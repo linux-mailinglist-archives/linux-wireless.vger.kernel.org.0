@@ -1,223 +1,224 @@
-Return-Path: <linux-wireless+bounces-33792-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33793-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PDvJiAVw2lCoAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33792-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 23:50:08 +0100
+	id eP2YKJ4Vw2lCoAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33793-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 23:52:14 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C3831D75A
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 23:50:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E2231D7EA
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 23:52:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C253311B69B
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 22:46:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 463BC303FFFA
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 22:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087663C65E1;
-	Tue, 24 Mar 2026 22:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6EB3C6A21;
+	Tue, 24 Mar 2026 22:49:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="goFNEleL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB9038F635
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 22:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A885B3B4E8A
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 22:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774392395; cv=none; b=D1HX/vCua6yXtzQ5aYXyGVdU2zSzBGgVY01pN5vYrtL9kHwIJP+XRJ8t8qCLnN5n1VGaEAF+g/DoAQSDRreS3bylDlYtmb/yhpAspTX2bgehd8lX3bQU7Kbk4gD8tMAb+HXPJ0ppym0hRvoJDMDDAJs2j+wReFSwItb01dO/MoI=
+	t=1774392570; cv=none; b=PmflfWbbCwzh2YGKQkRjo0mXHiy1WvudncCg3qv1M+0nP9xlS8JzGgxiXzO5T9owP4pXTAD+YeQwCtTP2ciYi5HW4pO9bcR9F/0xT8isp1vYA7kuaUDFCMK/bG6dvvCuGhXPlSj3pPXPfnrH2+kTroXyTJlWQOSVjy/UJ6GTXU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774392395; c=relaxed/simple;
-	bh=3YDYe+eKvpUXHiyvLACVGcDJXT1eIj28IFAVn7VoE+4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K8bGT8WHBeNgOBU52P6j4jhEnijtNy865bibOe781vdEiMfXqnl8KsVMl8X0zkeECR+S/GPMzAdQJ9RnQ2+KQcggbWMjpW6vnZbABs5IEMYrg4/2Mtjr1a0P51koOZqhyLmxH0nDGjVoIN+uO/40p6NEiwZJheUrE3t3SJcAwnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+	s=arc-20240116; t=1774392570; c=relaxed/simple;
+	bh=x66sLBkPM9N4hLXn1DtA+Tsks0CxriXlzYTWpFI/SYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RhKYIUR4zN0/RY7uUDcJm5jrzgsXAiC5xTnWqlH2oEFoXHJ9C/aLgdzpSN5QYgiLUqmUWCAmo8CiTCMbFHI6XRb8EZAPUJ7PKnQ1fZjJxnEI0KDuJG26QTaMoshJ7xdoX4ydTuBw+5wDU8yHIDQR1fB/vFg0lHyXe89aZgpeXMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=goFNEleL; arc=none smtp.client-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a13e1cfa45so5226520e87.2
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 15:46:34 -0700 (PDT)
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2c0ea57fea7so7372246eec.0
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 15:49:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774392569; x=1774997369; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gNx1VzVQBg2bGT4I9Bs+XmhXlek+bgkFq6Ick2G8sfw=;
+        b=goFNEleL/6OQLHn+J+oosYrN144Gvq3n9PxHX01b3AOoBSzMntlYyfDBUev1IPmigZ
+         PJNtk4Puil6DsOG08u2pCFDFISC0hZRWi1B9SPmvozkwDXnq7KMGHUMsTG48keNg0TzD
+         4ux7C9aM+cSk5nll4X0cKKMzWfJza7Ui2/qr02Y9axCLE+5UeHxyAg+zw5hr5ZMGy+s2
+         Wr13RXhhNNJkgmTqx7vNdoQdlkz6i4BFXe5JyxWiA7mIuFsP21vN0NKAed52WPvzDxz3
+         ClVP44k1pNh21rMwxWJ+CfYqfExhhx0OcvYywKMsYisw5flN0b4YHgQc14etyGiDFJ7r
+         1NCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774392392; x=1774997192;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cwV/BjEvjB+2xLn3P/yF4TbYfG+FKFLU/kxsrZgmYEA=;
-        b=jJIfANjrXbEzG+nIk9rKNLEE3j1K+12Ai3slWtPzGcnD4mTV5ic/sUtlaSwhnk8BdA
-         veb1c3PE3GMaIhNGB//thkG2JeBrOCfKSbWi7/yxPg2btAzpofBavDgD64o2vHaXlp0Q
-         XcEGxMsa3rWC1tc2UvIDMFVFvdnbFyavv5/NNzSu0c3R/tZR9Th3zCVgnri01ATIt+7Y
-         Peh3GhjRa/KziIdh6qUbWVbjTE1qTGGLidUcp36llHkBYOvWfjAiVSljoLqLAqd6KcbH
-         EgjjHsLDaMYlkwqUI4AwS9+ZBwXZSgISBwEhM49M4RNxRArNvQxdICVFRss4jrNXbXK3
-         Bmwg==
-X-Forwarded-Encrypted: i=1; AJvYcCWttvaZYZ9suxgRgrzg8EguBS9qETCW9gEyrEsB3IWiHxnpwmPtafbaXgtR/YtGcUrzbfzbufzCpEGtUaKRhg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQCkih5HG5WxdH7rSzBEaZkR6VpgB8GYC6BatxHWFzBLD1810E
-	Yws435kRe2bb+BqMSstXIbslcHIl0WJvuX85tJv/qkRVWOoRLD8XoTIh
-X-Gm-Gg: ATEYQzx5bPLdeVnOERYNWUqwnb/gcObZd+KIzVwvlJhHI7Z3Mzy/VlrZy1SYK/wUAiJ
-	fDwnBf5TDuBvkh/9SPuD6MTQ5Vfc70Flw8wuWtmIRd5nyl7kfU4HoqM1tyKQo8sEO4pub+P2U5B
-	YI7dV7NcRNSOUvF0S9NA3bEOcYsJoTyaCddoC2/1uHoxiuNLu8dESeXfqaRHANPukVZDqsgyipG
-	+BqDMyn4kmvlG7n8uhUyWzaHcHLkhc7ppe0NbU5b5qQ3+dbWK4v8IrrzMTP+ovwv7KB18XzPGK+
-	qJmNQ6tyTpUa0tnMHU2VUBsj7DmjRXgx0HOUwanJki2/yvs7Y1Tiu+V8QuVi/g7wZgJQuijW6Vj
-	ft+DnwP5WRDY8kMemP7ymULMouOnltC5Dsn3WZTYv8u6BLQXqmEkXIAVz8Ct+eY/CIxFYuUchS8
-	ux8QsGmkD0YmWjzZfuA/Ns
-X-Received: by 2002:a05:6512:1250:b0:5a2:86bf:28cf with SMTP id 2adb3069b0e04-5a29b990918mr350145e87.29.1774392392094;
-        Tue, 24 Mar 2026 15:46:32 -0700 (PDT)
-Received: from hackbase ([213.87.129.220])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a298fe3383sm626971e87.9.2026.03.24.15.46.28
+        d=1e100.net; s=20251104; t=1774392569; x=1774997369;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gNx1VzVQBg2bGT4I9Bs+XmhXlek+bgkFq6Ick2G8sfw=;
+        b=s+umGHTzFk7iY/OWRdP8bV1ASq0T4xDqwGfjRayBuH+DpL2k72lUkvTVV6giw9Cjwh
+         RZSYXs1noQg1+vnaDYGoANypqYa6jb0B4/emiAdr3OiP5YB0wvh15+QpZPCs0inMcU2D
+         U2xH4S8VHJzbCtB7023wdmo8x1RkF72IO3MPIIz7CukEzQgAu4RaanBYUc9DksmKY3Q4
+         wGsHnFNTjmEncGQncXKwixH6C5xgGXpLxl6w2fiVv24Lle57njmKjZESRk2raj/duAyc
+         urbRjDuRhmEFLICEyUqWQbBBr5Hmw36zgHWdvv5yMHSSYPNR+neVzBnbRjbcY1vvQJi1
+         y4Sg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKQ7yAosuDJ24Rs1i+z19SFIToQxVgSVhX/r2skdhAa87q7hlih3MLLFTNGPtd9V5BX8KCOyBvTYIDwmoIRA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrMrbT6xYSCuHnb0Wk0u2QpHl5piWlNshhyW9RITSIMUW6JGXv
+	Yg9mof0RGVQowYSPFFy754OwQ25ZZojdKkBG6a6OUCOL4pLEuJNtSnU=
+X-Gm-Gg: ATEYQzwGSKil9BrxJl1YH2/npQm5b+C229wyq0TQiwUG2pOghsMWCRqDsp1RdLYm1Z/
+	wu+n0dYi5bZmZyWsF7flkYE4ZV+yTgD/EJBX6WuutJnEdx8c2bZ3CVNWq2ujEiW1mwfw3YRR8Xz
+	FljKQjM9mGy8RBFF1coXzg5LiZdhZGwPh7AxfYwNwGzvJyszgokdH3UYOlTwqroowFFFF2NXuKI
+	jQasVRoOpyatWt/xqxprkIVzP9H8zGP9Yl3ard4Rnsg2w+0Em+M+k85dLWX4f5uuEgtGdodo14X
+	Su8Y5VqvUoPjJAf1G3vijR/4e2/qtH1+eo18iwns8IeFgqvmgfKWyIwJ4KKcOARWwdyIo+pRKSy
+	oTkjVln9Mp9EcC7U9Y0J5cs+Mfi5UHWPK09yCfNCXGnPnG+oA+rCKWST/y3C7kXyxIOmHouciWx
+	6VdpnQy+C3FYTEG2uIKo3Tky74rXk754JtEvoMK1oSIdPAzUMPupjHE0ZyU/1hEpMZ/3cMsK1pv
+	34OFJ9emQx1EI2WK5+h//LKJa7d
+X-Received: by 2002:a05:7301:6582:b0:2c1:2999:498e with SMTP id 5a478bee46e88-2c15d3a1176mr717588eec.18.1774392568523;
+        Tue, 24 Mar 2026 15:49:28 -0700 (PDT)
+Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b1961a2sm16796758eec.12.2026.03.24.15.49.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 15:46:30 -0700 (PDT)
-From: Alexander Popov <alex.popov@linux.com>
-To: Andrew Lunn <andrew@lunn.ch>,
+        Tue, 24 Mar 2026 15:49:28 -0700 (PDT)
+Date: Tue, 24 Mar 2026 15:49:27 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
+	andrew+netdev@lunn.ch, michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com, anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com, saeedm@nvidia.com, tariqt@nvidia.com,
+	mbloch@nvidia.com, alexanderduyck@fb.com, kernel-team@meta.com,
+	johannes@sipsolutions.net, sd@queasysnail.net, jianbol@nvidia.com,
+	dtatulea@nvidia.com, mohsin.bashr@gmail.com,
+	jacob.e.keller@intel.com, willemb@google.com, skhawaja@google.com,
+	bestswngs@gmail.com, aleksandr.loktionov@intel.com, kees@kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	leon@kernel.org
+Subject: Re: [PATCH net-next v3 03/13] net: introduce ndo_set_rx_mode_async
+ and dev_rx_mode_work
+Message-ID: <acMU93XN02PHmAGi@mini-arch>
+Mail-Followup-To: Stanislav Fomichev <stfomichev@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	David Miller <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Michal Kubecek <mkubecek@suse.cz>,
-	Gal Pressman <gal@nvidia.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	James Guan <guan_yufei@163.com>,
-	Kees Cook <kees@kernel.org>,
-	Paul Moses <p@1g4.org>,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexander Popov <alex.popov@linux.com>
-Cc: security@kernel.org,
-	notify@kernel.org
-Subject: [PATCH] wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free
-Date: Wed, 25 Mar 2026 01:46:02 +0300
-Message-ID: <20260324224607.374327-1-alex.popov@linux.com>
-X-Mailer: git-send-email 2.53.0
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
+	andrew+netdev@lunn.ch, michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com, anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com, saeedm@nvidia.com, tariqt@nvidia.com,
+	mbloch@nvidia.com, alexanderduyck@fb.com, kernel-team@meta.com,
+	johannes@sipsolutions.net, sd@queasysnail.net, jianbol@nvidia.com,
+	dtatulea@nvidia.com, mohsin.bashr@gmail.com,
+	jacob.e.keller@intel.com, willemb@google.com, skhawaja@google.com,
+	bestswngs@gmail.com, aleksandr.loktionov@intel.com, kees@kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	leon@kernel.org
+References: <20260320012501.2033548-1-sdf@fomichev.me>
+ <20260320012501.2033548-4-sdf@fomichev.me>
+ <20260323162003.0d155055@kernel.org>
+ <acLUMN1BYkIVyOk8@mini-arch>
+ <20260324142114.216fcb01@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.14 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260324142114.216fcb01@kernel.org>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[linux.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33792-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[lunn.ch,kernel.org,davemloft.net,google.com,redhat.com,bootlin.com,suse.cz,nvidia.com,pengutronix.de,gmail.com,linuxfoundation.org,sipsolutions.net,163.com,1g4.org,vger.kernel.org,linux.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alex.popov@linux.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-33793-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[37];
+	FREEMAIL_CC(0.00)[fomichev.me,vger.kernel.org,davemloft.net,google.com,redhat.com,kernel.org,lwn.net,linuxfoundation.org,lunn.ch,broadcom.com,intel.com,nvidia.com,fb.com,meta.com,sipsolutions.net,queasysnail.net,gmail.com,lists.osuosl.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[stfomichev@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.com:email,linux.com:mid]
-X-Rspamd-Queue-Id: 16C3831D75A
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 43E2231D7EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Currently we execute `SET_NETDEV_DEV(dev, &priv->lowerdev->dev)` for
-the virt_wifi net devices. However, unregistering a virt_wifi device in
-netdev_run_todo() can happen together with the device referenced by
-SET_NETDEV_DEV().
+On 03/24, Jakub Kicinski wrote:
+> On Tue, 24 Mar 2026 11:13:04 -0700 Stanislav Fomichev wrote:
+> > > > +		netif_addr_lock_bh(dev);
+> > > > +
+> > > > +		err = __hw_addr_list_snapshot(&uc_snap, &dev->uc,
+> > > > +					      dev->addr_len);
+> > > > +		if (!err)
+> > > > +			err = __hw_addr_list_snapshot(&uc_ref, &dev->uc,
+> > > > +						      dev->addr_len);
+> > > > +		if (!err)
+> > > > +			err = __hw_addr_list_snapshot(&mc_snap, &dev->mc,
+> > > > +						      dev->addr_len);
+> > > > +		if (!err)
+> > > > +			err = __hw_addr_list_snapshot(&mc_ref, &dev->mc,
+> > > > +						      dev->addr_len);  
+> > > 
+> > > This doesn't get slow with a few thousands of addresses?  
+> > 
+> > I can add kunit benchmark and attach the output? Although not sure where
+> > to go from that. The alternative to this is allocating an array of entries.
+> > I started with that initially but __hw_addr_sync_dev wants to kfree the
+> > individual entries and I decided not to have a separate helpers to
+> > manage the snapshots.
+> 
+> Let's see what the benchmark says. Hopefully it's fast enough and 
+> we don't have to worry. Is keeping these lists around between the
+> invocations of the work tricky?
 
-It can result in use-after-free during the ethtool operations performed
-on a virt_wifi device that is currently being unregistered. Such a net
-device can have the `dev.parent` field pointing to the freed memory,
-but ethnl_ops_begin() calls `pm_runtime_get_sync(dev->dev.parent)`.
-
-Let's remove SET_NETDEV_DEV for virt_wifi to avoid bugs like this:
-
- ==================================================================
- BUG: KASAN: slab-use-after-free in __pm_runtime_resume+0xe2/0xf0
- Read of size 2 at addr ffff88810cfc46f8 by task pm/606
-
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4d/0x70
-  print_report+0x170/0x4f3
-  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-  kasan_report+0xda/0x110
-  ? __pm_runtime_resume+0xe2/0xf0
-  ? __pm_runtime_resume+0xe2/0xf0
-  __pm_runtime_resume+0xe2/0xf0
-  ethnl_ops_begin+0x49/0x270
-  ethnl_set_features+0x23c/0xab0
-  ? __pfx_ethnl_set_features+0x10/0x10
-  ? kvm_sched_clock_read+0x11/0x20
-  ? local_clock_noinstr+0xf/0xf0
-  ? local_clock+0x10/0x30
-  ? kasan_save_track+0x25/0x60
-  ? __kasan_kmalloc+0x7f/0x90
-  ? genl_family_rcv_msg_attrs_parse.isra.0+0x150/0x2c0
-  genl_family_rcv_msg_doit+0x1e7/0x2c0
-  ? __pfx_genl_family_rcv_msg_doit+0x10/0x10
-  ? __pfx_cred_has_capability.isra.0+0x10/0x10
-  ? stack_trace_save+0x8e/0xc0
-  genl_rcv_msg+0x411/0x660
-  ? __pfx_genl_rcv_msg+0x10/0x10
-  ? __pfx_ethnl_set_features+0x10/0x10
-  netlink_rcv_skb+0x121/0x380
-  ? __pfx_genl_rcv_msg+0x10/0x10
-  ? __pfx_netlink_rcv_skb+0x10/0x10
-  ? __pfx_down_read+0x10/0x10
-  genl_rcv+0x23/0x30
-  netlink_unicast+0x60f/0x830
-  ? __pfx_netlink_unicast+0x10/0x10
-  ? __pfx___alloc_skb+0x10/0x10
-  netlink_sendmsg+0x6ea/0xbc0
-  ? __pfx_netlink_sendmsg+0x10/0x10
-  ? __futex_queue+0x10b/0x1f0
-  ____sys_sendmsg+0x7a2/0x950
-  ? copy_msghdr_from_user+0x26b/0x430
-  ? __pfx_____sys_sendmsg+0x10/0x10
-  ? __pfx_copy_msghdr_from_user+0x10/0x10
-  ___sys_sendmsg+0xf8/0x180
-  ? __pfx____sys_sendmsg+0x10/0x10
-  ? __pfx_futex_wait+0x10/0x10
-  ? fdget+0x2e4/0x4a0
-  __sys_sendmsg+0x11f/0x1c0
-  ? __pfx___sys_sendmsg+0x10/0x10
-  do_syscall_64+0xe2/0x570
-  ? exc_page_fault+0x66/0xb0
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  </TASK>
-
-This fix may be combined with another one in the ethtool subsystem:
-https://lore.kernel.org/all/20260322075917.254874-1-alex.popov@linux.com/T/#u
-
-Fixes: d43c65b05b848e0b ("ethtool: runtime-resume netdev parent in ethnl_ops_begin")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Popov <alex.popov@linux.com>
----
- drivers/net/wireless/virtual/virt_wifi.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/net/wireless/virtual/virt_wifi.c b/drivers/net/wireless/virtual/virt_wifi.c
-index 885dc7243e8d..97bd39d89e98 100644
---- a/drivers/net/wireless/virtual/virt_wifi.c
-+++ b/drivers/net/wireless/virtual/virt_wifi.c
-@@ -557,7 +557,6 @@ static int virt_wifi_newlink(struct net_device *dev,
- 	eth_hw_addr_inherit(dev, priv->lowerdev);
- 	netif_stacked_transfer_operstate(priv->lowerdev, dev);
+Yeah, that sounds doable, don't think it's too tricky, just extra
+list_head on net_device + change the alloc/free to use it.
+And then we keep this cache around until unregister? I will try to add it as
+a separate patch to cache these entries to keep it simple for review..
  
--	SET_NETDEV_DEV(dev, &priv->lowerdev->dev);
- 	dev->ieee80211_ptr = kzalloc_obj(*dev->ieee80211_ptr);
- 
- 	if (!dev->ieee80211_ptr) {
--- 
-2.53.0
+> > > Can we give the work a reference on the netdev (at init time) and
+> > > cancel + release it here instead of flushing / waiting?  
+> > 
+> > Not sure why cancel+release, maybe you're thinking about the unregister
+> > path? This is rtnl_unlock -> netdev_run_todo -> __rtnl_unlock + some
+> > extras.
+> > 
+> > And the flush is here to plumb the addresses to the real devices
+> > before we return to the callers. Mostly because of the following
+> > things we have in the tests:
+> > 
+> > # TEST: team cleanup mode lacp                                        [FAIL]
+> > #       macvlan unicast address not found on a slave
+> > 
+> > Can you explain a bit more on the suggestion?
+> 
+> Oh, I thought it's here for unregister! Feels like it'd be cleaner to
+> add the flush in dev_*c_add() and friends? How hard would it be to
+> identify the callers in atomic context?
 
+Not sure we can do it in dev_xc_add because it runs under rtnl :-(
+I currently do flush in netdev_run_todo because that's the place that
+doesn't hold rtnl. Otherwise flush will get stuck because the work
+handler grabs it...
 
