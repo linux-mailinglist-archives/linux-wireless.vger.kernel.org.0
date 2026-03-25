@@ -1,193 +1,189 @@
-Return-Path: <linux-wireless+bounces-33868-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33869-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sK3oGPs5xGlsxgQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33868-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 20:39:39 +0100
+	id kDzxFGI+xGnZxgQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33869-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 20:58:26 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD7632B57E
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 20:39:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D59832B859
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 20:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B8AF301BC1E
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 19:39:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B522C30131FC
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 19:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6332731F983;
-	Wed, 25 Mar 2026 19:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D0430F93D;
+	Wed, 25 Mar 2026 19:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Jke5vlqL";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XUwb13Ck"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EGHR1Lu5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442462D97B8
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 19:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F3033A9C3
+	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 19:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774467551; cv=none; b=FDhLfUuCaOFTfEkAe3YdoZI9om5EH/AnYCl9Ohz1b1fJJ+T+KZ2fwn0JpRChMeGATc4+lrpm7Ixywm8tJReH3GAQcJmpRpSZKAEAvQaWDK7XcfQ6cSJ/cn+TnSN3bJqI3+ioakDGZyZ0gLN0X2zzRn5dnsbVJMeBRBEX/LrFS3s=
+	t=1774468674; cv=none; b=Z7IuEWiytbUgpHTYjGNXcDutw30zoJAG27O7NbNQI0xyc+hB2cH4yKOABq/ckwrN82fr1gII3JPGs9vjk9Vkd0nA9ZXUKGOOEbY5N6SiUVSdVyYSIS1ukCgSruxkNUEyoZyUS3ZdUP/CvS2gEkSbCCvYKrqy9PAssOOmG2FNJ2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774467551; c=relaxed/simple;
-	bh=mARsqTbZxbkeBHP4zgmLOL+PjHsYiG8qZxdV66rvrfY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i3lpVASSStpA2laekxGpvxx1LN2Um2TGUNH4r/7360JokUcE/K/47S7BfJO27ZEwwkcRlum77TU+qQFLaHBAg6e+5btkUspHe9GmVXdk/XUetzgJvi0WUBRJsdxQQb5wBEdY7+g968eogdy2yDKe6FIw6WYeLQsRGbGzl3s8UX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Jke5vlqL; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XUwb13Ck; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62PFH3QZ1257960
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 19:39:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=VRX2TeJnAfqK61YrX26wKqVI
-	j6I4aVlTC7JyT6LMrPE=; b=Jke5vlqLOymrsMkJIXGnGSKhUONpLkcA6PDaM0B6
-	AWwh5Z9j9fz351ENI0ktAtJl9KNzS3r0sgSMlxlTMFnKsJyfimnyzbC87+2R7g1X
-	YWqmDUOr3mQKoG9dUUGB2uXOunzALcWuQHF0wKSPtFtaXuzqkTlE96AWUVX6d12G
-	cG+fBupcCN2s3QRBJEs11/xzCKxRT5edwla9jJZkTAhJf7pBdreCsiZ8RZ48Zb+R
-	tcLx/TwMuT+WEYtIQFOoapxCo3CoV1gCpjbvBmxMnWqqyrczPcWvWxbZQI4mAx7A
-	0mqGfuwWBd4XZGC/okK2znzqDlbwaQbnGt6QyslMRxsfnA==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d4dm2t3k6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 19:39:09 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5093b92f327so13893171cf.1
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 12:39:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1774467548; x=1775072348; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VRX2TeJnAfqK61YrX26wKqVIj6I4aVlTC7JyT6LMrPE=;
-        b=XUwb13Ck+DZfq+gLo7vZb97Krg8QTlfQGTKEpCHv6YZGl8Ms9hfIr1W2T2fYD8TjOv
-         3Uu3dSKpWvcYrfVuAT+d2QMJSVhFYtHe8ZkR4XaK4iCup+8kJ/isUQcSK96vxrgtg423
-         yl56j0Q+zvq+LAzKpHzR08UOPXMx12QvxvkH5poOc9nFo7TXpv720xMm0atODaQRsggs
-         /7Y0AulsV4fLBtfFYUpdiYD1ykoRBVET69xUrQ2oaH0atwV1gc7o4LKnfgZBi/+mz3tu
-         AdLeo6oRtHSQRFBVRcC6pFZ5Xir/HL6YlwQR8cAXy+l9wcqeFEIsZyzMLy9fyx2onk90
-         RiXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774467548; x=1775072348;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VRX2TeJnAfqK61YrX26wKqVIj6I4aVlTC7JyT6LMrPE=;
-        b=STdYBRtToP/x72aIEv70OqTEreWzlKsSe2vPRy7mSfOUCP/snmYkGQuru53C5aZvlu
-         Z1KrTbBKPkePBu6Ea0jkF9krk/F6BZ9DCC1V3OrNc0peubxSdqBYEynuCd31SmxrRhuO
-         +pMnch96+IaPE+T9DroX3bxc6FOAn4jO01vUVL8SyC2vwOQiKTvOJDL8WdMxrnb7+cD+
-         IXt74mo9IIkICuCt2oSCd4SS24PioTTksL4s89oADv9oOvam3vkT3L+rHo0ROgl+9TO3
-         fDQpf4SaWHMhmRQNt7EnnUw8CDnDGM0oKVsVWxY4O8ct1Ch0xfHJYDwcmEZNAqjKfZRy
-         vTDg==
-X-Forwarded-Encrypted: i=1; AJvYcCWGUBr7j9Vn8xdeD3vvpyhbXNAVy1uiUz8H0iZ2WzqUu48wd0v6kF/rF+p2Fy5cBvx/3hCmdhfoFXRi43mC6g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoFfm24hhB2XoGnDuw1BFLpR2cYS2QSOLRB6ng4DlXmHzhUXBe
-	Ek57VmGUFqyCroN+Jk9RbV4AnvKIoZsS1tEU66LNS2RW+CvlQCE/UsxK88r+s3YB5L0y9d/p8Fp
-	DHecPp62zrClwLRrcp7LoNB6xfYF0rRaBxljgATVvY0OlrpDPBmzr0aRTSaVPf8ijU+JbvA==
-X-Gm-Gg: ATEYQzyaGUydrJZRIpbJC/SG5UYuiH6ZPAREWa2IBYDZaOR/7H7kPVWuEVmxVNTODqI
-	+pCsLvXmWCppG6tsQmLaKJS9mEBpn3yEinKh9DFaZoc/4tII8RpySrm3yUNkxqMP56ZAhsPPC2F
-	fCOZXdFRaq+WDQgYJ1xkouJuwLvL4DeE3XPvTpjyDeVpeVP7Nzerqqw0BhFyybGvMYJWBHB2+uv
-	+d4JkJVTn/HtJnl9KWmdL+Y+ZYHNNZnLerX1LZ24BrKFmdMrjlIt9FWK6l1S8d7fHwW4KK51yZi
-	4jmEEUeRoC2Nk62tz5Qxt1NCxr9oYF7aC09m3iEvzIDvN9SVQJyGXungwKCRPiqV5Xsp1rIvy7K
-	FU7eq4tKq4fdlnWVtwaihH8LR/wzKnVqvmXf4FUqO1YvyLOjX31Ncbx3GdRS18hVwExFFtTzLYD
-	ZhPsG93L2aOgjWF7wUxeEJfccMPaR7rzlbczI=
-X-Received: by 2002:a05:622a:1f9a:b0:509:120d:4311 with SMTP id d75a77b69052e-50b80e66563mr73669851cf.60.1774467548228;
-        Wed, 25 Mar 2026 12:39:08 -0700 (PDT)
-X-Received: by 2002:a05:622a:1f9a:b0:509:120d:4311 with SMTP id d75a77b69052e-50b80e66563mr73669501cf.60.1774467547795;
-        Wed, 25 Mar 2026 12:39:07 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2a068f8c7sm91843e87.65.2026.03.25.12.39.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 12:39:06 -0700 (PDT)
-Date: Wed, 25 Mar 2026 21:39:04 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, jjohnson@kernel.org
-Subject: Re: [PULL linux-firmware] ath10k, ath11k and ath12k firmware
- ath-20260325
-Message-ID: <4zrp3tlsqytyuxau5qk4hnlsht24f6vlgv7pyhb5y5cswgn4c3@4imh6ktclmfd>
-References: <32af006e-265f-4239-9b5f-be3d52996e10@oss.qualcomm.com>
+	s=arc-20240116; t=1774468674; c=relaxed/simple;
+	bh=krnllAghdLjo4diVkXV0ofGEmqaUXMDDjhFyCG7ESRA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SF8DFYM353+oM5RXPhp1ElfOW7L6fzJ4I3JFRXYVJp2c4imrYKg4XBCg+cobaLPE8dIumXTjVTOcZQZewufhzLCehISS1R0G9tQcMeOydzaS+H8sHVRF7mK7IDf84KxGzFr+T0+jzzxvgZfD5vSi2vd8C3oEqVucQ78V1shZYbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EGHR1Lu5; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774468673; x=1806004673;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=krnllAghdLjo4diVkXV0ofGEmqaUXMDDjhFyCG7ESRA=;
+  b=EGHR1Lu58PSP7vZXxSywZ9ZE43OHACZEJmWzNV5TaVK5+7jNSh8WykAx
+   +H5dQBOyU+6IY4tNCRTKU/ergBENiHwy2NJaXilniS8iRPyDTr5FhhXPJ
+   CMOwHbYp14Z1B2oAYUWd+3S3p0Sthr4NY4CyQa8gQH4+3yfA+p8+80mXb
+   NR3+Lxf9frQItdeakE2WHthWuTzt2gbJs+l4vYJoNodvLy1w7Lq3Y9oPK
+   PPGKEOPlYAg42noxDT4FjulmOVazi9ENYjej1CtjIm6SNOU3M0Q1M9fzt
+   MKBdMl7JIf7xYVsO1/vXYVnUH1cnCxjPw5O90TZ5n97HTtfhO/R8TPthA
+   w==;
+X-CSE-ConnectionGUID: JY2DUDULQPS96CtioQIaMQ==
+X-CSE-MsgGUID: goNWdlfIQLaGm+hksjQPhg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="63066905"
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
+   d="scan'208";a="63066905"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 12:57:52 -0700
+X-CSE-ConnectionGUID: HacjwEphQ4W3eQHMv/6EYA==
+X-CSE-MsgGUID: eo+4ZsKuThiqMXRVowf98w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
+   d="scan'208";a="220374993"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 12:57:51 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Cc: Benjamin Berg <benjamin.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>
+Subject: [PATCH v4 wireless-next] wifi: mac80211: ignore reserved bits in reconfiguration status
+Date: Wed, 25 Mar 2026 21:57:39 +0200
+Message-Id: <20260325215404.ab5ccf4bc62e.I9aef8f4fb6f1b06671bb6cf0e2bd4ec6e4c8bda4@changeid>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <32af006e-265f-4239-9b5f-be3d52996e10@oss.qualcomm.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDE0MyBTYWx0ZWRfX/5n+lffGwewk
- 6WeoH3XwotMy6KM07yGaltsmefWm7y2fqnWU2cAb8TUHHSnDeGRcmJEuUB8EInL9OliTyB5lx4K
- cK5anE7CO/Q7oyKMABwixWz18AWUsW69YgyChXDSmfb7zzwHvHEh9844NFsx++NwSNtm8SlvVue
- bhi/ozOaIYyJ2Fdl1Vk98FUbpW7qhKZo00TwGBwvXYv0WxDwVEqrOrgTorIGQo8Qfm+uZm0aiIT
- s+7MmkaPpCZX9yRGWpHv3NpicwsQeWI2EJbVRX7a4GUOuSipgpEC/u8QpBGZqu/AlCnSvScdDXa
- nIk+OE7mkalN04ch9C1Q3qD0siVrhGbkmzLWdcXKL/q4rQVia8ayZ5VLfo2qelpKG7qGqjDSdvK
- WgxDyPJc4l58rGYPhTXXZNGQrk1GnSVaVEZhDtKeYDSsgkBbJi2GoBMHGZiopEAMZ1yxA8HrPX8
- N+qzn97DRlOGfGdveag==
-X-Proofpoint-GUID: WqB9JvmzDetiJj4KryX-zDOeErCLgE0V
-X-Authority-Analysis: v=2.4 cv=Fo0IPmrq c=1 sm=1 tr=0 ts=69c439dd cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=p0WdMEafAAAA:8
- a=FOHEAjDUwq7NbCT47RAA:9 a=CjuIK1q_8ugA:10 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-ORIG-GUID: WqB9JvmzDetiJj4KryX-zDOeErCLgE0V
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-25_05,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 malwarescore=0 clxscore=1015 spamscore=0
- bulkscore=0 phishscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603250143
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33868-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: BDD7632B57E
+	TAGGED_FROM(0.00)[bounces-33869-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 0D59832B859
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 25, 2026 at 11:00:04AM -0700, Jeff Johnson wrote:
-> Hi,
-> Here's a new pull request for ath10k, ath11k and ath12k.
-> 
-> No updates for ath10k or ath12k
-> 
-> For ath11k:
-> Update QCA6698AQ and WCN6855 firmware to address a WoW page fault issue.
-> 
-> Please let me know if there are any problems.
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-Thanks, merged and pushed out:
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/974
+The Link ID Info field in the Reconfiguration Status Duple subfield of
+the Reconfiguration Response frame only uses the lower four bits for the
+link ID. The upper bits are reserved and should therefore be ignored.
 
-> 
-> Thanks,
-> /jeff
-> 
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ include/linux/ieee80211.h |  7 +++++++
+ net/mac80211/mlme.c       | 14 ++++++++------
+ 2 files changed, 15 insertions(+), 6 deletions(-)
+--
+v2: added structs and macros, as required.
+v3: fixed Fixes tag
+v4: added the requested structures again...
 
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 52db36120314..b5d649db123f 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -1194,6 +1194,13 @@ struct ieee80211_mgmt {
+ 
+ #define IEEE80211_MIN_ACTION_SIZE(type)	offsetofend(struct ieee80211_mgmt, u.action.type)
+ 
++/* Link Reconfiguration Status Duple field */
++struct ieee80211_ml_reconf_status {
++	u8 info;
++	__le16 status;
++} __packed;
++
++#define IEEE80211_ML_RECONF_LINK_ID_MASK	0xf
+ 
+ /* Management MIC information element (IEEE 802.11w) for CMAC */
+ struct ieee80211_mmie {
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 173a60360a45..7fc5616cb244 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -10459,8 +10459,8 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
+ 	pos = mgmt->u.action.ml_reconf_resp.variable;
+ 	len -= offsetofend(typeof(*mgmt), u.action.ml_reconf_resp);
+ 
+-	/* each status duple is 3 octets */
+-	if (len < mgmt->u.action.ml_reconf_resp.count * 3) {
++	if (len < mgmt->u.action.ml_reconf_resp.count *
++				sizeof(struct ieee80211_ml_reconf_status)) {
+ 		sdata_info(sdata,
+ 			   "mlo: reconf: unexpected len=%zu, count=%u\n",
+ 			   len, mgmt->u.action.ml_reconf_resp.count);
+@@ -10469,9 +10469,11 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
+ 
+ 	link_mask = sta_changed_links;
+ 	for (i = 0; i < mgmt->u.action.ml_reconf_resp.count; i++) {
+-		u16 status = get_unaligned_le16(pos + 1);
++		struct ieee80211_ml_reconf_status *reconf_status = (void *)pos;
++		u16 status = le16_to_cpu(reconf_status->status);
+ 
+-		link_id = *pos;
++		link_id = u8_get_bits(reconf_status->info,
++				      IEEE80211_ML_RECONF_LINK_ID_MASK);
+ 
+ 		if (!(link_mask & BIT(link_id))) {
+ 			sdata_info(sdata,
+@@ -10506,8 +10508,8 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
+ 			sdata->u.mgd.reconf.added_links &= ~BIT(link_id);
+ 		}
+ 
+-		pos += 3;
+-		len -= 3;
++		pos += sizeof(*reconf_status);
++		len -= sizeof(*reconf_status);
+ 	}
+ 
+ 	if (link_mask) {
 -- 
-With best wishes
-Dmitry
+2.34.1
+
 
