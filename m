@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-33883-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33884-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKFuCPpQxGljyAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33883-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 22:17:46 +0100
+	id ICzOK0FSxGljyAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33884-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 22:23:13 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD80032C55E
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 22:17:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D4232C624
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 22:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 692E730A894A
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 21:16:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15A2D30E0547
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 21:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A3536F43D;
-	Wed, 25 Mar 2026 21:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238A830C35C;
+	Wed, 25 Mar 2026 21:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iLzQPJEk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GHD20mMo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A95374730
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 21:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6DD37C90C
+	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 21:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774473367; cv=none; b=OMs4HWAQ6loVXWqgdWebd8xnylBdcObH8g7Un4g7Egj2dHx3CLy1mIWilTc8r6T3fwmGRb0oo5n+QTM2laGH3rGhrbyf9Tz5RlC+Y5Tu1T1u/aAPiZ4XwEFmEYk7UNEr1Nv3IqDhdpC1LZR2RMgCaDwYpQy3DY+uEqSCdxBy/ZE=
+	t=1774473369; cv=none; b=kNlsR9fxkA27wzIWGuP/IKurb+isjpriMUGmalhnKkmLl54i4L+jcwjnfJ9Pyg5QUKuUH2R3EMVDpjSk77UuN3PdMAl01DkrikhG1TMMSrXcyDgtmLQz8OssoP0QF6r/72LEZKHsvusxkSEJK6Gfb/MNOtvEmXaEfk8s8j8aHng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774473367; c=relaxed/simple;
-	bh=3UMfgc+HnZiD6t1MYjdRWstxg6U1YDGzTx+VR2BxU9Y=;
+	s=arc-20240116; t=1774473369; c=relaxed/simple;
+	bh=MmkCjNQnNwU1y6JddAFHSRkcae0XMMb3P6/yQaWwZW4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RE34r00Ywo79c2xtvBBZln9SP2w/o6ewj7loe7DCl/zLwAu4USsk1xp5wVx9Z8f03XTZXUs+JYolwlelM2UHCTmSj6xP/ebK1aFILdI+5Ded1whHaLjEwLnmUGuDCap5bW2bwTQBufyDmk8K/mejHJLwFv86H0JqdzaSuGguk28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iLzQPJEk; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=e5SSZ2u+Uyd7yWlOkQuwOIqtRYWHfpq6Ng7AhF4gHc1UVAyzET249o4hpySc/f7mLvGtOhL6kKSR6YnEyVX2U5eOIW2rCt9gd/BCkKOPl6sbUafK7bC8O1pNydQQGooPLbYh9+nVFmErLt9Pdsa/FhRxU1BLmXTRJQ6VQxzovg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GHD20mMo; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774473367; x=1806009367;
+  t=1774473368; x=1806009368;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=3UMfgc+HnZiD6t1MYjdRWstxg6U1YDGzTx+VR2BxU9Y=;
-  b=iLzQPJEkr/FnBDgqiimAaAoiyoZsECBt1WVm1/woqCEYN2XOOqTkrG3U
-   QUdRdhMj4QNvqyzCjus2917ERoSfTHXPtp5DH+JBSngVqdXm4klPzcZ7D
-   Zpn8G2TR+fWmTlqQFhrlDufX+LBT/3ijA0ujfrwanLHS70pSIoAIiSDy3
-   YbSgPPTc1Bw0fDG1oPIYy8GtHt4/pN9kHfFwLTVGk9NYANYv3ebeGqAGV
-   I1vAWHTvMo9Y+DwW6i3C3p9A5ztcKmgOxg0haXTW/cI1EdrxIc26IuCeV
-   C8cN7DqsYakFaLk/QNHsMYKbTIzO54ZZ0IXvN8yvU+UmviTrMBGMVSZXu
-   w==;
-X-CSE-ConnectionGUID: aYh3vxxvQEWQl0fodTNeaw==
-X-CSE-MsgGUID: Rq+DZr/dTtKdzfeTPkvxUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="75485383"
+  bh=MmkCjNQnNwU1y6JddAFHSRkcae0XMMb3P6/yQaWwZW4=;
+  b=GHD20mMo6oDS6cpBtxguAcvtAleYp/VnFdba6oGSHjMOqng4CXSdbImu
+   LmPxkn/2ic7d5I4zFMmFACqAWi1Skr+w3RO1SL+qmC3enyO5pPRBjlYGy
+   eqWb9r4aB0g6bt1VgL/POHj/ivQdKgRuKIv5lW8nRY2nm8QN0bYgtx5st
+   bGXwdqa7nzE43KOSQkujtGC1I7qKWQFa2D71ao9anzMAbVHnKBhwDZmQ0
+   dMVgQMOPxyJXVKRam/6xjagBPe+i8Qycx6BrT1uLvVpDNkEWzjM0kpPQ7
+   /8fheAL4WEEBWVuCbT1x0MYxr9EWRMA3YbQFHYx3kXNFnN6RX1acNLCrd
+   Q==;
+X-CSE-ConnectionGUID: AJ765YvUTOqPtinbxuF+Eg==
+X-CSE-MsgGUID: yKXUZ+nYSN+1W0r0l3D0Og==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="75485385"
 X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
-   d="scan'208";a="75485383"
+   d="scan'208";a="75485385"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 14:16:07 -0700
-X-CSE-ConnectionGUID: bKkccGkESTKdqc/oktIqTQ==
-X-CSE-MsgGUID: pCM9LijGTmWdt1GrvITnrw==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 14:16:08 -0700
+X-CSE-ConnectionGUID: dPh0cN8ASJmUUaGWeSXkUQ==
+X-CSE-MsgGUID: em1+ZxViRwyv/tnTXRAeCQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
-   d="scan'208";a="224747545"
+   d="scan'208";a="224747550"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 14:16:06 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 14:16:07 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 12/15] wifi: mac80211: Accept frames on NAN DATA interfaces
-Date: Wed, 25 Mar 2026 23:15:33 +0200
-Message-Id: <20260325230443.7987da40ac7f.Iaa84cc3d063392f0150fcdf2bf610bdb41062f70@changeid>
+Subject: [PATCH wireless-next 13/15] wifi: mac80211: allow block ack agreements in NAN Data
+Date: Wed, 25 Mar 2026 23:15:34 +0200
+Message-Id: <20260325230443.aef1006ea6b7.I104435f2af65e032cba168b1d842cb9610720041@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260325211536.910411-1-miriam.rachel.korenblit@intel.com>
 References: <20260325211536.910411-1-miriam.rachel.korenblit@intel.com>
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -91,10 +91,10 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33883-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33884-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -104,91 +104,48 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AD80032C55E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 52D4232C624
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Accept frames there were received on NAN DATA interfaces:
-
-- Data frames, both multicast or unicast
-- Non-Public action frames, both multicast or unicast
-- Unicast secure management frames
-- FromDS and ToDS are 0.
-
-While at it, check FromDS/ToDS also for NAN management frames.
-
-Accept only data frames from devices that are part of the NAN
-cluster.
+Allow receiving and sending Add Block Ack action frames for NAN Data
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/rx.c | 37 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ net/mac80211/agg-tx.c | 3 ++-
+ net/mac80211/rx.c     | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
+diff --git a/net/mac80211/agg-tx.c b/net/mac80211/agg-tx.c
+index 01d927b88264..4833b46770b6 100644
+--- a/net/mac80211/agg-tx.c
++++ b/net/mac80211/agg-tx.c
+@@ -641,7 +641,8 @@ int ieee80211_start_tx_ba_session(struct ieee80211_sta *pubsta, u16 tid,
+ 	    sdata->vif.type != NL80211_IFTYPE_MESH_POINT &&
+ 	    sdata->vif.type != NL80211_IFTYPE_AP_VLAN &&
+ 	    sdata->vif.type != NL80211_IFTYPE_AP &&
+-	    sdata->vif.type != NL80211_IFTYPE_ADHOC)
++	    sdata->vif.type != NL80211_IFTYPE_ADHOC &&
++	    sdata->vif.type != NL80211_IFTYPE_NAN_DATA)
+ 		return -EINVAL;
+ 
+ 	if (test_sta_flag(sta, WLAN_STA_BLOCK_BA)) {
 diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index dbdd67c181d8..a00b73420929 100644
+index a00b73420929..979ac26d1173 100644
 --- a/net/mac80211/rx.c
 +++ b/net/mac80211/rx.c
-@@ -4469,6 +4469,9 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
- 	u8 *bssid = ieee80211_get_bssid(hdr, skb->len, sdata->vif.type);
- 	bool multicast = is_multicast_ether_addr(hdr->addr1) ||
- 			 ieee80211_is_s1g_beacon(hdr->frame_control);
-+	static const u8 nan_network_id[ETH_ALEN] __aligned(2) = {
-+		0x51, 0x6F, 0x9A, 0x01, 0x00, 0x00
-+	};
+@@ -3748,7 +3748,8 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
+ 		    sdata->vif.type != NL80211_IFTYPE_MESH_POINT &&
+ 		    sdata->vif.type != NL80211_IFTYPE_AP_VLAN &&
+ 		    sdata->vif.type != NL80211_IFTYPE_AP &&
+-		    sdata->vif.type != NL80211_IFTYPE_ADHOC)
++		    sdata->vif.type != NL80211_IFTYPE_ADHOC &&
++		    sdata->vif.type != NL80211_IFTYPE_NAN_DATA)
+ 			break;
  
- 	switch (sdata->vif.type) {
- 	case NL80211_IFTYPE_STATION:
-@@ -4597,6 +4600,10 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
- 		       (ieee80211_is_auth(hdr->frame_control) &&
- 			ether_addr_equal(sdata->vif.addr, hdr->addr1));
- 	case NL80211_IFTYPE_NAN:
-+		if (ieee80211_has_tods(hdr->frame_control) ||
-+		    ieee80211_has_fromds(hdr->frame_control))
-+			return false;
-+
- 		/* Accept only frames that are addressed to the NAN cluster
- 		 * (based on the Cluster ID). From these frames, accept only
- 		 * action frames or authentication frames that are addressed to
-@@ -4608,7 +4615,35 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
- 			 (ieee80211_is_auth(hdr->frame_control) &&
- 			  ether_addr_equal(sdata->vif.addr, hdr->addr1)));
- 	case NL80211_IFTYPE_NAN_DATA:
--		return false;
-+		if (ieee80211_has_tods(hdr->frame_control) ||
-+		    ieee80211_has_fromds(hdr->frame_control))
-+			return false;
-+
-+		if (ieee80211_is_data(hdr->frame_control)) {
-+			struct ieee80211_sub_if_data *nmi;
-+
-+			nmi = rcu_dereference(sdata->u.nan_data.nmi);
-+			if (!nmi)
-+				return false;
-+
-+			if (!ether_addr_equal(nmi->wdev.u.nan.cluster_id,
-+					      hdr->addr3))
-+				return false;
-+
-+			return multicast ||
-+			       ether_addr_equal(sdata->vif.addr, hdr->addr1);
-+		}
-+
-+		/* Non-public action frames (unicast or multicast) */
-+		if (ieee80211_is_action(hdr->frame_control) &&
-+		    !ieee80211_is_public_action(hdr, skb->len) &&
-+		    (ether_addr_equal(nan_network_id, hdr->addr1) ||
-+		     ether_addr_equal(sdata->vif.addr, hdr->addr1)))
-+			return true;
-+
-+		/* Unicast secure management frames */
-+		return ether_addr_equal(sdata->vif.addr, hdr->addr1) &&
-+		       ieee80211_is_unicast_robust_mgmt_frame(skb);
- 	default:
- 		break;
- 	}
+ 		/* verify action_code is present */
 -- 
 2.34.1
 
