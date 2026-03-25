@@ -1,531 +1,193 @@
-Return-Path: <linux-wireless+bounces-33867-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33868-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGz6HVk3xGnkxQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33867-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 20:28:25 +0100
+	id sK3oGPs5xGlsxgQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33868-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 20:39:39 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED83232B3EC
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 20:28:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD7632B57E
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 20:39:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A6425307CC3A
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 19:26:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B8AF301BC1E
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 19:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D412351C3A;
-	Wed, 25 Mar 2026 19:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6332731F983;
+	Wed, 25 Mar 2026 19:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=waelti.dev header.i=@waelti.dev header.b="EZEUcsAU"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Jke5vlqL";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XUwb13Ck"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-4318.protonmail.ch (mail-4318.protonmail.ch [185.70.43.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA7D35A393
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 19:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442462D97B8
+	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 19:39:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774466744; cv=none; b=qtrp5UiZ24lYbR+e57kizia++m6Q/k2YfgnCGpJnGOGIJnPgJR0FUP0s55ioSWuoJV0NLMFAGBldifm1VeqPF6GLRk3JfKypdRWnuZLdgVOONPrCNB+hMFF4ho+Ktq8D+knF0bpvFx3NGSYfI4r4r3qvSZQXOdy1f/Ty7iUNqWI=
+	t=1774467551; cv=none; b=FDhLfUuCaOFTfEkAe3YdoZI9om5EH/AnYCl9Ohz1b1fJJ+T+KZ2fwn0JpRChMeGATc4+lrpm7Ixywm8tJReH3GAQcJmpRpSZKAEAvQaWDK7XcfQ6cSJ/cn+TnSN3bJqI3+ioakDGZyZ0gLN0X2zzRn5dnsbVJMeBRBEX/LrFS3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774466744; c=relaxed/simple;
-	bh=S0/EeLiCdssCR97eT+6M9vsFoYo4F0q54R7URk1sUrs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S6JEm7G80GIPy8SpyE6QXxc25coywFfZKr9dvW3hbUfk+9NJdb3kIoPnWEScf8QBUETCYvzFYrCXbabkkLLsDumR1XRgp6sP3nWmpYt4EmJ0huBQOfugwbbT7BsBXo8D4mTkoWj6n2CP03jrKb/p6Pemt9ZBNjljG5QBe1Ujw8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=waelti.dev; spf=pass smtp.mailfrom=waelti.dev; dkim=pass (2048-bit key) header.d=waelti.dev header.i=@waelti.dev header.b=EZEUcsAU; arc=none smtp.client-ip=185.70.43.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=waelti.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=waelti.dev
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=waelti.dev;
-	s=protonmail; t=1774466730; x=1774725930;
-	bh=1pkEwT5ezBo/JFS2x6OxLbXqLypNAF0nkPTpt0PC2Fw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=EZEUcsAUMhlltmyKrQdESu/wPeierIMsWBM9zVmK4BZoM+pNuJchG0VwPnsdaaiDL
-	 LaFanrtoDBaFSKJLWBP8nMtkZsnAqxPzBk9oj36MnAuM8hunRR4TYnlE5E4FxbqtAn
-	 XlCA/Hkdgw4FI2Sm1qQGvoFaZaeKZP+72+EzFUsh/dYN0JqX+IgCgm8hwEcbSQu3gW
-	 KjVHclndIMMQixJZErbY+aTnCBiSkUxOYETo7Gs51bMOmT3lXY4blQAQTZKLupoA2g
-	 xnsL782nQQBzJd4wQ6XX4EsqBNvuYAXJduCF84QHaJI3gP3gI0uFBuiv/MJy3+lD1e
-	 3sWir+2tJ/VYQ==
-Date: Wed, 25 Mar 2026 19:25:27 +0000
-To: Ping-Ke Shih <pkshih@realtek.com>
-From: =?utf-8?Q?Jeffrey_W=C3=A4lti?= <jeffrey@waelti.dev>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: wifi: rtw89: rtw8922ae: HWSI bus lockup during RF recalibration on AP bandwidth change
-Message-ID: <uyjP590fzro7xuECRhUp6nlegi4hnWSBbrrFd-tcCcKeeKbDaoUThi7EkMNUMC2LYibyA0jaAqR7GrIchbJcGVh5CSgiGa39jMQkLq5F9QY=@waelti.dev>
-In-Reply-To: <8bf447cc627746cca6eb30ae283bbbe6@realtek.com>
-References: <SnJ_b28_Uro9Xtlb2ew62uypaut_7wD44Qnmibm2Yj4FgSS7cayhZvqkK8-AXGNAc-xdwYST6E2GDCMcoZh33PjukvAsXwaqMzx8Z14_aA0=@waelti.dev> <8bf447cc627746cca6eb30ae283bbbe6@realtek.com>
-Feedback-ID: 168448313:user:proton
-X-Pm-Message-ID: 056d6a3d391a7d41f22774826d66b4fca6109cda
+	s=arc-20240116; t=1774467551; c=relaxed/simple;
+	bh=mARsqTbZxbkeBHP4zgmLOL+PjHsYiG8qZxdV66rvrfY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i3lpVASSStpA2laekxGpvxx1LN2Um2TGUNH4r/7360JokUcE/K/47S7BfJO27ZEwwkcRlum77TU+qQFLaHBAg6e+5btkUspHe9GmVXdk/XUetzgJvi0WUBRJsdxQQb5wBEdY7+g968eogdy2yDKe6FIw6WYeLQsRGbGzl3s8UX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Jke5vlqL; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XUwb13Ck; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62PFH3QZ1257960
+	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 19:39:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=VRX2TeJnAfqK61YrX26wKqVI
+	j6I4aVlTC7JyT6LMrPE=; b=Jke5vlqLOymrsMkJIXGnGSKhUONpLkcA6PDaM0B6
+	AWwh5Z9j9fz351ENI0ktAtJl9KNzS3r0sgSMlxlTMFnKsJyfimnyzbC87+2R7g1X
+	YWqmDUOr3mQKoG9dUUGB2uXOunzALcWuQHF0wKSPtFtaXuzqkTlE96AWUVX6d12G
+	cG+fBupcCN2s3QRBJEs11/xzCKxRT5edwla9jJZkTAhJf7pBdreCsiZ8RZ48Zb+R
+	tcLx/TwMuT+WEYtIQFOoapxCo3CoV1gCpjbvBmxMnWqqyrczPcWvWxbZQI4mAx7A
+	0mqGfuwWBd4XZGC/okK2znzqDlbwaQbnGt6QyslMRxsfnA==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d4dm2t3k6-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 19:39:09 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5093b92f327so13893171cf.1
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 12:39:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1774467548; x=1775072348; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VRX2TeJnAfqK61YrX26wKqVIj6I4aVlTC7JyT6LMrPE=;
+        b=XUwb13Ck+DZfq+gLo7vZb97Krg8QTlfQGTKEpCHv6YZGl8Ms9hfIr1W2T2fYD8TjOv
+         3Uu3dSKpWvcYrfVuAT+d2QMJSVhFYtHe8ZkR4XaK4iCup+8kJ/isUQcSK96vxrgtg423
+         yl56j0Q+zvq+LAzKpHzR08UOPXMx12QvxvkH5poOc9nFo7TXpv720xMm0atODaQRsggs
+         /7Y0AulsV4fLBtfFYUpdiYD1ykoRBVET69xUrQ2oaH0atwV1gc7o4LKnfgZBi/+mz3tu
+         AdLeo6oRtHSQRFBVRcC6pFZ5Xir/HL6YlwQR8cAXy+l9wcqeFEIsZyzMLy9fyx2onk90
+         RiXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774467548; x=1775072348;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VRX2TeJnAfqK61YrX26wKqVIj6I4aVlTC7JyT6LMrPE=;
+        b=STdYBRtToP/x72aIEv70OqTEreWzlKsSe2vPRy7mSfOUCP/snmYkGQuru53C5aZvlu
+         Z1KrTbBKPkePBu6Ea0jkF9krk/F6BZ9DCC1V3OrNc0peubxSdqBYEynuCd31SmxrRhuO
+         +pMnch96+IaPE+T9DroX3bxc6FOAn4jO01vUVL8SyC2vwOQiKTvOJDL8WdMxrnb7+cD+
+         IXt74mo9IIkICuCt2oSCd4SS24PioTTksL4s89oADv9oOvam3vkT3L+rHo0ROgl+9TO3
+         fDQpf4SaWHMhmRQNt7EnnUw8CDnDGM0oKVsVWxY4O8ct1Ch0xfHJYDwcmEZNAqjKfZRy
+         vTDg==
+X-Forwarded-Encrypted: i=1; AJvYcCWGUBr7j9Vn8xdeD3vvpyhbXNAVy1uiUz8H0iZ2WzqUu48wd0v6kF/rF+p2Fy5cBvx/3hCmdhfoFXRi43mC6g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoFfm24hhB2XoGnDuw1BFLpR2cYS2QSOLRB6ng4DlXmHzhUXBe
+	Ek57VmGUFqyCroN+Jk9RbV4AnvKIoZsS1tEU66LNS2RW+CvlQCE/UsxK88r+s3YB5L0y9d/p8Fp
+	DHecPp62zrClwLRrcp7LoNB6xfYF0rRaBxljgATVvY0OlrpDPBmzr0aRTSaVPf8ijU+JbvA==
+X-Gm-Gg: ATEYQzyaGUydrJZRIpbJC/SG5UYuiH6ZPAREWa2IBYDZaOR/7H7kPVWuEVmxVNTODqI
+	+pCsLvXmWCppG6tsQmLaKJS9mEBpn3yEinKh9DFaZoc/4tII8RpySrm3yUNkxqMP56ZAhsPPC2F
+	fCOZXdFRaq+WDQgYJ1xkouJuwLvL4DeE3XPvTpjyDeVpeVP7Nzerqqw0BhFyybGvMYJWBHB2+uv
+	+d4JkJVTn/HtJnl9KWmdL+Y+ZYHNNZnLerX1LZ24BrKFmdMrjlIt9FWK6l1S8d7fHwW4KK51yZi
+	4jmEEUeRoC2Nk62tz5Qxt1NCxr9oYF7aC09m3iEvzIDvN9SVQJyGXungwKCRPiqV5Xsp1rIvy7K
+	FU7eq4tKq4fdlnWVtwaihH8LR/wzKnVqvmXf4FUqO1YvyLOjX31Ncbx3GdRS18hVwExFFtTzLYD
+	ZhPsG93L2aOgjWF7wUxeEJfccMPaR7rzlbczI=
+X-Received: by 2002:a05:622a:1f9a:b0:509:120d:4311 with SMTP id d75a77b69052e-50b80e66563mr73669851cf.60.1774467548228;
+        Wed, 25 Mar 2026 12:39:08 -0700 (PDT)
+X-Received: by 2002:a05:622a:1f9a:b0:509:120d:4311 with SMTP id d75a77b69052e-50b80e66563mr73669501cf.60.1774467547795;
+        Wed, 25 Mar 2026 12:39:07 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2a068f8c7sm91843e87.65.2026.03.25.12.39.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 12:39:06 -0700 (PDT)
+Date: Wed, 25 Mar 2026 21:39:04 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
+        ath12k@lists.infradead.org, jjohnson@kernel.org
+Subject: Re: [PULL linux-firmware] ath10k, ath11k and ath12k firmware
+ ath-20260325
+Message-ID: <4zrp3tlsqytyuxau5qk4hnlsht24f6vlgv7pyhb5y5cswgn4c3@4imh6ktclmfd>
+References: <32af006e-265f-4239-9b5f-be3d52996e10@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <32af006e-265f-4239-9b5f-be3d52996e10@oss.qualcomm.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDE0MyBTYWx0ZWRfX/5n+lffGwewk
+ 6WeoH3XwotMy6KM07yGaltsmefWm7y2fqnWU2cAb8TUHHSnDeGRcmJEuUB8EInL9OliTyB5lx4K
+ cK5anE7CO/Q7oyKMABwixWz18AWUsW69YgyChXDSmfb7zzwHvHEh9844NFsx++NwSNtm8SlvVue
+ bhi/ozOaIYyJ2Fdl1Vk98FUbpW7qhKZo00TwGBwvXYv0WxDwVEqrOrgTorIGQo8Qfm+uZm0aiIT
+ s+7MmkaPpCZX9yRGWpHv3NpicwsQeWI2EJbVRX7a4GUOuSipgpEC/u8QpBGZqu/AlCnSvScdDXa
+ nIk+OE7mkalN04ch9C1Q3qD0siVrhGbkmzLWdcXKL/q4rQVia8ayZ5VLfo2qelpKG7qGqjDSdvK
+ WgxDyPJc4l58rGYPhTXXZNGQrk1GnSVaVEZhDtKeYDSsgkBbJi2GoBMHGZiopEAMZ1yxA8HrPX8
+ N+qzn97DRlOGfGdveag==
+X-Proofpoint-GUID: WqB9JvmzDetiJj4KryX-zDOeErCLgE0V
+X-Authority-Analysis: v=2.4 cv=Fo0IPmrq c=1 sm=1 tr=0 ts=69c439dd cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=p0WdMEafAAAA:8
+ a=FOHEAjDUwq7NbCT47RAA:9 a=CjuIK1q_8ugA:10 a=a_PwQJl-kcHnX1M80qC6:22
+X-Proofpoint-ORIG-GUID: WqB9JvmzDetiJj4KryX-zDOeErCLgE0V
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-25_05,2026-03-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 adultscore=0 malwarescore=0 clxscore=1015 spamscore=0
+ bulkscore=0 phishscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603250143
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[waelti.dev,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[waelti.dev:s=protonmail];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33867-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33868-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[waelti.dev:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeffrey@waelti.dev,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: ED83232B3EC
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: BDD7632B57E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-<pkshih@realtek.com> wrote:
+On Wed, Mar 25, 2026 at 11:00:04AM -0700, Jeff Johnson wrote:
+> Hi,
+> Here's a new pull request for ath10k, ath11k and ath12k.
+> 
+> No updates for ath10k or ath12k
+> 
+> For ath11k:
+> Update QCA6698AQ and WCN6855 firmware to address a WoW page fault issue.
+> 
+> Please let me know if there are any problems.
 
-> Jeffrey W=C3=A4lti <jeffrey@waelti.dev> wrote:
-> > Hi,
-> >
-> > I am experiencing a reproducible HWSI bus lockup on the RTL8922AE
-> > (rtw89_8922ae) triggered by the connected AP changing its advertised
-> > bandwidth in a beacon. During the lockup, the radio is unresponsive and=
- the only
-> > fix I could find is reconnecting to the network.
-> >
-> > The issue occurs on every boot within seconds of association, and also =
-during
-> > normal operation whenever the AP re-advertises its
-> > channel width.
-> >
-> > I have tested with both the in-tree driver on kernel 6.19 and the
-> > latest out-of-tree driver from morrownr/rtw89 (git HEAD). Both
-> > reproduce the issue identically.
->=20
-> Please try to disable power save and ASPM by
-> 1) iw wlan0 set power_save off
-> 2) reference and install https://github.com/lwfinger/rtw89/blob/main/70-r=
-tw89.conf
->    and then cold reboot.
->=20
-> >
-> > User-visible impact
-> > -------------------
-> >
-> > During the HWSI busy window, all network traffic basically stops. Exist=
-ing TCP
-> > connections stall and time-sensitive applications (VoIP, video calls) b=
-reak. The
-> > Wi-Fi/BT coexistence is also disrupted, causing paired Bluetooth device=
-s to
-> > disconnect.
-> >
-> > The issue reproduces on every association and also during
-> > runtime when the AP periodically re-advertises its bandwidth (sometimes=
- every
-> > few minutes), making connectivity unreliable.
-> >
-> > Boot-to-bug dmesg (trimmed to relevant entries)
-> > ------------------------------------------------
-> >
-> > [   17.659262] rtw89_8922ae 0000:03:00.0: loaded firmware
-> > rtw89/rtw8922a_fw-4.bin
-> > [   17.659440] rtw89_8922ae 0000:03:00.0: enabling device (0000 -> 0003=
-)
-> > [   17.666964] rtw89_8922ae 0000:03:00.0: Firmware version 0.35.80.3 (8=
-ef4f0cf),
-> > cmd version 1, type 1
-> > [   17.666968] rtw89_8922ae 0000:03:00.0: Firmware version 0.35.80.3 (8=
-ef4f0cf),
-> > cmd version 1, type 3
-> > [   17.685115] rtw89_8922ae 0000:03:00.0: chip rfe_type is 1
-> > [   17.685886] input: HD-Audio Generic Mic as
-> > /devices/pci0000:00/0000:00:08.1/0000:04:00.6/sound/card1/input24
-> > [   17.685913] input: HD-Audio Generic Headphone as
-> > /devices/pci0000:00/0000:00:08.1/0000:04:00.6/sound/card1/input25
-> > [   17.687499] rtw89_8922ae 0000:03:00.0: Firmware version 0.1.0.0 (7b3=
-93818),
-> > cmd version 0, type 64
-> > [   17.687504] rtw89_8922ae 0000:03:00.0: Firmware element BB version: =
-00 49 00
-> > 00
-> > [   17.687511] rtw89_8922ae 0000:03:00.0: Firmware element radio A vers=
-ion: 00
-> > 33 00 00
-> > [   17.687516] rtw89_8922ae 0000:03:00.0: Firmware element NCTL version=
-: 00 0f
-> > 00 00
-> > [   17.687536] rtw89_8922ae 0000:03:00.0: Firmware element TXPWR versio=
-n: 00 46
-> > 00 00
-> > [   17.687537] rtw89_8922ae 0000:03:00.0: Firmware element TXPWR versio=
-n: 00 46
-> > 00 00
-> > [   17.687538] rtw89_8922ae 0000:03:00.0: Firmware element TXPWR versio=
-n: 00 46
-> > 00 00
-> > [   17.687546] rtw89_8922ae 0000:03:00.0: Firmware element PWR_TRK vers=
-ion: 00
-> > 33 00 00
-> > [   17.687550] rtw89_8922ae 0000:03:00.0: Firmware element REGD version=
-: 00 49
-> > 00 08
-> > [   17.691873] rtw89_8922ae 0000:03:00.0: rfkill hardware state changed=
- to
-> > enable
-> > [   18.108033] systemd-journald[808]: Received client request to flush =
-runtime
-> > journal.
-> > [   18.367229] input: keyd virtual keyboard as /devices/virtual/input/i=
-nput26
-> > [   18.383013] Bluetooth: BNEP (Ethernet Emulation) ver 1.3
-> > [   18.383017] Bluetooth: BNEP filters: protocol multicast
-> > [   18.383021] Bluetooth: BNEP socket layer initialized
-> > [   18.410929] input: keyd virtual pointer as /devices/virtual/input/in=
-put27
-> > [   18.464298] Bluetooth: hci0: RTL: fw version 0x41c0c905
-> > [   18.647322] Bluetooth: hci0: AOSP extensions version v1.00
-> > [   18.647546] Bluetooth: MGMT ver 1.23
-> > [   18.655814] NET: Registered PF_ALG protocol family
-> > [   21.985205] wlan0: authenticate with 7c:10:c9:b5:b4:4c (local
-> > address=3D7c:fa:80:c3:5b:f9)
-> > [   21.985210] wlan0: send auth to 7c:10:c9:b5:b4:4c (try 1/3)
-> > [   22.001200] wlan0: authenticate with 7c:10:c9:b5:b4:4c (local
-> > address=3D7c:fa:80:c3:5b:f9)
-> > [   22.001210] wlan0: send auth to 7c:10:c9:b5:b4:4c (try 1/3)
-> > [   22.002893] wlan0: authenticated
-> > [   22.003792] wlan0: associate with 7c:10:c9:b5:b4:4c (try 1/3)
-> > [   22.005327] wlan0: RX AssocResp from 7c:10:c9:b5:b4:4c (capab=3D0x10=
-11
-> > status=3D0 aid=3D17)
-> > [   22.111182] wlan0: associated
-> > [   22.111255] wlan0: Ignore NSS change to invalid 4 in VHT opmode noti=
-f from
-> > 7c:10:c9:b5:b4:4c
-> > [   22.111263] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertise=
-d by
-> > 7c:10:c9:b5:b4:4c
-> > [   32.623170] hid-sensor-hub 0020:1022:0001.0004: hidraw3: SENSOR HUB =
-HID
-> > v0.00 Device [hid-amdsfh 1022:0001] on pcie_mp2_amd
-> > [   33.076564] wlan0: AP 7c:10:c9:b5:b4:4c changed bandwidth in beacon,=
- new used
-> > config is 5220.000 MHz, width 5 (5250.000/0 MHz)
-> > [   33.090085] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.102460] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.114775] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.127371] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.141826] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.153783] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.165901] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.178402] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.191675] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.205185] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.217544] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.229788] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.242802] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.257200] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.269858] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.282153] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.295625] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.307822] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.320258] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.332693] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.345004] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.360051] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.373084] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.385703] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.397827] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.411372] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.426744] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.438969] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.451407] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.464456] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.477296] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.489589] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.502064] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-> > [   33.514235] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a=
-] HWSI
-> > is busy
-> > [   33.514249] wlan0: Ignore NSS change to invalid 4 in VHT opmode noti=
-f from
-> > 7c:10:c9:b5:b4:4c
-> > [   34.491697] rfkill: input handler disabled
-> > [   34.778186] Bluetooth: RFCOMM TTY layer initialized
-> > [   34.778198] Bluetooth: RFCOMM socket layer initialized
-> > [   34.778201] Bluetooth: RFCOMM ver 1.11
-> > [   39.723603] rfkill: input handler enabled
-> > [   40.871391] rfkill: input handler disabled
-> > [   41.010414] nvme nvme0: using unchecked data buffer
-> > [   43.272141] warning: `ThreadPoolForeg' uses wireless extensions whic=
-h will
-> > stop working for Wi-Fi 7 hardware; use nl80211
-> >
-> > Environment
-> > -----------
-> >
-> > Linux version 6.19.9-1-cachyos (linux-cachyos@cachyos) (clang version 2=
-2.1.1,
-> > LLD 22.1.1) #1 SMP PREEMPT_DYNAMIC Thu, 19 Mar 2026 20:13:27 +0000
-> >
-> > 03:00.0 Network controller [0280]: Realtek Semiconductor Co., Ltd. RTL8=
-922AE
-> > 802.11be PCIe Wireless Network Adapter [10ec:8922] (rev 01)
-> >         Subsystem: Lenovo Device [17aa:4922]
-> >         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- Par=
-Err-
-> > Stepping- SERR- FastB2B- DisINTx+
-> >         Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort=
-- <TAbort-
-> > <MAbort- >SERR- <PERR- INTx-
-> >         Latency: 0
-> >         Interrupt: pin A routed to IRQ 112
-> >         IOMMU group: 15
-> >         Region 0: I/O ports at 2000 [size=3D256]
-> >         Region 2: Memory at 80b00000 (64-bit, non-prefetchable) [size=
-=3D1M]
-> >         Capabilities: <access denied>
-> >         Kernel driver in use: rtw89_8922ae
-> >         Kernel modules: rtw89_8922ae
-> >
-> > rtw89_8922ae           12288  0
-> > rtw89_8922a            77824  1 rtw89_8922ae
-> > rtw89_pci             131072  1 rtw89_8922ae
-> > rtw89_core           1236992  2 rtw89_8922a,rtw89_pci
-> > mac80211             1806336  2 rtw89_core,rtw89_pci
-> > cfg80211             1523712  3 rtw89_core,rtw89_8922a,mac80211
-> > rfkill                 45056  9 rtw89_core,bluetooth,ideapad_laptop,cfg=
-80211
-> >
-> > Hardware:    Lenovo Yoga 7 2-in-1 14AKP10 (machine type 83JR)
-> > Chip:        RTL8922AE (PCI ID 10ec:8922)
-> > Firmware:    rtw89/rtw8922a_fw-4.bin, version 0.35.80.3 (8ef4f0cf)
-> > RFE type:    1
-> >
-> > I am happy to provide additional debugging information, test patches, o=
-r collect
-> > further traces if needed.
->=20
-> Please help to test the latest kernel 7.0-rc with additional patch [1].
->=20
-> [1] https://lore.kernel.org/linux-wireless/20260310080146.31113-4-pkshih@=
-realtek.com/
->=20
-> Ping-Ke
->=20
->=20
+Thanks, merged and pushed out:
+https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/974
 
-Thank you for coming back to me so quickly, I just encountered the same thi=
-ng with kernel 7.0-rc5.
+> 
+> Thanks,
+> /jeff
+> 
 
-[26055.113514] wlan0: authenticate with 7c:10:c9:b5:b4:4c (local address=3D=
-7c:fa:80:c3:5b:f9)
-[26055.113528] wlan0: send auth to 7c:10:c9:b5:b4:4c (try 1/3)
-[26055.133089] wlan0: send auth to 7c:10:c9:b5:b4:4c (try 2/3)
-[26055.150902] wlan0: authenticate with 7c:10:c9:b5:b4:4c (local address=3D=
-7c:fa:80:c3:5b:f9)
-[26055.150914] wlan0: send auth to 7c:10:c9:b5:b4:4c (try 1/3)
-[26055.153246] wlan0: authenticated
-[26055.153721] wlan0: associate with 7c:10:c9:b5:b4:4c (try 1/3)
-[26055.155584] wlan0: RX AssocResp from 7c:10:c9:b5:b4:4c (capab=3D0x1011 s=
-tatus=3D0 aid=3D27)
-[26055.271023] wlan0: associated
-[26055.271237] wlan0: Ignore NSS change to invalid 4 in VHT opmode notif fr=
-om 7c:10:c9:b5:b4:4c
-[26055.271248] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised by=
- 7c:10:c9:b5:b4:4c
-[26065.984663] wlan0: AP 7c:10:c9:b5:b4:4c changed bandwidth in beacon, new=
- used config is 5220.000 MHz, width 5 (5250.000/0 MHz)
-[26065.999102] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.012897] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.026604] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.040218] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.055075] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.066562] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.078117] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.090357] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.102961] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.115725] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.127339] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.139004] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.150442] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.161916] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.173963] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.185870] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.197456] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.209340] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.221632] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.233635] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.245872] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.259756] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.271685] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.283509] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.295651] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.308285] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.320675] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.332706] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.344874] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.356848] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.369061] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.381196] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.393249] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26066.405227] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26066.405240] wlan0: Ignore NSS change to invalid 4 in VHT opmode notif fr=
-om 7c:10:c9:b5:b4:4c
-[26078.276959] wlan0: authenticate with 7c:10:c9:b5:b4:48 (local address=3D=
-7c:fa:80:c3:5b:f9)
-[26078.276970] wlan0: send auth to 7c:10:c9:b5:b4:48 (try 1/3)
-[26078.295560] wlan0: authenticate with 7c:10:c9:b5:b4:48 (local address=3D=
-7c:fa:80:c3:5b:f9)
-[26078.295573] wlan0: send auth to 7c:10:c9:b5:b4:48 (try 1/3)
-[26078.305323] wlan0: authenticated
-[26078.307561] wlan0: associate with 7c:10:c9:b5:b4:48 (try 1/3)
-[26078.313095] wlan0: RX AssocResp from 7c:10:c9:b5:b4:48 (capab=3D0x1411 s=
-tatus=3D0 aid=3D33)
-[26078.424096] wlan0: associated
-[26165.453429] ideapad_acpi VPC2004:00: unexpected charge_types: both [Fast=
-] and [Long_Life] are enabled
-[26226.049306] wlan0: disconnect from AP 7c:10:c9:b5:b4:48 for new auth to =
-7c:10:c9:b5:b4:4c
-[26226.283858] wlan0: authenticate with 7c:10:c9:b5:b4:4c (local address=3D=
-7c:fa:80:c3:5b:f9)
-[26226.283870] wlan0: send auth to 7c:10:c9:b5:b4:4c (try 1/3)
-[26226.284759] wlan0: authenticated
-[26226.286909] wlan0: associate with 7c:10:c9:b5:b4:4c (try 1/3)
-[26226.289664] wlan0: RX ReassocResp from 7c:10:c9:b5:b4:4c (capab=3D0x1011=
- status=3D0 aid=3D13)
-[26226.400500] wlan0: associated
-[26226.400560] wlan0: Ignore NSS change to invalid 4 in VHT opmode notif fr=
-om 7c:10:c9:b5:b4:4c
-[26226.400566] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised by=
- 7c:10:c9:b5:b4:4c
-[26237.305703] wlan0: AP 7c:10:c9:b5:b4:4c changed bandwidth in beacon, new=
- used config is 5220.000 MHz, width 5 (5250.000/0 MHz)
-[26237.323124] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.338894] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.352942] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.366488] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.380974] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.396258] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.410103] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.423962] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.439875] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.454635] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.468377] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.482203] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.496234] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.510190] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.524248] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.536842] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.550513] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.564329] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.578157] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.591944] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.605710] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.621850] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.635990] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.650297] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.664291] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.679167] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.694107] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.708096] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.722032] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.735945] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.749689] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.763441] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.777281] rtw89_8922ae 0000:03:00.0: poll HWSI is busy
-[26237.791136] rtw89_8922ae 0000:03:00.0: [rtw89_phy_write_full_rf_v2_a] HW=
-SI is busy
-[26237.791148] wlan0: Ignore NSS change to invalid 4 in VHT opmode notif fr=
-om 7c:10:c9:b5:b4:4c
-[26323.825259] wlan0: deauthenticating from 7c:10:c9:b5:b4:4c by local choi=
-ce (Reason: 3=3DDEAUTH_LEAVING)
-[26324.373581] wlan0: authenticate with 7c:10:c9:b5:b4:4c (local address=3D=
-7c:fa:80:c3:5b:f9)
-[26324.373593] wlan0: send auth to 7c:10:c9:b5:b4:4c (try 1/3)
-[26324.391589] wlan0: authenticate with 7c:10:c9:b5:b4:4c (local address=3D=
-7c:fa:80:c3:5b:f9)
-[26324.391624] wlan0: send auth to 7c:10:c9:b5:b4:4c (try 1/3)
-[26324.393858] wlan0: authenticated
-[26324.394270] wlan0: associate with 7c:10:c9:b5:b4:4c (try 1/3)
-[26324.395784] wlan0: RX AssocResp from 7c:10:c9:b5:b4:4c (capab=3D0x1011 s=
-tatus=3D0 aid=3D20)
-[26324.503689] wlan0: associated
-[26324.503778] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised by=
- 7c:10:c9:b5:b4:4c
-
-Jeffrey W=C3=A4lti
+-- 
+With best wishes
+Dmitry
 
