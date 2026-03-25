@@ -1,141 +1,166 @@
-Return-Path: <linux-wireless+bounces-33858-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33859-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NB2BvgZxGkRwgQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33858-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 18:23:04 +0100
+	id qL+FA0AbxGnlwQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33859-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 18:28:32 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30599329BB3
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 18:23:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A46A2329CC0
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 18:28:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3E29630917CE
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 17:17:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ED7D33040E4F
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 17:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FFC3C73EA;
-	Wed, 25 Mar 2026 17:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="hKSqS6IZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3783E4035DA;
+	Wed, 25 Mar 2026 17:24:58 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E4D3CEB98
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 17:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B52B402B8F
+	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 17:24:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774459056; cv=none; b=DI2Vr6R7VqijxpU8hp+uBNeTkJ19S5P5j9vVTTYp78QPz6uELsVL/HWtdlbzPBVOo4FuJ4WjBEwjq0/jn4kRybKXTyMoraHTkN4OVGny2THTJtoAwU2OXRccrJzYwmFcfiSjC8UPWJ+khTbxmoCnxtXqOZhEupsZNuIw1FHB92I=
+	t=1774459496; cv=none; b=dTtxVMHj6VwaNr9YjqMH8se+aZN8eRriUw+YqempW6QIof6BZ9cqF+93kM5u8jN/7911h/VRzsrWxEqXqTCuBt0zA8EMStESCWKaT6ZaYF3O79VvFkej++HHe90QZsApSy8uqmaGwwrw6hMlsnDlqZc+EmC2RBCFBUcGKwI0UWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774459056; c=relaxed/simple;
-	bh=HvS9eqj6f8rorxXglINXu91gtimVkaBxN0NxixlNIF8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=I0tdyVEc5flxBWSrEzbJ9qLot43N5x9vAGkuoJAjB9k6WraBWasnGz30CqlNxVzmnoRb+N5euFFcJ2oi6/DNty56MO/YZRKgwVwV2tzpyGhb4UBnLSttJctSIrgx2+1THQbxafYjMhwqVHupYajykc9YVrrKoWqCNz7+TUTazfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=hKSqS6IZ; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 7fef6d62286e11f1a39cd589f645bc18-20260326
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=1NDzJA/0MjyusnuWKkzTQb8f5VjxX7ByPwK0ik1Pxfk=;
-	b=hKSqS6IZcSKZdrhW9adfyWPBGiOC2WIdBgSclQSA5SV/HvOXiACvQvh6R7FHv9YP8IUaWMytu5VpilEBLrpIkb/0XwPxGnX8NABdp5B/v3AHFx/rv7LOcIgc4DJn+/W1cKPSv/u9/5zWqZZYdShoOR/K9Wbxk84wDOqG2+SjLkw=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:9f980465-293d-446a-a018-f863ac83daee,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:d5bc20d5-060f-4ecc-9ee0-121eeeb4a682,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 7fef6d62286e11f1a39cd589f645bc18-20260326
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-	(envelope-from <ryder.lee@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1294698684; Thu, 26 Mar 2026 01:17:28 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 26 Mar 2026 01:17:26 +0800
-Received: from mussdccf250.eus.mediatek.inc (10.73.250.250) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Thu, 26 Mar 2026 01:17:26 +0800
-From: Ryder Lee <ryder.lee@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>
-CC: <linux-mediatek@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-	Shayne Chen <shayne.chen@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2] wifi: mt76: mt7996: disable UNI_BSS_INFO_PROTECT_INFO for mt7996
-Date: Wed, 25 Mar 2026 10:17:23 -0700
-Message-ID: <6427326eb4e8f375c63379f7a0df7e2ae9d120a4.1774458901.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1774459496; c=relaxed/simple;
+	bh=WJCHadKIGcaNougMBQMInd24II9CRRJ+fXNCPrZLcj4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oGh/FobFN2GMDz5Y2LzoxBHVDk7H03sEqrqOsmjztqI2/bmryi3qi05Wwntl6hP2qi+28CRQKUW7PNXFQak7wRAin2x14xvlDsUuzzqBxcSGJkop7WKJUitPy0R3402puFdGPtEvcFOuqbtORe0mWKMGNEYtt/o4D3hNXAFVAvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-486fd5360d4so1569465e9.1
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 10:24:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774459489; x=1775064289;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wiw/GUjidliX10Xt88+2grOFSA9ojrEc+pd+AHSqD4Y=;
+        b=bJsbsjefMOvr2V78GTs/bUqZc5Sbj4B/NKtMGu/sPBx30Mmiu1OINDmsa74H//60xi
+         iK76ML6h3slMWJKgOpIAx8VziY7an6eCqBvTLtoDeHx0tjKFhSzYI8TYm7lzGTPq8qDr
+         rgkbJxcpWFcEiZajzGN6ObAVZyJcH5/hsgoZna0ZwQkWBZbs6uOBM2cxNCgsGpZ8LjMp
+         UweWSAYFOALOIpSlrKv3S4OHTgBeS2PWKf874QO9g1+r6x/JKSME2QJrRxs4W532/KsH
+         zoI3L9a0H3FwhwgO2D4G2Xmi0RQT/x8st9vyIH9vmA0vWf0MXhmzkBz6F8eodoZLmex8
+         ZxTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVyfjBpsWQkJ9lfioOkHTxByzvpL6oiemcGyQVp43hn1bgWbQ2ESQIbAfJlWoRluXkM0jz4KwSKI3IEvT+fbg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwblbRJPse2hoM+o8Nvlc3KNJFKrRCuW41kiI/kQhvPUyEKyw+s
+	492vHDZ5PEtES5KS18t1eThroek/Qm6LeT+6iNHcMVjG/1ASrGnhg/5s
+X-Gm-Gg: ATEYQzwoUunv+gDnHre7+OCZe/lxy1RWYFDIyutAqDT0iLDxijqxjAz5e2r40hN4qQU
+	lPJANJPiL0l9uqKSKn+/CGAnNXwTm3a0xtQZ/lxSQ8HR6TpIhWYRFiFmLSOd5LoKnEidkZUrf84
+	WxvRGBLzVh7NW5NmvwJPYtZFnMdqwOKg3sZde7fQw2llF3+4GtCHWNmpM3nNCaWDOKbU3HQk3xO
+	oOKjHqY1kTIJ9CCma6sec/EWEzQboGz08keXnpdvuuTpj9ZInf4zm71vzKocv/wJ8g9ZXyEpXQ7
+	ih5m5LX5i12TlDoRpT6IyLLgpr6ZXK/Ev59zF3a4l2Og4fqrQz4nd6mh8MWDBvugtf87tZlJd8E
+	GRGf9/Bio2FdQ9mbDlDbp1ElQZioQ6dx+USEtyb5Eky59DnAeQN6SxHaX4/0dhU5hmcbx+/s8p3
+	JPnXUelAqcd32RsEQqM/c=
+X-Received: by 2002:a05:600c:4705:b0:485:a4de:f4f9 with SMTP id 5b1f17b1804b1-4871608406dmr70720405e9.27.1774459489238;
+        Wed, 25 Mar 2026 10:24:49 -0700 (PDT)
+Received: from [0.0.0.0] ([94.156.174.93])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871e5d195bsm8481415e9.3.2026.03.25.10.24.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Mar 2026 10:24:48 -0700 (PDT)
+Message-ID: <76bba9e1-1e87-413e-94d7-80e7c352a55b@linux.com>
+Date: Wed, 25 Mar 2026 20:24:42 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
-X-Spamd-Result: default: False [-0.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Reply-To: alex.popov@linux.com
+Subject: Re: [PATCH] wifi: virt_wifi: remove SET_NETDEV_DEV to avoid
+ use-after-free
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Jakub Kicinski <kuba@kernel.org>, David Miller <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Michal Kubecek <mkubecek@suse.cz>, Gal Pressman <gal@nvidia.com>,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, Ido Schimmel <idosch@nvidia.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Greg KH
+ <gregkh@linuxfoundation.org>, Johannes Berg <johannes@sipsolutions.net>,
+ James Guan <guan_yufei@163.com>, Kees Cook <kees@kernel.org>,
+ Paul Moses <p@1g4.org>, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, security@kernel.org,
+ notify@kernel.org
+References: <20260324224607.374327-1-alex.popov@linux.com>
+ <fa3c91c3-9ceb-4fb2-9250-cc239fb0c1b6@lunn.ch>
+Content-Language: en-US
+From: Alexander Popov <alex.popov@linux.com>
+In-Reply-To: <fa3c91c3-9ceb-4fb2-9250-cc239fb0c1b6@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[linux.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,davemloft.net,google.com,redhat.com,bootlin.com,suse.cz,nvidia.com,pengutronix.de,gmail.com,linuxfoundation.org,sipsolutions.net,163.com,1g4.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-33859-lists,linux-wireless=lfdr.de];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33858-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ryder.lee@mediatek.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[23];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	HAS_REPLYTO(0.00)[alex.popov@linux.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alex.popov@linux.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 30599329BB3
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.com:replyto,linux.com:mid]
+X-Rspamd-Queue-Id: A46A2329CC0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The current MT7996 firmware causes TX failure and need further
-investigation, so it is temporarily disabled.
+On 3/25/26 15:34, Andrew Lunn wrote:
+> On Wed, Mar 25, 2026 at 01:46:02AM +0300, Alexander Popov wrote:
+>> Currently we execute `SET_NETDEV_DEV(dev, &priv->lowerdev->dev)` for
+>> the virt_wifi net devices. However, unregistering a virt_wifi device in
+>> netdev_run_todo() can happen together with the device referenced by
+>> SET_NETDEV_DEV().
+>>
+>> It can result in use-after-free during the ethtool operations performed
+>> on a virt_wifi device that is currently being unregistered. Such a net
+>> device can have the `dev.parent` field pointing to the freed memory,
+>> but ethnl_ops_begin() calls `pm_runtime_get_sync(dev->dev.parent)`.
+>>
+>> Let's remove SET_NETDEV_DEV for virt_wifi to avoid bugs like this:
+> 
+> Did you have a look at all user of SET_NETDEV_DEV() to see if there
+> are other examples of the same bug?
+> 
+> What i found was:
+> 
+> https://elixir.bootlin.com/linux/v6.19.9/source/drivers/net/ethernet/mellanox/mlx4/en_netdev.c#L3180
+> 
+> Does this have the same problem?
 
-MT7992 and MT7990 are working normally.
+Andrew, I can't say about this particular net device. Looks like it refers to a 
+specific ethernet adapter.
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-v2 - add a comment to describe why this check is required.
----
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+How can we distinguish security-relevant bugs similar to this use-after-free:
+an unprivileged user must be able to create a given net device via user namespaces.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 16420375112d..ae068392b9dd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1281,6 +1281,10 @@ int mt7996_mcu_set_protection(struct mt7996_phy *phy, struct mt7996_vif_link *li
- 		PROT_NONGF_STA	 = BIT(7),
- 	};
- 
-+	/* The current firmware causes TX failure. Need further investigation */
-+	if (is_mt7996(&dev->mt76))
-+		return 0;
-+
- 	skb = __mt7996_mcu_alloc_bss_req(&dev->mt76, &link->mt76,
- 					 MT7996_BSS_UPDATE_MAX_SIZE);
- 	if (IS_ERR(skb))
--- 
-2.45.2
+As I mentioned, applying this fix in ethtool could help against them:
+https://lore.kernel.org/all/20260322075917.254874-1-alex.popov@linux.com/T/#u
 
+Best regards,
+Alexander
 
