@@ -1,253 +1,212 @@
-Return-Path: <linux-wireless+bounces-33837-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33838-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFE3NivCw2n6twQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33837-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 12:08:27 +0100
+	id cJNmMY/Hw2lKuAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33838-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 12:31:27 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C683238C1
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 12:08:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3570D323E89
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 12:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DDF3530E0D0F
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 10:59:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9368C3149E09
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 11:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264873C553B;
-	Wed, 25 Mar 2026 10:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66533CD8A2;
+	Wed, 25 Mar 2026 11:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kW5uaG+B"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="WMxIgCMn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABB139BFE4
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 10:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774436380; cv=pass; b=lKELW72uHPJTBs1OlA9Nx8tXdmYlWCKcMZ08YW++oSDF77v8b2WinH5q8UZ22k+brCXFs1rnJ83d/GC4UGztdbB7Lh+q2Fb3GKSU7Bf6tuhfs1zR2G0kWQ+36m4rWTLNPrUFkPJAZhjpCptooxEly53AtGfOY5glK7mk3Lp++Sg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774436380; c=relaxed/simple;
-	bh=6OarUN5/S8KW9TtgegaCy/h6lb+LwPoIPD0hOhnuUbA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AEm5klLmp//T1mH/jw5oET7mBbsa7MaStzWGCx9ZLtPtqSNdP7dyVNPu/UAffHpMxAu3eCjtmnsgVIFZCaA8foxofuUbUR+VWfVIW2G3/tT8M5QE1bcBjA9sopIHR6TrLeRWfcI43Ao/PU2DtHlbyRCUknwlUSutAbk42A3faMo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kW5uaG+B; arc=pass smtp.client-ip=209.85.160.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-40f1ffba6a0so1352855fac.0
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 03:59:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774436377; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QzHSHEw+5dfWlYegYZeAMBH3kqtEjFREFIyPU/x8E5W9OhljxGattrHKVdrljszfuo
-         c6v/kvtBJbIeX3co7HemeYhTaVcOeLikgKv8PNSQ4CGj6iFjeOsKNvDSXoa5pjH3vz49
-         dZ5sacgXrR+ibbcVMjvep0ivnLZqT8HMzkszDQVsWo7wHje5V/TmCDeJx9QxPr6rG/B1
-         EBOu4/9x3MoxJxExniUPeUwgTndlQd/ChMgIJqeJ+daDTx3h7eWdvMigpEQWb4JW+8O+
-         QD+1/xN3KFaE6AAwtr4snsYv00NH8j1znmc1Sj5gjqMN99948U13BaNuVIoOdEe7RabO
-         fnFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CRbV2+ZkI9Qv4tonWef15Wk6xuibNUPgwYnA9gQ8ovY=;
-        fh=l513puzKs7lQQ1Lx0Tgqn7Eu9FdhMtKBNIt1wxmslLE=;
-        b=SeLycEH18aocAa47YvNCqgKkFRWzWyLqsDvwO41e14UF3ciM20ifzRr4fdXD6wfbZJ
-         V3EXwBzjoUlpOHkENGbEDzrnASGYYcRAARPRZ8YX/NHDOM4/oHSteD9qg/18gRfGx2he
-         3mVS6p/w+oBT++SI/SDYBbcpQsvTgHVWZu5CiYm4brEbb/ttEkN+l1BfQWHfHTqz0Q37
-         9mdif+KnHcjdiBhT5/3wXfcESbdBcEcIvBEozfYKnqz5WPeiuZsAhF2cXaGNO9eaRDbc
-         iA6WaKoLN6arZFos6HD4D6UZIspz95ZTbWaXiTj/Gvz1c6ff2XRc1d6timZz8qteYazZ
-         KPgw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320B73CE48B
+	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 11:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774437692; cv=none; b=nwPLPT4o3HfwkYIVXLv+X+zxPnI/0YOZ6Lk2etw7IQrfng7t+FplNkvmxwnf8R205ExRPAfcHZMr3aejqSiJ8myO1mrukuuiQvWTyxhbed+xRaad3WxnHti8qz+N7OuLIY2eoC3LIyfh2qKC3KkyWR5d+Ppsmm37yuC/GakafKw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774437692; c=relaxed/simple;
+	bh=IIQYmTMM0Nc+VfhCZCPnAbMFQW+7p2rjFDKfu/A08iI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RjXpNgwcpNJwxKHeWLNd3lptpxO8plRsZImRhWHtO1Od3sABSzVDISlHwvPO/Rdo7G/HjGBalPuTeHBNWyPD4TUAPrrTzuoRk18mTVwn/M346GpgoNNAn0WfUUbXoPSFnE3MVsCnHbDeO9MNz8Vp6T/vppak4H5jO9qqLpAuYFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=WMxIgCMn; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4853c1ca73aso22369095e9.2
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 04:21:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774436377; x=1775041177; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CRbV2+ZkI9Qv4tonWef15Wk6xuibNUPgwYnA9gQ8ovY=;
-        b=kW5uaG+BLT9rKi4RFt6pShm6cAbISE6BcLdvqvJhA2EOh226+HM+rJyirBqoN0fvUV
-         fcZI+qOEWh1xNSt6iRJ4AjEUvbMHPJN1aNGrc+sv2HHlBkyzIZg3IaZlAcGzSc5l2iAo
-         w/FqaH777cvCZVIiljtQm5ZbPxD3ByCNghBIEdqNBiibghsvp8zABTTMg07zVuxZVv+h
-         G8orzlusxwr6uAaDgcH5UCT3asts1OBfHyhpfviRMH2Ss5yGNCMvrn+30mKI6N8cIvRU
-         rtM7oHVF3ZcaMD/8RLuLFcSUsSle2rEPlGRu9wzo/UcBK2ettbKC73EX2umEE9DWCbkf
-         n2tw==
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1774437688; x=1775042488; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UlyH3EeEIeeZnEqsaaYMPX/bc+fGaraM/nktAjp2qYw=;
+        b=WMxIgCMnJ9WvLkj0ta9NPTOmZfy/rLtQoGndN+YZcf5meRPoyarIe1iGmQEljovhYV
+         a4v7aK5j6+lPVBjC1F7P//+E16tnocRC62rFjcF2aBUMWhgjZeJWiHTGvSR2EDAyA4U2
+         VX6OOMEIUdfyeZYAyHMPpqpfKRWrcZv98exTmBnL1bVyb8fQcRCLE7ccL3FOJkC3/4DE
+         s7iX8GaUIdpPVG4Gp7JRPA58l5cc3Si5P+bU0WQX0E1+RgKmAAVF2BQT0pGD6SZzjifo
+         acNmSUniLg7QgtiYHieM5VVyRUuDy+KJyHN9MRY3izS894YTsEEyCzMg0H983XXa+0YS
+         0T2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774436377; x=1775041177;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CRbV2+ZkI9Qv4tonWef15Wk6xuibNUPgwYnA9gQ8ovY=;
-        b=DI9gK4nyMWMb/TX5tEnvq2j2aL8rFFixJeKivqX3MS7ZixFKy92TT1Kep9AiFG4pQA
-         /BFXXnphlM3RH42bjVr1jVOMnaw+oXsfRBzR+Cu46t+i3+v9VXMuNV+UE2T6lrzFOvUc
-         XrPwHgTIzKlrdgelYmFOV1LcXTr+d5OdWc4Crfv2WUKzFkuQ6MdifnPvWXRKPrKmkwye
-         pbRmeyy0nPavS9hQvpV8wXyd+xNTvP+9Mwv5PyWu4kGMPhC2e1/Jz3s7DtJPivcP88P5
-         fEKqTmdbKB7H7rhX4wEuybqtcB6F4r612sgLTfqUKFEoSfHuPZxDi8zjt86nTtrlbDMl
-         hOnA==
-X-Forwarded-Encrypted: i=1; AJvYcCWmV8QMdUTJ2xaWwb+DUPrfpL77iulXff8tElwYAOo0vqQ7F2iiSRcUdrIMcigKavntUEzXOsmHmA+WP+NX9g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvPKyKT2AtRY7y5/z1FbsI1dRVE7Y5H2sa0FShelXiL4t+Hzvs
-	UxMgD9kFPfspuydqxhntGoztenNjiu9Gbs2MyZuz0+B58AIUjpwbcFZMhxren1nauQVEtu8w12z
-	OHOyKAu//viiqtjJkvFcZnLoqWKXhkGdmU0fZa0I=
-X-Gm-Gg: ATEYQzzDukIp6ZKydKXhx3bIa3DxiD+ojaFPLJNLQoZXGmhQw6s5rUDztp0tqObsc9Z
-	OV/SRojAJzrZ0/hIeCUWK5J4jZklh9LXttRYMyaOGSlTVH5VMkxCwwXmMnqDFZqwMXn/rLlfd2K
-	Bh/pmWTRJ0nxOIWgsxoDzDQeQ2qEzWO2YMhswZD7LkuZQ1jxYaeYZ7l6LKsenrdhB9OC936EqeK
-	5Dv/J/MRNbSr65GViOEGXH7Zy/IsinGHP331VtOMx06xwFX8e90ZIJR0Ee6G63hMNSnzKz8+Qs7
-	g48lfw==
-X-Received: by 2002:a05:6871:5f09:b0:41b:f7f5:e88c with SMTP id
- 586e51a60fabf-41ca6fd777fmr1829748fac.23.1774436377431; Wed, 25 Mar 2026
- 03:59:37 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774437688; x=1775042488;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UlyH3EeEIeeZnEqsaaYMPX/bc+fGaraM/nktAjp2qYw=;
+        b=aN7SREDn97tDzT5WIJpMcYRb4EJnEnBDUqmdQdvQ9V188aB9UWhMXbLNSraaR7OYwu
+         AY3USzJuk+hm304C5Q/Yo1RR4O2Kw3eGm/Tp7UrffnFLlBlMpHpO49Y7GFNnn+uE0Mcz
+         JFNUdLaqp5pWQkR7Wgsi2qKO/DuffOSjUzl3lVIGI/3VpUoK6qx60jm25PSHBGqJs/bJ
+         vA59gBH/kzWtFdPKoyVS0Ov0gKYmMTzNlFZc6P2yhTDQvQ8x76El5YO8ZXkti7BzeFpL
+         CXXVrynAHX45S648x2A0qOi7xDkWPSserMaCIgLw/y+lxrzGI8cXkPAA4h0iRfHd1rGU
+         sjpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXGJ2j/7nKrbZ3+5p0rE7AbXy93jbdF3K94uP7sVsUO2BjgyEbFbwhqE8OkSDWYnWeogy0CKYftLrJ/ATlxdA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIAxzMNX0HHF2S9nmMvMAryOjWbDgoV5cOyMtLvkqa8nTa8juP
+	dNPObzKbCRQw56gXdyo+c2fBPbGKxBAG3AGzm2896fCcTZ3VYPK19WfSV/w5vAN87CRyYl58WOU
+	hFTyi
+X-Gm-Gg: ATEYQzzzovBMFk2hGmC/Ad4pk0BOlAbX/ZR9x3/A2fFWPkSZffUcVnLp1N5xvu9aFuW
+	7wDpS1Bqsx7BoGec7LdlUDK2oqYdhq8vKGygTGJkZmERKqdOAJAQqVetR6Rb5+WCyB4T3sKfHJV
+	i9/T8XWbkSdvSRrz89cXJwIEWJwoajPJ9/D3xY9cPpfHwq0kDKDlJi5YRafV5WWy/WQr6m3D9kS
+	SRZctOMtZ9TSHUhSbFAyRh5rjk+jI/xNMWfOVg2f0cPnlJJ5TiyRSheqSxLi9INGgo5toLAqSLE
+	GIGJvgk/tbpNziKdliJnLkdvkvX3wKcC6oovV4JrBY5oQKjSRf9jnZ49pQYgOAwaaFd95HtMyWl
+	Uyg+/6E6H4x2SyAxi0FOCajs98aP71USOkLceaRUyE+EY3kgWwzev3QzR/uHkVgXqJPRUi7SM4K
+	8CkbHbfVI8SnRC7C7/A7hkB8PNmHOI2GEGOa2Ct/a8zlzJDMzxb+u3RQ==
+X-Received: by 2002:a05:600c:4e0e:b0:485:3c66:e230 with SMTP id 5b1f17b1804b1-487160a63eamr44972205e9.29.1774437688212;
+        Wed, 25 Mar 2026 04:21:28 -0700 (PDT)
+Received: from [192.168.108.101] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871174f39dsm107684195e9.11.2026.03.25.04.21.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Mar 2026 04:21:27 -0700 (PDT)
+Message-ID: <0bbe540f-6a48-4d70-b6ca-4498f715963b@freebox.fr>
+Date: Wed, 25 Mar 2026 12:21:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+bbHrW0C9+Pz5TOUgM_oodhfJnoO7P0YiEdp85D08h=hLPF5A@mail.gmail.com>
- <20260325001513.1303-1-fjhhz1997@gmail.com>
-In-Reply-To: <20260325001513.1303-1-fjhhz1997@gmail.com>
-From: =?UTF-8?B?w5NzY2FyIEFsZm9uc28gRMOtYXo=?= <oscar.alfonso.diaz@gmail.com>
-Date: Wed, 25 Mar 2026 11:59:27 +0100
-X-Gm-Features: AQROBzA2ShJuxo-ZuIgKycJxBGuFiWvCSCV0YHbexP8wyZK7UX0A9LeKEvpe0G4
-Message-ID: <CA+bbHrW0Z6NdFsUwycvRhLbe3xnbXSwmb24EW4FKFtn=0TVzBw@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mac80211: fix monitor mode frame capture for real
- chanctx drivers
-To: =?UTF-8?B?5YKF57un5pmX?= <fjhhz1997@gmail.com>
-Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.57 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_MIXED_CHARSET(0.59)[subject];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] wifi: mac80211: factor out part of
+ ieee80211_calc_expected_tx_airtime
+To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net
+References: <20260323101954.874299-1-nbd@nbd.name>
+ <900aa78e-b0ca-43de-adae-4053bde4d328@freebox.fr>
+ <0f56f76d-7820-4392-88f7-78f24b9ff421@nbd.name>
+From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
+Content-Language: en-US
+In-Reply-To: <0f56f76d-7820-4392-88f7-78f24b9ff421@nbd.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[freebox-fr.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33837-lists,linux-wireless=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[freebox-fr.20230601.gappssmtp.com:+];
+	TAGGED_FROM(0.00)[bounces-33838-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[freebox.fr];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[oscaralfonsodiaz@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 73C683238C1
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,freebox.fr:mid,freebox-fr.20230601.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: 3570D323E89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello everybody. I've tested this patch and I'm sorry to say this...
-but, bad news. Same behaviour. I mean, as soon as the DoS window
-appears during the evil twin attack, the VM is completely frozen.
+On 25/03/2026 04:58, Felix Fietkau wrote:
+> On 23.03.26 17:00, Pablo MARTIN-GOMEZ wrote:
+>> Hello,
+>>
+[...]
+>> I know this patch is just a refactoring, but I think this moved code is
+>> bugged. If (and it's a big if) I understood correctly the chain of
+>> macros and the comments, `ieee80211_get_rate_duration` return the
+>> `duration` in 1024 µs of an average packet (which would imply
+>> 1f38b8c564b8 is wrong) and the (PHY) `overhead` in µs for a (average)
+>> packet. So I believe the code should be:
+>> ```c
+>>     duration = ieee80211_get_rate_duration(hw, &stat, &overhead);
+>>     duration *= 1024;  /* now duration is in µs */
+>>     /* the agg_shift calculation has to be fixed */
+>>     duration += (overhead >> agg_shift);  /* for one packet, we
+>> "assign" a
+>> fraction of the overhead */
+>>     duration *= len/AVG_PKT_SIZE;  /* we multiply by the number of
+>> packets */
+>>     duration /= 1024;  /* we go back to a duration in 1024 µs*/
+>>
+>>     return duration;
+>> ```
+> 
+> The overhead (preamble, signal field, etc.) is a fixed per-frame PHY
+> cost that doesn't depend on how many data bytes are in the frame. In the
+> aggregated case, agg_shift amortizes that fixed cost across the
+> estimated number of subframes in the aggregate. So the correct order is:
+> scale the data duration to the actual packet size, then add the
+> amortized overhead once.
+My bad, I didn't understand that `len` was the byte size of a MPDU.
 
-I put the full report including screenshots on the github thread:
-https://github.com/morrownr/USB-WiFi/issues/682
+So I was wrong on where I put the overhead, but (a priori) not on the
+rest of the calculation *if* my understanding of the units is correct.
+If 1f38b8c564b8 is correct and so `duration` is in ns and `overhead` is
+in µs, then your code is correct, but the commit message is wrong
+because `ieee80211_rate_expected_tx_airtime` is returning a value in ns.
 
-If you are interested in reproducing what I do, it is pretty simple.
-You just need linux, one wireless adapter using an affected by the bug
-Mediatek chipset (in my case chipset is MT7921U, also tested on
-MT7921AUN), a wireless network and a client connected (your mobile
-phone is enough). Use the airgeddon tool and launch the most simple
-evil twin attack over it:
+My snippet fixed if `duration` is in 1024 µs:
+```c
+     duration = ieee80211_get_rate_duration(hw, &stat, &overhead);  /*
+duration of an average MPDU in 1024 µs */
+     duration *= 1024;  /* duration in µs */
+     duration /= AVG_PKT_SIZE;  /* duration in µs for a byte */
+     duration *= len;  /* duration in µs for the actual MPDU */
+     duration += (overhead >> agg_shift);  /* duration in µs for an
+approximate PPDU aka airtime */
+     duration /= 1024;  /* airtime duration in 1024 µs*/
 
-git clone https://github.com/v1s1t0r1sh3r3/airgeddon
-cd airgeddon
-bash airgeddon.sh
-Navigate through menus selecting the Mediatek adapter, then evil twin
-menu (option 7) and then scan for your target network (option 4).
-After selecting it, Just launch the "Evil Twin attack just AP" (option
-5) and wait until all the 4 windows of the attack appear, then check
-if your client (mobile phone) is disconnected from the network. That's
-it.
+     return duration;
+```
+[`ieee80211_calc_expected_tx_airtime` has to be fixed too]
 
-In my case, just 3 windows opened... the first one is the Fake AP, the
-second is a DHCP server, the third one is the DoS window, and as I
-said, as soon as it appears, everything hangs... so no time for the
-4th window to be opened (the control window).
+The current patch:
+```c
+	duration·=·ieee80211_get_rate_duration(hw,·&stat,·&overhead);  /*
+duration of an average MPDU in ns */
+	duration·*=·len;
+	duration·/=·AVG_PKT_SIZE;  /* duration in ns for the actual MPDU */
+	duration·+=·(overhead·*·1024·>>·agg_shift);  /* adding the overhead in
+µs to a duration in ns to get PPDU duration: overhead [µs] == overhead *
+1024 [ns] */
+	return·duration;  /* airtime duration in ns */
+```
 
-Kind regards.
---
-Oscar
+> This is the same pattern used in ieee80211_calc_rx_airtime:
+> 
+>   duration *= len;
+>   duration /= AVG_PKT_SIZE;
+>   duration /= 1024;
+>   return duration + overhead;
+> 
+> Your proposed rewrite would multiply the overhead by len / AVG_PKT_SIZE,
+> making it proportional to packet size, which is incorrect, because a
+> 512-byte frame and a 1500-byte frame have the same PHY preamble duration.
+> 
+> - Felix
 
-OpenPGP Key: DA9C60E9 ||
-https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
-4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
---
-
-El mi=C3=A9, 25 mar 2026 a las 1:15, =E5=82=85=E7=BB=A7=E6=99=97 (<fjhhz199=
-7@gmail.com>) escribi=C3=B3:
->
-> Hi Oscar,
->
-> Thank you for testing the v1 patch and reporting the VM hang -- your
-> report was critical in identifying the root cause.
->
-> Lucid-Duck did extensive debugging and reproduction work on this.
-> The full discussion is here:
-> https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-4120751621
->
-> Root cause of the crash:
->
-> The v1 patch falls back to list_first_entry_or_null(&local->chanctx_list)
-> when the monitor vif has no chanctx. In your Evil Twin + DoS scenario,
-> the AP and monitor interfaces created multiple channel contexts. The
-> fallback blindly grabbed whichever chanctx was first on the list --
-> which could be the AP's chanctx that the firmware wasn't expecting
-> monitor traffic on. Injecting frames on a chanctx where
-> mt7921_mcu_config_sniffer() was never called is the likely trigger
-> for the hard hang.
->
-> The v2 patch adds a list_is_singular() guard: injection only proceeds
-> when there is exactly one chanctx (unambiguous), and is refused when
-> multiple chanctxs exist. This covers the common single-channel AP +
-> monitor case while preventing the dangerous multi-chanctx path that
-> caused your crash.
->
-> Lucid-Duck tested v2 extensively on kernel 6.19.8 with the MT7921AU
-> (ALFA AWUS036AXML) -- single-channel AP + monitor + injection,
-> multi-chanctx via P2P-GO, heavy load injection floods (50k fps,
-> 1.8M packets) -- all stable with zero crashes or kernel warnings.
->
-> The v2 diff against net/mac80211/tx.c:
->
->         chanctx_conf =3D rcu_dereference(sdata->vif.bss_conf.chanctx_conf=
-);
-> -       if (chanctx_conf)
-> +       if (chanctx_conf) {
->                 chandef =3D &chanctx_conf->def;
-> -       else if (local->emulate_chanctx)
-> +       } else if (local->emulate_chanctx) {
->                 chandef =3D &local->hw.conf.chandef;
-> -       else
-> -               goto fail_rcu;
-> +       } else {
-> +               struct ieee80211_chanctx *ctx;
-> +
-> +               ctx =3D list_first_entry_or_null(&local->chanctx_list,
-> +                                              struct ieee80211_chanctx,
-> +                                              list);
-> +               if (ctx && list_is_singular(&local->chanctx_list))
-> +                       chandef =3D &ctx->conf.def;
-> +               else
-> +                       goto fail_rcu;
-> +       }
->
-> If you have time, could you re-test with this v2 patch in your
-> original Evil Twin + DoS setup? That would help confirm the fix
-> before I send v2 to the list.
->
-> Thanks again for your help!
->
-> Best regards,
-> =E5=82=85=E7=BB=A7=E6=99=97
+Pablo MG
 
