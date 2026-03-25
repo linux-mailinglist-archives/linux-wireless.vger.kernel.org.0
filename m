@@ -1,74 +1,76 @@
-Return-Path: <linux-wireless+bounces-33802-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33803-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OgSOzxgw2m1qQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33802-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 05:10:36 +0100
+	id QJhrEetlw2nFqgQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33803-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 05:34:51 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E5231F806
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 05:10:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 986C131FB0D
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 05:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6C15317604B
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 03:59:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E24273019041
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 04:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5862DCF72;
-	Wed, 25 Mar 2026 03:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="HJNNN0aB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7249E301486;
+	Wed, 25 Mar 2026 04:33:31 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44682E2840
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 03:59:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE0B26A0C7
+	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 04:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774411193; cv=none; b=atTyJ3t/RVtTusCKIYJec88jKvS5UYyCvjqDJfWXdWfHXSedZGi6qILVQ7mx0+0aR647u7adzEIgeqNbr5ZSfY0zuFhZb4voGAfW7ryNjjgfyVUX9BUs5mBzozYmABnIWV8z7zWyChMh1ygw3h2/wyqfrmWEzJ+rg//3DMd8fjE=
+	t=1774413211; cv=none; b=alKRjEQdizda3oto5aJbapl/1nmFQrR/llvZJ7ciozT0vHGrF/Fp94iWiU68gG+KQ6KadPCYsf7307yf6SefcofrmXAB/zwV+nJk9tZCQHVEeQHc4FiGchpOUwy1e6fInyY2yQAfCGoK/4Ju/qYI7agsWduw0FapZIeEbo4Z87E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774411193; c=relaxed/simple;
-	bh=EtzwM1L311pCH5T8orEcz4MINnaubCLwT0aZjw4vUyk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dc5J7Ux7qQsPP3lYHgXgIjNVS1SU0/WeMqiqipz8Z0L9o9qEppkBErKu4zMsXtrWrcIEl3zEJYl584yZSOXwopSvb2XCLj2dHK+G9Yukb8SqjF26XnxU96sdlYMk2wW8Qh/zIHneq0wskRXaFxm8Z4UPcHm+DJ1FRPipeSVrGvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=HJNNN0aB; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 0f9ff2bc27ff11f1a02d4725871ece0b-20260325
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=CAcAj41Nboaxy537cdMv9ttueCZpamwxsdWgeZCwTvU=;
-	b=HJNNN0aBvLxyeBl54O0K2UKWa3NM6EDwK1xMu13beHm62tQ5u8GVqfMvzvdCC8eqZw/LrkhOnAGMeuvSHSaUFUBWpd2WimxAQGR2sQV328A2LXqq+L5lO8beSPhVlIBIhf9hsvhWZ8aHpkF9YFTEYNOW0XZ/DpfqC1IHy2/ctro=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:5a2d2b6f-eeaf-4a3f-b85a-7b5f1649c153,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:e7bac3a,CLOUDID:293a1ad5-060f-4ecc-9ee0-121eeeb4a682,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 0f9ff2bc27ff11f1a02d4725871ece0b-20260325
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw01.mediatek.com
-	(envelope-from <ryder.lee@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1706654448; Wed, 25 Mar 2026 11:59:45 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 25 Mar 2026 11:59:44 +0800
-Received: from mussdccf250.eus.mediatek.inc (10.73.250.250) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Wed, 25 Mar 2026 11:59:43 +0800
-From: Ryder Lee <ryder.lee@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>
-CC: <linux-mediatek@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-	Shayne Chen <shayne.chen@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7996: disable UNI_BSS_INFO_PROTECT_INFO for mt7996
-Date: Tue, 24 Mar 2026 20:59:41 -0700
-Message-ID: <a1f5ad05b164c836161e9c53e32335c15a1fa2a2.1774411028.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1774413211; c=relaxed/simple;
+	bh=epvWZ/qzAOYk4YtcSYYc1lChJNS4yAVg0WY4crReVJc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qr87LEgVjOuCFzDeb3VVaQJvR6ZQIKvO9l0FQIFwI4DyFOa8lPMIEGZHNbMcsclNM69GVeT7e+rhgfJ+80CPpiEinB/uKWG5QVA+W1LtJWMF0LhiWIIh8T6wOZVvkTcWlHMmL2mayQHmPw/6g2OpBgOo2MBQfDoQ55VvBMGUqes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-79a3e2e64f4so15871857b3.1
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 21:33:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774413209; x=1775018009;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2obK+0//qjZWU2JZcp5VyDPc6Q6QS5+BiBkfTjrf2jM=;
+        b=SDqPs0eolYPhM0CxtQlOsVYT1j7fpo0aPN5i3H1SFF7o4pcMpN+NAyEvmqJjQajMU8
+         f5yYr+RgAi74MajmcyYj32zYzSl0014EZq7aLk+plDCPmZP+EA+9v437gni6kDYit7D8
+         Ryyz5KsBHU3uvrfEELZEmpjyAizgEO8bz5AeujrdfMS1kR+IDrXSYJJ9IjAo6n2AZAeb
+         DVgSpoBtj5BbCfK1APAlyAr90acLDRcntoZH8GbPElAomZpM0oziZUU08xatiuUFno4y
+         P0/LaihJzjh9mE9fgBQuDxVrfaaXsGEo7PirOG/gQ/wjBBkJwtwFIJ7kAZHp5GCUgqIg
+         c4VA==
+X-Gm-Message-State: AOJu0Yy2hs+OayITuPd8x0uN02/GpxQKbGgJr4ZNk+kfiWI5ntDBOt5g
+	Vz2JEMcYj4Q38PZgBtS9G2XgBhEtgVt4z2B54qiE3qpYra+yWza+s+ag
+X-Gm-Gg: ATEYQzwfJEIuJ7C4DInjTAnyfp+RoLg90BjR2eoiuKrfiZbhAlJ8NB8cBI79Gnq/HeF
+	3eiRWnJmLxcs3jkjIb4TWSnbkrCG64xHIXZoYbLRsCDf0Ck0j81hTaLHuZN8JwfpR8PD+ceRcSr
+	lNmG5UPS5W7J/OSCJPb8lzgtQ4LPJSP1ZIAGqsdsK3Th3VzlGHL4dIxfy0E5LjaDIfMVlhJhUeQ
+	F8OFNuZ5oVJjItgixeIKBpV6PTeS7CC6F10Sc1/SRA5/KcnliY2bhGMu1GLUlANZpXUZ/67m7JM
+	CwvpvpBs5kcFp6j9ilV/3o4aCn4v3lZRfVtEvwfn6O49kXFQgrgPM+u8ktQJhapwu1V1C29DdLo
+	xucUO0ueRaYj117e2byN+wRci1E7uI/H+pYyj1ylNZWi3v5rR6tAgZjVlISEwgQfwEyWh/7oGCk
+	9p20xdnWQbtqloT6DyZZdJ6N5gFyK985DpQL9fjXR5cPA03NKr6C/4MAqdq53vJwSCSPZfiPpYy
+	A==
+X-Received: by 2002:a05:690c:4a10:b0:79a:b118:4386 with SMTP id 00721157ae682-79acf728b0dmr20936267b3.48.1774413204969;
+        Tue, 24 Mar 2026 21:33:24 -0700 (PDT)
+Received: from sean-HP-EliteBook-830-G6.attlocal.net ([2600:1702:5083:7610:3916:ec63:baa5:b5f0])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79a903e0b8csm82707977b3.12.2026.03.24.21.33.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 21:33:23 -0700 (PDT)
+From: Sean Wang <sean.wang@kernel.org>
+To: nbd@nbd.name,
+	lorenzo.bianconi@redhat.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	Sean Wang <sean.wang@mediatek.com>
+Subject: [PATCH 1/3] wifi: mt76: connac: use a helper to cache txpower_cur
+Date: Tue, 24 Mar 2026 23:33:16 -0500
+Message-ID: <20260325043318.13298-1-sean.wang@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,61 +78,111 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-33803-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33802-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ryder.lee@mediatek.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mediatek.com:dkim,mediatek.com:email,mediatek.com:mid]
-X-Rspamd-Queue-Id: 62E5231F806
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sku_tlbv.channel:url,mediatek.com:email]
+X-Rspamd-Queue-Id: 986C131FB0D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-There are known firmware issues with MT7996, so it is temporarily
-disabled. MT7992 and MT7990 are working normally.
+From: Sean Wang <sean.wang@mediatek.com>
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+The cached txpower value is derived from the bounded channel power after
+applying the chainmask path delta.
+
+Use a helper for that conversion so callers do not open-code it.
+
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt76_connac.h     |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |  9 +++++++++
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 11 ++++++++---
+ 3 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 16420375112d..bdc40e94127c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1281,6 +1281,9 @@ int mt7996_mcu_set_protection(struct mt7996_phy *phy, struct mt7996_vif_link *li
- 		PROT_NONGF_STA	 = BIT(7),
- 	};
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+index 51423c7740bd..d0953e02810b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+@@ -420,7 +420,7 @@ mt76_connac_mutex_release(struct mt76_dev *dev, struct mt76_connac_pm *pm)
+ void mt76_connac_gen_ppe_thresh(u8 *he_ppet, int nss, enum nl80211_band band);
+ int mt76_connac_init_tx_queues(struct mt76_phy *phy, int idx, int n_desc,
+ 			       int ring_base, void *wed, u32 flags);
+-
++void mt76_connac_set_txpower_cur(struct mt76_phy *phy, s8 max_power);
+ void mt76_connac_write_hw_txp(struct mt76_dev *dev,
+ 			      struct mt76_tx_info *tx_info,
+ 			      void *txp_ptr, u32 id);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+index 0339e2e7ab60..b2daa6c7d061 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -275,6 +275,15 @@ int mt76_connac_init_tx_queues(struct mt76_phy *phy, int idx, int n_desc,
+ }
+ EXPORT_SYMBOL_GPL(mt76_connac_init_tx_queues);
  
-+	if (is_mt7996(&dev->mt76))
-+		return 0;
++void mt76_connac_set_txpower_cur(struct mt76_phy *phy, s8 max_power)
++{
++	int delta;
 +
- 	skb = __mt7996_mcu_alloc_bss_req(&dev->mt76, &link->mt76,
- 					 MT7996_BSS_UPDATE_MAX_SIZE);
- 	if (IS_ERR(skb))
++	delta = mt76_tx_power_path_delta(hweight16(phy->chainmask));
++	phy->txpower_cur = max_power - delta;
++}
++EXPORT_SYMBOL_GPL(mt76_connac_set_txpower_cur);
++
+ #define __bitrate_mask_check(_mcs, _mode)				\
+ ({									\
+ 	u8 i = 0;							\
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 89bd52ea8bf7..897b065a2be6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -2223,14 +2223,19 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
+ 				.hw_value = ch_list[idx],
+ 				.band = band,
+ 			};
+-			s8 reg_power, sar_power;
++			s8 reg_power, sar_power, max_power;
+ 
+ 			reg_power = mt76_connac_get_ch_power(phy, &chan,
+ 							     tx_power);
+ 			sar_power = mt76_get_sar_power(phy, &chan, reg_power);
+ 
+-			mt76_get_rate_power_limits(phy, &chan, limits,
+-						   sar_power);
++			max_power = mt76_get_rate_power_limits(phy, &chan, limits,
++							       sar_power);
++
++			if (phy->chandef.chan &&
++			    phy->chandef.chan->hw_value == ch_list[idx] &&
++			    phy->chandef.chan->band == band)
++				mt76_connac_set_txpower_cur(phy, max_power);
+ 
+ 			tx_power_tlv.last_msg = ch_list[idx] == last_ch;
+ 			sku_tlbv.channel = ch_list[idx];
 -- 
-2.45.2
+2.43.0
 
 
