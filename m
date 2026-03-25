@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-33879-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33880-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKhgOuZQxGljyAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33879-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 22:17:26 +0100
+	id 4JGSGeRQxGljyAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33880-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 22:17:24 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A7832C548
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 22:17:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 371EE32C541
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 22:17:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 776803089889
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 21:16:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 99FBE3056247
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 21:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18AEC37AA61;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14A73659E7;
 	Wed, 25 Mar 2026 21:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cRuSf3db"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HT1R3+x2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB1637BE9F
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 21:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F75378D79
+	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 21:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774473364; cv=none; b=Pta1OVpb0ZE7Rsboh9OMKFFn985kaPIKbt/RHi2Ic98HgUYn0BXDcFUgb80L+uEKsC/XmBFzJm9BOuGdSLIJkeRiEU3RB1u0azxjMM2b1xhjtqcDtOWuxjKr7vYEuZ63IWZOiem7N4/WyS+CpocWmE+Ru1MSr6G7tq38Cx1ROOw=
+	t=1774473364; cv=none; b=cI7ygnbf5Q2Hl2UJ48OSwzutvezzcNknDvh9wd1NeDbASBcfICeZ4M6QfmlbvJJeM/fjdTnsiXClbJX+ds4S0IGkJadXtWaRmZgl62de6m1QriquE3D5OAU0+DghRmhG+mTRjr5Jm830esCCBzSEeTc8odxCSJDN/YN2N54yQYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774473364; c=relaxed/simple;
-	bh=nCwnlc7IZeKdwNTVwgIWTjLSOr9vN6CB3yrmeZnDync=;
+	bh=IDgUSMcMHpj1qEl4f2rVX3jL+u7bZcKBl6aggEKOKFo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lnBfr+JaPyyS55je5dLeQ79G4jKAYx+3S6ovw94P1XasHZuJM4iCCAq5GWQplSNf3k3Tz6fJMtvO6mLJUt2ApiuLUMM/d3hKnWUshbRlyQ6RcR8dFvwQ2MNQjRfauERA+p2Z3Hd+KCovXEmIR/wydkAAG6lx6rQeQXYSLVZ2fBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cRuSf3db; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=chu1/l11GYJq3TLGQulkSfv1ig3RyR8ztsk9tcPJjyYZ3NLIJ96nBCx5hSz3JKMhfsIiazLzbE5GLr2hzqA6ASLie0siuZegH1N++Aq0Rf3ii+Ezy2bpBB6+hEeWU+0NqLPKET3QSFeQXcF5BtzNdbFdA3dOuDlWC0pJLdhrUAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HT1R3+x2; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774473362; x=1806009362;
+  t=1774473363; x=1806009363;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=nCwnlc7IZeKdwNTVwgIWTjLSOr9vN6CB3yrmeZnDync=;
-  b=cRuSf3dbuv00kPXaU6xvy3Jq/hMrjcIUdPOgunLhndPe0ezwMyszML8p
-   biOSDFjX2PGWcWe2uDITOkN4Xu2xdLLMdXWOCnPhZsBnYQvGe8Ijs5rpx
-   8hXU3MeV8aXuZTZuJ0SUbRPI+ep9frjJgyOhfyMLK/EVMSx3dWGBuD0qi
-   Nqv7kmPsvbEKa3oSj4J0akm2iree8Lbr3WOhSpqehcXHp9r9Gnvjzlywg
-   VmPkb00OwY/pWOb5bvZWEfHxFHq+wz6Fb3GjWmsZadKF8YDUTIvgDinYk
-   OBDgwzimH0KWt95NEKXTKBzIWsMdVgxfLCVzSV1lsER5dPnXdMpxlJSDO
-   g==;
-X-CSE-ConnectionGUID: Q8vgCbG0QO+/QNu8HD7a/Q==
-X-CSE-MsgGUID: Telm5Sx/TteQswc6MMIlOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="75485369"
+  bh=IDgUSMcMHpj1qEl4f2rVX3jL+u7bZcKBl6aggEKOKFo=;
+  b=HT1R3+x2t3N3GtDLVsAYEqYaJ2tw9jPiLGkoDfvSToKs6CF6REHswkjF
+   8gDlIohYOju2nTqrY8OVhhvZCC86Ot7kN4gJTFodvZZwx4CLqa2sdEo3D
+   iA/R2eYvpQLqdwkGd30OHVoQKK+K3O7gL6Z9li4EVRpjc/PYtS7+b3kVm
+   kQWSqI10IISJ1DP3nNDpgqG48Cs34J7dk73tbGUnEPqnyfr4cC2wQpHTB
+   EozDSGYt44jto7hVquWfMorWlOsjjcl8YoJLebYYEIjoPiUAk//X6iML1
+   jdBvAqeQew3r+bH1+iXWeCMuIRc6F87cxQq8M1ZLPIu41HnOuXdSW45kn
+   w==;
+X-CSE-ConnectionGUID: BBDG2xtrQr2B1Fh0leFsTQ==
+X-CSE-MsgGUID: 7IQrweh6SpqPCm4N/EpH7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="75485371"
 X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
-   d="scan'208";a="75485369"
+   d="scan'208";a="75485371"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 14:16:02 -0700
-X-CSE-ConnectionGUID: lD3IqwnfTc6dpJi3/yygpA==
-X-CSE-MsgGUID: 1QU+6F54Qvaz28R6wUiVJA==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 14:16:03 -0700
+X-CSE-ConnectionGUID: EeCVMd+rQd2g3+FTzYBZRw==
+X-CSE-MsgGUID: 8x0JpcTWT4Or/95S8CCTnQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,140,1770624000"; 
-   d="scan'208";a="224747506"
+   d="scan'208";a="224747519"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 14:16:00 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 14:16:02 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 08/15] wifi: mac80211: support NAN stations
-Date: Wed, 25 Mar 2026 23:15:29 +0200
-Message-Id: <20260325230443.32c5644ec4be.I7a7bd6e8e751cab49c329419485839afd209cfc6@changeid>
+Subject: [PATCH wireless-next 09/15] wifi: mac80211: add NAN peer schedule support
+Date: Wed, 25 Mar 2026 23:15:30 +0200
+Message-Id: <20260325230443.b10fc7b44c1c.I0345eb665be8ccf4a77eb1aca9a421eb8d2432e2@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260325211536.910411-1-miriam.rachel.korenblit@intel.com>
 References: <20260325211536.910411-1-miriam.rachel.korenblit@intel.com>
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -91,10 +91,10 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33879-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33880-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -104,533 +104,551 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 87A7832C548
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 371EE32C541
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add support for both NMI and NDI stations.
+Peer schedules specify which channels the peer is available on and when.
+Add support for configuring peer NAN schedules:
+- build and store the schedule and maps
+- for each channel, make sure that it fits into the capabilities, and
+  take the minimum between it and the local compatible nan channel.
+- configure the driver
 
-The NDI station will be linked to the NMI station of the NAN peer for
-which the NDI station is added.
-
-A peer can choose to reuse its NMI address as the NDI address.
-Since different keys might be in use for NAN management and for data
-frames, we will have 2 different stations, even if they'll have the same
-address.
-
-Even though there are no links in NAN, sta->deflink will still be used
-to store the one set of capabilities and SMPS mode.
+Note that the removal of a peer schedule should be done by the driver
+upon NMI station removal.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/mac80211.h  |  13 ++++-
- net/mac80211/cfg.c      | 103 ++++++++++++++++++++++++++++++++++++----
- net/mac80211/he.c       |   7 ++-
- net/mac80211/ht.c       |  19 ++++++--
- net/mac80211/iface.c    |  10 ++--
- net/mac80211/sta_info.c |  21 +++++++-
- net/mac80211/sta_info.h |   3 +-
- net/mac80211/util.c     |  41 ++++++++++++++++
- net/mac80211/vht.c      |  16 ++++++-
- 9 files changed, 209 insertions(+), 24 deletions(-)
+ include/net/mac80211.h     |  62 +++++++++-
+ net/mac80211/cfg.c         |  13 +++
+ net/mac80211/driver-ops.h  |  21 ++++
+ net/mac80211/ieee80211_i.h |   3 +
+ net/mac80211/nan.c         | 226 ++++++++++++++++++++++++++++++++++++-
+ net/mac80211/sta_info.c    |   4 +
+ net/mac80211/trace.h       |  31 +++++
+ net/mac80211/util.c        |   8 ++
+ 8 files changed, 365 insertions(+), 3 deletions(-)
 
 diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 24685f106757..8656e2cc2b75 100644
+index 8656e2cc2b75..783757f14b61 100644
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -2534,11 +2534,15 @@ struct ieee80211_sta_aggregates {
-  * @uhr_cap: UHR capabilities of this STA
-  * @s1g_cap: S1G capabilities of this STA
-  * @agg: per-link data for multi-link aggregation
-- * @bandwidth: current bandwidth the station can receive with
-+ * @bandwidth: current bandwidth the station can receive with.
-+ *	This is the minimum between the peer's capabilities and our own
-+ *	operating channel width; Invalid for NAN since that is operating on
-+ *	multiple channels.
-  * @rx_nss: in HT/VHT, the maximum number of spatial streams the
-  *	station can receive at the moment, changed by operating mode
-  *	notifications and capabilities. The value is only valid after
-- *	the station moves to associated state.
-+ *	the station moves to associated state. Invalid for NAN since it
-+ *	operates on multiple configurations of rx_nss.
-  * @txpwr: the station tx power configuration
+@@ -877,8 +877,11 @@ struct ieee80211_bss_conf {
+  *	is irrelevant for NAN, still store it for convenience - some functions
+  *	require it as an argument.
+  * @needed_rx_chains: number of RX chains needed for this NAN channel
+- * @chanctx_conf: chanctx_conf assigned to this NAN channel. Will be %NULL
+- *	if the channel is ULWed.
++ * @chanctx_conf: chanctx_conf assigned to this NAN channel.
++ *	If a local channel is being ULWed (because we needed this chanctx for
++ *	something else), the local NAN channel that used this chanctx,
++ *	will have this pointer set to %NULL.
++ *	A peer NAN channel should never have this pointer set to %NULL.
+  * @channel_entry: the Channel Entry blob as defined in Wi-Fi Aware
+  *	(TM) 4.0 specification Table 100 (Channel Entry format for the NAN
+  *	Availability attribute).
+@@ -890,6 +893,49 @@ struct ieee80211_nan_channel {
+ 	u8 channel_entry[6];
+ };
+ 
++/**
++ * struct ieee80211_nan_peer_map - NAN peer schedule map
++ *
++ * This stores a single map from a peer's schedule. Each peer can have
++ * multiple maps.
++ *
++ * @map_id: the map ID from the peer schedule, %CFG80211_NAN_INVALID_MAP_ID
++ *	if unused
++ * @slots: mapping of time slots to channel configurations in the schedule's
++ *	channels array
++ */
++struct ieee80211_nan_peer_map {
++	u8 map_id;
++	struct ieee80211_nan_channel *slots[CFG80211_NAN_SCHED_NUM_TIME_SLOTS];
++};
++
++/**
++ * struct ieee80211_nan_peer_sched - NAN peer schedule
++ *
++ * This stores the complete schedule from a peer. Contains peer-level
++ * parameters and an array of schedule maps.
++ *
++ * @seq_id: the sequence ID from the peer schedule
++ * @committed_dw: committed DW as published by the peer
++ * @max_chan_switch: maximum channel switch time in microseconds
++ * @init_ulw: initial ULWs as published by the peer (copied)
++ * @ulw_size: number of bytes in @init_ulw
++ * @maps: array of peer schedule maps. Invalid slots have map_id set to
++ *	%CFG80211_NAN_INVALID_MAP_ID.
++ * @n_channels: number of valid channel entries in @channels
++ * @channels: flexible array of negotiated peer channels for this schedule
++ */
++struct ieee80211_nan_peer_sched {
++	u8 seq_id;
++	u16 committed_dw;
++	u16 max_chan_switch;
++	const u8 *init_ulw;
++	u16 ulw_size;
++	struct ieee80211_nan_peer_map maps[CFG80211_NAN_MAX_PEER_MAPS];
++	u8 n_channels;
++	struct ieee80211_nan_channel channels[] __counted_by(n_channels);
++};
++
+ /**
+  * enum mac80211_tx_info_flags - flags to describe transmission information/status
   *
-  */
-@@ -2620,6 +2624,7 @@ struct ieee80211_link_sta {
-  * @valid_links: bitmap of valid links, or 0 for non-MLO
+@@ -2625,6 +2671,7 @@ struct ieee80211_link_sta {
   * @spp_amsdu: indicates whether the STA uses SPP A-MSDU or not.
   * @epp_peer: indicates that the peer is an EPP peer.
-+ * @nmi: For NDI stations, pointer to the NMI station of the peer.
+  * @nmi: For NDI stations, pointer to the NMI station of the peer.
++ * @nan_sched: NAN peer schedule for this station. Valid only for NMI stations.
   */
  struct ieee80211_sta {
  	u8 addr[ETH_ALEN] __aligned(2);
-@@ -2648,6 +2653,8 @@ struct ieee80211_sta {
- 	struct ieee80211_link_sta deflink;
- 	struct ieee80211_link_sta __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
+@@ -2655,6 +2702,9 @@ struct ieee80211_sta {
  
-+	struct ieee80211_sta __rcu *nmi;
+ 	struct ieee80211_sta __rcu *nmi;
+ 
++	/* should only be accessed with the wiphy mutex held */
++	struct ieee80211_nan_peer_sched *nan_sched;
 +
  	/* must be last */
  	u8 drv_priv[] __aligned(sizeof(void *));
  };
-@@ -2881,6 +2888,8 @@ struct ieee80211_txq {
-  *	station has a unique address, i.e. each station entry can be identified
-  *	by just its MAC address; this prevents, for example, the same station
-  *	from connecting to two virtual AP interfaces at the same time.
-+ *	Note that this doesn't apply for NAN, in which the peer's NMI address
-+ *	can be equal to its NDI address.
-  *
-  * @IEEE80211_HW_SUPPORTS_REORDERING_BUFFER: Hardware (or driver) manages the
-  *	reordering buffer internally, guaranteeing mac80211 receives frames in
+@@ -4556,6 +4606,12 @@ struct ieee80211_prep_tx_info {
+  * @del_nan_func: Remove a NAN function. The driver must call
+  *	ieee80211_nan_func_terminated() with
+  *	NL80211_NAN_FUNC_TERM_REASON_USER_REQUEST reason code upon removal.
++ * @nan_peer_sched_changed: Notifies the driver that the peer NAN schedule
++ *	has changed. The new schedule is available via sta->nan_sched.
++ *	Note that the channel_entry blob might not match the actual chandef
++ *	since the bandwidth of the chandef is the minimum of the local and peer
++ *	bandwidth. It is the driver responsibility to remove the peer schedule
++ *	when the NMI station is removed.
+  * @can_aggregate_in_amsdu: Called in order to determine if HW supports
+  *	aggregating two specific frames in the same A-MSDU. The relation
+  *	between the skbs should be symmetric and transitive. Note that while
+@@ -4961,6 +5017,8 @@ struct ieee80211_ops {
+ 	void (*del_nan_func)(struct ieee80211_hw *hw,
+ 			    struct ieee80211_vif *vif,
+ 			    u8 instance_id);
++	int (*nan_peer_sched_changed)(struct ieee80211_hw *hw,
++				      struct ieee80211_sta *sta);
+ 	bool (*can_aggregate_in_amsdu)(struct ieee80211_hw *hw,
+ 				       struct sk_buff *head,
+ 				       struct sk_buff *skb);
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 701b111db7df..a1089e3964bd 100644
+index a1089e3964bd..493f7b5cfd6f 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -2077,7 +2077,7 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 				     enum sta_link_apply_mode mode,
- 				     struct link_station_parameters *params)
- {
--	struct ieee80211_supported_band *sband;
-+	struct ieee80211_supported_band *sband = NULL;
- 	struct ieee80211_sub_if_data *sdata = sta->sdata;
- 	u32 link_id = params->link_id < 0 ? 0 : params->link_id;
- 	struct ieee80211_link_data *link =
-@@ -2085,6 +2085,9 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 	struct link_sta_info *link_sta =
- 		rcu_dereference_protected(sta->link[link_id],
- 					  lockdep_is_held(&local->hw.wiphy->mtx));
-+	const struct ieee80211_sta_ht_cap *own_ht_cap;
-+	const struct ieee80211_sta_vht_cap *own_vht_cap;
-+	const struct ieee80211_sta_he_cap *own_he_cap;
- 	bool changes = params->link_mac ||
- 		       params->txpwr_set ||
- 		       params->supported_rates_len ||
-@@ -2114,10 +2117,27 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 	if (!link || !link_sta)
- 		return -EINVAL;
+@@ -5689,6 +5689,18 @@ ieee80211_set_local_nan_sched(struct wiphy *wiphy,
+ 	return ieee80211_nan_set_local_sched(sdata, sched);
+ }
  
--	sband = ieee80211_get_link_sband(link);
--	if (!sband)
-+	/*
-+	 * We should not have any changes in NDI station, its capabilities are
-+	 * copied from the NMI sta
-+	 */
-+	if (WARN_ON(sdata->vif.type == NL80211_IFTYPE_NAN_DATA))
- 		return -EINVAL;
- 
-+	if (sdata->vif.type == NL80211_IFTYPE_NAN) {
-+		own_ht_cap = &local->hw.wiphy->nan_capa.phy.ht;
-+		own_vht_cap = &local->hw.wiphy->nan_capa.phy.vht;
-+		own_he_cap = &local->hw.wiphy->nan_capa.phy.he;
-+	} else {
-+		sband = ieee80211_get_link_sband(link);
-+		if (!sband)
-+			return -EINVAL;
++static int
++ieee80211_set_peer_nan_sched(struct wiphy *wiphy,
++			     struct wireless_dev *wdev,
++			     struct cfg80211_nan_peer_sched *sched)
++{
++	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
 +
-+		own_ht_cap = &sband->ht_cap;
-+		own_vht_cap = &sband->vht_cap;
-+		own_he_cap = ieee80211_get_he_iftype_cap_vif(sband, &sdata->vif);
-+	}
++	lockdep_assert_wiphy(sdata->local->hw.wiphy);
 +
- 	if (params->link_mac) {
- 		if (mode == STA_LINK_MODE_NEW) {
- 			memcpy(link_sta->addr, params->link_mac, ETH_ALEN);
-@@ -2139,6 +2159,27 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 			return ret;
- 	}
- 
-+	if (sdata->vif.type == NL80211_IFTYPE_NAN) {
-+		static const u8 all_ofdm_rates[] = {
-+			0x0c, 0x12, 0x18, 0x24, 0x30, 0x48, 0x60, 0x6c
-+		};
++	return ieee80211_nan_set_peer_sched(sdata, sched);
++}
 +
-+		/* Set the same supported_rates for all bands */
-+		for (int i = 0; i < NUM_NL80211_BANDS; i++) {
-+			struct ieee80211_supported_band *tmp =
-+				sdata->local->hw.wiphy->bands[i];
+ const struct cfg80211_ops mac80211_config_ops = {
+ 	.add_virtual_intf = ieee80211_add_iface,
+ 	.del_virtual_intf = ieee80211_del_iface,
+@@ -5806,4 +5818,5 @@ const struct cfg80211_ops mac80211_config_ops = {
+ 	.assoc_ml_reconf = ieee80211_assoc_ml_reconf,
+ 	.set_epcs = ieee80211_set_epcs,
+ 	.nan_set_local_sched = ieee80211_set_local_nan_sched,
++	.nan_set_peer_sched = ieee80211_set_peer_nan_sched,
+ };
+diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
+index 51bf3c7822a7..f1c0b87fddd5 100644
+--- a/net/mac80211/driver-ops.h
++++ b/net/mac80211/driver-ops.h
+@@ -1793,4 +1793,25 @@ static inline int drv_set_eml_op_mode(struct ieee80211_sub_if_data *sdata,
+ 	return ret;
+ }
+ 
++static inline int
++drv_nan_peer_sched_changed(struct ieee80211_local *local,
++			   struct ieee80211_sub_if_data *sdata,
++			   struct sta_info *sta)
++{
++	int ret;
 +
-+			if ((i != NL80211_BAND_2GHZ && i != NL80211_BAND_5GHZ) ||
-+			    !tmp)
-+				continue;
++	might_sleep();
++	lockdep_assert_wiphy(local->hw.wiphy);
++	check_sdata_in_driver(sdata);
 +
-+			if (!ieee80211_parse_bitrates(tmp, all_ofdm_rates,
-+						      sizeof(all_ofdm_rates),
-+						      &link_sta->pub->supp_rates[i]))
-+				return -EINVAL;
-+		}
-+	}
++	if (!local->ops->nan_peer_sched_changed)
++		return -EOPNOTSUPP;
 +
- 	if (params->supported_rates &&
- 	    params->supported_rates_len &&
- 	    !ieee80211_parse_bitrates(sband, params->supported_rates,
-@@ -2147,22 +2188,24 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 		return -EINVAL;
- 
- 	if (params->ht_capa)
--		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, &sband->ht_cap,
-+		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, own_ht_cap,
- 						  params->ht_capa, link_sta);
- 
- 	/* VHT can override some HT caps such as the A-MSDU max length */
- 	if (params->vht_capa)
- 		ieee80211_vht_cap_ie_to_sta_vht_cap(sdata, sband,
--						    &sband->vht_cap,
-+						    own_vht_cap,
- 						    params->vht_capa, NULL,
- 						    link_sta);
- 
- 	if (params->he_capa)
--		ieee80211_he_cap_ie_to_sta_he_cap(sdata, sband,
--						  (void *)params->he_capa,
--						  params->he_capa_len,
--						  (void *)params->he_6ghz_capa,
--						  link_sta);
-+		_ieee80211_he_cap_ie_to_sta_he_cap(sdata,
-+						   own_he_cap,
-+						   (void *)params->he_capa,
-+						   params->he_capa_len,
-+						   (sband && sband->band == NL80211_BAND_6GHZ) ?
-+						   (void *)params->he_6ghz_capa : NULL,
-+						   link_sta);
- 
- 	if (params->he_capa && params->eht_capa)
- 		ieee80211_eht_cap_ie_to_sta_eht_cap(sdata, sband,
-@@ -2349,6 +2392,32 @@ static int sta_apply_parameters(struct ieee80211_local *local,
- 	if (params->airtime_weight)
- 		sta->airtime_weight = params->airtime_weight;
- 
-+	if (params->nmi_mac) {
-+		struct ieee80211_sub_if_data *nmi =
-+			rcu_dereference_wiphy(local->hw.wiphy,
-+					      sdata->u.nan_data.nmi);
-+		struct sta_info *nmi_sta;
++	trace_drv_nan_peer_sched_changed(local, sdata, &sta->sta);
++	ret = local->ops->nan_peer_sched_changed(&local->hw, &sta->sta);
++	trace_drv_return_int(local, ret);
 +
-+		if (WARN_ON(!nmi))
-+			return -EINVAL;
++	return ret;
++}
 +
-+		nmi_sta = sta_info_get(nmi, params->nmi_mac);
-+		if (!nmi_sta)
-+			return -ENOENT;
-+		rcu_assign_pointer(sta->sta.nmi, &nmi_sta->sta);
-+
-+		/* For NAN_DATA stations, copy capabilities from the NMI station */
-+		if (!nmi_sta->deflink.pub->ht_cap.ht_supported)
-+			return -EINVAL;
-+
-+		sta->deflink.pub->ht_cap = nmi_sta->deflink.pub->ht_cap;
-+		sta->deflink.pub->vht_cap = nmi_sta->deflink.pub->vht_cap;
-+		sta->deflink.pub->he_cap = nmi_sta->deflink.pub->he_cap;
-+		memcpy(&sta->deflink.pub->supp_rates,
-+		       &nmi_sta->deflink.pub->supp_rates,
-+		       sizeof(sta->deflink.pub->supp_rates));
-+	}
-+
- 	/* set the STA state after all sta info from usermode has been set */
- 	if (test_sta_flag(sta, WLAN_STA_TDLS_PEER) ||
- 	    set & BIT(NL80211_STA_FLAG_ASSOCIATED)) {
-@@ -2494,6 +2563,12 @@ static int ieee80211_change_station(struct wiphy *wiphy,
- 		else
- 			statype = CFG80211_STA_AP_CLIENT_UNASSOC;
- 		break;
-+	case NL80211_IFTYPE_NAN:
-+		statype = CFG80211_STA_NAN_MGMT;
-+		break;
-+	case NL80211_IFTYPE_NAN_DATA:
-+		statype = CFG80211_STA_NAN_DATA;
-+		break;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -2532,6 +2607,14 @@ static int ieee80211_change_station(struct wiphy *wiphy,
- 		}
- 	}
+ #endif /* __MAC80211_DRIVER_OPS */
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index e3a051beba6a..23bf00472915 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2042,6 +2042,9 @@ int ieee80211_mesh_finish_csa(struct ieee80211_sub_if_data *sdata,
+ /* NAN code */
+ int ieee80211_nan_set_local_sched(struct ieee80211_sub_if_data *sdata,
+ 				  struct cfg80211_nan_local_sched *sched);
++int ieee80211_nan_set_peer_sched(struct ieee80211_sub_if_data *sdata,
++				 struct cfg80211_nan_peer_sched *sched);
++void ieee80211_nan_free_peer_sched(struct ieee80211_nan_peer_sched *sched);
  
-+	/* NAN capabilties should not change */
-+	if (statype == CFG80211_STA_NAN_DATA &&
-+	    sta->deflink.pub->ht_cap.ht_supported &&
-+	    (params->link_sta_params.ht_capa ||
-+	     params->link_sta_params.vht_capa ||
-+	     params->link_sta_params.he_capa))
-+		return -EINVAL;
-+
- 	err = sta_apply_parameters(local, sta, params);
- 	if (err)
- 		return err;
-diff --git a/net/mac80211/he.c b/net/mac80211/he.c
-index 93e0342cff4f..a3e16a5bec22 100644
---- a/net/mac80211/he.c
-+++ b/net/mac80211/he.c
-@@ -127,6 +127,10 @@ _ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
- 	if (!he_cap_ie || !own_he_cap_ptr || !own_he_cap_ptr->has_he)
- 		return;
+ /* scan/BSS handling */
+ void ieee80211_scan_work(struct wiphy *wiphy, struct wiphy_work *work);
+diff --git a/net/mac80211/nan.c b/net/mac80211/nan.c
+index 2fa55e9a9dab..5e1f9bb7c49d 100644
+--- a/net/mac80211/nan.c
++++ b/net/mac80211/nan.c
+@@ -1,12 +1,13 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+  * NAN mode implementation
+- * Copyright(c) 2025 Intel Corporation
++ * Copyright(c) 2025-2026 Intel Corporation
+  */
+ #include <net/mac80211.h>
  
-+	/* NDI station are using the capabilities from the NMI station */
-+	if (WARN_ON_ONCE(sdata->vif.type == NL80211_IFTYPE_NAN_DATA))
-+		return;
-+
- 	own_he_cap = *own_he_cap_ptr;
+ #include "ieee80211_i.h"
+ #include "driver-ops.h"
++#include "sta_info.h"
  
- 	/* Make sure size is OK */
-@@ -156,7 +160,8 @@ _ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
- 	he_cap->has_he = true;
- 
- 	link_sta->cur_max_bandwidth = ieee80211_sta_cap_rx_bw(link_sta);
--	link_sta->pub->bandwidth = ieee80211_sta_cur_vht_bw(link_sta);
-+	if (sdata->vif.type != NL80211_IFTYPE_NAN)
-+		link_sta->pub->bandwidth = ieee80211_sta_cur_vht_bw(link_sta);
- 
- 	if (he_6ghz_capa)
- 		ieee80211_update_from_he_6ghz_capa(he_6ghz_capa, link_sta);
-diff --git a/net/mac80211/ht.c b/net/mac80211/ht.c
-index 410e2354f33a..97719298e038 100644
---- a/net/mac80211/ht.c
-+++ b/net/mac80211/ht.c
-@@ -154,6 +154,10 @@ bool ieee80211_ht_cap_ie_to_sta_ht_cap(struct ieee80211_sub_if_data *sdata,
- 	if (!ht_cap_ie || !own_cap_ptr->ht_supported)
- 		goto apply;
- 
-+	/* NDI station are using the capabilities from the NMI station */
-+	if (WARN_ON_ONCE(sdata->vif.type == NL80211_IFTYPE_NAN_DATA))
-+		return 0;
-+
- 	ht_cap.ht_supported = true;
- 
- 	own_cap = *own_cap_ptr;
-@@ -254,10 +258,17 @@ bool ieee80211_ht_cap_ie_to_sta_ht_cap(struct ieee80211_sub_if_data *sdata,
- 
- 	rcu_read_lock();
- 	link_conf = rcu_dereference(sdata->vif.link_conf[link_sta->link_id]);
--	if (WARN_ON(!link_conf))
-+	if (WARN_ON(!link_conf)) {
- 		width = NL80211_CHAN_WIDTH_20_NOHT;
--	else
-+	} else if (sdata->vif.type == NL80211_IFTYPE_NAN ||
-+		   sdata->vif.type == NL80211_IFTYPE_NAN_DATA) {
-+		/* In NAN, link_sta->bandwidth is invalid since NAN operates on
-+		 * multiple channels. Just take the maximum.
-+		 */
-+		width = NL80211_CHAN_WIDTH_320;
-+	} else {
- 		width = link_conf->chanreq.oper.width;
-+	}
- 
- 	switch (width) {
- 	default:
-@@ -285,7 +296,9 @@ bool ieee80211_ht_cap_ie_to_sta_ht_cap(struct ieee80211_sub_if_data *sdata,
- 				IEEE80211_STA_RX_BW_40 : IEEE80211_STA_RX_BW_20;
- 
- 	if (sta->sdata->vif.type == NL80211_IFTYPE_AP ||
--	    sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN) {
-+	    sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN ||
-+	    sta->sdata->vif.type == NL80211_IFTYPE_NAN ||
-+	    sta->sdata->vif.type == NL80211_IFTYPE_NAN_DATA) {
- 		enum ieee80211_smps_mode smps_mode;
- 
- 		switch ((ht_cap.cap & IEEE80211_HT_CAP_SM_PS)
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 507c5e016ec8..f1ab85ff326d 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -535,12 +535,14 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	 * (because if we remove a STA after ops->remove_interface()
- 	 * the driver will have removed the vif info already!)
- 	 *
--	 * For AP_VLANs stations may exist since there's nothing else that
--	 * would have removed them, but in other modes there shouldn't
--	 * be any stations.
-+	 * For AP_VLANs, NAN and NAN_DATA stations may exist since there's
-+	 * nothing else that would have removed them, but in other modes there
-+	 * shouldn't be any stations.
- 	 */
- 	flushed = sta_info_flush(sdata, -1);
--	WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_AP_VLAN && flushed > 0);
-+	WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_AP_VLAN &&
-+		     sdata->vif.type != NL80211_IFTYPE_NAN &&
-+		     sdata->vif.type != NL80211_IFTYPE_NAN_DATA && flushed > 0);
- 
- 	/* don't count this interface for allmulti while it is down */
- 	if (sdata->flags & IEEE80211_SDATA_ALLMULTI)
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 4259e9c13ed7..017d91365920 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -795,6 +795,7 @@ struct sta_info *sta_info_alloc_with_link(struct ieee80211_sub_if_data *sdata,
- static int sta_info_insert_check(struct sta_info *sta)
- {
- 	struct ieee80211_sub_if_data *sdata = sta->sdata;
-+	struct ieee80211_sta *same_addr_sta;
- 
- 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
- 
-@@ -810,13 +811,18 @@ static int sta_info_insert_check(struct sta_info *sta)
- 		    !is_valid_ether_addr(sta->sta.addr)))
- 		return -EINVAL;
- 
-+	if (!ieee80211_hw_check(&sdata->local->hw, NEEDS_UNIQUE_STA_ADDR))
-+		return 0;
-+
- 	/* The RCU read lock is required by rhashtable due to
- 	 * asynchronous resize/rehash.  We also require the mutex
- 	 * for correctness.
- 	 */
- 	rcu_read_lock();
--	if (ieee80211_hw_check(&sdata->local->hw, NEEDS_UNIQUE_STA_ADDR) &&
--	    ieee80211_find_sta_by_ifaddr(&sdata->local->hw, sta->addr, NULL)) {
-+	same_addr_sta = ieee80211_find_sta_by_ifaddr(&sdata->local->hw,
-+						     sta->addr, NULL);
-+	/* For NAN, a peer can re-use */
-+	if (same_addr_sta && same_addr_sta != rcu_access_pointer(sta->sta.nmi)) {
- 		rcu_read_unlock();
- 		return -ENOTUNIQ;
- 	}
-@@ -1294,6 +1300,17 @@ static int __must_check __sta_info_destroy_part1(struct sta_info *sta)
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
-+	if (sdata->vif.type == NL80211_IFTYPE_NAN) {
-+		struct sta_info *sta_iter, *tmp;
-+
-+		/* Remove all NDI stations associated with this NMI STA */
-+		list_for_each_entry_safe(sta_iter, tmp, &local->sta_list, list) {
-+			if (rcu_access_pointer(sta_iter->sta.nmi) != &sta->sta)
-+				continue;
-+			sta_info_destroy_addr(sta_iter->sdata, sta_iter->addr);
-+		}
-+	}
-+
- 	/*
- 	 * Before removing the station from the driver and
- 	 * rate control, it might still start new aggregation
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 58ccbea7f6f6..3e5d003bd31f 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -505,7 +505,8 @@ struct ieee80211_fragment_cache {
-  * @status_stats.ack_signal_filled: last ACK signal validity
-  * @status_stats.avg_ack_signal: average ACK signal
-  * @cur_max_bandwidth: maximum bandwidth to use for TX to the station,
-- *	taken from HT/VHT capabilities or VHT operating mode notification
-+ *	taken from HT/VHT capabilities or VHT operating mode notification.
-+ *	Invalid for NAN since that is operating on multiple bands.
-  * @rx_omi_bw_rx: RX OMI bandwidth restriction to apply for RX
-  * @rx_omi_bw_tx: RX OMI bandwidth restriction to apply for TX
-  * @rx_omi_bw_staging: RX OMI bandwidth restriction to apply later
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 925a09246ad9..a352f73a7ec4 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -1782,6 +1782,7 @@ static int ieee80211_reconfig_nan(struct ieee80211_sub_if_data *sdata)
- {
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_sub_if_data *ndi_sdata;
-+	struct sta_info *sta;
- 	int res;
- 
- 	res = drv_start_nan(local, sdata, &sdata->u.nan.conf);
-@@ -1802,6 +1803,42 @@ static int ieee80211_reconfig_nan(struct ieee80211_sub_if_data *sdata)
- 		}
- 	}
- 
-+	/* Add NMI stations (stations on the NAN interface) */
-+	list_for_each_entry(sta, &local->sta_list, list) {
-+		enum ieee80211_sta_state state;
-+
-+		if (!sta->uploaded || sta->sdata != sdata)
-+			continue;
-+
-+		for (state = IEEE80211_STA_NOTEXIST; state < sta->sta_state;
-+		     state++) {
-+			res = drv_sta_state(local, sdata, sta, state,
-+					    state + 1);
-+			if (WARN_ON(res))
-+				return res;
-+		}
-+	}
-+
-+	/* Add NDI stations (stations on NAN_DATA interfaces) */
-+	list_for_each_entry(sta, &local->sta_list, list) {
-+		enum ieee80211_sta_state state;
-+
-+		if (!sta->uploaded ||
-+		    sta->sdata->vif.type != NL80211_IFTYPE_NAN_DATA)
-+			continue;
-+
-+		if (WARN_ON(!sta->sta.nmi))
-+			continue;
-+
-+		for (state = IEEE80211_STA_NOTEXIST; state < sta->sta_state;
-+		     state++) {
-+			res = drv_sta_state(local, sta->sdata, sta, state,
-+					    state + 1);
-+			if (WARN_ON(res))
-+				return res;
-+		}
-+	}
-+
+ static void
+ ieee80211_nan_init_channel(struct ieee80211_nan_channel *nan_channel,
+@@ -96,6 +97,82 @@ ieee80211_nan_use_chanctx(struct ieee80211_sub_if_data *sdata,
  	return 0;
  }
  
-@@ -2060,6 +2097,10 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 		case NL80211_IFTYPE_AP_VLAN:
- 		case NL80211_IFTYPE_MONITOR:
- 			break;
-+		case NL80211_IFTYPE_NAN:
-+		case NL80211_IFTYPE_NAN_DATA:
-+			/* NAN stations are handled later */
-+			break;
- 		case NL80211_IFTYPE_ADHOC:
- 			if (sdata->vif.cfg.ibss_joined)
- 				WARN_ON(drv_join_ibss(local, sdata));
-diff --git a/net/mac80211/vht.c b/net/mac80211/vht.c
-index a6570781740a..f3bb5a561a38 100644
---- a/net/mac80211/vht.c
-+++ b/net/mac80211/vht.c
-@@ -133,6 +133,10 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
- 	if (!vht_cap_ie || !own_vht_cap->vht_supported)
- 		return;
++static void
++ieee80211_nan_update_peer_channels(struct ieee80211_sub_if_data *sdata,
++				   struct ieee80211_chanctx_conf *removed_conf)
++{
++	struct ieee80211_local *local = sdata->local;
++	struct sta_info *sta;
++
++	lockdep_assert_wiphy(local->hw.wiphy);
++
++	list_for_each_entry(sta, &local->sta_list, list) {
++		struct ieee80211_nan_peer_sched *peer_sched;
++		int write_idx = 0;
++		bool updated = false;
++
++		if (sta->sdata != sdata)
++			continue;
++
++		peer_sched = sta->sta.nan_sched;
++		if (!peer_sched)
++			continue;
++
++		/* NULL out map slots for channels being removed */
++		for (int i = 0; i < peer_sched->n_channels; i++) {
++			if (peer_sched->channels[i].chanctx_conf != removed_conf)
++				continue;
++
++			for (int m = 0; m < CFG80211_NAN_MAX_PEER_MAPS; m++) {
++				struct ieee80211_nan_peer_map *map =
++					&peer_sched->maps[m];
++
++				if (map->map_id == CFG80211_NAN_INVALID_MAP_ID)
++					continue;
++
++				for (int s = 0; s < ARRAY_SIZE(map->slots); s++)
++					if (map->slots[s] == &peer_sched->channels[i])
++						map->slots[s] = NULL;
++			}
++		}
++
++		/* Compact channels array, removing those with removed_conf */
++		for (int i = 0; i < peer_sched->n_channels; i++) {
++			if (peer_sched->channels[i].chanctx_conf == removed_conf) {
++				updated = true;
++				continue;
++			}
++
++			if (write_idx != i) {
++				/* Update map pointers before moving */
++				for (int m = 0; m < CFG80211_NAN_MAX_PEER_MAPS; m++) {
++					struct ieee80211_nan_peer_map *map =
++						&peer_sched->maps[m];
++
++					if (map->map_id == CFG80211_NAN_INVALID_MAP_ID)
++						continue;
++
++					for (int s = 0; s < ARRAY_SIZE(map->slots); s++)
++						if (map->slots[s] == &peer_sched->channels[i])
++							map->slots[s] = &peer_sched->channels[write_idx];
++				}
++
++				peer_sched->channels[write_idx] = peer_sched->channels[i];
++			}
++			write_idx++;
++		}
++
++		/* Clear any remaining entries at the end */
++		for (int i = write_idx; i < peer_sched->n_channels; i++)
++			memset(&peer_sched->channels[i], 0, sizeof(peer_sched->channels[i]));
++
++		peer_sched->n_channels = write_idx;
++
++		if (updated)
++			drv_nan_peer_sched_changed(local, sdata, sta);
++	}
++}
++
+ static void
+ ieee80211_nan_remove_channel(struct ieee80211_sub_if_data *sdata,
+ 			     struct ieee80211_nan_channel *nan_channel)
+@@ -118,6 +195,10 @@ ieee80211_nan_remove_channel(struct ieee80211_sub_if_data *sdata,
  
-+	/* NDI station are using the capabilities from the NMI station */
-+	if (WARN_ON_ONCE(sdata->vif.type == NL80211_IFTYPE_NAN_DATA))
+ 	conf = nan_channel->chanctx_conf;
+ 
++	/* If any peer nan schedule uses this chanctx, update them */
++	if (conf)
++		ieee80211_nan_update_peer_channels(sdata, conf);
++
+ 	memset(nan_channel, 0, sizeof(*nan_channel));
+ 
+ 	/* Update the driver before (possibly) releasing the channel context */
+@@ -376,3 +457,146 @@ void ieee80211_nan_sched_update_done(struct ieee80211_vif *vif)
+ 				       GFP_KERNEL);
+ }
+ EXPORT_SYMBOL(ieee80211_nan_sched_update_done);
++
++void ieee80211_nan_free_peer_sched(struct ieee80211_nan_peer_sched *sched)
++{
++	if (!sched)
 +		return;
 +
- 	if (sband) {
- 		/* Allow VHT if at least one channel on the sband supports 80 MHz */
- 		bool have_80mhz = false;
-@@ -320,7 +324,8 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
- 				IEEE80211_STA_RX_BW_160;
++	kfree(sched->init_ulw);
++	kfree(sched);
++}
++
++static int
++ieee80211_nan_init_peer_channel(struct ieee80211_sub_if_data *sdata,
++				const struct sta_info *sta,
++				const struct cfg80211_nan_channel *cfg_chan,
++				struct ieee80211_nan_channel *new_chan)
++{
++	struct ieee80211_nan_sched_cfg *sched_cfg = &sdata->vif.cfg.nan_sched;
++
++	/* Find compatible local channel */
++	for (int j = 0; j < ARRAY_SIZE(sched_cfg->channels); j++) {
++		struct ieee80211_nan_channel *local_chan =
++			&sched_cfg->channels[j];
++		const struct cfg80211_chan_def *compat;
++
++		if (!local_chan->chanreq.oper.chan)
++			continue;
++
++		compat = cfg80211_chandef_compatible(&local_chan->chanreq.oper,
++						     &cfg_chan->chandef);
++		if (!compat)
++			continue;
++
++		/* compat is the wider chandef, and we want the narrower one */
++		new_chan->chanreq.oper = compat == &local_chan->chanreq.oper ?
++					 cfg_chan->chandef : local_chan->chanreq.oper;
++		new_chan->needed_rx_chains = min(local_chan->needed_rx_chains,
++						 cfg_chan->rx_nss);
++		new_chan->chanctx_conf = local_chan->chanctx_conf;
++
++		break;
++	}
++
++	/*
++	 * nl80211 already validated that each peer channel is compatible
++	 * with at least one local channel, so this should never happen.
++	 */
++	if (WARN_ON(!new_chan->chanreq.oper.chan))
++		return -EINVAL;
++
++	memcpy(new_chan->channel_entry, cfg_chan->channel_entry,
++	       sizeof(new_chan->channel_entry));
++
++	return 0;
++}
++
++static void
++ieee80211_nan_init_peer_map(struct ieee80211_nan_peer_sched *peer_sched,
++			    const struct cfg80211_nan_peer_map *cfg_map,
++			    struct ieee80211_nan_peer_map *new_map)
++{
++	new_map->map_id = cfg_map->map_id;
++
++	if (new_map->map_id == CFG80211_NAN_INVALID_MAP_ID)
++		return;
++
++	/* Set up the slots array */
++	for (int slot = 0; slot < ARRAY_SIZE(new_map->slots); slot++) {
++		u8 chan_idx = cfg_map->schedule[slot];
++
++		if (chan_idx < peer_sched->n_channels)
++			new_map->slots[slot] = &peer_sched->channels[chan_idx];
++	}
++}
++
++int ieee80211_nan_set_peer_sched(struct ieee80211_sub_if_data *sdata,
++				 struct cfg80211_nan_peer_sched *sched)
++{
++	struct ieee80211_nan_peer_sched *new_sched, *old_sched, *to_free;
++	struct sta_info *sta;
++	int ret;
++
++	lockdep_assert_wiphy(sdata->local->hw.wiphy);
++
++	if (!sdata->u.nan.started)
++		return -EINVAL;
++
++	sta = sta_info_get(sdata, sched->peer_addr);
++	if (!sta)
++		return -ENOENT;
++
++	new_sched = kzalloc(struct_size(new_sched, channels, sched->n_channels),
++			    GFP_KERNEL);
++	if (!new_sched)
++		return -ENOMEM;
++
++	to_free = new_sched;
++
++	new_sched->seq_id = sched->seq_id;
++	new_sched->committed_dw = sched->committed_dw;
++	new_sched->max_chan_switch = sched->max_chan_switch;
++	new_sched->n_channels = sched->n_channels;
++
++	if (sched->ulw_size && sched->init_ulw) {
++		new_sched->init_ulw = kmemdup(sched->init_ulw, sched->ulw_size,
++					      GFP_KERNEL);
++		if (!new_sched->init_ulw) {
++			ret = -ENOMEM;
++			goto out;
++		}
++		new_sched->ulw_size = sched->ulw_size;
++	}
++
++	for (int i = 0; i < sched->n_channels; i++) {
++		ret = ieee80211_nan_init_peer_channel(sdata, sta,
++						      &sched->nan_channels[i],
++						      &new_sched->channels[i]);
++		if (ret)
++			goto out;
++	}
++
++	for (int m = 0; m < ARRAY_SIZE(sched->maps); m++)
++		ieee80211_nan_init_peer_map(new_sched, &sched->maps[m],
++					    &new_sched->maps[m]);
++
++	/* Install the new schedule before calling the driver */
++	old_sched = sta->sta.nan_sched;
++	sta->sta.nan_sched = new_sched;
++
++	ret = drv_nan_peer_sched_changed(sdata->local, sdata, sta);
++	if (ret) {
++		/* Revert to old schedule */
++		sta->sta.nan_sched = old_sched;
++		goto out;
++	}
++
++	/* Success - free old schedule */
++	to_free = old_sched;
++	ret = 0;
++
++out:
++	ieee80211_nan_free_peer_sched(to_free);
++	return ret;
++}
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 017d91365920..dd0d92abf60d 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -1309,6 +1309,10 @@ static int __must_check __sta_info_destroy_part1(struct sta_info *sta)
+ 				continue;
+ 			sta_info_destroy_addr(sta_iter->sdata, sta_iter->addr);
+ 		}
++
++		/* Free and clear the local peer schedule */
++		ieee80211_nan_free_peer_sched(sta->sta.nan_sched);
++		sta->sta.nan_sched = NULL;
  	}
  
--	link_sta->pub->bandwidth = ieee80211_sta_cur_vht_bw(link_sta);
-+	if (sdata->vif.type != NL80211_IFTYPE_NAN)
-+		link_sta->pub->bandwidth = ieee80211_sta_cur_vht_bw(link_sta);
- 
  	/*
- 	 * Work around the Cisco 9115 FW 17.3 bug by taking the min of
-@@ -373,6 +378,10 @@ __ieee80211_sta_cap_rx_bw(struct link_sta_info *link_sta,
- 		} else {
- 			struct ieee80211_bss_conf *link_conf;
+diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
+index e5968d754f8b..71cf88039bd4 100644
+--- a/net/mac80211/trace.h
++++ b/net/mac80211/trace.h
+@@ -3366,6 +3366,37 @@ TRACE_EVENT(drv_set_eml_op_mode,
+ 	)
+ );
  
-+			if (WARN_ON_ONCE(sdata->vif.type == NL80211_IFTYPE_NAN_DATA ||
-+					 sdata->vif.type == NL80211_IFTYPE_NAN))
-+				return IEEE80211_STA_RX_BW_20;
++TRACE_EVENT(drv_nan_peer_sched_changed,
++	TP_PROTO(struct ieee80211_local *local,
++		 struct ieee80211_sub_if_data *sdata,
++		 struct ieee80211_sta *sta),
 +
- 			rcu_read_lock();
- 			link_conf = rcu_dereference(sdata->vif.link_conf[link_id]);
- 			band = link_conf->chanreq.oper.chan->band;
-@@ -518,6 +527,11 @@ _ieee80211_sta_cur_vht_bw(struct link_sta_info *link_sta,
- 	} else {
- 		struct ieee80211_bss_conf *link_conf;
++	TP_ARGS(local, sdata, sta),
++	TP_STRUCT__entry(
++		LOCAL_ENTRY
++		VIF_ENTRY
++		STA_ENTRY
++		__array(u8, map_ids, CFG80211_NAN_MAX_PEER_MAPS)
++	),
++
++	TP_fast_assign(
++		LOCAL_ASSIGN;
++		VIF_ASSIGN;
++		STA_ASSIGN;
++		for (int i = 0; i < CFG80211_NAN_MAX_PEER_MAPS; i++)
++			__entry->map_ids[i] = sta->nan_sched ?
++					      sta->nan_sched->maps[i].map_id :
++					      0xff;
++	),
++
++	TP_printk(
++		LOCAL_PR_FMT  VIF_PR_FMT  STA_PR_FMT
++		" map_ids=[%u, %u]",
++		LOCAL_PR_ARG, VIF_PR_ARG, STA_PR_ARG,
++		__entry->map_ids[0], __entry->map_ids[1]
++	)
++);
++
+ #endif /* !__MAC80211_DRIVER_TRACE || TRACE_HEADER_MULTI_READ */
  
-+		/* NAN operates on multiple channels so a chandef must be given */
-+		if (WARN_ON_ONCE(sta->sdata->vif.type == NL80211_IFTYPE_NAN ||
-+				 sta->sdata->vif.type == NL80211_IFTYPE_NAN_DATA))
-+			return IEEE80211_STA_RX_BW_20;
+ #undef TRACE_INCLUDE_PATH
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index a352f73a7ec4..b093bc203c81 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -1817,6 +1817,14 @@ static int ieee80211_reconfig_nan(struct ieee80211_sub_if_data *sdata)
+ 			if (WARN_ON(res))
+ 				return res;
+ 		}
 +
- 		rcu_read_lock();
- 		link_conf = rcu_dereference(sta->sdata->vif.link_conf[link_sta->link_id]);
- 		if (WARN_ON_ONCE(!link_conf)) {
++		/* Add peer schedules for NMI stations that have them */
++		if (!sta->sta.nan_sched)
++			continue;
++
++		res = drv_nan_peer_sched_changed(local, sdata, sta);
++		if (WARN_ON(res))
++			return res;
+ 	}
+ 
+ 	/* Add NDI stations (stations on NAN_DATA interfaces) */
 -- 
 2.34.1
 
