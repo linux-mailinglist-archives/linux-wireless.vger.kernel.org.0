@@ -1,222 +1,206 @@
-Return-Path: <linux-wireless+bounces-33860-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33861-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFRtDkQexGmZwgQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33860-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 18:41:24 +0100
+	id GNW/Kk8fxGnYwgQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33861-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 18:45:51 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA2A32A008
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 18:41:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB8832A121
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 18:45:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 169D43039F48
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 17:35:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 589CE3003486
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2026 17:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C145F40629A;
-	Wed, 25 Mar 2026 17:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186613BD636;
+	Wed, 25 Mar 2026 17:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QeVKCRrA"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Jv+70GcG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [185.100.197.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56DF406275
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 17:35:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2299E3CC9F8;
+	Wed, 25 Mar 2026 17:39:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774460103; cv=none; b=rDEqCm578dCyXmX3ZXDPaF4bv0u054L6n3NkLxH7Muvq04Ppv1yPneOznDqrQvzXvcqmXdOGV1s6m/H7ZZgToMoUW+bJ7aHUWKcrcimn1kOmpH6t4In9fowXULlZYIDEgvniGCg0HVrggVa0mPeurfH/KmSXRWA5Y9lnqiUuDf0=
+	t=1774460381; cv=none; b=jqqA43up+RhUJN4RK+Y4uR2eUm3vESg0X60Ig3UDDjpPndDXni58WtDfvnmjGDb3xlEvuzqB+B71RNvpELI1jriE+3CGlQP0/EAo28gCzvSsf2EHjB1iaPLR/T7Uivs5p3IiqmqX8FAnJdVz/NwGNu4WZpyNCXNMbvK/RWeS5q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774460103; c=relaxed/simple;
-	bh=clM9+UyXrzN9nEW43pJpghdXSx89Puh9hjZlPMWv+hI=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aSzAZdbEH+uNygyItZyQGBL2u28j5CW4qXAU+gAaXIQya9ivzUKMd8QdrJVDNP64kK5bQSeyGnpI85MsPGFgcAkqUUuipT3kMhnrHs8SbvICsxaLaMpjJd5khb06g6Q3p03KcEIHSV6KBo/DvygZ34Y4Haw2211cLwYE1C5uaec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QeVKCRrA; arc=none smtp.client-ip=74.125.82.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2ba9c484e5eso109451eec.1
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 10:35:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774460100; x=1775064900; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6LvfhXxnMpqu+8Jaxmf8YnU74NbO72vJex03sq4AEB4=;
-        b=QeVKCRrA7qO9pYLUdqR1gtTQMaq7b4+caHjFbI6fiixPD/pY+8y9ybm+LLCw4NWDI1
-         XfEz5wUmjp4l9ZuMW9af0hIoo1FVD6Y7tstrV8I54xOZq8kGQ9vNkj9R1lDTItwMnX9X
-         wXWMrD5zYRWX5O27k7mJHEEyMswoz9/BOe4NiBhGEaICvInXumrp4CB3YFFzunUkrGIi
-         gB5RRVGgnF2Rzoves4aXDT1zLz22i13dQFZkYFvwxZoAxjWi4uopQp6k0JfS7Ldbarrt
-         jcCdVGVP2mkC3dfDJ98SoAq+UbXDFqXKdLxUa5NOWlgAyUXPOguSpEzAvYfOMCcjuCLy
-         iZ8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774460100; x=1775064900;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6LvfhXxnMpqu+8Jaxmf8YnU74NbO72vJex03sq4AEB4=;
-        b=V9L2F75gB8daJjP58EYIg6B8VYHki2krBcsFsuBPYlZWtYOl9J2fHALsAefT5LU+MV
-         djX6nI6AJbCSvJfe5fmEQztzvCjhULpEMDdivtQB3jiJoU9NmILZe0oZBOCeC/CgVDx0
-         RL9srMGK+C11HZ0FTumjvapFoq8FdmkU9Gyxom5oKWvbMr3oVnQZEZOikDClh0gzt8vR
-         0yAURsjI7wAFfE01vnugW2zKPmgz8IombsOhXuKVZhWb+1F5z0WfeJ/sdMv/KbKEvH9T
-         zsxBRv2odPUPFJHu5q2rQLHL6WIjgPII1NZHTbT0BaMz4BLRd/Yh9sVp7b6edm8HIv/8
-         YIxA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQeXx6l7IhDCSRbfYx9ECg2I8dlqEdN386n65WXOJfkozPE2Z2GaY7hVhFidzSMJ0dGhzDkiWD8A9f5eytzw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2eo4+RCCJ+/Sxy/HtoCLIKWeM6WasE3BHmgTyxXKs2PXjm1KY
-	mPO4flby2BJJAEd3ziwwjXfomgSq3/uy9O9ZBGjT+rXgNniWreIJa1o=
-X-Gm-Gg: ATEYQzwqWMtieth6Tq+mqd0KBMeeDjDUJolTVOqNKInfy1tAm/+k817X6jJvse63Y6T
-	Lqm+tlAb6Np8aUhufn4UawuvjLVu61yi6WdxxJtHF5Doi+1j2zjvImLZnY2FrF180D6DpM6nYrZ
-	exIwznOlgy2cdSz2zkVnzGbwlyvc0cB9GDEwAbyo80zriR/SlWqcZILPEuPW99B70AQ1nUOyjsC
-	YWv2aiXAoIwkhy1Mhu2lFQNFlze06FqOp5vk/vKqCb+9iACwtQCIunGODgVxPFVRR5rV0zqI0nB
-	WQLQDAWqddB4/fZ4+2JuvbtdFpPw2ObBOeWrVqn/dfw/C/BvN6q5t/9Mf1RHhWyXPEznomHWnYz
-	nZm3ZBp9btQTnyd+n8Tue/nDgv01dZcK0494zyD9n5WkcQC9Wa/kmJSyT4ToymoPZUVKtTxghUk
-	g9HCBJ2yhRyqDsNX31R38SUTUQQio2KWEZPNFt+VR6YwbXPrgbrIDsFoDXmEO1YmtfefJeJb102
-	6jbvcU4e0HShT6bnQ==
-X-Received: by 2002:a05:7301:1e91:b0:2b7:1d38:3596 with SMTP id 5a478bee46e88-2c15d32adfamr1794122eec.4.1774460099374;
-        Wed, 25 Mar 2026 10:34:59 -0700 (PDT)
-Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c16ee01373sm211727eec.26.2026.03.25.10.34.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 10:34:58 -0700 (PDT)
-Date: Wed, 25 Mar 2026 10:34:57 -0700
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
-	skhan@linuxfoundation.org, andrew+netdev@lunn.ch,
-	michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
-	alexanderduyck@fb.com, kernel-team@meta.com,
-	johannes@sipsolutions.net, sd@queasysnail.net, jianbol@nvidia.com,
-	dtatulea@nvidia.com, mohsin.bashr@gmail.com,
-	jacob.e.keller@intel.com, willemb@google.com, skhawaja@google.com,
-	bestswngs@gmail.com, aleksandr.loktionov@intel.com, kees@kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	leon@kernel.org
-Subject: Re: [PATCH net-next v3 03/13] net: introduce ndo_set_rx_mode_async
- and dev_rx_mode_work
-Message-ID: <acQcwZOXJjPlVpP6@mini-arch>
-Mail-Followup-To: Stanislav Fomichev <stfomichev@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
-	andrew+netdev@lunn.ch, michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com, anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com, saeedm@nvidia.com, tariqt@nvidia.com,
-	mbloch@nvidia.com, alexanderduyck@fb.com, kernel-team@meta.com,
-	johannes@sipsolutions.net, sd@queasysnail.net, jianbol@nvidia.com,
-	dtatulea@nvidia.com, mohsin.bashr@gmail.com,
-	jacob.e.keller@intel.com, willemb@google.com, skhawaja@google.com,
-	bestswngs@gmail.com, aleksandr.loktionov@intel.com, kees@kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	leon@kernel.org
-References: <20260320012501.2033548-1-sdf@fomichev.me>
- <20260320012501.2033548-4-sdf@fomichev.me>
- <20260323162003.0d155055@kernel.org>
- <acLUMN1BYkIVyOk8@mini-arch>
- <20260324142114.216fcb01@kernel.org>
- <acMU93XN02PHmAGi@mini-arch>
- <20260324204440.1752423d@kernel.org>
- <acP59NM6HZhV9oAe@mini-arch>
+	s=arc-20240116; t=1774460381; c=relaxed/simple;
+	bh=U1CClbbYMV3aDRX/EeYBmhygOq7XX1V8RT7YNZEpQ0U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GDyW6jqBCG5P+EZgNLEJCMN6hVFFsgOppEMK44m+T5IA2rzMDmnu4d3UIdQKAX+jkqhiZuEZaQn6i7/OLU+YR24DiMN+valKcusHn3Dz9rusx8Xs48f4BiJ6oZ2Ddd1WF6OS4WJLtXk8DfG3r7Xr+8Mad00B9FbVZ/hKL5iOO7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Jv+70GcG; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id D057653400DE;
+	Wed, 25 Mar 2026 18:39:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1774460374;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WmUIEtW5+eXkmHyv6fj0xD4LEO3YM6Y6FsgaI2ESrFA=;
+	b=Jv+70GcGKOM3rOK39+5T7uC+XF5901O5ly5/cEBZINaw2aiAPIhzJuh0/pTOHV4dF22s8c
+	zSyM8y1LA9EeW90FiTvpUsY2Lw58PjmTMJewJXHucGl21qVPehrlDNTYU7T6xdFxYukOhE
+	u0UidhPpc2o38pzzwwROQQO4Iv2XKi4=
+Message-ID: <323d5570-ae3d-4083-bbc8-8ce2ef53a34c@ixit.cz>
+Date: Wed, 25 Mar 2026 18:39:32 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <acP59NM6HZhV9oAe@mini-arch>
-X-Spamd-Result: default: False [-0.16 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] ath10k: Introduce a device-tree quirk to skip host
+ cap QMI requests
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Paul Sajna <sajattack@postmarketos.org>, Amit Pundir
+ <amit.pundir@linaro.org>, linux-wireless@vger.kernel.org,
+ devicetree@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260325-skip-host-cam-qmi-req-v3-0-b163cf7b3c81@ixit.cz>
+ <20260325-skip-host-cam-qmi-req-v3-2-b163cf7b3c81@ixit.cz>
+ <d6pv62kc5zyqite7krm65vbtlqnsc3v53rlrtilchyk5c7uad2@iu4yaw2ksr65>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <d6pv62kc5zyqite7krm65vbtlqnsc3v53rlrtilchyk5c7uad2@iu4yaw2ksr65>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[ixit.cz,quarantine];
+	R_DKIM_ALLOW(-0.20)[ixit.cz:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33860-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,fomichev.me,vger.kernel.org,davemloft.net,google.com,redhat.com,lwn.net,linuxfoundation.org,lunn.ch,broadcom.com,intel.com,nvidia.com,fb.com,meta.com,sipsolutions.net,queasysnail.net,gmail.com,lists.osuosl.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[37];
+	TAGGED_FROM(0.00)[bounces-33861-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stfomichev@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@ixit.cz,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[ixit.cz:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8FA2A32A008
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linaro.org:email,checkpatch.pl:url]
+X-Rspamd-Queue-Id: ACB8832A121
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 03/25, Stanislav Fomichev wrote:
-> On 03/24, Jakub Kicinski wrote:
-> > On Tue, 24 Mar 2026 15:49:27 -0700 Stanislav Fomichev wrote:
-> > > > > Not sure why cancel+release, maybe you're thinking about the unregister
-> > > > > path? This is rtnl_unlock -> netdev_run_todo -> __rtnl_unlock + some
-> > > > > extras.
-> > > > > 
-> > > > > And the flush is here to plumb the addresses to the real devices
-> > > > > before we return to the callers. Mostly because of the following
-> > > > > things we have in the tests:
-> > > > > 
-> > > > > # TEST: team cleanup mode lacp                                        [FAIL]
-> > > > > #       macvlan unicast address not found on a slave
-> > > > > 
-> > > > > Can you explain a bit more on the suggestion?  
-> > > > 
-> > > > Oh, I thought it's here for unregister! Feels like it'd be cleaner to
-> > > > add the flush in dev_*c_add() and friends? How hard would it be to
-> > > > identify the callers in atomic context?  
-> > > 
-> > > Not sure we can do it in dev_xc_add because it runs under rtnl :-(
-> > > I currently do flush in netdev_run_todo because that's the place that
-> > > doesn't hold rtnl. Otherwise flush will get stuck because the work
-> > > handler grabs it...
-> > 
-> > I was thinking of something a'la linkwatch. We can "steal" / "flush"
-> > the pending work inline. I guess linkwatch is a major source of races
-> > over the years...
-> >
-> > Does the macvlan + team problem still happens with the current
-> > implementation minus the flush? We are only flushing once so only
-> > pushing the addresses thru one layer of async callbacks.
+On 25/03/2026 18:15, Dmitry Baryshkov wrote:
+> On Wed, Mar 25, 2026 at 05:41:13PM +0100, David Heidelberg via B4 Relay wrote:
+>> From: Amit Pundir <amit.pundir@linaro.org>
+>>
+>> There are firmware versions which do not support host capability QMI
+>> request. We suspect either the host cap is not implemented or there may
+>> be firmware specific issues, but apparently there seem to be a generation
+>> of firmware that has this particular behavior.
 > 
-> Yes, it does happen consistently when I remove the flush. It also
-> happens with my internal v4, so I need to look again at what's going on.
-> Not sure whether it's my internal regression or I was just sloppy/lucky
-> (since you're correct in pointing out that we flush only once).
+> It needs to be explicit that this happens _before_ firmware-N.bin and
+> board-M.bin loading. As such, you can't add a quirk to the firmware.bin
+> (a standard way to handle firmware issues).
 
-Hmm, the test does 'team -d' in the background. That's why it works for
-bonding, but not the teaming. I'll update the test to a bunch of
-'ip' commands instead of starting a daemon..
+Ok, let me send with updated desc :)
 
-> Before I went down the workqueue route, I had a simple
-> net_todo_list-like approach: `list_add_tail` on enqueue and
-> `while(!list_empty) run_work()` on rtnl_unlock. This had a nice properly of
-> tracking re-submissions (by checking whether the device's list_head is
-> linked into the list or not) and it was relatively easy to do the
-> recursive flush. Let me try get back to this approach and see whether
-> it solves the flush? Not sure what wq buys us at this point.
+> 
+>> For example, firmware build on Xiaomi Poco F1 (sdm845) phone:
+>> "QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1"
+>>
+>> If we do not skip the host cap QMI request on Poco F1, then we get a
+>> QMI_ERR_MALFORMED_MSG_V01 error message before loading the firmware in the
+>> ath10k_qmi_host_cap_send_sync(). This error message is not fatal to the
+>> firmware nor to the ath10k driver and we can still bring up the WiFi
+>> services successfully if we just ignore it.
+>>
+>> Hence introducing this device-tree quirk to skip host capability
+>> QMI request for the devices with firmware versions which do not support
+>> this feature.
+>>
+>> Suggested-by: Bjorn Andersson <andersson@kernel.org>
+>> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> 
+> You are sending the patch, but it misses your SoB.
 
-Will still look into that, maybe something similar to the linkwatch as
-you mentioned.
+Oh, sorry bout that.
+
+checkpatch.pl could spot this kind of an issue :P
+
+David>
+>> ---
+>>   drivers/net/wireless/ath/ath10k/qmi.c  | 13 ++++++++++---
+>>   drivers/net/wireless/ath/ath10k/snoc.c |  3 +++
+>>   drivers/net/wireless/ath/ath10k/snoc.h |  1 +
+>>   3 files changed, 14 insertions(+), 3 deletions(-)
+> 
+
+-- 
+David Heidelberg
+
 
