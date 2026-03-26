@@ -1,200 +1,187 @@
-Return-Path: <linux-wireless+bounces-33936-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33939-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aHyLA+wAxWkz5gQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33936-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:48:28 +0100
+	id kJN7BkcJxWnn5gQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33939-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:24:07 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D303329DC
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:48:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B454133341B
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:24:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F27413013495
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 09:41:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 28481311EB0A
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F7834E763;
-	Thu, 26 Mar 2026 09:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BD73CA4B5;
+	Thu, 26 Mar 2026 10:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TVBHmtAd"
+	dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b="ItYBcwZi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from courrier.aliel.fr (pouet.aliel.fr [65.21.61.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6118C34CFC3
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 09:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF05E3D3013;
+	Thu, 26 Mar 2026 10:01:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.61.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774518104; cv=none; b=H+tc1J3NXoRS7tr/Bq2XHaQTBTd74LPkz30p5Q3CtGxoeK2gtToJOQAoevWQd2i9cPBC3tzJpx0qSAgSXgepfWMVMLQJEnCmoWhDSXha/grAxYEmgGrlZwrhhLRTiT8XGhGqAPtP7Uvit+Qn1wIH+BghvIOxx5OzhbHiiw2EA68=
+	t=1774519320; cv=none; b=RYD9/DIOf/P3zEXHmydHcGtIr1hNHOPw8wee8iRTi4/XUx5DWFSJG+goVq8d9ZKjPOleIXL+FqRQ/+osDTWFfMLDMPsk7n+WziBXfpfgI8MVWHAGRhFj/0//MMwXUW5S+dqxb+6SU6TfiDqaXRaOB6mmherkjAGEJOI8A1/saS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774518104; c=relaxed/simple;
-	bh=Zx9y8XwTtPeFEXKPIT3f8JrBeN6tj267+ZQZMnclteE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HpLNnyYvQeLUKMwWdGola5uA6XBTdXMQsVOZEIVTy0lfcQ7lj2PkPJuQ/X2xCUC9r2jKHEXfxtPIaKw7ed1DT7SEgJgOij+sLm3fiGOv82RUs6JWfzJ0dNX1p2iqkmQWeW4gxQwnEWEr7DurTmjBfpAccM9KuWI/a/XpZxL0Wes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TVBHmtAd; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774518103; x=1806054103;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Zx9y8XwTtPeFEXKPIT3f8JrBeN6tj267+ZQZMnclteE=;
-  b=TVBHmtAds9C22np8c41ymHY6Wtk+NSXwqfCkU57Wa+zKbqpklCrMvmoF
-   3TbCZ5YcXGJ5IazJYgtIIKYEhDfvg3mwywjdURpOuUTJf8qP8BfqdPbs5
-   0FGE1n/oGeMH4aYW9P35fzfdc5U3BRC8jaWCEip9DO/TgIMaKX5qbg6+R
-   XVmLjddNcdjGP823XqxU3X53Ny3TpaMa2HSCBvxwvE61yUKyOIodhyyf7
-   SrLqWVVNyTRBBpVbdARP08v7PbzRn9qOGG4binpCZf6wTarKxGgvyBuOF
-   pPUO4twSELxyFSixjZGyx4NGza6+nETkMi0ILG2M7BK5mIVFfgT9sEL16
-   g==;
-X-CSE-ConnectionGUID: xErAxMeNSE6b9R72RuD7tg==
-X-CSE-MsgGUID: tjF2/dsNQRaBOrrXaXxPMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86944987"
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="86944987"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 02:41:42 -0700
-X-CSE-ConnectionGUID: PnX7rrChQfmeorTq4tdqhA==
-X-CSE-MsgGUID: 36RD2GkkTtODpsI2dGSYyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="262870300"
-Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
-  by orviesa001.jf.intel.com with ESMTP; 26 Mar 2026 02:41:41 -0700
-Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w5hDd-000000007Fd-33uV;
-	Thu, 26 Mar 2026 09:41:37 +0000
-Date: Thu, 26 Mar 2026 10:41:10 +0100
-From: kernel test robot <lkp@intel.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [PATCH rtw-next] wifi: rtw89: Fill fw_version member of struct
- wiphy
-Message-ID: <202603261021.wmsdP9pa-lkp@intel.com>
-References: <60bdb2f8-d5dd-46a3-8679-5b4a5fd0604b@gmail.com>
+	s=arc-20240116; t=1774519320; c=relaxed/simple;
+	bh=YrKt0Ww3CgM+qr6VBXPFTJI/TUiGPe735lMX0b/L28k=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Yul6dZbEObt4CEBPKELkETdByjQmDII+uOMwVt7m20toutWmvYV49CUaulj3RPk4W+/p2ossHCmjt4wNA4X3HbgMcIJrhHIcKjCpwxqx/O/AuSOD8gZpFaRnKk6NhsDLOrFYkKtpyWdhYGxb+siIsGtJ8JjpXZtjQwoBYh1w8P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr; spf=pass smtp.mailfrom=aliel.fr; dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b=ItYBcwZi; arc=none smtp.client-ip=65.21.61.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliel.fr
+From: Ronald Claveau <linux-kernel-dev@aliel.fr>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aliel.fr;
+	s=courrier-s1; t=1774519314;
+	bh=YrKt0Ww3CgM+qr6VBXPFTJI/TUiGPe735lMX0b/L28k=;
+	h=From:Subject:Date:To:Cc;
+	b=ItYBcwZivHMGiCGLcWmoy0XvR7D54lAMd808KbEAoOR44pqsXyBCXYGz0TxzyJ1er
+	 hv6Kem6meJiUYVyUW4i0oFEXVVs8MUr+tCzJZyB/KTJl3hdUqvMPjAv5FBdwJuLE7i
+	 MBdu9mHNPRGgkThVCkMg1WSSIg3d784zWkOT+NSQ=
+Subject: [PATCH v5 0/9] arm64: dts: amlogic: Add MMC/SD/SDIO support for
+ Khadas VIM4 (Amlogic T7)
+Date: Thu, 26 Mar 2026 10:59:11 +0100
+Message-Id: <20260326-add-emmc-t7-vim4-v5-0-d3f182b48e9d@aliel.fr>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <60bdb2f8-d5dd-46a3-8679-5b4a5fd0604b@gmail.com>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6WQ3WqEMBBGX0Vy3ZH86kZK2fcovcjquKZrYpuoW
+ BbfvVktdGl715uBb8I5H5MriRgsRlJlVxJwttEOPgX1kJG6M/6MYJuUCae8oIJTME0D6FwNYwm
+ zdRIK07ACtSyYbEnC3gK2dtmUzy97Dvg+JfO4L4nDGM1mrrLHXcwELSnlPE9TihIYvFrj8246G
+ tcPZ1vn9eCebvqTiQgpODtWmcdlhC+DJre2zsZxCB/bPTPb6rZ3zg6MspLqXCipaCrorZ8WuGD
+ w2EOD89H0Fvu8DZtn5v9gxTcruPj9ZbMACoop3Whq9EHWP3h5z6s/eJl4KevyJI1CqfQdv67rJ
+ x8mKU/VAQAA
+X-Change-ID: 20260320-add-emmc-t7-vim4-6ad16e94614f
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+ Johannes Berg <johannes@sipsolutions.net>, van Spriel <arend@broadcom.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ Ronald Claveau <linux-kernel-dev@aliel.fr>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Xianwei Zhao <xianwei.zhao@amlogic.com>, Nick Xie <nick@khadas.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openssh-sha256; t=1774519311; l=3343;
+ i=linux-kernel-dev@aliel.fr; s=id_ed25519; h=from:subject:message-id;
+ bh=YrKt0Ww3CgM+qr6VBXPFTJI/TUiGPe735lMX0b/L28k=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgMGec55oxeeisqykQiUedekMYyOnR9
+ BG9E/7rDWyqdNoAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QIHRXjWTzrMh5ahGI4R/IpDrnH6+QXhObnxkTH8FTvGDua87mdIW3Kn2PADGdEJ8fTRpOFFNaXK
+ uzvWV+G6OPQk=
+X-Developer-Key: i=linux-kernel-dev@aliel.fr; a=openssh;
+ fpr=SHA256:kch4osYZ6A1BrPps5AUs6KnfdE2wm4ocMtyTc8TmZMs
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[aliel.fr:s=courrier-s1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33936-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[linaro.org,baylibre.com,googlemail.com,kernel.org,sipsolutions.net,broadcom.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DMARC_NA(0.00)[aliel.fr];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-33939-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FROM_NEQ_ENVFROM(0.00)[linux-kernel-dev@aliel.fr,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[aliel.fr:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,intel.com:mid,01.org:url,git-scm.com:url]
-X-Rspamd-Queue-Id: 37D303329DC
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amlogic.com:email,aliel.fr:dkim,aliel.fr:email,aliel.fr:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B454133341B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Bitterblue,
+This patch series depends on Jian's SCMI clock patches yet to merge
+https://lore.kernel.org/all/20260313070022.700437-1-jian.hu@amlogic.com/
 
-kernel test robot noticed the following build errors:
+This series adds device tree support for the MMC, SD card and SDIO
+interfaces on the Amlogic T7 SoC and the Khadas VIM4 board.
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main linus/master v7.0-rc5 next-20260325]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The first patches add the necessary building blocks in the T7 SoC
+DTSI: pinctrl nodes for pin muxing, PWM controller nodes, and MMC
+controller nodes. The amlogic,t7-mmc and amlogic,t7-pwm compatible
+strings are introduced with fallbacks to existing drivers, avoiding
+the need for new driver code.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Bitterblue-Smith/wifi-rtw89-Fill-fw_version-member-of-struct-wiphy/20260326-082721
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/60bdb2f8-d5dd-46a3-8679-5b4a5fd0604b%40gmail.com
-patch subject: [PATCH rtw-next] wifi: rtw89: Fill fw_version member of struct wiphy
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260326/202603261021.wmsdP9pa-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260326/202603261021.wmsdP9pa-lkp@intel.com/reproduce)
+The remaining patches enable these interfaces on the Khadas VIM4
+board, including the power regulators, the SDIO power sequence and
+32.768kHz PWM clock required by the BCM43752 Wi-Fi module, and the
+board-specific MMC controller configurations.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603261021.wmsdP9pa-lkp@intel.com/
+Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
+---
+Changes in v5:
+- Add missing trailers according to Rob's feedback.
+- Change mux-0 to mux in pinctrl nodes for single mux. Neil's feedback.
+- Move disabled status at the end of node properties. Neil's feedback.
+- Restore space instead of tab in VIM4 DTS file according to Neil's feedback.
+- Link to v4: https://lore.kernel.org/r/20260325-add-emmc-t7-vim4-v4-0-44c7b4a5e459@aliel.fr
 
-All errors (new ones prefixed by >>):
+Changes in v4:
+- Address potential DT binding API break from Xianwei's feedback.
+- Change underscore to dash in pinctrl nodes names from Xianwei's feedback.
+- Link to v3: https://lore.kernel.org/r/20260323-add-emmc-t7-vim4-v3-0-5159d90a984c@aliel.fr
 
-   drivers/net/wireless/realtek/rtw89/fw.c: In function 'rtw89_fw_update_ver':
->> drivers/net/wireless/realtek/rtw89/fw.c:759:21: error: 'RTW89_FW_NORMAL_B' undeclared (first use in this function); did you mean 'RTW89_FW_NORMAL_CE'?
-     759 |             type == RTW89_FW_NORMAL_B)
-         |                     ^~~~~~~~~~~~~~~~~
-         |                     RTW89_FW_NORMAL_CE
-   drivers/net/wireless/realtek/rtw89/fw.c:759:21: note: each undeclared identifier is reported only once for each function it appears in
+Changes in v3:
+- Remove all changes about fixed pll clock from analog controller.
+- Use clocks retrieved through SCMI.
+- Add other MMC controllers
+- Manage Wi-Fi module enablement. 
+- Link to v2: https://lore.kernel.org/r/20260218101709.35450-1-linux-kernel-dev@aliel.fr
 
+Changes in v2:
+- Resend v1 patches as attached to the first patch.
+- Link to v1: https://lore.kernel.org/r/20260218101709.35450-1-linux-kernel-dev@aliel.fr
 
-vim +759 drivers/net/wireless/realtek/rtw89/fw.c
+---
+Ronald Claveau (9):
+      arm64: dts: amlogic: t7: Add eMMC, SD card and SDIO pinctrl nodes
+      dt-bindings: mmc: amlogic: Add compatible for T7 mmc
+      arm64: dts: amlogic: t7: Add MMC controller nodes
+      arm64: dts: amlogic: t7: Add PWM pinctrl nodes
+      arm64: dts: amlogic: t7: Add PWM controller nodes
+      arm64: dts: amlogic: t7: khadas-vim4: Add power regulators
+      arm64: dts: amlogic: t7: khadas-vim4: Add SDIO power sequence and WiFi clock
+      dt-bindings: net: wireless: brcm: Add compatible for bcm43752
+      arm64: dts: amlogic: t7: khadas-vim4: Add MMC nodes
 
-   726	
-   727	static int rtw89_fw_update_ver(struct rtw89_dev *rtwdev,
-   728				       enum rtw89_fw_type type,
-   729				       struct rtw89_fw_suit *fw_suit)
-   730	{
-   731		const struct rtw89_fw_hdr *v0 = (const struct rtw89_fw_hdr *)fw_suit->data;
-   732		const struct rtw89_fw_hdr_v1 *v1 = (const struct rtw89_fw_hdr_v1 *)fw_suit->data;
-   733	
-   734		if (type == RTW89_FW_LOGFMT)
-   735			return 0;
-   736	
-   737		fw_suit->type = type;
-   738		fw_suit->hdr_ver = le32_get_bits(v0->w3, FW_HDR_W3_HDR_VER);
-   739	
-   740		switch (fw_suit->hdr_ver) {
-   741		case 0:
-   742			rtw89_fw_update_ver_v0(rtwdev, fw_suit, v0);
-   743			break;
-   744		case 1:
-   745			rtw89_fw_update_ver_v1(rtwdev, fw_suit, v1);
-   746			break;
-   747		default:
-   748			rtw89_err(rtwdev, "Unknown firmware header version %u\n",
-   749				  fw_suit->hdr_ver);
-   750			return -ENOENT;
-   751		}
-   752	
-   753		rtw89_info(rtwdev,
-   754			   "Firmware version %u.%u.%u.%u (%08x), cmd version %u, type %u\n",
-   755			   fw_suit->major_ver, fw_suit->minor_ver, fw_suit->sub_ver,
-   756			   fw_suit->sub_idex, fw_suit->commitid, fw_suit->cmd_ver, type);
-   757	
-   758		if (type == RTW89_FW_NORMAL || type == RTW89_FW_NORMAL_CE ||
- > 759		    type == RTW89_FW_NORMAL_B)
-   760			snprintf(rtwdev->hw->wiphy->fw_version,
-   761				 sizeof(rtwdev->hw->wiphy->fw_version),
-   762				 "%u.%u.%u.%u",
-   763				 fw_suit->major_ver, fw_suit->minor_ver,
-   764				 fw_suit->sub_ver, fw_suit->sub_idex);
-   765	
-   766		return 0;
-   767	}
-   768	
+ .../bindings/mmc/amlogic,meson-gx-mmc.yaml         |   4 +
+ .../bindings/net/wireless/brcm,bcm4329-fmac.yaml   |   1 +
+ .../dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts  | 200 ++++++++++++
+ arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi        | 336 +++++++++++++++++++++
+ 4 files changed, 541 insertions(+)
+---
+base-commit: f6eb9ae8b9fc13c3971e4a6d1e8442f253001f36
+change-id: 20260320-add-emmc-t7-vim4-6ad16e94614f
+prerequisite-message-id: <20260313070022.700437-1-jian.hu@amlogic.com>
+prerequisite-patch-id: f03a086b4137158412b2d47b3de793b858de8dde
+prerequisite-patch-id: 123970c9b29c2090440f2fd71c85d3c6fd8e36de
+prerequisite-patch-id: 3e2e56b0926ba327b520f935df4ced5089bbe503
 
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Ronald Claveau <linux-kernel-dev@aliel.fr>
+
 
