@@ -1,230 +1,175 @@
-Return-Path: <linux-wireless+bounces-33946-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33947-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCQbAZAJxWnn5gQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33946-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:25:20 +0100
+	id 2CyrBIIMxWkI6AQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33947-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:37:54 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CD9333475
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:25:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA513338AA
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:37:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 78A9531F53E9
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:06:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF166308F3F0
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78113EBF09;
-	Thu, 26 Mar 2026 10:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6310134DB78;
+	Thu, 26 Mar 2026 10:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b="b7LdDrWD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eL2RghMv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from courrier.aliel.fr (pouet.aliel.fr [65.21.61.41])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0903E7158;
-	Thu, 26 Mar 2026 10:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.61.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144C438736E
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 10:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774519325; cv=none; b=E9dOhfrwTiu+5uP56tpEvG0zrYnV9Q4nkLkBg5SqssjkmFVqFrsKa188R7tzoYYlaLT6YkqsNCapiAuv0yX7mrAE3ODnirjvmDdct1/RjpXY34/2FZmiSBOhYgOqXNaUsNX8Ji/iFX4kOznwkohAT9iAyYNTcRgd4Gn6b+/lXUU=
+	t=1774520103; cv=none; b=Dk8qZOMrJGsZFjArNCxHaGanYi00kWeysj26eLrI4y1eBByRmlvIRnNBM6RnmbARwreBg9r7eMhcJ5gantwRIhj83h39eUhKPs8mDZL1UsPYOE94nRZD9l4UhUjgn4Lwn7uRdxN4oz2I7lbbGKiqCPkAKHXrQ9zp907TsQzfJOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774519325; c=relaxed/simple;
-	bh=SN3GcE+7DDqwPEJFK+/S2nmtpKZI7ca2JpiaH3/MPVc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=El8ZK50cDYLRXT/bzdjz2QSWcCpSf6kDGxjbatIF2NrhPGSqsv3bt4BpVEpWS2CIOH4dsuSGcezNNIrCibaHBd8rZNRljeh33wKDIGlw8YJwaqdB5fOHElACTpBZkH+n5nDVLjPFuzN4Dvjc5rLIs7d+HtmD2IeG5qW6/NK3qxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr; spf=pass smtp.mailfrom=aliel.fr; dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b=b7LdDrWD; arc=none smtp.client-ip=65.21.61.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliel.fr
-From: Ronald Claveau <linux-kernel-dev@aliel.fr>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aliel.fr;
-	s=courrier-s1; t=1774519322;
-	bh=SN3GcE+7DDqwPEJFK+/S2nmtpKZI7ca2JpiaH3/MPVc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=b7LdDrWDyx3sV7ysP86zr31s+Lae8ND39IOosLxANVvreWUc88tWAvBORI0QyaRU2
-	 X28awifUf9K4zQZtgHtIwhZwESD5RhNnmWOQuMLjN0yjm57t1uSMqdAD8pbuglerwP
-	 aHG1iywn7Bg6Ew7SKExSsAQoFtdF9wzi99XWawSU=
-Date: Thu, 26 Mar 2026 10:59:20 +0100
-Subject: [PATCH v5 9/9] arm64: dts: amlogic: t7: khadas-vim4: Add MMC nodes
+	s=arc-20240116; t=1774520103; c=relaxed/simple;
+	bh=QDXbIh97eyXOBDhHFGlgocCzokaCx+brsIUF7TsqSCs=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=KbhR0z2RR7/3HO+Aiv2C9DbAHIqAx0feGkp/WGLhWZOeMv4VO2CX5MOgTZcqIHbF8K5xeB95ImddBcqcMaN5zaE+d57RplO4g/MGXeBRzpAl4/rglb2KHSjD55kkYeLBjTLfEPngu9+LkysYsD50TaVnyTlKZo9O4nZVflzI4jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eL2RghMv; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774520102; x=1806056102;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=QDXbIh97eyXOBDhHFGlgocCzokaCx+brsIUF7TsqSCs=;
+  b=eL2RghMvTDDO9Fl7047+em1IZGq3861udALFWeZdGp7RgQuqqneXqfyQ
+   HnqtYFjXG6GzbXAVVn+H2/UrHEsdk8me4DCQVjPkJvYX9KYjPSttwc+Yj
+   06kzxj7gT5+IPInR8A2KjOCiHZQPg66elBIXB4IWcUcSF0MvqI/iyfpyA
+   thKUXswfSHNDz6b+kyR62VxqVlOdwAIfSMD9Ib2Y5SUUyz3OC964hcW64
+   qnynPeRsjk9dz42cEWcoDW/b5ss1LVM6/ZwYcLwcsXS8i8DaO/bwo6F83
+   YXr3AWc16FHre2lYPtYEYwd2n3ZIj6xh/XdbA9cRbLLi9FpZEUfHhEFAH
+   w==;
+X-CSE-ConnectionGUID: CPBpV3GJSNG3mj65H5A64g==
+X-CSE-MsgGUID: yckL2iCVRjm1Kb8k/zJLmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="87048548"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="87048548"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 03:15:02 -0700
+X-CSE-ConnectionGUID: 23xKvHtTRUSnH69i4w8Odg==
+X-CSE-MsgGUID: Xj3ccRT1QHa7LA4Y4pkD7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="221653039"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 03:15:00 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH v2 wireless-next 00/15] wifi: mac80211: add NAN support
+Date: Thu, 26 Mar 2026 12:14:30 +0200
+Message-Id: <20260326101445.1443198-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260326-add-emmc-t7-vim4-v5-9-d3f182b48e9d@aliel.fr>
-References: <20260326-add-emmc-t7-vim4-v5-0-d3f182b48e9d@aliel.fr>
-In-Reply-To: <20260326-add-emmc-t7-vim4-v5-0-d3f182b48e9d@aliel.fr>
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
- Johannes Berg <johannes@sipsolutions.net>, van Spriel <arend@broadcom.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org, 
- Ronald Claveau <linux-kernel-dev@aliel.fr>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openssh-sha256; t=1774519313; l=2772;
- i=linux-kernel-dev@aliel.fr; s=id_ed25519; h=from:subject:message-id;
- bh=SN3GcE+7DDqwPEJFK+/S2nmtpKZI7ca2JpiaH3/MPVc=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgMGec55oxeeisqykQiUedekMYyOnR9
- BG9E/7rDWyqdNoAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QJIX22fPeHgunMEWRlgpEd9pdcy2wktjVrQCxvP0exgrJ7aGyj0z6OP8zhC/6IS6fn0k1HmyPGt
- iO9SRy0vMrgk=
-X-Developer-Key: i=linux-kernel-dev@aliel.fr; a=openssh;
- fpr=SHA256:kch4osYZ6A1BrPps5AUs6KnfdE2wm4ocMtyTc8TmZMs
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[aliel.fr:s=courrier-s1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-33947-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[linaro.org,baylibre.com,googlemail.com,kernel.org,sipsolutions.net,broadcom.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[aliel.fr];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33946-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux-kernel-dev@aliel.fr,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[aliel.fr:+];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,0.0.0.0:email,aliel.fr:dkim,aliel.fr:email,aliel.fr:mid,0.0.0.1:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 54CD9333475
+	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_ONE(0.00)[1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:mid]
+X-Rspamd-Queue-Id: 5CA513338AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Enable and configure the three MMC controllers for the Khadas VIM4 board:
-- sd_emmc_a: SDIO interface for the BCM43752 Wi-Fi module
-- sd_emmc_b: SD card slot
-- sd_emmc_c: eMMC storage
+Hi,
+This is the first series of patches for adding support for NAN in
+mac80211.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
+It contains (mainly):
+- support NAN local and peer schedules
+- basic support for NAN DATA interface
+- support NAN stations
+- support configuring keys on NAN interfcase
+- support Tx/Rx over NAN DATA
+
+Thanks,
+Miri
 ---
- .../dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts  | 88 ++++++++++++++++++++++
- 1 file changed, 88 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-index 770f06b0b16c7..78d02370553cd 100644
---- a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-+++ b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-@@ -15,6 +15,9 @@ / {
- 
- 	aliases {
- 		serial0 = &uart_a;
-+		mmc0 = &sd_emmc_c;
-+		mmc1 = &sd_emmc_b;
-+		mmc2 = &sd_emmc_a;
- 	};
- 
- 	memory@0 {
-@@ -159,6 +162,91 @@ &pwm_ab {
- 	pinctrl-names = "default";
- };
- 
-+/* SDIO */
-+&sd_emmc_a {
-+	status = "okay";
-+	pinctrl-0 = <&sdio_pins>;
-+	pinctrl-1 = <&sdio_clk_gate_pins>;
-+	pinctrl-names = "default", "clk-gate";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	bus-width = <4>;
-+	cap-sd-highspeed;
-+	sd-uhs-sdr12;
-+	sd-uhs-sdr25;
-+	sd-uhs-sdr50;
-+	sd-uhs-sdr104;
-+	cap-sdio-irq;
-+	max-frequency = <200000000>;
-+	non-removable;
-+	disable-wp;
-+	no-mmc;
-+	no-sd;
-+
-+	power-domains = <&pwrc PWRC_T7_SDIO_A_ID>;
-+
-+	keep-power-in-suspend;
-+
-+	mmc-pwrseq = <&sdio_pwrseq>;
-+
-+	vmmc-supply = <&vddao_3v3>;
-+	vqmmc-supply = <&vddao_1v8>;
-+
-+	brcmf: wifi@1 {
-+		reg = <1>;
-+		compatible = "brcm,bcm43752-fmac", "brcm,bcm4329-fmac";
-+	};
-+};
-+
-+/* SD card */
-+&sd_emmc_b {
-+	status = "okay";
-+	pinctrl-0 = <&sdcard_pins>;
-+	pinctrl-1 = <&sdcard_clk_gate_pins>;
-+	pinctrl-names = "default", "clk-gate";
-+
-+	bus-width = <4>;
-+	cap-sd-highspeed;
-+	sd-uhs-sdr12;
-+	sd-uhs-sdr25;
-+	sd-uhs-sdr50;
-+	sd-uhs-sdr104;
-+	max-frequency = <200000000>;
-+	disable-wp;
-+	no-sdio;
-+	no-mmc;
-+
-+	power-domains = <&pwrc PWRC_T7_SDIO_B_ID>;
-+
-+	cd-gpios = <&gpio GPIOC_6 GPIO_ACTIVE_LOW>;
-+	vmmc-supply = <&sd_3v3>;
-+	vqmmc-supply = <&vddio_c>;
-+};
-+
-+/* eMMC */
-+&sd_emmc_c {
-+	status = "okay";
-+	pinctrl-0 = <&emmc_ctrl_pins>, <&emmc_data_8b_pins>, <&emmc_ds_pins>;
-+	pinctrl-1 = <&emmc_clk_gate_pins>;
-+	pinctrl-names = "default", "clk-gate";
-+
-+	bus-width = <8>;
-+	cap-mmc-highspeed;
-+	mmc-ddr-1_8v;
-+	mmc-hs200-1_8v;
-+	max-frequency = <200000000>;
-+	disable-wp;
-+	non-removable;
-+	no-sdio;
-+	no-sd;
-+
-+	power-domains = <&pwrc PWRC_T7_EMMC_ID>;
-+
-+	vmmc-supply = <&vddio_3v3>;
-+	vqmmc-supply = <&vddio_1v8>;
-+};
-+
- &uart_a {
- 	status = "okay";
- 	clocks = <&xtal>, <&xtal>, <&xtal>;
+Avraham Stern (1):
+  wifi: mac80211: allow add_key on NAN interfaces
 
+Benjamin Berg (3):
+  wifi: mac80211: add a TXQ for management frames on NAN devices
+  wifi: ieee80211: add more NAN definitions
+  wifi: mac80211: export ieee80211_calculate_rx_timestamp
+
+Miri Korenblit (11):
+  wifi: mac80211: run NAN DE code only when appropriate
+  wifi: mac80211: add NAN local schedule support
+  wifi: mac80211: support open and close for NAN_DATA interfaces
+  wifi: mac80211: handle reconfig for NAN DATA interfaces
+  wifi: mac80211: support NAN stations
+  wifi: mac80211: add NAN peer schedule support
+  wifi: mac80211: update NAN data path state on schedule changes
+  wifi: mac80211: add support for TX over NAN_DATA interfaces
+  wifi: mac80211: Accept frames on NAN DATA interfaces
+  wifi: mac80211: allow block ack agreements in NAN Data
+  wifi: mac80211: report and drop spurious NAN Data frames
+
+ include/linux/ieee80211-nan.h |  37 ++
+ include/linux/ieee80211.h     |   1 +
+ include/net/mac80211.h        | 157 +++++++-
+ net/mac80211/Makefile         |   2 +-
+ net/mac80211/agg-tx.c         |   3 +-
+ net/mac80211/cfg.c            | 195 ++++++++--
+ net/mac80211/chan.c           | 132 +++++--
+ net/mac80211/driver-ops.h     |  21 +
+ net/mac80211/he.c             |   7 +-
+ net/mac80211/ht.c             |  19 +-
+ net/mac80211/ibss.c           |   2 +-
+ net/mac80211/ieee80211_i.h    |  52 ++-
+ net/mac80211/iface.c          | 104 ++++-
+ net/mac80211/main.c           |   4 +-
+ net/mac80211/mesh_sync.c      |   2 +-
+ net/mac80211/nan.c            | 710 ++++++++++++++++++++++++++++++++++
+ net/mac80211/rx.c             |  61 ++-
+ net/mac80211/scan.c           |   2 +-
+ net/mac80211/sta_info.c       |  29 +-
+ net/mac80211/sta_info.h       |   3 +-
+ net/mac80211/trace.h          |  31 ++
+ net/mac80211/tx.c             |  52 ++-
+ net/mac80211/util.c           | 146 +++++--
+ net/mac80211/vht.c            |  16 +-
+ 24 files changed, 1641 insertions(+), 147 deletions(-)
+ create mode 100644 net/mac80211/nan.c
+---
+v2: fix s-o-b
 -- 
-2.49.0
+2.34.1
 
 
