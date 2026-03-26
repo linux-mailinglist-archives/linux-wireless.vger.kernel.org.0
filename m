@@ -1,169 +1,129 @@
-Return-Path: <linux-wireless+bounces-33907-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33908-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCvbMdZ9xGmTzgQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33907-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 01:29:10 +0100
+	id yA9tI5d9xGmTzgQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33908-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 01:28:07 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E1832DA68
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 01:29:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC3E732DA44
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 01:28:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C8B8303B2F5
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 00:22:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74E533032F64
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 00:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E97723EA88;
-	Thu, 26 Mar 2026 00:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42A0221FB6;
+	Thu, 26 Mar 2026 00:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b="FfGJaiGR";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AMCjAfot"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="QQLqKryV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883B823C51D;
-	Thu, 26 Mar 2026 00:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09D9217662
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 00:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774484567; cv=none; b=nzEtvbmB5NqDPhxgA0MrDINfHmQg610um5XgA+2ibPw9v5VYq44yv/CodNVMgmKPBswK6mEMmYm2jc0bTgpSKSxrsQZnVzGe5kC+OKMoVPT3jntXMw/RJNOdJV7OQybapP7xHSDQLdU3PKAyhJvRhYz3Q7JxMg7DZq+BMq0tp+s=
+	t=1774484637; cv=none; b=piUA+BtbE3+bbrlF/uTtjklLgCyhjMI4UYx6qlf431v7emVaSWLnimUDFSAo0uJbj3FObfkEngOURjRQN7ktN58F6aqjGB/UoYiXpDe5g6TxaSYLmjMFL4+QR28CTbpVPULT1/PlFQZUIM5PzNdpQ1SHvSQ4ZjkQjewoNfcmH8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774484567; c=relaxed/simple;
-	bh=KoGksBrhgEtRDSfM/YDFfZUq76xOqjELkeavOboi/IU=;
-	h=Content-Type:MIME-Version:From:To:Date:Subject:Cc:In-Reply-To:
-	 References:Message-Id; b=Ho7rSybZfGdL19af+VOjbyM9CGi67JuFQRpeMbNy0mRO1CS9T8TKgvgkCVujwQ7PjLsVw5EwUqwH9ZsaE3sRpsMWOitnrSosWJixNWCrz8KoN0tNwY3t5iULsVDROJ47JAR8sz6aAWoc5GWtau9sipAFwBAPFk1pcSrDwJeyplU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me; spf=pass smtp.mailfrom=jetm.me; dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b=FfGJaiGR; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AMCjAfot; arc=none smtp.client-ip=103.168.172.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jetm.me
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id 1EE311380743;
-	Wed, 25 Mar 2026 20:22:43 -0400 (EDT)
-Received: from phl-imap-07 ([10.202.2.97])
-  by phl-compute-02.internal (MEProxy); Wed, 25 Mar 2026 20:22:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jetm.me; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1774484563;
-	 x=1774491763; bh=KoGksBrhgEtRDSfM/YDFfZUq76xOqjELkeavOboi/IU=; b=
-	FfGJaiGR8wwkUXmw0OxoZpapCVyITNP9jQy8V6NXs0B+Ph/EboZ2CHMbTVSeupkj
-	JBD0zhKFeLS3L8CW8USOd442u1gW4WT1y9mQbnYGuun3qhtkeSv0HTFgcexsIOgZ
-	DKM26Re1KjHSTDGIlM+h0WJlhs+6rzihgMk0Vmx/h6GyzimOsPkL2rmPlw2agXHH
-	R3M7xQBFAIHcDdxKbyLWVKOM10V7AR6FC1cS2z3WipPG7/8omenaCkD8IyqJVC8i
-	uieLb8upy0xI0GAU8XQBD2js3xklu2zPADpLfKLaFndXrs0M5tD+Xt51R/k+YLuy
-	8CHf8wsChVIfAwZPnRHNdQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774484563; x=
-	1774491763; bh=KoGksBrhgEtRDSfM/YDFfZUq76xOqjELkeavOboi/IU=; b=A
-	MCjAfotSWOW3C9NV4AeCNzy4JHkSliVuTt0hUDrEPtKEGOshqyW4BvD6IQTIXirQ
-	LTEe5edkZKe2JTOuo4MyQNiKv6ux/nahS3w0TKY6ATJzzq1eW3uNq50fUwdnEfuP
-	eKXfHbE6JAWIHVz6C1pi/yHEHfkGPbX/GhrmRaiB95nmMkf0R/DQubxxJRzXiFxS
-	66IPRzG+AX6DvMqqueeu7MbAi3repjTeColUxTWnJThzbOs4HSh1DmGPX+6FquSO
-	uIQ2mf+QD15/nqo5uKEbU4z/oBdGdJh+hXMYIwq8BYcbVJ9RcXYopdGqXymK6raM
-	OlbV4/XUk5khh1MSZc7CQ==
-X-ME-Sender: <xms:UnzEac2LXinKBmeR3d0Q11WE2DDpQWKzJXO4ycyPck9LqLIS4IyPcA>
-    <xme:UnzEaR6IZhGtIDeTOb3SAV7MGqaAp0Mo6JVoZm1d5LvTrvWBoY-60PvQzlbQWMjUa
-    nocXa8ZOJGFtWGeDcbQNICZHxVD39rHIOe6tWbSJgvBuS5gSC9nxw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdehledtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegopf
-    hokfffucdluddtmdenucfjughrpefotggggffhvfffufevjghfsehtkedttdertdejnecu
-    hfhrohhmpeflrghvihgvrhcuvfhirgcuoehflhhoshhssehjvghtmhdrmhgvqeenucggtf
-    frrghtthgvrhhnpedtudejffejkeekteelueefvdejvdeuhfefteehkeevtddvleduteek
-    leetvdelhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehflhhoshhssehjvghtmhdrmhgvpdhnsggprhgtphhtthhopedvfedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtoheprghnghgvlhhoghhiohgrtggthhhinhhordguvghlrh
-    gvghhnohestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopeefudelfeeifedusehg
-    mhgrihhlrdgtohhmpdhrtghpthhtoheplhhoohhnghdrtdigtddtsehgmhgrihhlrdgtoh
-    hmpdhrtghpthhtoheprghrihgvlhdrrhhoshgvnhhfvghlugdrjeehtdesghhmrghilhdr
-    tghomhdprhgtphhtthhopegthhgrphhuihhsuggrrhhiohegsehgmhgrihhlrdgtohhmpd
-    hrtghpthhtohepghhiohhsrghlledtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhgr
-    thhthhhirghsrdgsghhgsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhgrughoihdrtg
-    hhrhhishesghhmrghilhdrtghomhdprhgtphhtthhopehsrghmuhdrthholhhjrghmohes
-    ghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:UnzEab2oOstJnxD3dqX5RYKr-ESaHoxoRnNsZYzSCAV-UwH8WCVi5w>
-    <xmx:UnzEae-ZILLAGzzaLn06h_7AIjh4xtDuvtUWod50hjVv7GIuwi3ktQ>
-    <xmx:UnzEaZdVrqQuIE9xnoEK3CriglFgOK3tpmn3r3l-SFnbAstLTuVrKA>
-    <xmx:UnzEaS7r9qT97VdUBsaCuJhRdNTDekAHd0IKPihETnVnXsem2QDGag>
-    <xmx:U3zEaZShFSVc8IhrR0Le_l4CFEQpZQVkY_JEG6y5wJovFb4_lMPWUdbE>
-Feedback-ID: i9dde48b3:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 50D8B1EA006B; Wed, 25 Mar 2026 20:22:42 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1774484637; c=relaxed/simple;
+	bh=sHUzO0d8N3ol8v3No1BdzEBnSKWBNEncmk4+IVqOwas=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=auX4BBhg1o6m/uwNUIhV0i9GhEgH7wzhf+m5Vh5InzY4+t7LWfgHG4IG/SZBGRO1dlHQdjmNVVH8/H2zAllJwYml5+8QKlPXC/FmNOFzFbPdeaM0hnlf4EyBhujMw7ANHZ5YuqLizNA39w3T79/yeqfepbMXTQSu3nB1SCb/ECk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=QQLqKryV; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62Q0NoxG6395942, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1774484630; bh=sHUzO0d8N3ol8v3No1BdzEBnSKWBNEncmk4+IVqOwas=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=QQLqKryVITMEMJ+BNEuk5ackNtXeX1JuSFNxb/JFbgGH4dWWsr3A5NndZUZ/pyiLa
+	 qv79Xn940xehMFhdH3NFqlCNmO/Jbyuh8OmmV8AMDBWycePdLVRQbktgn+25a/L269
+	 m5Q1sB94zO9G2HtySbC1u83pJfGV7UBEObTvOnyMsHCYmfQLP4E2zdOqYLyvERwsxb
+	 fO6za5/fXPwy7gWVcPcMTODwhgRCgg0YkmD5nr3WLlI/bTZbuzLljdj2vwvGBsabRZ
+	 9pu7zxJY6gLd8YpCuookiKluHhJZBq/gBeroFYE0tQIJP3HqqMmkQugEv7bfSuFswB
+	 AtNmIHtAlOsHw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 62Q0NoxG6395942
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Mar 2026 08:23:50 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 26 Mar 2026 08:23:51 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::46e9:fab9:b2cf:c99b%10]) with mapi id
+ 15.02.1748.010; Thu, 26 Mar 2026 08:23:51 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: =?utf-8?B?SmVmZnJleSBXw6RsdGk=?= <jeffrey@waelti.dev>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: wifi: rtw89: rtw8922ae: HWSI bus lockup during RF recalibration
+ on AP bandwidth change
+Thread-Topic: wifi: rtw89: rtw8922ae: HWSI bus lockup during RF recalibration
+ on AP bandwidth change
+Thread-Index: AQHcurr3ssaqHgvFgEq3QbzjT47FFLW87FxAgAIyVoCAANiPoA==
+Date: Thu, 26 Mar 2026 00:23:50 +0000
+Message-ID: <f387614466ce497fb59d4ad98ef641f5@realtek.com>
+References: <SnJ_b28_Uro9Xtlb2ew62uypaut_7wD44Qnmibm2Yj4FgSS7cayhZvqkK8-AXGNAc-xdwYST6E2GDCMcoZh33PjukvAsXwaqMzx8Z14_aA0=@waelti.dev>
+ <8bf447cc627746cca6eb30ae283bbbe6@realtek.com>
+ <uyjP590fzro7xuECRhUp6nlegi4hnWSBbrrFd-tcCcKeeKbDaoUThi7EkMNUMC2LYibyA0jaAqR7GrIchbJcGVh5CSgiGa39jMQkLq5F9QY=@waelti.dev>
+In-Reply-To: <uyjP590fzro7xuECRhUp6nlegi4hnWSBbrrFd-tcCcKeeKbDaoUThi7EkMNUMC2LYibyA0jaAqR7GrIchbJcGVh5CSgiGa39jMQkLq5F9QY=@waelti.dev>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-From: Javier Tia <floss@jetm.me>
-To: Sean Wang <sean.wang@kernel.org>
-Date: Wed, 25 Mar 2026 18:18:45 -0600
-Subject: Re: [PATCH v2 05/13] wifi: mt76: mt7925: advertise EHT 320MHz capabilities for 6GHz band
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Deren Wu <deren.wu@mediatek.com>, Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, Marcin FM <marcin@lgic.pl>, Cristian-Florin Radoi <radoi.chris@gmail.com>, George Salukvadze <giosal90@gmail.com>, Evgeny Kapusta <3193631@gmail.com>, Samu Toljamo <samu.toljamo@gmail.com>, Ariel Rosenfeld <ariel.rosenfeld.750@gmail.com>, Chapuis Dario <chapuisdario4@gmail.com>, =?utf-8?q?Thibaut_Fran=C3=A7ois?= <tibo@humeurlibre.fr>, =?utf-8?b?5byg5pet5ra1?= <Loong.0x00@gmail.com>
-In-Reply-To: CAGp9LzoYcJEmFKTKGsF3WchxLedyo7HvGCn8Vi=WaEXS1N-VTg@mail.gmail.com
-References: 20260319-mt7927-wifi-support-v2-v2-0-d627a7fad70d@jetm.me 20260319-mt7927-wifi-support-v2-v2-5-d627a7fad70d@jetm.me CAGp9LzoYcJEmFKTKGsF3WchxLedyo7HvGCn8Vi=WaEXS1N-VTg@mail.gmail.com
-Message-Id: <20260326002242.50D8B1EA006B@mailuser.phl.internal>
-X-Spamd-Result: default: False [8.85 / 15.00];
-	URIBL_BLACK(7.50)[jetm.me:dkim];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.06 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
+	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33907-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[jetm.me:s=fm3,messagingengine.com:s=fm1];
-	GREYLIST(0.00)[pass,body];
+	TAGGED_FROM(0.00)[bounces-33908-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[23];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org,lgic.pl,humeurlibre.fr];
-	DMARC_POLICY_ALLOW(0.00)[jetm.me,quarantine];
-	DKIM_TRACE(0.00)[jetm.me:+,messagingengine.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.588];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[floss@jetm.me,linux-wireless@vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mailuser.phl.internal:mid,messagingengine.com:dkim,jetm.me:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 42E1832DA68
-X-Rspamd-Action: add header
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,waelti.dev:email]
+X-Rspamd-Queue-Id: CC3E732DA44
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-Hi Sean,
-
-On Mon, Mar 24, 2026 Sean Wang wrote:
-> I don't think this is correct for mt7925, and it will cause a
-> regression there. Was this tested on actual mt7925 hardware?
-
-You are right. I do not have mt7925 hardware to verify against.
-In v3, is_320mhz_supported() now checks is_mt7927() only, so
-mt7925 behavior is unchanged.
-
-> I don't think this should be copied from mt7996 as-is for mt7927. I'd
-> suggest dropping the eht_cap_elem->phy_cap_info[7] change and keeping
-> it conservative for now.
-
-Agreed. The phy_cap_info[7] additions (NON_OFDMA_UL_MU_MIMO_320MHZ
-and MU_BEAMFORMER_320MHZ) are dropped in v3. Only the MCS/NSS maps
-and per-BW beamformee SS/sounding dimensions for 320MHz remain.
-
-Both changes are in v3, sent today.
-
-Best,
-Javier
+SmVmZnJleSBXw6RsdGkgPGplZmZyZXlAd2FlbHRpLmRldj4gd3JvdGU6DQo+IA0KPiA8cGtzaGlo
+QHJlYWx0ZWsuY29tPiB3cm90ZToNCj4gDQo+ID4NCj4gPiBQbGVhc2UgdHJ5IHRvIGRpc2FibGUg
+cG93ZXIgc2F2ZSBhbmQgQVNQTSBieQ0KPiA+IDEpIGl3IHdsYW4wIHNldCBwb3dlcl9zYXZlIG9m
+Zg0KPiA+IDIpIHJlZmVyZW5jZSBhbmQgaW5zdGFsbA0KPiBodHRwczovL2dpdGh1Yi5jb20vbHdm
+aW5nZXIvcnR3ODkvYmxvYi9tYWluLzcwLXJ0dzg5LmNvbmYNCj4gPiAgICBhbmQgdGhlbiBjb2xk
+IHJlYm9vdC4NCg0KSGF2ZSB5b3UgdGVzdGVkIHdpdGggdGhlc2UgY29uZGl0aW9ucz8NCg0KWy4u
+Ll0NCg0KPiA+DQo+ID4gUGxlYXNlIGhlbHAgdG8gdGVzdCB0aGUgbGF0ZXN0IGtlcm5lbCA3LjAt
+cmMgd2l0aCBhZGRpdGlvbmFsIHBhdGNoIFsxXS4NCj4gPg0KPiA+IFsxXQ0KPiBodHRwczovL2xv
+cmUua2VybmVsLm9yZy9saW51eC13aXJlbGVzcy8yMDI2MDMxMDA4MDE0Ni4zMTExMy00LXBrc2hp
+aEByZWFsdGVrDQo+IC5jb20vDQoNCkhhdmUgeW91IGFsc28gYXBwbGllZCB0aGlzIHBhdGNoPw0K
+DQo+ID4NCj4gPiBQaW5nLUtlDQo+ID4NCj4gPg0KPiANCj4gVGhhbmsgeW91IGZvciBjb21pbmcg
+YmFjayB0byBtZSBzbyBxdWlja2x5LCBJIGp1c3QgZW5jb3VudGVyZWQgdGhlIHNhbWUgdGhpbmcN
+Cj4gd2l0aCBrZXJuZWwgNy4wLXJjNS4NCj4gDQoNClBsZWFzZSBjb25maXJtIG15IHF1ZXN0aW9u
+cyBhYm92ZS4NCg0KUGluZy1LZQ0KDQo=
 
