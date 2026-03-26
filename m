@@ -1,50 +1,50 @@
-Return-Path: <linux-wireless+bounces-33943-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33944-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eLZmGhUFxWmz5gQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33943-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:06:13 +0100
+	id EIJBBDoIxWnn5gQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33944-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:19:38 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DB8332EB0
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:06:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 638693332F6
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 65226301EF29
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:05:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4BD5320E3CE
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847763E8C4D;
-	Thu, 26 Mar 2026 10:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6ED3E9596;
+	Thu, 26 Mar 2026 10:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b="O0M8KbzE"
+	dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b="ZE/90QDA"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from courrier.aliel.fr (pouet.aliel.fr [65.21.61.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8073D3D18;
-	Thu, 26 Mar 2026 10:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDE33E6DFC;
+	Thu, 26 Mar 2026 10:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.61.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774519323; cv=none; b=u5fz5iPxvQEHK4fDgZp961pvUvWjHwxDhrKyg6afmfNMGgjPsE2eLj8H8ma7O/HLT2+GkmrbdVwGiZAw1ZWW+I4GTesx/xYO2z3Z691QQezk4LuB9ifBKlBqwSjJyhs7zbJGIcB+lQ+R+6wE1Qbis2DPHY48pYieB6J38pUM8/s=
+	t=1774519323; cv=none; b=lxMh4o9V41LIkhrLAMZ7/Ypzu3jmSbiCVuUtiuOTdaD5W8LSm9Iga6G3a3Z5BlUt6X/uLYKUBTM8Kum4+yaWK0B31nQWrf0zSXWolaWsK6n0YSUJd5Javit/wRER26tx6kgi1M02qFuT5zh0viJwlPYnJKPccX2WZVwHBJgMjyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774519323; c=relaxed/simple;
-	bh=8n5TwE56sNZirccftjx5WoMWbdvD7mohV25DyjYwnVw=;
+	bh=IIczfRRn8m2Koe8q+bufp05ljlfqGGQ51x/BzYCoz40=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=vCRCf9efhx5KkayZq+T8s8rHMEFrDKYZytBQUKO83VUVdjsNKND4rihQHRO9jpAtleDb1k4jKjph8TEDK1S0S/ZHTCESGpbi9o4/gA6abf9QheHIq+N67sPQ0cW1MZDNLtJerrtOmeIDSJ3uT1qLxX/3JNXlAP+Tg4HxdLi9TIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr; spf=pass smtp.mailfrom=aliel.fr; dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b=O0M8KbzE; arc=none smtp.client-ip=65.21.61.41
+	 In-Reply-To:To:Cc; b=W0T0wjQJE7qKdm0kBuR5Gf092BsOA0PhFcQbDJO7cbZ778AyRhElSx222GUN++cjxFFsHxL7UQ7owAqIwHj2uKqfScrtM47JQvFlS3/0sOy2LJRdeIrYn9hUt8kcJEKqNPg0OCTZRoDbuH9e+SUg+n/H+PIZOa8Qc6zG76cUSt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr; spf=pass smtp.mailfrom=aliel.fr; dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b=ZE/90QDA; arc=none smtp.client-ip=65.21.61.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliel.fr
 From: Ronald Claveau <linux-kernel-dev@aliel.fr>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aliel.fr;
 	s=courrier-s1; t=1774519320;
-	bh=8n5TwE56sNZirccftjx5WoMWbdvD7mohV25DyjYwnVw=;
+	bh=IIczfRRn8m2Koe8q+bufp05ljlfqGGQ51x/BzYCoz40=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=O0M8KbzE+CvnQTJ22gO++kb14J8nq6JmK5HqxmcyWf0vmzpunuZ1CcQDHBB4UpeUU
-	 ECG98QylaCyUkORqk9ePSZ3dPOAaqKtGvuLFH4Ny3Aa97zWlbXWCOT6hYz/amy2FDg
-	 wfYXSnViPyhXDVVdqmNt9Kn0wq9iR9bZKZn9TwBU=
-Date: Thu, 26 Mar 2026 10:59:17 +0100
-Subject: [PATCH v5 6/9] arm64: dts: amlogic: t7: khadas-vim4: Add power
- regulators
+	b=ZE/90QDAcYT6XYrHUof+zbGZ2FWkygRoA/C16zacprIBp1KTgECfUeCoKR1Y/NwI0
+	 Sw4/TAe06dsX9+mQS+ZyGeQX/m5C3SJIF1rGZDOLWFlu0scFfndrsQ/3inWx3WY1bD
+	 vvE0GLZWGCJg8X6gWydzzHE/B/ZHuFs5Tk88RIkw=
+Date: Thu, 26 Mar 2026 10:59:18 +0100
+Subject: [PATCH v5 7/9] arm64: dts: amlogic: t7: khadas-vim4: Add SDIO
+ power sequence and WiFi clock
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260326-add-emmc-t7-vim4-v5-6-d3f182b48e9d@aliel.fr>
+Message-Id: <20260326-add-emmc-t7-vim4-v5-7-d3f182b48e9d@aliel.fr>
 References: <20260326-add-emmc-t7-vim4-v5-0-d3f182b48e9d@aliel.fr>
 In-Reply-To: <20260326-add-emmc-t7-vim4-v5-0-d3f182b48e9d@aliel.fr>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -67,20 +67,20 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
  linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org, 
  Ronald Claveau <linux-kernel-dev@aliel.fr>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openssh-sha256; t=1774519313; l=3426;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1774519313; l=1501;
  i=linux-kernel-dev@aliel.fr; s=id_ed25519; h=from:subject:message-id;
- bh=8n5TwE56sNZirccftjx5WoMWbdvD7mohV25DyjYwnVw=;
+ bh=IIczfRRn8m2Koe8q+bufp05ljlfqGGQ51x/BzYCoz40=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgMGec55oxeeisqykQiUedekMYyOnR9
  BG9E/7rDWyqdNoAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QNjVVaOd8jjc6hn3882SKWZmbPbJB+gzSoVpOaXQ/75twScdmZlXCj3fZKlFiInYcIhii5r4Qwe
- kTF7grPi4XA4=
+ QO29BFkTR4PHNgOSc2RtXXhzWb6qmHwFO13UQteeX26kjeF6ORoJ7KdoFuLy9l4BjIKo7bfBnTx
+ a13z19FsS/QQ=
 X-Developer-Key: i=linux-kernel-dev@aliel.fr; a=openssh;
  fpr=SHA256:kch4osYZ6A1BrPps5AUs6KnfdE2wm4ocMtyTc8TmZMs
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_DKIM_ALLOW(-0.20)[aliel.fr:s=courrier-s1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -92,7 +92,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_NA(0.00)[aliel.fr];
 	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33943-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33944-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -101,126 +101,58 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[aliel.fr:dkim,aliel.fr:email,aliel.fr:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: 06DB8332EB0
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[aliel.fr:dkim,aliel.fr:email,aliel.fr:mid,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 638693332F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add voltage regulator nodes describing the VIM4 power tree,
-required by peripheral nodes such as the SD card controller.
+Add the SDIO power sequence node using mmc-pwrseq-simple and a
+32.768kHz PWM-based clock required by the Wi-Fi module.
 
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
 ---
- .../dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts  | 90 ++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+ .../dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts  | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-index fffdab96b12eb..2450084d37642 100644
+index 2450084d37642..770f06b0b16c7 100644
 --- a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
 +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-@@ -6,6 +6,8 @@
- /dts-v1/;
- 
- #include "amlogic-t7.dtsi"
-+#include <dt-bindings/gpio/amlogic,t7-periphs-pinctrl.h>
-+#include <dt-bindings/gpio/gpio.h>
- 
- / {
- 	model = "Khadas vim4";
-@@ -45,6 +47,94 @@ xtal: xtal-clk {
- 		#clock-cells = <0>;
+@@ -67,6 +67,15 @@ sd_3v3: regulator-sdcard-3v3 {
+ 		regulator-always-on;
  	};
  
-+	dc_in: regulator-dc-in {
-+		compatible = "regulator-fixed";
-+		regulator-name = "DC_IN";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		regulator-always-on;
++	sdio_pwrseq: sdio-pwrseq {
++		compatible = "mmc-pwrseq-simple";
++		reset-gpios = <&gpio GPIOX_6 GPIO_ACTIVE_LOW>;
++		post-power-on-delay-ms = <500>;
++		power-off-delay-us = <200000>;
++		clocks = <&wifi32k>;
++		clock-names = "ext_clock";
 +	};
 +
-+	sd_3v3: regulator-sdcard-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "SD_3V3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&vddao_3v3>;
-+		gpio = <&gpio GPIOD_11 GPIO_ACTIVE_LOW>;
-+		regulator-boot-on;
-+		enable-active-low;
-+		regulator-always-on;
+ 	vcc5v: regulator-vcc-5v {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "VCC5V";
+@@ -135,6 +144,19 @@ vddio_c: regulator-gpio-c {
+ 		states = <1800000 1
+ 			  3300000 0>;
+ 	};
++
++	wifi32k: wifi32k {
++		compatible = "pwm-clock";
++		#clock-cells = <0>;
++		clock-frequency = <32768>;
++			pwms = <&pwm_ab 0 30518 0>;
 +	};
++};
 +
-+	vcc5v: regulator-vcc-5v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VCC5V";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		vin-supply = <&dc_in>;
-+
-+		gpio = <&gpio GPIOH_4 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+
-+	vcc5v0_usb: regulator-vcc-usb {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VCC5V0_USB";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		vin-supply = <&vcc5v>;
-+
-+		gpio = <&gpio GPIOY_5 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+
-+	vddao_1v8: regulator-vddao-1v8 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VDDAO_1V8";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		vin-supply = <&vddao_3v3>;
-+		regulator-always-on;
-+	};
-+
-+	vddao_3v3: regulator-vddao-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VDDAO_3V3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&dc_in>;
-+		regulator-always-on;
-+	};
-+
-+	vddio_1v8: regulator-vddio-1v8 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VDDIO_1V8";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		vin-supply = <&vddio_3v3>;
-+		regulator-always-on;
-+	};
-+
-+	vddio_3v3: regulator-vddio-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VDDIO_3V3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&vddao_3v3>;
-+		regulator-always-on;
-+	};
-+
-+	vddio_c: regulator-gpio-c {
-+		compatible = "regulator-gpio";
-+		regulator-name = "VDDIO_C";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&vddio_3v3>;
-+		gpios = <&gpio GPIOD_9 GPIO_ACTIVE_HIGH>;
-+		states = <1800000 1
-+			  3300000 0>;
-+	};
++&pwm_ab {
++	status = "okay";
++	pinctrl-0 = <&pwm_a_pins>;
++	pinctrl-names = "default";
  };
  
  &uart_a {
