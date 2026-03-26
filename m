@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-33948-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33949-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAbNFYUMxWn05wQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33948-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:37:57 +0100
+	id 8Fp/A4QMxWn05wQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33949-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:37:56 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C313B3338B8
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:37:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 665F43338B1
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D4D903198EEF
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:15:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B599319B248
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4D93BE17E;
-	Thu, 26 Mar 2026 10:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6733BFE3B;
+	Thu, 26 Mar 2026 10:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IOaIONfv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z8HdxfYr"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE6434DB78
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 10:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA61399030
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 10:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774520110; cv=none; b=jABmw1GagAszy0Cb9xYkeffYXskDUBNkSzRO6ksfOdGRQ0J5fHKKiEM4mM93p/pIR2dHgbG35Mju8W6nmHCozkmcvzlbkQpg3uhnGi16kFvCnOC4bTOtVM7mAIWh5Dwjvk+3rjoJpLppYR4TJurhf/Uu1ItSy5Kh9xPZr3/58Lg=
+	t=1774520111; cv=none; b=TtwnZLuVtL6FwUX2PFybfxKj8Bnx+FHvlIfixP+zrj9WJNjJunk1R4LRpZjxJjEE7Oucyiv7aiKo+W8AQ4uh6zp1yUjoJwzmYcjksCmZHNlAeiI3UZaIa+A1cMactdMe7VBVRQmCQhX34+7fQcR3IvkeWOlVlE2Vg0dD6XJweW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774520110; c=relaxed/simple;
-	bh=lEq0Y3Pzc9K6BSkdPLZ7zYdEZD9AelpDf4DbU9+z1uw=;
+	s=arc-20240116; t=1774520111; c=relaxed/simple;
+	bh=jW3v3+ayvZxgXzGsXSfVeY7oJ4tjVa88JV2ZWIe3GaQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eRdeFnvU3yoVbSFccFqIBq5BEE3j93LrXLbM3s9d0PWu9P3wlToChst1RdQ2KMby3x6MmkKIUwooduteoCmOweKFrVUAx36qoxxuGJq93ZYGqEEugxrPYz4vnEBi5GPnoTkpsEb+Se4NPg7a/3QyzXH3vlJkyiLMjQRI0EN0Y+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IOaIONfv; arc=none smtp.client-ip=198.175.65.12
+	 MIME-Version; b=irk7y1bBTyLwB3Mrt40ARNuucAQNQQhY+fYhkPMJLBNavDyBFy+8VuFV0cZX0cPp0dJjPNeNS7qMhc29mMz8TeoRQdbS3x2iIoh6UMlJCuktNzhMFuXC4/RHjCgYiOVy5+VtP8t4jDmTZ9xklpP3W7cxY6TQisIHwl7h0G/1jxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z8HdxfYr; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774520109; x=1806056109;
+  t=1774520110; x=1806056110;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=lEq0Y3Pzc9K6BSkdPLZ7zYdEZD9AelpDf4DbU9+z1uw=;
-  b=IOaIONfvso2R5Nyqgx4UBO1YigTa5d9DfEZyiL/2MhU2Jo3sDZhokFqt
-   YVZufF4hr9K8tVdoEzvRQ+qT8EBy9hiG7p7FUbxWb90DVS6OA5c/1yT0R
-   Dl6RNsZh8o9EEVfuzGRKhwgYC1YaohZKE71EhDZbkyhwcd1TshWQhjRyP
-   ohhEFY5jv6z9ie2X0QGvs2Xagycv4dyqjaBdzLzPsoCpTegbx9g80frKd
-   QhmnXnhr9vTV7Py+/QE+t35wUy88TaBmXEV419pkO+9LgCgRuqcSOTNFs
-   FCCLVemQ957sqgv+F+34lojuGYe5ciSHMbuYALcD3gTdKY4QfdZcpq1yt
+  bh=jW3v3+ayvZxgXzGsXSfVeY7oJ4tjVa88JV2ZWIe3GaQ=;
+  b=Z8HdxfYrhgT4AMsuoZvgW5/YieLYsx6lm6M5XBJxmaJfkGAW4rA8fqav
+   lu6jNZddFwppueEEEOpYgNsssAtu+M4UrK4IgcwCIXJ/hUrYFHwVnK4Jq
+   MDsiSDow326nNaK+oqcWLdqHexK7t80Wjj1PaiFHH4GH1u6RsXMi601HP
+   S6kxAp3yOuCFHyd69AYKZyS1AsksE5JGCUhNxrUTlz2mLkWKDJ1Bv5KKW
+   Xoz2hZ8OJwRLQVnYCfJZz9SZDsevkmzpGAt8WOvQI0d0rlw6lrpfos5Ek
+   PDwpCyT69FKKIeV0PO2RQyD8jQNK0xiUkXlKGumNoXfHhb9dA7+Iv9xQJ
    w==;
-X-CSE-ConnectionGUID: wYXjlSF5Qim53y+UUcHcVw==
-X-CSE-MsgGUID: RSqEI95oTBiw730J2bnb6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="87048556"
+X-CSE-ConnectionGUID: TMwmJlM5SZKfCxqVXi190Q==
+X-CSE-MsgGUID: X5I2YR2dSzynQKGe49q75A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="87048558"
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="87048556"
+   d="scan'208";a="87048558"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
   by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 03:15:09 -0700
-X-CSE-ConnectionGUID: ZYl3kqspQB2A98zM7z7HAg==
-X-CSE-MsgGUID: FC1OwFPTSAepsu5ILe8Zbg==
+X-CSE-ConnectionGUID: GUJcxsmOSQqA+D5eF2b1nQ==
+X-CSE-MsgGUID: rJvN/JzJRJKslPWHB5tvMg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="221653102"
+   d="scan'208";a="221653174"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 03:15:01 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 03:15:02 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH v2 wireless-next 01/15] wifi: mac80211: add a TXQ for management frames on NAN devices
-Date: Thu, 26 Mar 2026 12:14:31 +0200
-Message-Id: <20260326121156.32eddd986bd2.Iee95758287c276155fbd7779d3f263339308e083@changeid>
+Subject: [PATCH v2 wireless-next 02/15] wifi: ieee80211: add more NAN definitions
+Date: Thu, 26 Mar 2026 12:14:32 +0200
+Message-Id: <20260326121156.ebb52db4c1eb.Ie8142cf92fc8c97c744a7c8b0a94ce3da6ff75ec@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260326101445.1443198-1-miriam.rachel.korenblit@intel.com>
 References: <20260326101445.1443198-1-miriam.rachel.korenblit@intel.com>
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33948-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33949-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
@@ -104,226 +104,80 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: C313B3338B8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 665F43338B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Benjamin Berg <benjamin.berg@intel.com>
 
-Currently there is no TXQ for non-data frames. Add a new txq_mgmt for
-this purpose and create one of these on NAN devices. On NAN devices,
-these frames may only be transmitted during the discovery window and it
-is therefore helpful to schedule them using a queue.
+These will be needed to implement NAN synchronization in mac80211_hwsim.
 
 Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- include/net/mac80211.h |  2 ++
- net/mac80211/iface.c   | 28 ++++++++++++++++++++++++++--
- net/mac80211/tx.c      | 20 ++++++++++++++++----
- net/mac80211/util.c    | 34 +++++++++++++++++++++++-----------
- 4 files changed, 67 insertions(+), 17 deletions(-)
+ include/linux/ieee80211-nan.h | 37 +++++++++++++++++++++++++++++++++++
+ include/linux/ieee80211.h     |  1 +
+ 2 files changed, 38 insertions(+)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 9cc482191ab9..2959736efdf3 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -2074,6 +2074,7 @@ enum ieee80211_neg_ttlm_res {
-  * @drv_priv: data area for driver use, will always be aligned to
-  *	sizeof(void \*).
-  * @txq: the multicast data TX queue
-+ * @txq_mgmt: the mgmt frame TX queue, currently only exists for NAN devices
-  * @offload_flags: 802.3 -> 802.11 enapsulation offload flags, see
-  *	&enum ieee80211_offload_flags.
-  */
-@@ -2092,6 +2093,7 @@ struct ieee80211_vif {
- 	u8 hw_queue[IEEE80211_NUM_ACS];
+diff --git a/include/linux/ieee80211-nan.h b/include/linux/ieee80211-nan.h
+index ebf28ea651f9..455033955e54 100644
+--- a/include/linux/ieee80211-nan.h
++++ b/include/linux/ieee80211-nan.h
+@@ -37,4 +37,41 @@
+ #define NAN_DEV_CAPA_NDPE_SUPPORTED		0x08
+ #define NAN_DEV_CAPA_S3_SUPPORTED		0x10
  
- 	struct ieee80211_txq *txq;
-+	struct ieee80211_txq *txq_mgmt;
- 
- 	netdev_features_t netdev_features;
- 	u32 driver_flags;
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 125897717a4c..7518dcbcdf1c 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -682,6 +682,10 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	if (sdata->vif.txq)
- 		ieee80211_txq_purge(sdata->local, to_txq_info(sdata->vif.txq));
- 
-+	if (sdata->vif.txq_mgmt)
-+		ieee80211_txq_purge(sdata->local,
-+				    to_txq_info(sdata->vif.txq_mgmt));
++/* NAN attributes, as defined in Wi-Fi Aware (TM) specification 4.0 Table 42 */
++#define NAN_ATTR_MASTER_INDICATION		0x00
++#define NAN_ATTR_CLUSTER_INFO			0x01
 +
- 	sdata->bss = NULL;
- 
- 	if (local->open_count == 0)
-@@ -2223,10 +2227,16 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
- 	if (type == NL80211_IFTYPE_P2P_DEVICE || type == NL80211_IFTYPE_NAN) {
-+		int size = ALIGN(sizeof(*sdata) + local->hw.vif_data_size,
-+				 sizeof(void *));
- 		struct wireless_dev *wdev;
-+		int txq_size = 0;
++struct ieee80211_nan_attr {
++	u8 attr;
++	__le16 length;
++	u8 data[];
++} __packed;
 +
-+		if (type == NL80211_IFTYPE_NAN)
-+			txq_size = sizeof(struct txq_info) +
-+				   local->hw.txq_data_size;
- 
--		sdata = kzalloc(sizeof(*sdata) + local->hw.vif_data_size,
--				GFP_KERNEL);
-+		sdata = kzalloc(size + txq_size, GFP_KERNEL);
- 		if (!sdata)
- 			return -ENOMEM;
- 		wdev = &sdata->wdev;
-@@ -2236,6 +2246,16 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
- 		ieee80211_assign_perm_addr(local, wdev->address, type);
- 		memcpy(sdata->vif.addr, wdev->address, ETH_ALEN);
- 		ether_addr_copy(sdata->vif.bss_conf.addr, sdata->vif.addr);
++struct ieee80211_nan_master_indication {
++	u8 master_pref;
++	u8 random_factor;
++} __packed;
 +
-+		/*
-+		 * Add a management TXQ for NAN devices which includes frames
-+		 * that will only be transmitted during discovery windows (DWs)
-+		 */
-+		if (type == NL80211_IFTYPE_NAN) {
-+			txqi = (struct txq_info *)((unsigned long)sdata + size);
-+			ieee80211_txq_init(sdata, NULL, txqi,
-+					   IEEE80211_NUM_TIDS);
-+		}
- 	} else {
- 		int size = ALIGN(sizeof(*sdata) + local->hw.vif_data_size,
- 				 sizeof(void *));
-@@ -2386,6 +2406,10 @@ void ieee80211_if_remove(struct ieee80211_sub_if_data *sdata)
- 	if (sdata->vif.txq)
- 		ieee80211_txq_purge(sdata->local, to_txq_info(sdata->vif.txq));
- 
-+	if (sdata->vif.txq_mgmt)
-+		ieee80211_txq_purge(sdata->local,
-+				    to_txq_info(sdata->vif.txq_mgmt));
++struct ieee80211_nan_anchor_master_info {
++	union {
++		__le64 master_rank;
++		struct {
++			u8 master_addr[ETH_ALEN];
++			u8 random_factor;
++			u8 master_pref;
++		} __packed;
++	} __packed;
++	u8 hop_count;
++	__le32 ambtt;
++} __packed;
 +
- 	synchronize_rcu();
- 
- 	cfg80211_unregister_wdev(&sdata->wdev);
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 3844c7fbb8a8..730c208c3bdf 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1313,13 +1313,19 @@ static struct txq_info *ieee80211_get_txq(struct ieee80211_local *local,
- 	    unlikely(!ieee80211_is_data_present(hdr->frame_control))) {
- 		if ((!ieee80211_is_mgmt(hdr->frame_control) ||
- 		     ieee80211_is_bufferable_mmpdu(skb) ||
--		     vif->type == NL80211_IFTYPE_STATION) &&
-+		     vif->type == NL80211_IFTYPE_STATION ||
-+		     vif->type == NL80211_IFTYPE_NAN ||
-+		     vif->type == NL80211_IFTYPE_NAN_DATA) &&
- 		    sta && sta->uploaded) {
- 			/*
- 			 * This will be NULL if the driver didn't set the
- 			 * opt-in hardware flag.
- 			 */
- 			txq = sta->sta.txq[IEEE80211_NUM_TIDS];
-+		} else if ((!ieee80211_is_mgmt(hdr->frame_control) ||
-+			    ieee80211_is_bufferable_mmpdu(skb)) &&
-+			   !sta) {
-+			txq = vif->txq_mgmt;
- 		}
- 	} else if (sta) {
- 		u8 tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
-@@ -1512,9 +1518,15 @@ void ieee80211_txq_init(struct ieee80211_sub_if_data *sdata,
- 	txqi->txq.vif = &sdata->vif;
- 
- 	if (!sta) {
--		sdata->vif.txq = &txqi->txq;
--		txqi->txq.tid = 0;
--		txqi->txq.ac = IEEE80211_AC_BE;
-+		txqi->txq.tid = tid;
++#define for_each_nan_attr(_attr, _data, _datalen)			\
++	for (_attr = (const struct ieee80211_nan_attr *)(_data);	\
++	     (const u8 *)(_data) + (_datalen) - (const u8 *)_attr >=	\
++		(int)sizeof(*_attr) &&					\
++	     (const u8 *)(_data) + (_datalen) - (const u8 *)_attr >=	\
++		(int)sizeof(*_attr) + le16_to_cpu(_attr->length);	\
++	     _attr = (const struct ieee80211_nan_attr *)		\
++		(_attr->data + le16_to_cpu(_attr->length)))
 +
-+		if (tid == IEEE80211_NUM_TIDS) {
-+			sdata->vif.txq_mgmt = &txqi->txq;
-+			txqi->txq.ac = IEEE80211_AC_VO;
-+		} else {
-+			sdata->vif.txq = &txqi->txq;
-+			txqi->txq.ac = IEEE80211_AC_BE;
-+		}
+ #endif /* LINUX_IEEE80211_NAN_H */
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index b5d649db123f..ffa8f9f77efe 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2240,6 +2240,7 @@ struct ieee80211_multiple_bssid_configuration {
  
- 		return;
- 	}
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 8987a4504520..72e73f4f79c5 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -325,7 +325,7 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- 	struct ieee80211_vif *vif = &sdata->vif;
- 	struct fq *fq = &local->fq;
- 	struct ps_data *ps = NULL;
--	struct txq_info *txqi;
-+	struct txq_info *txqi = NULL;
- 	struct sta_info *sta;
- 	int i;
- 
-@@ -344,37 +344,49 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- 
- 		for (i = 0; i < ARRAY_SIZE(sta->sta.txq); i++) {
- 			struct ieee80211_txq *txq = sta->sta.txq[i];
-+			struct txq_info *sta_txqi;
- 
- 			if (!txq)
- 				continue;
- 
--			txqi = to_txq_info(txq);
-+			sta_txqi = to_txq_info(txq);
- 
- 			if (ac != txq->ac)
- 				continue;
- 
- 			if (!test_and_clear_bit(IEEE80211_TXQ_DIRTY,
--						&txqi->flags))
-+						&sta_txqi->flags))
- 				continue;
- 
- 			spin_unlock(&fq->lock);
--			drv_wake_tx_queue(local, txqi);
-+			drv_wake_tx_queue(local, sta_txqi);
- 			spin_lock(&fq->lock);
- 		}
- 	}
- 
--	if (!vif->txq)
--		goto out;
-+	if (vif->txq) {
-+		txqi = to_txq_info(vif->txq);
- 
--	txqi = to_txq_info(vif->txq);
-+		/* txq and txq_mgmt are mutually exclusive */
-+		WARN_ON_ONCE(vif->txq_mgmt);
- 
--	if (!test_and_clear_bit(IEEE80211_TXQ_DIRTY, &txqi->flags) ||
--	    (ps && atomic_read(&ps->num_sta_ps)) || ac != vif->txq->ac)
--		goto out;
-+		if (!test_and_clear_bit(IEEE80211_TXQ_DIRTY, &txqi->flags) ||
-+		    (ps && atomic_read(&ps->num_sta_ps)) ||
-+		    ac != vif->txq->ac)
-+			txqi = NULL;
-+	} else if (vif->txq_mgmt) {
-+		txqi = to_txq_info(vif->txq_mgmt);
-+
-+		if (!test_and_clear_bit(IEEE80211_TXQ_DIRTY, &txqi->flags) ||
-+		    ac != vif->txq_mgmt->ac)
-+			txqi = NULL;
-+	}
- 
- 	spin_unlock(&fq->lock);
- 
--	drv_wake_tx_queue(local, txqi);
-+	if (txqi)
-+		drv_wake_tx_queue(local, txqi);
-+
- 	local_bh_enable();
- 	return;
- out:
+ #define WLAN_OUI_WFA			0x506f9a
+ #define WLAN_OUI_TYPE_WFA_P2P		9
++#define WLAN_OUI_TYPE_WFA_NAN		0x13
+ #define WLAN_OUI_TYPE_WFA_DPP		0x1A
+ #define WLAN_OUI_MICROSOFT		0x0050f2
+ #define WLAN_OUI_TYPE_MICROSOFT_WPA	1
 -- 
 2.34.1
 
