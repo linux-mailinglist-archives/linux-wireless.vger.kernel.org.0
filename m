@@ -1,86 +1,86 @@
-Return-Path: <linux-wireless+bounces-33926-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33927-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFMALar1xGld5QQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33926-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:00:26 +0100
+	id kNNqDq31xGld5QQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33927-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:00:29 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AFAC331CA5
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:00:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1630331CAD
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:00:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D08E3040FA1
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 08:53:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 11E153157936
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 08:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A163B9DA4;
-	Thu, 26 Mar 2026 08:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC0736B055;
+	Thu, 26 Mar 2026 08:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="axs6ryHJ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OcVqGIC6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFB73B8D58
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 08:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1213385B2
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 08:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774515188; cv=none; b=ShZdwuI5hkxoTPqQ2hs26XEhfF7cWgX+Y90QofzTanWQbwlAl40qN8oRl95TtrVVGKuAIHTMPt3bwHmUdE94cA4G9Gx8+KCXcO4ibxoTnUQh1lxqrVfSnRc3BWp8zdqy5mup/3ZwExVtOipCYeZszxlIo4HXqQdEuTOVdYg86L4=
+	t=1774515211; cv=none; b=eRH3/dnviUoglSCg83eyJ5QthHOo5jVqjtqfGnpDi12EeNcbZlTTko0WABl4OLYiCrqPD4/lFTRsdJhGBE6zOxxZdycbkyQv/t9MrXAxCaQ41vb5ES41Uw2008Tqm6gv7zAP4Of/bP0Nf9b/YVBC0Jg/QduQ9OSHL5ARHpnOCGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774515188; c=relaxed/simple;
-	bh=O1jN7BD1GGh6tS7iK1iKMQNeemAgg7gH0h2lUJMtyzU=;
+	s=arc-20240116; t=1774515211; c=relaxed/simple;
+	bh=B/doHcMx8ilgyWReYhj/P7ozTG2VrbfB8uWLrQf7sIo=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=iBRftU9sgby/tIHPD3EAKtw1H8w6vSaLh4hSS3pQVDRU3WTzX7nahvDyffbovb0jMQNkqjq0TCdIC8CpaxgJUopiNIEbDFTGDzu/yqks6Zdlw/Tk2aGzeS/HFbCezp70r7ZOnqNTc72xx9Jvtxhp1BWfSTkDjcAFfE7ORC7Ux5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=axs6ryHJ; arc=none smtp.client-ip=209.85.128.42
+	 In-Reply-To:Content-Type; b=JmAJcFQYLVQeCCgTyYOZ9LLA3zS3FjxnlRUpeqB3aCmA7WCySYD91XthXOf/WBj4/QRo8HxD4rL8v3XlugRBwuMUTjDm3W5msebYwFTI4YUj2ar6HZScQYjZrkmhbRCkuqAz4uTIrncSqU1ruY9n3SvNDj7ISnpkPWVioSzsQYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OcVqGIC6; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4852b81c73aso6159065e9.3
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 01:53:07 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4852e9ca034so6841425e9.2
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 01:53:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774515186; x=1775119986; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1774515208; x=1775120008; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gDXG9M4VD8sbt4ubZpnvKniIhpg/LpwkxR7DgYK7GD0=;
-        b=axs6ryHJXk5TQYWk7R/Kyg7ny8VkbnGVt2IMpuKP+V1GgNsSGWpN+ue/l9Nyj+51y0
-         wjAb4BG/0bf+/7K9LZoKW4RX8Sd9AZKp0p/zQT/2J1RwB0v8WaChdzz6xdmDnNHB8NFb
-         XflIkk+12f6sjmwKEEBieidkOqqOq0zP1SqYURMQZapvHnGBQGmoR6jRehd+bsoWuko7
-         aEgVfP8DHKZIFPkkwz3C2lMfeLQkU2yGu+jXBqRumu79AlpzHTfWvHHocRu0ANszj/rC
-         3EmmuDlsxwF6Ast3ADIWIF+GTMWbP+IWfSlQr27xmSSrGqUOBizGgKp62iJDdQbrrt45
-         yhHg==
+        bh=E0QdGIGJmrLd5pDRPLgO89nIX7dVoELnsj1kn655mmo=;
+        b=OcVqGIC6bY7evf15cXY/EhBJrUMqzjWFSbnKOU9WueKiPtYzPDKITGe6Yqw3FpmE1A
+         4EW+N6RDPGqIvC0hyhYish4jAHQSnF2CI8bFOJNL7LB+QPddwi2zuXFcBWKgc7WGvo9a
+         KHplIYGog8bmAOtnOQwJIUojeQPeZ84W2B2nHQzBKFM1+cbdVe9Lf3qKrZj+b1CUmWlB
+         bYk2aewhT5Q3GIlXCKVddw11y7JRaZZ5ztJjKTHg9oR94+bnc6tZ5EPDJhwO/5VelQOV
+         AkdGbi4HmByegV19XCkZWVkajYoGAg+nZMokV7RNWXUaO0hXu83bfL0Xaqq0+mZ0d0d4
+         DchQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774515186; x=1775119986;
+        d=1e100.net; s=20251104; t=1774515208; x=1775120008;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gDXG9M4VD8sbt4ubZpnvKniIhpg/LpwkxR7DgYK7GD0=;
-        b=rW5Cbp8f3moLDqGcXMRE6laIc/p3KAecZc6W3DT5XoE4Xcc7Ute2fq51BpypJuvc67
-         +t+C7/siYoz4RdVl8AypqOcTay+V2gBkRyvNM9r39+Vw15yPIj2aaehPO8jEQdwqVtyp
-         uAwgZn3QAtK6+Ag9r5PZfsrGb/8mVlElFAvHCLuJ350Xsy5utZkzLToZmiL+hGys7KFb
-         ZS+nqHO5njtMX7H67GDOg2CLUkrxrqxibLXgtlU/yJi5mpwSQOS1MbuIpnFFlEbGCu8O
-         pd5Sezvivd9O71IFPgiAMcPfxaqiX6fbIo1R0jiSbRaP+gNAIkVTZQOsQ2fcbsD5MPKp
-         FAoA==
-X-Forwarded-Encrypted: i=1; AJvYcCW19M5LCHuD/RQ0iWSSw+t9p4g29l0wHLFG8myBF+uDMnXnq0Xa+3HPV5WDfW3cMK+y7OPUsFZ/0Q7K/EIjAg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUpcyejZPiHd655ZXTkLCIdhgB3rXfdgvgz6gLBp1vZGhysM1B
-	38pKGIAloj+bD01RbajzRk9ItWs/y6PkcTaGoNJEnIqpn+Al9eGWeCjrGcWVle7amUE=
-X-Gm-Gg: ATEYQzyqs1CZcH7S1kEltm2LJOxmfCmftaWqrbcO8AmdLoJ7uErqzPMIxECkaX0f4Wl
-	R8VFSunz0jOKFF8Hoq5aaUNgQ+e64OhKCKb8lrojT0/34kWE57gf2hw0k9b5HmYmqQEzqlrltBr
-	T9Z90bXT40LSND/VPZp5OwFIqtzM5O6dP9QpXnjTLegTo9nvLNKjeVl6/jBohy/GEHyYJSAqBlx
-	720A1BPBBEjwh7HUQsDDDorYGmj3duKnHZePzZ7Hq6S0szw2jxhjWI3UUSAbNikR8bH0zvkea+F
-	6tAW/vG4GQZP3xUMumqXFkwIUAV/NR3BP+Texr/YhbOqSU/UJeWsOBZHxggyDKQHhFD29Cxnnb5
-	rpC5oALqGD9J6w+NAJLGUuMZbNK2VcuvTI8L2wY8GMUx8B8K/K/qRDnOamjkXPkAWl368ghBAUN
-	50TQKFhHQkQcldTBNKgmG6ljywSyQghuFvv/uapUhdiFO/ZdQt5pTyr3TPRQf/+D8sx4AzlwTpA
-	9oOgdw=
-X-Received: by 2002:a05:600c:c490:b0:485:3ff1:d5ed with SMTP id 5b1f17b1804b1-48715fc7437mr97262695e9.1.1774515185800;
-        Thu, 26 Mar 2026 01:53:05 -0700 (PDT)
+        bh=E0QdGIGJmrLd5pDRPLgO89nIX7dVoELnsj1kn655mmo=;
+        b=G5ubx4zB6HivdRFa0zbkdK1JZ6azg+MZ5PKv6CpqbpNPSyyGLmE4lRPMy07cy7Nxmy
+         PdK5AM0ber1VrLvgO4Lgkr25Y4i0uCen2WlhBzAmCSa5KbZWRzpmxQ++NDouJcndz0Ar
+         qW3Bi+7MWImttH2fGp5EZK3lGyed71/phaVh/hUXlgQfdLJLipAFJbuFxU3NtXS8oZkg
+         89cI9bxoPwpIH2vbLptjrJAR2NphtIpGQJkfcCTSOdByAepGQCwZ1EkKU5ZfhoHSLofq
+         iEDBoyTrNkIjIY3Xk/Wohk3gz50tmdHOLg2T82B+bXgRCVJFeBwsYJC4WVD7oF2feJAj
+         QiJA==
+X-Forwarded-Encrypted: i=1; AJvYcCUlGqoLP0m3Z4PoQOQMzLX1FRe8+Ni/UeJxyrGwnsJus1+W0RQEAJ2xZJskrxsA+yuECvNk1bcAMVtjk5NHUw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YypbId2kmP6DJrALPbqVQB6ne4YwTi4A+GlrdFYFQtK9FCJ7yoP
+	k31pzB16GtKfpdkvccYVKUkhPt4MuZ7T5f4w244K/7cn3c4u2Z6FAGqS3xSkhovoCHY=
+X-Gm-Gg: ATEYQzycGVbM6ZpYPAWO8vP1TLxKYJIA2YQNzKLJpY1Fgpq09CpB/G6UUcMtKtixwyc
+	ncFI6O5slE2aeNhPj+acq7FiUYWplu01WLbynGLQnGvQV6wLMtXCb6ZuqSDxEYbxv9CFLMbcnIP
+	2465wJNNeo8e0NRtuVA86vG9fOueqhX6+XhFReSuayrPgLoWbVUBTN6BNGrIZ182jTDcT577R7V
+	S0tQYRc4j3f4NtykTCsiFJBodE/fz/3syy2T+64EOPxzW5/mhqWkg2/0aI2Lh4aPy+93Kpz9XQX
+	c8u372VrWg06aFNqKpvVkh4S9vfVD3JSwQ10LmxpBBd3sH0dPrCDb/PYXBuDasGHY8e45xh26HT
+	0pXQ+FqHgMS9fCqxQmF4YO3A8jYvisCRaagtgxQO/PxHgm2emMacLcD5A3OYM7M7763RuNtvyyE
+	jss9PjkZbbFYqzUodFPf6jFysqHqOF9RwjxKkY6a+ptxpn1WTgqm50h/2J5c+bvtUxGw55YMDj6
+	wShTiU=
+X-Received: by 2002:a05:600c:4705:b0:486:fc4a:2951 with SMTP id 5b1f17b1804b1-48716083231mr103005895e9.28.1774515208194;
+        Thu, 26 Mar 2026 01:53:28 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:106d:1080:8431:f88b:714d:f78d? ([2a01:e0a:106d:1080:8431:f88b:714d:f78d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919e708asm5819184f8f.36.2026.03.26.01.53.05
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722c65989sm29792335e9.2.2026.03.26.01.53.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Mar 2026 01:53:05 -0700 (PDT)
-Message-ID: <d39c0e43-8c62-4a41-895a-5384dc365c2a@linaro.org>
-Date: Thu, 26 Mar 2026 09:53:04 +0100
+        Thu, 26 Mar 2026 01:53:27 -0700 (PDT)
+Message-ID: <3780aa8e-5082-4494-aa9e-ca84544bbdb2@linaro.org>
+Date: Thu, 26 Mar 2026 09:53:26 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,7 +90,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Neil Armstrong <neil.armstrong@linaro.org>
 Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v4 5/9] arm64: dts: amlogic: t7: Add PWM controller nodes
+Subject: Re: [PATCH v4 6/9] arm64: dts: amlogic: t7: khadas-vim4: Add power
+ regulators
 To: Ronald Claveau <linux-kernel-dev@aliel.fr>,
  Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
  Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
@@ -99,10 +100,9 @@ To: Ronald Claveau <linux-kernel-dev@aliel.fr>,
  Johannes Berg <johannes@sipsolutions.net>, van Spriel <arend@broadcom.com>
 Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
- Nick Xie <nick@khadas.com>
+ linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org
 References: <20260325-add-emmc-t7-vim4-v4-0-44c7b4a5e459@aliel.fr>
- <20260325-add-emmc-t7-vim4-v4-5-44c7b4a5e459@aliel.fr>
+ <20260325-add-emmc-t7-vim4-v4-6-44c7b4a5e459@aliel.fr>
 Content-Language: en-US, fr
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
@@ -129,7 +129,7 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro
-In-Reply-To: <20260325-add-emmc-t7-vim4-v4-5-44c7b4a5e459@aliel.fr>
+In-Reply-To: <20260325-add-emmc-t7-vim4-v4-6-44c7b4a5e459@aliel.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -141,121 +141,149 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33926-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	RSPAMD_URIBL_FAIL(0.00)[0.0.117.48:query timed out,5a000:query timed out,5e000:query timed out,0.0.226.144:query timed out];
+	TAGGED_FROM(0.00)[bounces-33927-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[aliel.fr,baylibre.com,googlemail.com,kernel.org,linaro.org,sipsolutions.net,broadcom.com];
 	HAS_ORG_HEADER(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[aliel.fr,baylibre.com,googlemail.com,kernel.org,linaro.org,sipsolutions.net,broadcom.com];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linaro.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RSPAMD_EMAILBL_FAIL(0.00)[pwm.0.0.125.0:query timed out];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:dkim,linaro.org:email,linaro.org:replyto,linaro.org:mid];
+	HAS_REPLYTO(0.00)[neil.armstrong@linaro.org];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[neil.armstrong@linaro.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	HAS_REPLYTO(0.00)[neil.armstrong@linaro.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	REPLYTO_EQ_FROM(0.00)[]
-X-Rspamd-Queue-Id: 6AFAC331CA5
+X-Rspamd-Queue-Id: D1630331CAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 On 3/25/26 10:15, Ronald Claveau wrote:
-> Add device tree nodes for the seven PWM controllers available
-> on the Amlogic T7 SoC, using amlogic,meson-s4-pwm as fallback compatible.
-> All nodes are disabled by default and should be
-> enabled in the board-specific DTS file.
+> Add voltage regulator nodes describing the VIM4 power tree,
+> required by peripheral nodes such as the SD card controller.
 > 
-> Co-developed-by: Nick Xie <nick@khadas.com>
-> Signed-off-by: Nick Xie <nick@khadas.com>
 > Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
 > ---
->   arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 63 +++++++++++++++++++++++++++++
->   1 file changed, 63 insertions(+)
+>   .../dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts  | 90 ++++++++++++++++++++++
+>   1 file changed, 90 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-> index eb09a26bcd0e0..581cdaebfe637 100644
-> --- a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-> +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-> @@ -511,6 +511,69 @@ sec_ao: ao-secure@10220 {
->   				amlogic,has-chip-id;
->   			};
+> diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
+> index fffdab96b12eb..2450084d37642 100644
+> --- a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
+> +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
+> @@ -6,6 +6,8 @@
+>   /dts-v1/;
 >   
-> +			pwm_ao_ef: pwm@30000 {
-> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
-> +				reg = <0x0 0x30000 0x0 0x24>;
-> +				clocks = <&clkc_periphs CLKID_PWM_AO_E>,
-> +					 <&clkc_periphs CLKID_PWM_AO_F>;
-> +				#pwm-cells = <3>;
-> +				status = "disabled";
-> +			};
+>   #include "amlogic-t7.dtsi"
+> +#include <dt-bindings/gpio/amlogic,t7-periphs-pinctrl.h>
+> +#include <dt-bindings/gpio/gpio.h>
+>   
+>   / {
+>   	model = "Khadas vim4";
+> @@ -45,6 +47,94 @@ xtal: xtal-clk {
+>   		#clock-cells = <0>;
+>   	};
+>   
+> +	dc_in: regulator-dc-in {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "DC_IN";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		regulator-always-on;
+> +	};
 > +
-> +			pwm_ao_gh: pwm@32000 {
-> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
-> +				reg = <0x0 0x32000 0x0 0x24>;
-> +				clocks = <&clkc_periphs CLKID_PWM_AO_G>,
-> +					 <&clkc_periphs CLKID_PWM_AO_H>;
-> +				#pwm-cells = <3>;
-> +				status = "disabled";
-> +			};
+> +	sd_3v3: regulator-sdcard-3v3 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "SD_3V3";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		vin-supply = <&vddao_3v3>;
+> +		gpio = <&gpio GPIOD_11 GPIO_ACTIVE_LOW>;
+> +		regulator-boot-on;
+> +		enable-active-low;
+> +		regulator-always-on;
+> +	};
 > +
-> +			pwm_ab: pwm@58000 {
-> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
-> +				reg = <0x0 0x58000 0x0 0x24>;
-> +				clocks = <&clkc_periphs CLKID_PWM_A>,
-> +					 <&clkc_periphs CLKID_PWM_B>;
-> +				#pwm-cells = <3>;
-> +				status = "disabled";
-> +			};
+> +	vcc5v: regulator-vcc-5v {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "VCC5V";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		vin-supply = <&dc_in>;
 > +
-> +			pwm_cd: pwm@5a000 {
-> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
-> +				reg = <0x0 0x5a000 0x0 0x24>;
-> +				clocks = <&clkc_periphs CLKID_PWM_C>,
-> +					 <&clkc_periphs CLKID_PWM_D>;
-> +				#pwm-cells = <3>;
-> +				status = "disabled";
-> +			};
+> +		gpio = <&gpio GPIOH_4 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
 > +
-> +			pwm_ef: pwm@5c000 {
-> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
-> +				reg = <0x0 0x5c000 0x0 0x24>;
-> +				clocks = <&clkc_periphs CLKID_PWM_E>,
-> +					 <&clkc_periphs CLKID_PWM_F>;
-> +				#pwm-cells = <3>;
-> +				status = "disabled";
-> +			};
+> +	vcc5v0_usb: regulator-vcc-usb {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "VCC5V0_USB";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		vin-supply = <&vcc5v>;
 > +
-> +			pwm_ao_ab: pwm@5e000 {
-> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
-> +				reg = <0x0 0x5e000 0x0 0x24>;
-> +				clocks = <&clkc_periphs CLKID_PWM_AO_A>,
-> +					 <&clkc_periphs CLKID_PWM_AO_B>;
-> +				#pwm-cells = <3>;
-> +				status = "disabled";
-> +			};
+> +		gpio = <&gpio GPIOY_5 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
 > +
-> +			pwm_ao_cd: pwm@60000 {
-> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
-> +				reg = <0x0 0x60000 0x0 0x24>;
-> +				clocks = <&clkc_periphs CLKID_PWM_AO_C>,
-> +					 <&clkc_periphs CLKID_PWM_AO_D>;
-> +				#pwm-cells = <3>;
-> +				status = "disabled";
-> +			};
+> +	vddao_1v8: regulator-vddao-1v8 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "VDDAO_1V8";
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <1800000>;
+> +		vin-supply = <&vddao_3v3>;
+> +		regulator-always-on;
+> +	};
 > +
->   			sd_emmc_a: mmc@88000 {
->   				compatible = "amlogic,t7-mmc", "amlogic,meson-axg-mmc";
->   				reg = <0x0 0x88000 0x0 0x800>;
+> +	vddao_3v3: regulator-vddao-3v3 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "VDDAO_3V3";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		vin-supply = <&dc_in>;
+> +		regulator-always-on;
+> +	};
+> +
+> +	vddio_1v8: regulator-vddio-1v8 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "VDDIO_1V8";
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <1800000>;
+> +		vin-supply = <&vddio_3v3>;
+> +		regulator-always-on;
+> +	};
+> +
+> +	vddio_3v3: regulator-vddio-3v3 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "VDDIO_3V3";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		vin-supply = <&vddao_3v3>;
+> +		regulator-always-on;
+> +	};
+> +
+> +	vddio_c: regulator-gpio-c {
+> +		compatible = "regulator-gpio";
+> +		regulator-name = "VDDIO_C";
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		vin-supply = <&vddio_3v3>;
+> +		gpios = <&gpio GPIOD_9 GPIO_ACTIVE_HIGH>;
+> +		states = <1800000 1
+> +			  3300000 0>;
+> +	};
+>   };
+>   
+>   &uart_a {
 > 
 
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
