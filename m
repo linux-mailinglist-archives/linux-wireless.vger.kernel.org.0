@@ -1,120 +1,124 @@
-Return-Path: <linux-wireless+bounces-34003-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34004-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOYBBydtxWl1+AQAu9opvQ
-	(envelope-from <linux-wireless+bounces-34003-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 18:30:15 +0100
+	id UKe3BQyExWlc+wQAu9opvQ
+	(envelope-from <linux-wireless+bounces-34004-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 20:07:56 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A77DE33925C
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 18:30:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EEE33AB8B
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 20:07:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 184F03010B75
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 17:30:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6298630A11A4
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 19:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0AF41C2FC;
-	Thu, 26 Mar 2026 17:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DC823B612;
+	Thu, 26 Mar 2026 19:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="gC6GIeVi"
+	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="TjMDUMtI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9071041C2FA;
-	Thu, 26 Mar 2026 17:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9963328E6
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 19:04:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774546211; cv=none; b=Ok3Xr713/MlOkNxGPaDhXTOiZg7kx6tJHEVknxkVTZjomPVBqtd5loKxSM0D1vhwppurBmyq7Wbggcj0mdD7LulkfI8tyfoyF2YTNop8jwhZkaI7GdPVmiEIwiDlNPHwQsSkpXgqn7EszePFMsUFwh5rC5dstzZJgWP44MBQKow=
+	t=1774551844; cv=none; b=hOaUcpFqnUmsjDhSIOOoBUPlJ8+VuDV3Sbd1ETpcQQ7DSw2oFQAHQPY9X/iV4goICXc+WZPdccm8AKYvrc7LDDPTVIW1R0e8wmgY/sHTv1LAfltlOEZo7OS9cIXyDabv7VejffSFZMA9NAwJhA81QdQ8k2JtGUr7swBtFakqJao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774546211; c=relaxed/simple;
-	bh=DAU4SfHW0Z5kEwZHRmCMRMCWV+k23xpMa0Jz8WSqOAo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GzaNcdB1Mk3SKEamuLhshkDOJltMwq5rht69D/1dXem1IV9uwvtjwE8Xg02kBYdFI37919l2Aa/xpT9FC0U53jbzbC9PMpJ7Pjziprm4luSwV7a4ROTB6ShRAC3MagZgbvSWJ7gDlQ0MS7Vq70Zn2B8gAyW2tWrfDx8Kgdc9vaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=gC6GIeVi; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=DAU4SfHW0Z5kEwZHRmCMRMCWV+k23xpMa0Jz8WSqOAo=;
-	t=1774546209; x=1775755809; b=gC6GIeViZW3fLFFg5mAaSYcqYAKvfMGdtHJgdRpWjUcB5et
-	uNXYm74tceWA716adlEAtH/uqzBgGiTKyEO70t8YCZvoSwC4zcQLoV36svU7DGCSqQuJWH4l5ehel
-	N+a0oaHD4G3qj7QmDP02NOgadmOQKsSSvImnfJG4iybHvqlA89LmTcSgErvlcrD5pKfIHrA9Wdyn1
-	j2dlD5mYLH0XnNOtRpX/v1NdJ7fFzrLK9XIy36f+PihgOvC2IeBGgpAyDyopo5PNWQ6irQ5knu06H
-	rmdhcRzKwgGOrbsAtbmoefWnCGzFQsErh05cwmIHQIsYSQXbx6KE40hF+4yTFTQQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1w5oWu-0000000DDEs-0Q9U;
-	Thu, 26 Mar 2026 18:30:00 +0100
-Message-ID: <94dad6848516ffb71967c2832c923f153d14e5d5.camel@sipsolutions.net>
-Subject: Re: [GIT PULL] wireless-2026-03-26
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Date: Thu, 26 Mar 2026 18:29:59 +0100
-In-Reply-To: <936e4100-5e3e-4c3a-8598-6724d904deac@redhat.com>
-References: <20260326093329.77815-3-johannes@sipsolutions.net>
-	 <936e4100-5e3e-4c3a-8598-6724d904deac@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1774551844; c=relaxed/simple;
+	bh=vBUk8AlvIl2Sm9Ya8jdpATcn3CTWo+D4uwNu5b4d3xc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=upPvEl0Wr5pOe68sngUheU5ob+2/DHmqcf+kOcDpgg2DPQ03ANI5eKKhy42DyGaPobie9pntB+u6MOJL0xyp13ntw9o5qLcFbgSIJXYuarlqFgyLkocZwCrgs6VarMejN6VF59th5t8hH6cj3lsOdcHfrYPrPwvA2uPC3HBkOMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=TjMDUMtI; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
+	s=key1; t=1774551831;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2nKOrQu/q+fU5meJzN4ZZdsdpjtXwGQWpbKXuDrdLOI=;
+	b=TjMDUMtIJ/7IoigppoL+DTJfUqlnRSf24SQVC7lanDwzSqZxyQBsw+n1+8rndwlh1yijiK
+	Riz+vX7YLNG/U1IWLFmMMJL6mqCF7JRrj+Yw5pBOtFzDuPlY+iDlAFMN/zOISl7q3cjaHb
+	ttHK6cEq/t6K06Mjc+HlIOtb9XhZBnPmNfA7cKq+Heshge4pY2bcBjvf1xFD81gzA26s8I
+	BoqVg/LTaesJZrN44CwR+sHYVNI8S77aXS3WLqOA3H7Xo2Ze1XghhtjKHND9IGSar13iYF
+	ouOue0c9C5v7Ea0SUIzzb/C6+QEX79WMP8yiBfsY3q966LQ3tXGYbM5eyM1ylA==
+From: Lucid Duck <lucid_duck@justthetip.ca>
+To: nbd@nbd.name,
+	lorenzo.bianconi@redhat.com
+Cc: sean.wang@mediatek.com,
+	linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	morrownr@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH wireless-next] wifi: mt76: mt7925: add Netgear A8500 USB device ID
+Date: Thu, 26 Mar 2026 12:03:46 -0700
+Message-ID: <20260326190346.415226-1-lucid_duck@justthetip.ca>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34003-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[mediatek.com,vger.kernel.org,lists.infradead.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-34004-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[justthetip.ca:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A77DE33925C
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B9EEE33AB8B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 2026-03-26 at 18:24 +0100, Paolo Abeni wrote:
-> On 3/26/26 10:31 AM, Johannes Berg wrote:
-> > And ... more fixes from drivers came in, notably iwlwifi with
-> > a bunch of things (their maintainer had been on vacation).
-> >=20
-> > I'm going to be on vacation next week, but I'm also not aware
-> > of anything missing from drivers etc. right now, so we'll see.
-> > I doubt this is the _last_ pull request for 7.0, but I think
-> > not much more will come in.
-> >=20
-> > Please pull and let us know if there's any problem.
->=20
-> Blame on me, I left this one out of my bag, and it missed today net PR
-> for Linus.
+Add USB device ID for the Netgear A8500 (0846:9050) which uses
+the mt7925 chipset.
 
-No worries, I just wanted to get it out before I go mostly offline for
-the next week, so it's not stuck on me :)
+Cc: stable@vger.kernel.org
+Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/usb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-johannes
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+index d9968f038..e44f0cafd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+@@ -12,6 +12,9 @@
+ static const struct usb_device_id mt7925u_device_table[] = {
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0e8d, 0x7925, 0xff, 0xff, 0xff),
+ 		.driver_info = (kernel_ulong_t)MT7925_FIRMWARE_WM },
++	/* Netgear, Inc. A8500 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9050, 0xff, 0xff, 0xff),
++		.driver_info = (kernel_ulong_t)MT7925_FIRMWARE_WM },
+ 	/* Netgear, Inc. A9000 */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9072, 0xff, 0xff, 0xff),
+ 		.driver_info = (kernel_ulong_t)MT7925_FIRMWARE_WM },
+-- 
+2.53.0
+
 
