@@ -1,86 +1,86 @@
-Return-Path: <linux-wireless+bounces-33925-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33926-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIycOsD2xGmC5QQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33925-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:05:04 +0100
+	id IFMALar1xGld5QQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33926-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:00:26 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BC6331E5F
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:05:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AFAC331CA5
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:00:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E60130347AC
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 08:53:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D08E3040FA1
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 08:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E9C3B960F;
-	Thu, 26 Mar 2026 08:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A163B9DA4;
+	Thu, 26 Mar 2026 08:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Se+QCkHp"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="axs6ryHJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EF7238C0D
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 08:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFB73B8D58
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 08:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774515177; cv=none; b=SN0XOibxPNweVfQCgn4IinLZRtsdrIuV66PRS13SE1DcwtLHQR072zdu8SBfFeQKbUYmoCrNFnzH63tU7KtMdZ/3YXLsLv/5b9Q5vYybuaJy5nckhB/ZLgSxB25HNCaO7UTSDNi2vQPoLnO/ODTy9EKCMeppFCpJMroILDWkF9o=
+	t=1774515188; cv=none; b=ShZdwuI5hkxoTPqQ2hs26XEhfF7cWgX+Y90QofzTanWQbwlAl40qN8oRl95TtrVVGKuAIHTMPt3bwHmUdE94cA4G9Gx8+KCXcO4ibxoTnUQh1lxqrVfSnRc3BWp8zdqy5mup/3ZwExVtOipCYeZszxlIo4HXqQdEuTOVdYg86L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774515177; c=relaxed/simple;
-	bh=1TFlh6vX9rIf+AI3Yi6Yz4mnrOkBXxXUYpjspg6Jam4=;
+	s=arc-20240116; t=1774515188; c=relaxed/simple;
+	bh=O1jN7BD1GGh6tS7iK1iKMQNeemAgg7gH0h2lUJMtyzU=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=kTEHVILjj4QN1RHhi2Ix0gFDQMGrTO7iMoTO6Q9/28+XBNpIJIRlFWLVEuhlxPxS7BgKICIb7JVLL3EEALRVhKtqBTtzUKm10q80RyURf8SfXDCl0lCdp8AVwkSsiP2W6g2xPWDd1nFBp09RETVyI4B9sq4EzhmfAfbMi/2AcOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Se+QCkHp; arc=none smtp.client-ip=209.85.128.47
+	 In-Reply-To:Content-Type; b=iBRftU9sgby/tIHPD3EAKtw1H8w6vSaLh4hSS3pQVDRU3WTzX7nahvDyffbovb0jMQNkqjq0TCdIC8CpaxgJUopiNIEbDFTGDzu/yqks6Zdlw/Tk2aGzeS/HFbCezp70r7ZOnqNTc72xx9Jvtxhp1BWfSTkDjcAFfE7ORC7Ux5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=axs6ryHJ; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-487012ce896so4112685e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 01:52:55 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4852b81c73aso6159065e9.3
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 01:53:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774515174; x=1775119974; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1774515186; x=1775119986; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=alkbuVKROditw0aGu/OnnUsWfxL3CtIz8SG2uW8L1eU=;
-        b=Se+QCkHpvRTw1iYGVrCu2wDTR8CVJHWaaflMNuMgVvu9uc/HzMRfz7is2tAbcRGBS5
-         IgeUCKCGcBT2mv7mU+/3UXh4unqw+9KGg5nrCSl0IZl8l6Tp0qhXCuHgfO3b310n5SbI
-         rmOT8FJWELPRuyF8S0909JVSFf/I7o050/xmoVDoGtl8bER7cvxYwkJJVmb+wfxAG79C
-         3AhCH3SI1sqxNQrosTH+eWGj9xnJaIa1wgZf1oMgIPsbl94Qg078Q52oHUcN24dc0wkF
-         OTqGxfWu+ZmgidGWSH3NOaf+/ctPPWY6s7r5WCbTHf1PUBeVdiZc97p4EGh1azw3ZjP8
-         V9dA==
+        bh=gDXG9M4VD8sbt4ubZpnvKniIhpg/LpwkxR7DgYK7GD0=;
+        b=axs6ryHJXk5TQYWk7R/Kyg7ny8VkbnGVt2IMpuKP+V1GgNsSGWpN+ue/l9Nyj+51y0
+         wjAb4BG/0bf+/7K9LZoKW4RX8Sd9AZKp0p/zQT/2J1RwB0v8WaChdzz6xdmDnNHB8NFb
+         XflIkk+12f6sjmwKEEBieidkOqqOq0zP1SqYURMQZapvHnGBQGmoR6jRehd+bsoWuko7
+         aEgVfP8DHKZIFPkkwz3C2lMfeLQkU2yGu+jXBqRumu79AlpzHTfWvHHocRu0ANszj/rC
+         3EmmuDlsxwF6Ast3ADIWIF+GTMWbP+IWfSlQr27xmSSrGqUOBizGgKp62iJDdQbrrt45
+         yhHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774515174; x=1775119974;
+        d=1e100.net; s=20251104; t=1774515186; x=1775119986;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=alkbuVKROditw0aGu/OnnUsWfxL3CtIz8SG2uW8L1eU=;
-        b=sojzDHtz/v2f15R56/22OzK80QUeyq8wMMczQePiUImm8VziiAxWKVHter8KGZnGd2
-         3OWzVETjfi6cG7n3uWe7ATekizng5i3T17gwNu9UP/ezalUSK4X3nD3Pat/rZFq9ztai
-         ZwuggLUoXGgamaFUq0ejeh8aOObUXdbxPpYrydYWW1PvrnhJOu+asw4uAbglV/+4ZkEb
-         UT/HtWLpz7lnhpCjNBLw0jNYADcZv5V0CqboZ/ucFzYpEIZeqo9abO1FIXSPwtdEnC9h
-         +h5G3HD5iQthFf+X5+dHwGYUIhgATPo/8tWjcGSuQHsHcN/JvIgUxr/hdqmuYGaYa129
-         Qk+A==
-X-Forwarded-Encrypted: i=1; AJvYcCUanvV44NETlXl1oOrlV6l2gtIsTQ2vpns/Um3DlYQsf77+qZp1scfkXYsHTSaS02o15eecrEm053DptrGqOQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywe23D1umIjjtygcwOIU4IZ5U4STvNRLvGh/Abk8r63rsxrBSmD
-	fkVmmPh/W5wYgUiDCGTHW6sUKtHDfg7vqrM1p4Z61Vp38SiCrhoBKOIPEC4S4xKWYbY=
-X-Gm-Gg: ATEYQzynASh8s1cgUHOFsalc7soDGHT0FVJHhyfn98/QKtuyp0ji2sS3/6iDoK+xe8R
-	7VtRJ0KsW+dEHaEWFu02FQRGVkAfVdc9uTXNi3HSmfhgJUc3ri//206zBwc+rG5HroXZ2CfZQyR
-	q/FIfkkfziTunBAGTr8Qlh+Clky8twOR+N6vqypl709OKl1tY39QQI7IWprjonQmPTl1DWLNdMn
-	rbnPkCZPOEUyhk+ULwfyuhkSfINnKulF/vqSz2gloO4rPknJ4CV/93CobeeUwDBx5EVTw1+u2KQ
-	7IRlkVJBjxsOxk4ZyRp8N0W24ADSuLjGEvayszCjZUOa1wXgSDMqACOizjuGyYogruGoi0A+8jk
-	sB+5mL+3cRHKpUpyXTrE+s1JrDMUPbDcjro3dfFsdHo5SiFNw6R7VdNNL8xIu3hP/88hBlKsZ8K
-	swL1h8o0NkkvLqVk1QBG0VIDyIch7UGTveaEy0+dchpalcAKn1gChp9PCkMteALNyFClnnGESdh
-	2BnfNI=
-X-Received: by 2002:a05:600c:4ed4:b0:46e:4e6d:79f4 with SMTP id 5b1f17b1804b1-487160083f4mr106443395e9.15.1774515174254;
-        Thu, 26 Mar 2026 01:52:54 -0700 (PDT)
+        bh=gDXG9M4VD8sbt4ubZpnvKniIhpg/LpwkxR7DgYK7GD0=;
+        b=rW5Cbp8f3moLDqGcXMRE6laIc/p3KAecZc6W3DT5XoE4Xcc7Ute2fq51BpypJuvc67
+         +t+C7/siYoz4RdVl8AypqOcTay+V2gBkRyvNM9r39+Vw15yPIj2aaehPO8jEQdwqVtyp
+         uAwgZn3QAtK6+Ag9r5PZfsrGb/8mVlElFAvHCLuJ350Xsy5utZkzLToZmiL+hGys7KFb
+         ZS+nqHO5njtMX7H67GDOg2CLUkrxrqxibLXgtlU/yJi5mpwSQOS1MbuIpnFFlEbGCu8O
+         pd5Sezvivd9O71IFPgiAMcPfxaqiX6fbIo1R0jiSbRaP+gNAIkVTZQOsQ2fcbsD5MPKp
+         FAoA==
+X-Forwarded-Encrypted: i=1; AJvYcCW19M5LCHuD/RQ0iWSSw+t9p4g29l0wHLFG8myBF+uDMnXnq0Xa+3HPV5WDfW3cMK+y7OPUsFZ/0Q7K/EIjAg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUpcyejZPiHd655ZXTkLCIdhgB3rXfdgvgz6gLBp1vZGhysM1B
+	38pKGIAloj+bD01RbajzRk9ItWs/y6PkcTaGoNJEnIqpn+Al9eGWeCjrGcWVle7amUE=
+X-Gm-Gg: ATEYQzyqs1CZcH7S1kEltm2LJOxmfCmftaWqrbcO8AmdLoJ7uErqzPMIxECkaX0f4Wl
+	R8VFSunz0jOKFF8Hoq5aaUNgQ+e64OhKCKb8lrojT0/34kWE57gf2hw0k9b5HmYmqQEzqlrltBr
+	T9Z90bXT40LSND/VPZp5OwFIqtzM5O6dP9QpXnjTLegTo9nvLNKjeVl6/jBohy/GEHyYJSAqBlx
+	720A1BPBBEjwh7HUQsDDDorYGmj3duKnHZePzZ7Hq6S0szw2jxhjWI3UUSAbNikR8bH0zvkea+F
+	6tAW/vG4GQZP3xUMumqXFkwIUAV/NR3BP+Texr/YhbOqSU/UJeWsOBZHxggyDKQHhFD29Cxnnb5
+	rpC5oALqGD9J6w+NAJLGUuMZbNK2VcuvTI8L2wY8GMUx8B8K/K/qRDnOamjkXPkAWl368ghBAUN
+	50TQKFhHQkQcldTBNKgmG6ljywSyQghuFvv/uapUhdiFO/ZdQt5pTyr3TPRQf/+D8sx4AzlwTpA
+	9oOgdw=
+X-Received: by 2002:a05:600c:c490:b0:485:3ff1:d5ed with SMTP id 5b1f17b1804b1-48715fc7437mr97262695e9.1.1774515185800;
+        Thu, 26 Mar 2026 01:53:05 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:106d:1080:8431:f88b:714d:f78d? ([2a01:e0a:106d:1080:8431:f88b:714d:f78d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b9179b212sm6621276f8f.0.2026.03.26.01.52.53
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919e708asm5819184f8f.36.2026.03.26.01.53.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Mar 2026 01:52:53 -0700 (PDT)
-Message-ID: <7c207f00-fff3-4506-858e-db7dfdc32ccd@linaro.org>
-Date: Thu, 26 Mar 2026 09:52:53 +0100
+        Thu, 26 Mar 2026 01:53:05 -0700 (PDT)
+Message-ID: <d39c0e43-8c62-4a41-895a-5384dc365c2a@linaro.org>
+Date: Thu, 26 Mar 2026 09:53:04 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,7 +90,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Neil Armstrong <neil.armstrong@linaro.org>
 Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v4 4/9] arm64: dts: amlogic: t7: Add PWM pinctrl nodes
+Subject: Re: [PATCH v4 5/9] arm64: dts: amlogic: t7: Add PWM controller nodes
 To: Ronald Claveau <linux-kernel-dev@aliel.fr>,
  Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
  Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
@@ -99,9 +99,10 @@ To: Ronald Claveau <linux-kernel-dev@aliel.fr>,
  Johannes Berg <johannes@sipsolutions.net>, van Spriel <arend@broadcom.com>
 Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org
+ linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
+ Nick Xie <nick@khadas.com>
 References: <20260325-add-emmc-t7-vim4-v4-0-44c7b4a5e459@aliel.fr>
- <20260325-add-emmc-t7-vim4-v4-4-44c7b4a5e459@aliel.fr>
+ <20260325-add-emmc-t7-vim4-v4-5-44c7b4a5e459@aliel.fr>
 Content-Language: en-US, fr
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
@@ -128,200 +129,133 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro
-In-Reply-To: <20260325-add-emmc-t7-vim4-v4-4-44c7b4a5e459@aliel.fr>
+In-Reply-To: <20260325-add-emmc-t7-vim4-v4-5-44c7b4a5e459@aliel.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-33926-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33925-lists,linux-wireless=lfdr.de];
-	FREEMAIL_TO(0.00)[aliel.fr,baylibre.com,googlemail.com,kernel.org,linaro.org,sipsolutions.net,broadcom.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	RSPAMD_URIBL_FAIL(0.00)[0.0.117.48:query timed out,5a000:query timed out,5e000:query timed out,0.0.226.144:query timed out];
 	HAS_ORG_HEADER(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	FREEMAIL_TO(0.00)[aliel.fr,baylibre.com,googlemail.com,kernel.org,linaro.org,sipsolutions.net,broadcom.com];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:dkim,linaro.org:email,linaro.org:replyto,linaro.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,aliel.fr:email];
-	HAS_REPLYTO(0.00)[neil.armstrong@linaro.org];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[pwm.0.0.125.0:query timed out];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[neil.armstrong@linaro.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	HAS_REPLYTO(0.00)[neil.armstrong@linaro.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	REPLYTO_EQ_FROM(0.00)[]
-X-Rspamd-Queue-Id: 58BC6331E5F
+X-Rspamd-Queue-Id: 6AFAC331CA5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 On 3/25/26 10:15, Ronald Claveau wrote:
-> These pinctrl nodes are required by the PWM drivers to configure
-> pin muxing at runtime.
+> Add device tree nodes for the seven PWM controllers available
+> on the Amlogic T7 SoC, using amlogic,meson-s4-pwm as fallback compatible.
+> All nodes are disabled by default and should be
+> enabled in the board-specific DTS file.
 > 
+> Co-developed-by: Nick Xie <nick@khadas.com>
+> Signed-off-by: Nick Xie <nick@khadas.com>
 > Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
 > ---
->   arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 136 ++++++++++++++++++++++++++++
->   1 file changed, 136 insertions(+)
+>   arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 63 +++++++++++++++++++++++++++++
+>   1 file changed, 63 insertions(+)
 > 
 > diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-> index 62c87d0ef7065..eb09a26bcd0e0 100644
+> index eb09a26bcd0e0..581cdaebfe637 100644
 > --- a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
 > +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-> @@ -307,6 +307,142 @@ mux {
->   					};
->   				};
+> @@ -511,6 +511,69 @@ sec_ao: ao-secure@10220 {
+>   				amlogic,has-chip-id;
+>   			};
 >   
-> +				pwm_a_pins: pwm-a {
-> +					mux {
-> +						groups = "pwm_a";
-> +						function = "pwm_a";
-> +						bias-disable;
-> +					};
-> +				};
+> +			pwm_ao_ef: pwm@30000 {
+> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
+> +				reg = <0x0 0x30000 0x0 0x24>;
+> +				clocks = <&clkc_periphs CLKID_PWM_AO_E>,
+> +					 <&clkc_periphs CLKID_PWM_AO_F>;
+> +				#pwm-cells = <3>;
+> +				status = "disabled";
+> +			};
 > +
-> +				pwm_ao_a_pins: pwm-ao-a {
-> +					mux {
-> +						groups = "pwm_ao_a";
-> +						function = "pwm_ao_a";
-> +						bias-disable;
-> +					};
-> +				};
+> +			pwm_ao_gh: pwm@32000 {
+> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
+> +				reg = <0x0 0x32000 0x0 0x24>;
+> +				clocks = <&clkc_periphs CLKID_PWM_AO_G>,
+> +					 <&clkc_periphs CLKID_PWM_AO_H>;
+> +				#pwm-cells = <3>;
+> +				status = "disabled";
+> +			};
 > +
-> +				pwm_ao_b_pins: pwm-ao-b {
-> +					mux {
-> +						groups = "pwm_ao_b";
-> +						function = "pwm_ao_b";
-> +						bias-disable;
-> +					};
-> +				};
+> +			pwm_ab: pwm@58000 {
+> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
+> +				reg = <0x0 0x58000 0x0 0x24>;
+> +				clocks = <&clkc_periphs CLKID_PWM_A>,
+> +					 <&clkc_periphs CLKID_PWM_B>;
+> +				#pwm-cells = <3>;
+> +				status = "disabled";
+> +			};
 > +
-> +				pwm_ao_c_pins: pwm-ao-c {
-> +					mux {
-> +						groups = "pwm_ao_c";
-> +						function = "pwm_ao_c";
-> +						bias-disable;
-> +					};
-> +				};
+> +			pwm_cd: pwm@5a000 {
+> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
+> +				reg = <0x0 0x5a000 0x0 0x24>;
+> +				clocks = <&clkc_periphs CLKID_PWM_C>,
+> +					 <&clkc_periphs CLKID_PWM_D>;
+> +				#pwm-cells = <3>;
+> +				status = "disabled";
+> +			};
 > +
-> +				pwm_ao_c_hiz_pins: pwm-ao-c-hiz {
-> +					mux {
-> +						groups = "pwm_ao_c_hiz";
-> +						function = "pwm_ao_c_hiz";
-> +						bias-disable;
-> +					};
-> +				};
+> +			pwm_ef: pwm@5c000 {
+> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
+> +				reg = <0x0 0x5c000 0x0 0x24>;
+> +				clocks = <&clkc_periphs CLKID_PWM_E>,
+> +					 <&clkc_periphs CLKID_PWM_F>;
+> +				#pwm-cells = <3>;
+> +				status = "disabled";
+> +			};
 > +
-> +				pwm_ao_d_pins: pwm-ao-d {
-> +					mux {
-> +						groups = "pwm_ao_d";
-> +						function = "pwm_ao_d";
-> +						bias-disable;
-> +					};
-> +				};
+> +			pwm_ao_ab: pwm@5e000 {
+> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
+> +				reg = <0x0 0x5e000 0x0 0x24>;
+> +				clocks = <&clkc_periphs CLKID_PWM_AO_A>,
+> +					 <&clkc_periphs CLKID_PWM_AO_B>;
+> +				#pwm-cells = <3>;
+> +				status = "disabled";
+> +			};
 > +
-> +				pwm_ao_e_pins: pwm-ao-e {
-> +					mux {
-> +						groups = "pwm_ao_e";
-> +						function = "pwm_ao_e";
-> +						bias-disable;
-> +					};
-> +				};
+> +			pwm_ao_cd: pwm@60000 {
+> +				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
+> +				reg = <0x0 0x60000 0x0 0x24>;
+> +				clocks = <&clkc_periphs CLKID_PWM_AO_C>,
+> +					 <&clkc_periphs CLKID_PWM_AO_D>;
+> +				#pwm-cells = <3>;
+> +				status = "disabled";
+> +			};
 > +
-> +				pwm_ao_f_pins: pwm-ao-f {
-> +					mux {
-> +						groups = "pwm_ao_f";
-> +						function = "pwm_ao_f";
-> +						bias-disable;
-> +					};
-> +				};
-> +
-> +				pwm_ao_g_pins: pwm-ao-g {
-> +					mux {
-> +						groups = "pwm_ao_g";
-> +						function = "pwm_ao_g";
-> +						bias-disable;
-> +					};
-> +				};
-> +
-> +				pwm_ao_g_hiz_pins: pwm-ao-g-hiz {
-> +					mux {
-> +						groups = "pwm_ao_g_hiz";
-> +						function = "pwm_ao_g_hiz";
-> +						bias-disable;
-> +					};
-> +				};
-> +
-> +				pwm_ao_h_pins: pwm-ao-h {
-> +					mux {
-> +						groups = "pwm_ao_h";
-> +						function = "pwm_ao_h";
-> +						bias-disable;
-> +					};
-> +				};
-> +
-> +				pwm_b_pins: pwm-b {
-> +					mux {
-> +						groups = "pwm_b";
-> +						function = "pwm_b";
-> +						bias-disable;
-> +					};
-> +				};
-> +
-> +				pwm_c_pins: pwm-c {
-> +					mux {
-> +						groups = "pwm_c";
-> +						function = "pwm_c";
-> +						bias-disable;
-> +					};
-> +				};
-> +
-> +				pwm_d_pins: pwm-d {
-> +					mux {
-> +						groups = "pwm_d";
-> +						function = "pwm_d";
-> +						bias-disable;
-> +					};
-> +				};
-> +
-> +				pwm_e_pins: pwm-e {
-> +					mux {
-> +						groups = "pwm_e";
-> +						function = "pwm_e";
-> +						bias-disable;
-> +					};
-> +				};
-> +
-> +				pwm_f_pins: pwm-f {
-> +					mux {
-> +						groups = "pwm_f";
-> +						function = "pwm_f";
-> +						bias-disable;
-> +					};
-> +				};
-> +
-> +				pwm_vs_pins: pwm-vs {
-> +					mux {
-> +						groups = "pwm_vs";
-> +						function = "pwm_vs";
-> +						bias-disable;
-> +					};
-> +				};
-> +
->   				sdcard_pins: sdcard {
->   					mux {
->   						groups = "sdcard_d0",
+>   			sd_emmc_a: mmc@88000 {
+>   				compatible = "amlogic,t7-mmc", "amlogic,meson-axg-mmc";
+>   				reg = <0x0 0x88000 0x0 0x800>;
 > 
 
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
