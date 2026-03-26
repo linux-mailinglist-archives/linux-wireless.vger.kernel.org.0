@@ -1,154 +1,171 @@
-Return-Path: <linux-wireless+bounces-33989-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33991-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CE1XA2JoxWl1+AQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33989-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 18:09:54 +0100
+	id KIiLKIJpxWl1+AQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33991-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 18:14:42 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74137338EE6
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 18:09:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C1A338FA5
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 18:14:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F8C0304C104
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 17:03:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 476B330D5C73
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 17:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500EC41C2F3;
-	Thu, 26 Mar 2026 17:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521BF3ECBDA;
+	Thu, 26 Mar 2026 17:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XXomoRsP"
+	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="jJHpo35c"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB0E27FD75
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 17:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB68641C2F3
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 17:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774544616; cv=none; b=XGqWyw+AMpk51eNVACfRKu6PB8xmuY7U53zmt6IV5smwsnTcP3f7KKQjszEE3jhnQpkWWpUX2otVfv/ldr6hULMty4xag0fa/W4GE5hZwK0ajLar/TVAr2xv1sG/KgSsYfazPTXzCUzROF1QC4o+YcGiK5lGnJVorcLyI7CW+T4=
+	t=1774544660; cv=none; b=PpNQ5mgyOBzi1KPbCwY15MbgjFAxLckyDhKq1/vysViuCGVyc3x3TlbIRiyqcU5ca9Ak+nAwkxnNs80x3QzsPUfsAs+BS0nXBi9KnEaU3q+TeEO+x/o5fWUfXyTQoMS1aJbuk8TzwTTKD61YoH6ccdiVDa7xXLGoi8ZicuU+XHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774544616; c=relaxed/simple;
-	bh=7x/jKENK9I09Oetj9dx28SpTQmQOGoEU4e6h7qbsGGc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=MTP0eaa8hZdpQTZapbt7H3j1CuG4PwXEOtqbz6KBemTTK/cZNyOVJysz8i67xYNX5sqZWKTz9J0PETBJ/f1FGiop1crV/VRybE8fyB9LEyKnBg4yVuNV9e9BAdxekVfVjWzXxVzT8G2YBDc0wljNgqab1R/2LGfYn45gJzMpdRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XXomoRsP; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so11389405e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 10:03:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774544613; x=1775149413; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZTEOswdRhtKKDkdXolqm95+3sw1A19qFgw7JwHVhcaA=;
-        b=XXomoRsPW6qqXhMixksr6YPtTkNp1wbRRRZjyxEk+IWUJ6WxzbHCxOolYxf3p6Zzlo
-         +OGo+ERXy+lSjQLma34rPBsY6cpaVuJe1HVmSWrzXYcgzek8Nq2e/BBxsEWF7C9Kdkd4
-         oBpwSQt5u39emyj3DMZda26rO0lqu5x/ORQeOkTSx9N8r2Mt1N0AkdMok1KN2ex2wSPs
-         FJA5X6ibFt572Za+Z2frtlBKV1RDXc9fbsaMXyV+jTs2hcSv+84TTW6yaLFLG4dsk+/h
-         dm5xXkainTvLeHejEJ6J+VYYGzVAJUwDcXeRhStyg+ZjKGL7kyw2aVc3aUdOnSTVAxca
-         0Sgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774544613; x=1775149413;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZTEOswdRhtKKDkdXolqm95+3sw1A19qFgw7JwHVhcaA=;
-        b=KYcBmrWtAiqgNEgN5+deZ8ltRzjZyW9t+TqPoSTpQ+tbKrWxaKrapnwRH2pQE6QlOS
-         z2NF0/l+qxmPbGvrGYYHTZWLeJsh7oqhKmKc6Zp+6hF4vNR+mNlrXTWTLJ532kRbpB93
-         x+vyRa5bIVrYt2YztdIPMolqWNgVPB7KLPeiDNPryYoP1ExLHNmwbHMGu4KStFDnadTD
-         BjmenBJHMXH+nARRNyZMr888nuilbQETqIlmBrw/oMed0rTcGiRg0OYDeDjJMa59IE55
-         H9mE1ZVyxJMshsYE627c4qS93jJGTUU+REifJQuEAsBNzjz3cI1MvkSq2P3TacSdHUDu
-         wuuw==
-X-Gm-Message-State: AOJu0YxcaiuUpBE/EMke0lciXFsuB9rgLpNk8VAKn2KdiO7PFCNuEsKb
-	TxdsM77sTweHy0o5GgUROpQ2stO8ntkWYhGDUEMJKKz42TTHFtGIK4p5X40ILA==
-X-Gm-Gg: ATEYQzwMQt9tVg4m9wlNfMvC8XrZ/G3oBu3bP2VSiEvVu5oiUMxbutDX3gFHrXXbi0l
-	8eAb1gM2f+EOcNlflpNYGK7+s1KV+R9eHXjoSh9nunmxZvrl9OymSIVwcxunLbSlWiueO3CfEMW
-	WIQvfL1i5GbCJVPOY0+ydItnqNLbde7SiMNFT0taR+loImxTBSyZPHBuCifLmBXwlOTQ5rUCNsA
-	K+Ux6p0UG/TNMXFL100Y/D6+Dg8HuI1Bq+jY01mZ1FtbabaYS/Djq86ZX4tcdumfoUB8Gs135rR
-	ICMGJ0thiQGWMTTxRQdZ0/VfMBX+VDJk9qZdf6wpV4MtSeucaZaG5RQP3VZN+6nsvMtijIPFVWN
-	chgruwhV9B2wBxpQYSAbvt2HNMTdXKnAPJwHUU0M4KCmpTPmvpfHwLzA5KVNoWw3EoIFNfY5RYY
-	jNnwbddgW+2qfPkH+wDRESmLP8ePDe4gU6Hw66R67X
-X-Received: by 2002:a05:600c:47c7:b0:487:20ee:bef6 with SMTP id 5b1f17b1804b1-48720eeca1cmr27306035e9.11.1774544613177;
-        Thu, 26 Mar 2026 10:03:33 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919e68a6sm11012075f8f.33.2026.03.26.10.03.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Mar 2026 10:03:32 -0700 (PDT)
-Message-ID: <eb447efe-466d-4494-86c2-2e4d2b882fce@gmail.com>
-Date: Thu, 26 Mar 2026 19:03:31 +0200
+	s=arc-20240116; t=1774544660; c=relaxed/simple;
+	bh=6O+Fb4y6hZGC1Ii/vWaybHRB6+JV10GYTuqP7uR3g5s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Wkwf6HbnHshilmD6mg6TJo6qNndZb8CYDxrjh0y+Y/llB9KACChOMwiWMgkBV6IZ0P7XK26eGa4IY6w8tvYIJr0evPuNPh0hVOyAppkx7lYQPOnmsPqA8Dn3dusir0/qq6syqhz11fd1RNgXIsSIR6DZy2Ehs+XPObmpnjhpxZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=jJHpo35c; arc=none smtp.client-ip=91.218.175.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
+	s=key1; t=1774544655;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rPLbETzywDZ/LXKktaa48OxW8xTevcANb3hp9TPiGq8=;
+	b=jJHpo35c6UoaYo0r2PqWNFsmNOrlCcnvuMLHUiaa7MH9jgeBIdS89t1NeuCeuPCPpMgYsm
+	IPbT/ufWg6suIGeNhKkzdMgB0WGk7qsn4JNaKiiNKCinNjz843LXNNcAc7LzbVCF6BQQe9
+	xiczeHZbn/cZoLfLbcuqbz9bPmc4bx1Mx9a5X1xlmmBap+SSjuzk/xETD4RrmaCSAxjmHc
+	GfjHRsplTQ5BXyAt7Ap6iQACQOwL6Yj6StAUAz5MNfWtW1gauRV26/89tBR1eeR9RlREb+
+	hFX6QqEAx218F6IqDiWKaKDmmUxFJjfzSVm9/3XCkUWV6rh0R6pAUkOzLtC5ZA==
+From: Lucid Duck <lucid_duck@justthetip.ca>
+To: sean.wang@kernel.org
+Cc: nbd@nbd.name,
+	lorenzo.bianconi@redhat.com,
+	linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	morrownr@gmail.com
+Subject: Re: [PATCH 1/3] wifi: mt76: connac: use a helper to cache txpower_cur
+Date: Thu, 26 Mar 2026 10:04:07 -0700
+Message-ID: <20260326170407.406431-1-lucid_duck@justthetip.ca>
+In-Reply-To: <20260325043318.13298-1-sean.wang@kernel.org>
+References: <20260325043318.13298-1-sean.wang@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH rtw-next 01/12] wifi: rtw89: usb: Disable MLO for now
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-References: <8549233f-dd83-4e77-be88-5e22ecd4f5f1@gmail.com>
-Content-Language: en-US
-In-Reply-To: <8549233f-dd83-4e77-be88-5e22ecd4f5f1@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33989-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33991-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[nbd.name,redhat.com,vger.kernel.org,lists.infradead.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[justthetip.ca:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 74137338EE6
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,justthetip.ca:dkim,justthetip.ca:email,justthetip.ca:mid]
+X-Rspamd-Queue-Id: E2C1A338FA5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-It's not yet clear how the TX queue/channel selection is supposed to
-work for RTL8922AU with MLO, and I can't test MLO anyway.
+Sean,
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
- drivers/net/wireless/realtek/rtw89/usb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Tested the full 3-patch series on MT7921AU. All three bands working
+correctly -- txpower reporting is fixed.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
-index 581b8c05f930..7a46ace34c25 100644
---- a/drivers/net/wireless/realtek/rtw89/usb.c
-+++ b/drivers/net/wireless/realtek/rtw89/usb.c
-@@ -1029,6 +1029,10 @@ int rtw89_usb_probe(struct usb_interface *intf,
- 		return -ENOMEM;
- 	}
- 
-+	rtw89_debug(rtwdev, RTW89_DBG_CHAN,
-+		    "%s: disable MLO for now\n", __func__);
-+	rtwdev->support_mlo = false;
-+
- 	rtwusb = rtw89_usb_priv(rtwdev);
- 	rtwusb->rtwdev = rtwdev;
- 	rtwusb->info = info->bus.usb;
--- 
-2.53.0
+Test environment:
 
+  Kernel:     6.19.8-200.fc43.x86_64 (Fedora 43)
+  Device:     MediaTek MT7921AU USB (0e8d:7961)
+  Firmware:   HW/SW 0x8a108a10, WM 20251223091148
+  AP:         Tri-band (2.4/5/6 GHz)
+  Regdomain:  CA (DFS-FCC), also tested US, JP, DE
+  Note:       Internet maintained via separate USB ethernet
+              adapter during WiFi testing
+
+Baseline (stock 6.19.8, pre-patch):
+
+  txpower 3.00 dBm on all bands
+
+Post-patch txpower:
+
+  2.4 GHz  ch 1   (2412 MHz, 20 MHz):   36.00 dBm
+  5 GHz    ch 100 (5500 MHz, 80 MHz):    26.00 dBm
+  6 GHz    ch 5   (5975 MHz, 80 MHz):    12.00 dBm
+
+All values match expected CA regulatory limits. Connectivity verified
+with 0% packet loss on every band.
+
+Stress testing (28 tests, 28 passed, 0 failed):
+
+  - Connect/disconnect: 10 cycles per band (30 total), txpower
+    correct and ping 0% loss on every cycle
+  - Band switching: 30 sequential hops (2.4 -> 5 -> 6 -> repeat),
+    txpower correct on every hop, ping 30/30
+  - Module reload: 15 full rmmod/insmod cycles of all mt76 modules,
+    txpower correct after every reload
+  - Throughput: 100-ping per band, 0% loss on all
+      2.4 GHz: avg 2.4 ms, max 23.6 ms
+      5 GHz:   avg 1.9 ms, max 8.0 ms
+      6 GHz:   avg 2.2 ms, max 3.3 ms
+  - Soak: 20-minute continuous test per band (60 min total),
+    txpower sampled every 30 seconds, never deviated
+      2.4 GHz: 40/40 samples at 36.00 dBm, slab delta -4 kB
+      5 GHz:   40/40 samples at 26.00 dBm, slab delta +16 kB
+      6 GHz:   40/40 samples at 12.00 dBm, slab delta -16 kB
+  - Memory: 50 connect/disconnect cycles, slab delta +64 kB
+    (negligible, no leak)
+  - Band-hop marathon: 200 random band hops, 200/200 pass,
+    ping 200/200 OK, completed in 1232 seconds
+  - Concurrent managed + monitor: txpower stable on all bands
+    with a monitor VIF present, ping 0% loss
+  - Regulatory domain switching: txpower correctly adjusts
+    per country on 5 GHz
+      CA: 26.00 dBm
+      US: 24.00 dBm
+      JP: 23.00 dBm
+      DE: 26.00 dBm
+
+Zero kernel warnings in dmesg throughout all testing.
+
+For context, I originally reported this bug and submitted a fix in
+January (v1 through v4 on linux-wireless, as Lucid Duck). Patches 1
+and 2 in this series address the same core issue -- capturing the rate
+power loop output and subtracting the path delta before caching
+txpower_cur. Patch 3 (the per-vif-link get_txpower callback) is a
+good addition that was not in my series.
+
+Reported-by: Lucid Duck <lucid_duck@justthetip.ca>
+Tested-by: Lucid Duck <lucid_duck@justthetip.ca>
 
