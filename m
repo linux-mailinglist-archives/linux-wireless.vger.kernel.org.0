@@ -1,221 +1,161 @@
-Return-Path: <linux-wireless+bounces-34006-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34007-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABc+NxqNxWlG/QQAu9opvQ
-	(envelope-from <linux-wireless+bounces-34006-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 20:46:34 +0100
+	id qL/RICWSxWlG/QQAu9opvQ
+	(envelope-from <linux-wireless+bounces-34007-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 21:08:05 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831E633B1BA
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 20:46:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7C033B409
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 21:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BEC1C30A8FD6
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 19:40:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C13D73033387
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 20:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357CF3A5E87;
-	Thu, 26 Mar 2026 19:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BC434B662;
+	Thu, 26 Mar 2026 20:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="XTH6vNZf"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="WLqHqDcQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0FB34D910
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 20:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774555683; cv=none; b=YVcGz68APO30wd/0sCj2JTGmDvaJQK0Tnpl+QqGAEBQsWj7dQgrPjn8FHjO02FH9mJNkLEDLgV7xRaWi8+3ykR4jPNCbD54G2uj/bDFm2sSFRtQ/rp4QkUSv3/3xe11imalrAdld4ocIo3xLVqL9vEOpCzp6GTLj7OC7kav3GaQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774555683; c=relaxed/simple;
+	bh=Ki03cfETuQQC/SsXxP87AraOT/QLYljp30z8tR3MGNM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r68Hj+M7LBsH2JYrayyWhUeXhkAUQ7Gu/9hsHnID5RSrb8xmwDztrB781Ljh9cOMWqZZEjJvb7hG2GFXzRHumR14TQ9ZQoBZ464s2F47C5bcdAMvu+tzJdWHDqOKeviHe+UB/HeVOKKxRTxRXCIAApJz7q101JscHKM34Jv4WKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=WLqHqDcQ; arc=none smtp.client-ip=148.163.129.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 31BE62AE737
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 20:08:01 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 016871C008F;
+	Thu, 26 Mar 2026 20:07:51 +0000 (UTC)
+Received: from pk3.candelatech.com (firewall.candelatech.com [50.251.239.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB05E34BA5A
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 19:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774554014; cv=none; b=MKlfLaNEflIAb9ga9Rhdg56KdukrR1311seNly/j0lDxNu1ydTmYcF9XVt9L4nCDV+yYZ/3z8guxGMcH8aRYGY/RYtPSUGWZH96Eokmg5xuKLAmXueSsDwrmpLrlfyUthH/VIfdBohSPMX4Cb9tHd9RzhEoc4WviURvVNhHoC+0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774554014; c=relaxed/simple;
-	bh=vrl0CXld5pnl3+j2iO7woriOvcxFLATcV9RLuYGwkcU=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=f+whBkSgEa4OY6DNv2Am+dp9k6dabxxrySEVpMwBtVEnCRJqlaDiSKHIzIPii+6H6QyuByz0WXlb8NVyE4aqi9mvd/xfx5soCuSwXAZjIU2D4r31C4c7eFYfEU7r93V4TqTHJFvPu2R55fc1OwkdENt0uO6Fq6QzqQK+u0GsU2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=XTH6vNZf; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 49BB713C2B0;
+	Thu, 26 Mar 2026 13:07:49 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 49BB713C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1774555669;
+	bh=Ki03cfETuQQC/SsXxP87AraOT/QLYljp30z8tR3MGNM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WLqHqDcQ4fQ8x/6PyyloNRMD3zH6NTeRh8DFb8+SXOEm4DocrerhQIaXM8R3I8WMo
+	 hDeNIGDKbWQYMsXzAE/fZ71nxoMA5WPkxpXMC10hNRuUQc/z5AMobIITCQJ/oTaZ6Y
+	 mbgk+9FAux/GXns7ynM1M5snYJIvx3NS98sCvAU8=
+From: dylan.eskew@candelatech.com
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com
+Cc: linux-wireless@vger.kernel.org,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	Dylan Eskew <dylan.eskew@candelatech.com>
+Subject: [PATCH] wifi: mt76: mt7996: limit work in set_bitrate_mask
+Date: Thu, 26 Mar 2026 13:07:38 -0700
+Message-ID: <20260326200737.3736975-2-dylan.eskew@candelatech.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1774553998;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2sSZdOlH6LcaXmEulL+Z3vD5W8JNjS8vj1IOyQwqalY=;
-	b=XTH6vNZfTs+Rhn/5LbLqBySMN0ZX5pl6xsbTh9654tQcRAh1k+4nFg2w4G1u1qCntQiaZ8
-	A/R2MUis4bsWUAwdlxAgvsKMoCQTVTKo5FYZ+UF5W86+DpeBTmUVbgxC4++ZpZuZrgdUd4
-	CJEUl378fYQ+f+HtmI79PftGLkYVsggFhKDl/3JVteu3ZiYS8a22o8T7OP9KUtpDC4JYac
-	9CXVos/p6+ikPQVwciRBc6BdRnFiAKhP5CmwYb+nAvENQrNDTM6rf7qlh3ECM895NMgvQF
-	+ztY6H8YDr09klaAyYgCcmhSwrhKLlLhwgvTQs0BGGViqdjhMKM87IDTt2Ed8Q==
-Date: Thu, 26 Mar 2026 19:39:49 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Paul Sajna" <sajattack@postmarketos.org>
-Message-ID: <425dcdb501ed6ebb0e652c58ef2c56c78754884b@postmarketos.org>
-TLS-Required: No
-Subject: Re: [PATCH v4 2/3] ath10k: Add device-tree quirk to skip host cap
- QMI requests
-To: david@ixit.cz, "Johannes Berg" <johannes@sipsolutions.net>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Jeff Johnson" <jjohnson@kernel.org>,
- "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konradybcio@kernel.org>
-Cc: "Amit Pundir" <amit.pundir@linaro.org>, linux-wireless@vger.kernel.org,
- devicetree@vger.kernel.org, ath10k@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- phone-devel@vger.kernel.org, "David Heidelberg" <david@ixit.cz>
-In-Reply-To: <20260325-skip-host-cam-qmi-req-v4-2-bc08538487aa@ixit.cz>
-References: <20260325-skip-host-cam-qmi-req-v4-0-bc08538487aa@ixit.cz>
- <20260325-skip-host-cam-qmi-req-v4-2-bc08538487aa@ixit.cz>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-MDID: 1774555673-W6umXQiqA__f
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;ut7;1774555673;W6umXQiqA__f;<dylan.eskew@candelatech.com>;f49eb8a899f4a60c9b856bf22a60d609
+X-PPE-TRUSTED: V=1;DIR=OUT;
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[postmarketos.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[postmarketos.org:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34006-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sajattack@postmarketos.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[postmarketos.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	FROM_NEQ_ENVFROM(0.00)[dylan.eskew@candelatech.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34007-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[candelatech.com:+];
+	FROM_NO_DN(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ixit.cz:email]
-X-Rspamd-Queue-Id: 831E633B1BA
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EF7C033B409
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-March 25, 2026 at 5:57 PM, "David Heidelberg via B4 Relay" <devnull+david=
-.ixit.cz@kernel.org mailto:devnull+david.ixit.cz@kernel.org?to=3D%22David=
-%20Heidelberg%20via%20B4%20Relay%22%20%3Cdevnull%2Bdavid.ixit.cz%40kernel=
-.org%3E > wrote:
+From: Dylan Eskew <dylan.eskew@candelatech.com>
 
+Calls to mt7996_set_bitrate_mask() would propogate work for all stations
+on the ieee80211_hw regardless of the vif specified in the call. To
+prevent unnecessary work in FW, limit setting the sta_rate to only the
+specified vif in mt7996_sta_rate_ctrl_update().
 
->=20
->=20From: Amit Pundir <amit.pundir@linaro.org>
->=20
->=20Some firmware versions do not support the host capability QMI request=
-.
-> Since this request occurs before firmware-N.bin and board-M.bin are
-> loaded, the quirk cannot be expressed in the firmware itself.
->=20
->=20The root cause is unclear, but there appears to be a generation of
-> firmware that lacks host capability support.
->=20
->=20Without this quirk, ath10k_qmi_host_cap_send_sync() returns
-> QMI_ERR_MALFORMED_MSG_V01 before loading the firmware. This error is no=
-t
-> fatal - Wi-Fi services still come up successfully if the request is sim=
-ply
-> skipped.
->=20
->=20Add a device-tree quirk to skip the host capability QMI request on de=
-vices
-> whose firmware does not support it.
->=20
->=20For example, firmware build
-> "QC_IMAGE_VERSION_STRING=3DWLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1"
-> on Xiaomi Poco F1 phone requires this quirk.
->=20
->=20Suggested-by: Bjorn Andersson <andersson@kernel.org>
-> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  drivers/net/wireless/ath/ath10k/qmi.c | 13 ++++++++++---
->  drivers/net/wireless/ath/ath10k/snoc.c | 3 +++
->  drivers/net/wireless/ath/ath10k/snoc.h | 1 +
->  3 files changed, 14 insertions(+), 3 deletions(-)
->=20
->=20diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wire=
-less/ath/ath10k/qmi.c
-> index eebd78e7ff6bc..e7f90fd9e9b83 100644
-> --- a/drivers/net/wireless/ath/ath10k/qmi.c
-> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
-> @@ -808,6 +808,7 @@ ath10k_qmi_ind_register_send_sync_msg(struct ath10k=
-_qmi *qmi)
->  static void ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
->  {
->  struct ath10k *ar =3D qmi->ar;
-> + struct ath10k_snoc *ar_snoc =3D ath10k_snoc_priv(ar);
->  int ret;
->=20=20
->=20 ret =3D ath10k_qmi_ind_register_send_sync_msg(qmi);
-> @@ -819,9 +820,15 @@ static void ath10k_qmi_event_server_arrive(struct =
-ath10k_qmi *qmi)
->  return;
->  }
->=20=20
->=20- ret =3D ath10k_qmi_host_cap_send_sync(qmi);
-> - if (ret)
-> - return;
-> + /*
-> + * Skip the host capability request for the firmware versions which
-> + * do not support this feature.
-> + */
-> + if (!test_bit(ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK, &ar_snoc->flags))=
+Fixes: afff4325548f0 ("wifi: mt76: mt7996: Use proper link_id in link_sta_rc_update callback")
+Signed-off-by: Dylan Eskew <dylan.eskew@candelatech.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index a8a6552d49f6..26b8c91db0a8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -1959,7 +1959,11 @@ static void mt7996_sta_rate_ctrl_update(void *data, struct ieee80211_sta *sta)
  {
-> + ret =3D ath10k_qmi_host_cap_send_sync(qmi);
-> + if (ret)
-> + return;
-> + }
->=20=20
->=20 ret =3D ath10k_qmi_msa_mem_info_send_sync_msg(qmi);
->  if (ret)
-> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wirel=
-ess/ath/ath10k/snoc.c
-> index f72f236fb9eb3..3106502275781 100644
-> --- a/drivers/net/wireless/ath/ath10k/snoc.c
-> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
-> @@ -1362,6 +1362,9 @@ static void ath10k_snoc_quirks_init(struct ath10k=
- *ar)
->=20=20
->=20 if (of_property_read_bool(dev->of_node, "qcom,snoc-host-cap-8bit-qui=
-rk"))
->  set_bit(ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK, &ar_snoc->flags);
-> +
-> + if (of_property_read_bool(dev->of_node, "qcom,snoc-host-cap-skip-quir=
-k"))
-> + set_bit(ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK, &ar_snoc->flags);
->  }
->=20=20
->=20 int ath10k_snoc_fw_indication(struct ath10k *ar, u64 type)
-> diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wirel=
-ess/ath/ath10k/snoc.h
-> index 1ecae34687c21..46574fd8f84ee 100644
-> --- a/drivers/net/wireless/ath/ath10k/snoc.h
-> +++ b/drivers/net/wireless/ath/ath10k/snoc.h
-> @@ -51,6 +51,7 @@ enum ath10k_snoc_flags {
->  ATH10K_SNOC_FLAG_MODEM_STOPPED,
->  ATH10K_SNOC_FLAG_RECOVERY,
->  ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK,
-> + ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK,
->  };
->=20=20
->=20 struct clk_bulk_data;
->=20
->=20--=20
->=202.53.0
->
+ 	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
+ 	struct mt7996_sta_link *msta_link;
+-	u32 *changed = data;
++	struct mt7996_vif *mvif = data;
++	u32 changed = IEEE80211_RC_SUPP_RATES_CHANGED;
++
++	if (msta->vif != mvif)
++		return;
+ 
+ 	msta_link = rcu_dereference(msta->link[msta->deflink_id]);
+ 	if (msta_link)
+@@ -1972,7 +1976,6 @@ mt7996_set_bitrate_mask(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ {
+ 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+ 	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
+-	u32 changed = IEEE80211_RC_SUPP_RATES_CHANGED;
+ 
+ 	mvif->deflink.bitrate_mask = *mask;
+ 
+@@ -1985,7 +1988,7 @@ mt7996_set_bitrate_mask(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	 * then multiple MCS setting (MCS 4,5,6) is not supported.
+ 	 */
+ 	ieee80211_iterate_stations_atomic(hw, mt7996_sta_rate_ctrl_update,
+-					  &changed);
++					  mvif);
+ 	ieee80211_queue_work(hw, &dev->rc_work);
+ 
+ 	return 0;
+-- 
+2.52.0
 
-Tested-by: Paul Sajna <sajattack@postmarketos.org>
 
