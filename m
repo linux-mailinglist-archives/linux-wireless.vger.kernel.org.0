@@ -1,86 +1,86 @@
-Return-Path: <linux-wireless+bounces-33974-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33975-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDseKLksxWnb7gQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33974-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 13:55:21 +0100
+	id yFrII7MuxWnb7gQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33975-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 14:03:47 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506E33358F8
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 13:55:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0F7335A98
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 14:03:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1A3173034535
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 12:55:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B5073011C64
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 12:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72EB6285C88;
-	Thu, 26 Mar 2026 12:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073492773CA;
+	Thu, 26 Mar 2026 12:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KJ8ufbuQ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lBBeooUG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF1E257459
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 12:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E6823D2AB
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 12:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774529718; cv=none; b=Hj1nMw0zMfVw+UnUVPelTuaPaRKPTVv0w3N+EnC3Kmm/wm/hnZ0CyN/N7cFa9xbu9JjPEPM84GqK+R0aFZR0g1UsD+3BzBvcO9AyaWkIuWhsJ4ftahuj0lKxmP68tjqddoAX1dZTby/U/BO2oS0QCPk9FsIW4nOiLWfX4sPti/g=
+	t=1774529768; cv=none; b=ZuvzNFYLduUdoFHW7BBTRLLHmYYKu9fu11loEjqjZO44zpXSDBr1Mu7ULzurO6nHJtcYwJdNwscg6JcYGtmlreQB1a7EZWf6sMOwOTd66R+zolufJaPZd+Q1NPGfxLRyyhnExIH0NR1owzMO4Br/wScM2aIg0I6UnTl+475Aj4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774529718; c=relaxed/simple;
-	bh=Y0FF9WEp5KmFXbC+L8OjWx066EP02rkF8OEbRbkcYEg=;
+	s=arc-20240116; t=1774529768; c=relaxed/simple;
+	bh=f5JciFCLHuQRid8O58UfBpq58kWGNO3IgcP/oZDy9Qk=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=eOiAkyMyQxeUerKqBeJnIDiQ90tH8rhnqhRmjrJ0tGX/f6cTOuYvoQSkAkfiak16v2k26LDC3zsi7wtjomdplKlErvbfl7gu1d5Wy1hbis+ZF07vr8tIWin+N9XXMtbK/nBfLgt4YVOTXrg4MWHS5LvjrSEYA+/gigpN1jSgYHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KJ8ufbuQ; arc=none smtp.client-ip=209.85.128.47
+	 In-Reply-To:Content-Type; b=qE9MF2y8B9/COtbWhx2IhFwvmZGRgMijP/a/wKz/ecW3tSbcpmiY2CqttCRgPEybFz/DP8TP/NJwdrRjhR99FjM/DMVWKRxk+dH2yf2SvqHudIF4o1anGct1fDALryGVIbf852Oa1CP4y1aAKVY1Qh7i6aaD0KfrnqQW/EgvTAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lBBeooUG; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-486fd3a577eso8203865e9.1
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 05:55:16 -0700 (PDT)
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48704db565eso13248395e9.1
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 05:56:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774529715; x=1775134515; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1774529766; x=1775134566; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=X67yw9hp70DJW5SbayvQBOmUIp03R92/bYFmSlkehKU=;
-        b=KJ8ufbuQUFmOzhQDZvCLZ6XVPxV0h6G5EVwow/IApzRkh/cr0RTs94Nvvn5GWcmRm8
-         0kYHkw5xqF3W5fR4MfNdp7XkttG9TpmjSKIS7ccHHwM4+CZD8cFEhsi3jzDp+zMRLHon
-         ooUmd85gyEX6sAo2VmMsSPxgkpNPO6x5Jgw496YopxCOoMqaAc35ql8xhhtlSFVtfFuO
-         XlTvhuzLydszWUNQG2vNjWiKrjsIp3DGG0fcnbnzC9wP9KYBvvxNchZdmGtN21UnGPKm
-         pvC47s7rP1SSXvLU7NofnInnhtY69HsiJfaVHtnlx806r5tkeRPX2gIioZNKSPWjpxwG
-         OxdQ==
+        bh=Yx9U8ru1kAXiSx+zB+95J2U/zt+/QpX2ZNGpavJgFb0=;
+        b=lBBeooUGTcVMGUmYIIsgsZSVPt+kb0NROOP2ua1CkbSAunz0UEWFqciKka5DHiJm3R
+         O/uzQE+2V/GBKfZlgYTJwXLN3QEA1F/sWZ1LPsbY4SyJY0hVIcNYk5BRGmUyS5Pyrjmd
+         g2yuP13BsIAJX02ezQqRVbGy0JIlywtB9n22uD4qWJCF2ENXPz8ALbzF8IepY9i1H0m2
+         mIhC240MsYDabE7I9q1surjkDbVFzXNu1p2jEymBLadwWLGo6ZnF8fzQOw++HrmMxd0F
+         Arl3XPWdqHHKLy1bJr8sNSQi1DU4L2taVsB2dlcifqU5w9O0DT+4noNKv2hSfwqKRR0r
+         SGuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774529715; x=1775134515;
+        d=1e100.net; s=20251104; t=1774529766; x=1775134566;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=X67yw9hp70DJW5SbayvQBOmUIp03R92/bYFmSlkehKU=;
-        b=nd+p/9Uoau46ZLxQMFhkXmwKjMayKT/XC78R2LUI7b0QDsqM5cJ5W59av/tW9TUk5e
-         ve1ecw+OAssbWHurHsZnl1XLwrsvl0WD5OOiFjqesYidYwYwz5wfQKbsgQSlssalmTW5
-         024QrsTu97oCvEpTNKeu0kWMLsQyL1ma2K4UI/ffRGQwAtBhr6cjNrnDFFTB7s7E9pWW
-         X9cRXlfphLJR7wwR8y0MAbIKmynaHaFD/Eu//hkeWM2w1klyaLJ2tCLF3lDx0l6+lZh/
-         wCUee1mOezZyDa16qv8uI7MCHIIJ8u4QIvkXcYh8rarghgI9nplRCpvk/BUYjoLnbIF3
-         dnlg==
-X-Forwarded-Encrypted: i=1; AJvYcCVwAvQA+ov3Tuqzkw1ydDivKR4BRJxAFERMztrg3Y+miKcY4sTfPeBIiv3ncL9R8S8wkQhoEDnUUey4B1cP6g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaCDC8EYxBLCm5PVW5yuITCY9bxcZIv5Jc5SH8aB+dVdgsD5vt
-	1Qh+5UgXU7kn060Fon62axO9KqlSeWcm4zlxSmcAgqcis4M8BOOkW6RUR1eUJiMPzeg=
-X-Gm-Gg: ATEYQzwgsuuuvBJNDzX4HUVja+vqcQmlUOzcc9ielqRm+bTfMwSMXRD3WFHcGX8qCiL
-	d1OVfzsjChssReK8+hft35xTU9bSHwP2KuHXmNeLabhlpHURHZE1RTk6BxtgfOr9yQ5Xcrq82F9
-	g4FkBt06kuKTRnNUESDHhfIWU8TSGUKmhPtaxe+BMj2NQBThHcd+aARO7co5C2Po9EhB3x6N6C3
-	CTNbiY5ziyhDqGkW6ZcRWyMifBelKN++gZp2h2+U56m2Ufxiw1Z/CjakZ6xAYb9qaI2BzxG2EhA
-	d52R0lP0qG8b5gAKaEL1HKmf18VKOA/syQkKiRN4UPxVgR4MuWl6HuMUVWjApAhygZRkEi60Ang
-	6wSK6rXErgddrTDRtLHvDqJFOXC69zewPM+6UgHwU/ZPDPi5szzxvzBvYN4yy9o5uJpgviIrIHP
-	F2NRdX3XX6AOQlKMFI9dfsIjMm8yUIxDB3hdWvLKnW+dc9JgpiiY07WNvOAxKkfI2b/CAinXNqb
-	QdjztVm0cZSm4zcXw==
-X-Received: by 2002:a05:600c:1f12:b0:486:fdca:ea8d with SMTP id 5b1f17b1804b1-48716050758mr107584965e9.25.1774529715255;
-        Thu, 26 Mar 2026 05:55:15 -0700 (PDT)
+        bh=Yx9U8ru1kAXiSx+zB+95J2U/zt+/QpX2ZNGpavJgFb0=;
+        b=KDNpvpUInkwImZcsWGv6K+jkHacTbObtSRIb9s5uqrTgqz65lFQTAVJ3JCSsOutLNI
+         j5/3Rm1U1YvUZ7h5koOkwe6WxWNZzYHsPtErib+oEv1WtRWlDPXH0XZHlKx4rv8CPktF
+         6AoxSSt1OUYU3Pu8mYbfzoogEVSRGbU0JOyKWXNn5meTa0MnUgxnXIEm5XM9kexJCasE
+         10PQLdBtBZuI3Ku6nFxFLXM+fOUIRBYRoJDY7DxfIrSuZvtNm9MrnBMzCnBpS/egNwYP
+         ShVoahoRLNzF4iEPYqvsu2a/2LkscM5fMK9CYqlLMO4JNdCBYrQnhZoGf6psx3l1OQkP
+         BT9A==
+X-Forwarded-Encrypted: i=1; AJvYcCVTO9P1PZjVCYNF69dOQ5poNm8FbZO61qqe1r3o5PeFB6YDldrVtTNX+iFOz9soHWWewrU0lGVDyWhWWv0mtA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJniOLTzQDk1J3fy7TKp96NNUsxpUR2cWmqHnHweS8pk0V93kU
+	/bLzJp9lUUAYDIg+Ca3bP0X1gSdpwfdYeX4mWE6au7L6kmiENb9XgXkyKayW77FsVBU=
+X-Gm-Gg: ATEYQzxY0CJO/AmIyLLSvYrhoMGMpXGlGcYonu8OrwdVJNJ9o6JUD0bWmxuPvup0oj7
+	gLU3yZWxEtap9/7mhUsKQHuQVB9wi8dgg29yufrq5DQvk0TvZAnlJpgWKEOwgvsEylosjdLMFg9
+	31CfZGjYJEdivXHJ5/QgQpM4eiw/GQtW5XZ8agpRe5r9Iueg5tKSKC65jIl6ayxx6mDyZMJQGsC
+	vi3BboYY/hX7PpvAAPNKRdA9Wu6YPRwqFM2VlYRWLzdsHRWjaEcV+9jB5+vyczFmdED+DP5yyt8
+	/mmycP7FMdHH7bLsS4zxvkhR0gAljEBOMoV+GZV9J7ja3qUQolLMih7TVSyBBZ0MgVSSJz6H/bV
+	6b9nhpPO72nqlWdKs+MGiA3qSrbr8QKVJODWI4PnL7SUZF23Wd70Jdr4XKPZ0PtnnUwL/0xFwiX
+	Q3hxJHYe/MYOoREeaRdr9xJyFNRiwDqfoMbC9mHIzCQzz8fLCbiU2VCuY+NfP990aHlUC336dfP
+	l1ld1c=
+X-Received: by 2002:a05:600c:45d4:b0:485:2c61:9457 with SMTP id 5b1f17b1804b1-48715fd5277mr105962645e9.10.1774529765762;
+        Thu, 26 Mar 2026 05:56:05 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:106d:1080:8431:f88b:714d:f78d? ([2a01:e0a:106d:1080:8431:f88b:714d:f78d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-487209378e2sm14061155e9.31.2026.03.26.05.55.14
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919dfb54sm8088573f8f.31.2026.03.26.05.56.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Mar 2026 05:55:14 -0700 (PDT)
-Message-ID: <9bc23f1e-1cf3-43d1-935a-c4738d576c29@linaro.org>
-Date: Thu, 26 Mar 2026 13:55:13 +0100
+        Thu, 26 Mar 2026 05:56:05 -0700 (PDT)
+Message-ID: <9dcb5e67-6a30-4ca3-b324-a57faee7d767@linaro.org>
+Date: Thu, 26 Mar 2026 13:56:04 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,8 +90,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Neil Armstrong <neil.armstrong@linaro.org>
 Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v5 8/9] dt-bindings: net: wireless: brcm: Add compatible
- for bcm43752
+Subject: Re: [PATCH v5 3/9] arm64: dts: amlogic: t7: Add MMC controller nodes
 To: Ronald Claveau <linux-kernel-dev@aliel.fr>,
  Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
  Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
@@ -100,10 +99,9 @@ To: Ronald Claveau <linux-kernel-dev@aliel.fr>,
  Johannes Berg <johannes@sipsolutions.net>, van Spriel <arend@broadcom.com>
 Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
- Conor Dooley <conor.dooley@microchip.com>
+ linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org
 References: <20260326-add-emmc-t7-vim4-v5-0-d3f182b48e9d@aliel.fr>
- <20260326-add-emmc-t7-vim4-v5-8-d3f182b48e9d@aliel.fr>
+ <20260326-add-emmc-t7-vim4-v5-3-d3f182b48e9d@aliel.fr>
 Content-Language: en-US, fr
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
@@ -130,68 +128,110 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro
-In-Reply-To: <20260326-add-emmc-t7-vim4-v5-8-d3f182b48e9d@aliel.fr>
+In-Reply-To: <20260326-add-emmc-t7-vim4-v5-3-d3f182b48e9d@aliel.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33974-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FREEMAIL_TO(0.00)[aliel.fr,baylibre.com,googlemail.com,kernel.org,linaro.org,sipsolutions.net,broadcom.com];
-	HAS_ORG_HEADER(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linaro.org:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-33975-lists,linux-wireless=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[aliel.fr:email,linaro.org:dkim,linaro.org:replyto,linaro.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,microchip.com:email];
+	RSPAMD_EMAILBL_FAIL(0.00)[mmc.8a000:query timed out,mmc.0.1.87.192:query timed out,mmc.8c000:query timed out,neil.armstrong.linaro.org:query timed out,ao-secure.0.0.39.236:query timed out];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[8a000:email,0.0.39.236:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:dkim,linaro.org:email,linaro.org:replyto,linaro.org:mid,aliel.fr:email];
 	HAS_REPLYTO(0.00)[neil.armstrong@linaro.org];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[neil.armstrong@linaro.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_PROHIBIT(0.00)[0.1.87.192:email];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	REPLYTO_EQ_FROM(0.00)[]
-X-Rspamd-Queue-Id: 506E33358F8
+X-Rspamd-Queue-Id: 3B0F7335A98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 On 3/26/26 10:59, Ronald Claveau wrote:
-> Add bcm43752 compatible with its bcm4329 compatible fallback.
+> Add device tree nodes for the three MMC controllers available
+> on the Amlogic T7 SoC, using amlogic,meson-axg-mmc as fallback compatible.
+> All nodes are disabled by default and should be
+> enabled in the board-specific DTS file.
 > 
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
 > Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
 > ---
->   Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml | 1 +
->   1 file changed, 1 insertion(+)
+>   arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 39 +++++++++++++++++++++++++++++
+>   1 file changed, 39 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> index 3be7576787644..81fd3e37452a6 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> @@ -42,6 +42,7 @@ properties:
->                 - brcm,bcm4356-fmac
->                 - brcm,bcm4359-fmac
->                 - brcm,bcm4366-fmac
-> +              - brcm,bcm43752-fmac
->                 - cypress,cyw4373-fmac
->                 - cypress,cyw43012-fmac
->                 - infineon,cyw43439-fmac
+> diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
+> index 36d13371f56ba..fe1ced0a58967 100644
+> --- a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
+> +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
+> @@ -374,6 +374,45 @@ sec_ao: ao-secure@10220 {
+>   				reg = <0x0 0x10220 0x0 0x140>;
+>   				amlogic,has-chip-id;
+>   			};
+> +
+> +			sd_emmc_a: mmc@88000 {
+> +				compatible = "amlogic,t7-mmc", "amlogic,meson-axg-mmc";
+> +				reg = <0x0 0x88000 0x0 0x800>;
+> +				interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
+> +				clocks = <&clkc_periphs CLKID_SYS_SD_EMMC_A>,
+> +					 <&clkc_periphs CLKID_SD_EMMC_A>,
+> +					 <&scmi_clk CLKID_FCLK_DIV2>;
+> +				clock-names = "core", "clkin0", "clkin1";
+> +				assigned-clocks = <&clkc_periphs CLKID_SD_EMMC_A_SEL>;
+> +				assigned-clock-parents = <&xtal>;
+> +				status = "disabled";
+> +			};
+> +
+> +			sd_emmc_b: mmc@8a000 {
+> +				compatible = "amlogic,t7-mmc", "amlogic,meson-axg-mmc";
+> +				reg = <0x0 0x8a000 0x0 0x800>;
+> +				interrupts = <GIC_SPI 177 IRQ_TYPE_EDGE_RISING>;
+> +				clocks = <&clkc_periphs CLKID_SYS_SD_EMMC_B>,
+> +					 <&clkc_periphs CLKID_SD_EMMC_B>,
+> +					 <&scmi_clk CLKID_FCLK_DIV2>;
+> +				clock-names = "core", "clkin0", "clkin1";
+> +				assigned-clocks = <&clkc_periphs CLKID_SD_EMMC_B_SEL>;
+> +				assigned-clock-parents = <&xtal>;
+> +				status = "disabled";
+> +			};
+> +
+> +			sd_emmc_c: mmc@8c000 {
+> +				compatible = "amlogic,t7-mmc", "amlogic,meson-axg-mmc";
+> +				reg = <0x0 0x8c000 0x0 0x800>;
+> +				interrupts = <GIC_SPI 178 IRQ_TYPE_EDGE_RISING>;
+> +				clocks = <&clkc_periphs CLKID_SYS_SD_EMMC_C>,
+> +					 <&clkc_periphs CLKID_SD_EMMC_C>,
+> +					 <&scmi_clk CLKID_FCLK_DIV2>;
+> +				clock-names = "core", "clkin0", "clkin1";
+> +				assigned-clocks = <&clkc_periphs CLKID_SD_EMMC_C_SEL>;
+> +				assigned-clock-parents = <&xtal>;
+> +				status = "disabled";
+> +			};
+>   		};
+>   
+>   	};
 > 
 
-I'll apply all the other DT patches, please send this one alone with the [PATCH net-next] prefix so it gets picked by the wireless/net people.
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
 Thanks,
 Neil
