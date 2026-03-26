@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-33952-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33953-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBGhIkkMxWn05wQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33952-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	id OCetNEkMxWn05wQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33953-lists+linux-wireless=lfdr.de@vger.kernel.org>)
 	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:36:57 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE35733383F
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:36:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E67F333841
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 11:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB27831A1DCA
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:15:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA49331A33C7
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762673C1961;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00B23C197A;
 	Thu, 26 Mar 2026 10:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XjtjTYre"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jJQS54t2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6473BFE34
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 10:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9179C38736E
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 10:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774520113; cv=none; b=I6YsXWzy5DImN6s8/+Q+UJ/+gmefdKXmtffvse7B0ezgb0er+wXTrll93QoR6n8BZAi+Z7JMhj4rmcEFA9vnx/IAtKUvEoA82PdwXRd2VxCPjU8tdvOxOwoVL5Ez62xvvAyArBvRXnB4MxVmX0xlu6pLeTamkGymQnatuyIeEe4=
+	t=1774520113; cv=none; b=DNK8bgTLIlYteNpWf3QMjONJ1hvYPevdRCxcorh7UXJpiGowUKF7e4c5HkGeNYflvG+3VZ6G2q7KSLEuIUjGuoddzpGMRe+yw1wVtQxhpjLfkck+S4nPFfX0ERNL5gc/iM9eU6xaJDzvgFN3TxQAFoAU4cBFnCfx/SepLMZ4+oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774520113; c=relaxed/simple;
-	bh=VARwBIGMqWBb2bwa4xzFsNr4HoAChWR4so6pATHLLwo=;
+	bh=v/pEsNc7JVGlS+yMdEvQt9CNPYJCH41hZ98QqUxfLMU=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BuPWO/PgkTe8F5u4NZrpCCc7CleQA2kV4zx00H/9jNQwRWuhxJwY+finS+BzsmWpATtVxc4S1ytMqXDZptCkB3GlaEd7VRRvqGUMVuzoRLKxWoJIq0DwsLQ5Vlhgs8dKhJyXxDltvV1zpGdMxIn0vDpeoBuCRRqh5XBfdeEDBGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XjtjTYre; arc=none smtp.client-ip=198.175.65.12
+	 MIME-Version; b=DmlmGBROCaM98xMeeQkVA0Iiw4xQChq/+qe7mMUsVeQdDDu4JB0hgfoH34cBTIqXirf66R1aISTAOZhY6B9HL5aQWgAVF4SekE0bBanSwO75cRKK7zzuzkbRZXaB2Eyy/yqEsQWbN9dPk6NYQXnMdGmDECqISDmgR+9y/JAeecY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jJQS54t2; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774520112; x=1806056112;
+  t=1774520113; x=1806056113;
   h=from:to:subject:date:message-id:in-reply-to:references:
    mime-version:content-transfer-encoding;
-  bh=VARwBIGMqWBb2bwa4xzFsNr4HoAChWR4so6pATHLLwo=;
-  b=XjtjTYre03w4LGP5bYLQVW3rd9Fbkvv/mycpSzqUSErTGWtmk4WqyekP
-   q+/trOn45iuEfwWEoGAreFltQ4+x1Kn7vpmZyYJoH6rwPkgDDJgCkwugl
-   lZt45aJ7GgWeyAPcOnnp4axl9O6Lh1ZSZmYqHZSCLvgAaxnZ3rcOFSiiE
-   H/ieScvPXVbh8qw/eChAMCnAYTRP50pNG9Ed3VNPiN87TFv2aQcxE7vCL
-   byOppxSofTNVlZQxP5uKhcbJsKla7zG5+kTzMTea1nmxf3T7EuHUFo6/Q
-   Z93YJIvIvoJLB2o+SFvo8Ubl+jMzwT00hHPBP6HuWs98Fkq4FcSu8YyC+
+  bh=v/pEsNc7JVGlS+yMdEvQt9CNPYJCH41hZ98QqUxfLMU=;
+  b=jJQS54t29oLsWCzHr34LQ+YnH1fcAMz8D50PaZViBaDutC6O0a+ba3eP
+   m3SoF77e57utgwQ9nkOfI4CEva2lSojDok5Rd/jVw+28n5kwBKtq2YrM/
+   5tmfGzJT85XZAhBpKAr/IPb7z52yv3/RttMnS15UArA6yoNVDQINiTUpr
+   BCMvaLsQP1Lg/BSAb8gU5n1rdphuVWS7OC7EeIXT20+wN6ktAgplEHq38
+   viMD7FLUWx/cG2MCUf+FrKcjLXXVKeegDPG3u4rZ65rCs6HkofG1lC9pz
+   uY08MQV61fmU9oH8ze3Ev2OzwPhkTNSWKappcbTYHoVJmyckk9P9OFHeL
    g==;
-X-CSE-ConnectionGUID: HPoS6bsTTWey1fBrW14K8g==
-X-CSE-MsgGUID: lGlqesS9QfWYevEjC7HzBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="87048561"
+X-CSE-ConnectionGUID: SvjzQdk8RN2I51/9FAwYSQ==
+X-CSE-MsgGUID: wjHSNkFNQ2ihFB04CNKM6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="87048563"
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="87048561"
+   d="scan'208";a="87048563"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
   by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 03:15:10 -0700
-X-CSE-ConnectionGUID: nAVN1FAhRqmK+n6Ubdm02g==
-X-CSE-MsgGUID: neDmUG/gR1a6PpYrUJkysA==
+X-CSE-ConnectionGUID: cgNynML0TuqV91k90XAEiw==
+X-CSE-MsgGUID: Qv6oroa3TMGWuuRdG0G66w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
-   d="scan'208";a="221653165"
+   d="scan'208";a="221653178"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 03:15:07 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 03:15:08 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH v2 wireless-next 06/15] wifi: mac80211: support open and close for NAN_DATA interfaces
-Date: Thu, 26 Mar 2026 12:14:36 +0200
-Message-Id: <20260326121156.a19de68119e5.Ia6724dac6a0e17cb69989dd714d14f4df1c69bef@changeid>
+Subject: [PATCH v2 wireless-next 07/15] wifi: mac80211: handle reconfig for NAN DATA interfaces
+Date: Thu, 26 Mar 2026 12:14:37 +0200
+Message-Id: <20260326121156.b14392ce99d6.I2ba3bfcd93e47e48d7f7c74007c70cca52d46896@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260326101445.1443198-1-miriam.rachel.korenblit@intel.com>
 References: <20260326101445.1443198-1-miriam.rachel.korenblit@intel.com>
@@ -83,11 +83,11 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33952-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33953-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -96,155 +96,79 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	RCPT_COUNT_ONE(0.00)[1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: DE35733383F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3E67F333841
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Support opening and closing a NAN_DATA interface.
-Track the NAN (NMI) interface, for convenience.
-Allow opening an NAN_DATA interface only if the NAN interface is running
-(NAN has started).
-When closing the NAN interface, make sure all NAN_DATA interfaces are
-closed first, and warn if this is not the case.
+Make sure these interfaces are added to the driver only after the NAN
+one was, and after NAN operation was started.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/ieee80211_i.h | 11 +++++++++++
- net/mac80211/iface.c       | 33 ++++++++++++++++++++++++++++++---
- 2 files changed, 41 insertions(+), 3 deletions(-)
+ net/mac80211/util.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 92ea8de8a6db..e3a051beba6a 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1006,6 +1006,16 @@ struct ieee80211_if_nan {
- 	DECLARE_BITMAP(removed_channels, IEEE80211_NAN_MAX_CHANNELS);
- };
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 19ac778b704d..925a09246ad9 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -1780,10 +1780,11 @@ ieee80211_reconfig_nan_offload_de(struct ieee80211_sub_if_data *sdata)
  
-+/**
-+ * struct ieee80211_if_nan_data - NAN data path state
-+ *
-+ * @nmi: pointer to the NAN management interface sdata. Used for data path,
-+ *	hence RCU.
-+ */
-+struct ieee80211_if_nan_data {
-+	struct ieee80211_sub_if_data __rcu *nmi;
-+};
-+
- struct ieee80211_link_data_managed {
- 	u8 bssid[ETH_ALEN] __aligned(2);
- 
-@@ -1204,6 +1214,7 @@ struct ieee80211_sub_if_data {
- 		struct ieee80211_if_ocb ocb;
- 		struct ieee80211_if_mntr mntr;
- 		struct ieee80211_if_nan nan;
-+		struct ieee80211_if_nan_data nan_data;
- 	} u;
- 
- 	struct ieee80211_link_data deflink;
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 0f3e49cdbb39..507c5e016ec8 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -361,6 +361,17 @@ static int ieee80211_check_concurrent_iface(struct ieee80211_sub_if_data *sdata,
- 			     nsdata->vif.type == NL80211_IFTYPE_OCB))
- 				return -EBUSY;
- 
-+			/*
-+			 * A NAN DATA interface is correlated to the NAN
-+			 * (management) one
-+			 */
-+			if (iftype == NL80211_IFTYPE_NAN_DATA &&
-+			    nsdata->vif.type == NL80211_IFTYPE_NAN) {
-+				if (!nsdata->u.nan.started)
-+					return -EINVAL;
-+				rcu_assign_pointer(sdata->u.nan_data.nmi, nsdata);
-+			}
-+
- 			/*
- 			 * Allow only a single IBSS interface to be up at any
- 			 * time. This is restricted because beacon distribution
-@@ -475,6 +486,7 @@ static int ieee80211_open(struct net_device *dev)
- static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_down)
+ static int ieee80211_reconfig_nan(struct ieee80211_sub_if_data *sdata)
  {
- 	struct ieee80211_local *local = sdata->local;
-+	struct ieee80211_sub_if_data *iter;
- 	unsigned long flags;
- 	struct sk_buff_head freeq;
- 	struct sk_buff *skb, *tmp;
-@@ -621,6 +633,12 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 		}
- 		break;
- 	case NL80211_IFTYPE_NAN:
-+		/* Check if any open NAN_DATA interfaces */
-+		list_for_each_entry(iter, &local->interfaces, list) {
-+			WARN_ON(iter->vif.type == NL80211_IFTYPE_NAN_DATA &&
-+				ieee80211_sdata_running(iter));
++	struct ieee80211_local *local = sdata->local;
++	struct ieee80211_sub_if_data *ndi_sdata;
+ 	int res;
+ 
+-	res = drv_start_nan(sdata->local, sdata,
+-			    &sdata->u.nan.conf);
++	res = drv_start_nan(local, sdata, &sdata->u.nan.conf);
+ 	if (WARN_ON(res))
+ 		return res;
+ 
+@@ -1792,6 +1793,15 @@ static int ieee80211_reconfig_nan(struct ieee80211_sub_if_data *sdata)
+ 
+ 	drv_vif_cfg_changed(sdata->local, sdata, BSS_CHANGED_NAN_LOCAL_SCHED);
+ 
++	/* Now we can add all the NDIs to the driver */
++	list_for_each_entry(ndi_sdata, &local->interfaces, list) {
++		if (ndi_sdata->vif.type == NL80211_IFTYPE_NAN_DATA) {
++			res = drv_add_interface(local, ndi_sdata);
++			if (WARN_ON(res))
++				return res;
 +		}
++	}
 +
- 		/* clean all the functions */
- 		if (!(local->hw.wiphy->nan_capa.flags &
- 		      WIPHY_NAN_FLAGS_USERSPACE_DE)) {
-@@ -636,6 +654,9 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 			spin_unlock_bh(&sdata->u.nan.de.func_lock);
- 		}
- 		break;
-+	case NL80211_IFTYPE_NAN_DATA:
-+		RCU_INIT_POINTER(sdata->u.nan_data.nmi, NULL);
-+		fallthrough;
- 	default:
- 		wiphy_work_cancel(sdata->local->hw.wiphy, &sdata->work);
- 		/*
-@@ -1384,9 +1405,12 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	case NL80211_IFTYPE_OCB:
- 	case NL80211_IFTYPE_NAN:
--	case NL80211_IFTYPE_NAN_DATA:
- 		/* no special treatment */
- 		break;
-+	case NL80211_IFTYPE_NAN_DATA:
-+		if (WARN_ON(!rcu_access_pointer(sdata->u.nan_data.nmi)))
-+			return -ENOLINK;
-+		break;
- 	case NL80211_IFTYPE_UNSPECIFIED:
- 	case NUM_NL80211_IFTYPES:
- 	case NL80211_IFTYPE_P2P_CLIENT:
-@@ -1404,8 +1428,8 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
- 		res = drv_start(local);
- 		if (res) {
- 			/*
--			 * no need to worry about AP_VLAN cleanup since in that
--			 * case we can't have open_count == 0
-+			 * no need to worry about AP_VLAN/NAN_DATA cleanup since
-+			 * in that case we can't have open_count == 0
- 			 */
- 			return res;
- 		}
-@@ -1524,6 +1548,7 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
- 		case NL80211_IFTYPE_AP:
- 		case NL80211_IFTYPE_MESH_POINT:
- 		case NL80211_IFTYPE_OCB:
-+		case NL80211_IFTYPE_NAN_DATA:
- 			netif_carrier_off(dev);
- 			break;
- 		case NL80211_IFTYPE_P2P_DEVICE:
-@@ -1570,6 +1595,8 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
-  err_stop:
- 	if (!local->open_count)
- 		drv_stop(local, false);
-+	if (sdata->vif.type == NL80211_IFTYPE_NAN_DATA)
-+		RCU_INIT_POINTER(sdata->u.nan_data.nmi, NULL);
- 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
- 		list_del(&sdata->u.vlan.list);
- 	/* Might not be initialized yet, but it is harmless */
+ 	return 0;
+ }
+ 
+@@ -1945,6 +1955,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 		if (sdata->vif.type == NL80211_IFTYPE_MONITOR &&
+ 		    !ieee80211_hw_check(&local->hw, NO_VIRTUAL_MONITOR))
+ 			continue;
++		/* These vifs can't be added before NAN was started */
++		if (sdata->vif.type == NL80211_IFTYPE_NAN_DATA)
++			continue;
+ 		if (sdata->vif.type != NL80211_IFTYPE_AP_VLAN &&
+ 		    ieee80211_sdata_running(sdata)) {
+ 			res = drv_add_interface(local, sdata);
+@@ -1962,6 +1975,8 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 			if (sdata->vif.type == NL80211_IFTYPE_MONITOR &&
+ 			    !ieee80211_hw_check(&local->hw, NO_VIRTUAL_MONITOR))
+ 				continue;
++			if (sdata->vif.type == NL80211_IFTYPE_NAN_DATA)
++				continue;
+ 			if (sdata->vif.type != NL80211_IFTYPE_AP_VLAN &&
+ 			    ieee80211_sdata_running(sdata))
+ 				drv_remove_interface(local, sdata);
 -- 
 2.34.1
 
