@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-33917-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33918-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sME9LZPOxGnb3wQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33917-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 07:13:39 +0100
+	id EOx8E8jPxGli4AQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33918-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 07:18:48 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181BA32FAB2
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 07:13:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A503632FAF9
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 07:18:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0488300D6AB
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 06:09:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 526AE3016917
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 06:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101073AEF25;
-	Thu, 26 Mar 2026 06:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C31342538;
+	Thu, 26 Mar 2026 06:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VW7PLw9U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrdoafSQ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE0E3914FA
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 06:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1C4217704
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 06:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774505347; cv=none; b=mM+8v46N04S2YJ9KaXB/dYWbHylK6bM0jkRhgBogYJ/LuS3LCl+tW25VtXfSAxYhiVYKGgtkwfeGf2soY/mvlWZ1j1QNVWkKFD3Y3JTp/kyskilYk7jwLxA1dyZ5mi4KmAWB7ryTKp8K1bnLgrHxdGSQr8XKRyUWQhRPjmlZ2lo=
+	t=1774505708; cv=none; b=TRIfRsFqBN/mm/EE8jEAjrU0/egKGOdyKZNnqJqMMmrPBo8DmKJ4S9Ua1MLEkSUl3D5HOSIDxFKn85fwks2Vd0aetd25AN/hA3swtQyOlx0FqqPGtsxcYb8ay239Y4r6VqPt6fQzPsxGm9SwA24cvDwnLaBl3L0Ho2vjL2tnfmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774505347; c=relaxed/simple;
-	bh=YYJzzBUZ5xCz3VewPGgIe4VjqU3krL4cpevmT2J0q6U=;
+	s=arc-20240116; t=1774505708; c=relaxed/simple;
+	bh=qNPDzY1c3zPMJCL6JgWJwXs7dJyiTLP5CKNIBdYLW2E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Uk2DUDTWbLGHCU2PiUVIS+gxEVBTWs8PzbySLGkVWfB+n2C1g4LAPJN4zX+hVJSfcqc0YFxyDnw/whCjSnpr5GRbRvC1Hu+DT5b/RRkPUzisyYDGxWXumw76zBXIyTDiBeY0ypxP8dlq9bqhd5SzOYMDosJs4aqvgaz2W71RM18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VW7PLw9U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F77DC2BCB2
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 06:09:07 +0000 (UTC)
+	 To:Cc:Content-Type; b=nOinf12nMTRIg3YJ2T6XelT3W9sfELfm99OGSYucYuDXbZGI6m4u5oS6sgyTGLOWaWWCSvd9tphRiMOnqkaV4ORSr1kmzNyncAU/l+htwpefYXNVf2CXhgcVg2wFAyp+8Ud0Vpnq+ZzVzvA4tqKFhoojW2FicptJoKGoecowUZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrdoafSQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D43C2BCB5
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 06:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774505347;
-	bh=YYJzzBUZ5xCz3VewPGgIe4VjqU3krL4cpevmT2J0q6U=;
+	s=k20201202; t=1774505707;
+	bh=qNPDzY1c3zPMJCL6JgWJwXs7dJyiTLP5CKNIBdYLW2E=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VW7PLw9U98ap5cmm0HGJgn8kBNyx9LWjDm5ZwUMF6xoHYiwy7jysd+EM7DB6/+rFy
-	 Wmg9Y8V+VjjBW9gfO4eXuoP703pzTrNFwpa/Ukb+BoVKxodZrGDW7mx/er4SoM0KTy
-	 SijiYEUN/tvU26aKd8QOaAwnovAHIfG9JiNFiFC0JKNBclaB96suWXPmgfLA5BlRw/
-	 CwKG0e1Ucdq8SdHypvZy0wXYdqjMrhNup1Z74iF2uiGLAiTsyFiN7GyvJAgxyrVqmI
-	 ImYtVQLGAvuwEMY7kDE0qNjfGLl24U7danZ1ze6cC00PpIf8aMimiboCkeMxEQdHyP
-	 hjlwjPPFtqlbA==
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-38c551f2497so3902001fa.2
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 23:09:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXJfNGHYyk0EqkdZCLgVMos+swXYujh9pEFzLavQZN6yLN4aQOPbpLq01A7N0mhHRbuy7JBLT/WgrSVsgw7/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5vpryjd3RS0gUdqbIGhgDr1GGZAZm1TLkwAcyD4cAFHo/mawU
-	6ZSI3uBMUDrdl1TFJ1hc0ZFn2L/80rsoUyf/UV4zkgwj+8QzjFx7WBBVaKaYr54cGs9bvS6HhyC
-	Nib9JOW64UYyILQfaJlQrTA5L5w03ZI4=
-X-Received: by 2002:a05:651c:1469:b0:38c:6b7:ad47 with SMTP id
- 38308e7fff4ca-38c43072d48mr24340281fa.7.1774505345770; Wed, 25 Mar 2026
- 23:09:05 -0700 (PDT)
+	b=KrdoafSQp/PoGdrRZrHSdDIbUO3qnqh4298eJxgPd58fUG9mGedPkOEWKbzYL/fSz
+	 knapw+oWNpV6otfvqTOA97un0IcFxNztV3IRnO3egICzYCtMXekXIiBraTfbVJzlDM
+	 LwQ6oacGYegjnPHUDC+4oMISal/9t8FfaKFVSgy9bNm18pjET6KRT81yN9ZHnOHUlq
+	 ypHTL+I6NvrJM7EIZFeeT6XyzOKtZElOSTFqKHPjuACyxhw/uF8+2rmHBXEq/5jDiX
+	 x8xsfl2J1V4Jf5hA/RD/lLS8VXequw9rbvU4f55++hwT9mN//ge+ArmHLcWKl7XOik
+	 GXxvbCLQe0awQ==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38ad26e3992so4466581fa.1
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 23:15:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWqtD0xfMZyrSI/CNnfCLU+9SBsubwjdqNyrqq8IJYzviaopSQEgph1E1LUp/WWsK3WbH+Mlw3sgjqjFK8HcA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNauvbUxt1NT9du/GfENBfJHIDA5tJBTZy0QZlFTx/Y9uXtMoa
+	44GmW9Ym8kgDTL/U/FdtIR8rdO3M/eVS5cgVYoA/L4chVy6USPIIXEbeGwfckjK+x2OdKKnS7Ku
+	Jzp0Jg3BHZEhF5uo1G+NnDxaAeswGCnc=
+X-Received: by 2002:a05:651c:4081:b0:389:f13f:8082 with SMTP id
+ 38308e7fff4ca-38c4320f5e3mr14222931fa.37.1774505705946; Wed, 25 Mar 2026
+ 23:15:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260325-mt7927-wifi-support-v2-v3-0-5ca66c97a755@jetm.me> <20260325-mt7927-wifi-support-v2-v3-5-5ca66c97a755@jetm.me>
-In-Reply-To: <20260325-mt7927-wifi-support-v2-v3-5-5ca66c97a755@jetm.me>
+References: <20260325-mt7927-wifi-support-v2-v3-0-5ca66c97a755@jetm.me> <20260325-mt7927-wifi-support-v2-v3-12-5ca66c97a755@jetm.me>
+In-Reply-To: <20260325-mt7927-wifi-support-v2-v3-12-5ca66c97a755@jetm.me>
 From: Sean Wang <sean.wang@kernel.org>
-Date: Thu, 26 Mar 2026 01:08:56 -0500
-X-Gmail-Original-Message-ID: <CAGp9Lzr1Fgj5Gk2cAUFWq6sfKZZR2Cd6ymrzP7wKQh-7P9eo1A@mail.gmail.com>
-X-Gm-Features: AQROBzAUYeAj2eTTTOIP2gLEFHOEoyZYt5R3yZNXfXyqfKxhXOUP9a1iwLeqE3c
-Message-ID: <CAGp9Lzr1Fgj5Gk2cAUFWq6sfKZZR2Cd6ymrzP7wKQh-7P9eo1A@mail.gmail.com>
-Subject: Re: [PATCH v3 05/13] wifi: mt76: mt7925: advertise EHT 320MHz
- capabilities for 6GHz band
+Date: Thu, 26 Mar 2026 01:14:56 -0500
+X-Gmail-Original-Message-ID: <CAGp9LzpdV3TEK2LNrjotgJX10a-WyAb_8P_kpTNYVtUta2Q2MQ@mail.gmail.com>
+X-Gm-Features: AQROBzB7OndRY6rEIWjHQOhEVzDIfM5J7pucQeFuRa7TwBdAyjB6Crc6NPXHqfI
+Message-ID: <CAGp9LzpdV3TEK2LNrjotgJX10a-WyAb_8P_kpTNYVtUta2Q2MQ@mail.gmail.com>
+Subject: Re: [PATCH v3 12/13] wifi: mt76: mt7925: disable ASPM and runtime PM
+ for MT7927
 To: Javier Tia <floss@jetm.me>
 Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
 	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
@@ -75,12 +75,7 @@ Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder L
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
 	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, Deren Wu <deren.wu@mediatek.com>, 
 	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	Marcin FM <marcin@lgic.pl>, Cristian-Florin Radoi <radoi.chris@gmail.com>, 
-	George Salukvadze <giosal90@gmail.com>, Evgeny Kapusta <3193631@gmail.com>, 
-	Samu Toljamo <samu.toljamo@gmail.com>, Ariel Rosenfeld <ariel.rosenfeld.750@gmail.com>, 
-	Chapuis Dario <chapuisdario4@gmail.com>, =?UTF-8?Q?Thibaut_Fran=C3=A7ois?= <tibo@humeurlibre.fr>, 
-	=?UTF-8?B?5byg5pet5ra1?= <Loong.0x00@gmail.com>
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [8.84 / 15.00];
@@ -91,164 +86,112 @@ X-Spamd-Result: default: False [8.84 / 15.00];
 	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33917-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33918-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
 	GREYLIST(0.00)[pass,meta];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org,lgic.pl,humeurlibre.fr];
-	RCPT_COUNT_TWELVE(0.00)[23];
+	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.454];
+	NEURAL_HAM(-0.00)[-0.699];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,jetm.me:email,humeurlibre.fr:email,lgic.pl:email]
-X-Rspamd-Queue-Id: 181BA32FAB2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,jetm.me:email]
+X-Rspamd-Queue-Id: A503632FAF9
 X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
 X-Spam: Yes
 
 Hi, Javier
 
-On Wed, Mar 25, 2026 at 5:14=E2=80=AFPM Javier Tia <floss@jetm.me> wrote:
+On Wed, Mar 25, 2026 at 5:13=E2=80=AFPM Javier Tia <floss@jetm.me> wrote:
 >
-> mt7925_init_eht_caps() only populates EHT MCS/NSS maps for BW <=3D 80
-> and BW =3D 160, but never sets BW =3D 320. This means iw phy shows no
-> 320MHz MCS map entries even though the hardware supports 320MHz
-> operation in the 6GHz band.
+> Disable PCIe ASPM unconditionally for MT7927. The CONNINFRA power
+> domain and WFDMA register access are unreliable with PCIe L1 active,
+> causing throughput to drop from 1+ Gbps to ~200 Mbps.
 >
-> Add the missing 320MHz capability bits for 6GHz:
->   - PHY_CAP0: IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ
->   - PHY_CAP1: beamformee SS for 320MHz
->   - PHY_CAP2: sounding dimensions for 320MHz
->   - PHY_CAP6: MCS15 support for 320MHz width
->   - MCS/NSS: populate bw._320 maps for 6GHz band
+> Disable runtime PM and deep sleep for MT7927. The combo chip shares
+> a CONNINFRA power domain between WiFi (PCIe) and BT (USB).
+> SET_OWN/CLR_OWN transitions on the LPCTL register crash the BT
+> firmware, requiring a full power cycle to recover. PM enablement will
+> be addressed in a follow-up once safe power state transitions are
+> determined.
 >
-> Introduce is_320mhz_supported() to gate 320MHz on MT7927 only, since
-> MT7925 does not support 320MHz operation.
->
-> Tested-by: Marcin FM <marcin@lgic.pl>
-> Tested-by: Cristian-Florin Radoi <radoi.chris@gmail.com>
-> Tested-by: George Salukvadze <giosal90@gmail.com>
-> Tested-by: Evgeny Kapusta <3193631@gmail.com>
-> Tested-by: Samu Toljamo <samu.toljamo@gmail.com>
-> Tested-by: Ariel Rosenfeld <ariel.rosenfeld.750@gmail.com>
-> Tested-by: Chapuis Dario <chapuisdario4@gmail.com>
-> Tested-by: Thibaut Fran=C3=A7ois <tibo@humeurlibre.fr>
-> Tested-by: =E5=BC=A0=E6=97=AD=E6=B6=B5 <Loong.0x00@gmail.com>
 > Signed-off-by: Javier Tia <floss@jetm.me>
 > ---
->  drivers/net/wireless/mediatek/mt76/mt76_connac.h |  5 +++++
->  drivers/net/wireless/mediatek/mt76/mt7925/main.c | 22 ++++++++++++++++++=
-+++-
->  2 files changed, 26 insertions(+), 1 deletion(-)
+>  drivers/net/wireless/mediatek/mt76/mt7925/init.c | 6 +++++-
+>  drivers/net/wireless/mediatek/mt76/mt7925/pci.c  | 9 +++++++--
+>  2 files changed, 12 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/n=
-et/wireless/mediatek/mt76/mt76_connac.h
-> index 813d61bffc2c..3785fbf5ac99 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> @@ -177,6 +177,11 @@ static inline bool is_mt7925(struct mt76_dev *dev)
->         return mt76_chip(dev) =3D=3D 0x7925;
->  }
->
-> +static inline bool is_320mhz_supported(struct mt76_dev *dev)
-> +{
-> +       return is_mt7927(dev);
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7925/init.c
+> index c4c99380f5b5..89140fc6a2b6 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+> @@ -243,7 +243,11 @@ int mt7925_register_device(struct mt792x_dev *dev)
+>         dev->pm.idle_timeout =3D MT792x_PM_TIMEOUT;
+>         dev->pm.stats.last_wake_event =3D jiffies;
+>         dev->pm.stats.last_doze_event =3D jiffies;
+> -       if (!mt76_is_usb(&dev->mt76)) {
+> +       /* MT7927: runtime PM disabled. The combo chip shares a CONNINFRA
+> +        * power domain between WiFi (PCIe) and BT (USB). SET_OWN/CLR_OWN
+> +        * transitions on the LPCTL register crash BT firmware.
+> +        */
 
-This looks like it would cause a build error since is_mt7927() is not
-introduced until patch 6.
+I think this level of detail is better kept in the commit message. For
+the code itself, a short comment should be enough, or even no comment
+if the condition is already clear enough.
 
-> +}
+> +       if (!mt76_is_usb(&dev->mt76) && !is_mt7927(&dev->mt76)) {
+>                 dev->pm.enable_user =3D true;
+>                 dev->pm.enable =3D true;
+>                 dev->pm.ds_enable_user =3D true;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7925/pci.c
+> index 393d9f408b84..693e08f35d68 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+> @@ -530,7 +530,13 @@ static int mt7925_pci_probe(struct pci_dev *pdev,
+>         if (ret)
+>                 goto err_free_pci_vec;
+>
+> -       if (mt7925_disable_aspm)
+> +       is_mt7927_hw =3D (pdev->device =3D=3D 0x6639 || pdev->device =3D=
+=3D 0x7927);
 > +
->  static inline bool is_mt7920(struct mt76_dev *dev)
->  {
->         return mt76_chip(dev) =3D=3D 0x7920;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7925/main.c
-> index f128a198f81d..cfce851a94e2 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-> @@ -183,6 +183,10 @@ mt7925_init_eht_caps(struct mt792x_phy *phy, enum nl=
-80211_band band,
->                 IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER |
->                 IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE;
+> +       /* MT7927: CONNINFRA power domain and WFDMA register access are
+> +        * unreliable with PCIe L1 active, causing throughput to drop
+> +        * from 1+ Gbps to ~200 Mbps. Disable ASPM unconditionally.
+> +        */
+
+Ditto
+
+> +       if (mt7925_disable_aspm || is_mt7927_hw)
+>                 mt76_pci_disable_aspm(pdev);
 >
-> +       if (band =3D=3D NL80211_BAND_6GHZ && is_320mhz_supported(&phy->de=
-v->mt76))
-> +               eht_cap_elem->phy_cap_info[0] |=3D
-> +                       IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
-> +
->         eht_cap_elem->phy_cap_info[0] |=3D
->                 u8_encode_bits(u8_get_bits(sts - 1, BIT(0)),
->                                IEEE80211_EHT_PHY_CAP0_BEAMFORMEE_SS_80MHZ=
-_MASK);
-> @@ -193,10 +197,20 @@ mt7925_init_eht_caps(struct mt792x_phy *phy, enum n=
-l80211_band band,
->                 u8_encode_bits(sts - 1,
->                                IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_160MH=
-Z_MASK);
->
-> +       if (band =3D=3D NL80211_BAND_6GHZ && is_320mhz_supported(&phy->de=
-v->mt76))
-> +               eht_cap_elem->phy_cap_info[1] |=3D
-> +                       u8_encode_bits(sts - 1,
-> +                                      IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_=
-SS_320MHZ_MASK);
-> +
->         eht_cap_elem->phy_cap_info[2] =3D
->                 u8_encode_bits(sts - 1, IEEE80211_EHT_PHY_CAP2_SOUNDING_D=
-IM_80MHZ_MASK) |
->                 u8_encode_bits(sts - 1, IEEE80211_EHT_PHY_CAP2_SOUNDING_D=
-IM_160MHZ_MASK);
->
-> +       if (band =3D=3D NL80211_BAND_6GHZ && is_320mhz_supported(&phy->de=
-v->mt76))
-> +               eht_cap_elem->phy_cap_info[2] |=3D
-> +                       u8_encode_bits(sts - 1,
-> +                                      IEEE80211_EHT_PHY_CAP2_SOUNDING_DI=
-M_320MHZ_MASK);
-> +
->         eht_cap_elem->phy_cap_info[3] =3D
->                 IEEE80211_EHT_PHY_CAP3_NG_16_SU_FEEDBACK |
->                 IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK |
-> @@ -217,7 +231,8 @@ mt7925_init_eht_caps(struct mt792x_phy *phy, enum nl8=
-0211_band band,
->                 u8_encode_bits(u8_get_bits(0x11, GENMASK(1, 0)),
->                                IEEE80211_EHT_PHY_CAP5_MAX_NUM_SUPP_EHT_LT=
-F_MASK);
->
-> -       val =3D width =3D=3D NL80211_CHAN_WIDTH_160 ? 0x7 :
-> +       val =3D width =3D=3D NL80211_CHAN_WIDTH_320 ? 0xf :
-> +             width =3D=3D NL80211_CHAN_WIDTH_160 ? 0x7 :
->               width =3D=3D NL80211_CHAN_WIDTH_80 ? 0x3 : 0x1;
->         eht_cap_elem->phy_cap_info[6] =3D
->                 u8_encode_bits(u8_get_bits(0x11, GENMASK(4, 2)),
-> @@ -239,6 +254,11 @@ mt7925_init_eht_caps(struct mt792x_phy *phy, enum nl=
-80211_band band,
->         eht_nss->bw._160.rx_tx_mcs9_max_nss =3D val;
->         eht_nss->bw._160.rx_tx_mcs11_max_nss =3D val;
->         eht_nss->bw._160.rx_tx_mcs13_max_nss =3D val;
-> +       if (band =3D=3D NL80211_BAND_6GHZ && is_320mhz_supported(&phy->de=
-v->mt76)) {
-> +               eht_nss->bw._320.rx_tx_mcs9_max_nss =3D val;
-> +               eht_nss->bw._320.rx_tx_mcs11_max_nss =3D val;
-> +               eht_nss->bw._320.rx_tx_mcs13_max_nss =3D val;
-> +       }
->  }
->
->  int mt7925_init_mlo_caps(struct mt792x_phy *phy)
+>         ops =3D mt792x_get_mac80211_ops(&pdev->dev, &mt7925_ops,
+> @@ -562,7 +568,6 @@ static int mt7925_pci_probe(struct pci_dev *pdev,
+>         dev =3D container_of(mdev, struct mt792x_dev, mt76);
+>         dev->fw_features =3D features;
+>         dev->hif_ops =3D &mt7925_pcie_ops;
+> -       is_mt7927_hw =3D (pdev->device =3D=3D 0x6639 || pdev->device =3D=
+=3D 0x7927);
+>         dev->irq_map =3D is_mt7927_hw ? &mt7927_irq_map : &irq_map;
+>         dev->dma_config =3D is_mt7927_hw ? &mt7927_dma_cfg : &mt7925_dma_=
+cfg;
+>         mt76_mmio_init(&dev->mt76, pcim_iomap_table(pdev)[0]);
 >
 > --
 > 2.53.0
