@@ -1,169 +1,145 @@
-Return-Path: <linux-wireless+bounces-33909-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33910-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOCYCjKOxGkh0gQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33909-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 02:38:58 +0100
+	id cCLcHQiSxGnH0gQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33910-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 02:55:20 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EAEC32DF7A
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 02:38:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C07B32E178
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 02:55:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F05E302C5D1
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 01:37:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 320EE3027043
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 01:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A1A2459EA;
-	Thu, 26 Mar 2026 01:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D2D38AC7D;
+	Thu, 26 Mar 2026 01:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lPzxCEBd"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="YFUSxL21"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D7FF4F1
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 01:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E3C186A
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 01:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774489056; cv=none; b=cgFTy6GYKmGoDcDLscoT5gxEqG39y20VFEL6VJ4/ShuEdPwL8owRNKRdtAgXPa595siIEDk2h0KDZabvmr9JEaRiOfZArxZnCpMNv+mHoNC17UZxFxkigf+grtAxqr+mrujKo5qVOpizrNvMdmM9MuyKolm9ki5elnuuLGy+7TM=
+	t=1774490114; cv=none; b=FqonlqVcfgrK7jdSG4nfW1BPIYPlixSzhsfNLTXAaxPajeqvRVYxrObNBH0Fbh9jhu9b1J1aPNixqvzBWvuTODPVfg2gAwg3VhUy2PTskqAjhUKvQl+8fjOt3OfxZhQ/bFEjzqh2rgG1mm7GMsnddOdHmYY2AMEkeBtkmJi+RTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774489056; c=relaxed/simple;
-	bh=Jj2qm8qG63CrbIFMV9IlMuOzVORLnHETDXVgtmwwQxo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NvBMkzRloJen+zSKAOSwQKCi/zsfVD5fRxpZa6v/4inZKY6ENyX8ZIf70fJ5VSMJM7fwJQjHPxbbx7CI2VPw153ahuNKjUO/SoXxUy5bQzTHgauuBsRn3A6N5uxxONAah1CdeyBQbztsFdZ0tKzeaNqo8OvA0onNSNEKeB7Y6kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lPzxCEBd; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82a646c96bdso362404b3a.2
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2026 18:37:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774489055; x=1775093855; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TAPOHm+2rdklVBQSpRSKOLEhOKAWiuPin4IyJcaEptM=;
-        b=lPzxCEBdmqkipI9rRiylIAI9Pm8f+9DbddUXdmriv4csOgioReWznr1cTmg8xKFm4g
-         bH+kF1HTdylg2fbDUzuFYv4TC8BHxa9i3vxTOGoHOtPy+//jycwQ05UiEuGehqqHQ1Qc
-         E4BO1TJblnfZJbUiSrw8YukQXisZUv6jCtdSjow5iV5sHoHnrxDPWdk4SkefTEm34lpg
-         o5C+Roc981IZboV+bQzjCBmVyFh2UcJ9XIBKLF07nfgPlGZ7xnbS7pdthZa0ZpMffd3A
-         /PMx50RQx+EIihthMivVSrx+l0EtH5xh0+eGnbH1BNGY/LjQewPOeIuoOemdwD2tsgMb
-         irgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774489055; x=1775093855;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=TAPOHm+2rdklVBQSpRSKOLEhOKAWiuPin4IyJcaEptM=;
-        b=VMnoeuwLMzwKdyGbGF3O9FM1WGZxq+0QVeE4XhdFWl1vHVFJZ+BxdTs8WgfbDcgCXG
-         htli2eCmNf92fhtTxsdgrAzXKr5fapkYxQyh5v+KMmWXy7bi8Z3cCc/uR137+JFRO+Lg
-         1lYS42v6jHVCXzrdJs7D4E+Bqlse50SqHOCa1yIJnA5jMl7JHp4QOgZ9Aq8vXDlyv80B
-         yB7Rys1EljxKv8vfp3m8YD7dGb1H8haiypPNMY2EMeb7y5aGi98/jeuQAnpO9pdtfWFB
-         qDjdKZgk0ia3iNewB9j2j2hwwmSwsMlHz8YmLN3pJb9ht2Bsg7AKUrXRCX5IPJ09fkdf
-         FL0w==
-X-Forwarded-Encrypted: i=1; AJvYcCXSw0YtCVjoHHbcJOPiKJmMmokClJGjPJHT/UuHsWJfdHsijkkx1Ny99tBXw3QIKJH43w0jBjC37j9necjoLw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeOoyw1YELt2Ix+wKWDVGpPk7jnEqV8wNwHagmCqRmOmJa86zo
-	vK5BcVr6pe1VKsz7Hhc7KkTucbymiA2g17/+e6rl9itc2Ci4n65MPFDc
-X-Gm-Gg: ATEYQzz6rZelfEX5V65JYPAjNux2J7/jdz87cLTwPTcdq3KSwjhhdhOhLwS9B4PCjiH
-	0XPPQv9GtpWdKnbwRP+fbvf2iJxHqREnMpw192icePoCsAYPbQj6Pbsm1Zl6P+jxiTHfy9sH9Wu
-	zo8YgZ3/IAnxR4PjRabKv3kG8FLm+YGxsJL1HF5wJG0IDiWQK3EWToZDnMgRIT8F8N3AD493uUc
-	6kVEc/7Xh63/h3ngrLuTawd85MJzJoc+v3O5mBKVS/gxKR0ZDUsjoVPdkePx3C1EKdS6zYs+iaA
-	PrCB8KGR5tiP/oLv0xKAJcXGOUaqeJgxRTOi9yf982CSATNdPcFdlWl1imds/xk3Aaj6vtrUYr8
-	BohGl9tNEls8pCPKoriTHW5ZYrhqer7Fiktmdg5Z48f6tQonyw+fljfk9thAXizKcPI3kinRl/1
-	7cPcj0lcbYeekuOdTIy41HhoLR+3Lm6UnP455w5+HZ1z09jYvMIS09NHXAI9599z8roP/d6bXgK
-	He/
-X-Received: by 2002:a05:6a00:2ea4:b0:82a:6e7f:4c14 with SMTP id d2e1a72fcca58-82c6df6609emr5412590b3a.27.1774489054556;
-        Wed, 25 Mar 2026 18:37:34 -0700 (PDT)
-Received: from localhost.localdomain ([2409:8a28:820:e910:540f:de1e:bee1:7630])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82c7d400f62sm883251b3a.55.2026.03.25.18.37.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 18:37:34 -0700 (PDT)
-From: =?UTF-8?q?=E5=82=85=E7=BB=A7=E6=99=97?= <fjhhz1997@gmail.com>
-To: oscar.alfonso.diaz@gmail.com
-Cc: fjhhz1997@gmail.com,
-	johannes@sipsolutions.net,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: mac80211: fix the issue of NULL pointer access when deleting the virtual interface
-Date: Thu, 26 Mar 2026 09:37:19 +0800
-Message-ID: <20260326013719.1662-1-fjhhz1997@gmail.com>
-X-Mailer: git-send-email 2.45.0.windows.1
-In-Reply-To: <CA+bbHrW0Z6NdFsUwycvRhLbe3xnbXSwmb24EW4FKFtn=0TVzBw@mail.gmail.com>
-References: <CA+bbHrW0Z6NdFsUwycvRhLbe3xnbXSwmb24EW4FKFtn=0TVzBw@mail.gmail.com>
+	s=arc-20240116; t=1774490114; c=relaxed/simple;
+	bh=BlZPabnEsEfBzLw7+GNyd1KkLLe6DMPV99NIazHFsEo=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=MY7zziNqGZsEnF+wBi5eJPIX4eIpunHpLlgREXCTPjCE9EEy0K1ER4Dvxg9rXkX2KlGfgObORRmVU+bOtODiNwMXs2SjHqXEBcfSLqUfEE0vZnJoHyaY/7gOSmDjHxjR2PPNImJP9I/rkpO2CgSRcTV32wwbTeMKUmOcMsjiQMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=YFUSxL21; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62Q1t9tdD537759, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1774490109; bh=BlZPabnEsEfBzLw7+GNyd1KkLLe6DMPV99NIazHFsEo=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=YFUSxL21N5vCK/h392qHYk0aFeaS6Vx0+rAuEYrmtid0wGVY2VtXCoQBkXMNNTJar
+	 AZ2PMukWIZkpXkiRRhARhY9v8opzb2SEAz3asIoFo6YqDn9qE+Y8dxqo3rHeRhB+Zj
+	 8bYjWXaRUY3CtiM/Wmei6S6e2P+GZ/dGqS2am6oJ8/EbeojuWjSXD7deSBmMW+A6tA
+	 3DEColWn+mcpDwKFv/9bZIv82fERcHfM5nhLcmlmT3gd9gL5Y5wMN88DmJZ8GzuYkk
+	 oAlDWGjSjDZ7vQUHN8PQROYOV5/9n1XgA2LpFmQNzpfEG9jWnbfsC5X0mIfcHlk18P
+	 LtWQd1jCwf5uA==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 62Q1t9tdD537759
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Mar 2026 09:55:09 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 26 Mar 2026 09:55:08 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::46e9:fab9:b2cf:c99b%10]) with mapi id
+ 15.02.1748.010; Thu, 26 Mar 2026 09:55:08 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH rtw-next] wifi: rtw89: Fill fw_version member of struct
+ wiphy
+Thread-Topic: [PATCH rtw-next] wifi: rtw89: Fill fw_version member of struct
+ wiphy
+Thread-Index: AQHcvKXL0HQyWdB8wkiRkis6gU0vLrXACODg
+Date: Thu, 26 Mar 2026 01:55:08 +0000
+Message-ID: <9c25a5eee4194356b4d0210b2bace5f2@realtek.com>
+References: <60bdb2f8-d5dd-46a3-8679-5b4a5fd0604b@gmail.com>
+In-Reply-To: <60bdb2f8-d5dd-46a3-8679-5b4a5fd0604b@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.06 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33909-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,sipsolutions.net,vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-33910-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fjhhz1997@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7EAEC32DF7A
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:mid]
+X-Rspamd-Queue-Id: 1C07B32E178
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Óscar,
-
-Lucid-Duck spent some time trying to reproduce your crash and wasn't able
-to trigger it. Here's a summary of what was tested:
-
-- Kali 2025.4 (kernel 6.18.12+kali-amd64) VM on QEMU/KVM, with my v2
-  patch applied
-- MT7921AU USB adapter, passthrough to VM
-- Full airgeddon evil twin flow: monitor VIF + hostapd AP + continuous
-  deauth via aireplay-ng
-- Also tested on bare metal Fedora 6.19.8 with the same adapter
-
-All tests were stable -- no crash, no dmesg errors, load stayed low. The
-deauth frames were confirmed sending for 30+ seconds under the v2 patch
-without issues.
-
-The one variable that couldn't be matched was the VM hypervisor.
-Lucid-Duck used QEMU/KVM, which handles USB passthrough at the kernel
-level (xHCI). If you're using VirtualBox or VMware, the USB passthrough
-path is quite different (userspace proxy), and that could potentially
-explain a total VM freeze that isn't a kernel panic.
-
-Could you please reply to Lucid-Duck directly on GitHub with the
-following information? Here's the link:
-https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-4129198757
-
-1. Which hypervisor are you using? (VirtualBox, VMware, QEMU/KVM, etc.)
-2. Your exact USB adapter model and ID? (0e8d:7961 covers several
-   MT7921 variants)
-3. If possible, try SSHing into the VM from the host while the display
-   is frozen -- if SSH still works, the issue is at the hypervisor/display
-   level, not the kernel.
-
-Thanks,
-傅继晗
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBMZXQg
+dXNlcnNwYWNlIHRvb2xzIGxpa2UgbHNodyBzaG93IHRoZSBmaXJtd2FyZSB2ZXJzaW9uIGJ5IGZp
+bGxpbmcgdGhlDQo+IGZ3X3ZlcnNpb24gbWVtYmVyIG9mIHN0cnVjdCB3aXBoeS4NCj4gDQo+IEJl
+Zm9yZToNCj4gDQo+IGNvbmZpZ3VyYXRpb246IGJyb2FkY2FzdD15ZXMgZHJpdmVyPXJ0dzg5Xzg4
+NTJhdQ0KPiBkcml2ZXJ2ZXJzaW9uPTYuMTkuNi1hcmNoMS0xIGZpcm13YXJlPU4vQSBsaW5rPW5v
+IG11bHRpY2FzdD15ZXMNCj4gd2lyZWxlc3M9SUVFRSA4MDIuMTENCj4gDQo+IEFmdGVyOg0KPiAN
+Cj4gY29uZmlndXJhdGlvbjogYnJvYWRjYXN0PXllcyBkcml2ZXI9cnR3ODlfODg1MmF1DQo+IGRy
+aXZlcnZlcnNpb249Ni4xOS42LWFyY2gxLTEgZmlybXdhcmU9MC4xMy4zNi4yIGxpbms9bm8gbXVs
+dGljYXN0PXllcw0KPiB3aXJlbGVzcz1JRUVFIDgwMi4xMQ0KPiANCj4gU2lnbmVkLW9mZi1ieTog
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IC0tLQ0KPiAgZHJp
+dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jIHwgOCArKysrKysrKw0KPiAgMSBm
+aWxlIGNoYW5nZWQsIDggaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvZncuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODkvZncuYw0KPiBpbmRleCA0NWQ4YzVlNzAwODQuLjU1YWVlNmViODQ3OCAx
+MDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jDQo+
+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvZncuYw0KPiBAQCAtNzU1
+LDYgKzc1NSwxNCBAQCBzdGF0aWMgaW50IHJ0dzg5X2Z3X3VwZGF0ZV92ZXIoc3RydWN0IHJ0dzg5
+X2RldiAqcnR3ZGV2LA0KPiAgICAgICAgICAgICAgICAgICAgZndfc3VpdC0+bWFqb3JfdmVyLCBm
+d19zdWl0LT5taW5vcl92ZXIsIGZ3X3N1aXQtPnN1Yl92ZXIsDQo+ICAgICAgICAgICAgICAgICAg
+ICBmd19zdWl0LT5zdWJfaWRleCwgZndfc3VpdC0+Y29tbWl0aWQsIGZ3X3N1aXQtPmNtZF92ZXIs
+DQo+IHR5cGUpOw0KPiANCj4gKyAgICAgICBpZiAodHlwZSA9PSBSVFc4OV9GV19OT1JNQUwgfHwg
+dHlwZSA9PSBSVFc4OV9GV19OT1JNQUxfQ0UgfHwNCj4gKyAgICAgICAgICAgdHlwZSA9PSBSVFc4
+OV9GV19OT1JNQUxfQikNCj4gKyAgICAgICAgICAgICAgIHNucHJpbnRmKHJ0d2Rldi0+aHctPndp
+cGh5LT5md192ZXJzaW9uLA0KPiArICAgICAgICAgICAgICAgICAgICAgICAgc2l6ZW9mKHJ0d2Rl
+di0+aHctPndpcGh5LT5md192ZXJzaW9uKSwNCg0Kbml0OiBob3cgYWJvdXQgZGVmaW5pbmcgYSBs
+b2NhbCB2YXJpYWJsZSB3aXBoeT8gYXMgd2VsbCBhcyBydHc4OC4NCg0KPiArICAgICAgICAgICAg
+ICAgICAgICAgICAgIiV1LiV1LiV1LiV1IiwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgIGZ3
+X3N1aXQtPm1ham9yX3ZlciwgZndfc3VpdC0+bWlub3JfdmVyLA0KPiArICAgICAgICAgICAgICAg
+ICAgICAgICAgZndfc3VpdC0+c3ViX3ZlciwgZndfc3VpdC0+c3ViX2lkZXgpOw0KPiArDQo+ICAg
+ICAgICAgcmV0dXJuIDA7DQo+ICB9DQo+IA0KPiAtLQ0KPiAyLjUzLjANCg0K
 
