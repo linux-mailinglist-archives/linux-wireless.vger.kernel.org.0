@@ -1,183 +1,200 @@
-Return-Path: <linux-wireless+bounces-33935-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33936-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHdSJ8//xGkz5gQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33935-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:43:43 +0100
+	id aHyLA+wAxWkz5gQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33936-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:48:28 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED9B33286D
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:43:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D303329DC
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 10:48:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88772308E97B
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 09:33:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F27413013495
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 09:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7BF30594E;
-	Thu, 26 Mar 2026 09:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F7834E763;
+	Thu, 26 Mar 2026 09:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="JIfL9S6Q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TVBHmtAd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6893148DD;
-	Thu, 26 Mar 2026 09:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6118C34CFC3
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 09:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774517621; cv=none; b=nKtWGAzp6I5Vq/Rzum5sLsRGyhI91wADxJD3peU+TynOia0FffR/R1ZCMdzq8VYYyyC50noXonO+oPl4UQftEvFREGoPDXbln+ytrK1fNOAfVXHoUkeuGoHf7Cs/F6aOYJEU5Y7HeBGi6WohPRLv6QQkscPVGytk0Ta04Fg738M=
+	t=1774518104; cv=none; b=H+tc1J3NXoRS7tr/Bq2XHaQTBTd74LPkz30p5Q3CtGxoeK2gtToJOQAoevWQd2i9cPBC3tzJpx0qSAgSXgepfWMVMLQJEnCmoWhDSXha/grAxYEmgGrlZwrhhLRTiT8XGhGqAPtP7Uvit+Qn1wIH+BghvIOxx5OzhbHiiw2EA68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774517621; c=relaxed/simple;
-	bh=TlgZPqsifYUNanuJk7ktg2DgD57MAfIdrP8qwPSF/Yc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dal61+L59LYiRB1D7KoStoRRXCYaYwfUAYj5Ay6bNO/V3LIFN/Cx3yHDSQF+UlQGom4ba2ntuK10k+hDfR9M06L4kKXam6rF8WmgnIvIIhjs+Qc+zBQ43rejq3t+rdu6Xr/ym6bMx7f3faJTyNEoeia9J1CvEkUX7EHvbrfBORs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=JIfL9S6Q; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=kpD74HZQXAuyN2XDecX4PjgJkz7NNLyVJZ/YVPKmMoY=; t=1774517620; x=1775727220; 
-	b=JIfL9S6QbT7dW93TWHrqbLMJJ256kQAz5x/8WOpv/Nu2P0a+yjcwhqdXmum/ZDTsLAEPLlwpopM
-	ZUTHGVXXF8Pd8HbD+nSR6KWIO62i9hBxWpbLvxcI27LK1T36cQ+vpucBfwAgvV9x65NwZGqvhEhk7
-	nKsjFB+ck7Zbgg4fIH+6cc+YTFv83QrP7Iw4aejibAue2eYnJTEmoKEnRBLqzN0rURtgLk5GfH0tL
-	J0jlWbZn4ijqk4CGsXhV1EVCYr6Q5hCfoJibOuf3NfYd83ba54x+ZiSxNcUwaXH/vBqiyriU1zZgC
-	98OGZAxMtijn3Bh1n8GJIhXo/ifNYpjwtaZA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1w5h5o-0000000CyVs-1pJE;
-	Thu, 26 Mar 2026 10:33:32 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2026-03-26
-Date: Thu, 26 Mar 2026 10:31:35 +0100
-Message-ID: <20260326093329.77815-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1774518104; c=relaxed/simple;
+	bh=Zx9y8XwTtPeFEXKPIT3f8JrBeN6tj267+ZQZMnclteE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HpLNnyYvQeLUKMwWdGola5uA6XBTdXMQsVOZEIVTy0lfcQ7lj2PkPJuQ/X2xCUC9r2jKHEXfxtPIaKw7ed1DT7SEgJgOij+sLm3fiGOv82RUs6JWfzJ0dNX1p2iqkmQWeW4gxQwnEWEr7DurTmjBfpAccM9KuWI/a/XpZxL0Wes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TVBHmtAd; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774518103; x=1806054103;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Zx9y8XwTtPeFEXKPIT3f8JrBeN6tj267+ZQZMnclteE=;
+  b=TVBHmtAds9C22np8c41ymHY6Wtk+NSXwqfCkU57Wa+zKbqpklCrMvmoF
+   3TbCZ5YcXGJ5IazJYgtIIKYEhDfvg3mwywjdURpOuUTJf8qP8BfqdPbs5
+   0FGE1n/oGeMH4aYW9P35fzfdc5U3BRC8jaWCEip9DO/TgIMaKX5qbg6+R
+   XVmLjddNcdjGP823XqxU3X53Ny3TpaMa2HSCBvxwvE61yUKyOIodhyyf7
+   SrLqWVVNyTRBBpVbdARP08v7PbzRn9qOGG4binpCZf6wTarKxGgvyBuOF
+   pPUO4twSELxyFSixjZGyx4NGza6+nETkMi0ILG2M7BK5mIVFfgT9sEL16
+   g==;
+X-CSE-ConnectionGUID: xErAxMeNSE6b9R72RuD7tg==
+X-CSE-MsgGUID: tjF2/dsNQRaBOrrXaXxPMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="86944987"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="86944987"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 02:41:42 -0700
+X-CSE-ConnectionGUID: PnX7rrChQfmeorTq4tdqhA==
+X-CSE-MsgGUID: 36RD2GkkTtODpsI2dGSYyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="262870300"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by orviesa001.jf.intel.com with ESMTP; 26 Mar 2026 02:41:41 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w5hDd-000000007Fd-33uV;
+	Thu, 26 Mar 2026 09:41:37 +0000
+Date: Thu, 26 Mar 2026 10:41:10 +0100
+From: kernel test robot <lkp@intel.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [PATCH rtw-next] wifi: rtw89: Fill fw_version member of struct
+ wiphy
+Message-ID: <202603261021.wmsdP9pa-lkp@intel.com>
+References: <60bdb2f8-d5dd-46a3-8679-5b4a5fd0604b@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <60bdb2f8-d5dd-46a3-8679-5b4a5fd0604b@gmail.com>
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33935-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-33936-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:dkim,sipsolutions.net:mid]
-X-Rspamd-Queue-Id: 2ED9B33286D
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,intel.com:mid,01.org:url,git-scm.com:url]
+X-Rspamd-Queue-Id: 37D303329DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+Hi Bitterblue,
 
-And ... more fixes from drivers came in, notably iwlwifi with
-a bunch of things (their maintainer had been on vacation).
+kernel test robot noticed the following build errors:
 
-I'm going to be on vacation next week, but I'm also not aware
-of anything missing from drivers etc. right now, so we'll see.
-I doubt this is the _last_ pull request for 7.0, but I think
-not much more will come in.
+[auto build test ERROR on wireless-next/main]
+[also build test ERROR on wireless/main linus/master v7.0-rc5 next-20260325]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Please pull and let us know if there's any problem.
+url:    https://github.com/intel-lab-lkp/linux/commits/Bitterblue-Smith/wifi-rtw89-Fill-fw_version-member-of-struct-wiphy/20260326-082721
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/60bdb2f8-d5dd-46a3-8679-5b4a5fd0604b%40gmail.com
+patch subject: [PATCH rtw-next] wifi: rtw89: Fill fw_version member of struct wiphy
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260326/202603261021.wmsdP9pa-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260326/202603261021.wmsdP9pa-lkp@intel.com/reproduce)
 
-Thanks,
-johannes
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603261021.wmsdP9pa-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/net/wireless/realtek/rtw89/fw.c: In function 'rtw89_fw_update_ver':
+>> drivers/net/wireless/realtek/rtw89/fw.c:759:21: error: 'RTW89_FW_NORMAL_B' undeclared (first use in this function); did you mean 'RTW89_FW_NORMAL_CE'?
+     759 |             type == RTW89_FW_NORMAL_B)
+         |                     ^~~~~~~~~~~~~~~~~
+         |                     RTW89_FW_NORMAL_CE
+   drivers/net/wireless/realtek/rtw89/fw.c:759:21: note: each undeclared identifier is reported only once for each function it appears in
 
 
+vim +759 drivers/net/wireless/realtek/rtw89/fw.c
 
-The following changes since commit a1d9d8e833781c44ab688708804ce35f20f3cbbd:
+   726	
+   727	static int rtw89_fw_update_ver(struct rtw89_dev *rtwdev,
+   728				       enum rtw89_fw_type type,
+   729				       struct rtw89_fw_suit *fw_suit)
+   730	{
+   731		const struct rtw89_fw_hdr *v0 = (const struct rtw89_fw_hdr *)fw_suit->data;
+   732		const struct rtw89_fw_hdr_v1 *v1 = (const struct rtw89_fw_hdr_v1 *)fw_suit->data;
+   733	
+   734		if (type == RTW89_FW_LOGFMT)
+   735			return 0;
+   736	
+   737		fw_suit->type = type;
+   738		fw_suit->hdr_ver = le32_get_bits(v0->w3, FW_HDR_W3_HDR_VER);
+   739	
+   740		switch (fw_suit->hdr_ver) {
+   741		case 0:
+   742			rtw89_fw_update_ver_v0(rtwdev, fw_suit, v0);
+   743			break;
+   744		case 1:
+   745			rtw89_fw_update_ver_v1(rtwdev, fw_suit, v1);
+   746			break;
+   747		default:
+   748			rtw89_err(rtwdev, "Unknown firmware header version %u\n",
+   749				  fw_suit->hdr_ver);
+   750			return -ENOENT;
+   751		}
+   752	
+   753		rtw89_info(rtwdev,
+   754			   "Firmware version %u.%u.%u.%u (%08x), cmd version %u, type %u\n",
+   755			   fw_suit->major_ver, fw_suit->minor_ver, fw_suit->sub_ver,
+   756			   fw_suit->sub_idex, fw_suit->commitid, fw_suit->cmd_ver, type);
+   757	
+   758		if (type == RTW89_FW_NORMAL || type == RTW89_FW_NORMAL_CE ||
+ > 759		    type == RTW89_FW_NORMAL_B)
+   760			snprintf(rtwdev->hw->wiphy->fw_version,
+   761				 sizeof(rtwdev->hw->wiphy->fw_version),
+   762				 "%u.%u.%u.%u",
+   763				 fw_suit->major_ver, fw_suit->minor_ver,
+   764				 fw_suit->sub_ver, fw_suit->sub_idex);
+   765	
+   766		return 0;
+   767	}
+   768	
 
-  Merge tag 'net-7.0-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-03-19 11:25:40 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-03-26
-
-for you to fetch changes up to 789b06f9f39cdc7e895bdab2c034e39c41c8f8d6:
-
-  wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free (2026-03-25 20:46:57 +0100)
-
-----------------------------------------------------------------
-Couple more fixes:
- - virt_wifi: remove SET_NETDEV_DEV to avoid UAF on teardown
- - iwlwifi:
-   - fix (some) devices that don't have 6 GHz (WiFi6E)
-   - fix potential OOB read of firmware notification
-   - set WiFi generation for firmware to avoid packet drops
-   - fix multi-link scan timing
- - wilc1000: fix integer overflow
- - ath11k/ath12k: fix TID during A-MPDU session teardown
- - wl1251: don't trust firmware TX status response index
-
-----------------------------------------------------------------
-Alexander Popov (1):
-      wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free
-
-Alexey Velichayshiy (1):
-      wifi: iwlwifi: mvm: fix potential out-of-bounds read in iwl_mvm_nd_match_info_handler()
-
-Emmanuel Grumbach (1):
-      wifi: iwlwifi: mvm: don't send a 6E related command when not supported
-
-Johannes Berg (3):
-      wifi: iwlwifi: mld: correctly set wifi generation data
-      Merge tag 'iwlwifi-fixes-2026-03-24' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
-      Merge tag 'ath-current-20260324' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
-
-Pagadala Yesu Anjaneyulu (1):
-      wifi: iwlwifi: mld: Fix MLO scan timing
-
-Pengpeng Hou (1):
-      wifi: wl1251: validate packet IDs before indexing tx_frames
-
-Reshma Immaculate Rajkumar (2):
-      wifi: ath11k: Pass the correct value of each TID during a stop AMPDU session
-      wifi: ath12k: Pass the correct value of each TID during a stop AMPDU session
-
-Yasuaki Torimaru (1):
-      wifi: wilc1000: fix u8 overflow in SSID scan buffer size calculation
-
- drivers/net/wireless/ath/ath11k/dp_rx.c            |  15 ++-
- drivers/net/wireless/ath/ath12k/dp_rx.c            |   4 +-
- .../net/wireless/intel/iwlwifi/fw/api/commands.h   |   5 +
- drivers/net/wireless/intel/iwlwifi/fw/api/scan.h   |  10 ++
- drivers/net/wireless/intel/iwlwifi/mld/iface.c     | 101 ++++++++++++++-------
- drivers/net/wireless/intel/iwlwifi/mld/mac80211.c  |  19 ++++
- drivers/net/wireless/intel/iwlwifi/mld/mld.c       |   1 +
- drivers/net/wireless/intel/iwlwifi/mld/mlo.c       |   4 +-
- drivers/net/wireless/intel/iwlwifi/mld/notif.c     |   5 +
- drivers/net/wireless/intel/iwlwifi/mld/scan.c      |  30 +++++-
- drivers/net/wireless/intel/iwlwifi/mld/scan.h      |   9 +-
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c        |   3 +-
- drivers/net/wireless/microchip/wilc1000/hif.c      |   2 +-
- drivers/net/wireless/ti/wl1251/tx.c                |   8 +-
- drivers/net/wireless/virtual/virt_wifi.c           |   1 -
- 16 files changed, 163 insertions(+), 56 deletions(-)
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
