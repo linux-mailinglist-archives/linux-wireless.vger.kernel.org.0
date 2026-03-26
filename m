@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-33971-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33970-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGI7Co4oxWkU7QQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33971-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 13:37:34 +0100
+	id IGeNDu4oxWkU7QQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33970-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 13:39:10 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA7E3354DB
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 13:37:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC1B33552B
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 13:39:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B6AFC30CBB90
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 12:33:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83AC5300BCB0
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2026 12:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E40C3F9F30;
-	Thu, 26 Mar 2026 12:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49A43FA5CD;
+	Thu, 26 Mar 2026 12:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pnn8Szsa"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gdGCJ4Wb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723763C3440
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 12:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CDC3F99F0
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 12:32:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774528358; cv=none; b=rWLNEVqNq4LwP2HzB4sQLYAVXb3CWGGuNSROm7IkAlwGUJp5LW+o7GvbUhdNtc/4EpcgXRLJ/vNsM/L4GOd44Jz3ItJ/ZqiCOPSY7Hd9iTz9nX4EIVhnOH2jd4iz2Z9t/FJC1+Vpt8jBeQTovd6jlhOFtUVddSQ3y7syjLa3wfs=
+	t=1774528357; cv=none; b=Q1ojAdCBgzvU5hBb7xwPSpKwAEhtcS8kdrn2pazdnJxSqrYCyiSMhGMWtKADIA6vFG82dj2r0szqkaD6JG8fQ/Fg67m6EZhpOIjku3nYUQTTyLz8W1hoqf59wGUTK7jf+KbXsoYSvFSoaFiC9X42+Xrfy0LPfOhCuxwnbR8R33c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774528358; c=relaxed/simple;
-	bh=ZEGAUcvooReaJ1XmRJnQfzG/aLY4zKJA94CADfSupZM=;
+	s=arc-20240116; t=1774528357; c=relaxed/simple;
+	bh=pyr1jSN9tAMToc+rEqDkNjLtVcNjZm4QwjwQj/BCYPQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IsVa+f6D4FU0fi6AVuGSUj2pFGqcmb0v737gSbxN1qm3Fw3k/YprRyK4+1nKqE6j5uK4xooK0h7PokY+v/+dcyuj+F3swQncuwr7+wkVFKZ5IyrARBDh/vH/As7wJiBzGQ+lUuS93YIgeqTWLwZUCnIooBXr9o2fZVcdj5UAnWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pnn8Szsa; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=M/io1YBTKaJElv6EVXkK7JuaSdgUBeqyjWlXo5pSyQIjSsv09GDbgjOm9o3plgmpvvGCFRxrD6IWCOdEcSqwBDgol4mCX2pXy0I6C9lBdcaictGwWCEwZF2r/WtDHOg2Zw44YBtrawE17eJPcMGnzOjt90TQDcWycq3H0CJ5Cgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gdGCJ4Wb; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4853b5b0fafso17724885e9.3
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 05:32:34 -0700 (PDT)
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4852cf0318dso9948995e9.3
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2026 05:32:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774528353; x=1775133153; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774528354; x=1775133154; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DCR1+XiCejEoTZukOGzTXx300luMCdEPMVOduAGAhwQ=;
-        b=pnn8SzsaxWdT1Xg7bun4HelpBTaPt2xL5Ka6sp5j8DTsXSpU2WAsbA3TELSLbYAFdy
-         BmzQBUatwrqo8rObW4ddm8mkrjc6kCFuj8a5R2gtQYVh4CCL64Rn2oy4IY2ymGebHjhi
-         zlHCpFB5KCjkTlB3bfEc7elT9nYuQ9i6LPIdmgJJscO+ZNk1k35WIJulubbfe8NggxLP
-         3zQy7tNjXAYOqqhnUrp74tJMbjLjNusJcK0aGeLbuIotj4vjeVTVliRpWff/V7q/tbIB
-         efq5L5NgfqARFrJu9d1DymS2RHzbowq5/Z1wD8jTqIRK/jbSJTSNidRzOuhm17wZDkuG
-         gWBg==
+        bh=PnUmSvdGrdA8wXtaJVKX+3lGQinclElGewhzWnJqPks=;
+        b=gdGCJ4WbSxQLV66Km3qdvbudt1uVNZovHa2K5Mn/OTEwtSt6YqGOPsKzkBLvWE4jn3
+         yzsJY3Zfl8L9bHpSHdMA7lvkvR3d2qOD3DitDRbDOaf2zX9GdRcchnw+9Brhhddf/ulJ
+         /NBNUXwcKKqBCy4pn8K2yJCuXxbtHEjyg7L3YD+Nq1YRFyBP8Pju6d/q7AQZxMsPLC2Z
+         TsBxftzHWDkBlURkM8h1x0AsaAOwjbrw4YTnCxi39qkz57JeRJkAMYnN/JLQbKGATeZC
+         R4DhYnaCGKxPH196uaTbeacykvQOgpQqGKJrc0LhX8YDiESheqvUQ4z2UtDqv41v/q9s
+         GGlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774528353; x=1775133153;
+        d=1e100.net; s=20251104; t=1774528354; x=1775133154;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DCR1+XiCejEoTZukOGzTXx300luMCdEPMVOduAGAhwQ=;
-        b=Rqma0S6L9w5RYLj5pX8amtRB3KQaHUIPW6qt1mQHsrMGg4TJ90ZcT9Gscg7qO4gl9A
-         SwE2wz7WQJRdei+xs0EUAqHWIS63La+idH1fgxmz8FH9yt85yVL97PX/XRdNnrTW2KCQ
-         u4eatqVd6K64a4Qdd7fxCIk9sn8654BhbXIStDJvX3B7unB8laUGAVIgz+1ZEmwj/wNe
-         aEOziGLDvlTiCp5B4Zs0xXb44wzvKo92qpGa9mPjY3pnN134wRDp+FzQ+2r5LXEc3oAm
-         hJp409B3u1FU0cfGX3t7YrI3zK5xkBIpK0njmwsshuFf5B+bDC2XfKdIsnR6Yhib/1ig
-         OBiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXJNspr7jfEirTRPDy1gfV3TbWtdS1NtoeUIRSHoop40Z7qQoBDHa/5AxN8bHaDWQHzFVISJXLXGTEQ554y0w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzK5/i3AZYlk1cOyhPl64h8/z0n7QiDXyn8uLZh4Bo1M4+fakso
-	XlxInjMpUo8gXH5/DEbGHSHecRzG27E5kcJ87CCMSY1Q2fJEqFxtxX8WqRcyt/Lh1ke+m+0Jzkl
-	kSDFBH2GCO/mKPg==
-X-Received: from wmoo19.prod.google.com ([2002:a05:600d:113:b0:487:238e:327b])
+        bh=PnUmSvdGrdA8wXtaJVKX+3lGQinclElGewhzWnJqPks=;
+        b=etqx99cl6rBi6IrKBL+JvTErHkQ1FBi58N6QPfFEoQ83yso4fhm5P+PybBTEij5JpL
+         HT2qelhNfHiiZ9NWAup73odUsDeFcmSCat/a5q4oNbD9ceEuttxeKxMvz6klnSStU1p1
+         MNbINWhnbSaNXABGWc4Wh9u+KNU5enVxp13f44yih6Yujygc5efbQziCmgbjw/1TIcuw
+         s5n0pkTlx1hQ0sITXFydPeEhMagKWsx+xk6RG6YeWexyRqPqPOSuMQR6Chph6EtjNXqK
+         QTXrMowAxS0W7y5eXtNzv4XMsriJtjmYB/mxPcyQU39Ibcp85bJGYyQ5Akm4i00UbumV
+         iWnw==
+X-Forwarded-Encrypted: i=1; AJvYcCU79X0E0j8Q1oXfQPZGG4P/6YUdyo1I3JBxg7GMF4/2w+QSFEUMtgQcH57nfsxljAEXhAErO22JPWP6gVoVEw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7qydW3AyqKn2EXIEP1GGA5ADbHwhzEQbPKSq1sDYZw2stNbVA
+	8yoQFAhJjamS9hNsTB1kaVPhkdnxQp/Sb2SBwjn1WH+Tc/veCot0gail++GDR0TY0Un8Zew7elF
+	qOA66CnCu9tNuhA==
+X-Received: from wmbjr7.prod.google.com ([2002:a05:600c:5607:b0:485:3682:6cf6])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d1d:b0:486:ffa3:592 with SMTP id 5b1f17b1804b1-48716071b2amr111318865e9.24.1774528352832;
- Thu, 26 Mar 2026 05:32:32 -0700 (PDT)
-Date: Thu, 26 Mar 2026 12:31:59 +0000
+ 2002:a05:600c:1f95:b0:486:f308:94ec with SMTP id 5b1f17b1804b1-4871606d88cmr107670785e9.24.1774528353854;
+ Thu, 26 Mar 2026 05:32:33 -0700 (PDT)
+Date: Thu, 26 Mar 2026 12:32:00 +0000
 In-Reply-To: <20260326-gfp64-v2-0-d916021cecdf@google.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -76,8 +76,8 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260326-gfp64-v2-0-d916021cecdf@google.com>
 X-Mailer: b4 0.14.3
-Message-ID: <20260326-gfp64-v2-3-d916021cecdf@google.com>
-Subject: [PATCH v2 3/4] mm/kfence: Use special gfp_t format specifier
+Message-ID: <20260326-gfp64-v2-4-d916021cecdf@google.com>
+Subject: [PATCH v2 4/4] net/rds: Use special gfp_t format specifier
 From: Brendan Jackman <jackmanb@google.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
 	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
@@ -96,19 +96,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33971-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33970-lists,linux-wireless=lfdr.de];
 	FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,wp.pl,google.com,linux-foundation.org,oracle.com,davemloft.net,redhat.com];
 	RCPT_COUNT_TWELVE(0.00)[25];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jackmanb@google.com,linux-wireless@vger.kernel.org];
@@ -117,8 +117,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BFA7E3354DB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6AC1B33552B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -127,22 +127,22 @@ the size of gfp_t.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- mm/kfence/kfence_test.c | 2 +-
+ net/rds/tcp_recv.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
-index 5725a367246d9..10424cd25e5a6 100644
---- a/mm/kfence/kfence_test.c
-+++ b/mm/kfence/kfence_test.c
-@@ -263,7 +263,7 @@ static void *test_alloc(struct kunit *test, size_t size, gfp_t gfp, enum allocat
- 		break;
- 	}
+diff --git a/net/rds/tcp_recv.c b/net/rds/tcp_recv.c
+index 49f96ee0c40f6..ffe843ca219c7 100644
+--- a/net/rds/tcp_recv.c
++++ b/net/rds/tcp_recv.c
+@@ -275,7 +275,7 @@ static int rds_tcp_read_sock(struct rds_conn_path *cp, gfp_t gfp)
+ 	desc.count = 1; /* give more than one skb per call */
  
--	kunit_info(test, "%s: size=%zu, gfp=%x, policy=%s, cache=%i\n", __func__, size, gfp,
-+	kunit_info(test, "%s: size=%zu, gfp=%pGg, policy=%s, cache=%i\n", __func__, size, &gfp,
- 		   policy_name, !!test_cache);
+ 	tcp_read_sock(sock->sk, &desc, rds_tcp_data_recv);
+-	rdsdebug("tcp_read_sock for tc %p gfp 0x%x returned %d\n", tc, gfp,
++	rdsdebug("tcp_read_sock for tc %p gfp %pGg returned %d\n", tc, &gfp,
+ 		 desc.error);
  
- 	/*
+ 	if (skb_queue_empty_lockless(&sock->sk->sk_receive_queue) &&
 
 -- 
 2.51.2
