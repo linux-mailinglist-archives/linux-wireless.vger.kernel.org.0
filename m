@@ -1,169 +1,240 @@
-Return-Path: <linux-wireless+bounces-34029-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34030-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eL+jGpskxmnQGwUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34029-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 07:32:59 +0100
+	id EJqQC8hExmmgIAUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34030-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 09:50:16 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3A533FC5C
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 07:32:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 686E73414C0
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 09:50:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5FEF30DB3D6
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 06:29:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A821D30F8AB5
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 08:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D19392C5A;
-	Fri, 27 Mar 2026 06:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="SW8/fnHA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B602D3CAE74;
+	Fri, 27 Mar 2026 08:44:20 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AD53A7F64
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Mar 2026 06:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4778C3D8102
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Mar 2026 08:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774592637; cv=none; b=EtzfVPd/+oK0yi6fUVj4/YpMo90SLMsqDyhre98YksZD7hQphosChziyS+1T5gzq/8ResaIZUPDBiGDA4Kcy9uI79ztB0Z/Jg4x7sw6g5ZJvwUOjI4jvUDrePUgf7PBNYsE/YHx82C1LRjfeWpwhCmNXb/SqssHu2nwP3LxWM0s=
+	t=1774601060; cv=none; b=Fm8m9mNWDZNGFe8+GXPkDg+LCuOJm0bZbXmCgDYXVCdTVD7wn5ox76qOFGwpAsKiCbiRZwkDD2zeGjQZme/4ehfo/Dpq4HR5T0vGSsS/nrkdG2vroQLet7Ehm6O29eD6r3RCxdxEMtaRcjgm5Mqi93uaHe4uTJid8hbL40YvpL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774592637; c=relaxed/simple;
-	bh=u/5rpAuyh1/y7yyOUaht7ZpD09IZBOW9EaMJrBdlPNo=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=fQqHXJe22vvgnBhhmjZFf/ZaxOGtDfAffS+C0MeOQuhfWERpu7Rz55kMmQ0/8gkLblkIVNdLzSRGbWZsCEIOFobbVT7EsVkskknri9/9NvoABSA1ADWVEYGF5lctX1F9tYywg3oZZbc42oLppe0kWImIbFds5EFRki2AKGWOq/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=SW8/fnHA; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62R6NigjE3201134, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1774592624; bh=u/5rpAuyh1/y7yyOUaht7ZpD09IZBOW9EaMJrBdlPNo=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=SW8/fnHARTIvPiXSdHd4UPZojFYBFWhE5kzXY0Y0JAg60LlrWZOJtPGGFobuEROI0
-	 9V7SHn5113KztmJulafjKb0opuwFQKTaCio1RN+GmxpsFd1H73jCyrHrWXogh42Qfv
-	 2Nwp+IvgO1NUZQ9Rv7ux/L/vVmsnpRhJmHoYaPErHOtaks6Wr4Dw5SYmW1DRxD8bqY
-	 NT1vCBGPqLDer792VBPSPc5SwdsMzgAr2l2WunYFVWqRiXGl7mGunKYlNogAxa9FJl
-	 gJuDD1/7ayQt7j5oZS7FFMGYJ16jOSM2lC5Dl69O4dLiTwveAPQHJvnnCqm8Fr60YX
-	 r0CjmmVFVy5jg==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 62R6NigjE3201134
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Mar 2026 14:23:44 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 27 Mar 2026 14:23:42 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 27 Mar 2026 14:23:41 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::46e9:fab9:b2cf:c99b%10]) with mapi id
- 15.02.1748.010; Fri, 27 Mar 2026 14:23:41 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        Bitterblue Smith
-	<rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH rtw-next v2] wifi: rtw88: Fill fw_version member of struct
- wiphy
-Thread-Topic: [PATCH rtw-next v2] wifi: rtw88: Fill fw_version member of
- struct wiphy
-Thread-Index: AQHcvTQ2Po6dETgIAkqhsZ4PtASoh7XBAE+AgADoF0A=
-Date: Fri, 27 Mar 2026 06:23:39 +0000
-Message-ID: <4aa63ec1d1b74b7b83d1823844062885@realtek.com>
-References: <3701cce1-42c4-4382-9120-cd21012c1b21@gmail.com>
- <2c90c306-f285-4ea7-b795-37a0f14ec27b@oss.qualcomm.com>
-In-Reply-To: <2c90c306-f285-4ea7-b795-37a0f14ec27b@oss.qualcomm.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1774601060; c=relaxed/simple;
+	bh=vKn5LXbeZkz4miYiVNpmLRBUs4oX/rVsVApxdJufiZY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WN57M15g34PNScSunrbXO8QYy9nRnkl+7O426Mf3H+4sov7bVqJqVroOrDna1e5/du3NYU9Oyb/Kz3Ar2mAlatx8mGeFt+9ibgbDLs8g7qrC7vtJdJIZFtDTUkNxRR+y0zptNfxd+XQF0rJj6kJPrrKW4VxuTGoYPHpTNXohXRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.0.192] (ip5f5af73b.dynamic.kabel-deutschland.de [95.90.247.59])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id C52B14C2C37F03;
+	Fri, 27 Mar 2026 09:43:42 +0100 (CET)
+Message-ID: <4c8c17c1-424c-4a7b-af68-81c099497bd7@molgen.mpg.de>
+Date: Fri, 27 Mar 2026 09:43:42 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-current] wifi: ath10k: fix station lookup failure
+ during disconnect
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+ Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+References: <20260325-ath10k-station-lookup-failure-v1-1-2e0c970f25d5@oss.qualcomm.com>
+ <7af13762-3e98-4d77-bde2-c14cdb3b1e3c@molgen.mpg.de>
+ <5033b613-3514-4686-895f-75bb8f523303@oss.qualcomm.com>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <5033b613-3514-4686-895f-75bb8f523303@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34029-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,gmail.com,vger.kernel.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:mid];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-34030-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[mpg.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmenzel@molgen.mpg.de,linux-wireless@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: BA3A533FC5C
+	NEURAL_HAM(-0.00)[-1.000];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,molgen.mpg.de:mid,qualcomm.com:email,mpg.de:email]
+X-Rspamd-Queue-Id: 686E73414C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-DQpKZWZmIEpvaG5zb24gPGplZmYuam9obnNvbkBvc3MucXVhbGNvbW0uY29tPiB3cm90ZToNCj4g
-DQo+IE9uIDMvMjYvMjAyNiA4OjIxIEFNLCBCaXR0ZXJibHVlIFNtaXRoIHdyb3RlOg0KPiA+IExl
-dCB1c2Vyc3BhY2UgdG9vbHMgbGlrZSBsc2h3IHNob3cgdGhlIGZpcm13YXJlIHZlcnNpb24gYnkg
-ZmlsbGluZyB0aGUNCj4gPiBmd192ZXJzaW9uIG1lbWJlciBvZiBzdHJ1Y3Qgd2lwaHkuDQo+ID4N
-Cj4gPiBCZWZvcmU6DQo+ID4NCj4gPiBjb25maWd1cmF0aW9uOiBicm9hZGNhc3Q9eWVzIGRyaXZl
-cj1ydHc4OF84ODE0YXUNCj4gPiBkcml2ZXJ2ZXJzaW9uPTYuMTkuNi1hcmNoMS0xIGZpcm13YXJl
-PU4vQSBsaW5rPW5vIG11bHRpY2FzdD15ZXMNCj4gPiB3aXJlbGVzcz1JRUVFIDgwMi4xMQ0KPiA+
-DQo+ID4gQWZ0ZXI6DQo+ID4NCj4gPiBjb25maWd1cmF0aW9uOiBicm9hZGNhc3Q9eWVzIGRyaXZl
-cj1ydHc4OF84ODE0YXUNCj4gPiBkcml2ZXJ2ZXJzaW9uPTYuMTkuNi1hcmNoMS0xIGZpcm13YXJl
-PTMzLjYuMCBsaW5rPW5vIG11bHRpY2FzdD15ZXMNCj4gPiB3aXJlbGVzcz1JRUVFIDgwMi4xMQ0K
-PiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBn
-bWFpbC5jb20+DQo+ID4gLS0tDQo+ID4gdjI6DQo+ID4gIC0gVXNlIGxvY2FsIHdpcGh5IHZhcmlh
-YmxlLg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21h
-aW4uYyB8IDYgKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKykNCj4g
-Pg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21h
-aW4uYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jDQo+ID4g
-aW5kZXggYzRmOTc1OGI0ZTk2Li5jZDkyNTQzNzBmY2MgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMNCj4gPiArKysgYi9kcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uYw0KPiA+IEBAIC0xODA1LDYgKzE4MDUsNyBA
-QCBzdGF0aWMgdm9pZCBydHdfbG9hZF9maXJtd2FyZV9jYihjb25zdCBzdHJ1Y3QgZmlybXdhcmUN
-Cj4gKmZpcm13YXJlLCB2b2lkICpjb250ZXh0KQ0KPiA+ICB7DQo+ID4gICAgICAgc3RydWN0IHJ0
-d19md19zdGF0ZSAqZncgPSBjb250ZXh0Ow0KPiA+ICAgICAgIHN0cnVjdCBydHdfZGV2ICpydHdk
-ZXYgPSBmdy0+cnR3ZGV2Ow0KPiA+ICsgICAgIHN0cnVjdCB3aXBoeSAqd2lwaHkgPSBydHdkZXYt
-Pmh3LT53aXBoeTsNCj4gPg0KPiA+ICAgICAgIGlmICghZmlybXdhcmUgfHwgIWZpcm13YXJlLT5k
-YXRhKSB7DQo+ID4gICAgICAgICAgICAgICBydHdfZXJyKHJ0d2RldiwgImZhaWxlZCB0byByZXF1
-ZXN0IGZpcm13YXJlXG4iKTsNCj4gPiBAQCAtMTgxOSw2ICsxODIwLDExIEBAIHN0YXRpYyB2b2lk
-IHJ0d19sb2FkX2Zpcm13YXJlX2NiKGNvbnN0IHN0cnVjdCBmaXJtd2FyZQ0KPiAqZmlybXdhcmUs
-IHZvaWQgKmNvbnRleHQpDQo+ID4gICAgICAgcnR3X2luZm8ocnR3ZGV2LCAiJXNGaXJtd2FyZSB2
-ZXJzaW9uICV1LiV1LiV1LCBIMkMgdmVyc2lvbiAldVxuIiwNCj4gPiAgICAgICAgICAgICAgICBm
-dy0+dHlwZSA9PSBSVFdfV09XTEFOX0ZXID8gIldPVyAiIDogIiIsDQo+ID4gICAgICAgICAgICAg
-ICAgZnctPnZlcnNpb24sIGZ3LT5zdWJfdmVyc2lvbiwgZnctPnN1Yl9pbmRleCwNCj4gZnctPmgy
-Y192ZXJzaW9uKTsNCj4gPiArDQo+ID4gKyAgICAgaWYgKGZ3LT50eXBlID09IFJUV19OT1JNQUxf
-RlcpDQo+ID4gKyAgICAgICAgICAgICBzbnByaW50Zih3aXBoeS0+ZndfdmVyc2lvbiwgc2l6ZW9m
-KHdpcGh5LT5md192ZXJzaW9uKSwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICIldS4ldS4l
-dSIsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICBmdy0+dmVyc2lvbiwgZnctPnN1Yl92ZXJz
-aW9uLCBmdy0+c3ViX2luZGV4KTsNCj4gPiAgfQ0KPiA+DQo+ID4gIHN0YXRpYyBpbnQgcnR3X2xv
-YWRfZmlybXdhcmUoc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwgZW51bSBydHdfZndfdHlwZSB0eXBl
-KQ0KPiANCj4gZ2VuZXJpY2FsbHkgc3BlYWtpbmcgaG93IHVzZWZ1bCBpcyB0aGlzPw0KPiB3aXRo
-IE1MTyBhbmQgbXVsdGktcmFkaW8gd2lwaHkgdGhlcmUgY2FuIGJlIG11bHRpcGxlIHVuZGVybHlp
-bmcgaGFyZHdhcmUgd2l0aA0KPiBkaWZmZXJlbnQgZmlybXdhcmUgdmVyc2lvbnMuIGluIHJlY2Vu
-dCBhdGggZHJpdmVycyB3ZSBhcmUgbm90IGZpbGxpbmcgdGhpcy4NCg0KVGhhbmtzIGZvciB0aGUg
-aW5mby4NCg0KUmVhbHRlayBXaUZpIGhhcyBzaW5nbGUgb25lIGZpcm13YXJlIHZlcnNpb24sIEkn
-ZCBjaGVjayBmaXJtd2FyZSB2ZXJzaW9uIGJ5DQprZXJuZWwgbG9nIHBlcnNvbmFsbHkuIEJ5IGNv
-bW1pdCBtZXNzYWdlLCBCaXR0ZXJibHVlIHVzZXMgbHNodyB0b29sIHRvIHJlYWQNCnRoZSB2ZXJz
-aW9uLCBhbmQgSSBwZXJzb25hbGx5IGRvbid0IG9iamVjdCB0aGlzIHBhdGNoLg0KDQpQaW5nLUtl
-DQoNCg==
+Dear Baochen,
+
+
+Am 27.03.26 um 03:54 schrieb Baochen Qiang:
+
+> On 3/27/2026 7:31 AM, Paul Menzel wrote:
+
+[…]
+
+>> Am 25.03.26 um 04:05 schrieb Baochen Qiang:
+>>> Recent commit [1] moved station statistics collection to an earlier stage
+>>> of the disconnect flow. With this change in place, ath10k fails to resolve
+>>> the station entry when handling a peer stats event triggered during
+>>> disconnect, resulting in log messages such as:
+>>>
+>>> wlp58s0: deauthenticating from 74:1a:e0:e7:b4:c8 by local choice (Reason: 3=DEAUTH_LEAVING)
+>>> ath10k_pci 0000:3a:00.0: not found station for peer stats
+>>> ath10k_pci 0000:3a:00.0: failed to parse stats info tlv: -22
+>>>
+>>> The failure occurs because ath10k relies on ieee80211_find_sta_by_ifaddr()
+>>> for station lookup. That function uses local->sta_hash, but by the time
+>>> the peer stats request is triggered during disconnect, mac80211 has
+>>> already removed the station from that hash table, leading to lookup
+>>> failure.
+>>>
+>>> Before commit [1], this issue was not visible because the transition from
+>>> IEEE80211_STA_NONE to IEEE80211_STA_NOTEXIST prevented ath10k from sending
+>>> a peer stats request at all: ath10k_mac_sta_get_peer_stats_info() would
+>>> fail early to find the peer and skip requesting statistics.
+>>>
+>>> Fix this by switching the lookup path to ath10k_peer_find(), which queries
+>>> ath10k's internal peer table. At the point where the firmware emits the
+>>> peer stats event, the peer entry is still present in the driver's list,
+>>> ensuring lookup succeeds.
+>>
+>> Out of curiosity, how can the statistics be printed?
+> 
+> not quite understand your question, can you be more detailed?
+
+The commit message starts with:
+
+“… moved station statistics collection to an earlier stage …”
+
+I was wondering how to print/dump these statistics.
+
+
+Kind regards,
+
+Paul
+
+
+>>> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00309-QCARMSWPZ-1
+>>>
+>>> Fixes: a203dbeeca15 ("wifi: mac80211: collect station statistics earlier when disconnect") # [1]
+>>> Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+>>> Closes: https://lore.kernel.org/ath10k/57671b89-ec9f-4e6c-992c-45eb8e75929c@molgen.mpg.de
+>>> Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+>>> ---
+>>>    drivers/net/wireless/ath/ath10k/wmi-tlv.c | 26 +++++++++++++++-----------
+>>>    1 file changed, 15 insertions(+), 11 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/
+>>> ath10k/wmi-tlv.c
+>>> index ec8e91707f84..01f2d1fa9d7d 100644
+>>> --- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+>>> +++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+>>> @@ -3,7 +3,7 @@
+>>>     * Copyright (c) 2005-2011 Atheros Communications Inc.
+>>>     * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+>>>     * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+>>> - * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+>>> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+>>>     */
+>>>    #include "core.h"
+>>>    #include "debug.h"
+>>> @@ -14,6 +14,7 @@
+>>>    #include "wmi-tlv.h"
+>>>    #include "p2p.h"
+>>>    #include "testmode.h"
+>>> +#include "txrx.h"
+>>>    #include <linux/bitfield.h>
+>>>      /***************/
+>>> @@ -224,8 +225,9 @@ static int ath10k_wmi_tlv_parse_peer_stats_info(struct ath10k *ar, u16 tag, u16
+>>>                            const void *ptr, void *data)
+>>>    {
+>>>        const struct wmi_tlv_peer_stats_info *stat = ptr;
+>>> -    struct ieee80211_sta *sta;
+>>> +    u32 vdev_id = *(u32 *)data;
+>>>        struct ath10k_sta *arsta;
+>>> +    struct ath10k_peer *peer;
+>>>          if (tag != WMI_TLV_TAG_STRUCT_PEER_STATS_INFO)
+>>>            return -EPROTO;
+>>> @@ -241,20 +243,20 @@ static int ath10k_wmi_tlv_parse_peer_stats_info(struct ath10k *ar, u16 tag, u16
+>>>               __le32_to_cpu(stat->last_tx_rate_code),
+>>>               __le32_to_cpu(stat->last_tx_bitrate_kbps));
+>>> -    rcu_read_lock();
+>>> -    sta = ieee80211_find_sta_by_ifaddr(ar->hw, stat->peer_macaddr.addr, NULL);
+>>> -    if (!sta) {
+>>> -        rcu_read_unlock();
+>>> -        ath10k_warn(ar, "not found station for peer stats\n");
+>>> +    guard(spinlock_bh)(&ar->data_lock);
+>>> +
+>>> +    peer = ath10k_peer_find(ar, vdev_id, stat->peer_macaddr.addr);
+>>> +    if (!peer || !peer->sta) {
+>>> +        ath10k_warn(ar, "not found %s with vdev id %u mac addr %pM for peer stats\n",
+>>> +                peer ? "sta" : "peer", vdev_id, stat->peer_macaddr.addr);
+>>>            return -EINVAL;
+>>>        }
+>>> -    arsta = (struct ath10k_sta *)sta->drv_priv;
+>>> +    arsta = (struct ath10k_sta *)peer->sta->drv_priv;
+>>>        arsta->rx_rate_code = __le32_to_cpu(stat->last_rx_rate_code);
+>>>        arsta->rx_bitrate_kbps = __le32_to_cpu(stat->last_rx_bitrate_kbps);
+>>>        arsta->tx_rate_code = __le32_to_cpu(stat->last_tx_rate_code);
+>>>        arsta->tx_bitrate_kbps = __le32_to_cpu(stat->last_tx_bitrate_kbps);
+>>> -      rcu_read_unlock();
+>>>          return 0;
+>>>    }
+>>> @@ -266,6 +268,7 @@ static int ath10k_wmi_tlv_op_pull_peer_stats_info(struct ath10k *ar,
+>>>        const struct wmi_tlv_peer_stats_info_ev *ev;
+>>>        const void *data;
+>>>        u32 num_peer_stats;
+>>> +      u32 vdev_id;
+>>>        int ret;
+>>>          tb = ath10k_wmi_tlv_parse_alloc(ar, skb->data, skb->len, GFP_ATOMIC);
+>>> @@ -284,15 +287,16 @@ static int ath10k_wmi_tlv_op_pull_peer_stats_info(struct ath10k *ar,
+>>>        }
+>>>          num_peer_stats = __le32_to_cpu(ev->num_peers);
+>>> +        vdev_id = __le32_to_cpu(ev->vdev_id);
+>>>          ath10k_dbg(ar, ATH10K_DBG_WMI,
+>>>               "wmi tlv peer stats info update peer vdev id %d peers %i more data %d\n",
+>>> -           __le32_to_cpu(ev->vdev_id),
+>>> +           vdev_id,
+>>>               num_peer_stats,
+>>>               __le32_to_cpu(ev->more_data));
+>>>          ret = ath10k_wmi_tlv_iter(ar, data, ath10k_wmi_tlv_len(data),
+>>> -                  ath10k_wmi_tlv_parse_peer_stats_info, NULL);
+>>> +                  ath10k_wmi_tlv_parse_peer_stats_info, &vdev_id);
+>>>        if (ret)
+>>>            ath10k_warn(ar, "failed to parse stats info tlv: %d\n", ret);
+>>
+>> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+>> Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
+>>
+>>
+>> Kind regards,
+>>
+>> Paul
 
