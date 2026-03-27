@@ -1,182 +1,251 @@
-Return-Path: <linux-wireless+bounces-34093-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34094-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKMqCHm+xmnoNwUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34093-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 18:29:29 +0100
+	id EB6qGFbfxmkoPQUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34094-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 20:49:42 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710793485B6
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 18:29:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A37334A706
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 20:49:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CDA6308E946
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 17:23:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4EE6D303A130
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 19:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1540B396571;
-	Fri, 27 Mar 2026 17:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B65237E302;
+	Fri, 27 Mar 2026 19:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="MaQ8vsqE"
+	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="InALLPmi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BA738F92B
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Mar 2026 17:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E43138BF8E
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Mar 2026 19:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774632198; cv=none; b=nuMTaQ4xeB/C8Xzh/QUrhKUoGvMqcCLH3NqbmJXztypvCKg9eNUkXgYJlC6g5zBhbNZsxQ/pLYtfCizwSB18vbXXplVUya18/0M5zSUPXrAMMxNijz/apxDAZ4vZ+LqCqb48p0T7mgHYePwRo5axU1lAVkWWxzBV5qg623f1PCw=
+	t=1774640435; cv=none; b=pzac0qmFO489ysgUCL8EotDw9YQZz7x1r8D+51K4fQGyXib0sPMNzvGh9iJFaCT1fzAsRvvJIH7pQDlPj5KH9RZUNeJEUdATUGXsHKgxlZZ+aSponLOOzSyJLzIDBuWEOjvt5Aw16ccrmUSZUrKxgwws1O5sSEL7WBY0x3tgTqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774632198; c=relaxed/simple;
-	bh=7ceDAktFs/4aYNC0Ka33d7TEBjpL0Izv3hmxiwL8Hlk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=mPAKHDLqT7RhxAgyxiCpSuRx9bsfKh3/R1ctON9WEsL0TQBCS8mCFCGjZwQoJANYzAfm0vELkYRNRXnsNNamKutEXpMSaDa0m9paDd264VQbPYgJlTSfkfu55OCSmx74hEhFkJwjt+DJJboepPIgUEmeUP6CbdRjVF2WWYPWHuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=MaQ8vsqE; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48538c5956bso22966825e9.0
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Mar 2026 10:23:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1774632194; x=1775236994; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3PVL5y5vL+SIKcEqHvATh78BLcKW0g0Z/1pX9XnBadE=;
-        b=MaQ8vsqETLU3Jw3M8Zl8mtVWIt50kdqzlfRWcv2s8RD0K8W0Gp484YVCEarKr14B2O
-         Wu29c/P0zdcu0sLmZxnlZ04WWy9vc64LmUAf0uaOygr/ZnUAaUoI81lZXKeytPcyYVV6
-         6pS1CXan4zVlmg3ws6w84HsObH+RjRipQDJngTN9ai+VTEMOx4ff3lCNdzoIGR0zxWof
-         Imzuvb4djpLPgLnYkbaTRcuTzeQrjt6LpTKm2GiXtQE74OW5LTGhib60egaNMlJabiBO
-         XZ15z9SoR/iIcKfVVfLf2uLmNDbJPUKnTc5UiheiH3Lg36i+a/EbjPNF2rw/86j7591L
-         bO4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774632194; x=1775236994;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3PVL5y5vL+SIKcEqHvATh78BLcKW0g0Z/1pX9XnBadE=;
-        b=R/g6soD7V953j4cBAyxJ6LGY2cbbsQijpXVDZt9aBSjeT6JvwEqY75NB19R/Rzluyx
-         8z/G3HBXteVvv/8O5aAOkPMb+MwaLTrFQacXBHsIBwfF9tV/5UZ+NS/4+bSOX31rJtkS
-         vouPte+xYPpMYj1cqCAiGNdiJ8Ve8Gw2UjkSc4OfRdbtoKM+oYLMUD8u7Jtm2uq1iJ2r
-         TiUpTf2AdA8xbgcV8vqNyWqUPwdq0h28IXtfvYPRk1EIGxUYtO4ccyVR1gVgXslnXK71
-         Bw1+EeJGPpODYaMIWHsUHp0ZMpocuhheT6FQQQyAK7PsDneku+eQ9iKyrBw9XMu+5eel
-         3vJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVjvVj2qX5mw1VaGKijX8QmM8LfWDXEzDY2Y/VS1vmpV+5RA65ET/5+QwfyaoxRb0wQbtO82HNcAceEDfOHnA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzRbfYLt2an5NZlTH9pGsL1X0u0erXTJLSGyfHBrFrtDpeFQkb
-	0o06EErjU4VEzhhG2V6KHukbwrx5yRcdHSelK9cZSXe5tbxou0tZoc6nu9vRVzIsslA/o9wHPoO
-	edk/p
-X-Gm-Gg: ATEYQzzrFG6RzwnBin9DNfJUI8RLyAwr04Cqf39eh0RAof2ffcCXILTOBqrfsv34042
-	AG2f1I28g1b5A2WQZfkjXHzzyS7B4W/bKmg0WQbrDvJI4psiEiyU0ZEYR8QL3xydR0zbsXXhVHk
-	84i0QYFxiWNqWqa6Mw/Tnt/ss1vgA6iReGRqEtasoZhui/rAUmVJ8iV2/h2bQlwWj4qwwhg85ct
-	FpN9AK2cAanTAEUngEtrm1BOISRFTRIdTPkf/1d5gPe97UmgGQPd2FGnOnAnI/P8H97qGGaV8b9
-	z6Po/3PhHIpRicz7FDcVEyLULJVrBuiC/YXea+AAWI/uEyUw7j39crZWNX4b+vBBdyzK+gaM9cu
-	F/M1XZv7kQs7mTk0Pccl4oD1K9/ZLs1hDduCJPHr67+Ut+wy6ACKpAjqvnlIWfH5cPlCCO9TRio
-	oUBuSxAxgHoBOKLXISdDym2XkZf+mW8HJt4InUW4mWQ/0hlGn851PQOmOmMOlwUL63sQxjoaJds
-	6Q6A4JJuY4=
-X-Received: by 2002:a05:600c:6487:b0:486:fe83:861c with SMTP id 5b1f17b1804b1-487290d098dmr45336805e9.7.1774632193537;
-        Fri, 27 Mar 2026 10:23:13 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:71:7cc0:9f51:a89f:3777:bbea? ([2a01:e0a:71:7cc0:9f51:a89f:3777:bbea])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4872718e474sm20645765e9.31.2026.03.27.10.23.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Mar 2026 10:23:13 -0700 (PDT)
-Message-ID: <34e028b0-c598-4d60-81aa-26a109b44d6d@freebox.fr>
-Date: Fri, 27 Mar 2026 18:23:12 +0100
+	s=arc-20240116; t=1774640435; c=relaxed/simple;
+	bh=dmGV+dwOZe0z0P/MfvO9d6jrVB1lS++DYp0VGNGKeCU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nLTtmi/j8fKIsE2Fz5kPPFpF92BK2fP/glljoAapR/WLa6OBBkP4t7Y58wdyZ4MmHK2WTrOMwGJVhtcvKAXGxVWmkOrnRxN717gczLHNhvLcIoNhhGX/eIyqCeMs+qsvcc/YjX0eNJLZvLCB6pjrZf85z2buu/vmQlRjdoeyzeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=InALLPmi; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
+	s=key1; t=1774640424;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FUcjJSTCwKjx17qZB6HcOBr+uMak1u7sFzWNqgDyLQ8=;
+	b=InALLPmiApYSi+Hrk21m+u/r6YNV79yIZlZtN8/AEGM6M/GnU5EtXinxAgwJaaZf7wuCPj
+	JyeONFWQ0E0yE3lJTB0kFVfaudxQt90Zgv8KGnLUJhJjES0jyh4L8E8AvuoahT5oh55pyt
+	HaVBera/94Pfhla2/hQKF5362iGSuUeRYuEu+psqStBA6cptd/o5QbyCoUU6lHXHKVvyJk
+	j3Ois26aUW+AL5EPqBg73W796+V2bf/iEcGY25gDkDQfDhBYFppCC4dGIzhitN36VM3Yce
+	NyUeWDP3t21OUo//wXv1GuV4V87irpO3qsuwa93l96AGIEML88br0qBE6vsM8w==
+From: Lucid Duck <lucid_duck@justthetip.ca>
+To: pkshih@realtek.com
+Cc: linux-wireless@vger.kernel.org,
+	rtl8821cerfe2@gmail.com,
+	morrownr@gmail.com,
+	Lucid Duck <lucid_duck@justthetip.ca>
+Subject: [PATCH v4] wifi: rtw89: usb: fix TX flow control by tracking in-flight URBs
+Date: Fri, 27 Mar 2026 12:40:02 -0700
+Message-ID: <20260327194002.48648-1-lucid_duck@justthetip.ca>
+In-Reply-To: <20260323233347.158745-1-lucid_duck@justthetip.ca>
+References: <20260323233347.158745-1-lucid_duck@justthetip.ca>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 08/19] wifi: mac80211: clean up STA NSS handling
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-References: <20260327093659.711584-21-johannes@sipsolutions.net>
- <20260327103659.5296c2f3a949.I97fb93ccc1b366110ab23de58fcd73676cdd85d6@changeid>
- <79228bab-aa6c-4fda-97c9-768b158dfa3a@freebox.fr>
- <8aa10ce1ed9da7409ade68d376a61f5e14c70219.camel@sipsolutions.net>
- <ff90035f97d3ae180171172ad6624fcc7c6c9d8a.camel@sipsolutions.net>
-Content-Language: en-US
-From: Pablo MG <pmartin-gomez@freebox.fr>
-In-Reply-To: <ff90035f97d3ae180171172ad6624fcc7c6c9d8a.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[freebox-fr.20230601.gappssmtp.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-34093-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	DMARC_NA(0.00)[freebox.fr];
-	DKIM_TRACE(0.00)[freebox-fr.20230601.gappssmtp.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,justthetip.ca];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-34094-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[justthetip.ca:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 710793485B6
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,justthetip.ca:dkim,justthetip.ca:email,justthetip.ca:mid]
+X-Rspamd-Queue-Id: 7A37334A706
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Le 27/03/2026 à 16:08, Johannes Berg a écrit :
-> On Fri, 2026-03-27 at 15:50 +0100, Johannes Berg wrote:
->> On Fri, 2026-03-27 at 13:24 +0100, Pablo MG wrote:
->>> If we are doing some cleanup, let's go full on it.
-> 
->> No? You're sounding a lot like an LLM that really likes to comment on
->> code that's only moved...
-> 
-> OK, that was a cheap shot, sorry.
-No hard feelings, this wouldn't be a Linux ML if there was some harsh 
-and somewhat deserved comments from time to time.
+rtw89_usb_ops_check_and_reclaim_tx_resource() returns a hardcoded
+placeholder value (42) instead of actual TX resource availability.
+This violates mac80211's flow control contract, preventing backpressure
+and causing uncontrolled URB accumulation under sustained TX load.
 
-> 
-> We can debate the merits of doing some cleanup on the code separately,
-> but "let's go full" doesn't really ever make sense, even if a patch is
-> already doing some specific cleanup in some area, it's always better to
-> do other/unrelated cleanups separately.
-The phrasing was very LLMy of me, and my proposed changes definitely 
-warranted its own commit, I could have done better.
+Fix by adding per-channel atomic counters (tx_inflight[]) that track
+in-flight URBs. Increment before usb_submit_urb() with rollback on
+failure, decrement in the completion callback, and return the
+remaining capacity to mac80211. The firmware command channel (CH12)
+always returns 1 since it has its own flow control.
 
-> 
-> So please don't suggest that code that's only (explicitly!) being moved
-> get cleanups "along the way", doing that would be actively harmful to
-> understanding the changes being made. The key point in this patch isn't
-> even that the code moves, it's that the callers move around. Maybe I
-> shouldn't even move the code at the same time.
-Not to poke the bear again, but the commit message does say 'While doing 
-this, fix [...]', so if we can add a fix to it, why not plug in a 
-refactor too /s
+The pre-increment pattern prevents a race where USB core completes the
+URB on another CPU before the submitting code increments the counter.
 
-> 
-> Of course, if there are cleanups related to actual modifications, sure,
-> that's good to review.
-> 
-> Also, of course you're more than welcome to suggest cleanups to the code
-> as patches yourself, but you could do that _better_ by reading the
-> _code_ rather than by looking at the changes someone else is doing is
-> doing to it. And less chances of conflicting along the way.
-I'll do that. It's true that I have a bit of a T-Rex vision regarding 
-code, if it's not changing, I don't know it exists.
-> 
-> The part that the review LLMs do all the time is suggest that context or
-> code being moved is also changed, and that's really not how "small,
-> individual commits" work. Even the Sashiko folks are actually trying to
-> get it to do _less_ of that, nobody is saying this is a good thing.
-> 
-> johannes
+128 URBs per channel provides headroom for RTL8832CU at 160 MHz
+bandwidth. Tested on RTL8852AU (USB3 80 MHz) where 64 and 128 showed
+equivalent throughput, and on RTL8832AU where 128 sustained full
+throughput under 8-stream parallel load.
 
-Pablo MG
+Tested on D-Link DWA-X1850 (RTL8832AU), kernel 6.19.8, Fedora 43:
+
+                     Unpatched -> Patched (128 URBs)
+  USB3 5GHz UL:      844 -> 837 Mbps (no regression)
+  USB3 5GHz retx:    3 -> 0
+  USB3 2.4GHz UL:    162 -> 164 Mbps (no regression)
+  4-stream UL:       858 -> 826 Mbps (within variance)
+  8-stream UL:       872 -> 826 Mbps (within variance)
+  UDP flood:         0% loss (690K datagrams)
+  60-second soak:    855 Mbps, 0 retransmits
+
+Reported-by: morrownr <morrownr@gmail.com>
+Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
+---
+Changes since v3:
+  - Increased MAX_TX_URBS_PER_CH from 64 to 128 per Ping-Ke's
+    suggestion, providing headroom for RTL8832CU at 160 MHz. I don't
+    have an RTL8832CU to test 160 MHz directly, but 64 and 128 are
+    equivalent on RTL8852AU at 80 MHz -- no regression risk.
+  - Simplified CH12 handling per Ping-Ke's suggestion: CH12 is now
+    tracked in the counter like all other channels. The only special
+    case is in check_and_reclaim where CH12 returns 1 (firmware
+    command channel has its own flow control).
+  - Removed all inline comments flagged in review.
+  - Sent via git send-email (was asked about mailer in v2 review).
+
+Changes since v2:
+  - Increased MAX_TX_URBS_PER_CH from 32 to 64 based on URB scaling
+    tests showing 32 drops 35% under multi-stream load.
+  - Removed duplicate "TX flow control" comments.
+
+Changes since v1:
+  - Removed duplicate comments per Ping-Ke.
+  - Added throughput data to commit message per Ping-Ke.
+  - Addressed Bitterblue's question about using skb_queue_len vs
+    atomic counters (atomic is needed because the counter must update
+    before usb_submit_urb returns, not after URB completion).
+
+ usb.c | 20 ++++++++++++++++++--
+ usb.h |  3 +++
+ 2 files changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/usb.c b/usb.c
+index eb489df..6f57788 100644
+--- a/usb.c
++++ b/usb.c
+@@ -166,16 +166,24 @@ static u32
+ rtw89_usb_ops_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
+ 					    u8 txch)
+ {
++	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
++	int inflight;
++
+ 	if (txch == RTW89_TXCH_CH12)
+ 		return 1;
+ 
+-	return 42; /* TODO some kind of calculation? */
++	inflight = atomic_read(&rtwusb->tx_inflight[txch]);
++	if (inflight >= RTW89_USB_MAX_TX_URBS_PER_CH)
++		return 0;
++
++	return RTW89_USB_MAX_TX_URBS_PER_CH - inflight;
+ }
+ 
+ static void rtw89_usb_write_port_complete(struct urb *urb)
+ {
+ 	struct rtw89_usb_tx_ctrl_block *txcb = urb->context;
+ 	struct rtw89_dev *rtwdev = txcb->rtwdev;
++	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
+ 	struct ieee80211_tx_info *info;
+ 	struct rtw89_txwd_body *txdesc;
+ 	struct sk_buff *skb;
+@@ -234,6 +242,8 @@ static void rtw89_usb_write_port_complete(struct urb *urb)
+ 		break;
+ 	}
+ 
++	atomic_dec(&rtwusb->tx_inflight[txcb->txch]);
++
+ 	kfree(txcb);
+ }
+ 
+@@ -311,9 +321,13 @@ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
+ 
+ 		skb_queue_tail(&txcb->tx_ack_queue, skb);
+ 
++		atomic_inc(&rtwusb->tx_inflight[txch]);
++
+ 		ret = rtw89_usb_write_port(rtwdev, txch, skb->data, skb->len,
+ 					   txcb);
+ 		if (ret) {
++			atomic_dec(&rtwusb->tx_inflight[txch]);
++
+ 			if (ret != -ENODEV)
+ 				rtw89_err(rtwdev, "write port txch %d failed: %d\n",
+ 					  txch, ret);
+@@ -694,8 +708,10 @@ static void rtw89_usb_init_tx(struct rtw89_dev *rtwdev)
+ 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(rtwusb->tx_queue); i++)
++	for (i = 0; i < ARRAY_SIZE(rtwusb->tx_queue); i++) {
+ 		skb_queue_head_init(&rtwusb->tx_queue[i]);
++		atomic_set(&rtwusb->tx_inflight[i], 0);
++	}
+ }
+ 
+ static void rtw89_usb_deinit_tx(struct rtw89_dev *rtwdev)
+diff --git a/usb.h b/usb.h
+index 9f554b5..1a77e0e 100644
+--- a/usb.h
++++ b/usb.h
+@@ -21,6 +21,8 @@
+ #define RTW89_MAX_BULKIN_NUM		2
+ #define RTW89_MAX_BULKOUT_NUM		7
+ 
++#define RTW89_USB_MAX_TX_URBS_PER_CH	128
++
+ struct rtw89_usb_info {
+ 	u32 usb_host_request_2;
+ 	u32 usb_wlan0_1;
+@@ -67,6 +69,7 @@ struct rtw89_usb {
+ 	struct usb_anchor tx_submitted;
+ 
+ 	struct sk_buff_head tx_queue[RTW89_TXCH_NUM];
++	atomic_t tx_inflight[RTW89_TXCH_NUM];
+ };
+ 
+ static inline struct rtw89_usb *rtw89_usb_priv(struct rtw89_dev *rtwdev)
+-- 
+2.53.0
+
 
