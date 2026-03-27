@@ -1,147 +1,155 @@
-Return-Path: <linux-wireless+bounces-34053-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34054-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJ1wCE5Qxmk2IgUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34053-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 10:39:26 +0100
+	id 8LLVDhhWxmmMIwUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34054-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 11:04:08 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0899F341DE1
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 10:39:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A0C342226
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 11:04:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 736FD3096050
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 09:37:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 91B35300B9CA
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 10:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275943D6684;
-	Fri, 27 Mar 2026 09:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F114B3A758D;
+	Fri, 27 Mar 2026 10:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b="FgkXKXD9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CUrU9cSB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from courrier.aliel.fr (pouet.aliel.fr [65.21.61.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77D9379EC4;
-	Fri, 27 Mar 2026 09:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.61.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679DD3A6F1C
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Mar 2026 10:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774604253; cv=none; b=YhEizAxG4RTcqXYx4+oY9VLsDP9lTJw2DZEXz7Ek7eraNAXfL9qho8QX4E2VGnWRcjZHb9Ilh1BnE4g7mpqfMx7LT+RY9ft7cBEzc409163ScqNkmLMoy70YnK4B6K+hbhb7WaSG9SdmwvNyHkg3Sx2zHhX+xebU45iHFKON8D0=
+	t=1774605781; cv=none; b=e8g7owJyxQqvlGHigX2T0cjJUNoh5ytn8oV25DkR6bsqKFsQJe2nZo0pwb+K/JLXL5ssbW+v2rEOf+TYIJwL1HO9YrrePHd+CJGiQjojqL/wPmz9ClZ/scCaL89TCdEJCZE6+G0/5trBxBl5lb/EG8LL0nnfXAJvsxcL3j/BDyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774604253; c=relaxed/simple;
-	bh=cCrKuuyOz5qG2rFBsp37cnDOUzhVXzOLst/bIvh8j+A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hyIUSlx4DI6iMEn67ojhYCiWrfpUhapiQlSMi5mhlFbrbfhF9OAGQEZ/puNT5U4TD3a/aTxh7du08IkYq7SEfQvTYTRm6cvbN4zUV8baq6aEmP36VJ8P8hcu0OLGy/xuM6YA4rpZq8URAic+pQdtLm+8GqQEu6qjjlkMOlxXbvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr; spf=pass smtp.mailfrom=aliel.fr; dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b=FgkXKXD9; arc=none smtp.client-ip=65.21.61.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliel.fr
-From: Ronald Claveau <linux-kernel-dev@aliel.fr>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aliel.fr;
-	s=courrier-s1; t=1774604242;
-	bh=cCrKuuyOz5qG2rFBsp37cnDOUzhVXzOLst/bIvh8j+A=;
-	h=From:Date:Subject:To:Cc;
-	b=FgkXKXD9iXLEZQAnfELBmS7V93ht232DzX+JEbXFdYBrm7ChAVeXfp3e4l57j1nwF
-	 itc5IBJlAL5t32cDWr7w6uKj4Ex9MEMNkSR3ohDEzo08OzlnzPUWyMBIhP+pjWCLTk
-	 /7TdBBtXGuD8ux8M36dd/At3l4EklgM1VU9pg7eQ=
-Date: Fri, 27 Mar 2026 10:36:26 +0100
-Subject: [PATCH net-next v2] dt-bindings: net: wireless: brcm: Add
- compatible for bcm43752
+	s=arc-20240116; t=1774605781; c=relaxed/simple;
+	bh=8++rv44Zo9lc4YRRtEVA5R1EsDOTVZkDbukvWi6J6dI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K7+9OApLLjM8KenD//mGMo3GCrzBcKZ0KeWKTxRyxVfqOteZeuVfTdabF0Ffg0XypAgrwiuoo0q9EriqfSCNdTUQb4Xz/N82j01lf1PjC5RHrHjEjPMMMaDdZDfLUTe/FL21Sf9cn+vw8BmAfVhpJfM35wLe1TLZq0ORxX8l61A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CUrU9cSB; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so17204915e9.0
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Mar 2026 03:03:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774605779; x=1775210579; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SLXE5YEAWcb3iffDgGvNVl9eXbiYGmULBIFt7lG4i4Y=;
+        b=CUrU9cSBW+bbIuY1zjZw30orfSBh83ry7Ud3NwWxu27rOZ0u91dX1JmrYRBQyNLHIV
+         rCU+6LXwS5McplJ9lxIU35vmoqcIc3XjNy0DO3JuZdhA7fOm9bqLd8ybGrhmptICzBDj
+         qPrDd2/11ItjHACYuNLngL+GlmMsLHwdlI5rZunoh3oWdxwGJx+ytxKXtyvtyisrxz7/
+         bop1kBCOpCBkdQkRdwBRbZwfIrJjy0UOc4IZk8fr+A2C2vQbcnSG6xGFGh3KRNMvg5a8
+         d/FphLxzRFqX7qxa2kioDQYDmZh38S7Wqj36cT0qlWea6nnKtNFPO6XD4e8XTRQGanrC
+         2bCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774605779; x=1775210579;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SLXE5YEAWcb3iffDgGvNVl9eXbiYGmULBIFt7lG4i4Y=;
+        b=UVDFsfe3m9HgGKUL48Btrbe6YHZ0SZSU4SWf5kfK8I3rqhIdvNim2mrbrKgjAX9kx8
+         drfk6021Zy74e6nWMGiozArxcgDmjVDBYTLW9T4y8dLxFAhwcr+4WEuZtAVfbKinUYUM
+         8qwY+9xIpOqWHWCGBusr35dDns3Zj4337SlJu2/evJevNl1/TueQxNwwtehasUHJ1Jhj
+         UzhCqNa+ouf8HcrLHcC55sonuBA5WZWxWPYPSR78D5aFtR0j44lh9HtAyKT2QXcSTy3C
+         a5xGVNlWDvgSB3PjSrsdeXGEd0S0HZJaw3Yii5xC9lRYVzjKTK5P/9yS7YSTuywKVWgP
+         ZtBg==
+X-Gm-Message-State: AOJu0YzziIArnDWvlgrpzVzIXC03M1QCjaXrbmGRiNMqJ1/i5xl2OTm5
+	/iUGDiI0QBsrnPpgrdvNFv5BD1WFO9c6v5YDlPY2Nx8ubMicoKwICt5m9Qp2kQ==
+X-Gm-Gg: ATEYQzzkZNiW7aeNVOrKB/qcWLx8QUBpxW7hN/kK6n2HW3FcBayK3kG0cEdEsU6bb2i
+	BXFqAs0Qqikh9m6y3sS3t+m4nidHUxtmTpHlwDEQA3AYAjvQv8pd5erLzI8WkqALlsb6O8SFhjD
+	GhaTtaYpv+oU6wZqnc1no1hMzRj2wHwB1t2qGO9VVgCTAtY0cX1wpMLahaeKD9oRDGGqxAJa5cQ
+	UDA9V7nzSehjQ6arEk/kOU/hEy2qlIfu+X+p0dc3qgEffiIwA5EnNamU6S/obfHbYJflILPMvpf
+	mN2X1baH13TcFQ5kZib2UjZhNgD6DrL3GXrcaAtPNZWuwHD/6fqsUh0yqUzto8YP8oQFHFimbup
+	wT9GANYpSe1eh6cRW1/zENKIxUhV5zBsuyKwunNk9aEArv+XheLGN+pMZc6lif4T6IbDe7yjTYJ
+	F8A6JpyDPsoz49FVw6TiKHdMCCBMAPLMdL8Wn9jYay7H8uJSe7/lElbD3D
+X-Received: by 2002:a05:600c:8715:b0:485:3bc7:a231 with SMTP id 5b1f17b1804b1-48728091c2cmr29640565e9.29.1774605778404;
+        Fri, 27 Mar 2026 03:02:58 -0700 (PDT)
+Received: from syracuse.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722c9134fsm142946985e9.9.2026.03.27.03.02.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 03:02:57 -0700 (PDT)
+From: Nicolas Escande <nico.escande@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: johannes.berg@intel.com
+Subject: [PATCH] wifi: mac80211: handle VHT EXT NSS in ieee80211_determine_our_sta_mode()
+Date: Fri, 27 Mar 2026 11:02:56 +0100
+Message-ID: <20260327100256.3101348-1-nico.escande@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260327-add-bcm43752-compatible-v2-1-5b28e6637101@aliel.fr>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNTQqDMBBGryKz7hRN/F/1HsXFRMc6oFGSIBbx7
- g1eoMvH43vfCZ6dsIc2OcHxLl5WG0E9Eugnsh9GGSKDSlWZalUiDQOafsl1VSjs12WjIGZmZFX
- mlI9VU2mCuN4cj3Lc5TdYDmj5CNBFM4kPq/vel3t2+7/1PcMMjTYNFTUZXZsXzcLzc3TQXdf1A
- yPTs3THAAAA
-X-Change-ID: 20260326-add-bcm43752-compatible-e264a4f7973a
-To: Johannes Berg <johannes@sipsolutions.net>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, van Spriel <arend@broadcom.com>
-Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- Conor Dooley <conor.dooley@microchip.com>, 
- Ronald Claveau <linux-kernel-dev@aliel.fr>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openssh-sha256; t=1774604241; l=1596;
- i=linux-kernel-dev@aliel.fr; s=id_ed25519; h=from:subject:message-id;
- bh=cCrKuuyOz5qG2rFBsp37cnDOUzhVXzOLst/bIvh8j+A=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgMGec55oxeeisqykQiUedekMYyOnR9
- BG9E/7rDWyqdNoAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QIfB4fa5UnaYIw0QLG9SkKH5Df9Rhm2DOTJfIGNKliU28PbcrWWyEMIDqEabsSl4xy16qD9S7fD
- B1ndbnYkdBgI=
-X-Developer-Key: i=linux-kernel-dev@aliel.fr; a=openssh;
- fpr=SHA256:kch4osYZ6A1BrPps5AUs6KnfdE2wm4ocMtyTc8TmZMs
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[aliel.fr:s=courrier-s1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34053-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[aliel.fr];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[aliel.fr:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux-kernel-dev@aliel.fr,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-34054-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nicoescande@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_NONE(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,aliel.fr:dkim,aliel.fr:email,aliel.fr:mid,microchip.com:email]
-X-Rspamd-Queue-Id: 0899F341DE1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 56A0C342226
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add bcm43752 compatible with its bcm4329 compatible fallback.
+A station which has a NSS ratio on the number of streams it is capable of
+in 160MHz VHT operation is supposed to use the 'Extended NSS BW Support'
+as defined by section '9.4.2.156.2 VHT Capabilities Information field'.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
+This was missing in ieee80211_determine_our_sta_mode() and so we would
+wrongfully downgrade our bandwidth when connecting to an AP that supported
+160MHz with messages such as:
+
+	[   37.638346] wlan1: AP XX:XX:XX:XX:XX:XX changed bandwidth in assoc response, new used config is 5280.000 MHz, width 3 (5290.000/0 MHz)
+
+Fixes: 310c8387c638 ("wifi: mac80211: clean up connection process")
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
 ---
-The Khadas VIM4 board based on Amlogic A311D2 aka T7 features an AP6275s Wi-Fi/Bluetooth module with a BCM43752 chipset.
-This patch aims to add this chipset with its fallback to bcm4329 compatible.
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-The original patch series is here:
-https://lore.kernel.org/r/20260326-add-emmc-t7-vim4-v5-0-d3f182b48e9d@aliel.fr
----
-Changes in v2:
-- Add netdev in CC.
-- Link to v1: https://lore.kernel.org/r/20260326-add-bcm43752-compatible-v1-1-b3b9a58ab38b@aliel.fr
----
- Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-index 3be7576787644..81fd3e37452a6 100644
---- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-@@ -42,6 +42,7 @@ properties:
-               - brcm,bcm4356-fmac
-               - brcm,bcm4359-fmac
-               - brcm,bcm4366-fmac
-+              - brcm,bcm43752-fmac
-               - cypress,cyw4373-fmac
-               - cypress,cyw43012-fmac
-               - infineon,cyw43439-fmac
-
----
-base-commit: 45b2b84ac6fde39c427018d6cdf7d44258938faa
-change-id: 20260326-add-bcm43752-compatible-e264a4f7973a
-
-Best regards,
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 810bea1aacc5..1f3f7fa79084 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -6009,7 +6009,8 @@ ieee80211_determine_our_sta_mode(struct ieee80211_sub_if_data *sdata,
+ 
+ 	if (is_5ghz &&
+ 	    !(vht_cap.cap & (IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
+-			     IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ))) {
++			     IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ |
++			     IEEE80211_VHT_CAP_EXT_NSS_BW_MASK))) {
+ 		conn->bw_limit = IEEE80211_CONN_BW_LIMIT_80;
+ 		mlme_link_id_dbg(sdata, link_id,
+ 				 "no VHT 160 MHz capability on 5 GHz, limiting to 80 MHz");
 -- 
-Ronald Claveau <linux-kernel-dev@aliel.fr>
+2.53.0
 
 
