@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-34086-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34087-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHSnDDKJxmlELgUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34086-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 14:42:10 +0100
+	id oN5EIxSOxmlLLwUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34087-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 15:03:00 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E7E34574E
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 14:42:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5DF1345B62
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 15:02:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 61F9C3019F08
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 13:39:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1E8E3067A27
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 13:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B8D39B486;
-	Fri, 27 Mar 2026 13:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD523F0741;
+	Fri, 27 Mar 2026 13:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZ2a9OOm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqlqCI1l"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8E234B434;
-	Fri, 27 Mar 2026 13:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81303EF67E;
+	Fri, 27 Mar 2026 13:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774618776; cv=none; b=Njt+QfpblRldCbEXKDPSpZq+kp6L/dPcPBISIHZyak6SJCsw8+pPTjhjqgdaHUyn7I+EvJYhndYy6KSHn+/zBFVB4OAkuk2+k16kIrS1rZRWk28rBV9Ft3+n6n4wMrQdjjMMLwKujonid6sZlK9EuunXFrWI173LjNtMVZTJ2Ic=
+	t=1774619812; cv=none; b=YFaD1JOaGb6cmS2ihiL3/34C+tSgWYin2bppUuD90MOvA2TdoFbOKVuaNOXBl+Tci+mE8c7e69sBe08v+WVn37qeFREuQ6pw+obUoJ3vSeGVTMBsXWstddZLT2tGFdDmESlNhBE2Z9b6ScuN7PXllYZ537ojum8mYAC+xvidkWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774618776; c=relaxed/simple;
-	bh=EK3L84nzzwEQPvQOCJndbS7CWv2sJDVmRS0NFbkNFt4=;
+	s=arc-20240116; t=1774619812; c=relaxed/simple;
+	bh=2mf5n3dc77+mCuOXdxbyc2GEf2Wtigj7YNJ+nHFL1Tc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YYMy1XWqfnLoDqeNLPMSxbVl7YLKw0rqsEVlRZNFxd2IHVr6znWdKnV33854Y8hOfvnoHpjM53CUQ1IBAy+A8BVssTV0S6E7k9ZLuz9Rzu2Y82vCgJahObBWTLlshMu+FePlLIRef092EwBLNDdOopk4NDPTLr8YpnzZENjJuhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZ2a9OOm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EF8C19423;
-	Fri, 27 Mar 2026 13:39:26 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=YdqTFlPJXraxNTEfSWXFcln8URpQlgDxrby5I8BA8Ms7o+4qgsKBrgLEgHQCg9pyzQx6ovBqPRJRyUntD7N2Y8mJZZatuTYjeObXTqy+yLoPnb/bkj11WCTE3cPw96WIdKTl/M7QyautU+EIw4Hcw+1BwiFAIeAxUNK2723zm0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqlqCI1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B11FC19423;
+	Fri, 27 Mar 2026 13:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774618776;
-	bh=EK3L84nzzwEQPvQOCJndbS7CWv2sJDVmRS0NFbkNFt4=;
+	s=k20201202; t=1774619812;
+	bh=2mf5n3dc77+mCuOXdxbyc2GEf2Wtigj7YNJ+nHFL1Tc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gZ2a9OOmIUE9p1djDWK+JEQLE1+0jE5+eHqkLh0g4U+My9MeFyfXvW8YyFq805afi
-	 Mrhqpi0tviIOqOjc2irCWiYCF1mQOpnX/ZgjyLQUyNzp3RFW8qM+aKwuyeQPAJgSA0
-	 6wPdrWKseyd0ZYZuS8WB7cZi1N+PVw7RrzzgJOAcllE8v4VGoNpaLbxjvxoVN3sWng
-	 G22Co7kk/1POJ7t06mXgXbeqzdMcKYD7o/7DaHBMQkvF2hcgOA8JXt58wkDndNlpe1
-	 97UWhS+jO80p3kcwYdY5DfYiELCVdjQlPIugLIUtArmmyE5ZxIE/+DJ2HxOA2JDiKH
-	 6dPWYSZ4WIkWw==
-Message-ID: <2da6cbcc-677d-4ba8-9762-ecb47b157f21@kernel.org>
-Date: Fri, 27 Mar 2026 14:39:24 +0100
+	b=gqlqCI1lFYA8l0v9f7x7r+LuraTcOCrQCqsWXfQHxTliO9u0H6NRLTSwt1PJrc2dI
+	 JzSZ7Qx97LFgd5pw5IJYTs9HohcIs9z82W9PtTLStFdtcUBXA44LYWIFEw60xB93WB
+	 Xg1IQEwKTbluRJYw21AaOQI+uhUaTx2JA6iR2D5CwyM/5WzR+pdQffXUb2sZ178cEq
+	 JkU6r4X0hjI9M0GspIsHMZJwg+EJ62Q6laoD1llzD4fcACEH/YX7yGNYJRlqPqM43D
+	 XD8AsQg4ziDw+uksS36u5xCr92h7VrFduN9+tqSK9sn1n4iTtLi7cQ+RzP7dPLige/
+	 0wMltjEFiAeqA==
+Message-ID: <a0a7269d-7a09-4a78-a4b0-b39b67bc253b@kernel.org>
+Date: Fri, 27 Mar 2026 14:56:40 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -54,8 +54,8 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 02/15] firmware: qcom: Add a generic PAS service
-To: Sumit Garg <sumit.garg@kernel.org>,
- Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Sumit Garg <sumit.garg@kernel.org>
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
  linux-media@vger.kernel.org, netdev@vger.kernel.org,
@@ -70,17 +70,19 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  jjohnson@kernel.org, mathieu.poirier@linaro.org,
- trilokkumar.soni@oss.qualcomm.com, pavan.kondeti@oss.qualcomm.com,
- jorge.ramirez@oss.qualcomm.com, tonyh@qti.qualcomm.com,
- vignesh.viswanathan@oss.qualcomm.com, srinivas.kandagatla@oss.qualcomm.com,
- amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
- op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
- skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
- Sumit Garg <sumit.garg@oss.qualcomm.com>
+ trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
+ pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com,
+ tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com,
+ srinivas.kandagatla@oss.qualcomm.com, amirreza.zarrabi@oss.qualcomm.com,
+ jens.wiklander@linaro.org, op-tee@lists.trustedfirmware.org,
+ apurupa@qti.qualcomm.com, skare@qti.qualcomm.com,
+ linux-kernel@vger.kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>
 References: <20260312062756.694390-1-sumit.garg@kernel.org>
  <20260312062756.694390-3-sumit.garg@kernel.org>
- <20260313072450.sx7vqtvh62nflhff@hu-mojha-hyd.qualcomm.com>
- <acE3MR4SVCPUzcgR@sumit-xelite>
+ <28d63822-f191-400a-8005-5185dd480dbb@kernel.org>
+ <acE-kAi2tkPh2qie@sumit-xelite>
+ <5c5b49aa-7819-44c6-b5f7-19ec780d73fa@kernel.org>
+ <2e55bdc3-54a1-4f18-b9ad-fe03f21fc4da@oss.qualcomm.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -126,7 +128,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <acE3MR4SVCPUzcgR@sumit-xelite>
+In-Reply-To: <2e55bdc3-54a1-4f18-b9ad-fe03f21fc4da@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -139,7 +141,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
-	TAGGED_FROM(0.00)[bounces-34086-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34087-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
@@ -148,7 +150,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[50];
+	RCPT_COUNT_GT_50(0.00)[51];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -157,31 +159,39 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C8E7E34574E
+X-Rspamd-Queue-Id: E5DF1345B62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 23/03/2026 13:50, Sumit Garg wrote:
->>> +
->>> +#include <linux/device/devres.h>
->>> +#include <linux/firmware/qcom/qcom_pas.h>
->>> +#include <linux/kernel.h>
->>> +#include <linux/module.h>
->>> +
->>> +#include "qcom_pas.h"
->>> +
->>> +struct qcom_pas_ops *ops_ptr;
+On 23/03/2026 15:26, Konrad Dybcio wrote:
+>>>
+>>> This pattern has been carried from the PAS API contract among kernel
+>>> clients and the SCM PAS service earlier. The clients don't hold a
+>>> reference to the PAS data like underlying platform or TEE device etc.
+>>> Hence the need to have a global data pointer to hold reference to the
+>>> ops data structure registered by drivers having different lifetime of
+>>> devices. Also, the PAS APIs can be called from very different client
+>>> driver contexts.
+>>>
+>>> Surely, avoiding global data is always better given a better alternative
+>>> is there. Do you have any better alternative proposal here?
 >>
->> Should this be static ?
+>> Why it cannot be part of the context?
+>>
+>> Look at your API, e.g.:
+>> qcom_pas_init_image(). It takes struct qcom_pas_context which should
+>> contain the ops.
 > 
-> It was static earlier in v1. I dropped it based on earlier v1 discussion
-> with Krzysztof. Let me conclude that discussion on the other thread
-> again.
+> This would make the client have to select the ops. The whole point is to
+> avoid that, since the client has no clue (and is supposed not to have any).
 
-The discussion was whether this should be singleton in the first place,
-not making it a global singleton.
+Yeah, I see. The problem is that this patchset just keeps growing the
+singletons so except existing 'struct qcom_scm *__scm' in qcom_scm.c,
+this one brings at least three new: 'ops_ptr', 'qcom_pas_ops_scm' and
+'qcom_pas_ops_tee'.
 
-Of course it cannot be anything else than static - nothing should poke here.
+I don't think you need all four in total, but only one which will hold
+whatever pointers are necessary.
 
 Best regards,
 Krzysztof
