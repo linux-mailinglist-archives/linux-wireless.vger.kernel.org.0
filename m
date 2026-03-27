@@ -1,60 +1,60 @@
-Return-Path: <linux-wireless+bounces-34045-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34046-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLMlBiBQxmk2IgUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34045-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 10:38:40 +0100
+	id ABzPNypQxmk2IgUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34046-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 10:38:50 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A17341D6C
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 10:38:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9613A341D82
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 10:38:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DE9E330A1DC0
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 09:37:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BAC3430A84DD
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 09:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB923DD518;
-	Fri, 27 Mar 2026 09:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F063D8134;
+	Fri, 27 Mar 2026 09:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="AnChP5V9"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="EDl21jhp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5153DCD8C
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Mar 2026 09:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FEDB3D3318
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Mar 2026 09:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774604234; cv=none; b=JIWxSVTYFom+MOFnDUyiJts4zV+2eI7PBlO73pvgJ6g+qFtlHRjqfYTVYNo0QzGpw8QZ8MPe4q9wQkoIYaqRaixNd2Td0ap7VOUhdG3c9NgJ4d5ut52UXWyhaGi4VN8qaP5UMjNQL1lBZuOk4APaq97T+V7PsSclQ9Nawf3G/08=
+	t=1774604235; cv=none; b=NNgueo56qSqeT9D0EU+Zk4Du/ZK6g/GU6mMM1r8NW4yu/OhH2Rjwl4qGP3XBHQ9/psZT47Yrn+t/H6reLx+4vNq8KNOxXpEYgxwrFHj+8hJF0MYkvaj9tht/kzraWgK9z+eJ4a5tVmE2OHhc4/hxBxn4BQXh5oc1p7LqBmALnIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774604234; c=relaxed/simple;
-	bh=UvsBdjWjYnrKxHFBDWLMrLD4qKJZGdD1YY8ojqMCQPY=;
+	s=arc-20240116; t=1774604235; c=relaxed/simple;
+	bh=goU21D0yWdL5ADRt6W308OvlGgzf7gnq3VzuN8YBbCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HcJA7Z4kSO+Nn47gqhulia+oT+dXPVuJrBsGuDGhZ5NtgT7PwrIalVQklG2TWzaOPCwvbtgxp4W2w/kirjeLh+PbA+As1VWxJsw+t7s9VBtKyyirR8qwUWv1BYqaci0ON2Umit7zPkkNhYSMwl0vq5/UcU5LppcVhyYNJhkPttE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=AnChP5V9; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=KwARXwAZhncrz0KaL25RkcqTBeEOVlbDyN0DNBE0UZPzjf6Y/9p1mGD0hUnGW1thkqHJ1cWaWNoxnxmK01SGAfkbL97xuDiGtZVOF0h2rnqLcUK278dLqr4e0eWH1A9oGJ9W3BBjUrwNH1l3ZL+UzVLhga11dgfkNILj2F2p4qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=EDl21jhp; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=RNBEoxkOZpB20HM+MEkb/7esdQ9Jw/Bi8o7NCsnb4hg=;
-	t=1774604233; x=1775813833; b=AnChP5V9g8F/8BAJZiJfjs5P4I1ivn7SkBNfsjUICklJ0Xb
-	Jgfw+//mReeaSbXOSme3/q47fD6a5aG58CD9D26r8HG/WtX/qHHmwL/7DFIWANVEtxfz/ZX/3kX8u
-	c5aP5X9EZDAy2vAg3rRbGatZE63u/GzY+zCXyXcfFNqdcdO2tL4EGawvGCwcyOOCCYGWNl4WcWzqa
-	1iuZSq7yGXGbCSkVJ8if4HUSZQhm6y3Oai9Tf15RtXxKvoI/5v6eveESqR5iP3WnkfvcrEC0k4rMl
-	dP5ugJG2PpYh90Qo8w4hYDvUMwLv7fFNvbHqkafgaDFY+G+wUmMxX2YBYU7C5fzg==;
+	Resent-Cc:Resent-Message-ID; bh=7cqBVCLDVswvHL8V4PFIaNxc0IVRcVJq3d8VN4bL9a0=;
+	t=1774604234; x=1775813834; b=EDl21jhpt4j0T19nX93XPbMNbY/Dq6ba3JVMwCWAJWbE44H
+	KTItQ2afh8l5/tCvYraIM2jADvqEFIbjUYijgoAgjaJtZTtAdg0695zaZGSJRaacam83fJzjZ0kgU
+	JOWjGokjnR/bftZY6cvmw/nezTlFEPMw8CNRstuC0e5ZYHkQpAG3PZ0Uwy15XYXRt2tNkXZXYYPdU
+	K9j1CQcuLjlHK94ACHxbWTivLx1v7NELkXxO8KWIddPkU810W08GarpSaV7OPY7U1RhpniO4cC/L8
+	FJDi4L3MMK5g65belCWjBZ3sqJvTRHuCv2GaS142SQI3bg9jKHi8hQbdWmB9Bt/g==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1w63ct-0000000E83L-0B0i;
-	Fri, 27 Mar 2026 10:37:11 +0100
+	id 1w63ct-0000000E83L-3I7V;
+	Fri, 27 Mar 2026 10:37:12 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [RFC PATCH 15/19] wifi: nl80211: reject too short HT/VHT/HE/EHT capability/operation
-Date: Fri, 27 Mar 2026 10:31:41 +0100
-Message-ID: <20260327103659.0030d54a57a7.Ib1368e4d8e33a396f332a38a6ba6708fd188f143@changeid>
+Subject: [RFC PATCH 16/19] wifi: cfg80211: provide HT/VHT operation for AP beacon
+Date: Fri, 27 Mar 2026 10:31:42 +0100
+Message-ID: <20260327103659.58d4844576c6.Ia9692671b699164edcc0bdaf4fdbdbefc50b18f8@changeid>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260327093659.711584-21-johannes@sipsolutions.net>
 References: <20260327093659.711584-21-johannes@sipsolutions.net>
@@ -70,14 +70,14 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34045-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34046-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -91,133 +91,74 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: A2A17341D6C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sipsolutions.net:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9613A341D82
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-If any of these are present, the code only assigns pointers when
-they're also long enough. Instead of ignoring them in that case,
-reject the configuration instead.
-
-Also add error messages to existing error paths.
+In addition to providing HE/EHT/UHR operation, also check
+and provide HT/VHT operation, so that drivers have it and
+can use it, e.g. to correctly calculate station bandwidth.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/wireless/nl80211.c | 51 +++++++++++++++++++++++++++++++++---------
- 1 file changed, 41 insertions(+), 10 deletions(-)
+ include/net/cfg80211.h |  4 ++++
+ net/wireless/nl80211.c | 18 ++++++++++++++++++
+ 2 files changed, 22 insertions(+)
 
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index f3e46f6d7410..4705c53bd228 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1398,6 +1398,8 @@ struct cfg80211_rnr_elems {
+  *	attribute is present in beacon data or not.
+  * @ht_required: stations must support HT
+  * @vht_required: stations must support VHT
++ * @ht_oper: HT operation element (or %NULL if HT isn't enabled)
++ * @vht_oper: VHT operation element (or %NULL if VHT isn't enabled)
+  * @he_oper: HE operation IE (or %NULL if HE isn't enabled)
+  * @eht_oper: EHT operation IE (or %NULL if EHT isn't enabled)
+  * @uhr_oper: UHR operation (or %NULL if UHR isn't enabled)
+@@ -1427,6 +1429,8 @@ struct cfg80211_beacon_data {
+ 	bool he_bss_color_valid;
+ 
+ 	bool ht_required, vht_required;
++	const struct ieee80211_ht_operation *ht_oper;
++	const struct ieee80211_vht_operation *vht_oper;
+ 	const struct ieee80211_he_operation *he_oper;
+ 	const struct ieee80211_eht_operation *eht_oper;
+ 	const struct ieee80211_uhr_operation *uhr_oper;
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index e0ed9ed28093..263d04a1366e 100644
+index 263d04a1366e..f65f3887ea62 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -6649,28 +6649,49 @@ static void nl80211_check_ap_rate_selectors(struct cfg80211_beacon_data *bcn,
-  * HT/VHT/... capabilities, we parse them out of the elements and check for
-  * validity for use by drivers/mac80211.
-  */
--static int nl80211_calculate_ap_capabilities(struct cfg80211_ap_settings *params)
-+static int nl80211_calculate_ap_capabilities(struct genl_info *info,
-+					     struct cfg80211_ap_settings *params)
- {
- 	size_t ies_len = params->beacon.tail_len;
- 	const u8 *ies = params->beacon.tail;
- 	const struct element *cap;
- 
- 	cap = cfg80211_find_elem(WLAN_EID_HT_CAPABILITY, ies, ies_len);
--	if (cap && cap->datalen >= sizeof(*params->ht_cap))
-+	if (cap) {
-+		if (cap->datalen < sizeof(*params->ht_cap)) {
-+			GENL_SET_ERR_MSG(info, "bad HT capability in beacon");
-+			return -EINVAL;
-+		}
- 		params->ht_cap = (void *)cap->data;
-+	}
-+
- 	cap = cfg80211_find_elem(WLAN_EID_VHT_CAPABILITY, ies, ies_len);
--	if (cap && cap->datalen >= sizeof(*params->vht_cap))
-+	if (cap) {
-+		if (cap->datalen < sizeof(*params->vht_cap)) {
-+			GENL_SET_ERR_MSG(info, "bad VHT capability in beacon");
-+			return -EINVAL;
-+		}
- 		params->vht_cap = (void *)cap->data;
-+	}
-+
- 	cap = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_CAPABILITY, ies, ies_len);
--	if (cap && cap->datalen >= sizeof(*params->he_cap) + 1)
-+	if (cap) {
-+		if (cap->datalen < sizeof(*params->he_cap) + 1) {
-+			GENL_SET_ERR_MSG(info, "bad HE capability in beacon");
-+			return -EINVAL;
-+		}
- 		params->he_cap = (void *)(cap->data + 1);
-+	}
-+
- 	cap = cfg80211_find_ext_elem(WLAN_EID_EXT_EHT_CAPABILITY, ies, ies_len);
- 	if (cap) {
- 		params->eht_cap = (void *)(cap->data + 1);
- 		if (!ieee80211_eht_capa_size_ok((const u8 *)params->he_cap,
- 						(const u8 *)params->eht_cap,
--						cap->datalen - 1, true))
-+						cap->datalen - 1, true)) {
-+			GENL_SET_ERR_MSG(info, "bad EHT capability in beacon");
- 			return -EINVAL;
-+		}
+@@ -6730,6 +6730,24 @@ static int nl80211_calculate_ap_operation(struct genl_info *info,
+ 		}
  	}
  
- 	return 0;
-@@ -6696,26 +6717,36 @@ static int nl80211_calculate_ap_operation(struct genl_info *info,
- 	nl80211_check_ap_rate_selectors(bcn, rates);
- 
- 	op = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_OPERATION, ies, ies_len);
--	if (op && op->datalen >= sizeof(*bcn->he_oper) + 1) {
++	op = cfg80211_find_elem(WLAN_EID_HT_OPERATION, ies, ies_len);
 +	if (op) {
-+		if (op->datalen < sizeof(*bcn->he_oper) + 1) {
-+			GENL_SET_ERR_MSG(info, "bad HE operation in beacon");
++		if (op->datalen < sizeof(*bcn->ht_oper)) {
++			GENL_SET_ERR_MSG(info, "bad HT operation in beacon");
 +			return -EINVAL;
 +		}
- 		bcn->he_oper = (void *)(op->data + 1);
- 		/* takes extension ID into account */
--		if (op->datalen < ieee80211_he_oper_size((void *)bcn->he_oper))
-+		if (op->datalen < ieee80211_he_oper_size((void *)bcn->he_oper)) {
-+			GENL_SET_ERR_MSG(info, "bad HE operation in beacon");
- 			return -EINVAL;
++		bcn->ht_oper = (void *)op->data;
++	}
++
++	op = cfg80211_find_elem(WLAN_EID_VHT_OPERATION, ies, ies_len);
++	if (op) {
++		if (op->datalen < sizeof(*bcn->vht_oper)) {
++			GENL_SET_ERR_MSG(info, "bad VHT operation in beacon");
++			return -EINVAL;
 +		}
- 	}
- 
++		bcn->vht_oper = (void *)op->data;
++	}
++
  	op = cfg80211_find_ext_elem(WLAN_EID_EXT_EHT_OPERATION, ies, ies_len);
  	if (op) {
  		if (!ieee80211_eht_oper_size_ok(op->data + 1,
--						op->datalen - 1))
-+						op->datalen - 1)) {
-+			GENL_SET_ERR_MSG(info, "bad EHT operation in beacon");
- 			return -EINVAL;
-+		}
- 		bcn->eht_oper = (void *)(op->data + 1);
- 	}
- 
- 	op = cfg80211_find_ext_elem(WLAN_EID_EXT_UHR_OPER, ies, ies_len);
- 	if (op) {
- 		/* need full UHR operation separately */
--		if (!info->attrs[NL80211_ATTR_UHR_OPERATION])
-+		if (!info->attrs[NL80211_ATTR_UHR_OPERATION]) {
-+			GENL_SET_ERR_MSG(info, "missing UHR operation");
- 			return -EINVAL;
-+		}
- 		bcn->uhr_oper = nla_data(info->attrs[NL80211_ATTR_UHR_OPERATION]);
- 	} else if (info->attrs[NL80211_ATTR_UHR_OPERATION]) {
- 		GENL_SET_ERR_MSG(info, "unexpected UHR operation");
-@@ -7156,7 +7187,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 			goto out;
- 	}
- 
--	err = nl80211_calculate_ap_capabilities(params);
-+	err = nl80211_calculate_ap_capabilities(info, params);
- 	if (err)
- 		goto out;
- 
 -- 
 2.53.0
 
