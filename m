@@ -1,121 +1,133 @@
-Return-Path: <linux-wireless+bounces-34058-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34059-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNBMBPJpxmmkJwUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34058-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 12:28:50 +0100
+	id gGBkHxRsxmmkJwUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34059-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 12:37:56 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A36434371D
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 12:28:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC05734392B
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 12:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 92C2C301CC88
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 11:28:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CFAE311E0D8
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2026 11:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001963E3C47;
-	Fri, 27 Mar 2026 11:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA95379987;
+	Fri, 27 Mar 2026 11:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="npyekksz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IdzGWuis"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDC33DC4A4;
-	Fri, 27 Mar 2026 11:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B43F34DCEC;
+	Fri, 27 Mar 2026 11:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774610921; cv=none; b=q5iyFZtTHqB6fkA40b2g5eEp+33ifgqA21cpJxBH+Bu3NMrd7VIMU6y7yw6Im1p0TiVEB0HqwQMhDOMxd2bY3ynaDlp8FTEUqxptFOMyDIVH201xD/5QCp/J1CnUqGEnALwLIQCHar7HD+fDHmt+DuXN806SYP1FakztXiMyjEc=
+	t=1774611163; cv=none; b=SdCyflIQ+xJNhweV200LJGkTEZksBrIyL1NOkWa6n7PTSQoQ1gr24l8hEHefynvm9ZVW4tbL57Bu4MtN7rQ4R5CdVULG5RZOEdazRpiR5Ow5INHaAGphQLmd/ouRcGewCbtdO+isSRXRUSKH/yoqL7y+99heWT/eL2srDL/HNUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774610921; c=relaxed/simple;
-	bh=iasJ4QWocp2ZzX8ajhF2a0x2zaj/ryj6nhV9m0U9Orw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gfUICchYwnuZuGw1y77ZdN9djCFJ7bSbizG1SMUH//sfGZNeXhNhuXtA8FSHF8ltwE77m8Sw3rrxhA3NY+JUTVq1Rv5b4qL5An8ETb9vatyYwzWAtCi+HTf/Y02qE1uVsYf+V2e8YaKri1Wnf9kbOi8Lr2E3OmM4l2drIOaAmcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=npyekksz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6ECC19423;
-	Fri, 27 Mar 2026 11:28:41 +0000 (UTC)
+	s=arc-20240116; t=1774611163; c=relaxed/simple;
+	bh=eAwHeSjNB5pt3VoteW4EVdClveN31+a2CjugAiHJzf4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T8EfoG/fcuz9FSijBY+B7ZxoG6VOFYEjx0+58aj6gRmMsxihbEHtO8gEuq10GXKXGje7qIevjxmpJ4tiYnyHbL6QfT6a+HxhZkEpmnuOXGgpmZss5m1/DVN3E2qqz/CnC1+Iu9mEExJDioM+6dKxrIxk1GqjRSRKz+U9JW4G/D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IdzGWuis; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEED4C2BC86;
+	Fri, 27 Mar 2026 11:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774610921;
-	bh=iasJ4QWocp2ZzX8ajhF2a0x2zaj/ryj6nhV9m0U9Orw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=npyekkszAMo/Q1yUelVG3+xe7sV/JPxwyW/XinuhHGlU+njuBoNHF4jZVGZTs14u6
-	 CJrFPDX6Ns5RyfT7pG24ibaM78TolkQeO0lVq2gbhlaNRhaHS7tQ+A+2B5UKH0R7p9
-	 oennoKctGnvUyIwbAW1o0eYRo6vC8MUutztmvF+VRK54h8LEkwMkIczyWnbKzsQc8W
-	 A9hsLlDlRLGVTwm1RRv4sqEt6ZigPtJbEKYQC3FmsNyYmZTa8rJUIrar3iwbTvsNpv
-	 LvHo+MKmIHmF49brQGjBi9/Qr6pCMM4CSwp+NQz8JYFiWLJSGOMZ79a538HPn9TXz2
-	 CXGsGdzTKpAMw==
+	s=k20201202; t=1774611162;
+	bh=eAwHeSjNB5pt3VoteW4EVdClveN31+a2CjugAiHJzf4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IdzGWuiswBLtuA/J68wII0NpVl4IKzP0I9E/ftWOvUIEPnhI1C4f2A+Uwbn6Dbt6l
+	 8nHWsQE9Vf/m6JhqhJ54ylQRg9jv8d4jQS76xE4XzDkr2c5rJyg5QDtvhGMQsqb79S
+	 DTRKc9UTEmowMn+l1meBI1di7DW+ar54Cfi9BqTOyq2+yhIA/LUQglKFsPs7qi8KT0
+	 w5FveJv50PYMIoCVZV+OfCr9+19vircgAjfVALQgRwwO1MuU916gA/JO5A4B9tkGRf
+	 7xAcsVpbxMV1z1NW5o+wwqpelk6scoEn2K2uT5TLQa2FTPPOuBtw7HtYSbP9IHjBuf
+	 3Pk9inShz8upw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1w65Mk-00000005VeL-33oV;
-	Fri, 27 Mar 2026 12:28:38 +0100
-Date: Fri, 27 Mar 2026 12:28:38 +0100
+	id 1w65Qe-00000005VmB-25RI;
+	Fri, 27 Mar 2026 12:32:40 +0100
 From: Johan Hovold <johan@kernel.org>
 To: Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Jakob Unterwurzacher <jakob.unterwurzacher@theobroma-systems.com>
-Subject: Re: [PATCH] wifi: rt2x00usb: fix devres lifetime
-Message-ID: <acZp5kY0U_dTfbD_@hovoldconsulting.com>
-References: <20260327104726.1310327-1-johan@kernel.org>
- <20260327110730.GA16592@wp.pl>
+	Vishal Thanki <vishalthanki@gmail.com>
+Subject: [PATCH v2] wifi: rt2x00usb: fix devres lifetime
+Date: Fri, 27 Mar 2026 12:32:19 +0100
+Message-ID: <20260327113219.1313748-1-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260327110730.GA16592@wp.pl>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34058-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-34059-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[wp.pl];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_TO(0.00)[wp.pl];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5A36434371D
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CC05734392B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 27, 2026 at 12:07:30PM +0100, Stanislaw Gruszka wrote:
-> Hi
-> 
-> On Fri, Mar 27, 2026 at 11:47:26AM +0100, Johan Hovold wrote:
-> > USB drivers bind to USB interfaces and any device managed resources
-> > should have their lifetime tied to the interface rather than parent USB
-> > device. This avoids issues like memory leaks when drivers are unbound
-> > without their devices being physically disconnected (e.g. on probe
-> > deferral or configuration changes).
-> > 
-> > Fix the USB anchor lifetime so that it is released on driver unbind.
-> > 
-> > Fixes: 9f2d3eae88d2 ("can: ucan: add driver for Theobroma Systems UCAN devices")
-> 
-> Fix tag is wrong (and also cc based on it). Tag should be:
-> 8b4c0009313f ("rt2x00usb: Use usb anchor to manage URB").
+USB drivers bind to USB interfaces and any device managed resources
+should have their lifetime tied to the interface rather than parent USB
+device. This avoids issues like memory leaks when drivers are unbound
+without their devices being physically disconnected (e.g. on probe
+deferral or configuration changes).
 
-Of course, thanks for catching that. I'll send a v2.
+Fix the USB anchor lifetime so that it is released on driver unbind.
 
-Johan
+Fixes: 8b4c0009313f ("rt2x00usb: Use usb anchor to manage URB")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: Vishal Thanki <vishalthanki@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/net/wireless/ralink/rt2x00/rt2x00usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+index 83d00b6baf64..174d89b0b1d7 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+@@ -826,7 +826,7 @@ int rt2x00usb_probe(struct usb_interface *usb_intf,
+ 	if (retval)
+ 		goto exit_free_device;
+ 
+-	rt2x00dev->anchor = devm_kmalloc(&usb_dev->dev,
++	rt2x00dev->anchor = devm_kmalloc(&usb_intf->dev,
+ 					sizeof(struct usb_anchor),
+ 					GFP_KERNEL);
+ 	if (!rt2x00dev->anchor) {
+-- 
+2.52.0
+
 
