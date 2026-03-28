@@ -1,98 +1,98 @@
-Return-Path: <linux-wireless+bounces-34113-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34114-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMChLFZByGnviwUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34113-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 22:00:06 +0100
+	id HuqhFPZIyGkrjgUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34114-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 22:32:38 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3861C34FF55
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 22:00:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCB5350002
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 22:32:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6BBCA300A302
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 21:00:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3234D300A613
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 21:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D707136CDFE;
-	Sat, 28 Mar 2026 21:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969B52FFF9D;
+	Sat, 28 Mar 2026 21:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="An5oOjpd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="faSikN96"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F82336C9D0
-	for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 21:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313DA24B28
+	for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 21:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774731603; cv=pass; b=tfU8IDMnGTQkOselOouFH/55y7WZ3nfGRf1BFHOi3C3FxpnZ5M/MHB1p37ebV1/n4Mjh/FLUcXoF4BjBvI40olFRE4FyZ5fWtN7Nix4ecJQ28zuLEWiRul+VOn3bfXgiSxbcyk22q7bwc/Vl+uQEMBdS3tJUxxC41gcdl9/fjEI=
+	t=1774733555; cv=pass; b=ZmHHmg34pHUDYIfZrtvB/NpcBqR231yamtOX/iJHv89UopMvYupIWjEIyJLy0ayTIyRBU+xFLRwb7ULaLamUAnpKxYdp9b6d79aEfOb+rKtXX2BgaDt/pQZ1GESCm2G5B15K/7mO76/1TbELkc16ztNZ/rfZob+dey0QZdd1Z1o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774731603; c=relaxed/simple;
-	bh=gUF6jml86u5eXORyhkeHL4Z9Q89i78jGwClSi9WREU4=;
+	s=arc-20240116; t=1774733555; c=relaxed/simple;
+	bh=rKgnYdjzapKYUtsIHl/qS2UmulAJctVszwvkkFPz1+8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ev2u5eu8t9fYOkGQWpMys/ftkGWM9m+TiiGENabUh8eF16NP6ET/r6IKDcNB1USUFxfbeYboAuIdCazLIxtEq8q0YyjV061XoVuRfjREgqMt3A9m5m85ampYoDmUuZQjcZc+NWH4oeCqqr70VxCg2BxT6BagvlpBw0m2JbpoDNI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=An5oOjpd; arc=pass smtp.client-ip=209.85.160.45
+	 To:Cc:Content-Type; b=aG6sUIOYRSJCtQgA6+s5OJ7ehdprj/NFStqupXFDQ5nwfTF/ikAdKOYxfqTKnEvJ4UNQ3bNbpRhvp9L9AuAhm2rF/9EKUw/YbiufXvw8XVL6oCGtkjCdqvj5kIwuare3xJlCo6FMOeFaeEpF1/xM69P/H5HvuVAjU+EMYiIMYfQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=faSikN96; arc=pass smtp.client-ip=209.85.210.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-40946982a78so1158279fac.2
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 14:00:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774731601; cv=none;
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7d7e565c877so1669538a34.3
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 14:32:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774733553; cv=none;
         d=google.com; s=arc-20240605;
-        b=C7EHXiwhrcDSQvD+u3LW7h3bjboaNFD83PhcVDgijSGUMu0bcjmO0qz1Tb5XZiOfL6
-         knc7zw5u66VmjSl74bmmLBbdAY/R1AnkLXPezjRGVNkEMIw9S7wWBvNK5kt348zV5aWT
-         ZU72xQW9+uqUIQQMwJRSYhg0lnbXNfQe9ksSI3mwwaiE60li1H86UrMCzcc2puZkEDLj
-         ++0/pLuofyOQIc7KgNfGCITy3FUN2xjvCH5YnM0zPt+Tsq+GuracGIWyRWr4Htbt9DMJ
-         XP0j0Gd1HOaCXZDztqhDFaddI//QS9/iZj2M7Qq5j77rJJJlBWzpYHW2xQCfXVkShiLX
-         eYew==
+        b=bpmwMDaYjXm5reWri55uZaBo9gaPcwq0I7CSg5PrWNGpmdXu7WIo6LXP01ElTQ0AlR
+         qgOkDF3VQhr4TBp9cW38L8Zjm2pz3BjKbEbLBJoKwnpvfNdIP7CTaHWBga9/cpjy/Zjg
+         dLsDwDwVOCgQbXJ5YL1evxlrItENmEEn4WAsLwWGjiSPpMC/MJOjQaRGt0pbEyVxqJST
+         uAcgFNsk2dtH1lDpwViEkaYHYzl9861dXQ0ta5EUOYTQ0nKX0OnJ+G+iizaLfanKBGKF
+         1I8oWJ/tTeZdf+YHZcVrMqBmX2A4wGLdgchixK8fKNA9m59TNsOBR6/W9LhCLDMVr0cX
+         Kzvg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=Fv8m+M5IDJxeNba0GImApUXrgAHRHtobjKP26It5Yy4=;
-        fh=6oklrprLbTVdj+bR17ZBqz2Z918bkI0wkR8o3O/mWoo=;
-        b=dmjsfOI0HMAtIfVIjymR+kBRbGUVLP2bWveGsOwddZyEE9MQs0OdW6Ciy+WjmawCSk
-         67v/kqlIjSL866IKZVtl5nAhlOtDBfzb4A1at7VAvMCnAxne4guRZWornMlDc4GvJ66J
-         xbPXkUuL8vHjvPyEWNzb2AnGcbiztx2PrJqUlG3Djhtw1du+IYWI0+PhIcLZpZcpfX8d
-         73o8JlHhUH5H9B6gCPCS3IbOKNVNIDDhmTrfIgSokpIKm1Obd5pR27cQrjrETOGewvXv
-         g1YaBuWOVYBgTsVOKlzQfRoMYZ9SLNIMn93aCYcVKwEd+Uo1oSS6Y3IJJwlw9oisKSqn
-         D+LQ==;
+        bh=9E3k6mAWw+rQpjEj7ftshAWAEa0ac5Hij5BzYF/+FYc=;
+        fh=fJodyBTryugGq7GWe0dR8kyE376BY8PeJdGlJ86tajA=;
+        b=R/iKulggV4RGhim0cs1HLuQUSkzzLEppJSHEqb6oUk64ZXHsMT2W3Y66L/XSABa69/
+         vhd7YU0ckeDeafDCyZWJ1+qZpLRNadhtZI9eA3c5BqBbjozItKprM1LxjGt0fNJFI3EC
+         m27BsQkKWXPN/hmcNgIkh9DmBKeQXSlmU2YCXnePxWV5/1rBEEiPaZhtJgksExDLOQP4
+         jXkHBjy9FqZfTO9IHFVFs53oGix/6cqco2zsFDsrTQnGofJZyBk3Dp+ufJ+fFR1W4VbU
+         dDOfTw7FpvOpcgc1h8s4Dv56lXdVLh7MEkVl0hOwvR3Dx81lVL+Ge+cYRwkjFZLcqXxT
+         rqtw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774731601; x=1775336401; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774733553; x=1775338353; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Fv8m+M5IDJxeNba0GImApUXrgAHRHtobjKP26It5Yy4=;
-        b=An5oOjpdXu6FCb3HsZPDYYgSLSshBvM54DhCvqvQToF0Azt28VWaoyHyZ2gIuyn0wl
-         S+C6JUmtyTlOuhd1FfugxDiNH/yUPGOgkPpC0+seMBYPzwJgCh42wXuHpgn+DYKdpq0K
-         0PrgPnrEAHq+l7cETfTSfq9p0tg28zftfO4svhK8znCa5XsU5Wnmd7fSqLJSeXAj3aKV
-         3H30lZBNQXsUM/4NqZ2Bb+J8j8ZGFpQWJGiHbvV11fJNFINPpGyCGWPNPobLqJqU+7We
-         84Crk/q0nZJ2ml4BqY87JlwVxySasqrrM7QQIc3GsgdRvCHy8BG9QjN5M1/V1zUlHGjz
-         EDbA==
+        bh=9E3k6mAWw+rQpjEj7ftshAWAEa0ac5Hij5BzYF/+FYc=;
+        b=faSikN961QBaIJF0rWMPKjveamX/fUHB05JUXYiLJBt/dHzZdRv6pmCvx8l2O7DKdz
+         IdV5TzKncnnGW35qz94q8uCtW6jcWJImt3MSXaIJPI8b+XEgDP7FDRPqsrlT4PLEHoff
+         Kvze44BgFhv44W29RUaF/kpfSnuzGXOU/slsE+KfKPk+f2uv1FDN3FUxjOT9PXEc71H3
+         PLG+ArTogpywynFFUJQ+GvqZAHgKPaf13wlXkQXkGRW2YDUBqhcn7unYiqlsFUeOy5u6
+         Z3USDlPTMvbar3mthnb5S1mDs6/3hu0CxlifbVhpIeGE+KpivkGRpDFdo0IlOmoUpBKe
+         i2+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774731601; x=1775336401;
+        d=1e100.net; s=20251104; t=1774733553; x=1775338353;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Fv8m+M5IDJxeNba0GImApUXrgAHRHtobjKP26It5Yy4=;
-        b=D/LedFFT4DOm7PzXLNsUSPhE7G05rZmppgUSLz5hva16I3y2u0lJ0da2hmElL6Y1Dk
-         CMDHQbbfx9EJpEQqmr4MCLJEIhm1SJDD3AfKXEqIroE9g5lv9qMKefTGXHfRErZu0mNG
-         2Do6FvI8zQ5/WCGYObxk7qyo5Go0IsG8CTe/jRydDVmrg+TOKIlrenV/2SmQgxLOUxiB
-         G2r0nieE+qbS0chDAXF8GBhycaWyKASri8LdU+9lEijoj26LzqG6112ztP0PAMRShhjN
-         uYUsV01LbttW4hNUPp1R5dKaRcOTPYAW9IIguE8RLqvwESXmHoQ7xV9MSxAAr9ADm/Hy
-         QM7w==
-X-Forwarded-Encrypted: i=1; AJvYcCVXLPhsMXFe/TImPfhrd+BZjkQSL/3WcvGSHaV6rdC90I+/PItqu618uwO4Qnc0FWH57HwILnevUJeP2GCGBg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLD4JJKWhelaDA6MlpAq8NfrMw9+ZsW5Nx+OEMyV1ZLJbfknF4
-	/PCVVeIIicTX8FtMCGXSQ4r5q43fmlUazgcFZRUN1fI+k84bdIAHWl/Wt6seCBno1AlB2zq28TD
-	hJWTmUOh004G5ysvZz/9mipueuiLTQ3xZDWqFtlBa8lYu
-X-Gm-Gg: ATEYQzzVd3OTo0lHHRcGC+p5p3grSfKw3+MszefxyBPOU/haA0HPECb9TYJsYiuUZyy
-	QzJOhIeESKOZZhcADSfN1+klV/CJOMeAiOGtuTq/s4iZt/EZehprEEp+gBujPpvjQlZoceaJm1D
-	Lr8TuzEEr8Dl0lZbNBFVJ5NAk1314y7WFr36Fvn2NKaneiRCKQaXCjeYwOgyG9++TuKdeVvU2J8
-	DJN9+j7+8Ue0nZqP5i/iaCAmDBU3BWX5BfhWjRVACQkQg7HEOS44Ctj7/wwoXRjf0Fv9Vk2dEIc
-	BPD13G5MQVhkbL8bvZI=
-X-Received: by 2002:a05:6808:4f21:b0:464:2570:8805 with SMTP id
- 5614622812f47-46a8a399ef2mr3321077b6e.3.1774731601345; Sat, 28 Mar 2026
- 14:00:01 -0700 (PDT)
+        bh=9E3k6mAWw+rQpjEj7ftshAWAEa0ac5Hij5BzYF/+FYc=;
+        b=gt4Z+64/prb95n815xPH6AhzhF8jElSgARBnL+OvSMIjo+k2EA2s4vqtL+8lI41b/m
+         oPHFlNZ4IdYr/H25SrTfXQGAIv096hgKIq7DClGO2jthDPw6OvziQVgBmvlEgSZSPgux
+         8/cb2iY0Uuj+pKH+fJcTIO/kJj53/2FBnxX60iaQBwxtGeZkp9ADhyL5Y2V/scJzK5oK
+         oWnRTNBp9Cf2l1UewK0eFTIBd7D4zQ131MdllTP2Fo3hRzVGUFCh3yqoriRv5qzrfU+F
+         U2NusjaCBNW93B0OqN4fS14jz9bHlQhbyjMkgjQjanSoE4m45MwZZy2Fw7th3iuUejFe
+         B/Sw==
+X-Forwarded-Encrypted: i=1; AJvYcCV7GP1+a8tmFjwv2+dBFN2So3AH5neMsAlnvPRN0HmKUMf6r/Apg+e+le/IcJHPsF/HGir1mabYHpnVRJXq0g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7hlffsNSddSMhubxb/ItdKaRGqPCRPhOdJxeR/52kkQzdjKjc
+	HBoUsRwdGpruVRJAxa8SiNMuYhUC/nNhUoNwWc0m6yHRx8pxS9zoFXL/77UXz5bOItgP4AigRom
+	ak21hfko8YPLKDzPwnw9f90dXYut4Sng=
+X-Gm-Gg: ATEYQzy0p5zMyrlNbFwdU4w5m7EYMvzw1vehumcIsLpzIvFCESoHu3mhf1grfxheMpX
+	3LsQRHPn/1fpuR/SfHTKU5unGjmiTgvtbZ1pDC45TcUposEan6qkySN4UhRCqevBXF+7KsJoKe0
+	9DTeOQtpbffzvuMiFPWoBZ3lMmerjdQqGgayAdikaN/pzLaMDLHX+0vvB3iDLGDIqGDU+WH/eRF
+	xtvgruUQacz//7sgq1ejHarzdM1NGrpsycG3Qik1aHkHL329pRbHb+7+1+UsNGOoC7u4x9iEpcK
+	ALN8QG1a
+X-Received: by 2002:a05:6808:50a1:b0:455:bebf:af41 with SMTP id
+ 5614622812f47-46a8a5e01d9mr3819667b6e.52.1774733553064; Sat, 28 Mar 2026
+ 14:32:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -109,12 +109,12 @@ References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
  <CALdGYqQ_RCOwa2J-GsEyCxCQ4bztyxSzbc+6eYNesBSaY3Nt-w@mail.gmail.com>
  <da30a61b-dad0-48ff-a283-3dd8e9bdf91d@gmail.com> <CALdGYqS53=MmG4yCLwgV+RJAZ=U8Aqi8QQZFZ5oFMernhSyxTg@mail.gmail.com>
  <5eb90d6d-e590-4c9e-91c8-1ba315f45304@gmail.com> <CALdGYqRkX8=XMOePeauxvSTDZFLEYyJZKCtoxCzqaNwdO6BNnw@mail.gmail.com>
- <a5ea6373-8c07-4fcd-95fc-d87ce6aef6d5@gmail.com>
-In-Reply-To: <a5ea6373-8c07-4fcd-95fc-d87ce6aef6d5@gmail.com>
+ <a5ea6373-8c07-4fcd-95fc-d87ce6aef6d5@gmail.com> <CALdGYqTjSpAjPR7akMowhkQKVJsZmr4G47g6s+y4guFRMpYS2Q@mail.gmail.com>
+In-Reply-To: <CALdGYqTjSpAjPR7akMowhkQKVJsZmr4G47g6s+y4guFRMpYS2Q@mail.gmail.com>
 From: LB F <goainwo@gmail.com>
-Date: Sat, 28 Mar 2026 22:59:24 +0200
-X-Gm-Features: AQROBzBZ-pW_sqX9nfJuvNE_uZKzILfJU5XE2bfZfwMzXEflJZHpDMlaqhvGu2w
-Message-ID: <CALdGYqTjSpAjPR7akMowhkQKVJsZmr4G47g6s+y4guFRMpYS2Q@mail.gmail.com>
+Date: Sat, 28 Mar 2026 23:31:56 +0200
+X-Gm-Features: AQROBzBS2CB7Z3raa_AbgKprYArKFZPzTiX-rJ9QoVa0ThXCOQ_iBGqdBNUt7nI
+Message-ID: <CALdGYqSC3WXLCKGSmRh4g9SJkegZN4qGvpiVMBK_U+qRqpE8og@mail.gmail.com>
 Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
  power_save is enabled (LPS/ASPM conflict)
 To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
@@ -127,11 +127,11 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34113-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34114-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -148,35 +148,126 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 3861C34FF55
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9CCB5350002
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Bitterblue,
+Following up on the corrected patch =E2=80=94 I tried to trace the RX path
+myself to understand the full picture. I am not a developer
+and may be misreading the code, so please take this with a grain
+of salt. But I thought some of these observations might be useful.
 
-Thank you for the thorough analysis of the RX descriptor fields.
-I found your observations very insightful =E2=80=94 especially the 24-byte
-MAC address offset and the DRV_INFO_SIZE anomalies.
+---
 
-I fixed the second print_hex_dump to start at rxdesc + 56 as you
-originally intended:
+Tracing the RX path from DMA to crash
+--------------------------------------
 
--               print_hex_dump(KERN_INFO, "", DUMP_PREFIX_OFFSET, 16, 1,
--                              rxdesc, 40, true);
-+               print_hex_dump(KERN_INFO, "", DUMP_PREFIX_OFFSET, 16, 1,
-+                              rxdesc + 56, 40, true);
+In rtw_pci_rx_napi() (pci.c), each frame from the DMA ring is
+processed like this:
 
-The corrected patch is compiled and installed. I will send a new
-full dmesg with the additional data after the next reboot once
-some events accumulate.
+  1. rtw_pci_dma_check()           =E2=80=94 compares rx_tag, but only
+                                     warns on mismatch, does not
+                                     skip the frame (pci.c:696)
 
-I'm ready to test any further patches you or Ping-Ke may propose,
-including the DRV_INFO_SIZE filter or any other approach. Just let
-me know.
+  2. dma_sync_single_for_cpu()     =E2=80=94 syncs 11478 bytes
+                                     (RTK_PCI_RX_BUF_SIZE) from
+                                     device to CPU
+
+  3. rtw_rx_query_rx_desc()        =E2=80=94 parses all RX descriptor
+                                     fields from W0..W5 with no
+                                     validation (rx.c:305-325):
+
+       pkt_len      =3D W0[13:0]     range 0..16383
+       drv_info_sz  =3D W0[19:16]    range 0..15, then *8 =3D 0..120
+       shift        =3D W0[25:24]    range 0..3
+       physt        =3D W0[26]       0 or 1
+       is_c2h       =3D W2[28]       0 or 1
+
+     None of these fields are checked against expected values.
+
+  4. pkt_offset =3D 24 + drv_info_sz + shift
+     With garbage, this can be up to 24 + 120 + 3 =3D 147.
+
+  5. new_len =3D pkt_len + pkt_offset      (pci.c:1088)
+     With garbage, this can be up to 16383 + 147 =3D 16530,
+     which exceeds RTK_PCI_RX_BUF_SIZE (11478).
+     skb_put_data() then copies new_len bytes from the DMA
+     buffer =E2=80=94 potentially reading past the end.
+
+  6. If is_c2h =3D=3D 1 (from garbage W2 bit 28), the frame goes
+     to rtw_fw_c2h_cmd_rx_irqsafe() (pci.c:1096-1097).
+
+In rtw_fw_c2h_cmd_rx_irqsafe() (fw.c:351):
+
+  7. c2h =3D skb->data + pkt_offset
+     c2h->id is simply read from that offset =E2=80=94 a random byte
+     from garbage data. No validation against known C2H IDs.
+
+  8. If c2h->id is not C2H_BT_MP_INFO, C2H_WLAN_RFON, or
+     C2H_SCAN_RESULT, the skb goes to c2h_queue for deferred
+     processing via the default case (fw.c:377-381).
+
+In rtw_c2h_work() -> rtw_fw_c2h_cmd_handle() (fw.c:302):
+
+  9. mutex_lock(&rtwdev->mutex)
+     c2h->id is matched against the switch cases.
+     If it happens to be 0x37 (C2H_ADAPTIVITY):
+       rtw_fw_adaptivity_result() dereferences
+       rtwdev->chip->edcca_th, which is NULL for RTL8821C.
+       Kernel oops. Mutex never unlocked.
+
+So the crash is probabilistic =E2=80=94 it requires a garbage frame
+where W2 bit 28 is 1 (is_c2h) AND the byte at pkt_offset
+happens to be 0x37. This explains why not every burst of
+corrupted frames results in a crash.
+
+---
+
+Concrete example with a captured dump
+--------------------------------------
+
+Taking the "page 2" dump with MAC addresses:
+
+  00000000: 88 55 51 95 d1 66 ad 50 2f 25 3f 89 ae 35 ef 77
+
+  W0 (bytes 0-3, little-endian) =3D 0x95515588
+    pkt_len      =3D 0x588      =3D 1416
+    drv_info_sz  =3D 0x5        -> *8 =3D 40
+    shift        =3D 1
+    physt        =3D 1
+
+  W2 (bytes 8-11, little-endian) =3D 0x893f252f
+    is_c2h =3D bit 28 =3D (0x893f252f >> 28) =3D 0x8 -> bit 0 =3D 0
+    (In this particular frame is_c2h =3D 0, so no C2H path.)
+
+  But drv_info_sz =3D 5 (should be 0 or 4 per your observation),
+  confirming the frame is corrupted.
+
+---
+
+pci bus timeout
+---------------
+
+I checked all our saved logs across 29 boots and 41 resume
+cycles: zero "pci bus timeout" messages anywhere. This means
+rtw_pci_dma_check() never detects a rx_tag mismatch =E2=80=94 the
+buffer descriptor passes validation, but the buffer content
+is corrupted. So the corruption seems to happen at a level
+that rx_tag does not catch.
+
+---
+
+I also noticed that new_len is not bounds-checked against
+RTK_PCI_RX_BUF_SIZE before the skb_put_data() copy
+(pci.c:1088-1094), which might be worth looking at
+independently of this bug.
+
+Again, I'm sure you will see things I've missed. Happy to
+test anything.
 
 Best regards,
 Oleksandr Havrylov
