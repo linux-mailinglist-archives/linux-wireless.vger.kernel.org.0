@@ -1,209 +1,284 @@
-Return-Path: <linux-wireless+bounces-34104-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34105-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMZWCj23x2msbAUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34104-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 12:10:53 +0100
+	id ePoeMt++x2lxbgUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34105-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 12:43:27 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 769F334E241
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 12:10:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5360534E3BC
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 12:43:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 048FB300DDD8
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 11:08:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C7BE3046BB1
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 11:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619B32C15AC;
-	Sat, 28 Mar 2026 11:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99093876D0;
+	Sat, 28 Mar 2026 11:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="MMZChxae"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="THR14aIt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f98.google.com (mail-ot1-f98.google.com [209.85.210.98])
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F121619E97B
-	for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 11:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.98
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774696102; cv=none; b=fA/bXxVDRlDvJrCsHO5F8UHowiyHkPxd6zvouHFmg9R9b4nhgBRCaL/xjG5O0uUN6i8SrILRz3hbbipZgNSoy0OaArAoOqj8o+RFB73wJwL/br6Sz2is7UxOFCULxAQ7/IRuaiOKA4gnJmeZVnvfUYniBvZB3YSE0rt93cZRRcQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774696102; c=relaxed/simple;
-	bh=Jc86y6vosjJg43sZQ6yoIOzTYidLgFRcyXlsjXkBL0U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BMYOlluocYCaqmtvMDCNH+62Yv/NlpZeBLlQ6b631exXUljIuj9rTAbMEcNZ45akRMedbXxqWOv8Ql5YnyLV567yKM7c2ZYPr2TDF72QKqoSvxSf97RtmHjdghdxzszY/97NG2QuZw47NHeGOYCarsD1X54MdN6uVzg9MAMHPnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=MMZChxae; arc=none smtp.client-ip=209.85.210.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ot1-f98.google.com with SMTP id 46e09a7af769-7d750eeaec3so1349363a34.0
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 04:08:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774696100; x=1775300900;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=BLF/+iTQ3iATILhR5zIsR9RzOGZ7FQ8p8aLXTNannDE=;
-        b=LoAmiflqbQ73Eitcia0kUb/xSnZPISdeK74ukVDzUgzog2KPqoqGi72AlToVXzpazs
-         HdDCA2nJsQhGNSIyWCbNNE12L7DrAhZyTNonl8nA+n6MVgLYXy8Lh+Zbpo+0dVcclnO+
-         92cKzNJawD9+wZKBn8skGGAO0BUehFRKXI/j6no6FfDJhvqFKmWTAExtkSDe83LmDvEh
-         5ovNka5NgvrlVvwiEB9mn9nAZAi+sqKbkOQhxGOfGIC7ZARK+lOeNkHAM5j5H9Hz/lV6
-         hsHIlFnkb28DRzK7PmGDVBcVr8RT0Qpn4DNPI+4GnicAfhVyXNyRH+yyJrrGljq8Zs5U
-         +bOA==
-X-Forwarded-Encrypted: i=1; AJvYcCV9ALv78hYBn4FGrmu9uNeESm/SO/Y5yyH2+DtxNyC804rCTWHoq9rMVF8hTB+mV1NyLDdXhZF7IEsRmkWe9A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0oI9jInwsLya1z7McFyNrVyCMKo7T/u+JzWc+yqzepuoCk5jm
-	vvAFrkOblfmjydtSXmi8RWTg/ZcIfqBEWBBSAMeT14aYP/HCFs1yjQrgLRrExJ9sr9E4otlZUe3
-	L+5OtSpVZ0c4OLaFmdFiJMiS9soHF4hZybGlZq2fYYD76+YhmMkCCnnMOYqPKC6hggMIe/qTcfV
-	VPB3DVboqqXXojVZ9ZtHMRpnY/n65L9NisUV1tugCRdDxX1fGeKGoChvmpT/ZtQYsnrggQtjbdV
-	ysTD/rFiY3Q6QuR+porDYhT1y4r
-X-Gm-Gg: ATEYQzwO8Yu7nyXWmKISiZ88I7eiZA88tb/x7+liqUx0+0nS0H2lFcIIBq53tAPPEXF
-	NxxKpa0ch5+7jLJUygzHn1Ds2/909TqPx1JFNMenyhn5cwSUmsYEilepuMUH7ugSlbVC6196b3w
-	NsaC3nb7NXmgukjVPtId56ExICZJdEWStuhseWGljfJmiYB4n0/nDxcH3gREez+zbBQ5Kz9Mk+O
-	OEE+rTESIk2Xh0c4PJeNOo3tVk9hGcJTBsiz8OFRl5xHXb5kxO3K/omKZj09tAbTdVcgD0mvQus
-	hErFooJZ9Objk4Q2MuEnB8yJptbom2XIoUSMWqQIL8YaMnyD2k9ZVup8HRc6ecTX6TVH7I8dCPX
-	ddQ5f7tXEjCkJGJMvBkunjMFW907IqbB467nZVfKM3nQZ3wi4cDV5aeABXJ0zb3gc+30oEjIbRY
-	F5mgGc/bAa
-X-Received: by 2002:a05:6830:3c8b:b0:7d7:faef:fa0 with SMTP id 46e09a7af769-7d9fad878c5mr3163759a34.3.1774696099830;
-        Sat, 28 Mar 2026 04:08:19 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com ([144.49.247.127])
-        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-7da0a34c069sm452233a34.1.2026.03.28.04.08.19
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 28 Mar 2026 04:08:19 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b92323d85efso379321366b.3
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 04:08:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49679388E7B
+	for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 11:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774698110; cv=pass; b=RB/bI52q3sd5Fdis3EtJJewCKj3YpuRiMBGS9Rqdt9l29MWpBuZ0omTLaC7KJrOZnvLI6EaJw1umUyy0fRO9b8vxEp/hZ1AknxRp0drh2462/rbeQM2AWJktbDvqf6Y0+zHelqahXktXH13WimY74N2R3DgUxdCSaPcysFu/etA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774698110; c=relaxed/simple;
+	bh=h2Xzth2D59LPVTgpDOMCH5plDZi4f+ciY+NSeIeXGCM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=akpJ5X1RKGSCHb9yVirfdRayYFd2/wl59gYNzpSnkznoDR2n6T1SK3ssYS1/G/7D8IInl/qKJeHH2BVDq56LyrqrpX0Vb4BuaTn1AhAIOVCQTPwZh3nQrJaRO43k0CeQ6SXQ618+CrgyYvkm4IDccsMlDaFYBmgRIIFY/8gTyHQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=THR14aIt; arc=pass smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-67ba5921b84so1762774eaf.3
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 04:41:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774698108; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bmhVuy4rfsJvhFW5uVVx/YrJsc5r2irbnlu8Q6VcWm/4PBYpmu+VEqph796+HLIGZu
+         CG8+IG92SdP6a2FKJuKSZvvVQESuGyulp19PeZhc+2LxbfNED88NBsXqYFq0/jC6rast
+         OgS1O5LxVoevvPPVY9oiyqYKYionaUoQa2Lm5EHcPTcb6YSXDqO8xwmZdRPYStTqVBZZ
+         keU5DnCVf6Hg+vTOfLaVw1bpV26jMc35ub5p63KYAm+O+8cMR2RntivbbMPiiZ5yNYVJ
+         0unTnJ41HC56ISDzywayad/bHeVnwpt1J5oUIbWeBz5ClktQsFqlsmeX0iAroeOMfaVR
+         /Xtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LWwYScVwA52gWrGbuzFI/dVKL0vznxxTT3o3q3rgtJQ=;
+        fh=C9fhOPQcReAEk4nbrlekIoS0jOqZWfVkOqEUlgqD3dw=;
+        b=MFI5fiY+pEoPNoj88Yj/AGb/4kIyBWXywotzxIqmSigS7IuC4vo7tn/6wTbMSTuXR7
+         7kUUkw98IiaHs7e9O9LeSQwXnwDBLrc5svUtPTnFRMh6b2PfNJ0UQpbqwWf6hV6pk4r+
+         P7jxEA7puItLsM7t2h/nlfI8krMRsnn0yjJxdUQxg2IWunC9V5v2kMJInBWNdPJMaQVi
+         y41Nq9ajnGZh1dBA3mxVEXKWR2tp8CKI6Ot8LeB10PhtsMZJlrMBlgjJ0NB2yE97CSjG
+         L8gs1QjEm4txdsppTLTU8yLUlxeEoJKyoyKVByWFYAzpQVTP1rr6bIgGzY11eroqnoRy
+         FO+g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1774696098; x=1775300898; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=BLF/+iTQ3iATILhR5zIsR9RzOGZ7FQ8p8aLXTNannDE=;
-        b=MMZChxaeWRlm55HlSzZGZnz9wnYJRolYkroSB2qMTeOsVl7zUxZHM1ZlH87jK3OsiK
-         WDSeORGgS3kdgol92j7XHhr7mWpt7MP4yD8NIjoHUA3sliUdfyeTdxM3pgGY0bW9DjCc
-         xLAdHgrAp7jM9DOgs6K19fbR9xEWzMlqKxiG0=
-X-Forwarded-Encrypted: i=1; AJvYcCVLPRmKV95mrVhz1IL3bPKno3ChBitTa9cyjQrnyJWghuDgq7TRsNnowh7ZpcyxQoPTcWRKjJgEEHFynJzrgg==@vger.kernel.org
-X-Received: by 2002:a17:907:1b17:b0:b93:9ac0:7913 with SMTP id a640c23a62f3a-b9b50569823mr422290266b.35.1774696098014;
-        Sat, 28 Mar 2026 04:08:18 -0700 (PDT)
-X-Received: by 2002:a17:907:1b17:b0:b93:9ac0:7913 with SMTP id a640c23a62f3a-b9b50569823mr422287266b.35.1774696097499;
-        Sat, 28 Mar 2026 04:08:17 -0700 (PDT)
-Received: from [192.168.178.26] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9b7b1e438asm64253066b.47.2026.03.28.04.08.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Mar 2026 04:08:17 -0700 (PDT)
-Message-ID: <fe3859ec-c799-4b05-bbb9-897765269252@broadcom.com>
-Date: Sat, 28 Mar 2026 12:08:18 +0100
+        d=gmail.com; s=20251104; t=1774698108; x=1775302908; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LWwYScVwA52gWrGbuzFI/dVKL0vznxxTT3o3q3rgtJQ=;
+        b=THR14aItTqTh8+jDS6/H8ikTOJX/iAQPNW5k+yDwZ83nx2myHl8vrZdHE4RIfSmKw7
+         qe2ofu8PnBxG7ecRyJzYPCGyNipM+4TzixjSTojkvq27/+IQx6Jb2TOLJzOne1trCDXw
+         9ICL/INi2A2jR1iatJ42YFLsbktFqntA20E0jwpn6n0CKXk9fkGCbAlhZamJAupV0SoK
+         wel1eoj5ZlTgF3rplOU+DtANWRtW/0cfRMYA7hRs6CmDl+NZJOtOTvLYPL0HjVV2HFNV
+         1HM6qMOYSsNUwVyypQp5MCWhSszOda9dTFGKPvhlgApNAScGwUcMZEPptnvxfBl4ombe
+         Wgbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774698108; x=1775302908;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LWwYScVwA52gWrGbuzFI/dVKL0vznxxTT3o3q3rgtJQ=;
+        b=OKaZMIgnmcN7Zo2dpREkMA8Eg3pcGCWy5KakMDmOG+MWW0CluD97crA8H6r0l30rPy
+         TZNAr+yN3iyDVGVVru8dKQyDzdZ39SZy4yiFGJV8wPycpdadusbWhCn1Re/TKHwe+A9d
+         2r/Acjl6wsJZNumMVuGsHSqv/cmqPnNDGYketbKYow8ojIDWPTb2oLIM1cNiH/sUluWv
+         7Ey9c85rjv+Xpj1jThqO6h0Dp79qIuD+Ix2Kdv25Y8oiLAw92gzDESZ01PUevAKCblqK
+         agUrJf8Ws/Ux+t+5eDUgFok9c8xdD64My+3WlPBhN2QH+Put+GzbYZy0b2sWYE4L9nAR
+         dV1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW++ECMsEe22gWyxknB0gJpK10OVSzLATnyyVSkKNxyEWCmdSUEcuWIpHkI8AW2pW79SRTNNzKvGr9TiCR7pQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyiwp7KoKwzrCzBmVeh3cZ1G6XopQync8JfoR+8P7gsJnKh8aZk
+	442bwXGSBonLGZSdZB/glApNBM5u3EwsmetUO/9Zb1R0jUV3Ca/3FPK75g9AGma0wUJ898h3fiG
+	MOBevODUmzcYTAQxQm6LoUK7cpuVwxoo=
+X-Gm-Gg: ATEYQzzYRVJ+/elY6lguBpZPktXng1TB05hibk9ejTQRnIUyaDzb8/hGWuQ85y9SOqd
+	OhRrHEQP9Jf26TRSxzgHpJGolLptvMshA2W2/DhvYuRxSpVOBPVDjph5oJ3R+uLYEsw+UIb/KPL
+	OulmAxJZnmGWXlLu1ffDCZuXGhngTJmui5wglA50vRFXGeUkNJGZ/1r42aIEHaf7FwulejK9o1Y
+	QXR6NjGjEhV1fCzvTAv9KAWUPt05hzJpwve3Gf75owkKx1789vUXW8AA3BmPX+kG1qbH0m2d3fb
+	LorjmGbL
+X-Received: by 2002:a4a:e90b:0:b0:67e:2aa4:ce16 with SMTP id
+ 006d021491bc7-67e2aa4d0f6mr56923eaf.39.1774698108069; Sat, 28 Mar 2026
+ 04:41:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] wifi: brcmsmac: Fix dma_free_coherent() size
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: stable@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
- Simon Horman <horms@kernel.org>, "John W. Linville"
- <linville@tuxdriver.com>, linux-wireless@vger.kernel.org,
- brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
- linux-kernel@vger.kernel.org
-References: <20260218130741.46566-3-fourier.thomas@gmail.com>
-Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- xsFNBGP96SABEACfErEjSRi7TA1ttHYaUM3GuirbgqrNvQ41UJs1ag1T0TeyINqG+s6aFuO8
- evRHRnyAqTjMQoo4tkfy21XQX/OsBlgvMeNzfs6jnVwlCVrhqPkX5g5GaXJnO3c4AvXHyWik
- SOd8nOIwt9MNfGn99tkRAmmsLaMiVLzYfg+n3kNDsqgylcSahbd+gVMq+32q8QA+L1B9tAkM
- UccmSXuhilER70gFMJeM9ZQwD/WPOQ2jHpd0hDVoQsTbBxZZnr2GSjSNr7r5ilGV7a3uaRUU
- HLWPOuGUngSktUTpjwgGYZ87Edp+BpxO62h0aKMyjzWNTkt6UVnMPOwvb70hNA2v58Pt4kHh
- 8ApHky6IepI6SOCcMpUEHQuoKxTMw/pzmlb4A8PY//Xu/SJF8xpkpWPVcQxNTqkjbpazOUw3
- 12u4EK1lzwH7wjnhM3Fs5aNBgyg+STS1VWIwoXJ7Q2Z51odh0XecsjL8EkHbp9qHdRvZQmMu
- Ns8lBPBkzpS7y2Q6Sp7DcRvDfQQxPrE2sKxKLZVGcRYAD90r7NANryRA/i+785MSPUNSTWK3
- MGZ3Xv3fY7phISvYAklVn/tYRh88Zthf6iDuq86m5mr+qOO8s1JnCz6uxd/SSWLVOWov9Gx3
- uClOYpVsUSu3utTta3XVcKVMWG/M+dWkbdt2KES2cv4P5twxyQARAQABzS9BcmVuZCB2YW4g
- U3ByaWVsIDxhcmVuZC52YW5zcHJpZWxAYnJvYWRjb20uY29tPsLBhwQTAQgAMRYhBLX1Z69w
- T4l/vfdb0pZ6NOIYA/1RBQJj/ek9AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQlno04hgD/VGw
- 8A//VEoGTamfCks+a12yFtT1d/GjDdf3i9agKMk3esn08JwjJ96x9OFFl2vFaQCSiefeXITR
- K4T/yT+n/IXntVWT3pOBfb343cAPjpaZvBMh8p32z3CuV1H0Y+753HX7gdWTEojGWaWmKkZh
- w3nGoRZQEeAcwcF3gMNwsM5Gemj7aInIhRLUeoKh/0yV85lNE1D7JkyNheQ+v91DWVj5/a9X
- 7kiL18fH1iC9kvP3lq5VE54okpGqUj5KE5pmHNFBp7HZO3EXFAd3Zxm9ol5ic9tggY0oET28
- ucARi1wXLD/oCf1R9sAoWfSTnvOcJjG+kUwK7T+ZHTF8YZ4GAT3k5EwZ2Mk3+Rt62R81gzRF
- A6+zsewqdymbpwgyPDKcJ8YUHbqvspMQnPTmXNk+7p7fXReVPOYFtzzfBGSCByIkh1bB45jO
- +TM5ZbMmhsUbqA0dFT5JMHjJIaGmcw21ocgBcLsJ730fbLP/L08udgWHywPoq7Ja7lj5W0io
- ZDLz5uQ6CEER6wzD07vZwSl/NokljVexnOrwbR3wIhdr6B0Hc/0Bh7T8gpeM+QcK6EwJBG7A
- xCHLEacOuKo4jinf94YQrOEMnOmvucuQRm9CIwZrQ69Mg6rLn32pA4cK4XWQN1N3wQXnRUnb
- MTymLAoxE4MInhDVsZCtIDFxMVvBUgZiZZszN33OwU0EY/3pIgEQAN35Ii1Hn90ghm/qlvz/
- L+wFi3PTQ90V6UKPv5Q5hq+1BtLA6aj2qmdFBO9lgO9AbzHo8Eizrgtxp41GkKTgHuYChijI
- kdhTVPm+Pv44N/3uHUeFhN3wQ3sTs1ZT/0HhwXt8JvjqbhvtNmoGosZvpUCTwiyM1VBF/ICT
- ltzFmXd5z7sEuDyZcz9Q1t1Bb2cmbhp3eIgLmVA4Lc9ZS3sK1UMgSDwaR4KYBhF0OKMC1OH8
- M5jfcPHR8OLTLIM/Thw0YIUiYfj6lWwWkb82qa4IQvIEmz0LwvHkaLU1TCXbehO0pLWB9HnK
- r3nofx5oMfhu+cMa5C6g3fBB8Z43mDi2m/xM6p5c3q/EybOxBzhujeKN7smBTlkvAdwQfvuD
- jKr9lvrC2oKIjcsO+MxSGY4zRU0WKr4KD720PV2DCn54ZcOxOkOGR624d5bhDbjw1l2r+89V
- WLRLirBZn7VmWHSdfq5Xl9CyHT1uY6X9FRr3sWde9kA/C7Z2tqy0MevXAz+MtavOJb9XDUlI
- 7Bm0OPe5BTIuhtLvVZiW4ivT2LJOpkokLy2K852u32Z1QlOYjsbimf77avcrLBplvms0D7j6
- OaKOq503UKfcSZo3lF70J5UtJfXy64noI4oyVNl1b+egkV2iSXifTGGzOjt50/efgm1bKNkX
- iCVOYt9sGTrVhiX1ABEBAAHCwXYEGAEIACAWIQS19WevcE+Jf733W9KWejTiGAP9UQUCY/3p
- PgIbDAAKCRCWejTiGAP9UaC/EACZvViKrMkFooyACGaukqIo/s94sGuqxj308NbZ4g5jgy/T
- +lYBzlurnFmIbJESFOEq0MBZorozDGk+/p8pfAh4S868i1HFeLivVIujkcL6unG1UYEnnJI9
- uSwUbEqgA8vwdUPEGewYkPH6AaQoh1DdYGOleQqDq1Mo62xu+bKstYHpArzT2islvLdrBtjD
- MEzYThskDgDUk/aGPgtPlU9mB7IiBnQcqbS/V5f01ZicI1esy9ywnlWdZCHy36uTUfacshpz
- LsTCSKICXRotA0p6ZiCQloW7uRH28JFDBEbIOgAcuXGojqYx5vSM6o+03W9UjKkBGYFCqjIy
- Ku843p86Ky4JBs5dAXN7msLGLhAhtiVx8ymeoLGMoYoxqIoqVNaovvH9y1ZHGqS/IYXWf+jE
- H4MX7ucv4N8RcsoMGzXyi4UbBjxgljAhTYs+c5YOkbXfkRqXQeECOuQ4prsc6/zxGJf7MlPy
- NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
- eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
- AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <20260218130741.46566-3-fourier.thomas@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
+References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
+ <CALdGYqSMUPnPfW-_q1RgYr0_SjoXUejAaJJr-o+jpwCk1S7ndQ@mail.gmail.com>
+ <e5f00d0a42994812b42df867718fa087@realtek.com> <CALdGYqRbkV7_w7WDiqD-vYMa8MUFV7nSYz-=q2FzotgLHRy=HA@mail.gmail.com>
+ <cb32c1eefb614a8bb96ef6fe2c4f4989@realtek.com> <CALdGYqQ3tS_aQpmf7xLkaCG9W55ATQXP=tnRNdjBAG8waqg8yA@mail.gmail.com>
+ <dbe78a09fafe4a0ab16cd691049896a8@realtek.com> <CALdGYqQ3JQgFvvjiqh-ck8UqUQpAoJ0zeUzEL4i4Un8qPmqxJA@mail.gmail.com>
+ <CALdGYqQuS5EOWCaeimr6PY758feF-DPo5i3XFwoQ8ewf4xnm7A@mail.gmail.com>
+ <b231d63665334ac786e808610fe4a1e9@realtek.com> <CALdGYqSd61wxNrPDui+m-S+Na_is-RM18-=L6xm-Jf4QQ+-DOg@mail.gmail.com>
+ <a8e187e1b40e4a35bbeb3bc3a3d21821@realtek.com> <CALdGYqRPcDRctCpNSJFatXvqMKLFiiRGXZoQa3KJwfwutHJEwA@mail.gmail.com>
+ <ba9790526e4e42c386642a05fcbc2f34@realtek.com> <CALdGYqQ5U2USCqVEixoDda1Xd2ugBakh1K1QkaKAU7HPSTTNWg@mail.gmail.com>
+ <CALdGYqQ_RCOwa2J-GsEyCxCQ4bztyxSzbc+6eYNesBSaY3Nt-w@mail.gmail.com> <da30a61b-dad0-48ff-a283-3dd8e9bdf91d@gmail.com>
+In-Reply-To: <da30a61b-dad0-48ff-a283-3dd8e9bdf91d@gmail.com>
+From: LB F <goainwo@gmail.com>
+Date: Sat, 28 Mar 2026 13:41:11 +0200
+X-Gm-Features: AQROBzCjiTLJHhY2YHXoS76QOjjZxc0y--FONllkzSS1YBkEdacQHUJo0k7Uii4
+Message-ID: <CALdGYqS53=MmG4yCLwgV+RJAZ=U8Aqi8QQZFZ5oFMernhSyxTg@mail.gmail.com>
+Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
+ power_save is enabled (LPS/ASPM conflict)
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-34104-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[broadcom.com:+];
+	TAGGED_FROM(0.00)[bounces-34105-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:dkim,broadcom.com:email,broadcom.com:mid];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 769F334E241
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 5360534E3BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 18/02/2026 14:07, Thomas Fourier wrote:
-> dma_alloc_consistent() may change the size to align it. The new size is
-> saved in alloced.
-> 
-> Change the free size to match the allocation size.
-> 
-> Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-> Cc: <stable@vger.kernel.org>
+Hi Bitterblue,
 
-Looks good to me.
+Apologies for the delayed response. I applied your diagnostic patch
+right away but held off on replying because the NULL pointer crash
+has not reproduced since =E2=80=94 it has been over 36 hours now with no
+oops, which is unusual (previously it occurred in 4 out of 7 boots,
+typically within 2 minutes to 24 hours).
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+I wanted to wait and collect the hex dumps from the crash-time burst
+(the 50+ "unused phy status page" events that always preceded the
+oops), as those would be the most valuable. Unfortunately, the crash
+hasn't happened yet during this session. If/when it does, I will
+follow up immediately with those dumps.
 
-> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+In the meantime, here is what I have so far. The patch is working
+and producing output. I collected 76 "unused phy status page" events
+during this boot, with the following time distribution:
+
+  14:01       1 event  (isolated)
+  16:33       1 event
+  16:57-17:00 73 events (burst over ~3 minutes, no crash followed)
+  00:03       1 event  (isolated)
+
+Page number distribution (no page 0 or 1, all are "garbage" pages):
+
+  page 10: 10    page  7:  8    page  8:  7    page 13:  7
+  page 11:  7    page  9:  6    page 15:  6    page 12:  6
+  page  4:  5    page  2:  5    page 14:  4    page  5:  2
+  page  3:  2    page  6:  1
+
+Here are representative hex dumps. I'm showing the byte-level dump
+(second print_hex_dump) since it is easier to read:
+
+Isolated event (page 9):
+
+  rtw_8821ce 0000:13:00.0: unused phy status page (9)
+  00000000: c7 5e 9c 9d 91 69 4d dc b0 67 c2 09 84 33 00 00  .^...iM..g...3=
+..
+  00000010: 00 1e fe 3f cf f2 f0 08 01 29 00 00 00 11 2a 01  ...?.....)....=
+*.
+  00000020: 0e 00 00 00 00 00 00 20                           .......
+
+Burst event (page 14):
+
+  rtw_8821ce 0000:13:00.0: unused phy status page (14)
+  00000000: bd 2c e0 3d 00 00 00 11 87 0a 40 80 88 33 00 00  .,.=3D......@.=
+.3..
+  00000010: 00 1e fe 3f 3e b6 9b 44 01 2e 00 00 00 11 2a 01  ...?>..D......=
+*.
+  00000020: 20 00 00 00 00 00 00 20                            ......
+
+Burst event (page 12) =E2=80=94 byte 0x10 is 0x7e instead of usual 0x00:
+
+  rtw_8821ce 0000:13:00.0: unused phy status page (12)
+  00000000: 1c b3 7f 15 d1 94 95 7e 70 5e f4 e3 b4 a1 bf 10  .......~p^....=
+..
+  00000010: 7e 1e fe 3f 2e f1 62 44 01 2c 00 00 00 11 2a 01  ~..?..bD.,....=
+*.
+  00000020: 14 00 00 00 00 00 00 20                           .......
+
+Burst event (page 2) =E2=80=94 contains MAC addresses:
+
+  rtw_8821ce 0000:13:00.0: unused phy status page (2)
+  00000000: 88 55 51 95 d1 66 ad 50 2f 25 3f 89 ae 35 ef 77  .UQ..f.P/%?..5=
+.w
+  00000010: 00 1e fe 3f 89 68 62 4d 88 42 40 00 8c c8 4b 68  ...?.hbM.B@...=
+Kh
+  00000020: d1 63 6c 68 a4 1c 97 5b                           .clh...[
+
+  Note: bytes 0x1a-0x1f are 8c:c8:4b:68:d1:63 =E2=80=94 my adapter's MAC.
+        bytes 0x20-0x25 are 6c:68:a4:1c:97:5b =E2=80=94 the AP's BSSID (par=
+tially,
+        the dump is only 40 bytes so it cuts off after 0x25).
+
+Burst event (page 15) =E2=80=94 completely random, no recognizable structur=
+e:
+
+  rtw_8821ce 0000:13:00.0: unused phy status page (15)
+  00000000: c6 a1 92 1c a7 68 6b 97 12 bd ad 89 30 98 ab 94  .....hk.....0.=
+..
+  00000010: 00 1e fe 3f ec 3f 3e 44 1f c2 91 41 0e 9b 54 5f  ...?.?>D...A..=
+T_
+  00000020: 30 eb 40 18 6f d3 25 62                           0.@.o.%b
+
+Burst event (page 10) =E2=80=94 offset 0x10 is completely different pattern=
+:
+
+  rtw_8821ce 0000:13:00.0: unused phy status page (10)
+  00000000: cb 1c 2a df f1 69 d0 05 58 c0 e8 0e d0 59 87 6e  ..*..i..X....Y=
+.n
+  00000010: 63 7e 56 f0 95 fa b8 d3 d5 4b 3e fa b0 0c 0e be  c~V......K>...=
+..
+  00000020: 42 28 14 89 15 c1 fd ad                           B(......
+
+Last isolated event (page 4):
+
+  rtw_8821ce 0000:13:00.0: unused phy status page (4)
+  00000000: 97 ee fa 4e 04 90 00 21 c0 0f 89 80 b3 33 00 00  ...N...!.....3=
+..
+  00000010: 00 1e fe 3f 97 7e 64 90 5d 3e 74 fa 70 e0 39 65  ...?.~d.]>t.p.=
+9e
+  00000020: 48 a4 40 d3 de a9 85 15                           H.@.....
+
+Observations:
+
+  - Bytes at offset 0x0e-0x0f are usually 00 00 or have low values
+    in most dumps, but some are completely random.
+  - Bytes 0x11-0x13 are almost always 1e fe 3f (with byte 0x10
+    being 00 or 7e), suggesting this is a consistent part of the
+    RX descriptor that is not corrupted.
+  - The "page 2" dump at 17:00:23 clearly contains the adapter
+    and AP MAC addresses, confirming this is real RX frame data.
+  - Some dumps (page 10, page 5, page 15) have completely random
+    data with no recognizable RX descriptor structure at all.
+  - The 73-event burst at 16:57-17:00 happened over ~3 minutes but
+    did NOT result in a crash this time. Previously, similar bursts
+    of 50+ events within ~1 second always led to the NULL pointer
+    dereference in rtw_fw_c2h_cmd_handle+0x127.
+
+I will keep monitoring and will send the crash-time dumps as soon as
+the oops reproduces.
+
+Thanks for looking into this.
+
+Best regards,
+Oleksandr Havrylov
 
