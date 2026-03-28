@@ -1,210 +1,220 @@
-Return-Path: <linux-wireless+bounces-34107-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34109-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JOVBnTfx2kfeAUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34107-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 15:02:28 +0100
+	id kINqLGkjyGnyhAUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34109-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 19:52:25 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8920234E9DA
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 15:02:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4808434FAFA
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 19:52:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 664AC300B47B
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 14:01:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7E6383004D03
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2026 18:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C6E18BC3B;
-	Sat, 28 Mar 2026 14:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF99231A07B;
+	Sat, 28 Mar 2026 18:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="C4uS5Rg3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AHrXhrzY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E321E505
-	for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 14:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497C0337BA6
+	for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 18:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774706492; cv=none; b=kjVhkcZyCmDmMw6N6S1Tyvc3da9ilWkMtTbPKkS0Fr5DnfiwXoSi8+5UJIHGVOy/PX9mruy7WzqWcGEvX51dGynK4lVeZmbJGbf1/SuIejnaM39xWWloxBbfDj/88NvB3HtkYaCV6eeGDJdl0U6L5uLQLeRac8IpUJikPR//GCQ=
+	t=1774723940; cv=none; b=SQiTt9NIOh57MTolo9kJW2K56vjcGnQBTMmO0GsbEjuKIMq5epcCAVbfrC4ULjKGqWbaws8UEo4qyr2UeYXIGiHBV11iyTELTvrQMt8WPEYFvpieUqfVUC2ld5aDPJSn5AJVgeigBbWeAWJqlPpLVGJKClvKTls9Neec7qg2GXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774706492; c=relaxed/simple;
-	bh=v27CgWKJduciAD30Cwhnf+g92Mqz1HiBHL3YqncTGg8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BGO8hFk109lTDqDhkqKDrBetqiiDqIBmZT7BImwT3a5bSw/zlTu29plE84xL7mbchjdVD9ZYjSbkMuZvuAKdkEmP3FsDdxcGqCBXjLmV7xCxcOjAvDd6JsZadJPZdlRtD3pV4kNoMTmCfo2YHq+LMEIYpfVauqsIioBgwRjzxEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=C4uS5Rg3; arc=none smtp.client-ip=209.85.216.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-35d971fbcddso201282a91.1
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 07:01:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774706490; x=1775311290;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=54xQVob9wdFV/Y49RL8c+XQpBeMY6onRtC3s2HHzq5o=;
-        b=bYTOwPrX8XzavergYSNb4+62DGXVj2D0upt5s9x16FlLLHGueMwUn5uc9XFXCXMtHL
-         Cpi1Jpkflt9ZjtoXBsBGwgYfpnlE81sMt/BEu+YF+hO/qBIKaoh3ina8fvPqQ268PREa
-         g/Sr18tJEE4XulG0cP0rM4cLabdhX73sWnNjB9ZIf6YACt0CCATvVaSU3AxLi/4OP1oE
-         vMBgXvZF4Hh21YjHJvLCkpFNDk+bTDkz1wq1HzMfOHlIIVi3RSyF6xxRfb848lVvYoPA
-         GmVSeH3wyd9nAsSRACiuBBLP2lSDX+UQB5CuJ9xYmNSMjiZ8Yg10g3fnFKzd4Q0onkhf
-         Ywbg==
-X-Gm-Message-State: AOJu0YwKIjz5dsFscMAfjJXxNp/Le74WtqUa9TMC/EWH2BcKKU78244e
-	g7jojxwzcSeM+0SKhl7fVIZAQSRqQdwgTUudTPpMBqOfci6QbyqMkTO1fGet/TIonW6lC80ZgUj
-	8dtFyt5s1QohUVK7jsgr9NfsD3a0o5nt5WIf24vWy+5sSsEJ3zSeBKfc4rpbQWjzYzDT6P/HGSY
-	T/ko+L/uSMdls9zzEFKkDULyfbFLf+3yzZ+MNV7BDcqiRLnM5iAGCKHZF40Z+D3NfPfwwuvrUIE
-	m0YN+M8liEi1h+AshNPZITTXvp+
-X-Gm-Gg: ATEYQzxEeHwynNk29bcRmuD54cBkB6zGkvTw/eEAPvQtv7aSBMANZDoMRu25fKKqEak
-	ZOkeWWMsoXx6a6Y55AZIM3SfVQvjV4fMxLDMybbEpaSnsVP0ZiWN8nUF9QJoXgPiR9yAuqV0RMo
-	IrayNa8iVUdFv/Opc+JcJeTasUxGHRiW5u80FcO/byiW0rzJw9TJitjydvNi4eIBz2ImqJbMSFL
-	VKmaRm/7SrSuRkA5AFc5gmo7PAdoByHc3jQ5tKgOGATtThIyWLqLf37qbIVby0HTCPXWYe9fcuK
-	Xv0ArXEiaZvHPtexJUd18m9MS2avKvaWlzZz6WB8IQyckqjZASrSbOs+Qj0wurQhK6z4pe8tSci
-	MTVNIxYAvrZFssDfuaUeg8Afk6nsZL1novv4nqF6HALBv3aWE+D9gqVKYV9cJqsXxzCjqJnNm0x
-	O47YXoI3peEVViC1/+6p90NrgGUpQagLzmTzvBEypu78hPXFELcd3e0i3la75z
-X-Received: by 2002:a17:90b:3f8d:b0:35b:cc8b:1124 with SMTP id 98e67ed59e1d1-35c228060b6mr8650003a91.5.1774706490289;
-        Sat, 28 Mar 2026 07:01:30 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-15.dlp.protect.broadcom.com. [144.49.247.15])
-        by smtp-relay.gmail.com with ESMTPS id 41be03b00d2f7-c76916e0329sm172323a12.4.2026.03.28.07.01.29
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 28 Mar 2026 07:01:30 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2bda35eab74so2118251eec.0
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 07:01:29 -0700 (PDT)
+	s=arc-20240116; t=1774723940; c=relaxed/simple;
+	bh=SOoad42V5ojIVPEtnZNAUJVSCXLgcfwtR3LALNMX96s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FOlhTV1kYgjj7CmBoXZyXZ4C7en0erjOz6br0Bh2+iZYb0uubDF1HbvHy2ZcWDSkpS82EOfrrQz9Wf8Cq4wmcZEFvdEC27clHTNnW3NsmiNFP1U5+qMaFSS6nodHYF2hGOs+F0s7gAxdUWY67shgZfQytEaDx7XpVhX0ZIqdFDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AHrXhrzY; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso27222005e9.1
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 11:52:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1774706488; x=1775311288; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=54xQVob9wdFV/Y49RL8c+XQpBeMY6onRtC3s2HHzq5o=;
-        b=C4uS5Rg3kGhS5C+qSjQzO09OprsnDwsv2O2hMQlBbD5iq+LcVgsYi1igNic3PeADvB
-         5WB1gaRLmqkd5QKEruAUkBupF7sTdqEY6nQN3+CtOtDFje+WaH2526zfh1ewhoYTrwo7
-         SeESdBfkaH91Z8gL5jffJ7ZO4xzyWTVl5a6RA=
-X-Received: by 2002:a05:693c:2c8d:b0:2be:b20a:9b69 with SMTP id 5a478bee46e88-2c17723bdb8mr4497403eec.12.1774706488103;
-        Sat, 28 Mar 2026 07:01:28 -0700 (PDT)
-X-Received: by 2002:a05:693c:2c8d:b0:2be:b20a:9b69 with SMTP id 5a478bee46e88-2c17723bdb8mr4497374eec.12.1774706487510;
-        Sat, 28 Mar 2026 07:01:27 -0700 (PDT)
-Received: from bld-bun-02.bun.broadcom.net ([192.19.176.227])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c3c3bd9894sm2135470eec.4.2026.03.28.07.01.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 07:01:26 -0700 (PDT)
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH -next] wifi: brcmfmac: silence warning for non-existent, optional firmware
-Date: Sat, 28 Mar 2026 15:01:21 +0100
-Message-ID: <20260328140121.2583606-1-arend.vanspriel@broadcom.com>
-X-Mailer: git-send-email 2.45.4
+        d=gmail.com; s=20251104; t=1774723938; x=1775328738; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wWaMes09VbJA0eu/5mK0JBrbn1EAM0ibD7TXD1gN1LI=;
+        b=AHrXhrzYr5HwGo3Se64YLqn4hQgqWg55fsRGhIjrpxsvK38jTGEDD36YUYlSi4kutI
+         3zWzaHr96qKRCpgSOqsKuoC+GSB9yPxrsNdlY9mLbQnOWu8Ls3FOxohj/tWUwNYhsHsa
+         Bl8zgQTNZjGstHj6QiRoPlQbZxahI0RWudkTfmh5luaj52iVM1w0sSJswl/aHIs8oNcd
+         vpjREbUjrYsHq8UJ30f2m3B/ubk30zq5ltL2t1f/MZSjfWQcHVcXyRrv6zI3vBDaE1Cg
+         yFsavTvKgO400rFQaTgW3To14wsXo0w/HwjceT/m0xgZXSZKFPyUzKtRJ6IpaV9L9rnh
+         NiVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774723938; x=1775328738;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wWaMes09VbJA0eu/5mK0JBrbn1EAM0ibD7TXD1gN1LI=;
+        b=O4YakIyLfvGj5tg3Z2rc2dXiFcfXxVXHzhnR8J0nXU6sqGYJ52Ve0Tm35nWlk16dHt
+         GYCn3Avlj47+t4TE4WwDHkAaISidu28JQza8jyAnNREY6QlHGMHyif3ypwO/S2d9GEOi
+         jtxDqYi++FdCIV6zTjborAVQJmBoGZMbpSv0Q0H8OzWQMo18I+EKEuGko23Du7+Uj8ZM
+         CnEexwkLxnvxwvEQxB1pEB72DaswQswK818gRjlmn5lVCd0RQ/c82JUSaqGEbhCXmHJj
+         1NN7kCZB+Ws3oJkoqXFq2j0oaNx/PMppwwD3Vh4R0pj0wV9X01zv+dX3LPIM1wuSPSch
+         KMzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHgnIdKwJYfnIR+Ln3WHu3TGKSEBjo9lt+QqGP6OItwznxr4P8w5QLOjncmN0We9kAj8goXqgmSb6BEdj2PQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywg2mBMju7o0DXXNIEde1YSsUqVpdc83CLvL3CwFnpF1/yvf0o8
+	ZCvXs5/Q8U86zPbLaSzr9QMzM8qjA0Dq6/i8dhSuNFBAHTe4D4LONyE+
+X-Gm-Gg: ATEYQzxj5wKW3akJ8UiJOrukhBn8CB9Rd8mkkrDflY/UQe1ciOhJ/CJjv85ydEFwPO7
+	2MgxhlerCi2MLMbau3wrx9QW25vKSxlfORB4RIq7bF4TCQz0GTv/lcKnyPlUf5xOywBEgjYf382
+	tvZj+tL7itIq7eGE90CzqYYu6L+SphSijjqlzXJ/bySY5TG35PzF9VpaJgz89UPOxmd3KRY2mXk
+	Tt+pgZT45p8kM+g+kFwuC9HFcDnVne+I3tF8E9GTzRrxLDAbnTAbsX+oooy2uLsiPA0Q9S/5sto
+	q6SycVDyZ6tw8mqvBU7fdo8S7mNiwr+VRsO8/mGw1qM9LdRNKBjO8R28P7swgvs6xwsTVWg6n49
+	7/DEJ1CjOplE4mG1wa9lK3iGOO3GEmFYfYT7Ezb1nLRjfr+ZxTHZg25cVX/Z4kICENqfgyttTx+
+	P+VCBHDEFJTES8A9dy54Pl6/zGLwnu2w==
+X-Received: by 2002:a05:600c:6085:b0:487:288:1198 with SMTP id 5b1f17b1804b1-48727eda73cmr114620325e9.22.1774723937265;
+        Sat, 28 Mar 2026 11:52:17 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.93])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722d236a9sm301655295e9.11.2026.03.28.11.52.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 28 Mar 2026 11:52:16 -0700 (PDT)
+Message-ID: <a5ea6373-8c07-4fcd-95fc-d87ce6aef6d5@gmail.com>
+Date: Sat, 28 Mar 2026 20:52:15 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
+ power_save is enabled (LPS/ASPM conflict)
+To: LB F <goainwo@gmail.com>
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
+ <CALdGYqQ3tS_aQpmf7xLkaCG9W55ATQXP=tnRNdjBAG8waqg8yA@mail.gmail.com>
+ <dbe78a09fafe4a0ab16cd691049896a8@realtek.com>
+ <CALdGYqQ3JQgFvvjiqh-ck8UqUQpAoJ0zeUzEL4i4Un8qPmqxJA@mail.gmail.com>
+ <CALdGYqQuS5EOWCaeimr6PY758feF-DPo5i3XFwoQ8ewf4xnm7A@mail.gmail.com>
+ <b231d63665334ac786e808610fe4a1e9@realtek.com>
+ <CALdGYqSd61wxNrPDui+m-S+Na_is-RM18-=L6xm-Jf4QQ+-DOg@mail.gmail.com>
+ <a8e187e1b40e4a35bbeb3bc3a3d21821@realtek.com>
+ <CALdGYqRPcDRctCpNSJFatXvqMKLFiiRGXZoQa3KJwfwutHJEwA@mail.gmail.com>
+ <ba9790526e4e42c386642a05fcbc2f34@realtek.com>
+ <CALdGYqQ5U2USCqVEixoDda1Xd2ugBakh1K1QkaKAU7HPSTTNWg@mail.gmail.com>
+ <CALdGYqQ_RCOwa2J-GsEyCxCQ4bztyxSzbc+6eYNesBSaY3Nt-w@mail.gmail.com>
+ <da30a61b-dad0-48ff-a283-3dd8e9bdf91d@gmail.com>
+ <CALdGYqS53=MmG4yCLwgV+RJAZ=U8Aqi8QQZFZ5oFMernhSyxTg@mail.gmail.com>
+ <5eb90d6d-e590-4c9e-91c8-1ba315f45304@gmail.com>
+ <CALdGYqRkX8=XMOePeauxvSTDZFLEYyJZKCtoxCzqaNwdO6BNnw@mail.gmail.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <CALdGYqRkX8=XMOePeauxvSTDZFLEYyJZKCtoxCzqaNwdO6BNnw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
-	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,ew.tq-group.com,gmail.com,broadcom.com];
-	TAGGED_FROM(0.00)[bounces-34107-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[broadcom.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34109-lists,linux-wireless=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tq-group.com:email,broadcom.com:dkim,broadcom.com:email,broadcom.com:mid];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 8920234E9DA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4808434FAFA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+On 28/03/2026 15:40, LB F wrote:
+> Hi Bitterblue,
+> 
+> Thank you for the quick feedback. Full dmesg from the current boot
+> session is attached (dmesg_boot0_clean.txt, 332K, 3349 lines).
+> 
+> It contains all 76 "unused phy status page" events with both hex
+> dumps (4-byte grouped and byte-level) in full, plus all surrounding
+> kernel context.
+> 
+> The interesting observation you made about the MAC addresses being
+> 24 bytes lower than expected is very helpful — I hadn't noticed the
+> offset discrepancy. If you need the adapter and AP MAC addresses
+> for reference:
+> 
+>   Adapter: 8c:c8:4b:68:d1:63
+>   AP:      6c:68:a4:1c:97:5b
+> 
+> And yes, adding a NULL check in rtw_fw_adaptivity_result() seems
+> like a good defensive measure regardless of the root cause.
+> 
+> Let me know if you need anything else or a different format.
+> 
+> Best regards,
+> Oleksandr Havrylov
 
-The driver tries to load optional firmware files, specific to
-the actual board compatible. These might not exist resulting in a warning
-like this:
-brcmfmac mmc2:0001:1: Direct firmware load for brcm/brcmfmac4373-sdio.tq,imx93-tqma9352-mba93xxla-mini.bin failed with error -2
+I made a mistake with the second print_hex_dump. It was supposed to
+print from rxdesc + 56. But not to worry, I think this is sufficient.
 
-Silence this by using firmware_request_nowait_nowarn() for all firmware
-loads which use brcmf_fw_request_done_alt_path() as callback. This one
-handles optional firmware files.
+Some of the frames have what looks like a valid PHY status at byte 24:
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Tested-by: Christian Hewitt <christianshewitt@gmail.com>
-[arend: use nowarn api for optional firmware files]
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
----
- .../broadcom/brcm80211/brcmfmac/firmware.c    | 21 ++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+[ 9926.365048] cachyos-x8664 kernel: rtw_8821ce 0000:13:00.0: unused phy status page (7)
+[ 9926.365451] cachyos-x8664 kernel: 00000000: 05da26ac b587f0af 0aa2e765 f48d78f5  .&......e....x..
+[ 9926.365475] cachyos-x8664 kernel: 00000010: 3ffe9e00 49d11a5c 00002701 012a0000  ...?\..I.'....*.
+[ 9926.365496] cachyos-x8664 kernel: 00000020: 00000014 20000000 000000e2 0000000a  ....... ........
+[ 9926.365537] cachyos-x8664 kernel: 00000030: 0000001c 00000000                    ........
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-index 4bacd83db052..358abdb126a4 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-@@ -670,7 +670,12 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
- 	}
- 
- fallback:
--	return request_firmware(fw, cur->path, fwctx->dev);
-+	if (cur->flags & BRCMF_FW_REQF_OPTIONAL) {
-+		ret = firmware_request_nowarn(fw, cur->path, fwctx->dev);
-+	} else {
-+		ret = request_firmware(fw, cur->path, fwctx->dev);
-+	}
-+	return ret;
- }
- 
- static void brcmf_fw_request_done(const struct firmware *fw, void *ctx)
-@@ -714,9 +719,10 @@ static void brcmf_fw_request_done_alt_path(const struct firmware *fw, void *ctx)
- 		if (!alt_path)
- 			goto fallback;
- 
--		ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
--					      fwctx->dev, GFP_KERNEL, fwctx,
--					      brcmf_fw_request_done_alt_path);
-+		ret = firmware_request_nowait_nowarn(THIS_MODULE,
-+						     alt_path, fwctx->dev,
-+						     GFP_KERNEL, fwctx,
-+						     brcmf_fw_request_done_alt_path);
- 		kfree(alt_path);
- 
- 		if (ret < 0)
-@@ -779,9 +785,10 @@ int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
- 					    fwctx->req->board_types[0]);
- 	if (alt_path) {
- 		fwctx->board_index++;
--		ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
--					      fwctx->dev, GFP_KERNEL, fwctx,
--					      brcmf_fw_request_done_alt_path);
-+		ret = firmware_request_nowait_nowarn(THIS_MODULE,
-+						     alt_path, fwctx->dev,
-+						     GFP_KERNEL, fwctx,
-+						     brcmf_fw_request_done_alt_path);
- 		kfree(alt_path);
- 	} else {
- 		ret = request_firmware_nowait(THIS_MODULE, true, first->path,
+But RTW_RX_DESC_W0_SHIFT is not 0. Then rtw88 looks for the PHY
+status in the wrong place, in this case at byte 25. The official
+driver always looks for it at byte 24:
 
-base-commit: dbd94b9831bc52a1efb7ff3de841ffc3457428ce
--- 
-2.45.4
+https://github.com/lwfinger/rtw88/blob/master/alt_rtl8821ce/hal/rtl8821c/pci/rtl8821ce_recv.c#L272
 
+Unfortunately fixing that won't be enough.
+
+The way rtw88 configures the chip, RTW_RX_DESC_W0_DRV_INFO_SIZE is
+supposed to be either 0 or 4, but in these frames it has many other
+values.
+
+In this case:
+
+[ 9986.214022] cachyos-x8664 kernel: rtw_8821ce 0000:13:00.0: unused phy status page (2)
+[ 9986.214512] cachyos-x8664 kernel: 00000000: 95515588 50ad66d1 893f252f 77ef35ae  .UQ..f.P/%?..5.w
+[ 9986.214544] cachyos-x8664 kernel: 00000010: 3ffe1e00 4d626889 00404288 684bc88c  ...?.hbM.B@...Kh
+[ 9986.214572] cachyos-x8664 kernel: 00000020: 686c63d1 5b971ca4 1ca4686c 73205a97  .clh...[lh...Z s
+[ 9986.214599] cachyos-x8664 kernel: 00000030: 4a670000 000b2000                    ..gJ. ..
+
+the 802.11 header immediately follows the RX descriptor (there is
+no PHY status, which is not unusual) but RTW_RX_DESC_W0_PHYST is 1.
+
+In station mode RTW_RX_DESC_W1_MACID is supposed to be 0 or 1 (I think),
+mostly 0. In these frames it has many other values.
+
+RTW_RX_DESC_W0_PKT_LEN sometimes exceeds 11454. In one case it's 0.
+
+In many of these frames bytes 25..31 don't look like a PHY status
+or 802.11 header.
+
+If we can't find the reason for these weird frames, maybe the best
+way to filter them out is to check RTW_RX_DESC_W0_DRV_INFO_SIZE.
+It takes care of 67 out of the 76 weird frames in dmesg_boot0_clean.txt.
 
