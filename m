@@ -1,189 +1,178 @@
-Return-Path: <linux-wireless+bounces-34117-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34118-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPFhCmOryGldogUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34117-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Mar 2026 06:32:35 +0200
+	id 5ufeASbXyGkErgUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34118-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Mar 2026 09:39:18 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72449350A08
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Mar 2026 06:32:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BBF635121E
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Mar 2026 09:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0216301FD59
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Mar 2026 04:32:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B29F300E245
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Mar 2026 07:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A20E1FA859;
-	Sun, 29 Mar 2026 04:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B5B175A6D;
+	Sun, 29 Mar 2026 07:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TSeehxt2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f207.google.com (mail-oi1-f207.google.com [209.85.167.207])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8506B40DFC1
-	for <linux-wireless@vger.kernel.org>; Sun, 29 Mar 2026 04:32:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF122C21EE
+	for <linux-wireless@vger.kernel.org>; Sun, 29 Mar 2026 07:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774758750; cv=none; b=Dq4AVxN69WzuIuhjAj2XjlKXCavjLyv5ldPEoFhlt+AaXOk9BNnZk1ZTdfX0C+yZolEnf/blPRsi0w4NbrO6Ps2SD7xiGdWAyMx2zujVBkBbHOdc3j2AWmOM/YP1Q2FtfemljSoqLsXOW48M+3RnG2W63polXQor/cMNwm+yfr4=
+	t=1774769952; cv=none; b=peZh4zFFId0F9YIiWe2tvedVroK+gzY/Yy+5vdPGHNEX9bkIdbyHZ14VTOURaAEqim51ZmbtJpRIhNJfPGtIprleOODKc/gHhz5qivCceFEkxDdOd+TFK45A0rs+QM/ocm6IBmzrQUzgqP9vjUdu/WkqVLSCNb+sG18kkTxdKow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774758750; c=relaxed/simple;
-	bh=eRRRb2N3ymTRMe23xvRvuPxbpsHO4mJ2zs/SOfgFzow=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=f75k1HPdCSAuk7u5lPAYL0soMVWl9A+EQDslREgCBhlyN7kvoMaXEW66hwSLEh0Y8nsJ6i2l15xJE5NMhtZFjutLArBnWN6ujw3brceqZSqgsWgCe2Okov9RE5Y1Jj7uVN5j6XmHInBvn37D8FvbpMkEZnTIhCBNpFfYVrqRIjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f207.google.com with SMTP id 5614622812f47-467e8aaa943so5134756b6e.0
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2026 21:32:29 -0700 (PDT)
+	s=arc-20240116; t=1774769952; c=relaxed/simple;
+	bh=TdDm38vrAmSUlvhXt9NlwDETtT5aTysm08q/2+oasyI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZbmlghfT+OaPDJqCGHO4rESQ3wNGzuFDl8MvbCk9HQEUp9qA9HvwWOJ6qcNC72C+MicrHiiZBr+L7EshnpTxtp2L/yJs9FQqdbjS3ZLA3qm49fjrwJcwfWxDJ+rePtF3oRgpcAwBWouQHaGKYzEficexUfJQSXWwM3RwTYO58yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TSeehxt2; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-486fb439299so31258095e9.0
+        for <linux-wireless@vger.kernel.org>; Sun, 29 Mar 2026 00:39:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774769950; x=1775374750; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hEKJAdHSYTG77GQhnzcTFePsNoW7/3Wpn9Naib1NAmk=;
+        b=TSeehxt2brJnnFYZFVCZy3rhUFylhUdZQ13fGBY4OYZArj6Io5HJNnCmMTOtjfEJht
+         T+G1tRTU0AI+vXgcGMuXYh3QJAcaO39lCChCVdhdXyXJgrOyWLdIWiBR/4ciSIjFJLUj
+         48LIRYbp7a5woO2v++MYfO/aDiUvI7BJioiNv+d8S5vmNNOblu90f2godUms5TZPMb1o
+         x9X9EUv7fUnCsKSV9Es7W9asNLn6O9C45Iud43kjjheB/tN7UuYOsNZbPd9FDKxSN6tA
+         Smz4jl5qktnYPbIO7FAwp2eAONP6sRRIJRVxrXcb3FRMZrM+AobNODm0VrBgNNXFljeq
+         iZeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774758748; x=1775363548;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MEoAnAURmycMeJhLBjjMu7mW85fSmjHXh//VW9K2psM=;
-        b=JhhM2tE6liffEj+C+ENJnuGebZhKHuv9FiA1xIkj3qdwkyKh8o46W4RGIfwSxch2QB
-         YY9d8ZBd6bXJXlTy4764rTzAALzfz7OiEmlJSNJ4qAqR54beu7edzGFEDeX5Vamn366r
-         Wfqa9whUAPUbKJwg3H0bXj5ygnEfV5JcdNIIsl98rgLoyI+X3aF+tJw1ZaafnPWa7kZ0
-         YGQWUuYhFny3f2HoPRpruXQMjoM/I0nl0P4fd4gBJ6dRCA0jNyHWxgFbbZOkPL0YzFKk
-         g3WUfLl6DrCvbW2vAvQovlm6jplYhDKmhyZhaWbp0u+jg1n0FIDKqBHCAu6s0Wma7gWE
-         uBaA==
-X-Forwarded-Encrypted: i=1; AJvYcCURo8eLTITaZPdqhnvhQ1RDlDp+fyarWfYRCR/VMDyX43bbozFoxCj7AenfLm4Ge5TuS9/trtWWRyEcxp8SOw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1JtYxE/v1KFIClip2j47W6GiBihEf74BE44Rd//WIBi7OJ25Q
-	CQAzHfRxY9fhiPzGl/KQXLAcmFIMRlRThpCvLgkxJdp03Vyzd7lrTbKf1+LUrLyGfLkkgUOv1db
-	uh0J2n+kgpNZMv2UBGI0Ikml+ueG08UldZYKrY/Muu4qIeQ037TA7dOHxnXQ=
+        d=1e100.net; s=20251104; t=1774769950; x=1775374750;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hEKJAdHSYTG77GQhnzcTFePsNoW7/3Wpn9Naib1NAmk=;
+        b=IH9RoSksslhFvfjIhgaw8x/FQtjANcBLoWshW9+A9TKkHDkhdE1yQWits+5tPM0tN/
+         Sq2Lr6kX9ewwuCDP9Q/afyQEoG+LvmyVvmpNXYJOOUYpWY81E68sam2g2DrNNGJbUqBX
+         pK8bwzlMiDZbssMnKI5S7UYnXRdpIqLnqi4B2r45sLLmsEHDg+vbkavKmJP5/S6zYhKD
+         bC0TWVa4dIsQlEMAsmtUnIraxoBayLZwM6EBH6OIhoBdRwOcKKc35Ph3PhpphqzFtAVN
+         yNCfLLG/twfVMfZVCixdow6I0b1TQyd4ViIwyBFAsJ2Ey1dAFPqv4X/Q7p6dYB9FVyj0
+         KJYw==
+X-Gm-Message-State: AOJu0YxGbnQOHCDonIButcRVJECvLlWMkzqmMolDp6aRnIzH4GQnXBJD
+	Bs7eKupxUqIEPxkz6FyERCieTJ62mXuTiJw3MdRKnZ3Cjk4E28FN7Yoq
+X-Gm-Gg: ATEYQzyf/pe9tzyzSA0JqWO3ipyThKjv+iNUIJSkiEbUcIJ0SkK8uN3svKaHs+3EZHV
+	ofcHSHa+6TkOJR7u/TrKGGOVQVavA6kafD5c/+EJIY5C/bL5kEOh20dXf1QZyNHWHcyA/iWVWOp
+	CQltBlvmh7ZCHQ4yKbl9YvkGi82MrXi4x6vJVpW60gyiuI01zzU37YQPwE41FNMVmipIa8tnX3+
+	eDUN1HyYM3a3CZTkNi4wz6vciD1fRXSU7cgHJsfy/OAfdw1p3bGJRGB0aDrJ2LRvPqmYH54UWAU
+	53Fh+mxPRekDho2nzv40aFyl7DK93EYq8lKWsWgn5mqIIWxG7HHyjfLUxzt52DIorIm9hYUcVFG
+	M4YZixgmObR6CYgx3JpJzZttGXgcpuQNr3lqnjnA97M7v/N4K24bFl6tL+98DFmwOzb4yIshpsQ
+	xsV9keODVxPiVsRh8QVFO+ZWPc48A13P4/QUOrvxfjWUA0iIeVDDHsKo3qZYvvJCkUCnbPhBYxY
+	lz8Acm1gu28N9uLSAL+wOTZRj1Oxq0t1hdtA2puPiACRJHUhPU3xRrONhvGGTClyFHysD6pu+cw
+	Qx6ARte55Gwe+TvRMG48TYx8ykjrBbrLj8b3vYJsv3gDkIy6ZLG4xqRToANYsMpjeHvrjw==
+X-Received: by 2002:a05:600c:1d1e:b0:486:fc95:1a91 with SMTP id 5b1f17b1804b1-48727f2373dmr136434845e9.12.1774769949398;
+        Sun, 29 Mar 2026 00:39:09 -0700 (PDT)
+Received: from archlinux.kangaroo-newton.ts.net ([185.213.155.209])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4872712b268sm51754575e9.16.2026.03.29.00.39.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Mar 2026 00:39:09 -0700 (PDT)
+From: Christos Longros <chris.longros@gmail.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Christos Longros <chris.longros@gmail.com>
+Subject: [PATCH] wifi: rtw89: fix wrong pci_get_drvdata type in AER handlers
+Date: Sun, 29 Mar 2026 09:38:57 +0200
+Message-ID: <20260329073857.113081-1-chris.longros@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:222a:b0:67d:e5f5:2518 with SMTP id
- 006d021491bc7-67e185f48f9mr4419021eaf.14.1774758748580; Sat, 28 Mar 2026
- 21:32:28 -0700 (PDT)
-Date: Sat, 28 Mar 2026 21:32:28 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69c8ab5c.a70a0220.97f31.002c.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in cfg80211_chandef_dfs_required (2)
-From: syzbot <syzbot+02a1a03b8622d3c7d1c9@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-0.36 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=71d49d824b43a0d9];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-34117-lists,linux-wireless=lfdr.de,02a1a03b8622d3c7d1c9];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	SUBJECT_HAS_QUESTION(0.00)[];
-	REDIRECTOR_URL(0.00)[goo.gl];
+	TAGGED_FROM(0.00)[bounces-34118-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[chrislongros@gmail.com,linux-wireless@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[storage.googleapis.com:url,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 72449350A08
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3BBF635121E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+rtw89 stores an ieee80211_hw pointer via pci_set_drvdata() at probe
+time, but io_error_detected() and io_resume() retrieve it as a
+net_device pointer.  This causes netif_device_detach/attach to
+operate on an ieee80211_hw struct, reading and writing at wrong
+offsets.  The adjacent io_slot_reset() already does it correctly.
 
-syzbot found the following issue on:
+Use ieee80211_stop_queues/wake_queues instead, consistent with
+every other queue stop/start path in the driver.
 
-HEAD commit:    b1c803d5c816 net: airoha: Rework the code flow in airoha_r..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=17ad21d6580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=71d49d824b43a0d9
-dashboard link: https://syzkaller.appspot.com/bug?extid=02a1a03b8622d3c7d1c9
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+Tested on RTL8852CE by calling the handlers from a test module
+before and after the fix.
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/09cf620a7914/disk-b1c803d5.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/72906e01e665/vmlinux-b1c803d5.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/e1bab2219b98/bzImage-b1c803d5.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+02a1a03b8622d3c7d1c9@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-!cfg80211_chandef_valid(chandef)
-WARNING: net/wireless/chan.c:796 at cfg80211_chandef_dfs_required+0xe3e/0xf00 net/wireless/chan.c:796, CPU#0: syz.0.4705/23179
-Modules linked in:
-CPU: 0 UID: 0 PID: 23179 Comm: syz.0.4705 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-RIP: 0010:cfg80211_chandef_dfs_required+0xe3e/0xf00 net/wireless/chan.c:796
-Code: de e8 26 ed bb f6 48 83 fb 3f 0f 87 aa 00 00 00 e8 d7 e8 bb f6 b8 01 00 00 00 89 d9 48 d3 e0 e9 0a f4 ff ff e8 c3 e8 bb f6 90 <0f> 0b 90 b8 ea ff ff ff e9 f7 f3 ff ff e8 10 d9 a5 00 89 d1 80 e1
-RSP: 0018:ffffc900039c7680 EFLAGS: 00010283
-RAX: ffffffff8b09b83d RBX: 1ffff92000738f10 RCX: 0000000000080000
-RDX: ffffc90005477000 RSI: 00000000000005cf RDI: 00000000000005d0
-RBP: ffffc900039c7810 R08: ffffffff822422df R09: ffff8880b863f428
-R10: dffffc0000000000 R11: ffffed10165f8539 R12: ffffc900039c7a00
-R13: dffffc0000000000 R14: 0000000000000006 R15: 1ffff92000738ee8
-FS:  00007f6f79eb16c0(0000) GS:ffff888125461000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f6f7904eddd CR3: 0000000054d9e000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- _ieee80211_link_use_channel+0x29c/0xd50 net/mac80211/chan.c:2034
- ieee80211_link_use_channel net/mac80211/ieee80211_i.h:2754 [inline]
- ieee80211_set_monitor_channel+0x692/0x8e0 net/mac80211/cfg.c:1084
- rdev_set_monitor_channel net/wireless/rdev-ops.h:453 [inline]
- cfg80211_set_monitor_channel+0x22d/0x650 net/wireless/chan.c:1600
- cfg80211_wext_siwfreq+0x730/0x870 net/wireless/wext-compat.c:792
- ioctl_standard_call+0xcb/0x1b0 net/wireless/wext-core.c:1042
- wireless_process_ioctl net/wireless/wext-core.c:-1 [inline]
- wext_ioctl_dispatch+0xee/0x410 net/wireless/wext-core.c:1013
- wext_handle_ioctl+0x10f/0x1d0 net/wireless/wext-core.c:1074
- sock_ioctl+0x159/0x7f0 net/socket.c:1300
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f6f78f9c799
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f6f79eb1028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f6f79215fa0 RCX: 00007f6f78f9c799
-RDX: 0000200000000040 RSI: 0000000000008b04 RDI: 0000000000000003
-RBP: 00007f6f79032c99 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f6f79216038 R14: 00007f6f79215fa0 R15: 00007ffe8253b778
- </TASK>
-
-
+Signed-off-by: Christos Longros <chris.longros@gmail.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/realtek/rtw89/pci.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 43c61b3dc..64554eb35 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -4624,9 +4624,9 @@ EXPORT_SYMBOL(rtw89_pm_ops);
+ static pci_ers_result_t rtw89_pci_io_error_detected(struct pci_dev *pdev,
+ 						    pci_channel_state_t state)
+ {
+-	struct net_device *netdev = pci_get_drvdata(pdev);
++	struct ieee80211_hw *hw = pci_get_drvdata(pdev);
+ 
+-	netif_device_detach(netdev);
++	ieee80211_stop_queues(hw);
+ 
+ 	return PCI_ERS_RESULT_NEED_RESET;
+ }
+@@ -4643,12 +4643,12 @@ static pci_ers_result_t rtw89_pci_io_slot_reset(struct pci_dev *pdev)
+ 
+ static void rtw89_pci_io_resume(struct pci_dev *pdev)
+ {
+-	struct net_device *netdev = pci_get_drvdata(pdev);
++	struct ieee80211_hw *hw = pci_get_drvdata(pdev);
+ 
+ 	/* ack any pending wake events, disable PME */
+ 	pci_enable_wake(pdev, PCI_D0, 0);
+ 
+-	netif_device_attach(netdev);
++	ieee80211_wake_queues(hw);
+ }
+ 
+ const struct pci_error_handlers rtw89_pci_err_handler = {
+-- 
+2.53.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
