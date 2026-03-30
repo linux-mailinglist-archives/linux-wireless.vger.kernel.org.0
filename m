@@ -1,150 +1,155 @@
-Return-Path: <linux-wireless+bounces-34175-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34176-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJ3rJNVEymm/7AUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34175-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 11:39:33 +0200
+	id INkfMqRLymmb7QUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34176-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 12:08:36 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CFD4358528
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 11:39:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9876E358E2B
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 12:08:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68AE8302BDED
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 09:34:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3E474300621E
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 10:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA60D3AC0FE;
-	Mon, 30 Mar 2026 09:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7092C3A6B72;
+	Mon, 30 Mar 2026 10:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R4HXWDsd"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Zt69Es65"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E8E3AC0EE
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 09:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A623B7B74;
+	Mon, 30 Mar 2026 10:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774863288; cv=none; b=hJso5dbqHPoLJ6ku57faWurnRklBg63WWCuXtE5ly4wQhcGcuPzeMDkPi4n65wsXHaRwaqdwllIJ7fCSPiNsWT8XV5RAW2EhUE+ll8995t2FF4rmk6tNjShp3ejzYPHvIL9Wrd8uEYpMJQARFxCC6MO5TKd6Tw/suT4NbQpUG9I=
+	t=1774865167; cv=none; b=PqZ2+jPCeg+dCQ9Ugbg82ROBzn5M0ulTjJ4jhxmJtAPYzRzDZF7ewvspBUlW+a9CJGv9GMQv6sjbJo6vGnqni3GbGxbLQ/47Pj+3YlGXMOM8aFkdTIML30BfNYFGwC5N+HqaAKaz/wX05Q8o+R367AwJrmpP655wFtkrfcSVVgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774863288; c=relaxed/simple;
-	bh=VINwoavDK9DU941cqg8iZRVirwNKWjFD1mWWpXZtQfU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HLACienLEoZXBfj1SV0Kgk/Yro3iK5z/Umtr7mCOoyt+sCPJ6IkmdlXhz8brYZreTKQNBRduLfQD48nXCLyk4PwF/7rFNzvH/56ehxsH/uq+C5keqPa/XDyEsHB9RXYpg55DLe06af+2iYot8aVGisRAPkP9SDll2Wl2wD4E4Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R4HXWDsd; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b2589c26e3so2968025ad.1
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 02:34:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774863287; x=1775468087; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wFV+hqOD9sKqCRhaTtbXB0/RtdapcEP2Rmsg9aDRycY=;
-        b=R4HXWDsdowbuN2CZkFDHi880aXA2wca6tcUpeeTmHCVRfvKGe1hw8aOUVhCmzZ+/oV
-         DB/xuh5TCTPkDCBW6Iu2T1JxR+FEMAfGPs/i/i73VHweqCAxob1dT3wR6ZLES3Ta2t3g
-         0Y3gvot9xWBEfXY9QpmgyfDM+EXdL7+how4HzaA1T8PyGutxrg/q47iztI3NDF/ZA9Vz
-         qgr+JupkPD/Cm/HuQaAnHVMkleE5JT4ohFDu6ZVrBA6JGHHonGNb5LMJR8V3iFUB+siN
-         2p+F6tAI/c1cXEf0My9guFlDMMYKqqgiTiO8YcnsGW6q9mbSZs2nlZn+VNZ0bQjK5CBz
-         xTrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774863287; x=1775468087;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wFV+hqOD9sKqCRhaTtbXB0/RtdapcEP2Rmsg9aDRycY=;
-        b=XJa8Rou0/Ud6fvzEqsdAmFwpcrx2BlUSxBotiAmXX44HZN5cjOstln+0PcUN94UcrR
-         MQMNHunFM/Um7fmIvamUixedAin0ejcD2EoWBenFrhQk+WAIOubK4Fq4ssI2Zasd03+Z
-         +Ld+c3xniWvJUC1OzjbVQzfScRXhEBxg2dJQfQRlI/DhNqX1uAojA79ezEzgcOTx7uKY
-         denz6AV9DjF3KxPzetJZZxWB+htw8XNPMGqKGddhEjlHRe+Hnp8+2YjccB79EQgbdgr3
-         1H5Kaqc9z7lPuLVQKflFcNCCN7qyrq1UaQ0CGnqHR/B5hKIUc2Wt8Xom+uUMSP1rFR3k
-         TCuQ==
-X-Gm-Message-State: AOJu0YyAvYaDArls5PZ2X1CSCU5QnOdfeGXRKWYkrgYu1WnUjh3+/9y0
-	Eon3rEW7h6EFf4Mr4EZ5TELMlflY/ykKMrQv1bg5gqX4NClTNZJ9zdOWwM8RtOOv
-X-Gm-Gg: ATEYQzwskwfk24DFs/EKEy8VxG3HVNl5riaMuM/ZmK6+XBTJuDqL664kLMGo0xrgh4+
-	cqYiWOoCzSjFgt51gkMshaZijsbJj4fIXlH5PYIIxJiH77S5k1YHHOXknRqrYitNu0WO9WqUgT9
-	aeeQPlug50WCrPylw/pDRq4omentTzMblin94y/W+dFFhJj2ml+QbWY5CNQwhtt2HyORUmB9eLR
-	0MdYH2WBuAyza8tt3nTFopNZLFHQhj+r5WSxPaW2AxZFPYcQzC2ugOlozCqsziCbhbOev7G6AHh
-	TdqTF1G7M/f7qYu4tRcBLrtDjqtmOyxl74LOSM96bZ9brqevPSO6mWsRNr28v+WQCvDx+Wny9sc
-	9W/5z3Z6oY0lGMhLue01nCz+2gRphrU26PkepfhXFKtl6nGCEMwLwWpJ2yRNXUjiVIAErnsi/un
-	2/f0FRHYtQINhOiG9VParYaIok/1PKXrt4OdnWI+uXzFgxjKXyAiAB/z4sQcb4N8tE
-X-Received: by 2002:a17:902:ea0f:b0:2ae:55eb:f82d with SMTP id d9443c01a7336-2b0cdc1fa6cmr121626765ad.1.1774863286680;
-        Mon, 30 Mar 2026 02:34:46 -0700 (PDT)
-Received: from BM5220 (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2b24265e7basm96283015ad.21.2026.03.30.02.34.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 02:34:46 -0700 (PDT)
-From: Zenm Chen <zenmchen@gmail.com>
-To: linux-wireless@vger.kernel.org,
-	pkshih@realtek.com,
-	rtl8821cerfe2@gmail.com
-Cc: zenmchen@gmail.com
-Subject: [PATCH rtw-next] wifi: rtw89: Add support for Elecom WDC-XE2402TU3-B
-Date: Mon, 30 Mar 2026 17:34:39 +0800
-Message-ID: <20260330093440.3615-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1774865167; c=relaxed/simple;
+	bh=+T1KB1PRAcDpvQuuJjtTEvpIKvPWqc1Ds4Px12LBTP8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YN9ukKiKQDJ5EqnO7udRfx05ZUFlDjXCwDPdeAAT/MDPWrnc5BqWcO1UCRcJsNnRhM/G1jClpjG5ERsVoHwlbmLZ00P9JsQNkCF60sI9L1tYpBPcsJxGedWll7N2ZGp6EYXcx9P6KW9W0cTsA5LZ42Wtjl3riRuQaQlqZdvIM84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Zt69Es65; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1774865158;
+	bh=+T1KB1PRAcDpvQuuJjtTEvpIKvPWqc1Ds4Px12LBTP8=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Zt69Es65XnjFRPtzrPcIbf7sKLof+bmYywkQtn30x30MLp7a91AtyYxoz8eOAV+CX
+	 hbklTsqjnglLljukrwIBc6BVJjgtVM+AogbDeIFJcetHc68fCH6M4wbW3uZ0IX84gd
+	 jGgDqPqBs5exbtcOSc0CxdnmsI+e1f+HfWFyCqvfWue10GLcG9SdCsryL7IE8MmhvR
+	 WshiF1/YAis+PWvUYPVYfiQ54ZuT7NdUoEGfB6YPQiwI1EH/oD9OZJg9x3PVUpYdjF
+	 AmmXgXn/qge4tpbJ1eKknmRNozMNzbZqe+Rv0/kwBcCoMicuMDRs5p7BvY5lsYP/JK
+	 g744fsyMnsE3A==
+Received: from [192.168.1.53] (unknown [IPv6:2a01:6243:628:0:43ea:f64d:fc7e:3a2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: mattl)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id E104D17E418F;
+	Mon, 30 Mar 2026 12:05:57 +0200 (CEST)
+From: Matthew Leach <matthew.leach@collabora.com>
+Subject: [RFC PATCH RESEND 0/3] net: ath11k: Firmware lockup detection &
+ mitigation
+Date: Mon, 30 Mar 2026 11:05:30 +0100
+Message-Id: <20260330-ath11k-lockup-fixes-v1-0-7ed21095c2c4@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, kernel@collabora.com, 
+ Matthew Leach <matthew.leach@collabora.com>
+X-Mailer: b4 0.15.0
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,realtek.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-34175-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-34176-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[collabora.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zenmchen@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1CFD4358528
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,collabora.com:dkim,collabora.com:email,collabora.com:mid,ntp.org:url]
+X-Rspamd-Queue-Id: 9876E358E2B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add the ID 056e:4024 to the table to support an additional RTL8832CU
-adapter: Elecom WDC-XE2402TU3-B.
+When sat idle for approx 24 hours, a user experienced a firmware lockup on a
+ath11k chip, resulting in the following log output:
 
-Link: https://github.com/morrownr/rtw89/commit/55c059e2bd49acd5cf93edbc8eda7b9e042f4efd
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+  systemd-timesyncd[558]: Timed out waiting for reply from 23.95.49.216:123 (2.arch.pool.ntp.org).
+  systemd-timesyncd[558]: Timed out waiting for reply from 23.186.168.125:123 (2.arch.pool.ntp.org).
+  systemd-timesyncd[558]: Timed out waiting for reply from 64.79.100.197:123 (2.arch.pool.ntp.org).
+  systemd-timesyncd[558]: Timed out waiting for reply from 69.89.207.199:123 (2.arch.pool.ntp.org).
+  kernel: ath11k_pci 0000:03:00.0: failed to transmit frame -12
+  kernel: ath11k_pci 0000:03:00.0: failed to transmit frame -12
+  kernel: ath11k_pci 0000:03:00.0: failed to transmit frame -12
+
+  [...]
+
+  kernel: ath11k_pci 0000:03:00.0: failed to flush transmit queue, data pkts pending 564
+  kernel: ath11k_pci 0000:03:00.0: wmi command 20486 timeout
+  kernel: ath11k_pci 0000:03:00.0: failed to submit WMI_VDEV_STOP cmd
+  kernel: ath11k_pci 0000:03:00.0: failed to stop WMI vdev 0: -11
+  kernel: ath11k_pci 0000:03:00.0: failed to stop vdev 0: -11
+  kernel: ath11k_pci 0000:03:00.0: failed to do early vdev stop: -11
+  kernel: ath11k_pci 0000:03:00.0: Failed to remove station: xx:xx:xx:xx:xx:xx for VDEV: 0
+  kernel: ath11k_pci 0000:03:00.0: Found peer entry xx:xx:xx:xx:xx:xx n vdev 0 after it was supposedly removed
+  kernel: ------------[ cut here ]------------
+  kernel: WARNING: CPU: 0 PID: 1229 at net/mac80211/sta_info.c:1490 __sta_info_destroy_part2+0x14e/0x180 [mac80211]
+
+This patch series:
+
+ - Fixes a bug in the core reset logic which could cause a second redundant reset
+   after the original reset completes.
+ - Implements the error correlation logic and queues a chip reset when detected.
+ - Adds a simulation to the simulate_fw_crash debugfs file to test the
+   detection logic.
+
+Signed-off-by: Matthew Leach <matthew.leach@collabora.com>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8852cu.c | 2 ++
- 1 file changed, 2 insertions(+)
+Matthew Leach (3):
+      net: ath11k: fix redundant reset from stale pending workqueue bit
+      net: ath11k: add firmware lockup detection and recovery
+      net: ath11k: add lockup simulation via debugfs
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-index de3f8358b..092d2812a 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-@@ -41,6 +41,8 @@ static const struct rtw89_driver_info rtw89_8852cu_info = {
- static const struct usb_device_id rtw_8852cu_id_table[] = {
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03a6, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x056e, 0x4024, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc832, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc85a, 0xff, 0xff, 0xff),
+ drivers/net/wireless/ath/ath11k/core.h    |  3 +++
+ drivers/net/wireless/ath/ath11k/debugfs.c |  7 ++++++-
+ drivers/net/wireless/ath/ath11k/hal.c     |  7 +++++--
+ drivers/net/wireless/ath/ath11k/htc.c     |  2 +-
+ drivers/net/wireless/ath/ath11k/mac.c     | 10 ++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.c     | 28 +++++++++++++++++++++++++++-
+ 6 files changed, 52 insertions(+), 5 deletions(-)
+---
+base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
+change-id: 20260304-ath11k-lockup-fixes-b808b5c7318b
+
+Best regards,
 -- 
-2.53.0
+Matt
 
 
