@@ -1,223 +1,197 @@
-Return-Path: <linux-wireless+bounces-34172-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34173-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QE0aKxMuymkA6AUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34172-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 10:02:27 +0200
+	id UKc/Gc8uymkA6AUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34173-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 10:05:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D6B356D3C
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 10:02:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1188F356DAD
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 10:05:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9260E3047409
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 07:55:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECBBC300D169
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 07:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106D73A6EE7;
-	Mon, 30 Mar 2026 07:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9643A8747;
+	Mon, 30 Mar 2026 07:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D7D0YxSi"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=matthew.leach@collabora.com header.b="aam+Aiw3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EDD3A8737
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 07:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774857334; cv=none; b=pKNhBr3eotMI4RUrcuwSpsh/Djdysc3ktcaAw4+0OZFC4ihiZOKR+T87qauL+BgugVtlzEIHv/bjNlXXPUDwUUiM7yMGkRBUiMKMlLfAhCMqFg3J/KDOKGAbuIizJG+USsrqd7MHmxmCpUNY0xo2fO3pk2H2atL4R14GS5S+sDA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774857334; c=relaxed/simple;
-	bh=MPDWBPm36fsWmva00EjlRjN2FTdNLYptQaxhTf+7Fg8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=hx0vmA3IO+i1oyNoaynnBIB6Je43f+MEK8mz8m0G//ZTaVs90k88JjHetv/W6zarppg7POiInY6rcSAtX0bR+5aVuT91SqhmVPfE1uWOgM1fj3zwR0EcageiPw9NCp8wc4JeXe07CqCtBcaK3CbufrjYhYLTeD8Eo3pUmDbjLfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D7D0YxSi; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso34976405e9.1
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 00:55:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774857330; x=1775462130; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AUItjZv34EZ10kX4LACTE3wjNz+JATlDo11i94BXg48=;
-        b=D7D0YxSio7A4uSaBe30ZDn2zK9/eMSYJn+lo+a1N32wH0m0Tc3AG0xavE23lwL+sXo
-         SktKSKq6PdxQz8dnJ2QZG7e9b4uZaMTvDtgk4dLzW3aJeHsWd7wVtEzKlyvHhOY8Alrc
-         TZgJksYCX50uVaJ34GzXmi8+VHo+o9m8EI4hu/tD6ctmvsgpPCMo1JkHoZlhcYaC0WNO
-         eWmHojJd8TMP+3+5+32WAMSHxHs1Ew3oLFdbaHg2Pz0vXxdgCv/j07oU08V9x+m9WbQh
-         JSc7myNEoq3kPyKfp+TCGs49uNJYLYPPyHIANwryONs+d9RGqq+zKYMijnFWlgb1vPgH
-         wx5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774857330; x=1775462130;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AUItjZv34EZ10kX4LACTE3wjNz+JATlDo11i94BXg48=;
-        b=bEVfpVJd9pZ/1pELYdn8bigToYl3G2uSfNojzbR9GG98KIwtf3v+HBrVTFrkAd7Jwc
-         /4ljHIeITbIo4JZCv5jD9D1eZLZyPiq/X19Sbk8HorD5DerrG0r6rHsEz/QyT8NZLXTI
-         Y5Py1iEVuXSdy79+tPmtPXm51V0EZUaX/vojnj81lUCi3cG+QfbJnV4nTvPYN6LI+hsW
-         JhSNNrq2PN8kShO6BJ/SKtIZMwAWOSSKPGQk3OpAaCwDs55G7szK0UPtSQeN62ujAHBi
-         e9aE/7BtdyQUbgSUQcnWHtOgufAdf0HSx4I8EabxJwkz5taC3xnGFTyVqOPyg841LjgM
-         /3Kw==
-X-Forwarded-Encrypted: i=1; AJvYcCVj9JBe51dY6QIk079oB1N6NZfx1Wqa+tqWPcnrOQfkwGKlr3ayFuiAOlzKXlkhnJ/3B6ByPP+YqbY8yGy60w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGo3MqIund2zSvEFhd1CxTMq09rSE4jrOHEOLgRu0xX4L1hCJI
-	sJrhGNps6+hXZ2r/0cgWgHLNTXl7H1BWQ5AIbGun3nS4NCboTbAM3PJobM7a49SNGrQZA2RjPqV
-	KRcj2sew=
-X-Gm-Gg: ATEYQzwGbqXrqTI3Ys2HJz/looY3WeaP86crvfPG5r8IK2VrLG6B2falvFn0YFxD/B3
-	n8Y/qlaxZsz6GCu/KnoaWSaKpEVOHd9cAhZcZ2YJCHYRxgMMequbJaEp7bMnA+WrKHE9C6nJY16
-	9XOPmGIvLyhpgFXzrS9fDYD4eO+Sylv6Qnq6cx6oVHFnAQzIMlqo/Us81ifLQfO5fJ7H8y7xgbb
-	KjMvOPD0ZKAaqNll0OKJs+aDT3Xei9MkqUrz0LS8+Qbio1v9oocZO8JDynZ7+kzHqN7ZLMRmjQn
-	De9ROdVHgn/7VCvo1xdb0gUfT9sigFwiH5LO+wYC9mchthjV5uJi9AiiQMB33eOfA3voab/oHMT
-	vLnSU/hLhIph9PU2bu7Pv/CrAvrUts0uvIiQOB90m3JtpzuLN2EnSSylFvNmrR1mcXp8m/gCrgY
-	EwqR0s8I4U/D8h0dLrBk0ffrXM+IfcaLvq4jmwy5jd6/+Et3f1NtTaNaLrd5x69w1qF5TKPAcHr
-	O0Kbu4=
-X-Received: by 2002:a05:600c:4f91:b0:485:3f30:6250 with SMTP id 5b1f17b1804b1-48727eda62emr178938295e9.20.1774857330208;
-        Mon, 30 Mar 2026 00:55:30 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:106d:1080:cb3c:d0d2:870b:6ad0? ([2a01:e0a:106d:1080:cb3c:d0d2:870b:6ad0])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48735faac9dsm60393575e9.0.2026.03.30.00.55.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Mar 2026 00:55:29 -0700 (PDT)
-Message-ID: <416d42a6-8d99-421c-91aa-e705f23576e2@linaro.org>
-Date: Mon, 30 Mar 2026 09:55:28 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033853A8733;
+	Mon, 30 Mar 2026 07:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774857495; cv=pass; b=TpZL4yNiZ6xz/Ikc6BM25JawJRebwbfl9KzmNsfE8BwQVamGRara/48/3bmd2ehusrv5EWlJ3xUSmEFGMAaYRs2z96dxeZICnMXWLKOSvLCAD/8vd2P4MgcvIINDwIlFwRMdSXiurTSx4rlEd/kt20+0YBkPrkdfGEIIu/L8BqI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774857495; c=relaxed/simple;
+	bh=PMaIzbLqBrjVxKpMuBjMYE1w0WGeUUt0zQH7i3Wxp54=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=iEdwqeTbjGI2jTJ2BvDGjIDzbsW0MaYJe2c4FOyE926KZFGXdEG/J63jaBcJTUKniN4yivcjW/NL3OTdcI4JuU1IVAX5vMOrRthQlFByZqA43rz+SJWuIKldppEs7d1hADPKd1cB/LLfMPmXRlaCqoWfhfztE/vJ+StuE8d5bzc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=matthew.leach@collabora.com header.b=aam+Aiw3; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1774857461; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=C0sJnXnikR4x7vtFyrDkiDDQlEJrN293LjqOiOw9RjaSacnlXhzk4Gy3axMvq9gMncqYH2aa7W4ocnQYglUt0dcT6I5xUPreOxtuQeltgN9NkaesNW9ww6BxBDrl+AqdjixsWtMsSEV/e8+NXOam68orpJ5ndrkun8PmCgDdvMU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1774857461; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=eIMC7cDWsrBOtjtJ4eTyTeEKTFa7e1tg8E0vasvRRoM=; 
+	b=P+TyzUEi6lRintRdy/j67dC6HcnvswGcA8C+ceVW7lKfkwlnkOXypwA00uTGpEJm5F3Ea4PD3FiSQs/Q1RSi5gIi/ObWbmP8A1mtm0MMMqx6VL1VndtNOWTdzRsYzMtc6dfMlcXwly1k4HArL8QJHJvcOvtX7VM9qSUt1bklGYw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=matthew.leach@collabora.com;
+	dmarc=pass header.from=<matthew.leach@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774857457;
+	s=zohomail; d=collabora.com; i=matthew.leach@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:In-Reply-To:References:Date:Date:Message-ID:MIME-Version:Content-Type:Message-Id:Reply-To;
+	bh=eIMC7cDWsrBOtjtJ4eTyTeEKTFa7e1tg8E0vasvRRoM=;
+	b=aam+Aiw3NqpnMwNC68ETwmlahVuwUNgeNoS5qUhdAXFFGNnwe1L7elha/C8mu0TT
+	Pvo0etGaR+V+Lcp1d+y1woS9ii0NIJyBkcOv7MO6vGQqsxUZXB++igpGDRSxjOYglro
+	LiX+zjXZwrcKuJpZ8A538I+8pUEbxTp1wYEll3zc=
+Received: by mx.zohomail.com with SMTPS id 1774857454006418.10295521158673;
+	Mon, 30 Mar 2026 00:57:34 -0700 (PDT)
+From: Matthew Leach <matthew.leach@collabora.com>
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org,  ath11k@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  kernel@collabora.com
+Subject: Re: [PATCH] ath11k: workaround firmware bug where peer_id=0
+In-Reply-To: <20260326-ath11k-null-peerid-workaround-v1-1-0c2fd53202f8@collabora.com>
+	(Matthew Leach's message of "Thu, 26 Mar 2026 10:53:53 +0000")
+References: <20260326-ath11k-null-peerid-workaround-v1-1-0c2fd53202f8@collabora.com>
+User-Agent: mu4e 1.12.15; emacs 30.2
+Date: Mon, 30 Mar 2026 08:57:31 +0100
+Message-ID: <87h5pxlpg4.fsf@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v5 6/9] arm64: dts: amlogic: t7: khadas-vim4: Add power
- regulators
-To: Ronald Claveau <linux-kernel-dev@aliel.fr>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Johannes Berg <johannes@sipsolutions.net>, van Spriel <arend@broadcom.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org
-References: <20260326-add-emmc-t7-vim4-v5-0-d3f182b48e9d@aliel.fr>
- <20260326-add-emmc-t7-vim4-v5-6-d3f182b48e9d@aliel.fr>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20260326-add-emmc-t7-vim4-v5-6-d3f182b48e9d@aliel.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+Content-Type: text/plain
+X-ZohoMailClient: External
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-34173-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34172-lists,linux-wireless=lfdr.de];
-	FREEMAIL_TO(0.00)[aliel.fr,baylibre.com,googlemail.com,kernel.org,linaro.org,sipsolutions.net,broadcom.com];
-	HAS_ORG_HEADER(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:dkim,linaro.org:email,linaro.org:replyto,linaro.org:mid];
-	HAS_REPLYTO(0.00)[neil.armstrong@linaro.org];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[neil.armstrong@linaro.org,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_EQ_FROM(0.00)[]
-X-Rspamd-Queue-Id: 76D6B356D3C
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[collabora.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:dkim,collabora.com:email,collabora.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1188F356DAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/26/26 10:59, Ronald Claveau wrote:
-> Add voltage regulator nodes describing the VIM4 power tree,
-> required by peripheral nodes such as the SD card controller.
-> 
-> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-> Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
-> ---
->   .../dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts  | 90 ++++++++++++++++++++++
->   1 file changed, 90 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-> index fffdab96b12eb..2450084d37642 100644
-> --- a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-> +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-> @@ -6,6 +6,8 @@
->   /dts-v1/;
->   
->   #include "amlogic-t7.dtsi"
-> +#include <dt-bindings/gpio/amlogic,t7-periphs-pinctrl.h>
-> +#include <dt-bindings/gpio/gpio.h>
->   
->   / {
->   	model = "Khadas vim4";
-> @@ -45,6 +47,94 @@ xtal: xtal-clk {
->   		#clock-cells = <0>;
->   	};
->   
-> +	dc_in: regulator-dc-in {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "DC_IN";
-> +		regulator-min-microvolt = <5000000>;
-> +		regulator-max-microvolt = <5000000>;
-> +		regulator-always-on;
-> +	};
-> +
-> +	sd_3v3: regulator-sdcard-3v3 {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "SD_3V3";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		vin-supply = <&vddao_3v3>;
-> +		gpio = <&gpio GPIOD_11 GPIO_ACTIVE_LOW>;
-> +		regulator-boot-on;
+Hello,
 
-> +		enable-active-low;
+Matthew Leach <matthew.leach@collabora.com> writes:
 
-This properly is invalid, please send follow up patch removing this,
+> This patch caches the peer enctype during the MSDU processing loop,
+> caching it on the first AMSDU sub-frame (is_first_msdu=1
+> is_last_msdu=0) and setting the correct enctype for any subsequent
+> sub-MSDUs.
 
-Thanks,
-Neil
+I've been looking at creating a patch that addresses the root cause,
+rather than patching incoming frame's flags:
 
-<snip>
+--8<---------------cut here---------------start------------->8---
+diff --git a/drivers/net/wireless/ath/ath11k/peer.c b/drivers/net/wireless/ath/ath11k/peer.c
+index 6d0126c39301..98348ccfdfbe 100644
+--- a/drivers/net/wireless/ath/ath11k/peer.c
++++ b/drivers/net/wireless/ath/ath11k/peer.c
+@@ -347,7 +347,7 @@ static int __ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, const u8 *addr)
+ 	return 0;
+ }
+ 
+-int ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, u8 *addr)
++int ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, const u8 *addr)
+ {
+ 	int ret;
+ 
+@@ -372,7 +372,7 @@ int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
+ {
+ 	struct ath11k_peer *peer;
+ 	struct ath11k_sta *arsta;
+-	int ret, fbret;
++	int ret, fbret, retries = 3;
+ 
+ 	lockdep_assert_held(&ar->conf_mutex);
+ 
+@@ -400,6 +400,8 @@ int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
+ 	spin_unlock_bh(&ar->ab->base_lock);
+ 	mutex_unlock(&ar->ab->tbl_mtx_lock);
+ 
++retry:
++
+ 	ret = ath11k_wmi_send_peer_create_cmd(ar, param);
+ 	if (ret) {
+ 		ath11k_warn(ar->ab,
+@@ -427,6 +429,18 @@ int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
+ 		goto cleanup;
+ 	}
+ 
++	if (!peer->peer_id) {
++		if (retries--) {
++			spin_unlock_bh(&ar->ab->base_lock);
++			mutex_unlock(&ar->ab->tbl_mtx_lock);
++			ath11k_peer_delete(ar, param->vdev_id, param->peer_addr);
++			goto retry;
++		} else {
++			ath11k_warn(ar->ab, "Null peer workaround failed for peer %pM, adding anyway",
++				    param->peer_addr);
++		}
++	}
++
+ 	ret = ath11k_peer_rhash_add(ar->ab, peer);
+ 	if (ret) {
+ 		spin_unlock_bh(&ar->ab->base_lock);
+diff --git a/drivers/net/wireless/ath/ath11k/peer.h b/drivers/net/wireless/ath/ath11k/peer.h
+index 3ad2f3355b14..6325c4d157c7 100644
+--- a/drivers/net/wireless/ath/ath11k/peer.h
++++ b/drivers/net/wireless/ath/ath11k/peer.h
+@@ -47,7 +47,7 @@ struct ath11k_peer *ath11k_peer_find_by_addr(struct ath11k_base *ab,
+ 					     const u8 *addr);
+ struct ath11k_peer *ath11k_peer_find_by_id(struct ath11k_base *ab, int peer_id);
+ void ath11k_peer_cleanup(struct ath11k *ar, u32 vdev_id);
+-int ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, u8 *addr);
++int ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, const u8 *addr);
+ int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
+ 		       struct ieee80211_sta *sta, struct peer_create_params *param);
+ int ath11k_wait_for_peer_delete_done(struct ath11k *ar, u32 vdev_id,
+--8<---------------cut here---------------end--------------->8---
+
+This patch detects the error condition at the point where a peer map
+request reply is received from the firmware. If the firmware maps with
+peer_id=0, we request that the firmware unmap that peer and map again,
+hoping it selects a peer_id!=0. We attempt this up to three times, at
+which point we give up and let the peer be mapped with an ID of 0.
+
+This patch addresses the root cause, but I think it's more invasive. I'd
+appreciate some comments as to which approach upstream would prefer. If
+the preference is for the above, I'll send out a v2.
+
+Regards,
+-- 
+Matt
 
