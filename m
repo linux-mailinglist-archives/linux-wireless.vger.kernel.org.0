@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-34165-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34166-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOIjK3ggymmu5QUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34165-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 09:04:24 +0200
+	id mGxhJkkfymmu5QUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34166-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 08:59:21 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D5E6356321
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 09:04:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F9E35625C
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 08:59:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47AD7302EEAB
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 06:59:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 06C0F3004C11
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 06:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD73724E4B4;
-	Mon, 30 Mar 2026 06:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B1D286D73;
+	Mon, 30 Mar 2026 06:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="SyMRNcyL"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="XZO7RjhL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C82439526F
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 06:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5E624E4B4
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 06:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774853953; cv=none; b=qao7vlu4WOnfBlnkY5m6BcoPHyY3S4vQ3YFoFImu20Jtxzlh3L6KvddX2Nkou3n+Zd7Uo1IqOUBQydl2HJZN4W/3nHeBVGtBKa3//y1OpXZavfaphAHhx3f/eaNvQabCpqhoAp+dKvPZ/ZMvvWhCLTgJH7TP4EQMQxgeEXuRLwo=
+	t=1774853959; cv=none; b=GYxvqterP5EXi3xutOqosYaKw6H996qBvjFy6ObjIGmNyU+Bsjsy759MsgkmdvLq/Y0slDELLSSGMdSzk9BP6VtZYrPFYznuORKd/s4+9UUuDxXr6kLBkippkbRUQMh1l1liUK/EwR6L3+Utnui35KKBuHmHmHWEJfDpzv2YYjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774853953; c=relaxed/simple;
-	bh=BZ5hfoaphjDtvcxpEeC0p9CAV8/Pz/jfvruEztHokA8=;
+	s=arc-20240116; t=1774853959; c=relaxed/simple;
+	bh=c8TfGKjaC5mZmZPDvkKzEDOZl5JIvhgcLv/ffVru1fI=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oKhjQ1e7xIBYzo6XhgIgdLd3ncLjT65chj88iUtOksHY+rk3FlEC7XNaRw28cQ/D5aMU1D2hqygCucPm85B94SrbhO7nFF2BFl7q42jjk4eALzm975+SC6FnY1LjyPQle492StLhNaf30/sCesdn00AAbX/fncgC11quftoX9x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=SyMRNcyL; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=If0SVE4QJ4F3qmS69G94HkmdT0KU6ha7FzKqvsgYgXy1Ngk4L0V6dZnJt1voTRCB4SoiAv8mExH7IMxPyNOCTU5UI0hSnYYvY6JB4sw//9gkfK04A5fh77y0aSeZHEvBa2LtP1eJbwJ81BcH4pXdIXWMbEW65zuhlbe/4lzci/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=XZO7RjhL; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62U6x9Oz9673828, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62U6xFLe9673841, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1774853949; bh=QmFgt84PyRXwjZQ9xDjGxuOlPH9GtrZyr3YBcNG0RAs=;
+	t=1774853955; bh=Ij99hMbPg2N4Upkg1qr2lXTtRp2iFCaUaoZAO1Vj1PY=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=SyMRNcyL3vW+33nY+DVNBHuej1kSxiiQgGtnHZH29XWH/0prlj/EYfuKmpwwV8xNq
-	 2rAGCxqfdEbw91FyYL1qkupU2ck8ZvxQ3XN3jOokrxY5aFrvTn5B1hye6BGt1ZhM1C
-	 yS+p7Y/W56Xgr5ClC8O9QfaXmwYmOUOGXIcsUS8+EPAxnqRt8whhg2rbgd7Ao3gmBs
-	 iE4NYxayCGTMccm02Xm2TfdeXWG2/ZJ/9OrOjhztlmAm1644hlq+wxqoFCvMPlRllK
-	 7UxhVfqMvmw6TlAPTZb6a5KOd3Zuqs94th9nKtJdFtl85fRIpOpzB0ArRAV7C6qRgE
-	 eNEdRjneEOAjQ==
+	b=XZO7RjhLNjQBix1C5xS4ZoITya8TUYLU1P7YDpLNHqIdc9Xz5BAMeFAQyVPkQ0Sae
+	 vK/wk1BxydDRbKamoR0gTzNhwatIyZbq/SALMhpyDMPXHakeMQQy4cLQBIFvsjczTy
+	 jnXVLc+6Lc3/UyQ3stpRouxc0V9QFGAEjm+mvb+rwvQHWZj/okxjWn3dzHZ9CdBtej
+	 yWYTbfePTZqfdn1tq/b03brSK8uY1742+spH7sEhtmYGUwIs3GRrwYLfUFuD9E4PEE
+	 SiAbgkvoWYCDKnDWD0i5tJt398JytEZ6G8H2TE8/Yy4OspuU+XLKjjguWEEriFR6Xx
+	 qZv6OFq6UnqlA==
 Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 62U6x9Oz9673828
+	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 62U6xFLe9673841
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 14:59:09 +0800
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 14:59:15 +0800
 Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
  RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 30 Mar 2026 14:59:10 +0800
+ 15.2.1748.10; Mon, 30 Mar 2026 14:59:15 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS04.realtek.com.tw
  (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Mon, 30 Mar 2026 14:59:10 +0800
+ Transport; Mon, 30 Mar 2026 14:59:15 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH rtw-next 4/9] wifi: rtw89: 8922d: add set TX power callback
-Date: Mon, 30 Mar 2026 14:58:42 +0800
-Message-ID: <20260330065847.48946-5-pkshih@realtek.com>
+Subject: [PATCH rtw-next 5/9] wifi: rtw89: 8922d: configure TX/RX path assisting in BT coexistence
+Date: Mon, 30 Mar 2026 14:58:43 +0800
+Message-ID: <20260330065847.48946-6-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260330065847.48946-1-pkshih@realtek.com>
 References: <20260330065847.48946-1-pkshih@realtek.com>
@@ -78,12 +78,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34165-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34166-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	RCPT_COUNT_ONE(0.00)[1];
@@ -96,189 +96,190 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_NONE(0.00)[];
 	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:dkim,realtek.com:email,realtek.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9D5E6356321
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:dkim,realtek.com:email,realtek.com:mid]
+X-Rspamd-Queue-Id: 15F9E35625C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Set TX power depends on operating channel. The Tx power factors are data
-rate, channel, bandwidth and etc. Also, consider SAR as a factor of TX
-power limit.
+The BT coexistence mechanism needs to control TX/RX path to co-work with
+BT well, and these helpers are provided by BB to configure path.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/reg.h      |  13 ++
- drivers/net/wireless/realtek/rtw89/rtw8922d.c | 115 ++++++++++++++++++
- 2 files changed, 128 insertions(+)
+ drivers/net/wireless/realtek/rtw89/reg.h      |   9 +-
+ drivers/net/wireless/realtek/rtw89/rtw8922d.c | 125 ++++++++++++++++++
+ 2 files changed, 132 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 1a5a5b30a28e..37de1c827814 100644
+index 37de1c827814..78f2cf579fa6 100644
 --- a/drivers/net/wireless/realtek/rtw89/reg.h
 +++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -10235,6 +10235,8 @@
- #define B_TSSI_CONT_EN BIT(3)
- #define R_P0_TXPWRB_BE 0xE61C
- #define R_P1_TXPWRB_BE 0xE71C
-+#define R_P0_TXPWRB_BE4 0x2251C
-+#define R_P1_TXPWRB_BE4 0x2261C
- #define B_TXPWRB_MAX_BE GENMASK(20, 12)
- #define R_TSSI_MAP_OFST_P0 0xE620
- #define R_TSSI_MAP_OFST_P1 0xE720
-@@ -10531,13 +10533,24 @@
- #define B_TXPWR_RSTB0_BE4 BIT(16)
- #define R_TSSI_EN_P0_BE4 0x22510
- #define B_TSSI_EN_P0_BE4 GENMASK(3, 0)
-+#define R_TXAGC_REF_DBM_PATH0_TBL0_BE4 0x22528
-+#define B_TXAGC_OFDM_REF_DBM_PATH0_TBL0_BE4 GENMASK(8, 0)
-+#define B_TXAGC_CCK_REF_DBM_PATH0_TBL0_BE4 GENMASK(17, 9)
- #define R_USED_TSSI_TRK_ON_P0_BE4 0x22534
- #define B_USED_TSSI_TRK_ON_P0_BE4 BIT(22)
-+#define R_TSSI_K_OFDM_PATH0_TBL0_BE4 0x225A0
-+#define B_TSSI_K_OFDM_PATH0_TBL0_BE4 GENMASK(29, 20)
- #define R_TSSI_DCK_MOV_AVG_LEN_P0_BE4 0x225CC
- #define B_TSSI_DCK_MOV_AVG_LEN_P0_BE4 GENMASK(8, 6)
- #define R_TXPWR_RSTB1_BE4 0x2260C
- #define B_TXPWR_RSTB1_BE4 BIT(16)
- 
-+#define R_TXAGC_REF_DBM_PATH0_TBL1_BE4 0x23528
-+#define B_TXAGC_OFDM_REF_DBM_PATH0_TBL1_BE4 GENMASK(8, 0)
-+#define B_TXAGC_CCK_REF_DBM_PATH0_TBL1_BE4 GENMASK(17, 9)
-+#define R_TSSI_K_OFDM_PATH0_TBL1_BE4 0x235A0
-+#define B_TSSI_K_OFDM_PATH0_TBL1_BE4 GENMASK(29, 20)
-+
- #define R_OFDM_OFST_P0_BE4 0x240C8
- #define B_OFDM_OFST_P0_BE4 GENMASK(31, 24)
- #define R_PATH0_RXIDX_INIT_BE4 0x24108
+@@ -10469,8 +10469,9 @@
+ #define B_EMLSR_BB_CLK_BE4 GENMASK(31, 30)
+ #define R_CHINFO_SEG_BE4 0x200B4
+ #define B_CHINFO_SEG_LEN_BE4 GENMASK(12, 10)
+-#define R_STS_HDR2_PARSING_BE4 0x2070C
+-#define B_STS_HDR2_PARSING_BE4 BIT(10)
++#define R_SEL_GNT_BT_RX_BE4 0x2010C
++#define B_SEL_GNT_BT_RX_PATH0_BE4 GENMASK(3, 0)
++#define B_SEL_GNT_BT_RX_PATH1_BE4 GENMASK(11, 8)
+ #define R_SW_SI_WDATA_BE4 0x20370
+ #define B_SW_SI_DATA_PATH_BE4 GENMASK(31, 28)
+ #define B_SW_SI_DATA_ADR_BE4 GENMASK(27, 20)
+@@ -10490,9 +10491,13 @@
+ #define B_ENABLE_CCK0_BE4 BIT(5)
+ #define R_RSTB_ASYNC_BE4 0x20704
+ #define B_RSTB_ASYNC_BE4 BIT(1)
++#define R_STS_HDR2_PARSING_BE4 0x2070C
++#define B_STS_HDR2_PARSING_BE4 BIT(10)
+ #define R_EDCCA_RPT_SEL_BE4 0x20780
+ #define R_EDCCA_RPT_SEL_BE4_C1 0x21780
+ #define B_EDCCA_RPT_SEL_BE4_MSK 0xE0000
++#define R_SEL_GNT_BT_RXPHY_BE4 0x2079C
++#define B_SEL_GNT_BT_RXPHY_BE4 GENMASK(11, 8)
+ #define R_IMR_TX_ERROR_BE4 0x20920
+ #define B_IMR_TX_ERROR_BE4 BIT(30)
+ #define R_TXINFO_PATH_BE4 0x209A4
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.c b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-index 2e6f4504caeb..9c62a5f12962 100644
+index 9c62a5f12962..cfe9752abddc 100644
 --- a/drivers/net/wireless/realtek/rtw89/rtw8922d.c
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-@@ -11,6 +11,7 @@
- #include "reg.h"
- #include "rtw8922d.h"
- #include "rtw8922d_rfk.h"
-+#include "sar.h"
- #include "util.h"
+@@ -238,6 +238,35 @@ static const struct rtw89_efuse_block_cfg rtw8922d_efuse_blocks[] = {
+ 	[RTW89_EFUSE_BLOCK_ADIE]		= {.offset = 0x70000, .size = 0x10},
+ };
  
- #define RTW8922D_FW_FORMAT_MAX 0
-@@ -2322,6 +2323,120 @@ static void rtw8922d_rfk_track(struct rtw89_dev *rtwdev)
- 	rtw8922d_lck_track(rtwdev);
++static void rtw8922d_sel_bt_rx_path(struct rtw89_dev *rtwdev, u8 val,
++				    enum rtw89_rf_path rx_path)
++{
++	if (rx_path == RF_PATH_A)
++		rtw89_phy_write32_mask(rtwdev, R_SEL_GNT_BT_RX_BE4,
++				       B_SEL_GNT_BT_RX_PATH0_BE4, val);
++	else if (rx_path == RF_PATH_B)
++		rtw89_phy_write32_mask(rtwdev, R_SEL_GNT_BT_RX_BE4,
++				       B_SEL_GNT_BT_RX_PATH1_BE4, val);
++	else
++		rtw89_warn(rtwdev, "[%s] Not support path = %d\n", __func__, rx_path);
++}
++
++static void rtw8922d_sel_bt_rx_phy(struct rtw89_dev *rtwdev, u8 val,
++				   enum rtw89_phy_idx phy_idx)
++{
++	rtw89_phy_write32_idx(rtwdev, R_SEL_GNT_BT_RXPHY_BE4,
++			      B_SEL_GNT_BT_RXPHY_BE4, val, phy_idx);
++}
++
++static void rtw8922d_set_gbt_bt_rx_sel(struct rtw89_dev *rtwdev, bool en,
++				       enum rtw89_phy_idx phy_idx)
++{
++	rtw8922d_sel_bt_rx_path(rtwdev, 0x3, RF_PATH_A);
++	rtw8922d_sel_bt_rx_phy(rtwdev, 0x0, RTW89_PHY_0);
++	rtw8922d_sel_bt_rx_path(rtwdev, 0x3, RF_PATH_B);
++	rtw8922d_sel_bt_rx_phy(rtwdev, 0x0, RTW89_PHY_1);
++}
++
+ static int rtw8922d_pwr_on_func(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+@@ -2437,6 +2466,102 @@ static void rtw8922d_set_txpwr_ctrl(struct rtw89_dev *rtwdev,
+ 	rtw8922d_set_txpwr_ref(rtwdev, chan, phy_idx);
  }
  
-+static const struct rtw89_reg_def rtw8922d_txpwr_ref[][3] = {
-+	{{ .addr = R_TXAGC_REF_DBM_PATH0_TBL0_BE4,
-+	   .mask = B_TXAGC_OFDM_REF_DBM_PATH0_TBL0_BE4 },
-+	 { .addr = R_TXAGC_REF_DBM_PATH0_TBL0_BE4,
-+	   .mask = B_TXAGC_CCK_REF_DBM_PATH0_TBL0_BE4 },
-+	 { .addr = R_TSSI_K_OFDM_PATH0_TBL0_BE4,
-+	   .mask = B_TSSI_K_OFDM_PATH0_TBL0_BE4 }
-+	},
-+	{{ .addr = R_TXAGC_REF_DBM_PATH0_TBL1_BE4,
-+	   .mask = B_TXAGC_OFDM_REF_DBM_PATH0_TBL1_BE4 },
-+	 { .addr = R_TXAGC_REF_DBM_PATH0_TBL1_BE4,
-+	   .mask = B_TXAGC_CCK_REF_DBM_PATH0_TBL1_BE4 },
-+	 { .addr = R_TSSI_K_OFDM_PATH0_TBL1_BE4,
-+	   .mask = B_TSSI_K_OFDM_PATH0_TBL1_BE4 }
-+	},
-+};
-+
-+static void rtw8922d_set_txpwr_diff(struct rtw89_dev *rtwdev,
-+				    const struct rtw89_chan *chan,
-+				    enum rtw89_phy_idx phy_idx)
++static void rtw8922d_ctrl_trx_path(struct rtw89_dev *rtwdev,
++				   enum rtw89_rf_path tx_path, u8 tx_nss,
++				   enum rtw89_rf_path rx_path, u8 rx_nss)
 +{
-+	s16 pwr_ofst = rtw89_phy_ant_gain_pwr_offset(rtwdev, chan);
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	static const u32 path_ofst[] = {0x0, 0x100};
-+	const struct rtw89_reg_def *txpwr_ref;
-+	s16 tssi_k_ofst = abs(pwr_ofst);
-+	s16 ofst_dec[RF_PATH_NUM_8922D];
-+	s16 tssi_k[RF_PATH_NUM_8922D];
-+	s16 pwr_ref_ofst;
-+	s16 pwr_ref = 16;
-+	u8 i;
++	enum rtw89_phy_idx phy_idx;
 +
-+	pwr_ref <<= chip->txpwr_factor_rf;
-+	pwr_ref_ofst = pwr_ref - rtw89_phy_txpwr_bb_to_rf(rtwdev, abs(pwr_ofst));
++	for (phy_idx = RTW89_PHY_0; phy_idx <= RTW89_PHY_1; phy_idx++) {
++		rtw8922d_ctrl_tx_path_tmac(rtwdev, tx_path, phy_idx);
++		rtw8922d_ctrl_rx_path_tmac(rtwdev, rx_path, phy_idx);
 +
-+	ofst_dec[RF_PATH_A] = pwr_ofst > 0 ? pwr_ref : pwr_ref_ofst;
-+	ofst_dec[RF_PATH_B] = pwr_ofst > 0 ? pwr_ref_ofst : pwr_ref;
-+	tssi_k[RF_PATH_A] = pwr_ofst > 0 ? 0 : tssi_k_ofst;
-+	tssi_k[RF_PATH_B] = pwr_ofst > 0 ? tssi_k_ofst : 0;
-+
-+	for (i = 0; i < RF_PATH_NUM_8922D; i++) {
-+		txpwr_ref = rtw8922d_txpwr_ref[phy_idx];
-+
-+		rtw89_phy_write32_mask(rtwdev, txpwr_ref[0].addr + path_ofst[i],
-+				       txpwr_ref[0].mask, ofst_dec[i]);
-+		rtw89_phy_write32_mask(rtwdev, txpwr_ref[1].addr + path_ofst[i],
-+				       txpwr_ref[1].mask, ofst_dec[i]);
-+		rtw89_phy_write32_mask(rtwdev, txpwr_ref[2].addr + path_ofst[i],
-+				       txpwr_ref[2].mask, tssi_k[i]);
++		rtw8922d_tssi_reset(rtwdev, rx_path, phy_idx);
 +	}
 +}
 +
-+static void rtw8922d_set_txpwr_ref(struct rtw89_dev *rtwdev,
-+				   const struct rtw89_chan *chan,
-+				   enum rtw89_phy_idx phy_idx)
++static void rtw8922d_ctrl_nbtg_bt_tx(struct rtw89_dev *rtwdev, bool en,
++				     enum rtw89_phy_idx phy_idx)
 +{
-+	s16 ref_ofdm = 0;
-+	s16 ref_cck = 0;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_TXPWR, "[TXPWR] set txpwr reference\n");
-+
-+	rtw8922d_set_txpwr_diff(rtwdev, chan, phy_idx);
-+
-+	rtw89_mac_txpwr_write32_mask(rtwdev, phy_idx, R_BE_PWR_REF_CTRL,
-+				     B_BE_PWR_REF_CTRL_OFDM, ref_ofdm);
-+	rtw89_mac_txpwr_write32_mask(rtwdev, phy_idx, R_BE_PWR_REF_CTRL,
-+				     B_BE_PWR_REF_CTRL_CCK, ref_cck);
++	if (en) {
++		rtw89_phy_write32_idx(rtwdev, R_FORCE_FIR_A, B_FORCE_FIR_A, 0x3, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_RXBY_WBADC_A, B_RXBY_WBADC_A,
++				      0xf, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BT_RXBY_WBADC_A, B_BT_RXBY_WBADC_A,
++				      0x0, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BT_SHARE_A, B_BT_TRK_OFF_A, 0x0, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_OP1DB_A, B_OP1DB_A, 0x80, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_OP1DB1_A, B_TIA10_A, 0x8080, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BACKOFF_A, B_LNA_IBADC_A, 0x34, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BKOFF_A, B_BKOFF_IBADC_A, 0x34, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_FORCE_FIR_B, B_FORCE_FIR_B, 0x3, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_RXBY_WBADC_B, B_RXBY_WBADC_B,
++				      0xf, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BT_RXBY_WBADC_B, B_BT_RXBY_WBADC_B,
++				      0x0, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BT_SHARE_B, B_BT_TRK_OFF_B, 0x0, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_LNA_TIA, B_TIA1_B, 0x80, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BACKOFF_B, B_LNA_IBADC_B, 0x34, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BKOFF_B, B_BKOFF_IBADC_B, 0x34, phy_idx);
++	} else {
++		rtw89_phy_write32_idx(rtwdev, R_FORCE_FIR_A, B_FORCE_FIR_A, 0x0, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_RXBY_WBADC_A, B_RXBY_WBADC_A,
++				      0x0, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BT_RXBY_WBADC_A, B_BT_RXBY_WBADC_A,
++				      0x1, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BT_SHARE_A, B_BT_TRK_OFF_A, 0x1, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_OP1DB_A, B_OP1DB_A, 0x1a, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_OP1DB1_A, B_TIA10_A, 0x2a2a, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BACKOFF_A, B_LNA_IBADC_A, 0x7a6, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BKOFF_A, B_BKOFF_IBADC_A, 0x26, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_FORCE_FIR_B, B_FORCE_FIR_B, 0x0, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_RXBY_WBADC_B, B_RXBY_WBADC_B,
++				      0x0, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BT_RXBY_WBADC_B, B_BT_RXBY_WBADC_B,
++				      0x1, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BT_SHARE_B, B_BT_TRK_OFF_B, 0x1, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_LNA_TIA, B_TIA1_B, 0x2a, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BACKOFF_B, B_LNA_IBADC_B, 0x7a6, phy_idx);
++		rtw89_phy_write32_idx(rtwdev, R_BKOFF_B, B_BKOFF_IBADC_B, 0x26, phy_idx);
++	}
 +}
 +
-+static void rtw8922d_set_txpwr_sar_diff(struct rtw89_dev *rtwdev,
-+					const struct rtw89_chan *chan,
-+					enum rtw89_phy_idx phy_idx)
++static void rtw8922d_bb_cfg_txrx_path(struct rtw89_dev *rtwdev)
 +{
-+	struct rtw89_sar_parm sar_parm = {
-+		.center_freq = chan->freq,
-+		.force_path = true,
-+	};
-+	s16 sar_rf;
-+	s8 sar_mac;
++	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_CHANCTX_0);
++	enum rtw89_band band = chan->band_type;
++	struct rtw89_hal *hal = &rtwdev->hal;
++	u8 ntx_path = RF_PATH_AB;
++	u8 nrx_path = RF_PATH_AB;
++	u32 tx_en0, tx_en1;
++	u8 rx_nss = 2;
 +
-+	if (phy_idx != RTW89_PHY_0)
-+		return;
++	if (hal->antenna_tx == RF_A)
++		ntx_path = RF_PATH_A;
++	else if (hal->antenna_tx == RF_B)
++		ntx_path = RF_PATH_B;
 +
-+	sar_parm.path = RF_PATH_A;
-+	sar_mac = rtw89_query_sar(rtwdev, &sar_parm);
-+	sar_rf = rtw89_phy_txpwr_mac_to_rf(rtwdev, sar_mac);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TXPWRB_BE4, B_TXPWRB_MAX_BE, sar_rf);
++	if (hal->antenna_rx == RF_A)
++		nrx_path = RF_PATH_A;
++	else if (hal->antenna_rx == RF_B)
++		nrx_path = RF_PATH_B;
 +
-+	sar_parm.path = RF_PATH_B;
-+	sar_mac = rtw89_query_sar(rtwdev, &sar_parm);
-+	sar_rf = rtw89_phy_txpwr_mac_to_rf(rtwdev, sar_mac);
-+	rtw89_phy_write32_mask(rtwdev, R_P1_TXPWRB_BE4, B_TXPWRB_MAX_BE, sar_rf);
-+}
++	if (nrx_path != RF_PATH_AB)
++		rx_nss = 1;
 +
-+static void rtw8922d_set_txpwr(struct rtw89_dev *rtwdev,
-+			       const struct rtw89_chan *chan,
-+			       enum rtw89_phy_idx phy_idx)
-+{
-+	rtw89_phy_set_txpwr_byrate(rtwdev, chan, phy_idx);
-+	rtw89_phy_set_txpwr_offset(rtwdev, chan, phy_idx);
-+	rtw89_phy_set_txpwr_limit(rtwdev, chan, phy_idx);
-+	rtw89_phy_set_txpwr_limit_ru(rtwdev, chan, phy_idx);
-+	rtw8922d_set_txpwr_ref(rtwdev, chan, phy_idx);
-+	rtw8922d_set_txpwr_sar_diff(rtwdev, chan, phy_idx);
-+}
++	rtw8922d_hal_reset(rtwdev, RTW89_PHY_0, RTW89_MAC_0, band, &tx_en0, true);
++	if (rtwdev->dbcc_en)
++		rtw8922d_hal_reset(rtwdev, RTW89_PHY_1, RTW89_MAC_1, band,
++				   &tx_en1, true);
 +
-+static void rtw8922d_set_txpwr_ctrl(struct rtw89_dev *rtwdev,
-+				    enum rtw89_phy_idx phy_idx)
-+{
-+	const struct rtw89_chan *chan = rtw89_mgnt_chan_get(rtwdev, phy_idx);
++	rtw8922d_ctrl_trx_path(rtwdev, ntx_path, 2, nrx_path, rx_nss);
 +
-+	rtw8922d_set_txpwr_ref(rtwdev, chan, phy_idx);
++	rtw8922d_hal_reset(rtwdev, RTW89_PHY_0, RTW89_MAC_0, band, &tx_en0, false);
++	if (rtwdev->dbcc_en)
++		rtw8922d_hal_reset(rtwdev, RTW89_PHY_1, RTW89_MAC_1, band,
++				   &tx_en1, false);
 +}
 +
  MODULE_FIRMWARE(RTW8922D_MODULE_FIRMWARE);
