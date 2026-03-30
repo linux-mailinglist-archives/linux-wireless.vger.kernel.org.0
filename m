@@ -1,176 +1,223 @@
-Return-Path: <linux-wireless+bounces-34171-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34172-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAVjEFkiymmu5QUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34171-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 09:12:25 +0200
+	id QE0aKxMuymkA6AUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34172-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 10:02:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC573564A7
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 09:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76D6B356D3C
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 10:02:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D954E304ADB9
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 07:08:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9260E3047409
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 07:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB53039E182;
-	Mon, 30 Mar 2026 07:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106D73A6EE7;
+	Mon, 30 Mar 2026 07:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWwAMHbX"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D7D0YxSi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3288292B44;
-	Mon, 30 Mar 2026 07:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EDD3A8737
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 07:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774854537; cv=none; b=vDNL3+qDNt0vxKPQ6WkLksI2WAMe3GBikAsSzG6VtPek7nK5qAR9D8eU5CgO9r5ZVFUbtWB/p+iECZv/IjwOjC5CRM1/evRQzhwfXwBxr8Vy0BSafvBp+gRkWz7aXzd5H8cLOb3wfh9tvv3gjzNgGEJk5JoF64XE/CqvJC+5kFg=
+	t=1774857334; cv=none; b=pKNhBr3eotMI4RUrcuwSpsh/Djdysc3ktcaAw4+0OZFC4ihiZOKR+T87qauL+BgugVtlzEIHv/bjNlXXPUDwUUiM7yMGkRBUiMKMlLfAhCMqFg3J/KDOKGAbuIizJG+USsrqd7MHmxmCpUNY0xo2fO3pk2H2atL4R14GS5S+sDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774854537; c=relaxed/simple;
-	bh=/jDwCS37ClQxnMNZi4IpdtAvb0wwJQBYhYWpxA7NdaE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cuNNaZ9Q1/LbtJsMGydPVKlJEIz3+kd8u9J1OkORbMntEM+Bgl4gC8ywBtGF0CD1fjLIBpcTMOAG4OfbdO+DLb7HRVxWUUHMvdDoUYE5D+Iah0ASiaARO3+ZGoZtSKX8HtZOGeAw0gb4ZgrlDm8JquG3mftcAU1+tIqDcFe/rc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWwAMHbX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37DEC4CEF7;
-	Mon, 30 Mar 2026 07:08:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774854537;
-	bh=/jDwCS37ClQxnMNZi4IpdtAvb0wwJQBYhYWpxA7NdaE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MWwAMHbXhHOam7pxS91Eazmz+hUaoDAf2swLU3Xxq0gOap3WbmlYuHlA7Lt16iHk/
-	 okQRjsC54iUTWRm7vbYcOl63AQeNSP1MNEgw1swjH48UQtjagL+B86CXREPNJzOwOq
-	 Cp8lf0iFOXffdYv5f1ZGoX72EDi3p7JUGh67peAHFMO9Q/7XBtMWuezArFeYv8+qt4
-	 fgq1SWLpceGxYsLEgK9CZjwsuKJFx4nOY6DeWoYA4vzLl8bC5lMBjrcNcnMwUkRVKt
-	 CDc0Q5JxKQzahwBZXb6knpLrYwg3kt1+XvW2qSNHe45aTGMzshmNSA4zgJNCA3qG5D
-	 kMXWwGLdrpl2w==
-Date: Mon, 30 Mar 2026 12:38:37 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-	linux-media@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-remoteproc@vger.kernel.org, andersson@kernel.org,
-	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
-	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
-	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
-	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
-	dikshita.agarwal@oss.qualcomm.com, bod@kernel.org,
-	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
-	trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
-	pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com,
-	tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com,
-	srinivas.kandagatla@oss.qualcomm.com,
-	amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
-	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
-	skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: Re: [PATCH v2 02/15] firmware: qcom: Add a generic PAS service
-Message-ID: <acohdYeKYSDQrKUZ@sumit-xelite>
-References: <20260312062756.694390-1-sumit.garg@kernel.org>
- <20260312062756.694390-3-sumit.garg@kernel.org>
- <28d63822-f191-400a-8005-5185dd480dbb@kernel.org>
- <acE-kAi2tkPh2qie@sumit-xelite>
- <5c5b49aa-7819-44c6-b5f7-19ec780d73fa@kernel.org>
- <2e55bdc3-54a1-4f18-b9ad-fe03f21fc4da@oss.qualcomm.com>
- <a0a7269d-7a09-4a78-a4b0-b39b67bc253b@kernel.org>
+	s=arc-20240116; t=1774857334; c=relaxed/simple;
+	bh=MPDWBPm36fsWmva00EjlRjN2FTdNLYptQaxhTf+7Fg8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=hx0vmA3IO+i1oyNoaynnBIB6Je43f+MEK8mz8m0G//ZTaVs90k88JjHetv/W6zarppg7POiInY6rcSAtX0bR+5aVuT91SqhmVPfE1uWOgM1fj3zwR0EcageiPw9NCp8wc4JeXe07CqCtBcaK3CbufrjYhYLTeD8Eo3pUmDbjLfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D7D0YxSi; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso34976405e9.1
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 00:55:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1774857330; x=1775462130; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AUItjZv34EZ10kX4LACTE3wjNz+JATlDo11i94BXg48=;
+        b=D7D0YxSio7A4uSaBe30ZDn2zK9/eMSYJn+lo+a1N32wH0m0Tc3AG0xavE23lwL+sXo
+         SktKSKq6PdxQz8dnJ2QZG7e9b4uZaMTvDtgk4dLzW3aJeHsWd7wVtEzKlyvHhOY8Alrc
+         TZgJksYCX50uVaJ34GzXmi8+VHo+o9m8EI4hu/tD6ctmvsgpPCMo1JkHoZlhcYaC0WNO
+         eWmHojJd8TMP+3+5+32WAMSHxHs1Ew3oLFdbaHg2Pz0vXxdgCv/j07oU08V9x+m9WbQh
+         JSc7myNEoq3kPyKfp+TCGs49uNJYLYPPyHIANwryONs+d9RGqq+zKYMijnFWlgb1vPgH
+         wx5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774857330; x=1775462130;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AUItjZv34EZ10kX4LACTE3wjNz+JATlDo11i94BXg48=;
+        b=bEVfpVJd9pZ/1pELYdn8bigToYl3G2uSfNojzbR9GG98KIwtf3v+HBrVTFrkAd7Jwc
+         /4ljHIeITbIo4JZCv5jD9D1eZLZyPiq/X19Sbk8HorD5DerrG0r6rHsEz/QyT8NZLXTI
+         Y5Py1iEVuXSdy79+tPmtPXm51V0EZUaX/vojnj81lUCi3cG+QfbJnV4nTvPYN6LI+hsW
+         JhSNNrq2PN8kShO6BJ/SKtIZMwAWOSSKPGQk3OpAaCwDs55G7szK0UPtSQeN62ujAHBi
+         e9aE/7BtdyQUbgSUQcnWHtOgufAdf0HSx4I8EabxJwkz5taC3xnGFTyVqOPyg841LjgM
+         /3Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCVj9JBe51dY6QIk079oB1N6NZfx1Wqa+tqWPcnrOQfkwGKlr3ayFuiAOlzKXlkhnJ/3B6ByPP+YqbY8yGy60w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGo3MqIund2zSvEFhd1CxTMq09rSE4jrOHEOLgRu0xX4L1hCJI
+	sJrhGNps6+hXZ2r/0cgWgHLNTXl7H1BWQ5AIbGun3nS4NCboTbAM3PJobM7a49SNGrQZA2RjPqV
+	KRcj2sew=
+X-Gm-Gg: ATEYQzwGbqXrqTI3Ys2HJz/looY3WeaP86crvfPG5r8IK2VrLG6B2falvFn0YFxD/B3
+	n8Y/qlaxZsz6GCu/KnoaWSaKpEVOHd9cAhZcZ2YJCHYRxgMMequbJaEp7bMnA+WrKHE9C6nJY16
+	9XOPmGIvLyhpgFXzrS9fDYD4eO+Sylv6Qnq6cx6oVHFnAQzIMlqo/Us81ifLQfO5fJ7H8y7xgbb
+	KjMvOPD0ZKAaqNll0OKJs+aDT3Xei9MkqUrz0LS8+Qbio1v9oocZO8JDynZ7+kzHqN7ZLMRmjQn
+	De9ROdVHgn/7VCvo1xdb0gUfT9sigFwiH5LO+wYC9mchthjV5uJi9AiiQMB33eOfA3voab/oHMT
+	vLnSU/hLhIph9PU2bu7Pv/CrAvrUts0uvIiQOB90m3JtpzuLN2EnSSylFvNmrR1mcXp8m/gCrgY
+	EwqR0s8I4U/D8h0dLrBk0ffrXM+IfcaLvq4jmwy5jd6/+Et3f1NtTaNaLrd5x69w1qF5TKPAcHr
+	O0Kbu4=
+X-Received: by 2002:a05:600c:4f91:b0:485:3f30:6250 with SMTP id 5b1f17b1804b1-48727eda62emr178938295e9.20.1774857330208;
+        Mon, 30 Mar 2026 00:55:30 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:106d:1080:cb3c:d0d2:870b:6ad0? ([2a01:e0a:106d:1080:cb3c:d0d2:870b:6ad0])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48735faac9dsm60393575e9.0.2026.03.30.00.55.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Mar 2026 00:55:29 -0700 (PDT)
+Message-ID: <416d42a6-8d99-421c-91aa-e705f23576e2@linaro.org>
+Date: Mon, 30 Mar 2026 09:55:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a0a7269d-7a09-4a78-a4b0-b39b67bc253b@kernel.org>
-X-Spamd-Result: default: False [-0.16 / 15.00];
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v5 6/9] arm64: dts: amlogic: t7: khadas-vim4: Add power
+ regulators
+To: Ronald Claveau <linux-kernel-dev@aliel.fr>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Johannes Berg <johannes@sipsolutions.net>, van Spriel <arend@broadcom.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org
+References: <20260326-add-emmc-t7-vim4-v5-0-d3f182b48e9d@aliel.fr>
+ <20260326-add-emmc-t7-vim4-v5-6-d3f182b48e9d@aliel.fr>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20260326-add-emmc-t7-vim4-v5-6-d3f182b48e9d@aliel.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34171-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[oss.qualcomm.com,vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[51];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
+	TAGGED_FROM(0.00)[bounces-34172-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[aliel.fr,baylibre.com,googlemail.com,kernel.org,linaro.org,sipsolutions.net,broadcom.com];
+	HAS_ORG_HEADER(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:dkim,linaro.org:email,linaro.org:replyto,linaro.org:mid];
+	HAS_REPLYTO(0.00)[neil.armstrong@linaro.org];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[neil.armstrong@linaro.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8DC573564A7
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	REPLYTO_EQ_FROM(0.00)[]
+X-Rspamd-Queue-Id: 76D6B356D3C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 27, 2026 at 02:56:40PM +0100, Krzysztof Kozlowski wrote:
-> On 23/03/2026 15:26, Konrad Dybcio wrote:
-> >>>
-> >>> This pattern has been carried from the PAS API contract among kernel
-> >>> clients and the SCM PAS service earlier. The clients don't hold a
-> >>> reference to the PAS data like underlying platform or TEE device etc.
-> >>> Hence the need to have a global data pointer to hold reference to the
-> >>> ops data structure registered by drivers having different lifetime of
-> >>> devices. Also, the PAS APIs can be called from very different client
-> >>> driver contexts.
-> >>>
-> >>> Surely, avoiding global data is always better given a better alternative
-> >>> is there. Do you have any better alternative proposal here?
-> >>
-> >> Why it cannot be part of the context?
-> >>
-> >> Look at your API, e.g.:
-> >> qcom_pas_init_image(). It takes struct qcom_pas_context which should
-> >> contain the ops.
-
-Have a look at all other PAS client APIs, the context isn't something
-that each client takes a reference and pass it on for every PAS
-invocation. And changing the PAS API contract for kernel clients is out
-of scope of this patch-set.
-
-> > 
-> > This would make the client have to select the ops. The whole point is to
-> > avoid that, since the client has no clue (and is supposed not to have any).
+On 3/26/26 10:59, Ronald Claveau wrote:
+> Add voltage regulator nodes describing the VIM4 power tree,
+> required by peripheral nodes such as the SD card controller.
 > 
-> Yeah, I see. The problem is that this patchset just keeps growing the
-> singletons so except existing 'struct qcom_scm *__scm' in qcom_scm.c,
-> this one brings at least three new: 'ops_ptr', 'qcom_pas_ops_scm' and
-> 'qcom_pas_ops_tee'.
-
-Not sure how you equate ops structure __pointer__ to the ops structure
-itself. Can you enlighten me how in the rest of the kernel ops data
-structures are shared among independent modules registering on different
-bus types?
-
+> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+> Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
+> ---
+>   .../dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts  | 90 ++++++++++++++++++++++
+>   1 file changed, 90 insertions(+)
 > 
-> I don't think you need all four in total, but only one which will hold
-> whatever pointers are necessary.
+> diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
+> index fffdab96b12eb..2450084d37642 100644
+> --- a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
+> +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
+> @@ -6,6 +6,8 @@
+>   /dts-v1/;
+>   
+>   #include "amlogic-t7.dtsi"
+> +#include <dt-bindings/gpio/amlogic,t7-periphs-pinctrl.h>
+> +#include <dt-bindings/gpio/gpio.h>
+>   
+>   / {
+>   	model = "Khadas vim4";
+> @@ -45,6 +47,94 @@ xtal: xtal-clk {
+>   		#clock-cells = <0>;
+>   	};
+>   
+> +	dc_in: regulator-dc-in {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "DC_IN";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		regulator-always-on;
+> +	};
+> +
+> +	sd_3v3: regulator-sdcard-3v3 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "SD_3V3";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		vin-supply = <&vddao_3v3>;
+> +		gpio = <&gpio GPIOD_11 GPIO_ACTIVE_LOW>;
+> +		regulator-boot-on;
 
-Your arguments seems to be in favour of the existing monolithic SCM
-driver design but you need to understand that's not how underlying TZ
-services are implemented. The PAS service in TZ has nothing to do with
-the ICE service for inline crypto as an example.
+> +		enable-active-low;
 
-Please go through the motivation of this patch-set and the corresponding
-OP-TEE implementation as TZ which is all open source.
+This properly is invalid, please send follow up patch removing this,
 
--Sumit
+Thanks,
+Neil
+
+<snip>
 
