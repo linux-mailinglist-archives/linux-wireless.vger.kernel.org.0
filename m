@@ -1,197 +1,207 @@
-Return-Path: <linux-wireless+bounces-34173-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34174-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKc/Gc8uymkA6AUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34173-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 10:05:35 +0200
+	id SPyYCc9Aymky7AUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34174-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 11:22:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1188F356DAD
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 10:05:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D5C358127
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 11:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ECBBC300D169
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 07:58:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E523A3004D16
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 09:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9643A8747;
-	Mon, 30 Mar 2026 07:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82BA3B19A6;
+	Mon, 30 Mar 2026 09:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=matthew.leach@collabora.com header.b="aam+Aiw3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1+KmTyM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033853A8733;
-	Mon, 30 Mar 2026 07:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774857495; cv=pass; b=TpZL4yNiZ6xz/Ikc6BM25JawJRebwbfl9KzmNsfE8BwQVamGRara/48/3bmd2ehusrv5EWlJ3xUSmEFGMAaYRs2z96dxeZICnMXWLKOSvLCAD/8vd2P4MgcvIINDwIlFwRMdSXiurTSx4rlEd/kt20+0YBkPrkdfGEIIu/L8BqI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774857495; c=relaxed/simple;
-	bh=PMaIzbLqBrjVxKpMuBjMYE1w0WGeUUt0zQH7i3Wxp54=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iEdwqeTbjGI2jTJ2BvDGjIDzbsW0MaYJe2c4FOyE926KZFGXdEG/J63jaBcJTUKniN4yivcjW/NL3OTdcI4JuU1IVAX5vMOrRthQlFByZqA43rz+SJWuIKldppEs7d1hADPKd1cB/LLfMPmXRlaCqoWfhfztE/vJ+StuE8d5bzc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=matthew.leach@collabora.com header.b=aam+Aiw3; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1774857461; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=C0sJnXnikR4x7vtFyrDkiDDQlEJrN293LjqOiOw9RjaSacnlXhzk4Gy3axMvq9gMncqYH2aa7W4ocnQYglUt0dcT6I5xUPreOxtuQeltgN9NkaesNW9ww6BxBDrl+AqdjixsWtMsSEV/e8+NXOam68orpJ5ndrkun8PmCgDdvMU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1774857461; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=eIMC7cDWsrBOtjtJ4eTyTeEKTFa7e1tg8E0vasvRRoM=; 
-	b=P+TyzUEi6lRintRdy/j67dC6HcnvswGcA8C+ceVW7lKfkwlnkOXypwA00uTGpEJm5F3Ea4PD3FiSQs/Q1RSi5gIi/ObWbmP8A1mtm0MMMqx6VL1VndtNOWTdzRsYzMtc6dfMlcXwly1k4HArL8QJHJvcOvtX7VM9qSUt1bklGYw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=matthew.leach@collabora.com;
-	dmarc=pass header.from=<matthew.leach@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774857457;
-	s=zohomail; d=collabora.com; i=matthew.leach@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:In-Reply-To:References:Date:Date:Message-ID:MIME-Version:Content-Type:Message-Id:Reply-To;
-	bh=eIMC7cDWsrBOtjtJ4eTyTeEKTFa7e1tg8E0vasvRRoM=;
-	b=aam+Aiw3NqpnMwNC68ETwmlahVuwUNgeNoS5qUhdAXFFGNnwe1L7elha/C8mu0TT
-	Pvo0etGaR+V+Lcp1d+y1woS9ii0NIJyBkcOv7MO6vGQqsxUZXB++igpGDRSxjOYglro
-	LiX+zjXZwrcKuJpZ8A538I+8pUEbxTp1wYEll3zc=
-Received: by mx.zohomail.com with SMTPS id 1774857454006418.10295521158673;
-	Mon, 30 Mar 2026 00:57:34 -0700 (PDT)
-From: Matthew Leach <matthew.leach@collabora.com>
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org,  ath11k@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  kernel@collabora.com
-Subject: Re: [PATCH] ath11k: workaround firmware bug where peer_id=0
-In-Reply-To: <20260326-ath11k-null-peerid-workaround-v1-1-0c2fd53202f8@collabora.com>
-	(Matthew Leach's message of "Thu, 26 Mar 2026 10:53:53 +0000")
-References: <20260326-ath11k-null-peerid-workaround-v1-1-0c2fd53202f8@collabora.com>
-User-Agent: mu4e 1.12.15; emacs 30.2
-Date: Mon, 30 Mar 2026 08:57:31 +0100
-Message-ID: <87h5pxlpg4.fsf@collabora.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4763B0AF8;
+	Mon, 30 Mar 2026 09:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774862062; cv=none; b=O11NEJkPMh9H4OxLVgaDip6rnDVxZOUNlBUQ+sqt1hueIpTelTB982CU7rMlyg7gpX8CaK/55MHhzko6y5LwU4BUkBD6oR9bzSTAzQ7kN4JJPUseMsirgHCvfWexIsUyQIrFK/MztCz0ZiatHO717cEQHymLGWZ4CmYRXRAn6Ns=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774862062; c=relaxed/simple;
+	bh=F2DTDMgwV3Y/ekPzFw0tACQfolXrQG9Q3INC7wJCU4I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mCAe4E9ieWrh0SBf/MhJc3AIg8h2Q7qq8rnPVxjumFJkFkGkwd8t+DDza6uz4i1XUsigkG5UEy9ku9L2eJwh3WxFPIXPrh3Aw8SWadxpdebtY6iU5pbS9VLC8QxcoeHvGVpuMgPRev/vPHVFA441d3xLeiQuMhsNeSbn7MgMbdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1+KmTyM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859E4C4CEF7;
+	Mon, 30 Mar 2026 09:14:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774862062;
+	bh=F2DTDMgwV3Y/ekPzFw0tACQfolXrQG9Q3INC7wJCU4I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=i1+KmTyMuWARSmFI9KvD1/3FBivqVQHNdLYQ8R6HFuda3aLejoVYyKi+sbcGbQybq
+	 whzMz23rXD3V3AT0IrMLydHA395oSXV5BGalKxnnpjld97tYyePFI7BMHMGNScPU8P
+	 eGFfh0pDHbvxq81g8zMtq0qvTBGMd5cEUqPR8zls=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH] net: rfkill: prevent unlimited numbers of rfkill events from being created
+Date: Mon, 30 Mar 2026 11:14:13 +0200
+Message-ID: <2026033013-disfigure-scroll-e25e@gregkh>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ZohoMailClient: External
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+Lines: 106
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3473; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=F2DTDMgwV3Y/ekPzFw0tACQfolXrQG9Q3INC7wJCU4I=; b=owGbwMvMwCRo6H6F97bub03G02pJDJmn7J4W7VY5pjb7yuPUFgZZyaUXgg+yNDy88/Kj0rTiI 64LOH5IdsSyMAgyMciKKbJ82cZzdH/FIUUvQ9vTMHNYmUCGMHBxCsBEpCIZ5nCdUel63y2/R1Lo i/Fz9QtcV77yGjEsOGKvPtXmXETh4Z1HhBau+j2j8ka+IwA=
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34173-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34174-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[collabora.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,sipsolutions.net,gmail.com,lzu.edu.cn,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:dkim,collabora.com:email,collabora.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1188F356DAD
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,sipsolutions.net:email,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 24D5C358127
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+Userspace can create an unlimited number of rfkill events if the system
+is so configured, while not consuming them from the rfkill file
+descriptor, causing a potential out of memory situation.  Prevent this
+from bounding the number of pending rfkill events at a "large" number
+(i.e. 1000) to prevent abuses like this.
 
-Matthew Leach <matthew.leach@collabora.com> writes:
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ net/rfkill/core.c | 35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-> This patch caches the peer enctype during the MSDU processing loop,
-> caching it on the first AMSDU sub-frame (is_first_msdu=1
-> is_last_msdu=0) and setting the correct enctype for any subsequent
-> sub-MSDUs.
-
-I've been looking at creating a patch that addresses the root cause,
-rather than patching incoming frame's flags:
-
---8<---------------cut here---------------start------------->8---
-diff --git a/drivers/net/wireless/ath/ath11k/peer.c b/drivers/net/wireless/ath/ath11k/peer.c
-index 6d0126c39301..98348ccfdfbe 100644
---- a/drivers/net/wireless/ath/ath11k/peer.c
-+++ b/drivers/net/wireless/ath/ath11k/peer.c
-@@ -347,7 +347,7 @@ static int __ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, const u8 *addr)
- 	return 0;
+diff --git a/net/rfkill/core.c b/net/rfkill/core.c
+index 2444237bc36a..4827e1fb8804 100644
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -73,11 +73,14 @@ struct rfkill_int_event {
+ 	struct rfkill_event_ext	ev;
+ };
+ 
++/* Max rfkill events that can be "in-flight" for one data source */
++#define MAX_RFKILL_EVENT	1000
+ struct rfkill_data {
+ 	struct list_head	list;
+ 	struct list_head	events;
+ 	struct mutex		mtx;
+ 	wait_queue_head_t	read_wait;
++	u32			event_count;
+ 	bool			input_handler;
+ 	u8			max_size;
+ };
+@@ -255,10 +258,12 @@ static void rfkill_global_led_trigger_unregister(void)
+ }
+ #endif /* CONFIG_RFKILL_LEDS */
+ 
+-static void rfkill_fill_event(struct rfkill_event_ext *ev,
+-			      struct rfkill *rfkill,
+-			      enum rfkill_operation op)
++static int rfkill_fill_event(struct rfkill_int_event *int_ev,
++			     struct rfkill *rfkill,
++			     struct rfkill_data *data,
++			     enum rfkill_operation op)
+ {
++	struct rfkill_event_ext *ev = &int_ev->ev;
+ 	unsigned long flags;
+ 
+ 	ev->idx = rfkill->idx;
+@@ -271,6 +276,15 @@ static void rfkill_fill_event(struct rfkill_event_ext *ev,
+ 					RFKILL_BLOCK_SW_PREV));
+ 	ev->hard_block_reasons = rfkill->hard_block_reasons;
+ 	spin_unlock_irqrestore(&rfkill->lock, flags);
++
++	scoped_guard(mutex, &data->mtx) {
++		if (data->event_count++ > MAX_RFKILL_EVENT) {
++			data->event_count--;
++			return -ENOSPC;
++		}
++		list_add_tail(&int_ev->list, &data->events);
++	}
++	return 0;
  }
  
--int ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, u8 *addr)
-+int ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, const u8 *addr)
- {
- 	int ret;
- 
-@@ -372,7 +372,7 @@ int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
- {
- 	struct ath11k_peer *peer;
- 	struct ath11k_sta *arsta;
--	int ret, fbret;
-+	int ret, fbret, retries = 3;
- 
- 	lockdep_assert_held(&ar->conf_mutex);
- 
-@@ -400,6 +400,8 @@ int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
- 	spin_unlock_bh(&ar->ab->base_lock);
- 	mutex_unlock(&ar->ab->tbl_mtx_lock);
- 
-+retry:
-+
- 	ret = ath11k_wmi_send_peer_create_cmd(ar, param);
- 	if (ret) {
- 		ath11k_warn(ar->ab,
-@@ -427,6 +429,18 @@ int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
- 		goto cleanup;
- 	}
- 
-+	if (!peer->peer_id) {
-+		if (retries--) {
-+			spin_unlock_bh(&ar->ab->base_lock);
-+			mutex_unlock(&ar->ab->tbl_mtx_lock);
-+			ath11k_peer_delete(ar, param->vdev_id, param->peer_addr);
-+			goto retry;
-+		} else {
-+			ath11k_warn(ar->ab, "Null peer workaround failed for peer %pM, adding anyway",
-+				    param->peer_addr);
+ static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
+@@ -282,10 +296,10 @@ static void rfkill_send_events(struct rfkill *rfkill, enum rfkill_operation op)
+ 		ev = kzalloc_obj(*ev);
+ 		if (!ev)
+ 			continue;
+-		rfkill_fill_event(&ev->ev, rfkill, op);
+-		mutex_lock(&data->mtx);
+-		list_add_tail(&ev->list, &data->events);
+-		mutex_unlock(&data->mtx);
++		if (rfkill_fill_event(ev, rfkill, data, op)) {
++			kfree(ev);
++			continue;
 +		}
-+	}
-+
- 	ret = ath11k_peer_rhash_add(ar->ab, peer);
- 	if (ret) {
- 		spin_unlock_bh(&ar->ab->base_lock);
-diff --git a/drivers/net/wireless/ath/ath11k/peer.h b/drivers/net/wireless/ath/ath11k/peer.h
-index 3ad2f3355b14..6325c4d157c7 100644
---- a/drivers/net/wireless/ath/ath11k/peer.h
-+++ b/drivers/net/wireless/ath/ath11k/peer.h
-@@ -47,7 +47,7 @@ struct ath11k_peer *ath11k_peer_find_by_addr(struct ath11k_base *ab,
- 					     const u8 *addr);
- struct ath11k_peer *ath11k_peer_find_by_id(struct ath11k_base *ab, int peer_id);
- void ath11k_peer_cleanup(struct ath11k *ar, u32 vdev_id);
--int ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, u8 *addr);
-+int ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, const u8 *addr);
- int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
- 		       struct ieee80211_sta *sta, struct peer_create_params *param);
- int ath11k_wait_for_peer_delete_done(struct ath11k *ar, u32 vdev_id,
---8<---------------cut here---------------end--------------->8---
-
-This patch detects the error condition at the point where a peer map
-request reply is received from the firmware. If the firmware maps with
-peer_id=0, we request that the firmware unmap that peer and map again,
-hoping it selects a peer_id!=0. We attempt this up to three times, at
-which point we give up and let the peer be mapped with an ID of 0.
-
-This patch addresses the root cause, but I think it's more invasive. I'd
-appreciate some comments as to which approach upstream would prefer. If
-the preference is for the above, I'll send out a v2.
-
-Regards,
+ 		wake_up_interruptible(&data->read_wait);
+ 	}
+ }
+@@ -1186,10 +1200,8 @@ static int rfkill_fop_open(struct inode *inode, struct file *file)
+ 		if (!ev)
+ 			goto free;
+ 		rfkill_sync(rfkill);
+-		rfkill_fill_event(&ev->ev, rfkill, RFKILL_OP_ADD);
+-		mutex_lock(&data->mtx);
+-		list_add_tail(&ev->list, &data->events);
+-		mutex_unlock(&data->mtx);
++		if (rfkill_fill_event(ev, rfkill, data, RFKILL_OP_ADD))
++			kfree(ev);
+ 	}
+ 	list_add(&data->list, &rfkill_fds);
+ 	mutex_unlock(&rfkill_global_mutex);
+@@ -1259,6 +1271,7 @@ static ssize_t rfkill_fop_read(struct file *file, char __user *buf,
+ 		ret = -EFAULT;
+ 
+ 	list_del(&ev->list);
++	data->event_count--;
+ 	kfree(ev);
+  out:
+ 	mutex_unlock(&data->mtx);
 -- 
-Matt
+2.53.0
+
 
