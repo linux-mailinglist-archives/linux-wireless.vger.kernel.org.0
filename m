@@ -1,263 +1,176 @@
-Return-Path: <linux-wireless+bounces-34170-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34171-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAVSGpwgymmu5QUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34170-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 09:05:00 +0200
+	id yAVjEFkiymmu5QUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34171-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 09:12:25 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E20356332
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 09:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC573564A7
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 09:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D2823040A84
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 06:59:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D954E304ADB9
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 07:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B48382399;
-	Mon, 30 Mar 2026 06:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB53039E182;
+	Mon, 30 Mar 2026 07:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="C7dV0bOI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWwAMHbX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09914286D73
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 06:59:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3288292B44;
+	Mon, 30 Mar 2026 07:08:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774853983; cv=none; b=bYxCmeb3o3yd3cknfBEDM/N9/NfrQZlsKqwLvaKZ328EqJ8RAK4uzpTwA3AkjWfw8Yi12FrfF+Tzqo05C4AoQJ31M2zBZRtiEDw5ukFIRAL1NgafcMeAcD5ekJf7h1QMDSrlIx1I1ibV9wc5nGjOdaajTc5fu/ObtpIBrv75mlk=
+	t=1774854537; cv=none; b=vDNL3+qDNt0vxKPQ6WkLksI2WAMe3GBikAsSzG6VtPek7nK5qAR9D8eU5CgO9r5ZVFUbtWB/p+iECZv/IjwOjC5CRM1/evRQzhwfXwBxr8Vy0BSafvBp+gRkWz7aXzd5H8cLOb3wfh9tvv3gjzNgGEJk5JoF64XE/CqvJC+5kFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774853983; c=relaxed/simple;
-	bh=2A1pn7pXSM+609RToNL1OomlSXEaHuDjRcQB3Qf3V3U=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XMUyBKWpVwfVF0aqbmBeFW5EvIjdmWJnnKpCqv9+b5bvwVh94VUhd+jP2ZSQB8GFoxJtma8K4v7CDrQjjZ7PlfpA6kNUpxBAbWbMsF8Ixjhoi3gQlyFhL2qf4kNFahYTKJx0NU06O/7AlEoX1RMyk38OQhS3ik98AjuAyjHYvlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=C7dV0bOI; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62U6xdDI3673884, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1774853979; bh=AVjwxO/BejHfxVf5dLDAa7+Ew1hI9piSkVULipFV4Rc=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=C7dV0bOId4e8qMotDmi6INQNJEuevoKTrDTKHPevDKL+fgT8QH6NETUylkLjddyFl
-	 l6VM2ow19SaXcBQYn7yKcJiiQWODCsSftS/ufMrZRB5XIYJLVjOsvzu84rbn5WJ9Jt
-	 RR5Vbl6/6vVKbyf5fRdURTKydOBKlmetm9VDa4maS2wxpjou/iDHk/+1W0Cw9hGaf8
-	 4gCbzj52T2lhx2BGmi2VunDrEk+zkYdw5A3GvzoRjAbeQFxi5K56YYDmNdbPng8YrT
-	 rbGSD6ig0OwTFDFZY2jlMHL9Yx7XMhBQnJApgO6nhecL6OL2w6IViEsIhe53YPveuv
-	 a9DwJMRioJc0g==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 62U6xdDI3673884
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 14:59:39 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 30 Mar 2026 14:59:39 +0800
-Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 30 Mar 2026 14:59:39 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS04.realtek.com.tw
- (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Mon, 30 Mar 2026 14:59:39 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH rtw-next 9/9] wifi: rtw89: 8922d: add PCI ID of RTL8922DE and RTL8922DE-VS
-Date: Mon, 30 Mar 2026 14:58:47 +0800
-Message-ID: <20260330065847.48946-10-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260330065847.48946-1-pkshih@realtek.com>
-References: <20260330065847.48946-1-pkshih@realtek.com>
+	s=arc-20240116; t=1774854537; c=relaxed/simple;
+	bh=/jDwCS37ClQxnMNZi4IpdtAvb0wwJQBYhYWpxA7NdaE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cuNNaZ9Q1/LbtJsMGydPVKlJEIz3+kd8u9J1OkORbMntEM+Bgl4gC8ywBtGF0CD1fjLIBpcTMOAG4OfbdO+DLb7HRVxWUUHMvdDoUYE5D+Iah0ASiaARO3+ZGoZtSKX8HtZOGeAw0gb4ZgrlDm8JquG3mftcAU1+tIqDcFe/rc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWwAMHbX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37DEC4CEF7;
+	Mon, 30 Mar 2026 07:08:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774854537;
+	bh=/jDwCS37ClQxnMNZi4IpdtAvb0wwJQBYhYWpxA7NdaE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MWwAMHbXhHOam7pxS91Eazmz+hUaoDAf2swLU3Xxq0gOap3WbmlYuHlA7Lt16iHk/
+	 okQRjsC54iUTWRm7vbYcOl63AQeNSP1MNEgw1swjH48UQtjagL+B86CXREPNJzOwOq
+	 Cp8lf0iFOXffdYv5f1ZGoX72EDi3p7JUGh67peAHFMO9Q/7XBtMWuezArFeYv8+qt4
+	 fgq1SWLpceGxYsLEgK9CZjwsuKJFx4nOY6DeWoYA4vzLl8bC5lMBjrcNcnMwUkRVKt
+	 CDc0Q5JxKQzahwBZXb6knpLrYwg3kt1+XvW2qSNHe45aTGMzshmNSA4zgJNCA3qG5D
+	 kMXWwGLdrpl2w==
+Date: Mon, 30 Mar 2026 12:38:37 +0530
+From: Sumit Garg <sumit.garg@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-media@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org, andersson@kernel.org,
+	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
+	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
+	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
+	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
+	dikshita.agarwal@oss.qualcomm.com, bod@kernel.org,
+	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
+	trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
+	pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com,
+	tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com,
+	srinivas.kandagatla@oss.qualcomm.com,
+	amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
+	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
+	skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: Re: [PATCH v2 02/15] firmware: qcom: Add a generic PAS service
+Message-ID: <acohdYeKYSDQrKUZ@sumit-xelite>
+References: <20260312062756.694390-1-sumit.garg@kernel.org>
+ <20260312062756.694390-3-sumit.garg@kernel.org>
+ <28d63822-f191-400a-8005-5185dd480dbb@kernel.org>
+ <acE-kAi2tkPh2qie@sumit-xelite>
+ <5c5b49aa-7819-44c6-b5f7-19ec780d73fa@kernel.org>
+ <2e55bdc3-54a1-4f18-b9ad-fe03f21fc4da@oss.qualcomm.com>
+ <a0a7269d-7a09-4a78-a4b0-b39b67bc253b@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a0a7269d-7a09-4a78-a4b0-b39b67bc253b@kernel.org>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34170-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_ONE(0.00)[1];
+	TAGGED_FROM(0.00)[bounces-34171-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:email,realtek.com:mid];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: D6E20356332
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[51];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8DC573564A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add PCI ID tables with RTL8922DE whose ID is 10EC:895D, and with
-RTL8922DE-VS whose ID are 10EC:892D and 10EC:882D. Also, add pci_info
-struct to describe the hardware capabilities and registers accordingly.
+On Fri, Mar 27, 2026 at 02:56:40PM +0100, Krzysztof Kozlowski wrote:
+> On 23/03/2026 15:26, Konrad Dybcio wrote:
+> >>>
+> >>> This pattern has been carried from the PAS API contract among kernel
+> >>> clients and the SCM PAS service earlier. The clients don't hold a
+> >>> reference to the PAS data like underlying platform or TEE device etc.
+> >>> Hence the need to have a global data pointer to hold reference to the
+> >>> ops data structure registered by drivers having different lifetime of
+> >>> devices. Also, the PAS APIs can be called from very different client
+> >>> driver contexts.
+> >>>
+> >>> Surely, avoiding global data is always better given a better alternative
+> >>> is there. Do you have any better alternative proposal here?
+> >>
+> >> Why it cannot be part of the context?
+> >>
+> >> Look at your API, e.g.:
+> >> qcom_pas_init_image(). It takes struct qcom_pas_context which should
+> >> contain the ops.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/pci.h      |   3 +
- .../net/wireless/realtek/rtw89/rtw8922de.c    | 119 ++++++++++++++++++
- 2 files changed, 122 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8922de.c
+Have a look at all other PAS client APIs, the context isn't something
+that each client takes a reference and pass it on for every PAS
+invocation. And changing the PAS API contract for kernel clients is out
+of scope of this patch-set.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
-index c7cd34e99349..e7da37b9da7d 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.h
-+++ b/drivers/net/wireless/realtek/rtw89/pci.h
-@@ -1105,6 +1105,9 @@
- 			    B_BE_CH6_BUSY | B_BE_CH7_BUSY | B_BE_CH8_BUSY | \
- 			    B_BE_CH9_BUSY | B_BE_CH10_BUSY | B_BE_CH11_BUSY | \
- 			    B_BE_CH12_BUSY | B_BE_CH13_BUSY | B_BE_CH14_BUSY)
-+#define DMA_BUSY1_CHECK_BE_V1 (B_BE_CH0_BUSY | B_BE_CH2_BUSY | B_BE_CH4_BUSY | \
-+			       B_BE_CH6_BUSY | B_BE_CH8_BUSY | B_BE_CH10_BUSY | \
-+			       B_BE_CH12_BUSY)
- 
- #define R_BE_HAXI_EXP_CTRL_V1 0xB020
- #define B_BE_R_NO_SEC_ACCESS BIT(31)
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922de.c b/drivers/net/wireless/realtek/rtw89/rtw8922de.c
-new file mode 100644
-index 000000000000..f144e7fc76de
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922de.c
-@@ -0,0 +1,119 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright(c) 2026  Realtek Corporation
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/pci.h>
-+
-+#include "pci.h"
-+#include "reg.h"
-+#include "rtw8922d.h"
-+
-+static const struct rtw89_pci_info rtw8922d_pci_info = {
-+	.gen_def		= &rtw89_pci_gen_be,
-+	.isr_def		= &rtw89_pci_isr_be_v1,
-+	.txbd_trunc_mode	= MAC_AX_BD_TRUNC,
-+	.rxbd_trunc_mode	= MAC_AX_BD_TRUNC,
-+	.rxbd_mode		= MAC_AX_RXBD_PKT,
-+	.tag_mode		= MAC_AX_TAG_MULTI,
-+	.tx_burst		= MAC_AX_TX_BURST_V1_256B,
-+	.rx_burst		= MAC_AX_RX_BURST_V1_128B,
-+	.wd_dma_idle_intvl	= MAC_AX_WD_DMA_INTVL_256NS,
-+	.wd_dma_act_intvl	= MAC_AX_WD_DMA_INTVL_256NS,
-+	.multi_tag_num		= MAC_AX_TAG_NUM_8,
-+	.lbc_en			= MAC_AX_PCIE_ENABLE,
-+	.lbc_tmr		= MAC_AX_LBC_TMR_2MS,
-+	.autok_en		= MAC_AX_PCIE_DISABLE,
-+	.io_rcy_en		= MAC_AX_PCIE_ENABLE,
-+	.io_rcy_tmr		= MAC_AX_IO_RCY_ANA_TMR_DEF,
-+	.rx_ring_eq_is_full	= true,
-+	.check_rx_tag		= true,
-+	.no_rxbd_fs		= true,
-+	.group_bd_addr		= true,
-+	.rpp_fmt_size		= sizeof(struct rtw89_pci_rpp_fmt_v1),
-+
-+	.init_cfg_reg		= R_BE_HAXI_INIT_CFG1,
-+	.txhci_en_bit		= B_BE_TXDMA_EN,
-+	.rxhci_en_bit		= B_BE_RXDMA_EN,
-+	.rxbd_mode_bit		= B_BE_RXQ_RXBD_MODE_MASK,
-+	.exp_ctrl_reg		= R_BE_HAXI_EXP_CTRL_V1,
-+	.max_tag_num_mask	= B_BE_MAX_TAG_NUM_MASK,
-+	.rxbd_rwptr_clr_reg	= R_BE_RXBD_RWPTR_CLR1_V1,
-+	.txbd_rwptr_clr2_reg	= R_BE_TXBD_RWPTR_CLR1,
-+	.dma_io_stop		= {R_BE_HAXI_INIT_CFG1, B_BE_STOP_AXI_MST},
-+	.dma_stop1		= {R_BE_HAXI_DMA_STOP1, B_BE_TX_STOP1_MASK_V1},
-+	.dma_stop2		= {0},
-+	.dma_busy1		= {R_BE_HAXI_DMA_BUSY1, DMA_BUSY1_CHECK_BE_V1},
-+	.dma_busy2_reg		= 0,
-+	.dma_busy3_reg		= R_BE_HAXI_DMA_BUSY1,
-+
-+	.rpwm_addr		= R_BE_PCIE_HRPWM,
-+	.cpwm_addr		= R_BE_PCIE_CRPWM,
-+	.mit_addr		= R_BE_PCIE_MIT_CH_EN,
-+	.wp_sel_addr		= R_BE_WP_ADDR_H_SEL0_3_V1,
-+	.tx_dma_ch_mask		= BIT(RTW89_TXCH_ACH1) | BIT(RTW89_TXCH_ACH3) |
-+				  BIT(RTW89_TXCH_ACH5) | BIT(RTW89_TXCH_ACH7) |
-+				  BIT(RTW89_TXCH_CH9) | BIT(RTW89_TXCH_CH11),
-+	.bd_idx_addr_low_power	= NULL,
-+	.dma_addr_set		= &rtw89_pci_ch_dma_addr_set_be_v1,
-+	.bd_ram_table		= NULL,
-+
-+	.ltr_set		= rtw89_pci_ltr_set_v2,
-+	.fill_txaddr_info	= rtw89_pci_fill_txaddr_info_v1,
-+	.parse_rpp		= rtw89_pci_parse_rpp_v1,
-+	.config_intr_mask	= rtw89_pci_config_intr_mask_v3,
-+	.enable_intr		= rtw89_pci_enable_intr_v3,
-+	.disable_intr		= rtw89_pci_disable_intr_v3,
-+	.recognize_intrs	= rtw89_pci_recognize_intrs_v3,
-+
-+	.ssid_quirks		= NULL,
-+};
-+
-+static const struct rtw89_driver_info rtw89_8922de_vs_info = {
-+	.chip = &rtw8922d_chip_info,
-+	.variant = &rtw8922de_vs_variant,
-+	.quirks = NULL,
-+	.bus = {
-+		.pci = &rtw8922d_pci_info,
-+	},
-+};
-+
-+static const struct rtw89_driver_info rtw89_8922de_info = {
-+	.chip = &rtw8922d_chip_info,
-+	.variant = NULL,
-+	.quirks = NULL,
-+	.bus = {
-+		.pci = &rtw8922d_pci_info,
-+	},
-+};
-+
-+static const struct pci_device_id rtw89_8922de_id_table[] = {
-+	{
-+		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0x892D),
-+		.driver_data = (kernel_ulong_t)&rtw89_8922de_vs_info,
-+	},
-+	{
-+		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0x882D),
-+		.driver_data = (kernel_ulong_t)&rtw89_8922de_vs_info,
-+	},
-+	{
-+		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0x895D),
-+		.driver_data = (kernel_ulong_t)&rtw89_8922de_info,
-+	},
-+	{},
-+};
-+MODULE_DEVICE_TABLE(pci, rtw89_8922de_id_table);
-+
-+static struct pci_driver rtw89_8922de_driver = {
-+	.name		= "rtw89_8922de",
-+	.id_table	= rtw89_8922de_id_table,
-+	.probe		= rtw89_pci_probe,
-+	.remove		= rtw89_pci_remove,
-+	.driver.pm	= &rtw89_pm_ops_be,
-+	.err_handler    = &rtw89_pci_err_handler,
-+};
-+module_pci_driver(rtw89_8922de_driver);
-+
-+MODULE_AUTHOR("Realtek Corporation");
-+MODULE_DESCRIPTION("Realtek 802.11be wireless 8922DE/8922DE-VS driver");
-+MODULE_LICENSE("Dual BSD/GPL");
--- 
-2.25.1
+> > 
+> > This would make the client have to select the ops. The whole point is to
+> > avoid that, since the client has no clue (and is supposed not to have any).
+> 
+> Yeah, I see. The problem is that this patchset just keeps growing the
+> singletons so except existing 'struct qcom_scm *__scm' in qcom_scm.c,
+> this one brings at least three new: 'ops_ptr', 'qcom_pas_ops_scm' and
+> 'qcom_pas_ops_tee'.
 
+Not sure how you equate ops structure __pointer__ to the ops structure
+itself. Can you enlighten me how in the rest of the kernel ops data
+structures are shared among independent modules registering on different
+bus types?
+
+> 
+> I don't think you need all four in total, but only one which will hold
+> whatever pointers are necessary.
+
+Your arguments seems to be in favour of the existing monolithic SCM
+driver design but you need to understand that's not how underlying TZ
+services are implemented. The PAS service in TZ has nothing to do with
+the ICE service for inline crypto as an example.
+
+Please go through the motivation of this patch-set and the corresponding
+OP-TEE implementation as TZ which is all open source.
+
+-Sumit
 
