@@ -1,76 +1,74 @@
-Return-Path: <linux-wireless+bounces-34135-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34136-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kA1WAs/WyWnE2wUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34135-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 03:50:07 +0200
+	id +IUEI0bXyWnX2wUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34136-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 03:52:06 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60DCE354A6E
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 03:50:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C13354A9D
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 03:52:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE72D300A111
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 01:50:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4A14B300232A
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 01:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B8219CD1D;
-	Mon, 30 Mar 2026 01:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3817A229B38;
+	Mon, 30 Mar 2026 01:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="DELecomo"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="VjhXiwHM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD6E175A81;
-	Mon, 30 Mar 2026 01:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29012DF68
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 01:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774835404; cv=none; b=ncpdjLOcHaODIuuv3HRWqc9EMPpFVcOkytHKCv4zk/5LXtoAM6ZEiM8a3Plk32qpyhf3318/NS/d2RDaCkVzuSzh+p11t9v12LTKrtb7fB67kQwfjjtr6R/ussQ8zH78DydbL4ixzDd+3MVBHXrq0DzZGhUZrkT11o8k4vOcVzc=
+	t=1774835524; cv=none; b=VN4Lf4B/KoN4bsVJW8aW3b3ivfN14K7sZcOOyAt2kbA3ZTl27H77O7dtNufSnMRiE75BUd46JYGMMg7fbg2c1biXss/Yvpmz5a7aR2mLZyHbTIcldv589kEeqDETWIQZoRkOH5h/HFAx6iHEDwwGslJxlYqZo2JXpZFR1C/ex+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774835404; c=relaxed/simple;
-	bh=1QIsGMrx1bhOXLEeJ726K5mGCREoBKWGy/hDUgPo8uE=;
+	s=arc-20240116; t=1774835524; c=relaxed/simple;
+	bh=Sg1q9uyyaT5XaItYSmf+/DMKIM1QnI3CiLnTXdvRQ04=;
 	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type; b=oTnY9JND6agqDVvIRXYQ2nCrLVSQ0CwUQrZSmGPCJb4u8Z8ZKxem1gpQG5bAgeGjebQhqG5ni8UyO0bECtZnVZbYITmSe8GA+2fe94bk3X4WS/sC8t6oI8aJCG3c5rcWDghlPcbB6W5F6LJgq3SwkCMugNHVd88nTIxa9f4CBWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=DELecomo; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=lHKOv3a2LCejxfA0dxHv3cpFng1IeX4cyCitCs4ZmPPYq67o52UbRBtq6TGTM4NuvqgV7LLqh76jva5dR1ugLeCRNEu9fzn8PPV+em8sHD7Hhq6d2pNphyLMDc/7wdry6sEfJBeB9av7di+mBKoLkjFoCjtdJqJXHyQ1B+2fiek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=VjhXiwHM; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62U1nVaO5073478, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62U1pxegF075664, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1774835371; bh=geXm3FemlH8eRdmyDg97vzDqCwXLuW58EwxVJhu71Lg=;
+	t=1774835519; bh=u0aDtHXJHSEp1adW0BOm29Q9hgcRmKcwJmiCrrHTnB8=;
 	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
 	 MIME-Version:Content-Type;
-	b=DELecomoOGjR+hRCBSeWGeBX8QZ16SoR23DTVlTkKrbZAg8IzZur3srvG5rqhedXt
-	 ZwpNSk++itVSoR1aRr/cWrGZy9JnhB1Ba67Fv9qsf2KhD31fJnEVqaBLXmV9WEqGjL
-	 ElibVl0GGToLck1wmkQIkh7hVBG5EUAErg+3Wt6u5jpKPpjbfnqukbWwYxCa+4nB47
-	 ienAeD1QNdfEw5QLr9y8xV7GQwJZ+G4/3N9M14jcTyvwD7/aLDeA+HDSbNt0WkBaqO
-	 YMsBWF6gtNbp8wOkaKvvoQsM740dbn0s/sLCRIazu0K6yTk2jMjWTjnm7UKXCBD1yA
-	 v2PZPrhYfaySg==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 62U1nVaO5073478
+	b=VjhXiwHM0vBZPhzrSzPQicqrO92Fa+QDFRYAXCpJYWwpqlOuNaE58+JWuxNyopXlR
+	 A8zr0IOaBbLEzsI2aICBCzdpAIX7B+Htsk2ffrtt+RKaXaJziwkNHfUFrIo1rkWEtF
+	 3h8x0oqzbScnZ/O7yJO2mNUlD4GRaK02jffS10rcRpZdE/bYYNSjOudGkBbtc2ZdQo
+	 q9dh9KQ5UPEPcAWZU3b0WH7jBGwuCBuieNxmsu9KPFWwHoqSYyVYmfIGHiWcyDhXZD
+	 H3KWOVwWGG/521CHKSFpUe4LuPeGu0/iKp/3g5FLHqAWuIPF/qTZvNGnm9ZtHqfc6z
+	 Fcno4G1kbPysg==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 62U1pxegF075664
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 30 Mar 2026 09:49:31 +0800
-Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+	Mon, 30 Mar 2026 09:51:59 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 30 Mar 2026 09:49:30 +0800
+ 15.2.1748.10; Mon, 30 Mar 2026 09:51:52 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Mon, 30 Mar 2026 09:51:51 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS04.realtek.com.tw
  (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Mon, 30 Mar 2026 09:49:25 +0800
+ Transport; Mon, 30 Mar 2026 09:51:51 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: Alexey Velichayshiy <a.velichayshiy@ispras.ru>,
-        Ping-Ke Shih
-	<pkshih@realtek.com>
-CC: Alexey Velichayshiy <a.velichayshiy@ispras.ru>,
-        Yuan-Han Zhang
-	<yuanhan1020@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
-Subject: Re: [PATCH rtw-next] wifi: rtw89: phy: fix uninitialized variable access in rtw89_phy_cfo_set_crystal_cap()
-In-Reply-To: <20260323140613.1615574-1-a.velichayshiy@ispras.ru>
-References: <20260323140613.1615574-1-a.velichayshiy@ispras.ru>
-Message-ID: <4345cdc5-0ffe-4836-ac50-74ee8f08090c@RTKEXHMBS04.realtek.com.tw>
-Date: Mon, 30 Mar 2026 09:49:25 +0800
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <goainwo@gmail.com>
+Subject: Re: [PATCH v2 rtw-next] wifi: rtw88: validate RX rate to prevent out-of-bound
+In-Reply-To: <20260324011001.5742-1-pkshih@realtek.com>
+References: <20260324011001.5742-1-pkshih@realtek.com>
+Message-ID: <0db3c3ed-10d2-49df-a3f3-676eb04b23e4@RTKEXHMBS04.realtek.com.tw>
+Date: Mon, 30 Mar 2026 09:51:51 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,55 +78,61 @@ MIME-Version: 1.0
 Content-Type: text/plain
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34135-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34136-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:dkim,realtek.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,RTKEXHMBS04.realtek.com.tw:mid];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[RTKEXHMBS04.realtek.com.tw:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:email,ispras.ru:email]
-X-Rspamd-Queue-Id: 60DCE354A6E
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 31C13354A9D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Alexey Velichayshiy <a.velichayshiy@ispras.ru> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> In the rtw89_phy_cfo_set_crystal_cap() function, for chips other than
-> RTL8852A/RTL8851B, the values read by rtw89_mac_read_xtal_si() are
-> stored into the local variables sc_xi_val and sc_xo_val. If either
-> read fails, these variables remain uninitialized, they are later
-> used to update cfo->crystal_cap and in debug print statements. This
-> can lead to undefined behavior.
+> The reported RX rate might be unexpected, causing kernel warns:
 > 
-> Fix the issue by initializing sc_xi_val and sc_xo_val to zero,
-> like is implemented in vendor driver.
+>   Rate marked as a VHT rate but data is invalid: MCS: 0, NSS: 0
+>   WARNING: net/mac80211/rx.c:5491 at ieee80211_rx_list+0x183/0x1020 [mac80211]
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> As the RX rate can be index of an array under certain conditions, validate
+> it to prevent accessing array out-of-bound potentially.
 > 
-> Fixes: 8379fa611536 ("rtw89: 8852c: add write/read crystal function in CFO tracking")
-> Signed-off-by: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> Tested on HP Notebook P3S95EA#ACB (kernel 6.19.9-1-cachyos):
+> 
+>   - No WARNING: net/mac80211/rx.c:5491 observed after patch.
+>   - System remains fully stable through idle, load, Bluetooth A2DP
+>     usage, and multiple suspend/resume cycles.
+>   - Zero H2C or LPS errors in dmesg.
+> 
+> Reported-by: Oleksandr Havrylov <goainwo@gmail.com>
+> Closes: https://lore.kernel.org/linux-wireless/CALdGYqSMUPnPfW-_q1RgYr0_SjoXUejAaJJr-o+jpwCk1S7ndQ@mail.gmail.com/
+> Tested-by: Oleksandr Havrylov <goainwo@gmail.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Tested-by: Oleksandr Havrylov <goainwo@gmail.com>
 
 1 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-047cddf88c61 wifi: rtw89: phy: fix uninitialized variable access in rtw89_phy_cfo_set_crystal_cap()
+bf14367719fa wifi: rtw88: validate RX rate to prevent out-of-bound
 
 ---
 https://github.com/pkshih/rtw.git
