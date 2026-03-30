@@ -1,140 +1,254 @@
-Return-Path: <linux-wireless+bounces-34141-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34142-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kEBqBRTnyWl43QUAu9opvQ
-	(envelope-from <linux-wireless+bounces-34141-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 04:59:32 +0200
+	id UFxsHk3nyWl43QUAu9opvQ
+	(envelope-from <linux-wireless+bounces-34142-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 05:00:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CAE3354EEB
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 04:59:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BE22354F02
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 05:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BF6603002B0F
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 02:59:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3AA4F3011101
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2026 03:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CC337F75E;
-	Mon, 30 Mar 2026 02:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9956C365A06;
+	Mon, 30 Mar 2026 03:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="JgHnNWPH"
+	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="ivd/EmfK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6965313E05
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 02:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82A0375ABC
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2026 03:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774839567; cv=none; b=BHQoSk2v0Gw33c9f3wqjo9eBRXP6+lfVxF1cF9JM5FBcCOqDvlTAYdeS1C+5tsPhh7mwrnpwue7c8hi0A/XEcp7MvxSIFsLXBEmeC28YqQAXG1T4GPevdwFnUepXxiNAXfpB71NRX+w33uP1DwHBUm/RkgeT0ExrptARGopcr6M=
+	t=1774839611; cv=none; b=gtfwJWhTN/yjo2mtLHnP2wIP01DfTAIUI3sowT5ZlyvVpX3q64lYeVQWmTJgvVEDDxFWIYyuJaiup76yPF/zTF8fkE266/z6B3i8eetfwQc+6BRrnI49cB9kkbZIDdB2IO1ZbR8fCHflmjUfhJsv6sngcNPxYwUXibQ3ydoQFXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774839567; c=relaxed/simple;
-	bh=ae+2VetodwNOh6COJXYuuVcZadUQX6C9EwkoKSiGgq8=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=DLYwUwB/oj1O6QuMTv5cFtT7q+CD5+FGXl7v6pooMoHv4den8cQ1chbjlK4WW4K8k+EG48z9rgDdSzoKvhVAgB3WNDKqbueqi8ucF43gcy7XDW+WTT0l6zp0yRjdME2TtbboYdRvKahAIoGiPw8LATdgBAkqebEnciTjLva/7D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=JgHnNWPH; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62U2xLNL1201253, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1774839561; bh=ae+2VetodwNOh6COJXYuuVcZadUQX6C9EwkoKSiGgq8=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=JgHnNWPHDOgY0Mp3kuIG7fye1DpsSilc2UyNFu25QM4xOgCMsLX5vb92R4UTf59AZ
-	 WahEvJZLNN72/42g0gmS2fwccMzOS4Gg343HfnZpvxzOvc5j9T5UX/gmiALcJaSn/d
-	 Ui3LoNWctd8sEXYyJueEPlrmXikhvlnfcWZ/fhSPPe5ni9RSOiFm0B97sD70YGItMa
-	 5yvMxDWpvvIvmboyEjcEl9aAcw3p5zQ78Ok4M9+R33DP6fMdrzXybiRLo0CryKXlrn
-	 BOdnKXs8w2VgwO0y1UDyKIzK9tRq1ffBcXBIW38uvNCBwMs4eSSYCRRS/0eDmZb7i7
-	 FFJRa4/+678qA==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 62U2xLNL1201253
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 30 Mar 2026 10:59:21 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 30 Mar 2026 10:59:21 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 30 Mar 2026 10:59:13 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::46e9:fab9:b2cf:c99b%10]) with mapi id
- 15.02.1748.010; Mon, 30 Mar 2026 10:59:13 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH rtw-next 01/12] wifi: rtw89: usb: Disable MLO for now
-Thread-Topic: [PATCH rtw-next 01/12] wifi: rtw89: usb: Disable MLO for now
-Thread-Index: AQHcvUJ8zbuMUkM/fk6VkX/GCcGq4rXGZsFA
-Date: Mon, 30 Mar 2026 02:59:13 +0000
-Message-ID: <dbd41cc160504b8daeb93b7967101c7f@realtek.com>
-References: <8549233f-dd83-4e77-be88-5e22ecd4f5f1@gmail.com>
- <eb447efe-466d-4494-86c2-2e4d2b882fce@gmail.com>
-In-Reply-To: <eb447efe-466d-4494-86c2-2e4d2b882fce@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1774839611; c=relaxed/simple;
+	bh=WJ8HjFrFkmXT2dp9ZUarFikJml/ZKXBcr6PlYsWNf0w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Yyo0FKvclxlThTvlc3ddtYgSVe58Qx7FuTO1NfYbGAcJ+fspGVJG2opSDqN1f/aY6tfMtKupZYXKPe+6JRrK+rxNu0F+csXwIAGJalxfvqzTYzWuwM5+HwOejBUmzfCr796DxaFOnB6LLeDJJiSuPrs2A958qjqSOwBV97yNXwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=ivd/EmfK; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
+	s=key1; t=1774839606;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aawMuDp68GtT28D6xTsjJkFIofgzzyWmeGHlR3mYq/8=;
+	b=ivd/EmfKDICQ91g11gMLlhUXGzZFRkzkCaZKvRBgSsE67FNZrZcMvr7Q56/6wNfdkKOHZv
+	6MMxM8iHGrzGSHVS8NAMZaReV/htonmD/pPPZnr3/w/eP3xqoeEKVlGM9UpTqcUMhSY5d6
+	mX2v41WNaW3bv2qS6jD3ShoEMLoMWESj6TDr+6l/0/bDz/Qobnu5Vc6gk9YLQ7mt0U8mgP
+	IM1akmerE+kApaRTcwKFcXEi0623m4+PH9ZZeIkOL9hvTUsL0RiOIXwbcoRF+yAbfAZTE/
+	Lsa/XQvc9mL/LXrZtRo8p9iQzI9QVF+BnXO2HxH02IeZ7DbCnmvMpFrpOvEMzg==
+From: Lucid Duck <lucid_duck@justthetip.ca>
+To: pkshih@realtek.com
+Cc: linux-wireless@vger.kernel.org,
+	rtl8821cerfe2@gmail.com,
+	morrownr@gmail.com,
+	Lucid Duck <lucid_duck@justthetip.ca>
+Subject: [PATCH v5] wifi: rtw89: usb: fix TX flow control by tracking in-flight URBs
+Date: Sun, 29 Mar 2026 19:59:59 -0700
+Message-ID: <20260330025959.399018-1-lucid_duck@justthetip.ca>
+In-Reply-To: <20260323233347.158745-1-lucid_duck@justthetip.ca>
+References: <20260323233347.158745-1-lucid_duck@justthetip.ca>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34141-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:mid];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,justthetip.ca];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-34142-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
+	DKIM_TRACE(0.00)[justthetip.ca:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 9CAE3354EEB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,justthetip.ca:dkim,justthetip.ca:email,justthetip.ca:mid]
+X-Rspamd-Queue-Id: 5BE22354F02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBJdCdz
-IG5vdCB5ZXQgY2xlYXIgaG93IHRoZSBUWCBxdWV1ZS9jaGFubmVsIHNlbGVjdGlvbiBpcyBzdXBw
-b3NlZCB0bw0KPiB3b3JrIGZvciBSVEw4OTIyQVUgd2l0aCBNTE8sIGFuZCBJIGNhbid0IHRlc3Qg
-TUxPIGFueXdheS4NCg0KQ3VycmVudGx5LCBydHc4OSB3b3JrIGluIE1MU1IgbW9kZSBieSBkZWZh
-dWx0LCB3aGljaCBtZWFucyBpdCB3b3JrcyBsaWtlDQpsZWdhY3kgbW9kZSwgc28gaXQncyBwcm9i
-YWJseSBmaW5lIHRvIGVuYWJsZSBNTE8uDQoNClRoZSBkZWJ1Z2ZzIGNhbiBzd2l0Y2ggZU1MU1Ig
-bW9kZSwgYnV0IGl0IGRvZXNuJ3Qgd29yayB2ZXJ5IHdlbGwgZm9yIG5vdy4NCg0KPiANCj4gU2ln
-bmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+
-IC0tLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS91c2IuYyB8IDQgKysr
-Kw0KPiAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBh
-L2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvdXNiLmMNCj4gYi9kcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3VzYi5jDQo+IGluZGV4IDU4MWI4YzA1ZjkzMC4uN2E0
-NmFjZTM0YzI1IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
-dzg5L3VzYi5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvdXNi
-LmMNCj4gQEAgLTEwMjksNiArMTAyOSwxMCBAQCBpbnQgcnR3ODlfdXNiX3Byb2JlKHN0cnVjdCB1
-c2JfaW50ZXJmYWNlICppbnRmLA0KPiAgICAgICAgICAgICAgICAgcmV0dXJuIC1FTk9NRU07DQo+
-ICAgICAgICAgfQ0KPiANCj4gKyAgICAgICBydHc4OV9kZWJ1ZyhydHdkZXYsIFJUVzg5X0RCR19D
-SEFOLA0KPiArICAgICAgICAgICAgICAgICAgICIlczogZGlzYWJsZSBNTE8gZm9yIG5vd1xuIiwg
-X19mdW5jX18pOw0KPiArICAgICAgIHJ0d2Rldi0+c3VwcG9ydF9tbG8gPSBmYWxzZTsNCj4gKw0K
-PiAgICAgICAgIHJ0d3VzYiA9IHJ0dzg5X3VzYl9wcml2KHJ0d2Rldik7DQo+ICAgICAgICAgcnR3
-dXNiLT5ydHdkZXYgPSBydHdkZXY7DQo+ICAgICAgICAgcnR3dXNiLT5pbmZvID0gaW5mby0+YnVz
-LnVzYjsNCj4gLS0NCj4gMi41My4wDQoNCg==
+rtw89_usb_ops_check_and_reclaim_tx_resource() returns a hardcoded
+placeholder value (42) instead of actual TX resource availability.
+This violates mac80211's flow control contract, preventing backpressure
+and causing uncontrolled URB accumulation under sustained TX load.
+
+Fix by adding per-channel atomic counters (tx_inflight[]) that track
+in-flight URBs. Increment before usb_submit_urb() with rollback on
+failure, decrement in the completion callback, and return the
+remaining capacity to mac80211. The firmware command channel (CH12)
+always returns 1 since it has its own flow control.
+
+The pre-increment pattern prevents a race where USB core completes the
+URB on another CPU before the submitting code increments the counter.
+
+128 URBs per channel provides headroom for RTL8832CU at 160 MHz
+bandwidth. Tested on RTL8852AU (USB3 80 MHz) where 64 and 128 showed
+equivalent throughput, and on RTL8832AU where 128 sustained full
+throughput under 8-stream parallel load.
+
+Tested on D-Link DWA-X1850 (RTL8832AU), kernel 6.19.8, Fedora 43:
+
+                     Unpatched -> Patched (128 URBs)
+  USB3 5GHz UL:      844 -> 837 Mbps (no regression)
+  USB3 5GHz retx:    3 -> 0
+  USB3 2.4GHz UL:    162 -> 164 Mbps (no regression)
+  4-stream UL:       858 -> 826 Mbps (within variance)
+  8-stream UL:       872 -> 826 Mbps (within variance)
+  UDP flood:         0% loss (690K datagrams)
+  60-second soak:    855 Mbps, 0 retransmits
+
+Reported-by: morrownr <morrownr@gmail.com>
+Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
+---
+Changes since v4:
+  - Regenerated from kernel tree (not standalone repo). v4 had bare
+    usb.c/usb.h paths instead of drivers/net/wireless/realtek/rtw89/
+    which broke patchwork delegation. Sorry about that.
+  - No code changes from v4.
+
+Changes since v3:
+  - Increased MAX_TX_URBS_PER_CH from 64 to 128 per Ping-Ke's
+    suggestion, providing headroom for RTL8832CU at 160 MHz.
+  - Simplified CH12 handling per Ping-Ke's suggestion: CH12 is now
+    tracked in the counter like all other channels. The only special
+    case is in check_and_reclaim where CH12 returns 1 (firmware
+    command channel has its own flow control).
+  - Removed all inline comments flagged in review.
+
+Changes since v2:
+  - Increased MAX_TX_URBS_PER_CH from 32 to 64 based on URB scaling
+    tests showing 32 drops 35% under multi-stream load.
+  - Removed duplicate "TX flow control" comments.
+
+Changes since v1:
+  - Removed duplicate comments per Ping-Ke.
+  - Added throughput data to commit message per Ping-Ke.
+  - Addressed Bitterblue's question about using skb_queue_len vs
+    atomic counters (atomic is needed because the counter must update
+    before usb_submit_urb returns, not after URB completion).
+
+ drivers/net/wireless/realtek/rtw89/usb.c | 20 ++++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/usb.h |  3 +++
+ 2 files changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
+index da1b7ce..9a2d68a 100644
+--- a/drivers/net/wireless/realtek/rtw89/usb.c
++++ b/drivers/net/wireless/realtek/rtw89/usb.c
+@@ -161,16 +161,24 @@ static u32
+ rtw89_usb_ops_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
+ 					    u8 txch)
+ {
++	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
++	int inflight;
++
+ 	if (txch == RTW89_TXCH_CH12)
+ 		return 1;
+ 
+-	return 42; /* TODO some kind of calculation? */
++	inflight = atomic_read(&rtwusb->tx_inflight[txch]);
++	if (inflight >= RTW89_USB_MAX_TX_URBS_PER_CH)
++		return 0;
++
++	return RTW89_USB_MAX_TX_URBS_PER_CH - inflight;
+ }
+ 
+ static void rtw89_usb_write_port_complete(struct urb *urb)
+ {
+ 	struct rtw89_usb_tx_ctrl_block *txcb = urb->context;
+ 	struct rtw89_dev *rtwdev = txcb->rtwdev;
++	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
+ 	struct ieee80211_tx_info *info;
+ 	struct rtw89_txwd_body *txdesc;
+ 	struct sk_buff *skb;
+@@ -229,6 +237,8 @@ static void rtw89_usb_write_port_complete(struct urb *urb)
+ 		break;
+ 	}
+ 
++	atomic_dec(&rtwusb->tx_inflight[txcb->txch]);
++
+ 	kfree(txcb);
+ }
+ 
+@@ -306,9 +316,13 @@ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
+ 
+ 		skb_queue_tail(&txcb->tx_ack_queue, skb);
+ 
++		atomic_inc(&rtwusb->tx_inflight[txch]);
++
+ 		ret = rtw89_usb_write_port(rtwdev, txch, skb->data, skb->len,
+ 					   txcb);
+ 		if (ret) {
++			atomic_dec(&rtwusb->tx_inflight[txch]);
++
+ 			if (ret != -ENODEV)
+ 				rtw89_err(rtwdev, "write port txch %d failed: %d\n",
+ 					  txch, ret);
+@@ -666,8 +680,10 @@ static void rtw89_usb_init_tx(struct rtw89_dev *rtwdev)
+ 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(rtwusb->tx_queue); i++)
++	for (i = 0; i < ARRAY_SIZE(rtwusb->tx_queue); i++) {
+ 		skb_queue_head_init(&rtwusb->tx_queue[i]);
++		atomic_set(&rtwusb->tx_inflight[i], 0);
++	}
+ }
+ 
+ static void rtw89_usb_deinit_tx(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/usb.h b/drivers/net/wireless/realtek/rtw89/usb.h
+index 203ec8e..e62bde6 100644
+--- a/drivers/net/wireless/realtek/rtw89/usb.h
++++ b/drivers/net/wireless/realtek/rtw89/usb.h
+@@ -20,6 +20,8 @@
+ #define RTW89_MAX_ENDPOINT_NUM		9
+ #define RTW89_MAX_BULKOUT_NUM		7
+ 
++#define RTW89_USB_MAX_TX_URBS_PER_CH	128
++
+ struct rtw89_usb_info {
+ 	u32 usb_host_request_2;
+ 	u32 usb_wlan0_1;
+@@ -63,6 +65,7 @@ struct rtw89_usb {
+ 	struct usb_anchor tx_submitted;
+ 
+ 	struct sk_buff_head tx_queue[RTW89_TXCH_NUM];
++	atomic_t tx_inflight[RTW89_TXCH_NUM];
+ };
+ 
+ static inline struct rtw89_usb *rtw89_usb_priv(struct rtw89_dev *rtwdev)
+-- 
+2.53.0
+
 
