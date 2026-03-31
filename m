@@ -1,192 +1,223 @@
-Return-Path: <linux-wireless+bounces-34218-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34219-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NtuO5Pey2m0MAYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34218-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 16:47:47 +0200
+	id UDzKK5Dty2m5MgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34219-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 17:51:44 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F62036B2B4
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 16:47:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564A936C20E
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 17:51:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4607230A4F5F
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 14:43:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6EA093096828
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 15:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF543FFAB6;
-	Tue, 31 Mar 2026 14:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF20411627;
+	Tue, 31 Mar 2026 15:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l8MuGp0+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nkOO1ubW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68863FD151;
-	Tue, 31 Mar 2026 14:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774968178; cv=none; b=seBDrCAp9iPXStAYOcnmBH8HomVXpH1nUOSuMrsodVkdal9YhNI5FSqjBC8GBValUyYVvyImI9bdEGYo/jvm+TuwsERQkvMdnBiqCzZGi8Gfr5rN2cS1FNzTIvt6o+NH/dLJ6VREW/flfhsWH+12IZZO+YhnMVEQxUSa4xWOrcU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774968178; c=relaxed/simple;
-	bh=WE5uyvvTZ9XdxLDqQXGD/2cxlUnFYlwEgsN9tPZdLLQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lSH218TrM34sCdCerEnBqr1ngXN3lm2/AZ1DdX0OWrrH/XWOCl3A/0qpFfowwKXL9/EMegDCvB1UVE30GMppLgsrEIfYCZ1GnM9DE1AtZ/wggifSYX7KmjjC/n1E2NJ4ADKbbvygystElink/zlv5Uj70qkPBsJCGoRcCc5Q6nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l8MuGp0+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB715C19423;
-	Tue, 31 Mar 2026 14:42:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774968178;
-	bh=WE5uyvvTZ9XdxLDqQXGD/2cxlUnFYlwEgsN9tPZdLLQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l8MuGp0+g2W/i2FLkF6NdJKAzGYCVfm52PX+qsqAEusct0p0jMKEXgTB6PbmLB/rf
-	 W1K4dAbqJnA/F95iM29TcF8SmzIZ90XH3oczzOKXg3TO+a+CVWz9BIXfDgRLUUk4hi
-	 Efp7VmAczmURWKBTboGv3vcfv9oc9JCbZz0WkYKpJ0hWAHDgNY5sVKxiwdeMUnDwaf
-	 0WPMFONtIj+VuM8Gna1sMh57muYwXqT1MaI6KeE/Yp5ItylGKexRW1zJ58mMUlcK1e
-	 LJblbbSybBlHXjrZLC1YrrGDIF+hdLsxEdjMjq3txnLZkF2E+NH6aXJNzNdUrXH9Bm
-	 bGMlK6HPPKDbw==
-Message-ID: <0de0574a-04ce-45d0-946d-5fdc1a7b8181@kernel.org>
-Date: Tue, 31 Mar 2026 16:42:53 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F793A1E8C
+	for <linux-wireless@vger.kernel.org>; Tue, 31 Mar 2026 15:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774971618; cv=pass; b=Xq/2ACyylg8Y7KyGMzIuoHVTAnJF5fMV2o6FvJXB7h39kFcp0TVXyACgv+2tYdA1oOxSBVUSzIMqC63URR8ZaekmBQCRZ1BG04Ys/ZFL+LNXKqX4otgVFAz7xCqopBXLLHJkEuuS9KG/O7nxTxADfud9yxkmaMQB9jce5juuViE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774971618; c=relaxed/simple;
+	bh=M86POBW/a3TsEts6tVZ7TB0EfrjJxMIvFGo4HhkDcK8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EvzUGTRtLC2KRjOSTkZuhzg2QNIarIDPRMTvJZbJVJqELfQl1w532YE2ivTs2UjaVclBzh4OqJ5MTzT27glK0XkpQMIiWrV2LaufAatkria+JoC+qBE+z3UX2LeDUQxIp0p2Gi4n9njkhndZqiXB4MkwvmmVad7gZZoTm2XfHqY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nkOO1ubW; arc=pass smtp.client-ip=209.85.167.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-46703fb602fso1912873b6e.0
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Mar 2026 08:40:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774971616; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fXo4NR/DaT0cLU/qTKj4A3bCb4JTubVKfx7n5NRDArUzValoXRVBluhlxzm87swpI3
+         aalriC7F1EZlxmei4nKv9oTl80K7iJq4VgAhtzRZWti9t7ZjDtykxaLxAq0Dm81QE23k
+         m6+ufS+XpmOM7seLJqu0cTR2Oti/lSIFC/Nfmukkz3tM+qbQ0cKCGKmQ+wO9FCEDwbt5
+         7mgSPXSWHuH6hjlVLGk2sJsbeikgv5pbcZHyADv8A3J67RJM4ZKtnVmHPlXbMlaq7vGk
+         Ul+/NBoFw9CZlUeXbxaupaKkcwG+/0xrBEpHyZNzI6UQ3NY+N66y8tDFOeDk+x0I8dX+
+         yA/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=u8qcruLr1TaN4a3nPxJC8zeje2SUnWQJ8J8aOZ6a6Fo=;
+        fh=NicHWZbL8t99aLQEuJkfaapDVZ+3fW/5NJE5ikCz+u0=;
+        b=IqiRKIXEJKpsM+ZwKYT+Om5Fw0fQKexyZwR4u30Ei5URIDhmUgsThwt+hhRR6kCn0f
+         MSrVpB/VsQhCzTSzQzvYSQsqacu9Gof5sHTK4gbGecRfVctfR4o/FHW3wq8hkUZR/g27
+         tbv3usJF5WASxSbZlyfCE8r737vkbH6bT0ye59GP6PNQCA2mDFHyUTQ4bnaO+auDSHuB
+         dzMXYRG31o7cJw6OuBkGS/fHpxEgA2AwFJ9jibLL94Bt0UQgf7MhGje/n69r38IOV5mN
+         KWA1AsWzYt95k287CG7kKKxxEDm6HPpLUyXTPrQJjmzm9QlSH6u6Dua+0lDa27+5fME7
+         24cg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774971616; x=1775576416; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u8qcruLr1TaN4a3nPxJC8zeje2SUnWQJ8J8aOZ6a6Fo=;
+        b=nkOO1ubWeSgBynejD6YjsUMf4rGxqUG52/z/ZMrxG8uCSmw+eUI0nRSh6ranGg7xjA
+         zliEmUdzHmYndZvYeOoDTCTqQV6YtkKQI8Rnmf5fPEXX7mMhcQoZyGpEYT57WMAf5M8p
+         /GOTZ8DxjEy4Yf92ts63IfA0BrZEvshDztmLNQoQ1zFzhxslHxcE55TNepseMr7TTjJU
+         MgLjevZbRop1ZLsN1V0uGh/mMoDei9iXcetugblwbhv8ARWQcF0AQPFS+IhHnPxyX19S
+         ytE1bpXUTWJ99bEuKIbTUGW57qbJjQTft/dziHHrKkdB7NsRazbpj+sKVoUHjUX5PGbe
+         Ch4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774971616; x=1775576416;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=u8qcruLr1TaN4a3nPxJC8zeje2SUnWQJ8J8aOZ6a6Fo=;
+        b=WlAICfTe5caLET5CVB8UnViTPMidrk2IfuG3liv48DsPFU2p43Zloi8YmhP2iYFjvL
+         wzotvhW0uZNSbuK3OXTK/G7sh6yCjU2aB3CqWu+Aub9f6ErIewY2VCiG31jSJYgfE6z8
+         LPlXawsXoB86GkwI6pF0KtvO/QaKn7UjdCczn51ssRmsuTEyhkZUcxNynDOoDqtWuiqz
+         uwLyV4b4R7P1dXx3nXtM/iY7mOQcVPWLXcm5Lq7gL5VaTPLuGTrw6ObsZH/gLT5U4qUs
+         C02tgqicz9vOta1A4U1WLcZc+jPRkfQ47e7FfXkXKOp1bhfEwHEy+xGMcWFNnbQNBVgh
+         42Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUtNx7n2+B5+pCCpcJbyEbqfMdiG2mI0122iM++JnmOhCC2q6m5K8BI7i9KRdyLcZqU/dA5M16TBE0x6gUgdw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxg5SxR1ksomTzkRqEjT/JI9vNHcIDhPul9JUjyPf1mblvLhbl8
+	fPGVXwadqrPpv7xqmgD5VMcXMfaDnFBd2a4E8wN/1QjfHl9qCp+83lQsylgAn+sTFgQpUzx/0WC
+	WDlksF595yVnx6U6AiSBIAHP4ANbEmdE=
+X-Gm-Gg: ATEYQzysPzJnQFlc3rOBhMfhQQh3BmPZC8TytahrTRUm6pvm7i7d/Cqew8iJF5TGKgV
+	sjDqV19xiClhy2JXDMS2ZQXKZkdCnHiAeL1GjjED/uZ/QDw56u/aWYpC9OguxeJqKHNAfJQPcfh
+	oB4oLBSCMGRmSiltoYn/Ara7SYFQci2hA8FmMgDdpnHzNFAkLbmSbKDlaJbEtWB97Ci5+tKgrVa
+	dzFGvdDP8uInZl2ot34aQo4nAt6U0fiyOZzlXTIaZxQfpL7uYy5bCWIMKSRTlupj46MqjgyQSaS
+	Gv+U8FK6aNY9UoJfmFBsxZxl/UPVoBWo/Wu4PQlaKtvINh8=
+X-Received: by 2002:a05:6808:1718:b0:468:48d:8075 with SMTP id
+ 5614622812f47-46a8a395fb3mr7995552b6e.8.1774971616516; Tue, 31 Mar 2026
+ 08:40:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v3 1/6] dt-bindings: net: wireless: add ath12k
- wifi device IPQ5424
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
- Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ath12k@lists.infradead.org
-References: <20260331-ath12k-ipq5424-v3-0-1455b9cae29c@oss.qualcomm.com>
- <20260331-ath12k-ipq5424-v3-1-1455b9cae29c@oss.qualcomm.com>
- <20260331-fanatic-elegant-wallaby-913e35@quoll>
- <b1194bdb-75fa-4f2e-b4a3-9565b11bb3e9@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <b1194bdb-75fa-4f2e-b4a3-9565b11bb3e9@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+References: <20260330-p14s-pm-quirk-v1-1-cf2fa39cc2d5@gmail.com>
+In-Reply-To: <20260330-p14s-pm-quirk-v1-1-cf2fa39cc2d5@gmail.com>
+From: Kyle Farnung <kfarnung@gmail.com>
+Date: Tue, 31 Mar 2026 08:40:05 -0700
+X-Gm-Features: AQROBzAt-wrDIMtX7p-AOcDjVXjahzEybmuxfvEKnbowGjaS1uRal6qZfRUGMgw
+Message-ID: <CAOPSVF3tbkTVjW1o1NfrgbOA9v163n_QuDR4ay2ggdMs5f9Z0g@mail.gmail.com>
+Subject: Re: [PATCH] wifi: ath11k: apply existing PM quirk to ThinkPad P14s
+ Gen 5 AMD
+To: kfarnung@gmail.com
+Cc: jjohnson@kernel.org, mpearson-lenovo@squebb.ca, stable@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34218-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-34219-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[devicetree.org:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6F62036B2B4
+	FROM_NEQ_ENVFROM(0.00)[kfarnung@gmail.com,linux-wireless@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid,lenovo.com:url]
+X-Rspamd-Queue-Id: 564A936C20E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 31/03/2026 16:23, Jeff Johnson wrote:
-> On 3/31/2026 12:24 AM, Krzysztof Kozlowski wrote:
->> On Tue, Mar 31, 2026 at 02:09:06AM +0530, Raj Kumar Bhagat wrote:
->>>  $id: http://devicetree.org/schemas/net/wireless/qcom,ipq5332-wifi.yaml#
->>> @@ -17,6 +17,7 @@ properties:
->>>    compatible:
->>>      enum:
->>>        - qcom,ipq5332-wifi
->>> +      - qcom,ipq5424-wifi
->>
->> No, use previous patch.
->>
->> I am annoyed that you keep making changes even for such trivialities and
->> require re-review from the community.  Previous patch was correct. This
->> one doing whatever you want to do in copyrights is too much. You don't
->> change copyrights just because you wrote one device model.
-> 
-> Krzysztof,
-> 
-> FYI here is the guidance I received from Qualcomm legal (links to internal
-> documentation, removed -- I've forwarded the entire e-mail to your Qualcomm
-> mailbox):
+On Mon, Mar 30, 2026 at 11:18=E2=80=AFPM Kyle Farnung via B4 Relay
+<devnull+kfarnung.gmail.com@kernel.org> wrote:
+>
+> From: Kyle Farnung <kfarnung@gmail.com>
+>
+> Some ThinkPad P14s Gen 5 AMD systems experience suspend/resume
+> reliability issues similar to those reported in [1]. These platforms
+> were not previously included in the ath11k PM quirk table.
+>
+> Add DMI matches for product IDs 21ME and 21MF to apply the existing
+> ATH11K_PM_WOW override, improving suspend/resume behavior on these
+> systems.
+>
+> Tested on a ThinkPad P14s Gen 5 AMD (21ME) running 6.19.9.
+>
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D219196
+> [2] https://pcsupport.lenovo.com/us/en/products/laptops-and-netbooks/thin=
+kpad-p-series-laptops/thinkpad-p14s-gen-5-type-21me-21mf/
+>
+> Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine =
+model")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
+> ---
+>  drivers/net/wireless/ath/ath11k/core.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireles=
+s/ath/ath11k/core.c
+> index 3f6f4db5b7ee1aba79fd7526e5d59d068e0f4a2e..21d366224e75904feeae6cb9c=
+93d9ef692d127fe 100644
+> --- a/drivers/net/wireless/ath/ath11k/core.c
+> +++ b/drivers/net/wireless/ath/ath11k/core.c
+> @@ -1041,6 +1041,20 @@ static const struct dmi_system_id ath11k_pm_quirk_=
+table[] =3D {
+>                         DMI_MATCH(DMI_PRODUCT_NAME, "21D5"),
+>                 },
+>         },
+> +       {
+> +               .driver_data =3D (void *)ATH11K_PM_WOW,
+> +               .matches =3D { /* P14s G5 AMD #1 */
+> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
+> +               },
+> +       },
+> +       {
+> +               .driver_data =3D (void *)ATH11K_PM_WOW,
+> +               .matches =3D { /* P14s G5 AMD #2 */
+> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "21MF"),
+> +               },
+> +       },
+>         {}
+>  };
+>
+>
+> ---
+> base-commit: dbd94b9831bc52a1efb7ff3de841ffc3457428ce
+> change-id: 20260330-p14s-pm-quirk-0a51ba19235f
+>
+> Best regards,
+> --
+> Kyle Farnung <kfarnung@gmail.com>
+>
+>
 
-As I explained already more than once, legal can engage in open source
-discussions directly. I am not going to discuss with them via proxies.
+Apologies to everyone, I realized that I lost my CC list in the sending
+process. I wasn't sure what the right fix was so I ended up posting a v2
+patch [1] instead.
 
-> 
-> ... Repos under copyleft license [...] QTI copyright must be added when we
-> make significant changes.
-> 
-> ... Repos under friendly license (BSD, Apache, MIT, ...) [...] QTI copyright
-> must be added for any changes, not just significant ones.
-> 
-> ... under the regular QUIC to QTI open-source copyright transitioning [...]
-> all QUIC Copyright instances should be replaced with year-less QTI OSS Copyright.
-> 
-> I'll follow up with them on this case where there is a dual-license file.
+[1] https://lore.kernel.org/linux-wireless/20260330-p14s-pm-quirk-v2-1-ef18=
+ce07996b@gmail.com/
 
-You nicely removed the quote where they ask to follow what the upstream
-maintainer asks for. So as one of the maintainers I ask not to change
-it, because it is churn and pointless waste of my time.
-
-Best regards,
-Krzysztof
+Thanks,
+Kyle
 
