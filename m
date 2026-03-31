@@ -1,76 +1,76 @@
-Return-Path: <linux-wireless+bounces-34228-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34229-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJ+AFYcZzGnHPgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34228-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 20:59:19 +0200
+	id gN/4KYsZzGnHPgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34229-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 20:59:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8DA3704AE
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 20:59:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C6AF3704BD
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 20:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 55F283070799
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 18:58:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0E1F730488D7
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 18:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F323A1A22;
-	Tue, 31 Mar 2026 18:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410152FD7D3;
+	Tue, 31 Mar 2026 18:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="dq4oTl8i"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="qQzgS8/5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from GVZP280CU018.outbound.protection.outlook.com (mail-swedencentralazolkn19012050.outbound.protection.outlook.com [52.103.35.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D986317158
-	for <linux-wireless@vger.kernel.org>; Tue, 31 Mar 2026 18:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74103A1A58
+	for <linux-wireless@vger.kernel.org>; Tue, 31 Mar 2026 18:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.35.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774983517; cv=fail; b=lipc7fD9f0p92DGwUQjBNxpmxkaMnn2CBeyIrkLLWqVadlW6o0YeXU9T+bAm3+yABTrXKgTaddl4Zyb0eBQZHpEH7r3B0WSCGrstPJ5QpJNe5gU3RpWUVVA53iTZWEwouUwLBzzdwYl+uDTaUPFj0zR1KVMcB1nKI7xsaC50FCQ=
+	t=1774983519; cv=fail; b=SWdX7hvc9CXBo0hENjakMWKQEGyOP5dqH7FUkfd3RSYDZ5msvGTfc3+mwAXrh1YMkSR8ewCukk/Hedr0jERemeTETGzWqA1ys/i+O7RMPdF6rXp4xRYIUfLTpCIhjzRFTdjn7bXVKlfVq8DDZi86QJy6b0ysBEIxgett0Wx5UII=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774983517; c=relaxed/simple;
-	bh=CKFBHz+Z2GHGdywUqlX2XcDayxJBqX6i7a2kzIqEeP8=;
+	s=arc-20240116; t=1774983519; c=relaxed/simple;
+	bh=VetO7dkqHS9EkHhpx/kb5LwZKQKluM49lTZmjJo85f0=;
 	h=Date:Message-ID:From:To:CC:Subject:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tUUxYFrXtgtsj9xnuHaiiw1uv2+tirnZWJP4fJUKa5VLzmaAmSC7ESu/n/Q7SunyEHnNEqz0mzC3ux/yzWdOH7do416eUDfJ6DkfUpjVXCliFc7M81J60vpZ2KyxNzg2+p6ssvSnFkjx+uN0LXpv/h9OKkSJqmFqmDTfp6uQL/8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=dq4oTl8i; arc=fail smtp.client-ip=52.103.35.50
+	 Content-Type:MIME-Version; b=PJg0MpUBmjHbaZzQkgSf+IXDFaq8C5jLGvhsY6hSCZW48KIojCZi51BDenGowY/qDC5SHmDWR1wRowIuubi33VR73hWcMeFZX2q2GIe+W9Ozk14A0+vXTXL7exvjR+xGDQRc4uXnNbMDNmiMuu5DofC8qD8SWebpk0g5/362XMU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=qQzgS8/5; arc=fail smtp.client-ip=52.103.35.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v8f4533G14IyxLlGxWRh+LxNsQXSZl5szHYVDBhnF6xOR5/ppHW2UbElFxMq7sekRtSnrPLMdeEgdphJmdTU1QAMQWp8++gbhdaG47El9eFCZS6JaCdAggKKYObVv6yLFzqtW8LhmyOUD5bDwPR9txJBMJ7qCJlT2YmZRVpf/z6B+GBnCmoU0UUl0oiW6sXN2kpEcIYuxJZD0PrBOcIFG6k3Kges13xVMcA+kZ+cYtLp10xHw/K592cVEeMpqPWaiaFIqtSU3YHgs9q//9j7RXy9jqcSrehWFwN+VSbPZoNwzCCbydHoGIFX65BgrTPRu1k6d/1HhsXyZa+kkW2HbQ==
+ b=BkVWvhLGX3oPRbk9xnMJUsfRoinSfbNfYBw697VDfi0Bfukk33s5411cdFgIlRVeA+CMGTpYsTY/9F1v6pBcFJo0Y9iAZ8uCoTZRpVQEYEMGFyrzk6EnX/NcnUVmIkoX9J0ZrVPR/jAF9R+CIqFormwJDzH7VAf+/A89q8dAJ911C/I/uTDIuhZMm0HORHHajRCimUWJx8u5fLVsEa1KPn23c1CRYWJmecYH0zy749X6Zffla5A6qMpvqCsU+jjhtNopsDteq/NA5D5HKrXsa28G8W1HJMzS1Qnw0YPuZoyhlVqApKYU+Gzmv6L6aiHfm2Fkib8MvJERXcUMaRi5GQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qpYgp8j8eDPFDzY1AhZFC9WXBy1JMP1EQnyse1iaBIM=;
- b=kRpiOKFXnqxuU8CZ+aLShs+X/QB86IiA6LXfCtFaS2Iun6cTV+sIUfDZhRX54/QyyjYzqlgN+ijd+S67ReTHxWzWUPak1NITriqaSzqJaZGxNoaugBubakvhzifDK2s6ZPVTRkGoCibbM2F36iLHoRft62USSWNFnPtAsWwcAQvYUlFcNPVHo7sZirv/gKDy1ea/YFV6udLbk9yU8nlISoZ5Ok13li44coda/hES4eelZgj+QKM2g+5pA0nePBioXNaGKd1R6ha+b8zLkjRJ9lTdK/lgdXjau3ryG5/3OXmbLIJ+mGPDthR5K5YD1dT2SQ0JbTPQjtPtdXcNB/HVKQ==
+ bh=bk9Z52wFlyvjWstMfVDoBhoOMoGz4Ytu1RCEfSo1jnA=;
+ b=kbS4PK/8IqpG6MVNCo49RCh9naqJN/7QwhdEO8zkI8rycaEPT54LfdI0A587kPkl81OkRWSynq6KftiBc/kKbeWAOIesBiDCQTGp23z4Pcw9qB2blrpCXQrMbeLEn8YrToXbiaY9x0ga3CsADt+dVkBl0bZ0mTPBfrnUy5EILwhW9H46AIQjpK2YnPPx7h3CoJeEFebTxqPopAKqbswi90GfAORtXH/Zs+8h0FF5oOqM6y3dG86zWPQPS/jPgBIId4rZqOWAFbA0Q8/usom6GE9TkHqUYY3Bfae3otqieyDkCXbjHfD6hU+Ct6aE9RnpEKWmhL3BpobpllbRX/XZ1A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qpYgp8j8eDPFDzY1AhZFC9WXBy1JMP1EQnyse1iaBIM=;
- b=dq4oTl8iq14jTmGqAA28GbQHoB0XvjovepYAGCk3xBFSNqXwhyy3NAwN+C/VCLaxnsX66AR2Mjel2xOrtEN/SwIcdPkrsvIdgnrbOJMGBSVoW+gy608iSHyfy7OQkQ8eUyDNBowTNkVhkuevkbTTs8woVtuz9ukTyC3ESCyZT6xRD+IL2wjd6x0LIvoRlHLtvXQiGuojjk3C3u/weq+1O3TAph0VKurtcKmWn7RYlPe1X7Qxv9jf9VZ6lOEpxer9Kx/a+2Gu5Ukbc/xEwNTyAdszf1wlOcsrAwOITqDSTc/d5NY0wSh4TEzkzuqDEzKc05O5sflWftH7r3EnQRnEyg==
+ bh=bk9Z52wFlyvjWstMfVDoBhoOMoGz4Ytu1RCEfSo1jnA=;
+ b=qQzgS8/5VUOEVjhCbekawJoYKYsWAaOinKSkw9n7sPJxc2DXaZl21LUtT2evnS+47+h+4M4yOUX2oGKD5ZwaRjVZPQOhhxNmABwhCbKNXz6Yk0A4psnmCWsRsfmEgjI2a/Qqnqq+lMhMIbTy5atNh6kWikI76V/qzK8Nk8v94Pd/8Pf1yFQJvqOn8FJNKp9hp+ruN7gYG4w8Lk2S+X/e2XXGgwSdmladatGNXmdAe5+2LETE0WgqxJdidbkbkoNulvQg9DpBCVTjpVm6zsrwVvdN2Ih1xQ866RZKoqWqO0xmwGU4+QynLFNXwKX4isR0vr2UUhja26kmwTPi2Toxdw==
 Received: from GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:19b::9)
  by MM0P280MB0978.SWEP280.PROD.OUTLOOK.COM (2603:10a6:190:2::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Tue, 31 Mar
- 2026 18:58:32 +0000
+ 2026 18:58:34 +0000
 Received: from GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
  ([fe80::6328:bea5:c218:593f]) by GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
  ([fe80::6328:bea5:c218:593f%4]) with mapi id 15.20.9723.018; Tue, 31 Mar 2026
- 18:58:32 +0000
-Date: Tue, 31 Mar 2026 20:58:31 +0200
+ 18:58:34 +0000
+Date: Tue, 31 Mar 2026 20:58:32 +0200
 Message-ID:
- <GVYP280MB1518288D81C04F477DA3F3A69453A@GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM>
+ <GVYP280MB1518B5DFE59FFFE343F3D5709453A@GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM>
 From: Masi Osmani <mas-i@hotmail.de>
 To: Christian Lamparter <chunkeey@gmail.com>
-CC: linux-wireless@vger.kernel.org, ath9k-devel@qca.qualcomm.com, Johannes Berg <johannes@sipsolutions.net>
-Subject: Re: [PATCH 11/12] carl9170: skip cross-band channel changes during sw scan
-In-Reply-To: <73153743-e0e8-4f2d-8774-066f53460511@gmail.com>
-References: <AM7PPF5613FA0B68A6825857195D5EF51B59443A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM> <73153743-e0e8-4f2d-8774-066f53460511@gmail.com>
+CC: linux-wireless@vger.kernel.org, ath9k-devel@qca.qualcomm.com
+Subject: Re: [PATCH 12/12] carl9170: rx: handle zeroed PLCP CCK rate as corrupted
+In-Reply-To: <cbeeac30-ff8e-4db0-bba9-30942001f557@gmail.com>
+References: <AM7PPF5613FA0B686F41D14D2742825BE219443A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM> <cbeeac30-ff8e-4db0-bba9-30942001f557@gmail.com>
 Content-Type: text/plain
-X-ClientProxiedBy: FR2P281CA0032.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:14::19) To GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
+X-ClientProxiedBy: FR2P281CA0030.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:14::17) To GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
  (2603:10a6:150:19b::9)
-X-Microsoft-Original-Message-ID: <b34a10890882d5959e30d8eff3a2c23e@hotmail.de>
+X-Microsoft-Original-Message-ID: <8d480cf9ca6e4e6feef2d24c4810d02d@hotmail.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,58 +80,42 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GVYP280MB1518:EE_|MM0P280MB0978:EE_
-X-MS-Office365-Filtering-Correlation-Id: 828e83a6-ed03-4c42-7064-08de8f57810b
+X-MS-Office365-Filtering-Correlation-Id: 852230ac-eb07-4d51-4176-08de8f578213
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|23021999003|19110799012|461199028|8060799015|41001999006|15080799012|51005399006|5072599009|440099028|3412199025|26121999003|40105399003;
+	BCL:0;ARA:14566002|23021999003|19110799012|461199028|8060799015|15080799012|51005399006|5072599009|440099028|3412199025|26121999003|40105399003;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7tm4N3Ach7PYVJspZ/AmIMXgbZcp1UEQUchhDx8ivzHp2Jxa0FQZ1sfIuXP/?=
- =?us-ascii?Q?APuajF9udELxTGE2pLFIOJJmI+O+rCahMt6QtJFePPEAyWWyQLjylnjgCOJI?=
- =?us-ascii?Q?hcDtWEpMa6G4oX2cWHcHM5qzsb3brzR30Om6cI2GOj27QRrqm75POoakGshO?=
- =?us-ascii?Q?9SeCT36uT5CI/drtevTdxgRvhA4Mr6fIl9qbcB9KFwj7IMIlyF63fzaMaEt1?=
- =?us-ascii?Q?b58PRLa3QL6iWCxYqXUbNF7dVAnByz1kx7tQ3iTtqLDOHqkESHZsdl9n8G4I?=
- =?us-ascii?Q?MOcaxp6I3xsOYx21IJz0j50SAROCWnt+uFRyllHwdeyBw0YVclq2rbMxuBnN?=
- =?us-ascii?Q?Lh5PMN3rCUAOp4G/lZZTLxy6zVgaNNo95Xx3CJpZUFq/6Aycej5UVcgN90od?=
- =?us-ascii?Q?ODd+Thti2BSyUg+uvDgP7GEZSSd0qvOqNw63QY7bn5Tbui/IvQE8XwfvPlsU?=
- =?us-ascii?Q?iKzdZbecMePDorUSSCztyns0GuuO9XK1wXytt07erEKIE1DxK4Fo9ZzkM7nS?=
- =?us-ascii?Q?LOpQIl/wuIT2ERC+7Yd7g+l+peqL51gDNdr2ye6skMMBrrtbEcfGUd8rAV4D?=
- =?us-ascii?Q?pPgasgY9P7D239tsJf+1ZsVL/OLAQ9pw+J1iUpaqSZAE1YsZgDutNfHbz2TN?=
- =?us-ascii?Q?cTug9jHhqXTlumDRWyRprDSz5mKkra9Vt/LMSjFcXEl60sB6z+NVOpNr7o8Y?=
- =?us-ascii?Q?eoyMoRQ1mEgfYe6XJvExNa1oGsOAYEy/EuU5QGuzPinjmVUtKihgFmiDsZJ+?=
- =?us-ascii?Q?c7LMVMRTwFwrlS+OTNQGYwvUf/jlzo4w2Mvf448MX2531EgLTzFpwVPgO0aM?=
- =?us-ascii?Q?v6xuS18R1XLX2T0wkzlBjLC9qiG9WO2jbEKzdcyRhWlkWkw2zkRa21kSw5GH?=
- =?us-ascii?Q?NkPvjfiB8YBQTacWwglqZODklBi+HaZr7g11UQcFW4szHyme1hOaPuNH9isW?=
- =?us-ascii?Q?IrrieW0JErE8Cm0Z5xMwva0Wh+HSCcTcQm5EggXi0ps=3D?=
+	9gxDvRIjnhmNb6FR6UD5ezibboKUyoJACNzvLp2aI856rQqR3an6AUxmsKZAN1eBPssVDdm4gsOPneqxI7nZHQHxr9CXEo8yrhljlLutSFvu5pDxRWMdyVQOQQ5evzttxy+iomc9YVEqpmyFtGQSa3rFlGMX3CqJSW2jpTbWmd9QxiJmk627fuFOMHNnB9slpYsy0r6mBDyn+cp+4tH9BZ07Wz3mqba7vWp3GbcR9+rYSUnO9gq9V+Z6SbEKo4kfWpI8UVHIMDm4Ss7RIq3ckk/S891kY/G7yYn17LfylKQj5i28MDHrtxKf9ALKGHxfdSWnolBsqzN5go/J/rwk5lfcE3dz1deB0TI/7IjoAMlrr4chDtijD+YoR4lqIlBQZwF1gltfbgwYxHa0ulptEP5LcQpYAjJ7LcjKtv1gGweFMYbOpIZjxEN0HIxFOp9M50hjWC/I7RxWUXQGN7HVF28Koh0Dlbobfh9ul4h59X7jA69kyaLc9oilzUw87lioeUDaSP25ae/vV2vE8UVXOorzz5P1uAHOiozz3J7GryaWRw2p5DKzuqm/wIxIrMLczVLfzaSmw52QdaeiU1Xiq5Ax+z/aVZ8T3IrMqQ3bgxPPNn2krCr1dURLzGLIpmcIRQd5+9ifXH7n1cABWlRc+y91ETzBqiOJroQnEkcJa/NLWp6P9CuZ+tqzpKer5/Xu1+m26EHq03yuOjEcIMoJ25em7TRC/Ixsdn+Qh5SHXFLyDpy5E0zPK5JZ082bEh6rKuSDjhGxgpFa/zZtxdERmShHARrObR6k5U5o39CUrCQ82VOxt5XWmvUMApBtEpRCY6TI65KYlO7dfhlBZ31jeiI9XJbq/+PG5zJKCDvkIamvG1WdlG0HXSfB9lN44CGBYWsQnSsbOrZFALsCGjt/JyJ6h3ZfQz2849twOGQskpF5d4y+2bn0cQKbWz6RDCro
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gGgftpAHGOxgelO1dRk3yha3bzrXTI5RSo3r/WWE7bpFhWjQyzHm4zfjCziX?=
- =?us-ascii?Q?oF02b6OzsuZQ6J8BwZ5vFu7KKnj83UHREuRdc6eezyZqzuGS4b0V0SZgXneU?=
- =?us-ascii?Q?/5QRXMyH5PkUg3iezAK75ME8Nn89ijqPmNVJFCJIeSUSbc7T55NMSWHwZY4E?=
- =?us-ascii?Q?YUyvwUiYJWZ/v4QUXgo6UzTojtiMsI/DW4tIcayVrIYH/wgo39uA9nGZ1Bwj?=
- =?us-ascii?Q?f65L/SETycj9MsuEGWz9V56yNgnvkl5wJFKh7cyOsjqSd4wlTJYz1tmZAfPs?=
- =?us-ascii?Q?oGIbm5qapfnV3voEkgPmsGLpjODLsDTJ5LNJX7nX084hDFA9azm0+uVqa9fG?=
- =?us-ascii?Q?dGpFCDSw7ocbluM+P8S+U5agBbHy87IAykQMQWYg2++EPb33RPtgbgViqM/u?=
- =?us-ascii?Q?4hcfucyiAq+kMd8+0AuiBBwVT2RYHb1RuXjzaiTOJBh6MojZxAEQhJQtYaRW?=
- =?us-ascii?Q?ErTLz9566MOUBXo2P4iUhANmiZPa+ZEuF20j6AtvwTvOjdCiRZUGcYiH16a5?=
- =?us-ascii?Q?TUFLBNNDNGheAZTixjWMuu8YQFFQ3QvWfmclaXbd95+8d3v7oINWv1S0g2hx?=
- =?us-ascii?Q?Ln2/MOrmmXfY7U3JTKLwiGwNb2z1bc0lnnHvQ0gla2bEXTXL2lfrotE7eubw?=
- =?us-ascii?Q?/4OpjKAUePaQRgjOYgdTnmqmfpAFmdON3QV58z0qOtbUzEmYu3hoJjFVQIJb?=
- =?us-ascii?Q?XLBuWBu4QfevVK5a1qeB18XYogmaoA/3M/gfN8QB6/ZTgJOAHZ3dvitAWiHi?=
- =?us-ascii?Q?vU4NpJzbPrDeFS1lcnDo/Z4tc0fnis5WjF2f+guFFbDVIZzafHWAyArrIQLg?=
- =?us-ascii?Q?RiW3qu1gQn5EEzNYYbqn5AmWf8ZBiYV8jNk5SiBnjJmCQyR9NEei7DvdC52F?=
- =?us-ascii?Q?YIj7S/0JuqmCR+2BVn7tK1yb44hi6K3Q2+hHaYj3Zo7jEVhaWw5RSrNN1aL4?=
- =?us-ascii?Q?YSiE+TciDP2H65OD1pxDykXlDNRVwMbI8CLBuvOzpGujeAnYFy+w7xKMehYS?=
- =?us-ascii?Q?VWugcVZ2y+WnxwG6g8QBsng3ZuX6vhR3PgDbzjKKnR9tKyvubrpmpJ2ofZ6B?=
- =?us-ascii?Q?sIsUZnBFkD0oYOBYJt7NfyQg8S9cMMk+cCXBcvZJQM8dHE/IOpU1lrbfsjxk?=
- =?us-ascii?Q?6dewMTGBdezA4Q1b1n5Iqnhfbhzl9xYFUm+r2eSZx9Vd8JjOcaMxLZczO8qN?=
- =?us-ascii?Q?WQRXrsI9ySOMirX5zEkYTvaW7ZVFS9UakIllsbb1ErL8+4DuQ1TV0b3Pr7cd?=
- =?us-ascii?Q?vJj3SkvZGQJP/9VxOWKhCzIEotJe+0ViACYh4hLarUKQvJFh0u1MwKnoaLsb?=
- =?us-ascii?Q?ifJML8/QCeTjssRMrRf5iyEOIAX94g8BZK0qD0aOIl/poX8sWJA/xLw2eq/H?=
- =?us-ascii?Q?cwbua85YLndyb2B1fVzDLYRXnZJX?=
+	=?us-ascii?Q?QnGTIM6nhFjD5JeBYK2DMqB/Mkytvu0n3QCsjvC3hAEnyfdEYYRKDu//Q9zn?=
+ =?us-ascii?Q?9fgs0D6WQgQFcuw5r9bUwduzMTKJv74gt1WbfzI01Ek7wjgsCSQkrb/6qU+A?=
+ =?us-ascii?Q?M42E8ItVr9I6bvTV1ZNcsgqlCcEGs0d86HBsVb5m+v3PZws7j7u9deFbsM8V?=
+ =?us-ascii?Q?jxY8MS4wcOhait7W9rN/xeklmGkv9srXEPl3BBAZfn3rItINpDfcDwGZPKGt?=
+ =?us-ascii?Q?NfNPa6RKYRMIY67a9eine1YePdOKukAqrb7zG9e9HPbSRZLBPBTVd2zXNVaV?=
+ =?us-ascii?Q?F61Y4Dg6b/91AMc1xQfPfwxhhsPjf6Eii9te11RISU4hpXEw8yeaUNzrt7Dg?=
+ =?us-ascii?Q?JZ96fNUgBicu6hBhizDB34NVZjPcZVEWKUml1bsXr/zjiKSQ9fVcn6UNZCK9?=
+ =?us-ascii?Q?SE3Onedu9SlN5S0OpAGpZrVi7+Rkec539GBUnI44EPkKJecpNTfV8sRca390?=
+ =?us-ascii?Q?kd65YoLXdKhAiHdD+dYYpfTKvnsvyM3SrST6LqQCW7pg2+YLCTZqfXQDJmgM?=
+ =?us-ascii?Q?k1D8UrqbVgFgOFfIVM5F9IYY/5ArrnWJd7IHnAunRK81tuvfwEIxS1L9L0I/?=
+ =?us-ascii?Q?Nhfikgh8pbdebKSzpj4JeZECk23H0EzLufR32q1MuaJkhMt5k3xOuXYN44Zs?=
+ =?us-ascii?Q?sJ0qZJnGzJjpzZuoblyrGVYqNZL+wgoOB71mjNA8yhMM2C+asD58KtSJbAj7?=
+ =?us-ascii?Q?dVrN7bC7+vvtPkjP6atwTsrnd88o2urBOguYgV2wLkt5oW2XKVDTgmHIsM2t?=
+ =?us-ascii?Q?6ynTCPf5G5IC8Ndrk94oY61rrDy7Oz3eEt/0MZV5I91/lfOPt3YNxF6rC1Cu?=
+ =?us-ascii?Q?OQZbRxztiEVw8EHU9kVDJZ0Xdzfu6uSGzdYZDKA+4EvnsZNC2xWw/mIosVXQ?=
+ =?us-ascii?Q?sgCQ00IIrfhWOOv36x3FZLFt+VAE6mOtJzrNPPQRRyXt+7jdxmwkPT2DNm1A?=
+ =?us-ascii?Q?OioQZOCxX6l13QXsKU9DgoU+tbcZoM+7+c+byTDNbjOYr2M6XCJm/3RBrxxy?=
+ =?us-ascii?Q?Y+kUyQ/kWsD3QOFxNjb8Bv/MM65Dl5WsWqS72cH3HUqZhfJ0VepSzZVoeIRr?=
+ =?us-ascii?Q?Hlwp+B5S9ex1I2MFHahnNRzoxipS6d2ZNltOdn0b0t9WRl/IJomkNhfN7v/8?=
+ =?us-ascii?Q?f/k62lSGruuSB42M0NXbkZpk3WX9tcOqgr3cpSasm18HIYfT+gXktx4BFacO?=
+ =?us-ascii?Q?rheHR5rz34yJh5rr5Ewth3ejt2jlcGZRwW28VGOUpb8ELkLw4NAhtR8fqI4Q?=
+ =?us-ascii?Q?l8ScmsouIY+48v+txFdzCaK3OiU5g9QM90lsVLf3Y04HOLUd4sVyGIRwraPF?=
+ =?us-ascii?Q?k/pFPoRhAp4kBrnMLVWVnzfzchmJ4PrQ8pXCNOFXsJj0fLQI/2XkKk5VFkxI?=
+ =?us-ascii?Q?xi2ov0aHZuzTFljClsOe/zc810Ha?=
 X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-10872.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 828e83a6-ed03-4c42-7064-08de8f57810b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 852230ac-eb07-4d51-4176-08de8f578213
 X-MS-Exchange-CrossTenant-AuthSource: GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 18:58:32.4732
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 18:58:34.2135
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -144,18 +128,18 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[hotmail.de,none];
 	R_DKIM_ALLOW(-0.20)[HOTMAIL.DE:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34228-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34229-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	FREEMAIL_FROM(0.00)[hotmail.de];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[mas-i@hotmail.de,linux-wireless@vger.kernel.org];
@@ -165,39 +149,50 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM:mid,HOTMAIL.DE:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DA8DA3704AE
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,HOTMAIL.DE:dkim,GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM:mid]
+X-Rspamd-Queue-Id: 6C6AF3704BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/15/26 10:58 PM, Christian Lamparter wrote:
-> I do see the point here and I can confirm that to this day, this
-> causes the described annoyances.
+On 3/21/26 10:42 PM, Christian Lamparter wrote:
+> And the firmware just "delivers" the frame that it gets from the
+> hardware. Apart from filtering (if enabled) it doesn't/shouldn't
+> edit it.
 >
-> @Johannes: Is this "stay within the band" something the driver should
-> do, or could this be moved up to mac80211/cfg80211?
+> I don't think we can really tell? From what I know the antenna must
+> have pick up this frame that way already. Is there some insight in
+> how the hardware works?
+> Note: This all might be because AR9170_MAC_RX_CTRL_PASS_TO_HOST is
+> enabled.
 
-On the @Johannes question: I believe the driver is the right place for
-this. The issue is hardware-specific — the AR9170 requires a full
-baseband cold reset and AGC calibration (200 ms firmware RF_INIT
-command) for every channel change, and cross-band switches add a
-clock domain change (44/88 MHz ↔ 40/80 MHz) that frequently causes
-the AGC to time out. Other hardware with lower channel-change cost
-would not need this restriction.
+Fair point. In 802.11b CCK the PLCP header rate field maps as follows:
 
-A mac80211/cfg80211 layer fix would either need to become
-hardware-capability-driven (a new flag) or apply universally — both
-seem heavier than warranted.
+  0x0a = 1 Mbps  (long preamble)
+  0x14 = 2 Mbps
+  0x37 = 5.5 Mbps
+  0x6e = 11 Mbps
 
-Since sending this patch I have also implemented a complementary fix
-(posted separately as BUG-014) that handles the -EIO return from
-carl9170_set_channel() during a scan more gracefully: instead of
-counting it as a failure that cascades into a device restart, the
-driver now returns 0 so mac80211 advances to the next scan channel
-silently. The two patches work together — this one prevents the
-expensive failed attempts on cross-band channels, BUG-014 handles
-any that slip through.
+  0x05 = 2 Mbps  (short preamble)
+  0x0b = 5.5 Mbps
+  0x16 = 11 Mbps
+
+0x00 is not a valid CCK rate in the 802.11b standard. Any frame
+arriving with plcp[0] == 0x00 cannot be decoded to a real rate, so
+the data payload is garbage regardless of the modulation path it
+took through the hardware.
+
+That said, you are right that we cannot tell whether this is a
+hardware artefact, an RSSI-gated quirk of PASS_TO_HOST, or something
+specific to the AR9170 PHY. The original `default:` case already
+treated this as an error and the frame was dropped. This patch adds
+an explicit case and keeps the same drop behaviour — the only
+functional change is the wiphy_dbg downgrade for the genuine
+`default:` path, which you already acked.
+
+If you prefer, I can fold the 0x00 case back into the existing
+`default:` case (without the dedicated comment) and just keep the
+dbg downgrade. Let me know.
 
 -- 
 Regards,
