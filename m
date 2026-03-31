@@ -1,76 +1,76 @@
-Return-Path: <linux-wireless+bounces-34232-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34233-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCK/IGMbzGnHPgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34232-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 21:07:15 +0200
+	id KBo0AmkbzGnHPgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34233-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 21:07:21 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6A13705CB
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 21:07:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89EB53705D2
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 21:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7614330782BE
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 19:06:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F23EB306A384
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 19:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED41223DE9;
-	Tue, 31 Mar 2026 19:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC80A223DE9;
+	Tue, 31 Mar 2026 19:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="thUvctqV"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="JDatfuDL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from MM0P280CU009.outbound.protection.outlook.com (mail-swedensouthazolkn19011034.outbound.protection.outlook.com [52.103.34.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E631F38CFE7
-	for <linux-wireless@vger.kernel.org>; Tue, 31 Mar 2026 19:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A293A2553
+	for <linux-wireless@vger.kernel.org>; Tue, 31 Mar 2026 19:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.34.34
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774983986; cv=fail; b=uMpefEPXRoHn7lv7JvnZpAdK4Zi7FIvJeh5aHLuuWevJ7XDGfSc+/xQDpHDdry25ycyw+mZ+ZrOpZanQMz8GeRKDNdmpw1VgGkTrMpZqbS5Ygbvw4dLKpIEMQFWsqyWgRfOPceYqFXp/pnmr/m2Er0FD5Bcb+eJpaf2QEfPZXcQ=
+	t=1774983987; cv=fail; b=t5GoPAxdvw3/vequQCBsWd7Yb6BrXnx3hjLhv2BKCW0VHlcFJBjm7uYDgqsOtujvwhqoAAeM8o7GSXtrIPplrN3/pT7txL48x/YH2dwg8S+25soPvCTdhroN9QD/dflNbx38zS88kvmjtt7OHU/VdGmcobBmduC/k0kJ7n+zLBg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774983986; c=relaxed/simple;
-	bh=OUe7rdY/Nvm2cLGfFeBfrcgHVIEiAkqC84wzO45OiZc=;
+	s=arc-20240116; t=1774983987; c=relaxed/simple;
+	bh=dMGGyH2BXWjwJzCN6dQn+6GaS6gdl+omoMmsf379ops=;
 	h=Date:Message-ID:From:To:CC:Subject:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T2pk5GuY5IRLPEOXCJ+u4A5lFxi/RszQsLUFQOHveBdDV/HwFxVwLek2oS/oic3e4SQLmym26CIPnzRlUluEl/bNyv/Xi4n8OP4QKjXF+qChjee7yD8ScQoIA0es0lF28UE8oZeqklix4daid1QlnqyBAcLAqyi4zCHBqi0GC6Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=thUvctqV; arc=fail smtp.client-ip=52.103.34.34
+	 Content-Type:MIME-Version; b=tWGxh0BSdpEA921YtE8utbg/+cByM+NsmW5Yv4bek7MgNtlbr8ruWOSaO5atUROPOJ0ydP5uIOtL6r7B91KV9Uvh+wDYGhDCshpomS1ADYTPxsaKittJc7GF516HSK1HjNS4Gp7kjCbwXgqyXA5v7k647LO/3cd+yS+u/fw25Is=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=JDatfuDL; arc=fail smtp.client-ip=52.103.34.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Rm9DwAryQiKVKZ9tShEshVv794oWgQOflz8HSE3yhQaWRr98vFSJIadMj9k4Cepu6e1AMU78RQM/WKgAwyVDZc9QFU97O1NfdT481EwPyOQh7M8keNo8wKVAADY3B0p/N6+wOu6pDp6gLo1ELPA4H0/qJqK229W7kOD3g4ShCa/AHkmFFDDn+ATz7YYhVFxXEW0KamAU9wkmzQ0tQcAqAQezaqriLOJCXpk5yjvqnkCbiykINQpJJGyJfqdirwhb3/Qn/YZgHCEhMb7a7LJmnH79YifRttET6B2GrjHnjCtDDQnC4esmO2opQ2KebV4uDx24y347E3soslFTmogrig==
+ b=EZSPTfBBXpOK4tV8lYVYfgdsyGsnTPQvyHKH+t6anvJsDaSI2pGcgonBkth3CI62pefdWbCZ75Kgbr7K/lcXic0ysyoh4rouLdP2tyzuuBYkDGlMIS3Di1AGGNrvLoaYjsjYvd5ByJKWujU73U6YzW8VsefFS3fEKOMBplObfaaJxg0vE1tnWUkTegeq5AJBr+Jpt7yvmcN5W3Pg8mRnBQE/yemD9MaPJEINlAdsrd44bLFeXQPN4M6UjrUS5d8CCxDM+RVERpMzr2AU8LcnvKNfTN7rEsFCOg07GXNRDlFTqjkov3hz5K93RBNqabsNyOk/dYBUsKkWQA6lAswztw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MtVpiZkvtkS9hjCPxVefSCZAtKaRwizNZnX7gs8CKi0=;
- b=ygNfr/KUwv9BmPw10jY4z/FLL/pgK2+8V07O3B5l0Ic+tGeGUlKW3eX1GkPwz9RfNnnmSwfQ+UugCR/c8/0q/L5dDot1RF73M7ugunpARMEGEuNFLudZ9w2asMI6CqsDRANZQx5dEmAMimjxje1/u6shRVjZ6PJo9ovTu2qoMIRUzlUY+phaEAPnbMfNldmJxDiw0/qw3hOEF77LYDc+AtGpJsbBZnyqoIUA4BNqrEKX1uGO8DZusojzm197RLC95lKv/zMCUVR49OW6i+QKsgEE05c2KZlCIHudTKOqy3woqJvdJX7JvM+5aLjoXf83AaJSxGcS6joeVzGMZ0P9LA==
+ bh=SC3oPP86v4vdKm0VRiqeznpJMHvqo6JpzyNnYo4Q3ZI=;
+ b=GJoHOEb8zwSxXHzNj69TfTbVC8y3T+TWFFCo4BZ3r2nXCErjdbEZEAF0JIEjuJTKHLBOv9NzYU2Rtx9E0olhGu+5TZ6QEF7BiqrDlzdZlEC25UgqhWh++r0lzDcOSu26Vw0Ttq53sSsHS5k6pKN1qGJZeCRiv7Jpi1F8/BBmCY3DKjRj6A3kbdqnR67uePArPD+qfRN3cEU7Olcu20kI6/A7fWXGwNFQlMV1eR8S1qLCrWzvbqZFXoR4+8B+FwdIAG/+4Ow96bC5TM2eIEd52XZvy/5Qco2DdiXzxlS3pwNnpFtfm5Jnlm2T/VcmycqdmGPPk+q5qzzbedP1HywxcA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MtVpiZkvtkS9hjCPxVefSCZAtKaRwizNZnX7gs8CKi0=;
- b=thUvctqVQgOlmAuRSWMXxDLvXaubR7Fc3SADEFNG+543Vr0o2bObGQwekawRO9RHLtLRljJw9QR5w1hOl2dCxhi0rggGUyUQkh/I5cXSBZCaFdib4aX/jepc7QxU9ZlZ6qu0665sZnb8Bb4ptDRi0zzvb4LzSqgx1LeCdxTod1ztx562Bx7rQ+7L/AkUbSNiY4E5DtY1kdFzv6LYEfn49JiDBOMwP4JwWqPeO5ofdVQkjNNypmFfH7LG9yFXNWU3djBG6OZbe7W63xKtrYDe5v9HDW4w2+rasG1jbCcNZHyh6yuZMNZTj/2/qN86oVQTD+fhwW0M9jDSY65vdJcv3w==
+ bh=SC3oPP86v4vdKm0VRiqeznpJMHvqo6JpzyNnYo4Q3ZI=;
+ b=JDatfuDLzwh3gHKlxy9H0VekpRxfz0YZ0GwNAcjMee+a29GQ7mtrk5mn0v91OL/K5VWNc4s4j/BwROxpYuXLVY56gao0IAqvtlS8Q7TipbrHTT0QJDYHVr17WclNEJ1LOGB56KJm9JwBlL7vBtO9OzKm5wrZbY9wr1RtFimIciQyv/P3hjdWKxDa0nWJ/I3ZubbzV3F78ZRtfOxVnSJttSQzaa88sGmxkTgm37Ewcdv6HW86z/tTjMOqGAzkTIUw1XLGfVjToCLBb/DbmWT3VonV2adqG5BaFudE32WXKj+s6Wy36lDbneV83/qsSk5cSk9A3ZlQaYyGl33mtio+oA==
 Received: from GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:19b::9)
  by GV5P280MB2028.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:376::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
- 2026 19:06:23 +0000
+ 2026 19:06:25 +0000
 Received: from GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
  ([fe80::6328:bea5:c218:593f]) by GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
  ([fe80::6328:bea5:c218:593f%4]) with mapi id 15.20.9723.018; Tue, 31 Mar 2026
- 19:06:23 +0000
-Date: Tue, 31 Mar 2026 21:06:21 +0200
+ 19:06:25 +0000
+Date: Tue, 31 Mar 2026 21:06:23 +0200
 Message-ID:
- <GVYP280MB15188BDB9B5557B0D4931BA89453A@GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM>
+ <GVYP280MB1518512DDF2D2097031CC9729453A@GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM>
 From: Masi Osmani <mas-i@hotmail.de>
 To: Christian Lamparter <chunkeey@gmail.com>
 CC: linux-wireless@vger.kernel.org, ath9k-devel@qca.qualcomm.com
-Subject: Re: [PATCH 04/10] carl9170: rx: wire up dropped frame counter
-In-Reply-To: <ad72370b-b5ea-4cc5-98b0-701ffbe15290@gmail.com>
-References: <AM7PPF5613FA0B6AC8119FB64246940D3899444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM> <ad72370b-b5ea-4cc5-98b0-701ffbe15290@gmail.com>
+Subject: Re: [PATCH 06/10] carl9170: phy: populate per-channel TX power from EEPROM
+In-Reply-To: <ec4490af-1156-41b0-9df1-770fe8be6f91@gmail.com>
+References: <AM7PPF5613FA0B6E8EAEDB73BAB87748A8C9444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM> <ec4490af-1156-41b0-9df1-770fe8be6f91@gmail.com>
 Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0434.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:d1::7) To GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
+X-ClientProxiedBy: FR2P281CA0125.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9d::19) To GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
  (2603:10a6:150:19b::9)
-X-Microsoft-Original-Message-ID: <2c4694f90cd14ac7f35a6160749b7356@hotmail.de>
+X-Microsoft-Original-Message-ID: <3b1b74d644693a82db75c011bbd2ba62@hotmail.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,58 +80,42 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GVYP280MB1518:EE_|GV5P280MB2028:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0211a61d-97dd-47e5-6f42-08de8f589987
+X-MS-Office365-Filtering-Correlation-Id: 8aabb620-3b20-4572-a344-08de8f589acd
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|15080799012|5072599009|23021999003|461199028|41001999006|8060799015|19110799012|51005399006|440099028|3412199025|26121999003|40105399003;
+	BCL:0;ARA:14566002|15080799012|5072599009|23021999003|461199028|8060799015|19110799012|51005399006|440099028|3412199025|26121999003|40105399003;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?JY3mn5hFHmQFPLK3tsVvJQPAGbel0uIkyejXCAUp+Jd2x3X2UKPpjYQt6Lvm?=
- =?us-ascii?Q?5IdCmwwerEnCQkGWIYtGmNOZMF2WNtYSm3zmaNd3vsvgVHQQiUzxdJHq1T1B?=
- =?us-ascii?Q?fkjhR1oFw4Ne4IdjsTSHEF2wmocXyjLD1LlDV4GYCISihFyrjLUN2SCKaQmU?=
- =?us-ascii?Q?r61cmu5RPoqcUWBvj8spWHoV0wmBkqWB5DHQUlFTN6zY/HvACzLcDzeRXSQb?=
- =?us-ascii?Q?Blkpx2B9r9ZJg1iEL+vB1HhUzq0RUXbv3a2YOHn/vRsH1DVxg+1WvbdWAqZy?=
- =?us-ascii?Q?NNviLgdK14lCb4tyW1Z8ZpgIrA2B0nwZf+BChnbEHCiskDD6BEGZ2CXNJIVc?=
- =?us-ascii?Q?Muo7kDtzcwoTbBBWz1pokVjdgORbNu3ID+iOpAiEkslsr5RFSEWe2wTxL/is?=
- =?us-ascii?Q?feCJhuMLMWmArp7VWV+7Fo8TJNWEOkeI8U5d/7SduwhcK++4264WAvhFmEC+?=
- =?us-ascii?Q?gUpW8dxTLnK7LT0tOynfYNNVfP/3mAVqMEf2p0Ysx4xPXKn/Zb587pY7tAxn?=
- =?us-ascii?Q?19/whPhPi1VDBI6H0WhD6nlfqA0IrjoZPe+BpFAiN9/ovgnu7p518nH1YZpL?=
- =?us-ascii?Q?K7UwkDL6lKtdiicOjPEJTjdLvc0OTnL85eoS3zgnDDVl8W6deJ7VDsUqTWIO?=
- =?us-ascii?Q?Ve+MaNESjWN6X1ncTvcOo3g8NABcUZJ51yMzQy//Gn8tnexX0/Q7PNdmkZb/?=
- =?us-ascii?Q?YRYdipmHGKvh13GNf27GWgYmNt4yV40yzDMXXBKwIn2G5JJolD5o88R8jw8E?=
- =?us-ascii?Q?e4YmozCUeHpO9W7OAPI9yRvBqFV1MoOE3kB5bMkLt+oCDmCwej+1A0hUS/1d?=
- =?us-ascii?Q?ZagPePGXY3K2+fD0kWOikQbPYcivvzy5X1Quh6QS4u0FPhv0XAduF1xMVZ+g?=
- =?us-ascii?Q?5DbcaoSdB3dPUKQ6TVnNsom/d70dS/z7cU6RYQs0EFVH4UO+qn1Qv5H4Kopf?=
- =?us-ascii?Q?Vb/pSqR522psLjoupfOhq2r17UWyufmJ1adJ4PCGUZY=3D?=
+	vesKUEqjZCbtfwCMuZPIuTLNJgliP+Z3Wrz0mw2UEKzDo2f7UxCUAB1wBnP7beDMAFnH24jzka8wdjxkK15IzZOAVcaUMa5CikcCwKcwQHQnZgVEfSPFpUF0ZD6JwwSS/bUtrG18pyo0mhRz+mouxT+0e3PmbmWZRs/0WcKtMoECNmIoAPbv0lmPFhC/R1sQv5TcrOVUEpFVGz53B7uw+IhxOmlGS/7Y7v6WNItTiSJXX+knG4tbbu3uZ5YicgdBDdaVFIEEk4gRSLDTzsNcNGEruZg6glkeGBH+VAGuY58oUwZh8s236LmGmXlJUaPC5ZBczNcehJ/vZoNMEPF04bN2RbVF7i89naESXfay8Kw4/fVwR5wm93OHOrrod5n0FhKKDjcx7WXAbshdYEuMtigZtUZ7/VbZ4VxhpCUZ1o8dEUZLjAN/yza20PEepB4ytiVg9zI6PCzYWv3d0mo5WSVLjoyhLMPFUFj5H1QYkWc4PLeNh19984GyyhRDOKLhm0g5+gWkAg65il25PIlIjWe3G7XqxnKiqxBgWJ4nGXC0V5X2PMOnEmxAjGZ8JQ0gmRjHvxzxc/xO8LURTLve3JbhKBaCSINMLB+Vb4RYnBsJJl4UWqiWpiMPrJtq2sDMqTws0uDHRKq9p9DFZR6fXjAYucObTCd2XCoV56mNwL8QUOCflO8tApgfDnVNcbySgRusdaLjK50UcIXdO3+L4UGICeqlHw3bx0srwKqCcbYYyvVq3feLJP40rFuYN4EtBo1MpGdDQUL802Iw24DTr8mLAYCcRRDCln/K96nYgTj38ZiVDcfNr+plP+mqcC9833Z9UpxvgJ+62/kLT+WZI1HsFEH6K2mFEZjR0XEbe9IbM48l0LmuyVtxF7dfXIsjHDjsRoNnwXhTmdAu4P1pxhnX3xeqQNHW5vhAlTQA0HMGRMOOFb5XhGgrH04tEs5u
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ioSM+EN6/ECKdE4roGsuKO4WfOeB3Q3bdFiygd5GDhnIy4OvMLKQyd+2GDCz?=
- =?us-ascii?Q?fLHYzcYmIzKLnHRpaLI3ProHSYmPfMZCm6FAdmv2RFFdxNeRptoq5ejQ3meP?=
- =?us-ascii?Q?Tm+VxFz3/KlVgfVgtzbjpgWYQVpBJ5zY7ca8kUNW/1ZRXE2ewiI+xEpW6ADP?=
- =?us-ascii?Q?FwAnn3Jrpeu5z21whhJLG9M60BA2zNXtHh77O6sp95WXVEoguwZKq+yEgV+v?=
- =?us-ascii?Q?cg4asp3eo1D2v1OteFp5iQq7mFlnySA413utW2hi5LqCiuKgOQy6gHViwwpt?=
- =?us-ascii?Q?LKb9dbvSBkybw9/ySRBc4dtK0dDxocKQgrnmOwyrztDcN8MWKs7AT/Z34x+Z?=
- =?us-ascii?Q?XpQ8qcQMnXeR0BC/4vpw0mnU7P0XZs+5zlEKPueRLwvY3bbZVog1LLb0Zzl6?=
- =?us-ascii?Q?s7sAO5exoD+Lu8vomoL7/crTNkhwkpK7SxavsJ7LJnYuLdjRhZu69lToUU9q?=
- =?us-ascii?Q?UkoAFc7Pv4pJm7cFVT//z3awcRgQNayO4Z9nPWKs+A5B3yQFFOODmL6FZWKU?=
- =?us-ascii?Q?gRhceEQ6jG9ug82PXBD1hDSC1BWPG6kN0dT6ZyDH06KG9yT6gSYwJbun8nr2?=
- =?us-ascii?Q?3VATVSO/xAn+p3dewK8Pqsy/UY+3N7LuvP1TmlW/4tjk+Su+8CqAU5z6btyO?=
- =?us-ascii?Q?qNMMVkO1TQar4O8muZUfBEky0rHTPXNvLsXSk4xVDnJfL/LiBRIGf4g/1f5K?=
- =?us-ascii?Q?SxMMx+e6/EpfKsmYfVetiHrhbVLZaEdwHyhTz6++BiL5xG15LoUVb8RJMO3H?=
- =?us-ascii?Q?HV2l3Qe07e/NOB3dOntKPKXUtdsDWBSmO4j1LgzInql12G2jzFzHVQ9D0c2p?=
- =?us-ascii?Q?UMDfYxHneiqqQR0UNUbwqkY57aNGfA97PzC8fEIUY2HKAIUybyQIDSoOzTy9?=
- =?us-ascii?Q?pfoPAs7BJuRjabxw2Wi/VsbMnu2WEUJVJCMrPQy1Hf+ADmTf5B4mIA1biQYQ?=
- =?us-ascii?Q?lSMmgpuyZGikEyCfAgfn+cs3OIlv/IkpAMhFJMuEYt48Zbzzh1nKIB5Owszl?=
- =?us-ascii?Q?M7TqjyZU5f03Dqx8Ia0d93FLqZhGwYf/M0SzSGRSMF/4XRi0cXs4C2HVcFrH?=
- =?us-ascii?Q?4IcCNanOB0ovoie5NdvA2T7Vw2eht136vBZE6uIa+Y2fsNHaAv0Da46u6HeN?=
- =?us-ascii?Q?Qs+R6Vo5nZGd98us1ezIWkhU5WAUaZbWpCGjbUQbak8frCt/HExDV6i6MyVl?=
- =?us-ascii?Q?0VrSgJd8pK3y9/NnPaLqajwAnWxVIK+//TFEK+ihBSzVRh5bPhAkhE8TESQc?=
- =?us-ascii?Q?eFtC0g6h6E1zdvzIt1YdOWKqsLeT4DvhB7GNgKwna05ZzdakfSJ4TR/jK4g6?=
- =?us-ascii?Q?2+UZTU4QiWVxvyunrcOW5IcXSkqF4Xea8RyKClCMFH/nriPzMcDqCPk5nmnK?=
- =?us-ascii?Q?K+x7JvtIh5MEKPDuiVheavVxhg1w?=
+	=?us-ascii?Q?KJ9tj5jrgnk5NQ1VtCObwOMNHcOiw7syOH7JzKsLcKzuKxmq8p9mi5E3YjcG?=
+ =?us-ascii?Q?PAMJmWY5nnRMRQpT4L3YwTFci18jSN4R5BMBhN+xS3GrLduVbOVx+rh2a6m4?=
+ =?us-ascii?Q?o0TxxvAUc5alk5tj2ISVR8susfSH8pVdkdtaK6OHSP7CknJYLTndUcH/HTeN?=
+ =?us-ascii?Q?tD7POaOAVpXR8FZW00YIl6/PlZBL1lOqTPpjx7AbhJMZN0v9SGZf/8QifqE/?=
+ =?us-ascii?Q?yznaJL05+F87lPqZAsvZCsjFlen9+dUgW8EachjmKuOo5uC15JkubfY1OBS8?=
+ =?us-ascii?Q?L5/hwpsZFhi5C6hC8SoVyt4yrHwY/FoM8gZK8Z80vxNO0OjoJL4cFNZX5Ykl?=
+ =?us-ascii?Q?Hu9jt451kmo3n5rdIBOfsNSJxIa6a1SX89p87RnJHGE0zhv6uj33tuBwoUbR?=
+ =?us-ascii?Q?Lepl7RXb6G2/DS+XU3cvy+XzjxtLcefsJydrK6M7mA9BJkrUTpvefj61rcuq?=
+ =?us-ascii?Q?42fR5zD9m08HdUrsJSZE2jJJZrB/gdIvhXgYFkUaX/VMniwVb8Pcu2MnyiWJ?=
+ =?us-ascii?Q?P8Hkr3Jq35dZh973UA+B/md4omKsjSodaZfl7uQTglQbHryblaEH4L86H6wW?=
+ =?us-ascii?Q?sP4rK3+a4IUZJduhCthA0PuVQy7b4npPKCOR9HS4juh5eFOf80yenhl6s7pL?=
+ =?us-ascii?Q?eU6ffDO0XhHywSyZJHasqCXpA6oKYsSoAfrKvNn2tvB0j5tkwBH139qjqSfj?=
+ =?us-ascii?Q?EMvtB5vfpKe9JHurQATVTabvB7Q92FAhJ+fvsUuTVwrYdPxJOVfPAu38ViZK?=
+ =?us-ascii?Q?KrVqn6mIicG006lDi3rXvlzYlODCZ4oT3Ud+RMocmieTJCmTcubEUl5qVOHS?=
+ =?us-ascii?Q?UrFP8h4iy+aYeoqsYV/B4wgaX1SkSfRgL0V1X7HIWUEotZBXwdsx+MbWo1bV?=
+ =?us-ascii?Q?hD7isf4TPbEnoN48an6RYgu0ZwaJBKa8lE7iuo6zVIXj/CUAJUtBvYbRBz3r?=
+ =?us-ascii?Q?EmHMDNvKWHb6JMX05fxuzL9d9MNr+qgsy5phUjyoW5/wvShLixOKfTPsvx9y?=
+ =?us-ascii?Q?OV+zLhMyjNZ7s0MEjAmSK9ReVMIMKGlAxG1pu3iXYDG0odaj6VKHbl4//AYH?=
+ =?us-ascii?Q?CAjPmrnfkLyJiS4kEiynkqPulibLRwoTd4B6RDn4BRcXnUmb5Kk0KumBeaH5?=
+ =?us-ascii?Q?L2fY8C2buRGDx2WIJMWCx6DhCSkdTQS8wjTXx8SUR9G/Jm4AZEUwwL7ASZho?=
+ =?us-ascii?Q?yIfDAGRdkdNQpGPeZvqXI4F2o4YtqcEJzkTdWn/JKbSqsMdn2AX8Eo7GdsKW?=
+ =?us-ascii?Q?kMR7iwtkD/7RBi/Ti1b1Go5d644LzGoWIQNczxenjWPN9TM3/xYjV7MWUlpz?=
+ =?us-ascii?Q?VxaWDe0PVD8eCX9uJ0U7XT0AeeX2SClK9UIoKZw98UKGSQbAycPLqqasGVxi?=
+ =?us-ascii?Q?ZwcSM5R8Scmg5Ci22euTysRrnYKB?=
 X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-10872.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0211a61d-97dd-47e5-6f42-08de8f589987
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8aabb620-3b20-4572-a344-08de8f589acd
 X-MS-Exchange-CrossTenant-AuthSource: GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 19:06:23.1515
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 19:06:25.2987
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -144,11 +128,11 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[hotmail.de,none];
 	R_DKIM_ALLOW(-0.20)[HOTMAIL.DE:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34232-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34233-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -165,42 +149,39 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,HOTMAIL.DE:dkim,GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM:mid]
-X-Rspamd-Queue-Id: 3D6A13705CB
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM:mid,HOTMAIL.DE:dkim]
+X-Rspamd-Queue-Id: 89EB53705D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/21/26 8:03 PM, Christian Lamparter wrote:
-> No, that would cause it to be counted twice.
-> This is because in the parent function carl9170_rx_untie_data() [...]
-> already has the "ar->rx_dropped++;" in the "drop:" error code path.
+On 3/21/26 8:24 PM, Christian Lamparter wrote:
+> Why the need for interpolation here? Don't you just need to look
+> for the max(ctpl[idx].power, previous_value) within the band?
+> I'm not aware of any high-powered AR9170 devices. Were/are there any?
 
-You are absolutely right.  I missed the drop: label in
-carl9170_rx_untie_data().  The correct fix is to simply remove the
-stale TODO comment without adding any counter increment — the drop:
-label already covers all frames that carl9170_rx_mac_status() rejects.
+The interpolation was more careful than necessary.  You are right that
+a simple per-band max() across all calibration entries would give the
+same practical result for all known AR9170 devices.
 
-The original TODO read "update netdevice's RX dropped/errors
-statistics" which refers to the netdev stats (ndev->stats.rx_dropped),
-not the debugfs ar->rx_dropped counter.  That wiring is handled by a
-separate bugfix patch which maps ar->rx_dropped into get_stats().
+The reason I used interpolation: the EEPROM calibration target power
+tables store entries at specific frequency calibration points (e.g.
+2412, 2437, 2462 MHz for 2.4 GHz).  Channels between those points
+have slightly lower target power due to regulatory shaping in some
+EEPROM configurations.  Interpolation gives the per-channel value the
+AP would see if it queried the regulatory domain.  But in practice,
+for the AR9170's flat-ish power curves and unknown-to-me device
+diversity, max() achieves the same result.
 
-Corrected patch:
+Regarding high-powered devices: I am not aware of any either.  The
+Fritz!WLAN N EEPROM shows 2.4 GHz: 20 dBm, 5 GHz: 23 dBm (DFS
+channels: 20 dBm) — nothing unusual.  The main benefit is simply
+replacing the hardcoded 18 dBm XXX placeholder with the correct EEPROM
+value, whatever it turns out to be.
 
-  --- a/drivers/net/wireless/ath/carl9170/rx.c
-  +++ b/drivers/net/wireless/ath/carl9170/rx.c
-  @@ -340,8 +340,6 @@ static int carl9170_rx_mac_status(...)
-   	/* drop any other error frames */
-   	if (unlikely(error)) {
-  -		/* TODO: update netdevice's RX dropped/errors statistics */
-  -
-   		if (net_ratelimit())
-   			wiphy_dbg(ar->hw->wiphy, "received frame with "
-   			       "suspicious error code (%#x).\n", error);
-
-I will send a v2 with this fix and an updated commit message explaining
-that the counter is already incremented by the caller.
+I am happy to simplify to max() if you prefer — the patch would be
+significantly shorter and the result identical for all hardware we
+know about.  Let me know.
 
 -- 
 Regards,
