@@ -1,76 +1,73 @@
-Return-Path: <linux-wireless+bounces-34224-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34225-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGJBHG0ZzGnHPgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34224-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 20:58:53 +0200
+	id +KaQKnQZzGnHPgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34225-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 20:59:00 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF92370490
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 20:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA7F370498
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 20:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C8E8305E9FC
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 18:58:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 305613067712
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 18:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7D838F24D;
-	Tue, 31 Mar 2026 18:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC702FD7D3;
+	Tue, 31 Mar 2026 18:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="HcY5OcrY"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="slZ1upr0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from MM0P280CU010.outbound.protection.outlook.com (mail-swedensouthazolkn19012054.outbound.protection.outlook.com [52.103.34.54])
+Received: from GVZP280CU018.outbound.protection.outlook.com (mail-swedencentralazolkn19012071.outbound.protection.outlook.com [52.103.35.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4688C3A3839
-	for <linux-wireless@vger.kernel.org>; Tue, 31 Mar 2026 18:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.34.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD973A16A3
+	for <linux-wireless@vger.kernel.org>; Tue, 31 Mar 2026 18:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.35.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774983496; cv=fail; b=jhcjm5dhc6xYE65he2vkJVBPy9DeeY78gefTxOtRBHl7SwXrP/L67rpS7uNzGiaOYHL+CGyjS/PecOMRAG4KFYgBZ5ybevr2/eGRiwvy3IIu6+gHyNdKVpS17vV6VxeJac2UHThMHiabfYq2lPA7QHmOBnnBzUyTGliw/Zdh4Kw=
+	t=1774983503; cv=fail; b=D9o1lEDlfUVq1gv74PoeWCSRv7551EAlnXBaiFqcA9MIfh4YCcvvRCNfpEjDlELPfkjFuoCj9eewa7G4jVdUAHk09WkCj8u4dc/v4aD9FeNkEVYa1YPkRLGeWN5w65RW5la5rc77rxm4zYJKbzz0mAAEwm6C84sUawY0P1MCaIY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774983496; c=relaxed/simple;
-	bh=cIxFGjigWSRBiztWxYzk2nJ2ER+N/aPHloMWVnRwzOw=;
-	h=Date:Message-ID:From:To:CC:Subject:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cFrWIcLTJXWpSnHBuYRTwJSdmdo2a24p5+dzn6iH4b6jVEoyleJ2ByzY7fCOVzK51jrNtKjn1MlkWCndtptFvqel7VUTGMWeCWp8VOJLcF3pTk4CE1yPA+cRoJZNMXhMqsdHRkW48oNQatSFRGzi6JBfZh9FeC8y9Vmbf053C64=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=HcY5OcrY; arc=fail smtp.client-ip=52.103.34.54
+	s=arc-20240116; t=1774983503; c=relaxed/simple;
+	bh=29CZg+iYvYkW7wazjDjA69qaKdl4lhkLryYzgxPGVEM=;
+	h=Date:Message-ID:From:To:CC:Subject:Content-Type:MIME-Version; b=DJsC43h5L6kYrwOxGYGy/dnRnA5LbW2zZMaPEDmF6Usiq5TKkBSfoqjcmaAWc6Cva1SQpHn3KqKeSHEyzcxVZeCtT5j3ZvR5muGfpRrBeDpWL9JIqVU4G22vnfKoon2WJ2gBtinnzpTkS3eLCCWPTXKPthZZ+XV1zdmORH5Ud8g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=slZ1upr0; arc=fail smtp.client-ip=52.103.35.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FW8IB7VUHxM8Mk/KfscJ9V3FV0XEe6Y7gBazYljK+oJTuyrCkWCDhlVcyiuUBDqTf3Fl4gLn2t4CrNlEg1eac2eCYSLrmHBH6VI3hmFwVszg02F773wJkOmkoxyrzov4HFxZrTPVujb+fAls6+HdUMgwz6GPf9QaF+7+acAJpe/8P6AiRkyIJCBtBMtTOTEaOc2BX1vZgqwIeXtpFExAUu6mHM/KHMup9TtVMX1hQHomAPCpAZZzUhOgS4mCtcLLUO13UEbOs9sCWORzt32KlIu0eox4dcu7YCCFYLY27IpWBVyIOgCcuAXch5cVLRE72CFqSXlDvv++/56biyr9CA==
+ b=dp0XrTEq3sDBqwRrFA7b5irnL2GLtzHmJKGTz47Z8OkXf+zcwC9TAGFt/GjBekrS5075/okVVxA05oAkGDAtlhKdrAlHwD3cEdCM5cbmrvUjkA1XxpPEGeI91hmFXW1+7kwTGR+IupNzFH8eSrMWUxw/KymL63BjXkfc0dpm7me+jrVfmcoB/oN2z9tDQRx9CP+ed3vPmtlCAgteTgghQD0VqFTEUIttspgW4YuHYLCD3iK12nKjld1WznDyrrrrBqWVnrwuTx2nk0dRhWuAXBM0MB20B2AfZTCr+QHZp55dkM4Wk6MfjDtScOPTTlrcGdOdQ3XAVLCAn53tD6+f2A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2SqtHe8HSJv9d0u/pk/1VPnHXyDnAxYeSUB0gv+/jkQ=;
- b=CaTLgsl3d3KggQsoQBNKqz0xMALw+bHTQH1bbH0ni6Lt/OlnFBruU7ytnVYwfESnZjvpk2/JJBj6SQKwefMsgdMGqWlBcX+PdcHwpP7UVsHBX74uF6+YGtEsPVp12eChnhkTQatxSM/r8eLlE+bEDiCGT9BTECg/+3UW3Yc7gPitKKjL256nGyayhNfgE2wDHhznKJXFJFi674HrIHJaAmCsDSTFj62bI4RT5as5NdIzBYOGc2SmQ4HHGZ3IC/tHzTVV6Y5ecwVddkFi+enCJgnRpfe5bh+wkMLf5BQdA5qnktVx5HemH2QK3vMn26Ro1ZK+Lryd2hmb3GD9jsAI3A==
+ bh=OteJ0qIe2K6COe9pBJyJ0TKAnv8E1F0kTCOlWnzL8js=;
+ b=NfOt5hjiL9amENeRTDsvRTMRGeBjOM/lF2VCm/XtoM7S3ZGD4KhWux3FgAu/TEPZiS0oQCOAfXAXKNw5r4eRzTHIQceJTClTibOGFtPf7qgWONkvyUO+tiJuzC5OO6ltXOqopbqTC25EhW6JNcInUNQMe1V0smcnDSAAmUnEDSLOGaNjFdQIkRHlDti1APmvvokJ8jXO17UavMIjnu64nzBhKgDVI6KJRqkG5JrdVu1+9eUqMc0c5nCFJMXBvxtHIbs4cEqSKSXRY/t6B1e/LweXV24j/FlSQYTf1gdJ47Utm3bfcPNg75r78a48a1vkRSEMJN8xkE8L5ip4HX+fJA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2SqtHe8HSJv9d0u/pk/1VPnHXyDnAxYeSUB0gv+/jkQ=;
- b=HcY5OcrY/lYwEc3ZTcbjgwFrQFyNbWrDiA9zIg8V4P8Sy4P/YK2ydBbV+374MlxjFH5SbsId9PgQ27nUlxm1aBnxqoeV/j/x623nhc5Nu4ZzLHMnnwH9U3sXpWaVVLu1GKbHUCzwkqIeOd01E0ASzwHgF3PXXmE1wawNfLbhwhd/cV5EH8zwSG0oA3hRIYWGItJG8eKp3omOrGhurXo1MqJ7DmfMpefvTKk8q/8PU2XWd9+4G8nHya1RGQ718e+hQpEw6xTmVvCyLC7reOFKd4jyBhR1glyLJ+87UVGjEc4xnv4xdQB44TMFazNZ+8Ko9qDUWsf5D03ilCD+RCx2eQ==
+ bh=OteJ0qIe2K6COe9pBJyJ0TKAnv8E1F0kTCOlWnzL8js=;
+ b=slZ1upr0FB1fvduPOfnpwZEExkb4nS8BfbQ5UVM10oeS2PTvpnV+IcVMswjP/QZ6ms5HDAZrLobRB2Y2RTwHmDBqIlYABmJcfCe4ihrvbp2GfZLdWP47Q3IPpoeUZalCeTOnNfxrOdIIBGaPFQQQy2pTmIVpK+0Y722SiFb7w/Iiph6YFogG1cxglVihDANfXoIcpK1bswKPTi93rMdvRxZVU3rKSwkuTjBkOf8crHgRrqSK2l3OU/TFBGS3M25Xc21z7L61ZCBTBaH/FhdafDwPz92hJSgcHX2uRzOxfdjiRO0FvqQc1GArG193cs9yB9VLXXvy9KpNGNIvNNbdKw==
 Received: from GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:19b::9)
  by MM0P280MB0978.SWEP280.PROD.OUTLOOK.COM (2603:10a6:190:2::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Tue, 31 Mar
- 2026 18:58:12 +0000
+ 2026 18:58:19 +0000
 Received: from GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
  ([fe80::6328:bea5:c218:593f]) by GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
  ([fe80::6328:bea5:c218:593f%4]) with mapi id 15.20.9723.018; Tue, 31 Mar 2026
- 18:58:12 +0000
-Date: Tue, 31 Mar 2026 20:58:10 +0200
+ 18:58:19 +0000
+Date: Tue, 31 Mar 2026 20:58:17 +0200
 Message-ID:
- <GVYP280MB1518D554111AA6F6BAB473929453A@GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM>
+ <GVYP280MB1518FB3FAA4B157AD47C0DF89453A@GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM>
 From: Masi Osmani <mas-i@hotmail.de>
-To: Christian Lamparter <chunkeey@gmail.com>
-CC: linux-wireless@vger.kernel.org, ath9k-devel@qca.qualcomm.com
-Subject: Re: [PATCH 14/16] carl9170: main: guard op_config and bss_info_changed against non-STARTED state
-In-Reply-To: <4558729b-1248-476d-8262-56ddb228812a@gmail.com>
-References: <AM7PPF5613FA0B6FDA6759CDCBE2421A8039441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM> <4558729b-1248-476d-8262-56ddb228812a@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: linux-wireless@vger.kernel.org, Christian Lamparter <chunkeey@googlemail.com>
+Subject: [PATCH] mac80211: stop hardware before clearing driver state on reconfig failure
 Content-Type: text/plain
 X-ClientProxiedBy: FR0P281CA0075.DEUP281.PROD.OUTLOOK.COM
  (2603:10a6:d10:1e::10) To GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
  (2603:10a6:150:19b::9)
-X-Microsoft-Original-Message-ID: <8e33796f0279675750323698eece14bc@hotmail.de>
+X-Microsoft-Original-Message-ID: <48fe513847163fba91ebb855ce28ffad@hotmail.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,60 +77,59 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GVYP280MB1518:EE_|MM0P280MB0978:EE_
-X-MS-Office365-Filtering-Correlation-Id: 53a81942-de6d-45d3-8881-08de8f5774f0
+X-MS-Office365-Filtering-Correlation-Id: 0d3423e1-a62c-453b-c684-08de8f5778f5
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|23021999003|19110799012|461199028|8060799015|15080799012|51005399006|5072599009|10035399007|440099028|3412199025|4302099013|26121999003|1602099012|40105399003;
+	BCL:0;ARA:14566002|23021999003|19110799012|5062599005|461199028|8060799015|15080799012|51005399006|5072599009|440099028|3412199025|12091999003|26121999003|40105399003;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hSN22FCenHC+720RRJ2eMPAZl4t3FjcseoJaRz03vpR/E5Z2q4el0T6Xl7+1?=
- =?us-ascii?Q?luwmXciiWppdLW8B7+BhEeWiUHa4nqwyhCrLi58Y7c8uRPRNon6pxaQ58uwM?=
- =?us-ascii?Q?1xKPhsYpV1uRPLLuZwFr2eTtaWy7Gp3qZ3EJnt+fADhKb3SNsCSr553heEPk?=
- =?us-ascii?Q?JOQcydFc0irzEZ41GuuQSw7JS8EZfDwl1ZRecix6rmqMqk6brFCLEIaGlJ2+?=
- =?us-ascii?Q?yqXLU0lUh4Kt5f6EdiXzNzz58kkoez7ee9Tar8BYjaY9jfG9dTr26VHTEJ2s?=
- =?us-ascii?Q?TQklPuO6twJghhIyazs+L4+4qX8XF68/T6A9CwwGJOE5wMKQNzSCHSfGf9T5?=
- =?us-ascii?Q?1Upet+6e3+BF9LiPQ4AIiUv2wQY9Rxo10/zgFA26qRGzNqRG51ZEcCGhFuHn?=
- =?us-ascii?Q?M2QwCR353H7JSywlzAVU0nPxDI730TW3WN9qGKBhKqNGBc9EPs2rTcYhG1vR?=
- =?us-ascii?Q?mbcJq4AOVFxxTK9TCJ7PTuqfdMLLMIWs9CHWPAehJv/QD2ckJ8e2QOLCJyp6?=
- =?us-ascii?Q?Ejx3+Uv9Q61j52fvrBUWQaJgxFqr8B5VitEeOMjSiT8EzVqClDy+k31ZX4dA?=
- =?us-ascii?Q?HfoPOm9ZAewgNcaD6zhWZuteAlhvB6JMk3kdQn2TLwRcfk3XHb7zHlUndQkY?=
- =?us-ascii?Q?XcmGEInLGb5A1NWvnT0MUljkAHE21qpMy5Go4VVIx59dRlzA/eUK6E9sSucC?=
- =?us-ascii?Q?igIQoR3AdmQ2VWPlnD0WrOEJ32VW3k6qmNfACOxea6HNXqvgke2+L3ytwkpx?=
- =?us-ascii?Q?sjIGqm2sPeFtsKY7Mr2tSc1yY+X/84gqywbIzrmixJbt4dyYbevbJ7AKq7NS?=
- =?us-ascii?Q?ltiWC/701+sKFzpYJ9BM1TMn26tphrdSzHAoFspSVeNESoo2Wmjd2TwIbme5?=
- =?us-ascii?Q?lEnHqI0iL763CyUuP0f/iqrsdUVOSHUR+JpKsHMFXdk3XPTO+5rkCg1p5T+H?=
- =?us-ascii?Q?/aL0R1cB11TXMdmj+kqVcu7UaAHyTf1s+noX+loTWlNyLZNJjx5YwtCWuYoz?=
- =?us-ascii?Q?QpaytKOdDAiITdwulG7ElSQ2Yot9nsU9z3NQkuyzZSAuz2w6XGI8gBdrzfHV?=
- =?us-ascii?Q?n6qDgzU8?=
+	=?us-ascii?Q?JR22YW1eAXNpRtCALLbwk+jD/4JHC0TMOCkwvVo8SMc/2Ps9eM0MRv73UdGD?=
+ =?us-ascii?Q?ChGaiaBXwUCyZ1R6DBBDwOSE1zMlfYnWLFsQoTuBXRHWrFrTSXrXjw4oRZf9?=
+ =?us-ascii?Q?MzLb0A/UzAF+8t48LhcwWqcCC078MiMbolRvUjmD3Mdrw6riH1XNK7lMf+u5?=
+ =?us-ascii?Q?ch+QYWfiKs+jH7cw8/cVHVbCab0h170XfhyBbQ+cnl9Obl1yXDKBZG216d3s?=
+ =?us-ascii?Q?Tz7pIcmIkNwg2xdsOWR4HjA7bzYWMwXfYaO2MEDeRj4fZv5oQ2A2odOMv7cD?=
+ =?us-ascii?Q?g8vvkTp5p6RIVtaIG9XEcV8iCidb8rjgRiK+tEbEW/LWcRKoO+8LeyICKQ2j?=
+ =?us-ascii?Q?LL0tA6ef1lNPltqGDyh2NmSQ1rsnNnE5atUu2FuOI500VOwxcEveF5mZ0lhs?=
+ =?us-ascii?Q?QfCggafcTB7D//D39Awhbo9ikB/Es85S1i4c/NEfg7K4O7gjVrGXqcyLaGMu?=
+ =?us-ascii?Q?crBlZYSPES2AqnvFSPkFA3JZwUNL0cFS6pPRbs2OA9ZV/WT2LIB3300OPXIE?=
+ =?us-ascii?Q?dKe+mPM6e+bSOUY+US1oiwFSvRCkjHq97shx2xYLrSyTMyvXnrC3l4fgKghq?=
+ =?us-ascii?Q?mc1VzoFmS4X+08PnvFNyJ2RtldZJh7scUyBU7lFusklFLAzfJxZSussUd0gN?=
+ =?us-ascii?Q?XbNSr2WZcXVfr0mIcEC6b2+hyksLrVmm/TVi7ehI09X8wL0SPoQAC7Zmxm46?=
+ =?us-ascii?Q?qRx30ZH6NU1QtC9btMSYIBWl8QAQV/T1ylHuaGRUxuXowwH/qPYr1HgBDzLP?=
+ =?us-ascii?Q?zdvQPMvZUlYXIYHOIvpiZW8xZcJmCrsx4BnG66Klb578br8vgr3AJhIw83Q5?=
+ =?us-ascii?Q?5Dlni/ulAWcrCuXg2BkLDl2mXD8gE7Oi0+FbON5rhJYM2++bycbU43ScpzIA?=
+ =?us-ascii?Q?HESwCHILrXKkrQ817TqAhP8yMlvTSfTd9SbCrBrcn8GKIzocM2VkPndHm4mi?=
+ =?us-ascii?Q?/5lXMtGOtT1PGksN8ePctMwGOKq5DLYf+bjip3fGU5WpRv7GUkJ82HPbQ0u+?=
+ =?us-ascii?Q?WveA?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3J9rB+/Zwa9rzsE6gEP90E/4XRD1/7Gjox86lIWAdV0LQcqwEnDVFmB1CJrn?=
- =?us-ascii?Q?/dew8HlK9SZuUpDDnKGuhmWVFqSoroxvGIlu11m+MDrmZjoDnZMrXksmJEan?=
- =?us-ascii?Q?5iIAcE/YRoNdIFkihSuQitvEvXGVa+L0KGZ2S4izjJ6NCMgJ/VWPyZbwLZuK?=
- =?us-ascii?Q?iR6T/9cHWLDVEbzmwkQ8NfRS+wuPUO3KIgAJWZB/ZuGIId0PivhGtIA7mTZi?=
- =?us-ascii?Q?u+S81+1a/758/TYoUpsUYVdNPG4NgIPAliYqjYDQja2knJim5sfFwHes/Kl2?=
- =?us-ascii?Q?djCrhAcgc0nZWz6qMkpAHPB5F55FO6Wu20eOnuHYtbzRA0P6Xgb0u9J66lvK?=
- =?us-ascii?Q?Xv5IPH5voXa9BdUJ/eZl9GTrR9K0VRe2QUbMPZBbrI7HeBwhkPSPm2Zu1kiD?=
- =?us-ascii?Q?8cPNvFRl4K7cSj7irUzHsG1OtwoLzww5ZwzJiW6Z3UwpKRmkfIXCQ+s0ss5r?=
- =?us-ascii?Q?nPQZVaGQpukJ9wCW1mBpcqP7/BHjS2m0RMTUrgph/Rex3dg33jxTpy4vRE+D?=
- =?us-ascii?Q?4is7Kq3Jy3ApdFrzoRD+4WazgERw+NTD4ZkaetT8nfX4u9eO8qWhETEDuQFq?=
- =?us-ascii?Q?t+ECT/DjS9eAfupI0YuzQr2plh04eVKVYWl4xwZnGkkDk10fBgXGosmernTF?=
- =?us-ascii?Q?PGetH1yg0fM+GsRUlNidIfXrdpqmrm1tqpSdJ4fxQHmPa6ex0ni81F8zrfk6?=
- =?us-ascii?Q?/Wrr8hwjj3p5bChssihtkiKJ1mOXAybkg8TzuEcfdC3EyjD/IRXH++HEpGoT?=
- =?us-ascii?Q?ZlXrUIRb7jQ9TNjz9MLCLcSSCC4chMGDSQ5RwTf0lPQ3lgUsQega9/IF8yRP?=
- =?us-ascii?Q?lkUAahyDsAI7S4wfl67Xu0uN9m8v8N/8+v8cfaqc6Vl9j+k03AMZmSKrSmcT?=
- =?us-ascii?Q?6Fd9qpBp8TZqLFwQimHTGqeAlY1gGgzbPFHdd35c/bkb1euY0fZRI6/sD0Ab?=
- =?us-ascii?Q?IGuFlYXjqjW28PnrMmLz63UIMVXEEm+rXbuQLUFgzbw2LVAPh6/a/+UaPYp5?=
- =?us-ascii?Q?6+oBS5ziyiSCbH9yQclzqXyMPyRtEAOOaeiMqbcLFAEA7fTBF3a3Xu616FYb?=
- =?us-ascii?Q?VG8rf6+xdRHtR3MlLQtmp0ePxtmjhV7rPf/GlztsQwKMhbY6knQnYzjWG5Ta?=
- =?us-ascii?Q?XtcX+eey6eADZ8B3rjk61gWLusoj6s1PoUveOvzbGLXvHM3Ou2goq7oEFGNf?=
- =?us-ascii?Q?h/7ZxNqRbt8F+PXvekSmd0ZW9WAI9wZ08XUazdXjw2N+iad5glXrW4TULPEf?=
- =?us-ascii?Q?o/Qf8uYxILSHGHsRDP5lyHNa1QAgAi9riEB8KaIbYrXTWf4K5Elf9veiXBWC?=
- =?us-ascii?Q?Eb5HTMEuuVifHtYaWbMLtKzyG41n1+NOQcyUNzPfAidFc+sctzy1zOmXAfHA?=
- =?us-ascii?Q?PGqzDrj3jvEJhMvwYa4YGyoQQiRe?=
+	=?us-ascii?Q?Mie0F23hYRr5wW4SScpUUPcBzNIEMtL4cn/rthhb17g8oW5NwH294YwjEunN?=
+ =?us-ascii?Q?K7mkDDPOM52gqF51cQ0KRmoSVa7evDrQjcwh5hI9RLAZMdvo6RHk4Y0jen7+?=
+ =?us-ascii?Q?+VlIqo/8ERgOZINJxJR3Dy+WylhcU6V4N3HH66N65SLqnqfUsyYVLQ6r/7bd?=
+ =?us-ascii?Q?hpmvtEwTi08jTHAdgZqNypLfBx0nBr98N9cKrhWMlVg7qLiRn1SqWWZbh9sv?=
+ =?us-ascii?Q?bakRZjcp+e0DsZZ+Pk73RVG44PvWlQvvJnmZ0igxfsxLp2xkCHLs0ql7Qm0E?=
+ =?us-ascii?Q?g4ObciB7bw9jYBeFlQ+mq72TRe6/9lVMtE+N+g0l6STsICCmpIMSFi7KCNvj?=
+ =?us-ascii?Q?y7Rbi/HA9cdUuPlSSnVrRmNEIX0WM5Idyui91V7XWNTgfXCR6R0Tu204RlHP?=
+ =?us-ascii?Q?qcw97Gp+sYKdXU0h4rLwGiiCrSu82AzdBwRUdFXUbUJELfceS4LWp8zuAkVS?=
+ =?us-ascii?Q?3FyBdwuJ94DVns05NMpNhhy8sfM7N+EzEpCZhtrXHVr6iGV48CtRddA3jwtM?=
+ =?us-ascii?Q?qjC0IBIMghnldCO7HSioSlK2XP3nBSdoNBXHSAgDm0ka1Jrh9xKisbIeL0mV?=
+ =?us-ascii?Q?SS4R7CnFzsSK0JGxtN9wcmqKzMlB01TAzKSiOSjW/TqT4r5eQ/prbFGsumM0?=
+ =?us-ascii?Q?rvjlmLaz+h6c1HYsQpSV7omic1m7muaj9DN6Fzgk+VW1yscfqWukesOJprqO?=
+ =?us-ascii?Q?nVm6uIEt67EVWsnlp9hLhtUKV5gIrOI1UMf+AZKsulgb+t2nwVPuS2HZ8r30?=
+ =?us-ascii?Q?zTLj+TIOhOw/p/dtOs+FI8Uwf8bJTZKBoMI7tBQT5sAHIKUKFxO146XUqoNi?=
+ =?us-ascii?Q?vQvCIz+wSpZp5cgt/yj8cP39+rLs5g+7jeDyd7KxADr6jPfRn6AdkpMzI9xC?=
+ =?us-ascii?Q?r1VSdFltve0xgjnNojlwMmFolbTj7QUS8/lTKjkFvuGLzVv7Ogimfq9Jr16v?=
+ =?us-ascii?Q?UYe7wZv9q3cFsRCPHd1HUqV82HVl5MiAPEaWphkqDouUGS2tPaq+gCzAWRfR?=
+ =?us-ascii?Q?YI/Yt9XkTiq8Mj6Yh4Phv16ndIUkYxCW7PQahzyQB9Pycgr0dZb/9HHj+FqB?=
+ =?us-ascii?Q?Wot0/23CVER3zFZC8UjUedcnFivZRE21rssqvsqkHGyhqXnnonfc5oTjz6Hd?=
+ =?us-ascii?Q?xvHRisFZMEfOOIKaGHxA15HfwvrQvy8cQz7UcfUsYdt01LNZQ/5h3mUX1DUj?=
+ =?us-ascii?Q?/JSwfo+RvKbu7jBZgrEsowWLRY/nCl9p6hpkNrxLCUqCJoEtcrofu9l8t7kg?=
+ =?us-ascii?Q?dl0pPH8xz7stulQbUB8WKSUIUhWbbp2C5ObyBKtPNDyhJgllVHG8kMVhwvg+?=
+ =?us-ascii?Q?D7SsHzoRQm5fkffIaAYYEe8Y5IGf9ybMrgz0S39zXh/GAVLtIGbOKQq4q5j0?=
+ =?us-ascii?Q?hWyDLmzLpeUHjVmie0jGYYDiSrJC?=
 X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-10872.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53a81942-de6d-45d3-8881-08de8f5774f0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0d3423e1-a62c-453b-c684-08de8f5778f5
 X-MS-Exchange-CrossTenant-AuthSource: GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 18:58:12.1793
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 18:58:18.9579
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -150,11 +146,11 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34224-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34225-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,googlemail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
@@ -165,45 +161,79 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	DKIM_TRACE(0.00)[HOTMAIL.DE:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-1.000];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM:mid,HOTMAIL.DE:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0EF92370490
+	DBL_BLOCKED_OPENRESOLVER(0.00)[GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM:mid,hotmail.de:email,HOTMAIL.DE:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3EA7F370498
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/21/26 11:28 PM, Christian Lamparter wrote:
-> Resources exhaustion? Kernel Panic? This does sound like an embedded device!
-> Have you checked for leaks? ( https://docs.kernel.org/dev-tools/kmemleak.html )
-> Can you please post such a panic?
+From: Masi Osmani <mas-i@hotmail.de>
+Date: Thu, 12 Mar 2026 02:00:00 +0100
 
-Sorry for the misleading phrasing — "resource exhaustion" was wrong. What
-actually happens is simpler:
+When ieee80211_handle_reconfig_failure() is called after a failed HW
+reconfiguration, it clears IEEE80211_SDATA_IN_DRIVER flags on all
+interfaces but does not stop the hardware. This creates a race window:
+cfg80211_shutdown_all_interfaces() subsequently calls ieee80211_do_stop()
+which runs sta_info_flush() to destroy stations, while the driver's RX
+path may still be delivering frames that reference station data being
+freed.
 
-During teardown/restart (state = IDLE), mac80211 calls carl9170_op_config()
-and carl9170_op_bss_info_changed(), which attempt register writes. The
-firmware is already dead, so each write fails with -EIO. On our hardware
-(AR9170, which uses IS_ACCEPTING_CMD() = state >= IDLE) we see these in
-dmesg for every restart cycle:
+This race was observed with the carl9170 driver: when firmware
+deadlocks during a restart attempt, ieee80211_reconfig() fails
+at drv_add_interface(). The subsequent interface teardown triggers
+sta_info_destroy_part2() while the USB RX tasklet still calls
+ieee80211_rx_napi(), causing a use-after-free kernel panic (hard
+system freeze, power cycle required — no oops saved to disk).
 
-  ieee80211 phy31: writing reg 0x1c36f0 (val 0x2400) failed (-5)
-  ieee80211 phy31: writing reg 0x1c36f0 (val 0x5000) failed (-5)
+The race condition:
+  1. carl9170 firmware deadlocks → ieee80211_reconfig() called
+  2. carl9170_op_start() returns -ETIMEDOUT
+  3. ieee80211_handle_reconfig_failure() clears IN_DRIVER flags
+     but does NOT call drv_stop() → hardware still running
+  4. cfg80211_shutdown_all_interfaces() → sta_info_flush() frees
+     station data
+  5. USB RX tasklet delivers frames via ieee80211_rx_napi() →
+     use-after-free → hard freeze
 
-The "30+ cycles causing a panic" claim in the original commit message was
-overstated — the -EIO flood did not cause the kernel panic directly. The
-panic (hard freeze) was a separate mac80211 reconfig failure race described
-in my reply to patch 13.
+The fix stops the hardware in ieee80211_handle_reconfig_failure() before
+clearing IN_DRIVER state, ensuring no driver can deliver RX frames once
+the teardown begins. The drv_stop() call is guarded by local->started
+since some call sites reach this function after drv_start() has already
+failed (where the hardware was never started).
 
-This patch still fixes a real problem: unnecessary -EIO writes and their
-associated error log spam during every teardown cycle. The IS_STARTED()
-guard makes the code correct and eliminates the noise, but it is a minor
-improvement, not a critical fix.
+Christian Lamparter (carl9170 original author) reviewed the carl9170-side
+companion patches and confirmed: "If what you write is true for an
+up-to-date kernel, this needs to be addressed in mac80211."
 
-Apologies for the overstated description. If you'd prefer, I can resend
-with a corrected commit message.
+Signed-off-by: Masi Osmani <mas-i@hotmail.de>
+---
+ net/mac80211/util.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -1614,6 +1614,18 @@ static void ieee80211_handle_reconfig_failure(struct ieee80211_local *local)
+
+ 	local->resuming = false;
+ 	local->suspended = false;
++
++	/*
++	 * Stop the hardware before clearing IN_DRIVER state. Without this,
++	 * cfg80211_shutdown_all_interfaces() tears down stations via
++	 * sta_info_flush() while the driver's RX path may still deliver
++	 * frames referencing station data being freed, causing use-after-free.
++	 * Guard with local->started since this function can be reached when
++	 * drv_start() itself failed (hardware never started).
++	 */
++	if (local->started)
++		drv_stop(local, false);
++
+ 	local->in_reconfig = false;
+ 	local->reconfig_failure = true;
 
 -- 
-Regards,
-Masi Osmani
+2.51.0
 
