@@ -1,76 +1,76 @@
-Return-Path: <linux-wireless+bounces-34233-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34234-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBo0AmkbzGnHPgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34233-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 21:07:21 +0200
+	id GLQDK1oczGnHPgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34234-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 21:11:22 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EB53705D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 21:07:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F93C37064D
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 21:11:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F23EB306A384
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 19:06:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB7EA30A166E
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 19:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC80A223DE9;
-	Tue, 31 Mar 2026 19:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAC43A3839;
+	Tue, 31 Mar 2026 19:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="JDatfuDL"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="mMfMqO6t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from MM0P280CU009.outbound.protection.outlook.com (mail-swedensouthazolkn19011034.outbound.protection.outlook.com [52.103.34.34])
+Received: from MM0P280CU009.outbound.protection.outlook.com (mail-swedensouthazolkn19011027.outbound.protection.outlook.com [52.103.34.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A293A2553
-	for <linux-wireless@vger.kernel.org>; Tue, 31 Mar 2026 19:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.34.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1807223DE9
+	for <linux-wireless@vger.kernel.org>; Tue, 31 Mar 2026 19:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.34.27
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774983987; cv=fail; b=t5GoPAxdvw3/vequQCBsWd7Yb6BrXnx3hjLhv2BKCW0VHlcFJBjm7uYDgqsOtujvwhqoAAeM8o7GSXtrIPplrN3/pT7txL48x/YH2dwg8S+25soPvCTdhroN9QD/dflNbx38zS88kvmjtt7OHU/VdGmcobBmduC/k0kJ7n+zLBg=
+	t=1774983991; cv=fail; b=dT5fZ0itL4OpyqV/Q13QDiVhRcL21suBZkZfaw6Ozqzl5unErUOX2Z6RYeA8kruK1hV/9z3WgscF7Dt1OG6dUT4kn/C31tvKkuOLLzbIzXTl9DgEUhzWoEG9fFA6z28wRnnmAOViNRWzT0ogflvGT4C48pA+aTHyQ3TW+G8LYTE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774983987; c=relaxed/simple;
-	bh=dMGGyH2BXWjwJzCN6dQn+6GaS6gdl+omoMmsf379ops=;
+	s=arc-20240116; t=1774983991; c=relaxed/simple;
+	bh=OEhyXE7HLhkJu4jxmniDhC8wuaujXj3paS26UF5NVck=;
 	h=Date:Message-ID:From:To:CC:Subject:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tWGxh0BSdpEA921YtE8utbg/+cByM+NsmW5Yv4bek7MgNtlbr8ruWOSaO5atUROPOJ0ydP5uIOtL6r7B91KV9Uvh+wDYGhDCshpomS1ADYTPxsaKittJc7GF516HSK1HjNS4Gp7kjCbwXgqyXA5v7k647LO/3cd+yS+u/fw25Is=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=JDatfuDL; arc=fail smtp.client-ip=52.103.34.34
+	 Content-Type:MIME-Version; b=qPXaEVxWvCBHp2oY9f82KbsgrKQJ6GG0QeQdpKJmcxtAOW/pzf6stcpjFqOQvNcO5tAEEXRynTn/ZY9MxvZy706ZNlot6LNi9qk5/rBNP1OAsPUv/EvmCplKI5yYRvbz67Hzil5IKkce9o9u9dbxS+3spqZfAVVEca42s5+3MEY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=mMfMqO6t; arc=fail smtp.client-ip=52.103.34.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EZSPTfBBXpOK4tV8lYVYfgdsyGsnTPQvyHKH+t6anvJsDaSI2pGcgonBkth3CI62pefdWbCZ75Kgbr7K/lcXic0ysyoh4rouLdP2tyzuuBYkDGlMIS3Di1AGGNrvLoaYjsjYvd5ByJKWujU73U6YzW8VsefFS3fEKOMBplObfaaJxg0vE1tnWUkTegeq5AJBr+Jpt7yvmcN5W3Pg8mRnBQE/yemD9MaPJEINlAdsrd44bLFeXQPN4M6UjrUS5d8CCxDM+RVERpMzr2AU8LcnvKNfTN7rEsFCOg07GXNRDlFTqjkov3hz5K93RBNqabsNyOk/dYBUsKkWQA6lAswztw==
+ b=JNOHpADPT5631rPizCJ+EUorkLzrAnvv/yeZOFECfk3lov2Ax/b40zzvJ0XXRFYV0sOBiBOiWlgAB3ZDKlwZ0iNM2QHtZywOtVN7U+EFupbM6c8jGbGpAzMZHYiTehI2M9O4vMto3H6KDx9tKVoHVvTJ1c5KZO+H2GshFVueS1IeLud1ZmgC3h9W8ZMjo7TkzHG6L2xFp2RIkg1E7WLpzwYs7ioXgdMgf+l/TJI9WuNaomW+HhzYntDBGVpBLz9HbL86qs7byInnOWXobSlvkIC5g9kyr4z2sTbYjuan0m6fIwfMPgnECIbmEn42lCWvZ4XFaW/lqh3dZiiXiepHTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SC3oPP86v4vdKm0VRiqeznpJMHvqo6JpzyNnYo4Q3ZI=;
- b=GJoHOEb8zwSxXHzNj69TfTbVC8y3T+TWFFCo4BZ3r2nXCErjdbEZEAF0JIEjuJTKHLBOv9NzYU2Rtx9E0olhGu+5TZ6QEF7BiqrDlzdZlEC25UgqhWh++r0lzDcOSu26Vw0Ttq53sSsHS5k6pKN1qGJZeCRiv7Jpi1F8/BBmCY3DKjRj6A3kbdqnR67uePArPD+qfRN3cEU7Olcu20kI6/A7fWXGwNFQlMV1eR8S1qLCrWzvbqZFXoR4+8B+FwdIAG/+4Ow96bC5TM2eIEd52XZvy/5Qco2DdiXzxlS3pwNnpFtfm5Jnlm2T/VcmycqdmGPPk+q5qzzbedP1HywxcA==
+ bh=ef2Ij3U7VFcoL1T0O4SmfHEo3v1TJizpYGbwLZE3RDQ=;
+ b=tlxkErpsPK+bfeYrd6gbm0QhCnwL9KQL1IZoxXl8G1C1By4/qHSLA/ui1QfOwBZEEXBfzNM+AuNkxGPJZ8CnACEbjyoUy81dDJ9YJ1Lkb8x1aRuSzP/zqG+EcrHwuJVWNPi2De8AflRGlVpbMSZc8hpjJjTjxY0GzNen78zNVdioj7QXC/XYo6o5c3n1dMrTATjMfUPxwfvky6VbouSXeAoqhw7PofMYT9epPamQk8pSiab0B+nvjcCdDbPTXbBCIPwS8Idol4noDzbkRdMkbEWc1V31zWgt6VQ3Sy9rs9YW6SsYy9GU37ByVNapqdZN9W5Ij0juf8xSXbPzSscQDg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SC3oPP86v4vdKm0VRiqeznpJMHvqo6JpzyNnYo4Q3ZI=;
- b=JDatfuDLzwh3gHKlxy9H0VekpRxfz0YZ0GwNAcjMee+a29GQ7mtrk5mn0v91OL/K5VWNc4s4j/BwROxpYuXLVY56gao0IAqvtlS8Q7TipbrHTT0QJDYHVr17WclNEJ1LOGB56KJm9JwBlL7vBtO9OzKm5wrZbY9wr1RtFimIciQyv/P3hjdWKxDa0nWJ/I3ZubbzV3F78ZRtfOxVnSJttSQzaa88sGmxkTgm37Ewcdv6HW86z/tTjMOqGAzkTIUw1XLGfVjToCLBb/DbmWT3VonV2adqG5BaFudE32WXKj+s6Wy36lDbneV83/qsSk5cSk9A3ZlQaYyGl33mtio+oA==
+ bh=ef2Ij3U7VFcoL1T0O4SmfHEo3v1TJizpYGbwLZE3RDQ=;
+ b=mMfMqO6tB8c0RqD39Np923GHLQ4G+NqazQ29e6pIrs/OfWzi2XwMiiKFOKQdkL+dU3vb2Gii6ZvU5k+nAuwhfVD3qHwNFOhSwkUX5GVddQ2FCAoosy/pH5c6YxXQRjaWylDc5eYKIwl5Iw+FPyDumoHn2nKhKKeecD1fH7L1CVUM0n/z8lIvvL/g8ekvgY4FJEu0FGV3hGDdhmebscpbqejsl+ABQ0tX7FRgZIBMoIltiepw924jqa+nqHO+Tp1MPH9hdBL+7SEv9wiyTfL+81kfPoUAQrw21MD6k76s7/kpzYh0b8SxlMSabik8PYDCHF0zkQASJRQeJ++fZeDQMA==
 Received: from GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:19b::9)
  by GV5P280MB2028.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:376::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
- 2026 19:06:25 +0000
+ 2026 19:06:27 +0000
 Received: from GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
  ([fe80::6328:bea5:c218:593f]) by GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
  ([fe80::6328:bea5:c218:593f%4]) with mapi id 15.20.9723.018; Tue, 31 Mar 2026
- 19:06:25 +0000
-Date: Tue, 31 Mar 2026 21:06:23 +0200
+ 19:06:27 +0000
+Date: Tue, 31 Mar 2026 21:06:25 +0200
 Message-ID:
- <GVYP280MB1518512DDF2D2097031CC9729453A@GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM>
+ <GVYP280MB15187353282B2DB39605C8BE9453A@GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM>
 From: Masi Osmani <mas-i@hotmail.de>
 To: Christian Lamparter <chunkeey@gmail.com>
 CC: linux-wireless@vger.kernel.org, ath9k-devel@qca.qualcomm.com
-Subject: Re: [PATCH 06/10] carl9170: phy: populate per-channel TX power from EEPROM
-In-Reply-To: <ec4490af-1156-41b0-9df1-770fe8be6f91@gmail.com>
-References: <AM7PPF5613FA0B6E8EAEDB73BAB87748A8C9444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM> <ec4490af-1156-41b0-9df1-770fe8be6f91@gmail.com>
+Subject: Re: [PATCH 09/10] carl9170: fw: enable DFS radar detection
+In-Reply-To: <093b7bad-2ecc-47af-9763-958283a102d6@gmail.com>
+References: <AM7PPF5613FA0B6E8DE143A385080A72F139444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM> <093b7bad-2ecc-47af-9763-958283a102d6@gmail.com>
 Content-Type: text/plain
-X-ClientProxiedBy: FR2P281CA0125.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9d::19) To GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
+X-ClientProxiedBy: FR4P281CA0444.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c6::6) To GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
  (2603:10a6:150:19b::9)
-X-Microsoft-Original-Message-ID: <3b1b74d644693a82db75c011bbd2ba62@hotmail.de>
+X-Microsoft-Original-Message-ID: <567cbff657dd989e473cda51c0cfd1f8@hotmail.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,42 +80,42 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GVYP280MB1518:EE_|GV5P280MB2028:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8aabb620-3b20-4572-a344-08de8f589acd
+X-MS-Office365-Filtering-Correlation-Id: c4d96467-ce6a-4ba6-e5df-08de8f589c11
 X-Microsoft-Antispam:
 	BCL:0;ARA:14566002|15080799012|5072599009|23021999003|461199028|8060799015|19110799012|51005399006|440099028|3412199025|26121999003|40105399003;
 X-Microsoft-Antispam-Message-Info:
-	vesKUEqjZCbtfwCMuZPIuTLNJgliP+Z3Wrz0mw2UEKzDo2f7UxCUAB1wBnP7beDMAFnH24jzka8wdjxkK15IzZOAVcaUMa5CikcCwKcwQHQnZgVEfSPFpUF0ZD6JwwSS/bUtrG18pyo0mhRz+mouxT+0e3PmbmWZRs/0WcKtMoECNmIoAPbv0lmPFhC/R1sQv5TcrOVUEpFVGz53B7uw+IhxOmlGS/7Y7v6WNItTiSJXX+knG4tbbu3uZ5YicgdBDdaVFIEEk4gRSLDTzsNcNGEruZg6glkeGBH+VAGuY58oUwZh8s236LmGmXlJUaPC5ZBczNcehJ/vZoNMEPF04bN2RbVF7i89naESXfay8Kw4/fVwR5wm93OHOrrod5n0FhKKDjcx7WXAbshdYEuMtigZtUZ7/VbZ4VxhpCUZ1o8dEUZLjAN/yza20PEepB4ytiVg9zI6PCzYWv3d0mo5WSVLjoyhLMPFUFj5H1QYkWc4PLeNh19984GyyhRDOKLhm0g5+gWkAg65il25PIlIjWe3G7XqxnKiqxBgWJ4nGXC0V5X2PMOnEmxAjGZ8JQ0gmRjHvxzxc/xO8LURTLve3JbhKBaCSINMLB+Vb4RYnBsJJl4UWqiWpiMPrJtq2sDMqTws0uDHRKq9p9DFZR6fXjAYucObTCd2XCoV56mNwL8QUOCflO8tApgfDnVNcbySgRusdaLjK50UcIXdO3+L4UGICeqlHw3bx0srwKqCcbYYyvVq3feLJP40rFuYN4EtBo1MpGdDQUL802Iw24DTr8mLAYCcRRDCln/K96nYgTj38ZiVDcfNr+plP+mqcC9833Z9UpxvgJ+62/kLT+WZI1HsFEH6K2mFEZjR0XEbe9IbM48l0LmuyVtxF7dfXIsjHDjsRoNnwXhTmdAu4P1pxhnX3xeqQNHW5vhAlTQA0HMGRMOOFb5XhGgrH04tEs5u
+	FTB7rdeSuy0Wn8hIEcLI9Jj0nhQ7mmYLabSi6fAIobWRObkxvjSFXJeIevwmVqbWy89BhGxOiMHhVOtapaVqjILUOo2P+xA3kZ7EKlogliJd08yjvpuMgNAEGej8McwfnLRCQaTWOSUdbhPVw9WxErlOY/rZPlF7SNW6CNf6lReobXhVMZLYlZwdtdgR9Y9ZkxE3B/F3RegZG+BQ/H0LbiCitwiSh0bTyppeppaGJyV/0HgfD43oYfURJavNZK659wkDqLt6HKoswkXWgJ+oiyYJJvn/FpNhMfsTZNSMgpVL89OWo8LL5mP+UqualJrlU7Bz5g7OMhda+ocyqOguYruGWDSL9dmhv/65qbiwmW12kp0x3xJqWxMGc4HtwHOECSKzHMfV1ur63X58QN4xIZ2fl5XS3G+5BAOaiv6sfWnkkQJkmmHKcD4cNgFZ8BHvZhYrFCOdKdqZGieOJEwHQUSxct7u3dm6j3jAc+w0rFSNLFsNlSlyJehJOjuF1yI81Oic5wVbjrHE1hSVXqgIj5W7ozskztT1SrivzyKo75jLhsSHDd7jDS3tyVRyUfmclRubjZe7FoF0ncU5E8pTCluf8gdCec0vRpKS4ip3yflwODrCQWFup2iguiP3EvSvcR1A1Arzn1dxZ0WfG9MpomVFLjcb7EZxWwnKWNYJafZ7L4zjGucRiacuZi8CtQ+ICisnlrbwRk+BWMYapLJKmwvbnDyhcEbpXDoa615A8D+1cqWFv81sFxWeeFuvWEiBZDE4lQSTy3tGCnymBS513aGp8bKsiwaCDgVw11pPEPTwSxqEERuIOtaP0DmiuQgok2iBMNtonLKeksNhc60wVqdBxh0XAqEjpkoQMZweza+qOiNKgYUrY0R79b2rvDuzwOJTFT/uzgUlXxI/1m7ujovD12itEC2Iy6eyLHCcrf7QyS6cJBzGuqJ8zf4KzmKo
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KJ9tj5jrgnk5NQ1VtCObwOMNHcOiw7syOH7JzKsLcKzuKxmq8p9mi5E3YjcG?=
- =?us-ascii?Q?PAMJmWY5nnRMRQpT4L3YwTFci18jSN4R5BMBhN+xS3GrLduVbOVx+rh2a6m4?=
- =?us-ascii?Q?o0TxxvAUc5alk5tj2ISVR8susfSH8pVdkdtaK6OHSP7CknJYLTndUcH/HTeN?=
- =?us-ascii?Q?tD7POaOAVpXR8FZW00YIl6/PlZBL1lOqTPpjx7AbhJMZN0v9SGZf/8QifqE/?=
- =?us-ascii?Q?yznaJL05+F87lPqZAsvZCsjFlen9+dUgW8EachjmKuOo5uC15JkubfY1OBS8?=
- =?us-ascii?Q?L5/hwpsZFhi5C6hC8SoVyt4yrHwY/FoM8gZK8Z80vxNO0OjoJL4cFNZX5Ykl?=
- =?us-ascii?Q?Hu9jt451kmo3n5rdIBOfsNSJxIa6a1SX89p87RnJHGE0zhv6uj33tuBwoUbR?=
- =?us-ascii?Q?Lepl7RXb6G2/DS+XU3cvy+XzjxtLcefsJydrK6M7mA9BJkrUTpvefj61rcuq?=
- =?us-ascii?Q?42fR5zD9m08HdUrsJSZE2jJJZrB/gdIvhXgYFkUaX/VMniwVb8Pcu2MnyiWJ?=
- =?us-ascii?Q?P8Hkr3Jq35dZh973UA+B/md4omKsjSodaZfl7uQTglQbHryblaEH4L86H6wW?=
- =?us-ascii?Q?sP4rK3+a4IUZJduhCthA0PuVQy7b4npPKCOR9HS4juh5eFOf80yenhl6s7pL?=
- =?us-ascii?Q?eU6ffDO0XhHywSyZJHasqCXpA6oKYsSoAfrKvNn2tvB0j5tkwBH139qjqSfj?=
- =?us-ascii?Q?EMvtB5vfpKe9JHurQATVTabvB7Q92FAhJ+fvsUuTVwrYdPxJOVfPAu38ViZK?=
- =?us-ascii?Q?KrVqn6mIicG006lDi3rXvlzYlODCZ4oT3Ud+RMocmieTJCmTcubEUl5qVOHS?=
- =?us-ascii?Q?UrFP8h4iy+aYeoqsYV/B4wgaX1SkSfRgL0V1X7HIWUEotZBXwdsx+MbWo1bV?=
- =?us-ascii?Q?hD7isf4TPbEnoN48an6RYgu0ZwaJBKa8lE7iuo6zVIXj/CUAJUtBvYbRBz3r?=
- =?us-ascii?Q?EmHMDNvKWHb6JMX05fxuzL9d9MNr+qgsy5phUjyoW5/wvShLixOKfTPsvx9y?=
- =?us-ascii?Q?OV+zLhMyjNZ7s0MEjAmSK9ReVMIMKGlAxG1pu3iXYDG0odaj6VKHbl4//AYH?=
- =?us-ascii?Q?CAjPmrnfkLyJiS4kEiynkqPulibLRwoTd4B6RDn4BRcXnUmb5Kk0KumBeaH5?=
- =?us-ascii?Q?L2fY8C2buRGDx2WIJMWCx6DhCSkdTQS8wjTXx8SUR9G/Jm4AZEUwwL7ASZho?=
- =?us-ascii?Q?yIfDAGRdkdNQpGPeZvqXI4F2o4YtqcEJzkTdWn/JKbSqsMdn2AX8Eo7GdsKW?=
- =?us-ascii?Q?kMR7iwtkD/7RBi/Ti1b1Go5d644LzGoWIQNczxenjWPN9TM3/xYjV7MWUlpz?=
- =?us-ascii?Q?VxaWDe0PVD8eCX9uJ0U7XT0AeeX2SClK9UIoKZw98UKGSQbAycPLqqasGVxi?=
- =?us-ascii?Q?ZwcSM5R8Scmg5Ci22euTysRrnYKB?=
+	=?us-ascii?Q?ROeint1El3Ha6WGYStYd3kOEvfnuXRXsg+di3G4zI5zzXZBqBBRZFL31HJYx?=
+ =?us-ascii?Q?9NEHiOM7dSdHHtn3TDUH2E8v4Hf0HtYKpMZafN8FPSCZC5TEn+RN6wcI/7GD?=
+ =?us-ascii?Q?rCCHP4gw3SbdD2lKtrY0Cqis1HWwVaOVLaCdMdJOFbhzw2B2FaBT2HaprMJ/?=
+ =?us-ascii?Q?9FOlvZ9b6ROBYZK27DwkE9SjNr4vl5Vn/y00BIaP+YM8KpxhEGnpwMDbbKYW?=
+ =?us-ascii?Q?/p5u5EczWfVIu2tVK+uy4ZZ5tZzqfYOkut0xEpx/y1xx2PT0uYN/3QuMxFxd?=
+ =?us-ascii?Q?ihiif1gNx0N2zTqpQNRF25iG4exY4MP9C/DOHfdDaiYyhNJazp6Z4HQ9XYP/?=
+ =?us-ascii?Q?X/WP65VCE9Nudz76cybS056HCWB+saH4SNPqpuSGulHBHi8CoZ2fsYtRxEIH?=
+ =?us-ascii?Q?hHglOlGbk0tSDFuj1RSNw2FHGS25E7FRk1XI3X5k2YKPZr5dUPPGeu3VTVD7?=
+ =?us-ascii?Q?jzcfN/K0b6u0dPUDqnNoCobpGolrlBZ+6tm6Kch40fu+haoYOOSTlsufjQpY?=
+ =?us-ascii?Q?HAGhGauBihzw22qJiMIUQdi32txQD9ix1oy1PU+ZW2dr/czf4hs2kfjC0xv6?=
+ =?us-ascii?Q?vWyW/RivSUB+sY+mSU3RYUCMqTpQRXB7tAB3Z+6/FAYCNDVHoAOubZj825z6?=
+ =?us-ascii?Q?9eCX0DKb126lj9oma10TNnhooZqgTSy8g4wrtsUxx8spbci4Roa0OMnN2tPA?=
+ =?us-ascii?Q?PEXrm5YPAdHcKQTcyDIZUHgGB9gBPVnbuTbV235yZ1dZ11CmQZnESxrHmiX8?=
+ =?us-ascii?Q?KRmgVDVTqms0uepBsa1EJrtvaB4Q291lwpv3KRDLixHIEDKHH/k3vFbnVieN?=
+ =?us-ascii?Q?3l8qP13Wx8LjI6CBsNWnpk/KEejByeKBlDUCqWRVtSioGEa1GW//46DOHXyu?=
+ =?us-ascii?Q?1EvweMcfQoVfuKmEBM/4Kycryot1Ahqs7zTyDzMpwWfmWJF+KyfcqrI9TAYQ?=
+ =?us-ascii?Q?DfhCi1yRCwMoqzbQTsB4nr0QS3JABIeovd55MtPwhb3XprPR94XF4fMsHzhr?=
+ =?us-ascii?Q?MIH7OZVjGyXe7TnNNxarW5OlKwKCb4QvuAiJaSTIKHPPNj/AL9o2dVFvhdUQ?=
+ =?us-ascii?Q?zYLbniGWq/0YK6zMry5nDLJCpqtbCQHwsYTixCrZ2EfyLd09wMaRLGtu5x7w?=
+ =?us-ascii?Q?LAjf72G0ogSCukfMK9RV6CWu8Y5zc9OiATvztcOVoVGZNW3yHHhq+5xS6Fo9?=
+ =?us-ascii?Q?JWPrMMcxM7fnN9TsISCBuiMydY9MVb3qwADh7XxAktt8H0Q3oERTyR85fgw5?=
+ =?us-ascii?Q?dVhl0VxEZ6RpAk4bNbFt6jrdJNSKIDePRVhz5l8GHjcUzPog/EWBATKEUUJA?=
+ =?us-ascii?Q?31b53op6DbIZ0pcw05ru/PA5+O7SIglDKimBYYL9BloNPkPX6jfdCJPG4I47?=
+ =?us-ascii?Q?KqZMIQAYBc6wxW4rG1ctXHDsMeal?=
 X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-10872.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8aabb620-3b20-4572-a344-08de8f589acd
+X-MS-Exchange-CrossTenant-Network-Message-Id: c4d96467-ce6a-4ba6-e5df-08de8f589c11
 X-MS-Exchange-CrossTenant-AuthSource: GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 19:06:25.2987
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 19:06:27.3816
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -128,11 +128,11 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[hotmail.de,none];
 	R_DKIM_ALLOW(-0.20)[HOTMAIL.DE:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34233-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34234-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -149,39 +149,43 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM:mid,HOTMAIL.DE:dkim]
-X-Rspamd-Queue-Id: 89EB53705D2
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM:mid,HOTMAIL.DE:dkim]
+X-Rspamd-Queue-Id: 1F93C37064D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/21/26 8:24 PM, Christian Lamparter wrote:
-> Why the need for interpolation here? Don't you just need to look
-> for the max(ctpl[idx].power, previous_value) within the band?
-> I'm not aware of any high-powered AR9170 devices. Were/are there any?
+On 3/21/26 9:11 PM, Christian Lamparter wrote:
+> Which values did you use? The best I can find are in ar5008_phy.c
+> | conf->fir_power = -33;
+> | conf->radar_rssi = 20;
+> | conf->pulse_height = 10;
+> | conf->pulse_rssi = 15;
 
-The interpolation was more careful than necessary.  You are right that
-a simple per-band max() across all calibration entries would give the
-same practical result for all known AR9170 devices.
+I used values adapted from ath9k ar5008_phy.c with adjustments for
+the AR9170 register encoding.  The mapping is:
 
-The reason I used interpolation: the EEPROM calibration target power
-tables store entries at specific frequency calibration points (e.g.
-2412, 2437, 2462 MHz for 2.4 GHz).  Channels between those points
-have slightly lower target power due to regulatory shaping in some
-EEPROM configurations.  Interpolation gives the per-channel value the
-AP would see if it queried the regulatory domain.  But in practice,
-for the AR9170's flat-ish power curves and unknown-to-me device
-diversity, max() achieves the same result.
+  ath9k ar5008              AR9170 patch
+  fir_power   = -33    →    FIRPWR   = 33   (magnitude, sign implicit)
+  radar_rssi  = 20     →    RRSSI    = 12   (scaled for AR9170 format)
+  pulse_height = 10    →    HEIGHT   = 6    (scaled for AR9170 format)
+  pulse_rssi  = 15     →    PRSSI    = 1    (minimum threshold)
 
-Regarding high-powered devices: I am not aware of any either.  The
-Fritz!WLAN N EEPROM shows 2.4 GHz: 20 dBm, 5 GHz: 23 dBm (DFS
-channels: 20 dBm) — nothing unusual.  The main benefit is simply
-replacing the hardcoded 18 dBm XXX placeholder with the correct EEPROM
-value, whatever it turns out to be.
+The scaling differences are because the AR9170 RADAR register fields
+have narrower bit widths than ath9k's.  I used the maximum values that
+fit without truncation, targeting sensitivity rather than specificity.
 
-I am happy to simplify to max() if you prefer — the patch would be
-significantly shorter and the result identical for all hardware we
-know about.  Let me know.
+I must be honest: I have not tested this against actual radar
+transmitters.  I have no access to radar test equipment.  The patch
+wires up the existing firmware RADAR event to ieee80211_radar_detected()
+and programs the registers with reasonable defaults — but whether the
+thresholds are appropriate for FCC/ETSI compliance is unknown.
+
+If you think the values are too aggressive (too many false positives)
+or too conservative (missed detections), I am open to adjusting them
+or dropping the register programming entirely and just wiring up the
+firmware event, leaving register tuning to operators with test
+equipment.
 
 -- 
 Regards,
