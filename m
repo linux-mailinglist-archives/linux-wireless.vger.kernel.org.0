@@ -1,174 +1,169 @@
-Return-Path: <linux-wireless+bounces-34280-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34281-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8P2VIaxSzWmnbwYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34280-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 19:15:24 +0200
+	id YI3tJAJazWkRcQYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34281-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 19:46:42 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E69E637E7F1
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 19:15:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E86937EC73
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 19:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6688F3180AC5
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 17:00:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E193930BF52A
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 17:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7D336AB54;
-	Wed,  1 Apr 2026 17:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D328F3DD526;
+	Wed,  1 Apr 2026 17:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="L3b+W/rL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iOpt7ms/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C2343E9D6
-	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 17:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B89D3DEFE0
+	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 17:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775062844; cv=none; b=N804tgZ7YOLorBI8XmODRU3PTHgZFa62iX657jWf2+6VrcDhZLlswCxErGSC+II28Z2CfxaLYyG68DzFPaIZFNh3J99USr1Bd7CiphPSNKhGoUS+1dVIeVRM4uzEP9ptFrIdkPldQCZxm+SN+O03wwQc5Jiv8Zgn7Pun3ZGqhCk=
+	t=1775065412; cv=none; b=LLHTNXOm/tMFyuEHO/5g6zxqgwRBq9n+4eCUgOEwTXKGa8Nenk4Z0luk0GPadOQhN78PJoRLr+IAvsWBLtt8liyujAdpSrlgQGzbf1Imqtb7aIHnsFp6HguBNfKwo7WpH2JUC529n9dKodWLoeTeS7Ex6T6yzSzztrMCJZiuQp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775062844; c=relaxed/simple;
-	bh=vJq+WbDR8OrsJV5qyfCb43XT9E2w9Xr0/w+Ah23ZH4o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AhLJgmtESSGk0ZuzSlQ7si6rQ20Z5iwWJsypja+/0QWW1NRTPRdt16x69YHuFIOAqKb/bLU4y+u7Y3pFSjlBwB3+8DU8iJYo2LFkQ8UwCUGXzQrRzffdTpndRSV6vmHgvj9JT5qzemelJJLUBnXDcW+F81hnZ2+S1f8i14BaDBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=L3b+W/rL; arc=none smtp.client-ip=195.121.94.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
-X-KPN-MessageId: 28c13c06-2dec-11f1-b185-005056abad63
-Received: from smtp.kpnmail.nl (unknown [10.31.155.38])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 28c13c06-2dec-11f1-b185-005056abad63;
-	Wed, 01 Apr 2026 18:59:34 +0200 (CEST)
+	s=arc-20240116; t=1775065412; c=relaxed/simple;
+	bh=M2PTvMIWNwglM5IRtzt7CmJXai+0enUMlMZ6jT4o34I=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
+	 In-Reply-To:Content-Type; b=QAMCcK4pGK+rjA2VWRijFn6jRV93VqetjPmues8HnA7n1/fTIdH1wPtjI9kARdSZql+d1tk/tCmuJzehsVhVQqJ92RxchdOsM24WMTZCCE3XK8ZP+RVRwnos5+S/GAt/lcWTDnGUWbtSbnxDJbBKI1uuImjDpIeZo3HzJy4xn9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iOpt7ms/; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48704db565eso87846605e9.1
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Apr 2026 10:43:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=mime-version:message-id:date:subject:to:from;
-	bh=pq8fyeoRZOgQL3KQm3S8JZ0D+k426q1CN95l7TG/gKU=;
-	b=L3b+W/rLb+2WLT5DbWuK/P8oBSbyFesW/CN13heZO1tq6k5ZWkpR6gs+woTQXi0G7I0DmIPQau6wN
-	 LvX5L9Xr4uNlKMFHtIB81hWXmFvf1jAAPqVIQnL0krASqiraVYQDyYcBT67KPT1/AaeNaMZJN+MEeY
-	 CyIy8s8oTsfVLYXTHaYm8IUxUpFi9AdfVs5GdhPqwje31hpBV04Hx/wfyTA336hhS2HJRklrkQWImP
-	 iGtyhZvSBo0iGaqEhycRC2Im9vXp1lOxriWaZq8EqMkO59Eii+TLVeL8LqQ0pVXqby+euzPin4WIm1
-	 AchW7Xnv9Lx0ByNCq+Q+/ZjlUTLrurQ==
-X-KPN-MID: 33|LSD0yulFrQa9lcJoWehBYU19fU7DBHXDohtTuutw6UFyPWkHLnltD1b8JduCR0R
- efUIeLXgPqRsqL2cEEUxM5Q==
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|qQ9ibsLMa+AouB7DlQ9uxspn7eFCF09e1kMqs9nDBfk8+JQBpQhfEIocNNUTW/K
- JoSeKUxdQTTV/xPjPlbFDiw==
-Received: from daedalus.home (unknown [178.227.141.37])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id 25fcbae0-2dec-11f1-a6cc-005056abf0db;
-	Wed, 01 Apr 2026 18:59:34 +0200 (CEST)
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Jori Koolstra <jkoolstra@xs4all.nl>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-wireless@vger.kernel.org (open list:MAC80211),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] mac80211_hwsim: change hwsim_class to a const struct
-Date: Wed,  1 Apr 2026 18:59:37 +0200
-Message-ID: <20260401165938.3843784-1-jkoolstra@xs4all.nl>
-X-Mailer: git-send-email 2.53.0
+        d=gmail.com; s=20251104; t=1775065409; x=1775670209; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gaI/OIQrNpeQjaeEVNFFVCUQads4q+o75svaH52EdCQ=;
+        b=iOpt7ms/JSSWBuU5GpcW0LhNUiEnXII2/ePQtqzWcx3yQZ2q/W7+asQUGTSo/lAV0j
+         yEtnubrn4rabs05YRHqRgq0peo8SvEKs/IlmI4jOtV63LtjNRzNvg7zaWToAHnvI2rYL
+         FAdbTzTg4MrqDRNVjbjZO+GH7GKyzHJfYQJM+/91C3L/CHrjdeFeMPd6W+wcDX1AfHq4
+         6JebwyJzmBjiVsC8A5ZpGSGtBkEE5QmhoHPdiMSEi+afTGEi5VMdB8zvBZ4uejMBqMuM
+         DxzuK140NLDIs4ZQjnqdlLeBLepmRoWka/8xOnLSlp4SHU7oT3qD3VnVakYsHM6A/tiA
+         +7ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775065409; x=1775670209;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gaI/OIQrNpeQjaeEVNFFVCUQads4q+o75svaH52EdCQ=;
+        b=qtn99fhZGGky1Hx6y+AOg3/wxHJt66pxlwtpZWBNCpSmvVx85DI8w0/5dOzGyV52lA
+         aqXkjqiI/OXKtQ3DAv2Oi8HRB8V1V38sEbU/7m2ynS0TqgdxPsDyKbFs58PekWvRYssf
+         c7yEXUkMIiUKhMpYIXl/93Q+iQjpJxMVT2a/ZCXc2GFqHlOluO25vWmlAG/MQzH96jsi
+         inH5BDOluoVhbvrlaRS/4uhvVXT5SsszO55G/7WIGAskynN4L/AFsll4Ud5lpUnSJeYv
+         qfD6wEc3KnzBjOc1Fjq5GN5kVdQCldnOKSQODw5tY8Iiyhusd09ZVyJ9wXwjgAtnFgB4
+         6kCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcYvCT+bX8GbVGJsTy8SCQB8E+qM3OqKU5sRi5+nHr7VsFz0mCTQs4dhgS8UZSUD6vSnBTeLD9qyxIpEIFSA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxmi67iQzQqxrMG8cN1gjdX0gov0nsOCG26+UXrmZf7HjQyw9cS
+	3RSbiYJwoCHJq7c/ISlUbWso26AkKJMuggc68HQJ3Mg15r2kF89Uxp212GhcaQ==
+X-Gm-Gg: ATEYQzyx8hfa2NgfrT8WscuOUyzZ3ebAMBhhcP39+nzGhSLJG6zhKEEp4BfZMEQVYKE
+	BZCyU8f5HcDlNnEgG7D5mf3WE6oTxBidGTVpr2S4Kf6IYm/zFWL2Lqh1byt2rbb/9biJykfR0Li
+	B6eOtivhiaGWMMaWvLsnZS2W6ZgX4ZFaIXP2Pp2t75zvQngyGJXx48i3UDTsEwhMfs6ChbppuZ0
+	SFWiO7qJPJxa7puIcw7c2qOmvrak3qQqinEvuvDuLXQwcyUyH5pF3H2STAD9+4CabYscDkqDNOH
+	2rf9A04YZZ1EPHn66JPvXM5STW+5FQoSljlifnMjrhaINwKk9zIC6nwtQ8/Q3Vbo0ObepF8/G+C
+	zNtpgoIhWqnByXbWuOHp8/+pxI7xh6ZoCV4a84/AP+++ZTxgAaBPA9JeUEX4lRKCgLFQXAAK5Ce
+	sPWJph5oAwpphzsPslbBh2865YAAw3bg==
+X-Received: by 2002:a05:600c:638e:b0:487:1fc:14f9 with SMTP id 5b1f17b1804b1-4888b769917mr2412745e9.15.1775065409400;
+        Wed, 01 Apr 2026 10:43:29 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.93])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e735532sm163614125e9.0.2026.04.01.10.43.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Apr 2026 10:43:28 -0700 (PDT)
+Message-ID: <a90f22d6-bac0-4c76-86fb-517e7e7bf441@gmail.com>
+Date: Wed, 1 Apr 2026 20:43:27 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+User-Agent: Mozilla Thunderbird
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: Re: [PATCH rtw-next 00/12] wifi: rtw89: Add support for RTL8922AU
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <8549233f-dd83-4e77-be88-5e22ecd4f5f1@gmail.com>
+ <25781f4aa6cc427caf396374ca46d380@realtek.com>
+Content-Language: en-US
+In-Reply-To: <25781f4aa6cc427caf396374ca46d380@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[xs4all.nl,reject];
-	R_DKIM_ALLOW(-0.20)[xs4all.nl:s=xs4all01];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[xs4all.nl];
-	FREEMAIL_CC(0.00)[xs4all.nl,linuxfoundation.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-34280-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34281-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jkoolstra@xs4all.nl,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[xs4all.nl:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xs4all.nl:dkim,xs4all.nl:email,xs4all.nl:mid]
-X-Rspamd-Queue-Id: E69E637E7F1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4E86937EC73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The class_create() call has been deprecated in favor of class_register()
-as the driver core now allows for a struct class to be in read-only
-memory. Change hwsim_class to be a const struct class and drop the
-class_create() call.
+On 30/03/2026 05:53, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> Often one or more of these messages appears when the chip powers on:
+>>
+>> [  +2.167037] rtw89_8922au 1-2:1.0: failed to wait RF DACK
+>>
+>> [  +2.942749] rtw89_8922au 1-2:1.0: failed to wait RF TSSI
+>>
+>> [  +0.019006] rtw89_8922au 2-4:1.0: failed to wait RF PRE_NTFY
+>>
+>> [  +5.985900] rtw89_8922au 2-4:1.0: failed to wait RF DPK
+>>
+>> It's unclear why.
+> 
+> RTL8922D done RF calibrations by firmware one by one, so driver should
+> wait for previous one done, and trigger next one. However, it'd be
+> well to just do waiting at the last to wait for all calibrations. 
+> 
+> Try to enlarge waiting time in rtw8922a_rfk_channel().
+> 
 
-Link: https://lore.kernel.org/all/2023040244-duffel-pushpin-f738@gregkh/
+I was convinced I tried that already, but no.
 
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
----
- drivers/net/wireless/virtual/mac80211_hwsim.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+After increasing all delays a bit the warnings are much more rare.
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index e89173f91637..506f865075b1 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -337,7 +337,9 @@ static inline void hwsim_net_set_wmediumd(struct net *net, u32 portid)
- 	hwsim_net->wmediumd = portid;
- }
- 
--static struct class *hwsim_class;
-+static const struct class hwsim_class = {
-+	.name	= "mac80211_hwsim"
-+};
- 
- static struct net_device *hwsim_mon; /* global monitor netdev */
- 
-@@ -5424,7 +5426,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 	data = hw->priv;
- 	data->hw = hw;
- 
--	data->dev = device_create(hwsim_class, NULL, 0, hw, "hwsim%d", idx);
-+	data->dev = device_create(&hwsim_class, NULL, 0, hw, "hwsim%d", idx);
- 	if (IS_ERR(data->dev)) {
- 		printk(KERN_DEBUG
- 		       "mac80211_hwsim: device_create failed (%ld)\n",
-@@ -5978,7 +5980,7 @@ static void mac80211_hwsim_free(void)
- 		spin_lock_bh(&hwsim_radio_lock);
- 	}
- 	spin_unlock_bh(&hwsim_radio_lock);
--	class_destroy(hwsim_class);
-+	class_unregister(&hwsim_class);
- }
- 
- static const struct net_device_ops hwsim_netdev_ops = {
-@@ -7083,11 +7085,9 @@ static int __init init_mac80211_hwsim(void)
- 	if (err)
- 		goto out_exit_netlink;
- 
--	hwsim_class = class_create("mac80211_hwsim");
--	if (IS_ERR(hwsim_class)) {
--		err = PTR_ERR(hwsim_class);
-+	err = class_register(&hwsim_class);
-+	if (err)
- 		goto out_exit_virtio;
--	}
- 
- 	hwsim_init_s1g_channels(hwsim_channels_s1g);
- 
+>>
+>> It seems to work well anyway.
+>>
+> 
+> If you can yield the highest rate (MCS13), I'd say it is fine.
+> 
+> Ping-Ke
+> 
 
-base-commit: d466c332e106fe666d1e2f5a24d08e308bebbfa1
--- 
-2.53.0
+Testing with RTL8832CU (Brostrend AX8) in AP mode, the RTL8912AU can
+reach 1.5 Gbps (MCS10) RX, 1 Gbps TX.
 
+I used the RTL8832CU because my router is not working well with 160
+MHz.
 
