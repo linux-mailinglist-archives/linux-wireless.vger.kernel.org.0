@@ -1,196 +1,174 @@
-Return-Path: <linux-wireless+bounces-34279-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34280-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAgSL/5MzWl6bgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34279-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 18:51:10 +0200
+	id 8P2VIaxSzWmnbwYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34280-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 19:15:24 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617AD37E2ED
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 18:51:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E69E637E7F1
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 19:15:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D5CD33088F3A
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 16:44:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6688F3180AC5
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 17:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4EB47799F;
-	Wed,  1 Apr 2026 16:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7D336AB54;
+	Wed,  1 Apr 2026 17:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=zabbadoz.net header.i=@zabbadoz.net header.b="M1b/lTq0"
+	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="L3b+W/rL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx-01.divo.sbone.de (legacy1.sbone.de [80.151.10.34])
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC43472760;
-	Wed,  1 Apr 2026 16:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.151.10.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C2343E9D6
+	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 17:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775061885; cv=none; b=hHQBbbSfjt9Y8UUlrMmo8fC9aZynqwudBQd7tW+cm2F/SRN2HXYWYVMM3k1mcP5G9in9Qxk67wtV2vOPA65HpZ0wxSPrWDikGnMNJv6dT2P2CViIOeTEkPWueBybRlu+GQIbZAAuRSFjrdI7Fe0wG8ym1iK/e/p0HlXHipmnx+E=
+	t=1775062844; cv=none; b=N804tgZ7YOLorBI8XmODRU3PTHgZFa62iX657jWf2+6VrcDhZLlswCxErGSC+II28Z2CfxaLYyG68DzFPaIZFNh3J99USr1Bd7CiphPSNKhGoUS+1dVIeVRM4uzEP9ptFrIdkPldQCZxm+SN+O03wwQc5Jiv8Zgn7Pun3ZGqhCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775061885; c=relaxed/simple;
-	bh=L7QYUKOAasoCSYere7gl554w+Twajp2xHlhYrh3+o4s=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-Id; b=FryMQoaMSyFOTOgQeX0f94wSh6C0oaMJ+qHcDS9X2BMtk43tOyEpQ8F50QiUZ3b6haxNyyiS/8zbRdZ0WegiZB4NBkJV43LOJ0zYkbk1DrEsoMsuFsyOnpAaa+WG3vCJdSOZQBDOunnxLmsG9gHbfRdctJ/6hfeyMN+XEHZ6rCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lists.zabbadoz.net; spf=pass smtp.mailfrom=lists.zabbadoz.net; dkim=pass (4096-bit key) header.d=zabbadoz.net header.i=@zabbadoz.net header.b=M1b/lTq0; arc=none smtp.client-ip=80.151.10.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lists.zabbadoz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lists.zabbadoz.net
-Received: from mail.sbone.de (mail.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:1025])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by mx-01.divo.sbone.de (Postfix) with ESMTPS id D9902A64805;
-	Wed, 01 Apr 2026 16:34:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=zabbadoz.net;
-	s=20240622; t=1775061285;
-	bh=L7QYUKOAasoCSYere7gl554w+Twajp2xHlhYrh3+o4s=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References;
-	b=M1b/lTq05e8KeboSTmXSX7M1YW9zV+QAk2vw6i+E8gwT1jgX8ScvW5jMD08uWILnk
-	 hjmryFuzVdO6KTWrTwpfjPv+/9jNSOSN4abNHubpizWYq68eJ6NKlMeKSrY31UJQgk
-	 +OqnAPYrDptHXN77ujSvPs7GsD4F8VTJx24/Oo8A5LKasyca8kBPPajU3vwSVrGHVc
-	 7D+WzRaTjhyhYzS5R/w3aKdjjU1KHLzqZxNGWv4dHUxnI3/vwKzh09LcVOgxm4KOtg
-	 zVjCJ1qBIN+NdzlhA+f0zP8ojXW0WYy/bORGZMtTUfZOCj928GNLhLKmRXyeiJDe9+
-	 ZIP5oyrNsYdM+wZuZjZhoglbRXUmMVdHSknEYsjgXeztybOHVcfCMBfvep6X7sN0VS
-	 YaeCs+e1c0yfnHD940PJyp7+EHpZkLukoP0+pC1C+xXylHVFRo7DhKbfTgqEsS/iZU
-	 DvqAN9R7c4dRylj+uHD7onpO3y4oDDI20o3N3GTeK/RPsIBIU1wL7kcMbWQ67/NuvO
-	 cMWKiLg1ww3avLz+Rahz0w7JZqN0p+ekNxl19IVby5BBH+hq/qCEb3YOoCZClU5ARv
-	 F+UDmS+dArLaOr9eOg0CMQp9PJcn4sFG5peJB/zGrPeHzFtW76RdyLZQXsfclUyRKt
-	 XrdKNAmsvH9zIf1fV5hZILXk=
-Received: from content-filter.t4-02.sbone.de (content-filter.t4-02.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:2742])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.sbone.de (Postfix) with ESMTPS id 8CD4A2D029E9;
-	Wed,  1 Apr 2026 16:35:04 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at sbone.de
-Received: from mail.sbone.de ([IPv6:fde9:577b:c1a9:4902:0:7404:2:1025])
-	by content-filter.t4-02.sbone.de (content-filter.t4-02.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:2742]) (amavisd-new, port 10024)
-	with ESMTP id 2IW08zsrTcK7; Wed,  1 Apr 2026 16:35:03 +0000 (UTC)
-Received: from nv.t4-02.sbone.de (nv.t4-02.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:22])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.sbone.de (Postfix) with ESMTPSA id AE4862D029D8;
-	Wed,  1 Apr 2026 16:35:00 +0000 (UTC)
-Date: Wed, 1 Apr 2026 16:35:00 +0000 (UTC)
-From: "Bjoern A. Zeeb" <bzeeb-lists@lists.zabbadoz.net>
-To: David Woodhouse <dwmw2@infradead.org>
-cc: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-    Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
-    Andrew Lunn <andrew+netdev@lunn.ch>, 
-    "David S. Miller" <davem@davemloft.net>, 
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-    Nikolay Aleksandrov <razor@blackwall.org>, 
-    Ido Schimmel <idosch@nvidia.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
-    Daniel Borkmann <daniel@iogearbox.net>, 
-    John Fastabend <john.fastabend@gmail.com>, 
-    Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>, 
-    Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-    Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
-    KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, 
-    Jiri Olsa <jolsa@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-    Willem de Bruijn <willemb@google.com>, David Ahern <dsahern@kernel.org>, 
-    Neal Cardwell <ncardwell@google.com>, 
-    Johannes Berg <johannes@sipsolutions.net>, 
-    Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
-    Phil Sutter <phil@nwl.cc>, Guillaume Nault <gnault@redhat.com>, 
-    David Woodhouse <dwmw@amazon.co.uk>, Kees Cook <kees@kernel.org>, 
-    Alexei Lazar <alazar@nvidia.com>, Gal Pressman <gal@nvidia.com>, 
-    Paul Moore <paul@paul-moore.com>, netdev@vger.kernel.org, 
-    linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, 
-    oss-drivers@corigine.com, bridge@lists.linux.dev, bpf@vger.kernel.org, 
-    linux-wireless@vger.kernel.org, netfilter-devel@vger.kernel.org, 
-    coreteam@netfilter.org, torvalds@linux-foundation.org, 
-    jon.maddog.hall@gmail.com
-Subject: Re: [PATCH 0/6] Deprecate Legacy IP
-In-Reply-To: <20260401074509.1897527-1-dwmw2@infradead.org>
-References: <20260401074509.1897527-1-dwmw2@infradead.org>
+	s=arc-20240116; t=1775062844; c=relaxed/simple;
+	bh=vJq+WbDR8OrsJV5qyfCb43XT9E2w9Xr0/w+Ah23ZH4o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AhLJgmtESSGk0ZuzSlQ7si6rQ20Z5iwWJsypja+/0QWW1NRTPRdt16x69YHuFIOAqKb/bLU4y+u7Y3pFSjlBwB3+8DU8iJYo2LFkQ8UwCUGXzQrRzffdTpndRSV6vmHgvj9JT5qzemelJJLUBnXDcW+F81hnZ2+S1f8i14BaDBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=L3b+W/rL; arc=none smtp.client-ip=195.121.94.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
+X-KPN-MessageId: 28c13c06-2dec-11f1-b185-005056abad63
+Received: from smtp.kpnmail.nl (unknown [10.31.155.38])
+	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
+	id 28c13c06-2dec-11f1-b185-005056abad63;
+	Wed, 01 Apr 2026 18:59:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xs4all.nl; s=xs4all01;
+	h=mime-version:message-id:date:subject:to:from;
+	bh=pq8fyeoRZOgQL3KQm3S8JZ0D+k426q1CN95l7TG/gKU=;
+	b=L3b+W/rLb+2WLT5DbWuK/P8oBSbyFesW/CN13heZO1tq6k5ZWkpR6gs+woTQXi0G7I0DmIPQau6wN
+	 LvX5L9Xr4uNlKMFHtIB81hWXmFvf1jAAPqVIQnL0krASqiraVYQDyYcBT67KPT1/AaeNaMZJN+MEeY
+	 CyIy8s8oTsfVLYXTHaYm8IUxUpFi9AdfVs5GdhPqwje31hpBV04Hx/wfyTA336hhS2HJRklrkQWImP
+	 iGtyhZvSBo0iGaqEhycRC2Im9vXp1lOxriWaZq8EqMkO59Eii+TLVeL8LqQ0pVXqby+euzPin4WIm1
+	 AchW7Xnv9Lx0ByNCq+Q+/ZjlUTLrurQ==
+X-KPN-MID: 33|LSD0yulFrQa9lcJoWehBYU19fU7DBHXDohtTuutw6UFyPWkHLnltD1b8JduCR0R
+ efUIeLXgPqRsqL2cEEUxM5Q==
+X-KPN-VerifiedSender: Yes
+X-CMASSUN: 33|qQ9ibsLMa+AouB7DlQ9uxspn7eFCF09e1kMqs9nDBfk8+JQBpQhfEIocNNUTW/K
+ JoSeKUxdQTTV/xPjPlbFDiw==
+Received: from daedalus.home (unknown [178.227.141.37])
+	by smtp.xs4all.nl (Halon) with ESMTPSA
+	id 25fcbae0-2dec-11f1-a6cc-005056abf0db;
+	Wed, 01 Apr 2026 18:59:34 +0200 (CEST)
+From: Jori Koolstra <jkoolstra@xs4all.nl>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Jori Koolstra <jkoolstra@xs4all.nl>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-wireless@vger.kernel.org (open list:MAC80211),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] mac80211_hwsim: change hwsim_class to a const struct
+Date: Wed,  1 Apr 2026 18:59:37 +0200
+Message-ID: <20260401165938.3843784-1-jkoolstra@xs4all.nl>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset=US-ASCII
-Message-Id: <20260401163500.AE4862D029D8@mail.sbone.de>
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[zabbadoz.net,none];
-	R_DKIM_ALLOW(-0.20)[zabbadoz.net:s=20240622];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[xs4all.nl,reject];
+	R_DKIM_ALLOW(-0.20)[xs4all.nl:s=xs4all01];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[nvidia.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,blackwall.org,linux.dev,iogearbox.net,gmail.com,fomichev.me,sipsolutions.net,netfilter.org,strlen.de,nwl.cc,amazon.co.uk,paul-moore.com,vger.kernel.org,corigine.com,lists.linux.dev,linux-foundation.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,freebsdfoundation.org:url,mail.sbone.de:mid];
-	DKIM_TRACE(0.00)[zabbadoz.net:+];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-34279-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[xs4all.nl];
+	FREEMAIL_CC(0.00)[xs4all.nl,linuxfoundation.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-34280-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bzeeb-lists@lists.zabbadoz.net,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jkoolstra@xs4all.nl,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[50];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[xs4all.nl:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 617AD37E2ED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xs4all.nl:dkim,xs4all.nl:email,xs4all.nl:mid]
+X-Rspamd-Queue-Id: E69E637E7F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/1/26 07:44, David Woodhouse wrote:
+The class_create() call has been deprecated in favor of class_register()
+as the driver core now allows for a struct class to be in read-only
+memory. Change hwsim_class to be a const struct class and drop the
+class_create() call.
 
-Hi David,
+Link: https://lore.kernel.org/all/2023040244-duffel-pushpin-f738@gregkh/
 
-(fun fishing this out from nntp.lore.kernel.org needing NAT64)
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
+---
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-> RFC1883, the IPv6 standard, was published in the final decade of the 1900s.
-> That's closer in time to the Apollo 11 moon landing than it was to today.
-> 
-> Even our esteemed Maddog has worked with computers for longer in the IPv6
-> era, than he ever did before it.
-> 
-> Yet Linux still can't even be *built* with only IPv6 support and without
-> support for Legacy IP. This long overdue patch series fixes that, and
-> ...
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index e89173f91637..506f865075b1 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -337,7 +337,9 @@ static inline void hwsim_net_set_wmediumd(struct net *net, u32 portid)
+ 	hwsim_net->wmediumd = portid;
+ }
+ 
+-static struct class *hwsim_class;
++static const struct class hwsim_class = {
++	.name	= "mac80211_hwsim"
++};
+ 
+ static struct net_device *hwsim_mon; /* global monitor netdev */
+ 
+@@ -5424,7 +5426,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 	data = hw->priv;
+ 	data->hw = hw;
+ 
+-	data->dev = device_create(hwsim_class, NULL, 0, hw, "hwsim%d", idx);
++	data->dev = device_create(&hwsim_class, NULL, 0, hw, "hwsim%d", idx);
+ 	if (IS_ERR(data->dev)) {
+ 		printk(KERN_DEBUG
+ 		       "mac80211_hwsim: device_create failed (%ld)\n",
+@@ -5978,7 +5980,7 @@ static void mac80211_hwsim_free(void)
+ 		spin_lock_bh(&hwsim_radio_lock);
+ 	}
+ 	spin_unlock_bh(&hwsim_radio_lock);
+-	class_destroy(hwsim_class);
++	class_unregister(&hwsim_class);
+ }
+ 
+ static const struct net_device_ops hwsim_netdev_ops = {
+@@ -7083,11 +7085,9 @@ static int __init init_mac80211_hwsim(void)
+ 	if (err)
+ 		goto out_exit_netlink;
+ 
+-	hwsim_class = class_create("mac80211_hwsim");
+-	if (IS_ERR(hwsim_class)) {
+-		err = PTR_ERR(hwsim_class);
++	err = class_register(&hwsim_class);
++	if (err)
+ 		goto out_exit_virtio;
+-	}
+ 
+ 	hwsim_init_s1g_channels(hwsim_channels_s1g);
+ 
 
-This is very interesting; I'll be happy to read the more serious 
-discussions for 6/6 this year then :)
+base-commit: d466c332e106fe666d1e2f5a24d08e308bebbfa1
+-- 
+2.53.0
 
-That said, I've been there 15 years ago and done that for real,
-just not for Linux:
-https://freebsdfoundation.org/blog/freebsd-foundation-and-ixsystems-announce-ipv6-only-testing-versions-of-freebsd-and-pc-bsd/
-
-A lot of parts (e.g., PC-BSD,the IPv6-only snapshots we published 
-back then, websites) are long gone, but FreeBSD today still has NO-INET
-(as well as NO-INET6 and NO-IP) kernel configs which are regularly tested
-as part of a universe build to make sure the status-quo stayed, along with
-options to build (large parts) of userspace without IPv4 support.
-
-I have since run real IPv6-only machines :]]
-EAFNOSUPPORT and EPROTONOSUPPORT are (were) a good friend of mine.
-
-It helped a lot back then to find applications which had real trouble
-working without IPv4.
-It was fun sitting in a UKNOF presentation years later to hear about
-all these applications just working on IPv6-only and knowing why, whereas
-the presenter was unaware, and still had a 127.1 on his loopback *sigh*
-
-IPv6-only is something a lot of people will not understand and someone
-just has to do it!  It is a worthwhile goal, even if late, as you say.
-My reminder to people these days is: DNSsec is even older than IPv6.
-
-I have moved on (though would love to go back to more IPv6);
-please feel free to get in touch in case you want me to go and swap in
-some more memories from that time to share experience and help.
-
-To the global deployment of IPv6!
-/bz
 
