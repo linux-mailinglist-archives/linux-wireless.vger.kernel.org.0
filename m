@@ -1,149 +1,254 @@
-Return-Path: <linux-wireless+bounces-34288-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34289-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJM1CVKjzWl9fgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34288-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 00:59:30 +0200
+	id QJLWKUerzWlRfwYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34289-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 01:33:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804B1381293
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 00:59:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9B4381AFF
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 01:33:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 572843015E3F
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 22:59:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0390D301FF95
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 23:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98187306498;
-	Wed,  1 Apr 2026 22:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E82E1FA272;
+	Wed,  1 Apr 2026 23:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nr4mDDMp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/5T8d5h"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C60A1C5D7D
-	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 22:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF19611E
+	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 23:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775084348; cv=none; b=sTaK2sfDLQGbayinbzSnBOq9R3QwttksnJc2MYjKuv3Gq9fFow1WgJqKZCc05a6DD8Y5eo6RGG6jfhna3W47c9BHwD5MRP/dDzNi/qgLYkuhGaAkzsHBKB4FC42ov3b/T4VFtwY67tyGl2FSG7RCKZXFXNQEwJ3m8LcamQl9zqs=
+	t=1775086395; cv=none; b=e//PpzCnF0Iqdxfh0oO6hzJTp3hz8BSoplsSBdmduarIlKptrNam73+I6QbZEDOPbNxLwR0be3b8WsSeVug9E6ekXpnmgMxPMdf2opqE7zEEhV/kouEqdLDqmqkxD+I5VXUyFIvAywr/6c+SuADlB27TQWBpbqCH2gop5Hz9Seg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775084348; c=relaxed/simple;
-	bh=Bh04i1AsLlmfPzJc4tfDUDKrG+zQUwrNren6a6q14IY=;
+	s=arc-20240116; t=1775086395; c=relaxed/simple;
+	bh=1sXBNqug0DkE2sO3RKQReACBcJvWTOGM7QqwiJSRO1g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K5ddKpLOxDY4UuvTi03O4ZXEUg12J9TbshJOquPjvQ780gBebQKwdCY/9nPBPHXopIFxSp3ocHh1IiSOnSU9gC3OljEE/LJ3+XlWElPCDOklhFIxK/pm4tDKjp+eQs/ILcT9IaJ6kTOF33915Ko/+kzip0PReV5MYiiDQ9XqlRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nr4mDDMp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E8DC2BCB2
-	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 22:59:07 +0000 (UTC)
+	 To:Cc:Content-Type; b=X332WVVkDGnLpNod8earw3vHCKeOqvX3lG+FNUKGvPwUNOPEMPQSZO6Bjb0RkesKutec0fMFcDBmUmjPPtOTLMzH06hV1UkVUBeW5v4Ng2spEnaq+8FaCkEIMu99cChYzoNsqcZoqgdwLI/W9aaNaRtntxTAyRDw61wnwF0/kzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/5T8d5h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF08FC4CEF7
+	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 23:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775084347;
-	bh=Bh04i1AsLlmfPzJc4tfDUDKrG+zQUwrNren6a6q14IY=;
+	s=k20201202; t=1775086394;
+	bh=1sXBNqug0DkE2sO3RKQReACBcJvWTOGM7QqwiJSRO1g=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nr4mDDMpqOPxtogvY217Vr023niJV3H3X+OEMpaBiyygtUn+HYAlNrHa+1I0NxIN+
-	 iMjn0jgFnRVud5+eAU0J6oMFx8hirsUMhRIb0Pr89kut46lMEpiIGHbhNUsFcjP+TK
-	 bKyuXfQCvJX3izTSc6qxW5u5qKxC4BhkouI0c5lwoJ+AKfEGMuhG2Msm/ABCknL4De
-	 oygKcNZO6KL4c18d8Sn89Fh9mwhpHFePpc2DW+928Unq3fBDlOVRtW9iKG79wMHTmW
-	 +4tYRhV7PM0DiLMaYIm8CdR5zjrDJfQ/8XIWJbpirrSiD+N+56wF0gk/nx7GsupDq6
-	 PMYs9ctGKU89g==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38b13652c87so2928081fa.0
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Apr 2026 15:59:07 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yx34WxJG/JvJQRRV4BU68JGt4G2wjK7Iciy25DrEq3Q7gFKwvuT
-	gX6Tb4S58ZXDCisEK63mgfXbEI55kn94QG/bm5RvY7Z2IkfV+gMP8EFUcxoCtBjZndVcOZaGipc
-	jQ/Bd2MXW7qJMvgrT3iSPRlykOsqm21c=
-X-Received: by 2002:a05:651c:324b:b0:37c:d689:7e1c with SMTP id
- 38308e7fff4ca-38cc3072eeamr20758451fa.23.1775084346107; Wed, 01 Apr 2026
- 15:59:06 -0700 (PDT)
+	b=b/5T8d5hK0Af0DpF0zqeb3jsYu8NsJg3mz2UzZZplfwnYEiZO7g2QA3Ff1NC7R4XJ
+	 0gowvLGs0sXRxQMBqi8h8owSdKNg7+ZvH2B1DICiRBsC5aooxonbeOSuDztkf4SkGs
+	 UA9DK8ybPw8uRake+0k2t6TLlChHe8W91kNaI+RnWO12YauXMI9V9rCX0HB5RvXDSO
+	 4jB5lScb1ASi6LJFVLnLqoHMQ0uqnhGmjemtWh+LndetKe+NKxgeRzWo/+oYYB6VIU
+	 YmnqsJR+jGhbkWDp+wpOduMqwJq83LphwNQe8nLfmKG2bEca1MpwB/aDp0iq3aVgGi
+	 uh6Q/6IiGERPA==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-38cc8708d76so2537111fa.3
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Apr 2026 16:33:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWsf1FLAgcK6aaDqP/8Akvvjm2nr6wINHlF4XQtGj7euv/9mMyfM/S3KkdaEZDWreVRjT1iZ7a7Bf98wj8eLA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIElFabQoIc6zVtLJv8MAMM18+s7Wjm2lb/t/qyIN+Hkhv4gU4
+	050DpEGMOjQI5JfNg9X4yEsyX7PfqjH3dfV5U78d8qS+L+d2ph4nFEgKOCtFVIv/KME7jb6Af7Q
+	cp8VRIA0gNqxBmVhuL0+oj0s+g9LiRxg=
+X-Received: by 2002:a2e:96c4:0:b0:38b:fd3e:c42f with SMTP id
+ 38308e7fff4ca-38cc2f6d560mr14044901fa.14.1775086393244; Wed, 01 Apr 2026
+ 16:33:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <59f58f03-6dee-4380-80d6-7e2778b5f14b@altlinux.org> <f264b392-37bc-4b31-ac0e-768466f2b962@altlinux.org>
-In-Reply-To: <f264b392-37bc-4b31-ac0e-768466f2b962@altlinux.org>
+References: <CAEoHs0hONW_X8POryv-YC8ahGAVoOsvXXJw9VnDOguSgq52v=Q@mail.gmail.com>
+In-Reply-To: <CAEoHs0hONW_X8POryv-YC8ahGAVoOsvXXJw9VnDOguSgq52v=Q@mail.gmail.com>
 From: Sean Wang <sean.wang@kernel.org>
-Date: Wed, 1 Apr 2026 17:58:54 -0500
-X-Gmail-Original-Message-ID: <CAGp9LzrfD+a84ZVGjUnrv7KYCpgfe88NyrXos8wW8U7aKM8BZw@mail.gmail.com>
-X-Gm-Features: AQROBzCRx5vmL5Svm5WZlkSZUDNKHT4mh-uraOryAXlhYNAIGQLo8xUpZway6ys
-Message-ID: <CAGp9LzrfD+a84ZVGjUnrv7KYCpgfe88NyrXos8wW8U7aKM8BZw@mail.gmail.com>
-Subject: Re: [BUG] mt7921e: Intermittent connection failure
-To: silverducks@altlinux.org
-Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
+Date: Wed, 1 Apr 2026 18:33:00 -0500
+X-Gmail-Original-Message-ID: <CAGp9LzqMNFwQVg248rxEQ=YPhqABprVGMHx2jREmSBBzSW91aw@mail.gmail.com>
+X-Gm-Features: AQROBzDkN6WEAOoeEce2wboeQZfOu-bn-7y38aYDKlWopxuom81kQnrkfRRU5wI
+Message-ID: <CAGp9LzqMNFwQVg248rxEQ=YPhqABprVGMHx2jREmSBBzSW91aw@mail.gmail.com>
+Subject: Re: [BUG] mt7925e: MSI Vector A16 HX A8WHG-004US reports permanent
+ hardware rfkill block under Linux; ACPI GPPA.WLAN AE_ALREADY_EXISTS
+To: Ross <rosspayant@gmail.com>
+Cc: linux-mediatek@lists.infradead.org, nbd@nbd.name, lorenzo@kernel.org, 
 	ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com, 
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
+	deren.wu@mediatek.com, linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-34288-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34289-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,altlinux.org:email]
-X-Rspamd-Queue-Id: 804B1381293
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 0A9B4381AFF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Hi,
 
-On Tue, Mar 31, 2026 at 2:40=E2=80=AFAM silverducks <silverducks@altlinux.o=
-rg> wrote:
+On Mon, Mar 9, 2026 at 2:20=E2=80=AFPM Ross <rosspayant@gmail.com> wrote:
 >
-> Greetings!
+> Hello, I want to report a wifi bug. This bug makes the wifi hard lock
+> on my computer under Arch Linux as well as Fedora. Wifi does work on
+> Linux LTE and Windows 11. The computer is a Vector A16 HX A8WHG-004US
+> and this it's actually the second I bought. I returned the first one
+> because of the exact same bug. Since I got the second one I've stuck
+> it through hoping there would be a fix, it's been three months now.
+> I've tried all the possible fixes (on both machines), nothing. "sudo
+> rfkill unblock all" and "sudo rfkill unblock wifi" do not work. There
+> is no switch in the bios or "airplane mode" hotkey to toggle either.
+> The wifi just does not work in Linux (apart from LTE). I've updated
+> the bios to the new version every time a new one drops (including the
+> most recent one from a couple days ago) and nothing has changed
+> anything. I've updated everything else frequently. No dice.
 >
-> I apologize for poor formatting in the previous email. I did not realize =
-all
-> plain text files' contents would be visible on the mailing list.
-> I am attaching an archive containing the same files as in previous email =
-for
-> convenience.
-> Given compression, I can also avoid using external hosting, which I
-> presume is
-> preferred, so I am including all relevant logs in the archive as well.
-> I am also including original email text just in case.
+> Anyway, I suppose this is where I go to file report bugs like this?
+> I've never issued a bug report before so I'm not sure. Thank you so
+> much for giving this the time of day, as well as all the other work
+> you do on the LInux project. If you need further information I'll give
+> you whatever you need.
+>
+> I had the following written for me by AI but I can confirm it's
+> accurate to the problem:
+>
+>
+> I am reporting what appears to be an MSI-platform-specific MT7925
+> hard-rfkill issue on Linux.
+>
+> Hardware
+> - Laptop: MSI Vector A16 HX A8WHG-004US
+> - WLAN: MEDIATEK MT7925 802.11be 160MHz 2x2 PCIe Wireless Network
+> Adapter [14c3:7925]
+> - Subsystem: Foxconn International, Inc. Device [105b:e138]
+>
+> Software
+> - BIOS: E15MMAMS.107
+> - Kernel: 6.19.6-arch1-1
+> - linux-firmware: 20260221-1
+> - Distro: Arch Linux
+>
+> Problem
+> - The Wi-Fi device is detected correctly.
+> - The mt7925e driver binds successfully.
+> - Firmware appears to load.
+> - The interface is created/renamed to wlp5s0.
+> - However, rfkill always reports the WLAN as hard blocked.
+>
+> Current rfkill state
+> - Bluetooth: Soft blocked: no / Hard blocked: no
+> - Wireless LAN: Soft blocked: no / Hard blocked: yes
+>
+> Attempted commands
+> - sudo rfkill unblock wifi
+> - sudo rfkill unblock all
+>
+> Neither command changes the WLAN hard block.
+>
+> Relevant observations
+> - lspci shows:
+> MEDIATEK Corp. MT7925 802.11be 160MHz 2x2 PCIe Wireless Network
+> Adapter [Filogic 360] [14c3:7925]
+> Kernel driver in use: mt7925e
+> - The boot log shows the device being enabled, ASIC revision detected,
+> firmware information printed, and the interface renamed from wlan0 to
+> wlp5s0.
+> - The same boot log also shows repeated ACPI errors involving WLAN
+> objects under \_SB.PCI0.GPPA.WLAN..., including repeated
+> AE_ALREADY_EXISTS failures.
+>
+> This makes it look like:
+> - the device is present,
+> - the mt7925e driver is loading,
+> - but platform/ACPI state may be forcing or misreporting hardware rfkill.
+>
+> Relevant kernel log excerpt
+>
+> mt7925e 0000:05:00.0: enabling device (0000 -> 0002)
+> mt7925e 0000:05:00.0: ASIC revision: 79250000
+> mt7925e 0000:05:00.0: HW/SW Version: 0x8a108a10, Build Time: 202601061530=
+07a
+> mt7925e 0000:05:00.0: WM Firmware Version: ____000000, Build Time:
+> 20260106153120
+> mt7925e 0000:05:00.0 wlp5s0: renamed from wlan0
+>
 
-I think the current test setup is still mixing too many variables, so
-it is hard to tell what is actually triggering the issue.
+From the logs so far, this does not look like a basic mt7925e
+initialization failure. The device probes normally, firmware loads,
+and the interface is created, but the WLAN still ends up reported as
+hard blocked, so Wi-Fi never becomes usable. Typically, this kind of
+blocked state comes from a platform-level source, such as a hardware
+radio switch or platform-provided radio state, rather than from the
+mt7925e path itself.
 
-In particular, if the goal is to test the NetworkManager path, the
-script should not also manually manage wpa_supplicant, and iwd should
-not be part of the same test either. NetworkManager normally manages
-the Wi-Fi backend itself, so mixing manual wpa_supplicant handling,
-iwd, and NetworkManager in one setup makes the result difficult to
-interpret.
-
-Could you first simplify the setup and test one path at a time?
-
-If you want to test NetworkManager, use only NetworkManager, for
-example by using nmcli to explicitly control the connection steps.
-If you want to test plain wpa_supplicant, stop NetworkManager
-completely and use only wpa_supplicant + wpa_cli. I would suggest
-starting with this path, since that is also the setup I usually use
-for testing.
-If you want to test iwd, please test it separately as well.
-Also suggest to avoid suspend/resume or hibernation for now.
-The log you shared includes a clear S4 resume path (ACPI: PM: Waking
-up from system sleep state S4 and pci_pm_restore returns -110), which
-does not match a simple reconnect or module reload test.
+> ACPI BIOS Error (bug): Failure creating named object
+> [\_SB.PCI0.GPPA.WLAN._S0W], AE_ALREADY_EXISTS
+> ACPI BIOS Error (bug): Failure creating named object
+> [\_SB.PCI0.GPPA.WLAN._S4W], AE_ALREADY_EXISTS
+> ACPI BIOS Error (bug): Failure creating named object
+> [\_SB.PCI0.GPPA.WLAN._DSM], AE_ALREADY_EXISTS
+> ACPI BIOS Error (bug): Failure creating named object
+> [\_SB.PCI0.GPPA.WLAN.PCIF], AE_ALREADY_EXISTS
+> ACPI BIOS Error (bug): Failure creating named object
+> [\_SB.PCI0.GPPA.WLAN.NVID], AE_ALREADY_EXISTS
+> ACPI BIOS Error (bug): Failure creating named object
+> [\_SB.PCI0.GPPA.WLAN.NDID], AE_ALREADY_EXISTS
+> ACPI BIOS Error (bug): Failure creating named object
+> [\_SB.PCI0.GPPA.WLAN.PWR1], AE_ALREADY_EXISTS
+> ACPI BIOS Error (bug): Failure creating named object
+> [\_SB.PCI0.GPPA.WLAN._PR0], AE_ALREADY_EXISTS
+> ACPI BIOS Error (bug): Failure creating named object
+> [\_SB.PCI0.GPPA.WLAN._PR2], AE_ALREADY_EXISTS
+> ACPI BIOS Error (bug): Failure creating named object
+> [\_SB.PCI0.GPPA.WLAN._PR3], AE_ALREADY_EXISTS
+> ACPI BIOS Error (bug): Failure creating named object
+> [\_SB.PCI0.GPPA.WLAN.PWFR], AE_ALREADY_EXISTS
+> ACPI BIOS Error (bug): Failure creating named object
+> [\_SB.PCI0.GPPA.WLAN._PRR], AE_ALREADY_EXISTS
+>
+> Reproduction
+> 1. Boot Linux normally.
+> 2. Run:
+> rfkill list all
+> 3. Wireless LAN is always reported as:
+> Soft blocked: no
+> Hard blocked: yes
+>
+> Additional notes
+> - Windows 11 on the same laptop can use Wi-Fi normally.
+> - Updating BIOS from E15MMAMS.106 to E15MMAMS.107 did not resolve the iss=
+ue.
+> - This may be similar in shape to other MT7925 hard-rfkill issues that
+> required a machine-specific quirk, but on this MSI model the prominent
+> clue is the repeated ACPI GPPA.WLAN object collision.
+>
+> Please let me know if you want:
+> - full lspci -nnk output
+> - full dmesg/journalctl -b -k
+> - acpidump / decoded DSDT
+> - additional testing with a proposed patch or boot parameter
+>
+> --
+> Ross Payant
+>
 
