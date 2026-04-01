@@ -1,169 +1,200 @@
-Return-Path: <linux-wireless+bounces-34281-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34282-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YI3tJAJazWkRcQYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34281-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 19:46:42 +0200
+	id aHh0AMNjzWkHdAYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34282-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 20:28:19 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E86937EC73
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 19:46:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5725537F430
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 20:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E193930BF52A
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 17:43:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0DD133002FAB
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 18:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D328F3DD526;
-	Wed,  1 Apr 2026 17:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iOpt7ms/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8D2285CBA;
+	Wed,  1 Apr 2026 18:23:35 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B89D3DEFE0
-	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 17:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41E41096F
+	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 18:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775065412; cv=none; b=LLHTNXOm/tMFyuEHO/5g6zxqgwRBq9n+4eCUgOEwTXKGa8Nenk4Z0luk0GPadOQhN78PJoRLr+IAvsWBLtt8liyujAdpSrlgQGzbf1Imqtb7aIHnsFp6HguBNfKwo7WpH2JUC529n9dKodWLoeTeS7Ex6T6yzSzztrMCJZiuQp8=
+	t=1775067815; cv=none; b=ZhyHkr57/lvGUuMnAkiHWqtOGeTZwiXpBGjE40ZAKUiKk96Z41sAEhkXYjaEmGDDNxAUGhxiqKE6ZKox8nkk3F5UIuVfHx4OmceKlbCtT+QfWO3mvq9BVKC1eArkeUEsCy+OJ680r/DvNSbg2F7mYyx9Y0eTOtHRObxbZ17SrSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775065412; c=relaxed/simple;
-	bh=M2PTvMIWNwglM5IRtzt7CmJXai+0enUMlMZ6jT4o34I=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=QAMCcK4pGK+rjA2VWRijFn6jRV93VqetjPmues8HnA7n1/fTIdH1wPtjI9kARdSZql+d1tk/tCmuJzehsVhVQqJ92RxchdOsM24WMTZCCE3XK8ZP+RVRwnos5+S/GAt/lcWTDnGUWbtSbnxDJbBKI1uuImjDpIeZo3HzJy4xn9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iOpt7ms/; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1775067815; c=relaxed/simple;
+	bh=M3dtOgsDJGmNc5xdHP8gX5HurAKIP3hQCkrAObkxXkM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cEsj/GqJ+10o0WLJG33ViLNCM4/l5DnKOAVg5ahqH3QOqBP8fFyHX7HCfomPAAuY81nRahhViMBe9XL1fwRP8OBMn1CWeT19miDTw09yy4ZD353pzHG6P8hrUe8wCU/xEaAn2QD8AY19sTyqZxcGM8l7MzJr4zO3AkUZIIZgqKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48704db565eso87846605e9.1
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Apr 2026 10:43:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775065409; x=1775670209; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gaI/OIQrNpeQjaeEVNFFVCUQads4q+o75svaH52EdCQ=;
-        b=iOpt7ms/JSSWBuU5GpcW0LhNUiEnXII2/ePQtqzWcx3yQZ2q/W7+asQUGTSo/lAV0j
-         yEtnubrn4rabs05YRHqRgq0peo8SvEKs/IlmI4jOtV63LtjNRzNvg7zaWToAHnvI2rYL
-         FAdbTzTg4MrqDRNVjbjZO+GH7GKyzHJfYQJM+/91C3L/CHrjdeFeMPd6W+wcDX1AfHq4
-         6JebwyJzmBjiVsC8A5ZpGSGtBkEE5QmhoHPdiMSEi+afTGEi5VMdB8zvBZ4uejMBqMuM
-         DxzuK140NLDIs4ZQjnqdlLeBLepmRoWka/8xOnLSlp4SHU7oT3qD3VnVakYsHM6A/tiA
-         +7ng==
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-46708149af2so33527b6e.0
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Apr 2026 11:23:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775065409; x=1775670209;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gaI/OIQrNpeQjaeEVNFFVCUQads4q+o75svaH52EdCQ=;
-        b=qtn99fhZGGky1Hx6y+AOg3/wxHJt66pxlwtpZWBNCpSmvVx85DI8w0/5dOzGyV52lA
-         aqXkjqiI/OXKtQ3DAv2Oi8HRB8V1V38sEbU/7m2ynS0TqgdxPsDyKbFs58PekWvRYssf
-         c7yEXUkMIiUKhMpYIXl/93Q+iQjpJxMVT2a/ZCXc2GFqHlOluO25vWmlAG/MQzH96jsi
-         inH5BDOluoVhbvrlaRS/4uhvVXT5SsszO55G/7WIGAskynN4L/AFsll4Ud5lpUnSJeYv
-         qfD6wEc3KnzBjOc1Fjq5GN5kVdQCldnOKSQODw5tY8Iiyhusd09ZVyJ9wXwjgAtnFgB4
-         6kCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcYvCT+bX8GbVGJsTy8SCQB8E+qM3OqKU5sRi5+nHr7VsFz0mCTQs4dhgS8UZSUD6vSnBTeLD9qyxIpEIFSA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxmi67iQzQqxrMG8cN1gjdX0gov0nsOCG26+UXrmZf7HjQyw9cS
-	3RSbiYJwoCHJq7c/ISlUbWso26AkKJMuggc68HQJ3Mg15r2kF89Uxp212GhcaQ==
-X-Gm-Gg: ATEYQzyx8hfa2NgfrT8WscuOUyzZ3ebAMBhhcP39+nzGhSLJG6zhKEEp4BfZMEQVYKE
-	BZCyU8f5HcDlNnEgG7D5mf3WE6oTxBidGTVpr2S4Kf6IYm/zFWL2Lqh1byt2rbb/9biJykfR0Li
-	B6eOtivhiaGWMMaWvLsnZS2W6ZgX4ZFaIXP2Pp2t75zvQngyGJXx48i3UDTsEwhMfs6ChbppuZ0
-	SFWiO7qJPJxa7puIcw7c2qOmvrak3qQqinEvuvDuLXQwcyUyH5pF3H2STAD9+4CabYscDkqDNOH
-	2rf9A04YZZ1EPHn66JPvXM5STW+5FQoSljlifnMjrhaINwKk9zIC6nwtQ8/Q3Vbo0ObepF8/G+C
-	zNtpgoIhWqnByXbWuOHp8/+pxI7xh6ZoCV4a84/AP+++ZTxgAaBPA9JeUEX4lRKCgLFQXAAK5Ce
-	sPWJph5oAwpphzsPslbBh2865YAAw3bg==
-X-Received: by 2002:a05:600c:638e:b0:487:1fc:14f9 with SMTP id 5b1f17b1804b1-4888b769917mr2412745e9.15.1775065409400;
-        Wed, 01 Apr 2026 10:43:29 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e735532sm163614125e9.0.2026.04.01.10.43.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Apr 2026 10:43:28 -0700 (PDT)
-Message-ID: <a90f22d6-bac0-4c76-86fb-517e7e7bf441@gmail.com>
-Date: Wed, 1 Apr 2026 20:43:27 +0300
+        d=1e100.net; s=20251104; t=1775067813; x=1775672613;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aauRVUQQqkGVpGY51g7LHYShg9XLgVwRWtM8bAaqPig=;
+        b=qBVZSzCD7G7hk0DNUeJ/rpQClVmVDFOh4S9QtLi3xKM3qrWv0jAICwTLNTUwRdr5HR
+         yI95QFnBUe/nha6cGR/HtQg9obaBZ4GtANxgdt6dqQ4D+1rlbzumrGENl8A5JwAHFRXn
+         RuABmBcwk9r4Y1keXvZS1chY9HsxeV+rqK+Yw9IDtxwHDOcW5ygltrY7bM1Z3NAqAwmn
+         SD+oaLooGIEYLqvennd0dDCJzy/MqC7yR3jEhJ79CiV1IxxlxNiz7oRbnhPSz5QzpC6T
+         GmuILsIcXl9ObLLHLIXdx9pAkfgp487QTGK1mvc9pCkzIig6jIw3fCNvQR8XrR7xFGtn
+         3P3w==
+X-Gm-Message-State: AOJu0YxdBfxlmRQwdAlsGL182fQQ5qpzY5WE2L2ODZgfotfed7j1bICc
+	rNp13htCm2pFYsSifz23tMKDwYueYWDO7yp0O+hmVNrWlxihPBgiDRVE
+X-Gm-Gg: ATEYQzzKkI+mj2I8HVA2a+EFcjoSClc03Ssq14JNjgLLjV3r4NDvoOLlzQtz9YFy0AS
+	XFGygPBX2KnVedvDi1gQ2cMRoVB3B4k8ACxzNSOot/GjspMTpcqexxtnwLCVRQOgdvrWUodVil6
+	NBWHSOgFTxQesWmTCRLB22XK31c625T4nyC3OkzoGHxFenkpNzcRoh8y3vxC+jKFL8CfEwFOoHb
+	9oeQKQ6vqhiti8ieA2rRHIU7gBnETCnJzed9SY2gp9LJM+ZxYohrBZrJqgp6NmBBSAjaFwbaU/q
+	GzU3YOZ4kOToczGKVwqKu7ryLpURCSjWQuQksMdzNubcY0QkErKomvEhjPLoyrgxt03wkeoVBzy
+	QVSqstnkkyd/QVtxL5GeuuIcr1bcUP6ZZYWPqpmX6flcNRa846CAG8QdfXqJpsOPBNKuTXaW297
+	asG6xvrCo+QdJ0kmHU6c9IpChsx/sOubJbfROtMzRc8wpmMVY=
+X-Received: by 2002:a05:6808:308d:b0:45e:dbf9:61c7 with SMTP id 5614622812f47-46ae01e3780mr2409342b6e.46.1775067812855;
+        Wed, 01 Apr 2026 11:23:32 -0700 (PDT)
+Received: from sean-HP-EliteBook-830-G6.lan ([207.191.35.252])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-422eb3c9e06sm386778fac.15.2026.04.01.11.23.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 11:23:32 -0700 (PDT)
+From: Sean Wang <sean.wang@kernel.org>
+To: nbd@nbd.name,
+	lorenzo.bianconi@redhat.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	Sean Wang <sean.wang@mediatek.com>,
+	Devin Wittmayer <lucid_duck@justthetip.ca>,
+	Satadru Pramanik <satadru@gmail.com>
+Subject: [PATCH v2 1/3] wifi: mt76: connac: use a helper to cache txpower_cur
+Date: Wed,  1 Apr 2026 13:23:20 -0500
+Message-ID: <20260401182322.64355-1-sean.wang@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH rtw-next 00/12] wifi: rtw89: Add support for RTL8922AU
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <8549233f-dd83-4e77-be88-5e22ecd4f5f1@gmail.com>
- <25781f4aa6cc427caf396374ca46d380@realtek.com>
-Content-Language: en-US
-In-Reply-To: <25781f4aa6cc427caf396374ca46d380@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34281-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,mediatek.com,justthetip.ca,gmail.com];
+	TAGGED_FROM(0.00)[bounces-34282-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.922];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4E86937EC73
+	DBL_BLOCKED_OPENRESOLVER(0.00)[justthetip.ca:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mediatek.com:email]
+X-Rspamd-Queue-Id: 5725537F430
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 30/03/2026 05:53, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> Often one or more of these messages appears when the chip powers on:
->>
->> [  +2.167037] rtw89_8922au 1-2:1.0: failed to wait RF DACK
->>
->> [  +2.942749] rtw89_8922au 1-2:1.0: failed to wait RF TSSI
->>
->> [  +0.019006] rtw89_8922au 2-4:1.0: failed to wait RF PRE_NTFY
->>
->> [  +5.985900] rtw89_8922au 2-4:1.0: failed to wait RF DPK
->>
->> It's unclear why.
-> 
-> RTL8922D done RF calibrations by firmware one by one, so driver should
-> wait for previous one done, and trigger next one. However, it'd be
-> well to just do waiting at the last to wait for all calibrations. 
-> 
-> Try to enlarge waiting time in rtw8922a_rfk_channel().
-> 
+From: Sean Wang <sean.wang@mediatek.com>
 
-I was convinced I tried that already, but no.
+The cached txpower value is derived from the bounded channel power after
+applying the chainmask path delta.
 
-After increasing all delays a bit the warnings are much more rare.
+Use a helper for that conversion so callers do not open-code it.
 
->>
->> It seems to work well anyway.
->>
-> 
-> If you can yield the highest rate (MCS13), I'd say it is fine.
-> 
-> Ping-Ke
-> 
+Reported-by: Devin Wittmayer <lucid_duck@justthetip.ca>
+Closes: https://lore.kernel.org/linux-wireless/20260130215839.53270-1-lucid_duck@justthetip.ca/
+Tested-by: Devin Wittmayer <lucid_duck@justthetip.ca>
+Tested-by: Satadru Pramanik <satadru@gmail.com>
+Co-developed-by: Devin Wittmayer <lucid_duck@justthetip.ca>
+Signed-off-by: Devin Wittmayer <lucid_duck@justthetip.ca>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+--
+v2:
+- Rebased onto the latest mt76 tree
+- Added Reported-by, Tested-by, Co-developed-by and Signed-off-by tags
+---
+ drivers/net/wireless/mediatek/mt76/mt76_connac.h     |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |  9 +++++++++
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 11 ++++++++---
+ 3 files changed, 18 insertions(+), 4 deletions(-)
 
-Testing with RTL8832CU (Brostrend AX8) in AP mode, the RTL8912AU can
-reach 1.5 Gbps (MCS10) RX, 1 Gbps TX.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+index 51423c7740bd..d0953e02810b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+@@ -420,7 +420,7 @@ mt76_connac_mutex_release(struct mt76_dev *dev, struct mt76_connac_pm *pm)
+ void mt76_connac_gen_ppe_thresh(u8 *he_ppet, int nss, enum nl80211_band band);
+ int mt76_connac_init_tx_queues(struct mt76_phy *phy, int idx, int n_desc,
+ 			       int ring_base, void *wed, u32 flags);
+-
++void mt76_connac_set_txpower_cur(struct mt76_phy *phy, s8 max_power);
+ void mt76_connac_write_hw_txp(struct mt76_dev *dev,
+ 			      struct mt76_tx_info *tx_info,
+ 			      void *txp_ptr, u32 id);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+index 0339e2e7ab60..b2daa6c7d061 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -275,6 +275,15 @@ int mt76_connac_init_tx_queues(struct mt76_phy *phy, int idx, int n_desc,
+ }
+ EXPORT_SYMBOL_GPL(mt76_connac_init_tx_queues);
+ 
++void mt76_connac_set_txpower_cur(struct mt76_phy *phy, s8 max_power)
++{
++	int delta;
++
++	delta = mt76_tx_power_path_delta(hweight16(phy->chainmask));
++	phy->txpower_cur = max_power - delta;
++}
++EXPORT_SYMBOL_GPL(mt76_connac_set_txpower_cur);
++
+ #define __bitrate_mask_check(_mcs, _mode)				\
+ ({									\
+ 	u8 i = 0;							\
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 89bd52ea8bf7..897b065a2be6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -2223,14 +2223,19 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
+ 				.hw_value = ch_list[idx],
+ 				.band = band,
+ 			};
+-			s8 reg_power, sar_power;
++			s8 reg_power, sar_power, max_power;
+ 
+ 			reg_power = mt76_connac_get_ch_power(phy, &chan,
+ 							     tx_power);
+ 			sar_power = mt76_get_sar_power(phy, &chan, reg_power);
+ 
+-			mt76_get_rate_power_limits(phy, &chan, limits,
+-						   sar_power);
++			max_power = mt76_get_rate_power_limits(phy, &chan, limits,
++							       sar_power);
++
++			if (phy->chandef.chan &&
++			    phy->chandef.chan->hw_value == ch_list[idx] &&
++			    phy->chandef.chan->band == band)
++				mt76_connac_set_txpower_cur(phy, max_power);
+ 
+ 			tx_power_tlv.last_msg = ch_list[idx] == last_ch;
+ 			sku_tlbv.channel = ch_list[idx];
+-- 
+2.43.0
 
-I used the RTL8832CU because my router is not working well with 160
-MHz.
 
