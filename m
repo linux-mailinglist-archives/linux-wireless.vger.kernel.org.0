@@ -1,231 +1,147 @@
-Return-Path: <linux-wireless+bounces-34286-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34287-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cP20KI5tzWnvdQYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34286-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 21:10:06 +0200
+	id UASwIzqjzWl9fgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34287-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 00:59:06 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 201AB37FAB1
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 21:10:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01231381285
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 00:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 007D6305E430
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 19:06:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88CC330158A1
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 22:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F612E091B;
-	Wed,  1 Apr 2026 19:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEF73BD24D;
+	Wed,  1 Apr 2026 22:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YBixx8O/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2138B32ED2E
-	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 19:06:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF1B3859D5
+	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 22:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775070411; cv=none; b=OHFBqzCBAmMKvw2B39OCGBJqp4lR3agwvYZ6Z9pkHLpVKV37jvYUX+Bq1sITqjTi0dUEq9aA2xu4yYzt6+7yfGFI2i9Nww9CuoOoegbBQXNC8a3bNjZ5eQdPleGsRnM9FUm3NENB02UD6C5Y6TzcRqkN88xYp/ttyVg806WUrB0=
+	t=1775084319; cv=none; b=r7HlyS4gQWwRqMb4pm9qdMCKA7Ioo49/xsqQFnPsB9C/zvXXqwIthL4E6iARFi2S8Zm0a1psnbDmqfUOo04awuyhNjz8Thgb2ajEpGqoyp6NyvZN2KcPRIlZMmVfNcKYjrDRUQNbOTo66kjPvZJFjVbHZ2wWgfGtlrFZeU9qVIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775070411; c=relaxed/simple;
-	bh=0U8ggOjLfcU5BjzQzTkxd6w1KMXgL3gnh2JOhJXMxhQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8sV1mq2f3LZlcDIvwShHrdSpNoYNn5WEIfUfdcJSPYc6P259VduZDpyErZi2xIO3R/bnfYbwNEdo3edjWXTR/TZlqGfk1qYmWc2ti/JVW1yABxRp+iuk/HeRE2Q4l29zksO42UJBPrfiYdco90Tb13Ycj8dkzZKnx36HT769WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+	s=arc-20240116; t=1775084319; c=relaxed/simple;
+	bh=8bIAS0+bOkwgPsPLNR9zP29IJ2JqtnsWyFUAJsNFWYI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=HqGdx8mA7oYzpFRI/7E/HRhahODUlI1z7+2cbb2ctmdQCFe2QwyFVznN23+BY6oW9YS9T0N0Vcx4lI6c+PQz/6Q0ZkdJcmeKdEf7aLaOTezUjov6rTIxM/h5+7FstW7kAuqER0MkRs7G2yYXkY+IidrDOXbw8iWnxKZr8vTEERM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YBixx8O/; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-67e02b821cfso59947eaf.0
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Apr 2026 12:06:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775070409; x=1775675209;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48374014a77so2524535e9.3
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Apr 2026 15:58:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775084316; x=1775689116; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/bbbtUfPpmMH6eFM76akrOLWA1LQMByWmMa0q4rif0s=;
-        b=JBxTa1y38YUh+qDlzCsGsNbw4hgtjAjcHDa8QXuIqcDZ6Zf93hhO0AaF/evNQtrMww
-         6u23Jkh3m1HK6boMxAF8/hWr47DknxAQzzDhwddAqKBoa2hHUCEGkFKFtaiTL3XyonVm
-         I6IfqygoB6fTtYZPm1qsewrh7bS/Bw8sIBEsYY2KWLRBoFwVe/pvCl7I0RfuFwlM+0iN
-         hBqt+MBT1Xh+LIdqmFWpJ0y2wAdq+lQxt2Han1Hc9FIKDiwi+Yv1PLdij7nKC33vELtw
-         INBQ79MdB045FO8tqL/42ATt8qXbjfrvRR2TgRImgAC1nsEQdoh4SW44a9GlrTsAFllu
-         rWyA==
-X-Gm-Message-State: AOJu0YyHrWRHptFHpLfPXg5w5yfWYF1VBRJBl7LP6oqWT1uRn5neUrMA
-	QJ2v1BKT643IXV8KWgQD8b7V38bS1sYULzU//c5Nc3TJHeF0RoZAGyTH
-X-Gm-Gg: ATEYQzzmSvAe8ZREE1udJvqHBXmW06yXbUyov6o9R0bSGCkNFEIuV1e1zCpOFwyUxTj
-	zXEPAhQtEcySMOhxJYMZfFlCZvR0fwsMihkbEvnce5IjMbWSmczQSd2oa4inBy2sMRnP47Lat1y
-	9mHdPry/jfuePHmV0bpv/VFGOWfPZ7XAuHPoIOq8rY/6wHBcEpKYxdfQKR2xnuXPgAVA8Ar1Gxe
-	AKKsjGz97BwbhPkRNFXDhXghYcsrtesEz3kwCvVZ1HwVktq1li7Z7JXa7RDxrwRkvZoOt9lc0dW
-	RLVszuc0p8W6GWhiGfvdXcoB+n5U5seGKuc7gwYf+2dBweaCkDTXjqvfdt2txPe+3Xk1IJmC/52
-	24LfVfZqGF4GxeMk1yxCTMYD5ENWt35EKaI0ZiyjxDceLnvQm2cEApvNWM4Ni+V8pWkuvsKxBqF
-	HdkRCY/REeGeFHXrk5DsfJaFX15q/KBJU51q0zjQsiawh/rPM=
-X-Received: by 2002:a05:6820:4dcb:b0:67e:367c:998b with SMTP id 006d021491bc7-67fabd207eemr2654797eaf.59.1775070409001;
-        Wed, 01 Apr 2026 12:06:49 -0700 (PDT)
-Received: from sean-HP-EliteBook-830-G6.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-422eaf2c780sm551867fac.6.2026.04.01.12.06.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 12:06:48 -0700 (PDT)
-From: Sean Wang <sean.wang@kernel.org>
-To: nbd@nbd.name,
-	lorenzo.bianconi@redhat.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Sean Wang <sean.wang@mediatek.com>,
-	Bryam Vargas <bryamestebanvargas@gmail.com>
-Subject: [PATCH v2 2/2] wifi: mt76: mt7921u: escalate broken USB transport to device reset
-Date: Wed,  1 Apr 2026 14:06:32 -0500
-Message-ID: <20260401190632.147042-2-sean.wang@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260401190632.147042-1-sean.wang@kernel.org>
-References: <20260401190632.147042-1-sean.wang@kernel.org>
+        bh=w+NiT8aph1Oh4THbDCVUM/vvu4eeH7pv0tJ9d9OfH1A=;
+        b=YBixx8O/MYTC/TBhVl6vNnfEOuXSK+ciQw0oTrSzQXTlIqrVSOJv8B/DcMA/BGOPRQ
+         haXwFuMp79C8PGwE0mV6hf5lytfxDr0qxxpbS1N9xD879w4kTo2sJA97QqgSZNXrzu4s
+         WE3HTzcQmgtPzQDW8KyaW9vrGKyqTdtLew8n+iOjcqs1QCZzREp+C48Um0Ananko9sPY
+         R69MRHcGI4zJR97dee3GuUYFNHF7bRb9TcxLMwgA1zIN4txUfP7d6ro+C4YN1Hfwl6Og
+         WSpNNG55a+ZR+tpPs23LQPa82HC1TzNxUhblovcm8njl9J/jzs+bPplk9WWqqJiaRDlY
+         re8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775084316; x=1775689116;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=w+NiT8aph1Oh4THbDCVUM/vvu4eeH7pv0tJ9d9OfH1A=;
+        b=mdqqt2xCXoQQcSSqz/QTI9fwhxFhD3IgTq4TlzIsiHPLL7fTTYzCSCubrc4CNseL5K
+         5WNtM30VoFdC1FLbrO2/vjBTtsxZgkWH0dBPw8T25Pl81jzJBiS7puOAnZszV8rUcpb5
+         4VCKosgzx2d3KZNTANVWwXmkW2zetlq3FzFPWAVDvmJ6Y2OSmbD1yGSelStKeGPZw/sx
+         MjjTkQZ5mthu6xgwins+Fs/UORMGDtIc2/QULp1QQbDommO7uqh/4r86YuJAa3IArMAD
+         3wTIXc1YnnzO8HMi2FsojMS47yo5GxVQN4HcbyG2H5Ol3uxtCUdvSXzzGePP9ohOrzfq
+         2D+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXJg/xY4MN2H9Dn5jqsEmeDVN2BQsx7RUcyVkILcxmYLijXFZL4t9Vxap+AQmnHWOVl4UGYTubBBfEdRJRqlA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YymbxbqP10z1MJJsKvdzBhkxkbNoHjJ4MA/oAlXgQU9EnSacHVf
+	8jrf+1GPfC6TpCqehLbcP94a59NUnvSOjNnmal3WGh3BYjFH6L0Dzz5qGead3A==
+X-Gm-Gg: ATEYQzzfgEeHQ+8nKtA/o48cRHWqTIQaT/gli2H3j2FaAjIs399JcxUD7QdpGP3BF9X
+	fduU0cBgx5JvucFB5jI+p9QM60cUvTbBHsXaRL+eVHioIkizrfYDqkEdc5pbq/4yh3C3L9rT16F
+	d2X1zKOPNUl6cShLMdL61lvZt1xz8l+HFTyDhU2gkD1J/rpgoUZTSWaUcVEePSd0T//0FE6fU/J
+	MPtW+sdW/m/D4CyM3AIPfiz+1aEp5DlmkbmttvroZQwYWCi1cSBevpJJcxCZvs+EMWxef+MUT8G
+	H1bb2l/GNQKE5NHIQ3mVxwv/G6rfWbC8JQRY6i/ZaNIccBIN94yjB7W5JeRSIkVXG3/+gVpPvBh
+	VfLG0Ap61oYYb/s7B15j0EnqwRk0VzClrUz81jCHd/fxcQw9Fa6M5TW2A+ud6HUigQTtGAXSwDM
+	m6yIAKvXMR4XaUeVYA69rY0LL4PMgUXg==
+X-Received: by 2002:a05:600c:4507:b0:487:21c7:2885 with SMTP id 5b1f17b1804b1-4888b6eab58mr17464155e9.5.1775084315504;
+        Wed, 01 Apr 2026 15:58:35 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.93])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887ad782d1sm51766185e9.9.2026.04.01.15.58.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Apr 2026 15:58:34 -0700 (PDT)
+Message-ID: <b0181475-ec36-438c-b5f9-0aa886ddbe3d@gmail.com>
+Date: Thu, 2 Apr 2026 01:58:33 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.46 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rtw-next 06/12] wifi: rtw89: usb: Enable RX aggregation
+ for RTL8922AU
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <8549233f-dd83-4e77-be88-5e22ecd4f5f1@gmail.com>
+ <6d7440bc-d463-4d99-af12-181684b87bfa@gmail.com>
+ <5853e0d8036840b89080229ed1aa4deb@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <5853e0d8036840b89080229ed1aa4deb@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34286-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,mediatek.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-34287-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.580];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 201AB37FAB1
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 01231381285
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sean Wang <sean.wang@mediatek.com>
+On 30/03/2026 06:46, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> It uses the same settings as RTL8852CU.
+> 
+> Though the values are the same, I'd prefer listing them individually, since
+> naming is different in vendor driver.
+> 
+> #define R_AX_RXAGG_0_V1 0x6000
+> #define R_BE_RXAGG_0_V1 0x6000
+> 
+> How about you? (I don't strictly request to this change)
+> 
 
-Check the USB control path before running the normal WFSYS reset flow.
-
-If USB access is no longer reliable, stop the WFSYS-only reset path,
-mark the device as bus_hung, and queue a USB device reset instead.
-
-Reuse the existing bus_hung state to represent transport-level failure,
-keeping the semantics consistent with the SDIO path.
-
-Also initialize bus_hung explicitly during probe for consistency.
-
-Reported-by: Bryam Vargas <bryamestebanvargas@gmail.com>
-Closes: https://lore.kernel.org/r/CANAPQziOh3sB7B8G+U3AZsFfeFN1uAg4munhwA_feZi56D7W+Q@mail.gmail.com
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
-v2:
-- Rebased onto the latest mt76 tree
-- Added the proper Reported-by tag
----
- .../net/wireless/mediatek/mt76/mt7921/mac.c   |  4 ++-
- .../net/wireless/mediatek/mt76/mt7921/usb.c   |  5 ++++
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  1 +
- .../net/wireless/mediatek/mt76/mt792x_usb.c   | 26 +++++++++++++++++++
- 4 files changed, 35 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 03b4960db73f..d27dbee8df1b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -675,7 +675,9 @@ void mt7921_mac_reset_work(struct work_struct *work)
- 		if (!ret)
- 			break;
- 	}
--	if (mt76_is_sdio(&dev->mt76) && atomic_read(&dev->mt76.bus_hung))
-+
-+	if ((mt76_is_sdio(&dev->mt76) || mt76_is_usb(&dev->mt76)) &&
-+	    atomic_read(&dev->mt76.bus_hung))
- 		return;
- 
- 	if (i == 10)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-index 6be28f4152ed..8c0f0e4ef87b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-@@ -88,6 +88,10 @@ static int mt7921u_mac_reset(struct mt792x_dev *dev)
- {
- 	int err;
- 
-+	mt792xu_reset_on_bus_error(dev);
-+	if (atomic_read(&dev->mt76.bus_hung))
-+		return 0;
-+
- 	mt76_txq_schedule_all(&dev->mphy);
- 	mt76_worker_disable(&dev->mt76.tx_worker);
- 
-@@ -196,6 +200,7 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
- 	dev = container_of(mdev, struct mt792x_dev, mt76);
- 	dev->fw_features = features;
- 	dev->hif_ops = &hif_ops;
-+	atomic_set(&dev->mt76.bus_hung, false);
- 	mt792xu_reset_work_init(dev);
- 
- 	udev = usb_get_dev(udev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index 5f06074591ca..74222c507b81 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -494,6 +494,7 @@ int mt792xu_init_reset(struct mt792x_dev *dev);
- void mt792xu_reset_work_init(struct mt792x_dev *dev);
- void mt792xu_reset_work_cleanup(struct mt792x_dev *dev);
- int mt792xu_check_bus(struct mt792x_dev *dev);
-+int mt792xu_reset_on_bus_error(struct mt792x_dev *dev);
- u32 mt792xu_rr(struct mt76_dev *dev, u32 addr);
- void mt792xu_wr(struct mt76_dev *dev, u32 addr, u32 val);
- u32 mt792xu_rmw(struct mt76_dev *dev, u32 addr, u32 mask, u32 val);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-index 2558d87b1e0f..6b10d035bcbc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-@@ -60,6 +60,32 @@ int mt792xu_check_bus(struct mt792x_dev *dev)
- }
- EXPORT_SYMBOL_GPL(mt792xu_check_bus);
- 
-+int mt792xu_reset_on_bus_error(struct mt792x_dev *dev)
-+{
-+	int err = 0;
-+
-+	if (!atomic_read(&dev->mt76.bus_hung))
-+		err = mt792xu_check_bus(dev);
-+
-+	if (err) {
-+		atomic_set(&dev->mt76.bus_hung, true);
-+
-+		if (!atomic_xchg(&dev->usb_reset_pending, 1)) {
-+			dev_warn(dev->mt76.dev,
-+				 "USB transport access failed (%d), queueing device reset\n",
-+				 err);
-+
-+			schedule_work(&dev->usb_reset_work);
-+		}
-+
-+		return err;
-+	}
-+
-+	atomic_set(&dev->mt76.bus_hung, false);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(mt792xu_reset_on_bus_error);
-+
- u32 mt792xu_rr(struct mt76_dev *dev, u32 addr)
- {
- 	u32 ret;
--- 
-2.43.0
-
+Okay, I will do that for v2.
 
