@@ -1,80 +1,75 @@
-Return-Path: <linux-wireless+bounces-34284-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34285-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sH3lBetjzWkHdAYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34284-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 20:28:59 +0200
+	id qDcuOIhtzWnvdQYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34285-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 21:10:00 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692C237F44F
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 20:28:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DBAA37FAAA
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 21:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F215301DCC7
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 18:23:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6DD3C305A4E8
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 19:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E802E0B58;
-	Wed,  1 Apr 2026 18:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA332E091B;
+	Wed,  1 Apr 2026 19:06:45 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBEC633A9CF
-	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 18:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0D833F585
+	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 19:06:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775067823; cv=none; b=ndJk05zWDuj5RhltFGCZdlckh/3rlf4CG5wF6cIw9zL6aJMNlWuKY55/6ftGAZbAZM/zhKn0HVmJ1a5v95ai42fyvhg7jykazTBO8CsqpX8TIpPhsKNG3Tk3bbbCi8IZJhG+ey1HU/F/YebKi2WT+VqF6okIJmofNdrWkQuyyDU=
+	t=1775070405; cv=none; b=DvCl93S033oPunehTHKO0eIXwR4pjuruyWy+gFeBnV+J950zcDmJXifpymjYvIvX3048qj7MhJanqSMwnilNcvscbNdXVBiJUqnYJTP+gxxWqxcuAOnLk1IeRMeNkXZb9epamUCg9QQJ2g5MV8MMy629IDKgRAnkJfMLtKaNgUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775067823; c=relaxed/simple;
-	bh=zY9d1jd0STEyvIps2ic0MFxCDArLjIShdxxSXHa19Sk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NKXYRiD8F83tJnO+E58B9wD4jx73cR0N1olBQx/LO43ScwJNf0IXuf5HpHxLmKf7JeQFYMvlTjLUlTet1gc5PyP1kVrsPH528O37Ze2JCBC+iU6izsHkgRL09cp460egOvkFIrrTwvX08jpnVvKv4UV/uc9rQHSNpQG6zmTmG+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.51
+	s=arc-20240116; t=1775070405; c=relaxed/simple;
+	bh=UVvNZm1IYUxJ1PjPduDzojP4XDyq7KxKfPxyn0iG+UI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LhufI2FIGXLadCRYGWO+RqsYtJfGEEyCoDOdqAcHL98ZkM4+0oTBPFWlm59tvNJc75p52wwKTcvmFi28H3t4aAj84GeaNLpI1MbWJppVVAg/cKNHcGZYQpPbE5VVGyzW0CyO431NJHQ2oVj7dx80lKHMjJeCcqV1/6DNmWwGIfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-4043b27ddeaso48878fac.1
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Apr 2026 11:23:41 -0700 (PDT)
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-415e568a7ecso57052fac.0
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Apr 2026 12:06:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775067821; x=1775672621;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=q3xYD9hif0mmKJi5KnGGefNn1V5fwiod+4YYIl9xrIk=;
-        b=DNiR/aGMURB/NoFeJWrYx1g3gHOPkT//k6gsEQS612HhtggPzcm+D3FL+zsMsy4f91
-         o5tYGfqRnyc0yEZ+T+MRn+Pt4WMUxT8Xl204J3j6wsCU8kS9XKW0G78DMwImJ8d2Fns7
-         7mb/y3dc6gVoYxJZlhtaZAB8BVmOPCXpKNccxGdT22Jza574rVZ595ViMRH1OtdrXqvD
-         XGJuyEXkQh0IsbwV8uFZWVGf0L2lrgnLlb2HpnIosgaMVVR0GHXHRevI/G5+UUbjO7jq
-         D7EG4ZoBJZrCm919BJjihgM48lHFlv2yIYPhB7NApZEHUdyXf9nrblpBpd+nX2THkDOg
-         kufA==
-X-Gm-Message-State: AOJu0YxRnL6G9ciMy1rPVeQq7npDWb44aiT+Qi5pGbSi9ROaJ97iabhc
-	VdU8nPvyGmqLc3Aur0uCHCfE9jR6Ucd8DOJ/Qc8aX72/LijfBqQlWC19
-X-Gm-Gg: ATEYQzwcgfya4sIspNIxRfy3UXFj19G1o07FrN6wA23TjhAo1wxcp94GLV0Rc5hZvN0
-	LHwGeoIXGMEilhARvBqUrsUZvx/ueYOXgrJdEx6zKyi61mtg0pQ9phgTYxwCLnSttwoprYN851Z
-	zeJCDSYFzqS0A4RYZVsUZ+0Mwh4PcRJb4MUYcuct7oLDaiNQgqIT/VkWgt7Fk1j2BUzTo3N4/H5
-	XaXt54q/hOHQS5NxRfxse5aMe23B9fboiRO8MqDYsOm8gfo7AbB/nB+jl/pNNfZ6VMSbqHUsprA
-	GmAaPaAXTIMEpLkUj3N0QpTUsUn3hMmdMgS2oyf424LV9vzyRRfADZezXrpNKewyxY61aHASbSR
-	Jz+85nxkHMDvukcfTxbRhdvfsw9ELf5QOTnFv1YHVIbCkxDWYsGr0zW4wMQ6KEb0JrTadYtnOok
-	/2BeqhsM9IPnN5HnzAkEPvn3bxydOgihL0/HdmoQ4B3pe/WI8=
-X-Received: by 2002:a05:6870:d29c:b0:417:c695:869c with SMTP id 586e51a60fabf-422cfeaeb79mr2545688fac.27.1775067820280;
-        Wed, 01 Apr 2026 11:23:40 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775070403; x=1775675203;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RhMDaJgdHrBwkyZkpBFRF9FScxuvntJewf4BaEmC6l8=;
+        b=snBtw3F5lzpQ/XMCZdVGtE9DTZ7OtMq+HDUYfUqXyzUQaqUlswQa41gpEPwp152RWD
+         1rIVF9odTLGcQ9Oy6RUMEcHPH3ZtB/PnFtGiFZ6R9k7p7F80CSiegFQWkcBSKtTPRneN
+         0mX/8cXAPyFIdXF8u7Z8vipukT+vc18fNefoyyopVkpmMn7akknwVXITef+JjyA3Mq4p
+         mXtXt3JN21yDti3sxoTgkmtRxRGsWvHKsJKmqBm79ey/M3YBkAc/17RkBD0gyggHBsqU
+         VS1NEnAcvJFA5mdieRCmHrwEzFzfuR3o3Yc5XZmIwIkng2wViVbhZVxifZRtWpfzw15q
+         lvYg==
+X-Gm-Message-State: AOJu0YwBkefIAVg8tTWtLGG+OzJhMWpSxaJ7/mmV1h5anBVlSfhpDbkq
+	SebmlBCjQtapTFhVpVxONg1X1padAOTDQvfCHJ/tivrCoc79zIRou4la5jXKaw==
+X-Gm-Gg: ATEYQzzZ6jVqDZLKLOoqowwC2ic7vbrysYsSKjWdMVWPS8nTqrbkEzGZ+5xvw9AaQ9K
+	8GGTK7fpHMk4IxcckwdWcknu7hFGKxInuXPxdNyEH/XkPqf2FkiAnXv1zE3cn5e6SXYjx+oMyRK
+	Held/JWHw7YqVoS/ZDTLbJVJGzdW4t9JODdAC0UEoLe0uaLqn8CtWLC8HpzTjeuQuTCVz64V0n8
+	q6eM7ZyavwMf91rHsdV2nKNVhpS/ZuJTrAQ5tnH+sEzxv+n9CyPfmeS+XijNGbCqapMkgwTROro
+	lJic5f+tT0EjRw7RgVK04UtzWdCiIX4yOO4dH1AIucF75puNoSLnFVquYF5x38pOW8aX9s9gwqi
+	TtQQ8d4b/ByZu4mg50HKxTFoW+0RdmgFVv03Dnri3R3Cp8pt3DlCzkUlS987RfQc3vlUnUL5hFP
+	IvA9Q4Qdn0gtLGLk2GanevmpPo+zljH64ZZPv7AYy/pc2r6pb2gl1qeENGsA==
+X-Received: by 2002:a05:6871:3588:b0:417:533b:79ac with SMTP id 586e51a60fabf-422cfc075bamr3055228fac.9.1775070402752;
+        Wed, 01 Apr 2026 12:06:42 -0700 (PDT)
 Received: from sean-HP-EliteBook-830-G6.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-422eb3c9e06sm386778fac.15.2026.04.01.11.23.39
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-422eaf2c780sm551867fac.6.2026.04.01.12.06.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 11:23:39 -0700 (PDT)
+        Wed, 01 Apr 2026 12:06:42 -0700 (PDT)
 From: Sean Wang <sean.wang@kernel.org>
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
 Cc: linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org,
-	Sean Wang <sean.wang@mediatek.com>,
-	Devin Wittmayer <lucid_duck@justthetip.ca>,
-	Satadru Pramanik <satadru@gmail.com>
-Subject: [PATCH v2 3/3] wifi: mt76: mt792x: report txpower for the requested vif link
-Date: Wed,  1 Apr 2026 13:23:22 -0500
-Message-ID: <20260401182322.64355-3-sean.wang@kernel.org>
+	Sean Wang <sean.wang@mediatek.com>
+Subject: [PATCH v2 1/2] wifi: mt76: mt792x: add common USB transport reset helpers
+Date: Wed,  1 Apr 2026 14:06:31 -0500
+Message-ID: <20260401190632.147042-1-sean.wang@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260401182322.64355-1-sean.wang@kernel.org>
-References: <20260401182322.64355-1-sean.wang@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -87,148 +82,183 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,mediatek.com,justthetip.ca,gmail.com];
-	TAGGED_FROM(0.00)[bounces-34284-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.671];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-34285-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[justthetip.ca:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mediatek.com:email]
-X-Rspamd-Queue-Id: 692C237F44F
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.991];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mediatek.com:email]
+X-Rspamd-Queue-Id: 7DBAA37FAAA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-mt792x currently reports txpower from the generic PHY cached state,
-which may not match the requested vif/link context.
+Add per-device USB reset work and a control-path access check helper
+for mt7921u and mt7925u.
 
-Resolve the requested link channel and derive txpower from that channel
-instead, with fallback to the current PHY chandef if no valid chanctx is
-available.
+This prepares common infrastructure for transport-level recovery while
+keeping the reset state per-device for correct lifetime handling.
 
-Reported-by: Devin Wittmayer <lucid_duck@justthetip.ca>
-Closes: https://lore.kernel.org/linux-wireless/20260130215839.53270-1-lucid_duck@justthetip.ca/
-Tested-by: Devin Wittmayer <lucid_duck@justthetip.ca>
-Tested-by: Satadru Pramanik <satadru@gmail.com>
+No functional change intended.
+
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
 v2:
 - Rebased onto the latest mt76 tree
-- Added Reported-by, Tested-by, Co-developed-by and Signed-off-by tags
 ---
- .../net/wireless/mediatek/mt76/mt7921/main.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7925/main.c  |  2 +-
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  2 +
- .../net/wireless/mediatek/mt76/mt792x_core.c  | 41 +++++++++++++++++++
- 4 files changed, 45 insertions(+), 2 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7921/usb.c   |  2 +
+ .../net/wireless/mediatek/mt76/mt7925/usb.c   |  2 +
+ drivers/net/wireless/mediatek/mt76/mt792x.h   |  5 ++
+ .../net/wireless/mediatek/mt76/mt792x_usb.c   | 50 +++++++++++++++++++
+ 4 files changed, 59 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 3d74fabe7408..2e7cdf8edc12 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1552,7 +1552,7 @@ const struct ieee80211_ops mt7921_ops = {
- 	.wake_tx_queue = mt76_wake_tx_queue,
- 	.release_buffered_frames = mt76_release_buffered_frames,
- 	.channel_switch_beacon = mt7921_channel_switch_beacon,
--	.get_txpower = mt76_get_txpower,
-+	.get_txpower = mt792x_get_txpower,
- 	.get_stats = mt792x_get_stats,
- 	.get_et_sset_count = mt792x_get_et_sset_count,
- 	.get_et_strings = mt792x_get_et_strings,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 73d3722739d0..53e1a93c6976 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -2433,7 +2433,7 @@ const struct ieee80211_ops mt7925_ops = {
- 	.wake_tx_queue = mt76_wake_tx_queue,
- 	.release_buffered_frames = mt76_release_buffered_frames,
- 	.channel_switch_beacon = mt7925_channel_switch_beacon,
--	.get_txpower = mt76_get_txpower,
-+	.get_txpower = mt792x_get_txpower,
- 	.get_stats = mt792x_get_stats,
- 	.get_et_sset_count = mt792x_get_et_sset_count,
- 	.get_et_strings = mt792x_get_et_strings,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+index 17057e68bf21..6be28f4152ed 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -196,6 +196,7 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
+ 	dev = container_of(mdev, struct mt792x_dev, mt76);
+ 	dev->fw_features = features;
+ 	dev->hif_ops = &hif_ops;
++	mt792xu_reset_work_init(dev);
+ 
+ 	udev = usb_get_dev(udev);
+ 	usb_reset_device(udev);
+@@ -244,6 +245,7 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
+ 
+ error:
+ 	mt76u_queues_deinit(&dev->mt76);
++	mt792xu_reset_work_cleanup(dev);
+ 
+ 	usb_set_intfdata(usb_intf, NULL);
+ 	usb_put_dev(interface_to_usbdev(usb_intf));
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+index d9968f03856d..8b5d58125352 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+@@ -184,6 +184,7 @@ static int mt7925u_probe(struct usb_interface *usb_intf,
+ 	dev = container_of(mdev, struct mt792x_dev, mt76);
+ 	dev->fw_features = features;
+ 	dev->hif_ops = &hif_ops;
++	mt792xu_reset_work_init(dev);
+ 
+ 	udev = usb_get_dev(udev);
+ 	usb_reset_device(udev);
+@@ -232,6 +233,7 @@ static int mt7925u_probe(struct usb_interface *usb_intf,
+ 
+ error:
+ 	mt76u_queues_deinit(&dev->mt76);
++	mt792xu_reset_work_cleanup(dev);
+ 
+ 	usb_set_intfdata(usb_intf, NULL);
+ 	usb_put_dev(interface_to_usbdev(usb_intf));
 diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index 4ff93f2cd624..65eba18bc3a1 100644
+index 4ff93f2cd624..5f06074591ca 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt792x.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -397,6 +397,8 @@ void mt792x_roc_timer(struct timer_list *timer);
- void mt792x_csa_timer(struct timer_list *timer);
- void mt792x_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		  u32 queues, bool drop);
-+int mt792x_get_txpower(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+		       unsigned int link_id, int *dbm);
- int mt792x_assign_vif_chanctx(struct ieee80211_hw *hw,
- 			      struct ieee80211_vif *vif,
- 			      struct ieee80211_bss_conf *link_conf,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index 152cfcca2f90..3fd1be7db1f4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -329,6 +329,47 @@ void mt792x_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- }
- EXPORT_SYMBOL_GPL(mt792x_flush);
+@@ -243,6 +243,8 @@ struct mt792x_dev {
+ 	wait_queue_head_t wait;
  
-+int mt792x_get_txpower(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+		       unsigned int link_id, int *dbm)
+ 	struct work_struct init_work;
++	struct work_struct usb_reset_work;
++	atomic_t usb_reset_pending;
+ 
+ 	u8 fw_debug;
+ 	u8 fw_features;
+@@ -489,6 +491,9 @@ int mt792xu_dma_init(struct mt792x_dev *dev, bool resume);
+ int mt792xu_mcu_power_on(struct mt792x_dev *dev);
+ int mt792xu_wfsys_reset(struct mt792x_dev *dev);
+ int mt792xu_init_reset(struct mt792x_dev *dev);
++void mt792xu_reset_work_init(struct mt792x_dev *dev);
++void mt792xu_reset_work_cleanup(struct mt792x_dev *dev);
++int mt792xu_check_bus(struct mt792x_dev *dev);
+ u32 mt792xu_rr(struct mt76_dev *dev, u32 addr);
+ void mt792xu_wr(struct mt76_dev *dev, u32 addr, u32 val);
+ u32 mt792xu_rmw(struct mt76_dev *dev, u32 addr, u32 mask, u32 val);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+index 47827d1c5ccb..2558d87b1e0f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+@@ -11,6 +11,55 @@
+ #include "mt792x.h"
+ #include "mt76_connac2_mac.h"
+ 
++static int mt792xu_read32(struct mt76_dev *dev, u32 addr, void *buf)
 +{
-+	struct mt76_power_limits limits = {};
-+	struct ieee80211_bss_conf *link_conf;
-+	struct ieee80211_channel *chan;
-+	struct mt792x_bss_conf *mconf;
-+	struct mt792x_vif *mvif;
-+	struct mt76_phy *phy;
-+	s8 max_power;
-+
-+	if (!vif)
-+		return mt76_get_txpower(hw, vif, link_id, dbm);
-+
-+	mvif = (struct mt792x_vif *)vif->drv_priv;
-+	phy = mvif->phy->mt76;
-+
-+	mt792x_mutex_acquire(mvif->phy->dev);
-+
-+	link_conf = mt792x_vif_to_bss_conf(vif, link_id);
-+	mconf = link_conf ? mt792x_link_conf_to_mconf(link_conf) : NULL;
-+	if (mconf && mconf->mt76.ctx && mconf->mt76.ctx->def.chan)
-+		chan = mconf->mt76.ctx->def.chan;
-+	else
-+		/* Fall back to the current PHY chandef if the requested link
-+		 * does not have a valid channel context.
-+		 */
-+		chan = phy->chandef.chan;
-+
-+	mt792x_mutex_release(mvif->phy->dev);
-+
-+	if (!chan)
-+		return -EINVAL;
-+
-+	max_power = mt76_connac_get_rate_power_limit(phy, chan, &limits);
-+	*dbm = DIV_ROUND_UP(max_power, 2);
-+
-+	return 0;
++	return __mt76u_vendor_request(dev, MT_VEND_READ_EXT,
++				      USB_DIR_IN | MT_USB_TYPE_VENDOR,
++				      (u16)(addr >> 16), (u16)addr,
++				      buf, sizeof(__le32));
 +}
-+EXPORT_SYMBOL_GPL(mt792x_get_txpower);
 +
- int mt792x_assign_vif_chanctx(struct ieee80211_hw *hw,
- 			      struct ieee80211_vif *vif,
- 			      struct ieee80211_bss_conf *link_conf,
++static void mt792xu_reset_work(struct work_struct *work)
++{
++	struct mt792x_dev *dev =
++		container_of(work, struct mt792x_dev, usb_reset_work);
++	struct usb_interface *usb_intf = to_usb_interface(dev->mt76.dev);
++
++	if (usb_intf && usb_get_intfdata(usb_intf) == dev)
++		usb_queue_reset_device(usb_intf);
++
++	atomic_set(&dev->usb_reset_pending, 0);
++}
++
++void mt792xu_reset_work_init(struct mt792x_dev *dev)
++{
++	INIT_WORK(&dev->usb_reset_work, mt792xu_reset_work);
++	atomic_set(&dev->usb_reset_pending, 0);
++}
++EXPORT_SYMBOL_GPL(mt792xu_reset_work_init);
++
++void mt792xu_reset_work_cleanup(struct mt792x_dev *dev)
++{
++	cancel_work_sync(&dev->usb_reset_work);
++	atomic_set(&dev->usb_reset_pending, 0);
++}
++EXPORT_SYMBOL_GPL(mt792xu_reset_work_cleanup);
++
++int mt792xu_check_bus(struct mt792x_dev *dev)
++{
++	int ret;
++
++	mutex_lock(&dev->mt76.usb.usb_ctrl_mtx);
++	ret = mt792xu_read32(&dev->mt76, MT_HW_CHIPID, dev->mt76.usb.data);
++	mutex_unlock(&dev->mt76.usb.usb_ctrl_mtx);
++
++	if (ret == sizeof(__le32))
++		return 0;
++
++	return ret < 0 ? ret : -EIO;
++}
++EXPORT_SYMBOL_GPL(mt792xu_check_bus);
++
+ u32 mt792xu_rr(struct mt76_dev *dev, u32 addr)
+ {
+ 	u32 ret;
+@@ -333,6 +382,7 @@ void mt792xu_disconnect(struct usb_interface *usb_intf)
+ {
+ 	struct mt792x_dev *dev = usb_get_intfdata(usb_intf);
+ 
++	mt792xu_reset_work_cleanup(dev);
+ 	cancel_work_sync(&dev->init_work);
+ 	if (!test_bit(MT76_STATE_INITIALIZED, &dev->mphy.state))
+ 		return;
 -- 
 2.43.0
 
