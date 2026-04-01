@@ -1,143 +1,200 @@
-Return-Path: <linux-wireless+bounces-34255-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34256-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODwIBnzOzGlFWwYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34255-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 09:51:24 +0200
+	id kCmqD/DOzGlFWwYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34256-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 09:53:20 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76040376479
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 09:51:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C643764F2
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 09:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B00A302410B
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 07:42:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6112301DCE3
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 07:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A94386C31;
-	Wed,  1 Apr 2026 07:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A4E38B14D;
+	Wed,  1 Apr 2026 07:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qppyHh4y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688A13806BE
-	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 07:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370CC38552F;
+	Wed,  1 Apr 2026 07:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775029347; cv=none; b=nP3gjpywXpRA4ORHyCEqEmVyXj3Ev/hZ7hQIsdGQSrPyQ2OHg3YGgfasD+2QBvob9d1JfDgU2bGXxXIByObMN0Kcp4C+85JI6bYGTlRlWTlICZo1lxPqN+Id3jUFE18Ajf2pGS145FrHS0IPzm7n9R+D+3CByfxzTw5QjP7jmoE=
+	t=1775029545; cv=none; b=DBF5fLoR5w3vQQqHSeQ6809h2L1zGT8ZcC3U0Xi45v0QJp705Chq53nTQ0a14THwgK/1vuYIOrYiAbdqHpmoGJKAqfFF8fFnNVIGEp8cmTo2H5VXAXG5wfMIHsnIlt4SVyxTkdYHSYIfXfvAir1SWmVoOydmHy1AHqy9j0gy8aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775029347; c=relaxed/simple;
-	bh=txXUfYvaeQJYycp0fUA9LLKONMLQ2GKqQcMKym2NH8s=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=XZ48zWzJbSkDBxIqsKMnGMdn6x8sWAtD51Z9Ms8nYbmaOY/FyjmrmFOrE8Datlf0pxPBJbpEh81XOJTKDX9DDSgD2Cl4qMkMR21SX5t3oXXPn51B7xMuLFFKnQQHJNocj2pGND9BnGsGThDk+E5I4/6fFbzz9+khqRpS7yG/Y6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-462a9191720so16659530b6e.0
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Apr 2026 00:42:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775029344; x=1775634144;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I3gTuXpKCN7VYI+q2l2Hi9gL9Ghm548UsftJe2Z4drE=;
-        b=Ut592X9a0wNg+0DaTjas1drBEr0JXBQDAGvfz0tDfPVcOgOzwvw0mF9Fd4J82zUANF
-         VY5hexU+2CsT2ja72TQpk0lMEpUsaWxm2YmoAOB7u4CDj9/bh6Rn2/GDSsL2Jyqab/4s
-         qxTCfUudiX+M3LOwFEo3/cRy7zIVsvBA8O9c95zAtVFxUZn8AXbTAYsEKOhCQe+wJ+Ak
-         z4cI93XSq/GlA5KzQBAuGNXLQPXOYoP37Yn6s/KBHTp3p5y+L3kc5Mf8eGS056YAAHln
-         xzPteOeH6fYe9Eu9hyy4B/k97fv6Pzpp+Ug61aJMBJU9O91ql6RKfS2VDidZK6c9dzpq
-         tnBw==
-X-Forwarded-Encrypted: i=1; AJvYcCXzul4xzQPwvkhVZMpspEqNuLvqP1Pu3DA4rS9+VlH4RWsTWIr9+d7twFYWCmfwY11OkXddP9tlmqatnUvwyA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9ebh8832xu0UWkk9uFLwYZf7vwxDE3KANTMN0G6B7u7U2lGui
-	PeU4BnVqNBs9J7GpflnPia1xP2DuANyO+ynEqesLXP+GBAT7Q9BYCgee+p/BPQdB90JWd/iS676
-	HFkH59QPe+remnoXiVJA4S/CaTtrAlmS0ddfOcKSCaAzK2/tsztTTDJ5I1QU=
+	s=arc-20240116; t=1775029545; c=relaxed/simple;
+	bh=qN7W5IBVBu/OQTCESu4Ceo7yTOnBD6XUujV3W2X5nu8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Fo8BJRKys1ArCG1GrCKGbO7v+uajmYkwBheiMH04hY6F2ybJtbQ4xxTY5s3uq+2Tkx+duq18CS0EwERyym2YuPI07Moj8Rj/APKNcvhC3NbmTJCqr/ZZ4eMH/xOVIG91ZlIxDOR62e2RJVFHbtJIFTd7w0Q+YTBawfB9fscvhMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qppyHh4y; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=ocYqYAcgR1+/f5z2PeObgww9KvTkVcu5upOhy12M96c=; b=qppyHh4yVyPfuZinNmzNuvUo98
+	ZzIQLIAkGtEusEFCWJLH056dBP0ZGgDld2dbOncKsxuY3CdOjHfDNBojsMgurWLZKRZ2VEb3DZ6lI
+	RfsN1GcZUdsyEr5B7f5wp3K35mkdWnmyVDGQZSmA2Dl6j2mZNYm0KMTuEEl/7vMAvNs4ePewrI7FM
+	2O0TjqZhbd94Bc4ck74/suWRXQ1kS8kGuAZt/IXK5LxpTVyqsK5xpycHKG97uEHKkkxJzhThrDmJM
+	IuvFXMEMqWQbh3URIbtzq1ou7YPYh8Z6QUyTRAgNmBChGcFHdjPbAAcsH5RXTZWoNL3MngVsfUPBL
+	re9IFLlA==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w7qGN-0000000HLQO-0An7;
+	Wed, 01 Apr 2026 07:45:19 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w7qGM-00000007xe2-1Dj0;
+	Wed, 01 Apr 2026 08:45:18 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	Guillaume Nault <gnault@redhat.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Kees Cook <kees@kernel.org>,
+	Alexei Lazar <alazar@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Paul Moore <paul@paul-moore.com>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	oss-drivers@corigine.com,
+	bridge@lists.linux.dev,
+	bpf@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	torvalds@linux-foundation.org,
+	jon.maddog.hall@gmail.com
+Subject: [PATCH 0/6] Deprecate Legacy IP
+Date: Wed,  1 Apr 2026 08:44:14 +0100
+Message-ID: <20260401074509.1897527-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1745:b0:67e:fbc:de68 with SMTP id
- 006d021491bc7-67fabc08953mr1169405eaf.26.1775029344454; Wed, 01 Apr 2026
- 00:42:24 -0700 (PDT)
-Date: Wed, 01 Apr 2026 00:42:24 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69cccc60.050a0220.183828.003f.GAE@google.com>
-Subject: [syzbot] Monthly wireless report (Apr 2026)
-From: syzbot <syzbot+listb52ea0a54d3fbb4630b8@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-1.36 / 15.00];
+Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=desiato.20200630];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-34255-lists,linux-wireless=lfdr.de,listb52ea0a54d3fbb4630b8];
+	FREEMAIL_TO(0.00)[nvidia.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,blackwall.org,linux.dev,iogearbox.net,gmail.com,fomichev.me,sipsolutions.net,netfilter.org,strlen.de,nwl.cc,amazon.co.uk,paul-moore.com,vger.kernel.org,corigine.com,lists.linux.dev,linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[49];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	REDIRECTOR_URL(0.00)[goo.gl];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goo.gl:url,googlegroups.com:email,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 76040376479
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34256-lists,linux-wireless=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dwmw2@infradead.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[infradead.org:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:dkim,infradead.org:mid]
+X-Rspamd-Queue-Id: 98C643764F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello wireless maintainers/developers,
+RFC1883, the IPv6 standard, was published in the final decade of the 1900s.
+That's closer in time to the Apollo 11 moon landing than it was to today.
 
-This is a 31-day syzbot report for the wireless subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/wireless
+Even our esteemed Maddog has worked with computers for longer in the IPv6
+era, than he ever did before it.
 
-During the period, 2 new issues were detected and 2 were fixed.
-In total, 51 issues are still open and 174 have already been fixed.
+Yet Linux still can't even be *built* with only IPv6 support and without
+support for Legacy IP. This long overdue patch series fixes that, and
+immediately marks Legacy IP for deprecation.
 
-Some of the still happening issues:
+It also cleans up a few tautological "INET && IPV6" and "INET || IPV6"
+checks, since IPV6 (and now LEGACY_IP) cannot be selected without the
+overall CONFIG_INET option.
 
-Ref  Crashes Repro Title
-<1>  28045   Yes   WARNING in rate_control_rate_init (3)
-                   https://syzkaller.appspot.com/bug?extid=9bdc0c5998ab45b05030
-<2>  14590   No    WARNING in kcov_remote_start (6)
-                   https://syzkaller.appspot.com/bug?extid=3f51ad7ac3ae57a6fdcc
-<3>  10607   Yes   WARNING in __rate_control_send_low (3)
-                   https://syzkaller.appspot.com/bug?extid=34463a129786910405dd
-<4>  6950    Yes   WARNING in __cfg80211_ibss_joined (2)
-                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
-<5>  1226    Yes   WARNING in ieee80211_start_next_roc
-                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
-<6>  872     Yes   INFO: task hung in reg_check_chans_work (7)
-                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
-<7>  810     Yes   INFO: rcu detected stall in ieee80211_handle_queued_frames
-                   https://syzkaller.appspot.com/bug?extid=1c991592da3ef18957c0
-<8>  790     No    INFO: task hung in netdev_run_todo (4)
-                   https://syzkaller.appspot.com/bug?extid=894cca71fa925aabfdb2
-<9>  719     Yes   WARNING in ieee80211_tx_h_rate_ctrl
-                   https://syzkaller.appspot.com/bug?extid=0d516b33238bd97ee864
-<10> 619     Yes   INFO: task hung in crda_timeout_work (8)
-                   https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
+For now, we only add a warning when a process *listens* on a Legacy IP
+socket (since you can listen on IPv6 and still accept connections which
+have come through a timewarp from the 20th century. Adding warnings for
+making outbound connections or *accepting* on Legacy IP can come later.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+  'I would be happy if "Legacy IP" ceased to be the "industry standard"
+   and IPv6 be the default, even if I had to beat IPv6 into the head of
+   every single network administrator's head with a shovel.' said Jon
+  'maddog' Hall, ancient supporter of Free and Open Source Software.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+David Woodhouse (6):
+      net: Simplify tautological CONFIG_INET/CONFIG_IPV6 guards
+      net: Add CONFIG_LEGACY_IP option
+      net: Guard Legacy IP entry points with CONFIG_LEGACY_IP
+      net: Make IPv4-only Kconfig options depend on LEGACY_IP
+      net: Change CONFIG_INET to CONFIG_LEGACY_IP for IPv4-only code
+      net: Warn when processes listen on AF_INET sockets
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+ .../net/ethernet/mellanox/mlx5/core/en/tc_tun.c    |  6 ++--
+ .../net/ethernet/mellanox/mlx5/core/en/tc_tun.h    |  2 +-
+ .../ethernet/mellanox/mlx5/core/en/tc_tun_encap.c  |  2 +-
+ .../ethernet/netronome/nfp/flower/tunnel_conf.c    |  2 +-
+ include/linux/indirect_call_wrapper.h              |  4 ++-
+ net/bridge/br_arp_nd_proxy.c                       |  2 +-
+ net/bridge/br_private.h                            |  8 +++++
+ net/core/filter.c                                  | 12 +++----
+ net/core/secure_seq.c                              |  2 +-
+ net/core/sock.c                                    |  2 +-
+ net/ipv4/Kconfig                                   | 37 ++++++++++++++++++++++
+ net/ipv4/af_inet.c                                 | 23 +++++++++++---
+ net/ipv4/devinet.c                                 |  2 ++
+ net/ipv4/route.c                                   |  1 -
+ net/ipv4/tcp_ipv4.c                                | 30 ++++++++++--------
+ net/mac80211/main.c                                | 10 +++---
+ net/netfilter/nfnetlink_queue.c                    |  2 +-
+ 17 files changed, 105 insertions(+), 42 deletions(-)
 
-You may send multiple commands in a single email message.
 
