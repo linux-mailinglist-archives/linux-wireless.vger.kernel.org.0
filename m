@@ -1,75 +1,79 @@
-Return-Path: <linux-wireless+bounces-34285-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34286-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDcuOIhtzWnvdQYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34285-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 21:10:00 +0200
+	id cP20KI5tzWnvdQYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34286-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 21:10:06 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBAA37FAAA
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 21:10:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 201AB37FAB1
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Apr 2026 21:10:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6DD3C305A4E8
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 19:06:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 007D6305E430
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2026 19:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA332E091B;
-	Wed,  1 Apr 2026 19:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F612E091B;
+	Wed,  1 Apr 2026 19:06:51 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0D833F585
-	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 19:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2138B32ED2E
+	for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2026 19:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775070405; cv=none; b=DvCl93S033oPunehTHKO0eIXwR4pjuruyWy+gFeBnV+J950zcDmJXifpymjYvIvX3048qj7MhJanqSMwnilNcvscbNdXVBiJUqnYJTP+gxxWqxcuAOnLk1IeRMeNkXZb9epamUCg9QQJ2g5MV8MMy629IDKgRAnkJfMLtKaNgUU=
+	t=1775070411; cv=none; b=OHFBqzCBAmMKvw2B39OCGBJqp4lR3agwvYZ6Z9pkHLpVKV37jvYUX+Bq1sITqjTi0dUEq9aA2xu4yYzt6+7yfGFI2i9Nww9CuoOoegbBQXNC8a3bNjZ5eQdPleGsRnM9FUm3NENB02UD6C5Y6TzcRqkN88xYp/ttyVg806WUrB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775070405; c=relaxed/simple;
-	bh=UVvNZm1IYUxJ1PjPduDzojP4XDyq7KxKfPxyn0iG+UI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LhufI2FIGXLadCRYGWO+RqsYtJfGEEyCoDOdqAcHL98ZkM4+0oTBPFWlm59tvNJc75p52wwKTcvmFi28H3t4aAj84GeaNLpI1MbWJppVVAg/cKNHcGZYQpPbE5VVGyzW0CyO431NJHQ2oVj7dx80lKHMjJeCcqV1/6DNmWwGIfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.46
+	s=arc-20240116; t=1775070411; c=relaxed/simple;
+	bh=0U8ggOjLfcU5BjzQzTkxd6w1KMXgL3gnh2JOhJXMxhQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=C8sV1mq2f3LZlcDIvwShHrdSpNoYNn5WEIfUfdcJSPYc6P259VduZDpyErZi2xIO3R/bnfYbwNEdo3edjWXTR/TZlqGfk1qYmWc2ti/JVW1yABxRp+iuk/HeRE2Q4l29zksO42UJBPrfiYdco90Tb13Ycj8dkzZKnx36HT769WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-415e568a7ecso57052fac.0
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Apr 2026 12:06:43 -0700 (PDT)
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-67e02b821cfso59947eaf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Apr 2026 12:06:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775070403; x=1775675203;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RhMDaJgdHrBwkyZkpBFRF9FScxuvntJewf4BaEmC6l8=;
-        b=snBtw3F5lzpQ/XMCZdVGtE9DTZ7OtMq+HDUYfUqXyzUQaqUlswQa41gpEPwp152RWD
-         1rIVF9odTLGcQ9Oy6RUMEcHPH3ZtB/PnFtGiFZ6R9k7p7F80CSiegFQWkcBSKtTPRneN
-         0mX/8cXAPyFIdXF8u7Z8vipukT+vc18fNefoyyopVkpmMn7akknwVXITef+JjyA3Mq4p
-         mXtXt3JN21yDti3sxoTgkmtRxRGsWvHKsJKmqBm79ey/M3YBkAc/17RkBD0gyggHBsqU
-         VS1NEnAcvJFA5mdieRCmHrwEzFzfuR3o3Yc5XZmIwIkng2wViVbhZVxifZRtWpfzw15q
-         lvYg==
-X-Gm-Message-State: AOJu0YwBkefIAVg8tTWtLGG+OzJhMWpSxaJ7/mmV1h5anBVlSfhpDbkq
-	SebmlBCjQtapTFhVpVxONg1X1padAOTDQvfCHJ/tivrCoc79zIRou4la5jXKaw==
-X-Gm-Gg: ATEYQzzZ6jVqDZLKLOoqowwC2ic7vbrysYsSKjWdMVWPS8nTqrbkEzGZ+5xvw9AaQ9K
-	8GGTK7fpHMk4IxcckwdWcknu7hFGKxInuXPxdNyEH/XkPqf2FkiAnXv1zE3cn5e6SXYjx+oMyRK
-	Held/JWHw7YqVoS/ZDTLbJVJGzdW4t9JODdAC0UEoLe0uaLqn8CtWLC8HpzTjeuQuTCVz64V0n8
-	q6eM7ZyavwMf91rHsdV2nKNVhpS/ZuJTrAQ5tnH+sEzxv+n9CyPfmeS+XijNGbCqapMkgwTROro
-	lJic5f+tT0EjRw7RgVK04UtzWdCiIX4yOO4dH1AIucF75puNoSLnFVquYF5x38pOW8aX9s9gwqi
-	TtQQ8d4b/ByZu4mg50HKxTFoW+0RdmgFVv03Dnri3R3Cp8pt3DlCzkUlS987RfQc3vlUnUL5hFP
-	IvA9Q4Qdn0gtLGLk2GanevmpPo+zljH64ZZPv7AYy/pc2r6pb2gl1qeENGsA==
-X-Received: by 2002:a05:6871:3588:b0:417:533b:79ac with SMTP id 586e51a60fabf-422cfc075bamr3055228fac.9.1775070402752;
-        Wed, 01 Apr 2026 12:06:42 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775070409; x=1775675209;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/bbbtUfPpmMH6eFM76akrOLWA1LQMByWmMa0q4rif0s=;
+        b=JBxTa1y38YUh+qDlzCsGsNbw4hgtjAjcHDa8QXuIqcDZ6Zf93hhO0AaF/evNQtrMww
+         6u23Jkh3m1HK6boMxAF8/hWr47DknxAQzzDhwddAqKBoa2hHUCEGkFKFtaiTL3XyonVm
+         I6IfqygoB6fTtYZPm1qsewrh7bS/Bw8sIBEsYY2KWLRBoFwVe/pvCl7I0RfuFwlM+0iN
+         hBqt+MBT1Xh+LIdqmFWpJ0y2wAdq+lQxt2Han1Hc9FIKDiwi+Yv1PLdij7nKC33vELtw
+         INBQ79MdB045FO8tqL/42ATt8qXbjfrvRR2TgRImgAC1nsEQdoh4SW44a9GlrTsAFllu
+         rWyA==
+X-Gm-Message-State: AOJu0YyHrWRHptFHpLfPXg5w5yfWYF1VBRJBl7LP6oqWT1uRn5neUrMA
+	QJ2v1BKT643IXV8KWgQD8b7V38bS1sYULzU//c5Nc3TJHeF0RoZAGyTH
+X-Gm-Gg: ATEYQzzmSvAe8ZREE1udJvqHBXmW06yXbUyov6o9R0bSGCkNFEIuV1e1zCpOFwyUxTj
+	zXEPAhQtEcySMOhxJYMZfFlCZvR0fwsMihkbEvnce5IjMbWSmczQSd2oa4inBy2sMRnP47Lat1y
+	9mHdPry/jfuePHmV0bpv/VFGOWfPZ7XAuHPoIOq8rY/6wHBcEpKYxdfQKR2xnuXPgAVA8Ar1Gxe
+	AKKsjGz97BwbhPkRNFXDhXghYcsrtesEz3kwCvVZ1HwVktq1li7Z7JXa7RDxrwRkvZoOt9lc0dW
+	RLVszuc0p8W6GWhiGfvdXcoB+n5U5seGKuc7gwYf+2dBweaCkDTXjqvfdt2txPe+3Xk1IJmC/52
+	24LfVfZqGF4GxeMk1yxCTMYD5ENWt35EKaI0ZiyjxDceLnvQm2cEApvNWM4Ni+V8pWkuvsKxBqF
+	HdkRCY/REeGeFHXrk5DsfJaFX15q/KBJU51q0zjQsiawh/rPM=
+X-Received: by 2002:a05:6820:4dcb:b0:67e:367c:998b with SMTP id 006d021491bc7-67fabd207eemr2654797eaf.59.1775070409001;
+        Wed, 01 Apr 2026 12:06:49 -0700 (PDT)
 Received: from sean-HP-EliteBook-830-G6.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-422eaf2c780sm551867fac.6.2026.04.01.12.06.41
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-422eaf2c780sm551867fac.6.2026.04.01.12.06.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 12:06:42 -0700 (PDT)
+        Wed, 01 Apr 2026 12:06:48 -0700 (PDT)
 From: Sean Wang <sean.wang@kernel.org>
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
 Cc: linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org,
-	Sean Wang <sean.wang@mediatek.com>
-Subject: [PATCH v2 1/2] wifi: mt76: mt792x: add common USB transport reset helpers
-Date: Wed,  1 Apr 2026 14:06:31 -0500
-Message-ID: <20260401190632.147042-1-sean.wang@kernel.org>
+	Sean Wang <sean.wang@mediatek.com>,
+	Bryam Vargas <bryamestebanvargas@gmail.com>
+Subject: [PATCH v2 2/2] wifi: mt76: mt7921u: escalate broken USB transport to device reset
+Date: Wed,  1 Apr 2026 14:06:32 -0500
+Message-ID: <20260401190632.147042-2-sean.wang@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260401190632.147042-1-sean.wang@kernel.org>
+References: <20260401190632.147042-1-sean.wang@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,185 +84,147 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-34285-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34286-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,mediatek.com,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.991];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
 	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mediatek.com:email]
-X-Rspamd-Queue-Id: 7DBAA37FAAA
+	NEURAL_HAM(-0.00)[-0.580];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 201AB37FAB1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Add per-device USB reset work and a control-path access check helper
-for mt7921u and mt7925u.
+Check the USB control path before running the normal WFSYS reset flow.
 
-This prepares common infrastructure for transport-level recovery while
-keeping the reset state per-device for correct lifetime handling.
+If USB access is no longer reliable, stop the WFSYS-only reset path,
+mark the device as bus_hung, and queue a USB device reset instead.
 
-No functional change intended.
+Reuse the existing bus_hung state to represent transport-level failure,
+keeping the semantics consistent with the SDIO path.
 
+Also initialize bus_hung explicitly during probe for consistency.
+
+Reported-by: Bryam Vargas <bryamestebanvargas@gmail.com>
+Closes: https://lore.kernel.org/r/CANAPQziOh3sB7B8G+U3AZsFfeFN1uAg4munhwA_feZi56D7W+Q@mail.gmail.com
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
 v2:
 - Rebased onto the latest mt76 tree
+- Added the proper Reported-by tag
 ---
- .../net/wireless/mediatek/mt76/mt7921/usb.c   |  2 +
- .../net/wireless/mediatek/mt76/mt7925/usb.c   |  2 +
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  5 ++
- .../net/wireless/mediatek/mt76/mt792x_usb.c   | 50 +++++++++++++++++++
- 4 files changed, 59 insertions(+)
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   |  4 ++-
+ .../net/wireless/mediatek/mt76/mt7921/usb.c   |  5 ++++
+ drivers/net/wireless/mediatek/mt76/mt792x.h   |  1 +
+ .../net/wireless/mediatek/mt76/mt792x_usb.c   | 26 +++++++++++++++++++
+ 4 files changed, 35 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 03b4960db73f..d27dbee8df1b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -675,7 +675,9 @@ void mt7921_mac_reset_work(struct work_struct *work)
+ 		if (!ret)
+ 			break;
+ 	}
+-	if (mt76_is_sdio(&dev->mt76) && atomic_read(&dev->mt76.bus_hung))
++
++	if ((mt76_is_sdio(&dev->mt76) || mt76_is_usb(&dev->mt76)) &&
++	    atomic_read(&dev->mt76.bus_hung))
+ 		return;
+ 
+ 	if (i == 10)
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-index 17057e68bf21..6be28f4152ed 100644
+index 6be28f4152ed..8c0f0e4ef87b 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-@@ -196,6 +196,7 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
+@@ -88,6 +88,10 @@ static int mt7921u_mac_reset(struct mt792x_dev *dev)
+ {
+ 	int err;
+ 
++	mt792xu_reset_on_bus_error(dev);
++	if (atomic_read(&dev->mt76.bus_hung))
++		return 0;
++
+ 	mt76_txq_schedule_all(&dev->mphy);
+ 	mt76_worker_disable(&dev->mt76.tx_worker);
+ 
+@@ -196,6 +200,7 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
  	dev = container_of(mdev, struct mt792x_dev, mt76);
  	dev->fw_features = features;
  	dev->hif_ops = &hif_ops;
-+	mt792xu_reset_work_init(dev);
++	atomic_set(&dev->mt76.bus_hung, false);
+ 	mt792xu_reset_work_init(dev);
  
  	udev = usb_get_dev(udev);
- 	usb_reset_device(udev);
-@@ -244,6 +245,7 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
- 
- error:
- 	mt76u_queues_deinit(&dev->mt76);
-+	mt792xu_reset_work_cleanup(dev);
- 
- 	usb_set_intfdata(usb_intf, NULL);
- 	usb_put_dev(interface_to_usbdev(usb_intf));
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
-index d9968f03856d..8b5d58125352 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
-@@ -184,6 +184,7 @@ static int mt7925u_probe(struct usb_interface *usb_intf,
- 	dev = container_of(mdev, struct mt792x_dev, mt76);
- 	dev->fw_features = features;
- 	dev->hif_ops = &hif_ops;
-+	mt792xu_reset_work_init(dev);
- 
- 	udev = usb_get_dev(udev);
- 	usb_reset_device(udev);
-@@ -232,6 +233,7 @@ static int mt7925u_probe(struct usb_interface *usb_intf,
- 
- error:
- 	mt76u_queues_deinit(&dev->mt76);
-+	mt792xu_reset_work_cleanup(dev);
- 
- 	usb_set_intfdata(usb_intf, NULL);
- 	usb_put_dev(interface_to_usbdev(usb_intf));
 diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index 4ff93f2cd624..5f06074591ca 100644
+index 5f06074591ca..74222c507b81 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt792x.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -243,6 +243,8 @@ struct mt792x_dev {
- 	wait_queue_head_t wait;
- 
- 	struct work_struct init_work;
-+	struct work_struct usb_reset_work;
-+	atomic_t usb_reset_pending;
- 
- 	u8 fw_debug;
- 	u8 fw_features;
-@@ -489,6 +491,9 @@ int mt792xu_dma_init(struct mt792x_dev *dev, bool resume);
- int mt792xu_mcu_power_on(struct mt792x_dev *dev);
- int mt792xu_wfsys_reset(struct mt792x_dev *dev);
- int mt792xu_init_reset(struct mt792x_dev *dev);
-+void mt792xu_reset_work_init(struct mt792x_dev *dev);
-+void mt792xu_reset_work_cleanup(struct mt792x_dev *dev);
-+int mt792xu_check_bus(struct mt792x_dev *dev);
+@@ -494,6 +494,7 @@ int mt792xu_init_reset(struct mt792x_dev *dev);
+ void mt792xu_reset_work_init(struct mt792x_dev *dev);
+ void mt792xu_reset_work_cleanup(struct mt792x_dev *dev);
+ int mt792xu_check_bus(struct mt792x_dev *dev);
++int mt792xu_reset_on_bus_error(struct mt792x_dev *dev);
  u32 mt792xu_rr(struct mt76_dev *dev, u32 addr);
  void mt792xu_wr(struct mt76_dev *dev, u32 addr, u32 val);
  u32 mt792xu_rmw(struct mt76_dev *dev, u32 addr, u32 mask, u32 val);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-index 47827d1c5ccb..2558d87b1e0f 100644
+index 2558d87b1e0f..6b10d035bcbc 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-@@ -11,6 +11,55 @@
- #include "mt792x.h"
- #include "mt76_connac2_mac.h"
+@@ -60,6 +60,32 @@ int mt792xu_check_bus(struct mt792x_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(mt792xu_check_bus);
  
-+static int mt792xu_read32(struct mt76_dev *dev, u32 addr, void *buf)
++int mt792xu_reset_on_bus_error(struct mt792x_dev *dev)
 +{
-+	return __mt76u_vendor_request(dev, MT_VEND_READ_EXT,
-+				      USB_DIR_IN | MT_USB_TYPE_VENDOR,
-+				      (u16)(addr >> 16), (u16)addr,
-+				      buf, sizeof(__le32));
++	int err = 0;
++
++	if (!atomic_read(&dev->mt76.bus_hung))
++		err = mt792xu_check_bus(dev);
++
++	if (err) {
++		atomic_set(&dev->mt76.bus_hung, true);
++
++		if (!atomic_xchg(&dev->usb_reset_pending, 1)) {
++			dev_warn(dev->mt76.dev,
++				 "USB transport access failed (%d), queueing device reset\n",
++				 err);
++
++			schedule_work(&dev->usb_reset_work);
++		}
++
++		return err;
++	}
++
++	atomic_set(&dev->mt76.bus_hung, false);
++	return 0;
 +}
-+
-+static void mt792xu_reset_work(struct work_struct *work)
-+{
-+	struct mt792x_dev *dev =
-+		container_of(work, struct mt792x_dev, usb_reset_work);
-+	struct usb_interface *usb_intf = to_usb_interface(dev->mt76.dev);
-+
-+	if (usb_intf && usb_get_intfdata(usb_intf) == dev)
-+		usb_queue_reset_device(usb_intf);
-+
-+	atomic_set(&dev->usb_reset_pending, 0);
-+}
-+
-+void mt792xu_reset_work_init(struct mt792x_dev *dev)
-+{
-+	INIT_WORK(&dev->usb_reset_work, mt792xu_reset_work);
-+	atomic_set(&dev->usb_reset_pending, 0);
-+}
-+EXPORT_SYMBOL_GPL(mt792xu_reset_work_init);
-+
-+void mt792xu_reset_work_cleanup(struct mt792x_dev *dev)
-+{
-+	cancel_work_sync(&dev->usb_reset_work);
-+	atomic_set(&dev->usb_reset_pending, 0);
-+}
-+EXPORT_SYMBOL_GPL(mt792xu_reset_work_cleanup);
-+
-+int mt792xu_check_bus(struct mt792x_dev *dev)
-+{
-+	int ret;
-+
-+	mutex_lock(&dev->mt76.usb.usb_ctrl_mtx);
-+	ret = mt792xu_read32(&dev->mt76, MT_HW_CHIPID, dev->mt76.usb.data);
-+	mutex_unlock(&dev->mt76.usb.usb_ctrl_mtx);
-+
-+	if (ret == sizeof(__le32))
-+		return 0;
-+
-+	return ret < 0 ? ret : -EIO;
-+}
-+EXPORT_SYMBOL_GPL(mt792xu_check_bus);
++EXPORT_SYMBOL_GPL(mt792xu_reset_on_bus_error);
 +
  u32 mt792xu_rr(struct mt76_dev *dev, u32 addr)
  {
  	u32 ret;
-@@ -333,6 +382,7 @@ void mt792xu_disconnect(struct usb_interface *usb_intf)
- {
- 	struct mt792x_dev *dev = usb_get_intfdata(usb_intf);
- 
-+	mt792xu_reset_work_cleanup(dev);
- 	cancel_work_sync(&dev->init_work);
- 	if (!test_bit(MT76_STATE_INITIALIZED, &dev->mphy.state))
- 		return;
 -- 
 2.43.0
 
