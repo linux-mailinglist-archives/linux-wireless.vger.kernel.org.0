@@ -1,285 +1,667 @@
-Return-Path: <linux-wireless+bounces-34313-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34314-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHu/DucIzmkwkgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34313-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 08:12:55 +0200
+	id oDZyIGgLzmmnkgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34314-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 08:23:36 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3773F3844E9
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 08:12:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9D83846B0
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 08:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 28EA8300B9ED
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2026 06:12:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A3339303AFB0
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2026 06:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F70223DFF;
-	Thu,  2 Apr 2026 06:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00B137CD50;
+	Thu,  2 Apr 2026 06:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="HxpJH8H8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WzUiQ4mf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23962D978C
-	for <linux-wireless@vger.kernel.org>; Thu,  2 Apr 2026 06:12:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83848263F5E;
+	Thu,  2 Apr 2026 06:23:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775110369; cv=none; b=Dkaa402B0p3GSGnTX1xoCldgb1R7Bew+sXn3YKakNTmuIu2o7r5VqWUbABKFSfszxOwkOirJvTk6bs+SJr5JfbpzqEqypkfC+f7FnsQKs6M/7Coeeu//OFg+vTiU31PFy4OIRDED6SifYzc1EMl/ChuuF6IJ/n6sJNzEaq1XObk=
+	t=1775111011; cv=none; b=g79gS5VfS/ZtF8a8Ils5EToccfo9D/fj+0w1l/mLpd1DTO8dcR6IDU0Dxuk94AG8msD+NXyqxiNOvlGRecTV7YpP8pGJExAlNXl2+MCilpk7EjftD+Pwmp8CnP8HLRxnBE7Xa/IY2r3Ezm47NEY9xmi1UMPnvHh2Ur+PpzuzA0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775110369; c=relaxed/simple;
-	bh=JdclRZzvJVyHKMsJLceHSOoPZgdPwUZLcEUhbtAZKUc=;
-	h=From:To:Subject:Content-Type:MIME-Version:Message-ID:Date; b=nte/SdgGeFw2WnfcZPAeKjZuLf2QL1f8V3XDgjfYZ0H6zIjS4Iflnue+Ze/zMIjOjwlQYMmpRrJMwpV7hUFUlnW6KK+qLpH8y7/YAUis0yO9H7PqWzPVD26X6YV64JKoifLYU3exUkOYosFdvz8ZL58hIp1xIl1HWCJMI52FUQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=HxpJH8H8; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6326CjHI22583778, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1775110365; bh=JdclRZzvJVyHKMsJLceHSOoPZgdPwUZLcEUhbtAZKUc=;
-	h=From:To:Subject:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Message-ID:Date;
-	b=HxpJH8H87Zn2hbab2v84Vju/RS+Mx1LV5ZU4P8LgNQQTe9nU9wKljhpe70DBPrLKy
-	 VbZqItmoFUhcho1FR3tTiSgT3/vUgHjxMA/swAylSMpCrMF5iortV89IJsDsVUSyXj
-	 s5wtvh8DvToR8mJAfd2mFQrCcJnd/eUGtGkNdskfh0ytYyqb9xn0u+BvZViZxnHaLs
-	 Alp50MRSRvPxRtlpgUGSunYIcap+iGy22KuYp4ZAQBl/uCJHX9btw0Vn5VaNmM7+m3
-	 ftOWEOBQKQ5vpgko9KEnTLD/8dVNtrVImmH2UB+rzd6OPgXOEP9ZSCAnD2F8uZg4Sc
-	 iDGiEA0x47+5g==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 6326CjHI22583778
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 2 Apr 2026 14:12:45 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Thu, 2 Apr 2026 14:12:45 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
- (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Thu, 2 Apr 2026 14:12:45 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: pull-request: rtw-next-2026-04-02
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1775111011; c=relaxed/simple;
+	bh=1hQ/0S8oRZgtSiNRnqfKOBu3rBMgkc0Kel/5lQ1b46A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NIkxXBaVKZD3koNEkJlOHlKv5DEVZXzJH2j7tTVkJlaYgSqedd6HMmx88nD5hyhZHxxs141N9KOp01iioX8Yec2hgav19ZnWHDMi3UHvQVYqq6/XiZU8g0SFLh18uIOGpMcPP07gpWIJpNs05d5+ZHM9j0OQQckhDSRhyRY/feY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WzUiQ4mf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4408CC19423;
+	Thu,  2 Apr 2026 06:23:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775111011;
+	bh=1hQ/0S8oRZgtSiNRnqfKOBu3rBMgkc0Kel/5lQ1b46A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WzUiQ4mfFOS756slYDURtvWpR2Ytv3yQGpI4Sf4C+iWVOYt8cVr7mG7+EbAssI0Uz
+	 tKt3bupqMb0IGEo0l5QMWenRFYuepZSlE59dndMiGgTzN5OHCtgK+epcuRpDWewria
+	 OvFr5G45c/vo6qPb7lH7943uGc6KOcS5L1LUHhJfeEVaarY8UK/7QjnuXdvJaaQTIi
+	 WxkvdWbD/gpALn/M//30PYbtyIH5X9KuZbEjYsbnU/pdNp3gVzw9VWHkLaQVs/ICPH
+	 WXfTOkssuLue1cK7zBOnJggMvNmxsCQId3WDUEPpIDhAv4w/Y0VYE3FujAvPdKogIB
+	 EgNAsgH3eSveA==
+Date: Thu, 2 Apr 2026 11:53:12 +0530
+From: Sumit Garg <sumit.garg@kernel.org>
+To: Harshal Dev <harshal.dev@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-media@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org, andersson@kernel.org,
+	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
+	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
+	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
+	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
+	dikshita.agarwal@oss.qualcomm.com, bod@kernel.org,
+	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
+	trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
+	pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com,
+	tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com,
+	srinivas.kandagatla@oss.qualcomm.com,
+	amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
+	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
+	skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: Re: [PATCH v3 04/15] firmware: qcom: Add a PAS TEE service
+Message-ID: <ac4LUJbR6jUIWNgI@sumit-xelite>
+References: <20260327131043.627120-1-sumit.garg@kernel.org>
+ <20260327131043.627120-5-sumit.garg@kernel.org>
+ <000abdb5-a8b4-47c4-860b-5666e650b545@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Message-ID: <c9f07959-2ec1-4f7e-88c6-8141703c44c1@RTKEXHMBS05.realtek.com.tw>
-Date: Thu, 2 Apr 2026 14:12:45 +0800
-X-Spamd-Result: default: False [-2.06 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <000abdb5-a8b4-47c4-860b-5666e650b545@oss.qualcomm.com>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34313-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34314-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_ONE(0.00)[1];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.995];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,RTKEXHMBS05.realtek.com.tw:mid]
-X-Rspamd-Queue-Id: 3773F3844E9
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[50];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 6B9D83846B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-SGksCgpBIHB1bGwtcmVxdWVzdCBvZiBydHctbmV4dCB0byB3aXJlbGVzcy1uZXh0IHRyZWUsIG1v
-cmUgaW5mbyBiZWxvdy4gUGxlYXNlCmxldCBtZSBrbm93IGlmIGFueSBwcm9ibGVtcy4KClRoYW5r
-cwpQaW5nLUtlCgotLS0KClRoZSBmb2xsb3dpbmcgY2hhbmdlcyBzaW5jZSBjb21taXQgN2M2MDg0
-ZDdmYTRlNjFkZDc4MjRjMzQ1MjkyNzdhODE0YzdiMzgzNjoKCiAgd2lmaTogY2ZnODAyMTE6IHN1
-cHBvcnQga2V5IGluc3RhbGxhdGlvbiBvbiBub24tbmV0ZGV2IHdkZXZzICgyMDI2LTAzLTAyIDEx
-OjI4OjMzICswMTAwKQoKYXJlIGF2YWlsYWJsZSBpbiB0aGUgR2l0IHJlcG9zaXRvcnkgYXQ6Cgog
-IGh0dHBzOi8vZ2l0aHViLmNvbS9wa3NoaWgvcnR3LmdpdCB0YWdzL3J0dy1uZXh0LTIwMjYtMDQt
-MDIKCmZvciB5b3UgdG8gZmV0Y2ggY2hhbmdlcyB1cCB0byA4MDExOWE3N2U1YjAzNzQ3Yjg4ODY1
-MDVkZjFiM2NiMjZmNDkxNjhkOgoKICB3aWZpOiBydHc4OTogdXNiOiBmaXggVFggZmxvdyBjb250
-cm9sIGJ5IHRyYWNraW5nIGluLWZsaWdodCBVUkJzICgyMDI2LTA0LTAyIDE0OjA2OjUzICswODAw
-KQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLQpydHctbmV4dCBwYXRjaGVzIGZvciAtbmV4dAoKSW1wcm92ZSBNTE8gYW5kIHNv
-bWUgcmFuZG9tIGZpeGVzLiBOb3RhYmxlIGNoYW5nZXMgYXJlOgoKICogZHJvcCB1c2IgZGV2aWNl
-IHJlZmVyZW5jZSBhY3Jvc3MgZHJpdmVycwoKcnR3ODk6CgogKiBhZGQgUlRMODkyMkRFIGJ1dCBu
-b3QgZW5hYmxlZCB5ZXQsIGJlY2F1c2UgQlQgY29leGlzdGVuY2UgaXMgc3RpbGwKICAgY29va2lu
-Zy4KCiAqIGFkZCBVU0IgUlggYWdncmVnYXRpb24gdG8gaW1wcm92ZSBwZXJmb3JtYW5jZS4KCiAq
-IGFkZCBVU0IgVFggZmxvdyBjb250cm9sIGJ5IHRyYWNraW5nIGluLWZsaWdodCBVUkJzLgoKLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLQpBbGV4ZXkgVmVsaWNoYXlzaGl5ICgxKToKICAgICAgd2lmaTogcnR3ODk6IHBoeTogZml4
-IHVuaW5pdGlhbGl6ZWQgdmFyaWFibGUgYWNjZXNzIGluIHJ0dzg5X3BoeV9jZm9fc2V0X2NyeXN0
-YWxfY2FwKCkKCkJpdHRlcmJsdWUgU21pdGggKDUpOgogICAgICB3aWZpOiBydHc4OTogVHVyYm8g
-bW9kZSBmb3IgUlRMODg1MUJVL1JUTDg4NTJCVQogICAgICB3aWZpOiBydHc4ODogVFggUU9TIE51
-bGwgZGF0YSB0aGUgc2FtZSB3YXkgYXMgTnVsbCBkYXRhCiAgICAgIHdpZmk6IHJ0dzg4OiBjb2V4
-OiBJZ25vcmUgQlQgaW5mbyBieXRlIDUgZnJvbSBSVEw4ODIxQQogICAgICB3aWZpOiBydHc4ODog
-RmlsbCBmd192ZXJzaW9uIG1lbWJlciBvZiBzdHJ1Y3Qgd2lwaHkKICAgICAgd2lmaTogcnR3ODk6
-IEZpbGwgZndfdmVyc2lvbiBtZW1iZXIgb2Ygc3RydWN0IHdpcGh5CgpDaGluLVllbiBMZWUgKDMp
-OgogICAgICB3aWZpOiBydHc4OTogd293OiBhZGQgcmV0cnkgZm9yIGVuc3VyaW5nIHBhY2tldCBh
-cmUgcHJvY2Vzc2VkCiAgICAgIHdpZmk6IHJ0dzg5OiB3b3c6IHVzZSBzdHJ1Y3Qgc3R5bGUgdG8g
-ZmlsbCBXT1cgd2FrZXVwIGNvbnRyb2wgSDJDIGNvbW1hbmQKICAgICAgd2lmaTogcnR3ODk6IHdv
-dzogZW5hYmxlIE1MRCBhZGRyZXNzIGZvciBNYWdpYyBwYWNrZXQgd2FrZXVwCgpDaGluZy1UZSBL
-dSAoMSk6CiAgICAgIHdpZmk6IHJ0dzg4OiBjb2V4OiBTb2x2ZSBMRS1ISUQgbGFnICYgdXBkYXRl
-IGNvZXggdmVyc2lvbiB0byAyNjAyMDQyMAoKQ2hyaXN0aWFuIEhld2l0dCAoMSk6CiAgICAgIHdp
-Zmk6IHJ0dzg5OiByZXRyeSBlZnVzZSBwaHlzaWNhbCBtYXAgZHVtcCBvbiB0cmFuc2llbnQgZmFp
-bHVyZQoKQ2hyaXN0b3MgTG9uZ3JvcyAoMSk6CiAgICAgIHdpZmk6IHJ0dzg5OiBmaXggdHlwbyAi
-ZnJvbWUiIC0+ICJmcm9tIiBpbiByeF9mcmVxX2Zyb21lX2llCgpEdW9taW5nIFpob3UgKDEpOgog
-ICAgICB3aWZpOiBydGx3aWZpOiBwY2k6IGZpeCBwb3NzaWJsZSB1c2UtYWZ0ZXItZnJlZSBjYXVz
-ZWQgYnkgdW5maW5pc2hlZCBpcnFfcHJlcGFyZV9iY25fdGFza2xldAoKRXJpYyBIdWFuZyAoMSk6
-CiAgICAgIHdpZmk6IHJ0dzg5OiBwaHk6IGV4cGFuZCBQSFkgcGFnZSBmb3IgUlRMODkyMkQKCkZl
-ZG9yIFBjaGVsa2luICgxKToKICAgICAgd2lmaTogcnR3ODg6IGNoZWNrIGZvciBQQ0kgdXBzdHJl
-YW0gYnJpZGdlIGV4aXN0ZW5jZQoKSi4gTmV1c2Now6RmZXIgKDEpOgogICAgICB3aWZpOiBydGw4
-eHh4dTogTWFyayBSVEw4MTg4RVRWICgwYmRhOjAxNzkpIGFzIHRlc3RlZAoKSmFpbWUgU2FndWls
-bG8gUmV2aWxsYSAoMSk6CiAgICAgIHdpZmk6IHJ0bHdpZmk6IHJ0bDgxOTJkOiBmaXggdHlwbyBp
-biBIMkMgd2FpdCBjb3VudGVyIG5hbWVzCgpKb2hhbiBIb3ZvbGQgKDUpOgogICAgICB3aWZpOiBy
-dGw4MTh4OiBkcm9wIHJlZHVuZGFudCBkZXZpY2UgcmVmZXJlbmNlCiAgICAgIHdpZmk6IHJ0bDh4
-eHh1OiBkcm9wIHJlZHVuZGFudCBkZXZpY2UgcmVmZXJlbmNlCiAgICAgIHdpZmk6IHJ0dzg4OiBm
-aXggZGV2aWNlIGxlYWsgb24gcHJvYmUgZmFpbHVyZQogICAgICB3aWZpOiBydHc4OTogZHJvcCBy
-ZWR1bmRhbnQgZGV2aWNlIHJlZmVyZW5jZQogICAgICB3aWZpOiBydGx3aWZpOiB1c2I6IGRyb3Ag
-cmVkdW5kYW50IGRldmljZSByZWZlcmVuY2UKCkt1YW4tQ2h1bmcgQ2hlbiAoMSk6CiAgICAgIHdp
-Zmk6IHJ0dzg5OiBhZGQgSDJDIGNvbW1hbmQgdG8gcHJvdGVjdCBUWC9SWCBmb3IgdW51c2VkIFBI
-WQoKTHVjaWQgRHVjayAoMSk6CiAgICAgIHdpZmk6IHJ0dzg5OiB1c2I6IGZpeCBUWCBmbG93IGNv
-bnRyb2wgYnkgdHJhY2tpbmcgaW4tZmxpZ2h0IFVSQnMKClBpbmctS2UgU2hpaCAoMjkpOgogICAg
-ICB3aWZpOiBydHc4OTogZnc6IGFkZCBmd19kZWYgc3RydWN0IHRvIHB1dCBmaXJtd2FyZSBuYW1l
-IGFuZCBmb3JtYXQgdmVyc2lvbgogICAgICB3aWZpOiBydHc4OTogZnc6IHJlY29nbml6ZSBmaXJt
-d2FyZSB0eXBlIEIgYnkgQUlECiAgICAgIHdpZmk6IHJ0dzg5OiA4ODUyYjogdXBkYXRlIHN1cHBv
-cnRlZCBmaXJtd2FyZSBmb3JtYXQgdG8gMgogICAgICB3aWZpOiBydHc4OTogcmZrOiBhZGQgaGFy
-ZHdhcmUgdmVyc2lvbiB0byBydHc4OV9md19oMmNfcmZfcHJlX250ZnlfbWNjIGZvciBuZXcgV2lG
-aSA3IGZpcm13YXJlCiAgICAgIHdpZmk6IHJ0dzg5OiBwY2k6IHVwZGF0ZSBTRVIgcGFyYW1ldGVy
-cyBmb3Igc3VzcGVuZC9yZXN1bWUKICAgICAgd2lmaTogcnR3ODk6IG1hYzogcmVtb3ZlIEEtZGll
-IG9mZiBzZXR0aW5nIGZvciBSVEw4ODUyQyBhbmQgUlRMODkyMkEKICAgICAgd2lmaTogcnR3ODk6
-IHBoeTogbGltaXQgQU1QRFUgbnVtYmVyIGZvciBSQSB0cnkgcmF0ZQogICAgICB3aWZpOiBydHc4
-ODogYWRkIHF1aXJrcyB0byBkaXNhYmxlIFBDSSBBU1BNIGFuZCBkZWVwIExQUyBmb3IgSFAgUDNT
-OTVFQSNBQ0IKICAgICAgd2lmaTogcnR3ODg6IHZhbGlkYXRlIFJYIHJhdGUgdG8gcHJldmVudCBv
-dXQtb2YtYm91bmQKICAgICAgd2lmaTogcnR3ODk6IDg5MjJkOiBhZGQgZGVmaW5pdGlvbiBvZiBx
-dW90YSwgcmVnaXN0ZXJzIGFuZCBlZnVzZSBibG9jawogICAgICB3aWZpOiBydHc4OTogODkyMmQ6
-IGFkZCBwb3dlciBvbi9vZmYgZnVuY3Rpb25zCiAgICAgIHdpZmk6IHJ0dzg5OiA4OTIyZDogZGVm
-aW5lIGVmdXNlIG1hcCBhbmQgcmVhZCBuZWNlc3NhcnkgZmllbGRzCiAgICAgIHdpZmk6IHJ0dzg5
-OiA4OTIyZDogcmVhZCBhbmQgY29uZmlndXJlIFJGIGJ5IGNhbGlicmF0aW9uIGRhdGEgZnJvbSBl
-ZnVzZSBwaHlzaWNhbCBtYXAKICAgICAgd2lmaTogcnR3ODk6IDg5MjJkOiBhZGQgc2V0IGNoYW5u
-ZWwgb2YgTUFDIHBhcnQKICAgICAgd2lmaTogcnR3ODk6IDg5MjJkOiBhZGQgc2V0IGNoYW5uZWwg
-b2YgQkIgcGFydAogICAgICB3aWZpOiBydHc4OTogODkyMmQ6IGFkZCBzZXQgY2hhbm5lbCBvZiBS
-RiBwYXJ0CiAgICAgIHdpZmk6IHJ0dzg5OiBwY2k6IGNsZWFyIFNFUiBJU1Igd2hlbiBpbml0aWFs
-IGFuZCBsZWF2aW5nIFdvV0xBTiBmb3IgV2lGaSA3IGNoaXBzCiAgICAgIHdpZmk6IHJ0dzg5OiBt
-YWM6IGFkZCBzcGVjaWZpYyBjYXNlIHRvIGR1bXAgbWFjIG1lbW9yeSBmb3IgUlRMODkyMkQKICAg
-ICAgd2lmaTogcnR3ODk6IG1hYzogZGlzYWJsZSBwcmUtbG9hZCBmdW5jdGlvbiBmb3IgUlRMODky
-MkRFCiAgICAgIHdpZmk6IHJ0dzg5OiBwaHk6IGxvYWQgUkYgcGFyYW1ldGVycyByZWx5aW5nIG9u
-IEFDViBmb3IgUlRMODkyMkQKICAgICAgd2lmaTogcnR3ODk6IDg5MjJkOiBCQiBoYXJkd2FyZSBw
-cmUtL3Bvc3QtaW5pdCwgVFgvUlggcGF0aCBhbmQgcG93ZXIgc2V0dGluZ3MKICAgICAgd2lmaTog
-cnR3ODk6IDg5MjJkOiBhZGQgc2V0IGNoYW5uZWwgd2l0aCBwcmUtL3Bvc3QtIGhlbHBlcnMKICAg
-ICAgd2lmaTogcnR3ODk6IDg5MjJkOiBhZGQgUkYgY2FsaWJyYXRpb24gb3BzCiAgICAgIHdpZmk6
-IHJ0dzg5OiA4OTIyZDogYWRkIHNldCBUWCBwb3dlciBjYWxsYmFjawogICAgICB3aWZpOiBydHc4
-OTogODkyMmQ6IGNvbmZpZ3VyZSBUWC9SWCBwYXRoIGFzc2lzdGluZyBpbiBCVCBjb2V4aXN0ZW5j
-ZQogICAgICB3aWZpOiBydHc4OTogODkyMmQ6IGFkZCBSRiBvcHMgb2YgaW5pdCBoYXJkd2FyZSBh
-bmQgZ2V0IHRoZXJtYWwKICAgICAgd2lmaTogcnR3ODk6IDg5MjJkOiBhZGQgb3BzIHJlbGF0ZWQg
-dG8gQlQgY29leGlzdGVuY2UgbWVjaGFuaXNtCiAgICAgIHdpZmk6IHJ0dzg5OiA4OTIyZDogYWRk
-IGNoaXBfaW5mbyBhbmQgY2hpcF9vcHMgc3RydWN0CiAgICAgIHdpZmk6IHJ0dzg5OiA4OTIyZDog
-YWRkIFBDSSBJRCBvZiBSVEw4OTIyREUgYW5kIFJUTDg5MjJERS1WUwoKUG8tSGFvIEh1YW5nICgy
-KToKICAgICAgd2lmaTogcnR3ODk6IERyb3AgbWFsZm9ybWVkIEFNUERVIGZyYW1lcyB3aXRoIGFi
-bm9ybWFsIFBOCiAgICAgIHdpZmk6IHJ0dzg5OiBSZWNhbGN1bGF0ZSBzdGF0aW9uIGFnZ3JlZ2F0
-ZXMgd2hlbiBBTVNEVSBsZW5ndGggY2hhbmdlcyBmb3IgTUxPIGxpbmtzCgpTaGluLVlpIExpbiAo
-MSk6CiAgICAgIHdpZmk6IHJ0dzg5OiB1c2I6IFJ4IGFnZ3JlZ2F0aW9uIGZvciBSVEw4ODMyQ1Uv
-UlRMODg1MUJVCgpZaSBDb25nICgxKToKICAgICAgd2lmaTogcnRsOHh4eHU6IGZpeCBwb3RlbnRp
-YWwgdXNlIG9mIHVuaW5pdGlhbGl6ZWQgdmFsdWUKClplbm0gQ2hlbiAoMyk6CiAgICAgIHdpZmk6
-IHJ0dzg5OiBBZGQgc3VwcG9ydCBmb3IgVFAtTGluayBBcmNoZXIgVFg1MFUKICAgICAgd2lmaTog
-cnR3ODk6IEFkZCBzdXBwb3J0IGZvciBCdWZmYWxvIFdJLVUzLTI0MDBYRTIKICAgICAgd2lmaTog
-cnR3ODk6IEFkZCBzdXBwb3J0IGZvciBFbGVjb20gV0RDLVhFMjQwMlRVMy1CCgpab25nLVpoZSBZ
-YW5nICgxNCk6CiAgICAgIHdpZmk6IHJ0dzg5OiBhZGQgZ2VuZXJhbCB3YXkgdG8gZ2VuZXJhdGUg
-bW9kdWxlIGZpcm13YXJlIHN0cmluZwogICAgICB3aWZpOiBydHc4OTogODg1MmE6IG1vdmUgRElH
-IHRhYmxlcyB0byBydHc4ODUyYS5jCiAgICAgIHdpZmk6IHJ0dzg5OiA4ODUyYTogdXBkYXRlIHN1
-cHBvcnRlZCBmaXJtd2FyZSBmb3JtYXQgdG8gMQogICAgICB3aWZpOiBydHc4OTogODg1MWI6IHVw
-ZGF0ZSBzdXBwb3J0ZWQgZmlybXdhcmUgZm9ybWF0IHRvIDEKICAgICAgd2lmaTogcnR3ODk6IGRl
-YnVnOiBhZGQgU0VSIFNXIGNvdW50ZXJzIHRvIGNvdW50IHNpbXVsYXRpb24KICAgICAgd2lmaTog
-cnR3ODk6IHNlcjogV2ktRmkgNyByZXNldCBIQUxUIEMySCBhZnRlciByZWFkaW5nIGl0CiAgICAg
-IHdpZmk6IHJ0dzg5OiBzZXI6IHBvc3QtcmVjb3ZlciBETUFDIHN0YXRlIHRvIHByZXZlbnQgTFBT
-CiAgICAgIHdpZmk6IHJ0dzg5OiBtb3ZlIGRpc2FibGluZyBkeW5hbWljIG1lY2hhbmlzbSBmdW5j
-dGlvbnMgdG8gY29yZQogICAgICB3aWZpOiBydHc4OTogdHdlYWsgc2V0dGluZ3Mgb2YgVFggcG93
-ZXIgYW5kIGNoYW5uZWwgZm9yIFdpLUZpIDcKICAgICAgd2lmaTogcnR3ODk6IGNoYW46IHNpbXBs
-aWZ5IGxpbmsgaGFuZGxpbmcgcmVsYXRlZCB0byBST0MKICAgICAgd2lmaTogcnR3ODk6IGNoYW46
-IHJlY2FsYyBNTE8gREJDQyBtb2RlIGJhc2VkIG9uIGN1cnJlbnQgZW50aXR5IG1vZGUKICAgICAg
-d2lmaTogcnR3ODk6IHJlcGxhY2UgUkYgbXV0ZXggd2l0aCB3aXBoeSBsb2NrIGFzc2VydGlvbgog
-ICAgICB3aWZpOiBydHc4OTogZGVidWc6IHNpbXVsYXRlIFdpLUZpIDcgU0VSIEwwL0wxIHdpdGhv
-dXQgUFMgbW9kZQogICAgICB3aWZpOiBydHc4OTogZnc6IGxvYWQgVFggcG93ZXIgZWxlbWVudHMg
-YWNjb3JkaW5nIHRvIEFJRAoKIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsODE4eC9y
-dGw4MTg3L2Rldi5jIHwgICAgNCAtCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4
-eHh1L2NvcmUuYyAgICAgICB8ICAgNDAgKy0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnRsd2lmaS9wY2kuYyAgICAgICAgIHwgICAgMSArCiAuLi4vd2lyZWxlc3MvcmVhbHRlay9ydGx3
-aWZpL3J0bDgxOTJkL2Z3X2NvbW1vbi5jICB8ICAgMTIgKy0KIGRyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnRsd2lmaS91c2IuYyAgICAgICAgIHwgICAgNCAtCiBkcml2ZXJzL25ldC93aXJl
-bGVzcy9yZWFsdGVrL3J0dzg4L2NvZXguYyAgICAgICAgICB8ICAgNDcgKy0KIGRyaXZlcnMvbmV0
-L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jICAgICAgICAgIHwgICAgNiArCiBkcml2ZXJz
-L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uaCAgICAgICAgICB8ICAgIDYgKwogZHJp
-dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuYyAgICAgICAgICAgfCAgIDM0ICst
-CiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg3MDNiLmMgICAgICB8ICAg
-IDUgKwogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4NzIzZC5jICAgICAg
-fCAgICA1ICsKIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMWEuYyAg
-ICAgIHwgICAgNyArLQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4ODIx
-Yy5jICAgICAgfCAgICA3ICstCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0
-dzg4MjJiLmMgICAgICB8ICAgIDUgKwogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4
-OC9ydHc4ODIyYy5jICAgICAgfCAgICA1ICstCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
-L3J0dzg4L3J4LmMgICAgICAgICAgICB8ICAgIDggKwogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydHc4OC90eC5jICAgICAgICAgICAgfCAgICAyICstCiBkcml2ZXJzL25ldC93aXJlbGVz
-cy9yZWFsdGVrL3J0dzg4L3VzYi5jICAgICAgICAgICB8ICAgIDMgKy0KIGRyaXZlcnMvbmV0L3dp
-cmVsZXNzL3JlYWx0ZWsvcnR3ODkvY2hhbi5jICAgICAgICAgIHwgICA3MiArLQogZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9jb3JlLmMgICAgICAgICAgfCAgMTU1ICstCiBkcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2NvcmUuaCAgICAgICAgICB8ICAxMDUgKy0K
-IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvZGVidWcuYyAgICAgICAgIHwgICA1
-MyArLQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9lZnVzZS5jICAgICAgICAg
-fCAgIDIzICstCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2Z3LmMgICAgICAg
-ICAgICB8ICAxNTkgKy0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvZncuaCAg
-ICAgICAgICAgIHwgIDEzNCArLQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9t
-YWMuYyAgICAgICAgICAgfCAgIDY5ICstCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
-dzg5L21hYy5oICAgICAgICAgICB8ICAgMzQgKy0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnR3ODkvbWFjODAyMTEuYyAgICAgIHwgICAxMSArCiBkcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0dzg5L21hY19iZS5jICAgICAgICB8ICAgIDIgKwogZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydHc4OS9wY2kuaCAgICAgICAgICAgfCAgICA3ICsKIGRyaXZlcnMvbmV0L3dp
-cmVsZXNzL3JlYWx0ZWsvcnR3ODkvcGNpX2JlLmMgICAgICAgIHwgIDEwNCArLQogZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9waHkuYyAgICAgICAgICAgfCAgIDcxICstCiBkcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3BoeS5oICAgICAgICAgICB8ICAgIDUgKwog
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9waHlfYmUuYyAgICAgICAgfCAgICAy
-ICstCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3BzLmMgICAgICAgICAgICB8
-ICAgIDIgKwogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9yZWcuaCAgICAgICAg
-ICAgfCAgMjg3ICstCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3J0dzg4NTFi
-LmMgICAgICB8ICAgNDkgKy0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcnR3
-ODg1MWJ1LmMgICAgIHwgICAgMSArCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5
-L3J0dzg4NTJhLmMgICAgICB8ICAgNjggKy0KIC4uLi9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4
-OS9ydHc4ODUyYV90YWJsZS5jICAgIHwgICA1MSAtCiAuLi4vbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnR3ODkvcnR3ODg1MmFfdGFibGUuaCAgICB8ICAgIDEgLQogZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-cmVhbHRlay9ydHc4OS9ydHc4ODUyYXUuYyAgICAgfCAgICAxICsKIGRyaXZlcnMvbmV0L3dpcmVs
-ZXNzL3JlYWx0ZWsvcnR3ODkvcnR3ODg1MmIuYyAgICAgIHwgICA0MSArLQogZHJpdmVycy9uZXQv
-d2lyZWxlc3MvcmVhbHRlay9ydHc4OS9ydHc4ODUyYnQuYyAgICAgfCAgIDE1ICstCiBkcml2ZXJz
-L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3J0dzg4NTJidS5jICAgICB8ICAgIDEgKwogZHJp
-dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9ydHc4ODUyYy5jICAgICAgfCAgIDE3ICst
-CiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3J0dzg4NTJjdS5jICAgICB8ICAg
-IDcgKwogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9ydHc4OTIyYS5jICAgICAg
-fCAgIDE4ICstCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3J0dzg5MjJkLmMg
-ICAgICB8IDMwOTMgKysrKysrKysrKysrKysrKysrKysKIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3Jl
-YWx0ZWsvcnR3ODkvcnR3ODkyMmQuaCAgICAgIHwgICA4MyArCiBkcml2ZXJzL25ldC93aXJlbGVz
-cy9yZWFsdGVrL3J0dzg5L3J0dzg5MjJkX3Jmay5jICB8ICAzNzIgKysrCiBkcml2ZXJzL25ldC93
-aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3J0dzg5MjJkX3Jmay5oICB8ICAgMjIgKwogZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9ydHc4OTIyZGUuYyAgICAgfCAgMTE5ICsKIGRyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvc2VyLmMgICAgICAgICAgIHwgICAgNCArLQog
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS91c2IuYyAgICAgICAgICAgfCAgMTA3
-ICstCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3VzYi5oICAgICAgICAgICB8
-ICAgMTUgKwogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS91dGlsLmggICAgICAg
-ICAgfCAgIDE3ICsKIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvd293LmMgICAg
-ICAgICAgIHwgICAgMiArCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3dvdy5o
-ICAgICAgICAgICB8ICAgIDcgLQogNTkgZmlsZXMgY2hhbmdlZCwgNTE5MiBpbnNlcnRpb25zKCsp
-LCA0MTUgZGVsZXRpb25zKC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydHc4OS9ydHc4OTIyZC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9ydHc4OTIyZC5oCiBjcmVhdGUgbW9kZSAxMDA2NDQg
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9ydHc4OTIyZF9yZmsuYwogY3JlYXRl
-IG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcnR3ODkyMmRf
-cmZrLmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
-dzg5L3J0dzg5MjJkZS5jCg==
+On Mon, Mar 30, 2026 at 04:06:47PM +0530, Harshal Dev wrote:
+> 
+> 
+> On 3/27/2026 6:40 PM, Sumit Garg wrote:
+> > From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> > 
+> > Add support for Peripheral Authentication Service (PAS) driver based
+> > on TEE bus with OP-TEE providing the backend PAS service implementation.
+> > 
+> > The TEE PAS service ABI is designed to be extensible with additional API
+> > as PTA_QCOM_PAS_CAPABILITIES. This allows to accommodate any future
+> > extensions of the PAS service needed while still maintaining backwards
+> > compatibility.
+> > 
+> > Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> > ---
+> >  drivers/firmware/qcom/Kconfig        |  10 +
+> >  drivers/firmware/qcom/Makefile       |   1 +
+> >  drivers/firmware/qcom/qcom_pas_tee.c | 478 +++++++++++++++++++++++++++
+> >  3 files changed, 489 insertions(+)
+> >  create mode 100644 drivers/firmware/qcom/qcom_pas_tee.c
+> >
+> [...]
+> 
+> > diff --git a/drivers/firmware/qcom/qcom_pas_tee.c b/drivers/firmware/qcom/qcom_pas_tee.c
+> > new file mode 100644
+> > index 000000000000..d63122c34f04
+> > --- /dev/null
+> > +++ b/drivers/firmware/qcom/qcom_pas_tee.c
+> > @@ -0,0 +1,478 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+> > + */
+> > +
+> > +#include <linux/delay.h>
+> > +#include <linux/of.h>
+> > +#include <linux/firmware/qcom/qcom_pas.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/module.h>
+> > +#include <linux/slab.h>
+> > +#include <linux/tee_drv.h>
+> > +#include <linux/uuid.h>
+> > +
+> > +#include "qcom_pas.h"
+> > +
+> > +/*
+> > + * Peripheral Authentication Service (PAS) supported.
+> > + *
+> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
+> > + */
+> > +#define TA_QCOM_PAS_IS_SUPPORTED		1
+> > +
+> > +/*
+> > + * PAS capabilities.
+> > + *
+> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
+> > + * [out] params[1].value.a:	PAS capability flags
+> > + */
+> > +#define TA_QCOM_PAS_CAPABILITIES		2
+> > +
+> > +/*
+> > + * PAS image initialization.
+> > + *
+> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
+> > + * [in]  params[1].memref:	Loadable firmware metadata
+> > + */
+> > +#define TA_QCOM_PAS_INIT_IMAGE			3
+> > +
+> > +/*
+> > + * PAS memory setup.
+> > + *
+> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
+> > + * [in]  params[0].value.b:	Relocatable firmware size
+> > + * [in]  params[1].value.a:	32bit LSB relocatable firmware memory address
+> > + * [in]  params[1].value.b:	32bit MSB relocatable firmware memory address
+> > + */
+> > +#define TA_QCOM_PAS_MEM_SETUP			4
+> > +
+> > +/*
+> > + * PAS get resource table.
+> > + *
+> > + * [in]     params[0].value.a:	Unique 32bit remote processor identifier
+> > + * [inout]  params[1].memref:	Resource table config
+> > + */
+> > +#define TA_QCOM_PAS_GET_RESOURCE_TABLE		5
+> > +
+> > +/*
+> > + * PAS image authentication and co-processor reset.
+> > + *
+> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
+> > + * [in]  params[0].value.b:	Firmware size
+> > + * [in]  params[1].value.a:	32bit LSB firmware memory address
+> > + * [in]  params[1].value.b:	32bit MSB firmware memory address
+> > + * [in]  params[2].memref:	Optional fw memory space shared/lent
+> > + */
+> > +#define TA_QCOM_PAS_AUTH_AND_RESET		6
+> > +
+> > +/*
+> > + * PAS co-processor set suspend/resume state.
+> > + *
+> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
+> > + * [in]  params[0].value.b:	Co-processor state identifier
+> > + */
+> > +#define TA_QCOM_PAS_SET_REMOTE_STATE		7
+> > +
+> > +/*
+> > + * PAS co-processor shutdown.
+> > + *
+> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
+> > + */
+> > +#define TA_QCOM_PAS_SHUTDOWN			8
+> > +
+> > +#define TEE_NUM_PARAMS				4
+> > +
+> > +/**
+> > + * struct qcom_pas_tee_private - PAS service private data
+> > + * @dev:		PAS service device.
+> > + * @ctx:		TEE context handler.
+> > + * @session_id:		PAS TA session identifier.
+> 
+> Nit: Column alignment of comment descriptions.
+
+These are aligned if you look at them after applying the patch-set.
+Plain email text isn't good at showing the alignment here.
+
+> 
+> > + */
+> > +struct qcom_pas_tee_private {
+> > +	struct device *dev;
+> > +	struct tee_context *ctx;
+> > +	u32 session_id;
+> > +};
+> > +
+> > +static bool qcom_pas_tee_supported(struct device *dev, u32 pas_id)
+> > +{
+> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
+> > +	struct tee_ioctl_invoke_arg inv_arg = {
+> > +		.func = TA_QCOM_PAS_IS_SUPPORTED,
+> > +		.session = data->session_id,
+> > +		.num_params = TEE_NUM_PARAMS
+> > +	};
+> > +	struct tee_param param[4] = {
+> > +		[0] = {
+> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
+> > +			.u.value.a = pas_id
+> > +		}
+> > +	};
+> > +	int ret;
+> > +
+> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
+> > +	if (ret < 0 || inv_arg.ret != 0) {
+> > +		dev_err(dev, "PAS not supported, pas_id: %d, err: %x\n",
+> > +			pas_id, inv_arg.ret);
+> 
+> I can see that similar error handling pattern for tee_client_invoke_func() is
+> being done by other clients. But it seems that this error log doesn't really convey
+> whether we failed before or after entering OPTEE (or some other TEE) for invoking
+> the service.
+> 
+> Could be better if we print 'ret' when ret < 0. And print 'inv_arg.ret' when
+> inv_arg.ret != 0. So for example, if the param marshalling fails, or some other
+> issue is encountered when processing the params in a different back-end TEE
+> driver, we could know from the logs.
+
+Okay, I will add print for "ret" as well.
+
+> 
+> > +		return false;
+> > +	}
+> > +
+> > +	return true;
+> > +}
+> > +
+> > +static int qcom_pas_tee_init_image(struct device *dev, u32 pas_id,
+> > +				   const void *metadata, size_t size,
+> > +				   struct qcom_pas_context *ctx)
+> > +{
+> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
+> > +	struct tee_ioctl_invoke_arg inv_arg = {
+> > +		.func = TA_QCOM_PAS_INIT_IMAGE,
+> > +		.session = data->session_id,
+> > +		.num_params = TEE_NUM_PARAMS
+> > +	};
+> > +	struct tee_param param[4] = {
+> > +		[0] = {
+> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
+> > +			.u.value.a = pas_id
+> > +		},
+> > +		[1] = {
+> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT,
+> > +		}
+> > +	};
+> > +	struct tee_shm *mdata_shm;
+> > +	u8 *mdata_buf = NULL;
+> > +	int ret;
+> > +
+> > +	if (!ctx)
+> > +		return -EINVAL;
+> > +
+> > +	mdata_shm = tee_shm_alloc_kernel_buf(data->ctx, size);
+> 
+> Why not move the DEFINE_FREE() above this function so we can use scoped free
+> here as well for mdata_shm?
+> 
+> struct tee_shm *mdata_shm __free(shm_free) = ...
+
+mdata_shm gets freed as part of qcom_pas_tee_metadata_release(), so no
+automatic free here.
+
+> 
+> > +	if (IS_ERR(mdata_shm)) {
+> > +		dev_err(dev, "mdata_shm allocation failed\n");
+> > +		return PTR_ERR(mdata_shm);
+> > +	}
+> > +
+> > +	mdata_buf = tee_shm_get_va(mdata_shm, 0);
+> > +	if (IS_ERR(mdata_buf)) {
+> > +		dev_err(dev, "mdata_buf get VA failed\n");
+> > +		tee_shm_free(mdata_shm);
+> > +		return PTR_ERR(mdata_buf);
+> > +	}
+> > +	memcpy(mdata_buf, metadata, size);
+> > +
+> > +	param[1].u.memref.shm = mdata_shm;
+> > +	param[1].u.memref.size = size;
+> > +
+> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
+> > +	if (ret < 0 || inv_arg.ret != 0) {
+> > +		dev_err(dev, "PAS init image failed, pas_id: %d, err: %x\n",
+> 
+> Nit: We can prefix %x with 0x. "err: 0x%x\n."
+
+Ack
+
+> 
+> > +			pas_id, inv_arg.ret);
+> > +		tee_shm_free(mdata_shm);
+> > +		return -EINVAL;
+> > +	}
+> > +	ctx->ptr = (void *)mdata_shm;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int qcom_pas_tee_mem_setup(struct device *dev, u32 pas_id,
+> > +				  phys_addr_t addr, phys_addr_t size)
+> > +{
+> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
+> > +	struct tee_ioctl_invoke_arg inv_arg = {
+> > +		.func = TA_QCOM_PAS_MEM_SETUP,
+> > +		.session = data->session_id,
+> > +		.num_params = TEE_NUM_PARAMS
+> > +	};
+> > +	struct tee_param param[4] = {
+> > +		[0] = {
+> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
+> > +			.u.value.a = pas_id,
+> > +			.u.value.b = size,
+> > +		},
+> > +		[1] = {
+> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
+> > +			.u.value.a = lower_32_bits(addr),
+> > +			.u.value.b = upper_32_bits(addr),
+> > +		}
+> > +	};
+> > +	int ret;
+> > +
+> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
+> > +	if (ret < 0 || inv_arg.ret != 0) {
+> > +		dev_err(dev, "PAS mem setup failed, pas_id: %d, err: %x\n",
+> > +			pas_id, inv_arg.ret);
+> > +		return -EINVAL;
+> 
+> I can see that originally in-case of error, qcom_scm_pas_mem_setup() bubbles
+> up the return value from qcom_scm_call(). Perhaps we should do the same as well,
+> return ret here instead of hard-coded '-EINVAL' which overrides any useful
+> return values returned from the back-end TEE driver.
+
+ret can even be 0 while still error from TEE. Let's rather do following:
+
+	return ret ? ret : -EINVAL;
+
+>  
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +DEFINE_FREE(shm_free, struct tee_shm *, tee_shm_free(_T))
+> > +
+> > +static void *qcom_pas_tee_get_rsc_table(struct device *dev,
+> > +					struct qcom_pas_context *ctx,
+> > +					void *input_rt, size_t input_rt_size,
+> > +					size_t *output_rt_size)
+> > +{
+> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
+> > +	struct tee_ioctl_invoke_arg inv_arg = {
+> > +		.func = TA_QCOM_PAS_GET_RESOURCE_TABLE,
+> > +		.session = data->session_id,
+> > +		.num_params = TEE_NUM_PARAMS
+> > +	};
+> > +	struct tee_param param[4] = {
+> > +		[0] = {
+> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
+> > +			.u.value.a = ctx->pas_id,
+> > +		},
+> > +		[1] = {
+> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INOUT,
+> > +			.u.memref.size = input_rt_size,
+> > +		}
+> > +	};
+> > +	void *rt_buf = NULL;
+> > +	int ret;
+> > +
+> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
+> > +	if (ret < 0 || inv_arg.ret != 0) {
+> > +		dev_err(dev, "PAS get RT failed, pas_id: %d, err: %x\n",
+> > +			ctx->pas_id, inv_arg.ret);
+> > +		return ERR_PTR(-EINVAL);
+> 
+> Same comment here, we could return ERR_PTR(ret) instead of overriding to
+> '-EINVAL'.
+> 
+> > +	}
+> > +
+> > +	if (param[1].u.memref.size) {
+> > +		struct tee_shm *rt_shm __free(shm_free) =
+> > +			tee_shm_alloc_kernel_buf(data->ctx,
+> > +						 param[1].u.memref.size);
+> > +		void *rt_shm_va;
+> > +
+> > +		if (IS_ERR(rt_shm)) {
+> > +			dev_err(dev, "rt_shm allocation failed\n");
+> > +			return rt_shm;
+> > +		}
+> > +
+> > +		rt_shm_va = tee_shm_get_va(rt_shm, 0);
+> > +		if (IS_ERR_OR_NULL(rt_shm_va)) {
+> > +			dev_err(dev, "rt_shm get VA failed\n");
+> > +			return ERR_PTR(-EINVAL);
+> 
+> Why not just return rt_shm_va? It already encodes the error in the pointer.
+
+Again let me add a null check while returning rt_shm_va.
+
+> 
+> > +		}
+> > +		memcpy(rt_shm_va, input_rt, input_rt_size);
+> > +
+> > +		param[1].u.memref.shm = rt_shm;
+> > +		ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
+> > +		if (ret < 0 || inv_arg.ret != 0) {
+> > +			dev_err(dev, "PAS get RT failed, pas_id: %d, err: %x\n",
+> > +				ctx->pas_id, inv_arg.ret);
+> > +			return ERR_PTR(-EINVAL);
+> 
+> Same comment.
+> 
+> > +		}
+> > +
+> > +		if (param[1].u.memref.size) {
+> 
+> Is it possible for param[1].u.memref.size to be 0 after a successful tee_client_invoke_func()?
+
+Yeah it's possible if there is no resource table entry needed for a
+particular PAS id.
+
+> 
+> > +			*output_rt_size = param[1].u.memref.size;
+> > +			rt_buf = kmemdup(rt_shm_va, *output_rt_size, GFP_KERNEL);
+> > +			if (!rt_buf)
+> > +				return ERR_PTR(-ENOMEM);
+> > +		}
+> > +	}
+> > +
+> > +	return rt_buf;
+> > +}
+> > +
+> > +static int __qcom_pas_tee_auth_and_reset(struct device *dev, u32 pas_id,
+> > +					 phys_addr_t mem_phys, size_t mem_size)
+> > +{
+> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
+> > +	struct tee_ioctl_invoke_arg inv_arg = {
+> > +		.func = TA_QCOM_PAS_AUTH_AND_RESET,
+> > +		.session = data->session_id,
+> > +		.num_params = TEE_NUM_PARAMS
+> > +	};
+> > +	struct tee_param param[4] = {
+> > +		[0] = {
+> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
+> > +			.u.value.a = pas_id,
+> > +			.u.value.b = mem_size,
+> > +		},
+> > +		[1] = {
+> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
+> > +			.u.value.a = lower_32_bits(mem_phys),
+> > +			.u.value.b = upper_32_bits(mem_phys),
+> > +		},
+> > +		/* Reserved for fw memory space to be shared or lent */
+> 
+> Can you explain this comment a bit more? Plan is to allow passing a MEM_REF here
+> which could be lent/shared to TEE via FFA ABI?
+
+This param is added for future compatibility where PAS firmware is
+loaded in arbitrarity allocated memory region by the kernel. Then that
+can be shared or lend with TZ for authentication and reset sequence.
+
+Right now the kernel is already loading the PAS firmware is fixed
+reserved memory regions, for which this param is unused.
+
+> 
+> > +		[2] = {
+> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT,
+> > +		}
+> > +	};
+> > +	int ret;
+> > +
+> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
+> > +	if (ret < 0 || inv_arg.ret != 0) {
+> > +		dev_err(dev, "PAS auth reset failed, pas_id: %d, err: %x\n",
+> > +			pas_id, inv_arg.ret);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int qcom_pas_tee_auth_and_reset(struct device *dev, u32 pas_id)
+> 
+> I'm guessing once all clients have migrated to PAS, plan is to drop this wrapper?
+
+Yeah, this patch-set doesn't aim to change the kernel client PAS API
+contract apart from just renaming APIs. Surely future work can change
+the PAS API contract as needed.
+
+> 
+> > +{
+> > +	return __qcom_pas_tee_auth_and_reset(dev, pas_id, 0, 0);
+> > +}
+> > +
+> > +static int qcom_pas_tee_prepare_and_auth_reset(struct device *dev,
+> > +					       struct qcom_pas_context *ctx)
+> > +{
+> > +	return __qcom_pas_tee_auth_and_reset(dev, ctx->pas_id, ctx->mem_phys,
+> > +					     ctx->mem_size);
+> > +}
+> > +
+> > +static int qcom_pas_tee_set_remote_state(struct device *dev, u32 state,
+> > +					 u32 pas_id)
+> > +{
+> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
+> > +	struct tee_ioctl_invoke_arg inv_arg = {
+> > +		.func = TA_QCOM_PAS_SET_REMOTE_STATE,
+> > +		.session = data->session_id,
+> > +		.num_params = TEE_NUM_PARAMS
+> > +	};
+> > +	struct tee_param param[4] = {
+> > +		[0] = {
+> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
+> > +			.u.value.a = pas_id,
+> > +			.u.value.b = state,
+> > +		}
+> > +	};
+> > +	int ret;
+> 
+> Nit: Why not ret = 0 initialize and always use ret?
+
+zero init will still be redundant..
+
+> 
+> > +
+> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
+> > +	if (ret < 0 || inv_arg.ret != 0) {
+> > +		dev_err(dev, "PAS shutdown failed, pas_id: %d, err: %x\n",
+> > +			pas_id, inv_arg.ret);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	return 0;
+
+.. will rather change this to return ret.
+
+> > +}
+> > +
+> > +static int qcom_pas_tee_shutdown(struct device *dev, u32 pas_id)
+> > +{
+> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
+> > +	struct tee_ioctl_invoke_arg inv_arg = {
+> > +		.func = TA_QCOM_PAS_SHUTDOWN,
+> > +		.session = data->session_id,
+> > +		.num_params = TEE_NUM_PARAMS
+> > +	};
+> > +	struct tee_param param[4] = {
+> > +		[0] = {
+> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
+> > +			.u.value.a = pas_id
+> > +		}
+> > +	};
+> > +	int ret = 0;
+> > +
+> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
+> > +	if (ret < 0 || inv_arg.ret != 0) {
+> > +		dev_err(dev, "PAS shutdown failed, pas_id: %d, err: %x\n",
+> > +			pas_id, inv_arg.ret);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	return 0;
+> 
+> You could just return 'ret' here. :)
+
+Ack.
+
+> 
+> > +}
+> > +
+> > +static void qcom_pas_tee_metadata_release(struct device *dev,
+> > +					  struct qcom_pas_context *ctx)
+> > +{
+> > +	struct tee_shm *mdata_shm = ctx->ptr;
+> > +
+> 
+> Nit: Unnecessary extra line.
+
+Extra line is recommended after variables declaration.
+
+> 
+> > +	tee_shm_free(mdata_shm);
+> > +}
+> > +
+> 
+> [...]
+> 
+> > +
+> > +module_tee_client_driver(optee_pas_tee_driver);
+> > +
+> > +MODULE_LICENSE("GPL");
+> > +MODULE_DESCRIPTION("TEE bus based Qualcomm PAS driver");
+> 
+> Since this is a tee_client driver, isn't it self-explanatary that it's TEE bus based?
+> 
+
+I can rather say:
+
+MODULE_DESCRIPTION("Qualcomm PAS TEE driver");
+
+-Sumit
 
