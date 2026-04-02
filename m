@@ -1,667 +1,270 @@
-Return-Path: <linux-wireless+bounces-34314-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34315-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDZyIGgLzmmnkgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34314-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 08:23:36 +0200
+	id iDvaIHITzmmnkgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34315-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 08:57:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9D83846B0
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 08:23:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5257384D1C
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 08:57:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A3339303AFB0
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2026 06:23:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7D4AE3018764
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2026 06:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00B137CD50;
-	Thu,  2 Apr 2026 06:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF0BA328616;
+	Thu,  2 Apr 2026 06:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WzUiQ4mf"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="dsXyYhXo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SY8PR01CU002.outbound.protection.outlook.com (mail-australiaeastazolkn19010019.outbound.protection.outlook.com [52.103.72.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83848263F5E;
-	Thu,  2 Apr 2026 06:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775111011; cv=none; b=g79gS5VfS/ZtF8a8Ils5EToccfo9D/fj+0w1l/mLpd1DTO8dcR6IDU0Dxuk94AG8msD+NXyqxiNOvlGRecTV7YpP8pGJExAlNXl2+MCilpk7EjftD+Pwmp8CnP8HLRxnBE7Xa/IY2r3Ezm47NEY9xmi1UMPnvHh2Ur+PpzuzA0M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775111011; c=relaxed/simple;
-	bh=1hQ/0S8oRZgtSiNRnqfKOBu3rBMgkc0Kel/5lQ1b46A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NIkxXBaVKZD3koNEkJlOHlKv5DEVZXzJH2j7tTVkJlaYgSqedd6HMmx88nD5hyhZHxxs141N9KOp01iioX8Yec2hgav19ZnWHDMi3UHvQVYqq6/XiZU8g0SFLh18uIOGpMcPP07gpWIJpNs05d5+ZHM9j0OQQckhDSRhyRY/feY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WzUiQ4mf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4408CC19423;
-	Thu,  2 Apr 2026 06:23:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775111011;
-	bh=1hQ/0S8oRZgtSiNRnqfKOBu3rBMgkc0Kel/5lQ1b46A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WzUiQ4mfFOS756slYDURtvWpR2Ytv3yQGpI4Sf4C+iWVOYt8cVr7mG7+EbAssI0Uz
-	 tKt3bupqMb0IGEo0l5QMWenRFYuepZSlE59dndMiGgTzN5OHCtgK+epcuRpDWewria
-	 OvFr5G45c/vo6qPb7lH7943uGc6KOcS5L1LUHhJfeEVaarY8UK/7QjnuXdvJaaQTIi
-	 WxkvdWbD/gpALn/M//30PYbtyIH5X9KuZbEjYsbnU/pdNp3gVzw9VWHkLaQVs/ICPH
-	 WXfTOkssuLue1cK7zBOnJggMvNmxsCQId3WDUEPpIDhAv4w/Y0VYE3FujAvPdKogIB
-	 EgNAsgH3eSveA==
-Date: Thu, 2 Apr 2026 11:53:12 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: Harshal Dev <harshal.dev@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-	linux-media@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-remoteproc@vger.kernel.org, andersson@kernel.org,
-	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
-	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
-	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
-	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
-	dikshita.agarwal@oss.qualcomm.com, bod@kernel.org,
-	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
-	trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
-	pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com,
-	tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com,
-	srinivas.kandagatla@oss.qualcomm.com,
-	amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
-	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
-	skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: Re: [PATCH v3 04/15] firmware: qcom: Add a PAS TEE service
-Message-ID: <ac4LUJbR6jUIWNgI@sumit-xelite>
-References: <20260327131043.627120-1-sumit.garg@kernel.org>
- <20260327131043.627120-5-sumit.garg@kernel.org>
- <000abdb5-a8b4-47c4-860b-5666e650b545@oss.qualcomm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418E9320A00;
+	Thu,  2 Apr 2026 06:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775112604; cv=fail; b=Sf3gZpwX+lsR/KQSqbi5LMQR367c+Mjkec/cOI8YFCW1fma0qD29li2rQvgN7fjarvUhj/uqdm1KDO616PztBLeZdTSeGn2ByZslGlLYbPCe6/Q1gofXoiK1urUxU2S0pgAjgufHVypZky5sfi6tDFSXfb2UUKWoSc3MiTagDus=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775112604; c=relaxed/simple;
+	bh=2xrCPATmp99GCbqXT+5qUk+YJdLb/e2RbGsp0Ympffo=;
+	h=From:Date:Subject:Content-Type:Message-ID:To:Cc:MIME-Version; b=SuY1QEVZdHLDyb4qD4rbjDK4mNv+sK3aAs6HK440glQhfVqY55kjOkb6iCNmormeUymEbF0isjBJYiVWVNenn/l6A9Lc9oVoSkYxP1Nx9wTB0LATHIDeT4BTpPOsdesC+4tzQN6eYojbvBHTp4sEiSxbBWqlw4zmCdNLx4pg1MU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=dsXyYhXo; arc=fail smtp.client-ip=52.103.72.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tpwmYzCeTKarIAzlb5BRNnmg0Yw0ctDKHAZFTR4BzPLDD/X1ZDUcRJt/yF41inS+gv1ZdL1s2Wsza3cAZmDXmw9b9AuL5xtqIt6uyEIELygsN681KhlBf5e0luHD68Hm3zTlBepX9t8mXOX4kaTA9zHimThf5NYetGbtt1cgvExg+IVioHydykyDP4WbEVTHxSTKWPaSmne7Z8ilIJk5oGOxaO9eRHMk8+hk5BIXokpToOd2sJ3RUg4xqTaErplomRaElHLpNpal6XHQpBWSRGqR9r4F8yzTfFFxHh4prDZiIgIfrndq14HwljWJCMT4LYp0cHGk+hTeTIkB771TJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=T3N1ecifa4s8jG87JCykBBBqaFW4O8cXupYszNNwopY=;
+ b=uu8Lth2RKje2vI4zgvmAYKoJdNL2DLmldDDrcqlISw1ftWbeay/M3JZG0ndVx5skU9fgMLdVnp/Cx/Tx+YvH+HqlSQXpP7X6t1g1JaLWrma8ygKmGB6esEOVC3A5oiqckNDnH124zDIoQhttV5KOtUloNEfZ0efdco+p0D6+X9QUeohhh1O5ne4LLaUEAaatH+SGrA4C6NNc+BkOX17kgi6A97+qg3bpwuovBwEQIL0WTw0mj8Qf8nqr9/gABKI0G9ALjb3e+3sDGNZXJRMcLv894lT+hLZSpPtKw1N7VBFEHaMJBXhIOZP6OiTiZa7HBozQvkXnW036Nup+uJizXw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=T3N1ecifa4s8jG87JCykBBBqaFW4O8cXupYszNNwopY=;
+ b=dsXyYhXoc3eX5vQOwg2LSbvTfDxuq3Q9N3RlOkN/mU3Xrqhh7YNMnw2iBJlqA0tKwap/Ztt7PEZS9iXVyy3qmWuVv94OqpDagpYn8HQfqQu68XvLQFRpvWk2JaPrmUAEC+mmsz/b5H7Ov6xV40jFMaWOQlv+I6H2LpnGCP/zfGJUaWX+EkZmRXFMuJZ9eM7EgaNEKkjmq1snp4WfeLkMJE3tgK4Ju+sbjxJPvBRxZ0zAtJGvkJZMzePOBZjnp0dC5r/w3r+5gmhFXY5e5Qv5SGHlFDPe3UJQg/UkZWJr8gKcnbnVPxHZlkXKqDi9ARO2ZF8opqGj5Ak57TEwi80Tsw==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by SYZPR01MB7325.ausprd01.prod.outlook.com (2603:10c6:10:16e::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Thu, 2 Apr
+ 2026 06:49:58 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%5]) with mapi id 15.20.9769.017; Thu, 2 Apr 2026
+ 06:49:58 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+Date: Thu, 02 Apr 2026 14:48:07 +0800
+Subject: [PATCH] wifi: iwlwifi: mld: validate sta_mask before ffs() in BA
+ session handlers
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID:
+ <SYBPR01MB788115C6CE873271A9A15A25AF51A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-B4-Tracking: v=1; b=H4sIACYRzmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDEwMj3bTMitRiXQtzU4ukJDNji0TzZCWg2oKiVLAEUGl0bG0tAGOs9Fp
+ XAAAA
+X-Change-ID: 20260402-fixes-8758bb638a7c
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
+ Johannes Berg <johannes.berg@intel.com>, 
+ Shaul Triebitz <shaul.triebitz@intel.com>, 
+ Daniel Gabay <daniel.gabay@intel.com>, 
+ Benjamin Berg <benjamin.berg@intel.com>
+Cc: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>, 
+ Emmanuel Grumbach <emmanuel.grumbach@intel.com>, 
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org, 
+ Junrui Luo <moonafterrain@outlook.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2190;
+ i=moonafterrain@outlook.com; h=from:subject:message-id;
+ bh=2xrCPATmp99GCbqXT+5qUk+YJdLb/e2RbGsp0Ympffo=;
+ b=owJ4nJvAy8zAJVb4wiKgu++DA+NptSSGzHOCajfv8F26vHMX1w1jyfSC0pIrKx6cvrKNuV30l
+ 6HHbN7nPnUdpSwMYlwMsmKKLMcLLn2z8N2iu8VnSzLMHFYmkCEMXJwCMJHTRxgZzq7gf8Oq2fv0
+ kgPbnBmmk3NjO5d+CpzFfmxHvgj3sU4dNYZfTCHtjOyrFh9f/P5ZhbZ46am8HzJfz56/qLtrapO
+ gDU87MwDiv0rZ
+X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
+ fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
+X-ClientProxiedBy: TY4P286CA0033.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:2b2::14) To SYBPR01MB7881.ausprd01.prod.outlook.com
+ (2603:10c6:10:1b0::5)
+X-Microsoft-Original-Message-ID:
+ <20260402-fixes-v1-1-63dfbb5ed61e@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <000abdb5-a8b4-47c4-860b-5666e650b545@oss.qualcomm.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|SYZPR01MB7325:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4258234-9205-477a-0563-08de90840d4a
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199028|5062599005|5072599009|6090799003|24121999003|15080799012|12121999013|22091999003|19110799012|23021999003|8060799015|40105399003|53005399003|3412199025|440099028|26121999003|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RHVIbDc3UmZYNnpQd2VpWjRGdFVtVTVTMXRyQ09qWDZudzVtZDd3bjlMNGxS?=
+ =?utf-8?B?d2lQa0xOcjBxMkswdW5CZXdIcGhEbzJ0eUp0MUFhRi93QTltRUJuSUdpUWN6?=
+ =?utf-8?B?ZWdxVHlMSytjdk5pRzR0Y1licW5lWEg2K1l4NHI5NlFrNm9ya3kveUFNdndl?=
+ =?utf-8?B?Z1lySENzRnJFc0VkRXJsT2JDK0lRK0RSZjRHeGFMTVJ2MzhVWFd0aVAzZFE0?=
+ =?utf-8?B?QmpFRGIzbjdRd2NHVXQydWovYkIrVFV4UzNsZFdvSUJrOFJDYW83N2F6SVYw?=
+ =?utf-8?B?VmlWTjdFSFJic05saXBXdXp3Z0V1VnNLL2c1U3VpU0NNQkRObjEwT0YwSmdj?=
+ =?utf-8?B?WUVxU2hRR3FYYUhGVFFkUVRHODJwUGEwdDJPTlYwa05SUUd5V0c2a0V0Q3k0?=
+ =?utf-8?B?R05IRTZpbWYweXN1alBZT1RFcE02bFRwL2JGTnVuQkwrZTYwVG52d1JOdUc4?=
+ =?utf-8?B?VGJIc25QRzVGR2NzLzdoaHVvMWJZWURYR1I5YzdLRTBzZ21tOUJDc2YyU1BH?=
+ =?utf-8?B?aTl5Vm52ajBaT08vdm5rOENzRE41WXE0clNUMmE2YTczZnlYcWFmWGY0ZW9m?=
+ =?utf-8?B?dzc5RnZqVWRjRHBXaW56czh6Zm9mcUcyTENCVDBub3NuNVdYRjRDNVJDd29l?=
+ =?utf-8?B?ajkxQXJUM2RNbnIvcGg5NjBxRVc1eVhwTjR0cFpzamJ2R05QOXM4SDNXRzhw?=
+ =?utf-8?B?b3FNdUFEZHV4UExrRWNjb21uWlJBSVhKNm11U1E2b2xIQ1B3VEpSMkllb3dJ?=
+ =?utf-8?B?OEJVMmVBRStlbW9EYmlrb0c3bVd6a0RlejhrWlM5cVR2dzEzTWJuV3pYVUUr?=
+ =?utf-8?B?cGc4OXg3Y0tDbkgvTGxhNldreWRJQlhKd3hrTTZnSUtXTWZEQng4U292TkxX?=
+ =?utf-8?B?LzZTOCt3MWp6UEJhcmk2M2xOMmZjTnRIS3dPVElMejdzN2VZeURGRk9WNVlq?=
+ =?utf-8?B?eC9qZU9wSndsenFjaVVGMXovMTFVVmNuTG9yMzFPajd2TysrWkhkTUtBa0RS?=
+ =?utf-8?B?ZXYzVEJuM1lxS01HNzlIQ2V3S295WWVJaTc4Z1ZTQkdYT0N3c1E1c0ZtZFZV?=
+ =?utf-8?B?ekRuZC85VmZoRlUxSHpwT29WdTFkb0ZBQlpqTTE0amh5WlFobFM4b3ZJekx1?=
+ =?utf-8?B?MVdpR2xVZStHK0RsdkRicS9OUlpOMnBWZk03WVBvaWFYWWhvT0JPZnZ4UXJj?=
+ =?utf-8?B?bEpnekFtUGxPVk9jMEd5STI4ZUtRL25NWCtVTmZxSEtLY0V4ZjZ5RG9wdlBs?=
+ =?utf-8?B?L0p0UVp0WXJ1NHg2dVVpbis3akNVejQxSDBJTmJvcUFpaXdwWjNvNGZWNXAr?=
+ =?utf-8?B?dEFYNU5pVlJPMFFwWkQrTG9SRzdRNGQ2SDQxOWVObm1xdEhyWmJXUURTSVk3?=
+ =?utf-8?B?S2JiTW5UbmF3Kzlhb3dIRHJSbVFISmZXdVpaUy84ZDRzWm8zb0FtWTVsZzB0?=
+ =?utf-8?B?Q01YczVJc21tRmR1N29EREdCKyttQmU2QXVLQ05CN1MxTDZRSDRZNjNIbU9i?=
+ =?utf-8?Q?+cRlWTLCZMUhlypQLWkvn87W7ZG?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?elBaaExhM0JQTVRHTmRjSlc2aGtXWEZjR1p2WklhNkNsVzhudHJKKzZvYzJn?=
+ =?utf-8?B?VVo1WEVDTlVhZkxwSUdBWXJwOTNVNkJ1cUZwclcvUGU2TGlhbEZOU3lQWjVO?=
+ =?utf-8?B?dkxJcVJLK2tqd1pFMllpUldzc3M0QUlqUloyb2pZaWU3WW9TeE56alE4MTl0?=
+ =?utf-8?B?cFZWMi84bjk5WVNqSVBod0lTeGdFaDMxZFZwUHhyZVRYUmszSVlSZW13dVdq?=
+ =?utf-8?B?TEEvRGRCRzZ5MWg3OGJQc2hIaGh2ZVlYek1Kb2xSLzFZK1ZjelhQbjZXZGlZ?=
+ =?utf-8?B?VklNZGtsbGJVNWNueDBTbVpJYkpBdjNjanZuNDlGNm52Q2lPbEo4Mi9LajFD?=
+ =?utf-8?B?M05XTGRvV0JQdjdsUkh4c0VqaDRINy9DSzJ2RU5BZ0kxRitQM01VbHZoN3RR?=
+ =?utf-8?B?bk1UeGJUR3Q2NDMxazRwbGlVOXlnL1N2dXVZa0QvQWNCTmpxejNLWDlaNkNk?=
+ =?utf-8?B?SUVEMFB1bVNMRWlrRU5KRytJVlBIOHQ3bkV4dG41Y1VRWmVZMHdONHZNRnR6?=
+ =?utf-8?B?a1YvSVhUZUY4d2NqbTNjNW5Fd1VXOTROQWRjL280NW1RREdrd3B5dXAzdEZu?=
+ =?utf-8?B?L2FlOENUcjA5TlQrZUpUZ0ZOeGxMdVRKL1BVdmNEYlRqKzN4R3pNaHhNdlkx?=
+ =?utf-8?B?WHFPWVRIRGhBeXZZZXB5MFdEalJNelEwOUhPKzlHeWVjekJtMWhwZkZyU0pz?=
+ =?utf-8?B?NWxvT1VZUVR5bDlqcTZPNkh3NlM3TmxNNzM2T1NsZzlZOFFxUDJrS3R5Szhw?=
+ =?utf-8?B?YVVSc3JOU1NJeDdaS1JuaittbVQ3Sk41U1M1dzM0VWdSb1BuM0lrZDl5eWNl?=
+ =?utf-8?B?aWZHMzNqRVVXK2RDNGRBTUw5L3NUZWVPQmZ3ZmJpWXVTQXdmWTNnSFNLeG1v?=
+ =?utf-8?B?MGR3STJqQUlqUEFCWStYb0F4MDJQTis4aGNJTmdFTHVObXpSY2NSWVdEYWlM?=
+ =?utf-8?B?Vis1MytzZURkUGZlTXRmMllDSmN4c21GZER2REdIdkZjLzFWcVBkaTltcFJF?=
+ =?utf-8?B?RTAzaWJCamcwUWtocmFqVkJlYmxZZStXc1lBSndNR1RONTI1QWNBV2JPRUV0?=
+ =?utf-8?B?V0k1bmFYUnlPQVBJRmx3V2dsTDFSYnp2aHVNMHhnSXlwdXp1WloyYk5DbWtn?=
+ =?utf-8?B?eWtEM1FSdUs3UFh3ZDlzbDdkbHBKTmxFZXM3d3U1ZkRvS3JOVWRrbUxzSzVp?=
+ =?utf-8?B?Q3NRaVhMUnFVcXVOVVpYaEVha0pNamtwa2xDSVFMcjROR0NIMWh1L21HRm1Y?=
+ =?utf-8?B?SHFPV3lXWlI5VW00VjFmc0ZMTnJIbXQ3aURrRks3RnVCRUdRcG9zK2hCdDJx?=
+ =?utf-8?B?U1dqb0x4VXhpSTBmRzFsMDg1UXVMWStyQmQ3OXk0YjR2WXUxNzA1RlNDQVIz?=
+ =?utf-8?B?bFh0NzVrUlhsUi9ES2FMRE8yNVRxOSswVjUxT3pnYUdwaFhJNTlpd1I1bm9i?=
+ =?utf-8?B?N3lIZVp3MVpJNHZ2VjYzYXdlTWRSU1RGeVBzR3BVUE9oL1dRN01uQTluSlgv?=
+ =?utf-8?B?dDkyVGIxUEVkam1CY2dMa3I2dVFzSWZtVnBzdFZybmdWYWZYWVM2VFp6SlAv?=
+ =?utf-8?B?UFdCZUVMNFdqb2tIUjB4SWhvelJTQlZkOHJjcmVwME5xYmgwSi9Wc2JXZ3A4?=
+ =?utf-8?B?NVpHcmM4Wmd0Q3owTU1nU2JJSldqWWdRc2x3eVRVVHlPYS9yc2VZWTdSZDVE?=
+ =?utf-8?B?KzgxZHBxUVd1bHpYdkRENENhbHpJNS94dTNZbWt4QkNOazdacldRU1kvUjla?=
+ =?utf-8?B?dzNZeVpUMThhL21tZnczQVB3QVdWbzU3eGw3Q1V5VU9lSk96ZWNoQWdyd0Zv?=
+ =?utf-8?B?OGhOd25hNUM2NWVBaFJsL1ptQ0NwVHkyMGdXQjdWSzZYL2M3ZjZwSEtZeWZI?=
+ =?utf-8?B?aDZiVTdKRWJDTyszMk5tdXNxKzJtMndiM2ZnL0tVRVAyWXc9PQ==?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4258234-9205-477a-0563-08de90840d4a
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 06:49:57.6885
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SYZPR01MB7325
 X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34314-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34315-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[intel.com,vger.kernel.org,gmail.com,outlook.com];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[50];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 6B9D83846B0
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:dkim,outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D5257384D1C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 30, 2026 at 04:06:47PM +0530, Harshal Dev wrote:
-> 
-> 
-> On 3/27/2026 6:40 PM, Sumit Garg wrote:
-> > From: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> > 
-> > Add support for Peripheral Authentication Service (PAS) driver based
-> > on TEE bus with OP-TEE providing the backend PAS service implementation.
-> > 
-> > The TEE PAS service ABI is designed to be extensible with additional API
-> > as PTA_QCOM_PAS_CAPABILITIES. This allows to accommodate any future
-> > extensions of the PAS service needed while still maintaining backwards
-> > compatibility.
-> > 
-> > Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> > ---
-> >  drivers/firmware/qcom/Kconfig        |  10 +
-> >  drivers/firmware/qcom/Makefile       |   1 +
-> >  drivers/firmware/qcom/qcom_pas_tee.c | 478 +++++++++++++++++++++++++++
-> >  3 files changed, 489 insertions(+)
-> >  create mode 100644 drivers/firmware/qcom/qcom_pas_tee.c
-> >
-> [...]
-> 
-> > diff --git a/drivers/firmware/qcom/qcom_pas_tee.c b/drivers/firmware/qcom/qcom_pas_tee.c
-> > new file mode 100644
-> > index 000000000000..d63122c34f04
-> > --- /dev/null
-> > +++ b/drivers/firmware/qcom/qcom_pas_tee.c
-> > @@ -0,0 +1,478 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-> > + */
-> > +
-> > +#include <linux/delay.h>
-> > +#include <linux/of.h>
-> > +#include <linux/firmware/qcom/qcom_pas.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/module.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/tee_drv.h>
-> > +#include <linux/uuid.h>
-> > +
-> > +#include "qcom_pas.h"
-> > +
-> > +/*
-> > + * Peripheral Authentication Service (PAS) supported.
-> > + *
-> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
-> > + */
-> > +#define TA_QCOM_PAS_IS_SUPPORTED		1
-> > +
-> > +/*
-> > + * PAS capabilities.
-> > + *
-> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
-> > + * [out] params[1].value.a:	PAS capability flags
-> > + */
-> > +#define TA_QCOM_PAS_CAPABILITIES		2
-> > +
-> > +/*
-> > + * PAS image initialization.
-> > + *
-> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
-> > + * [in]  params[1].memref:	Loadable firmware metadata
-> > + */
-> > +#define TA_QCOM_PAS_INIT_IMAGE			3
-> > +
-> > +/*
-> > + * PAS memory setup.
-> > + *
-> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
-> > + * [in]  params[0].value.b:	Relocatable firmware size
-> > + * [in]  params[1].value.a:	32bit LSB relocatable firmware memory address
-> > + * [in]  params[1].value.b:	32bit MSB relocatable firmware memory address
-> > + */
-> > +#define TA_QCOM_PAS_MEM_SETUP			4
-> > +
-> > +/*
-> > + * PAS get resource table.
-> > + *
-> > + * [in]     params[0].value.a:	Unique 32bit remote processor identifier
-> > + * [inout]  params[1].memref:	Resource table config
-> > + */
-> > +#define TA_QCOM_PAS_GET_RESOURCE_TABLE		5
-> > +
-> > +/*
-> > + * PAS image authentication and co-processor reset.
-> > + *
-> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
-> > + * [in]  params[0].value.b:	Firmware size
-> > + * [in]  params[1].value.a:	32bit LSB firmware memory address
-> > + * [in]  params[1].value.b:	32bit MSB firmware memory address
-> > + * [in]  params[2].memref:	Optional fw memory space shared/lent
-> > + */
-> > +#define TA_QCOM_PAS_AUTH_AND_RESET		6
-> > +
-> > +/*
-> > + * PAS co-processor set suspend/resume state.
-> > + *
-> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
-> > + * [in]  params[0].value.b:	Co-processor state identifier
-> > + */
-> > +#define TA_QCOM_PAS_SET_REMOTE_STATE		7
-> > +
-> > +/*
-> > + * PAS co-processor shutdown.
-> > + *
-> > + * [in]  params[0].value.a:	Unique 32bit remote processor identifier
-> > + */
-> > +#define TA_QCOM_PAS_SHUTDOWN			8
-> > +
-> > +#define TEE_NUM_PARAMS				4
-> > +
-> > +/**
-> > + * struct qcom_pas_tee_private - PAS service private data
-> > + * @dev:		PAS service device.
-> > + * @ctx:		TEE context handler.
-> > + * @session_id:		PAS TA session identifier.
-> 
-> Nit: Column alignment of comment descriptions.
+Three BA session handlers use ffs(ba_data->sta_mask) - 1 to derive a
+station ID without checking that sta_mask is non-zero. When sta_mask is
+zero, ffs() returns 0 and the subtraction wraps to 0xFFFFFFFF, causing
+an out-of-bounds access on fw_id_to_link_sta[].
 
-These are aligned if you look at them after applying the patch-set.
-Plain email text isn't good at showing the alignment here.
+Add WARN_ON_ONCE(!ba_data->sta_mask) guards before each ffs() call,
+consistent with the existing check in iwl_mld_ampdu_rx_start().
 
-> 
-> > + */
-> > +struct qcom_pas_tee_private {
-> > +	struct device *dev;
-> > +	struct tee_context *ctx;
-> > +	u32 session_id;
-> > +};
-> > +
-> > +static bool qcom_pas_tee_supported(struct device *dev, u32 pas_id)
-> > +{
-> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
-> > +	struct tee_ioctl_invoke_arg inv_arg = {
-> > +		.func = TA_QCOM_PAS_IS_SUPPORTED,
-> > +		.session = data->session_id,
-> > +		.num_params = TEE_NUM_PARAMS
-> > +	};
-> > +	struct tee_param param[4] = {
-> > +		[0] = {
-> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
-> > +			.u.value.a = pas_id
-> > +		}
-> > +	};
-> > +	int ret;
-> > +
-> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
-> > +	if (ret < 0 || inv_arg.ret != 0) {
-> > +		dev_err(dev, "PAS not supported, pas_id: %d, err: %x\n",
-> > +			pas_id, inv_arg.ret);
-> 
-> I can see that similar error handling pattern for tee_client_invoke_func() is
-> being done by other clients. But it seems that this error log doesn't really convey
-> whether we failed before or after entering OPTEE (or some other TEE) for invoking
-> the service.
-> 
-> Could be better if we print 'ret' when ret < 0. And print 'inv_arg.ret' when
-> inv_arg.ret != 0. So for example, if the param marshalling fails, or some other
-> issue is encountered when processing the params in a different back-end TEE
-> driver, we could know from the logs.
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mld/agg.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Okay, I will add print for "ret" as well.
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/agg.c b/drivers/net/wireless/intel/iwlwifi/mld/agg.c
+index 3bf36f8f6874..e3627ad0321c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/agg.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/agg.c
+@@ -64,6 +64,9 @@ static void iwl_mld_release_frames_from_notif(struct iwl_mld *mld,
+ 	}
+ 
+ 	/* pick any STA ID to find the pointer */
++	if (WARN_ON_ONCE(!ba_data->sta_mask))
++		goto out_unlock;
++
+ 	sta_id = ffs(ba_data->sta_mask) - 1;
+ 	link_sta = rcu_dereference(mld->fw_id_to_link_sta[sta_id]);
+ 	if (WARN_ON_ONCE(IS_ERR_OR_NULL(link_sta) || !link_sta->sta))
+@@ -166,6 +169,9 @@ void iwl_mld_del_ba(struct iwl_mld *mld, int queue,
+ 		goto out_unlock;
+ 
+ 	/* pick any STA ID to find the pointer */
++	if (WARN_ON_ONCE(!ba_data->sta_mask))
++		goto out_unlock;
++
+ 	sta_id = ffs(ba_data->sta_mask) - 1;
+ 	link_sta = rcu_dereference(mld->fw_id_to_link_sta[sta_id]);
+ 	if (WARN_ON_ONCE(IS_ERR_OR_NULL(link_sta) || !link_sta->sta))
+@@ -347,6 +353,9 @@ static void iwl_mld_rx_agg_session_expired(struct timer_list *t)
+ 	}
+ 
+ 	/* timer expired, pick any STA ID to find the pointer */
++	if (WARN_ON_ONCE(!ba_data->sta_mask))
++		goto unlock;
++
+ 	sta_id = ffs(ba_data->sta_mask) - 1;
+ 	link_sta = rcu_dereference(ba_data->mld->fw_id_to_link_sta[sta_id]);
+ 
 
-> 
-> > +		return false;
-> > +	}
-> > +
-> > +	return true;
-> > +}
-> > +
-> > +static int qcom_pas_tee_init_image(struct device *dev, u32 pas_id,
-> > +				   const void *metadata, size_t size,
-> > +				   struct qcom_pas_context *ctx)
-> > +{
-> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
-> > +	struct tee_ioctl_invoke_arg inv_arg = {
-> > +		.func = TA_QCOM_PAS_INIT_IMAGE,
-> > +		.session = data->session_id,
-> > +		.num_params = TEE_NUM_PARAMS
-> > +	};
-> > +	struct tee_param param[4] = {
-> > +		[0] = {
-> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
-> > +			.u.value.a = pas_id
-> > +		},
-> > +		[1] = {
-> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT,
-> > +		}
-> > +	};
-> > +	struct tee_shm *mdata_shm;
-> > +	u8 *mdata_buf = NULL;
-> > +	int ret;
-> > +
-> > +	if (!ctx)
-> > +		return -EINVAL;
-> > +
-> > +	mdata_shm = tee_shm_alloc_kernel_buf(data->ctx, size);
-> 
-> Why not move the DEFINE_FREE() above this function so we can use scoped free
-> here as well for mdata_shm?
-> 
-> struct tee_shm *mdata_shm __free(shm_free) = ...
+---
+base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
+change-id: 20260402-fixes-8758bb638a7c
 
-mdata_shm gets freed as part of qcom_pas_tee_metadata_release(), so no
-automatic free here.
+Best regards,
+-- 
+Junrui Luo <moonafterrain@outlook.com>
 
-> 
-> > +	if (IS_ERR(mdata_shm)) {
-> > +		dev_err(dev, "mdata_shm allocation failed\n");
-> > +		return PTR_ERR(mdata_shm);
-> > +	}
-> > +
-> > +	mdata_buf = tee_shm_get_va(mdata_shm, 0);
-> > +	if (IS_ERR(mdata_buf)) {
-> > +		dev_err(dev, "mdata_buf get VA failed\n");
-> > +		tee_shm_free(mdata_shm);
-> > +		return PTR_ERR(mdata_buf);
-> > +	}
-> > +	memcpy(mdata_buf, metadata, size);
-> > +
-> > +	param[1].u.memref.shm = mdata_shm;
-> > +	param[1].u.memref.size = size;
-> > +
-> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
-> > +	if (ret < 0 || inv_arg.ret != 0) {
-> > +		dev_err(dev, "PAS init image failed, pas_id: %d, err: %x\n",
-> 
-> Nit: We can prefix %x with 0x. "err: 0x%x\n."
-
-Ack
-
-> 
-> > +			pas_id, inv_arg.ret);
-> > +		tee_shm_free(mdata_shm);
-> > +		return -EINVAL;
-> > +	}
-> > +	ctx->ptr = (void *)mdata_shm;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int qcom_pas_tee_mem_setup(struct device *dev, u32 pas_id,
-> > +				  phys_addr_t addr, phys_addr_t size)
-> > +{
-> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
-> > +	struct tee_ioctl_invoke_arg inv_arg = {
-> > +		.func = TA_QCOM_PAS_MEM_SETUP,
-> > +		.session = data->session_id,
-> > +		.num_params = TEE_NUM_PARAMS
-> > +	};
-> > +	struct tee_param param[4] = {
-> > +		[0] = {
-> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
-> > +			.u.value.a = pas_id,
-> > +			.u.value.b = size,
-> > +		},
-> > +		[1] = {
-> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
-> > +			.u.value.a = lower_32_bits(addr),
-> > +			.u.value.b = upper_32_bits(addr),
-> > +		}
-> > +	};
-> > +	int ret;
-> > +
-> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
-> > +	if (ret < 0 || inv_arg.ret != 0) {
-> > +		dev_err(dev, "PAS mem setup failed, pas_id: %d, err: %x\n",
-> > +			pas_id, inv_arg.ret);
-> > +		return -EINVAL;
-> 
-> I can see that originally in-case of error, qcom_scm_pas_mem_setup() bubbles
-> up the return value from qcom_scm_call(). Perhaps we should do the same as well,
-> return ret here instead of hard-coded '-EINVAL' which overrides any useful
-> return values returned from the back-end TEE driver.
-
-ret can even be 0 while still error from TEE. Let's rather do following:
-
-	return ret ? ret : -EINVAL;
-
->  
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +DEFINE_FREE(shm_free, struct tee_shm *, tee_shm_free(_T))
-> > +
-> > +static void *qcom_pas_tee_get_rsc_table(struct device *dev,
-> > +					struct qcom_pas_context *ctx,
-> > +					void *input_rt, size_t input_rt_size,
-> > +					size_t *output_rt_size)
-> > +{
-> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
-> > +	struct tee_ioctl_invoke_arg inv_arg = {
-> > +		.func = TA_QCOM_PAS_GET_RESOURCE_TABLE,
-> > +		.session = data->session_id,
-> > +		.num_params = TEE_NUM_PARAMS
-> > +	};
-> > +	struct tee_param param[4] = {
-> > +		[0] = {
-> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
-> > +			.u.value.a = ctx->pas_id,
-> > +		},
-> > +		[1] = {
-> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INOUT,
-> > +			.u.memref.size = input_rt_size,
-> > +		}
-> > +	};
-> > +	void *rt_buf = NULL;
-> > +	int ret;
-> > +
-> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
-> > +	if (ret < 0 || inv_arg.ret != 0) {
-> > +		dev_err(dev, "PAS get RT failed, pas_id: %d, err: %x\n",
-> > +			ctx->pas_id, inv_arg.ret);
-> > +		return ERR_PTR(-EINVAL);
-> 
-> Same comment here, we could return ERR_PTR(ret) instead of overriding to
-> '-EINVAL'.
-> 
-> > +	}
-> > +
-> > +	if (param[1].u.memref.size) {
-> > +		struct tee_shm *rt_shm __free(shm_free) =
-> > +			tee_shm_alloc_kernel_buf(data->ctx,
-> > +						 param[1].u.memref.size);
-> > +		void *rt_shm_va;
-> > +
-> > +		if (IS_ERR(rt_shm)) {
-> > +			dev_err(dev, "rt_shm allocation failed\n");
-> > +			return rt_shm;
-> > +		}
-> > +
-> > +		rt_shm_va = tee_shm_get_va(rt_shm, 0);
-> > +		if (IS_ERR_OR_NULL(rt_shm_va)) {
-> > +			dev_err(dev, "rt_shm get VA failed\n");
-> > +			return ERR_PTR(-EINVAL);
-> 
-> Why not just return rt_shm_va? It already encodes the error in the pointer.
-
-Again let me add a null check while returning rt_shm_va.
-
-> 
-> > +		}
-> > +		memcpy(rt_shm_va, input_rt, input_rt_size);
-> > +
-> > +		param[1].u.memref.shm = rt_shm;
-> > +		ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
-> > +		if (ret < 0 || inv_arg.ret != 0) {
-> > +			dev_err(dev, "PAS get RT failed, pas_id: %d, err: %x\n",
-> > +				ctx->pas_id, inv_arg.ret);
-> > +			return ERR_PTR(-EINVAL);
-> 
-> Same comment.
-> 
-> > +		}
-> > +
-> > +		if (param[1].u.memref.size) {
-> 
-> Is it possible for param[1].u.memref.size to be 0 after a successful tee_client_invoke_func()?
-
-Yeah it's possible if there is no resource table entry needed for a
-particular PAS id.
-
-> 
-> > +			*output_rt_size = param[1].u.memref.size;
-> > +			rt_buf = kmemdup(rt_shm_va, *output_rt_size, GFP_KERNEL);
-> > +			if (!rt_buf)
-> > +				return ERR_PTR(-ENOMEM);
-> > +		}
-> > +	}
-> > +
-> > +	return rt_buf;
-> > +}
-> > +
-> > +static int __qcom_pas_tee_auth_and_reset(struct device *dev, u32 pas_id,
-> > +					 phys_addr_t mem_phys, size_t mem_size)
-> > +{
-> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
-> > +	struct tee_ioctl_invoke_arg inv_arg = {
-> > +		.func = TA_QCOM_PAS_AUTH_AND_RESET,
-> > +		.session = data->session_id,
-> > +		.num_params = TEE_NUM_PARAMS
-> > +	};
-> > +	struct tee_param param[4] = {
-> > +		[0] = {
-> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
-> > +			.u.value.a = pas_id,
-> > +			.u.value.b = mem_size,
-> > +		},
-> > +		[1] = {
-> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
-> > +			.u.value.a = lower_32_bits(mem_phys),
-> > +			.u.value.b = upper_32_bits(mem_phys),
-> > +		},
-> > +		/* Reserved for fw memory space to be shared or lent */
-> 
-> Can you explain this comment a bit more? Plan is to allow passing a MEM_REF here
-> which could be lent/shared to TEE via FFA ABI?
-
-This param is added for future compatibility where PAS firmware is
-loaded in arbitrarity allocated memory region by the kernel. Then that
-can be shared or lend with TZ for authentication and reset sequence.
-
-Right now the kernel is already loading the PAS firmware is fixed
-reserved memory regions, for which this param is unused.
-
-> 
-> > +		[2] = {
-> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT,
-> > +		}
-> > +	};
-> > +	int ret;
-> > +
-> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
-> > +	if (ret < 0 || inv_arg.ret != 0) {
-> > +		dev_err(dev, "PAS auth reset failed, pas_id: %d, err: %x\n",
-> > +			pas_id, inv_arg.ret);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int qcom_pas_tee_auth_and_reset(struct device *dev, u32 pas_id)
-> 
-> I'm guessing once all clients have migrated to PAS, plan is to drop this wrapper?
-
-Yeah, this patch-set doesn't aim to change the kernel client PAS API
-contract apart from just renaming APIs. Surely future work can change
-the PAS API contract as needed.
-
-> 
-> > +{
-> > +	return __qcom_pas_tee_auth_and_reset(dev, pas_id, 0, 0);
-> > +}
-> > +
-> > +static int qcom_pas_tee_prepare_and_auth_reset(struct device *dev,
-> > +					       struct qcom_pas_context *ctx)
-> > +{
-> > +	return __qcom_pas_tee_auth_and_reset(dev, ctx->pas_id, ctx->mem_phys,
-> > +					     ctx->mem_size);
-> > +}
-> > +
-> > +static int qcom_pas_tee_set_remote_state(struct device *dev, u32 state,
-> > +					 u32 pas_id)
-> > +{
-> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
-> > +	struct tee_ioctl_invoke_arg inv_arg = {
-> > +		.func = TA_QCOM_PAS_SET_REMOTE_STATE,
-> > +		.session = data->session_id,
-> > +		.num_params = TEE_NUM_PARAMS
-> > +	};
-> > +	struct tee_param param[4] = {
-> > +		[0] = {
-> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
-> > +			.u.value.a = pas_id,
-> > +			.u.value.b = state,
-> > +		}
-> > +	};
-> > +	int ret;
-> 
-> Nit: Why not ret = 0 initialize and always use ret?
-
-zero init will still be redundant..
-
-> 
-> > +
-> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
-> > +	if (ret < 0 || inv_arg.ret != 0) {
-> > +		dev_err(dev, "PAS shutdown failed, pas_id: %d, err: %x\n",
-> > +			pas_id, inv_arg.ret);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	return 0;
-
-.. will rather change this to return ret.
-
-> > +}
-> > +
-> > +static int qcom_pas_tee_shutdown(struct device *dev, u32 pas_id)
-> > +{
-> > +	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
-> > +	struct tee_ioctl_invoke_arg inv_arg = {
-> > +		.func = TA_QCOM_PAS_SHUTDOWN,
-> > +		.session = data->session_id,
-> > +		.num_params = TEE_NUM_PARAMS
-> > +	};
-> > +	struct tee_param param[4] = {
-> > +		[0] = {
-> > +			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
-> > +			.u.value.a = pas_id
-> > +		}
-> > +	};
-> > +	int ret = 0;
-> > +
-> > +	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
-> > +	if (ret < 0 || inv_arg.ret != 0) {
-> > +		dev_err(dev, "PAS shutdown failed, pas_id: %d, err: %x\n",
-> > +			pas_id, inv_arg.ret);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	return 0;
-> 
-> You could just return 'ret' here. :)
-
-Ack.
-
-> 
-> > +}
-> > +
-> > +static void qcom_pas_tee_metadata_release(struct device *dev,
-> > +					  struct qcom_pas_context *ctx)
-> > +{
-> > +	struct tee_shm *mdata_shm = ctx->ptr;
-> > +
-> 
-> Nit: Unnecessary extra line.
-
-Extra line is recommended after variables declaration.
-
-> 
-> > +	tee_shm_free(mdata_shm);
-> > +}
-> > +
-> 
-> [...]
-> 
-> > +
-> > +module_tee_client_driver(optee_pas_tee_driver);
-> > +
-> > +MODULE_LICENSE("GPL");
-> > +MODULE_DESCRIPTION("TEE bus based Qualcomm PAS driver");
-> 
-> Since this is a tee_client driver, isn't it self-explanatary that it's TEE bus based?
-> 
-
-I can rather say:
-
-MODULE_DESCRIPTION("Qualcomm PAS TEE driver");
-
--Sumit
 
