@@ -1,185 +1,165 @@
-Return-Path: <linux-wireless+bounces-34317-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34318-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HSeC4ZJzmlRmgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34317-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 12:48:38 +0200
+	id yMItM1ZdzmnvnAYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34318-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 14:13:10 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EC3387E7C
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 12:48:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C0D388E57
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Apr 2026 14:13:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A9FF3308BC14
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2026 10:47:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 59659308B25E
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2026 12:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5259F386556;
-	Thu,  2 Apr 2026 10:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fZ5X6iUb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46E41A9FA4;
+	Thu,  2 Apr 2026 12:10:32 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28A8386C1C
-	for <linux-wireless@vger.kernel.org>; Thu,  2 Apr 2026 10:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [4.193.249.245])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADAE3D3332
+	for <linux-wireless@vger.kernel.org>; Thu,  2 Apr 2026 12:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.193.249.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775126841; cv=none; b=tzdY9YV88NIfX5TLzUYB4FiT9OPHKIh/yToHzr9KDIFRDduR8eSFNaRzAtw6KGRxaup8TzbRK+deJtPEXFe8xWtBXyrR/jS0ZRsJ9wjmv20mHppbApAFliH4UPxNQn1h8arwsilYHtkFnqQHrFBtN4aKqMepqIW+ArkeyQv7114=
+	t=1775131832; cv=none; b=a6KxJ6Uu7OfX8z85KvDahkbEG3xYyiH49KP47Mj/YEexa/2BgtRR6EFVDB+qC47qYr/eS1f3GZKsa+wK99XCKZrexwSzzKfRzMNxglUm6wVmlht6sP3QpQfD7/ZpkoBMhf5RgvA7Ml/aDUMIHO6AUx+iNCXAsLVZqnjRfUsZG9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775126841; c=relaxed/simple;
-	bh=RhkLq/f8QfMS0eianUd8AmA9oZvvs0fkEBnq8nleweY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=plcycdGvKJ/6y4Pr7rTHzNtMSBXu/Jf835RkPT/fyW52rBblTydIUoYU+SAAvIjLTYyhlL7tNyGrq/Y8FG+3YVznQluJ1BlpoYjyW2U5ySeXfsRV80pgMkF158skJPbspauwuMdyI5wu/cxCrCCilnx2OUg8GxaE5ln43kG110A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fZ5X6iUb; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48704db565eso7689785e9.1
-        for <linux-wireless@vger.kernel.org>; Thu, 02 Apr 2026 03:47:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775126838; x=1775731638; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p7weI9og6Q0lyNx60wu/+g5SxUcLYMdf+Jn1DbxQ90k=;
-        b=fZ5X6iUbXsG8bsMvcSPgZJHfYSPD7F/9dhlWY9f6Kxf8Q+gBOvAgSwJxBc0CNhcaar
-         euTn04gr7CgIu9k09abA4xQ9fg9JSkcAlvFJph1kH8cG5H3gV3cHpRb7Kn67vfY5jC8H
-         NL7n19dn4C99NecP1Eo2B7+he0C8vGt8Sw0ruBIwYkGBj6bRK7hgOooLSb7CtYphrEJH
-         Hk4RbzVFsIDXNWJ+YSkbYA7bEMmUHpJsFo1JLyWTTqq4armQ6AX/J3YykTuUXIkS/aU7
-         xseXFNQMTW2P8ZGZ8CXb7lbswlNmZJ9YOZA0XDnM8eyxJtl0UPnIeyIXzWw/IFC/ILT3
-         LR5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775126838; x=1775731638;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=p7weI9og6Q0lyNx60wu/+g5SxUcLYMdf+Jn1DbxQ90k=;
-        b=lqr2WlkrhkjZvvVKTuqyv5+JntNWAAGupwZKj4HVh3X9f+KvAPXKcsW96XHaWN6kzf
-         tVnakVmvYKlTQNsKZPoJOaU3p5WRfiiD2kGs7+zLTjuHyVdSJOoP42BfQ/gPnmxDBkiF
-         TeC/nq9SMJBX02FO71xVC2v5hdU3/+neEccfJpcND/UocBJn8WaKcqLZ1Z1znno/7TVG
-         MrrqCiRf/f6hMkjyVIY72MK6ETP7KvDoD/MYlEAC6MdzuhmR57rSfrMu4JsvYg4qE324
-         FqmTpvkE+6LrPYgHb6a8whn5acK47tnVvoD6ONe7Y6g/ZhtEx6L+dsCSfnBxEUo3AEgJ
-         fqKA==
-X-Gm-Message-State: AOJu0YyAHIlw7vNXfhVx9Bvzu8Rt1PYL/ogMlMbcW1nEdqnQqUG3h3v+
-	KP+LEw4UGk8D6vP417YH+eDS+C7uZ7epwJoXsyC8EUALdznXG6GUODRXb5gpjQ==
-X-Gm-Gg: ATEYQzyWRavDdotURWXN2zCz9rjcs1z9RmIC1CPpCkQB1TNqVO1EVSNzbARxPNRh+IJ
-	mlX0Shap4+SqKazRN9YRySvOHyMU47qlr2rD1Sicip+17R1ilgFNLsViIFV7HzMtpdH2sLDYuwH
-	IiBtpiZieTdwOvw8tOPzUEOJ77qK1lA9Il3wdOxpzz+ajxbHAVldUjuWCzUNl2yDHFw3axsLVty
-	GIKdCroaM3kGSaDiWt0KDtZnX61Cx4NoWggIVRthYx7FDJq4cT/56fsN+kXSrwmCpuL+hKrDGEg
-	EzU9uqZLc5bq4uAhVEmBEunhuU7Tg7Z/UOkHQ6Yuq6ajj+o5FZuYELDP9NZXZBqt+LZyBE3tt77
-	4zhOqJnGGS3y6/a8HxZY1+GE/an/EmJUbzbg4qtmjJctreJLZatQnTJzg2havubp1l4LEahfILa
-	684l6uAgSS9QqvHMGMJHTnzgvHKc7rzR1W1+SSqYyy2w==
-X-Received: by 2002:a05:600c:83c8:b0:485:2c61:9457 with SMTP id 5b1f17b1804b1-4888b70fbaemr58487125e9.10.1775126838010;
-        Thu, 02 Apr 2026 03:47:18 -0700 (PDT)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887c751158sm95037345e9.6.2026.04.02.03.47.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Apr 2026 03:47:17 -0700 (PDT)
+	s=arc-20240116; t=1775131832; c=relaxed/simple;
+	bh=clu2N2eW9N8i4tlthOzczgk1VDLmgxLp0nI92lesy6o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=e2hCT9cXJYda3Tb9XKDyJXYmr7BOGhvM6DDwMfEAxfPaQlxbsMxeZxdZ7+FmD1TdOyKF3kWr0wv9NLS/2eirsYapGgQG3/4j2ifAdIXGa8SbCC5wAGYTZSq6ZRPZELIYIa5Mv7oXaydV/nLDNe+JaxUMcE4uyOodXabuMdaBQ9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=4.193.249.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
+	by app1 (Coremail) with SMTP id ygmowAAnoACgXM5pbc2gAA--.222S3;
+	Thu, 02 Apr 2026 20:10:13 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	linville@tuxdriver.com,
+	kilroyd@googlemail.com,
+	yifanwucs@gmail.com,
+	tomapufckgml@gmail.com,
+	yuantan098@gmail.com,
+	bird@lzu.edu.cn,
+	enjou1224z@gmail.com,
+	xuyuqiabc@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH 1/1] wifi: cfg80211: wext: prevent encoding_size overflow in giwrange
+Date: Thu,  2 Apr 2026 20:10:06 +0800
+Message-ID: <20260402121007.339835-2-n05ec@lzu.edu.cn>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260402121007.339835-1-n05ec@lzu.edu.cn>
+References: <20260402121007.339835-1-n05ec@lzu.edu.cn>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 02 Apr 2026 12:47:17 +0200
-Message-Id: <DHILY3AU5IF4.QIHK6RI52T93@gmail.com>
-Subject: Re: [PATCH ath-next v5] wifi: ath12k: avoid dynamic alloc when
- parsing wmi tb
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Baochen Qiang" <baochen.qiang@oss.qualcomm.com>, "Nicolas Escande"
- <nico.escande@gmail.com>, <ath12k@lists.infradead.org>
-Cc: <linux-wireless@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260330102434.13136-1-nico.escande@gmail.com>
- <b066de0a-71bc-4d03-8ce1-c6ff22eddda1@oss.qualcomm.com>
-In-Reply-To: <b066de0a-71bc-4d03-8ce1-c6ff22eddda1@oss.qualcomm.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ygmowAAnoACgXM5pbc2gAA--.222S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zr43ZF15Jr4kWr45Jw17Awb_yoW8uw47pF
+	43C3sIqr97Wr12k348JFW8ZryxtaykuFn7W390k3s7uan7KF4Fqr9FgFy5uF4DZa97Gr4r
+	AFnFgF1xGw1kCFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB01xkIjI8I6I8E6xAIw20EY4v20xvaj40_JFC_Wr1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
+	87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
+	8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
+	Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+	xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
+	w2AFwI0_Jw0_GFylc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY2
+	0_Gr4l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
+	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
+	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUonmRUUUUU
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQUFCWnNP3wVcQAAsL
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34317-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[sipsolutions.net,tuxdriver.com,googlemail.com,gmail.com,lzu.edu.cn];
+	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34318-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,gmail.com,lists.infradead.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DMARC_NA(0.00)[lzu.edu.cn];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[n05ec@lzu.edu.cn,linux-wireless@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.985];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nicoescande@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D0EC3387E7C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 71C0D388E57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue Mar 31, 2026 at 4:44 AM CEST, Baochen Qiang wrote:
-[...]
->> @@ -11239,3 +11149,30 @@ int ath12k_wmi_send_mlo_link_set_active_cmd(str=
-uct ath12k_base *ab,
->>  	dev_kfree_skb(skb);
->>  	return ret;
->>  }
->> +
->> +int ath12k_wmi_alloc(void)
->> +{
->> +	guard(mutex)(&ath12k_wmi_mutex);
->> +
->> +	if (!ath12k_wmi_tb)
->> +		ath12k_wmi_tb =3D __alloc_percpu(WMI_TAG_MAX * sizeof(void *),
->> +					       __alignof__(void *));
->> +	if (!ath12k_wmi_tb)
->> +		return -ENOMEM;
->
-> better move the second testing inside ?
->
-> 	if (!ath12k_wmi_tb) {
-> 		ath12k_wmi_tb =3D alloc();
-> 		if (!ath12k_wmi_tb)
-> 			return -ENOMEM;
-> 	}
+From: Yuqi Xu <xuyuqiabc@gmail.com>
 
-I tend to prefer not over indenting when I can avoid it but ok.
+cfg80211_wext_giwrange() appends one encoding_size entry for each
+WLAN_CIPHER_SUITE_WEP40 and WLAN_CIPHER_SUITE_WEP104 value advertised by
+the wiphy. struct iw_range only provides IW_MAX_ENCODING_SIZES slots in
+encoding_size[], so duplicated WEP entries can advance num_encoding_sizes
+past the end of the array and corrupt the iw_range buffer returned by
+SIOCGIWRANGE.
 
->
->> +
->> +	ath12k_wmi_refcount++;
->> +	return 0;
->> +}
->> +
->> +void ath12k_wmi_free(void)
->> +{
->> +	guard(mutex)(&ath12k_wmi_mutex);
->> +
->> +	if (!WARN_ON(ath12k_wmi_refcount - 1 < 0))
->
-> better to use refcount_t and its APIs?
+This can happen when the wiphy cipher list contains duplicated WEP entries.
 
-Indeed I'm not familiar with them but I'll look into it
+Only append encoding sizes while there is still room in the fixed-size
+array. This keeps the current behaviour for normal cipher lists and
+truncates oversized WEP capability lists instead of writing past the end of
+the buffer.
 
->
->> +		ath12k_wmi_refcount--;
->> +
->> +	if (!ath12k_wmi_refcount) {
->> +		free_percpu(ath12k_wmi_tb);
->> +		ath12k_wmi_tb =3D NULL;
->> +	}
->> +}
+Fixes: 2ab658f9ce21 ("cfg80211: set WE encoding size based on available ciphers")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
+ net/wireless/wext-compat.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
+index 5a70a0120343..9c5ac7da774c 100644
+--- a/net/wireless/wext-compat.c
++++ b/net/wireless/wext-compat.c
+@@ -170,13 +170,15 @@ int cfg80211_wext_giwrange(struct net_device *dev,
+ 			break;
+ 
+ 		case WLAN_CIPHER_SUITE_WEP40:
+-			range->encoding_size[range->num_encoding_sizes++] =
+-				WLAN_KEY_LEN_WEP40;
++			if (range->num_encoding_sizes < IW_MAX_ENCODING_SIZES)
++				range->encoding_size[range->num_encoding_sizes++] =
++					WLAN_KEY_LEN_WEP40;
+ 			break;
+ 
+ 		case WLAN_CIPHER_SUITE_WEP104:
+-			range->encoding_size[range->num_encoding_sizes++] =
+-				WLAN_KEY_LEN_WEP104;
++			if (range->num_encoding_sizes < IW_MAX_ENCODING_SIZES)
++				range->encoding_size[range->num_encoding_sizes++] =
++					WLAN_KEY_LEN_WEP104;
+ 			break;
+ 		}
+ 	}
+-- 
+2.52.0
+
 
