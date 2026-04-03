@@ -1,104 +1,104 @@
-Return-Path: <linux-wireless+bounces-34321-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34322-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCsqBmdHz2luuwYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34321-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Apr 2026 06:51:51 +0200
+	id +Ly9FIKCz2nLwwYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34322-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 03 Apr 2026 11:04:02 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E212390FC0
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Apr 2026 06:51:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF46F39288D
+	for <lists+linux-wireless@lfdr.de>; Fri, 03 Apr 2026 11:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D881A301A780
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2026 04:51:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B3B5B30A1860
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2026 09:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B03630C35F;
-	Fri,  3 Apr 2026 04:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098CB2C324D;
+	Fri,  3 Apr 2026 09:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JkKoAt4m";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YytMETsA"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MJuVqINB";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="H96O94He"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871317081A
-	for <linux-wireless@vger.kernel.org>; Fri,  3 Apr 2026 04:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21113019BA
+	for <linux-wireless@vger.kernel.org>; Fri,  3 Apr 2026 09:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775191907; cv=none; b=o6aUZd4kSvosuEp1X1QbiTvZmV6WxSUmwUxYt3b/x9d9kxI4370g2laTX6btzb3YdnEFiyOCQATvt1TLtowjrCxoQghGsCfKYiubnQae0osk70Gb2ZCk0XNyU5WA0Zkyup4Ub1WlonQFWUP87775AwGpq7kh+e3VSOB63fCNfPg=
+	t=1775206883; cv=none; b=RzJb7PbSGGxXktAp5wiKXbCoRPXMHhA4HOafmkp6xlHiB025g+H/vtG0XMZMB8GKp6FmKLsFhwid7bmgF+UFR6Z+hqH1/634f9wMgH28y06MY2dgo/ivneL65jVupHST+q6+nxEm6Yn1U7wHwILNvaNUGv5Drxw8uIatHBFAhcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775191907; c=relaxed/simple;
-	bh=4D6ePz4Hq88HcwX2Ji+Kmw9BNGtUwVuoQ9qLJY3qrOI=;
+	s=arc-20240116; t=1775206883; c=relaxed/simple;
+	bh=cmDriKbCcG9Q8hSVXUoL8k7uqHqqwdQ42AQKkfed4rY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B8WsB8ntZD+3N7YByxgT3VFV4KPgeJN8TNi26WpsCdxLUmJuXClZVnHSZrKAj/endloU086LS84hBPz4LAaVywgq5SdsLwOH19kxEMGMEjQAuMyc571CrBrIuc6lHMAiPMTa1bOlUKXUj7JEQlGmNNI3JBQoYYXUxucWaTQX9oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JkKoAt4m; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YytMETsA; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=C+4Y6iZuij1rx7nNUNHXKv3NzpYssUnjmS5zTUl3Fjz2xVARI7rOh8HclIqFYnx1uWaem74XJHxIniSqdn7HnkfxcCMxpIPpjMo1NVpEhAq66DjwyaiAbiDKuMkrwRVkWNNTY7tLoXeZlkdcWkv9zmq9yWIPRZF4Uy8k8IPH0zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MJuVqINB; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=H96O94He; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6332H4IO2528256
-	for <linux-wireless@vger.kernel.org>; Fri, 3 Apr 2026 04:51:46 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6332b6TF3804954
+	for <linux-wireless@vger.kernel.org>; Fri, 3 Apr 2026 09:01:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	tu61AyGnBgVejknoekX3DnvPA8bTJAUFSOc67PDNgPg=; b=JkKoAt4m4oyzZY/q
-	Yl8dx5N8/FrAIBIZEVtwt7JLJpIN6C0YEXR/81VCPRt23Av6y+n2B1sXtNuJNayS
-	bIGmeTpygv+XU4OrvPkwsUGUthsD6LYjvyyhcVvEV2cxch4uCm8v9mTb/cqLDszc
-	4KULkGHbvDsRJw3AOMNNTHrK6FxDEAXTbchTBhp8EElESA2Wufo0hfYjroZs98e6
-	0LvaghURFs4zwRi7NwQrn9PJnyuDnIyICmTQ05lelHNr6mR8e+eyA2n0X3P3EQCR
-	5ZB2TG29QdK9rJO/W2gL4vK/vV4ycLkAq1Zgd/d3a9iOoLAjEVofPwcmLEFjMmH8
-	SkdOWA==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d9txca7u7-1
+	oqFxlfuV8pspBAs2CXOzM9DH0w3Wtyj4158jVPNTSw0=; b=MJuVqINBnD/Yyeyf
+	XO0FEH61k35SZ0MZfCZiIaX8buCquv/HA3O8+WCTM+DE750FkWOBICkUnqJzvRPR
+	A/5AWn4IoLgMYxcfVtzqgJ2w53TVf9VeyE5HsY73x9inaUN3dDrtYgk4/55G/1Bb
+	VXZ7reDiil/wTbsfBOKqJIbEmyqABijJOStLGwj4mNLcKeioOa4leWB1O5CzDLjG
+	RQZUzx6EP17sKEraLd4OdMHkQAAS1e1+z/ZQB8g2kmevszH4iNDuD/Uy0YtHqADs
+	+qFjWo2B8ecRU2HyvtyMPI3Cjaiy6gaKvu7sYYL1A74zGu09lNI5oloaHKOzdoEI
+	pekMYw==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d9r0u3su5-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 03 Apr 2026 04:51:45 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-35d9467e85aso1427807a91.0
-        for <linux-wireless@vger.kernel.org>; Thu, 02 Apr 2026 21:51:45 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Fri, 03 Apr 2026 09:01:21 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2b0f4e632caso24988085ad.3
+        for <linux-wireless@vger.kernel.org>; Fri, 03 Apr 2026 02:01:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1775191905; x=1775796705; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=oss.qualcomm.com; s=google; t=1775206881; x=1775811681; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tu61AyGnBgVejknoekX3DnvPA8bTJAUFSOc67PDNgPg=;
-        b=YytMETsA0neuPPSMByu4nxbSJPX+Vo13LSNJMAISp4RyCY15rAmJsJFmasv47W7G9U
-         uLh47d4kziGU4yhOjTAgKvH8zSJWrtCP5TeaTZUHIigAgsupvV6vPt6mc+zAUNaSmDEz
-         PPEM+pSYS7HvJaDOFsxuPzRCL7WnFuCRhPuOyDkGa13OPEvTB+9tdk3dIxfNmLStHP95
-         pujBXtKRuDZu1Vp4rBaLxW+xywok4XbCkK2IrXjZOoQuUGpAl6Vr0xOETuoocyawUUY7
-         AHsm+YxPF4x6vmsqfz/Zz8URIWQt0KiAh4guQBLWvHLuoQcnjBmOErcrSwgGHDXNaZTV
-         eZyQ==
+        bh=oqFxlfuV8pspBAs2CXOzM9DH0w3Wtyj4158jVPNTSw0=;
+        b=H96O94He/O1utMk3KBP8xFgBHnGhTT1ivzv4FZUMuLrMxlc6XCXfP3Z3Mxa8ufDeGD
+         ns6pMmHgI4NUq98hgZSjoWVoiKRidlUiAymBAiVLe92WfL0eOraJPvTbhemtKca2exAi
+         r5Qi9BetBSDB3GuADraZxOgNFDS2CficIOfqlEhFvpG+qcCioAPXIYFwKo5Jc8vslSeA
+         xf+5A8uiqhMF69e2M4N82F1XRJ8N6sEb48A2kSfNC1HGq8tPjIW429Y+9aJlMrjJnvCW
+         bMOHUBo9t/Cn4vzWX1ypAlu1y+sePYPWMm4g+Y7WAnfI1RRlku8QogWIv7m2jjNqfLjD
+         3PAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775191905; x=1775796705;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=1e100.net; s=20251104; t=1775206881; x=1775811681;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tu61AyGnBgVejknoekX3DnvPA8bTJAUFSOc67PDNgPg=;
-        b=pavPF5e5ujZ2vr6gmKtpIKJpkewMZV3HR+r7XY1Ogen4RiP3wC/e3n2XQsG9qliOVz
-         Q3U90G9GmcMogzxZvfpnO/MlIMkkyQg/dP0NvVfw1J2WWMRnmJa6bhr2ivv+kkQOEKlw
-         oyEPfKWXzUi3mrY2zUhXnbSoR04sMd7f+CQy4NCWJi+eC58S2A6jFoG99bQ4Exac1uiy
-         bsxSjJa7DhqnMp8NYoU4uFmLY8UDrlm3LGRpTqasCqnmU5pFGiABaaSdXCkIXSwrgkUH
-         ZvFdrkWwoAEzBtP/qP6DaqBT/BxRHYU0uFXaCgOMf+FiJu/aH/2pdmGAy9bSiEOr4qCH
-         KUnw==
-X-Gm-Message-State: AOJu0Yy6luAZ+l35iPGHPwPFz2Z+ARztOgINUnEDmxfRmq0yy3dfsTTy
-	tALZs10f8JaTCp/AL0zgELgHZgZy1MUv/vQaPCdmpPY04VljlnBG7Vhb5wn5HYeQ1b98CtKCICw
-	A+INszokX/pNrVY3NdUO1xrgek04TyiE/g+D/A3UI2HZE5GBkHTs35TfSK+/vKYJzqxSroBYn+M
-	xCSg==
-X-Gm-Gg: ATEYQzxjQ4kTqbMz/ZnZsDc8L0QKl7WZ5FMOMnOD1AhrbL0seGQoPMgYVmq3S+21rC4
-	Q5oCeeo8Hd9YxDyX+Ai2MX9otq8Z6rJdlkBXruF3C68zbyEOvQNc2wP8a1jRccac9499q+mBYCZ
-	6YP3UVi4H/cAeKjLNDe7TfbPewrI7P1yTYyqTfySfUpliB033u1LfoHIK8Ak+L1BtjRo0d2OGNn
-	taA5Swz93/QQo9oA8NvMfzIYJJM6azIqg1YmBWZ0dOcuDQYd0xXVv6URhkc1Z4ZuezH+Y+Wc7aT
-	KoV2S+j6VMvd75Gf1R/9aW4k0WAPNqyxCgjpW7MvHORQV6upKDi5dPFfFbfueFnTw0urQQF0+yE
-	wwc2tWWnePZjTEV1bSwg304ufmJ98oUSw9yIAhapzUS1Y9Zy1XQPN5wcfsKrWmw==
-X-Received: by 2002:a05:6a20:7d8a:b0:398:9c94:2033 with SMTP id adf61e73a8af0-39f2ef837acmr1535111637.11.1775191904700;
-        Thu, 02 Apr 2026 21:51:44 -0700 (PDT)
-X-Received: by 2002:a05:6a20:7d8a:b0:398:9c94:2033 with SMTP id adf61e73a8af0-39f2ef837acmr1535077637.11.1775191904138;
-        Thu, 02 Apr 2026 21:51:44 -0700 (PDT)
-Received: from [10.152.199.23] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9b6113dsm4258227b3a.23.2026.04.02.21.51.42
+        bh=oqFxlfuV8pspBAs2CXOzM9DH0w3Wtyj4158jVPNTSw0=;
+        b=q8t0rr1SOjCTZZY9Qz44Fq7FDBI+bh62I+XVv/p4nDkHDG69SxgednOV1F+5uN8NdW
+         d+l1w8WePB9Wolrx3yxP9MEYz+BV+EuNdIzLqTij956JiL0dJgRNHhG5x5zq51gQEMyo
+         EX63bQPxJqO+XfjK0apl0IeY5f8jpyYUhN7tS+YasgZ7EMCCr3tuUj9MV/uBxEreFmI2
+         9GSjp4NuU2JI4WKwRLEITilJmruNe8yGmH5IoKvsCA4wfbbJJ/1AIxBI1CXnQQS3Q/BY
+         Tk10TXtg5/pPoj4DwKfaTBVK/Rq8iMuQwIswBANfrj3OgYSeHSKJX+ovsxno5XnzvuEE
+         CboQ==
+X-Gm-Message-State: AOJu0YwPgIUcagYsioov2Ax4OPF1kSnkESDb/0EJQvolrMHrHk/n27Hs
+	q6Uf/oz/h9AG0a69zf9ve+yQVwZpcyKYSmAtQxaBok9gBkKWRD4GhYyRL5oVUui94t0AjJt5/K/
+	Kn1yVFaQNXHEUvOirOKfhbYX5AE2oHbDG3f20tboobpITXNelYx4zCafttM49oUG+1FQ1cg==
+X-Gm-Gg: AeBDievs/RAt3xVfSXUKZ+7B/1lqmE4Oyq8Qv9NlVAMRhnYFOK4z+bb9gX0exoXk4D0
+	hMRarM/SkeYiftFK27CZtb8It+37N1Z59VwMBwR37GGRDsbWIESDrxAW2iVpEW6e0wZNKXwm8ON
+	JCtdsjTHYCvHhmhBs2MZgIalSR4vAjnJ1IuNVnK/Q8xOVs+KHtIGuXvIvTePlk7ywAMDKwJLHDt
+	5nTvPdtu3ydGACMK1Obfno1hEUrqu0AZ5TMcizjN1pkh/gZm8jD5CSw8ZPFqlA14u4B4CpgOlkH
+	kLv+WoqXGVY1GycunvQ3zesjN9SYEhRDeKNWhyEI8jxiNe46N5t3LQaHkoydqOmeWjiTy4AghPw
+	WPBdqmtNQ4y9nuTEfQcA5TBLyLNtEP2AO5DG3gPSC1w+p7IW2l8tR4WBbg/O4u7DP8aG17ivMWI
+	j/vR8xCvjbaZRa3o3t310=
+X-Received: by 2002:a17:903:1b4c:b0:2b2:420a:b48a with SMTP id d9443c01a7336-2b28182c458mr24575815ad.32.1775206880432;
+        Fri, 03 Apr 2026 02:01:20 -0700 (PDT)
+X-Received: by 2002:a17:903:1b4c:b0:2b2:420a:b48a with SMTP id d9443c01a7336-2b28182c458mr24575075ad.32.1775206879727;
+        Fri, 03 Apr 2026 02:01:19 -0700 (PDT)
+Received: from [10.133.33.111] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27472cdfesm53090625ad.14.2026.04.03.02.01.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Apr 2026 21:51:43 -0700 (PDT)
-Message-ID: <8588fd02-55a2-482d-87f4-1db8e696bad0@oss.qualcomm.com>
-Date: Fri, 3 Apr 2026 10:21:40 +0530
+        Fri, 03 Apr 2026 02:01:19 -0700 (PDT)
+Message-ID: <5fff7189-fee7-4d73-a9a1-728389900678@oss.qualcomm.com>
+Date: Fri, 3 Apr 2026 17:01:15 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -106,257 +106,204 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next] wifi: ath12k: Create symlink for each radio in a
- wiphy
-To: Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Harshitha Prem <harshitha.prem@oss.qualcomm.com>
-References: <20260402051402.3903795-1-roopni.devanathan@oss.qualcomm.com>
+Subject: Re: [PATCH ath-next v4 2/6] wifi: ath12k: Add ath12k_hw_params for
+ IPQ5424
+To: Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ath12k@lists.infradead.org,
+        Saravanakumar Duraisamy <quic_saradura@quicinc.com>
+References: <20260402-ath12k-ipq5424-v4-0-cd1e0f0a6c88@oss.qualcomm.com>
+ <20260402-ath12k-ipq5424-v4-2-cd1e0f0a6c88@oss.qualcomm.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 Content-Language: en-US
-From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-In-Reply-To: <20260402051402.3903795-1-roopni.devanathan@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20260402-ath12k-ipq5424-v4-2-cd1e0f0a6c88@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: GKONE5thS6jDCvdUcskvP8c2lgtYunBx
-X-Proofpoint-ORIG-GUID: GKONE5thS6jDCvdUcskvP8c2lgtYunBx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAzMDA0MCBTYWx0ZWRfXyzXzSNSU0TFO
- DX4+GmTCwEiO6oYR2oN+4Sm31uneOF/K7XrFFCVfVyELjCqaQVozhxa1SU13FaKQ48Hy4FoijI1
- ba9Us/eYIR8XunthetNFKtHcYIUzdw2x6lR1s2djPKH6Y9B2f/2D8b7wmLyUpJw9DOmQ8QZ2Tx1
- BkTSOXOwcHw9ZGQ6M725xmaee8myP2rdBIlX9rmzOu0c+EwD3tKOHAmL0AncxBRux9unRJKfOjf
- IHsayu46vqxWr76vZJJ7MalWaZKAmCfF86jXibs1a+87Yf8cSxjBn5R3mOqlzHjlejz5XVtuNxY
- e4g3p0CpvWhJ2C0+R6q57XS5oJEtwsdN9Hxp/shDM3n3wwd3tCHAEuttRPsOZdxFIk+rH1u01lv
- lqHnPIz3aHsvOB+A6afIo0zSL34FqRVzulHOItp5OgnvKCwGlKw+7wax3EUu3wlFAlJpeoHSq+q
- JQWKlGT2inzvTyA78ZA==
-X-Authority-Analysis: v=2.4 cv=HKXO14tv c=1 sm=1 tr=0 ts=69cf4761 cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAzMDA3OCBTYWx0ZWRfXxmMH23897Wte
+ caVwxA+ARe9e49K8NFTA48x04DEpQetsGOtpf5yWQfE9iDSX22fd7yhp82m59TlSmx3BJGWMONf
+ 0fYB4+F8qKcTyPXASKITDoDuBwFpP2x/4sFHW3Jdcj4nzxVjcMgX2jKbmXOcuIl2M0S4LIpd5OD
+ 2LeEP0zArApVNyE/AX29WpC2qaNs413qAUpRN07WOq1N+qnxovdUqRQ0F4cA6a2CyymynR7HLAx
+ TeAthszOKUaHlzsgCJk4QaHVtkJ8fmqw6qoEsH6EldqTv65o6Jfz4cZthOQsy3nT5dP4OQh8B9h
+ lnfVv3CQhsXt2i5zZT+f4rQtqLxOR/bRcqLZHuJmjkIgn2eLho1sKq9uhYVTvhlanbPy/G8Os1B
+ ATvPGq4GLge4BM2EAY80ADsIX6Pev1NB0X5X+R/YCvcBm7QQiAgs3ofQPcA30MQfYwTI53IN8w3
+ rf1J/5LN4Jnf4QYyCng==
+X-Authority-Analysis: v=2.4 cv=D5xK6/Rj c=1 sm=1 tr=0 ts=69cf81e1 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
  a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=EUspDBNiAAAA:8 a=lxJo2wgQVOyoRhA3UyYA:9 a=QEXdDO2ut3YA:10
- a=rl5im9kqc5Lf4LNbBjHf:22
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=Z7WYvUlOW1kuK6QZCLMA:9 a=QEXdDO2ut3YA:10
+ a=GvdueXVYPmCkWapjIL-Q:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: fWbhwydpnwIvXUgmXNJ-7kH3XjFNyBmM
+X-Proofpoint-ORIG-GUID: fWbhwydpnwIvXUgmXNJ-7kH3XjFNyBmM
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-03_01,2026-04-02_05,2025-10-01_01
+ definitions=2026-04-03_02,2026-04-03_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 malwarescore=0
- suspectscore=0 priorityscore=1501 adultscore=0 spamscore=0 phishscore=0
+ clxscore=1015 suspectscore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ spamscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604030040
-X-Spamd-Result: default: False [-2.16 / 15.00];
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604030078
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34321-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,qualcomm.com:dkim,qualcomm.com:email,quicinc.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34322-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[baochen.qiang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 9E212390FC0
+X-Rspamd-Queue-Id: BF46F39288D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 
-On 4/2/2026 10:44 AM, Roopni Devanathan wrote:
-> In single-wiphy design, when more than one radio is registered as a
-> single-wiphy in the mac80211 layer, the following warnings are seen:
+On 4/2/2026 11:54 AM, Raj Kumar Bhagat wrote:
+> From: Saravanakumar Duraisamy <quic_saradura@quicinc.com>
 > 
-> 1. debugfs: File 'ath12k' in directory 'phy0' already present!
-> 2. debugfs: File 'simulate_fw_crash' in directory 'pci-0000:57:00.0' already present!
->     debugfs: File 'device_dp_stats' in directory 'pci-01777777777777777777777:57:00.0' already present!
+> Add ath12k_hw_params for the ath12k AHB-based WiFi 7 device IPQ5424.
+> The WiFi device IPQ5424 is similar to IPQ5332. Most of the hardware
+> parameters like hw_ops, wmi_init, ring_mask, etc., are the same between
+> IPQ5424 and IPQ5332, hence use these same parameters for IPQ5424.
+> Some parameters are specific to IPQ5424; initially set these to
+> 0 or NULL, and populate them in subsequent patches.
 > 
-> When more than one radio is registered as a single-wiphy, symlinks for
-> all the radios are created in the same debugfs directory:
-> /sys/kernel/debug/ieee80211/phyX/ath12k, resulting in warning 1. When a
-> symlink is created for the first radio, since the 'ath12k' directory is
-> not present, it will be created and no warning will be thrown. But when
-> symlink is created for more than one radio, since the 'ath12k'
-> directory was already created for symlink for radio 1, a warning is
-> thrown complaining that 'ath12k' directory is already present. To resolve
-> warning 1, create symlink for each radio in separate debugfs directories.
-> For the first radio, the symlink will always be the 'ath12k' directory.
-> This ensures that the existing directory structure is retained for
-> single-wiphy and multi-wiphy architectures. In single-wiphy architecture
-> with multiple radios, create symlink in separate debugfs directories
-> introduced by mac80211.
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01243-QCAHKSWPL_SILICONZ-1
+> Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.6-01275-QCAHKSWPL_SILICONZ-1
+> Tested-on: IPQ5424 hw1.0 AHB WLAN.WBE.1.6-01275-QCAHKSWPL_SILICONZ-1
 > 
-> Existing debugfs directory in single-wiphy architecture:
-> /sys/kernel/debug/ieee80211/phyX/ath12k is a symlink to
-> /sys/kernel/debug/ath12k/pci-0001:01:00.0/macY
-> 
-> Proposed debugfs directory in single-wiphy architecture with one radio:
-> /sys/kernel/debug/ieee80211/phyX/ath12k is a symlink to
-> /sys/kernel/debug/ath12k/pci-0001:01:00.0/mac0
-> 
-> Proposed debugfs directory in single-wiphy architecture with more than
-> one radio:
-> /sys/kernel/debug/ieee80211/phyX/radio0/ath12k is a symlink to
-> /sys/kernel/debug/ath12k/pci-0001:01:00.0/mac0 and
-> /sys/kernel/debug/ieee80211/phyX/radioY/ath12k is a symlink to
-> /sys/kernel/debug/ath12k/pci-0001:01:00.0/macY
-> 
-> Where X is phy index and Y is radio index, seen in
-> 'iw phyX info | grep Idx'. Two symlinks for the first radio are to ensure
-> compatibility with the existing design. Add radio_idx inside ar, to track
-> the radio index in probing order.
-> 
-> API ath12k_debugfs_pdev_create() that creates SoC entries is called more
-> than once when hardware group starts up, resulting in warning 2. To
-> resolve this warning, remove all other calls to this API and add one
-> inside the ath12k_core_pdev_create(). This API carries all pdev-specific
-> initializations and can conveniently hold a call to
-> ath12k_debugfs_pdev_create().
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Co-developed-by: Harshitha Prem <harshitha.prem@oss.qualcomm.com>
-> Signed-off-by: Harshitha Prem <harshitha.prem@oss.qualcomm.com>
-> Signed-off-by: Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>
+> Signed-off-by: Saravanakumar Duraisamy <quic_saradura@quicinc.com>
+> Signed-off-by: Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>
 > ---
->   drivers/net/wireless/ath/ath12k/core.c    |  4 ++--
->   drivers/net/wireless/ath/ath12k/core.h    |  2 ++
->   drivers/net/wireless/ath/ath12k/debugfs.c | 29 +++++++++++++++++++----
->   drivers/net/wireless/ath/ath12k/mac.c     |  2 +-
->   4 files changed, 29 insertions(+), 8 deletions(-)
+>  drivers/net/wireless/ath/ath12k/core.h     |  1 +
+>  drivers/net/wireless/ath/ath12k/wifi7/hw.c | 75 ++++++++++++++++++++++++++++++
+>  2 files changed, 76 insertions(+)
 > 
-> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-> index c31c47fb5a73..2519e2400d58 100644
-> --- a/drivers/net/wireless/ath/ath12k/core.c
-> +++ b/drivers/net/wireless/ath/ath12k/core.c
-> @@ -835,8 +835,6 @@ static int ath12k_core_soc_create(struct ath12k_base *ab)
->   		goto err_qmi_deinit;
->   	}
->   
-> -	ath12k_debugfs_pdev_create(ab);
-> -
->   	return 0;
->   
->   err_qmi_deinit:
-> @@ -869,6 +867,8 @@ static int ath12k_core_pdev_create(struct ath12k_base *ab)
->   		goto err_dp_pdev_free;
->   	}
->   
-> +	ath12k_debugfs_pdev_create(ab);
-> +
->   	return 0;
->   
->   err_dp_pdev_free:
 > diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-> index 59c193b24764..046249c8763e 100644
+> index 59c193b24764..68453594eba8 100644
 > --- a/drivers/net/wireless/ath/ath12k/core.h
 > +++ b/drivers/net/wireless/ath/ath12k/core.h
-> @@ -588,6 +588,7 @@ struct ath12k_dbg_htt_stats {
->   struct ath12k_debug {
->   	struct dentry *debugfs_pdev;
->   	struct dentry *debugfs_pdev_symlink;
-> +	struct dentry *debugfs_pdev_symlink_default;
->   	struct ath12k_dbg_htt_stats htt_stats;
->   	enum wmi_halphy_ctrl_path_stats_id tpc_stats_type;
->   	bool tpc_request;
-> @@ -673,6 +674,7 @@ struct ath12k {
->   	u8 pdev_idx;
->   	u8 lmac_id;
->   	u8 hw_link_id;
-> +	u8 radio_idx;
->   
->   	struct completion peer_assoc_done;
->   	struct completion peer_delete_done;
-> diff --git a/drivers/net/wireless/ath/ath12k/debugfs.c b/drivers/net/wireless/ath/ath12k/debugfs.c
-> index 358031fa14eb..8c81a1c22449 100644
-> --- a/drivers/net/wireless/ath/ath12k/debugfs.c
-> +++ b/drivers/net/wireless/ath/ath12k/debugfs.c
-> @@ -1473,18 +1473,35 @@ void ath12k_debugfs_register(struct ath12k *ar)
->   {
->   	struct ath12k_base *ab = ar->ab;
->   	struct ieee80211_hw *hw = ar->ah->hw;
-> -	char pdev_name[5];
-> +	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
-> +	struct dentry *ath12k_fs;
->   	char buf[100] = {};
-> +	char pdev_name[5];
->   
->   	scnprintf(pdev_name, sizeof(pdev_name), "%s%d", "mac", ar->pdev_idx);
->   
->   	ar->debug.debugfs_pdev = debugfs_create_dir(pdev_name, ab->debugfs_soc);
->   
->   	/* Create a symlink under ieee80211/phy* */
-> -	scnprintf(buf, sizeof(buf), "../../ath12k/%pd2", ar->debug.debugfs_pdev);
-> -	ar->debug.debugfs_pdev_symlink = debugfs_create_symlink("ath12k",
-> -								hw->wiphy->debugfsdir,
-> -								buf);
-> +	if (ar->radio_idx == 0) {
-> +		scnprintf(buf, sizeof(buf), "../../ath12k/%pd2",
-> +			  ar->debug.debugfs_pdev);
-> +		ath12k_fs = hw->wiphy->debugfsdir;
+> @@ -157,6 +157,7 @@ enum ath12k_hw_rev {
+>  	ATH12K_HW_WCN7850_HW20,
+>  	ATH12K_HW_IPQ5332_HW10,
+>  	ATH12K_HW_QCC2072_HW10,
+> +	ATH12K_HW_IPQ5424_HW10,
+>  };
+>  
+>  enum ath12k_firmware_mode {
+> diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hw.c b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
+> index ec6dba96640b..9b9ca06a9f45 100644
+> --- a/drivers/net/wireless/ath/ath12k/wifi7/hw.c
+> +++ b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
+> @@ -753,6 +753,81 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
+>  
+>  		.dp_primary_link_only = false,
+>  	},
+> +	{
+> +		.name = "ipq5424 hw1.0",
+> +		.hw_rev = ATH12K_HW_IPQ5424_HW10,
+> +		.fw = {
+> +			.dir = "IPQ5424/hw1.0",
+> +			.board_size = 256 * 1024,
+> +			.cal_offset = 128 * 1024,
+> +			.m3_loader = ath12k_m3_fw_loader_remoteproc,
+> +			.download_aux_ucode = false,
+> +		},
+> +		.max_radios = 1,
+> +		.single_pdev_only = false,
+> +		.qmi_service_ins_id = ATH12K_QMI_WLFW_SERVICE_INS_ID_V01_IPQ5332,
+> +		.internal_sleep_clock = false,
 > +
-> +		/* symbolic link for compatibility */
-> +		ar->debug.debugfs_pdev_symlink_default = debugfs_create_symlink("ath12k",
-> +										ath12k_fs,
-> +										buf);
-> +	}
+> +		.hw_ops = &qcn9274_ops,
+> +		.ring_mask = &ath12k_wifi7_hw_ring_mask_ipq5332,
 > +
-> +	if (ah->num_radio > 1) {
-> +		scnprintf(buf, sizeof(buf), "../../../ath12k/%pd2",
-> +			  ar->debug.debugfs_pdev);
-> +		ath12k_fs = hw->wiphy->radio_cfg[ar->radio_idx].radio_debugfsdir;
-> +		ar->debug.debugfs_pdev_symlink = debugfs_create_symlink("ath12k",
-> +									ath12k_fs,
-> +									buf);
-> +	}
->   
->   	if (ar->mac.sbands[NL80211_BAND_5GHZ].channels) {
->   		debugfs_create_file("dfs_simulate_radar", 0200,
-> @@ -1513,7 +1530,9 @@ void ath12k_debugfs_unregister(struct ath12k *ar)
->   
->   	/* Remove symlink under ieee80211/phy* */
->   	debugfs_remove(ar->debug.debugfs_pdev_symlink);
-> +	debugfs_remove(ar->debug.debugfs_pdev_symlink_default);
->   	debugfs_remove_recursive(ar->debug.debugfs_pdev);
->   	ar->debug.debugfs_pdev_symlink = NULL;
-> +	ar->debug.debugfs_pdev_symlink_default = NULL;
->   	ar->debug.debugfs_pdev = NULL;
->   }
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 553ec28b6aaa..c2b747f1b9f5 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -15065,6 +15065,7 @@ static struct ath12k_hw *ath12k_mac_hw_allocate(struct ath12k_hw_group *ag,
->   		ar->hw_link_id = pdev->hw_link_id;
->   		ar->pdev = pdev;
->   		ar->pdev_idx = pdev_idx;
-> +		ar->radio_idx = i;
->   		pdev->ar = ar;
->   
->   		ag->hw_links[ar->hw_link_id].device_id = ab->device_id;
-> @@ -15132,7 +15133,6 @@ int ath12k_mac_allocate(struct ath12k_hw_group *ag)
->   		if (!ab)
->   			continue;
->   
-> -		ath12k_debugfs_pdev_create(ab);
->   		ath12k_mac_set_device_defaults(ab);
->   		total_radio += ab->num_radios;
->   	}
+> +		.host_ce_config = ath12k_wifi7_host_ce_config_ipq5332,
+> +		.ce_count = 12,
+> +		.target_ce_config = ath12k_wifi7_target_ce_config_wlan_ipq5332,
+> +		.target_ce_count = 12,
+> +		.svc_to_ce_map =
+> +			ath12k_wifi7_target_service_to_ce_map_wlan_ipq5332,
+> +		.svc_to_ce_map_len = 18,
+> +
+> +		.rxdma1_enable = true,
+> +		.num_rxdma_per_pdev = 1,
+> +		.num_rxdma_dst_ring = 0,
+> +		.rx_mac_buf_ring = false,
+> +		.vdev_start_delay = false,
+> +
+> +		.interface_modes = BIT(NL80211_IFTYPE_STATION) |
+> +				   BIT(NL80211_IFTYPE_AP) |
+> +				   BIT(NL80211_IFTYPE_MESH_POINT),
+> +		.supports_monitor = true,
+> +
+> +		.idle_ps = false,
+> +		.download_calib = true,
+> +		.supports_suspend = false,
+> +		.tcl_ring_retry = true,
+> +		.reoq_lut_support = false,
+> +		.supports_shadow_regs = false,
+> +
+> +		.num_tcl_banks = 48,
+> +		.max_tx_ring = 4,
+> +
+> +		.wmi_init = &ath12k_wifi7_wmi_init_qcn9274,
+> +
+> +		.qmi_cnss_feature_bitmap = BIT(CNSS_QDSS_CFG_MISS_V01),
+> +
+> +		.rfkill_pin = 0,
+> +		.rfkill_cfg = 0,
+> +		.rfkill_on_level = 0,
+> +
+> +		.rddm_size = 0,
+> +
+> +		.def_num_link = 0,
+> +		.max_mlo_peer = 256,
+> +
+> +		.otp_board_id_register = 0,
+> +
+> +		.supports_sta_ps = false,
+> +
+> +		.acpi_guid = NULL,
+> +		.supports_dynamic_smps_6ghz = false,
+> +		.iova_mask = 0,
+> +		.supports_aspm = false,
+> +
+> +		.ce_ie_addr = NULL,
+> +		.ce_remap = NULL,
+> +		.bdf_addr_offset = 0x940000,
+> +
+> +		.dp_primary_link_only = true,
+> +	},
+>  };
+
+mhi_config and current_cc_support are missing, please explicitly set them.
+
+>  
+>  /* Note: called under rcu_read_lock() */
 > 
-> base-commit: 15551ababf6d4e857f2101366a0c3eaa86dd822c
-
-
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 
 
