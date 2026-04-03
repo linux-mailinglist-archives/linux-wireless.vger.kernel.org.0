@@ -1,252 +1,294 @@
-Return-Path: <linux-wireless+bounces-34325-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34326-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFzJGlGaz2lKxwYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34325-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Apr 2026 12:45:37 +0200
+	id eJGxEr3Cz2lH0QYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34326-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 03 Apr 2026 15:38:05 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CED39363C
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Apr 2026 12:45:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCEAB394949
+	for <lists+linux-wireless@lfdr.de>; Fri, 03 Apr 2026 15:38:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E48F3017C18
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2026 10:43:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4DBD33014105
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2026 13:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44AB382F2C;
-	Fri,  3 Apr 2026 10:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D210B40DFBE;
+	Fri,  3 Apr 2026 13:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=waelti.dev header.i=@waelti.dev header.b="MITlxjB3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X/HesPv3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-08.mail-europe.com (mail-08.mail-europe.com [57.129.93.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E64B31F9B0
-	for <linux-wireless@vger.kernel.org>; Fri,  3 Apr 2026 10:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.129.93.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05113A9DAF
+	for <linux-wireless@vger.kernel.org>; Fri,  3 Apr 2026 13:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775213016; cv=none; b=O5rtvQwSnSVOva5zohnmyo1t0zSe1ieGH1PyJztl7P5FOfY74+WIwDoBjSwvZm0Lmm2lMCH3XAOkoRg6YX0ZqelsE3/R+e85/iFTy6dGgZa8/nGrbwFchw/vmQOewAXpP95DBeglakaYi5dynkQd/bodVfXZiXA1E6sZCNqr0QQ=
+	t=1775223309; cv=none; b=ha/befU13igdVGBpuAjJFNTeo+GuBkqWf0WTCI/XHwRSRl0ZwcU92ADrEzJ1lrwQGlrdB+ksM3RwYL1RVYtLEJ7ksxjst9KZuA1XFWRQPBmNB6rCywN7yYF+TrGZw2sR3dizpN0QJOgWS0sEdLxnQ2QZO9tJQCTmLLcUg1fCJyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775213016; c=relaxed/simple;
-	bh=xqZHY3V7itTFO+IX1Mj/dqhkV2SzEOHU2rfLnG3hASc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ohYWClpPvJ76RsxdxhjDvsvNyZWHxvUfnsu021IQU/f0jKSl8kzFa8a5/9ng1NG0SxAg7PNIJIUD/M9u1MNUS/udClVrj2bRgw0SnKHH4JW0MdqViqOxujAlDXeWWSzSibBlCoSXlJBZAWsEP6QpDsaLgiSf52ZqlNkd1Oc09pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=waelti.dev; spf=pass smtp.mailfrom=waelti.dev; dkim=pass (2048-bit key) header.d=waelti.dev header.i=@waelti.dev header.b=MITlxjB3; arc=none smtp.client-ip=57.129.93.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=waelti.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=waelti.dev
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=waelti.dev;
-	s=protonmail; t=1775212999; x=1775472199;
-	bh=FB7KSMdyVfXocN8g+BKAJyQ0ciIUy6vmUSrkAXSCxtQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=MITlxjB3ljhopir2/MeRgi+28ClFnlN5+I998ULCN0j3IDTF7W5wYZpxaszLHou09
-	 wR39/b4FK3wtDM1PVyk/tvNB+EGgJc/gIvaWvYi8xxYdaqyQnl3Es5mNnwwBATE6l2
-	 NR5GnmywbkLJpNBeu7vbAhqBHFOBHHh4tSXiW3GgRmkLVrvaGkIKCQUaFNxwmVnMMS
-	 5sywmydWWEOtgr909gIyP1qljtHkvYfNc3d0jACZzT4mJJChq9K2XQnNrR4SVKIpRw
-	 YkKRHDCo3DB8TboTbnMRtaCnf7MGabYbntitbvXdsIrDBMG7NI0G+w9r7SQhY1C1pY
-	 Qed8G6UjizrWw==
-Date: Fri, 03 Apr 2026 10:43:16 +0000
-To: Ping-Ke Shih <pkshih@realtek.com>
-From: =?utf-8?Q?Jeffrey_W=C3=A4lti?= <jeffrey@waelti.dev>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: wifi: rtw89: rtw8922ae: HWSI bus lockup during RF recalibration on AP bandwidth change
-Message-ID: <dFJeMTbWtJdpQXoZpQRv85Z8BumU9LW5xY5D4Hnuri6Zez_Gkk8XL6zNEuCFN1djAEqsTA9-mJb1ygNXX-V72HL4Q3Vit_1JY1-xBHBm5SQ=@waelti.dev>
-In-Reply-To: <nPBjkph3lQo2eiuYIDyn7Mx8rg_pYRHNkQ-yyIVecS7isXyz4KC77Kud29sqnGKgCVgZS_IM1Jj28gx1RN4iaLuyKhS_MZVUnXhy-BVGCfQ=@waelti.dev>
-References: <SnJ_b28_Uro9Xtlb2ew62uypaut_7wD44Qnmibm2Yj4FgSS7cayhZvqkK8-AXGNAc-xdwYST6E2GDCMcoZh33PjukvAsXwaqMzx8Z14_aA0=@waelti.dev> <8bf447cc627746cca6eb30ae283bbbe6@realtek.com> <uyjP590fzro7xuECRhUp6nlegi4hnWSBbrrFd-tcCcKeeKbDaoUThi7EkMNUMC2LYibyA0jaAqR7GrIchbJcGVh5CSgiGa39jMQkLq5F9QY=@waelti.dev> <f387614466ce497fb59d4ad98ef641f5@realtek.com> <JSFJ7Do8YsCSMLsXH6KLXADJ0-z0Dh-y99PpaSCHiCwp6aikxldPnTr9mXpEAifNezf2gFyPPiHIaobekBeqiM4XVpO8hYKyXvuei4lKVc0=@waelti.dev> <4b0f77fcdaf74da5a1c5e77b83f972df@realtek.com> <nPBjkph3lQo2eiuYIDyn7Mx8rg_pYRHNkQ-yyIVecS7isXyz4KC77Kud29sqnGKgCVgZS_IM1Jj28gx1RN4iaLuyKhS_MZVUnXhy-BVGCfQ=@waelti.dev>
-Feedback-ID: 168448313:user:proton
-X-Pm-Message-ID: 7bd4e5b07a186e990076b9762f002891577f682a
+	s=arc-20240116; t=1775223309; c=relaxed/simple;
+	bh=V/h0f9d78XX6YPK62s4wDgSH/I/6asklxfUo1DFcVrg=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=J9k5HNVT7b8JUjF1G+IkDRzaSYrC4/DCpRochDPGKIj5W2d3hNfWF3urvawmG5u/UT3/n+sePX7w+OW/9XVs6J1/6sKjA7kjJRUO938xLwvOvUEjb8npbl2ePKZJGeKsRfbGW72XXBqm46HCI56uTkcK9Q31+wM4fruEoXSUNS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X/HesPv3; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48704db565eso20244145e9.1
+        for <linux-wireless@vger.kernel.org>; Fri, 03 Apr 2026 06:35:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775223305; x=1775828105; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2Sdn1t+20ZcBDYTL0P+DZi/HsAzqkOYhV5LIu4Iw10U=;
+        b=X/HesPv33NOK2GgNsBQoAodl3xlEIt0tC4PVE9tZ817DXQc6K6ZBW5kSou4+PUZV7l
+         m/zD1sQSxbDF3xQTwtsyU+ZjE3BRCBHn501cOz6DQCwpq1PrYP+WTDZ0d6tq/Wz6Sjfn
+         YCL4RH4HE7DCvrnGvdjqbD/DPz8DctszlNCCD6cNsutp4cl+x2RhYp4LH1+s6mM4TX3L
+         ICU2JEDFgWY0XdUEtynnhkUttvNfeYVwUgtXYqD0JdAAHB8gUMaRkfswlu5ITauoO/J+
+         l7EX8RRkoDw9ZINMkVJJU6/OlJXT0vL5L3PZS5WGTfO0ca8AazqWydFO8kN6t5y6CZjZ
+         7Nxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775223305; x=1775828105;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2Sdn1t+20ZcBDYTL0P+DZi/HsAzqkOYhV5LIu4Iw10U=;
+        b=j/BtCJ0UI3YoKpt5Zs2bNAGaK5DmicQTaJAil+reAOvGaAw9sIDPPk1Grb/bJOXECs
+         yVqSxi52GNhJl5wbfcMluACKIBeH+HGP2JI/UQL7nGDZQbsL0DnLNBQqWsh1ElspwgfJ
+         p/sSpJCLwgQlunOZm0d4hxYtt7PQpTDh5j9kAnSgcpaELxEmg1bpJpq4ATumRn72k+I7
+         /ajx5xcZK8vclUuR76x4QST0M9VOX14n6atBao4Wsng0zf1TFeU6oblJB652srupFk5c
+         rP/mcl9uNMeN0jqHjS6UeuhcItLvLNsYBevzRStpZ0aclB/NbfgbvTuuXMyfm9eFOc15
+         E4QQ==
+X-Gm-Message-State: AOJu0YzNfIJkMkhjFJwGgpJFDrC9do4akmJSj52YLQX6bFFsOwdkQQZG
+	p10j8VgQ1K2QJVWAkgj5XiXb+Z8lM78YAHVs5epm3rAECkMAF4yLWFBHQXVPzg==
+X-Gm-Gg: ATEYQzz8K+VBn19gKQ3LIhl7mt577CBW4TLL0F8aH/EDGVrAHDksVBhrhV/M/QV8SJb
+	I2EkrU2gRZi65vRqksBEjU71hfsBsSpUy4NZktYv1Mlw8c+dtyBDCUa1hofY6kcEb5gjhgvLdxw
+	gy1bue8IbrDFDFl28xxDgA5xjQByZaEz1x4kSWVqiWkFWG7XsvhtVSFPTbucH9rgnAt1O6tdsVY
+	Pgmqyv7wLkaETBxxq9E5p+k9RgUdBVpYmU2AaKw3FJ9OQh2IEhOdf1WuEMD5U2X+d4/nqbzwFbK
+	gLEun7zsslfnsY9EVCcJDi51u7f4FBt8uBovao4eJA1iS1HOAyF04V/LlXiZUWErWRGqT+wAxQi
+	UuRnKcdh6LUKA7k+I3CgQBHj7f2K1c0fD8EVE9V3GcNg2o+MSDooqjb8Y1R60jvXSA52fWMOdv6
+	muetSX11INiqX+dCmglyqTeC1EO1srLsGpUu4IwtRIK0+iOJtrzvj7xyT+YDevfUWXEawE0PShA
+	V/hKolB+w==
+X-Received: by 2002:a05:600c:c8f:b0:485:3cf3:1010 with SMTP id 5b1f17b1804b1-488996d23femr44916705e9.2.1775223305341;
+        Fri, 03 Apr 2026 06:35:05 -0700 (PDT)
+Received: from [192.168.85.4] (net-5-94-253-173.cust.vodafonedsl.it. [5.94.253.173])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4f52easm17505801f8f.36.2026.04.03.06.35.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Apr 2026 06:35:04 -0700 (PDT)
+Message-ID: <afefde93-1f6a-4b3b-976b-87105615f931@gmail.com>
+Date: Fri, 3 Apr 2026 15:35:04 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Ryder Lee <ryder.lee@mediatek.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Matteo Croce <technoboy85@gmail.com>
+Subject: mt7996e kernel panic
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[waelti.dev,quarantine];
-	R_DKIM_ALLOW(-0.20)[waelti.dev:s=protonmail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-34326-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_TWO(0.00)[2];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34325-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeffrey@waelti.dev,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[waelti.dev:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,waelti.dev:dkim,waelti.dev:email,waelti.dev:mid]
-X-Rspamd-Queue-Id: A1CED39363C
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[technoboy85@gmail.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BCEAB394949
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Jeffrey W=C3=A4lti <jeffrey@waelti.dev> wrote:
+Hi,
 
-> Ping-Ke Shih <pkshih@realtek.com> wrote:
->=20
-> > Jeffrey W=C3=A4lti <jeffrey@waelti.dev> wrote:
-> > >
-> > > Ping-Ke Shih <pkshih@realtek.com> wrote:
-> > >
-> > > > Jeffrey W=C3=A4lti <jeffrey@waelti.dev> wrote:
-> > > > >
-> > > > > <pkshih@realtek.com> wrote:
-> > > > >
-> > > > > >
-> > > > > > Please try to disable power save and ASPM by
-> > > > > > 1) iw wlan0 set power_save off
-> > >
-> > > I'm sorry, this is my first time interacting with the mailing list an=
-d I overlooked the other instructions.
-> > > It seems like disabling power save gets rid of the issue of Wi-Fi tim=
-eouts. I haven't been able to
-> > > reproduce the issue with `iw wlan0 set power_save off` yet, even with=
-out any of the other fixes on kernel
-> > > 6.19.10 and 7.0-rc6.
-> > >
-> > > > > > 2) reference and install
-> > > > > https://github.com/lwfinger/rtw89/blob/main/70-rtw89.conf
-> > > > > >    and then cold reboot.
-> > > >
-> > > > Have you tested with these conditions?
-> > >
-> > > Using this patch eliminates the issue of Bluetooth devices disconnect=
-ing, when switching between
-> > > networks.
-> > >
-> > > > [...]
-> > > >
-> > > > > >
-> > > > > > Please help to test the latest kernel 7.0-rc with additional pa=
-tch [1].
-> > > > > >
-> > > > > > [1]
-> > > > > https://lore.kernel.org/linux-wireless/20260310080146.31113-4-pks=
-hih@realtek
-> > > > > .com/
-> > > >
-> > > > Have you also applied this patch?
-> > >
-> > > I tested kernel 7.0-rc6 with this patch applied on top for ~1 day now=
- and haven't been able to reproduce,
-> > > even with power save enabled. However, it is a bit difficult to relia=
-bly trigger the issue as it seems
-> > > to trigger more on certain networks than others etc.
-> > >
-> > > > > >
-> > > > > > Ping-Ke
-> > > > > >
-> > > > > >
-> > > > >
-> > > > > Thank you for coming back to me so quickly, I just encountered th=
-e same thing
-> > > > > with kernel 7.0-rc5.
-> > > > >
-> > > >
-> > > > Please confirm my questions above.
-> > > >
-> > > > Ping-Ke
-> > > >
-> > > >
-> > >
-> > > In summary:
-> > > - Disabling power save seems to stop the timeouts but Bluetooth issue=
-s remain
-> > > - Disabling ASPM features fixes the Bluetooth issue
-> > > - kernel 7.0-rc6 with the additional patch fixes Wi-Fi timeouts but n=
-ot the Bluetooth disconnects
-> > >
-> > > I hope that answers your questions.
-> >
-> > It looks like additional patch can fix the WiFi timeouts problem, and
-> > disabling ASPM feature can fix Bluetooth issue. I think you can keep
-> > (2) + (3) setting as workaround.
-> >
-> > I'd talk with BT coexistence team internally to figure out the cause
-> > of Bluetooth disconnection.
->=20
-> As always, thank you very much for coming back to me so quickly and worki=
-ng on a fix. Please do let me know if there is any progress on the issue or=
- if you need any more help testing a patch.
+I'm experiencing a crash with the mt7996e driver.
 
-Hi again,
+The system is OpenWrt running on a Banana Pi R4, so kernel is 6.12.74 + 
+mt76 backport
 
-I'm sorry for coming back to you so quickly once again, but I am sad to rep=
-ort, that I just encountered the same issue again with kernel 7.0-rc6 and t=
-he custom patch applied. After resume the Wi-Fi connection ran at less than=
- 1/100 of the expected speed and wouldn't come back up, until I reconnected=
- to the same network. It seems like just the custom patch was not enough to=
- fix the underlying issue, but it did fix the HWSI lock up. This is what dm=
-esg tells me.
+This is the crash:
 
-[126462.035430] PM: suspend exit
-[126465.615935] wlan0: authenticate with 68:67:c7:2a:20:43 (local address=
-=3D7c:fa:80:c3:5b:f9)
-[126465.615944] wlan0: send auth to 68:67:c7:2a:20:43 (try 1/3)
-[126465.634818] wlan0: send auth to 68:67:c7:2a:20:43 (try 2/3)
-[126465.654072] wlan0: send auth to 68:67:c7:2a:20:43 (try 3/3)
-[126465.673115] wlan0: authentication with 68:67:c7:2a:20:43 timed out
-[126466.065780] wlan0: authenticate with 68:67:c7:2a:20:42 (local address=
-=3D7c:fa:80:c3:5b:f9)
-[126466.065789] wlan0: send auth to 68:67:c7:2a:20:42 (try 1/3)
-[126468.082718] wlan0: send auth to 68:67:c7:2a:20:42 (try 2/3)
-[126470.107802] wlan0: send auth to 68:67:c7:2a:20:42 (try 3/3)
-[126471.070743] wlan0: aborting authentication with 68:67:c7:2a:20:42 by lo=
-cal choice (Reason: 3=3DDEAUTH_LEAVING)
-[126474.858695] wlan0: authenticate with 68:67:c7:2a:20:43 (local address=
-=3D7c:fa:80:c3:5b:f9)
-[126474.858705] wlan0: send auth to 68:67:c7:2a:20:43 (try 1/3)
-[126474.879430] wlan0: authenticate with 68:67:c7:2a:20:43 (local address=
-=3D7c:fa:80:c3:5b:f9)
-[126474.879439] wlan0: send auth to 68:67:c7:2a:20:43 (try 1/3)
-[126474.884633] wlan0: authenticated
-[126474.885578] wlan0: associate with 68:67:c7:2a:20:43 (try 1/3)
-[126474.899521] wlan0: RX AssocResp from 68:67:c7:2a:20:43 (capab=3D0x1011 =
-status=3D0 aid=3D20)
-[126475.002744] wlan0: associated
-[126475.002799] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised b=
-y 68:67:c7:2a:20:43
-[126490.802365] ideapad_acpi VPC2004:00: unexpected charge_types: both [Fas=
-t] and [Long_Life] are enabled
-[126627.760736] ideapad_acpi VPC2004:00: unexpected charge_types: both [Fas=
-t] and [Long_Life] are enabled
 
-(Here I decide to manually reconnect to the same network)
+[518291.616307] mt7996e 0000:01:00.0: Message 001a0003 (seq 1) timeout
+[518291.622615] ap-mld0: HW problem - can not stop rx aggregation for 
+4a:11:96:52:7e:6d tid 0
+[518291.686603] pcieport 0000:00:00.0: AER: Multiple Uncorrectable 
+(Non-Fatal) error message received from 0000:00:00.0
+[518291.686603] pcieport 0001:00:00.0: AER: Multiple Uncorrectable 
+(Non-Fatal) error message received from 0001:00:00.0
+[518291.686628] pcieport 0000:00:00.0: PCIe Bus Error: 
+severity=Uncorrectable (Non-Fatal), type=Transaction Layer, (Requester ID)
+[518291.697137] pcieport 0001:00:00.0: PCIe Bus Error: 
+severity=Uncorrectable (Non-Fatal), type=Transaction Layer, (Requester ID)
+[518291.707639] pcieport 0000:00:00.0:   device [14c3:7988] error 
+status/mask=00004000/00400000
+[518291.707645] pcieport 0000:00:00.0:    [14] CmpltTO                
+(First)
+[518291.719022] pcieport 0001:00:00.0:   device [14c3:7988] error 
+status/mask=00004000/00400000
+[518291.730390] pcieport 0000:00:00.0: AER: broadcast error_detected message
+[518291.730395] mt7996e 0000:01:00.0: AER: can't recover (no 
+error_detected callback)
+[518291.738822] pcieport 0001:00:00.0:    [14] CmpltTO                
+(First)
+[518291.745754] pcieport 0000:00:00.0: AER: device recovery failed
+[518291.754122] pcieport 0001:00:00.0: AER: broadcast error_detected message
+[518291.786622] Unable to handle kernel paging request at virtual 
+address 7ae91c2bcb8708b6
+[518291.788007] mt7996e_hif 0001:01:00.0: AER: can't recover (no 
+error_detected callback)
+[518291.795992] Mem abort info:
+[518291.803956] pcieport 0001:00:00.0: AER: device recovery failed
+[518291.806766]   ESR = 0x0000000096000004
+[518291.806769]   EC = 0x25: DABT (current EL), IL = 32 bits
+[518291.821919]   SET = 0, FnV = 0
+[518291.825052]   EA = 0, S1PTW = 0
+[518291.828278]   FSC = 0x04: level 0 translation fault
+[518291.833233] Data abort info:
+[518291.836189]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[518291.841761]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[518291.846895]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[518291.852282] [7ae91c2bcb8708b6] address between user and kernel 
+address ranges
+[518291.859500] Internal error: Oops: 0000000096000004 [#1] SMP
+[518291.865152] Modules linked in: pppoe ppp_async nft_fib_inet 
+nf_flow_table_inet pppox ppp_generic nft_reject_ipv6 nft_reject_ipv4 
+nft_reject_inet nft_reject nft_redir nft_quota nft_numgen nft_nat 
+nft_masq nft_log nft_limit nft_hash nft_flow_offload nft_fib_ipv6 
+nft_fib_ipv4 nft_fib nft_ct nft_chain_nat nf_tables nf_nat nf_flow_table 
+nf_conntrack mt7996e(O) mt76_connac_lib(O) mt76(O) mac80211(O) 
+cfg80211(O) slhc sfp rtc_pcf8563 nfnetlink nf_reject_ipv6 nf_reject_ipv4 
+nf_log_syslog nf_defrag_ipv6 nf_defrag_ipv4 mdio_i2c macvlan libcrc32c 
+compat(O) at24 crypto_safexcel pwm_fan i2c_mux_pca954x i2c_mux 
+sha512_arm64 sha1_ce sha1_generic seqiv md5 geniv des_generic libdes 
+authencesn authenc leds_gpio xhci_plat_hcd xhci_pci xhci_mtk_hcd 
+xhci_hcd gpio_button_hotplug(O) usbcore usb_common aquantia crc_itu_t
+[518291.935834] CPU: 3 UID: 0 PID: 22229 Comm: kworker/u16:0 Tainted: 
+G        W  O       6.12.74 #0
+[518291.944702] Tainted: [W]=WARN, [O]=OOT_MODULE
+[518291.949135] Hardware name: Banana Pi BPI-R4 (2x SFP+) (DT)
+[518291.954696] Workqueue: mt76 mt7996_mac_reset_work [mt7996e]
+[518291.960367] pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS 
+BTYPE=--)
+[518291.967406] pc : __free_pages+0x14/0x88
+[518291.971326] lr : mtk_wed_hwrro_free_buffer+0x5c/0xc0
+[518291.976371] sp : ffffffc08cf83b80
+[518291.979761] x29: ffffffc08cf83b80 x28: ffffff80c5ce4c30 x27: 
+ffffff80c5ce4c18
+[518291.986976] x26: 0000000000000001 x25: ffffff80c4e1c080 x24: 
+ffffffc081d03000
+[518291.994188] x23: ffffff80c266f000 x22: ffffff80c2670000 x21: 
+0000000000000001
+[518292.001401] x20: 7ae91c2bcb8708b6 x19: ffffff80c266f810 x18: 
+ffffff80ff7ae100
+[518292.008613] x17: ffffffc07eb8b000 x16: ffffffc080e00000 x15: 
+0000000000000001
+[518292.015825] x14: 0000000000000000 x13: ffffff80c0129cc0 x12: 
+0000000000000006
+[518292.023037] x11: 0000000000000000 x10: ffffff80c0129cc0 x9 : 
+ffffff80ff7ae180
+[518292.030249] x8 : 0000000000000000 x7 : ffffffc080d76400 x6 : 
+7ae91c2bcb8708ea
+[518292.037461] x5 : ffffffc080dafce8 x4 : 0000000000000020 x3 : 
+000000000000003f
+[518292.044673] x2 : 0000000000000040 x1 : 0000000000000000 x0 : 
+7ae91c2bcb8708b6
+[518292.051885] Call trace:
+[518292.054408]  __free_pages+0x14/0x88
+[518292.057974]  mtk_wed_hwrro_free_buffer+0x5c/0xc0
+[518292.062668]  mtk_wed_reset_dma+0x78c/0xafc
+[518292.066842]  mt7996_dma_reset+0x1b0/0x444 [mt7996e]
+[518292.071807]  mt7996_mac_reset_work+0x324/0x1250 [mt7996e]
+[518292.077287]  process_one_work+0x174/0x300
+[518292.081376]  worker_thread+0x278/0x430
+[518292.085202]  kthread+0xd8/0xdc
+[518292.088335]  ret_from_fork+0x10/0x20
+[518292.091992] Code: 9100d006 910003fd f90013f5 52800035 (f9400004)
+[518292.098160] ---[ end trace 0000000000000000 ]---
+[518292.110206] pstore: backend (ramoops) writing error (-28)
+[518292.115685] Kernel panic - not syncing: Oops: Fatal exception
+[518292.121506] SMP: stopping secondary CPUs
+[518292.125508] Kernel Offset: disabled
+[518292.129073] CPU features: 0x00,00000002,00000000,4200400b
+[518292.134548] Memory Limit: none
+[518292.144967] Rebooting in 3 seconds..
 
-[126737.556015] wlan0: deauthenticating from 68:67:c7:2a:20:43 by local cho=
-ice (Reason: 3=3DDEAUTH_LEAVING)
-[126738.215678] wlan0: authenticate with 68:67:c7:2a:20:43 (local address=
-=3D7c:fa:80:c3:5b:f9)
-[126738.215697] wlan0: send auth to 68:67:c7:2a:20:43 (try 1/3)
-[126740.272244] wlan0: send auth to 68:67:c7:2a:20:43 (try 2/3)
-[126740.291264] wlan0: authenticate with 68:67:c7:2a:20:43 (local address=
-=3D7c:fa:80:c3:5b:f9)
-[126740.291271] wlan0: send auth to 68:67:c7:2a:20:43 (try 1/3)
-[126740.293310] wlan0: authenticated
-[126740.294214] wlan0: associate with 68:67:c7:2a:20:43 (try 1/3)
-[126740.303679] wlan0: RX AssocResp from 68:67:c7:2a:20:43 (capab=3D0x1011 =
-status=3D0 aid=3D21)
-[126740.409430] wlan0: associated
-[126740.409517] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised b=
-y 68:67:c7:2a:20:43
 
-I will resume testing with the power save function turned off, to check if =
-that still is a working workaround for now.
+I resolved the line numbers and I've got:
 
-Jeffrey
+    __free_pages (include/asm-generic/bitops/generic-non-atomic.h:128)
+    mtk_wed_hwrro_free_buffer (drivers/net/ethernet/mediatek/mtk_wed.c:870)
+    mtk_wed_reset_dma (drivers/net/ethernet/mediatek/mtk_wed.c:1887)
+    mt7996_dma_reset (mt7996/dma.c:1009) [mt7996e]
+    mt7996_mac_restart (mt7996/mac.c:2273) [mt7996e]
+    process_one_work (kernel/workqueue.c:3235)
+    process_scheduled_works (kernel/workqueue.c:3304)
+    kthread (kernel/kthread.c:389)
+    ret_from_fork (arch/arm64/kernel/entry.S:863)
+
+
+It happens randomly between a few hours and a few days. I don't know the 
+code so I let an AI analyze the crash, for what it's worth, this is its 
+analysis:
+
+
+The crash is a use-after-free / corrupted pointer during a MAC reset 
+work handler. The sequence:
+
+1. mt7996 MCU timeout (Message 001a0003 timeout) triggers a MAC reset 
+via mt7996_mac_reset_work
+2. The reset path calls mt7996_dma_reset(dev, true) → 
+mtk_wed_device_dma_reset() → mtk_wed_reset_dma() → mtk_wed_rx_reset() → 
+mtk_wed_hwrro_free_buffer()
+3. At mtk_wed.c:870-879, the loop iterates over page_list[] entries and 
+calls __free_page(page) on each
+4. The page pointer is 0x7ae91c2bcb8708b6 (visible in x20/x0 registers) 
+— this is a garbage/poisoned value, not a valid kernel pointer
+5. __free_page() → __free_pages() tries to test page flags via 
+generic_test_bit() and faults on the bad pointer
+
+The root cause is that dev->hw_rro.pages[] contains corrupted entries. 
+This is likely because the PCIe Completion Timeout (CmpltTO) errors on 
+both PCIe ports
+(0000:00:00.0 and 0001:00:00.0) corrupted DMA memory or the device state 
+before the reset handler could clean up properly. The 0x7ae91c2bcb87... 
+pattern in x20 and x6
+(with 0x...08ea vs 0x...08b6 — differing by 0x34 = a struct offset) 
+suggests the page_list memory itself was corrupted by stale DMA writes 
+after the PCIe link went
+down.
+
+
+Regards,
+
+-- 
+
+Matteo Croce
+
+per aspera ad upstream
+
 
