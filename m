@@ -1,311 +1,256 @@
-Return-Path: <linux-wireless+bounces-34342-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34343-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLEsOM010Gnm4gYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34342-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Apr 2026 23:49:01 +0200
+	id uKBEEBGU0GlG9QYAu9opvQ
+	(envelope-from <linux-wireless+bounces-34343-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 04 Apr 2026 06:31:13 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B34F3988FE
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Apr 2026 23:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C18399E8A
+	for <lists+linux-wireless@lfdr.de>; Sat, 04 Apr 2026 06:31:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A31E03013248
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2026 21:48:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A8BF301FD42
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Apr 2026 04:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5D43009E2;
-	Fri,  3 Apr 2026 21:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC72334D3A5;
+	Sat,  4 Apr 2026 04:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mP8aWg3c"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Rhra5k4J";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="iw7GpMP6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF84B2D592F
-	for <linux-wireless@vger.kernel.org>; Fri,  3 Apr 2026 21:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775252903; cv=pass; b=huk3VaDAOUIK9mm6BiLZ8iSYtVGc5PdrVh2tYYDRKB3/hxP8DIWgCzUcqeC718nJTiHNg0IWObdc/8d9RK1Bw/l8EJM9yA8PC8oi1Uy+DxNxGZ/XVCUWLbaJdcHrBPsNkCoAqisJU5S/O0GL6R6bmdTBSOtoYo4zI79Jqynyb9Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775252903; c=relaxed/simple;
-	bh=4Mybm8ZE4heOTROCwuYpcX2b5aSOvjUqyqV7WG5Fsrk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YmXLr0BSLwtYgWC76SzZNcYEzAK188+GkZk+GwJl7OWUXylCEZNI//C9opUYIPC2uswXrB09V9EES+gEsBIzZBm0g3Snsl/bDLJ9Uq3SN3sc7Cd9WSOjD/XvpLHPwBCiJN5G4I3QuZ8ZygaUO8XXiFrM6MVHquBlBcKQUbqIbk4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mP8aWg3c; arc=pass smtp.client-ip=209.85.160.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-40ee9b945d5so1833248fac.0
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Apr 2026 14:48:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775252901; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XcVzROWDN+1mDW8pj/JpUhjMY1d2eqVxWzejNWs6aN6MJwCuONht43L2GrEPTB+vUc
-         G+6QEzz26ZVDkOkz9U1VadK+YoIkf63JFB+hoKxMdV9CBeo5Rcbcuas4C3rnL95kY3Ye
-         IO24A6eYvTdNeHDLeHl+LYMqxr2CoW0v4si7jhX77QdDAeI+9NPuJLhkhhMe/H3Mcos7
-         UQLkA9dPs81W8ZwCYYT977FSbzzN9mCBnW2c+SnHdRn0R7damcW994MxlOb07WhIsX6j
-         vSuIo5scFKGVGgb9GKzh5W5NnKdZWsZiU/tmBCbE++ZXeG1nKpAncF8xHGq/nSY/pusx
-         7kng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9A/NvhOobEGKSNNHEG0vu4GE3BhoHnkh+A+reV/BCQ4=;
-        fh=FzHZjjLUufp4mRCPfTTKUvuQTdjfHtmb3uLdBTo3ISI=;
-        b=azeHtpspgqj2SmD6BlyieqlTAyTL08HnlbWooOBCp2hk6jvBdzuNw2UtMIJlLMDuw7
-         h/iapydng2brYXYQxKsolwrYlLvnljVU4wLt4BAFhB3ObdkVN2IKhVX88XigxsrrHWrM
-         FJkgCp8jh5CMOpke3numLY8HOtD8wNvSpphSZzvQWlin/0iDPxaP7Uywt/TsAg9Oh2mw
-         mLEK8ljiA+B2zcOOVNbbsww5t3BDp6XduEsUv3XnmBRxrADqGExQXDPNinU1jM/GOf3X
-         DX1lThjNaLObe/xQfFqkQmSK4GPvCch3KNhfRI1U9UbuqSfmNar9kTfacCRST0+saTv/
-         BVog==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC162330651
+	for <linux-wireless@vger.kernel.org>; Sat,  4 Apr 2026 04:31:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775277065; cv=none; b=h+yYuTWLy90wKoUTUOLMG2xspgjwSRGhniBRwloa4pcEXiBGMc3xxjgMbL3Vem5/zuZnDHmQttYW6Szv2Dtspl80gJ0pd61kXkHKZrQ4iHYzboB4CyzjlCy4rZIaBddBBnsCu2t4hWtx+r4C2Jp1uZTdYImE3hNw6jFngGOJHdY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775277065; c=relaxed/simple;
+	bh=kRkpjAcqLpyGH48sEgcrZnCkiwnJnMX+6jvmkTspUhc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ciFUdocT3rwCl7kTFktq+kZ6xXZLJMV0pVxKe77bR0zRDxGeDr3yqb8TqyjskJ+lUcpU3X6gW4gatxlNDQGIuyQcMNjcazF4oRZskedO6izh4cxWSkM5Kclx0qj+gebv9k7sTjVluzSEPXRTOhtFRrLSlUh87o48XKPJioyJWRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Rhra5k4J; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=iw7GpMP6; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6340KAMA1310004
+	for <linux-wireless@vger.kernel.org>; Sat, 4 Apr 2026 04:31:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=IBOjD1SCE/uWKPBO1BDvYmWOu32r5baQpc1
+	YaXyTiMM=; b=Rhra5k4JaJGSlN/R3BdhSADj2gpyni/r1udJO1qbq7DAHk58suk
+	dM71Vo4+w3hqg0vYyjM2v7RPAIi4ezwmMMR6VbwNgivDMOPyCRMygOb4oTAX35Mk
+	1zseK9l80iIELX2nlFYtWMZGzsL6CiqFkM04Es7KNtscmdiVAmocYhte+hUOWCYN
+	HxerNXwnWE7qhqNkS8Ut+u1phuK8ECzjjZkz7bmhsNV2mCzStgMpDoRkDuIxc/QN
+	buKrRDyl+Sv2ZTA05wm7YQrB7KrQP2W/LPPLD6/R3Ma3QA6tBWN/ql7zAiVHABDM
+	hlTHVj9d1fP36Vw94Xzc6ZCXENTJHxE7Lpg==
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dar0mgayk-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Sat, 04 Apr 2026 04:31:02 +0000 (GMT)
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-2ccc035f125so463184eec.1
+        for <linux-wireless@vger.kernel.org>; Fri, 03 Apr 2026 21:31:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775252901; x=1775857701; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9A/NvhOobEGKSNNHEG0vu4GE3BhoHnkh+A+reV/BCQ4=;
-        b=mP8aWg3cWubb1JARf0kjH3CrS9ga7vImKW5QefiUNoYusBDu37tk/Gs7Pzuzdw7DOW
-         eWAznDbnZ2glvsHbumBWTV44YEbWp064FCD1vcWgRvdd7RJZw/80DQkxxZSPnBJRZQ+8
-         PwmdmB6Zguyhi1J2BgFaruiigww89O+YZQ588hM6ISWV/6Jw4EMK4542Xx5wfDA2nmFu
-         sYiDxfmy8r3tWzdYq6NXcW0+Fg//eI0B4mkWrrj/97V0fY6M/b0bRmSf6i32BZsUWMkH
-         oTI5l4ilpnLYIFBRvlh10chTJEDi2nF6uyKxtEBzO3pmjAcabMhOYjE6O2EDDixF7vf4
-         z/AQ==
+        d=oss.qualcomm.com; s=google; t=1775277062; x=1775881862; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IBOjD1SCE/uWKPBO1BDvYmWOu32r5baQpc1YaXyTiMM=;
+        b=iw7GpMP6u5nLgjbcb++a8LwB/2OoE4dwkPMrQrXKT97ZBRclHlE0mcN7AQdKYVFOLB
+         MJNlzkYwemQ+dfQo9HI2DfyI6FjsEHyWZC5sJZH5XMDkdcQWcpfnCD26YpUlTQylwnVp
+         kfXzGAbyF7QM6FeserN2iOmQpH8sxOc2iRSaMAIVeJjlFSvzCCbx0wOdCH13aKVCOUI/
+         igu8iqyhe6uQLKTCthYySzjFytbWdqa5qH9mxIRrK3Gmo28H1YhfXze6chCP/d0DRtQE
+         d9pjkav9uaHqf3kj7X4+shlpVX9bFfh/6+ezVLcZWx4J2yxqJKLTj7m4Fds795AXqUPC
+         8GsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775252901; x=1775857701;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9A/NvhOobEGKSNNHEG0vu4GE3BhoHnkh+A+reV/BCQ4=;
-        b=lfMSEezpmhP/lQB2jD7V4mM0s4zI1XnB1DLxY2oUCuNE2DlogyNr/tBhnlYARxcoyZ
-         6U+Is5+jzqAZJhd21tFqI/O0OjpCvlvrBFq1g6zkMSnuybMKFEyieYKcZk7y3C1gjCkz
-         nW6gABDqXiZjMDK3QrO4BKfWhqz5NrAwXVfsJXBTdC3XX2QMB2scCS+0N7OaECznIjgp
-         /5I2SPHbuabycAhLS8b9bDpKKdL6NBKeo8rQFqMFVwqxCOZQZxpxaK51I9UC0IZmKbNz
-         CvV76t/Ili4nlKw9/HcUIAShJ22Zwc5OP15eezCq/GeMwCMOcLjaqL2NFws8ix7hpMbI
-         qJMg==
-X-Forwarded-Encrypted: i=1; AJvYcCU949YHFArS8vwYqVWhn6uzJWKDXeX2egUDs27+Wa984C9f5ZfUao4mS9kZI6X0kBNcsScEa67joGrlAzhjEw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAg15W7ywvHKE+8tz8RYXN1MV/zC24DW7EfI83hV/yW0t8dPGx
-	FRa8qFrE8lEGUzBuDuyXKacYQdn7QLyCL00Kzqq64KG8ughKac4+MrChn48VEeB+fs7QGK8UhLw
-	Y/tVRehWxaLOUg45bqRwUOyJ5//LcKRg=
-X-Gm-Gg: ATEYQzx6udjgTU36LBstpkPSB+FmEJpqnxF+p3QYEzdMCE5Bqy5S2p4eHpsYn+gQ3sn
-	vqUvCCw1sBVQSQAhS98nMqqy3op3X5TIrmHRrTtmxDCxx3HED7pBxtMufkAEhIU9Wgatc8HJGql
-	an5irFJxuzAs6l738SJWvegcCtV6dlm2/c3xjqsVp0nAxuYsxX0NQ0IBJGnehEQ+/EY/+HNiF1o
-	VCnhl2JuFb5oh2/N7MfxJv4kltVVun6z0pf8MY4cRFeeJHgp6BJvyYn5w5PZ+lfCnSkFB2xYKF6
-	ztLNyY9n
-X-Received: by 2002:a05:6870:158a:b0:41c:b538:e19c with SMTP id
- 586e51a60fabf-423100855b8mr2360450fac.38.1775252900556; Fri, 03 Apr 2026
- 14:48:20 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775277062; x=1775881862;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IBOjD1SCE/uWKPBO1BDvYmWOu32r5baQpc1YaXyTiMM=;
+        b=gCdOy2nG1nA9oGB/zkqS50AUXnAR6of2G+9clhGtK76AyXGuzYUO3vuyi0sbF0TJbp
+         Xw1DkMq1V7V09JjkCufGBdtd3YnzPqlCNJUfZrRYE0zuMGiF7xkDDH/d7AIeSVXnVIZO
+         1KPK4ykRJUVwaliEwW6rydSgYfjGYYMZ9N70vwvS8NlrjUYSdbA10yXQeJ0TphHBevA2
+         QKmKE0YdGuLusGCTshFRB2gEb3EJS4rzOH+5mVhMLB25MifIr7YvttNDl7KnOzqLtScx
+         UePP6gg3mdOQGfO0S6k6/TutbRYkzABavNTfHJZhphlIbwui7tu1+4QTrWs4l4VJ8zLX
+         YBSg==
+X-Forwarded-Encrypted: i=1; AJvYcCWPmfJcIFyTJw9wPLX6eOHTFnIPsy5aP7OyDVexI89EN4ZTyx7UGAffcikZAjmQc/BuE+k+hd5YZuTl6vfgQw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTo+Qqn9r1WAb5oiWTAznPbqnv/tFb61NWPOVv6mBWaalMJKE4
+	iwf7thQqga0YzIj4CntO24ThFMfh5/UxoaAMCBsB/uUqUhahdQpfAB/tb4SP8bNC9zmM8VUGsqp
+	CKS3FyuKbQ2ep8SpcJc5tsfu0yb+P7FtlC5qirxnjH9ekaI9h7VpAYKg4uki7rnPBbA0yFQ==
+X-Gm-Gg: AeBDiesACkfYMn+T3q9dl4tyljNctkg2oLL1/hTAxL114rBcoj0fL8lyy/c9CABGJpv
+	l6a340rq58ujxre4HkHeVidVgrCkfRY0ua99npXdG03JA+t8xqjQCOlNG78KM5tw/cxj/DItwAb
+	W3l1ORgYXGvM8dcFvTBViUWyHncF4Zmj3Gt4YBiHDfpOhvIRCTTOU4XLZZlNBdW6/lMAf8fV/VY
+	7XtmzgLr99vJOpyUJEOv6Ny8ou1yF1eaHqmPggmif1/q/MvHziCSSAl/tpD//N/K0Db6tKwZaA8
+	BdYR9vwfNEr5K+5azNXTenUDIQ2en7UgLFpNtTq12e0nzw/KUH/+ET48X65NgE9G1jT8pHuLW5X
+	heT+HNFHk0Kdfu4Z3UduFuJZBt1HW96Y7udmswlOnLl4kKTDgMKOBDvPfuKNp9tnx1m/DiWZjJ5
+	t6Tw==
+X-Received: by 2002:a05:7022:2219:b0:123:2de5:346e with SMTP id a92af1059eb24-12bfa9cddfbmr2202723c88.0.1775277061444;
+        Fri, 03 Apr 2026 21:31:01 -0700 (PDT)
+X-Received: by 2002:a05:7022:2219:b0:123:2de5:346e with SMTP id a92af1059eb24-12bfa9cddfbmr2202704c88.0.1775277060868;
+        Fri, 03 Apr 2026 21:31:00 -0700 (PDT)
+Received: from san-w175-na3-01.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12bede7f085sm6271622c88.12.2026.04.03.21.31.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 21:31:00 -0700 (PDT)
+From: Wei Zhang <wei.zhang@oss.qualcomm.com>
+To: jeff.johnson@oss.qualcomm.com
+Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Wei Zhang <wei.zhang@oss.qualcomm.com>
+Subject: [PATCH ath-next] wifi: ath11k: cancel SSR work items during PCI shutdown
+Date: Fri,  3 Apr 2026 21:30:50 -0700
+Message-ID: <20260404043050.3433754-1-wei.zhang@oss.qualcomm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
- <CALdGYqQ3tS_aQpmf7xLkaCG9W55ATQXP=tnRNdjBAG8waqg8yA@mail.gmail.com>
- <dbe78a09fafe4a0ab16cd691049896a8@realtek.com> <CALdGYqQ3JQgFvvjiqh-ck8UqUQpAoJ0zeUzEL4i4Un8qPmqxJA@mail.gmail.com>
- <CALdGYqQuS5EOWCaeimr6PY758feF-DPo5i3XFwoQ8ewf4xnm7A@mail.gmail.com>
- <b231d63665334ac786e808610fe4a1e9@realtek.com> <CALdGYqSd61wxNrPDui+m-S+Na_is-RM18-=L6xm-Jf4QQ+-DOg@mail.gmail.com>
- <a8e187e1b40e4a35bbeb3bc3a3d21821@realtek.com> <CALdGYqRPcDRctCpNSJFatXvqMKLFiiRGXZoQa3KJwfwutHJEwA@mail.gmail.com>
- <ba9790526e4e42c386642a05fcbc2f34@realtek.com> <CALdGYqQ5U2USCqVEixoDda1Xd2ugBakh1K1QkaKAU7HPSTTNWg@mail.gmail.com>
- <CALdGYqQ_RCOwa2J-GsEyCxCQ4bztyxSzbc+6eYNesBSaY3Nt-w@mail.gmail.com>
- <da30a61b-dad0-48ff-a283-3dd8e9bdf91d@gmail.com> <CALdGYqS53=MmG4yCLwgV+RJAZ=U8Aqi8QQZFZ5oFMernhSyxTg@mail.gmail.com>
- <5eb90d6d-e590-4c9e-91c8-1ba315f45304@gmail.com> <CALdGYqRkX8=XMOePeauxvSTDZFLEYyJZKCtoxCzqaNwdO6BNnw@mail.gmail.com>
- <a5ea6373-8c07-4fcd-95fc-d87ce6aef6d5@gmail.com> <6898154c58c84536a0dd4351b3b026fb@realtek.com>
- <CALdGYqT2e+jt+mK-o_bL8hfdEwqZ44fUt9_N6-H4jYp8FpqQJw@mail.gmail.com> <5fb2f699626b483b8a0a537960b274f0@realtek.com>
-In-Reply-To: <5fb2f699626b483b8a0a537960b274f0@realtek.com>
-From: LB F <goainwo@gmail.com>
-Date: Sat, 4 Apr 2026 00:47:44 +0300
-X-Gm-Features: AQROBzBqZEhcsduHdj-XrMiDiS5dzH0XRbEDmf0fTypasx0HvHgeBhqW8dU9s4E
-Message-ID: <CALdGYqThUD1DSAcsshC0y4Lm=uG=EDvBccMqkL=qr2+Jajp4tg@mail.gmail.com>
-Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
- power_save is enabled (LPS/ASPM conflict)
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: _6CD3qw6yKC_lBWXuGVqrxHgualTltPt
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA0MDAzNiBTYWx0ZWRfX9W/KMh9k+tvs
+ SCANmo2p0HWkKeD+xZyCFwUSmtHqBr2732vKrmOPbb1jBgz6/fXEg67Lu358FN98f5QzX64NCXi
+ Ssr3JW8wpl1Wmya1US87IZbMTo8VSOUwxrZMFHmFxZOoKDOC4Mpc3mZ0kX19Sy4XV8bn878GYS4
+ Rdr7mvjYISohsw2twPJYt6grkxt10qJYz4M3ybKTg9YqDnAs6rPyvvZer7d3r0ri1NJeBZUOluV
+ gH/aq5pfHmywsObKMw1ADNG7x1Wps3ZLmkWBI5vFPhqxHp39Jm/9UowlX4mgWHrA/fSfSIhtwee
+ I0i78AHfoq1UtL6fEXr4OIY+5rOc1n3prfnHLTfllT5c3G9YUOr1sv8ZU6oHSZ9oyvsxkwCFLvW
+ 3DpAVHPBOpH7DOPu+UyI+nI+WA6XruGMfnTlzxRL/c8u2IHUM1o+RJsnYeAbKkLVab9do0AgVub
+ UIBm082XHT26ZeNPicg==
+X-Authority-Analysis: v=2.4 cv=PpaergM3 c=1 sm=1 tr=0 ts=69d09406 cx=c_pps
+ a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=EUspDBNiAAAA:8
+ a=2AV42wVkYpmhdkL2cwwA:9 a=bBxd6f-gb0O0v-kibOvt:22
+X-Proofpoint-GUID: _6CD3qw6yKC_lBWXuGVqrxHgualTltPt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-03_07,2026-04-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 spamscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
+ suspectscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604040036
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34342-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-34343-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wei.zhang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4B34F3988FE
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 82C18399E8A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
-> If we can't find the reason for these weird frames, maybe the best
-> way to filter them out is to check RTW_RX_DESC_W0_DRV_INFO_SIZE.
+A reboot can crash the kernel if it overlaps with WLAN firmware crash
+recovery (SSR). The crash is a NULL pointer dereference in the MHI teardown
+path while freeing DMA-backed MHI contexts.
 
-Hi Bitterblue, Ping-Ke,
+Simplified trace:
+  dma_free_attrs
+  mhi_deinit_dev_ctxt [mhi]
+  ath11k_pci_power_down [ath11k_pci]
+  ath11k_pci_shutdown [ath11k_pci]
+  device_shutdown
+  kernel_restart
 
-I have a new crash to report that shows a different failure mode
-from the garbage RX data, with some characteristics I haven't
-seen before.
+On the host side, SSR is driven by the MHI RDDM callback, which queues
+reset_work to perform device recovery. reset_work power-cycles the device
+by calling ath11k_hif_power_down() followed by ath11k_hif_power_up(). The
+power-down phase deinitializes MHI and frees DMA resources.
 
-=3D=3D=3D NEW INCIDENT: 2026-04-03 =3D=3D=3D
+Shutdown/reboot runs fully asynchronously with this RDDM-driven SSR
+recovery flow. As a result, the shutdown path
+(ath11k_pci_shutdown() -> ath11k_pci_power_down()) can race with the SSR
+recovery sequence.
 
-The system froze approximately 1 second after Wi-Fi association
-on a fresh cold boot (not resume from hibernation). Hard power-off
-was required.
+Fix this by canceling SSR-related work items during PCI shutdown, marking
+the device as unregistering, and serializing the RDDM callback path that
+checks and queues reset_work. This ensures that no new SSR recovery work
+can be queued once teardown has started, and that any in-flight recovery
+work is fully synchronized before device power-down, preventing MHI
+teardown and DMA resource freeing from running more than once.
 
-Timeline:
-  17:16:16  Cold boot (PM: Image not found =E2=80=94 no hibernation image)
-  17:16:38  wlan0 associated with AP (6c:68:a4:1c:97:5b)
-  17:16:39  First "pci bus timeout" + mac80211 WARNING
-  17:16:39-17:17:00  System frozen, hard reset required
+Note: This issue only affects PCI/MHI-based devices. AHB-based ath11k
+devices do not queue reset_work in normal SSR flows.
 
-Kernel: 6.19.10-1-cachyos (PREEMPT full, Clang/LLVM)
-Patches applied: DMI quirk (ASPM+LPS disabled), rate validation v2,
-  Bitterblue's diagnostic hex dump in query_phy_status.
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04866.5-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
 
-=3D=3D=3D THREE DIFFERENCES FROM PREVIOUS CRASHES =3D=3D=3D
+Fixes: 13da397f884d ("ath11k: add support for device recovery for QCA6390/WCN6855")
+Fixes: 5edbb148bc57 ("wifi: ath11k: Add firmware coredump collection support")
+Signed-off-by: Wei Zhang <wei.zhang@oss.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath11k/mhi.c | 4 +++-
+ drivers/net/wireless/ath/ath11k/pci.c | 8 ++++++++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-1) Zero "unused phy status page" events.
-
-   Every previous incident had a burst of these messages before
-   or during the crash. This time there were none at all. The
-   corrupted data appears to have gone straight to mac80211 without
-   triggering query_phy_status =E2=80=94 likely because PHYST=3D0 in the
-   corrupted descriptors, so the diagnostic hex dump never fired.
-
-2) Cold boot, 1 second after initial association.
-
-   All previous crashes occurred after minutes to hours of uptime
-   or shortly after hibernation resume. This one happened on a
-   fresh boot before any power-state transition. ASPM and LPS Deep
-   were already disabled by the DMI quirk.
-
-3) Hang mechanism: infinite "pci bus timeout" loop.
-
-   Not the NULL dereference (Bug 221286) and not the ASPM deadlock
-   (Bug 221195). The loop produced 547 "pci bus timeout" messages
-   and 41 mac80211 WARNINGs over 21 seconds.
-
-=3D=3D=3D HANG MECHANISM (my reading of the code, please correct if wrong) =
-=3D=3D=3D
-
-The crash appears to follow this sequence in rtw_pci_rx_napi():
-
-  while (count--) {
-      rtw_pci_dma_check(rtwdev, ring, cur_rp);   // [A]
-      ...
-      rtw_rx_query_rx_desc(rtwdev, rx_desc, ...); // [B]
-      ...
-      ieee80211_rx_napi(rtwdev->hw, NULL, new, napi); // [C]
-  }
-
-At [A], rtw_pci_dma_check() detects an RX tag mismatch and prints
-the warning, but returns void and the loop continues. At [B], since
-PHYST=3D0, query_phy_status is not called. At [C], the garbage frame
-reaches ieee80211_rx_list(), triggering WARNING at rx.c:896.
-
-The RBP values across the 41 WARNING traces form a monotonically
-increasing sequence from 0x55 to 0x1FF, which looks like cur_rp
-cycling through the ring. Once exhausted, rtw_pci_get_hw_rx_ring_nr()
-reads more entries from hardware (which is in a bad state), and the
-loop restarts. The NAPI poll never returns.
-
-The execution context migrated from irq/58-rtw_pci (PID 635,
-170 traces) to ksoftirqd/1 (PID 26, 216 traces) as the softirq
-was deferred, but the loop continued in both.
-
-=3D=3D=3D FIRST WARNING (full trace) =3D=3D=3D
-
-WARNING: net/mac80211/rx.c:896 at ieee80211_rx_list+0x1033/0x1040
-  [mac80211], CPU#1: irq/58-rtw_pci/635
-
-RAX: 0000000000020100 RBX: 0000000000000000 RCX: 0000000000000004
-RDX: 0000000000000000 RSI: ffff8e56c7bb2f18 RDI: 0000000000000000
-RBP: 0000000000000055 R08: 0000000000000004 R09: 0000000000000000
-
-Call Trace:
- <IRQ>
-  ieee80211_rx_napi+0x51/0xe0 [mac80211]
-  rtw_pci_rx_napi+0x2fd/0x400 [rtw_pci]
-  rtw_pci_napi_poll+0x79/0x1d0 [rtw_pci]
-  net_rx_action+0x195/0x290
-  handle_softirqs+0x12d/0x1c0
-  do_softirq+0x56/0x70
- </IRQ>
- <TASK>
-  __local_bh_enable_ip.cold+0xc/0x11
-  rtw_pci_interrupt_threadfn+0x270/0x360 [rtw_pci]
-  irq_thread_fn+0x24/0x50
-  irq_thread+0xbc/0x160
-  kthread+0x205/0x280
- </TASK>
-
-=3D=3D=3D NAIVE HARDENING IDEA (please ignore if this is wrong) =3D=3D=3D
-
-I am not a kernel developer and I may be misreading the code, but
-I wondered if making rtw_pci_dma_check() return a value and
-skipping the frame on tag mismatch might prevent the infinite loop,
-independently of the DRV_INFO_SIZE filter. Something along these
-lines:
-
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
--static void rtw_pci_dma_check(struct rtw_dev *rtwdev,
-+static bool rtw_pci_dma_check(struct rtw_dev *rtwdev,
-                               struct rtw_pci_rx_ring *rx_ring,
-                               u32 idx)
- {
--    if (total_pkt_size !=3D rtwpci->rx_tag)
-+    if (total_pkt_size !=3D rtwpci->rx_tag) {
-         rtw_warn(rtwdev, "pci bus timeout, check dma status\n");
-+        return false;
-+    }
-     rtwpci->rx_tag =3D (rtwpci->rx_tag + 1) % RX_TAG_MAX;
-+    return true;
+diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
+index f994233df2bb..a6c9ff112c68 100644
+--- a/drivers/net/wireless/ath/ath11k/mhi.c
++++ b/drivers/net/wireless/ath/ath11k/mhi.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2020 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
+ 
+ #include <linux/msi.h>
+@@ -282,8 +282,10 @@ static void ath11k_mhi_op_status_cb(struct mhi_controller *mhi_cntrl,
+ 			break;
+ 		}
+ 
++		spin_lock_bh(&ab->base_lock);
+ 		if (!(test_bit(ATH11K_FLAG_UNREGISTERING, &ab->dev_flags)))
+ 			queue_work(ab->workqueue_aux, &ab->reset_work);
++		spin_unlock_bh(&ab->base_lock);
+ 
+ 		break;
+ 	default:
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index 7114eca8810d..35bb9e7a63a2 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -1210,6 +1210,14 @@ static void ath11k_pci_shutdown(struct pci_dev *pdev)
+ 	struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
+ 
+ 	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
++
++	spin_lock_bh(&ab->base_lock);
++	set_bit(ATH11K_FLAG_UNREGISTERING, &ab->dev_flags);
++	spin_unlock_bh(&ab->base_lock);
++
++	cancel_work_sync(&ab->reset_work);
++	cancel_work_sync(&ab->dump_work);
++
+ 	ath11k_pci_power_down(ab, false);
  }
+ 
 
-     while (count--) {
--        rtw_pci_dma_check(rtwdev, ring, cur_rp);
-+        if (!rtw_pci_dma_check(rtwdev, ring, cur_rp))
-+            goto next_rp;
+base-commit: 15551ababf6d4e857f2101366a0c3eaa86dd822c
+-- 
+2.34.1
 
-I am sure there are considerations I am missing. Please treat this
-only as a description of what I observed, not as a proposed patch.
-
-=3D=3D=3D SUMMARY =3D=3D=3D
-
-The garbage RX data from this chip now appears to cause at least
-three distinct failure modes:
-
-1) Bug 221195: ASPM/LPS deadlock (fixed by DMI quirk)
-2) Bug 221286: NULL dereference via C2H_ADAPTIVITY misinterpretation
-3) This incident: infinite loop triggered by DMA tag mismatch
-
-I wanted to report this new failure mode in case it is useful for
-your work on the DRV_INFO_SIZE filter. I can provide the full dmesg
-from this crash (7828 lines) if it would be helpful =E2=80=94 just let me
-know.
-
-Best regards,
-Oleksandr Havrylov
 
