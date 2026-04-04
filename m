@@ -1,122 +1,171 @@
-Return-Path: <linux-wireless+bounces-34349-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34350-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cH2HOjTw0GkDCgcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34349-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 04 Apr 2026 13:04:20 +0200
+	id D4heODIb0WkvFQcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34350-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 04 Apr 2026 16:07:46 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8633239AE38
-	for <lists+linux-wireless@lfdr.de>; Sat, 04 Apr 2026 13:04:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB8F39B4E3
+	for <lists+linux-wireless@lfdr.de>; Sat, 04 Apr 2026 16:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F8CE303D2C9
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Apr 2026 11:03:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 623F63005316
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Apr 2026 14:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D8B2236FD;
-	Sat,  4 Apr 2026 11:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C132580F3;
+	Sat,  4 Apr 2026 14:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LlNyJzEP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="je1eAqgO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D31221F06;
-	Sat,  4 Apr 2026 11:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DF421B9F5
+	for <linux-wireless@vger.kernel.org>; Sat,  4 Apr 2026 14:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775300621; cv=none; b=MHoMaaSuZj5bUkHFN10kYLSwuK3LutYK52vehEwP7i8Jxt006+8gSWhRaENHu8HfiYEBNUKyNMPO8vT+TP2sMKCf3BxCasvTEvu62hsn30sDL68hGLGfq2jwC/fLCNvtwd5NbYhbYnCtIvWU/Q40hW6mOm4u4kbAlhEkSMc9uP0=
+	t=1775311659; cv=none; b=lTlRiSD4dtq5oHTcZI8zpHP93Rry04YNtDO+UiljXzolE5Prw224n/+v01d+rOFYYcrvWv7xYAjr55rYLqxerPPSZFENWGEQOzSCd3teaK5aCI+/yBZ737tk7dqe9G2Mhfxm/D5DQtywwUarP1iO0nEf6pXXdQkyVAIaXlSKhQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775300621; c=relaxed/simple;
-	bh=6St2+FWQW6l2+yulRPhL9B9LaFWvnweTQb8aao65BJQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eDTM0a33DY/185BaI19yg9+xmZSFoIy9Xx0bxj5FLCPvaVw+2zPtcIu3kVpd95WcfxFFfXUbgd0Q4yEDUXdUG/gF+6z6PtpYHLur9vDBK7uQI0OOBVbqDoSuO8rt4031/zW+zBWFjpxnAsM/BceF0rrtUBGy+l0prD4PADbl7JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LlNyJzEP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B5BC19421;
-	Sat,  4 Apr 2026 11:03:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775300621;
-	bh=6St2+FWQW6l2+yulRPhL9B9LaFWvnweTQb8aao65BJQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LlNyJzEP1vCy3VsXqvb+qYWW7ZgAAcWmqH3alo3kX5XyniTbUiC/P0mDfU/ml39KV
-	 0bOSX5o1nV5jSsW3IXO9FT/REUxr+KXeBtDRpTjuZkw7/77HI04blC8qRB5T2S13nJ
-	 dDgveJhRGnQ/4gyG9p2PLkN0UUEON9oS/fh764MK3IL2wt6ehQsFhK6+IX7BABewy4
-	 3pEl+awEVmsfviM7h3WUMU1n5tz8UK+hZMbnkQnKRUjRciQ7LL9LdfathHb+BrLkM1
-	 eM467LdIvq2ZKSCC5xLOH3WalCvBVkE93O1MValbuQh+qOmgjYS315D+J1ICMy678L
-	 batJXhfwJvgzw==
-Date: Sat, 4 Apr 2026 13:03:39 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Alexander Koskovich <AKoskovich@pm.me>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Rocky Liao <quic_rjliao@quicinc.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson <jjohnson@kernel.org>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: Re: [PATCH v2 3/7] dt-bindings: net: wireless: ath11k: Document
- WCN6755 WiFi
-Message-ID: <20260404-sceptical-benign-chachalaca-e13aa9@quoll>
-References: <20260403-milos-fp6-bt-wifi-v2-0-393322b27c5f@fairphone.com>
- <20260403-milos-fp6-bt-wifi-v2-3-393322b27c5f@fairphone.com>
+	s=arc-20240116; t=1775311659; c=relaxed/simple;
+	bh=jknqINkRPUFpesQtH/4MgsVC/EU05LdVrrSPJsWq/Zk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=MpLXBZvftlkk/iRD3kXqeCeUufBn6EmROOyT4Wn4Kr2dfZMwaRJAj/Y7OP7JQQsQK2TZhHxTK/bI21EY4jOnKIUX/K1hGB3EUIyxuooiplH/qLOW7ka/aALMsnCcrFnZ0zSmHnf8MjAAPpLC2yfO32kZoQkAaWkAFak3tvyQ/PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=je1eAqgO; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso24184475e9.1
+        for <linux-wireless@vger.kernel.org>; Sat, 04 Apr 2026 07:07:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775311656; x=1775916456; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VM4lYzot5gNIomL078Tcz8FVeq+iPj10V+2mQYXz0Qc=;
+        b=je1eAqgOF5ZoWu0x5ShixSQNpW16Is0zyPZWsQsnnL7As6+2zom0GjDtS8sUJpG2LY
+         /cpXagyuIiLev9/bBFABcKdt5n1ACozZvV0/H/UmSeEMmVe54eT+YYybfolq107KuEaC
+         aWjCz5hmoNYUrtEhsBo4/AtOMK1QlUeC7lBL8iYkB0oL80prs8H6HvnvUVayTsmWTApB
+         4Ti+3eGgvSDEDrZMvFGgklowsZM0V0Im+GTqEbff6HnEroacwViuV4B1XB4FJ6mctgaS
+         yDLw4beLCm29c4CQPbUDWGBsEpltatxWa6yFIfrvl2biFfY1AldwBdyr9t1o4Cw16M/H
+         WDuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775311656; x=1775916456;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VM4lYzot5gNIomL078Tcz8FVeq+iPj10V+2mQYXz0Qc=;
+        b=cD49tREqPK0G86QmSxGa5RdPS71oKJ5UWii6MZPmbL9wSRHobick1qEQ2HOqLlSvqi
+         veQgjKCxysX4rYfo/2656GiWTrsM0OErDc1BeJ2nQAFl6B7Alm/5URrlZQt+rBgtbpV4
+         zuJLAwgY1lA89V/uzfFesX371ALJu9AwGOitsa0Jc2arqEo0mTFiRcPFMz6OqW2AgZu4
+         j1waGD8Xpv6hzzwGdMSh9T05FMpl4SjAWdGsQ43U4mytKR49fcW70SJqxY9fIkGI5rio
+         AYC5FIHGAbA6M2R1iQUmtZpCD9eEiu7QeaRMhSO5VYQFnqB0oto9PcyL/AC90nufi/AI
+         FCLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVfCu8uirt3fXauknvZtf8Rt5ieka8IuGifmMbHmazSj/KXTKXlSAuXumvx3tBOLq9+HD1cyZiSWw49PCw0BQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNXE78M52s6yshqbcxCVvU+iCE19cpNmVZorMj1FcG9JGeQ9Lt
+	b3ZIs4JZ3p2CWjZ59rvVDj80VCsh017Tnw86Cut+KwAjdGN6jvESHKT4
+X-Gm-Gg: AeBDiestXdPv37O6o6FLjsRqqtyL6MhnLzBOrR/xfNKueH2D8Lml3eGWl4y05EX1uAR
+	uharb4b/R5lT4LMCesztqTHaee8rR8cpiTthPLJLRfCnZVXZclpZogpZCpAXx/XmddUCqR16AAJ
+	ukGCzvrMLGTqBxGi5nsr18ONbCtsNTSD2dsd5QJyAZxSroJHcxF8IFFKc59SyHJcMbFne0/H8yS
+	ghg1tPSKFkg9qGtcXu7GaRfS77AMUuJ8ObVrApLnHlEDgdy/oBJPk1vR9m3wkdG3fS7NC6KVX1n
+	je6r9AkRNBWyc6hQae/uDqK7t6Nluesk4Lc3IVGhySF2U1vylxIhXW1rzlNmACyrqvD+NMtTt0r
+	Bt0Ikmhqvk9HG62xsLSobB9bQGiNdxt8vRctwj8yunanxOVsfVW2xIC3NsV8XiVn/lxD8dGd/6K
+	GksiQv5uwLgHyxdyL1eXNZ0DQ9ny4Sqg==
+X-Received: by 2002:a05:600c:c0c8:b0:47d:8479:78d5 with SMTP id 5b1f17b1804b1-488996d9c52mr74941785e9.7.1775311655958;
+        Sat, 04 Apr 2026 07:07:35 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.93])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48899ea0091sm43937605e9.28.2026.04.04.07.07.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 04 Apr 2026 07:07:34 -0700 (PDT)
+Message-ID: <f8a5d2ae-4129-4396-8261-5fffc8a72338@gmail.com>
+Date: Sat, 4 Apr 2026 17:07:32 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260403-milos-fp6-bt-wifi-v2-3-393322b27c5f@fairphone.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rtw-next 01/12] wifi: rtw89: usb: Disable MLO for now
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <8549233f-dd83-4e77-be88-5e22ecd4f5f1@gmail.com>
+ <eb447efe-466d-4494-86c2-2e4d2b882fce@gmail.com>
+ <dbd41cc160504b8daeb93b7967101c7f@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <dbd41cc160504b8daeb93b7967101c7f@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-34349-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,pm.me,gmail.com,holtmann.org,quicinc.com,sipsolutions.net,lists.sr.ht,vger.kernel.org,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-34350-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 8633239AE38
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9FB8F39B4E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 03, 2026 at 03:52:49PM +0200, Luca Weiss wrote:
-> Document the WCN6755 WiFi using a fallback to WCN6750 since the two
-> chips seem to be completely pin and software compatible. In fact the
-> original downstream kernel just pretends the WCN6755 is a WCN6750.
+On 30/03/2026 05:59, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> It's not yet clear how the TX queue/channel selection is supposed to
+>> work for RTL8922AU with MLO, and I can't test MLO anyway.
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  .../devicetree/bindings/net/wireless/qcom,ath11k.yaml    | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
+> Currently, rtw89 work in MLSR mode by default, which means it works like
+> legacy mode, so it's probably fine to enable MLO.
+> 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Someone tested MLO now (5 GHz + 6 GHz) so I will drop this patch from v2.
 
-Best regards,
-Krzysztof
+> The debugfs can switch eMLSR mode, but it doesn't work very well for now.
+> 
+>>
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> ---
+>>  drivers/net/wireless/realtek/rtw89/usb.c | 4 ++++
+>>  1 file changed, 4 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtw89/usb.c
+>> b/drivers/net/wireless/realtek/rtw89/usb.c
+>> index 581b8c05f930..7a46ace34c25 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/usb.c
+>> +++ b/drivers/net/wireless/realtek/rtw89/usb.c
+>> @@ -1029,6 +1029,10 @@ int rtw89_usb_probe(struct usb_interface *intf,
+>>                 return -ENOMEM;
+>>         }
+>>
+>> +       rtw89_debug(rtwdev, RTW89_DBG_CHAN,
+>> +                   "%s: disable MLO for now\n", __func__);
+>> +       rtwdev->support_mlo = false;
+>> +
+>>         rtwusb = rtw89_usb_priv(rtwdev);
+>>         rtwusb->rtwdev = rtwdev;
+>>         rtwusb->info = info->bus.usb;
+>> --
+>> 2.53.0
+> 
 
 
