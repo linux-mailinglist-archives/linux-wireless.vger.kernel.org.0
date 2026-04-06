@@ -1,81 +1,81 @@
-Return-Path: <linux-wireless+bounces-34377-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34379-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0C66FC7/02lypAcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34377-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Apr 2026 20:45:02 +0200
+	id 2B+SDFj/02lypAcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34379-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Apr 2026 20:45:44 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58BE3A6524
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Apr 2026 20:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A71723A6550
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Apr 2026 20:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D8E9301FCB3
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2026 18:44:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83596302D979
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2026 18:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2666039479F;
-	Mon,  6 Apr 2026 18:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10815396D16;
+	Mon,  6 Apr 2026 18:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I7dzpaTi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kvyjnwoZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7AF3914E1
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Apr 2026 18:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB7E393DDC
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Apr 2026 18:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775501093; cv=none; b=K/LfRs8C8EWNXvJEQ2CsU9RvH8Y7A6txAkWwi2ACjt3wd6knZ19JZLIGBJ+ouZextrog1pjcB3xTGkWlyMVIE0PwxXIhz6uXeElQnZ/SiqhT58GSRmCy/vADeM/APIdZs4/mdSvmbXGQVDZoLJlVCp468jKBPv4Jm7eXrkV9jK8=
+	t=1775501095; cv=none; b=sTsQGRwrxhFgVkI7NjiD65YpmcaS2A150LL5wRZCWfIvXGTjbeLgA/OKBDdcavHZkyMtFftV/igSW9gtNYUZJPd0QExGrnWFjnNNrC5MYkcqRsie2V4MwrUn82bRRd+ZUko5nyu/jlsbwfaPJannA05myZjWN5iuY9W1bG8VOtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775501093; c=relaxed/simple;
-	bh=WMU7EGs3jMkd5faIWQETGMP/EOvdf8l1T/tZgvHILm0=;
+	s=arc-20240116; t=1775501095; c=relaxed/simple;
+	bh=pEvU+QYTdAtxGpbqErFvleuuq2RzHaUh40Ae5euTQOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3K1fcbNyybazlEk+ik1nyEY7Y69CXOC/4OojwZuUvVrWm1gHUV1cOesUtzO873KcAcRds5VmVhqb1xlfLCVL5RwrlSM8NA0qvJD6bT10TazXN2XzX5sIKKbXAs0iuN0oofLYb6WWObZRWtURq18BxCnZBqh296h2TDocUcDSEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I7dzpaTi; arc=none smtp.client-ip=74.125.224.41
+	 MIME-Version; b=hfATp3Wi3Ll8poYi7ujYBQ8uGfACqGdU6HbnQM6/wX4lMOx/pzsGHIr9WTwcfJ1z44X0OlhTECNjUoV1tFUc7bbgtXHXzV9mdc1t3/DKinZ5wGZS5QBYasBJ90l8ujV0uJ0oXkhdtMKqMHwu4vj+0EJlNKnlDz7frycww/enrLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kvyjnwoZ; arc=none smtp.client-ip=209.85.128.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-64f48a5c3d8so4287196d50.1
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2026 11:44:51 -0700 (PDT)
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-79ea87af213so75958257b3.0
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2026 11:44:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775501091; x=1776105891; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775501092; x=1776105892; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iIDqed17Bi0ataxw+Ke35vc4r3g4dT4TF34U2d2sNnE=;
-        b=I7dzpaTixqO2jj4Tb8YF/hW0L+tZTgQB5JG3Oq+aYkjsP6NByCHqdjl0+yR7LlzZy3
-         srkwNT8nT30IXw6d73FdQzKxBLBqB8vgpXqBk9mMEXVyzwLNMpb/ByucZdU8g0zOp837
-         VaR6VNl0xkDGYjfPaXbVgeK39NzBIiG32g1anBvGGWkmwoIs5c5sFFhMkwXi+I6XGIfh
-         hzxk24jm4kyxMhOdxLWmX6GF3wiEnJLq0cK57TOrQjFyK18Fr/zymHH99A9VlEniF0zM
-         pXtggvoNt7o12vwBa1OKoQODFOTtD/pVPjgcVroNzh1+aZNQ9audVr/DIH4Zy+EWGX+G
-         ZB0A==
+        bh=NQoz1d8ovhjDJHF4BWKEq+W4S1EYJTMp42UIwuuSZLQ=;
+        b=kvyjnwoZGoxAq1ocHumgip16t+Em4S7Agp2d7+5B8P9LqhL4jagYmjwb8jK2JMvHoj
+         illfD5+48JW4aT+SIs0tEnmRp/OWSR0EuWs/CfewCAZVO0/AMBpDO6rdX8I+gBrMTMWS
+         Xw0h4xBKLxdTu55QEqrj9u79kt1ovT0JC+fytT6RKxIsqL+gVj8lx0Q87CP7FF0FJk7I
+         P8cTvRKwoTE6g2392uA+S55X7pBPrf0pyVQYyctjKTZ5UjcBQCOonYUlCF2Nb2dF/vDM
+         SOEUWYPaEVH62SucDNdB6lfgYJChDvwAa9qgTVlt03jKJmm9jotqwmqZjCr9Xm03MEpD
+         lyOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775501091; x=1776105891;
+        d=1e100.net; s=20251104; t=1775501092; x=1776105892;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=iIDqed17Bi0ataxw+Ke35vc4r3g4dT4TF34U2d2sNnE=;
-        b=NZ7RrCSMvjp0C0A2XJ/rCfg92cv5/V8IFXEdU6LaGGJdRF4u9UUYnNua48qPfy1Ao1
-         PPMA8zXFNGFrlqD05zvNRPqkgEpZV4rhmO7O8/jrKMOc/7W8L+ezfCc5bEeR2R4cs/FA
-         +GIjXpiCPDVy4QvDaWDeN6t5yGAk5QN+Z0Q6rGrIYG8TCoiyBgaxKIYyzNaQwYnCy4C7
-         l3zfgjsDglcImAz7fh5Ov22ezvOe37rwqviRl57JV24yUu6GTwqJhUj+j1MGJbX7w3jN
-         0iapHAgRelFh1p8vkFf7yA/gShk9tXzZCJ1tiDfSZ0vI1oKe+w4RBxwuX9wJhF0GArmW
-         u5GQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJUZngjQTu+v7/aAhQtxOgLqQjOPVrI7L4diQkNqcUt9W9sEyonxySe4zqmlrr3P323VLyULNiF/4xajqBkQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxTgm5hGeKsVDXO4UqyKG8kOxFSo0yJzKKisIyopzPNe9t/vAw
-	9cdEAO3gO7rucg7/hSMTfDdzPt8vXafGhdoHcevlq5L3uqbCT9a12GGx
-X-Gm-Gg: AeBDievxw3YbN8/O1F62m2mnjhvVh5fSjwTasGWRMCodFklx2O3lcN6H3mGA1C6B5D2
-	RrBY9u5/J2R5qv+XLCrsrDNDqMVOBrI/HxAeorZUIoE7B/6mI0EyPCroa1HY5ilxOeCUt98ZieP
-	00eJGktefyhmrKSggq0PBqYpK3XRjLby2+EUMFthX4SlZDds4m6Xgols8hVK7Ww72mEZ4JIrpW3
-	r4gtnkZKwDxDUVS7beIZnBctJ6x5Cs3qhaD8WG68dQOFvQKwASUT9r5gTW71e5mRSeg8rvnh6rJ
-	MHuh9BAAYTeTJ7GQDR+GKnTiaLUD3jAQrSbu52V7L3EXDNxXYjwsEpUjhC8Cu1ZscGqypa6e4H9
-	i5HK8zU0ug0XTJ7Nt08nbYJErSxBb+BLzPAqinWm4sJb6q1cCBCcooQ4MfyyKgqovhXwVSTDoTJ
-	esijV6X5KYGehV7ApRiIofNg9h7m2qIVaQ0GjFwDV3rDLJibPUfByzgScUicDk
-X-Received: by 2002:a05:690e:1282:b0:650:516:5ea6 with SMTP id 956f58d0204a3-650488acc93mr13212718d50.65.1775501090808;
-        Mon, 06 Apr 2026 11:44:50 -0700 (PDT)
+        bh=NQoz1d8ovhjDJHF4BWKEq+W4S1EYJTMp42UIwuuSZLQ=;
+        b=Yg+8RFUZfLmb3dw3DnYmgZ5Y8guh0D8Kf63gnjQmjIslWzBmSMJYFXoz8mKHailpyD
+         selVWjV55yACl3gfS+5wEIu49KQBzR23wbjS0rGlstfVSBOtNhpON17eR7OItcqxv0K/
+         vmdh2RU/K9aTTlvWIJSd4eyh/2LsK1DqflTh2enMM/YPjmmefA7UqBtUkYGK1HGpWf7x
+         Vq4VltjBbNak8AVoL+Dzkyt7hEY1B07OIYtFGDusMGjT0Rd2tLMnUN7WPEZA+qwYItAN
+         BLsLiBge/5aDVJJ3/NxwRkMp2RZvh/o0gXMyUGgX2A1ZzIDSifPSSkkojXI7lHRwH0jc
+         M5cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUNYy4M1pwV6hEIKvZMT1hhfUKEcp2UvkoBJSD4vdnvgZ/Y9k9OV01NUW2/jQzvawDWm5zOKBGo4kbru/ltMg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkKqmGFAptdwPxGFbaWZi6OpcRevPwdaGH54sWBW7EXXBCEjLf
+	n+cgmJscwDXkpYff+kVzjAsVlsLMe7i79/tcqe2cIQ7Fwo6+kSVNQnFn
+X-Gm-Gg: AeBDietDgrPLt2Yg2cpfszrwOnsLq/i8m6itPRkAXhO+ryamB2xLBsXpujW3ywpSAYm
+	yyt6vAXC6uD8XnmKrTBWiWqTcFlb1Nr0sKL410oTlQMJzFDzVzLGwQH5dKzNDeLSaBdxMrPoJPQ
+	xKvSV9oQ58L3/+raeVpLUlh7mh6NeAj71t09ZNOCZvzSDY/0Pxtz9BGcd8odBgm3L3B6aYN0Wjs
+	jBUhrMxYlFVCd2DtMv3jGzM2ySiKhWhewI9feerLgKNcoVUeku0E1oYjaoJlvCj6kGgsQ52Jxlo
+	P37zQccK6RJ0KDap3J+BNNuqxYOzBuC+4SYpuaO+HwAtlPdGWjPJ8xbXXOZQkz3nkfV1tEqiJAN
+	oM1TbYkwwsnFbA/c99LKRfsGgQorE2GyYFqntNMH+ez3kAaAjlChr/WZYEs6vuwZz0aJiAHhmJR
+	f7Bkg86cgrvNdH4QxkdMD4PWVNtTUCAPufMSPXAgrQVi58AGlCm/fLyJOhOAk2
+X-Received: by 2002:a05:690e:440c:b0:650:3363:ff81 with SMTP id 956f58d0204a3-65047fc62edmr5918011d50.4.1775501091704;
+        Mon, 06 Apr 2026 11:44:51 -0700 (PDT)
 Received: from DEV.lan (c-75-74-152-49.hsd1.fl.comcast.net. [75.74.152.49])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6503a9a9271sm6342830d50.15.2026.04.06.11.44.49
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6503a9a9271sm6342830d50.15.2026.04.06.11.44.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2026 11:44:50 -0700 (PDT)
+        Mon, 06 Apr 2026 11:44:51 -0700 (PDT)
 From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
 To: nbd@nbd.name,
 	lorenzo@kernel.org,
@@ -86,9 +86,9 @@ Cc: shayne.chen@mediatek.com,
 	linux-kernel@vger.kernel.org,
 	Joshua Klinesmith <joshuaklinesmith@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] wifi: mt76: mt7915: validate WCID index before WTBL lookup
-Date: Mon,  6 Apr 2026 14:44:05 -0400
-Message-ID: <20260406184406.8152-2-joshuaklinesmith@gmail.com>
+Subject: [PATCH 2/2] wifi: mt76: mt7996: validate WCID index before WTBL lookup
+Date: Mon,  6 Apr 2026 14:44:06 -0400
+Message-ID: <20260406184406.8152-3-joshuaklinesmith@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260406184406.8152-1-joshuaklinesmith@gmail.com>
 References: <20260406184406.8152-1-joshuaklinesmith@gmail.com>
@@ -111,7 +111,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[mediatek.com,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-34377-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34379-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -128,56 +128,50 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D58BE3A6524
+X-Rspamd-Queue-Id: A71723A6550
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The mt7915 driver does not validate WCID indices extracted from
-hardware TX free events and TX status reports before using them
-for WTBL MMIO register accesses. The hardware WCID field is 10
-bits wide (max 1023) but actual WTBL capacity is only 288
-(MT7915) or 544 (MT7916). An out-of-range index causes
-mt7915_mac_wtbl_lmac_addr() to compute an invalid MMIO address,
-leading to a kernel data abort:
+Same class of bug as mt7915: the mt7996 driver does not validate
+WCID indices from TX free events or TX status reports before
+WTBL lookups. An out-of-range WCID causes invalid MMIO accesses
+leading to a kernel data abort.
 
-  Unable to handle kernel paging request at virtual address
-  ffffff88d5ab0010
+Add bounds checks in mt7996_mac_tx_free() and
+mt7996_mac_add_txs() to match the pattern used by mt7615,
+mt7921, and mt7925 drivers.
 
-The mt7615, mt7921, and mt7925 drivers already validate WCID
-indices against their WTBL size before use. Add the same bounds
-checks in mt7915_mac_tx_free() and mt7915_mac_add_txs().
-
-Fixes: c17780e7b21e ("mt76: mt7915: add txfree event v3")
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
 Cc: stable@vger.kernel.org
 Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 6 ++++++
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index cec2c4208255..0acada48824f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -901,6 +901,9 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index e2a83da3a09c..ea775029125d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1327,6 +1327,9 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
  			u16 idx;
  
- 			idx = FIELD_GET(MT_TX_FREE_WLAN_ID, info);
-+			if (idx >= mt7915_wtbl_size(dev))
-+				continue;
+ 			idx = FIELD_GET(MT_TXFREE_INFO_WLAN_ID, info);
++			if (idx >= mt7996_wtbl_size(dev))
++				goto next;
 +
  			wcid = mt76_wcid_ptr(dev, idx);
  			sta = wcid_to_sta(wcid);
- 			if (!sta)
-@@ -992,6 +995,9 @@ static void mt7915_mac_add_txs(struct mt7915_dev *dev, void *data)
+ 			if (!sta) {
+@@ -1563,6 +1566,9 @@ static void mt7996_mac_add_txs(struct mt7996_dev *dev, void *data)
  	u8 pid;
  
  	wcidx = le32_get_bits(txs_data[2], MT_TXS2_WCID);
-+	if (wcidx >= mt7915_wtbl_size(dev))
++	if (wcidx >= mt7996_wtbl_size(dev))
 +		return;
 +
  	pid = le32_get_bits(txs_data[3], MT_TXS3_PID);
  
- 	if (pid < MT_PACKET_ID_WED)
+ 	if (pid < MT_PACKET_ID_NO_SKB)
 -- 
 2.43.0
 
