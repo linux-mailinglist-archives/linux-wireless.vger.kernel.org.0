@@ -1,81 +1,81 @@
-Return-Path: <linux-wireless+bounces-34382-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34383-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OF+3FZ3/02lypAcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34382-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Apr 2026 20:46:53 +0200
+	id 4CV6ILv/02lypAcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34383-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Apr 2026 20:47:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA093A65B1
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Apr 2026 20:46:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D28D3A65C0
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Apr 2026 20:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 09B8B3028F42
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2026 18:46:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 994953031F1D
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2026 18:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C33338E13C;
-	Mon,  6 Apr 2026 18:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B0F39769B;
+	Mon,  6 Apr 2026 18:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zf/dkx2Y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I+D3/Ka3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60767392C4A
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Apr 2026 18:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD88E396B7F
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Apr 2026 18:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775501180; cv=none; b=WjPqwxscIXqJVtp+wbNdoSmP0d9ZT3Wp5KNuek0hUdA/zveSCaLM9hdttrUfEuVfxtege88Z98NiQaUKFeCjVi3YoIFwDBiWo2f6FFrHcYo0JroedcAOTdPWCOY57Vo8ypi+BqENByQ9MGBj59Trx37qY+4dL0wALAcCRB4wVAE=
+	t=1775501181; cv=none; b=SkGH/Fhlvtiqg1q67HMbmmMhtNrUn8ZkqCa8SaI8a6OsemEYrBZtkrUvXKp711yvdtK0JKj1lbP3AAm+BMjtbM+M/TdTnLnAUzfGes68Qz9o16Y1NxLWlL2Bnn4UVAFMZF/k+YuhAf0wjPhfcFNOeQt+BKg9J11exXFdbo35KWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775501180; c=relaxed/simple;
-	bh=1BlXWlRN49rlr8956LLGxTQhvicZChrmUTMEfYKLNeU=;
+	s=arc-20240116; t=1775501181; c=relaxed/simple;
+	bh=TodaMl53UO3CirNfBGxleA7KOIefYV/SEGEFmuQG35s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPQPrO9tIa1zxoZL4NI7fazIEVRefuOkeBJRpco422Sjuh/Hp8Ea0b/GC12J8Dop4HtTUFmWXTGFqFBflfzb6OTba0x9Fn+LDeUIeP8lkU8X8QwflKm98eKYk/uwXO9fWXq+g6vqwrS2UorjDWm0htAW1FPQtQu4QJoQM/wTubQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zf/dkx2Y; arc=none smtp.client-ip=209.85.128.182
+	 MIME-Version; b=lziAqKzfdVe+An8z23t8Qgfpm90yRJb6k+VceVu4U5fipSI+PGCkzzXJzxPX4AgKCqu3KkTREVmt3YzJQh5Syy8EQASfl7BL1h6JLD6kDApE3rvBpjUKjtr6Nla8yeev9y8yYZz5H2Q9leJB7SrlRfVoAQUwZ2M4/ztI36ahpmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I+D3/Ka3; arc=none smtp.client-ip=209.85.128.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-7927261a3acso35057017b3.0
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2026 11:46:17 -0700 (PDT)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-79853c0f5b9so70275127b3.0
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2026 11:46:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775501176; x=1776105976; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775501177; x=1776105977; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=loX0Qy4NihlN+KUtrLsqZhhdHawhctjv5xYILfNriy4=;
-        b=Zf/dkx2Y+KQ1gfePjRUkmcjLJ+d1NvW5qY6GbnVkvqmap3pufd5URfS8nyrLc4JSE0
-         6Ndce0qTr08zaob6D3Bsj5LfqYGayT6HkUYlG5kYPtCQmJymlxFYvfs28igdmzIXWyFV
-         7tZaIbfRkh9S37sBnIR5LuyKvqeACDSoObHCPOIaeC0XxQ97HMykl2Fwo0JJRyL+2j7t
-         vgjPRvlBQ5qBfw6pGcayzWs47zxksADpu9AkXcSp22W56bZVuf6SR4491S88CoOFqL1s
-         h4QF5bBkWLWvN5pve0N7LcwGggQZqUeUXx7JgnXi3bsqnGGPXvOWRud2onu+E2coNdyn
-         CmyQ==
+        bh=WZPzCplQeYw4HrNPe0mY3COLB2w8pgJ3gstqK4owbOE=;
+        b=I+D3/Ka31lJe14KNDtXtxVBdyUZGN3IngJkpE/lGeZpLAoeecfnwGHyDunixTtSk6c
+         Xir48p2sPXV+8HKU5W5pvGvy1+BlyBBvmVYpBnZdaS6q1/Y4QMGub2VHN1zC4C3a/vPu
+         vP4C3drzg3tkRisCwiFtkSfoHv5+VCAAr1u0wO8YdVtBuaQcL2YNw0hp7DaskXZ6/zwK
+         uZUb9UWjFJYF4u3+7eeHCX6nD8zcxelz1j3/04XYfz3czPe+MMjPk/8b75Qe51MUHdAL
+         l6orLGKoEk9rP7QOthvd/ZV7ZDF/CLWDVRofgiov8h/cTQYVnAS1jxEWoARbVn59DlSR
+         El9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775501176; x=1776105976;
+        d=1e100.net; s=20251104; t=1775501177; x=1776105977;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=loX0Qy4NihlN+KUtrLsqZhhdHawhctjv5xYILfNriy4=;
-        b=gbJwQ/YTVsee2V3nvrbCg/0g6hp5g6AgiHPTWs45qwdp5LJTheMGMC7GRQK/qTkjur
-         r/nvOf4WXkiEgV/wiWe/Coc/+fXe6CyjSxJCgYBKu29twGO0jgwJFtq6jx1JlIjgctUu
-         aWcgc9nd7EdygasXpCu8fAYcGaeZrFPDFxqDuhuSrFav3Ca0+PvFRTzxL25BbYXf3iQU
-         MAo6/g0b+qIN6xa9MFEzTrKMsSM4h42qp9ALrnfoBSyh2JdxT6ZnOAXVlH0tFCipMfyV
-         kdarUnkrMzVoTDq1pC2rdCQ/Qff0tKYO9Ug1QKuWjH/iWgPuxE+HJ/grYUUJRh3MfF2M
-         /pow==
-X-Forwarded-Encrypted: i=1; AJvYcCX6EIIiWehA4fNmBQEwip1D00tNbM3W2mahL2DsO5rfV77tLiihA8LAPUrYRmRnfaosPfwr19fyKBY0z82khg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEi/iGUlQh4I0xr/XeI0ts53EWUXAY6uu1Y00HeNOKTttt/HNo
-	XkOHm7rWUnzaz4E6UFBl5dEh/l81wcBB8KuCTzVnrD82ITUbHjfzoLDqj0DHAZwN
-X-Gm-Gg: AeBDievfq1m1+NLh0pe44adcbWCA3osZGkqqESttdc6aJPPEKakvIACp/++YTaLmffw
-	tRdJaQHoGcfekkw4MlMJvbcImt3PvInmdypCHh/BL+COVjg8J3z69Jbrm2hZ0BPloB6y2CcHjAl
-	aFvYQL9S7pcD7+Cj86AX1DU9t7gJ0xUIHnfJHiX2bLRzJqIQdwsmBJuO+XGEJ+lVD131DCOKSdv
-	Agu6WvmeeiZEVqcUdc7I1MtOoEbYsIGl95X4LzUhJiFPrD0E5mVWNNGvJYWQwKijHFqNRB4220C
-	jDItlucxvd5NldFhlvxMm8ATvrmqHXcEkeraeXe2DMgWtwlfVwcCQYdZR/MvXYWeSAsKzL+5Cxh
-	5p8y58urzYReUDOJps2SIFjiLMzyfnfIQ4S4HjY6wu+zKjwZoo32wWQ+JUjJrOgpA7DMnFVcK5U
-	i5FAvjAk7plpZAHDrH9w8+7Jw7XnY/MRgb+9ME0m/YnlG6b8kZQMrb7EC1aRKdqLcSbpnw6NQ=
-X-Received: by 2002:a05:690c:6891:b0:79b:82a1:645d with SMTP id 00721157ae682-7a4d84c2b0cmr136330457b3.29.1775501176499;
-        Mon, 06 Apr 2026 11:46:16 -0700 (PDT)
+        bh=WZPzCplQeYw4HrNPe0mY3COLB2w8pgJ3gstqK4owbOE=;
+        b=Os/K96/WI4K6mM+bBeIIpWvGomBiApzfff0cBBjsFBN/Ye80A0zJWv4x4N5ysBRnCu
+         AYPO0gqTUoeNaBWW/SmFw70TsRaOpO2SdC5E6H5Y1AHIXLWeVnxFIPMr4QaMFkFDIYST
+         QcrK+KrlUv2vJWi4ePYVU45gCyl0SJ17WGLjGBZRjkOjYSDcIK4ZLq0aBCcYjx7cI6fZ
+         c/ESgj0ZR8o6kH/xuE/TUVvniU28nEw/K88smhJbJmYf8LjL4ahvnUZ+7dwlxwtegWkq
+         FHwNrYW2ucfaReaqm+tJYt3qINvkuUPi26lg3jaFWPIT57YLGq4qpkrfpZCl9B3yuws3
+         Dtkg==
+X-Forwarded-Encrypted: i=1; AJvYcCXqwEU1RJHMKcr7JcUzy76WT8BwXYZOMDlG/+vdg5btb2ERCj/ohqY/QYVsHmZoepVYwgKYkQVU76wp0rkF9w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx50Qrj/tepuxasyw6emdTNA9iL9XCfoyrw6KfgC8jn5h8S9NZk
+	51CfFWVFg3635rsJeEeW0BKcKGO4gK2l2aD9sv4giN0oqrJZaC82vjss
+X-Gm-Gg: AeBDiesEQVMbI4Ghv5coWxLk6wcEFle5+MY7E5vXkvbGDKbEST1C6AjAGCaH1AQyks1
+	NL0Qek/iCYbiphCGhSo9DN3hQKBMhmO0DtTvBugZqv1b80oXsmb88hFqKexZDq0xSKd/G/hs8JF
+	EyB2BsCGO2enWKPVPVvBp30jjPdgRdkg5wLv7/6sI5HNWyOyQCB/h76LaYSP3G4OSx8jwNb0jRI
+	vSxTR6E9ItJWy2jqErSNA6QSH/Ex/cynW8k/jgO26dMUpC3E2O66ai3n1H7XKtvyvJpaOeoFEjt
+	duQg2XZgYLwkBuwPYQ7n5lAyjl8Wg74VNhkk0GsS3gXESfJaA/vWaypwkEG094C9SA+3b6kjJl9
+	CEbvqCwRxKm3fhpcdW1jzrRcHpOrzODoM1Cht7ZFQrZRvN9flVZRhaT8Ydh9mQ4xEN292XbFkfn
+	XB7zMM+Hgwli2di9VvGHZTE8bS3icZrr3M6m0TPH0ozwOnnpYdeVLoT0M8vUck
+X-Received: by 2002:a05:690c:dc9:b0:79a:6751:1489 with SMTP id 00721157ae682-7a4d5c5bbf6mr138049557b3.38.1775501177568;
+        Mon, 06 Apr 2026 11:46:17 -0700 (PDT)
 Received: from DEV.lan (c-75-74-152-49.hsd1.fl.comcast.net. [75.74.152.49])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7a36e8343d3sm56288377b3.16.2026.04.06.11.46.15
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7a36e8343d3sm56288377b3.16.2026.04.06.11.46.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2026 11:46:16 -0700 (PDT)
+        Mon, 06 Apr 2026 11:46:17 -0700 (PDT)
 From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
 To: nbd@nbd.name,
 	lorenzo@kernel.org,
@@ -86,9 +86,9 @@ Cc: shayne.chen@mediatek.com,
 	linux-kernel@vger.kernel.org,
 	Joshua Klinesmith <joshuaklinesmith@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 2/3] wifi: mt76: mt7915: fix DMA read beyond mapped length
-Date: Mon,  6 Apr 2026 14:45:55 -0400
-Message-ID: <20260406184556.8245-3-joshuaklinesmith@gmail.com>
+Subject: [PATCH 3/3] wifi: mt76: mt7996: fix DMA read beyond mapped length
+Date: Mon,  6 Apr 2026 14:45:56 -0400
+Message-ID: <20260406184556.8245-4-joshuaklinesmith@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260406184556.8245-1-joshuaklinesmith@gmail.com>
 References: <20260406184556.8245-1-joshuaklinesmith@gmail.com>
@@ -105,13 +105,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[mediatek.com,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-34382-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34383-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -126,13 +126,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0DA093A65B1
+X-Rspamd-Queue-Id: 1D28D3A65C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Same bug as mt7615: buf[1].len is overridden to
+Same bug as mt7615/mt7915: buf[1].len is overridden to
 MT_CT_PARSE_LEN (72) but the DMA mapping may cover fewer
 bytes, causing SMMU faults when hardware reads past the
 mapped region.
@@ -140,18 +140,18 @@ mapped region.
 Cap the firmware parse length to the actual DMA-mapped
 length.
 
-Fixes: c17780e7b21e ("mt76: mt7915: add txfree event v3")
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
 Cc: stable@vger.kernel.org
 Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index cec2c4208255..b66c440dbef3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -799,7 +799,7 @@ int mt7915_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index e2a83da3a09c..5c03dc163547 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1171,7 +1171,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
  	tx_info->skb = NULL;
  
  	/* pass partial skb header to fw */
