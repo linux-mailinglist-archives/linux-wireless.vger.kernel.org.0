@@ -1,124 +1,153 @@
-Return-Path: <linux-wireless+bounces-34376-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34378-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gAIJFZna02nVnQcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34376-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Apr 2026 18:08:57 +0200
+	id CEp2Miz/02lypAcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34378-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Apr 2026 20:45:00 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDDD63A519A
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Apr 2026 18:08:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C833A651D
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Apr 2026 20:45:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 957E53008760
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2026 16:08:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BB153300C0D2
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2026 18:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A99133C194;
-	Mon,  6 Apr 2026 16:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4643947BA;
+	Mon,  6 Apr 2026 18:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVL+qkwh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dHlKfhBB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D552B388382;
-	Mon,  6 Apr 2026 16:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E8D31715A
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Apr 2026 18:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775491697; cv=none; b=s8V6VKgzR8oAH/s/QaxG60D/KTjYc+tFIOGKRz6jnobfXTFXIH9Onl9uIc/w3Ifj4DApYMuztZ/ext/CvEBAIvFGCXKx0Va12Q8b7Qe0gv2O9dtvJ+srZq2wpn2PTl6jABL/HFp3vv8zYXbgpBZov8+LOY96bQJwhfHlhTLvAuY=
+	t=1775501093; cv=none; b=r683Nv0ZQMVhHWBvCOmYgMBzZtQ5HPswo4j3NT1q+PgDe72M0w6REw2i/50D7o7CThCziCrXOYDl6VOWx5Eu2jkgmeW/YuvExel4fsedLNkORQrBjWXSnUft5rPBTr6/wdBJizqzR6uce+BW6dRO6P9zJkLjYluv/9XRT/ayfng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775491697; c=relaxed/simple;
-	bh=OYsimdFILg66Rq4LvXe90JtypDml8yHs+AL6xpCSECM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EgoJDegtl7OGmLJlscZbjzrOTpF8V0Z6bVttBEjkWk8Adj4tUSd6k9BkTefTxrvx3RoN8cheOCN7ApXi3XkEYRjmj4L2XfXhLOrFppz5zC7aOBQjUiMUrvEW9U/0nd4w//LICJN+5VuhyYqwLnxXTbIEbmmNBx78MW/EapqiK4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVL+qkwh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095C6C4CEF7;
-	Mon,  6 Apr 2026 16:08:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775491696;
-	bh=OYsimdFILg66Rq4LvXe90JtypDml8yHs+AL6xpCSECM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WVL+qkwh2cE0JYr2sfsCtU3NhWf0LwL0YJUTsOa9MzoEb3Im1SU5U9EjHNs2cypFp
-	 Ab1aYQCkezyvkqqzkm+FnD6zqH9XWA0WfRJ6bvOKoU/JV3NI/ZSBOY5AlDGejwLSV8
-	 8WDMMz/StOc4pv1TseluetYYIOhLrLPQKwd8mtFpPWlMQVm6Q63scWVirumKDFLzE6
-	 TllHCa0CeMCXl3shLQRnceesCocKEKhZ3dqDBDj7+3EbY8YWgKJan1zIS6bq8HJ6Al
-	 NbifxHrIYJlRWoYXMD5tap9B7UAMyL8pcav4mplTd5T8X1j1twxgnFAyYohZf1a17n
-	 ZlZt6BZPcFTCw==
-Date: Mon, 6 Apr 2026 09:06:59 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org, linux-crypto@vger.kernel.org,
+	s=arc-20240116; t=1775501093; c=relaxed/simple;
+	bh=1wFdMyFvSWKZhsBw4bUJanuljFszLvuCcEbWOUJntAY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bb+rwX8+cc5fuESk0u68BLOiOFkj8ot2kb7FQVdhg3ufLCr0PWstPw+MqkKml1i33pG1KFPkJm+qrZZSPhjM5WFRDPuS2qDyZtavxZlFEnP+mb9+IOLWRkZU15O7muEOnyz1k0+nAtEMuvwnPaLK3i9/znc04MsHEQKB6xlGrF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dHlKfhBB; arc=none smtp.client-ip=74.125.224.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-650789b22e3so331390d50.1
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2026 11:44:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775501090; x=1776105890; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=s1TFbzSmIgRxkU6nP06w6dExgV+CzgxbPMmRj78Eh2I=;
+        b=dHlKfhBBpPNnvSukZX8+8/9ZaHHJBxkkfGgpaaWQ2EMgkh4ZP5hB4TGWQBk6lBmAJ4
+         TtnrYOmc3zcRSpEra9wAJ2iOZiGt2YYs346c/QXd6lXIqc0aukb9U1kP6QOK9oIFm1lA
+         4URXfiUTROE8tAqhN2kRDkTcDtLF0wpqxUVpXWxX2sEZz99NnHsoNWT+3NkY2ZSSW71v
+         YIVHqkX8gIJbC6se1GhsB9PF1oqcxoqGN5RSzKnSWP0clepx4+lrQ8z6VkNXIurgtfZD
+         g9DOs75Y0ovnsd3uL6KM3LaGFeLpMw+d0gR53f+7/rNYn7JrtY8bvw/mD0Gd/iyOaU8T
+         IiSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775501090; x=1776105890;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s1TFbzSmIgRxkU6nP06w6dExgV+CzgxbPMmRj78Eh2I=;
+        b=M38LXx4XKya+EnerJwnlxrkK95z/+LGug+lbaXmXriUNNTDBGzOVd/GzCEQ0NtxWft
+         030V15bCMjnuBO7UkbaNpmhRQtPOKO5npOoVmNpxLYS3swSlRSCo+5wh5jgggPYCN1+W
+         l2xKKHxiEL1RNoXiC5RFlz6Pvb3w47/08nOyRyyQqoKb7KFNc+hozdTdQCwn84l24sXx
+         gXw+Ht+02Qs/0IZ8ZIak6CEWKmuhLtJKcBxWKWojxY6m0gP2Gkvam4RxfHT/Je4cRhmh
+         R/x4g+EhcciaHSecwKU6lUKrnzKJBI5ZJ87yNo63j6ZXpzf9olnJ8RGgzoTctDiaY7DS
+         vetg==
+X-Forwarded-Encrypted: i=1; AJvYcCXwragt8nMOh29qKA5Y1d3FxJ1hjNiFXGgsQ27Vtwa2chnbC6ZwSJIvJFNFJaD+v4Y8kbZ8XmZ3F7EWR/RTvA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuBZWFqFNlT1wIkWsVW9rCsJTd61DnrdVCWjNKh7x0hnowIy4v
+	bTrwotS1f7kRQppen7ExeRX2kSL4zk3DMaokVG/zIFSQ/NJFjr6+TO5R
+X-Gm-Gg: AeBDievPmbEJTf8KDsfyishYuCskld3/PuJRo3uz4IeLRlyTlOTckuQuDcwu/S6aSim
+	dEeesACl2zYSmxZdvDjqoPNzSF8bejy5mnCO5gPl/5jNMp54SXWQOzfPIFbhFFeSx0xcva1t9rf
+	4JGbhwip/H4vq4wx9/9Cxlco0p98t67T8Ii4+gU+hrDLSMbUz+b4FRwj0eYn5qYOxhFNYV9dVK7
+	nuOcOz+mKpiYcFOQKEuG340gTeD4KBLfC3ykI/yZ0X2W6Hy6Jets/Hn/Y5nvkgFI9Uky4YrTo1J
+	RUarG3wrbBsfzDdsYatMzzPCxssHTNPpb7JSOd2q3tzO3iAUaaINKUP2++5itk/VWti1oQ2AmTa
+	J2xh9op4lpO0OV3KKJ1GgPDycTzkfPZRVqFzqkwZRwFx6Jwvfrg83h7FrVM0AMg9W4RYJScupVd
+	UslOpEHYzJyVdzGHRuXfyaQNMY46ACrNLnmfkryIKFiyblLAca/X8fMd5mcYHE
+X-Received: by 2002:a05:690e:d48:b0:64c:a6c8:5300 with SMTP id 956f58d0204a3-6504886b02emr11564131d50.34.1775501089848;
+        Mon, 06 Apr 2026 11:44:49 -0700 (PDT)
+Received: from DEV.lan (c-75-74-152-49.hsd1.fl.comcast.net. [75.74.152.49])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6503a9a9271sm6342830d50.15.2026.04.06.11.44.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Apr 2026 11:44:49 -0700 (PDT)
+From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com
+Cc: shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH wireless-next 4/6] wifi: ipw2x00: Depend on MAC80211
-Message-ID: <20260406160659.GB2971@sol>
-References: <20260405052734.130368-1-ebiggers@kernel.org>
- <20260405052734.130368-5-ebiggers@kernel.org>
- <9a3cbef9-5599-48cf-8307-3114ac2de704@oss.qualcomm.com>
+	Joshua Klinesmith <joshuaklinesmith@gmail.com>
+Subject: [PATCH 0/2] wifi: mt76: validate WCID index before WTBL lookup
+Date: Mon,  6 Apr 2026 14:44:04 -0400
+Message-ID: <20260406184406.8152-1-joshuaklinesmith@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9a3cbef9-5599-48cf-8307-3114ac2de704@oss.qualcomm.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[mediatek.com,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-34378-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34376-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joshuaklinesmith@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CDDD63A519A
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 71C833A651D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Apr 05, 2026 at 03:41:55PM -0700, Jeff Johnson wrote:
-> On 4/4/2026 10:27 PM, Eric Biggers wrote:
-> ...
-> > @@ -149,11 +149,11 @@ config IPW2200_DEBUG
-> >  
-> >  	  If you are not sure, say N here.
-> >  
-> >  config LIBIPW
-> >  	tristate
-> > -	depends on PCI && CFG80211
-> > +	depends on PCI && MAC80211
-> >  	select WIRELESS_EXT
-> >  	select CRYPTO
-> >  	select CRYPTO_MICHAEL_MIC
-> 
-> remove??
+The mt7915 and mt7996 drivers do not validate WCID indices
+extracted from hardware TX free events and TX status reports
+before using them for WTBL MMIO register accesses. The hardware
+WCID field is 10 bits wide (max 1023) but the actual WTBL
+capacity is only 288 (MT7915), 544 (MT7916), or variable
+(MT7996). An out-of-range index causes a kernel data abort.
 
-If you're asking for 'select CRYPTO_MICHAEL_MIC' to be removed, that's
-done in patch 5.
+Reverse engineering of the MediaTek WA co-processor firmware
+(NDS32/FreeRTOS) confirmed that the firmware validates WCID
+for its internal table (< 786) but still emits out-of-range
+values in DMA descriptors sent to the host driver.
 
-If you're asking for the "depends on" clause to be removed from LIBIPW
-(but not IPW2100 and IPW2200), sure we can do that as part of this patch
-if you want, since it's not actually necessary in LIBIPW.
+The mt7615, mt7921, and mt7925 drivers already have these
+bounds checks. This series adds the same validation to mt7915
+and mt7996.
 
-- Eric
+Joshua Klinesmith (2):
+  wifi: mt76: mt7915: validate WCID index before WTBL lookup
+  wifi: mt76: mt7996: validate WCID index before WTBL lookup
+
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 6 ++++++
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 6 ++++++
+ 2 files changed, 12 insertions(+)
 
