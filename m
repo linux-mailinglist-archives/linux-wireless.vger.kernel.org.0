@@ -1,160 +1,159 @@
-Return-Path: <linux-wireless+bounces-34449-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34450-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIxvDGyo1GmkwAcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34449-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 08:47:08 +0200
+	id gIGjHiS41GnQwgcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34450-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 09:54:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAEEA3AA728
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 08:47:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5A63AB007
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 09:54:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7ED87309B9B7
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 06:44:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 508993008A6F
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 07:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4000038B132;
-	Tue,  7 Apr 2026 06:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZjh3z+o"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C687B3A2575;
+	Tue,  7 Apr 2026 07:54:09 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CE238A712;
-	Tue,  7 Apr 2026 06:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184773947BE
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 07:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775544241; cv=none; b=qbPFDIBZWCs3O3ap4neIFG9gKgNs2K4N0VRT2NuolqJasiLbsBf3D5NAzJPyTewvPx/wuEBJAhNXd6Devt8oV5RrFP64HkSoCekC9lbcOXTbxBq+nmsJ1WVPG0Ur/wMc/tgVWjI0mQOOLkzzP1bQBFnCX+FCJ2J2FgP6HEkcmkQ=
+	t=1775548449; cv=none; b=NNrKmnlgWjV3LsNsQtqQMKd1wUfq3+Mj5FzLf/si1pRueMiDut2eQ2YBzbHlMC+KsGyquEZLKT65XCNvnqT4NEID39XlZxo/ADeJg9w3oqxE8ZkdFIQWlsXNUC6Y/NGgv3yDlRp6AxmCFWkcgq1U3BwMOvKrg/0ODkukmT9qQak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775544241; c=relaxed/simple;
-	bh=To0TOgWdk+Eg3vCUJ0MvI1sSRqScB4zFZ3xj+H7iwWk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nCPEpFH0FOA7T08s4JZROz9NGFI1FEVulcdOSPaqkybxmvoRpSmJJjGN0JF5wC24znSHqlw95d7w4juLoXnEDZPZvnDvbehTTYZj0aGoHH+r+rVP95KsxQMAVu7JyjqqvREg9Ux7Kg32iOZLkiC78/gbWL+WB5xtHxNqD6LBAfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZjh3z+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BD69CC19424;
-	Tue,  7 Apr 2026 06:44:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775544240;
-	bh=To0TOgWdk+Eg3vCUJ0MvI1sSRqScB4zFZ3xj+H7iwWk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=LZjh3z+oKpl3+fFSh3fpCOIeXeEibbIAZ45Tgut4/0L/2VtEpuqkd/hV4xtxpTlOh
-	 cLOataclZiWmnVO3IfQErs9jpIl7IEmDGlk0VHqBQh2aLB/KVkhlwGHQFq1N3ABBy3
-	 TQIEg+oURUJrG2/4PWittvzZEYw+AHGJSiEASktUgCWSA6yTnYNfAgoeUZiH5PBeOB
-	 e8wYJM1toLafK4tHjGT/TASxIqpz4dTOBYeiaqIR2f8sEItLE5m26kFo0Qk6GSmIMp
-	 yW/MdmNbFGrsra4/hHrYIsEOW1tVz1R9U2IrMLDull3Qhv7/+xj6TjSefd+fLTEI+i
-	 DWiXaQ0S530+Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ACE07E9D832;
-	Tue,  7 Apr 2026 06:44:00 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Tue, 07 Apr 2026 08:43:56 +0200
-Subject: [PATCH v5 3/3] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable
- ath10k host-cap skip quirk
+	s=arc-20240116; t=1775548449; c=relaxed/simple;
+	bh=SA/Y5UMtIwiNf8LjDXzXrP512qUvnjOQr7Ac3bRFAlg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XVf06LzfxdHUdNk/tQx2dfPF3vljJ8jL4UdCQGUs3amsUukUi/AgTiWXnVDKv1PhKWKrXDvpiOvvZSRJxLJnJENmVjWnDBkRke8h6880FV5hFtkrsk/FZOWJ5RzXMyfPsfJ6Foe72CZmjVRmOfMzagD4S5o7s36jxoqOZ8X21X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-56d924c7183so4638766e0c.0
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 00:54:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775548447; x=1776153247;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S3vsOW+B7OYhYNMzQrQ+wQqHziPohNJv5TXUjsSUv1w=;
+        b=ogSiQJzj+BnOIOyyX10WSs8Hqn1XpxZWCIPbXAN6yBAJsgMbaVneI5IoA+4ADgWIHF
+         3/Moo7PiEQL7mBKjHHuwgAlZ7KM/YvNhLOP/wlHN3AbHHsEPTWNScro8dFOXdQnEaBXo
+         m4MjXEzX82At0REHIeI05DwyXoymuln5pBHn7Uuf/M9SoSp7/hvIrMSNeip2zsbCoXD4
+         RXPb1Nqv+fhM+WAp6O82Xalr+5LDPbmoNY9yiR1xPrQfOksquJoDd2O8sfmwrQLbJkIf
+         NlwWFpr1rjuMCkp0Jgij230bNADQyd6KsedO31s+ffw7cKAOdJrtRquALCsYP54wd3sv
+         eJbA==
+X-Forwarded-Encrypted: i=1; AJvYcCUOsedI9vq/Sk9KkTXlySLnk/rlZhPPGDITVbb3F6gdUIFFX5m6XFRpBOt8Qn5/1vDiex2Sogl6s48iAx647A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAVmG9J8Aa5UMSe4kbDahV1INQEdnkDqhp2rNLr802ixPg83Er
+	7b9EayG3g4H6fjBdHaPp3/YkrzLTIiVWGn6zVoz8Mepjg6LPXui8A2NNX7LxkA9f
+X-Gm-Gg: AeBDieuoS6YeolHRyFmeHrCJ8dqO0jiaDS7fLBiCpO4BeI945QoIK10I4QpyRTnggNm
+	Crl3twp0AkZLCZhaJ1doFaJ+A5R+3w4pCKDWPdTchwkDfLAEOGfVfMzfUX3TmSfn57G3YE5Z7hX
+	iaGLaTmnXs+QnVVqrWq6HOojzXZXm9oQS2kS5JYBkhNu8sWj1+CBxYbiGjCQalf8vpHTaixcTLb
+	pc8sdce8NIsRQtrC3GWmng0p3WbVMc5tnBC/Ni95uxb//BP8/T4yuD+ZlGquydLBRU5Qs0am9Uy
+	qqf1vt3Nri1UGur5c/074H1SMkmJ+pfaUA2cNsm59kPtk6Z9WqGoapMWtwoP6iQfz8FhZhQbKOH
+	Iud+C260cNeSYC2rpHEunYlWfPRxTxOPeSeRSaSokxquIu1xQ4Rjr7GhN/6btorNigbI8s0VnAa
+	8NS5uyS0eoCv3BIeFMOBxlyMKRcAMgrUmJp0rS4QGY07sBZ9pITVJ4f0ys+VgVfuuL4pBBo/0=
+X-Received: by 2002:a05:6122:45a7:b0:56a:e3c7:7ed7 with SMTP id 71dfb90a1353d-56d9f1976eemr5586627e0c.6.1775548447038;
+        Tue, 07 Apr 2026 00:54:07 -0700 (PDT)
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com. [209.85.217.50])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56d9ba826f6sm18160714e0c.2.2026.04.07.00.54.06
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Apr 2026 00:54:06 -0700 (PDT)
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-605b3b6c4dcso2150368137.1
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 00:54:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXGJQyfd9/By+Cg832isgha3p0F5qU1J29dE9vSJoTziIe/erGGrN8X6u1g7WS0laq22L9VURmTe/y0+efg7Q==@vger.kernel.org
+X-Received: by 2002:a05:6102:94d:b0:600:3b3e:681a with SMTP id
+ ada2fe7eead31-6058a87fc66mr6244649137.14.1775548446384; Tue, 07 Apr 2026
+ 00:54:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260407-skip-host-cam-qmi-req-v5-3-dfa8a05c6538@ixit.cz>
-References: <20260407-skip-host-cam-qmi-req-v5-0-dfa8a05c6538@ixit.cz>
-In-Reply-To: <20260407-skip-host-cam-qmi-req-v5-0-dfa8a05c6538@ixit.cz>
-To: Johannes Berg <johannes@sipsolutions.net>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Paul Sajna <sajattack@postmarketos.org>
-Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>, 
- Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Amit Pundir <amit.pundir@linaro.org>, linux-wireless@vger.kernel.org, 
- devicetree@vger.kernel.org, ath10k@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=932; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=DU/dXePFyTa55SQv+lhHqY4KIdvjaGH0tSQ5egVr5Ig=;
- b=kA0DAAgBYAI/xNNJIHIByyZiAGnUp66g1k1G2PXK1XLApKqh8rZQqnP+rM1X6ccdHnoc1CQiZ
- YkCMwQAAQgAHRYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJp1KeuAAoJEGACP8TTSSByrA0P/3wf
- qabD5CEeb4B4+PsJgKOZY/BrgJN1A4Zdw5C35f3dwpNPtBQTwOkxEcSCHj5GYoAtZRGeJWCr+0Z
- 6Za616Xc2FfWBQa3wtnFtArLaTN58RK4j9patgL5m1lOe+iXo9A8ZyowzTRgnLA3jvxqfibnXdU
- Cab7tJzP2IyopQE4WpkfMYjj6PbA72EmXSMtVqBpPr73FIyYL1rSswZ52gOxhVIGOx6SAaZg+4c
- KsKnhg03Fzx7Y3UKTFqJ2JYMadV/h+GgmL4PfmYQqcLUtEcMm8BBRPiVFKGproGfkJ6hDA59JFH
- CVwyIV3QEC8op9GElbGGXsiAq0XbBFo+qvLme+gDcpTakvz1EzLv/bfYG+SPP9K4a1LlklC5Ehl
- AX+zAk15id1qDONaAxEvMqmb3cGD13a+fh+2UIdFC85hqzpGzUYqUZR1HtQmwu00VcA40aMZ1OC
- 2YgTBb6/gn82TMc4560FcTrUfrifRtAe1/jzgA1JvZsFhZHb+cCT2TqqduU7OmB4HfUxlWW/dm+
- 776t78Z0IxeMPAMYeg2sSjUubPOWtuRYWn1A/dpuXxY2+75D6wlD/mukE0f+FzRdqVIQ8zImbK9
- fxQTk8iTFc8OkBhZ6pTMXKdAKOP5igNOcTaLWDJlAmQ74V63pcGF7c3fFwrZU38fc94/eSp9NM8
- hmeoN
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+References: <20260405052734.130368-1-ebiggers@kernel.org> <20260405052734.130368-7-ebiggers@kernel.org>
+In-Reply-To: <20260405052734.130368-7-ebiggers@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 7 Apr 2026 09:53:54 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVnC_NPH5Co--5-SCLw17hZWkq-_iz3cWhi6e6oA0iP0Q@mail.gmail.com>
+X-Gm-Features: AQROBzAPn-cRMgXtKdvZnIrCSa0iIYxaxI0VYJSdnntVWbMPtn_Xq2rko4RLhk8
+Message-ID: <CAMuHMdVnC_NPH5Co--5-SCLw17hZWkq-_iz3cWhi6e6oA0iP0Q@mail.gmail.com>
+Subject: Re: [PATCH wireless-next 6/6] crypto: Remove michael_mic from
+ crypto_shash API
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Herbert Xu <herbert@gondor.apana.org.au>
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-34450-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34449-lists,linux-wireless=lfdr.de,david.ixit.cz];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[linux-m68k.org];
 	TO_DN_SOME(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	HAS_REPLYTO(0.00)[david@ixit.cz];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,ixit.cz:email,ixit.cz:replyto,ixit.cz:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: CAEEA3AA728
+	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.948];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: CF5A63AB007
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Amit Pundir <amit.pundir@linaro.org>
+On Sun, 5 Apr 2026 at 07:32, Eric Biggers <ebiggers@kernel.org> wrote:
+> Remove the "michael_mic" crypto_shash algorithm, since it's no longer
+> used.  Its only users were wireless drivers, which have now been
+> converted to use the michael_mic() function instead.
+>
+> It makes sense that no other users ever appeared: Michael MIC is an
+> insecure algorithm that is specific to WPA TKIP, which itself was an
+> interim security solution to replace the broken WEP standard.
+>
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 
-The Wi-Fi firmware used on Xiaomi Poco F1 (beryllium) phone doesn't
-support the host-capability QMI request, so add a quirk to skip it on
-this device.
+>  arch/m68k/configs/amiga_defconfig           |   1 -
+>  arch/m68k/configs/apollo_defconfig          |   1 -
+>  arch/m68k/configs/atari_defconfig           |   1 -
+>  arch/m68k/configs/bvme6000_defconfig        |   1 -
+>  arch/m68k/configs/hp300_defconfig           |   1 -
+>  arch/m68k/configs/mac_defconfig             |   1 -
+>  arch/m68k/configs/multi_defconfig           |   1 -
+>  arch/m68k/configs/mvme147_defconfig         |   1 -
+>  arch/m68k/configs/mvme16x_defconfig         |   1 -
+>  arch/m68k/configs/q40_defconfig             |   1 -
+>  arch/m68k/configs/sun3_defconfig            |   1 -
+>  arch/m68k/configs/sun3x_defconfig           |   1 -
 
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-index 1298485c42142..950bbcc3bf91f 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-@@ -661,5 +661,6 @@ &wifi {
- 	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
- 
- 	qcom,calibration-variant = "xiaomi_beryllium";
-+	qcom,snoc-host-cap-skip-quirk;
- };
- 
+(although these would be removed during next defconfig refresh anyway)
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-2.53.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
