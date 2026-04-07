@@ -1,105 +1,61 @@
-Return-Path: <linux-wireless+bounces-34478-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34479-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFqyArIi1WnK1AcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34478-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:28:50 +0200
+	id aMeMIA8o1WnB1gcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34479-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:51:43 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732913B0F94
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:28:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D053D3B155A
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:51:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C5CBE304D669
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 15:24:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06A8030B077A
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 15:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD0A371D0E;
-	Tue,  7 Apr 2026 15:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4044B3CAE80;
+	Tue,  7 Apr 2026 15:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="h9Zk+yUO";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="OyLXgTK3"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="OiTByfre"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36DF393DEB
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 15:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8353C5522;
+	Tue,  7 Apr 2026 15:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775575363; cv=none; b=URy8Qt2J6INE+rBEW521DUSZwyxB98ztyd4lIi+B5o8772gLca7s+das4THohh/AXbOdU6nvpEOqtlUVyooWMWGyFSYGhk8yQaQA6nFfi4/dp4GDPVRvJ4WpQuUXc17SOuioCPXx72wVs+mumtITcjVUBxN24WU5bj7z1t29yHo=
+	t=1775576548; cv=none; b=EV7jAIcR4sAWQpnhGgjopDiVkiCRmbMensAcSjv7mmxQuG8CRDzV6zGrr4jPNzo/O292NzaFYavhKW5fINq38Z9KoNhHQzEnAv03mHHRDziZmSyvd12K+J8maVFFdSUJKYD9MjujPA1fIfMZHnaa0VbtUpEkDd/PmKO+RdYwrnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775575363; c=relaxed/simple;
-	bh=ZxSa87c9Q/P2FnV6ZESN6x0uwkWarLp7y4OuMnVA+u0=;
+	s=arc-20240116; t=1775576548; c=relaxed/simple;
+	bh=ZdukmGPr32uKMT3hUIvJrsG8XDUJH7rwxzNXZ36hCk8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pwQxM81lPuFXlMGivpzEnUOjdprtW1Va9GbKugvNmAZq5JS26+pPolygUgrsasdk34leSY1EYDdQCn3gIztCxwQC/bUqEg4EZXjhf33uWl8xNYu1DnXWdGzvvNSq8Ii+QaruWodiJPnpYCAr0y4iKGApcM2jtEtdos1W+flIrBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=h9Zk+yUO; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=OyLXgTK3; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 637CN80L1584355
-	for <linux-wireless@vger.kernel.org>; Tue, 7 Apr 2026 15:22:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	LYRabF+RiYhaedAndJ0qtT5reBRffHjDq4Sz6B2n9Wc=; b=h9Zk+yUOz23GTOhc
-	cZbnl3Ik5WMdcQ2/d8uuw6+rJnsmeDlNEcO5+2nBLXyYNzU/XdjV9DHdnYs20ka8
-	2EhdY1VWgNMhRlPh6eelQBq0BWD3zt9+ZQ6FIebuhtCtURACCS3xELiQ7AY3SAb3
-	8FJsaHYt47JM+5NR93W2u4TZ9BdrBPFZApBegsoHdr4biA1eyjHTXFrEZcv7i2a4
-	fMEGkxDmFx8pZmFAgwaRHEGaz+L9QwIF0LiSdi7Ylc8w75JwJ+jwrcI4wXH/Gv1q
-	9Hkg8gXUvbTAnDCkJcBzohsUrrm4bcCKo4q2jiYg3dRbAwwcOHfxMNiSnCZF8UuH
-	5L7GGw==
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dcmr9uc6m-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 15:22:37 +0000 (GMT)
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-2bdc1b30ac8so30877382eec.1
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 08:22:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1775575356; x=1776180156; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LYRabF+RiYhaedAndJ0qtT5reBRffHjDq4Sz6B2n9Wc=;
-        b=OyLXgTK36MQ+u5/3IrfCNDd4CIL7JPQYZXyFFdc3XPgqfhxENYNcuj3vceJK7nznUk
-         lsy0hBhbRWMpXybpQ8wIhP4qDpi17zR0XfIYOtzfknF2bURx4+V1dsIJeZSx8X2su8LZ
-         h9sSlPY15F+uOZ9+YaQlIoXcikNopFC+Zwdsm5ZxUGtR0NfyewFq6GzEuhHsYPKIiZAF
-         5hXCToWopohZ9V9Tab/6WroZrFnxlsO4jnMxwXLaJsAvXXNs8ziCwlHGbl+AAW6Znw0Q
-         A3inBlpJT4CO+dDAnboPyWtsfjl5pKJk1L98ynDBLo3M4ZImqYgA17DxZT1Jp6m87Rrw
-         lj2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775575356; x=1776180156;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LYRabF+RiYhaedAndJ0qtT5reBRffHjDq4Sz6B2n9Wc=;
-        b=AIZcNs42V4oq9D3dTcNDjZaoh5gv53TFbyvQuYkefWKKzionSO8M5OnAR1lvADXHTI
-         yV9hBpO+AtCCDGnHJIEFL3kA1yT7Oi/Nlax/BMq64LY2vWB5OBnj/twlG3bRdScA8CJ6
-         8lbhuErN3JE/YgLsaUdnLf1PlBxar4TaWLPxXmGwYCIm6RIMnQzvTF8uG3sMzOFVhQSy
-         DdFEzg/Y7NnCcFFOJNjAF3M+Yb0VW/EyUIN2cGBOFjn84EOZIL8c/LrZYlTEVgucy3/F
-         nLdRoJQoIWNW96+c1EE9w6aJJAtltEKwcUaOcT2t3DjKOBqc7D5iith55gyP/Z8/qHOo
-         MKtg==
-X-Gm-Message-State: AOJu0YxCqq/ZUFBJMd4dFyYCabRaRxXn9q0WHabkP8zWW0KpNoyAPtO+
-	w4GNVFOMjyVWlgmtQPDC6kFD2Q+gvnBrFVzOnOZ67lCo60WSdxuDyK7trdfi6iQDWbnCZXHRWV4
-	mkx9mpff1p3cOzyFmpQR3MYzgHPuQDxcEbU2ip9Fz5LpzyalNLDzY5vNeLjOtNsUi+ziZX7wJw8
-	UV+w==
-X-Gm-Gg: AeBDieuPwQvp4fD9I2s1FNf5qJoKzGVpRQW88eqMSgV5otGZsk4+5j8ABtH84Icsijp
-	YNfbK63v4/JrKAyhQJr1WNAUq9e7DtbN6AdsJAcjTUo44bdEw7LoGm61CRGaf6Gq7V8KQAP7/SW
-	2m0kE6tp6ZUA7LpkeuEGr9N1ovUQU4BVy0bsfDjXCh61G9xo5ekGdX5JsnKD0AtCndN2L2Z+Usz
-	C1mH/fxfSuWfPDhIWwXb8VM9yoe6sbcziTJF2WdR5AwwRD6svgiNp6xV/3Uoe6gN8EkvWix2FFi
-	+U99axti+yz5b/N0zTtaH5j9tbTNuKfBIua5ebBkIlQqObQF0kKbn9Td8Dlb7zm4OGcNLJ/Xiqq
-	Bna/QfeQatLxf4ZSdRne8fAX5Yd1uF4E+QnAHLKC8eAXlcbnXopWIlYkkdgHfT4DuTozREMPXaj
-	hxujV0ow==
-X-Received: by 2002:a05:7300:824d:b0:2cf:c1e7:521 with SMTP id 5a478bee46e88-2cfc1e70755mr3066747eec.17.1775575356359;
-        Tue, 07 Apr 2026 08:22:36 -0700 (PDT)
-X-Received: by 2002:a05:7300:824d:b0:2cf:c1e7:521 with SMTP id 5a478bee46e88-2cfc1e70755mr3066721eec.17.1775575355744;
-        Tue, 07 Apr 2026 08:22:35 -0700 (PDT)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca7c20c151sm17619573eec.19.2026.04.07.08.22.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Apr 2026 08:22:35 -0700 (PDT)
-Message-ID: <b8248f7b-84c5-471b-af58-3a655a7af95e@oss.qualcomm.com>
-Date: Tue, 7 Apr 2026 08:22:34 -0700
+	 In-Reply-To:Content-Type; b=V73Bn5TUOZW0DhUgXpawiOh8X6Rqpbbt3L3geMepmK6cAOFYcw9RYPZLl48pyuufIq8sswPBTXbSmWGf36W0txP/6s0m7Aca6JaDKoMsukyMp6p3B9qSi0HDAk8Bn2rpnKuAVKz35wr6WmtJf9/Njn8n6pESQ6k2MYMz2TpcAH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=OiTByfre; arc=none smtp.client-ip=148.163.129.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 249582C506C;
+	Tue,  7 Apr 2026 15:25:35 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 76285A80070;
+	Tue,  7 Apr 2026 15:25:25 +0000 (UTC)
+Received: from [192.168.1.23] (unknown [98.97.38.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id C900D13C2B0;
+	Tue,  7 Apr 2026 08:25:13 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C900D13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1775575523;
+	bh=ZdukmGPr32uKMT3hUIvJrsG8XDUJH7rwxzNXZ36hCk8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OiTByfreOgsKqwGFK3UvF3ct58qv0l5gS/Bj15Yf6ZU/oOqFEFl2qHDmo4dx089m2
+	 xrQMSd5BZXaAeMV4ivwU32YiXTEAJvC7hwcBQrAdBoL3AmOmhCPc7oBkbwYfLwzrlA
+	 EVQJ0lWz0v9Yiaj02NoO8tWeQsL9bUhhBmAe0b08=
+Message-ID: <d4622e31-4012-4c05-9288-529b0bb0aebd@candelatech.com>
+Date: Tue, 7 Apr 2026 08:25:10 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -107,80 +63,108 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next] wifi: ath12k: Support channel change stats
-To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-        Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Harish Rachakonda <quic_rachakon@quicinc.com>
-References: <20260326050641.3066562-1-roopni.devanathan@oss.qualcomm.com>
- <63acfa83-753c-4b45-8f11-8e18e760cbf2@oss.qualcomm.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <63acfa83-753c-4b45-8f11-8e18e760cbf2@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH wireless 4/4] wifi: mt76: mt7925: fix RCPI chain 3 mask in
+ sta_poll RSSI extraction
+To: Joshua Klinesmith <joshuaklinesmith@gmail.com>,
+ linux-wireless@vger.kernel.org
+Cc: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+ shayne.chen@mediatek.com, sean.wang@mediatek.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260406234739.29926-1-joshuaklinesmith@gmail.com>
+ <20260406234739.29926-5-joshuaklinesmith@gmail.com>
+Content-Language: en-MW
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <20260406234739.29926-5-joshuaklinesmith@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=SMdykuvH c=1 sm=1 tr=0 ts=69d5213d cx=c_pps
- a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=VwQbUJbxAAAA:8 a=oa6df1jTVhldLQ0IEBkA:9 a=QEXdDO2ut3YA:10
- a=bBxd6f-gb0O0v-kibOvt:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDE0MCBTYWx0ZWRfX4hB7XNXcQ4Cn
- 8A4v/LaIDHyUd1SyO8y1TgOsHs59RDw2mm3W94V1MCrwMXGllvwOD7xuIw2N6t4XtDjFoF6uQtl
- rOgjL+uMvGeeHsAUfxH1Gtdfd7dcO3JKi4CxC3b3xO0EVo8nHSeRD4khcTqq4cI30MakzKjDuQj
- 4yxyPSk+eI64Rbv4qPQhywy9X1kAWb1CVpBtjlheAxJkcSefuEqduLmRKP/h7OHZyx0vQ0fN6fM
- 1fJBA2tFWYQd34ZhUFjgyrrAe0uXnhke3a5E1L7quh15yw4wAdz8NdEJZ0wIhpkvzejUZWsEk3d
- B1ATJ45Pv8wXY4uXopkOGStjXUbVtIPpSMGiHZR4Ni2EU9edlYQQQEwJf5wGkJXx0+gRAn9ZQHL
- oVkGlpmx/qlok7i0nNtodvvgsvzxPcKz+rAvb32X8cGAFqdeVDBqe18vt5swWRGLPTWjy3nXSp2
- 93jxSFg/SOwkjVFb3xg==
-X-Proofpoint-GUID: PtRQh4ahRfXr2ktv_FyWO41sMVnIxdZD
-X-Proofpoint-ORIG-GUID: PtRQh4ahRfXr2ktv_FyWO41sMVnIxdZD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-07_03,2026-04-07_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0
- impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070140
+X-MDID: 1775575526-qrLPDTSfbSZ1
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;ut7;1775575526;qrLPDTSfbSZ1;<greearb@candelatech.com>;cd1e1c133c9805f1fc8e076cc471adaa
+X-PPE-TRUSTED: V=1;DIR=OUT;
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34478-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34479-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[candelatech.com:+];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:dkim,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 732913B0F94
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,candelatech.com:dkim,candelatech.com:mid,candelatech.com:email,candelatech.com:url]
+X-Rspamd-Queue-Id: D053D3B155A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/6/2026 8:23 PM, Baochen Qiang wrote:
-> On 3/26/2026 1:06 PM, Roopni Devanathan wrote:
->> Note: WCN7850 firmware does not support HTT stats type 76.
+On 4/6/26 16:47, Joshua Klinesmith wrote:
+> The fourth receive chain RCPI uses GENMASK(31, 14), an 18-bit mask
+> spanning bits 14-31. It should be GENMASK(31, 24), an 8-bit mask
+> for the fourth byte, consistent with the other three chains and
+> with the RCPI3 definitions used elsewhere in the driver
+> (MT_PRXV_RCPI3 and MT_TXS7_F0_RCPI_3 both use GENMASK(31, 24)).
+
+Hello Joshua,
+
+How much of this is AI driven?  As far as I know, mt7925 is a 2x2 chipset
+at max.  So while the patch may be correct, it may also not matter in practice
+and at least may not need to be backported into stable.  If it is a minor
+cleanup that doesn't actually matter, that should be described more clearly
+in the commit message?
+
+Some of your patches are touching tricky parts of the code and making
+subtle comparisons against how the vendor's driver is written.  How well has
+this been tested and reviewed by a knowledgeable human in general?
+
+Thanks,
+Ben
+
 > 
-> this note also applies to QCC2072.
+> On devices with fewer than 4 antenna chains, the corrupted value
+> is masked out by antenna_mask in mt76_rx_signal(). On 4-chain
+> devices, this produces incorrect ACK signal strength readings.
+> 
+> Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+> index 6334019249..85e91ca84f 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+> @@ -144,7 +144,7 @@ static void mt7925_mac_sta_poll(struct mt792x_dev *dev)
+>   		rssi[0] = to_rssi(GENMASK(7, 0), val);
+>   		rssi[1] = to_rssi(GENMASK(15, 8), val);
+>   		rssi[2] = to_rssi(GENMASK(23, 16), val);
+> -		rssi[3] = to_rssi(GENMASK(31, 14), val);
+> +		rssi[3] = to_rssi(GENMASK(31, 24), val);
+>   
+>   		mlink->ack_signal =
+>   			mt76_rx_signal(msta->vif->phy->mt76->antenna_mask, rssi);
 
-I've updated this in 'pending'
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
-https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=a9adb8f605d5660f1db49f8cbec51ff73b4b7be8
 
