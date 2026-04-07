@@ -1,221 +1,248 @@
-Return-Path: <linux-wireless+bounces-34491-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34492-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gImtKn9B1Wk73gcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34491-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 19:40:15 +0200
+	id gGfpGhls1Wm96AcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34492-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 22:42:01 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDD93B2790
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 19:40:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F333B4A0E
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 22:42:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6229A303CA49
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 17:35:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D091301DAD3
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 20:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15DD33F38B;
-	Tue,  7 Apr 2026 17:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB742126C17;
+	Tue,  7 Apr 2026 20:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F4cAwiv6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q1cnBBcs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B78934404F
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 17:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775583330; cv=pass; b=Y+ta8DxlJdMb/z6OYdU8cNc/eyYaFRoSRFEvJ6KqsHznpKSBVXOE1HByBG58ezel+0uEe4xYFKpTbG8D+Z+xi0MZXoENMnMjsXYNuC83XFS1yalv68QrjEPo3sF4QOR33byK5SE+5P4z7gAeaIZYQQYKclWcmHve8pbpvDW9Mv4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775583330; c=relaxed/simple;
-	bh=bVcou+Gprm8jI+MgNIWQTYr42AbaKd/ho0YCL94TYdU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sta8NbzQmXNAEKThv5KaegLm3X/s0s9J77sZZSs424GhVMfdGxWa6pzNDLFf9I3CgSvzCJA6fiX+n+BEei331DPoVi5JyPd5ReYUwPzU8PlzvSS5HTJNCUgR+BPJreLFZJMIT+qfHMbUNpJP71UgPXyjfODcPhEfBW4gUbQvc5w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F4cAwiv6; arc=pass smtp.client-ip=209.85.222.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0B7379EEF
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 20:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775594518; cv=none; b=bc1diX5uXij4WyMuhTr6DHK9IP+XE0GcufKyI95LN78YcDQ1jsNjQ6WqxBPN3R3yrjDIlQw3Icq5+c93guJ9NO53RQ0Uve7TLbtjS47IlZ+dL8aTa1D0LUcPEND0/MWvqW8UaYgElVlorh9iBYRr8szVGUcI2x3YYJwVwqcmBwY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775594518; c=relaxed/simple;
+	bh=6E33cF5eENWn+ODPAABTPO0KklZ6lyAjIMWoWsddMW4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=cPXD/38rjxdpdjCdOd5cQtPKJuezloXligBJAmIYeFu2pF0DwY3gERt3TU5m/Z16hvaL7IkfmxX1LL/VPI3xi6N4YARrLtg/QJqoxwZ0CrNGoixvh3+nPUBNyAvNDt2hiZJQ7dzpLaNq/Zvzv6rTMeIzJNtRIkpIhwAeiAYRUsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q1cnBBcs; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-953a5defbbdso53480241.1
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 10:35:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775583328; cv=none;
-        d=google.com; s=arc-20240605;
-        b=SXah3ySnSaysWYXXs0B895Fkx20wzKF/dvZUkqHgSrgyfRhEYnrz2tFnlF5mRtyMrl
-         srPmRi4h/yCgCJWPHzDJa/MULW+9phCZdoOZK8f/cCacsSpd82USFOkY+PWtE9Ep2HMx
-         xyE13+aGzoj58ALN5F6A3JJNvAPyAMkajAqa9dmVqlzG/Jmwa4uTikUPQBWvZWP6O/iI
-         UNkxE090eLxmpU/pK/ba8DCIHlKoKJgueLo/zBhxbPj0qDQLYVRJ6ZkCo1VbNxKCRWBN
-         cw9mhSWjh8259UfW3bUDGVfNU/ecWDPVanxhKZUDSlC4vydtqqrYp61nJ4c4qxlt1xDd
-         Kr/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=d0d7dSyKzAyZ8PECEnJjvu70SAnmL644NrgpjRWVsEo=;
-        fh=z13KRDOBL26GXrXq9EJJjW8Udv+4Is3MOUPGIn9PAN4=;
-        b=gIs3xwDgbVAcFbrA+wcpieG4pRA3zjI7Sp3qwbKBO2f21RnmUO1KNVNSRvRnmJhgKA
-         gax4u5nIWvyRRIFd+WBy4w27PljYSa0AM02EjB+mZ5oRyA7TPvgwkKV+XU8YN0XiiaEI
-         KbF7sSwUtx7fbOeyoj3IiaGeiz+hFBH1vGExnCcYZ7GFaI9XWtsZZT9Ndf2AD2GAOnmL
-         US7EnRv7Xz349kXV8rNtJcKzIaciKrFDaYs84Yepj+CQrbIuzRyAmlcn4e76P1xXc6cw
-         YUp0T9W74sk3dnCv9OTI2lBrXskx/CJ2W+Yo8VibTKQe1ver4Q7R+Xi1fzmUm0JOy1d7
-         AUFA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so50812395e9.0
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 13:41:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775583328; x=1776188128; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d0d7dSyKzAyZ8PECEnJjvu70SAnmL644NrgpjRWVsEo=;
-        b=F4cAwiv6xG/b3XUADEDIdJBqQk+j2gWcrri+DtPEKJAT1/ca5p83YNVNnFdmqf+GSQ
-         eZeeGa7hP3mYZhXf7thT7tPM4zkpW9+S6XOkrqMnWxh4x796RbGY9ppMZeVaKsKDYL+M
-         7oLTJNGRzLx1Jmz2GHKgtuH565TI6OMyL6MoGx5hmBlrlwZlZ7ziAHFtS1ACjdPfZyuX
-         se3NPNCFbnMiMdjcNyONdB1YmSQkbtEaTvqNKMECRJawfHzoM6oknl2g4pF1bFejaPsK
-         j+PSffQb7eXJiWAVviiaMm9jCOP6PR5COpBfL/hhpHoj4V4XLuTCNGWJb0pH0DqqlOZ9
-         70RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775583328; x=1776188128;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=gmail.com; s=20251104; t=1775594515; x=1776199315; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=d0d7dSyKzAyZ8PECEnJjvu70SAnmL644NrgpjRWVsEo=;
-        b=YAiCr3Vpj/eG6QCzm/mrjyC5asSGkLz/eYcG90XdhB4ygab5VoGBUUKyeYzRIDM0EY
-         eQP6R8Of9TJ296emF/QzocHTAf+8yyU2LHaDY8kLxexRKk7KEH1+3iaGBm5SFGCUJveP
-         FPgpevH5LCKPLb45SMGtRJrHaPSsujoRdwLuCTMpaJQRCL3hA53/65Z11UwgTfB3d9V8
-         mYx/zqwdv1/zDU5fe2GIVDz0IztAwEffq3HKaHEczSOZvsyhm4RTa9gECyPnRqgXMM/M
-         fptGdk9O6oZgA348tNAC9eCyqVU3fXtD3irijXPhEpYGDQ1l4CXtoqVBMYm2Ut0NJc53
-         LBTg==
-X-Gm-Message-State: AOJu0Yz2whhbV0GYoRsBSSqkLFTILwNRQ+UgYvpJcxFo1FgN9+j8aD5x
-	3NpkHzXnbzkIDJ9WkgB/Nbb6hPcvpG1N6F4XYG29PUbN91Oht+TL7h5FFoCV8Xo5sTUgj8EQUvC
-	UV4ewvheO75XnTC3UGpMHCkqHVimht8I=
-X-Gm-Gg: AeBDiesCNkswFOKbBRWFJ8iE/P9bgZHRVQDcW+2Gbf5T1u4H2tATENvKW3BHrACTggl
-	U+bOD1RKJ/iOx65p0X+flf5GYsiVe+SK5QIcWotBuEb0xBdn4nLN8LUUuwn5D9Ac+Zv+aimpxP/
-	uoEg+BkxI9C2lEr83Sfsw6QtbN1arUKDouNNZv+K3sseLoXCpIC5nGcvyjYBWymNqW2asmP02jd
-	/MMzE45kcRxW3eeEVAmKE+JHsZXv0EkgEwxvBAR4ZMy5qaudf17qSffHtGVFO0Wx9oT0BOZD4vX
-	H7jSt/V58atQHg/94y8tQpNW9oWHamZ8EzQrjTQ1
-X-Received: by 2002:a05:6102:94d:b0:5f8:e41e:e5cc with SMTP id
- ada2fe7eead31-605a5034c28mr5433959137.9.1775583328358; Tue, 07 Apr 2026
- 10:35:28 -0700 (PDT)
+        bh=IIZepUTaDX41TxFVMbEKDikeA0mvwv+R2Cxv0WTMC+k=;
+        b=q1cnBBcsi2PrVN72qiickWQtUMMlXVFSFHkpBOUV0vt8TKj9RjUE4JvZ3qmc9pdlQG
+         ENMHgzPdSp53QqdASOhCj2XOWdpXaufBgDj3PKYWxwO/ufkNwSp2Zty+kd3fU014iA/A
+         U0Eay7TwO+wbO58iuYK/4m6T+QGC9OQSUQEE9ICvG56kkfPn+rd2cTBHRuhLa/Lz0woi
+         Z8uLnv/eYgG9d36gTu6B0kr2GUTSN2iyT7G4v0WSq7ZRxUi5AKInr28NZVXmU69fJmef
+         NW6eAZwN2qFpbxX5joRkk/liAmlfMaat1Ug6pmknuZ1xvbsRcVQfdObIPSyGUHSlqSZT
+         YDRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775594515; x=1776199315;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IIZepUTaDX41TxFVMbEKDikeA0mvwv+R2Cxv0WTMC+k=;
+        b=LFAxzHwoTSpcdL66/+ILLb8EoTjOWc7/QJEINrFFpRy5SezT9PVQ/gkpc9ECHhF4Dg
+         oZ0HQkb1I2IP0bL09ftwyOShm/H41tHY7J+1RfTCWx7Q23+2uVUKwhuE/Of3E1JVac93
+         +sRbPCEQ4cPuNU6+u9ENrxo6KSIBPH+XhrQzEPYaSyhRW4lmawDs9hk+TjEiDj9pFXny
+         VbDIpENBYmILJTrxq5KOgT0W1p3+4L2iHlYoClYZFnax1f8z3apSnb0YfP+c/dxHL4uT
+         BTIxhHOvkXouAY2FB7d/0pNoDLhlT03x+FYcApCUu1qA76mGIAlfjGJHoNuw6VGeTpRJ
+         u5iQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUmnbGRfZjjnBFDmjqL6WctmedBct8Sm2WoiDT6F4f0+M4BXuFojAVcL5/5yeClT95W18hK6juEXguepSKHLg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcJOqCPi7y3Ru1Ghi+3Bs7UzYaOKYcIX+BoLQnOdRN0XKDfkQE
+	/3rbUQ4FTzXYurpMwPTZx+VJRtLrJ4smhih2zuBz43pEH6RdLoMfNC0c+Wtvcg==
+X-Gm-Gg: AeBDieuL/mj+e0DTJt+/ViNXL+FdO90tAPus45NFMD2aDCUqimUTla64kubpvjF5hPS
+	M1rpg/yOyfdDG2md9873Mnr/u5qOIlWa0a4pFeYSyYyu+0lnoutUdPrkhMmtlny3V0IKoYKT2xn
+	hJBL6eFwEzWV3kcYJjdgB6hndU2gI8YlJkvEC32x8r0EHUROT5EL5K1GyI1MrhrGFDgsNgna7MC
+	98n5lDYp6QWQt6Fotu+j4n+t8gjXc5/0A+NDxo81aTq6ontXXrfH2tWP3gpSlKn/lDnNiw+uyvS
+	TDsVie5vzkZc5FQBJFQqRjHkIz3XDdLPRxFPSnoDzfnNadew7U6byCA4IBFtJKzj7sOZnzMYrgC
+	0YQYAnOo4KJJqKReT6joMNBHx6CRALHeESGz2PJ+RMEjJBPFfBs14Huf3RwDBMD/E6vjBFV+048
+	bg1Tnp/NjI7VTBc9DC1A/Iauy3EmQx1g==
+X-Received: by 2002:a05:600c:621a:b0:488:af7f:7707 with SMTP id 5b1f17b1804b1-488af7f7fd3mr137613935e9.18.1775594515142;
+        Tue, 07 Apr 2026 13:41:55 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.93])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488c55d1347sm5918335e9.4.2026.04.07.13.41.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Apr 2026 13:41:54 -0700 (PDT)
+Message-ID: <e8d10b96-f305-46f4-a473-2592f237f871@gmail.com>
+Date: Tue, 7 Apr 2026 23:41:52 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260406234739.29926-1-joshuaklinesmith@gmail.com>
- <20260406234739.29926-5-joshuaklinesmith@gmail.com> <d4622e31-4012-4c05-9288-529b0bb0aebd@candelatech.com>
- <CANs=ypgdgB_3stm5bCvO8RTat-sxs0N6SAaeYSQ-dyq43U-ZBg@mail.gmail.com>
- <ddc4ccfe-27e0-7558-9b5b-27b4c4fe54b3@candelatech.com> <CANs=ypgceH4NL5xOr2C1FPp8KvDCcUWTu10i+DiXntuOmAfJVA@mail.gmail.com>
- <5e197844-804e-51d7-a1de-e9e7686bad0a@candelatech.com>
-In-Reply-To: <5e197844-804e-51d7-a1de-e9e7686bad0a@candelatech.com>
-From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
-Date: Tue, 7 Apr 2026 13:35:15 -0400
-X-Gm-Features: AQROBzAV6xaHAvXHRyVUe2RM59GmP1ed74mWrJcyksvjS9RgAmFB4oykGjkFOUg
-Message-ID: <CANs=yphvbzzDHFsZZexSW-7YZTU5zRc4P_iapvCH=NK0f_XbMg@mail.gmail.com>
-Subject: Re: [PATCH wireless 4/4] wifi: mt76: mt7925: fix RCPI chain 3 mask in
- sta_poll RSSI extraction
-To: Ben Greear <greearb@candelatech.com>
-Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
-	ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rtw-next 00/12] wifi: rtw89: Add support for RTL8922AU
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <8549233f-dd83-4e77-be88-5e22ecd4f5f1@gmail.com>
+ <25781f4aa6cc427caf396374ca46d380@realtek.com>
+ <a90f22d6-bac0-4c76-86fb-517e7e7bf441@gmail.com>
+ <0cbfd38ffd0b46e899885c83889d060b@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <0cbfd38ffd0b46e899885c83889d060b@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34491-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34492-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joshuaklinesmith@gmail.com,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_HAS_DN(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,candelatech.com:email,candelatech.com:url]
-X-Rspamd-Queue-Id: 0DDD93B2790
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: B8F333B4A0E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/7/26 Ben Greear wrote:
-> If you talked some AI bot into finding non public source, or if it can
-> actually generate useful c code out of vendor binaries, then I am not
-> sure how legit that is to even post.
+On 02/04/2026 03:48, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> On 30/03/2026 05:53, Ping-Ke Shih wrote:
+>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>>>> Often one or more of these messages appears when the chip powers on:
+>>>>
+>>>> [  +2.167037] rtw89_8922au 1-2:1.0: failed to wait RF DACK
+>>>>
+>>>> [  +2.942749] rtw89_8922au 1-2:1.0: failed to wait RF TSSI
+>>>>
+>>>> [  +0.019006] rtw89_8922au 2-4:1.0: failed to wait RF PRE_NTFY
+>>>>
+>>>> [  +5.985900] rtw89_8922au 2-4:1.0: failed to wait RF DPK
+>>>>
+>>>> It's unclear why.
+>>>
+>>> RTL8922D done RF calibrations by firmware one by one, so driver should
+>>> wait for previous one done, and trigger next one. However, it'd be
+>>> well to just do waiting at the last to wait for all calibrations.
+>>>
+>>> Try to enlarge waiting time in rtw8922a_rfk_channel().
+>>>
+>>
+>> I was convinced I tried that already, but no.
+>>
+>> After increasing all delays a bit the warnings are much more rare.
+> 
+> Turn of debug mask RTW89_DBG_RFK and set a very large timeout time, and
+> do connection >20 times and then check "RF %s takes %lld ms to complete"
+> to see the maximum value in your environment.
+> 
+> Please share the number for each RF calibration after your experiments.
+> 
 
-Hi Ben,
+I changed every delay to 500, then ran this, once with the adapter in
+USB 2, once in USB 3:
 
-Thank you for raising this point. After considering your feedback, I
-realize my workflow has involved analysis of proprietary vendor
-binaries, which raises legitimate provenance and licensing concerns
-for kernel submissions. I should not have submitted patches derived
-from that process.
+for i in {01..20}; do nmcli connection up "<2.4 GHz SSID>"; sleep 10; nmcli connection up "<5 GHz SSID>"; sleep 10; done
 
-I am withdrawing my outstanding patches from this series. I will not
-submit further patches based on this workflow.
+There were no "failed to wait RF" warnings.
 
-Going forward, I will limit my contributions to fixes based solely on
-publicly available GPL-licensed sources and will clearly document the
-source and rationale in my commit messages.
+These are the results after processing with "sort --unique":
 
-Thank you again for taking the time to flag this.
+RF DACK takes 15 ms to complete
+RF DACK takes 16 ms to complete
+RF DACK takes 44 ms to complete
+RF DACK takes 72 ms to complete
 
-On Tue, Apr 7, 2026 at 1:31=E2=80=AFPM Ben Greear <greearb@candelatech.com>=
- wrote:
->
-> On 4/7/26 09:58, Joshua Klinesmith wrote:
-> > On 4/7/26 12:31, Ben Greear wrote:
-> >> I am more concerned about the trickier patches that you have been post=
-ing
-> >> that is utilizing work from upstream vendor code.  How much of that is=
- pure
-> >> AI driven?  How much testing has been done to see if there are actual =
-stability
-> >> or performance improvements when testing actual hardware?
-> >
-> > Hi Ben,
-> >
-> > To be straightforward: my workflow involves pulling GitHub issues into
-> > AI prompts along with firmware analysis tooling to identify potential
-> > fixes. I have an MT6000 available, but I have not been doing thorough
-> > on-hardware testing before submitting. That is a gap I need to close.
-> >
-> > I will hold off on submitting further patches to the mt76 driver until
-> > I have a proper test workflow in place and can verify changes on real
-> > hardware.
-> >
-> > I appreciate you raising this directly.
->
-> Please be sure to add note about using AI to patch submissions,
-> and link to original bug reports you are trying to fix.
->
-> Possibly some of this is useful, but you need to do significant tests
-> with real hardware if you are proposing non-trivial changes.
->
-> If you are referencing publicly available upstream driver source, then
-> be clear about that and provide links.  'Reverse Engineering' could mean =
-a lot of things,
-> some of which is grey area for patch submission.  If you talked some AI b=
-ot
-> into finding non public source, or if it can actually generate useful c c=
-ode out of
-> vendor binaries, then I am not sure how legit that is to even post.
->
-> Thanks,
-> Ben
->
-> --
-> Ben Greear <greearb@candelatech.com>
-> Candela Technologies Inc  http://www.candelatech.com
->
->
+RF DPK takes 23 ms to complete
+RF DPK takes 24 ms to complete
+RF DPK takes 27 ms to complete
+RF DPK takes 30 ms to complete
+
+RF IQK takes 48 ms to complete
+RF IQK takes 49 ms to complete
+RF IQK takes 50 ms to complete
+
+RF PRE_NTFY takes 0 ms to complete
+RF PRE_NTFY takes 1 ms to complete
+
+RF RX_DCK takes 8 ms to complete
+RF RX_DCK takes 9 ms to complete
+RF RX_DCK takes 11 ms to complete
+RF RX_DCK takes 23 ms to complete
+RF RX_DCK takes 24 ms to complete
+RF RX_DCK takes 27 ms to complete
+RF RX_DCK takes 38 ms to complete
+RF RX_DCK takes 39 ms to complete
+RF RX_DCK takes 53 ms to complete
+RF RX_DCK takes 54 ms to complete
+RF RX_DCK takes 58 ms to complete
+RF RX_DCK takes 70 ms to complete
+RF RX_DCK takes 110 ms to complete
+
+RF TSSI takes 1 ms to complete
+RF TSSI takes 2 ms to complete
+RF TSSI takes 23 ms to complete
+RF TSSI takes 24 ms to complete
+
+RF TXGAPK takes 9 ms to complete
+RF TXGAPK takes 10 ms to complete
+RF TXGAPK takes 17 ms to complete
+RF TXGAPK takes 18 ms to complete
+
+I also left it unconnected and constantly scanning for a few minutes.
+RTW89_TSSI_SCAN always takes 1-2 ms.
+
+>>
+>>>>
+>>>> It seems to work well anyway.
+>>>>
+>>>
+>>> If you can yield the highest rate (MCS13), I'd say it is fine.
+>>>
+>>> Ping-Ke
+>>>
+>>
+>> Testing with RTL8832CU (Brostrend AX8) in AP mode, the RTL8912AU can
+>> reach 1.5 Gbps (MCS10) RX, 1 Gbps TX.
+>>
+>> I used the RTL8832CU because my router is not working well with 160
+>> MHz.
+> 
+> Since rtw89 only support beamformee (no beamformer), beamforming can't
+> work between two rtw89 devices. More, two antenna can't have good
+> beamforming performance. I think this is a point that it is hard to
+> yield the highest rate. 
+> 
+> Another point may be the RF performance. If the warning messages of
+> RF calibration disappeared, I'd say this might not a problem.
+> 
+> Let's mention this in commit message of 12/12.
+> 
+> Ping-Ke
+> 
+
 
