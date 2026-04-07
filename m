@@ -1,296 +1,301 @@
-Return-Path: <linux-wireless+bounces-34469-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34471-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICxXKmkb1Wli0wcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34469-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 16:57:45 +0200
+	id gKEmK1Ee1Wnr0wcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34471-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:10:09 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3998B3B0793
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 16:57:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2402E3B0B07
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:10:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C340A301D0B5
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 14:57:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 88A4C300A529
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 15:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B8033D4F8;
-	Tue,  7 Apr 2026 14:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACBB3603C0;
+	Tue,  7 Apr 2026 15:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UUlmjS0Z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oM/kS0m4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E8733CEA5
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 14:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A657735F5FD
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 15:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775573859; cv=none; b=Oj4MPoIepmWteTlqgasJGcRlWlSwVJG329mPWE2yc+XcaoFCAzHMMVlPJLj5XSaS6qryb6N1fsUEZPX/S2FUvGyz3XOCT3yOo/kfTJ7XVjjI8hw1bp9OC6ogAM46afPcvk42Xr9exVtDcTUqJSVXZ1VXPJHwj1dgw6EiLwLUJys=
+	t=1775574522; cv=none; b=KD3JieaKYyxJFsw3MhGFhLupQoA3oH+4dBAPF/g3EHvYoR5UslMgW6+uldjhNkcLdU7RF+GTEMEI5/D+oP+Dh0CzHdMXI2PmYo8RDOsq8ATyBclw5srxK05w6cW5E1J8cMWypUuR2u6U+egdyCn1CHbcdoUPrbZeslx3/oQ8wI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775573859; c=relaxed/simple;
-	bh=+8tieGi9uACYaBcgAxIIdIncGZwzacMKj/hhimuZCO0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W/NPVN5kqhcHZSUuOtwSeDKoUqIAzGUBrRSKR8Lk6YpsizJ9hMaEtwEKbCoj68oo7t1npt+JOMkc4937ElcOHiV90LuFCbC5CG8Dbn9ErhCHwnXQWbYuomqYAGkTADmD9lAv+SthIAbjW4Ej8PnBff4NhipwdMU62k5qwE8eeos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UUlmjS0Z; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775573857; x=1807109857;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+8tieGi9uACYaBcgAxIIdIncGZwzacMKj/hhimuZCO0=;
-  b=UUlmjS0ZsVqsMJLIb4z4ulckRLbvwekIyyoHv6JvN5/bbQCaMG6pBJr/
-   mwWrP6r25GYW5WhGtfOLrspVZCYgnIKowAWdmsdqcKYHFk1Yfar1mnzXN
-   hnyVe6Y40yvzT9SM/xZq1oEd5ncTW/5BXe2d6q2adLbvw3+sZ4JoYEyNB
-   GIXxQJXsoOp8hZIEqNKlt+3PzuG58SqMIqKLd9qzUORIwYTD0yV/KQQ2W
-   EPVZucveQ3t4pgYfew7zZqBiulpoQbI0z1dThE8q5J1xGrpTaJ1VQEL86
-   KRwxPUMRQIuuDIjGzMvE6rkd+7WoxFGJeKblLzZrLjrx5o+cSmuQWoe3K
-   g==;
-X-CSE-ConnectionGUID: O5ws3FL7Sl+Swbju0Afh4Q==
-X-CSE-MsgGUID: /nETWaXITIOo7xyJcxqSfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="99165684"
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
-   d="scan'208";a="99165684"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 07:57:36 -0700
-X-CSE-ConnectionGUID: oh7naw4eQ6yd6Ci3KocLZg==
-X-CSE-MsgGUID: qToTkt6sRQ+xih4FCwMMbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
-   d="scan'208";a="233157230"
-Received: from lkp-server01.sh.intel.com (HELO d00eb8a6782a) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 07 Apr 2026 07:57:34 -0700
-Received: from kbuild by d00eb8a6782a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wA7rv-000000000i3-0GJJ;
-	Tue, 07 Apr 2026 14:57:31 +0000
-Date: Tue, 7 Apr 2026 22:56:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Joshua Klinesmith <joshuaklinesmith@gmail.com>,
-	linux-wireless@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, nbd@nbd.name,
-	lorenzo@kernel.org, ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com, sean.wang@mediatek.com,
-	Joshua Klinesmith <joshuaklinesmith@gmail.com>
-Subject: Re: [PATCH wireless v2] wifi: mt76: mt7996: replace direct WTBL
- access with MCU for station statistics
-Message-ID: <202604072310.QZ9n9tFj-lkp@intel.com>
-References: <20260407053855.75828-1-joshuaklinesmith@gmail.com>
+	s=arc-20240116; t=1775574522; c=relaxed/simple;
+	bh=jymJPdqyE0JtZYcOwQes2cGg9dVOktqNFZiLSsqTKKg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hVMGZVcdrs5k4dzqRsolXRFO3ZZI5Hk6G0U+iAenT9B21W8UOIjbd2NOVMqmo8j9Tq9Y0J38E8FmHTKC44p44PLrwuYcbEFnCKxZHDZxxc9lhna3Fv4+1A3jGRbtVZzFqVtyOwydWcxGiK9CnlYNkWugRlf922yqpZNnK9w/6VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oM/kS0m4; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43ba1f3fa7eso5433052f8f.2
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 08:08:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775574519; x=1776179319; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=N4jjEPCUJmZT2sKEYrMwlfVHfjzzKvnFJHfospIU05c=;
+        b=oM/kS0m4cIuz+n/KMiXNxqknKvl6gXpm2xPRN5jiAHojDLjnyavSsbdvcq+/0+FaK6
+         uGzGGxKxMk0+9b8oo2l+/+Mk6K8VXhHosQSUDhrYr+pjT4q7uAEj2DIdIYhSWfreT6ax
+         thwqUGZpj6IDhk3ZDWY1xYAHNtEzg1EzpZhH6FT+aU6haOWulOci3yKNWwCAGlZZwm8Q
+         2J7TKX3eU/dE/gGrbn7Weeu6QREpV2MXp2vhn4WJTbzqwlsoUVrEUYxhs10pqltAbbAZ
+         QGSP/70jlOv6ctvjHoJtHrunN7+MLujgDbQxm+skTntIPPToDH81iCGspC+nsVNKZT55
+         ffBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775574519; x=1776179319;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N4jjEPCUJmZT2sKEYrMwlfVHfjzzKvnFJHfospIU05c=;
+        b=JQU9DtJAs6dQCpmclgU1RjwLSPlfBGyJfrIh/krB9athR1ogOvm1pOO1de86lcpymr
+         BVmjVntWB6G9LCNZN45v5EueUt2dzVlwz4gfpQ9hzp9yBsDksB5anaJS/N/NoK6MYGf8
+         yzkFoU0w8BOkNucTdMLUClgZntERI4aLb95HtFuF9lbweg6TOfgj7VJc5EapbzJ6i0oH
+         mQ6Ufp9aDyqN8qdvp4xTFEXefJD0bVION7o+7H/CtKr7Aq9rGFnle5OHDMDZAXXRF31U
+         HS2pzE6M5WeBJkPfErpYHpA33p5BmKfzDCl0s4+3EKj0uf/uLbRDgcudlmf9aTxkTXGK
+         4YTw==
+X-Forwarded-Encrypted: i=1; AJvYcCUkIgqiObmj3EZniDb6umTAph7lwWAk4pOYZEY1g3ejoZx5JfpPm7+HLUJR59HL/UnSW2XciYse/DBYmuCbMw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyknZAXZgAnxfEH1TF788XYPL/3wJxdAVyCRh2Gv5WmAQS1iwV
+	zhknB4PVOwQ5Ap4N8M+HrGIC++fa1lV/6Vq+E29aRJbS2eM7ABR2QHdx
+X-Gm-Gg: AeBDietdzk++kZt0EVFhDLSTX8TzAuRQgpONyHTBCmb5ngTmhSmUwGAEaqWZNqn3eiY
+	fLRJwN6hajXtgNBLDeRGnjLOpKdijgS/fgvYoc5OFBoSK3R0WkpI3kIkawU0/U2ZBX5O+HYSk8X
+	aMcLPh82RjirNPSO7La9Z1djWeK5mfMzCRkfOKke1AkcDXgpPVH6UnLT9mOa2d8/dzGCYAuAQJK
+	j0iyrrHJz40z9Xj4dll1unll1gaHaX6QEFic+1itMKrTu1aVIj2FPuBqUwtaCtBEZ3C4NOhYzde
+	pRX+lyBf+4M6asEXyNWQV89nmhelMppcrdRb7S9Xq16yuv37bhChUFI+toQwvYaX4rSSztkzh0r
+	1s9z97p/9VZqjP87nev3eog6rCykOErm01vm8SqW0VlaMQ9l2E291Pdgf5LdvwgczQe0T7v6ERv
+	8WPnUqUN2FyG2aJRyv3grRv2wxzfoXu3lDjtuo1qYKgkRkjuDHHv6lM8bfLTGRtER/kO4pCxBIv
+	JakTquQgZPj
+X-Received: by 2002:a05:6000:1446:b0:439:c69f:503a with SMTP id ffacd0b85a97d-43d292d5e8dmr26238497f8f.27.1775574518734;
+        Tue, 07 Apr 2026 08:08:38 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e2c54bdsm52056417f8f.16.2026.04.07.08.08.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 08:08:37 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jon Maloy <jmaloy@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	dev@openvswitch.org,
+	linux-sctp@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>
+Subject: [PATCH v4 net-next] net: use get_random_u{16,32,64}() where appropriate
+Date: Tue,  7 Apr 2026 16:07:58 +0100
+Message-ID: <20260407150758.5889-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260407053855.75828-1-joshuaklinesmith@gmail.com>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,nbd.name,kernel.org,mediatek.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-34469-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lunn.ch,kernel.org,gmail.com,sipsolutions.net,redhat.com,ovn.org,vger.kernel.org,lists.linux.dev,openvswitch.org,lists.sourceforge.net];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	TAGGED_FROM(0.00)[bounces-34471-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,01.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,git-scm.com:url]
-X-Rspamd-Queue-Id: 3998B3B0793
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	NEURAL_HAM(-0.00)[-0.984];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2402E3B0B07
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Joshua,
+Use the typed random integer helpers instead of
+get_random_bytes() when filling a single integer variable.
+The helpers return the value directly, require no pointer
+or size argument, and better express intent.
 
-kernel test robot noticed the following build errors:
+Skipped sites writing into __be16 (netdevsim) and __le64
+(ceph) fields where a direct assignment would trigger
+sparse endianness warnings.
 
-[auto build test ERROR on wireless/main]
-[also build test ERROR on linus/master v7.0-rc7 next-20260406]
-[cannot apply to wireless-next/main]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Joshua-Klinesmith/wifi-mt76-mt7996-replace-direct-WTBL-access-with-MCU-for-station-statistics/20260407-151612
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git main
-patch link:    https://lore.kernel.org/r/20260407053855.75828-1-joshuaklinesmith%40gmail.com
-patch subject: [PATCH wireless v2] wifi: mt76: mt7996: replace direct WTBL access with MCU for station statistics
-config: riscv-allmodconfig (https://download.01.org/0day-ci/archive/20260407/202604072310.QZ9n9tFj-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project c80443cd37b2e2788cba67ffa180a6331e5f0791)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260407/202604072310.QZ9n9tFj-lkp@intel.com/reproduce)
+Notes:
+    Changes v3 -> v4:
+    - Dropped net/ceph/auth_x.c site: client_challenge is __le64,
+      direct assignment triggers sparse endianness warning
+      (Matthieu Baerts)
+    - Added Reviewed-by from Matthieu Baerts for net/mptcp changes
+    
+    v3: https://lore.kernel.org/netdev/20260405154816.4774-1-devnexen@gmail.com/
+    v2: https://lore.kernel.org/netdev/Z/BfE0zn+DJxhBH7@debian/
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604072310.QZ9n9tFj-lkp@intel.com/
+ drivers/net/netdevsim/psample.c | 4 ++--
+ net/core/net_namespace.c        | 2 +-
+ net/mac80211/mesh_plink.c       | 2 +-
+ net/mptcp/subflow.c             | 4 ++--
+ net/openvswitch/flow_table.c    | 2 +-
+ net/sctp/sm_make_chunk.c        | 4 ++--
+ net/tipc/node.c                 | 2 +-
+ 7 files changed, 10 insertions(+), 10 deletions(-)
 
-All errors (new ones prefixed by >>):
-
->> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:4870:10: error: incompatible pointer types assigning to 'struct mt76_vif_link *' from 'struct mt76_vif_data *' [-Wincompatible-pointer-types]
-    4870 |                                 mvif = &msta_link->sta->vif->mt76;
-         |                                      ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:4871:35: error: no member named 'link' in 'struct mt76_vif_link'
-    4871 |                                 mlink = rcu_dereference(mvif->link[wcid->link_id]);
-         |                                                         ~~~~  ^
-   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:4871:35: error: no member named 'link' in 'struct mt76_vif_link'
-    4871 |                                 mlink = rcu_dereference(mvif->link[wcid->link_id]);
-         |                                                         ~~~~  ^
-   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:4871:35: error: no member named 'link' in 'struct mt76_vif_link'
-    4871 |                                 mlink = rcu_dereference(mvif->link[wcid->link_id]);
-         |                                                         ~~~~  ^
-   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:4871:35: error: no member named 'link' in 'struct mt76_vif_link'
-    4871 |                                 mlink = rcu_dereference(mvif->link[wcid->link_id]);
-         |                                                         ~~~~  ^
-   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:4871:35: error: no member named 'link' in 'struct mt76_vif_link'
-    4871 |                                 mlink = rcu_dereference(mvif->link[wcid->link_id]);
-         |                                                         ~~~~  ^
-   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:4871:35: error: no member named 'link' in 'struct mt76_vif_link'
-    4871 |                                 mlink = rcu_dereference(mvif->link[wcid->link_id]);
-         |                                                         ~~~~  ^
-   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:4871:35: error: no member named 'link' in 'struct mt76_vif_link'
-    4871 |                                 mlink = rcu_dereference(mvif->link[wcid->link_id]);
-         |                                                         ~~~~  ^
-   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:4871:35: error: no member named 'link' in 'struct mt76_vif_link'
-    4871 |                                 mlink = rcu_dereference(mvif->link[wcid->link_id]);
-         |                                                         ~~~~  ^
-   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:4871:35: error: no member named 'link' in 'struct mt76_vif_link'
-    4871 |                                 mlink = rcu_dereference(mvif->link[wcid->link_id]);
-         |                                                         ~~~~  ^
-   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:4871:35: error: no member named 'link' in 'struct mt76_vif_link'
-    4871 |                                 mlink = rcu_dereference(mvif->link[wcid->link_id]);
-         |                                                         ~~~~  ^
-   11 errors generated.
-
-
-vim +4870 drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-
-  4786	
-  4787	int mt7996_mcu_get_per_sta_info(struct mt7996_phy *phy, u16 tag)
-  4788	{
-  4789		struct mt7996_dev *dev = phy->dev;
-  4790		struct mt7996_mcu_per_sta_info_event *res;
-  4791		struct mt76_wcid *wcid;
-  4792		struct sk_buff *skb;
-  4793		int i, ret, sta_num, resp_sta_num;
-  4794		int wcid_idx = 0;
-  4795		struct {
-  4796			u8 _rsv1;
-  4797			u8 unsolicit;
-  4798			u8 _rsv2[2];
-  4799	
-  4800			__le16 tag;
-  4801			__le16 len;
-  4802			__le16 sta_num;
-  4803			u8 _rsv3[2];
-  4804			__le16 wlan_idx[PER_STA_INFO_MAX_NUM];
-  4805		} __packed req = {
-  4806			.tag = cpu_to_le16(tag),
-  4807			.len = cpu_to_le16(sizeof(req) - 4),
-  4808		};
-  4809	
-  4810		while (wcid_idx < mt7996_wtbl_size(dev)) {
-  4811			sta_num = 0;
-  4812	
-  4813			rcu_read_lock();
-  4814			for (i = wcid_idx;
-  4815			     i < mt7996_wtbl_size(dev) && sta_num < PER_STA_INFO_MAX_NUM;
-  4816			     i++) {
-  4817				wcid = rcu_dereference(dev->mt76.wcid[i]);
-  4818				if (!wcid || !wcid->sta)
-  4819					continue;
-  4820				req.wlan_idx[sta_num++] = cpu_to_le16(i);
-  4821			}
-  4822			rcu_read_unlock();
-  4823			wcid_idx = i;
-  4824	
-  4825			if (!sta_num)
-  4826				continue;
-  4827	
-  4828			req.sta_num = cpu_to_le16(sta_num);
-  4829	
-  4830			ret = mt76_mcu_send_and_get_msg(&dev->mt76,
-  4831							MCU_WM_UNI_CMD(PER_STA_INFO),
-  4832							&req, sizeof(req), true, &skb);
-  4833			if (ret)
-  4834				return ret;
-  4835	
-  4836			res = (struct mt7996_mcu_per_sta_info_event *)skb->data;
-  4837	
-  4838			resp_sta_num = le16_to_cpu(res->sta_num);
-  4839			if (resp_sta_num > sta_num ||
-  4840			    skb->len < struct_size(res, rssi, resp_sta_num)) {
-  4841				dev_kfree_skb(skb);
-  4842				return -EINVAL;
-  4843			}
-  4844	
-  4845			rcu_read_lock();
-  4846			for (i = 0; i < resp_sta_num; i++) {
-  4847				struct mt7996_sta_link *msta_link;
-  4848				struct mt76_vif_link *mvif;
-  4849				struct mt76_vif_link *mlink;
-  4850				struct mt76_phy *mphy;
-  4851				u16 wlan_idx;
-  4852				s8 rssi[4];
-  4853	
-  4854				switch (tag) {
-  4855				case UNI_PER_STA_RSSI:
-  4856					wlan_idx = le16_to_cpu(res->rssi[i].wlan_idx);
-  4857					wcid = mt76_wcid_ptr(dev, wlan_idx);
-  4858					if (!wcid || !wcid->sta)
-  4859						break;
-  4860	
-  4861					msta_link = container_of(wcid,
-  4862								 struct mt7996_sta_link,
-  4863								 wcid);
-  4864	
-  4865					rssi[0] = (res->rssi[i].rcpi[0] - 220) / 2;
-  4866					rssi[1] = (res->rssi[i].rcpi[1] - 220) / 2;
-  4867					rssi[2] = (res->rssi[i].rcpi[2] - 220) / 2;
-  4868					rssi[3] = (res->rssi[i].rcpi[3] - 220) / 2;
-  4869	
-> 4870					mvif = &msta_link->sta->vif->mt76;
-  4871					mlink = rcu_dereference(mvif->link[wcid->link_id]);
-  4872					if (mlink) {
-  4873						mphy = mt76_vif_link_phy(mlink);
-  4874						if (mphy)
-  4875							msta_link->ack_signal =
-  4876								mt76_rx_signal(mphy->antenna_mask,
-  4877									       rssi);
-  4878					}
-  4879	
-  4880					ewma_avg_signal_add(&msta_link->avg_ack_signal,
-  4881							    -msta_link->ack_signal);
-  4882					break;
-  4883				}
-  4884			}
-  4885			rcu_read_unlock();
-  4886	
-  4887			dev_kfree_skb(skb);
-  4888		}
-  4889	
-  4890		return 0;
-  4891	}
-  4892	
-
+diff --git a/drivers/net/netdevsim/psample.c b/drivers/net/netdevsim/psample.c
+index 47d24bc64ee4..717d157c3ae2 100644
+--- a/drivers/net/netdevsim/psample.c
++++ b/drivers/net/netdevsim/psample.c
+@@ -94,7 +94,7 @@ static void nsim_dev_psample_md_prepare(const struct nsim_dev_psample *psample,
+ 	if (psample->out_tc_occ_max) {
+ 		u64 out_tc_occ;
+ 
+-		get_random_bytes(&out_tc_occ, sizeof(u64));
++		out_tc_occ = get_random_u64();
+ 		md->out_tc_occ = out_tc_occ & (psample->out_tc_occ_max - 1);
+ 		md->out_tc_occ_valid = 1;
+ 	}
+@@ -102,7 +102,7 @@ static void nsim_dev_psample_md_prepare(const struct nsim_dev_psample *psample,
+ 	if (psample->latency_max) {
+ 		u64 latency;
+ 
+-		get_random_bytes(&latency, sizeof(u64));
++		latency = get_random_u64();
+ 		md->latency = latency & (psample->latency_max - 1);
+ 		md->latency_valid = 1;
+ 	}
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index 1057d16d5dd2..deb8b2ec5674 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -411,7 +411,7 @@ static __net_init int preinit_net(struct net *net, struct user_namespace *user_n
+ 	ref_tracker_dir_init(&net->refcnt_tracker, 128, "net_refcnt");
+ 	ref_tracker_dir_init(&net->notrefcnt_tracker, 128, "net_notrefcnt");
+ 
+-	get_random_bytes(&net->hash_mix, sizeof(u32));
++	net->hash_mix = get_random_u32();
+ 	net->dev_base_seq = 1;
+ 	net->user_ns = user_ns;
+ 
+diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
+index 803106fc3134..7cbab90c8784 100644
+--- a/net/mac80211/mesh_plink.c
++++ b/net/mac80211/mesh_plink.c
+@@ -712,7 +712,7 @@ void mesh_plink_timer(struct timer_list *t)
+ 				"Mesh plink for %pM (retry, timeout): %d %d\n",
+ 				sta->sta.addr, sta->mesh->plink_retries,
+ 				sta->mesh->plink_timeout);
+-			get_random_bytes(&rand, sizeof(u32));
++			rand = get_random_u32();
+ 			sta->mesh->plink_timeout = sta->mesh->plink_timeout +
+ 					     rand % sta->mesh->plink_timeout;
+ 			++sta->mesh->plink_retries;
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 5cfe19990f31..1a7736145dbc 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -72,7 +72,7 @@ static void subflow_req_create_thmac(struct mptcp_subflow_request_sock *subflow_
+ 	struct mptcp_sock *msk = subflow_req->msk;
+ 	u8 hmac[SHA256_DIGEST_SIZE];
+ 
+-	get_random_bytes(&subflow_req->local_nonce, sizeof(u32));
++	subflow_req->local_nonce = get_random_u32();
+ 
+ 	subflow_generate_hmac(READ_ONCE(msk->local_key),
+ 			      READ_ONCE(msk->remote_key),
+@@ -1639,7 +1639,7 @@ int __mptcp_subflow_connect(struct sock *sk, const struct mptcp_pm_local *local,
+ 	ssk = sf->sk;
+ 	subflow = mptcp_subflow_ctx(ssk);
+ 	do {
+-		get_random_bytes(&subflow->local_nonce, sizeof(u32));
++		subflow->local_nonce = get_random_u32();
+ 	} while (!subflow->local_nonce);
+ 
+ 	/* if 'IPADDRANY', the ID will be set later, after the routing */
+diff --git a/net/openvswitch/flow_table.c b/net/openvswitch/flow_table.c
+index 61c6a5f77c2e..67d5b8c0fe79 100644
+--- a/net/openvswitch/flow_table.c
++++ b/net/openvswitch/flow_table.c
+@@ -167,7 +167,7 @@ static struct table_instance *table_instance_alloc(int new_size)
+ 
+ 	ti->n_buckets = new_size;
+ 	ti->node_ver = 0;
+-	get_random_bytes(&ti->hash_seed, sizeof(u32));
++	ti->hash_seed = get_random_u32();
+ 
+ 	return ti;
+ }
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index 2c0017d058d4..de86ac088289 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -2727,7 +2727,7 @@ __u32 sctp_generate_tag(const struct sctp_endpoint *ep)
+ 	__u32 x;
+ 
+ 	do {
+-		get_random_bytes(&x, sizeof(__u32));
++		x = get_random_u32();
+ 	} while (x == 0);
+ 
+ 	return x;
+@@ -2738,7 +2738,7 @@ __u32 sctp_generate_tsn(const struct sctp_endpoint *ep)
+ {
+ 	__u32 retval;
+ 
+-	get_random_bytes(&retval, sizeof(__u32));
++	retval = get_random_u32();
+ 	return retval;
+ }
+ 
+diff --git a/net/tipc/node.c b/net/tipc/node.c
+index af442a5ef8f3..97aa970a0d83 100644
+--- a/net/tipc/node.c
++++ b/net/tipc/node.c
+@@ -1275,7 +1275,7 @@ void tipc_node_check_dest(struct net *net, u32 addr,
+ 			goto exit;
+ 
+ 		if_name = strchr(b->name, ':') + 1;
+-		get_random_bytes(&session, sizeof(u16));
++		session = get_random_u16();
+ 		if (!tipc_link_create(net, if_name, b->identity, b->tolerance,
+ 				      b->net_plane, b->mtu, b->priority,
+ 				      b->min_win, b->max_win, session,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.53.0
+
 
