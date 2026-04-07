@@ -1,168 +1,170 @@
-Return-Path: <linux-wireless+bounces-34476-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34477-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNwMDxsg1Wnr0wcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34476-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:17:47 +0200
+	id UJrUBHQg1Wnr0wcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34477-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:19:16 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9907C3B0CC7
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:17:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C583B0D06
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F37D330086DA
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 15:13:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 481C03057C4A
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 15:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9911F355049;
-	Tue,  7 Apr 2026 15:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276FF3603ED;
+	Tue,  7 Apr 2026 15:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kempniu.pl header.i=kernel@kempniu.pl header.b="dFNOKzPd"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bRmp+NzE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender-op-o11.zoho.eu (sender-op-o11.zoho.eu [136.143.169.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3189435837C;
-	Tue,  7 Apr 2026 15:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FB535F5FD
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 15:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775574837; cv=pass; b=TuE2Kuh9cCWfFetnb/ThqtS6W47FEPctVtIlELvI5XVBMXMw8S0WvZl9P6EOKTDGZsPPaF1acT2Dz2EboaaoEz3md3PgF48D1lS+jzQnJmYayTflQTxXNb12901RxsOiQrfegTkhbGMjIvFZocZqsUojlqota3cU5XpmZhQYQ+8=
+	t=1775574890; cv=pass; b=IIdtLhmRHRDcrkRWGoI0BI5wwu1IVM0rtkgG1MvymJdM32Rsae6OOBxvbkwBtZvcpTzV/SjUb2VXFzxlOR09Nfh5W3zYOugfxUd3BPPVoLir3PYElqu+U37bpw99vUn1cfrSzo9OH65lx9VnP4SzxDmkouj3bEIhgvhMHaPWvZE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775574837; c=relaxed/simple;
-	bh=//JcOV5p++bvo8mEpEEaKaGB8OSx+1UJgdY3pC7NSVI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iR48go26sN9fo1LxFb1QIJA5vVMRv9qzeqzCSYOLJDx2G9cI742GY3prfwjGFcnjf3jyOwv4VjB/IVh3V7QpsJTFt6SgQQHplvjOKa0ooqZd8rmEiHS1LT8HFYb5iKUBODQrOrackj9Uiqv8PgaucVfbGxXCO0svWEIaUy3xD/M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kempniu.pl; spf=pass smtp.mailfrom=kempniu.pl; dkim=pass (1024-bit key) header.d=kempniu.pl header.i=kernel@kempniu.pl header.b=dFNOKzPd; arc=pass smtp.client-ip=136.143.169.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kempniu.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kempniu.pl
-ARC-Seal: i=1; a=rsa-sha256; t=1775574801; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=kM+05SV0CmLYqKkgn/7OzyRyijeAAz9XNg9KzLczJwcA0XFAVXwxEfUa9s+Z6f/aY6OcS5UmBHae9RCK+ljDPSv9wWbAjFMUmtivhBzfmeAFZt+cyktm32sbyac/MNvuxu04B/Y7NSkEqfJp1SDWLS4YcLNKj1ktnVV8o3EOk2U=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1775574801; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=pM755TWVDXtvctLCMSHYr2HPrQ23PcJ/n2NnUxGMouw=; 
-	b=C2zzF8vXm6zy6D1OK1dCYISpCUM1N+o9efs2NDdHh0KHjTtb6R1BuPYyUoioehrCDNOa9qOeprrS/s7uieZXdSWDTjt9/ALR9A7T3qBgbSABuA5iVBnUo6L+J/iKYZP7VNokOXv47AzKisgSYsrTYiL5MMdptLU4Y8A1z8XcXy8=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=kempniu.pl;
-	spf=pass  smtp.mailfrom=kernel@kempniu.pl;
-	dmarc=pass header.from=<kernel@kempniu.pl>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775574801;
-	s=zmail; d=kempniu.pl; i=kernel@kempniu.pl;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
-	bh=pM755TWVDXtvctLCMSHYr2HPrQ23PcJ/n2NnUxGMouw=;
-	b=dFNOKzPdSO/DYJwujrCPP9NcxPw0hOqZxOMbCdeNZkCcWKY6Fvgf7O+YrJjTY8f2
-	+ipIyTwqdaiVv7byRvj47sdkOrAuDBnYe3i5Y36/3Zu3HqA4DE0F0xLGG3H/qH6pBw1
-	sn6s4RCN9vO6DMAMfa8vOTTM03Z9zX/j6EAY3K2Q=
-Received: by mx.zoho.eu with SMTPS id 177557479865717.399845662206303;
-	Tue, 7 Apr 2026 17:13:18 +0200 (CEST)
-Date: Tue, 7 Apr 2026 17:13:16 +0200
-From: =?utf-8?B?TWljaGHFgiBLxJlwaWXFhA==?= <kernel@kempniu.pl>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Arnd Bergmann <arnd@arndb.de>, Alban Bedel <albeu@free.fr>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-	linux-gpio@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: Re: [PATCH v6] wifi: ath9k: Obtain system GPIOS from descriptors
-Message-ID: <adUfDB4y-xt5QorX@larwa.hq.kempniu.pl>
-References: <20260317-descriptors-wireless-v6-1-b19ecff9cd2b@kernel.org>
+	s=arc-20240116; t=1775574890; c=relaxed/simple;
+	bh=SVuB5w4S9g3i2LJVwtkxp4MFM2EaZ8x7Kf0aj1pairU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AIymQdVCOef436tBe8VlM/HvXHw3nuclBYeI/q+KrCdcMybrUS7YHIBSimytNpo73UoSEGL0otz7s3KNSnNTQDL9enbFAkNR/ViS0ZxZpBA29hrOzDg4dh+6eLY2Y0vj4lPFj/E/5OBkexjxgZVzA72AzmVn1y6JLQ+NsZJU/j4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bRmp+NzE; arc=pass smtp.client-ip=209.85.217.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-60579b9c066so1685142137.1
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 08:14:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775574887; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lqM/jcCaiBeeu1547lW5zielNx8ikvfvkacihQZ7OuQGFUTv5i18iH2a9zKfTIi1/w
+         fy5CF1gxj0EwUwkjV+dDyazdJyhBPGLR+m1Oxd81VhwX0rOw+VB/1hJgR46ug5gNtMbr
+         1rOIJZT7QJrrhBg5viWqKwUVE8nTGfdPQyVL9FgMaoQUSduyFK2woiPzz3iYg1WcU/Po
+         /UsBZzeU4KeAqxE1cmq9kkqiP0QLdANpO22GbN8A8OzGtQPmhu0bH7tjR5tuFRgftqj9
+         JIxzM+VerFkOnJFp3tCXPsv6BIsW7wgN2aKENDh4xGjcgbU27PmZLiWEedvTD3J3adQL
+         1HRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SVuB5w4S9g3i2LJVwtkxp4MFM2EaZ8x7Kf0aj1pairU=;
+        fh=Hynmm3D6fR1/K0xDCv+VSmRDjrlz+eg7kchkvAN09+o=;
+        b=gpp60RIs18SJeUauL4iKTNNhNqRHy4vaQAMpK2Np1LQr6hwYEJdjI+ABP/k0U+nO2X
+         OVeECZd6+QzWjY6yRBhKNHE2QgRCKYYRt0k0AOglQahi0a/DsPBa1QMcvA5JFE/4KSbv
+         jpXCORZqdqI28fSYO6pmiMV98dm0UsnglIYyYYSrmDQsy8pDBtrMWtvm/2wsPa/6ngQo
+         au2SRV7UrG3oDcJaQx5ahXY7dWpanKqVEWfAhuxn2ScMJYdLsbT345FexMDiv+0S+5WV
+         1ux1xFsE6PmpPA0efNxo+CpZQDrmVzEqezYA/nEYbTuhqUKnMYCa7gV/PL3xHbR4IgDA
+         dqSQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775574887; x=1776179687; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SVuB5w4S9g3i2LJVwtkxp4MFM2EaZ8x7Kf0aj1pairU=;
+        b=bRmp+NzEmiSpEU3/+BkVW49B+fOD00XhLtwdmd5ailgWxEW5PGQ2rW08zarHXY0y+Y
+         Zplec1TcjY1Rhy37CPctH0D5FGvPX1N8P6tXvFr8TdpxKegiKiynq3mEpgb8WdwRug3T
+         UeyLAnn/I0N2gUfWQJQ7j6WAfIh6QJSLcQtwRmxgGDmuxd3rolh+yebjZuH95SIReZ6j
+         +pOKWqLbESKoUWfVnxZf6ypLf+RyKMvD6iAPH4lJXkojDb3tk1gyZ9alVYsfbZZpJ0Lj
+         7wZXHS8wDlCYzuJk3EcQD9tV/mAZuOLmGvrvII0XgQqnMmup5/cYSh8luM+6dIaK8smL
+         34XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775574887; x=1776179687;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SVuB5w4S9g3i2LJVwtkxp4MFM2EaZ8x7Kf0aj1pairU=;
+        b=KfyUIrcMkG1mNykQpWgvPEQW5wnerU4qUHOy5dEwUXdTQgwpO+srL+oGwsUnBQlVQI
+         kEs5me0zmfUIDUMU17Yxk09K2KqVPmzDq7KeZC04a3g9rA/1gwLGSu0mpWkwnDk7Y2sc
+         A5d97UNF0JEa9CdbCgjuOd9gRrWQwiucOxNxQkge9uImZySdd+zuwwiKSPJE8pcJ/32g
+         lV+9tJyszILP3Ncrzh0iPcQUwC+1s4gL18J2DuArEAOqoAeOpg6RAmTkTLJlS+Zxs2hS
+         Ry+h2wGNbh3plxWKE22IOT88Vhh3EbtJE9jqxSwrA7izHOwbh91sydgrYGAxPgTvJpN6
+         oFpw==
+X-Forwarded-Encrypted: i=1; AJvYcCX5POyWRHenFaW+fLDJhPkErDRl4XqAH7EnjPREQzkbG6X3LQO3pyPyAQhQzB3MNGutsTdGJ83OcYZocsM13w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbjmTAJo7T80CuctLOp12cdPRa0pGnJNrvZ21PilfyXfHfNWW9
+	jf69awnOrsXrOL7Ys+B5Nn4lPniHbeilFXagYdALMKyd3UUwc2/MAWnGFo4k4tju1N/Pae7ASkS
+	IpbuW3/BU9uX11KIsZM3r0DNOgirFA5EDxERKQz6X
+X-Gm-Gg: AeBDievSUFVOVIfuofzieem5xei/5mlo0vejWxJ9GImCq/GQ6b7e6H2xA4EdO6n73ft
+	Y+JKKEqKuwH3ZxKb6/0CTM2zWotA1BYZCxWqKjXYNvWhspPT0XDIJrLi0IA7wGI6hYDYBvL8F7+
+	HqTXNETZywrxxOd2jU543GVr6OzjKO/mKl5bz6PICIWAsdcpZuYnLMCJQqoOE01nRKk6X6HDscF
+	xQdj82ZHxPLZDxIbK4/p36HOojP9o7w1t57t8ZzAdN9ekNuKczX5R2TiKY3pTUB3xxodDzj+blG
+	8mteLeo0RZLyhfX02w==
+X-Received: by 2002:a05:6102:8555:20b0:607:97a9:e3e9 with SMTP id
+ ada2fe7eead31-60797a9e882mr169043137.23.1775574886413; Tue, 07 Apr 2026
+ 08:14:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260317-descriptors-wireless-v6-1-b19ecff9cd2b@kernel.org>
-X-ZM-MESSAGEID: 1775570913823007700
-X-ZM-MESSAGEID: 1775571581406007700
-X-ZohoMail-Sender: =?utf-8?B?TWljaGHFgiBLxJlwaWXFhA==?=
-X-ZM-MESSAGEID: 1775574477695007600
-X-ZohoMailClient: External
-X-Spamd-Result: default: False [-1.01 / 15.00];
-	R_MIXED_CHARSET(1.15)[subject];
+References: <20260407150758.5889-1-devnexen@gmail.com>
+In-Reply-To: <20260407150758.5889-1-devnexen@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 7 Apr 2026 08:14:35 -0700
+X-Gm-Features: AQROBzDVHNhmKDoXWfA937vlS7i5gl0nT_gzqkVTXTlHZU7d9eadHvamrDIvMqU
+Message-ID: <CANn89iLweeu08XgFL345k1NVx56=u6RV_GqnfG2ArvLjUwktrA@mail.gmail.com>
+Subject: Re: [PATCH v4 net-next] net: use get_random_u{16,32,64}() where appropriate
+To: David Carlier <devnexen@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Simon Horman <horms@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	Aaron Conole <aconole@redhat.com>, Ilya Maximets <i.maximets@ovn.org>, 
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
+	Jon Maloy <jmaloy@redhat.com>, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	mptcp@lists.linux.dev, dev@openvswitch.org, linux-sctp@vger.kernel.org, 
+	tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[kempniu.pl,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kempniu.pl:s=zmail];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[oss.qualcomm.com,linux.intel.com,arndb.de,free.fr,bgdev.pl,toke.dk,vger.kernel.org,broadcom.com];
-	TAGGED_FROM(0.00)[bounces-34476-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34477-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kempniu.pl:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kernel@kempniu.pl,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,davemloft.net,redhat.com,lunn.ch,gmail.com,sipsolutions.net,ovn.org,vger.kernel.org,lists.linux.dev,openvswitch.org,lists.sourceforge.net];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,larwa.hq.kempniu.pl:mid,kempniu.pl:dkim,kempniu.pl:email]
-X-Rspamd-Queue-Id: 9907C3B0CC7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 86C583B0D06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Linus,
+On Tue, Apr 7, 2026 at 8:08=E2=80=AFAM David Carlier <devnexen@gmail.com> w=
+rote:
+>
+> Use the typed random integer helpers instead of
+> get_random_bytes() when filling a single integer variable.
+> The helpers return the value directly, require no pointer
+> or size argument, and better express intent.
+>
+> Skipped sites writing into __be16 (netdevsim) and __le64
+> (ceph) fields where a direct assignment would trigger
+> sparse endianness warnings.
+>
+> Signed-off-by: David Carlier <devnexen@gmail.com>
+> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-> The ath9k has an odd use of system-wide GPIOs: if the chip
-> does not have internal GPIO capability, it will try to obtain a
-> GPIO line from the system GPIO controller:
-> 
->   if (BIT(gpio) & ah->caps.gpio_mask)
->         ath9k_hw_gpio_cfg_wmac(...);
->   else if (AR_SREV_SOC(ah))
->         ath9k_hw_gpio_cfg_soc(ah, gpio, out, label);
-> 
-> Where ath9k_hw_gpio_cfg_soc() will attempt to issue
-> gpio_request_one() passing the local GPIO number of the controller
-> (0..31) to gpio_request_one().
-> 
-> This is somewhat peculiar and possibly even dangerous: there is
-> nowadays no guarantee of the numbering of these system-wide
-> GPIOs, and assuming that GPIO 0..31 as used by ath9k would
-> correspond to GPIOs 0..31 on the system as a whole seems a bit
-> wild.
-> 
-> Register all 32 GPIOs at index 0..31 directly in the ATH79K
-> GPIO driver and associate with the NULL device (making them
-> widely available) if and only if we are probing ATH79K wifi
-> from the AHB bus (used for SoCs). We obtain these offsets from
-> the NULL device if necessary.
-> 
-> These GPIOs should ideally be defined in the device tree
-> instead, but we have no control over that for the legacy
-> code path.
-> 
-> Testcompiled with the ath79 defconfig.
-
-I could only test a 6.12 backport of v6 on real hardware as that is the
-kernel version that OpenWRT's current main branch uses for my router.
-That being said, the only conflict I had to resolve was the one caused
-by commit 551a097118391018ddc4079cbcec6fe4e7d64bc5 ("gpio: ath79: use
-new generic GPIO chip API") in ath79_gpio_probe(), i.e. no functional
-changes were necessary.
-
-After replacing the "tweaked" version of v2 with a 6.12 backport of v6
-in OpenWRT's source tree, the WiFi LED still works fine on my router.
-
-For the above:
-
-Tested-by: Michał Kępień <kernel@kempniu.pl>
-
--- 
-Best regards,
-Michał Kępień
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
