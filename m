@@ -1,170 +1,169 @@
-Return-Path: <linux-wireless+bounces-34479-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34480-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMeMIA8o1WnB1gcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34479-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:51:43 +0200
+	id iDhgKpkm1WnB1gcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34480-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:45:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D053D3B155A
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:51:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2A03B13BC
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:45:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06A8030B077A
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 15:42:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9EBCE3024001
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 15:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4044B3CAE80;
-	Tue,  7 Apr 2026 15:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E353CEBAE;
+	Tue,  7 Apr 2026 15:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="OiTByfre"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcQRK2Pt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8353C5522;
-	Tue,  7 Apr 2026 15:42:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8046A3CE4B5
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 15:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775576548; cv=none; b=EV7jAIcR4sAWQpnhGgjopDiVkiCRmbMensAcSjv7mmxQuG8CRDzV6zGrr4jPNzo/O292NzaFYavhKW5fINq38Z9KoNhHQzEnAv03mHHRDziZmSyvd12K+J8maVFFdSUJKYD9MjujPA1fIfMZHnaa0VbtUpEkDd/PmKO+RdYwrnE=
+	t=1775576724; cv=none; b=md8ZLLF9pjFG8o7oPduwpeoO6QSd7li+eGBA+axFWm5d38Tk4XnNfWrvAZAtMtr8HeG/xA8EZTn+krREIPnrf0cEz423vFFs6vjChS5XBD6lIc7/znJlcYVzHwH4cFllhyPTxlvgJR4FsVx2LXjUV58qtcFrnHRgSaYer7UKgWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775576548; c=relaxed/simple;
-	bh=ZdukmGPr32uKMT3hUIvJrsG8XDUJH7rwxzNXZ36hCk8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V73Bn5TUOZW0DhUgXpawiOh8X6Rqpbbt3L3geMepmK6cAOFYcw9RYPZLl48pyuufIq8sswPBTXbSmWGf36W0txP/6s0m7Aca6JaDKoMsukyMp6p3B9qSi0HDAk8Bn2rpnKuAVKz35wr6WmtJf9/Njn8n6pESQ6k2MYMz2TpcAH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=OiTByfre; arc=none smtp.client-ip=148.163.129.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 249582C506C;
-	Tue,  7 Apr 2026 15:25:35 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 76285A80070;
-	Tue,  7 Apr 2026 15:25:25 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.38.167])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id C900D13C2B0;
-	Tue,  7 Apr 2026 08:25:13 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C900D13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1775575523;
-	bh=ZdukmGPr32uKMT3hUIvJrsG8XDUJH7rwxzNXZ36hCk8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OiTByfreOgsKqwGFK3UvF3ct58qv0l5gS/Bj15Yf6ZU/oOqFEFl2qHDmo4dx089m2
-	 xrQMSd5BZXaAeMV4ivwU32YiXTEAJvC7hwcBQrAdBoL3AmOmhCPc7oBkbwYfLwzrlA
-	 EVQJ0lWz0v9Yiaj02NoO8tWeQsL9bUhhBmAe0b08=
-Message-ID: <d4622e31-4012-4c05-9288-529b0bb0aebd@candelatech.com>
-Date: Tue, 7 Apr 2026 08:25:10 -0700
+	s=arc-20240116; t=1775576724; c=relaxed/simple;
+	bh=SuWl3tjZsAfYMRt8x4bSIskei8uiSlKXsRGVBV5mucM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z5znmnEPklCZRVx/X1a4+AZnfMyHY0iiSHjr5cMAmQXe2hzmzN0iBms2sDO0z1yST+pbn8ufTvAApUjrWNwqZTSRA5Npv/YLIgWD6+8KbwY+jcq4wD2j6SKlYpZv5DHJyj9rZL71YxXYDYhI8uMDO+Evkt/XOS+zj6wlftuUCY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcQRK2Pt; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b258576d8cso33031505ad.0
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 08:45:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775576712; x=1776181512; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mdgebIX8WCshNHCphbYwlC8WuuoYhJuJww2bMe0846A=;
+        b=bcQRK2PtHV1PtGHf0Fve3dTdRAdmawhl/JP/RqaSCAVHXHQN+Mg57h+qwEvtn5dETE
+         IJw4Tn26m+ZdhOJHsWTGb7o9o5Oo4P4PCE2qkqKu/ez7dIzG0DXEYtNT2aAwhdc44qny
+         ek/A19AoHRrxw36P55aLNlQzd2rufywCoXCgMoBGjtiMw/X/0FgBva6aWcVdOaalnTvn
+         Ei6v3QlqRjrlV7j3woAU5VgjMQbxAq/6wpLbA/HYgKoGlk6dxNew/UHBbzoZKV+QQW51
+         PrlGz/LqlBtkjoxHx41tiSSxZGdx8MqTkxKnZsOpVY0vKzSO3KwOSoGwgh9qtgvy4wxK
+         eMIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775576712; x=1776181512;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mdgebIX8WCshNHCphbYwlC8WuuoYhJuJww2bMe0846A=;
+        b=b4YVShAtEoiastEWndi/iG/R+waNEmacv0x1cqRA8B6aYVyMTnWkB5QpizQg2oklgD
+         wSfAgSbV9TicOkmn7NhCseYPaApdxCtsw6EFvIiuRSijrIF3r9VAZUKPvKPYz8bh6xHS
+         8KbvPrHWzSBBsoq4joaMvBdbpunKpatsNOhNOJTa6+DZcIx0zqqoD4rPrU738agFSork
+         lmW+z38YULHHCXUlGQ1RXfK5zHHninE43qqHaeEP60eaI4+mgj/ZRfWY9VYUiGPfwIRo
+         KIYKY0ahn1TXOtIoYncCu36CKTh4MxL41qpWwB7WLE4UuHR/M7dm2PbK0msagWsMuxqI
+         iBsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVp8cCEH+3ydcxLodYMCl/YMb6MIWAEtqUBsEpmxg1klMh8sXcPiZDr+jxE03k9AyZFB9PU53kqOiA6klDl7A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJv/tgjV4uMq18r4C5YVXvtOYdj7wvrSCS5e2FrQSGf2ja1Ar9
+	ejM4/E4qQa2SnPGHUidte6qSbjms8+01tFcEQncJKAAl54oIC0lIV2eY
+X-Gm-Gg: AeBDiesJmaO14Vac4AM3PdFbrkexKxWavCWnxMcgod62S3NSoxLsCUR7D7mXscoC9fW
+	Zw5KKkzo+cYczcQUbxcGe/LSPWXSNgUlfeEGgXgKG7llVhQKBMxK8MkMYXBHBY1ufuniD7Gv6cy
+	gDURPgLr5/SORgDXCtC0Sh73skz+OVf/+Zd8ukIYMEiRR/aXutrM9S4dbitR3cxhEhjk6YZ74L9
+	nc1wzHY8FIURXuMj2I129pUjBx7fJJLxhDdmvCq5lUeWRk+MGOJNvrk+Rz1T1yE3ftbWv/PwUGf
+	lDxTZpSo5AYonZ98Y7a+tkL35c0vaxl1bB1WjVT6198rj1BH15H871Uw0gne7hNzcoSbo9pPSVo
+	/zVnSKfTEwyJztj75RrwSFK+EcMsFKXxRKbwlhYTjTMR/GWhs0kbrVGUAef6tyVwl+cDYenIoJ3
+	6Bh08OpH/2AgebYezmzdavMIQ=
+X-Received: by 2002:a17:903:1aa8:b0:2b2:42b1:ad9a with SMTP id d9443c01a7336-2b28182be11mr183382875ad.19.1775576712346;
+        Tue, 07 Apr 2026 08:45:12 -0700 (PDT)
+Received: from BM5220 ([49.215.226.71])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2b27472d55fsm230992905ad.11.2026.04.07.08.45.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 08:45:11 -0700 (PDT)
+From: Zenm Chen <zenmchen@gmail.com>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Cc: zenmchen@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH mt76] wifi: mt76: mt76x2u: Add support for ELECOM WDC-867SU3S
+Date: Tue,  7 Apr 2026 23:44:30 +0800
+Message-ID: <20260407154430.9184-1-zenmchen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless 4/4] wifi: mt76: mt7925: fix RCPI chain 3 mask in
- sta_poll RSSI extraction
-To: Joshua Klinesmith <joshuaklinesmith@gmail.com>,
- linux-wireless@vger.kernel.org
-Cc: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
- shayne.chen@mediatek.com, sean.wang@mediatek.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260406234739.29926-1-joshuaklinesmith@gmail.com>
- <20260406234739.29926-5-joshuaklinesmith@gmail.com>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <20260406234739.29926-5-joshuaklinesmith@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1775575526-qrLPDTSfbSZ1
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1775575526;qrLPDTSfbSZ1;<greearb@candelatech.com>;cd1e1c133c9805f1fc8e076cc471adaa
-X-PPE-TRUSTED: V=1;DIR=OUT;
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34479-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[candelatech.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-34480-lists,linux-wireless=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[zenmchen@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,candelatech.com:dkim,candelatech.com:mid,candelatech.com:email,candelatech.com:url]
-X-Rspamd-Queue-Id: D053D3B155A
+	NEURAL_HAM(-0.00)[-0.997];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-hardware.org:url]
+X-Rspamd-Queue-Id: 4A2A03B13BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/6/26 16:47, Joshua Klinesmith wrote:
-> The fourth receive chain RCPI uses GENMASK(31, 14), an 18-bit mask
-> spanning bits 14-31. It should be GENMASK(31, 24), an 8-bit mask
-> for the fourth byte, consistent with the other three chains and
-> with the RCPI3 definitions used elsewhere in the driver
-> (MT_PRXV_RCPI3 and MT_TXS7_F0_RCPI_3 both use GENMASK(31, 24)).
+Add the ID 056e:400a to the table to support an additional MT7612U
+adapter: ELECOM WDC-867SU3S.
 
-Hello Joshua,
+Compile tested only.
 
-How much of this is AI driven?  As far as I know, mt7925 is a 2x2 chipset
-at max.  So while the patch may be correct, it may also not matter in practice
-and at least may not need to be backported into stable.  If it is a minor
-cleanup that doesn't actually matter, that should be described more clearly
-in the commit message?
+Cc: stable@vger.kernel.org # 5.10.x
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+---
+This ID was found from [1] and adding it to the device table should be 
+enough to make it work. Hardware probes at [2] can prove its existence.
 
-Some of your patches are touching tricky parts of the code and making
-subtle comparisons against how the vendor's driver is written.  How well has
-this been tested and reviewed by a knowledgeable human in general?
+[1] https://bushowhige.blogspot.com/2019/08/ubuntu-1804-mediatek-usb-wi-fi.html
+[2] https://linux-hardware.org/?id=usb:056e-400a
+---
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks,
-Ben
-
-> 
-> On devices with fewer than 4 antenna chains, the corrupted value
-> is masked out by antenna_mask in mt76_rx_signal(). On 4-chain
-> devices, this produces incorrect ACK signal strength readings.
-> 
-> Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
-> ---
->   drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-> index 6334019249..85e91ca84f 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-> @@ -144,7 +144,7 @@ static void mt7925_mac_sta_poll(struct mt792x_dev *dev)
->   		rssi[0] = to_rssi(GENMASK(7, 0), val);
->   		rssi[1] = to_rssi(GENMASK(15, 8), val);
->   		rssi[2] = to_rssi(GENMASK(23, 16), val);
-> -		rssi[3] = to_rssi(GENMASK(31, 14), val);
-> +		rssi[3] = to_rssi(GENMASK(31, 24), val);
->   
->   		mlink->ack_signal =
->   			mt76_rx_signal(msta->vif->phy->mt76->antenna_mask, rssi);
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index 01cb3b283..459c4044f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -16,6 +16,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
+ 	{ USB_DEVICE(0x0e8d, 0x7612) },	/* Aukey USBAC1200 - Alfa AWUS036ACM */
+ 	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
+ 	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
++	{ USB_DEVICE(0x056e, 0x400a) },	/* ELECOM WDC-867SU3S */
+ 	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
+ 	{ USB_DEVICE(0x0471, 0x2126) }, /* LiteOn WN4516R module, nonstandard USB connector */
+ 	{ USB_DEVICE(0x0471, 0x7600) }, /* LiteOn WN4519R module, nonstandard USB connector */
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.53.0
 
 
