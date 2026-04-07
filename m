@@ -1,84 +1,105 @@
-Return-Path: <linux-wireless+bounces-34492-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34493-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGfpGhls1Wm96AcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34492-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 22:42:01 +0200
+	id OMQnBNiB1Wlr7AcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34493-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 00:14:48 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F333B4A0E
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 22:42:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 131253B5464
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 00:14:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D091301DAD3
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 20:41:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D53EC3002D09
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 22:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB742126C17;
-	Tue,  7 Apr 2026 20:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E25C37F741;
+	Tue,  7 Apr 2026 22:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q1cnBBcs"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="OweH0Y2k";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Towwi8qC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0B7379EEF
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 20:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F0137EFF1
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 22:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775594518; cv=none; b=bc1diX5uXij4WyMuhTr6DHK9IP+XE0GcufKyI95LN78YcDQ1jsNjQ6WqxBPN3R3yrjDIlQw3Icq5+c93guJ9NO53RQ0Uve7TLbtjS47IlZ+dL8aTa1D0LUcPEND0/MWvqW8UaYgElVlorh9iBYRr8szVGUcI2x3YYJwVwqcmBwY=
+	t=1775600076; cv=none; b=mlVeDT5oB2y+PB3cMrtdtQV6ViZDNw0ixsv4pxwIuyG+yqEcaERBflMlHSyIehqgSrrbhaBAmvsrg+3eQxaTNbLApR+MajOp0r6E4+3gk6llyNpEJm0EBxwaCAktu3aLvZPyBDjoWUM/BUA/+1gB5OCMYiezxgvAZEbvKBv0bKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775594518; c=relaxed/simple;
-	bh=6E33cF5eENWn+ODPAABTPO0KklZ6lyAjIMWoWsddMW4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=cPXD/38rjxdpdjCdOd5cQtPKJuezloXligBJAmIYeFu2pF0DwY3gERt3TU5m/Z16hvaL7IkfmxX1LL/VPI3xi6N4YARrLtg/QJqoxwZ0CrNGoixvh3+nPUBNyAvNDt2hiZJQ7dzpLaNq/Zvzv6rTMeIzJNtRIkpIhwAeiAYRUsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q1cnBBcs; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so50812395e9.0
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 13:41:56 -0700 (PDT)
+	s=arc-20240116; t=1775600076; c=relaxed/simple;
+	bh=O70zG8/vQ7/2/njiFcnoP01VaZrKBSDy6k7ous7SiZg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RIP4UNER2jruUGsoBORvwBHXRvScuh9XfgxQ8CWfI2sN49wHP3YpxQpTGY2pLgRGzmnNgX/A6zfn4+JdHaIsff2QJ59BqexzGMxI8QiPEShb2wwQFavNtdCaCtc3YrZWyZcHWx9gSmhnq+RdSjKb4/Cb2watK8nXPBnsYYQcST8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=OweH0Y2k; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Towwi8qC; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 637K7N0B2009220
+	for <linux-wireless@vger.kernel.org>; Tue, 7 Apr 2026 22:14:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	VjGZu1nMIYxEH+BkM12qs+iRxdD0JnnyuDFHzOWT/rM=; b=OweH0Y2kARoYn1W1
+	qq3nLdCQrnMusgkFKVH97SH/YIOnMEsAfAZK2KoiG9Gxh/8/n7cU1UsGD3/JY+O+
+	TnCC6+QeX8Z0IUKHaUmjTIypZ2H0UfYbyJVOT7JUEat6dMR7LzZBxjoLQJyQmwOz
+	hXC6WmTAPgKiCEnt8sayLvxEaf1aQEZ3KVbNm3zDkVgkpsYAgEMpiGSFzicXC+GT
+	zLbUcVWQXj925Bce1NoFoyGvgQBlVpoEnadvPpUlxJC/tmR4UarU4h86gc0j8iqn
+	9zGvFPUfebfRPl8K/kWd8XSw9wadeBrURZDqQNVSPOk9jaO1/Rspujy1bXSio4MO
+	UaKy3Q==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dcmrrvr98-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 22:14:33 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2ba9a744f7dso7903253eec.0
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 15:14:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775594515; x=1776199315; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1775600066; x=1776204866; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IIZepUTaDX41TxFVMbEKDikeA0mvwv+R2Cxv0WTMC+k=;
-        b=q1cnBBcsi2PrVN72qiickWQtUMMlXVFSFHkpBOUV0vt8TKj9RjUE4JvZ3qmc9pdlQG
-         ENMHgzPdSp53QqdASOhCj2XOWdpXaufBgDj3PKYWxwO/ufkNwSp2Zty+kd3fU014iA/A
-         U0Eay7TwO+wbO58iuYK/4m6T+QGC9OQSUQEE9ICvG56kkfPn+rd2cTBHRuhLa/Lz0woi
-         Z8uLnv/eYgG9d36gTu6B0kr2GUTSN2iyT7G4v0WSq7ZRxUi5AKInr28NZVXmU69fJmef
-         NW6eAZwN2qFpbxX5joRkk/liAmlfMaat1Ug6pmknuZ1xvbsRcVQfdObIPSyGUHSlqSZT
-         YDRA==
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VjGZu1nMIYxEH+BkM12qs+iRxdD0JnnyuDFHzOWT/rM=;
+        b=Towwi8qCgZfYUflNkOb/McOoIKWL4FXtnHS+61NfoX++L3aMY7rz/hE198FCH4bEr7
+         lTERDD6vyUau5niV1ACETaGLJLCGKM8CtQ0iiSxhmTxj+2HO2sINAgOq0BoMpBk9P1YU
+         W9md2wZDgOfa20KbSwBg+UV8n0wd523R2GHFLceuS34njkbSagCzY+oSqRTutlOBHC6Z
+         e6Q135NmJUVeVXysLPa9h+mTLE1K4lGnxU8vGE6WgQf84h93PCfXW7qpQB3FDz88YPWz
+         6xhTGOk4ctF9wQjZs54SKwXMl75pDrM3hj5xPU33fZycNyzpm+gsA1bz8/8rTSIX/0Ll
+         hLGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775594515; x=1776199315;
+        d=1e100.net; s=20251104; t=1775600066; x=1776204866;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=IIZepUTaDX41TxFVMbEKDikeA0mvwv+R2Cxv0WTMC+k=;
-        b=LFAxzHwoTSpcdL66/+ILLb8EoTjOWc7/QJEINrFFpRy5SezT9PVQ/gkpc9ECHhF4Dg
-         oZ0HQkb1I2IP0bL09ftwyOShm/H41tHY7J+1RfTCWx7Q23+2uVUKwhuE/Of3E1JVac93
-         +sRbPCEQ4cPuNU6+u9ENrxo6KSIBPH+XhrQzEPYaSyhRW4lmawDs9hk+TjEiDj9pFXny
-         VbDIpENBYmILJTrxq5KOgT0W1p3+4L2iHlYoClYZFnax1f8z3apSnb0YfP+c/dxHL4uT
-         BTIxhHOvkXouAY2FB7d/0pNoDLhlT03x+FYcApCUu1qA76mGIAlfjGJHoNuw6VGeTpRJ
-         u5iQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUmnbGRfZjjnBFDmjqL6WctmedBct8Sm2WoiDT6F4f0+M4BXuFojAVcL5/5yeClT95W18hK6juEXguepSKHLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcJOqCPi7y3Ru1Ghi+3Bs7UzYaOKYcIX+BoLQnOdRN0XKDfkQE
-	/3rbUQ4FTzXYurpMwPTZx+VJRtLrJ4smhih2zuBz43pEH6RdLoMfNC0c+Wtvcg==
-X-Gm-Gg: AeBDieuL/mj+e0DTJt+/ViNXL+FdO90tAPus45NFMD2aDCUqimUTla64kubpvjF5hPS
-	M1rpg/yOyfdDG2md9873Mnr/u5qOIlWa0a4pFeYSyYyu+0lnoutUdPrkhMmtlny3V0IKoYKT2xn
-	hJBL6eFwEzWV3kcYJjdgB6hndU2gI8YlJkvEC32x8r0EHUROT5EL5K1GyI1MrhrGFDgsNgna7MC
-	98n5lDYp6QWQt6Fotu+j4n+t8gjXc5/0A+NDxo81aTq6ontXXrfH2tWP3gpSlKn/lDnNiw+uyvS
-	TDsVie5vzkZc5FQBJFQqRjHkIz3XDdLPRxFPSnoDzfnNadew7U6byCA4IBFtJKzj7sOZnzMYrgC
-	0YQYAnOo4KJJqKReT6joMNBHx6CRALHeESGz2PJ+RMEjJBPFfBs14Huf3RwDBMD/E6vjBFV+048
-	bg1Tnp/NjI7VTBc9DC1A/Iauy3EmQx1g==
-X-Received: by 2002:a05:600c:621a:b0:488:af7f:7707 with SMTP id 5b1f17b1804b1-488af7f7fd3mr137613935e9.18.1775594515142;
-        Tue, 07 Apr 2026 13:41:55 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488c55d1347sm5918335e9.4.2026.04.07.13.41.53
+        bh=VjGZu1nMIYxEH+BkM12qs+iRxdD0JnnyuDFHzOWT/rM=;
+        b=k5ukd7O2i2ZzjV7VLGqpnPv+pvSCp2jZJ6IUT4GGzQD+VCOIq+bDvtE+GS6DaihmFT
+         H4YUk20vo0WQcqkwSHcl3tAJQh6Jf2v5AV/Y1ffmS2EYuYaoku1Jng4+FB73wLVkkLVj
+         Jkf2Zwctet+HPWvYW+TvsbY6Mx2HiJGUCKF6dNsk5MPDTYAp77RV7QOmPsD3ALPb+Ta7
+         2yG96kLegGrIn96sS7gNAH7CsUyxtWMNAgWSxeRgfdD4rJWKu1mjuJGTAZH9F2yYFk8/
+         y58FkM2DoJL0GDV4WRoXUHOGrTwXBGcJXy5G/nGqSuw/rrT4h+KyLujWH8kVMHio5Zjg
+         sXYg==
+X-Forwarded-Encrypted: i=1; AJvYcCX0xbGxjBcmNJc9z0GcQB78TLDpyU5Hk5Qj90F8yEu0OvYe7lDOOomu0OaDWtLgAHzAkoTQWqlwSS3zxab/qw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVHIQrSvlvXQVVZ4oKRS96GWntoLPKOUocKCFb8ab/I1z06XoY
+	QlrwEhUpz8qwwjhabUGyBVvLO1t+dQnR6op4Ve8mG1FEZikjC7n75TPa08ep/i4sS4mIKX30bL+
+	DHxkFk+zb67J0jyTVpDc6zOz3X8GsKN84rUc3ExkZ779nBlPSiaJfeJ+A1jWfPJ5fHIXo2A==
+X-Gm-Gg: AeBDiev4vBU8JuNkEkZHzg77GwMmpxLLvjh1x13E160Y91gmJfIbjZm72zcoXUEYpQL
+	DZbSSWrio/vFQ5UMHeoivewVcWPmLLoNxO3JhQJG+0QccvPRyJie+PapLZzkKZcmNM0T3QXSfLz
+	EnxsfdzDtKzzi5YEL8ZL79IH9hgeds3N2p3l9+EtmYkgdSQCsVeLZPYMV6BUttdTYy+YUJiIzUD
+	Paj76nGjjfDrmTeTGVw1RBcnC6m4RmmU1Rxj8KRHD3TUkt7gVNIQ2f3Kcw3P1BtNvdr5jLOPaZ3
+	sRUBQiUtstzqEowlGY0otiULY/JCZLReS/avlw6uPHO94kazyyaI5N6HxuzppN82BVFgUyBqKwb
+	hvfHbqk+6BNDnImaqYxclgwsV7NHXXaFihpdioolxU/uDfHz5VnPLY/Y7OZiVbXociY2f2b+gBM
+	nG9mD6
+X-Received: by 2002:a05:7300:880a:b0:2ce:f3d7:20c with SMTP id 5a478bee46e88-2cef3d70bd3mr4324851eec.29.1775600065598;
+        Tue, 07 Apr 2026 15:14:25 -0700 (PDT)
+X-Received: by 2002:a05:7300:880a:b0:2ce:f3d7:20c with SMTP id 5a478bee46e88-2cef3d70bd3mr4324829eec.29.1775600065017;
+        Tue, 07 Apr 2026 15:14:25 -0700 (PDT)
+Received: from [10.134.65.116] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2cf2be19f85sm12178552eec.30.2026.04.07.15.14.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Apr 2026 13:41:54 -0700 (PDT)
-Message-ID: <e8d10b96-f305-46f4-a473-2592f237f871@gmail.com>
-Date: Tue, 7 Apr 2026 23:41:52 +0300
+        Tue, 07 Apr 2026 15:14:24 -0700 (PDT)
+Message-ID: <439f9bbf-1ba1-465f-b5af-01ba0ebb86d4@oss.qualcomm.com>
+Date: Tue, 7 Apr 2026 15:14:22 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -86,163 +107,141 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next 00/12] wifi: rtw89: Add support for RTL8922AU
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <8549233f-dd83-4e77-be88-5e22ecd4f5f1@gmail.com>
- <25781f4aa6cc427caf396374ca46d380@realtek.com>
- <a90f22d6-bac0-4c76-86fb-517e7e7bf441@gmail.com>
- <0cbfd38ffd0b46e899885c83889d060b@realtek.com>
+Subject: Re: [PATCH v3 11/15] media: qcom: Switch to generic PAS TZ APIs
+To: Sumit Garg <sumit.garg@kernel.org>,
+        Jorge Ramirez <jorge.ramirez@oss.qualcomm.com>,
+        vikash.garodia@oss.qualcomm.com
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-media@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-remoteproc@vger.kernel.org, andersson@kernel.org,
+        konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+        conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
+        akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
+        jesszhan0024@gmail.com, marijn.suijten@somainline.org,
+        airlied@gmail.com, simona@ffwll.ch, dikshita.agarwal@oss.qualcomm.com,
+        bod@kernel.org, mchehab@kernel.org, elder@kernel.org,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, jjohnson@kernel.org,
+        mathieu.poirier@linaro.org, mukesh.ojha@oss.qualcomm.com,
+        pavan.kondeti@oss.qualcomm.com, tonyh@qti.qualcomm.com,
+        vignesh.viswanathan@oss.qualcomm.com,
+        srinivas.kandagatla@oss.qualcomm.com,
+        amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
+        op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
+        skare@qti.qualcomm.com, harshal.dev@oss.qualcomm.com,
+        linux-kernel@vger.kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>
+References: <20260327131043.627120-1-sumit.garg@kernel.org>
+ <20260327131043.627120-12-sumit.garg@kernel.org> <ac-KQ7e8-syph1Zl@trex>
+ <adOcMsk8a_Clb4WZ@sumit-xelite>
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <0cbfd38ffd0b46e899885c83889d060b@realtek.com>
+From: Trilok Soni <trilokkumar.soni@oss.qualcomm.com>
+In-Reply-To: <adOcMsk8a_Clb4WZ@sumit-xelite>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDIwMyBTYWx0ZWRfX6sP3RKkR36ft
+ Aw4zLoVPfn8kqh39A4c4FeZx43mLjB4Exp37s27HTLd0emsesh9Qw7DwubEAQcGSEMRT8EYAJ8Y
+ TzPUpv1zXBL1i1hvc9gKzeD94d4X6tdvuP0+DIImcF+vEHm8II3jTXK/julRlXVN3Kf15Tqb5tk
+ 3dsk+TT7i+usQGlOTAUOTtIDIhz3YSXQcBvZR2Zm9dlCOt/L9AirIG/CUjF29oVV8nlFuwXl7UA
+ ysfZDKjBQXZ5V+WR++XS6xjMoKeLNDK0aiGaZY3CIGMPKoVZTZ1G1CxFjUPOi2/zxQZp8WYXRrT
+ uKNogndKGeVmxGGOW7p3nJom7TQFMkVT5pmGcSaycYhQQcvdazjTPmJ+2G7ILhdcrvKVAbjNzf7
+ cB8ddtjduTsgbk+dSjLxhVyaWPooyyZ1pNweD8M/89SzB4XuXVqmHIYQJklRgd2drR/RCEAt61+
+ CP38jPq9A9EEiy6mlfQ==
+X-Proofpoint-GUID: zagOLQASerRdUBzl-1x22de3dCOW0iAZ
+X-Proofpoint-ORIG-GUID: zagOLQASerRdUBzl-1x22de3dCOW0iAZ
+X-Authority-Analysis: v=2.4 cv=LquiDHdc c=1 sm=1 tr=0 ts=69d581c9 cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=NEAV23lmAAAA:8 a=EUspDBNiAAAA:8 a=nRfXl0x10UYwF-qtBXkA:9 a=QEXdDO2ut3YA:10
+ a=PxkB5W3o20Ba91AHUih5:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-07_05,2026-04-07_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 priorityscore=1501 adultscore=0 phishscore=0
+ impostorscore=0 spamscore=0 suspectscore=0 clxscore=1015 bulkscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604010000
+ definitions=main-2604070203
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34492-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	TAGGED_FROM(0.00)[bounces-34493-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[trilokkumar.soni@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_GT_50(0.00)[50];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: B8F333B4A0E
+	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 131253B5464
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 02/04/2026 03:48, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> On 30/03/2026 05:53, Ping-Ke Shih wrote:
->>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>>> Often one or more of these messages appears when the chip powers on:
->>>>
->>>> [  +2.167037] rtw89_8922au 1-2:1.0: failed to wait RF DACK
->>>>
->>>> [  +2.942749] rtw89_8922au 1-2:1.0: failed to wait RF TSSI
->>>>
->>>> [  +0.019006] rtw89_8922au 2-4:1.0: failed to wait RF PRE_NTFY
->>>>
->>>> [  +5.985900] rtw89_8922au 2-4:1.0: failed to wait RF DPK
->>>>
->>>> It's unclear why.
+On 4/6/2026 4:42 AM, Sumit Garg wrote:
+> Hi Jorge,
+> 
+> On Fri, Apr 03, 2026 at 11:37:07AM +0200, Jorge Ramirez wrote:
+>> On 27/03/26 18:40:39, Sumit Garg wrote:
+>>> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
 >>>
->>> RTL8922D done RF calibrations by firmware one by one, so driver should
->>> wait for previous one done, and trigger next one. However, it'd be
->>> well to just do waiting at the last to wait for all calibrations.
->>>
->>> Try to enlarge waiting time in rtw8922a_rfk_channel().
->>>
+>>> Switch qcom media client drivers over to generic PAS TZ APIs. Generic PAS
+>>> TZ service allows to support multiple TZ implementation backends like QTEE
+>>> based SCM PAS service, OP-TEE based PAS service and any further future TZ
+>>> backend service.
 >>
->> I was convinced I tried that already, but no.
+>> OP-TEE based PAS service relies on the linux driver to configure the
+>> iommu (just as it is done on the no_tz case). This generic patch does
+>> not cover that requirement.
+> 
+> That's exactly the reason why the kodiak EL2 dtso disables venus by
+> default in patch #1 due to missing IOMMU configuration.
+> 
 >>
->> After increasing all delays a bit the warnings are much more rare.
+>> Because of that, it is probably better if the commit message doesnt
+>> mention OP-TEE and instead maybe indicate that PAS wll support TEEs that
+>> implement the same restrictions that QTEE (ie, iommu configuration).
 > 
-> Turn of debug mask RTW89_DBG_RFK and set a very large timeout time, and
-> do connection >20 times and then check "RF %s takes %lld ms to complete"
-> to see the maximum value in your environment.
+> The scope for this patch is to just adopt the generic PAS layer without
+> affecting the client functionality.
 > 
-> Please share the number for each RF calibration after your experiments.
-> 
-
-I changed every delay to 500, then ran this, once with the adapter in
-USB 2, once in USB 3:
-
-for i in {01..20}; do nmcli connection up "<2.4 GHz SSID>"; sleep 10; nmcli connection up "<5 GHz SSID>"; sleep 10; done
-
-There were no "failed to wait RF" warnings.
-
-These are the results after processing with "sort --unique":
-
-RF DACK takes 15 ms to complete
-RF DACK takes 16 ms to complete
-RF DACK takes 44 ms to complete
-RF DACK takes 72 ms to complete
-
-RF DPK takes 23 ms to complete
-RF DPK takes 24 ms to complete
-RF DPK takes 27 ms to complete
-RF DPK takes 30 ms to complete
-
-RF IQK takes 48 ms to complete
-RF IQK takes 49 ms to complete
-RF IQK takes 50 ms to complete
-
-RF PRE_NTFY takes 0 ms to complete
-RF PRE_NTFY takes 1 ms to complete
-
-RF RX_DCK takes 8 ms to complete
-RF RX_DCK takes 9 ms to complete
-RF RX_DCK takes 11 ms to complete
-RF RX_DCK takes 23 ms to complete
-RF RX_DCK takes 24 ms to complete
-RF RX_DCK takes 27 ms to complete
-RF RX_DCK takes 38 ms to complete
-RF RX_DCK takes 39 ms to complete
-RF RX_DCK takes 53 ms to complete
-RF RX_DCK takes 54 ms to complete
-RF RX_DCK takes 58 ms to complete
-RF RX_DCK takes 70 ms to complete
-RF RX_DCK takes 110 ms to complete
-
-RF TSSI takes 1 ms to complete
-RF TSSI takes 2 ms to complete
-RF TSSI takes 23 ms to complete
-RF TSSI takes 24 ms to complete
-
-RF TXGAPK takes 9 ms to complete
-RF TXGAPK takes 10 ms to complete
-RF TXGAPK takes 17 ms to complete
-RF TXGAPK takes 18 ms to complete
-
-I also left it unconnected and constantly scanning for a few minutes.
-RTW89_TSSI_SCAN always takes 1-2 ms.
-
 >>
->>>>
->>>> It seems to work well anyway.
->>>>
->>>
->>> If you can yield the highest rate (MCS13), I'd say it is fine.
->>>
->>> Ping-Ke
->>>
+>> I can send an RFC for OP-TEE support based on the integration work being
+>> carried out here [1]
+> 
+> @Vikash may know better details about support for IOMMU configuration
+> for venus since it's a generic functionality missing when Linux runs in
+> EL2 whether it's with QTEE or OP-TEE.
+> 
+> However, feel free to propose your work to initiate discussions again.
+
+Vikas and team depends on some of the IOMMU patches to get accepted 
+before they enable the EL2 venus support. Please reach out to him
+and Prakash Gupta at Qualcomm. 
+
+> 
 >>
->> Testing with RTL8832CU (Brostrend AX8) in AP mode, the RTL8912AU can
->> reach 1.5 Gbps (MCS10) RX, 1 Gbps TX.
->>
->> I used the RTL8832CU because my router is not working well with 160
->> MHz.
+>> [1] https://github.com/OP-TEE/optee_os/pull/7721#discussion_r3016923507
 > 
-> Since rtw89 only support beamformee (no beamformer), beamforming can't
-> work between two rtw89 devices. More, two antenna can't have good
-> beamforming performance. I think this is a point that it is hard to
-> yield the highest rate. 
-> 
-> Another point may be the RF performance. If the warning messages of
-> RF calibration disappeared, I'd say this might not a problem.
-> 
-> Let's mention this in commit message of 12/12.
-> 
-> Ping-Ke
-> 
+> -Sumit
 
 
