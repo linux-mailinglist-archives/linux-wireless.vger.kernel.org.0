@@ -1,56 +1,56 @@
-Return-Path: <linux-wireless+bounces-34446-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34449-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGSnCFqo1GmkwAcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34446-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 08:46:50 +0200
+	id SIxvDGyo1GmkwAcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34449-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 08:47:08 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5CCB3AA6F3
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 08:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAEEA3AA728
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 08:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC049306F5EA
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 06:44:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7ED87309B9B7
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 06:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF7138A286;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4000038B132;
 	Tue,  7 Apr 2026 06:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3UfE+O5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZjh3z+o"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9488387587;
-	Tue,  7 Apr 2026 06:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CE238A712;
+	Tue,  7 Apr 2026 06:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775544240; cv=none; b=hLKga9z8/C49epsbRKx6TsBVEfQSdeZesZw7+aoDKNYWwp0X/J++bxysL09IZuG1iWSYp2J3iwgTn+mT/e3dsaw4I69+sCazIFPMelN6vHNa5qNmFr/RePKOhlo7Q4DMYoUZdqaa15xHTxGMUmDRmiPRn6SJe/fZtVikL1QRMuc=
+	t=1775544241; cv=none; b=qbPFDIBZWCs3O3ap4neIFG9gKgNs2K4N0VRT2NuolqJasiLbsBf3D5NAzJPyTewvPx/wuEBJAhNXd6Devt8oV5RrFP64HkSoCekC9lbcOXTbxBq+nmsJ1WVPG0Ur/wMc/tgVWjI0mQOOLkzzP1bQBFnCX+FCJ2J2FgP6HEkcmkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775544240; c=relaxed/simple;
-	bh=GEymDA+iQJel2JdCTM+6T/7r4bVEqeoygTAWOXIniVw=;
+	s=arc-20240116; t=1775544241; c=relaxed/simple;
+	bh=To0TOgWdk+Eg3vCUJ0MvI1sSRqScB4zFZ3xj+H7iwWk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AQ7vmTfT7DmiAla9uWQNJPIBV7jOROLk3brzCtJ5a7TUnV+dsorBIeXkcyCgch9aM6ziT7PlqlNOXqL1NMF/Kfpw5W+VY7PK2pWWRYs/pssOF7hEqIcb/1EFWLn412+julCCNZdFvJlf20oaZppQE+4eubAbli3ajdqdO7RiXUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p3UfE+O5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AA189C2BCB1;
+	 In-Reply-To:To:Cc; b=nCPEpFH0FOA7T08s4JZROz9NGFI1FEVulcdOSPaqkybxmvoRpSmJJjGN0JF5wC24znSHqlw95d7w4juLoXnEDZPZvnDvbehTTYZj0aGoHH+r+rVP95KsxQMAVu7JyjqqvREg9Ux7Kg32iOZLkiC78/gbWL+WB5xtHxNqD6LBAfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZjh3z+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BD69CC19424;
 	Tue,  7 Apr 2026 06:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775544240;
-	bh=GEymDA+iQJel2JdCTM+6T/7r4bVEqeoygTAWOXIniVw=;
+	bh=To0TOgWdk+Eg3vCUJ0MvI1sSRqScB4zFZ3xj+H7iwWk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=p3UfE+O5jEFkYuBoqSGz8gFoHHETkW/wv0HISlgsBWyiu8i9I6Z7EHQeySMzZVXWZ
-	 ty+IZ4m2tOVbTQkv54NInkjt+10Rrx1ov+acvK72fPlyzF1OfbOYPnNuOK3Z2yC0sQ
-	 J01n1DuN2rvsZm2LUVY8Luid9jFd1rgmxIanqokhD/cNhLcrqDh68DJ63RXblvsQZ1
-	 rg42VOc04zNBs/jVaAAoEPM6ndFCYd8DhEgVn7xV4lt6k7uQp9tBouyFMh/9NGiAH4
-	 5mDOtYAn2rw4rJhz93SCkIXjehGVQTpzzuxWpKp7iRWU3Hshf4iC9NoKb3DG9ltyAL
-	 POm7OY29kbYUA==
+	b=LZjh3z+oKpl3+fFSh3fpCOIeXeEibbIAZ45Tgut4/0L/2VtEpuqkd/hV4xtxpTlOh
+	 cLOataclZiWmnVO3IfQErs9jpIl7IEmDGlk0VHqBQh2aLB/KVkhlwGHQFq1N3ABBy3
+	 TQIEg+oURUJrG2/4PWittvzZEYw+AHGJSiEASktUgCWSA6yTnYNfAgoeUZiH5PBeOB
+	 e8wYJM1toLafK4tHjGT/TASxIqpz4dTOBYeiaqIR2f8sEItLE5m26kFo0Qk6GSmIMp
+	 yW/MdmNbFGrsra4/hHrYIsEOW1tVz1R9U2IrMLDull3Qhv7/+xj6TjSefd+fLTEI+i
+	 DWiXaQ0S530+Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9ADC2FB519F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ACE07E9D832;
 	Tue,  7 Apr 2026 06:44:00 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Tue, 07 Apr 2026 08:43:55 +0200
-Subject: [PATCH v5 2/3] ath10k: Add device-tree quirk to skip host cap QMI
- requests
+Date: Tue, 07 Apr 2026 08:43:56 +0200
+Subject: [PATCH v5 3/3] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable
+ ath10k host-cap skip quirk
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -59,7 +59,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260407-skip-host-cam-qmi-req-v5-2-dfa8a05c6538@ixit.cz>
+Message-Id: <20260407-skip-host-cam-qmi-req-v5-3-dfa8a05c6538@ixit.cz>
 References: <20260407-skip-host-cam-qmi-req-v5-0-dfa8a05c6538@ixit.cz>
 In-Reply-To: <20260407-skip-host-cam-qmi-req-v5-0-dfa8a05c6538@ixit.cz>
 To: Johannes Berg <johannes@sipsolutions.net>, 
@@ -76,21 +76,21 @@ Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3626; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=932; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=duxRMTRGnz0BVuY8CUPzChCzTzgdtO7LKOK19WE1+G0=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp1Keu88ybLs7hox4Z8WZ8o/SOGrjIyc50jOeLX
- QOeUbddEHaJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCadSnrgAKCRBgAj/E00kg
- csgHEACboOgcD/LfRDDFDXsLlNM8GQpmFctiiv8IiSa6B7WuuCZJPAlP3WC0R2Ey4yNoNjHQCr0
- ZyvWsz6GOjzVbxcOf5+/c4qMuiSvnJ7ulQ1Kk4gGgG9+W5blpLLajSw97dXGLS/wSCUXeIvDGp2
- BPLTJjNlkgfd7gnD/Dt4VEgOFxpMv9xE27OxvYSyGb6ipvdxJtkebQ+4ty46eutqLo2+9m00NwN
- 0AH9Ftd/rDohmPpYJbm+oTsLY2PmhLf5iNDk8l9sQChoPfJMl3Exf53kqW8YqB9dp0Tms2JRCoG
- NXQyh7XsX8uQpLNg2f3vB/eCgAObfDWABwjtSq+PxXjWDOUprrOVcsPdfrcLxVdzFoSWPk8o+nm
- ao6WLbn4AQ9hjbYwJ6nelY4kPUDs6tS1eZHtGjes/kCHXf7vP4FxbcbCmgDmpHOKGJBJE3U/kyD
- ZRJegTIBgZiSVp9Viq8iGgd0/DypawqzUWfoalT1VVxZQoEezg0LUw09Xk7puDEqce8p/25O2vB
- +vglqLByzcXiWIX5FM0cW3TZOe14Wr7AYmg6g3deIOtKjXatGDIG9VxvEXTKp1s9aN7pAjtaTIB
- Zcixl/7/AJULaUwRoSzAv5PhFxu+QOxALaXb6mWYGlSsvamwVXBqkOEoHcCWijHOyIpIZKyxPvw
- lS+1BqIPk5NW51Q==
+ bh=DU/dXePFyTa55SQv+lhHqY4KIdvjaGH0tSQ5egVr5Ig=;
+ b=kA0DAAgBYAI/xNNJIHIByyZiAGnUp66g1k1G2PXK1XLApKqh8rZQqnP+rM1X6ccdHnoc1CQiZ
+ YkCMwQAAQgAHRYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJp1KeuAAoJEGACP8TTSSByrA0P/3wf
+ qabD5CEeb4B4+PsJgKOZY/BrgJN1A4Zdw5C35f3dwpNPtBQTwOkxEcSCHj5GYoAtZRGeJWCr+0Z
+ 6Za616Xc2FfWBQa3wtnFtArLaTN58RK4j9patgL5m1lOe+iXo9A8ZyowzTRgnLA3jvxqfibnXdU
+ Cab7tJzP2IyopQE4WpkfMYjj6PbA72EmXSMtVqBpPr73FIyYL1rSswZ52gOxhVIGOx6SAaZg+4c
+ KsKnhg03Fzx7Y3UKTFqJ2JYMadV/h+GgmL4PfmYQqcLUtEcMm8BBRPiVFKGproGfkJ6hDA59JFH
+ CVwyIV3QEC8op9GElbGGXsiAq0XbBFo+qvLme+gDcpTakvz1EzLv/bfYG+SPP9K4a1LlklC5Ehl
+ AX+zAk15id1qDONaAxEvMqmb3cGD13a+fh+2UIdFC85hqzpGzUYqUZR1HtQmwu00VcA40aMZ1OC
+ 2YgTBb6/gn82TMc4560FcTrUfrifRtAe1/jzgA1JvZsFhZHb+cCT2TqqduU7OmB4HfUxlWW/dm+
+ 776t78Z0IxeMPAMYeg2sSjUubPOWtuRYWn1A/dpuXxY2+75D6wlD/mukE0f+FzRdqVIQ8zImbK9
+ fxQTk8iTFc8OkBhZ6pTMXKdAKOP5igNOcTaLWDJlAmQ74V63pcGF7c3fFwrZU38fc94/eSp9NM8
+ hmeoN
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -106,7 +106,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34446-lists,linux-wireless=lfdr.de,david.ixit.cz];
+	TAGGED_FROM(0.00)[bounces-34449-lists,linux-wireless=lfdr.de,david.ixit.cz];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[19];
@@ -123,102 +123,35 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,ixit.cz:email,ixit.cz:replyto,ixit.cz:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B5CCB3AA6F3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,ixit.cz:email,ixit.cz:replyto,ixit.cz:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: CAEEA3AA728
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Amit Pundir <amit.pundir@linaro.org>
 
-Some firmware versions do not support the host capability QMI request.
-Since this request occurs before firmware-N.bin and board-M.bin are
-loaded, the quirk cannot be expressed in the firmware itself.
+The Wi-Fi firmware used on Xiaomi Poco F1 (beryllium) phone doesn't
+support the host-capability QMI request, so add a quirk to skip it on
+this device.
 
-The root cause is unclear, but there appears to be a generation of
-firmware that lacks host capability support.
-
-Without this quirk, ath10k_qmi_host_cap_send_sync() returns
-QMI_ERR_MALFORMED_MSG_V01 before loading the firmware. This error is not
-fatal - Wi-Fi services still come up successfully if the request is simply
-skipped.
-
-Add a device-tree quirk to skip the host capability QMI request on devices
-whose firmware does not support it.
-
-For example, firmware build
-"QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1"
-on Xiaomi Poco F1 phone requires this quirk.
-
-Suggested-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Tested-by: Paul Sajna <sajattack@postmarketos.org>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Acked-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/net/wireless/ath/ath10k/qmi.c  | 13 ++++++++++---
- drivers/net/wireless/ath/ath10k/snoc.c |  3 +++
- drivers/net/wireless/ath/ath10k/snoc.h |  1 +
- 3 files changed, 14 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-index eebd78e7ff6bc..e7f90fd9e9b83 100644
---- a/drivers/net/wireless/ath/ath10k/qmi.c
-+++ b/drivers/net/wireless/ath/ath10k/qmi.c
-@@ -808,6 +808,7 @@ ath10k_qmi_ind_register_send_sync_msg(struct ath10k_qmi *qmi)
- static void ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
- {
- 	struct ath10k *ar = qmi->ar;
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
- 	int ret;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+index 1298485c42142..950bbcc3bf91f 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+@@ -661,5 +661,6 @@ &wifi {
+ 	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
  
- 	ret = ath10k_qmi_ind_register_send_sync_msg(qmi);
-@@ -819,9 +820,15 @@ static void ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
- 		return;
- 	}
- 
--	ret = ath10k_qmi_host_cap_send_sync(qmi);
--	if (ret)
--		return;
-+	/*
-+	 * Skip the host capability request for the firmware versions which
-+	 * do not support this feature.
-+	 */
-+	if (!test_bit(ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK, &ar_snoc->flags)) {
-+		ret = ath10k_qmi_host_cap_send_sync(qmi);
-+		if (ret)
-+			return;
-+	}
- 
- 	ret = ath10k_qmi_msa_mem_info_send_sync_msg(qmi);
- 	if (ret)
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index f72f236fb9eb3..3106502275781 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -1362,6 +1362,9 @@ static void ath10k_snoc_quirks_init(struct ath10k *ar)
- 
- 	if (of_property_read_bool(dev->of_node, "qcom,snoc-host-cap-8bit-quirk"))
- 		set_bit(ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK, &ar_snoc->flags);
-+
-+	if (of_property_read_bool(dev->of_node, "qcom,snoc-host-cap-skip-quirk"))
-+		set_bit(ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK, &ar_snoc->flags);
- }
- 
- int ath10k_snoc_fw_indication(struct ath10k *ar, u64 type)
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
-index 1ecae34687c21..46574fd8f84ee 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.h
-+++ b/drivers/net/wireless/ath/ath10k/snoc.h
-@@ -51,6 +51,7 @@ enum ath10k_snoc_flags {
- 	ATH10K_SNOC_FLAG_MODEM_STOPPED,
- 	ATH10K_SNOC_FLAG_RECOVERY,
- 	ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK,
-+	ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK,
+ 	qcom,calibration-variant = "xiaomi_beryllium";
++	qcom,snoc-host-cap-skip-quirk;
  };
  
- struct clk_bulk_data;
 
 -- 
 2.53.0
