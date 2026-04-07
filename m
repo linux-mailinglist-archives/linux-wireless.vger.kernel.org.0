@@ -1,169 +1,170 @@
-Return-Path: <linux-wireless+bounces-34480-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34481-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDhgKpkm1WnB1gcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34480-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:45:29 +0200
+	id ODszLFYo1WnB1gcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34481-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:52:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2A03B13BC
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1313B1589
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:52:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9EBCE3024001
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 15:45:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 60E2D3036B59
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 15:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E353CEBAE;
-	Tue,  7 Apr 2026 15:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D104F3CFF6C;
+	Tue,  7 Apr 2026 15:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcQRK2Pt"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b="yJIhOaHZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8046A3CE4B5
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 15:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087273D093A
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 15:47:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775576724; cv=none; b=md8ZLLF9pjFG8o7oPduwpeoO6QSd7li+eGBA+axFWm5d38Tk4XnNfWrvAZAtMtr8HeG/xA8EZTn+krREIPnrf0cEz423vFFs6vjChS5XBD6lIc7/znJlcYVzHwH4cFllhyPTxlvgJR4FsVx2LXjUV58qtcFrnHRgSaYer7UKgWw=
+	t=1775576863; cv=none; b=Tsdf1PmP/YxhwworeCVwdDdJeB2S6P/7s2vVShKWSuvyiI0Xih6T1E1Ld1LZvB3bm9Dl0verHbqMjeOtpDlWdhtHNwuj8JRUdnqR6RUfdnWuGg8Ar4lV6ld65PQXPeBty2H7nFRSb/7VjkN43EZKtWRgnWkIosbMGXZWPvEEzKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775576724; c=relaxed/simple;
-	bh=SuWl3tjZsAfYMRt8x4bSIskei8uiSlKXsRGVBV5mucM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z5znmnEPklCZRVx/X1a4+AZnfMyHY0iiSHjr5cMAmQXe2hzmzN0iBms2sDO0z1yST+pbn8ufTvAApUjrWNwqZTSRA5Npv/YLIgWD6+8KbwY+jcq4wD2j6SKlYpZv5DHJyj9rZL71YxXYDYhI8uMDO+Evkt/XOS+zj6wlftuUCY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcQRK2Pt; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b258576d8cso33031505ad.0
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 08:45:13 -0700 (PDT)
+	s=arc-20240116; t=1775576863; c=relaxed/simple;
+	bh=RWQ8MNiQiq0WBg2Der6b9sv6NAFsXk33bvQd4GWOuig=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V8NUSLFmRjbymFIETJ/8cFfU6cJFF6Qh1k1mKPWwU5UfachV8j49/TA8vX4OTBoXKFLxc7Jh/ZT0zv5fN8bHv7OmfTWJWzoX53UOd85CPRRgb3Dr0benmQXWgtSl/7IhRbcPYj4D5mgiTU1SFToDzKSnSaXE6Z8F4oG8w9vPMAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b=yJIhOaHZ; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4888375f735so48022445e9.3
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 08:47:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775576712; x=1776181512; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mdgebIX8WCshNHCphbYwlC8WuuoYhJuJww2bMe0846A=;
-        b=bcQRK2PtHV1PtGHf0Fve3dTdRAdmawhl/JP/RqaSCAVHXHQN+Mg57h+qwEvtn5dETE
-         IJw4Tn26m+ZdhOJHsWTGb7o9o5Oo4P4PCE2qkqKu/ez7dIzG0DXEYtNT2aAwhdc44qny
-         ek/A19AoHRrxw36P55aLNlQzd2rufywCoXCgMoBGjtiMw/X/0FgBva6aWcVdOaalnTvn
-         Ei6v3QlqRjrlV7j3woAU5VgjMQbxAq/6wpLbA/HYgKoGlk6dxNew/UHBbzoZKV+QQW51
-         PrlGz/LqlBtkjoxHx41tiSSxZGdx8MqTkxKnZsOpVY0vKzSO3KwOSoGwgh9qtgvy4wxK
-         eMIA==
+        d=freebox-fr.20251104.gappssmtp.com; s=20251104; t=1775576850; x=1776181650; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6bgBHOzhyQ4BkLS8IOkMQOk4W86mqjiLwT/q5jIAW5g=;
+        b=yJIhOaHZJuEpqHC/mqnjyWT+GZP+xpeHQyNV6w2hyOvmbKsT5RXITsT2/GO1jXHJm1
+         yTiPH00V7Jsgak70Q1EaYnji8UMF25Tr2KCupn3B/q4XFAuJnBn4f5NV5S+KlgITfoyv
+         GKVGWoYi/5fzhTeNNa1xJ5vQyiUuIRhYjoCWLc9wlWcQhVOkZ3pc1+8GfK22fqGsI7ac
+         QPHgRUBtd3wyz6ZWUoCIyEcbO8qb0/Xo/lGNjyNVD40AA3aaslEcJJKpqab5DvU/emog
+         Tdilqe05N7MUuQ8GCiQE9H56oFjgpu7oqWd/8L9pZR6SFDT8zVDlG0ltv/QdRYa15i+r
+         b2iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775576712; x=1776181512;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mdgebIX8WCshNHCphbYwlC8WuuoYhJuJww2bMe0846A=;
-        b=b4YVShAtEoiastEWndi/iG/R+waNEmacv0x1cqRA8B6aYVyMTnWkB5QpizQg2oklgD
-         wSfAgSbV9TicOkmn7NhCseYPaApdxCtsw6EFvIiuRSijrIF3r9VAZUKPvKPYz8bh6xHS
-         8KbvPrHWzSBBsoq4joaMvBdbpunKpatsNOhNOJTa6+DZcIx0zqqoD4rPrU738agFSork
-         lmW+z38YULHHCXUlGQ1RXfK5zHHninE43qqHaeEP60eaI4+mgj/ZRfWY9VYUiGPfwIRo
-         KIYKY0ahn1TXOtIoYncCu36CKTh4MxL41qpWwB7WLE4UuHR/M7dm2PbK0msagWsMuxqI
-         iBsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVp8cCEH+3ydcxLodYMCl/YMb6MIWAEtqUBsEpmxg1klMh8sXcPiZDr+jxE03k9AyZFB9PU53kqOiA6klDl7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJv/tgjV4uMq18r4C5YVXvtOYdj7wvrSCS5e2FrQSGf2ja1Ar9
-	ejM4/E4qQa2SnPGHUidte6qSbjms8+01tFcEQncJKAAl54oIC0lIV2eY
-X-Gm-Gg: AeBDiesJmaO14Vac4AM3PdFbrkexKxWavCWnxMcgod62S3NSoxLsCUR7D7mXscoC9fW
-	Zw5KKkzo+cYczcQUbxcGe/LSPWXSNgUlfeEGgXgKG7llVhQKBMxK8MkMYXBHBY1ufuniD7Gv6cy
-	gDURPgLr5/SORgDXCtC0Sh73skz+OVf/+Zd8ukIYMEiRR/aXutrM9S4dbitR3cxhEhjk6YZ74L9
-	nc1wzHY8FIURXuMj2I129pUjBx7fJJLxhDdmvCq5lUeWRk+MGOJNvrk+Rz1T1yE3ftbWv/PwUGf
-	lDxTZpSo5AYonZ98Y7a+tkL35c0vaxl1bB1WjVT6198rj1BH15H871Uw0gne7hNzcoSbo9pPSVo
-	/zVnSKfTEwyJztj75RrwSFK+EcMsFKXxRKbwlhYTjTMR/GWhs0kbrVGUAef6tyVwl+cDYenIoJ3
-	6Bh08OpH/2AgebYezmzdavMIQ=
-X-Received: by 2002:a17:903:1aa8:b0:2b2:42b1:ad9a with SMTP id d9443c01a7336-2b28182be11mr183382875ad.19.1775576712346;
-        Tue, 07 Apr 2026 08:45:12 -0700 (PDT)
-Received: from BM5220 ([49.215.226.71])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2b27472d55fsm230992905ad.11.2026.04.07.08.45.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 08:45:11 -0700 (PDT)
-From: Zenm Chen <zenmchen@gmail.com>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Cc: zenmchen@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH mt76] wifi: mt76: mt76x2u: Add support for ELECOM WDC-867SU3S
-Date: Tue,  7 Apr 2026 23:44:30 +0800
-Message-ID: <20260407154430.9184-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20251104; t=1775576850; x=1776181650;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6bgBHOzhyQ4BkLS8IOkMQOk4W86mqjiLwT/q5jIAW5g=;
+        b=dvp+IIPqVg8T/YT6EoRQhH+PNVMy3adpQOeGvYgg0pZm4WogQiRD9pIaUte2eGMlM2
+         u/ljKUPsbvUf2n/VF0y1wQ36sEHCE2gOisItLjhyiLDrWOdv1Yud9XT9W+8Y8Jxqv1Xi
+         iUHPLt3rvlTqh/OjxivloG83PerRpiIkF/GdnRvOS2G+RGYIUp0wVWn4K+LU0++MPhaQ
+         BkLkcee+xkdmI/dOFifCXGj+nZUDhumjO0+qugUPZb+VeOfoQxumgdb5lDlX3vCs+ap0
+         PoCjrz9hW6Pr9ivO9ekiryTtMxp6VW8hu6wdT7Lam4Vz/TX1UkM0HIE/MczofKLQ1B88
+         EKlg==
+X-Gm-Message-State: AOJu0YwlqoBUprlu9B+pMLCdge4T183x4FEQnBZMklAMTxbiku/JU1tu
+	L5Un5ayUgtOqAI4lRBsA1/pFPIAayScsa9Sf19uNaPTLcwv9Vt+CRtpbhYPUJNUmFQAWSaY+Jyv
+	dfi+J
+X-Gm-Gg: AeBDiet2azwX+jhr6bc4SFVz0habkyuT6RDc6h0oP3zcLWuD+FXKKOmB2w3W3pQFFoV
+	UFEs515l3aR499AhKd7uZu2BjRgDz311DF6VtlXCDitSKokbtZPjIiJUfgY/5T4KmAMuqxGBbUC
+	mlnQDAk0dVnkYLPBO5gbczqueAAsX/LP31HUsKhwul2wsSY1wQm+OoqiSInFN1jP0LrQpuWvKrT
+	SZr1f9zlW2AMpCt2dmORGk4LbBlSq6GslOFrIhEwy3p1FthNNlvx2xO3Z9aoaUidJkGL7VCIodk
+	pDn3trD5u0+XmpU73jY+/tE3qQjR75wvVIETi6M8v/g/6oyNJhAy1DGZ+Gz5HkoxOI1K2Xlsuhl
+	PKY4gHGx7wfmhmktRBbBAZ1fvbVFuWMktEJR8mzhiW96B55h5v8YwSxaxYyzYgs2IYl749gKBFj
+	gHIY4QivUyvMRhW5O0zEJrf9a+BrJ5JfXztb2AZGFlNxeNYj0bxMaSxrvtf78scqN7
+X-Received: by 2002:a05:600c:1c21:b0:488:b87b:3052 with SMTP id 5b1f17b1804b1-488b87b3508mr81294905e9.29.1775576849883;
+        Tue, 07 Apr 2026 08:47:29 -0700 (PDT)
+Received: from [192.168.108.101] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488c4e46284sm951865e9.3.2026.04.07.08.47.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Apr 2026 08:47:29 -0700 (PDT)
+Message-ID: <822a3036-1cc0-460f-ad04-d711606afd4c@freebox.fr>
+Date: Tue, 7 Apr 2026 17:47:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] wifi: Transition/Padding delay subfields are for both
+ EMLSR and EMLMR
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org
+References: <20260327201135.905852-1-pmartin-gomez@freebox.fr>
+ <20260327201135.905852-4-pmartin-gomez@freebox.fr>
+ <6900294c6c10fb7336e8ca6c7217e970db2cc3a1.camel@sipsolutions.net>
+From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
+Content-Language: en-US
+In-Reply-To: <6900294c6c10fb7336e8ca6c7217e970db2cc3a1.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[freebox-fr.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-34481-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-34480-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	DMARC_NA(0.00)[freebox.fr];
+	DKIM_TRACE(0.00)[freebox-fr.20251104.gappssmtp.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[zenmchen@gmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_NONE(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.997];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-hardware.org:url]
-X-Rspamd-Queue-Id: 4A2A03B13BC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,freebox.fr:mid]
+X-Rspamd-Queue-Id: 3C1313B1589
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add the ID 056e:400a to the table to support an additional MT7612U
-adapter: ELECOM WDC-867SU3S.
+On 07/04/2026 16:00, Johannes Berg wrote:
+> On Fri, 2026-03-27 at 21:11 +0100, Pablo Martin-Gomez wrote:
+>> -#define IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY	0x0070
+>> +#define IEEE80211_EML_CAP_EMLSR_EMLMR_TRANSITION_DELAY	0x0070
+>>  #define  IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY_0US		0
+>>  #define  IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY_16US		1
+>>  #define  IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY_32US		2
+> 
+> I think this is confusing. You have the "EMLSR_EMLMR_" prefix in the
+> definition for the mask, but not in the values, but also the prefix
+> itself gets very long, not sure what to do about that. Maybe just
+> ..._EML_TRANSITION_DELAY even if it doesn't match the spec completely.
+In the standard, there is two different tables to convert the field
+value to a delay: 9-417j for EMLSR and 9-417l for EMLMR. E.g. if the
+field has the value 1, in EMLSR mode, it's a 16 µs delay, in EMLMR mode,
+it's a 32 µs delay.
 
-Compile tested only.
+As no driver implements EMLMR, I was expecting the first one to
+implement it to create the defines:
+```
+#define  IEEE80211_EML_CAP_EMLMR_TRANSITION_DELAY_0US	0
+#define  IEEE80211_EML_CAP_EMLMR_TRANSITION_DELAY_32US	1
+[...]
+```
 
-Cc: stable@vger.kernel.org # 5.10.x
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
----
-This ID was found from [1] and adding it to the device table should be 
-enough to make it work. Hardware probes at [2] can prove its existence.
+If you prefer, I can implement it +
+`ieee80211_emlmr_[trans/pad]_delay_in_us` but it will be dead code for now.
 
-[1] https://bushowhige.blogspot.com/2019/08/ubuntu-1804-mediatek-usb-wi-fi.html
-[2] https://linux-hardware.org/?id=usb:056e-400a
----
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
- 1 file changed, 1 insertion(+)
+> 
+> And then another thing - I was going to apply the other two patches, but
+> really then looked at my git log and saw that no, really, the subjects
+> are stating a spec thing rather than describing a change, so please fix
+> that too.
+I'll fix that in a v2
+> 
+> johannes
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index 01cb3b283..459c4044f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -16,6 +16,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
- 	{ USB_DEVICE(0x0e8d, 0x7612) },	/* Aukey USBAC1200 - Alfa AWUS036ACM */
- 	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
- 	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
-+	{ USB_DEVICE(0x056e, 0x400a) },	/* ELECOM WDC-867SU3S */
- 	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
- 	{ USB_DEVICE(0x0471, 0x2126) }, /* LiteOn WN4516R module, nonstandard USB connector */
- 	{ USB_DEVICE(0x0471, 0x7600) }, /* LiteOn WN4519R module, nonstandard USB connector */
--- 
-2.53.0
+Pablo MG
 
 
