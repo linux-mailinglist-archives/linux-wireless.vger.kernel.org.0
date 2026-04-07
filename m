@@ -1,170 +1,230 @@
-Return-Path: <linux-wireless+bounces-34481-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34482-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODszLFYo1WnB1gcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34481-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:52:54 +0200
+	id QPLYJoQr1Wli1wcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34482-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 18:06:28 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1313B1589
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:52:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE5B3B17EC
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 18:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 60E2D3036B59
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 15:49:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A475A301F4AB
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 16:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D104F3CFF6C;
-	Tue,  7 Apr 2026 15:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6F73CD8A8;
+	Tue,  7 Apr 2026 16:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b="yJIhOaHZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ah/BAsyD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087273D093A
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 15:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775576863; cv=none; b=Tsdf1PmP/YxhwworeCVwdDdJeB2S6P/7s2vVShKWSuvyiI0Xih6T1E1Ld1LZvB3bm9Dl0verHbqMjeOtpDlWdhtHNwuj8JRUdnqR6RUfdnWuGg8Ar4lV6ld65PQXPeBty2H7nFRSb/7VjkN43EZKtWRgnWkIosbMGXZWPvEEzKU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775576863; c=relaxed/simple;
-	bh=RWQ8MNiQiq0WBg2Der6b9sv6NAFsXk33bvQd4GWOuig=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V8NUSLFmRjbymFIETJ/8cFfU6cJFF6Qh1k1mKPWwU5UfachV8j49/TA8vX4OTBoXKFLxc7Jh/ZT0zv5fN8bHv7OmfTWJWzoX53UOd85CPRRgb3Dr0benmQXWgtSl/7IhRbcPYj4D5mgiTU1SFToDzKSnSaXE6Z8F4oG8w9vPMAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b=yJIhOaHZ; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4888375f735so48022445e9.3
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 08:47:34 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1938C3AB29C
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 16:00:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775577641; cv=pass; b=f7hzirkLL/4XzxRnrIGuTgKj2M/XGxhKR5poA3JxSwIoaeocuFBtFfvhghBcwncqCfIr1XT7H7iyoZRi0ScH3dEun8bB55KIApremjt0/gkVLtXzEze3xjj7dch3kvlJQdumERS1x6quNgwlnSnyymoAkgO4gd7J0E45oOXnbd8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775577641; c=relaxed/simple;
+	bh=8RLob4QB28ImVoxRQZX+IBEgAl2HyO/hx5ZoQuzPjGA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C0YZFugjaPTg0NWBPG92O6eFxl3A+gaTLYF71xc8M5OoGQv/A1t07HMs/nz8VB7V+JBa9zUL3MF+TZRCX69mnXyZyNDBVMvoTdvY3wsHcZnUQMd0FO6OPn1FawxhKymlKWuIA/HxERVXGZ3/VJltI6B91LXCwFi/Z2ojbe16X6U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ah/BAsyD; arc=pass smtp.client-ip=209.85.217.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-604f1bfecf1so3528280137.3
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 09:00:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775577629; cv=none;
+        d=google.com; s=arc-20240605;
+        b=km0727qJ7XqHfEl07Py0jSiTYaOOfafSzLb5KkPDKykwF/Ek2EFA+vvHCV3p35Srvo
+         5zW8hoeRsrxEZWDey99ZMD94RxpCNG+0M6VbT9B3cKLXYMtuAjFedbTfTU80ln6eamF7
+         M9toFVTYxet3xUS6oPdtP9+lrOHZS01+G2Pqaj6hD0X6HvRrEmRZ12zwnOyFMqbyr5+D
+         IV85rd4Tq1tv3cYn9TRxook5UKiLXxgXdtrI9k9mZO9tnRwW36tbndDOh9cL8EwOOQuQ
+         X7I1mFqHLvnFnmwcsFKMoaB+fn4QEf3eqBiQouwts+UXYP245RBbsNnuRrcYRLcRppjI
+         0PcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7cOfNAa8j+2xclxv3TIo/Dyr9thVkxs9qM2FBEkKirg=;
+        fh=z13KRDOBL26GXrXq9EJJjW8Udv+4Is3MOUPGIn9PAN4=;
+        b=GWIDRSlNBRs9MJfugPgzeO+j2KZCbCP9nrF/z3l534rLQYcfpC1jERjVhIfRE0PjYO
+         xyk9o1IwJBOzYBm7kJ+f6tai0VOKdjgTxuqRF+owbIV6AqPoNXeqKMJyGoukgqZur4GH
+         TiiTLJ5texhklzrb3ut5a6G+vdvubjCyCt2uTdnD18RysOd9Gv36eHOhq4resHRlfJ03
+         k1zJ4LXNv4orJxdQpHM5oyq8WyvHzJZdlwWT6hry3vePEuiL7dKi/sZdcrb0qmOsQVXu
+         uubW/tKAzFFyzSU/0gXsiB3hmEfxD/VTHBTEqy90ngzL9ekol56PYkMZoxeKj2eAP1Cz
+         ZJ4A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20251104.gappssmtp.com; s=20251104; t=1775576850; x=1776181650; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6bgBHOzhyQ4BkLS8IOkMQOk4W86mqjiLwT/q5jIAW5g=;
-        b=yJIhOaHZJuEpqHC/mqnjyWT+GZP+xpeHQyNV6w2hyOvmbKsT5RXITsT2/GO1jXHJm1
-         yTiPH00V7Jsgak70Q1EaYnji8UMF25Tr2KCupn3B/q4XFAuJnBn4f5NV5S+KlgITfoyv
-         GKVGWoYi/5fzhTeNNa1xJ5vQyiUuIRhYjoCWLc9wlWcQhVOkZ3pc1+8GfK22fqGsI7ac
-         QPHgRUBtd3wyz6ZWUoCIyEcbO8qb0/Xo/lGNjyNVD40AA3aaslEcJJKpqab5DvU/emog
-         Tdilqe05N7MUuQ8GCiQE9H56oFjgpu7oqWd/8L9pZR6SFDT8zVDlG0ltv/QdRYa15i+r
-         b2iA==
+        d=gmail.com; s=20251104; t=1775577629; x=1776182429; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7cOfNAa8j+2xclxv3TIo/Dyr9thVkxs9qM2FBEkKirg=;
+        b=Ah/BAsyDBEBwKo3TycGJk9eTlBqh/HcpGSGaZWkQ/pEuwchm9+QWleVPVEMNh4x8i7
+         WhCm/9pCO4yFgZTyNNfYrVe8ja0O+3aAe/G+eEGSn1cbDB5ySPM/wh7TINx+fwNeOdGi
+         oYVDQDRjGqWRWqROuivLSyEnta/Msc7nSUae6uzeu0bl8V5qowLZyFWLPJbCjF0DtLLb
+         QQlAoy9DC+JwND2srujY3iSRgqF8chumIWcSsX2Y7BL7HUgve7mFP1ugG2peNhXcYKX1
+         /36IgrXgmxUdyP1MUS0MDYEFg1CuOlJJlMq6vzgEoXTdEYVcK+6kTR7fVUXSJQdTAEfb
+         Z4pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775576850; x=1776181650;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6bgBHOzhyQ4BkLS8IOkMQOk4W86mqjiLwT/q5jIAW5g=;
-        b=dvp+IIPqVg8T/YT6EoRQhH+PNVMy3adpQOeGvYgg0pZm4WogQiRD9pIaUte2eGMlM2
-         u/ljKUPsbvUf2n/VF0y1wQ36sEHCE2gOisItLjhyiLDrWOdv1Yud9XT9W+8Y8Jxqv1Xi
-         iUHPLt3rvlTqh/OjxivloG83PerRpiIkF/GdnRvOS2G+RGYIUp0wVWn4K+LU0++MPhaQ
-         BkLkcee+xkdmI/dOFifCXGj+nZUDhumjO0+qugUPZb+VeOfoQxumgdb5lDlX3vCs+ap0
-         PoCjrz9hW6Pr9ivO9ekiryTtMxp6VW8hu6wdT7Lam4Vz/TX1UkM0HIE/MczofKLQ1B88
-         EKlg==
-X-Gm-Message-State: AOJu0YwlqoBUprlu9B+pMLCdge4T183x4FEQnBZMklAMTxbiku/JU1tu
-	L5Un5ayUgtOqAI4lRBsA1/pFPIAayScsa9Sf19uNaPTLcwv9Vt+CRtpbhYPUJNUmFQAWSaY+Jyv
-	dfi+J
-X-Gm-Gg: AeBDiet2azwX+jhr6bc4SFVz0habkyuT6RDc6h0oP3zcLWuD+FXKKOmB2w3W3pQFFoV
-	UFEs515l3aR499AhKd7uZu2BjRgDz311DF6VtlXCDitSKokbtZPjIiJUfgY/5T4KmAMuqxGBbUC
-	mlnQDAk0dVnkYLPBO5gbczqueAAsX/LP31HUsKhwul2wsSY1wQm+OoqiSInFN1jP0LrQpuWvKrT
-	SZr1f9zlW2AMpCt2dmORGk4LbBlSq6GslOFrIhEwy3p1FthNNlvx2xO3Z9aoaUidJkGL7VCIodk
-	pDn3trD5u0+XmpU73jY+/tE3qQjR75wvVIETi6M8v/g/6oyNJhAy1DGZ+Gz5HkoxOI1K2Xlsuhl
-	PKY4gHGx7wfmhmktRBbBAZ1fvbVFuWMktEJR8mzhiW96B55h5v8YwSxaxYyzYgs2IYl749gKBFj
-	gHIY4QivUyvMRhW5O0zEJrf9a+BrJ5JfXztb2AZGFlNxeNYj0bxMaSxrvtf78scqN7
-X-Received: by 2002:a05:600c:1c21:b0:488:b87b:3052 with SMTP id 5b1f17b1804b1-488b87b3508mr81294905e9.29.1775576849883;
-        Tue, 07 Apr 2026 08:47:29 -0700 (PDT)
-Received: from [192.168.108.101] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488c4e46284sm951865e9.3.2026.04.07.08.47.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Apr 2026 08:47:29 -0700 (PDT)
-Message-ID: <822a3036-1cc0-460f-ad04-d711606afd4c@freebox.fr>
-Date: Tue, 7 Apr 2026 17:47:28 +0200
+        d=1e100.net; s=20251104; t=1775577629; x=1776182429;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7cOfNAa8j+2xclxv3TIo/Dyr9thVkxs9qM2FBEkKirg=;
+        b=a/XkNZ6PLaqFO8IFthZO5Hv89vfrOa6LXWU+NRQzcHkWrccxsQprxEMnkdsP4EzjWY
+         670q6hZMPteCb8BAotxzJTnWYMyhY0XqQPS9DH/llPAaxA27UrtuUVj1taS+q7mUBXqa
+         VowERKOBWPDIPHnLLdcxCRch5kywc1VlUhYkB/mskrvSjKwfqswRF28X6x9iyOqVdtjN
+         3J0P2Hm5fdB1OeF9HuKG++nQtD92Lvs8JHSD4jLjOUwo+RPRWm4qxcdbQF8LF3qvyR8b
+         1NnCPS71kxWR7rK0wTUolkKFdMstgi3YY6zuY6L4RtxzT5B4lmJSwbwYRr/d1+88zTxe
+         AkDw==
+X-Gm-Message-State: AOJu0Ywj3/bpSb12iUfv1AeHK4lAS0j0wf6KeWm0hAXcnVYBbWjDcH+E
+	28LuBLWojAPGFWOrMXCI36QKopxy4x8b3dSDH7iGAbTdZPXSvca3bRtiJJO1nU9eVbBYuFSoHFU
+	4KCt8PW0FcV3GK04fnNL627+n9Fx0/eo=
+X-Gm-Gg: AeBDievM6tYySAUJz41u3kWlzg2c1VVkWMO7kSaQTbGnQYOMY9YnbFa0A5vw5NmHL08
+	qXOD6HcETgh62Ceg4n8IOusCy1TrUQtKN46ZNP3rs25BAg0Dyrl0LYtTT5O4DBYjWsNBgxHfF2F
+	adKo7S4TpvE9elkzGWCbPpwV+L4xF6ZII1ad099m+dLbBDUSbmrIufUvjOMxnGWkdL3VOUQ6lDC
+	Fbd5CJnbfD2Ysqe75+lO3cW8pg5vZvfn24QD0kJdsj2U7ZGbcVO9uBBCI9FtUusmCLvghu5RjgB
+	Z8jrPMg4m3srBC8uHf1Zap5XrL8hYzUE7nyD0ebM
+X-Received: by 2002:a67:ef52:0:b0:607:4fe2:d3e1 with SMTP id
+ ada2fe7eead31-6074fe32c26mr643493137.13.1775577628763; Tue, 07 Apr 2026
+ 09:00:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] wifi: Transition/Padding delay subfields are for both
- EMLSR and EMLMR
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
-References: <20260327201135.905852-1-pmartin-gomez@freebox.fr>
- <20260327201135.905852-4-pmartin-gomez@freebox.fr>
- <6900294c6c10fb7336e8ca6c7217e970db2cc3a1.camel@sipsolutions.net>
-From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
-Content-Language: en-US
-In-Reply-To: <6900294c6c10fb7336e8ca6c7217e970db2cc3a1.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[freebox-fr.20251104.gappssmtp.com:s=20251104];
+References: <20260406234739.29926-1-joshuaklinesmith@gmail.com>
+ <20260406234739.29926-5-joshuaklinesmith@gmail.com> <d4622e31-4012-4c05-9288-529b0bb0aebd@candelatech.com>
+In-Reply-To: <d4622e31-4012-4c05-9288-529b0bb0aebd@candelatech.com>
+From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+Date: Tue, 7 Apr 2026 12:00:16 -0400
+X-Gm-Features: AQROBzB8oos5R4wfuV80BDxNB2sW-hRDYLx84rQYT0ZQnA6Gi09V7mSU-s_cnLA
+Message-ID: <CANs=ypgdgB_3stm5bCvO8RTat-sxs0N6SAaeYSQ-dyq43U-ZBg@mail.gmail.com>
+Subject: Re: [PATCH wireless 4/4] wifi: mt76: mt7925: fix RCPI chain 3 mask in
+ sta_poll RSSI extraction
+To: Ben Greear <greearb@candelatech.com>
+Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
+	ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-34481-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	DMARC_NA(0.00)[freebox.fr];
-	DKIM_TRACE(0.00)[freebox-fr.20251104.gappssmtp.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34482-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joshuaklinesmith@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,freebox.fr:mid]
-X-Rspamd-Queue-Id: 3C1313B1589
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[candelatech.com:email,candelatech.com:url,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3EE5B3B17EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 07/04/2026 16:00, Johannes Berg wrote:
-> On Fri, 2026-03-27 at 21:11 +0100, Pablo Martin-Gomez wrote:
->> -#define IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY	0x0070
->> +#define IEEE80211_EML_CAP_EMLSR_EMLMR_TRANSITION_DELAY	0x0070
->>  #define  IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY_0US		0
->>  #define  IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY_16US		1
->>  #define  IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY_32US		2
-> 
-> I think this is confusing. You have the "EMLSR_EMLMR_" prefix in the
-> definition for the mask, but not in the values, but also the prefix
-> itself gets very long, not sure what to do about that. Maybe just
-> ..._EML_TRANSITION_DELAY even if it doesn't match the spec completely.
-In the standard, there is two different tables to convert the field
-value to a delay: 9-417j for EMLSR and 9-417l for EMLMR. E.g. if the
-field has the value 1, in EMLSR mode, it's a 16 µs delay, in EMLMR mode,
-it's a 32 µs delay.
+On 4/7/26 11:25, Ben Greear wrote:
+> How much of this is AI driven?  As far as I know, mt7925 is a 2x2 chipset
+> at max.  So while the patch may be correct, it may also not matter in pra=
+ctice
+> and at least may not need to be backported into stable.
 
-As no driver implements EMLMR, I was expecting the first one to
-implement it to create the defines:
-```
-#define  IEEE80211_EML_CAP_EMLMR_TRANSITION_DELAY_0US	0
-#define  IEEE80211_EML_CAP_EMLMR_TRANSITION_DELAY_32US	1
-[...]
-```
+Hi Ben,
 
-If you prefer, I can implement it +
-`ieee80211_emlmr_[trans/pad]_delay_in_us` but it will be dead code for now.
+Please accept my apologies. You are correct that the mt7925 is a 2x2
+chipset, so this does not have a practical impact and should not have
+been tagged for stable. I did not read the documentation in its
+entirety before submitting, and that is on me.
 
-> 
-> And then another thing - I was going to apply the other two patches, but
-> really then looked at my git log and saw that no, really, the subjects
-> are stating a spec thing rather than describing a change, so please fix
-> that too.
-I'll fix that in a v2
-> 
-> johannes
+I will be much more careful and diligent with testing and review going forw=
+ard.
 
-Pablo MG
+Thanks for the feedback.
 
+Joshua
+
+
+On Tue, Apr 7, 2026 at 11:25=E2=80=AFAM Ben Greear <greearb@candelatech.com=
+> wrote:
+>
+> On 4/6/26 16:47, Joshua Klinesmith wrote:
+> > The fourth receive chain RCPI uses GENMASK(31, 14), an 18-bit mask
+> > spanning bits 14-31. It should be GENMASK(31, 24), an 8-bit mask
+> > for the fourth byte, consistent with the other three chains and
+> > with the RCPI3 definitions used elsewhere in the driver
+> > (MT_PRXV_RCPI3 and MT_TXS7_F0_RCPI_3 both use GENMASK(31, 24)).
+>
+> Hello Joshua,
+>
+> How much of this is AI driven?  As far as I know, mt7925 is a 2x2 chipset
+> at max.  So while the patch may be correct, it may also not matter in pra=
+ctice
+> and at least may not need to be backported into stable.  If it is a minor
+> cleanup that doesn't actually matter, that should be described more clear=
+ly
+> in the commit message?
+>
+> Some of your patches are touching tricky parts of the code and making
+> subtle comparisons against how the vendor's driver is written.  How well =
+has
+> this been tested and reviewed by a knowledgeable human in general?
+>
+> Thanks,
+> Ben
+>
+> >
+> > On devices with fewer than 4 antenna chains, the corrupted value
+> > is masked out by antenna_mask in mt76_rx_signal(). On 4-chain
+> > devices, this produces incorrect ACK signal strength readings.
+> >
+> > Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver fo=
+r mt7925 chips")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+> > ---
+> >   drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/=
+net/wireless/mediatek/mt76/mt7925/mac.c
+> > index 6334019249..85e91ca84f 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+> > @@ -144,7 +144,7 @@ static void mt7925_mac_sta_poll(struct mt792x_dev *=
+dev)
+> >               rssi[0] =3D to_rssi(GENMASK(7, 0), val);
+> >               rssi[1] =3D to_rssi(GENMASK(15, 8), val);
+> >               rssi[2] =3D to_rssi(GENMASK(23, 16), val);
+> > -             rssi[3] =3D to_rssi(GENMASK(31, 14), val);
+> > +             rssi[3] =3D to_rssi(GENMASK(31, 24), val);
+> >
+> >               mlink->ack_signal =3D
+> >                       mt76_rx_signal(msta->vif->phy->mt76->antenna_mask=
+, rssi);
+>
+> --
+> Ben Greear <greearb@candelatech.com>
+> Candela Technologies Inc  http://www.candelatech.com
+>
 
