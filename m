@@ -1,109 +1,62 @@
-Return-Path: <linux-wireless+bounces-34471-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34472-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKEmK1Ee1Wnr0wcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34471-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:10:09 +0200
+	id oI50Ocwe1Wnr0wcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34472-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:12:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2402E3B0B07
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:10:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8583B0B58
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 17:12:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 88A4C300A529
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 15:08:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 30F8B302709E
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 15:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACBB3603C0;
-	Tue,  7 Apr 2026 15:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48213603EE;
+	Tue,  7 Apr 2026 15:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oM/kS0m4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XhT+Wwmc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A657735F5FD
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 15:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A0535F602;
+	Tue,  7 Apr 2026 15:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775574522; cv=none; b=KD3JieaKYyxJFsw3MhGFhLupQoA3oH+4dBAPF/g3EHvYoR5UslMgW6+uldjhNkcLdU7RF+GTEMEI5/D+oP+Dh0CzHdMXI2PmYo8RDOsq8ATyBclw5srxK05w6cW5E1J8cMWypUuR2u6U+egdyCn1CHbcdoUPrbZeslx3/oQ8wI4=
+	t=1775574695; cv=none; b=S6veC5ehLC+7buST6qPNGMep1AhxOPTq4ywkDam4MTjWsaUPBTsvQo+dCTub+qVVaBXzd2SvjWQ6luDeU7kGCjBhEh1wyXo/qUC2xuUtVPJscLwI9CdZMBM9ICQtzsQUCd+xu+g+Q7s+Pl0YnBlzi/1Tv6bhWrxKhEkvMptZvzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775574522; c=relaxed/simple;
-	bh=jymJPdqyE0JtZYcOwQes2cGg9dVOktqNFZiLSsqTKKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hVMGZVcdrs5k4dzqRsolXRFO3ZZI5Hk6G0U+iAenT9B21W8UOIjbd2NOVMqmo8j9Tq9Y0J38E8FmHTKC44p44PLrwuYcbEFnCKxZHDZxxc9lhna3Fv4+1A3jGRbtVZzFqVtyOwydWcxGiK9CnlYNkWugRlf922yqpZNnK9w/6VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oM/kS0m4; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43ba1f3fa7eso5433052f8f.2
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 08:08:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775574519; x=1776179319; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=N4jjEPCUJmZT2sKEYrMwlfVHfjzzKvnFJHfospIU05c=;
-        b=oM/kS0m4cIuz+n/KMiXNxqknKvl6gXpm2xPRN5jiAHojDLjnyavSsbdvcq+/0+FaK6
-         uGzGGxKxMk0+9b8oo2l+/+Mk6K8VXhHosQSUDhrYr+pjT4q7uAEj2DIdIYhSWfreT6ax
-         thwqUGZpj6IDhk3ZDWY1xYAHNtEzg1EzpZhH6FT+aU6haOWulOci3yKNWwCAGlZZwm8Q
-         2J7TKX3eU/dE/gGrbn7Weeu6QREpV2MXp2vhn4WJTbzqwlsoUVrEUYxhs10pqltAbbAZ
-         QGSP/70jlOv6ctvjHoJtHrunN7+MLujgDbQxm+skTntIPPToDH81iCGspC+nsVNKZT55
-         ffBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775574519; x=1776179319;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N4jjEPCUJmZT2sKEYrMwlfVHfjzzKvnFJHfospIU05c=;
-        b=JQU9DtJAs6dQCpmclgU1RjwLSPlfBGyJfrIh/krB9athR1ogOvm1pOO1de86lcpymr
-         BVmjVntWB6G9LCNZN45v5EueUt2dzVlwz4gfpQ9hzp9yBsDksB5anaJS/N/NoK6MYGf8
-         yzkFoU0w8BOkNucTdMLUClgZntERI4aLb95HtFuF9lbweg6TOfgj7VJc5EapbzJ6i0oH
-         mQ6Ufp9aDyqN8qdvp4xTFEXefJD0bVION7o+7H/CtKr7Aq9rGFnle5OHDMDZAXXRF31U
-         HS2pzE6M5WeBJkPfErpYHpA33p5BmKfzDCl0s4+3EKj0uf/uLbRDgcudlmf9aTxkTXGK
-         4YTw==
-X-Forwarded-Encrypted: i=1; AJvYcCUkIgqiObmj3EZniDb6umTAph7lwWAk4pOYZEY1g3ejoZx5JfpPm7+HLUJR59HL/UnSW2XciYse/DBYmuCbMw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyknZAXZgAnxfEH1TF788XYPL/3wJxdAVyCRh2Gv5WmAQS1iwV
-	zhknB4PVOwQ5Ap4N8M+HrGIC++fa1lV/6Vq+E29aRJbS2eM7ABR2QHdx
-X-Gm-Gg: AeBDietdzk++kZt0EVFhDLSTX8TzAuRQgpONyHTBCmb5ngTmhSmUwGAEaqWZNqn3eiY
-	fLRJwN6hajXtgNBLDeRGnjLOpKdijgS/fgvYoc5OFBoSK3R0WkpI3kIkawU0/U2ZBX5O+HYSk8X
-	aMcLPh82RjirNPSO7La9Z1djWeK5mfMzCRkfOKke1AkcDXgpPVH6UnLT9mOa2d8/dzGCYAuAQJK
-	j0iyrrHJz40z9Xj4dll1unll1gaHaX6QEFic+1itMKrTu1aVIj2FPuBqUwtaCtBEZ3C4NOhYzde
-	pRX+lyBf+4M6asEXyNWQV89nmhelMppcrdRb7S9Xq16yuv37bhChUFI+toQwvYaX4rSSztkzh0r
-	1s9z97p/9VZqjP87nev3eog6rCykOErm01vm8SqW0VlaMQ9l2E291Pdgf5LdvwgczQe0T7v6ERv
-	8WPnUqUN2FyG2aJRyv3grRv2wxzfoXu3lDjtuo1qYKgkRkjuDHHv6lM8bfLTGRtER/kO4pCxBIv
-	JakTquQgZPj
-X-Received: by 2002:a05:6000:1446:b0:439:c69f:503a with SMTP id ffacd0b85a97d-43d292d5e8dmr26238497f8f.27.1775574518734;
-        Tue, 07 Apr 2026 08:08:38 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e2c54bdsm52056417f8f.16.2026.04.07.08.08.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 08:08:37 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jon Maloy <jmaloy@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	mptcp@lists.linux.dev,
-	dev@openvswitch.org,
-	linux-sctp@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
+	s=arc-20240116; t=1775574695; c=relaxed/simple;
+	bh=yhVQppHVFW8Te0Gb8BJnlsGvxMPSV1L6vIxwkXFfjTw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Za0F5fanw2Rqu9iEQWOghbgqgR/FglDqlM04YQsZnKCeTXvuN+FCF8yqvOtp+8mZbNzHqdFWhdOP6xWGAXlC7tEIlEZQMZT5MLTVtyLLBkZW9ZWFVr76TmjXKRdJFyAog8vIuG6U+hEajSd6TrLmpGl9bwXWWNM5MPXWOGZ/+V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XhT+Wwmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F649C19424;
+	Tue,  7 Apr 2026 15:11:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775574695;
+	bh=yhVQppHVFW8Te0Gb8BJnlsGvxMPSV1L6vIxwkXFfjTw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XhT+WwmckAFNphsZkojivXoALb006Ioijr1YpwUFuxFBquloR4aZXN6ZlcAApuCrt
+	 nIu0/nBWrJo2ERXqmiyjNCfArtWvW9cJ0z4w1Gad4Q1tKFJSRY/Cc9eHpJ0yJQ80aZ
+	 +eBa7Bo49n5OMh9RPOurD9tbVbl4Vmm79L9hJdYD3tFNkY/g3VaNE9zXDtA0vf1g5V
+	 jufjTzKno3n61nUA81Hxwkvpf0UFarF6yQYhX/8rDFpt5p1lMPJ52p32M96hRJ7Eas
+	 njmsF5IJaWeseH2IaBHxU8kuTGVLdCHIcYxCCltqlbuyKGeVJqBL7Gnl0fxyzimUg3
+	 gI7JMbWekSQpA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wA85V-0000000DNJ1-0MYd;
+	Tue, 07 Apr 2026 17:11:33 +0200
+From: Johan Hovold <johan@kernel.org>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	libertas-dev@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	David Carlier <devnexen@gmail.com>
-Subject: [PATCH v4 net-next] net: use get_random_u{16,32,64}() where appropriate
-Date: Tue,  7 Apr 2026 16:07:58 +0100
-Message-ID: <20260407150758.5889-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH v2 0/3] wifi: refactor USB endpoint lookups
+Date: Tue,  7 Apr 2026 17:11:08 +0200
+Message-ID: <20260407151111.3187826-1-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -111,191 +64,58 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lunn.ch,kernel.org,gmail.com,sipsolutions.net,redhat.com,ovn.org,vger.kernel.org,lists.linux.dev,openvswitch.org,lists.sourceforge.net];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	TAGGED_FROM(0.00)[bounces-34471-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-34472-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	NEURAL_HAM(-0.00)[-0.984];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2402E3B0B07
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9C8583B0B58
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Use the typed random integer helpers instead of
-get_random_bytes() when filling a single integer variable.
-The helpers return the value directly, require no pointer
-or size argument, and better express intent.
+Use the common USB helper for looking up bulk and interrupt endpoints
+instead of open coding.
 
-Skipped sites writing into __be16 (netdevsim) and __le64
-(ceph) fields where a direct assignment would trigger
-sparse endianness warnings.
+Johan
 
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
 
-Notes:
-    Changes v3 -> v4:
-    - Dropped net/ceph/auth_x.c site: client_challenge is __le64,
-      direct assignment triggers sparse endianness warning
-      (Matthieu Baerts)
-    - Added Reviewed-by from Matthieu Baerts for net/mptcp changes
-    
-    v3: https://lore.kernel.org/netdev/20260405154816.4774-1-devnexen@gmail.com/
-    v2: https://lore.kernel.org/netdev/Z/BfE0zn+DJxhBH7@debian/
+Changes in v2:
+ - rebase on wireless-next
 
- drivers/net/netdevsim/psample.c | 4 ++--
- net/core/net_namespace.c        | 2 +-
- net/mac80211/mesh_plink.c       | 2 +-
- net/mptcp/subflow.c             | 4 ++--
- net/openvswitch/flow_table.c    | 2 +-
- net/sctp/sm_make_chunk.c        | 4 ++--
- net/tipc/node.c                 | 2 +-
- 7 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/netdevsim/psample.c b/drivers/net/netdevsim/psample.c
-index 47d24bc64ee4..717d157c3ae2 100644
---- a/drivers/net/netdevsim/psample.c
-+++ b/drivers/net/netdevsim/psample.c
-@@ -94,7 +94,7 @@ static void nsim_dev_psample_md_prepare(const struct nsim_dev_psample *psample,
- 	if (psample->out_tc_occ_max) {
- 		u64 out_tc_occ;
- 
--		get_random_bytes(&out_tc_occ, sizeof(u64));
-+		out_tc_occ = get_random_u64();
- 		md->out_tc_occ = out_tc_occ & (psample->out_tc_occ_max - 1);
- 		md->out_tc_occ_valid = 1;
- 	}
-@@ -102,7 +102,7 @@ static void nsim_dev_psample_md_prepare(const struct nsim_dev_psample *psample,
- 	if (psample->latency_max) {
- 		u64 latency;
- 
--		get_random_bytes(&latency, sizeof(u64));
-+		latency = get_random_u64();
- 		md->latency = latency & (psample->latency_max - 1);
- 		md->latency_valid = 1;
- 	}
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index 1057d16d5dd2..deb8b2ec5674 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -411,7 +411,7 @@ static __net_init int preinit_net(struct net *net, struct user_namespace *user_n
- 	ref_tracker_dir_init(&net->refcnt_tracker, 128, "net_refcnt");
- 	ref_tracker_dir_init(&net->notrefcnt_tracker, 128, "net_notrefcnt");
- 
--	get_random_bytes(&net->hash_mix, sizeof(u32));
-+	net->hash_mix = get_random_u32();
- 	net->dev_base_seq = 1;
- 	net->user_ns = user_ns;
- 
-diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
-index 803106fc3134..7cbab90c8784 100644
---- a/net/mac80211/mesh_plink.c
-+++ b/net/mac80211/mesh_plink.c
-@@ -712,7 +712,7 @@ void mesh_plink_timer(struct timer_list *t)
- 				"Mesh plink for %pM (retry, timeout): %d %d\n",
- 				sta->sta.addr, sta->mesh->plink_retries,
- 				sta->mesh->plink_timeout);
--			get_random_bytes(&rand, sizeof(u32));
-+			rand = get_random_u32();
- 			sta->mesh->plink_timeout = sta->mesh->plink_timeout +
- 					     rand % sta->mesh->plink_timeout;
- 			++sta->mesh->plink_retries;
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 5cfe19990f31..1a7736145dbc 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -72,7 +72,7 @@ static void subflow_req_create_thmac(struct mptcp_subflow_request_sock *subflow_
- 	struct mptcp_sock *msk = subflow_req->msk;
- 	u8 hmac[SHA256_DIGEST_SIZE];
- 
--	get_random_bytes(&subflow_req->local_nonce, sizeof(u32));
-+	subflow_req->local_nonce = get_random_u32();
- 
- 	subflow_generate_hmac(READ_ONCE(msk->local_key),
- 			      READ_ONCE(msk->remote_key),
-@@ -1639,7 +1639,7 @@ int __mptcp_subflow_connect(struct sock *sk, const struct mptcp_pm_local *local,
- 	ssk = sf->sk;
- 	subflow = mptcp_subflow_ctx(ssk);
- 	do {
--		get_random_bytes(&subflow->local_nonce, sizeof(u32));
-+		subflow->local_nonce = get_random_u32();
- 	} while (!subflow->local_nonce);
- 
- 	/* if 'IPADDRANY', the ID will be set later, after the routing */
-diff --git a/net/openvswitch/flow_table.c b/net/openvswitch/flow_table.c
-index 61c6a5f77c2e..67d5b8c0fe79 100644
---- a/net/openvswitch/flow_table.c
-+++ b/net/openvswitch/flow_table.c
-@@ -167,7 +167,7 @@ static struct table_instance *table_instance_alloc(int new_size)
- 
- 	ti->n_buckets = new_size;
- 	ti->node_ver = 0;
--	get_random_bytes(&ti->hash_seed, sizeof(u32));
-+	ti->hash_seed = get_random_u32();
- 
- 	return ti;
- }
-diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-index 2c0017d058d4..de86ac088289 100644
---- a/net/sctp/sm_make_chunk.c
-+++ b/net/sctp/sm_make_chunk.c
-@@ -2727,7 +2727,7 @@ __u32 sctp_generate_tag(const struct sctp_endpoint *ep)
- 	__u32 x;
- 
- 	do {
--		get_random_bytes(&x, sizeof(__u32));
-+		x = get_random_u32();
- 	} while (x == 0);
- 
- 	return x;
-@@ -2738,7 +2738,7 @@ __u32 sctp_generate_tsn(const struct sctp_endpoint *ep)
- {
- 	__u32 retval;
- 
--	get_random_bytes(&retval, sizeof(__u32));
-+	retval = get_random_u32();
- 	return retval;
- }
- 
-diff --git a/net/tipc/node.c b/net/tipc/node.c
-index af442a5ef8f3..97aa970a0d83 100644
---- a/net/tipc/node.c
-+++ b/net/tipc/node.c
-@@ -1275,7 +1275,7 @@ void tipc_node_check_dest(struct net *net, u32 addr,
- 			goto exit;
- 
- 		if_name = strchr(b->name, ':') + 1;
--		get_random_bytes(&session, sizeof(u16));
-+		session = get_random_u16();
- 		if (!tipc_link_create(net, if_name, b->identity, b->tolerance,
- 				      b->net_plane, b->mtu, b->priority,
- 				      b->min_win, b->max_win, session,
+Johan Hovold (3):
+  wifi: at76c50x: refactor endpoint lookup
+  wifi: libertas: refactor endpoint lookup
+  wifi: libertas_tf: refactor endpoint lookup
+
+ drivers/net/wireless/atmel/at76c50x-usb.c     | 22 ++-------
+ .../net/wireless/marvell/libertas/if_usb.c    | 33 +++++++------
+ .../net/wireless/marvell/libertas_tf/if_usb.c | 46 +++++++++----------
+ 3 files changed, 41 insertions(+), 60 deletions(-)
+
 -- 
-2.53.0
+2.52.0
 
 
