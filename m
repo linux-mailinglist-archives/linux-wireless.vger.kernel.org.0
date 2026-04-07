@@ -1,515 +1,221 @@
-Return-Path: <linux-wireless+bounces-34407-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34408-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mB+/FV1q1GletwcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34407-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 04:22:21 +0200
+	id ENE2Fe5q1GletwcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34408-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 04:24:46 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2583A8FB2
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 04:22:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A013A9022
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 04:24:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 104BC3011F23
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 02:21:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E25813040189
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 02:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C6B34DB54;
-	Tue,  7 Apr 2026 02:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371FF34F462;
+	Tue,  7 Apr 2026 02:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JqAAr2wq"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Wkp5wzwf";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YqSvaH4h"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8902617993
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 02:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9FB211A09
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Apr 2026 02:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775528462; cv=none; b=oXePBEoK2ObxvjgctdKuiQg+mw0oW2nETFo3WvxPK6dO0cezXiG7p1jngV5pKjNYcI30RMDhUJ8n5qMAKTJhbl7p7SI41A7XsYyp40bBaEQLEsSn9SlwlCZdLvor5hR1JNGujcOCdHSZG3K5HhJEeqw0FHUpfA2ff5wFsTdf0Kg=
+	t=1775528639; cv=none; b=cchi64fghQgVdUJntCEbb5W4vktHz1ksXjSP2BZMCFmRWFX8XKX9ttpPxiWCTcF1Y7ULtrlOjGDc5eNhmlp23tFOuzm9kMIT2qtjloPNiwaHg8mSVPprF6GY2KBd8aunMGUgGlQf9WP2edk/FQlyFMLOinAXNul8PKqi6Fq41G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775528462; c=relaxed/simple;
-	bh=PxU3cfTdJfl+LMIvHCxQwCKCx1rkMTwzyN+ZiBDZeOI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hP/L6x26yPfddzEZck8nG5Ptyg2yP7IU3ArTWuaGgjxhFCuK9vRY+nFqlL9SmPUZmfXTw2Ku7SxdxPUuWgnuQAp+2xbP7xbacQ/Dc5mJk1AyZ1MoUfV+uEbRIHGokNmSSVjZATjZKsbWwW9zr3AIx7jX5ts9NXAfHlnpEQFJX3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JqAAr2wq; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7991db3dc98so47849217b3.0
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2026 19:21:00 -0700 (PDT)
+	s=arc-20240116; t=1775528639; c=relaxed/simple;
+	bh=OPzVQ8wK7oRE94NWpDt3lDoeRCxcICiSYHbJxWI2KLc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WqIhFYo9yQRrIkpb2YusoFpTCV0xbPGoyl43F268Bm7XKuFHixyFxVlvVshC6PeH9SWzAvNH4PhoEoC2AoqcoL8t8WxQTZX1pn/Dwn8R4Fa1tK3CEN+apZ4srCub1hqZ4lsnPbKegOKU8w0qN+X9HnKzTWOd8g8tizl+1DDsTgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Wkp5wzwf; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YqSvaH4h; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 636LQH291405987
+	for <linux-wireless@vger.kernel.org>; Tue, 7 Apr 2026 02:23:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	8+T64C2shkeuX9nGP7xkHlGtnZEAVo6YT0+MuiSjWM4=; b=Wkp5wzwfsLYeTN/S
+	OYG9JfM9mtWQwaHUdX4Vb7bX45ku4I6lztTxJQxAnEkmSHxWnuvMtTDE3mYR8CX0
+	dl3GdC1AMlYfjkil6mVniB2VBY1elYgGesRLobLjMb8o11MyVdWUbxNSFovRzIR8
+	MEaUgWdxZx7al4YKNb+EapD+UyNWvzTUzPjR1x3mHyAbFbEgYot2wLFdXOc+PqHx
+	rnpVdPKhayoCb2PuTLflBw+4fe/70GAj7UM9LwSniSaa3hFFXVEXk76vOeI8c1cl
+	ZE9CD8vxEPcnJ6G4xsH08JOEwTBqmVpVTwLWf6PZF+/gGj29dLlKZAugKAGQhs7W
+	4PEwWQ==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dcmrarn3w-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2026 02:23:56 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2b2454fc131so81635225ad.3
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2026 19:23:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775528459; x=1776133259; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JddOLnmdz26EEBsXn/Qc2EtayJ/Lg+OLGCr/6YZatwU=;
-        b=JqAAr2wq904uS+Lwd23RaZSvtkNzlKzZ4TyWBCMxA2Y6gfhzNlF1HdvOa1z7diJhaS
-         JItj3sl7yr6XvqB//XM2cYzshifu+1j6F327JK8G0RLCERBl/VLvrjvnzJw9IqsQE8lZ
-         cS4dPmRRDefdfYekdWJtieVQNO44oDcG3YUHjpEN0EAK652eZY7ohiG8SQERUJKIlqzi
-         3ChhKEh8hVtk/nhEJUzmPSygfkzqRJ+AvfkKDsQxRkdQCezWlQyLtD93v2s4T+QyWcOQ
-         bal1rA91QjWN30FW1p0AGZf8nXUoVDT5ChGkvy+pyDVh9mbN07rykkrzT4bEGQlfT8nY
-         d0kQ==
+        d=oss.qualcomm.com; s=google; t=1775528635; x=1776133435; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8+T64C2shkeuX9nGP7xkHlGtnZEAVo6YT0+MuiSjWM4=;
+        b=YqSvaH4hD3KfQmgzJaHA3teYfIV6Y1f4RnupHetP1Zbjq1+Z7sLwu2dyK0ndV3VC+j
+         le6XoWHPFxJrpPdYrPOoQ02B2PKVU0bM9zjFzvsRPZXNzlOoniCJ5ROz52dSxFidTU3t
+         5w7PHjR/ep4aDLlNuTevIo4hDW73HGqXz8Bu+E64B1ULfwm1Aon1WnCPfVytheTxzYxM
+         9HMAYHzGNWu+L+KbFBuLAX93Vr8WaeizJD4x4YvljvmtZ6J2NmnUhxYs4o7sT04fEbda
+         vvU0UBzZbJw6zvo/02AnpVk/hffxEM5duhvWWwmgZG3pM8IxHXydUZEl+uzADCS1TeNB
+         xdBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775528459; x=1776133259;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JddOLnmdz26EEBsXn/Qc2EtayJ/Lg+OLGCr/6YZatwU=;
-        b=Q5eh+/LcCC+KW0tFs90ODlJ6+ZG9YGEheH+i+WH3lcRwkMYATtjejGop5w/XX9GL5A
-         5BUG0Wx0/2XYF+fTnN6y/g4MxbouHo1sg5859Wsd6pwCe6cbD6dH46V33KFULNGTtr9P
-         oZ70EeUElPuYFcsanVW+7NjdHO+E8fJMfRDeMGnbwVwUYczxoTUFz0SSmqrE/beL15ON
-         5Ag1ssQO7lgLizvfL/bTvsiyxZZgSF4JfR+tvmbJVYdwU55kklxhVa5r6M91FHrv8Kyj
-         r7JI6Mq1B+OfbI1C8NnK/5KvRhkzXsnERhKsLMqW7oDqMAH8RayAD36l7jlIRKIrvWw6
-         BBoQ==
-X-Gm-Message-State: AOJu0Yyj+WBoOGk9L5sKCmBLhsKpmGbv9hCam+ArnaAZ0pFn//Eo+qg5
-	i70RDIretVmDrbRGqYh+OnVniqJl8DU0A0UnlVa3l1o+2kGlavnQq/+vq24SSX2m
-X-Gm-Gg: AeBDieuFZPREDWH/915sCN6XEQv2PBjwrD9ci+vjPcJkSNPeEpMrBRbgdwovTBfg7l4
-	ZGY04Ncbbzw9cm5D/U39Eoo1Km0u/9I97JQd7VkPMh8mRmdoSlCx7cxfxD/T2Q6o9nHZbrjpSuJ
-	iqw+4SgzyVxgYl6y2/wyAwpQYosmZQpIA7goCqbgdPUEj/LJYMcYzDr3UNBldTMK8Xg5HcKIYRs
-	ZTE6TWkA/mk146fVL03twuvBEHh4b69lRgkNeFxBQ8nqrHnutLgNDpmibe7HdKIbE78EM3MSPGj
-	perf1rV3PLgPBknNANBv7G+oBmyVR7gKjzQP/7L9vXx/a5ztxyLOZZk8ZmfU8YQq8iB8MQG3/fK
-	oQ/bBK4Up+Cp8NN5eRhxkGM+9v+CUTk7OARLhM/nZGiqRa8JCSOEgcgzrnXqwthss/8DnmVYT6a
-	e6QfeOdi/3HzTKDWSAl/Tu4yo3av4Tz/sXov1gJSZ//xGLZAjAisdxz8r7LXxX
-X-Received: by 2002:a05:690c:dd5:b0:79f:2e53:8606 with SMTP id 00721157ae682-7a4d5c5e341mr158670937b3.41.1775528459311;
-        Mon, 06 Apr 2026 19:20:59 -0700 (PDT)
-Received: from DEV.lan (c-75-74-152-49.hsd1.fl.comcast.net. [75.74.152.49])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7a3712ecc31sm60979597b3.45.2026.04.06.19.20.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2026 19:20:59 -0700 (PDT)
-From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	Joshua Klinesmith <joshuaklinesmith@gmail.com>
-Subject: [PATCH wireless] wifi: mt76: mt7996: replace direct WTBL access with MCU for station statistics
-Date: Mon,  6 Apr 2026 22:20:52 -0400
-Message-ID: <20260407022052.49707-1-joshuaklinesmith@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1775528635; x=1776133435;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8+T64C2shkeuX9nGP7xkHlGtnZEAVo6YT0+MuiSjWM4=;
+        b=R4ql6+RrzGztdzoRmrwlpWeuA2LZlhmiEkhdk67yqpPPR1d38MyaloUxXdHqldFZnw
+         2d+nmv4NK7TdnC05+XmA50tbLOsQ2xFSTVYHDImh2Flg0z2HdpDx/6lZvidofJW7zOou
+         91u4G4SkaQ17JWqPEcyhiUFLWtLJjuVUEvYDwlhR8GwqB5k7/psUZSwFryEu/ABzLTN+
+         thPfBNIGe38hhGr50POkL22gEmwIMZWRvnBcwfKi/GNrUbjvtknYNx/AmPHaphZJjlpr
+         Z+HuxsEtNKfIqEO7wHSViJdbj0U6G+tx17vWD3rUG1TsvvFUtF3pVHexIp7w5RcoosJl
+         HiIw==
+X-Gm-Message-State: AOJu0YzXyO2llihZo8azPI3cVTZX72nEOkzpFdlgQ5W8s4kvhQwpBZI8
+	QtNXc10/nVDLfKuUNA68wsQG4T2VByHpQLQs5UHZgyE2rIdxhInr0CsZO51a04P8iff4rGRD5kH
+	iyLdB/97P2Mz/64nbHZgIFJFzzV0f8skWyx/zymXhqr0yCk/Foce8ULtMz8dxND4WpXrUFQ==
+X-Gm-Gg: AeBDieutysgYEA9lBKr19swwvg9TegOGS3UAQLwTvLRUBbQtzJOzDv8yoNaVgPXbr8Y
+	6byZg/xQgIGVds2kCVZAcDp/7MPslBXHgq87beDi+dq5KqsY7JOWPMAqcMEKOCuyFjI3jS7h3qz
+	aQlswj2uh8ZAvNvfCXkhCZQfIjsoMmcB024MlYT1ArS4SX7RVili8PQwpJh5J7Seogr8g9Hutus
+	wfPr95fFadJZGiODYneg4UABXB+BfyXnXQKvUZ5zSk4sB3+wOpMJ14Z6DcyFRrWbPSKbNDYF7gU
+	1vQCApP4sD/eL+oryY0UYts6DUsxZpiI4DzcEy6V6LySdgApZzac7h/XtLE7Ap9BhpYnbSO3Sgh
+	BsKTjfZc+Nij28jxLdAYk8Gjuu+rVCdOWSzqC6Ve857FFM8IgZFIk
+X-Received: by 2002:a17:902:e845:b0:2b2:6df1:1108 with SMTP id d9443c01a7336-2b281867961mr157965685ad.15.1775528635549;
+        Mon, 06 Apr 2026 19:23:55 -0700 (PDT)
+X-Received: by 2002:a17:902:e845:b0:2b2:6df1:1108 with SMTP id d9443c01a7336-2b281867961mr157965345ad.15.1775528635108;
+        Mon, 06 Apr 2026 19:23:55 -0700 (PDT)
+Received: from [10.231.195.112] ([114.94.8.21])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27473583dsm153140155ad.9.2026.04.06.19.23.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Apr 2026 19:23:54 -0700 (PDT)
+Message-ID: <09fb6efd-646b-4d0d-a0f3-9f6ce4b38442@oss.qualcomm.com>
+Date: Tue, 7 Apr 2026 10:23:49 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next v4 0/6] wifi: ath12k: Enable IPQ5424 AHB WiFi
+ device
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+        Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ath12k@lists.infradead.org,
+        Saravanakumar Duraisamy <quic_saradura@quicinc.com>,
+        Sowmiya Sree Elavalagan <sowmiya.elavalagan@oss.qualcomm.com>
+References: <20260402-ath12k-ipq5424-v4-0-cd1e0f0a6c88@oss.qualcomm.com>
+ <5a606f7d-6665-4b0c-bbbe-32538b2315b6@oss.qualcomm.com>
+ <95face24-deaf-47c4-935d-0b48b5141371@kernel.org>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <95face24-deaf-47c4-935d-0b48b5141371@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: 4RlDj5OKkMtxGqO7zyMWVMHCbEppSl0_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDAyMSBTYWx0ZWRfXzxpP4o6LYmvc
+ qqPUtrnM8+nsEOTE3pIVfrehcmml2WkVITD5cgA00CkZySZ8UxHVMXggFOgXVsMcndtZPs5+C/Z
+ 4wGNBI7JFe7pELLGVIonkqCRt5EdtXaXdTGS12dcdR60zXC2LUPQh5seyq6kyM/UIcoEIIpkT0N
+ CZeyzxOl62dK0y4zdFo/pJorDfYC8Lj1BB1sSSlrOIDJlN3J5K3/Yyxqzf5MOcuhOYD9+/Er5G4
+ P9zte2b0YllQZP/UL3tGakzoRMdKDdoKpHhwWwyTqEjsJbP7QOAmnHyx0lBUfII3NIdtv5LBQXk
+ RyIH6/NLftD6xWleRQtT2DlmBRnVLsZ3eQH+onTcltV/bpBZRZ6bnhBi4uu0eJpp9lsiIN/UYpc
+ b6PnAQJcOnQmEqqi6101ezj4yd4wXJeOtbOew33ODJK+CL5Y3XK3r9zham3Vhwl4VEoaWiFK6ZM
+ 1zPh4v4gKbisBukdl5A==
+X-Proofpoint-GUID: 4RlDj5OKkMtxGqO7zyMWVMHCbEppSl0_
+X-Authority-Analysis: v=2.4 cv=D/d37PRj c=1 sm=1 tr=0 ts=69d46abc cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=Uz3yg00KUFJ2y2WijEJ4bw==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=EUspDBNiAAAA:8 a=eL9f3Vq-dHuaEv9KJUoA:9 a=QEXdDO2ut3YA:10
+ a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-07_01,2026-04-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 phishscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070021
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-34407-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joshuaklinesmith@gmail.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34408-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[baochen.qiang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DB2583A8FB2
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: E7A013A9022
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Direct MMIO access to WTBL entries for airtime and RSSI statistics in
-mt7996_mac_sta_poll() races with firmware, causing warnings at
-mt7996_mac_wtbl_lmac_addr, MCU message timeouts, and firmware
-communication breakdown. The function was called from
-mt7996_mac_tx_free() on every TX-Free-Done event, compounding the
-issue with heavy CPU overhead.
 
-Replace the direct WTBL polling with firmware MCU queries:
-- Airtime: UNI_ALL_STA_TXRX_AIR_TIME via the existing all_sta_info
-  MCU command, with a new handler in mt7996_mcu_rx_all_sta_info_event()
-- RSSI: UNI_PER_STA_RSSI via new mt7996_mcu_get_per_sta_info() using
-  MCU_WM_UNI_CMD(PER_STA_INFO)
 
-Both queries run from mt7996_mac_work() every 5th tick under dev mutex,
-matching the pattern already used for TX rate, admission stats, and
-MSDU count reporting.
+On 4/4/2026 1:23 PM, Krzysztof Kozlowski wrote:
+> On 03/04/2026 11:13, Baochen Qiang wrote:
+>>>
+>>>  .../bindings/net/wireless/qcom,ipq5332-wifi.yaml   |  1 +
+>>>  drivers/net/wireless/ath/ath12k/ahb.c              | 36 +++++----
+>>>  drivers/net/wireless/ath/ath12k/ahb.h              |  1 +
+>>>  drivers/net/wireless/ath/ath12k/ce.h               | 13 ++-
+>>>  drivers/net/wireless/ath/ath12k/core.h             |  1 +
+>>>  drivers/net/wireless/ath/ath12k/wifi7/ahb.c        |  8 ++
+>>>  drivers/net/wireless/ath/ath12k/wifi7/hal.c        |  7 ++
+>>>  drivers/net/wireless/ath/ath12k/wifi7/hal.h        |  3 +
+>>>  .../net/wireless/ath/ath12k/wifi7/hal_qcn9274.c    | 88 ++++++++++++++++++++
+>>>  .../net/wireless/ath/ath12k/wifi7/hal_qcn9274.h    |  1 +
+>>>  drivers/net/wireless/ath/ath12k/wifi7/hw.c         | 93 +++++++++++++++++++++-
+>>>  11 files changed, 231 insertions(+), 21 deletions(-)
+>>> ---
+>>> base-commit: 15551ababf6d4e857f2101366a0c3eaa86dd822c
+>>> change-id: 20260331-ath12k-ipq5424-cddb63a46a97
+>>>
+>>
+>> only nit in patch 2/6, so for patches 2-6/6:
+>>
+>> Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+> 
+> It does not work like this. Replying to cover letter causes that all
+> patches will get it. Provide detailed review and response to each email
+> in such case.
 
-Remove mt7996_mac_sta_poll() and its airtime_ac tracking array entirely.
+Got it, thank you!
 
-Vendor driver analysis (mt_wifi.ko from Xiaomi AX3000T MT7981 firmware)
-confirms the RCPI-to-RSSI conversion formula (rcpi - 220) / 2 and that
-the vendor never performs direct WTBL reads for statistics.
-
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Link: https://github.com/openwrt/openwrt/issues/21177
-Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
----
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |   7 ++
- .../net/wireless/mediatek/mt76/mt7996/mac.c   | 117 +-----------------
- .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 116 +++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7996/mcu.h   |  25 ++++
- .../wireless/mediatek/mt76/mt7996/mt7996.h    |   2 +-
- 5 files changed, 151 insertions(+), 116 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 8d59cf43f0e2..14d3ee7defa1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1392,6 +1392,13 @@ enum {
- 	UNI_OFFLOAD_OFFLOAD_BMC_RPY_DETECT,
- };
- 
-+#define PER_STA_INFO_MAX_NUM	90
-+
-+enum UNI_PER_STA_INFO_TAG {
-+	UNI_PER_STA_RSSI,
-+	UNI_PER_STA_MAX_NUM
-+};
-+
- enum UNI_ALL_STA_INFO_TAG {
- 	UNI_ALL_STA_TXRX_RATE,
- 	UNI_ALL_STA_TX_STAT,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index d4f3ee943b47..3d9648fb6773 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -111,119 +111,6 @@ u32 mt7996_mac_wtbl_lmac_addr(struct mt7996_dev *dev, u16 wcid, u8 dw)
- 	return MT_WTBL_LMAC_OFFS(wcid, dw);
- }
- 
--static void mt7996_mac_sta_poll(struct mt7996_dev *dev)
--{
--	static const u8 ac_to_tid[] = {
--		[IEEE80211_AC_BE] = 0,
--		[IEEE80211_AC_BK] = 1,
--		[IEEE80211_AC_VI] = 4,
--		[IEEE80211_AC_VO] = 6
--	};
--	struct mt7996_sta_link *msta_link;
--	struct mt76_vif_link *mlink;
--	struct ieee80211_sta *sta;
--	struct mt7996_sta *msta;
--	u32 tx_time[IEEE80211_NUM_ACS], rx_time[IEEE80211_NUM_ACS];
--	LIST_HEAD(sta_poll_list);
--	struct mt76_wcid *wcid;
--	int i;
--
--	spin_lock_bh(&dev->mt76.sta_poll_lock);
--	list_splice_init(&dev->mt76.sta_poll_list, &sta_poll_list);
--	spin_unlock_bh(&dev->mt76.sta_poll_lock);
--
--	rcu_read_lock();
--
--	while (true) {
--		bool clear = false;
--		u32 addr, val;
--		u16 idx;
--		s8 rssi[4];
--
--		spin_lock_bh(&dev->mt76.sta_poll_lock);
--		if (list_empty(&sta_poll_list)) {
--			spin_unlock_bh(&dev->mt76.sta_poll_lock);
--			break;
--		}
--		msta_link = list_first_entry(&sta_poll_list,
--					     struct mt7996_sta_link,
--					     wcid.poll_list);
--		msta = msta_link->sta;
--		wcid = &msta_link->wcid;
--		list_del_init(&wcid->poll_list);
--		spin_unlock_bh(&dev->mt76.sta_poll_lock);
--
--		idx = wcid->idx;
--
--		/* refresh peer's airtime reporting */
--		addr = mt7996_mac_wtbl_lmac_addr(dev, idx, 20);
--
--		for (i = 0; i < IEEE80211_NUM_ACS; i++) {
--			u32 tx_last = msta_link->airtime_ac[i];
--			u32 rx_last = msta_link->airtime_ac[i + 4];
--
--			msta_link->airtime_ac[i] = mt76_rr(dev, addr);
--			msta_link->airtime_ac[i + 4] = mt76_rr(dev, addr + 4);
--
--			tx_time[i] = msta_link->airtime_ac[i] - tx_last;
--			rx_time[i] = msta_link->airtime_ac[i + 4] - rx_last;
--
--			if ((tx_last | rx_last) & BIT(30))
--				clear = true;
--
--			addr += 8;
--		}
--
--		if (clear) {
--			mt7996_mac_wtbl_update(dev, idx,
--					       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
--			memset(msta_link->airtime_ac, 0,
--			       sizeof(msta_link->airtime_ac));
--		}
--
--		if (!wcid->sta)
--			continue;
--
--		sta = container_of((void *)msta, struct ieee80211_sta,
--				   drv_priv);
--		for (i = 0; i < IEEE80211_NUM_ACS; i++) {
--			u8 q = mt76_connac_lmac_mapping(i);
--			u32 tx_cur = tx_time[q];
--			u32 rx_cur = rx_time[q];
--			u8 tid = ac_to_tid[i];
--
--			if (!tx_cur && !rx_cur)
--				continue;
--
--			ieee80211_sta_register_airtime(sta, tid, tx_cur, rx_cur);
--		}
--
--		/* get signal strength of resp frames (CTS/BA/ACK) */
--		addr = mt7996_mac_wtbl_lmac_addr(dev, idx, 34);
--		val = mt76_rr(dev, addr);
--
--		rssi[0] = to_rssi(GENMASK(7, 0), val);
--		rssi[1] = to_rssi(GENMASK(15, 8), val);
--		rssi[2] = to_rssi(GENMASK(23, 16), val);
--		rssi[3] = to_rssi(GENMASK(31, 14), val);
--
--		mlink = rcu_dereference(msta->vif->mt76.link[wcid->link_id]);
--		if (mlink) {
--			struct mt76_phy *mphy = mt76_vif_link_phy(mlink);
--
--			if (mphy)
--				msta_link->ack_signal =
--					mt76_rx_signal(mphy->antenna_mask,
--						       rssi);
--		}
--
--		ewma_avg_signal_add(&msta_link->avg_ack_signal,
--				    -msta_link->ack_signal);
--	}
--
--	rcu_read_unlock();
--}
--
- /* The HW does not translate the mac header to 802.3 for mesh point */
- static int mt7996_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
- {
-@@ -1424,8 +1311,6 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
- 		}
- 	}
- 
--	mt7996_mac_sta_poll(dev);
--
- 	if (wake)
- 		mt76_set_tx_blocked(&dev->mt76, false);
- 
-@@ -2947,6 +2832,8 @@ void mt7996_mac_work(struct work_struct *work)
- 		mt7996_mac_update_stats(phy);
- 
- 		mt7996_mcu_get_all_sta_info(phy, UNI_ALL_STA_TXRX_RATE);
-+		mt7996_mcu_get_all_sta_info(phy, UNI_ALL_STA_TXRX_AIR_TIME);
-+		mt7996_mcu_get_per_sta_info(phy, UNI_PER_STA_RSSI);
- 		if (mtk_wed_device_active(&phy->dev->mt76.mmio.wed)) {
- 			mt7996_mcu_get_all_sta_info(phy, UNI_ALL_STA_TXRX_ADM_STAT);
- 			mt7996_mcu_get_all_sta_info(phy, UNI_ALL_STA_TXRX_MSDU_COUNT);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index c0c042de477b..05b43c16f0d3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -616,6 +616,35 @@ mt7996_mcu_rx_all_sta_info_event(struct mt7996_dev *dev, struct sk_buff *skb)
- 			wcid->stats.rx_packets +=
- 				le32_to_cpu(res->msdu_cnt[i].rx_msdu_cnt);
- 			break;
-+		case UNI_ALL_STA_TXRX_AIR_TIME: {
-+			static const u8 ac_to_tid[] = {
-+				[IEEE80211_AC_BE] = 0,
-+				[IEEE80211_AC_BK] = 1,
-+				[IEEE80211_AC_VI] = 4,
-+				[IEEE80211_AC_VO] = 6
-+			};
-+			struct ieee80211_sta *sta;
-+
-+			wlan_idx = le16_to_cpu(res->airtime[i].wlan_idx);
-+			wcid = mt76_wcid_ptr(dev, wlan_idx);
-+			sta = wcid_to_sta(wcid);
-+			if (!sta)
-+				break;
-+
-+			for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
-+				u8 lmac_ac = mt76_connac_lmac_mapping(ac);
-+				u32 tx_cur = le32_to_cpu(res->airtime[i].tx[lmac_ac]);
-+				u32 rx_cur = le32_to_cpu(res->airtime[i].rx[lmac_ac]);
-+
-+				if (!tx_cur && !rx_cur)
-+					continue;
-+
-+				ieee80211_sta_register_airtime(sta,
-+							      ac_to_tid[ac],
-+							      tx_cur, rx_cur);
-+			}
-+			break;
-+		}
- 		default:
- 			break;
- 		}
-@@ -4755,6 +4784,93 @@ int mt7996_mcu_get_all_sta_info(struct mt7996_phy *phy, u16 tag)
- 				 &req, sizeof(req), false);
- }
- 
-+int mt7996_mcu_get_per_sta_info(struct mt7996_phy *phy, u16 tag)
-+{
-+	struct mt7996_dev *dev = phy->dev;
-+	struct mt7996_mcu_per_sta_info_event *res;
-+	struct mt76_wcid *wcid;
-+	struct sk_buff *skb;
-+	int i, ret, sta_num = 0;
-+	struct {
-+		u8 _rsv1;
-+		u8 unsolicit;
-+		u8 _rsv2[2];
-+
-+		__le16 tag;
-+		__le16 len;
-+		__le16 sta_num;
-+		u8 _rsv3[2];
-+		__le16 wlan_idx[PER_STA_INFO_MAX_NUM];
-+	} __packed req = {
-+		.tag = cpu_to_le16(tag),
-+		.len = cpu_to_le16(sizeof(req) - 4),
-+	};
-+
-+	/* Build list of active station WCIDs */
-+	rcu_read_lock();
-+	for (i = 0; i < mt7996_wtbl_size(dev) && sta_num < PER_STA_INFO_MAX_NUM; i++) {
-+		wcid = rcu_dereference(dev->mt76.wcid[i]);
-+		if (!wcid || !wcid->sta)
-+			continue;
-+		req.wlan_idx[sta_num] = cpu_to_le16(i);
-+		sta_num++;
-+	}
-+	rcu_read_unlock();
-+
-+	if (!sta_num)
-+		return 0;
-+
-+	req.sta_num = cpu_to_le16(sta_num);
-+
-+	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_WM_UNI_CMD(PER_STA_INFO),
-+					&req, sizeof(req), true, &skb);
-+	if (ret)
-+		return ret;
-+
-+	res = (struct mt7996_mcu_per_sta_info_event *)skb->data;
-+
-+	rcu_read_lock();
-+	for (i = 0; i < sta_num; i++) {
-+		struct mt7996_sta_link *msta_link;
-+		struct mt76_vif_link *mlink;
-+		struct mt76_phy *mphy;
-+		u16 wlan_idx;
-+		s8 rssi[4];
-+
-+		switch (tag) {
-+		case UNI_PER_STA_RSSI:
-+			wlan_idx = le16_to_cpu(res->rssi[i].wlan_idx);
-+			wcid = rcu_dereference(dev->mt76.wcid[wlan_idx]);
-+			if (!wcid || !wcid->sta)
-+				break;
-+
-+			msta_link = container_of(wcid, struct mt7996_sta_link, wcid);
-+
-+			rssi[0] = (res->rssi[i].rcpi[0] - 220) / 2;
-+			rssi[1] = (res->rssi[i].rcpi[1] - 220) / 2;
-+			rssi[2] = (res->rssi[i].rcpi[2] - 220) / 2;
-+			rssi[3] = (res->rssi[i].rcpi[3] - 220) / 2;
-+
-+			mlink = rcu_dereference(msta_link->sta->vif->mt76.link[wcid->link_id]);
-+			if (mlink) {
-+				mphy = mt76_vif_link_phy(mlink);
-+				if (mphy)
-+					msta_link->ack_signal =
-+						mt76_rx_signal(mphy->antenna_mask, rssi);
-+			}
-+
-+			ewma_avg_signal_add(&msta_link->avg_ack_signal,
-+					    -msta_link->ack_signal);
-+			break;
-+		}
-+	}
-+	rcu_read_unlock();
-+
-+	dev_kfree_skb(skb);
-+
-+	return 0;
-+}
-+
- int mt7996_mcu_wed_rro_reset_sessions(struct mt7996_dev *dev, u16 id)
- {
- 	struct {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-index e0b83ac9f5e2..b5bad9a76c49 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-@@ -220,6 +220,31 @@ struct mt7996_mcu_all_sta_info_event {
- 			__le32 tx_msdu_cnt;
- 			__le32 rx_msdu_cnt;
- 		} __packed, msdu_cnt);
-+
-+		DECLARE_FLEX_ARRAY(struct {
-+			__le16 wlan_idx;
-+			u8 rsv[2];
-+			__le32 tx[IEEE80211_NUM_ACS];
-+			__le32 rx[IEEE80211_NUM_ACS];
-+		} __packed, airtime);
-+	} __packed;
-+} __packed;
-+
-+struct mt7996_mcu_per_sta_info_event {
-+	u8 rsv[4];
-+	__le16 tag;
-+	__le16 len;
-+	u8 more;
-+	u8 rsv2;
-+	__le16 sta_num;
-+	u8 rsv3[4];
-+
-+	union {
-+		DECLARE_FLEX_ARRAY(struct {
-+			__le16 wlan_idx;
-+			u8 rsv[2];
-+			u8 rcpi[4];
-+		} __packed, rssi);
- 	} __packed;
- } __packed;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 7a884311800e..b523e971f78c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -222,7 +222,6 @@ struct mt7996_sta_link {
- 	struct mt7996_sta *sta;
- 
- 	struct list_head rc_list;
--	u32 airtime_ac[8];
- 
- 	int ack_signal;
- 	struct ewma_avg_signal avg_ack_signal;
-@@ -741,6 +740,7 @@ int mt7996_mcu_trigger_assert(struct mt7996_dev *dev);
- void mt7996_mcu_rx_event(struct mt7996_dev *dev, struct sk_buff *skb);
- void mt7996_mcu_exit(struct mt7996_dev *dev);
- int mt7996_mcu_get_all_sta_info(struct mt7996_phy *phy, u16 tag);
-+int mt7996_mcu_get_per_sta_info(struct mt7996_phy *phy, u16 tag);
- int mt7996_mcu_wed_rro_reset_sessions(struct mt7996_dev *dev, u16 id);
- int mt7996_mcu_set_sniffer_mode(struct mt7996_phy *phy, bool enabled);
- 
--- 
-2.43.0
+> 
+> Best regards,
+> Krzysztof
 
 
