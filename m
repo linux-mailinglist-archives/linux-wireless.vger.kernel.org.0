@@ -1,121 +1,135 @@
-Return-Path: <linux-wireless+bounces-34443-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34444-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFiAERGk1GmkwAcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34443-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 08:28:33 +0200
+	id SM4oFhil1GmkwAcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34444-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 08:32:56 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD873AA460
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 08:28:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970723AA4E9
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Apr 2026 08:32:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 221BF3007B8D
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 06:28:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 591FC301CDB3
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2026 06:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC7A386C26;
-	Tue,  7 Apr 2026 06:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="WPpqtNq0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC97372B3D;
+	Tue,  7 Apr 2026 06:32:53 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75CA38657A;
-	Tue,  7 Apr 2026 06:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7848335BBB;
+	Tue,  7 Apr 2026 06:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775543309; cv=none; b=JpA7yAE57HqiiwQPnAybRexSpw93Nn/POMvfxjoJcDH0ZdRcDmZBN3PKdF4gBHrpr/O8r96Rcp1f079QC95rftishEB2NkcwcS9XGoc18WWMf1F1BUI+AT9a9cBFsoByIuZgVw/krAMSqHhDfzTQJrCRJMpDH8Uajnu4u6ZrEHI=
+	t=1775543573; cv=none; b=Po2/2PlHdo9xojcgIYcfFc3XjuTCS/BqHuLzmg1ve6NW3ZyZh5JcjAzQI5sywEAdlYa0BQ9AzPlSuN/KvfiMSRJkFqz5LX3KTFTDKdq31+DYA+AwqP+W/efgSo+IG+M1BIo//QLzHcZqm1BeWOVyfq+KWtjS0MuvIMqGh68suR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775543309; c=relaxed/simple;
-	bh=upBaE4cGbmF50cumJBR5qxyds0bnpS/2O8LmwmYLWVA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ErRXLelU3HgzaPyQTL3O7ECr9OJ8LWbWN9q9SZCw6SeJp5vTlj2/YZdJNl7GPImc4gKL82CjHWBY9u2sFSA3Fm1qKEfWxS4QpcI/mwBPKYLT0ioOwiEyrYXRjNLcb6BrwcFGyZ/aRFmx8cJA8Bp4BhrewSy3M9nx+FNpdaqMYCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=WPpqtNq0; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=zM25rvTHQ4j/fFzxXC/W2rgL+pkGK3S3whdzkHXc+eE=;
-	t=1775543307; x=1776752907; b=WPpqtNq0ur1YvyGWhmbmdAP3Cr1FxyNhb2hQFVPIja/mR0F
-	NDNmYbbO/DN+iUEsxnucFPN/qJK5eNYAmhpjSiUIKOi1AT7ntV75laFQUoAoFCL4QHBQwNcaUqB71
-	/i2BKQnH6FpLbMHf2QdM4RDTKalBPELarU0BtR5VcbJwEkNURRUU2X8rDXCKMds9+svwwFQez6x0/
-	Hfo3Jnf5rm5BexJOpFn/X7TP2HOSWttLnDszw4S2Fpgg24j4Rg1cCx/4OZKPwHeQlToQKUX7M4DiH
-	dzCgQx8lZOKLYvs8qVDxiUOQzMrXVh1mCJ4mWubes2UzaFkvveu80LvdSGocp9Fw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1w9zvB-0000000C3Qk-3aKc;
-	Tue, 07 Apr 2026 08:28:22 +0200
-Message-ID: <b4a8265d1814eb63be9a64ab4581439829f22fb0.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next 0/6] Consolidate Michael MIC code into
- mac80211
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Christoph Hellwig <hch@infradead.org>, Eric Biggers <ebiggers@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>
-Date: Tue, 07 Apr 2026 08:28:20 +0200
-In-Reply-To: <adSjHlfi15v_U62B@infradead.org>
-References: <20260405052734.130368-1-ebiggers@kernel.org>
-	 <7f69d6e6c2057858eda5c65ec77be44d72c6ac78.camel@sipsolutions.net>
-	 <20260407061508.GA7934@sol> <adSjHlfi15v_U62B@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1775543573; c=relaxed/simple;
+	bh=S9JA2PmVzXIR2YV/mI/XmMLVmTBKaLDsHs134XHA9aM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q0I2d20zgiUdZ7c/dSn2SHMZOFeSvYXZOp+JY/SVYGlU6RZ6s7ReCn0UCTACze7xAQPYcaHl8cw/OmXerjV030vRR05AoNqOCf2CejEBdkBCKcQTn+0OeC1+idOl1HHFVY/J4Pah/XfSS1L2F64OmOGgQTTrDsm27iLqj9MhXWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 944bfaaa324b11f1aa26b74ffac11d73-20260407
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:929cbdee-e623-44b0-b14e-565f096a76f2,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:4bffb7716203ced1076bfc7c4bf30350,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|898,TC:nil,Content:0|15|50,EDM:-3,IP
+	:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,
+	LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 944bfaaa324b11f1aa26b74ffac11d73-20260407
+X-User: liujiajia@kylinos.cn
+Received: from iris.lan [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <liujiajia@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 448545083; Tue, 07 Apr 2026 14:32:41 +0800
+From: Jiajia Liu <liujiajia@kylinos.cn>
+To: Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jiajia Liu <liujiajia@kylinos.cn>
+Subject: [PATCH] wifi: mac80211: remove unused variables in minstrel_ht_alloc_sta
+Date: Tue,  7 Apr 2026 14:32:05 +0800
+Message-ID: <20260407063205.68471-1-liujiajia@kylinos.cn>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34443-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[kylinos.cn];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34444-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[liujiajia@kylinos.cn,linux-wireless@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.924];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:dkim,sipsolutions.net:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DAD873AA460
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email,kylinos.cn:mid]
+X-Rspamd-Queue-Id: 970723AA4E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 2026-04-06 at 23:24 -0700, Christoph Hellwig wrote:
-> On Mon, Apr 06, 2026 at 11:15:08PM -0700, Eric Biggers wrote:
-> > Just to clarify, mac80211 already contains the michael_mic() function.
-> > And every driver that needs Michael MIC already depends on mac80211
-> > except for ipw2x00.  So bloat-wise I assumed it's probably better to
-> > make that one driver depend on mac80211, rather than make every driver
-> > pull in the Michael MIC code (by moving it from mac80211 to cfg80211).
-> > But if you prefer that the code be in cfg80211 we can do it that way.
->=20
-> To me the most sensible thing would be to have a separate module for
-> the code.  If you don't want to expose it too widely for understandable
-> reasons, keep the module in net/wireless/.
->=20
-Maybe, but that'd probably be more overhead than anything else? The
-text+data is 725 bytes (on x86-64).
+Remove the unused variable max_rates and related code. Also remove the
+variable mi and pass type to kzalloc_obj instead.
 
-johannes
+Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
+---
+ net/mac80211/rc80211_minstrel_ht.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
+
+diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
+index 62745ca00e06..b73ef3adfcc5 100644
+--- a/net/mac80211/rc80211_minstrel_ht.c
++++ b/net/mac80211/rc80211_minstrel_ht.c
+@@ -1849,20 +1849,7 @@ minstrel_ht_rate_update(void *priv, struct ieee80211_supported_band *sband,
+ static void *
+ minstrel_ht_alloc_sta(void *priv, struct ieee80211_sta *sta, gfp_t gfp)
+ {
+-	struct ieee80211_supported_band *sband;
+-	struct minstrel_ht_sta *mi;
+-	struct minstrel_priv *mp = priv;
+-	struct ieee80211_hw *hw = mp->hw;
+-	int max_rates = 0;
+-	int i;
+-
+-	for (i = 0; i < NUM_NL80211_BANDS; i++) {
+-		sband = hw->wiphy->bands[i];
+-		if (sband && sband->n_bitrates > max_rates)
+-			max_rates = sband->n_bitrates;
+-	}
+-
+-	return kzalloc_obj(*mi, gfp);
++	return kzalloc_obj(struct minstrel_ht_sta, gfp);
+ }
+ 
+ static void
+-- 
+2.25.1
+
 
