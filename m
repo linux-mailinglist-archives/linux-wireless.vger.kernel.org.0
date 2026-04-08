@@ -1,174 +1,150 @@
-Return-Path: <linux-wireless+bounces-34524-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34525-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cB6aNshm1mnIEwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34524-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 16:31:36 +0200
+	id UMr/Omxp1mnIEwgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34525-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 16:42:52 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C7F3BDAE8
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 16:31:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC0A3BDCD9
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 16:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F245530479CA
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2026 14:26:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB9EB3009162
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2026 14:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740A62D9787;
-	Wed,  8 Apr 2026 14:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3853B27CD;
+	Wed,  8 Apr 2026 14:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qbCSEa8W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hHpi+jex"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31473B19A8
-	for <linux-wireless@vger.kernel.org>; Wed,  8 Apr 2026 14:26:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396483876CA;
+	Wed,  8 Apr 2026 14:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775658405; cv=none; b=XX+McdfU4jWRkmfStr1jGK/KojvYAACtr+ZnL3Lcc4ngtxywxz1oYowLztzOhlJB/1qvkygRL7Uax5bbSefpghbfvbrSIDQqNZWxP4vybyglGTjgZvHSq25mDWWipSkRUDXw9DRgXzT7S4DYK4uS1CI7z9DME12SJmVYNY2kne4=
+	t=1775659168; cv=none; b=F6rw1rsaiJEDCPGJ2oV/ViwEa0gG9V53BnecgjfSwZWrTqBhXYKM28FTJb5J0y6NZ8GA/C80Dy8swJq8JDwQOp2n/bsys+1NaJcHPNrPzfxt5rBkJtxmGvZu8ov/cjEWtqQMmHRIhjI5qZYkfxESPm1b7Yo538APgVilTKhXItk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775658405; c=relaxed/simple;
-	bh=yZiSiWEzKNqdM0bnG/O0sLcUaN3PynC7Ok6cKY6wawY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ORjsgOrJpipzb9u1ivgIXuPTWFwh7qDPC0FJtivO5cpqu57+OTzrKniaGt+fezolyvZpOa/N2ypvtOYTu4x0NG4CiRQqy7RZZaU4dbCsvNsbHIaDy692cUdrl/JMVEKGDPnbVRFDpcNZpd//btgBsEsg9aPfMOwgFYez6qNydAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qbCSEa8W; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4887eca00c4so42746755e9.2
-        for <linux-wireless@vger.kernel.org>; Wed, 08 Apr 2026 07:26:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775658402; x=1776263202; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YFIOx+MT1j+MxRcVxecY+31uacH+vOq2WOxsC6sgJJQ=;
-        b=qbCSEa8WxDEJQwdH6PIWObZECee6Rum7+qSj9AwgxTe+pd+3QwdEfqX55+zYYhodWf
-         q3Tv8mgIPzrOcSqodPWvRqqmD+3+bnvs1YpwgnIQy2V/T6J45o/Bi4Er3L9SUp4KXYtt
-         E8N5hftch4RWfm6XvDAZaR69flzvTky+4kAo6SUSi7TCdxIHBkjlc48vdZH53lx9L8ms
-         ohGg3UrDzqHrRkGjoF5WN1n71R1qouJBftDhguenNOtRwjfBM+KcBmsavLoMcBMMjD9U
-         gpOyg1P490yvCHlFrxPrAT+bh0XLadNY5BEdtOhJSOTBPCuOMECTBjCe17JYth96NXo6
-         noig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775658402; x=1776263202;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YFIOx+MT1j+MxRcVxecY+31uacH+vOq2WOxsC6sgJJQ=;
-        b=DfrnF/QNGNqVdMhM7/xDONGskNEJIsmh5CxmL+vD+ry1JjSeI+x2WdB82leU2h38RS
-         7p3uMnlApfnXafgQlsACO1EMaVOF4w2alMrau6LuTGsNNN+zrV6Ypb2FNg0PISMu0nnN
-         mkphepHzQe3UKqcWEnIN+S89jvMQoIo1QTrk837dr6hV7GGNyR++Dsm+bB3O/hkivt+n
-         jdhJGYxxbzYE+uMwTd/mrB5XXkH8znRYyFB4nRa4Zy3GaN6qfr+L3UpTLPsP6Ym3+qVU
-         Iz7D5LuSe+BY0WKrTJVZmoisDI1IYn81OiJKnJW8kkS9CCwc+FOjLHqQZImFQgpCG7Vt
-         MCGQ==
-X-Gm-Message-State: AOJu0YwlAr+ZUT103Vl4W/y1cnSQHC1XVvq23oH/avMsvdCsxnmNqZLm
-	fvcTdjo5zyDovKOWiyX3w9GvhCvn1BIJS2enjGZRVc0wS2UWQmojZtpa
-X-Gm-Gg: AeBDietx2YcK/nb5dW5c9TQ5lK7JQlQXKE4xwg/IR0LxFyBUtt3w/36dnWfn/Opa4S4
-	6pI3oEn1Io0KLPWd+0vPmEXOeuZmKXJIFg8+4TFmj9RrbL3Etw9M1gp4pUa12RzwGF3/y3hk/Mu
-	60NcDkZzUTXLQT55/u0rgGz9m/R5HBAzcOJwTN/8OE15BzHz9hGUbevibqPUejvHBRtply7Da27
-	3HpHaWgfBZMg9C6bRW+7TAzXNxznpEGIU0Xj8u7bDqqjcdGy52bE80fmPN97MJR3BcUIqkE1/tF
-	QmQ54Xh99I3TSG8fQUv+oCzFQ9Th5JjHm10Bxxljlq+iW4B72jfTswfUwCkPjkwUcQ+KzExzwxf
-	ccvGxAERf/pg6kswAIezEqTfqQNOlv8auXkHChUecLRSwuSlAq4I9/Yj/lERXFdyH6zcFpeAHqv
-	Lnlm9odbUpgL6Yplo9845oTvT8sU7gqA==
-X-Received: by 2002:a05:600c:1f96:b0:487:4eb:d125 with SMTP id 5b1f17b1804b1-48899753e5fmr296983695e9.9.1775658402212;
-        Wed, 08 Apr 2026 07:26:42 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888a72baa8sm502051215e9.15.2026.04.08.07.26.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Apr 2026 07:26:41 -0700 (PDT)
-Message-ID: <5f9003ca-3bfc-45aa-bf0e-35e9c991629d@gmail.com>
-Date: Wed, 8 Apr 2026 17:26:38 +0300
+	s=arc-20240116; t=1775659168; c=relaxed/simple;
+	bh=WDVQUSJZJti5I83uQQI0nyEhlm5REOmLdet9XTkvQCU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e0ZaVDvwM+7YhvrL2mZpHcqd9iwtYG6zQxXQYXuEpB86m4oHZ0a6Dl0IPk/hpWTo1wBMoR95c2YZnf6mr5rtmGzjpHa78dqkWw75iJ+xxV02Eu3NDzirgDTsSgZM/DHj569lvrvH/QZR68K9vLfVxl6JVcaEltSNHVTISKNpiDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hHpi+jex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09BEC19421;
+	Wed,  8 Apr 2026 14:39:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775659167;
+	bh=WDVQUSJZJti5I83uQQI0nyEhlm5REOmLdet9XTkvQCU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hHpi+jexiL4h2pCgODqOxk+UWVGUc0bqDHGxK6L3q8r0YxV9Dkn6qTHmars9/PuD5
+	 YfNeoCWn+pIrfPkNRPM8mV7suXdzGboJ+Q6RwGBU0DgZUF7WFdEMbol+US8lVR8Fv+
+	 fXaWksS6qNIng0tX7bfyR3LGtt4NZIp3E/DQcbfRqOuDSJMO0CbCg9hnuqA37HTV0a
+	 M/PIO+mNPYw9Drj1KnhJPCaHcgf68pqWpPdIUq7iOzLs8NyIQdESDPCIy0WtKjo+Xs
+	 n+ruhQ0g1BPosh8enVXXDRa2vMx/19SJEBLN2/mBLgoTkNGlIoQlNN6orbTEp2GQZ4
+	 KsFWA3CE4REKw==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wAU3x-00000000obw-0W8c;
+	Wed, 08 Apr 2026 16:39:25 +0200
+Date: Wed, 8 Apr 2026 16:39:25 +0200
+From: Johan Hovold <johan@kernel.org>
+To: linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Felix Fietkau <nbd@nbd.name>
+Cc: Jeff Johnson <jjohnson@kernel.org>,
+	Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Jakub Kicinski <kuba@kernel.org>, Stanislaw Gruszka <stf_xl@wp.pl>,
+	Hin-Tak Leung <hintak.leung@gmail.com>,
+	Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 00/18] wifi: drop redundant USB device references
+Message-ID: <adZonQ10NQqRI4_V@hovoldconsulting.com>
+References: <20260306085144.12064-1-johan@kernel.org>
+ <acJL3c5J6sT59sjx@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
- power_save is enabled (LPS/ASPM conflict)
-To: Ping-Ke Shih <pkshih@realtek.com>, LB F <goainwo@gmail.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
- <b231d63665334ac786e808610fe4a1e9@realtek.com>
- <CALdGYqSd61wxNrPDui+m-S+Na_is-RM18-=L6xm-Jf4QQ+-DOg@mail.gmail.com>
- <a8e187e1b40e4a35bbeb3bc3a3d21821@realtek.com>
- <CALdGYqRPcDRctCpNSJFatXvqMKLFiiRGXZoQa3KJwfwutHJEwA@mail.gmail.com>
- <ba9790526e4e42c386642a05fcbc2f34@realtek.com>
- <CALdGYqQ5U2USCqVEixoDda1Xd2ugBakh1K1QkaKAU7HPSTTNWg@mail.gmail.com>
- <CALdGYqQ_RCOwa2J-GsEyCxCQ4bztyxSzbc+6eYNesBSaY3Nt-w@mail.gmail.com>
- <da30a61b-dad0-48ff-a283-3dd8e9bdf91d@gmail.com>
- <CALdGYqS53=MmG4yCLwgV+RJAZ=U8Aqi8QQZFZ5oFMernhSyxTg@mail.gmail.com>
- <5eb90d6d-e590-4c9e-91c8-1ba315f45304@gmail.com>
- <CALdGYqRkX8=XMOePeauxvSTDZFLEYyJZKCtoxCzqaNwdO6BNnw@mail.gmail.com>
- <a5ea6373-8c07-4fcd-95fc-d87ce6aef6d5@gmail.com>
- <6898154c58c84536a0dd4351b3b026fb@realtek.com>
- <CALdGYqT2e+jt+mK-o_bL8hfdEwqZ44fUt9_N6-H4jYp8FpqQJw@mail.gmail.com>
- <5fb2f699626b483b8a0a537960b274f0@realtek.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <5fb2f699626b483b8a0a537960b274f0@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acJL3c5J6sT59sjx@hovoldconsulting.com>
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34524-lists,linux-wireless=lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[realtek.com,gmail.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-34525-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,toke.dk,chromium.org,dolcini.it,mediatek.com,wp.pl,gmail.com,realtek.com,microchip.com,bootlin.com,tuxon.dev,collabora.com,linuxfoundation.org,lists.infradead.org,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 40C7F3BDAE8
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hovoldconsulting.com:mid]
+X-Rspamd-Queue-Id: 5EC0A3BDCD9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 31/03/2026 03:32, Ping-Ke Shih wrote:
+On Tue, Mar 24, 2026 at 09:31:25AM +0100, Johan Hovold wrote:
+> On Fri, Mar 06, 2026 at 09:51:26AM +0100, Johan Hovold wrote:
+> > Driver core holds a reference to the USB interface and its parent USB
+> > device while the interface is bound to a driver and there is no need to
+> > take additional references unless the structures are needed after
+> > disconnect.
+> > 
+> > Drop redundant device references to reduce cargo culting, make it easier
+> > to spot drivers where an extra reference is needed, and reduce the risk
+> > of memory leaks when drivers fail to release them.
 > 
-> LB F <goainwo@gmail.com> wrote:
->>
->> Could you advise on how to investigate this further? For example:
->>
->>   - Is there a debug flag or register dump we could capture right
->>     before the first corrupted frame in a burst?
->>   - Would it help to log C2H (chip-to-host) traffic around the
->>     time of these events?
+> > Johan Hovold (18):
 > 
-> I have never heard about this symptom from internal, so no clear
-> idea for that. Sorry.
+> >   wifi: mt76: drop redundant device reference
+> >   wifi: mt76x0u: drop redundant device reference
+> >   wifi: mt76x2u: drop redundant device reference
+> >   wifi: mt76: mt792xu: drop redundant device reference
+> >   wifi: mt7601u: drop redundant device reference
 > 
->>
->> I am ready to run any specific tests you need. In the meantime,
->> I agree that filtering by DRV_INFO_SIZE is the right practical
->> solution, and I'm waiting for your official patch to test locally.
+> All of these are now in linux-next except for the five Mediatek fixes.
 > 
-> As malformed frames happen randomly, more validations like
-> DRV_INFO_SIZE are needed. I think Bitterblue is working on the
-> test patch. :)
-> 
-> Ping-Ke
-> 
+> Could someone pick them up as well? Not sure which tree they'd usually
+> go through.
 
-Yes, I am preparing a patch now.
+It's been two more weeks (and these haven't shown up in linux-next) so
+sending another reminder.
+
+Can someone please pick these up for 7.1?
+
+Johan
 
