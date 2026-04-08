@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-34507-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34508-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBPSEPjG1WnA9wcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34507-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 05:09:44 +0200
+	id CI2MKV7H1WnA9wcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34508-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 05:11:26 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E8763B67B4
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 05:09:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 225913B6806
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 05:11:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3809B3012AB0
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2026 03:09:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77516304CE90
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2026 03:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074AF34EEEE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF3A373C16;
 	Wed,  8 Apr 2026 03:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fW82o2KT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GkuLeyL8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D611133F8B7;
-	Wed,  8 Apr 2026 03:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570EC36E49F;
+	Wed,  8 Apr 2026 03:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775617767; cv=none; b=JSp9pXCS8EOqVpZrHSuGxEgFDJwXRubqSoFJRDiIsRKO5ctvrIW9DpuOVElMv1EUnoDaBacKRdMDrIhIFo9dpjWAePxYMO9qH2HPJABWjSaXKokoi/aqcrFXDtpHCDfKNRF7zEBbhqV6AxHv9Me3HGD+/hH6fZanZ+5eQS0ekE8=
+	t=1775617768; cv=none; b=omsCa0Su7G/eJUOpugG2pxrIjex3Tkf5ASy1La24VPHAtz02jiSBO9j7QZQW6gPrqbnq/UW6LvPfr6E2JBjRGBZxFFTEQrq7ZtWI2A6+roMG17c0xKK0nA3DVomGm25o/Xoo/WIuK5ya5wuuxBfEcp26LbG/vbUNOOzTNtDyaYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775617767; c=relaxed/simple;
-	bh=r1pZY4VFvrZ1/2AdNJCx5jHyxAwHtVzSGed8n5oYQXc=;
+	s=arc-20240116; t=1775617768; c=relaxed/simple;
+	bh=Q1v+JpOLlfcBi2mZKAzGiUmr5p7F4seOZvQEILD4LS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TRW2xEDx7QkJbedhE1fKSHf0sW50txwIhM50as83ktDf2IpO8sTB0Ef2UmrXHnpCxO/B+77Swgh+BFpsQv5QDQCj/LtOEe6R4QMsfsBWd5yw5nE1WPBbEMVzhjOt7JvY9UB5PxP5LRBj+ME1f9uk4WkDAghQjmj3YqJF4zLxksU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fW82o2KT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81929C2BCB1;
+	 MIME-Version; b=nbBWbTsFCUVzfvOysHdtl82IWTflefsH2NxUylmCcb+wALTL2s+Z9/PLXcrJbJ1/iaKQIE3ZnbkFTxlhNnCcEo22GOSfu80Ot9L0XTYi5LMFtnWRvuPlTvuLz/jfSTd6EcZkqHkXWUUwzBu7xrLx7f7ykbdxEXd3C3uRahH09sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GkuLeyL8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F7EC2BC9E;
 	Wed,  8 Apr 2026 03:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775617767;
-	bh=r1pZY4VFvrZ1/2AdNJCx5jHyxAwHtVzSGed8n5oYQXc=;
+	s=k20201202; t=1775617768;
+	bh=Q1v+JpOLlfcBi2mZKAzGiUmr5p7F4seOZvQEILD4LS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fW82o2KTQs1MvGq6wLqrR2EwtVSmAB3fzqyx8887qv0VZkZVG45mr18TjJmKL1DFf
-	 jonEKLbroJoI7U9jIyG4dYOiy2/LoJLvOKpgvdtm29XJZb1sIbHUCDjDT7wEFYYwt4
-	 YyW7pc1gcqjh7tZmgilRy9LOQn0OEBB9hqg7oNH5GkeIX+EMgqaCPhqpR1UNiCOd2u
-	 MnZbSSo1Ff21JIU4qffehjzYN84gGDKehQ4a4GSbkCTr2Q8T7cdWX0wJ1J8+z0euk3
-	 ZTZ3HXMM+Z+a6apHlNqK3P/WEqq7DGIG5MlHPA6ECrHag8ZX+2lXiVDzzZbOs2PYjw
-	 gS6BHIqVv/ZaQ==
+	b=GkuLeyL8OyVQLZQLyx9ww4s/F159lQE+PGrgLtjHlxzounK9A2SvX2pz2ozEWDbZs
+	 jWt5yswhX7qMJ/mR6cVyE2Pn/4lXCasMeY87TXLPiK5848mprgQGBPP7gMOVe9uHkp
+	 kB1bgnbE1sWl848Fy6e6uOd8AvBpLiW1DapsBbQ3G0SmFqAGjcjeLPkeowp0f+1kVJ
+	 wuVKYJG44etv34gqw76kY7tmg6v8TODxsun3C46+b3kRAdUETo1tpz/zaXnJBm3tN1
+	 N9HlBCtWCH90brLfFV6joq2SfTUNLYXBTVjcfIdmTNPqM/foFSsFKUXl2lXvjQXr/6
+	 up+swzepKnR9Q==
 From: Eric Biggers <ebiggers@kernel.org>
 To: Johannes Berg <johannes@sipsolutions.net>,
 	linux-wireless@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: linux-crypto@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH wireless-next v2 4/6] wifi: ath12k: Use michael_mic() from cfg80211
-Date: Tue,  7 Apr 2026 20:06:49 -0700
-Message-ID: <20260408030651.80336-5-ebiggers@kernel.org>
+Subject: [PATCH wireless-next v2 5/6] wifi: ipw2x00: Use michael_mic() from cfg80211
+Date: Tue,  7 Apr 2026 20:06:50 -0700
+Message-ID: <20260408030651.80336-6-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408030651.80336-1-ebiggers@kernel.org>
 References: <20260408030651.80336-1-ebiggers@kernel.org>
@@ -70,11 +70,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34507-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34508-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -88,273 +88,253 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3E8763B67B4
+X-Rspamd-Queue-Id: 225913B6806
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Just use the michael_mic() function from cfg80211 instead of a local
 implementation of it using the crypto_shash API.
 
-Note: when the kernel is booted with fips=1,
-crypto_alloc_shash("michael_mic", 0, 0) always returned
-ERR_PTR(-ENOENT), because Michael MIC is not a "FIPS allowed" algorithm.
-For now, just preserve that behavior exactly, to ensure that TKIP is not
-allowed to be used in FIPS mode.  This logic actually seems to disable
-the entire driver in FIPS mode and not just TKIP, but that was the
-existing behavior.  Supporting this driver in FIPS mode, if anyone
-actually needs it there, should be a separate commit.
-
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/Kconfig       |  1 -
- drivers/net/wireless/ath/ath12k/dp.c          |  2 -
- drivers/net/wireless/ath/ath12k/dp_peer.h     |  1 -
- drivers/net/wireless/ath/ath12k/dp_rx.c       | 55 ++-----------------
- drivers/net/wireless/ath/ath12k/dp_rx.h       |  4 --
- drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c |  7 +--
- 6 files changed, 8 insertions(+), 62 deletions(-)
+ drivers/net/wireless/intel/ipw2x00/Kconfig    |   1 -
+ .../intel/ipw2x00/libipw_crypto_tkip.c        | 120 +-----------------
+ 2 files changed, 5 insertions(+), 116 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/Kconfig b/drivers/net/wireless/ath/ath12k/Kconfig
-index 1ea1af1b8f6c5..d39c075758bda 100644
---- a/drivers/net/wireless/ath/ath12k/Kconfig
-+++ b/drivers/net/wireless/ath/ath12k/Kconfig
-@@ -1,10 +1,9 @@
- # SPDX-License-Identifier: BSD-3-Clause-Clear
- config ATH12K
- 	tristate "Qualcomm Technologies Wi-Fi 7 support (ath12k)"
- 	depends on MAC80211 && HAS_DMA && PCI
+diff --git a/drivers/net/wireless/intel/ipw2x00/Kconfig b/drivers/net/wireless/intel/ipw2x00/Kconfig
+index b92df91adb3a4..b508f14542d5d 100644
+--- a/drivers/net/wireless/intel/ipw2x00/Kconfig
++++ b/drivers/net/wireless/intel/ipw2x00/Kconfig
+@@ -152,11 +152,10 @@ config IPW2200_DEBUG
+ config LIBIPW
+ 	tristate
+ 	depends on PCI && CFG80211
+ 	select WIRELESS_EXT
+ 	select CRYPTO
 -	select CRYPTO_MICHAEL_MIC
- 	select QCOM_QMI_HELPERS
- 	select MHI_BUS
- 	select QRTR
- 	select QRTR_MHI
- 	select PCI_PWRCTRL_PWRSEQ if HAVE_PWRCTRL
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index 1c82d927d27b2..90802ed1aa59f 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -2,11 +2,10 @@
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
--#include <crypto/hash.h>
- #include "core.h"
- #include "dp_tx.h"
- #include "hif.h"
- #include "hal.h"
- #include "debug.h"
-@@ -39,11 +38,10 @@ void ath12k_dp_peer_cleanup(struct ath12k *ar, int vdev_id, const u8 *addr)
- 		spin_unlock_bh(&dp->dp_lock);
- 		return;
- 	}
- 
- 	ath12k_dp_rx_peer_tid_cleanup(ar, peer);
--	crypto_free_shash(peer->dp_peer->tfm_mmic);
- 	peer->dp_peer->dp_setup_done = false;
- 	spin_unlock_bh(&dp->dp_lock);
- }
- 
- int ath12k_dp_peer_setup(struct ath12k *ar, int vdev_id, const u8 *addr)
-diff --git a/drivers/net/wireless/ath/ath12k/dp_peer.h b/drivers/net/wireless/ath/ath12k/dp_peer.h
-index 20294ff095131..113b8040010fa 100644
---- a/drivers/net/wireless/ath/ath12k/dp_peer.h
-+++ b/drivers/net/wireless/ath/ath12k/dp_peer.h
-@@ -137,11 +137,10 @@ struct ath12k_dp_peer {
- 
- 	u16 sec_type_grp;
- 	u16 sec_type;
- 
- 	/* Info used in MMIC verification of * RX fragments */
--	struct crypto_shash *tfm_mmic;
- 	struct ieee80211_key_conf *keys[WMI_MAX_KEY_INDEX + 1];
- 	struct ath12k_dp_link_peer __rcu *link_peers[ATH12K_NUM_MAX_LINKS];
- 	struct ath12k_reoq_buf reoq_bufs[IEEE80211_NUM_TIDS + 1];
- 	struct ath12k_dp_rx_tid rx_tid[IEEE80211_NUM_TIDS + 1];
- };
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 59088ab407d05..250459facff36 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2,14 +2,14 @@
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
-+#include <linux/fips.h>
+ 	select CRYPTO_LIB_ARC4
+ 	select CRC32
+ 	help
+ 	This option enables the hardware independent IEEE 802.11
+ 	networking stack.  This component is deprecated in favor of the
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_crypto_tkip.c b/drivers/net/wireless/intel/ipw2x00/libipw_crypto_tkip.c
+index c2cd6808fd0fe..24bb28ab7a49b 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_crypto_tkip.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_crypto_tkip.c
+@@ -23,12 +23,10 @@
+ #include <asm/string.h>
+ #include <linux/wireless.h>
  #include <linux/ieee80211.h>
- #include <linux/kernel.h>
- #include <linux/skbuff.h>
+ #include <net/iw_handler.h>
+ #include <crypto/arc4.h>
 -#include <crypto/hash.h>
- #include "core.h"
- #include "debug.h"
- #include "hw.h"
- #include "dp_rx.h"
- #include "dp_tx.h"
-@@ -1431,92 +1431,47 @@ static void ath12k_dp_rx_frag_timer(struct timer_list *timer)
+-#include <linux/crypto.h>
+ #include <linux/crc32.h>
+ #include "libipw.h"
+ 
+ #define TKIP_HDR_LEN 8
+ 
+@@ -55,15 +53,10 @@ struct libipw_tkip_data {
+ 
+ 	int key_idx;
+ 
+ 	struct arc4_ctx rx_ctx_arc4;
+ 	struct arc4_ctx tx_ctx_arc4;
+-	struct crypto_shash *rx_tfm_michael;
+-	struct crypto_shash *tx_tfm_michael;
+-
+-	/* scratch buffers for virt_to_page() (crypto API) */
+-	u8 rx_hdr[16], tx_hdr[16];
+ 
+ 	unsigned long flags;
+ };
+ 
+ static unsigned long libipw_tkip_set_flags(unsigned long flags, void *priv)
+@@ -87,45 +80,18 @@ static void *libipw_tkip_init(int key_idx)
+ 	if (fips_enabled)
+ 		return NULL;
+ 
+ 	priv = kzalloc_obj(*priv, GFP_ATOMIC);
+ 	if (priv == NULL)
+-		goto fail;
++		return priv;
+ 
+ 	priv->key_idx = key_idx;
+-
+-	priv->tx_tfm_michael = crypto_alloc_shash("michael_mic", 0, 0);
+-	if (IS_ERR(priv->tx_tfm_michael)) {
+-		priv->tx_tfm_michael = NULL;
+-		goto fail;
+-	}
+-
+-	priv->rx_tfm_michael = crypto_alloc_shash("michael_mic", 0, 0);
+-	if (IS_ERR(priv->rx_tfm_michael)) {
+-		priv->rx_tfm_michael = NULL;
+-		goto fail;
+-	}
+-
+ 	return priv;
+-
+-      fail:
+-	if (priv) {
+-		crypto_free_shash(priv->tx_tfm_michael);
+-		crypto_free_shash(priv->rx_tfm_michael);
+-		kfree(priv);
+-	}
+-
+-	return NULL;
  }
  
- int ath12k_dp_rx_peer_frag_setup(struct ath12k *ar, const u8 *peer_mac, int vdev_id)
+ static void libipw_tkip_deinit(void *priv)
  {
- 	struct ath12k_base *ab = ar->ab;
--	struct crypto_shash *tfm;
- 	struct ath12k_dp_link_peer *peer;
- 	struct ath12k_dp_rx_tid *rx_tid;
- 	int i;
- 	struct ath12k_dp *dp = ath12k_ab_to_dp(ab);
- 
--	tfm = crypto_alloc_shash("michael_mic", 0, 0);
--	if (IS_ERR(tfm))
--		return PTR_ERR(tfm);
-+	if (fips_enabled) {
-+		ath12k_warn(ab, "This driver is disabled due to FIPS\n");
-+		return -ENOENT;
-+	}
- 
- 	spin_lock_bh(&dp->dp_lock);
- 
- 	peer = ath12k_dp_link_peer_find_by_vdev_and_addr(dp, vdev_id, peer_mac);
- 	if (!peer || !peer->dp_peer) {
- 		spin_unlock_bh(&dp->dp_lock);
--		crypto_free_shash(tfm);
- 		ath12k_warn(ab, "failed to find the peer to set up fragment info\n");
- 		return -ENOENT;
- 	}
- 
- 	if (!peer->primary_link) {
- 		spin_unlock_bh(&dp->dp_lock);
--		crypto_free_shash(tfm);
- 		return 0;
- 	}
- 
- 	for (i = 0; i <= IEEE80211_NUM_TIDS; i++) {
- 		rx_tid = &peer->dp_peer->rx_tid[i];
- 		rx_tid->dp = dp;
- 		timer_setup(&rx_tid->frag_timer, ath12k_dp_rx_frag_timer, 0);
- 		skb_queue_head_init(&rx_tid->rx_frags);
- 	}
- 
--	peer->dp_peer->tfm_mmic = tfm;
- 	peer->dp_peer->dp_setup_done = true;
- 	spin_unlock_bh(&dp->dp_lock);
- 
- 	return 0;
+-	struct libipw_tkip_data *_priv = priv;
+-	if (_priv) {
+-		crypto_free_shash(_priv->tx_tfm_michael);
+-		crypto_free_shash(_priv->rx_tfm_michael);
+-	}
+ 	kfree_sensitive(priv);
  }
  
--int ath12k_dp_rx_h_michael_mic(struct crypto_shash *tfm, u8 *key,
--			       struct ieee80211_hdr *hdr, u8 *data,
--			       size_t data_len, u8 *mic)
+ static inline u16 RotR1(u16 val)
+ {
+@@ -462,77 +428,10 @@ static int libipw_tkip_decrypt(struct sk_buff *skb, int hdr_len, void *priv)
+ 	skb_trim(skb, skb->len - 4);
+ 
+ 	return keyidx;
+ }
+ 
+-static int libipw_michael_mic(struct crypto_shash *tfm_michael, u8 *key, u8 *hdr,
+-		       u8 *data, size_t data_len, u8 *mic)
 -{
--	SHASH_DESC_ON_STACK(desc, tfm);
--	u8 mic_hdr[16] = {};
--	u8 tid = 0;
--	int ret;
+-	SHASH_DESC_ON_STACK(desc, tfm_michael);
+-	int err;
 -
--	if (!tfm)
--		return -EINVAL;
+-	if (tfm_michael == NULL) {
+-		pr_warn("%s(): tfm_michael == NULL\n", __func__);
+-		return -1;
+-	}
 -
--	desc->tfm = tfm;
+-	desc->tfm = tfm_michael;
 -
--	ret = crypto_shash_setkey(tfm, key, 8);
--	if (ret)
+-	if (crypto_shash_setkey(tfm_michael, key, 8))
+-		return -1;
+-
+-	err = crypto_shash_init(desc);
+-	if (err)
 -		goto out;
--
--	ret = crypto_shash_init(desc);
--	if (ret)
+-	err = crypto_shash_update(desc, hdr, 16);
+-	if (err)
 -		goto out;
--
--	/* TKIP MIC header */
--	memcpy(mic_hdr, ieee80211_get_DA(hdr), ETH_ALEN);
--	memcpy(mic_hdr + ETH_ALEN, ieee80211_get_SA(hdr), ETH_ALEN);
--	if (ieee80211_is_data_qos(hdr->frame_control))
--		tid = ieee80211_get_tid(hdr);
--	mic_hdr[12] = tid;
--
--	ret = crypto_shash_update(desc, mic_hdr, 16);
--	if (ret)
+-	err = crypto_shash_update(desc, data, data_len);
+-	if (err)
 -		goto out;
--	ret = crypto_shash_update(desc, data, data_len);
--	if (ret)
--		goto out;
--	ret = crypto_shash_final(desc, mic);
+-	err = crypto_shash_final(desc, mic);
+-
 -out:
 -	shash_desc_zero(desc);
--	return ret;
+-	return err;
 -}
--EXPORT_SYMBOL(ath12k_dp_rx_h_michael_mic);
 -
- void ath12k_dp_rx_h_undecap_frag(struct ath12k_pdev_dp *dp_pdev, struct sk_buff *msdu,
- 				 enum hal_encrypt_type enctype, u32 flags)
+-static void michael_mic_hdr(struct sk_buff *skb, u8 * hdr)
+-{
+-	struct ieee80211_hdr *hdr11;
+-
+-	hdr11 = (struct ieee80211_hdr *)skb->data;
+-
+-	switch (le16_to_cpu(hdr11->frame_control) &
+-		(IEEE80211_FCTL_FROMDS | IEEE80211_FCTL_TODS)) {
+-	case IEEE80211_FCTL_TODS:
+-		memcpy(hdr, hdr11->addr3, ETH_ALEN);	/* DA */
+-		memcpy(hdr + ETH_ALEN, hdr11->addr2, ETH_ALEN);	/* SA */
+-		break;
+-	case IEEE80211_FCTL_FROMDS:
+-		memcpy(hdr, hdr11->addr1, ETH_ALEN);	/* DA */
+-		memcpy(hdr + ETH_ALEN, hdr11->addr3, ETH_ALEN);	/* SA */
+-		break;
+-	case IEEE80211_FCTL_FROMDS | IEEE80211_FCTL_TODS:
+-		memcpy(hdr, hdr11->addr3, ETH_ALEN);	/* DA */
+-		memcpy(hdr + ETH_ALEN, hdr11->addr4, ETH_ALEN);	/* SA */
+-		break;
+-	default:
+-		memcpy(hdr, hdr11->addr1, ETH_ALEN);	/* DA */
+-		memcpy(hdr + ETH_ALEN, hdr11->addr2, ETH_ALEN);	/* SA */
+-		break;
+-	}
+-
+-	if (ieee80211_is_data_qos(hdr11->frame_control)) {
+-		hdr[12] = le16_to_cpu(*((__le16 *)ieee80211_get_qos_ctl(hdr11)))
+-			& IEEE80211_QOS_CTL_TID_MASK;
+-	} else
+-		hdr[12] = 0;		/* priority */
+-
+-	hdr[13] = hdr[14] = hdr[15] = 0;	/* reserved */
+-}
+-
+ static int libipw_michael_mic_add(struct sk_buff *skb, int hdr_len,
+ 				     void *priv)
  {
- 	struct ath12k_dp *dp = dp_pdev->dp;
- 	struct ieee80211_hdr *hdr;
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.h b/drivers/net/wireless/ath/ath12k/dp_rx.h
-index bd62af0c80d46..55a31e669b3b0 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.h
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.h
-@@ -4,11 +4,10 @@
-  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- #ifndef ATH12K_DP_RX_H
- #define ATH12K_DP_RX_H
+ 	struct libipw_tkip_data *tkey = priv;
+ 	u8 *pos;
+@@ -542,16 +441,13 @@ static int libipw_michael_mic_add(struct sk_buff *skb, int hdr_len,
+ 		       "(tailroom=%d hdr_len=%d skb->len=%d)\n",
+ 		       skb_tailroom(skb), hdr_len, skb->len);
+ 		return -1;
+ 	}
  
--#include <crypto/hash.h>
- #include "core.h"
- #include "debug.h"
- 
- #define DP_MAX_NWIFI_HDR_LEN	30
- 
-@@ -202,13 +201,10 @@ u64 ath12k_dp_rx_h_get_pn(struct ath12k_dp *dp, struct sk_buff *skb);
- void ath12k_dp_rx_h_sort_frags(struct ath12k_hal *hal,
- 			       struct sk_buff_head *frag_list,
- 			       struct sk_buff *cur_frag);
- void ath12k_dp_rx_h_undecap_frag(struct ath12k_pdev_dp *dp_pdev, struct sk_buff *msdu,
- 				 enum hal_encrypt_type enctype, u32 flags);
--int ath12k_dp_rx_h_michael_mic(struct crypto_shash *tfm, u8 *key,
--			       struct ieee80211_hdr *hdr, u8 *data,
--			       size_t data_len, u8 *mic);
- int ath12k_dp_rx_ampdu_start(struct ath12k *ar,
- 			     struct ieee80211_ampdu_params *params,
- 			     u8 link_id);
- int ath12k_dp_rx_ampdu_stop(struct ath12k *ar,
- 			    struct ieee80211_ampdu_params *params,
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c b/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c
-index e6a934d74e85d..945680b3ebdfc 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c
-@@ -981,11 +981,11 @@ static int ath12k_wifi7_dp_rx_h_verify_tkip_mic(struct ath12k_pdev_dp *dp_pdev,
- 	struct hal_rx_desc *rx_desc = (struct hal_rx_desc *)msdu->data;
- 	struct ieee80211_rx_status *rxs = IEEE80211_SKB_RXCB(msdu);
- 	struct ieee80211_key_conf *key_conf;
- 	struct ieee80211_hdr *hdr;
- 	u8 mic[IEEE80211_CCMP_MIC_LEN];
--	int head_len, tail_len, ret;
-+	int head_len, tail_len;
- 	size_t data_len;
- 	u32 hdr_len, hal_rx_desc_sz = hal->hal_desc_sz;
- 	u8 *key, *data;
- 	u8 key_idx;
- 
-@@ -1009,13 +1009,12 @@ static int ath12k_wifi7_dp_rx_h_verify_tkip_mic(struct ath12k_pdev_dp *dp_pdev,
- 
- 	data = msdu->data + head_len;
- 	data_len = msdu->len - head_len - tail_len;
- 	key = &key_conf->key[NL80211_TKIP_DATA_OFFSET_RX_MIC_KEY];
- 
--	ret = ath12k_dp_rx_h_michael_mic(peer->tfm_mmic, key, hdr, data,
--					 data_len, mic);
--	if (ret || memcmp(mic, data + data_len, IEEE80211_CCMP_MIC_LEN))
-+	michael_mic(key, hdr, data, data_len, mic);
-+	if (memcmp(mic, data + data_len, IEEE80211_CCMP_MIC_LEN))
- 		goto mic_fail;
- 
+-	michael_mic_hdr(skb, tkey->tx_hdr);
+ 	pos = skb_put(skb, 8);
+-	if (libipw_michael_mic(tkey->tx_tfm_michael, &tkey->key[16], tkey->tx_hdr,
+-			skb->data + hdr_len, skb->len - 8 - hdr_len, pos))
+-		return -1;
+-
++	michael_mic(&tkey->key[16], (struct ieee80211_hdr *)skb->data,
++		    skb->data + hdr_len, skb->len - 8 - hdr_len, pos);
  	return 0;
+ }
  
- mic_fail:
+ static void libipw_michael_mic_failure(struct net_device *dev,
+ 					  struct ieee80211_hdr *hdr,
+@@ -581,14 +477,12 @@ static int libipw_michael_mic_verify(struct sk_buff *skb, int keyidx,
+ 	u8 mic[8];
+ 
+ 	if (!tkey->key_set)
+ 		return -1;
+ 
+-	michael_mic_hdr(skb, tkey->rx_hdr);
+-	if (libipw_michael_mic(tkey->rx_tfm_michael, &tkey->key[24], tkey->rx_hdr,
+-			skb->data + hdr_len, skb->len - 8 - hdr_len, mic))
+-		return -1;
++	michael_mic(&tkey->key[24], (struct ieee80211_hdr *)skb->data,
++		    skb->data + hdr_len, skb->len - 8 - hdr_len, mic);
+ 	if (memcmp(mic, skb->data + skb->len - 8, 8) != 0) {
+ 		struct ieee80211_hdr *hdr;
+ 		hdr = (struct ieee80211_hdr *)skb->data;
+ 		printk(KERN_DEBUG "%s: Michael MIC verification failed for "
+ 		       "MSDU from %pM keyidx=%d\n",
+@@ -612,21 +506,17 @@ static int libipw_michael_mic_verify(struct sk_buff *skb, int keyidx,
+ 
+ static int libipw_tkip_set_key(void *key, int len, u8 * seq, void *priv)
+ {
+ 	struct libipw_tkip_data *tkey = priv;
+ 	int keyidx;
+-	struct crypto_shash *tfm = tkey->tx_tfm_michael;
+ 	struct arc4_ctx *tfm2 = &tkey->tx_ctx_arc4;
+-	struct crypto_shash *tfm3 = tkey->rx_tfm_michael;
+ 	struct arc4_ctx *tfm4 = &tkey->rx_ctx_arc4;
+ 
+ 	keyidx = tkey->key_idx;
+ 	memset(tkey, 0, sizeof(*tkey));
+ 	tkey->key_idx = keyidx;
+-	tkey->tx_tfm_michael = tfm;
+ 	tkey->tx_ctx_arc4 = *tfm2;
+-	tkey->rx_tfm_michael = tfm3;
+ 	tkey->rx_ctx_arc4 = *tfm4;
+ 	if (len == TKIP_KEY_LEN) {
+ 		memcpy(tkey->key, key, TKIP_KEY_LEN);
+ 		tkey->key_set = 1;
+ 		tkey->tx_iv16 = 1;	/* TSC is initialized to 1 */
 -- 
 2.53.0
 
