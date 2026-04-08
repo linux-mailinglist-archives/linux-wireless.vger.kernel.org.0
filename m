@@ -1,48 +1,49 @@
-Return-Path: <linux-wireless+bounces-34503-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34504-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id jHaVAe7G1WnA9wcAu9opvQ
-	(envelope-from <linux-wireless+bounces-34503-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	id OD4dOu7G1WnA9wcAu9opvQ
+	(envelope-from <linux-wireless+bounces-34504-lists+linux-wireless=lfdr.de@vger.kernel.org>)
 	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 05:09:34 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA083B678F
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 05:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CAFB3B6797
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Apr 2026 05:09:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E371A301828C
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2026 03:09:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A63BA301AA70
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2026 03:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6EA283FF5;
-	Wed,  8 Apr 2026 03:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0438C288C2F;
+	Wed,  8 Apr 2026 03:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2ZK7+/O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y+pe85d2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA075223339;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3722239E7D;
 	Wed,  8 Apr 2026 03:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775617766; cv=none; b=lpyUSid/FjzkJTIBNutB4pFgDQsRQHVQkMgMAaMm+Ed5g43bQFkS1etiA/SZH/Xq5j8npUtwrokEfyVblmWv38RqBOUpUzuUs4NMpMwC8ZUe/jQxNcbSgrV3a7Y1zyYBZaXtSzJL9G5eRneTiIo7Avhm0RSve7+Lm523MR6fjOo=
+	t=1775617766; cv=none; b=FnM0T5DQSOPxCeMZGL+OAPYM1eUW8296TZCracHogijKHd+ukGKgLzomKNaqzy9QDRL/dH9jviohlb5nPTKFc0+TvCrcGlEV7RF6xpD86pNAM1i/jp2ejcAxuH04HtvtWJdtev/GiEgD20ME/WmurF9Q0OHtkuqmSKhwVH3lsL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775617766; c=relaxed/simple;
-	bh=gjVB7UOe6sjEmlcCnMJkpyU172O0A0sAn9IoAUekkMk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PDooVc4WmLU2IDtQJOYf1k9W0vYwYyV7mN2/4pP+zlIo+gnQkFVlNAOYvLRMb67YnbLLPsLKV2EL8V1c5BITr9K5ZOuBopYC7pUOArnpTp0pYNzmGOqvDB6Eh8Ljyj3pkK8+oYLtxJj7JWLJt+vGMjhOO7mG3kOPhVkxdEp5ym8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2ZK7+/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA3FC116C6;
+	bh=clFqp8uYqEOC0hX7vhxXuHH5l5xR2disoNQCo5id2vo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Y7H4e8Gm9h+8MkmIRWb2L+9CRX2hEj8Y1DxDX84QlKxwumDDnxR0Bd5dF4Dupi30PCBmQrYMl/FqEF3MOwd3+JJ6CNi1vRJU/SjBnGYK+caxW7Lq0uc5vX2eDCtWpwg4Wa7xzdMighOOtYrZACSI4XuSfGaYYYlJ4p24Oh5JjG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y+pe85d2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F2AC19424;
 	Wed,  8 Apr 2026 03:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775617766;
-	bh=gjVB7UOe6sjEmlcCnMJkpyU172O0A0sAn9IoAUekkMk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=f2ZK7+/Oc8ZJP8zcnrFkrN3NruD+v2DKOB92OTCKAjphkFx7hC33sLD+MapqOI+/6
-	 BMZuA6AGPUDHNJxJdJCSPjB5iQI1OAPuI6/L2htQQgX5QygQAmkQkE0UKAW/05PhnJ
-	 gc61QoL3xOIbNzyjMPcVN2wDcml3ppUmJ3TDXNCAyO32BETD+JEcQ9MuGBEDkwxVKb
-	 dZGdqTxqMozHEcFPnxPqczGNQiEgF15u/ODe2JGgS+utfSQWzWSMMh61ngrhpkg9pU
-	 Q71wM7Km6ZHaYGbi8075h8zKP8pSXcGXuaI/ObrUSHtEnqR5uGgcQQR3EWo8VRTrC2
-	 rw7ioSKxJQIdg==
+	bh=clFqp8uYqEOC0hX7vhxXuHH5l5xR2disoNQCo5id2vo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Y+pe85d2drLC5E/x0gsZxx7ir5X8cA8UYTRDJdkV1lqkn4zQDAs4m3Ct1lRtjUekA
+	 eRMAFiCJ1nq1KMq61ppDrGgQLRr06h3eYNKCe1O+wHgsUew7143YcgwMGMo4JJYBCH
+	 W5F5/CMNINTTQIaXt25PHaU4sJ3JmsG3sawZnwzM43XzHsZaZnQaRJXc7PO6INmwIQ
+	 8VCN4umerZ4bmlomV+CLDu9wE1ywre6H7hvQhCMZk47gIy8CkzfFRbAy82XJePxLIv
+	 wAX+EIXv4+SLzjWNc/rvCkhgGXviCefw77wyg9bIKc3llKOwxhntxKe3eWg65HtrRw
+	 GAqZR5BDrBcDw==
 From: Eric Biggers <ebiggers@kernel.org>
 To: Johannes Berg <johannes@sipsolutions.net>,
 	linux-wireless@vger.kernel.org
@@ -50,10 +51,12 @@ Cc: linux-crypto@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH wireless-next v2 0/6] Consolidate Michael MIC code into cfg80211
-Date: Tue,  7 Apr 2026 20:06:45 -0700
-Message-ID: <20260408030651.80336-1-ebiggers@kernel.org>
+Subject: [PATCH wireless-next v2 1/6] wifi: ipw2x00: Rename michael_mic() to libipw_michael_mic()
+Date: Tue,  7 Apr 2026 20:06:46 -0700
+Message-ID: <20260408030651.80336-2-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260408030651.80336-1-ebiggers@kernel.org>
+References: <20260408030651.80336-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -71,7 +74,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34503-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34504-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -87,125 +90,64 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7FA083B678F
+X-Rspamd-Queue-Id: 7CAFB3B6797
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Michael MIC is an inherently weak algorithm that is specific to WPA
-TKIP, which itself was an interim security solution to replace the
-broken WEP standard.
+Rename the driver-local michael_mic() function to libipw_michael_mic()
+to prevent a name conflict with the common michael_mic() function.
 
-Currently, the primary implementation of Michael MIC in the kernel is
-the one in the mac80211 module.  But there's also a duplicate
-implementation in crypto/michael_mic.c which is exposed via the
-crypto_shash API.  It's used only by a few wireless drivers.
+Note that this code will be superseded later when libipw starts using
+the common michael_mic().  This commit just prevents a bisection hazard.
 
-Seeing as Michael MIC is specific to WPA TKIP and should never be used
-elsewhere, this series removes the crypto subsystem's implementation of
-Michael MIC, leaving just the wireless subsystem's implementation.  To
-do that, it moves the latter implementation from mac80211 to cfg80211,
-then converts the above-mentioned drivers to use it.
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+ drivers/net/wireless/intel/ipw2x00/libipw_crypto_tkip.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-This consolidates duplicate code and prevents other kernel subsystems
-from accidentally using this insecure algorithm.
-
-Changed in v2:
-
-    - Added preparatory patch to fix a bisection hazard.
-
-    - Moved michael_mic() to cfg80211 so that ipw2x00 doesn't have to
-      start depending on mac80211.
-
-    - Adjusted the 'fips_enabled' error messages, and updated the commit
-      messages to clarify that ath11k and ath12k don't actually work at
-      all in FIPS mode but that these patches don't aim to fix that.
-
-Eric Biggers (6):
-  wifi: ipw2x00: Rename michael_mic() to libipw_michael_mic()
-  wifi: mac80211, cfg80211: Export michael_mic() and move it to cfg80211
-  wifi: ath11k: Use michael_mic() from cfg80211
-  wifi: ath12k: Use michael_mic() from cfg80211
-  wifi: ipw2x00: Use michael_mic() from cfg80211
-  crypto: Remove michael_mic from crypto_shash API
-
- arch/arm/configs/omap2plus_defconfig          |   1 -
- arch/arm/configs/spitz_defconfig              |   1 -
- arch/arm64/configs/defconfig                  |   1 -
- arch/m68k/configs/amiga_defconfig             |   1 -
- arch/m68k/configs/apollo_defconfig            |   1 -
- arch/m68k/configs/atari_defconfig             |   1 -
- arch/m68k/configs/bvme6000_defconfig          |   1 -
- arch/m68k/configs/hp300_defconfig             |   1 -
- arch/m68k/configs/mac_defconfig               |   1 -
- arch/m68k/configs/multi_defconfig             |   1 -
- arch/m68k/configs/mvme147_defconfig           |   1 -
- arch/m68k/configs/mvme16x_defconfig           |   1 -
- arch/m68k/configs/q40_defconfig               |   1 -
- arch/m68k/configs/sun3_defconfig              |   1 -
- arch/m68k/configs/sun3x_defconfig             |   1 -
- arch/mips/configs/bigsur_defconfig            |   1 -
- arch/mips/configs/decstation_64_defconfig     |   1 -
- arch/mips/configs/decstation_defconfig        |   1 -
- arch/mips/configs/decstation_r4k_defconfig    |   1 -
- arch/mips/configs/gpr_defconfig               |   1 -
- arch/mips/configs/ip32_defconfig              |   1 -
- arch/mips/configs/lemote2f_defconfig          |   1 -
- arch/mips/configs/malta_qemu_32r6_defconfig   |   1 -
- arch/mips/configs/maltaaprp_defconfig         |   1 -
- arch/mips/configs/maltasmvp_defconfig         |   1 -
- arch/mips/configs/maltasmvp_eva_defconfig     |   1 -
- arch/mips/configs/maltaup_defconfig           |   1 -
- arch/mips/configs/mtx1_defconfig              |   1 -
- arch/mips/configs/rm200_defconfig             |   1 -
- arch/mips/configs/sb1250_swarm_defconfig      |   1 -
- arch/parisc/configs/generic-32bit_defconfig   |   1 -
- arch/parisc/configs/generic-64bit_defconfig   |   1 -
- arch/powerpc/configs/g5_defconfig             |   1 -
- arch/powerpc/configs/linkstation_defconfig    |   1 -
- arch/powerpc/configs/mvme5100_defconfig       |   1 -
- arch/powerpc/configs/powernv_defconfig        |   1 -
- arch/powerpc/configs/ppc64_defconfig          |   1 -
- arch/powerpc/configs/ppc64e_defconfig         |   1 -
- arch/powerpc/configs/ppc6xx_defconfig         |   1 -
- arch/powerpc/configs/ps3_defconfig            |   1 -
- arch/s390/configs/debug_defconfig             |   1 -
- arch/s390/configs/defconfig                   |   1 -
- arch/sh/configs/sh2007_defconfig              |   1 -
- arch/sh/configs/titan_defconfig               |   1 -
- arch/sh/configs/ul2_defconfig                 |   1 -
- arch/sparc/configs/sparc32_defconfig          |   1 -
- arch/sparc/configs/sparc64_defconfig          |   1 -
- crypto/Kconfig                                |  12 --
- crypto/Makefile                               |   1 -
- crypto/michael_mic.c                          | 176 ------------------
- crypto/tcrypt.c                               |   4 -
- crypto/testmgr.c                              |   6 -
- crypto/testmgr.h                              |  50 -----
- drivers/net/wireless/ath/ath11k/Kconfig       |   1 -
- drivers/net/wireless/ath/ath11k/dp.c          |   2 -
- drivers/net/wireless/ath/ath11k/dp_rx.c       |  60 +-----
- drivers/net/wireless/ath/ath11k/peer.h        |   1 -
- drivers/net/wireless/ath/ath12k/Kconfig       |   1 -
- drivers/net/wireless/ath/ath12k/dp.c          |   2 -
- drivers/net/wireless/ath/ath12k/dp_peer.h     |   1 -
- drivers/net/wireless/ath/ath12k/dp_rx.c       |  55 +-----
- drivers/net/wireless/ath/ath12k/dp_rx.h       |   4 -
- drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c |   7 +-
- drivers/net/wireless/intel/ipw2x00/Kconfig    |   1 -
- .../intel/ipw2x00/libipw_crypto_tkip.c        | 120 +-----------
- include/linux/ieee80211.h                     |   5 +
- net/mac80211/Makefile                         |   1 -
- net/mac80211/michael.h                        |  22 ---
- net/mac80211/wpa.c                            |   1 -
- net/wireless/Makefile                         |   2 +-
- .../michael.c => wireless/michael-mic.c}      |   5 +-
- 71 files changed, 30 insertions(+), 557 deletions(-)
- delete mode 100644 crypto/michael_mic.c
- delete mode 100644 net/mac80211/michael.h
- rename net/{mac80211/michael.c => wireless/michael-mic.c} (96%)
-
-
-base-commit: aa5e9884a2d63aa20fc3396d369382c1ecd16109
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_crypto_tkip.c b/drivers/net/wireless/intel/ipw2x00/libipw_crypto_tkip.c
+index c6b0de8d91aea..c2cd6808fd0fe 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_crypto_tkip.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_crypto_tkip.c
+@@ -462,11 +462,11 @@ static int libipw_tkip_decrypt(struct sk_buff *skb, int hdr_len, void *priv)
+ 	skb_trim(skb, skb->len - 4);
+ 
+ 	return keyidx;
+ }
+ 
+-static int michael_mic(struct crypto_shash *tfm_michael, u8 *key, u8 *hdr,
++static int libipw_michael_mic(struct crypto_shash *tfm_michael, u8 *key, u8 *hdr,
+ 		       u8 *data, size_t data_len, u8 *mic)
+ {
+ 	SHASH_DESC_ON_STACK(desc, tfm_michael);
+ 	int err;
+ 
+@@ -544,11 +544,11 @@ static int libipw_michael_mic_add(struct sk_buff *skb, int hdr_len,
+ 		return -1;
+ 	}
+ 
+ 	michael_mic_hdr(skb, tkey->tx_hdr);
+ 	pos = skb_put(skb, 8);
+-	if (michael_mic(tkey->tx_tfm_michael, &tkey->key[16], tkey->tx_hdr,
++	if (libipw_michael_mic(tkey->tx_tfm_michael, &tkey->key[16], tkey->tx_hdr,
+ 			skb->data + hdr_len, skb->len - 8 - hdr_len, pos))
+ 		return -1;
+ 
+ 	return 0;
+ }
+@@ -582,11 +582,11 @@ static int libipw_michael_mic_verify(struct sk_buff *skb, int keyidx,
+ 
+ 	if (!tkey->key_set)
+ 		return -1;
+ 
+ 	michael_mic_hdr(skb, tkey->rx_hdr);
+-	if (michael_mic(tkey->rx_tfm_michael, &tkey->key[24], tkey->rx_hdr,
++	if (libipw_michael_mic(tkey->rx_tfm_michael, &tkey->key[24], tkey->rx_hdr,
+ 			skb->data + hdr_len, skb->len - 8 - hdr_len, mic))
+ 		return -1;
+ 	if (memcmp(mic, skb->data + skb->len - 8, 8) != 0) {
+ 		struct ieee80211_hdr *hdr;
+ 		hdr = (struct ieee80211_hdr *)skb->data;
 -- 
 2.53.0
 
