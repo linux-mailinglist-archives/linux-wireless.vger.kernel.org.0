@@ -1,156 +1,151 @@
-Return-Path: <linux-wireless+bounces-34549-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34550-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FWuFiKw12kORggAu9opvQ
-	(envelope-from <linux-wireless+bounces-34549-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Apr 2026 15:56:50 +0200
+	id 0J7vD+fG12n6SwgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34550-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Apr 2026 17:33:59 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3EB3CBA55
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Apr 2026 15:56:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 639B13CCBF1
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Apr 2026 17:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5D2930866B1
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2026 13:51:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3F81C3064F0E
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2026 15:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969A437BE7D;
-	Thu,  9 Apr 2026 13:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72C53DEFFF;
+	Thu,  9 Apr 2026 15:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b="y8tMjT7J"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="D7PwVn6+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7003D3CEB
-	for <linux-wireless@vger.kernel.org>; Thu,  9 Apr 2026 13:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770563BD62A
+	for <linux-wireless@vger.kernel.org>; Thu,  9 Apr 2026 15:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775742657; cv=none; b=Qm53gi3kiitst2NpgtDyTIenJJn/5RAKUQYqUyPlDphOyfU3JspxKWkBeWdhWSbctEuy1g76T5VXnLnnP8AXs47X29tLMd3wwaTY39R+tCRSY3z+4EVNLq46AXA+CTVozOpcBrOzKqC3xlmy/VVU9KHCqSL0BPSwHVC/SV+qcMA=
+	t=1775748438; cv=none; b=IhpHgjlpUeNzO8JKQ78KgTu+KwuMDzPHnNbXnQ7CzBjTbyKKb520GVAs/dg0ojrVvV/EdUB0N4haD3PbPUaXGwMvM0R3rRGWH5S92qEeeQjW00HHkHtuumEwoMGx/iK/z21vsfr/tLU03woNBq/ocu++jTyOz/Z6jnITy8KOzMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775742657; c=relaxed/simple;
-	bh=1KhnCDzzjjovJ9avW19Ijla5k+ILjvwGQmuFCpxh5iY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WAkn/XTOx1fhHx6+NRitOHdFAwYL3rLEW1FwSuvPpgF86rRIAwDHHI/c5gkXe3L70MlBbvjnZiltvOZG2daALT7YnBwx5J32vyUOFIQ7kYaTg8G8HIlQZt+W/J1naLVJh34cUHbi5IN7fd+DZo+W9Ty/nIC/zUSYFRogWxdc7Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b=y8tMjT7J; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488ba6366a7so11088125e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Apr 2026 06:50:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20251104.gappssmtp.com; s=20251104; t=1775742647; x=1776347447; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h2mFUfLxqdoRukgDEWfqeZph5cDCf8XBe4M+zxLzV6Q=;
-        b=y8tMjT7J/ZbePTTYDJnPaaBXYcaIXRK4iUEFMq2tRutP0ihyrx1PjIZCO0MTAaR12H
-         7LUZUAtAegmC2RWRDi6c5q+IVJfvOrA720Y2MDLm4QE/hXvUf3yd+ht+9w6AOfBNyU3i
-         F2B2xL55qqVN/1Iq/qKg1m2fGMBcFs4vzjx7t7+46D2rr1Gv1B/+rYuP0z2c25hpg/qF
-         sHRDvVSLreOPZvdiFWxAdqVrXnbd/Z/rzjmg5QV4mbVBg3bbCYQl8s/yMJwlp4uAoUCF
-         CTQPt/ES51XLbz/sO5caPzIIF2gaLFxr3OmnTzvklXbzREDTZJhTkAGygcNX/Ala71LA
-         8aYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775742647; x=1776347447;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=h2mFUfLxqdoRukgDEWfqeZph5cDCf8XBe4M+zxLzV6Q=;
-        b=TdnHV6Y6Nl9ZgOIXryUhiRuICXRMe6RU+tVHdmjTaY4wZqjYNUs003BCZ9aElojbg4
-         KPXvxy3Uesnj1oifZ/LYPLpijgXuO1ueOuPXE4+Nb53S+IPNQQ1rwFnn3tMj3XueXvAv
-         aSaDI2dRzoScDYRyRWwnbze3xPNu68s24sAfYVZR34HE4Alc+GsWUOvenKslRYODSRBH
-         YfKtnrY3z3F2fwqJtc10gwN9GZfGfce+8dDOVcx+NWHOI/xZDCdnI6crUlVmqjR65Ltq
-         nezpAtpW+Elro4zcUnQjq3Yd4G1z57ZJuS/J50+toFoTxMTC+aBdKD/75LqxwtWTvUE9
-         i/RA==
-X-Gm-Message-State: AOJu0YzgCz+0U6pvD7r86LKN6Qk7vGqfkz64PR/kzhb71npe9fwswgTc
-	lw18vO1c1Yw76NBIiAYRLz4Y4rfYG5zNZTtavVjG1012Uo7dQ+m3GaJBMmU302Ijk9c=
-X-Gm-Gg: AeBDiev5ExTBeEk6rigFA5CReYYjEcyB+gg4gb0sIx4Xsx+IZVv9rd7IjJpiXanKO8j
-	PSTfylV02QOoOvlIyz5NHcenC89LM5weE+nMVY0l+Xd2fLIY659joRmCcUuIjTxY7WvtztjSQCK
-	/17jeFbXmNm2oseFQodVi2F4VG0WNXiI0mZ7WptgkJQXS1LbjoU9kVMmbSEG69UYmnMihCHUtAe
-	ALAQCCxBq7XARqnbswPhraJMl0iEhiRgjjIFjNXKLshzwcMxAYMS9fszhebf2kC97PN8+7CNqHF
-	NDC0WH6PO9nKuViP8Y7/M5tX9N9xjvj+X1AgalqyjyZrOcY19LExD65ZAglbQcA2sRGDMnAxPk3
-	i73ES1W+mCse1rWnRDa9PqDtVFMugLrttlYX4zUhYL6CA7lY7MyyMUWYY2JnxXTw1bzjMuCPTP5
-	syHb6rJJUnRg3iXgz2OPx9PUANrYbVNPi0FilyEGbXb7y35ofbbYaYt828uIH99ponEovIgMUTM
-	pSqQsRcOjlD
-X-Received: by 2002:a05:600c:3492:b0:488:b14f:b8ed with SMTP id 5b1f17b1804b1-488b14fb9e4mr235474965e9.0.1775742646949;
-        Thu, 09 Apr 2026 06:50:46 -0700 (PDT)
-Received: from pablomg-ThinkStation-P620.mgt.proxad.net (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488cf9e8808sm57815625e9.5.2026.04.09.06.50.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Apr 2026 06:50:46 -0700 (PDT)
-From: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-	Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
-Subject: [PATCH v2 4/4] wifi: Update EML function documentation to remove EMLSR-specific references
-Date: Thu,  9 Apr 2026 15:50:32 +0200
-Message-ID: <20260409135035.4018725-5-pmartin-gomez@freebox.fr>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260409135035.4018725-1-pmartin-gomez@freebox.fr>
-References: <20260409135035.4018725-1-pmartin-gomez@freebox.fr>
+	s=arc-20240116; t=1775748438; c=relaxed/simple;
+	bh=bENqwAGIWd+5rU4iDjnQ7Wgk7w2A3yQwftCXQFWN2Jo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=m1lOvaWhIaflIgQjH6P7amqmtTlWlN2fCgGS8ShcBQikYtpMWeGtxpeH2EvgPnJB0hKrplARVs202hST3WrSfbRnu5XRAM0oAONQ7ho6HJCpg6VObqmOqa+yPPZxZQxlry5N8rrxd6i7+NP02sHSHTbXKaxqD2mlt5o8l4rnT18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=D7PwVn6+; arc=none smtp.client-ip=148.163.129.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id EBDBB10008B;
+	Thu,  9 Apr 2026 15:27:08 +0000 (UTC)
+Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 853A713C2B0;
+	Thu,  9 Apr 2026 08:27:06 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 853A713C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1775748426;
+	bh=bENqwAGIWd+5rU4iDjnQ7Wgk7w2A3yQwftCXQFWN2Jo=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=D7PwVn6+2eKMlrYohrtH7VOQBTdu5iylJdH35O+BQeDdl0rrZ8OrNnPBOR01OF3Qz
+	 ee4WQt6eeTPvd8FhBNNvuuvjHta8ZPDpUmeNc2JR116QJEcZpsGYwLZ8AIKybqJ+XA
+	 4I3LVEYoGSDGeHiTT1BbE7Z5HDmHdM6kBDpkcohA=
+Message-ID: <1e00d8c4-9d97-da1e-5cbd-cf336900363b@candelatech.com>
+Date: Thu, 9 Apr 2026 08:27:06 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: nl80211: missing minimum TX power attribute causes misleading
+ userspace behavior
+To: Steffen May <steffen.may@posteo.de>, linux-wireless@vger.kernel.org
+References: <9ec6fd0b1c7392fce8c913a46c1b197e@posteo.de>
+Content-Language: en-US
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <9ec6fd0b1c7392fce8c913a46c1b197e@posteo.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-MDID: 1775748429-SmZojdT5SLkP
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;ut7;1775748429;SmZojdT5SLkP;<greearb@candelatech.com>;0e0cb912402f57d70bfea4d5fa2fe9ab
+X-PPE-TRUSTED: V=1;DIR=OUT;
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[freebox-fr.20251104.gappssmtp.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34549-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34550-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DMARC_NA(0.00)[freebox.fr];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[freebox-fr.20251104.gappssmtp.com:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_TWO(0.00)[2];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[candelatech.com:+];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,freebox.fr:email,freebox.fr:mid]
-X-Rspamd-Queue-Id: EA3EB3CBA55
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mac80211.sh:url]
+X-Rspamd-Queue-Id: 639B13CCBF1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Transition Timeout is not specific to EMLSR and is used by both EMLSR
-and EMLMR modes.
+On 4/9/26 01:05, Steffen May wrote:
+> 
+> This issue was discovered during the analysis of two documented OpenWrt bugs. Bug 1 is a type comparison error in LuCI wireless.js that causes 0 dBm to be 
+> displayed incorrectly. Bug 2 is in ucode mac80211.sh where the value 0 is treated as falsy, causing the router to transmit at maximum power instead. Both bugs 
+> are proven and reported.
+> 
+> During verification of Bug 2 on five devices with three different chipsets, it became apparent that the hardware floor is device-dependent and completely 
+> unknown to the stack. This is not a bug but a missing feature.
+> 
+> Because the floor is unknown, iwinfo generates selection lists containing values that have no real effect on the actual output power. Userspace accepts 
+> configurations such as 0 dBm even though the hardware cannot apply them. The system reports success while the hardware remains at its minimum supported level. 
+> This creates false assumptions.
+> 
+> Measurements
+> 
+> The deviation between the requested transmit power and the actual hardware floor is not constant but depends on the hardware:
+> 
+> Device                Chipset            Requested     Actual floor Difference
+> Buffalo WZR-600DHP    Atheros AR7161     1 dBm         3 dBm          +2 dB
+> TP-Link Archer C7     Qualcomm QCA9558   1 dBm         5 dBm          +4 dB
+> OpenWrt One           MTK Filogic        1 dBm         1 dBm           0 dB
+> Cudy WR3000           MTK Filogic        1 dBm         1 dBm           0 dB
+> GL.iNet GL-MT6000     MTK Filogic        1 dBm         1 dBm           0 dB
 
-Signed-off-by: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
----
- include/linux/ieee80211-eht.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+If you set that tplink to 1dbm, and then read the reported power, does it properly show 5dbm?
 
-diff --git a/include/linux/ieee80211-eht.h b/include/linux/ieee80211-eht.h
-index 82efd01d7708..92196018a950 100644
---- a/include/linux/ieee80211-eht.h
-+++ b/include/linux/ieee80211-eht.h
-@@ -1236,11 +1236,11 @@ static inline u32 ieee80211_emlmr_trans_delay_in_us(u16 eml_cap)
- }
- 
- /**
-- * ieee80211_eml_trans_timeout_in_us - Fetch the EMLSR Transition
-+ * ieee80211_eml_trans_timeout_in_us - Fetch the EML Transition
-  *	timeout value in microseconds
-  * @eml_cap: EML capabilities field value from common info field of
-  *	the Multi-link element
-- * Return: the EMLSR Transition timeout (in microseconds) encoded in
-+ * Return: the EML Transition timeout (in microseconds) encoded in
-  *	the EML Capabilities field
-  */
- 
+If so, that seems good enough?
+
+If not, then we should fix the reporting, but having a floor reported doesn't seem helpful
+to me.  There are lots of things that can affect actual txpower.  User-space can at best
+offer its suggestion of preferred txpower.  Kernel/driver/firmware/hardware then makes final
+decision.
+
+Thanks,
+Ben
+
 -- 
-2.43.0
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
 
 
