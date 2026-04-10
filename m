@@ -1,56 +1,56 @@
-Return-Path: <linux-wireless+bounces-34597-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34598-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOubMeLt2GlLjwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34597-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:32:34 +0200
+	id eEzeAt/t2GlLjwgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34598-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:32:31 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8C13D72F3
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:32:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7283D72DB
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AD6FB3035E5C
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:24:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AA5AC30E3506
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85E63DA5A4;
-	Fri, 10 Apr 2026 12:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE313CBE7C;
+	Fri, 10 Apr 2026 12:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEmycwX5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9r3LlHr"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C075E3BF677;
-	Fri, 10 Apr 2026 12:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C698E3CBE65;
+	Fri, 10 Apr 2026 12:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775823609; cv=none; b=fYKHoVuCywDnRDrT3jXANcox+cmjE8gx34yzXJr5NC4KTFnBXIrfsII8PTnWJLKJrskisrlCQyVh4nMpYrBPN+HOYbIBmwqR7sHJplBjxVBhq7FTBGCJdbVrAltZbJyYKy6u8JTIWv2X8mhtkgw8WKOb3u+mmHBQgcdnMluhGP4=
+	t=1775823614; cv=none; b=t4K9uvE2lenawvNQFIvyFrdwoqhWlX9npbKVfQ7CnttX0eZYkSa/IFEvD+SbWBbgDcqLoAzUP2A1RnC6+DDEQgcgpzy1lWVVByUhevTYL9bZHz+mksvDQFis1TxnyrWpvFtW7Eh8KM2keghzBraEw0O3JAvbrKX9Cq3SDuGCHPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775823609; c=relaxed/simple;
-	bh=UKj6WoZFsTQfNpLsa4hK9AJwWp/c6TyAgfAmmgBM2Aw=;
+	s=arc-20240116; t=1775823614; c=relaxed/simple;
+	bh=fBmKDE903B55aOazdk1fgTYrHTdJzb3m7rYXj49+TyY=;
 	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=Q5Dk+UZYkVYtIgMsX39fEcffPAkPHN9RhmTxmsnqL0JNu/qL2eCjOpy6m3IoDttALBoXQyBCDFVSTcnUU8XyFxwxgfa1GSVv6QAz+/R/mBM6ArzLqqHcTMqRe3+UnI5f+G1GLAwsSaDDVG7hFKkqxSGmsKruQK2Ems1h7xrEcgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEmycwX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CA3C19425;
-	Fri, 10 Apr 2026 12:20:08 +0000 (UTC)
+	 Content-Type; b=lN4YwviANod8j/9WlTq1QNr84ZfIuxr2+KdFyq7P8l1IEJXBri/FuOl+oIqBzobyi57ZByif+l0ikZlii7y3jyKPscDNlIdgw7OHLEtI+q47LljBNPhA0Jlh3GPNRh+2k5OYIzZgLYMLR54UXuSxwiW6HRLHEBQC28jpw+Ev/TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9r3LlHr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C840C2BCB0;
+	Fri, 10 Apr 2026 12:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823609;
-	bh=UKj6WoZFsTQfNpLsa4hK9AJwWp/c6TyAgfAmmgBM2Aw=;
+	s=k20201202; t=1775823614;
+	bh=fBmKDE903B55aOazdk1fgTYrHTdJzb3m7rYXj49+TyY=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=SEmycwX5s0//+gtSPktg47GJS+8sJlwAPsv65Bq7Wv5tg7uQL3Gpghd9FaOczcWIN
-	 ZQaCuA/qh+jNH/riNYpmVLmwYhqyjM2JbqnNtt1yhbGBg3HT7iCiqP6g94wS0wTPIA
-	 99ougHo5Nu9h67SjSnTNqyHC+/lIAAGR6p7tHCAck6aAnXmlbTDue5R1sT+DZ/waOZ
-	 GXIvFpg3p1ueseORBf9eozHpgJ3jpkMWN+atB0UvtcxRk8vKXhCteFgdwrDai6rThh
-	 FHU0CtO/nkzQnAaFOlH62oLpy9zcH9gwc0II0cebCdnPQhGplJ3L9nz1drcdz9bKdB
-	 3Oc5+96qoKgtw==
-Date: Fri, 10 Apr 2026 14:20:06 +0200
-Message-ID: <20260410120318.929806643@kernel.org>
+	b=K9r3LlHrTcCOkcDztBL2sK/tQ+yi3dZzcdFnxujOK2CvaNmPXdlKrSDZTOaDJVW4S
+	 4mOX2OGTBKQ54SjOZcfKwdFhqUqz7KSUNqnVJajtIbXp/GGLFwlU7bEb8zVF3NgHwH
+	 1PaUWksbUVEp48mOHI3J4/UWYuvo5lLJzmYA1j3FTzptfyaQ68k1o579nPzwBiXUsC
+	 3DfIec/NNOEw9ut9tg7BENSlBdgvHCyF+4+WEDfTHmiMcBanB5cN+csJSB4d+fA+Ka
+	 C4Vf48Goy0kDdmbaemETnL+HfFRh1XMMUZS6QyYOK2+NJ2yf87fs8P9lxl4UXibsda
+	 2J390A/pMX1Ag==
+Date: Fri, 10 Apr 2026 14:20:11 +0200
+Message-ID: <20260410120318.997202495@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- kasan-dev@googlegroups.com,
+Cc: Thomas Sailer <t.sailer@alumni.ethz.ch>,
+ linux-hams@vger.kernel.org,
  Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
@@ -71,8 +71,8 @@ Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
  Uladzislau Rezki <urezki@gmail.com>,
  Marco Elver <elver@google.com>,
  Dmitry Vyukov <dvyukov@google.com>,
- Thomas Sailer <t.sailer@alumni.ethz.ch>,
- linux-hams@vger.kernel.org,
+ kasan-dev@googlegroups.com,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
  "Jason A. Donenfeld" <Jason@zx2c4.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  linux-alpha@vger.kernel.org,
@@ -96,8 +96,7 @@ Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 20/38] kasan: sw_tags: Replace get_cycles() by
- random_get_entropy()
+Subject: [patch 21/38] hamradio: baycom_epp: Remove BAYCOM_DEBUG
 References: <20260410120044.031381086@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -110,19 +109,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,googlegroups.com,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,vger.kernel.org,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,google.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
+	FREEMAIL_CC(0.00)[alumni.ethz.ch,vger.kernel.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-34597-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34598-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -133,36 +132,144 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_TWELVE(0.00)[48];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 8E8C13D72F3
+X-Rspamd-Queue-Id: 6F7283D72DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Seeding the random state with get_cycles() is functionally equivalent on
-the architectures which provide get_cycles(), but it does not make sense
-semantically.
+The whole code guarded by BAYCOM_DEBUG is only writing debug values into a
+datastructure, but there is no way to ever access them.
 
-Use random_get_entropy() instead, which is the proper interface.
+Remove the pointless ballast.
 
 This is part of a larger effort to remove get_cycles() usage from
 non-architecture code.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: kasan-dev@googlegroups.com
+Cc: Thomas Sailer <t.sailer@alumni.ethz.ch>
+Cc: linux-hams@vger.kernel.org
 ---
- mm/kasan/sw_tags.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/hamradio/baycom_epp.c |   51 --------------------------------------
+ 1 file changed, 51 deletions(-)
 
---- a/mm/kasan/sw_tags.c
-+++ b/mm/kasan/sw_tags.c
-@@ -41,7 +41,7 @@ void __init kasan_init_sw_tags(void)
- 	int cpu;
+--- a/drivers/net/hamradio/baycom_epp.c
++++ b/drivers/net/hamradio/baycom_epp.c
+@@ -44,7 +44,6 @@
  
- 	for_each_possible_cpu(cpu)
--		per_cpu(prng_state, cpu) = (u32)get_cycles();
-+		per_cpu(prng_state, cpu) = (u32)random_get_entropy();
+ /* --------------------------------------------------------------------- */
  
- 	kasan_init_tags();
- 	kasan_enable();
+-#define BAYCOM_DEBUG
+ #define BAYCOM_MAGIC 19730510
+ 
+ /* --------------------------------------------------------------------- */
+@@ -191,18 +190,6 @@ struct baycom_state {
+ 
+ 	unsigned int ptt_keyed;
+ 	struct sk_buff *skb;  /* next transmit packet  */
+-
+-#ifdef BAYCOM_DEBUG
+-	struct debug_vals {
+-		unsigned long last_jiffies;
+-		unsigned cur_intcnt;
+-		unsigned last_intcnt;
+-		int cur_pllcorr;
+-		int last_pllcorr;
+-		unsigned int mod_cycles;
+-		unsigned int demod_cycles;
+-	} debug_vals;
+-#endif /* BAYCOM_DEBUG */
+ };
+ 
+ /* --------------------------------------------------------------------- */
+@@ -259,26 +246,6 @@ static inline int calc_crc_ccitt(const u
+ 
+ #define tenms_to_flags(bc,tenms) ((tenms * bc->bitrate) / 800)
+ 
+-/* --------------------------------------------------------------------- */
+-
+-static inline void baycom_int_freq(struct baycom_state *bc)
+-{
+-#ifdef BAYCOM_DEBUG
+-	unsigned long cur_jiffies = jiffies;
+-	/*
+-	 * measure the interrupt frequency
+-	 */
+-	bc->debug_vals.cur_intcnt++;
+-	if (time_after_eq(cur_jiffies, bc->debug_vals.last_jiffies + HZ)) {
+-		bc->debug_vals.last_jiffies = cur_jiffies;
+-		bc->debug_vals.last_intcnt = bc->debug_vals.cur_intcnt;
+-		bc->debug_vals.cur_intcnt = 0;
+-		bc->debug_vals.last_pllcorr = bc->debug_vals.cur_pllcorr;
+-		bc->debug_vals.cur_pllcorr = 0;
+-	}
+-#endif /* BAYCOM_DEBUG */
+-}
+-
+ /* ---------------------------------------------------------------------- */
+ /*
+  *    eppconfig_path should be setable  via /proc/sys.
+@@ -621,13 +588,6 @@ static int receive(struct net_device *de
+ 	return ret;
+ }
+ 
+-/* --------------------------------------------------------------------- */
+-
+-#define GETTICK(x)						\
+-({								\
+-	x = (unsigned int)get_cycles();				\
+-})
+-
+ static void epp_bh(struct work_struct *work)
+ {
+ 	struct net_device *dev;
+@@ -635,21 +595,17 @@ static void epp_bh(struct work_struct *w
+ 	struct parport *pp;
+ 	unsigned char stat;
+ 	unsigned char tmp[2];
+-	unsigned int time1 = 0, time2 = 0, time3 = 0;
+ 	int cnt, cnt2;
+ 
+ 	bc = container_of(work, struct baycom_state, run_work.work);
+ 	dev = bc->dev;
+ 	if (!bc->work_running)
+ 		return;
+-	baycom_int_freq(bc);
+ 	pp = bc->pdev->port;
+ 	/* update status */
+ 	if (pp->ops->epp_read_addr(pp, &stat, 1, 0) != 1)
+ 		goto epptimeout;
+ 	bc->stat = stat;
+-	bc->debug_vals.last_pllcorr = stat;
+-	GETTICK(time1);
+ 	if (bc->modem == EPP_FPGAEXTSTATUS) {
+ 		/* get input count */
+ 		tmp[0] = EPP_TX_FIFO_ENABLE|EPP_RX_FIFO_ENABLE|EPP_MODEM_ENABLE|1;
+@@ -673,7 +629,6 @@ static void epp_bh(struct work_struct *w
+ 			goto epptimeout;
+ 		if (transmit(bc, cnt2, stat))
+ 			goto epptimeout;
+-		GETTICK(time2);
+ 		if (receive(dev, cnt))
+ 			goto epptimeout;
+ 		if (pp->ops->epp_read_addr(pp, &stat, 1, 0) != 1)
+@@ -700,7 +655,6 @@ static void epp_bh(struct work_struct *w
+ 		}
+ 		if (transmit(bc, cnt, stat))
+ 			goto epptimeout;
+-		GETTICK(time2);
+ 		/* do receiver */
+ 		while ((stat & (EPP_NRAEF|EPP_NRHF)) != EPP_NRHF) {
+ 			switch (stat & (EPP_NRAEF|EPP_NRHF)) {
+@@ -734,11 +688,6 @@ static void epp_bh(struct work_struct *w
+ 				goto epptimeout;
+ 		}
+ 	}
+-	GETTICK(time3);
+-#ifdef BAYCOM_DEBUG
+-	bc->debug_vals.mod_cycles = time2 - time1;
+-	bc->debug_vals.demod_cycles = time3 - time2;
+-#endif /* BAYCOM_DEBUG */
+ 	schedule_delayed_work(&bc->run_work, 1);
+ 	if (!bc->skb)
+ 		netif_wake_queue(dev);
 
 
