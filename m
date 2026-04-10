@@ -1,64 +1,56 @@
-Return-Path: <linux-wireless+bounces-34605-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34606-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCbXNyTw2GnrjwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34605-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:42:12 +0200
+	id 8B9bHH3y2GnrjwgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34606-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:52:13 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 391233D7848
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC0F3D7BAF
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E34C53075032
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:28:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A7CD30DFD92
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3CA3DE451;
-	Fri, 10 Apr 2026 12:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320C93DEFE6;
+	Fri, 10 Apr 2026 12:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2TX+7hq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OB4z6rme"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630EF3C5550;
-	Fri, 10 Apr 2026 12:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A33C3DEAF7;
+	Fri, 10 Apr 2026 12:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775823648; cv=none; b=bTFDZtI8i58c22GB7ZrRDbexW7De0cGka7T6cZ37WG+VG3LDigvctN96ERTHK0o5PnosNRvxJfUtRiq1Ukz0nRpyGwJ6Jd1PDSznPEdZ42UxoCKcRHx+Y4NguAAYyMxBBLZKjH7aMsvZ6QzkVPxixCAwB7Os1V74iAhmYcV1Srw=
+	t=1775823654; cv=none; b=exciZ3bLp2yTQ2GG7EIg+Qu1qNClEWJChWdFsdkMsm5NQyWWW1GjLichkrp85nQ2RNRzMOItHbSEV/znOYeiWsdT8bnM8iCJBbQdcNLvviH+UaGn9TmpmiigvJ6EFkmFYicrjsQcjpUGcSUW/Z6ix+Whd4djDam3grcZrXNXQhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775823648; c=relaxed/simple;
-	bh=Rixu9UkxBpBa/pCcYjAm91Mos3e7PJEWty4VuN8Giko=;
-	h=Date:Message-ID:From:To:Subject:References:MIME-Version:
-	 Content-Type:cc; b=R6q77D8xnCvZgJUekh19PkL3f1qAfRHkUeGlQkxTqUSaySS9Fe871v6lDDLZQqWbltMIQ7l9X5dWK0/0PGSjzvZE3a8js4pFgnI3sBxgKj6yCtKoRq6GrUeQExtya0BgJCkWB94pKKl7zRsvWfVLqr6yuLNd2UMvrvqvJKzCB2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2TX+7hq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9315FC19425;
-	Fri, 10 Apr 2026 12:20:47 +0000 (UTC)
+	s=arc-20240116; t=1775823654; c=relaxed/simple;
+	bh=JK0/F7Ki9YiLWmMnKZ+Lr+3CWdB1is+mT2jM4Zqadew=;
+	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=l0/uDF8ZKepWFqTVUQyjbv4bVkf+ilIvp9iTmFsEZTbO3/gdXjQlrXxMcqDrVY+H9mavE6TJ3XEiDZUA1vnaFJs/IYnBj7JOki2fl+HcvbzlNQeLqf6x3SefbwVBy0KjGNqe1IqZH8bvP/ca30u2Shjr3CxHLw6PKCfWseB3jVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OB4z6rme; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A6BC2BCAF;
+	Fri, 10 Apr 2026 12:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823648;
-	bh=Rixu9UkxBpBa/pCcYjAm91Mos3e7PJEWty4VuN8Giko=;
-	h=Date:From:To:Subject:References:cc:From;
-	b=e2TX+7hqQyBiWzo8NI5NRXrCTX+aQLO1om6YbdKnBp1t6r+3gdVVwFgSRp0YguQNn
-	 Jlc+qQUu+TDLRhNxs0vDUgKc/64bw4Xr/nrLXGcr9x8N+WxcYYAWKz/hetumLTTXiH
-	 IOZQe6vf3JeallzAbQOuDlVku9VS3q2KBCLecHsxJ+DIPpUILukw8IDg9/7PZ2ubbz
-	 C8W0nQsdyxy0TL4ubCO16dsYj5itsv1q3iQDjbYKDrJAHUzFBqI36jq5cjES+sc4w7
-	 L7ELcmmojjtISrbWTN6OaCnE72An4bb94Nrrp4eO37cDQXx+zCdhzTRuhaN3nbGiT3
-	 axWFURoe64Leg==
-Date: Fri, 10 Apr 2026 14:20:45 +0200
-Message-ID: <20260410120319.462206386@kernel.org>
+	s=k20201202; t=1775823653;
+	bh=JK0/F7Ki9YiLWmMnKZ+Lr+3CWdB1is+mT2jM4Zqadew=;
+	h=Date:From:To:Cc:Subject:References:From;
+	b=OB4z6rmedzjF/tihT238p7staUYI70l/WLyVpYQgd3G/0qlK9BetgUNbHaxUOTJJk
+	 qdDaLQwa1siZvXl47NXTJc0ORYA2dsT704qKM+lVSSRN4sldd+TbcnCJaaKLtMHkff
+	 SfKJlNkL5h8guSKmd0Me9uWsWZCYIBa85rKbdrV18Ca38UzELO7GQROVPWzrTHMCfJ
+	 QFdBWZuROAjUxl7+DX48sdEQxX7/xngz/AnUC+xaQ7wkdJF1oolh8aMOXz2mAve+hh
+	 C3LVdoPqlu6sGEaRdYNI50vZs10DhqwpaJqHFXY4YWja3gycAdllpb8XCooIJE8rT+
+	 LUw8ufY+z6WgQ==
+Date: Fri, 10 Apr 2026 14:20:50 +0200
+Message-ID: <20260410120319.528318344@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 28/38] mips: Select ARCH_HAS_RANDOM_ENTROPY
-References: <20260410120044.031381086@kernel.org>
-Precedence: bulk
-X-Mailing-List: linux-wireless@vger.kernel.org
-List-Id: <linux-wireless.vger.kernel.org>
-List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-cc: Arnd Bergmann <arnd@arndb.de>,
+Cc: Dinh Nguyen <dinguyen@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
  iommu@lists.linux.dev,
@@ -92,7 +84,6 @@ cc: Arnd Bergmann <arnd@arndb.de>,
  loongarch@lists.linux.dev,
  Geert Uytterhoeven <geert@linux-m68k.org>,
  linux-m68k@lists.linux-m68k.org,
- Dinh Nguyen <dinguyen@kernel.org>,
  Jonas Bonn <jonas@southpole.se>,
  linux-openrisc@vger.kernel.org,
  Helge Deller <deller@gmx.de>,
@@ -105,6 +96,15 @@ cc: Arnd Bergmann <arnd@arndb.de>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
+Subject: [patch 29/38] nios2: Select ARCH_HAS_RANDOM_ENTROPY
+References: <20260410120044.031381086@kernel.org>
+Precedence: bulk
+X-Mailing-List: linux-wireless@vger.kernel.org
+List-Id: <linux-wireless.vger.kernel.org>
+List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -116,10 +116,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,vger.kernel.org,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
+	FREEMAIL_CC(0.00)[kernel.org,arndb.de,linux.intel.com,lists.linux.dev,pengutronix.de,vger.kernel.org,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-34605-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34606-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -132,292 +132,94 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_TWELVE(0.00)[48];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 391233D7848
+X-Rspamd-Queue-Id: 6FC0F3D7BAF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The only remaining usage of get_cycles() is to provide random_get_entropy().
+The only remaining non-architecture usage of get_cycles() is to provide
+random_get_entropy().
 
-Switch mips over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
+Switch nios2 over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
 and providing random_get_entropy() in asm/random.h.
 
-As a consequence this unearthed a nasty include dependency hell because
-arbitrary code relies on a magic include of asm/timex.h. Including the
-headers in asm/random.h turned out to be impossible as well.
-
-The only solution for now is to uninline random_get_entropy().  Fix up all
-other dependencies on the content of asm/timex.h in those files which
-really depend on it.
-
-Remove asm/timex.h as it has no functionality anymore.
+Add 'asm/timex.h' includes to the relevant files, so the global include can
+be removed once all architectures are converted over.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: Dinh Nguyen <dinguyen@kernel.org>
 ---
- arch/mips/Kconfig              |    1 
- arch/mips/generic/init.c       |    1 
- arch/mips/include/asm/random.h |    7 +++
- arch/mips/include/asm/timex.h  |   92 -----------------------------------------
- arch/mips/kernel/pm-cps.c      |    1 
- arch/mips/kernel/proc.c        |    1 
- arch/mips/kernel/relocate.c    |    1 
- arch/mips/kernel/time.c        |   53 +++++++++++++++++++++++
- arch/mips/lib/dump_tlb.c       |    1 
- arch/mips/mm/cache.c           |    1 
- 10 files changed, 66 insertions(+), 93 deletions(-)
+ arch/nios2/Kconfig              |    1 +
+ arch/nios2/include/asm/random.h |   14 ++++++++++++++
+ arch/nios2/include/asm/timex.h  |    5 +----
+ arch/nios2/kernel/time.c        |    4 ++--
+ 4 files changed, 18 insertions(+), 6 deletions(-)
 
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -19,6 +19,7 @@ config MIPS
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UBSAN
- 	select ARCH_HAS_GCOV_PROFILE_ALL
+--- a/arch/nios2/Kconfig
++++ b/arch/nios2/Kconfig
+@@ -7,6 +7,7 @@ config NIOS2
+ 	select ARCH_HAS_SYNC_DMA_FOR_CPU
+ 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+ 	select ARCH_HAS_DMA_SET_UNCACHED
 +	select ARCH_HAS_RANDOM_ENTROPY
- 	select ARCH_KEEP_MEMBLOCK
- 	select ARCH_USE_BUILTIN_BSWAP
- 	select ARCH_USE_CMPXCHG_LOCKREF if 64BIT
---- a/arch/mips/generic/init.c
-+++ b/arch/mips/generic/init.c
-@@ -12,6 +12,7 @@
- #include <linux/of_fdt.h>
- 
- #include <asm/bootinfo.h>
-+#include <asm/cpu-type.h>
- #include <asm/fw/fw.h>
- #include <asm/irq_cpu.h>
- #include <asm/machine.h>
+ 	select ARCH_NO_SWAP
+ 	select COMMON_CLK
+ 	select TIMER_OF
 --- /dev/null
-+++ b/arch/mips/include/asm/random.h
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-v2.0-only */
-+#ifndef _ASM_RANDOM_H
-+#define _ASM_RANDOM_H
++++ b/arch/nios2/include/asm/random.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _ASM_NIOS2_RANDOM_H
++#define _ASM_NIOS2_RANDOM_H
 +
-+unsigned long random_get_entropy(void);
++#include <asm/timex.h>
 +
-+#endif /*  _ASM_RANDOM_H */
---- a/arch/mips/include/asm/timex.h
-+++ /dev/null
-@@ -1,92 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 1998, 1999, 2003 by Ralf Baechle
-- * Copyright (C) 2014 by Maciej W. Rozycki
-- */
--#ifndef _ASM_TIMEX_H
--#define _ASM_TIMEX_H
--
--#ifdef __KERNEL__
--
--#include <linux/compiler.h>
--
--#include <asm/cpu.h>
--#include <asm/cpu-features.h>
--#include <asm/mipsregs.h>
--#include <asm/cpu-type.h>
--
--/*
-- * Standard way to access the cycle counter.
-- * Currently only used on SMP for scheduling.
-- *
-- * Only the low 32 bits are available as a continuously counting entity.
-- * But this only means we'll force a reschedule every 8 seconds or so,
-- * which isn't an evil thing.
-- *
-- * We know that all SMP capable CPUs have cycle counters.
-- */
--
--/*
-- * On R4000/R4400 an erratum exists such that if the cycle counter is
-- * read in the exact moment that it is matching the compare register,
-- * no interrupt will be generated.
-- *
-- * There is a suggested workaround and also the erratum can't strike if
-- * the compare interrupt isn't being used as the clock source device.
-- * However for now the implementation of this function doesn't get these
-- * fine details right.
-- */
--static inline int can_use_mips_counter(unsigned int prid)
--{
--	int comp = (prid & PRID_COMP_MASK) != PRID_COMP_LEGACY;
--
--	if (__builtin_constant_p(cpu_has_counter) && !cpu_has_counter)
--		return 0;
--	else if (__builtin_constant_p(cpu_has_mips_r) && cpu_has_mips_r)
--		return 1;
--	else if (likely(!__builtin_constant_p(cpu_has_mips_r) && comp))
--		return 1;
--	/* Make sure we don't peek at cpu_data[0].options in the fast path! */
--	if (!__builtin_constant_p(cpu_has_counter))
--		asm volatile("" : "=m" (cpu_data[0].options));
--	if (likely(cpu_has_counter &&
--		   prid > (PRID_IMP_R4000 | PRID_REV_ENCODE_44(15, 15))))
--		return 1;
--	else
--		return 0;
--}
--
--static inline cycles_t get_cycles(void)
--{
--	if (can_use_mips_counter(read_c0_prid()))
--		return read_c0_count();
--	else
--		return 0;	/* no usable counter */
--}
++static inline unsigned long random_get_entropy(void)
++{
++	unsigned long c = get_cycles();
++
++	return c ? c : random_get_entropy_fallback();
++}
++
++#endif
+--- a/arch/nios2/include/asm/timex.h
++++ b/arch/nios2/include/asm/timex.h
+@@ -5,9 +5,6 @@
+ #ifndef _ASM_NIOS2_TIMEX_H
+ #define _ASM_NIOS2_TIMEX_H
+ 
+-extern cycles_t get_cycles(void);
 -#define get_cycles get_cycles
 -
--/*
-- * Like get_cycles - but where c0_count is not available we desperately
-- * use c0_random in an attempt to get at least a little bit of entropy.
-- */
--static inline unsigned long random_get_entropy(void)
--{
--	unsigned int c0_random;
--
--	if (can_use_mips_counter(read_c0_prid()))
--		return read_c0_count();
--
--	if (cpu_has_3kex)
--		c0_random = (read_c0_random() >> 8) & 0x3f;
--	else
--		c0_random = read_c0_random() & 0x3f;
--	return (random_get_entropy_fallback() << 6) | (0x3f - c0_random);
--}
--#define random_get_entropy random_get_entropy
--
--#endif /* __KERNEL__ */
--
--#endif /*  _ASM_TIMEX_H */
---- a/arch/mips/kernel/pm-cps.c
-+++ b/arch/mips/kernel/pm-cps.c
-@@ -13,6 +13,7 @@
- #include <asm/asm-offsets.h>
- #include <asm/cacheflush.h>
- #include <asm/cacheops.h>
-+#include <asm/cpu-type.h>
- #include <asm/idle.h>
- #include <asm/mips-cps.h>
- #include <asm/mipsmtregs.h>
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -11,6 +11,7 @@
- #include <asm/bootinfo.h>
- #include <asm/cpu.h>
- #include <asm/cpu-features.h>
-+#include <asm/cpu-type.h>
- #include <asm/idle.h>
- #include <asm/mipsregs.h>
- #include <asm/processor.h>
---- a/arch/mips/kernel/relocate.c
-+++ b/arch/mips/kernel/relocate.c
-@@ -13,7 +13,6 @@
- #include <asm/fw/fw.h>
- #include <asm/sections.h>
- #include <asm/setup.h>
--#include <asm/timex.h>
- #include <linux/elf.h>
- #include <linux/kernel.h>
- #include <linux/libfdt.h>
---- a/arch/mips/kernel/time.c
-+++ b/arch/mips/kernel/time.c
-@@ -2,6 +2,7 @@
- /*
-  * Copyright 2001 MontaVista Software Inc.
-  * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-+ * Copyright (C) 1998, 1999, 2003 by Ralf Baechle
-  * Copyright (c) 2003, 2004  Maciej W. Rozycki
-  *
-  * Common time service routines for MIPS machines.
-@@ -21,9 +22,12 @@
- #include <linux/cpufreq.h>
- #include <linux/delay.h>
+-#define random_get_entropy() (((unsigned long)get_cycles()) ?: random_get_entropy_fallback())
++cycles_t get_cycles(void);
  
-+#include <asm/cpu.h>
- #include <asm/cpu-features.h>
- #include <asm/cpu-type.h>
- #include <asm/div64.h>
-+#include <asm/mipsregs.h>
-+#include <asm/random.h>
- #include <asm/time.h>
+ #endif
+--- a/arch/nios2/kernel/time.c
++++ b/arch/nios2/kernel/time.c
+@@ -7,7 +7,6 @@
+  * License. See the file "COPYING" in the main directory of this archive
+  * for more details.
+  */
+-
+ #include <linux/export.h>
+ #include <linux/interrupt.h>
+ #include <linux/clockchips.h>
+@@ -19,6 +18,8 @@
+ #include <linux/io.h>
+ #include <linux/slab.h>
  
- #ifdef CONFIG_CPU_FREQ
-@@ -150,6 +154,55 @@ static __init int cpu_has_mfc0_count_bug
++#include <asm/timex.h>
++
+ #define ALTR_TIMER_COMPATIBLE		"altr,timer-1.0"
+ 
+ #define ALTERA_TIMER_STATUS_REG	0
+@@ -112,7 +113,6 @@ cycles_t get_cycles(void)
+ 		return nios2_timer_read(&nios2_cs.cs);
  	return 0;
  }
+-EXPORT_SYMBOL(get_cycles);
  
-+
-+/*
-+ * On R4000/R4400 an erratum exists such that if the cycle counter is
-+ * read in the exact moment that it is matching the compare register,
-+ * no interrupt will be generated.
-+ *
-+ * There is a suggested workaround and also the erratum can't strike if
-+ * the compare interrupt isn't being used as the clock source device.
-+ * However for now the implementation of this function doesn't get these
-+ * fine details right.
-+ */
-+static inline int can_use_mips_counter(unsigned int prid)
-+{
-+	int comp = (prid & PRID_COMP_MASK) != PRID_COMP_LEGACY;
-+
-+	if (__builtin_constant_p(cpu_has_counter) && !cpu_has_counter)
-+		return 0;
-+	else if (__builtin_constant_p(cpu_has_mips_r) && cpu_has_mips_r)
-+		return 1;
-+	else if (likely(!__builtin_constant_p(cpu_has_mips_r) && comp))
-+		return 1;
-+	/* Make sure we don't peek at cpu_data[0].options in the fast path! */
-+	if (!__builtin_constant_p(cpu_has_counter))
-+		asm volatile("" : "=m" (cpu_data[0].options));
-+	if (likely(cpu_has_counter &&
-+		   prid > (PRID_IMP_R4000 | PRID_REV_ENCODE_44(15, 15))))
-+		return 1;
-+	else
-+		return 0;
-+}
-+
-+/*
-+ * Like get_cycles - but where c0_count is not available we desperately
-+ * use c0_random in an attempt to get at least a little bit of entropy.
-+ */
-+unsigned long random_get_entropy(void)
-+{
-+	unsigned int c0_random;
-+
-+	if (can_use_mips_counter(read_c0_prid()))
-+		return read_c0_count();
-+
-+	if (cpu_has_3kex)
-+		c0_random = (read_c0_random() >> 8) & 0x3f;
-+	else
-+		c0_random = read_c0_random() & 0x3f;
-+	return (random_get_entropy_fallback() << 6) | (0x3f - c0_random);
-+}
-+
- void __init time_init(void)
+ static void nios2_timer_start(struct nios2_timer *timer)
  {
- 	plat_time_init();
---- a/arch/mips/lib/dump_tlb.c
-+++ b/arch/mips/lib/dump_tlb.c
-@@ -8,6 +8,7 @@
- #include <linux/kernel.h>
- #include <linux/mm.h>
- 
-+#include <asm/cpu-type.h>
- #include <asm/hazards.h>
- #include <asm/mipsregs.h>
- #include <asm/mmu_context.h>
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -22,6 +22,7 @@
- #include <asm/processor.h>
- #include <asm/cpu.h>
- #include <asm/cpu-features.h>
-+#include <asm/cpu-type.h>
- #include <asm/setup.h>
- #include <asm/pgtable.h>
- 
 
 
