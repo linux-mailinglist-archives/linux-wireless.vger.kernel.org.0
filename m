@@ -1,67 +1,58 @@
-Return-Path: <linux-wireless+bounces-34585-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34586-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JI4MKzr2GlCjwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34585-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:23:08 +0200
+	id YKfuMXbs2GlGjwgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34586-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:26:30 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A463E3D6DF0
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:23:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1DA3D6F8D
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:26:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C4CD730341FA
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:20:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9DF503068D2F
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A29E3CC9F5;
-	Fri, 10 Apr 2026 12:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6A83C13FF;
+	Fri, 10 Apr 2026 12:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YwhpP/sf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pacXAmHL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5240D3BD64E;
-	Fri, 10 Apr 2026 12:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9463BFE40;
+	Fri, 10 Apr 2026 12:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775823551; cv=none; b=Coyxp6lIkeIFJNsrdxqQn9VNq1Dd91+mjgGIwEmVZY/vhJHaaQbLzss0itQikN3TCbMosxkZXTrvQJDjv1kZVV8z6oANp3jyIoFNlrlLPx0te64vF1RKRbLA+XZnsx/tRlFE/uTmVw6Al17j/P/m8zcSltP3BO4BwifqbBek078=
+	t=1775823555; cv=none; b=UPss8nVAuMTAN3pnwUYX6yCZ7+jJvr73arfBZPYO+xfwireSSUjyXhJH5TGQ2piRT0WZ92UY7H4aQYrc7Qc8Cit5Y9Q5MA5vJJm9sY507ms2K6bYHWG+JcnaZWwfSTv1kk9NrryoJL3WAkgfkOi6yy0gieHgOqbowiG02E8toGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775823551; c=relaxed/simple;
-	bh=bea3byi4f+lJwA9RE9L4RIIWG0LfPmc09XAUdHtlAlE=;
-	h=Date:Message-ID:From:To:Subject:References:MIME-Version:
-	 Content-Type:cc; b=uGpT1AiSAr6h9n0GuuSfkG3onoJpNqNwUxMKeAdYGd/A7E5CeZ+0ov7ASXousy/aPcBeiA5onN4l/Jg/p8ouE1RM207z0wtwddA/X49s6JYNzeocBB0FD3If/ow0mRlbh9MpiRgNglAjIoOOZSQiiqgMGSXtrdSw5p1WuNB/hWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YwhpP/sf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455B0C2BC87;
-	Fri, 10 Apr 2026 12:19:10 +0000 (UTC)
+	s=arc-20240116; t=1775823555; c=relaxed/simple;
+	bh=qtG4jYoFMBUH8Rv5LkkLsBrvbBwuDbTX1269QfkLCzw=;
+	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=NuZWGs7c9F/nxYYh4xjAHr15mr+jzC5d2SbzM+zhw7jfOaF+82PzmSsSMf8h9ydKzttuf868rQzsgbwMXH/vxT5bnYS7OCppCwbArnZR/UoKblIV+tH7WwMhHqTjeR08UbE5jTwi+0XeOJrDD2f626jOLL4+5inCrBf4sWCCJtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pacXAmHL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE3EC2BC87;
+	Fri, 10 Apr 2026 12:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823550;
-	bh=bea3byi4f+lJwA9RE9L4RIIWG0LfPmc09XAUdHtlAlE=;
-	h=Date:From:To:Subject:References:cc:From;
-	b=YwhpP/sfl2uNAokHMGyDzPyXqsYG5Z3HHapkhzwVASiSkGSv1ImeSFBY018VYZGU6
-	 EPRk8H/tD4bE94DCGFfik82fydH/mvkzeKH2zcGHFzmiPQlK2yTJNXmBvp6CR6/aKP
-	 ZUXJ1ridIfNl+octSklnUsCiAFVq0bMAbDZHArZ2XlGiEpILEnKNdARJlXe1YoLGU7
-	 gTGiAjrmuKfAH7Stm5YSWpKnJ3J0WABG0fiD/+Dm/7aJCfY6aDBkC0dcXhqkELemEA
-	 OLCKD9b/UmnIij2UMaT5laELpK9/RUq1POEHXDOcdk6mujQiavRoj/L2U3OHpVV16q
-	 LiEll066ex31A==
-Date: Fri, 10 Apr 2026 14:19:08 +0200
-Message-ID: <20260410120318.121043259@kernel.org>
+	s=k20201202; t=1775823555;
+	bh=qtG4jYoFMBUH8Rv5LkkLsBrvbBwuDbTX1269QfkLCzw=;
+	h=Date:From:To:Cc:Subject:References:From;
+	b=pacXAmHLAMseTev4RAQUAZDfRzJFeJXjwMW3x14w8vUm7ybikBbtslQQu96s/8Sq0
+	 a3pcIexn/gzfbwI2qYLuXSTx/gSXbmVwhuUFKfTY31pSFVH71nhoebkIPAnwJfmArK
+	 tPmJiCD8oWRaoY6EByg0L3DGpV75oKKW/C5lmUUCoaSznEsjUHpS9yyQByZ5hUlH3x
+	 P8NYw39byMTR2ebfPveTfvTFbDgwqYFvegEj7/kJQbjlvVeppRrN8YtOduabfxNT6E
+	 Yw4oV6JDjGSLEpWghPJGJFmnCci2PXJh9wjpVWvhGUbODkplfUDbeuEJIVIN1zibiF
+	 mC2OEaJT1jHhg==
+Date: Fri, 10 Apr 2026 14:19:12 +0200
+Message-ID: <20260410120318.187521447@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 08/38] x86/tsc: Use rdtsc() instead of get_cycles()
-References: <20260410120044.031381086@kernel.org>
-Precedence: bulk
-X-Mailing-List: linux-wireless@vger.kernel.org
-List-Id: <linux-wireless.vger.kernel.org>
-List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-cc: Arnd Bergmann <arnd@arndb.de>,
- x86@kernel.org,
+Cc: x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
  iommu@lists.linux.dev,
+ Arnd Bergmann <arnd@arndb.de>,
  Michael Grzeschik <m.grzeschik@pengutronix.de>,
  netdev@vger.kernel.org,
  linux-wireless@vger.kernel.org,
@@ -105,20 +96,29 @@ cc: Arnd Bergmann <arnd@arndb.de>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
+Subject: [patch 09/38] iommu/vt-d: Use sched_clock() instead of get_cycles()
+References: <20260410120044.031381086@kernel.org>
+Precedence: bulk
+X-Mailing-List: linux-wireless@vger.kernel.org
+List-Id: <linux-wireless.vger.kernel.org>
+List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34585-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34586-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,vger.kernel.org,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
+	FREEMAIL_CC(0.00)[kernel.org,linux.intel.com,lists.linux.dev,arndb.de,pengutronix.de,vger.kernel.org,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
 	RCPT_COUNT_TWELVE(0.00)[48];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
@@ -131,66 +131,90 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A463E3D6DF0
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linux.dev:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1D1DA3D6F8D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This code knows that TSC is available so there is no point to use the TSC
-feature guarded get_cycles().
+Calculating the timeout from get_cycles() is a historical leftover without
+any functional requirement.
 
-No functional change.
+Use ktime_get() instead.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: x86@kernel.org
+Cc: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: iommu@lists.linux.dev
 ---
- arch/x86/kernel/tsc.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/iommu.h |    3 ---
+ drivers/iommu/intel/dmar.c   |    4 ++--
+ drivers/iommu/intel/iommu.h  |    8 ++++++--
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -371,12 +371,12 @@ static u64 tsc_read_refs(u64 *p, int hpe
- 	int i;
+--- a/arch/x86/include/asm/iommu.h
++++ b/arch/x86/include/asm/iommu.h
+@@ -18,9 +18,6 @@ extern bool x86_swiotlb_enable;
+ #define x86_swiotlb_enable false
+ #endif
  
- 	for (i = 0; i < MAX_RETRIES; i++) {
--		t1 = get_cycles();
-+		t1 = rdtsc();
- 		if (hpet)
- 			*p = hpet_readl(HPET_COUNTER) & 0xFFFFFFFF;
- 		else
- 			*p = acpi_pm_read_early();
--		t2 = get_cycles();
-+		t2 = rdtsc();
- 		if ((t2 - t1) < thresh)
- 			return t2;
- 	}
-@@ -468,13 +468,13 @@ static unsigned long pit_calibrate_tsc(u
- 	outb(latch & 0xff, 0x42);
- 	outb(latch >> 8, 0x42);
+-/* 10 seconds */
+-#define DMAR_OPERATION_TIMEOUT ((cycles_t) tsc_khz*10*1000)
+-
+ static inline int __init
+ arch_rmrr_sanity_check(struct acpi_dmar_reserved_memory *rmrr)
+ {
+--- a/drivers/iommu/intel/dmar.c
++++ b/drivers/iommu/intel/dmar.c
+@@ -1606,9 +1606,9 @@ void qi_flush_pasid_cache(struct intel_i
+  */
+ void dmar_disable_qi(struct intel_iommu *iommu)
+ {
++	ktime_t start_time = ktime_get();
+ 	unsigned long flags;
+ 	u32 sts;
+-	cycles_t start_time = get_cycles();
  
--	tsc = t1 = t2 = get_cycles();
-+	tsc = t1 = t2 = rdtsc();
+ 	if (!ecap_qis(iommu->ecap))
+ 		return;
+@@ -1624,7 +1624,7 @@ void dmar_disable_qi(struct intel_iommu
+ 	 */
+ 	while ((readl(iommu->reg + DMAR_IQT_REG) !=
+ 		readl(iommu->reg + DMAR_IQH_REG)) &&
+-		(DMAR_OPERATION_TIMEOUT > (get_cycles() - start_time)))
++	       (DMAR_OPERATION_TIMEOUT > (ktime_get() - start_time)))
+ 		cpu_relax();
  
- 	pitcnt = 0;
- 	tscmax = 0;
- 	tscmin = ULONG_MAX;
- 	while ((inb(0x61) & 0x20) == 0) {
--		t2 = get_cycles();
-+		t2 = rdtsc();
- 		delta = t2 - tsc;
- 		tsc = t2;
- 		if ((unsigned long) delta < tscmin)
-@@ -553,9 +553,9 @@ static inline int pit_expect_msb(unsigne
- 		if (!pit_verify_msb(val))
- 			break;
- 		prev_tsc = tsc;
--		tsc = get_cycles();
-+		tsc = rdtsc();
- 	}
--	*deltap = get_cycles() - prev_tsc;
-+	*deltap = rdtsc() - prev_tsc;
- 	*tscp = tsc;
+ 	iommu->gcmd &= ~DMA_GCMD_QIE;
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -23,6 +23,7 @@
+ #include <linux/xarray.h>
+ #include <linux/perf_event.h>
+ #include <linux/pci.h>
++#include <linux/timekeeping.h>
+ #include <linux/generic_pt/iommu.h>
  
- 	/*
+ #include <asm/iommu.h>
+@@ -360,14 +361,17 @@
+ /* PERFINTRSTS_REG */
+ #define DMA_PERFINTRSTS_PIS	((u32)1)
+ 
++#define DMAR_OPERATION_TIMEOUT  (((ktime_t)10) * NSEC_PER_SEC)
++
+ #define IOMMU_WAIT_OP(iommu, offset, op, cond, sts)			\
+ do {									\
+-	cycles_t start_time = get_cycles();				\
++	ktime_t start_time = ktime_get();				\
++									\
+ 	while (1) {							\
+ 		sts = op(iommu->reg + offset);				\
+ 		if (cond)						\
+ 			break;						\
+-		if (DMAR_OPERATION_TIMEOUT < (get_cycles() - start_time))\
++		if (DMAR_OPERATION_TIMEOUT < (ktime_get() - start_time))\
+ 			panic("DMAR hardware is malfunctioning\n");	\
+ 		cpu_relax();						\
+ 	}								\
 
 
