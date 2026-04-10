@@ -1,55 +1,56 @@
-Return-Path: <linux-wireless+bounces-34599-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34600-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eK/5Gpvx2GkhkAgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34599-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:48:27 +0200
+	id EOooKOHu2GlLjwgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34600-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:36:49 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90FC73D7AEA
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:48:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6164F3D75A0
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:36:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A6B7D305B69B
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:25:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFC323092E1C
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AED3CC9F6;
-	Fri, 10 Apr 2026 12:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177073CCFB5;
+	Fri, 10 Apr 2026 12:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C7az2CYX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c0dC5Jtr"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1813C4566;
-	Fri, 10 Apr 2026 12:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26D63CCFA9;
+	Fri, 10 Apr 2026 12:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775823619; cv=none; b=UaqxFWRQ7jNL7xiUzaFSyabXxWIh1sHjcFZ5L0YIGwKPoryc9DJzNlmf22kexVU3g/SObgPjChXC0vag52rdD1wI4wIxzyPhqBB+Q3FdRZ1+srMBKYLBYLYZO5Lnztr3KJVWPUfUJPFNLc1Qs3imud9HU0P+9REPyuB25co+vPA=
+	t=1775823625; cv=none; b=T0fGOea6MAaefT2KzJspzb+reflcvhJVce+XVTZfa7d7IwRgCMJjyUY+i+kbIyB3wqYDexUKre57TKZyXseHbf4COa+x0BmIGXqWHJbGxUKbkP0YQt2QYRuj/9eEJB6CcFRya20v8bHCcFxoUEFpsbiTmDZm6GSLKs1TVPELT14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775823619; c=relaxed/simple;
-	bh=qm3xQcBXEr96lL4hegVcj0UIOMtgXH0StGBPsgVLlKQ=;
+	s=arc-20240116; t=1775823625; c=relaxed/simple;
+	bh=oFanz67wDB6XocOAPDGw4dDZpTIkPCesLmisdDG6nxo=;
 	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=pwhTH/LlUysvxt6vG27EW+1KliR/E+ys+ncaLsBtCQpNsutspYmuCZ/dM1/T0l1bMcgxe8mnNNNiGytS4ehowhA381vCThIj6rRzvr/dbzvxnhM10vjC2fit5bhUabiuDCFUYWFrZF7EGkGvX4DH+g2Z1iTk/1akeJKEL9fok4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C7az2CYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E21BC19421;
-	Fri, 10 Apr 2026 12:20:18 +0000 (UTC)
+	 Content-Type; b=hAoJOvRcRD5SIXTv2D+n1Y9KsY8ltJ1I/PQLZpQXXd+UWxGF5vNxB3ysr2p7ZhRMhFLgIrQTPVSCaOE1OopMxj3YmAK0YRAHzzXSf5mcgrjs4xiwXhYkiqCHkwTyCsmkB3fTJTBa7B/puxbTE0KM8HEZiJcpn1WlCTP7QOmvLzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c0dC5Jtr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8D1C2BCAF;
+	Fri, 10 Apr 2026 12:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823619;
-	bh=qm3xQcBXEr96lL4hegVcj0UIOMtgXH0StGBPsgVLlKQ=;
+	s=k20201202; t=1775823624;
+	bh=oFanz67wDB6XocOAPDGw4dDZpTIkPCesLmisdDG6nxo=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=C7az2CYXx68wjErxLRkuWTeHqh2CiNCWSqYoEW7CDASKgYcRJIgZbMFxC0wyGwYuo
-	 q2wWS5Il3rSZIvkXMrziJDymJeOKDwzCu+GiLTUQ15ObFw+7EBHLm3ubP5lL1H6hxr
-	 ReCtVW/VKZ0Y6HBv+Xxa78vZHjPEyhGg6WzSGQLG1W0Tyuqe7kgGZgc8KKs+JzIX6a
-	 qzTQ3qBxeH5MKjO5ANy/+fOcCKNQ7HWyamJ7hE6VNKzzJsl13+xyi236101/gCvlT5
-	 hn6GusmLxuTParC929bCg39takaaNPRV5A3bS+11CTndJSbqW1MjcdkxKmUqQfmLua
-	 lqUqNEa3EnLWw==
-Date: Fri, 10 Apr 2026 14:20:16 +0200
-Message-ID: <20260410120319.064561422@kernel.org>
+	b=c0dC5JtrlZ2hDwVhQHVakSSF0GbYurUcyOeInN2NikRGB2GB116TXZbw4nZgMtYST
+	 +trrlORaNRGlhOHpfrC+lW1HFBRAEy8GyOUXKZu1wlydXKozlVO6l7tAEsojNrD9kY
+	 z8EDy3AU6BDmVg1em2KMGfc38GeNfIIV9PZdmIDh6XXPID1ZvpPfEKL37BFIXkriEy
+	 vg9bLTMeocXCte6TCzTTMg21Eh6HrXJDyZdGV1tmWvL/lAElJukNPv/QpJCLNXioOw
+	 AQtioNlgi2FcvW/yMQPolJ5GR/97GritVQBv4kElLuN4ah4YH0PTQC3eZtbzxU1vfd
+	 IORnVjKLVUNIw==
+Date: Fri, 10 Apr 2026 14:20:21 +0200
+Message-ID: <20260410120319.131582521@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ linux-alpha@vger.kernel.org,
  Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
@@ -74,8 +75,7 @@ Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
  Andrey Ryabinin <ryabinin.a.a@gmail.com>,
  Thomas Sailer <t.sailer@alumni.ethz.ch>,
  linux-hams@vger.kernel.org,
- Richard Henderson <richard.henderson@linaro.org>,
- linux-alpha@vger.kernel.org,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>,
  Russell King <linux@armlinux.org.uk>,
  linux-arm-kernel@lists.infradead.org,
  Catalin Marinas <catalin.marinas@arm.com>,
@@ -96,7 +96,7 @@ Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 22/38] random: Provide CONFIG_ARCH_HAS_RANDOM_ENTROPY
+Subject: [patch 23/38] alpha: Select ARCH_HAS_RANDOM_ENTROPY
 References: <20260410120044.031381086@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -109,19 +109,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[zx2c4.com,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,vger.kernel.org,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
+	FREEMAIL_CC(0.00)[linaro.org,vger.kernel.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-34599-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34600-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -132,129 +132,82 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_TWELVE(0.00)[48];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 90FC73D7AEA
+X-Rspamd-Queue-Id: 6164F3D75A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Chasing down to what random_get_entropy() resolves is a 'spot the mouse'
-game through a maze of #ifdeffery. Also the placement in timex.h is
-non-obvious and has just been chosen because it provides conveniant access
-to the underlying get_cycles() #ifdeffery.
+The only remaining usage of get_cycles() is to provide
+random_get_entropy().
 
-Provide a config switch which is selectable by the architecture and a
-temporary #ifdef guard in timex.h. Architectures which select the config
-switch must provide asm/random.h with the architecture specific
-implementation.
+Switch alpha over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
+and providing random_get_entropy() in asm/random.h.
 
-Update all usage sites to include linux/random.h so that the gradual
-conversion does not cause build regressions.
-
-This is part of a larger effort to remove get_cycles() usage from
-non-architecture code.
+Remove asm/timex.h as it has no functionality anymore.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: linux-alpha@vger.kernel.org
 ---
- arch/Kconfig                     |    3 +++
- arch/loongarch/kernel/relocate.c |    1 +
- arch/mips/kernel/relocate.c      |    1 +
- crypto/jitterentropy-kcapi.c     |    1 +
- include/linux/random.h           |   15 +++++++++++++++
- include/linux/timex.h            |    2 ++
- kernel/kcsan/core.c              |    1 +
- 7 files changed, 24 insertions(+)
+ arch/alpha/Kconfig              |    1 +
+ arch/alpha/include/asm/random.h |   14 ++++++++++++++
+ arch/alpha/include/asm/timex.h  |   26 --------------------------
+ 3 files changed, 15 insertions(+), 26 deletions(-)
 
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -370,6 +370,9 @@ config ARCH_HAS_CPU_FINALIZE_INIT
- config ARCH_HAS_DELAY_TIMER
- 	bool
- 
-+config ARCH_HAS_RANDOM_ENTROPY
-+	bool
+--- a/arch/alpha/Kconfig
++++ b/arch/alpha/Kconfig
+@@ -5,6 +5,7 @@ config ALPHA
+ 	select ARCH_32BIT_USTAT_F_TINODE
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DMA_OPS if PCI
++	select ARCH_HAS_RANDOM_ENTROPY
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
+ 	select ARCH_MODULE_NEEDS_WEAK_PER_CPU if SMP
+--- /dev/null
++++ b/arch/alpha/include/asm/random.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASMALPHA_RANDOM_H
++#define _ASMALPHA_RANDOM_H
 +
- # The architecture has a per-task state that includes the mm's PASID
- config ARCH_HAS_CPU_PASID
- 	bool
---- a/arch/loongarch/kernel/relocate.c
-+++ b/arch/loongarch/kernel/relocate.c
-@@ -9,6 +9,7 @@
- #include <linux/kernel.h>
- #include <linux/printk.h>
- #include <linux/panic_notifier.h>
-+#include <linux/random.h>
- #include <linux/start_kernel.h>
- #include <asm/bootinfo.h>
- #include <asm/early_ioremap.h>
---- a/arch/mips/kernel/relocate.c
-+++ b/arch/mips/kernel/relocate.c
-@@ -19,6 +19,7 @@
- #include <linux/libfdt.h>
- #include <linux/of_fdt.h>
- #include <linux/panic_notifier.h>
-+#include <linux/random.h>
- #include <linux/sched/task.h>
- #include <linux/start_kernel.h>
- #include <linux/string.h>
---- a/crypto/jitterentropy-kcapi.c
-+++ b/crypto/jitterentropy-kcapi.c
-@@ -42,6 +42,7 @@
- #include <linux/fips.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/random.h>
- #include <linux/slab.h>
- #include <linux/time.h>
- #include <crypto/internal/rng.h>
---- a/include/linux/random.h
-+++ b/include/linux/random.h
-@@ -139,4 +139,19 @@ int random_online_cpu(unsigned int cpu);
- extern const struct file_operations random_fops, urandom_fops;
- #endif
- 
-+unsigned long random_get_entropy_fallback(void);
++/* Use the cycle counter for entropy. */
++static inline unsigned long random_get_entropy(void)
++{
++	unsigned long ret;
 +
-+/*
-+ * random_get_entropy() is used by the /dev/random driver in order to extract
-+ * entropy via the relative unpredictability of when an interrupt takes places
-+ * versus a high speed, fine-grained timing source or cycle counter.  Since it
-+ * will be occurred on every single interrupt, it must have a very low
-+ * cost/overhead.
-+ *
-+ * If an architecture does not provide it, then use random_get_entropy_fallback().
-+ */
-+#ifdef CONFIG_ARCH_HAS_RANDOM_ENTROPY
-+#include <asm/random.h>
++	__asm__ __volatile__ ("rpcc %0" : "=r"(ret));
++	return ret;
++}
++
 +#endif
-+
- #endif /* _LINUX_RANDOM_H */
---- a/include/linux/timex.h
-+++ b/include/linux/timex.h
-@@ -66,6 +66,7 @@ unsigned long random_get_entropy_fallbac
- 
- #include <asm/timex.h>
- 
-+#ifndef CONFIG_ARCH_HAS_RANDOM_ENTROPY
- #ifndef random_get_entropy
- /*
-  * The random_get_entropy() function is used by the /dev/random driver
-@@ -85,6 +86,7 @@ unsigned long random_get_entropy_fallbac
- #define random_get_entropy()	random_get_entropy_fallback()
- #endif
- #endif
-+#endif
- 
- /*
-  * SHIFT_PLL is used as a dampening factor to define how much we
---- a/kernel/kcsan/core.c
-+++ b/kernel/kcsan/core.c
-@@ -18,6 +18,7 @@
- #include <linux/moduleparam.h>
- #include <linux/percpu.h>
- #include <linux/preempt.h>
-+#include <linux/random.h>
- #include <linux/sched.h>
- #include <linux/string.h>
- #include <linux/uaccess.h>
+--- a/arch/alpha/include/asm/timex.h
++++ /dev/null
+@@ -1,26 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/*
+- * linux/include/asm-alpha/timex.h
+- *
+- * ALPHA architecture timex specifications
+- */
+-#ifndef _ASMALPHA_TIMEX_H
+-#define _ASMALPHA_TIMEX_H
+-
+-/*
+- * Standard way to access the cycle counter.
+- * Currently only used on SMP for scheduling.
+- *
+- * Only the low 32 bits are available as a continuously counting entity. 
+- * But this only means we'll force a reschedule every 8 seconds or so,
+- * which isn't an evil thing.
+- */
+-static inline cycles_t get_cycles (void)
+-{
+-	cycles_t ret;
+-	__asm__ __volatile__ ("rpcc %0" : "=r"(ret));
+-	return ret;
+-}
+-#define get_cycles get_cycles
+-
+-#endif
 
 
