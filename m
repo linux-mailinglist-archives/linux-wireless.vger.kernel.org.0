@@ -1,179 +1,327 @@
-Return-Path: <linux-wireless+bounces-34573-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34574-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8F7pDXOu2GljgwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34573-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 10:01:55 +0200
+	id KJTqAyrP2GngiQgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34574-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:21:30 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2986E3D3B4A
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 10:01:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC333D5990
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:21:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 12D1430235A0
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 08:00:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E0A693004621
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 10:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1061D3AE1B8;
-	Fri, 10 Apr 2026 08:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC9C332608;
+	Fri, 10 Apr 2026 10:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LrZEVRu1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p5BIbt5w"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF5A3ACEE2
-	for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 08:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC2F38228D
+	for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 10:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775808041; cv=none; b=ic04f7ZjNZmbQMmW0r+gEoSQcsj7O9Cl7EGGxxoJZXbcbx4ABJXnJdKwlZD7RzT1G7Kn9Oubn2uKxPhKXt7CReUGzU4ayZMDrWC4a2HoDvxQdehLGSQd/oNvz/SRkTt7GEw6FVHODSu6dKuK0ZMfdG3RfOrIF5d3DAGtensFZKU=
+	t=1775816022; cv=none; b=cp028MadsuiN0gBgO/XZOytkhLfAH6RanPz0q2LO7bK66GeK+Zu6zf1bsQimSpY/F/wxL2eCTA21aWqM4sbboUHXTO7rPTspESRY6GYea/WjhgaLLLNeS+U/Q72SwBD5/QtnxOKBhupLeklFkj0kxyclzQXgR3iAqu77AYhtoK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775808041; c=relaxed/simple;
-	bh=VPddwM7q9ai+Mc+Hm7URp9mhZzBpJZSUIvlqgPihycU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XSZS7vCJZqbVqi4IqTixhNKzF0xuYlJwKYIKaVKlEno9F91D5mcw6y6jRfvM+37qJrXY07TTziGD9ftcBlJwW4ud5cauVP7ZUJnkOENjXLAl2gVZsFkzQamKxjQVw+tgoWVWRkF5+W99GDwF3CesGYFFYqN3GgbT1Xefu22+Em4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LrZEVRu1; arc=none smtp.client-ip=209.85.221.49
+	s=arc-20240116; t=1775816022; c=relaxed/simple;
+	bh=3hN7KPxTlCsbSILsewOQ/ykUheRZtZQ3Rn/0qROUGIg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=VLyMcsgitwmQpS4WeZ/ytvdoRg9ytijjGRZ+GjylqdkTkzdAzKykBv6Z4ndQxpPx9UpiilgKgRnjB8yV9NLQBx79uVHJlQyL5G4zsIIdHbN+l+OxN3MUIgjoaL9hcih8n/oy1xymkKPi+IRqYcXNIHc+q6Kwr4K68+bocNtT5q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p5BIbt5w; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43b8e8e7432so1523516f8f.1
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 01:00:39 -0700 (PDT)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4887ca8e529so11991625e9.0
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 03:13:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775808038; x=1776412838; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FH4qigFMvJKamcVu6PpJKnPBitJ1tPD2bAQZHpobGMY=;
-        b=LrZEVRu1cF8ARTyxV7oe+qNycEiPSievJ3j7kt8tptvwyUXYdg9DvGmRh71rOfr7zV
-         tuSIU272nYeAR4/+R6p6jdZuxwmFtyfqfKZGG90btFJRspgcZJ6d4G15tYvCntn2VC/N
-         kk3cmt1+AmtZZAtPAsSB3979mE7RFZHh6xJ/BsPH+XJajg1Iq1IklY5SAmebJdHufo+S
-         CZ4IpsK7ArJHRoU88GgpDkX3B1F4Ao/jVd82lhTUn+IrtafglwAAdYuIQKHPJ3jHB1Nj
-         A3Y2BZRAHOjfRedIim2CXrLBDvAJqdMbbpyRqKbGJPEy/m4WJKtPBKggsesF4YhssTkW
-         j2NA==
+        d=gmail.com; s=20251104; t=1775816019; x=1776420819; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qARg06qVMz9+DLd38HAj11nvFT4m9He5ePu4KsCy86E=;
+        b=p5BIbt5wQkS7D2MFi1N1GnQ4U+ZYQm866EL1LjfouKStfmbSmP3UTsVBXMJYbs3iYv
+         ioVgcwGLY5nnm80Qe4CbjaFopPi5T75Ir8WgyRKYWqGk/hPrOrzDXiFF0pTD4tP2hw2+
+         tiBBt/EjJvgZRwfyCSwm7ZSQNSa+USxeTaizPSaDic7Y2+iHIXyfclpZJmPDjCS2LIHP
+         e8JNUIWQyzwnBI9Tqm9OhQG3/0eXOnqrLCRjYiyMUkcKNAM/ecj2lQPG/XaiZZQFmchQ
+         MavpuRrpyRXElKdMBzrk0MV4DsjYm9jd4ggitkkIKitFV8TiaGzL+ikFoDxDrKSCJUEs
+         wevg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775808038; x=1776412838;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FH4qigFMvJKamcVu6PpJKnPBitJ1tPD2bAQZHpobGMY=;
-        b=owmtC+HbbDq7F/ohHTx75N9z6yWn8bt4k1tK+ORlTtyRMkZ8eSjxCcaYeQXHHa3WdN
-         ii2Hqqooc6Q4qCBZW2y644RLp37uJoj1jAjfoDu/SvmJ7aZM04OI4/docoruhsD4HPGk
-         njPW62AuB7VqXu3xnWPHfatZWiBpIm/par3pwTP+oDeB8cOMecuZa9ngHhXVtP1eZOXT
-         BSXXFbUzX41zS6KDhMrNN9M5g6UODnbE5Idk+7X+/9BPav466tBPU1qFoxosHPSBwbA/
-         F97AsNyEIceCOegn6nSTrRuapVLzIHZiHPijwoqDPW2eZjpmyQQ/bzWFcp326xIVG4UQ
-         UTHA==
-X-Gm-Message-State: AOJu0YxR2rRCjG6YmmBstFEba7tAkV+kGNGuplIrZXOzehwIVIC6AZX8
-	MCd6MzB4cSTVF4clDT7TN4Ptmbn6xEjkwikV9yMZRqpg0gzPv+Wexqr88s9Lij9kMDw=
-X-Gm-Gg: AeBDievlaVPncvo4ATVWNZfMW/zrns0aXhXsUBGg85lMrg74KsRA4AX47xJ63hh4dLR
-	13a754I95FBFgIivvd5s0Csiy1pKv2eropGYjJvQMa8aewPtyim4Yb+R9oyn+CV7RWqfIQUZV8H
-	VAIxXhnakG+OmRIQU0Y1AWHAdl9UdNqFV/XkA2xDndBnVXOsUfBBZt7copihqS/7yr6ppoRvxmY
-	cOIs9e8Mlmq0KaKHRhr5ONyVeEliBU0LhkqDPjRqOIl9m22WyGQYqCy8SNROCS6F8wiJh0UGlee
-	NxCa4Nn0b38QFRjtQLeHd5JJ8t4t5uJyJsQqb7ZvIpcTyjBHYJN6lR1xOaIoe7+JHyN7PMjqR/G
-	HXEtFjolo3hUdJHVuygyxZ+2GFugp4keHpVnIYHI5FPo0p5gHlUJfT9kq5Ybodt71Z6pZuJgEUX
-	YcWlElcyxKe7HEpuw=
-X-Received: by 2002:a05:6000:1ac5:b0:43d:4df5:3de with SMTP id ffacd0b85a97d-43d642c5029mr2857827f8f.31.1775808037584;
-        Fri, 10 Apr 2026 01:00:37 -0700 (PDT)
-Received: from bazzite ([102.128.175.252])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63e5c98fsm5891151f8f.35.2026.04.10.01.00.34
+        d=1e100.net; s=20251104; t=1775816019; x=1776420819;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qARg06qVMz9+DLd38HAj11nvFT4m9He5ePu4KsCy86E=;
+        b=O2TdB2/vvxVKVe+/3Kl5f8w/6iYozf/7PMW1Jzpw7t07SAs05CMMr5j2Z4zga/862t
+         v5L6S1YrcN3g8QUF0ytCMa1abASYzbCxlmxkORTxNcigKg+8qfh1JVyQw30IzntnZpB5
+         eGmGyfeIAkKspDxW/aYOF3UThFCYMoPWQFLOt/9TDSmsuj+wRocKOO7JDuAhd82t8q9C
+         meHnK9/cli4aCyUSLnS7hT8TvEyevg9SLE/oqBiS8zYyLm/pvn0BJKTnPmRTZ0mVpT6v
+         /oEFES9mUCY/IGN+3b4fh1uE+ejxzl2Xtv/ymexdfO9rzO35zBYSGh3Hs34cdOK7Xj17
+         W4fQ==
+X-Gm-Message-State: AOJu0Yz8uAiT95g/nJJsTk/QZciFjyWPAGLxBjKzrNUqtt9zxvFsQYt4
+	dDGnGU4+EQCLCLs9/meojeO141FztLVRDBycDkCUeyn+nSkCo63k5V33
+X-Gm-Gg: AeBDievip+/Y41JexDwAyknqXNkDjNO18Gc722hNMI9akTPREaOTvobPSm/bofuz8TZ
+	fOgdPMYiCkmvUVSIUqo2sEd2d/X/prhAi46g9p17vU2t0f1wjB+HLiDehlGvATgRnBGuZAVISZB
+	RN+hmtBBL411RRDwxr6/TEGGaLXQ/jc7xlgDFgHuJ1IzIxot1FXMlk9XNnDwf6EkwnAEtQME4eq
+	FQVHCaTMNVrOL0jd18XRwYHB4oLbPnUc2UyaOtwOEy686XR9yP2O4ni6OUu38IfU3p58a5Kb487
+	sAlXOfnYuSoKBIbXqv57lVXLpjpnA6XdOCG+7UoOGm+pc6ZNUJbEc6GRa0Bk6iEJWaEc+CGsK9X
+	xroAkzjOUVrTz4K6u4/tGcNCyHG/nCqUbNvSjgnbFirpyIut4exyAfpUwypAP/qyyAE+7wfsRHQ
+	VgIFRBqyo2px0+4+cym7I=
+X-Received: by 2002:a05:600c:3ba4:b0:488:c6e9:1e0c with SMTP id 5b1f17b1804b1-488d6847de9mr28556345e9.5.1775816019154;
+        Fri, 10 Apr 2026 03:13:39 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63e5c981sm6388557f8f.33.2026.04.10.03.13.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 01:00:36 -0700 (PDT)
-From: Louis Kotze <loukot@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: pkshih@realtek.com,
-	rtl8821cerfe2@gmail.com,
-	linux-kernel@vger.kernel.org,
-	Louis Kotze <loukot@gmail.com>
-Subject: [PATCH 2/2] wifi: rtw89: phy: make RF calibration timeouts non-fatal on USB
-Date: Fri, 10 Apr 2026 10:00:17 +0200
-Message-ID: <20260410080017.82946-3-loukot@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260410080017.82946-1-loukot@gmail.com>
-References: <795a8567fdbe48babc5cf0f2b5e10c0a@realtek.com>
- <20260410080017.82946-1-loukot@gmail.com>
+        Fri, 10 Apr 2026 03:13:38 -0700 (PDT)
+Date: Fri, 10 Apr 2026 13:13:35 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: Sean Wang <sean.wang@mediatek.com>
+Cc: linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: [bug report] wifi: mt76: mt7921: handle MT7902 irq_map quirk with
+ mutable copy
+Message-ID: <adjNTwO_ziI9eLWU@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34573-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[realtek.com,gmail.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-34574-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[loukot@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[error27@gmail.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2986E3D3B4A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,stanley.mountain:mid]
+X-Rspamd-Queue-Id: 6BC333D5990
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On USB adapters, RF calibration timeouts can still occasionally occur
-despite the increased timeout values, particularly under system load
-or USB bus contention. However, the radio typically continues to
-operate correctly despite an incomplete calibration — the timeout
-does not indicate a hardware failure.
+Hello Sean Wang,
 
-Make calibration timeouts and bad state returns non-fatal on USB by
-logging at debug level and continuing, rather than returning
--ETIMEDOUT/-EFAULT which can cascade into a connection failure or
-disconnect.
+Commit 222606f43b58 ("wifi: mt76: mt7921: handle MT7902 irq_map quirk
+with mutable copy") from Feb 18, 2026 (linux-next), leads to the
+following Smatch static checker warning:
 
-PCIe error handling is unchanged — timeouts remain fatal on PCIe
-where they indicate a real problem.
+	drivers/net/wireless/mediatek/mt76/mt7921/pci.c:363 mt7921_pci_probe()
+	warn: missing unwind goto?
 
-Signed-off-by: Louis Kotze <loukot@gmail.com>
----
- drivers/net/wireless/realtek/rtw89/phy.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+    258 static int mt7921_pci_probe(struct pci_dev *pdev,
+    259                             const struct pci_device_id *id)
+    260 {
+    261         static const struct mt76_driver_ops drv_ops = {
+    262                 /* txwi_size = txd size + txp size */
+    263                 .txwi_size = MT_TXD_SIZE + sizeof(struct mt76_connac_hw_txp),
+    264                 .drv_flags = MT_DRV_TXWI_NO_FREE | MT_DRV_HW_MGMT_TXQ |
+    265                              MT_DRV_AMSDU_OFFLOAD,
+    266                 .survey_flags = SURVEY_INFO_TIME_TX |
+    267                                 SURVEY_INFO_TIME_RX |
+    268                                 SURVEY_INFO_TIME_BSS_RX,
+    269                 .token_size = MT7921_TOKEN_SIZE,
+    270                 .tx_prepare_skb = mt7921e_tx_prepare_skb,
+    271                 .tx_complete_skb = mt76_connac_tx_complete_skb,
+    272                 .rx_check = mt7921_rx_check,
+    273                 .rx_skb = mt7921_queue_rx_skb,
+    274                 .rx_poll_complete = mt792x_rx_poll_complete,
+    275                 .sta_add = mt7921_mac_sta_add,
+    276                 .sta_event = mt7921_mac_sta_event,
+    277                 .sta_remove = mt7921_mac_sta_remove,
+    278                 .update_survey = mt792x_update_channel,
+    279                 .set_channel = mt7921_set_channel,
+    280         };
+    281         static const struct mt792x_hif_ops mt7921_pcie_ops = {
+    282                 .init_reset = mt7921e_init_reset,
+    283                 .reset = mt7921e_mac_reset,
+    284                 .mcu_init = mt7921e_mcu_init,
+    285                 .drv_own = mt792xe_mcu_drv_pmctrl,
+    286                 .fw_own = mt792xe_mcu_fw_pmctrl,
+    287         };
+    288         static const struct mt792x_irq_map irq_map = {
+    289                 .host_irq_enable = MT_WFDMA0_HOST_INT_ENA,
+    290                 .tx = {
+    291                         .all_complete_mask = MT_INT_TX_DONE_ALL,
+    292                         .mcu_complete_mask = MT_INT_TX_DONE_MCU,
+    293                 },
+    294                 .rx = {
+    295                         .data_complete_mask = MT_INT_RX_DONE_DATA,
+    296                         .wm_complete_mask = MT_INT_RX_DONE_WM,
+    297                         .wm2_complete_mask = MT_INT_RX_DONE_WM2,
+    298                 },
+    299         };
+    300         struct ieee80211_ops *ops;
+    301         struct mt76_bus_ops *bus_ops;
+    302         struct mt792x_dev *dev;
+    303         struct mt76_dev *mdev;
+    304         void __iomem *regs;
+    305         u16 cmd, chipid;
+    306         u8 features;
+    307         int ret;
+    308 
+    309         ret = pcim_enable_device(pdev);
+    310         if (ret)
+    311                 return ret;
+    312 
+    313         pci_read_config_word(pdev, PCI_COMMAND, &cmd);
+    314         if (!(cmd & PCI_COMMAND_MEMORY)) {
+    315                 cmd |= PCI_COMMAND_MEMORY;
+    316                 pci_write_config_word(pdev, PCI_COMMAND, cmd);
+    317         }
+    318         pci_set_master(pdev);
+    319 
+    320         ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
+    321         if (ret < 0)
+    322                 return ret;
+    323 
+    324         ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
+    325         if (ret)
+    326                 goto err_free_pci_vec;
+    327 
+    328         if (mt7921_disable_aspm)
+    329                 mt76_pci_disable_aspm(pdev);
+    330 
+    331         ops = mt792x_get_mac80211_ops(&pdev->dev, &mt7921_ops,
+    332                                       (void *)id->driver_data, &features);
+    333         if (!ops) {
+    334                 ret = -ENOMEM;
+    335                 goto err_free_pci_vec;
+    336         }
+    337 
+    338         mdev = mt76_alloc_device(&pdev->dev, sizeof(*dev), ops, &drv_ops);
+    339         if (!mdev) {
+    340                 ret = -ENOMEM;
+    341                 goto err_free_pci_vec;
+    342         }
+    343 
+    344         pci_set_drvdata(pdev, mdev);
+    345 
+    346         regs =  pcim_iomap_region(pdev, 0, pci_name(pdev));
+    347         if (IS_ERR(regs))
+    348                 return PTR_ERR(regs);
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 4d809df8b..a06bea88e 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -3972,9 +3972,21 @@ int rtw89_phy_rfk_report_wait(struct rtw89_dev *rtwdev, const char *rfk_name,
- 	time_left = wait_for_completion_timeout(&wait->completion,
- 						msecs_to_jiffies(ms));
- 	if (time_left == 0) {
-+		if (rtwdev->hci.type == RTW89_HCI_TYPE_USB) {
-+			rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+				    "RF %s timeout (non-fatal on USB)\n",
-+				    rfk_name);
-+			goto out;
-+		}
- 		rtw89_warn(rtwdev, "failed to wait RF %s\n", rfk_name);
- 		return -ETIMEDOUT;
- 	} else if (wait->state != RTW89_RFK_STATE_OK) {
-+		if (rtwdev->hci.type == RTW89_HCI_TYPE_USB) {
-+			rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+				    "RF %s state %d (non-fatal on USB)\n",
-+				    rfk_name, wait->state);
-+			goto out;
-+		}
- 		rtw89_warn(rtwdev, "failed to do RF %s result from state %d\n",
- 			   rfk_name, wait->state);
- 		return -EFAULT;
--- 
-2.53.0
+Need to goto to err_free_pci_vec before returning
 
+    349 
+    350         dev = container_of(mdev, struct mt792x_dev, mt76);
+    351         dev->fw_features = features;
+    352         dev->hif_ops = &mt7921_pcie_ops;
+    353         dev->irq_map = &irq_map;
+    354         mt76_mmio_init(&dev->mt76, regs);
+    355 
+    356         if (id->device == 0x7902) {
+    357                 struct mt792x_irq_map *map;
+    358 
+    359                 /* MT7902 needs a mutable copy because wm2_complete_mask differs */
+    360                 map = devm_kmemdup(&pdev->dev, &irq_map,
+    361                                    sizeof(irq_map), GFP_KERNEL);
+    362                 if (!map)
+--> 363                         return -ENOMEM;
+
+Same.
+
+    364 
+    365                 map->rx.wm2_complete_mask = 0;
+    366                 dev->irq_map = map;
+    367         }
+    368 
+    369         tasklet_init(&mdev->irq_tasklet, mt792x_irq_tasklet, (unsigned long)dev);
+    370 
+    371         dev->phy.dev = dev;
+    372         dev->phy.mt76 = &dev->mt76.phy;
+    373         dev->mt76.phy.priv = &dev->phy;
+    374         dev->bus_ops = dev->mt76.bus;
+    375         bus_ops = devm_kmemdup(dev->mt76.dev, dev->bus_ops, sizeof(*bus_ops),
+    376                                GFP_KERNEL);
+    377         if (!bus_ops) {
+    378                 ret = -ENOMEM;
+    379                 goto err_free_dev;
+    380         }
+    381 
+    382         bus_ops->rr = mt7921_rr;
+    383         bus_ops->wr = mt7921_wr;
+    384         bus_ops->rmw = mt7921_rmw;
+    385         dev->mt76.bus = bus_ops;
+    386 
+    387         if (!mt7921_disable_aspm && mt76_pci_aspm_supported(pdev))
+    388                 dev->aspm_supported = true;
+    389 
+    390         ret = mt792xe_mcu_fw_pmctrl(dev);
+    391         if (ret)
+    392                 goto err_free_dev;
+    393 
+    394         ret = __mt792xe_mcu_drv_pmctrl(dev);
+    395         if (ret)
+    396                 goto err_free_dev;
+    397 
+    398         chipid = mt7921_l1_rr(dev, MT_HW_CHIPID);
+    399         if (chipid == 0x7961 && (mt7921_l1_rr(dev, MT_HW_BOUND) & BIT(7)))
+    400                 chipid = 0x7920;
+    401         mdev->rev = (chipid << 16) |
+    402                     (mt7921_l1_rr(dev, MT_HW_REV) & 0xff);
+    403         dev_info(mdev->dev, "ASIC revision: %04x\n", mdev->rev);
+    404 
+    405         ret = mt792x_wfsys_reset(dev);
+    406         if (ret)
+    407                 goto err_free_dev;
+    408 
+    409         mt76_wr(dev, irq_map.host_irq_enable, 0);
+    410 
+    411         mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
+    412 
+    413         ret = devm_request_irq(mdev->dev, pdev->irq, mt792x_irq_handler,
+    414                                IRQF_SHARED, KBUILD_MODNAME, dev);
+    415         if (ret)
+    416                 goto err_free_dev;
+    417 
+    418         ret = mt7921_dma_init(dev);
+    419         if (ret)
+    420                 goto err_free_irq;
+    421 
+    422         ret = mt7921_register_device(dev);
+    423         if (ret)
+    424                 goto err_free_irq;
+    425 
+    426         if (of_property_read_bool(dev->mt76.dev->of_node, "wakeup-source"))
+    427                 device_init_wakeup(dev->mt76.dev, true);
+    428 
+    429         return 0;
+    430 
+    431 err_free_irq:
+    432         devm_free_irq(&pdev->dev, pdev->irq, dev);
+    433 err_free_dev:
+    434         mt76_free_device(&dev->mt76);
+    435 err_free_pci_vec:
+    436         pci_free_irq_vectors(pdev);
+    437 
+    438         return ret;
+    439 }
+
+This email is a free service from the Smatch-CI project [smatch.sf.net].
+
+regards,
+dan carpenter
 
