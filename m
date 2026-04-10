@@ -1,55 +1,55 @@
-Return-Path: <linux-wireless+bounces-34601-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34602-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKBXDxDu2GlLjwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34601-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:33:20 +0200
+	id YIz8JQ/v2GlLjwgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34602-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:37:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0193D7333
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:33:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 736183D7603
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 46802304F7E6
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:26:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 69B0A30738C9
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B8C3DC4B4;
-	Fri, 10 Apr 2026 12:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765583C4573;
+	Fri, 10 Apr 2026 12:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UacNbv5z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UsSMuuI0"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D217D3CD8B5;
-	Fri, 10 Apr 2026 12:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487C63C0635;
+	Fri, 10 Apr 2026 12:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775823629; cv=none; b=fgvGLK9QvpNS98Bhjjb9i0aTw8UZr7f90SuvH9ZMi+Vk2hZlWBZiIJYLNylxpXVVqmmFZ6iqQ75K/6ejzKFn/ynDla28rTlQg52xPyxf6N9cS5FrCSdLc25KENkK2rL+xmBwgMlVN6HkwB9I1mSPXGzjcU8lCaazIqyPZ6Qdngw=
+	t=1775823634; cv=none; b=kw/y9sTZaHK2WHMZ+ZQVcYd7xeA1iV/G4DFWYHN7Iy6LsGlc2vOG+yc2OjKz0YILTY7Wx1dLvmstx5TfaKMQdzjyBJg1ERhEriFFpMjgbTp6Sepd06kZ3QKC9aVEVufYLbysYtiAyW7k9D4xWSqBhilcLwBWQ3EspQqxIJXmsPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775823629; c=relaxed/simple;
-	bh=Xj914OB0ywB5KtjAdUFbVTIri4m7J0/9GAWloccpVyg=;
+	s=arc-20240116; t=1775823634; c=relaxed/simple;
+	bh=dDZlZkUBE8Yoz+Mf4b2btSZILqeS3wHEYjrON1rjw6U=;
 	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=H2GCUz2KT+SoxPKaVXy8PbUO11xism9fwtAnwZeYciKxJ5yDNWqp6Qxcv/fyBHruroV1S/2dMo2plV68PJE/P63fyNuFdIoio0Qgz9Pq6Ia1Om55rtGtGzGUSGICMv+tHDOI9YgF6PacuUwIr/FYBcHzzfYuQnycW4XMI3F4Czo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UacNbv5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8258C2BCAF;
-	Fri, 10 Apr 2026 12:20:28 +0000 (UTC)
+	 Content-Type; b=R1hxpitiGibTPOM97tROot1Zqqa5MbMQNqyMD9WJ4vbMqhGCthqmgyxefh6fbp12bryjN0Aps9ABZRY3pdFTkFDJtqz3dkgbNUJPPKXG22cT1s10FyMV5j6Nx7dX/b8MqvykHrIxJZwv7/hnKChgLr+hxA0spbHp1ALN+QTTUf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UsSMuuI0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59123C2BC87;
+	Fri, 10 Apr 2026 12:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823629;
-	bh=Xj914OB0ywB5KtjAdUFbVTIri4m7J0/9GAWloccpVyg=;
+	s=k20201202; t=1775823634;
+	bh=dDZlZkUBE8Yoz+Mf4b2btSZILqeS3wHEYjrON1rjw6U=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=UacNbv5zzA6AzbAlRM4n4U5NaKejyQd8mANj0iWZ5RQiRAJWixjyMgZjbiDhDTyzO
-	 ay62PPnTA47MG/rmdeWa/4KfjNAnW4xtTzJ34RAhThlg0KY8nNByGNrsu9zE469dPQ
-	 hWtTJvAZ4ZE2brA8ZCckIrkzYMvi5clv/chlzjJ3PYteh92RUSFzhMNQu3+ZTJTDCI
-	 kJ6mPTSZ1AZhD1XvkSSEOtM9nEZR/77fxCsYwUjbpiFSE3ESK6EP7pbE6Ao/WrdTRD
-	 AlaT3EdsheI/WmWdaf0zz7rbsJUIcktKioLIztC89PcrEqXmxk39mPCnXjzI5yFh8X
-	 xNx6W4PqnkQAQ==
-Date: Fri, 10 Apr 2026 14:20:26 +0200
-Message-ID: <20260410120319.197793115@kernel.org>
+	b=UsSMuuI0fLabe+4dL8zTL2gq7n1Qam6gWMJ4FfKEoBXmYXreb34mK0jfpqexOCcjk
+	 URd+7aIYau5Paex32UCyAHBB1baazBC53HlWWmD8jGnelNjcRxfUYPATekVzRrqJDT
+	 SM4YYaTAd2jF6zuzF3s9v75IAyeOupGmOZUxJte/r7FKLtBw0S1j/Gfer+oeitcrs9
+	 GcWasj5F60hnX72mh29rwAv4UlAzszLEnt4a+71ByOcLxgUh/fQSei1PCaUTQnLPFS
+	 AyV/TWXRXX6WJrt/PID7Ovi55s49ArxiVCGwFwMjqqfxuev0KPjerElNRcERH69T8a
+	 bfdJGP+BHG9rw==
+Date: Fri, 10 Apr 2026 14:20:31 +0200
+Message-ID: <20260410120319.263143276@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>,
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
  linux-arm-kernel@lists.infradead.org,
  Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
@@ -78,7 +78,7 @@ Cc: Russell King <linux@armlinux.org.uk>,
  "Jason A. Donenfeld" <Jason@zx2c4.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  linux-alpha@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>,
+ Russell King <linux@armlinux.org.uk>,
  Huacai Chen <chenhuacai@kernel.org>,
  loongarch@lists.linux.dev,
  Geert Uytterhoeven <geert@linux-m68k.org>,
@@ -96,7 +96,7 @@ Cc: Russell King <linux@armlinux.org.uk>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 24/38] ARM: Select ARCH_HAS_RANDOM_ENTROPY
+Subject: [patch 25/38] arm64: Select ARCH_HAS_RANDOM_ENTROPY
 References: <20260410120044.031381086@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -109,19 +109,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[armlinux.org.uk,lists.infradead.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,vger.kernel.org,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
+	FREEMAIL_CC(0.00)[arm.com,lists.infradead.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,vger.kernel.org,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-34601-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34602-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -132,89 +132,197 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_TWELVE(0.00)[48];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 9E0193D7333
+X-Rspamd-Queue-Id: 736183D7603
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The only remaining usage of get_cycles() is to provide
-random_get_entropy().
+The only remaining usage of get_cycles() is to provide random_get_entropy().
 
-Switch ARM over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY and
-providing random_get_entropy() in asm/random.h.
+Switch arm64 over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
+and providing random_get_entropy() in asm/random.h.
+
+As a consequence this unearthed a nasty include dependecy hell where random
+code including rqspinlock.h relies on a magic include of asm/arch_timer.h.
+Including the headers in asm/random.h turned out to be impossible as well.
+
+The only solution for now is to uninline random_get_entropy().  Fix up all
+other dependencies on the content of asm/timex.h in those files which
+really depend on it.
 
 Remove asm/timex.h as it has no functionality anymore.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: linux-arm-kernel@lists.infradead.org
 ---
- arch/arm/Kconfig              |    1 +
- arch/arm/include/asm/random.h |   14 ++++++++++++++
- arch/arm/include/asm/timex.h  |   18 ------------------
- arch/arm/lib/delay.c          |    4 ++--
- 4 files changed, 17 insertions(+), 20 deletions(-)
+ arch/arm64/Kconfig                      |    1 +
+ arch/arm64/include/asm/io.h             |    5 +++--
+ arch/arm64/include/asm/random.h         |   11 +++++++++++
+ arch/arm64/include/asm/rqspinlock.h     |    1 +
+ arch/arm64/include/asm/timex.h          |   18 ------------------
+ arch/arm64/kernel/time.c                |    6 ++++++
+ arch/arm64/kernel/topology.c            |    1 +
+ arch/arm64/kernel/traps.c               |    1 +
+ arch/arm64/kvm/emulate-nested.c         |    1 +
+ arch/arm64/kvm/hyp/include/hyp/switch.h |    1 +
+ arch/arm64/lib/delay.c                  |    1 +
+ drivers/irqchip/irq-apple-aic.c         |    1 +
+ 12 files changed, 28 insertions(+), 20 deletions(-)
 
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -22,6 +22,7 @@ config ARM
- 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
- 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
- 	select ARCH_HAS_PTE_SPECIAL if ARM_LPAE
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -45,6 +45,7 @@ config ARM64
+ 	select ARCH_HAS_PREEMPT_LAZY
+ 	select ARCH_HAS_PTDUMP
+ 	select ARCH_HAS_PTE_SPECIAL
 +	select ARCH_HAS_RANDOM_ENTROPY
+ 	select ARCH_HAS_HW_PTE_YOUNG
  	select ARCH_HAS_SETUP_DMA_OPS
- 	select ARCH_HAS_SET_MEMORY
- 	select ARCH_STACKWALK
+ 	select ARCH_HAS_SET_DIRECT_MAP
+--- a/arch/arm64/include/asm/io.h
++++ b/arch/arm64/include/asm/io.h
+@@ -100,12 +100,13 @@ static __always_inline u64 __raw_readq(c
+ ({									\
+ 	unsigned long tmp;						\
+ 									\
+-	dma_rmb();								\
++	dma_rmb();							\
+ 									\
+ 	/*								\
+ 	 * Create a dummy control dependency from the IO read to any	\
+ 	 * later instructions. This ensures that a subsequent call to	\
+-	 * udelay() will be ordered due to the ISB in get_cycles().	\
++	 * udelay() will be ordered due to the ISB in			\
++	 * arm_timer_read_counter().					\
+ 	 */								\
+ 	asm volatile("eor	%0, %1, %1\n"				\
+ 		     "cbnz	%0, ."					\
 --- /dev/null
-+++ b/arch/arm/include/asm/random.h
-@@ -0,0 +1,14 @@
++++ b/arch/arm64/include/asm/random.h
+@@ -0,0 +1,11 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef _ASMARM_RANDOM_H
-+#define _ASMARM_RANDOM_H
++/*
++ * Copyright (C) 2012 ARM Ltd.
++ */
++#ifndef __ASM_RANDOM_H
++#define __ASM_RANDOM_H
 +
-+bool delay_read_timer(unsigned long *t);
-+
-+static inline unsigned long random_get_entropy(void)
-+{
-+	unsigned long t;
-+
-+	return delay_read_timer(&t) ? t : random_get_entropy_fallback();
-+}
++/* Out of line to avoid recursive include hell */
++unsigned long random_get_entropy(void);
 +
 +#endif
---- a/arch/arm/include/asm/timex.h
+--- a/arch/arm64/include/asm/rqspinlock.h
++++ b/arch/arm64/include/asm/rqspinlock.h
+@@ -2,6 +2,7 @@
+ #ifndef _ASM_RQSPINLOCK_H
+ #define _ASM_RQSPINLOCK_H
+ 
++#include <asm/arch_timer.h>
+ #include <asm/barrier.h>
+ 
+ /*
+--- a/arch/arm64/include/asm/timex.h
 +++ /dev/null
 @@ -1,18 +0,0 @@
 -/* SPDX-License-Identifier: GPL-2.0-only */
 -/*
-- *  arch/arm/include/asm/timex.h
-- *
-- *  Copyright (C) 1997,1998 Russell King
-- *
-- *  Architecture Specific TIME specifications
+- * Copyright (C) 2012 ARM Ltd.
 - */
--#ifndef _ASMARM_TIMEX_H
--#define _ASMARM_TIMEX_H
+-#ifndef __ASM_TIMEX_H
+-#define __ASM_TIMEX_H
 -
--// Temporary workaround
--bool delay_read_timer(unsigned long *t);
+-#include <asm/arch_timer.h>
 -
--#define get_cycles()	({ cycles_t c; delay_read_timer(&c) ? 0 : c; })
--#define random_get_entropy() (((unsigned long)get_cycles()) ?: random_get_entropy_fallback())
+-/*
+- * Use the current timer as a cycle counter since this is what we use for
+- * the delay loop.
+- */
+-#define get_cycles()	arch_timer_read_counter()
+-
+-#include <asm-generic/timex.h>
 -
 -#endif
---- a/arch/arm/lib/delay.c
-+++ b/arch/arm/lib/delay.c
-@@ -42,9 +42,9 @@ static inline u64 cyc_to_ns(u64 cyc, u32
+--- a/arch/arm64/kernel/time.c
++++ b/arch/arm64/kernel/time.c
+@@ -29,6 +29,7 @@
  
- static void __timer_delay(unsigned long cycles)
- {
--	cycles_t start = get_cycles();
-+	cycles_t start = delay_timer->read_current_timer();
+ #include <clocksource/arm_arch_timer.h>
  
--	while ((get_cycles() - start) < cycles)
-+	while ((delay_timer->read_current_timer() - start) < cycles)
- 		cpu_relax();
++#include <asm/arch_timer.h>
+ #include <asm/thread_info.h>
+ #include <asm/paravirt.h>
+ 
+@@ -52,6 +53,11 @@ unsigned long profile_pc(struct pt_regs
  }
+ EXPORT_SYMBOL(profile_pc);
  
++static unsigned long random_get_entropy(void)
++{
++	return arch_timer_read_counter();
++}
++
+ void __init time_init(void)
+ {
+ 	u32 arch_timer_rate;
+--- a/arch/arm64/kernel/topology.c
++++ b/arch/arm64/kernel/topology.c
+@@ -21,6 +21,7 @@
+ #include <linux/sched/isolation.h>
+ #include <linux/xarray.h>
+ 
++#include <asm/arch_timer.h>
+ #include <asm/cpu.h>
+ #include <asm/cputype.h>
+ #include <asm/topology.h>
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -30,6 +30,7 @@
+ #include <linux/ubsan.h>
+ #include <linux/cfi.h>
+ 
++#include <asm/arch_timer.h>
+ #include <asm/atomic.h>
+ #include <asm/bug.h>
+ #include <asm/cpufeature.h>
+--- a/arch/arm64/kvm/emulate-nested.c
++++ b/arch/arm64/kvm/emulate-nested.c
+@@ -7,6 +7,7 @@
+ #include <linux/kvm.h>
+ #include <linux/kvm_host.h>
+ 
++#include <asm/arch_timer.h>
+ #include <asm/kvm_emulate.h>
+ #include <asm/kvm_nested.h>
+ 
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -18,6 +18,7 @@
+ 
+ #include <kvm/arm_psci.h>
+ 
++#include <asm/arch_timer.h>
+ #include <asm/barrier.h>
+ #include <asm/cpufeature.h>
+ #include <asm/extable.h>
+--- a/arch/arm64/lib/delay.c
++++ b/arch/arm64/lib/delay.c
+@@ -14,6 +14,7 @@
+ #include <linux/timex.h>
+ 
+ #include <clocksource/arm_arch_timer.h>
++#include <asm/arch_timer.h>
+ 
+ #define USECS_TO_CYCLES(time_usecs)			\
+ 	xloops_to_cycles((time_usecs) * 0x10C7UL)
+--- a/drivers/irqchip/irq-apple-aic.c
++++ b/drivers/irqchip/irq-apple-aic.c
+@@ -55,6 +55,7 @@
+ #include <linux/jump_label.h>
+ #include <linux/limits.h>
+ #include <linux/of_address.h>
++#include <asm/arch_timer.h>
+ #include <linux/slab.h>
+ #include <asm/apple_m1_pmu.h>
+ #include <asm/cputype.h>
 
 
