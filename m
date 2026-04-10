@@ -1,55 +1,56 @@
-Return-Path: <linux-wireless+bounces-34606-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34607-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8B9bHH3y2GnrjwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34606-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:52:13 +0200
+	id 0GdOGpjt2GlLjwgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34607-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:31:20 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC0F3D7BAF
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:52:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC483D7226
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:31:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2A7CD30DFD92
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:28:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1294304F20C
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320C93DEFE6;
-	Fri, 10 Apr 2026 12:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57CA3CF042;
+	Fri, 10 Apr 2026 12:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OB4z6rme"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmyBeAjX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A33C3DEAF7;
-	Fri, 10 Apr 2026 12:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEA63C5DAD;
+	Fri, 10 Apr 2026 12:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775823654; cv=none; b=exciZ3bLp2yTQ2GG7EIg+Qu1qNClEWJChWdFsdkMsm5NQyWWW1GjLichkrp85nQ2RNRzMOItHbSEV/znOYeiWsdT8bnM8iCJBbQdcNLvviH+UaGn9TmpmiigvJ6EFkmFYicrjsQcjpUGcSUW/Z6ix+Whd4djDam3grcZrXNXQhs=
+	t=1775823658; cv=none; b=ZEldeZxOLnwzAEhJNgCmawkApWi8+0MI5DMdQZALV4vsfdw1mpOiBZVtW7dmk927JdOMTfaP4DePDrip+nBXipxnMTNni62cxw6mQPXokpx6kC0JOmFDI1pA9dq3Cc1I/WJhYx+lgUBZCHE/XnNaV1yHYrFZK/nuTSHJNLtpWy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775823654; c=relaxed/simple;
-	bh=JK0/F7Ki9YiLWmMnKZ+Lr+3CWdB1is+mT2jM4Zqadew=;
+	s=arc-20240116; t=1775823658; c=relaxed/simple;
+	bh=Hb2dziS1cUz3f0ZYnY6mq4QP/VKrKM0StdHMUX+1BaE=;
 	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=l0/uDF8ZKepWFqTVUQyjbv4bVkf+ilIvp9iTmFsEZTbO3/gdXjQlrXxMcqDrVY+H9mavE6TJ3XEiDZUA1vnaFJs/IYnBj7JOki2fl+HcvbzlNQeLqf6x3SefbwVBy0KjGNqe1IqZH8bvP/ca30u2Shjr3CxHLw6PKCfWseB3jVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OB4z6rme; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A6BC2BCAF;
-	Fri, 10 Apr 2026 12:20:52 +0000 (UTC)
+	 Content-Type; b=jQnJ82OSn/FN29TdO9PkImnhnvK28RqxmczoU7cyaAoVE2ThwL+InDbU9pAIsAXJ64tQHxINgvIPzfq66+yNDz4Wd8peDPyaEmKDK5sdx29PBoVkIXk5vDkVXmHDTso+WG92u/zaesfy+SxGN4MEmwxuGlr1ibUnNYu1zmQZ33M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmyBeAjX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82685C19421;
+	Fri, 10 Apr 2026 12:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823653;
-	bh=JK0/F7Ki9YiLWmMnKZ+Lr+3CWdB1is+mT2jM4Zqadew=;
+	s=k20201202; t=1775823658;
+	bh=Hb2dziS1cUz3f0ZYnY6mq4QP/VKrKM0StdHMUX+1BaE=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=OB4z6rmedzjF/tihT238p7staUYI70l/WLyVpYQgd3G/0qlK9BetgUNbHaxUOTJJk
-	 qdDaLQwa1siZvXl47NXTJc0ORYA2dsT704qKM+lVSSRN4sldd+TbcnCJaaKLtMHkff
-	 SfKJlNkL5h8guSKmd0Me9uWsWZCYIBa85rKbdrV18Ca38UzELO7GQROVPWzrTHMCfJ
-	 QFdBWZuROAjUxl7+DX48sdEQxX7/xngz/AnUC+xaQ7wkdJF1oolh8aMOXz2mAve+hh
-	 C3LVdoPqlu6sGEaRdYNI50vZs10DhqwpaJqHFXY4YWja3gycAdllpb8XCooIJE8rT+
-	 LUw8ufY+z6WgQ==
-Date: Fri, 10 Apr 2026 14:20:50 +0200
-Message-ID: <20260410120319.528318344@kernel.org>
+	b=RmyBeAjX6h1L2rIRLcz+AgNEdpyqYQZZkX4kYkgxpR9ZJA0/rvdow263wov/8PVOr
+	 hb2QUP5GwQZouavgtAcs0bwbkCd8TxgfCVh6LWoo2a7HWknstglzPKB+9aabXFzH1J
+	 rP1F6gK8dqeRn0JBTKdTohI1oCqed+5PigWBVmbAA5ah3505CMSHrUL7HPCCN4sGiu
+	 NHT4954Kmifvfva6Jx9l4xaRzDUJEaSzZYxXiP8aChKSe2ykT1tpUU6RYxqauW7DoH
+	 p3wDa9fQGCdDGL4OtStOnSEjWIThdsFEIiYqSYDvCq0zlNoVlLTrCjuWlgc/BYNO1M
+	 jFsY3AL2zO6GQ==
+Date: Fri, 10 Apr 2026 14:20:55 +0200
+Message-ID: <20260410120319.593798781@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: Dinh Nguyen <dinguyen@kernel.org>,
+Cc: Jonas Bonn <jonas@southpole.se>,
+ linux-openrisc@vger.kernel.org,
  Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
@@ -84,8 +85,7 @@ Cc: Dinh Nguyen <dinguyen@kernel.org>,
  loongarch@lists.linux.dev,
  Geert Uytterhoeven <geert@linux-m68k.org>,
  linux-m68k@lists.linux-m68k.org,
- Jonas Bonn <jonas@southpole.se>,
- linux-openrisc@vger.kernel.org,
+ Dinh Nguyen <dinguyen@kernel.org>,
  Helge Deller <deller@gmx.de>,
  linux-parisc@vger.kernel.org,
  Michael Ellerman <mpe@ellerman.id.au>,
@@ -96,7 +96,7 @@ Cc: Dinh Nguyen <dinguyen@kernel.org>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 29/38] nios2: Select ARCH_HAS_RANDOM_ENTROPY
+Subject: [patch 30/38] openrisc: Select ARCH_HAS_RANDOM_ENTROPY
 References: <20260410120044.031381086@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -109,19 +109,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,arndb.de,linux.intel.com,lists.linux.dev,pengutronix.de,vger.kernel.org,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
+	FREEMAIL_CC(0.00)[southpole.se,vger.kernel.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-34606-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34607-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -132,94 +132,86 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_TWELVE(0.00)[48];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 6FC0F3D7BAF
+X-Rspamd-Queue-Id: CAC483D7226
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 The only remaining non-architecture usage of get_cycles() is to provide
 random_get_entropy().
 
-Switch nios2 over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
+Switch openrisc over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
 and providing random_get_entropy() in asm/random.h.
 
 Add 'asm/timex.h' includes to the relevant files, so the global include can
 be removed once all architectures are converted over.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: Dinh Nguyen <dinguyen@kernel.org>
+Cc: Jonas Bonn <jonas@southpole.se>
+Cc: linux-openrisc@vger.kernel.org
 ---
- arch/nios2/Kconfig              |    1 +
- arch/nios2/include/asm/random.h |   14 ++++++++++++++
- arch/nios2/include/asm/timex.h  |    5 +----
- arch/nios2/kernel/time.c        |    4 ++--
- 4 files changed, 18 insertions(+), 6 deletions(-)
+ arch/openrisc/Kconfig              |    1 +
+ arch/openrisc/include/asm/random.h |   12 ++++++++++++
+ arch/openrisc/include/asm/timex.h  |    5 -----
+ arch/openrisc/lib/delay.c          |    1 +
+ 4 files changed, 14 insertions(+), 5 deletions(-)
 
---- a/arch/nios2/Kconfig
-+++ b/arch/nios2/Kconfig
-@@ -7,6 +7,7 @@ config NIOS2
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+--- a/arch/openrisc/Kconfig
++++ b/arch/openrisc/Kconfig
+@@ -10,6 +10,7 @@ config OPENRISC
+ 	select ARCH_HAS_DELAY_TIMER
  	select ARCH_HAS_DMA_SET_UNCACHED
+ 	select ARCH_HAS_DMA_CLEAR_UNCACHED
 +	select ARCH_HAS_RANDOM_ENTROPY
- 	select ARCH_NO_SWAP
+ 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+ 	select GENERIC_BUILTIN_DTB
  	select COMMON_CLK
- 	select TIMER_OF
 --- /dev/null
-+++ b/arch/nios2/include/asm/random.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef _ASM_NIOS2_RANDOM_H
-+#define _ASM_NIOS2_RANDOM_H
++++ b/arch/openrisc/include/asm/random.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef __ASM_OPENRISC_RANDOM_H
++#define __ASM_OPENRISC_RANDOM_H
 +
 +#include <asm/timex.h>
 +
 +static inline unsigned long random_get_entropy(void)
 +{
-+	unsigned long c = get_cycles();
-+
-+	return c ? c : random_get_entropy_fallback();
++	return get_cycles();
 +}
 +
 +#endif
---- a/arch/nios2/include/asm/timex.h
-+++ b/arch/nios2/include/asm/timex.h
-@@ -5,9 +5,6 @@
- #ifndef _ASM_NIOS2_TIMEX_H
- #define _ASM_NIOS2_TIMEX_H
- 
--extern cycles_t get_cycles(void);
--#define get_cycles get_cycles
--
--#define random_get_entropy() (((unsigned long)get_cycles()) ?: random_get_entropy_fallback())
-+cycles_t get_cycles(void);
- 
- #endif
---- a/arch/nios2/kernel/time.c
-+++ b/arch/nios2/kernel/time.c
-@@ -7,7 +7,6 @@
-  * License. See the file "COPYING" in the main directory of this archive
-  * for more details.
+--- a/arch/openrisc/include/asm/timex.h
++++ b/arch/openrisc/include/asm/timex.h
+@@ -9,13 +9,9 @@
+  * OpenRISC implementation:
+  * Copyright (C) 2010-2011 Jonas Bonn <jonas@southpole.se>
   */
 -
- #include <linux/export.h>
- #include <linux/interrupt.h>
- #include <linux/clockchips.h>
-@@ -19,6 +18,8 @@
- #include <linux/io.h>
- #include <linux/slab.h>
+ #ifndef __ASM_OPENRISC_TIMEX_H
+ #define __ASM_OPENRISC_TIMEX_H
  
-+#include <asm/timex.h>
-+
- #define ALTR_TIMER_COMPATIBLE		"altr,timer-1.0"
+-#define get_cycles get_cycles
+-
+-#include <asm-generic/timex.h>
+ #include <asm/spr.h>
+ #include <asm/spr_defs.h>
  
- #define ALTERA_TIMER_STATUS_REG	0
-@@ -112,7 +113,6 @@ cycles_t get_cycles(void)
- 		return nios2_timer_read(&nios2_cs.cs);
- 	return 0;
- }
--EXPORT_SYMBOL(get_cycles);
- 
- static void nios2_timer_start(struct nios2_timer *timer)
+@@ -23,6 +19,5 @@ static inline cycles_t get_cycles(void)
  {
+ 	return mfspr(SPR_TTCR);
+ }
+-#define get_cycles get_cycles
+ 
+ #endif
+--- a/arch/openrisc/lib/delay.c
++++ b/arch/openrisc/lib/delay.c
+@@ -18,6 +18,7 @@
+ #include <linux/init.h>
+ 
+ #include <asm/param.h>
++#include <asm/timex.h>
+ #include <asm/processor.h>
+ 
+ bool delay_read_timer(unsigned long *timer_value)
 
 
