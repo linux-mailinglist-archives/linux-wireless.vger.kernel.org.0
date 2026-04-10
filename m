@@ -1,347 +1,244 @@
-Return-Path: <linux-wireless+bounces-34569-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34570-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yISvJoyk2GnegAgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34569-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 09:19:40 +0200
+	id EM5pF/yo2Gm3gggAu9opvQ
+	(envelope-from <linux-wireless+bounces-34570-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 09:38:36 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4733D3435
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 09:19:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3E1C3D36EA
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 09:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A3B1A3008697
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 07:13:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 979B1301876A
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 07:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A5038C401;
-	Fri, 10 Apr 2026 07:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5AF39657C;
+	Fri, 10 Apr 2026 07:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dRxnfUzu";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kUjzIPAX"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bu7ooWtV";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Zalmj4fo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A61C2BE056
-	for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 07:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43C2389101
+	for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 07:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775805201; cv=none; b=ue3VeKW9Bl74Maic385LHVbhdtUrnY1PJSLM81R1ohgXoS0ReIigVBUORxeVRmzPx4bAICRjgoLHeDAaTR6PiOJSWDGdglY6ru/rcDUh3HxrZhyjvMcC2z57tMfPFaBbXVr6/9Uh70A6+8FEwNoBwNP5cRq58Mf0oW3rDGkY0cU=
+	t=1775806712; cv=none; b=S9uVhbChuC0lzWZ7h428tp9m3xu4KjfDt6a4fpRm4i/KJn+hZhe9T4wD2UGg9gSVtYTjul94WIUew7SCzCnYf0wKZNo0wMg+u2HCYYtjUSb8r+d0ynF1Em0EbSJBrhXul98ORz+esO7T31vvo/TAFm7NauKZShtSTvj2GtD17MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775805201; c=relaxed/simple;
-	bh=OTC7h2HFRKxNwbOoEigYsgd4gJo62Eo/vn5gp+KZIts=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U7eVa8X8f1hECfvmqEIMTAzFchmqK9k0JFApgKcRJgNW9vNQQSjrxbvgXP3tuJlz7JLNsToI8RiH+3g/UMcq91wuUMwnbWaIamV4Q7uizk+me7LjDAbc362pdRb8/ZrcCXrmo+tg6mdxJ8BJFZHjIdNNispXhTsf3LtI6bDJa8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dRxnfUzu; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kUjzIPAX; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1775806712; c=relaxed/simple;
+	bh=v38s9Qq2+kaM2Yj7sNv9VKvKSebxXIEm1GSi9tLA3PI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZbjAEX7eSpCbyYkHmRzIq8x94Nmaxd5PCErHqQXQdhO0rzzxEgV2senPxUlCjdtgT5uS1NNkd3lNqjR8tpxks8RnXX+DY3VH/qtmcI7psfhiub8n7FMCQBmfW7hpOHj+4KseB2j/Q7DcsuJdxQRiuYSgnIk0QKIMa/de2h8NGzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bu7ooWtV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Zalmj4fo; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 639NE6kO3934613
-	for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 07:13:19 GMT
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63A7FLEa2624749
+	for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 07:38:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=fmEXD1qIyUmzxQdrW7wk7qeou2259gvsDVS
-	fQeAi2mk=; b=dRxnfUzuXm5S0XPt8IA5+lcUqUP+bY3Lu0cIXNa6nwm4NXDqmnY
-	H48OXrmvAM8SYZcNHD2c2zw8krYt0ZwWT8shYUpS0Zf6i7mMjzN2zSQn32+0EwfR
-	A70X/zLJ5qJ63acOSrfJ8KPwHiQOR2EllostIylWVMxDc8HsA56OW/8aWjNJHNL7
-	TEsU8z/yDbXkpgzIluft9E1WYXo7X/DTxbFgtf+e97ZRm1PeT0YsL4BLIE30irhI
-	sa9MMWay+BRtZauCkzttX77xT2g0SBvJHCXAU0q1Sgkexbs1iZhqh9LoTzVXyxP/
-	PDmi9DOyTt5SX+IqG7Ee15XLN92FSIRiWhw==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ded5sayg7-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	zshsTI/Jmmz4I2BWB938l40pUvO87SUUsOPhsEdr1Ps=; b=bu7ooWtVBGLG38tC
+	KAC5A1z77h52iSoI260/VV7EGVXzUsu+hLn4kos/b+A1I17rPujg8tIOvLG++l0X
+	495NcvuU5+2+XnL/hi9lO+i1uyXYLiGzYYWSfcDEYCwqlpNx6UVY4eFAbxGTU/Ne
+	ZbO4sLsWd8aYz2EaSoA+H6Z4kTkV6piDl61mNyfSxVrs5z0xwxbr0vU6ZVB0K1B1
+	WHqcvXkEDzHW1rLlxSRXBSHgoBZjD55k5MFD0VaiJsqPLPzRicBvhVHRzobB7mBW
+	RGfckMN0eyfjIXrxDPnxQz/9YZLk2+R97mct2RaxLRFXjJ8iElgDyOjIt0bkCkdN
+	CUEx1Q==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4decmu37a1-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 07:13:19 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-35da97f6a6dso2233518a91.0
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 00:13:19 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 07:38:29 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-82c613194caso1006257b3a.1
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 00:38:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1775805198; x=1776409998; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fmEXD1qIyUmzxQdrW7wk7qeou2259gvsDVSfQeAi2mk=;
-        b=kUjzIPAXqZ3DVxfhLCArmuO3/ss6s5/m3uxZFKCGlbmNjjeLwe0Ry9BdFaR9+sNzug
-         4SYYJ5jZoB8yClJN9oNY9M7zMebpaxMc3e2rqNoruhWkzBWZMmJTvFRNQsormGMBtc0b
-         kWTnXSyvccZoWi0s8KJCQUD4NI3mAfInJQSqtTeXKEBpUuNveLHyNYCKM1+wBrU/zuiv
-         eUvX+eB7UXIX6ZCu7795tGOYJVXrT+mkm5RIKZH57XG/fG42e87DLNmHVGcoqMq+5rE1
-         KCYoojgd0u1b0KMwdYb67XA3RPU1Wl1Y1CzsfKPPUd6KzCB+2nmqx6EePnDLcvfXqpiw
-         JnUg==
+        d=oss.qualcomm.com; s=google; t=1775806708; x=1776411508; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zshsTI/Jmmz4I2BWB938l40pUvO87SUUsOPhsEdr1Ps=;
+        b=Zalmj4fo/Xlh8tf6tG/Cj26PXv1N9Exya44HJmxtvdgeQDHcucuCk0/6H6clY1q0sQ
+         sDBiia9ouQFSq/I8AE7f1BrD6kdWC54bwRX9FdPL08XxN26P8r5aK7t8RiLhC2EW3gyb
+         BoFVnUwvqN77MkD7XK++hoZOlTjmG5SPD0XuUaAPp0yV69LgbNIlr2a0s707ErLBnj4n
+         KOiO2yxJY44mT+59Ubqw/W8wigLQS0YCChGYcp43szJGZ4jYX2R5PnTbTeSLZjcL74Qo
+         e2fAMqcavgPPa1rqmqW8OLjRaLd46AJ3AQJZkJyLOaTz1apJ2XkBAnFg7ZeNcptQPtif
+         jqNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775805198; x=1776409998;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fmEXD1qIyUmzxQdrW7wk7qeou2259gvsDVSfQeAi2mk=;
-        b=J/igtLhjBR6vbGJZruVzloIIle9paSRdLvIcma1rZMoBDR0yp2trYG7C0cobA88IyT
-         t7ZWFFH0NYaE/SZMrS38DXDw7WrME2iSlkbfy1icjHMhRG+jgndJEc+duj2ukgrZKQdl
-         EitBPWr+PvjwEZrnJ8fsMMXMsrO4AIi16hOvwwdXnFkQYPsiFq13RuQcG0mTGZXA7wyM
-         uwLT+kcsZNfixZ7q52/8QJ5Em7kVuhKBEylCWaMUdRw2Z2SmxNEws4ANr7eP90YF/Gly
-         889Zmukn1obWtw/twKC4bGPUn4XjzNcJI8pNpZ8zqEFo7Q4Ja3OHoOaqEd0tCa5N7mil
-         0LTQ==
-X-Gm-Message-State: AOJu0YwN8Q5tI4rQwsfxMFDRTsZGHsJgeAw0EfRVKmbFd7xENDhkr5hn
-	/wtr3sDLhmNfrqWD9wYRewjfWq3kUDt5BNvRo7wIAG4m9wx+P7Db2jefZu5d9mNRws0/A8mbiWv
-	gsAWeDRZ903mWPKKBA2+SAi0NSzJ95RdJhvbYPObb2wR28IJyNb7MKOp6nRMffpwxmmrLQQ==
-X-Gm-Gg: AeBDietWiULtsWVrZ8wFbVQhWNFHnb8EcCjqVownucQfnWpoZUv0Ch3vew+NA1214i+
-	ZO2RBQwhJZSz+qxSWMifoubh3OX6OBEa13Povr3/l7qMWHOBli4s0lPt+jezubVOA/9XIlROJf+
-	c4dTmk9aE4JDnrOb3H+/mKmpY//moXC9E7zUk2hOfX3zpXu3C6ttHp5IUBNDW1vRPHC/aSpD/o9
-	COFO/yyLnaueqDRyglaGqKIG4EiH7xWIkmHUHQqNcrmSxtt4MQH13dQR6Y8uL92NrYNC187JCop
-	Zd+t2TynBk2PCy9UMlOANobSx7vlUHfZLrJCDqMPlUmtXaXZXEQ8RQWYPSROouO/v3jOCzCgIYk
-	j1q0DHiwtYVXueIE7MaauIw8zDWQ6miEwb1Z3ebjYIgqpA6Av6xgo6lL9cXr2HoZ+lqzZtIRHHj
-	C+phbNp9e7fP72qP+Z5GX5YkbtCJCbQ1zasxhxbT8UygZB
-X-Received: by 2002:a17:90a:c2c3:b0:35b:9d97:63ac with SMTP id 98e67ed59e1d1-35e427c925amr2264157a91.7.1775805198176;
-        Fri, 10 Apr 2026 00:13:18 -0700 (PDT)
-X-Received: by 2002:a17:90a:c2c3:b0:35b:9d97:63ac with SMTP id 98e67ed59e1d1-35e427c925amr2264111a91.7.1775805197482;
-        Fri, 10 Apr 2026 00:13:17 -0700 (PDT)
-Received: from hu-aarasahu-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e4131cfacsm2070459a91.10.2026.04.10.00.13.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 00:13:17 -0700 (PDT)
-From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Subject: [PATCH ath-next] wifi: ath12k: fix OF node refcount imbalance in WSI graph traversal
-Date: Fri, 10 Apr 2026 12:43:00 +0530
-Message-Id: <20260410071300.2323603-1-aaradhana.sahu@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20251104; t=1775806708; x=1776411508;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zshsTI/Jmmz4I2BWB938l40pUvO87SUUsOPhsEdr1Ps=;
+        b=rmBcTvJXH01XC9tO4a+kNdC5YoA7Hz6Kvgme1TPZcaI6q1zVAPtHAXrGrF5OUE0WDr
+         sklfJA+zspnyRlXBaLjjkZ6JBP5NWGOwswfCb2hr5Zfl7eFMnLn3SKzHwxTqqbmdaEtE
+         d8KkjoYhjE6TVuLu78CWC07DcadsMvcA4X1DVrhe688c2n7D1v5FH61JiAVdzYb8Prab
+         KJooVsr+1QanP6MwdNKbFG9gBewfsCtdwiOwxn/s+K6JiCe2+nWYHzubWAMKCMTzsAwc
+         8PgiQ0lL7dW0a/fFFo+51gsQd9PoaG2ibqNHhdEG/XtP60zNGkZ+6mdxnWokWtWbUBJf
+         HT2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUhvZAJcsMf4IpqtEeLShcOm2FxDtkdmMJUXQB/h05ZncUT0vvR6dpyFvALRvsjPp752xmdngmf1coJIXaqyQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6hKUCLC/vV7SQqoxHry5upmqgKUggvb6yOBxQHaDKTyqldQIJ
+	0aiInWoEYvQxKYiiZKDFFP3JE/VLzQ9+b58Ic+rbaLyiCfxmDK4UjEFCldNzNmciPOhkhpqeFv/
+	Lqw9xA9tTfzRxXrM5d0uM1thufyOrrtn+3PuBABZYw/icANcO+ZonUUr4aDq7jiuGQM+8Cw==
+X-Gm-Gg: AeBDievo/1b/BxAAMCn8jBO0B6WtVoVZlQBTvthwcrBjHX+0koRwjApwTUnrMX63RP0
+	RIoAiJJvkGN3g23USOlFVECNEqTvhBLMtEowWPvSJa73KaP2xpPR+ocPLWoISSEaFd/euccpJ1g
+	CsJN2D2XHuYgVVD9gahJxk2tLOEXmm6AaIjzAKyNSS8g6yoR3Bj0npYqL903d6xMX6Wg2R8eTJm
+	OEUFM5dLi4S7vjIQmAYutx/yFjQqbZ+TtZpdq15nEqJgLbKQkZw63goxCtok08SIW0Tg8hg1l5B
+	XMkXIN2EXPALrUh1qdq6BVNVhu+O5xoDQdhSz9nqBi3dZykLEc/iIc8WOgMrPV52jZgnAGq+WcM
+	JNKUF0D+66xU23IFBfHZ7siSfLz89OAAGoz37oFY3B3k+pYX1GZWO/Nl3SoGT2quJGtcXktM1B1
+	45eGYicbSIZpIWCJPMPxY=
+X-Received: by 2002:a05:6a00:4b0b:b0:81f:3fbd:ccf with SMTP id d2e1a72fcca58-82f0c2278e7mr2426294b3a.23.1775806708355;
+        Fri, 10 Apr 2026 00:38:28 -0700 (PDT)
+X-Received: by 2002:a05:6a00:4b0b:b0:81f:3fbd:ccf with SMTP id d2e1a72fcca58-82f0c2278e7mr2426266b3a.23.1775806707825;
+        Fri, 10 Apr 2026 00:38:27 -0700 (PDT)
+Received: from [10.133.33.254] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c34f7d0sm1946707b3a.14.2026.04.10.00.38.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Apr 2026 00:38:27 -0700 (PDT)
+Message-ID: <fcebc2a2-4478-41fa-8071-18dfcc2dffe1@oss.qualcomm.com>
+Date: Fri, 10 Apr 2026 15:38:24 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ath10k: skip quiet mode for WCN3990 to prevent firmware
+ crash
+To: Malte Schababerle <m.schababerle@gmail.com>
+Cc: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <323b5222-a105-4701-8342-9131660fe803@oss.qualcomm.com>
+ <20260406221405.201848-1-m.schababerle@gmail.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260406221405.201848-1-m.schababerle@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: RUdMZSqz9ZCxYrugWn30_jD0fErtPzHu
-X-Proofpoint-GUID: RUdMZSqz9ZCxYrugWn30_jD0fErtPzHu
-X-Authority-Analysis: v=2.4 cv=Ko59H2WN c=1 sm=1 tr=0 ts=69d8a30f cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=EUspDBNiAAAA:8
- a=cJ7lEyrx1ZesTjHcJmMA:9 a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEwMDA2NSBTYWx0ZWRfX6w5nHvmBQDFB
- 0HfNv+KBAe9Bnotxa0eCIx8eH4wbwh7qqfkqTR8SqPzCfwEIK3qwvtUSNRnsFFVTcBVJ5D8WFq9
- fL0h9DRNMkF+RYvk2aUyeFnahwBi7bhL4KBdbc0bf4vYRSmeytZjg716p+rEja4Z7IuQyd1DxhT
- MdBEvPXEJvhoPtGMv73q48lxQlB1Qf1GB3xKknO7B6nPDuZqjZiWvKtQxkQ7j14TD+ufObPpvC1
- dtKaU8G71ka+/INI27ytgBpGy0pNdDoyJb+F8owkLpj6FGK/OYyjj6OXjiUYyPgcJ7mDufvhwFf
- XqyM3kvUGWnw7UsATl6Pw3Cye/g2InackVeVsSMipd0xLurXYddgH7TSTZcr0sGCeenvi/1Q/jD
- ItsYsGXCCY8T9EooVPHt46jwiVpYO1PbXflVHcq/UmU9wBLRMSWFmopCz+QfOtRndL/ZdhHXa/s
- mgCuZkfDLxBw7i2fPHA==
+X-Proofpoint-GUID: wlEhxvFXhSKy4P6EAvD7I4awBITHG2BO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEwMDA2OSBTYWx0ZWRfX3IuS3RuRN8j4
+ Um9JTTTBgtHQy85Bj2lOoPJGbQpGP5rOud1J+YDB59I847nMct+pOs75dCM1M8CDXKgR57vfeil
+ A7czhef+oo509mDxT5H49vKGNFumZsXYZSxkGvwp35IBG4pab9hafCxvmkp4xJDZmSjhzeFgmEX
+ RsYSiyqyGxlGAyhdj8arkyMn1r9mTC80A6vhBfvMCrcItuFxTuuY7utewFFKpPn9slKxBJIvY2Z
+ sqZk30w58yNRFqgIbWX1VwTfjoZ8/Tlns24caBo3dvlWiaqECgwUbCuEorqdX+rq2zA7H/0CjCb
+ +0nRS2L0j3zqQ9t2t7sh/UdrwaEta0WVgv0jQsazbbuy043zCqaFXOz+zHfYkoNuP8zAzXSheQ6
+ 32cntAJ8EtO0j3kZX8dSpukSa2ZHLW3SwdqpWFpzvN+K1SHSt0U/ggIjxPLzWbGqgsaSRYLX1y1
+ lqkxve5cloQyh+qVnMw==
+X-Proofpoint-ORIG-GUID: wlEhxvFXhSKy4P6EAvD7I4awBITHG2BO
+X-Authority-Analysis: v=2.4 cv=DslmPm/+ c=1 sm=1 tr=0 ts=69d8a8f5 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=rxAmHljU2xxGwqvv-XQA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-10_02,2026-04-09_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
- phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 impostorscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604010000
- definitions=main-2604100065
-X-Spamd-Result: default: False [4.84 / 15.00];
-	SEM_URIBL(3.50)[0.0.0.0:email];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+ phishscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 malwarescore=0
+ clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604100069
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	R_DKIM_ALLOW(0.00)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34570-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	GREYLIST(0.00)[pass,body];
-	TAGGED_FROM(0.00)[bounces-34569-lists,linux-wireless=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[qualcomm.com,reject];
+	FREEMAIL_TO(0.00)[gmail.com];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	NEURAL_SPAM(0.00)[0.322];
+	RCPT_COUNT_THREE(0.00)[3];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,c000000:email,0.0.0.0:email,qualcomm.com:dkim,qualcomm.com:email];
-	FROM_NEQ_ENVFROM(0.00)[aaradhana.sahu@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[baochen.qiang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c15:e001:75::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 9F4733D3435
+X-Rspamd-Queue-Id: C3E1C3D36EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-ath12k_core_get_wsi_info() traverses the WSI (Wired Serial Interface)
-device graph starting from dev->of_node. The current code uses
-dev->of_node directly as the local traversal pointer and calls
-of_node_put() on error.
 
-Since the driver does not own a reference to dev->of_node, dropping it
-during traversal results in the following OF refcount underflow:
 
-OF: ERROR: of_node_release() detected bad of_node_put() on /soc@0/wifi@c000000
-CPU: 1 UID: 0 PID: 210 Comm: insmod Not tainted 6.19.0-rc4-next-20260109-00023-g797dd36dc178 #26 PREEMPT
-Hardware name: Qualcomm Technologies, Inc. IPQ5332 MI01.2 (DT)
-Call trace:
- show_stack+0x18/0x24 (C)
- dump_stack_lvl+0x60/0x80
- dump_stack+0x18/0x24
- of_node_release+0x164/0x1a0
- kobject_put+0xb4/0x278
- of_node_put+0x18/0x28
- ath12k_core_init+0x29c/0x5d4 [ath12k]
- ath12k_ahb_probe+0x950/0xc14 [ath12k]
- platform_probe+0x5c/0xa4
- really_probe+0xc0/0x3ec
- __driver_probe_device+0x80/0x170
- driver_probe_device+0x3c/0x120
- __driver_attach+0xc4/0x218
-OF: ERROR: next of_node_put() on this node will result in a kobject warning 'refcount_t: underflow; use-after-free.'
+On 4/7/2026 6:14 AM, Malte Schababerle wrote:
+> On 3/22/2026, Baochen Qiang wrote:
+>> Malte, the firmware team needs firmware dump to understand this issue,
+>> would you be able to help collect it?
+> 
+> Sure. Attaching the full dmesg from a reproducible test run (kernel
+> without the patch, upstream 6.17, postmarketOS on OnePlus 7T / SM8150).
+> 
+> Firmware: WLAN.HL.3.2.0.c2-00006
+> 
+> The crash triggers deterministically on every boot. Key lines:
+> 
+>   [25.122098] PDM: service 'wlan_process' crash:
+>                'EX:wlan_process:0x1:WLAN RT:0x2076:PC=0xb0008e20'
+>   [25.283364] ath10k_snoc 18800000.wifi: firmware crashed!
+> 
+> Full crash sequence repeats across subsequent recovery attempts at the
+> same PC=0xb0008e20 (see attached dmesg.txt).
+> 
+> Note: I'm running an upstream kernel (6.17) on postmarketOS.
+> CONFIG_QCOM_RAMDUMP and WCSS coredump tooling are not available here.
+> If the firmware team needs a full Hexagon register dump, please advise
+> how to collect it in this environment.
 
-Fix this by explicitly acquiring a reference to the starting node
-using of_node_get() and attaching automatic cleanup via
-__free(device_node).
+please follow below steps to collect firmware dump:
 
-Each discovered WSI node is stored in ag->wsi_node[] with its own
-of_node_get() reference. These references are later released in
-ath12k_core_free_wsi_info() during driver teardown.
+1. sudo modprobe -r ath10k_pci
+2. sudo modprobe ath10k_core coredump_mask=7
+3. sudo modprobe ath10k_pci
+4. reproduce the crash issue
+5. collect dump using a similar way to Intel chip [1]:
 
-Also remove unnecessary memset() of wsi_node array since cleanup now
-explicitly sets pointers to NULL.
+	You can now get the data from the devcoredump device and dump to a file:
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01243-QCAHKSWPL_SILICONZ-1
-Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.6-01275-QCAHKSWPL_SILICONZ-1
+	cat /sys/devices/virtual/devcoredump/devcdY/data > iwl.dump
+	echo 1 > /sys/devices/virtual/devcoredump/devcdY/data
+	(Y is incremented each time)
 
-Fixes: 908c10c860e0 ("wifi: ath12k: parse multiple device information from Device Tree")
-Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath12k/core.c | 77 ++++++++++++++++----------
- 1 file changed, 48 insertions(+), 29 deletions(-)
+	The easiest is to define a udev rule to dump the data automatically as soon as
+	dump is created:
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 2519e2400d58..980a12fb2c6e 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -1838,10 +1838,22 @@ static struct ath12k_hw_group *ath12k_core_hw_group_alloc(struct ath12k_base *ab
- 	return ag;
- }
- 
-+static void ath12k_core_free_wsi_info(struct ath12k_hw_group *ag)
-+{
-+	int i;
-+
-+	for (i = 0; i < ag->num_devices; i++) {
-+		of_node_put(ag->wsi_node[i]);
-+		ag->wsi_node[i] = NULL;
-+	}
-+	ag->num_devices = 0;
-+}
-+
- static void ath12k_core_hw_group_free(struct ath12k_hw_group *ag)
- {
- 	mutex_lock(&ath12k_hw_group_mutex);
- 
-+	ath12k_core_free_wsi_info(ag);
- 	list_del(&ag->list);
- 	kfree(ag);
- 
-@@ -1867,52 +1879,59 @@ static struct ath12k_hw_group *ath12k_core_hw_group_find_by_dt(struct ath12k_bas
- static int ath12k_core_get_wsi_info(struct ath12k_hw_group *ag,
- 				    struct ath12k_base *ab)
- {
--	struct device_node *wsi_dev = ab->dev->of_node, *next_wsi_dev;
--	struct device_node *tx_endpoint, *next_rx_endpoint;
--	int device_count = 0;
--
--	next_wsi_dev = wsi_dev;
-+	struct device_node *next_wsi_dev;
-+	int device_count = 0, ret = 0;
-+	struct device_node *wsi_dev;
- 
--	if (!next_wsi_dev)
-+	wsi_dev = of_node_get(ab->dev->of_node);
-+	if (!wsi_dev)
- 		return -ENODEV;
- 
- 	do {
--		ag->wsi_node[device_count] = next_wsi_dev;
-+		if (device_count >= ATH12K_MAX_DEVICES) {
-+			ath12k_warn(ab, "device count in DT %d is more than limit %d\n",
-+				    device_count, ATH12K_MAX_DEVICES);
-+			ret = -EINVAL;
-+			break;
-+		}
-+
-+		ag->wsi_node[device_count++] = of_node_get(wsi_dev);
- 
--		tx_endpoint = of_graph_get_endpoint_by_regs(next_wsi_dev, 0, -1);
-+		struct device_node *tx_endpoint __free(device_node) =
-+					of_graph_get_endpoint_by_regs(wsi_dev, 0, -1);
- 		if (!tx_endpoint) {
--			of_node_put(next_wsi_dev);
--			return -ENODEV;
-+			ret = -ENODEV;
-+			break;
- 		}
- 
--		next_rx_endpoint = of_graph_get_remote_endpoint(tx_endpoint);
-+		struct device_node *next_rx_endpoint __free(device_node) =
-+					of_graph_get_remote_endpoint(tx_endpoint);
- 		if (!next_rx_endpoint) {
--			of_node_put(next_wsi_dev);
--			of_node_put(tx_endpoint);
--			return -ENODEV;
-+			ret = -ENODEV;
-+			break;
- 		}
- 
--		of_node_put(tx_endpoint);
--		of_node_put(next_wsi_dev);
--
- 		next_wsi_dev = of_graph_get_port_parent(next_rx_endpoint);
- 		if (!next_wsi_dev) {
--			of_node_put(next_rx_endpoint);
--			return -ENODEV;
-+			ret = -ENODEV;
-+			break;
- 		}
- 
--		of_node_put(next_rx_endpoint);
-+		of_node_put(wsi_dev);
-+		wsi_dev = next_wsi_dev;
-+	} while (ab->dev->of_node != wsi_dev);
- 
--		device_count++;
--		if (device_count > ATH12K_MAX_DEVICES) {
--			ath12k_warn(ab, "device count in DT %d is more than limit %d\n",
--				    device_count, ATH12K_MAX_DEVICES);
--			of_node_put(next_wsi_dev);
--			return -EINVAL;
-+	if (ret) {
-+		while (--device_count >= 0) {
-+			of_node_put(ag->wsi_node[device_count]);
-+			ag->wsi_node[device_count] = NULL;
- 		}
--	} while (wsi_dev != next_wsi_dev);
- 
--	of_node_put(next_wsi_dev);
-+		of_node_put(wsi_dev);
-+		return ret;
-+	}
-+
-+	of_node_put(wsi_dev);
- 	ag->num_devices = device_count;
- 
- 	return 0;
-@@ -1983,9 +2002,9 @@ static struct ath12k_hw_group *ath12k_core_hw_group_assign(struct ath12k_base *a
- 		    ath12k_core_get_wsi_index(ag, ab)) {
- 			ath12k_dbg(ab, ATH12K_DBG_BOOT,
- 				   "unable to get wsi info from dt, grouping single device");
-+			ath12k_core_free_wsi_info(ag);
- 			ag->id = ATH12K_INVALID_GROUP_ID;
- 			ag->num_devices = 1;
--			memset(ag->wsi_node, 0, sizeof(ag->wsi_node));
- 			wsi->index = 0;
- 		}
- 
+	SUBSYSTEM=="devcoredump", ACTION=="add", RUN+="/sbin/iwlfwdump.sh"
+	You’ll typically have to paste this into a new file called /etc/udev/rules.d/85-
+	iwl-dump.rules. This location can vary between distributions.
 
-base-commit: ae530e0b135102c5fc08e64c39e7a18564a52b3e
--- 
-2.34.1
+	/sbin/iwlfwdump.sh can simply be:
+
+	#!/bin/bash
+
+	timestamp=$(date +%F_%H-%M-%S)
+	filename=/var/log/iwl-fw-error_${timestamp}.dump
+	cat /sys/${DEVPATH}/data > ${filename}
+	echo 1 > /sys/${DEVPATH}/data
+
+	This way, each time a dump is created it will automatically land on your file
+	system. Remember to make the /sbin/iwlfwdump.sh file executable (i.e. chmod a+x
+	/sbin/iwlfwdump.sh), so that the udev rule can execute it, otherwise it won’t
+	work.
+
+[1]
+https://wireless.docs.kernel.org/en/latest/en/users/drivers/iwlwifi/debugging.html#how-to-provide-information-to-debug-the-firmware
+
+> 
+> Tested-by: Malte Schababerle <m.schababerle@gmail.com>
+>   on OnePlus 7T (SM8150/WCN3990), kernel 6.17, FW WLAN.HL.3.2.0.c2-00006
 
 
