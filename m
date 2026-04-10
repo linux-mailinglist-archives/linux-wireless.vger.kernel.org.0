@@ -1,89 +1,88 @@
-Return-Path: <linux-wireless+bounces-34636-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34637-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLeRFPhL2WkMoQgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34636-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 21:14:00 +0200
+	id sJp+BBhK2WmkoAgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34637-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 21:06:00 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EDD23DBCD3
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 21:13:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C223DBC69
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 21:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C473230048E0
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 19:04:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFE3130416A9
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 19:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FC82D3EC1;
-	Fri, 10 Apr 2026 19:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFB83446A7;
+	Fri, 10 Apr 2026 19:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b="WFE9Ocza"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b="jWM1C6pK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8CA344DAE
-	for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 19:04:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C650633D4FB
+	for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 19:04:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775847845; cv=none; b=CCfoSG6YQ3rDUPGEYBFgF2A0ibUErpDZLTIYALEJ9Q0FJYauQRZDzh82ryt5dGHmPJvzhLyfIBJvZZtNz0P0ZSBqyJP14E3SoUplLz5MBgIncMVoikpJNRR9bBMmzdDmkd3ujQy3nSX41beXpDrvmyrVyhdGZMRC0sSk3vjGGQA=
+	t=1775847846; cv=none; b=UbLOYwVKnvZ8ySFzwalQXXuWod5NWCCcJt3P0XTIz3fu2vsV+Emtc8W5bgvj/sRKSSecPTN7DoKYaZzeoipR2XS4Ff3hDKcxOFqIOwOjmQ5ag5iBlCZA2/AWfpPFGN/OJKNdEnw+e2m95yj0hxVvDXDr646gLyHfn6qEMdScx7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775847845; c=relaxed/simple;
-	bh=VVretd6NIYdYD7LBdovVwjBf0LhDinlQGKm+Zj1TK6Y=;
+	s=arc-20240116; t=1775847846; c=relaxed/simple;
+	bh=5e+Lz+an9gIS+iAdb3O8pPciMq1Mh/fIBPEyBlOaMYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bZ4ltr8hcI2EY2iEmhK+ioqhs3icrynuII0FSBGxRG4iHDPQ9deFgif35Ys8+yuFTMv3wW2qkWRLfzFWSwPr9YAreiyDJsA43gwg8FsjDMqwjcbe+TVecLQCxPS76TfNGahW60Xl1gz5t2DKFhoR5AlWrJgRzG4bj3sAMi52QWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b=WFE9Ocza; arc=none smtp.client-ip=209.85.128.54
+	 MIME-Version; b=o6ijPy+dMQ61YEJSzqLqSp6N7ce7M4n9pN+aQ1a2cy7SAZc+aLNpw8A2Roye1ZxhPU9NogQwCwLDklufdrOxn7CooXomLUnBEh8eaCT8ohCZsEhqSMmuBYXk4PqeMZk4yJiwGWpXiC7gtEmaCMsVLvCpAUvFNuU72SsbEFj67E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b=jWM1C6pK; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-488b3f8fa2bso28562785e9.1
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 12:04:03 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4852b81c73aso23407405e9.3
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2026 12:04:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20251104.gappssmtp.com; s=20251104; t=1775847842; x=1776452642; darn=vger.kernel.org;
+        d=freebox-fr.20251104.gappssmtp.com; s=20251104; t=1775847843; x=1776452643; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8nl5vKGelj6wqbIZKUJ2xFWGiK2/2/6FveNLNKf27LA=;
-        b=WFE9Ocza+1HVR0+l9Me19RbRQwHJK6odR7sqfr4SrF0tswPK2cvrMzTQiNhkOTD5U8
-         NdIcLv/GbTNftaXLLY4NY8O4HdUIkDZvr3JuViX696/QCnn+PslDYDJnHvuA3DE8Kp/R
-         0Ex6cJxOJWmig0ruMM1akx4WvPuvF66ybzvkIORnMeXUFvJL/YUIBAK3H2Jcq99AOB/n
-         mNWBwd5eHTVDSMYZ9XuIr0s/R0WhcRP4pxVl5xkUO4OJQOwurQdkY5z2GEEK07btDZ4o
-         iY5ZN4Eagi7D/QKtDthjrLHNgOpWQ228h8D1ZTiqSZIfH583bS1aDiiUEq4Yigfl1hSq
-         7C+A==
+        bh=5nBQXlx+6S9xekUTTMSL/MT8AytbOBUSnm6kE+hqJWI=;
+        b=jWM1C6pKG+Q5eO7dFrohCslz5M/bpvvc5pomXJA84Ma/i53WzsYuobSMboe5+vlQ+U
+         MVDSbLwA4ELNZ0nInZQmxU/TYzQ3zAbEz09qdfXPZm1a2IjPfXilWSQfOWnBNn7RWMnG
+         NXgZJa8IytlfVb4rxwwabcxs24CaAzJUUN1GGyljp0pAopP9nPqhDY3z/7U0liL5BRZu
+         uIKCQu8TNkBNURVXQAVuNUUGhx5FaS5BGaJa3saj8WKlwxrfsAeUtCs9HhvaP3JxsvNf
+         rInJGtZsYFVXCLfEIOjDWhvFG5g0/uVCf4GMiDOHUAIKYrAJFBJiwY2ZCsZxVZm7HSk7
+         qysw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775847842; x=1776452642;
+        d=1e100.net; s=20251104; t=1775847843; x=1776452643;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=8nl5vKGelj6wqbIZKUJ2xFWGiK2/2/6FveNLNKf27LA=;
-        b=Uslolfu7414O6LUUq6uIiGAAL213HzyrLe/mVasc7OeYDDAWW7iyAkRL/Z220F9RRO
-         bILYxuReIxkBvyComK2tYRrPWzofe58PAhnznZ9wX4gxxjLddzJoEmRNdj4KycfA6iKa
-         gpsgr1iJvm4C8icIJgxRvSjYX0ilx8LoDRyKeIPx8Uqoyoi8t7B1pdJSHPAsjwFMyP8B
-         EqViBOuivUwgJpn6F7+aRelpFqDssq9HCQ04ZgpUyisrcRcL0W/bdT6dlQfPMzZ9Gq9q
-         ZIAVEuyPypywTLFLJdVKqpU0qnj03BgfWr49rO7mRpLMK+Z8fBgenpm7NRj4cSPL0Nb1
-         mBXw==
-X-Gm-Message-State: AOJu0Yyy6gAsJ8kZmuswjy9+Q0+7sflpyCf0r1PJ/OeVB+XPRMZNxM4q
-	ji1X7j+nAf/9RdGYzi/fZyQwPeLbr8MWKejfHLVeWzRUhQ00RMQOepv6Iv5trHkJEkep/wSRJQS
-	xT/fP
-X-Gm-Gg: AeBDievO5DElr46X/X5+iq3j6/4DB5Yr0XxTiBy8g1dO8JSGRfnyaknCI93tKwxGsn0
-	ReyRkrdl555BBB1EYEYZpxbOFw1MCV44z/zSR4GtvK6an47wJiMi8Up+8vls0Va5+LwSMwoSPuH
-	E02hSrocc6QQGCRshGWBh7YLOZ/6GWX+2bGolAhItd8/dRW7RhIFCWLygay0UlVNClN9c42Bx3n
-	sV31uqzN7dwPz1Jhy+vL9EwOQbRI27pCnxPtH9al23iNUPO21ZtWaQwJ/+FA7ZB5pp5HL/jrSa0
-	WAPPO3JJlS54KecYTbEIzJU2ht1mLau/JzAP9vtg5RD+CHEsQrUs5ykzw8DvqzjCYNRgjD0O6Vj
-	qbw0ZtVonQUaDLEd/oLVc9KML0v3LfThKDgOqgjHZZRBD7b29+h/tpfZhY4dUmxHqZRZP7eB6gT
-	4eG4ldtdzVACoh27KgsFEIELj0ZfP/8JUGGMXg2Da5T6joGtum85fAmuDkDOV9ZJm5ODqtsVZDD
-	fABvoUYtt+N
-X-Received: by 2002:a05:600c:609a:b0:485:3e00:944a with SMTP id 5b1f17b1804b1-488d68ae78amr57301335e9.9.1775847842051;
-        Fri, 10 Apr 2026 12:04:02 -0700 (PDT)
+        bh=5nBQXlx+6S9xekUTTMSL/MT8AytbOBUSnm6kE+hqJWI=;
+        b=BrGU1jqEVCk8QNSch+7CGwTRWKjYYnzd4ItQizh7Y0avOaxnbR34zzM9ZHPcCIZUIG
+         haY0zkHCQXOIG+aXwM29gIk6k25o/AqabemT0hfbxOLXH1GEASakd5fNhKNhA421NMwF
+         Aqf6YHskuOskWaloqVrOpSWC6A3jOWLzz7/PmdOgAXDgjJR2/rTXI5FA/AiJJvGYdj1q
+         XjRPwIg8GRa899EOBD9mCSV06PRfSuarAoibhXjUbaSQ/yPP7+rqaiED7MEhhhla02Gv
+         emp2OhzfBc9FUiiqV2pHGqAio+eC9w4gssIE10rr8V5HPF/sAgw6Slc/xsDMpJSztQt+
+         uWyg==
+X-Gm-Message-State: AOJu0YwBfaz7a0jaHrS9Pdtf5l2YJ4vwnqyJ9S7rB46dJzqDuPc8AmYB
+	vz3BL4PW2hAH2l0bRMyJ93UUSZMR6/Aj2NL//YOXrQ7EAZxoEYDH7uI/ivhcTWZpIO0=
+X-Gm-Gg: AeBDietIo0giMKrJCCsPxLll5tGuQYHIYspmaajHLXeIEFIXaw4aLZN9VKKiFUf9nNn
+	HcDBW4d7ZPFO3hTvUVHAEpYgmpEZYQDVyX+U0nYk/mxvYDszEctasE6BfpA8ijYzFJWheoBGehF
+	C7mRSs57bHXyaciVBmJclEcPo1GBpuIgbq+SQF9CDyNZHJzUoVlQVVwXCQSipp+PMoXz3qWX/eQ
+	vvVHzA5Ef6FGua8E6ctu0MsAdTcU2+V4nuigS+lJ5XpkHY3cVotJ4Yfs3tZgFJAvcB3ue2fH3wx
+	VRwo9opDv154jahl53TU+oK91cczDFfPX7e75KK5Q2APAd17nihDe6ZKlRotWroCidBoLTHJBOR
+	OMxcw+mysniumiWgRJpXfriWc7jFgIfgVxLIwV8qhvDISkU5fBSLODDJGBJZQjI0sP35/U0hrHD
+	T4NjMc/gLKMotCnlhqyfxjWQOrBRz2LM52Px7KPyTvP1Trr7eDYLrD9ZVdrWqWtE5X/++ne/vWy
+	wiurRHlhHes
+X-Received: by 2002:a05:600d:d:b0:488:9e43:9690 with SMTP id 5b1f17b1804b1-488d67dbf4amr46733045e9.10.1775847843134;
+        Fri, 10 Apr 2026 12:04:03 -0700 (PDT)
 Received: from pablomg-ThinkStation-P620.mgt.proxad.net (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d5d6ee98sm38909125e9.1.2026.04.10.12.04.01
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d5d6ee98sm38909125e9.1.2026.04.10.12.04.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 12:04:01 -0700 (PDT)
+        Fri, 10 Apr 2026 12:04:02 -0700 (PDT)
 From: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
 To: Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org,
 	Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
-Subject: [RFC PATCH 5/7] wifi: ath11k: do not read band-dependent reserved bits
-Date: Fri, 10 Apr 2026 21:03:52 +0200
-Message-ID: <20260410190354.394742-6-pmartin-gomez@freebox.fr>
+Subject: [RFC PATCH 6/7] wifi: ath12k: do not read band-dependent reserved bits
+Date: Fri, 10 Apr 2026 21:03:53 +0200
+Message-ID: <20260410190354.394742-7-pmartin-gomez@freebox.fr>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260410190354.394742-1-pmartin-gomez@freebox.fr>
 References: <20260410190354.394742-1-pmartin-gomez@freebox.fr>
@@ -98,12 +97,12 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[freebox-fr.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34636-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34637-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	DMARC_NA(0.00)[freebox.fr];
@@ -119,9 +118,9 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[freebox.fr:email,freebox.fr:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,freebox-fr.20251104.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 9EDD23DBCD3
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,freebox.fr:email,freebox.fr:mid]
+X-Rspamd-Queue-Id: 78C223DBC69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -135,49 +134,92 @@ reserved.
 
 Signed-off-by: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 32 ++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index a48b6bf1f29a..eb3dc5770077 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -2383,7 +2383,7 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
- 		return;
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 6e4cfbb0e5bd..51b5a9ceff75 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4,6 +4,7 @@
+  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
  
- 	arg->he_flag = true;
--	support_160 = !!(he_cap->he_cap_elem.phy_cap_info[0] &
-+	support_160 = band != NL80211_BAND_2GHZ && !!(he_cap->he_cap_elem.phy_cap_info[0] &
- 		  IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G);
- 
- 	/* Supported HE-MCS and NSS Set of peer he_cap is intersection with self he_cp */
-@@ -8683,13 +8683,14 @@ ath11k_mac_has_single_legacy_rate(struct ath11k *ar,
- }
- 
- static __le16
--ath11k_mac_get_tx_mcs_map(const struct ieee80211_sta_he_cap *he_cap)
-+ath11k_mac_get_tx_mcs_map(const struct ieee80211_sta_he_cap *he_cap,
-+			  enum nl80211_band band)
++#include <linux/nl80211.h>
+ #include <net/mac80211.h>
+ #include <net/cfg80211.h>
+ #include <linux/etherdevice.h>
+@@ -8703,28 +8704,32 @@ static void
+ ath12k_mac_copy_eht_mcs_nss(struct ath12k_band_cap *band_cap,
+ 			    struct ieee80211_eht_mcs_nss_supp *mcs_nss,
+ 			    const struct ieee80211_he_cap_elem *he_cap,
+-			    const struct ieee80211_eht_cap_elem_fixed *eht_cap)
++			    const struct ieee80211_eht_cap_elem_fixed *eht_cap,
++			    enum nl80211_band band)
  {
--	if (he_cap->he_cap_elem.phy_cap_info[0] &
-+	if (band != NL80211_BAND_2GHZ && he_cap->he_cap_elem.phy_cap_info[0] &
- 	    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)
- 		return he_cap->he_mcs_nss_supp.tx_mcs_80p80;
+-	if ((he_cap->phy_cap_info[0] &
+-	     (IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G |
+-	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
++	if ((band == NL80211_BAND_2GHZ && (he_cap->phy_cap_info[0] &
++	     IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G) == 0) ||
++	    (band != NL80211_BAND_2GHZ && (he_cap->phy_cap_info[0] &
++	     (IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
+ 	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G |
+-	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)) == 0)
++	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)) == 0))
+ 		memcpy(&mcs_nss->only_20mhz, &band_cap->eht_mcs_20_only,
+ 		       sizeof(struct ieee80211_eht_mcs_nss_supp_20mhz_only));
  
--	if (he_cap->he_cap_elem.phy_cap_info[0] &
-+	if (band != NL80211_BAND_2GHZ && he_cap->he_cap_elem.phy_cap_info[0] &
+-	if (he_cap->phy_cap_info[0] &
+-	    (IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G |
+-	     IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G))
++	if ((band == NL80211_BAND_2GHZ && (he_cap->phy_cap_info[0] &
++	     IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G)) ||
++	    (band != NL80211_BAND_2GHZ && (he_cap->phy_cap_info[0] &
++	     IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G)))
+ 		memcpy(&mcs_nss->bw._80, &band_cap->eht_mcs_80,
+ 		       sizeof(struct ieee80211_eht_mcs_nss_supp_bw));
+ 
+-	if (he_cap->phy_cap_info[0] &
++	if (band != NL80211_BAND_2GHZ && he_cap->phy_cap_info[0] &
  	    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G)
- 		return he_cap->he_mcs_nss_supp.tx_mcs_160;
+ 		memcpy(&mcs_nss->bw._160, &band_cap->eht_mcs_160,
+ 		       sizeof(struct ieee80211_eht_mcs_nss_supp_bw));
  
-@@ -8740,7 +8741,7 @@ ath11k_mac_bitrate_mask_get_single_nss(struct ath11k *ar,
- 	if (!he_cap)
- 		return false;
+-	if (eht_cap->phy_cap_info[0] & IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ)
++	if (band == NL80211_BAND_6GHZ &&
++	    eht_cap->phy_cap_info[0] & IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ)
+ 		memcpy(&mcs_nss->bw._320, &band_cap->eht_mcs_320,
+ 		       sizeof(struct ieee80211_eht_mcs_nss_supp_bw));
+ }
+@@ -8809,7 +8814,8 @@ static void ath12k_mac_copy_eht_cap(struct ath12k *ar,
+ 				    struct ath12k_band_cap *band_cap,
+ 				    struct ieee80211_he_cap_elem *he_cap_elem,
+ 				    int iftype,
+-				    struct ieee80211_sta_eht_cap *eht_cap)
++				    struct ieee80211_sta_eht_cap *eht_cap,
++				    enum nl80211_band band)
+ {
+ 	struct ieee80211_eht_cap_elem_fixed *eht_cap_elem = &eht_cap->eht_cap_elem;
  
--	he_mcs_map = le16_to_cpu(ath11k_mac_get_tx_mcs_map(he_cap));
-+	he_mcs_map = le16_to_cpu(ath11k_mac_get_tx_mcs_map(he_cap, sband->band));
+@@ -8852,7 +8858,7 @@ static void ath12k_mac_copy_eht_cap(struct ath12k *ar,
+ 	}
  
- 	for (i = 0; i < ARRAY_SIZE(mask->control[band].he_mcs); i++) {
- 		if (mask->control[band].he_mcs[i] == 0)
+ 	ath12k_mac_copy_eht_mcs_nss(band_cap, &eht_cap->eht_mcs_nss_supp,
+-				    he_cap_elem, eht_cap_elem);
++				    he_cap_elem, eht_cap_elem, band);
+ 
+ 	if (eht_cap_elem->phy_cap_info[5] &
+ 	    IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT)
+@@ -8888,7 +8894,7 @@ static int ath12k_mac_copy_sband_iftype_data(struct ath12k *ar,
+ 				ath12k_mac_setup_he_6ghz_cap(cap, band_cap);
+ 		}
+ 		ath12k_mac_copy_eht_cap(ar, band_cap, &he_cap->he_cap_elem, i,
+-					&data[idx].eht_cap);
++					&data[idx].eht_cap, band);
+ 		idx++;
+ 	}
+ 
 -- 
 2.43.0
 
