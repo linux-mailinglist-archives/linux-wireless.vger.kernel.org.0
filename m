@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-34609-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34610-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFITFo3y2GnrjwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34609-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:52:29 +0200
+	id sIt7Obrw2GnrjwgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34610-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:44:42 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555123D7BC5
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:52:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868023D795F
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 14:44:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7465E30E0904
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:28:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 384B030B1E36
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2026 12:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A543E1206;
-	Fri, 10 Apr 2026 12:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997E63E2758;
+	Fri, 10 Apr 2026 12:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uoiHjWjo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t+6BdojJ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD6C3C1413;
-	Fri, 10 Apr 2026 12:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FACB3C1413;
+	Fri, 10 Apr 2026 12:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775823668; cv=none; b=IbLGk1L/E6nOM5Vsb6/rI0/XomR+RgXkuNIqPCT2qdw/h6cozWQ3z9uPf8eHYDNda1Q7Pt/jGVhFmosiTgDhqLLWuw4heO0c/nF0C0lVGJkAUxmZ460xJbU6jrrdooN6HcVFnwiz6Ag7JN2zi6j8x8MvkQlsntNBgYeTq7mQ2YM=
+	t=1775823672; cv=none; b=MRlETmY//WPSoDpXRNMc7TiRNp/42g02bAjpwXmhWjmbVfYAuwr/zXsD5OjHxqLfRpomHOPCL8eqNahleLjqO0Us3CYqM/blrlOAs5WNCnDIjzGPguHrUNYrXfxSeCxriAoEihWNHBcmRC31RTrIHXeq6rlSrURftTfLc1s7Giw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775823668; c=relaxed/simple;
-	bh=ql5fkS0UEXw/nBMHEudu1ngsgqvxlZvUknLeTtAAGUU=;
+	s=arc-20240116; t=1775823672; c=relaxed/simple;
+	bh=tpcbJjrROej8+Ep0S4yh9w/0viNOJRSIBsQtj9nrduE=;
 	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=m3KWOeIb+RkssioSPSmun5zFtPW/ZFmiAb9L0exrDr64p2CzZauXSF2rVyaVIpnrUS3tCGWItPASIt0UZWVqbr+dyp/coEQeojoKWRqI0wSCZxMzd9NeCN2AuGdnAxl7PQ6Di7+DUYIoawIpYDY7eMC0CKb1HYVxka4zRwhUjOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uoiHjWjo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FAAC19421;
-	Fri, 10 Apr 2026 12:21:06 +0000 (UTC)
+	 Content-Type; b=JqOy1eIyVxb+rGZbSqmaIgY6ezz5rO6QzxeR3716jA4ZIM+qJg2GT3KpwfyEMyYe8R3Xvq62ZzLdiyDpwqe0owklLWAVLaA4ROpk7A6ea4iZhGe19l0TATRAXZIt1M1jW7V6GpGz4xNnKa/v2vByxLk92lRUngf8pwvg+ROk/o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t+6BdojJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4B2C2BC87;
+	Fri, 10 Apr 2026 12:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823667;
-	bh=ql5fkS0UEXw/nBMHEudu1ngsgqvxlZvUknLeTtAAGUU=;
+	s=k20201202; t=1775823672;
+	bh=tpcbJjrROej8+Ep0S4yh9w/0viNOJRSIBsQtj9nrduE=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=uoiHjWjoWcWN7Tw6xiUbL/Io/RlHzIChPqiGJJ7RtYjsrncirPNTd0U6jsMefBLBl
-	 PuEP8rIYZGWPrDUGiB7D/1OZBxXBypGlDQEoNlUgfhKncfE0Vht3vVd8dR09fIJYz6
-	 LaRap+OM72T7ij93UcDxrSAuxRJvyqDUwai7p79fd01gYNQNCFb6LttF4gur8fMl1Z
-	 TmanYlU2xNYAREOAaMNh8AIeZ2WEpNPx/37VkP03IexczKkHFgtDwEiwY8TvmgoUyG
-	 zdqSX2TqLhRdpCyZVVz2iZYLDeqcR5cB1pNHnjTlrpzblDMQ8i7KXktiKriMpSMGuM
-	 +dQ/qJxaC9obA==
-Date: Fri, 10 Apr 2026 14:21:04 +0200
-Message-ID: <20260410120319.723429844@kernel.org>
+	b=t+6BdojJde/UDdVdrSTxElEId1Y48xNZSVlMYQlGTL0WHNGFs3HWPQxpINyMlW0Tp
+	 I6cN87TfGyJy1fhgMX3eHxGWXyIRGEfK+oj+v7ZqgSkuHT9TIqDSO48kfeefrr2R+6
+	 RZvls6BOQPsjm5E39PGBUAxS3ybrYUwTjTmhDryNFYGgOGgmcHGql9J5M/vSFS9Dpm
+	 Ps3dk0/gjV2/aMyaPlsNujNJN/7qos+7ycvHmAQEpnPn1tOePEJ6rKipC5ku3IQ4UE
+	 ud6vC+9M6N71X0VBW7hJfjso4CmI7VrrHXujC0k5eBTPHkHx5czFPyyVnepx/5Zgc1
+	 GRj7R63OiiEsA==
+Date: Fri, 10 Apr 2026 14:21:09 +0200
+Message-ID: <20260410120319.789114053@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
@@ -96,7 +96,7 @@ Cc: Michael Ellerman <mpe@ellerman.id.au>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 32/38] powerpc/spufs: Use mftb() directly
+Subject: [patch 33/38] powerpc: Select ARCH_HAS_RANDOM_ENTROPY
 References: <20260410120044.031381086@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -109,7 +109,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -119,9 +119,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FREEMAIL_CC(0.00)[ellerman.id.au,lists.ozlabs.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,vger.kernel.org,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,linux.ibm.com,davemloft.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-34609-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34610-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -132,49 +132,75 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_TWELVE(0.00)[48];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 555123D7BC5
+X-Rspamd-Queue-Id: 868023D795F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-There is no reason to indirect via get_cycles(), which is about to be
-removed.
+The only remaining usage of get_cycles() is to provide random_get_entropy().
 
-Use mftb() directly.
+Switch powerpc over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
+and providing random_get_entropy() in asm/random.h.
+
+Remove asm/timex.h as it has no functionality anymore.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: linuxppc-dev@lists.ozlabs.org
 ---
- arch/powerpc/platforms/cell/spufs/switch.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/powerpc/Kconfig              |    1 +
+ arch/powerpc/include/asm/random.h |   13 +++++++++++++
+ arch/powerpc/include/asm/timex.h  |   21 ---------------------
+ 3 files changed, 14 insertions(+), 21 deletions(-)
 
---- a/arch/powerpc/platforms/cell/spufs/switch.c
-+++ b/arch/powerpc/platforms/cell/spufs/switch.c
-@@ -34,6 +34,7 @@
- #include <asm/spu_priv1.h>
- #include <asm/spu_csa.h>
- #include <asm/mmu_context.h>
-+#include <asm/time.h>
- 
- #include "spufs.h"
- 
-@@ -279,7 +280,7 @@ static inline void save_timebase(struct
- 	 *    Read PPE Timebase High and Timebase low registers
- 	 *    and save in CSA.  TBD.
- 	 */
--	csa->suspend_time = get_cycles();
-+	csa->suspend_time = mftb();
- }
- 
- static inline void remove_other_spu_access(struct spu_state *csa,
-@@ -1261,7 +1262,7 @@ static inline void setup_decr(struct spu
- 	 *     in LSCSA.
- 	 */
- 	if (csa->priv2.mfc_control_RW & MFC_CNTL_DECREMENTER_RUNNING) {
--		cycles_t resume_time = get_cycles();
-+		cycles_t resume_time = mftb();
- 		cycles_t delta_time = resume_time - csa->suspend_time;
- 
- 		csa->lscsa->decr_status.slot[0] = SPU_DECR_STATUS_RUNNING;
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -150,6 +150,7 @@ config PPC
+ 	select ARCH_HAS_PREEMPT_LAZY
+ 	select ARCH_HAS_PTDUMP
+ 	select ARCH_HAS_PTE_SPECIAL
++	select ARCH_HAS_RANDOM_ENTROPY
+ 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
+ 	select ARCH_HAS_SET_MEMORY
+ 	select ARCH_HAS_STRICT_KERNEL_RWX	if (PPC_BOOK3S || PPC_8xx) && !HIBERNATION
+--- /dev/null
++++ b/arch/powerpc/include/asm/random.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_POWERPC_RANDOM_H
++#define _ASM_POWERPC_RANDOM_H
++
++#include <asm/cputable.h>
++#include <asm/vdso/timebase.h>
++
++static inline unsigned long random_get_entropy(void)
++{
++	return mftb();
++}
++
++#endif	/* _ASM_POWERPC_RANDOM_H */
+--- a/arch/powerpc/include/asm/timex.h
++++ b/arch/powerpc/include/asm/timex.h
+@@ -1,21 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _ASM_POWERPC_TIMEX_H
+-#define _ASM_POWERPC_TIMEX_H
+-
+-#ifdef __KERNEL__
+-
+-/*
+- * PowerPC architecture timex specifications
+- */
+-
+-#include <asm/cputable.h>
+-#include <asm/vdso/timebase.h>
+-
+-ostatic inline cycles_t get_cycles(void)
+-{
+-	return mftb();
+-}
+-#define get_cycles get_cycles
+-
+-#endif	/* __KERNEL__ */
+-#endif	/* _ASM_POWERPC_TIMEX_H */
 
 
