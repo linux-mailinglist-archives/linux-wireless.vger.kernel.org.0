@@ -1,314 +1,219 @@
-Return-Path: <linux-wireless+bounces-34645-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34646-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0P68AJXz2Wn1wwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34645-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2026 09:09:09 +0200
+	id nqzHECv32WncxQgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34646-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2026 09:24:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BBBF3DEA40
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2026 09:09:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DAEE3DEA96
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2026 09:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C02C6305B0AA
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2026 07:02:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ED08B30091D8
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2026 07:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13946311C2A;
-	Sat, 11 Apr 2026 07:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87A93264F5;
+	Sat, 11 Apr 2026 07:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XuxFtpct"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Cr+dIuNM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C52230BE9
-	for <linux-wireless@vger.kernel.org>; Sat, 11 Apr 2026 07:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0ECC32BF5D
+	for <linux-wireless@vger.kernel.org>; Sat, 11 Apr 2026 07:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775890935; cv=none; b=ei4oJujwcifsrGxtARTMb7j2GKqFq4gxIwMseDtkxzqaFPVD9fP2G0FsY0nNleYsDSkTWj94chHmLX6tpqInr4mY9CH7pAJX1nZ01WVjKRznDBe5W+QO/e9Gr4VY9Fg7DmOqcYRBU6rJAJQtu7FFI6QrJO7MOqwr881gx3rPpOE=
+	t=1775892259; cv=none; b=N7zVVphhvlS87qzRY8YJ492PzoHyz00ovfzeM3Md5lo/mJ6887yiStV504A33/gdxJXWV3wocKraBeb10YeOVyIM4Eh2hWloBiBTttyan9WbMZXdYV69SkMH2dCBnxX8quhTo5AvnsdUEQmrbLzGt7Vz85PBWQRA7ZXncWTth8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775890935; c=relaxed/simple;
-	bh=JNFKYtdLaLGV5XHgAhZxq73EDqsMbed2Ab6l1+Mbdpo=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=sAC8RnexyJddHXPjVWFpREoa1f2NOiw9ZLw6Rj7mp/2GrpU+If47mYHutJcPu7EKzf2TSmK8hNG0mj9Jmg2FxMJQh9kJfnmUCD7hrvsyrV2GK2viKygf8Z3hyWU3npZ9LT6uNo/yVZfYbjRAHUGQ258PLKHa7MiyJgBbMaZ6Iqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XuxFtpct; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775890933; x=1807426933;
-  h=date:from:to:cc:subject:message-id;
-  bh=JNFKYtdLaLGV5XHgAhZxq73EDqsMbed2Ab6l1+Mbdpo=;
-  b=XuxFtpctb/ByOLnYxvjH2liIMqEV85ukSEkcW5piIgPvvgLZ9CjR8mlH
-   nc9ZazhcoWLQGDmyJroTY4bL1BMV+6qK/H/tEO+OyEhtF6cNXjhoqz05i
-   s0g5m+kR9SthqBhvuioIua/7GVLGLj0jFbPmZkIHwUoipInnNwJardy0Z
-   9gYhR43RCbwzvDPwqiIIXMx6P/RQVqElcJ66M5ic1MNRj52y6zRZU7QO6
-   kEpPohdxXrRJIq3te24hqYdJtcVkkBlJR9IzCGBxk9G1gdWKjdNC52fnv
-   D8+hyBCY7x2Sz2j1L/ycwsIS2hkbJIxjrFYXxBE6wdd19yHzIH3II8QAj
-   A==;
-X-CSE-ConnectionGUID: SKv716e2RtSh9/aqJwtd5A==
-X-CSE-MsgGUID: dKYiOi2RRQaNpt71WG8s1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11755"; a="79491817"
-X-IronPort-AV: E=Sophos;i="6.23,173,1770624000"; 
-   d="scan'208";a="79491817"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2026 00:02:12 -0700
-X-CSE-ConnectionGUID: 5GOxDkdZSb6l7hjWbphwJA==
-X-CSE-MsgGUID: Ke00GJ7SQCCEpEEJXgg6aQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,173,1770624000"; 
-   d="scan'208";a="259760574"
-Received: from lkp-server01.sh.intel.com (HELO 3eaaf1a74b89) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 11 Apr 2026 00:02:10 -0700
-Received: from kbuild by 3eaaf1a74b89 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wBSM4-000000000w5-2gUL;
-	Sat, 11 Apr 2026 07:02:08 +0000
-Date: Sat, 11 Apr 2026 15:01:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- fa489a77e3267e05df95db96ba98e141ec07cbd9
-Message-ID: <202604111520.nc45sIDw-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1775892259; c=relaxed/simple;
+	bh=+1+yWd1w1iE6BVAqI0K+5H79DdsMtJItzAUysC5lLxc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hlsMrpGVMDjxtO8n/5lXWn5g7Q/LMxZg54AysGLmkA0ks45nRikOY/QDZCJqFlNK1T8O4mMLn5RVYhI+lE/730qBem2CHL7LY64TZHbBA9MyeWbWz0W2x6TQAyliQJK6SL0B2arL/McP3DxgSMKmrcS7b1EO+fnsM0YC63LOOlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Cr+dIuNM; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63B7OD6e8164276, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1775892253; bh=qhDC4UR17/iWHWRJ3JMBvpZcjm92o1tsWfhBbjzEQ+E=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=Cr+dIuNM09mHfIHPra170cFD66n8jdgufRM2o0S2+ZprwTriYx0aofnXnfQCFmU9i
+	 ghjiyDgIOn04qsISjSnSFcK3PW0tIz/e2htmIuzKGqclZkaZ0SfHSFg5MsiU0/oTkS
+	 hv4cFUWk5yPZo0BTz0ekWM/h2ShfqNVSn+WcYNpbdyEs/OPM/f3ztfa1Hr0Zd4huzv
+	 xO4HKyepTO+W1vLeOhTDWRT/ReyWKXdbesdiDpEAFT2i3zysB1nKiNPUFupoCC3nBy
+	 5bmfv7hUbpRMsYUTglT1BhjwF2zYOP2XlCnJVXnUl+Z3GxmCJrF7scb+6kAu3d1FdM
+	 W5oh8l9Gy1WNA==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 63B7OD6e8164276
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 11 Apr 2026 15:24:13 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Sat, 11 Apr 2026 15:24:13 +0800
+Received: from [127.0.1.1] (172.21.40.76) by RTKEXHMBS05.realtek.com.tw
+ (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
+ Transport; Sat, 11 Apr 2026 15:24:13 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <rtl8821cerfe2@gmail.com>
+Subject: [PATCH rtw-next 1/2] wifi: rtw88: add __packed to efuse map and do assertion
+Date: Sat, 11 Apr 2026 15:24:12 +0800
+Message-ID: <20260411072413.1556575-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34645-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-34646-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_TWO(0.00)[2];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:mid]
-X-Rspamd-Queue-Id: 3BBBF3DEA40
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3DAEE3DEA96
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: fa489a77e3267e05df95db96ba98e141ec07cbd9  wifi: cfg80211: Explicitly include <linux/export.h> in michael-mic.c
+As arm-linux-gnueabi-gcc compiler align struct field is not always like
+gcc on x86 target, the efuse map layout might not be expected. Add __packed
+and do assertion to ensure it is expected.
 
-elapsed time: 818m
+Complied test only with arm-linux-gnueabi-gcc and x86 gcc.
 
-configs tested: 189
-configs skipped: 2
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/rtw8703b.h | 2 ++
+ drivers/net/wireless/realtek/rtw88/rtw8723x.h | 4 +++-
+ drivers/net/wireless/realtek/rtw88/rtw8821c.h | 4 +++-
+ drivers/net/wireless/realtek/rtw88/rtw8822b.h | 4 +++-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h | 4 +++-
+ drivers/net/wireless/realtek/rtw88/rtw88xxa.h | 2 +-
+ 6 files changed, 15 insertions(+), 5 deletions(-)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b.h b/drivers/net/wireless/realtek/rtw88/rtw8703b.h
+index 3e2da2e6739d..e3d709635902 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8703b.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.h
+@@ -70,6 +70,8 @@ struct phy_status_8703b {
+ #endif
+ } __packed;
+ 
++static_assert(sizeof(struct phy_status_8703b) == 28);
++
+ /* Baseband registers */
+ #define REG_BB_PWR_SAV5_11N 0x0818
+ /* BIT(11) should be 1 for 8703B *and* 8723D, which means LNA uses 4
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723x.h b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
+index 0fc70dfdfc8b..da674ab7cb78 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723x.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
+@@ -95,9 +95,11 @@ struct rtw8723x_efuse {
+ 		struct rtw8723xe_efuse e;
+ 		struct rtw8723xu_efuse u;
+ 		struct rtw8723xs_efuse s;
+-	};
++	} __packed;
+ } __packed;
+ 
++static_assert(sizeof(struct rtw8723x_efuse) == 0x120);
++
+ #define RTW8723X_IQK_ADDA_REG_NUM	16
+ #define RTW8723X_IQK_MAC8_REG_NUM	3
+ #define RTW8723X_IQK_MAC32_REG_NUM	1
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.h b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
+index 954e93c8020d..ac9773b6dee5 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
+@@ -101,9 +101,11 @@ struct rtw8821c_efuse {
+ 		struct rtw8821ce_efuse e;
+ 		struct rtw8821cu_efuse u;
+ 		struct rtw8821cs_efuse s;
+-	};
++	} __packed;
+ } __packed;
+ 
++static_assert(sizeof(struct rtw8821c_efuse) == 0x200);
++
+ static inline void
+ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
+ {
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.h b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
+index 9fca9ba67c90..656f8830a394 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
+@@ -103,9 +103,11 @@ struct rtw8822b_efuse {
+ 		struct rtw8822be_efuse e;
+ 		struct rtw8822bu_efuse u;
+ 		struct rtw8822bs_efuse s;
+-	};
++	} __packed;
+ } __packed;
+ 
++static_assert(sizeof(struct rtw8822b_efuse) == 0x200);
++
+ static inline void
+ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
+ {
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.h b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
+index fc62b67a15f2..e1423448c453 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
+@@ -102,9 +102,11 @@ struct rtw8822c_efuse {
+ 		struct rtw8822ce_efuse e;
+ 		struct rtw8822cu_efuse u;
+ 		struct rtw8822cs_efuse s;
+-	};
++	} __packed;
+ } __packed;
+ 
++static_assert(sizeof(struct rtw8822c_efuse) == 0x19a);
++
+ enum rtw8822c_dpk_agc_phase {
+ 	RTW_DPK_GAIN_CHECK,
+ 	RTW_DPK_GAIN_LARGE,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw88xxa.h b/drivers/net/wireless/realtek/rtw88/rtw88xxa.h
+index 09a45c1a4129..1b5297c942d8 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw88xxa.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw88xxa.h
+@@ -58,7 +58,7 @@ struct rtw88xxa_efuse {
+ 	union {
+ 		struct rtw8821au_efuse rtw8821au;
+ 		struct rtw8812au_efuse rtw8812au;
+-	};
++	} __packed;
+ } __packed;
+ 
+ static_assert(sizeof(struct rtw88xxa_efuse) == 512);
+-- 
+2.25.1
 
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-alpha                               defconfig    gcc-15.2.0
-arc                              allmodconfig    gcc-15.2.0
-arc                               allnoconfig    gcc-15.2.0
-arc                              allyesconfig    gcc-15.2.0
-arc                                 defconfig    gcc-15.2.0
-arc                   randconfig-001-20260411    gcc-12.5.0
-arc                   randconfig-002-20260411    gcc-12.5.0
-arm                               allnoconfig    clang-23
-arm                               allnoconfig    gcc-15.2.0
-arm                              allyesconfig    gcc-15.2.0
-arm                                 defconfig    gcc-15.2.0
-arm                   randconfig-001-20260411    gcc-12.5.0
-arm                   randconfig-002-20260411    gcc-12.5.0
-arm                   randconfig-003-20260411    gcc-12.5.0
-arm                   randconfig-004-20260411    gcc-12.5.0
-arm                        shmobile_defconfig    gcc-15.2.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.2.0
-arm64                               defconfig    gcc-15.2.0
-arm64                 randconfig-001-20260411    clang-23
-arm64                 randconfig-002-20260411    clang-23
-arm64                 randconfig-003-20260411    clang-23
-arm64                 randconfig-004-20260411    clang-23
-csky                             allmodconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                                defconfig    gcc-15.2.0
-csky                  randconfig-001-20260411    clang-23
-csky                  randconfig-002-20260411    clang-23
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    gcc-15.2.0
-hexagon                           allnoconfig    clang-23
-hexagon                           allnoconfig    gcc-15.2.0
-hexagon                             defconfig    gcc-15.2.0
-hexagon               randconfig-001-20260411    gcc-14.3.0
-hexagon               randconfig-002-20260411    gcc-14.3.0
-i386                             allmodconfig    clang-20
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-15.2.0
-i386                             allyesconfig    clang-20
-i386        buildonly-randconfig-001-20260411    gcc-14
-i386        buildonly-randconfig-002-20260411    gcc-14
-i386        buildonly-randconfig-003-20260411    gcc-14
-i386        buildonly-randconfig-004-20260411    gcc-14
-i386        buildonly-randconfig-005-20260411    gcc-14
-i386        buildonly-randconfig-006-20260411    gcc-14
-i386                                defconfig    gcc-15.2.0
-i386                  randconfig-001-20260411    clang-20
-i386                  randconfig-002-20260411    clang-20
-i386                  randconfig-003-20260411    clang-20
-i386                  randconfig-004-20260411    clang-20
-i386                  randconfig-005-20260411    clang-20
-i386                  randconfig-006-20260411    clang-20
-i386                  randconfig-007-20260411    clang-20
-i386                  randconfig-011-20260411    clang-20
-i386                  randconfig-012-20260411    clang-20
-i386                  randconfig-013-20260411    clang-20
-i386                  randconfig-014-20260411    clang-20
-i386                  randconfig-015-20260411    clang-20
-i386                  randconfig-016-20260411    clang-20
-i386                  randconfig-017-20260411    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-23
-loongarch                         allnoconfig    gcc-15.2.0
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20260411    gcc-14.3.0
-loongarch             randconfig-002-20260411    gcc-14.3.0
-m68k                             allmodconfig    gcc-15.2.0
-m68k                              allnoconfig    gcc-15.2.0
-m68k                             allyesconfig    gcc-15.2.0
-m68k                                defconfig    clang-19
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                       allyesconfig    gcc-15.2.0
-microblaze                          defconfig    clang-19
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-mips                             allyesconfig    gcc-15.2.0
-nios2                            allmodconfig    clang-23
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-23
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-19
-nios2                 randconfig-001-20260411    gcc-14.3.0
-nios2                 randconfig-002-20260411    gcc-14.3.0
-openrisc                         allmodconfig    clang-23
-openrisc                         allmodconfig    gcc-15.2.0
-openrisc                          allnoconfig    clang-23
-openrisc                          allnoconfig    gcc-15.2.0
-openrisc                            defconfig    gcc-15.2.0
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    clang-23
-parisc                            allnoconfig    gcc-15.2.0
-parisc                           allyesconfig    clang-19
-parisc                           allyesconfig    gcc-15.2.0
-parisc                              defconfig    gcc-15.2.0
-parisc                randconfig-001-20260411    gcc-11.5.0
-parisc                randconfig-002-20260411    gcc-11.5.0
-parisc64                            defconfig    clang-19
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    clang-23
-powerpc                           allnoconfig    gcc-15.2.0
-powerpc               randconfig-001-20260411    gcc-11.5.0
-powerpc               randconfig-002-20260411    gcc-11.5.0
-powerpc64             randconfig-001-20260411    gcc-11.5.0
-powerpc64             randconfig-002-20260411    gcc-11.5.0
-riscv                            allmodconfig    clang-23
-riscv                             allnoconfig    clang-23
-riscv                             allnoconfig    gcc-15.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    gcc-15.2.0
-riscv                 randconfig-001-20260411    gcc-10.5.0
-riscv                 randconfig-002-20260411    gcc-10.5.0
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-15.2.0
-s390                                defconfig    gcc-15.2.0
-s390                  randconfig-001-20260411    gcc-10.5.0
-s390                  randconfig-002-20260411    gcc-10.5.0
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    clang-23
-sh                                allnoconfig    gcc-15.2.0
-sh                               allyesconfig    clang-19
-sh                               allyesconfig    gcc-15.2.0
-sh                                  defconfig    gcc-14
-sh                    randconfig-001-20260411    gcc-10.5.0
-sh                    randconfig-002-20260411    gcc-10.5.0
-sparc                             allnoconfig    clang-23
-sparc                             allnoconfig    gcc-15.2.0
-sparc                               defconfig    gcc-15.2.0
-sparc                 randconfig-001-20260411    gcc-14
-sparc                 randconfig-002-20260411    gcc-14
-sparc64                          allmodconfig    clang-23
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260411    gcc-14
-sparc64               randconfig-002-20260411    gcc-14
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-23
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-15.2.0
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260411    gcc-14
-um                    randconfig-002-20260411    gcc-14
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                            allnoconfig    clang-23
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20260411    gcc-14
-x86_64      buildonly-randconfig-002-20260411    gcc-14
-x86_64      buildonly-randconfig-003-20260411    gcc-14
-x86_64      buildonly-randconfig-004-20260411    gcc-14
-x86_64      buildonly-randconfig-005-20260411    gcc-14
-x86_64      buildonly-randconfig-006-20260411    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20260411    gcc-14
-x86_64                randconfig-002-20260411    gcc-14
-x86_64                randconfig-003-20260411    gcc-14
-x86_64                randconfig-004-20260411    gcc-14
-x86_64                randconfig-005-20260411    gcc-14
-x86_64                randconfig-006-20260411    gcc-14
-x86_64                randconfig-011-20260411    clang-20
-x86_64                randconfig-012-20260411    clang-20
-x86_64                randconfig-013-20260411    clang-20
-x86_64                randconfig-014-20260411    clang-20
-x86_64                randconfig-015-20260411    clang-20
-x86_64                randconfig-016-20260411    clang-20
-x86_64                randconfig-071-20260411    clang-20
-x86_64                randconfig-072-20260411    clang-20
-x86_64                randconfig-073-20260411    clang-20
-x86_64                randconfig-074-20260411    clang-20
-x86_64                randconfig-075-20260411    clang-20
-x86_64                randconfig-076-20260411    clang-20
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-23
-xtensa                            allnoconfig    gcc-15.2.0
-xtensa                           allyesconfig    clang-23
-xtensa                           allyesconfig    gcc-15.2.0
-xtensa                randconfig-001-20260411    gcc-14
-xtensa                randconfig-002-20260411    gcc-14
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
