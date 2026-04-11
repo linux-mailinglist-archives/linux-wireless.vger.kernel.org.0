@@ -1,68 +1,71 @@
-Return-Path: <linux-wireless+bounces-34646-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34647-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id nqzHECv32WncxQgAu9opvQ
-	(envelope-from <linux-wireless+bounces-34646-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2026 09:24:27 +0200
+	id yNaWGkf32WncxQgAu9opvQ
+	(envelope-from <linux-wireless+bounces-34647-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2026 09:24:55 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DAEE3DEA96
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2026 09:24:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0632A3DEAB3
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2026 09:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ED08B30091D8
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2026 07:24:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3AA7F305832E
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2026 07:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87A93264F5;
-	Sat, 11 Apr 2026 07:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3A532ED32;
+	Sat, 11 Apr 2026 07:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Cr+dIuNM"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="qL1HbMvf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0ECC32BF5D
-	for <linux-wireless@vger.kernel.org>; Sat, 11 Apr 2026 07:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F7132F764
+	for <linux-wireless@vger.kernel.org>; Sat, 11 Apr 2026 07:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775892259; cv=none; b=N7zVVphhvlS87qzRY8YJ492PzoHyz00ovfzeM3Md5lo/mJ6887yiStV504A33/gdxJXWV3wocKraBeb10YeOVyIM4Eh2hWloBiBTttyan9WbMZXdYV69SkMH2dCBnxX8quhTo5AvnsdUEQmrbLzGt7Vz85PBWQRA7ZXncWTth8k=
+	t=1775892264; cv=none; b=jRdfXIo4tqHQXz2HmLqbFaFG6XvkRkeqjqC1DQbynLDuzQMmDt9A/SQq78Po7lxpHg4+uZPQLj8ahB3I1VlrN8ttbYEtxs+yV7C8IvtW/uU17+tOx4qb7Ewi7afYZ4knd7ArAp70d1Bi3hQN4yQsbtJVXJGP1wa9Hxm6P1LDxCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775892259; c=relaxed/simple;
-	bh=+1+yWd1w1iE6BVAqI0K+5H79DdsMtJItzAUysC5lLxc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hlsMrpGVMDjxtO8n/5lXWn5g7Q/LMxZg54AysGLmkA0ks45nRikOY/QDZCJqFlNK1T8O4mMLn5RVYhI+lE/730qBem2CHL7LY64TZHbBA9MyeWbWz0W2x6TQAyliQJK6SL0B2arL/McP3DxgSMKmrcS7b1EO+fnsM0YC63LOOlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Cr+dIuNM; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1775892264; c=relaxed/simple;
+	bh=MBlHBqbtZouB0PH8djcVHVKP9rKdRNJFvEp+KWI2ONc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XVU1bErJta/+xL7X2SERtJ2lf6O5wR+nF6gsldokYjSSW2Pqvl+Hem42spKK0LGhlnx7VpDljsa8lQKvWdWZn7al0YW6GBSznaoclM32Dd7a0scG+hCGB/jIw4B04lkzQYJbY8v86KDCSp1KQC8H6zXY9QcRw+95z4wUUzX5lwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=qL1HbMvf; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63B7OD6e8164276, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63B7OIIl8164280, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1775892253; bh=qhDC4UR17/iWHWRJ3JMBvpZcjm92o1tsWfhBbjzEQ+E=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=Cr+dIuNM09mHfIHPra170cFD66n8jdgufRM2o0S2+ZprwTriYx0aofnXnfQCFmU9i
-	 ghjiyDgIOn04qsISjSnSFcK3PW0tIz/e2htmIuzKGqclZkaZ0SfHSFg5MsiU0/oTkS
-	 hv4cFUWk5yPZo0BTz0ekWM/h2ShfqNVSn+WcYNpbdyEs/OPM/f3ztfa1Hr0Zd4huzv
-	 xO4HKyepTO+W1vLeOhTDWRT/ReyWKXdbesdiDpEAFT2i3zysB1nKiNPUFupoCC3nBy
-	 5bmfv7hUbpRMsYUTglT1BhjwF2zYOP2XlCnJVXnUl+Z3GxmCJrF7scb+6kAu3d1FdM
-	 W5oh8l9Gy1WNA==
+	t=1775892258; bh=2PCBgPT5pqo4rWgqoSfeAkTy10z4P945UkI9MSHdG08=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=qL1HbMvfilkQm1GqjJb6QGJmIdydRMnEd83pQ/4yLus9r5rwP13VctcNrpmT175SN
+	 yU8MdEFs736Cdj/Gs2R7tVkLzdu4JE68LxkPbpSkCw6vPaG7mIeSczj0iOMSLuodj0
+	 RygEzvhCtf6lOMljzmOzrUUHR4a2l3pxncfBG9g5VhOnDwPmateU1bD8+F0ADkAFjG
+	 7fowZ4ymj5zmNQwgRuqUbXdnvg29bXNkpsGhGSFbUr/Tk9HkJkJPSxYixSmGz4L/6V
+	 Ci5DhGO85w1gcFC1qIHxf64InOWqMb4Ldc7w5HT21fhzrvXTvAySalaqDXTXQnWYo3
+	 Vh/0guh8MVTWQ==
 Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 63B7OD6e8164276
+	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 63B7OIIl8164280
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 11 Apr 2026 15:24:13 +0800
+	Sat, 11 Apr 2026 15:24:18 +0800
 Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
  RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Sat, 11 Apr 2026 15:24:13 +0800
+ 15.2.1748.10; Sat, 11 Apr 2026 15:24:19 +0800
 Received: from [127.0.1.1] (172.21.40.76) by RTKEXHMBS05.realtek.com.tw
  (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Sat, 11 Apr 2026 15:24:13 +0800
+ Transport; Sat, 11 Apr 2026 15:24:18 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <rtl8821cerfe2@gmail.com>
-Subject: [PATCH rtw-next 1/2] wifi: rtw88: add __packed to efuse map and do assertion
-Date: Sat, 11 Apr 2026 15:24:12 +0800
-Message-ID: <20260411072413.1556575-1-pkshih@realtek.com>
+Subject: [PATCH rtw-next 2/2] wifi: rtw89: add __packed to efuse map and do assertion
+Date: Sat, 11 Apr 2026 15:24:13 +0800
+Message-ID: <20260411072413.1556575-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260411072413.1556575-1-pkshih@realtek.com>
+References: <20260411072413.1556575-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,12 +80,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34646-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34647-lists,linux-wireless=lfdr.de];
 	FREEMAIL_CC(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[6];
 	RCPT_COUNT_TWO(0.00)[2];
@@ -95,10 +98,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_NONE(0.00)[];
 	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3DAEE3DEA96
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0632A3DEAB3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -111,108 +114,164 @@ Complied test only with arm-linux-gnueabi-gcc and x86 gcc.
 Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8703b.h | 2 ++
- drivers/net/wireless/realtek/rtw88/rtw8723x.h | 4 +++-
- drivers/net/wireless/realtek/rtw88/rtw8821c.h | 4 +++-
- drivers/net/wireless/realtek/rtw88/rtw8822b.h | 4 +++-
- drivers/net/wireless/realtek/rtw88/rtw8822c.h | 4 +++-
- drivers/net/wireless/realtek/rtw88/rtw88xxa.h | 2 +-
- 6 files changed, 15 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8851b.h        | 8 +++++---
+ drivers/net/wireless/realtek/rtw89/rtw8852a.h        | 8 +++++---
+ drivers/net/wireless/realtek/rtw89/rtw8852b_common.h | 8 +++++---
+ drivers/net/wireless/realtek/rtw89/rtw8852c.h        | 8 +++++---
+ drivers/net/wireless/realtek/rtw89/rtw8922a.h        | 2 ++
+ drivers/net/wireless/realtek/rtw89/rtw8922d.h        | 2 ++
+ 6 files changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b.h b/drivers/net/wireless/realtek/rtw88/rtw8703b.h
-index 3e2da2e6739d..e3d709635902 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8703b.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.h
-@@ -70,6 +70,8 @@ struct phy_status_8703b {
- #endif
- } __packed;
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.h b/drivers/net/wireless/realtek/rtw89/rtw8851b.h
+index 1a5c52654d8a..5c2e26c04cd9 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.h
+@@ -13,11 +13,11 @@
+ struct rtw8851bu_efuse {
+ 	u8 rsvd[0x88];
+ 	u8 mac_addr[ETH_ALEN];
+-};
++} __packed;
  
-+static_assert(sizeof(struct phy_status_8703b) == 28);
-+
- /* Baseband registers */
- #define REG_BB_PWR_SAV5_11N 0x0818
- /* BIT(11) should be 1 for 8703B *and* 8723D, which means LNA uses 4
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723x.h b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
-index 0fc70dfdfc8b..da674ab7cb78 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8723x.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
-@@ -95,9 +95,11 @@ struct rtw8723x_efuse {
- 		struct rtw8723xe_efuse e;
- 		struct rtw8723xu_efuse u;
- 		struct rtw8723xs_efuse s;
--	};
-+	} __packed;
- } __packed;
+ struct rtw8851be_efuse {
+ 	u8 mac_addr[ETH_ALEN];
+-};
++} __packed;
  
-+static_assert(sizeof(struct rtw8723x_efuse) == 0x120);
-+
- #define RTW8723X_IQK_ADDA_REG_NUM	16
- #define RTW8723X_IQK_MAC8_REG_NUM	3
- #define RTW8723X_IQK_MAC32_REG_NUM	1
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.h b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-index 954e93c8020d..ac9773b6dee5 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-@@ -101,9 +101,11 @@ struct rtw8821c_efuse {
- 		struct rtw8821ce_efuse e;
- 		struct rtw8821cu_efuse u;
- 		struct rtw8821cs_efuse s;
--	};
-+	} __packed;
- } __packed;
- 
-+static_assert(sizeof(struct rtw8821c_efuse) == 0x200);
-+
- static inline void
- _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
- {
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.h b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
-index 9fca9ba67c90..656f8830a394 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
-@@ -103,9 +103,11 @@ struct rtw8822b_efuse {
- 		struct rtw8822be_efuse e;
- 		struct rtw8822bu_efuse u;
- 		struct rtw8822bs_efuse s;
--	};
-+	} __packed;
- } __packed;
- 
-+static_assert(sizeof(struct rtw8822b_efuse) == 0x200);
-+
- static inline void
- _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
- {
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.h b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-index fc62b67a15f2..e1423448c453 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-@@ -102,9 +102,11 @@ struct rtw8822c_efuse {
- 		struct rtw8822ce_efuse e;
- 		struct rtw8822cu_efuse u;
- 		struct rtw8822cs_efuse s;
--	};
-+	} __packed;
- } __packed;
- 
-+static_assert(sizeof(struct rtw8822c_efuse) == 0x19a);
-+
- enum rtw8822c_dpk_agc_phase {
- 	RTW_DPK_GAIN_CHECK,
- 	RTW_DPK_GAIN_LARGE,
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw88xxa.h b/drivers/net/wireless/realtek/rtw88/rtw88xxa.h
-index 09a45c1a4129..1b5297c942d8 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw88xxa.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw88xxa.h
-@@ -58,7 +58,7 @@ struct rtw88xxa_efuse {
+ struct rtw8851b_tssi_offset {
+ 	u8 cck_tssi[TSSI_CCK_CH_GROUP_NUM];
+@@ -68,9 +68,11 @@ struct rtw8851b_efuse {
  	union {
- 		struct rtw8821au_efuse rtw8821au;
- 		struct rtw8812au_efuse rtw8812au;
+ 		struct rtw8851bu_efuse u;
+ 		struct rtw8851be_efuse e;
 -	};
 +	} __packed;
  } __packed;
  
- static_assert(sizeof(struct rtw88xxa_efuse) == 512);
++static_assert(sizeof(struct rtw8851b_efuse) == 0x48e);
++
+ extern const struct rtw89_chip_info rtw8851b_chip_info;
+ 
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.h b/drivers/net/wireless/realtek/rtw89/rtw8852a.h
+index d6c1acd09238..0d381f6fd182 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.h
+@@ -19,11 +19,11 @@ enum rtw8852a_pmac_mode {
+ struct rtw8852au_efuse {
+ 	u8 rsvd[0x38];
+ 	u8 mac_addr[ETH_ALEN];
+-};
++} __packed;
+ 
+ struct rtw8852ae_efuse {
+ 	u8 mac_addr[ETH_ALEN];
+-};
++} __packed;
+ 
+ struct rtw8852a_tssi_offset {
+ 	u8 cck_tssi[TSSI_CCK_CH_GROUP_NUM];
+@@ -78,9 +78,11 @@ struct rtw8852a_efuse {
+ 	union {
+ 		struct rtw8852au_efuse u;
+ 		struct rtw8852ae_efuse e;
+-	};
++	} __packed;
+ } __packed;
+ 
++static_assert(sizeof(struct rtw8852a_efuse) == 0x43e);
++
+ struct rtw8852a_bb_pmac_info {
+ 	u8 en_pmac_tx:1;
+ 	u8 is_cck:1;
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_common.h b/drivers/net/wireless/realtek/rtw89/rtw8852b_common.h
+index 3dce5422f41e..89e936e4b211 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b_common.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_common.h
+@@ -20,11 +20,11 @@ enum rtw8852bx_pmac_mode {
+ struct rtw8852bx_u_efuse {
+ 	u8 rsvd[0x88];
+ 	u8 mac_addr[ETH_ALEN];
+-};
++} __packed;
+ 
+ struct rtw8852bx_e_efuse {
+ 	u8 mac_addr[ETH_ALEN];
+-};
++} __packed;
+ 
+ struct rtw8852bx_tssi_offset {
+ 	u8 cck_tssi[TSSI_CCK_CH_GROUP_NUM];
+@@ -89,9 +89,11 @@ struct rtw8852bx_efuse {
+ 	union {
+ 		struct rtw8852bx_u_efuse u;
+ 		struct rtw8852bx_e_efuse e;
+-	};
++	} __packed;
+ } __packed;
+ 
++static_assert(sizeof(struct rtw8852bx_efuse) == 0x48e);
++
+ struct rtw8852bx_bb_pmac_info {
+ 	u8 en_pmac_tx:1;
+ 	u8 is_cck:1;
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.h b/drivers/net/wireless/realtek/rtw89/rtw8852c.h
+index 8585921ac6c4..49cb6b4b3b7c 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.h
+@@ -13,11 +13,11 @@
+ struct rtw8852c_u_efuse {
+ 	u8 rsvd[0x88];
+ 	u8 mac_addr[ETH_ALEN];
+-};
++} __packed;
+ 
+ struct rtw8852c_e_efuse {
+ 	u8 mac_addr[ETH_ALEN];
+-};
++} __packed;
+ 
+ struct rtw8852c_tssi_offset {
+ 	u8 cck_tssi[TSSI_CCK_CH_GROUP_NUM];
+@@ -95,9 +95,11 @@ struct rtw8852c_efuse {
+ 	union {
+ 		struct rtw8852c_u_efuse u;
+ 		struct rtw8852c_e_efuse e;
+-	};
++	} __packed;
+ } __packed;
+ 
++static_assert(sizeof(struct rtw8852c_efuse) == 0x48e);
++
+ extern const struct rtw89_chip_info rtw8852c_chip_info;
+ 
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.h b/drivers/net/wireless/realtek/rtw89/rtw8922a.h
+index a29cfa5b4291..33c87bcc403c 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922a.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.h
+@@ -68,6 +68,8 @@ struct rtw8922a_efuse {
+ 	struct rtw8922a_rx_gain_6g rx_gain_6g_b;
+ } __packed;
+ 
++static_assert(sizeof(struct rtw8922a_efuse) == 0x1b8);
++
+ extern const struct rtw89_chip_info rtw8922a_chip_info;
+ extern const struct rtw89_chip_variant rtw8922ae_vs_variant;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.h b/drivers/net/wireless/realtek/rtw89/rtw8922d.h
+index 22a7d1cc244f..6d0fb01c1216 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922d.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.h
+@@ -77,6 +77,8 @@ struct rtw8922d_efuse {
+ 	struct rtw8922d_rx_gain_6g rx_gain_6g_b_2;
+ } __packed;
+ 
++static_assert(sizeof(struct rtw8922d_efuse) == 0x222);
++
+ extern const struct rtw89_chip_info rtw8922d_chip_info;
+ extern const struct rtw89_chip_variant rtw8922de_vs_variant;
+ 
 -- 
 2.25.1
 
