@@ -1,75 +1,72 @@
-Return-Path: <linux-wireless+bounces-34669-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34670-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WL7UKDqM22nuDAkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34669-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:12:42 +0200
+	id qGvxHXWP22mZDQkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34670-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:26:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32BAF3E3C0B
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:12:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C51EF3E3C6C
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E4F5A302B526
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 12:12:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17D913009FA4
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 12:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8C037BE66;
-	Sun, 12 Apr 2026 12:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA3D30E0C0;
+	Sun, 12 Apr 2026 12:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CWDMwkln"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O0waA57X"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A36637C0F5
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2026 12:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4D578F4F
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2026 12:26:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775995918; cv=none; b=e4Tc+Spu5Bcp9UTy+Sc+FeQ168ghmqRuU7o547RU48xig8PKjC7MPggmZ9mOMd8t9ImAMFf42/uDcn16kwDroqN4zC5TiDi5WlWej1e4d2DcucWvvifvIKG5ME33lchmwyTcLtFvaF3WiiCRuzRnrnnQKuunYjWNWF7jSekJ77o=
+	t=1775996785; cv=none; b=SUhsCDDPXCgzOo7t13vrAJczkp9tJVacPlcoWNwfKeztJZvJRW7am+7FHyfZZE6Wq1QrnMK/Z08jdaubbubEzw0kNdqYkrWbpD7zBBr1TQI8GJVPX2nFZ7DP9uGPP86zHF0BvftMtwZsS6ziQUhcdSF1JMiSQqYc3Myf03SBODA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775995918; c=relaxed/simple;
-	bh=mdmEgJNtLKlQOcjaaX/tyMcZMSYSgaFNlZyPsrNvBN4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RcUXRuOXqYQUSrLpf1YKI+WjUbQ5DH7wqJNtC2y23BCqWovg56bx/ecnM+R7sj8nVojAI0EMs0iDheR+X22Ygf0OLIvyhDClh1H01Eo192t0x4bX4MrnNT0r3lkuIOEG1GmULoU3b+gZnShDnHtIoisOY5KQFg0AY6I2LrLh6lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CWDMwkln; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1775996785; c=relaxed/simple;
+	bh=w8v/yVX6JDBLcYtuSS0BBJb5vd/i8Ma0LVwKvNglIeg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fT+tVBt+nVnykh9P+G/33BhikV67gz47o4/MYUyyZxpn28DQOVHMd7QPnznmeKvtA5B5ATfBSffAIoSKwRJ245Bd7EkyMv9OOinKWn1Gk7Vo46UxiQpjDiiE/UOcsRTNivAajbdaczecRZXh1RfYKLTwRy56O/fqe7QWSIWyTMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O0waA57X; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775995917; x=1807531917;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=mdmEgJNtLKlQOcjaaX/tyMcZMSYSgaFNlZyPsrNvBN4=;
-  b=CWDMwklnWY2CxOhcW2E3+EDa/cT9dTN8kkzWTBNEb5ilJTEgklBXDP32
-   j717pSDGrIMv8P6pn+PD+6hyypakJ0ACeuv8iz8t3ZEhfyKPqQMr15xb7
-   37gg8/IJt+M2Ck1xe5YyUMxADO+KHE+MuUtqo7xLAw32Nt3g5r+jglWYc
-   eoaZGc3VilcAVMSymsNJ3zg5CFkftHYBzuDr8A1iHYqtimK3lOcfAZByD
-   A/4ZdYjhZj9dlRYwg1Mlt8awr5+uA2CnTUALi/Tnuiv0MaGk1jO76ztRu
-   rKGede2zCVb6R0W7NP0QdUU2E4s7LzVj88BKqjjnbtoYf6ugzoYVk8dhw
-   A==;
-X-CSE-ConnectionGUID: YtK8r62TTGWElbJ7IWUewA==
-X-CSE-MsgGUID: fWN9YP8DQY+3KZn5ndGXIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="88028478"
+  t=1775996784; x=1807532784;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=w8v/yVX6JDBLcYtuSS0BBJb5vd/i8Ma0LVwKvNglIeg=;
+  b=O0waA57X9NBd0BlymkwH0ciCkAX0E7SnzTubHCAp+4E7y9QXqr2B85Sz
+   U0vqaFVZjbJNxLR/WSgmfEWaB4Ma0km3FjRQpGTnjdB69QJHS6CSoZrAG
+   mB/cdReDSA/55elSdWep49W3QUD9ZGxiYv69H3MZNrEPREHOD8C/Y00oC
+   b5JuD/zqoiWbmCF0xUIE2E4oAFe+07Tn33JBHyRrLECJf+50UB76T7il9
+   JtECvjdag9Ut6SwXGi0AmlBAdrE6gFV/PU6fF3s88W0KEsQqLWWNbH0vC
+   py12Du6P5CiOt+cgW4Qr9A5uLoD7J+v8A+rfcTszzjMfgCAYvQOkkqvoQ
+   w==;
+X-CSE-ConnectionGUID: mczgtVpgRD6No762h4vuMQ==
+X-CSE-MsgGUID: EmZ0bgfSSM+PohunxJqwLA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="80812780"
 X-IronPort-AV: E=Sophos;i="6.23,175,1770624000"; 
-   d="scan'208";a="88028478"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:11:57 -0700
-X-CSE-ConnectionGUID: Bibiy1B6Rjm8lv+cgXdYJQ==
-X-CSE-MsgGUID: G5EUWgbqRB6KJOFU76u2iA==
+   d="scan'208";a="80812780"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:26:24 -0700
+X-CSE-ConnectionGUID: FzI4vwW2T8S2CkUEuK7R4Q==
+X-CSE-MsgGUID: vih7bO3LQZOiJfOL3yzW7w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,175,1770624000"; 
-   d="scan'208";a="229411949"
+   d="scan'208";a="233585691"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:11:56 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:26:23 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH wireless-next 15/15] wifi: mac80211_hwsim: switch to use TXQs
-Date: Sun, 12 Apr 2026 15:11:24 +0300
-Message-Id: <20260412150826.69f7978d04aa.Id3e629770663c44de00faa3ff9bac9c6b87459c6@changeid>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless-next] wifi: radiotap: add definitions for the new UHR TLVs
+Date: Sun, 12 Apr 2026 15:26:09 +0300
+Message-Id: <20260412152605.73e682d0c8c3.I5a0c858467c852b7a2a00f580bd073af29c37705@changeid>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260412121124.2246222-1-miriam.rachel.korenblit@intel.com>
-References: <20260412121124.2246222-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -83,7 +80,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -91,10 +88,10 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-34669-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34670-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -104,85 +101,230 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 32BAF3E3C0B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C51EF3E3C6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Simply immediately TX all available packets on the corresponding queue.
+Add the necessary definitions to create radiotap UHR TLVs
+for UHR sniffers.
 
-This removes the HWSIM_TM_CMD_STOP_QUEUES/HWSIM_TM_CMD_RESUME_QUEUES
-feature for now. It should be reasonably simple to add it back if it is
-needed.
-
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/virtual/mac80211_hwsim_main.c    | 20 ++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ include/net/ieee80211_radiotap.h | 190 +++++++++++++++++++++++++++++++
+ 1 file changed, 190 insertions(+)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-index c6d1f841c04d..e510357c1411 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-@@ -2198,6 +2198,17 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 	ieee80211_tx_status_irqsafe(hw, skb);
- }
+diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
+index c60867e7e43c..6c2210a253cd 100644
+--- a/include/net/ieee80211_radiotap.h
++++ b/include/net/ieee80211_radiotap.h
+@@ -95,6 +95,8 @@ enum ieee80211_radiotap_presence {
+ 	IEEE80211_RADIOTAP_EXT = 31,
+ 	IEEE80211_RADIOTAP_EHT_USIG = 33,
+ 	IEEE80211_RADIOTAP_EHT = 34,
++	IEEE80211_RADIOTAP_UHR_ELR = 37,
++	IEEE80211_RADIOTAP_UHR = 38,
+ };
  
-+static void ieee80211_hwsim_wake_tx_queue(struct ieee80211_hw *hw,
-+					  struct ieee80211_txq *txq)
-+{
-+	struct ieee80211_tx_control control = {
-+		.sta = txq->sta,
-+	};
-+	struct sk_buff *skb;
+ /* for IEEE80211_RADIOTAP_FLAGS */
+@@ -602,6 +604,194 @@ enum ieee80211_radiotap_eht_usig_tb {
+ 	IEEE80211_RADIOTAP_EHT_USIG2_TB_B20_B25_TAIL		= 0xfc000000,
+ };
+ 
++/*
++ * ieee80211_radiotap_uhr_elr - content of UHR-ELR TLV (type 35)
++ * see https://www.radiotap.org/fields/UHR-ELR for details
++ */
++struct ieee80211_radiotap_uhr_elr {
++	__le32 known;
++	__le32 sig1, sig2, mark;
++} __packed;
 +
-+	while ((skb = ieee80211_tx_dequeue(hw, txq)))
-+		mac80211_hwsim_tx(hw, &control, skb);
-+}
- 
- static int mac80211_hwsim_start(struct ieee80211_hw *hw)
- {
-@@ -2943,11 +2954,7 @@ static int mac80211_hwsim_testmode_cmd(struct ieee80211_hw *hw,
- 			goto nla_put_failure;
- 		return cfg80211_testmode_reply(skb);
- 	case HWSIM_TM_CMD_STOP_QUEUES:
--		ieee80211_stop_queues(hw);
--		return 0;
- 	case HWSIM_TM_CMD_WAKE_QUEUES:
--		ieee80211_wake_queues(hw);
--		return 0;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -4051,7 +4058,7 @@ static int mac80211_hwsim_set_radar_background(struct ieee80211_hw *hw,
- 
- #define HWSIM_COMMON_OPS					\
- 	.tx = mac80211_hwsim_tx,				\
--	.wake_tx_queue = ieee80211_handle_wake_tx_queue,	\
-+	.wake_tx_queue = ieee80211_hwsim_wake_tx_queue,		\
- 	.start = mac80211_hwsim_start,				\
- 	.stop = mac80211_hwsim_stop,				\
- 	.add_interface = mac80211_hwsim_add_interface,		\
-@@ -5530,6 +5537,8 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 	ieee80211_hw_set(hw, TDLS_WIDER_BW);
- 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
- 	ieee80211_hw_set(hw, STRICT);
-+	ieee80211_hw_set(hw, BUFF_MMPDU_TXQ);
-+	ieee80211_hw_set(hw, STA_MMPDU_TXQ);
- 
- 	if (param->mlo) {
- 		hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_MLO;
-@@ -5588,6 +5597,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 	hw->vif_data_size = sizeof(struct hwsim_vif_priv);
- 	hw->sta_data_size = sizeof(struct hwsim_sta_priv);
- 	hw->chanctx_data_size = sizeof(struct hwsim_chanctx_priv);
-+	hw->txq_data_size = 0;
- 
- 	memcpy(data->channels_2ghz, hwsim_channels_2ghz,
- 		sizeof(hwsim_channels_2ghz));
++enum ieee80211_radiotap_uhr_elr_known {
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_VERSION_ID		= 0x00000001,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_UL_DL			= 0x00000002,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_MCS			= 0x00000004,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_CODING			= 0x00000008,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_LENGTH			= 0x00000010,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_LDPC_EXTRA_OFDM_SYM	= 0x00000020,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_SIG_1_CRC		= 0x00000040,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_SIG_1_TAIL		= 0x00000080,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_STA_ID			= 0x00000100,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_DISREGARD		= 0x00000200,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_SIG_2_CRC		= 0x00000400,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_SIG_2_TAIL		= 0x00000800,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_SIG_1_CRC_CHECKED	= 0x00001000,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_SIG_2_CRC_CHECKED	= 0x00002000,
++	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_MARK_BSS_COLOR		= 0x00010000,
++};
++
++enum ieee80211_radiotap_uhr_elr_sig1 {
++	IEEE80211_RADIOTAP_UHR_ELR_SIG1_VERSION_ID		= 0x00000001,
++	IEEE80211_RADIOTAP_UHR_ELR_SIG1_UL_DL			= 0x00000002,
++	IEEE80211_RADIOTAP_UHR_ELR_SIG1_MCS			= 0x00000004,
++	IEEE80211_RADIOTAP_UHR_ELR_SIG1_CODING			= 0x00000008,
++	IEEE80211_RADIOTAP_UHR_ELR_SIG1_LENGTH			= 0x00001FF0,
++	IEEE80211_RADIOTAP_UHR_ELR_SIG1_LDPC_EXTRA_OFDM_SYM	= 0x00002000,
++	IEEE80211_RADIOTAP_UHR_ELR_SIG1_CRC			= 0x0003C000,
++	IEEE80211_RADIOTAP_UHR_ELR_SIG1_TAIL			= 0x00FC0000,
++	IEEE80211_RADIOTAP_UHR_ELR_SIG1_CRC_VALID		= 0x80000000,
++};
++
++enum ieee80211_radiotap_uhr_elr_sig2 {
++	IEEE80211_RADIOTAP_UHR_ELR_SIG2_STA_ID			= 0x000007FF,
++	IEEE80211_RADIOTAP_UHR_ELR_SIG2_DISREGARD		= 0x00003800,
++	IEEE80211_RADIOTAP_UHR_ELR_SIG2_CRC			= 0x0003C000,
++	IEEE80211_RADIOTAP_UHR_ELR_SIG2_TAIL			= 0x00FC0000,
++	IEEE80211_RADIOTAP_UHR_ELR_SIG2_CRC_VALID		= 0x80000000,
++};
++
++enum ieee80211_radiotap_uhr_elr_mark {
++	IEEE80211_RADIOTAP_UHR_ELR_MARK_BSS_COLOR		= 0x0000003F,
++};
++
++/*
++ * ieee80211_radiotap_uhr - content of UHR TLV (type 36)
++ * see https://www.radiotap.org/fields/UHR for details
++ */
++struct ieee80211_radiotap_uhr {
++	__le32 known;
++	__le32 data[9];
++	struct {
++		__le32 known, info;
++	} user[];
++} __packed;
++
++enum ieee80211_radiotap_uhr_known {
++	IEEE80211_RADIOTAP_UHR_KNOWN_SPATIAL_REUSE		= 0x00000001,
++	IEEE80211_RADIOTAP_UHR_KNOWN_GI_LTF_SIZE		= 0x00000002,
++	IEEE80211_RADIOTAP_UHR_KNOWN_NUMBER_OF_UHR_LTF_SYMBOLS	= 0x00000004,
++	IEEE80211_RADIOTAP_UHR_KNOWN_LDPC_EXTRA_SYMBOL_SEGMENT	= 0x00000008,
++	IEEE80211_RADIOTAP_UHR_KNOWN_PRE_FEC_PADDING_FACTOR	= 0x00000010,
++	IEEE80211_RADIOTAP_UHR_KNOWN_PE_DISAMBIGUITY		= 0x00000020,
++	IEEE80211_RADIOTAP_UHR_KNOWN_DISREGARD_OFDMA		= 0x00000040,
++	IEEE80211_RADIOTAP_UHR_KNOWN_CRC1			= 0x00000080,
++	IEEE80211_RADIOTAP_UHR_KNOWN_TAIL1			= 0x00000100,
++	IEEE80211_RADIOTAP_UHR_KNOWN_CRC2			= 0x00000200,
++	IEEE80211_RADIOTAP_UHR_KNOWN_TAIL2			= 0x00000400,
++	IEEE80211_RADIOTAP_UHR_KNOWN_INTERFERENCE_MITIGATION	= 0x00000800,
++	IEEE80211_RADIOTAP_UHR_KNOWN_DISREGARD_NON_OFDMA	= 0x00001000,
++	IEEE80211_RADIOTAP_UHR_KNOWN_NUMBER_OF_NON_OFDMA_USERS	= 0x00002000,
++	IEEE80211_RADIOTAP_UHR_KNOWN_COMMON_ENCODING_BLOCK_CRC	= 0x00004000,
++	IEEE80211_RADIOTAP_UHR_KNOWN_COMMON_ENCODING_BLOCK_TAIL	= 0x00008000,
++	IEEE80211_RADIOTAP_UHR_KNOWN_RU_MRU_DRU_SIZE		= 0x00010000,
++	IEEE80211_RADIOTAP_UHR_KNOWN_RU_MRU_INDEX		= 0x00020000,
++	IEEE80211_RADIOTAP_UHR_KNOWN_DRU_RRU_ALLOC_TB_FMT	= 0x00040000,
++	IEEE80211_RADIOTAP_UHR_KNOWN_PRI80_CHAN_POS		= 0x00080000,
++};
++
++enum ieee80211_radiotap_uhr_data {
++	/* data[0] */
++	IEEE80211_RADIOTAP_UHR_DATA0_SPATIAL_REUSE		= 0x0000000F,
++	IEEE80211_RADIOTAP_UHR_DATA0_GI_LTF_SIZE		= 0x00000030,
++	IEEE80211_RADIOTAP_UHR_DATA0_NUMBER_OF_LTF_SYMBOLS	= 0x00000700,
++	IEEE80211_RADIOTAP_UHR_DATA0_LDPC_EXTRA_SYMBOL_SEGMENT	= 0x00000800,
++	IEEE80211_RADIOTAP_UHR_DATA0_PRE_FEC_PADDING_FACTOR	= 0x00003000,
++	IEEE80211_RADIOTAP_UHR_DATA0_PE_DISAMBIGUITY		= 0x00004000,
++	IEEE80211_RADIOTAP_UHR_DATA0_DISREGARD_OFDMA		= 0x00078000,
++	IEEE80211_RADIOTAP_UHR_DATA0_CRC1			= 0x00780000,
++	IEEE80211_RADIOTAP_UHR_DATA0_TAIL1			= 0x1f800000,
++	/* data[1] */
++	IEEE80211_RADIOTAP_UHR_DATA1_RU_MRU_DRU_SIZE		= 0x0000001f,
++	IEEE80211_RADIOTAP_UHR_DATA1_RU_MRU_INDEX		= 0x00001fe0,
++	IEEE80211_RADIOTAP_UHR_DATA1_RU_ALLOC_CC_1_1_1		= 0x003fe000,
++	IEEE80211_RADIOTAP_UHR_DATA1_RU_ALLOC_CC_1_1_1_KNOWN	= 0x00400000,
++	IEEE80211_RADIOTAP_UHR_DATA1_PRI80_CHAN_POS		= 0xc0000000,
++	/* data[2] */
++	IEEE80211_RADIOTAP_UHR_DATA2_RU_ALLOC_CC_2_1_1		= 0x000001ff,
++	IEEE80211_RADIOTAP_UHR_DATA2_RU_ALLOC_CC_2_1_1_KNOWN	= 0x00000200,
++	IEEE80211_RADIOTAP_UHR_DATA2_RU_ALLOC_CC_1_1_2		= 0x0007fc00,
++	IEEE80211_RADIOTAP_UHR_DATA2_RU_ALLOC_CC_1_1_2_KNOWN	= 0x00080000,
++	IEEE80211_RADIOTAP_UHR_DATA2_RU_ALLOC_CC_2_1_2		= 0x1ff00000,
++	IEEE80211_RADIOTAP_UHR_DATA2_RU_ALLOC_CC_2_1_2_KNOWN	= 0x20000000,
++	/* data[3] */
++	IEEE80211_RADIOTAP_UHR_DATA3_RU_ALLOC_CC_1_2_1		= 0x000001ff,
++	IEEE80211_RADIOTAP_UHR_DATA3_RU_ALLOC_CC_1_2_1_KNOWN	= 0x00000200,
++	IEEE80211_RADIOTAP_UHR_DATA3_RU_ALLOC_CC_2_2_1		= 0x0007fc00,
++	IEEE80211_RADIOTAP_UHR_DATA3_RU_ALLOC_CC_2_2_1_KNOWN	= 0x00080000,
++	IEEE80211_RADIOTAP_UHR_DATA3_RU_ALLOC_CC_1_2_2		= 0x1ff00000,
++	IEEE80211_RADIOTAP_UHR_DATA3_RU_ALLOC_CC_1_2_2_KNOWN	= 0x20000000,
++	/* data[4] */
++	IEEE80211_RADIOTAP_UHR_DATA4_RU_ALLOC_CC_2_2_2		= 0x000001ff,
++	IEEE80211_RADIOTAP_UHR_DATA4_RU_ALLOC_CC_2_2_2_KNOWN	= 0x00000200,
++	IEEE80211_RADIOTAP_UHR_DATA4_RU_ALLOC_CC_1_2_3		= 0x0007fc00,
++	IEEE80211_RADIOTAP_UHR_DATA4_RU_ALLOC_CC_1_2_3_KNOWN	= 0x00080000,
++	IEEE80211_RADIOTAP_UHR_DATA4_RU_ALLOC_CC_2_2_3		= 0x1ff00000,
++	IEEE80211_RADIOTAP_UHR_DATA4_RU_ALLOC_CC_2_2_3_KNOWN	= 0x20000000,
++	/* data[5] */
++	IEEE80211_RADIOTAP_UHR_DATA5_RU_ALLOC_CC_1_2_4		= 0x000001ff,
++	IEEE80211_RADIOTAP_UHR_DATA5_RU_ALLOC_CC_1_2_4_KNOWN	= 0x00000200,
++	IEEE80211_RADIOTAP_UHR_DATA5_RU_ALLOC_CC_2_2_4		= 0x0007fc00,
++	IEEE80211_RADIOTAP_UHR_DATA5_RU_ALLOC_CC_2_2_4_KNOWN	= 0x00080000,
++	IEEE80211_RADIOTAP_UHR_DATA5_RU_ALLOC_CC_1_2_5		= 0x1ff00000,
++	IEEE80211_RADIOTAP_UHR_DATA5_RU_ALLOC_CC_1_2_5_KNOWN	= 0x20000000,
++	/* data[6] */
++	IEEE80211_RADIOTAP_UHR_DATA6_RU_ALLOC_CC_2_2_5		= 0x000001ff,
++	IEEE80211_RADIOTAP_UHR_DATA6_RU_ALLOC_CC_2_2_5_KNOWN	= 0x00000200,
++	IEEE80211_RADIOTAP_UHR_DATA6_RU_ALLOC_CC_1_2_6		= 0x0007fc00,
++	IEEE80211_RADIOTAP_UHR_DATA6_RU_ALLOC_CC_1_2_6_KNOWN	= 0x00080000,
++	IEEE80211_RADIOTAP_UHR_DATA6_RU_ALLOC_CC_2_2_6		= 0x1ff00000,
++	IEEE80211_RADIOTAP_UHR_DATA6_RU_ALLOC_CC_2_2_6_KNOWN	= 0x20000000,
++	/* data[7] */
++	IEEE80211_RADIOTAP_UHR_DATA7_CRC2			= 0x0000000f,
++	IEEE80211_RADIOTAP_UHR_DATA7_TAIL2			= 0x000003f0,
++	IEEE80211_RADIOTAP_UHR_DATA7_INTERFERENCE_MITIGATION	= 0x00000400,
++	IEEE80211_RADIOTAP_UHR_DATA7_DISREGARD_NON_OFDMA	= 0x00001800,
++	IEEE80211_RADIOTAP_UHR_DATA7_NUMBER_OF_NON_OFDMA_USERS	= 0x0000e000,
++	IEEE80211_RADIOTAP_UHR_DATA7_COMMON_ENCODING_BLOCK_CRC	= 0x000f0000,
++	IEEE80211_RADIOTAP_UHR_DATA7_COMMON_ENCODING_BLOCK_TAIL	= 0x03f00000,
++	/* data[8] */
++	IEEE80211_RADIOTAP_UHR_DATA8_DRU_RRU_ALLOC_TB_FMT_PS_160= 0x00000001,
++	IEEE80211_RADIOTAP_UHR_DATA8_DRU_RRU_ALLOC_TB_FMT_B0	= 0x00000002,
++	IEEE80211_RADIOTAP_UHR_DATA8_DRU_RRU_ALLOC_TB_FMT_B7_B1	= 0x000001fc,
++	IEEE80211_RADIOTAP_UHR_DATA8_DRU_RRU_INDICATION		= 0x00000200,
++};
++
++enum ieee80211_radiotap_uhr_user_known {
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_STA_ID		= 0x00000001,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_MCS			= 0x00000002,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_NSS			= 0x00000004,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_UEQM			= 0x00000008,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_BF			= 0x00000010,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_CODING		= 0x00000020,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_UEQM_PATTERN		= 0x00000040,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_2X_LDPC		= 0x00000080,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_SPATIAL_CONFIG	= 0x00000100,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_DISREGARD		= 0x00000200,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_BSS_COLOR_INDICATION	= 0x00000400,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_USR_ENC_BLK_CRC	= 0x00000800,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_USR_ENC_BLK_TAIL	= 0x00001000,
++	/* really 'known' but actual data */
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_DATA_USR_ENC_BLK_CRC	= 0x000f0000,
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_DATA_USR_ENC_BLK_TAIL	= 0x03f00000,
++	/* indicates this user was captured */
++	IEEE80211_RADIOTAP_UHR_USER_KNOWN_USER_CAPTURED		= 0x80000000,
++};
++
++enum ieee80211_radiotap_uhr_user_info {
++	IEEE80211_RADIOTAP_UHR_USER_INFO_STA_ID			= 0x000007ff,
++	IEEE80211_RADIOTAP_UHR_USER_INFO_MCS			= 0x0000f800,
++	IEEE80211_RADIOTAP_UHR_USER_INFO_NSS			= 0x00070000,
++	IEEE80211_RADIOTAP_UHR_USER_INFO_SPATIAL_CONFIG		= 0x000f0000,
++	IEEE80211_RADIOTAP_UHR_USER_INFO_UEQM			= 0x00100000,
++	IEEE80211_RADIOTAP_UHR_USER_INFO_DISREGARD		= 0x00100000,
++	IEEE80211_RADIOTAP_UHR_USER_INFO_BF			= 0x00200000,
++	IEEE80211_RADIOTAP_UHR_USER_INFO_BSS_COLOR_INDICATION	= 0x00200000,
++	IEEE80211_RADIOTAP_UHR_USER_INFO_UEQM_PATTERN		= 0x00c00000,
++	IEEE80211_RADIOTAP_UHR_USER_INFO_CODING			= 0x01000000,
++	IEEE80211_RADIOTAP_UHR_USER_INFO_2X_LDPC		= 0x02000000,
++};
++
+ /**
+  * ieee80211_get_radiotap_len - get radiotap header length
+  * @data: pointer to the header
 -- 
 2.34.1
 
