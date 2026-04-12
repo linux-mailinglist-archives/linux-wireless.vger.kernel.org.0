@@ -1,72 +1,73 @@
-Return-Path: <linux-wireless+bounces-34659-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34660-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0ET8OROM22nuDAkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34659-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:12:03 +0200
+	id gKctABiM22nuDAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34660-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:12:08 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9743E3BC3
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:12:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8D83E3BD2
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:12:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6B77A3015A77
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 12:11:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2DE9B3013EFF
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 12:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AACC37B41A;
-	Sun, 12 Apr 2026 12:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE2937BE6B;
+	Sun, 12 Apr 2026 12:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nFA0nbDs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OuLZzlgv"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1CF3382F1
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2026 12:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6391937BE65
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2026 12:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775995904; cv=none; b=BRE1vGO5099qmGvzSRXcufBnDG6vPDTpIdo9gu2UwB1uqQqXtE7XnoLYkjAiMPXcvIoIRECDQdSYAxZsxd9o/AXDO+4yQpMsIEsPql62PA2tBsp3VVrx/NKhGoiyoUAfpBUXbYsDr+BMAoYOvJYzGUUv/5O8UzTlRnqzM6BtjQE=
+	t=1775995907; cv=none; b=Uw8WG+LFgMoEbBvW5JGOD1Suu1TTMG8WldTjQaaNKWkvw1JPCgkjV0SejmX7M7o44WANGZmmhez883XJ730pLb2roT8LkGJCq9GNspS7Evbjv2dgQVvtcx9Q29Js9VipN8yngmmdA8TyTgTTYO5/RAF8Rv2ogekm5vnMOJTTRi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775995904; c=relaxed/simple;
-	bh=L6RP8XRU8IqiBZEwJPJPL41WmTWf1nQG3y9BMk4ib7c=;
+	s=arc-20240116; t=1775995907; c=relaxed/simple;
+	bh=ywvEHQH1LKhefXukMDwkR3KBPTdE8zvRCasjF/R3d4Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=S2hsMO3QogaDin+iCe1zNAW81t4YNZt4ptxR8n6pEDSorw5UbutHiyIybMXlwAFLBYDJIgJA7Eg6cPZuCPOW2pKXP9bg2eFt3x56mazZdAum2trX2gRmDgU2RHl7PF5f42Fa1qw1bEkbOgc0p3yGhy1FoT+NuWPM6vmVwFcp2N8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nFA0nbDs; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=Iyj+sMp7aoCmszGI5qmsH7E8DL92OonPFHnfLHPjaLpSOkcuhI1u5KfGGEjqA1uKZaJ8DUMDL688svHmTNIrQ+cxrIVBck2nHZLlOWL+R7TJcybsd1P0npifUWCEhZzM1ljgdfTBKrNk+mwo4fA+5WdPbhsJ7JSHUaQe0oo9FSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OuLZzlgv; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775995903; x=1807531903;
+  t=1775995905; x=1807531905;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=L6RP8XRU8IqiBZEwJPJPL41WmTWf1nQG3y9BMk4ib7c=;
-  b=nFA0nbDsbtnsKlKR5HlDNV/smuQGOaVYGelD19WEPqT4Gc/Pd497M+9e
-   E+mFmKZZe2AQ7M5PNZ1rZJMk6uHLvMnGXunkCg7henwLWBDhkG22dLPB2
-   mlD+zOwHqX1Lm7QAfUdPVhE8Dz49Rr0nTFK5+Jo8saEPhLKt8AJccWihL
-   GMArDX3myi/9oYZJ+sTgqVkDdefNtIqAjyXf7VLi7/ZhwcLBcI/dUCNHx
-   VzKwkdSd423Pwd1ZueeE/V3d+JPoNXRS0IW3yIpt20ZWmUUvBkliNjCjS
-   X75DHg4O322HHMSFU4oTit955SmqXqgUWekZ8CxjoKKO2J9+oktO4Tp8C
-   A==;
-X-CSE-ConnectionGUID: 1LkcBWnSTQSbxhRa6h3GGQ==
-X-CSE-MsgGUID: KjHpAKpyRUGcCy6gr79ixA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="88028461"
+  bh=ywvEHQH1LKhefXukMDwkR3KBPTdE8zvRCasjF/R3d4Y=;
+  b=OuLZzlgvNbO8uFz6iHYLoLmwqJ0aroEobeg3zI5s7EaiPUEtsUCBGG+9
+   DrFVyezapnJPKXZsZJ/gRpbLGRi4T55u5/zYfi9sjHzljkwcXk9mAlhy5
+   e/TeWq/790xVYHlJPgRLwxs3OPZ8rfbOHn/s01Qh6utpazPLHmLPqrktF
+   q5PZxEiMJTDrWfTEPncuwRBYToP1dlfIyr33QAMKs5jeheM6Jw8Q9gwYG
+   dxCq9cZJl8gjspsTSnS5a7DV5rIcfIoQtgqlX7Zr+6xJUD0ySqJp1wykA
+   PaEi/gVIQruQeaS162oGsFexMziG3ysfE+5cH8K3c2/kiplEfdo3UuZLc
+   w==;
+X-CSE-ConnectionGUID: TZLyiA/VSLmWpZFnp5GSDg==
+X-CSE-MsgGUID: nS5sKqn6TluWadhM0O/zCA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="88028463"
 X-IronPort-AV: E=Sophos;i="6.23,175,1770624000"; 
-   d="scan'208";a="88028461"
+   d="scan'208";a="88028463"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:11:43 -0700
-X-CSE-ConnectionGUID: PNZxvb5OSUOaQNyGoRcKVA==
-X-CSE-MsgGUID: zUO6qVSQQaaSdha61ytqYw==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:11:45 -0700
+X-CSE-ConnectionGUID: pPyKG+GnQ+6LprZs8xtLvg==
+X-CSE-MsgGUID: GZGOxTipQXGD+pYAkw+I0w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,175,1770624000"; 
-   d="scan'208";a="229411898"
+   d="scan'208";a="229411903"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:11:43 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:11:44 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
-Subject: [PATCH wireless-next 05/15] wifi: mac80211: Fix a kernel panic in ieee80211_encrypt_tx_skb()
-Date: Sun, 12 Apr 2026 15:11:14 +0300
-Message-Id: <20260412121124.2246222-2-miriam.rachel.korenblit@intel.com>
+Cc: Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless-next 06/15] wifi: mac80211: avoid out-of-bounds access in monitor
+Date: Sun, 12 Apr 2026 15:11:15 +0300
+Message-Id: <20260412150826.e2edd9711512.I15919027597c04ec35c6217db6e52e2a605e5cfc@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260412121124.2246222-1-miriam.rachel.korenblit@intel.com>
 References: <20260412121124.2246222-1-miriam.rachel.korenblit@intel.com>
@@ -78,24 +79,24 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34659-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34660-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -105,50 +106,53 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9C9743E3BC3
+X-Rspamd-Queue-Id: 6A8D83E3BD2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+In NAN, we don't know on what band the frame will be sent. Therefore we
+set info->band to NUM_NL80211_BANDS. However, this leads to out-of-bound
+access in ieee80211_add_tx_radiotap_header when we try to access the
+sbands array.
 
-skb->dev may be NULL for frames on non-netdev devices. For example, NAN
-device frames after pairing. Fix it.
+Fix it by not accessing the array if the band is NUM_NL80211_BANDS.
+This means that we will not report rate info for legacy rate in NAN.
+But nobody really cares about it.
 
-Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/tx.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/mac80211/status.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 6ff36bd658e6..230826960721 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -5355,7 +5355,7 @@ static int ieee80211_beacon_protect(struct sk_buff *skb,
- int ieee80211_encrypt_tx_skb(struct sk_buff *skb)
- {
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
--	struct ieee80211_sub_if_data *sdata;
-+	struct ieee80211_sub_if_data *sdata = NULL;
- 	struct sk_buff *check_skb;
- 	struct ieee80211_tx_data tx;
- 	ieee80211_tx_result res;
-@@ -5370,7 +5370,14 @@ int ieee80211_encrypt_tx_skb(struct sk_buff *skb)
- 	__skb_queue_head_init(&tx.skbs);
- 	__skb_queue_tail(&tx.skbs, skb);
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index 4b38aa0e902a..8716eda8317d 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -5,7 +5,7 @@
+  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2008-2010	Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+- * Copyright 2021-2025  Intel Corporation
++ * Copyright 2021-2026  Intel Corporation
+  */
  
--	sdata = IEEE80211_DEV_TO_SUB_IF(skb->dev);
-+	if (skb->dev)
-+		sdata = IEEE80211_DEV_TO_SUB_IF(skb->dev);
-+	else if (info->control.vif)
-+		sdata = vif_to_sdata(info->control.vif);
-+
-+	if (WARN_ON(!sdata))
-+		return -EINVAL;
-+
- 	tx.sdata = sdata;
- 	tx.local = sdata->local;
- 	res = ieee80211_tx_h_encrypt(&tx);
+ #include <linux/export.h>
+@@ -295,9 +295,10 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
+ 						 RATE_INFO_FLAGS_VHT_MCS |
+ 						 RATE_INFO_FLAGS_HE_MCS)))
+ 			legacy_rate = status_rate->rate_idx.legacy;
+-	} else if (info->status.rates[0].idx >= 0 &&
+-		 !(info->status.rates[0].flags & (IEEE80211_TX_RC_MCS |
+-						  IEEE80211_TX_RC_VHT_MCS))) {
++	} else if (info->band < NUM_NL80211_BANDS &&
++		   info->status.rates[0].idx >= 0 &&
++		   !(info->status.rates[0].flags & (IEEE80211_TX_RC_MCS |
++						    IEEE80211_TX_RC_VHT_MCS))) {
+ 		struct ieee80211_supported_band *sband;
+ 
+ 		sband = local->hw.wiphy->bands[info->band];
 -- 
 2.34.1
 
