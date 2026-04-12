@@ -1,72 +1,73 @@
-Return-Path: <linux-wireless+bounces-34657-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34658-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPGCEAuM22nuDAkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34657-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:11:55 +0200
+	id 4CrhJwiM22nuDAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34658-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:11:52 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4563E3BBC
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:11:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 489D33E3BAE
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:11:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 63110301681A
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 12:11:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B288A3004D3E
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 12:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D183537D4;
-	Sun, 12 Apr 2026 12:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED53F3783DB;
+	Sun, 12 Apr 2026 12:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AE8kXH07"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AOfzrL+L"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E023C3382F1
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2026 12:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817AC37BE8C
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2026 12:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775995902; cv=none; b=j9nCVIOe6R5c8GS0E+lRqqO0SQk7zM6iolhuv+UbIo7Lvlddpq3/jZXgxYtiPRqredwv99G0PCkRAaZq/y06WsBG3EDOJhSgnieSSM+oDBEroBK5XXmJG6svGOyYYN2+cham/uD+agKOZY5J0i+amhcbEFEUYTafScSvI+4Fa7g=
+	t=1775995903; cv=none; b=DFMlOvFnSHab7MAZTnatiUaaCpxbb9g4PEXUrYzD+Q5+89l3jgONxBYSTlxz7LvwICJWZxbJUqc7tyyt0Wf9BZyv9cfD/zTrODIKCIT9rN/DNB3Gf3c+SCkjFlhqa4Nei5n17dRUeIsCWNfLGA454sIeX7fzjOpT1XYTCiYYc/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775995902; c=relaxed/simple;
-	bh=XMUBzYW4ZmvubPpHYMYpnNs13e+TeVRvFuTp6UT2SaM=;
+	s=arc-20240116; t=1775995903; c=relaxed/simple;
+	bh=LLxUu9T6uw2wV340GCpsc7SiUDyV6XxgEEynqCAByWU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iRePaDjrPwwo2A4MiW8TozbqcVyMxCWKw1uPBy7SSI9DdqOIubDS0kYNyA9rybukoJhiCoOhNJiG5wqIgwO3FyeaWIhMgnwSTTxCK8e7M/5G53/Ku/PXUJawycIZKN9zl709R++MxFRy1IoA5XG55Va5YemnChi4ZCfuem7M+io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AE8kXH07; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=Zc03P9xiw2LRx61JhB17IKaVLX/WKHn4Y+1Eg4eBihy4a12n/5K6LfMQHZWbDazAxcPcvFDeCdr2KrZMPAtH0+6/linbWXJ15wPvJuKbV3dvK9ju/bgdHta2HG4gV8Kelp0/vaZxZwakNhlIj2qHwJVUhiHpAo5Vh/9Yb2oy2Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AOfzrL+L; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775995900; x=1807531900;
+  t=1775995902; x=1807531902;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=XMUBzYW4ZmvubPpHYMYpnNs13e+TeVRvFuTp6UT2SaM=;
-  b=AE8kXH07zqMAPNfr5IkZ51RWOCznjekvNddbMgiqQdlFqnUGgYhQ9exA
-   sHTcpaIHWi5TBejggW0Uo+F9DM/LANMueksrhqfrhx8dCW+WwS4PfQQCf
-   rnDZmbP4l6EFtKtqyIAdwc6fVZaqxgQcfXwlH3kHXojZGNACey2LnuyvX
-   RMKdDEHzkzCiu+9O6j/bzU4Zx1QI9C5fIYpr0OOSt1j30i6u9QH7TZKlH
-   Lex34nwEUVYKRjPuya1gCGd1CQ7hQFq0/tT7P3wJ8zsB0Q51HtOY8ETrJ
-   dMwKJ+xR+sVdHD0P8MP42pYr/sJvCqGkEu8HXS1nCNqD0qTIfNaARDYvn
+  bh=LLxUu9T6uw2wV340GCpsc7SiUDyV6XxgEEynqCAByWU=;
+  b=AOfzrL+L1yNmvyheJGlHJocarDnjNtizvTRe2XyPfcvE7RoUgyYUy6do
+   mqAYPKAw+IhDQtSJJMaZhA2AyrDJoZiIXMBqUSdt/1SYBh3lT5rakNUsN
+   bfp3mMEd2J2cqjIJfOLsirbeTrYYByGRBRsoYAuZwg+5RkGzwcYmB9JMT
+   HmXnNr3qo/3a0kYOAxJtDP0H1WskEsAYghuMi0yuMA/tnqLkpzPYKRO9y
+   yCpjc+5ThnYVnMDRET+9zAmpo/MwnNex8ZiIUaTcLMR3/C9Kmjh3vMCuX
+   iwzyhpJBJC0l0EeptWfHTiawoP2zKVT1W6E149t/VGBT44T8OeUDrxPBR
    g==;
-X-CSE-ConnectionGUID: 23IeuFJ0TXiwRKjCjC2GHA==
-X-CSE-MsgGUID: mWlrb8vCQcaRtNHVswmIyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="88028459"
+X-CSE-ConnectionGUID: vfc57ZUkQh2pWjb5Cq6U+Q==
+X-CSE-MsgGUID: iKwwT1+jRP6Rai60XIqWbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="88028460"
 X-IronPort-AV: E=Sophos;i="6.23,175,1770624000"; 
-   d="scan'208";a="88028459"
+   d="scan'208";a="88028460"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:11:40 -0700
-X-CSE-ConnectionGUID: VCvbp8nTQ0yhXqLwnX9Vtg==
-X-CSE-MsgGUID: HHRXuVMXRc+6WWkmEeVlOg==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:11:42 -0700
+X-CSE-ConnectionGUID: c9nbIGQhSNC8Gi/CFm9JaA==
+X-CSE-MsgGUID: PT2v68wwQ2W9xjuPH+J+Bw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,175,1770624000"; 
-   d="scan'208";a="229411887"
+   d="scan'208";a="229411893"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:11:40 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:11:41 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Avraham Stern <avraham.stern@intel.com>
-Subject: [PATCH wireless-next 03/15] wifi: mac80211: accept protected frames for NAN device
-Date: Sun, 12 Apr 2026 15:11:12 +0300
-Message-Id: <20260412150826.d96981ef8bb8.Ia25b2e82b250058fefa179c39327d9c8b3c3cd62@changeid>
+Cc: Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless-next 04/15] wifi: mac80211: Allow setting MAC address on interface creation
+Date: Sun, 12 Apr 2026 15:11:13 +0300
+Message-Id: <20260412150826.1de21fb81c5c.I351e16270c34ee734fed98da25db848211ab7cc2@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260412121124.2246222-1-miriam.rachel.korenblit@intel.com>
 References: <20260412121124.2246222-1-miriam.rachel.korenblit@intel.com>
@@ -83,84 +84,61 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-34657-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34658-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EF4563E3BBC
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 489D33E3BAE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-Some frames sent to the NAN device may be protected, such as
-protected action frames (in particular protected dual of
-public action).
+Allow setting the interface MAC address for NAN Device interfaces
+and P2P Device interfaces on interface creation.
 
-Accept robust management frames except disassoc on the NAN
-device, and clean up the code a little bit.
-
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/rx.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ net/mac80211/iface.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 82ea7404f3da..e1f376e0620c 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4624,16 +4624,24 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
- 		    ieee80211_has_fromds(hdr->frame_control))
- 			return false;
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 95b779c4d627..683d8db4da14 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -2280,7 +2280,12 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
  
--		/* Accept only frames that are addressed to the NAN cluster
-+		/*
-+		 * Accept only frames that are addressed to the NAN cluster
- 		 * (based on the Cluster ID). From these frames, accept only
--		 * action frames or authentication frames that are addressed to
--		 * the local NAN interface.
-+		 *  - public action frames,
-+		 *  - authentication frames to the local address, and
-+		 *  - robust management frames except disassoc.
- 		 */
--		return memcmp(sdata->u.nan.conf.cluster_id,
--			      hdr->addr3, ETH_ALEN) == 0 &&
--			(ieee80211_is_public_action(hdr, skb->len) ||
--			 (ieee80211_is_auth(hdr->frame_control) &&
--			  ether_addr_equal(sdata->vif.addr, hdr->addr1)));
-+		if (!ether_addr_equal(sdata->u.nan.conf.cluster_id, hdr->addr3))
-+			return false;
-+		if (ieee80211_is_public_action(hdr, skb->len))
-+			return true;
-+		if (ieee80211_is_auth(hdr->frame_control) &&
-+		    ether_addr_equal(sdata->vif.addr, hdr->addr1))
-+			return true;
-+		if (!ieee80211_is_disassoc(hdr->frame_control) &&
-+		    ieee80211_is_robust_mgmt_frame(skb))
-+			return true;
-+		return false;
- 	case NL80211_IFTYPE_NAN_DATA:
- 		if (ieee80211_has_tods(hdr->frame_control) ||
- 		    ieee80211_has_fromds(hdr->frame_control))
+ 		sdata->dev = NULL;
+ 		strscpy(sdata->name, name, IFNAMSIZ);
+-		ieee80211_assign_perm_addr(local, wdev->address, type);
++
++		if (is_valid_ether_addr(params->macaddr))
++			memcpy(wdev->address, params->macaddr, ETH_ALEN);
++		else
++			ieee80211_assign_perm_addr(local, wdev->address, type);
++
+ 		memcpy(sdata->vif.addr, wdev->address, ETH_ALEN);
+ 		ether_addr_copy(sdata->vif.bss_conf.addr, sdata->vif.addr);
+ 
 -- 
 2.34.1
 
