@@ -1,331 +1,196 @@
-Return-Path: <linux-wireless+bounces-34670-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34671-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGvxHXWP22mZDQkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34670-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:26:29 +0200
+	id IE39Ay+d22mCEAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34671-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 15:25:03 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51EF3E3C6C
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9231C3E3FD9
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 15:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17D913009FA4
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 12:26:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD862302D088
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 13:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA3D30E0C0;
-	Sun, 12 Apr 2026 12:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CB637C110;
+	Sun, 12 Apr 2026 13:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O0waA57X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dccArJm9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4D578F4F
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2026 12:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775996785; cv=none; b=SUhsCDDPXCgzOo7t13vrAJczkp9tJVacPlcoWNwfKeztJZvJRW7am+7FHyfZZE6Wq1QrnMK/Z08jdaubbubEzw0kNdqYkrWbpD7zBBr1TQI8GJVPX2nFZ7DP9uGPP86zHF0BvftMtwZsS6ziQUhcdSF1JMiSQqYc3Myf03SBODA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775996785; c=relaxed/simple;
-	bh=w8v/yVX6JDBLcYtuSS0BBJb5vd/i8Ma0LVwKvNglIeg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fT+tVBt+nVnykh9P+G/33BhikV67gz47o4/MYUyyZxpn28DQOVHMd7QPnznmeKvtA5B5ATfBSffAIoSKwRJ245Bd7EkyMv9OOinKWn1Gk7Vo46UxiQpjDiiE/UOcsRTNivAajbdaczecRZXh1RfYKLTwRy56O/fqe7QWSIWyTMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O0waA57X; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775996784; x=1807532784;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=w8v/yVX6JDBLcYtuSS0BBJb5vd/i8Ma0LVwKvNglIeg=;
-  b=O0waA57X9NBd0BlymkwH0ciCkAX0E7SnzTubHCAp+4E7y9QXqr2B85Sz
-   U0vqaFVZjbJNxLR/WSgmfEWaB4Ma0km3FjRQpGTnjdB69QJHS6CSoZrAG
-   mB/cdReDSA/55elSdWep49W3QUD9ZGxiYv69H3MZNrEPREHOD8C/Y00oC
-   b5JuD/zqoiWbmCF0xUIE2E4oAFe+07Tn33JBHyRrLECJf+50UB76T7il9
-   JtECvjdag9Ut6SwXGi0AmlBAdrE6gFV/PU6fF3s88W0KEsQqLWWNbH0vC
-   py12Du6P5CiOt+cgW4Qr9A5uLoD7J+v8A+rfcTszzjMfgCAYvQOkkqvoQ
-   w==;
-X-CSE-ConnectionGUID: mczgtVpgRD6No762h4vuMQ==
-X-CSE-MsgGUID: EmZ0bgfSSM+PohunxJqwLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="80812780"
-X-IronPort-AV: E=Sophos;i="6.23,175,1770624000"; 
-   d="scan'208";a="80812780"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:26:24 -0700
-X-CSE-ConnectionGUID: FzI4vwW2T8S2CkUEuK7R4Q==
-X-CSE-MsgGUID: vih7bO3LQZOiJfOL3yzW7w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,175,1770624000"; 
-   d="scan'208";a="233585691"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 05:26:23 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next] wifi: radiotap: add definitions for the new UHR TLVs
-Date: Sun, 12 Apr 2026 15:26:09 +0300
-Message-Id: <20260412152605.73e682d0c8c3.I5a0c858467c852b7a2a00f580bd073af29c37705@changeid>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCA737C91F
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2026 13:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776000188; cv=pass; b=fSPDBVqPNXriH82DEYg2qTh4PjqKQKywIHM1oS0bYQQqROcHkgGLCyTqtCCh/TgADpfdnQ85Defs+j2zOqnCI4f0WhDdR1c8QuwaylUyErHVol8qGczCA8zG83On4jRvzZ3hQxS6u/P2axxEQWJv2soXXvq2EaHvv3zXLe2NelM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776000188; c=relaxed/simple;
+	bh=1p6x7PvyQL+5PGqdAnx23TY8v0cVXdqCOnUZdmPD2Po=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K3G1bkxJCBx6Jzb5/KUJVDWxGskEy49ReyW5OARjycUHa9TI+PRt+rVvwFGsDxrvbZgS59LspWYDk/aKxaBwsZqxUvCTT8TCDoY7Pq36P2OmcP+RrWmDqyDxYz72spiDMJYXbhu777txFnUsdbkqdDRC6QRHrJh1TvRqg1W35pw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dccArJm9; arc=pass smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6717ead1d6aso229991a12.0
+        for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2026 06:23:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776000183; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CeyoHHWLmX9dgaOH9cPA4qJpDAfQluw+M/st/xeRTvXlqxJFn3XFXaqGLg4exeZ3WE
+         VbICUMjxWUtSrdjNqZOqPjRhp1XHHDfLzOy1+1Jdn04mq9jdHpQ5VVSwGsA7Uv3RuUI0
+         TVwsYMIkAxwR9CKGS0QodWEi7CqL3qDNdAo6mDCBXn2N5h+mQzznd08QQd5+IfVtuUei
+         3gD0XkRR3wxC9UciOVBP8Gz0Jh7Pr36GFPjVlJBZr8LqHhcEEmFF9u22qSldHf7c2JoL
+         tlMhWLhBXFHc24w+FDTawJzAauOJrB3jXZrRqGYiX1C2C1U6ZjCpNjTntKtIp/5A4JlS
+         H1CQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gDdA9vu4Fz00bgurrj0mXlyC2hJ8rRfiuCUxuR8xwe8=;
+        fh=M2eayRy55MhBIFtgXMTRlQcmUjrPg09SnfgggmbGsdU=;
+        b=BHAVK5ln66DGqj9sWWoEKGHo5Fnuk+PFqvsbQZ706wZaLGTo8eFSyLe6JMaqA7b49n
+         ChwDjVkyGzu5uZteE9Mh7miix97jCDXaOq9SJrLqvjwDo4cxQODo25uCDL+gp8RpJfY2
+         YDz115zcJ8wH4fbxiPEP4cgFKR5uzZum67KAPndqtE5osVlQ6g7csgjW9jkilKIZti4U
+         syyPRJxMeYrGjzXaqDB2LebraEHOs6gRlrnPGYA/LOqyc+sTXr+/pT1pIeCY5vQIvV8o
+         KjMQH/9vu341GZFVXyU0XxDg9wm1nkNile96TemUWOUQlG7nMjU1ujkJE0ejFC4llA7g
+         rPeA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776000183; x=1776604983; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gDdA9vu4Fz00bgurrj0mXlyC2hJ8rRfiuCUxuR8xwe8=;
+        b=dccArJm9v6h9Fdk8lDGNWZnQG14AQ9ZokHDnv7DAL1GW0R6BDoMR0waR0wHnO++sNY
+         YJPJSDf/Eo4Jqw4GQ8Gz/T/rsLkNap5uTZ+EpwANfeQ1dFGXyG88+fN/49+h4JvC9C7c
+         2+asFn0yzVsL4n2hJqrH+GINWtCINsNrMCDz6yHqeLWKks0EsNy7ssNes4vhdFLCd+tg
+         k2Ys2/EuxonOOeyCkSNs/L20e6zSdmHhXIY25hzHxXat+VjZowRiCo0VNk9bdjlPvxYt
+         DV9owUMCQ8VWv/4Ldm8HtUCj9QQlhYJyZr8JnJBv87EbzYIfO7KpnQu2sRPezsHrfV9J
+         1U2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776000183; x=1776604983;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gDdA9vu4Fz00bgurrj0mXlyC2hJ8rRfiuCUxuR8xwe8=;
+        b=gE1IlWbE4iQ6ReN2q2AaqkFt2dl73fse447n1Jm3GNsTe4101k1gzJQQAOKJVbgnjB
+         47K7H1oE9zS6m8pS4lWLGDCKAvWsQ18kTNvRFnJhha5qby647DSYja6Bc5iOeIXE77nh
+         0+bbQYnaWh5ksVp30bYE5YnbTsb/j0TvOKsu2ZunTQBwjdC2Tp3Wn46kfH0t2erT06Vs
+         AQ8LKV2c4Ak1EqaiWjMs/S5a0o9dqvxhsuf87m0gQPNZ9mqECXqaFutVYJ7w7c5zcWEw
+         LtyxrzHW0PqDqIuwkRvXjsFozRib3630V8inkV1WLBfD72W7U1NW3SJwkso1AG6pWyrG
+         lkDA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtMcxnb59zswEiAMHTC1XqwvWXonLHBqlQ0a0JLrBU5iFHgDHcEUeQdfrAOrVa3eB3tpKE6ysFYBvkI71TSA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMjcMe8iqaGvb7i0sssquS/7bhSu+3chJHKN+MPSTStrSBPXUv
+	tsa7KcAiQuU1xUID7GV6d4sFdBpdFax8wK1jRqtdnQbVPXlGeDT/meF8rscWJTdnzYRzq/hWPRh
+	gBhHVxShw1JM+xYcZnYtRJQajzLTyqX4=
+X-Gm-Gg: AeBDiesqb24Pp3BtZAX90ThCJ79TDDNhK9ZO/2y7DVgEUoiNylljv019qxegv/C7fwl
+	oIzEzebm9lKrfPZ2GND8EbOtP5/8Nh3g7yhFpuclgn1YFzh+WaMPwjVB4wshWI7aU1mMD1kAq4O
+	wdB6TN10sPTZquCHgG1lWMdfhCCLK1KcqbMK6qgcgFPQi8jY6YNe9sb23zGcUd1rHWNmM9R5bYI
+	rIvGDxcXJMNVwGTK6FYiB2lNljMvXdOqLObyo96g4SfH6wGUFWs90dXztEVPD1l0be7fnhetnET
+	34CwPFiAjqSsWoOBnfA3YMv1z8aDMloLnCIfsvCd
+X-Received: by 2002:a17:907:e113:b0:b9c:6ef1:ed18 with SMTP id
+ a640c23a62f3a-b9d727aa4fdmr352963766b.25.1776000183133; Sun, 12 Apr 2026
+ 06:23:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+References: <20260410120044.031381086@kernel.org> <20260410120319.131582521@kernel.org>
+In-Reply-To: <20260410120319.131582521@kernel.org>
+From: Magnus Lindholm <linmag7@gmail.com>
+Date: Sun, 12 Apr 2026 15:22:51 +0200
+X-Gm-Features: AQROBzAeMsaeSVePCJ__tEd4f2rWAY6MixXzp_fii2b8vyUpLt4xjSbtYzENFaw
+Message-ID: <CA+=Fv5S68wZQapeaYTspOfsuGk=nBj60sx-ojHBSqrxV59Q+ZA@mail.gmail.com>
+Subject: Re: [patch 23/38] alpha: Select ARCH_HAS_RANDOM_ENTROPY
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, 
+	Richard Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org, 
+	Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>, 
+	iommu@lists.linux.dev, Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
+	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
+	David Woodhouse <dwmw2@infradead.org>, Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
+	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
+	linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
+	Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	loongarch@lists.linux.dev, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	linux-m68k@lists.linux-m68k.org, Dinh Nguyen <dinguyen@kernel.org>, 
+	Jonas Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org, 
+	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
+	Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org, 
+	Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-34670-lists,linux-wireless=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-34671-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C51EF3E3C6C
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[49];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linaro.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linmag7@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 9231C3E3FD9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Fri, Apr 10, 2026 at 2:36=E2=80=AFPM Thomas Gleixner <tglx@kernel.org> w=
+rote:
+>
+> The only remaining usage of get_cycles() is to provide
+> random_get_entropy().
+>
+> Switch alpha over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
+> and providing random_get_entropy() in asm/random.h.
+>
+> Remove asm/timex.h as it has no functionality anymore.
+>
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Cc: Richard Henderson <richard.henderson@linaro.org>
+> Cc: linux-alpha@vger.kernel.org
+> ---
+>  arch/alpha/Kconfig              |    1 +
+>  arch/alpha/include/asm/random.h |   14 ++++++++++++++
+>  arch/alpha/include/asm/timex.h  |   26 --------------------------
+>  3 files changed, 15 insertions(+), 26 deletions(-)
 
-Add the necessary definitions to create radiotap UHR TLVs
-for UHR sniffers.
+Hi,
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- include/net/ieee80211_radiotap.h | 190 +++++++++++++++++++++++++++++++
- 1 file changed, 190 insertions(+)
+The Alpha side looks fine to me.
 
-diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
-index c60867e7e43c..6c2210a253cd 100644
---- a/include/net/ieee80211_radiotap.h
-+++ b/include/net/ieee80211_radiotap.h
-@@ -95,6 +95,8 @@ enum ieee80211_radiotap_presence {
- 	IEEE80211_RADIOTAP_EXT = 31,
- 	IEEE80211_RADIOTAP_EHT_USIG = 33,
- 	IEEE80211_RADIOTAP_EHT = 34,
-+	IEEE80211_RADIOTAP_UHR_ELR = 37,
-+	IEEE80211_RADIOTAP_UHR = 38,
- };
- 
- /* for IEEE80211_RADIOTAP_FLAGS */
-@@ -602,6 +604,194 @@ enum ieee80211_radiotap_eht_usig_tb {
- 	IEEE80211_RADIOTAP_EHT_USIG2_TB_B20_B25_TAIL		= 0xfc000000,
- };
- 
-+/*
-+ * ieee80211_radiotap_uhr_elr - content of UHR-ELR TLV (type 35)
-+ * see https://www.radiotap.org/fields/UHR-ELR for details
-+ */
-+struct ieee80211_radiotap_uhr_elr {
-+	__le32 known;
-+	__le32 sig1, sig2, mark;
-+} __packed;
-+
-+enum ieee80211_radiotap_uhr_elr_known {
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_VERSION_ID		= 0x00000001,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_UL_DL			= 0x00000002,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_MCS			= 0x00000004,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_CODING			= 0x00000008,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_LENGTH			= 0x00000010,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_LDPC_EXTRA_OFDM_SYM	= 0x00000020,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_SIG_1_CRC		= 0x00000040,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_SIG_1_TAIL		= 0x00000080,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_STA_ID			= 0x00000100,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_DISREGARD		= 0x00000200,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_SIG_2_CRC		= 0x00000400,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_SIG_2_TAIL		= 0x00000800,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_SIG_1_CRC_CHECKED	= 0x00001000,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_SIG_2_CRC_CHECKED	= 0x00002000,
-+	IEEE80211_RADIOTAP_UHR_ELR_KNOWN_MARK_BSS_COLOR		= 0x00010000,
-+};
-+
-+enum ieee80211_radiotap_uhr_elr_sig1 {
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG1_VERSION_ID		= 0x00000001,
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG1_UL_DL			= 0x00000002,
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG1_MCS			= 0x00000004,
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG1_CODING			= 0x00000008,
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG1_LENGTH			= 0x00001FF0,
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG1_LDPC_EXTRA_OFDM_SYM	= 0x00002000,
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG1_CRC			= 0x0003C000,
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG1_TAIL			= 0x00FC0000,
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG1_CRC_VALID		= 0x80000000,
-+};
-+
-+enum ieee80211_radiotap_uhr_elr_sig2 {
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG2_STA_ID			= 0x000007FF,
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG2_DISREGARD		= 0x00003800,
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG2_CRC			= 0x0003C000,
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG2_TAIL			= 0x00FC0000,
-+	IEEE80211_RADIOTAP_UHR_ELR_SIG2_CRC_VALID		= 0x80000000,
-+};
-+
-+enum ieee80211_radiotap_uhr_elr_mark {
-+	IEEE80211_RADIOTAP_UHR_ELR_MARK_BSS_COLOR		= 0x0000003F,
-+};
-+
-+/*
-+ * ieee80211_radiotap_uhr - content of UHR TLV (type 36)
-+ * see https://www.radiotap.org/fields/UHR for details
-+ */
-+struct ieee80211_radiotap_uhr {
-+	__le32 known;
-+	__le32 data[9];
-+	struct {
-+		__le32 known, info;
-+	} user[];
-+} __packed;
-+
-+enum ieee80211_radiotap_uhr_known {
-+	IEEE80211_RADIOTAP_UHR_KNOWN_SPATIAL_REUSE		= 0x00000001,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_GI_LTF_SIZE		= 0x00000002,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_NUMBER_OF_UHR_LTF_SYMBOLS	= 0x00000004,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_LDPC_EXTRA_SYMBOL_SEGMENT	= 0x00000008,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_PRE_FEC_PADDING_FACTOR	= 0x00000010,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_PE_DISAMBIGUITY		= 0x00000020,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_DISREGARD_OFDMA		= 0x00000040,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_CRC1			= 0x00000080,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_TAIL1			= 0x00000100,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_CRC2			= 0x00000200,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_TAIL2			= 0x00000400,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_INTERFERENCE_MITIGATION	= 0x00000800,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_DISREGARD_NON_OFDMA	= 0x00001000,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_NUMBER_OF_NON_OFDMA_USERS	= 0x00002000,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_COMMON_ENCODING_BLOCK_CRC	= 0x00004000,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_COMMON_ENCODING_BLOCK_TAIL	= 0x00008000,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_RU_MRU_DRU_SIZE		= 0x00010000,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_RU_MRU_INDEX		= 0x00020000,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_DRU_RRU_ALLOC_TB_FMT	= 0x00040000,
-+	IEEE80211_RADIOTAP_UHR_KNOWN_PRI80_CHAN_POS		= 0x00080000,
-+};
-+
-+enum ieee80211_radiotap_uhr_data {
-+	/* data[0] */
-+	IEEE80211_RADIOTAP_UHR_DATA0_SPATIAL_REUSE		= 0x0000000F,
-+	IEEE80211_RADIOTAP_UHR_DATA0_GI_LTF_SIZE		= 0x00000030,
-+	IEEE80211_RADIOTAP_UHR_DATA0_NUMBER_OF_LTF_SYMBOLS	= 0x00000700,
-+	IEEE80211_RADIOTAP_UHR_DATA0_LDPC_EXTRA_SYMBOL_SEGMENT	= 0x00000800,
-+	IEEE80211_RADIOTAP_UHR_DATA0_PRE_FEC_PADDING_FACTOR	= 0x00003000,
-+	IEEE80211_RADIOTAP_UHR_DATA0_PE_DISAMBIGUITY		= 0x00004000,
-+	IEEE80211_RADIOTAP_UHR_DATA0_DISREGARD_OFDMA		= 0x00078000,
-+	IEEE80211_RADIOTAP_UHR_DATA0_CRC1			= 0x00780000,
-+	IEEE80211_RADIOTAP_UHR_DATA0_TAIL1			= 0x1f800000,
-+	/* data[1] */
-+	IEEE80211_RADIOTAP_UHR_DATA1_RU_MRU_DRU_SIZE		= 0x0000001f,
-+	IEEE80211_RADIOTAP_UHR_DATA1_RU_MRU_INDEX		= 0x00001fe0,
-+	IEEE80211_RADIOTAP_UHR_DATA1_RU_ALLOC_CC_1_1_1		= 0x003fe000,
-+	IEEE80211_RADIOTAP_UHR_DATA1_RU_ALLOC_CC_1_1_1_KNOWN	= 0x00400000,
-+	IEEE80211_RADIOTAP_UHR_DATA1_PRI80_CHAN_POS		= 0xc0000000,
-+	/* data[2] */
-+	IEEE80211_RADIOTAP_UHR_DATA2_RU_ALLOC_CC_2_1_1		= 0x000001ff,
-+	IEEE80211_RADIOTAP_UHR_DATA2_RU_ALLOC_CC_2_1_1_KNOWN	= 0x00000200,
-+	IEEE80211_RADIOTAP_UHR_DATA2_RU_ALLOC_CC_1_1_2		= 0x0007fc00,
-+	IEEE80211_RADIOTAP_UHR_DATA2_RU_ALLOC_CC_1_1_2_KNOWN	= 0x00080000,
-+	IEEE80211_RADIOTAP_UHR_DATA2_RU_ALLOC_CC_2_1_2		= 0x1ff00000,
-+	IEEE80211_RADIOTAP_UHR_DATA2_RU_ALLOC_CC_2_1_2_KNOWN	= 0x20000000,
-+	/* data[3] */
-+	IEEE80211_RADIOTAP_UHR_DATA3_RU_ALLOC_CC_1_2_1		= 0x000001ff,
-+	IEEE80211_RADIOTAP_UHR_DATA3_RU_ALLOC_CC_1_2_1_KNOWN	= 0x00000200,
-+	IEEE80211_RADIOTAP_UHR_DATA3_RU_ALLOC_CC_2_2_1		= 0x0007fc00,
-+	IEEE80211_RADIOTAP_UHR_DATA3_RU_ALLOC_CC_2_2_1_KNOWN	= 0x00080000,
-+	IEEE80211_RADIOTAP_UHR_DATA3_RU_ALLOC_CC_1_2_2		= 0x1ff00000,
-+	IEEE80211_RADIOTAP_UHR_DATA3_RU_ALLOC_CC_1_2_2_KNOWN	= 0x20000000,
-+	/* data[4] */
-+	IEEE80211_RADIOTAP_UHR_DATA4_RU_ALLOC_CC_2_2_2		= 0x000001ff,
-+	IEEE80211_RADIOTAP_UHR_DATA4_RU_ALLOC_CC_2_2_2_KNOWN	= 0x00000200,
-+	IEEE80211_RADIOTAP_UHR_DATA4_RU_ALLOC_CC_1_2_3		= 0x0007fc00,
-+	IEEE80211_RADIOTAP_UHR_DATA4_RU_ALLOC_CC_1_2_3_KNOWN	= 0x00080000,
-+	IEEE80211_RADIOTAP_UHR_DATA4_RU_ALLOC_CC_2_2_3		= 0x1ff00000,
-+	IEEE80211_RADIOTAP_UHR_DATA4_RU_ALLOC_CC_2_2_3_KNOWN	= 0x20000000,
-+	/* data[5] */
-+	IEEE80211_RADIOTAP_UHR_DATA5_RU_ALLOC_CC_1_2_4		= 0x000001ff,
-+	IEEE80211_RADIOTAP_UHR_DATA5_RU_ALLOC_CC_1_2_4_KNOWN	= 0x00000200,
-+	IEEE80211_RADIOTAP_UHR_DATA5_RU_ALLOC_CC_2_2_4		= 0x0007fc00,
-+	IEEE80211_RADIOTAP_UHR_DATA5_RU_ALLOC_CC_2_2_4_KNOWN	= 0x00080000,
-+	IEEE80211_RADIOTAP_UHR_DATA5_RU_ALLOC_CC_1_2_5		= 0x1ff00000,
-+	IEEE80211_RADIOTAP_UHR_DATA5_RU_ALLOC_CC_1_2_5_KNOWN	= 0x20000000,
-+	/* data[6] */
-+	IEEE80211_RADIOTAP_UHR_DATA6_RU_ALLOC_CC_2_2_5		= 0x000001ff,
-+	IEEE80211_RADIOTAP_UHR_DATA6_RU_ALLOC_CC_2_2_5_KNOWN	= 0x00000200,
-+	IEEE80211_RADIOTAP_UHR_DATA6_RU_ALLOC_CC_1_2_6		= 0x0007fc00,
-+	IEEE80211_RADIOTAP_UHR_DATA6_RU_ALLOC_CC_1_2_6_KNOWN	= 0x00080000,
-+	IEEE80211_RADIOTAP_UHR_DATA6_RU_ALLOC_CC_2_2_6		= 0x1ff00000,
-+	IEEE80211_RADIOTAP_UHR_DATA6_RU_ALLOC_CC_2_2_6_KNOWN	= 0x20000000,
-+	/* data[7] */
-+	IEEE80211_RADIOTAP_UHR_DATA7_CRC2			= 0x0000000f,
-+	IEEE80211_RADIOTAP_UHR_DATA7_TAIL2			= 0x000003f0,
-+	IEEE80211_RADIOTAP_UHR_DATA7_INTERFERENCE_MITIGATION	= 0x00000400,
-+	IEEE80211_RADIOTAP_UHR_DATA7_DISREGARD_NON_OFDMA	= 0x00001800,
-+	IEEE80211_RADIOTAP_UHR_DATA7_NUMBER_OF_NON_OFDMA_USERS	= 0x0000e000,
-+	IEEE80211_RADIOTAP_UHR_DATA7_COMMON_ENCODING_BLOCK_CRC	= 0x000f0000,
-+	IEEE80211_RADIOTAP_UHR_DATA7_COMMON_ENCODING_BLOCK_TAIL	= 0x03f00000,
-+	/* data[8] */
-+	IEEE80211_RADIOTAP_UHR_DATA8_DRU_RRU_ALLOC_TB_FMT_PS_160= 0x00000001,
-+	IEEE80211_RADIOTAP_UHR_DATA8_DRU_RRU_ALLOC_TB_FMT_B0	= 0x00000002,
-+	IEEE80211_RADIOTAP_UHR_DATA8_DRU_RRU_ALLOC_TB_FMT_B7_B1	= 0x000001fc,
-+	IEEE80211_RADIOTAP_UHR_DATA8_DRU_RRU_INDICATION		= 0x00000200,
-+};
-+
-+enum ieee80211_radiotap_uhr_user_known {
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_STA_ID		= 0x00000001,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_MCS			= 0x00000002,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_NSS			= 0x00000004,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_UEQM			= 0x00000008,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_BF			= 0x00000010,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_CODING		= 0x00000020,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_UEQM_PATTERN		= 0x00000040,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_2X_LDPC		= 0x00000080,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_SPATIAL_CONFIG	= 0x00000100,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_DISREGARD		= 0x00000200,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_BSS_COLOR_INDICATION	= 0x00000400,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_USR_ENC_BLK_CRC	= 0x00000800,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_USR_ENC_BLK_TAIL	= 0x00001000,
-+	/* really 'known' but actual data */
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_DATA_USR_ENC_BLK_CRC	= 0x000f0000,
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_DATA_USR_ENC_BLK_TAIL	= 0x03f00000,
-+	/* indicates this user was captured */
-+	IEEE80211_RADIOTAP_UHR_USER_KNOWN_USER_CAPTURED		= 0x80000000,
-+};
-+
-+enum ieee80211_radiotap_uhr_user_info {
-+	IEEE80211_RADIOTAP_UHR_USER_INFO_STA_ID			= 0x000007ff,
-+	IEEE80211_RADIOTAP_UHR_USER_INFO_MCS			= 0x0000f800,
-+	IEEE80211_RADIOTAP_UHR_USER_INFO_NSS			= 0x00070000,
-+	IEEE80211_RADIOTAP_UHR_USER_INFO_SPATIAL_CONFIG		= 0x000f0000,
-+	IEEE80211_RADIOTAP_UHR_USER_INFO_UEQM			= 0x00100000,
-+	IEEE80211_RADIOTAP_UHR_USER_INFO_DISREGARD		= 0x00100000,
-+	IEEE80211_RADIOTAP_UHR_USER_INFO_BF			= 0x00200000,
-+	IEEE80211_RADIOTAP_UHR_USER_INFO_BSS_COLOR_INDICATION	= 0x00200000,
-+	IEEE80211_RADIOTAP_UHR_USER_INFO_UEQM_PATTERN		= 0x00c00000,
-+	IEEE80211_RADIOTAP_UHR_USER_INFO_CODING			= 0x01000000,
-+	IEEE80211_RADIOTAP_UHR_USER_INFO_2X_LDPC		= 0x02000000,
-+};
-+
- /**
-  * ieee80211_get_radiotap_len - get radiotap header length
-  * @data: pointer to the header
--- 
-2.34.1
+I've applied this patch on top of v7.0-rc7, built a kernel successfully,
+boot-tested it on an Alpha UP2000+ (SMP) without issues.
 
+Acked-by: Magnus Lindholm <linmag7@gmail.com>
+Tested-by: Magnus Lindholm <linmag7@gmail.com>
 
