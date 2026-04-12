@@ -1,164 +1,139 @@
-Return-Path: <linux-wireless+bounces-34672-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34673-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKdcICGn22kSEwkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34672-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 16:07:29 +0200
+	id 0HUjBYaq22mzEwkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34673-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 16:21:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D843E424F
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 16:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CE13E435E
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 16:21:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70B76301A922
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:04:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB119300B441
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2026 14:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DAB2DE6FF;
-	Sun, 12 Apr 2026 14:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5045D373C1D;
+	Sun, 12 Apr 2026 14:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="dp5V3ynI"
+	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="KSptVbYO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9F42C08BB
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2026 14:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEFA36A01E
+	for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2026 14:21:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776002647; cv=none; b=NNkZNoSf4EbSD6c11OthmyJc7oZUN9il6Wpk8592eN3+MLc/uA0JoZmYa1priNmqSwgUZflVM3nU/zeollyLHJ9JG9NR3fpLi5JefqBPPzYXqXAac5yuhsj4XTH9BgCJXQR22XfqzWr6n+om0BXaT+pc5ZRvReV8cFGwmcaICBY=
+	t=1776003713; cv=none; b=GU2LuEGdnTHPTzvRU9m+BeJSYvTXIvP72ZLDeSRTqvDi4ohDiCHue7UPWQrBxs6/LPf3/7PtZrnv+TGAhP4yIoZfo/WdFvwQ0U/0rDmRxRjdfwSTMTM03Yt0xPU9Aj4BVGBrzd84jgaCxNoQV5ARI4Gn7ifyF10gcKjbegUXSgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776002647; c=relaxed/simple;
-	bh=HgFVOXbJcp0bLsKjicXpTOp4qHHRJdpvNDmHDbqBkEo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KdtWB8WuGqUWvaxzwqDBwDJ2Oz6Jbp84cOrJlgu+9dTgE1qLzlqe9Oy7+UOxHvIOyWz0Gd2pDQqLKXI80JSsNC7Eiq1zIqvTKc1JRgLYOzL+pSKaQoyuBoCF9sEbyLjwW7mfT/FrNPz7iELg7oAn/L+Uc92UOPPJY/KVYV5ILBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=dp5V3ynI; arc=none smtp.client-ip=148.163.129.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 9C613B00061;
-	Sun, 12 Apr 2026 14:03:57 +0000 (UTC)
-Received: from [10.252.54.110] (unknown [198.134.98.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id DDB1313C2B0;
-	Sun, 12 Apr 2026 07:03:49 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com DDB1313C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1776002634;
-	bh=HgFVOXbJcp0bLsKjicXpTOp4qHHRJdpvNDmHDbqBkEo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dp5V3ynIAj7hzuEx73YmuJK1hRsvvqpUGOKbJK2T/Hz6ZSY194Izgjo3RCIQWFFDJ
-	 jCCpTjGKhryd4lnuOnsnOEzAj8vcqpkiY9xUmh9N4OnXlfIT+FEPRfFoncaeuwK8MD
-	 TuRCcQl912ZnW1jCXbkTiH3aqfgjwBLP5Om0mvfE=
-Message-ID: <d74eb2fd-5698-425b-8650-f136c9442155@candelatech.com>
-Date: Sun, 12 Apr 2026 07:03:49 -0700
+	s=arc-20240116; t=1776003713; c=relaxed/simple;
+	bh=2OzzAGEjlO1j+az6ZWcSL+63IyScuxmCxAcFSpy+ZKM=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Wr5wQ8BUgFe0b7t4ZQLW3VehmiWz59d953CCAQjD3eCsSpIXsnMkqiRFHUlnZSJf5iz/ykqOZQ+2eQNamlD1tUm86GimTSlpX7gUWPo0UCGScagnhUeLN5sAw2g82UrIArObPHfGalRFI70EwuB9SJvoSvuF1NrTeVwJ2+tqFas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=KSptVbYO; arc=none smtp.client-ip=195.121.94.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
+X-KPN-MessageId: c924a144-367a-11f1-bea8-005056992ed3
+Received: from mta.kpnmail.nl (unknown [10.31.161.189])
+	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
+	id c924a144-367a-11f1-bea8-005056992ed3;
+	Sun, 12 Apr 2026 16:20:41 +0200 (CEST)
+Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.189])
+	by mta.kpnmail.nl (Halon) with ESMTP
+	id c9237dab-367a-11f1-b5d0-0050569981f5;
+	Sun, 12 Apr 2026 16:20:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xs4all.nl; s=xs4all01;
+	h=content-type:mime-version:subject:message-id:to:from:date;
+	bh=t24q5yRxR4yOwoXyL6Wkhw8RZCd6L09pdlxq+MQQ69Y=;
+	b=KSptVbYOGwYLaG7QTZ/QEaSWaVtI56Jfi5OW9gLzNKN3jzKkrYDXiWH5vjJIf5XiOdS/d2tr5fLj3
+	 yzG6NG6oxAWBnHYy/7wWy8Uw/HuT5d2D/Rjmjh/EllINqGjqd5oNG6PBMibHMlfYZ9fHk/CfudptSA
+	 iUmoAmmZ4S3sVr2JITx4E2kqRm3MsoXwqeCxDp6D7l7Pg+0Y2mLmNvBD89mLZuXncXr+9crOjDxlXQ
+	 T23BTa7m4rlz/Lbm8Y1SjePm4w5elCc+Op8T0JTy5EEcnJ7dsJBpJZeCg2YXsH+kK398MBg6ffzGsy
+	 kSTOZyGl00XzLyLB0HxQKPfqLSHnfrQ==
+X-KPN-MID: 33|Zh/4RFIV6k4ahLk3gbS2ptW6g0oikOdKjnbglaPGgRRHZ5S0U7XkSXN2tZuWnYK
+ 4W8lMdkEow5leHnJcb8DTU62kpjs00x/oz8sVlv8wp0s=
+X-CMASSUN: 33|+2xea++xjgjuCBu4Eb2wRKTWrPSXnzwCBcVKCJLM+tJSJ0q2ztY7wkqfha/4n4y
+ OLPVOlMVii74itIlsNPxLsw==
+X-KPN-VerifiedSender: Yes
+Received: from cpxoxapps-mh07 (cpxoxapps-mh07.personalcloud.so.kpn.org [10.128.135.213])
+	by mtaoutbound.kpnmail.nl (Halon) with ESMTPSA
+	id c9166a10-367a-11f1-94b1-00505699eff2;
+	Sun, 12 Apr 2026 16:20:41 +0200 (CEST)
+Date: Sun, 12 Apr 2026 16:20:41 +0200 (CEST)
+From: Jori Koolstra <jkoolstra@xs4all.nl>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"open list:MAC80211" <linux-wireless@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Message-ID: <675951732.2051008.1776003641276@kpc.webmail.kpnmail.nl>
+In-Reply-To: <538186550596da7b862eb7340047695267f8b71e.camel@sipsolutions.net>
+References: <20260401165938.3843784-1-jkoolstra@xs4all.nl>
+ <538186550596da7b862eb7340047695267f8b71e.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211_hwsim: change hwsim_class to a const struct
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] wifi: iwlwifi: mld: fix TSO segmentation explosion
- when AMSDU is disabled
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
- Cole Leavitt <cole@unwrap.rs>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: "johannes@sipsolutions.net" <johannes@sipsolutions.net>
-References: <20260405054145.1064152-1-cole@unwrap.rs>
- <20260405054145.1064152-3-cole@unwrap.rs>
- <DS0PR11MB788029013A25A284B0907D01A3272@DS0PR11MB7880.namprd11.prod.outlook.com>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <DS0PR11MB788029013A25A284B0907D01A3272@DS0PR11MB7880.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-MDID: 1776002638-bLx3YiuNvite
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1776002638;bLx3YiuNvite;<greearb@candelatech.com>;9db8dd06de60c557760218eb2301c105
-X-PPE-TRUSTED: V=1;DIR=OUT;
+X-Priority: 3
+Importance: Normal
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[xs4all.nl,reject];
+	R_DKIM_ALLOW(-0.20)[xs4all.nl:s=xs4all01];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	HAS_ORG_HEADER(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34672-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	DKIM_TRACE(0.00)[candelatech.com:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_X_PRIO_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-34673-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[xs4all.nl:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[xs4all.nl];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jkoolstra@xs4all.nl,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,candelatech.com:dkim,candelatech.com:mid,candelatech.com:email,candelatech.com:url,unwrap.rs:email]
-X-Rspamd-Queue-Id: C8D843E424F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xs4all.nl:dkim,kpc.webmail.kpnmail.nl:mid]
+X-Rspamd-Queue-Id: 64CE13E435E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/11/26 8:47 PM, Korenblit, Miriam Rachel wrote:
-> 
-> 
->> -----Original Message-----
->> From: Cole Leavitt <cole@unwrap.rs>
->> Sent: Sunday, April 5, 2026 8:42 AM
->> To: linux-wireless@vger.kernel.org
->> Cc: greearb@candelatech.com; Korenblit, Miriam Rachel
->> <miriam.rachel.korenblit@intel.com>; johannes@sipsolutions.net;
->> cole@unwrap.rs
->> Subject: [PATCH 2/3] wifi: iwlwifi: mld: fix TSO segmentation explosion when
->> AMSDU is disabled
->>
->> When the TLC notification disables AMSDU for a TID, the MLD driver sets
->> max_tid_amsdu_len to the sentinel value 1. The TSO segmentation path in
->> iwl_mld_tx_tso_segment() checks for zero but not for this sentinel, allowing it to
->> reach the num_subframes calculation:
->>
->>    num_subframes = (max_tid_amsdu_len + pad) / (subf_len + pad)
->>                  = (1 + 2) / (1534 + 2) = 0
->>
->> This zero propagates to iwl_tx_tso_segment() which sets:
->>
->>    gso_size = num_subframes * mss = 0
->>
->> Calling skb_gso_segment() with gso_size=0 creates over 32000 tiny segments
->> from a single GSO skb. This floods the TX ring with ~1024 micro-frames (the rest
->> are purged), creating a massive burst of TX completion events that can lead to
->> memory corruption and a subsequent use-after-free in TCP's retransmit queue
->> (refcount underflow in tcp_shifted_skb, NULL deref in tcp_rack_detect_loss).
-> 
-> And why not fixing this issue?
 
-We have been running with this patch.  It doesn't seem to cause harm,
-but also, we still saw at least a few warnings about 32k spins in GSO logic.
+> Op 07-04-2026 15:46 CEST schreef Johannes Berg <johannes@sipsolutions.net>:
+> 
+>  
+> Hi,
+> 
+> The subject should have a "wifi: " prefix. Maybe we need a MAINTAINERS
+> thing for that ...
 
-I am pretty sure the 32k GSO spin we see is due to some skb memory corruption of some kind,
-and I don't know root cause.
+Sounds like a good idea... I am just guessing because with the cleanup work
+I am not familiar with the conventions of each subsystem I am cleaning up in.
 
-Maybe this patch is still worth having, but the description about lots of tx completion events
-causing mem corruption seems unfounded to me, and while I have no proof, this sort of
-over-confidence in cause vs affect appears similar to some other AI generated patches I've seen.
+> 
+> Also, this patch doesn't apply on wireless-next, please respin.
+> 
+
+I just saw that it has been already applied.
+
+> johannes
 
 Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Jori.
 
