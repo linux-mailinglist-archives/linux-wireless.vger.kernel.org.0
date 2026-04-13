@@ -1,184 +1,210 @@
-Return-Path: <linux-wireless+bounces-34713-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34714-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HNtILM53Wk3awkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34713-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 20:45:07 +0200
+	id sLsbHqZE3WkubQkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34714-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 21:31:50 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31513F2353
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 20:45:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 629473F2BEC
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 21:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E19953033F9C
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 18:43:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F02B9301BA67
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 19:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A2138F92E;
-	Mon, 13 Apr 2026 18:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FBE3932D0;
+	Mon, 13 Apr 2026 19:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EEvIjQ95"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="eBEb3+z4";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fK2XbJ97"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B4438F647
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 18:43:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD1F3537FA;
+	Mon, 13 Apr 2026 19:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776105824; cv=none; b=ngCGXKQ98PSy+iRlvli9SgzqlZnpYmVjBPuFZtysFDMLCE1+mA6kaVuOTmF3W11Tj/cwbeXJw3HdzibBzKoc1Ia+zKSycIezQeldGQriyHO5qVpsQcg5VKtkXLSvu1u9Wxw28sCZYay4wsVzlLwwSw3IhmqZM2/TKbUXLOupRao=
+	t=1776108701; cv=none; b=Wwv7ysAI3pZa7lDmJhUWwipeGdvAQG/VIJHrVKio0YixISKcp4kFNSwJuI+cF04dMmLnjN1bNEPjAkhySfUuWAhcnMaTFdQW1GsQGiGI9UDDxNJUYgMSU4d/m+xnPPgy4QL812kozcop5wedzTQxfknEW7TYLwA7uUfBdYGk1b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776105824; c=relaxed/simple;
-	bh=jwdcUNA2d70FnEkNepHRPW+EhyXibyW56hR2BjVE1O4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A315CfGe8oOfGKN79oucMHPVOXNXGPlNAZ6TJIU/wTNUd/CuOFrR4pQ7cVkM8ctgjwA6Mzex1WFPlgk0xopXV0QzNqRI26Fl7Ia5rCc4F6iTCFsrFQYie0pgMvuS8MwXw5j7Hh6vLHVKBKKAIzSS+KBOxHylRNiHnPTpQSIJBkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EEvIjQ95; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7d7ec0cde98so332947a34.2
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 11:43:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776105821; x=1776710621; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UIVbLPcvPCrf1/gTRE4+B7+RumJKZrg4gpt1ORMIP1g=;
-        b=EEvIjQ950M9Fvv3mkiBXgBnurGYNeImQdR7g2TgIhKDyKZG+6ysazttR8/IQ41dOjn
-         VQo93SpQEErivCXQsTRc8vYh585vnTmwI2xI6t/Av/q9/ZWpF8OT+xzXysWRrbQ0V3hp
-         e4VepS1/5GCUW/cKpJj0nsroTGtMgv6dYqNqTtL0PCNcQw/F+YqtXva0IwmCFnMi6yhS
-         gTo4vPpJ96m4RHwvvzHFYbkZt+deAe8EYljTLamYqos9YQ76Qy0fb4qAlxhH6Nd68PXr
-         c2OWn4M7F0r2NGIJKSVxbNq9LGN2rNzW1qdPy2MVEwmF1WrXs7h47sNjRPLnTPaD2CBr
-         ybUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776105821; x=1776710621;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UIVbLPcvPCrf1/gTRE4+B7+RumJKZrg4gpt1ORMIP1g=;
-        b=EEWehwnIkbP8/lafplgmRGd1WNQeqIvCh4zoyXXgrcmtL0a0DqauPpjZRT/RyeWkfS
-         h8EnV+NIXQT5Oanc7qoZ5HYLkUFW1WolnGb025hEFP4sA/z50DGAROKlBY2potymhs1L
-         FaUQ0+zscISwZkAkP+MJgAFu2SE3FDkWKsHgkR/lXpfJ5mcaSKKanyjJDwamoZ3OIEXT
-         7zpwXseF/Z7C+W7NMdzA+tFDptDXN+wyEFaByHZh1qlyCc9GW/RrhiqBH6+8GxytfIh4
-         vDOWjacOxGiG0Lcj+dOVOpM3acqA8rKdkGw2zOeQp3nIrJxTg3f8LS1J9MzDvQbouYxw
-         1A0Q==
-X-Gm-Message-State: AOJu0Ywnjz2XBQUR+IKEGa7At136a0XdLCVFngi6rc78vXnzhKPLrNxm
-	RB243RsJ/0sgU/xYi5V5xMto7T1AjYR6Lsz8D0TFvGOd062N460r932ku3v6jC+8
-X-Gm-Gg: AeBDievQ+No5GmI91E1XMVbM3BuWtN8LStzP/5P/3A6m9uY6LgYusr3VfwsPQ/5iQs7
-	fOCG0yGg8dLgGQZx6JIuH1oeXyEA5x0iHzezd7PgIH9IQc4mAjzWwykfoXfvG1dBoExGi901vG4
-	FN5Up25W7g2RFtMFGHqGCAT5y200CMtCCnJC/cnB53JB9oLkmcAiIud8+GJWK7MLylm/F4T5YqK
-	yJk+dbKtgoibdbMxqo5hnkiR02N6wdEEBPw5KYUo+6PWBsQHm8iF1+vRCFNfMw8Dnqt+7HDuHUK
-	34qD3YBBEoHnXJbo2zQk+QRbSp6mx9jHBuxdA9H40TPHbKo9RxsZR6qeQO2CSlMfahREn38VQb1
-	7n/qQPEAmWNFvdBCLQSjJWy1kZ8XEY79Q8vSF0wY1eO0mU6whtkmZJpZs57YQI+DdJxmophw5Im
-	zAfC38ffgpH5jQb37kaCkDPdrdW7RnsOX6K6rei6bUhg3/NyByeWXbz23L5ouJcf5Jk/w9kKX6Z
-	BjRu/kUCcce9VZhqXIoFl7n
-X-Received: by 2002:a05:6830:3109:b0:7d7:ce07:5118 with SMTP id 46e09a7af769-7dc2800d06cmr6516696a34.7.1776105821313;
-        Mon, 13 Apr 2026 11:43:41 -0700 (PDT)
-Received: from localhost ([136.49.184.116])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc269fd1b3sm8958176a34.27.2026.04.13.11.43.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 11:43:40 -0700 (PDT)
-From: Aaron Esau <aaron1esau@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: miriam.rachel.korenblit@intel.com,
-	stable@vger.kernel.org,
-	Aaron Esau <aaron1esau@gmail.com>
-Subject: [PATCH] wifi: iwlwifi: mld: bail out from TX when firmware is dead
-Date: Mon, 13 Apr 2026 13:43:37 -0500
-Message-ID: <20260413184337.413259-1-aaron1esau@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1776108701; c=relaxed/simple;
+	bh=WrrLF4ZuZDSSPdaipSZzrKXRH2qtrS74BAAAonCIRps=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=n7g1Yx5W6plpXKy+rkozQ6xEgTTaO1xCblNw3ix8fDOKnFfVL16O7SZh497soJj3f4zqp/zSWU+KxfR5iG2eT19N4YiEsFirX1mWgV9neXuPLaq+B1XzLfWKQzwRina3cMiqA4CdgmYDmme3QAv4sOaeHSA6ZSdvV11+Z0V8qUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=eBEb3+z4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fK2XbJ97; arc=none smtp.client-ip=103.168.172.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.phl.internal (Postfix) with ESMTP id 9BAA81380415;
+	Mon, 13 Apr 2026 15:31:38 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Mon, 13 Apr 2026 15:31:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1776108698;
+	 x=1776115898; bh=oF7+4SGRAImH9WMGSId2dJm+4RdrBt2YGrt25aFUZUA=; b=
+	eBEb3+z4uCJ5XpVJfmMDtd+Hz4pTmn4rIKoszU8vf+435LUmCEc3EJdi4K0/oVv8
+	C+yjXVYuraejFdA/rcQOSN6Zfi5pNlS43GslApllsudgHnK44npvkIwaUHWVTtuh
+	Dw/4I/j/UNeqyr1LQlKmH5vdXZciz/2GPqFtFHFDNoaInKEsvm7hwh9DYdVnGoah
+	lMAIbVhEjH95sryDmrUzci3AfaiCDHHYDZH3oXJ/R4+VlvsfKJPopXWx0JE7CxaE
+	ognvTjwa06PAMT31z/DBGKMGBcoGUsjb6Y3k+6cm618rMbyQ7yCpT6T6pE5XH3Hf
+	w2SGXNdq7Abx7TrcOF+CrA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776108698; x=
+	1776115898; bh=oF7+4SGRAImH9WMGSId2dJm+4RdrBt2YGrt25aFUZUA=; b=f
+	K2XbJ97Y0jsbU1s6LswXOEcaT2AuIJQsZKTCiqB2bsDjsavXFxXjXN24HUjqmHPV
+	30lUfZzPVJ0GZrRSLZsyTrPlhAwj+oOp7rzHIcW4Q+ggBxcGWjNT+roTWJQkS80p
+	muhmPfZao8pyrAslQS6xE9YgbnnrpBmxpEViK0VuBn5kyHZfCSLFSApLiy8hZEkj
+	X3o7U4xt3roWjYEf/0QsKGiNqeP3myXk/e3+BEa4KYIE59wmYsrhudiDwV46CB5d
+	E8K4OFv0fHuOdK14nnUUxfff3rCPKj8vJw3X7p6M4i0BpN1E8RSwySIEaUf5sCqK
+	alHtK1Rc5jgsKIF8k3s0A==
+X-ME-Sender: <xms:l0TdaRMQ1ovC5UjXw9wB_riUJbJZBZQ47VcEC4ozPMlWVwTWyL-hPg>
+    <xme:l0Tdaey9qAPkMkkSsq5ZowyLiVSaVZg3Aabqq1QUbhdAX-Y8VC29U600TE9HTIGWj
+    W-h6ka_l-N0bKYGG_W-3bzXlHGY0ZcjcSbZR_zuoL-6Ds0X7Q55CQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefledtkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpedvhfdvkeeuudevfffftefgvdevfedvleehvddvgeejvdefhedtgeegveehfeeljeen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeegkedpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtohepthdrshgrihhlvghrsegrlhhumhhnihdrvghthhiirdgthhdprhgtph
+    htthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghpthhtohep
+    lhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegurghvvghmse
+    gurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhi
+    ugdrrghupdhrtghpthhtoheprhihrggsihhnihhnrdgrrdgrsehgmhgrihhlrdgtohhmpd
+    hrtghpthhtohepuhhrvgiikhhisehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvlhhl
+    vghrsehgmhigrdguvgdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprg
+    hnrgdrohhrghdrrghu
+X-ME-Proxy: <xmx:l0TdaTelOssYXt15-FK9p6saYLM_nmrvIO6c-_F3ZyF6_xfZywmCYA>
+    <xmx:l0TdaUxOkh6ozfKMIVT4v_qdW_i5Tss0CLMqkf2F01TBmahdCnZo_w>
+    <xmx:l0TdaUWn-LdWx2_7oUHRu6zzNshE3wCLw-aFKzbUUXN26D6Q-_6vLw>
+    <xmx:l0TdacTwYVtUWJnf_Fdh14nt-sYvlNq7AaQbOTvOw2Uu221fQyzEjQ>
+    <xmx:mkTdaTH5uGiAlbaAI17-uSN6CKxYeQsdeWCm3ruscf_j0l2LK_Chakad>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 04818700069; Mon, 13 Apr 2026 15:31:35 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-ThreadId: AMdy4yCH1GcR
+Date: Mon, 13 Apr 2026 21:30:11 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "David Woodhouse" <dwmw2@infradead.org>,
+ "Thomas Gleixner" <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Cc: x86@kernel.org, "Baolu Lu" <baolu.lu@linux.intel.com>,
+ iommu@lists.linux.dev, "Michael Grzeschik" <m.grzeschik@pengutronix.de>,
+ Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+ "Herbert Xu" <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
+ "Bernie Thompson" <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
+ "Theodore Ts'o" <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+ "Marco Elver" <elver@google.com>, "Dmitry Vyukov" <dvyukov@google.com>,
+ kasan-dev@googlegroups.com, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
+ "Thomas Sailer" <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
+ "Jason A . Donenfeld" <Jason@zx2c4.com>,
+ "Richard Henderson" <richard.henderson@linaro.org>,
+ linux-alpha@vger.kernel.org, "Russell King" <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Huacai Chen" <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ linux-m68k@lists.linux-m68k.org, "Dinh Nguyen" <dinguyen@kernel.org>,
+ "Jonas Bonn" <jonas@southpole.se>,
+ "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
+ "Helge Deller" <deller@gmx.de>, linux-parisc@vger.kernel.org,
+ "Michael Ellerman" <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ "Paul Walmsley" <pjw@kernel.org>, linux-riscv@lists.infradead.org,
+ "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
+ "David S . Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Message-Id: <07df88e5-208d-4aac-9668-a3b0c65ae529@app.fastmail.com>
+In-Reply-To: <7a48b636cb3146f4f7134c6d4fe42070ac2edb43.camel@infradead.org>
+References: <20260410120044.031381086@kernel.org>
+ <20260410120318.592237447@kernel.org>
+ <7a48b636cb3146f4f7134c6d4fe42070ac2edb43.camel@infradead.org>
+Subject: Re: [patch 15/38] ptp: ptp_vmclock: Replace get_cycles() usage
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[arndb.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[arndb.de:s=fm1,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-34713-lists,linux-wireless=lfdr.de];
+	XM_UA_NO_VERSION(0.01)[];
+	TAGGED_FROM(0.00)[bounces-34714-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[48];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,vger.kernel.org,gondor.apana.org.au,kvack.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aaron1esau@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[arnd@arndb.de,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[arndb.de:+,messagingengine.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.997];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D31513F2353
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[app.fastmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arndb.de:dkim]
+X-Rspamd-Queue-Id: 629473F2BEC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The drain loop in iwl_mld_tx_from_txq() keeps dequeuing and processing
-packets while stop_full is not set and mac80211 has buffered frames.
-When firmware crashes, STATUS_FW_ERROR may not be set before softirq TX
-paths enter this loop. Each iteration performs expensive GSO segmentation
-via iwl_tx_tso_segment() -> skb_gso_segment() while holding the netdev
-TX queue spinlock (HARD_TX_LOCK from __dev_queue_xmit), blocking all
-other CPUs attempting to transmit.
+On Mon, Apr 13, 2026, at 17:33, David Woodhouse wrote:
+> On Fri, 2026-04-10 at 14:19 +0200, Thomas Gleixner wrote:
+>
+> ... depend on TSC_RELIABLE=C2=B9, since if the guest doesn't believe t=
+hat it
+> is, then the guest shouldn't be trying to use it as the basis for
+> precise timing.
+>
+> =C2=B9 (Or... one of the other zoo of TSC flags for the gradually redu=
+cing
+> brokenness over the years...)
 
-The existing backpressure mechanism (stop_full, set via iwl_txq_stop()
-when the hardware ring crosses its high water mark) is insufficient:
-iwl_trans_pcie_tx() silently absorbs frames into its overflow_q and
-returns success even when the ring is full and firmware is not consuming
-descriptors. This delays the stop_full signal long enough for the loop
-to hold the TX lock for tens of seconds, triggering soft lockups across
-multiple CPUs that cascade into SLUB freelist corruption during the
-subsequent driver reprobe.
+It looks like this is sufficiently handled in the caller:
 
-Add a test_bit(STATUS_FW_ERROR) check to the drain loop so that it
-exits promptly when firmware is no longer alive.
+static int vmclock_get_crosststamp(struct vmclock_state *st,
+                                   struct ptp_system_timestamp *sts,
+                                   struct system_counterval_t *system_co=
+unter,
+                                   struct timespec64 *tspec)
+{
+....
+#ifdef CONFIG_X86
+        /*
+         * We'd expect the hypervisor to know this and to report the clo=
+ck
+         * status as VMCLOCK_STATUS_UNRELIABLE. But be paranoid.
+         */
+        if (check_tsc_unstable())
+                return -EINVAL;
+#endif
 
-Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aaron Esau <aaron1esau@gmail.com>
----
+With 486 and ELAN out of the way, Winchip6 seems to be the only
+one without X86_FEATURE_TSC, so I think the next logical step would
+be to turn off Winchip6 as well and remove all X86_FEATURE_TSC
+and CONFIG_X86_TSC checks.
 
-Found while investigating a complete system freeze on a Lenovo ThinkPad
-(Intel Core Ultra 7 155H, Intel Wi-Fi 7 BE200) running kernel 6.19.11.
-The firmware LMAC crashed (NMI_INTERRUPT_UNKNOWN, both LMACs halted at
-0xd0), the drain loop held HARD_TX_LOCK for 26+ seconds, 7 CPUs soft
-locked, and the subsequent reprobe corrupted SLUB freelist pointers
-(non-canonical address 0x54c991d5bf7e0cce in __kmalloc), killing Xorg,
-systemd --user, and requiring a hard power off.
-
-CachyOS/linux-cachyos#673 reports the same crash signature on BE200
-with kernel 6.18+, confirming the pattern. The documented workaround
-(ethtool -K <iface> tso off gso off) works because it eliminates the
-per-packet skb_gso_segment() cost, allowing the ring to fill and
-stop_full to trip before the watchdog fires.
-
- drivers/net/wireless/intel/iwlwifi/mld/tx.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tx.c b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
-index e3fb4fc4f..5e8a63e24 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
-@@ -989,6 +989,8 @@ void iwl_mld_tx_from_txq(struct iwl_mld *mld, struct ieee80211_txq *txq)
- 	rcu_read_lock();
- 	do {
- 		while (likely(!mld_txq->status.stop_full) &&
-+		       !test_bit(STATUS_FW_ERROR,
-+				 &mld->trans->status) &&
- 		       (skb = ieee80211_tx_dequeue(mld->hw, txq)))
- 			iwl_mld_tx_skb(mld, skb, txq);
- 	} while (atomic_dec_return(&mld_txq->tx_request));
--- 
-2.49.0
+      Arnd
 
