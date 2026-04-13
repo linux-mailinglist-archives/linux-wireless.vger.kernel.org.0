@@ -1,158 +1,245 @@
-Return-Path: <linux-wireless+bounces-34686-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34687-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMRDN2GU3GkkTQkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34686-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 08:59:45 +0200
+	id kLWAIE+k3GkEUgkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34687-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 10:07:43 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419933E8064
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 08:59:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE5A3E8D2E
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 10:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8D90300EF6C
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 06:59:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6658303A6F8
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 07:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E67391836;
-	Mon, 13 Apr 2026 06:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B8C3A0B3D;
+	Mon, 13 Apr 2026 07:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="rpKtpZZ5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aInXVTZD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E69285C8B
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 06:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60217396B73;
+	Mon, 13 Apr 2026 07:59:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776063583; cv=none; b=KAh6DPq6pyzb8Zfe60gRYrs2YL4ZVWzXcPqN+SpzcGc5bdix/E5yJuFMxfQ6EQSyOTAZbdB9TlA0kAR+UroYSn4GuCibEOB8RyaSFVONhOtjCTRT41mPu7GBw15Vhy/rGSx0+PKSN2CXxfSmDERCEKTN/nZ8marqDwGGRd12+4w=
+	t=1776067142; cv=none; b=mwl5JWeertl0/gsLkuJhUFiD/4pFkMbuu1YAx66BnaaHh0xM3vW7B5nuvKYeeYycgQhrlECdYiSPDDUvTjCjz8WGBdJ5FQqMHmDPfWm68Dc/tEiKj9zaFJVmHJMdTkXt2Y46jn+qRWPpKQ36tlP8aPz+KqPZMazxYVK287sR45E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776063583; c=relaxed/simple;
-	bh=KCKF5J6bN2QKrs5eozOwta3xBfIq/ygyCjZeraamVQ4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qBKhw1I1nUd8+H2PZg14/aHYEFMI9ZpdWKvql/qFj7eRbHaIlhKN8Z8dnHFsfrZp3TSQJcbsNt4d/G4IISdrop4H8IFI/XHpviLXNAkT3DUmnNjHSSgyM+i3RKxdsRXXt4xAX/iyWu4Dzp+sMTflp/+YZQe//Dur9W7N/n7q4pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=rpKtpZZ5; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63D6xcpK73794751, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1776063578; bh=2UPMzgKRTDXAALbczLQ1ETRKFJ3ZQcFB/XSw15eM7Fw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=rpKtpZZ5ZhsHv3LyMRIVL5x5yhzkAPiMsDpB2xfAzXbM4zqImcOcY/XqPmQmesIzR
-	 83AqWr5pJ1aCgsOQD7LygcfN8zNcOMDtrSEBIDk9h0NeZOnfsxisFtolQnTc04ZP7K
-	 CFqVDLuJk/lPyHCEWbeJlZlZuDjnhIxVtVvwUntbaNVulJamdvYBYPIEY81Sbmso5A
-	 yYeIEv0HLIw0as+fp85zCXeveVVxqbmrtHLC7mtE9EE0BCNAmtwF+NyQddu0OLzKy5
-	 fGZmWsmGxif21Oif4f4UgCi3VY92hQFLsXUrHn81/atVbH0BXMWYl6L1r+kUQwk5yP
-	 m5T3J/jTH+aPQ==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 63D6xcpK73794751
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 14:59:38 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 13 Apr 2026 14:59:38 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
- (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Mon, 13 Apr 2026 14:59:38 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <timlee@realtek.com>
-Subject: [PATCH rtw-next] wifi: rtw88: fix wrong pci_get_drvdata type in AER handlers
-Date: Mon, 13 Apr 2026 14:59:26 +0800
-Message-ID: <20260413065926.17027-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1776067142; c=relaxed/simple;
+	bh=XHj3Sl5zLIaiozQdeiIMCMFRZIyOS3dN0hw7WTARA40=;
+	h=Date:From:To:Cc:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=o5Yy4LGd4QYVJp16vTLLNEu6pFIPQOqsaBE/s5GlxjBieSH7nqN5V9DzN1lBKj+ARWJKEd8uIs8XnYd/tS3ePR3atwpKF9Z0HERwePpnYoHD+JiCxf9IsiRsr8b002FusBcBkCZgtcc6Kvv8W9mqLm7JvCKukmzXI7KK/zz/3lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aInXVTZD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E82C2BCB1;
+	Mon, 13 Apr 2026 07:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776067142;
+	bh=XHj3Sl5zLIaiozQdeiIMCMFRZIyOS3dN0hw7WTARA40=;
+	h=Date:From:To:Cc:From;
+	b=aInXVTZDoMoSfHiM/ZTxpP0dqJp8rPTOhRsc0Vuegjf9eP1zvaDTJ+apxlgIuhj5m
+	 uymEbEu/UHOJWJ6lw7U0YrRJbLNQJR/o8436sUmQyyIJnGd5I57C1MKi19QSG24eX9
+	 h2iGOBKURBUQkPE+zITLtqcSezi5jonPS8m9wlnnrbrXoKcavVutGZS3YzVK/HoBVS
+	 ZTBks8Urt9YUD0fN0O3n/+VePDQcDLPvpr8M3UALf3YN6/WXTllw86HLQ5q1c3ADYE
+	 YbRf8iuI5QEq4lS/pfjIFvTCKsJMm3+e/VB0lwWLoC4lQj8qW8Sg2xkFLYg/qNqpkL
+	 OEuPIqPS+wyIg==
+Date: Mon, 13 Apr 2026 16:58:59 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org,
+	Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+	Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-crypto@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+	Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
+	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-m68k@lists.linux-m68k.org, Dinh Nguyen <dinguyen@kernel.org>,
+	Jonas Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org,
+	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>,
+	linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
+	linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	sparclinux@vger.kernel.org, Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shengming Hu <hu.shengming@zte.com.cn>
+Message-ID: <adyiQy_DP_vldg1r@hyeyoo>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spamd-Result: default: False [1.84 / 15.00];
+	MISSING_SUBJECT(2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34686-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:email,realtek.com:mid]
-X-Rspamd-Queue-Id: 419933E8064
+	TAGGED_FROM(0.00)[bounces-34687-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,kvack.org,arndb.de,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net,linux.dev,gentwo.org,zte.com.cn];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[54];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[harry@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kvack.org:email]
+X-Rspamd-Queue-Id: 1AE5A3E8D2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Chin-Yen Lee <timlee@realtek.com>
+Bcc: 
+Subject: Re: [patch 14/38] slub: Use prandom instead of get_cycles()
+Reply-To: 
+In-Reply-To: <20260410120318.525653921@kernel.org>
 
-rtw88 stores an ieee80211_hw pointer via pci_set_drvdata() at probe
-time, but io_error_detected() and io_resume() retrieve it as a
-net_device pointer.  This causes netif_device_detach/attach to
-operate on an ieee80211_hw struct, reading and writing at wrong
-offsets.
+On Fri, Apr 10, 2026 at 02:19:37PM +0200, Thomas Gleixner wrote:
+> The decision whether to scan remote nodes is based on a 'random' number
+> retrieved via get_cycles(). get_cycles() is about to be removed.
+> 
+> There is already prandom state in the code, so use that instead.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: linux-mm@kvack.org
+> ---
 
-Use ieee80211_stop_queues/wake_queues instead, consistent with
-every other queue stop/start path in the driver.
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
 
-Fixes: cdb82c80b934 ("wifi: rtw88: pci: add PCI Express error handling")
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/pci.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Is this for this merge window?
 
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index bba370ad510c..c56beacbb1b0 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1711,9 +1711,9 @@ static void rtw_pci_napi_deinit(struct rtw_dev *rtwdev)
- static pci_ers_result_t rtw_pci_io_err_detected(struct pci_dev *pdev,
- 						pci_channel_state_t state)
- {
--	struct net_device *netdev = pci_get_drvdata(pdev);
-+	struct ieee80211_hw *hw = pci_get_drvdata(pdev);
- 
--	netif_device_detach(netdev);
-+	ieee80211_stop_queues(hw);
- 
- 	return PCI_ERS_RESULT_NEED_RESET;
- }
-@@ -1730,12 +1730,12 @@ static pci_ers_result_t rtw_pci_io_slot_reset(struct pci_dev *pdev)
- 
- static void rtw_pci_io_resume(struct pci_dev *pdev)
- {
--	struct net_device *netdev = pci_get_drvdata(pdev);
-+	struct ieee80211_hw *hw = pci_get_drvdata(pdev);
- 
- 	/* ack any pending wake events, disable PME */
- 	pci_enable_wake(pdev, PCI_D0, 0);
- 
--	netif_device_attach(netdev);
-+	ieee80211_wake_queues(hw);
- }
- 
- const struct pci_error_handlers rtw_pci_err_handler = {
+This may conflict with upcoming changes on freelist shuffling [1]
+(not queued for slab/for-next yet though), but it should be easy to
+resolve.
 
-base-commit: fa489a77e3267e05df95db96ba98e141ec07cbd9
+[Cc'ing Shengming and SLAB ALLOCATOR folks]
+
+[1] https://lore.kernel.org/linux-mm/20260409204352095kKWVYKtZImN59ybO6iRNj@zte.com.cn
+
 -- 
-2.25.1
+Cheers,
+Harry / Hyeonggon
 
+>  mm/slub.c |   37 +++++++++++++++++++++++--------------
+>  1 file changed, 23 insertions(+), 14 deletions(-)
+> 
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -3302,6 +3302,25 @@ static inline struct slab *alloc_slab_pa
+>  	return slab;
+>  }
+>  
+> +#if defined(CONFIG_SLAB_FREELIST_RANDOM) || defined(CONFIG_NUMA)
+> +static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
+> +
+> +static unsigned int slab_get_prandom_state(unsigned int limit)
+> +{
+> +	struct rnd_state *state;
+> +	unsigned int res;
+> +
+> +	/*
+> +	 * An interrupt or NMI handler might interrupt and change
+> +	 * the state in the middle, but that's safe.
+> +	 */
+> +	state = &get_cpu_var(slab_rnd_state);
+> +	res = prandom_u32_state(state) % limit;
+> +	put_cpu_var(slab_rnd_state);
+> +	return res;
+> +}
+> +#endif
+> +
+>  #ifdef CONFIG_SLAB_FREELIST_RANDOM
+>  /* Pre-initialize the random sequence cache */
+>  static int init_cache_random_seq(struct kmem_cache *s)
+> @@ -3365,8 +3384,6 @@ static void *next_freelist_entry(struct
+>  	return (char *)start + idx;
+>  }
+>  
+> -static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
+> -
+>  /* Shuffle the single linked freelist based on a random pre-computed sequence */
+>  static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
+>  			     bool allow_spin)
+> @@ -3383,15 +3400,7 @@ static bool shuffle_freelist(struct kmem
+>  	if (allow_spin) {
+>  		pos = get_random_u32_below(freelist_count);
+>  	} else {
+> -		struct rnd_state *state;
+> -
+> -		/*
+> -		 * An interrupt or NMI handler might interrupt and change
+> -		 * the state in the middle, but that's safe.
+> -		 */
+> -		state = &get_cpu_var(slab_rnd_state);
+> -		pos = prandom_u32_state(state) % freelist_count;
+> -		put_cpu_var(slab_rnd_state);
+> +		pos = slab_get_prandom_state(freelist_count);
+>  	}
+>  
+>  	page_limit = slab->objects * s->size;
+> @@ -3882,7 +3891,7 @@ static void *get_from_any_partial(struct
+>  	 * with available objects.
+>  	 */
+>  	if (!s->remote_node_defrag_ratio ||
+> -			get_cycles() % 1024 > s->remote_node_defrag_ratio)
+> +	    slab_get_prandom_state(1024) > s->remote_node_defrag_ratio)
+>  		return NULL;
+>  
+>  	do {
+> @@ -7102,7 +7111,7 @@ static unsigned int
+>  
+>  	/* see get_from_any_partial() for the defrag ratio description */
+>  	if (!s->remote_node_defrag_ratio ||
+> -			get_cycles() % 1024 > s->remote_node_defrag_ratio)
+> +	    slab_get_prandom_state(1024) > s->remote_node_defrag_ratio)
+>  		return 0;
+>  
+>  	do {
+> @@ -8421,7 +8430,7 @@ void __init kmem_cache_init_late(void)
+>  	flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM | WQ_PERCPU,
+>  				  0);
+>  	WARN_ON(!flushwq);
+> -#ifdef CONFIG_SLAB_FREELIST_RANDOM
+> +#if defined(CONFIG_SLAB_FREELIST_RANDOM) || defined(CONFIG_NUMA)
+>  	prandom_init_once(&slab_rnd_state);
+>  #endif
+>  }
+> 
+> 
 
