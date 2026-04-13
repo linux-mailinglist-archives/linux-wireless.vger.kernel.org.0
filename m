@@ -1,233 +1,214 @@
-Return-Path: <linux-wireless+bounces-34692-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34693-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEkbCCG23GnbVgkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34692-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 11:23:45 +0200
+	id CMqGEMC43Gn2VgkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34693-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 11:34:56 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B85D53E9CCE
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 11:23:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED713E9E3F
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 11:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F4363049298
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 09:16:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 456CF3019532
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 09:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890623B27C4;
-	Mon, 13 Apr 2026 09:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AADE3AE6FA;
+	Mon, 13 Apr 2026 09:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oY+vEH1n"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="osbBTfx2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5664E19C546;
-	Mon, 13 Apr 2026 09:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6E037F8B0
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 09:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776071783; cv=none; b=DXyEAPU6HKBrYkw1IFuAYKk2/ZFxAm+FGqV+QUlnBoH71VOwgiXICiessO0I1ayP2P+61khY6MJGsQSPIb2wizLfMzfDULZ5ItD5/P4Y5d5h7/u03spEK6ZKIpUa/t+XU0AM6JAwGQ8BlaMC3BtBT9GP374TgT1P1/muHOxLnVo=
+	t=1776072740; cv=none; b=ON1dmp72G+xjYR8htvPIK5z6kvBbpfsqg9HbaynnTIqUVroU4wyW5Jy3dqoTuHM8gRA4JI4D/YWzZUTEioRmM2vaPHNppedrShApN8kcom5xqn4jWu+jRf7r/06paIbRf5y4PTLW0B84PetX+TZekpPLv+Zzd998j/l2A8y7hdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776071783; c=relaxed/simple;
-	bh=j/tYEurlHNq5kx1yV6D47wbOZhhwgvOxlSSa1P5IOeM=;
+	s=arc-20240116; t=1776072740; c=relaxed/simple;
+	bh=r5ox1dFrYoySIHS4XOEUtJOp25+xZgVyE1/HrKTClvA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K5FItm4pkWqIoz/HLDoSRvqOYcfcTW90Ijz3BL3hja+DhSPq7EPSBtz5R2UMMJhPvvZ8fAM0XCljCUcztKBQw9SxMrw/5RRrlgL4OzYKNVsYWnVn5Ic6ttpen+bHYyoXj4F2CuzeaLsxiRAT887zW1VHTVG7qH99bimsdTdwtsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oY+vEH1n; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63CNQ6Rp3649347;
-	Mon, 13 Apr 2026 09:15:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=3hYK9Ei+d9kVH0VV/CR68CUDnV5UVC
-	rS18XI/2Q3GjY=; b=oY+vEH1nHYm21zR7dKdG+rMVbiAs+2M4pSYJYH25H3Q/WQ
-	S5pbibNxKHXRtCU5RA4BZpoAC/CsLV14kYSk9HD7BI83gpVLqIVXm+N3/UD3mtFb
-	VGL3bfwkoS+MFSXp/7ksAXz/d/43BdzYyNe+WU94qMB7+oTAY5jMdy/aC1rg5QU1
-	UhBzNrX2r1ZHEsamBr6j/bYRaaLxasa1WWuLDHkVDfa2K6RkMY6wizvw26f4v3Pw
-	kdUQa11kKa0O4lHqHX35TBGaxo9cfSk8h/UtwhMbDVaUgMt8SMltIpECwIrRGVKB
-	KeirN6PqfMTEor0kXcjWPcrhlHvR883P23ApPmxw==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dfdt3px1j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Apr 2026 09:15:17 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63D80WMC015153;
-	Mon, 13 Apr 2026 09:15:16 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg0mscku7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Apr 2026 09:15:16 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63D9FEC727328866
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Apr 2026 09:15:14 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 70F6620043;
-	Mon, 13 Apr 2026 09:15:14 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B712A2004F;
-	Mon, 13 Apr 2026 09:15:04 +0000 (GMT)
-Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.123.13.2])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 13 Apr 2026 09:15:04 +0000 (GMT)
-Date: Mon, 13 Apr 2026 14:45:02 +0530
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>,
-        iommu@lists.linux.dev, Michael Grzeschik <m.grzeschik@pengutronix.de>,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org,
-        Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
-        Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-m68k@lists.linux-m68k.org, Dinh Nguyen <dinguyen@kernel.org>,
-        Jonas Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
-        Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org,
-        Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Subject: Re: [patch 07/38] treewide: Consolidate cycles_t
-Message-ID: <ady0Ft_tDrbGlu2o@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-References: <20260410120044.031381086@kernel.org>
- <20260410120318.045532623@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CnQM+gpIl+lZvPK68lswyYNs/JGZ4SVcF1XOf1hxS6UeExulkxp1APfaUVfpkMsZaSZnKA6VdWItk9AKm+thV7Q0/Z96mY0Z8oXjwZAOqr2hRiVyC214PQxeGg8VQkyM9L09BWwiGlcaAKINSy620dMh9cd3kwpPpacCSUiXysQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=osbBTfx2; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48374014a77so58931015e9.3
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 02:32:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776072737; x=1776677537; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AtkvQUwJwxJbSQun1xp3UJ1EVjDwjdDQxfbDiJ20NYU=;
+        b=osbBTfx2EuPaopnJhnQ6tZhL+KgZ+jKpAmh6Jnb3rnmlrZfZDqc3ue6S/YIG92WoJv
+         yw8RrIUL0fcZETO9WrBngZE10BnkO8us4nXreihw7QmfB9npgaY+8WoCOnwV2gTPH1yI
+         l/guAHJhfjoKwtFrYY5dY98/IjIirgVbKlpbl2E9a1WnLMFcvjf4+EbzXacxld0t7Qes
+         V5ywmUBsY4KYUbfswg4R+KDD0Q4KpoUQtWbZk9b734pwwd4W0AfFDMHTjgb8ejyigrTf
+         19P0ZcOFiE2WQUEpj+ROosJw4nIesy+VCOu0AEjEiDr59TVVh8lzuCZAby0ix4bNaEhA
+         4RdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776072737; x=1776677537;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AtkvQUwJwxJbSQun1xp3UJ1EVjDwjdDQxfbDiJ20NYU=;
+        b=iJoR+uy5AW8NJOanVyuU2t9XpGAVuKgJydQLkE8uIRg/RbYCpW9fPOMXGzf7qtUeMJ
+         Z3pdrX0W4SVwD4vVhB46jXkql7FJUmeZv07GIAqucAfyhe993bf+UWHyuAFBPOaTz5aj
+         KGixtkh31XwDY9KdGPiJWx45jG6tA6ejydTswze76Jk84zTnKDbzt9DYRwgA5dzCK94e
+         nFCgdvPM/FOQdJo1+OB1xqX1vLund0Uk1nMuu7RXnGOwfqOv7DDCOttNtKRTOXKTB038
+         5LR/tug9QCEZk+2t0mbG97WYSA1WC3SdiEGlgg4QTHZNGZWY1GPdiFT5HaI0zjDR/GKq
+         y49g==
+X-Forwarded-Encrypted: i=1; AFNElJ98Okx8gy7OSDLxrO5q0pjabjd7PCog/N176D3tAkJIVzBPyKS/QMUbpFKqAi9/FDMaCfm1tGNAzCjmJZOH3Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywd45uN76R91V1Tl54Gbj/4bEU0FQq/LO236lq+eHo/PrPug+E7
+	cHRqUkusnSIvvrX2NhEL1U2ryF4GBqEjKdNzFg3X807EgHBYlAEE7Tea
+X-Gm-Gg: AeBDiet2RQG/EVEivi5IEMZj3Rnsvj2y12xI7PAqBcIK0yIgzTTMn0NWx7tDf52GC4D
+	9QJw9dNcUhfBoqTAScYf0/lK2AKzCG0+4WSRkp0vVFtXvC8j4ekTs962cqYAKT86VRCMGXIA6jP
+	H/Q/SlK29RX/zC2+X1MuW4wnh/iXxx7OO1T2qlxjZlGcEJi/gy6vlkLzSBZT1LwiPAcXVg50FJX
+	WfeIU5SjRfPX80QC+KiarwGUN9KjJ78s2YXN+6BR2jsNE2LBB9y0q5CgHuWn/QATN9EDacadzC/
+	WqxjYtmxEEJUpfkFAQfXJUR40WNrv5Mr3aWcuOowyUT0PPIvgLBFgZj7wDQ2zGkrGVee43aD3P/
+	5KAjbyRwbQfie679NMwAled3clHuQ52fMGnywcx43FYXxbWaJg86p6plW05r+7d7QoOpKEwaxVj
+	ENW2bdGQAsmEMzuo+CkRqg8rpGyVeLKZtdgZwHAu/Y9nWLVwznnfNeYK+4L3Jxcy8x/v2XS58A5
+	pXkniWFJ+fXHJ+rsfNFai9jNOk=
+X-Received: by 2002:a05:600c:1391:b0:486:fe23:1707 with SMTP id 5b1f17b1804b1-488d687116amr185252315e9.20.1776072737113;
+        Mon, 13 Apr 2026 02:32:17 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d531f229sm374255055e9.3.2026.04.13.02.32.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 02:32:16 -0700 (PDT)
+Date: Mon, 13 Apr 2026 11:32:15 +0200
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Jeff Johnson <jjohnson@kernel.org>, 
+	Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, ath10k@lists.infradead.org, 
+	ath11k@lists.infradead.org, devicetree@vger.kernel.org, ath12k@lists.infradead.org, 
+	Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+Subject: Re: [PATCH 0/2] wifi: ath: Use static calibration variant table for
+ devicetree platforms
+Message-ID: <77vowy4ax4cl6dlc45i2q3fjmwn3q676wqghq267tmbix7773b@27h5t66mflur>
+References: <20251114-ath-variant-tbl-v1-0-a9adfc49e3f3@oss.qualcomm.com>
+ <2fd84ab2-2e3e-4d05-add5-17930a35fedf@oss.qualcomm.com>
+ <jnggqxqv3rjzhyevovnnxzplfhl3t6auhhvmoz7wxmsf6awgdx@dusdgxwsxvts>
+ <b8277024-f9d4-4f17-946f-c2c390669067@oss.qualcomm.com>
+ <exfmj52dqu3uctwsb2gopcjg7744vq5avlkahtmgfw4opw4mfl@t2svrln72u53>
+ <f853d9b2-47f8-47b5-a02d-6aa8f12a4283@oss.qualcomm.com>
+ <trr5j57vwk2dhoibdgdxnlkftnmfcmjkwmicsiltmhybxanjaf@tzaeeqcyz56l>
+ <fasihmiu2szj6m2r3qef5slvzlvdjo2ajhrd6xyqsa5cajrbzq@a5dyulg2dnac>
+ <ff11954f-345f-4865-a86e-759aa167768d@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260410120318.045532623@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: r6KN03kK1HZaoam71kVl5aHZm9BfgAQ4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEzMDA4NSBTYWx0ZWRfX+Gwbo0yddZP/
- ED3CWrVQNFFw/TECS1M9+tSS57FYBZnMmG79KmJVnAwBWc3o5BgyeadFZ9maSHI4Tv+/+VHQiXF
- uu6/EAbMsVnRYIXugjj6TyQBBqRyeSoPbLxIVX8tqr0goumkz0lPJ9Y4Y3a3ECfM9WbzUtOSm5u
- eNbyrRMw+nuwi0Afz/QuxwA0FuazktkFPrSziYKfNEV92tR6ksCbhLbdKwZfOQ6IaUNAK3mHh04
- Z9ZuJvFG4+5R/DIJQ8v5H1fE5bYExgqIL1hC1HoekBef4/UHL3Jav5jU5Ty8ib2gAESLlopFcCb
- VttV6mxWXomhvrcFDBgGSdweqIiLio3UyKWRaxfdCdf1K3UdP0nDdx3LiWp/XKSUCxaso/02xav
- PADy/jEsrag0vsgcCLG1/jcBcJ3bFL3cNcYlDCC6JXFySGCPKTcpDMOtfvLh9vv4Vg7VR02ItSs
- a0USozVz3do3GTBrHkA==
-X-Proofpoint-GUID: iwEVNX-0n_YmGG6iAARt9TRRoEhRuwqE
-X-Authority-Analysis: v=2.4 cv=WpEb99fv c=1 sm=1 tr=0 ts=69dcb426 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=9Pz4rRoAHiK5H5RfW9YA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-13_02,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
- malwarescore=0 clxscore=1011 lowpriorityscore=0 suspectscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604010000
- definitions=main-2604130085
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ff11954f-345f-4865-a86e-759aa167768d@oss.qualcomm.com>
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
-	TAGGED_FROM(0.00)[bounces-34692-lists,linux-wireless=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[49];
+	TAGGED_FROM(0.00)[bounces-34693-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ojaswin@linux.ibm.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: B85D53E9CCE
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ernestvanhoecke@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CED713E9E3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 10, 2026 at 02:19:03PM +0200, Thomas Gleixner wrote:
-> Most architectures define cycles_t as unsigned long execpt:
+On Wed, Apr 08, 2026 at 02:06:00PM +0800, Baochen Qiang wrote:
 > 
->  - x86 requires it to be 64-bit independent of the 32-bit/64-bit build.
 > 
->  - parisc and mips define it as unsigned int
+> On 11/25/2025 5:57 PM, Ernest Van Hoecke wrote:
+> > On Tue, Nov 18, 2025 at 12:23:20PM +0530, Manivannan Sadhasivam wrote:
+> >>
+> >> ath12k doesn't seem to require a calibration variant. But even if the user
+> >> replaces ath11k chipset with ath10k one, the calibration variant should be the
+> >> same as it is platform specific except for WSI.
+> >>
+> >> - Mani
+> >>
+> >> -- 
+> >> மணிவண்ணன் சதாசிவம்
+> >>
+> > 
+> > Hi all,
+> > 
+> > Jumping in on this thread to ask about how we should handle variants.
+> > 
+> > We are using the WCN7850 device with the ath12k driver and received three
+> > board files for this from Silex, signed by Qualcomm. All three support the
+> > same board (SX-PCEBE), where one is the board file to be used for the
+> > US/EU/JP and the other two are one for higher emissions in the UK/CA and
+> > one for lower emissions in the UK/CA.
+> > 
+> > Since these are needed for regulatory differences but support the same
+> > board, we were wondering about your views on how to handle that in
+> > mainline. I see that there is no support for the board file selection in
+> > the device tree for ath12k, and that there is some discussion on how to
+> > handle variants in general. We are using a device tree-based setup and no
+> > ACPI.
 > 
->    parisc has no real reason to do so as there are only a few usage sites
->    which either expand it to a 64-bit value or utilize only the lower
->    32bits.
+> does your machine has different 'model' property for different BDFs ?
+> does the existing ath11k 'calibration' property based mechanism satisfy your requirement?
 > 
->    mips has no real requirement either.
-> 
-> Move the typedef to types.h and provide a config switch to enforce the
-> 64-bit type for x86.
-> 
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> ---
->  arch/Kconfig                       |    4 ++++
->  arch/alpha/include/asm/timex.h     |    3 ---
->  arch/arm/include/asm/timex.h       |    1 -
->  arch/loongarch/include/asm/timex.h |    2 --
->  arch/m68k/include/asm/timex.h      |    2 --
->  arch/mips/include/asm/timex.h      |    2 --
->  arch/nios2/include/asm/timex.h     |    2 --
->  arch/parisc/include/asm/timex.h    |    2 --
->  arch/powerpc/include/asm/timex.h   |    4 +---
->  arch/riscv/include/asm/timex.h     |    2 --
->  arch/s390/include/asm/timex.h      |    2 --
->  arch/sparc/include/asm/timex_64.h  |    1 -
->  arch/x86/Kconfig                   |    1 +
->  arch/x86/include/asm/tsc.h         |    2 --
->  include/asm-generic/timex.h        |    1 -
->  include/linux/types.h              |    6 ++++++
->  16 files changed, 12 insertions(+), 25 deletions(-)
-> 
-<...>
 
-> --- a/arch/powerpc/include/asm/timex.h
-> +++ b/arch/powerpc/include/asm/timex.h
-> @@ -11,9 +11,7 @@
->  #include <asm/cputable.h>
->  #include <asm/vdso/timebase.h>
->  
-> -typedef unsigned long cycles_t;
-> -
-> -static inline cycles_t get_cycles(void)
-> +ostatic inline cycles_t get_cycles(void)
+We have a SoM with always the same WiFi SoC on board. These SoMs are
+then mated with a carrier board, in our case often a development board,
+and together they form a whole machine for which we have a specific
+device tree with a specific model and compatible name.
 
-Hi Thomas, I'm in middle of testing this series on powerpc. In the meantime I
-noticed that there's probably a small typo here (althrough this is fixed
-later)
+Customers that create their own carrier board would have their own
+device tree with their own model string. These carrier board device
+trees include the base SoM dtsi.
 
-Regards,
-ojaswin
->  {
->  	return mftb();
->  }
+When these devices are sold in multiple markets, the model string is
+thus not specific to it. For example, the same model string can be sold
+in Japan and in Canada, with different regulatory requirements and thus
+a different board file that needs to be used.
+
+In short: no, the machine does not have a different model property for
+different BDFs.
+
+Similarly, the WCN7850 would also not have a different PCI ID in
+different regions since the hardware sold is the same.
+
+The existing ath11k calibration property did provide a way to specify in
+the DT which BDF should be used, so in that way it can provide a
+solution yes. Of course, with the drawback that the PCI device has to be
+specified in the DT.
+
+This would allow customers to ship their device with a different DT
+based on the the target market and its regulatory requirements. Another
+mechanism that allows them to specify which variant to use in SW/HW
+in- or outside the device tree would also work.
+
+Thanks for looking at this and kind regards,
+Ernest
 
