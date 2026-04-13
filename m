@@ -1,154 +1,181 @@
-Return-Path: <linux-wireless+bounces-34694-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34695-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEruFG693GliVwkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34694-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 11:54:54 +0200
+	id cHiLNoa/3GliVwkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34695-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 12:03:50 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6EA3EA14C
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 11:54:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 958653EA2AF
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 12:03:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0B6513002321
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 09:54:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 658A93006781
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 10:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F41535F8B9;
-	Mon, 13 Apr 2026 09:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67154346E56;
+	Mon, 13 Apr 2026 10:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="qEG1v262"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IlWNaKTv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.186])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AB935F61E
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 09:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E713935E956
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 10:03:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776074090; cv=none; b=K5TpQ0PVLf3sBrhCLGY2TLuVfjfYu9VYTmpfUch7XR1H8Pqqskp81obh/61B8a7ehf7nesDaVwhBvcTR8Rjob/BKCpMdPuLNZfoDl/l6W0nmHSk4tYcbAY/8kk9onYG9b0Lb8hXrtrkNCZaFCkRJKrpmhWwLO0JefQ8pPoZ0pls=
+	t=1776074627; cv=none; b=NPEyfn9VOF9Scw+h39W4imXLDQ4mi/ppgoSUwi1YOx7ZM+haHv55Vf53t5YVbEmHjmP6KW8wt3VYTruy+zQjMbSBJQ7uz2EceCFLB+pApjQ7vo+bIxz9vjHl5z5FU053iYxzc/T239bKdD36XITo42LMg7UVLoThoqINWDTk/Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776074090; c=relaxed/simple;
-	bh=c2CGlGVZqp3alRDCnZcttXz0G9aDXOjwnSxTsPk8zIQ=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=aglxXHPfkhskcM6eyHzZdluCxnuXsgzRMMbB24mWj4+QyBH/ZGh34dj1phtfxdZlfzHQ5YbqVPxZYTbONkaHLUhWt6Q0kGOgexp9sUkOESJX33StwcrnNa41a4nhqaTYgoTILprmgwZX8G4LNko5chforhDSZrFh3+h63hvHys8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=qEG1v262; arc=none smtp.client-ip=195.121.94.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
-X-KPN-MessageId: c96836c5-371e-11f1-89e1-00505699b430
-Received: from mta.kpnmail.nl (unknown [10.31.161.191])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id c96836c5-371e-11f1-89e1-00505699b430;
-	Mon, 13 Apr 2026 11:54:39 +0200 (CEST)
-Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.190])
-	by mta.kpnmail.nl (Halon) with ESMTP
-	id c9672149-371e-11f1-83d8-00505699891e;
-	Mon, 13 Apr 2026 11:54:39 +0200 (CEST)
+	s=arc-20240116; t=1776074627; c=relaxed/simple;
+	bh=BuhFIen6Ac+1GUTwLrQqUksTb5n9nEh+t5zfBzL6UO8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hUEF/0PJ1w70tFkUHbrEltVIIpvsnuezoFh/wcwRV98B9m+Dvyab92z7Czv79wyBDJEpw9HsJF2PytaK5Nv8ya1coG+xo1JcDndm+3yyDkwCOmfsB8hBNpxBz6n6mvaWpVzQeqoyiYQjhY1gNFVWR3KSBpNvU1/GMP0knM+GyFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IlWNaKTv; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-43d734223e4so689504f8f.0
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 03:03:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:subject:message-id:to:from:date;
-	bh=nlt0Px8sm0nTGDMuegqkfg4UbDLjgtKHdrHsp/wHC4g=;
-	b=qEG1v262gFDd1+qxSAh6xJMsb6JmvkapHys5CFk0KT/W8sqoICENBRxMP5nJhGunuFPKg7jZ/NXx0
-	 y/znz+85rYN1XHH3vYcPPyEwbLAlwIbh/wHzYAgeo2JQk4yEIzimrYc5WGmYVPAoj9VQ6r3RSBmQ1v
-	 b9ksxoIi1VyvnbvrKz1Mbl5X36V32h2cYAgdV+eR2SOUzrgFP53iYZSu/ammY/efoF9GjiIe7jH09h
-	 3CoKIJPWfEnZoUfKunAuTDy8lUSdUPRAH8c0byV2vmwb5z18RSbnYGxyE5XXDWn3TFZsEibiDujNF/
-	 OkUNg79RvK6Ov6tIBeE8KtS2U1LLoiw==
-X-KPN-MID: 33|EQTl3qluFIpmTj6N5x3r3WnTBy0W4dplO4KuNiIEe2QaNq4A3cczKzDpvP80WXA
- osYBJQdPHcNo+WY7dbmI2Y9mmPu6IcG8idlnos5ll9lM=
-X-CMASSUN: 33|xH4WiFy/3l1WvwjGQikdb3xy2t1tBE9NA5DZSIeeEdcWFLxFNvOTe67rDozapy9
- Wi6+Rej1jjrliCab0dwir1w==
-X-KPN-VerifiedSender: Yes
-Received: from cpxoxapps-mh07 (cpxoxapps-mh07.personalcloud.so.kpn.org [10.128.135.213])
-	by mtaoutbound.kpnmail.nl (Halon) with ESMTPSA
-	id c95c64e9-371e-11f1-b8d7-005056995d6c;
-	Mon, 13 Apr 2026 11:54:39 +0200 (CEST)
-Date: Mon, 13 Apr 2026 11:54:39 +0200 (CEST)
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"open list:MAC80211" <linux-wireless@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Message-ID: <1501198413.2134444.1776074079199@kpc.webmail.kpnmail.nl>
-In-Reply-To: <2f2ddabe109c846d3635098a8004b3a5632aac45.camel@sipsolutions.net>
-References: <20260401165938.3843784-1-jkoolstra@xs4all.nl>
- <538186550596da7b862eb7340047695267f8b71e.camel@sipsolutions.net>
- <675951732.2051008.1776003641276@kpc.webmail.kpnmail.nl>
- <2f2ddabe109c846d3635098a8004b3a5632aac45.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211_hwsim: change hwsim_class to a const struct
+        d=gmail.com; s=20251104; t=1776074624; x=1776679424; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vIXni/q1yaGi0fWHIAsT7aMdfrlQ/oqixUPYn0EFfik=;
+        b=IlWNaKTvwQprfVcyyZY4lEwPHKB6vT2ujSNjRj0ZEwZ1gGfBybBnxAylgG6+9KLmb0
+         dZRx5j7/wqIIp1AZbenym9a7SC3mgeYb0J2H13p3NFDB7rcgSFv58rFRIMEb4prMfur9
+         J6jYRYzlM/lZlfBSBNES09W8nQjF5K9611reMPpu6/N5E6AWXab5K4GAgF3qbC+cwUvo
+         UcWvofgOvPARikk0p4qYAIiK2wE4k1OJ5Ln+u0nrj57MAcZZAkXapkMHFTo1NIHB2G3s
+         Vw7Q3a1mPr1Ya0SdPFZ74YYFeWBSsb8puCstdeG5zN4PrJaIoCcbdS/I0FzbXndejWa6
+         c60w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776074624; x=1776679424;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vIXni/q1yaGi0fWHIAsT7aMdfrlQ/oqixUPYn0EFfik=;
+        b=pdPZuC6r6QcnmHcezDZyylZuswR5UoLkGuowHFQKuVotX9FbG1uGWrQcEVkseSDLvf
+         Mtbz7981vAOPRHOfs+am1TsDTe7wGJYNTgfE1gCynrxYsmabYSDvVZnPEn1cx+QH5l8q
+         P03JE4OY0+dxpnBhIX8xTpcKgwW2QDOcy85uAp7U/kJUIy6XeeQPsybfw3UrYwulJL5C
+         ukCOtZBGYwatUDjYe1cpZjhXYmVlfEDIltOzP+l2rTOd9MdQEtxgC5l1ma8Po21eh/eE
+         glSYcH/mGnJoPEdJfFb9XUUm5DADfKe3s6d/vvgeVS/41PqP+zfaLfWaX+Y2W2r+PZ+i
+         d2GA==
+X-Gm-Message-State: AOJu0YzvReF16p3PZSuXPOtosSMOgXD9QaLzPvGo3rk/5fwON1JWi6Ze
+	orytM0eNmwxf6qYY2lxHE+3yPuXHX3K0a7b+FbDYKE0sKWjSe4Yd3xWI
+X-Gm-Gg: AeBDievnrS/ZtbzMXY0VISd2vCjtxBibaLQzvbKrWxTp4YLpD6IBymLU3zq7fQ0sXoc
+	eCsHZVAqlHyDuk0MTwR53ipgpmUtsLFHquOubYRnn5ireD50yatGK3l9NhERX9EMiqk7lqORLcB
+	JUldhaZxk2bJrBOZJpD4X8+K4H3w/pnTbzqt+jV7kspsvbk4/Epxs6eqhCQ+tGB8ikC8ecT95Dr
+	SMwKSmfNhKYkmJFLz2ANuXH3RalXCOM0wqLjH1wdtXc2CK6mjmfg+my5p2XzeOrGWdOZ92kt1NV
+	ZSJY8I8Z/GUg7pVqqNfHMxakCk3QNsSEfeLy/B/3uV4fXn3bMBwNT3N6rFzQQn7L9TBtXQroCMd
+	LIx3vGhYy+eCOttT+zyxs4cqiz1O6pES5Rf9ml7I+HBNWy534S05/5nrWkBhhr2ekU4ueHLtgob
+	xKWJk7+Rqdz+4aGlLMQu9RScfSiNADBS462MT9ZF+zWOnrk8ybiyktni16kckgd7mrDuTMxdsHv
+	f+XaF83
+X-Received: by 2002:a05:6000:2401:b0:43d:76dd:269 with SMTP id ffacd0b85a97d-43d76dd0365mr5733100f8f.29.1776074624021;
+        Mon, 13 Apr 2026 03:03:44 -0700 (PDT)
+Received: from fedora.home ([2a02:586:e223:fc00:fc13:e2ba:df80:5e4b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63de2a53sm30995042f8f.5.2026.04.13.03.03.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 03:03:43 -0700 (PDT)
+From: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
+To: pkshih@realtek.com
+Cc: linux-wireless@vger.kernel.org,
+	goainwo@gmail.com,
+	Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
+Subject: [PATCH] wifi: rtw88: Add NULL check for chip->edcca_th
+Date: Mon, 13 Apr 2026 13:02:49 +0300
+Message-ID: <20260413100249.28618-1-npetrakopoulos2003@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Normal
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[xs4all.nl,reject];
-	R_DKIM_ALLOW(-0.20)[xs4all.nl:s=xs4all01];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_X_PRIO_THREE(0.00)[3];
-	TAGGED_FROM(0.00)[bounces-34694-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[xs4all.nl:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[xs4all.nl];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jkoolstra@xs4all.nl,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-34695-lists,linux-wireless=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[npetrakopoulos2003@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,xs4all.nl:dkim,kpc.webmail.kpnmail.nl:mid]
-X-Rspamd-Queue-Id: 9E6EA3EA14C
+	NEURAL_HAM(-0.00)[-0.997];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 958653EA2AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+It was recently reported that rtw_fw_adaptivity_result
+in fw.c dereferences rtwdev->chip->edcca_th without
+a null check. The issue appears to be that devices
+with the 8821CE chip don't define edcca_th in their
+chip info. As a result, when rtw_fw_adaptivity_result
+tries to dereference it, the kernel triggers an oops.
 
-> Op 13-04-2026 08:19 CEST schreef Johannes Berg <johannes@sipsolutions.net>:
-> 
->  
-> On Sun, 2026-04-12 at 16:20 +0200, Jori Koolstra wrote:
-> > 
-> > 
-> > I just saw that it has been already applied.
-> 
-> I didn't apply this one though. You sent it twice:
-> 
-> https://lore.kernel.org/all/20260303165938.3773998-1-jkoolstra@xs4all.nl/
-> https://lore.kernel.org/all/20260401165938.3843784-1-jkoolstra@xs4all.nl/
-> 
+Add a NULL check for edcca_th before dereferencing
+it in rtw_fw_adaptivity_result() in fw.c and
+rtw_phy_set_edcca_th() in phy.c.
 
-I think then I might know what happened. The patch was applied but I was
-not aware of it, so I resend it. Then you tried to apply it, but it was
-not possible because it was already applied (I had to do a three-way merge).
-But maybe I am totally mistaken here.
+Tested on a 8822CE chip which defines edcca_th, so
+this issue is not present on it, but it still uses
+this driver and I can verify there are no regressions.
 
-> and the *second* one didn't apply (and I replied to it accordingly.)
-> 
-> But it looks like at that point I missed there was a first one (please
-> add "v2" tags etc. when doing this),
+Reported-by: Oleksandr Havrylov <goainwo@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221286
+Link: https://lore.kernel.org/linux-wireless/CALdGYqQriS7mP0vj_rm_xvisfzFVh0hbpy+---48r6bodZO7tg@mail.gmail.com/
+Signed-off-by: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw88/fw.c  | 3 +++
+ drivers/net/wireless/realtek/rtw88/phy.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
-I intended it as a resend.
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index 48207052e3f8..c4819ef6d54d 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -284,6 +284,9 @@ static void rtw_fw_adaptivity_result(struct rtw_dev *rtwdev, u8 *payload,
+ 		result->density, result->igi, result->l2h_th_init, result->l2h,
+ 		result->h2l, result->option);
+ 
++	if (!edcca_th)
++		return;
++
+ 	rtw_dbg(rtwdev, RTW_DBG_ADAPTIVITY, "Reg Setting: L2H %x H2L %x\n",
+ 		rtw_read32_mask(rtwdev, edcca_th[EDCCA_TH_L2H_IDX].hw_reg.addr,
+ 				edcca_th[EDCCA_TH_L2H_IDX].hw_reg.mask),
+diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
+index e2ac5c6fd500..c10eb28e54ad 100644
+--- a/drivers/net/wireless/realtek/rtw88/phy.c
++++ b/drivers/net/wireless/realtek/rtw88/phy.c
+@@ -161,6 +161,9 @@ void rtw_phy_set_edcca_th(struct rtw_dev *rtwdev, u8 l2h, u8 h2l)
+ {
+ 	const struct rtw_hw_reg_offset *edcca_th = rtwdev->chip->edcca_th;
+ 
++	if (!edcca_th)
++		return;
++
+ 	rtw_write32_mask(rtwdev,
+ 			 edcca_th[EDCCA_TH_L2H_IDX].hw_reg.addr,
+ 			 edcca_th[EDCCA_TH_L2H_IDX].hw_reg.mask,
+-- 
+2.53.0
 
-> 
-> What's strange is that they look to be completely identical, so I don't
-> know why one didn't apply and one did.
-> 
-> johannes
-
-Thanks,
-Jori.
 
