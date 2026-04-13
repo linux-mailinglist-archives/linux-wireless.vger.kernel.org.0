@@ -1,94 +1,68 @@
-Return-Path: <linux-wireless+bounces-34679-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34680-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kF7UCjtk3GkMQQkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34679-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 05:34:19 +0200
+	id 2LDbIvaA3GmYSAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34680-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 07:36:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77BBE3E6FEA
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 05:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E49CC3E7810
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 07:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D473230067A3
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 03:34:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6240F300B60A
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 05:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64A42FFFBE;
-	Mon, 13 Apr 2026 03:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA20335BA;
+	Mon, 13 Apr 2026 05:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h3878paD"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Ugg9057o"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6733F305E1F
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 03:34:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B061D2C027C
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 05:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776051248; cv=none; b=TODwfh9+tsAt49lD+kJCX3S7WAlkRh7ihSY70/OQCAdS+NO8A+GXnou/w44qBGWfT3a4YaS3IzXZ9CtEGf/fPfS/1iz79U+JOqjgBIP1RK8A8O3WZ41y5Dw5ePbz3NYFghb9Iv6nilVfRfsoMLVlNVmu7P/B81RzGFyu6Px39RU=
+	t=1776058577; cv=none; b=pJ2/w1t16skUy041SU57Ld5bBhsUGWzyxT9l/d3/0iR7Wcq5E0auu/IZjBgUEpe5nW552n0cEaka2BOGT5wsDMMPmV1afmtBDqnEa60NsYCdu2mG4AJsISdnbLRkcPwUvRTaA2M4FracVvu4H0zqACspSmDBNxApa1GcipZYfsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776051248; c=relaxed/simple;
-	bh=hatqUmhWF4/cUo8g2UwAbqFYgCgkJlNHohRFiygUR/c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K62kuBe/LXL2UFvzlicgdSoHW5EkN7BUNOJnO8UJUcYNBhiJemQDp9cdwq6gNWfMr0KFY/H6UbFZmbBcil4Zg3ITNF+O8zGiEkawGAOzXsAQoGmDnfV1fJnw93MMxx4N+p1QfNRQ01336aaVXz0L2rQydDhu03eBfoybnAHrixM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h3878paD; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-48374014a77so55054495e9.3
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2026 20:34:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776051244; x=1776656044; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VWai8sQZcAy73MJVvJe8OyZCghHwHKCcS0IqPiTlaK0=;
-        b=h3878paD49SoOeofWWDLfqRq9t1cLiEtIjH+xrjeGXjWhdDdXIUvavYhk6iUCXstZw
-         pwnU94EOhdEWu38spfPfvu7L+Qfe+wRHiDPRm1COCZEOwgOPHiCr/+CIznGzSTmN2srg
-         IkJ6MoNleJ4/yoLw1z6Rx/yzqp72X5fgwb9Tkz1WciGoEwMBRedakResycIR7gznfaLb
-         Nws4LMO6PL1cxYHHSevWnGFcAjcU9CgllVrVro4X3Bx0lw8RLimlA4jv95q/kL/F8efh
-         clKwUS3w1S/NOwlTLIbDtAv8uueFhFcUz6huoVFkpvstu8pUcvi45AE2KRV99BDgsjHM
-         0J3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776051244; x=1776656044;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VWai8sQZcAy73MJVvJe8OyZCghHwHKCcS0IqPiTlaK0=;
-        b=KfWj/FC56eET2B4jQSfVhUZfR4MuLgzKNWDAVvH2o5/ja11CHbp2VnpE0J9vkkOg8+
-         kwLcGCMQnQDu6AyxbVsSTpfVHlPxzut/farCo+sE+EpTBkxcnxRgcU4YMFQ7+LcZy073
-         qHOs1/t1DEgsEETJbg5JoioGtZukG6xuB1roM/NWVFFZ/Y5KfDQLtuxUP/yQJ1bEEvmC
-         u2oLI2yh/9iFDq0sRzWc+SA0qz+26AAdBouf2PpZpdoM7Hoj7l7nImO6Q2s6H49cOk94
-         FWynbXY7YBv2Fyn71CCwlc1rbuzT6Rz/deSEkgXatCk7QBsmLBAm4NQ7K+nsTn2A2Ak6
-         r+dg==
-X-Gm-Message-State: AOJu0Yw9eEYdfhOMiOpY4ZJO6Idk7mJymSjvX5UEmlB84WczS6YzbNZq
-	xaHZLXtbOCYscpJxZQCPZ8kgTFYar9ChEtKdIaMm4J/9V9++0uI0XKM8Z154JpSG
-X-Gm-Gg: AeBDieudcjatEpcWUWKAqDo3UqU4h6QsgioxQP+1QDGcypE7TT2YjS1zuY7S2lLEmYo
-	4mNE9+0et/gVfV4R8/RvvylKXO2s6Yd8iXv9snXDCcM0dCKLROAc3F0WDPIWhozrjRIj4QrtVQ7
-	s7BPfm5EZ0mZWinfWTq/5oiPCEZRuYL0BTZ4boXmqmPN2jQPoLAgKLVxRO4AwpsOBnpNabbyLso
-	RxhJEiBPpErxKe8jhDKONJN9pTp2isohxHcFvVThzzZK1E+qVDJzVn+NRyYTGpDylzBsN6jazTx
-	Xnx4o1LbhEDua+gr86lSVXKmeMH8eIiH9CipsM+sUkE5UjnGSpMwlwRD6K19Z2WNcJu8NCK+CAC
-	BUqQUmJYssmTRefpoIOlkN4NNdN+1LKLCh4+VPECUmHCMPcJu+wcuJtlQD+F9FGvTNi6D5Ag4P3
-	n3tiibyvgm4JBZUckySh1+jCO2BAOdM/sWScre4Wn+2zyA5K8ZVVU=
-X-Received: by 2002:a05:600c:64cd:b0:485:3cf3:1010 with SMTP id 5b1f17b1804b1-488d67df592mr163123525e9.2.1776051244197;
-        Sun, 12 Apr 2026 20:34:04 -0700 (PDT)
-Received: from localhost.localdomain ([87.71.34.96])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d5d6ee98sm114039175e9.1.2026.04.12.20.34.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 20:34:03 -0700 (PDT)
-From: Aviel Zohar <avielzohar123@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: linux-mediatek@lists.infradead.org,
-	nbd@nbd.name,
-	lorenzo@kernel.org,
-	sean.wang@mediatek.com,
-	ryder.lee@mediatek.com,
-	Aviel Zohar <avielzohar123@gmail.com>
-Subject: [PATCH 2/2] wifi: mt76: mt7915: validate skb length in txpower SKU query
-Date: Mon, 13 Apr 2026 06:31:35 +0300
-Message-ID: <20260413033136.5417-3-avielzohar123@gmail.com>
-X-Mailer: git-send-email 2.47.0.windows.1
-In-Reply-To: <20260413033136.5417-1-avielzohar123@gmail.com>
-References: <20260413033136.5417-1-avielzohar123@gmail.com>
+	s=arc-20240116; t=1776058577; c=relaxed/simple;
+	bh=fgVbgp5OGkNnLW9u89p++tH57CKLIFJ/wMUJBjgLmU8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dZUzeQeh9l8M6EcoKRR8JOcIZhMt9u9DUpX/2qv58UufPro6vD+7efhGy1Ip15/+fIqaGwSY/mJ5Cz0V83PofHkdlpeQajltX2OfL1oxq+g/Ek6HXgAX4oJShLVvlD3DHshTaVgv3GZkCjHWEpqMuiQ/56sReia1s+P0vOaRyEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Ugg9057o; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63D5aDfkD3690143, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1776058573; bh=N1nichLoO1xsin+Oa3HlbnIKTIlelN/PjlzC21S4twA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=Ugg9057oQ2VPCKVHDK8UnA4qqTnbLinazxRljM+wJmxNgUbw9LgglqnHdtBenoNdM
+	 GFyVs+T8u+G7DHa8CgHWoitRCRIEFAymwS86+EzS/vJ/2PL6hcp6hilyRBdeAub6kU
+	 hMQ6VHSWBUc9l0Aicopoq5XDPcSB4mlC5ShHG5fwFKy7C5QmwLWM6+1IX2+5ZRS7T0
+	 +hemGTjR4byq1wXJ5ReyahRiMfcjg/cpnBg8S4rkvzbsz0pUpTFdRiEz2a2hvbHcFT
+	 LDKXjeLbZ3Z12keHjUz9QmtUCO+kYorS/w4BpTjQEGOoa3PPMtn/dtmWjwl8GxTmvx
+	 Bi37epQAwEGeg==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 63D5aDfkD3690143
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 13:36:13 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Mon, 13 Apr 2026 13:36:13 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
+ (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
+ Transport; Mon, 13 Apr 2026 13:36:13 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <kevin_yang@realtek.com>
+Subject: [RFT rtw/rtw-next] wifi: rtw88: check if center channel is supported before setting
+Date: Mon, 13 Apr 2026 13:36:01 +0800
+Message-ID: <20260413053601.13037-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -96,81 +70,172 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-34680-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.infradead.org,nbd.name,kernel.org,mediatek.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-34679-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[avielzohar123@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 77BBE3E6FEA
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:email,realtek.com:mid]
+X-Rspamd-Queue-Id: E49CC3E7810
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In mt7915_mcu_get_txpower_sku(), the response skb from
-mt76_mcu_send_and_get_msg() is used in memcpy without validating
-its length:
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-For TX_POWER_INFO_RATE:
-  memcpy(res, skb->data + 4, sizeof(res));
+Some unusual center channels may be assigned to driver. However, RF
+doesn't really expect them, and then warnings happen due to lack of
+TX power limit configurations. For example, center channel 114/130
+with 80MHz. So, add a check before setting the channel.
 
-where sizeof(res) is MT7915_SKU_RATE_NUM * 2 = 322 bytes.
-
-For TX_POWER_INFO_PATH:
-  memcpy(txpower, skb->data + 4, len);
-
-In both cases, if the firmware returns a response shorter than
-the expected size, the memcpy reads beyond the skb data buffer.
-The data surfaces to userspace via debugfs (txpower_sku and
-txpower_path).
-
-Add length checks for both code paths before the memcpy.
-
-Signed-off-by: Aviel Zohar <avielzohar123@gmail.com>
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  7 +++++--
+ drivers/net/wireless/realtek/rtw88/main.c     | 13 +++++++++++--
+ drivers/net/wireless/realtek/rtw88/main.h     |  2 +-
+ drivers/net/wireless/realtek/rtw88/phy.c      | 18 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/phy.h      |  2 ++
+ 5 files changed, 37 insertions(+), 5 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3532,10 +3532,18 @@
- 	if (category == TX_POWER_INFO_RATE) {
- 		s8 res[MT7915_SKU_RATE_NUM][2];
- 
-+		if (skb->len < sizeof(res) + 4) {
-+			dev_kfree_skb(skb);
-+			return -EINVAL;
-+		}
- 		memcpy(res, skb->data + 4, sizeof(res));
- 		for (i = 0; i < len; i++)
- 			txpower[i] = res[i][req.band_idx];
- 	} else if (category == TX_POWER_INFO_PATH) {
-+		if (skb->len < len + 4) {
-+			dev_kfree_skb(skb);
-+			return -EINVAL;
-+		}
- 		memcpy(txpower, skb->data + 4, len);
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index 766f22d31079..9d97e8dd0c1e 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -92,8 +92,11 @@ static int rtw_ops_config(struct ieee80211_hw *hw, int radio_idx, u32 changed)
+ 		}
  	}
+ 
+-	if (changed & IEEE80211_CONF_CHANGE_CHANNEL)
+-		rtw_set_channel(rtwdev);
++	if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
++		ret = rtw_set_channel(rtwdev);
++		if (ret)
++			goto out;
++	}
+ 
+ 	if ((changed & IEEE80211_CONF_CHANGE_IDLE) &&
+ 	    (hw->conf.flags & IEEE80211_CONF_IDLE) &&
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index cd9254370fcc..08aebb3c5a78 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -868,23 +868,30 @@ void rtw_get_channel_params(struct cfg80211_chan_def *chandef,
+ 	chan_params->primary_chan = channel->hw_value;
+ }
+ 
+-void rtw_set_channel(struct rtw_dev *rtwdev)
++int rtw_set_channel(struct rtw_dev *rtwdev)
+ {
+ 	const struct rtw_chip_info *chip = rtwdev->chip;
+ 	struct ieee80211_hw *hw = rtwdev->hw;
+ 	struct rtw_hal *hal = &rtwdev->hal;
+ 	struct rtw_channel_params ch_param;
+ 	u8 center_chan, primary_chan, bandwidth, band;
++	int ch_idx;
+ 
+ 	rtw_get_channel_params(&hw->conf.chandef, &ch_param);
+ 	if (WARN(ch_param.center_chan == 0, "Invalid channel\n"))
+-		return;
++		return -EINVAL;
+ 
+ 	center_chan = ch_param.center_chan;
+ 	primary_chan = ch_param.primary_chan;
+ 	bandwidth = ch_param.bandwidth;
+ 	band = ch_param.center_chan > 14 ? RTW_BAND_5G : RTW_BAND_2G;
+ 
++	ch_idx = rtw_band_channel_to_idx(band, center_chan);
++	if (ch_idx < 0) {
++		rtw_warn(rtwdev, "not support band %d ch %d\n", band, center_chan);
++		return -EOPNOTSUPP;
++	}
++
+ 	rtw_update_channel(rtwdev, center_chan, primary_chan, band, bandwidth);
+ 
+ 	if (rtwdev->scan_info.op_chan)
+@@ -910,6 +917,8 @@ void rtw_set_channel(struct rtw_dev *rtwdev)
+ 	 */
+ 	if (!test_bit(RTW_FLAG_SCANNING, rtwdev->flags))
+ 		rtwdev->need_rfk = true;
++
++	return 0;
+ }
+ 
+ void rtw_chip_prepare_tx(struct rtw_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 9c0b746540b0..a368f1a4a003 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -2241,7 +2241,7 @@ bool ltecoex_reg_write(struct rtw_dev *rtwdev, u16 offset, u32 value);
+ void rtw_restore_reg(struct rtw_dev *rtwdev,
+ 		     struct rtw_backup_info *bckp, u32 num);
+ void rtw_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss);
+-void rtw_set_channel(struct rtw_dev *rtwdev);
++int rtw_set_channel(struct rtw_dev *rtwdev);
+ void rtw_chip_prepare_tx(struct rtw_dev *rtwdev);
+ void rtw_vif_port_config(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif,
+ 			 u32 config);
+diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
+index e2ac5c6fd500..a543eaa57f2c 100644
+--- a/drivers/net/wireless/realtek/rtw88/phy.c
++++ b/drivers/net/wireless/realtek/rtw88/phy.c
+@@ -1630,6 +1630,24 @@ static int rtw_channel_to_idx(u8 band, u8 channel)
+ 	return ch_idx;
+ }
+ 
++int rtw_band_channel_to_idx(enum rtw_supported_band band, u8 channel)
++{
++	u8 phy_band;
++
++	switch (band) {
++	case RTW_BAND_2G:
++		phy_band = PHY_BAND_2G;
++		break;
++	case RTW_BAND_5G:
++		phy_band = PHY_BAND_5G;
++		break;
++	default:
++		return -1;
++	}
++
++	return rtw_channel_to_idx(phy_band, channel);
++}
++
+ static void rtw_phy_set_tx_power_limit(struct rtw_dev *rtwdev, u8 regd, u8 band,
+ 				       u8 bw, u8 rs, u8 ch, s8 pwr_limit)
+ {
+diff --git a/drivers/net/wireless/realtek/rtw88/phy.h b/drivers/net/wireless/realtek/rtw88/phy.h
+index 8449936497bb..98aeb576e24d 100644
+--- a/drivers/net/wireless/realtek/rtw88/phy.h
++++ b/drivers/net/wireless/realtek/rtw88/phy.h
+@@ -201,4 +201,6 @@ enum rtw_phy_cck_pd_lv {
+ #define RRSR_RATE_ORDER_MAX	0xfffff
+ #define RRSR_RATE_ORDER_CCK_LEN	4
+ 
++int rtw_band_channel_to_idx(enum rtw_supported_band band, u8 channel);
++
+ #endif
+-- 
+2.25.1
+
 
