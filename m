@@ -1,262 +1,212 @@
-Return-Path: <linux-wireless+bounces-34706-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34707-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPVALlwO3WlsZQkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34706-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 17:40:12 +0200
+	id OLy3CGAO3WkOZQkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34707-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 17:40:16 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121A93EE156
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 17:40:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A0C3EE165
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 17:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0E4B3029780
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 15:33:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 38698302515B
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 15:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548E33E0259;
-	Mon, 13 Apr 2026 15:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA4C3E1CF8;
+	Mon, 13 Apr 2026 15:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="gvEodDXy"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NnE3NY3n";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="QNEUFEXU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D17E1A680E;
-	Mon, 13 Apr 2026 15:33:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801063E1CF0
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 15:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776094399; cv=none; b=kBx3rId8VtVCRtnPhw7b49MUtY/cu5V6qOuT5L6lFriPd8wNwNsOjb/CvvO3/+1Sq5ROW9DoEE0GVbYXm7HEGIyKNgG/nLFnCQtF+4NUgxtBlLRKGxrC5fKat18k6u88h4yMBV0sHCFgsvZwnxl/hLf6squt+fihnQjO2VugmDg=
+	t=1776094781; cv=none; b=LPtMo9vxwdOcFTFVto+pB306wIdvLuBJ/hR4r4qG6zqaRRJePdjJI4v29qCyNVerwkpopNTyAMnDscF3Vl03PMnjYZXyyh82YOkgPKi32UzAmO7ehXmE2QKydikNyhtHekB2dmG/mWX6n8dU3kETNJLafcVW2FDDyw+uub9QJHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776094399; c=relaxed/simple;
-	bh=NQ57pLTyv1RobAbU0dr2msaGqFcjF8MGivOACrwgK2Y=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=o/5znYLr9xR7IFRD+Su5vxwUQ9jz0N3g8Rsltb5Reog85EC93zxUrq37HgB3DDZUu5axmm39yQo/xfdnhnTTqwd/AogutIW9dJ7BtypbgAUh8PbzjW2+i1Cb38WJwXyaXZbhTdr88+PRBx3hJlpG+/H0KpkfAK7ZvprbmSPyQRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=gvEodDXy; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=pMyc546A8Vk0VhSxh5jSMOtHszp9PyQiNzOlGW+Tlac=; b=gvEodDXyVRhr3ht5KLvvYUHruq
-	Vr6/Nk8hYRocARm5fuOZlMoKF+85eiOOvk45UWaJEUhV71TuTffj9ccPPnvJsusON6fJc5Grsy5jI
-	iNNAvdI28ex09hHo60SsASOsHG9j1//cpT5bdeKExgSUokyNtM/888qR2IIJJJn5k0YY4ZHvZ/iUY
-	JYS9o9fm8cesNcUDQtQkHs5oojlgzNoY+sKaw+Kqth7jk3I7NtkAAk1lZIJtE46y3HsqbFIeXRzUn
-	UNa7OJ6p8M3XCoCofzGj4msg6NLCmsGATi2zcxDsbslkmxZrkCEEoEdgUxSWU6wiTsaySOA61u8BB
-	0y1VEngg==;
-Received: from [213.122.4.78] (helo=u09cd745991455d.ant.amazon.com)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCJHl-0000000H2um-3OE9;
-	Mon, 13 Apr 2026 15:33:13 +0000
-Message-ID: <7a48b636cb3146f4f7134c6d4fe42070ac2edb43.camel@infradead.org>
-Subject: Re: [patch 15/38] ptp: ptp_vmclock: Replace get_cycles() usage
-From: David Woodhouse <dwmw2@infradead.org>
-To: Thomas Gleixner <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, Lu Baolu
- <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, Michael Grzeschik
- <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
- linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
- linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, 
- linux-mm@kvack.org, Bernie Thompson <bernie@plugable.com>, 
- linux-fbdev@vger.kernel.org, Theodore Tso <tytso@mit.edu>, 
- linux-ext4@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>, Dmitry
- Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, Andrey Ryabinin
- <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
- linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, Richard
- Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen
- <chenhuacai@kernel.org>,  loongarch@lists.linux.dev, Geert Uytterhoeven
- <geert@linux-m68k.org>,  linux-m68k@lists.linux-m68k.org, Dinh Nguyen
- <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
- linux-openrisc@vger.kernel.org, Helge Deller <deller@gmx.de>, 
- linux-parisc@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
- linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, 
- linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>, 
- linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
- sparclinux@vger.kernel.org
-Date: Mon, 13 Apr 2026 16:33:12 +0100
-In-Reply-To: <20260410120318.592237447@kernel.org>
-References: <20260410120044.031381086@kernel.org>
-	 <20260410120318.592237447@kernel.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-vt+GQ8cE1r98bSrQsw7r"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	s=arc-20240116; t=1776094781; c=relaxed/simple;
+	bh=dzvzgk85piI8yiA2wp6ATL4yBCiMADTSKSQoPRTTQYE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=irBCf15lvMgcH+vR38uOpcpGArWgKTxDuRXWl+lewfr+tvviW1vCxy1ByujjnK7/mrTqv34s0ayTuKSvWBHAmCevkNeTTaPFS9SDYqM1Qxgilz0JXCLPhBnQ9y08/vG6+QMXNw5mtEKZqfsrhdBkDv+rK/Vs9YfgUWVl2cwx+R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NnE3NY3n; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=QNEUFEXU; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63DEJJqd3539272
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 15:39:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=axp7tNpBNw3aQicWgliM1g5+tiQFHVw+0xR
+	kGYUDKf4=; b=NnE3NY3nBoEYvIbAPn5ptA6I65H0TfAWclG2wxNonCqL01kOuO9
+	c0H4heBRyVXGM2q3nEO+wpWBfGlF8vm4qAM9JIuGGZaecv3tJaWQ2Z6Rh8utREG7
+	/iHV23VKZCIUUTOYlQ9stqyISziSZXF/lWJ95rTDiKnzNpiSgFLaHJwG3T5wsSMK
+	l3C1qzoQACwNWiHewKE1BdAYY3g/2AKEZfJzbSaqtnI2HpwVu/F115P1MSdS8/Gk
+	FsrDPyZ4hxbQ5CJL7SRFq89dqz7JtA3ugp5Fr86W5fXuWdD7LEPiRIkBXxckRCMR
+	IiO/DcBE24n2fjkJelA8/ZjI2FHykAogmAA==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dh258r8nw-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 15:39:39 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-35da99b90f6so5572336a91.1
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 08:39:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1776094778; x=1776699578; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=axp7tNpBNw3aQicWgliM1g5+tiQFHVw+0xRkGYUDKf4=;
+        b=QNEUFEXUy0g2BYzGRvJ8NfRmhfj4Fk5sLlwZFoimvplA8al0eC7UF2eGD7KQKGT/RV
+         LkNuKHMrYt2gSepLbOHN1P3hsULq5Dr39wO4XGIa98U2zo9TqwxKbBPVObBDmqTYPnRD
+         dNgkCi/+Hv8AH7E0JqVn1cY+8lFLLNSWUp0gxEO84IFbsGk/M0Qp+2rdV3mDIlg3vtlq
+         gZYD0JyPFncXtOEy++rFMzRIylotKVyVqF6vzLOgmZ8aF4TJG4NXAoDKwPBSjlUj23Fb
+         Lpv7mCymSy9WznyVde+Nnf5ObWlnxtrJWZFZLZDCu5Ko80l2aZj6SY+xSVC334K1C/6s
+         f89g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776094778; x=1776699578;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=axp7tNpBNw3aQicWgliM1g5+tiQFHVw+0xRkGYUDKf4=;
+        b=eSQYEopv7gdg84GK9wSztVDtAjj925oBqddEHdzI49q5mJ26C/WoD6EBTLa506k8bg
+         CiJwradO3V6E88KVzzPOtifwNNcyAXXHPOktkjZILkBZFjfrZInjABlOGP6tR55g/Iqn
+         X6Lg+y+/xANWWG6HWwCBhjsztM4Mp6+OcENmsdzjV8Co8sJ/9hXCYasiUleBLpeap4aj
+         hvH1MY2Vv9rPn8wvaqm7qzIgcPwE7JTKafNGn6j3Kpl4gLfhpgfZKSoLVvNqkOkBG+eA
+         fp8Pf/+fNWkv+BP46Z2cQHlfOl6V6INo023dSb+o73LQ5mvmSERvw4xF7835XkuG6G9l
+         xJAw==
+X-Gm-Message-State: AOJu0Ywqv0Z8Rq4rsQzAjExYJ7S+zd5VvXeFeHVp7VdZ/feJsBa6hxZI
+	IS14dCIBHZsoxObg/juknbnRqDKi2GubAeMTQqzonRyRPdP0N9rAjpHL+RCekotRZuyaZhHRu2I
+	qGtHjN/kPK/BReNbDQNmI5SZvv1deRJx/IWJZc0RU1BtmPnjXXyKlVibyoNfB/Pf7HC8VIA==
+X-Gm-Gg: AeBDievvTL4vDNEVdqpHs4i+xx92xawuQXaPtZWz7vZkiFUPkLLXpvLhybGl4+HaxLj
+	KIGEUSYHA2L1tfKbCvzTlFOUOqbLm2oqlSxvH18F4XoY0chBS+6JNjMeqMlblt3J8rKfxwVWI8D
+	rmZ9/sWX1A6v6mbN0W7VtLELQg4rqbD9rR9mRURHwYfOcprXZIM0EntUIzriDG1sV7WyQLeFcXx
+	KfY64PGexTjrhXVVEgrKbGlxPbp4XfbZXDfJtwKGPGbMF9434EjDYnYfFWl3b3qi3jDJSxfJtOw
+	jOfTqtuUb9cFTR+yfhkLk2kOnFStfI0zZ26PIs7OfMAoENn1I5U6Nf9CXOvAcFaw9ajE4NSTKU5
+	pp5roaOMXZghUr8sgwYpvnlkUPVHccL5ktcqU8D68dsE5VofeghTIGlvAK2ENL6vaRcQpxS7+PK
+	3N4qOm+apAmi8fqXQGNZcUByTmnMzDgtozN+qCMHnA2vU1Jrrpgwk=
+X-Received: by 2002:a17:90b:2689:b0:35f:b953:244c with SMTP id 98e67ed59e1d1-35fb953263bmr3380820a91.0.1776094778163;
+        Mon, 13 Apr 2026 08:39:38 -0700 (PDT)
+X-Received: by 2002:a17:90b:2689:b0:35f:b953:244c with SMTP id 98e67ed59e1d1-35fb953263bmr3380793a91.0.1776094777619;
+        Mon, 13 Apr 2026 08:39:37 -0700 (PDT)
+Received: from hu-mkenna-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e411ff4e1sm13000123a91.3.2026.04.13.08.39.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 08:39:37 -0700 (PDT)
+From: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+Subject: [PATCH ath-next v2 0/5] wifi: ath12k: thermal throttling and cooling device support
+Date: Mon, 13 Apr 2026 21:08:35 +0530
+Message-Id: <20260413153840.1969931-1-maharaja.kennadyrajan@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_SMIME(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: sTff0RmKuU7HmYWeTHhhrTBeMIqrMGbM
+X-Authority-Analysis: v=2.4 cv=Vo4Txe2n c=1 sm=1 tr=0 ts=69dd0e3b cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=kPw7zogRYXnG0GdHtlcA:9
+ a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-ORIG-GUID: sTff0RmKuU7HmYWeTHhhrTBeMIqrMGbM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEzMDE1MyBTYWx0ZWRfX7qb66wBtWIkD
+ cGrCC1SCmC5jNW63e/fzG8xB3kp6U5rioDqqSWiHuv7/WCwKxSmMNOc3SPkRRymn4pNgGY+euYi
+ nz7N+NuDRxACi8tJQ6KuGGWPmtmHyeweqEUjvGQnTrGAvabLbtMPHn06RdNgLtKltQIxhviToXw
+ +fgGIaTip1N+CA6LT3ZINtZj2O7n5OOupl/M560WDvuFJXC1JReFRm+lTkTUyei8ewRwP02ftS6
+ NaNQrx/0XPLmpWvq1YLsC//SxSciNKcMPz59Hozsd7FZ6X2nDvVTL2Rxas5aSrsVe4Fq8xaDug3
+ qNqLDC9sdDM8K46CiVBD5dteWQSqjLEIVTGAOrAA5acfM2GV0p++7Cxpgj7e9iTGW67TRjZmaPH
+ g2vC0pXUm06EXhAeqL432LhWoc9lF4ghPP2+GCgJlt3vIWyV/ZyB9J156IjwN9Wrw9PhrSKVDEn
+ KlEAk0DdKjS+yvuJixg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-13_03,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 lowpriorityscore=0 impostorscore=0 bulkscore=0 spamscore=0
+ adultscore=0 phishscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604130153
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=desiato.20200630];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34706-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[48];
-	FROM_HAS_DN(0.00)[];
-	HAS_ATTACHMENT(0.00)[];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dwmw2@infradead.org,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,vger.kernel.org,gondor.apana.org.au,kvack.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	TAGGED_FROM(0.00)[bounces-34707-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:dkim,infradead.org:email,infradead.org:mid,amazon.co.uk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 121A93EE156
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:dkim];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[maharaja.kennadyrajan@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: D6A0C3EE165
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Patch 1 handles the firmware stats event so we can track the current
+temperature and throttle level per pdev without spamming logs.
 
---=-vt+GQ8cE1r98bSrQsw7r
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Patch 2 enables thermal throttling at bring-up and programs default level
+tables to firmware via WMI_THERM_THROT_SET_CONF_CMDID; the driver picks
+IPA/XFEM defaults based on the firmware WMI service bitmap, supports 4 or 5
+levels as advertised, and only fills optional fields (pout reduction,
+tx chain mask) when the corresponding WMI service bits are present.
 
-On Fri, 2026-04-10 at 14:19 +0200, Thomas Gleixner wrote:
-> get_cycles() is not really well defined and similar to other usaage of th=
-e
-> underlying hardware CPU counters the PTP vmclock should use an explicit
-> interface as well.
->=20
-> Implement ptp_vmclock_read_cpu_counter() in arm64 and x86 and simplify th=
-e
-> Kconfig selection while at it.
->=20
-> No functional change.
->=20
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> Cc: David Woodhouse <dwmw2@infradead.org>
+Patch 3 refactors per-radio thermal hwmon cleanup to reduce code duplication and
+ensure consistent cleanup across thermal register and unregister paths.
 
-Acked-by: David Woodhouse <dwmw@amazon.co.uk>
+Patch 4 reorders the group teardown logic symmetric for safe thermal sysfs cleanup.
 
-Although I might follow up with a change to make this...
+Patch 5 exposes a thermal cooling device per radio so the kernel thermal
+framework or userspace can set the TX duty-cycle off percentage; writes
+are validated against the throttling state range and host state is kept in
+sync with successful firmware updates.
 
-> +static inline u64 ptp_vmclock_read_cpu_counter(void)
-> +{
-> +	return cpu_feature_enabled(X86_FEATURE_TSC) ? rdtsc() : 0;
-> +}
-> +
+Examples:
+echo 40 > /sys/devices/pci0000:00/0000:00:1d.1/0000:58:00.0/ieee80211/phyX/cooling_device/cur_stat
+cat /sys/devices/pci0000:00/0000:00:1d.1/0000:58:00.0/ieee80211/phyX/cooling_device/cur_state
+cat /sys/devices/pci0000:00/0000:00:1d.1/0000:58:00.0/ieee80211/phyX/cooling_device/max_state
 
-... depend on TSC_RELIABLE=C2=B9, since if the guest doesn't believe that i=
-t
-is, then the guest shouldn't be trying to use it as the basis for
-precise timing.
+v2: Addressed Jeff's comment by rebased on latest TOT with wmi tb - alloc and free
+    interface change.
 
-=C2=B9 (Or... one of the other zoo of TSC flags for the gradually reducing
-brokenness over the years...)
+Maharaja Kennadyrajan (5):
+  wifi: ath12k: handle thermal throttle stats WMI event
+  wifi: ath12k: configure firmware thermal throttling via WMI
+  wifi: ath12k: refactor per-radio thermal hwmon setup and cleanup
+  wifi: ath12k: reorder group start/stop for safe thermal sysfs cleanup
+  wifi: ath12k: add thermal cooling device support
 
---=-vt+GQ8cE1r98bSrQsw7r
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDQxMzE1MzMx
-MlowLwYJKoZIhvcNAQkEMSIEINhM0B01ygaCz6Xe0qE2NJYaKBfHsATydjMA4/6Wd4kYMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAPYfq/9mmd2s1
-SP00p3hmk+X0WHZfkinMkii2h4lyVacxXwjoSGz8t80VTtFXokPrNGmGsYArmww2/rp2kj+/Tv5G
-XXj04By7oFvcWZcv2ehQjgcnWXEG18Dafmh1E3ex6fNQlKS01kTelj7gzlUuq5WHZWL3834SA80P
-ycGZ1cFYLKrMHDHiR1ojUZbK226biYdF+3CITBRUH+85ncmQSJgKEB0hg76bNY+FrcuOqK4r9z2/
-PiptBoGJP4Q3UiXzXL4HpKBjHw7gx2nunSkEUUNyz9jLn+KcfUI5YmtecSlY8WbD17I+qPOlgJL9
-YHgpFL0zB0tzC9LuYFhVj9avlC4wi9Lcy7vcq8FKbQlepK7K3T9INa2xGQ6MKaOFRX7TgfnMARbl
-bRhvZ825233jpAPSdlet42tjpXXxw0D1JNWWCFZq3ittr5uj23ozIePJ6uBH0omp2DEM5kBhFAGC
-DNsqsmx7AKJ3NlZGmvR/IESk+AAvXHPXRjS/accB3/y56R7/gYbjv7gLhOXxr4INAnrsrb5w7z0d
-97lJiQhmYkR0+QRzLN66f6R0pYPixVACLMzcASk8IUr3sgtALCeoVmXWe0UzNbqhx8r6WCBVaHgO
-OygxmWQEtvOdDNB9gmza2s3JOTNNKHDHGJPsXwq64B3ty5nq7n89MMET0ooGW5sAAAAAAAA=
+ drivers/net/wireless/ath/ath12k/core.c    |  50 +++--
+ drivers/net/wireless/ath/ath12k/mac.c     |   9 +
+ drivers/net/wireless/ath/ath12k/thermal.c | 252 ++++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/thermal.h |  35 +++
+ drivers/net/wireless/ath/ath12k/wmi.c     | 108 ++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h     |  50 +++++
+ 6 files changed, 447 insertions(+), 57 deletions(-)
 
 
---=-vt+GQ8cE1r98bSrQsw7r--
+base-commit: 9a4f673eb08d2a7713b258d671b4a45f2a6e68b7
+-- 
+2.34.1
+
 
