@@ -1,88 +1,52 @@
-Return-Path: <linux-wireless+bounces-34695-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34696-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHiLNoa/3GliVwkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34695-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 12:03:50 +0200
+	id AAPMEgHi3GmKXwkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34696-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 14:30:57 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958653EA2AF
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 12:03:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C90F53EC00A
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 14:30:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 658A93006781
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 10:03:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0A3363008296
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 12:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67154346E56;
-	Mon, 13 Apr 2026 10:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IlWNaKTv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39D61E511;
+	Mon, 13 Apr 2026 12:30:47 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E713935E956
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 10:03:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 279161C84C0
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 12:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776074627; cv=none; b=NPEyfn9VOF9Scw+h39W4imXLDQ4mi/ppgoSUwi1YOx7ZM+haHv55Vf53t5YVbEmHjmP6KW8wt3VYTruy+zQjMbSBJQ7uz2EceCFLB+pApjQ7vo+bIxz9vjHl5z5FU053iYxzc/T239bKdD36XITo42LMg7UVLoThoqINWDTk/Pw=
+	t=1776083447; cv=none; b=R1zS8kjooka2SvUF2bjE9FJrfr8Rk6xA5hmG3iYklcfxIHWxPnR4kjm+zQlvUSiGsq2mXcN8tUEf+uxB1qHPEljEmkaudbg1Dkp0QwzyDmWlxxH/BnD9NRdxV6N8lOhiio80ewaSlIiWZvdOv0VhuyZ85ErY93K7Wn2ui5V6O3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776074627; c=relaxed/simple;
-	bh=BuhFIen6Ac+1GUTwLrQqUksTb5n9nEh+t5zfBzL6UO8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hUEF/0PJ1w70tFkUHbrEltVIIpvsnuezoFh/wcwRV98B9m+Dvyab92z7Czv79wyBDJEpw9HsJF2PytaK5Nv8ya1coG+xo1JcDndm+3yyDkwCOmfsB8hBNpxBz6n6mvaWpVzQeqoyiYQjhY1gNFVWR3KSBpNvU1/GMP0knM+GyFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IlWNaKTv; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-43d734223e4so689504f8f.0
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 03:03:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776074624; x=1776679424; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vIXni/q1yaGi0fWHIAsT7aMdfrlQ/oqixUPYn0EFfik=;
-        b=IlWNaKTvwQprfVcyyZY4lEwPHKB6vT2ujSNjRj0ZEwZ1gGfBybBnxAylgG6+9KLmb0
-         dZRx5j7/wqIIp1AZbenym9a7SC3mgeYb0J2H13p3NFDB7rcgSFv58rFRIMEb4prMfur9
-         J6jYRYzlM/lZlfBSBNES09W8nQjF5K9611reMPpu6/N5E6AWXab5K4GAgF3qbC+cwUvo
-         UcWvofgOvPARikk0p4qYAIiK2wE4k1OJ5Ln+u0nrj57MAcZZAkXapkMHFTo1NIHB2G3s
-         Vw7Q3a1mPr1Ya0SdPFZ74YYFeWBSsb8puCstdeG5zN4PrJaIoCcbdS/I0FzbXndejWa6
-         c60w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776074624; x=1776679424;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vIXni/q1yaGi0fWHIAsT7aMdfrlQ/oqixUPYn0EFfik=;
-        b=pdPZuC6r6QcnmHcezDZyylZuswR5UoLkGuowHFQKuVotX9FbG1uGWrQcEVkseSDLvf
-         Mtbz7981vAOPRHOfs+am1TsDTe7wGJYNTgfE1gCynrxYsmabYSDvVZnPEn1cx+QH5l8q
-         P03JE4OY0+dxpnBhIX8xTpcKgwW2QDOcy85uAp7U/kJUIy6XeeQPsybfw3UrYwulJL5C
-         ukCOtZBGYwatUDjYe1cpZjhXYmVlfEDIltOzP+l2rTOd9MdQEtxgC5l1ma8Po21eh/eE
-         glSYcH/mGnJoPEdJfFb9XUUm5DADfKe3s6d/vvgeVS/41PqP+zfaLfWaX+Y2W2r+PZ+i
-         d2GA==
-X-Gm-Message-State: AOJu0YzvReF16p3PZSuXPOtosSMOgXD9QaLzPvGo3rk/5fwON1JWi6Ze
-	orytM0eNmwxf6qYY2lxHE+3yPuXHX3K0a7b+FbDYKE0sKWjSe4Yd3xWI
-X-Gm-Gg: AeBDievnrS/ZtbzMXY0VISd2vCjtxBibaLQzvbKrWxTp4YLpD6IBymLU3zq7fQ0sXoc
-	eCsHZVAqlHyDuk0MTwR53ipgpmUtsLFHquOubYRnn5ireD50yatGK3l9NhERX9EMiqk7lqORLcB
-	JUldhaZxk2bJrBOZJpD4X8+K4H3w/pnTbzqt+jV7kspsvbk4/Epxs6eqhCQ+tGB8ikC8ecT95Dr
-	SMwKSmfNhKYkmJFLz2ANuXH3RalXCOM0wqLjH1wdtXc2CK6mjmfg+my5p2XzeOrGWdOZ92kt1NV
-	ZSJY8I8Z/GUg7pVqqNfHMxakCk3QNsSEfeLy/B/3uV4fXn3bMBwNT3N6rFzQQn7L9TBtXQroCMd
-	LIx3vGhYy+eCOttT+zyxs4cqiz1O6pES5Rf9ml7I+HBNWy534S05/5nrWkBhhr2ekU4ueHLtgob
-	xKWJk7+Rqdz+4aGlLMQu9RScfSiNADBS462MT9ZF+zWOnrk8ybiyktni16kckgd7mrDuTMxdsHv
-	f+XaF83
-X-Received: by 2002:a05:6000:2401:b0:43d:76dd:269 with SMTP id ffacd0b85a97d-43d76dd0365mr5733100f8f.29.1776074624021;
-        Mon, 13 Apr 2026 03:03:44 -0700 (PDT)
-Received: from fedora.home ([2a02:586:e223:fc00:fc13:e2ba:df80:5e4b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63de2a53sm30995042f8f.5.2026.04.13.03.03.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 03:03:43 -0700 (PDT)
-From: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
-To: pkshih@realtek.com
-Cc: linux-wireless@vger.kernel.org,
-	goainwo@gmail.com,
-	Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
-Subject: [PATCH] wifi: rtw88: Add NULL check for chip->edcca_th
-Date: Mon, 13 Apr 2026 13:02:49 +0300
-Message-ID: <20260413100249.28618-1-npetrakopoulos2003@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1776083447; c=relaxed/simple;
+	bh=wiw6ywt2RZovO3C/yN+ZICzH5i/o0r7j6NqBg8xFv0o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uaMz8NI7xJGLDvodz/O+AWF7c9qYfLWm4SR3zS79QbU0Kk6rr1sdT9fodKTQB9EEj+JVngf0PPfaOxve926MiZX9tPk9Y07uiJiUyqcfE650OEruEirzAcIYRM4u15rnVbCsR7OJ1YGJyNYaTQX8cealSEBtoaDlefzQyvsD5iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=207.46.229.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
+	by app1 (Coremail) with SMTP id ygmowACnHf7q4dxpKSzAAA--.43310S2;
+	Mon, 13 Apr 2026 20:30:34 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: linux-wireless@vger.kernel.org,
+	johannes@sipsolutions.net
+Cc: linville@tuxdriver.com,
+	kilroyd@googlemail.com,
+	yifanwucs@gmail.com,
+	tomapufckgml@gmail.com,
+	yuantan098@gmail.com,
+	bird@lzu.edu.cn,
+	xuyuqiabc@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH v2 1/1] wifi: cfg80211: reject duplicate wiphy cipher suite entries
+Date: Mon, 13 Apr 2026 20:30:00 +0800
+Message-ID: <20260413123000.1480661-1-n05ec@lzu.edu.cn>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,92 +54,129 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-CM-TRANSID:ygmowACnHf7q4dxpKSzAAA--.43310S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGr4rtw1fWFWUGr1rZFykuFg_yoW5GFyDpr
+	W7Gr4Dtry8KF9Fyw4rJa48XFy5XayktF4Iq3yxK3s5C3Z7GrWftw1FgFy3ZF1rAFy09FyY
+	qa4SyF4Du3yqyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB01xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
+	87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
+	8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_
+	JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+	xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
+	w2AFwI0_Jw0_GFylc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY2
+	0_Gr4l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
+	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
+	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUFg4SDUUUU
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQ0QCWncrd8H-wAAsq
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[tuxdriver.com,googlemail.com,gmail.com,lzu.edu.cn];
+	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34696-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34695-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[npetrakopoulos2003@gmail.com,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DMARC_NA(0.00)[lzu.edu.cn];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[n05ec@lzu.edu.cn,linux-wireless@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.919];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.997];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 958653EA2AF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,lzu.edu.cn:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C90F53EC00A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-It was recently reported that rtw_fw_adaptivity_result
-in fw.c dereferences rtwdev->chip->edcca_th without
-a null check. The issue appears to be that devices
-with the 8821CE chip don't define edcca_th in their
-chip info. As a result, when rtw_fw_adaptivity_result
-tries to dereference it, the kernel triggers an oops.
+From: Yuqi Xu <xuyuqiabc@gmail.com>
 
-Add a NULL check for edcca_th before dereferencing
-it in rtw_fw_adaptivity_result() in fw.c and
-rtw_phy_set_edcca_th() in phy.c.
+Duplicate entries in wiphy->cipher_suites do not describe any
+additional capability, but cfg80211 currently accepts them and leaves
+individual consumers to deal with them.
 
-Tested on a 8822CE chip which defines edcca_th, so
-this issue is not present on it, but it still uses
-this driver and I can verify there are no regressions.
+One such consumer is the WEXT compatibility code, which appends a WEP
+key length for each WEP cipher entry it sees. Repeated WEP entries can
+therefore overflow the fixed iw_range::encoding_size array returned by
+SIOCGIWRANGE.
 
-Reported-by: Oleksandr Havrylov <goainwo@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221286
-Link: https://lore.kernel.org/linux-wireless/CALdGYqQriS7mP0vj_rm_xvisfzFVh0hbpy+---48r6bodZO7tg@mail.gmail.com/
-Signed-off-by: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
+Reject duplicate cipher suite entries in wiphy_register() instead.
+This keeps the cipher suite invariant in one place and makes malformed
+wiphy descriptions fail early with -EINVAL, rather than relying on a
+single cfg80211 user to handle duplicates correctly.
+
+Cc: stable@kernel.org
+Fixes: 2ab658f9ce21 ("cfg80211: set WE encoding size based on available ciphers")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
 ---
- drivers/net/wireless/realtek/rtw88/fw.c  | 3 +++
- drivers/net/wireless/realtek/rtw88/phy.c | 3 +++
- 2 files changed, 6 insertions(+)
+changes in v2:
+  - reject duplicate wiphy->cipher_suites entries in wiphy_register()
+  - leave net/wireless/wext-compat.c unchanged
+  - return -EINVAL without WARN_ON() on duplicate entries
+  - v2 link: https://lore.kernel.org/all/32271ec25eae3d23aae2450ab864f37e9d475e24.1774627789.git.xuyuqiabc@gmail.com/
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 48207052e3f8..c4819ef6d54d 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -284,6 +284,9 @@ static void rtw_fw_adaptivity_result(struct rtw_dev *rtwdev, u8 *payload,
- 		result->density, result->igi, result->l2h_th_init, result->l2h,
- 		result->h2l, result->option);
+ net/wireless/core.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 28ca4290ca99..59d93f142fc2 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -731,6 +731,24 @@ static int wiphy_verify_combinations(struct wiphy *wiphy)
+ 	return ret;
+ }
  
-+	if (!edcca_th)
-+		return;
++static bool wiphy_cipher_suites_valid(const struct wiphy *wiphy)
++{
++	int i, j;
 +
- 	rtw_dbg(rtwdev, RTW_DBG_ADAPTIVITY, "Reg Setting: L2H %x H2L %x\n",
- 		rtw_read32_mask(rtwdev, edcca_th[EDCCA_TH_L2H_IDX].hw_reg.addr,
- 				edcca_th[EDCCA_TH_L2H_IDX].hw_reg.mask),
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index e2ac5c6fd500..c10eb28e54ad 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -161,6 +161,9 @@ void rtw_phy_set_edcca_th(struct rtw_dev *rtwdev, u8 l2h, u8 h2l)
++	if (wiphy->n_cipher_suites && !wiphy->cipher_suites)
++		return false;
++
++	for (i = 0; i < wiphy->n_cipher_suites; i++) {
++		for (j = 0; j < i; j++) {
++			if (wiphy->cipher_suites[i] ==
++			    wiphy->cipher_suites[j])
++				return false;
++		}
++	}
++
++	return true;
++}
++
+ int wiphy_register(struct wiphy *wiphy)
  {
- 	const struct rtw_hw_reg_offset *edcca_th = rtwdev->chip->edcca_th;
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
+@@ -863,6 +881,9 @@ int wiphy_register(struct wiphy *wiphy)
+ 	if (res)
+ 		return res;
  
-+	if (!edcca_th)
-+		return;
++	if (!wiphy_cipher_suites_valid(wiphy))
++		return -EINVAL;
 +
- 	rtw_write32_mask(rtwdev,
- 			 edcca_th[EDCCA_TH_L2H_IDX].hw_reg.addr,
- 			 edcca_th[EDCCA_TH_L2H_IDX].hw_reg.mask,
+ 	/* sanity check supported bands/channels */
+ 	for (band = 0; band < NUM_NL80211_BANDS; band++) {
+ 		const struct ieee80211_sband_iftype_data *iftd;
 -- 
-2.53.0
+2.52.0
 
 
