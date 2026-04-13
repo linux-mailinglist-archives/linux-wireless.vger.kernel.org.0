@@ -1,127 +1,161 @@
-Return-Path: <linux-wireless+bounces-34681-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34682-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEFxNrSD3GnnSAkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34681-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 07:48:36 +0200
+	id 0KkZIZuF3GleSQkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34682-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 07:56:43 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7153E790D
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 07:48:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7513E79A1
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 07:56:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7BCB3011C49
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 05:47:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70EF03006951
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 05:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817F02FFF8D;
-	Mon, 13 Apr 2026 05:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADD7382286;
+	Mon, 13 Apr 2026 05:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="GyXPFs6W"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7222773E5;
-	Mon, 13 Apr 2026 05:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32983806B5
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 05:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776059269; cv=none; b=QeSSnTQ5WCx2Uj3fQdKD5vClqnMl+kAXwHmoQSJ7Xs9dksD57pMKsWjzf8ew395QnU6gG7A8xHfQ/5HRlSo+Ooelzk2PAceFZkBb0WVjZnWcwVm+2JFeL9NF5PCSnBjDXXtyzGERfi8IpNVFQRf0vUsE4RLqWnt795LtRmapbk8=
+	t=1776059799; cv=none; b=LT+EmwtpAQejc2863EsPmnhJn6WxymqFOncGGCukOwHvKmngeXdRBxq3/w8KB+OP1dbvWdgOdji52iyACBF8w4qi8Yef4yXLFCkXrXbDl3W3Qjq0qglZJ5J4Q87SaUB4rlQZcSiqRr6eqzop5jh9LOwYXwibYDbswLWjm8L9vkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776059269; c=relaxed/simple;
-	bh=YxepDZzylg7DLxJ1UuKV5wvO8y/p14MplYX7PzmcQ08=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=MWbOo9tARfrBcn9eCmjchtLcu1r1J5lRuBc0zX4vTTkBRHjrM005QWIXYzagKgVmbOA1+vcY/1KRpr+8fALLgx5V8fd5yZ9xvRcO92MT2JFxDdxJKKXegRxQ3RbBl/dgtmtyV2UHqPH0cPMUsH8IqkMp1AyutpAbh+2ZqvUfQSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 2FA4892009C; Mon, 13 Apr 2026 07:47:45 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 283D292009B;
-	Mon, 13 Apr 2026 06:47:45 +0100 (BST)
-Date: Mon, 13 Apr 2026 06:47:45 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: Thomas Gleixner <tglx@kernel.org>
-cc: LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-    x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, 
-    Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
-    linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
-    linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, 
-    linux-mm@kvack.org, David Woodhouse <dwmw2@infradead.org>, 
-    Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
-    Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>, 
-    Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
-    Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-    Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org, 
-    "Jason A. Donenfeld" <Jason@zx2c4.com>, 
-    Richard Henderson <richard.henderson@linaro.org>, 
-    linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
-    linux-arm-kernel@lists.infradead.org, 
-    Catalin Marinas <catalin.marinas@arm.com>, 
-    Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev, 
-    Geert Uytterhoeven <geert@linux-m68k.org>, linux-m68k@lists.linux-m68k.org, 
-    Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
-    linux-openrisc@vger.kernel.org, Helge Deller <deller@gmx.de>, 
-    linux-parisc@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
-    linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, 
-    linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>, 
-    linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-    sparclinux@vger.kernel.org
-Subject: Re: [patch 28/38] mips: Select ARCH_HAS_RANDOM_ENTROPY
-In-Reply-To: <20260410120319.462206386@kernel.org>
-Message-ID: <alpine.DEB.2.21.2604130638270.29980@angie.orcam.me.uk>
-References: <20260410120044.031381086@kernel.org> <20260410120319.462206386@kernel.org>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+	s=arc-20240116; t=1776059799; c=relaxed/simple;
+	bh=bNnrnUhMF6GJlvM4ilhd7gA1kL3sqNq1o++DY5Ig9N4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=JRBZQi1HhqGds09Fmv0TNHknTuqB8F5SVrdIMzVtC1ND2jXiTP7OD/fr9wkEcJ/L41i74S8sCPkRj8vcg+XWPbOFrLJ88O9mgopoKp0XeQVKGuaQzwmrR51PGLJhQmhVp/9MAybk35tCVHwBMiYBSFFhx9+kq6Ml2vHjQSX8+LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=GyXPFs6W; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63D5uHg553727833, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1776059777; bh=bNnrnUhMF6GJlvM4ilhd7gA1kL3sqNq1o++DY5Ig9N4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=GyXPFs6Wz/JUT1kFMhrl1HZsAfch8ooGDKb/LtGdh+y7faNrLQKYStDBGszm74dHC
+	 GNzO3Nv3iU+x00iwV0WdgSqxOO/fdv/x9GNvH3+kpc0GQOQYh23tVW6caeVjfBEA4L
+	 TdKSKuPtIUcrbdbgbaFQ+oAbRDDJq4KH/0zvg8CJ+zN+EvMkEG4a1BOvxOEqIR6XJD
+	 tGVHKVQFK9V6UZUp1pOJAdhRgrKbgRdZH2RhaSRz0k0oufysA67jCe/voFRkp+gOzd
+	 Qx6g6ooWGd27znfZiLT4P4D//5ZOcyak3SMWS28ZQ2/C7KUhf/G19rVUGBiZAq7epV
+	 AKJbtk0lIfRpw==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 63D5uHg553727833
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Apr 2026 13:56:17 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Mon, 13 Apr 2026 13:56:17 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::ed72:3015:2840:4458]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::ed72:3015:2840:4458%10]) with mapi id
+ 15.02.1748.010; Mon, 13 Apr 2026 13:56:17 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+CC: Kalle Valo <kvalo@kernel.org>, Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kernel-dev@igalia.com" <kernel-dev@igalia.com>
+Subject: RE: [PATCH] rtw88: add TX power limit support to 114 and 130 channels
+Thread-Topic: [PATCH] rtw88: add TX power limit support to 114 and 130
+ channels
+Thread-Index: AQHcrZj6b0aZaPK17kqRjXoafOBZKbXX3tPQ///l4ICABPIGEA==
+Date: Mon, 13 Apr 2026 05:56:17 +0000
+Message-ID: <f347beb33eb142cba384bbe9378a061c@realtek.com>
+References: <20260306-rtw88_channel130-v1-1-ff25a5bc930a@igalia.com>
+ <55c23c5551354c6f8752d620f268b37b@realtek.com>
+ <adjN1Tl1N_xpzBHd@quatroqueijos.cascardo.eti.br>
+In-Reply-To: <adjN1Tl1N_xpzBHd@quatroqueijos.cascardo.eti.br>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34681-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[orcam.me.uk];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
-	RCPT_COUNT_TWELVE(0.00)[49];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34682-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[macro@orcam.me.uk,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,angie.orcam.me.uk:mid]
-X-Rspamd-Queue-Id: 7A7153E790D
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:mid]
+X-Rspamd-Queue-Id: DA7513E79A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 10 Apr 2026, Thomas Gleixner wrote:
+Thadeu Lima de Souza Cascardo <cascardo@igalia.com> wrote:
+> On Fri, Apr 10, 2026 at 03:56:11AM +0000, Ping-Ke Shih wrote:
+> > Thadeu Lima de Souza Cascardo <cascardo@igalia.com> wrote:
+> > > Though 114 and 130 are not usual channels, they are found in the wild=
+ with
+> > > setups using 5350MHz as the center frequency of a 80MHz setup.
+> >
+> > What did the AP setup? channel 114 160MHz?
+> > I wonder why rtw88 can select a not usual channel 114 80MHz.
+> >
+> > Please share your environment setup.
+> >
+>=20
+> This is a Mikrotik that uses channel 130 at 80MHz.
 
-> The only solution for now is to uninline random_get_entropy().  Fix up all
-> other dependencies on the content of asm/timex.h in those files which
-> really depend on it.
+I'm surprised that an AP can work on this not usual channel/bandwidth.=20
+Can you change the setting to usual channel/bandwidth? We'd avoid using
+this unsupported channel/bandwidth by [1].
 
- Oh dear!  I'd yet have to fully evaluate the consequences, but offhand 
-this has clearly turned what compiles to a single CPU instruction on the 
-vast majority of MIPS platforms into an expensive function call, possibly 
-also changing the caller from a leaf to a nested function with all the 
-associated execution penalty.  Is there no other way?
+>=20
+> > >
+> > > rtw88 supports that, but issues a WARNING because it cannot find the =
+TX
+> > > power limit for those channels.
+> >
+> > Actually, rtw88 hardware can't support that, so we are working on patch
+> > to avoid selecting unusual channels. Can it work properly with
+> > the AP after this patch?
+> >
+>=20
+> It does work just fine even without the patch. The only issue is the
+> WARNING that is triggered.
+>=20
 
- Cf. commit 06947aaaf9bf ("MIPS: Implement random_get_entropy with CP0 
-Random").
+As internal discussion, hardware doesn't work on channel 130 80M,
+which means connection might be well, but it can't yield expected performan=
+ce.
+More, the power limit is not really verified on ch130 80M, so we wonder
+that the signal might not in expectation.
 
-  Maciej
+By above reasons, we'd avoid using channel 114 and 130.
+
+[1] https://lore.kernel.org/linux-wireless/20260413053601.13037-1-pkshih@re=
+altek.com/T/#u
+
+
 
