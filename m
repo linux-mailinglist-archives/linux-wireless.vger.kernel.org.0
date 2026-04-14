@@ -1,159 +1,132 @@
-Return-Path: <linux-wireless+bounces-34725-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34727-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJj9GS7L3WlqjQkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34725-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 07:05:50 +0200
+	id yP+9AVbd3WlwkQkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34727-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 08:23:18 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70A83F5A77
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 07:05:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4213F5E9E
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 08:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D20B4303DF4C
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 05:02:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69DC43030133
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 06:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D1E2820AC;
-	Tue, 14 Apr 2026 05:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2478634B1A7;
+	Tue, 14 Apr 2026 06:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=r26.me header.i=@r26.me header.b="pciELZ1d"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="XWvxEvkc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-08.mail-europe.com (mail-08.mail-europe.com [57.129.93.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C18282F33
-	for <linux-wireless@vger.kernel.org>; Tue, 14 Apr 2026 05:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.129.93.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDDE33AD9A
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Apr 2026 06:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776142966; cv=none; b=omYIDvwKe/WU2Uac8Brutsj+v6Hc386pBXlgULLK7EKDSeRA0oDOzaywey1zreqN/RpMZYu2sB63gfLp2gIsb6YayEyQyR3vbMgI4q0Hq30QN6QkaUl77o9dbqddliwT9KuSozAv2OuPE3Ka1e0UNZvaQqG2H5K+tP6wIi1H4hI=
+	t=1776147770; cv=none; b=FZBCBVeMgHRrOL9UXfnNnEjULigReLelc07FRXeXd6RhtizjAisJsPAET9EaXs/ZpDEyK219VyKxBr7GQN7JTAtrTqjeFJJ7rNMsBP5JRniSqcXx4gsoshzoFgR9Lu0J7NFl55YOGpndkFWFDkbRZEY3raYgMWbjHt+9IGYQnxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776142966; c=relaxed/simple;
-	bh=OCWLcsNHwCEk6LHbC54ErXgKWLnSLLirH7MrRfWtx/o=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rb8OOJoaVSfGd5QjjqzfAhLbCL6NqgnX2xuxd0AL5hK2Sdwtl0jBvaB5eRyLNFV5jxb1s8WQ+EOPUhhaJDK5veV6UtRc5pF0Y+7PO821PiC17ckyd0HCmGx/zdelJWS2UZcI4r5jxijtUUX4W9Mvx9inznnV2ABADSm7OxlxcqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=r26.me; spf=pass smtp.mailfrom=r26.me; dkim=pass (2048-bit key) header.d=r26.me header.i=@r26.me header.b=pciELZ1d; arc=none smtp.client-ip=57.129.93.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=r26.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=r26.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=r26.me;
-	s=protonmail; t=1776142951; x=1776402151;
-	bh=OCWLcsNHwCEk6LHbC54ErXgKWLnSLLirH7MrRfWtx/o=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=pciELZ1d9XEsOXKnyAdFvX4fin0TH6YjSqA3xZktddGHRvoT/teGA1YvIVcRlR8hp
-	 x6wwj6vezwRisTwGfL+jdraXMty0Eb4iwhyrJoSyfYsiqSDoVEk+5FjWw0b4XcE3ri
-	 YnUJDLKrCh5QFGRpdWqqFcioRkcv2RaqpSjKBExFw5ZRIDZ39we6YHUOdygC6HJPfT
-	 tmfncuycxahorSmqTJNq4+pHh0FjgWtryIh0mzpAs4Yh5AsRSKM0bd4Zcfm4YlT9Wi
-	 7PaxxeBw8bkW9DCX/PgJ7fpCW4OPC0yF6dBQiCqdyNk2Ifx2eu1Pt0FCp99IOZd/a4
-	 KLfDV1GJi5ZrQ==
-Date: Tue, 14 Apr 2026 05:02:26 +0000
-To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-From: Rio Liu <rio@r26.me>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "johannes@sipsolutions.net" <johannes@sipsolutions.net>, "benjamin.berg@intel.com" <benjamin.berg@intel.com>
-Subject: [PATCH] Skip ieee80211_verify_sta_ht_mcs_support check in non-strict mode
-Message-ID: <AKVRf_yEu2mRCJekCJpre5xXMuHa_3_dO7_H1UU8fiKZRjJUf96ZKepiR999NwpiVwmzWBYoKipBpx1rqZatVihMYOCvANUnbeoyI2U7ct0=@r26.me>
-In-Reply-To: <7h5kwW8K-FIgMb5P9VQ1BwuECi1JtpQP3RNBytb3F0k2g6DtBAnz65o1smDvWOr2ag9Kla-YpMSGyN1NsU7yYslLU-K9NCyTAxjyx-PEEF8=@r26.me>
-References: <7h5kwW8K-FIgMb5P9VQ1BwuECi1JtpQP3RNBytb3F0k2g6DtBAnz65o1smDvWOr2ag9Kla-YpMSGyN1NsU7yYslLU-K9NCyTAxjyx-PEEF8=@r26.me>
-Feedback-ID: 77429777:user:proton
-X-Pm-Message-ID: 3024d96ba447ae0cae267b55b94a25e2c14dfc74
+	s=arc-20240116; t=1776147770; c=relaxed/simple;
+	bh=sggiDGSxZLqniiVbUvw0g8ARFTDB+hTXjY63jFp5Sas=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kB5GL2nr2sm1vnLrnDp3ihPw3m4pPDHp3CArniv/CA3C0trKULsDht6NddAC+Ip0Nr5WPfXP880Pd/hb92Givhpk+d4WgqYrU8l3+XGlg+6j6MVcvhjXE5F1DBPTNVTSolAtbcLDEIejFIgHJfGHH3koAe3Mg0OkTZAYGjCjVUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=XWvxEvkc; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63E6MhpoE1508631, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1776147763; bh=FYbgT9bewEC4dCVjX973PjMtrVsBXJL9/e+ZHGLQ6t4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=XWvxEvkcNOl0rc8RwBs2kAsQ6SyBpdp+S3r+dZAS6hH/z5MUgR9/zZ0eDtkIUaNkG
+	 p0h8WO83McLYXcs3Bf9BNE5oGB7jIi0uf5ecqPMD03cwqwaOapgifaXp/+4bl0etIw
+	 dqePNTs5nTOpN2ds6Jdf6WQb9dpebw0gXhQYVGs2E9XbDyWC0pUiMzUge8Le0p3S7r
+	 vQOkJ8ISpq4sTNTqvNx3a8XqAwhoBM+aAxWlqCUjehK+DOR/kx2T7/CBHXccvEB61q
+	 eh+iVVERR9BYkK3PKMcedct0XyoIcLCFVpeNoOtZy/8G8qA5Wc7kHBi4JtsqV3iWWQ
+	 OQfVGmi7RUyfg==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 63E6MhpoE1508631
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Apr 2026 14:22:43 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Tue, 14 Apr 2026 14:22:43 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Tue, 14 Apr 2026 14:22:43 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
+ (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
+ Transport; Tue, 14 Apr 2026 14:22:43 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <Jes.Sorensen@gmail.com>
+Subject: [PATCH rtw-next 0/3] wifi: rtl8xxxu/rtlwifi: validate action frame size
+Date: Tue, 14 Apr 2026 14:22:26 +0800
+Message-ID: <20260414062229.21047-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[r26.me,none];
-	R_DKIM_ALLOW(-0.20)[r26.me:s=protonmail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_EQ_ADDR_ALL(0.00)[];
-	DKIM_TRACE(0.00)[r26.me:+];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TAGGED_FROM(0.00)[bounces-34725-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34727-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rio@r26.me,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.987];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,reddit.com:url,r26.me:dkim,r26.me:email,r26.me:mid]
-X-Rspamd-Queue-Id: D70A83F5A77
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 8F4213F5E9E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Some AP advertise 3 or 4 spatial stream MCS indexes in their basic
-HT-MCS set. On cards with lower (2x2) spatial streams, the check would
-fail, and we'd be stuck with no HT when it in fact work fine with
-2-stream rate. This change makes it so the check is only performed in
-strict mode.
+As mentioned by Johannes [1], some where of rtl8xxxu and rtlwifi check
+fields of action frame without checking size. Refine the code to check
+size by IEEE80211_MIN_ACTION_SIZE() before using.
 
-Signed-off-by: Rio Liu <rio@r26.me>
----
-My previous mail is showing up as empty on LKML for some reason.
-Apologies for that, trying again.
+[1] https://lore.kernel.org/linux-wireless/d4e7f2ec4a7def5820eb41e84ed0815e159cf39b.camel@sipsolutions.net/
 
-There has been some reports that WIFI speed is capped on some routers:
+Ping-Ke Shih (3):
+  wifi: rtl8xxxu: validate action frame size before using in
+    rtl8xxxu_dump_action()
+  wifi: rtlwifi: validate action frame size in rtl_action_proc()
+  wifi: rtlwifi: validate action frame size before using in
+    _rtl_pci_tx_isr()
 
-Link: https://linuxcommunity.io/t/intel-ax210-speeds-capped-at-20-mbps-on-m=
-ultiple-distros/6708/28
-Link: https://bbs.archlinux.org/viewtopic.php?id=3D312952
-Link: https://bbs.archlinux.org/viewtopic.php?id=3D313033
-Link: https://www.reddit.com/r/Rogers/comments/1s89j9f/xb8_5ghz_dfs_channel=
-_broadcasting_at_54_mbps/
-Link: https://www.reddit.com/r/Comcast_Xfinity/comments/1s7fc3f/recent_firm=
-ware_update_to_wifi_gateway_breaking/
-Link: https://www.reddit.com/r/Comcast_Xfinity/comments/1sg9r6z/slow_intern=
-et_for_linux_computers/
+ drivers/net/wireless/realtek/rtl8xxxu/core.c | 13 +++++++++++--
+ drivers/net/wireless/realtek/rtlwifi/base.c  | 17 ++++++++++-------
+ drivers/net/wireless/realtek/rtlwifi/pci.c   |  7 ++++---
+ 3 files changed, 25 insertions(+), 12 deletions(-)
 
-Apparently some APs advertises higher MIMO streams than the device
-supports. In that case, HT-MCS check would fail and we fall back to
-20MHz channel. A patch exists here that bypasses the check completely:
-https://github.com/WoodyWoodster/mac80211-mcs-patch, and have been
-reported to get 80MHz channel back.
 
-This patch adds a check on STRICT flag before verifying HT MCS set from
-the AP, similar to how it is done in ieee80211_verify_sta_vht_mcs_support.
----
- net/mac80211/mlme.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+base-commit: fa489a77e3267e05df95db96ba98e141ec07cbd9
+-- 
+2.25.1
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 810bea1aacc5..0e33733ac634 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -419,6 +419,15 @@ ieee80211_verify_sta_ht_mcs_support(struct ieee80211_s=
-ub_if_data *sdata,
- =09memcpy(&sta_ht_cap, &sband->ht_cap, sizeof(sta_ht_cap));
- =09ieee80211_apply_htcap_overrides(sdata, &sta_ht_cap);
-
-+=09/*
-+=09 * Some AP advertise 3 or 4 spatial stream MCS indexes in their basic H=
-T-MCS
-+=09 * set. On cards with lower (2x2) spatial streams, the check would fail=
-, and
-+=09 * we'd be stuck with no HT when it in fact work fine with 2-stream rat=
-e. So
-+=09 * check it only in strict mode.
-+=09 */
-+=09if (!ieee80211_hw_check(&sdata->local->hw, STRICT))
-+=09=09return true;
-+
- =09/*
- =09 * P802.11REVme/D7.0 - 6.5.4.2.4
- =09 * ...
---
-base-commit: d65b175cfac64ee65506eea7fa573d291a9694ca
 
