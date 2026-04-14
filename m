@@ -1,141 +1,183 @@
-Return-Path: <linux-wireless+bounces-34744-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34745-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAzcBFU53mkxpgkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34744-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 14:55:49 +0200
+	id 4MhVM/yZ3mlrGQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34745-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 21:48:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C51C3FA33E
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 14:55:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C073FE17F
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 21:48:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6A28B3034331
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 12:55:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2F74303C009
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 19:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90776282F3F;
-	Tue, 14 Apr 2026 12:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED942F1FDE;
+	Tue, 14 Apr 2026 19:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=matthew.leach@collabora.com header.b="SgVTncjK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="azpE6OUC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEB620DE3;
-	Tue, 14 Apr 2026 12:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776171318; cv=pass; b=YthD9hYCs/7hjyBNlGLur3Mfsc4oBAyjac0XL7xGJeYzZJz6ndjNlpdd/Be4aUNjx7ltDGKjam9n62FaW+fW/USKpxZBbJEyrl6M/vSj9YRJaiakfRygyjVWae3qEHd8wz1SPsqPobglC9RXj3ZrDkM19FhskDorws5WHIoV0hQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776171318; c=relaxed/simple;
-	bh=CPqicFcytNtnzHuoW7FJrVjBpaHA25SCuocEPa2d7tU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Gn2lbWck6AJh0B9AIH+21CsXdiZqilkGbW5X2NtzIsVdZYoE0GE7+Bk5hYaqxVDkcxWxrjQqNGSzYguaJjqiKeoSKtNEK/5tnE+NYaXUbdlKDZvzRgl2sedipRY24noVkKXmAuVwf7zw4KEj+XJ6/mAVXRsvQKBa6FEeS0jLVyg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=matthew.leach@collabora.com header.b=SgVTncjK; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1776171298; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=PcUlMX5UZ9symej9Q+NUSgMdBQRE95LhZbSCKN22rL55eKVxg9WofZ7XmkBBh8qWK2EKHFFZSJ0TN7HVg+xUzzwXQvLcVROo1WDi+bvYCnmZVYqL8D7A7pU6xn/Rlm5J3sWEPeb5wn8QeFMpTrrdA4xHSw9EzfrGzJ/mF3My2jk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1776171298; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=1udwrSYEoaoUgP2bIJt2dmf8dBn58zMQ1f8UWe8/+Ck=; 
-	b=KNdUysAh3VeExsi8JI3xMchc4xzrtlSfYJxKZ96svR08nYjAYk3tNrUyqINq36Ea2UapxFty/uDv2e0xnm5Qv9EAkRqTg+En8Ea7oTz29D3OWInURLL2JVJ/CfL0c0WbGzRF6E3xA6KPvh4+1sQF1RwSxXJI2osXs6RCjmiOd8U=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=matthew.leach@collabora.com;
-	dmarc=pass header.from=<matthew.leach@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776171298;
-	s=zohomail; d=collabora.com; i=matthew.leach@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:In-Reply-To:References:Date:Date:Message-ID:MIME-Version:Content-Type:Message-Id:Reply-To;
-	bh=1udwrSYEoaoUgP2bIJt2dmf8dBn58zMQ1f8UWe8/+Ck=;
-	b=SgVTncjKDekvDRxFkAKPpHpKFYVOeBWK3J+jvXmUULPcERNSKAw3E1J0q90N3BpA
-	qjuOycWc0ih8o3vUJvYbKpCkZyrTPLr3h2vzvS9hVAyClbA/2R48I8jUrVkkZQIOI0x
-	T4w5EU2sN8JOCZPtIUvu2HbNFE9zoBDzoaL6VaDo=
-Received: by mx.zohomail.com with SMTPS id 1776171296260511.12827373228345;
-	Tue, 14 Apr 2026 05:54:56 -0700 (PDT)
-From: Matthew Leach <matthew.leach@collabora.com>
-To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>,  linux-wireless@vger.kernel.org,
-  ath11k@lists.infradead.org,  linux-kernel@vger.kernel.org,
-  kernel@collabora.com
-Subject: Re: [PATCH] ath11k: workaround firmware bug where peer_id=0
-In-Reply-To: <7dbc3836-c42c-4cbb-a50a-011d82a0ee81@oss.qualcomm.com> (Baochen
-	Qiang's message of "Tue, 14 Apr 2026 15:06:33 +0800")
-References: <20260326-ath11k-null-peerid-workaround-v1-1-0c2fd53202f8@collabora.com>
-	<87h5pxlpg4.fsf@collabora.com>
-	<7dbc3836-c42c-4cbb-a50a-011d82a0ee81@oss.qualcomm.com>
-User-Agent: mu4e 1.14.0; emacs 30.2
-Date: Tue, 14 Apr 2026 13:54:47 +0100
-Message-ID: <87a4v54s88.fsf@collabora.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6312030BB9B
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Apr 2026 19:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776196089; cv=none; b=MXZsP18F72XuPyba0p2EWCNW25DxWgmOAaiSBYCx7CDfxQa2c1GjPPR77XOn1g6R6RzXcNkPh5w5h+d3ElYE6yeLkzaNJJeBd/c/NUhiDPEqym2DaqppSFGPKb0CemWx0nKMy44HpiCOBGpARtXGXCDtOGwtwbN2hAJFtVIClWY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776196089; c=relaxed/simple;
+	bh=e8g/AI4FJ8p7NUYamHZbHF/TeV8/GkPGlAOO3Z1H0VY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lC4Be/W98h3GlEE59mlozzT/7qewFm0Y5+tj4bRCqSAffB8BOJLDEvxk0e7B0yrT8YCkjN4BiZnxsR7+ENSIdrpW7olJlG8n7QdcTDF98TABSGRJPGsZqPoti2tLJvLmwicvDkQKEyzfBBY5yQrYVjB28QGXbCnZTRm5DS0s/94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=azpE6OUC; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-488afb0427eso72948005e9.1
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Apr 2026 12:48:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776196087; x=1776800887; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XTbrmREgIqFspcZJEJHoOzGkDNDV/nNlxzaSlt07LQo=;
+        b=azpE6OUCO1a9BZyCJtDx1o51+O8xdNeLU7diYVvhSTrnixQAjdNF6dxFh3olPfd+gU
+         YOaVBNblyUsJTe7TeJFCoLxudD1Dy1ZJe9AxqtWKU1fXO4n/AnjUThXZAnDykiXL4kjl
+         pu1jqmck1x0tLBNgdgeaspR2KjtDanrHSQxotCf85yWHKvSkWPfVr56GUAENls6qNy4i
+         G16Gs9aYkBwndEBDj61ybtRhfCEPYAZQF663N4/fqBW8d1EZEE3mujOUH7PEpxxa8KPF
+         GtiwCE1DhBEbTDOAEq1/OWD/MSP9YhlccwyyQ+A4gcfwlvDF6XJ0tOlu91mQrw9s/AwD
+         HbBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776196087; x=1776800887;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XTbrmREgIqFspcZJEJHoOzGkDNDV/nNlxzaSlt07LQo=;
+        b=NkXfnY20eD/74Dzm0YhcI4pCajlgWQZC51uNVkEhNAQoG1lLeRLIexA/q16kwe+xHu
+         cyg2Tiugk/wDdTzddakbe5fq5tnKBjA9ASNjgPZPE6xVkDFaZjq9lDk72QINIgZUfuP4
+         eYke/Bwy2QrpNynQx9CX7vgvxMbIzH0dD1VDg6v+goO2KLscnIHfe0NRrJhJ2EDFeq5C
+         Vmi2dQNeXBRr/9GJJweii58rGYgS5JBFMmZFoN7KgdsG0OC6cW6KN+4Ket3IuRlCgbH+
+         DOWeyYfzXZd2b1tI8DXOsvU11+0tAxD0Ibi6ycyEUdjpZcsRQ0RCOIp2Em1r2y5ksQkh
+         ua4A==
+X-Gm-Message-State: AOJu0Yxl/alJfEsMqy1KaWGUSDT+8F/eyDxHPfcEbUuEwQ5DfbFkprD4
+	jDyYJTAmNGXVjB0MXWCtE4hZkH5mRDYsCVx3Ba3BbTDNdO5Fc9ZVyfzU
+X-Gm-Gg: AeBDies5ntJWEBwMLVrtY26l8183adVPzfuddjMLB1CttqyepO0FiqMAY4UoBzzOIzZ
+	JVgYOT2o21ts7QXK4fHxrghrsfXFuRdm3NqD0aB2zbFSu7/URtICIIS/7HZzLrFwT4TruHdS3EG
+	qubktIuYtWvuzI2IaDCh9scOuVQDDzqnYsTCIzJnD7j7aR0phnA8znLwgRE+so9M9JRvPPfE2ns
+	EXMzlefHVPKTDWL7VNEZbVMCA6e2eXbXFI3uoXDGL4DrsSevMxxzLFZ/exq1tTdXxhkPmp8iC9h
+	gQa2GMs3mhF6cOm7q1Y/1LA2I9Z4jAysu4HpMmeT5A6CAGxu9URS9XSmwVLep/fvzj6uuoZ8XR/
+	lAsn5rPeRKC/DaYW9dMrtsW6uSB7ttRS3VpHtcNKX7o7BbIGHChIhTKsqOuixNVR0MgmKCOArcM
+	oLSWAnzBOkpOLyRxu3V5e+1HDYMdGrazMuF6rVstG6J80gFThXRYVtsFm88VqGo746Yx7GBTPqi
+	g==
+X-Received: by 2002:a05:6000:24c2:b0:439:fd13:5c4a with SMTP id ffacd0b85a97d-43d64297b74mr28166740f8f.6.1776196086514;
+        Tue, 14 Apr 2026 12:48:06 -0700 (PDT)
+Received: from fedora ([2a02:586:e909:37df:ce84:3a77:87cf:ccf4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d6fc9d525sm27444924f8f.36.2026.04.14.12.48.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 12:48:05 -0700 (PDT)
+From: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
+To: pkshih@realtek.com
+Cc: linux-wireless@vger.kernel.org,
+	Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>,
+	Oleksandr Havrylov <goainwo@gmail.com>
+Subject: [PATCH v2] wifi: rtw88: Add NULL check for chip->edcca_th
+Date: Tue, 14 Apr 2026 22:47:57 +0300
+Message-ID: <20260414194757.163339-1-npetrakopoulos2003@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260413100249.28618-1-npetrakopoulos2003@gmail.com>
+References: <20260413100249.28618-1-npetrakopoulos2003@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ZohoMailClient: External
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34744-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[collabora.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34745-lists,linux-wireless=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[npetrakopoulos2003@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:dkim,collabora.com:email,collabora.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 7C51C3FA33E
+	NEURAL_HAM(-0.00)[-0.998];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:email]
+X-Rspamd-Queue-Id: 14C073FE17F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Baochen,
+It was recently reported that rtw_fw_adaptivity_result()
+in fw.c dereferences rtwdev->chip->edcca_th without
+a NULL check. The issue is that devices with the
+8821CE chip don't define edcca_th in their chip
+info. As a result, when rtw_fw_adaptivity_result()
+tries to dereference it, the kernel triggers an oops.
 
-Baochen Qiang <baochen.qiang@oss.qualcomm.com> writes:
+Add a NULL check for edcca_th before dereferencing
+it in rtw_fw_adaptivity_result() in fw.c. Placing
+the check at the function entry avoids logging any
+garbage values.
 
-> On 3/30/2026 3:57 PM, Matthew Leach wrote:
->> Hello,
->> 
->> Matthew Leach <matthew.leach@collabora.com> writes:
->> 
+This change does not address the root cause for
+this behavior, but it prevents the NULL dereference
+and the resulting oops while a more permanent solution
+is developed.
 
-[...]
+Tested on a 8822CE chip which defines edcca_th, so
+this issue is not present on it, but it still uses
+this driver and I can verify there are no regressions.
 
-> for chips like QCA2066 and WCN6855 etc 0 is a valid value, however
-> this is not for chips like QCN9074 etc.
->
-> so a possible fix would be to add hardware ops based on chips: for
-> QCN9074 we keep the existing validation on 0 in the ops, while for
-> QCA2066 the ops is a null func. Or even simper we can remove the
-> validation for all chips.
+Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
+Reported-by: Oleksandr Havrylov <goainwo@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221286
+Link: https://lore.kernel.org/linux-wireless/CALdGYqQriS7mP0vj_rm_xvisfzFVh0hbpy+---48r6bodZO7tg@mail.gmail.com/
+Signed-off-by: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
+---
+v2:
+  - Move NULL check to the entry of rtw_fw_adaptivity_result() (Ping-Ke Shih)
+  - Drop rtw_phy_set_edcca_th() hunk; all callers define edcca_th (Ping-Ke Shih)
+  - Change bugzilla reference from Closes: to Link: since this does not
+    address the root cause
 
-In that case, does it make sense to remove the condition check
+ drivers/net/wireless/realtek/rtw88/fw.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-if (rxcb->peer_id)
-
-in ath11k_dp_rx_h_find_peer()? It looks like this has been used as a
-small optimisation, where if peer_id isn't valid it skips checking for
-it in the peer hash table. However, if on newer chips peer_id=0 is
-valid, we should remove this?
-
-Regards,
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index 48207052e3f8..945fedcd375b 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -279,6 +279,9 @@ static void rtw_fw_adaptivity_result(struct rtw_dev *rtwdev, u8 *payload,
+ 	const struct rtw_hw_reg_offset *edcca_th = rtwdev->chip->edcca_th;
+ 	struct rtw_c2h_adaptivity *result = (struct rtw_c2h_adaptivity *)payload;
+ 
++	if (!edcca_th)
++		return;
++
+ 	rtw_dbg(rtwdev, RTW_DBG_ADAPTIVITY,
+ 		"Adaptivity: density %x igi %x l2h_th_init %x l2h %x h2l %x option %x\n",
+ 		result->density, result->igi, result->l2h_th_init, result->l2h,
 -- 
-Matt
+2.53.0
+
 
