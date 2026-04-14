@@ -1,239 +1,198 @@
-Return-Path: <linux-wireless+bounces-34715-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34717-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Mk2MEeD3WmffAkAu9opvQ
-	(envelope-from <linux-wireless+bounces-34715-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 01:59:03 +0200
+	id cC/qAq2O3Wn5fQkAu9opvQ
+	(envelope-from <linux-wireless+bounces-34717-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 02:47:41 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B467D3F4544
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 01:59:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822F63F4A1A
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 02:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 09E82300515B
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2026 23:58:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 33543301B046
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2026 00:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DEF39E6E4;
-	Mon, 13 Apr 2026 23:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF8721ABD7;
+	Tue, 14 Apr 2026 00:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Pv1QuxKd";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="edFnnEkS"
+	dkim=pass (2048-bit key) header.d=jqluv-com.20251104.gappssmtp.com header.i=@jqluv-com.20251104.gappssmtp.com header.b="s/qKECxP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A775630EF6C
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 23:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776124733; cv=none; b=db0UG8fNLs6K8mN/YHe1cISZRMp6UrPblvQGrG2/Xao/ZgWAMsZm+pvXRM0WN8XBgTa1D1jbZob015gngELXX/e/43itbWFb/PuQIxVaC6+QikGpNxUERDOLvmIGbOZxipu0XSmUMRBca87cBupNZPkSR0GDFFR49FuyjxVw4w4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776124733; c=relaxed/simple;
-	bh=uLhu0ZhLYPYGxe2LSZ42GLgMgTXBRY8+IQv2ivHSrNg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hpQg+o/n+4MMorUCm98hS8Zv6ax2s5H+ezQtN51J7tDKYaFGlO64JrugqgTqvv3f9fbDUdvYtXmhFfL8b3UBEuFVUTtueGAag/qVxR6dNy7B40UEmV2ZX8kkz6f/kLpkFHbQ+kEzQ4qTITJVqURDZ88U+csz4d0a5OBanrTnQNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Pv1QuxKd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=edFnnEkS; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63DLD3cj969091
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 23:58:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=WtmbfjqxuCsqPvNY55CdE1
-	l1BTHuJDYnMaJvgQfTDqg=; b=Pv1QuxKdLnzXkNdvrCnokJAPIdH2Z1xaQVgyno
-	wg9rZJ6GKR3cLZK0nw3DEnP77nHpw8WnQC9+O/k5xPiN4ReFiXCYGKvvFNao6xzk
-	tsisDnqsI0OZzzOHTyivGRtnejfKOcYP9pfGEqyobwIcsdsfUz91B/fP+gxjHRYZ
-	oG+kLMxNtcEgmbey/g9Kpms5DYNREepzWSBtuyOqRt8Pk/1TSdLfLMkB9orgS1Bp
-	E85n7DW4guxJaGfi7rSy7lYmsPiog/6gWpolzsnIn3Mt5NmUuqLqFI4MpeykYK4k
-	91cVD2WwY4Mu6FtRUOym2/WcrjeO6grMbQ0nkmMr48fOh+Ww==
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dh86v0b8h-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 23:58:49 +0000 (GMT)
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2bdf75bc88fso7659408eec.0
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 16:58:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C252248861
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Apr 2026 00:47:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776127648; cv=pass; b=ahRsJqBLXkT6i/yvraXPpeFTgh1D5W4SId2WZOHX/fiMdX6DBFImdZK9tKFfKQ1e/wbMGUU1/vkWj2cf+IJZODvGxevklfyr3oDgCdM8GUEPULNeTWwCSArVenA5hgjXTY6HMcftAwIK1n3Zbjih17rPDSRPNDjaUpoiyCE6PdA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776127648; c=relaxed/simple;
+	bh=Ud3mtmsoftIgkmjV9a9u3lTqUE43P1+mj6ADly2pE5k=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Nmcn8j6vaMkzyYe04PaJmyiuUei9PLdHRO5YipZ8p49L2SXYZiFhs8KKhsU/f0GeaOEVxd8ejpcd14Bc6qA9RfWqPRgqrF+Py8qL7XBWhN00664oOvnNuTEmZ1eq1XvzXf4t4BuEYM7iuGSenPWpaplzdgOGcm/UNkxo7OSI5Ss=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jqluv.com; spf=none smtp.mailfrom=jqluv.com; dkim=pass (2048-bit key) header.d=jqluv-com.20251104.gappssmtp.com header.i=@jqluv-com.20251104.gappssmtp.com header.b=s/qKECxP; arc=pass smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jqluv.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=jqluv.com
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-50b2ebca625so44606771cf.0
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2026 17:47:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776127645; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fyH29IiWHm/opoek78xsiX1MB6LJYhu5589f9yCPVZ7eAcOcrJSBD8TxlEjHbwiRyb
+         +p2x0nPyAb+l7wS+Pvet8N8i/ThOvPjXGhIIbYQnC2UiXNfEJv2S4tVfUtAQggIdMZdW
+         D4jp7Jr5VTEE8ZQf/+atFo6CocQ0NfBfLiDgBoG/vfMmR1WFjQiF4GiDKIX5AW/+CV7v
+         hgyI9282QLe4hmzFKtbfIgnQJ4VnhnSHMvgkXHgnPoFvvY69ouuVayKJqrK18JKWGrpG
+         GmqUACZtEObA/KqYkhRX2phWUKnZJTzidUX4RF5seyLNnlY1XkMMcE0PfsGjAdrrsTNJ
+         /hqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=DZthKiBBNfazaDb9Xs1lqHaz7Zn12D0w53dftCxHhcU=;
+        fh=kwUmd9pLcs8Qf8gSw3VLuctaY1pYaFLWM7FR6VV8RRo=;
+        b=NnQHYBW+LlnBEhS/912Mf9MynMastYG3LikAprtlIQbB9IT9y/nTm1zFm3yOR88cuK
+         VA20q3f5ewqMBnW6UVyVSI8gWglTiAWoP5mAYnxCgEOxUWXbDDZgpGzu8sZwHW0rnhmK
+         xbGglXHNbpKGN9/NjZR6jfBoRUcIQMO+cYqt/yJUz91U8Mc6I1DpSWFMm0Ivj1uJHzN5
+         +EFSJPXNWnfKTyrcsiqZ6KpLh5RnZ9MFnvz57R2pRQT6NMr8tI/SxTnq1+yE0vbsb+jK
+         LnQt6fL1RH2Zio7QGbtMofkRx7EjT897J6UqIE38K6/TTrnaqSCRnBUk8NYmXo/EJnKE
+         bsgQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776124729; x=1776729529; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WtmbfjqxuCsqPvNY55CdE1l1BTHuJDYnMaJvgQfTDqg=;
-        b=edFnnEkSItCRi7vFytLq2AKMrz/RkHmiKm7kNbd5qavLVzrSnVAzvBzLE/VyvBQoqf
-         3WJw1iyfM06PAhKSy4f1G5rb0Twl22igdznetdVO8x/yVufMLWs1T79K1RKVJKMh6HOo
-         DfEWtyDI6J9DeCgcmqlQTUdrYoB1BJ0kVYQdgChhFjRljFUpYbQBwXppKd5pksJer3hP
-         uiS1W8myodiI5SNUPwaD6bzZLWEfgb6+WdJwyQopq5UmdrncKQrr1dZ30Dqqy0yGJCQ9
-         KV+QvhlhyF5dfXVLiBIjswwSVV6vNMqB9AO6mC8wQjPBnoy1g1Wa1a8DWITcUKCgx8Uh
-         wZKA==
+        d=jqluv-com.20251104.gappssmtp.com; s=20251104; t=1776127645; x=1776732445; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DZthKiBBNfazaDb9Xs1lqHaz7Zn12D0w53dftCxHhcU=;
+        b=s/qKECxP1SNlmi15qF50aCCscJCWoeifNzBvZ3AjE2cMNFl1JfU7Ht99GsnJIom0Wz
+         16IpH6IXa6W/CJbdmshtbRUc03oUFvv3TALhCSipNylBj2jbpPijPNgI7i/flL69zvm5
+         4K6wdwnMZmtLupYDP2SpsQhXi6vX6NJ+AIa2U0lsaO+q9DXQX25vYhDjubo1WKhZb+iv
+         cSxau+SqIRM9qJNyNGy/pQ3drQsfQj3ZLlWxirBQJe9XO5GgTTFY979tO75ceMLH6cRX
+         E5RBEy9/qGjPlatcTyZ+QqPfPPdSACPDdzH9hWxxYW4ncW5GfjAPYWLMmOGn0Uwfns82
+         b86g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776124729; x=1776729529;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WtmbfjqxuCsqPvNY55CdE1l1BTHuJDYnMaJvgQfTDqg=;
-        b=bZRJ8MKCN6xZ+N8OdbepZI6twLyiPUyj+BDS7qDfCKw4Y81mNGH8f01gwV3IzPZvWS
-         feDZJKCXs7AHYPE9FX98BEXppcTdRQj89tX1X66IQqNhhK2aHWpHyzsJADizmxfsLRWY
-         D0+zTzH9MvOPU5v7Py0983rQqldgkh/UawVvv0phXGNlXU31zNS6plpIm53WmusS2R52
-         ssGsUERIXb03Qsl64ke6Pvf2Jfm1694CpyaEnNHsjoho0ca7r2ymHVXeBxLhluU2lBjK
-         v6OuTKCm6H3kIVv8cggW1UwCkpZwcMNDP+ssbygCOgfPe203vSAde9+fgpN3S90oaTxS
-         Y/Rw==
-X-Gm-Message-State: AOJu0YwjU8PskR9Fqt/YGaBcq3ngv1m1eIU+LwgGnXthHUW20Tn7tzrM
-	X6SaFmPIZv/85Cb4KgD2FbAIdKSOZxRjtubbIYbTE2ONch7/ALbdUFlAOqlfOzoGAiCprXcXVHr
-	gUYqo3GY7a+e5lvKLMRBuSejCBqi7taoPOyxnEpF49LihCnlzYJdwdi8G0Jk2+mXwt9QRlg==
-X-Gm-Gg: AeBDievow8ixU3LWcVjyju38W4OJS6LD8GCW9HeCOqunmRzKmFrfvnL2Zzju8w4x6Nv
-	gnfV5iKSMR+ACSIQtiRlF7Y33OzhmtXz5mWp7YqoQDyRn1SLEjVw+QyxUW3/6MF3XZnRIy5efJR
-	+YEon8w6lfby7V+bFkPD4y47ndMPTfrZXI/7fB0BaNv2ZZuTkG9eEMb8OmVV4Ey10nwvxc13JLC
-	w/fdCWDFrzmmfuf8O9tCv3Lp4k2n2PoIY4FIwp0T1yfAFOIq1Je6S8wEAZYo4WXBvgaIShTIYfU
-	r8qqi7YPt9QJr3IwkNREw392getTeA5vtL4vuAOaVG0OrYjnfpbBSUBJjACo1g+ZqG72fDNYTja
-	jwGWtz4REhXy/vQjU/izlHqJGPiwWDtR2UVd4A071gIVrFdW1UuvE91q16/GUauz4NruXIXYyPr
-	za
-X-Received: by 2002:a05:7300:7495:b0:2c1:85a:d25d with SMTP id 5a478bee46e88-2d5871afa9cmr9657701eec.1.1776124728529;
-        Mon, 13 Apr 2026 16:58:48 -0700 (PDT)
-X-Received: by 2002:a05:7300:7495:b0:2c1:85a:d25d with SMTP id 5a478bee46e88-2d5871afa9cmr9657692eec.1.1776124727943;
-        Mon, 13 Apr 2026 16:58:47 -0700 (PDT)
-Received: from hu-jjohnson-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d562ac344csm18650600eec.25.2026.04.13.16.58.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 16:58:47 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Date: Mon, 13 Apr 2026 16:58:46 -0700
-Subject: [PATCH ath-next] wifi: ath12k: Remove unused HAL_RX_REO_QUEUE_INFO
- macros
+        d=1e100.net; s=20251104; t=1776127645; x=1776732445;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DZthKiBBNfazaDb9Xs1lqHaz7Zn12D0w53dftCxHhcU=;
+        b=fuDZT0T2ahZePPI/El2wGkj2hwMHELjzEPuLb7qWyFcyMDd4PjRbFo4STZML4BTL+v
+         yoDG2s9ArcQ1JuJSy27AzLebGToXTHDd/rbSrwTlh/QcNhEGvv9tJQo1TCWgP+QhEmLm
+         eDFHbenOZGZ9auAex7rqOa/1NH1g64apjdUX9IikJuTN/b9qW6TQZ9Jj4xoegssMHMae
+         Qqla1ypDU3sGZWTt8bRaVYDCjO5BMXzT0GOUYUTMtfu6BkcIHK9IHG/z0uPz9PVe/lc7
+         xRqz8mh9vst3SIuaRrS8kgSoX2PpSaQ9D55cBEwdcEKSCGziiY8ZAzZWXfrSD5Ac5G0y
+         BVVA==
+X-Forwarded-Encrypted: i=1; AFNElJ81xCb5Y4TNgCuC/SBbsm0hXP11IlWjpxTT6u2kCX7SrSXsd3O9Y6VcZbAh8+amWnaOG72mgoGsKhQFm1HSoQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw52qS3eSBnKkqy8Ew7sC45qEE4/GJfmWYD8BpD9IKWqXcHdmcT
+	cj7+UyBgbHitG6S7R2IZ9WwIYWxIVo9WMjwBAAmBGoDAiZhiBTadi2j7yZJC3jztuWrVwvnJOEu
+	BsvQFxR8zFbVZ2BBITdYSMt+TTpInqViK4ZpIPOL0KA==
+X-Gm-Gg: AeBDievGIiTkfTA8XoTI3WqSXArHof3bXt8i5WB8sZHUYdRHj6XGCu9eAK+EP1WSbRF
+	oDdQqCykFb5lSbSm7YZuBVJvpH6K+84oGifP0zBexgpQvH/d9Sxy04kEKW1hnFK1CsEmRQP/L1j
+	x3G9bdn1fPGeTJZ/6iHOc/Oatu3TrEnY7p8nL8i2FTuXNVKDL5fWHHRJ78dkdP08OrZCcoUlG6w
+	xWXZOeF7UYIVouMLXYHX78OJV2Pg8hwjYSe+gnUwBYZxhDVc5zXa8eNqIwrfEeflDfoxGaUVbh/
+	9d9UyAYNHV0+XfguQOQ9gRqqkg==
+X-Received: by 2002:a05:622a:1c0c:b0:50d:8ed0:7f10 with SMTP id
+ d75a77b69052e-50dd6abfc41mr197783761cf.13.1776127645412; Mon, 13 Apr 2026
+ 17:47:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-hal_rx_reo_queue_info2_msdu_count-v1-1-c4c92ccf77b9@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIADWD3WkC/5WNwQrCMBAFf0VyNpJdQ0BP/odISJuNDdjEJk2pl
- P67oScPHvTyYHgws7BMyVNm593CEk0++xgqwH7H2s6EO3FvKzMUqIQUknfmodOsE0U9FCqkfXA
- RdZ9t0W0sYeSCkBpljZAKWPU8Ezk/b40rM2PHA80ju9Wn83mM6bXFJ9j+PzoTcOAOTq5BkJJQX
- WLOh6GYRxv7/lBni0z4KT79IsYqbloAVNYdrXBfxOu6vgEWoCdgPAEAAA==
-X-Change-ID: 20260404-hal_rx_reo_queue_info2_msdu_count-0e2eb6da0461
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEzMDIzNSBTYWx0ZWRfX53yEbSFSU6v2
- XABzGXfCl6aQMqjw+n6vADBKS2uYVUaDUksG01v0ULkKTU8FmWpFcddoRw/JG0HxlcBRHQfHxHV
- H8DhjFBO4lKxLscv269yHJGlHrzQJBBgukxJPQMbaRnavp5dWrDaBE+Kl5DaTYZeNBKphlcSjJv
- FspC9g/RVAs+O+e5ghx7jzI7mNVHKPSMitQSkhkJJ1ffPVw5dcAtCff1GRTh71QfD/Sykspip7F
- YPV3HxHu9lQlbvoyZvNnpZxv55XbvomAGN5MTvGfd5/+j/08XouXcpZdcBnvSg4/TP5IBhiYsEx
- gHDMbhBIYmjPmQi3/9z+xfPWL2ddmqytvjZ2E86fkIEqDJku1c8rYpu4S01T0YzGHJLRfuOIcBa
- 9s+GUiyXVeIKvSTAPKHUElykgjqgtHsAaa0/tNHAKLBL4qcA/ls673qn+Y3fAwwp4EJ44R456ae
- D79nmm+q/KL+/txgEww==
-X-Proofpoint-ORIG-GUID: YJmWS-WtAoVduyYRPCn1n1KwmHOVnOAa
-X-Authority-Analysis: v=2.4 cv=Iowutr/g c=1 sm=1 tr=0 ts=69dd8339 cx=c_pps
- a=Uww141gWH0fZj/3QKPojxA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=EUspDBNiAAAA:8 a=NnysC0QT6Qjdb-6y4-4A:9 a=QEXdDO2ut3YA:10
- a=PxkB5W3o20Ba91AHUih5:22
-X-Proofpoint-GUID: YJmWS-WtAoVduyYRPCn1n1KwmHOVnOAa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-13_03,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0
- spamscore=0 phishscore=0 clxscore=1015 malwarescore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604130235
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+From: Geramy Loveless <gloveless@jqluv.com>
+Date: Mon, 13 Apr 2026 17:47:13 -0700
+X-Gm-Features: AQROBzBqW-ojsb0u6FPA-ZqTzp-M3dGCgDcmDSGT-PWMOIZcL11AfWIsX9zzabM
+Message-ID: <CAGpo2mcGfBL=ve1zyqJSdRSNzzd5MXX0NSBTs6HTZCjSkwmV1g@mail.gmail.com>
+Subject: [Question] mt7925: CSI (Channel State Information) support in STA firmware?
+To: deren.wu@mediatek.com
+Cc: chank.chen@mediatek.com, Bo.Jiao@mediatek.com, ryder.lee@mediatek.com, 
+	shayne.chen@mediatek.com, sean.wang@mediatek.com, mingyen.hsieh@mediatek.com, 
+	nbd@nbd.name, lorenzo@kernel.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	SUBJECT_ENDS_QUESTION(1.00)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[jqluv-com.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34715-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34717-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[jqluv.com];
+	DKIM_TRACE(0.00)[jqluv-com.20251104.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gloveless@jqluv.com,linux-wireless@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: B467D3F4544
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid,jqluv-com.20251104.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: 822F63F4A1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Many of the HAL_RX_REO_QUEUE_INFO macros are unused, so remove them.
+Hi Deren, Chank,
 
-No functional change. Compile Tested only.
+I'm working on enabling CSI extraction on the MT7925 (Filogic 360,
+PCIe) running as a station. I've built the full kernel-side
+infrastructure (vendor netlink, ring buffer, debugfs, event handlers)
+and have been testing against the stock firmware:
 
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
----
-This issue was highlighted by AI review which noted that the
-HAL_RX_REO_QUEUE_INFO2_MSDU_COUNT macro was missing GENMASK().
-However, rather than fix an unused macro, it seems "better" to just
-remove it (along with all other unused HAL_RX_REO_QUEUE_INFO macros).
----
- drivers/net/wireless/ath/ath12k/wifi7/hal_desc.h | 26 ------------------------
- 1 file changed, 26 deletions(-)
+  WIFI_RAM_CODE_MT7925_1_1.bin
+  Version: t-neptune-main-mt7925-2249 (build 2025-12-10)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_desc.h b/drivers/net/wireless/ath/ath12k/wifi7/hal_desc.h
-index e1ab47b44433..822de3a4abc8 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/hal_desc.h
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_desc.h
-@@ -2100,41 +2100,15 @@ enum hal_rx_reo_queue_pn_size {
- 
- #define HAL_RX_REO_QUEUE_INFO0_VLD			BIT(0)
- #define HAL_RX_REO_QUEUE_INFO0_ASSOC_LNK_DESC_COUNTER	GENMASK(2, 1)
--#define HAL_RX_REO_QUEUE_INFO0_DIS_DUP_DETECTION	BIT(3)
--#define HAL_RX_REO_QUEUE_INFO0_SOFT_REORDER_EN		BIT(4)
- #define HAL_RX_REO_QUEUE_INFO0_AC			GENMASK(6, 5)
--#define HAL_RX_REO_QUEUE_INFO0_BAR			BIT(7)
- #define HAL_RX_REO_QUEUE_INFO0_RETRY			BIT(8)
--#define HAL_RX_REO_QUEUE_INFO0_CHECK_2K_MODE		BIT(9)
--#define HAL_RX_REO_QUEUE_INFO0_OOR_MODE			BIT(10)
- #define HAL_RX_REO_QUEUE_INFO0_BA_WINDOW_SIZE		GENMASK(20, 11)
- #define HAL_RX_REO_QUEUE_INFO0_PN_CHECK			BIT(21)
--#define HAL_RX_REO_QUEUE_INFO0_EVEN_PN			BIT(22)
--#define HAL_RX_REO_QUEUE_INFO0_UNEVEN_PN		BIT(23)
--#define HAL_RX_REO_QUEUE_INFO0_PN_HANDLE_ENABLE		BIT(24)
- #define HAL_RX_REO_QUEUE_INFO0_PN_SIZE			GENMASK(26, 25)
- #define HAL_RX_REO_QUEUE_INFO0_IGNORE_AMPDU_FLG		BIT(27)
- 
- #define HAL_RX_REO_QUEUE_INFO1_SVLD			BIT(0)
- #define HAL_RX_REO_QUEUE_INFO1_SSN			GENMASK(12, 1)
--#define HAL_RX_REO_QUEUE_INFO1_CURRENT_IDX		GENMASK(22, 13)
--#define HAL_RX_REO_QUEUE_INFO1_SEQ_2K_ERR		BIT(23)
--#define HAL_RX_REO_QUEUE_INFO1_PN_ERR			BIT(24)
--#define HAL_RX_REO_QUEUE_INFO1_PN_VALID			BIT(31)
--
--#define HAL_RX_REO_QUEUE_INFO2_MPDU_COUNT		GENMASK(6, 0)
--#define HAL_RX_REO_QUEUE_INFO2_MSDU_COUNT		(31, 7)
--
--#define HAL_RX_REO_QUEUE_INFO3_TIMEOUT_COUNT		GENMASK(9, 4)
--#define HAL_RX_REO_QUEUE_INFO3_FWD_DUE_TO_BAR_CNT	GENMASK(15, 10)
--#define HAL_RX_REO_QUEUE_INFO3_DUPLICATE_COUNT		GENMASK(31, 16)
--
--#define HAL_RX_REO_QUEUE_INFO4_FRAME_IN_ORD_COUNT	GENMASK(23, 0)
--#define HAL_RX_REO_QUEUE_INFO4_BAR_RECVD_COUNT		GENMASK(31, 24)
--
--#define HAL_RX_REO_QUEUE_INFO5_LATE_RX_MPDU_COUNT	GENMASK(11, 0)
--#define HAL_RX_REO_QUEUE_INFO5_WINDOW_JUMP_2K		GENMASK(15, 12)
--#define HAL_RX_REO_QUEUE_INFO5_HOLE_COUNT		GENMASK(31, 16)
- 
- struct hal_rx_reo_queue {
- 	struct hal_desc_header desc_hdr;
+I found the connac3 CSI patch for mt7996 in the MediaTek SDK feeds:
 
----
-base-commit: 15551ababf6d4e857f2101366a0c3eaa86dd822c
-change-id: 20260404-hal_rx_reo_queue_info2_msdu_count-0e2eb6da0461
+  0095-mtk-mt76-mt7996-Add-connac3-csi-feature.patch
+  (by Chank Chen, Jan 2024)
 
+which defines:
+
+  MCU_UNI_CMD_CSI_CTRL  = 0x4A
+  MCU_UNI_EVENT_CSI_REPORT = 0x4A
+
+  Command tags:
+    UNI_CMD_CSI_STOP          = 0
+    UNI_CMD_CSI_START         = 1
+    UNI_CMD_CSI_SET_FRAME_TYPE = 2
+    ...
+
+I've been sending MCU_WM_UNI_CMD(CSI_CTRL) with tag=1 (CSI_START) to
+the MT7925 firmware. The command returns success (ret=0) but the
+firmware never generates MCU_UNI_EVENT_CSI_REPORT (eid=0x4A) events.
+
+All commands return success but none produce CSI I/Q data events.
+
+My questions:
+
+  1. Does the MT7925 STA firmware (CE variant) have the CSI reporting
+     handler compiled in? Or is CSI only available in AP firmware
+     builds (mt7996, mt7981)?
+
+  2. If CSI is not in the current firmware, is there a firmware build
+     or roadmap that would add MCU_UNI_CMD_CSI_CTRL support for the
+     MT7925 in STA mode?
+
+  3. Is there any alternative path to obtain per-subcarrier channel
+     estimates on the MT7925? (e.g., via ICAP, WiFi Spectrum mode,
+     or PHY register reads)
+
+The kernel-side driver patches are ready and tested. The full
+infrastructure (NL80211 vendor commands, TLV event parsing, ring
+buffer) will work immediately once the firmware starts delivering
+CSI events.
+
+Hardware: ASUS ROG Strix Halo (Ryzen AI Max+ 395)
+WiFi: MT7925 PCIe [14c3:7925]
+Kernel: 7.0-rc7 with mt76 from mainline + CSI patches
+Firmware: WIFI_RAM_CODE_MT7925_1_1.bin v2249
+
+Thanks for any guidance.
+
+Geramy Loveless
 
