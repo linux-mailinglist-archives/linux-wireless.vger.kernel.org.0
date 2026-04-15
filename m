@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-34752-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34753-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJW0Ji8z32msQAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34752-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 08:41:51 +0200
+	id GE0eGKYz32lqQAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34753-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 08:43:50 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B935400EF5
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 08:41:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED73400FBD
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 08:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0C67C30B764D
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 06:40:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DCB5E307BBE7
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 06:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F143909B3;
-	Wed, 15 Apr 2026 06:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C12390CA9;
+	Wed, 15 Apr 2026 06:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DlKjOfJ1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmG1V1Qh"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB8F39022B;
-	Wed, 15 Apr 2026 06:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A886F39022B;
+	Wed, 15 Apr 2026 06:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776235244; cv=none; b=YCgdM63N5HDwZNoqJU0CSmA5Q0tyuElP8oXjDzKT62KgZaWEqGPLb5oOOipXEv/wdB4RqByof883biKjhFX21l067Jz+o6GaJ310ecQBzJJ3B1exIGQSHT1kS/qfLFD7+Ml3CJI0asJ7rleRGciUydvWsViNHDhLYpNBRCn7xxY=
+	t=1776235411; cv=none; b=KnZkTeDuB5pVkUJcahE3xSqd5nffmgeQoMLS3v6mu35wrBZynFjROgNDr0B8znRZXKGOOITBosWm/9BPs3vMhSKz83I9oMgPLUCaOjmDDMQzwG9X2cXQA6X13t0Ni7sbXjS/dK2OAsfjZZP+8D2AJG6ox+HT8m6Dl+/WGPZS3SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776235244; c=relaxed/simple;
-	bh=JuAmOkFB1T4BBikf9XJrOpaIxFaqy9eIR0tbD7W+hcw=;
+	s=arc-20240116; t=1776235411; c=relaxed/simple;
+	bh=3l4dmsvsnQyxf5GbIefFkBoRTtzYmP3a/BJez1WWJU0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P7hO8q21QoVHP/2XSvknaptKbQBdGDLVyEQvMXmcIotbVJlec+2Tep2OGyZDOHB4uipePTdzYgtwVuByxLmr3nVir6B9dE5pwqifwZZAnCjV9t4fZnA6V44QK3yqlIRfed1Z6ZQDnYg8515BuLdTJshGjZCjr7RXSuw+ctv2zFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DlKjOfJ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE83C19424;
-	Wed, 15 Apr 2026 06:40:34 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=MqawphiTbFeFgXjZv1FksI5trzJKm/0AZ1VcCiXjjAStm6GhZVfNUtSgjKJz8w5jcv0V+K+xK8wxgenf7qPeHXvxgbLHk0ZvXw43w3Wd3alc2dzcm73gmggyNjdAGVFf+zRfCGndR0LOSYoQ1R7W3TRyxzGYEsIWQuNSCMaMaEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmG1V1Qh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC3EC19424;
+	Wed, 15 Apr 2026 06:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776235244;
-	bh=JuAmOkFB1T4BBikf9XJrOpaIxFaqy9eIR0tbD7W+hcw=;
+	s=k20201202; t=1776235411;
+	bh=3l4dmsvsnQyxf5GbIefFkBoRTtzYmP3a/BJez1WWJU0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DlKjOfJ14Zp8pzmzxv2haxtgzYDjsnPs9R8hg2+ycACzTHbr7acuR5kjJvTsifuiB
-	 hmrefCsvmiJ8S/ASyRhbrEu0eVEjKJ3qiGiGhV8DLnoIKoNSgDAJBNt6yXX+x/8aFy
-	 cbTK+0ijPOgP2gpFlzJ0R/vA3lR/joE90UCrW7sEAhyUfhJKoV4AaCRHEIu2Vh3Hp5
-	 aR84FJEpkPgT8eAw/WK6T1w2mBmwVEl1Ig0fRwMwg4Aw9VRf7WIrCoVnB+PZUTjNWh
-	 1hjyxTxme+UDITGfxUZ0n5MCjKKM/eoWvChVelii168UjL1u2yP9UhA0p+paS1ha63
-	 sy53C3I7gK3Lg==
-Message-ID: <fd21186c-a67b-4485-ae0b-1dd62dd484ab@kernel.org>
-Date: Wed, 15 Apr 2026 08:40:33 +0200
+	b=NmG1V1Qh8X51h9yFFz/RGI1o84gKp7RHsiOopESELjzBD3f9G2epzFGKqLdlrBBvM
+	 85BRNDv9YgePWTAd/mWHoOfcVqkZ9t54hSGyPy5okYzBxuCsVMlJue+y2wSJhbVhIb
+	 lb1DnIaWF178QVSBg4jx+V4/OFjaBNwtpoh3Tr4lJfjGJizmbNJlvTEiLyH2ILDjm+
+	 9pOpGMDHM1wUUHlqTgOAicNu6S/pI86hh/KXo0HpBVSU8mvpdrsn1yE6nfT23v28aD
+	 LJpZNPtQ4Ce9RQkXbclJOLPdj0XzY6SczhKB/CIS9XrbEQGTKPU35O7cIRgQtYcfwt
+	 Wv24vurrRB4xg==
+Message-ID: <0758843e-8f75-4c82-b9c0-25fab502e62f@kernel.org>
+Date: Wed, 15 Apr 2026 08:43:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [patch 05/38] treewide: Remove CLOCK_TICK_RATE
+Subject: Re: [patch 07/38] treewide: Consolidate cycles_t
 To: Thomas Gleixner <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 Cc: Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev,
@@ -83,10 +83,10 @@ Cc: Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
  linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
 References: <20260410120044.031381086@kernel.org>
- <20260410120317.910770161@kernel.org>
+ <20260410120318.045532623@kernel.org>
 Content-Language: fr-FR
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260410120317.910770161@kernel.org>
+In-Reply-To: <20260410120318.045532623@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -94,11 +94,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34752-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34753-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -115,292 +115,64 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,synopsys.com:url]
-X-Rspamd-Queue-Id: 4B935400EF5
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1ED73400FBD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 
-Le 10/04/2026 à 14:18, Thomas Gleixner a écrit :
-> This has been scheduled for removal more than a decade ago and the comments
-> related to it have been dutifully ignored. The last dependencies are gone.
+Le 10/04/2026 à 14:19, Thomas Gleixner a écrit :
+> Most architectures define cycles_t as unsigned long execpt:
 > 
-> Remove it along with various now empty asm/timex.h files.
+>   - x86 requires it to be 64-bit independent of the 32-bit/64-bit build.
+> 
+>   - parisc and mips define it as unsigned int
+> 
+>     parisc has no real reason to do so as there are only a few usage sites
+>     which either expand it to a 64-bit value or utilize only the lower
+>     32bits.
+> 
+>     mips has no real requirement either.
+> 
+> Move the typedef to types.h and provide a config switch to enforce the
+> 64-bit type for x86.
 > 
 > Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-
-For powerpc:
-
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-
 > ---
->   arch/alpha/include/asm/timex.h      |    4 ----
->   arch/arc/include/asm/timex.h        |   15 ---------------
->   arch/arm/mach-omap1/Kconfig         |    2 +-
->   arch/hexagon/include/asm/timex.h    |    3 ---
->   arch/m68k/include/asm/timex.h       |   15 ---------------
->   arch/microblaze/include/asm/timex.h |   13 -------------
->   arch/mips/include/asm/timex.h       |    8 --------
->   arch/openrisc/include/asm/timex.h   |    3 ---
->   arch/parisc/include/asm/timex.h     |    2 --
->   arch/powerpc/include/asm/timex.h    |    2 --
->   arch/s390/include/asm/timex.h       |    2 --
->   arch/sh/include/asm/timex.h         |   24 ------------------------
->   arch/sparc/include/asm/timex.h      |    2 +-
->   arch/sparc/include/asm/timex_32.h   |   14 --------------
->   arch/sparc/include/asm/timex_64.h   |    2 --
->   arch/um/include/asm/timex.h         |    9 ---------
->   arch/x86/include/asm/timex.h        |    3 ---
->   17 files changed, 2 insertions(+), 121 deletions(-)
+>   arch/Kconfig                       |    4 ++++
+>   arch/alpha/include/asm/timex.h     |    3 ---
+>   arch/arm/include/asm/timex.h       |    1 -
+>   arch/loongarch/include/asm/timex.h |    2 --
+>   arch/m68k/include/asm/timex.h      |    2 --
+>   arch/mips/include/asm/timex.h      |    2 --
+>   arch/nios2/include/asm/timex.h     |    2 --
+>   arch/parisc/include/asm/timex.h    |    2 --
+>   arch/powerpc/include/asm/timex.h   |    4 +---
+>   arch/riscv/include/asm/timex.h     |    2 --
+>   arch/s390/include/asm/timex.h      |    2 --
+>   arch/sparc/include/asm/timex_64.h  |    1 -
+>   arch/x86/Kconfig                   |    1 +
+>   arch/x86/include/asm/tsc.h         |    2 --
+>   include/asm-generic/timex.h        |    1 -
+>   include/linux/types.h              |    6 ++++++
+>   16 files changed, 12 insertions(+), 25 deletions(-)
 > 
-> --- a/arch/alpha/include/asm/timex.h
-> +++ b/arch/alpha/include/asm/timex.h
-> @@ -7,10 +7,6 @@
->   #ifndef _ASMALPHA_TIMEX_H
->   #define _ASMALPHA_TIMEX_H
->   
-> -/* With only one or two oddballs, we use the RTC as the ticker, selecting
-> -   the 32.768kHz reference clock, which nicely divides down to our HZ.  */
-> -#define CLOCK_TICK_RATE	32768
-> -
->   /*
->    * Standard way to access the cycle counter.
->    * Currently only used on SMP for scheduling.
-> --- a/arch/arc/include/asm/timex.h
-> +++ /dev/null
-> @@ -1,15 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0-only */
-> -/*
-> - * Copyright (C) 2004, 2007-2010, 2011-2012 Synopsys, Inc. (https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwww.synopsys.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cac13d5b928bc4eabd9b708de96fb5935%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639114203455047148%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=uCL895qVLUoy3Stzhmgph2DiYmjpd4RPdQIW2dZcJ7w%3D&reserved=0)
-> - */
-> -
-> -#ifndef _ASM_ARC_TIMEX_H
-> -#define _ASM_ARC_TIMEX_H
-> -
-> -#define CLOCK_TICK_RATE	80000000 /* slated to be removed */
-> -
-> -#include <asm-generic/timex.h>
-> -
-> -/* XXX: get_cycles() to be implemented with RTSC insn */
-> -
-> -#endif /* _ASM_ARC_TIMEX_H */
-> --- a/arch/arm/mach-omap1/Kconfig
-> +++ b/arch/arm/mach-omap1/Kconfig
-> @@ -74,7 +74,7 @@ config OMAP_32K_TIMER
->   	  currently only available for OMAP16XX, 24XX, 34XX, OMAP4/5 and DRA7XX.
->   
->   	  On OMAP2PLUS this value is only used for CONFIG_HZ and
-> -	  CLOCK_TICK_RATE compile time calculation.
-> +	  timer frequency compile time calculation.
->   	  The actual timer selection is done in the board file
->   	  through the (DT_)MACHINE_START structure.
->   
-> --- a/arch/hexagon/include/asm/timex.h
-> +++ b/arch/hexagon/include/asm/timex.h
-> @@ -9,9 +9,6 @@
->   #include <asm-generic/timex.h>
->   #include <asm/hexagon_vm.h>
->   
-> -/* Using TCX0 as our clock.  CLOCK_TICK_RATE scheduled to be removed. */
-> -#define CLOCK_TICK_RATE              19200
-> -
->   #define ARCH_HAS_READ_CURRENT_TIMER
->   
->   static inline int read_current_timer(unsigned long *timer_val)
-> --- a/arch/m68k/include/asm/timex.h
-> +++ b/arch/m68k/include/asm/timex.h
-> @@ -7,21 +7,6 @@
->   #ifndef _ASMm68K_TIMEX_H
->   #define _ASMm68K_TIMEX_H
->   
-> -#ifdef CONFIG_COLDFIRE
-> -/*
-> - * CLOCK_TICK_RATE should give the underlying frequency of the tick timer
-> - * to make ntp work best.  For Coldfires, that's the main clock.
-> - */
-> -#include <asm/coldfire.h>
-> -#define CLOCK_TICK_RATE	MCF_CLK
-> -#else
-> -/*
-> - * This default CLOCK_TICK_RATE is probably wrong for many 68k boards
-> - * Users of those boards will need to check and modify accordingly
-> - */
-> -#define CLOCK_TICK_RATE	1193180 /* Underlying HZ */
-> -#endif
-> -
->   typedef unsigned long cycles_t;
->   
->   static inline cycles_t get_cycles(void)
-> --- a/arch/microblaze/include/asm/timex.h
-> +++ /dev/null
-> @@ -1,13 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0 */
-> -/*
-> - * Copyright (C) 2006 Atmark Techno, Inc.
-> - */
-> -
-> -#ifndef _ASM_MICROBLAZE_TIMEX_H
-> -#define _ASM_MICROBLAZE_TIMEX_H
-> -
-> -#include <asm-generic/timex.h>
-> -
-> -#define CLOCK_TICK_RATE 1000 /* Timer input freq. */
-> -
-> -#endif /* _ASM_TIMEX_H */
-> --- a/arch/mips/include/asm/timex.h
-> +++ b/arch/mips/include/asm/timex.h
-> @@ -19,14 +19,6 @@
->   #include <asm/cpu-type.h>
->   
->   /*
-> - * This is the clock rate of the i8253 PIT.  A MIPS system may not have
-> - * a PIT by the symbol is used all over the kernel including some APIs.
-> - * So keeping it defined to the number for the PIT is the only sane thing
-> - * for now.
-> - */
-> -#define CLOCK_TICK_RATE 1193182
-> -
-> -/*
->    * Standard way to access the cycle counter.
->    * Currently only used on SMP for scheduling.
->    *
-> --- a/arch/openrisc/include/asm/timex.h
-> +++ b/arch/openrisc/include/asm/timex.h
-> @@ -25,9 +25,6 @@ static inline cycles_t get_cycles(void)
->   }
->   #define get_cycles get_cycles
->   
-> -/* This isn't really used any more */
-> -#define CLOCK_TICK_RATE 1000
-> -
->   #define ARCH_HAS_READ_CURRENT_TIMER
->   
->   #endif
-> --- a/arch/parisc/include/asm/timex.h
-> +++ b/arch/parisc/include/asm/timex.h
-> @@ -9,8 +9,6 @@
->   
->   #include <asm/special_insns.h>
->   
-> -#define CLOCK_TICK_RATE	1193180 /* Underlying HZ */
-> -
->   typedef unsigned long cycles_t;
->   
->   static inline cycles_t get_cycles(void)
 > --- a/arch/powerpc/include/asm/timex.h
 > +++ b/arch/powerpc/include/asm/timex.h
-> @@ -11,8 +11,6 @@
+> @@ -11,9 +11,7 @@
 >   #include <asm/cputable.h>
 >   #include <asm/vdso/timebase.h>
 >   
-> -#define CLOCK_TICK_RATE	1024000 /* Underlying HZ */
+> -typedef unsigned long cycles_t;
 > -
->   typedef unsigned long cycles_t;
->   
->   static inline cycles_t get_cycles(void)
-> --- a/arch/s390/include/asm/timex.h
-> +++ b/arch/s390/include/asm/timex.h
-> @@ -177,8 +177,6 @@ static inline void local_tick_enable(uns
->   	set_clock_comparator(get_lowcore()->clock_comparator);
->   }
->   
-> -#define CLOCK_TICK_RATE		1193180 /* Underlying HZ */
-> -
->   typedef unsigned long cycles_t;
->   
->   static __always_inline unsigned long get_tod_clock(void)
-> --- a/arch/sh/include/asm/timex.h
-> +++ /dev/null
-> @@ -1,24 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0 */
-> -/*
-> - * linux/include/asm-sh/timex.h
-> - *
-> - * sh architecture timex specifications
-> - */
-> -#ifndef __ASM_SH_TIMEX_H
-> -#define __ASM_SH_TIMEX_H
-> -
-> -/*
-> - * Only parts using the legacy CPG code for their clock framework
-> - * implementation need to define their own Pclk value. If provided, this
-> - * can be used for accurately setting CLOCK_TICK_RATE, otherwise we
-> - * simply fall back on the i8253 PIT value.
-> - */
-> -#ifdef CONFIG_SH_PCLK_FREQ
-> -#define CLOCK_TICK_RATE		(CONFIG_SH_PCLK_FREQ / 4) /* Underlying HZ */
-> -#else
-> -#define CLOCK_TICK_RATE		1193180
-> -#endif
-> -
-> -#include <asm-generic/timex.h>
-> -
-> -#endif /* __ASM_SH_TIMEX_H */
-> --- a/arch/sparc/include/asm/timex.h
-> +++ b/arch/sparc/include/asm/timex.h
-> @@ -4,6 +4,6 @@
->   #if defined(__sparc__) && defined(__arch64__)
->   #include <asm/timex_64.h>
->   #else
-> -#include <asm/timex_32.h>
-> +#include <asm-generic/timex.h>
->   #endif
->   #endif
-> --- a/arch/sparc/include/asm/timex_32.h
-> +++ /dev/null
-> @@ -1,14 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0 */
-> -/*
-> - * linux/include/asm/timex.h
-> - *
-> - * sparc architecture timex specifications
-> - */
-> -#ifndef _ASMsparc_TIMEX_H
-> -#define _ASMsparc_TIMEX_H
-> -
-> -#define CLOCK_TICK_RATE	1193180 /* Underlying HZ */
-> -
-> -#include <asm-generic/timex.h>
-> -
-> -#endif
-> --- a/arch/sparc/include/asm/timex_64.h
-> +++ b/arch/sparc/include/asm/timex_64.h
-> @@ -9,8 +9,6 @@
->   
->   #include <asm/timer.h>
->   
-> -#define CLOCK_TICK_RATE	1193180 /* Underlying HZ */
-> -
->   /* Getting on the cycle counter on sparc64. */
->   typedef unsigned long cycles_t;
->   #define get_cycles()	tick_ops->get_tick()
-> --- a/arch/um/include/asm/timex.h
-> +++ /dev/null
-> @@ -1,9 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0 */
-> -#ifndef __UM_TIMEX_H
-> -#define __UM_TIMEX_H
-> -
-> -#define CLOCK_TICK_RATE (HZ)
-> -
-> -#include <asm-generic/timex.h>
-> -
-> -#endif
-> --- a/arch/x86/include/asm/timex.h
-> +++ b/arch/x86/include/asm/timex.h
-> @@ -14,9 +14,6 @@ static inline unsigned long random_get_e
->   }
->   #define random_get_entropy random_get_entropy
->   
-> -/* Assume we use the PIT time source for the clock tick */
-> -#define CLOCK_TICK_RATE		PIT_TICK_RATE
-> -
->   #define ARCH_HAS_READ_CURRENT_TIMER
->   
->   #endif /* _ASM_X86_TIMEX_H */
-> 
-> 
+> -static inline cycles_t get_cycles(void)
+> +ostatic inline cycles_t get_cycles(void)
 
+What is 'ostatic' ?
+
+>   {
+>   	return mftb();
+>   }
 
