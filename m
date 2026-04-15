@@ -1,197 +1,172 @@
-Return-Path: <linux-wireless+bounces-34813-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34814-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ACDzI1XI32kmYwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34813-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:18:13 +0200
+	id KH4cH2XQ32m4ZAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34814-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:52:37 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F283D406B9D
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:18:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7F5406EAA
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:52:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 64CDC301EC59
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 17:18:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3BACB308C518
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 17:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8243E8C59;
-	Wed, 15 Apr 2026 17:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939433CBE7F;
+	Wed, 15 Apr 2026 17:42:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bues.ch header.i=@bues.ch header.b="HOM3+atI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from shell.v3.sk (mail.v3.sk [167.172.186.51])
+Received: from mail.bues.ch (bues.ch [116.203.120.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8324D373C04;
-	Wed, 15 Apr 2026 17:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.172.186.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D5F39099A
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 17:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.120.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776273486; cv=none; b=a6wXYeLZyzTDs+5EMV46+zswdSjpiKSLrT6+AnOGRKJ+q46iBt+x9uW/lZUNOaCOxpr00PSvCZNRMzs2hJv9YQnjacWHoqB/ZQDmB6LPrGt8AcZT9wc2itN0VrytqCudYlEhBjtAV/iCx5D8h8YoVXRDQ7WPH08HNwK75JX58A0=
+	t=1776274978; cv=none; b=EcWR/hUAv75zZocnGJE+Y499AeqYtrZf6QXijgSge2Rp1Yxgj+gA0QfibWIiU+3u1887gOaNIDF0CeXmd4SUbDTCxGD3lgWHQ/EybXdjo7xy1IJ1D0Z1aTgX2YgJ36KiaA4R9+d4bteICoOwetUfi7ppwbcrFt4VXwsoaLvehpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776273486; c=relaxed/simple;
-	bh=BXM+to8siLu81KiUOonJM1w02O5RIRoRGMXyVjaji/c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tBf9FjrusieI65aSr4lvhwZGIGA5DcvdOFjlPKfgit+UiwklWKSBzrp2iKuSDhzGHsirDgqtNqLTq6G2emKzgUYmuqLlMxg8b9bws3syiehuqk1JnnhJQOsBppkDkGgC2Uwl+GuE60Tx1qhhqIRkFy3s3Z4WX6dhO5nDCf3g3rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=v3.sk; spf=pass smtp.mailfrom=v3.sk; arc=none smtp.client-ip=167.172.186.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=v3.sk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=v3.sk
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by zimbra.v3.sk (Postfix) with ESMTP id DD4E1E2111;
-	Wed, 15 Apr 2026 16:52:53 +0000 (UTC)
-Received: from shell.v3.sk ([127.0.0.1])
-	by localhost (zimbra.v3.sk [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id R4N2wv-dUtxI; Wed, 15 Apr 2026 16:52:53 +0000 (UTC)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by zimbra.v3.sk (Postfix) with ESMTP id 4E47AE210E;
-	Wed, 15 Apr 2026 16:52:53 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at zimbra.v3.sk
-Received: from shell.v3.sk ([127.0.0.1])
-	by localhost (zimbra.v3.sk [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id MkbUL-gib38t; Wed, 15 Apr 2026 16:52:53 +0000 (UTC)
-Received: from demiurge.local (unknown [109.183.109.54])
-	by zimbra.v3.sk (Postfix) with ESMTPSA id 06174E210D;
-	Wed, 15 Apr 2026 16:52:53 +0000 (UTC)
-From: Lubomir Rintel <lkundrak@v3.sk>
-To: linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH] zd1211rw/mac: Fix out-of-bounds upon RX when unassociated
-Date: Wed, 15 Apr 2026 19:08:10 +0200
-Message-ID: <20260415170810.1809398-1-lkundrak@v3.sk>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1776274978; c=relaxed/simple;
+	bh=iMU8Q7tk0mzvGfxhQdx/C/pXwAGPrpTMzMu2PP4YAmI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mHHcnVjA1+BWRZwMFvD7RTXZ8irBuBol3mzLsWCexMfoxnx9/EXadNId7RV2862ANtiAYTkUN4IFah62OacKa43wzzOEbWHbgUmY0qUwLMp1xEeDVOBoOYYGOilpEedxhfjk7P4jLZha3lzlCLWJo4EaVsPow9/iV9TgFZ3RlgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; dkim=pass (2048-bit key) header.d=bues.ch header.i=@bues.ch header.b=HOM3+atI; arc=none smtp.client-ip=116.203.120.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bues.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
+Date: Wed, 15 Apr 2026 19:41:50 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bues.ch; s=main;
+	t=1776274974;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iMU8Q7tk0mzvGfxhQdx/C/pXwAGPrpTMzMu2PP4YAmI=;
+	b=HOM3+atIPHRb4nfcOcS9numuJVQJCQtHAjo+ljFid+5XbI2ICaacgElaz9xAV0s4shEWPb
+	2ssYa71UCKofBzWT4mayl6mpSecJ9MU4HyrNvhz8hiSMZ818j5A5vRqAZvl/fIHC2Qds+n
+	hE13Np8rju1PojUPpujNFpnT41LeTC+/ZHQha3rE2iBR5eC8tiqrXJ0Iri4acAoO8/IQhm
+	CuWZbj3xj/nJuL2wnXRSd28AjQNxGKSIxkbCuDrleKtCPj8SuImqb5l3Lo9QkvJHOUBDnU
+	YPhygfkKnHqbMjbaUoDUI0egb5OYxwKZwYvCs20mADOgU/LL3NZkxPk/BXJPWw==
+From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To: "Joshua Peisach" <jpeisach@ubuntu.com>
+Cc: "Jonas Gorski" <jonas.gorski@gmail.com>, "Johannes Berg"
+ <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>,
+ <b43-dev@lists.infradead.org>, "b43-dev"
+ <b43-dev-bounces@lists.infradead.org>
+Subject: Re: Firmware for reverse engineering b43?
+Message-ID: <20260415194150.291dbe2d@barney>
+In-Reply-To: <DHTW44HOVZLS.GFYBZTKJTMP4@ubuntu.com>
+References: <DHS1BJ5XFYRC.GCF9PXS0OSRI@ubuntu.com>
+	<c62a448843f189d78187de18d3fcb955f2779d13.camel@sipsolutions.net>
+	<DHSUDVMGW0PS.2LYWKGG1C1135@ubuntu.com>
+	<CAOiHx==kVm0OKWRKi4VHSEEr6ZygzrpNiA=zj+zEHT6_rgZ3CQ@mail.gmail.com>
+	<DHTPAVC76140.1JLO3HNQARQ9Q@ubuntu.com>
+	<CAOiHx=n8awRRvArvG8sWqEokojXL6ppFRJ8_SOuGAddDb1D32A@mail.gmail.com>
+	<20260415175748.61aa7993@barney>
+	<DHTW44HOVZLS.GFYBZTKJTMP4@ubuntu.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [0.04 / 15.00];
+Content-Type: multipart/signed; boundary="Sig_/5GlhseULoQivVP7Dmr.YsLG";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Spamd-Result: default: False [-0.70 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	SUBJECT_ENDS_QUESTION(1.00)[];
+	R_MIXED_CHARSET(0.56)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[bues.ch,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[bues.ch:s=main];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34813-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[v3.sk];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkundrak@v3.sk,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-34814-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[8];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.944];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[bues.ch:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[m@bues.ch,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,sipsolutions.net,vger.kernel.org,lists.infradead.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F283D406B9D
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ubuntu.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DB7F5406EAA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Upon plugging the adapter, UBSAN complains about an out of bounds read:
+--Sig_/5GlhseULoQivVP7Dmr.YsLG
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-  zd1211rw 1-12:1.0: firmware version 4725
-  zd1211rw 1-12:1.0: zd1211b chip 083a:4505 v4810 high 00-13-f7 AL2230_RF=
- pa0 g--NS
-  ------------[ cut here ]------------
-  UBSAN: array-index-out-of-bounds in drivers/net/wireless/zydas/zd1211rw=
-/zd_mac.c:1059:26
-  index -1 is out of range for type 'ieee80211_channel [14]'
-  CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.17.12-300.fc43.x86_6=
-4 #1 PREEMPT(lazy)
-  Hardware name: MSI MS-7A68/B250 KRAIT GAMING (MS-7A68), BIOS H.00 12/15=
-/2016
-  Call Trace:
-   <IRQ>
-   dump_stack_lvl+0x5d/0x80
-   ubsan_epilogue+0x5/0x2b
-   __ubsan_handle_out_of_bounds.cold+0x54/0x59
-   zd_mac_rx+0x453/0x470 [zd1211rw]
-   ? raise_softirq_irqoff+0x9/0x30
-   rx_urb_complete+0x178/0x260 [zd1211rw]
-   ? queue_work_on+0x73/0x80
-   ? led_trigger_blink_oneshot+0x78/0xa0
-   __usb_hcd_giveback_urb+0x9d/0x120
-   usb_giveback_urb_bh+0xb1/0x140
-   process_one_work+0x18f/0x350
-   bh_worker+0x1ac/0x210
-   tasklet_action+0x10/0x30
-   handle_softirqs+0xed/0x340
-   __irq_exit_rcu+0xcb/0xf0
-   common_interrupt+0x85/0xa0
-   </IRQ>
-   <TASK>
-   asm_common_interrupt+0x26/0x40
-  RIP: 0010:cpuidle_enter_state+0xcc/0x660
+On Wed, 15 Apr 2026 13:04:40 -0400
+"Joshua Peisach" <jpeisach@ubuntu.com> wrote:
+> Well, if the regression risk is that high, then I guess I'll let it be.
 
-  Code: 00 00 e8 f7 36 ef fe e8 72 f0 ff ff 49 89 c4 0f
-        1f 44 00 00 31 ff e8 23 55 ed fe 45 84 ff 0f 85
-        02 02 00 00 fb 0f 1f 44 00 00 <85> ed 0f 88 d3 01
-        00 00 4c 63 f5 49 83 fe 0a 0f 83 9f 04 00 00 49
-  RSP: 0018:ffffffff9dc03df8 EFLAGS: 00000246
-  RAX: ffff8a5440447000 RBX: ffff8a53df03ea40 RCX: 0000000000000000
-  RDX: 001bd812ca957581 RSI: 00000000248799d1 RDI: 0000000000000000
-  RBP: 0000000000000002 R08: fffffffc74360e92 R09: ffff8a53df02cbe0
-  R10: 001bd81656731313 R11: 0000000000000000 R12: 001bd812ca957581
-  R13: ffffffff9df0fa60 R14: 0000000000000002 R15: 0000000000000000
-   ? cpuidle_enter_state+0xbd/0x660
-   cpuidle_enter+0x31/0x50
-   cpuidle_idle_call+0xf5/0x160
-   ? ktime_get+0x3c/0xf0
-   do_idle+0x78/0xd0
-   cpu_startup_entry+0x29/0x30
-   rest_init+0xe7/0xf0
-   start_kernel+0x49d/0x4a0
-   x86_64_start_reservations+0x24/0x30
-   x86_64_start_kernel+0x126/0x130
-   common_startup_64+0x13e/0x141
-   </TASK>
-  ---[ end trace ]---
+> Sure. I might just make sure everything is using register definitions
+> instead of hardcoded values, but then leave it there.
 
-It is correct: if zd_mac_rx() is called when unassociated, the channel
-is 0, becomes -1 under assumption there's a proper channel number
-starting from 1.
+I mean, I don't want to discourage you from doing anything,
+but I just wanted to point out that this is a lot more work than just imple=
+ment
+a TODO here and there.
 
-Add a missing bounds check.
+For most of the code we don't really know what it does exactly.
+That may change a bit, if you pull over some code from the newer drivers.
+But I don't think the situation will improve fundamentally.
 
-Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
----
- drivers/net/wireless/zydas/zd1211rw/zd_mac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+> So I guess this driver just sits here.. not quite pointless to be
+> removed from the main tree, but not quite worth the effort to bring it
+> up to speed.
 
-diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c b/drivers/net/w=
-ireless/zydas/zd1211rw/zd_mac.c
-index 03948f0b4628..c59d1929a69c 100644
---- a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
-+++ b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
-@@ -1022,6 +1022,7 @@ int zd_mac_rx(struct ieee80211_hw *hw, const u8 *bu=
-ffer, unsigned int length)
- 	const struct rx_status *status;
- 	struct sk_buff *skb;
- 	int bad_frame =3D 0;
-+	u8 channel;
- 	__le16 fc;
- 	int need_padding;
- 	int i;
-@@ -1055,7 +1056,9 @@ int zd_mac_rx(struct ieee80211_hw *hw, const u8 *bu=
-ffer, unsigned int length)
- 		}
- 	}
-=20
--	stats.freq =3D zd_channels[_zd_chip_get_channel(&mac->chip) - 1].center=
-_freq;
-+	channel =3D _zd_chip_get_channel(&mac->chip);
-+	if (channel > 0 && channel <=3D ARRAY_SIZE(zd_channels))
-+		stats.freq =3D zd_channels[channel - 1].center_freq;
- 	stats.band =3D NL80211_BAND_2GHZ;
- 	stats.signal =3D zd_check_signal(hw, status->signal_strength);
-=20
+Well, it probably still works well on the (few) devices it worked well on,
+because it basically hasn't changed.
+There are many devices which were never supported at all or were never supp=
+orted
+properly. It's not that just your device is missing to complete
+the perfect picture :-)
+
+There might be better uses of your time than working on this legacy stuff.
+For example working on the microcode reverse engineering and tools and
+get them updated for the current generation of devices is probably
+much more useful. And I think much more fun, too.
+Or something else altogether.
+
 --=20
-2.52.0
+Michael B=C3=BCsch
+https://bues.ch/
 
+--Sig_/5GlhseULoQivVP7Dmr.YsLG
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmnfzd4ACgkQ9TK+HZCN
+iw6hcRAAhtbf9pPiLjU6v5aNDqOs27ICOjU4ys4u4AYEUk1iYWSkY/oQTxbnX4r1
+GdRFaRijhVwtxP2mzDGEbwi8LcjyZatA0ANhdPEO9h+UeXc1xjQAiMNgGVY2t3KH
+56HllAN10+BgSQoFmysytW1jbxawzFvctetJ4mGWyX8SaoNn0MMCiACrWoP2rFH1
+Wx5bTvImGPiR+KP8FV62gAsMHZ9tBw0WyvZ7fDFc17ePAMLFNqkYeWbY00fziRnd
+9oLCTnu9k1Edky4+W30HaYSZdjCcM7Tx/bkyVFaKqhT61NsfubmZBI6ilw2lEbew
+A0dZU/rTGaf2RczgTRK+QN4lAyykBFcb23VFYB05ybNb7BALXyD0NiI33rdrIoik
+Lde/pe8KAME4+mLZCPBsIS8OOK5iQpIICneCvl3JjsLMTxZ5ejrPbqurDmgC9e7J
+LUFJc71rpUPfstEbJ5N0t/Y7NThzXL6/uuyQ0GkPyyqJ5QeIaU4qFFa7GPrylsod
+R+525VAMss0H2l7aO2Mog8P0bxYOmb2KpzxXe6icaNdxSgktVDMVkygAJh0IH1Ka
+eq3sPCBMGmW/IBFgLyXiohW6uqU2WPWgCn7oTKpGK+hvrH/nivRbcMDPQw7wRDEA
+3p0bU1uJ1L/xTSk9nUpc5cZX7OC+KCjVHfs3crE4WCPN0fMmXkw=
+=BYmO
+-----END PGP SIGNATURE-----
+
+--Sig_/5GlhseULoQivVP7Dmr.YsLG--
 
