@@ -1,186 +1,149 @@
-Return-Path: <linux-wireless+bounces-34810-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34808-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aI+WEuC332mMYQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34810-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 18:08:00 +0200
+	id gPeiDe+232lVYQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34808-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 18:03:59 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DBE40641D
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 18:07:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8150C406333
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 18:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7DE3730055CB
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 16:07:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 041B030342A3
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 16:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FB53164B7;
-	Wed, 15 Apr 2026 16:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0A43264F3;
+	Wed, 15 Apr 2026 16:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bues.ch header.i=@bues.ch header.b="BN5wFWY3"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b="Ysi2ejSE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.bues.ch (bues.ch [116.203.120.240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E7978F3A
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 16:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.120.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25C331619B
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 16:02:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776269240; cv=none; b=JCdXuUu5NT+i+Jd7eyuMVKi5U/cncG/vhIpa192nJw/RfrkFKjtF7YyfIHyETRBg5rmbWvFPKRHsd+fGdojN2CS/oN7CYIEdTZQMwr5PCl0PrQZ/W/44WK1R/B1pVdwX5d2QkukY4FadXSV2ot6DXJVLmZrWd+gTklxc+kDkDZI=
+	t=1776268941; cv=none; b=Oi4NZJ46WL87KMIe8KutB73Vh8/OBweJiFx8R+k18iyeEnaPdO15lDQnN/41gqO7mbbkkp8kEBmHrh35GoCVedWprp/vo62HUoxsXOTpYwn+yoOjhGb17n5uD5ngTAfyFTVJeEmae349LoP6oF7XZIgYBqv2QsOVJ5gvOxPCgAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776269240; c=relaxed/simple;
-	bh=J/J/rHcH80SrKxja8htcH+s0y97ceMSk5zZnzhnKpkI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Seexd7y0VUfC7OANp8jsFv4eLkj9kTHIg803U8uCCj3PO486Dt4xBAjpLBDi+yfQ6+IOhFboAGDBWeh+vBjGENf+VSGPzmE1XVBKc6l6+w4L5dF/xrUl03pTKtwwR9KoK3iQIuL7DDsdR2F9ItoBdID+JgjCSNQIXsldQbiaKd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; dkim=pass (2048-bit key) header.d=bues.ch header.i=@bues.ch header.b=BN5wFWY3; arc=none smtp.client-ip=116.203.120.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bues.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
-Date: Wed, 15 Apr 2026 17:57:48 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bues.ch; s=main;
-	t=1776268691;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J/J/rHcH80SrKxja8htcH+s0y97ceMSk5zZnzhnKpkI=;
-	b=BN5wFWY3B9u47kWoWHKih/s7VQ1i5WIU8pZ6Qpup8hBLQx6+nq7T8QqdRDu8mlVBPYhTOP
-	gyb7RwMuvYPlE4Vt4ue745CpKycVYC8lq4n2O8IHH2xPqi73w6Fx7YNfAxL+uRwbNcFXVe
-	pTQfaG1fYNVcFq3qsPYDamF4S//GBLmxrYpWfr6/05kuXL6pX4egpwSfXpyBiq2P2dNJKb
-	rWs8DhCXx6qy7WXcBW/leVRuyhpBJGYdbeiON39Og+88BHBpns+iHfKxBbMCWm101NNJSS
-	1W7BFuoFhP2ABQtFaZAIEyBYpwLhq+mOoMxpOqrXbJ4EyX6RPv9AMYr8xFQuQg==
-From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: Joshua Peisach <jpeisach@ubuntu.com>, Johannes Berg
- <johannes@sipsolutions.net>, b43-dev@lists.infradead.org,
- linux-wireless@vger.kernel.org
-Subject: Re: Firmware for reverse engineering b43?
-Message-ID: <20260415175748.61aa7993@barney>
-In-Reply-To: <CAOiHx=n8awRRvArvG8sWqEokojXL6ppFRJ8_SOuGAddDb1D32A@mail.gmail.com>
-References: <DHS1BJ5XFYRC.GCF9PXS0OSRI@ubuntu.com>
- <c62a448843f189d78187de18d3fcb955f2779d13.camel@sipsolutions.net>
- <DHSUDVMGW0PS.2LYWKGG1C1135@ubuntu.com>
- <CAOiHx==kVm0OKWRKi4VHSEEr6ZygzrpNiA=zj+zEHT6_rgZ3CQ@mail.gmail.com>
- <DHTPAVC76140.1JLO3HNQARQ9Q@ubuntu.com>
- <CAOiHx=n8awRRvArvG8sWqEokojXL6ppFRJ8_SOuGAddDb1D32A@mail.gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1776268941; c=relaxed/simple;
+	bh=fjACtKvPHRtGF1SPcxaa4P86YugKlVBxFvWpt+6u+58=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W/ubhpqeP3CeQ7IgTK/Gha3fFmwsd5jr7o3Buwuec8MMeV94zkvxR0N2hfFLjPtiiNWtfZXE46Ed4Zg2riFU51SivNgaG79srSINFaStWiXc0kpvsMc+F8ktYh8XMgIaLty1kgk8q/aZijG6T/HbIy6Q1uAD5celLcSQFI26rCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b=Ysi2ejSE; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-43cfac48bc7so4900849f8f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 09:02:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20251104.gappssmtp.com; s=20251104; t=1776268938; x=1776873738; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dYcVn5mqmvaYXv9y2UznJ3QPXaEL/HtDEqzEbCONGqM=;
+        b=Ysi2ejSEHodAOOOKF9KmrGK9tx25SArF8Egc/o7DRgz9ktehIzMcyh9gGoNhdFcXnx
+         tLkz8gwFjOMT2/Z9aSQ+gOoZeFJUiU8cpa0U3Jf7QbbTvOMmdNTIVdFpPtj0jMBZLIZJ
+         RBht3h9FyjXYo+kUKEjEg7vCZHOAG7OTjdvORHF4tWgxuRSyWpqtb//WdJ77K9MvvRNq
+         xwpaH3bwPjwehZOL0Tz5uoST4EALRNtb91eHrLGkYntOa3kzrVTBxJCbhR2u36EbPvQe
+         4Djs0xQM+dHpa2qW4iYdotVKLYHhuJANRvM6REyenuNKrFKjWdBLiZtXpd/dp9Pgl8Ml
+         Rypg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776268938; x=1776873738;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dYcVn5mqmvaYXv9y2UznJ3QPXaEL/HtDEqzEbCONGqM=;
+        b=df/RP4GDdVSqXLyv2IlKix/r1uzmWU1D0ED2V8K9h7KvepUGP1N5OnXsiQi1hxx6yk
+         Ti35jRom1ny4hYRNBSIOHKzv3oNUA/aIW/AHDD9acvyu2v8W53NqB+HQAFLJekPiCLzn
+         iQBn5x84RtNk1hC4wTyBdvaglJOVXYGT0hkZARLZ790V+dlAjTYYyaNIwWgU2Z/blMcE
+         5MEw6xZEe8ahW8BGHNARB2ZYt/b07whcvbtP/M7rC/qGXAnMFG/jB8WKqNb80eWFZ7GA
+         +EF0X+wAFO3s2dOdtvgAB8dIuAVesaigrGE4fSVbONbP22rYSk+g/MXQZIjTGISThFb5
+         1B5A==
+X-Forwarded-Encrypted: i=1; AFNElJ9+5sqUGjhP6fOaX7aA8C7IAeqdNUgalxZHa8wy4WJ/n9iFZd2kXf44g6IueFK8lZNWCPKAOoOFpuVRScQJQg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwW+7VWCuEDsqE+7XHJcRDzJFa3hD4IUL7Kqh2RrAGsqjj1Ck9e
+	UpS9yPahEIBecnrLswgIdveNRh00b12M2qak/tzbArfssVLsVy9Uzy5v9lHUPRfkuyk=
+X-Gm-Gg: AeBDievN3OzeZoqT924o5TUZJc0ZWv2DRfwP8gt6pLm+c2SH180DbnWwL8q+WdXib4k
+	l0q76BZP6WzuunfdhFVIopuNdygl8kOp58slxJJJblcKplG9BK3FKNDqopy5MK/k3p/pXLViZk4
+	XzWR5pvrWqWQpvKh93ZSc8Sm5/HiFUroIwCud4y9xy8/ElMF+BDylb/Zk8SBMZghcqnMWwQnV5H
+	xa1EF7tXAJzpm1tNo9GjSiCRvy7A4Nd0UfGE29v0xyCgWbhjMklrK/gRSUdraclp+sKzMcHPaWy
+	/Q1Ur7PDiAJVVY8FVkdTiaggjx1+sOGlM3m9IMFjsE4lSPDdA8ziWE0B7Ktc+b8uhzKMGMAhvs7
+	67+CS4ARBG70qiB3BkDUJy5BEtWYr+wjOv+GB+/YoPQTi7YZ8sdUR5R2vbQh2oTvoLLmhumBlKc
+	KOUKeRbix7lxBQtL2CJc44pgiV+KuaeoKvNd/JV9CRcBCI+hBrU1/zkLuvoX33SVz3
+X-Received: by 2002:a05:6000:2886:b0:43b:93af:e124 with SMTP id ffacd0b85a97d-43d642c7992mr32537416f8f.26.1776268938032;
+        Wed, 15 Apr 2026 09:02:18 -0700 (PDT)
+Received: from [192.168.108.101] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43ead3553d7sm6080652f8f.9.2026.04.15.09.02.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Apr 2026 09:02:17 -0700 (PDT)
+Message-ID: <5633ace2-45df-4ee6-a41f-831de3e90d60@freebox.fr>
+Date: Wed, 15 Apr 2026 18:02:16 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/lPMAN2dntsU+fJbqlNm7P6y";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Spamd-Result: default: False [-0.70 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
-	SUBJECT_ENDS_QUESTION(1.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 17/20] wifi: cfg80211: provide HT/VHT operation for AP
+ beacon
+To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
+Cc: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+References: <20260415124514.284345-22-johannes@sipsolutions.net>
+ <20260415144514.32ad98454543.Ia9692671b699164edcc0bdaf4fdbdbefc50b18f8@changeid>
+ <ddfdac5d-602f-4f67-80bf-d41924b0b7e7@freebox.fr>
+ <b5a0822b7ebf8e816e096e6a628db6b21fad40ef.camel@sipsolutions.net>
+From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
+Content-Language: en-US
+In-Reply-To: <b5a0822b7ebf8e816e096e6a628db6b21fad40ef.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MIXED_CHARSET(0.56)[subject];
-	DMARC_POLICY_ALLOW(-0.50)[bues.ch,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[bues.ch:s=main];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[freebox-fr.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[freebox-fr.20251104.gappssmtp.com:+];
+	TAGGED_FROM(0.00)[bounces-34808-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[freebox.fr];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[bues.ch:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[m@bues.ch,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-34810-lists,linux-wireless=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ubuntu.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bues.ch:dkim,bues.ch:url]
-X-Rspamd-Queue-Id: 49DBE40641D
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,freebox-fr.20251104.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: 8150C406333
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
---Sig_/lPMAN2dntsU+fJbqlNm7P6y
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, 15 Apr 2026 13:54:31 +0200
-Jonas Gorski <jonas.gorski@gmail.com> wrote:
-
-> On Wed, Apr 15, 2026 at 1:44=E2=80=AFPM Joshua Peisach <jpeisach@ubuntu.c=
-om> wrote:
-> > It does appear to be similar - even the current brcm80211. So much so
-> > that I sometimes need to think about whether b43 is actually a
-> > duplicated driver.
-> >
-> > Since b43 is in an orphan state, I thought it would be a great place to
-> > start for kernel development. 5G doesn't work on that iMac, some of the
-> > PHYs, like the AC PHYs appear to be incomplete - it felt reasonable.
-> >
-> > Because I'm one of those "there's always room for improvement people",
-> > I was going to try to improve the driver, filling out TODOs, fixing
-> > hardcoded register numbers, etc. But if it's best left alone.. then I
-> > guess we can do that.
-> >
-> > That is, assuming b43 is actually supposed to be a separate driver,
-> > because if brcmsmac basically has the same code, then maybe we should
-> > focus to centralizing everything? But then there's b43legacy.. hm... =20
->=20
-> It is/was intentionally a separate driver: Broadcom didn't want to
-> maintain support for obsolete chips (anything SSB, anything older than
-> BCM43224), so the decision was to have b43 support all the "legacy"
-> chips, while brcm80211 supports everything never. Since they were both
-> based on the same driver, they are (more or less) the same
-> architecture.
->=20
-> But now that Broadcom has essentially abandoned the softmac part of
-> brcm80211 since several years, I don't think there would be many
-> objections on unifying it with b43.
-
-The hardest part in the b43 development always was not to break already
-working stuff. There are many different types and revisions of the hardware
-out there. Probably in the order of many dozens of variants.
-
-Please keep in mind that changing code means mostly testing.
-Which is hard, if you don't have the hardware variants and basically no
-users exist anymore. Just implementing random TODOs and missing pieces
-will break things. (e.g. not doing some HW calibration or workaround might
-be better than only partially doing it or doing it wrong).
-
-I would personally not touch this thing anymore, except for security fixes =
-and such.
-
-But if you want to work on the code, long term, I would welcome that.
-We could even arrange that I ship you some hardware.
-But keep in mind, it's all almost 20 years old legacy stuff.
-
---=20
-Michael B=C3=BCsch
-https://bues.ch/
-
---Sig_/lPMAN2dntsU+fJbqlNm7P6y
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmnftXwACgkQ9TK+HZCN
-iw74gRAAtog6Qh+8376tiB6lfcrpQCa5Y8kjAKSUuHYWJdoK5d9tDZz2G10FuBCx
-IjjGrYd2FRHyhA9RFHe4XpLdcAwNUhUs2Z6cuaYhE0VkasowyfNEhsBEWfOeW/a+
-llN4zzD1m/A2tPkylqderJt1Fere/y7glhyNDGeCz761ljQKIRwXed6MYfsbHoc7
-GF/FDLizkWcdoPlIgInPeqwzA8kHe541lm5sUaQVNKJshLItFY9OGGAYKvm6zO1i
-geSxjctnDcRo9XUYANplQBZ9eB7su7GqNmdVacbNOeiie61bWsMpXapuqDSK95aV
-nR2ZvCUysPMUVbZrQW9+p+sknongYrk0kY557zdrTzxaWwRzZeCTbqLZLm3FygPt
-JwO1mA4vUYa6mNLbuFo0A0YwmnosX43VXW1FBhNB8uWFUF1QUQbo1jKj5N/KFh5v
-jXkfyp4OTSMfde5629q3Q5BSrGydMsp2vqtWq2Ql2yIdWnmayF3ZNbDZt1WgsTRn
-dLmJLwuP2pc+o/0tL3VjcNsriqMNmShSX96poPckJhK+ikL7V83pXHRgIYN/XgjD
-OUkjT0mZe6qh3hylszcW6028ekH+/NyaYLPtzr0GLVstLmChTxQm9st0bnmkMw7T
-cIjVFemphPEq4tpu1Ww3RMwe54uGkKgUygL5Ok9uVk5idxGkN64=
-=kr47
------END PGP SIGNATURE-----
-
---Sig_/lPMAN2dntsU+fJbqlNm7P6y--
+On 15/04/2026 17:42, Johannes Berg wrote:
+> On Wed, 2026-04-15 at 17:22 +0200, Pablo MARTIN-GOMEZ wrote:
+>>
+>>> + * @ht_oper: HT operation element (or %NULL if HT isn't enabled)
+>> Might be some nitpicking you can ignore, but HT operation element is optional when HT is enabled. With the current comment, someone might (wrongly) deduce that if `ht_oper` is NULL then HT is not enabled.
+>>
+> 
+> Not sure how you mean that, but not really? If the AP has HT then it
+> must have HT operation, otherwise the clients can't use it?
+Oh my bad, you can ignore my comment. I wasn't sure if HT operation
+element was mandatory, so I quickly checked the standard and the wording
+of second table of 6.5.3.3.2 misled me in thinking it was optional ("The
+parameter is optionally present if dot11HighThroughputOptionImplemented
+is true; otherwise not present.")
+> 
+> johannes
+Pablo MG
 
