@@ -1,161 +1,171 @@
-Return-Path: <linux-wireless+bounces-34767-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34768-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFT3OGN532nFTgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34767-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 13:41:23 +0200
+	id OOXKHEd632nFTgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34768-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 13:45:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1113B403F13
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 13:41:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D57DC403FAA
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 13:45:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 952FD300823C
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 11:39:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F80930305E3
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 11:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170E1246781;
-	Wed, 15 Apr 2026 11:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C2E34A3DB;
+	Wed, 15 Apr 2026 11:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Si79Lpj9"
+	dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b="QDN83BKE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AFA1CFBA;
-	Wed, 15 Apr 2026 11:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514293793C1
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 11:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776253160; cv=none; b=lIR9o0yuQnEZGtSMh+p6c4j/279XqsXhQvfbxivDieRtBe6Wg1mlk6TL8kymuP9985R+aX+W3b9oQLtpkGgyTksLORp+KdcEZe3mZpDuAceBq8H62FfT0VY8eIDiai0ORLwZjy2YsNwwIIZtu0RPJ3+TrwvUm+RuaiRp/Cz+hQg=
+	t=1776253474; cv=none; b=dlYI4f80QDzuXionqSG5zWwKLPE3RpYUZNYj/900/Esqo6BrcSrC7wbTUQeV82WTWFt41RwX14xQdQyagDdplv3tAERGxcq/9Y/POvPJ7zDvodd/3US+Cc0I49XZxavB8IaOMuvqSOkgOXws1rnGcJVn+93MTRKTER7ZcpkiuHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776253160; c=relaxed/simple;
-	bh=JxotkZNGGVp6+Jfj35t3XJ8WSJ91VDrnPfRI530PwRw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QQpkESJsvsBwYh10mtc8C+Vwanat7Vz9sZ7J5mIxpbYRxtBE62YaeJCxZaZhPt1RIkaxQWAJ+W3JIbJoVGdZS97YYvm4uT6+d/nhDocTysLHOs929xKj9U9NGQSp918dD2AyWIE48qukXcW1LIJaJuae+Ypi2UyhB7BrGOK6528=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Si79Lpj9; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1776253150;
-	bh=JxotkZNGGVp6+Jfj35t3XJ8WSJ91VDrnPfRI530PwRw=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Si79Lpj9kP7EF51Yk6vjhjTvDNw8ncA4HIZtiMvoWpNUHA5xwFI5s2vX1dXlw5cXs
-	 RT2XiuHb6o4+kIXzHrW7buAjITQAoPWulGH41VxZrLFMWOJwv6cxjYbDKRtYZtSJ9w
-	 bki4UN+/s8r2q2apOpCyV/5BK2NFNKGL7SNlLXQqDCgaSlP31WXoYedwneVFRW2hJU
-	 u90JqvtclcEgt9lHnmYXvSnwfaNFQdCXYB7FxSQST7JoMEHCyP6Z86PMQJ3i0R2Lym
-	 +MM55Ea2R+Xf3tgePEVXDRXGuX9WLAvHujAF5FsT/C2UR3J35Pkyv4bTws48ZDx0B2
-	 w6QGx3XkI5OCQ==
-Received: from [192.168.1.53] (unknown [100.64.0.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: mattl)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 461CD17E1356;
-	Wed, 15 Apr 2026 13:39:10 +0200 (CEST)
-From: Matthew Leach <matthew.leach@collabora.com>
-Date: Wed, 15 Apr 2026 12:39:02 +0100
-Subject: [PATCH v2] ath11k: fix peer resolution on rx path when peer_id=0
+	s=arc-20240116; t=1776253474; c=relaxed/simple;
+	bh=RUAMkRMvJIYGpqvgrfry3NMMlM+78pl3rBiEk2MPNJU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=C2qWrh/AkUOVQChj/O81NkUmSu+zBw0DIw5nKEEMzTYrIZSMphT5Wt0ddvU9MD9DzxC1QfK+DuUrbdAplcPdAtjxLD7ZL6DW/1pZk3LqIFEjRJTkR/UyubmlDc8lgkZzenUA5jWrI51XIW9R3DEwdNWqzqlkVECEKDR+9veeByo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com; dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b=QDN83BKE; arc=none smtp.client-ip=121.127.44.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ubuntu.com;
+ h=In-Reply-To: References: Cc: To: From: Subject: Message-Id: Date:
+ Content-Type: Content-Transfer-Encoding: Mime-Version; q=dns/txt;
+ s=fe-953a8a3ca9; t=1776253464;
+ bh=RUAMkRMvJIYGpqvgrfry3NMMlM+78pl3rBiEk2MPNJU=;
+ b=QDN83BKE1cWlNEOo2GZbV/L2j51jkFNCYXb1gFegdVS/VmJdi/+wpLwdBYv+/WcsMspS//S6V
+ l425IoylIS48OxxNQLl6O5Qt478H2Pg6o5r5pT6ZXeKTcCh0PjL9wOBohEy4sY22TDMK2I5qcSK
+ ODmt8UTjiHGTU3or1V7/pMFjC+sGfIibrXZQ9pfu+MzJymgFqU0yrQ1ve3NcZrYzUtHOlyws8Zk
+ NXtmF2vc6KXOpE4AmKcxC+K8mgPSEAbUvjrCop6Zq7cbVw4qDekgeWvq+Xu0aP+wmYnpENvPNO5
+ mE5LbwG4cXmVbnYOa6StLQqfnSpE+7ZH9ZXVyYy0WTCw==
+X-Forward-Email-ID: 69df7a17289add7dee9f6483
+X-Forward-Email-Sender: rfc822; jpeisach@ubuntu.com, smtp.forwardemail.net,
+ 121.127.44.73
+X-Forward-Email-Version: 2.7.3
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260415-ath11k-null-peerid-workaround-v2-1-2abae3bbac16@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42OQQ6CMBREr0K69ht+CYiuvIdhUdoildqSX0AN6
- d0teAGXL5l5MysLmowO7JKtjPRigvEuAT9kTPbC3TUYlZjxnFd5wSsQU484gJuthVGnsoKXp0G
- Qn52CipcC+flUY4ssOUbSnXnv/lvz4zC3Dy2nTbolehMmT5/9wIJb7t+tBQEhl7xTZZEqXX2V3
- lrRehJH6Z+siTF+AbW8HBPgAAAA
-X-Change-ID: 20260326-ath11k-null-peerid-workaround-625a129781b1
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>, 
- linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
- linux-kernel@vger.kernel.org, kernel@collabora.com, 
- Matthew Leach <matthew.leach@collabora.com>
-X-Mailer: b4 0.15.2
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8; format=Flowed
+Date: Wed, 15 Apr 2026 07:44:21 -0400
+Message-Id: <DHTPAVC76140.1JLO3HNQARQ9Q@ubuntu.com>
+Subject: Re: Firmware for reverse engineering b43?
+From: "Joshua Peisach" <jpeisach@ubuntu.com>
+To: "Jonas Gorski" <jonas.gorski@gmail.com>, "Joshua Peisach"
+ <jpeisach@ubuntu.com>
+Cc: "Johannes Berg" <johannes@sipsolutions.net>,
+ <b43-dev@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <DHS1BJ5XFYRC.GCF9PXS0OSRI@ubuntu.com>
+ <c62a448843f189d78187de18d3fcb955f2779d13.camel@sipsolutions.net>
+ <DHSUDVMGW0PS.2LYWKGG1C1135@ubuntu.com>
+ <CAOiHx==kVm0OKWRKi4VHSEEr6ZygzrpNiA=zj+zEHT6_rgZ3CQ@mail.gmail.com>
+In-Reply-To: <CAOiHx==kVm0OKWRKi4VHSEEr6ZygzrpNiA=zj+zEHT6_rgZ3CQ@mail.gmail.com>
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	SUBJECT_ENDS_QUESTION(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[ubuntu.com,none];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ubuntu.com:s=fe-953a8a3ca9];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[collabora.com:+];
-	TAGGED_FROM(0.00)[bounces-34767-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34768-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,ubuntu.com];
 	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[jpeisach@ubuntu.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[ubuntu.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 1113B403F13
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: D57DC403FAA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-It has been observed that on certain chipsets a peer can be assigned
-peer_id=0. For reception of standard MPDUs this is fine as
-ath11k_dp_rx_h_find_peer() has a fallback case where it locates the peer
-based upon the source mac address.
+On Tue Apr 14, 2026 at 8:24 AM EDT, Jonas Gorski wrote:
+> On Tue, Apr 14, 2026 at 1:31=E2=80=AFPM Joshua Peisach <jpeisach@ubuntu.c=
+om> wrote:
+>>
+>> On Tue Apr 14, 2026 at 5:14 AM EDT, Johannes Berg wrote:
+>> > I think there's no easy answer - what are you even trying to achieve?
+>> > Does b43 not work sufficiently well? Do you even know if some specific
+>> > calibration have a tendency to go out of whack? Is there later firmwar=
+e
+>> > that has some advantage (given how little actually happens in firmware
+>> > in these devices, I'd be surprised by that) but isn't compatible with
+>> > the driver now, and you want to change that?
+>> >
+>> > I'd be tempted to say that if there's no problem there don't try to fi=
+x
+>> > anything, the hardware is ancient anyway, likely has few users, and
+>> > those users would probably be fine with just leaving it?
+>> >
+>> > johannes
+>>
+>> The BCM4321 (nphy) doesn't connect to my 5G network, so I figured that
+>> by filling in TODOs and FIXME's, I could eventually get something
+>> working.
+>>
+>> Other than that, I was thinking of making improvements for the sake of
+>> improving the driver.
+>
+> The initial version of the brcm80211 softmac driver [1] should also
+> help in making sense of some of the code (flag names etc). While it
+> officially only supports BCM43224 and newer on BCMA, it still had
+> remnants of support for older N-PHY revisions, so may help in finding
+> differences or explaining what code does.
+>
+> I once considered trying to clean up b43 based on brcmsmac, but never
+> got around to it.
 
-However, on an aggregated link, reception of AMSDUs results in the peer
-not being resolved for the second (any any subsequent) sub-MSDUs due to
-the peer_id guard in ath11k_dp_rx_h_find_peer(). This causes the
-encryption type of the frame to be set to an incorrect value, resulting
-in the sub-MSDUs being dropped by ieee80211.
+It does appear to be similar - even the current brcm80211. So much so
+that I sometimes need to think about whether b43 is actually a
+duplicated driver.
 
-ath11k_pci 0000:03:00.0: data rx skb 000000002f4b704d len 1534 peer xx:xx:xx:xx:xx:xx 0 ucast sn 3063 he160 rate_idx 9 vht_nss 2 freq 5240 band 1 flag 0x40d1a fcs-err 0 mic-err 0 amsdu-more 0 peer_id 0 first_msdu 1 last_msdu 0
-ath11k_pci 0000:03:00.0: data rx skb 0000000038acd580 len 1534 peer (null) 0 ucast sn 3063 he160 rate_idx 9 vht_nss 2 freq 5240 band 1 flag 0x40d00 fcs-err 0 mic-err 0 amsdu-more 0 peer_id 0 first_msdu 0 last_msdu 1
+Since b43 is in an orphan state, I thought it would be a great place to
+start for kernel development. 5G doesn't work on that iMac, some of the
+PHYs, like the AC PHYs appear to be incomplete - it felt reasonable.
 
-This patch removes the null peer_id check in ath11k_dp_rx_h_find_peer(),
-allowing peer's with an assigned ID of 0 to be resolved.
+Because I'm one of those "there's always room for improvement people",
+I was going to try to improve the driver, filling out TODOs, fixing
+hardcoded register numbers, etc. But if it's best left alone.. then I
+guess we can do that.
 
-Signed-off-by: Matthew Leach <matthew.leach@collabora.com>
----
-Changes in v2:
+That is, assuming b43 is actually supposed to be a separate driver,
+because if brcmsmac basically has the same code, then maybe we should
+focus to centralizing everything? But then there's b43legacy.. hm...
 
-- Since peer_id=0 is a valid condition on some chips, remove the guard
-  that prevented the peer lookup.
-- Link to v1: https://patch.msgid.link/20260326-ath11k-null-peerid-workaround-v1-1-0c2fd53202f8@collabora.com
+-Josh
 
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org
-Cc: ath11k@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
----
- drivers/net/wireless/ath/ath11k/dp_rx.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 49d959b2e148..ff2c78a4e5f3 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2215,8 +2215,7 @@ ath11k_dp_rx_h_find_peer(struct ath11k_base *ab, struct sk_buff *msdu)
- 
- 	lockdep_assert_held(&ab->base_lock);
- 
--	if (rxcb->peer_id)
--		peer = ath11k_peer_find_by_id(ab, rxcb->peer_id);
-+	peer = ath11k_peer_find_by_id(ab, rxcb->peer_id);
- 
- 	if (peer)
- 		return peer;
-
----
-base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
-change-id: 20260326-ath11k-null-peerid-workaround-625a129781b1
-
-Best regards,
---  
-Matt
+>
+> Best regards,
+> Jonas
+>
+> [1] https://github.com/torvalds/linux/tree/a9533e7ea3c410fed2f4cd8b3e1e21=
+3e48529b75/drivers/staging/brcm80211
 
 
