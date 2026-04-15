@@ -1,219 +1,153 @@
-Return-Path: <linux-wireless+bounces-34796-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34797-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBGrG0aS32nYWAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34796-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 15:27:34 +0200
+	id gF8JCHqT32n5WAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34797-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 15:32:42 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CBA404C63
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 15:27:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B7C404D20
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 15:32:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5D37B300C6CE
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 13:27:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1D0FE300D4E5
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 13:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB853A759E;
-	Wed, 15 Apr 2026 13:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7903B19A6;
+	Wed, 15 Apr 2026 13:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b="C7AaQmzS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KpGDpAYS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186DF37CD40
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 13:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B943AE1A0
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 13:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776259648; cv=none; b=CC+xEHDkZoH9f7brw5VbPrLcSQO4w3AvpgNaUob2fe8x1w0UcZDGy6XxOYXFeQOlGDAFGm+uMZ6DZKY8ARGTL7oJdmk7C7H4CpAp6WUoFB/5Yi+gtWSb7XeBsRAy1Fv1WQjLmYtw+McX/Wt89hIomvqJJO8NtMt3KPVNqx5AJYg=
+	t=1776259953; cv=none; b=ljck+i8B04i0Cgk39oChvMniI76femlhdiinJKdmNF7WEYVhSHjpHR9xF2iZdpURTCowfHPHVGWFoev2nJoY0p8ZSoY3NZGRqXzGSbXLYD9++yT+mpYa6umzCor9MWIIOGCmEzadZZAMh77kGJh7w5UHK00PozdwGXM6ld1jego=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776259648; c=relaxed/simple;
-	bh=RryjuW7D6wFsYvdkC6r51PQnhQUVOTR87iFxg0ZOPPY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VXHzoo0mou9WDO0mHTwmU3bia5urq4TrdGaJ+Sxd7aTJAtWkARs8KgxNt7LHVq9yK8Vj3B2UBIV+FWJORNLAqlo2YS6JWnvF1Lu5nj62GeMhntJd5wKQX69JiOQ+zg+alNWShfgFkUBADAJQi7jbwDl1bK1xO1V50Yy/UUo7maU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20251104.gappssmtp.com header.i=@freebox-fr.20251104.gappssmtp.com header.b=C7AaQmzS; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso67008945e9.1
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 06:27:25 -0700 (PDT)
+	s=arc-20240116; t=1776259953; c=relaxed/simple;
+	bh=JzY6TbHnMQKD6tpTV95W9zIwOTtJklkFzJD7dGXj/j4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Nm07rLG5aOPH08P1BMoLwdquLyFKKnAVekEEWd+NQkJY8pozCInLnNRaOq74dwDrfargV3cqo1Ad2cnjlfz0Sh4XxFy/hqk/TWFbMWCNZit5J3JktCr7fwf4HVflzUs8YGlZIBLLoN2f0LMLAPx/iSjIRDi0Z8vTrQ2dScMKUNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KpGDpAYS; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4888375f735so67606775e9.3
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 06:32:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20251104.gappssmtp.com; s=20251104; t=1776259644; x=1776864444; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mlGD8n5yS6OtrV5NZXNllCe7VLCWfgTIdtosmWt7NTw=;
-        b=C7AaQmzS30Tue/mupRamDKg6HUR/7phxbOSTPiw0ZZg3txVEqmRaIGhEy3H272jW84
-         4fOPv7UcSUPoMUZUAtRsZez1KcbgTC3lkBrS+BasKwN9exAGL4qdLyPrLQfqqBpGCKzb
-         JyJSKkCPIVywHp+FUMTXxDp9bRSwO4X7Q+Nywy9DyeTDBs9H63uEMifaSZfKqLscB0ui
-         Eb+x5YCfmp8NqQTvrQ8tzEZoIuzcma88FJJ0jG2l/upfi9qpXumfzp5WsJf005GWZma/
-         l2638HZSjN276fXwYMT4GbljBMgskJuUYG5rPb27u4vG7IFz0MP912hI0lto0H1vqtCX
-         J3Ow==
+        d=gmail.com; s=20251104; t=1776259950; x=1776864750; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hJGfQlThfdF78g4FKQa7uEltXkfB9hJKUX9n2sHsgFc=;
+        b=KpGDpAYSY5PLJNDdik77heXQ60znZYUyFBV5EM/Ac1c0NxhZRFiwAP3LCRnzCtC944
+         /4w+O5yTUECTzk77pnj7HChuqfyZkVmHLUROxF2CPzFktpy0rET4Q/srfwrhkU9WRYec
+         rzwRL0A548sXEHggfL3HTWUi3daOFLHaUiFlopihGvtEU3pwvFKdMY7Sz3lDJRxkFW88
+         aF3up2dvw8a0/xm/crkJ7ICXOceLzXralRt0UBo4+/matklt7z2xJiDLqKfwzEQkcSWe
+         Ungi8pdMhvMhtcsVe3l4efGuOAzLTgoFhAndUfWTpRU2klbHWucCpI4nw17YSNqGTVy/
+         +O9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776259644; x=1776864444;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mlGD8n5yS6OtrV5NZXNllCe7VLCWfgTIdtosmWt7NTw=;
-        b=B5Ri7LxryueiqqR4MPDhtb9CXOuuNx+IEEABlJ3NLMUfCVTBolCt98Jrkj5f8bseVo
-         4ZfSXmsDewwavrfl5+cq1U1eQrwh96D+26HcKrWL1+4fz1mM4h6ppnKWmddqZKr1M+2/
-         yxp5RAELkCJyoHyNH77qdjTYWi7/Yy9d30gICtLufJW2wSIFGVYsAAyNrXserhA5AtwB
-         0yw99tqJpDpMhjdJuT3DdLSo2G0wUaAPYyx3dLsj3dxelQefR4adJdzw/DlpnFxATab9
-         XtKZrkkNdZtL1cOW8mVgQf2vGNYncdpXssSIabWhzZAQbBASOAPP7+CfWle/PbeoYUGr
-         sZEw==
-X-Forwarded-Encrypted: i=1; AFNElJ+rjMHf3x89MMnDpJCqn0ngITq6rQvyr7RR00fOsEgp1qMxkvz0xVkqQBa6IRGq3UJiWehDCKjPkcOOaMPPEw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwP2QMx+DBdNfjePa4pRXJ9WHln+6CQRdU0rw/elmoifZ7gCNsj
-	zyIYKboQgJNacpNDrkhXl/S3Wp247OSPzU77DNytu5pdT09+bWs6wJ1NU79Zv/i1HVA=
-X-Gm-Gg: AeBDietDSqWVZFsuuVN6UaFgfuH7Fkz8aogvoHBSfgbP8Yzk61OGKFRVEo97Fm9r4K4
-	xxKYjaMAwG/r6l2yqZ4bT7+PgbXqfAVsfL7O9UFH1L3HyQWUO3d3xkl0nPDuSLEzZzMPeCYM22F
-	Q+0AGqtnB6kso+H1K6qUMcvVQyWJLZ6pdGsRsA0JxD++kwoItqemXGI1U1uAJUDJbe2TiwhxSEi
-	qvsRyOpfJlcSd2D1idR80r+JLRAjoqEuwTTcT1nbeked6tuHzzaPQOsf6fu6Op0ipcL9wUaH2cq
-	7iDKXi+PZV+RMAqTKZnml1j1nqIl+bpx3x9E1da/48O99Fn/72EDJeKFd12pdt3RcPjR24aIIUF
-	x62L0sjzTXf/n1GN/XZHaBRGINNH6Z5f/s/ApqvxS/R9ZvU0oQXVIg6K/l2/VuMuIuv0vO//UnN
-	9lNWpkHrlK4v51xjgEMvUULfr8bsTu5RW1SzpJ5m36LWhcZ+Cmh/Rb8yChMS7lhPvVgM262ef91
-	Xo=
-X-Received: by 2002:a05:600c:c0da:b0:488:b043:5efd with SMTP id 5b1f17b1804b1-488d682628dmr264829625e9.13.1776259644138;
-        Wed, 15 Apr 2026 06:27:24 -0700 (PDT)
-Received: from [192.168.108.101] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43ead3d5ea9sm5435535f8f.21.2026.04.15.06.27.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Apr 2026 06:27:23 -0700 (PDT)
-Message-ID: <e3af2190-3941-4ec8-9c59-91eafc6eb156@freebox.fr>
-Date: Wed, 15 Apr 2026 15:27:23 +0200
+        d=1e100.net; s=20251104; t=1776259950; x=1776864750;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hJGfQlThfdF78g4FKQa7uEltXkfB9hJKUX9n2sHsgFc=;
+        b=SBVvGzxeLepTBz2KkGY02SUv+lPiRmOWTd73GSEs/kRDlg1pHgudHiRT0J1N4gVNqz
+         T1iC239HoWMTtqX/fGHVHTCXuQVLMjggbJCmzajpz4sY6v5NC6PeCMxET2eUZynG79wE
+         CrmgnLUyaA+BECTHFduIjVUvBLwBydjSul7zQIXmDE2E6oKUQAlZhoDvpO55+LCcJNsK
+         a5chh5o83xfY2+ENeCwgLoXF7PnRIIJWmMbY0zAqDWwszwOAQDApe+tn2ItSkSS8euAF
+         qoZOhwVvvM0nMfA5luVtADox9pKncWL20Yv0NshpLjJ9FDGa1EI/He4jkVhdn8fdop87
+         16zw==
+X-Forwarded-Encrypted: i=1; AFNElJ8B3yPMnvV1ZnQ7BfPJ57cyq0N2AiJvCtA7wu6iRMXbbAXbHbP25ZvnRrae0bicU7t8SjLGiSVHguY9wDn/aQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjVLD7en31yb4x9BAC2T8z4n1SJuX5uzaOAdkIrEmFnQrOBwts
+	SrV5pYjH2idIhfilFQhf94vbaFAug15ixcyYf/3HrKOn+jIkSrUHmoM=
+X-Gm-Gg: AeBDiev5pKypgdVwBQnZ+cIe2fs8mrV5e4DDp40Pya0ZGYnzVAFxFUazvIvYHgY7yFt
+	lprTMmUCvCVHA4IhES5iU2L7Kmed8VSjMSyDYoAvG7szQZQ454hVCFaxrvUAyUga5qkLEqT4lms
+	uzu7zWsN/5Dct/mxlxenIget+AiSakVdzDX+la+CK5BkpFqsqKkJDJtbqj6oU49rjUuIcQT5Guc
+	R5+P4PTM9zNEzCU1wcviMLDJs0WRY0R/TSjlDUTVT5e3ypw/tNYdR6Fps4+ek0z7VqjBU7gaVtE
+	gx7pAq8FosOgBFQAAV4MzZU28gcMgko/FRFmSsJaNBAR+zpkfN6FHG0cWeCHo4EuRawGPaYFyV5
+	sPpQIHA4JTMMrZ9IgFH7jT6Ezi1MJW092sJF7xUJyh5V7Krx7nX4GYczVY/78mM71FE/Ao3+olE
+	Buog782uWX9XMnuS4qWpsQODoXfzPBXTzpMCJ3Qx+RufO59TY60ZRKHBPoAbZEg+GfqTrrQirQN
+	QBItQUBFdPpHDwVAiT2PdEWjXtj0T4nQm9h3cSZO2cphBZhDZIFNS5tqfyj+pfV
+X-Received: by 2002:a05:600c:64c4:b0:485:39b2:a47c with SMTP id 5b1f17b1804b1-488d686892emr269700955e9.25.1776259950011;
+        Wed, 15 Apr 2026 06:32:30 -0700 (PDT)
+Received: from archtop.localdomain (92-242-248-33.broadband.mtnet.hr. [92.242.248.33])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f0eb43f6sm20604755e9.25.2026.04.15.06.32.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 06:32:29 -0700 (PDT)
+From: Jakov Novak <jakovnovak30@gmail.com>
+To: johannes@sipsolutions.net
+Cc: dcbw@redhat.com,
+	jakovnovak30@gmail.com,
+	kees@kernel.org,
+	libertas-dev@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linville@tuxdriver.com,
+	mingo@kernel.org,
+	skhan@linuxfoundation.org,
+	swilczek.lx@gmail.com,
+	syzbot+c99d17aa44dbdba16ad2@syzkaller.appspotmail.com,
+	tglx@kernel.org
+Subject: [PATCH v2 0/1] wifi: libertas: fix bug in Marvell Libertas driver
+Date: Wed, 15 Apr 2026 15:31:34 +0200
+Message-ID: <20260415133134.167783-2-jakovnovak30@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <57275e905a67e789ea438bf637be0aeb442fc880.camel@sipsolutions.net>
+References: <57275e905a67e789ea438bf637be0aeb442fc880.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next] wifi: radiotap: add definitions for the new
- UHR TLVs
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
- linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-References: <20260412152605.73e682d0c8c3.I5a0c858467c852b7a2a00f580bd073af29c37705@changeid>
-From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
-Content-Language: en-US
-In-Reply-To: <20260412152605.73e682d0c8c3.I5a0c858467c852b7a2a00f580bd073af29c37705@changeid>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[freebox-fr.20251104.gappssmtp.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[freebox-fr.20251104.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-34796-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[redhat.com,gmail.com,kernel.org,lists.infradead.org,vger.kernel.org,tuxdriver.com,linuxfoundation.org,syzkaller.appspotmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[freebox.fr];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-34797-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jakovnovak30@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.993];
+	TO_DN_NONE(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[radiotap.org:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,freebox.fr:mid,freebox-fr.20251104.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 58CBA404C63
+	TAGGED_RCPT(0.00)[linux-wireless,c99d17aa44dbdba16ad2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 16B7C404D20
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+Thank you for the reply. It should be fixed now.
 
-On 12/04/2026 14:26, Miri Korenblit wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> Add the necessary definitions to create radiotap UHR TLVs
-> for UHR sniffers.
-> 
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-> ---
->  include/net/ieee80211_radiotap.h | 190 +++++++++++++++++++++++++++++++
->  1 file changed, 190 insertions(+)
-> 
-> diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
-> index c60867e7e43c..6c2210a253cd 100644
-> --- a/include/net/ieee80211_radiotap.h
-> +++ b/include/net/ieee80211_radiotap.h
-> @@ -95,6 +95,8 @@ enum ieee80211_radiotap_presence {
->  	IEEE80211_RADIOTAP_EXT = 31,
->  	IEEE80211_RADIOTAP_EHT_USIG = 33,
->  	IEEE80211_RADIOTAP_EHT = 34,
-> +	IEEE80211_RADIOTAP_UHR_ELR = 37,
-> +	IEEE80211_RADIOTAP_UHR = 38,
-Why are the values 37 and 38 but below in the doc 35 and 38?
->  };
->  
->  /* for IEEE80211_RADIOTAP_FLAGS */
-> @@ -602,6 +604,194 @@ enum ieee80211_radiotap_eht_usig_tb {
->  	IEEE80211_RADIOTAP_EHT_USIG2_TB_B20_B25_TAIL		= 0xfc000000,
->  };
->  
-> +/*
-> + * ieee80211_radiotap_uhr_elr - content of UHR-ELR TLV (type 35)
-> + * see https://www.radiotap.org/fields/UHR-ELR for details
-The URL gives a error 404
-> + */
-> +struct ieee80211_radiotap_uhr_elr {
-> +	__le32 known;
-> +	__le32 sig1, sig2, mark;
-> +} __packed;
-> +
-[...]
-> +
-> +/*
-> + * ieee80211_radiotap_uhr - content of UHR TLV (type 36)
-> + * see https://www.radiotap.org/fields/UHR for details
-Error 404
-> + */
-> +struct ieee80211_radiotap_uhr {
-> +	__le32 known;
-> +	__le32 data[9];
-> +	struct {
-> +		__le32 known, info;
-> +	} user[];
-> +} __packed;
-> +
-> +enum ieee80211_radiotap_uhr_known {
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_SPATIAL_REUSE		= 0x00000001,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_GI_LTF_SIZE		= 0x00000002,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_NUMBER_OF_UHR_LTF_SYMBOLS	= 0x00000004,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_LDPC_EXTRA_SYMBOL_SEGMENT	= 0x00000008,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_PRE_FEC_PADDING_FACTOR	= 0x00000010,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_PE_DISAMBIGUITY		= 0x00000020,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_DISREGARD_OFDMA		= 0x00000040,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_CRC1			= 0x00000080,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_TAIL1			= 0x00000100,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_CRC2			= 0x00000200,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_TAIL2			= 0x00000400,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_INTERFERENCE_MITIGATION	= 0x00000800,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_DISREGARD_NON_OFDMA	= 0x00001000,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_NUMBER_OF_NON_OFDMA_USERS	= 0x00002000,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_COMMON_ENCODING_BLOCK_CRC	= 0x00004000,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_COMMON_ENCODING_BLOCK_TAIL	= 0x00008000,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_RU_MRU_DRU_SIZE		= 0x00010000,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_RU_MRU_INDEX		= 0x00020000,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_DRU_RRU_ALLOC_TB_FMT	= 0x00040000,
-> +	IEEE80211_RADIOTAP_UHR_KNOWN_PRI80_CHAN_POS		= 0x00080000,
-> +};
-In the other radiotap fields, the `known` fields are (as far as I
-checked) have the same order than the data, but here, for example,
-`PRI80_CHAN_POS` is before `INTERFERENCE_MITIGATION  ` in `known` but
-after in `data`. Any reason for that?
+Jakov Novak (1):
+  wifi: libertas: add wake_up() call to properly notify fw_wq during
+    disconnect
 
-[...]
+ drivers/net/wireless/marvell/libertas/if_usb.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Pablo MG
+-- 
+2.53.0
 
 
