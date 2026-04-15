@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-34778-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34779-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFCIJ7mI32kHVAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34778-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 14:46:49 +0200
+	id sJttLbqI32kHVAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34779-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 14:46:50 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 255E24046A3
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 14:46:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B7834046AA
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 14:46:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B15B630D353D
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 12:45:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E91630D43B8
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 12:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1360532E743;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4462C330B3B;
 	Wed, 15 Apr 2026 12:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="kpufYlEP"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QK4jdy3R"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143D532548B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8513F32C957
 	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 12:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776257125; cv=none; b=jIEGdg0qlS8BBkehILezaxGvAz+0H/W0JAi5qYPqntiedMKtthqEaYTHp78pl8awbK0lRWXKUn5IEGNnPgPJrZWwYnoFuz4DsMPrbjV3XPo2RTYdaLaq9fFyQxFkWKynLhivK8tZiCyliwOYO11GznD3/gLqn4ZZcNyod9BdGws=
+	t=1776257125; cv=none; b=u2bf9fdedz0VpSDdfPnKOYTdFq6dpbI3cV7wr3c+vqndTHDOzVUzmPuKpK/Sdca61VR+Izj2rpknV4Nxmb68SGdMjFnvO9Gx7fnMnYQ0Kez/zqCPgs8itR8KC69IgdKkyh9osWLYOPAnGPT8itY4UvUrpw4RkSnYAN8DmE1XGWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776257125; c=relaxed/simple;
-	bh=mdD55rRi7gBZ3B5aVWOQQB+QIgue1wZnnD/jhfvAfZ8=;
+	bh=+F3mguTM9SHT4gKoJsMtR62RuiRz6UwW3fuybjYKDx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iTA3dlIx9ZvlfzzRuA8Lue+2QrfNquw732/DiRyuO8a0XW87HZ+w+6H6LIdSKmsWCi/yDHMqBaT5TSqD6YcqZu1HkZnQ4LcdXBKnniU5noh1hza0Zhw9dz/qvkeS0SAz2uKSe9QxVCcXq/31uxr15hOdDT1JRXtG9xl3y8Z6n7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=kpufYlEP; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=WkjhAgkzNPpJcPt9SRq+1BsSq9aPKezjZCy46UFcnfYI7N/xPhIpeWyDftMZp5HAo+9THK2Cq7RmUHKBv4SqHyUqYfsvk/GNjCr4Ftw2XMxxhsmDV5fk6pIc5hB0fxnkqxMDtj7X1YQamtZKdUujM2d00Mn9JV0BgBkJ/bnP3g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QK4jdy3R; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=VBikkz+XioIarGvdkIYQam1f+TueaJrpLVuLcZbbgWI=;
-	t=1776257123; x=1777466723; b=kpufYlEPzyhNLcuWQsTR2C1WAnnxhvVw/QTYv1A+gYNekB8
-	aPykq6imoARPf4nYgsVYzTfUyFYAtYeeiRuc/Vg+8F0kuP1+9UVYsnz8SQNJfrExAMCFPtbxZ2knx
-	Aqi6XyaiEVanfY2GIWu2ZcASpt/kITcKxCJYTLwyk+YnAwX7sW0eRC3HYDorjBuhT2DjfQkLXRS+m
-	FSOEXMo+6Zl+DX5MnMeKvNsyWmKD3E++Z579hDIplU0ESxnF5vQTanKicrduxQIZer3WJYQyuOt+h
-	ii0bFP1DSCrEJ4w0kRgYtnrhEqyXMlc6uNA+I6QFVJ7SdlQ2nLyULCN5F4JyiK4w==;
+	Resent-Cc:Resent-Message-ID; bh=c4qKcJQAcF3KOjB5gngOy8Lyj0rz4CM0fJVM9NMgZGg=;
+	t=1776257123; x=1777466723; b=QK4jdy3ROHvVCQlcgT7b6AfMQsIF445IFu0jfFEXVwT8tok
+	d0iG62er+8gFsJAcbfytw5mxcVzIHEtEpIylGeMjT1Fv8NKd7jrk/nq6dGu8kUx+I+xFjiRLJM5em
+	sUBEor7FtdtbfSg8+1m2xFEhbVf3PgTjkx1H/raPdPUrj/SY0/Y5eSKTUypkAzPsHwtPgMlx5oB2R
+	jNQVOMui1w3Mnnk2rZMECja5dPceCkK/6pzpZdvqUjEH6lFMspl7RHXBRt+aJs68Vklv5gLYkiWko
+	nHZC+KU3jnFFZ6zNbfURIg8aQoHFieoe6DNlyGm+v8BXb4WyPMG9Te3SldA8ZliQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1wCzcP-00000006OgW-06jt;
+	id 1wCzcP-00000006OgW-2Yn3;
 	Wed, 15 Apr 2026 14:45:21 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>,
 	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 06/20] wifi: mac80211: remove ieee80211_sta_cap_chan_bw()
-Date: Wed, 15 Apr 2026 14:42:04 +0200
-Message-ID: <20260415144514.138728393e2b.I4ea9221cafcfd034dda430e76de82eec59ab1e71@changeid>
+Subject: [PATCH 07/20] wifi: nl80211: document channel opmode change channel width
+Date: Wed, 15 Apr 2026 14:42:05 +0200
+Message-ID: <20260415144514.87d5b1ce688f.Ia9a0769d52dcfe56f7b0dff903ed14db3ef04920@changeid>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260415124514.284345-22-johannes@sipsolutions.net>
 References: <20260415124514.284345-22-johannes@sipsolutions.net>
@@ -72,17 +72,17 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-34778-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34779-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
@@ -93,106 +93,45 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sipsolutions.net:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 255E24046A3
+X-Rspamd-Queue-Id: 6B7834046AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-This function is only used by TDLS, but is more or less equivalent
-to ieee80211_sta_cap_rx_bw() (which takes OMI into account, but that
-won't be used in TDLS), except it tries to differentiate 80+80 and
-160, but then caller doesn't care about that. Remove the function.
+The opmode change notification is entirely unused by existing
+userspace except for printing out the values. As such, there's
+no need to keep it perfectly accurate, and the implementation
+in mac80211 doesn't report it correctly today. Add a note in
+the documentation that it may not differentiate 80+80 and 160.
 
 Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/ieee80211_i.h |  2 --
- net/mac80211/tdls.c        | 19 +++++++++++--------
- net/mac80211/vht.c         | 24 ------------------------
- 3 files changed, 11 insertions(+), 34 deletions(-)
+ include/uapi/linux/nl80211.h | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 2a693406294b..029600b3b7c0 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2316,8 +2316,6 @@ ieee80211_sta_cur_vht_bw(struct link_sta_info *link_sta)
- 	return _ieee80211_sta_cur_vht_bw(link_sta, NULL);
- }
- void ieee80211_sta_init_nss(struct link_sta_info *link_sta);
--enum nl80211_chan_width
--ieee80211_sta_cap_chan_bw(struct link_sta_info *link_sta);
- void ieee80211_process_mu_groups(struct ieee80211_sub_if_data *sdata,
- 				 struct ieee80211_link_data *link,
- 				 struct ieee80211_mgmt *mgmt);
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index 90a122dc274f..874752738c68 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -311,17 +311,20 @@ ieee80211_tdls_chandef_vht_upgrade(struct ieee80211_sub_if_data *sdata,
- 	/* IEEE802.11ac-2013 Table E-4 */
- 	static const u16 centers_80mhz[] = { 5210, 5290, 5530, 5610, 5690, 5775 };
- 	struct cfg80211_chan_def uc = sta->tdls_chandef;
--	enum nl80211_chan_width max_width =
--		ieee80211_sta_cap_chan_bw(&sta->deflink);
-+	enum nl80211_chan_width max_width;
- 	int i;
- 
--	/* only support upgrading non-narrow channels up to 80Mhz */
--	if (max_width == NL80211_CHAN_WIDTH_5 ||
--	    max_width == NL80211_CHAN_WIDTH_10)
--		return;
--
--	if (max_width > NL80211_CHAN_WIDTH_80)
-+	switch (ieee80211_sta_cap_rx_bw(&sta->deflink)) {
-+	case IEEE80211_STA_RX_BW_20:
-+		max_width = NL80211_CHAN_WIDTH_20;
-+		break;
-+	case IEEE80211_STA_RX_BW_40:
-+		max_width = NL80211_CHAN_WIDTH_40;
-+		break;
-+	default: /* 80 or higher, only support upgrade to 80 */
- 		max_width = NL80211_CHAN_WIDTH_80;
-+		break;
-+	}
- 
- 	if (uc.width >= max_width)
- 		return;
-diff --git a/net/mac80211/vht.c b/net/mac80211/vht.c
-index 6da8a5021136..c25190bc7c5c 100644
---- a/net/mac80211/vht.c
-+++ b/net/mac80211/vht.c
-@@ -433,30 +433,6 @@ _ieee80211_sta_cap_rx_bw(struct link_sta_info *link_sta,
- 		   link_sta->rx_omi_bw_rx);
- }
- 
--enum nl80211_chan_width
--ieee80211_sta_cap_chan_bw(struct link_sta_info *link_sta)
--{
--	struct ieee80211_sta_vht_cap *vht_cap = &link_sta->pub->vht_cap;
--	u32 cap_width;
--
--	if (!vht_cap->vht_supported) {
--		if (!link_sta->pub->ht_cap.ht_supported)
--			return NL80211_CHAN_WIDTH_20_NOHT;
--
--		return link_sta->pub->ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40 ?
--				NL80211_CHAN_WIDTH_40 : NL80211_CHAN_WIDTH_20;
--	}
--
--	cap_width = vht_cap->cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK;
--
--	if (cap_width == IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ)
--		return NL80211_CHAN_WIDTH_160;
--	else if (cap_width == IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ)
--		return NL80211_CHAN_WIDTH_80P80;
--
--	return NL80211_CHAN_WIDTH_80;
--}
--
- enum nl80211_chan_width
- ieee80211_sta_rx_bw_to_chan_width(struct link_sta_info *link_sta)
- {
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 3d55bf4be36f..072b383d7d3c 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -1204,10 +1204,12 @@
+  *	user space through the connect result as the user space would have
+  *	initiated the connection through the connect request.
+  *
+- * @NL80211_CMD_STA_OPMODE_CHANGED: An event that notify station's
+- *	ht opmode or vht opmode changes using any of %NL80211_ATTR_SMPS_MODE,
+- *	%NL80211_ATTR_CHANNEL_WIDTH,%NL80211_ATTR_NSS attributes with its
+- *	address(specified in %NL80211_ATTR_MAC).
++ * @NL80211_CMD_STA_OPMODE_CHANGED: An event that notifies that a station's
++ *	HT opmode or VHT opmode changed using any of %NL80211_ATTR_SMPS_MODE,
++ *	%NL80211_ATTR_CHANNEL_WIDTH, %NL80211_ATTR_NSS attributes with its
++ *	address (specified in %NL80211_ATTR_MAC).
++ *	Note that 80+80 and 160 MHz might not be differentiated, i.e. may
++ *	report %NL80211_CHAN_WIDTH_160 instead of %NL80211_CHAN_WIDTH_80P80.
+  *
+  * @NL80211_CMD_GET_FTM_RESPONDER_STATS: Retrieve FTM responder statistics, in
+  *	the %NL80211_ATTR_FTM_RESPONDER_STATS attribute.
 -- 
 2.53.0
 
