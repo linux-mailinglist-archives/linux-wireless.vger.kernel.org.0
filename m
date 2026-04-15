@@ -1,134 +1,147 @@
-Return-Path: <linux-wireless+bounces-34809-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34811-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIjcL7y332lVYQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34809-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 18:07:24 +0200
+	id oG5FHx3J32nVYwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34811-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:21:33 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CA54063B1
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 18:07:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2135406C0C
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C504A3060202
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 16:06:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EC6033164F8
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 16:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A404C3A9D9C;
-	Wed, 15 Apr 2026 16:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B822E3E5594;
+	Wed, 15 Apr 2026 16:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="UH4c/yW9"
+	dkim=pass (2048-bit key) header.d=r26.me header.i=@r26.me header.b="p44Ny+tI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577D42989BC
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 16:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E2231AAA8;
+	Wed, 15 Apr 2026 16:57:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776269156; cv=none; b=tl6X8Hvzi52BsCFHiDGxyVmkd2Quijk7b6IQwuvqF9luVxDNTJqRu+0pIH0WTzO+BuvdRSun8MwY1+Rn3lcdVohxMv9u/ZaV6cjEPpsK16qSYfRVUsZO9IeaZKexqUsLOmhm/sR+jM6LinwwPNjPNbspi4k5PjQOpQmMDxFeUKE=
+	t=1776272244; cv=none; b=tkMS94ScpKDSLFoT0Xscc+FWZkxLIohTOcDjVh1a9CZd+p1JsM2fw1V6dSwxUaIZelAB6GaInu9h/W87+jkeF6aPxx7TYdirYlMG6zIgtzdBvBjKwNXNKmMy++DNnqpVFLIUG1NQWeEAzgVExZxZfuWdR5QpedUHkzPjDRCMivg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776269156; c=relaxed/simple;
-	bh=iwN4wHTBsfLFKci0H7PA8rIYYv2bD9nTXgU0TIlgPRc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hG0t7cbK1Ftsa4ePHyW+6W3L9JBrYhE+2p5bL7dhvsJOFWUibuZVLyHIbintsMOHoiChTro8kdXF0wz5Mnoo7liIPRWj2JQwcMxogt7BlMlhhH2HzPRgstrQn4oULqG78yrFP98Hn0GtJ1+YusS/p8549LUbaCX/PV/pzKOADHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=UH4c/yW9; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=nVCIhm+64kTSsrmLU18tTGq9u3NTD95uakO0tiD4c8Y=;
-	t=1776269155; x=1777478755; b=UH4c/yW9G+z591UJT04MoBI94B6zUuXYkHK7/WzKxalfskR
-	fpWxMexDHLs2f/QwPMtHrys3AXJ8MvcE5oZk2AtW/Z9KcO3+phv+LGPzbvMN3PVDU2Glug8hrkazu
-	gMRv4e87uo6D4JaY1UKN+LkLN/L6xIXn0+bAi/A6cleVv1jxKrW+dSYLjFcb/Dy8rNWpieTouFsWX
-	VoAj7n28ZxxppzvjuqPc66MQsiIEOQksJv5zySMwNNEHXq9IOqNq4dJcwLnGfIX3ZLTBb38Ce7c5s
-	7PRcDd6wOXCWKWeaUT/OM8AYgV3DikpgnVorUyaP6lHTVVcZEl2YhuKcjpYsdUoA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wD2kR-00000006VIb-1jON;
-	Wed, 15 Apr 2026 18:05:52 +0200
-Message-ID: <9c77d6dfd7de1a54a3a454516af664a53bddd00b.camel@sipsolutions.net>
-Subject: Re: [PATCH 17/20] wifi: cfg80211: provide HT/VHT operation for AP
- beacon
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>, 
-	linux-wireless@vger.kernel.org
-Cc: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Date: Wed, 15 Apr 2026 18:05:50 +0200
-In-Reply-To: <5633ace2-45df-4ee6-a41f-831de3e90d60@freebox.fr> (sfid-20260415_180219_977065_1257F0CF)
-References: <20260415124514.284345-22-johannes@sipsolutions.net>
-	 <20260415144514.32ad98454543.Ia9692671b699164edcc0bdaf4fdbdbefc50b18f8@changeid>
-	 <ddfdac5d-602f-4f67-80bf-d41924b0b7e7@freebox.fr>
-	 <b5a0822b7ebf8e816e096e6a628db6b21fad40ef.camel@sipsolutions.net>
-	 <5633ace2-45df-4ee6-a41f-831de3e90d60@freebox.fr>
-	 (sfid-20260415_180219_977065_1257F0CF)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1776272244; c=relaxed/simple;
+	bh=V9T5Bgj31sBKP6pd9DlhQ0fIulRPEXKuRHEVPjkkrLk=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=oHQ+Bquz15/UxuyNAaL+UuzSkkr4/HXave6hj+Eguf3Mj78xBgzqEZbRH/MGV+ZgR+dAMJqBD3id31OI2cThwTMkvWkcCe4mX+T+v/J5TM9uL4kVDEX4T8fiORaF/llXAoTAytGv4Ddoty7m2R/xNlmFLtrUhLJk4K1q2JPDwTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=r26.me; spf=pass smtp.mailfrom=r26.me; dkim=pass (2048-bit key) header.d=r26.me header.i=@r26.me header.b=p44Ny+tI; arc=none smtp.client-ip=185.70.43.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=r26.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=r26.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=r26.me;
+	s=protonmail; t=1776272238; x=1776531438;
+	bh=V9T5Bgj31sBKP6pd9DlhQ0fIulRPEXKuRHEVPjkkrLk=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=p44Ny+tIelN3XwDc51CBNqEsFxfwsUWb8onR9hV8hs9nFcupihzP954gx2Qnp+C5I
+	 Bjx7KWCsC09bLTDi2c/S9WrhHFJ1QdmRzUXSyKMWKb+oeFswfoIVwPD/CyLR10xfAS
+	 YE0q97ivtWEJAO6yCTYV6mQhbOwv9pXBET3bF7Nz2QBOu3xhAtLcfV1TKr8qeuR4BA
+	 2hJNzjWSvousKIcGCGa4EH6tvgR24Am6/5gJOlhlGOr6KMrQ44IYOr6f0kzI50beL8
+	 OBYpGArYWIfmPfqMfio3s9FhiLFB8wKbjqOfeByD3xZhvZq/BUM6fPsqG/OzmiBX1J
+	 vAKKVw/J9oJ6g==
+Date: Wed, 15 Apr 2026 16:57:13 +0000
+To: Johannes Berg <johannes@sipsolutions.net>
+From: Rio Liu <rio@r26.me>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "benjamin.berg@intel.com" <benjamin.berg@intel.com>
+Subject: [PATCH v2] wifi: mac80211: skip ieee80211_verify_sta_ht_mcs_support check in non-strict mode
+Message-ID: <99Mv9QEceyPrQhSP52MtAVmz0_kWJmzqotJjD9YW6LGLqk-AZloAueUyHCURilFkuqOh6Ecv8i2KKdSE1ujP3AnbU5QEouVisT1w_V3xdfc=@r26.me>
+Feedback-ID: 77429777:user:proton
+X-Pm-Message-ID: 53d93d6dcfe9b777cac89c2172c46285dc4aaa65
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[r26.me,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[r26.me:s=protonmail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34809-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-34811-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rio@r26.me,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[r26.me:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sipsolutions.net:dkim,sipsolutions.net:mid]
-X-Rspamd-Queue-Id: 45CA54063B1
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[r26.me:email,r26.me:dkim,r26.me:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F2135406C0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 2026-04-15 at 18:02 +0200, Pablo MARTIN-GOMEZ wrote:
-> On 15/04/2026 17:42, Johannes Berg wrote:
-> > On Wed, 2026-04-15 at 17:22 +0200, Pablo MARTIN-GOMEZ wrote:
-> > >=20
-> > > > + * @ht_oper: HT operation element (or %NULL if HT isn't enabled)
-> > > Might be some nitpicking you can ignore, but HT operation element is =
-optional when HT is enabled. With the current comment, someone might (wrong=
-ly) deduce that if `ht_oper` is NULL then HT is not enabled.
-> > >=20
-> >=20
-> > Not sure how you mean that, but not really? If the AP has HT then it
-> > must have HT operation, otherwise the clients can't use it?
-> Oh my bad, you can ignore my comment. I wasn't sure if HT operation
-> element was mandatory, so I quickly checked the standard and the wording
-> of second table of 6.5.3.3.2 misled me in thinking it was optional ("The
-> parameter is optionally present if dot11HighThroughputOptionImplemented
-> is true; otherwise not present.")
->=20
+Some Xfinity XB8 firmware advertises >1 spatial stream MCS indexes in
+their basic HT-MCS set. On cards with lower spatial streams, the check
+would fail, and we'd be stuck with no HT when in fact work fine with its
+own supported rate. This change makes it so the check is only performed
+in strict mode.
 
-Huh. I'm not sure what you're referring to (spec version is highly
-relevant), but HT operation in a beacon frame, REVmf D2.0 says:
+Fixes: 574faa0e936d ("wifi: mac80211: add HT and VHT basic set verification=
+")
+Signed-off-by: Rio Liu <rio@r26.me>
+---
+v2 changes:
+- update comment to include Xfinity router model
+- generalize comment to include devices with only single spatial stream
+- add Fixes tag
+- add wifi: mac80211: to patch title
 
-	The HT Operation element is included by an AP and a mesh STA
-	when dot11HighThroughputOperationImplemented is true and the AP
-	or mesh STA is not a STA 6G.
+Link to v1: https://lore.kernel.org/linux-wireless/AKVRf_yEu2mRCJekCJpre5xX=
+MuHa_3_dO7_H1UU8fiKZRjJUf96ZKepiR999NwpiVwmzWBYoKipBpx1rqZatVihMYOCvANUnbeo=
+yI2U7ct0=3D@r26.me/T/#u
 
-johannes
+ net/mac80211/mlme.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 810bea1aacc5..44cb826263ba 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -419,6 +419,15 @@ ieee80211_verify_sta_ht_mcs_support(struct ieee80211_s=
+ub_if_data *sdata,
+ =09memcpy(&sta_ht_cap, &sband->ht_cap, sizeof(sta_ht_cap));
+ =09ieee80211_apply_htcap_overrides(sdata, &sta_ht_cap);
+
++=09/*
++=09 * Some Xfinity XB8 firmware advertises >1 spatial stream MCS indexes i=
+n
++=09 * their basic HT-MCS set. On cards with lower spatial streams, the che=
+ck
++=09 * would fail, and we'd be stuck with no HT when it in fact work fine w=
+ith
++=09 * its own supported rate. So check it only in strict mode.
++=09 */
++=09if (!ieee80211_hw_check(&sdata->local->hw, STRICT))
++=09=09return true;
++
+ =09/*
+ =09 * P802.11REVme/D7.0 - 6.5.4.2.4
+ =09 * ...
+
+base-commit: d65b175cfac64ee65506eea7fa573d291a9694ca
+--
+2.53.0
+
+
 
