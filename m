@@ -1,147 +1,164 @@
-Return-Path: <linux-wireless+bounces-34811-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34812-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oG5FHx3J32nVYwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34811-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:21:33 +0200
+	id CBwyDu7J32nVYwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34812-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:25:02 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2135406C0C
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:21:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5090406C66
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EC6033164F8
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 16:58:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F24931282A2
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 17:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B822E3E5594;
-	Wed, 15 Apr 2026 16:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7463E5590;
+	Wed, 15 Apr 2026 17:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=r26.me header.i=@r26.me header.b="p44Ny+tI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aAQT0wOc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E2231AAA8;
-	Wed, 15 Apr 2026 16:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776272244; cv=none; b=tkMS94ScpKDSLFoT0Xscc+FWZkxLIohTOcDjVh1a9CZd+p1JsM2fw1V6dSwxUaIZelAB6GaInu9h/W87+jkeF6aPxx7TYdirYlMG6zIgtzdBvBjKwNXNKmMy++DNnqpVFLIUG1NQWeEAzgVExZxZfuWdR5QpedUHkzPjDRCMivg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776272244; c=relaxed/simple;
-	bh=V9T5Bgj31sBKP6pd9DlhQ0fIulRPEXKuRHEVPjkkrLk=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=oHQ+Bquz15/UxuyNAaL+UuzSkkr4/HXave6hj+Eguf3Mj78xBgzqEZbRH/MGV+ZgR+dAMJqBD3id31OI2cThwTMkvWkcCe4mX+T+v/J5TM9uL4kVDEX4T8fiORaF/llXAoTAytGv4Ddoty7m2R/xNlmFLtrUhLJk4K1q2JPDwTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=r26.me; spf=pass smtp.mailfrom=r26.me; dkim=pass (2048-bit key) header.d=r26.me header.i=@r26.me header.b=p44Ny+tI; arc=none smtp.client-ip=185.70.43.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=r26.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=r26.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=r26.me;
-	s=protonmail; t=1776272238; x=1776531438;
-	bh=V9T5Bgj31sBKP6pd9DlhQ0fIulRPEXKuRHEVPjkkrLk=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=p44Ny+tIelN3XwDc51CBNqEsFxfwsUWb8onR9hV8hs9nFcupihzP954gx2Qnp+C5I
-	 Bjx7KWCsC09bLTDi2c/S9WrhHFJ1QdmRzUXSyKMWKb+oeFswfoIVwPD/CyLR10xfAS
-	 YE0q97ivtWEJAO6yCTYV6mQhbOwv9pXBET3bF7Nz2QBOu3xhAtLcfV1TKr8qeuR4BA
-	 2hJNzjWSvousKIcGCGa4EH6tvgR24Am6/5gJOlhlGOr6KMrQ44IYOr6f0kzI50beL8
-	 OBYpGArYWIfmPfqMfio3s9FhiLFB8wKbjqOfeByD3xZhvZq/BUM6fPsqG/OzmiBX1J
-	 vAKKVw/J9oJ6g==
-Date: Wed, 15 Apr 2026 16:57:13 +0000
-To: Johannes Berg <johannes@sipsolutions.net>
-From: Rio Liu <rio@r26.me>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "benjamin.berg@intel.com" <benjamin.berg@intel.com>
-Subject: [PATCH v2] wifi: mac80211: skip ieee80211_verify_sta_ht_mcs_support check in non-strict mode
-Message-ID: <99Mv9QEceyPrQhSP52MtAVmz0_kWJmzqotJjD9YW6LGLqk-AZloAueUyHCURilFkuqOh6Ecv8i2KKdSE1ujP3AnbU5QEouVisT1w_V3xdfc=@r26.me>
-Feedback-ID: 77429777:user:proton
-X-Pm-Message-ID: 53d93d6dcfe9b777cac89c2172c46285dc4aaa65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6554D3E639A
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 17:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776272641; cv=pass; b=Ji7uEqcMX81GYUfn4EQxiTnI/C8i1mSYUa6i+SJBEwmIAq3u1KoLGICUs9oaxc1NravkiSQSPkqbAepDCvEOPlY/zoRWAbE9QMj8u70PUvbbCLs1gRItxbyjJqjvJjKooRjaYEYlHIwYDzlFifIb+o0xbAgxeEIlvscRn3bj+n4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776272641; c=relaxed/simple;
+	bh=S5NhDLLih0xWHY1USnTam+lNuj714IEk59kE3isHgEY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EXj76kEmxPKY233aE8PX1XfSJIY+QqSK9LC66RB7/1LkzmXA5vQlv6CNcN95Vbyh+PdrJnniohT/dF3gvIa3qX1UwnllrcYpfKgsBOyaYBJpe5ACgu/bc+/NOwCHxLiZq57drjOiGMobDn5pvgl2iLBVUG1adlCErNfggN/oXO0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aAQT0wOc; arc=pass smtp.client-ip=209.85.210.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7d86eb7c854so3483522a34.3
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 10:03:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776272637; cv=none;
+        d=google.com; s=arc-20240605;
+        b=E5OEQTpqWQDmQG5IKnxXh1ImolP3iH93hlKz96ytHyXmXZrFqZqS35dTWOu6jLRZuy
+         HBHmsSZr5VyMsyn+p+6C7eP62HuqDJGY7XkvsimSjVg6M6i2KktMnU02JqR1sELtrlAS
+         EQblQ+Bzu/TnRgsUBgYmkmC9SE9lHHOx3gUO5wkQWVlLSdop67kubxldGP7Ad54AZcEv
+         jieWl0FIAQIOIAiecSypYOdweuR+KJy0jYD4JXtFcRfoqnLPQheO0RWobvVU9odrrRiG
+         la1JWpvm0aM9vmeTaz8CENFHhY53imwPa7O0HmbbgUwafJ/FsRS4pwclzXSYzmIwGscv
+         exaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=S5NhDLLih0xWHY1USnTam+lNuj714IEk59kE3isHgEY=;
+        fh=rXjh9mvtsYw3eG+YQ3StxTwY26w6ijf+9wcS0T7g+Go=;
+        b=XnNcPGH+wDXA+MHkD3I+7rtNbVWQ+pZZpcWrGRyiXbth5WwK0a784SEtG8TMx8WvRN
+         hogiPFoim6nDlS1KGo58BuutVRTNfMwNaySx4GI3iPye5zQPvIormvF5yRm1nz1nU+gF
+         ffZPKVMkAQnoc9KuowTZTeXj5OzDPhsq7Am0bk3qQtOWLfRsNVrQBqZdNPlkGP0TdPEm
+         GliYFEAvtxHMvCkvMFQdESQ95c4BP+Hp9RIVhBxzP2sLQaA3A8O/TiPejf2NRAEPCSeI
+         2Xh1I7gFLmGuIblq4f2KyruPtoC8d3pBn6WhK4SpjnOwrsuxocI78YCwiQMGl5PCEXuD
+         jm7g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776272637; x=1776877437; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=S5NhDLLih0xWHY1USnTam+lNuj714IEk59kE3isHgEY=;
+        b=aAQT0wOcuQyxZAPHkoJnJ21zRkSFAPeHa2ddRAt8R34e1GxvFi/ofe84n977SR0H0N
+         9OBUk5ue6lD3pDTFAkFXUHkBXzkdZYD6fClVXaomqVH+/FkmPPC5WkGqeO7mz4xR3UOM
+         WEATORc98mPI3eJn6IZrOMIRXZ6EFZdwdOHh8iSi0SnhZ06F/a8p7W0eu+DYgsjAzF1t
+         H55GeNUmtrjZG8Z8Budno5pMjuSIkGNxTdR0UUk2ojdvPoQBxltIiXx/rYHOEb+FMu8Q
+         Ir458E+qOLMKoZ4T+2649ZOVYmawTnxXHsE+ifrwQPBBLh8jU+HQYclOJgDucZAcPUSg
+         C6LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776272637; x=1776877437;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S5NhDLLih0xWHY1USnTam+lNuj714IEk59kE3isHgEY=;
+        b=QwOQUjo5y5IBJ6q6PYRkHHyh1ptR5CMmBTFTV6rG6CSSAFDSjZLQ0LD9NZrbhNTSZ8
+         hyXDITIoi6lYt7D9DH8nftJ6IigqqbwEduY9MEWYMt7CJEYBZo216UfsdhNFqh8N+Lg0
+         fS1XpOEvkn5XyWovCjjVlGH2T4TqAOCFzZxUbZbNOHwqNlrjsQQ2scnWU+b7rBGPnHnR
+         aRgzFZWtaEQnetQkpHw1fuid41fWsQyV7YfiQctokum/+2Vga98yhW8XcVYgiI67gMCT
+         lDi98xBVRoLvuWz4PBWggL6EAYqW2ALOReMd3E/rCPNFmTnWeJvd6mlTuwMN2gpYKoGW
+         doWw==
+X-Forwarded-Encrypted: i=1; AFNElJ/2U20bmo0N9Lwk9nHSm6GEnbXhKlfClEbTnDYTpOo3hD8++wHvcPTbftwg/9HTAP57adMcqZxC5JWlabIMOQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdARSF4I2Z5zLvoWCO1wnEuBQsqKE+4RKhZ6ZLXDzK/dEypGZn
+	CbIgZkkH6vBNrWBGeazerxflaCxlqHeylUgU+kDt1bD6vS5y8m/boQ+NrlRK0JacDbLsfXBn87g
+	PQFraRpXaNPyw3VQx9KPntOb1mKo1rNaCxb6YhjDgHQ==
+X-Gm-Gg: AeBDiesBRfzsqgZu94pUdiydruhl4XhUPJbkuheMcPDSTnPuKZMXboSyiieW8giI4O8
+	beBRj2wCvyCirfTQggPdvkfNchNq21pQxZuOKsNBn8WJp/QTPxqr2E9tu+/Eoi7L+wDUirrqbyQ
+	UHONFn9KUmaH+wuuqgtq2Y+qzMdtDidjFeT00rIYYQOygzt/O6xaXZv36iJ/bv/QvcvbxPsC+bX
+	aZb+oseNUnjwpsKRd3w1q3SfXv18p64hpbZ8UojZuh4nY6Ge/OYMloPNwOzBnlvu1YiwDrYF+p1
+	MdbiCdHK4n5hAN2b+sk=
+X-Received: by 2002:a05:6808:344c:b0:467:bfa:bdb2 with SMTP id
+ 5614622812f47-478a0400607mr11838977b6e.25.1776272636884; Wed, 15 Apr 2026
+ 10:03:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20260414194757.163339-1-npetrakopoulos2003@gmail.com>
+ <20260415052959.14844-1-npetrakopoulos2003@gmail.com> <ad69b2f3dbc74ea6b9b1a17f2a77fbb4@realtek.com>
+In-Reply-To: <ad69b2f3dbc74ea6b9b1a17f2a77fbb4@realtek.com>
+From: LB F <goainwo@gmail.com>
+Date: Wed, 15 Apr 2026 20:03:20 +0300
+X-Gm-Features: AQROBzDgga_jZUeB1-sQh2Y0w7VvH3nw1Bq63jbFFR1fUFTE2ABRpoPIcAqLO9I
+Message-ID: <CALdGYqSepO3xy9UerKXFfKLdj1BS1jGQh5YgkcSHrxYYY=n3Kg@mail.gmail.com>
+Subject: Re: [PATCH v3] wifi: rtw88: Add NULL check for chip->edcca_th in rtw_fw_adaptivity_result()
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[r26.me,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[r26.me:s=protonmail];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34811-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-34812-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rio@r26.me,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[r26.me:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[r26.me:email,r26.me:dkim,r26.me:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F2135406C0C
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B5090406C66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Some Xfinity XB8 firmware advertises >1 spatial stream MCS indexes in
-their basic HT-MCS set. On cards with lower spatial streams, the check
-would fail, and we'd be stuck with no HT when in fact work fine with its
-own supported rate. This change makes it so the check is only performed
-in strict mode.
+On Tue, 15 Apr 2026, Panagiotis Petrakopoulos wrote:
+> Add a NULL check for edcca_th before dereferencing
+> it in rtw_fw_adaptivity_result() in fw.c.
 
-Fixes: 574faa0e936d ("wifi: mac80211: add HT and VHT basic set verification=
-")
-Signed-off-by: Rio Liu <rio@r26.me>
----
-v2 changes:
-- update comment to include Xfinity router model
-- generalize comment to include devices with only single spatial stream
-- add Fixes tag
-- add wifi: mac80211: to patch title
+Hi Panagiotis,
 
-Link to v1: https://lore.kernel.org/linux-wireless/AKVRf_yEu2mRCJekCJpre5xX=
-MuHa_3_dO7_H1UU8fiKZRjJUf96ZKepiR999NwpiVwmzWBYoKipBpx1rqZatVihMYOCvANUnbeo=
-yI2U7ct0=3D@r26.me/T/#u
+I have applied this v3 patch to my local out-of-tree rtw88 build
+(openSUSE Tumbleweed, kernel 6.19) on the affected RTL8821CE
+hardware. The driver compiles cleanly and the module loads
+without issues.
 
- net/mac80211/mlme.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+I am now starting a structured stability test covering suspend,
+hibernation, high-throughput transfers, and long uptime. I will
+follow up with a Tested-by once I have sufficient confidence in
+the results.
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 810bea1aacc5..44cb826263ba 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -419,6 +419,15 @@ ieee80211_verify_sta_ht_mcs_support(struct ieee80211_s=
-ub_if_data *sdata,
- =09memcpy(&sta_ht_cap, &sband->ht_cap, sizeof(sta_ht_cap));
- =09ieee80211_apply_htcap_overrides(sdata, &sta_ht_cap);
-
-+=09/*
-+=09 * Some Xfinity XB8 firmware advertises >1 spatial stream MCS indexes i=
-n
-+=09 * their basic HT-MCS set. On cards with lower spatial streams, the che=
-ck
-+=09 * would fail, and we'd be stuck with no HT when it in fact work fine w=
-ith
-+=09 * its own supported rate. So check it only in strict mode.
-+=09 */
-+=09if (!ieee80211_hw_check(&sdata->local->hw, STRICT))
-+=09=09return true;
-+
- =09/*
- =09 * P802.11REVme/D7.0 - 6.5.4.2.4
- =09 * ...
-
-base-commit: d65b175cfac64ee65506eea7fa573d291a9694ca
---
-2.53.0
-
-
+Best regards,
+Oleksandr Havrylov
 
