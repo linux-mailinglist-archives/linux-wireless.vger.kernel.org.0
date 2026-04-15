@@ -1,193 +1,197 @@
-Return-Path: <linux-wireless+bounces-34815-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34813-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPmoDjvP32m4ZAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34815-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:47:39 +0200
+	id ACDzI1XI32kmYwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34813-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:18:13 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD58406E4F
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:47:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F283D406B9D
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6AECA3012581
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 17:47:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 64CDC301EC59
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 17:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3E12BDC13;
-	Wed, 15 Apr 2026 17:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b="YtF897uv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8243E8C59;
+	Wed, 15 Apr 2026 17:18:06 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from shell.v3.sk (mail.v3.sk [167.172.186.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6EE41C71
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 17:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8324D373C04;
+	Wed, 15 Apr 2026 17:18:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.172.186.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776275252; cv=none; b=oInR8umLxpMEdnhOIFhuMyJzcJsgU7F1lcS6D8dMoZkEXHDjcKMdb6DHVIJ265fCbvSiJ5tFjDva3e3L36etR56TuwoWkScHwnlmC8bhot1zQoU9of2upffv0qxk0X7vuNC2cnYu8AJg77hJftv4ZeBQVsecRbz/uDEd5tj0/xQ=
+	t=1776273486; cv=none; b=a6wXYeLZyzTDs+5EMV46+zswdSjpiKSLrT6+AnOGRKJ+q46iBt+x9uW/lZUNOaCOxpr00PSvCZNRMzs2hJv9YQnjacWHoqB/ZQDmB6LPrGt8AcZT9wc2itN0VrytqCudYlEhBjtAV/iCx5D8h8YoVXRDQ7WPH08HNwK75JX58A0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776275252; c=relaxed/simple;
-	bh=NtB/eWOJij+AJOpCmAPG4LZPrrs0H8n9UE2w9g0Bys8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=IB6It0tI9zFfYAh/eyo4ceB/Y9dNMQ5mrE/BUKtX74dJYtJ/C8cgpVyYjWkSkyfsNoIvkzSP7sWy95nSjy53TGLdv+XpM30Exh3dhDS4DzUIiOeeHyngoupSZ8625peXv5gUv6GF1oFK7u7F36DE9tODcei63E7iO9hiHAaASPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com; dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b=YtF897uv; arc=none smtp.client-ip=121.127.44.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ubuntu.com;
- h=In-Reply-To: References: To: From: Subject: Cc: Message-Id: Date:
- Content-Type: Content-Transfer-Encoding: Mime-Version; q=dns/txt;
- s=fe-953a8a3ca9; t=1776275249;
- bh=NtB/eWOJij+AJOpCmAPG4LZPrrs0H8n9UE2w9g0Bys8=;
- b=YtF897uvfpHmJo76GRPqlxNxOjklRIZdPi3Xs03/bZEDCH9vygGlsME0iNmi327mJYvP8PCP+
- EFmnE7Y88PdJwrBluSx/ddpvFe+X5Cpd089y4/m1FEXmYVsvSwWjEv/2u53VGIbW8PwZBarsDm+
- 5CDSiJbWYnvKygEryVgDJy9DoFXhgclCBEVgYFb5VabUDf/79W2CKut2/dIYpXoR/d8ZBkpw4xj
- ZFY0C+u5mpJpsQL46kbwAq7S+D5n8QW7p2ORF6Ns2dIslVUB6kg0/K34YvWeij6Mu82LKvmk4Zx
- YYXqhWN+yefjxzBkJxysbdUx9DcuDqc98imkvM05322A==
-X-Forward-Email-ID: 69dfc52a8929b895becdf89a
-X-Forward-Email-Sender: rfc822; jpeisach@ubuntu.com, smtp.forwardemail.net,
- 121.127.44.73
-X-Forward-Email-Version: 2.7.3
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
+	s=arc-20240116; t=1776273486; c=relaxed/simple;
+	bh=BXM+to8siLu81KiUOonJM1w02O5RIRoRGMXyVjaji/c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tBf9FjrusieI65aSr4lvhwZGIGA5DcvdOFjlPKfgit+UiwklWKSBzrp2iKuSDhzGHsirDgqtNqLTq6G2emKzgUYmuqLlMxg8b9bws3syiehuqk1JnnhJQOsBppkDkGgC2Uwl+GuE60Tx1qhhqIRkFy3s3Z4WX6dhO5nDCf3g3rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=v3.sk; spf=pass smtp.mailfrom=v3.sk; arc=none smtp.client-ip=167.172.186.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=v3.sk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=v3.sk
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by zimbra.v3.sk (Postfix) with ESMTP id DD4E1E2111;
+	Wed, 15 Apr 2026 16:52:53 +0000 (UTC)
+Received: from shell.v3.sk ([127.0.0.1])
+	by localhost (zimbra.v3.sk [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id R4N2wv-dUtxI; Wed, 15 Apr 2026 16:52:53 +0000 (UTC)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by zimbra.v3.sk (Postfix) with ESMTP id 4E47AE210E;
+	Wed, 15 Apr 2026 16:52:53 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at zimbra.v3.sk
+Received: from shell.v3.sk ([127.0.0.1])
+	by localhost (zimbra.v3.sk [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id MkbUL-gib38t; Wed, 15 Apr 2026 16:52:53 +0000 (UTC)
+Received: from demiurge.local (unknown [109.183.109.54])
+	by zimbra.v3.sk (Postfix) with ESMTPSA id 06174E210D;
+	Wed, 15 Apr 2026 16:52:53 +0000 (UTC)
+From: Lubomir Rintel <lkundrak@v3.sk>
+To: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Lubomir Rintel <lkundrak@v3.sk>
+Subject: [PATCH] zd1211rw/mac: Fix out-of-bounds upon RX when unassociated
+Date: Wed, 15 Apr 2026 19:08:10 +0200
+Message-ID: <20260415170810.1809398-1-lkundrak@v3.sk>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8; format=Flowed
-Date: Wed, 15 Apr 2026 13:04:40 -0400
-Message-Id: <DHTW44HOVZLS.GFYBZTKJTMP4@ubuntu.com>
-Cc: "Johannes Berg" <johannes@sipsolutions.net>,
- <linux-wireless@vger.kernel.org>, <b43-dev@lists.infradead.org>, "b43-dev"
- <b43-dev-bounces@lists.infradead.org>
-Subject: Re: Firmware for reverse engineering b43?
-From: "Joshua Peisach" <jpeisach@ubuntu.com>
-To: =?utf-8?q?Michael_B=C3=BCsch?= <m@bues.ch>, "Jonas Gorski"
- <jonas.gorski@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <DHS1BJ5XFYRC.GCF9PXS0OSRI@ubuntu.com>
- <c62a448843f189d78187de18d3fcb955f2779d13.camel@sipsolutions.net>
- <DHSUDVMGW0PS.2LYWKGG1C1135@ubuntu.com>
- <CAOiHx==kVm0OKWRKi4VHSEEr6ZygzrpNiA=zj+zEHT6_rgZ3CQ@mail.gmail.com>
- <DHTPAVC76140.1JLO3HNQARQ9Q@ubuntu.com>
- <CAOiHx=n8awRRvArvG8sWqEokojXL6ppFRJ8_SOuGAddDb1D32A@mail.gmail.com>
- <20260415175748.61aa7993@barney>
-In-Reply-To: <20260415175748.61aa7993@barney>
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	SUBJECT_ENDS_QUESTION(1.00)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ubuntu.com,none];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ubuntu.com:s=fe-953a8a3ca9];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34815-lists,linux-wireless=lfdr.de];
-	FREEMAIL_TO(0.00)[bues.ch,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34813-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[v3.sk];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jpeisach@ubuntu.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[ubuntu.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkundrak@v3.sk,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[8];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.944];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5BD58406E4F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F283D406B9D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed Apr 15, 2026 at 11:57 AM EDT, Michael B=C3=BCsch wrote:
-> On Wed, 15 Apr 2026 13:54:31 +0200
-> Jonas Gorski <jonas.gorski@gmail.com> wrote:
->
->> On Wed, Apr 15, 2026 at 1:44=E2=80=AFPM Joshua Peisach <jpeisach@ubuntu.=
-com> wrote:
->> > It does appear to be similar - even the current brcm80211. So much so
->> > that I sometimes need to think about whether b43 is actually a
->> > duplicated driver.
->> >
->> > Since b43 is in an orphan state, I thought it would be a great place t=
-o
->> > start for kernel development. 5G doesn't work on that iMac, some of th=
-e
->> > PHYs, like the AC PHYs appear to be incomplete - it felt reasonable.
->> >
->> > Because I'm one of those "there's always room for improvement people",
->> > I was going to try to improve the driver, filling out TODOs, fixing
->> > hardcoded register numbers, etc. But if it's best left alone.. then I
->> > guess we can do that.
->> >
->> > That is, assuming b43 is actually supposed to be a separate driver,
->> > because if brcmsmac basically has the same code, then maybe we should
->> > focus to centralizing everything? But then there's b43legacy.. hm... =
+Upon plugging the adapter, UBSAN complains about an out of bounds read:
+
+  zd1211rw 1-12:1.0: firmware version 4725
+  zd1211rw 1-12:1.0: zd1211b chip 083a:4505 v4810 high 00-13-f7 AL2230_RF=
+ pa0 g--NS
+  ------------[ cut here ]------------
+  UBSAN: array-index-out-of-bounds in drivers/net/wireless/zydas/zd1211rw=
+/zd_mac.c:1059:26
+  index -1 is out of range for type 'ieee80211_channel [14]'
+  CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.17.12-300.fc43.x86_6=
+4 #1 PREEMPT(lazy)
+  Hardware name: MSI MS-7A68/B250 KRAIT GAMING (MS-7A68), BIOS H.00 12/15=
+/2016
+  Call Trace:
+   <IRQ>
+   dump_stack_lvl+0x5d/0x80
+   ubsan_epilogue+0x5/0x2b
+   __ubsan_handle_out_of_bounds.cold+0x54/0x59
+   zd_mac_rx+0x453/0x470 [zd1211rw]
+   ? raise_softirq_irqoff+0x9/0x30
+   rx_urb_complete+0x178/0x260 [zd1211rw]
+   ? queue_work_on+0x73/0x80
+   ? led_trigger_blink_oneshot+0x78/0xa0
+   __usb_hcd_giveback_urb+0x9d/0x120
+   usb_giveback_urb_bh+0xb1/0x140
+   process_one_work+0x18f/0x350
+   bh_worker+0x1ac/0x210
+   tasklet_action+0x10/0x30
+   handle_softirqs+0xed/0x340
+   __irq_exit_rcu+0xcb/0xf0
+   common_interrupt+0x85/0xa0
+   </IRQ>
+   <TASK>
+   asm_common_interrupt+0x26/0x40
+  RIP: 0010:cpuidle_enter_state+0xcc/0x660
+
+  Code: 00 00 e8 f7 36 ef fe e8 72 f0 ff ff 49 89 c4 0f
+        1f 44 00 00 31 ff e8 23 55 ed fe 45 84 ff 0f 85
+        02 02 00 00 fb 0f 1f 44 00 00 <85> ed 0f 88 d3 01
+        00 00 4c 63 f5 49 83 fe 0a 0f 83 9f 04 00 00 49
+  RSP: 0018:ffffffff9dc03df8 EFLAGS: 00000246
+  RAX: ffff8a5440447000 RBX: ffff8a53df03ea40 RCX: 0000000000000000
+  RDX: 001bd812ca957581 RSI: 00000000248799d1 RDI: 0000000000000000
+  RBP: 0000000000000002 R08: fffffffc74360e92 R09: ffff8a53df02cbe0
+  R10: 001bd81656731313 R11: 0000000000000000 R12: 001bd812ca957581
+  R13: ffffffff9df0fa60 R14: 0000000000000002 R15: 0000000000000000
+   ? cpuidle_enter_state+0xbd/0x660
+   cpuidle_enter+0x31/0x50
+   cpuidle_idle_call+0xf5/0x160
+   ? ktime_get+0x3c/0xf0
+   do_idle+0x78/0xd0
+   cpu_startup_entry+0x29/0x30
+   rest_init+0xe7/0xf0
+   start_kernel+0x49d/0x4a0
+   x86_64_start_reservations+0x24/0x30
+   x86_64_start_kernel+0x126/0x130
+   common_startup_64+0x13e/0x141
+   </TASK>
+  ---[ end trace ]---
+
+It is correct: if zd_mac_rx() is called when unassociated, the channel
+is 0, becomes -1 under assumption there's a proper channel number
+starting from 1.
+
+Add a missing bounds check.
+
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+---
+ drivers/net/wireless/zydas/zd1211rw/zd_mac.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c b/drivers/net/w=
+ireless/zydas/zd1211rw/zd_mac.c
+index 03948f0b4628..c59d1929a69c 100644
+--- a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
++++ b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+@@ -1022,6 +1022,7 @@ int zd_mac_rx(struct ieee80211_hw *hw, const u8 *bu=
+ffer, unsigned int length)
+ 	const struct rx_status *status;
+ 	struct sk_buff *skb;
+ 	int bad_frame =3D 0;
++	u8 channel;
+ 	__le16 fc;
+ 	int need_padding;
+ 	int i;
+@@ -1055,7 +1056,9 @@ int zd_mac_rx(struct ieee80211_hw *hw, const u8 *bu=
+ffer, unsigned int length)
+ 		}
+ 	}
 =20
->>=20
->> It is/was intentionally a separate driver: Broadcom didn't want to
->> maintain support for obsolete chips (anything SSB, anything older than
->> BCM43224), so the decision was to have b43 support all the "legacy"
->> chips, while brcm80211 supports everything never. Since they were both
->> based on the same driver, they are (more or less) the same
->> architecture.
->>=20
->> But now that Broadcom has essentially abandoned the softmac part of
->> brcm80211 since several years, I don't think there would be many
->> objections on unifying it with b43.
->
-> The hardest part in the b43 development always was not to break already
-> working stuff. There are many different types and revisions of the hardwa=
-re
-> out there. Probably in the order of many dozens of variants.
->
-> Please keep in mind that changing code means mostly testing.
-> Which is hard, if you don't have the hardware variants and basically no
-> users exist anymore. Just implementing random TODOs and missing pieces
-> will break things. (e.g. not doing some HW calibration or workaround migh=
-t
-> be better than only partially doing it or doing it wrong).
->
+-	stats.freq =3D zd_channels[_zd_chip_get_channel(&mac->chip) - 1].center=
+_freq;
++	channel =3D _zd_chip_get_channel(&mac->chip);
++	if (channel > 0 && channel <=3D ARRAY_SIZE(zd_channels))
++		stats.freq =3D zd_channels[channel - 1].center_freq;
+ 	stats.band =3D NL80211_BAND_2GHZ;
+ 	stats.signal =3D zd_check_signal(hw, status->signal_strength);
+=20
+--=20
+2.52.0
 
-Well, if the regression risk is that high, then I guess I'll let it be.
-
-> I would personally not touch this thing anymore, except for security fixe=
-s and such.
->
-
-Sure. I might just make sure everything is using register definitions
-instead of hardcoded values, but then leave it there.
-
-> But if you want to work on the code, long term, I would welcome that.
-> We could even arrange that I ship you some hardware.
-> But keep in mind, it's all almost 20 years old legacy stuff.
-
-The only b43 devices I have are the aforementioned iMac, and also the
-Wii. And unless the hardware is unique in some other way, I don't think
-its worth sending it to me. Besides, if the code is so risky to touch,
-then the only technical change I make should just be to fix my 5G
-situation.
-
-I didn't intend to become a b43 maintainer, and given where I currently
-am lifewise, I don't think it's worth trying to fulfill that role long
-term. Hopefully I'll find areas of work in brcm80211 to work in. It
-just so happened that "make sure the kernel works on everything you can
-get your hands on" stumbled across b43, which I thought would be a good
-starting point.
-
-So I guess this driver just sits here.. not quite pointless to be
-removed from the main tree, but not quite worth the effort to bring it
-up to speed.
 
