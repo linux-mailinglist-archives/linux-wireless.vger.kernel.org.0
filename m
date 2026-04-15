@@ -1,164 +1,193 @@
-Return-Path: <linux-wireless+bounces-34812-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34815-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBwyDu7J32nVYwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34812-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:25:02 +0200
+	id uPmoDjvP32m4ZAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34815-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:47:39 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5090406C66
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:25:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD58406E4F
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 19:47:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F24931282A2
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 17:04:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6AECA3012581
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 17:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7463E5590;
-	Wed, 15 Apr 2026 17:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3E12BDC13;
+	Wed, 15 Apr 2026 17:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aAQT0wOc"
+	dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b="YtF897uv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6554D3E639A
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 17:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776272641; cv=pass; b=Ji7uEqcMX81GYUfn4EQxiTnI/C8i1mSYUa6i+SJBEwmIAq3u1KoLGICUs9oaxc1NravkiSQSPkqbAepDCvEOPlY/zoRWAbE9QMj8u70PUvbbCLs1gRItxbyjJqjvJjKooRjaYEYlHIwYDzlFifIb+o0xbAgxeEIlvscRn3bj+n4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776272641; c=relaxed/simple;
-	bh=S5NhDLLih0xWHY1USnTam+lNuj714IEk59kE3isHgEY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EXj76kEmxPKY233aE8PX1XfSJIY+QqSK9LC66RB7/1LkzmXA5vQlv6CNcN95Vbyh+PdrJnniohT/dF3gvIa3qX1UwnllrcYpfKgsBOyaYBJpe5ACgu/bc+/NOwCHxLiZq57drjOiGMobDn5pvgl2iLBVUG1adlCErNfggN/oXO0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aAQT0wOc; arc=pass smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7d86eb7c854so3483522a34.3
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 10:03:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776272637; cv=none;
-        d=google.com; s=arc-20240605;
-        b=E5OEQTpqWQDmQG5IKnxXh1ImolP3iH93hlKz96ytHyXmXZrFqZqS35dTWOu6jLRZuy
-         HBHmsSZr5VyMsyn+p+6C7eP62HuqDJGY7XkvsimSjVg6M6i2KktMnU02JqR1sELtrlAS
-         EQblQ+Bzu/TnRgsUBgYmkmC9SE9lHHOx3gUO5wkQWVlLSdop67kubxldGP7Ad54AZcEv
-         jieWl0FIAQIOIAiecSypYOdweuR+KJy0jYD4JXtFcRfoqnLPQheO0RWobvVU9odrrRiG
-         la1JWpvm0aM9vmeTaz8CENFHhY53imwPa7O0HmbbgUwafJ/FsRS4pwclzXSYzmIwGscv
-         exaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=S5NhDLLih0xWHY1USnTam+lNuj714IEk59kE3isHgEY=;
-        fh=rXjh9mvtsYw3eG+YQ3StxTwY26w6ijf+9wcS0T7g+Go=;
-        b=XnNcPGH+wDXA+MHkD3I+7rtNbVWQ+pZZpcWrGRyiXbth5WwK0a784SEtG8TMx8WvRN
-         hogiPFoim6nDlS1KGo58BuutVRTNfMwNaySx4GI3iPye5zQPvIormvF5yRm1nz1nU+gF
-         ffZPKVMkAQnoc9KuowTZTeXj5OzDPhsq7Am0bk3qQtOWLfRsNVrQBqZdNPlkGP0TdPEm
-         GliYFEAvtxHMvCkvMFQdESQ95c4BP+Hp9RIVhBxzP2sLQaA3A8O/TiPejf2NRAEPCSeI
-         2Xh1I7gFLmGuIblq4f2KyruPtoC8d3pBn6WhK4SpjnOwrsuxocI78YCwiQMGl5PCEXuD
-         jm7g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776272637; x=1776877437; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=S5NhDLLih0xWHY1USnTam+lNuj714IEk59kE3isHgEY=;
-        b=aAQT0wOcuQyxZAPHkoJnJ21zRkSFAPeHa2ddRAt8R34e1GxvFi/ofe84n977SR0H0N
-         9OBUk5ue6lD3pDTFAkFXUHkBXzkdZYD6fClVXaomqVH+/FkmPPC5WkGqeO7mz4xR3UOM
-         WEATORc98mPI3eJn6IZrOMIRXZ6EFZdwdOHh8iSi0SnhZ06F/a8p7W0eu+DYgsjAzF1t
-         H55GeNUmtrjZG8Z8Budno5pMjuSIkGNxTdR0UUk2ojdvPoQBxltIiXx/rYHOEb+FMu8Q
-         Ir458E+qOLMKoZ4T+2649ZOVYmawTnxXHsE+ifrwQPBBLh8jU+HQYclOJgDucZAcPUSg
-         C6LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776272637; x=1776877437;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S5NhDLLih0xWHY1USnTam+lNuj714IEk59kE3isHgEY=;
-        b=QwOQUjo5y5IBJ6q6PYRkHHyh1ptR5CMmBTFTV6rG6CSSAFDSjZLQ0LD9NZrbhNTSZ8
-         hyXDITIoi6lYt7D9DH8nftJ6IigqqbwEduY9MEWYMt7CJEYBZo216UfsdhNFqh8N+Lg0
-         fS1XpOEvkn5XyWovCjjVlGH2T4TqAOCFzZxUbZbNOHwqNlrjsQQ2scnWU+b7rBGPnHnR
-         aRgzFZWtaEQnetQkpHw1fuid41fWsQyV7YfiQctokum/+2Vga98yhW8XcVYgiI67gMCT
-         lDi98xBVRoLvuWz4PBWggL6EAYqW2ALOReMd3E/rCPNFmTnWeJvd6mlTuwMN2gpYKoGW
-         doWw==
-X-Forwarded-Encrypted: i=1; AFNElJ/2U20bmo0N9Lwk9nHSm6GEnbXhKlfClEbTnDYTpOo3hD8++wHvcPTbftwg/9HTAP57adMcqZxC5JWlabIMOQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdARSF4I2Z5zLvoWCO1wnEuBQsqKE+4RKhZ6ZLXDzK/dEypGZn
-	CbIgZkkH6vBNrWBGeazerxflaCxlqHeylUgU+kDt1bD6vS5y8m/boQ+NrlRK0JacDbLsfXBn87g
-	PQFraRpXaNPyw3VQx9KPntOb1mKo1rNaCxb6YhjDgHQ==
-X-Gm-Gg: AeBDiesBRfzsqgZu94pUdiydruhl4XhUPJbkuheMcPDSTnPuKZMXboSyiieW8giI4O8
-	beBRj2wCvyCirfTQggPdvkfNchNq21pQxZuOKsNBn8WJp/QTPxqr2E9tu+/Eoi7L+wDUirrqbyQ
-	UHONFn9KUmaH+wuuqgtq2Y+qzMdtDidjFeT00rIYYQOygzt/O6xaXZv36iJ/bv/QvcvbxPsC+bX
-	aZb+oseNUnjwpsKRd3w1q3SfXv18p64hpbZ8UojZuh4nY6Ge/OYMloPNwOzBnlvu1YiwDrYF+p1
-	MdbiCdHK4n5hAN2b+sk=
-X-Received: by 2002:a05:6808:344c:b0:467:bfa:bdb2 with SMTP id
- 5614622812f47-478a0400607mr11838977b6e.25.1776272636884; Wed, 15 Apr 2026
- 10:03:56 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6EE41C71
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 17:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776275252; cv=none; b=oInR8umLxpMEdnhOIFhuMyJzcJsgU7F1lcS6D8dMoZkEXHDjcKMdb6DHVIJ265fCbvSiJ5tFjDva3e3L36etR56TuwoWkScHwnlmC8bhot1zQoU9of2upffv0qxk0X7vuNC2cnYu8AJg77hJftv4ZeBQVsecRbz/uDEd5tj0/xQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776275252; c=relaxed/simple;
+	bh=NtB/eWOJij+AJOpCmAPG4LZPrrs0H8n9UE2w9g0Bys8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=IB6It0tI9zFfYAh/eyo4ceB/Y9dNMQ5mrE/BUKtX74dJYtJ/C8cgpVyYjWkSkyfsNoIvkzSP7sWy95nSjy53TGLdv+XpM30Exh3dhDS4DzUIiOeeHyngoupSZ8625peXv5gUv6GF1oFK7u7F36DE9tODcei63E7iO9hiHAaASPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com; dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b=YtF897uv; arc=none smtp.client-ip=121.127.44.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ubuntu.com;
+ h=In-Reply-To: References: To: From: Subject: Cc: Message-Id: Date:
+ Content-Type: Content-Transfer-Encoding: Mime-Version; q=dns/txt;
+ s=fe-953a8a3ca9; t=1776275249;
+ bh=NtB/eWOJij+AJOpCmAPG4LZPrrs0H8n9UE2w9g0Bys8=;
+ b=YtF897uvfpHmJo76GRPqlxNxOjklRIZdPi3Xs03/bZEDCH9vygGlsME0iNmi327mJYvP8PCP+
+ EFmnE7Y88PdJwrBluSx/ddpvFe+X5Cpd089y4/m1FEXmYVsvSwWjEv/2u53VGIbW8PwZBarsDm+
+ 5CDSiJbWYnvKygEryVgDJy9DoFXhgclCBEVgYFb5VabUDf/79W2CKut2/dIYpXoR/d8ZBkpw4xj
+ ZFY0C+u5mpJpsQL46kbwAq7S+D5n8QW7p2ORF6Ns2dIslVUB6kg0/K34YvWeij6Mu82LKvmk4Zx
+ YYXqhWN+yefjxzBkJxysbdUx9DcuDqc98imkvM05322A==
+X-Forward-Email-ID: 69dfc52a8929b895becdf89a
+X-Forward-Email-Sender: rfc822; jpeisach@ubuntu.com, smtp.forwardemail.net,
+ 121.127.44.73
+X-Forward-Email-Version: 2.7.3
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260414194757.163339-1-npetrakopoulos2003@gmail.com>
- <20260415052959.14844-1-npetrakopoulos2003@gmail.com> <ad69b2f3dbc74ea6b9b1a17f2a77fbb4@realtek.com>
-In-Reply-To: <ad69b2f3dbc74ea6b9b1a17f2a77fbb4@realtek.com>
-From: LB F <goainwo@gmail.com>
-Date: Wed, 15 Apr 2026 20:03:20 +0300
-X-Gm-Features: AQROBzDgga_jZUeB1-sQh2Y0w7VvH3nw1Bq63jbFFR1fUFTE2ABRpoPIcAqLO9I
-Message-ID: <CALdGYqSepO3xy9UerKXFfKLdj1BS1jGQh5YgkcSHrxYYY=n3Kg@mail.gmail.com>
-Subject: Re: [PATCH v3] wifi: rtw88: Add NULL check for chip->edcca_th in rtw_fw_adaptivity_result()
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8; format=Flowed
+Date: Wed, 15 Apr 2026 13:04:40 -0400
+Message-Id: <DHTW44HOVZLS.GFYBZTKJTMP4@ubuntu.com>
+Cc: "Johannes Berg" <johannes@sipsolutions.net>,
+ <linux-wireless@vger.kernel.org>, <b43-dev@lists.infradead.org>, "b43-dev"
+ <b43-dev-bounces@lists.infradead.org>
+Subject: Re: Firmware for reverse engineering b43?
+From: "Joshua Peisach" <jpeisach@ubuntu.com>
+To: =?utf-8?q?Michael_B=C3=BCsch?= <m@bues.ch>, "Jonas Gorski"
+ <jonas.gorski@gmail.com>
+X-Mailer: aerc 0.21.0
+References: <DHS1BJ5XFYRC.GCF9PXS0OSRI@ubuntu.com>
+ <c62a448843f189d78187de18d3fcb955f2779d13.camel@sipsolutions.net>
+ <DHSUDVMGW0PS.2LYWKGG1C1135@ubuntu.com>
+ <CAOiHx==kVm0OKWRKi4VHSEEr6ZygzrpNiA=zj+zEHT6_rgZ3CQ@mail.gmail.com>
+ <DHTPAVC76140.1JLO3HNQARQ9Q@ubuntu.com>
+ <CAOiHx=n8awRRvArvG8sWqEokojXL6ppFRJ8_SOuGAddDb1D32A@mail.gmail.com>
+ <20260415175748.61aa7993@barney>
+In-Reply-To: <20260415175748.61aa7993@barney>
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	SUBJECT_ENDS_QUESTION(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[ubuntu.com,none];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ubuntu.com:s=fe-953a8a3ca9];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34812-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-34815-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[bues.ch,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[jpeisach@ubuntu.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[ubuntu.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B5090406C66
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5BD58406E4F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 15 Apr 2026, Panagiotis Petrakopoulos wrote:
-> Add a NULL check for edcca_th before dereferencing
-> it in rtw_fw_adaptivity_result() in fw.c.
+On Wed Apr 15, 2026 at 11:57 AM EDT, Michael B=C3=BCsch wrote:
+> On Wed, 15 Apr 2026 13:54:31 +0200
+> Jonas Gorski <jonas.gorski@gmail.com> wrote:
+>
+>> On Wed, Apr 15, 2026 at 1:44=E2=80=AFPM Joshua Peisach <jpeisach@ubuntu.=
+com> wrote:
+>> > It does appear to be similar - even the current brcm80211. So much so
+>> > that I sometimes need to think about whether b43 is actually a
+>> > duplicated driver.
+>> >
+>> > Since b43 is in an orphan state, I thought it would be a great place t=
+o
+>> > start for kernel development. 5G doesn't work on that iMac, some of th=
+e
+>> > PHYs, like the AC PHYs appear to be incomplete - it felt reasonable.
+>> >
+>> > Because I'm one of those "there's always room for improvement people",
+>> > I was going to try to improve the driver, filling out TODOs, fixing
+>> > hardcoded register numbers, etc. But if it's best left alone.. then I
+>> > guess we can do that.
+>> >
+>> > That is, assuming b43 is actually supposed to be a separate driver,
+>> > because if brcmsmac basically has the same code, then maybe we should
+>> > focus to centralizing everything? But then there's b43legacy.. hm... =
+=20
+>>=20
+>> It is/was intentionally a separate driver: Broadcom didn't want to
+>> maintain support for obsolete chips (anything SSB, anything older than
+>> BCM43224), so the decision was to have b43 support all the "legacy"
+>> chips, while brcm80211 supports everything never. Since they were both
+>> based on the same driver, they are (more or less) the same
+>> architecture.
+>>=20
+>> But now that Broadcom has essentially abandoned the softmac part of
+>> brcm80211 since several years, I don't think there would be many
+>> objections on unifying it with b43.
+>
+> The hardest part in the b43 development always was not to break already
+> working stuff. There are many different types and revisions of the hardwa=
+re
+> out there. Probably in the order of many dozens of variants.
+>
+> Please keep in mind that changing code means mostly testing.
+> Which is hard, if you don't have the hardware variants and basically no
+> users exist anymore. Just implementing random TODOs and missing pieces
+> will break things. (e.g. not doing some HW calibration or workaround migh=
+t
+> be better than only partially doing it or doing it wrong).
+>
 
-Hi Panagiotis,
+Well, if the regression risk is that high, then I guess I'll let it be.
 
-I have applied this v3 patch to my local out-of-tree rtw88 build
-(openSUSE Tumbleweed, kernel 6.19) on the affected RTL8821CE
-hardware. The driver compiles cleanly and the module loads
-without issues.
+> I would personally not touch this thing anymore, except for security fixe=
+s and such.
+>
 
-I am now starting a structured stability test covering suspend,
-hibernation, high-throughput transfers, and long uptime. I will
-follow up with a Tested-by once I have sufficient confidence in
-the results.
+Sure. I might just make sure everything is using register definitions
+instead of hardcoded values, but then leave it there.
 
-Best regards,
-Oleksandr Havrylov
+> But if you want to work on the code, long term, I would welcome that.
+> We could even arrange that I ship you some hardware.
+> But keep in mind, it's all almost 20 years old legacy stuff.
+
+The only b43 devices I have are the aforementioned iMac, and also the
+Wii. And unless the hardware is unique in some other way, I don't think
+its worth sending it to me. Besides, if the code is so risky to touch,
+then the only technical change I make should just be to fix my 5G
+situation.
+
+I didn't intend to become a b43 maintainer, and given where I currently
+am lifewise, I don't think it's worth trying to fulfill that role long
+term. Hopefully I'll find areas of work in brcm80211 to work in. It
+just so happened that "make sure the kernel works on everything you can
+get your hands on" stumbled across b43, which I thought would be a good
+starting point.
+
+So I guess this driver just sits here.. not quite pointless to be
+removed from the main tree, but not quite worth the effort to bring it
+up to speed.
 
