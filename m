@@ -1,103 +1,96 @@
-Return-Path: <linux-wireless+bounces-34798-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34799-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJI8GY6T32kiWQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34798-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 15:33:02 +0200
+	id iHVkOYeU32l9WQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34799-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 15:37:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD409404D3F
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 15:33:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ABCE404E75
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 15:37:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B657D308381C
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 13:32:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BA2403012E70
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2026 13:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F943AF66C;
-	Wed, 15 Apr 2026 13:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965FE38C426;
+	Wed, 15 Apr 2026 13:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="neGjvQtV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L69T1a1k"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E023B3BF7
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 13:32:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4799627B340
+	for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 13:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776259957; cv=none; b=UzQNDneGJIh0cTzZFOHpw6YopQw6yzdQzy5OzdWjg5ZR2md348vpvzwcLpr5vyR4pjg4oY5HGPU9LWyDZaS1ddJsWcUwAYoZ5NRgl87/fcj7TijBzy+Ws7C0Z1VrAXdvmnxCHUFX0noTWXJdvbCgFmPZh08yTIXvswTKxT9dBMo=
+	t=1776260227; cv=none; b=Uh5bDZeKALeI2hQTkuUo5kqJf3p5y03ZKwVOj1Y8LHAknLGdOKXba5d3V3H8/nxyqPk5f6KUPSNmskYZKPaX3faNyTzRFiu+DRzowIu+8ocCcouGFPBdfWK2aSf42xhovV3aS7PVqFlRUP4La2ZKn6tDl7H5nW33SaIPHKwEGyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776259957; c=relaxed/simple;
-	bh=xrCNSwVjVDKXltckPzvEePqEXPwg9HbwfWSN/2JSW5A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=udJgsCR4XyaoyZm1PfDcwRmQAJthk/Egf9OxBgHMnyF1HIfxEeW1CbF7izNWFKaR7nH0XWTNqHjNHXf/DW07S0g/fqWfOnxwBEpUf1NNiqjwqProVdp1Z1VfXgJD5n7TaOdnQvEIQCAWpJh+/Rd2CJIzISMWX4vudZlAxP7SqZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=neGjvQtV; arc=none smtp.client-ip=209.85.128.43
+	s=arc-20240116; t=1776260227; c=relaxed/simple;
+	bh=F7INEnckvJjD0F10khbGmpGo2YBACzsw6jOnVBgL5Ec=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RNHQZlG/bMt0Rsmzdmgk+e31o46j/YYOw93ZXhQPoT5t+z3IE6imMAH/C5rook86FTsrFN17NI79QhaECAbZ8tPvd6R5vE5j1Pp9OLicOa5v2Ew8em9P2Aundo2u1KuvdBw4NfPEeOOwIhgsM2X6iP3g+e7WRObkBUW3uIL1Mfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L69T1a1k; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-483487335c2so75109895e9.2
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 06:32:35 -0700 (PDT)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48374014a77so91024685e9.3
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2026 06:37:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776259954; x=1776864754; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2NmEA2H9yT1v8ldkiYgSp6xfvZWcRV5dr3KBw163IUM=;
-        b=neGjvQtVtz/Y71A37YW0mObltfYioU9buiruoeaqosnEA40fwoy9nNOFKcYzJPlRW6
-         OLNzoxAwK9qliBEhZ/pDjiOQG4S7UQFSAqxz6GdI4PzKdhdYTWYXX9ZNsYHNjZerdnRN
-         T7+oEDqx6y8RJUKto/LkqR8TLYEz3OWpJe+v4kYfneKMw21yYr2qtattLfH0o2YbbSU3
-         tRyVP6j7XaeSaK6TF87ufnilueQmFEASOtXB/jqb4yYWpcdpHu2SiMA2zL+MSflLFztm
-         JIIjG7cHhjdxNIEbxsf0BzxhMaO+cSkPAzQhcD7OKf9MZK8UcWG1OO1hLMdDTEEi7ZX4
-         lyCA==
+        d=gmail.com; s=20251104; t=1776260224; x=1776865024; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+GQjuBoeAqKQj2cFOO5yPJrSHf6fHrn9+GEjE+vnXO4=;
+        b=L69T1a1k06SuqrK7uTtASuwhM/nTxoQjI1diGZKUnKP97IWNUMTyTKtxvoiDxKCpQU
+         +ViYbvLuPb1Gvmh1CJrKNKhOVyiDYAfCxjwcD/B51dXopxy+6MbRV4hxlh2CBY7A2d3i
+         6wu1CHiKOFjzb8R8NW7Jknz5/DBmF2/d4HxDS7bmbJu0rJD+q8SdsjujOjUXOlVBKCD9
+         ONNJg+B0/v2BvVh70W/IUZ9D4jdpqD2Z6irTx5TECEDuOrqIpwvYP4Z8rleix62qkv33
+         hC3a1PHREqCHWjgO3GVqXjDEGyffrhrODrESVPqxc733AhaxfARsJhtK6j68VHpgpYC3
+         sNOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776259954; x=1776864754;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2NmEA2H9yT1v8ldkiYgSp6xfvZWcRV5dr3KBw163IUM=;
-        b=L35MQjTr+CVyNpWjTHE/g0LzVlgsxCZn5PSF0KTEK3CTuYx136AU6fWSvV5YWsjD0A
-         fHeJ831uuGpAMERTahhrkVyyPWk9cZ5IfbEZV6elJo88GFBb4VMgjxGs/iCj4997OkdD
-         gGJhTxj4/JSN/mOHSD8KEMeJsmQRDtcA7N2H/7sznvt22m/zK/2rfzJ9ZEsXOnIbRorU
-         D35oiiHIgeTBhag/3OunHmBmPHKr1BFu52xxYQCimTpo4FsbnkVdOz3+WsXzeJ3y9As3
-         Ud6sjy4cZZ4y58k8g56++s+ZXTAzpOYwoKmIV6jklqPqmgLfz36yk71emSEOx+XPqeoc
-         FFFg==
-X-Forwarded-Encrypted: i=1; AFNElJ+fBPtpxJa9V0XaSBFjRU10eT6ANdqzMTYgjTRj0B5ITQtkgPJxq0g4wtZp26a9dGl6iSkrXlJ1fT2BrpNIwQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6yK/Ydtuz7jkqHs6DvM30/mmy6KejHVgJ4/Zv84tbc+yDumhM
-	VkwN77032f7PW5HusSJlyxZYBLU/EHLbOz/RLR5JiugB1PnNxjXrrt2IkSUWICw=
-X-Gm-Gg: AeBDiesNNZ5fHV+AAr2xawdg0c5zesXDcDDPHKITgkfUYZfdytfz0BLkD0ivf4Ogvgr
-	eXCGIOdaShIc961069YAlyFccwCwfBDQS1LyGVsTUVo4KbkC3BoWo9EjmShSCPFK6M3FMEfQd4r
-	dlFokP4/yMvuYhMtbCnSiYSQD/YliNdKlfGI3sdZ/XM3/kP9IjOtIWFOxD9Hj7laQuDc7w/r9hG
-	YuDkg1OKdQ+PGXVrfBMHIYgCq6WIOPREbTfDFFnHYaIifRz5QZXZ9dxv04UTe1CZIcA3H/e37jO
-	KiR+J7y5T5QQTnNrujXehDm8ATmaalOhlriu61aJovUhvXVQCu7/n4/t45h29jfYENwBYhf0SfI
-	dLCKe2pWNDWrr+lMQDcEweugWQAWIdogOS0KqM2n4kZRs7Menr4MZcDKEZMw9O8G9ZUqtGe+avV
-	tDkbt+H3rnqLfuLNV/4auf6zWUUjpIyPRTRnl7xjOS71v1XHWNe9vdX+YL6KQ0iy2z76OD/B4zz
-	Zb/Hr9kSZ63Z6cDLoC+F8aH+3bhBhyryAXYA+4PHYKQ0giyCuw8PQ==
-X-Received: by 2002:a05:600c:45cf:b0:483:8062:b2f with SMTP id 5b1f17b1804b1-488d67b8dddmr283813955e9.6.1776259954109;
-        Wed, 15 Apr 2026 06:32:34 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776260224; x=1776865024;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+GQjuBoeAqKQj2cFOO5yPJrSHf6fHrn9+GEjE+vnXO4=;
+        b=q24qcraa3lXFy0rWU+k0ho9cwqDFmzUTxxPioLyqdkg9LBugq6ETS0n0pWvzJzIP1E
+         4/wk7bZmrETCyj+5p+Z6EeWN9rX8RG+CXomhsmd+TDzyi03owFAMsTAFHOJfw4d87oAF
+         4i/Ete7jf7uMp8PSkkWp2J/KdMYrQXzL0PkA3515WcbfJjCFbP7CqOBMLKqDFM+K99El
+         Ex2mLjsjWLMLNrP12I+QwYMMmUDhm4i7awExXbb2qw1Y30xA4BbyYcWTcWKzMJMFdjg6
+         ZjOOAqVdF/PzOQ9F2bZ3hP+4Zuo4t1huiLLc+5evKOSYpIOi4CWE4BaihrIH2uXafqxr
+         0Abg==
+X-Gm-Message-State: AOJu0YySjCK4AExtvEoW5Fighx3dKZlEUJm/6D9TLuwdtoEQ9MFN7f6M
+	ZVvIQrdQnaCZYdu2Wo2iICDs+I+6Dj90UNjaIenLq0QEVhmr+GHIj2tOHFdqS6k=
+X-Gm-Gg: AeBDiev3UJCXBuCyk0xw2ClASoB9UVas7UrPp/48YUIgtIDhBJ9/PfyXKkzuV9S0+qZ
+	lvoD0asHqIGkiws8s7jN+3bwjgpa1UE27qMRNPSr4LV/99gj/EYajcb9odLcBcKoXU1p/8EreFc
+	KxN+5esVof4msyG4tPnmLYIaL0R4UwfKR5pka2u2W82SkZ1rxljgSMA3dpFjXMoz4XtpnoYYE6r
+	pEzFPZpzwak6GOr426mdl5KjMMXyMstwSyDCgPXbv2x4gHa9tcdW08u4DRg28/WzSYqT3gWMaK8
+	Qk+1n9sCJgXRlaSDcpqCDGYyPR2G7Ax46bcksX6h+jyAPUNEWt/HzWDVLzYIE4CVH96KWviAxHr
+	LyVQ9YY1cEm1svRC9/v6QwxVaoqB5BxO5gJQWgu4ArOYT+sNLSiEBisZb0s+fRVc18cn83loWw9
+	HdB1yOCwgZJHgUyDFuk47ZgAHOrwQkvixVjv5zMDpkAnTJkMXms6CspGfgyu76d1n9BSGMZiBjo
+	UYpj0GR3VwN+IkyOg4pgTB1I1Qx/pDyT3LFQUWVaG6QDElDPQPTOw==
+X-Received: by 2002:a05:600d:d:b0:485:40db:d40c with SMTP id 5b1f17b1804b1-488d67df531mr241412545e9.3.1776260224212;
+        Wed, 15 Apr 2026 06:37:04 -0700 (PDT)
 Received: from archtop.localdomain (92-242-248-33.broadband.mtnet.hr. [92.242.248.33])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f0eb43f6sm20604755e9.25.2026.04.15.06.32.33
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f1d60ec2sm58105435e9.0.2026.04.15.06.37.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 06:32:33 -0700 (PDT)
+        Wed, 15 Apr 2026 06:37:03 -0700 (PDT)
 From: Jakov Novak <jakovnovak30@gmail.com>
-To: johannes@sipsolutions.net
-Cc: dcbw@redhat.com,
-	jakovnovak30@gmail.com,
-	kees@kernel.org,
+To: linux-wireless@vger.kernel.org
+Cc: Kees Cook <kees@kernel.org>,
+	Szymon Wilczek <swilczek.lx@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	"John W . Linville" <linville@tuxdriver.com>,
+	Dan Williams <dcbw@redhat.com>,
 	libertas-dev@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	linville@tuxdriver.com,
-	mingo@kernel.org,
 	skhan@linuxfoundation.org,
-	swilczek.lx@gmail.com,
-	syzbot+c99d17aa44dbdba16ad2@syzkaller.appspotmail.com,
-	tglx@kernel.org
-Subject: [PATCH v2 1/1] wifi: libertas: add wake_up() call to properly notify fw_wq during disconnect
-Date: Wed, 15 Apr 2026 15:31:35 +0200
-Message-ID: <20260415133134.167783-3-jakovnovak30@gmail.com>
+	Jakov Novak <jakovnovak30@gmail.com>
+Subject: [PATCH v2 0/1] wifi: libertas: fix bug in Marvell Libertas driver
+Date: Wed, 15 Apr 2026 15:36:26 +0200
+Message-ID: <20260415133626.172702-2-jakovnovak30@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260415133134.167783-2-jakovnovak30@gmail.com>
-References: <57275e905a67e789ea438bf637be0aeb442fc880.camel@sipsolutions.net>
- <20260415133134.167783-2-jakovnovak30@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -112,59 +105,42 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_CC(0.00)[redhat.com,gmail.com,kernel.org,lists.infradead.org,vger.kernel.org,tuxdriver.com,linuxfoundation.org,syzkaller.appspotmail.com];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34798-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,intel.com,tuxdriver.com,redhat.com,lists.infradead.org,vger.kernel.org,linuxfoundation.org];
+	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-34799-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jakovnovak30@gmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.992];
-	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-0.993];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,c99d17aa44dbdba16ad2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CD409404D3F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8ABCE404E75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This is necessary because the thread would be stuck if the
-firmware is not fully loaded before the if_usb_disconnect function is
-called. In that case if_usb_prog_firmware would be stuck in
-wait_event_interruptible and lbs_remove_card would also be stuck waiting
-for firmware loading to be done which was the original bug reported.
+Please ignore the previous email. I sent the wrong patch.
 
-Fixes: 954ee164f4f4 ("[PATCH] libertas: reorganize and simplify init sequence")
-Reported-and-tested-by: syzbot+c99d17aa44dbdba16ad2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c99d17aa44dbdba16ad2
-Signed-off-by: Jakov Novak <jakovnovak30@gmail.com>
----
+Jakov Novak (1):
+  wifi: libertas: add wake_up() call to properly notify fw_wq during
+    disconnect
+
  drivers/net/wireless/marvell/libertas/if_usb.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/if_usb.c b/drivers/net/wireless/marvell/libertas/if_usb.c
-index 245c902a7e42..8a6bf1365cfa 100644
---- a/drivers/net/wireless/marvell/libertas/if_usb.c
-+++ b/drivers/net/wireless/marvell/libertas/if_usb.c
-@@ -310,7 +310,6 @@ static void if_usb_disconnect(struct usb_interface *intf)
- 	struct lbs_private *priv = cardp->priv;
- 
- 	cardp->surprise_removed = 1;
--	wake_up(&cardp->fw_wq);
- 
- 	if (priv) {
- 		lbs_stop_card(priv);
 -- 
 2.53.0
 
