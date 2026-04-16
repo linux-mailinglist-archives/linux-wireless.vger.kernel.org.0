@@ -1,218 +1,180 @@
-Return-Path: <linux-wireless+bounces-34881-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34882-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wN03Fpe64GmIlAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34881-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 12:31:51 +0200
+	id sA6zBgnC4Gm8lgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34882-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 13:03:37 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0089B40CF1E
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 12:31:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF7A40D19E
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 13:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4D2CF3038C94
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 10:31:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 77AEB300BE19
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 11:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A52F392838;
-	Thu, 16 Apr 2026 10:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B516430DEAC;
+	Thu, 16 Apr 2026 11:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L9hfFIEq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D5439A05C
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 10:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776335507; cv=none; b=k/hkxsGQxzkEIbg1LK4eC28I49fR9cekX+24bWKPzSnieLFaWyZsUCrRM+Qf/fs6cXGPL5aTJh6bx0L5nx5ajhSGIkV+ryOgX9ccOCqi2nARKFSPJPWHl6ffbnHd6xRK73mnAYy2u29MX/PyAYi1DQ59rx3rr4UVR+o6vrSBbTc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776335507; c=relaxed/simple;
-	bh=Il5EilNKbQmVM1qv4XgxLAe02Z9+zxydkwUqJc2BPRU=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7B12DEA7B
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 11:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776337409; cv=pass; b=SOxkux5ghBruXIQrgB17gwSnoP6spTp8Uy5AIfDwM26aujSSpEKjA/Hgr75xi8GGwc65bjhJbEomhUAmDGCNbeGInGDQti60blAxFSGl1RmhyjjDzSeaGSlw3tH3RyqXvsob43lgX92q6NGRj5x+lKm6QLTLugKne+X80jlgpuU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776337409; c=relaxed/simple;
+	bh=FSqE8jrgvskquGpi3bsqdhmSbz3H030pUHE8JrJekAk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h1x1nY4iqiU3sm81zeQtxtaR3NKxGTdhsvogEKpr0fR3D0fAvX/hOKXzYIvLpPxuZvThTx8OqiEodLo7LtzRxsS19tZBZQvEfr+KbW6DY0OTY1k5X0H49kVBPxxqgGVcdTzfuLWZOOmeArqXsV9z9atZZKxMvLR00dZ/BZROFDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	 To:Cc:Content-Type; b=QDqxhRdj0IAlR/gu1ZzE6/qKsIH8Hp4QH511NJkiJaHV+jI3GFVZUo4GK5SSPndjegT5melksyBBtr3u2Nhkg9w3CxswvX9EI0E4IiGZY2+ZOc8cBLuTJ79xiA92s6tlTWhk8EG/OkdSz8vFrJpsbzQg2k+dkP+f7PyRSN1uE50=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L9hfFIEq; arc=pass smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7dbcb467f2bso7038891a34.3
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 03:31:45 -0700 (PDT)
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c6e2355739dso3571753a12.2
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 04:03:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776337408; cv=none;
+        d=google.com; s=arc-20240605;
+        b=WMmo/4BSV87WVKYUNQBg/xaVLImwHtx1+thd+PAcvHwrezfxmVcJYRDKgj7yNcrtcO
+         H+COjetOSmVlKRCYD7rCbuTQ532IBu+HkNlHgMU6stW3SPAKJ4+jeNAn3kj0gGlZ/kEX
+         E5yhnDgIoCviEiElaNUWc0AhdO28Hcfo6fEE1JdfVwDXoP8NhmSq87NOlRsjLClkMMzJ
+         6PnkMqUkCIjMNgQMX+MTzyVrFCx6m2RTlAqBA+9kJx18pnU6KcWExAbHsxckC6UE61Oh
+         xuf+gw9v1lu9MW6WOpOIce7jFrpFcpQtX5TumiwBt0M314YJOyDWL23PgX9oq7kdjsm+
+         Qkeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Jfa749J2sCeEfktUiIDDvwCTMiH8adtcJ683ydNNL1g=;
+        fh=C6LApgc9NK0pnnt83W+yqOoTu97u7h9piqaZtLW1yPE=;
+        b=exZkb5IORsuhMwCd9RpPm7Yk5gPfrA7ZHugsKSgSKa7SlxKjuPPtXuk5+j4W6AoqsY
+         ZGaaslyAI2onYRH1qz363JVSiH/1o+UytRoVJcyhrDEX33M9TjjPnvDMM0x0/DVCj341
+         x5wnGLso+jmb19ygL2Q5wG3q7wy6EcwfQT3wE0rXb/5wRcKgkHYdcyrmDqfY7ML+5wec
+         lSCh6zZ01e0vmu1r6qKHlEgSws9LFb4R55ppYfpIqjkzF0iF9iC0DB53vZpt3cSUqTrL
+         PjthNPBJkqL4Hkbu+peSmxyPLMvVxShd8Q1xi+psE6o/LISEDu1ey3x4n6LyddnNRYWN
+         jOAQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776337408; x=1776942208; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jfa749J2sCeEfktUiIDDvwCTMiH8adtcJ683ydNNL1g=;
+        b=L9hfFIEq2ENWbYjY1FdAp7RwK69uWEvALTLaKPkarGE5nA+1Awx88PSoiiDTxwpdUY
+         EOUuq2gevihl4142jp4rILGbZ7+Fwhp56OzcPvZm/805ZmuYEAaH7aWAwRJN5SCPgrxl
+         K5IS7Qe59vIbMTkpWrCIcahNbft2bxdwf3qz1T+ISAuzG33LPaR2uwE4OytGWq2dpyQM
+         g8vetqNtpKPuKClRT0DFEqvgEnPenJvfFa8f2qmE5F1TaUB5xCyruhRXIOLCeoFZB85b
+         1L/8OlDSpzdtckwhfqob6nxJjk+aMNvF6ad9SbKswRaJkMuO0iQgMe4bDQXfBK1Bwfgg
+         KMiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776335505; x=1776940305;
+        d=1e100.net; s=20251104; t=1776337408; x=1776942208;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z9HEDsaws+1AaPEcUyrGjtCss1Kv3jZQFAB8Oib7mmY=;
-        b=iFMPb83uIrXG7iDx43l6Y4U8XQlcb8kvFisBL4/B+z3CcwGxi937rnsG40wX7EVtpl
-         VhZi9E8PUHWPAHjPBDBKJcjmkd/yPyWNekD0/K/YzHmMXO3uSt+x0BVsRYdPqL7YJLCW
-         YuknEDuRN0ZQYHV4z2YHqZXt3IwG7Um02Z7E8mmj8bXavWYDsZGaMk+uVYPcZugpo6tQ
-         zJfjXLBxAmuU2KIN5JBTEnqcWPOac8GBxYq9IDGEx4lsvI2J4HMFxfub0SXYyDgvS1Y+
-         joS3QTyEL543m7mwX4SQDscbTzQZNZdAVHDsrTkHnBP4iFWyLqCiXDRt9RMigri2DjPP
-         ZkYQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8IrS3wuBLCT72KHAf3Kcfp2eXVB4VvozFfwt2FHQA2DBgVVeit2bf4T2bZZPx9F+2ZPGM8S5/xJ6+9ICUS8Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAgcflbRx5gSuEJ5deepnWJKmoL68WmkQPE6abX92OoFAmd/cq
-	nCP2tqIHsVgAnE5JrFJFvUnVVNkt8tved46S7+Z1Fl670+E/mA+7uKdnp+awFeWx
-X-Gm-Gg: AeBDiet5IfWRKuHpjNoramiw5H09B1yPuU4n0wbL01J6DeN91H6ZyuP9SB1V5AYaDkA
-	QU4Do051d+8dSnGoggJRFd6SSdHXX59K5Od8nOjs5iTJDj/0iPf+GvIcNpppRi9/3wRS4jWg7Jr
-	ExKM10SPeYf+2n5jaFNoWneX68F9WmRspCU7a2tckCuMd8jHG3277WnSsw7R24G0fQl/0QWFqEr
-	/4dZLus1AYuVnKo5JSHYcOCM4CMwLxYjFcbOLs55Qpkc+gM1TPHXJZkCtmymftyAc2aMOTb+58w
-	2BfXnwX/6h/CpMAOlDmYpkVkS7dXBtfTqzLnC2KouOhAvWArGfS6L02N1QjPyMjFIthThizbwv3
-	F0x8GTlz3TcpmqQgYs0eOOITGNAVQN2HkJi2SXSKn/9ztK7hk0dhWFq4P8rwu8/9GQkd18pgVAy
-	ILeGMUGs2e0ssqtbi9O0WWUpDKB+Xned64es/5606nGxLfauOUZWNQGdY40DStyWY5hDXs4hA=
-X-Received: by 2002:a05:6830:668b:b0:7d7:eab6:fb23 with SMTP id 46e09a7af769-7dc27f7cf76mr17491455a34.22.1776335505047;
-        Thu, 16 Apr 2026 03:31:45 -0700 (PDT)
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com. [209.85.210.52])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc76a32728sm3372354a34.7.2026.04.16.03.31.44
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Apr 2026 03:31:44 -0700 (PDT)
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7d7ebe11bffso6493592a34.0
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 03:31:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9SDxyzxaFZzXulgGOv3TG73jYODUTJT8L+1eEoRGMTXfFD95sWjmTerhA5AshqZxs/DHFiTTII5c3NgBlQ3Q==@vger.kernel.org
-X-Received: by 2002:a05:6102:c48:b0:608:cd24:354c with SMTP id
- ada2fe7eead31-609fe9b0d22mr11966750137.3.1776335071251; Thu, 16 Apr 2026
- 03:24:31 -0700 (PDT)
+        bh=Jfa749J2sCeEfktUiIDDvwCTMiH8adtcJ683ydNNL1g=;
+        b=VeRczHnReFDfXv4pv8vxRyvK/iC8+aEM3b9PN+CCRr4Dmh+rNGU947lVej5Ty9Qg5W
+         zcaOY/0pvKmPkyiWVtqcAouMwtode/xC5Sjmj2sVn6o9B7Mo7DHydPyFnbsEnvicD6IE
+         /AdbXBCpJWp1j0j4wn2856VfQqxJY7ldJLk+yvnZ1h7TNAzzDS0yD7ioE9lHgZjWJOgc
+         b9ndwa4pMdgMwps51XEbWqkmjBDlPab5BuE/A7iAZTj7QxhU146ah6ulX9E+VF/hd+Jd
+         KZ8AQuApdlZR1MUZq20AtglwQ4VPrnRQTZbBkxlF9HUYeTjOaUJMfeBUI4gwbf0P/F/8
+         CANw==
+X-Gm-Message-State: AOJu0YwhuoS0gEkvMYSfhuheYTrgK6rLUsy5T/3opt+2RJ7X1GVarGdn
+	GTOu+qW8J37p5zbqcgQzYT/itSHwykK/2zjLrQtkfddRtapH/Bx/V837qrthVnQCxz1ShzVN8Bc
+	PRBbVTToj3bOR6yj7aI5sTfSkDW/48GtpIKfagOg=
+X-Gm-Gg: AeBDietaQsfMU260YXQDXGUqetxP+979EebpTiL2LGYdMixcd/Gpv+kQDFHg3tgg2EH
+	ArbVHJgo86eSe5YMACsgdOXDsDdrzUCNI2VsG3wIXvs0DF1q3EUS/+s0BA4OSFJ90ndLNWhdmMJ
+	aCHjxJJVeCO+MniYq/gAe9hhr76Mu/EpMoQe76R5Npq69oRl3egINIk+I8Og1q8YMBKOt3LcLzd
+	A9XuigrY+JO7l3ob4kltLKpx1hCs1yLbcPP08B9H/TS69fuLF1+wN57K4PUhjEnwDM/abJgvfa3
+	5rpX5vDeXK02psirGtuwhw==
+X-Received: by 2002:a17:90b:3d01:b0:35f:b4c1:91f6 with SMTP id
+ 98e67ed59e1d1-35fb4c19544mr15668004a91.10.1776337407736; Thu, 16 Apr 2026
+ 04:03:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260410120044.031381086@kernel.org> <20260410120318.794680738@kernel.org>
-In-Reply-To: <20260410120318.794680738@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 16 Apr 2026 12:24:18 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVerN6Pz07CQH+hcvT=-ZD-r9VNrSrGzTQZBEsuecK_ig@mail.gmail.com>
-X-Gm-Features: AQROBzDRGGELVSySTko37h6zEj8YoV3p6pwZDCVQUlUW6sZbw_W5mbJzFIh35nQ
-Message-ID: <CAMuHMdVerN6Pz07CQH+hcvT=-ZD-r9VNrSrGzTQZBEsuecK_ig@mail.gmail.com>
-Subject: Re: [patch 18/38] lib/tests: Replace get_cycles() with ktime_get()
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, 
-	Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, 
-	Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
-	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
-	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, Marco Elver <elver@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
-	linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
-	Richard Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org, 
-	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
-	Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org, 
-	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, 
-	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
-	Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org, 
-	Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+References: <CACM6vn7QGKQcR5Rs=wmzNA-SgMDZX4Hw=UiPQHfYkWgLURcbAA@mail.gmail.com>
+ <b1a7678d-8e87-444e-b38a-bb7aedcd4f30@eskapa.be>
+In-Reply-To: <b1a7678d-8e87-444e-b38a-bb7aedcd4f30@eskapa.be>
+From: Benson Bear <benson.bear@gmail.com>
+Date: Thu, 16 Apr 2026 07:03:16 -0400
+X-Gm-Features: AQROBzA3NubvkwMBgE_3onZVk7svq3Qgob4yax3pbpFTzupNuv4yOehFEOzFC4M
+Message-ID: <CACM6vn6UXfSXw2WpYvzF+ODPGHw-LtsBMgtvc6n7s9iF9eaS6Q@mail.gmail.com>
+Subject: Re: Wi-Fi speeds degrade from 600Mps to 30Mps while using WPA2
+ security, but not on open network, shortly after ISP firmware upgrade.
+To: Pablo MARTIN-GOMEZ <pablomg@eskapa.be>
+Cc: linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux-foundation.org,gmail.com,kvack.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,infradead.org,plugable.com,mit.edu,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
-	TAGGED_FROM(0.00)[bounces-34881-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-m68k.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[48];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34882-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.993];
+	FROM_NEQ_ENVFROM(0.00)[bensonbear@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	R_DKIM_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-m68k.org:email]
-X-Rspamd-Queue-Id: 0089B40CF1E
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1BF7A40D19E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Thomas,
+Hi Pablo, thanks for your really prompt reply.   And sorry
+for the spelling error in the Subject header ("Mps" for "Mbps")
+and the horrid line formatting.  (Not used to using short lines
+although that is what I grew up on).
 
-On Fri, 10 Apr 2026 at 14:20, Thomas Gleixner <tglx@kernel.org> wrote:
-> get_cycles() is the historical access to a fine grained time source, but it
-> is a suboptimal choice for two reasons:
->
->    - get_cycles() is not guaranteed to be supported and functional on all
->      systems/platforms. If not supported or not functional it returns 0,
->      which makes benchmarking moot.
->
->    - get_cycles() returns the raw counter value of whatever the
->      architecture platform provides. The original x86 Time Stamp Counter
->      (TSC) was despite its name tied to the actual CPU core frequency.
->      That's not longer the case. So the counter value is only meaningful
->      when the CPU operates at the same frequency as the TSC or the value is
->      adjusted to the actual CPU frequency. Other architectures and
->      platforms provide similar disjunct counters via get_cycles(), so the
->      result is operations per BOGO-cycles, which is not really meaningful.
->
-> Use ktime_get() instead which provides nanosecond timestamps with the
-> granularity of the underlying hardware counter, which is not different to
-> the variety of get_cycles() implementations.
->
-> This provides at least understandable metrics, i.e. operations/nanoseconds,
-> and is available on all platforms. As with get_cycles() the result might
-> have to be put into relation with the CPU operating frequency, but that's
-> not any different.
->
-> This is part of a larger effort to remove get_cycles() usage from
-> non-architecture code.
->
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+And... you got it!   The MFP flag is lacking, and googling
+showed me that instead of  messing with wpa_supplicant, I
+can apparently do the same with nmcli:
 
-Thanks for your patch!
+nmcli connection modify NAME 802-11-wireless-security.pmf disable
 
-> --- a/lib/interval_tree_test.c
-> +++ b/lib/interval_tree_test.c
-> @@ -65,13 +65,13 @@ static void init(void)
->  static int basic_check(void)
->  {
->         int i, j;
-> -       cycles_t time1, time2, time;
-> +       ktime_t time1, time2, time;
->
->         printk(KERN_ALERT "interval tree insert/remove");
->
->         init();
->
-> -       time1 = get_cycles();
-> +       time1 = ktime_get();
->
->         for (i = 0; i < perf_loops; i++) {
->                 for (j = 0; j < nnodes; j++)
-> @@ -80,11 +80,11 @@ static int basic_check(void)
->                         interval_tree_remove(nodes + j, &root);
->         }
->
-> -       time2 = get_cycles();
-> +       time2 = ktime_get();
->         time = time2 - time1;
->
->         time = div_u64(time, perf_loops);
-> -       printk(" -> %llu cycles\n", (unsigned long long)time);
-> +       printk(" -> %llu nsecs\n", (unsigned long long)time);
+I tried that and it worked!   Internet speed test back to 600Mbps!
+What a relief!  Thank you very much!
 
-While cycles_t was unsigned long or long long, ktime_t is always s64,
-so "%lld", and the cast can be dropped (everywhere).
+I will try other testing with just pure Wi-Fi and with all machines
+after I get some sleep.
 
-Gr{oetje,eeting}s,
+Can you tell me why this is likely to have happened?  Surely
+one side or the other is misconfigured?  This misunderstanding
+between them should not be possible within a good specification,
+right?
 
-                        Geert
+(Sadly I think I might have an idea -- it's partly my fault.   The
+mac80211 module was disabling all HT and above because it
+felt it could not meet the BCS criteria laid down by the AP.
+Many people have thought these criteria were way too onerous.
+So I first had very low speeds because of that.  No HT even.
+I applied a patch to the module that ignored these requirements
+and got back to a high connection speed, and HE or VHT
+enabled, and got back a little of the lost speed.   Clearly very
+kludgy but seems a legitimate response to what the patch
+author called "aggressive basic MCS rates". But it may
+have opened up the room for misunderstandings.  I have my
+speed back in practice, but I wonder what the "correct" way
+of fixing this would be -- without the kludgy module patch).
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thanks again!
 
