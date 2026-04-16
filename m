@@ -1,267 +1,218 @@
-Return-Path: <linux-wireless+bounces-34880-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34881-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wO35Ecu04Gn5kwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34880-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 12:07:07 +0200
+	id wN03Fpe64GmIlAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34881-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 12:31:51 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1EB240CB4A
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 12:07:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0089B40CF1E
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 12:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F90E3050202
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 10:06:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4D2CF3038C94
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 10:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0778C39DBFE;
-	Thu, 16 Apr 2026 10:06:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="kzPX/LYQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A52F392838;
+	Thu, 16 Apr 2026 10:31:47 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B84E395257
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 10:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D5439A05C
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 10:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776333979; cv=none; b=pn338rQuugjuj2iqm1eMG9KS4vvpoLOfZJPxrsbYJa1CwC1aR2ssNXk+bgN+smOe5ZJWK1DIpC9kicr8/3OOkG/g9yv1KY64kGtDkEkW/4PkYr+JroLreQWUYpSe1RnEZVPJI3aLI38I1CJeTk98jIcHeya9kuIKZa0LvRBWGpU=
+	t=1776335507; cv=none; b=k/hkxsGQxzkEIbg1LK4eC28I49fR9cekX+24bWKPzSnieLFaWyZsUCrRM+Qf/fs6cXGPL5aTJh6bx0L5nx5ajhSGIkV+ryOgX9ccOCqi2nARKFSPJPWHl6ffbnHd6xRK73mnAYy2u29MX/PyAYi1DQ59rx3rr4UVR+o6vrSBbTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776333979; c=relaxed/simple;
-	bh=TRTbSHQMURjU0ZW+9bSmpSmU4dNIK7D4YlFMBvnDA7w=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=TrGN2np/WCZ5gAhE+tbsqsXpx66BGQ7m7Wq1r7/b2MOj/39Y+g3THalx+Tqyl7WAlfKqw9kBsPTa68A3o8CxFpS7O5dQ4ApNnyW+yMrY5qBnbcYclVA/66vIbeRorr39T4scRbjeErll0hVT6A8EJ//CG7TGHkp8WLu5qAUdPPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=kzPX/LYQ; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6716a2d9596so6728749a12.0
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 03:06:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1776333976; x=1776938776; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=StUmw+VWigYj7b9CbzCzolN8uC+xmf43R5kKEaP2dK4=;
-        b=kzPX/LYQ7y4Em+5vweuPtbDVXDcoj3YiojA1EIvviwOb9DAfGlxBFgYuW0pUQr84F7
-         o3C2dIlrz9fvBp/prcIwvOOsh5tJ+WHEVOCqXz3ITsX9ZGDDf3F0/hgcVVOjJS6rTvW5
-         TR/v39UwUsDGxg8Gm/VS9YgP283HLqywpv2g7Qmh8ul1teNUy9fMVk379o2Maq4hgeKZ
-         Mt9Q5acvzcEKbEBTvfEHV6jZiBMpMonajIaSSdLLz8e4c9pmUFCivqqrXN3EnyytrJYt
-         iHTj82htSnT0m1K8P7M6h5r9aOcIQ7qc8fGh7LqZrwMWA6jumfV+Bg+7/lDo46khGJsl
-         Y+fQ==
+	s=arc-20240116; t=1776335507; c=relaxed/simple;
+	bh=Il5EilNKbQmVM1qv4XgxLAe02Z9+zxydkwUqJc2BPRU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h1x1nY4iqiU3sm81zeQtxtaR3NKxGTdhsvogEKpr0fR3D0fAvX/hOKXzYIvLpPxuZvThTx8OqiEodLo7LtzRxsS19tZBZQvEfr+KbW6DY0OTY1k5X0H49kVBPxxqgGVcdTzfuLWZOOmeArqXsV9z9atZZKxMvLR00dZ/BZROFDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7dbcb467f2bso7038891a34.3
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 03:31:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776333976; x=1776938776;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=StUmw+VWigYj7b9CbzCzolN8uC+xmf43R5kKEaP2dK4=;
-        b=J5BMaSSBdXIDFqxoKfBqkuMMx3VgdB3mbAV/bZI/6cyHqF6K9s7fYLXYGeEZ4gbzzt
-         f27ELbNL/DQmKgnA2VWNz9Ls0qgqHrFfp2J3D8gY9XdP+YbnTzuBbTkvdAYt/ucb8fWe
-         srPhlZleIjUYeFhwDbC/tGdYMQ4s83WTK4ioe2kQfJo3sOZvKxR6iry2OTIVE2xpH3gG
-         uKX6yg8JTLFAVuZrhsUeWdS1M0p6gw4aUGQKfkNnnpNLpxfjbxZDu7dYzRlmnICiRWHi
-         ZRycH93AysxhKSMtHLC83oZ2mfDpnnZNXRr/tc75eS/4dh9cWpUOfVg3i6SW0n+6QK5i
-         FMKg==
-X-Forwarded-Encrypted: i=1; AFNElJ/RT5LURpSbzwrk7IBu2OEeBVdVIBPTmPT5pqLIokiCDdNAHEbteBALPsC/NGFBLlMVqAJWtxbdyA3WfICkTA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSof0Jyjrt8Z7Fvue4HRLs57QqJ4bPCN9rDdGdkArGEG43FnbE
-	cZupc47GnpXnvqhaid3qvC12uLA25Qd5oCWiWmediMigqpfdUg5sgjDBkU8o2o5j38Q=
-X-Gm-Gg: AeBDiesGkoyMwLkCtMNeHzuyvpjquKaZJ0fQ90QXpftGfUa6mTlZ+/xGCtAIHfQ8KST
-	bLW7VO8jPKQkUY5mTNQhS2OK5yt7gb0Gjg4u9MhewxGKBNQkR6APnxTq2BkQASR7M4jnwTW65Ek
-	nOpxqMvipgTtcqlSrNGqBeNhqIpDC373JXAkgUYr66sWg472urgHof982if/hPYf+LugmqQCldK
-	48q0sU/estTNBS2SgBxy1MbYhYOVlUi4Aze7eUX1afQKBf/Q7dplna2kV+e362n6hChItsrk6I4
-	gSAYSFW229EHq5KloCRrdrhW/Z6CFo4L+PXcDdDEvzfFM9o/72XyuvigAixuShTbY0Hwd12lXqt
-	C5X+nWE+1ECH00ocek2mrsHU1Brje0KdSBU3h4jDMoV8ilxpBYhz1cIzsd4CpqZyHVC6zdhkpDm
-	RDRdMyA/Y5n/9qx70nulI2jcybzqMKLF/CwBSIdT4lsrkL5Y1a180QKeZz9vq805TZXAM8pstcF
-	wHizP0=
-X-Received: by 2002:a05:6402:548c:b0:66e:f4c0:c348 with SMTP id 4fb4d7f45d1cf-6707898ffc1mr11228460a12.7.1776333975499;
-        Thu, 16 Apr 2026 03:06:15 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67237d79258sm1152533a12.4.2026.04.16.03.06.09
+        d=1e100.net; s=20251104; t=1776335505; x=1776940305;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z9HEDsaws+1AaPEcUyrGjtCss1Kv3jZQFAB8Oib7mmY=;
+        b=iFMPb83uIrXG7iDx43l6Y4U8XQlcb8kvFisBL4/B+z3CcwGxi937rnsG40wX7EVtpl
+         VhZi9E8PUHWPAHjPBDBKJcjmkd/yPyWNekD0/K/YzHmMXO3uSt+x0BVsRYdPqL7YJLCW
+         YuknEDuRN0ZQYHV4z2YHqZXt3IwG7Um02Z7E8mmj8bXavWYDsZGaMk+uVYPcZugpo6tQ
+         zJfjXLBxAmuU2KIN5JBTEnqcWPOac8GBxYq9IDGEx4lsvI2J4HMFxfub0SXYyDgvS1Y+
+         joS3QTyEL543m7mwX4SQDscbTzQZNZdAVHDsrTkHnBP4iFWyLqCiXDRt9RMigri2DjPP
+         ZkYQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8IrS3wuBLCT72KHAf3Kcfp2eXVB4VvozFfwt2FHQA2DBgVVeit2bf4T2bZZPx9F+2ZPGM8S5/xJ6+9ICUS8Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAgcflbRx5gSuEJ5deepnWJKmoL68WmkQPE6abX92OoFAmd/cq
+	nCP2tqIHsVgAnE5JrFJFvUnVVNkt8tved46S7+Z1Fl670+E/mA+7uKdnp+awFeWx
+X-Gm-Gg: AeBDiet5IfWRKuHpjNoramiw5H09B1yPuU4n0wbL01J6DeN91H6ZyuP9SB1V5AYaDkA
+	QU4Do051d+8dSnGoggJRFd6SSdHXX59K5Od8nOjs5iTJDj/0iPf+GvIcNpppRi9/3wRS4jWg7Jr
+	ExKM10SPeYf+2n5jaFNoWneX68F9WmRspCU7a2tckCuMd8jHG3277WnSsw7R24G0fQl/0QWFqEr
+	/4dZLus1AYuVnKo5JSHYcOCM4CMwLxYjFcbOLs55Qpkc+gM1TPHXJZkCtmymftyAc2aMOTb+58w
+	2BfXnwX/6h/CpMAOlDmYpkVkS7dXBtfTqzLnC2KouOhAvWArGfS6L02N1QjPyMjFIthThizbwv3
+	F0x8GTlz3TcpmqQgYs0eOOITGNAVQN2HkJi2SXSKn/9ztK7hk0dhWFq4P8rwu8/9GQkd18pgVAy
+	ILeGMUGs2e0ssqtbi9O0WWUpDKB+Xned64es/5606nGxLfauOUZWNQGdY40DStyWY5hDXs4hA=
+X-Received: by 2002:a05:6830:668b:b0:7d7:eab6:fb23 with SMTP id 46e09a7af769-7dc27f7cf76mr17491455a34.22.1776335505047;
+        Thu, 16 Apr 2026 03:31:45 -0700 (PDT)
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com. [209.85.210.52])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc76a32728sm3372354a34.7.2026.04.16.03.31.44
+        for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Apr 2026 03:06:14 -0700 (PDT)
+        Thu, 16 Apr 2026 03:31:44 -0700 (PDT)
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7d7ebe11bffso6493592a34.0
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 03:31:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9SDxyzxaFZzXulgGOv3TG73jYODUTJT8L+1eEoRGMTXfFD95sWjmTerhA5AshqZxs/DHFiTTII5c3NgBlQ3Q==@vger.kernel.org
+X-Received: by 2002:a05:6102:c48:b0:608:cd24:354c with SMTP id
+ ada2fe7eead31-609fe9b0d22mr11966750137.3.1776335071251; Thu, 16 Apr 2026
+ 03:24:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 16 Apr 2026 12:06:09 +0200
-Message-Id: <DHUHU7UIT487.139L3KIVRVREU@fairphone.com>
-Cc: <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>,
- <linux-wireless@vger.kernel.org>, <ath10k@lists.infradead.org>,
- <linux-pm@vger.kernel.org>, "Krzysztof Kozlowski" <krzk@kernel.org>,
- "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
-Subject: Re: [PATCH v3 3/8] wifi: ath10k: snoc: support powering on the
- device via pwrseq
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>, "Liam Girdwood"
- <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Bartosz Golaszewski" <brgl@kernel.org>,
- "Marcel Holtmann" <marcel@holtmann.org>, "Luiz Augusto von Dentz"
- <luiz.dentz@gmail.com>, "Jeff Johnson" <jjohnson@kernel.org>, "Bjorn
- Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konradybcio@kernel.org>, "Manivannan Sadhasivam" <mani@kernel.org>, "Vinod
- Koul" <vkoul@kernel.org>, "Balakrishna Godavarthi"
- <quic_bgodavar@quicinc.com>, "Matthias Kaehlcke" <mka@chromium.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260119-wcn3990-pwrctl-v3-0-948df19f5ec2@oss.qualcomm.com>
- <20260119-wcn3990-pwrctl-v3-3-948df19f5ec2@oss.qualcomm.com>
-In-Reply-To: <20260119-wcn3990-pwrctl-v3-3-948df19f5ec2@oss.qualcomm.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
+MIME-Version: 1.0
+References: <20260410120044.031381086@kernel.org> <20260410120318.794680738@kernel.org>
+In-Reply-To: <20260410120318.794680738@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 16 Apr 2026 12:24:18 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVerN6Pz07CQH+hcvT=-ZD-r9VNrSrGzTQZBEsuecK_ig@mail.gmail.com>
+X-Gm-Features: AQROBzDRGGELVSySTko37h6zEj8YoV3p6pwZDCVQUlUW6sZbw_W5mbJzFIh35nQ
+Message-ID: <CAMuHMdVerN6Pz07CQH+hcvT=-ZD-r9VNrSrGzTQZBEsuecK_ig@mail.gmail.com>
+Subject: Re: [patch 18/38] lib/tests: Replace get_cycles() with ktime_get()
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, 
+	Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, 
+	Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
+	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, 
+	David Woodhouse <dwmw2@infradead.org>, Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
+	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
+	linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+	Richard Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org, 
+	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
+	Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org, 
+	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
+	Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org, 
+	Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [0.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[fairphone.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[fairphone.com:s=fair];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux-foundation.org,gmail.com,kvack.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,infradead.org,plugable.com,mit.edu,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
+	TAGGED_FROM(0.00)[bounces-34881-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34880-lists,linux-wireless=lfdr.de];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,gmail.com,kernel.org,holtmann.org,quicinc.com,chromium.org];
+	DMARC_NA(0.00)[linux-m68k.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luca.weiss@fairphone.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[fairphone.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_TWELVE(0.00)[48];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.993];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: C1EB240CB4A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-m68k.org:email]
+X-Rspamd-Queue-Id: 0089B40CF1E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Dmitry,
+Hi Thomas,
 
-On Mon Jan 19, 2026 at 6:07 PM CET, Dmitry Baryshkov wrote:
-> The WCN39xx family of WiFi/BT chips incorporates a simple PMU, spreading
-> voltages over internal rails. Implement support for using powersequencer
-> for this family of ATH10k devices in addition to using regulators.
+On Fri, 10 Apr 2026 at 14:20, Thomas Gleixner <tglx@kernel.org> wrote:
+> get_cycles() is the historical access to a fine grained time source, but it
+> is a suboptimal choice for two reasons:
 >
-> Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> ---
->  drivers/net/wireless/ath/ath10k/snoc.c | 53 ++++++++++++++++++++++++++++=
-++++--
->  drivers/net/wireless/ath/ath10k/snoc.h |  3 ++
->  2 files changed, 53 insertions(+), 3 deletions(-)
+>    - get_cycles() is not guaranteed to be supported and functional on all
+>      systems/platforms. If not supported or not functional it returns 0,
+>      which makes benchmarking moot.
 >
-> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireles=
-s/ath/ath10k/snoc.c
-> index b3f6424c17d3..f72f236fb9eb 100644
-> --- a/drivers/net/wireless/ath/ath10k/snoc.c
-> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
-> @@ -1,6 +1,7 @@
->  // SPDX-License-Identifier: ISC
->  /*
->   * Copyright (c) 2018 The Linux Foundation. All rights reserved.
-> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
->   */
-> =20
->  #include <linux/bits.h>
-> @@ -11,6 +12,7 @@
->  #include <linux/of_device.h>
->  #include <linux/platform_device.h>
->  #include <linux/property.h>
-> +#include <linux/pwrseq/consumer.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/remoteproc/qcom_rproc.h>
->  #include <linux/of_reserved_mem.h>
-> @@ -1023,10 +1025,14 @@ static int ath10k_hw_power_on(struct ath10k *ar)
-> =20
->  	ath10k_dbg(ar, ATH10K_DBG_SNOC, "soc power on\n");
-> =20
-> -	ret =3D regulator_bulk_enable(ar_snoc->num_vregs, ar_snoc->vregs);
-> +	ret =3D pwrseq_power_on(ar_snoc->pwrseq);
->  	if (ret)
->  		return ret;
-> =20
-> +	ret =3D regulator_bulk_enable(ar_snoc->num_vregs, ar_snoc->vregs);
-> +	if (ret)
-> +		goto pwrseq_off;
-> +
->  	ret =3D clk_bulk_prepare_enable(ar_snoc->num_clks, ar_snoc->clks);
->  	if (ret)
->  		goto vreg_off;
-> @@ -1035,18 +1041,28 @@ static int ath10k_hw_power_on(struct ath10k *ar)
-> =20
->  vreg_off:
->  	regulator_bulk_disable(ar_snoc->num_vregs, ar_snoc->vregs);
-> +pwrseq_off:
-> +	pwrseq_power_off(ar_snoc->pwrseq);
-> +
->  	return ret;
->  }
-> =20
->  static int ath10k_hw_power_off(struct ath10k *ar)
+>    - get_cycles() returns the raw counter value of whatever the
+>      architecture platform provides. The original x86 Time Stamp Counter
+>      (TSC) was despite its name tied to the actual CPU core frequency.
+>      That's not longer the case. So the counter value is only meaningful
+>      when the CPU operates at the same frequency as the TSC or the value is
+>      adjusted to the actual CPU frequency. Other architectures and
+>      platforms provide similar disjunct counters via get_cycles(), so the
+>      result is operations per BOGO-cycles, which is not really meaningful.
+>
+> Use ktime_get() instead which provides nanosecond timestamps with the
+> granularity of the underlying hardware counter, which is not different to
+> the variety of get_cycles() implementations.
+>
+> This provides at least understandable metrics, i.e. operations/nanoseconds,
+> and is available on all platforms. As with get_cycles() the result might
+> have to be put into relation with the CPU operating frequency, but that's
+> not any different.
+>
+> This is part of a larger effort to remove get_cycles() usage from
+> non-architecture code.
+>
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+
+Thanks for your patch!
+
+> --- a/lib/interval_tree_test.c
+> +++ b/lib/interval_tree_test.c
+> @@ -65,13 +65,13 @@ static void init(void)
+>  static int basic_check(void)
 >  {
->  	struct ath10k_snoc *ar_snoc =3D ath10k_snoc_priv(ar);
-> +	int ret_seq =3D 0;
-> +	int ret_vreg;
-> =20
->  	ath10k_dbg(ar, ATH10K_DBG_SNOC, "soc power off\n");
-> =20
->  	clk_bulk_disable_unprepare(ar_snoc->num_clks, ar_snoc->clks);
-> =20
-> -	return regulator_bulk_disable(ar_snoc->num_vregs, ar_snoc->vregs);
-> +	ret_vreg =3D regulator_bulk_disable(ar_snoc->num_vregs, ar_snoc->vregs)=
-;
-> +
-> +	if (ar_snoc->pwrseq)
-> +		ret_seq =3D pwrseq_power_off(ar_snoc->pwrseq);
-> +
-> +	return ret_vreg ? : ret_seq;
->  }
-> =20
->  static void ath10k_snoc_wlan_disable(struct ath10k *ar)
-> @@ -1762,7 +1778,38 @@ static int ath10k_snoc_probe(struct platform_devic=
-e *pdev)
->  		goto err_release_resource;
->  	}
-> =20
-> -	ar_snoc->num_vregs =3D ARRAY_SIZE(ath10k_regulators);
-> +	/*
-> +	 * devm_pwrseq_get() can return -EPROBE_DEFER in two cases:
-> +	 * - it is not supposed to be used
-> +	 * - it is supposed to be used, but the driver hasn't probed yet.
-> +	 *
-> +	 * There is no simple way to distinguish between these two cases, but:
-> +	 * - if it is not supposed to be used, then regulator_bulk_get() will
-> +	 *   return all regulators as expected, continuing the probe
-> +	 * - if it is supposed to be used, but wasn't probed yet, we will get
-> +	 *   -EPROBE_DEFER from regulator_bulk_get() too.
-> +	 *
-> +	 * For backwards compatibility with DTs specifying regulators directly
-> +	 * rather than using the PMU device, ignore the defer error from
-> +	 * pwrseq.
-> +	 */
-> +	ar_snoc->pwrseq =3D devm_pwrseq_get(&pdev->dev, "wlan");
-> +	if (IS_ERR(ar_snoc->pwrseq)) {
-> +		ret =3D PTR_ERR(ar_snoc->pwrseq);
-> +		ar_snoc->pwrseq =3D NULL;
-> +		if (ret !=3D -EPROBE_DEFER)
-> +			goto err_free_irq;
+>         int i, j;
+> -       cycles_t time1, time2, time;
+> +       ktime_t time1, time2, time;
+>
+>         printk(KERN_ALERT "interval tree insert/remove");
+>
+>         init();
+>
+> -       time1 = get_cycles();
+> +       time1 = ktime_get();
+>
+>         for (i = 0; i < perf_loops; i++) {
+>                 for (j = 0; j < nnodes; j++)
+> @@ -80,11 +80,11 @@ static int basic_check(void)
+>                         interval_tree_remove(nodes + j, &root);
+>         }
+>
+> -       time2 = get_cycles();
+> +       time2 = ktime_get();
+>         time = time2 - time1;
+>
+>         time = div_u64(time, perf_loops);
+> -       printk(" -> %llu cycles\n", (unsigned long long)time);
+> +       printk(" -> %llu nsecs\n", (unsigned long long)time);
 
-I'm fairly sure this is now broken with CONFIG_POWER_SEQUENCING=3Dn since
-then pwrseq_get() is returning ERR_PTR(-ENOSYS) which is not handled
-here.
+While cycles_t was unsigned long or long long, ktime_t is always s64,
+so "%lld", and the cast can be dropped (everywhere).
 
-I'm observing my ath10k_snoc is now failing to probe "with error -38"
-which definitely seems to be related, but I haven't debugged it further
-yet.
+Gr{oetje,eeting}s,
 
-Regards
-Luca
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
