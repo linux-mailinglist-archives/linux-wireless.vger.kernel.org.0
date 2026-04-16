@@ -1,130 +1,204 @@
-Return-Path: <linux-wireless+bounces-34888-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34889-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHKnCsDN4GkdmAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34888-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 13:53:36 +0200
+	id sJLeEL3V4GmMmgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34889-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 14:27:41 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE7740DAFA
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 13:53:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2F240E1FE
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 14:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 195EB302708B
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 11:53:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 75BC13025F61
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 12:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885B3364032;
-	Thu, 16 Apr 2026 11:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6ABC3B895D;
+	Thu, 16 Apr 2026 12:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="cW8ELRZK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQGv29sX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515A637DE92
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 11:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C69337C924;
+	Thu, 16 Apr 2026 12:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776340412; cv=none; b=JRJJdS8xQ6+zbIkzpGu/a32ETNLu5ewtbMt3NR78bygr18GjAEcSMtggyD1IPlSBbkc23fd4FTywaA3XUqpvFW9BBe76zIctsLTOYAfCHw2AV1HJrowzXb5oAv2d4AkQGCGDcT5ACMUwkAYuMlg1wRZxbortB0PVmi4lja3wHlQ=
+	t=1776342318; cv=none; b=BxN9ADopjT0HG67ERqv27hTKoTqduufKYyqNQQVEskErZusc7h4cHqQrNDfWE/SFLyKX16g5jXT54Xde2HaMrxPV4Q6gUQOSGC3FPPnSWxfIbdpoGLYoNnXoowfaZAPpalMqUekDmhLyuprL40HoH41iMxukcXlhldI0BRF2E7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776340412; c=relaxed/simple;
-	bh=c85k3SjcCHTVHenl6c9aqjSxzZGk8S6wRsjWowr2rYI=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PPVunPdl1UkCp60x/J8zNXAD9ZLirz973n6AjiUt4Qg46KpALGr/YJLVfzOfgkW8oGTpQ6vXO4k3aMoXT9RZ5g7Yd1q1d2kzR6Y4gOwPsJrUcZBI892W0lU0LfbWNHjEJBRdUqjlEg/yyx1edAO+7GQVLbLshcX+gQqcQZZg34s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=cW8ELRZK; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=c85k3SjcCHTVHenl6c9aqjSxzZGk8S6wRsjWowr2rYI=;
-	t=1776340411; x=1777550011; b=cW8ELRZKXhYZErNBga+RpWp7lNC2c4l8Mn+fXwFE7huM+sb
-	XAOxXnetYr9qATPHIZlWTKVusO/3vylX7KzIYEO35J+lM4JiPKlqMJL3y6XuiiPrgxN6K/2eH6cVt
-	9C0LQ8Np0hRFDpm9DqPlGulPnZiNdoW9x/vXqPpishokrtLOHUqtsFYi/2Eloz1qPssENGjhX3guH
-	/Ho+FQJ3BCXxyCFA4iXPfo5TsV/8Bj3jRRp6ySdOw+FOYQaOQoLYRwgGava1ZHswoNl5qvdDhtIar
-	lATewAlLSYppDaH57LwOfEgFGdzijL76AoDgonFPEwD3bJT4NESODIApwELVuSIA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wDLHl-00000007Pv5-0T6o;
-	Thu, 16 Apr 2026 13:53:29 +0200
-Message-ID: <dd6454a4679355f6e9fbf2416da58b45c9c3b792.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next] wifi: mac80211: add __packed to union
- members of struct ieee80211_rx_status
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ping-Ke Shih <pkshih@realtek.com>, "linux-wireless@vger.kernel.org"
-	 <linux-wireless@vger.kernel.org>
-Date: Thu, 16 Apr 2026 13:53:28 +0200
-In-Reply-To: <280094f50a534fc998037b21c36ebe11@realtek.com>
-References: <20260411072509.1556635-1-pkshih@realtek.com>
-	 <280094f50a534fc998037b21c36ebe11@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1776342318; c=relaxed/simple;
+	bh=gECMS4EGrtN1lWkNcMdqV1cQaJPbxrgRQTXN3zouHSg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qdy/3MK0MwfEslDJpUvmQ3NbrxoYe4MuYEDd5I/0hg/Nklg/98f/WeraW+0hZjOYR3ll5HB/lln9Vf/aNZ/P5qvUZTryMZaQMBekQrlZ6d0uvRI+GqT9D3Ogs1R7/zYBLCu6V41SnsfnNkoGkdpGsPaklv/lrlL6JXwJhjAW5P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQGv29sX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4797C2BCB3;
+	Thu, 16 Apr 2026 12:25:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776342318;
+	bh=gECMS4EGrtN1lWkNcMdqV1cQaJPbxrgRQTXN3zouHSg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GQGv29sXj5S5z7UPKnXaUJAuD1qc92DQaWs8UXQ6wwBCK62RBOeMuB3RtNcxzLs+n
+	 PPcHL7L8pFqT/h2G0bvvPkUySB8nqp1hX+g8DsxNBEPpxoa8+yXm1bMdZVixBjqxgs
+	 n60V3osh+8lSW6pt2nDmsfqoDHDW6Auv9CDrXKgdtoPlM9Xla54AXl1OSAYSKpcXrA
+	 NmL+fSV7Qk/BTzx5WK8y+vV+U+fxOTS5SiuiemUg0UByoPARoWSlKdZYhXUYnMvTFf
+	 DgJsTYvf1ogHE4V/gC2FO90mA6aK9sVcz0Z1Cm9dDcGVpaCAj1nCKENYb7/YBcL1F4
+	 1oc9q29NjGBrg==
+Message-ID: <1fd72d1b-f5cd-447f-ae11-6f4d4426b8e8@kernel.org>
+Date: Thu, 16 Apr 2026 14:24:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spamd-Result: default: False [-2.16 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 55/61] interconnect: Prefer IS_ERR_OR_NULL over manual
+ NULL check
+To: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
+ apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org,
+ cocci@inria.fr, dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+ intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+ kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+ sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
+Cc: Georgi Djakov <djakov@kernel.org>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-55-bd63b656022d@avm.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260310-b4-is_err_or_null-v1-55-bd63b656022d@avm.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-34889-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34888-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[55];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:dkim,sipsolutions.net:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BCE7740DAFA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,avm.de:email]
+X-Rspamd-Queue-Id: 6E2F240E1FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 2026-04-14 at 00:55 +0000, Ping-Ke Shih wrote:
->=20
-> > Because of size assertion of rtw88's efuse map [1], I found
-> > arm-linux-gnueabi-gcc compiler throws this warning, but x86 gcc is abso=
-lutely
-> > silent and expected without this patch.
+On 10/03/2026 12:49, Philipp Hahn wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
+> 
+> Semantich change: Previously the code only printed the warning on error,
+> but not when the pointer was NULL. Now the warning is printed in both
+> cases!
 
-Yeah, depends on ABI padding rules.
+NAK, read the code
 
-> > [1]
-> > https://lore.kernel.org/linux-wireless/7c65e315-5a2e-455e-87ee-8fc6d60e=
-d807@gmail.com/T/#m43fdf8a1
-> > c2b8cff92c1ef50faab7993522647162
->=20
-> I'd note that discussion thread [2] of original kernel test robot.
-> Arnd pointed out the cause is CONFIG_AEABI is not set, and he said
-> nobody should be using ARM OABI any more.=20
+> 
+> Change found with coccinelle.
+> 
+> To: Georgi Djakov <djakov@kernel.org>
+> Cc: linux-pm@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+> ---
+>  drivers/interconnect/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
+> index 8569b78a18517b33abeafac091978b25cbc1acc7..22e92b30f73853d5bd2e05b4f52cb5aa22556468 100644
+> --- a/drivers/interconnect/core.c
+> +++ b/drivers/interconnect/core.c
+> @@ -790,7 +790,7 @@ void icc_put(struct icc_path *path)
+>  	size_t i;
+>  	int ret;
+>  
+> -	if (!path || WARN_ON(IS_ERR(path)))
+> +	if (WARN_ON(IS_ERR_OR_NULL(path)))
 
-Ah, right.
+IS_ERR_OR_NULL is simply discouraged, but beside of code preference, you
+just added bug here. This is clearly not equivalent and you emit warn on
+perfectly valid case!
 
-> Maybe, we can ignore the CPU and skip this patch.
-
-Given that nobody complained in many years about not being able to use
-wifi on those machines, I'd be inclined to just do that, yeah. But
-thanks for digging into it!
-
-johannes
+Best regards,
+Krzysztof
 
