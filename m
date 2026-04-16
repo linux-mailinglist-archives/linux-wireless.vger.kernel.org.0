@@ -1,164 +1,267 @@
-Return-Path: <linux-wireless+bounces-34879-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34880-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLLnI2Cv4GkRkwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34879-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 11:44:00 +0200
+	id wO35Ecu04Gn5kwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34880-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 12:07:07 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B980040C8BA
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 11:43:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1EB240CB4A
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 12:07:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6692F301A401
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 09:39:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F90E3050202
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 10:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F26B396567;
-	Thu, 16 Apr 2026 09:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0778C39DBFE;
+	Thu, 16 Apr 2026 10:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=eskapa.be header.i=@eskapa.be header.b="Em2jNf64"
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="kzPX/LYQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-190a.mail.infomaniak.ch (smtp-190a.mail.infomaniak.ch [185.125.25.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443EA391507
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 09:39:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B84E395257
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 10:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776332393; cv=none; b=HT7pYnWFbEqcQMi6Z8cTmLHX1r1b07H5OrZoOZ0RczqHCNKx4yDDWUZCuslpK5R40/MYfRNDQ/+OKiiVZ/G9TJSOol94zBobSSclODlRNp7WaXtSnceH/PGt24OHjU0LE5rVFQZXJSuySYtKwJ9+1So/1g72Esfnku47SAxAl9M=
+	t=1776333979; cv=none; b=pn338rQuugjuj2iqm1eMG9KS4vvpoLOfZJPxrsbYJa1CwC1aR2ssNXk+bgN+smOe5ZJWK1DIpC9kicr8/3OOkG/g9yv1KY64kGtDkEkW/4PkYr+JroLreQWUYpSe1RnEZVPJI3aLI38I1CJeTk98jIcHeya9kuIKZa0LvRBWGpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776332393; c=relaxed/simple;
-	bh=c7SUvv98yBbdmiS00lwnJibEnJTn19T8mAU7Vt0OvDk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=mWZ3dj1N187BdU8zRljs/lu3jV5ympIzrgiTopKQcElyvG+8mLkQfsCVCy/UinNH8J/QkhLvBNrB1dI0UyXlDO28LDIqQ/kxw55SNWmoO7YTGbXdWvP+vtzMYULO/SD6FVTpP0LbyFTCc2K7wryxLS4rVqv4xWbsIKGFcHd213k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eskapa.be; spf=pass smtp.mailfrom=eskapa.be; dkim=pass (2048-bit key) header.d=eskapa.be header.i=@eskapa.be header.b=Em2jNf64; arc=none smtp.client-ip=185.125.25.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eskapa.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eskapa.be
-Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fxCf30MHFzT8t;
-	Thu, 16 Apr 2026 11:39:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=eskapa.be;
-	s=20230820; t=1776332378;
-	bh=sC6DOp6I+UJxsZ/NFuRT61E82T7wW4cje7LW0fyzt+k=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=Em2jNf64PP8l7OK5Y06dgsn1+/7GS3vsf87QhRgvtn5Jvk91We/BvGaXTBJ4m8vJJ
-	 Vb/ZfnfbBGglvCEAC3V6RDFcV9AD3x2bhdoHNExyNeyTNjjB8GWkpSDa7xs1sw6WMp
-	 c6eP9VcCvWJ6MOy8lk6NXmglNeJ/qFElsLv8Bopv4YB513X9kXCJHDQ8orqWpNSlnt
-	 TPXv9cqfyx6XHZRSKtqTH/wKWTh6F/oO9NMkvsLIZmfOcr1Rlwc/gum8FKiUU2uv6k
-	 1YMv4cNqMqEqAeyWiWfYM2lT4i23pFEZtg+P+tRgDXvbNfpBIlPaeHFItHe4iuO/Bn
-	 MuoX9tywVDiWA==
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4fxCf248qgzw3l;
-	Thu, 16 Apr 2026 11:39:38 +0200 (CEST)
-Message-ID: <b1a7678d-8e87-444e-b38a-bb7aedcd4f30@eskapa.be>
-Date: Thu, 16 Apr 2026 11:39:38 +0200
+	s=arc-20240116; t=1776333979; c=relaxed/simple;
+	bh=TRTbSHQMURjU0ZW+9bSmpSmU4dNIK7D4YlFMBvnDA7w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=TrGN2np/WCZ5gAhE+tbsqsXpx66BGQ7m7Wq1r7/b2MOj/39Y+g3THalx+Tqyl7WAlfKqw9kBsPTa68A3o8CxFpS7O5dQ4ApNnyW+yMrY5qBnbcYclVA/66vIbeRorr39T4scRbjeErll0hVT6A8EJ//CG7TGHkp8WLu5qAUdPPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=kzPX/LYQ; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6716a2d9596so6728749a12.0
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 03:06:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1776333976; x=1776938776; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=StUmw+VWigYj7b9CbzCzolN8uC+xmf43R5kKEaP2dK4=;
+        b=kzPX/LYQ7y4Em+5vweuPtbDVXDcoj3YiojA1EIvviwOb9DAfGlxBFgYuW0pUQr84F7
+         o3C2dIlrz9fvBp/prcIwvOOsh5tJ+WHEVOCqXz3ITsX9ZGDDf3F0/hgcVVOjJS6rTvW5
+         TR/v39UwUsDGxg8Gm/VS9YgP283HLqywpv2g7Qmh8ul1teNUy9fMVk379o2Maq4hgeKZ
+         Mt9Q5acvzcEKbEBTvfEHV6jZiBMpMonajIaSSdLLz8e4c9pmUFCivqqrXN3EnyytrJYt
+         iHTj82htSnT0m1K8P7M6h5r9aOcIQ7qc8fGh7LqZrwMWA6jumfV+Bg+7/lDo46khGJsl
+         Y+fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776333976; x=1776938776;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=StUmw+VWigYj7b9CbzCzolN8uC+xmf43R5kKEaP2dK4=;
+        b=J5BMaSSBdXIDFqxoKfBqkuMMx3VgdB3mbAV/bZI/6cyHqF6K9s7fYLXYGeEZ4gbzzt
+         f27ELbNL/DQmKgnA2VWNz9Ls0qgqHrFfp2J3D8gY9XdP+YbnTzuBbTkvdAYt/ucb8fWe
+         srPhlZleIjUYeFhwDbC/tGdYMQ4s83WTK4ioe2kQfJo3sOZvKxR6iry2OTIVE2xpH3gG
+         uKX6yg8JTLFAVuZrhsUeWdS1M0p6gw4aUGQKfkNnnpNLpxfjbxZDu7dYzRlmnICiRWHi
+         ZRycH93AysxhKSMtHLC83oZ2mfDpnnZNXRr/tc75eS/4dh9cWpUOfVg3i6SW0n+6QK5i
+         FMKg==
+X-Forwarded-Encrypted: i=1; AFNElJ/RT5LURpSbzwrk7IBu2OEeBVdVIBPTmPT5pqLIokiCDdNAHEbteBALPsC/NGFBLlMVqAJWtxbdyA3WfICkTA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSof0Jyjrt8Z7Fvue4HRLs57QqJ4bPCN9rDdGdkArGEG43FnbE
+	cZupc47GnpXnvqhaid3qvC12uLA25Qd5oCWiWmediMigqpfdUg5sgjDBkU8o2o5j38Q=
+X-Gm-Gg: AeBDiesGkoyMwLkCtMNeHzuyvpjquKaZJ0fQ90QXpftGfUa6mTlZ+/xGCtAIHfQ8KST
+	bLW7VO8jPKQkUY5mTNQhS2OK5yt7gb0Gjg4u9MhewxGKBNQkR6APnxTq2BkQASR7M4jnwTW65Ek
+	nOpxqMvipgTtcqlSrNGqBeNhqIpDC373JXAkgUYr66sWg472urgHof982if/hPYf+LugmqQCldK
+	48q0sU/estTNBS2SgBxy1MbYhYOVlUi4Aze7eUX1afQKBf/Q7dplna2kV+e362n6hChItsrk6I4
+	gSAYSFW229EHq5KloCRrdrhW/Z6CFo4L+PXcDdDEvzfFM9o/72XyuvigAixuShTbY0Hwd12lXqt
+	C5X+nWE+1ECH00ocek2mrsHU1Brje0KdSBU3h4jDMoV8ilxpBYhz1cIzsd4CpqZyHVC6zdhkpDm
+	RDRdMyA/Y5n/9qx70nulI2jcybzqMKLF/CwBSIdT4lsrkL5Y1a180QKeZz9vq805TZXAM8pstcF
+	wHizP0=
+X-Received: by 2002:a05:6402:548c:b0:66e:f4c0:c348 with SMTP id 4fb4d7f45d1cf-6707898ffc1mr11228460a12.7.1776333975499;
+        Thu, 16 Apr 2026 03:06:15 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67237d79258sm1152533a12.4.2026.04.16.03.06.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Apr 2026 03:06:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Wi-Fi speeds degrade from 600Mps to 30Mps while using WPA2
- security, but not on open network, shortly after ISP firmware upgrade.
-To: Benson Bear <benson.bear@gmail.com>, linux-wireless@vger.kernel.org
-References: <CACM6vn7QGKQcR5Rs=wmzNA-SgMDZX4Hw=UiPQHfYkWgLURcbAA@mail.gmail.com>
-From: Pablo MARTIN-GOMEZ <pablomg@eskapa.be>
-Content-Language: en-US
-In-Reply-To: <CACM6vn7QGKQcR5Rs=wmzNA-SgMDZX4Hw=UiPQHfYkWgLURcbAA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Infomaniak-Routing: alpha
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Date: Thu, 16 Apr 2026 12:06:09 +0200
+Message-Id: <DHUHU7UIT487.139L3KIVRVREU@fairphone.com>
+Cc: <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>,
+ <linux-wireless@vger.kernel.org>, <ath10k@lists.infradead.org>,
+ <linux-pm@vger.kernel.org>, "Krzysztof Kozlowski" <krzk@kernel.org>,
+ "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
+Subject: Re: [PATCH v3 3/8] wifi: ath10k: snoc: support powering on the
+ device via pwrseq
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>, "Liam Girdwood"
+ <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>, "Rob Herring"
+ <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, "Bartosz Golaszewski" <brgl@kernel.org>,
+ "Marcel Holtmann" <marcel@holtmann.org>, "Luiz Augusto von Dentz"
+ <luiz.dentz@gmail.com>, "Jeff Johnson" <jjohnson@kernel.org>, "Bjorn
+ Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konradybcio@kernel.org>, "Manivannan Sadhasivam" <mani@kernel.org>, "Vinod
+ Koul" <vkoul@kernel.org>, "Balakrishna Godavarthi"
+ <quic_bgodavar@quicinc.com>, "Matthias Kaehlcke" <mka@chromium.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260119-wcn3990-pwrctl-v3-0-948df19f5ec2@oss.qualcomm.com>
+ <20260119-wcn3990-pwrctl-v3-3-948df19f5ec2@oss.qualcomm.com>
+In-Reply-To: <20260119-wcn3990-pwrctl-v3-3-948df19f5ec2@oss.qualcomm.com>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[eskapa.be,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[eskapa.be:s=20230820];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[fairphone.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[fairphone.com:s=fair];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34879-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[eskapa.be:+];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-34880-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,gmail.com,kernel.org,holtmann.org,quicinc.com,chromium.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pablomg@eskapa.be,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[luca.weiss@fairphone.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[fairphone.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B980040C8BA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: C1EB240CB4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
-On 16/04/2026 10:47, Benson Bear wrote:
-> Hi folks, I've never posted here before, don't know much about wireless, but
-> am having a big problem I have been trying to solve for a week. I've been
-> googling and ai chatting non-stop but finally after reading the info
-> page about the
-> list figured it would probably be acceptable to send this message.
-> 
-> BRIEFEST SUMMARY: There was a firmware update in Rogers's (Canada) XB7 Gateway,
-> and subsequently my Wi-Fi transfer speeds degraded badly on all three
-> Linux notebooks I have. Fully up to date notebooks, running Fedora 43 and
-> 42 with most recent kernel 6.19.11. Two different NICs: RTL8852BE and Intel
-> 7265 (rev 59). Wired machines and phones are unaffected.
-> 
-> The machines all connect with high transfer rates of around
-> 800-1000Mbs on the 5G band,
-> with an 80Mhz wide channnel, and MCS level ranging from 7 to 11 (HE and VHT).
-> 
-> Transfer speeds using WPA2 security have dropped in the one case (RTL)
-> from 600Mbps to
-> about 30Mbps. (Using internet speed test but iperf3 gives similar). The other
-> cases are similar.
-When traffic is capped around 30-50Mbps, the usual suspect is
-aggregation not being setup.
-> 
-> BUT the transfer using no network security is still what it used to
-> be! It is simply
-> the enabling of WPA2 that brings them to their knees.
-If I had to guess, this is an issue with PMF. Either the STA or the AP
-considers PMF is activated and the other one not; so the action frames
-that set up a BA session are dropped.
+Hi Dmitry,
 
-Check
-`/sys/kernel/debug/ieee80211/phy<n>/netdev\:<devname>/stations/<bssid>/flags`
-on your notebooks if there is `MFP` in the flags
-> 
-> So it seems to be a problem related to WPA2, and at a lower level in the
-> stack of modules, since it happens on two different NICs?
-You can try a few things:
-- build a master wpa_supplicant from source and replace the Fedora's
-binaries
-- use a raw wpa_supplicant connection and set ieee80211w=0 in the config
-file
-- switch the backend of NetworkManager to iwd
-- update the security to WPA3
-> 
-> I suspected for a long time that it was a firmware bug in the gateway, but
-> now I am starting to wonder. I have no solid evidence of that except that
-> Windows works fine on the same gateway and the same machine.
-> 
-> All three machines work well on another network I have occasional access
-> to, and have worked fine on this network until about a week ago.
-> 
-> I have ordered another router that I hope I can use to solve the
-> immediate practical problem, but I would really like to figure out
-> what is going on and contribute what I can to fixing it, even if only
-> by being sent out to gather potentially useful data.
-> 
-> Thank you.
-> 
+On Mon Jan 19, 2026 at 6:07 PM CET, Dmitry Baryshkov wrote:
+> The WCN39xx family of WiFi/BT chips incorporates a simple PMU, spreading
+> voltages over internal rails. Implement support for using powersequencer
+> for this family of ATH10k devices in addition to using regulators.
+>
+> Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> ---
+>  drivers/net/wireless/ath/ath10k/snoc.c | 53 ++++++++++++++++++++++++++++=
+++++--
+>  drivers/net/wireless/ath/ath10k/snoc.h |  3 ++
+>  2 files changed, 53 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireles=
+s/ath/ath10k/snoc.c
+> index b3f6424c17d3..f72f236fb9eb 100644
+> --- a/drivers/net/wireless/ath/ath10k/snoc.c
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: ISC
+>  /*
+>   * Copyright (c) 2018 The Linux Foundation. All rights reserved.
+> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+>   */
+> =20
+>  #include <linux/bits.h>
+> @@ -11,6 +12,7 @@
+>  #include <linux/of_device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/property.h>
+> +#include <linux/pwrseq/consumer.h>
+>  #include <linux/regulator/consumer.h>
+>  #include <linux/remoteproc/qcom_rproc.h>
+>  #include <linux/of_reserved_mem.h>
+> @@ -1023,10 +1025,14 @@ static int ath10k_hw_power_on(struct ath10k *ar)
+> =20
+>  	ath10k_dbg(ar, ATH10K_DBG_SNOC, "soc power on\n");
+> =20
+> -	ret =3D regulator_bulk_enable(ar_snoc->num_vregs, ar_snoc->vregs);
+> +	ret =3D pwrseq_power_on(ar_snoc->pwrseq);
+>  	if (ret)
+>  		return ret;
+> =20
+> +	ret =3D regulator_bulk_enable(ar_snoc->num_vregs, ar_snoc->vregs);
+> +	if (ret)
+> +		goto pwrseq_off;
+> +
+>  	ret =3D clk_bulk_prepare_enable(ar_snoc->num_clks, ar_snoc->clks);
+>  	if (ret)
+>  		goto vreg_off;
+> @@ -1035,18 +1041,28 @@ static int ath10k_hw_power_on(struct ath10k *ar)
+> =20
+>  vreg_off:
+>  	regulator_bulk_disable(ar_snoc->num_vregs, ar_snoc->vregs);
+> +pwrseq_off:
+> +	pwrseq_power_off(ar_snoc->pwrseq);
+> +
+>  	return ret;
+>  }
+> =20
+>  static int ath10k_hw_power_off(struct ath10k *ar)
+>  {
+>  	struct ath10k_snoc *ar_snoc =3D ath10k_snoc_priv(ar);
+> +	int ret_seq =3D 0;
+> +	int ret_vreg;
+> =20
+>  	ath10k_dbg(ar, ATH10K_DBG_SNOC, "soc power off\n");
+> =20
+>  	clk_bulk_disable_unprepare(ar_snoc->num_clks, ar_snoc->clks);
+> =20
+> -	return regulator_bulk_disable(ar_snoc->num_vregs, ar_snoc->vregs);
+> +	ret_vreg =3D regulator_bulk_disable(ar_snoc->num_vregs, ar_snoc->vregs)=
+;
+> +
+> +	if (ar_snoc->pwrseq)
+> +		ret_seq =3D pwrseq_power_off(ar_snoc->pwrseq);
+> +
+> +	return ret_vreg ? : ret_seq;
+>  }
+> =20
+>  static void ath10k_snoc_wlan_disable(struct ath10k *ar)
+> @@ -1762,7 +1778,38 @@ static int ath10k_snoc_probe(struct platform_devic=
+e *pdev)
+>  		goto err_release_resource;
+>  	}
+> =20
+> -	ar_snoc->num_vregs =3D ARRAY_SIZE(ath10k_regulators);
+> +	/*
+> +	 * devm_pwrseq_get() can return -EPROBE_DEFER in two cases:
+> +	 * - it is not supposed to be used
+> +	 * - it is supposed to be used, but the driver hasn't probed yet.
+> +	 *
+> +	 * There is no simple way to distinguish between these two cases, but:
+> +	 * - if it is not supposed to be used, then regulator_bulk_get() will
+> +	 *   return all regulators as expected, continuing the probe
+> +	 * - if it is supposed to be used, but wasn't probed yet, we will get
+> +	 *   -EPROBE_DEFER from regulator_bulk_get() too.
+> +	 *
+> +	 * For backwards compatibility with DTs specifying regulators directly
+> +	 * rather than using the PMU device, ignore the defer error from
+> +	 * pwrseq.
+> +	 */
+> +	ar_snoc->pwrseq =3D devm_pwrseq_get(&pdev->dev, "wlan");
+> +	if (IS_ERR(ar_snoc->pwrseq)) {
+> +		ret =3D PTR_ERR(ar_snoc->pwrseq);
+> +		ar_snoc->pwrseq =3D NULL;
+> +		if (ret !=3D -EPROBE_DEFER)
+> +			goto err_free_irq;
 
-Pablo MG
+I'm fairly sure this is now broken with CONFIG_POWER_SEQUENCING=3Dn since
+then pwrseq_get() is returning ERR_PTR(-ENOSYS) which is not handled
+here.
+
+I'm observing my ath10k_snoc is now failing to probe "with error -38"
+which definitely seems to be related, but I haven't debugged it further
+yet.
+
+Regards
+Luca
 
