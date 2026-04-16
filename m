@@ -1,205 +1,241 @@
-Return-Path: <linux-wireless+bounces-34877-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34878-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YN+uGvKl4GlZkgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34877-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 11:03:46 +0200
+	id 6NkWJ7mu4GkRkwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34878-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 11:41:13 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F5940BF66
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 11:03:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD86640C83B
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 11:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C41593020EBA
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 09:03:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA87530F278F
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 09:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4446E352C2C;
-	Thu, 16 Apr 2026 09:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC1D33D503;
+	Thu, 16 Apr 2026 09:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bHNGJ4MA"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="E0J5Y2Aa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC2127E049
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 09:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776330189; cv=pass; b=EplNS0jYgFgM2tjNK6+y1EI0Mua/mRTnkTTaRM54/BFFzyb1EdhTe3FwNN7o/476t+VqjDVj0mPqfwKVKeg+2x6ihLsf23bC+IlOQsIuZwCo8bE9FHL+fxga44VUa3zR0w1pLg7j4hYaY8aFXkVN0QeNBZQQsW04t39YNDj+6HU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776330189; c=relaxed/simple;
-	bh=YvvNRt8N44zcNbaa7IRqWXoi4C5QZ8FmEaaZXFM/OYw=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=G4Zo3UeSICyh+KYdfWPdwueNquyaTBPRGyIE4YWcBZZ+5RoFB93EugPvTN6CD8U8xjpzS2lTVqACZyXiXG/tIboVYqrKfmy0gdfrbsdz8HQhlzblZOIer3XmVLQxpCxY2otp0fo7Qk/TmvpH5iMyd8tuHxk3JGy0DSnLQH+O2Ts=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bHNGJ4MA; arc=pass smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2b6b0500e06so14715410eec.1
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 02:03:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776330187; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kK91ADxzEMhWivL5pdMuSU5mOw7tey3sjZ/3YhYR3bG9i+neIfoYrGnR6FrFZ6EocT
-         f7aaao6OL1ERd+Az6VoPqKmAHbw7gnxAHt1Al7dva53s7J7UJR1LtMeQxP8gvHotZbO9
-         yhK+MAFNsjbxhTcQMezZwNxawSIA6gtwxML0eWH0GD+0cI5wxX9QHG3s8lrNyrHSBoXb
-         q0Z0eehusBYYF3qU1QEb2bCssUdBHYD12phXYeGjaXuweAFALNsJ8nw8zA/sxQJXfLV+
-         mBOdJy3wIW7D4sepBFx1oUoQowayXqdWvMA/Mty3oN/cdIlvE6IVdSKNOspUGGZnCGKH
-         0AKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:dkim-signature;
-        bh=YvvNRt8N44zcNbaa7IRqWXoi4C5QZ8FmEaaZXFM/OYw=;
-        fh=JClNaBC8dlZl8iuzEdb+Ihos+KBgK/Eb/eOBTk59qjA=;
-        b=BeFa5oe3zf3g2TyhCPw2L5H7//fGopHgLrO+Nh+IxwujRVChwq4dzyp4tq0MwLG1M6
-         pAgnpFjo8UjVMka9Xl73IFS/K7QKk0PkcsEUsUKgCy5CPYaIIQZbk21gISzQPtShce4p
-         Rf2gcRx1w3ckKPsr+JxD1/TKMXPVaVWR4M5autAA081Eh80ipxZOF2MGMH+Buxslepxc
-         GsDuVAmM51UpT+L1PdYx0s0KKQ4eqlYb50rc7yakEqRcy7cqatLSKr92ZDZm57WIalO5
-         Emxjy/zZzWr8RTe3PmtcHiLoMItt4X7GchYFvSDR4qVJYiLVG9XdBL+jHyql61FWi1+7
-         Cmbg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776330187; x=1776934987; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YvvNRt8N44zcNbaa7IRqWXoi4C5QZ8FmEaaZXFM/OYw=;
-        b=bHNGJ4MAobeVkvI8QKZfhRPNM8Md+smviMi6qf83oZnnsl91sLyuQCdvWhuynv7RI7
-         abVgG+9opD3zaei/pvjzkOmkyPOXYygy3bvWfeSnWvlgHkrgwtccxUoUM6TTImTeCf6r
-         zIh7GH5x5T6wJNzzre7sZxuEp3sga/t+seV5EG0KQWwOU4qhA3SQ15pJZHVaj84AExdn
-         lbuLFVIVg3lzuh3y/7kTv0Sypv9vbUG1RdQt9jsDRzai/l3OPONe6A4kdoWrbdoZAWng
-         p5vYTgD/76dy0Whf4wNZOZWHWCV4rWq2ZLpG8zvjQRLEeg79QPEocIjUwOusWOVUuoRp
-         uriQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776330187; x=1776934987;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YvvNRt8N44zcNbaa7IRqWXoi4C5QZ8FmEaaZXFM/OYw=;
-        b=OqVCVj0eM6mGoK+uDXFWdE6q3duqnPUmzhXSA4Z2QsADynJV5uelQZse4yMYsuL1B0
-         f5jeqfABUD8YefgFjYCYkDDXpCp7hv1exOy/+klNHH1C1Q+ess+kJMKL0hZhyvKVv4QR
-         G7eiMpayyHmZqq/Kx/ruJQnwaqV8SfGHJsEDMFDojfDO5IeNjzEVpa9I/OXNbUA4C5Tc
-         lv17bn6IM7GRTV/MJ3A7KZhUj1mVHosMm5ZZqNgmuf0Uk7IAwr/u+Ts+4U+3yZrV36Cb
-         y58B/vnxIL+kz5w+OTIEe7omPZxbmjYTpT2YOjgamR5sRSwEJU96jhFxCenJK9/6XVKK
-         WOrQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8Ax92x/yX+eA4vJTJMSAStOv0fX4BcEo49e4tHrZtSe7rA5UjhC7k272T6LL99mZK43AP2J7uAaBTcf6hxRw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwtXU/deXOYfa9QJEmR5BtSA7Zj5KL1nqSOHdbZDjwb+/uHOFm
-	DIsWqJRILEsTKVMR+iA6XiJzN5kxvECIy20kam+38hSdq79FLQU6i61ZxJoo6WUGdd3b5NGaUiE
-	SMbdAZkIuE9myBRCjGc+w368Pvj5InWwy4kf0zpdNlg==
-X-Gm-Gg: AeBDieubE+McAQ0A3zGNHSVQjTCqB+UuXBFgnhWzcMswPo74fwYn6kdd5etFFQwenfD
-	5NLDuxWx82dnLlIGrXTQbQUI5MmQ2HI/QSKVtlKFM3YFrT1Q3ltoNyqkjVgmffBZPE7XDCfc/PL
-	Y+9Y3pDHWHBuwBOX21xzQb3cVAlOfnzmg6d62BwG5lzv11KYRlrZwwhqxx2r5p5tb5Kkh7ciVXb
-	Y2EWFs8yfL3/lKHjG1gs3qryKqxR3NtaVgDdYjMxGnWiKOhWSt1177AkzXEeuLz1Ijx2gC3bb9v
-	KUrWL25Ub/RY6lP9Gm4=
-X-Received: by 2002:a05:7300:6d05:b0:2da:44ac:6d17 with SMTP id
- 5a478bee46e88-2da44ac73d7mr8430546eec.17.1776330186461; Thu, 16 Apr 2026
- 02:03:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5A0382F32
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 09:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776332079; cv=none; b=uihmCQr2zQ7SpxvMmxJhy78cehZe17MJa8PZtVzCI5o4is7UqRr9BgAGzPBa6MxF3qk7LkB/A3DuRvoKt0gm2voVoX5RShnFOMjDSuS7oydBpjvXW0QgA0lT65Eq2PwgAV0GcygcXCG42TuntA1t8QD6qqo2SxX0TPn/eEWxxVg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776332079; c=relaxed/simple;
+	bh=tWmas1cm6B5QN1jq8ekbiSzKgEB5Kt9NC51/8xvjC3E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 References; b=s88+JyRLjJTip3/91g9aT0ZtSDTT1LjamBYn0b6vw6Hk4pX7NIHG+HFW0gobt8RfTW+ev+3+JqhVzPu45EM2dom5rNTZG7vWKV6Hlw+5PX5kXtnUgkLSx9u0rpP4THyXimIp6nULtRm2+fTRWhyV13wl6yuwceP1xyN7R5uDbVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=E0J5Y2Aa; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260416093428euoutp021b67d478df453aaa5e9ea1591d7d261e~mzJrtzIny2534725347euoutp02M
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 09:34:28 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260416093428euoutp021b67d478df453aaa5e9ea1591d7d261e~mzJrtzIny2534725347euoutp02M
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1776332068;
+	bh=23FazvtiCIPv2qrEXvDfkLiYN3Ax9w9NKvlIby1PYlo=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=E0J5Y2Aa+QRx2NIYqv4jOcOQ69f7AtBW0WLnk+N2syJsJsU6QJQOKZNgplXE2D5YI
+	 Bt5Q40ZI2cYu53JOIKOUvQQrUpzzeLrqKIjLx+F6rHL4a4P2ks8XUrQovyOf/69wvN
+	 FoJVfkYciuwdhjXF43oUT0kgndh98WKfJoTMKBtM=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260416093428eucas1p2fde898f84c1e15dd94d1ecb52707c72b~mzJrbkITF1661516615eucas1p2c;
+	Thu, 16 Apr 2026 09:34:28 +0000 (GMT)
+Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260416093428eusmtip1af3f197c1f60f0a9d44c4640aeca3c7b~mzJrJ2eQc0938209382eusmtip1P;
+	Thu, 16 Apr 2026 09:34:28 +0000 (GMT)
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+To: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Arend van Spriel
+	<arend.vanspriel@broadcom.com>
+Subject: [PATCH] wifi: brcmfmac: Fix potential use-after-free issue when
+ stopping watchdog task
+Date: Thu, 16 Apr 2026 11:33:39 +0200
+Message-Id: <20260416093339.2066829-1-m.szyprowski@samsung.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Sheroz Juraev <goodmartiandev@gmail.com>
-Date: Thu, 16 Apr 2026 14:02:53 +0500
-X-Gm-Features: AQROBzCSZziCMqVSc-4LKPugtGbhRz9-Yhx2NybwpvyU40Cu7MOJ0VRdGoQO-n4
-Message-ID: <CADPJysyMn_07rb+9b3SgR3xTn+uicSoRp5FMB=oeKNbABtZ5gg@mail.gmail.com>
-Subject: RE: [PATCH wireless v2] wifi: iwlwifi: mld: stop TX during firmware restart
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260416093428eucas1p2fde898f84c1e15dd94d1ecb52707c72b
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260416093428eucas1p2fde898f84c1e15dd94d1ecb52707c72b
+X-EPHeader: CA
+X-CMS-RootMailID: 20260416093428eucas1p2fde898f84c1e15dd94d1ecb52707c72b
+References: <CGME20260416093428eucas1p2fde898f84c1e15dd94d1ecb52707c72b@eucas1p2.samsung.com>
 X-Spamd-Result: default: False [-1.16 / 15.00];
-	FAKE_REPLY(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[samsung.com,none];
+	R_DKIM_ALLOW(-0.20)[samsung.com:s=mail20170921];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34877-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34878-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.c.6.3.0.1.0.0.e.4.0.c.3.0.0.6.2.asn6.rspamd.com:query timed out];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[goodmartiandev@gmail.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[samsung.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[m.szyprowski@samsung.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RSPAMD_EMAILBL_FAIL(0.00)[20260405054145.1064152-3-cole.unwrap.rs:query timed out];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 26F5940BF66
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DD86640C83B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Miri,
+Watchdog task might end between send_sig() and kthread_stop() calls, what
+results in the use-after-free issue. Fix this by increasing watchdog task
+reference count before calling send_sig() and dropping it by switching to
+kthread_stop_put().
 
-Thanks for the quick review. Let me address your points inline:
+Fixes: 373c83a801f1 ("brcmfmac: stop watchdog before detach and free everything")
+Fixes: a9ffda88be74 ("brcm80211: fmac: abstract bus_stop interface function pointer")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+---
+This fixes the following, rarely observed issue when no firmware binary
+is available:
 
-> Why is there a leak if we freeing the SKBs after we failed?
+brcmfmac mmc2:0001:1: Direct firmware load for brcm/brcmfmac4330-sdio.txt failed with error -2
+------------[ cut here ]------------
+------------[ cut here ]------------
+WARNING: kernel/fork.c:781 at __put_task_struct+0x13c/0x140, CPU#0: kworker/0:1/10
+Modules linked in: brcmfmac hci_uart btbcm btintel bluetooth sha256 cfg80211 s5p_csis s5p_fimc s5p_mfc exynos4_is_common v4l2_fwnode v4l2_async ecdh_generic ecc s5p_jpeg videobuf2_dma_contig v4l2_mem2mem videobuf2_memops videobuf2_v4l2 videobuf2_common videodev brcmutil mc
+CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 7.0.0-rc6-next-20260402 #12549 PREEMPT 
+Hardware name: Samsung Exynos (Flattened Device Tree)
+Workqueue: events request_firmware_work_func
+Call trace: 
+ unwind_backtrace from show_stack+0x10/0x14
+ show_stack from dump_stack_lvl+0x68/0x88
+ dump_stack_lvl from __warn+0x94/0x204
+ __warn from warn_slowpath_fmt+0x1b0/0x1bc
+ warn_slowpath_fmt from __put_task_struct+0x13c/0x140
+ __put_task_struct from rcu_core+0x330/0x1220
+ rcu_core from handle_softirqs+0x130/0x5b0
+ handle_softirqs from __irq_exit_rcu+0x144/0x1f0
+ __irq_exit_rcu from irq_exit+0x8/0x28
+ irq_exit from call_with_stack+0x18/0x20
+ call_with_stack from __irq_svc+0x9c/0xd0
+Exception stack(0xe0891c20 to 0xe0891c68)
+...
+ __irq_svc from console_flush_one_record+0x394/0x570
+ console_flush_one_record from console_unlock+0x78/0x148
+ console_unlock from vprintk_emit+0x224/0x390
+ vprintk_emit from vprintk_default+0x20/0x28
+ vprintk_default from _printk+0x2c/0x5c
+ _printk from warn_slowpath_fmt+0xe8/0x1bc
+ warn_slowpath_fmt from kthread_stop+0x2bc/0x364
+ kthread_stop from brcmf_sdio_remove+0x2c/0x194 [brcmfmac]
+ brcmf_sdio_remove [brcmfmac] from brcmf_sdiod_remove+0x20/0xb8 [brcmfmac]
+ brcmf_sdiod_remove [brcmfmac] from brcmf_ops_sdio_remove+0x34/0x5c [brcmfmac]
+ brcmf_ops_sdio_remove [brcmfmac] from sdio_bus_remove+0x30/0x10c
+ sdio_bus_remove from device_release_driver_internal+0x190/0x204
+ device_release_driver_internal from brcmf_sdio_firmware_callback+0x50/0x944 [brcmfmac]
+ brcmf_sdio_firmware_callback [brcmfmac] from brcmf_fw_request_done+0x154/0x17c [brcmfmac]
+ brcmf_fw_request_done [brcmfmac] from request_firmware_work_func+0x50/0x98
+ request_firmware_work_func from process_one_work+0x260/0x7dc
+ process_one_work from worker_thread+0x1ac/0x3b0
+ worker_thread from kthread+0x128/0x168
+ kthread from ret_from_fork+0x14/0x28
+Exception stack(0xe0891fb0 to 0xe0891ff8)
+...
+irq event stamp: 18820
+hardirqs last  enabled at (18826): [<c01c7d8c>] vprintk_emit+0x364/0x390
+hardirqs last disabled at (18831): [<c01c7d48>] vprintk_emit+0x320/0x390
+softirqs last  enabled at (18598): [<c0add65c>] __alloc_skb+0x168/0x1c0
+softirqs last disabled at (18629): [<c013e038>] __irq_exit_rcu+0x144/0x1f0
+---[ end trace 0000000000000000 ]---
+WARNING: lib/refcount.c:25 at kthread_stop+0x2bc/0x364, CPU#0: kworker/0:1/10
+refcount_t: addition on 0; use-after-free.
+Modules linked in: brcmfmac hci_uart btbcm btintel bluetooth sha256 cfg80211 s5p_csis s5p_fimc s5p_mfc exynos4_is_common v4l2_fwnode v4l2_async ecdh_generic ecc s5p_jpeg videobuf2_dma_contig v4l2_mem2mem videobuf2_memops videobuf2_v4l2 videobuf2_common videodev brcmutil mc
+CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Tainted: G        W           7.0.0-rc6-next-20260402 #12549 PREEMPT 
+Tainted: [W]=WARN
+Hardware name: Samsung Exynos (Flattened Device Tree)
+Workqueue: events request_firmware_work_func
+Call trace: 
+ unwind_backtrace from show_stack+0x10/0x14
+ show_stack from dump_stack_lvl+0x68/0x88
+ dump_stack_lvl from __warn+0x94/0x204
+ __warn from warn_slowpath_fmt+0x124/0x1bc
+ warn_slowpath_fmt from kthread_stop+0x2bc/0x364
+ kthread_stop from brcmf_sdio_remove+0x2c/0x194 [brcmfmac]
+ brcmf_sdio_remove [brcmfmac] from brcmf_sdiod_remove+0x20/0xb8 [brcmfmac]
+ brcmf_sdiod_remove [brcmfmac] from brcmf_ops_sdio_remove+0x34/0x5c [brcmfmac]
+ brcmf_ops_sdio_remove [brcmfmac] from sdio_bus_remove+0x30/0x10c
+ sdio_bus_remove from device_release_driver_internal+0x190/0x204
+ device_release_driver_internal from brcmf_sdio_firmware_callback+0x50/0x944 [brcmfmac]
+ brcmf_sdio_firmware_callback [brcmfmac] from brcmf_fw_request_done+0x154/0x17c [brcmfmac]
+ brcmf_fw_request_done [brcmfmac] from request_firmware_work_func+0x50/0x98
+ request_firmware_work_func from process_one_work+0x260/0x7dc
+ process_one_work from worker_thread+0x1ac/0x3b0
+ worker_thread from kthread+0x128/0x168
+ kthread from ret_from_fork+0x14/0x28
+Exception stack(0xe0891fb0 to 0xe0891ff8)
+...
+irq event stamp: 19327
+hardirqs last  enabled at (19435): [<c01c3810>] __up_console_sem+0x50/0x60
+hardirqs last disabled at (19460): [<c01c37fc>] __up_console_sem+0x3c/0x60
+softirqs last  enabled at (19458): [<c013dc0c>] handle_softirqs+0x330/0x5b0
+softirqs last disabled at (19443): [<c013e038>] __irq_exit_rcu+0x144/0x1f0
+---[ end trace 0000000000000000 ]---
 
-You're right, "leak" is not the precise term =E2=80=94 the skbs are freed
-after iwl_trans_tx() returns -EIO. The issue is allocation churn:
-mac80211 keeps scheduling TX via wake_tx_queue, so
-iwl_mld_tx_from_txq() keeps dequeuing new frames, passing them to
-the dead firmware, getting -EIO, and freeing them =E2=80=94 in a tight loop
-for the entire duration of the firmware restart. The /proc/allocinfo
-numbers I cited (10.8 GiB / 16.5M allocations) reflect cumulative
-allocations during that window, not a persistent leak.
+Best regards
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-The practical impact is CPU waste (softirq spinning on
-alloc-send-fail-free) and slab fragmentation from millions of rapid
-kmalloc/kfree cycles, which can cause memory pressure on systems
-with limited RAM. Adding the in_hw_restart guard eliminates this
-churn entirely =E2=80=94 same as the existing guard in the RX path.
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index d34db69c25a7..e6de88a6a852 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -2477,8 +2477,9 @@ static void brcmf_sdio_bus_stop(struct device *dev)
+ 	brcmf_dbg(TRACE, "Enter\n");
+ 
+ 	if (bus->watchdog_tsk) {
++		get_task_struct(bus->watchdog_tsk);
+ 		send_sig(SIGTERM, bus->watchdog_tsk, 1);
+-		kthread_stop(bus->watchdog_tsk);
++		kthread_stop_put(bus->watchdog_tsk);
+ 		bus->watchdog_tsk = NULL;
+ 	}
+ 
+@@ -4568,8 +4569,9 @@ void brcmf_sdio_remove(struct brcmf_sdio *bus)
+ 	if (bus) {
+ 		/* Stop watchdog task */
+ 		if (bus->watchdog_tsk) {
++			get_task_struct(bus->watchdog_tsk);
+ 			send_sig(SIGTERM, bus->watchdog_tsk, 1);
+-			kthread_stop(bus->watchdog_tsk);
++			kthread_stop_put(bus->watchdog_tsk);
+ 			bus->watchdog_tsk = NULL;
+ 		}
+ 
+-- 
+2.34.1
 
-> This was fixed by
-> https://patchwork.kernel.org/project/linux-wireless/patch/
-> 20260405054145.1064152-3-cole@unwrap.rs/
-
-Thank you for pointing this out. Cole's patch fixes the TSO
-segmentation explosion when AMSDU is disabled (max_tid_amsdu_len =3D=3D 1
-causing num_subframes =3D=3D 0 =E2=86=92 32000 tiny segments). That's a
-different code path from what I observed =E2=80=94 my issue was the TX
-dequeue loop running against dead firmware during restart, which
-happens regardless of TSO/AMSDU state.
-
-That said, the TSO segmentation explosion he fixed may explain
-why the system freeze was so severe with TSO enabled =E2=80=94 both bugs
-could have been compounding. The in_hw_restart guard in my patch
-would prevent both scenarios by stopping TX entirely before we
-ever reach the TSO segmentation code.
-
-> Not sure I understand if you have a new FW or not?
-
-The ucode version string is the same: 101.6e695a70.0
-(bz-b0-fm-c0-c101.ucode). But the linux-firmware package snapshot
-changed =E2=80=94 I was on an older nixpkgs snapshot when on kernel 6.19.5
-(early March), and now I'm on linux-firmware-20260309. Since the
-version string embedded in the ucode file is the same, the firmware
-binary itself likely did not change. The NMI_INTERRUPT_UNKNOWN
-crashes stopping may just be coincidental (different uptime,
-different traffic patterns, or some other system-level change).
-
-I don't have the old linux-firmware snapshot to do a binary diff,
-so I can't say with certainty whether the firmware binary changed.
-If you have a way to check internally whether there were firmware
-fixes for Bz-series between, say, February and March 2026 releases,
-that would clarify things.
-
-Either way, the code path in iwl_mld_tx_from_txq() remains
-unguarded =E2=80=94 any firmware crash under TX load will hit the same
-alloc churn. The RX path and TXQ allocation worker both check
-in_hw_restart; the TX dequeue path should too.
-
-Thanks,
-Sheroz
 
