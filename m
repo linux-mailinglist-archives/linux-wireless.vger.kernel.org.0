@@ -1,177 +1,205 @@
-Return-Path: <linux-wireless+bounces-34876-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34877-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UD/yBQqj4GkEkgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34876-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 10:51:22 +0200
+	id YN+uGvKl4GlZkgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34877-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 11:03:46 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD12C40BD88
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 10:51:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F5940BF66
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 11:03:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75F1B300A129
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 08:48:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C41593020EBA
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 09:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623D9392C49;
-	Thu, 16 Apr 2026 08:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4446E352C2C;
+	Thu, 16 Apr 2026 09:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cfnYWIj+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bHNGJ4MA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26AD246BD5
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 08:48:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC2127E049
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 09:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776329295; cv=pass; b=lnXlNjmKwIfCXLSewAICvOerzb3kJg3CQ4eqB/dQDyBb0WL69FD30qPUsAf0wAOS2UEsCfIa4Z9BTZZ6km9ovZqiC4/V1UwNHiYUucWCu3zW6mHZ3DCECVAN2Ymf2HTHdVFfa8HxqwdS/UCSnHKaPJsubkLzACNSgsps6az6pG4=
+	t=1776330189; cv=pass; b=EplNS0jYgFgM2tjNK6+y1EI0Mua/mRTnkTTaRM54/BFFzyb1EdhTe3FwNN7o/476t+VqjDVj0mPqfwKVKeg+2x6ihLsf23bC+IlOQsIuZwCo8bE9FHL+fxga44VUa3zR0w1pLg7j4hYaY8aFXkVN0QeNBZQQsW04t39YNDj+6HU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776329295; c=relaxed/simple;
-	bh=+mD6jEvmuyOFXixUU/3LesPcGaCtkozm0ckL4G+AoSY=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=n2jdfW/CNoi8i5R00edO6DBuZQ8mWtEJ4REj/WeTgU2yVkQrpHRPu6or27QpH6ho3a2dYsB23xMw7lhVjFmu+K562OhYYBL34zdxiT35ykaGdhpmS7gc7wOMBNEkiGbFEzwuuEm+t/X15/rYGAz59oacwKWFQfx/xgk2phhNWfs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cfnYWIj+; arc=pass smtp.client-ip=209.85.215.170
+	s=arc-20240116; t=1776330189; c=relaxed/simple;
+	bh=YvvNRt8N44zcNbaa7IRqWXoi4C5QZ8FmEaaZXFM/OYw=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=G4Zo3UeSICyh+KYdfWPdwueNquyaTBPRGyIE4YWcBZZ+5RoFB93EugPvTN6CD8U8xjpzS2lTVqACZyXiXG/tIboVYqrKfmy0gdfrbsdz8HQhlzblZOIer3XmVLQxpCxY2otp0fo7Qk/TmvpH5iMyd8tuHxk3JGy0DSnLQH+O2Ts=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bHNGJ4MA; arc=pass smtp.client-ip=74.125.82.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c70e27e2b74so3097729a12.0
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 01:48:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776329292; cv=none;
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2b6b0500e06so14715410eec.1
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 02:03:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776330187; cv=none;
         d=google.com; s=arc-20240605;
-        b=Qiigdge/yjEGmqeNxgsJsdVCkqzLHeTlR4CwtX31t3l/K8IKUh1IT20DVOj8b+xRMI
-         vWlzha/GQjyi1zYw8ofYcNkl03GxoMrLCRLxEkRm8y4AmYapWSAT1CXqjB+BihQNT7Cj
-         Ln21BF4fIh4lcD6YZYqbQs2/lbkkKMVYFodPQxMDOVkuROAqJxssSQpIY01D9tsAPgvv
-         sBJH7r09tYWdOQxAQLcC8RCnRcxeZRIt8zj3jE2rNJsyaxmTT1KfQK3/4mTW7E7hSdfi
-         0UAo5H179/gXGfC8IBVhNxdRvpsgXhvdGAs2kGvnCYLP8GDM6sXdjLol95fJYQZ6a6CP
-         QuSw==
+        b=kK91ADxzEMhWivL5pdMuSU5mOw7tey3sjZ/3YhYR3bG9i+neIfoYrGnR6FrFZ6EocT
+         f7aaao6OL1ERd+Az6VoPqKmAHbw7gnxAHt1Al7dva53s7J7UJR1LtMeQxP8gvHotZbO9
+         yhK+MAFNsjbxhTcQMezZwNxawSIA6gtwxML0eWH0GD+0cI5wxX9QHG3s8lrNyrHSBoXb
+         q0Z0eehusBYYF3qU1QEb2bCssUdBHYD12phXYeGjaXuweAFALNsJ8nw8zA/sxQJXfLV+
+         mBOdJy3wIW7D4sepBFx1oUoQowayXqdWvMA/Mty3oN/cdIlvE6IVdSKNOspUGGZnCGKH
+         0AKw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=+mD6jEvmuyOFXixUU/3LesPcGaCtkozm0ckL4G+AoSY=;
-        fh=qW0phhq3fb3oiohK/Mu9j1KY1zyRNiiioKFc5anvatM=;
-        b=Ncm2vESgrs8Fk2wVFvRBc0Uu/7VOMxfecogH+r0EHBMhWikLqWVjHg1MaXr1Cbj2zs
-         e9RPUG90KgMGkqx1k/UPYDmbGuu3hv+oPRLRfQghQtZcFMtQgOAVoLPIlxqV++d6CpfN
-         P9xh+nQfKS+hjFuW1eFijQ/m5FpDp0RGFCZ/ALM5aj8bwBYBec68Pbz6Crq/7tJxgXZA
-         xom2BnaAq7x/A9b5tBYYwW6zpdDqOrlA7CQ/NSwYgnUnZqNgtBH2+j5ZsCEJK1mddrgU
-         RflJKL23bOa0wMDMJmi/7qvoonjW4sSGiMQBSowFo7Z9DoBuRS/0ET2YCrtRdGLaMtVu
-         Zrow==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:dkim-signature;
+        bh=YvvNRt8N44zcNbaa7IRqWXoi4C5QZ8FmEaaZXFM/OYw=;
+        fh=JClNaBC8dlZl8iuzEdb+Ihos+KBgK/Eb/eOBTk59qjA=;
+        b=BeFa5oe3zf3g2TyhCPw2L5H7//fGopHgLrO+Nh+IxwujRVChwq4dzyp4tq0MwLG1M6
+         pAgnpFjo8UjVMka9Xl73IFS/K7QKk0PkcsEUsUKgCy5CPYaIIQZbk21gISzQPtShce4p
+         Rf2gcRx1w3ckKPsr+JxD1/TKMXPVaVWR4M5autAA081Eh80ipxZOF2MGMH+Buxslepxc
+         GsDuVAmM51UpT+L1PdYx0s0KKQ4eqlYb50rc7yakEqRcy7cqatLSKr92ZDZm57WIalO5
+         Emxjy/zZzWr8RTe3PmtcHiLoMItt4X7GchYFvSDR4qVJYiLVG9XdBL+jHyql61FWi1+7
+         Cmbg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776329292; x=1776934092; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+mD6jEvmuyOFXixUU/3LesPcGaCtkozm0ckL4G+AoSY=;
-        b=cfnYWIj+G2qpqdfBe4a/6945Pyy6AM+eqIlL8+/fW96WkSRSbQ1kaEMQZhwWj/xt07
-         R7KQIN54Sb9W6qxHPFidzgOgYgW7sdxlrhPps1dzhneGC5lxRAsN+hzcKLIEPGAt/B8+
-         3m1Y6RZVHo8nqNmwr/lrlg6j+QBWEXW1is43w+2N/VyjmIwnwKyA52LExL5W+8cuPDZh
-         g3DAruHONK4DjwX0E9rcHn+iOuFJ6hhbdYvr/VUWj6nLsgRrlbJWcR6WBJLQcOpc0aXM
-         M8LPNdFtQBi2B2c+wWxWRgtF2kk7DTzXDe8V11ZCGvcmRJARQbS7r+kn8aYlvCfqpIiP
-         8FvQ==
+        d=gmail.com; s=20251104; t=1776330187; x=1776934987; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YvvNRt8N44zcNbaa7IRqWXoi4C5QZ8FmEaaZXFM/OYw=;
+        b=bHNGJ4MAobeVkvI8QKZfhRPNM8Md+smviMi6qf83oZnnsl91sLyuQCdvWhuynv7RI7
+         abVgG+9opD3zaei/pvjzkOmkyPOXYygy3bvWfeSnWvlgHkrgwtccxUoUM6TTImTeCf6r
+         zIh7GH5x5T6wJNzzre7sZxuEp3sga/t+seV5EG0KQWwOU4qhA3SQ15pJZHVaj84AExdn
+         lbuLFVIVg3lzuh3y/7kTv0Sypv9vbUG1RdQt9jsDRzai/l3OPONe6A4kdoWrbdoZAWng
+         p5vYTgD/76dy0Whf4wNZOZWHWCV4rWq2ZLpG8zvjQRLEeg79QPEocIjUwOusWOVUuoRp
+         uriQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776329292; x=1776934092;
-        h=to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+mD6jEvmuyOFXixUU/3LesPcGaCtkozm0ckL4G+AoSY=;
-        b=oANPKHL2h7kgZXzw262z7p18Q9uNU9PpZW7YNWnghoP/7yti3yViY240GkuwzsD75E
-         QXRz1Nd03gb2Cz4Xbcr1zJfPRSy8KYMe3MeqbLE4CB/vV4/j4X4moIz5HY3jEZBoWYiE
-         AH/UtzwdEF4jgXgCcou/ZDgXjL2FkXwj9EqxAG8WhqIy/0tFNsyGOau3lTSJwuTkoetu
-         ne41HewP7i0JQVIs5v5P3URzyKnhdV3uVA9yyy+r31tSYZ31+Bom1CEXpA271krN6b4N
-         rji//2CEIU+qJqwbaQR0DNvd8ZZxbZ7jkwZKZO871Tt5+1p5AIeWWH8ihbjbwBx5+zJs
-         UyGQ==
-X-Gm-Message-State: AOJu0Yya1NPbrEzBxaKahISiMAQjP+PKkbXsDzXE5lftpB66HauLBKJy
-	0fJZlnoyN0bg9Fy4MFsZOiyVxYzc5cb+nkbABT4abC5Hmylg/SN1Y172dS8xXNUZ0LYmFzsTVSZ
-	HoebajX0cKSo/RNha5Jgtsxasp2SeykoHxgptDRE=
-X-Gm-Gg: AeBDieskN3jxgoJayfClIjEk0jfZ6wSwGnFIeUIT+sGL5So7F5uUB+CNcjb7f9Mq+X4
-	oGZiGEP0NZJAOL1+j2eVOOPjy3CgfPLRnL+iBGllUPZf9SjXsjAi0Ffywr+pIn53ExHtttQ3tbp
-	f7vOQsV1V2bPE7/OlVuk9juCwUHL2mpm9idLPOsaRea1v4L//SSQugPG5GcHNJePS1BexPgEwSJ
-	ehn6M2+lc4GFAV4u/4IvmVkmkSfiiwYcKP2QS/z3IWZsERYd5iC7ZGCO9urZVg/cdTlZZ55/Fz9
-	C9Abqw6nDbKN7oX/l4s1ig==
-X-Received: by 2002:a05:6a20:2455:b0:39b:8dcb:f36d with SMTP id
- adf61e73a8af0-39fe3f1d72fmr26770467637.35.1776329291684; Thu, 16 Apr 2026
- 01:48:11 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776330187; x=1776934987;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YvvNRt8N44zcNbaa7IRqWXoi4C5QZ8FmEaaZXFM/OYw=;
+        b=OqVCVj0eM6mGoK+uDXFWdE6q3duqnPUmzhXSA4Z2QsADynJV5uelQZse4yMYsuL1B0
+         f5jeqfABUD8YefgFjYCYkDDXpCp7hv1exOy/+klNHH1C1Q+ess+kJMKL0hZhyvKVv4QR
+         G7eiMpayyHmZqq/Kx/ruJQnwaqV8SfGHJsEDMFDojfDO5IeNjzEVpa9I/OXNbUA4C5Tc
+         lv17bn6IM7GRTV/MJ3A7KZhUj1mVHosMm5ZZqNgmuf0Uk7IAwr/u+Ts+4U+3yZrV36Cb
+         y58B/vnxIL+kz5w+OTIEe7omPZxbmjYTpT2YOjgamR5sRSwEJU96jhFxCenJK9/6XVKK
+         WOrQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8Ax92x/yX+eA4vJTJMSAStOv0fX4BcEo49e4tHrZtSe7rA5UjhC7k272T6LL99mZK43AP2J7uAaBTcf6hxRw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwtXU/deXOYfa9QJEmR5BtSA7Zj5KL1nqSOHdbZDjwb+/uHOFm
+	DIsWqJRILEsTKVMR+iA6XiJzN5kxvECIy20kam+38hSdq79FLQU6i61ZxJoo6WUGdd3b5NGaUiE
+	SMbdAZkIuE9myBRCjGc+w368Pvj5InWwy4kf0zpdNlg==
+X-Gm-Gg: AeBDieubE+McAQ0A3zGNHSVQjTCqB+UuXBFgnhWzcMswPo74fwYn6kdd5etFFQwenfD
+	5NLDuxWx82dnLlIGrXTQbQUI5MmQ2HI/QSKVtlKFM3YFrT1Q3ltoNyqkjVgmffBZPE7XDCfc/PL
+	Y+9Y3pDHWHBuwBOX21xzQb3cVAlOfnzmg6d62BwG5lzv11KYRlrZwwhqxx2r5p5tb5Kkh7ciVXb
+	Y2EWFs8yfL3/lKHjG1gs3qryKqxR3NtaVgDdYjMxGnWiKOhWSt1177AkzXEeuLz1Ijx2gC3bb9v
+	KUrWL25Ub/RY6lP9Gm4=
+X-Received: by 2002:a05:7300:6d05:b0:2da:44ac:6d17 with SMTP id
+ 5a478bee46e88-2da44ac73d7mr8430546eec.17.1776330186461; Thu, 16 Apr 2026
+ 02:03:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Benson Bear <benson.bear@gmail.com>
-Date: Thu, 16 Apr 2026 04:47:59 -0400
-X-Gm-Features: AQROBzCzh-AHzKKvF-NtzlHZH2tuQ3QpJGt56_V6LMwx7f1AWgEZz1v8SNmzmBg
-Message-ID: <CACM6vn7QGKQcR5Rs=wmzNA-SgMDZX4Hw=UiPQHfYkWgLURcbAA@mail.gmail.com>
-Subject: Wi-Fi speeds degrade from 600Mps to 30Mps while using WPA2 security,
- but not on open network, shortly after ISP firmware upgrade.
-To: linux-wireless@vger.kernel.org
+From: Sheroz Juraev <goodmartiandev@gmail.com>
+Date: Thu, 16 Apr 2026 14:02:53 +0500
+X-Gm-Features: AQROBzCSZziCMqVSc-4LKPugtGbhRz9-Yhx2NybwpvyU40Cu7MOJ0VRdGoQO-n4
+Message-ID: <CADPJysyMn_07rb+9b3SgR3xTn+uicSoRp5FMB=oeKNbABtZ5gg@mail.gmail.com>
+Subject: RE: [PATCH wireless v2] wifi: iwlwifi: mld: stop TX during firmware restart
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	FAKE_REPLY(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34877-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_ONE(0.00)[1];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-34876-lists,linux-wireless=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN_FAIL(0.00)[10.253.234.172.asn.rspamd.com:server fail];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.c.6.3.0.1.0.0.e.4.0.c.3.0.0.6.2.asn6.rspamd.com:query timed out];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bensonbear@gmail.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[goodmartiandev@gmail.com,linux-wireless@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BD12C40BD88
+	MISSING_XM_UA(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RSPAMD_EMAILBL_FAIL(0.00)[20260405054145.1064152-3-cole.unwrap.rs:query timed out];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 26F5940BF66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi folks, I've never posted here before, don't know much about wireless, but
-am having a big problem I have been trying to solve for a week. I've been
-googling and ai chatting non-stop but finally after reading the info
-page about the
-list figured it would probably be acceptable to send this message.
+Hi Miri,
 
-BRIEFEST SUMMARY: There was a firmware update in Rogers's (Canada) XB7 Gateway,
-and subsequently my Wi-Fi transfer speeds degraded badly on all three
-Linux notebooks I have. Fully up to date notebooks, running Fedora 43 and
-42 with most recent kernel 6.19.11. Two different NICs: RTL8852BE and Intel
-7265 (rev 59). Wired machines and phones are unaffected.
+Thanks for the quick review. Let me address your points inline:
 
-The machines all connect with high transfer rates of around
-800-1000Mbs on the 5G band,
-with an 80Mhz wide channnel, and MCS level ranging from 7 to 11 (HE and VHT).
+> Why is there a leak if we freeing the SKBs after we failed?
 
-Transfer speeds using WPA2 security have dropped in the one case (RTL)
-from 600Mbps to
-about 30Mbps. (Using internet speed test but iperf3 gives similar). The other
-cases are similar.
+You're right, "leak" is not the precise term =E2=80=94 the skbs are freed
+after iwl_trans_tx() returns -EIO. The issue is allocation churn:
+mac80211 keeps scheduling TX via wake_tx_queue, so
+iwl_mld_tx_from_txq() keeps dequeuing new frames, passing them to
+the dead firmware, getting -EIO, and freeing them =E2=80=94 in a tight loop
+for the entire duration of the firmware restart. The /proc/allocinfo
+numbers I cited (10.8 GiB / 16.5M allocations) reflect cumulative
+allocations during that window, not a persistent leak.
 
-BUT the transfer using no network security is still what it used to
-be! It is simply
-the enabling of WPA2 that brings them to their knees.
+The practical impact is CPU waste (softirq spinning on
+alloc-send-fail-free) and slab fragmentation from millions of rapid
+kmalloc/kfree cycles, which can cause memory pressure on systems
+with limited RAM. Adding the in_hw_restart guard eliminates this
+churn entirely =E2=80=94 same as the existing guard in the RX path.
 
-So it seems to be a problem related to WPA2, and at a lower level in the
-stack of modules, since it happens on two different NICs?
+> This was fixed by
+> https://patchwork.kernel.org/project/linux-wireless/patch/
+> 20260405054145.1064152-3-cole@unwrap.rs/
 
-I suspected for a long time that it was a firmware bug in the gateway, but
-now I am starting to wonder. I have no solid evidence of that except that
-Windows works fine on the same gateway and the same machine.
+Thank you for pointing this out. Cole's patch fixes the TSO
+segmentation explosion when AMSDU is disabled (max_tid_amsdu_len =3D=3D 1
+causing num_subframes =3D=3D 0 =E2=86=92 32000 tiny segments). That's a
+different code path from what I observed =E2=80=94 my issue was the TX
+dequeue loop running against dead firmware during restart, which
+happens regardless of TSO/AMSDU state.
 
-All three machines work well on another network I have occasional access
-to, and have worked fine on this network until about a week ago.
+That said, the TSO segmentation explosion he fixed may explain
+why the system freeze was so severe with TSO enabled =E2=80=94 both bugs
+could have been compounding. The in_hw_restart guard in my patch
+would prevent both scenarios by stopping TX entirely before we
+ever reach the TSO segmentation code.
 
-I have ordered another router that I hope I can use to solve the
-immediate practical problem, but I would really like to figure out
-what is going on and contribute what I can to fixing it, even if only
-by being sent out to gather potentially useful data.
+> Not sure I understand if you have a new FW or not?
 
-Thank you.
+The ucode version string is the same: 101.6e695a70.0
+(bz-b0-fm-c0-c101.ucode). But the linux-firmware package snapshot
+changed =E2=80=94 I was on an older nixpkgs snapshot when on kernel 6.19.5
+(early March), and now I'm on linux-firmware-20260309. Since the
+version string embedded in the ucode file is the same, the firmware
+binary itself likely did not change. The NMI_INTERRUPT_UNKNOWN
+crashes stopping may just be coincidental (different uptime,
+different traffic patterns, or some other system-level change).
+
+I don't have the old linux-firmware snapshot to do a binary diff,
+so I can't say with certainty whether the firmware binary changed.
+If you have a way to check internally whether there were firmware
+fixes for Bz-series between, say, February and March 2026 releases,
+that would clarify things.
+
+Either way, the code path in iwl_mld_tx_from_txq() remains
+unguarded =E2=80=94 any firmware crash under TX load will hit the same
+alloc churn. The RX path and TXQ allocation worker both check
+in_hw_restart; the TX dequeue path should too.
+
+Thanks,
+Sheroz
 
