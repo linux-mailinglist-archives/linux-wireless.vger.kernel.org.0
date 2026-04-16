@@ -1,215 +1,198 @@
-Return-Path: <linux-wireless+bounces-34891-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34892-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMN4MafW4GlymgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34891-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 14:31:35 +0200
+	id 2LUYMbLY4GlymgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34892-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 14:40:18 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239B140E38F
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 14:31:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D0C40E534
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 14:40:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9BE9A30A61C3
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 12:30:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D19D3119305
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2026 12:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6043BA220;
-	Thu, 16 Apr 2026 12:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89710386428;
+	Thu, 16 Apr 2026 12:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aREs4pY9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LCjcX8+U"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A13221256C;
-	Thu, 16 Apr 2026 12:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776342653; cv=none; b=BpLC0ibD52CUIy8KbC86N76NvLCW4umShQAcsp44UP6OODHNvLoy0MFi06L6nmNEy6QenxEV0PmCTY0VyLeG9krY1YUEXPYr2ab9KgqSmCtA6FVdLulH6sklAE09duHc311isI68hsXqE4wWz6E+d497/buXWYQhyf5u2mYc8mQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776342653; c=relaxed/simple;
-	bh=0+upWZt1SQSfIz6OgmfLK1joGZgudnQ2lP+Bv+7s1DM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uY5j+eRGJwaUdgIOC2wLp7JJWLC8KQMerzLOZh5DMvxrB6t2JpmbgQo4UGJl3ZxmdQG9NKK0xe399S40n2RHiyoBpEp85ydqeSaOEqsvaCTpw1iILu6o9zQb2ZHR7YZXH1zQFt28BRMIAOSMt8WojY9cLwve3nXYQDHjoMWxcpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aREs4pY9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8D2C2BCAF;
-	Thu, 16 Apr 2026 12:30:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776342653;
-	bh=0+upWZt1SQSfIz6OgmfLK1joGZgudnQ2lP+Bv+7s1DM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aREs4pY9AFWiyPis1yCUHi655kH6F2cmateO3OS3vwiWh4XGstegazkXh9fTeJRQW
-	 F7PNlGo+5uv4JS1ghUA7GmLt/nGdKTIiz0N3eNo0k9qdgxnlZ6UVo1xvuY/jm0Jsgz
-	 6OXZlHvLM95FlzgQqthFFGhbIejPY5s4jQOos8SHiaMv+4GNWDNJ4NBjKmastJKLl9
-	 B+kLcT7cwceOa9aKNihg3CZG+65E3BtgCcBvAVf5SIS4E47zAqVB8uUKfjkayyutdK
-	 0Jj6v6r/4toyxe6BrveBQ3dEYq/LaiTL2nhXiDsBmOQK54Y4zcD7qDew9ISAzQHpha
-	 d9g1fsIICa3fA==
-Message-ID: <1fba96bd-124d-431d-8de8-78688c248600@kernel.org>
-Date: Thu, 16 Apr 2026 14:30:37 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469FE33120C
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 12:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776342897; cv=pass; b=SfsvGcZsQ0zkwNQnnfpHMrjr/s625D1vh0ASJHZ/sYIoS3nYK1dQQwgMYOYGkxINSjknjLxt8YhLMCza/3NqkDjKAOFCWRi53tIu+0Hb3J2SNx+MoQI5nbeSWZvtYPWyNNXS9NDI8r8dk3J/jdPfYNMa2XGwLiGVlL8W/6OJqW0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776342897; c=relaxed/simple;
+	bh=X4C473nxsJsSh7dOp2a/Yj9++Ii1sJAJ2NXg4F2E5LI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FUCeawR0KIyBcPRc0B4hoyNHCISUYkRxjdnlw/S20QAaxeewF3CTVCakPGWWV3D5w2cMSggixnNwJB3sSgInToVdfEZNXTvtQMO8lhr0GpVVE6ACBRCy7tVev/myN0ofCRA0lYRV77YTpPnmNL7VL1w56SoDR13YfAi6537SOr0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LCjcX8+U; arc=pass smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35fc2b18363so4044732a91.0
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Apr 2026 05:34:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776342896; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lCnVdZ53oaewsq2wR8sKT0TAy7NViMmHFXHfy8nyjYRAZjAUvjaj8XtPyjG11m6ASm
+         ALMOMmkkuYuCfXjF73YT4JExAn0Qr5+ybtOMdYuRPevawUpzgUxDBmkNUGFQUTbUOYuP
+         YDp4AZsbnvm81gmyDRweSncjWvsiNFwDQWi2/tVeAXS/oFJKgDSRwsUcTBSuABQTD+v+
+         rU3NObS2iWpTxKe9hBo4y7rxWNePozZ5mUIxL7QzAWdI37uZvn7RvIPzs0WpTg7MBA+L
+         YNw+8yh0MAlm7w+csYsM6YxbTbotJAeqg75og3cmK+rIyTIjpsAzGiJvf6PPG6IIKD3O
+         e7eA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AKbgfl8cjDFtHLlUHMnIlnW2bJEa8KFVIoLVQkyKF8U=;
+        fh=C6LApgc9NK0pnnt83W+yqOoTu97u7h9piqaZtLW1yPE=;
+        b=cnZPkIx86qTS9QJDpt33Vgj8erx3BPO5H5H4RHscahLFp8lAkqdpzu1bQKMZY0U/Wd
+         0aSoLf5KJjoclIO2K2nBmz0zUnTW6jy4QjOdvJ8Hy8eKoLlTgmdancEFcv11sRo7R9Nv
+         kMaqn3mhwYU7ZsVkN9lPKtXJoqGl1Vns0oUajKfKdWsKnE2IqolDvlmNCfMYSbFDjGkt
+         fYFi+V23Uoo2ZO+6nkx86FcI52nou1YhLFHAmPj3dS0sAmLlpQRmM92yQ2DSdkuSu8aG
+         +PYP7seM5zgCrdsw2k7/61aaCOuW4A3CrIFArBJWLURoV8kRYInuFF1QaB/aKXkHfYOG
+         EEJQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776342895; x=1776947695; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AKbgfl8cjDFtHLlUHMnIlnW2bJEa8KFVIoLVQkyKF8U=;
+        b=LCjcX8+Uxk5yl15AnuvLmOebKPCVEZQCcpA6gMH9A7ZXYiGLIYi8z9ZPRrXnBLnnI5
+         qlsTlzEX31L7FeTTcW8TbfBZV7QlZZ2KPPoHi3DdbZsTgCMoe0yAj/inxQxFDbG767ir
+         gdVsRjySLnkfkKtMx0ZJ9ejVnj7VHWQvCu/ixLNqO7qs3Ejtg8S0f6rPA91VvMayXfRN
+         CDC1RZMhB5m1VoeaHDl+Hc+9Pntl2zWqH7pVxCE6/PdLGHVX18SUdc6Ge7a3PvhNWmTb
+         waM+FihIym55Y07bAxlAf9sd2ByDS1Sdg75OG1w47SgLaJza5LWEypCk3Ft+UXOFIiS+
+         yWiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776342895; x=1776947695;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AKbgfl8cjDFtHLlUHMnIlnW2bJEa8KFVIoLVQkyKF8U=;
+        b=UrFwAYnoZeqQq7WPvdrrr8/7e/A1kywGcjc3iy0i5/hO59ancAlT0WwjkNfnHHPjMy
+         hkkx5b1cGTSXEXk/CinG/WETPJDp1yYAamESuWGfsQhbd8lTnq/My5+lk+t5N7EHNPEI
+         LfmyAH2Hzz3zzJP/Y/oGAU2riyQgIGpRVx/fy2ngsCRl+VHOrjYDafnteMefIiSQpbuV
+         Y6RtN/N4NYsBqax43hMu/JRKNC4IDFtFrDL9MAQI4hqbhWqfbiexUoXUtra9e7VgnwNU
+         maRss2fNjPPEPLTullEubhQbLLgZiFFENYWAIUnE1HMYUoyoXVLEGYeQdex0nGSSo2qg
+         xW8Q==
+X-Gm-Message-State: AOJu0YymgU0nbLecv8RMRwuQ03hZUcMfEKoxnMFWEUyjEWDec+K1esbg
+	o/oApcPDy86p4OokYHElibSNbj0iFkDrNXlic+UbVKaxvvSb7bFwljWPDQQXPmkGvdb8nSGgODf
+	cc45Y4WXDE4JUCmzFNoDFd11gv8bQLPcIfgQS
+X-Gm-Gg: AeBDiesflCOYLw3EiwbSS9CHiAYOmwNF9luC5irGqEavz8ro6v67klS2VpRyay/onxh
+	79WoIstKE/LaaJ9a6R+VGKCU0B4aJUuatJhd6DhIhivXTXEX9zJfWzqN+s0tHEjk2X9WbnA4bkk
+	RWa3ykJ0zyDLi5ERM+XqlJEvML9tGGdAZVWwcDlIXvoOivqd7B0zS71uWe1xrPtfxKzwdQpds59
+	x/fY2ZfEXTgJ0nWkvgIcJVQdctLSqclkCPSBUIosxKqIEyPPhv7GNfdf9Nx0RnwACcLl0etlNzP
+	Mc1Bpz9Oi6nPJbJmO2zQog==
+X-Received: by 2002:a17:90b:3d86:b0:35c:30a8:319 with SMTP id
+ 98e67ed59e1d1-35e423f41c8mr27076015a91.0.1776342895485; Thu, 16 Apr 2026
+ 05:34:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/61] Coccinelle: Prefer IS_ERR_OR_NULL over manual NULL
- check
-To: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
- apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org,
- cocci@inria.fr, dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
- gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
- intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
- kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
- linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
- linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
- linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
- sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
-Cc: Julia Lawall <Julia.Lawall@inria.fr>,
- Nicolas Palix <nicolas.palix@imag.fr>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <20260310-b4-is_err_or_null-v1-1-bd63b656022d@avm.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260310-b4-is_err_or_null-v1-1-bd63b656022d@avm.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+References: <CACM6vn7QGKQcR5Rs=wmzNA-SgMDZX4Hw=UiPQHfYkWgLURcbAA@mail.gmail.com>
+ <b1a7678d-8e87-444e-b38a-bb7aedcd4f30@eskapa.be> <CACM6vn6UXfSXw2WpYvzF+ODPGHw-LtsBMgtvc6n7s9iF9eaS6Q@mail.gmail.com>
+ <beee4be9-2bfc-4c38-ad1b-13ecc7d90aa3@eskapa.be>
+In-Reply-To: <beee4be9-2bfc-4c38-ad1b-13ecc7d90aa3@eskapa.be>
+From: Benson Bear <benson.bear@gmail.com>
+Date: Thu, 16 Apr 2026 08:34:43 -0400
+X-Gm-Features: AQROBzD5gawCQhqONXB1JPHx60y1h1FToFnQSpXQNYAlyoPqsECgF9QjdguiWI8
+Message-ID: <CACM6vn7Dau9cX4tUCVQZmEpRmd7JiNtALUfR_fFARMbR_VZ_7A@mail.gmail.com>
+Subject: Re: Wi-Fi speeds degrade from 600Mps to 30Mps while using WPA2
+ security, but not on open network, shortly after ISP firmware upgrade.
+To: Pablo MARTIN-GOMEZ <pablomg@eskapa.be>
+Cc: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-34891-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34892-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[56];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bensonbear@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imag.fr:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,avm.de:email,inria.fr:email]
-X-Rspamd-Queue-Id: 239B140E38F
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,eskapa.be:email]
+X-Rspamd-Queue-Id: 07D0C40E534
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 10/03/2026 12:48, Philipp Hahn wrote:
-> Find and convert uses of IS_ERR() plus NULL check to IS_ERR_OR_NULL().
-> 
-> There are several cases where `!ptr && WARN_ON[_ONCE](IS_ERR(ptr))` is
-> used:
-> - arch/x86/kernel/callthunks.c:215 WARN_ON_ONCE
-> - drivers/clk/clk.c:4561 WARN_ON_ONCE
-> - drivers/interconnect/core.c:793 WARN_ON
-> - drivers/reset/core.c:718 WARN_ON
-> The change is not 100% semantical equivalent as the warning will now
-> also happen when the pointer is NULL.
-> 
-> To: Julia Lawall <Julia.Lawall@inria.fr>
-> To: Nicolas Palix <nicolas.palix@imag.fr>
-> Cc: cocci@inria.fr
-> Cc: linux-kernel@vger.kernel.org
-> 
-> ---
-> drivers/clocksource/mips-gic-timer.c:283 looks suspicious: ret != clk,
-> but Daniel Lezcano verified it as cottect.
-> 
-> There are some cases where the checks are part of a larger expression:
-> - mm/kmemleak.c:1095
-> - mm/kmemleak.c:1155
-> - mm/kmemleak.c:1173
-> - mm/kmemleak.c:1290
-> - mm/kmemleak.c:1328
-> - mm/kmemleak.c:1241
-> - mm/kmemleak.c:1310
-> - mm/kmemleak.c:1258
-> - net/netlink/af_netlink.c:2670
-> Thanks to Julia Lawall for the help to also handle them.
-> 
-> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-> ---
->  scripts/coccinelle/api/is_err_or_null.cocci | 125 ++++++++++++++++++++++++++++
->  1 file changed, 125 insertions(+)
-> 
+On Thu, Apr 16, 2026 at 7:47=E2=80=AFAM Pablo MARTIN-GOMEZ <pablomg@eskapa.=
+be> wrote:
 
-Neither this, nor try from 2011, nor any future try should be accepted,
-because it creates impression IS_ERR_OR_NULL is somehow okay. No, it is
-not okay, it is a discouraged pattern leading to less readable and
-maintainable code. We should not have therefore any tools suggesting
-usage of IS_ERR_OR_NULL, because people will be converting poor code
-into that, instead of fixing that poor code.
 
-Best regards,
-Krzysztof
+> Given that your client does not have the MFP flag and you can connect
+> without PMF, that means that your AP advertise MFP Capable (and so is
+> your client when it is not disabled), and following the association +
+> 4-way handshake, the AP believes it has correctly negotiated MFP but not
+> your client, so the AP is sending the client encrypted action framed
+> that are dropped by the client and the client is sending non-encrypted
+> action frames that are refused by the AP. The easiest way to debug this
+> would be to capture over the air the auth + assoc + 4-way handshake +
+> action frame and provide the SSID + the PSK to be able to decrypt
+> everything and understand who is in the wrong. If it's an issue on the
+> client side, it is most probably an issue in wpa_supplicant and not in
+> the kernel.
+
+Thanks again.  Sadly it looks like linux (the wpa_supplicant) is
+in the wrong here, just reasoning about it.   I assume the AP
+always offers the option.   It doesn't get a rejection before it
+even makes an offer.   So that means when it offered it when
+PMF was not disabled in the client, the client must have
+accepted the offer.   Because we know in the other case,
+when PMF *is* disabled, that it works fine, which must mean
+the AP received correctly a rejection of the offer.  So had
+the client sent a rejection in the first case, like it did in the
+second, there is no reason the AP would not have accepted
+that rejection.  So the client must have sent an acceptance.
+
+Not iron clad, because maybe the AP is just plain crazy.
+
+But it seems that this craziness would be hard to accomplish,
+since there is nothing to distinguish the two cases from its
+point of view if the client correctly rejects in both of them.
+
+Unless you can say that, contrary to my initial assumption,
+the client makes the rejection even before the offer is made.
+
+I was hoping I could go back to Rogers and tell them their
+AP is buggy on this point, but it looks like perhaps not.
+
+Unless you see some other flaw in the reasoning.  If you
+don't, I will take the issue over to the wpa_supplicant people,
+if you think that is a good idea.
+
+It does seem weird, though, that the client here would
+send an acceptance and then not carry through with it!
+
+(Since my own problem is solved I might lose interest, and
+not be able to carry out the over the air examination,
+something like this I have never done... but still we should
+get it resolved somehow)
 
