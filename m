@@ -1,168 +1,234 @@
-Return-Path: <linux-wireless+bounces-34953-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34954-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GIl0CMl64mnh6AAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34953-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2026 20:24:09 +0200
+	id EIJqEmOH4mkU7AAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34954-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2026 21:17:55 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A043041DF42
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2026 20:24:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B53DC41E2CA
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2026 21:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 830DC300F9CA
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2026 18:23:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D81A33068EF3
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2026 19:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AC635F195;
-	Fri, 17 Apr 2026 18:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135CE3AF67C;
+	Fri, 17 Apr 2026 19:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NeubjtwS"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="S6VPRlD6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f225.google.com (mail-qt1-f225.google.com [209.85.160.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FC834EF03;
-	Fri, 17 Apr 2026 18:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE24836492A
+	for <linux-wireless@vger.kernel.org>; Fri, 17 Apr 2026 19:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776450199; cv=none; b=cSQ+uSSgfrMkuLQXXhRGEkOYGztxcvvJRpcgprgH7/Rseo+eso7ZwIHEoQl8U80bfH45Jttr8v+5bmsbcTqpDx/mfabaEWkyCJMCgfAPewWu4UGWBuf9OfY95h0h/tEN1gkKAvETi2oZ2XMxRr4bDBpYjMSRAQ2una9Jg1KAo/s=
+	t=1776453351; cv=none; b=Ssxthj94pMYqzneVvj3MIaGtIbADlYehcSCgfR3NBKB87sNJoeLs+632RrsX042Vj4hANSN/PMiIjZ9qIF0kkZcYccDWb7oSGBe+sWPv2zJDThnUDf/gbRAhPvKu5DJ5D0vjWVyzBmhYtReTJCZekWs0iyYyKncLQTQrjvuXKos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776450199; c=relaxed/simple;
-	bh=MVZDuYa3KkkMxVmkRpVZdc6FtKg37CpLVbjbacBMFao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J1MJ3HhuTvdkAbNv7ZI/kipTT1FfplIVv4RzauNyN6iw5uYH4lhgGVLtuy032NM26xvLbdGajRFmNdhn6RjWu4E5XYmdJmoP0po3NlY5FgMo12kzrH0BTSz1m5sqf6eC7Zqx2R2M7Nw/DC6AnXKnWiD/h+px4w1fS7O0wgJ5ayI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NeubjtwS; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776450195; x=1807986195;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MVZDuYa3KkkMxVmkRpVZdc6FtKg37CpLVbjbacBMFao=;
-  b=NeubjtwSfX5NFzM5S0VuP+IB+WtqYINGGpUeBI5jq86vUYqzUDLIOAkl
-   bzXnk2TjtSm4zLUdbqly+BbrfVj3fknpKDVA/vMY+WT8ijaEHTLb/G4zD
-   HKfwID/Q38f5mnEDj9J40Q4hTfsepd18yRBoKNyXR+QO2E4dyFRaouYDM
-   cHViCaTRT56ZzzGuhBukF2htuUghTwsb0YlrbkSR51JNth0j+ZjAXvwtw
-   /rrUA3gpTAhukFXTHtG/ZBCAeJ021C3tiOu1mZt70/urJS1lZ8ES0/vyM
-   0+Fx+QMnpb6lmLxLSVzfVgBhOPo5TYG6HucntFByp3lzmCwLCPs1+00hs
-   A==;
-X-CSE-ConnectionGUID: s7pY2z+iQyOkqaS6oiknvg==
-X-CSE-MsgGUID: N+H6dAjNRyK6N7NKNmpODA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="102931943"
-X-IronPort-AV: E=Sophos;i="6.23,184,1770624000"; 
-   d="scan'208";a="102931943"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2026 11:23:13 -0700
-X-CSE-ConnectionGUID: 0seW7lPKRH6LPo/atTzGbg==
-X-CSE-MsgGUID: kWw5IYGsRSyZql6XwHmZ+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,184,1770624000"; 
-   d="scan'208";a="231376986"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.78])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2026 11:23:03 -0700
-Date: Fri, 17 Apr 2026 21:23:02 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Hans de Goede <hansg@kernel.org>, Linus Walleij <linusw@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Salah Triki <salah.triki@gmail.com>,
-	Achim Gratz <Achim.Gratz@stromeko.de>,
-	Ben Collins <bcollins@watter.com>, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH 0/9] bitfield: add FIELD_GET_SIGNED()
-Message-ID: <aeJ6hnZSbo2DrLpi@ashevche-desk.local>
-References: <20260417173621.368914-1-ynorov@nvidia.com>
+	s=arc-20240116; t=1776453351; c=relaxed/simple;
+	bh=onBollFxU9gWCj1/4DHA9aCn9z/xNPjGiw84XhEE+uw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UNyrAY6uBrvw6LqCwX1E/NpTlnOXNwHbdkUrahc83KIYtxuxxY6D5hscTfPrVZj4qJ4ygA5QTPZQUwPROYQ7n/HyC9YcTozD6OgP02w+iwF6IsSyGc625lJRt1gFqlhktD18DF+FXwdgZCarymjxMmADiN6slmpN+9dzs6fivRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=S6VPRlD6; arc=none smtp.client-ip=209.85.160.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qt1-f225.google.com with SMTP id d75a77b69052e-506a6cf8242so8268851cf.1
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Apr 2026 12:15:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776453349; x=1777058149;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ayc3jEms9UC869Y7shBNJreWQPohHdmWhf2wEENgffM=;
+        b=NPQSX4lFQWgNoCVQpHAgtwlVjAARTNFyRk7fv/jfg8jS1kNNUcePt/GdDcYFyy66cQ
+         wZX/rCLsCsQX7zu/F4KC6FGT2ZUpSsDcqSBhNgGwqYSNCCIlwsIyuR+3l1+IrWILcBtc
+         xExKH7L6LGby0dKEZHmi2+kA/Uf1mw9PkWOjLf0Gq0RrsqscYx0gU7SdpCXsoejVuiLT
+         djIRB10sF07BE0k40f+gd9U1OVCO1JIoclW176/jwMiIETD/YDXgHekgklrNhXFT6Oie
+         wI7zwUeA4RObDTHj/CTzthIija92/UahIAQi4VoQzLqxLIWMA5v0fMzPOL3AuwjAF+jt
+         eqiQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8aI71/jZz2PGhSVmKxG7DDp3sq3znjpT9QeWeD2P3L3dZj1A8N5lCSdxszTnZCO7nrjo7qhKaSaqoxJb6HLA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXTCUww+DqhPAc36akyBBMzDt7cnMx/YaoWzZQ2MaZnLSTNk+4
+	HdRS0B58KsPvDAkhFMWUi4VFMXQd1CtL7d7QSY9cAYd8XH+rJ5b4oU9FDfRhnooNzpHyGVCfkZX
+	UQ8gHfh2hOvqy+01RejYqciPt5mBkeqpXidUP4oKj6YJFU/ISUwGZB+fuhiHcrDhC2TXoKbG19P
+	vyW4KMJEM3sDIweqkHXtGalG+c5fOeHpR2riHaogQdJ/fZW908ayTjwZOrAe3LW3ZCT2G+sfKAj
+	AlMGfRwOgUWiq7V6LAM2Mi0lfLN
+X-Gm-Gg: AeBDieuJloyzrUTrLfSaLRqcHnyds6TuIXE/+oNC7Kd1QLhplWH8pqlL1scicYTdYe/
+	ilA00spnxFrjkgQn/k4i/nejQyJ4xyafY+L+MA2vyVaHlz0QsjCeK2HKUVjcO0Z0/C9E76lK2mf
+	QGci7Rb1XzR0GPsfxUMwq+rg3ic2zVIhxSI0hzoWOk0uKPoe8hZWkWphH4z9Apso2YxHkxu/nzX
+	qhe7+CjFuYzUjSzzdSRhSp2vE2tOLDj1nMahrRKUrbu76pqA/c+soPyitr8MdlIjdm7Gm51s7nE
+	JL1zLCawUemluT7uiYAmFa59fPg3ZW2WFROIXZFUpL9UBzvFxilP/E2E9HK+M8Vww1nLiOhd4fO
+	HKLnXILQyxS33NT+UGo6VFWSGjJzfcXeAWCBt6SNmb1ZDuvAeE5jKeSiH0+kF15ELLXgZHrPlM+
+	118EttDIRXWWfm+eVDXbA81NDM8gbQCgRQ6/QLq8i14MCvkL03/C+I0FIqGD7UHxQzFDuau3g=
+X-Received: by 2002:a05:622a:4d06:b0:50d:c25d:517a with SMTP id d75a77b69052e-50e36821829mr66359711cf.11.1776453348617;
+        Fri, 17 Apr 2026 12:15:48 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-24.dlp.protect.broadcom.com. [144.49.247.24])
+        by smtp-relay.gmail.com with ESMTPS id d75a77b69052e-50e39407d71sm1816871cf.13.2026.04.17.12.15.47
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 17 Apr 2026 12:15:48 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8a16036c90eso25168566d6.2
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Apr 2026 12:15:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1776453347; x=1777058147; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ayc3jEms9UC869Y7shBNJreWQPohHdmWhf2wEENgffM=;
+        b=S6VPRlD6grzJcPSLC3MyHBUL+g21sc1nDcmMwKF2Fb5ZU4asU87c07wc8zvHp/xFdF
+         4QhfThpzzYVenp/XczKJUaWPqZManc5HjjzF5dFGimCKOXFJI9R9KthXR4qgVH7A06Hu
+         v3NY5TY81sz5tyb+Q4YcUH+s+8JdB/h2+nEHI=
+X-Forwarded-Encrypted: i=1; AFNElJ/+g4YkW3QwnruXzK2hYR4DxcxvTe/ySPCSnBajhmdB0cVb4WdpSBrhkPCRy+ouUzmgVvXXAChWiVvc9alGDw==@vger.kernel.org
+X-Received: by 2002:a05:6214:21e6:b0:89c:4ea7:a70f with SMTP id 6a1803df08f44-8b028047ac8mr68671786d6.14.1776453346492;
+        Fri, 17 Apr 2026 12:15:46 -0700 (PDT)
+X-Received: by 2002:a05:6214:21e6:b0:89c:4ea7:a70f with SMTP id 6a1803df08f44-8b028047ac8mr68670746d6.14.1776453345482;
+        Fri, 17 Apr 2026 12:15:45 -0700 (PDT)
+Received: from [192.168.178.26] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac77546sm16682886d6.17.2026.04.17.12.15.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Apr 2026 12:15:44 -0700 (PDT)
+Message-ID: <a612564e-7338-430a-b7d8-8276adb45b05@broadcom.com>
+Date: Fri, 17 Apr 2026 21:15:42 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260417173621.368914-1-ynorov@nvidia.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next] wifi: brcm80211: change current_bss to a
+ FAM
+To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
+Cc: "open list:BROADCOM BRCM80211 IEEE802.11 WIRELESS DRIVERS"
+ <brcm80211@lists.linux.dev>,
+ "open list:BROADCOM BRCM80211 IEEE802.11 WIRELESS DRIVERS"
+ <brcm80211-dev-list.pdl@broadcom.com>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20260331233238.23527-1-rosenp@gmail.com>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <20260331233238.23527-1-rosenp@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,infradead.org,baylibre.com,analog.com,realtek.com,gmail.com,lunn.ch,davemloft.net,google.com,bootlin.com,rasmusvillemoes.dk,stromeko.de,watter.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-34953-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34954-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[34];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[broadcom.com:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:dkim,broadcom.com:mid];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ashevche-desk.local:mid,intel.com:dkim]
-X-Rspamd-Queue-Id: A043041DF42
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: B53DC41E2CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 17, 2026 at 01:36:11PM -0400, Yury Norov wrote:
-> The bitfields are designed in assumption that fields contain unsigned
-> integer values, thus extracting the values from the field implies
-> zero-extending.
+On 01/04/2026 01:32, Rosen Penev wrote:
+> Change to a single allocation with kzalloc_flex and remove some
+> boilerplate.
 > 
-> Some drivers need to sign-extend their fields, and currently do it like:
+> Done as a FAM instead of value to keep -> usage in codebase.
+
+I get it and it looks a bit like a trick, but....
+
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>   .../broadcom/brcm80211/brcmsmac/main.c        | 32 ++-----------------
+>   .../broadcom/brcm80211/brcmsmac/main.h        |  2 +-
+>   2 files changed, 3 insertions(+), 31 deletions(-)
 > 
-> 	dc_re += sign_extend32(FIELD_GET(0xfff000, tmp), 11);
-> 	dc_im += sign_extend32(FIELD_GET(0xfff, tmp), 11);
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+> index c7eaf160e1fa..4f57d64b1dd3 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+> @@ -418,21 +418,12 @@ static int brcms_chspec_bw(u16 chanspec)
+>   	return BRCMS_10_MHZ;
+>   }
 > 
-> It's error-prone because it relies on user to provide the correct
-> index of the most significant bit.
+> -static void brcms_c_bsscfg_mfree(struct brcms_bss_cfg *cfg)
+> -{
+> -	if (cfg == NULL)
+> -		return;
+> -
+> -	kfree(cfg->current_bss);
+> -	kfree(cfg);
+> -}
+> -
+
+... it does clearly give some code reduction.
+
+>   static void brcms_c_detach_mfree(struct brcms_c_info *wlc)
+>   {
+>   	if (wlc == NULL)
+>   		return;
 > 
-> This series adds a signed version of FIELD_GET(), which is the more
-> convenient and compiles (on x86_64) to just a couple instructions:
-> shl and sar.
+> -	brcms_c_bsscfg_mfree(wlc->bsscfg);
+> +	kfree(wlc->bsscfg);
+>   	kfree(wlc->pub);
+>   	kfree(wlc->modulecb);
+>   	kfree(wlc->default_bss);
+
+[...]
+
+> @@ -527,7 +499,7 @@ brcms_c_attach_malloc(uint unit, uint *err, uint devid)
+>   		goto fail;
+>   	}
 > 
-> Patch #1 adds FIELD_GET_SIGNED(), and the rest of the series applies it
-> tree-wide.
+> -	wlc->bsscfg = brcms_c_bsscfg_malloc(unit);
+> +	wlc->bsscfg = kzalloc_flex(*wlc->bsscfg, current_bss, 1, GFP_ATOMIC);
+>   	if (wlc->bsscfg == NULL) {
+>   		*err = 1011;
+>   		goto fail;
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.h
+> index b7ca0d9891c4..e9cbb95a5a17 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.h
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.h
+> @@ -614,7 +614,7 @@ struct brcms_bss_cfg {
+>   	u8 SSID_len;
+>   	u8 SSID[IEEE80211_MAX_SSID_LEN];
+>   	u8 BSSID[ETH_ALEN];
+> -	struct brcms_bss_info *current_bss;
+> +	struct brcms_bss_info current_bss[];
 
-Here the example is missing.
+It does feel icky to use a flex array for 1:1 object relation. It seems 
+the lifetime of both objects is exactly the same so I would consider 
+using the value instead of FAM. It would give the same code reduction, 
+but making the patch slightly larger.
 
-Nevertheless, I looked at the implementation a bit and wondering how would it
-work for 64-bit mask of say GENMASK_ULL(63, 60)? Wouldn't it give an overflow?
+main.c:	kfree(cfg->current_bss);
+main.c:	cfg->current_bss = kzalloc_obj(*cfg->current_bss, GFP_ATOMIC);
+main.c:	if (cfg->current_bss == NULL)
+main.c:			wlc->bsscfg->current_bss->chanspec = chanspec;
+main.c:		rs = &wlc->bsscfg->current_bss->rateset;
+main.c:			mcsset_bss = wlc->bsscfg->current_bss;
+main.c:		bi = wlc->bsscfg->current_bss->beacon_period << 10;
 
--- 
-With Best Regards,
-Andy Shevchenko
+So it is used in just 4 places not counting the first 3 hits for obvious 
+reasons. Not too much effort to use value here so please do that.
 
-
+Regards,
+Arend
 
