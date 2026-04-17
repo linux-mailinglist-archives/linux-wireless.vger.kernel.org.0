@@ -1,187 +1,246 @@
-Return-Path: <linux-wireless+bounces-34941-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34942-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIMqEkZq4mnk5gAAu9opvQ
-	(envelope-from <linux-wireless+bounces-34941-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2026 19:13:42 +0200
+	id CNAxHrdv4mnR5wAAu9opvQ
+	(envelope-from <linux-wireless+bounces-34942-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2026 19:36:55 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFF641D70D
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2026 19:13:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 077AF41D8B2
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2026 19:36:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 80EA3304A859
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2026 17:13:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1BC81301952D
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2026 17:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01978362153;
-	Fri, 17 Apr 2026 17:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72F03A4509;
+	Fri, 17 Apr 2026 17:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DfHrE6If"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rt/gaYxo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010038.outbound.protection.outlook.com [52.101.201.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DC0314D2D
-	for <linux-wireless@vger.kernel.org>; Fri, 17 Apr 2026 17:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776446017; cv=none; b=daYUZdNp73FmKdnIGRJ6f9ReWVucXAaEKM3hkzewyruqKTCxjnGhMOJ+n3NMvxitAtVec9UYvYwefiach3YdYW+BFi8t9ptNq3nQK4CB13fcZNcD5+BO6awuiW+GBGeSoClLZw1Wh32iUryxMHAAP+FHUpyQrF9u44v9viv6GI4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776446017; c=relaxed/simple;
-	bh=vOvv9PfdqrOQuktgiL2NNsrDaO6BtKVa3gPY5DNRhaA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PPNy9Ht+/lOKYao/3Y4UiFlnqUBBVN4A8wkb+C4wcO8PE9FQ5cE2pPIkzCM0QB394nYs1ZXPxahZcFhjJXfJ9HgLZq1rBP/6yxRsHF9BqNXEIrEy7foRNVBXENxNTQrx5LXnA/NgatGTlWCFFXd+Q+yv5otY3Z8LO+0G3nLhqMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DfHrE6If; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c648bc907ebso606201a12.3
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Apr 2026 10:13:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776446015; x=1777050815; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CcKPgwgP5uli3YETM/bYR++ZHOWnDPNKI/Lr/gqeGHY=;
-        b=DfHrE6IfJQv8qP6yoNPqZMuMGpYqh7bgaomrJYcG8BY4oLwy4Sa5H2p6duvLZ4mq3I
-         X0SgSnfsyg3pEgeYs3GU/HPpbwshdzD9M5tUxiFI1STJonmBj70wxUspnw4ODyFds2zG
-         gFzSf0aQVKPpOX8zfGsUz86AsronoXNXI+139XdtcFNd0KqwTekBP2HNJvHx/DCdnBKU
-         LUZA6pPWYaESChhYLRz4EVep1BUBeyt7vTy5cRNjH6/moDu6RMk11RB0hgdm/1KdMoET
-         5XIu2vz4TFU+kVsKQSMnWLWAJVOm3OyCpTIq7XHMPE1sJeDg4UXHLxKSGav3Qlyxm7HQ
-         hkYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776446015; x=1777050815;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CcKPgwgP5uli3YETM/bYR++ZHOWnDPNKI/Lr/gqeGHY=;
-        b=CPlYM+42YHKN050xjFw2Q8Wn+a/igNDsHT++0BY5FrfgAp1thgWvQ1VbAkB41bYyMh
-         y5xdMiQEoQnph9mr5UIKcaBZcmWowP6VRvhfkbBPV3L6So4+14iy/5S0Y+clmQythriT
-         iwDnCQZOa/0SREonfrXHvOJa/40pTBT7rWToazyKgbok3OGMzEDGln3Ix/dQ70Jw3VuK
-         5nMJJqgShj6ZuWDgnbS+lFDfLypUWASflkjqZMTe35gdo1Cs3wqIfmtXPl2CXft/fmPL
-         5xYPICiD38wNDSr/jR3gosyYzfSn4xm3AEzc5XLhxXVrmQ6O9J9leslCBRoqLQb7CsVI
-         xJww==
-X-Forwarded-Encrypted: i=1; AFNElJ+8vE74Xu2Y7nwYZZ1P21fYW4UhFmaohqCOb0mujVGDlgXrpWRZ6wdVLvsa6lLdt9REob64wqeZpUetjajBTA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywe6/nkM66MKlA6swOlHFVUCqIEfZescFA0OYAsXk8JKdcYX0NT
-	FsB4RWwCjPHmsLWdB/2eisE8BRa9HKojHx7z2j6sNq8G4VwgAPDOyw8w
-X-Gm-Gg: AeBDievlQGZa2BOyWFJSeAfWFDj9QhmkJfFxNdpmguxo0tqwfQ/SZjGmbPYe9owCsjM
-	9FhtvbevsHMVPC+syWeoz4d9cR/66cJC+2RlYRH7Wk7TIm5vt+d/9V0y5JrcDzxU6X+itHr+z+A
-	Sk97iILVIM22B+/jAMTFlWZ1iZq7SAvJz+F77yJ9CCbkPmP7tAa6GQYvx2Z3b68092o/P2K5iKs
-	uiU25cy/CkbBSzBlUzKrp02yG8KYa3o+AOu8ClZI1ct4zl85gI8h8aGFgvzCrI9I8ZTLE/acbgF
-	SL66sgRuuB1srD4XlFWOvx+qTR7m3Bt28Ol5+NN2Kdwhy+j0cnVyzXjj4Gnd9KtFeSz1y9i1IUR
-	NuiTCOaYmCVfBMBgDEthHmbVXaWfG+WX0fY7ZaxIHoCplY4mBONRifsGaIw2g/k8/DY+ZVEMLO/
-	faCDHQRZUE/7LUxkCZeXVoF3ZdxkHtTHwVV9p7BQdzfoqMxnp9OAsKqNlkZZE=
-X-Received: by 2002:a05:6a20:94cb:b0:39f:8aaa:face with SMTP id adf61e73a8af0-3a08d67bd3bmr4468629637.1.1776446014891;
-        Fri, 17 Apr 2026 10:13:34 -0700 (PDT)
-Received: from localhost.localdomain ([240c:c001:1:2e07:6c0d:c29d:b7e1:3688])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e981829sm3199862b3a.12.2026.04.17.10.13.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 10:13:34 -0700 (PDT)
-From: Wxm-233 <lty2wxm@gmail.com>
-X-Google-Original-From: Wxm-233 <2200013188@stu.pku.edu.cn>
-To: johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	brauner@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [BUG] mac80211: lockdep warning from key debugfs creation
-Date: Sat, 18 Apr 2026 01:12:53 +0800
-Message-ID: <20260417171253.662-1-2200013188@stu.pku.edu.cn>
-X-Mailer: git-send-email 2.45.2.windows.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F19B3815ED;
+	Fri, 17 Apr 2026 17:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.38
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776447393; cv=fail; b=Hl7bWopHclBn01owgjL1XLkGUBOjANLjJ8WGjnR8xba5xlINsUn+qEKz6Z7K7vfvGSUlQcmMFMEY+z+waFCDo++16Fg73UBaDBd8KsRnu9phTPA7aLFVNqJLK9x2hJvwGfi0JZ8UagMe8EP0VrdM5dae+IAEMXLrKeZpmaqD3sQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776447393; c=relaxed/simple;
+	bh=SqHfJhDGD1WqXDMlPR1xSHpj7qrf2TN9nD2mh1N6B7I=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=aGBH2YQR13RmHWNxsfK1xN39dJe/StPzWEFt1E1y/opjulHgMi2P0njUgml0w13SeQBGR2EmtR7kZ9CHwJ04bZvzpA6Sy1CQjHJkBPAp2WGsQYeKxlpr1zv79hnX3fmnHcRe16aCKM29wdiJdVYIPuKg/4oTbOO9OcrbbhUgb68=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rt/gaYxo; arc=fail smtp.client-ip=52.101.201.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EXwSDuCg1Tadswh/Z4jArsqAgAQGmWx7spMz+FFHUsMyMSoNIp/AAseqIXNBkqR6yc4EZDpR9+BJtMNxxDNSj5BQloDRRDmmGLzOsO81hzGOT+F7NS2RuG73LP48/YkpKr19Nk8Ar5+WDvGrYNCjN2EUuEDnDDjlkEum79J7Nn4AxJL5JJaQHK4p7vc1tR5/dX163UigineowklB5ltxGWZDgQVBwt40kgxYNaZztJEFyXc5AHoDfGl6K8NzWpDyIwTpjR1iUBzZ0GJDxMV0gv0MdREzAXkN1te3ncFgKsvcgb38RGZEdiwuPsLz2FxPQKHPgH9ZI1kyDDi/47Cckg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5mtZPGAcbPn3yYEX4G4NP+qTQrSh+h8BECbZbkUkcy8=;
+ b=T1EjJCS4m/D/TXTv1tuS7V2MDGnFFRvAEWiZynPyyBWS2c1zqw63axVcSsuez1unqEjyX8pjhR2ctPeRCz/jIG+GeHNqMEwF7eMH8LrXn9Zh7dhCWmXuoCBwyl1nBEeCRFXE85X130FTumeA3z92JVrx/PTsLu+iha0FVh9p4mcyeMFBOu/Js1YTlwnEmtZ1RrSpUdLRt3XFrPFtKm+Xe+8XSPqKahbFmSypVU136iBZIlMne5t+laMzMCTLDNuTDhWuIME/fHdFpAcOBL3BooL7NinGhFc2W51XRI1n2Hun1GSRImAnFjySbmplnZdSa+nhrgZNzUA3Ka55w3Z/Rg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5mtZPGAcbPn3yYEX4G4NP+qTQrSh+h8BECbZbkUkcy8=;
+ b=rt/gaYxo/KgL4aYPJpVIC76Bi7KJgS2slgNuao4iDlrjz7FBjg4Zg5cYdxyUdaz1o172PII3iE5FrsB0nel1XJp88AuYJh0IvjT1SiFieYHpEZozW2G+K2QTuB0tyHX2Qc3hp7Qr/iDBvfESKpiwnsGFPW6oFkSOF3QPCdSD1jxEekIP/yX6eEPkgcyxcL4VMQdvk5J45v6RW1j2Muvtfec3hadTffyXaofJKZsu7LRbi04mlX8Nqd8WdAw+bna6ALkQDU1Ppq47J3i3fsdaYkYG0XwPUzBpvPrHOKGO3M5dBPHjNblb0/Q3RYBsOeDMw81xfBDos1AYGK74ERaOiw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16)
+ by SA1PR12MB8744.namprd12.prod.outlook.com (2603:10b6:806:38c::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.21; Fri, 17 Apr
+ 2026 17:36:24 +0000
+Received: from CY8PR12MB8300.namprd12.prod.outlook.com
+ ([fe80::ce75:8187:3ac3:c5de]) by CY8PR12MB8300.namprd12.prod.outlook.com
+ ([fe80::ce75:8187:3ac3:c5de%3]) with mapi id 15.20.9818.023; Fri, 17 Apr 2026
+ 17:36:24 +0000
+From: Yury Norov <ynorov@nvidia.com>
+To: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Hans de Goede <hansg@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Salah Triki <salah.triki@gmail.com>,
+	Achim Gratz <Achim.Gratz@Stromeko.DE>,
+	Ben Collins <bcollins@watter.com>,
+	linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-rtc@vger.kernel.org
+Cc: Yury Norov <ynorov@nvidia.com>
+Subject: [PATCH 0/9] bitfield: add FIELD_GET_SIGNED()
+Date: Fri, 17 Apr 2026 13:36:11 -0400
+Message-ID: <20260417173621.368914-1-ynorov@nvidia.com>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BN0PR04CA0131.namprd04.prod.outlook.com
+ (2603:10b6:408:ed::16) To CY8PR12MB8300.namprd12.prod.outlook.com
+ (2603:10b6:930:7d::16)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR12MB8300:EE_|SA1PR12MB8744:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4d1a0c4c-0c52-452a-3e61-08de9ca7d8a4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|1800799024|7416014|376014|921020|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	v15VP0RCKagmczcI8ZiGDhdz4kPdIp2UDUauA+EEmpG8DcWpj8QkausvqQSlPxKRJBCmTScCHBiDhFVx2m940k9cRSWSOB5cOe+QpFOx7t7/sCviEEGmAuGMwE3hD9ZHodPnvNIgs9SpNrzBvgL//V5XHPod1MfPxMqBD4d6qpKPLZ/AKU0wpwAQb53RT1KP6lN6VmpA49cU2gaYvoaQPCe2+3bCag2KJm4wQQGdpbY61Rnwavd0GItb1ob0c6FDVV3eYDb/p/rawn0t6+3o4eiDQUlaUXSRV+g4p9VY2gSRjbNZe81Lp62o5r2aovjkfqOTjhoRSjK6afbmjxL8k/U74XYrxv5QoIDy6mAy0z4CY/HUBIxQYpgsfP716Sh1pHNtQ6+sawB+YTd/22I0HY8kO4Gbj+YX/Kdm4F4/lcDfhnyH7nvwuL9nm+SQQb8ZTNryCwLD9z+H9IG7zEmRU5cXxT7JCJ9KU7bklWk2v7Bo2JSlehvR6lc9jGUZP+vMkA9jy0u1gYU+3s59gJLARhHGQHEcjBpDcIfv6Jh6ngoI2vLKwyuTTiuUGThJALQ4nW6duDGuBqr/yQNd1K1k9jMkibu1020EVfdALqadU9Fk4gLYCfEDcKZQ9QJVo+uiid4QiVtPtjT3di8eRbMeNIrzp+cmMnj916Ss+qeEm7OPXrCoDZ99Nre8gnp4p209MUxSQbHHe3sZ1xfYEL1iCJ2IL0QznMx/Wk42amcRZTHdWlrP8trNhowi1p1xZVI+6LIOeMrk1enFNI75yv+LTQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8300.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(7416014)(376014)(921020)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?WjeHYmvyrDcJbop9xWRRBsXJOBmv5aJRMSWDRoaEvWBiI5QMMlDwgidVA0Kf?=
+ =?us-ascii?Q?EQkXQ2NprwwugrbSvpQGgK3wzIcPzLWXIekpbqqzahvgpU0a36PwHxN49vVj?=
+ =?us-ascii?Q?aXoDRNKzDizomxrESqzMuw1JZvZfvy8aaV0It8ROYc1cXmsJn8VN2EJZIG/s?=
+ =?us-ascii?Q?svxTwEM0V4je7ciHSRNXcKfF0xMAlbW0H3hQ8mpz0zrIk3QhoIF68T6P19pl?=
+ =?us-ascii?Q?mvaC87JETrQaGvRaOl2CIcat6OSFD5Ytj/KcocgWkrftroT63xWSfkqB0AgA?=
+ =?us-ascii?Q?yzx5iZcKWNQvYxFJXIu+XdFmUthm7S+LNuwK+/FHQy+Msk46Uf0KfXdhksvP?=
+ =?us-ascii?Q?w6Wf4BkPALKHHbQBadqClBjlcNkm6tIsfv4GVLuzcWZsCfSbo7M9DbmJ5btF?=
+ =?us-ascii?Q?yJrGZD/pibGRO0vMa7GNmKljIwxvJ4g5ITuqUc6gkGFTzW/fl2WYFc3r/BlO?=
+ =?us-ascii?Q?j3/mzTO8pCtpSq6ygFl+PhzDszFvfYubcSiFq8ndqAHpb4uYIAhXUaecqsYz?=
+ =?us-ascii?Q?xqXlAH8/m6ZWfQTObbZNX5nRVuqIBLoZ4EPMXtAu+n23se0Z2KXJ1FwlQ+C+?=
+ =?us-ascii?Q?6MQQWFrBnreVRXnixOR51VUB7oeoXJlYfsK5oQZHMmhLykb8lYCNFvX10zy1?=
+ =?us-ascii?Q?Ss8r019T5kVN8GpbRYO/pzLO213Bo94UxvvEjUVNuh7V9wVvyH/xLmZoCyK8?=
+ =?us-ascii?Q?9OUHPvp82LinbWDlUFORlX9bXMJqmlx+48XukWpG8OwWdjEsbrGrjNzqJVfm?=
+ =?us-ascii?Q?o9QTY7uHczBV37KwXgjyZFq96DjWpVnHj5qFdb5tnH9dC8BuWz015cLkE6BL?=
+ =?us-ascii?Q?F8PRQuhmo/56Xg2hokn4AUBt7ouG3KkDb3VbAnH7Okfq6YFOkDTrsVKPt2OD?=
+ =?us-ascii?Q?HqeoPzFtVOotckiD0QblsVBRqNb/j2Q67IwyAZ+8dvrYJ+0Ok0nuhCrifW9E?=
+ =?us-ascii?Q?2SKowP/fAnLUYw9QjttEEYQNSL+uaWXKEaZ4k+HVXdEBILUbdVPNm+6RyLE0?=
+ =?us-ascii?Q?NnYacl+9FUbKTNjrCh3zdCPLyrWVO4KGQexjCDVhdH5h6C8lAv7kQEjuVyKl?=
+ =?us-ascii?Q?D8cHUrk1PnVsCrPUgOSvKoi/+rG04idySgX3c2KHhb0j1jnzA55GteEA66PL?=
+ =?us-ascii?Q?xT6b7bTguTSOxXTuVfGJxmHH0nhUrXV5gDjqKpNFE8MHf5iZgGFHlNUkQ2FZ?=
+ =?us-ascii?Q?uScdbvFKqh8Gb5XB2baGudbxbFuQrK1DxHtvBYccDMKdsLtGA9KH4Rh0UDxH?=
+ =?us-ascii?Q?gOgM1ZaSVgkBAUK5iQr8FN8TIJ5KL6PB2Zb8iuv1Sg9zuWCKQpiklxFdCNg3?=
+ =?us-ascii?Q?7N44R3UT81EQMu6YGB2ZX7i4fe6o7CQlLdKw8m7ADlMpQswKzU0/GlKd2ZWI?=
+ =?us-ascii?Q?Kx2sQGgc51b8pOCG0AeMkQFfCWfUT0nZrHu88nl/sFbFPabW+rjtUQZmJZUe?=
+ =?us-ascii?Q?VvmEil1dNV2Og6yl+uRjbooawo28IKrMwQS+cQdtzNkIqkOSjJS5aSdl8Ace?=
+ =?us-ascii?Q?laKZXxzFSBz7oJcB9OA/pKRHVf0Up3/0mtMhffzlrbQwS/iI1C/xy6huONzr?=
+ =?us-ascii?Q?1kAwD/tFfot7F7AhKh4sARgUGcdx7h28wVBLb5b3uEzv5/uFNQXyMKfRnLAR?=
+ =?us-ascii?Q?wn1CgcvkbvRXqR6jFiHtU+oMY6s2UjhrGd/J91GJtCtwf9ZQotKSDZM/2IVL?=
+ =?us-ascii?Q?f8bGX8XyES/bTI6Hf990vQ8uS3euKj6+8sKG03AwRDeMuRIop5PU/LN0LBPp?=
+ =?us-ascii?Q?n3RBAwJF37R8HEQufjturwvhchNOncWKIlQN7OqayfHzmMR9SXVX?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d1a0c4c-0c52-452a-3e61-08de9ca7d8a4
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8300.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2026 17:36:24.2498
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WfEajuzT7WcIurnVln7XKgRWQg+b6zRxSY2oKhMKxPkytayPE0WwBeYY8XgcU5UjLtarsUDuSe3c7JQZNFIPzg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8744
+X-Spamd-Result: default: False [2.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_TO(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,infradead.org,baylibre.com,analog.com,realtek.com,gmail.com,lunn.ch,davemloft.net,google.com,bootlin.com,rasmusvillemoes.dk,Stromeko.DE,watter.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[34];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34941-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34942-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lty2wxm@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ynorov@nvidia.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,stu.pku.edu.cn:mid]
-X-Rspamd-Queue-Id: 9EFF641D70D
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	NEURAL_HAM(-0.00)[-0.995];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 077AF41D8B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+The bitfields are designed in assumption that fields contain unsigned
+integer values, thus extracting the values from the field implies
+zero-extending.
 
-We hit a lockdep warning in the mac80211 key-add path under
-syzkaller-style workloads.
+Some drivers need to sign-extend their fields, and currently do it like:
 
-We reproduced this on 6.19.0-rc5-00042-g944aacb68baf. In the same bug
-bucket, later runs still show the same warning on
-7.0.0-rc2-g0031c06807cf.
+	dc_re += sign_extend32(FIELD_GET(0xfff000, tmp), 11);
+	dc_im += sign_extend32(FIELD_GET(0xfff, tmp), 11);
 
-The warning is:
+It's error-prone because it relies on user to provide the correct
+index of the most significant bit.
 
-  WARNING: possible circular locking dependency detected
+This series adds a signed version of FIELD_GET(), which is the more
+convenient and compiles (on x86_64) to just a couple instructions:
+shl and sar.
 
-The observed path is:
+Patch #1 adds FIELD_GET_SIGNED(), and the rest of the series applies it
+tree-wide.
 
-  nl80211_new_key()
-    -> rdev_add_key()
-    -> ieee80211_add_key()
-    -> ieee80211_key_link()
-    -> ieee80211_debugfs_key_add()
-    -> debugfs_create_dir()
-    -> start_dirop()
+Yury Norov (9):
+  bitfield: add FIELD_GET_SIGNED()
+  x86/extable: switch to using FIELD_GET_SIGNED()
+  iio: intel_dc_ti_adc: switch to using
+  iio: magnetometer: yas530: switch to using FIELD_GET_SIGNED()
+  iio: pressure: bmp280: switch to using
+  iio: mcp9600: switch to using FIELD_GET_SIGNED()
+  wifi: rtw89: switch to using FIELD_GET_SIGNED()
+  rtc: rv3032: switch to using FIELD_GET_SIGNED()
+  ptp: switch to using FIELD_GET_SIGNED()
 
-nl80211_pre_doit() keeps wiphy.mtx held across nl80211_new_key().
-After ieee80211_key_replace() succeeds, ieee80211_key_link()
-immediately creates per-key debugfs entries.
+ arch/x86/include/asm/extable_fixup_types.h       | 13 ++++---------
+ arch/x86/mm/extable.c                            |  2 +-
+ drivers/iio/adc/intel_dc_ti_adc.c                |  4 ++--
+ drivers/iio/magnetometer/yamaha-yas530.c         | 12 ++++++------
+ drivers/iio/pressure/bmp280-core.c               |  2 +-
+ drivers/iio/temperature/mcp9600.c                |  2 +-
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.c    |  4 ++--
+ .../net/wireless/realtek/rtw89/rtw8852b_common.c |  4 ++--
+ .../net/wireless/realtek/rtw89/rtw8852b_rfk.c    |  4 ++--
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c    |  4 ++--
+ drivers/ptp/ptp_fc3.c                            |  4 ++--
+ drivers/rtc/rtc-rv3032.c                         |  2 +-
+ include/linux/bitfield.h                         | 16 ++++++++++++++++
+ 13 files changed, 42 insertions(+), 31 deletions(-)
 
-That debugfs_create_dir() call goes through debugfs_start_creating(),
-simple_start_creating(), and start_dirop(). start_dirop() takes the
-parent inode rwsem and lookup_one_qstr_excl() then allocates a dentry
-with GFP_KERNEL, which introduces fs_reclaim into the lock chain.
+-- 
+2.51.0
 
-The warning becomes possible because there is already an existing
-dependency from relay_open_buf()/relay_create_buf_file(): that path
-holds relay_channels_mutex and then enters the same debugfs/VFS
-creation flow, which reaches the directory inode lock.
-
-With both chains present, lockdep reports the cycle:
-
-  fs_reclaim -> relay_channels_mutex -> inode rwsem -> fs_reclaim
-
-This looks more like a real locking problem than a pure fuzzing
-artifact. The trigger is a syzkaller-style key creation workload, but
-the questionable part is that mac80211 performs non-essential debugfs
-creation inside the locked key installation path.
-
-A possible fix direction would be to avoid creating per-key debugfs
-entries while still in the locked add-key path, for example by
-deferring the debugfs population until after the critical section or by
-moving it to a safer asynchronous context.
-
-Relevant source locations in current trees are:
-
-  net/wireless/nl80211.c: nl80211_pre_doit(), nl80211_new_key()
-  net/mac80211/key.c: ieee80211_key_link()
-  net/mac80211/debugfs_key.c: ieee80211_debugfs_key_add()
-  fs/namei.c: start_dirop()
-
-If useful, I can also send the full report/log pair.
-
-Thanks,
 
