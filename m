@@ -1,157 +1,148 @@
-Return-Path: <linux-wireless+bounces-34971-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34972-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFG1Jmau5GnLYAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-34971-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 12:28:54 +0200
+	id qJMgHFHW5GnZagEAu9opvQ
+	(envelope-from <linux-wireless+bounces-34972-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 15:19:13 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10577423AC8
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 12:28:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7FC3424146
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 15:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A2FE6300B55D
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 10:28:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8F463300F164
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 13:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE0632939C;
-	Sun, 19 Apr 2026 10:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424E6367F22;
+	Sun, 19 Apr 2026 13:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PaDc8OZW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dzlJqSQ0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CF226B742
-	for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2026 10:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776594530; cv=pass; b=RzOdfNFJwblcGZL05BiFZOoj1eFOvlCC9hSHaEQ07S1RhAqWBY225H9Ceb0yswoBQ8OsSGbKNIK439UMpkxNhVmyZjZ6gWNHxVV4Z68P2EgV2rmsU/TZrPss/G6rq0bW/4iQp0NZPCHRKQUjpIyA6mkBADGIhBqTsoEAsL6TOZo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776594530; c=relaxed/simple;
-	bh=zY9mt3qI59qd05j+vxYkZ9HvCS2wYLsshMe4Z6hnmNA=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=BYYE1VEusBNcUdK3HGZwVxskmGMCt0aOrO1v2Mq7G3oOYLV5bifwqOnsp5Qr4RYJhrojvy9j6pfoQUIQDp2shFbMMiyQ/tPjZDXZjj/UPq8rVh8o2YvGGZHpBIWCzBh6ecN5qcJQs4NQGU9RzUxD8p6zjW+XcZRBjQLUG1diOsc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PaDc8OZW; arc=pass smtp.client-ip=74.125.224.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-65318dafbcbso1737944d50.2
-        for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2026 03:28:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776594528; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BGcJ/XDSQw5kjiJuwJUM4fIX7NMWWPbALGW16lIJ7/2TtoepCq9wI7/NubNmgMWvKe
-         4s5j+simHThwCN2mQFOeYUve01F/YhHnPIZ8o0hw6qDm1CstZFvgQFRCXBTXucExvH/d
-         3axNVexRAEw9dDKSh8izbjUYcwGfCzuaRFTwNDAtTHD0gmm7BKtaC/yuvz3ScePWUzpt
-         BMxWbq6/9CoMrKXvKB9TL1cn1LWoTFRaPKvx6nJP2Es+hK4jbAzw+m/Q2h+prD9a72mR
-         kg8IFnGv7GzSyYN19VVPKbgzpW/PlZAlOBcjMMQuCyxmz91dIbO1Cs6lYhp+ovEyg7fL
-         gEkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=b/DD4soCOVV1+0nCfBRBj0QLYGUGuUh1dnkGDgO1jDQ=;
-        fh=qW0phhq3fb3oiohK/Mu9j1KY1zyRNiiioKFc5anvatM=;
-        b=NDV/rYiCxMmb6Xg4ILh4E3gN4SXQwC+0d9WF3S+APsnZddImzMOXtifzqVbtU2WDpA
-         27muUZuz5wp1MSkHv1kfD+HStXeynXWC3RTOFWIiSRIXh6zzXaUeo3FmWNYcJh1/mjt6
-         OlYA4VcPfQ7iLSchkFpVNrEEp13AnVe/6LvedGojkmmg8HaCExNkFxOOQFjQ8DirL/al
-         mM3cxDz1NNDBZAv71s+Azuo0R9Ag173Cq5hhWqRoVb1tBG1xXxabzpHIVd82SeyIc0Mp
-         pdU/+mS+riroOsFBero1lw2kQnqh1/IA/X3q+nQV5u4Ar09k+8iuGT1rd81JMFjeExDv
-         0WEQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776594528; x=1777199328; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=b/DD4soCOVV1+0nCfBRBj0QLYGUGuUh1dnkGDgO1jDQ=;
-        b=PaDc8OZWRwWqR5jVYlOO4B0MyvGdvWVTKsVMp7XdOQZ+RuFbb4TmYx+Zo7eNKNTjHd
-         cHrc3HBLI0fgKG8B88ljQwFyJfldZ1BCPB8cBIj+tjbyKIPt8WPQqNPBonBDOC8IBbaI
-         Zn1UvthmNE7lo8BWc3VWtm0oBFgYXqlKZtAy7zaMBLJZUXsYCoMM19aQ4ycwU01Eb+Zt
-         CJr14qaqXGaDoPeDv7X+O9haecdCsdokaN1J51S2FVh5n3ga7Re+Fk7GdFqXEc/UcaQK
-         KXID0xjblTj5jOth+UQKI7pen1F0KgI4Iau4SQMBcY29GiPJhTupu/gMcnxHrhTeuDyy
-         XW4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776594528; x=1777199328;
-        h=to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b/DD4soCOVV1+0nCfBRBj0QLYGUGuUh1dnkGDgO1jDQ=;
-        b=R7ipSgIRZomUPM4q52V5RiOJgmzsXwDNyR8eyftVvenwKpbaBKdSV2uxELZwJJi1VN
-         ID1Lj8j4CyxsyiIevA2ht7jU6+X613m4Hwhumd22eCOquiBLufFCmABSFGgyujZc0aWI
-         Na/11KGe5oxQMfA384IkvgmDOU4eUrKVh0vafXyBJuEN7jEUTijKv6KvlXUE5M3Xn6H4
-         ncYDcPrCdY0TgzfPnvd6uijVSqofOXndJeEUG+scrKP03dsGiBE4yngo0W9PhkC8cPmN
-         gw7ZHQQZTLHwY9OQrBcKsuzpd6N5d3tT7AzWk/5hYWqcepVznukM5tfhZZQYVKPelkIv
-         7XkQ==
-X-Gm-Message-State: AOJu0YwU4qCrNR8Xd7y5eR2TaA+tV7Y8sU44rQPEc/zx2hlcWixOAW0X
-	+DC/xfcKeTEl4dNy7PfvAMfEyJq2hBKvF4JwmbrqbeHcziyMEA/d1LD8bHM5EZGuObNI0qIDFz+
-	lHDft1BR/SJQeYk5zOA+WPCkMWc0QC6glVd+jN1Cbkw==
-X-Gm-Gg: AeBDieu5G/e3QZ/tX+WRmntPqdF5eXFCN+M4rT4JkAO5R8gzHR2OmU/QcAXy23i1Jjs
-	AxOu87+qzwjsQM+I1MJ+s+GDuSvEfTtWL2EhqtX2tW8DV9gmiphWjbhVEABMZxH/HngxxOG3uXZ
-	BIHM7Q7GJTpBPLwUT8E2zvjxZR7+4ope+q86R57GJoxZlqi1ilTk1ec55C/649lqcGpoL9B7J/O
-	IOWubbV9AwG5iufyOsIDKySsPRUtPaNimhhd6ju87pbgceJUNluk02xGNuYBrgie9NDu3aVnSQk
-	LTXSYBvD/wU+tQBUZ1Dhn/242Eb3JTqA4bPMBquM8oeIWlrYZEs=
-X-Received: by 2002:a53:d059:0:20b0:651:8d11:a585 with SMTP id
- 956f58d0204a3-6531085e5eamr6944261d50.25.1776594528454; Sun, 19 Apr 2026
- 03:28:48 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9A92580F2;
+	Sun, 19 Apr 2026 13:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776604750; cv=none; b=mkAU2VugrQlNxpd3/v6Ilcsg9qtnKw5eArflZw5LcR/0whEXaiTUaS+/eZWJWm1cq6eAa2Nr2L1WHpfrRVhNhClv8MvqtdtxBp+0KV+QzoKgDXcC5EMVY8Ran0+vDBqKuBa7Z2mjs4BmFz7LFxWZVLjyByfmIzojhfIWhFgGBSE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776604750; c=relaxed/simple;
+	bh=AvLVvkGMx5KNZbNVEJf7B+DrKxVga6LUIBz3jALnThw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E/3fPuMCXwAJ8HguKGMu36C+LeagGxcPMHbGZBQNB+hqk95kWYzB4/gh4fYc7ursGnbGT9TdD/fNRhc3Q8a7mdPkJDVYR5z9BTi122ucuAUIEirKIeMucLh/aBcOzlKKshAGleBADHskpHCwjRQD/me/mrONuZkKnVApPzP3PPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dzlJqSQ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A533EC2BCAF;
+	Sun, 19 Apr 2026 13:18:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776604750;
+	bh=AvLVvkGMx5KNZbNVEJf7B+DrKxVga6LUIBz3jALnThw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dzlJqSQ08YUJ03UQYUUa4fEA/Tc9oM4uFmVjqf9VoH4oXrUMBIG2h7I33q6bSbTKo
+	 1XHc9p/U675xQntON8jfbD0tr7Y4SdqJi+Sg2sKf00RyWFbhmtQROiyKxDxilZEGxM
+	 xndvM+MS70K4sO51ukS52IWkQmsH9QwPB3sxWS05tBXEbzrooMRhXylneIGqfwNFMU
+	 NWN5DykZONDBOGw3axSIbr5IlBHRW01sh95v4LPImFtUd7wsHBH6jkNbWEVfBP1lGa
+	 t0aoJnSsz0WPb6AHBeXLcvbEHKVh1M9icSF+ubZEcK4pYEx9RuRvRVgOptO9ohjugQ
+	 518ZGkSyqGs0g==
+Date: Sun, 19 Apr 2026 14:18:53 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, Ping-Ke Shih <pkshih@realtek.com>, Richard
+ Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, Hans de Goede <hansg@kernel.org>, Linus Walleij
+ <linusw@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, Salah
+ Triki <salah.triki@gmail.com>, Achim Gratz <Achim.Gratz@Stromeko.DE>, Ben
+ Collins <bcollins@watter.com>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, linux-rtc@vger.kernel.org
+Subject: Re: [PATCH 3/9] iio: intel_dc_ti_adc: switch to using
+ FIELD_GET_SIGNED()
+Message-ID: <20260419141853.586ae273@jic23-huawei>
+In-Reply-To: <20260417173621.368914-4-ynorov@nvidia.com>
+References: <20260417173621.368914-1-ynorov@nvidia.com>
+	<20260417173621.368914-4-ynorov@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Ioannis Barkas <jnyb.de@gmail.com>
-Date: Sun, 19 Apr 2026 13:28:37 +0300
-X-Gm-Features: AQROBzBsPLMbe6YsClxANtzqX9GbOY-noN0-NfDkfv0cdeD-TocbJgkB6bbMW7s
-Message-ID: <CADUzMVb+JNEcpizCBCho+qCMPG1fzNfJ10Nh78=N7-vvao8Ogw@mail.gmail.com>
-Subject: Garfield Peak 4 trouble on TigerLake
-To: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34971-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34972-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_ONE(0.00)[1];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jnybde@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 10577423AC8
+	RCPT_COUNT_TWELVE(0.00)[33];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,infradead.org,baylibre.com,analog.com,realtek.com,gmail.com,lunn.ch,davemloft.net,google.com,bootlin.com,rasmusvillemoes.dk,Stromeko.DE,watter.com,vger.kernel.org];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E7FC3424146
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello, all!
+On Fri, 17 Apr 2026 13:36:14 -0400
+Yury Norov <ynorov@nvidia.com> wrote:
 
-Replacement of a WLAN module at an i7 based TigerLake device resulted
-in AX1690i not working under 6.19 or 7.0 kernel.
+> Switch from sign_extend32(FIELD_GET()) to the dedicated
+> FIELD_GET_SIGNED() and don't provide the fields length explicitly.
+> 
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
 
-I get the following:
-[    4.461487] iwlwifi 0000:00:14.3: Detected crf-id 0x11219, cnv-id
-0x20000302 wfpm id 0x80000000
-[    4.461511] iwlwifi 0000:00:14.3: PCI dev a0f0/1692, rev=0x351,
-rfid=0x3010d000
-[    4.461515] iwlwifi 0000:00:14.3: Detected Killer(R) Wi-Fi 6E
-AX1690i 160MHz Wireless Network Adapter (411NGW)
-[    4.461910] iwlwifi 0000:00:14.3: Direct firmware load for
-iwlwifi-QuZ-a0-gf4-a0-77.ucode failed with error -2
-[    4.461917] iwlwifi 0000:00:14.3: no suitable firmware found!
-[    4.463035] iwlwifi 0000:00:14.3: iwlwifi-QuZ-a0-gf4-a0-77 is required
+Assuming any remaining discussion on the implementation of the macro
+shakes out, this looks like a good little cleanup to me.
 
-Not sure if this is a valid file but I could not locate it. Is this
-expected? Also Bluetooth goes nuts.
+Not sure how you want to merge this but if it's going through another tree.
+Acked-by: Jonathan Cameron <jic23@kernel.org>
 
-Best regards,
-Ioannis
+> ---
+>  drivers/iio/adc/intel_dc_ti_adc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/intel_dc_ti_adc.c b/drivers/iio/adc/intel_dc_ti_adc.c
+> index 0fe34f1c338e..b5afad713e2d 100644
+> --- a/drivers/iio/adc/intel_dc_ti_adc.c
+> +++ b/drivers/iio/adc/intel_dc_ti_adc.c
+> @@ -290,8 +290,8 @@ static int dc_ti_adc_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		return ret;
+>  
+> -	info->vbat_zse = sign_extend32(FIELD_GET(DC_TI_VBAT_ZSE, val), 3);
+> -	info->vbat_ge = sign_extend32(FIELD_GET(DC_TI_VBAT_GE, val), 3);
+> +	info->vbat_zse = FIELD_GET_SIGNED(DC_TI_VBAT_ZSE, val);
+> +	info->vbat_ge = FIELD_GET_SIGNED(DC_TI_VBAT_GE, val);
+>  
+>  	dev_dbg(dev, "vbat-zse %d vbat-ge %d\n", info->vbat_zse, info->vbat_ge);
+>  
+
 
