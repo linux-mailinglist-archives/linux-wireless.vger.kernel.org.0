@@ -1,159 +1,157 @@
-Return-Path: <linux-wireless+bounces-34970-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34971-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHCxHad65GkQVwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-34970-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 08:48:07 +0200
+	id KFG1Jmau5GnLYAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-34971-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 12:28:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0ED242343F
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 08:48:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10577423AC8
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 12:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73E4F301467E
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 06:48:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A2FE6300B55D
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 10:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727AC2BEFED;
-	Sun, 19 Apr 2026 06:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE0632939C;
+	Sun, 19 Apr 2026 10:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSUJxW2X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PaDc8OZW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE8814BF97;
-	Sun, 19 Apr 2026 06:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776581284; cv=none; b=qjPnK9+NQVfD5Kd48NkFP4xe68ax5LaH0Jdi5i9/yotvf9xjv96dOg1/5OXJfxDCN+Ph1BHTNHxrZg1gwQhViAfoafFtVvk2NhooXXcff4ukZ60lAO9d1ucTGXdsKFo7m8IBbQDXKHd5L29Qig/N/xGgk/y1xjM2j5y91PxKTUY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776581284; c=relaxed/simple;
-	bh=2MmzG3cRR1aKgD+UKpbqAf7Fhg7bEuEtKpA5yXbLh50=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VpwPUQidd5I8MEhljJerqdxQqJefpWiabiefTSUycW8bsY1xt6DZM5RlZhHUGKZRxmSqnCHgDdqEbFkFIKu/C10nxe/YQW6xwQXRsgRYA6XmsA8ElkbT0q7PCo3eI0Z4M0OkHX2J9oRiNHB+UwLAWp3IUXNC9qyT3Kuhdlf86KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSUJxW2X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1ABCC2BCAF;
-	Sun, 19 Apr 2026 06:48:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776581284;
-	bh=2MmzG3cRR1aKgD+UKpbqAf7Fhg7bEuEtKpA5yXbLh50=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aSUJxW2XRzFVGAFiUM6bMl0WxKkzFgG37VNkJWEliljTJpiSMKMfWuu83iaXwhJ2/
-	 dPPsFAxmDE3T1J2RRhlR+ErJHkdwQ+sSoHA7ZQyPV1BnqlRkUHE6VuaA7gNBACkBFY
-	 ndnkAddc+7WFgR6JZxXWEmtbe551pijfsR9gObFM=
-Date: Sun, 19 Apr 2026 08:48:01 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Wxm-233 <lty2wxm@gmail.com>
-Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-	brauner@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [BUG] mac80211: lockdep warning from key debugfs creation
-Message-ID: <2026041944-dallying-unsettled-6e38@gregkh>
-References: <20260417171253.662-1-2200013188@stu.pku.edu.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CF226B742
+	for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2026 10:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776594530; cv=pass; b=RzOdfNFJwblcGZL05BiFZOoj1eFOvlCC9hSHaEQ07S1RhAqWBY225H9Ceb0yswoBQ8OsSGbKNIK439UMpkxNhVmyZjZ6gWNHxVV4Z68P2EgV2rmsU/TZrPss/G6rq0bW/4iQp0NZPCHRKQUjpIyA6mkBADGIhBqTsoEAsL6TOZo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776594530; c=relaxed/simple;
+	bh=zY9mt3qI59qd05j+vxYkZ9HvCS2wYLsshMe4Z6hnmNA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=BYYE1VEusBNcUdK3HGZwVxskmGMCt0aOrO1v2Mq7G3oOYLV5bifwqOnsp5Qr4RYJhrojvy9j6pfoQUIQDp2shFbMMiyQ/tPjZDXZjj/UPq8rVh8o2YvGGZHpBIWCzBh6ecN5qcJQs4NQGU9RzUxD8p6zjW+XcZRBjQLUG1diOsc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PaDc8OZW; arc=pass smtp.client-ip=74.125.224.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-65318dafbcbso1737944d50.2
+        for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2026 03:28:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776594528; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BGcJ/XDSQw5kjiJuwJUM4fIX7NMWWPbALGW16lIJ7/2TtoepCq9wI7/NubNmgMWvKe
+         4s5j+simHThwCN2mQFOeYUve01F/YhHnPIZ8o0hw6qDm1CstZFvgQFRCXBTXucExvH/d
+         3axNVexRAEw9dDKSh8izbjUYcwGfCzuaRFTwNDAtTHD0gmm7BKtaC/yuvz3ScePWUzpt
+         BMxWbq6/9CoMrKXvKB9TL1cn1LWoTFRaPKvx6nJP2Es+hK4jbAzw+m/Q2h+prD9a72mR
+         kg8IFnGv7GzSyYN19VVPKbgzpW/PlZAlOBcjMMQuCyxmz91dIbO1Cs6lYhp+ovEyg7fL
+         gEkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=b/DD4soCOVV1+0nCfBRBj0QLYGUGuUh1dnkGDgO1jDQ=;
+        fh=qW0phhq3fb3oiohK/Mu9j1KY1zyRNiiioKFc5anvatM=;
+        b=NDV/rYiCxMmb6Xg4ILh4E3gN4SXQwC+0d9WF3S+APsnZddImzMOXtifzqVbtU2WDpA
+         27muUZuz5wp1MSkHv1kfD+HStXeynXWC3RTOFWIiSRIXh6zzXaUeo3FmWNYcJh1/mjt6
+         OlYA4VcPfQ7iLSchkFpVNrEEp13AnVe/6LvedGojkmmg8HaCExNkFxOOQFjQ8DirL/al
+         mM3cxDz1NNDBZAv71s+Azuo0R9Ag173Cq5hhWqRoVb1tBG1xXxabzpHIVd82SeyIc0Mp
+         pdU/+mS+riroOsFBero1lw2kQnqh1/IA/X3q+nQV5u4Ar09k+8iuGT1rd81JMFjeExDv
+         0WEQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776594528; x=1777199328; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=b/DD4soCOVV1+0nCfBRBj0QLYGUGuUh1dnkGDgO1jDQ=;
+        b=PaDc8OZWRwWqR5jVYlOO4B0MyvGdvWVTKsVMp7XdOQZ+RuFbb4TmYx+Zo7eNKNTjHd
+         cHrc3HBLI0fgKG8B88ljQwFyJfldZ1BCPB8cBIj+tjbyKIPt8WPQqNPBonBDOC8IBbaI
+         Zn1UvthmNE7lo8BWc3VWtm0oBFgYXqlKZtAy7zaMBLJZUXsYCoMM19aQ4ycwU01Eb+Zt
+         CJr14qaqXGaDoPeDv7X+O9haecdCsdokaN1J51S2FVh5n3ga7Re+Fk7GdFqXEc/UcaQK
+         KXID0xjblTj5jOth+UQKI7pen1F0KgI4Iau4SQMBcY29GiPJhTupu/gMcnxHrhTeuDyy
+         XW4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776594528; x=1777199328;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=b/DD4soCOVV1+0nCfBRBj0QLYGUGuUh1dnkGDgO1jDQ=;
+        b=R7ipSgIRZomUPM4q52V5RiOJgmzsXwDNyR8eyftVvenwKpbaBKdSV2uxELZwJJi1VN
+         ID1Lj8j4CyxsyiIevA2ht7jU6+X613m4Hwhumd22eCOquiBLufFCmABSFGgyujZc0aWI
+         Na/11KGe5oxQMfA384IkvgmDOU4eUrKVh0vafXyBJuEN7jEUTijKv6KvlXUE5M3Xn6H4
+         ncYDcPrCdY0TgzfPnvd6uijVSqofOXndJeEUG+scrKP03dsGiBE4yngo0W9PhkC8cPmN
+         gw7ZHQQZTLHwY9OQrBcKsuzpd6N5d3tT7AzWk/5hYWqcepVznukM5tfhZZQYVKPelkIv
+         7XkQ==
+X-Gm-Message-State: AOJu0YwU4qCrNR8Xd7y5eR2TaA+tV7Y8sU44rQPEc/zx2hlcWixOAW0X
+	+DC/xfcKeTEl4dNy7PfvAMfEyJq2hBKvF4JwmbrqbeHcziyMEA/d1LD8bHM5EZGuObNI0qIDFz+
+	lHDft1BR/SJQeYk5zOA+WPCkMWc0QC6glVd+jN1Cbkw==
+X-Gm-Gg: AeBDieu5G/e3QZ/tX+WRmntPqdF5eXFCN+M4rT4JkAO5R8gzHR2OmU/QcAXy23i1Jjs
+	AxOu87+qzwjsQM+I1MJ+s+GDuSvEfTtWL2EhqtX2tW8DV9gmiphWjbhVEABMZxH/HngxxOG3uXZ
+	BIHM7Q7GJTpBPLwUT8E2zvjxZR7+4ope+q86R57GJoxZlqi1ilTk1ec55C/649lqcGpoL9B7J/O
+	IOWubbV9AwG5iufyOsIDKySsPRUtPaNimhhd6ju87pbgceJUNluk02xGNuYBrgie9NDu3aVnSQk
+	LTXSYBvD/wU+tQBUZ1Dhn/242Eb3JTqA4bPMBquM8oeIWlrYZEs=
+X-Received: by 2002:a53:d059:0:20b0:651:8d11:a585 with SMTP id
+ 956f58d0204a3-6531085e5eamr6944261d50.25.1776594528454; Sun, 19 Apr 2026
+ 03:28:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260417171253.662-1-2200013188@stu.pku.edu.cn>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+From: Ioannis Barkas <jnyb.de@gmail.com>
+Date: Sun, 19 Apr 2026 13:28:37 +0300
+X-Gm-Features: AQROBzBsPLMbe6YsClxANtzqX9GbOY-noN0-NfDkfv0cdeD-TocbJgkB6bbMW7s
+Message-ID: <CADUzMVb+JNEcpizCBCho+qCMPG1fzNfJ10Nh78=N7-vvao8Ogw@mail.gmail.com>
+Subject: Garfield Peak 4 trouble on TigerLake
+To: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-34971-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-34970-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_ONE(0.00)[1];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jnybde@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: C0ED242343F
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 10577423AC8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, Apr 18, 2026 at 01:12:53AM +0800, Wxm-233 wrote:
-> Hello,
-> 
-> We hit a lockdep warning in the mac80211 key-add path under
-> syzkaller-style workloads.
-> 
-> We reproduced this on 6.19.0-rc5-00042-g944aacb68baf. In the same bug
-> bucket, later runs still show the same warning on
-> 7.0.0-rc2-g0031c06807cf.
-> 
-> The warning is:
-> 
->   WARNING: possible circular locking dependency detected
-> 
-> The observed path is:
-> 
->   nl80211_new_key()
->     -> rdev_add_key()
->     -> ieee80211_add_key()
->     -> ieee80211_key_link()
->     -> ieee80211_debugfs_key_add()
->     -> debugfs_create_dir()
->     -> start_dirop()
-> 
-> nl80211_pre_doit() keeps wiphy.mtx held across nl80211_new_key().
-> After ieee80211_key_replace() succeeds, ieee80211_key_link()
-> immediately creates per-key debugfs entries.
-> 
-> That debugfs_create_dir() call goes through debugfs_start_creating(),
-> simple_start_creating(), and start_dirop(). start_dirop() takes the
-> parent inode rwsem and lookup_one_qstr_excl() then allocates a dentry
-> with GFP_KERNEL, which introduces fs_reclaim into the lock chain.
-> 
-> The warning becomes possible because there is already an existing
-> dependency from relay_open_buf()/relay_create_buf_file(): that path
-> holds relay_channels_mutex and then enters the same debugfs/VFS
-> creation flow, which reaches the directory inode lock.
-> 
-> With both chains present, lockdep reports the cycle:
-> 
->   fs_reclaim -> relay_channels_mutex -> inode rwsem -> fs_reclaim
-> 
-> This looks more like a real locking problem than a pure fuzzing
-> artifact. The trigger is a syzkaller-style key creation workload, but
-> the questionable part is that mac80211 performs non-essential debugfs
-> creation inside the locked key installation path.
-> 
-> A possible fix direction would be to avoid creating per-key debugfs
-> entries while still in the locked add-key path, for example by
-> deferring the debugfs population until after the critical section or by
-> moving it to a safer asynchronous context.
-> 
-> Relevant source locations in current trees are:
-> 
->   net/wireless/nl80211.c: nl80211_pre_doit(), nl80211_new_key()
->   net/mac80211/key.c: ieee80211_key_link()
->   net/mac80211/debugfs_key.c: ieee80211_debugfs_key_add()
->   fs/namei.c: start_dirop()
-> 
-> If useful, I can also send the full report/log pair.
+Hello, all!
 
-Why not send a fix for this so you get full credit for it?
+Replacement of a WLAN module at an i7 based TigerLake device resulted
+in AX1690i not working under 6.19 or 7.0 kernel.
 
-thanks,
+I get the following:
+[    4.461487] iwlwifi 0000:00:14.3: Detected crf-id 0x11219, cnv-id
+0x20000302 wfpm id 0x80000000
+[    4.461511] iwlwifi 0000:00:14.3: PCI dev a0f0/1692, rev=0x351,
+rfid=0x3010d000
+[    4.461515] iwlwifi 0000:00:14.3: Detected Killer(R) Wi-Fi 6E
+AX1690i 160MHz Wireless Network Adapter (411NGW)
+[    4.461910] iwlwifi 0000:00:14.3: Direct firmware load for
+iwlwifi-QuZ-a0-gf4-a0-77.ucode failed with error -2
+[    4.461917] iwlwifi 0000:00:14.3: no suitable firmware found!
+[    4.463035] iwlwifi 0000:00:14.3: iwlwifi-QuZ-a0-gf4-a0-77 is required
 
-greg k-h
+Not sure if this is a valid file but I could not locate it. Is this
+expected? Also Bluetooth goes nuts.
+
+Best regards,
+Ioannis
 
