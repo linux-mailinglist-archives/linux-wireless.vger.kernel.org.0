@@ -1,50 +1,50 @@
-Return-Path: <linux-wireless+bounces-34972-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34973-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJMgHFHW5GnZagEAu9opvQ
-	(envelope-from <linux-wireless+bounces-34972-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 15:19:13 +0200
+	id aImzI8rW5Gl5awEAu9opvQ
+	(envelope-from <linux-wireless+bounces-34973-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 15:21:14 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FC3424146
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 15:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A9F4241A0
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 15:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8F463300F164
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 13:19:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB092300FFB5
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 13:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424E6367F22;
-	Sun, 19 Apr 2026 13:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C7837BE87;
+	Sun, 19 Apr 2026 13:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dzlJqSQ0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XDhiISp2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9A92580F2;
-	Sun, 19 Apr 2026 13:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821D633260B;
+	Sun, 19 Apr 2026 13:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776604750; cv=none; b=mkAU2VugrQlNxpd3/v6Ilcsg9qtnKw5eArflZw5LcR/0whEXaiTUaS+/eZWJWm1cq6eAa2Nr2L1WHpfrRVhNhClv8MvqtdtxBp+0KV+QzoKgDXcC5EMVY8Ran0+vDBqKuBa7Z2mjs4BmFz7LFxWZVLjyByfmIzojhfIWhFgGBSE=
+	t=1776604871; cv=none; b=o4DQ4CkSPAPNzWtBxF5eDT5hzJYvvU1O++4A4b2s8ig2PfpmEiq1lOBedvO4QvcjK5iZnyg0vxcplFBe27g8jdjBtzeZ7yOZ51EDJGlGkjWSx/Xdc7qm/ovzT2LLK9H8CBqfrp3uzbcAnnknx0fJF+XBgYmHsV2r3vWtS/aEiJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776604750; c=relaxed/simple;
-	bh=AvLVvkGMx5KNZbNVEJf7B+DrKxVga6LUIBz3jALnThw=;
+	s=arc-20240116; t=1776604871; c=relaxed/simple;
+	bh=FgDYXkUkm9aucXmTXa4FHW6oLYLPtFizZghvL9EwMm8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E/3fPuMCXwAJ8HguKGMu36C+LeagGxcPMHbGZBQNB+hqk95kWYzB4/gh4fYc7ursGnbGT9TdD/fNRhc3Q8a7mdPkJDVYR5z9BTi122ucuAUIEirKIeMucLh/aBcOzlKKshAGleBADHskpHCwjRQD/me/mrONuZkKnVApPzP3PPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dzlJqSQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A533EC2BCAF;
-	Sun, 19 Apr 2026 13:18:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JAs/HuWBg5VhgTY/Uu/5VPjxUZBi2uOU/ICMznsQsObgqmR2EUoC6LS1Kvdc8aqUnyOEXViq2v+rncbDctqR+XvnXdVH1oArfJ/N80UyXHv3LQJjrmxPWodhJfXT6zdVjZW85fofH6NNVcLb3n5frvUgJFsHFsJZHdrPCAAd9nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XDhiISp2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D68C2BCAF;
+	Sun, 19 Apr 2026 13:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776604750;
-	bh=AvLVvkGMx5KNZbNVEJf7B+DrKxVga6LUIBz3jALnThw=;
+	s=k20201202; t=1776604871;
+	bh=FgDYXkUkm9aucXmTXa4FHW6oLYLPtFizZghvL9EwMm8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dzlJqSQ08YUJ03UQYUUa4fEA/Tc9oM4uFmVjqf9VoH4oXrUMBIG2h7I33q6bSbTKo
-	 1XHc9p/U675xQntON8jfbD0tr7Y4SdqJi+Sg2sKf00RyWFbhmtQROiyKxDxilZEGxM
-	 xndvM+MS70K4sO51ukS52IWkQmsH9QwPB3sxWS05tBXEbzrooMRhXylneIGqfwNFMU
-	 NWN5DykZONDBOGw3axSIbr5IlBHRW01sh95v4LPImFtUd7wsHBH6jkNbWEVfBP1lGa
-	 t0aoJnSsz0WPb6AHBeXLcvbEHKVh1M9icSF+ubZEcK4pYEx9RuRvRVgOptO9ohjugQ
-	 518ZGkSyqGs0g==
-Date: Sun, 19 Apr 2026 14:18:53 +0100
+	b=XDhiISp2Bu0d3vER2JR79jpIxctjflJuL7SuiiWuPZ75M71sQppUtfKTKyrR3cYwO
+	 WEzADiHx2qew8M3V1O0MD1vhiB+hYHqPR4QC9m4GqGdjS2PFzEtd0Y1/3lulheT/Xp
+	 ugDYG8nhDF7krkLw6ZMTfLSsiuwusEZMX3TqbKXkfswUOewKxFwpKxp5y5o52LT0Pm
+	 5F5s8NjqlBvl5VN1beILzpkyeivldBiSQ1v6j4tsemKTywS0Oq3tKdoEF8wTiTzeqP
+	 lcqhCgiVybVohCBO9IDowaGU8qBiPEOXPfUktCrNy9CHXOiEkgHwrv8djPaaWl65mI
+	 LeXlslE3jf3Mg==
+Date: Sun, 19 Apr 2026 14:20:54 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Yury Norov <ynorov@nvidia.com>
 Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
@@ -64,12 +64,12 @@ Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
  Collins <bcollins@watter.com>, linux-kernel@vger.kernel.org,
  linux-iio@vger.kernel.org, linux-wireless@vger.kernel.org,
  netdev@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH 3/9] iio: intel_dc_ti_adc: switch to using
+Subject: Re: [PATCH 4/9] iio: magnetometer: yas530: switch to using
  FIELD_GET_SIGNED()
-Message-ID: <20260419141853.586ae273@jic23-huawei>
-In-Reply-To: <20260417173621.368914-4-ynorov@nvidia.com>
+Message-ID: <20260419142054.0660e8e2@jic23-huawei>
+In-Reply-To: <20260417173621.368914-5-ynorov@nvidia.com>
 References: <20260417173621.368914-1-ynorov@nvidia.com>
-	<20260417173621.368914-4-ynorov@nvidia.com>
+	<20260417173621.368914-5-ynorov@nvidia.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -89,7 +89,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34972-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-34973-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
@@ -106,43 +106,17 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E7FC3424146
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: 43A9F4241A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 17 Apr 2026 13:36:14 -0400
+On Fri, 17 Apr 2026 13:36:15 -0400
 Yury Norov <ynorov@nvidia.com> wrote:
 
 > Switch from sign_extend32(FIELD_GET()) to the dedicated
-> FIELD_GET_SIGNED() and don't provide the fields length explicitly.
+> FIELD_GET_SIGNED() and don't calculate the fields length explicitly.
 > 
 > Signed-off-by: Yury Norov <ynorov@nvidia.com>
-
-Assuming any remaining discussion on the implementation of the macro
-shakes out, this looks like a good little cleanup to me.
-
-Not sure how you want to merge this but if it's going through another tree.
 Acked-by: Jonathan Cameron <jic23@kernel.org>
-
-> ---
->  drivers/iio/adc/intel_dc_ti_adc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/intel_dc_ti_adc.c b/drivers/iio/adc/intel_dc_ti_adc.c
-> index 0fe34f1c338e..b5afad713e2d 100644
-> --- a/drivers/iio/adc/intel_dc_ti_adc.c
-> +++ b/drivers/iio/adc/intel_dc_ti_adc.c
-> @@ -290,8 +290,8 @@ static int dc_ti_adc_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
->  
-> -	info->vbat_zse = sign_extend32(FIELD_GET(DC_TI_VBAT_ZSE, val), 3);
-> -	info->vbat_ge = sign_extend32(FIELD_GET(DC_TI_VBAT_GE, val), 3);
-> +	info->vbat_zse = FIELD_GET_SIGNED(DC_TI_VBAT_ZSE, val);
-> +	info->vbat_ge = FIELD_GET_SIGNED(DC_TI_VBAT_GE, val);
->  
->  	dev_dbg(dev, "vbat-zse %d vbat-ge %d\n", info->vbat_zse, info->vbat_ge);
->  
-
 
