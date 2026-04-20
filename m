@@ -1,65 +1,60 @@
-Return-Path: <linux-wireless+bounces-35063-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35064-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGhdMDsx5ml6tAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35063-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:59:23 +0200
+	id qDz7LhAz5mlqtQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35064-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:07:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D87742C803
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:59:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE4E42CA57
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:07:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 36C60321D4A5
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:50:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 037C23084DCD
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01163EFD25;
-	Mon, 20 Apr 2026 13:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE85D3BED47;
+	Mon, 20 Apr 2026 13:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qYWGF2Di"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRqgWJpg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE8E3EFD1B;
-	Mon, 20 Apr 2026 13:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE763FA5E0;
+	Mon, 20 Apr 2026 13:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691528; cv=none; b=qGMnkk749ql+Ohm1Y4hAYbEk+qQWOzZaN4frjnhb/Y+w4sYfn78gJ1OoDTVhP6tF3WpHxIbcNOVlbvX6lGWq90zseaiVBuwSPqxl8nKPr3qic/P/Y+1Ps1cHYZbpmdZL9cgCNt11LYOEwefu3VQv9Udwh84d6GlvNnA6A9u1KGo=
+	t=1776691571; cv=none; b=HAvFmJoAA13/1nPzOwmJBx+XxWPNZh8/dMjQLQis0k6b92reWMx9mMcNxxmzLAlL089gL6aBZHQEzq11dm01EHKyg1wGQbHVn0G8jbDLr0k0L3y+XBwFFWMJeOVOdPzGpf8WOXrWollh2US+C2Pc8JFxYH5XCKQNgWla9vL/bJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691528; c=relaxed/simple;
-	bh=xZeWLS00cNrQHhFhMdAB7QHipXmDGVVTsyHK/QHKDPk=;
+	s=arc-20240116; t=1776691571; c=relaxed/simple;
+	bh=WLQgOMFtCDW3oXcYgQSCIpO+YNH9wFtx5GdhAlLdSrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uaIuCwcAecBg+q+L6LILw6gfdaztAYHdbUx44hNE7ERE8BpNq8qdelLaR2TYalBNWeY44DMvfUZkj/SEi7pGCxISg4RIVm0HbtkoBeeTz0vEcvTHEYc7+pB57Er0A2UEpQ8AJkyB8KUs3bAk1pyp9eZKvzX6VR57BnMuLol9rFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qYWGF2Di; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EAAC19425;
-	Mon, 20 Apr 2026 13:25:26 +0000 (UTC)
+	 MIME-Version; b=Cfafx9d7QFWMBkZTQAQV367gaCid9z/IR3aq1oJfrRcQ0N15A4IuQM32xpbEzo/cNuQPejei5S8RstTcJpcOlpT3A0hxlNJLD7UKL9mSxjNFxiTbEqkQOgX2KzLNxCXyL3dpRiRwumH5K0Jxyypf1KWbv9YL8HIjvZ017MQQW/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRqgWJpg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBAE6C2BCB4;
+	Mon, 20 Apr 2026 13:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691528;
-	bh=xZeWLS00cNrQHhFhMdAB7QHipXmDGVVTsyHK/QHKDPk=;
+	s=k20201202; t=1776691571;
+	bh=WLQgOMFtCDW3oXcYgQSCIpO+YNH9wFtx5GdhAlLdSrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYWGF2DiSwzbqPXxljc3soW7+uCbH5jZZ0OgRatpEiRYjmQXgpbrMkn0bwWEwfBnM
-	 KZd9S7btFKmMFCY6s/AB9H6UUqTURQ4NQtAr6oBLIbk6MKtbIZ6A3TOsm2na4yZGLN
-	 T1MHUjQG0+G34dy0CAY2C9WqJK4FEmoEn1zdyYQJcd5DOKN+W0KrqhmVAkWjpRF2N/
-	 pm6L4A6hUdWvBByev+YkPbflDkM9bUOGnm2C0TKbXyBtBGylg1e3JeleLj9B04yrw2
-	 +SPv0XDWFOSA/8cIv78mM//iibJbL6lyRtTEJGW2iEHMsgHX2nqmDqnH81SMzYNZ15
-	 5433QwSpLLIoQ==
+	b=GRqgWJpgUzrZVoJ4J/DhJAyMewOVlcS5P6F+Ya383N7PnqM2JvA3u9B1ydfjLouY0
+	 QsSqR8Wsa6luLGugLLOpgtBOHERV70MU9G2qa1Jx8Zx/jbjRXXIKXiGpQx4F2nVUN/
+	 WVOfufLmxdbvEqQt9bHMpoPvDxEnz5igyBt/jhl5lm571y0I97+hes2RKFDrMh9sL3
+	 CtkmmArGT9vk9SJrmlgb/2GaKfj02VeHhV8Xbuq2WEVExxSogDdnDTujas5GyXqciL
+	 kLRM5z3OkF7BfQxRMqcHd3/xIQPoG3ze/XbBUk8wy7WTiI/a/yM57AG0ItzuBnG1VS
+	 7ByWB13BkYigA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
-	Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
 	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.18] wifi: ath12k: Set up MLO after SSR
-Date: Mon, 20 Apr 2026 09:17:56 -0400
-Message-ID: <20260420132314.1023554-82-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-6.18] wifi: iwlwifi: mld: always assign a fw id to a vif
+Date: Mon, 20 Apr 2026 09:18:21 -0400
+Message-ID: <20260420132314.1023554-107-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -72,466 +67,340 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35063-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35064-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 6D87742C803
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2CE4E42CA57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit f33a8e41826831fc8ceb5f62833488cd9388ed59 ]
+[ Upstream commit 4f1da5cf31cf6345f145e914a0158c2e114bbe27 ]
 
-During recovery of an MLO setup from a core reset,
-ATH12K_GROUP_FLAG_REGISTERED is set because ath12k_mac_unregister is not
-called during core reset. So, when an MLO setup is recovering from a core
-reset, ath12k_core_mlo_setup() is skipped. Hence, the firmware will not
-have information about partner links. This makes MLO association fail
-after recovery.
+We used to have a fw id assignment in iwl_mld_init_vif since all interface
+types that were added to the driver was immediately added to the FW as
+well.
+Since NAN was introduced, this is no longer the case - the NAN interface
+is not added to the fw until a local schedule is configured.
 
-To resolve this, call ath12k_core_mlo_setup() during recovery, to set up
-MLO. Also, if MLO setup fails during recovery, call
-ath12k_mac_unregister() and ath12k_mac_destroy() to unregister mac and
-then tear down the mac structures.
+For this vif we don't assign a fw id so it is 0 by default.
+But later, when the vif is removed from the driver, we think that it has
+a valid fw id (0) and we point fw_id_to_vif[0] to NULL.
+fw_id_to_vif[0] might actually point to another vif with a valid fw id
+0. In this case, we end up messing fw_id_to_vif.
 
-Also, initiate MLO teardown in the hardware group stop sequence to align
-with the hardware group start sequence.
+Fix this by initializing a vif with a special invalid fw id, and by
+exiting iwl_mld_rm_vif early for NAN interfaces.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01181-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
-Signed-off-by: Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260227041127.3265879-1-roopni.devanathan@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260321192637.f3b5cc59098f.I3d1dbe66bd224cbb786c2b0ab3d1c9f7ec9003e4@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the data I need. Let me write the comprehensive analysis.
+Good. Now I have a complete picture. Let me compile the full analysis.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: PARSE THE SUBJECT LINE
-- **Subsystem**: wifi: ath12k (Qualcomm ath12k wireless driver)
-- **Action verb**: "Set up" - implies ensuring required initialization
-  happens
-- **Summary**: Set up MLO (Multi-Link Operation) after SSR (Subsystem
-  Restart/Recovery)
-Record: [wifi: ath12k] [Set up] [Ensure MLO is configured after SSR
-recovery to avoid association failure]
+**Step 1.1: Subject Line**
+- Subsystem: `wifi: iwlwifi: mld:` (Intel wireless driver, MLD sub-
+  driver)
+- Action verb: "always assign" - implies fixing missing initialization
+- Summary: Ensure every vif gets a proper fw_id (even NAN interfaces
+  that don't get a real one)
 
-### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
-- **Tested-on**: QCN9274 hw2.0 PCI
-  WLAN.WBE.1.6-01181-QCAHKSWPL_SILICONZ-1
-- **Signed-off-by**: Ramya Gnanasekar (co-author), Roopni Devanathan
-  (author), Jeff Johnson (maintainer)
-- **Reviewed-by**: Baochen Qiang, Vasanthakumar Thiagarajan (both
-  Qualcomm reviewers)
-- **Link**: patch.msgid.link (original submission URL)
-- **No Fixes: tag** (expected for autosel candidates)
-- **No Cc: stable** (expected)
-Record: Two Qualcomm reviewers reviewed the patch. Jeff Johnson (ath12k
-maintainer) applied it. Tested on real hardware.
+Record: [wifi: iwlwifi: mld] [fix/ensure] [Initialize fw_id for NAN vifs
+to prevent fw_id_to_vif table corruption]
 
-### Step 1.3: ANALYZE THE COMMIT BODY TEXT
-The bug: During recovery from a core reset with MLO setup,
-`ATH12K_GROUP_FLAG_REGISTERED` remains set because
-`ath12k_mac_unregister()` is NOT called during core reset. Therefore,
-when `ath12k_core_hw_group_start()` is called during recovery, it sees
-the flag is set and jumps over the `ath12k_core_mlo_setup()` call. This
-means the firmware doesn't receive partner link information, causing MLO
-association to fail after recovery.
+**Step 1.2: Tags**
+- Reviewed-by: Emmanuel Grumbach (Intel wifi subsystem co-maintainer)
+- Signed-off-by: Miri Korenblit (Intel wifi maintainer)
+- Link: patch.msgid.link URL
+- No Fixes: tag (expected for candidates)
+- No Cc: stable (expected for candidates)
 
-Record: [Bug: MLO association fails after firmware recovery] [Symptom:
-WiFi MLO cannot associate after SSR] [Root cause:
-ath12k_core_mlo_setup() skipped during recovery because
-ATH12K_GROUP_FLAG_REGISTERED is still set]
+Record: Reviewed by a subsystem co-maintainer. No syzbot, no external
+reporters.
 
-### Step 1.4: DETECT HIDDEN BUG FIXES
-This is a clear bug fix - MLO association fails after recovery. The
-commit message explicitly describes a failure mode. Not hidden at all.
-Record: [This is an explicit bug fix for recovery failure]
+**Step 1.3: Commit Body Analysis**
+The message clearly describes:
+- The bug: NAN interfaces don't get a fw_id, so fw_id defaults to 0
+- The symptom: On NAN vif removal, `fw_id_to_vif[0]` is set to NULL,
+  which may belong to a *different* valid vif with fw_id 0
+- The consequence: Corrupts the fw_id_to_vif mapping table
+- The fix: Initialize fw_id to `IWL_MLD_INVALID_FW_ID` and skip rm_vif
+  for NAN
 
----
+Record: This is a data corruption bug in the vif-to-firmware-id mapping
+table.
 
-## PHASE 2: DIFF ANALYSIS - LINE BY LINE
+**Step 1.4: Hidden Bug Fix?**
+This is clearly described as a bug fix. The commit message explains the
+exact corruption mechanism.
 
-### Step 2.1: INVENTORY THE CHANGES
-- **File**: `drivers/net/wireless/ath/ath12k/core.c` only
-- **Change 1**: `ath12k_core_hw_group_stop()` - 2 lines added (call to
-  `ath12k_mac_mlo_teardown(ag)`)
-- **Change 2**: `ath12k_core_hw_group_start()` - ~8 lines modified (add
-  MLO setup in recovery path with error handling)
-- **Total**: ~10 lines added/modified
-- **Functions modified**: `ath12k_core_hw_group_stop()`,
-  `ath12k_core_hw_group_start()`
-Record: [Single file, ~10 lines changed, two functions modified,
-surgical fix]
+## PHASE 2: DIFF ANALYSIS
 
-### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
+**Step 2.1: Inventory**
+- 1 file changed: `drivers/net/wireless/intel/iwlwifi/mld/iface.c`
+- 2 hunks: one in `iwl_mld_init_vif()` (+1 line), one in
+  `iwl_mld_rm_vif()` (+3 lines)
+- Net: +4 lines. Extremely small, surgical fix.
 
-**Hunk 1** (`ath12k_core_hw_group_stop`):
-- Before: `ath12k_mac_unregister(ag)` then loop cleanup then
-  `ath12k_mac_destroy(ag)` - no MLO teardown.
-- After: `ath12k_mac_unregister(ag)` then `ath12k_mac_mlo_teardown(ag)`
-  then loop cleanup then `ath12k_mac_destroy(ag)`.
-- This aligns the stop sequence with the start sequence (MLO setup
-  happens in start, so MLO teardown should happen in stop).
+**Step 2.2: Code Flow Change**
 
-**Hunk 2** (`ath12k_core_hw_group_start`):
-- Before: When `ATH12K_GROUP_FLAG_REGISTERED` is set, jumps directly to
-  `core_pdev_create` - skipping all MLO setup.
-- After: When the flag is set, calls `ath12k_core_mlo_setup(ag)` first,
-  with error handling that calls `ath12k_mac_unregister()` and falls
-  through to `err_mac_destroy` on failure. Then proceeds to
-  `core_pdev_create` as before.
+Hunk 1 (`iwl_mld_init_vif`): Adds `mld_vif->fw_id =
+IWL_MLD_INVALID_FW_ID;` (0xff). Before: fw_id is 0 (zeroed struct).
+After: fw_id is 0xff (invalid sentinel).
 
-Record: [Fix adds MLO setup in recovery path and teardown in stop path
-to match start/stop symmetry]
+Hunk 2 (`iwl_mld_rm_vif`): Adds early return for NAN interfaces. Before:
+NAN vif removal proceeds to NULL out `fw_id_to_vif[0]`. After: NAN
+removal returns immediately without touching the table.
 
-### Step 2.3: IDENTIFY THE BUG MECHANISM
-- **Category**: Logic / correctness fix
-- **Mechanism**: Missing initialization during recovery path. The MLO
-  setup was only done on first-time start (when
-  `ATH12K_GROUP_FLAG_REGISTERED` is not set), but needs to also be done
-  on recovery (when the flag IS set but firmware state was lost).
-Record: [Logic bug - MLO firmware setup skipped during recovery, causing
-MLO association failure]
+**Step 2.3: Bug Mechanism**
+This is a **logic/correctness bug** leading to **data corruption** in
+the fw_id_to_vif mapping:
+1. NAN vif is created - fw_id stays at default 0 (no allocation)
+2. NAN vif is removed - `fw_id_to_vif[0]` is set to NULL
+3. If another vif legitimately holds fw_id 0, its mapping is destroyed
 
-### Step 2.4: ASSESS THE FIX QUALITY
-- The fix is obviously correct - adding `ath12k_core_mlo_setup()` to the
-  recovery path is the logical fix.
-- Error handling is properly added (if MLO setup fails during recovery,
-  unregister and destroy).
-- Adding teardown in stop path creates symmetry with start path.
-- Low regression risk - only affects the recovery code path.
-Record: [Fix is obviously correct, minimal, well-contained, proper error
-handling added]
+The existing WARN_ON check (`mld_vif->fw_id >=
+ARRAY_SIZE(mld->fw_id_to_vif)`) doesn't catch this because 0 is a valid
+index. But with the fix, IWL_MLD_INVALID_FW_ID (0xff) would trigger the
+WARN_ON as a safety net.
 
----
+**Step 2.4: Fix Quality**
+- Obviously correct: IWL_MLD_INVALID_FW_ID already exists and is used
+  elsewhere in the codebase (scan.c)
+- Minimal: only 4 lines added
+- No regression risk: NAN interfaces should never touch fw_id_to_vif,
+  and the early return prevents any interaction
+- Double defense: Both the sentinel value AND the early return prevent
+  the corruption
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+## PHASE 3: GIT HISTORY
 
-### Step 3.1: BLAME THE CHANGED LINES
-- The buggy code was introduced by commit `b716a10d99a28` ("wifi:
-  ath12k: enable MLO setup and teardown from core", Dec 2024) and
-  `a343d97f27f514` ("wifi: ath12k: move struct ath12k_hw from per device
-  to group", Dec 2024).
-- Both first appeared in v6.14.
-Record: [Buggy code introduced in v6.14 by b716a10d99a28 and
-a343d97f27f514]
+**Step 3.1: Blame Results**
+- `iwl_mld_init_vif` was introduced by `d1e879ec600f9` (add iwlmld sub-
+  driver, 2025-02-16), first in v6.15
+- The NAN support that introduced the bug was `9e978d8ebbe96`
+  (2025-11-10), first in v7.0
+- The `iwl_mld_rm_vif` function has been unchanged since the mld driver
+  introduction, with only the void return refactor in `0755db9f2605e`
 
-### Step 3.2: FOLLOW THE FIXES: TAG
-No Fixes: tag present (expected for autosel candidates).
-Record: [N/A - no Fixes tag]
+Record: Bug introduced by commit 9e978d8ebbe96 in v7.0-rc1. Only v7.0+
+stable trees are affected.
 
-### Step 3.3: CHECK FILE HISTORY
-- `core.c` has had extensive recovery-related fixes between v6.15 and
-  v6.16 (the "fix_reboot_issues_with_hw_grouping" series with 9 commits
-  in v6.16).
-- This current commit is a continuation of that series, fixing another
-  aspect of recovery that was missed.
-Record: [This is a standalone fix that addresses an issue not covered by
-the previous v6.16 recovery series]
+**Step 3.2: Fixes tag** - No Fixes: tag present (expected).
 
-### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-- Roopni Devanathan (author) has 7+ commits in ath12k, is a regular
-  contributor from Qualcomm.
-- Ramya Gnanasekar (co-author) has 13+ commits in ath12k.
-- Both Reviewed-by are from Qualcomm engineers who know the codebase.
-Record: [Author is a regular contributor, reviewed by knowledgeable team
-members]
+**Step 3.3: File History**
+Post-v7.0 commits touching iface.c are only recent tree-wide changes and
+the wifi generation fix. The file is stable.
 
-### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-- The functions used (`ath12k_core_mlo_setup`,
-  `ath12k_mac_mlo_teardown`, `ath12k_mac_unregister`,
-  `ath12k_mac_destroy`) all exist in the 7.0 tree.
-- The recovery flow with `ath12k_core_reset()` and
-  `ath12k_core_restart()` with hardware grouping exists in 7.0 (added in
-  v6.16).
-- The diff context matches the current 7.0 code exactly.
-Record: [No additional dependencies needed - patch applies cleanly to
-7.0]
+**Step 3.4: Author**
+Miri Korenblit is the primary maintainer of iwlwifi. Emmanuel Grumbach
+reviewed the patch.
 
----
+**Step 3.5: Dependencies**
+- `IWL_MLD_INVALID_FW_ID` (0xff) already exists in v7.0 at `mld.h:530`
+- NAN support already exists in v7.0
+- No other prerequisites needed. This is standalone.
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+## PHASE 4: MAILING LIST RESEARCH
 
-### Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
-- Retrieved via b4 mbox. The patch was submitted as "[PATCH ath-next]"
-  (single patch, not a series).
-- Jeff Johnson replied "Applied, thanks!" with commit hash
-  `f33a8e41826831fc8ceb5f62833488cd9388ed59`.
-- Two Reviewed-by tags from Baochen Qiang and Vasanthakumar Thiagarajan
-  were present on the original submission.
-Record: [Single patch, applied by ath12k maintainer Jeff Johnson,
-reviewed by 2 Qualcomm engineers]
-
-### Step 4.2: CHECK WHO REVIEWED THE PATCH
-- Baochen Qiang (Qualcomm) - regular ath12k reviewer
-- Vasanthakumar Thiagarajan (Qualcomm) - senior ath12k developer
-Record: [Reviewed by experienced ath12k engineers]
-
-### Step 4.3: SEARCH FOR THE BUG REPORT
-No external bug report linked. The bug was found during internal testing
-at Qualcomm.
-Record: [Internal finding, tested on QCN9274 hardware]
-
-### Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
-- This is a standalone patch, not part of a series.
-- Related to the earlier v6.16 "fix_reboot_issues_with_hw_grouping"
-  series but is an independent fix.
-Record: [Standalone patch, no dependencies on other unmerged patches]
-
-### Step 4.5: CHECK STABLE MAILING LIST HISTORY
-- Could not verify due to lore.kernel.org Anubis protection.
-Record: [Unable to check stable mailing list - lore blocked]
-
----
+Lore was inaccessible due to anti-bot protection. b4 dig found the
+submission URL: `https://patch.msgid.link/20260324093333.2953495-1-
+miriam.rachel.korenblit@intel.com`. This was part of a batch submission
+by Miri Korenblit. The patch was reviewed by Emmanuel Grumbach, the
+iwlwifi co-maintainer.
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1: KEY FUNCTIONS
-- `ath12k_core_hw_group_start()` - called during device bring-up and
-  recovery
-- `ath12k_core_hw_group_stop()` - called during device shutdown and
-  error handling
+**Step 5.1-5.4: Key Functions**
+- `iwl_mld_init_vif()`: Called from `iwl_mld_add_vif()` during interface
+  creation - standard mac80211 callback path
+- `iwl_mld_rm_vif()`: Called during interface removal
+- `fw_id_to_vif[]` is accessed from many places: notification handlers,
+  low_latency, scan code - corruption of this table has wide-reaching
+  effects
 
-### Step 5.2: TRACE CALLERS
-- `ath12k_core_hw_group_start()` is called from
-  `ath12k_core_qmi_firmware_ready()` (line 1319) during normal device
-  bring-up AND from the recovery path.
-- `ath12k_core_hw_group_stop()` is called from the error path of
-  `ath12k_core_hw_group_start()` and from `ath12k_core_deinit()`.
-Record: [Functions called during normal operation and recovery -
-recovery path is common for QCN9274 users]
+**Step 5.5: Similar Patterns**
+`IWL_MLD_INVALID_FW_ID` is already used as a sentinel value for
+`fw_link_id` in scan.c, so this pattern is established in the codebase.
 
-### Step 5.3-5.5: CALL CHAIN / SIMILAR PATTERNS
-- The recovery path: firmware crash → `ath12k_core_reset()` →
-  `ath12k_hif_power_up()` → firmware restarts → QMI ready →
-  `ath12k_core_hw_group_start()` → (bug: skips MLO setup) → recovery
-  fails
-Record: [Bug is in a common recovery code path triggered by firmware
-crashes]
+## PHASE 6: STABLE TREE ANALYSIS
 
----
+**Step 6.1: Buggy Code in Stable**
+- NAN support (`9e978d8ebbe96`) first appeared in v7.0-rc1
+- Not present in v6.19, v6.16, or v6.15
+- Bug exists ONLY in v7.0 stable tree
+- Current HEAD is v7.0, and we confirmed the v7.0 code has the bug
 
-## PHASE 6: CROSS-REFERENCING AND STABLE TREE ANALYSIS
+**Step 6.2: Backport Complications**
+The diff between v7.0 and HEAD for this file is empty (HEAD IS v7.0).
+The patch applies cleanly with no conflicts whatsoever.
 
-### Step 6.1: DOES THE BUGGY CODE EXIST IN STABLE TREES?
-- The buggy code was introduced in v6.14.
-- The MLO hw_group code exists in: v6.14, v6.15, v6.16, v6.17, v6.18,
-  7.0
-- The recovery-with-grouping code was added in v6.16 (the series from
-  6af396942bf13).
-- **For the bug to be triggerable, BOTH the MLO setup code AND the
-  recovery-with-grouping code must exist.**
-- Both are present in v6.16+ and in 7.0.
-Record: [Buggy code exists in v6.16+ stable trees and 7.0]
-
-### Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-- The diff context matches the current 7.0 code exactly - the patch
-  should apply cleanly.
-- All referenced functions exist in 7.0.
-Record: [Clean apply expected for 7.0]
-
-### Step 6.3: CHECK IF RELATED FIXES ARE ALREADY IN STABLE
-- The v6.16 "fix_reboot_issues_with_hw_grouping" series is already in
-  stable trees, but does NOT include the MLO setup fix that this commit
-  provides.
-Record: [No existing fix for this specific issue in stable]
-
----
+**Step 6.3: No related fixes already in stable.**
 
 ## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-### Step 7.1: IDENTIFY THE SUBSYSTEM
-- **Subsystem**: WiFi driver (ath12k) - Qualcomm QCN9274/WCN7850
-- **Criticality**: IMPORTANT - affects users of QCN9274 WiFi hardware
-  using MLO
-Record: [WiFi driver, IMPORTANT - affects MLO users of QCN9274]
+**Step 7.1:** wifi: iwlwifi is an IMPORTANT subsystem - Intel WiFi is
+among the most widely used WiFi hardware on Linux (laptops, desktops).
+Criticality: IMPORTANT.
 
-### Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-- ath12k is one of the most actively developed kernel subsystems - 62+
-  commits to core.c between v6.14 and v7.0.
-Record: [Highly active subsystem]
-
----
+**Step 7.2:** The iwlwifi mld driver is actively developed with NAN and
+EMLSR features being added in the v7.0 cycle.
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-### Step 8.1: DETERMINE WHO IS AFFECTED
-- Users of QCN9274 WiFi hardware with MLO (Multi-Link Operation)
-  enabled.
-- This is WiFi 7 hardware that supports MLO for improved throughput and
-  reliability.
-Record: [Driver-specific - affects QCN9274 MLO users]
+**Step 8.1: Affected Users**
+Users of Intel WiFi hardware using the iwlmld driver with NAN
+functionality. As NAN is a new feature in v7.0, this primarily affects
+users of newer WiFi 7 hardware.
 
-### Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-- Trigger: Firmware crash (not uncommon with WiFi firmware) followed by
-  SSR recovery.
-- After recovery, MLO association fails completely - WiFi connectivity
-  is broken until manual restart.
-Record: [Triggered by firmware crash recovery - moderately common
-scenario]
+**Step 8.2: Trigger Conditions**
+- Create a NAN interface, then remove it. This will corrupt
+  fw_id_to_vif[0].
+- If another vif with fw_id 0 exists, it becomes invisible to the
+  driver.
+- Trigger: normal NAN usage lifecycle (create/destroy NAN interface)
 
-### Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-- **Failure mode**: Complete MLO association failure after recovery -
-  WiFi becomes non-functional for MLO connections.
-- **Severity**: HIGH - loss of WiFi connectivity after firmware
-  recovery, defeating the purpose of SSR.
-Record: [HIGH - WiFi MLO connectivity lost after firmware recovery]
+**Step 8.3: Failure Mode**
+- The fw_id_to_vif table corruption means the driver loses track of
+  active interfaces
+- This can cause: wrong vif returned from firmware notifications, NULL
+  pointer dereferences when accessing the corrupted entry, incorrect
+  driver behavior
+- Severity: HIGH (data corruption of internal mapping, potential for
+  subsequent crashes)
 
-### Step 8.4: CALCULATE RISK-BENEFIT RATIO
-- **Benefit**: Fixes complete MLO failure after firmware recovery -
-  restores WiFi functionality.
-- **Risk**: Very low - ~10 lines, well-contained, only affects recovery
-  path, proper error handling added.
-- **Ratio**: High benefit / very low risk = FAVORABLE.
-Record: [High benefit, very low risk]
-
----
+**Step 8.4: Risk-Benefit**
+- BENEFIT: High - prevents corruption of critical internal data
+  structure
+- RISK: Very low - 4 lines, obviously correct, uses existing sentinel
+  value, reviewed by co-maintainer
+- Ratio: Strongly favorable
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: COMPILE THE EVIDENCE
-**FOR backporting:**
-- Fixes a real bug (MLO association failure after SSR recovery)
-- Small, surgical fix (~10 lines in one file)
-- Tested on real hardware (QCN9274 hw2.0)
-- Reviewed by 2 experienced engineers, applied by subsystem maintainer
-- Obviously correct - adds missing initialization in recovery path
-- All required functions exist in 7.0 tree
-- Patch applies cleanly to current 7.0 code
-- Proper error handling included
+**Step 9.1: Evidence Summary**
 
-**AGAINST backporting:**
-- Submitted to ath-next (not explicitly targeted for stable)
-- No Fixes: tag (expected for autosel)
-- No Cc: stable (expected for autosel)
-- Affects only QCN9274 MLO users (limited user base, though growing with
-  WiFi 7 adoption)
-- The recovery infrastructure this depends on was introduced relatively
-  recently (v6.16)
+FOR backporting:
+- Fixes real data corruption bug in fw_id_to_vif mapping table
+- Extremely small (4 lines), surgical, obviously correct
+- Uses existing infrastructure (IWL_MLD_INVALID_FW_ID)
+- Reviewed by subsystem co-maintainer Emmanuel Grumbach
+- Applies cleanly to v7.0 (zero diff between HEAD and v7.0)
+- No dependencies needed
+- Bug is triggered by normal NAN usage lifecycle
 
-### Step 9.2: APPLY THE STABLE RULES CHECKLIST
-1. **Obviously correct and tested?** YES - tested on QCN9274, reviewed
-   by 2 engineers.
-2. **Fixes a real bug that affects users?** YES - MLO connectivity fails
-   after firmware recovery.
-3. **Important issue?** MODERATE-HIGH - WiFi connectivity loss after
-   recovery.
-4. **Small and contained?** YES - ~10 lines in one file, single function
-   scope.
-5. **No new features or APIs?** CORRECT - no new features.
-6. **Can apply to stable trees?** YES - verified code context matches
-   7.0 exactly.
+AGAINST backporting:
+- NAN is a new feature, so the user population is still growing
+- No Fixes: tag or explicit stable nomination (but this is expected for
+  all candidates)
 
-### Step 9.3: CHECK FOR EXCEPTION CATEGORIES
-Not an exception category (not device ID, quirk, DT, or build fix).
-Standard bug fix.
+**Step 9.2: Stable Rules Checklist**
+1. Obviously correct and tested? YES - trivial fix, reviewed by co-
+   maintainer
+2. Fixes a real bug? YES - fw_id_to_vif corruption on NAN vif removal
+3. Important issue? YES - data corruption of internal driver state
+4. Small and contained? YES - 4 lines in 1 file
+5. No new features? Correct - pure bug fix
+6. Can apply to stable? YES - applies cleanly to v7.0
 
-### Step 9.4: DECISION
-The fix is small, obviously correct, tested, reviewed, and fixes a real
-user-impacting bug (MLO WiFi connectivity failure after firmware crash
-recovery). The risk is minimal and the patch applies cleanly. However,
-this is a driver-specific issue affecting QCN9274 MLO users - a growing
-but specific audience. The fix meets all stable kernel criteria.
+**Step 9.3: Exception Categories** - Not applicable; this is a
+straightforward bug fix.
 
----
+## Verification
 
-## Verification:
-- [Phase 1] Parsed tags: found Tested-on (QCN9274), 2 Reviewed-by
-  (Baochen Qiang, Vasanthakumar Thiagarajan), SOBs from Qualcomm team
-- [Phase 2] Diff analysis: ~10 lines added to two functions in core.c -
-  adds ath12k_core_mlo_setup() call in recovery path and
-  ath12k_mac_mlo_teardown() in stop path
-- [Phase 3] git blame: buggy code introduced by b716a10d99a28 (v6.14)
-  and a343d97f27f514 (v6.14)
-- [Phase 3] git tag --contains: b716a10d99a28 first appears in v6.14
-- [Phase 3] Recovery-with-grouping commits (6af396942bf13 through
-  f5755c23ed8a4) first appear in v6.16
-- [Phase 3] All required functions (ath12k_core_mlo_setup,
-  ath12k_mac_mlo_teardown, etc.) verified present in 7.0 tree
-- [Phase 3] File context at lines 1126-1127 verified: the exact buggy
-  code (skipping MLO setup when REGISTERED flag set) exists in 7.0
-- [Phase 4] b4 mbox: found 4 messages in thread, Jeff Johnson "Applied,
-  thanks!" with commit f33a8e41826831fc8ceb5f62833488cd9388ed59
-- [Phase 4] Patch submitted as "[PATCH ath-next]" - single standalone
-  patch
-- [Phase 5] ath12k_core_hw_group_start called from
-  ath12k_core_qmi_firmware_ready (line 1319) - verified in code
-- [Phase 6] Code exists in 7.0 tree - verified via grep and Read
-- [Phase 6] Diff context matches current 7.0 code exactly - verified by
-  reading lines 998-1020 and 1119-1184
-- [Phase 8] Failure mode: WiFi MLO association failure after firmware
-  recovery - severity HIGH
+- [Phase 1] Parsed tags: Reviewed-by Emmanuel Grumbach (Intel co-
+  maintainer), Signed-off-by Miri Korenblit (maintainer)
+- [Phase 2] Diff: +1 line in iwl_mld_init_vif (sentinel init), +3 lines
+  in iwl_mld_rm_vif (NAN early return)
+- [Phase 3] git blame: NAN support introduced in 9e978d8ebbe96
+  (v7.0-rc1), confirmed via `git tag --contains`
+- [Phase 3] git show 9e978d8ebbe96: confirmed it moved fw_id allocation
+  out of init_vif without initializing to invalid for NAN
+- [Phase 3] Verified `d1e879ec600f9b` (mld driver) first appeared in
+  v6.15, NAN support only in v7.0
+- [Phase 4] b4 dig found submission URL; lore inaccessible due to bot
+  protection
+- [Phase 5] IWL_MLD_INVALID_FW_ID (0xff) already exists in v7.0
+  mld.h:530 and is used in scan.c
+- [Phase 5] fw_id_to_vif[] accessed from iface.c, low_latency.c,
+  notification handlers - wide impact surface
+- [Phase 6] NAN not in v6.19, v6.16, or v6.15 (confirmed via `git show
+  v6.19:...nan.c`). Bug only in v7.0
+- [Phase 6] git diff v7.0..HEAD is empty for iface.c - patch applies
+  cleanly
+- [Phase 6] v7.0 code verified: iwl_mld_init_vif lacks fw_id init,
+  iwl_mld_rm_vif lacks NAN check
+- [Phase 7] fw_id is u8 inside zeroed_on_hw_restart struct_group,
+  confirmed default is 0 (valid index)
+- [Phase 8] Corruption path verified: NAN vif removed -> fw_id=0 ->
+  fw_id_to_vif[0]=NULL -> corrupts valid mapping
+
+This is a small, surgical, obviously correct fix for a real data
+corruption bug in the iwlwifi mld driver's NAN handling. It meets all
+stable kernel criteria and applies cleanly to v7.0.
 
 **YES**
 
- drivers/net/wireless/ath/ath12k/core.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mld/iface.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 4ed608ba3c304..a1834985bb63b 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -1006,6 +1006,8 @@ static void ath12k_core_hw_group_stop(struct ath12k_hw_group *ag)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.c b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+index 9215fc7e2eca7..fb56e59894726 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/iface.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+@@ -434,6 +434,7 @@ iwl_mld_init_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
+ 	lockdep_assert_wiphy(mld->wiphy);
  
- 	ath12k_mac_unregister(ag);
+ 	mld_vif->mld = mld;
++	mld_vif->fw_id = IWL_MLD_INVALID_FW_ID;
+ 	mld_vif->roc_activity = ROC_NUM_ACTIVITIES;
  
-+	ath12k_mac_mlo_teardown(ag);
+ 	if (!mld->fw_status.in_hw_restart) {
+@@ -481,6 +482,10 @@ void iwl_mld_rm_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
+ 
+ 	lockdep_assert_wiphy(mld->wiphy);
+ 
++	/* NAN interface type is not known to FW */
++	if (vif->type == NL80211_IFTYPE_NAN)
++		return;
 +
- 	for (i = ag->num_devices - 1; i >= 0; i--) {
- 		ab = ag->ab[i];
- 		if (!ab)
-@@ -1123,8 +1125,14 @@ static int ath12k_core_hw_group_start(struct ath12k_hw_group *ag)
+ 	iwl_mld_mac_fw_action(mld, vif, FW_CTXT_ACTION_REMOVE);
  
- 	lockdep_assert_held(&ag->mutex);
- 
--	if (test_bit(ATH12K_GROUP_FLAG_REGISTERED, &ag->flags))
-+	if (test_bit(ATH12K_GROUP_FLAG_REGISTERED, &ag->flags)) {
-+		ret = ath12k_core_mlo_setup(ag);
-+		if (WARN_ON(ret)) {
-+			ath12k_mac_unregister(ag);
-+			goto err_mac_destroy;
-+		}
- 		goto core_pdev_create;
-+	}
- 
- 	ret = ath12k_mac_allocate(ag);
- 	if (WARN_ON(ret))
+ 	if (WARN_ON(mld_vif->fw_id >= ARRAY_SIZE(mld->fw_id_to_vif)))
 -- 
 2.53.0
 
