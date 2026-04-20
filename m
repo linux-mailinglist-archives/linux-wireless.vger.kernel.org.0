@@ -1,65 +1,66 @@
-Return-Path: <linux-wireless+bounces-35082-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35083-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCJzHq1S5mmcuwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35082-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 18:22:05 +0200
+	id OA3KIrBQ5mkDuwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35083-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 18:13:36 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0DB342F612
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 18:22:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15B042F290
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 18:13:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FBBF318DB41
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 14:35:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 413543360DEB
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 14:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F5D3AD539;
-	Mon, 20 Apr 2026 13:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B98B3AE196;
+	Mon, 20 Apr 2026 13:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Es6XmYlT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hipX0xjK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F8F3A4501;
-	Mon, 20 Apr 2026 13:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24F84C9545;
+	Mon, 20 Apr 2026 13:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691994; cv=none; b=DdaKArAECjiB5y39NK1cYxo1jHcfANcRk36/QFerNhsv3Bvc32Eo0YoMek1odtCFCVtuCAQ0DlYBFQJrCtshL+463GX/icRP2KPgIzzUwgMWVZXlkNfsycQyMElhLL74JCYBE4D7kD89wkgAcY7jiKQMgOQeopX4QFM9fbs2JrM=
+	t=1776691998; cv=none; b=bzPhVOjQwUmTr9FOcqhgQQCLrPMxOE8DueIPhvjJD3GXU+cqGafDV5Cp02LVW0PRr2RYaPoC2Yozi7vHnVnnn3hvKL/Hsm6rta1o0/9UCPZo+H98XSjoYsHlG+wg0NrE6B45WPgtg5b137qXKWZ8Ti9MKFNjSBldNFIDfRwYi8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691994; c=relaxed/simple;
-	bh=LUDV08gzADyENRa5emx25syYugOXi3ly76AbdcLA3bY=;
+	s=arc-20240116; t=1776691998; c=relaxed/simple;
+	bh=BePUomKvvkrM4BNzUrfaEwFz9bdlcwZGtKaMzr9TL2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iG9GZLfxeznStsNZOOvOpR9fvp8lTVBr6eYfbryfyWpSHp3WFYsFprKL0UdXI2SxJhvWWHb1bEBPrcpFh7OFFh/t8OXfmd7mAkAlRkqE9H18CmJJYLTpi1GfRYjw6XHtMoo61nWgu6bNpruyhdf+OlXmrpvKnrGvxwGG1M50jAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Es6XmYlT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9297C2BCB4;
-	Mon, 20 Apr 2026 13:33:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VhlqlNmo6+JZbNxSuXM3ZoXYTsTM3O6MRlNESOQSTbP02kl4QWaQR+B1L/zcIxHQ7K4ge003hAHI3+AnG+uJkDbMmOFp+hx8GdIvp/u4IiVg13sPu480c7bDbGkAjYPfxLzZbRZUyjH5yWb588A8Oirfk3l6jILLMQxx4e128lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hipX0xjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A96C2BCB4;
+	Mon, 20 Apr 2026 13:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691994;
-	bh=LUDV08gzADyENRa5emx25syYugOXi3ly76AbdcLA3bY=;
+	s=k20201202; t=1776691997;
+	bh=BePUomKvvkrM4BNzUrfaEwFz9bdlcwZGtKaMzr9TL2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Es6XmYlTqs3BBTnvqjJUpgRI7DueoTS6FtWmRKniI2T+SrrMcpmympzye5S/ilYRr
-	 Hf9eEuBnRh/Hz77sWl+p7Xl+SfOg6Eo0YGggbGt1iIns5fxkeCXM+c72eYo+ZaaICy
-	 QJ2xsE3GFn9eUvhpX5Hl6U/lmoHu9/2qyaPVcjvN0Gyfyn+IZWixKK4NC885ut/pE+
-	 qtLQmoBFrvSRJaX7w43gn/FzxsHQLA8oOTsCLhtEl/vf+jCHCzmlCzVdUkbc8cuDYf
-	 DzriRbUGQ4+BQOuUlyY/OQGlwsNGAwq/Vxq4WCNMq0HLjZhnyCme2EaEY1dWRS7wt/
-	 78YA1QtVDN4ng==
+	b=hipX0xjKlSz5QyIV03cdH2iHNbOUrgeY4tVkPRNF59kZn7ttDpppJ3PQL9TP76yer
+	 lSNNH679RcIxA9SdaV0qE5p/WUKAWsQI5KiVxcmbhxwuIQt7YbBRCBgVeW0C0CcqbG
+	 /jTyBMVM39kf9Mm1bn7eyjMqF8P6xtoAXomUIZBQ4PBdQJF+VMnTGxINO1NK727n1L
+	 M7vVrfTLkah8QRIxS3/HS0RhX01/e9Jn+lEV9ehgxgQH7pOmsVRdcj9NYJK2Emf9F5
+	 4Gysktro777TCEUOa+iXcGxJZf85/Vqr45LEMJlYdp7Nn/8axhpCmMKO43HKwvNyJU
+	 3skkTf/o2oUYg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Avula Sri Charan <quic_asrichar@quicinc.com>,
-	Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
+	ryder.lee@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
 	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.18] wifi: ath12k: Skip adding inactive partner vdev info
-Date: Mon, 20 Apr 2026 09:21:45 -0400
-Message-ID: <20260420132314.1023554-311-sashal@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 7.0-6.18] wifi: mt76: mt7996: fix frequency separation for station STR mode
+Date: Mon, 20 Apr 2026 09:21:47 -0400
+Message-ID: <20260420132314.1023554-313-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -72,290 +73,332 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35082-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35083-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[mediatek.com,kernel.org,nbd.name,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email]
-X-Rspamd-Queue-Id: B0DB342F612
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nbd.name:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mediatek.com:email]
+X-Rspamd-Queue-Id: E15B042F290
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Avula Sri Charan <quic_asrichar@quicinc.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit 7d7dc26f72abb7a76abb4a68ebad75d5ab7b375e ]
+[ Upstream commit 59a295335021f6973a34566554b2b9371f1c6f7d ]
 
-Currently, a vdev that is created is considered active for partner link
-population. In case of an MLD station, non-associated link vdevs can be
-created but not started. Yet, they are added as partner links. This leads
-to the creation of stale FW partner entries which accumulate and cause
-assertions.
+Fix frequency separation field for STR in MLD capabilities to get the
+correct chip capability.
 
-To resolve this issue, check if the vdev is started and operating on a
-chosen frequency, i.e., arvif->is_started, instead of checking if the vdev
-is created, i.e., arvif->is_created. This determines if the vdev is active
-or not and skips adding it as a partner link if it's inactive.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01181-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Avula Sri Charan <quic_asrichar@quicinc.com>
-Signed-off-by: Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260330040732.1847263-1-roopni.devanathan@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260316-mt7996-sta-str-v1-1-666814e6ab2d@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have sufficient information. Let me compile the full analysis.
+Now I have enough information to complete the full analysis.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-**Step 1.1:** Subsystem: `wifi: ath12k:`. Action verb: "Skip" (which
-implies avoiding incorrect behavior). Summary: Skip adding inactive
-partner vdev info to prevent firmware assertions.
+### Step 1.1: Subject Line
+- **Subsystem**: `wifi: mt76: mt7996:` — MediaTek mt7996 WiFi 7 wireless
+  driver
+- **Action verb**: "fix" — explicitly a bug fix
+- **Summary**: Corrects frequency separation field for station STR mode
+  in MLD capabilities
 
-**Step 1.2:** Tags:
-- Tested-on: QCN9274 hw2.0 PCI (hardware-tested)
-- Signed-off-by: Avula Sri Charan (author), Roopni Devanathan
-  (submitter), Jeff Johnson (ath12k maintainer)
-- Reviewed-by: Rameshkumar Sundaram, Baochen Qiang (both active ath12k
-  contributors)
-- Link: patch.msgid.link URL for the submission
-- No Fixes: tag (expected for review candidates)
-- No Cc: stable (expected for review candidates)
+### Step 1.2: Tags
+- `Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>` — author from
+  MediaTek (the chip vendor)
+- `Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>` — co-
+  author/maintainer of mt76
+- `Link:` to patch.msgid.link — mailing list submission link
+- `Signed-off-by: Felix Fietkau <nbd@nbd.name>` — mt76 maintainer
+  applied the patch
+- No Fixes: tag, no Cc: stable, no Reported-by — expected for candidate
+  review
 
-**Step 1.3:** Bug: When MLD station mode has non-associated link vdevs
-that are created but not started, they are incorrectly added as partner
-links. This leads to stale FW partner entries that accumulate and
-**cause firmware assertions** (FW crash). Root cause: the check used
-`is_created` but should use `is_started` to ensure only active vdevs are
-added.
+### Step 1.3: Commit Body
+The message says: "Fix frequency separation field for STR in MLD
+capabilities to get the correct chip capability." The bug is that the
+station's MLD capabilities struct was missing the `FREQ_SEP_TYPE_IND`
+field, causing the driver to advertise incorrect STR capabilities during
+(Re)Association Request frames.
 
-**Step 1.4:** This is clearly a bug fix despite not using the word "fix"
-prominently. "Skip adding" = avoiding incorrect behavior that causes
-firmware crashes.
+### Step 1.4: Hidden Bug Fix?
+This is an explicit fix — the word "fix" is in the subject. The missing
+capability field causes incorrect WiFi frame content to be advertised to
+the AP during MLD association.
+
+Record: Genuine bug fix — incorrect WiFi capability advertisement.
+
+---
 
 ## PHASE 2: DIFF ANALYSIS
 
-**Step 2.1:** Single file changed:
-`drivers/net/wireless/ath/ath12k/mac.c`. Change is 1 line: `is_created`
--> `is_started`. Minimal scope.
+### Step 2.1: Inventory
+- **1 file** changed: `drivers/net/wireless/mediatek/mt76/mt7996/init.c`
+- **1 line added**:
+  `FIELD_PREP_CONST(IEEE80211_MLD_CAP_OP_FREQ_SEP_TYPE_IND, 1) |`
+- Scope: Single-file, static initializer change
 
-**Step 2.2:** In `ath12k_mac_mlo_get_vdev_args()`, when iterating
-partner link vdevs:
-- BEFORE: Check `arvif_p->is_created` (vdev allocated in firmware)
-- AFTER: Check `arvif_p->is_started` (vdev started and operating on
-  frequency)
-- This is a more restrictive check that filters out vdevs that exist but
-  are not active.
+### Step 2.2: Code Flow
+- **Before**: Station iftype entry in `iftypes_ext_capa[]` only sets
+  `IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS`
+- **After**: Station entry additionally sets
+  `IEEE80211_MLD_CAP_OP_FREQ_SEP_TYPE_IND` to value 1
+- The `mld_capa_and_ops` field is consumed by mac80211 in `mlme.c`
+  (lines 2069 and 10612-10613) and included directly in MLD capability
+  elements of association frames
 
-**Step 2.3:** Bug category: Logic/correctness fix. A created-but-not-
-started vdev should not be treated as an active partner, because it has
-no channel context yet. Adding it causes stale FW partner entries ->
-firmware assertion.
+### Step 2.3: Bug Mechanism
+This is a **logic/correctness fix** — a missing capability field in a
+static const initializer. `IEEE80211_MLD_CAP_OP_FREQ_SEP_TYPE_IND` (mask
+`0x0f80`, bits 7-11) was not set, meaning the station reported frequency
+separation type = 0 to the AP, which does not reflect the actual mt7996
+hardware STR capability.
 
-**Step 2.4:** Fix quality: Obviously correct. `is_started` is a subset
-of `is_created` (a vdev must be created before it can be started), so
-this is strictly more restrictive. The fix cannot introduce regressions
-because any vdev that is started is also created. The fix is reviewed by
-two ath12k developers and tested on real hardware.
+### Step 2.4: Fix Quality
+- Trivially correct — adding a missing field to a bitfield OR expression
+- Cannot introduce a regression — it's a static const initializer
+- Minimal and surgical
+- No red flags
+
+Record: 1 line added, static initializer, zero regression risk.
+
+---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
-**Step 3.1:** Blame shows the buggy line (`is_created` check) was
-introduced by commit `315d80be304ac1` ("wifi: ath12k: allocate new links
-in change_vif_links()") by Aditya Kumar Singh. This commit appeared at
-v6.13-rc6, landing in v6.15.
+### Step 3.1: Blame
+The station entry was introduced by commit `f5160304d57c55` ("wifi:
+mt76: mt7996: Enable MLO support for client interfaces") by Lorenzo
+Bianconi on 2025-09-01. The base `iftypes_ext_capa[]` array was
+introduced by `a9eae65d97f3cb` ("Export MLO AP capabilities to
+mac80211") on 2025-08-27.
 
-**Step 3.2:** The original function `ath12k_mac_mlo_get_vdev_args()` was
-introduced by `1ea0cdee6fb3a4` ("wifi: ath12k: MLO vdev bringup
-changes") at v6.12-rc4, landing in v6.14. The `is_created` check was an
-addition on top in v6.15.
+### Step 3.2: Fixes Target
+No explicit Fixes: tag, but the implicit target is `f5160304d57c55`
+which first introduced the station MLD capabilities. That commit was
+first present in **v6.18** (confirmed via `git merge-base --is-
+ancestor`). NOT in v6.17 or earlier.
 
-**Step 3.3:** The fix is standalone. No other patches are needed as
-prerequisites.
+### Step 3.3: File History
+The file has 20 recent commits, many related to MLO/MLD enablement. This
+fix appears standalone — no series dependencies.
 
-**Step 3.4:** Avula Sri Charan has one other commit in ath12k (napi
-fix). Roopni Devanathan has multiple ath12k contributions. Reviewers
-(Rameshkumar Sundaram, Baochen Qiang) are active ath12k contributors.
+### Step 3.4: Author
+- Peter Chiu is from MediaTek (the silicon vendor) — strong authority on
+  hardware capabilities
+- Lorenzo Bianconi is the mt76 co-maintainer who also signed off
+- Felix Fietkau (nbd) is the mt76 maintainer who applied the patch
 
-**Step 3.5:** No dependent commits needed. The fix only changes one
-condition.
+Record: Author is from the chip vendor. Both mt76 maintainers signed
+off. Bug introduced in v6.18.
 
-## PHASE 4: MAILING LIST RESEARCH
+### Step 3.5: Dependencies
+The fix only adds a line to an existing OR expression in a static
+initializer. No functional dependencies. The prerequisite code
+(`iftypes_ext_capa` with the station entry) exists in v6.18 and v7.0.
 
-**Step 4.1:** b4 dig could not find the commit (it's not yet merged).
-The submission URL is `https://patch.msgid.link/20260330040732.1847263-
-1-roopni.devanathan@oss.qualcomm.com`. Lore is behind Anubis protection,
-but we can confirm from the commit tags that it was reviewed by two
-developers and accepted by the subsystem maintainer Jeff Johnson.
+---
 
-**Step 4.2:** Two reviewers (Rameshkumar Sundaram, Baochen Qiang)
-reviewed the patch. Jeff Johnson (ath12k maintainer) signed off.
+## PHASE 4: MAILING LIST
 
-**Step 4.3-4.5:** Bug report details not available via web due to Anubis
-protection. The commit message itself describes the bug mechanism
-clearly.
+### Step 4.1-4.5
+Lore/WebFetch was blocked by Anubis protection. `b4 dig` for the
+message-id didn't find a match by commit hash (the commit hasn't been
+applied to the tree I'm on). The link
+`https://patch.msgid.link/20260316-mt7996-sta-
+str-v1-1-666814e6ab2d@kernel.org` indicates this was a v1 single-patch
+submission from Lorenzo Bianconi.
+
+Record: Could not fetch discussion. Patch submitted as v1, single patch.
+
+---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-**Step 5.1:** Modified function: `ath12k_mac_mlo_get_vdev_args()`
+### Step 5.1-5.4
+The `iftypes_ext_capa[]` array is assigned to `wiphy->iftype_ext_capab`
+at line 497 of `init.c`. This is consumed by mac80211's `mlme.c` via
+`cfg80211_get_iftype_ext_capa()` — the `mld_capa_and_ops` field is
+directly encoded into (Re)Association Request frames and MLD
+reconfiguration frames. This is a hot path for any MLD station
+association.
 
-**Step 5.2:** Called from `ath12k_mac_vdev_start_restart()` (line
-11210), which is a key function in the vdev start path. This is called
-during channel context assignment (common MLO WiFi operation).
+### Step 5.5: Similar Patterns
+The AP section of the same array does NOT include `FREQ_SEP_TYPE_IND`
+either, but only the station section is fixed here (STR is a station-
+side mode). The mt7925 driver also sets `mld_capa_and_ops` but
+dynamically.
 
-**Step 5.3-5.4:** The function populates partner link info that gets
-sent to firmware via `ath12k_wmi_vdev_start()`. Incorrect partner
-entries lead to firmware state corruption and assertion failures.
+Record: Capability is directly embedded in WiFi management frames during
+association.
 
-**Step 5.5:** The `is_started` flag is well-established in the codebase
-with clear semantics: set when vdev starts operating, cleared when it
-stops.
+---
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-**Step 6.1:** The buggy code (`is_created` check in
-`ath12k_mac_mlo_get_vdev_args()`) was introduced in v6.15 (commit
-`315d80be304ac1`). It exists in:
-- v7.0 (confirmed: `git merge-base --is-ancestor` = IN v7.0)
-- v6.15+ (confirmed)
-- NOT in v6.14 or earlier (MLO function is different or doesn't have the
-  check)
+### Step 6.1: Does the buggy code exist in stable trees?
+- The buggy commit `f5160304d57c55` is in **v6.18 and v7.0 only**
+- NOT in v6.17 or earlier — so this fix is irrelevant for all current
+  LTS trees (6.12.y, 6.6.y, 6.1.y, 5.15.y)
+- Only relevant for **7.0.y** stable and potentially 6.18.y if that is
+  still maintained
 
-**Step 6.2:** The fix is a single-line change. It will apply cleanly to
-the 7.0 stable tree since the surrounding code is identical.
+### Step 6.2: Backport Complications
+- 1 line addition to a static initializer — will apply cleanly to 7.0.y
+- No conflicting changes expected
 
-**Step 6.3:** No related fixes already in stable for this specific
-issue.
+### Step 6.3: No related fixes already in stable
+
+---
 
 ## PHASE 7: SUBSYSTEM CONTEXT
 
-**Step 7.1:** Subsystem: WiFi/ath12k (wireless driver). Criticality:
-IMPORTANT - ath12k supports Qualcomm WiFi 7 hardware (QCN9274, WCN7850)
-used in modern systems.
+### Step 7.1
+- **Subsystem**: WiFi drivers / MediaTek mt76 / mt7996
+- **Criticality**: PERIPHERAL (specific WiFi hardware) but WiFi is
+  important for many users
 
-**Step 7.2:** Very active subsystem - 232 commits to this file since the
-MLO function was introduced.
+### Step 7.2
+- Very active subsystem — 188 mt7996 commits since v6.12
+- mt7996 is a WiFi 7 chip with active MLO development
+
+---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-**Step 8.1:** Affected users: ath12k WiFi users in MLD/MLO station mode.
-This is a growing user base as WiFi 7 hardware becomes more common.
+### Step 8.1: Affected Users
+- Mt7996 WiFi 7 hardware users attempting MLD (Multi-Link Device)
+  operation in station mode
 
-**Step 8.2:** Trigger: MLD station connects with multiple links, non-
-associated link vdevs are created but not started, then a vdev start
-occurs. This is a normal MLO operation path, not an edge case.
+### Step 8.2: Trigger Conditions
+- Triggered whenever a mt7996 station performs MLD association (common
+  for WiFi 7 users)
+- The wrong capability is always advertised
 
-**Step 8.3:** Failure mode: Firmware assertion (crash). Severity:
-**CRITICAL** - the WiFi firmware crashes, requiring recovery.
+### Step 8.3: Failure Mode
+- Incorrect WiFi capability in association frames → potentially
+  incorrect STR mode negotiation, possible performance degradation or
+  failed MLD operation
+- Severity: **MEDIUM** — functional correctness issue, not a crash or
+  security vulnerability
 
-**Step 8.4:**
-- Benefit: HIGH - prevents firmware crashes during normal MLO operation
-- Risk: VERY LOW - 1 line change, strictly more restrictive condition,
-  cannot regress
-- Ratio: Strongly favorable
+### Step 8.4: Risk-Benefit
+- **Benefit**: Medium — corrects WiFi MLD capability for mt7996 users
+- **Risk**: Very low — 1-line static initializer change, cannot regress
+- **Ratio**: Favorable
+
+---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-**Evidence FOR backporting:**
-- Fixes firmware assertion (crash) - critical severity
-- Single-line change, obviously correct
-- `is_started` is a strict subset of `is_created` - no regression
-  possible
-- Reviewed by 2 developers, tested on real hardware
-- Affects normal MLO WiFi operation path
-- Clean apply to 7.0 stable
+### Step 9.1: Evidence
+**FOR backporting:**
+- Genuine correctness fix (missing capability field)
+- Trivially small (1 line) and obviously correct
+- Zero regression risk (static const initializer)
+- Written by chip vendor (MediaTek), signed by both mt76 maintainers
+- Fixes real functional issue for WiFi 7 MLD users
+- Buggy code exists in 7.0
 
-**Evidence AGAINST backporting:**
-- Affects only MLO (WiFi 7) users with ath12k hardware (limited
-  audience)
-- Relatively new code (v6.15+)
-- No explicit Fixes: tag or Cc: stable
+**AGAINST backporting:**
+- Not a crash, security, or data corruption fix
+- Only affects mt7996 MLD station mode users (relatively narrow)
+- Relatively new code (v6.18+)
 
-**Stable rules checklist:**
-1. Obviously correct and tested? **YES** - 1-line change, more
-   restrictive check, HW-tested
-2. Fixes a real bug? **YES** - firmware assertions/crashes
-3. Important issue? **YES** - firmware crash
-4. Small and contained? **YES** - 1 line in 1 file
-5. No new features? **YES** - purely a fix
-6. Can apply to stable? **YES** - clean apply
+### Step 9.2: Stable Rules Checklist
+1. Obviously correct and tested? **Yes** — trivially correct 1-line
+   addition
+2. Fixes a real bug? **Yes** — incorrect WiFi capability advertisement
+3. Important issue? **Medium** — functional correctness for WiFi MLD
+4. Small and contained? **Yes** — 1 line in 1 file
+5. No new features? **Correct** — fixes existing code
+6. Can apply to stable? **Yes** — clean apply expected
+
+### Step 9.3: Exception Categories
+Not an exception category; this is a standard driver bug fix.
+
+### Step 9.4: Decision
+The fix is a genuine 1-line correctness fix that corrects incorrect WiFi
+MLD capability advertisement for mt7996 hardware. It's written by the
+chip vendor, reviewed by both subsystem maintainers, and has zero
+regression risk. While it's not a crash or security fix, it corrects
+real WiFi functionality for mt7996 users in MLD/STR mode. The extremely
+small scope and zero risk make this appropriate for stable.
+
+---
 
 ## Verification
 
-- [Phase 1] Parsed tags: Tested-on: QCN9274, Reviewed-by: 2 developers,
-  Signed-off-by: Jeff Johnson (maintainer)
-- [Phase 2] Diff analysis: 1 line changed in
-  `ath12k_mac_mlo_get_vdev_args()`, `is_created` -> `is_started`
-- [Phase 3] git blame: buggy `is_created` check introduced in
-  315d80be304ac1 (v6.15), added by Aditya Kumar Singh
-- [Phase 3] git describe: 315d80be304ac1 = v6.13-rc6-1322, landed in
-  v6.15
-- [Phase 3] git merge-base: 315d80be304ac1 IS in v7.0, NOT in v6.14
-- [Phase 3] git merge-base: 1ea0cdee6fb3a4 (original function) IS in
-  v6.14, NOT in v6.13
-- [Phase 5] Grep callers: `ath12k_mac_mlo_get_vdev_args()` called from
-  `ath12k_mac_vdev_start_restart()` at line 11210
-- [Phase 5] Grep `is_started`: set to true in vdev start path (lines
-  11637, 12106, 12118), false in unassign path (lines 12168, 12179)
-- [Phase 6] Buggy code exists in v6.15+ and v7.0 stable trees only
-- [Phase 7] Active subsystem: 232 commits since MLO function
-  introduction
-- [Phase 8] Failure mode: firmware assertion = CRITICAL
+- [Phase 1] Parsed tags: Author from MediaTek, co-signed by mt76 co-
+  maintainer and maintainer
+- [Phase 2] Diff analysis: 1 line added to static const initializer,
+  adds missing `IEEE80211_MLD_CAP_OP_FREQ_SEP_TYPE_IND` field
+- [Phase 3] git blame: Station MLD caps introduced by `f5160304d57c55`
+  (v6.18), confirmed via `git merge-base`
+- [Phase 3] git merge-base: Buggy commit NOT in v6.17 or earlier, IS in
+  v6.18 and v7.0
+- [Phase 5] grep callers: `mld_capa_and_ops` consumed in
+  `net/mac80211/mlme.c` lines 2069 and 10612-10613 for association
+  frames
+- [Phase 5] grep definition: `IEEE80211_MLD_CAP_OP_FREQ_SEP_TYPE_IND` =
+  0x0f80 in `include/linux/ieee80211-eht.h`
+- [Phase 6] Buggy code only in v6.18+ and v7.0; irrelevant for older LTS
+  trees
+- [Phase 7] Peter Chiu confirmed as MediaTek contributor; Lorenzo
+  Bianconi and Felix Fietkau are mt76 maintainers
 - UNVERIFIED: Could not access lore.kernel.org discussion due to Anubis
   protection
 
-The fix is a minimal, obviously correct, single-line change that
-prevents firmware crashes during normal MLO WiFi operation. It meets all
-stable kernel criteria.
-
 **YES**
 
- drivers/net/wireless/ath/ath12k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 769d240e3ae24..6fca4418ab0bd 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -11122,7 +11122,7 @@ ath12k_mac_mlo_get_vdev_args(struct ath12k_link_vif *arvif,
- 		if (arvif == arvif_p)
- 			continue;
- 
--		if (!arvif_p->is_created)
-+		if (!arvif_p->is_started)
- 			continue;
- 
- 		link_conf = wiphy_dereference(ahvif->ah->hw->wiphy,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 00a8286bd1368..d940ca84bd0f1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -85,6 +85,7 @@ static const struct wiphy_iftype_ext_capab iftypes_ext_capa[] = {
+ 		.extended_capabilities_mask = if_types_ext_capa_ap,
+ 		.extended_capabilities_len = sizeof(if_types_ext_capa_ap),
+ 		.mld_capa_and_ops =
++			FIELD_PREP_CONST(IEEE80211_MLD_CAP_OP_FREQ_SEP_TYPE_IND, 1) |
+ 			FIELD_PREP_CONST(IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS,
+ 					 MT7996_MAX_RADIOS - 1),
+ 	},
 -- 
 2.53.0
 
