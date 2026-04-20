@@ -1,60 +1,60 @@
-Return-Path: <linux-wireless+bounces-35055-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35056-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FluHLwu5mliswEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35055-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:48:44 +0200
+	id 4NMQGMou5mliswEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35056-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:48:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1646342C4D3
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:48:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D230E42C4E1
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 22419311561C
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:35:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A956F337EB12
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6788F3D3CED;
-	Mon, 20 Apr 2026 13:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1283D3D18;
+	Mon, 20 Apr 2026 13:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/ww9Fxc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mel+HvyN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C343D3486;
-	Mon, 20 Apr 2026 13:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FA53D3D06;
+	Mon, 20 Apr 2026 13:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691416; cv=none; b=Jf2fuuS2ZP9jPgFCJrX5QWCWZvmGjZ3RQv79+bmm0320sZurQ3AjroQgnpg2WHvGpbNccG33p0WODcIekXXkr8u7L4Kr2LnmraK3ouvKv9u17j1lpHpRlcMgVa5y5PQha52HjSDuX+vZtkLNb8JbvbMY2NUIYtVOeX+xJs31mdo=
+	t=1776691417; cv=none; b=bBhKT0sD8WZ+i9Z/xM1JIHoUJjoMqxwdOJ57Lh2PF9MUTAfmrw47AGoYkymOMxbXQE4KiAJPJ5cM1GWEjMDviL8Bwf4pubw8dbmesHpFWn91Y21j5H+mnwYIHA2YhFbmLRYEGrARezmENQFJaL19qdorjdeKhLJq0ZYC/SxILYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691416; c=relaxed/simple;
-	bh=yQ1RewH9lw8beZGLPupAC42ESrO0ODROPpBzl9klZWM=;
+	s=arc-20240116; t=1776691417; c=relaxed/simple;
+	bh=t6WXuGdXT/jnJrIbR0CAcjUvYkXbpgvxo6/TwxkRo4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qwp9Ptzp3276kjtO0uyIQecl+RgE1W6rCvEOyOzqnxYoI27O2iG+BKXHHoUz3V/DkzzYvi5D8bEBECTQ204cQml+adLbEZz99Egxl6mAurUpvOFhcQUaE7I3Z29iZyCfAoynwQXdtxD9/oR46slcgdqDA4eQflYut1ifpToKqmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/ww9Fxc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110C6C2BCB4;
-	Mon, 20 Apr 2026 13:23:34 +0000 (UTC)
+	 MIME-Version; b=AVeNANTPl4t4AUknvNT4e1fxwKjjgc+CUaL/oesOmEyzZMKUWe0fBbZoiUiRhVU8ZJYJIa46gnj04MuHU93+PykOJjV3xo2SMJTufhwODT8EgYg0z2Vjy6Jnq/ni5bZvHRuEsQpA2L/VYq3Ab9Ndj9x6EfzDbg+6P04Ajk0DxBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mel+HvyN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FC9C19425;
+	Mon, 20 Apr 2026 13:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691416;
-	bh=yQ1RewH9lw8beZGLPupAC42ESrO0ODROPpBzl9klZWM=;
+	s=k20201202; t=1776691417;
+	bh=t6WXuGdXT/jnJrIbR0CAcjUvYkXbpgvxo6/TwxkRo4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/ww9FxcFsbz8WGtzCObYRybdyqaObFBRxzyJmxCOxYl5bzvcWsSzz8nw/idhHNxW
-	 VD0CAidnQ8RY07NB0xkWjJm94fJ7kdpBtb7w/aLTN8PoX+gb3jVapnCd221weWICts
-	 rSU6pVWuYAs3kTz4Zlyh1Kc9ownIxHxLuXhWk4pQSlC3mTekH2WbgiaiqPI2nJu8Qb
-	 iU+yubK5k49qxxBHtkAp750/RZxUt/YVQjh+11RPqGWLctHEpVfunWGyu4sivFIszp
-	 9Sy/bKE6XPuJdwoH87RzO8DEHTMMDfPRJPFtz22k3cap6GhDKSofoTWc4vHsP3WHsc
-	 9WbGaokUSOdhg==
+	b=mel+HvyNYfqYjrOH7Dn0A9N72XxeVlrHXhQtWC4uppGHC2RcUdOf28BNHCOfU0l2V
+	 lsPrun1Pu2lqTKxXqa9Vwj230PkoXHgw2mp/ptmG2VusjkUr0LOEcBg4R6XPENqGAi
+	 d+pEIVEgXikIC6MwsdwIWRifniaO9F2O0jQwkqXenYHiUj96eKlsl+vBArL6pkpWHx
+	 0FNxKVuAmSYMShRSnjoR5li9iUbIq6IzRtOZUUygUf5bPd87i+P7gIpQM3TiiE8e+y
+	 ZWmdW64JHHsK0JM8rT8fbXghCKuGpPzc1tQn9XyLmBwbvDDtXIcuryGb0G69YsAArK
+	 efaR25gBSg5fA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Ville Nummela <ville.nummela@kempower.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.12] wifi: rtw89: ser: Wi-Fi 7 reset HALT C2H after reading it
-Date: Mon, 20 Apr 2026 09:16:47 -0400
-Message-ID: <20260420132314.1023554-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-5.10] wifi: rsi_91x_usb: do not pause rfkill polling when stopping mac80211
+Date: Mon, 20 Apr 2026 09:16:48 -0400
+Message-ID: <20260420132314.1023554-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -73,13 +73,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35055-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35056-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -93,418 +93,387 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 1646342C4D3
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,kempower.com:email,intel.com:email]
+X-Rspamd-Queue-Id: D230E42C4E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Ville Nummela <ville.nummela@kempower.com>
 
-[ Upstream commit 0cae26a78b14fe1292b0f50f28ebabe6801f3885 ]
+[ Upstream commit 777d8ba5aada960c666f810d5d820ab55ebb64c3 ]
 
-When a SER (system error recovery) interrupt happens, driver reads HALT C2H
-register to get the error status via MAC. For Wi-Fi 7 chipset, driver needs
-to reset HALT C2H register after reading it to make FW aware that.
+Removing rsi_91x USB adapter could cause rtnetlink to lock up.
+When rsi_mac80211_stop is called, wiphy_lock is locked. Call to
+wiphy_rfkill_stop_polling would wait until the work queue has
+finished, but because the work queue waits for wiphy_lock, that
+would never happen.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260213061552.29997-12-pkshih@realtek.com
+Moving the call to rsi_disconnect avoids the lock up.
+
+Signed-off-by: Ville Nummela <ville.nummela@kempower.com>
+Link: https://patch.msgid.link/20260318081912.87744-1-ville.nummela@kempower.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have a comprehensive understanding. Let me compile my analysis.
+Now I have all the information needed. Let me compile the full analysis.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: PARSE THE SUBJECT LINE
-Record: [wifi: rtw89: ser] [reset] [Wi-Fi 7 reset HALT C2H register
-after reading it during SER to notify FW]
+### Step 1.1: Subject Line
+- **Subsystem**: `wifi: rsi_91x_usb` (USB WiFi driver for RSI 91x
+  chipset)
+- **Action verb**: "do not pause" - indicates preventing incorrect
+  behavior that causes a hang
+- **Summary**: Stop rfkill polling from being paused during mac80211
+  stop, which causes a deadlock
 
-### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
-- **Signed-off-by**: Zong-Zhe Yang (author, Realtek engineer) and Ping-
-  Ke Shih (maintainer, Realtek)
-- **Link**:
-  `https://patch.msgid.link/20260213061552.29997-12-pkshih@realtek.com`
-  - patch 12 of a series
-- No Fixes: tag (expected for candidate commits)
-- No Reported-by: tag
-- No Cc: stable
+Record: [wifi: rsi_91x_usb] [do not pause] [Avoid deadlock by moving
+rfkill stop polling out of mac80211 stop callback]
 
-Record: Standard Realtek vendor team submission. No user reports or
-explicit stable nomination.
+### Step 1.2: Tags
+- **Signed-off-by**: Ville Nummela (author, external contributor from
+  Kempower)
+- **Link**: `https://patch.msgid.link/20260318081912.87744-1-
+  ville.nummela@kempower.com`
+- **Signed-off-by**: Johannes Berg (Intel, the wireless subsystem
+  maintainer - applied the patch)
+- No Fixes: tag (expected for manual review)
+- No Reported-by, Tested-by, Reviewed-by
 
-### Step 1.3: ANALYZE THE COMMIT BODY TEXT
-The body states: "When a SER (system error recovery) interrupt happens,
-driver reads HALT C2H register to get the error status via MAC. For Wi-
-Fi 7 chipset, driver needs to reset HALT C2H register after reading it
-to make FW aware that."
+Record: Patch authored by external contributor (Ville Nummela), applied
+by the wifi subsystem maintainer (Johannes Berg). No explicit stable
+nomination.
 
-Record: Bug is that Wi-Fi 7 firmware requires the HALT_C2H register to
-be cleared after the driver reads it during error recovery, but the
-driver was not doing this. Without the clear, FW doesn't know the driver
-has acknowledged the error, potentially breaking the SER recovery flow.
-No version info or stack trace provided.
+### Step 1.3: Commit Body Analysis
+The message describes a **deadlock**:
+1. Removing the RSI USB adapter causes rtnetlink to lock up
+2. `rsi_mac80211_stop` is called with `wiphy_lock` held
+3. `wiphy_rfkill_stop_polling` calls `cancel_delayed_work_sync`, which
+   waits for the rfkill poll work to finish
+4. The rfkill poll work needs `wiphy_lock` to complete (via
+   `guard(wiphy)` in `cfg80211_rfkill_poll`)
+5. Classic ABBA deadlock: Thread A holds wiphy_lock, waits for work;
+   work needs wiphy_lock
 
-### Step 1.4: DETECT HIDDEN BUG FIXES
-Record: Yes, this IS a bug fix. The language "driver needs to reset"
-indicates a missing protocol step. The SER recovery on Wi-Fi 7 is broken
-without this change because the firmware protocol requires the register
-to be cleared after reading.
+Record: Real deadlock. Trigger: USB adapter removal. Failure: system
+hang (rtnetlink lockup).
 
----
+### Step 1.4: Hidden Bug Fix Detection
+This is explicitly a deadlock fix, not disguised. The description
+clearly explains the locking inversion.
+
+Record: Explicit deadlock fix, not hidden.
 
 ## PHASE 2: DIFF ANALYSIS
 
-### Step 2.1: INVENTORY THE CHANGES
-- **File**: `drivers/net/wireless/realtek/rtw89/mac.c`
-- **Function**: `rtw89_mac_get_err_status()`
-- **Lines added**: ~5 (1 variable declaration, 1 goto, 1 label, 1
-  conditional write, 1 empty line)
-- **Lines removed**: 1 (`return err` replaced with `goto bottom`)
-- **Scope**: Single-file, single-function surgical fix
+### Step 2.1: Inventory
+- **Files changed**: 3
+  - `drivers/net/wireless/rsi/rsi_91x_mac80211.c`: +16/-1 (new function
+    + remove call)
+  - `drivers/net/wireless/rsi/rsi_91x_usb.c`: +2/-0 (call new function)
+  - `drivers/net/wireless/rsi/rsi_common.h`: +1/-0 (declare new
+    function)
+- **Total**: ~19 lines added, 1 removed
+- **Functions modified**: `rsi_mac80211_stop()` (removed
+  `wiphy_rfkill_stop_polling` call), `rsi_disconnect()` (added call to
+  new function)
+- **Functions added**: `rsi_mac80211_rfkill_exit()` (new helper)
+- **Scope**: Small, single-subsystem, well-contained
 
-Record: Very small, contained change to one function in one file.
+### Step 2.2: Code Flow Change
+1. **rsi_mac80211_stop()**: BEFORE: called `wiphy_rfkill_stop_polling()`
+   while holding `common->mutex` (and with `wiphy_lock` held by caller).
+   AFTER: no longer calls it.
+2. **rsi_disconnect()** (USB): BEFORE: went straight to
+   `rsi_mac80211_detach()`. AFTER: calls `rsi_mac80211_rfkill_exit()`
+   first (without wiphy_lock held), then `rsi_mac80211_detach()`.
+3. **New `rsi_mac80211_rfkill_exit()`**: Calls
+   `wiphy_rfkill_stop_polling()` without wiphy_lock held, breaking the
+   deadlock.
 
-### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
-**Before**: When `rtw89_mac_suppress_log()` returns true, the function
-immediately returns without clearing HALT_C2H. When it returns false,
-the function dumps debug info and returns without clearing HALT_C2H.
+### Step 2.3: Bug Mechanism
+- **Category**: Deadlock/lock ordering
+- **Mechanism**: `rsi_mac80211_stop()` (called with `wiphy_lock` held)
+  invokes `wiphy_rfkill_stop_polling()` which calls
+  `cancel_delayed_work_sync()`. The work item (`cfg80211_rfkill_poll`)
+  needs `wiphy_lock`. Classic ABBA deadlock.
+- **Fix**: Move the polling stop to `rsi_disconnect()`, before
+  `rsi_mac80211_detach()`, where `wiphy_lock` is NOT held.
 
-**After**: Both paths converge at the `bottom:` label. For non-AX chips
-(Wi-Fi 7/BE), `R_AX_HALT_C2H` is written to 0 before returning. AX chips
-are unaffected.
-
-Record: The change ensures HALT_C2H is always cleared for Wi-Fi 7 chips
-regardless of which path is taken through the function.
-
-### Step 2.3: IDENTIFY THE BUG MECHANISM
-Record: This is a **hardware protocol fix** (category h). The Wi-Fi 7
-firmware requires the HALT_C2H register to be reset after the driver
-reads it, to acknowledge receipt of the error status. Without this, the
-FW doesn't know the driver has read the error, potentially preventing
-proper error recovery.
-
-### Step 2.4: ASSESS THE FIX QUALITY
-- **Obviously correct**: Yes - the register is already cleared to 0
-  during initialization (line 4066). This just does the same during SER.
-- **Minimal**: Yes - only 5 lines of actual change
-- **Regression risk**: Very low - the new write only applies to non-AX
-  chips, so existing Wi-Fi 6 behavior is completely unchanged
-- **Red flags**: None
-
-Record: High quality fix. Low regression risk. Only affects Wi-Fi 7
-chips.
-
----
+### Step 2.4: Fix Quality
+- Obviously correct: removes the deadlocking call from the locked
+  context, moves it to unlocked context
+- Minimal/surgical: small change, well-contained within the rsi driver
+- Other drivers (ath9k, rtlwifi, mt76, etc.) all call
+  `wiphy_rfkill_stop_polling()` from their deinit paths, NOT from
+  `.stop` - confirming this is the right pattern
+- Regression risk: very low. The rfkill polling is stopped slightly
+  earlier in the teardown sequence
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
-### Step 3.1: BLAME THE CHANGED LINES
-The function `rtw89_mac_get_err_status()` was introduced in commit
-`e3ec7017f6a20d` (2021-10-11, "rtw89: add Realtek 802.11ax driver"). The
-function has been modified by:
-- `198b6cf70146ca` (2022-03-14): Added error scenario parsing
-- `f5d98831badb89` (2023-01-19): Added RXI300 error case
-- `8130e94e888bf9` (2023-05-08): Added suppress_log functionality
-- `6f8d36552bab7d` (2023-12-04): Switched to mac_gen_def for
-  dump_err_status
+### Step 3.1: Blame
+- `wiphy_rfkill_stop_polling(hw->wiphy)` in `rsi_mac80211_stop()` was
+  added by commit `edba3532c65223` ("rsi: add support for rf-kill
+  functionality") by Pavani Muthyala, 2017-08-03.
+- The deadlock was introduced when `cfg80211_rfkill_poll()` acquired
+  wiphy_lock: commit `8e2f6f2366219` ("wifi: cfg80211: lock wiphy mutex
+  for rfkill poll") by Johannes Berg, 2023-11-24, first in v6.7-rc4.
+- `drv_stop()` has had `lockdep_assert_wiphy()` since commit
+  `0e8185ce1ddebf` (v6.7-rc1).
 
-Record: Function exists since driver inception. Has been incrementally
-enhanced for new chips. Code is stable and well-understood.
+Record: Bug is a latent deadlock since v6.7 (when wiphy_lock was added
+to the rfkill poll path). Buggy rfkill call in rsi since 2017, but it
+only became a deadlock with v6.7.
 
-### Step 3.2: FOLLOW THE FIXES TAG
-Record: No Fixes: tag present (expected).
+### Step 3.2: No Fixes: tag present (expected).
 
-### Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-Recent SER-related commits in the tree:
-- `f4de946bdb379`: "wifi: rtw89: ser: enable error IMR after recovering
-  from L1"
-- `44ec302e029d8`: "wifi: rtw89: ser: L1 skip polling status if FW runs
-  event mode"
-- `6792fcf6a6912`: "wifi: rtw89: debug: tweak Wi-Fi 7 SER L0/L1
-  simulation methods"
+### Step 3.3: File History
+Recent changes to rsi files are mostly cleanups and unrelated bug fixes.
+No prerequisites identified.
 
-These are from a Dec 2025 series "refine MLO, MCC and SER functions".
-The commit under review is from a later Feb 2026 series.
+### Step 3.4: Author
+Ville Nummela appears to be an external contributor (Kempower). This is
+their first rsi commit. However, the patch was applied by Johannes Berg,
+the wifi subsystem maintainer.
 
-Record: Related SER improvements already in tree. This commit appears
-standalone.
+### Step 3.5: Dependencies
+The fix is standalone. It uses only existing APIs
+(`wiphy_rfkill_stop_polling`) and creates a simple wrapper function. No
+dependencies on other patches.
 
-### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-Zong-Zhe Yang is a regular Realtek contributor with many rtw89 commits
-including SER-related work. Ping-Ke Shih is the primary rtw89
+## PHASE 4: MAILING LIST RESEARCH
+
+Lore is protected by anti-bot measures, preventing direct access. B4 dig
+could not find the commit in the local tree. The Link tag confirms the
+patch was submitted and reviewed through the standard wireless-next
+workflow and applied by Johannes Berg.
+
+Record: Could not access lore discussion. Patch applied by subsystem
 maintainer.
-
-Record: Author is a regular subsystem contributor. Maintainer signed
-off.
-
-### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-The diff only uses existing types/macros: `rtw89_chip_info`, `chip_gen`,
-`RTW89_CHIP_AX`, `R_AX_HALT_C2H`. All exist in the current tree.
-
-Record: No dependencies. The patch applies standalone.
-
----
-
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
-
-### Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
-Using b4 dig on related commits, found the previous SER series (v3 from
-Dec 2025). The commit under review is from a different, later series
-(20260213061552.29997-12). Lore.kernel.org was blocked by Anubis
-protection.
-
-Record: Patch is from a series by Ping-Ke Shih. Could not access lore
-directly due to bot protection. The previous SER series was titled
-"refine MLO, MCC and SER functions" and went through v1-v3 before
-merging.
-
-### Step 4.2: CHECK WHO REVIEWED THE PATCH
-Record: Ping-Ke Shih (rtw89 maintainer) signed off. Submitted through
-standard wireless-next pipeline.
-
-### Step 4.3-4.5: External research
-Record: Could not access lore.kernel.org due to Anubis protection. No
-stable-specific discussion found.
-
----
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1-5.2: FUNCTION ANALYSIS
-`rtw89_mac_get_err_status()` is called from:
-- `rtw89_pci_interrupt_threadfn()` (pci.c line 968) - the PCI interrupt
-  handler threaded function
+### Step 5.1: Functions Modified
+- `rsi_mac80211_stop()` - the `.stop` mac80211 callback
+- `rsi_disconnect()` - USB disconnect handler
+- New: `rsi_mac80211_rfkill_exit()`
 
-This is the primary SER entry point when a HALT_C2H interrupt fires. The
-interrupt handler calls `rtw89_mac_get_err_status()` to read the error
-code, then passes it to `rtw89_ser_notify()` which triggers the SER
-state machine.
+### Step 5.2: Callers
+- `rsi_mac80211_stop()` is called by mac80211 via `drv_stop()`
+  (confirmed: `lockdep_assert_wiphy()` at driver-ops.c:39). Called when
+  interface goes down.
+- `rsi_disconnect()` is the USB `.disconnect` callback, called by USB
+  subsystem on device removal.
 
-Record: Called from interrupt handler. Critical path for error recovery.
-Called for every SER event.
+### Step 5.3-5.4: Call Chain for Deadlock
+Verified complete deadlock chain:
+1. USB removal -> `rsi_disconnect()` -> `rsi_mac80211_detach()` ->
+   `ieee80211_unregister_hw()` -> interface shutdown -> `drv_stop()`
+   [acquires wiphy_lock] -> `rsi_mac80211_stop()`
+2. `rsi_mac80211_stop()` -> `wiphy_rfkill_stop_polling()` ->
+   `rfkill_pause_polling()` ->
+   `cancel_delayed_work_sync(&rfkill->poll_work)`
+3. Work item: `rfkill_poll()` -> `cfg80211_rfkill_poll()` ->
+   `guard(wiphy)(&rdev->wiphy)` [tries to acquire wiphy_lock] -> BLOCKED
 
-### Step 5.3-5.4: CALL CHAIN
-Interrupt -> `rtw89_pci_interrupt_threadfn()` ->
-`rtw89_mac_get_err_status()` -> reads register, returns error code ->
-`rtw89_ser_notify()` -> `ser_send_msg()` -> SER state machine
-
-Record: Reachable from hardware interrupt. Not userspace-triggerable
-directly, but occurs during hardware error conditions which are real-
-world events.
-
-### Step 5.5: SEARCH FOR SIMILAR PATTERNS
-The initialization code at line 4066 already performs
-`rtw89_write32(rtwdev, R_AX_HALT_C2H, 0)` - confirming the protocol
-requires this register to be cleared.
-
-Record: Consistent with existing initialization code pattern.
-
----
+### Step 5.5: Similar Patterns
+All other wifi drivers (ath9k, rtlwifi, mt76, rtl818x, brcmsmac) call
+`wiphy_rfkill_stop_polling()` from their deinit/disconnect path, NOT
+from `.stop`. RSI was unique in calling it from `.stop`.
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-### Step 6.1: DOES THE BUGGY CODE EXIST IN STABLE TREES?
-Wi-Fi 7 (RTL8922A/BE) support was added in v6.8. The `chip_gen` check
-means only Wi-Fi 7 chips are affected. The function
-`rtw89_mac_get_err_status()` exists in all stable trees from v5.15+, but
-the bug only matters for trees with Wi-Fi 7 support (v6.8+).
+### Step 6.1: Buggy Code in Stable
+- The deadlock requires both:
+  - `wiphy_rfkill_stop_polling()` in `rsi_mac80211_stop()` (since 2017,
+    commit edba3532)
+  - `wiphy_lock` acquisition in `cfg80211_rfkill_poll()` (since v6.7,
+    commit 8e2f6f23)
+- The deadlock exists in v6.7+ stable trees (6.12.y, 6.6.y if 8e2f6f23
+  was backported)
 
-Record: Bug is relevant to stable trees v6.8+.
+### Step 6.2: Backport Complications
+The fix is simple and self-contained. The rsi driver code in this area
+has been stable. Clean apply expected for recent stable trees.
 
-### Step 6.2: BACKPORT COMPLICATIONS
-The patch is small and touches a simple function. The code around it
-hasn't changed dramatically. Should apply cleanly to any tree that has
-the `rtw89_mac_suppress_log()` call (added in 2023) and `chip_gen`
-(added in 2023).
-
-Record: Clean apply expected on v6.8+.
-
-### Step 6.3: RELATED FIXES
-No duplicate fix found in stable trees.
-
-Record: No related fixes already in stable.
-
----
+### Step 6.3: No related fixes already in stable.
 
 ## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-### Step 7.1: SUBSYSTEM CRITICALITY
-**Subsystem**: drivers/net/wireless/realtek/rtw89 (Wi-Fi driver)
-**Criticality**: IMPORTANT - RTL8922A is a popular Wi-Fi 7 chipset used
-in laptops and desktop PCIe cards.
-
-Record: IMPORTANT - popular wireless driver with growing user base.
-
-### Step 7.2: SUBSYSTEM ACTIVITY
-Very active - many commits per month. Actively developed for Wi-Fi 7
-support.
-
-Record: Highly active subsystem.
-
----
+- **Subsystem**: wifi (drivers/net/wireless/rsi/) - USB WiFi driver
+- **Criticality**: IMPORTANT - WiFi is commonly used, RSI chipsets are
+  used in embedded/IoT
+- **Maintainer**: Applied by Johannes Berg (the wireless subsystem
+  maintainer), strong trust signal
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-### Step 8.1: AFFECTED USERS
-Users with RTL8922A (Wi-Fi 7) hardware. This is a PCIe wireless card
-found in recent laptops and desktops.
+### Step 8.1: Affected Users
+Users of RSI 91x USB WiFi adapters. When removing the adapter
+(physically or via software), the system hangs.
 
-Record: Driver-specific (Wi-Fi 7 / RTL8922A users). Growing user
-population.
+### Step 8.2: Trigger Conditions
+- **Trigger**: Removing RSI USB WiFi adapter (unplug or modprobe -r)
+- **Frequency**: Every time the adapter is removed
+- **Unprivileged**: Physical access needed, but could also be triggered
+  by system suspend/resume or hotplug events
 
-### Step 8.2: TRIGGER CONDITIONS
-Triggered when a SER (system error recovery) interrupt fires on Wi-Fi 7
-hardware. This happens during firmware errors, which can occur due to:
-- Firmware assertions
-- DMA errors
-- Watchdog timeouts
-- Various hardware error conditions
+### Step 8.3: Failure Mode Severity
+- **Failure mode**: System hang / deadlock (rtnetlink locks up)
+- **Severity**: CRITICAL - system becomes partially or fully unusable;
+  rtnetlink lockup affects all networking operations
 
-Record: Trigger is hardware-dependent error condition. Not predictable
-but real-world occurrence.
-
-### Step 8.3: FAILURE MODE SEVERITY
-Without this fix, when SER triggers on Wi-Fi 7:
-- Firmware doesn't know driver acknowledged the error
-- SER recovery flow may stall or not complete properly
-- Wi-Fi device may become non-functional requiring manual intervention
-  (module reload/reboot)
-
-Record: **HIGH** severity - device recovery failure, Wi-Fi becomes
-unusable until manual intervention.
-
-### Step 8.4: RISK-BENEFIT RATIO
-- **Benefit**: Ensures Wi-Fi 7 SER recovery works, preventing device
-  failure during error conditions
-- **Risk**: Very low - 5-line change, only affects non-AX chips,
-  consistent with initialization code pattern
-- **Ratio**: Very favorable - high benefit, very low risk
-
-Record: Benefit HIGH, Risk VERY LOW. Strongly favorable ratio.
-
----
+### Step 8.4: Risk-Benefit
+- **Benefit**: HIGH - prevents guaranteed system hang on USB adapter
+  removal
+- **Risk**: VERY LOW - 19 lines changed, moves existing call to correct
+  context, pattern matches all other wifi drivers
+- **Ratio**: Strongly favorable
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: EVIDENCE COMPILATION
+### Step 9.1: Evidence Summary
 
 **FOR backporting:**
-- Fixes broken SER recovery on Wi-Fi 7 chips (real functional bug)
-- Small, surgical fix (5 lines meaningful change)
-- Self-contained, no dependencies on other patches
-- Only affects Wi-Fi 7 chips (no regression risk for existing hardware)
-- Consistent with existing initialization pattern (line 4066)
-- From vendor driver team (Realtek) with maintainer sign-off
-- Critical error recovery path
+- Fixes a real, reproducible deadlock (system hang) on USB adapter
+  removal
+- Small, surgical fix (~20 lines across 3 files in one driver)
+- Obviously correct: moves `wiphy_rfkill_stop_polling()` from locked
+  context to unlocked context
+- Pattern matches all other wifi drivers (ath9k, rtlwifi, mt76, etc.)
+- Applied by wireless subsystem maintainer (Johannes Berg)
+- Standalone fix with no dependencies
+- Bug exists since v6.7 (when wiphy_lock was added to rfkill poll)
 
 **AGAINST backporting:**
-- No explicit user bug reports or crash reports
-- No Fixes: tag
-- Part of a "rtw-next" development series
-- Only affects Wi-Fi 7 users (relatively new hardware)
-- Commit message doesn't describe explicit user-visible failure
+- No explicit stable nomination or Fixes: tag (expected for manual
+  review)
+- Only fixes USB path (SDIO has same latent issue but wasn't addressed -
+  minor concern)
+- Author is external contributor with no previous rsi commits (mitigated
+  by maintainer sign-off)
 
-**UNRESOLVED:**
-- Could not verify lore.kernel.org discussion due to bot protection
-- Exact failure behavior without this fix is inferred (not explicitly
-  documented)
+### Step 9.2: Stable Rules Checklist
+1. Obviously correct and tested? **YES** - clear deadlock fix, correct
+   locking pattern
+2. Fixes a real bug? **YES** - deadlock causing system hang
+3. Important issue? **YES** - deadlock = CRITICAL severity
+4. Small and contained? **YES** - ~20 lines in one driver
+5. No new features or APIs? **YES** - only moves existing functionality
+6. Can apply to stable trees? **YES** - standalone, no dependencies
 
-### Step 9.2: STABLE RULES CHECKLIST
-1. **Obviously correct and tested?** YES - writes 0 to same register
-   cleared at init, gated by chip_gen check
-2. **Fixes a real bug?** YES - incomplete Wi-Fi 7 SER protocol
-   implementation
-3. **Important issue?** YES - device recovery failure leads to non-
-   functional Wi-Fi
-4. **Small and contained?** YES - 5 lines in one function
-5. **No new features or APIs?** CORRECT - no new features
-6. **Can apply to stable trees?** YES - applicable to v6.8+ (when Wi-Fi
-   7 support was added)
+### Step 9.3: Exception Categories
+Not an exception case - this is a straightforward deadlock fix.
 
-### Step 9.3: EXCEPTION CATEGORIES
-This is a hardware workaround/fix category - it fixes the SER protocol
-for Wi-Fi 7 chipsets.
-
-### Step 9.4: DECISION
-The fix is small, obviously correct, self-contained, and addresses a
-real functional bug in Wi-Fi 7 error recovery. The risk is very low
-(only affects Wi-Fi 7 chips, consistent with existing patterns). The
-benefit is significant (broken SER means device can't recover from
-errors).
-
----
+### Step 9.4: Decision
+This is a clear, small, surgical fix for a real deadlock that causes
+system hang when removing an RSI USB WiFi adapter. It follows the same
+pattern used by all other wifi drivers. Applied by the wifi subsystem
+maintainer.
 
 ## Verification
 
-- [Phase 1] Parsed tags: Signed-off-by from Zong-Zhe Yang and Ping-Ke
-  Shih; Link to patch series
-- [Phase 2] Diff analysis: 5 lines added to
-  `rtw89_mac_get_err_status()`, adds HALT_C2H register clear for non-AX
-  chips
-- [Phase 3] git blame: function introduced in e3ec7017f6a20d
-  (2021-10-11), present since driver inception
-- [Phase 3] git log: confirmed related SER commits (f4de946bdb379,
-  44ec302e029d8) already in tree
-- [Phase 3] git merge-base: RTL8922A (Wi-Fi 7) support added in v6.8
-  (commit c0a04552e36e1, 2023-11-17)
-- [Phase 4] b4 dig -c f4de946bdb379 -a: found series went through v1-v3
-  before merging
-- [Phase 4] lore.kernel.org: blocked by Anubis protection, could not
-  access discussions
-- [Phase 5] grep callers: `rtw89_mac_get_err_status` called from PCI
-  interrupt handler threadfn (pci.c:968)
-- [Phase 5] grep: `R_AX_HALT_C2H` already cleared to 0 at init time
-  (mac.c:4066), confirming protocol requirement
-- [Phase 6] chip_gen RTW89_CHIP_BE exists since v6.8;
-  `rtw89_mac_suppress_log` since v6.5
-- [Phase 6] Patch applies standalone - no dependencies on other patches
-  from series
-- [Phase 8] Failure mode: device recovery failure on Wi-Fi 7, severity
-  HIGH
-- UNVERIFIED: Exact FW behavior when HALT_C2H not cleared (inferred from
-  commit message and protocol)
-- UNVERIFIED: Could not access lore discussion for reviewer comments
+- [Phase 1] Parsed tags: Link to patch.msgid.link, SOB by author and
+  Johannes Berg (maintainer)
+- [Phase 2] Diff analysis: 1 line removed from `rsi_mac80211_stop()`,
+  16-line new function `rsi_mac80211_rfkill_exit()` added, 2 lines
+  calling it in `rsi_disconnect()`
+- [Phase 3] git blame: `wiphy_rfkill_stop_polling` in `.stop` added by
+  edba3532c65223 (2017)
+- [Phase 3] git show 8e2f6f2366219: confirmed `wiphy_lock` added to
+  `cfg80211_rfkill_poll()` in v6.7-rc4
+- [Phase 3] git show 0e8185ce1ddebf: confirmed `lockdep_assert_wiphy()`
+  in `drv_stop()` since v6.7-rc1
+- [Phase 3] git describe --contains 8e2f6f2366219: deadlock exists since
+  v6.7-rc4
+- [Phase 4] Could not access lore (anti-bot protection); patch Link tag
+  confirms standard review
+- [Phase 5] Verified deadlock chain: `drv_stop()` holds wiphy_lock
+  (driver-ops.c:39) -> `rsi_mac80211_stop()` -> `rfkill_pause_polling()`
+  -> `cancel_delayed_work_sync()` blocks on work item needing wiphy_lock
+  via `guard(wiphy)` in `cfg80211_rfkill_poll()` (core.c:224)
+- [Phase 5] Confirmed all other wifi drivers (ath9k, rtlwifi, mt76,
+  rtl818x, brcmsmac) call `wiphy_rfkill_stop_polling()` from deinit
+  path, not `.stop`
+- [Phase 6] Bug exists in v6.7+ trees; code in rsi driver unchanged in
+  affected area
+- [Phase 8] Failure mode: deadlock/system hang, severity CRITICAL
+- UNVERIFIED: Could not access lore discussion for reviewer feedback
 
 **YES**
 
- drivers/net/wireless/realtek/rtw89/mac.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c | 17 ++++++++++++++++-
+ drivers/net/wireless/rsi/rsi_91x_usb.c      |  2 ++
+ drivers/net/wireless/rsi/rsi_common.h       |  1 +
+ 3 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 8472f1a63951b..fa60f8e8bb3d4 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -814,6 +814,7 @@ static bool rtw89_mac_suppress_log(struct rtw89_dev *rtwdev, u32 err)
- u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev)
- {
- 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	u32 err, err_scnr;
- 	int ret;
- 
-@@ -836,11 +837,15 @@ u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev)
- 		err = MAC_AX_ERR_RXI300;
- 
- 	if (rtw89_mac_suppress_log(rtwdev, err))
--		return err;
-+		goto bottom;
- 
- 	rtw89_fw_st_dbg_dump(rtwdev);
- 	mac->dump_err_status(rtwdev, err);
- 
-+bottom:
-+	if (chip->chip_gen != RTW89_CHIP_AX)
-+		rtw89_write32(rtwdev, R_AX_HALT_C2H, 0);
-+
- 	return err;
+diff --git a/drivers/net/wireless/rsi/rsi_91x_mac80211.c b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
+index c7ae8031436ae..3faf2235728be 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
++++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
+@@ -325,6 +325,22 @@ void rsi_mac80211_detach(struct rsi_hw *adapter)
  }
- EXPORT_SYMBOL(rtw89_mac_get_err_status);
+ EXPORT_SYMBOL_GPL(rsi_mac80211_detach);
+ 
++/**
++ * rsi_mac80211_rfkill_exit() - This function is used to stop rfkill polling
++ *                              when the device is removed.
++ * @adapter: Pointer to the adapter structure.
++ *
++ * Return: None.
++ */
++void rsi_mac80211_rfkill_exit(struct rsi_hw *adapter)
++{
++	struct ieee80211_hw *hw = adapter->hw;
++
++	if (hw)
++		wiphy_rfkill_stop_polling(hw->wiphy);
++}
++EXPORT_SYMBOL_GPL(rsi_mac80211_rfkill_exit);
++
+ /**
+  * rsi_indicate_tx_status() - This function indicates the transmit status.
+  * @adapter: Pointer to the adapter structure.
+@@ -422,7 +438,6 @@ static void rsi_mac80211_stop(struct ieee80211_hw *hw, bool suspend)
+ 	rsi_dbg(ERR_ZONE, "===> Interface DOWN <===\n");
+ 	mutex_lock(&common->mutex);
+ 	common->iface_down = true;
+-	wiphy_rfkill_stop_polling(hw->wiphy);
+ 
+ 	/* Block all rx frames */
+ 	rsi_send_rx_filter_frame(common, 0xffff);
+diff --git a/drivers/net/wireless/rsi/rsi_91x_usb.c b/drivers/net/wireless/rsi/rsi_91x_usb.c
+index d83204701e27e..8765cac6f875b 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_usb.c
++++ b/drivers/net/wireless/rsi/rsi_91x_usb.c
+@@ -877,6 +877,8 @@ static void rsi_disconnect(struct usb_interface *pfunction)
+ 	if (!adapter)
+ 		return;
+ 
++	rsi_mac80211_rfkill_exit(adapter);
++
+ 	rsi_mac80211_detach(adapter);
+ 
+ 	if (IS_ENABLED(CONFIG_RSI_COEX) && adapter->priv->coex_mode > 1 &&
+diff --git a/drivers/net/wireless/rsi/rsi_common.h b/drivers/net/wireless/rsi/rsi_common.h
+index 7aa5124575cfe..591602beeec68 100644
+--- a/drivers/net/wireless/rsi/rsi_common.h
++++ b/drivers/net/wireless/rsi/rsi_common.h
+@@ -79,6 +79,7 @@ static inline int rsi_kill_thread(struct rsi_thread *handle)
+ }
+ 
+ void rsi_mac80211_detach(struct rsi_hw *hw);
++void rsi_mac80211_rfkill_exit(struct rsi_hw *hw);
+ u16 rsi_get_connected_channel(struct ieee80211_vif *vif);
+ struct rsi_hw *rsi_91x_init(u16 oper_mode);
+ void rsi_91x_deinit(struct rsi_hw *adapter);
 -- 
 2.53.0
 
