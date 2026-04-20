@@ -1,74 +1,70 @@
-Return-Path: <linux-wireless+bounces-34998-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34999-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJziN4eg5WkqmQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-34998-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 05:41:59 +0200
+	id sDDLCIyg5WkqmQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-34999-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 05:42:04 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583A442694F
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 05:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D6F42695D
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 05:42:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 63FCD300C27B
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 03:41:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 896F930157E2
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 03:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AAB37BE6B;
-	Mon, 20 Apr 2026 03:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05841377006;
+	Mon, 20 Apr 2026 03:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="qGzdx83f"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="hMRC3JI+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345FA2BDC0F
-	for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2026 03:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798DB3783D4
+	for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2026 03:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776656501; cv=none; b=etaGULZ6fYHQp0poWEG76JIblqYN+L2d/oS3PAq/VnNHPInvMtMfcvPDHqZMPoxPDbraeRu1fsFAHJLX45zvHegb5VyI8XvFj88V5J7n6NgAgWfPombBvipPSA9aBCv0ybPCeCM0126dAN8/8Y4OBrTbKzWR7qatigwQZ6KTJUk=
+	t=1776656504; cv=none; b=SraPEyJt34ryasocRaiDYfdeeBK3bN4c58HI4uMpNVNPhdRNknlt32veWI0EFP2DBtGACZGKF13ezpiRg11ko19zwKooPm9JiEj/wdnpsB2geBnl7Smy0xphVbHbos32wbd4B19Mq8FCyT1WM446NWr5qSkutLmlMjZr/f/wZks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776656501; c=relaxed/simple;
-	bh=0T8y/m3v9HCsdkEQyG16LAJqCpmSjXCcI1bH1MVfuV4=;
+	s=arc-20240116; t=1776656504; c=relaxed/simple;
+	bh=8eZtbBwY8ZlqXbCyWH3sM4V2T+hwbZdldlw/WPP4LF4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A1X38qxIM1tc4GdSf9Ash5cKOVVR09Pm6AjIOm7kmDavjz1/j3NOC6/waPdm+YmugkmCjBSWoEArkvVxZgkxjzLuHSvlL5bajIVCK56h2tE2FqxzlyYrXgIzUCeQ8M3EBYsTTuF18vNwvlkjL1X4KswF4RyZueaNqT/8/wF/Yto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=qGzdx83f; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=LfP8mdr2Jp2CurunSZ79hvAIgaDNuxxtWgIIzvYQWfYvUMsTLumJaNZlzRU24sW1i2ccDHlRw16lbFMMxg/48jBdt9LvfGiLopW3djy43H+xC36w0Z8gXCXK78upQ/x+nI9y29KgSPDcI5/0/G08DEDaOCnPlOC+/9RHuwDP8/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=hMRC3JI+; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63K3faMdB426725, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63K3ffWcB426773, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1776656496; bh=hP1zUlHAN/nEfMFxxiRjYGEcFodWznAPkDm0o1KMgKA=;
+	t=1776656501; bh=nCGEx4CzU+pugD3PBSZdHHd3F6GjONZkmhNAHXjNt/E=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=qGzdx83fsuOaa0lVyZ9o1/mC3BegpKFSb9gZ0S45o2fTc5Ui4OWRHG5CsNjWB+nTK
-	 +u3f596dUXS8gJLJtG5AHlMQJIsV7rFlAVviof2qSvbgfxbf6I1VjNZpPC0kKsniL4
-	 pU8cHMsjGbRAfikbkSxl5DPRPJJYmnU5JCXhRqu6V/4xZ+gp+mBUOy82klsPu0TzSu
-	 BkU2O19WxQzD5pn88u08y0gdddFfPDjNx/J0QN3GnMYSQiy8ou6xFULBMc1SzjOOMu
-	 ljVbdTQm3tTu0f/PXGt63pCY0RBe50ObwY/QDmMklQJPe3NO926/Iz9V5dyZ/3Ipuo
-	 jFGZ5KjU9DRqg==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 63K3faMdB426725
+	b=hMRC3JI+P8kA5WLiOEQUio4CnU2LpuKQCFNtQ61ufcdJpsqXZQNayDIsEwA8A3Hrf
+	 pnb7Ar9zN974EIQ1q3wwX+p03dAYA2OvKFIfhT8raULdjcCECL6dndAz+3fOGS5/Zx
+	 A2TU9E8XmxKM3jrzc7KgjMRaJ/3cLdy1DVFJZIB4CSV2c2WEtkcFsf3w+i+Q+MJ8eQ
+	 p+ujQgRjOHc44ODW1x6ueXZyrW/spxQWIU91JP/WATALwLFY+eirM+gfDkCL6/JRls
+	 SLYSvNb54HVSrPD1R/1WI6UVp8JFA+jLrF8BmxORpN8MQdQObaWkvOKYyf5wAIEnP+
+	 8tZ8OT2it8ABA==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 63K3ffWcB426773
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2026 11:41:36 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 20 Apr 2026 11:41:36 +0800
+	for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2026 11:41:41 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 20 Apr 2026 11:41:36 +0800
+ 15.2.1748.10; Mon, 20 Apr 2026 11:41:41 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Mon, 20 Apr 2026 11:41:36 +0800
+ Transport; Mon, 20 Apr 2026 11:41:41 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <leo.li@realtek.com>, <gary.chang@realtek.com>, <echuang@realtek.com>,
         <wenjie.tsai@realtek.com>, <phhuang@realtek.com>, <isaiah@realtek.com>,
         <kevin_yang@realtek.com>, <mh_chen@realtek.com>
-Subject: [PATCH rtw-next 05/16] wifi: rtw89: phy: support static PD level setting
-Date: Mon, 20 Apr 2026 11:40:40 +0800
-Message-ID: <20260420034051.17666-6-pkshih@realtek.com>
+Subject: [PATCH rtw-next 06/16] wifi: rtw89: Correct data type for scan index to avoid infinite loop
+Date: Mon, 20 Apr 2026 11:40:41 +0800
+Message-ID: <20260420034051.17666-7-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260420034051.17666-1-pkshih@realtek.com>
 References: <20260420034051.17666-1-pkshih@realtek.com>
@@ -90,12 +86,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34998-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-34999-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[realtek.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
@@ -104,268 +100,79 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 583A442694F
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D5D6F42695D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Eric Huang <echuang@realtek.com>
+From: Shin-Yi Lin <isaiah@realtek.com>
 
-PD (Packet Detection) threshold is a key parameter in the DIG
-(Dynamic Initial Gain) algorithm that determines the sensitivity
-of packet detection. Current implementation only supports dynamic
-PD adjustment based on environment. This patch adds support for
-static PD threshold via debugfs allowing users to set a fixed PD
-value for testing or specific scenarios.
+A kernel soft lockup was observed during Wi-Fi scanning on the 6GHz band.
+The CPU becomes stuck in rtw89_hw_scan_add_chan_ax for over 20 seconds,
+leading to a system panic.
 
-Signed-off-by: Eric Huang <echuang@realtek.com>
+RIP points to 0f b6 c3 (movzbl %bl, %eax), which zero-extends
+the low 8 bits of RBX into RAX.
+RBX (the counter i) has reached a huge value: 0x137466a1.
+
+  watchdog: BUG: soft lockup - CPU#2 stuck for 26s! [kworker/u16:4:6124]
+  Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
+  RIP: 0010:rtw89_hw_scan_add_chan_ax+0xb3/0x6e0 [rtw89_core]
+  Code: a0 48 89 45 a8 44 89 6d 9c 44 89 75 98 eb 29 66 66 2e 0f 1f
+  84 00 00 00 00 00 66 66 2e 0f 1f 84 00 00 00 00 00 66 90 83 c3 01
+  <0f> b6 c3 41 3b 44 24 74 0f 83 0b 02 00 00 0f b6 c3 48 8d 14 80 49
+  RSP: 0018:ffffcb48cbaa39f8 EFLAGS: 00000202
+  RAX: 0000000000000005 RBX: 00000000137466a1 RCX: 0000000000000000
+  RDX: ffff89ffc9d851a8 RSI: 0000000000004f0d RDI: 0000000096af0130
+  RBP: ffffcb48cbaa3a60 R08: 0000000000000000 R09: ffff8a00b7502080
+  R10: ffff8a00b75ff600 R11: 0000000000000000 R12: ffff89ffc7553870
+  R13: ffff8a00b7ac8f19 R14: ffff8a00b75020d8 R15: ffff89ffc3d54d80
+  FS:  0000000000000000(0000) GS:ffff8a014f962000(0000)
+  knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007558d7f9f4c4 CR3: 0000000178040001 CR4: 00000000001706f0
+  Call Trace:
+   <TASK>
+   rtw89_hw_scan_prep_chan_list_ax+0x8a/0x400 [rtw89_core]
+   rtw89_hw_scan_start+0x546/0x8a0 [rtw89_core]
+   ? rtw89_fw_h2c_default_cmac_tbl+0x13c/0x1f0 [rtw89_core]
+   rtw89_ops_hw_scan+0xae/0x120 [rtw89_core]
+   drv_hw_scan+0xbb/0x180 [mac80211]
+   __ieee80211_start_scan+0x2fc/0x750 [mac80211]
+   ieee80211_request_scan+0xe/0x20 [mac80211]
+   ieee80211_scan+0x123/0x190 [mac80211]
+   rdev_scan+0x40/0x110 [cfg80211]
+   cfg80211_scan_6ghz+0x5a1/0xa30 [cfg80211]
+
+By objdump with source:
+
+	for (i = 0; i < req->n_6ghz_params; i++) {
+   5fbc0:	83 c3 01             	add    $0x1,%ebx --> i++
+   5fbc3:	0f b6 c3             	movzbl %bl,%eax  --> get counter
+   fbc6:	41 3b 44 24 74       	cmp    0x74(%r12),%eax
+
+   * RBX: 00000000137466a1 -> %bl = a1 -> EAX = 000000a1 (161)
+
+Fixes: c6aa9a9c4725 ("wifi: rtw89: add RNR support for 6 GHz scan")
+Signed-off-by: Shin-Yi Lin <isaiah@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h  |  4 +
- drivers/net/wireless/realtek/rtw89/debug.c | 94 ++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/phy.c   | 44 +++++++---
- 3 files changed, 131 insertions(+), 11 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 4e920472c8aa..8618a7c30ee0 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -5180,6 +5180,7 @@ enum rtw89_dm_type {
- 	RTW89_DM_MLO,
- 	RTW89_DM_HW_SCAN,
- 	RTW89_DM_INACTIVE_PS,
-+	RTW89_DM_DIG_PD,
- };
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 17704f054727..089c9071b58f 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -8318,7 +8318,7 @@ static int rtw89_update_6ghz_rnr_chan_ax(struct rtw89_dev *rtwdev,
+ 	struct sk_buff *skb;
+ 	bool found;
+ 	int ret = 0;
+-	u8 i;
++	u32 i;
  
- #define RTW89_THERMAL_PROT_LV_MAX 5
-@@ -5221,6 +5222,9 @@ struct rtw89_hal {
- 
- 	u8 thermal_prot_th;
- 	u8 thermal_prot_lv; /* 0 ~ RTW89_THERMAL_PROT_LV_MAX */
-+
-+	u8 fixed_dig_pd_th; /* v = (X(dBm) + 102)/2 */
-+	s8 fixed_dig_cck_pd_th; /* dBm */
- };
- 
- #define RTW89_MAX_MAC_ID_NUM 128
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index ebe3b1f9c39d..f7672d7e0229 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.c
-+++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -87,6 +87,7 @@ struct rtw89_debugfs {
- 	struct rtw89_debugfs_priv phy_info;
- 	struct rtw89_debugfs_priv stations;
- 	struct rtw89_debugfs_priv disable_dm;
-+	struct rtw89_debugfs_priv static_pd_th;
- 	struct rtw89_debugfs_priv mlo_mode;
- 	struct rtw89_debugfs_priv beacon_info;
- 	struct rtw89_debugfs_priv diag_mac;
-@@ -4349,6 +4350,7 @@ static const struct rtw89_disabled_dm_info {
- 	DM_INFO(MLO),
- 	DM_INFO(HW_SCAN),
- 	DM_INFO(INACTIVE_PS),
-+	DM_INFO(DIG_PD),
- };
- 
- static ssize_t
-@@ -4394,6 +4396,96 @@ rtw89_debug_priv_disable_dm_set(struct rtw89_dev *rtwdev,
- 	return count;
- }
- 
-+#define RTW89_DIG_PD_TH_MIN_DBM		-102
-+#define RTW89_DIG_PD_TH_MAX_DBM		-40
-+#define RTW89_DIG_PD_TH_STEP		2
-+
-+static inline s8 rtw89_dig_pd_th_to_dbm(u8 reg_val)
-+{
-+	return RTW89_DIG_PD_TH_MIN_DBM + RTW89_DIG_PD_TH_STEP * reg_val;
-+}
-+
-+static inline u8 rtw89_dig_pd_th_dbm_to_reg(s8 dbm)
-+{
-+	return (dbm - RTW89_DIG_PD_TH_MIN_DBM) / RTW89_DIG_PD_TH_STEP;
-+}
-+
-+static ssize_t
-+rtw89_debug_priv_static_pd_th_get(struct rtw89_dev *rtwdev,
-+				  struct rtw89_debugfs_priv *debugfs_priv,
-+				  char *buf, size_t bufsz)
-+{
-+	struct rtw89_hal *hal = &rtwdev->hal;
-+	char *p = buf, *end = buf + bufsz;
-+	bool disabled;
-+	s8 pd_th_dbm;
-+	s8 cck_pd_th;
-+
-+	disabled = hal->disabled_dm_bitmap & BIT(RTW89_DM_DIG_PD);
-+
-+	if (disabled) {
-+		pd_th_dbm = rtw89_dig_pd_th_to_dbm(hal->fixed_dig_pd_th);
-+		cck_pd_th = hal->fixed_dig_cck_pd_th;
-+
-+		p += scnprintf(p, end - p, "DIG: static\n");
-+		p += scnprintf(p, end - p, "OFDM PD threshold: %d dBm\n", pd_th_dbm);
-+		p += scnprintf(p, end - p, "CCK PD threshold: %d dBm\n", cck_pd_th);
-+	} else {
-+		p += scnprintf(p, end - p, "DIG: dynamic\n");
-+	}
-+
-+	p += scnprintf(p, end - p, "\nUsage: echo <mode> [pd_th] > static_pd_th\n");
-+	p += scnprintf(p, end - p, "  mode: 0 = dynamic, 1 = static\n");
-+	p += scnprintf(p, end - p, "  pd_th: PD threshold in dBm (-102 ~ -40)\n");
-+
-+	return p - buf;
-+}
-+
-+static ssize_t
-+rtw89_debug_priv_static_pd_th_set(struct rtw89_dev *rtwdev,
-+				  struct rtw89_debugfs_priv *debugfs_priv,
-+				  const char *buf, size_t count)
-+{
-+	struct rtw89_hal *hal = &rtwdev->hal;
-+	int ret;
-+	u32 mode;
-+	s32 pd_th_dbm;
-+
-+	ret = sscanf(buf, "%u %d", &mode, &pd_th_dbm);
-+	if (ret < 1)
-+		return -EINVAL;
-+
-+	if (mode > 1)
-+		return -EINVAL;
-+
-+	if (mode == 0) {
-+		rtw89_core_dm_disable_clr(rtwdev, RTW89_DM_DIG_PD);
-+		hal->fixed_dig_pd_th = 0;
-+		hal->fixed_dig_cck_pd_th = 0;
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_DIG,
-+			    "DIG static mode disabled\n");
-+	} else {
-+		if (ret < 2 || pd_th_dbm < RTW89_DIG_PD_TH_MIN_DBM ||
-+		    pd_th_dbm > RTW89_DIG_PD_TH_MAX_DBM)
-+			return -EINVAL;
-+
-+		rtw89_core_dm_disable_set(rtwdev, RTW89_DM_DIG_PD);
-+		hal->fixed_dig_pd_th = clamp(rtw89_dig_pd_th_dbm_to_reg(pd_th_dbm),
-+					     0, 0x1f);
-+		/* CCK uses dBm directly */
-+		hal->fixed_dig_cck_pd_th = pd_th_dbm;
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_DIG,
-+			    "DIG static mode: PD=0x%02x (%d dBm), CCK=%d dBm\n",
-+			    hal->fixed_dig_pd_th,
-+			    rtw89_dig_pd_th_to_dbm(hal->fixed_dig_pd_th),
-+			    hal->fixed_dig_cck_pd_th);
-+	}
-+
-+	return count;
-+}
-+
- static void rtw89_debug_mlo_mode_set_mlsr(struct rtw89_dev *rtwdev,
- 					  unsigned int link_id)
- {
-@@ -4882,6 +4974,7 @@ static const struct rtw89_debugfs rtw89_debugfs_templ = {
- 	.phy_info = rtw89_debug_priv_get(phy_info),
- 	.stations = rtw89_debug_priv_get(stations, RLOCK),
- 	.disable_dm = rtw89_debug_priv_set_and_get(disable_dm, RWLOCK),
-+	.static_pd_th = rtw89_debug_priv_set_and_get(static_pd_th, RWLOCK),
- 	.mlo_mode = rtw89_debug_priv_set_and_get(mlo_mode, RWLOCK),
- 	.beacon_info = rtw89_debug_priv_get(beacon_info),
- 	.diag_mac = rtw89_debug_priv_get(diag_mac, RSIZE_16K, RLOCK),
-@@ -4930,6 +5023,7 @@ void rtw89_debugfs_add_sec1(struct rtw89_dev *rtwdev, struct dentry *debugfs_top
- 	rtw89_debugfs_add_r(phy_info);
- 	rtw89_debugfs_add_r(stations);
- 	rtw89_debugfs_add_rw(disable_dm);
-+	rtw89_debugfs_add_rw(static_pd_th);
- 	rtw89_debugfs_add_rw(mlo_mode);
- 	rtw89_debugfs_add_r(beacon_info);
- 	rtw89_debugfs_add_r(diag_mac);
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index e70d0e283987..f26cbde6bdd0 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -7162,11 +7162,19 @@ static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev,
- 	const struct rtw89_chan *chan = rtw89_mgnt_chan_get(rtwdev, bb->phy_idx);
- 	const struct rtw89_dig_regs *dig_regs = rtwdev->chip->dig_regs;
- 	struct rtw89_dig_info *dig = &bb->dig;
-+	struct rtw89_hal *hal = &rtwdev->hal;
- 	u8 final_rssi, under_region = dig->pd_low_th_ofst;
- 	s8 cck_cca_th;
- 	u32 pd_val;
- 
--	pd_val = __rtw89_phy_dig_dyn_pd_th(rtwdev, bb, rssi, enable, chan);
-+	if (hal->disabled_dm_bitmap & BIT(RTW89_DM_DIG_PD)) {
-+		pd_val = hal->fixed_dig_pd_th;
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_DIG,
-+			    "Fixed DIG: PD_low=%d\n", pd_val);
-+	} else {
-+		pd_val = __rtw89_phy_dig_dyn_pd_th(rtwdev, bb, rssi, enable, chan);
-+	}
- 	dig->bak_dig = pd_val;
- 
- 	rtw89_phy_write32_idx(rtwdev, dig_regs->seg0_pd_reg,
-@@ -7174,17 +7182,24 @@ static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev,
- 	rtw89_phy_write32_idx(rtwdev, dig_regs->seg0_pd_reg,
- 			      dig_regs->pd_spatial_reuse_en, enable, bb->phy_idx);
- 
--	if (!rtwdev->hal.support_cckpd)
-+	if (!hal->support_cckpd)
- 		return;
- 
--	final_rssi = min_t(u8, rssi, dig->igi_rssi);
--	under_region = rtw89_phy_dig_cal_under_region(rtwdev, bb, chan);
--	cck_cca_th = max_t(s8, final_rssi - under_region, CCKPD_TH_MIN_RSSI);
--	pd_val = (u32)(cck_cca_th - IGI_RSSI_MAX);
-+	if (hal->disabled_dm_bitmap & BIT(RTW89_DM_DIG_PD)) {
-+		pd_val = hal->fixed_dig_cck_pd_th;
- 
--	rtw89_debug(rtwdev, RTW89_DBG_DIG,
--		    "igi=%d, cck_ccaTH=%d, backoff=%d, cck_PD_low=((%d))dB\n",
--		    final_rssi, cck_cca_th, under_region, pd_val);
-+		rtw89_debug(rtwdev, RTW89_DBG_DIG,
-+			    "Fixed DIG: cck_PD_low=((%d))dB\n", pd_val);
-+	} else {
-+		final_rssi = min_t(u8, rssi, dig->igi_rssi);
-+		under_region = rtw89_phy_dig_cal_under_region(rtwdev, bb, chan);
-+		cck_cca_th = max_t(s8, final_rssi - under_region, CCKPD_TH_MIN_RSSI);
-+		pd_val = (u32)(cck_cca_th - IGI_RSSI_MAX);
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_DIG,
-+			    "igi=%d, cck_ccaTH=%d, backoff=%d, cck_PD_low=((%d))dB\n",
-+			    final_rssi, cck_cca_th, under_region, pd_val);
-+	}
- 
- 	rtw89_phy_write32_idx(rtwdev, dig_regs->bmode_pd_reg,
- 			      dig_regs->bmode_cca_rssi_limit_en, enable, bb->phy_idx);
-@@ -7315,6 +7330,7 @@ static void rtw89_phy_dig_ctrl(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb
- {
- 	const struct rtw89_dig_regs *dig_regs = rtwdev->chip->dig_regs;
- 	struct rtw89_dig_info *dig = &bb->dig;
-+	struct rtw89_hal *hal = &rtwdev->hal;
- 	bool en_dig;
- 	u32 pd_val;
- 
-@@ -7323,10 +7339,16 @@ static void rtw89_phy_dig_ctrl(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb
- 
- 	if (pause_dig) {
- 		en_dig = false;
--		pd_val = 0;
-+		if (hal->disabled_dm_bitmap & BIT(RTW89_DM_DIG_PD))
-+			pd_val = hal->fixed_dig_pd_th;
-+		else
-+			pd_val = 0;
- 	} else {
- 		en_dig = rtwdev->total_sta_assoc > 0;
--		pd_val = restore ? dig->bak_dig : 0;
-+		if (hal->disabled_dm_bitmap & BIT(RTW89_DM_DIG_PD))
-+			pd_val = hal->fixed_dig_pd_th;
-+		else
-+			pd_val = restore ? dig->bak_dig : 0;
- 	}
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_DIG, "%s <%s> PD_low=%d", __func__,
+ 	if (!req->n_6ghz_params)
+ 		return 0;
 -- 
 2.25.1
 
