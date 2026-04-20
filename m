@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-35094-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35092-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGKgLy1m5mlmvwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35094-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 19:45:17 +0200
+	id sKWjAbhs5mmBwAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35092-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 20:13:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36701432010
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 19:45:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C274432946
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 20:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 67D183024282
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 17:44:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B3B430C0725
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 17:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499433A758B;
-	Mon, 20 Apr 2026 17:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963D1386453;
+	Mon, 20 Apr 2026 17:44:17 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.unwrap.rs (mail.unwrap.rs [172.232.15.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E11355F35;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1B43A758E;
 	Mon, 20 Apr 2026 17:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.232.15.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776707058; cv=none; b=BVfK00QYrLvD6Np3gjWYxZnrnPSL0qyMgWgWZRlTvzNsw/aI4fCxPYOlgGWeqOjPDWNCz1/NlZ4dg2mJDk8UKNx+AumR2NGzJf9vEHes8CIHivOoXefn2XkHCg4rf7jsHiAtNeBEH/eGzckax2864mmcv81pLSRFufzEnf/ja9A=
+	t=1776707057; cv=none; b=s+ZE21ywleP/AuVb/wgCHXPAHdCiCCJkg1YiCS7TN/seqWpcxdBPKYmnRwnFFB+QP/1kSS0nMKq5yvo3xEvsQzMIfVpoL0Dc/p25QX8P0/5+fTjEq6rC12bKCYDYh0G0Du8cS+4mbQMnLWTFwhoHBq/lUt/6cH585Q0GlgEkrAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776707058; c=relaxed/simple;
-	bh=OL8S95UzA5AQbkJJTlTPyxJdS4Grcv4Xh3n1WHpvDkc=;
+	s=arc-20240116; t=1776707057; c=relaxed/simple;
+	bh=c8t+1jbp3edPTOaZ1g1cbniG5gVIVXK1gymA2jDzYLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uh1eXuwjuZKSj6y8xF+XY6+FcSXLByxRT53/WTYx/H5k8preprzRWSKFm7QR8o5qxAlD8i1JueVicyrnmjurGZ0J6lcU6NVYM2RJTuC2/bhdCVYwfaQBxDbl8vuslWjXD9gOj6+UdOf/G3RaVOOQALA1/U6brhv96xe1WxWTynE=
+	 MIME-Version; b=EmbTF8itPrTyRVcltiRCKJGfDFIxIYGpBFIVmzo9Qo1oB/Nk/XhBl8FOHKtRnIgx5yo/f48AvSzj4UHkeT/f013beHQOhgSdGFfMk4Nlqkr9kll7+z4abkl2RQM1oFNFNlNZcJicL1p8JuEFzn4PmPU0+FJ/Xs+G7f4wddZ418o=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs; spf=pass smtp.mailfrom=unwrap.rs; arc=none smtp.client-ip=172.232.15.166
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unwrap.rs
@@ -39,9 +39,9 @@ Cc: greearb@candelatech.com,
 	johannes@sipsolutions.net,
 	cole@unwrap.rs,
 	stable@vger.kernel.org
-Subject: [PATCH v3 1/3] wifi: iwlwifi: add STATUS_FW_ERROR guards to NAPI/TX-notif paths
-Date: Mon, 20 Apr 2026 10:44:04 -0700
-Message-ID: <20260420174406.128254-2-cole@unwrap.rs>
+Subject: [PATCH v3 2/3] wifi: iwlwifi: mld: fix TSO segmentation when AMSDU is disabled
+Date: Mon, 20 Apr 2026 10:44:05 -0700
+Message-ID: <20260420174406.128254-3-cole@unwrap.rs>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260420174406.128254-1-cole@unwrap.rs>
 References: <20260420174406.128254-1-cole@unwrap.rs>
@@ -57,7 +57,7 @@ X-Spamd-Result: default: False [2.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -66,8 +66,8 @@ X-Spamd-Result: default: False [2.04 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
-	TAGGED_FROM(0.00)[bounces-35094-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-35092-lists,linux-wireless=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	R_DKIM_NA(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[cole@unwrap.rs,linux-wireless@vger.kernel.org];
@@ -76,130 +76,77 @@ X-Spamd-Result: default: False [2.04 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	TO_DN_NONE(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,unwrap.rs:mid,unwrap.rs:email]
-X-Rspamd-Queue-Id: 36701432010
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,unwrap.rs:mid,unwrap.rs:email]
+X-Rspamd-Queue-Id: 5C274432946
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-After firmware error is detected and STATUS_FW_ERROR is set, NAPI may
-still be in-flight from a prior interrupt or get scheduled by the MSIX
-IRQ handler before the error bit is processed.  The NAPI poll functions
-have no STATUS_FW_ERROR check and will continue processing stale RX ring
-entries from dying firmware.
+When the TLC notification disables AMSDU for a TID, mld/tlc.c (line 858)
+sets link_sta->agg.max_tid_amsdu_len[TID] to the sentinel value 1.  The
+TSO segmentation path in iwl_mld_tx_tso_segment() guards only against
+zero, not this sentinel, so it reaches the num_subframes calculation:
 
-iwl_trans_reclaim() already early-returns on STATUS_FW_ERROR, so any
-TX-response notification that makes it through to reclaim is a no-op.
-What remains is:
+  num_subframes = (max_tid_amsdu_len + pad) / (subf_len + pad)
+                = (1 + 2) / (1534 + 2) = 0
 
-  * CPU spent parsing stale RX inside iwl_pcie_rx_handle() before
-    dispatching to the op_mode.
-  * No signal in the logs when the race fires, making the
-    post-FW-error sequence harder to debug.
+and then passes num_subframes=0 to iwl_tx_tso_segment(), which sets
 
-Add STATUS_FW_ERROR early-returns with WARN_ONCE() in four places:
+  gso_size = num_subframes * mss = 0
 
-  * iwl_pcie_napi_poll()        (legacy NAPI poll)
-  * iwl_pcie_napi_poll_msix()   (MSIX NAPI poll)
-  * iwl_mld_handle_tx_resp_notif()
-  * iwl_mld_handle_compressed_ba_notif()
+Calling skb_gso_segment() with gso_size=0 produces an unbounded number
+of tiny segments from a single GSO skb.  On a BE200 we've observed the
+expansion push thousands of micro-frames into the TX ring before the
+rest are purged.
 
-Rationale:
+The MVM driver is immune because it gates on mvmsta->amsdu_enabled (see
+mvm/tx.c lines 910-913) before reaching the num_subframes calculation.
+MLD has no equivalent bitmap and relies solely on max_tid_amsdu_len,
+which does not recognise the sentinel 1.
 
-  1. Stop NAPI from consuming any more RX budget once firmware is
-     declared dead; the restart path will re-initialise the rings.
-  2. Provide a single, one-shot log line via WARN_ONCE so we can tell
-     from a user's dmesg whether the post-error race actually fired in
-     their configuration, which has been hard to reproduce outside
-     Ben Greear's test rig.
+Fix by checking max_tid_amsdu_len == 1 at the existing guard and
+falling back to non-AMSDU TSO segmentation (Suggested-by Miriam
+Korenblit).  Also add WARN_ON_ONCE(!num_subframes) after the division
+as defense-in-depth so any future path that produces zero through a
+different mechanism is logged rather than silently creating a
+pathological GSO skb.
 
-_iwl_trans_pcie_gen2_stop_device() already calls iwl_pcie_rx_napi_sync()
-to quiesce NAPI during device teardown, but that runs much later in the
-restart sequence; these checks close the window between error detection
-and device stop.
+Downstream user-visible symptoms (TCP retransmit queue corruption on
+some setups, firmware MMIO-poll hang on BE200 with c102 firmware) have
+been reported in connection with this bug but the causal chain between
+the GSO explosion and those symptoms is being investigated separately
+with Ben Greear, so they are not claimed here.
 
+Suggested-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
 Cc: stable@vger.kernel.org
-Tested-by: Ben Greear <greearb@candelatech.com>
 Signed-off-by: Cole Leavitt <cole@unwrap.rs>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/tx.c       | 19 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c | 18 ++++++++++++++++++
- 2 files changed, 37 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mld/tx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tx.c b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
-index 546d09a38dab..e341d12e5233 100644
+index e341d12e5233..8af58aabcd68 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/tx.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
-@@ -1082,6 +1082,15 @@ void iwl_mld_handle_tx_resp_notif(struct iwl_mld *mld,
- 	bool mgmt = false;
- 	bool tx_failure = (status & TX_STATUS_MSK) != TX_STATUS_SUCCESS;
+@@ -823,7 +823,7 @@ static int iwl_mld_tx_tso_segment(struct iwl_mld *mld, struct sk_buff *skb,
+ 		return -EINVAL;
  
-+	/* iwl_trans_reclaim() already guards on STATUS_FW_ERROR, but
-+	 * bail out earlier (and log once) so we can tell from dmesg
-+	 * whether this race actually fires in the field.
-+	 */
-+	if (unlikely(test_bit(STATUS_FW_ERROR, &mld->trans->status))) {
-+		WARN_ONCE(1, "iwlwifi: TX resp notif (sta=%d txq=%d) after FW error\n",
-+			  sta_id, txq_id);
-+		return;
-+	}
- 	if (IWL_FW_CHECK(mld, tx_resp->frame_count != 1,
- 			 "Invalid tx_resp notif frame_count (%d)\n",
- 			 tx_resp->frame_count))
-@@ -1360,6 +1369,16 @@ void iwl_mld_handle_compressed_ba_notif(struct iwl_mld *mld,
- 	u8 sta_id = ba_res->sta_id;
- 	struct ieee80211_link_sta *link_sta;
+ 	max_tid_amsdu_len = sta->cur->max_tid_amsdu_len[tid];
+-	if (!max_tid_amsdu_len)
++	if (!max_tid_amsdu_len || max_tid_amsdu_len == 1)
+ 		return iwl_tx_tso_segment(skb, 1, netdev_flags, mpdus_skbs);
  
-+	/* Same rationale as iwl_mld_handle_tx_resp_notif: redundant with
-+	 * iwl_trans_reclaim()'s own STATUS_FW_ERROR check, but fails fast
-+	 * and logs via WARN_ONCE when the race is actually hit.
-+	 */
-+	if (unlikely(test_bit(STATUS_FW_ERROR, &mld->trans->status))) {
-+		WARN_ONCE(1, "iwlwifi: BA notif (sta=%d) after FW error\n",
-+			  sta_id);
-+		return;
-+	}
+ 	/* Sub frame header + SNAP + IP header + TCP header + MSS */
+@@ -835,6 +835,9 @@ static int iwl_mld_tx_tso_segment(struct iwl_mld *mld, struct sk_buff *skb,
+ 	 */
+ 	num_subframes = (max_tid_amsdu_len + pad) / (subf_len + pad);
+ 
++	if (WARN_ON_ONCE(!num_subframes))
++		return iwl_tx_tso_segment(skb, 1, netdev_flags, mpdus_skbs);
 +
- 	if (!tfd_cnt)
- 		return;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
-index fe263cdc2e4f..554c22777ec1 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
-@@ -1012,6 +1012,15 @@ static int iwl_pcie_napi_poll(struct napi_struct *napi, int budget)
- 	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
- 	trans = trans_pcie->trans;
- 
-+	/* Don't process RX for dying firmware; the restart path will
-+	 * re-init the rings.  WARN_ONCE helps surface whether this race
-+	 * actually fires in user dmesg.
-+	 */
-+	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status))) {
-+		WARN_ONCE(1, "iwlwifi: NAPI poll[%d] invoked after FW error\n",
-+			  rxq->id);
-+		napi_complete_done(napi, 0);
-+		return 0;
-+	}
-+
- 	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
- 
- 	IWL_DEBUG_ISR(trans, "[%d] handled %d, budget %d\n",
-@@ -1039,6 +1048,15 @@ static int iwl_pcie_napi_poll_msix(struct napi_struct *napi, int budget)
- 	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
- 	trans = trans_pcie->trans;
- 
-+	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status))) {
-+		WARN_ONCE(1,
-+			  "iwlwifi: NAPI MSIX poll[%d] invoked after FW error\n",
-+			  rxq->id);
-+		napi_complete_done(napi, 0);
-+		return 0;
-+	}
-+
- 	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
- 	IWL_DEBUG_ISR(trans, "[%d] handled %d, budget %d\n", rxq->id, ret,
- 		      budget);
+ 	if (sta->max_amsdu_subframes &&
+ 	    num_subframes > sta->max_amsdu_subframes)
+ 		num_subframes = sta->max_amsdu_subframes;
 -- 
 2.52.0
 
