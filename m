@@ -1,60 +1,61 @@
-Return-Path: <linux-wireless+bounces-35050-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35051-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CIlNJcq5mkDswEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35050-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:31:03 +0200
+	id mK01L4Ir5mkDswEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35051-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:34:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6A442BE2A
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6832642C054
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:34:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3706C3088903
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:26:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0843C305658A
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407943C1419;
-	Mon, 20 Apr 2026 13:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD9B3C73F6;
+	Mon, 20 Apr 2026 13:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SW8Xzyua"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fu09rmNH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6F43C1415;
-	Mon, 20 Apr 2026 13:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554983C73E5;
+	Mon, 20 Apr 2026 13:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691048; cv=none; b=gYR5s/A6GBvSoYw+TSbB7pD1sReDfJEfxeQsmMQA9MEtvQ1qb/Q7rtvxnrfF4do3gDecne+pUNzH/7U0iy1+dj0g73icKjS9VQrqncm6z8FfoMchv9r8dZqoRAvbnCNpIb+k1Uoa9W7ih+9jDACvuoxec6wQph+ZpI2vNeATsVE=
+	t=1776691058; cv=none; b=gmEbIxDRVMWObconAAP2zILqIzhu77vSV3yp1565PZ8xgF2AiijchSKvc6ujcmxSJTptrLYVv/6DS3+Zc+DFLJbtiCty17kUo0t6Iu3T5uKkxkd/owXsl07GL9zY+d3uR/pFmFDqcqTV2KzxisxKl8Hr71tuX0lkRNJYB+gAn/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691048; c=relaxed/simple;
-	bh=2uxAMq/plTcDTGuk0sfBjxKUs2/3TSlDaTNK2qRM9K0=;
+	s=arc-20240116; t=1776691058; c=relaxed/simple;
+	bh=xmjZr7nBExOm6+5J6CaHMHy6GKPbrkGxB2IzEUlk5hE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GL7l/0F/8mV7gN5sp9tGSMmz/kmkEz5DWYfk3MZI58WRBGpat+3MbdoZD3XvcVNtSubuhSYjvn7m1Vk+UofE+ptIT/hvDcDnT36orC3HQTgndRaDFq00kGMO6ekBrB3HZvElA07/YtliRecAj3mt9htyk3AVAiH9LR/+zP7PBIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SW8Xzyua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25201C2BCB4;
-	Mon, 20 Apr 2026 13:17:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KAVBkrOO4I6iQMQcJSE2iaeBvjhzfn3NfjxjeL/uvyStsgkTwlyZUwMkmRZ7oWaauniQPzDukzpWs1pYVgIA9MO2gcxhKQzyHILZKeNw2r7fUsDjCtHeI4JJJAtnvtAmoX01SOWzBeTMWKU1N6YkYQYduSm9JQIlrbIquDGTFUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fu09rmNH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183DCC2BCB4;
+	Mon, 20 Apr 2026 13:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691048;
-	bh=2uxAMq/plTcDTGuk0sfBjxKUs2/3TSlDaTNK2qRM9K0=;
+	s=k20201202; t=1776691058;
+	bh=xmjZr7nBExOm6+5J6CaHMHy6GKPbrkGxB2IzEUlk5hE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SW8XzyuauKeFDPEggm3+rER0DXZ7a8s0YnJrZZ0ab2Nypx/M4uOyH40o5vUsdqLHS
-	 j5JXEnPUqEmK7yYG51jezUun6A1YVBvK+6hLMRByCcthYbzgEO8TsjIrB8dffBgddo
-	 BqBhTPAw3dkX0p/p95uJJTW9R+IlT9u9Oco8ZlgvQomXxHnSilQmFRxhWKAR0s83TM
-	 O3asUjDJm/oLU701lEZ9kpvfppHyxNgNCU0dnGeS7GTwDOjUyxHXqChTetn16HG16f
-	 x2OdzwkUnBsBgP/TdSXdVA38lDMwzStvypr7JReCg7iEwVfWVnq7bydO1qmbk0LziN
-	 onX015bOnxriA==
+	b=Fu09rmNHMUnOkBuanGYznE8TI54uH8QWFf+0DU9ltua3zvMeLwpaueIUW/yq8z4Hl
+	 zzasN/marEAA62nyNRuBgCCMzTHVKTtFPlwPkmt/PAvQq2pOz4pJfCL5MZWaUtHevV
+	 Z/sN/T33nwvItmNynOMkvDvVfI83555e0t0BcP1rN+HGKysX/hMcbnyxx/NoyCHWiA
+	 TJQqSip/ST+r/aGdvnW2/X5BkQIZVi2P11rKo7z6w3Igjyv0sS8OEWpk1puEClJOPt
+	 iK5BSfyMHSDwQTqoGoPOSo3r4ORfhwmvNY9RdnTwFHMmJvJe5mFZCnDUVilwxMrK3N
+	 0hTg5anS87Bog==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Christian Hewitt <christianshewitt@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.1] wifi: rtw89: retry efuse physical map dump on transient failure
-Date: Mon, 20 Apr 2026 09:08:49 -0400
-Message-ID: <20260420131539.986432-63-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-6.18] wifi: iwlwifi: pcie: don't dump on reset handshake in dump
+Date: Mon, 20 Apr 2026 09:08:55 -0400
+Message-ID: <20260420131539.986432-69-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420131539.986432-1-sashal@kernel.org>
 References: <20260420131539.986432-1-sashal@kernel.org>
@@ -70,414 +71,405 @@ X-stable-base: Linux 7.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-35051-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-35050-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: EA6A442BE2A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6832642C054
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Christian Hewitt <christianshewitt@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit d92f6ad6483e6d430c8273eeb7be97ce85244bd5 ]
+[ Upstream commit 4a481720106d6bad1521d0e0322fd74fa2f6c464 ]
 
-On Radxa Rock 5B with a RTL8852BE combo WiFi/BT card, the efuse
-physical map dump intermittently fails with -EBUSY during probe.
-The failure occurs in rtw89_dump_physical_efuse_map_ddv() where
-read_poll_timeout_atomic() times out waiting for the B_AX_EF_RDY
-bit after 1 second.
+When a FW dump happens, possibly even because of a reset handshake
+timeout, there's no point in attempting to dump again. Since all the
+callers of the function outside the transport itself are from the FW
+dump infrastructure, just split the internal function and make the
+external one not dump on timeout.
 
-The root cause is a timing race during boot: the WiFi driver's
-chip initialization (firmware download via PCIe) overlaps with
-Bluetooth firmware download to the same combo chip via USB. This
-can leave the efuse controller temporarily unavailable when the
-WiFi driver attempts to read the efuse map.
-
-The firmware download path retries up to 5 times, but the efuse
-read that follows has no similar logic. Address this by adding
-retry loop logic (also up to 5 attempts) around physical efuse
-map dump.
-
-Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260317112155.1939569-1-christianshewitt@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260320100746.f36ba3893899.I063ccc3a037ae6dabcde61941acb162c4b33f127@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information needed for a thorough analysis. Here is
-the complete walkthrough:
+Now I have a complete picture of the call chain. Let me compile the full
+analysis.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
 ### Step 1.1: Subject Line
-- **Subsystem**: wifi: rtw89 (Realtek 802.11ax wireless driver)
-- **Action verb**: "retry" — indicates adding resilience to a failure
-  path
-- **Summary**: Adds retry logic for efuse physical map dump to handle
-  transient -EBUSY failures
+- **Subsystem**: `wifi: iwlwifi: pcie:` (Intel WiFi PCIe transport
+  layer)
+- **Action verb**: "don't dump" - this is preventing incorrect behavior
+  (a bug fix)
+- **Summary**: Prevent triggering a firmware dump when a reset handshake
+  timeout occurs during an already-in-progress firmware dump
+
+Record: [wifi: iwlwifi: pcie] [prevent/avoid] [Don't recursively trigger
+FW dump on reset handshake timeout during dump collection]
 
 ### Step 1.2: Tags
-- **Signed-off-by**: Christian Hewitt (author), Ping-Ke Shih (rtw89
-  maintainer who applied it)
-- **Link**: `https://patch.msgid.link/20260317112155.1939569-1-
-  christianshewitt@gmail.com` — original submission
-- No `Fixes:` tag (expected for autosel candidate)
-- No `Cc: stable` (expected)
-- No `Reported-by:` — the author is the reporter/user himself
+- **Signed-off-by**: Johannes Berg (author, iwlwifi maintainer)
+- **Reviewed-by**: Emmanuel Grumbach (key iwlwifi developer)
+- **Signed-off-by**: Miri Korenblit (iwlwifi submitter)
+- **Link**: patch.msgid.link URL (lore-blocked by Anubis)
+- No Fixes: tag (expected), no Reported-by, no Cc: stable
+
+Record: Written by the iwlwifi maintainer, reviewed by another senior
+iwlwifi developer. No explicit stable nomination.
 
 ### Step 1.3: Commit Body Analysis
-- **Bug description**: On Radxa Rock 5B with RTL8852BE combo WiFi/BT,
-  efuse physical map dump intermittently fails with -EBUSY during probe.
-- **Symptom**: `read_poll_timeout_atomic()` times out (1 second) waiting
-  for `B_AX_EF_RDY` bit in `rtw89_dump_physical_efuse_map_ddv()`.
-- **Root cause**: Timing race during boot — WiFi chip initialization
-  (firmware download via PCIe) overlaps with Bluetooth firmware download
-  via USB to the same combo chip. The efuse controller becomes
-  temporarily unavailable.
-- **Fix approach**: Add retry loop (up to 5 attempts), matching the
-  firmware download retry pattern already in the driver.
+The message explains: When a FW dump happens (possibly due to a reset
+handshake timeout), there's no point in attempting to dump again.
+External callers of `iwl_trans_pcie_fw_reset_handshake()` are all from
+the FW dump infrastructure, so the fix splits the internal function and
+makes the external one not trigger a dump on timeout.
+
+Record: Bug = recursive dump attempt when reset handshake times out
+during dump. Symptom = attempting to dump from within dump context
+(potential hang/deadlock). Root cause = all external callers are from
+dump infrastructure but the function unconditionally triggers a new dump
+on timeout.
 
 ### Step 1.4: Hidden Bug Fix Detection
-This is explicitly described as a real bug fix — probe fails
-intermittently, WiFi doesn't work. The commit message is clear about the
-failure mechanism.
+This is explicitly described as preventing incorrect behavior. The
+"don't dump" phrasing directly describes fixing a problematic code path.
+Not hidden.
 
-Record: Real probe-time failure on real hardware. Not a hidden fix.
-
----
+Record: This is a clear bug fix - preventing recursive dumps that can
+cause system instability.
 
 ## PHASE 2: DIFF ANALYSIS
 
 ### Step 2.1: Inventory
-- **Files changed**: 1 (`drivers/net/wireless/realtek/rtw89/efuse.c`)
-- **Lines**: +19 added (new retry wrapper), minimal structural change
-- **Functions modified**: `rtw89_dump_physical_efuse_map()` renamed to
-  `__rtw89_dump_physical_efuse_map()`, new wrapper
-  `rtw89_dump_physical_efuse_map()` with retry logic
-- **Scope**: Single-file, surgical fix
+- **Files changed**: 1
+  (`drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c`)
+- **Lines changed**: ~10 added, ~3 removed (net ~7 lines)
+- **Functions modified**: `iwl_trans_pcie_fw_reset_handshake()`
+  refactored into `_iwl_trans_pcie_fw_reset_handshake()` + wrapper;
+  `_iwl_trans_pcie_gen2_stop_device()` updated to call internal version
+- **Scope**: Single-file surgical fix
 
 ### Step 2.2: Code Flow Change
-**Before**: `rtw89_dump_physical_efuse_map()` calls DDV or DAV path
-once. If the efuse controller is busy (-EBUSY), it fails immediately and
-the caller propagates the error up, causing probe to fail.
-
-**After**: The original function is renamed to
-`__rtw89_dump_physical_efuse_map()`. A new wrapper calls it in a loop
-(up to 5 times). On success, returns immediately. On failure, logs a
-warning and retries.
+- **Before**: `iwl_trans_pcie_fw_reset_handshake()` always calls
+  `iwl_op_mode_dump_error()` on timeout with `!reset_done`. All callers
+  (both from dump infrastructure and from stop_device) get the same
+  behavior.
+- **After**: Internal `_iwl_trans_pcie_fw_reset_handshake(trans,
+  dump_on_timeout)` takes a parameter. External callers (from dump
+  infrastructure via `iwl_trans_pcie_fw_reset_handshake()`) get
+  `dump_on_timeout=false`. Internal caller
+  (`_iwl_trans_pcie_gen2_stop_device`) passes `dump_on_timeout=true`.
 
 ### Step 2.3: Bug Mechanism
-**Category**: Hardware timing/resource contention during probe.
-- The efuse controller is shared between WiFi and BT on combo chips
-- BT firmware download via USB can hold the controller busy
-- The DDV read path polls for B_AX_EF_RDY for up to 1 second, then fails
-- Without retry, a transient busy state becomes a permanent probe
-  failure
+The call chain for the bug:
+1. FW dump starts via `iwl_fw_dbg_collect_sync()` →
+   `iwl_fw_error_ini_dump()` → `iwl_dump_ini_file_gen()` →
+   `iwl_dump_ini_trigger()` → calls
+   `iwl_trans_pcie_fw_reset_handshake()`
+2. If handshake times out, old code calls `iwl_op_mode_nic_error()` and
+   `iwl_op_mode_dump_error()`
+3. `iwl_op_mode_dump_error()` → `iwl_mvm_dump_error()` →
+   `iwl_fw_error_collect()` → triggers another dump
+4. This is a **recursive dump attempt from within dump context** - at
+   minimum wasteful, potentially causing deadlocks or hangs
+
+Record: [Logic/correctness fix] [Recursive dump trigger: the function
+triggers a new dump on timeout even when already called from within the
+dump infrastructure]
 
 ### Step 2.4: Fix Quality
-- **Obviously correct**: Yes — retry on transient error is a well-
-  established pattern
-- **Minimal**: Yes — 19 lines, pure wrapper function
-- **Regression risk**: Very low — only adds retries on an already-
-  failing path; success path is unchanged (returns immediately on first
-  `!ret`)
-- **Pattern consistency**: Exactly matches `rtw89_fw_download()` at
-  fw.c:1980 which already does `for (retry = 0; retry < 5; retry++)`
-  around `__rtw89_fw_download()`
+- Obviously correct: the parameter cleanly separates the two behaviors
+- Minimal and surgical: only changes the necessary function and its
+  callers
+- No regression risk: internal caller preserves original behavior
+  (dump_on_timeout=true), external callers gain new safe behavior
+  (dump_on_timeout=false)
+- No API changes: external function signature is unchanged
 
----
+Record: High quality fix. Minimal regression risk. Obviously correct.
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
 ### Step 3.1: Blame
-- The DDV efuse read code (`rtw89_dump_physical_efuse_map_ddv`) was
-  introduced in commit `e3ec7017f6a20d` (v5.16-rc4, Oct 2021 — initial
-  rtw89 driver)
-- The wrapper `rtw89_dump_physical_efuse_map()` with DAV split came from
-  `bdfbf06c2c286d` (v5.18 era, Mar 2022)
-- The buggy code has been present since the driver was introduced
+- The function was originally introduced in commit `906d4eb84408a4` (Dec
+  2020) as a static function
+- It was made public (non-static, exported) in `85ccbdc4d3930f` (Feb
+  2025, v6.15)
+- The dump-triggering code on timeout was added in `7391b2a4f7dbb7` (Dec
+  2024, "rework firmware error handling")
+- Additional external callers added in `bb6d4dc9d3f624` (Apr 2025,
+  v6.16)
+
+Record: Bug introduced when `85ccbdc4d3930f` (v6.15) made the function
+public and called it from the dump infrastructure. The dump-on-timeout
+behavior was present from `7391b2a4f7dbb7` but harmless when function
+was static (only called from stop_device, not from dump context).
 
 ### Step 3.2: Fixes Tag
-No Fixes: tag present. The bug is effectively a design limitation from
-the original driver — no retry logic was ever added for efuse reads,
-while firmware download had retry from the beginning.
+No Fixes: tag present (expected).
 
 ### Step 3.3: File History
-Recent changes to `efuse.c` are all WiFi 7 feature additions (efuse
-version reading, secure boot info). The core
-`rtw89_dump_physical_efuse_map()` function has been unchanged since
-v5.18. No prerequisites needed.
+Recent commits to this file include several fixes: `43049a3c00c8c` (fix
+non-MSIX handshake register), `eda36f5195d6c` (reinit device properly
+during TOP reset), `e5d110fec068c` (fix locking on invalid TOP reset).
+This area is actively being fixed.
 
-### Step 3.4: Author Check
-- Christian Hewitt is the patch author (user who hit the bug on Radxa
-  Rock 5B)
-- Ping-Ke Shih is the rtw89 maintainer who signed off and applied the
-  patch
-- Maintainer sign-off provides strong confidence in the fix
+Record: Active area with multiple recent fixes. Standalone fix - no
+series dependencies.
+
+### Step 3.4: Author
+Johannes Berg is THE iwlwifi maintainer - the primary author and
+maintainer of the entire iwlwifi subsystem.
+
+Record: Author is the subsystem maintainer. Maximum authority.
 
 ### Step 3.5: Dependencies
-- **No dependencies**: The patch modifies only the wrapper function and
-  introduces no new structures, types, or dependencies
-- The function signature matches all stable trees v6.1+
-- In v5.16-5.17, the function signature differs (no `dav` parameter),
-  requiring minor adaptation
+The fix requires `85ccbdc4d3930f` (makes function public) and
+`7391b2a4f7dbb7` (adds dump-on-timeout logic) to be present. Both are in
+v6.15+.
 
----
+Record: Depends on code from v6.15+. Can apply standalone within that
+constraint.
 
 ## PHASE 4: MAILING LIST RESEARCH
 
-b4 dig could not find the commit (it's a single-patch submission, not in
-the local tree). Lore is blocking automated access. However:
-- The patch was submitted from `christianshewitt@gmail.com` on
-  2026-03-17
-- Applied by Ping-Ke Shih (rtw89 maintainer)
-- The Link: tag confirms it was submitted through normal mailing list
-  flow
+### Step 4.1-4.5
+Lore.kernel.org is protected by Anubis anti-bot measures. The Link: in
+the commit message points to the patch discussion. The patch was
+submitted as part of a series through the iwlwifi maintainer tree. It
+was reviewed by Emmanuel Grumbach (Reviewed-by tag), a senior iwlwifi
+developer.
 
----
+Record: Could not access lore directly. Patch was reviewed and approved
+through normal iwlwifi workflow.
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1: Functions Modified
-- `rtw89_dump_physical_efuse_map()` (renamed to `__` prefix, wrapped)
+### Step 5.1-5.4: Function Call Tracing
 
-### Step 5.2: Callers
-The wrapper `rtw89_dump_physical_efuse_map()` is called from 5
-locations, all during probe:
-1. `rtw89_parse_efuse_map_ax()` — twice (physical + DAV map)
-2. `rtw89_parse_phycap_map_ax()` — once
-3. `rtw89_read_efuse_ver()` — once
-4. `rtw89_efuse_read_fw_secure_ax()` — once
+The external function `iwl_trans_pcie_fw_reset_handshake()` is called
+from:
+1. `fw/dbg.c:2714` - during split dump
+   (IWL_FW_INI_APPLY_POLICY_SPLIT_DUMP_RESET)
+2. `fw/dbg.c:2722` - during non-split dump with RESET_DURING_ASSERT
+   capability
 
-All are invoked through `chip->ops->parse_efuse_map` and
-`chip->ops->parse_phycap_map` during device initialization.
+Both callers are deep inside the dump collection path:
+`iwl_fw_dbg_collect_sync()` → `iwl_fw_error_ini_dump()` →
+`iwl_dump_ini_file_gen()` → `iwl_dump_ini_trigger()` →
+`iwl_trans_pcie_fw_reset_handshake()`
 
-### Step 5.3/5.4: Impact
-If any of these callers fail, the WiFi device fails to probe — it
-becomes completely non-functional. The function is on the critical path
-for device initialization.
+If timeout triggers `iwl_op_mode_dump_error()`, it calls back into
+`iwl_mvm_dump_error()` → `iwl_fw_error_collect()`, creating a recursive
+dump situation.
 
-### Step 5.5: Similar Patterns
-The exact same retry pattern already exists at `fw.c:1980` for
-`rtw89_fw_download()`. This establishes precedent within the driver.
-
----
+Record: The buggy path is reachable during any FW error dump on Intel
+WiFi hardware. This affects all Intel WiFi users with modern firmware.
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-### Step 6.1: Code Exists in Stable Trees
-- **v5.16+**: The efuse DDV code exists (the core buggy path)
-- **v5.18+**: The DDV/DAV split wrapper exists (matching the patch
-  context)
-- **v6.1, v6.6, v6.12**: The exact function
-  `rtw89_dump_physical_efuse_map()` exists with identical signature and
-  body
-- RTL8852BE support has been present since v6.1
+### Step 6.1: Buggy Code Existence
+- `85ccbdc4d3930f` (prerequisite) is in v6.15+ (verified with `git
+  merge-base --is-ancestor`)
+- NOT in v6.14 or earlier
+- File was moved to `gen1_2/` in `c8a00a6e89ff` (v6.19)
+
+Record: Bug exists in v6.15+. Only relevant for stable trees 6.15.y
+through 7.0.y (and beyond).
 
 ### Step 6.2: Backport Complications
-The `rtw89_dump_physical_efuse_map()` function is **byte-for-byte
-identical** across v6.1, v6.6, v6.12, and mainline. The patch will apply
-cleanly to all active stable trees.
+For 7.0.y: Should apply cleanly (file path matches current tree). For
+6.15-6.18: file was at `pcie/trans-gen2.c`, would need path adjustment.
 
-### Step 6.3: No Existing Fix
-No related fix for this same issue exists in any stable tree.
-
----
+Record: Clean apply for 7.0.y. Minor path conflict for older trees.
 
 ## PHASE 7: SUBSYSTEM CONTEXT
 
-### Step 7.1: Subsystem
-- **Subsystem**: Network drivers (wireless) — Realtek rtw89
-- **Criticality**: IMPORTANT — WiFi connectivity affects many users,
-  especially on SBCs and laptops
+### Step 7.1: Subsystem Criticality
+WiFi driver (iwlwifi) - used by vast majority of Intel WiFi laptops and
+desktops. **IMPORTANT** criticality level.
 
 ### Step 7.2: Activity
-- rtw89 is actively developed with regular updates
-- Ping-Ke Shih (Realtek) is the active maintainer
-
----
+Very active subsystem with frequent fixes and updates.
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
 ### Step 8.1: Affected Users
-Users with RTL8852BE and other Realtek combo WiFi/BT cards on any
-platform where WiFi and BT firmware download can overlap during boot.
-The Radxa Rock 5B is specifically mentioned but any combo card could be
-affected.
+All users of Intel WiFi hardware with firmware that supports reset
+handshake during dumps (modern Intel WiFi devices).
 
 ### Step 8.2: Trigger Conditions
-- **Trigger**: Boot with both WiFi and BT enabled on a combo Realtek
-  chip
-- **Frequency**: "Intermittently" — depends on boot timing
-- **Unprivileged**: N/A — this is a probe-time issue, not user-triggered
+- Firmware crash occurs (not uncommon on Intel WiFi)
+- FW dump collection starts
+- Reset handshake during dump times out
+- System is in a state where `!reset_done` is true
 
-### Step 8.3: Severity
-- **Failure mode**: Complete WiFi probe failure — device doesn't work at
-  all
-- **Severity**: HIGH — total loss of WiFi functionality
-- No crash or data corruption, but complete feature loss
+### Step 8.3: Failure Mode Severity
+When triggered, the system attempts a recursive dump from within dump
+context. This can cause:
+- Deadlock if dump-related locks are already held (the `mvm->mutex`
+  locking in `iwl_mvm_dump_error` with `IWL_ERR_CONTEXT_FROM_OPMODE`
+  asserts the lock is held, and re-entering dump collection with it held
+  could deadlock)
+- At minimum: wasted resources, confusing error logs, delayed recovery
+- **Severity**: HIGH (potential deadlock/hang during error recovery)
 
-### Step 8.4: Risk-Benefit Ratio
-- **Benefit**: HIGH — prevents intermittent probe failures on real
-  hardware
-- **Risk**: VERY LOW — 19 lines, pure retry wrapper, success path
-  unchanged, follows existing driver pattern
-- **Ratio**: Strongly favorable for backport
-
----
+### Step 8.4: Risk-Benefit
+- **Benefit**: HIGH - prevents recursive dumps that can hang the system
+  during WiFi FW error recovery
+- **Risk**: VERY LOW - single-file, ~10 line change, obviously correct
+  parameter addition, preserves existing behavior for internal caller
+- **Ratio**: Strongly favorable
 
 ## PHASE 9: FINAL SYNTHESIS
 
 ### Step 9.1: Evidence Summary
 
-**FOR backporting**:
-- Fixes a real probe failure on real hardware (Radxa Rock 5B, RTL8852BE)
-- Small, self-contained, obviously correct (19 lines, single file)
-- Follows an existing pattern in the same driver (`rtw89_fw_download`
-  retry loop)
-- Applied with maintainer sign-off (Ping-Ke Shih)
-- No dependencies — standalone fix
-- Applies cleanly to all active stable trees (v6.1+)
-- When the bug triggers, WiFi is completely non-functional
-- Combo WiFi/BT timing race is a generic issue affecting multiple boards
+**FOR backporting:**
+- Fixes a real bug: recursive dump attempt from within dump context
+- Potential for deadlocks/hangs during FW error recovery
+- Affects widely-used Intel WiFi hardware
+- Written by THE iwlwifi maintainer (Johannes Berg)
+- Reviewed by senior iwlwifi developer (Emmanuel Grumbach)
+- Small, surgical, single-file fix (~10 lines net)
+- Obviously correct - parameter addition with clear semantics
+- No API changes, no new features
 
-**AGAINST backporting**:
-- No Fixes: tag or Cc: stable (expected, not a negative signal)
-- Could be seen as adding "new logic" rather than fixing existing logic
-- The failure is intermittent, not 100% reproducible
+**AGAINST backporting:**
+- No Fixes: tag or Cc: stable (expected - that's why it needs review)
+- No explicit user reports of the hang/deadlock
+- Only affects relatively recent kernels (v6.15+)
+- Theoretical trigger (but realistic - FW crashes do happen)
 
 ### Step 9.2: Stable Rules Checklist
-1. **Obviously correct and tested?** YES — retry pattern is well-
-   established, maintainer-approved
-2. **Fixes a real bug?** YES — intermittent probe failure causes total
-   WiFi loss
-3. **Important issue?** YES — complete loss of WiFi connectivity during
-   probe
-4. **Small and contained?** YES — 19 lines, 1 file, pure wrapper
-5. **No new features or APIs?** Correct — no new features, only
-   resilience
-6. **Can apply to stable?** YES — verified identical function across
-   v6.1, v6.6, v6.12
+1. Obviously correct and tested? **YES** - trivial function split,
+   reviewed by subsystem experts
+2. Fixes a real bug? **YES** - recursive dump can deadlock/hang
+3. Important issue? **YES** - potential system hang during WiFi error
+   recovery
+4. Small and contained? **YES** - single file, ~10 lines
+5. No new features or APIs? **YES** - no changes
+6. Can apply to stable? **YES** - cleanly for 7.0.y
 
-### Step 9.3: Exception Category
-Not an exception category — this is a standard bug fix.
+### Step 9.3: Exception Categories
+Not applicable - this is a standard bug fix.
 
 ### Step 9.4: Decision
-The fix is small, surgical, obviously correct, follows an existing
-pattern, fixes a real hardware issue causing complete WiFi loss, and was
-approved by the subsystem maintainer. The risk-benefit ratio strongly
-favors backporting.
-
----
+This is a well-crafted fix by the subsystem maintainer that prevents
+recursive firmware dumps which could cause deadlocks or hangs on Intel
+WiFi hardware during error recovery. The fix is small, obviously
+correct, and carries very low regression risk.
 
 ## Verification
 
-- [Phase 1] Parsed tags: Signed-off-by from Christian Hewitt (author)
-  and Ping-Ke Shih (maintainer). Link to patch.msgid.link.
-- [Phase 2] Diff analysis: 19 lines added — renames existing function
-  with `__` prefix, wraps it in retry loop (up to 5 attempts). No
-  behavioral change on success path.
-- [Phase 3] git blame: Buggy code (no retry) introduced in
-  e3ec7017f6a20d (v5.16-rc4, initial rtw89 driver, Oct 2021). Present in
-  all stable trees since v5.16.
-- [Phase 3] git blame: Wrapper function with DAV split introduced in
-  bdfbf06c2c286d (v5.18 era). Present in v6.1+.
-- [Phase 3] git log: No related fixes to this issue exist in history.
-- [Phase 3] Author: Christian Hewitt is an external contributor; Ping-Ke
-  Shih (Realtek, rtw89 maintainer) signed off.
-- [Phase 4] b4 dig: Could not find commit in local tree. Lore blocked by
-  anti-bot measures. Confirmed patch was submitted via normal mailing
-  list flow (Link: tag present).
-- [Phase 5] Grep callers: `rtw89_dump_physical_efuse_map()` called from
-  5 locations, all in probe path (parse_efuse_map, parse_phycap_map,
-  read_efuse_ver, read_fw_secure). Failure = total probe failure.
-- [Phase 5] Pattern match: Identical retry pattern exists at fw.c:1980
-  (`rtw89_fw_download()` wrapping `__rtw89_fw_download()` with `for
-  (retry = 0; retry < 5; retry++)`).
-- [Phase 6] Verified function exists identically in v6.1, v6.6, v6.12 by
-  `git show` of each tag. Patch applies cleanly.
-- [Phase 6] RTL8852BE PCI entry (9695dc2e4be90) present since v6.1.
-- [Phase 6] efuse.c in v5.16 has different signature (no `dav` param);
-  backport to 5.x would need rework.
-- [Phase 8] Failure mode: Complete WiFi probe failure — device non-
-  functional. Severity: HIGH.
-- UNVERIFIED: Could not access lore.kernel.org discussion for reviewer
-  feedback or stable nominations (anti-bot blocking). This does not
-  change the decision — the fix is technically sound independent of
-  reviewer commentary.
+- [Phase 1] Parsed tags: Signed-off-by Johannes Berg, Reviewed-by
+  Emmanuel Grumbach, Link to patch.msgid.link
+- [Phase 2] Diff analysis: Single file, ~10 lines net change. Function
+  split with `dump_on_timeout` parameter. External callers get `false`,
+  internal caller gets `true`.
+- [Phase 3] git blame: Function made public in `85ccbdc4d3930f` (v6.15).
+  Dump-on-timeout added in `7391b2a4f7dbb7`.
+- [Phase 3] `git merge-base --is-ancestor`: Confirmed `85ccbdc4d3930f`
+  is in v6.15 but NOT in v6.14 or v6.13
+- [Phase 3] Author check: Johannes Berg is the iwlwifi subsystem
+  maintainer
+- [Phase 4] Lore access blocked by Anubis; b4 dig confirmed related
+  commits
+- [Phase 5] Traced callers: `iwl_trans_pcie_fw_reset_handshake()` called
+  from `fw/dbg.c:2714` and `fw/dbg.c:2722`, both within dump collection
+  path
+- [Phase 5] Traced dump recursion path: `iwl_op_mode_dump_error()` →
+  `iwl_mvm_dump_error()` → `iwl_fw_error_collect()` → triggers new dump
+- [Phase 6] Bug exists in v6.15+ (verified). File at `gen1_2/` path
+  since v6.19 (verified)
+- [Phase 8] Failure mode: Potential deadlock/hang during FW error
+  recovery, severity HIGH
+- UNVERIFIED: Could not verify mailing list discussion due to lore being
+  bot-protected
+- UNVERIFIED: No direct evidence of users hitting this recursive dump
+  scenario in practice, but the code path is clearly reachable during
+  any FW crash
 
 **YES**
 
- drivers/net/wireless/realtek/rtw89/efuse.c | 23 ++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ .../wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/efuse.c b/drivers/net/wireless/realtek/rtw89/efuse.c
-index a2757a88d55da..89d4b1b865f8f 100644
---- a/drivers/net/wireless/realtek/rtw89/efuse.c
-+++ b/drivers/net/wireless/realtek/rtw89/efuse.c
-@@ -185,8 +185,8 @@ static int rtw89_dump_physical_efuse_map_dav(struct rtw89_dev *rtwdev, u8 *map,
- 	return 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
+index b15c5d4865277..a50e845cea421 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
+@@ -95,7 +95,9 @@ static void iwl_pcie_gen2_apm_stop(struct iwl_trans *trans, bool op_mode_leave)
+ 			      CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
  }
  
--static int rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, u8 *map,
--					 u32 dump_addr, u32 dump_size, bool dav)
-+static int __rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, u8 *map,
-+					   u32 dump_addr, u32 dump_size, bool dav)
+-void iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans)
++static void
++_iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans,
++				   bool dump_on_timeout)
  {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
  	int ret;
+@@ -133,7 +135,7 @@ void iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans)
+ 			"timeout waiting for FW reset ACK (inta_hw=0x%x, reset_done %d)\n",
+ 			inta_hw, reset_done);
  
-@@ -208,6 +208,25 @@ static int rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, u8 *map,
- 	return 0;
+-		if (!reset_done) {
++		if (!reset_done && dump_on_timeout) {
+ 			struct iwl_fw_error_dump_mode mode = {
+ 				.type = IWL_ERR_TYPE_RESET_HS_TIMEOUT,
+ 				.context = IWL_ERR_CONTEXT_FROM_OPMODE,
+@@ -147,6 +149,11 @@ void iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans)
+ 	trans_pcie->fw_reset_state = FW_RESET_IDLE;
  }
  
-+static int rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, u8 *map,
-+					 u32 dump_addr, u32 dump_size, bool dav)
++void iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans)
 +{
-+	int retry;
-+	int ret;
-+
-+	for (retry = 0; retry < 5; retry++) {
-+		ret = __rtw89_dump_physical_efuse_map(rtwdev, map, dump_addr,
-+						      dump_size, dav);
-+		if (!ret)
-+			return 0;
-+
-+		rtw89_warn(rtwdev, "efuse dump (dav=%d) failed, retrying (%d)\n",
-+			   dav, retry);
-+	}
-+
-+	return ret;
++	_iwl_trans_pcie_fw_reset_handshake(trans, false);
 +}
 +
- #define invalid_efuse_header(hdr1, hdr2) \
- 	((hdr1) == 0xff || (hdr2) == 0xff)
- #define invalid_efuse_content(word_en, i) \
+ static void _iwl_trans_pcie_gen2_stop_device(struct iwl_trans *trans)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+@@ -163,7 +170,7 @@ static void _iwl_trans_pcie_gen2_stop_device(struct iwl_trans *trans)
+ 		 * should assume that the firmware is already dead.
+ 		 */
+ 		trans->state = IWL_TRANS_NO_FW;
+-		iwl_trans_pcie_fw_reset_handshake(trans);
++		_iwl_trans_pcie_fw_reset_handshake(trans, true);
+ 	}
+ 
+ 	trans_pcie->is_down = true;
 -- 
 2.53.0
 
