@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-35053-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35054-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICk3JRcs5mliswEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35053-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:37:27 +0200
+	id CAt0ADIu5mliswEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35054-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:46:26 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224C542C105
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:37:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 701A742C3F1
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:46:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8493C313D1BD
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:29:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1299316C856
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E9C3CF676;
-	Mon, 20 Apr 2026 13:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B723E3B0AF5;
+	Mon, 20 Apr 2026 13:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q8jm3em9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fSret4Nr"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B30439BFEF;
-	Mon, 20 Apr 2026 13:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEF53B0AE3;
+	Mon, 20 Apr 2026 13:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691078; cv=none; b=pOFgbGnQxFmYwwy3kEPv/GAwg3SbG9LjGVhHXqFRhSyxBI8Vl5ppl09HEuNJsOsvdR3TZl1maclX3UrQDGaI07QaVketM5s814DKZa64Gt2yOrS7e4PqS1m/oK9gnglkr6+ZSV9ynwZ/3h+XiLt4Qr4EOZxSDp97ZLZRFALiKdo=
+	t=1776691398; cv=none; b=PUR4tpZd8CI79RC2kalA3fEuA4ngg7ewt2rUCyjJa3CcxckdYbFJ8teRJGu+81f0o7jedKQMtDuK1MZEqxY3l3YRT1a1DX1JZ8cFjR0p2vk3G9lM/j3L0b9K6ZW/fmFLLHkGTDepZD/gRQQVjJLV2ORmt5Lp9PVib2mF7wFVInU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691078; c=relaxed/simple;
+	s=arc-20240116; t=1776691398; c=relaxed/simple;
 	bh=4Ew+9P1AhCIc/hFMFZX1yd3SOp26GdjQC76CnuAw4eY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BjZQcNVL7v594Bv5fI1QLTFCBuNc37NzRhfL7eq4KIzk97CcqzirwKDwxxmzeaA6RxCYRENzy7rmGSRDD50i5TsHI6k1uV6CddfGPMHJpOGn26002tveHAZnljIC6E/UAmec8MCWpTnErH5kJ/aVFzhmdG1waExDWp1A5yyusAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q8jm3em9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535FFC19425;
-	Mon, 20 Apr 2026 13:17:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JmCLQAchEp+gHUzvi7UZV3JVyH2jp2xUVArIKOEloKFvKdDiURiMCzeDOvSYRbnJE/mdwx5p2HKVdA2LgnqJg8bxLcr1YgIOWUKX52EubpmnSnwK0qbF7ZIVSLQe2tl3nnzbClXlK0kpOk5ORLE0LymJ0Sxn2dPgnGMf9muQDjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fSret4Nr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A8DC2BCB7;
+	Mon, 20 Apr 2026 13:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691077;
+	s=k20201202; t=1776691398;
 	bh=4Ew+9P1AhCIc/hFMFZX1yd3SOp26GdjQC76CnuAw4eY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q8jm3em9L/64DUUid4jCIeW6xsquCUKV36RHVC4ZcsJjAn0vJoSW4XOUu7o6zcpmk
-	 KDg5vK+oeAlkedMomeT3jDhiqU80cZ1AohWwHEUQ729kpK5Ay2L5Oyz/989/mxKJET
-	 VLqzyMoCmf1//YTNGKEldvBur8UkxDCcwdmCUVWPA1r5YUwORVgdBa2rzUjY2dwb3y
-	 f0rMdUyPOjY7D92vjvYkkvc9CVFDyWzCRhavMRV1bdK322c8WY1D9oJBHBHNsR9bTn
-	 75jLw6D1BQ9Mh/v7QHyFqxySKrIwHZU3h6IAYNF8JjXhrEald/DhuBEFq+gRVDMx5o
-	 KC82pfwV1uAnA==
+	b=fSret4Nr/dT4WI0ejo0jrquAkS3QgSrfYNw6HWDYnF8qXQjQF/d9dCAjSJNT/EerC
+	 ofT1iBDn4z/v15MvAyWJDVSMz3FAnIpobV7u3ziVGRnDMb/pfOParuYSss12DImyA7
+	 VrM65Lw22Xdya8WaVwVoVBKz3C/ypKddFgupEONNj9GhF+VKk00PuRU4c0+dBnyR3u
+	 3IMaKSK6C0Vdd+/58A8j62wIeAgi67ulXUS4/eQWD+SC32SipBv2ia+fovTOrPUQX7
+	 O14rmcx1mLErQDKXdnKm5N5JALk/OyZEYXOdocKbdJRV31wweANHaSfMt0mwl5K832
+	 Z0ZM4Td0rrNIg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -54,18 +54,16 @@ Cc: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>,
 	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@codeaurora.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
+	jjohnson@kernel.org,
 	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
+	ath12k@lists.infradead.org,
 	linux-kernel@vger.kernel.org
 Subject: [PATCH AUTOSEL 7.0-6.18] wifi: ath12k: Fix the assignment of logical link index
-Date: Mon, 20 Apr 2026 09:09:06 -0400
-Message-ID: <20260420131539.986432-80-sashal@kernel.org>
+Date: Mon, 20 Apr 2026 09:16:36 -0400
+Message-ID: <20260420132314.1023554-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420131539.986432-1-sashal@kernel.org>
-References: <20260420131539.986432-1-sashal@kernel.org>
+In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
+References: <20260420132314.1023554-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,17 +79,17 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35053-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35054-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -101,9 +99,9 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,infradead.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: 224C542C105
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 701A742C3F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
