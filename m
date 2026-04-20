@@ -1,62 +1,65 @@
-Return-Path: <linux-wireless+bounces-35062-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35063-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iN1TMuIw5ml6tAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35062-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:57:54 +0200
+	id oGhdMDsx5ml6tAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35063-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:59:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC2942C785
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:57:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D87742C803
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 77A8830B03C9
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:49:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 36C60321D4A5
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFB03EE1D1;
-	Mon, 20 Apr 2026 13:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01163EFD25;
+	Mon, 20 Apr 2026 13:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j6dCnO9Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qYWGF2Di"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FDF3A5444;
-	Mon, 20 Apr 2026 13:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE8E3EFD1B;
+	Mon, 20 Apr 2026 13:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691517; cv=none; b=JLk2qXccvGP3sm6bOWEkwH+P7CjrNS4kAj6bEMPZ5qM/sfhJ4iy5vgoTRNVRGCdKFr8cHthyg+R3oJo/7QMM58UWxu3FttfnShJTxnmm+eLr0sNNgrvKtX/y3djQwd18y2u6tu0g8DPAGwqZO+1GYQ0ptYQEsDxhcYoI4pM0tac=
+	t=1776691528; cv=none; b=qGMnkk749ql+Ohm1Y4hAYbEk+qQWOzZaN4frjnhb/Y+w4sYfn78gJ1OoDTVhP6tF3WpHxIbcNOVlbvX6lGWq90zseaiVBuwSPqxl8nKPr3qic/P/Y+1Ps1cHYZbpmdZL9cgCNt11LYOEwefu3VQv9Udwh84d6GlvNnA6A9u1KGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691517; c=relaxed/simple;
-	bh=1tMwr7fKz198F+7PJAx76Ncs0+xGjN2tu4IcqbtjbiE=;
+	s=arc-20240116; t=1776691528; c=relaxed/simple;
+	bh=xZeWLS00cNrQHhFhMdAB7QHipXmDGVVTsyHK/QHKDPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=snzBwz5aw92GjKvy/Ghb2blmrI1f3TmZ2cIedP8aRtPVwkhR2+lvUuTQxOJ28Cl8nUvcX8azbM+caC1uLBBBPTiAIu+m/z8XTDxSQLkJ6+VjbtBUB/urHo5/BeoZh6QGHpRIJ4v/FljKgrej3Ai1X3OX29+GkFVE8l9Lc3Isuac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j6dCnO9Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2225C19425;
-	Mon, 20 Apr 2026 13:25:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uaIuCwcAecBg+q+L6LILw6gfdaztAYHdbUx44hNE7ERE8BpNq8qdelLaR2TYalBNWeY44DMvfUZkj/SEi7pGCxISg4RIVm0HbtkoBeeTz0vEcvTHEYc7+pB57Er0A2UEpQ8AJkyB8KUs3bAk1pyp9eZKvzX6VR57BnMuLol9rFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qYWGF2Di; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EAAC19425;
+	Mon, 20 Apr 2026 13:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691517;
-	bh=1tMwr7fKz198F+7PJAx76Ncs0+xGjN2tu4IcqbtjbiE=;
+	s=k20201202; t=1776691528;
+	bh=xZeWLS00cNrQHhFhMdAB7QHipXmDGVVTsyHK/QHKDPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6dCnO9Yp+9dzF26xa9K2nSj+40pehzD4+uHt8A/VxUhlMCrswrT4w44XULqgdvMw
-	 SDPhE+CjshQhVyv9mNkjjG2REmo43oEu6trpphcBg0AJ4uHuE0lJfFLVzRmGHKGjWC
-	 cMaVcEptQ7waKss8OaHeGUlT4YatGAS3W06ClqKHChT6ZbT+j8AlK4/mbximBRDjBV
-	 eHn2c1BniVezAMmPDZbJXX0YmThVIEF6wJkoZhCGnb6yrbz4jV54SQnQ/5n1V5tn1B
-	 8zAh6jPJFkdHuQJ1t9gP3LPk3l/ohEI+pZcXsM2dgVksn9fvN2L2NKSQi6xpZoMUD5
-	 v/kFfXwk72rzQ==
+	b=qYWGF2DiSwzbqPXxljc3soW7+uCbH5jZZ0OgRatpEiRYjmQXgpbrMkn0bwWEwfBnM
+	 KZd9S7btFKmMFCY6s/AB9H6UUqTURQ4NQtAr6oBLIbk6MKtbIZ6A3TOsm2na4yZGLN
+	 T1MHUjQG0+G34dy0CAY2C9WqJK4FEmoEn1zdyYQJcd5DOKN+W0KrqhmVAkWjpRF2N/
+	 pm6L4A6hUdWvBByev+YkPbflDkM9bUOGnm2C0TKbXyBtBGylg1e3JeleLj9B04yrw2
+	 +SPv0XDWFOSA/8cIv78mM//iibJbL6lyRtTEJGW2iEHMsgHX2nqmDqnH81SMzYNZ15
+	 5433QwSpLLIoQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>,
-	Sathishkumar Muruganandam <quic_murugana@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
+	Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
+	jjohnson@kernel.org,
 	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.1] wifi: mac80211: use ap_addr for 4-address NULL frame destination
-Date: Mon, 20 Apr 2026 09:17:50 -0400
-Message-ID: <20260420132314.1023554-76-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-6.18] wifi: ath12k: Set up MLO after SSR
+Date: Mon, 20 Apr 2026 09:17:56 -0400
+Message-ID: <20260420132314.1023554-82-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -75,455 +78,460 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35062-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35063-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,quicinc.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 5EC2942C785
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 6D87742C803
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
+From: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
 
-[ Upstream commit 594be50a3f0a6b7389f40f7acbf0dd731beb5204 ]
+[ Upstream commit f33a8e41826831fc8ceb5f62833488cd9388ed59 ]
 
-Currently ieee80211_send_4addr_nullfunc() uses deflink.u.mgd.bssid
-for addr1 and addr3 fields. In MLO configurations, deflink.u.mgd.bssid
-represents link 0's BSSID and is not updated when link 0 is not an
-assoc link. This causes 4-address NULL frames to be sent to the
-wrong address, preventing WDS AP_VLAN interface creation on the peer AP.
+During recovery of an MLO setup from a core reset,
+ATH12K_GROUP_FLAG_REGISTERED is set because ath12k_mac_unregister is not
+called during core reset. So, when an MLO setup is recovering from a core
+reset, ath12k_core_mlo_setup() is skipped. Hence, the firmware will not
+have information about partner links. This makes MLO association fail
+after recovery.
 
-To fix this use sdata->vif.cfg.ap_addr instead, which contains the AP's MLD
-address populated during authentication/association and remains
-valid regardless of which links are active.
+To resolve this, call ath12k_core_mlo_setup() during recovery, to set up
+MLO. Also, if MLO setup fails during recovery, call
+ath12k_mac_unregister() and ath12k_mac_destroy() to unregister mac and
+then tear down the mac structures.
 
-This ensures 4-address NULL frames reach the correct AP, allowing
-proper WDS operation over MLO connections.
+Also, initiate MLO teardown in the hardware group stop sequence to align
+with the hardware group start sequence.
 
-Co-developed-by: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
-Signed-off-by: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
-Signed-off-by: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260326164723.553927-3-tamizh.raja@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01181-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+Signed-off-by: Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260227041127.3265879-1-roopni.devanathan@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information I need for the complete analysis. Let me
-compile the findings.
+Now I have all the data I need. Let me write the comprehensive analysis.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: Parse the Subject Line
-- **Subsystem:** wifi: mac80211
-- **Action verb:** "use" (corrective - implying the current usage is
-  wrong)
-- **Summary:** Use the correct AP address (`ap_addr`) instead of deflink
-  BSSID for 4-address NULL frame destination in MLO configurations.
+### Step 1.1: PARSE THE SUBJECT LINE
+- **Subsystem**: wifi: ath12k (Qualcomm ath12k wireless driver)
+- **Action verb**: "Set up" - implies ensuring required initialization
+  happens
+- **Summary**: Set up MLO (Multi-Link Operation) after SSR (Subsystem
+  Restart/Recovery)
+Record: [wifi: ath12k] [Set up] [Ensure MLO is configured after SSR
+recovery to avoid association failure]
 
-Record: [wifi: mac80211] [use/fix] [Correct the destination address for
-4-addr NULL frames in MLO mode]
-
-### Step 1.2: Parse All Tags
-- **Co-developed-by:** Sathishkumar Muruganandam
-  <quic_murugana@quicinc.com>
-- **Signed-off-by:** Sathishkumar Muruganandam, Tamizh Chelvam Raja
-  (author), Johannes Berg (maintainer)
-- **Link:** https://patch.msgid.link/20260326164723.553927-3-
-  tamizh.raja@oss.qualcomm.com
-- **No Fixes: tag** (expected - that's why it needs review)
-- **No Reported-by:** (likely found through code review / internal
-  testing at Qualcomm)
+### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
+- **Tested-on**: QCN9274 hw2.0 PCI
+  WLAN.WBE.1.6-01181-QCAHKSWPL_SILICONZ-1
+- **Signed-off-by**: Ramya Gnanasekar (co-author), Roopni Devanathan
+  (author), Jeff Johnson (maintainer)
+- **Reviewed-by**: Baochen Qiang, Vasanthakumar Thiagarajan (both
+  Qualcomm reviewers)
+- **Link**: patch.msgid.link (original submission URL)
+- **No Fixes: tag** (expected for autosel candidates)
 - **No Cc: stable** (expected)
+Record: Two Qualcomm reviewers reviewed the patch. Jeff Johnson (ath12k
+maintainer) applied it. Tested on real hardware.
 
-Johannes Berg is the mac80211 maintainer who signed off — strong trust
-signal.
+### Step 1.3: ANALYZE THE COMMIT BODY TEXT
+The bug: During recovery from a core reset with MLO setup,
+`ATH12K_GROUP_FLAG_REGISTERED` remains set because
+`ath12k_mac_unregister()` is NOT called during core reset. Therefore,
+when `ath12k_core_hw_group_start()` is called during recovery, it sees
+the flag is set and jumps over the `ath12k_core_mlo_setup()` call. This
+means the firmware doesn't receive partner link information, causing MLO
+association to fail after recovery.
 
-Record: Co-developed by Qualcomm engineers, committed by mac80211
-maintainer Johannes Berg. Message-id suggests this is patch 3 of a
-series.
+Record: [Bug: MLO association fails after firmware recovery] [Symptom:
+WiFi MLO cannot associate after SSR] [Root cause:
+ath12k_core_mlo_setup() skipped during recovery because
+ATH12K_GROUP_FLAG_REGISTERED is still set]
 
-### Step 1.3: Analyze the Commit Body
-- **Bug:** `deflink.u.mgd.bssid` represents link 0's BSSID which is NOT
-  updated when link 0 is not an assoc link in MLO configurations
-- **Symptom:** 4-address NULL frames are sent to the WRONG address,
-  preventing WDS AP_VLAN interface creation on the peer AP
-- **Root cause:** Wrong field used for destination address in MLO mode
-- **Fix:** Use `sdata->vif.cfg.ap_addr` which contains the AP's MLD
-  address populated during authentication/association
-
-Record: Bug is that WDS (4-addr mode) over MLO connections is completely
-broken. Frames go to wrong AP address, preventing the AP from creating
-VLAN interfaces for the client.
-
-### Step 1.4: Detect Hidden Bug Fixes
-This is clearly a bug fix, not hidden. The commit message explicitly
-describes broken functionality (wrong destination address for 4-addr
-NULL frames in MLO).
-
-Record: This is an explicit bug fix for MLO+WDS functionality.
+### Step 1.4: DETECT HIDDEN BUG FIXES
+This is a clear bug fix - MLO association fails after recovery. The
+commit message explicitly describes a failure mode. Not hidden at all.
+Record: [This is an explicit bug fix for recovery failure]
 
 ---
 
-## PHASE 2: DIFF ANALYSIS
+## PHASE 2: DIFF ANALYSIS - LINE BY LINE
 
-### Step 2.1: Inventory the Changes
-- **File:** `net/mac80211/mlme.c`
-- **Lines changed:** 2 lines modified (addr1 and addr3 source changed)
-- **Function modified:** `ieee80211_send_4addr_nullfunc()`
-- **Scope:** Single-file, surgical, 2-line fix
+### Step 2.1: INVENTORY THE CHANGES
+- **File**: `drivers/net/wireless/ath/ath12k/core.c` only
+- **Change 1**: `ath12k_core_hw_group_stop()` - 2 lines added (call to
+  `ath12k_mac_mlo_teardown(ag)`)
+- **Change 2**: `ath12k_core_hw_group_start()` - ~8 lines modified (add
+  MLO setup in recovery path with error handling)
+- **Total**: ~10 lines added/modified
+- **Functions modified**: `ath12k_core_hw_group_stop()`,
+  `ath12k_core_hw_group_start()`
+Record: [Single file, ~10 lines changed, two functions modified,
+surgical fix]
 
-Record: 1 file, 2 lines changed. Scope: minimal surgical fix.
+### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
 
-### Step 2.2: Code Flow Change
-- **Before:** `memcpy(nullfunc->addr1, sdata->deflink.u.mgd.bssid, ...)`
-  and same for addr3
-- **After:** `memcpy(nullfunc->addr1, sdata->vif.cfg.ap_addr, ...)` and
-  same for addr3
-- **Path affected:** The 4-address NULL frame construction path (called
-  during association and interface config change)
+**Hunk 1** (`ath12k_core_hw_group_stop`):
+- Before: `ath12k_mac_unregister(ag)` then loop cleanup then
+  `ath12k_mac_destroy(ag)` - no MLO teardown.
+- After: `ath12k_mac_unregister(ag)` then `ath12k_mac_mlo_teardown(ag)`
+  then loop cleanup then `ath12k_mac_destroy(ag)`.
+- This aligns the stop sequence with the start sequence (MLO setup
+  happens in start, so MLO teardown should happen in stop).
 
-Record: Only the source of the MAC address for addr1/addr3 fields
-changes. Both are ETH_ALEN copies from valid struct members.
+**Hunk 2** (`ath12k_core_hw_group_start`):
+- Before: When `ATH12K_GROUP_FLAG_REGISTERED` is set, jumps directly to
+  `core_pdev_create` - skipping all MLO setup.
+- After: When the flag is set, calls `ath12k_core_mlo_setup(ag)` first,
+  with error handling that calls `ath12k_mac_unregister()` and falls
+  through to `err_mac_destroy` on failure. Then proceeds to
+  `core_pdev_create` as before.
 
-### Step 2.3: Bug Mechanism
-Category: **Logic/correctness fix** — wrong data source used for frame
-addresses in MLO.
+Record: [Fix adds MLO setup in recovery path and teardown in stop path
+to match start/stop symmetry]
 
-- In non-MLO: `deflink.u.mgd.bssid` == `vif.cfg.ap_addr`, so behavior is
-  unchanged
-- In MLO: `deflink.u.mgd.bssid` may point to an uninitialized/wrong link
-  0 BSSID, while `vif.cfg.ap_addr` correctly holds the AP MLD address
+### Step 2.3: IDENTIFY THE BUG MECHANISM
+- **Category**: Logic / correctness fix
+- **Mechanism**: Missing initialization during recovery path. The MLO
+  setup was only done on first-time start (when
+  `ATH12K_GROUP_FLAG_REGISTERED` is not set), but needs to also be done
+  on recovery (when the flag IS set but firmware state was lost).
+Record: [Logic bug - MLO firmware setup skipped during recovery, causing
+MLO association failure]
 
-Record: Logic bug — wrong field referenced for AP address in MLO mode.
-Fix uses the documented correct field.
-
-### Step 2.4: Fix Quality
-- **Obviously correct?** YES — `vif.cfg.ap_addr` is documented as "AP
-  MLD address, or BSSID for non-MLO connections" which is exactly what's
-  needed here.
-- **Minimal?** YES — 2 lines changed.
-- **Regression risk?** Virtually zero — the same pattern was applied in
-  commit 8a9be422f5ff3 for tx.c paths, and `ap_addr` is already used
-  extensively in the same file for the same purpose.
-
-Record: Fix is obviously correct, minimal, follows established
-precedent. Zero regression risk.
+### Step 2.4: ASSESS THE FIX QUALITY
+- The fix is obviously correct - adding `ath12k_core_mlo_setup()` to the
+  recovery path is the logical fix.
+- Error handling is properly added (if MLO setup fails during recovery,
+  unregister and destroy).
+- Adding teardown in stop path creates symmetry with start path.
+- Low regression risk - only affects the recovery code path.
+Record: [Fix is obviously correct, minimal, well-contained, proper error
+handling added]
 
 ---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
-### Step 3.1: Blame the Changed Lines
-- The buggy `sdata->deflink.u.mgd.bssid` was introduced by commit
-  **bfd8403adddd09** ("wifi: mac80211: reorg some iface data structs for
-  MLD") from May 2022 by Johannes Berg.
-- Before that commit, the code used `sdata->u.mgd.bssid` which was fine
-  for non-MLO.
-- The deflink reorg moved things to per-link structures but didn't
-  update this function to use the MLD-aware `ap_addr` for address
-  fields.
+### Step 3.1: BLAME THE CHANGED LINES
+- The buggy code was introduced by commit `b716a10d99a28` ("wifi:
+  ath12k: enable MLO setup and teardown from core", Dec 2024) and
+  `a343d97f27f514` ("wifi: ath12k: move struct ath12k_hw from per device
+  to group", Dec 2024).
+- Both first appeared in v6.14.
+Record: [Buggy code introduced in v6.14 by b716a10d99a28 and
+a343d97f27f514]
 
-Record: Buggy code introduced in bfd8403adddd09 (May 2022), present in
-v6.1+.
+### Step 3.2: FOLLOW THE FIXES: TAG
+No Fixes: tag present (expected for autosel candidates).
+Record: [N/A - no Fixes tag]
 
-### Step 3.2: Fixes Tag
-No Fixes: tag present. The implicit Fixes target is bfd8403adddd09.
+### Step 3.3: CHECK FILE HISTORY
+- `core.c` has had extensive recovery-related fixes between v6.15 and
+  v6.16 (the "fix_reboot_issues_with_hw_grouping" series with 9 commits
+  in v6.16).
+- This current commit is a continuation of that series, fixing another
+  aspect of recovery that was missed.
+Record: [This is a standalone fix that addresses an issue not covered by
+the previous v6.16 recovery series]
 
-Record: No explicit Fixes tag. Implicit target is bfd8403adddd09 (in
-v6.1+).
+### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
+- Roopni Devanathan (author) has 7+ commits in ath12k, is a regular
+  contributor from Qualcomm.
+- Ramya Gnanasekar (co-author) has 13+ commits in ath12k.
+- Both Reviewed-by are from Qualcomm engineers who know the codebase.
+Record: [Author is a regular contributor, reviewed by knowledgeable team
+members]
 
-### Step 3.3: Related Changes
-- Commit **8a9be422f5ff3** ("wifi: mac80211: tx: use AP address in some
-  places for MLO") by Johannes Berg himself did the exact same fix
-  pattern for tx.c paths — changing `deflink.u.mgd.bssid` to
-  `vif.cfg.ap_addr`. This was the same class of bug that was missed in
-  `ieee80211_send_4addr_nullfunc()`.
-
-Record: Strong precedent exists (8a9be422f5ff3). This is a missed
-instance of the same fix pattern.
-
-### Step 3.4: Author Context
-- Authors are Qualcomm engineers (Tamizh Chelvam Raja, Sathishkumar
-  Muruganandam)
-- Committed by Johannes Berg (mac80211 maintainer)
-- The maintainer's sign-off indicates review and approval
-
-Record: Fix accepted by subsystem maintainer.
-
-### Step 3.5: Dependencies
-- `ap_addr` field exists since commit b65567b03c9502 (June 2022), which
-  is in v6.1+
-- The `deflink` structure exists since bfd8403adddd09, also in v6.1+
-- No code dependencies beyond what exists in stable trees
-
-Record: No additional dependencies. All required structures exist in
-v6.1+.
+### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
+- The functions used (`ath12k_core_mlo_setup`,
+  `ath12k_mac_mlo_teardown`, `ath12k_mac_unregister`,
+  `ath12k_mac_destroy`) all exist in the 7.0 tree.
+- The recovery flow with `ath12k_core_reset()` and
+  `ath12k_core_restart()` with hardware grouping exists in 7.0 (added in
+  v6.16).
+- The diff context matches the current 7.0 code exactly.
+Record: [No additional dependencies needed - patch applies cleanly to
+7.0]
 
 ---
 
-## PHASE 4: MAILING LIST RESEARCH
+## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-### Step 4.1-4.5
-Lore.kernel.org was blocked by anti-bot protection. b4 dig couldn't find
-the commit (it's not yet in the tree as an applied commit). The Link:
-tag in the commit message references
-`20260326164723.553927-3-tamizh.raja@oss.qualcomm.com`, suggesting this
-is patch 3 of a series.
+### Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
+- Retrieved via b4 mbox. The patch was submitted as "[PATCH ath-next]"
+  (single patch, not a series).
+- Jeff Johnson replied "Applied, thanks!" with commit hash
+  `f33a8e41826831fc8ceb5f62833488cd9388ed59`.
+- Two Reviewed-by tags from Baochen Qiang and Vasanthakumar Thiagarajan
+  were present on the original submission.
+Record: [Single patch, applied by ath12k maintainer Jeff Johnson,
+reviewed by 2 Qualcomm engineers]
 
-The commit was signed off by Johannes Berg (mac80211 maintainer), which
-is a strong quality indicator.
+### Step 4.2: CHECK WHO REVIEWED THE PATCH
+- Baochen Qiang (Qualcomm) - regular ath12k reviewer
+- Vasanthakumar Thiagarajan (Qualcomm) - senior ath12k developer
+Record: [Reviewed by experienced ath12k engineers]
 
-Record: Could not access lore discussion. Maintainer sign-off verified.
+### Step 4.3: SEARCH FOR THE BUG REPORT
+No external bug report linked. The bug was found during internal testing
+at Qualcomm.
+Record: [Internal finding, tested on QCN9274 hardware]
+
+### Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
+- This is a standalone patch, not part of a series.
+- Related to the earlier v6.16 "fix_reboot_issues_with_hw_grouping"
+  series but is an independent fix.
+Record: [Standalone patch, no dependencies on other unmerged patches]
+
+### Step 4.5: CHECK STABLE MAILING LIST HISTORY
+- Could not verify due to lore.kernel.org Anubis protection.
+Record: [Unable to check stable mailing list - lore blocked]
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1: Key Functions
-Modified function: `ieee80211_send_4addr_nullfunc()`
+### Step 5.1: KEY FUNCTIONS
+- `ath12k_core_hw_group_start()` - called during device bring-up and
+  recovery
+- `ath12k_core_hw_group_stop()` - called during device shutdown and
+  error handling
 
-### Step 5.2: Callers
-Two call sites:
-1. `net/mac80211/mlme.c:6555` — called during
-   `ieee80211_assoc_success()` when `ifmgd->use_4addr` is true
-2. `net/mac80211/cfg.c:298` — called when 4addr mode is enabled via
-   `ieee80211_change_iface()`
+### Step 5.2: TRACE CALLERS
+- `ath12k_core_hw_group_start()` is called from
+  `ath12k_core_qmi_firmware_ready()` (line 1319) during normal device
+  bring-up AND from the recovery path.
+- `ath12k_core_hw_group_stop()` is called from the error path of
+  `ath12k_core_hw_group_start()` and from `ath12k_core_deinit()`.
+Record: [Functions called during normal operation and recovery -
+recovery path is common for QCN9274 users]
 
-Record: Called from association path and interface config path. Both are
-normal operational paths.
-
-### Step 5.3-5.4: Call Chain
-The function is reachable when:
-- A station associates with 4-addr mode (WDS) enabled → common for
-  mesh/backhaul setups
-- A user enables 4-addr mode via nl80211/iw
-
-Record: Reachable from normal user operations (association, interface
-config).
-
-### Step 5.5: Similar Patterns
-The same bug pattern (`deflink.u.mgd.bssid` → `vif.cfg.ap_addr`) was
-fixed in tx.c (commit 8a9be422f5ff3). There are still 8 remaining
-instances of `deflink.u.mgd.bssid` in mlme.c — some may be correct
-(link-specific operations) while others might need similar fixes.
-
-Record: Same pattern was already fixed in tx.c. This is a remaining
-instance.
+### Step 5.3-5.5: CALL CHAIN / SIMILAR PATTERNS
+- The recovery path: firmware crash → `ath12k_core_reset()` →
+  `ath12k_hif_power_up()` → firmware restarts → QMI ready →
+  `ath12k_core_hw_group_start()` → (bug: skips MLO setup) → recovery
+  fails
+Record: [Bug is in a common recovery code path triggered by firmware
+crashes]
 
 ---
 
-## PHASE 6: STABLE TREE ANALYSIS
+## PHASE 6: CROSS-REFERENCING AND STABLE TREE ANALYSIS
 
-### Step 6.1: Does Buggy Code Exist in Stable?
-- `deflink.u.mgd.bssid` was introduced by bfd8403adddd09 — confirmed in
-  v6.1+
-- `vif.cfg.ap_addr` was introduced by b65567b03c9502 — confirmed in
-  v6.1+
-- Both structures exist in all active stable trees (6.1.y, 6.6.y,
-  6.12.y)
+### Step 6.1: DOES THE BUGGY CODE EXIST IN STABLE TREES?
+- The buggy code was introduced in v6.14.
+- The MLO hw_group code exists in: v6.14, v6.15, v6.16, v6.17, v6.18,
+  7.0
+- The recovery-with-grouping code was added in v6.16 (the series from
+  6af396942bf13).
+- **For the bug to be triggerable, BOTH the MLO setup code AND the
+  recovery-with-grouping code must exist.**
+- Both are present in v6.16+ and in 7.0.
+Record: [Buggy code exists in v6.16+ stable trees and 7.0]
 
-Record: Buggy code exists in v6.1+ stable trees.
+### Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
+- The diff context matches the current 7.0 code exactly - the patch
+  should apply cleanly.
+- All referenced functions exist in 7.0.
+Record: [Clean apply expected for 7.0]
 
-### Step 6.2: Backport Complications
-- mlme.c has had 233 changes since v6.6, so context may differ
-- However, the function `ieee80211_send_4addr_nullfunc()` is self-
-  contained and hasn't changed much
-- The 2-line fix should apply cleanly or with trivial context adjustment
-
-Record: Minor context conflicts possible but fix is self-contained. Low
-backport difficulty.
-
-### Step 6.3: Related Fixes Already in Stable
-The precedent fix 8a9be422f5ff3 (tx.c changes) is in v6.1+, establishing
-that `ap_addr` is the correct field for MLO-aware AP addressing.
-
-Record: Precedent fix already in stable trees.
+### Step 6.3: CHECK IF RELATED FIXES ARE ALREADY IN STABLE
+- The v6.16 "fix_reboot_issues_with_hw_grouping" series is already in
+  stable trees, but does NOT include the MLO setup fix that this commit
+  provides.
+Record: [No existing fix for this specific issue in stable]
 
 ---
 
-## PHASE 7: SUBSYSTEM CONTEXT
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-### Step 7.1: Subsystem Criticality
-- **Subsystem:** net/mac80211 (WiFi)
-- **Criticality:** IMPORTANT — WiFi is critical for many users;
-  4-addr/WDS mode is used in enterprise mesh/backhaul
+### Step 7.1: IDENTIFY THE SUBSYSTEM
+- **Subsystem**: WiFi driver (ath12k) - Qualcomm QCN9274/WCN7850
+- **Criticality**: IMPORTANT - affects users of QCN9274 WiFi hardware
+  using MLO
+Record: [WiFi driver, IMPORTANT - affects MLO users of QCN9274]
 
-Record: IMPORTANT subsystem. WiFi WDS used in enterprise/mesh
-deployments.
-
-### Step 7.2: Activity
-mac80211 is very actively developed, especially around MLO support.
-
-Record: Highly active subsystem.
+### Step 7.2: ASSESS SUBSYSTEM ACTIVITY
+- ath12k is one of the most actively developed kernel subsystems - 62+
+  commits to core.c between v6.14 and v7.0.
+Record: [Highly active subsystem]
 
 ---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-### Step 8.1: Who is Affected
-Users running MLO (WiFi 7) connections with 4-addr/WDS mode enabled.
-This is a specific but real use case (enterprise mesh backhaul over WiFi
-7).
+### Step 8.1: DETERMINE WHO IS AFFECTED
+- Users of QCN9274 WiFi hardware with MLO (Multi-Link Operation)
+  enabled.
+- This is WiFi 7 hardware that supports MLO for improved throughput and
+  reliability.
+Record: [Driver-specific - affects QCN9274 MLO users]
 
-Record: Affected: MLO + WDS users. Growing user base as WiFi 7 adoption
-increases.
+### Step 8.2: DETERMINE THE TRIGGER CONDITIONS
+- Trigger: Firmware crash (not uncommon with WiFi firmware) followed by
+  SSR recovery.
+- After recovery, MLO association fails completely - WiFi connectivity
+  is broken until manual restart.
+Record: [Triggered by firmware crash recovery - moderately common
+scenario]
 
-### Step 8.2: Trigger Conditions
-- Triggerable whenever an MLO station associates with 4-addr mode
-  enabled
-- Requires MLO-capable hardware and AP
-- No special privileges needed beyond configuring 4-addr mode
+### Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
+- **Failure mode**: Complete MLO association failure after recovery -
+  WiFi becomes non-functional for MLO connections.
+- **Severity**: HIGH - loss of WiFi connectivity after firmware
+  recovery, defeating the purpose of SSR.
+Record: [HIGH - WiFi MLO connectivity lost after firmware recovery]
 
-Record: Triggered on every MLO+WDS association. 100% reproducible for
-affected configurations.
-
-### Step 8.3: Failure Mode Severity
-- **Not a crash** — the frame is sent to the wrong address
-- **Functional failure** — WDS doesn't work at all over MLO (AP can't
-  create VLAN interface)
-- **Severity: MEDIUM-HIGH** — Complete feature breakage for affected
-  users, but no data corruption/crash
-
-Record: Severity MEDIUM-HIGH — complete WDS functionality failure over
-MLO.
-
-### Step 8.4: Risk-Benefit Ratio
-- **Benefit:** Enables WDS/4-addr mode to work over MLO connections
-  (currently completely broken)
-- **Risk:** 2-line change to memcpy source, using a well-documented
-  field already used extensively elsewhere. Virtually zero regression
-  risk.
-- **Ratio:** Very favorable — HIGH benefit, VERY LOW risk
-
-Record: HIGH benefit, VERY LOW risk.
+### Step 8.4: CALCULATE RISK-BENEFIT RATIO
+- **Benefit**: Fixes complete MLO failure after firmware recovery -
+  restores WiFi functionality.
+- **Risk**: Very low - ~10 lines, well-contained, only affects recovery
+  path, proper error handling added.
+- **Ratio**: High benefit / very low risk = FAVORABLE.
+Record: [High benefit, very low risk]
 
 ---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: Evidence Summary
-
+### Step 9.1: COMPILE THE EVIDENCE
 **FOR backporting:**
-- Fixes real broken functionality (WDS over MLO completely non-
-  functional)
-- Extremely small fix (2 lines) that is obviously correct
-- Uses `ap_addr` which is documented as "AP MLD address, or BSSID for
-  non-MLO"
-- Follows established precedent (commit 8a9be422f5ff3 did the same fix
-  for tx.c)
-- `ap_addr` is already used ~20+ times in the same file for the same
-  purpose
-- Accepted by mac80211 maintainer Johannes Berg
-- No behavior change for non-MLO configurations
-- All required data structures exist in stable trees (v6.1+)
+- Fixes a real bug (MLO association failure after SSR recovery)
+- Small, surgical fix (~10 lines in one file)
+- Tested on real hardware (QCN9274 hw2.0)
+- Reviewed by 2 experienced engineers, applied by subsystem maintainer
+- Obviously correct - adds missing initialization in recovery path
+- All required functions exist in 7.0 tree
+- Patch applies cleanly to current 7.0 code
+- Proper error handling included
 
 **AGAINST backporting:**
-- No Fixes: or Cc: stable tags (expected for AUTOSEL candidates)
-- MLO is relatively new and may not have many stable users yet
-- Not a crash/security/corruption bug — it's a functional regression
-- Part of a series (patch 3/N — other patches may or may not be needed)
+- Submitted to ath-next (not explicitly targeted for stable)
+- No Fixes: tag (expected for autosel)
+- No Cc: stable (expected for autosel)
+- Affects only QCN9274 MLO users (limited user base, though growing with
+  WiFi 7 adoption)
+- The recovery infrastructure this depends on was introduced relatively
+  recently (v6.16)
 
-**UNRESOLVED:**
-- Could not access lore discussion to check if series patches are
-  independent
-- Could not verify exact stable tree code state
+### Step 9.2: APPLY THE STABLE RULES CHECKLIST
+1. **Obviously correct and tested?** YES - tested on QCN9274, reviewed
+   by 2 engineers.
+2. **Fixes a real bug that affects users?** YES - MLO connectivity fails
+   after firmware recovery.
+3. **Important issue?** MODERATE-HIGH - WiFi connectivity loss after
+   recovery.
+4. **Small and contained?** YES - ~10 lines in one file, single function
+   scope.
+5. **No new features or APIs?** CORRECT - no new features.
+6. **Can apply to stable trees?** YES - verified code context matches
+   7.0 exactly.
 
-### Step 9.2: Stable Rules Checklist
-1. **Obviously correct and tested?** YES — change to documented correct
-   field, accepted by maintainer
-2. **Fixes a real bug?** YES — WDS over MLO doesn't work at all
-3. **Important issue?** MEDIUM-HIGH — complete feature breakage for
-   MLO+WDS users
-4. **Small and contained?** YES — 2 lines in one function
-5. **No new features?** Correct — no new features
-6. **Can apply to stable?** YES — all required structures present in
-   v6.1+
+### Step 9.3: CHECK FOR EXCEPTION CATEGORIES
+Not an exception category (not device ID, quirk, DT, or build fix).
+Standard bug fix.
 
-### Step 9.3: Exception Categories
-Not an exception category — this is a standard bug fix.
-
-### Step 9.4: Decision
-The fix is tiny, obviously correct, follows an established pattern from
-the maintainer, fixes real broken functionality, and carries virtually
-zero regression risk. While it's not a crash or security fix, it fixes
-complete feature breakage for WDS over MLO — a real use case for
-enterprise WiFi deployments. The 2-line change is the kind of surgical
-fix that stable trees are designed to accept.
+### Step 9.4: DECISION
+The fix is small, obviously correct, tested, reviewed, and fixes a real
+user-impacting bug (MLO WiFi connectivity failure after firmware crash
+recovery). The risk is minimal and the patch applies cleanly. However,
+this is a driver-specific issue affecting QCN9274 MLO users - a growing
+but specific audience. The fix meets all stable kernel criteria.
 
 ---
 
-## Verification
-
-- [Phase 1] Parsed tags: Co-developed-by from Qualcomm, SOB from
-  mac80211 maintainer Johannes Berg
-- [Phase 2] Diff analysis: 2 lines changed in
-  `ieee80211_send_4addr_nullfunc()`, changing memcpy source from
-  `sdata->deflink.u.mgd.bssid` to `sdata->vif.cfg.ap_addr`
-- [Phase 3] git blame: Buggy lines introduced by bfd8403adddd09 (May
-  2022, Johannes Berg), confirmed in v6.1 via `git merge-base --is-
-  ancestor`
-- [Phase 3] Confirmed precedent commit 8a9be422f5ff3 exists doing same
-  fix pattern for tx.c
-- [Phase 3] `ap_addr` field introduced by b65567b03c9502, confirmed
-  present in v6.1 and v6.6
-- [Phase 5] Found 2 callers: mlme.c:6555 (assoc path) and cfg.c:298
-  (interface config)
-- [Phase 5] Verified `vif.cfg.ap_addr` is used extensively in mlme.c
-  (~20+ instances) for same purpose
-- [Phase 5] Verified `ap_addr` documented as "AP MLD address, or BSSID
-  for non-MLO connections"
-- [Phase 6] Confirmed buggy code and required structures exist in v6.1.y
-  and v6.6.y stable trees
-- [Phase 8] Failure mode: WDS completely non-functional over MLO,
-  severity MEDIUM-HIGH
-- UNVERIFIED: Could not access lore discussion to check series
-  independence (anti-bot protection)
-- UNVERIFIED: Exact patch applicability to specific stable tree branches
-  not tested
+## Verification:
+- [Phase 1] Parsed tags: found Tested-on (QCN9274), 2 Reviewed-by
+  (Baochen Qiang, Vasanthakumar Thiagarajan), SOBs from Qualcomm team
+- [Phase 2] Diff analysis: ~10 lines added to two functions in core.c -
+  adds ath12k_core_mlo_setup() call in recovery path and
+  ath12k_mac_mlo_teardown() in stop path
+- [Phase 3] git blame: buggy code introduced by b716a10d99a28 (v6.14)
+  and a343d97f27f514 (v6.14)
+- [Phase 3] git tag --contains: b716a10d99a28 first appears in v6.14
+- [Phase 3] Recovery-with-grouping commits (6af396942bf13 through
+  f5755c23ed8a4) first appear in v6.16
+- [Phase 3] All required functions (ath12k_core_mlo_setup,
+  ath12k_mac_mlo_teardown, etc.) verified present in 7.0 tree
+- [Phase 3] File context at lines 1126-1127 verified: the exact buggy
+  code (skipping MLO setup when REGISTERED flag set) exists in 7.0
+- [Phase 4] b4 mbox: found 4 messages in thread, Jeff Johnson "Applied,
+  thanks!" with commit f33a8e41826831fc8ceb5f62833488cd9388ed59
+- [Phase 4] Patch submitted as "[PATCH ath-next]" - single standalone
+  patch
+- [Phase 5] ath12k_core_hw_group_start called from
+  ath12k_core_qmi_firmware_ready (line 1319) - verified in code
+- [Phase 6] Code exists in 7.0 tree - verified via grep and Read
+- [Phase 6] Diff context matches current 7.0 code exactly - verified by
+  reading lines 998-1020 and 1119-1184
+- [Phase 8] Failure mode: WiFi MLO association failure after firmware
+  recovery - severity HIGH
 
 **YES**
 
- net/mac80211/mlme.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 68da06434bb5d..200a075c97c9c 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2496,9 +2496,9 @@ void ieee80211_send_4addr_nullfunc(struct ieee80211_local *local,
- 	fc = cpu_to_le16(IEEE80211_FTYPE_DATA | IEEE80211_STYPE_NULLFUNC |
- 			 IEEE80211_FCTL_FROMDS | IEEE80211_FCTL_TODS);
- 	nullfunc->frame_control = fc;
--	memcpy(nullfunc->addr1, sdata->deflink.u.mgd.bssid, ETH_ALEN);
-+	memcpy(nullfunc->addr1, sdata->vif.cfg.ap_addr, ETH_ALEN);
- 	memcpy(nullfunc->addr2, sdata->vif.addr, ETH_ALEN);
--	memcpy(nullfunc->addr3, sdata->deflink.u.mgd.bssid, ETH_ALEN);
-+	memcpy(nullfunc->addr3, sdata->vif.cfg.ap_addr, ETH_ALEN);
- 	memcpy(nullfunc->addr4, sdata->vif.addr, ETH_ALEN);
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 4ed608ba3c304..a1834985bb63b 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -1006,6 +1006,8 @@ static void ath12k_core_hw_group_stop(struct ath12k_hw_group *ag)
  
- 	IEEE80211_SKB_CB(skb)->flags |= IEEE80211_TX_INTFL_DONT_ENCRYPT;
+ 	ath12k_mac_unregister(ag);
+ 
++	ath12k_mac_mlo_teardown(ag);
++
+ 	for (i = ag->num_devices - 1; i >= 0; i--) {
+ 		ab = ag->ab[i];
+ 		if (!ab)
+@@ -1123,8 +1125,14 @@ static int ath12k_core_hw_group_start(struct ath12k_hw_group *ag)
+ 
+ 	lockdep_assert_held(&ag->mutex);
+ 
+-	if (test_bit(ATH12K_GROUP_FLAG_REGISTERED, &ag->flags))
++	if (test_bit(ATH12K_GROUP_FLAG_REGISTERED, &ag->flags)) {
++		ret = ath12k_core_mlo_setup(ag);
++		if (WARN_ON(ret)) {
++			ath12k_mac_unregister(ag);
++			goto err_mac_destroy;
++		}
+ 		goto core_pdev_create;
++	}
+ 
+ 	ret = ath12k_mac_allocate(ag);
+ 	if (WARN_ON(ret))
 -- 
 2.53.0
 
