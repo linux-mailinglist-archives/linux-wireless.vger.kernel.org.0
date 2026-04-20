@@ -1,60 +1,60 @@
-Return-Path: <linux-wireless+bounces-35056-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35057-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NMQGMou5mliswEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35056-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:48:58 +0200
+	id 6MF5LLgu5mliswEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35057-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:48:40 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D230E42C4E1
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:48:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D5F42C4C4
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:48:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A956F337EB12
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:35:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DAFC43022A8E
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1283D3D18;
-	Mon, 20 Apr 2026 13:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F034E3D522C;
+	Mon, 20 Apr 2026 13:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mel+HvyN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E0TGapmy"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FA53D3D06;
-	Mon, 20 Apr 2026 13:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F6A3D47DD;
+	Mon, 20 Apr 2026 13:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691417; cv=none; b=bBhKT0sD8WZ+i9Z/xM1JIHoUJjoMqxwdOJ57Lh2PF9MUTAfmrw47AGoYkymOMxbXQE4KiAJPJ5cM1GWEjMDviL8Bwf4pubw8dbmesHpFWn91Y21j5H+mnwYIHA2YhFbmLRYEGrARezmENQFJaL19qdorjdeKhLJq0ZYC/SxILYM=
+	t=1776691420; cv=none; b=JUAHylv5Ub+6aPj1xnTegcuz/x8Z69pe6U7CFPOk8y9RiW82UKP2qNMKbr7P+Lm0rrUaiUuZ3ueAwwNMtmGxoZ1G3PIu3WPpUjKfpVf152chMltghXAvvSsEXDPtvOWjKJgYBnIsuvjEWf49xkWy+7lkAUrLBr++bmsKQ2ulIVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691417; c=relaxed/simple;
-	bh=t6WXuGdXT/jnJrIbR0CAcjUvYkXbpgvxo6/TwxkRo4g=;
+	s=arc-20240116; t=1776691420; c=relaxed/simple;
+	bh=cNGyNEfbHOaX+mqn2fFZRBv+MY/EX7TyQpYcmO5pWaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AVeNANTPl4t4AUknvNT4e1fxwKjjgc+CUaL/oesOmEyzZMKUWe0fBbZoiUiRhVU8ZJYJIa46gnj04MuHU93+PykOJjV3xo2SMJTufhwODT8EgYg0z2Vjy6Jnq/ni5bZvHRuEsQpA2L/VYq3Ab9Ndj9x6EfzDbg+6P04Ajk0DxBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mel+HvyN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FC9C19425;
-	Mon, 20 Apr 2026 13:23:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oA5kanHIAjGFiy3mpQMk+ZdaherTNzoSDbkogYZ93X5sYR+sRdMAgL6weWgLvgUapBYxUwueDB7xTXezHGt2V5L7V5kg0VsE3vXSjXeUAoo2ymS70BvquTg0dHOaBn6/xukhtht5LXYpXwjqHMRPD9mzJJhz0hKUnRb5/BcP+j0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E0TGapmy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE21C19425;
+	Mon, 20 Apr 2026 13:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691417;
-	bh=t6WXuGdXT/jnJrIbR0CAcjUvYkXbpgvxo6/TwxkRo4g=;
+	s=k20201202; t=1776691420;
+	bh=cNGyNEfbHOaX+mqn2fFZRBv+MY/EX7TyQpYcmO5pWaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mel+HvyNYfqYjrOH7Dn0A9N72XxeVlrHXhQtWC4uppGHC2RcUdOf28BNHCOfU0l2V
-	 lsPrun1Pu2lqTKxXqa9Vwj230PkoXHgw2mp/ptmG2VusjkUr0LOEcBg4R6XPENqGAi
-	 d+pEIVEgXikIC6MwsdwIWRifniaO9F2O0jQwkqXenYHiUj96eKlsl+vBArL6pkpWHx
-	 0FNxKVuAmSYMShRSnjoR5li9iUbIq6IzRtOZUUygUf5bPd87i+P7gIpQM3TiiE8e+y
-	 ZWmdW64JHHsK0JM8rT8fbXghCKuGpPzc1tQn9XyLmBwbvDDtXIcuryGb0G69YsAArK
-	 efaR25gBSg5fA==
+	b=E0TGapmyJu5rKwtzUDu2xfzDwNEn7XlNrHLPcVW6D/JjEqtr83gWkWLqTzaJvBn/a
+	 8yfV0z/rWinHEGmrrLlibp8mar0bjp8JynQ1gO2wmJmT/vbeshlGbcG7ha9B128VdA
+	 makdrGxMBlfPIw4UbQnw1UvkULcPNx+DnN6dUgYYhtSyRBJkQTYCNkeDam+A1lWp2q
+	 7dgVo6PC+kkPN8snQPo9pR+ZpPWZ/5ANTKQNymDA7JFLzmmnmGBIh4OCr43U+Jtkha
+	 dGYPPJMbG2g0DkAvTXQz8GXggqCiXBDOzCexWixqGMFsfNR9PWBk+o+FND7c8yIbag
+	 5Ax0VDI6C/UEg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ville Nummela <ville.nummela@kempower.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+	Oleksandr Havrylov <goainwo@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-5.10] wifi: rsi_91x_usb: do not pause rfkill polling when stopping mac80211
-Date: Mon, 20 Apr 2026 09:16:48 -0400
-Message-ID: <20260420132314.1023554-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-6.18] wifi: rtw88: add quirks to disable PCI ASPM and deep LPS for HP P3S95EA#ACB
+Date: Mon, 20 Apr 2026 09:16:50 -0400
+Message-ID: <20260420132314.1023554-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -67,413 +67,464 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35056-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[realtek.com,gmail.com,kernel.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-35057-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,kempower.com:email,intel.com:email]
-X-Rspamd-Queue-Id: D230E42C4E1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 89D5F42C4C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Ville Nummela <ville.nummela@kempower.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 777d8ba5aada960c666f810d5d820ab55ebb64c3 ]
+[ Upstream commit b2bf9d61e14af4129362aeb9c10034229a6d8f08 ]
 
-Removing rsi_91x USB adapter could cause rtnetlink to lock up.
-When rsi_mac80211_stop is called, wiphy_lock is locked. Call to
-wiphy_rfkill_stop_polling would wait until the work queue has
-finished, but because the work queue waits for wiphy_lock, that
-would never happen.
+On an HP laptop (P3S95EA#ACB) equipped with a Realtek RTL8821CE 802.11ac
+PCIe adapter (PCI ID: 10ec:c821), the system experiences a hard lockup
+(complete freeze of the UI and kernel, sysrq doesn't work, requires
+holding the power button) when the WiFi adapter enters the power
+saving state. Disable PCI ASPM to avoid system freeze.
 
-Moving the call to rsi_disconnect avoids the lock up.
+In addition, driver throws messages periodically. Though this doesn't
+always cause unstable connection, missing H2C commands might cause
+unpredictable results. Disable deep LPS to avoid this as well.
 
-Signed-off-by: Ville Nummela <ville.nummela@kempower.com>
-Link: https://patch.msgid.link/20260318081912.87744-1-ville.nummela@kempower.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+ rtw88_8821ce 0000:13:00.0: firmware failed to leave lps state
+ rtw88_8821ce 0000:13:00.0: failed to send h2c command
+ rtw88_8821ce 0000:13:00.0: failed to send h2c command
+
+Tested on HP Notebook P3S95EA#ACB (kernel 6.19.7-1-cachyos):
+
+  - No hard freeze observed during idle or active usage.
+  - Zero h2c or lps errors in dmesg across idle (10 min),
+    load stress (100MB download), and suspend/resume cycle.
+  - Both quirk flags confirmed active via sysfs without any
+    manual modprobe parameters.
+
+Reported-by: Oleksandr Havrylov <goainwo@gmail.com>
+Closes: https://lore.kernel.org/linux-wireless/CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com/
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Tested-by: Oleksandr Havrylov <goainwo@gmail.com>
+Link: https://patch.msgid.link/20260316035635.16550-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information needed. Let me compile the full analysis.
+Now I have all the information I need. Let me compile my analysis.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
 ### Step 1.1: Subject Line
-- **Subsystem**: `wifi: rsi_91x_usb` (USB WiFi driver for RSI 91x
-  chipset)
-- **Action verb**: "do not pause" - indicates preventing incorrect
-  behavior that causes a hang
-- **Summary**: Stop rfkill polling from being paused during mac80211
-  stop, which causes a deadlock
-
-Record: [wifi: rsi_91x_usb] [do not pause] [Avoid deadlock by moving
-rfkill stop polling out of mac80211 stop callback]
+**Record:** [wifi: rtw88] [add quirks] [Adds DMI-based quirks to disable
+PCI ASPM and deep LPS for a specific HP laptop model]
 
 ### Step 1.2: Tags
-- **Signed-off-by**: Ville Nummela (author, external contributor from
-  Kempower)
-- **Link**: `https://patch.msgid.link/20260318081912.87744-1-
-  ville.nummela@kempower.com`
-- **Signed-off-by**: Johannes Berg (Intel, the wireless subsystem
-  maintainer - applied the patch)
-- No Fixes: tag (expected for manual review)
-- No Reported-by, Tested-by, Reviewed-by
+- **Reported-by:** Oleksandr Havrylov <goainwo@gmail.com> — a real user
+  reporting the bug
+- **Closes:** lore.kernel.org link to original bug report
+- **Signed-off-by:** Ping-Ke Shih <pkshih@realtek.com> — Realtek's rtw88
+  maintainer
+- **Tested-by:** Oleksandr Havrylov <goainwo@gmail.com> — reporter
+  confirmed the fix works
+- **Link:** patch.msgid.link for the submission
 
-Record: Patch authored by external contributor (Ville Nummela), applied
-by the wifi subsystem maintainer (Johannes Berg). No explicit stable
-nomination.
+No Fixes: tag (expected for this type of quirk addition). No Cc: stable
+(expected). Author is the rtw88 subsystem maintainer.
 
 ### Step 1.3: Commit Body Analysis
-The message describes a **deadlock**:
-1. Removing the RSI USB adapter causes rtnetlink to lock up
-2. `rsi_mac80211_stop` is called with `wiphy_lock` held
-3. `wiphy_rfkill_stop_polling` calls `cancel_delayed_work_sync`, which
-   waits for the rfkill poll work to finish
-4. The rfkill poll work needs `wiphy_lock` to complete (via
-   `guard(wiphy)` in `cfg80211_rfkill_poll`)
-5. Classic ABBA deadlock: Thread A holds wiphy_lock, waits for work;
-   work needs wiphy_lock
-
-Record: Real deadlock. Trigger: USB adapter removal. Failure: system
-hang (rtnetlink lockup).
+- **Bug:** HP laptop (P3S95EA#ACB) with RTL8821CE WiFi experiences
+  **hard lockup** (complete system freeze, SysRq unresponsive, requires
+  power button) when WiFi adapter enters power saving state
+- **Secondary issue:** Firmware error messages ("failed to leave lps
+  state", "failed to send h2c command") suggesting broken power
+  management communication
+- **Testing evidence:** Detailed test plan with idle, load, and
+  suspend/resume validation on 6.19.7 kernel
+- **Failure mode:** CRITICAL — hard lockup requiring power cycle
 
 ### Step 1.4: Hidden Bug Fix Detection
-This is explicitly a deadlock fix, not disguised. The description
-clearly explains the locking inversion.
+**Record:** This is NOT a hidden bug fix — it's an explicit hardware
+quirk/workaround for a specific device that causes system-wide hard
+lockups. This falls squarely into the "hardware quirk" exception
+category for stable.
 
-Record: Explicit deadlock fix, not hidden.
+---
 
 ## PHASE 2: DIFF ANALYSIS
 
 ### Step 2.1: Inventory
-- **Files changed**: 3
-  - `drivers/net/wireless/rsi/rsi_91x_mac80211.c`: +16/-1 (new function
-    + remove call)
-  - `drivers/net/wireless/rsi/rsi_91x_usb.c`: +2/-0 (call new function)
-  - `drivers/net/wireless/rsi/rsi_common.h`: +1/-0 (declare new
-    function)
-- **Total**: ~19 lines added, 1 removed
-- **Functions modified**: `rsi_mac80211_stop()` (removed
-  `wiphy_rfkill_stop_polling` call), `rsi_disconnect()` (added call to
-  new function)
-- **Functions added**: `rsi_mac80211_rfkill_exit()` (new helper)
-- **Scope**: Small, single-subsystem, well-contained
+- `main.h`: +5 lines — new enum `rtw_quirk_dis_caps` with 2 values
+- `pci.c`: +31 lines — DMI include, callback function, quirk table,
+  `dmi_check_system()` call
+- Total: **+36 lines, 0 removed**
+- Functions modified: `rtw_pci_probe()` (1 line added). New:
+  `rtw_pci_disable_caps()` callback
+- Scope: Single-driver, self-contained
 
 ### Step 2.2: Code Flow Change
-1. **rsi_mac80211_stop()**: BEFORE: called `wiphy_rfkill_stop_polling()`
-   while holding `common->mutex` (and with `wiphy_lock` held by caller).
-   AFTER: no longer calls it.
-2. **rsi_disconnect()** (USB): BEFORE: went straight to
-   `rsi_mac80211_detach()`. AFTER: calls `rsi_mac80211_rfkill_exit()`
-   first (without wiphy_lock held), then `rsi_mac80211_detach()`.
-3. **New `rsi_mac80211_rfkill_exit()`**: Calls
-   `wiphy_rfkill_stop_polling()` without wiphy_lock held, breaking the
-   deadlock.
+1. New enum provides named constants for quirk capability bits
+2. `rtw_pci_disable_caps()`: DMI callback that sets
+   `rtw_pci_disable_aspm` and/or `rtw_disable_lps_deep_mode` global
+   bools to true based on bitmask in driver_data
+3. `rtw_pci_quirks[]`: DMI table matching HP vendor + "HP Notebook"
+   product + "P3S95EA#ACB" SKU
+4. `dmi_check_system()` call added in `rtw_pci_probe()` before
+   `rtw_core_init()`, so quirks are set before driver initialization
+   uses those globals
 
 ### Step 2.3: Bug Mechanism
-- **Category**: Deadlock/lock ordering
-- **Mechanism**: `rsi_mac80211_stop()` (called with `wiphy_lock` held)
-  invokes `wiphy_rfkill_stop_polling()` which calls
-  `cancel_delayed_work_sync()`. The work item (`cfg80211_rfkill_poll`)
-  needs `wiphy_lock`. Classic ABBA deadlock.
-- **Fix**: Move the polling stop to `rsi_disconnect()`, before
-  `rsi_mac80211_detach()`, where `wiphy_lock` is NOT held.
+**Category: Hardware workaround (DMI quirk)**
+- The quirk sets the same module-level bools (`rtw_pci_disable_aspm`,
+  `rtw_disable_lps_deep_mode`) that existing module parameters expose
+- These bools are already checked in `rtw_pci_clkreq_set()`,
+  `rtw_pci_aspm_set()`, and `rtw_update_lps_deep_mode()`
+- The mechanism simply automates what a user would do with `modprobe
+  rtw88_pci disable_aspm=Y` + `rtw88_core disable_lps_deep=Y`
 
 ### Step 2.4: Fix Quality
-- Obviously correct: removes the deadlocking call from the locked
-  context, moves it to unlocked context
-- Minimal/surgical: small change, well-contained within the rsi driver
-- Other drivers (ath9k, rtlwifi, mt76, etc.) all call
-  `wiphy_rfkill_stop_polling()` from their deinit paths, NOT from
-  `.stop` - confirming this is the right pattern
-- Regression risk: very low. The rfkill polling is stopped slightly
-  earlier in the teardown sequence
+- **Obviously correct:** Uses standard DMI matching infrastructure. Sets
+  existing, well-tested booleans. The same mechanism already works via
+  module parameters.
+- **Minimal and surgical:** Only affects the specific HP laptop model
+  with the matching DMI strings. No behavioral change for any other
+  system.
+- **Regression risk:** Essentially zero — only changes behavior on one
+  specific laptop, and only disables power saving features that cause
+  lockups on that device.
+
+---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
 ### Step 3.1: Blame
-- `wiphy_rfkill_stop_polling(hw->wiphy)` in `rsi_mac80211_stop()` was
-  added by commit `edba3532c65223` ("rsi: add support for rf-kill
-  functionality") by Pavani Muthyala, 2017-08-03.
-- The deadlock was introduced when `cfg80211_rfkill_poll()` acquired
-  wiphy_lock: commit `8e2f6f2366219` ("wifi: cfg80211: lock wiphy mutex
-  for rfkill poll") by Johannes Berg, 2023-11-24, first in v6.7-rc4.
-- `drv_stop()` has had `lockdep_assert_wiphy()` since commit
-  `0e8185ce1ddebf` (v6.7-rc1).
+- `rtw_pci_disable_aspm` introduced by commit `68aa716b7dd36f`
+  (2020-07-15) — present since ~v5.9
+- `rtw_disable_lps_deep_mode` introduced by commit `fc3ac64a3a2868`
+  (2020-10-30) — present since ~v5.10
+- Both variables are available in ALL active stable trees
 
-Record: Bug is a latent deadlock since v6.7 (when wiphy_lock was added
-to the rfkill poll path). Buggy rfkill call in rsi since 2017, but it
-only became a deadlock with v6.7.
-
-### Step 3.2: No Fixes: tag present (expected).
+### Step 3.2: No Fixes tag — N/A
 
 ### Step 3.3: File History
-Recent changes to rsi files are mostly cleanups and unrelated bug fixes.
-No prerequisites identified.
+The pci.c file is moderately active. The eb101d2abdccc commit (upstream
+bridge check) touches a different part of the file and does NOT conflict
+with this patch. The quirk insertion point (after `rtw_pci_err_handler`
+export and before `rtw_pci_probe`) and the `dmi_check_system()`
+insertion point (in `rtw_pci_probe` before `rtw_core_init`) are both
+clean in the current v7.0 tree.
 
 ### Step 3.4: Author
-Ville Nummela appears to be an external contributor (Kempower). This is
-their first rsi commit. However, the patch was applied by Johannes Berg,
-the wifi subsystem maintainer.
+Ping-Ke Shih (pkshih@realtek.com) is the **rtw88 subsystem maintainer**
+at Realtek. He maintains the rtw tree and has many commits across the
+rtw88 codebase.
 
 ### Step 3.5: Dependencies
-The fix is standalone. It uses only existing APIs
-(`wiphy_rfkill_stop_polling`) and creates a simple wrapper function. No
-dependencies on other patches.
+- The patch is **fully standalone** — no prerequisites needed
+- It only references existing global variables and standard kernel DMI
+  infrastructure
+- The enum addition in main.h is self-contained
+
+---
 
 ## PHASE 4: MAILING LIST RESEARCH
 
-Lore is protected by anti-bot measures, preventing direct access. B4 dig
-could not find the commit in the local tree. The Link tag confirms the
-patch was submitted and reviewed through the standard wireless-next
-workflow and applied by Johannes Berg.
+### Step 4.1: Original Discussion
+- b4 dig found the submission at
+  `20260316035635.16550-1-pkshih@realtek.com`
+- Only v1 — no revisions needed. Clean acceptance.
+- Thread from mbox: The reporter (Oleksandr Havrylov) provided detailed
+  Tested-by with positive results.
+- Maintainer (Ping-Ke Shih) acknowledged the test and added Tested-by to
+  the commit message.
 
-Record: Could not access lore discussion. Patch applied by subsystem
-maintainer.
+### Step 4.2: Reviewers
+- linux-wireless@vger.kernel.org was CC'd
+- Reporter provided Tested-by — direct confirmation the fix works
+
+### Step 4.3: Bug Report
+- Closes link points to the original bug report email from the user
+- Single reporter but the issue is deterministic: hard lockup when WiFi
+  enters power saving
+
+### Step 4.4: Series Context
+- Single standalone patch, not part of a series
+
+### Step 4.5: Stable Discussion
+- No specific stable discussion found. No Cc: stable on the original
+  patch.
+
+---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1: Functions Modified
-- `rsi_mac80211_stop()` - the `.stop` mac80211 callback
-- `rsi_disconnect()` - USB disconnect handler
-- New: `rsi_mac80211_rfkill_exit()`
+### Step 5.1: Functions
+- `rtw_pci_disable_caps()` — new callback, only called by
+  `dmi_check_system()`
+- `rtw_pci_probe()` — modified to call `dmi_check_system()`
 
 ### Step 5.2: Callers
-- `rsi_mac80211_stop()` is called by mac80211 via `drv_stop()`
-  (confirmed: `lockdep_assert_wiphy()` at driver-ops.c:39). Called when
-  interface goes down.
-- `rsi_disconnect()` is the USB `.disconnect` callback, called by USB
-  subsystem on device removal.
+- `rtw_pci_probe()` is the PCI probe function called for every rtw88
+  PCIe device during driver loading — common path
+- `rtw_pci_disable_aspm` is checked in `rtw_pci_clkreq_set()` and
+  `rtw_pci_aspm_set()` — called during power state transitions
+- `rtw_disable_lps_deep_mode` is checked in `rtw_update_lps_deep_mode()`
+  — called during firmware init
 
-### Step 5.3-5.4: Call Chain for Deadlock
-Verified complete deadlock chain:
-1. USB removal -> `rsi_disconnect()` -> `rsi_mac80211_detach()` ->
-   `ieee80211_unregister_hw()` -> interface shutdown -> `drv_stop()`
-   [acquires wiphy_lock] -> `rsi_mac80211_stop()`
-2. `rsi_mac80211_stop()` -> `wiphy_rfkill_stop_polling()` ->
-   `rfkill_pause_polling()` ->
-   `cancel_delayed_work_sync(&rfkill->poll_work)`
-3. Work item: `rfkill_poll()` -> `cfg80211_rfkill_poll()` ->
-   `guard(wiphy)(&rdev->wiphy)` [tries to acquire wiphy_lock] -> BLOCKED
+### Step 5.3-5.5: Call Chain
+The quirk only sets global booleans that are already checked in existing
+code paths. No new logic branches introduced.
 
-### Step 5.5: Similar Patterns
-All other wifi drivers (ath9k, rtlwifi, mt76, rtl818x, brcmsmac) call
-`wiphy_rfkill_stop_polling()` from their deinit/disconnect path, NOT
-from `.stop`. RSI was unique in calling it from `.stop`.
+---
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-### Step 6.1: Buggy Code in Stable
-- The deadlock requires both:
-  - `wiphy_rfkill_stop_polling()` in `rsi_mac80211_stop()` (since 2017,
-    commit edba3532)
-  - `wiphy_lock` acquisition in `cfg80211_rfkill_poll()` (since v6.7,
-    commit 8e2f6f23)
-- The deadlock exists in v6.7+ stable trees (6.12.y, 6.6.y if 8e2f6f23
-  was backported)
+### Step 6.1: Code Exists in Stable
+- `rtw_pci_disable_aspm` exists since v5.9 (commit 68aa716b7dd36f)
+- `rtw_disable_lps_deep_mode` exists since v5.10 (commit fc3ac64a3a2868)
+- The RTL8821CE driver exists in all active stable trees
+- **The buggy behavior exists in all stable trees supporting this
+  hardware**
 
 ### Step 6.2: Backport Complications
-The fix is simple and self-contained. The rsi driver code in this area
-has been stable. Clean apply expected for recent stable trees.
+- The patch should apply cleanly or with minimal offset to all active
+  stable trees
+- The insertion points (after EXPORT_SYMBOL, before probe function,
+  inside probe) are stable
+- No conflicting structural changes in this area
 
-### Step 6.3: No related fixes already in stable.
+### Step 6.3: No related fixes already in stable for this specific
+laptop
+
+---
 
 ## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-- **Subsystem**: wifi (drivers/net/wireless/rsi/) - USB WiFi driver
-- **Criticality**: IMPORTANT - WiFi is commonly used, RSI chipsets are
-  used in embedded/IoT
-- **Maintainer**: Applied by Johannes Berg (the wireless subsystem
-  maintainer), strong trust signal
+### Step 7.1: Subsystem
+- **drivers/net/wireless/realtek/rtw88** — WiFi driver for Realtek
+  chipsets
+- **Criticality: IMPORTANT** — RTL8821CE is a widely-used WiFi adapter
+  in consumer laptops
+- RTW88 is an active, well-maintained in-tree driver
+
+### Step 7.2: Activity
+- Actively maintained by Realtek engineers (Ping-Ke Shih is the
+  maintainer)
+
+---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
 ### Step 8.1: Affected Users
-Users of RSI 91x USB WiFi adapters. When removing the adapter
-(physically or via software), the system hangs.
+- Users of the specific HP laptop model (P3S95EA#ACB) with RTL8821CE
+  WiFi adapter
+- DMI matching is narrowly scoped (vendor + product + SKU)
 
 ### Step 8.2: Trigger Conditions
-- **Trigger**: Removing RSI USB WiFi adapter (unplug or modprobe -r)
-- **Frequency**: Every time the adapter is removed
-- **Unprivileged**: Physical access needed, but could also be triggered
-  by system suspend/resume or hotplug events
+- **Trigger:** WiFi adapter enters power saving state — this happens
+  automatically during normal idle usage
+- **Frequency:** Very common — happens during any period of idle WiFi
+  usage
+- **Deterministic:** The lockup is reproducible
 
 ### Step 8.3: Failure Mode Severity
-- **Failure mode**: System hang / deadlock (rtnetlink locks up)
-- **Severity**: CRITICAL - system becomes partially or fully unusable;
-  rtnetlink lockup affects all networking operations
+- **Hard lockup** — system completely freezes, SysRq unresponsive,
+  requires holding power button
+- **Severity: CRITICAL** — total system unavailability, potential data
+  loss from unclean shutdown
 
 ### Step 8.4: Risk-Benefit
-- **Benefit**: HIGH - prevents guaranteed system hang on USB adapter
-  removal
-- **Risk**: VERY LOW - 19 lines changed, moves existing call to correct
-  context, pattern matches all other wifi drivers
-- **Ratio**: Strongly favorable
+- **Benefit: HIGH** — prevents deterministic hard lockups on affected
+  hardware
+- **Risk: VERY LOW** — only affects one specific laptop model; uses
+  existing, well-tested disable mechanisms; is functionally identical to
+  module parameters that already exist
+- **Ratio: Excellent** — high benefit, near-zero regression risk
+
+---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: Evidence Summary
+### Step 9.1: Evidence Compilation
 
 **FOR backporting:**
-- Fixes a real, reproducible deadlock (system hang) on USB adapter
-  removal
-- Small, surgical fix (~20 lines across 3 files in one driver)
-- Obviously correct: moves `wiphy_rfkill_stop_polling()` from locked
-  context to unlocked context
-- Pattern matches all other wifi drivers (ath9k, rtlwifi, mt76, etc.)
-- Applied by wireless subsystem maintainer (Johannes Berg)
-- Standalone fix with no dependencies
-- Bug exists since v6.7 (when wiphy_lock was added to rfkill poll)
+- Fixes deterministic hard lockups (CRITICAL severity)
+- Small, self-contained change (+36 lines, single driver)
+- Written by the subsystem maintainer (Ping-Ke Shih at Realtek)
+- Tested and confirmed working by the reporter
+- Uses standard DMI quirk pattern already used in other drivers (ath9k,
+  etc.)
+- Only automates existing module parameter functionality
+- Zero regression risk for non-affected systems (narrow DMI match)
+- The underlying infrastructure (module params) exists in all stable
+  trees since v5.10
+- Hardware quirk = explicitly allowed exception for stable
 
 **AGAINST backporting:**
-- No explicit stable nomination or Fixes: tag (expected for manual
-  review)
-- Only fixes USB path (SDIO has same latent issue but wasn't addressed -
-  minor concern)
-- Author is external contributor with no previous rsi commits (mitigated
-  by maintainer sign-off)
+- No explicit Cc: stable (expected — that's why we're reviewing it)
+- Adds new code rather than modifying existing code (but this is
+  inherent to quirk additions)
 
 ### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **YES** - clear deadlock fix, correct
-   locking pattern
-2. Fixes a real bug? **YES** - deadlock causing system hang
-3. Important issue? **YES** - deadlock = CRITICAL severity
-4. Small and contained? **YES** - ~20 lines in one driver
-5. No new features or APIs? **YES** - only moves existing functionality
-6. Can apply to stable trees? **YES** - standalone, no dependencies
+1. **Obviously correct and tested?** YES — uses standard DMI matching,
+   confirmed by Tested-by
+2. **Fixes a real bug?** YES — hard lockup reported and reproduced by a
+   user
+3. **Important issue?** YES — CRITICAL: hard lockup requiring power
+   cycle
+4. **Small and contained?** YES — 36 lines, 2 files, single driver
+5. **No new features?** YES — disables power features that cause
+   lockups; no new user-visible behavior
+6. **Can apply to stable?** YES — clean, standalone, no dependencies
 
-### Step 9.3: Exception Categories
-Not an exception case - this is a straightforward deadlock fix.
+### Step 9.3: Exception Category
+**Hardware quirk/workaround** — DMI-based quirk to disable broken power
+management on specific hardware. This is an explicitly allowed exception
+for stable trees.
 
-### Step 9.4: Decision
-This is a clear, small, surgical fix for a real deadlock that causes
-system hang when removing an RSI USB WiFi adapter. It follows the same
-pattern used by all other wifi drivers. Applied by the wifi subsystem
-maintainer.
+---
 
 ## Verification
 
-- [Phase 1] Parsed tags: Link to patch.msgid.link, SOB by author and
-  Johannes Berg (maintainer)
-- [Phase 2] Diff analysis: 1 line removed from `rsi_mac80211_stop()`,
-  16-line new function `rsi_mac80211_rfkill_exit()` added, 2 lines
-  calling it in `rsi_disconnect()`
-- [Phase 3] git blame: `wiphy_rfkill_stop_polling` in `.stop` added by
-  edba3532c65223 (2017)
-- [Phase 3] git show 8e2f6f2366219: confirmed `wiphy_lock` added to
-  `cfg80211_rfkill_poll()` in v6.7-rc4
-- [Phase 3] git show 0e8185ce1ddebf: confirmed `lockdep_assert_wiphy()`
-  in `drv_stop()` since v6.7-rc1
-- [Phase 3] git describe --contains 8e2f6f2366219: deadlock exists since
-  v6.7-rc4
-- [Phase 4] Could not access lore (anti-bot protection); patch Link tag
-  confirms standard review
-- [Phase 5] Verified deadlock chain: `drv_stop()` holds wiphy_lock
-  (driver-ops.c:39) -> `rsi_mac80211_stop()` -> `rfkill_pause_polling()`
-  -> `cancel_delayed_work_sync()` blocks on work item needing wiphy_lock
-  via `guard(wiphy)` in `cfg80211_rfkill_poll()` (core.c:224)
-- [Phase 5] Confirmed all other wifi drivers (ath9k, rtlwifi, mt76,
-  rtl818x, brcmsmac) call `wiphy_rfkill_stop_polling()` from deinit
-  path, not `.stop`
-- [Phase 6] Bug exists in v6.7+ trees; code in rsi driver unchanged in
-  affected area
-- [Phase 8] Failure mode: deadlock/system hang, severity CRITICAL
-- UNVERIFIED: Could not access lore discussion for reviewer feedback
+- [Phase 1] Parsed tags: Reported-by from real user, Tested-by from same
+  user, author is rtw88 maintainer
+- [Phase 2] Diff: +36 lines across 2 files (main.h enum + pci.c DMI
+  table + probe call), no code removed
+- [Phase 3] git blame: `rtw_pci_disable_aspm` from 68aa716b7dd36f
+  (2020-07-15), `rtw_disable_lps_deep_mode` from fc3ac64a3a2868
+  (2020-10-30) — both present in all active stable trees
+- [Phase 3] git log: no dependencies identified; eb101d2abdccc touches
+  different code area
+- [Phase 4] b4 dig -c b2bf9d61e14af: found at
+  https://patch.msgid.link/20260316035635.16550-1-pkshih@realtek.com
+- [Phase 4] b4 dig -a: only v1, clean acceptance with no revisions
+- [Phase 4] b4 dig -w: linux-wireless list and reporter CC'd
+- [Phase 4] mbox: reporter confirmed fix with detailed test (idle, load,
+  suspend/resume)
+- [Phase 5] `rtw_pci_disable_aspm` checked in `rtw_pci_clkreq_set()` and
+  `rtw_pci_aspm_set()`; `rtw_disable_lps_deep_mode` checked in
+  `rtw_update_lps_deep_mode()` — all existing code paths
+- [Phase 6] Code infrastructure exists in all active stable trees
+  (v5.10+), patch is standalone
+- [Phase 6] Diff against v7.0 shows clean insertion points with no
+  conflicts
+- [Phase 7] ath9k uses identical `dmi_check_system` quirk pattern,
+  establishing precedent
+- [Phase 8] Failure mode: hard lockup (CRITICAL), triggers during normal
+  idle WiFi usage
+
+**YES** — This is a textbook hardware quirk that prevents deterministic
+hard lockups on specific hardware. It uses standard DMI matching
+infrastructure, is written by the subsystem maintainer, tested by the
+reporter, adds only 36 lines, has zero regression risk for unaffected
+systems, and the underlying mechanism already exists in all stable
+trees.
 
 **YES**
 
- drivers/net/wireless/rsi/rsi_91x_mac80211.c | 17 ++++++++++++++++-
- drivers/net/wireless/rsi/rsi_91x_usb.c      |  2 ++
- drivers/net/wireless/rsi/rsi_common.h       |  1 +
- 3 files changed, 19 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/main.h |  5 ++++
+ drivers/net/wireless/realtek/rtw88/pci.c  | 31 +++++++++++++++++++++++
+ 2 files changed, 36 insertions(+)
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_mac80211.c b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-index c7ae8031436ae..3faf2235728be 100644
---- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-@@ -325,6 +325,22 @@ void rsi_mac80211_detach(struct rsi_hw *adapter)
- }
- EXPORT_SYMBOL_GPL(rsi_mac80211_detach);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 1ab70214ce36e..55b794d4584c4 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -432,6 +432,11 @@ enum rtw_wow_flags {
+ 	RTW_WOW_FLAG_MAX,
+ };
  
-+/**
-+ * rsi_mac80211_rfkill_exit() - This function is used to stop rfkill polling
-+ *                              when the device is removed.
-+ * @adapter: Pointer to the adapter structure.
-+ *
-+ * Return: None.
-+ */
-+void rsi_mac80211_rfkill_exit(struct rsi_hw *adapter)
++enum rtw_quirk_dis_caps {
++	QUIRK_DIS_CAP_PCI_ASPM,
++	QUIRK_DIS_CAP_LPS_DEEP,
++};
++
+ /* the power index is represented by differences, which cck-1s & ht40-1s are
+  * the base values, so for 1s's differences, there are only ht20 & ofdm
+  */
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index 56b16186d3aa4..ca26e0a7f538f 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -2,6 +2,7 @@
+ /* Copyright(c) 2018-2019  Realtek Corporation
+  */
+ 
++#include <linux/dmi.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
+ #include "main.h"
+@@ -1744,6 +1745,34 @@ const struct pci_error_handlers rtw_pci_err_handler = {
+ };
+ EXPORT_SYMBOL(rtw_pci_err_handler);
+ 
++static int rtw_pci_disable_caps(const struct dmi_system_id *dmi)
 +{
-+	struct ieee80211_hw *hw = adapter->hw;
++	uintptr_t dis_caps = (uintptr_t)dmi->driver_data;
 +
-+	if (hw)
-+		wiphy_rfkill_stop_polling(hw->wiphy);
++	if (dis_caps & BIT(QUIRK_DIS_CAP_PCI_ASPM))
++		rtw_pci_disable_aspm = true;
++
++	if (dis_caps & BIT(QUIRK_DIS_CAP_LPS_DEEP))
++		rtw_disable_lps_deep_mode = true;
++
++	return 1;
 +}
-+EXPORT_SYMBOL_GPL(rsi_mac80211_rfkill_exit);
 +
- /**
-  * rsi_indicate_tx_status() - This function indicates the transmit status.
-  * @adapter: Pointer to the adapter structure.
-@@ -422,7 +438,6 @@ static void rsi_mac80211_stop(struct ieee80211_hw *hw, bool suspend)
- 	rsi_dbg(ERR_ZONE, "===> Interface DOWN <===\n");
- 	mutex_lock(&common->mutex);
- 	common->iface_down = true;
--	wiphy_rfkill_stop_polling(hw->wiphy);
- 
- 	/* Block all rx frames */
- 	rsi_send_rx_filter_frame(common, 0xffff);
-diff --git a/drivers/net/wireless/rsi/rsi_91x_usb.c b/drivers/net/wireless/rsi/rsi_91x_usb.c
-index d83204701e27e..8765cac6f875b 100644
---- a/drivers/net/wireless/rsi/rsi_91x_usb.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_usb.c
-@@ -877,6 +877,8 @@ static void rsi_disconnect(struct usb_interface *pfunction)
- 	if (!adapter)
- 		return;
- 
-+	rsi_mac80211_rfkill_exit(adapter);
++static const struct dmi_system_id rtw_pci_quirks[] = {
++	{
++		.callback = rtw_pci_disable_caps,
++		.ident = "HP Notebook - P3S95EA#ACB",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP Notebook"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "P3S95EA#ACB"),
++		},
++		.driver_data = (void *)(BIT(QUIRK_DIS_CAP_PCI_ASPM) |
++					BIT(QUIRK_DIS_CAP_LPS_DEEP)),
++	},
++	{}
++};
 +
- 	rsi_mac80211_detach(adapter);
+ int rtw_pci_probe(struct pci_dev *pdev,
+ 		  const struct pci_device_id *id)
+ {
+@@ -1771,6 +1800,8 @@ int rtw_pci_probe(struct pci_dev *pdev,
+ 	rtwpci = (struct rtw_pci *)rtwdev->priv;
+ 	atomic_set(&rtwpci->link_usage, 1);
  
- 	if (IS_ENABLED(CONFIG_RSI_COEX) && adapter->priv->coex_mode > 1 &&
-diff --git a/drivers/net/wireless/rsi/rsi_common.h b/drivers/net/wireless/rsi/rsi_common.h
-index 7aa5124575cfe..591602beeec68 100644
---- a/drivers/net/wireless/rsi/rsi_common.h
-+++ b/drivers/net/wireless/rsi/rsi_common.h
-@@ -79,6 +79,7 @@ static inline int rsi_kill_thread(struct rsi_thread *handle)
- }
- 
- void rsi_mac80211_detach(struct rsi_hw *hw);
-+void rsi_mac80211_rfkill_exit(struct rsi_hw *hw);
- u16 rsi_get_connected_channel(struct ieee80211_vif *vif);
- struct rsi_hw *rsi_91x_init(u16 oper_mode);
- void rsi_91x_deinit(struct rsi_hw *adapter);
++	dmi_check_system(rtw_pci_quirks);
++
+ 	ret = rtw_core_init(rtwdev);
+ 	if (ret)
+ 		goto err_release_hw;
 -- 
 2.53.0
 
