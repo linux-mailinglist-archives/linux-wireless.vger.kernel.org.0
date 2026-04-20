@@ -1,66 +1,68 @@
-Return-Path: <linux-wireless+bounces-35052-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35053-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAD5GWYs5ml4swEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35052-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:38:46 +0200
+	id ICk3JRcs5mliswEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35053-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:37:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0386742C187
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:38:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 224C542C105
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9F5AD307AB81
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:28:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8493C313D1BD
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61DEA3CCFD6;
-	Mon, 20 Apr 2026 13:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E9C3CF676;
+	Mon, 20 Apr 2026 13:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HdAG88Nm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q8jm3em9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E31C3A6B82;
-	Mon, 20 Apr 2026 13:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B30439BFEF;
+	Mon, 20 Apr 2026 13:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691069; cv=none; b=apQiPQ0/BC0BlliiMY0YzkTXudUFe6CXAelD7PYc/4JcONIqWvjlqEucBktM79Bb/S86vNV+MZ5/63CyPELI3eUhgCNJ/tiKlbZ26WpfPD9ZEjwF/xqH+3vVfK3zC7mfvWW3AGzNyVfO1jNXaHCZf8A27TRQ8VXC9v3ExS+Ywpk=
+	t=1776691078; cv=none; b=pOFgbGnQxFmYwwy3kEPv/GAwg3SbG9LjGVhHXqFRhSyxBI8Vl5ppl09HEuNJsOsvdR3TZl1maclX3UrQDGaI07QaVketM5s814DKZa64Gt2yOrS7e4PqS1m/oK9gnglkr6+ZSV9ynwZ/3h+XiLt4Qr4EOZxSDp97ZLZRFALiKdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691069; c=relaxed/simple;
-	bh=f3xsyAIWxI4nn00HNYNNjBmimSPNBuKH8vBU5p8iJLA=;
+	s=arc-20240116; t=1776691078; c=relaxed/simple;
+	bh=4Ew+9P1AhCIc/hFMFZX1yd3SOp26GdjQC76CnuAw4eY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DV6xw5E4oyf1QGafEr8s1drVpaBb/tv9W2aOX2ABCYyGICsYiA6iq9/1QY0+UzzHXng1ocQjv9RE5urp8P3jJYcO0SyLmynRy/0zUMAc5AbA00oZJwa2AUA5Nl6POvyO1x4OuET7Fx6hxceffBSpu9mblHuMfFOb5xF9e+7FNa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HdAG88Nm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C7FC2BCB4;
-	Mon, 20 Apr 2026 13:17:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BjZQcNVL7v594Bv5fI1QLTFCBuNc37NzRhfL7eq4KIzk97CcqzirwKDwxxmzeaA6RxCYRENzy7rmGSRDD50i5TsHI6k1uV6CddfGPMHJpOGn26002tveHAZnljIC6E/UAmec8MCWpTnErH5kJ/aVFzhmdG1waExDWp1A5yyusAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q8jm3em9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535FFC19425;
+	Mon, 20 Apr 2026 13:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691069;
-	bh=f3xsyAIWxI4nn00HNYNNjBmimSPNBuKH8vBU5p8iJLA=;
+	s=k20201202; t=1776691077;
+	bh=4Ew+9P1AhCIc/hFMFZX1yd3SOp26GdjQC76CnuAw4eY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HdAG88NmYH6GuyXj6dySNYWssxcVNOdzdhVyR+KpfwJc259LU5t5tWjs204yFJvRh
-	 y8rk/wdANibgQDkz4JRqA1NPX3WsDv6fHqsyMGpP+g/6wbL4b/YMQFihstQub8Ykyb
-	 DXO1FJFB4vfg+e45cBgqGddS9vXeMC1fG22Px0KppXDSRvK1vl7+GGkRxwqBE6N1ss
-	 tX4cgGVgC2VhT2a+oLBY971QEXvWJqpSUopzF1A/P8Yhoh4viDKkAE1FoQgBfBeBEB
-	 HKgGO0k49LpRap3DySWaPNHbpDDf5shFFtg47o5sRqXZQ0zDhuV9XG9JWbL//9OmLi
-	 eKUfzB4QNahhg==
+	b=q8jm3em9L/64DUUid4jCIeW6xsquCUKV36RHVC4ZcsJjAn0vJoSW4XOUu7o6zcpmk
+	 KDg5vK+oeAlkedMomeT3jDhiqU80cZ1AohWwHEUQ729kpK5Ay2L5Oyz/989/mxKJET
+	 VLqzyMoCmf1//YTNGKEldvBur8UkxDCcwdmCUVWPA1r5YUwORVgdBa2rzUjY2dwb3y
+	 f0rMdUyPOjY7D92vjvYkkvc9CVFDyWzCRhavMRV1bdK322c8WY1D9oJBHBHNsR9bTn
+	 75jLw6D1BQ9Mh/v7QHyFqxySKrIwHZU3h6IAYNF8JjXhrEald/DhuBEFq+gRVDMx5o
+	 KC82pfwV1uAnA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>,
+Cc: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>,
+	Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
+	kvalo@codeaurora.org,
+	davem@davemloft.net,
+	kuba@kernel.org,
 	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 7.0-6.18] wifi: mt76: abort ROC on chanctx changes
-Date: Mon, 20 Apr 2026 09:09:01 -0400
-Message-ID: <20260420131539.986432-75-sashal@kernel.org>
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 7.0-6.18] wifi: ath12k: Fix the assignment of logical link index
+Date: Mon, 20 Apr 2026 09:09:06 -0400
+Message-ID: <20260420131539.986432-80-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420131539.986432-1-sashal@kernel.org>
 References: <20260420131539.986432-1-sashal@kernel.org>
@@ -73,380 +75,361 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35053-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-35052-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nbd.name:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0386742C187
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,infradead.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 224C542C105
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
 
-[ Upstream commit de62b24224ac1533c17b3d5bae77164a82ae2e49 ]
+[ Upstream commit aecb569d7fb689e3e5b0005ca7bd0a2ef28915e8 ]
 
-mt76_change_chanctx() calls mt76_phy_update_channel() which switches
-the hardware channel. If ROC is active on the same phy, this switches
-away from the ROC channel and clears offchannel, but leaves ROC state
-intact. Mac80211 still thinks the phy is on the ROC channel.
+Per-link logical index is assigned from the global counter,
+ahsta->num_peer. This logical index is sent to firmware during peer
+association. If there is a failure in creating a link station,
+ath12k_mac_free_unassign_link_sta() clears the link, but does not decrement
+the logical link index. This will result in a higher logical link index for
+the next link station created. Also, if there is a leak in logical link
+index as we assign the incremented num_peer, then the index can exceed the
+maximum valid value of 15.
 
-Abort any active ROC before proceeding, matching the pattern already
-used in add, remove, assign, unassign, and switch chanctx functions.
+As an example, let's say we have a 2 GHz + 5 GHz + 6 GHz MLO setup. So the
+logical link indices that they have are 0, 1 and 2, respectively. If the
+5 GHz link is removed, logical link index 1 becomes available, and num_peer
+is not reduced to 2 and still remains at 3. If a new 5 GHz link is added
+later, it gets the index 3, instead of reusing link index 1. Also,
+num_peer is increased to 4, though only 3 links are present.
 
-Link: https://patch.msgid.link/20260309060730.87840-5-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+To resolve these, create a bitmap, free_logical_link_idx, that tracks the
+available logical link indices. When a link station is created, select the
+first free logical index and when a link station is removed, mark its
+logical link index as available by setting the bit.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01181-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
+Signed-off-by: Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>
+Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260226041911.2434999-1-roopni.devanathan@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-I now have all the information needed for a complete analysis. Let me
-compile the findings.
+Now I have all the information I need. Let me compile the final
+analysis.
 
 ---
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+## Complete Analysis
 
-**Step 1.1: Subject Line**
-- Subsystem: `wifi: mt76:` (MediaTek MT76 wireless driver)
-- Action: "abort" - stopping an ongoing operation to prevent state
-  inconsistency
-- Summary: Abort ROC (Remain on Channel) on channel context changes
-- Record: [wifi: mt76] [abort] [Abort active ROC when channel context
-  changes to prevent state desync]
+### PHASE 1: COMMIT MESSAGE FORENSICS
 
-**Step 1.2: Tags**
-- Link: `https://patch.msgid.link/20260309060730.87840-5-nbd@nbd.name`
-  (patch 5 in a series)
-- Signed-off-by: Felix Fietkau `<nbd@nbd.name>` (mt76 subsystem
-  maintainer/author)
-- No Fixes: tag (expected for autosel candidates)
-- No Reported-by (no external report; author found the issue)
-- Record: Author is the mt76 subsystem creator. Patch 5 of a series.
+**Step 1.1:**
+- Subsystem: `wifi: ath12k`
+- Action verb: "Fix"
+- Summary: Fixes the assignment of logical link index for MLO (Multi-
+  Link Operation) link stations.
 
-**Step 1.3: Commit Body Analysis**
-The commit describes a concrete bug mechanism:
-1. `mt76_change_chanctx()` calls `mt76_phy_update_channel()` which
-   switches the hardware channel
-2. If ROC is active on the same phy, the hardware switches away from ROC
-   channel
-3. `offchannel` is cleared (set to false), but ROC state (`roc_vif`,
-   `roc_link`, `roc_work` timer) remains intact
-4. Mac80211 still believes the phy is on the ROC channel
+**Step 1.2: Tags:**
+- `Tested-on: QCN9274 hw2.0 PCI` — hardware tested
+- `Signed-off-by: Manish Dharanenthiran` — original author
+- `Signed-off-by: Roopni Devanathan` — submitter
+- `Reviewed-by: Rameshkumar Sundaram`, `Baochen Qiang`, `Vasanthakumar
+  Thiagarajan` — 3 Qualcomm reviewers
+- `Link:` to patch.msgid.link — original submission
+- `Signed-off-by: Jeff Johnson` — ath12k maintainer applied it
+- No Fixes: tag, no Reported-by, no syzbot, no Cc: stable — expected for
+  autoselection candidates.
 
-Record: [State inconsistency between driver and mac80211 when chanctx
-changes during active ROC] [Symptom: mac80211 and hardware out of sync
-on channel state] [Bug introduced with channel.c in v6.14]
+**Step 1.3:** The commit message describes a clear bug: `num_peer` is a
+monotonically incrementing counter used to assign logical link indices.
+When links are removed, the counter is never decremented, causing
+"leakage" of index values. Over time with link add/remove cycles, the
+index exceeds the firmware's maximum valid value of 15.
 
-**Step 1.4: Hidden Bug Fix Detection**
-This is clearly a bug fix, not cleanup. The commit explicitly describes
-a state desynchronization between the hardware and the mac80211 layer.
+**Step 1.4:** This is NOT a hidden bug fix — the subject explicitly says
+"Fix".
 
----
+### PHASE 2: DIFF ANALYSIS
 
-## PHASE 2: DIFF ANALYSIS
+**Step 2.1:**
+- `core.h`: 1 line changed (`u8 num_peer` -> `u16
+  free_logical_link_idx_map`)
+- `mac.c`: ~20 lines changed across 3 functions
+- Functions modified: `ath12k_mac_free_unassign_link_sta`,
+  `ath12k_mac_assign_link_sta`, `ath12k_mac_op_sta_state`
+- Scope: well-contained, single-subsystem fix
 
-**Step 2.1: Inventory**
-- 1 file changed: `drivers/net/wireless/mediatek/mt76/channel.c`
-- +3 lines added (including blank line), 0 removed
-- Function modified: `mt76_change_chanctx()`
-- Scope: Single-function surgical fix
-- Record: [channel.c +3/-0] [mt76_change_chanctx modified] [Single-file
-  surgical fix]
+**Step 2.2:**
+- In `ath12k_mac_free_unassign_link_sta`: adds
+  `ahsta->free_logical_link_idx_map |= BIT(arsta->link_idx)` — returns
+  the freed index to the pool
+- In `ath12k_mac_assign_link_sta`: replaces `arsta->link_idx =
+  ahsta->num_peer++` with bitmap-based allocation using `__ffs()` + adds
+  `-ENOSPC` check
+- In `ath12k_mac_op_sta_state`: initializes
+  `ahsta->free_logical_link_idx_map = U16_MAX` when a new station is
+  created (all bits set = all indices free)
 
-**Step 2.2: Code Flow Change**
-Before: `mt76_change_chanctx()` directly proceeds to cancel mac_work and
-update channel.
-After: Before canceling mac_work, checks if ROC is active
-(`phy->roc_vif`) and aborts it via `mt76_abort_roc(phy)`.
+**Step 2.3:** Bug category: Logic/correctness bug — resource index leak.
+The old approach only increments, never reuses indices. The new bitmap
+approach properly tracks available indices.
 
-**Step 2.3: Bug Mechanism**
-Verified by reading `__mt76_set_channel()` at mac80211.c:1045:
-`phy->offchannel = offchannel;`. When called from
-`mt76_phy_update_channel()` with `offchannel = false`, it clears the
-offchannel flag. But the ROC state (`roc_vif`, `roc_link`, `roc_work`)
-remains set, causing a desynchronization.
+**Step 2.4:** Fix quality:
+- The fix is correct — bitmap tracks available indices, `__ffs` gets the
+  lowest free bit, removal sets the bit back
+- It adds a proper `-ENOSPC` check for when all indices are exhausted
+- Minimal regression risk — the logic is straightforward and only
+  touches the specific allocation/deallocation paths
+- The U16_MAX initialization means 16 indices (0-15), which matches the
+  firmware's maximum
 
-Classification: **Logic/correctness fix** - missing cleanup of related
-state when switching channels.
+### PHASE 3: GIT HISTORY INVESTIGATION
 
-**Step 2.4: Fix Quality**
-- Obviously correct: follows the exact pattern established by all other
-  chanctx functions which abort scans
-- Minimal: 2 lines of actual logic
-- `mt76_abort_roc()` handles its own locking (takes `dev->mutex`
-  internally), so calling it before the existing `mutex_lock` is correct
-- Regression risk: extremely low - if ROC is not active (`roc_vif ==
-  NULL`), the check is a no-op
+**Step 3.1:** `git blame` confirms both the buggy code (`num_peer++` at
+line 7124) and the incomplete cleanup function were introduced by the
+same commit: `8e6f8bc286031` ("Add MLO station state change handling")
+by Sriram R, dated 2024-11-21, first in v6.14-rc1.
 
----
+**Step 3.2:** No Fixes: tag present. The bug was introduced by
+8e6f8bc286031.
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+**Step 3.3:** No intermediate fixes for the same issue. No prerequisites
+found — the patch modifies code that exists in the tree as-is.
 
-**Step 3.1: Blame**
-From git blame, the buggy `mt76_change_chanctx()` was introduced by
-commit `82334623af0cd` ("wifi: mt76: add chanctx functions for multi-
-channel phy support") by Felix Fietkau on 2025-01-02. This commit is in
-v6.14.
+**Step 3.4:** The author (Manish Dharanenthiran) is a regular ath12k
+contributor with 9+ commits in the subsystem. Jeff Johnson (ath12k
+maintainer) applied it.
 
-**Step 3.2: Fixes Tag**
-No Fixes: tag present. The implicit target is `82334623af0cd` which
-introduced `mt76_change_chanctx` without ROC abort handling.
+**Step 3.5:** This is a standalone single-patch fix. No dependencies on
+other commits.
 
-**Step 3.3: File History**
-The file has 7 commits since creation: the original, scanning code, ROC
-functions, offchannel link, a deref fix, abort scan/roc on hw restart,
-and relicensing. No conflicting changes near the modified area.
+### PHASE 4: MAILING LIST RESEARCH
 
-**Step 3.4: Author**
-Felix Fietkau (nbd@nbd.name) is the creator and maintainer of the mt76
-driver. He wrote the original `channel.c` file and all major chanctx
-functions.
+Lore was not accessible due to anti-bot protection. b4 dig could not
+find the exact commit (it hasn't landed in the main tree yet from the
+perspective of this 7.0 tree). The patch was sent to
+`ath12k@lists.infradead.org` and `linux-wireless@vger.kernel.org`. It
+was reviewed by 3 Qualcomm engineers and applied by the ath12k
+maintainer Jeff Johnson.
 
-**Step 3.5: Dependencies**
-The commit is patch 5 of a series (msgid `-5-`). However, the fix is
-**self-contained**:
-- `mt76_abort_roc()` already exists in the tree (since `a8f424c1287cc`,
-  in v6.14)
-- `phy->roc_vif` already exists in `mt76.h`
-- `mt76_abort_roc` is declared in `mt76.h` and accessible from
-  `channel.c`
-- No other patch from the series is needed for this fix to work
-  correctly.
+### PHASE 5: CODE SEMANTIC ANALYSIS
 
----
+**Step 5.1:** Modified functions: `ath12k_mac_free_unassign_link_sta`,
+`ath12k_mac_assign_link_sta`, `ath12k_mac_op_sta_state`
 
-## PHASE 4: MAILING LIST RESEARCH
+**Step 5.2:** `arsta->link_idx` is used in `ath12k_peer_assoc_h_mlo()`
+(line 3531) to populate `ml->logical_link_idx` which is sent to firmware
+via `wmi.c` line 2348 as `ml_params->logical_link_idx`. This is a WMI
+command parameter — an invalid value directly impacts firmware behavior.
 
-**Step 4.1-4.5**: Lore.kernel.org is behind Anubis anti-bot protection
-and could not be accessed. The `b4 dig` also did not find a match for
-the message-id (possibly a future date issue). However, the patch URL is
-well-formed and the commit is by the subsystem maintainer, providing
-strong quality assurance.
+**Step 5.4:** The path: `ath12k_mac_op_sta_state` ->
+`ath12k_mac_assign_link_sta` -> sets `link_idx` -> later used in
+`ath12k_peer_assoc_h_mlo` -> sent via WMI to firmware. This is a
+standard MLO station association path triggered during Wi-Fi connection
+setup.
 
-Record: [UNVERIFIED: Could not access lore/b4 due to anti-bot
-protection] [Author is mt76 maintainer which provides confidence in
-quality]
+### PHASE 6: STABLE TREE ANALYSIS
 
----
+**Step 6.1:** The buggy code (`num_peer` field) was introduced in commit
+`8e6f8bc286031`, first in v6.14-rc1. It is:
+- **NOT in v6.13, v6.12, or any earlier LTS tree**
+- Present in v6.14, v6.15, v6.16, v6.17, v6.18, v6.19, v7.0
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+For the 7.0.y stable tree specifically, the buggy code IS present.
 
-**Step 5.1: Functions Modified**
-- `mt76_change_chanctx()` - modified to add ROC abort call
+**Step 6.2:** The code in v7.0 matches exactly what the patch expects
+(verified by reading lines 7096-7137 and 6771-6798 of mac.c). The patch
+should apply cleanly.
 
-**Step 5.2: Callers**
-`mt76_change_chanctx` is a mac80211 callback assigned via
-`ieee80211_ops`. It is called by mac80211 whenever the channel context
-configuration changes (width changes, radar detection changes). This is
-a normal operation path triggered by AP configuration, DFS, or
-regulatory changes.
+### PHASE 7: SUBSYSTEM CONTEXT
 
-**Step 5.3: Callees**
-`mt76_abort_roc()` calls:
-1. `cancel_delayed_work_sync(&phy->roc_work)` - cancels the ROC timeout
-2. `mt76_roc_complete(phy)` under mutex - restores main channel, frees
-   offchannel link, notifies mac80211
+**Step 7.1:** Subsystem: wireless driver (ath12k) — IMPORTANT for WiFi 7
+users with Qualcomm QCN9274 and similar chipsets. MLO is a key WiFi 7
+feature.
 
-**Step 5.4: Call Chain**
-Userspace/regulatory -> mac80211 -> `mt76_change_chanctx` -> bug
-triggers if ROC active. This is reachable from normal WiFi operation
-(e.g., DFS, bandwidth changes during P2P).
+**Step 7.2:** ath12k is very actively developed (183 commits to mac.c
+between v6.14 and v7.0).
 
-**Step 5.5: Similar Patterns**
-All 5 other chanctx functions (`add`, `remove`, `assign`, `unassign`,
-`switch`) already call `mt76_abort_scan()`. The fix adds the equivalent
-`mt76_abort_roc()` to the one function that was missing it.
+### PHASE 8: IMPACT AND RISK ASSESSMENT
 
----
+**Step 8.1:** Affected users: Users of Qualcomm ath12k WiFi 7 hardware
+with MLO enabled (QCN9274, etc.).
 
-## PHASE 6: STABLE TREE ANALYSIS
+**Step 8.2:** Trigger: Happens when MLO links are removed and re-added —
+occurs during roaming, channel switching, or temporary link degradation.
+In a typical MLO setup with frequent link changes, this can be triggered
+relatively easily.
 
-**Step 6.1: Buggy Code in Stable Trees**
-- `channel.c` with `mt76_change_chanctx` was introduced in v6.14 (commit
-  `82334623af0cd`)
-- `mt76_abort_roc` function exists since v6.14 (commit `a8f424c1287cc`)
-- `mt76_abort_roc` is declared in `mt76.h` even in v6.14 (confirmed at
-  line 1586)
-- Bug affects: v6.14.y and later stable trees
+**Step 8.3:** Failure mode: Sending an invalid logical link index (>15)
+to firmware can cause firmware malfunction, potential firmware crash, or
+incorrect MLO behavior. Severity: **HIGH** — firmware receives invalid
+commands.
 
-**Step 6.2: Backport Complications**
-The code in v6.14 matches exactly: `mt76_change_chanctx()` is identical
-to the pre-patch state in v7.0. The patch would apply cleanly. No
-forward-declaration issues since `mt76_abort_roc` is declared in
-`mt76.h`.
+**Step 8.4:**
+- Benefit: Prevents firmware from receiving invalid index values during
+  MLO operations, which could cause connection instability or firmware
+  crashes
+- Risk: LOW — the change is ~20 lines, well-contained, uses standard
+  bitmap operations, reviewed by 3 engineers plus maintainer
+- Ratio: Favorable
 
-**Step 6.3: Related Fixes**
-No alternative fix for this specific bug exists in stable trees.
+### PHASE 9: FINAL SYNTHESIS
 
----
+**Evidence FOR backporting:**
+- Fixes a real, clearly described bug (index leak leading to invalid
+  firmware commands)
+- Small, well-contained fix (~20 lines across 2 files)
+- Obviously correct bitmap-based approach
+- 3 Reviewed-by tags from Qualcomm engineers + maintainer sign-off
+- Tested on hardware (QCN9274 hw2.0)
+- The buggy code exists in v7.0 (target tree)
+- Should apply cleanly
 
-## PHASE 7: SUBSYSTEM CONTEXT
+**Evidence AGAINST backporting:**
+- No Fixes: tag, no syzbot/crash report, no user-reported symptom
+- Replaces a data structure member (counter -> bitmap), slightly more
+  than a trivial patch
+- MLO is relatively new; impact limited to WiFi 7 MLO users
+- No explicit Cc: stable nomination
+- The bug requires specific MLO link add/remove cycles to manifest
 
-**Step 7.1: Subsystem**
-- Subsystem: WiFi/wireless drivers (drivers/net/wireless/mediatek/mt76)
-- Criticality: IMPORTANT - mt76 is one of the most widely used WiFi
-  chipset drivers (MT7921, MT7922, MT7925, MT7996, etc.), found in many
-  laptops and routers
+**Stable rules checklist:**
+1. Obviously correct and tested? **Yes** — bitmap approach is
+   straightforward, hardware tested
+2. Fixes a real bug? **Yes** — index leak causing invalid firmware
+   commands
+3. Important issue? **Medium-High** — can cause firmware malfunction in
+   MLO
+4. Small and contained? **Yes** — ~20 lines in 2 files, single subsystem
+5. No new features? **Correct** — pure bug fix
+6. Can apply to stable? **Yes** — code matches cleanly
 
-**Step 7.2: Activity**
-Actively maintained by Felix Fietkau with recent commits in the channel
-management area. The multi-radio/chanctx support is relatively new
-(v6.14).
+**Verification:**
+- [Phase 1] Parsed tags: 3 Reviewed-by, tested-on, Link, maintainer SOB
+- [Phase 2] Diff analysis: replaces `num_peer` counter with
+  `free_logical_link_idx_map` bitmap across 3 functions
+- [Phase 3] git blame: buggy code introduced in 8e6f8bc286031
+  (v6.14-rc1), confirmed by `git merge-base --is-ancestor` checks
+- [Phase 3] `git merge-base --is-ancestor 8e6f8bc286031 v6.13` → Not in
+  v6.13; `v6.14` → Yes
+- [Phase 3] Author has 9+ ath12k commits, is a regular contributor
+- [Phase 4] b4 dig could not find the commit (not merged in this tree);
+  lore blocked by anti-bot
+- [Phase 5] Traced `link_idx` usage: set in `ath12k_mac_assign_link_sta`
+  → used in `ath12k_peer_assoc_h_mlo` (line 3531) → sent to firmware via
+  WMI (wmi.c line 2348)
+- [Phase 6] Buggy code confirmed present in v7.0 tree; code at lines
+  7096-7137 matches patch context exactly
+- [Phase 6] NOT in v6.13 or earlier LTS trees (v6.12.y, v6.6.y, etc.)
+- [Phase 8] Invalid logical_link_idx sent to firmware can cause firmware
+  malfunction
+- UNVERIFIED: Could not access lore discussion to check for reviewer
+  stable nominations or concerns
 
----
-
-## PHASE 8: IMPACT AND RISK ASSESSMENT
-
-**Step 8.1: Affected Users**
-All users of MediaTek mt76 WiFi chipsets who use P2P, scanning, or any
-ROC functionality while channel context changes occur.
-
-**Step 8.2: Trigger Conditions**
-- Trigger: Channel context change (width change or radar detection)
-  while ROC is active
-- Likelihood: Moderate - occurs during DFS, bandwidth negotiation, or
-  regulatory changes that happen to coincide with P2P discovery or off-
-  channel management frames
-- Not directly triggered by unprivileged users (requires wireless state
-  machine interaction)
-
-**Step 8.3: Failure Mode**
-- Driver/mac80211 state desynchronization
-- ROC operations fail silently or behave unpredictably
-- P2P connection failures
-- Dangling ROC state may cause subsequent operations to fail or produce
-  unexpected behavior
-- Severity: **MEDIUM-HIGH** (functional failure, not crash, but can
-  break WiFi connectivity features)
-
-**Step 8.4: Risk-Benefit**
-- Benefit: Fixes real state inconsistency in a widely-used WiFi driver
-- Risk: Extremely low - 2 lines, guarded by `if (phy->roc_vif)` check,
-  calls well-tested existing function
-- Ratio: Very favorable
-
----
-
-## PHASE 9: FINAL SYNTHESIS
-
-**Step 9.1: Evidence Compilation**
-
-FOR backporting:
-- Fixes a real state desynchronization bug between driver and mac80211
-- 2-line fix, obviously correct, minimal risk
-- Written by the mt76 subsystem maintainer/author (Felix Fietkau)
-- Follows the established pattern used by all other chanctx functions
-- Self-contained, no dependencies on other patches
-- Applies cleanly to v6.14+ stable trees
-- mt76 is a widely-used WiFi driver
-
-AGAINST backporting:
-- No crash/panic, no data corruption - the bug causes functional issues
-  (ROC state desync)
-- No user reports (no Reported-by tag)
-- Part of a larger series (other patches in series not evaluated)
-
-UNRESOLVED:
-- Could not access mailing list discussion due to anti-bot protection
-- Could not verify if other patches in the series are also being
-  considered
-
-**Step 9.2: Stable Rules Checklist**
-1. Obviously correct and tested? **YES** - trivial 2-line check, follows
-   existing pattern, by subsystem maintainer
-2. Fixes a real bug? **YES** - state desync between driver and mac80211
-   during ROC
-3. Important issue? **MEDIUM-HIGH** - WiFi functionality failure, not
-   crash
-4. Small and contained? **YES** - 2 lines in 1 file
-5. No new features? **YES** - purely a bug fix
-6. Can apply to stable? **YES** - clean apply to v6.14+
-
-**Step 9.3: Exception Categories**
-Not an exception category; this is a standard bug fix.
-
-**Step 9.4: Decision**
-The fix is small, surgical, obviously correct, written by the subsystem
-maintainer, and fixes a real state inconsistency bug in a widely-used
-WiFi driver. The risk is minimal and the benefit is clear.
-
----
-
-## Verification
-
-- [Phase 1] Parsed tags: Link to patch.msgid.link, SOB by Felix Fietkau
-  (mt76 maintainer)
-- [Phase 2] Diff analysis: +3 lines (2 logic + 1 blank) in
-  `mt76_change_chanctx()`, adds ROC abort guard
-- [Phase 2] Verified `__mt76_set_channel()` at mac80211.c:1045 sets
-  `phy->offchannel = offchannel`, confirming the bug mechanism
-- [Phase 3] git blame: `mt76_change_chanctx` introduced by commit
-  `82334623af0cd` (v6.14) by Felix Fietkau
-- [Phase 3] `mt76_abort_roc` introduced by `a8f424c1287cc` (v6.14),
-  declared in mt76.h line 1586
-- [Phase 3] Confirmed `b36d55610215a` (EXPORT_SYMBOL_GPL for abort_roc)
-  is NOT in v6.14 but not needed since abort_roc is declared in mt76.h
-- [Phase 3] Confirmed patch is self-contained: all referenced
-  functions/fields exist in v6.14
-- [Phase 4] UNVERIFIED: Could not access lore.kernel.org or b4 dig
-  results due to anti-bot protection
-- [Phase 5] Verified all 5 other chanctx functions call
-  `mt76_abort_scan()` - this fix adds the analogous ROC abort
-- [Phase 5] Verified `mt76_abort_roc` cancels work, locks mutex, calls
-  `mt76_roc_complete`, unlocks - proper cleanup
-- [Phase 6] `82334623af0cd` is in v6.14 (confirmed via `git merge-base
-  --is-ancestor`)
-- [Phase 6] v6.14 `mt76_change_chanctx` code is identical to pre-patch
-  v7.0 - clean apply
-- [Phase 8] Failure mode: state desynchronization causing ROC/P2P
-  failures, severity MEDIUM-HIGH
+This is a real bug fix for a resource index leak in WiFi 7 MLO handling
+that can lead to invalid firmware commands. The fix is small, self-
+contained, well-reviewed, and hardware-tested. The buggy code exists in
+the target 7.0.y tree.
 
 **YES**
 
- drivers/net/wireless/mediatek/mt76/channel.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath12k/core.h |  2 +-
+ drivers/net/wireless/ath/ath12k/mac.c  | 16 ++++++++++++++--
+ 2 files changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/channel.c b/drivers/net/wireless/mediatek/mt76/channel.c
-index 2b705bdb7993c..a6e45b8d63d6b 100644
---- a/drivers/net/wireless/mediatek/mt76/channel.c
-+++ b/drivers/net/wireless/mediatek/mt76/channel.c
-@@ -88,6 +88,9 @@ void mt76_change_chanctx(struct ieee80211_hw *hw,
- 			 IEEE80211_CHANCTX_CHANGE_RADAR)))
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 990934ec92fca..5498ff285102b 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -522,7 +522,7 @@ struct ath12k_sta {
+ 	u16 links_map;
+ 	u8 assoc_link_id;
+ 	u16 ml_peer_id;
+-	u8 num_peer;
++	u16 free_logical_link_idx_map;
+ 
+ 	enum ieee80211_sta_state state;
+ };
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index b253d1e3f4052..769d240e3ae24 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -6784,6 +6784,8 @@ static void ath12k_mac_free_unassign_link_sta(struct ath12k_hw *ah,
  		return;
  
-+	if (phy->roc_vif)
-+		mt76_abort_roc(phy);
+ 	ahsta->links_map &= ~BIT(link_id);
++	ahsta->free_logical_link_idx_map |= BIT(arsta->link_idx);
 +
- 	cancel_delayed_work_sync(&phy->mac_work);
+ 	rcu_assign_pointer(ahsta->link[link_id], NULL);
+ 	synchronize_rcu();
  
- 	mutex_lock(&dev->mutex);
+@@ -7102,6 +7104,7 @@ static int ath12k_mac_assign_link_sta(struct ath12k_hw *ah,
+ 	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(ahsta);
+ 	struct ieee80211_link_sta *link_sta;
+ 	struct ath12k_link_vif *arvif;
++	int link_idx;
+ 
+ 	lockdep_assert_wiphy(ah->hw->wiphy);
+ 
+@@ -7120,8 +7123,16 @@ static int ath12k_mac_assign_link_sta(struct ath12k_hw *ah,
+ 
+ 	ether_addr_copy(arsta->addr, link_sta->addr);
+ 
+-	/* logical index of the link sta in order of creation */
+-	arsta->link_idx = ahsta->num_peer++;
++	if (!ahsta->free_logical_link_idx_map)
++		return -ENOSPC;
++
++	/*
++	 * Allocate a logical link index by selecting the first available bit
++	 * from the free logical index map
++	 */
++	link_idx = __ffs(ahsta->free_logical_link_idx_map);
++	ahsta->free_logical_link_idx_map &= ~BIT(link_idx);
++	arsta->link_idx = link_idx;
+ 
+ 	arsta->link_id = link_id;
+ 	ahsta->links_map |= BIT(arsta->link_id);
+@@ -7630,6 +7641,7 @@ int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
+ 	if (old_state == IEEE80211_STA_NOTEXIST &&
+ 	    new_state == IEEE80211_STA_NONE) {
+ 		memset(ahsta, 0, sizeof(*ahsta));
++		ahsta->free_logical_link_idx_map = U16_MAX;
+ 
+ 		arsta = &ahsta->deflink;
+ 
 -- 
 2.53.0
 
