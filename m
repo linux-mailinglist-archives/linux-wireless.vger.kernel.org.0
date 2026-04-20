@@ -1,149 +1,190 @@
-Return-Path: <linux-wireless+bounces-35039-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35040-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEGCB64H5mkIqgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35039-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:02:06 +0200
+	id mF+zMZoK5mluqwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35040-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:14:34 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E57E429B8A
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:02:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459B8429D0E
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:14:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06B6B3057D5C
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 11:01:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9C93C3013876
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 11:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C51639B97E;
-	Mon, 20 Apr 2026 11:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1956A399350;
+	Mon, 20 Apr 2026 11:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MlDWfKdm"
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="IBn20ZWW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4BA3806CC
-	for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2026 11:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D4D34844C
+	for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2026 11:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776682905; cv=none; b=UPTHGeNZ5NfAc/VdfCjGcVb08w5/1d1FD2Q1TJ2VKQOQWgWNFGYW5KjAUPWKtHPZWMPrl4p9Q90xFf4vILeoTyOD5Qig2Hkj1dfavZk5xzkYXkgx3O/02JW8ap0byGn45NHla124FDpFAboqIcqYFBGOjgaWsr/HsX+5xe3FvPw=
+	t=1776683669; cv=none; b=Zkkh+eFvgS7qDOdIDfG1FOJuT5D3oTNBXam7h/RR6wOHWLiYF8TuHvYi//4X9Age3cW/EZbPYtx6hzYdSnqyZ3xFxY9J6I/yXnoMDAqrjdzAfPius2kk6xRv0o1VNB2lsRIPub+Vi+zUzHECxFshDFMS2UoGHEY0GZwhrTcrJAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776682905; c=relaxed/simple;
-	bh=EDkRxc3BnO+19czH3LMgEx8NKAvrx4+Vk6d3XQpYQO0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PUOOoinPIo5uUB1WJq7QOUUrfGbblgSpWr0QCAZqDHj8vNZsTVH9zC2MhMOfiZtn5mDrd6kV7JasRftlMf4qbjrxw9Xp3+1YfNBwwYWH9TSFxhYCfCCxCfq8HLWBo0qy+q3PcSR45Lr01V5qZq3C5QpQncAeXK1u85QNt8MD8xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MlDWfKdm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776682902;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=uIx1jtwgFWjTPmF0LP5ePZMcwCJhNzdE/rAynE/II+M=;
-	b=MlDWfKdmLyl2cLypSfSPYcDaDQ7qtyIvRcMKS3S9+dfmimTLpH4eirIjwR8QJUotPP0tCz
-	LrSj23L1gy37j5meqOqZh+U2GvHq5597dWB7+kkeN1DuDKeelc7eTxkjLsk3qJlEP8qw8E
-	gvgrx9gP2Lbk1dZz4lRef22x2mGxCzw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-232-VfT_hqAzOkOCHwHmXfVFNw-1; Mon,
- 20 Apr 2026 07:01:39 -0400
-X-MC-Unique: VfT_hqAzOkOCHwHmXfVFNw-1
-X-Mimecast-MFC-AGG-ID: VfT_hqAzOkOCHwHmXfVFNw_1776682897
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 274F618005A9;
-	Mon, 20 Apr 2026 11:01:37 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.32.67])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7E6811800446;
-	Mon, 20 Apr 2026 11:01:34 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: jjohnson@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: ath11k: fix warning when unbinding
-Date: Mon, 20 Apr 2026 13:01:29 +0200
-Message-ID: <20260420110130.509670-1-jtornosm@redhat.com>
+	s=arc-20240116; t=1776683669; c=relaxed/simple;
+	bh=oo6sD9eeKJmgF8y+Mv9/ziuyg8LqE/RcnPFXODHSQBc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=BZpySO/qF3ClOrov74OUWKqdyvpJCeVl6NitR6Gq8M1M3caXewKTNwVUR/RUXnm6jw1ZSb5H+3pvC+JBcaTgQYleIYDumccXMgLNZZ7GDbb18AN79Lb+tqG8aozuMfQEP0E3xZMMHOtV2oKhwSda5P4afVmpo980SJt85aFerJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=IBn20ZWW; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488b3f8fa2bso34029395e9.1
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2026 04:14:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1776683664; x=1777288464; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dympeeiEyneZdFEwmKLL4dnrMWqI+ctP12odqcxsjA4=;
+        b=IBn20ZWWmHujVbwaKsnlG6/fA6O6Z2q5Etxdiy0Rpua1Flfio5iuvHphA6Htwq45Ru
+         s3mMLDbJzJitCNYGwhR3cCaaAbvB/WQVHdTXYCLx9Ml+1bXMjxqtxGNQ5GUGgh2cPEOt
+         xWbSHmOvSqUrozSX3EIfXn1/Kjql5WN+xOBy+pyku4K/+NQjwg1Q+P5EfcFZYHDnpRgP
+         093Q9FGcg5Ieo1vfOMYe13KsQZ+l+748XCsqGjAh7oX71k0klpCXcJNDTRHAcj6xVpKo
+         JSTzSSLYe5WGW3+LEp0U6l0aG7rirexfpwixmMKCzWA4FtFNnMJOFXXYXH4foGTAh1DV
+         JKmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776683664; x=1777288464;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dympeeiEyneZdFEwmKLL4dnrMWqI+ctP12odqcxsjA4=;
+        b=sHFE4Qrcpx/1lx/iH95RV2JnMyNU6iqxIkJTqWbMsBf+A+aQxKaBzTqQm6CDeVkvC/
+         +gCuMM+XeuswUgsC/xd1Nf5t85z15q7+iQF11fFO/Q45X4Yo3yrSrO2op2ErRgeBKa3M
+         ZLFwgUy93gAFzUwrByJg1gUI+WTpbRrr8Cn67yfntss6wbhmex0bBaob4OcPmax6F6C0
+         ///HhJNRY/7swWbSl2KK7I8hY2BBRYNyOyMCtsZE1uUcUwbjmyg1bcMFT58jfDUko9/3
+         vnkD3qcvsnSHhSZjK5Ua2XQ+7OASEgIpZOiZEWDbssoaZtGJs5k1lLyYB4UQ1yg2cLwL
+         d+BQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/sjGRSY8HPsRG0Tb9RPRhaL5w3Osl59TotcC9EVaeNMDIobH++yTqW/jCr3zemriMF1QLGxfX8/y5S4WxmJw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2krU4QGiJqufFUa+KY90JhVBKcC1ggDgTNfCUXZIDKdnBctfx
+	Gfs6TeVHHyIz4kGcoRizXaQqOAo3kvZxsGAkuq3jWhxAdhKbK9Be059R0/t58sl4REiM3y4HqWo
+	n3cx0
+X-Gm-Gg: AeBDiet6w8h7SuwboQHOk5GTbajIWI+O7UrrnBITufVGg3qi2qMirvqmUhu+ZJeHSoG
+	bRmi3TI92J29oUxUwl8vV4qP6S+OSALnTBZjLaBEnPm8VrjIDJIgIUCMHeXTx/B4Pb5w1kXUodN
+	HF0sICZFeUn6nw9tTxx1814Xfo8QZA/Awrim8bkpLR8nQb2SuQTdQZHrPvl7CY8RsGg9ojz2HFW
+	bs9f41XFiCgRLP1jqpnFC8EpHR0yvXgoEfGbzA0NYs7gLhsWbZ2niKv8qGFLo/8Zhi57rV6sjpC
+	MLKsGE3GgiHKqqyf205GBZUJ1P+FUFGZAmiMNiOhzgniacMYivANJY+xWELsDKeqezXKaMWAPmQ
+	aalI/ff22GV3rPYDdGJ9rHInCYwtxr7cyLMGRIFvZhId4jpJvAgw8dZTlFQdEFnCuuw+Z6Gnw4h
+	sa4CFlHkZ7+f6Z3g381Y7wn9zBkrSB2Nc6mUYzm6D2pb5UfW0CncBlXOiiYonRVJgWiB8qcVWIj
+	Ibx5azVfhXjxjMa3kc=
+X-Received: by 2002:a05:600c:34ca:b0:48a:761:5816 with SMTP id 5b1f17b1804b1-48a07615b87mr18212465e9.8.1776683663648;
+        Mon, 20 Apr 2026 04:14:23 -0700 (PDT)
+Received: from localhost (84-115-213-130.cable.dynamic.surfer.at. [84.115.213.130])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-489393ddd69sm10775525e9.10.2026.04.20.04.14.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Apr 2026 04:14:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 20 Apr 2026 13:14:01 +0200
+Message-Id: <DHXXSDE9V52E.33D6CI1LWMHFP@fairphone.com>
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>, "Luca Weiss"
+ <luca.weiss@fairphone.com>
+Cc: "Liam Girdwood" <lgirdwood@gmail.com>, "Mark Brown"
+ <broonie@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Bartosz Golaszewski" <brgl@kernel.org>, "Marcel Holtmann"
+ <marcel@holtmann.org>, "Luiz Augusto von Dentz" <luiz.dentz@gmail.com>,
+ "Jeff Johnson" <jjohnson@kernel.org>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>,
+ "Manivannan Sadhasivam" <mani@kernel.org>, "Vinod Koul" <vkoul@kernel.org>,
+ "Balakrishna Godavarthi" <quic_bgodavar@quicinc.com>, "Matthias Kaehlcke"
+ <mka@chromium.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-bluetooth@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+ <ath10k@lists.infradead.org>, <linux-pm@vger.kernel.org>, "Krzysztof
+ Kozlowski" <krzk@kernel.org>, "Bartosz Golaszewski"
+ <bartosz.golaszewski@oss.qualcomm.com>
+Subject: Re: [PATCH v3 3/8] wifi: ath10k: snoc: support powering on the
+ device via pwrseq
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260119-wcn3990-pwrctl-v3-0-948df19f5ec2@oss.qualcomm.com>
+ <20260119-wcn3990-pwrctl-v3-3-948df19f5ec2@oss.qualcomm.com>
+ <DHUHU7UIT487.139L3KIVRVREU@fairphone.com>
+ <hdypom3nioc6tk26gh647imy5ykhcjqvknideilnbc2b5p7eo7@hm7fsscleutf>
+In-Reply-To: <hdypom3nioc6tk26gh647imy5ykhcjqvknideilnbc2b5p7eo7@hm7fsscleutf>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	DMARC_POLICY_ALLOW(-0.50)[fairphone.com,quarantine];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[fairphone.com:s=fair];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35039-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,holtmann.org,quicinc.com,chromium.org,vger.kernel.org,lists.infradead.org,oss.qualcomm.com];
 	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35040-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[fairphone.com:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[luca.weiss@fairphone.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7E57E429B8A
+	RCPT_COUNT_TWELVE(0.00)[26];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 459B8429D0E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-If there is an error during some initialization related to firmware,
-the buffers dp->tx_ring[i].tx_status are released.
-However this is released again when the device is unbinded (ath11k_pci),
-and we get:
-WARNING: CPU: 0 PID: 6231 at mm/slub.c:4368 free_large_kmalloc+0x57/0x90
-Call Trace:
-free_large_kmalloc
-ath11k_dp_free
-ath11k_core_deinit
-ath11k_pci_remove
-...
+On Sat Apr 18, 2026 at 9:38 PM CEST, Dmitry Baryshkov wrote:
+> On Thu, Apr 16, 2026 at 12:06:09PM +0200, Luca Weiss wrote:
+>> Hi Dmitry,
+>>=20
+>> On Mon Jan 19, 2026 at 6:07 PM CET, Dmitry Baryshkov wrote:
+>> > The WCN39xx family of WiFi/BT chips incorporates a simple PMU, spreadi=
+ng
+>> > voltages over internal rails. Implement support for using powersequenc=
+er
+>> > for this family of ATH10k devices in addition to using regulators.
+>> >
+>> > Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com=
+>
+>> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+>> > ---
+>> >  drivers/net/wireless/ath/ath10k/snoc.c | 53 +++++++++++++++++++++++++=
++++++++--
+>> >  drivers/net/wireless/ath/ath10k/snoc.h |  3 ++
+>> >  2 files changed, 53 insertions(+), 3 deletions(-)
+>> >
+>> > +	ar_snoc->pwrseq =3D devm_pwrseq_get(&pdev->dev, "wlan");
+>> > +	if (IS_ERR(ar_snoc->pwrseq)) {
+>> > +		ret =3D PTR_ERR(ar_snoc->pwrseq);
+>> > +		ar_snoc->pwrseq =3D NULL;
+>> > +		if (ret !=3D -EPROBE_DEFER)
+>> > +			goto err_free_irq;
+>>=20
+>> I'm fairly sure this is now broken with CONFIG_POWER_SEQUENCING=3Dn sinc=
+e
+>> then pwrseq_get() is returning ERR_PTR(-ENOSYS) which is not handled
+>> here.
+>>=20
+>> I'm observing my ath10k_snoc is now failing to probe "with error -38"
+>> which definitely seems to be related, but I haven't debugged it further
+>> yet.
+>
+> Posted https://patch.msgid.link/20260418-ath10k-snoc-pwrseq-v1-1-832594ba=
+3294@oss.qualcomm.com
 
-The issue is always reproducible from a VM because the MSI addressing
-initialization is failing.
-
-In order to fix the issue, just set the buffers to NULL after releasing in
-order to avoid the double free.
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
----
- drivers/net/wireless/ath/ath11k/dp.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
-index bbb86f165141..5a50b623bd07 100644
---- a/drivers/net/wireless/ath/ath11k/dp.c
-+++ b/drivers/net/wireless/ath/ath11k/dp.c
-@@ -1040,6 +1040,7 @@ void ath11k_dp_free(struct ath11k_base *ab)
- 		idr_destroy(&dp->tx_ring[i].txbuf_idr);
- 		spin_unlock_bh(&dp->tx_ring[i].tx_idr_lock);
- 		kfree(dp->tx_ring[i].tx_status);
-+		dp->tx_ring[i].tx_status = NULL;
- 	}
- 
- 	/* Deinit any SOC level resource */
--- 
-2.53.0
-
+Thanks Dmitry!
 
