@@ -1,61 +1,66 @@
-Return-Path: <linux-wireless+bounces-35051-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35052-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mK01L4Ir5mkDswEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35051-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:34:58 +0200
+	id iAD5GWYs5ml4swEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35052-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:38:46 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6832642C054
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:34:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0386742C187
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0843C305658A
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:27:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9F5AD307AB81
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD9B3C73F6;
-	Mon, 20 Apr 2026 13:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61DEA3CCFD6;
+	Mon, 20 Apr 2026 13:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fu09rmNH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HdAG88Nm"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554983C73E5;
-	Mon, 20 Apr 2026 13:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E31C3A6B82;
+	Mon, 20 Apr 2026 13:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691058; cv=none; b=gmEbIxDRVMWObconAAP2zILqIzhu77vSV3yp1565PZ8xgF2AiijchSKvc6ujcmxSJTptrLYVv/6DS3+Zc+DFLJbtiCty17kUo0t6Iu3T5uKkxkd/owXsl07GL9zY+d3uR/pFmFDqcqTV2KzxisxKl8Hr71tuX0lkRNJYB+gAn/I=
+	t=1776691069; cv=none; b=apQiPQ0/BC0BlliiMY0YzkTXudUFe6CXAelD7PYc/4JcONIqWvjlqEucBktM79Bb/S86vNV+MZ5/63CyPELI3eUhgCNJ/tiKlbZ26WpfPD9ZEjwF/xqH+3vVfK3zC7mfvWW3AGzNyVfO1jNXaHCZf8A27TRQ8VXC9v3ExS+Ywpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691058; c=relaxed/simple;
-	bh=xmjZr7nBExOm6+5J6CaHMHy6GKPbrkGxB2IzEUlk5hE=;
+	s=arc-20240116; t=1776691069; c=relaxed/simple;
+	bh=f3xsyAIWxI4nn00HNYNNjBmimSPNBuKH8vBU5p8iJLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KAVBkrOO4I6iQMQcJSE2iaeBvjhzfn3NfjxjeL/uvyStsgkTwlyZUwMkmRZ7oWaauniQPzDukzpWs1pYVgIA9MO2gcxhKQzyHILZKeNw2r7fUsDjCtHeI4JJJAtnvtAmoX01SOWzBeTMWKU1N6YkYQYduSm9JQIlrbIquDGTFUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fu09rmNH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183DCC2BCB4;
-	Mon, 20 Apr 2026 13:17:37 +0000 (UTC)
+	 MIME-Version; b=DV6xw5E4oyf1QGafEr8s1drVpaBb/tv9W2aOX2ABCYyGICsYiA6iq9/1QY0+UzzHXng1ocQjv9RE5urp8P3jJYcO0SyLmynRy/0zUMAc5AbA00oZJwa2AUA5Nl6POvyO1x4OuET7Fx6hxceffBSpu9mblHuMfFOb5xF9e+7FNa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HdAG88Nm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C7FC2BCB4;
+	Mon, 20 Apr 2026 13:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691058;
-	bh=xmjZr7nBExOm6+5J6CaHMHy6GKPbrkGxB2IzEUlk5hE=;
+	s=k20201202; t=1776691069;
+	bh=f3xsyAIWxI4nn00HNYNNjBmimSPNBuKH8vBU5p8iJLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fu09rmNHMUnOkBuanGYznE8TI54uH8QWFf+0DU9ltua3zvMeLwpaueIUW/yq8z4Hl
-	 zzasN/marEAA62nyNRuBgCCMzTHVKTtFPlwPkmt/PAvQq2pOz4pJfCL5MZWaUtHevV
-	 Z/sN/T33nwvItmNynOMkvDvVfI83555e0t0BcP1rN+HGKysX/hMcbnyxx/NoyCHWiA
-	 TJQqSip/ST+r/aGdvnW2/X5BkQIZVi2P11rKo7z6w3Igjyv0sS8OEWpk1puEClJOPt
-	 iK5BSfyMHSDwQTqoGoPOSo3r4ORfhwmvNY9RdnTwFHMmJvJe5mFZCnDUVilwxMrK3N
-	 0hTg5anS87Bog==
+	b=HdAG88NmYH6GuyXj6dySNYWssxcVNOdzdhVyR+KpfwJc259LU5t5tWjs204yFJvRh
+	 y8rk/wdANibgQDkz4JRqA1NPX3WsDv6fHqsyMGpP+g/6wbL4b/YMQFihstQub8Ykyb
+	 DXO1FJFB4vfg+e45cBgqGddS9vXeMC1fG22Px0KppXDSRvK1vl7+GGkRxwqBE6N1ss
+	 tX4cgGVgC2VhT2a+oLBY971QEXvWJqpSUopzF1A/P8Yhoh4viDKkAE1FoQgBfBeBEB
+	 HKgGO0k49LpRap3DySWaPNHbpDDf5shFFtg47o5sRqXZQ0zDhuV9XG9JWbL//9OmLi
+	 eKUfzB4QNahhg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
 	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.18] wifi: iwlwifi: pcie: don't dump on reset handshake in dump
-Date: Mon, 20 Apr 2026 09:08:55 -0400
-Message-ID: <20260420131539.986432-69-sashal@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 7.0-6.18] wifi: mt76: abort ROC on chanctx changes
+Date: Mon, 20 Apr 2026 09:09:01 -0400
+Message-ID: <20260420131539.986432-75-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420131539.986432-1-sashal@kernel.org>
 References: <20260420131539.986432-1-sashal@kernel.org>
@@ -68,408 +73,380 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35051-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-35052-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6832642C054
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nbd.name:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0386742C187
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 4a481720106d6bad1521d0e0322fd74fa2f6c464 ]
+[ Upstream commit de62b24224ac1533c17b3d5bae77164a82ae2e49 ]
 
-When a FW dump happens, possibly even because of a reset handshake
-timeout, there's no point in attempting to dump again. Since all the
-callers of the function outside the transport itself are from the FW
-dump infrastructure, just split the internal function and make the
-external one not dump on timeout.
+mt76_change_chanctx() calls mt76_phy_update_channel() which switches
+the hardware channel. If ROC is active on the same phy, this switches
+away from the ROC channel and clears offchannel, but leaves ROC state
+intact. Mac80211 still thinks the phy is on the ROC channel.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20260320100746.f36ba3893899.I063ccc3a037ae6dabcde61941acb162c4b33f127@changeid
+Abort any active ROC before proceeding, matching the pattern already
+used in add, remove, assign, unassign, and switch chanctx functions.
+
+Link: https://patch.msgid.link/20260309060730.87840-5-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have a complete picture of the call chain. Let me compile the full
-analysis.
+I now have all the information needed for a complete analysis. Let me
+compile the findings.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: Subject Line
-- **Subsystem**: `wifi: iwlwifi: pcie:` (Intel WiFi PCIe transport
-  layer)
-- **Action verb**: "don't dump" - this is preventing incorrect behavior
-  (a bug fix)
-- **Summary**: Prevent triggering a firmware dump when a reset handshake
-  timeout occurs during an already-in-progress firmware dump
+**Step 1.1: Subject Line**
+- Subsystem: `wifi: mt76:` (MediaTek MT76 wireless driver)
+- Action: "abort" - stopping an ongoing operation to prevent state
+  inconsistency
+- Summary: Abort ROC (Remain on Channel) on channel context changes
+- Record: [wifi: mt76] [abort] [Abort active ROC when channel context
+  changes to prevent state desync]
 
-Record: [wifi: iwlwifi: pcie] [prevent/avoid] [Don't recursively trigger
-FW dump on reset handshake timeout during dump collection]
+**Step 1.2: Tags**
+- Link: `https://patch.msgid.link/20260309060730.87840-5-nbd@nbd.name`
+  (patch 5 in a series)
+- Signed-off-by: Felix Fietkau `<nbd@nbd.name>` (mt76 subsystem
+  maintainer/author)
+- No Fixes: tag (expected for autosel candidates)
+- No Reported-by (no external report; author found the issue)
+- Record: Author is the mt76 subsystem creator. Patch 5 of a series.
 
-### Step 1.2: Tags
-- **Signed-off-by**: Johannes Berg (author, iwlwifi maintainer)
-- **Reviewed-by**: Emmanuel Grumbach (key iwlwifi developer)
-- **Signed-off-by**: Miri Korenblit (iwlwifi submitter)
-- **Link**: patch.msgid.link URL (lore-blocked by Anubis)
-- No Fixes: tag (expected), no Reported-by, no Cc: stable
+**Step 1.3: Commit Body Analysis**
+The commit describes a concrete bug mechanism:
+1. `mt76_change_chanctx()` calls `mt76_phy_update_channel()` which
+   switches the hardware channel
+2. If ROC is active on the same phy, the hardware switches away from ROC
+   channel
+3. `offchannel` is cleared (set to false), but ROC state (`roc_vif`,
+   `roc_link`, `roc_work` timer) remains intact
+4. Mac80211 still believes the phy is on the ROC channel
 
-Record: Written by the iwlwifi maintainer, reviewed by another senior
-iwlwifi developer. No explicit stable nomination.
+Record: [State inconsistency between driver and mac80211 when chanctx
+changes during active ROC] [Symptom: mac80211 and hardware out of sync
+on channel state] [Bug introduced with channel.c in v6.14]
 
-### Step 1.3: Commit Body Analysis
-The message explains: When a FW dump happens (possibly due to a reset
-handshake timeout), there's no point in attempting to dump again.
-External callers of `iwl_trans_pcie_fw_reset_handshake()` are all from
-the FW dump infrastructure, so the fix splits the internal function and
-makes the external one not trigger a dump on timeout.
+**Step 1.4: Hidden Bug Fix Detection**
+This is clearly a bug fix, not cleanup. The commit explicitly describes
+a state desynchronization between the hardware and the mac80211 layer.
 
-Record: Bug = recursive dump attempt when reset handshake times out
-during dump. Symptom = attempting to dump from within dump context
-(potential hang/deadlock). Root cause = all external callers are from
-dump infrastructure but the function unconditionally triggers a new dump
-on timeout.
-
-### Step 1.4: Hidden Bug Fix Detection
-This is explicitly described as preventing incorrect behavior. The
-"don't dump" phrasing directly describes fixing a problematic code path.
-Not hidden.
-
-Record: This is a clear bug fix - preventing recursive dumps that can
-cause system instability.
+---
 
 ## PHASE 2: DIFF ANALYSIS
 
-### Step 2.1: Inventory
-- **Files changed**: 1
-  (`drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c`)
-- **Lines changed**: ~10 added, ~3 removed (net ~7 lines)
-- **Functions modified**: `iwl_trans_pcie_fw_reset_handshake()`
-  refactored into `_iwl_trans_pcie_fw_reset_handshake()` + wrapper;
-  `_iwl_trans_pcie_gen2_stop_device()` updated to call internal version
-- **Scope**: Single-file surgical fix
+**Step 2.1: Inventory**
+- 1 file changed: `drivers/net/wireless/mediatek/mt76/channel.c`
+- +3 lines added (including blank line), 0 removed
+- Function modified: `mt76_change_chanctx()`
+- Scope: Single-function surgical fix
+- Record: [channel.c +3/-0] [mt76_change_chanctx modified] [Single-file
+  surgical fix]
 
-### Step 2.2: Code Flow Change
-- **Before**: `iwl_trans_pcie_fw_reset_handshake()` always calls
-  `iwl_op_mode_dump_error()` on timeout with `!reset_done`. All callers
-  (both from dump infrastructure and from stop_device) get the same
-  behavior.
-- **After**: Internal `_iwl_trans_pcie_fw_reset_handshake(trans,
-  dump_on_timeout)` takes a parameter. External callers (from dump
-  infrastructure via `iwl_trans_pcie_fw_reset_handshake()`) get
-  `dump_on_timeout=false`. Internal caller
-  (`_iwl_trans_pcie_gen2_stop_device`) passes `dump_on_timeout=true`.
+**Step 2.2: Code Flow Change**
+Before: `mt76_change_chanctx()` directly proceeds to cancel mac_work and
+update channel.
+After: Before canceling mac_work, checks if ROC is active
+(`phy->roc_vif`) and aborts it via `mt76_abort_roc(phy)`.
 
-### Step 2.3: Bug Mechanism
-The call chain for the bug:
-1. FW dump starts via `iwl_fw_dbg_collect_sync()` →
-   `iwl_fw_error_ini_dump()` → `iwl_dump_ini_file_gen()` →
-   `iwl_dump_ini_trigger()` → calls
-   `iwl_trans_pcie_fw_reset_handshake()`
-2. If handshake times out, old code calls `iwl_op_mode_nic_error()` and
-   `iwl_op_mode_dump_error()`
-3. `iwl_op_mode_dump_error()` → `iwl_mvm_dump_error()` →
-   `iwl_fw_error_collect()` → triggers another dump
-4. This is a **recursive dump attempt from within dump context** - at
-   minimum wasteful, potentially causing deadlocks or hangs
+**Step 2.3: Bug Mechanism**
+Verified by reading `__mt76_set_channel()` at mac80211.c:1045:
+`phy->offchannel = offchannel;`. When called from
+`mt76_phy_update_channel()` with `offchannel = false`, it clears the
+offchannel flag. But the ROC state (`roc_vif`, `roc_link`, `roc_work`)
+remains set, causing a desynchronization.
 
-Record: [Logic/correctness fix] [Recursive dump trigger: the function
-triggers a new dump on timeout even when already called from within the
-dump infrastructure]
+Classification: **Logic/correctness fix** - missing cleanup of related
+state when switching channels.
 
-### Step 2.4: Fix Quality
-- Obviously correct: the parameter cleanly separates the two behaviors
-- Minimal and surgical: only changes the necessary function and its
-  callers
-- No regression risk: internal caller preserves original behavior
-  (dump_on_timeout=true), external callers gain new safe behavior
-  (dump_on_timeout=false)
-- No API changes: external function signature is unchanged
+**Step 2.4: Fix Quality**
+- Obviously correct: follows the exact pattern established by all other
+  chanctx functions which abort scans
+- Minimal: 2 lines of actual logic
+- `mt76_abort_roc()` handles its own locking (takes `dev->mutex`
+  internally), so calling it before the existing `mutex_lock` is correct
+- Regression risk: extremely low - if ROC is not active (`roc_vif ==
+  NULL`), the check is a no-op
 
-Record: High quality fix. Minimal regression risk. Obviously correct.
+---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
-### Step 3.1: Blame
-- The function was originally introduced in commit `906d4eb84408a4` (Dec
-  2020) as a static function
-- It was made public (non-static, exported) in `85ccbdc4d3930f` (Feb
-  2025, v6.15)
-- The dump-triggering code on timeout was added in `7391b2a4f7dbb7` (Dec
-  2024, "rework firmware error handling")
-- Additional external callers added in `bb6d4dc9d3f624` (Apr 2025,
-  v6.16)
+**Step 3.1: Blame**
+From git blame, the buggy `mt76_change_chanctx()` was introduced by
+commit `82334623af0cd` ("wifi: mt76: add chanctx functions for multi-
+channel phy support") by Felix Fietkau on 2025-01-02. This commit is in
+v6.14.
 
-Record: Bug introduced when `85ccbdc4d3930f` (v6.15) made the function
-public and called it from the dump infrastructure. The dump-on-timeout
-behavior was present from `7391b2a4f7dbb7` but harmless when function
-was static (only called from stop_device, not from dump context).
+**Step 3.2: Fixes Tag**
+No Fixes: tag present. The implicit target is `82334623af0cd` which
+introduced `mt76_change_chanctx` without ROC abort handling.
 
-### Step 3.2: Fixes Tag
-No Fixes: tag present (expected).
+**Step 3.3: File History**
+The file has 7 commits since creation: the original, scanning code, ROC
+functions, offchannel link, a deref fix, abort scan/roc on hw restart,
+and relicensing. No conflicting changes near the modified area.
 
-### Step 3.3: File History
-Recent commits to this file include several fixes: `43049a3c00c8c` (fix
-non-MSIX handshake register), `eda36f5195d6c` (reinit device properly
-during TOP reset), `e5d110fec068c` (fix locking on invalid TOP reset).
-This area is actively being fixed.
+**Step 3.4: Author**
+Felix Fietkau (nbd@nbd.name) is the creator and maintainer of the mt76
+driver. He wrote the original `channel.c` file and all major chanctx
+functions.
 
-Record: Active area with multiple recent fixes. Standalone fix - no
-series dependencies.
+**Step 3.5: Dependencies**
+The commit is patch 5 of a series (msgid `-5-`). However, the fix is
+**self-contained**:
+- `mt76_abort_roc()` already exists in the tree (since `a8f424c1287cc`,
+  in v6.14)
+- `phy->roc_vif` already exists in `mt76.h`
+- `mt76_abort_roc` is declared in `mt76.h` and accessible from
+  `channel.c`
+- No other patch from the series is needed for this fix to work
+  correctly.
 
-### Step 3.4: Author
-Johannes Berg is THE iwlwifi maintainer - the primary author and
-maintainer of the entire iwlwifi subsystem.
-
-Record: Author is the subsystem maintainer. Maximum authority.
-
-### Step 3.5: Dependencies
-The fix requires `85ccbdc4d3930f` (makes function public) and
-`7391b2a4f7dbb7` (adds dump-on-timeout logic) to be present. Both are in
-v6.15+.
-
-Record: Depends on code from v6.15+. Can apply standalone within that
-constraint.
+---
 
 ## PHASE 4: MAILING LIST RESEARCH
 
-### Step 4.1-4.5
-Lore.kernel.org is protected by Anubis anti-bot measures. The Link: in
-the commit message points to the patch discussion. The patch was
-submitted as part of a series through the iwlwifi maintainer tree. It
-was reviewed by Emmanuel Grumbach (Reviewed-by tag), a senior iwlwifi
-developer.
+**Step 4.1-4.5**: Lore.kernel.org is behind Anubis anti-bot protection
+and could not be accessed. The `b4 dig` also did not find a match for
+the message-id (possibly a future date issue). However, the patch URL is
+well-formed and the commit is by the subsystem maintainer, providing
+strong quality assurance.
 
-Record: Could not access lore directly. Patch was reviewed and approved
-through normal iwlwifi workflow.
+Record: [UNVERIFIED: Could not access lore/b4 due to anti-bot
+protection] [Author is mt76 maintainer which provides confidence in
+quality]
+
+---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1-5.4: Function Call Tracing
+**Step 5.1: Functions Modified**
+- `mt76_change_chanctx()` - modified to add ROC abort call
 
-The external function `iwl_trans_pcie_fw_reset_handshake()` is called
-from:
-1. `fw/dbg.c:2714` - during split dump
-   (IWL_FW_INI_APPLY_POLICY_SPLIT_DUMP_RESET)
-2. `fw/dbg.c:2722` - during non-split dump with RESET_DURING_ASSERT
-   capability
+**Step 5.2: Callers**
+`mt76_change_chanctx` is a mac80211 callback assigned via
+`ieee80211_ops`. It is called by mac80211 whenever the channel context
+configuration changes (width changes, radar detection changes). This is
+a normal operation path triggered by AP configuration, DFS, or
+regulatory changes.
 
-Both callers are deep inside the dump collection path:
-`iwl_fw_dbg_collect_sync()` → `iwl_fw_error_ini_dump()` →
-`iwl_dump_ini_file_gen()` → `iwl_dump_ini_trigger()` →
-`iwl_trans_pcie_fw_reset_handshake()`
+**Step 5.3: Callees**
+`mt76_abort_roc()` calls:
+1. `cancel_delayed_work_sync(&phy->roc_work)` - cancels the ROC timeout
+2. `mt76_roc_complete(phy)` under mutex - restores main channel, frees
+   offchannel link, notifies mac80211
 
-If timeout triggers `iwl_op_mode_dump_error()`, it calls back into
-`iwl_mvm_dump_error()` → `iwl_fw_error_collect()`, creating a recursive
-dump situation.
+**Step 5.4: Call Chain**
+Userspace/regulatory -> mac80211 -> `mt76_change_chanctx` -> bug
+triggers if ROC active. This is reachable from normal WiFi operation
+(e.g., DFS, bandwidth changes during P2P).
 
-Record: The buggy path is reachable during any FW error dump on Intel
-WiFi hardware. This affects all Intel WiFi users with modern firmware.
+**Step 5.5: Similar Patterns**
+All 5 other chanctx functions (`add`, `remove`, `assign`, `unassign`,
+`switch`) already call `mt76_abort_scan()`. The fix adds the equivalent
+`mt76_abort_roc()` to the one function that was missing it.
+
+---
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-### Step 6.1: Buggy Code Existence
-- `85ccbdc4d3930f` (prerequisite) is in v6.15+ (verified with `git
-  merge-base --is-ancestor`)
-- NOT in v6.14 or earlier
-- File was moved to `gen1_2/` in `c8a00a6e89ff` (v6.19)
+**Step 6.1: Buggy Code in Stable Trees**
+- `channel.c` with `mt76_change_chanctx` was introduced in v6.14 (commit
+  `82334623af0cd`)
+- `mt76_abort_roc` function exists since v6.14 (commit `a8f424c1287cc`)
+- `mt76_abort_roc` is declared in `mt76.h` even in v6.14 (confirmed at
+  line 1586)
+- Bug affects: v6.14.y and later stable trees
 
-Record: Bug exists in v6.15+. Only relevant for stable trees 6.15.y
-through 7.0.y (and beyond).
+**Step 6.2: Backport Complications**
+The code in v6.14 matches exactly: `mt76_change_chanctx()` is identical
+to the pre-patch state in v7.0. The patch would apply cleanly. No
+forward-declaration issues since `mt76_abort_roc` is declared in
+`mt76.h`.
 
-### Step 6.2: Backport Complications
-For 7.0.y: Should apply cleanly (file path matches current tree). For
-6.15-6.18: file was at `pcie/trans-gen2.c`, would need path adjustment.
+**Step 6.3: Related Fixes**
+No alternative fix for this specific bug exists in stable trees.
 
-Record: Clean apply for 7.0.y. Minor path conflict for older trees.
+---
 
 ## PHASE 7: SUBSYSTEM CONTEXT
 
-### Step 7.1: Subsystem Criticality
-WiFi driver (iwlwifi) - used by vast majority of Intel WiFi laptops and
-desktops. **IMPORTANT** criticality level.
+**Step 7.1: Subsystem**
+- Subsystem: WiFi/wireless drivers (drivers/net/wireless/mediatek/mt76)
+- Criticality: IMPORTANT - mt76 is one of the most widely used WiFi
+  chipset drivers (MT7921, MT7922, MT7925, MT7996, etc.), found in many
+  laptops and routers
 
-### Step 7.2: Activity
-Very active subsystem with frequent fixes and updates.
+**Step 7.2: Activity**
+Actively maintained by Felix Fietkau with recent commits in the channel
+management area. The multi-radio/chanctx support is relatively new
+(v6.14).
+
+---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-### Step 8.1: Affected Users
-All users of Intel WiFi hardware with firmware that supports reset
-handshake during dumps (modern Intel WiFi devices).
+**Step 8.1: Affected Users**
+All users of MediaTek mt76 WiFi chipsets who use P2P, scanning, or any
+ROC functionality while channel context changes occur.
 
-### Step 8.2: Trigger Conditions
-- Firmware crash occurs (not uncommon on Intel WiFi)
-- FW dump collection starts
-- Reset handshake during dump times out
-- System is in a state where `!reset_done` is true
+**Step 8.2: Trigger Conditions**
+- Trigger: Channel context change (width change or radar detection)
+  while ROC is active
+- Likelihood: Moderate - occurs during DFS, bandwidth negotiation, or
+  regulatory changes that happen to coincide with P2P discovery or off-
+  channel management frames
+- Not directly triggered by unprivileged users (requires wireless state
+  machine interaction)
 
-### Step 8.3: Failure Mode Severity
-When triggered, the system attempts a recursive dump from within dump
-context. This can cause:
-- Deadlock if dump-related locks are already held (the `mvm->mutex`
-  locking in `iwl_mvm_dump_error` with `IWL_ERR_CONTEXT_FROM_OPMODE`
-  asserts the lock is held, and re-entering dump collection with it held
-  could deadlock)
-- At minimum: wasted resources, confusing error logs, delayed recovery
-- **Severity**: HIGH (potential deadlock/hang during error recovery)
+**Step 8.3: Failure Mode**
+- Driver/mac80211 state desynchronization
+- ROC operations fail silently or behave unpredictably
+- P2P connection failures
+- Dangling ROC state may cause subsequent operations to fail or produce
+  unexpected behavior
+- Severity: **MEDIUM-HIGH** (functional failure, not crash, but can
+  break WiFi connectivity features)
 
-### Step 8.4: Risk-Benefit
-- **Benefit**: HIGH - prevents recursive dumps that can hang the system
-  during WiFi FW error recovery
-- **Risk**: VERY LOW - single-file, ~10 line change, obviously correct
-  parameter addition, preserves existing behavior for internal caller
-- **Ratio**: Strongly favorable
+**Step 8.4: Risk-Benefit**
+- Benefit: Fixes real state inconsistency in a widely-used WiFi driver
+- Risk: Extremely low - 2 lines, guarded by `if (phy->roc_vif)` check,
+  calls well-tested existing function
+- Ratio: Very favorable
+
+---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: Evidence Summary
+**Step 9.1: Evidence Compilation**
 
-**FOR backporting:**
-- Fixes a real bug: recursive dump attempt from within dump context
-- Potential for deadlocks/hangs during FW error recovery
-- Affects widely-used Intel WiFi hardware
-- Written by THE iwlwifi maintainer (Johannes Berg)
-- Reviewed by senior iwlwifi developer (Emmanuel Grumbach)
-- Small, surgical, single-file fix (~10 lines net)
-- Obviously correct - parameter addition with clear semantics
-- No API changes, no new features
+FOR backporting:
+- Fixes a real state desynchronization bug between driver and mac80211
+- 2-line fix, obviously correct, minimal risk
+- Written by the mt76 subsystem maintainer/author (Felix Fietkau)
+- Follows the established pattern used by all other chanctx functions
+- Self-contained, no dependencies on other patches
+- Applies cleanly to v6.14+ stable trees
+- mt76 is a widely-used WiFi driver
 
-**AGAINST backporting:**
-- No Fixes: tag or Cc: stable (expected - that's why it needs review)
-- No explicit user reports of the hang/deadlock
-- Only affects relatively recent kernels (v6.15+)
-- Theoretical trigger (but realistic - FW crashes do happen)
+AGAINST backporting:
+- No crash/panic, no data corruption - the bug causes functional issues
+  (ROC state desync)
+- No user reports (no Reported-by tag)
+- Part of a larger series (other patches in series not evaluated)
 
-### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **YES** - trivial function split,
-   reviewed by subsystem experts
-2. Fixes a real bug? **YES** - recursive dump can deadlock/hang
-3. Important issue? **YES** - potential system hang during WiFi error
-   recovery
-4. Small and contained? **YES** - single file, ~10 lines
-5. No new features or APIs? **YES** - no changes
-6. Can apply to stable? **YES** - cleanly for 7.0.y
+UNRESOLVED:
+- Could not access mailing list discussion due to anti-bot protection
+- Could not verify if other patches in the series are also being
+  considered
 
-### Step 9.3: Exception Categories
-Not applicable - this is a standard bug fix.
+**Step 9.2: Stable Rules Checklist**
+1. Obviously correct and tested? **YES** - trivial 2-line check, follows
+   existing pattern, by subsystem maintainer
+2. Fixes a real bug? **YES** - state desync between driver and mac80211
+   during ROC
+3. Important issue? **MEDIUM-HIGH** - WiFi functionality failure, not
+   crash
+4. Small and contained? **YES** - 2 lines in 1 file
+5. No new features? **YES** - purely a bug fix
+6. Can apply to stable? **YES** - clean apply to v6.14+
 
-### Step 9.4: Decision
-This is a well-crafted fix by the subsystem maintainer that prevents
-recursive firmware dumps which could cause deadlocks or hangs on Intel
-WiFi hardware during error recovery. The fix is small, obviously
-correct, and carries very low regression risk.
+**Step 9.3: Exception Categories**
+Not an exception category; this is a standard bug fix.
+
+**Step 9.4: Decision**
+The fix is small, surgical, obviously correct, written by the subsystem
+maintainer, and fixes a real state inconsistency bug in a widely-used
+WiFi driver. The risk is minimal and the benefit is clear.
+
+---
 
 ## Verification
 
-- [Phase 1] Parsed tags: Signed-off-by Johannes Berg, Reviewed-by
-  Emmanuel Grumbach, Link to patch.msgid.link
-- [Phase 2] Diff analysis: Single file, ~10 lines net change. Function
-  split with `dump_on_timeout` parameter. External callers get `false`,
-  internal caller gets `true`.
-- [Phase 3] git blame: Function made public in `85ccbdc4d3930f` (v6.15).
-  Dump-on-timeout added in `7391b2a4f7dbb7`.
-- [Phase 3] `git merge-base --is-ancestor`: Confirmed `85ccbdc4d3930f`
-  is in v6.15 but NOT in v6.14 or v6.13
-- [Phase 3] Author check: Johannes Berg is the iwlwifi subsystem
-  maintainer
-- [Phase 4] Lore access blocked by Anubis; b4 dig confirmed related
-  commits
-- [Phase 5] Traced callers: `iwl_trans_pcie_fw_reset_handshake()` called
-  from `fw/dbg.c:2714` and `fw/dbg.c:2722`, both within dump collection
-  path
-- [Phase 5] Traced dump recursion path: `iwl_op_mode_dump_error()` →
-  `iwl_mvm_dump_error()` → `iwl_fw_error_collect()` → triggers new dump
-- [Phase 6] Bug exists in v6.15+ (verified). File at `gen1_2/` path
-  since v6.19 (verified)
-- [Phase 8] Failure mode: Potential deadlock/hang during FW error
-  recovery, severity HIGH
-- UNVERIFIED: Could not verify mailing list discussion due to lore being
-  bot-protected
-- UNVERIFIED: No direct evidence of users hitting this recursive dump
-  scenario in practice, but the code path is clearly reachable during
-  any FW crash
+- [Phase 1] Parsed tags: Link to patch.msgid.link, SOB by Felix Fietkau
+  (mt76 maintainer)
+- [Phase 2] Diff analysis: +3 lines (2 logic + 1 blank) in
+  `mt76_change_chanctx()`, adds ROC abort guard
+- [Phase 2] Verified `__mt76_set_channel()` at mac80211.c:1045 sets
+  `phy->offchannel = offchannel`, confirming the bug mechanism
+- [Phase 3] git blame: `mt76_change_chanctx` introduced by commit
+  `82334623af0cd` (v6.14) by Felix Fietkau
+- [Phase 3] `mt76_abort_roc` introduced by `a8f424c1287cc` (v6.14),
+  declared in mt76.h line 1586
+- [Phase 3] Confirmed `b36d55610215a` (EXPORT_SYMBOL_GPL for abort_roc)
+  is NOT in v6.14 but not needed since abort_roc is declared in mt76.h
+- [Phase 3] Confirmed patch is self-contained: all referenced
+  functions/fields exist in v6.14
+- [Phase 4] UNVERIFIED: Could not access lore.kernel.org or b4 dig
+  results due to anti-bot protection
+- [Phase 5] Verified all 5 other chanctx functions call
+  `mt76_abort_scan()` - this fix adds the analogous ROC abort
+- [Phase 5] Verified `mt76_abort_roc` cancels work, locks mutex, calls
+  `mt76_roc_complete`, unlocks - proper cleanup
+- [Phase 6] `82334623af0cd` is in v6.14 (confirmed via `git merge-base
+  --is-ancestor`)
+- [Phase 6] v6.14 `mt76_change_chanctx` code is identical to pre-patch
+  v7.0 - clean apply
+- [Phase 8] Failure mode: state desynchronization causing ROC/P2P
+  failures, severity MEDIUM-HIGH
 
 **YES**
 
- .../wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/channel.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
-index b15c5d4865277..a50e845cea421 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
-@@ -95,7 +95,9 @@ static void iwl_pcie_gen2_apm_stop(struct iwl_trans *trans, bool op_mode_leave)
- 			      CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/channel.c b/drivers/net/wireless/mediatek/mt76/channel.c
+index 2b705bdb7993c..a6e45b8d63d6b 100644
+--- a/drivers/net/wireless/mediatek/mt76/channel.c
++++ b/drivers/net/wireless/mediatek/mt76/channel.c
+@@ -88,6 +88,9 @@ void mt76_change_chanctx(struct ieee80211_hw *hw,
+ 			 IEEE80211_CHANCTX_CHANGE_RADAR)))
+ 		return;
  
--void iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans)
-+static void
-+_iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans,
-+				   bool dump_on_timeout)
- {
- 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
- 	int ret;
-@@ -133,7 +135,7 @@ void iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans)
- 			"timeout waiting for FW reset ACK (inta_hw=0x%x, reset_done %d)\n",
- 			inta_hw, reset_done);
- 
--		if (!reset_done) {
-+		if (!reset_done && dump_on_timeout) {
- 			struct iwl_fw_error_dump_mode mode = {
- 				.type = IWL_ERR_TYPE_RESET_HS_TIMEOUT,
- 				.context = IWL_ERR_CONTEXT_FROM_OPMODE,
-@@ -147,6 +149,11 @@ void iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans)
- 	trans_pcie->fw_reset_state = FW_RESET_IDLE;
- }
- 
-+void iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans)
-+{
-+	_iwl_trans_pcie_fw_reset_handshake(trans, false);
-+}
++	if (phy->roc_vif)
++		mt76_abort_roc(phy);
 +
- static void _iwl_trans_pcie_gen2_stop_device(struct iwl_trans *trans)
- {
- 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
-@@ -163,7 +170,7 @@ static void _iwl_trans_pcie_gen2_stop_device(struct iwl_trans *trans)
- 		 * should assume that the firmware is already dead.
- 		 */
- 		trans->state = IWL_TRANS_NO_FW;
--		iwl_trans_pcie_fw_reset_handshake(trans);
-+		_iwl_trans_pcie_fw_reset_handshake(trans, true);
- 	}
+ 	cancel_delayed_work_sync(&phy->mac_work);
  
- 	trans_pcie->is_down = true;
+ 	mutex_lock(&dev->mutex);
 -- 
 2.53.0
 
