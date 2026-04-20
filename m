@@ -1,122 +1,148 @@
-Return-Path: <linux-wireless+bounces-35019-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35020-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kI6zI8Ho5WlkpAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35019-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 10:50:09 +0200
+	id EKe1Advo5WlkpAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35020-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 10:50:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E56A428755
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 10:50:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1554042876D
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 10:50:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1BEF3016EE6
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 08:41:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D1C293016B3F
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 08:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765D81A9F88;
-	Mon, 20 Apr 2026 08:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3837388E5B;
+	Mon, 20 Apr 2026 08:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZJ0A00Mk"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="uz6d47vl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155AF28B7DB
-	for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2026 08:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77578388E55;
+	Mon, 20 Apr 2026 08:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776674518; cv=none; b=frqvgZYXliB2uJrSzeInEQ0+PjpTT3bEbpZ2JZYrPU1wr5+262mOQBH2D9ei1Dn9esJ6JVRCevVJQg3/lLpmIdk++9mVehd3A20WlzBj7jroQPK4kyYI5ETUd2LMcqMJJ4bOJdsRJggFMm1LFlhp9EypOYkxc0QqLpYdmTrMQGM=
+	t=1776674619; cv=none; b=kGQs4234L4fCf8yQNyZdu8p5bYDhQ7HOKr2rU3SHWvDdCgU77z/zxBcdNNNZa7QLm2Ts+HJe/1CbmrNIksguVpyjRHSuRP9WxuXFRPlvmlNq3mk9dqB3dLDLgBaoKefsgz41RYC4IH8tDpbKuWRLDA2G5QHF4Ko3fRX/s+a77zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776674518; c=relaxed/simple;
-	bh=sZylmzMLzJxGwwmn8ymS0FkPCnFB8fRV6r5mxc8W/8I=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=S6AGJqY7K+KCHPSZn2E7AdpwbkjJCf+sdvVk+QE6Xu9nYimQdTirm+hQjkTDGzDH9z6wu6zenKRfeZDWaAm3VlBPRB6ehCor8XdK5ooOV33bJpdDW2aI5Upozc2/Tv6NOc76UAn0fU22mmlK4hwTNcIK5RlxZvAC58lCLbQsYSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZJ0A00Mk; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63K8frF03838688, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1776674513; bh=sZylmzMLzJxGwwmn8ymS0FkPCnFB8fRV6r5mxc8W/8I=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ZJ0A00MkfcOXW0gswixQwqr34DY5c1YLt0nRHp05nkKWmbKGGjwkFqUW1/zw9OZDG
-	 f9+Y7GCrPYfN/l6WkDXnzgzNFUXQjp5mtYHZwefn14IooBNqb4vxhpvnq0ti+Z5H9g
-	 lY+sTTNGqAPRsHQa0V1TsSU8BrDMFH/8OARttj7R2rqMAhur9sbvzEZhimKxxi1j4W
-	 CBL9ZGCqe8b0lIJ8Eg5lGUdmwlBTkxOjhSWCQkIEnOkrSJYTuSw6G/1ZI4sFS7akUt
-	 rQvBtkbR+NxSZLEXdB4+fiUBgUegtR0d+bv33zdaqqgWTJS1KAMv1Zd1riKPXv3GTN
-	 nJDVs4srT2tfA==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 63K8frF03838688
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Apr 2026 16:41:53 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 20 Apr 2026 16:41:53 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 20 Apr 2026 16:41:53 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::ed72:3015:2840:4458]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::ed72:3015:2840:4458%10]) with mapi id
- 15.02.1748.010; Mon, 20 Apr 2026 16:41:53 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH rtw-next v2 10/11] wifi: rtw89: Add rtw8922au.c
-Thread-Topic: [PATCH rtw-next v2 10/11] wifi: rtw89: Add rtw8922au.c
-Thread-Index: AQHc0AMclmHNr9m8XEuGL2v+Azrtd7XnougA
-Date: Mon, 20 Apr 2026 08:41:53 +0000
-Message-ID: <35a33276337d423faac206ffaf0f1995@realtek.com>
-References: <6ba2910d-020c-41bd-86fa-d1b0e0f7a2f5@gmail.com>
- <0d22cd72-4048-41ad-a4aa-511681e6ba51@gmail.com>
-In-Reply-To: <0d22cd72-4048-41ad-a4aa-511681e6ba51@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1776674619; c=relaxed/simple;
+	bh=SiMpNsxuTqKdP4Nz+xuM9/8Xeay8LMcqJNpsrYjeZvo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MwUlJmGID/IQqY6F6R9bKeg7P6mQTbBo2yJ3IeLovFrJD7wGi8ys4aDp5lgMfgRCAANXW7UNJ6gys7H7fjHg9e9DoTBY8o9Yygypd2VL5KeKciptYVK9zRK80Steym1FQxS8dFxEJVecCPc0x0xzMvi3lCd0b9gXVbEy/rRJV7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=uz6d47vl; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=VfLK/SrgHChF08QO9elV83WJzRM3AfcVpMSg5MkeJSI=;
+	t=1776674618; x=1777884218; b=uz6d47vlZu5MiuflER/yHSzrX8EkzBYciv1iUjxdWThoUMj
+	UyEY8FdDdMF/yXwO/CLvGBGluRn1OCaK8c08rFXkgAd1y1dpw2IHO0ZEBgl5Jt6b+Cnvu4WT4BYdn
+	y8UcFTgKf58lQtLv44ddAQ1dcFN8QeMyX0DDa19qSR1jG85ObfSrEHANTPIPtgmm3eYSwqzHJk43U
+	gpe2uUWhwH5deEBcSlrhDpvhaUWmTEVP/onWiv2KP0GEMSY7Y3ggdd11SyYxVLCZSwOMemyM/jVy/
+	T3K+rvDX3nsFqL6odOlU+aQe9G6wTS+wFl6izpoIQLkHBx8cO7f/RLypSO4xQtow==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wEkDn-00000002Jm3-1bMo;
+	Mon, 20 Apr 2026 10:43:11 +0200
+Message-ID: <6170788fcab2ec835597e3d7411928d36850c20a.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/9] bitfield: add FIELD_GET_SIGNED()
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Yury Norov <ynorov@nvidia.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen	
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>,  Andy Lutomirski	 <luto@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Jonathan Cameron	 <jic23@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Ping-Ke Shih	 <pkshih@realtek.com>,
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn	
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni	 <pabeni@redhat.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Yury Norov <yury.norov@gmail.com>, Rasmus
+ Villemoes <linux@rasmusvillemoes.dk>, Hans de Goede	 <hansg@kernel.org>,
+ Linus Walleij <linusw@kernel.org>, Sakari Ailus	
+ <sakari.ailus@linux.intel.com>, Salah Triki <salah.triki@gmail.com>, Achim
+ Gratz <Achim.Gratz@Stromeko.DE>, Ben Collins <bcollins@watter.com>, 
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-rtc@vger.kernel.org
+Date: Mon, 20 Apr 2026 10:43:08 +0200
+In-Reply-To: <20260417173621.368914-2-ynorov@nvidia.com>
+References: <20260417173621.368914-1-ynorov@nvidia.com>
+	 <20260417173621.368914-2-ynorov@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+X-malware-bazaar: not-scanned
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	URIBL_MULTI_FAIL(0.00)[sipsolutions.net:server fail,sin.lore.kernel.org:server fail];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	TAGGED_FROM(0.00)[bounces-35019-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:email,realtek.com:dkim,realtek.com:mid];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35020-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_TO(0.00)[nvidia.com,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,infradead.org,baylibre.com,analog.com,realtek.com,gmail.com,lunn.ch,davemloft.net,google.com,bootlin.com,rasmusvillemoes.dk,Stromeko.DE,watter.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[34];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 0E56A428755
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:dkim,sipsolutions.net:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1554042876D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBUaGlz
-IGlzIHRoZSBlbnRyeSBwb2ludCBvZiB0aGUgbmV3IHJ0dzg5Xzg5MjJhdSBtb2R1bGUuDQo+IA0K
-PiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNv
-bT4NCg0KQWNrZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KDQoNCg==
+On Fri, 2026-04-17 at 13:36 -0400, Yury Norov wrote:
+> The bitfields are designed in assumption that fields contain unsigned
+> integer values, thus extracting the values from the field implies
+> zero-extending.
+>=20
+> Some drivers need to sign-extend their fields, and currently do it like:
+>=20
+> 	dc_re +=3D sign_extend32(FIELD_GET(0xfff000, tmp), 11);
+> 	dc_im +=3D sign_extend32(FIELD_GET(0xfff, tmp), 11);
+
+That's indeed pretty awful...
+
+
+> +#define FIELD_GET_SIGNED(mask, reg)					\
+>=20
+
+[...]
+
+I (personally) tend to prefer the "__MAKE_OP" versions (*_get_bits()
+etc.), in particular because WiFi and firmware interfaces deal a lot
+with fixed endian fields.
+
+Any chance it'd be simple to generate u32_get_bits_signed() etc.? Could
+be especially useful for le32_get_bits_signed() for example, to have the
+endian conversion built-in unlike FIELD_GET_SIGNED().
+
+johannes
 
