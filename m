@@ -1,61 +1,67 @@
-Return-Path: <linux-wireless+bounces-35059-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35060-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAxQLpo25mkmtgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35059-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:22:18 +0200
+	id KC5HIQc45mkmtgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35060-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:28:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB7342CF1B
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:22:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F56A42D13F
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99642311E59D
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:39:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 783263000B89
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F7D3DA5C1;
-	Mon, 20 Apr 2026 13:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81253E9F79;
+	Mon, 20 Apr 2026 13:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WxmVUNc9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RLgP5iEm"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F91E3DA5BB;
-	Mon, 20 Apr 2026 13:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD963BBA03;
+	Mon, 20 Apr 2026 13:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691441; cv=none; b=cfaGGsR1wUhkR8cEplIqEBeX7UA1vnd/m0nCUil12au4xOtVw30jyESkYaOmF9zXjFczzAwxC16J5TrXCKG6Q8VUjGtYyAAvgSM0t4xAS9rzatN/zDZJeCx19X9hXIw2ECWLpwajs7i1ZZS7h6gN9BuQ3kFpTrt3mTSwtycYScc=
+	t=1776691503; cv=none; b=qs0X1piWzoOlqubuUb72eZ0kpY8oJUHoZM7pLJs9DUTx83m9dM1JFaVnm7eykEzGZuugGHAPWoo7Vt7sWlpV27DeZKV5AATDAR/dF48aWPUggHn1A6mbt7YGlyCTxXA/Q5/ENDW3yO3HIBXM8Di0Xxm2WGaivr84sYJfQpJUfSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691441; c=relaxed/simple;
-	bh=7zvufrhHYV6ds7spDOco84VdhgcOR1nJgg0J/89FE9k=;
+	s=arc-20240116; t=1776691503; c=relaxed/simple;
+	bh=e0MFqXIIiCXoLpaSLqnvXnlhDpUGIyNU3o1ydpzS96M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nD0DHLMGOE2d5e3gm8Z/GX/GM2YUqi2H106jTBVhLJCJUvzqCbP/4dtx2NupeOHp5jVqTHWJg50yvo71Zql8ALxXV/ppSkMkMlRD1Xr2n6uC6s1D98JjIvv1uvD6eu/f6+nu1f9BcDCp3KNsmlp82zC5k14s/w6n89joZJvverw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WxmVUNc9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A44C19425;
-	Mon, 20 Apr 2026 13:24:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aXQPhzxi5+emK8SGtwLeYv2cKAY+pAratlmyKYlexjOJQBt19hzE0Uo+U6e1b0Bt61sovv9q2FMuBocnm8bYUGYI/67EujeERubi6tem8L1zeS5UVgT86UJ+KF7qqE0qr8kIOcbNVbz0Ki5tjLpiWnLs2Figo1NlY4gLOzWrY5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RLgP5iEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCF6C19425;
+	Mon, 20 Apr 2026 13:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691440;
-	bh=7zvufrhHYV6ds7spDOco84VdhgcOR1nJgg0J/89FE9k=;
+	s=k20201202; t=1776691503;
+	bh=e0MFqXIIiCXoLpaSLqnvXnlhDpUGIyNU3o1ydpzS96M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WxmVUNc9LMDXO1yjAnv5Rxur/S/4YXAAQzQwFvikOWL/T3b6GsjYY8Zb6Jqn5M2Wk
-	 7m35jwp8sfJ2Ux7Yojjadq+sUH50oQMZdZvUDv0aSHejJrblVydLOWNOhFDMkTdpnp
-	 n7Ry3Zf9tE7cOZJG6H9Z9T7JM+aJMzuCJrU8b0yDRUXAXImsZHX+nNjLe9VjImfIKq
-	 7YYFce6NZIACCOJykul7oTpzx2axiCg8D+OLUd6nZ2BxwwbXUTFCQ3kvDnoo92fD4Z
-	 E/tLXrrh/OCFe14RT4GG4goNJpz8+UnPGGMVY8mE/cgCzpBa4hiWUuKXDdHg3k5w8O
-	 2RFk0ffOfwM9Q==
+	b=RLgP5iEm7Sn4ghy39xhbOaLAcHJD7OonX1ApwZBh58UuDGNmpsU1JJD7qjZEDlNCo
+	 qgUGtIFiiU2M8+yVFpKrTZluJyed0GH7fW5F3CAaYzi9bkH8DCH8eOOk3xIrK52IIY
+	 VsI9lqzWTPcPEsyAssPJwYoRZbn25uKAUDpcmxPh+O6u8ZaRHGdz81mzyvrdbD7PAN
+	 +0pwSHMcq6w8ZVNnG7cviwLk2NkIrJ3t0bEbesOGULWUTTTPPd0mH+XiqR8IvKOCVX
+	 EkXAflvS1QIbYAhqo0pxwPIksFIyseffTYmCvurDE1aihCKsF4yvDzMbBEhAT/3vnv
+	 8RdjYXVii+Q7A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Suraj P Kizhakkethil <suraj.kizhakkethil@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
 	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.6] wifi: mac80211: set band information only for non-MLD when probing stations using NULL frame
-Date: Mon, 20 Apr 2026 09:17:03 -0400
-Message-ID: <20260420132314.1023554-29-sashal@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 7.0-6.19] wifi: mt76: avoid to set ACK for MCU command if wait_resp is not set
+Date: Mon, 20 Apr 2026 09:17:42 -0400
+Message-ID: <20260420132314.1023554-68-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -70,415 +76,377 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35059-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-35060-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[mediatek.com,nbd.name,kernel.org,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 1BB7342CF1B
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,mediatek.com:email,nbd.name:email]
+X-Rspamd-Queue-Id: 7F56A42D13F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Suraj P Kizhakkethil <suraj.kizhakkethil@oss.qualcomm.com>
+From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 
-[ Upstream commit 73e7df69edb6f1271ea0fa876794761e6c73e76a ]
+[ Upstream commit 169c83d3df95b57e787174454332e01eb1b823ed ]
 
-Currently, when sending a NULL frame to probe a station, the band
-information is derived from the chanctx_conf in the mac80211 vif's
-bss_conf. However, for AP MLD, chanctx_conf is not assigned to the
-vif's bss_conf; instead it is assigned on a per-link basis. As a result,
-for AP MLD, sending a NULL packet to probe will trigger a warning.
+When wait_resp is not set but the ACK option is enabled in the MCU TXD,
+the ACK event is enqueued to the MCU event queue without being dequeued
+by the original MCU command request.
 
-WARNING: net/mac80211/cfg.c:4635 at ieee80211_probe_client+0x1a8/0x1d8 [mac80211], CPU#2: hostapd/244
-Call trace:
- ieee80211_probe_client+0x1a8/0x1d8 [mac80211] (P)
- nl80211_probe_client+0xac/0x170 [cfg80211]
- genl_family_rcv_msg_doit+0xc8/0x134
- genl_rcv_msg+0x200/0x280
- netlink_rcv_skb+0x38/0xf0
- genl_rcv+0x34/0x48
- netlink_unicast+0x314/0x3a0
- netlink_sendmsg+0x150/0x390
- ____sys_sendmsg+0x1f4/0x21c
- ___sys_sendmsg+0x98/0xc0
- __sys_sendmsg+0x74/0xcc
- __arm64_sys_sendmsg+0x20/0x34
- invoke_syscall.constprop.0+0x4c/0xd0
- do_el0_svc+0x3c/0xd0
- el0_svc+0x28/0xc0
- el0t_64_sync_handler+0x98/0xdc
- el0t_64_sync+0x154/0x158
----[ end trace 0000000000000000 ]---
+Any orphaned ACK events will only be removed from the queue when another
+MCU command requests a response. Due to sequence index mismatches, these
+events are discarded one by one until a matching sequence index is found.
 
-For NULL packets sent to probe stations, set the band information only
-for non-MLD, since MLD transmissions does not rely on band.
+However, if several MCU commands that do not require a response continue
+to fill up the event queue, there is a risk that when an MCU command with
+wait_resp enabled is issued, it may dequeue the wrong event skb,
+especially if the queue contains events with all possible sequence
+indices.
 
-Signed-off-by: Suraj P Kizhakkethil <suraj.kizhakkethil@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260213100126.1414398-2-suraj.kizhakkethil@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20260203155532.1098290-3-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-I now have all the information needed for a complete analysis. Let me
-compile the full report.
+Now I have enough information to compile the full analysis.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
 **Step 1.1: Subject Line**
-- Subsystem: `wifi: mac80211`
-- Action verb: "set" (conditionalize behavior)
-- Summary: Set band information only for non-MLD interfaces when probing
-  stations using NULL frames.
-
-Record: [wifi: mac80211] [set/conditionalize] [Fix probe_client to
-handle AP MLD correctly by skipping band derivation from vif bss_conf
-chanctx_conf]
+- Subsystem: `wifi: mt76:`
+- Action verb: "avoid" (indicating a prevention of incorrect behavior -
+  this is a bug fix verb)
+- Summary: Prevent setting ACK flag on MCU commands that don't wait for
+  a response
+- Record: [wifi: mt76] [avoid] [prevent orphaned ACK events in MCU event
+  queue]
 
 **Step 1.2: Tags**
-- `Signed-off-by: Suraj P Kizhakkethil
-  <suraj.kizhakkethil@oss.qualcomm.com>` — author from Qualcomm
-- `Link: https://patch.msgid.link/20260213100126.1414398-2-
-  suraj.kizhakkethil@oss.qualcomm.com` — mailing list patch link
-- `Signed-off-by: Johannes Berg <johannes.berg@intel.com>` — mac80211
-  subsystem maintainer merged this
-- No Fixes: tag, no Cc: stable (expected for manual review candidates)
-- No Reported-by: tag (author likely discovered it internally)
-
-Record: Merged by Johannes Berg (mac80211 maintainer). No explicit
-Fixes: tag. Qualcomm contributor.
+- `Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>` -
+  author, MediaTek engineer
+- `Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>` - regular mt76
+  contributor
+- `Link: https://patch.msgid.link/20260203155532.1098290-3-
+  shayne.chen@mediatek.com` - **patch 3** of a series
+- `Signed-off-by: Felix Fietkau <nbd@nbd.name>` - mt76 maintainer,
+  merged the patch
+- No Fixes: tag (expected for candidates), no Reported-by, no syzbot
+- Record: Author is MediaTek HW vendor engineer; committed by subsystem
+  maintainer. Part of a series (patch 3).
 
 **Step 1.3: Commit Body**
-- Bug: For AP MLD, `chanctx_conf` is not assigned to the vif's
-  `bss_conf` but per-link. Accessing it from
-  `sdata->vif.bss_conf.chanctx_conf` returns NULL.
-- Symptom: WARN_ON fires at `cfg.c:4635`, function returns -EINVAL,
-  probe client functionality is completely broken for AP MLD.
-- Stack trace provided: triggered via `nl80211_probe_client` ->
-  `ieee80211_probe_client`, reachable from userspace hostapd.
-- Root cause: The chanctx_conf architecture changed for MLD (per-link
-  instead of per-vif), but this function was never updated.
-
-Record: [WARN_ON trigger + -EINVAL return breaking probe_client for AP
-MLD] [Stack trace confirms userspace reachability] [Root cause: MLD per-
-link chanctx_conf not assigned at vif level]
+- Bug: When `wait_resp` is not set, ACK option is still set in MCU TXD.
+  Firmware generates ACK events that nobody dequeues.
+- Symptom: Orphaned ACK events accumulate in event queue. When a command
+  with `wait_resp=true` is issued, it may dequeue a wrong event
+  (sequence index mismatch), leading to incorrect MCU communication.
+- Failure mode: MCU command/response mismatch, potential driver
+  malfunction.
+- Record: [MCU event queue pollution by orphaned ACK events] [Wrong
+  event dequeued by subsequent commands] [No specific kernel version
+  mentioned] [Root cause: ACK option unconditionally set regardless of
+  wait_resp]
 
 **Step 1.4: Hidden Bug Fix Detection**
-This is NOT hidden — the commit message clearly describes a warning
-trigger and broken functionality. The subject says "set band information
-only for non-MLD" which is effectively "fix broken AP MLD probe_client."
-
-Record: [Direct bug fix, not disguised]
+- "avoid to set ACK" = preventing incorrect firmware behavior
+- This is explicitly a bug fix disguised with "avoid" rather than "fix"
+- Record: Yes, this is a real bug fix. Prevents event queue corruption.
 
 ## PHASE 2: DIFF ANALYSIS
 
 **Step 2.1: Inventory**
-- 1 file modified: `net/mac80211/cfg.c`
-- Lines changed: +10/-5 (net +5 lines)
-- Function modified: `ieee80211_probe_client()`
-- Scope: single-function surgical fix
+- `drivers/net/wireless/mediatek/mt76/mcu.c`: 1 line changed
+- `drivers/net/wireless/mediatek/mt76/mt7996/mcu.c`: ~8 lines changed
+  (option logic restructured, SDO special case removed)
+- Functions modified: `mt76_mcu_skb_send_and_get_msg()` in mcu.c,
+  `mt7996_mcu_send_message()` in mt7996/mcu.c
+- Record: [2 files, ~10 lines net change] [Single-subsystem surgical
+  fix]
 
 **Step 2.2: Code Flow Change**
-BEFORE: Unconditionally dereferences `sdata->vif.bss_conf.chanctx_conf`
-to get band. For AP MLD, chanctx_conf is NULL, triggers WARN_ON, returns
--EINVAL.
-
-AFTER: Checks `ieee80211_vif_is_mld()` first. If MLD, sets `band = 0`
-(MLD transmissions don't rely on band). If not MLD, uses the original
-chanctx_conf path unchanged.
+- Hunk 1 (mcu.c): Changed `dev->mcu_ops->mcu_skb_send_msg(dev, skb, cmd,
+  &seq)` to `dev->mcu_ops->mcu_skb_send_msg(dev, skb, cmd, wait_resp ?
+  &seq : NULL)`. Before: always passes seq pointer. After: passes NULL
+  when no response needed.
+- Hunk 2 (mt7996/mcu.c): Old code always set ACK via
+  `MCU_CMD_UNI_QUERY_ACK` or `MCU_CMD_UNI_EXT_ACK`, then special-cased
+  SDO to strip ACK. New code builds option from `MCU_CMD_UNI` base,
+  conditionally adds `MCU_CMD_SET` and `MCU_CMD_ACK` (only when
+  `wait_seq` is non-NULL).
+- Record: [Always ACK → conditional ACK based on wait_resp]
 
 **Step 2.3: Bug Mechanism**
-Category: Logic/correctness fix — missing MLD case handling.
-Mechanism: The function assumed chanctx_conf is always assigned at the
-vif's bss_conf level. After MLD introduction, this is only true for non-
-MLD interfaces. For MLD, chanctx_conf lives per-link.
+- Category: Logic/correctness fix
+- Mechanism: The MCU TXD option field had ACK unconditionally set. When
+  `wait_resp=false`, the caller never dequeues the resulting ACK event.
+  These orphaned events accumulate and can cause subsequent
+  `wait_resp=true` commands to get wrong events.
+- The fix makes the firmware-facing ACK flag consistent with the driver-
+  side intent.
+- Record: [Logic/correctness] [Unconditional ACK flag causes orphaned
+  events in MCU queue]
 
 **Step 2.4: Fix Quality**
-- Obviously correct: the conditional is clean and the MLD path avoids
-  the NULL dereference.
-- Minimal: only touches the necessary code path.
-- Regression risk: Very low. Non-MLD path is completely unchanged. MLD
-  path now gets `band = 0` instead of crashing.
-- Merged by Johannes Berg (mac80211 maintainer), who deeply understands
-  MLD architecture.
+- Verified equivalence: When `wait_seq` is non-NULL, the new option
+  values match old values exactly:
+  - Query: `MCU_CMD_UNI | MCU_CMD_ACK` = 0x3 = `MCU_CMD_UNI_QUERY_ACK`
+  - Non-query: `MCU_CMD_UNI | MCU_CMD_SET | MCU_CMD_ACK` = 0x7 =
+    `MCU_CMD_UNI_EXT_ACK`
+- The SDO special case removal is correct because SDO commands that
+  don't wait will naturally have no ACK.
+- Regression risk: Low. All 11 `mcu_skb_send_msg` implementations handle
+  NULL `wait_seq` safely (verified via code review).
+- Record: [Fix is obviously correct, verified logic equivalence] [Very
+  low regression risk]
 
-Record: [High quality, surgical fix] [Very low regression risk]
-
-## PHASE 3: GIT HISTORY INVESTIGATION
+## PHASE 3: GIT HISTORY
 
 **Step 3.1: Blame**
-- `chanctx_conf = rcu_dereference(sdata->vif.bss_conf.chanctx_conf)`
-  introduced by commit `d0a9123ef548de` (2022-05-10) — "wifi: mac80211:
-  move some future per-link data to bss_conf"
-- This was a mechanical rename moving `chanctx_conf` from `vif` to
-  `vif.bss_conf` as prep for MLD
-- The probe_client function itself dates back to `06500736c5d26b`
-  (2011-11-04) by Johannes Berg
+- mcu.c line 101: Introduced by `e452c6eb55fbfd` (Felix Fietkau,
+  2020-09-30) - "mt76: move waiting and locking out of
+  mcu_ops->mcu_skb_send_msg". The always-pass-seq behavior has been
+  present since 2020.
+- mt7996/mcu.c option logic: Introduced by `98686cd21624c7` (Shayne
+  Chen, 2022-11-22) - initial mt7996 driver commit.
+- SDO special case: `dab5b2025452f9` (Peter Chiu, 2025-11-06) - a
+  targeted fix for the same class of bug, already in 7.0 tree.
+- Record: [Buggy code from 2020 (mcu.c) and 2022 (mt7996)] [Present in
+  all kernels since v6.2]
 
-Record: [chanctx_conf access moved to bss_conf in d0a9123ef548de (2022)]
-[Function dates to 2011]
-
-**Step 3.2: Fixes Tag**
-No Fixes: tag present. The bug was introduced when MLD AP support was
-completed, making chanctx_conf per-link but not updating this function.
+**Step 3.2: No Fixes: tag** - expected, N/A
 
 **Step 3.3: File History**
-Recent changes to `net/mac80211/cfg.c` are mostly unrelated (key
-handling, UHR support, kmalloc changes). No related prerequisite
-refactoring needed.
-
-Record: [Standalone fix, no dependencies]
+- mcu.c has had only 4 changes since v6.6 (relicense, SDIO, retry,
+  refcount)
+- mt7996/mcu.c has had 149 commits since initial driver
+- Record: [mcu.c is stable code; mt7996/mcu.c actively developed]
 
 **Step 3.4: Author**
-- Author: Suraj P Kizhakkethil (Qualcomm) — first commit to
-  net/mac80211/
-- Merged by: Johannes Berg — mac80211 maintainer/creator
+- StanleyYP Wang and Shayne Chen are regular MediaTek mt76 contributors
+  (20+ commits each)
+- Felix Fietkau is the mt76 subsystem maintainer who merged this
+- Record: [Author is subsystem vendor engineer; merged by maintainer]
 
-Record: [Author is Qualcomm WiFi engineer; maintainer reviewed and
-merged]
-
-**Step 3.5: Prerequisites**
-- Requires `ieee80211_vif_is_mld()` which exists since v6.5 (commit
-  `f1871abd27641`, June 2023)
-- Verified present in v6.6 and v6.12
-
-Record: [Self-contained fix; prerequisite function exists in 6.5+]
+**Step 3.5: Dependencies**
+- Patch 3 of a series (from message-id). Other patches may affect mt7925
+  or other files.
+- This patch is self-contained: the mcu.c change is a one-line
+  conditional, and the mt7996 change is a local restructuring.
+- The SDO commit (`dab5b2025452f9`) is already in 7.0 tree, and this
+  patch supersedes it.
+- Record: [Part of series but functionally standalone for mt7996]
 
 ## PHASE 4: MAILING LIST RESEARCH
 
-**Step 4.1-4.2: Patch Discussion**
-- Lore was not directly accessible (anti-bot protection)
-- b4 dig could not match the message-id directly
-- The patch was merged by Johannes Berg, indicating it passed his review
-- The Link tag confirms it went through the standard wireless review
-  process
-
-Record: [Maintainer-reviewed and merged; lore inaccessible for detailed
-discussion]
-
-**Step 4.3: Bug Report**
-No explicit Reported-by. The stack trace with hostapd suggests the
-author encountered this in Qualcomm AP MLD testing.
-
-**Step 4.4-4.5: Related Patches/Stable Discussion**
-The patch message-id suggests this is patch 2 of a series, but it is
-self-contained — the fix only touches `ieee80211_probe_client()` and has
-no code dependencies on other patches in the series.
+- lore.kernel.org was behind anti-bot protection; could not fetch.
+- The Link tag points to
+  `patch.msgid.link/20260203155532.1098290-3-shayne.chen@mediatek.com`
+  confirming it's patch 3 of a series.
+- Merged by Felix Fietkau (mt76 maintainer) which implies review and
+  acceptance.
+- Record: [Could not access lore] [Patch merged by subsystem maintainer]
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-**Step 5.1: Functions Modified**
-- `ieee80211_probe_client()` — the only function modified
+**Step 5.1: Key Functions**
+- `mt76_mcu_skb_send_and_get_msg()` - core MCU send/receive path for all
+  mt76 drivers
+- `mt7996_mcu_send_message()` - mt7996-specific TXD preparation and send
 
 **Step 5.2: Callers**
-- Called via `.probe_client` in `cfg80211_ops` (line 5632 of cfg.c)
-- Called from `nl80211_probe_client()` in `net/wireless/nl80211.c`
-- Triggered from userspace via netlink (hostapd uses this for station
-  monitoring)
+- `mt76_mcu_skb_send_and_get_msg` is called from
+  `mt76_mcu_send_and_get_msg()` and `mt76_mcu_skb_send_msg()` (inline
+  wrapper). These are the primary MCU command interfaces used throughout
+  all mt76 drivers.
+- Record: [Core MCU path, called from dozens of locations in all mt76
+  drivers]
 
-Record: [Reachable from userspace via netlink; called during normal AP
-operation]
-
-**Step 5.3-5.4: Call Chain**
-Userspace (hostapd) -> netlink -> `genl_rcv_msg` ->
-`nl80211_probe_client` -> `ieee80211_probe_client` -> WARN_ON + return
--EINVAL
-
-This is a HOT path for AP MLD operation — hostapd regularly probes
-stations to check if they're still connected.
-
-**Step 5.5: Similar Patterns**
-Other places in mac80211 access `sdata->vif.bss_conf.chanctx_conf` (28
-occurrences across mac80211). This fix addresses only the probe_client
-path.
+**Step 5.4: Call Chain for wait_resp=false**
+- `__mt76_mcu_send_firmware` → `mt76_mcu_send_msg(... false)` →
+  `mt76_mcu_skb_send_and_get_msg(... false)` → `mcu_skb_send_msg(...,
+  NULL)`
+- Firmware scatter commands skip TXD option setup via `goto exit`, so
+  those are unaffected.
+- Record: [Currently, no mt7996 UNI commands are sent with
+  wait_resp=false in this tree, but the fix is architecturally correct]
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-**Step 6.1: Buggy Code in Stable Trees**
-- v6.6: YES — verified. The exact same buggy code exists at line 4150 in
-  v6.6's cfg.c. `ieee80211_vif_is_mld()` also exists in v6.6's
-  mac80211.h.
-- v6.12: YES — verified. Same buggy code at line 4226. Same
-  `ieee80211_vif_is_mld()`.
-- v6.1: NO — `ieee80211_vif_is_mld()` does not exist in v6.1 (not an
-  ancestor of v6.1). MLD was not mature enough in 6.1 to have this
-  issue.
-
-Record: [Bug affects v6.5+ stable trees, including v6.6.y and v6.12.y]
+**Step 6.1: Code Exists in Stable**
+- mt7996 driver was introduced in v6.2 (commit `98686cd21624c7`)
+- The buggy ACK-always-on pattern exists in all kernels since v6.2
+- Record: [Present in stable trees 6.6.y and later]
 
 **Step 6.2: Backport Complications**
-- v6.6: Minor conflict — uses `mutex_lock(&local->mtx)` instead of
-  `lockdep_assert_wiphy()`. Fix code itself applies cleanly since it
-  only touches the chanctx_conf logic.
-- v6.12: Should apply cleanly — uses the same `lockdep_assert_wiphy()`.
-
-Record: [v6.12: clean apply; v6.6: minor context difference in locking,
-fix itself applies]
-
-**Step 6.3: Related Fixes**
-No related fixes for this specific bug already in stable.
+- The mcu.c change should apply cleanly (context is stable since 2024).
+- The mt7996/mcu.c change context includes the SDO special case
+  (`dab5b2025452f9`), which was merged in v6.14 cycle. For older stable
+  trees (6.6.y, 6.1.y), this SDO commit may not exist, requiring minor
+  context adjustment.
+- Record: [Clean apply for 7.0; may need minor adaptation for older
+  stables]
 
 ## PHASE 7: SUBSYSTEM CONTEXT
 
-**Step 7.1: Subsystem Criticality**
-- Subsystem: WiFi/mac80211 — IMPORTANT
-- Used by AP/router deployments (hostapd), all WiFi-enabled devices
-- AP MLD (WiFi 7) is increasingly deployed
+- Subsystem: wifi (drivers/net/wireless/mediatek/mt76) - WiFi driver
+- Criticality: IMPORTANT - mt76 is a widely-used WiFi chipset family
+  (MediaTek)
+- mt7996 is the Wi-Fi 7 (802.11be) driver, relatively new but growing
+  user base
+- Record: [IMPORTANT subsystem; growing user base for mt7996]
 
-**Step 7.2: Subsystem Activity**
-Actively developed subsystem with continuous changes. MLD support is
-actively being improved.
+## PHASE 8: IMPACT AND RISK
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+**Step 8.1: Affected Users** - mt7996/mt7992 WiFi users (Wi-Fi 7
+hardware)
 
-**Step 8.1: Affected Users**
-Anyone running an AP MLD (WiFi 7 multi-link) configuration using
-hostapd.
+**Step 8.2: Trigger Conditions** - Multiple MCU commands without
+response need to be sent. Currently the SDO case is already fixed
+separately. The broader fix is defensive/architectural.
 
-**Step 8.2: Trigger Conditions**
-- Triggered during normal operation when hostapd probes client stations
-- Happens automatically via hostapd's station monitoring
-- Any AP MLD with connected stations will trigger this repeatedly
-- Reachable from userspace (hostapd)
+**Step 8.3: Failure Mode** - MCU command/response mismatch → WiFi driver
+malfunction, potential command timeouts. Severity: MEDIUM-HIGH (not a
+crash/panic, but WiFi stops working correctly).
 
-**Step 8.3: Failure Mode Severity**
-- WARN_ON fires every time a station is probed — spams kernel log
-- Function returns -EINVAL — station probing is completely non-
-  functional for AP MLD
-- Without probe_client, hostapd cannot determine if stations are still
-  alive
-- Severity: HIGH (functionality completely broken + WARN_ON spam)
-
-**Step 8.4: Risk-Benefit Ratio**
-- BENEFIT: HIGH — fixes broken AP MLD functionality, eliminates WARN_ON
-  spam
-- RISK: VERY LOW — 5-line net change, self-contained, maintainer-
-  reviewed, non-MLD path completely unchanged
+**Step 8.4: Risk-Benefit**
+- Benefit: MEDIUM - fixes architectural correctness issue, prevents
+  class of MCU communication bugs
+- Risk: LOW - changes are minimal, all implementations verified to
+  handle NULL safely
+- Record: [Medium benefit, low risk = favorable ratio]
 
 ## PHASE 9: FINAL SYNTHESIS
 
-**Step 9.1: Evidence Summary**
+**Evidence FOR backporting:**
+- Fixes a real architectural bug in MCU event handling
+- Small and contained (2 files, ~10 lines)
+- Obviously correct (verified logic equivalence for all option values)
+- All 11 `mcu_skb_send_msg` implementations handle NULL safely
+- Merged by subsystem maintainer (Felix Fietkau)
+- Authors are MediaTek vendor engineers who understand the hardware
+- Bug present since mt7996 introduction (v6.2)
+- Subsumes the SDO-specific band-aid fix
 
-FOR backporting:
-- Fixes a clear, reproducible WARN_ON trigger during normal AP MLD
-  operation
-- Fixes broken probe_client functionality for AP MLD (returns -EINVAL)
-- Small, surgical fix (+10/-5 lines)
-- Merged by Johannes Berg (mac80211 maintainer/creator)
-- Affects v6.6 and v6.12 stable trees (verified)
-- Stack trace in commit message proves real-world trigger
-- Reachable from userspace (hostapd normal operation)
-- No dependencies on other patches
+**Evidence AGAINST backporting:**
+- Part of a series (patch 3/N) - unclear if fully standalone for all
+  scenarios
+- Immediate practical impact limited: SDO case already fixed separately
+- No user reports or syzbot triggers documented
+- Changes the interface contract for `mcu_skb_send_msg` across all mt76
+  drivers
+- Broader fix is somewhat "preventive" for future commands that may be
+  added
 
-AGAINST backporting:
-- No explicit Fixes: tag (expected for review candidates)
-- No explicit Cc: stable (expected)
-- Author's first mac80211 commit (but maintainer-reviewed)
+**Stable Rules Checklist:**
+1. Obviously correct? YES (verified logic equivalence)
+2. Fixes real bug? YES (orphaned events can corrupt MCU command
+   handling)
+3. Important? MEDIUM (WiFi malfunction, not crash)
+4. Small and contained? YES (~10 lines, 2 files)
+5. No new features? YES (pure bug fix)
+6. Applies to stable? YES for 7.0 (SDO commit context matches)
 
-**Step 9.2: Stable Rules Checklist**
-1. Obviously correct and tested? YES — clear conditional check, stack
-   trace shows testing
-2. Fixes a real bug? YES — WARN_ON + broken functionality
-3. Important issue? YES — breaks AP MLD station probing entirely
-4. Small and contained? YES — 5 net lines, single function
-5. No new features? CORRECT — only fixes existing broken path
-6. Can apply to stable? YES — verified code exists in v6.6 and v6.12
+**Verification:**
+- [Phase 1] Parsed subject: "avoid" verb indicates bug prevention; patch
+  3 of series
+- [Phase 2] Diff: 1 line in mcu.c (conditional NULL), ~8 lines
+  restructured in mt7996/mcu.c
+- [Phase 2] Logic equivalence verified: MCU_CMD_UNI|MCU_CMD_ACK =
+  MCU_CMD_UNI_QUERY_ACK (0x3), MCU_CMD_UNI|MCU_CMD_SET|MCU_CMD_ACK =
+  MCU_CMD_UNI_EXT_ACK (0x7)
+- [Phase 3] git blame: mcu.c line from e452c6eb55fbfd (2020), mt7996
+  from 98686cd21624c7 (2022)
+- [Phase 3] SDO fix dab5b2025452f9 confirmed in 7.0 tree
+- [Phase 3] mt7996 mcu.c option code originates from initial driver
+  (98686cd21624c7)
+- [Phase 5] All 11 mcu_skb_send_msg implementations verified to handle
+  NULL wait_seq safely (subagent confirmed no NULL dereferences)
+- [Phase 5] No mt76_mcu_skb_send_msg(..., false) calls found in mt7996
+  for UNI commands; firmware scatter skips TXD
+- [Phase 6] mt7996 exists in stable 6.6.y and later
+- [Phase 8] Failure: MCU response mismatch → WiFi malfunction, severity
+  MEDIUM-HIGH
+- UNVERIFIED: Could not access lore.kernel.org to check full series
+  context and reviewer feedback
 
-**Step 9.3: Exception Categories**
-Not an exception category — this is a straightforward bug fix.
-
-**Step 9.4: Decision**
-Clear YES. This fixes a real, reproducible bug that completely breaks AP
-MLD probe_client functionality. The fix is small, obvious, self-
-contained, and maintainer-reviewed.
-
-## Verification
-
-- [Phase 1] Parsed tags: Link to patch.msgid.link, merged by Johannes
-  Berg (mac80211 maintainer)
-- [Phase 2] Diff analysis: +10/-5 lines in single function
-  `ieee80211_probe_client()`, adds MLD conditional check
-- [Phase 3] git blame: chanctx_conf access introduced by d0a9123ef548de
-  (2022-05-10)
-- [Phase 3] git show b4487c2d0edaf: unrelated older fix (2011) for
-  different warning in same function
-- [Phase 3] git log --author="Suraj": no prior mac80211 commits (first
-  contribution, but maintainer-reviewed)
-- [Phase 4] b4 dig: unable to match exact message-id, but patch link
-  confirms standard review process
-- [Phase 5] Grep: `ieee80211_probe_client` called via cfg80211_ops
-  `.probe_client` callback from nl80211
-- [Phase 5] Stack trace: confirms userspace reachability via
-  nl80211_probe_client -> hostapd
-- [Phase 6] git show v6.6:net/mac80211/cfg.c: confirmed same buggy code
-  at line 4150
-- [Phase 6] git show v6.12:net/mac80211/cfg.c: confirmed same buggy code
-  at line 4226
-- [Phase 6] git show v6.6:include/net/mac80211.h: confirmed
-  `ieee80211_vif_is_mld()` exists
-- [Phase 6] git merge-base --is-ancestor: `ieee80211_vif_is_mld` in v6.5
-  and v6.6, NOT in v6.1
-- [Phase 8] Failure mode: WARN_ON trigger + -EINVAL return = broken
-  functionality, severity HIGH
-- UNVERIFIED: Exact mailing list discussion content (lore blocked by
-  anti-bot protection)
+The fix is architecturally correct and addresses a real design flaw in
+the MCU command path. While the immediate practical impact is somewhat
+mitigated by the existing SDO fix, this is the proper general solution
+that prevents the entire class of orphaned ACK events. The change is
+small, safe, and merged by the subsystem maintainer. The risk is very
+low given all implementations handle the NULL parameter correctly.
 
 **YES**
 
- net/mac80211/cfg.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mcu.c        |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 11 +++++------
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index b85375ceb575d..85b18f59a7821 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4629,12 +4629,17 @@ static int ieee80211_probe_client(struct wiphy *wiphy, struct net_device *dev,
+diff --git a/drivers/net/wireless/mediatek/mt76/mcu.c b/drivers/net/wireless/mediatek/mt76/mcu.c
+index 535c3d8a9cc0d..cbfb3bbec5031 100644
+--- a/drivers/net/wireless/mediatek/mt76/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mcu.c
+@@ -98,7 +98,7 @@ int mt76_mcu_skb_send_and_get_msg(struct mt76_dev *dev, struct sk_buff *skb,
+ 	/* orig skb might be needed for retry, mcu_skb_send_msg consumes it */
+ 	if (orig_skb)
+ 		skb_get(orig_skb);
+-	ret = dev->mcu_ops->mcu_skb_send_msg(dev, skb, cmd, &seq);
++	ret = dev->mcu_ops->mcu_skb_send_msg(dev, skb, cmd, wait_resp ? &seq : NULL);
+ 	if (ret < 0)
+ 		goto out;
  
- 	qos = sta->sta.wme;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 54776f0703876..0abe5efa9424e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -322,13 +322,12 @@ mt7996_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
+ 		uni_txd->pkt_type = MCU_PKT_ID;
+ 		uni_txd->seq = seq;
  
--	chanctx_conf = rcu_dereference(sdata->vif.bss_conf.chanctx_conf);
--	if (WARN_ON(!chanctx_conf)) {
--		ret = -EINVAL;
--		goto unlock;
-+	if (ieee80211_vif_is_mld(&sdata->vif)) {
-+		/* MLD transmissions must not rely on the band */
-+		band = 0;
-+	} else {
-+		chanctx_conf = rcu_dereference(sdata->vif.bss_conf.chanctx_conf);
-+		if (WARN_ON(!chanctx_conf)) {
-+			ret = -EINVAL;
-+			goto unlock;
-+		}
-+		band = chanctx_conf->def.chan->band;
- 	}
--	band = chanctx_conf->def.chan->band;
+-		if (cmd & __MCU_CMD_FIELD_QUERY)
+-			uni_txd->option = MCU_CMD_UNI_QUERY_ACK;
+-		else
+-			uni_txd->option = MCU_CMD_UNI_EXT_ACK;
++		uni_txd->option = MCU_CMD_UNI;
++		if (!(cmd & __MCU_CMD_FIELD_QUERY))
++			uni_txd->option |= MCU_CMD_SET;
  
- 	if (qos) {
- 		fc = cpu_to_le16(IEEE80211_FTYPE_DATA |
+-		if (mcu_cmd == MCU_UNI_CMD_SDO)
+-			uni_txd->option &= ~MCU_CMD_ACK;
++		if (wait_seq)
++			uni_txd->option |= MCU_CMD_ACK;
+ 
+ 		if ((cmd & __MCU_CMD_FIELD_WA) && (cmd & __MCU_CMD_FIELD_WM))
+ 			uni_txd->s2d_index = MCU_S2D_H2CN;
 -- 
 2.53.0
 
