@@ -1,66 +1,60 @@
-Return-Path: <linux-wireless+bounces-35079-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35080-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBp4APhN5mkgugEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35079-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 18:02:00 +0200
+	id eOf8EcM55mlutgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35080-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:35:47 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4997442EDA7
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 18:01:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE52342D39E
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C9869310322D
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 14:23:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A816305990F
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 14:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365C8480948;
-	Mon, 20 Apr 2026 13:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B53248C3E4;
+	Mon, 20 Apr 2026 13:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uRB+RSWf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vKVjP89x"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1177147F2EA;
-	Mon, 20 Apr 2026 13:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F5C48BD5D;
+	Mon, 20 Apr 2026 13:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691886; cv=none; b=VhWHsOMf1pgtFKRGGpQLtV8gXkEolC2R7ihSucH4oI9z2eLbpGO40AetbPrJx2tMS8Zpj3ES0xyfZK4IxIdc40vo6fldd93mTGMsjptvtVWuavyv9jujX6mwD5jMk0tZIZMlQ5p07kJoWxcqFyrUymKPmQ6ofcmzJu202X6BKd8=
+	t=1776691928; cv=none; b=QJzxfpO3QO0B1oeA/6QdkQpW2i8MwjoU1+JyXJqJ5Oi4lXdgzG0gE061q0MLjShMGRSXJITFpMbWE7UWpLID2PvIRrsi0PYUT48BKvJd1taizoAwgg6VGV1y+liTeN0Vj6uRLEfibsOPpD4mMs85DRql48BjdLCVSaSVT4Aral8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691886; c=relaxed/simple;
-	bh=Pn9O84j5Gzkkn/+pDkJ16PqPIewq1Dj5WL2dYyGinJI=;
+	s=arc-20240116; t=1776691928; c=relaxed/simple;
+	bh=SXDq7jTu5wSPdVSajHBdhavLJFyfzR8Zka0VyZuuoL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fI/d67W9SCZIkRRNEzrkofB63YXfKaNsVXHNHzotibAXk/6nsHAiKMWp2WuiAAFBfOWAF2m5gsYtTtBrl4RhGkJNxqn5huWjwQIGkr8XmtuTz3+N1o6PyHLOuD1TeMlseDRw1xZwmEmBH1WLTqqfHIDGFiD6yX6akxRWH+H0xjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uRB+RSWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC6AC19425;
-	Mon, 20 Apr 2026 13:31:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HmRMMfDd4lHZfCgIX5rUgW6KImOpwlRpiI2mIn7EeAPrNLC9BSzCBHB6zGkP45TjskyOR0C8Zk8mRLmtlrkEP9Y2DesHjJoLuSy0aZmbHz3bVhRHOV2n6qAPNlZ++3EtW8meJxxdOB2vqS5cXMCxDKP9qudjdIEMiyQ9nCM9bJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vKVjP89x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526D9C2BCB4;
+	Mon, 20 Apr 2026 13:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691885;
-	bh=Pn9O84j5Gzkkn/+pDkJ16PqPIewq1Dj5WL2dYyGinJI=;
+	s=k20201202; t=1776691928;
+	bh=SXDq7jTu5wSPdVSajHBdhavLJFyfzR8Zka0VyZuuoL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRB+RSWfLJmUWoPP6r5iAA9mCImlc25pZdMrkBXQ7kR3fztmXbovGkBQx5gJCuBYd
-	 oRPrV4UDUX+16F2pEzRfVXnTmwCPqj6qVeIcMPoQYfuzdWYNjb+TZhQnmBYb7kw3g/
-	 qyXRroLRETD3T6Ad8HtcTa7Vdh2vhV9DvCn3KYwPGZquqYxUUsaITNPCi43QPhclDT
-	 Mcbkg+MFycqY2lp8f7QIdzQg7AzMpeLgaRSBC6WalQpNUGrDINahAzkX7ETyeJl0n1
-	 TqHhrYMcalUihz4RdnwmvnZXdsEPM/VaxUQH/QvigB3O9nEXXjQ/rBUloZbLCefm4Z
-	 UtLMFBBc7SyqQ==
+	b=vKVjP89xhinnBP4y8RJ/EmSIZ/aRsw+GPU46QAbDRQyKEdsC9k5FNwTC4zUoQqGlD
+	 131VlNtt9a6Vy7CN0EaWIkoB2DUETO6iVuZmLDAdVRu332FnSceZjncOoUKHF5pXl9
+	 QpALayZuU05MIHorkj0LPHnNOWNHXljk/c8nGJI8TPx/ERGRMW9JDlaFtE+ippBeF8
+	 rWKtFxlJD47nATqa6tN8WTLAht5zZOxfF64+8gmn7ilbwxJeGDm/MYpOD+bAIsREDE
+	 rZtC7zDviAetO/VanzSItcV3OM7RJQzHxusRbmHmvFkV36WAIjgEcAdFR1neWtwj0m
+	 e+1vFMXqFT+qw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Chad Monroe <chad@monroe.io>,
-	Felix Fietkau <nbd@nbd.name>,
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
 	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 7.0-6.6] wifi: mt76: mt7996: reset device after MCU message timeout
-Date: Mon, 20 Apr 2026 09:20:45 -0400
-Message-ID: <20260420132314.1023554-251-sashal@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 7.0-5.10] wifi: rtw88: TX QOS Null data the same way as Null data
+Date: Mon, 20 Apr 2026 09:21:08 -0400
+Message-ID: <20260420132314.1023554-274-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -75,448 +69,336 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[monroe.io,nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-35079-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-35080-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[chad.monroe.io:query timed out];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,nbd.name:email]
-X-Rspamd-Queue-Id: 4997442EDA7
+	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,realtek.com:email]
+X-Rspamd-Queue-Id: CE52342D39E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Chad Monroe <chad@monroe.io>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit d2b860454ea2df8f336e9b859da7ffb27f43444d ]
+[ Upstream commit 737e980e12983bb7420a2c00b981a1e607079a84 ]
 
-Trigger a full reset after MCU message timeout.
+When filling out the TX descriptor, Null data frames are treated like
+management frames, but QOS Null data frames are treated like normal
+data frames. Somehow this causes a problem for the firmware.
 
-Signed-off-by: Chad Monroe <chad@monroe.io>
-Link: https://patch.msgid.link/6e05ed063f3763ad3457633c56b60a728a49a6f0.1765203753.git.chad@monroe.io
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+When connected to a network in the 2.4 GHz band, wpa_supplicant (or
+NetworkManager?) triggers a scan every five minutes. During these scans
+mac80211 transmits many QOS Null frames in quick succession. Because
+these frames are marked with IEEE80211_TX_CTL_REQ_TX_STATUS, rtw88
+asks the firmware to report the TX ACK status for each of these frames.
+Sometimes the firmware can't process the TX status requests quickly
+enough, they add up, it only processes some of them, and then marks
+every subsequent TX status report with the wrong number.
+
+The symptom is that after a while the warning "failed to get tx report
+from firmware" appears every five minutes.
+
+This problem apparently happens only with the older RTL8723D, RTL8821A,
+RTL8812A, and probably RTL8703B chips.
+
+Treat QOS Null data frames the same way as Null data frames. This seems
+to avoid the problem.
+
+Tested with RTL8821AU, RTL8723DU, RTL8811CU, and RTL8812BU.
+
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/2b53fb0d-b1ed-47b6-8caa-2bb9ae2acb80@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information needed for the complete analysis. Let me
-compile the findings.
+Now I have all the information needed for a thorough analysis. Let me
+compile the complete assessment.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
 **Step 1.1: Subject Line**
-- Subsystem: `wifi: mt76: mt7996`
-- Action verb: "reset" (implies recovery from a failure state)
-- Summary: Trigger a device reset when MCU message timeouts occur on
-  mt7996
-- Record: [wifi/mt76/mt7996] [reset] [Trigger full device recovery after
-  MCU message timeout]
+- Subsystem: `wifi: rtw88:`
+- Action: "TX QOS Null data the same way as Null data" — implies
+  correcting inconsistent behavior, which is a bug fix
+- Summary: QoS Null data frames should be treated like regular Null data
+  frames during TX descriptor setup
 
 **Step 1.2: Tags**
-- `Signed-off-by: Chad Monroe <chad@monroe.io>` - patch author
-- `Link: https://patch.msgid.link/...` - reference to lore
-- `Signed-off-by: Felix Fietkau <nbd@nbd.name>` - maintainer/committer
-  of mt76
-- No Fixes: tag (expected for manual review candidates)
+- `Signed-off-by: Bitterblue Smith` — author, active rtw88 contributor
+- `Acked-by: Ping-Ke Shih` — rtw88 subsystem maintainer explicitly
+  acknowledged
+- `Signed-off-by: Ping-Ke Shih` — maintainer merged it
+- `Link: https://patch.msgid.link/...` — patch submission link
+- No Fixes: tag (expected for this review pipeline)
 - No Cc: stable (expected)
-- No Reported-by tag
-- Record: Author is Chad Monroe; applied by Felix Fietkau (the mt76
-  subsystem maintainer)
 
-**Step 1.3: Commit Body**
-- Body is very brief: "Trigger a full reset after MCU message timeout."
-- No stack traces or reproduction steps given
-- The mt7915 equivalent (commit 10f73bb3938f7c5) provides more context:
-  "MCU hangs do not trigger watchdog interrupts, so they can only be
-  detected through MCU message timeouts. Ensure that the hardware gets
-  restarted when that happens in order to prevent a permanent stuck
-  state."
-- Record: Bug = MCU hang leaves device permanently stuck. Symptom = WiFi
-  device becomes non-functional, requires reboot. Root cause = MCU hang
-  without watchdog interrupt, only detectable via message timeout, no
-  recovery triggered.
+**Step 1.3: Body Text**
+The commit describes:
+- **Bug**: QoS Null frames are treated as normal data frames, while
+  plain Null frames go through the management path. This causes firmware
+  misbehavior.
+- **Trigger**: On 2.4 GHz, wpa_supplicant/NetworkManager triggers scans
+  every 5 minutes. During scans, many QoS Null frames with
+  `IEEE80211_TX_CTL_REQ_TX_STATUS` are sent. Firmware can't keep up with
+  TX status reports.
+- **Symptom**: "failed to get tx report from firmware" warning every 5
+  minutes.
+- **Affected chips**: RTL8723D, RTL8821A, RTL8812A, RTL8703B (older
+  chips).
+- **Tested with**: RTL8821AU, RTL8723DU, RTL8811CU, RTL8812BU.
 
-**Step 1.4: Hidden Bug Fix Detection**
-- "reset device after MCU message timeout" - this is clearly a fix for a
-  missing recovery path. Without it, a firmware hang results in a
-  permanent stuck state.
-- Record: This IS a bug fix. The device becomes permanently stuck
-  without it.
-
----
+**Step 1.4: Hidden Bug Fix?**
+This is clearly a bug fix, not disguised. The commit explicitly explains
+the incorrect behavior and the symptom.
 
 ## PHASE 2: DIFF ANALYSIS
 
 **Step 2.1: Inventory**
-- `mcu.c`: +9 lines (in `mt7996_mcu_parse_response`)
-- `mac.c`: +5 lines (in `mt7996_reset`)
-- Total: ~14 lines added, 0 removed
-- Scope: Single-driver, surgical fix in two closely-related functions
-- Record: 2 files, +14 lines, functions: mt7996_mcu_parse_response,
-  mt7996_reset
+- Single file: `drivers/net/wireless/realtek/rtw88/tx.c`
+- 1 line changed: `ieee80211_is_nullfunc(fc)` →
+  `ieee80211_is_any_nullfunc(fc)`
+- Function modified: `rtw_tx_pkt_info_update()`
+- Scope: absolute minimal — single token change
 
-**Step 2.2: Code Flow Changes**
+**Step 2.2: Code Flow Change**
+Before: QoS Null frames (subtype `IEEE80211_STYPE_QOS_NULLFUNC`) don't
+match `ieee80211_is_nullfunc()` but DO match `ieee80211_is_data()`, so
+they go through `rtw_tx_data_pkt_info_update()` which sets MCS rates,
+software sequencing, and potential AMPDU.
 
-Hunk 1 (mcu.c): In `mt7996_mcu_parse_response()`, when `skb == NULL`
-(MCU timeout):
-- **Before**: Log error, return -ETIMEDOUT. No recovery action.
-- **After**: Log error, atomically set `MT76_MCU_RESET` bit (via
-  `test_and_set_bit` to prevent duplicates), set `recovery.restart =
-  true`, wake up MCU wait queue, queue `reset_work`, wake up
-  `reset_wait`, then return -ETIMEDOUT.
-
-Hunk 2 (mac.c): In `mt7996_reset()`, before the existing `queue_work`:
-- **Before**: Always queue reset_work and wake reset_wait
-  unconditionally.
-- **After**: If `MT_MCU_CMD_STOP_DMA` is set, additionally set
-  `MT76_MCU_RESET` bit and wake up MCU wait queue, aborting pending MCU
-  operations before reset.
+After: QoS Null frames match `ieee80211_is_any_nullfunc()`, so they go
+through `rtw_tx_mgmt_pkt_info_update()` which sets basic rates, hardware
+sequencing, and `dis_qselseq = true`.
 
 **Step 2.3: Bug Mechanism**
-- Category: Missing error recovery / permanent hardware stuck state
-- The MCU can hang in a way that doesn't trigger a hardware watchdog
-  interrupt. The only indication is MCU message timeouts. Without this
-  patch, timeouts just return an error code but never trigger device
-  recovery. The device becomes permanently non-functional.
-- Record: Missing recovery mechanism. MCU hang → timeout → error return
-  → no recovery → permanent stuck state.
+Category: **Logic/correctness fix**. QoS Null frames are
+control/management-like frames that should not be treated as normal data
+traffic. Being processed as data frames causes the firmware to choke on
+rapid TX status report requests.
 
 **Step 2.4: Fix Quality**
-- Obviously correct: Mirrors the exact same pattern used in mt7915
-  (commit 10f73bb3938f7c5) and mt7915's STOP_DMA handling (commit
-  b13cd593ef2402).
-- Minimal/surgical: Only adds recovery trigger code at the exact points
-  needed.
-- `test_and_set_bit` prevents duplicate resets.
-- Regression risk: Very low. The reset_work handler already handles
-  `recovery.restart = true` properly. The STOP_DMA path already exists
-  for other triggers.
-- Record: High quality fix, obviously correct, mirrors established
-  patterns.
+- Obviously correct: `ieee80211_is_any_nullfunc()` is the standard
+  helper for this exact pattern (introduced in commit 30b2f0be23fb
+  precisely for cases where both Null and QoS Null need matching)
+- Minimal: 1 token change
+- Regression risk: very low — QoS Null frames will now use basic rates
+  and hardware sequencing, same as plain Null frames, which is the
+  expected behavior
 
----
-
-## PHASE 3: GIT HISTORY INVESTIGATION
+## PHASE 3: GIT HISTORY
 
 **Step 3.1: Blame**
-- `mt7996_mcu_parse_response()`: Unchanged since original driver
-  addition by Shayne Chen (commit 98686cd21624c7, November 2022, v6.2).
-- `mt7996_reset()`: Added by Bo Jiao (commit 27015b6fbcca83, April 2023,
-  v6.4) as "enable full system reset support".
-- The buggy code (missing recovery trigger) has been present since the
-  driver was first created.
-- Record: Bug present since v6.2 (mcu.c) and v6.4 (mac.c had
-  mt7996_reset without STOP_DMA handling).
+The buggy line was introduced in `e3037485c68ec1` ("rtw88: new Realtek
+802.11ac driver") from v5.2-rc1 (April 2019). The bug has existed since
+the driver was first written.
 
-**Step 3.2: No Fixes: Tag**
-- N/A - no Fixes: tag present (expected).
+**Step 3.2: Fixes target**
+No Fixes: tag, but the root cause is in `e3037485c68ec1` — the initial
+driver commit. This means ALL stable trees that contain rtw88 have the
+bug.
 
-**Step 3.3: File History**
-- The mt7996 reset infrastructure was significantly improved in v6.18
-  (ace5d3b6b49e8 "improve hardware restart reliability"). However, the
-  basic recovery mechanism has been in place since v6.4.
-- The commit `beb01caa570c52` in v6.18 decreased MCU timeouts to allow
-  faster recovery - this patch's logic works with either timeout value.
-- Record: This commit is standalone; no prerequisites needed beyond the
-  v6.4 reset infrastructure.
+**Step 3.3: Related commits**
+The same author has addressed this "failed to get tx report from
+firmware" issue from multiple angles:
+- `57289d30cd2ae3` — beacon loss detection (v6.13) — works around the
+  symptom
+- `28818b4d871bc9` — USB disconnection fix after beacon loss (v6.11) —
+  separate but related bug
+- `c7706b1173c77` — data rate fallback for older chips — same set of
+  affected chips
+This commit appears to be the **root cause fix** rather than a
+workaround.
 
 **Step 3.4: Author**
-- Chad Monroe is a contributor to mt76 (5 commits found in the driver).
-- Felix Fietkau (nbd@nbd.name) is THE mt76 subsystem maintainer - he
-  applied the patch.
-- Felix also authored the identical fix for mt7915 (10f73bb3938f7c5).
-- Record: Applied by subsystem maintainer. Author is a regular
-  contributor.
+Bitterblue Smith is a prolific rtw88 contributor with 20+ commits to the
+driver. Not the subsystem maintainer but a trusted regular contributor,
+especially for USB variants of Realtek chips.
 
 **Step 3.5: Dependencies**
-- All structures/flags used already exist: `MT76_MCU_RESET`,
-  `recovery.restart`, `mcu.wait`, `reset_work`, `reset_wait`,
-  `MT_MCU_CMD_STOP_DMA`.
-- No new functions or data structures introduced.
-- Record: Fully self-contained, no dependencies on other uncommitted
-  patches.
+None. `ieee80211_is_any_nullfunc()` was added in v5.7-rc1 (commit
+30b2f0be23fb40). Verified it exists in v5.10, v5.15, v6.1, and v6.6
+trees. The patch applies cleanly to all stable trees.
 
----
+## PHASE 4: MAILING LIST
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
-
-**Step 4.1: Original Discussion**
-- lore.kernel.org returned anti-bot protection; direct web access was
-  blocked.
-- b4 dig of the mt7915 equivalent found it was part of a 24-patch series
-  (v2) by Felix Fietkau from August 2024.
-- The mt7996 version is by Chad Monroe and was ported from the mt7915
-  fix.
-- Record: Could not access lore directly due to anti-bot protection. b4
-  confirmed the mt7915 version was part of Felix Fietkau's cleanup
-  series.
-
-**Step 4.2: Reviewer**
-- Applied by Felix Fietkau, the mt76 subsystem maintainer.
-- Record: Subsystem maintainer applied the patch directly.
-
-**Step 4.3-4.5**: Blocked by lore anti-bot protection. No additional
-information could be gathered.
-
----
+Lore.kernel.org was not accessible due to bot protection. However:
+- The commit has `Acked-by: Ping-Ke Shih` (subsystem maintainer)
+- The commit was merged by Ping-Ke Shih
+- Testing was done on 4 different devices
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-**Step 5.1: Functions Modified**
-- `mt7996_mcu_parse_response()` - MCU response parser (callback)
-- `mt7996_reset()` - device reset entry point
+**Step 5.1: Modified function**
+`rtw_tx_pkt_info_update()` — the central TX path function.
 
-**Step 5.2: Callers of `mt7996_mcu_parse_response`**
-- Registered as `.mcu_parse_response` in `mt7996_mcu_ops` (mcu.c line
-  3363).
-- Called from `mt76_mcu_skb_send_and_get_msg()` in `mcu.c` (core mt76
-  code, line 122).
-- This is the universal MCU message response handler - called for EVERY
-  MCU command the driver issues.
-- Record: Called for every MCU message. Critical, high-frequency path.
+**Step 5.2: Callers**
+- `rtw_tx()` (line 556) — main TX entry point from mac80211
+- `rtw_txq_push_skb()` (line 613) — TX queue push path
+Both are hot paths executed for every transmitted frame.
 
-**Step 5.3: Callers of `mt7996_reset`**
-- Called from interrupt context and error recovery paths.
-- Used by `mt7996_irq_tasklet()` when MCU command interrupts occur.
-- Record: Called from interrupt handler / tasklet context.
+**Step 5.3-5.4: Call chain**
+This is directly reachable from mac80211's TX path — every WiFi frame
+goes through this function. The QoS Null frames are triggered
+automatically by mac80211 during scans.
 
-**Step 5.4: Call Chain**
-- Any WiFi operation → MCU command → `mt76_mcu_skb_send_and_get_msg()` →
-  wait for response → `mt7996_mcu_parse_response()` → if timeout →
-  trigger reset
-- This path is reachable from normal WiFi operations (scan, associate,
-  channel switch, etc.)
-- Record: Fully reachable from normal user operations.
-
-**Step 5.5: Similar Patterns**
-- mt7915 has identical recovery logic (10f73bb3938f7c5 +
-  b13cd593ef2402).
-- mt7921/mt7925 have similar reset mechanisms.
-- Record: Well-established pattern across the mt76 driver family.
-
----
+**Step 5.5: Similar patterns**
+The `ieee80211_is_any_nullfunc()` helper was specifically created
+because multiple places in mac80211 had the same bug of only checking
+for non-QoS nullfunc. Other drivers (iwlwifi, ath, rtw89) already use
+`ieee80211_is_any_nullfunc()` correctly.
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-**Step 6.1: Buggy Code in Stable Trees**
-- mt7996 driver added in v6.2.
-- `mt7996_reset()` added in v6.4.
-- `mt7996_mcu_parse_response()` unchanged since v6.2.
-- The mcu.c part of the fix applies to 6.2+. The mac.c part applies to
-  6.4+.
-- Affected stable trees: 6.6.y, 6.12.y, and any other active LTS that
-  includes mt7996.
-- Record: Bug exists in 6.6.y and all later stable trees.
+**Step 6.1: Buggy code in stable trees?**
+YES. Verified the exact buggy line `ieee80211_is_nullfunc(fc)` exists in
+v5.10, v5.15, v6.1, and v6.6 trees.
 
-**Step 6.2: Backport Complications**
-- The code being modified is unchanged since original introduction.
-- Should apply cleanly to 6.6.y.
-- Record: Expected clean apply.
+**Step 6.2: Backport complications**
+None. The patch applies with zero context conflicts. The surrounding
+code is identical across all stable trees.
 
-**Step 6.3: No Related Fixes Already in Stable**
-- No similar fix found in stable trees.
-- Record: No existing fix for this issue in stable.
-
----
+**Step 6.3: Related fixes in stable**
+No. This specific fix has not been applied to any stable tree.
 
 ## PHASE 7: SUBSYSTEM CONTEXT
 
 **Step 7.1: Subsystem**
-- WiFi driver (drivers/net/wireless/mediatek/mt76/mt7996)
-- MT7996 is MediaTek's Wi-Fi 7 (802.11be) chipset - used in routers and
-  access points.
-- Criticality: IMPORTANT - WiFi is critical infrastructure for many
-  users.
-- Record: [WiFi driver] [IMPORTANT - affects mt7996 hardware users]
+WiFi driver (rtw88) — IMPORTANT category. RTL8723D, RTL8821A, RTL8812A
+are common consumer WiFi chips used in USB dongles and embedded systems.
 
 **Step 7.2: Activity**
-- Very actively developed - dozens of commits in recent releases.
-- Active MLO/Wi-Fi 7 development ongoing.
-- Record: Highly active subsystem.
+Actively developed with regular fixes from multiple contributors.
 
----
+## PHASE 8: IMPACT AND RISK
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+**Step 8.1: Affected users**
+Users of RTL8723D, RTL8821A, RTL8812A, RTL8703B WiFi chips connected to
+2.4 GHz networks. These are popular budget WiFi chips.
 
-**Step 8.1: Affected Users**
-- All users of mt7996/mt7992 WiFi hardware (routers, access points, PCIe
-  WiFi cards).
-- Record: Hardware-specific, but MT7996 is a current-generation popular
-  WiFi chipset.
+**Step 8.2: Trigger**
+Automatic — triggered every 5 minutes during background scans by
+wpa_supplicant/NetworkManager. No user action required.
 
-**Step 8.2: Trigger Conditions**
-- Triggers when MCU firmware hangs without issuing a watchdog interrupt.
-- Can happen during normal operation (firmware bugs, hardware glitches).
-- Not user-triggered in the security sense, but can happen during
-  routine WiFi operation.
-- Record: Firmware hang during normal operation. Not predictable but
-  happens in practice (same fix was needed for mt7915).
+**Step 8.3: Severity**
+MEDIUM — the "failed to get tx report from firmware" warning floods logs
+periodically. While not a crash, it indicates firmware state
+desynchronization that can lead to further issues. The related commits
+show this same symptom can escalate to disconnections.
 
-**Step 8.3: Failure Mode**
-- Without the fix: WiFi device becomes permanently non-functional until
-  reboot.
-- This is a system hang from the WiFi perspective.
-- Severity: HIGH (permanent loss of WiFi connectivity, requires reboot)
-- Record: Permanent device stuck state. Severity: HIGH.
+**Step 8.4: Risk-Benefit**
+- **Benefit**: HIGH — fixes a recurring warning every 5 minutes for
+  users of popular hardware, prevents potential firmware state
+  corruption
+- **Risk**: VERY LOW — single token change using a well-established
+  kernel helper, tested on 4 devices, acked by maintainer
 
-**Step 8.4: Risk-Benefit Ratio**
-- Benefit: HIGH - prevents permanent WiFi device failure, enables
-  automatic recovery.
-- Risk: VERY LOW - 14 lines, uses `test_and_set_bit` for safety, mirrors
-  proven mt7915 pattern, no changes to public APIs or data structures.
-- Record: Benefit HIGH, Risk VERY LOW. Excellent ratio.
+## PHASE 9: SYNTHESIS
 
----
+**Evidence FOR:**
+- Fixes a real, user-visible bug (recurring firmware warnings every 5
+  minutes)
+- Affects popular WiFi hardware (RTL8723D/RTL8821A/RTL8812A/RTL8703B)
+- Trivial one-line change — absolute minimal scope
+- Uses standard kernel helper (`ieee80211_is_any_nullfunc`) available in
+  all stable trees
+- Bug exists since the driver was created (v5.2) — all stable trees
+  affected
+- Acked by subsystem maintainer
+- Tested on 4 different hardware variants
+- No dependencies, clean apply to all stable trees
+- Same class of bug (missing QoS Null check) was fixed in mac80211 core
+  via the same helper
 
-## PHASE 9: FINAL SYNTHESIS
+**Evidence AGAINST:**
+- No Fixes: tag (expected for review pipeline)
+- Symptom is a warning, not a crash (but related to firmware state
+  desync that can escalate)
 
-**Step 9.1: Evidence Summary**
-
-FOR backporting:
-- Fixes permanent device stuck state (WiFi becomes completely non-
-  functional)
-- Small and surgical fix (14 lines, 2 files in same driver)
-- Mirrors identical fix already applied to sister chip mt7915 (proven
-  pattern)
-- Applied by mt76 subsystem maintainer (Felix Fietkau)
-- No dependencies on other patches
-- Buggy code present since driver introduction (v6.2/v6.4)
-- `test_and_set_bit` prevents duplicate resets (safe concurrent
-  behavior)
-- Should apply cleanly to stable trees
-
-AGAINST backporting:
-- Brief commit message (but supplemented by identical mt7915 fix
-  explanation)
-- No explicit stable nomination or Reported-by (but this is expected for
-  manual review candidates)
-
-**Step 9.2: Stable Rules Checklist**
-1. Obviously correct and tested? **YES** - mirrors proven mt7915
-   pattern, applied by maintainer
-2. Fixes a real bug? **YES** - permanent device stuck state
-3. Important issue? **YES** - device becomes permanently non-functional
-4. Small and contained? **YES** - 14 lines in single driver
-5. No new features or APIs? **YES** - only adds error recovery
-6. Can apply to stable? **YES** - code unchanged since introduction
-
-**Step 9.3: Exception Categories**
-- Not an exception category - this is a standard bug fix.
-
-**Step 9.4: Decision**
-This is a clear bug fix that prevents a permanent device stuck state.
-It's small, obviously correct, follows established patterns, and was
-applied by the subsystem maintainer. The benefit-to-risk ratio is
-excellent.
-
----
+**Stable Rules Checklist:**
+1. Obviously correct? YES — standard helper for this exact pattern
+2. Fixes a real bug? YES — recurring firmware desync warning
+3. Important issue? YES (firmware interaction bug, periodic warning,
+   potential escalation)
+4. Small and contained? YES — 1 line in 1 file
+5. No new features? Correct — pure bug fix
+6. Can apply to stable? YES — verified helper exists in all stable trees
 
 ## Verification
 
-- [Phase 1] Parsed tags: Link to patch.msgid, signed by author (Chad
-  Monroe) and maintainer (Felix Fietkau)
-- [Phase 2] Diff analysis: +9 lines in mcu.c (reset trigger on timeout),
-  +5 lines in mac.c (STOP_DMA handling)
-- [Phase 3] git blame: mt7996_mcu_parse_response unchanged since
-  98686cd21624c7 (v6.2); mt7996_reset from 27015b6fbcca83 (v6.4)
-- [Phase 3] git show 10f73bb3938f7c5: confirmed identical mt7915 fix
-  exists with clear explanation of the permanent stuck state bug
-- [Phase 3] git show b13cd593ef2402: confirmed identical mt7915 STOP_DMA
-  handling pattern
-- [Phase 3] git log --author: Chad Monroe has 5 commits in mt76, is a
-  regular contributor
-- [Phase 4] b4 dig: found mt7915 version in Felix Fietkau's series at
-  lore
-- [Phase 4] lore direct access blocked by anti-bot protection
-- [Phase 5] Grep MT76_MCU_RESET: confirmed flag is used across 15+ files
-  in mt76 for reset coordination
-- [Phase 5] Grep mt7996_mcu_parse_response: confirmed it's registered as
-  mcu_ops callback (line 3363)
-- [Phase 5] Grep reset_work: confirmed reset_work/reset_wait
-  infrastructure exists since v6.4
-- [Phase 6] git tag --contains: mt7996_reset present since v6.4; driver
-  since v6.2
-- [Phase 6] Current 7.0 code confirmed: mt7996_reset lacks STOP_DMA
-  handling, parse_response lacks reset trigger
-- [Phase 8] Failure mode: permanent WiFi device stuck state requiring
-  reboot - severity HIGH
-- UNVERIFIED: Exact lore discussion content could not be accessed due to
-  anti-bot protection
+- [Phase 1] Parsed tags: Acked-by Ping-Ke Shih (maintainer), tested with
+  4 devices
+- [Phase 2] Diff: 1 token change in `rtw_tx_pkt_info_update()`:
+  `ieee80211_is_nullfunc` → `ieee80211_is_any_nullfunc`
+- [Phase 3] git blame: buggy code from `e3037485c68ec1` (v5.2-rc1, rtw88
+  driver creation), present in all stable trees
+- [Phase 3] git describe: `v5.2-rc1~133^2~37^2~8` confirmed for original
+  commit
+- [Phase 3] git show v6.6/v6.1/v5.15: verified identical buggy line
+  exists
+- [Phase 3] git log author: Bitterblue Smith has 20+ rtw88 commits,
+  trusted contributor
+- [Phase 3] Related commits: `57289d30cd2ae3` (beacon loss workaround)
+  and `28818b4d871bc9` (USB disconnection fix) address same symptom
+  family
+- [Phase 4] Lore inaccessible due to bot protection; maintainer ack
+  verified in commit tags
+- [Phase 5] `rtw_tx_pkt_info_update()` called from `rtw_tx()` and
+  `rtw_txq_push_skb()` — main TX paths
+- [Phase 5] `ieee80211_is_any_nullfunc()` already used by iwlwifi, ath,
+  rtw89 for same purpose
+- [Phase 6] `ieee80211_is_any_nullfunc()` verified present in v5.10
+  (line 735), v5.15 (line 732), v6.1 (line 769)
+- [Phase 6] Patch applies cleanly — surrounding code identical across
+  stable trees
+- [Phase 8] Trigger: automatic every 5 minutes on 2.4 GHz; severity
+  MEDIUM (firmware desync)
 
 **YES**
 
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 5 +++++
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 9 +++++++++
- 2 files changed, 14 insertions(+)
+ drivers/net/wireless/realtek/rtw88/tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index d4f3ee943b472..b7aa51481ce82 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -2737,6 +2737,11 @@ void mt7996_reset(struct mt7996_dev *dev)
- 		return;
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index 2ab440cb2d67b..3106edb84fb47 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -421,7 +421,7 @@ void rtw_tx_pkt_info_update(struct rtw_dev *rtwdev,
+ 		pkt_info->mac_id = rtwvif->mac_id;
  	}
  
-+	if (READ_ONCE(dev->recovery.state) & MT_MCU_CMD_STOP_DMA) {
-+		set_bit(MT76_MCU_RESET, &dev->mphy.state);
-+		wake_up(&dev->mt76.mcu.wait);
-+	}
-+
- 	queue_work(dev->mt76.wq, &dev->reset_work);
- 	wake_up(&dev->reset_wait);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index c0c042de477b8..54776f0703876 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -209,6 +209,7 @@ static int
- mt7996_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 			  struct sk_buff *skb, int seq)
- {
-+	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
- 	struct mt7996_mcu_rxd *rxd;
- 	struct mt7996_mcu_uni_event *event;
- 	int mcu_cmd = FIELD_GET(__MCU_CMD_FIELD_ID, cmd);
-@@ -217,6 +218,14 @@ mt7996_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 	if (!skb) {
- 		dev_err(mdev->dev, "Message %08x (seq %d) timeout\n",
- 			cmd, seq);
-+
-+		if (!test_and_set_bit(MT76_MCU_RESET, &dev->mphy.state)) {
-+			dev->recovery.restart = true;
-+			wake_up(&dev->mt76.mcu.wait);
-+			queue_work(dev->mt76.wq, &dev->reset_work);
-+			wake_up(&dev->reset_wait);
-+		}
-+
- 		return -ETIMEDOUT;
- 	}
- 
+-	if (ieee80211_is_mgmt(fc) || ieee80211_is_nullfunc(fc))
++	if (ieee80211_is_mgmt(fc) || ieee80211_is_any_nullfunc(fc))
+ 		rtw_tx_mgmt_pkt_info_update(rtwdev, pkt_info, sta, skb);
+ 	else if (ieee80211_is_data(fc))
+ 		rtw_tx_data_pkt_info_update(rtwdev, pkt_info, sta, skb);
 -- 
 2.53.0
 
