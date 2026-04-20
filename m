@@ -1,60 +1,60 @@
-Return-Path: <linux-wireless+bounces-35080-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35081-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOf8EcM55mlutgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35080-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:35:47 +0200
+	id uA6bL0hC5mlxtwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35081-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 17:12:08 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE52342D39E
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:35:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5530E42DE53
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 17:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9A816305990F
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 14:27:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 07B43336015D
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 14:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B53248C3E4;
-	Mon, 20 Apr 2026 13:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6C94A2E17;
+	Mon, 20 Apr 2026 13:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vKVjP89x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RH72oSSl"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F5C48BD5D;
-	Mon, 20 Apr 2026 13:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87CA3AC0EF;
+	Mon, 20 Apr 2026 13:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691928; cv=none; b=QJzxfpO3QO0B1oeA/6QdkQpW2i8MwjoU1+JyXJqJ5Oi4lXdgzG0gE061q0MLjShMGRSXJITFpMbWE7UWpLID2PvIRrsi0PYUT48BKvJd1taizoAwgg6VGV1y+liTeN0Vj6uRLEfibsOPpD4mMs85DRql48BjdLCVSaSVT4Aral8=
+	t=1776691962; cv=none; b=o9R6l1qQZ6MAp9Sep9OkZJSwg3KALZrOoa7iLtyjURPpsRiMp5JOEqzDpHb6oyNIUUxpV9Yg31QUK9Z4QFb2/wVyZfe6Nv8jR4WJExRpzNIAVfoKBcW7GMjIC0roT1hHgUabqIoGixt8RRFNTkeWVZ4sJoiMmG8FjjdabBJKauI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691928; c=relaxed/simple;
-	bh=SXDq7jTu5wSPdVSajHBdhavLJFyfzR8Zka0VyZuuoL4=;
+	s=arc-20240116; t=1776691962; c=relaxed/simple;
+	bh=eGzhoL+9ItleeULCSIk5g1DY5q8ohXKhvnZBWAIftTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HmRMMfDd4lHZfCgIX5rUgW6KImOpwlRpiI2mIn7EeAPrNLC9BSzCBHB6zGkP45TjskyOR0C8Zk8mRLmtlrkEP9Y2DesHjJoLuSy0aZmbHz3bVhRHOV2n6qAPNlZ++3EtW8meJxxdOB2vqS5cXMCxDKP9qudjdIEMiyQ9nCM9bJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vKVjP89x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526D9C2BCB4;
-	Mon, 20 Apr 2026 13:32:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cefwzZd6GTuBzTKoH0fhuFSK4D3vcto8KSMfNT/MhKx4scfmed9/bP33LeRr5YOoutz9XhQ5QLzIQX76+GnDkwuPMTgefBFMh1741fduHqNbPwRBoLGAUrv+Rp70314AB4HsoQrMAg2ktozz4SBZUhDc4J1vFOEEnHaPNz6QcxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RH72oSSl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84238C19425;
+	Mon, 20 Apr 2026 13:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691928;
-	bh=SXDq7jTu5wSPdVSajHBdhavLJFyfzR8Zka0VyZuuoL4=;
+	s=k20201202; t=1776691962;
+	bh=eGzhoL+9ItleeULCSIk5g1DY5q8ohXKhvnZBWAIftTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKVjP89xhinnBP4y8RJ/EmSIZ/aRsw+GPU46QAbDRQyKEdsC9k5FNwTC4zUoQqGlD
-	 131VlNtt9a6Vy7CN0EaWIkoB2DUETO6iVuZmLDAdVRu332FnSceZjncOoUKHF5pXl9
-	 QpALayZuU05MIHorkj0LPHnNOWNHXljk/c8nGJI8TPx/ERGRMW9JDlaFtE+ippBeF8
-	 rWKtFxlJD47nATqa6tN8WTLAht5zZOxfF64+8gmn7ilbwxJeGDm/MYpOD+bAIsREDE
-	 rZtC7zDviAetO/VanzSItcV3OM7RJQzHxusRbmHmvFkV36WAIjgEcAdFR1neWtwj0m
-	 e+1vFMXqFT+qw==
+	b=RH72oSSlOMreQWk6k3PhRuidp+65pU6ukXtMTaGFPNCeD8UQhSsJKuW0z1rAjtuVE
+	 8A2aAO3PYgUzpi8bv89jijMXUTuuVN4vAn1hmjiuFqR7Brx/9kRV4bgm6BZioFmEk3
+	 MFhPX0w0TuPNDUT1jOQPPP6ZUm0hYRhgRAywdAv5vlnWV3uY0OfaeH18TwVUzPVxaA
+	 JJH8Lm/mkUOUZwXfFQvCz9ytxBhkB2aSixPdB8+91c2kE3WSLyuVkiOOnTj9ZRAH7N
+	 UrGw6buNKYBMgfyavD+fxR/jaJqeg61aMFu76gPfQjrk2XVSVRhMarBiwKe0PXy6u1
+	 kVNl2lYXwgs2A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+	Oleksandr Havrylov <goainwo@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-5.10] wifi: rtw88: TX QOS Null data the same way as Null data
-Date: Mon, 20 Apr 2026 09:21:08 -0400
-Message-ID: <20260420132314.1023554-274-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-6.18] wifi: rtw88: validate RX rate to prevent out-of-bound
+Date: Mon, 20 Apr 2026 09:21:27 -0400
+Message-ID: <20260420132314.1023554-293-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -73,19 +73,19 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-35080-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[realtek.com,gmail.com,kernel.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-35081-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -95,310 +95,325 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,realtek.com:email]
-X-Rspamd-Queue-Id: CE52342D39E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 5530E42DE53
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 737e980e12983bb7420a2c00b981a1e607079a84 ]
+[ Upstream commit bf14367719fa86f7c6922c64d37a2df347954c66 ]
 
-When filling out the TX descriptor, Null data frames are treated like
-management frames, but QOS Null data frames are treated like normal
-data frames. Somehow this causes a problem for the firmware.
+The reported RX rate might be unexpected, causing kernel warns:
 
-When connected to a network in the 2.4 GHz band, wpa_supplicant (or
-NetworkManager?) triggers a scan every five minutes. During these scans
-mac80211 transmits many QOS Null frames in quick succession. Because
-these frames are marked with IEEE80211_TX_CTL_REQ_TX_STATUS, rtw88
-asks the firmware to report the TX ACK status for each of these frames.
-Sometimes the firmware can't process the TX status requests quickly
-enough, they add up, it only processes some of them, and then marks
-every subsequent TX status report with the wrong number.
+  Rate marked as a VHT rate but data is invalid: MCS: 0, NSS: 0
+  WARNING: net/mac80211/rx.c:5491 at ieee80211_rx_list+0x183/0x1020 [mac80211]
 
-The symptom is that after a while the warning "failed to get tx report
-from firmware" appears every five minutes.
+As the RX rate can be index of an array under certain conditions, validate
+it to prevent accessing array out-of-bound potentially.
 
-This problem apparently happens only with the older RTL8723D, RTL8821A,
-RTL8812A, and probably RTL8703B chips.
+Tested on HP Notebook P3S95EA#ACB (kernel 6.19.9-1-cachyos):
 
-Treat QOS Null data frames the same way as Null data frames. This seems
-to avoid the problem.
+  - No WARNING: net/mac80211/rx.c:5491 observed after the v2 patch.
+The unexpected `NSS: 0, MCS: 0` VHT rate warnings are successfully
+mitigated.
+  - The system remains fully stable through prolonged idle periods,
+high network load, active Bluetooth A2DP usage, and multiple deep
+suspend/resume cycles.
+  - Zero h2c timeouts or firmware lps state errors observed in dmesg.
 
-Tested with RTL8821AU, RTL8723DU, RTL8811CU, and RTL8812BU.
-
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Reported-by: Oleksandr Havrylov <goainwo@gmail.com>
+Closes: https://lore.kernel.org/linux-wireless/CALdGYqSMUPnPfW-_q1RgYr0_SjoXUejAaJJr-o+jpwCk1S7ndQ@mail.gmail.com/
+Tested-by: Oleksandr Havrylov <goainwo@gmail.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/2b53fb0d-b1ed-47b6-8caa-2bb9ae2acb80@gmail.com
+Link: https://patch.msgid.link/20260324011001.5742-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information needed for a thorough analysis. Let me
-compile the complete assessment.
+Here is my complete analysis:
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
 **Step 1.1: Subject Line**
-- Subsystem: `wifi: rtw88:`
-- Action: "TX QOS Null data the same way as Null data" — implies
-  correcting inconsistent behavior, which is a bug fix
-- Summary: QoS Null data frames should be treated like regular Null data
-  frames during TX descriptor setup
+- Subsystem: `wifi: rtw88`
+- Action verb: "validate" (to "prevent out-of-bound")
+- Summary: Adds bounds check on RX rate from hardware to prevent out-of-
+  bounds array access
+- Record: [wifi: rtw88] [validate/prevent] [bounds check on HW-reported
+  RX rate]
 
 **Step 1.2: Tags**
-- `Signed-off-by: Bitterblue Smith` — author, active rtw88 contributor
-- `Acked-by: Ping-Ke Shih` — rtw88 subsystem maintainer explicitly
-  acknowledged
-- `Signed-off-by: Ping-Ke Shih` — maintainer merged it
-- `Link: https://patch.msgid.link/...` — patch submission link
-- No Fixes: tag (expected for this review pipeline)
-- No Cc: stable (expected)
+- `Reported-by: Oleksandr Havrylov <goainwo@gmail.com>` — real user
+  report
+- `Closes:` lore link to original bug report
+- `Tested-by: Oleksandr Havrylov <goainwo@gmail.com>` — reporter
+  confirmed fix
+- `Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>` — Realtek WiFi
+  maintainer authored the fix
+- `Link:` to patch.msgid.link for the v1 submission
+- No Fixes: tag, no Cc: stable — expected for manual review candidate
+- Record: Real user-reported and user-tested fix by subsystem
+  maintainer.
 
-**Step 1.3: Body Text**
-The commit describes:
-- **Bug**: QoS Null frames are treated as normal data frames, while
-  plain Null frames go through the management path. This causes firmware
-  misbehavior.
-- **Trigger**: On 2.4 GHz, wpa_supplicant/NetworkManager triggers scans
-  every 5 minutes. During scans, many QoS Null frames with
-  `IEEE80211_TX_CTL_REQ_TX_STATUS` are sent. Firmware can't keep up with
-  TX status reports.
-- **Symptom**: "failed to get tx report from firmware" warning every 5
-  minutes.
-- **Affected chips**: RTL8723D, RTL8821A, RTL8812A, RTL8703B (older
-  chips).
-- **Tested with**: RTL8821AU, RTL8723DU, RTL8811CU, RTL8812BU.
+**Step 1.3: Commit Body**
+- Bug: Hardware reports unexpected RX rate values, causing a kernel
+  WARNING from mac80211: `"Rate marked as a VHT rate but data is
+  invalid: MCS: 0, NSS: 0"` at `ieee80211_rx_list+0x183/0x1020`
+- Since rate is used as array index, values >= DESC_RATE_MAX lead to
+  out-of-bounds access
+- Extensive testing on HP Notebook P3S95EA#ACB: no warnings, stable
+  through idle, high load, Bluetooth A2DP, and suspend/resume cycles
+- Record: Bug = invalid HW rate → WARNING in mac80211 + OOB array
+  access. Symptom = repeated kernel WARNING. Tested on real hardware.
 
-**Step 1.4: Hidden Bug Fix?**
-This is clearly a bug fix, not disguised. The commit explicitly explains
-the incorrect behavior and the symptom.
+**Step 1.4: Hidden Bug Fix Detection**
+- Not hidden — explicitly described as preventing out-of-bounds access
+  and kernel warnings. This is a clear bug fix.
 
 ## PHASE 2: DIFF ANALYSIS
 
 **Step 2.1: Inventory**
-- Single file: `drivers/net/wireless/realtek/rtw88/tx.c`
-- 1 line changed: `ieee80211_is_nullfunc(fc)` →
-  `ieee80211_is_any_nullfunc(fc)`
-- Function modified: `rtw_tx_pkt_info_update()`
-- Scope: absolute minimal — single token change
+- Files changed: 1 (`drivers/net/wireless/realtek/rtw88/rx.c`)
+- Lines added: +8 (7 lines of code + 1 blank line)
+- Lines removed: 0
+- Function modified: `rtw_rx_query_rx_desc()`
+- Scope: single-file, single-function, surgical fix
+- Record: 1 file, +8/-0 lines, one function, very small scope
 
 **Step 2.2: Code Flow Change**
-Before: QoS Null frames (subtype `IEEE80211_STYPE_QOS_NULLFUNC`) don't
-match `ieee80211_is_nullfunc()` but DO match `ieee80211_is_data()`, so
-they go through `rtw_tx_data_pkt_info_update()` which sets MCS rates,
-software sequencing, and potential AMPDU.
-
-After: QoS Null frames match `ieee80211_is_any_nullfunc()`, so they go
-through `rtw_tx_mgmt_pkt_info_update()` which sets basic rates, hardware
-sequencing, and `dis_qselseq = true`.
+- **Before**: `pkt_stat->rate` read from hardware descriptor (7-bit
+  field, values 0-127) and used directly in downstream code with no
+  validation
+- **After**: If `pkt_stat->rate >= DESC_RATE_MAX` (84), a debug message
+  is logged, and rate is clamped to `DESC_RATE1M` (0) with BW set to
+  20MHz
+- This is an early validation check placed right after the rate is read
+  from hardware, before any downstream usage
 
 **Step 2.3: Bug Mechanism**
-Category: **Logic/correctness fix**. QoS Null frames are
-control/management-like frames that should not be treated as normal data
-traffic. Being processed as data frames causes the firmware to choke on
-rapid TX status report requests.
+The RX rate field is `GENMASK(6, 0)` = 7 bits, supporting values 0-127
+from hardware. But `DESC_RATE_MAX = 0x54 = 84`. Two concrete bugs:
+
+1. **Out-of-bounds array write** (line 99):
+   `cur_pkt_cnt->num_qry_pkt[pkt_stat->rate]++` where array size is
+   `DESC_RATE_MAX` (84 elements). Rate >= 84 corrupts memory.
+
+2. **Invalid VHT encoding to mac80211** (lines 215-231): Rate >=
+   `DESC_RATEVHT1SS_MCS0` (0x2c) sets `encoding = RX_ENC_VHT`, but if
+   rate > `DESC_RATEVHT4SS_MCS9` (0x53), `rtw_desc_to_mcsrate()` doesn't
+   match any range, leaving `nss=0, mcs=0`. mac80211 fires `WARN_ONCE`
+   and drops the packet.
+
+- Category: Buffer overflow / out-of-bounds + input validation
+- Record: OOB array write via untrusted HW rate + mac80211 WARNING from
+  invalid VHT rate
 
 **Step 2.4: Fix Quality**
-- Obviously correct: `ieee80211_is_any_nullfunc()` is the standard
-  helper for this exact pattern (introduced in commit 30b2f0be23fb
-  precisely for cases where both Null and QoS Null need matching)
-- Minimal: 1 token change
-- Regression risk: very low — QoS Null frames will now use basic rates
-  and hardware sequencing, same as plain Null frames, which is the
-  expected behavior
+- Obviously correct: simple bounds check with safe fallback to CCK 1Mbps
+- Minimal and surgical: 7 lines of validation code
+- No regression risk: clamping an invalid rate to a safe default is
+  strictly better than using the invalid value
+- Uses existing `RTW_DBG_UNEXP` debug category already used elsewhere in
+  the driver
+- Record: Fix is obviously correct, minimal, zero regression risk
 
-## PHASE 3: GIT HISTORY
+## PHASE 3: GIT HISTORY INVESTIGATION
 
 **Step 3.1: Blame**
-The buggy line was introduced in `e3037485c68ec1` ("rtw88: new Realtek
-802.11ac driver") from v5.2-rc1 (April 2019). The bug has existed since
-the driver was first written.
+The rate assignment line (`pkt_stat->rate = le32_get_bits(...)`) was
+introduced in `bbb6f9be7f994` (Sep 2024) — a refactoring that
+consolidated 5 per-chip `query_rx_desc` functions into one. Before that,
+each chip function had the same unvalidated rate read (e.g.,
+`GET_RX_DESC_RX_RATE(rx_desc)`). The bug is as old as the driver itself
+— `e3037485c68ec` from April 2019 (v5.2).
 
-**Step 3.2: Fixes target**
-No Fixes: tag, but the root cause is in `e3037485c68ec1` — the initial
-driver commit. This means ALL stable trees that contain rtw88 have the
-bug.
+**Step 3.2: No Fixes: tag**
+Expected for manual review candidate. The underlying issue predates the
+refactoring.
 
-**Step 3.3: Related commits**
-The same author has addressed this "failed to get tx report from
-firmware" issue from multiple angles:
-- `57289d30cd2ae3` — beacon loss detection (v6.13) — works around the
-  symptom
-- `28818b4d871bc9` — USB disconnection fix after beacon loss (v6.11) —
-  separate but related bug
-- `c7706b1173c77` — data rate fallback for older chips — same set of
-  affected chips
-This commit appears to be the **root cause fix** rather than a
-workaround.
+**Step 3.3: File History**
+Recent history shows only the refactoring series (bbb6f9be7f994,
+053a7aace0207, 47f754b3f8382). No overlapping fixes.
 
 **Step 3.4: Author**
-Bitterblue Smith is a prolific rtw88 contributor with 20+ commits to the
-driver. Not the subsystem maintainer but a trusted regular contributor,
-especially for USB variants of Realtek chips.
+Ping-Ke Shih (`pkshih@realtek.com`) is the Realtek WiFi subsystem
+maintainer. His authorship carries high weight.
 
 **Step 3.5: Dependencies**
-None. `ieee80211_is_any_nullfunc()` was added in v5.7-rc1 (commit
-30b2f0be23fb40). Verified it exists in v5.10, v5.15, v6.1, and v6.6
-trees. The patch applies cleanly to all stable trees.
+This patch depends on `bbb6f9be7f994` (the refactoring into single
+`rtw_rx_query_rx_desc()`), which is present in this 7.0 tree. The patch
+is standalone and self-contained.
 
-## PHASE 4: MAILING LIST
+## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-Lore.kernel.org was not accessible due to bot protection. However:
-- The commit has `Acked-by: Ping-Ke Shih` (subsystem maintainer)
-- The commit was merged by Ping-Ke Shih
-- Testing was done on 4 different devices
+**Step 4.1-4.2**: Lore is behind anti-bot protection. b4 dig for the
+specific commit hash couldn't find it (commit not yet in this tree). The
+Link tag points to
+`https://patch.msgid.link/20260324011001.5742-1-pkshih@realtek.com`. The
+author is the recognized subsystem maintainer.
+
+**Step 4.3**: The bug report is linked in `Closes:` — a real user report
+on linux-wireless mailing list.
+
+**Step 4.4-4.5**: This is a standalone fix, not part of a series.
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-**Step 5.1: Modified function**
-`rtw_tx_pkt_info_update()` — the central TX path function.
+**Step 5.1: Functions Modified**
+- `rtw_rx_query_rx_desc()` — the central RX descriptor parser for all
+  rtw88 chips
 
 **Step 5.2: Callers**
-- `rtw_tx()` (line 556) — main TX entry point from mac80211
-- `rtw_txq_push_skb()` (line 613) — TX queue push path
-Both are hot paths executed for every transmitted frame.
+`rtw_rx_query_rx_desc()` is called from every RX path in the driver —
+PCI, USB, and SDIO transport backends. It is called for **every received
+WiFi packet**. This is an extremely hot path.
 
-**Step 5.3-5.4: Call chain**
-This is directly reachable from mac80211's TX path — every WiFi frame
-goes through this function. The QoS Null frames are triggered
-automatically by mac80211 during scans.
+**Step 5.3-5.4: Downstream impact**
+After rate is read, it flows to:
+1. `rtw_rx_fill_rx_status()` → determines encoding type (VHT/HT/legacy)
+   → passed to mac80211
+2. `rtw_rx_phy_stat()` → `num_qry_pkt[rate]++` — the out-of-bounds array
+   write
+3. `rtw_desc_to_mcsrate()` → converts to MCS/NSS for mac80211
 
 **Step 5.5: Similar patterns**
-The `ieee80211_is_any_nullfunc()` helper was specifically created
-because multiple places in mac80211 had the same bug of only checking
-for non-QoS nullfunc. Other drivers (iwlwifi, ath, rtw89) already use
-`ieee80211_is_any_nullfunc()` correctly.
+Found `rtw_get_tx_power_params()` had a similar array overrun fix
+(`2ff25985ea9cc`), confirming this is a known pattern in the driver.
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-**Step 6.1: Buggy code in stable trees?**
-YES. Verified the exact buggy line `ieee80211_is_nullfunc(fc)` exists in
-v5.10, v5.15, v6.1, and v6.6 trees.
+**Step 6.1: Buggy Code in Stable**
+The unvalidated rate path exists since driver inception (v5.2, 2019). In
+trees with the `bbb6f9be7f994` refactoring (post 6.12), this patch
+applies directly. In older trees, the per-chip functions need similar
+fixes (different patch needed).
 
-**Step 6.2: Backport complications**
-None. The patch applies with zero context conflicts. The surrounding
-code is identical across all stable trees.
+**Step 6.2: Backport for 7.0**
+For 7.0 stable: The refactoring is present, so this patch applies
+cleanly to `rtw_rx_query_rx_desc()`.
 
-**Step 6.3: Related fixes in stable**
-No. This specific fix has not been applied to any stable tree.
+**Step 6.3**: No related fix already in stable for this specific issue.
 
-## PHASE 7: SUBSYSTEM CONTEXT
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-**Step 7.1: Subsystem**
-WiFi driver (rtw88) — IMPORTANT category. RTL8723D, RTL8821A, RTL8812A
-are common consumer WiFi chips used in USB dongles and embedded systems.
+**Step 7.1**: WiFi driver (drivers/net/wireless/) — IMPORTANT subsystem.
+rtw88 supports popular consumer WiFi chipsets (RTL8822CE, RTL8723DE,
+etc.) used in many laptops.
 
-**Step 7.2: Activity**
-Actively developed with regular fixes from multiple contributors.
+**Step 7.2**: Actively developed subsystem with recent refactoring and
+new chip support.
 
-## PHASE 8: IMPACT AND RISK
+## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-**Step 8.1: Affected users**
-Users of RTL8723D, RTL8821A, RTL8812A, RTL8703B WiFi chips connected to
-2.4 GHz networks. These are popular budget WiFi chips.
+**Step 8.1**: Affects all rtw88 WiFi users — a widely used WiFi driver
+for Realtek chipsets common in laptops.
 
-**Step 8.2: Trigger**
-Automatic — triggered every 5 minutes during background scans by
-wpa_supplicant/NetworkManager. No user action required.
+**Step 8.2**: Triggered by receiving any WiFi frame with an unexpected
+rate value from hardware. This can happen during normal operation as
+demonstrated by the user report. No special conditions needed — just
+using WiFi.
 
-**Step 8.3: Severity**
-MEDIUM — the "failed to get tx report from firmware" warning floods logs
-periodically. While not a crash, it indicates firmware state
-desynchronization that can lead to further issues. The related commits
-show this same symptom can escalate to disconnections.
+**Step 8.3**:
+- Kernel WARNING spam in dmesg (every occurrence) — MEDIUM
+- Out-of-bounds array write (memory corruption) — HIGH
+- Packet drops when WARNING triggers — MEDIUM
+- Combined severity: **HIGH**
 
-**Step 8.4: Risk-Benefit**
-- **Benefit**: HIGH — fixes a recurring warning every 5 minutes for
-  users of popular hardware, prevents potential firmware state
-  corruption
-- **Risk**: VERY LOW — single token change using a well-established
-  kernel helper, tested on 4 devices, acked by maintainer
+**Step 8.4**:
+- Benefit: HIGH (fixes user-visible WARNING spam + potential memory
+  corruption on a hot RX path for a popular driver)
+- Risk: VERY LOW (7 lines, bounds check with safe fallback, no behavior
+  change for valid rates)
+- Ratio: Very favorable
 
-## PHASE 9: SYNTHESIS
+## PHASE 9: FINAL SYNTHESIS
 
-**Evidence FOR:**
-- Fixes a real, user-visible bug (recurring firmware warnings every 5
-  minutes)
-- Affects popular WiFi hardware (RTL8723D/RTL8821A/RTL8812A/RTL8703B)
-- Trivial one-line change — absolute minimal scope
-- Uses standard kernel helper (`ieee80211_is_any_nullfunc`) available in
-  all stable trees
-- Bug exists since the driver was created (v5.2) — all stable trees
-  affected
-- Acked by subsystem maintainer
-- Tested on 4 different hardware variants
-- No dependencies, clean apply to all stable trees
-- Same class of bug (missing QoS Null check) was fixed in mac80211 core
-  via the same helper
+**Step 9.1: Evidence**
+FOR backporting:
+- Fixes real user-reported bug (kernel WARNING spam)
+- Fixes potential out-of-bounds memory write (OOB array access)
+- Extremely small and surgical (7 lines)
+- Obviously correct (bounds check with safe default)
+- Authored and signed by the subsystem maintainer (Ping-Ke Shih)
+- Tested by the reporter with extensive scenarios
+- Affects a popular WiFi driver used in many laptops
+- Hot path (every RX packet)
 
-**Evidence AGAINST:**
-- No Fixes: tag (expected for review pipeline)
-- Symptom is a warning, not a crash (but related to firmware state
-  desync that can escalate)
+AGAINST backporting:
+- None identified
 
-**Stable Rules Checklist:**
-1. Obviously correct? YES — standard helper for this exact pattern
-2. Fixes a real bug? YES — recurring firmware desync warning
-3. Important issue? YES (firmware interaction bug, periodic warning,
-   potential escalation)
-4. Small and contained? YES — 1 line in 1 file
-5. No new features? Correct — pure bug fix
-6. Can apply to stable? YES — verified helper exists in all stable trees
+**Step 9.2: Stable Rules Checklist**
+1. Obviously correct and tested? **YES** — trivial bounds check, tested
+   by reporter
+2. Fixes a real bug? **YES** — user-reported WARNING + OOB memory write
+3. Important issue? **YES** — memory corruption (OOB write) and kernel
+   warnings
+4. Small and contained? **YES** — 7 lines in one file, one function
+5. No new features or APIs? **YES** — pure validation addition
+6. Can apply to stable? **YES** — 7.0 tree has the required refactoring
+
+**Step 9.3: Exception categories** — N/A (this is a standard bug fix)
+
+**Step 9.4: Decision** — Clear YES
 
 ## Verification
 
-- [Phase 1] Parsed tags: Acked-by Ping-Ke Shih (maintainer), tested with
-  4 devices
-- [Phase 2] Diff: 1 token change in `rtw_tx_pkt_info_update()`:
-  `ieee80211_is_nullfunc` → `ieee80211_is_any_nullfunc`
-- [Phase 3] git blame: buggy code from `e3037485c68ec1` (v5.2-rc1, rtw88
-  driver creation), present in all stable trees
-- [Phase 3] git describe: `v5.2-rc1~133^2~37^2~8` confirmed for original
-  commit
-- [Phase 3] git show v6.6/v6.1/v5.15: verified identical buggy line
-  exists
-- [Phase 3] git log author: Bitterblue Smith has 20+ rtw88 commits,
-  trusted contributor
-- [Phase 3] Related commits: `57289d30cd2ae3` (beacon loss workaround)
-  and `28818b4d871bc9` (USB disconnection fix) address same symptom
-  family
-- [Phase 4] Lore inaccessible due to bot protection; maintainer ack
-  verified in commit tags
-- [Phase 5] `rtw_tx_pkt_info_update()` called from `rtw_tx()` and
-  `rtw_txq_push_skb()` — main TX paths
-- [Phase 5] `ieee80211_is_any_nullfunc()` already used by iwlwifi, ath,
-  rtw89 for same purpose
-- [Phase 6] `ieee80211_is_any_nullfunc()` verified present in v5.10
-  (line 735), v5.15 (line 732), v6.1 (line 769)
-- [Phase 6] Patch applies cleanly — surrounding code identical across
-  stable trees
-- [Phase 8] Trigger: automatic every 5 minutes on 2.4 GHz; severity
-  MEDIUM (firmware desync)
+- [Phase 1] Parsed all tags: Reported-by from real user, Tested-by from
+  same user, author is subsystem maintainer
+- [Phase 2] Diff analysis: +7 lines adding bounds check in
+  `rtw_rx_query_rx_desc()`, validates rate before downstream use
+- [Phase 2] Verified `RTW_RX_DESC_W3_RX_RATE = GENMASK(6, 0)` — 7-bit
+  field, values 0-127
+- [Phase 2] Verified `DESC_RATE_MAX = 0x54 = 84` — array bound
+- [Phase 2] Verified OOB at line 99: `num_qry_pkt[pkt_stat->rate]++`
+  with array size DESC_RATE_MAX
+- [Phase 2] Verified VHT path: rate >= 0x2c triggers VHT encoding, rate
+  > 0x53 not handled by rtw_desc_to_mcsrate → nss=0
+- [Phase 2] Verified mac80211 WARNING at net/mac80211/rx.c:5505-5510
+  matches commit message exactly
+- [Phase 3] git blame: rate line from bbb6f9be7f994 (Sep 2024
+  refactoring), bug pattern since driver inception (v5.2)
+- [Phase 3] git log: no related prior fix for this specific issue
+- [Phase 3] Author Ping-Ke Shih is confirmed Realtek WiFi maintainer
+- [Phase 5] `rtw_rx_query_rx_desc()` is called from PCI/USB/SDIO
+  backends for every RX packet
+- [Phase 5] `RTW_DBG_UNEXP` debug flag already exists and is used in 3
+  other places in the driver
+- [Phase 6] Refactoring (bbb6f9be7f994) present in 7.0 tree — patch
+  applies cleanly
+- [Phase 8] Impact: all rtw88 users, triggered during normal WiFi
+  operation
+- UNVERIFIED: Could not access lore discussion due to anti-bot
+  protection (does not affect decision)
 
 **YES**
 
- drivers/net/wireless/realtek/rtw88/tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/rx.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
-index 2ab440cb2d67b..3106edb84fb47 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -421,7 +421,7 @@ void rtw_tx_pkt_info_update(struct rtw_dev *rtwdev,
- 		pkt_info->mac_id = rtwvif->mac_id;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw88/rx.c b/drivers/net/wireless/realtek/rtw88/rx.c
+index 8b0afaaffaa0e..d9e11343d4988 100644
+--- a/drivers/net/wireless/realtek/rtw88/rx.c
++++ b/drivers/net/wireless/realtek/rtw88/rx.c
+@@ -295,6 +295,14 @@ void rtw_rx_query_rx_desc(struct rtw_dev *rtwdev, void *rx_desc8,
  
--	if (ieee80211_is_mgmt(fc) || ieee80211_is_nullfunc(fc))
-+	if (ieee80211_is_mgmt(fc) || ieee80211_is_any_nullfunc(fc))
- 		rtw_tx_mgmt_pkt_info_update(rtwdev, pkt_info, sta, skb);
- 	else if (ieee80211_is_data(fc))
- 		rtw_tx_data_pkt_info_update(rtwdev, pkt_info, sta, skb);
+ 	pkt_stat->tsf_low = le32_get_bits(rx_desc->w5, RTW_RX_DESC_W5_TSFL);
+ 
++	if (unlikely(pkt_stat->rate >= DESC_RATE_MAX)) {
++		rtw_dbg(rtwdev, RTW_DBG_UNEXP,
++			"unexpected RX rate=0x%x\n", pkt_stat->rate);
++
++		pkt_stat->rate = DESC_RATE1M;
++		pkt_stat->bw = RTW_CHANNEL_WIDTH_20;
++	}
++
+ 	/* drv_info_sz is in unit of 8-bytes */
+ 	pkt_stat->drv_info_sz *= 8;
+ 
 -- 
 2.53.0
 
