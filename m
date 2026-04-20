@@ -1,134 +1,124 @@
-Return-Path: <linux-wireless+bounces-34989-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-34990-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2+e1FR835WlufgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-34989-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 22:12:15 +0200
+	id 4FDED3aB5WmZkgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-34990-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 03:29:26 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2402542564B
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 22:12:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9252E42604C
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 03:29:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7A5C530041F3
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2026 20:12:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06C1D300B9D3
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 01:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BA63019A9;
-	Sun, 19 Apr 2026 20:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A473257828;
+	Mon, 20 Apr 2026 01:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRo/2AVm"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="t0Q8a/wh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA26D2F49F1
-	for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2026 20:12:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E90A246782;
+	Mon, 20 Apr 2026 01:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776629530; cv=none; b=GsPMjPTfc2iZI8PLX/ilL27Xs/Ej7JARks2iM/KWtA52xE4aalFISS8UDFd9CPfDcBNwGZgsTI8sisctkMipyGICvq1bI52AVYqM6S4HZQorhQOWPrXNn5MTXhpU73fIbPhfPqD/Mi8B52IBhopuaQ88sjAuE+pxSLdNtWfhG04=
+	t=1776648562; cv=none; b=SwgyXfpiljMVsM091gWS9A9XizTEn/EGJagDEXC3iw+V3InUQl6vp2RuAFd0EmMtnt59OqmJh2BslehOLsP5zpc++fPl0fmRkFApEYQKupEye6XxCK1x2FSTYbEAJskYQVCrnORKQ+pT92NEG9NHBozOZxJCENhbRRDBTOGor2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776629530; c=relaxed/simple;
-	bh=OAMdrPYK5OV+e4A3PfNzbz835UpVFOyL7nAyo4Bzd74=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UGnIakv0sODo5kzwGSJSOvAicjjzDMQQaAG90m1lX++OeoAm8Ykv0kuyVl8yVdc9nPXKTfvB8b5bgXetA/eqh2rvQJHALKdUMyb1ZfzNYoV8EK3Ontb6oXQ5iUTjET0xYk4l5DUl6R3Ghn0NFjGv/NnoZLKkIjzCLvHI+hj3QyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRo/2AVm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891D9C2BCC4
-	for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2026 20:12:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776629530;
-	bh=OAMdrPYK5OV+e4A3PfNzbz835UpVFOyL7nAyo4Bzd74=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nRo/2AVmwPolgfGOXy14+dpwclEBZBvgGgT7MAlxO4NavhyOo6dvn/Yyr6+ck2ttf
-	 n6tfKCYZsdPagG10cjsD4+wIpQ81qjBsW2K3vrg9Vh3Z/xXgmq1FPST6cu1jb17Y6U
-	 AjpsVYfkQ9m97aSleN94z6n3qkmkjG6gOZApPZW1riD04Ir6G/5IydEVvB8N1xXbDV
-	 NaadMP2ZhoguQrKLYgHnbH2ExeU6tUSdmT51OhnAXTZW7Ypuuj+4KIAhVwdHXN9V+n
-	 UwA3rnoMwSfQOlixeu++vJL8/3D3Ia8ovddPw0Hne0bOh21wrqB3zzPPQ7tEQplSAp
-	 9M/UjwbSsrGWw==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a40cfab24dso2572497e87.2
-        for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2026 13:12:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+YOgkcVPPwrHZYpPdujiQOYFJfM2nYwP/iIDOVtUUkVurH9sO0x0p5+asFToLXVSVO+ypzOv4D6FQDYc1cVQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSATwFzQAA1kJLM0GqlodBDDYxjX2AVejAQsdHm85eyYvDqBfj
-	r9u07klHsYuKYhZHH6KG1jfUT96CN5GxhGWWPjAv05vNbeKTi6Or+qOzPRanDTo2qF51A3gV7MC
-	NuevG7ozqLTx3kMaE3AQBDiLloqaskUw=
-X-Received: by 2002:a05:6512:3c9d:b0:5a3:fd83:13f7 with SMTP id
- 2adb3069b0e04-5a4172ba690mr3178772e87.6.1776629528998; Sun, 19 Apr 2026
- 13:12:08 -0700 (PDT)
+	s=arc-20240116; t=1776648562; c=relaxed/simple;
+	bh=9+Z/Vm7E4+weRUKFRTdATUJme8yCUzrAwn9U/m7rSvM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=u+h0QJXmrJRmgcO8biwUXEsNmvS9AwjR5tGLDtiB/xFvVRYAIgKaH1oGvQIrSXYu/eFrvwiaFJWdiXIIJaRZgBchabdPik3WgTOlqCXznxsggPw8n48DaAeCjoZqyOcdvkY0l5zti13UV0fpXw/r/ZguzZpZoVulQWAXfT157Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=t0Q8a/wh; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63K1T9Bt8216492, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1776648549; bh=9+Z/Vm7E4+weRUKFRTdATUJme8yCUzrAwn9U/m7rSvM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=t0Q8a/whzBsFr0y8W5mAPwzE0wojb35C5aoG9UWygJZm+ecZ1i33LgZJ3M9aJmn6A
+	 rFY2EgcMdQdTjJ2R4tvv1tKULPhmDWHm1dDlTLAg4DNsnQEHapXGbFDHJXfYwgWoIQ
+	 VmDsGtalmcVtN2vJioP4JBBdH+OOVmnwcELqgCFE8LMFWpZLD8Kc7zLhLZlWsNf1Vw
+	 boPXdRoiZ4O/LuU7b5eD/GdLlJ1nPKOc8c0920gdg4NAlhMWhWQxiz7QaYi/B47U7t
+	 QZRvAJdl0NX7Ub6BU6WYUtCO52E4V9X6Fg9CWZFIBQfqKTlJDzj7r7f6zAGTKmWzKc
+	 w9N63zVZLX4lg==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 63K1T9Bt8216492
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 20 Apr 2026 09:29:09 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Mon, 20 Apr 2026 09:29:09 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::ed72:3015:2840:4458]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::ed72:3015:2840:4458%10]) with mapi id
+ 15.02.1748.010; Mon, 20 Apr 2026 09:29:09 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1Yik=?=
+	<u.kleine-koenig@baylibre.com>
+CC: "Christian A. Ehrhardt" <christian.ehrhardt@codasip.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v1 4/6] wifi: rtw88: Benefit from
+ sdio_device_id::driver_data_ptr
+Thread-Topic: [PATCH v1 4/6] wifi: rtw88: Benefit from
+ sdio_device_id::driver_data_ptr
+Thread-Index: AQHczmu35g1HrUmCcEqeFn3O1So0VrXnLTiA
+Date: Mon, 20 Apr 2026 01:29:09 +0000
+Message-ID: <603706ca09334395b9ff411ff4339018@realtek.com>
+References: <cover.1776429984.git.u.kleine-koenig@baylibre.com>
+ <eca8679e2145e698ed674e343ca357788c3d6de6.1776429984.git.u.kleine-koenig@baylibre.com>
+In-Reply-To: <eca8679e2145e698ed674e343ca357788c3d6de6.1776429984.git.u.kleine-koenig@baylibre.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260417173621.368914-1-ynorov@nvidia.com> <20260417173621.368914-5-ynorov@nvidia.com>
-In-Reply-To: <20260417173621.368914-5-ynorov@nvidia.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sun, 19 Apr 2026 22:11:57 +0200
-X-Gmail-Original-Message-ID: <CAD++jLmeFP4CHf+PZdR4gWW7ZFiN9LDNeXADQXcM0e5eJOO_rw@mail.gmail.com>
-X-Gm-Features: AQROBzA9qeeVj2Ps3N0YEWnbfhWwJYO6GUSEavstda-gTisTP6p1HIZ-NbjdBrk
-Message-ID: <CAD++jLmeFP4CHf+PZdR4gWW7ZFiN9LDNeXADQXcM0e5eJOO_rw@mail.gmail.com>
-Subject: Re: [PATCH 4/9] iio: magnetometer: yas530: switch to using FIELD_GET_SIGNED()
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Ping-Ke Shih <pkshih@realtek.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Hans de Goede <hansg@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Salah Triki <salah.triki@gmail.com>, 
-	Achim Gratz <Achim.Gratz@stromeko.de>, Ben Collins <bcollins@watter.com>, 
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-rtc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.06 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-34989-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,infradead.org,baylibre.com,analog.com,realtek.com,gmail.com,lunn.ch,davemloft.net,google.com,bootlin.com,rasmusvillemoes.dk,stromeko.de,watter.com,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-34990-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 2402542564B
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9252E42604C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 17, 2026 at 7:36=E2=80=AFPM Yury Norov <ynorov@nvidia.com> wrot=
-e:
-
-> Switch from sign_extend32(FIELD_GET()) to the dedicated
-> FIELD_GET_SIGNED() and don't calculate the fields length explicitly.
->
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
-
-Very nice,
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-
-Yours,
-Linus Walleij
+DQpVd2UgS2xlaW5lLUvDtm5pZyAoVGhlIENhcGFibGUgSHViKSA8dS5rbGVpbmUta29lbmlnQGJh
+eWxpYnJlLmNvbT4gd3JvdGU6DQo+IFJlY2VudGx5IHN0cnVjdCBzZGlvX2RldmljZV9pZCBnYWlu
+ZWQgYSBuZXcgbWVtYmVyIHRvIHN0b3JlIGEgcG9pbnRlciB0bw0KPiBkcml2ZXIgZGF0YS4gTWFr
+ZSB1c2Ugb2YgdGhhdCB0byBnZXQgcmlkIG9mIGEgYnVuY2ggb2YgY2FzdHMuDQo+IA0KPiBTaWdu
+ZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyAoVGhlIENhcGFibGUgSHViKSA8dS5rbGVpbmUt
+a29lbmlnQGJheWxpYnJlLmNvbT4NCg0KQWNrZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJl
+YWx0ZWsuY29tPg0KDQo=
 
