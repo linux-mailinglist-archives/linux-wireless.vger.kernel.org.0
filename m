@@ -1,190 +1,183 @@
-Return-Path: <linux-wireless+bounces-35040-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35041-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mF+zMZoK5mluqwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35040-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:14:34 +0200
+	id SCBAAvgL5mluqwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35041-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:20:24 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459B8429D0E
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:14:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3764429DF5
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:20:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9C93C3013876
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 11:14:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DB14D30086B8
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 11:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1956A399350;
-	Mon, 20 Apr 2026 11:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4182238F949;
+	Mon, 20 Apr 2026 11:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="IBn20ZWW"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="iF1utQPx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D4D34844C
-	for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2026 11:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C224281503;
+	Mon, 20 Apr 2026 11:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776683669; cv=none; b=Zkkh+eFvgS7qDOdIDfG1FOJuT5D3oTNBXam7h/RR6wOHWLiYF8TuHvYi//4X9Age3cW/EZbPYtx6hzYdSnqyZ3xFxY9J6I/yXnoMDAqrjdzAfPius2kk6xRv0o1VNB2lsRIPub+Vi+zUzHECxFshDFMS2UoGHEY0GZwhrTcrJAE=
+	t=1776684016; cv=none; b=Io9/inFfWziGx7QdBFHI61z8vsc0KeMjDrxa85YcnWoWp1X7TpKYITtTAgKvurzEh7coHEhJiSMi8dDQYEmVKm0P56lwA+0uZ1IbFJPy828fy2Bcwea1TsA7FDzKpDp3JYejWWYziZGzWG/njBAvbg+j3SECGXDkA7d2OSwMoYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776683669; c=relaxed/simple;
-	bh=oo6sD9eeKJmgF8y+Mv9/ziuyg8LqE/RcnPFXODHSQBc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=BZpySO/qF3ClOrov74OUWKqdyvpJCeVl6NitR6Gq8M1M3caXewKTNwVUR/RUXnm6jw1ZSb5H+3pvC+JBcaTgQYleIYDumccXMgLNZZ7GDbb18AN79Lb+tqG8aozuMfQEP0E3xZMMHOtV2oKhwSda5P4afVmpo980SJt85aFerJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=IBn20ZWW; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488b3f8fa2bso34029395e9.1
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2026 04:14:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1776683664; x=1777288464; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dympeeiEyneZdFEwmKLL4dnrMWqI+ctP12odqcxsjA4=;
-        b=IBn20ZWWmHujVbwaKsnlG6/fA6O6Z2q5Etxdiy0Rpua1Flfio5iuvHphA6Htwq45Ru
-         s3mMLDbJzJitCNYGwhR3cCaaAbvB/WQVHdTXYCLx9Ml+1bXMjxqtxGNQ5GUGgh2cPEOt
-         xWbSHmOvSqUrozSX3EIfXn1/Kjql5WN+xOBy+pyku4K/+NQjwg1Q+P5EfcFZYHDnpRgP
-         093Q9FGcg5Ieo1vfOMYe13KsQZ+l+748XCsqGjAh7oX71k0klpCXcJNDTRHAcj6xVpKo
-         JSTzSSLYe5WGW3+LEp0U6l0aG7rirexfpwixmMKCzWA4FtFNnMJOFXXYXH4foGTAh1DV
-         JKmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776683664; x=1777288464;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dympeeiEyneZdFEwmKLL4dnrMWqI+ctP12odqcxsjA4=;
-        b=sHFE4Qrcpx/1lx/iH95RV2JnMyNU6iqxIkJTqWbMsBf+A+aQxKaBzTqQm6CDeVkvC/
-         +gCuMM+XeuswUgsC/xd1Nf5t85z15q7+iQF11fFO/Q45X4Yo3yrSrO2op2ErRgeBKa3M
-         ZLFwgUy93gAFzUwrByJg1gUI+WTpbRrr8Cn67yfntss6wbhmex0bBaob4OcPmax6F6C0
-         ///HhJNRY/7swWbSl2KK7I8hY2BBRYNyOyMCtsZE1uUcUwbjmyg1bcMFT58jfDUko9/3
-         vnkD3qcvsnSHhSZjK5Ua2XQ+7OASEgIpZOiZEWDbssoaZtGJs5k1lLyYB4UQ1yg2cLwL
-         d+BQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/sjGRSY8HPsRG0Tb9RPRhaL5w3Osl59TotcC9EVaeNMDIobH++yTqW/jCr3zemriMF1QLGxfX8/y5S4WxmJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2krU4QGiJqufFUa+KY90JhVBKcC1ggDgTNfCUXZIDKdnBctfx
-	Gfs6TeVHHyIz4kGcoRizXaQqOAo3kvZxsGAkuq3jWhxAdhKbK9Be059R0/t58sl4REiM3y4HqWo
-	n3cx0
-X-Gm-Gg: AeBDiet6w8h7SuwboQHOk5GTbajIWI+O7UrrnBITufVGg3qi2qMirvqmUhu+ZJeHSoG
-	bRmi3TI92J29oUxUwl8vV4qP6S+OSALnTBZjLaBEnPm8VrjIDJIgIUCMHeXTx/B4Pb5w1kXUodN
-	HF0sICZFeUn6nw9tTxx1814Xfo8QZA/Awrim8bkpLR8nQb2SuQTdQZHrPvl7CY8RsGg9ojz2HFW
-	bs9f41XFiCgRLP1jqpnFC8EpHR0yvXgoEfGbzA0NYs7gLhsWbZ2niKv8qGFLo/8Zhi57rV6sjpC
-	MLKsGE3GgiHKqqyf205GBZUJ1P+FUFGZAmiMNiOhzgniacMYivANJY+xWELsDKeqezXKaMWAPmQ
-	aalI/ff22GV3rPYDdGJ9rHInCYwtxr7cyLMGRIFvZhId4jpJvAgw8dZTlFQdEFnCuuw+Z6Gnw4h
-	sa4CFlHkZ7+f6Z3g381Y7wn9zBkrSB2Nc6mUYzm6D2pb5UfW0CncBlXOiiYonRVJgWiB8qcVWIj
-	Ibx5azVfhXjxjMa3kc=
-X-Received: by 2002:a05:600c:34ca:b0:48a:761:5816 with SMTP id 5b1f17b1804b1-48a07615b87mr18212465e9.8.1776683663648;
-        Mon, 20 Apr 2026 04:14:23 -0700 (PDT)
-Received: from localhost (84-115-213-130.cable.dynamic.surfer.at. [84.115.213.130])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-489393ddd69sm10775525e9.10.2026.04.20.04.14.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Apr 2026 04:14:09 -0700 (PDT)
+	s=arc-20240116; t=1776684016; c=relaxed/simple;
+	bh=tAGssuwp+KPHsp3ijI1IC1FdjIpKYKPjCR3P7O5migA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CQB4WseIuV3qpxEBG2lSQzXXo9egTI5Xqg7R5C1cufgCPNrQRUv0JK4WWAksNEK20j52aX86ae2QTqPeKhe2YG0V8NdhVnFMXh3GfDMHBHtpprMm+ZQECrKOjkuAMqeUPABcWxP1D8o3amVH+2/UE02sZNyztI42UzUfDpsc0pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=iF1utQPx; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wEphAaQytTvkJ4Y8tBG6de3VhB79fwybJlTf49/OcGg=; b=iF1utQPxKPIAEUkTvYhGTfZ1gw
+	C/Fsi/Gx1q0cK971U1T7N9wBu8aesqpPFXbPZclgQSuc8qfU7P34caTdsHWdjuSWy3y1M7H7t9hcF
+	YDyWiTNnEvo0eh6vDYND9Ltd7GNr0APVrnt1FMVOXnccjwmZjfBmDy+ntHwtEqauo+7Mmf/XfLpfN
+	9ScTEZYp5lPVP601y+0DfVb3UxvGQdnkufqAeNkSyQ51bq6v+F+7+nl6xaX8rgjKZOBJezFuYZyos
+	ZBK8VJBR1QglIncUNSoIZY/rtsFVX1iiZ0f/V6qNHGb3jS8LjLqhxIuE85igguQXHadk5E7WyfzeE
+	0fLtIY5w==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wEmfF-00000007omh-40xL;
+	Mon, 20 Apr 2026 11:19:42 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 3C237301BDE; Mon, 20 Apr 2026 13:19:40 +0200 (CEST)
+Date: Mon, 20 Apr 2026 13:19:40 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Hans de Goede <hansg@kernel.org>, Linus Walleij <linusw@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Salah Triki <salah.triki@gmail.com>,
+	Achim Gratz <Achim.Gratz@stromeko.de>,
+	Ben Collins <bcollins@watter.com>, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org, linux-rtc@vger.kernel.org
+Subject: Re: [PATCH 1/9] bitfield: add FIELD_GET_SIGNED()
+Message-ID: <20260420111940.GE3102624@noisy.programming.kicks-ass.net>
+References: <20260417173621.368914-1-ynorov@nvidia.com>
+ <20260417173621.368914-2-ynorov@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 20 Apr 2026 13:14:01 +0200
-Message-Id: <DHXXSDE9V52E.33D6CI1LWMHFP@fairphone.com>
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>, "Luca Weiss"
- <luca.weiss@fairphone.com>
-Cc: "Liam Girdwood" <lgirdwood@gmail.com>, "Mark Brown"
- <broonie@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Bartosz Golaszewski" <brgl@kernel.org>, "Marcel Holtmann"
- <marcel@holtmann.org>, "Luiz Augusto von Dentz" <luiz.dentz@gmail.com>,
- "Jeff Johnson" <jjohnson@kernel.org>, "Bjorn Andersson"
- <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>,
- "Manivannan Sadhasivam" <mani@kernel.org>, "Vinod Koul" <vkoul@kernel.org>,
- "Balakrishna Godavarthi" <quic_bgodavar@quicinc.com>, "Matthias Kaehlcke"
- <mka@chromium.org>, <linux-arm-msm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-bluetooth@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
- <ath10k@lists.infradead.org>, <linux-pm@vger.kernel.org>, "Krzysztof
- Kozlowski" <krzk@kernel.org>, "Bartosz Golaszewski"
- <bartosz.golaszewski@oss.qualcomm.com>
-Subject: Re: [PATCH v3 3/8] wifi: ath10k: snoc: support powering on the
- device via pwrseq
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260119-wcn3990-pwrctl-v3-0-948df19f5ec2@oss.qualcomm.com>
- <20260119-wcn3990-pwrctl-v3-3-948df19f5ec2@oss.qualcomm.com>
- <DHUHU7UIT487.139L3KIVRVREU@fairphone.com>
- <hdypom3nioc6tk26gh647imy5ykhcjqvknideilnbc2b5p7eo7@hm7fsscleutf>
-In-Reply-To: <hdypom3nioc6tk26gh647imy5ykhcjqvknideilnbc2b5p7eo7@hm7fsscleutf>
-X-Spamd-Result: default: False [-0.16 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260417173621.368914-2-ynorov@nvidia.com>
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[fairphone.com,quarantine];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[fairphone.com:s=fair];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=desiato.20200630];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,holtmann.org,quicinc.com,chromium.org,vger.kernel.org,lists.infradead.org,oss.qualcomm.com];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35040-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[fairphone.com:+];
+	TAGGED_FROM(0.00)[bounces-35041-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,baylibre.com,analog.com,realtek.com,gmail.com,lunn.ch,davemloft.net,google.com,bootlin.com,rasmusvillemoes.dk,stromeko.de,watter.com,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[33];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[infradead.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luca.weiss@fairphone.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[peterz@infradead.org,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_TWELVE(0.00)[26];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 459B8429D0E
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: D3764429DF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat Apr 18, 2026 at 9:38 PM CEST, Dmitry Baryshkov wrote:
-> On Thu, Apr 16, 2026 at 12:06:09PM +0200, Luca Weiss wrote:
->> Hi Dmitry,
->>=20
->> On Mon Jan 19, 2026 at 6:07 PM CET, Dmitry Baryshkov wrote:
->> > The WCN39xx family of WiFi/BT chips incorporates a simple PMU, spreadi=
-ng
->> > voltages over internal rails. Implement support for using powersequenc=
-er
->> > for this family of ATH10k devices in addition to using regulators.
->> >
->> > Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com=
->
->> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->> > ---
->> >  drivers/net/wireless/ath/ath10k/snoc.c | 53 +++++++++++++++++++++++++=
-+++++++--
->> >  drivers/net/wireless/ath/ath10k/snoc.h |  3 ++
->> >  2 files changed, 53 insertions(+), 3 deletions(-)
->> >
->> > +	ar_snoc->pwrseq =3D devm_pwrseq_get(&pdev->dev, "wlan");
->> > +	if (IS_ERR(ar_snoc->pwrseq)) {
->> > +		ret =3D PTR_ERR(ar_snoc->pwrseq);
->> > +		ar_snoc->pwrseq =3D NULL;
->> > +		if (ret !=3D -EPROBE_DEFER)
->> > +			goto err_free_irq;
->>=20
->> I'm fairly sure this is now broken with CONFIG_POWER_SEQUENCING=3Dn sinc=
-e
->> then pwrseq_get() is returning ERR_PTR(-ENOSYS) which is not handled
->> here.
->>=20
->> I'm observing my ath10k_snoc is now failing to probe "with error -38"
->> which definitely seems to be related, but I haven't debugged it further
->> yet.
->
-> Posted https://patch.msgid.link/20260418-ath10k-snoc-pwrseq-v1-1-832594ba=
-3294@oss.qualcomm.com
+On Fri, Apr 17, 2026 at 01:36:12PM -0400, Yury Norov wrote:
+> The bitfields are designed in assumption that fields contain unsigned
+> integer values, thus extracting the values from the field implies
+> zero-extending.
+> 
+> Some drivers need to sign-extend their fields, and currently do it like:
+> 
+> 	dc_re += sign_extend32(FIELD_GET(0xfff000, tmp), 11);
+> 	dc_im += sign_extend32(FIELD_GET(0xfff, tmp), 11);
+> 
+> It's error-prone because it relies on user to provide the correct
+> index of the most significant bit and proper 32 vs 64 function flavor.
+> 
+> Thus, introduce a FIELD_GET_SIGNED() macro, which is the more
+> convenient and compiles (on x86_64) to just a couple instructions:
+> shl and sar.
+> 
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+> ---
+>  include/linux/bitfield.h | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/include/linux/bitfield.h b/include/linux/bitfield.h
+> index 54aeeef1f0ec..35ef63972810 100644
+> --- a/include/linux/bitfield.h
+> +++ b/include/linux/bitfield.h
+> @@ -178,6 +178,22 @@
+>  		__FIELD_GET(_mask, _reg, "FIELD_GET: ");		\
+>  	})
+>  
+> +/**
+> + * FIELD_GET_SIGNED() - extract a signed bitfield element
+> + * @mask: shifted mask defining the field's length and position
+> + * @reg:  value of entire bitfield
+> + *
+> + * Returns the sign-extended field specified by @_mask from the
+> + * bitfield passed in as @_reg by masking and shifting it down.
+> + */
+> +#define FIELD_GET_SIGNED(mask, reg)					\
+> +	({								\
+> +		__BF_FIELD_CHECK(mask, reg, 0U, "FIELD_GET_SIGNED: ");	\
+> +		 ((__signed_scalar_typeof(mask))((long long)(reg) <<	\
+> +		 __builtin_clzll(mask) >> (__builtin_clzll(mask) +	\
+> +						__builtin_ctzll(mask))));\
+> +	})
 
-Thanks Dmitry!
+IIRC clz is count-leading-zeros and ctz is count-trailing-zeros. Most of
+the other FIELD things use __bf_shf() which is defined in terms of ffs -
+1 (which is another way of writing ctz).
+
+So how about you start by redefining __bf_shf() in ctz, and then add
+another helper for the clz and write the thing something like:
+
+	((long long)(reg) << __bf_clz(mask)) >> (__bf_clz(mask) + __bf_shf(mask));
+
+Also, since the order of the shifts is rather important, I think it
+makes sense to add this extra pair of (), even when not strictly needed,
+just to make it easier to read.
 
