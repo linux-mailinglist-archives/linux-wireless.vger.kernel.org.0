@@ -1,63 +1,60 @@
-Return-Path: <linux-wireless+bounces-35076-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35077-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPx4IQ495mlutgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35076-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:49:50 +0200
+	id EMdDIcpN5mkgugEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35077-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 18:01:14 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD8B842D816
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:49:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD9A42ED63
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 18:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D76B33365E2
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 14:13:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE794369A4BF
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 14:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B1C43CECD;
-	Mon, 20 Apr 2026 13:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4097B43E9F9;
+	Mon, 20 Apr 2026 13:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCXKag4B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWeA2W84"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F8743CEC8;
-	Mon, 20 Apr 2026 13:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B52B43E9DC;
+	Mon, 20 Apr 2026 13:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691792; cv=none; b=NdbyC5WhlOGUCRIv+y5I6IGAsXXKlkeBUiYPz145/8MgNAnPD3gtcRLKALMBoV2tdXNDPdxSlxH/jvK81UVPrsC8cpRXK1E/fylTWnRvIT71pdUDX7SPgn+XHl9QwUEnF6CAy5fZidg5deBgJcUjs+3SPFnJ13gwxhrPMTgJgpI=
+	t=1776691807; cv=none; b=ax2/6jIj5DmnbMNv/HIV4O4HGC6k/F3tRldzneWGQGtqPZEK6H2/fb8LrB5bCl+GsUg55Zq4BuZNjZdPUV7PWyLrJgOWHpvN9NMSl5E4wLMS5FbXPboq50LJDlhtlB9DZE6mqdX3vH0CFinjx3Ab4kNYF4AgXf0Tm2nKqBkttKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691792; c=relaxed/simple;
-	bh=Teg3PZk4joL13q6+vgKFwwZm+5qBJJjOBbONA6sS+Ro=;
+	s=arc-20240116; t=1776691807; c=relaxed/simple;
+	bh=C9GfNAWj0YL3ATF78+dtGWFxV72UYQEMgacBgCxE/EM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MJANRYj6FskBR9MI7ID89a2suqFrEd3fMOaq5XyXYcZEpCsQAUuWTVmM5H84q0vhtBfgRpNR699HBl24lcTMXBIzZoQpPlJqmoGQBPyolDpCVtRWZcn4pWYuMD5m7RSzRPHTj/W3D6fPsuzqpcp4D6rmxTtwPuQlI74GeljnRYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCXKag4B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778A4C2BCB6;
-	Mon, 20 Apr 2026 13:29:50 +0000 (UTC)
+	 MIME-Version; b=e7Ul80mdvIpLaos3xVyA4DT06pAE1EynWjtv2/z0c38ngseaF4LcH7G8GMU+AOCwE3zecDbVcBQEi/QbMt2Jmgcw72xj+OdaDPBiAAJ0h9yWFrkX5H80Ov7oAFbT56Ox4Zgkxi49kLVxh8svoz7YvlOQpG/vXXvScnn+KoBiGnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWeA2W84; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3360BC2BCB8;
+	Mon, 20 Apr 2026 13:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691791;
-	bh=Teg3PZk4joL13q6+vgKFwwZm+5qBJJjOBbONA6sS+Ro=;
+	s=k20201202; t=1776691807;
+	bh=C9GfNAWj0YL3ATF78+dtGWFxV72UYQEMgacBgCxE/EM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCXKag4B286qlBwFzEZZ9xPSbFhhY1e/R7ZpTpdS0wx0zkAnY39qefSCWazwBLxAx
-	 plQ5gBF0UAVN22IxRTcATJ01WYE4Nsu/tzhsOTk8gfuwy4XQV22xmq86QL4yzoMsTP
-	 5VKTvMYEm9D1rI/JrYxhVIBJR8TXdSLbrpBUx+l4LT2TFYE4NIKcsKkBpb/WKW+Ao4
-	 P8Pv6JR/n9je71mZ+qAZ87uIsQIK+0iCLjOUafY3SgWorbWp8H75eHi7f+9xOM4INb
-	 PWVAtP1naXMzj4oT5VD5eOaE19+4vBsL4HoXNB8nfliY06vAQlqrq3adEHerEt+X8X
-	 C/RhrHfYFIVqQ==
+	b=VWeA2W84OKjkIDyz+ZNrb23wmJgOewTwWWU3nJqbN2QhviLSe9xRF4nirtGvSM29Y
+	 xlyfwZihj8dw3zuTIPd0vQ439Et9G5zRyO7LeyvIeU79FHIxZPW0fBdw55VsHQu/oS
+	 pJS5VvBUe7Zvi9Upzi2uO4kfwAoGiymqVfQjD8nOFFEtOYImxcAWERY8az3ypICHPg
+	 ZB9gc9IpZcudrTwe8i5NwsR+WZMk6gD6hZCn2myGMdzhsOtU3VQoaK7DPdV8HhcX+2
+	 Alf/Ui83SRXi7cAsbNnE01r3M1kJn0PGnIJCyeo9VJq+5jKdO3elnrXUTZ86ELIWA5
+	 NuOTleQC0RWXQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Rosen Penev <rosenp@gmail.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Zenm Chen <zenmchen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.18] wifi: brcmfmac: of: defer probe for MAC address
-Date: Mon, 20 Apr 2026 09:19:50 -0400
-Message-ID: <20260420132314.1023554-196-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-6.19] wifi: rtw89: Add support for Buffalo WI-U3-2400XE2
+Date: Mon, 20 Apr 2026 09:19:59 -0400
+Message-ID: <20260420132314.1023554-205-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -70,356 +67,292 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,broadcom.com,intel.com,kernel.org,vger.kernel.org,lists.linux.dev];
-	TAGGED_FROM(0.00)[bounces-35076-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-35077-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BD8B842D816
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: CBD9A42ED63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Zenm Chen <zenmchen@gmail.com>
 
-[ Upstream commit 084863593243c5dce0f2eef44e23de8c53ebf4a2 ]
+[ Upstream commit aefb20749074731c4f35444761e730991f1b8c77 ]
 
-of_get_mac_address can return EPROBE_DEFER if the specific nvmem driver
-has not been loaded yet.
+Add the ID 0411:03a6 to the table to support an additional RTL8832CU
+adapter: Buffalo WI-U3-2400XE2.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20260220022739.41755-1-rosenp@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://github.com/morrownr/rtw89/commit/506d193b8cb7d6394509aebcf8de1531629f6100
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260320154136.5750-1-zenmchen@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information needed for a comprehensive analysis. Let
-me compile the findings.
+Now I have all the information needed. Let me compile the full analysis.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: Subject Line
-- **Subsystem**: `wifi: brcmfmac: of:` (Broadcom WiFi driver, device-
-  tree integration)
-- **Action verb**: "defer" — implies fixing a probe ordering issue
-- **Summary**: Handle `-EPROBE_DEFER` return from `of_get_mac_address`
-  to properly defer probe when nvmem isn't ready
+**Step 1.1: Subject Line**
+- Subsystem: `wifi: rtw89:`
+- Action: "Add support for" (new device ID)
+- Summary: Adds USB device ID 0411:03a6 for Buffalo WI-U3-2400XE2 WiFi
+  adapter to existing RTL8852CU driver.
+- Record: [wifi: rtw89] [Add] [USB device ID for Buffalo WI-U3-2400XE2]
 
-### Step 1.2: Tags
-- **Signed-off-by**: Rosen Penev (author)
-- **Acked-by**: Arend van Spriel (Broadcom WiFi maintainer) — strong
-  endorsement
-- **Link**:
-  `https://patch.msgid.link/20260220022739.41755-1-rosenp@gmail.com`
-- **Signed-off-by**: Johannes Berg (wireless subsystem maintainer)
-- No Fixes: tag, no Reported-by, no Cc: stable (all expected for this
-  review)
+**Step 1.2: Tags**
+- Link: GitHub commit in morrownr/rtw89 out-of-tree driver (user-
+  contributed)
+- Signed-off-by: Zenm Chen (author), Ping-Ke Shih (rtw89 subsystem
+  maintainer)
+- Link: patch.msgid.link for the submission
+- No Fixes: tag (expected for device ID additions)
+- No Reported-by / Tested-by / Reviewed-by (typical for trivial device
+  ID patches)
+- Record: Maintainer SOB from Ping-Ke Shih confirms review.
 
-### Step 1.3: Commit Body
-The commit explains that `of_get_mac_address` can return `-EPROBE_DEFER`
-if the nvmem driver hasn't loaded yet. This is a well-known kernel
-pattern — nvmem drivers often load as modules, and the order relative to
-network drivers is not guaranteed.
+**Step 1.3: Body Text**
+- "Add the ID 0411:03a6 to the table to support an additional RTL8832CU
+  adapter: Buffalo WI-U3-2400XE2."
+- Straightforward description, no bug symptoms, no crash, just enabling
+  hardware.
+- Record: No bug described. This enables hardware that uses an existing
+  chipset/driver.
 
-### Step 1.4: Hidden Bug Fix Detection
-This IS a real bug fix. The unchecked return value means the driver
-proceeds without a valid MAC address. On systems relying on nvmem-
-provided MAC addresses (common on embedded platforms), the device ends
-up with no proper MAC.
-
-**Record**: Real bug fix disguised as a simple probe improvement.
-
----
+**Step 1.4: Hidden Bug Fix Detection**
+- This is NOT a bug fix. It's a new device ID addition that falls into
+  the explicit exception category for stable.
+- Record: Not a hidden bug fix; it's a device ID addition (exception
+  category).
 
 ## PHASE 2: DIFF ANALYSIS
 
-### Step 2.1: Inventory
-- **1 file** changed:
-  `drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c`
-- **+3 lines, -1 line** (net +2 lines)
-- **Function modified**: `brcmf_of_probe()`
+**Step 2.1: Inventory**
+- Files: `drivers/net/wireless/realtek/rtw89/rtw8852cu.c` (+2 lines)
+- Change: Adds one entry to `rtw_8852cu_id_table[]`
+- Record: Single file, +2 lines, one USB ID table entry added.
 
-### Step 2.2: Code Flow Change
-**Before**: `of_get_mac_address(np, settings->mac);` — return value
-discarded
-**After**:
-```c
-err = of_get_mac_address(np, settings->mac);
-if (err == -EPROBE_DEFER)
-    return err;
-```
+**Step 2.2: Code Flow Change**
+- Before: The USB ID table has 8 entries for RTL8852CU devices.
+- After: The table has 9 entries, with the new Buffalo device ID
+  (0x0411:0x03a6) added.
+- The entry uses `USB_DEVICE_AND_INTERFACE_INFO` with the same
+  `rtw89_8852cu_info` driver data as all other entries.
+- Record: Only change is one new ID table entry; no behavioral changes
+  to existing code paths.
 
-Only `-EPROBE_DEFER` is checked; other errors (e.g., no MAC in DT) are
-still silently ignored, preserving the original behavior where a missing
-MAC is not fatal.
+**Step 2.3: Bug Mechanism**
+- Category: Hardware enablement (device ID addition)
+- No bug being fixed; this enables a new device to be recognized by the
+  existing driver.
+- Record: [Device ID addition] [No bug; enables new hardware]
 
-### Step 2.3: Bug Mechanism
-**Category**: Logic/correctness fix — missing return value check
-- `of_get_mac_address()` -> `of_get_mac_address_nvmem()` ->
-  `of_nvmem_cell_get()` -> nvmem core returns `-EPROBE_DEFER` when the
-  nvmem device isn't yet available
-- Without the fix: probe succeeds with wrong/empty MAC
-- With the fix: probe defers, retries later when nvmem is ready, gets
-  correct MAC
+**Step 2.4: Fix Quality**
+- Trivially correct: follows exact same pattern as all other entries in
+  the table.
+- Zero regression risk: only triggers for the new VID:PID, no impact on
+  existing devices.
+- Record: Obviously correct. No regression risk.
 
-### Step 2.4: Fix Quality
-- **Obviously correct**: 3-line change, checking exactly one specific
-  error code
-- **Minimal/surgical**: No unrelated changes
-- **Regression risk**: Extremely low — only adds a `return
-  -EPROBE_DEFER` path, which the caller already handles (verified in
-  `common.c` line 564)
-- The exact same pattern is used by ath9k, mt76, and rt2x00 drivers (all
-  by the same author)
+## PHASE 3: GIT HISTORY
 
----
+**Step 3.1: Blame**
+- The file was created by commit `406849000df41` in v6.19.
+- Record: File introduced in v6.19.
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+**Step 3.2: Fixes tag**
+- No Fixes: tag present. Expected for device ID additions.
 
-### Step 3.1: Blame
-The buggy line (`of_get_mac_address(np, settings->mac)` without return
-check) was introduced by commit `716c220b4d990a` (Pavel Löbl,
-2022-05-06, "brcmfmac: allow setting wlan MAC address using device
-tree"), first present in v5.19.
+**Step 3.3: File History**
+- Only 2 commits to this file: initial creation (`406849000df41`) and
+  one prior device ID addition (`5f65ebf9aaf00` - Valve Steam Deck ID
+  28de:2432).
+- Record: Standalone patch, no prerequisites.
 
-### Step 3.2: Fixes Tag
-No Fixes: tag present. The implicit fix target is `716c220b4d990a`.
+**Step 3.4: Author's Commits**
+- Zenm Chen has contributed multiple USB ID additions to rtw89: D-Link
+  VR Air Bridge (DWA-F18), MSI AX1800 Nano (GUAX18N), also to rtw88 and
+  btusb drivers.
+- Record: Author is a regular contributor of device ID additions.
 
-### Step 3.3: File History
-Recent changes to `of.c`:
-- `082d9e263af8d` — Check return of `of_property_read_string_index()`
-  (v6.14+)
-- `2e19a3b590ebf` — Release 'root' node in all paths (v6.13)
-- `7cc7267a01631` — Use `devm_clk_get_optional_enabled_with_rate()`
-  (v6.13)
-- `0ff0843310b74` — Changed function from `void` to `int`, added LPO
-  clock (v6.13)
+**Step 3.5: Dependencies**
+- None. This is a self-contained 2-line addition to a USB ID table.
+- Record: Fully standalone, no dependencies.
 
-The current commit is standalone — no dependencies on other patches.
+## PHASE 4: MAILING LIST / EXTERNAL RESEARCH
 
-### Step 3.4: Author
-Rosen Penev is a regular contributor who has systematically fixed this
-exact same bug across multiple wireless drivers:
-- ath9k: `dfffb317519f8` (2024-11-05)
-- mt76: `c7c682100cec9` (same pattern)
-- rt2x00: `428ea708b714b` (same pattern)
-- brcmfmac: THIS commit (completing the series)
+**Step 4.1: Patch Discussion**
+- Lore protected by Anubis anti-bot; could not fetch directly.
+- GitHub link confirmed: the same change was first applied to the
+  morrownr/rtw89 out-of-tree driver, confirming user validation.
+- Record: Patch originated from real user contribution, validated in
+  out-of-tree driver.
 
-### Step 3.5: Dependencies
-- **Requires** `0ff0843310b74e` (v6.13) — changed `brcmf_of_probe` from
-  `void` to `int`
-- **Requires** `9e935c0fe3f80` (v6.15) — memory leak fix in caller's
-  EPROBE_DEFER handling
-- Both are present in v7.0 (verified via `git merge-base --is-ancestor`)
+**Step 4.2: Reviewers**
+- Ping-Ke Shih (Realtek maintainer) signed off, confirming
+  review/acceptance.
+- Record: Subsystem maintainer reviewed and accepted.
 
----
-
-## PHASE 4: MAILING LIST RESEARCH
-
-### Step 4.1-4.5
-Lore is protected by Anubis anti-bot, so direct fetch was blocked.
-However:
-- The commit was **Acked-by Arend van Spriel** (Broadcom WiFi
-  maintainer)
-- Merged by **Johannes Berg** (wireless subsystem maintainer)
-- The exact same fix pattern was applied to ath9k, mt76, rt2x00 — well-
-  established approach
-
----
+**Step 4.3-4.5: Bug Report / Related Patches / Stable History**
+- No bug report (not a bug fix).
+- A prior similar device ID addition (`5f65ebf9aaf00` - 28de:2432) was
+  already backported to 6.19.y stable as `6f055e0a78d6e`.
+- Record: Precedent exists for backporting USB ID additions to this
+  exact file in stable.
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1-5.4: Function Call Chain
-```
-brcmf_sdio_probe / brcmf_pcie_probe / brcmf_usb_probe
-  -> brcmf_get_module_param()  [common.c:564]
-    -> brcmf_of_probe()  [of.c:69]
-      -> of_get_mac_address()  [net/core/of_net.c:126]
-        -> of_get_mac_address_nvmem()  [net/core/of_net.c:61]
-          -> of_nvmem_cell_get()  -> nvmem core returns -EPROBE_DEFER
-```
-
-All three bus probes (SDIO, PCIe, USB) properly handle
-`ERR_PTR(-EPROBE_DEFER)` returned from `brcmf_get_module_param()`.
-
-### Step 5.5: Similar Patterns
-The exact same fix exists in 3 other wireless drivers:
-- `drivers/net/wireless/ath/ath9k/init.c:651` — checks EPROBE_DEFER
-- `drivers/net/wireless/mediatek/mt76/eeprom.c:174` — checks
-  EPROBE_DEFER
-- `drivers/net/wireless/ralink/rt2x00/rt2x00dev.c:996` — checks
-  EPROBE_DEFER
-
-brcmfmac was the outlier that did NOT check.
-
----
+**Step 5.1-5.5:**
+- The change is purely data-level (adding an entry to a `const` table).
+- No function modified, no code logic changed.
+- The USB subsystem will match the new VID:PID and bind to the existing
+  `rtw89_usb_probe` function.
+- Record: No code logic changes; purely declarative device ID addition.
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-### Step 6.1: Buggy Code in Stable Trees
-- The `of_get_mac_address` call was added in v5.19 (`716c220b4d990a`)
-- But `brcmf_of_probe` was changed from `void` to `int` in v6.13
-  (`0ff0843310b74e`)
-- For v7.0 stable: all prerequisites present, fix applies cleanly
-- For v6.13–v6.15: prerequisites present, may need minor backport
-  adjustments
-- For v6.12 and older: function returns `void`, fix is structurally
-  incompatible
+**Step 6.1: Buggy Code in Stable?**
+- The file `rtw8852cu.c` was introduced in v6.19, present in 7.0.y and
+  6.19.y.
+- Does NOT exist in older trees (6.12.y, 6.6.y, etc.).
+- Record: File exists in v6.19.y and v7.0.y.
 
-### Step 6.2: Backport Complications
-For v7.0: The code matches exactly — clean apply expected.
+**Step 6.2: Backport Complications**
+- The current tree (v7.0) has 8 entries in the table. The 6.19.y stable
+  has 7 entries (missing 28de:2432 which was backported separately as
+  `6f055e0a78d6e`).
+- The patch adds the entry at the beginning of the table; it should
+  apply cleanly or with trivial context adjustment.
+- Record: Clean apply expected (may need minor fuzz for ordering).
 
----
+**Step 6.3: Related Fixes Already in Stable**
+- No previous fix for this specific device (it's a new ID).
+- Record: No conflicts.
 
 ## PHASE 7: SUBSYSTEM CONTEXT
 
-### Step 7.1: Subsystem
-- **Subsystem**: WiFi driver (brcmfmac) — Broadcom wireless
-- **Criticality**: IMPORTANT — widely used in embedded/SBC/OpenWrt
-  platforms (Raspberry Pi, many routers)
-
----
+**Step 7.1:** WiFi drivers - IMPORTANT subsystem. Buffalo is a well-
+known consumer electronics brand.
+**Step 7.2:** rtw89 is actively developed with USB support being
+relatively new (v6.19+).
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-### Step 8.1: Affected Users
-Users of brcmfmac WiFi devices where the MAC address is provided via
-nvmem (device tree). This is common on:
-- OpenWrt routers
-- Embedded ARM platforms
-- Single-board computers with Broadcom WiFi
-
-### Step 8.2: Trigger Conditions
-The bug triggers when:
-1. Device tree specifies MAC address via nvmem
-2. The nvmem driver loads AFTER brcmfmac
-3. This is a race between module loading order — common in practice
-
-### Step 8.3: Failure Mode
-- **Severity**: MEDIUM-HIGH
-- Device probes with wrong/random MAC address
-- Can break network configuration, DHCP leases, MAC-based filtering
-- No crash, but real functional breakage for affected users
-
-### Step 8.4: Risk-Benefit
-- **Benefit**: HIGH — fixes MAC address assignment on affected embedded
-  platforms
-- **Risk**: VERY LOW — 3-line change, only adds one conditional return
-  path that the caller already handles
-- **Ratio**: Strongly favorable
-
----
+**Step 8.1:** Affects users of Buffalo WI-U3-2400XE2 USB WiFi adapter -
+without this ID, the adapter is not recognized.
+**Step 8.2:** Trigger: every time the device is plugged in (100%
+reproducible - device doesn't work without it).
+**Step 8.3:** Failure mode without fix: hardware doesn't work at all.
+Severity: HIGH for affected users.
+**Step 8.4:**
+- Benefit: HIGH - enables hardware for real users (the patch came from a
+  user contribution)
+- Risk: VERY LOW - 2 lines, const data addition, cannot affect other
+  devices
+- Ratio: Strongly favorable
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: Evidence Summary
+**Step 9.1: Evidence**
+- FOR: Textbook device ID addition; trivially correct; 2 lines; zero
+  regression risk; subsystem maintainer signed off; author has track
+  record; precedent for same-file backports to stable; enables real
+  hardware for real users
+- AGAINST: None identified
+- UNRESOLVED: Could not fetch lore discussion due to anti-bot protection
 
-**FOR backporting:**
-- Fixes a real, functional bug (wrong MAC address on embedded platforms)
-- Extremely small and surgical (3 lines)
-- Obviously correct — matches identical fixes in 3 other wireless
-  drivers
-- Acked by Broadcom WiFi maintainer, merged by wireless maintainer
-- Same author systematically fixed this across all affected drivers
-- All prerequisites present in v7.0
-- Caller already handles EPROBE_DEFER properly
+**Step 9.2: Stable Rules Checklist**
+1. Obviously correct and tested? YES - follows exact pattern of all
+   existing entries
+2. Fixes a real bug? YES (exception category - enables hardware)
+3. Important issue? YES for affected users - hardware non-functional
+   without it
+4. Small and contained? YES - 2 lines in one file
+5. No new features or APIs? YES - just a device ID
+6. Can apply to stable trees? YES - file exists in 6.19.y and 7.0.y
 
-**AGAINST backporting:**
-- No crash or security issue — "just" wrong MAC address
-- No Fixes: tag or explicit stable nomination
+**Step 9.3: Exception Category**
+YES - this is a **new device ID addition to an existing driver**, which
+is explicitly listed as an exception category that is appropriate for
+stable.
 
-The "against" points are very weak here — wrong MAC addresses are a real
-functional problem.
+## Verification
 
-### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **YES** — identical pattern in 3 other
-   drivers, acked by maintainer
-2. Fixes a real bug? **YES** — device gets wrong MAC when nvmem loads
-   after driver
-3. Important issue? **YES** — functional networking failure on affected
-   platforms
-4. Small and contained? **YES** — 3 lines, 1 file, 1 function
-5. No new features or APIs? **YES**
-6. Can apply to stable? **YES** — code matches v7.0 exactly
+- [Phase 1] Parsed tags: Signed-off-by from rtw89 maintainer Ping-Ke
+  Shih
+- [Phase 2] Diff analysis: +2 lines adding
+  USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03a6, ...) to ID table
+- [Phase 3] git show 406849000df41: confirmed file created in v6.19
+- [Phase 3] git describe --contains 406849000df41: first appeared in
+  v6.19
+- [Phase 3] git log for file: only 2 prior commits, no complex history
+- [Phase 3] Author Zenm Chen: verified 5 other device ID additions in
+  rtw89/rtw88/btusb
+- [Phase 4] GitHub link: confirmed same change validated in
+  morrownr/rtw89 out-of-tree driver
+- [Phase 4] UNVERIFIED: Could not access lore.kernel.org discussion
+  (anti-bot protection)
+- [Phase 5] Grep for 0x0411: Buffalo vendor ID already in rtw8852au.c
+  (known vendor)
+- [Phase 6] git log v6.19..v6.19.12: confirmed similar ID addition
+  (5f65ebf9aaf00) already backported to 6.19.y stable
+- [Phase 6] File exists in 7.0 and 6.19.y; does NOT exist in older trees
+- [Phase 8] Risk: VERY LOW (2-line const data); Benefit: HIGH (enables
+  hardware)
 
-### Verification:
-- [Phase 1] Parsed tags: Acked-by Arend van Spriel (broadcom
-  maintainer), Signed-off-by Johannes Berg (wireless maintainer)
-- [Phase 2] Diff analysis: 3 lines changed — capture return value of
-  `of_get_mac_address()`, return EPROBE_DEFER
-- [Phase 3] git blame: buggy line `716c220b4d990a` introduced in v5.19
-  (2022), unchecked of_get_mac_address
-- [Phase 3] git show `0ff0843310b74e`: confirmed prerequisite
-  (void->int) present in v6.13+
-- [Phase 3] git merge-base: all 3 prerequisites (`716c220b`, `0ff08433`,
-  `9e935c0f`) in v7.0
-- [Phase 3] Author history: Rosen Penev fixed same bug in ath9k, mt76,
-  rt2x00 — systematic fix campaign
-- [Phase 4] Lore discussion: blocked by Anubis; maintainer ack/merge
-  confirmed from commit tags
-- [Phase 5] Callers traced: `brcmf_get_module_param()` in `common.c:564`
-  already checks EPROBE_DEFER
-- [Phase 5] of_get_mac_address -> of_get_mac_address_nvmem ->
-  of_nvmem_cell_get -> nvmem core returns EPROBE_DEFER (confirmed in
-  `drivers/nvmem/core.c:1123`)
-- [Phase 5] 3 other wireless drivers handle this identical pattern
-  (verified via grep)
-- [Phase 6] Code exists in v7.0 stable tree, clean apply expected
-- [Phase 8] Failure mode: wrong MAC address on embedded platforms,
-  severity MEDIUM-HIGH
-
-The fix is tiny, obviously correct, follows an established pattern
-across multiple drivers, is acked by the subsystem maintainer, and fixes
-a real functional bug on embedded platforms.
+This is a textbook USB device ID addition to an existing driver - the
+most straightforward type of stable backport. It's 2 lines, trivially
+correct, zero risk, enables real hardware for real users, was reviewed
+by the subsystem maintainer, and there is direct precedent for identical
+backports to this exact file.
 
 **YES**
 
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/rtw8852cu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-index 1681ad00f82ec..03efae36a0b2d 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -128,7 +128,9 @@ int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 	if (err)
- 		brcmf_err("failed to get OF country code map (err=%d)\n", err);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
+index 3b9825c92a0d9..a485dacbb0531 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
+@@ -38,6 +38,8 @@ static const struct rtw89_driver_info rtw89_8852cu_info = {
+ };
  
--	of_get_mac_address(np, settings->mac);
-+	err = of_get_mac_address(np, settings->mac);
-+	if (err == -EPROBE_DEFER)
-+		return err;
- 
- 	if (bus_type != BRCMF_BUSTYPE_SDIO)
- 		return 0;
+ static const struct usb_device_id rtw_8852cu_id_table[] = {
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03a6, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc832, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc85a, 0xff, 0xff, 0xff),
 -- 
 2.53.0
 
