@@ -1,66 +1,60 @@
-Return-Path: <linux-wireless+bounces-35054-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35055-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CAt0ADIu5mliswEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35054-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:46:26 +0200
+	id 0FluHLwu5mliswEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35055-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:48:44 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701A742C3F1
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:46:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1646342C4D3
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:48:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1299316C856
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:33:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 22419311561C
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B723E3B0AF5;
-	Mon, 20 Apr 2026 13:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6788F3D3CED;
+	Mon, 20 Apr 2026 13:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fSret4Nr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/ww9Fxc"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEF53B0AE3;
-	Mon, 20 Apr 2026 13:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C343D3486;
+	Mon, 20 Apr 2026 13:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691398; cv=none; b=PUR4tpZd8CI79RC2kalA3fEuA4ngg7ewt2rUCyjJa3CcxckdYbFJ8teRJGu+81f0o7jedKQMtDuK1MZEqxY3l3YRT1a1DX1JZ8cFjR0p2vk3G9lM/j3L0b9K6ZW/fmFLLHkGTDepZD/gRQQVjJLV2ORmt5Lp9PVib2mF7wFVInU=
+	t=1776691416; cv=none; b=Jf2fuuS2ZP9jPgFCJrX5QWCWZvmGjZ3RQv79+bmm0320sZurQ3AjroQgnpg2WHvGpbNccG33p0WODcIekXXkr8u7L4Kr2LnmraK3ouvKv9u17j1lpHpRlcMgVa5y5PQha52HjSDuX+vZtkLNb8JbvbMY2NUIYtVOeX+xJs31mdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691398; c=relaxed/simple;
-	bh=4Ew+9P1AhCIc/hFMFZX1yd3SOp26GdjQC76CnuAw4eY=;
+	s=arc-20240116; t=1776691416; c=relaxed/simple;
+	bh=yQ1RewH9lw8beZGLPupAC42ESrO0ODROPpBzl9klZWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JmCLQAchEp+gHUzvi7UZV3JVyH2jp2xUVArIKOEloKFvKdDiURiMCzeDOvSYRbnJE/mdwx5p2HKVdA2LgnqJg8bxLcr1YgIOWUKX52EubpmnSnwK0qbF7ZIVSLQe2tl3nnzbClXlK0kpOk5ORLE0LymJ0Sxn2dPgnGMf9muQDjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fSret4Nr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A8DC2BCB7;
-	Mon, 20 Apr 2026 13:23:17 +0000 (UTC)
+	 MIME-Version; b=Qwp9Ptzp3276kjtO0uyIQecl+RgE1W6rCvEOyOzqnxYoI27O2iG+BKXHHoUz3V/DkzzYvi5D8bEBECTQ204cQml+adLbEZz99Egxl6mAurUpvOFhcQUaE7I3Z29iZyCfAoynwQXdtxD9/oR46slcgdqDA4eQflYut1ifpToKqmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/ww9Fxc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110C6C2BCB4;
+	Mon, 20 Apr 2026 13:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691398;
-	bh=4Ew+9P1AhCIc/hFMFZX1yd3SOp26GdjQC76CnuAw4eY=;
+	s=k20201202; t=1776691416;
+	bh=yQ1RewH9lw8beZGLPupAC42ESrO0ODROPpBzl9klZWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fSret4Nr/dT4WI0ejo0jrquAkS3QgSrfYNw6HWDYnF8qXQjQF/d9dCAjSJNT/EerC
-	 ofT1iBDn4z/v15MvAyWJDVSMz3FAnIpobV7u3ziVGRnDMb/pfOParuYSss12DImyA7
-	 VrM65Lw22Xdya8WaVwVoVBKz3C/ypKddFgupEONNj9GhF+VKk00PuRU4c0+dBnyR3u
-	 3IMaKSK6C0Vdd+/58A8j62wIeAgi67ulXUS4/eQWD+SC32SipBv2ia+fovTOrPUQX7
-	 O14rmcx1mLErQDKXdnKm5N5JALk/OyZEYXOdocKbdJRV31wweANHaSfMt0mwl5K832
-	 Z0ZM4Td0rrNIg==
+	b=e/ww9FxcFsbz8WGtzCObYRybdyqaObFBRxzyJmxCOxYl5bzvcWsSzz8nw/idhHNxW
+	 VD0CAidnQ8RY07NB0xkWjJm94fJ7kdpBtb7w/aLTN8PoX+gb3jVapnCd221weWICts
+	 rSU6pVWuYAs3kTz4Zlyh1Kc9ownIxHxLuXhWk4pQSlC3mTekH2WbgiaiqPI2nJu8Qb
+	 iU+yubK5k49qxxBHtkAp750/RZxUt/YVQjh+11RPqGWLctHEpVfunWGyu4sivFIszp
+	 9Sy/bKE6XPuJdwoH87RzO8DEHTMMDfPRJPFtz22k3cap6GhDKSofoTWc4vHsP3WHsc
+	 9WbGaokUSOdhg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>,
-	Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
 	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.18] wifi: ath12k: Fix the assignment of logical link index
-Date: Mon, 20 Apr 2026 09:16:36 -0400
-Message-ID: <20260420132314.1023554-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-6.12] wifi: rtw89: ser: Wi-Fi 7 reset HALT C2H after reading it
+Date: Mon, 20 Apr 2026 09:16:47 -0400
+Message-ID: <20260420132314.1023554-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -73,361 +67,444 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35054-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35055-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 701A742C3F1
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 1646342C4D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit aecb569d7fb689e3e5b0005ca7bd0a2ef28915e8 ]
+[ Upstream commit 0cae26a78b14fe1292b0f50f28ebabe6801f3885 ]
 
-Per-link logical index is assigned from the global counter,
-ahsta->num_peer. This logical index is sent to firmware during peer
-association. If there is a failure in creating a link station,
-ath12k_mac_free_unassign_link_sta() clears the link, but does not decrement
-the logical link index. This will result in a higher logical link index for
-the next link station created. Also, if there is a leak in logical link
-index as we assign the incremented num_peer, then the index can exceed the
-maximum valid value of 15.
+When a SER (system error recovery) interrupt happens, driver reads HALT C2H
+register to get the error status via MAC. For Wi-Fi 7 chipset, driver needs
+to reset HALT C2H register after reading it to make FW aware that.
 
-As an example, let's say we have a 2 GHz + 5 GHz + 6 GHz MLO setup. So the
-logical link indices that they have are 0, 1 and 2, respectively. If the
-5 GHz link is removed, logical link index 1 becomes available, and num_peer
-is not reduced to 2 and still remains at 3. If a new 5 GHz link is added
-later, it gets the index 3, instead of reusing link index 1. Also,
-num_peer is increased to 4, though only 3 links are present.
-
-To resolve these, create a bitmap, free_logical_link_idx, that tracks the
-available logical link indices. When a link station is created, select the
-first free logical index and when a link station is removed, mark its
-logical link index as available by setting the bit.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01181-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
-Signed-off-by: Roopni Devanathan <roopni.devanathan@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260226041911.2434999-1-roopni.devanathan@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260213061552.29997-12-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information I need. Let me compile the final
-analysis.
+Now I have a comprehensive understanding. Let me compile my analysis.
 
 ---
 
-## Complete Analysis
+## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### PHASE 1: COMMIT MESSAGE FORENSICS
+### Step 1.1: PARSE THE SUBJECT LINE
+Record: [wifi: rtw89: ser] [reset] [Wi-Fi 7 reset HALT C2H register
+after reading it during SER to notify FW]
 
-**Step 1.1:**
-- Subsystem: `wifi: ath12k`
-- Action verb: "Fix"
-- Summary: Fixes the assignment of logical link index for MLO (Multi-
-  Link Operation) link stations.
+### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
+- **Signed-off-by**: Zong-Zhe Yang (author, Realtek engineer) and Ping-
+  Ke Shih (maintainer, Realtek)
+- **Link**:
+  `https://patch.msgid.link/20260213061552.29997-12-pkshih@realtek.com`
+  - patch 12 of a series
+- No Fixes: tag (expected for candidate commits)
+- No Reported-by: tag
+- No Cc: stable
 
-**Step 1.2: Tags:**
-- `Tested-on: QCN9274 hw2.0 PCI` — hardware tested
-- `Signed-off-by: Manish Dharanenthiran` — original author
-- `Signed-off-by: Roopni Devanathan` — submitter
-- `Reviewed-by: Rameshkumar Sundaram`, `Baochen Qiang`, `Vasanthakumar
-  Thiagarajan` — 3 Qualcomm reviewers
-- `Link:` to patch.msgid.link — original submission
-- `Signed-off-by: Jeff Johnson` — ath12k maintainer applied it
-- No Fixes: tag, no Reported-by, no syzbot, no Cc: stable — expected for
-  autoselection candidates.
+Record: Standard Realtek vendor team submission. No user reports or
+explicit stable nomination.
 
-**Step 1.3:** The commit message describes a clear bug: `num_peer` is a
-monotonically incrementing counter used to assign logical link indices.
-When links are removed, the counter is never decremented, causing
-"leakage" of index values. Over time with link add/remove cycles, the
-index exceeds the firmware's maximum valid value of 15.
+### Step 1.3: ANALYZE THE COMMIT BODY TEXT
+The body states: "When a SER (system error recovery) interrupt happens,
+driver reads HALT C2H register to get the error status via MAC. For Wi-
+Fi 7 chipset, driver needs to reset HALT C2H register after reading it
+to make FW aware that."
 
-**Step 1.4:** This is NOT a hidden bug fix — the subject explicitly says
-"Fix".
+Record: Bug is that Wi-Fi 7 firmware requires the HALT_C2H register to
+be cleared after the driver reads it during error recovery, but the
+driver was not doing this. Without the clear, FW doesn't know the driver
+has acknowledged the error, potentially breaking the SER recovery flow.
+No version info or stack trace provided.
 
-### PHASE 2: DIFF ANALYSIS
+### Step 1.4: DETECT HIDDEN BUG FIXES
+Record: Yes, this IS a bug fix. The language "driver needs to reset"
+indicates a missing protocol step. The SER recovery on Wi-Fi 7 is broken
+without this change because the firmware protocol requires the register
+to be cleared after reading.
 
-**Step 2.1:**
-- `core.h`: 1 line changed (`u8 num_peer` -> `u16
-  free_logical_link_idx_map`)
-- `mac.c`: ~20 lines changed across 3 functions
-- Functions modified: `ath12k_mac_free_unassign_link_sta`,
-  `ath12k_mac_assign_link_sta`, `ath12k_mac_op_sta_state`
-- Scope: well-contained, single-subsystem fix
+---
 
-**Step 2.2:**
-- In `ath12k_mac_free_unassign_link_sta`: adds
-  `ahsta->free_logical_link_idx_map |= BIT(arsta->link_idx)` — returns
-  the freed index to the pool
-- In `ath12k_mac_assign_link_sta`: replaces `arsta->link_idx =
-  ahsta->num_peer++` with bitmap-based allocation using `__ffs()` + adds
-  `-ENOSPC` check
-- In `ath12k_mac_op_sta_state`: initializes
-  `ahsta->free_logical_link_idx_map = U16_MAX` when a new station is
-  created (all bits set = all indices free)
+## PHASE 2: DIFF ANALYSIS
 
-**Step 2.3:** Bug category: Logic/correctness bug — resource index leak.
-The old approach only increments, never reuses indices. The new bitmap
-approach properly tracks available indices.
+### Step 2.1: INVENTORY THE CHANGES
+- **File**: `drivers/net/wireless/realtek/rtw89/mac.c`
+- **Function**: `rtw89_mac_get_err_status()`
+- **Lines added**: ~5 (1 variable declaration, 1 goto, 1 label, 1
+  conditional write, 1 empty line)
+- **Lines removed**: 1 (`return err` replaced with `goto bottom`)
+- **Scope**: Single-file, single-function surgical fix
 
-**Step 2.4:** Fix quality:
-- The fix is correct — bitmap tracks available indices, `__ffs` gets the
-  lowest free bit, removal sets the bit back
-- It adds a proper `-ENOSPC` check for when all indices are exhausted
-- Minimal regression risk — the logic is straightforward and only
-  touches the specific allocation/deallocation paths
-- The U16_MAX initialization means 16 indices (0-15), which matches the
-  firmware's maximum
+Record: Very small, contained change to one function in one file.
 
-### PHASE 3: GIT HISTORY INVESTIGATION
+### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
+**Before**: When `rtw89_mac_suppress_log()` returns true, the function
+immediately returns without clearing HALT_C2H. When it returns false,
+the function dumps debug info and returns without clearing HALT_C2H.
 
-**Step 3.1:** `git blame` confirms both the buggy code (`num_peer++` at
-line 7124) and the incomplete cleanup function were introduced by the
-same commit: `8e6f8bc286031` ("Add MLO station state change handling")
-by Sriram R, dated 2024-11-21, first in v6.14-rc1.
+**After**: Both paths converge at the `bottom:` label. For non-AX chips
+(Wi-Fi 7/BE), `R_AX_HALT_C2H` is written to 0 before returning. AX chips
+are unaffected.
 
-**Step 3.2:** No Fixes: tag present. The bug was introduced by
-8e6f8bc286031.
+Record: The change ensures HALT_C2H is always cleared for Wi-Fi 7 chips
+regardless of which path is taken through the function.
 
-**Step 3.3:** No intermediate fixes for the same issue. No prerequisites
-found — the patch modifies code that exists in the tree as-is.
+### Step 2.3: IDENTIFY THE BUG MECHANISM
+Record: This is a **hardware protocol fix** (category h). The Wi-Fi 7
+firmware requires the HALT_C2H register to be reset after the driver
+reads it, to acknowledge receipt of the error status. Without this, the
+FW doesn't know the driver has read the error, potentially preventing
+proper error recovery.
 
-**Step 3.4:** The author (Manish Dharanenthiran) is a regular ath12k
-contributor with 9+ commits in the subsystem. Jeff Johnson (ath12k
-maintainer) applied it.
+### Step 2.4: ASSESS THE FIX QUALITY
+- **Obviously correct**: Yes - the register is already cleared to 0
+  during initialization (line 4066). This just does the same during SER.
+- **Minimal**: Yes - only 5 lines of actual change
+- **Regression risk**: Very low - the new write only applies to non-AX
+  chips, so existing Wi-Fi 6 behavior is completely unchanged
+- **Red flags**: None
 
-**Step 3.5:** This is a standalone single-patch fix. No dependencies on
-other commits.
+Record: High quality fix. Low regression risk. Only affects Wi-Fi 7
+chips.
 
-### PHASE 4: MAILING LIST RESEARCH
+---
 
-Lore was not accessible due to anti-bot protection. b4 dig could not
-find the exact commit (it hasn't landed in the main tree yet from the
-perspective of this 7.0 tree). The patch was sent to
-`ath12k@lists.infradead.org` and `linux-wireless@vger.kernel.org`. It
-was reviewed by 3 Qualcomm engineers and applied by the ath12k
-maintainer Jeff Johnson.
+## PHASE 3: GIT HISTORY INVESTIGATION
 
-### PHASE 5: CODE SEMANTIC ANALYSIS
+### Step 3.1: BLAME THE CHANGED LINES
+The function `rtw89_mac_get_err_status()` was introduced in commit
+`e3ec7017f6a20d` (2021-10-11, "rtw89: add Realtek 802.11ax driver"). The
+function has been modified by:
+- `198b6cf70146ca` (2022-03-14): Added error scenario parsing
+- `f5d98831badb89` (2023-01-19): Added RXI300 error case
+- `8130e94e888bf9` (2023-05-08): Added suppress_log functionality
+- `6f8d36552bab7d` (2023-12-04): Switched to mac_gen_def for
+  dump_err_status
 
-**Step 5.1:** Modified functions: `ath12k_mac_free_unassign_link_sta`,
-`ath12k_mac_assign_link_sta`, `ath12k_mac_op_sta_state`
+Record: Function exists since driver inception. Has been incrementally
+enhanced for new chips. Code is stable and well-understood.
 
-**Step 5.2:** `arsta->link_idx` is used in `ath12k_peer_assoc_h_mlo()`
-(line 3531) to populate `ml->logical_link_idx` which is sent to firmware
-via `wmi.c` line 2348 as `ml_params->logical_link_idx`. This is a WMI
-command parameter — an invalid value directly impacts firmware behavior.
+### Step 3.2: FOLLOW THE FIXES TAG
+Record: No Fixes: tag present (expected).
 
-**Step 5.4:** The path: `ath12k_mac_op_sta_state` ->
-`ath12k_mac_assign_link_sta` -> sets `link_idx` -> later used in
-`ath12k_peer_assoc_h_mlo` -> sent via WMI to firmware. This is a
-standard MLO station association path triggered during Wi-Fi connection
-setup.
+### Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
+Recent SER-related commits in the tree:
+- `f4de946bdb379`: "wifi: rtw89: ser: enable error IMR after recovering
+  from L1"
+- `44ec302e029d8`: "wifi: rtw89: ser: L1 skip polling status if FW runs
+  event mode"
+- `6792fcf6a6912`: "wifi: rtw89: debug: tweak Wi-Fi 7 SER L0/L1
+  simulation methods"
 
-### PHASE 6: STABLE TREE ANALYSIS
+These are from a Dec 2025 series "refine MLO, MCC and SER functions".
+The commit under review is from a later Feb 2026 series.
 
-**Step 6.1:** The buggy code (`num_peer` field) was introduced in commit
-`8e6f8bc286031`, first in v6.14-rc1. It is:
-- **NOT in v6.13, v6.12, or any earlier LTS tree**
-- Present in v6.14, v6.15, v6.16, v6.17, v6.18, v6.19, v7.0
+Record: Related SER improvements already in tree. This commit appears
+standalone.
 
-For the 7.0.y stable tree specifically, the buggy code IS present.
+### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
+Zong-Zhe Yang is a regular Realtek contributor with many rtw89 commits
+including SER-related work. Ping-Ke Shih is the primary rtw89
+maintainer.
 
-**Step 6.2:** The code in v7.0 matches exactly what the patch expects
-(verified by reading lines 7096-7137 and 6771-6798 of mac.c). The patch
-should apply cleanly.
+Record: Author is a regular subsystem contributor. Maintainer signed
+off.
 
-### PHASE 7: SUBSYSTEM CONTEXT
+### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
+The diff only uses existing types/macros: `rtw89_chip_info`, `chip_gen`,
+`RTW89_CHIP_AX`, `R_AX_HALT_C2H`. All exist in the current tree.
 
-**Step 7.1:** Subsystem: wireless driver (ath12k) — IMPORTANT for WiFi 7
-users with Qualcomm QCN9274 and similar chipsets. MLO is a key WiFi 7
-feature.
+Record: No dependencies. The patch applies standalone.
 
-**Step 7.2:** ath12k is very actively developed (183 commits to mac.c
-between v6.14 and v7.0).
+---
 
-### PHASE 8: IMPACT AND RISK ASSESSMENT
+## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-**Step 8.1:** Affected users: Users of Qualcomm ath12k WiFi 7 hardware
-with MLO enabled (QCN9274, etc.).
+### Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
+Using b4 dig on related commits, found the previous SER series (v3 from
+Dec 2025). The commit under review is from a different, later series
+(20260213061552.29997-12). Lore.kernel.org was blocked by Anubis
+protection.
 
-**Step 8.2:** Trigger: Happens when MLO links are removed and re-added —
-occurs during roaming, channel switching, or temporary link degradation.
-In a typical MLO setup with frequent link changes, this can be triggered
-relatively easily.
+Record: Patch is from a series by Ping-Ke Shih. Could not access lore
+directly due to bot protection. The previous SER series was titled
+"refine MLO, MCC and SER functions" and went through v1-v3 before
+merging.
 
-**Step 8.3:** Failure mode: Sending an invalid logical link index (>15)
-to firmware can cause firmware malfunction, potential firmware crash, or
-incorrect MLO behavior. Severity: **HIGH** — firmware receives invalid
-commands.
+### Step 4.2: CHECK WHO REVIEWED THE PATCH
+Record: Ping-Ke Shih (rtw89 maintainer) signed off. Submitted through
+standard wireless-next pipeline.
 
-**Step 8.4:**
-- Benefit: Prevents firmware from receiving invalid index values during
-  MLO operations, which could cause connection instability or firmware
-  crashes
-- Risk: LOW — the change is ~20 lines, well-contained, uses standard
-  bitmap operations, reviewed by 3 engineers plus maintainer
-- Ratio: Favorable
+### Step 4.3-4.5: External research
+Record: Could not access lore.kernel.org due to Anubis protection. No
+stable-specific discussion found.
 
-### PHASE 9: FINAL SYNTHESIS
+---
 
-**Evidence FOR backporting:**
-- Fixes a real, clearly described bug (index leak leading to invalid
-  firmware commands)
-- Small, well-contained fix (~20 lines across 2 files)
-- Obviously correct bitmap-based approach
-- 3 Reviewed-by tags from Qualcomm engineers + maintainer sign-off
-- Tested on hardware (QCN9274 hw2.0)
-- The buggy code exists in v7.0 (target tree)
-- Should apply cleanly
+## PHASE 5: CODE SEMANTIC ANALYSIS
 
-**Evidence AGAINST backporting:**
-- No Fixes: tag, no syzbot/crash report, no user-reported symptom
-- Replaces a data structure member (counter -> bitmap), slightly more
-  than a trivial patch
-- MLO is relatively new; impact limited to WiFi 7 MLO users
-- No explicit Cc: stable nomination
-- The bug requires specific MLO link add/remove cycles to manifest
+### Step 5.1-5.2: FUNCTION ANALYSIS
+`rtw89_mac_get_err_status()` is called from:
+- `rtw89_pci_interrupt_threadfn()` (pci.c line 968) - the PCI interrupt
+  handler threaded function
 
-**Stable rules checklist:**
-1. Obviously correct and tested? **Yes** — bitmap approach is
-   straightforward, hardware tested
-2. Fixes a real bug? **Yes** — index leak causing invalid firmware
-   commands
-3. Important issue? **Medium-High** — can cause firmware malfunction in
-   MLO
-4. Small and contained? **Yes** — ~20 lines in 2 files, single subsystem
-5. No new features? **Correct** — pure bug fix
-6. Can apply to stable? **Yes** — code matches cleanly
+This is the primary SER entry point when a HALT_C2H interrupt fires. The
+interrupt handler calls `rtw89_mac_get_err_status()` to read the error
+code, then passes it to `rtw89_ser_notify()` which triggers the SER
+state machine.
 
-**Verification:**
-- [Phase 1] Parsed tags: 3 Reviewed-by, tested-on, Link, maintainer SOB
-- [Phase 2] Diff analysis: replaces `num_peer` counter with
-  `free_logical_link_idx_map` bitmap across 3 functions
-- [Phase 3] git blame: buggy code introduced in 8e6f8bc286031
-  (v6.14-rc1), confirmed by `git merge-base --is-ancestor` checks
-- [Phase 3] `git merge-base --is-ancestor 8e6f8bc286031 v6.13` → Not in
-  v6.13; `v6.14` → Yes
-- [Phase 3] Author has 9+ ath12k commits, is a regular contributor
-- [Phase 4] b4 dig could not find the commit (not merged in this tree);
-  lore blocked by anti-bot
-- [Phase 5] Traced `link_idx` usage: set in `ath12k_mac_assign_link_sta`
-  → used in `ath12k_peer_assoc_h_mlo` (line 3531) → sent to firmware via
-  WMI (wmi.c line 2348)
-- [Phase 6] Buggy code confirmed present in v7.0 tree; code at lines
-  7096-7137 matches patch context exactly
-- [Phase 6] NOT in v6.13 or earlier LTS trees (v6.12.y, v6.6.y, etc.)
-- [Phase 8] Invalid logical_link_idx sent to firmware can cause firmware
-  malfunction
-- UNVERIFIED: Could not access lore discussion to check for reviewer
-  stable nominations or concerns
+Record: Called from interrupt handler. Critical path for error recovery.
+Called for every SER event.
 
-This is a real bug fix for a resource index leak in WiFi 7 MLO handling
-that can lead to invalid firmware commands. The fix is small, self-
-contained, well-reviewed, and hardware-tested. The buggy code exists in
-the target 7.0.y tree.
+### Step 5.3-5.4: CALL CHAIN
+Interrupt -> `rtw89_pci_interrupt_threadfn()` ->
+`rtw89_mac_get_err_status()` -> reads register, returns error code ->
+`rtw89_ser_notify()` -> `ser_send_msg()` -> SER state machine
+
+Record: Reachable from hardware interrupt. Not userspace-triggerable
+directly, but occurs during hardware error conditions which are real-
+world events.
+
+### Step 5.5: SEARCH FOR SIMILAR PATTERNS
+The initialization code at line 4066 already performs
+`rtw89_write32(rtwdev, R_AX_HALT_C2H, 0)` - confirming the protocol
+requires this register to be cleared.
+
+Record: Consistent with existing initialization code pattern.
+
+---
+
+## PHASE 6: STABLE TREE ANALYSIS
+
+### Step 6.1: DOES THE BUGGY CODE EXIST IN STABLE TREES?
+Wi-Fi 7 (RTL8922A/BE) support was added in v6.8. The `chip_gen` check
+means only Wi-Fi 7 chips are affected. The function
+`rtw89_mac_get_err_status()` exists in all stable trees from v5.15+, but
+the bug only matters for trees with Wi-Fi 7 support (v6.8+).
+
+Record: Bug is relevant to stable trees v6.8+.
+
+### Step 6.2: BACKPORT COMPLICATIONS
+The patch is small and touches a simple function. The code around it
+hasn't changed dramatically. Should apply cleanly to any tree that has
+the `rtw89_mac_suppress_log()` call (added in 2023) and `chip_gen`
+(added in 2023).
+
+Record: Clean apply expected on v6.8+.
+
+### Step 6.3: RELATED FIXES
+No duplicate fix found in stable trees.
+
+Record: No related fixes already in stable.
+
+---
+
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+
+### Step 7.1: SUBSYSTEM CRITICALITY
+**Subsystem**: drivers/net/wireless/realtek/rtw89 (Wi-Fi driver)
+**Criticality**: IMPORTANT - RTL8922A is a popular Wi-Fi 7 chipset used
+in laptops and desktop PCIe cards.
+
+Record: IMPORTANT - popular wireless driver with growing user base.
+
+### Step 7.2: SUBSYSTEM ACTIVITY
+Very active - many commits per month. Actively developed for Wi-Fi 7
+support.
+
+Record: Highly active subsystem.
+
+---
+
+## PHASE 8: IMPACT AND RISK ASSESSMENT
+
+### Step 8.1: AFFECTED USERS
+Users with RTL8922A (Wi-Fi 7) hardware. This is a PCIe wireless card
+found in recent laptops and desktops.
+
+Record: Driver-specific (Wi-Fi 7 / RTL8922A users). Growing user
+population.
+
+### Step 8.2: TRIGGER CONDITIONS
+Triggered when a SER (system error recovery) interrupt fires on Wi-Fi 7
+hardware. This happens during firmware errors, which can occur due to:
+- Firmware assertions
+- DMA errors
+- Watchdog timeouts
+- Various hardware error conditions
+
+Record: Trigger is hardware-dependent error condition. Not predictable
+but real-world occurrence.
+
+### Step 8.3: FAILURE MODE SEVERITY
+Without this fix, when SER triggers on Wi-Fi 7:
+- Firmware doesn't know driver acknowledged the error
+- SER recovery flow may stall or not complete properly
+- Wi-Fi device may become non-functional requiring manual intervention
+  (module reload/reboot)
+
+Record: **HIGH** severity - device recovery failure, Wi-Fi becomes
+unusable until manual intervention.
+
+### Step 8.4: RISK-BENEFIT RATIO
+- **Benefit**: Ensures Wi-Fi 7 SER recovery works, preventing device
+  failure during error conditions
+- **Risk**: Very low - 5-line change, only affects non-AX chips,
+  consistent with initialization code pattern
+- **Ratio**: Very favorable - high benefit, very low risk
+
+Record: Benefit HIGH, Risk VERY LOW. Strongly favorable ratio.
+
+---
+
+## PHASE 9: FINAL SYNTHESIS
+
+### Step 9.1: EVIDENCE COMPILATION
+
+**FOR backporting:**
+- Fixes broken SER recovery on Wi-Fi 7 chips (real functional bug)
+- Small, surgical fix (5 lines meaningful change)
+- Self-contained, no dependencies on other patches
+- Only affects Wi-Fi 7 chips (no regression risk for existing hardware)
+- Consistent with existing initialization pattern (line 4066)
+- From vendor driver team (Realtek) with maintainer sign-off
+- Critical error recovery path
+
+**AGAINST backporting:**
+- No explicit user bug reports or crash reports
+- No Fixes: tag
+- Part of a "rtw-next" development series
+- Only affects Wi-Fi 7 users (relatively new hardware)
+- Commit message doesn't describe explicit user-visible failure
+
+**UNRESOLVED:**
+- Could not verify lore.kernel.org discussion due to bot protection
+- Exact failure behavior without this fix is inferred (not explicitly
+  documented)
+
+### Step 9.2: STABLE RULES CHECKLIST
+1. **Obviously correct and tested?** YES - writes 0 to same register
+   cleared at init, gated by chip_gen check
+2. **Fixes a real bug?** YES - incomplete Wi-Fi 7 SER protocol
+   implementation
+3. **Important issue?** YES - device recovery failure leads to non-
+   functional Wi-Fi
+4. **Small and contained?** YES - 5 lines in one function
+5. **No new features or APIs?** CORRECT - no new features
+6. **Can apply to stable trees?** YES - applicable to v6.8+ (when Wi-Fi
+   7 support was added)
+
+### Step 9.3: EXCEPTION CATEGORIES
+This is a hardware workaround/fix category - it fixes the SER protocol
+for Wi-Fi 7 chipsets.
+
+### Step 9.4: DECISION
+The fix is small, obviously correct, self-contained, and addresses a
+real functional bug in Wi-Fi 7 error recovery. The risk is very low
+(only affects Wi-Fi 7 chips, consistent with existing patterns). The
+benefit is significant (broken SER means device can't recover from
+errors).
+
+---
+
+## Verification
+
+- [Phase 1] Parsed tags: Signed-off-by from Zong-Zhe Yang and Ping-Ke
+  Shih; Link to patch series
+- [Phase 2] Diff analysis: 5 lines added to
+  `rtw89_mac_get_err_status()`, adds HALT_C2H register clear for non-AX
+  chips
+- [Phase 3] git blame: function introduced in e3ec7017f6a20d
+  (2021-10-11), present since driver inception
+- [Phase 3] git log: confirmed related SER commits (f4de946bdb379,
+  44ec302e029d8) already in tree
+- [Phase 3] git merge-base: RTL8922A (Wi-Fi 7) support added in v6.8
+  (commit c0a04552e36e1, 2023-11-17)
+- [Phase 4] b4 dig -c f4de946bdb379 -a: found series went through v1-v3
+  before merging
+- [Phase 4] lore.kernel.org: blocked by Anubis protection, could not
+  access discussions
+- [Phase 5] grep callers: `rtw89_mac_get_err_status` called from PCI
+  interrupt handler threadfn (pci.c:968)
+- [Phase 5] grep: `R_AX_HALT_C2H` already cleared to 0 at init time
+  (mac.c:4066), confirming protocol requirement
+- [Phase 6] chip_gen RTW89_CHIP_BE exists since v6.8;
+  `rtw89_mac_suppress_log` since v6.5
+- [Phase 6] Patch applies standalone - no dependencies on other patches
+  from series
+- [Phase 8] Failure mode: device recovery failure on Wi-Fi 7, severity
+  HIGH
+- UNVERIFIED: Exact FW behavior when HALT_C2H not cleared (inferred from
+  commit message and protocol)
+- UNVERIFIED: Could not access lore discussion for reviewer comments
 
 **YES**
 
- drivers/net/wireless/ath/ath12k/core.h |  2 +-
- drivers/net/wireless/ath/ath12k/mac.c  | 16 ++++++++++++++--
- 2 files changed, 15 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 990934ec92fca..5498ff285102b 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -522,7 +522,7 @@ struct ath12k_sta {
- 	u16 links_map;
- 	u8 assoc_link_id;
- 	u16 ml_peer_id;
--	u8 num_peer;
-+	u16 free_logical_link_idx_map;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 8472f1a63951b..fa60f8e8bb3d4 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -814,6 +814,7 @@ static bool rtw89_mac_suppress_log(struct rtw89_dev *rtwdev, u32 err)
+ u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev)
+ {
+ 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	u32 err, err_scnr;
+ 	int ret;
  
- 	enum ieee80211_sta_state state;
- };
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index b253d1e3f4052..769d240e3ae24 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -6784,6 +6784,8 @@ static void ath12k_mac_free_unassign_link_sta(struct ath12k_hw *ah,
- 		return;
+@@ -836,11 +837,15 @@ u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev)
+ 		err = MAC_AX_ERR_RXI300;
  
- 	ahsta->links_map &= ~BIT(link_id);
-+	ahsta->free_logical_link_idx_map |= BIT(arsta->link_idx);
+ 	if (rtw89_mac_suppress_log(rtwdev, err))
+-		return err;
++		goto bottom;
+ 
+ 	rtw89_fw_st_dbg_dump(rtwdev);
+ 	mac->dump_err_status(rtwdev, err);
+ 
++bottom:
++	if (chip->chip_gen != RTW89_CHIP_AX)
++		rtw89_write32(rtwdev, R_AX_HALT_C2H, 0);
 +
- 	rcu_assign_pointer(ahsta->link[link_id], NULL);
- 	synchronize_rcu();
- 
-@@ -7102,6 +7104,7 @@ static int ath12k_mac_assign_link_sta(struct ath12k_hw *ah,
- 	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(ahsta);
- 	struct ieee80211_link_sta *link_sta;
- 	struct ath12k_link_vif *arvif;
-+	int link_idx;
- 
- 	lockdep_assert_wiphy(ah->hw->wiphy);
- 
-@@ -7120,8 +7123,16 @@ static int ath12k_mac_assign_link_sta(struct ath12k_hw *ah,
- 
- 	ether_addr_copy(arsta->addr, link_sta->addr);
- 
--	/* logical index of the link sta in order of creation */
--	arsta->link_idx = ahsta->num_peer++;
-+	if (!ahsta->free_logical_link_idx_map)
-+		return -ENOSPC;
-+
-+	/*
-+	 * Allocate a logical link index by selecting the first available bit
-+	 * from the free logical index map
-+	 */
-+	link_idx = __ffs(ahsta->free_logical_link_idx_map);
-+	ahsta->free_logical_link_idx_map &= ~BIT(link_idx);
-+	arsta->link_idx = link_idx;
- 
- 	arsta->link_id = link_id;
- 	ahsta->links_map |= BIT(arsta->link_id);
-@@ -7630,6 +7641,7 @@ int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
- 	if (old_state == IEEE80211_STA_NOTEXIST &&
- 	    new_state == IEEE80211_STA_NONE) {
- 		memset(ahsta, 0, sizeof(*ahsta));
-+		ahsta->free_logical_link_idx_map = U16_MAX;
- 
- 		arsta = &ahsta->deflink;
- 
+ 	return err;
+ }
+ EXPORT_SYMBOL(rtw89_mac_get_err_status);
 -- 
 2.53.0
 
