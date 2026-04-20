@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-35077-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35078-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMdDIcpN5mkgugEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35077-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 18:01:14 +0200
+	id KJ0sGIs95mlutgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35078-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:51:55 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD9A42ED63
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 18:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE2EE42D8CC
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE794369A4BF
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 14:14:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D98A436BF1A6
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 14:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4097B43E9F9;
-	Mon, 20 Apr 2026 13:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234D344BC9F;
+	Mon, 20 Apr 2026 13:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWeA2W84"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTxCdp3F"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B52B43E9DC;
-	Mon, 20 Apr 2026 13:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F355D44103F;
+	Mon, 20 Apr 2026 13:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691807; cv=none; b=ax2/6jIj5DmnbMNv/HIV4O4HGC6k/F3tRldzneWGQGtqPZEK6H2/fb8LrB5bCl+GsUg55Zq4BuZNjZdPUV7PWyLrJgOWHpvN9NMSl5E4wLMS5FbXPboq50LJDlhtlB9DZE6mqdX3vH0CFinjx3Ab4kNYF4AgXf0Tm2nKqBkttKA=
+	t=1776691814; cv=none; b=BuJoyPsmfKZZKKY70FQpJmH42/icXyYy6xm6SCKp65Zib8a/1h4WKul8MzCN1nms7wPU0eo+HDQHsmRnCBXDVjQZSeMLARUl1a3CkglR6Ljxe1mmx7voWoUIhiBzmM8qrgNEVCtY764psuxcxC/Yl+oaWZ3P+VjKUARs9aMuMG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691807; c=relaxed/simple;
-	bh=C9GfNAWj0YL3ATF78+dtGWFxV72UYQEMgacBgCxE/EM=;
+	s=arc-20240116; t=1776691814; c=relaxed/simple;
+	bh=0w01zXikFo9Re00qyVxbzAZST/JtC6BUtf0eukMyG74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7Ul80mdvIpLaos3xVyA4DT06pAE1EynWjtv2/z0c38ngseaF4LcH7G8GMU+AOCwE3zecDbVcBQEi/QbMt2Jmgcw72xj+OdaDPBiAAJ0h9yWFrkX5H80Ov7oAFbT56Ox4Zgkxi49kLVxh8svoz7YvlOQpG/vXXvScnn+KoBiGnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWeA2W84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3360BC2BCB8;
-	Mon, 20 Apr 2026 13:30:06 +0000 (UTC)
+	 MIME-Version; b=H2lJcdk15rLIV9dBaU2fJ3M6VuL0dF82ZYj+pZWyoEn3NoyWKq/3BSvapTGArh/V1WKDYKzRxeMKOPq7Q5kN5bwflEm3xMR5E/4UFJ8cGe6p4DRCp1tYNveHLeBZbMzuXUrlEqwqZm4IPMENwQ+qjIQTab7NPmDeJ3eMLpjcN+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTxCdp3F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82C5C19425;
+	Mon, 20 Apr 2026 13:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691807;
-	bh=C9GfNAWj0YL3ATF78+dtGWFxV72UYQEMgacBgCxE/EM=;
+	s=k20201202; t=1776691813;
+	bh=0w01zXikFo9Re00qyVxbzAZST/JtC6BUtf0eukMyG74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VWeA2W84OKjkIDyz+ZNrb23wmJgOewTwWWU3nJqbN2QhviLSe9xRF4nirtGvSM29Y
-	 xlyfwZihj8dw3zuTIPd0vQ439Et9G5zRyO7LeyvIeU79FHIxZPW0fBdw55VsHQu/oS
-	 pJS5VvBUe7Zvi9Upzi2uO4kfwAoGiymqVfQjD8nOFFEtOYImxcAWERY8az3ypICHPg
-	 ZB9gc9IpZcudrTwe8i5NwsR+WZMk6gD6hZCn2myGMdzhsOtU3VQoaK7DPdV8HhcX+2
-	 Alf/Ui83SRXi7cAsbNnE01r3M1kJn0PGnIJCyeo9VJq+5jKdO3elnrXUTZ86ELIWA5
-	 NuOTleQC0RWXQ==
+	b=eTxCdp3F6Ww0wM43U7g7u5mw7796ka59jLKh55D6Lz9VzgcR5pEizULx+GlJflXzZ
+	 G+2Zmjs26UwbfWdikcFZ5MX9O/kkpnjR+VyCRyxv7qS2z+tOs6h1BT/Yk33w0GqXc8
+	 Kggo/1R7Z0+i07aw72/d3CrS182RnYkc5AYi9VuItCfbOBxvrhDAFSkkegIFAGExwW
+	 rwTTDb2gWN9kr5mUNjSWUCVJliwStD/6D74lRBKwLZka4+UujZJTdR6gG0vs1g7YdZ
+	 efK1JAKIl8hxCh5zOC4l9b2klDTU30+oFAE+Bk5VYY2p8igFLOTAMR5txwM8PelaWh
+	 4hsNS61qH2cwg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -52,9 +52,9 @@ Cc: Zenm Chen <zenmchen@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.19] wifi: rtw89: Add support for Buffalo WI-U3-2400XE2
-Date: Mon, 20 Apr 2026 09:19:59 -0400
-Message-ID: <20260420132314.1023554-205-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-6.19] wifi: rtw89: Add support for Elecom WDC-XE2402TU3-B
+Date: Mon, 20 Apr 2026 09:20:04 -0400
+Message-ID: <20260420132314.1023554-210-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35077-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35078-lists,linux-wireless=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
@@ -95,245 +95,304 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: CBD9A42ED63
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: AE2EE42D8CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Zenm Chen <zenmchen@gmail.com>
 
-[ Upstream commit aefb20749074731c4f35444761e730991f1b8c77 ]
+[ Upstream commit 4e4fc2149b0a983670fd99bbd549012839bda79e ]
 
-Add the ID 0411:03a6 to the table to support an additional RTL8832CU
-adapter: Buffalo WI-U3-2400XE2.
+Add the ID 056e:4024 to the table to support an additional RTL8832CU
+adapter: Elecom WDC-XE2402TU3-B.
 
-Link: https://github.com/morrownr/rtw89/commit/506d193b8cb7d6394509aebcf8de1531629f6100
+Link: https://github.com/morrownr/rtw89/commit/55c059e2bd49acd5cf93edbc8eda7b9e042f4efd
 Signed-off-by: Zenm Chen <zenmchen@gmail.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260320154136.5750-1-zenmchen@gmail.com
+Link: https://patch.msgid.link/20260330093440.3615-1-zenmchen@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information needed. Let me compile the full analysis.
+Now I have enough information to complete the full analysis. Let me
+document all phases.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
 **Step 1.1: Subject Line**
-- Subsystem: `wifi: rtw89:`
-- Action: "Add support for" (new device ID)
-- Summary: Adds USB device ID 0411:03a6 for Buffalo WI-U3-2400XE2 WiFi
-  adapter to existing RTL8852CU driver.
-- Record: [wifi: rtw89] [Add] [USB device ID for Buffalo WI-U3-2400XE2]
+- Subsystem: `wifi: rtw89`
+- Action verb: "Add support for"
+- Summary: Adds USB device ID for Elecom WDC-XE2402TU3-B WiFi adapter
+  (RTL8832CU-based)
+- Record: [wifi: rtw89] [Add] [USB device ID for new RTL8832CU adapter]
 
 **Step 1.2: Tags**
-- Link: GitHub commit in morrownr/rtw89 out-of-tree driver (user-
-  contributed)
-- Signed-off-by: Zenm Chen (author), Ping-Ke Shih (rtw89 subsystem
-  maintainer)
-- Link: patch.msgid.link for the submission
-- No Fixes: tag (expected for device ID additions)
-- No Reported-by / Tested-by / Reviewed-by (typical for trivial device
-  ID patches)
-- Record: Maintainer SOB from Ping-Ke Shih confirms review.
+- No Fixes: tag (expected for candidate commits)
+- No Reported-by: tag
+- No Cc: stable tag
+- Link: to GitHub morrownr/rtw89 commit (out-of-tree driver reference)
+- Signed-off-by: Zenm Chen (author/contributor)
+- Signed-off-by: Ping-Ke Shih (rtw89 subsystem maintainer, accepted the
+  patch)
+- Link: patch.msgid.link (mainline submission)
+- Record: Author is a community contributor (Zenm Chen), maintainer
+  (Ping-Ke Shih) accepted the patch.
 
 **Step 1.3: Body Text**
-- "Add the ID 0411:03a6 to the table to support an additional RTL8832CU
-  adapter: Buffalo WI-U3-2400XE2."
-- Straightforward description, no bug symptoms, no crash, just enabling
-  hardware.
-- Record: No bug described. This enables hardware that uses an existing
-  chipset/driver.
+- Clear and concise: "Add the ID 056e:4024 to the table to support an
+  additional RTL8832CU adapter: Elecom WDC-XE2402TU3-B."
+- Vendor 0x056e = Elecom Co., Ltd.
+- Product 0x4024 = WDC-XE2402TU3-B
+- The adapter uses the RTL8832CU chip, which the rtw89_8852cu driver
+  already fully supports.
+- Record: [Device ID addition] [No bug described - hardware enablement]
+  [RTL8832CU chip already supported]
 
 **Step 1.4: Hidden Bug Fix Detection**
-- This is NOT a bug fix. It's a new device ID addition that falls into
-  the explicit exception category for stable.
-- Record: Not a hidden bug fix; it's a device ID addition (exception
-  category).
+- This is NOT a hidden bug fix. It's a straightforward USB device ID
+  addition.
+- However, it falls into the **explicit exception category** for stable:
+  NEW DEVICE IDs to existing drivers.
+- Record: Not a bug fix. Exception category: device ID addition.
 
 ## PHASE 2: DIFF ANALYSIS
 
 **Step 2.1: Inventory**
-- Files: `drivers/net/wireless/realtek/rtw89/rtw8852cu.c` (+2 lines)
-- Change: Adds one entry to `rtw_8852cu_id_table[]`
-- Record: Single file, +2 lines, one USB ID table entry added.
+- Files changed: 1 (`drivers/net/wireless/realtek/rtw89/rtw8852cu.c`)
+- Lines added: 2 (one `USB_DEVICE_AND_INTERFACE_INFO` entry +
+  `.driver_info` line)
+- Lines removed: 0
+- Functions modified: None. Only the static `rtw_8852cu_id_table[]`
+  array gains an entry.
+- Scope: single-file, surgical, 2-line addition to a const data table.
+- Record: [1 file, +2 lines, 0 functions modified, trivial scope]
 
 **Step 2.2: Code Flow Change**
-- Before: The USB ID table has 8 entries for RTL8852CU devices.
-- After: The table has 9 entries, with the new Buffalo device ID
-  (0x0411:0x03a6) added.
-- The entry uses `USB_DEVICE_AND_INTERFACE_INFO` with the same
-  `rtw89_8852cu_info` driver data as all other entries.
-- Record: Only change is one new ID table entry; no behavioral changes
-  to existing code paths.
+- Before: The USB ID table does not include 0x056e:0x4024. The Elecom
+  WDC-XE2402TU3-B adapter is not recognized by the driver.
+- After: The USB ID table includes 0x056e:0x4024 pointing to the
+  existing `rtw89_8852cu_info` driver data. The adapter will be
+  automatically bound to the rtw89_8852cu driver on plug-in.
+- No code logic changes; only static data table modification.
+- Record: [Before: device not recognized] [After: device bound to
+  existing driver]
 
 **Step 2.3: Bug Mechanism**
-- Category: Hardware enablement (device ID addition)
-- No bug being fixed; this enables a new device to be recognized by the
-  existing driver.
-- Record: [Device ID addition] [No bug; enables new hardware]
+- Category: Hardware enablement / device ID addition (category h from
+  the analysis framework)
+- The new entry uses `USB_DEVICE_AND_INTERFACE_INFO` with the same
+  interface class/subclass/protocol (0xff, 0xff, 0xff) and the same
+  `rtw89_8852cu_info` as all other entries in the table.
+- Record: [Device ID addition, identical pattern to existing entries]
 
 **Step 2.4: Fix Quality**
-- Trivially correct: follows exact same pattern as all other entries in
-  the table.
-- Zero regression risk: only triggers for the new VID:PID, no impact on
-  existing devices.
-- Record: Obviously correct. No regression risk.
+- Obviously correct: follows the exact same pattern as every other entry
+  in the table.
+- Minimal/surgical: 2 lines, purely additive to a const data array.
+- Regression risk: effectively zero. The new entry only matches USB
+  device 056e:4024; it cannot affect any other device.
+- Record: [Obviously correct, zero regression risk]
 
 ## PHASE 3: GIT HISTORY
 
 **Step 3.1: Blame**
-- The file was created by commit `406849000df41` in v6.19.
-- Record: File introduced in v6.19.
+- The file was created by Bitterblue Smith in commit `406849000df41`
+  (Nov 2025), first appearing in v6.19.
+- One subsequent ID addition (0x28de:0x2432) by Shin-Yi Lin in
+  `5f65ebf9aaf00` (Jan 2026).
+- Record: [File created in v6.19, present in v7.0]
 
-**Step 3.2: Fixes tag**
-- No Fixes: tag present. Expected for device ID additions.
+**Step 3.2: Fixes Tag**
+- No Fixes: tag present (expected, as this is a device ID addition, not
+  a bug fix).
 
 **Step 3.3: File History**
-- Only 2 commits to this file: initial creation (`406849000df41`) and
-  one prior device ID addition (`5f65ebf9aaf00` - Valve Steam Deck ID
-  28de:2432).
-- Record: Standalone patch, no prerequisites.
+- Only 2 commits to this file in the v7.0 tree: creation and one prior
+  ID addition.
+- The author (Zenm Chen) has contributed multiple similar USB ID
+  additions to the rtw89 driver family (D-Link DWA-F18 for rtw8852au,
+  MSI AX1800 Nano, etc.).
+- Record: [Standalone commit, no dependencies on other patches]
 
-**Step 3.4: Author's Commits**
-- Zenm Chen has contributed multiple USB ID additions to rtw89: D-Link
-  VR Air Bridge (DWA-F18), MSI AX1800 Nano (GUAX18N), also to rtw88 and
-  btusb drivers.
-- Record: Author is a regular contributor of device ID additions.
+**Step 3.4: Author**
+- Zenm Chen is a community contributor who specializes in adding device
+  IDs to rtw89/rtw88 drivers.
+- Patches accepted by Ping-Ke Shih, the Realtek rtw89 subsystem
+  maintainer.
+- Record: [Community contributor, maintainer-accepted]
 
 **Step 3.5: Dependencies**
-- None. This is a self-contained 2-line addition to a USB ID table.
-- Record: Fully standalone, no dependencies.
+- The diff context shows IDs 0x0411:0x03a6 and 0x37ad:0x0103 which are
+  NOT present in the v7.0 tree. These were added by other commits
+  post-v7.0.
+- However, the actual change (adding 0x056e:0x4024) is completely
+  independent of those entries. It just needs to be placed anywhere in
+  the table.
+- Minor context adjustment needed for clean application, but trivially
+  resolvable.
+- Record: [No functional dependencies. Trivial context conflict
+  expected.]
 
-## PHASE 4: MAILING LIST / EXTERNAL RESEARCH
+## PHASE 4: MAILING LIST RESEARCH
 
-**Step 4.1: Patch Discussion**
-- Lore protected by Anubis anti-bot; could not fetch directly.
-- GitHub link confirmed: the same change was first applied to the
-  morrownr/rtw89 out-of-tree driver, confirming user validation.
-- Record: Patch originated from real user contribution, validated in
-  out-of-tree driver.
-
-**Step 4.2: Reviewers**
-- Ping-Ke Shih (Realtek maintainer) signed off, confirming
-  review/acceptance.
-- Record: Subsystem maintainer reviewed and accepted.
-
-**Step 4.3-4.5: Bug Report / Related Patches / Stable History**
-- No bug report (not a bug fix).
-- A prior similar device ID addition (`5f65ebf9aaf00` - 28de:2432) was
-  already backported to 6.19.y stable as `6f055e0a78d6e`.
-- Record: Precedent exists for backporting USB ID additions to this
-  exact file in stable.
+**Step 4.1-4.5:**
+- b4 dig could not find the commit (the commit is post-v7.0 mainline,
+  not yet in this tree).
+- Lore.kernel.org was blocked by anti-scraping protection.
+- The patch link is
+  `https://patch.msgid.link/20260330093440.3615-1-zenmchen@gmail.com`,
+  indicating it was a single-patch submission (not part of a series).
+- The GitHub link references the out-of-tree morrownr/rtw89 driver repo,
+  where this ID was already tested.
+- Ping-Ke Shih (maintainer) signed off, indicating acceptance.
+- Record: [Single-patch submission, maintainer-accepted, no series
+  dependencies]
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
 **Step 5.1-5.5:**
-- The change is purely data-level (adding an entry to a `const` table).
-- No function modified, no code logic changed.
-- The USB subsystem will match the new VID:PID and bind to the existing
-  `rtw89_usb_probe` function.
-- Record: No code logic changes; purely declarative device ID addition.
+- No functions modified. The change is purely to a static const data
+  table (`rtw_8852cu_id_table[]`).
+- The USB core uses this table for device/driver matching via
+  `MODULE_DEVICE_TABLE(usb, ...)`.
+- No new code paths, no logic changes, no callee/caller analysis needed.
+- Record: [No code flow impact, static data table only]
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-**Step 6.1: Buggy Code in Stable?**
-- The file `rtw8852cu.c` was introduced in v6.19, present in 7.0.y and
-  6.19.y.
-- Does NOT exist in older trees (6.12.y, 6.6.y, etc.).
-- Record: File exists in v6.19.y and v7.0.y.
+**Step 6.1:**
+- The file `rtw8852cu.c` was created in v6.19 (commit `406849000df41`).
+- It exists in v7.0.
+- For stable trees older than v6.19, this file does not exist, so the
+  commit is irrelevant there.
+- Record: [File exists in v6.19+, applicable to 6.19.y and 7.0.y stable
+  trees]
 
-**Step 6.2: Backport Complications**
-- The current tree (v7.0) has 8 entries in the table. The 6.19.y stable
-  has 7 entries (missing 28de:2432 which was backported separately as
-  `6f055e0a78d6e`).
-- The patch adds the entry at the beginning of the table; it should
-  apply cleanly or with trivial context adjustment.
-- Record: Clean apply expected (may need minor fuzz for ordering).
+**Step 6.2:**
+- Minor context conflict: the diff assumes IDs 0x0411:0x03a6 and
+  0x37ad:0x0103 are present, but they aren't in v7.0.
+- Trivial to resolve: just insert the new 2-line entry into the existing
+  table.
+- Record: [Minor context adjustment needed, trivially resolvable]
 
-**Step 6.3: Related Fixes Already in Stable**
-- No previous fix for this specific device (it's a new ID).
-- Record: No conflicts.
+**Step 6.3:**
+- No related fixes for this specific device ID in stable.
+- Record: [No prior related fixes]
 
-## PHASE 7: SUBSYSTEM CONTEXT
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-**Step 7.1:** WiFi drivers - IMPORTANT subsystem. Buffalo is a well-
-known consumer electronics brand.
-**Step 7.2:** rtw89 is actively developed with USB support being
-relatively new (v6.19+).
+**Step 7.1:**
+- Subsystem: `drivers/net/wireless/realtek/rtw89` - WiFi driver
+- Criticality: IMPORTANT - WiFi connectivity is essential for many
+  users, especially USB WiFi adapters on Linux.
+- Record: [WiFi driver, IMPORTANT criticality]
+
+**Step 7.2:**
+- The rtw89 USB support is actively developed (new file in v6.19,
+  multiple ID additions since).
+- Record: [Active development]
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-**Step 8.1:** Affects users of Buffalo WI-U3-2400XE2 USB WiFi adapter -
-without this ID, the adapter is not recognized.
-**Step 8.2:** Trigger: every time the device is plugged in (100%
-reproducible - device doesn't work without it).
-**Step 8.3:** Failure mode without fix: hardware doesn't work at all.
-Severity: HIGH for affected users.
-**Step 8.4:**
-- Benefit: HIGH - enables hardware for real users (the patch came from a
-  user contribution)
-- Risk: VERY LOW - 2 lines, const data addition, cannot affect other
-  devices
-- Ratio: Strongly favorable
+**Step 8.1: Who is affected**
+- Users who own an Elecom WDC-XE2402TU3-B USB WiFi adapter.
+- Without this ID, the adapter is completely non-functional under Linux.
+- Record: [Device-specific: owners of Elecom WDC-XE2402TU3-B]
+
+**Step 8.2: Trigger**
+- Plugging in the USB adapter. The USB subsystem matches the device ID
+  to bind the driver.
+- Record: [Triggered on device plug-in, extremely common operation]
+
+**Step 8.3: Failure Mode**
+- Without the fix: the WiFi adapter is simply not recognized. No driver
+  binds.
+- With the fix: adapter works using the existing, fully-functional
+  RTL8832CU driver.
+- Severity: MEDIUM (hardware non-functional without it, but no
+  crash/corruption).
+- Record: [Device not functional without fix, MEDIUM severity]
+
+**Step 8.4: Risk-Benefit**
+- BENEFIT: HIGH - enables hardware for real users who purchased this
+  adapter.
+- RISK: VERY LOW - 2-line addition to a const data table, follows
+  identical pattern to all other entries, only affects the specific
+  device.
+- Ratio: Overwhelmingly favorable.
+- Record: [High benefit, very low risk]
 
 ## PHASE 9: FINAL SYNTHESIS
 
 **Step 9.1: Evidence**
-- FOR: Textbook device ID addition; trivially correct; 2 lines; zero
-  regression risk; subsystem maintainer signed off; author has track
-  record; precedent for same-file backports to stable; enables real
-  hardware for real users
-- AGAINST: None identified
-- UNRESOLVED: Could not fetch lore discussion due to anti-bot protection
+
+FOR backporting:
+- Classic USB device ID addition to existing driver (explicit exception
+  category)
+- 2-line change, zero logic change, only static data
+- Follows identical pattern to all existing entries
+- Zero regression risk (only matches specific USB device)
+- Maintainer (Ping-Ke Shih) accepted the patch
+- Enables real hardware for real users
+- The driver infrastructure fully exists in stable
+
+AGAINST backporting:
+- Minor context conflict (trivially resolvable)
+- Affects only users with this specific adapter (niche audience)
 
 **Step 9.2: Stable Rules Checklist**
-1. Obviously correct and tested? YES - follows exact pattern of all
-   existing entries
-2. Fixes a real bug? YES (exception category - enables hardware)
-3. Important issue? YES for affected users - hardware non-functional
-   without it
-4. Small and contained? YES - 2 lines in one file
-5. No new features or APIs? YES - just a device ID
-6. Can apply to stable trees? YES - file exists in 6.19.y and 7.0.y
+1. Obviously correct and tested? **YES** - identical pattern to all
+   other entries in the table.
+2. Fixes a real bug? **YES (exception)** - device ID addition enables
+   hardware support.
+3. Important issue? **YES** - hardware doesn't work at all without it.
+4. Small and contained? **YES** - 2 lines in 1 file.
+5. No new features or APIs? **YES** - no new functionality, just an ID
+   entry for existing driver.
+6. Can apply to stable trees? **YES** - with trivial context adjustment
+   for v7.0.y; file exists since v6.19.
 
 **Step 9.3: Exception Category**
-YES - this is a **new device ID addition to an existing driver**, which
-is explicitly listed as an exception category that is appropriate for
-stable.
+- **Device ID addition to existing driver** - this is explicitly listed
+  as an automatic YES for stable.
+
+**Step 9.4: Decision**
+This is a textbook device ID addition. 2 lines, zero risk, enables real
+hardware. Automatic YES per stable exception rules.
 
 ## Verification
 
-- [Phase 1] Parsed tags: Signed-off-by from rtw89 maintainer Ping-Ke
-  Shih
-- [Phase 2] Diff analysis: +2 lines adding
-  USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03a6, ...) to ID table
-- [Phase 3] git show 406849000df41: confirmed file created in v6.19
-- [Phase 3] git describe --contains 406849000df41: first appeared in
-  v6.19
-- [Phase 3] git log for file: only 2 prior commits, no complex history
-- [Phase 3] Author Zenm Chen: verified 5 other device ID additions in
-  rtw89/rtw88/btusb
-- [Phase 4] GitHub link: confirmed same change validated in
-  morrownr/rtw89 out-of-tree driver
-- [Phase 4] UNVERIFIED: Could not access lore.kernel.org discussion
-  (anti-bot protection)
-- [Phase 5] Grep for 0x0411: Buffalo vendor ID already in rtw8852au.c
-  (known vendor)
-- [Phase 6] git log v6.19..v6.19.12: confirmed similar ID addition
-  (5f65ebf9aaf00) already backported to 6.19.y stable
-- [Phase 6] File exists in 7.0 and 6.19.y; does NOT exist in older trees
-- [Phase 8] Risk: VERY LOW (2-line const data); Benefit: HIGH (enables
+- [Phase 1] Parsed commit message: USB device ID addition 056e:4024 for
+  Elecom WDC-XE2402TU3-B (RTL8832CU)
+- [Phase 1] Parsed tags: Signed-off-by from author (Zenm Chen) and
+  maintainer (Ping-Ke Shih), Link to patch.msgid.link
+- [Phase 2] Diff analysis: +2 lines to `rtw_8852cu_id_table[]`, no logic
+  changes, identical pattern to existing entries
+- [Phase 2] Verified new entry uses same `rtw89_8852cu_info` struct as
+  all other entries
+- [Phase 3] git blame: file created by 406849000df41 (v6.19), only 1
+  prior ID addition (5f65ebf9aaf00)
+- [Phase 3] git tag --contains 406849000df41: confirmed file exists
+  since v6.19
+- [Phase 3] git log author: Zenm Chen contributes USB ID additions
+  regularly to rtw89/rtw88
+- [Phase 3] Verified IDs 0x0411:0x03a6 and 0x37ad:0x0103 from diff
+  context do NOT exist in current tree (grep returned no matches) -
+  minor context conflict for backport
+- [Phase 4] b4 dig failed (commit not in this tree); lore blocked by
+  anti-scraping
+- [Phase 5] No code logic changes; only static const data table modified
+- [Phase 6] File exists in v7.0 (and v6.19+); applicable to those stable
+  trees
+- [Phase 8] Risk: VERY LOW (2 lines, const data); Benefit: HIGH (enables
   hardware)
-
-This is a textbook USB device ID addition to an existing driver - the
-most straightforward type of stable backport. It's 2 lines, trivially
-correct, zero risk, enables real hardware for real users, was reviewed
-by the subsystem maintainer, and there is direct precedent for identical
-backports to this exact file.
+- UNVERIFIED: Could not read original mailing list discussion due to
+  lore anti-bot protection. This does not affect the decision since the
+  change is a trivially verifiable device ID addition.
 
 **YES**
 
@@ -341,14 +400,14 @@ backports to this exact file.
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-index 3b9825c92a0d9..a485dacbb0531 100644
+index 314ea7f0ba72d..d0795da154594 100644
 --- a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-@@ -38,6 +38,8 @@ static const struct rtw89_driver_info rtw89_8852cu_info = {
- };
- 
+@@ -40,6 +40,8 @@ static const struct rtw89_driver_info rtw89_8852cu_info = {
  static const struct usb_device_id rtw_8852cu_id_table[] = {
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03a6, 0xff, 0xff, 0xff),
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03a6, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x056e, 0x4024, 0xff, 0xff, 0xff),
 +	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
  	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc832, 0xff, 0xff, 0xff),
  	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
