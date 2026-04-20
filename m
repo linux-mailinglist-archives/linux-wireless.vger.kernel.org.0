@@ -1,60 +1,62 @@
-Return-Path: <linux-wireless+bounces-35061-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35062-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDyZDCIz5mmOtQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35061-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:07:30 +0200
+	id iN1TMuIw5ml6tAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35062-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:57:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9BDF42CA7C
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 16:07:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC2942C785
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 15:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4287432112E5
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:47:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 77A8830B03C9
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2026 13:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2CB3B8BB1;
-	Mon, 20 Apr 2026 13:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFB03EE1D1;
+	Mon, 20 Apr 2026 13:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d68ufO2S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j6dCnO9Y"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B233EAC7C;
-	Mon, 20 Apr 2026 13:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FDF3A5444;
+	Mon, 20 Apr 2026 13:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691505; cv=none; b=idH5n5S2uaTxrKV4tVwMnup28ERONfo0IFMs08FdlsEqZJZdHxwUGLbzlvGlTdGxNIv3sp5Voi4iebizDhL/naB96iKT564WhGR4LokHUKGpVTzzD+1RbwqGRkzQeLkxysZ5xwYYa6hSzc99LvcpLh3DurpVgIFAM8fg+LqZ3aI=
+	t=1776691517; cv=none; b=JLk2qXccvGP3sm6bOWEkwH+P7CjrNS4kAj6bEMPZ5qM/sfhJ4iy5vgoTRNVRGCdKFr8cHthyg+R3oJo/7QMM58UWxu3FttfnShJTxnmm+eLr0sNNgrvKtX/y3djQwd18y2u6tu0g8DPAGwqZO+1GYQ0ptYQEsDxhcYoI4pM0tac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691505; c=relaxed/simple;
-	bh=iy4ullM0riE/zDEDaP0clf8E2jfWZ8QiGCYYRQJZXwg=;
+	s=arc-20240116; t=1776691517; c=relaxed/simple;
+	bh=1tMwr7fKz198F+7PJAx76Ncs0+xGjN2tu4IcqbtjbiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/pY7Jq0EZdhzef9vvlywUlxlAwhOKst2KJ02mVofqncE5a/KUUz91r0TgyHhw6cP+SMxBoT8gyzgx7CZaP8xnliaefSzNl2ZIRzLcNAkce4GFE54hMtdFeFF9TOnpbbWIGLjeLouiQxab9t4jp5EtOrhvcwBCcmDNyI2tJSDvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d68ufO2S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA91CC2BCB4;
-	Mon, 20 Apr 2026 13:25:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=snzBwz5aw92GjKvy/Ghb2blmrI1f3TmZ2cIedP8aRtPVwkhR2+lvUuTQxOJ28Cl8nUvcX8azbM+caC1uLBBBPTiAIu+m/z8XTDxSQLkJ6+VjbtBUB/urHo5/BeoZh6QGHpRIJ4v/FljKgrej3Ai1X3OX29+GkFVE8l9Lc3Isuac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j6dCnO9Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2225C19425;
+	Mon, 20 Apr 2026 13:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691504;
-	bh=iy4ullM0riE/zDEDaP0clf8E2jfWZ8QiGCYYRQJZXwg=;
+	s=k20201202; t=1776691517;
+	bh=1tMwr7fKz198F+7PJAx76Ncs0+xGjN2tu4IcqbtjbiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d68ufO2SwHbB8RAiL6uO0dql2h7bAzRW2kQLS2sbYKq29fEWHUNl7c6VTQM+43Tew
-	 xfJWAnS2kJu6gVkSvVf17dVswBQpzuy493FxwsxYxVrpzFQSLlhZOuJoWroBk/k5tA
-	 DNWxUDhXKowxP63BWGDnjJuJLh84oYzV8jxmLDgw/d0TyNn3D0rdpFJB4h8W7yg3nF
-	 8GgNKPJEgSal6h8mU0zq1nH/l9WPaC7UxKcdmKc0Fd9SARzT7ly0Xi5YKlmOGIMKJk
-	 O8C//RLZ70k6ySZ/m/XJDcnjZGJwz8waDRA8FfdXCRhxzOwEVTCJ0YYijRf4SgosVn
-	 awCKh2aqJBzHw==
+	b=j6dCnO9Yp+9dzF26xa9K2nSj+40pehzD4+uHt8A/VxUhlMCrswrT4w44XULqgdvMw
+	 SDPhE+CjshQhVyv9mNkjjG2REmo43oEu6trpphcBg0AJ4uHuE0lJfFLVzRmGHKGjWC
+	 cMaVcEptQ7waKss8OaHeGUlT4YatGAS3W06ClqKHChT6ZbT+j8AlK4/mbximBRDjBV
+	 eHn2c1BniVezAMmPDZbJXX0YmThVIEF6wJkoZhCGnb6yrbz4jV54SQnQ/5n1V5tn1B
+	 8zAh6jPJFkdHuQJ1t9gP3LPk3l/ohEI+pZcXsM2dgVksn9fvN2L2NKSQi6xpZoMUD5
+	 v/kFfXwk72rzQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Zenm Chen <zenmchen@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>,
+	Sathishkumar Muruganandam <quic_murugana@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.19] wifi: rtw89: Add support for TP-Link Archer TX50U
-Date: Mon, 20 Apr 2026 09:17:43 -0400
-Message-ID: <20260420132314.1023554-69-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-6.1] wifi: mac80211: use ap_addr for 4-address NULL frame destination
+Date: Mon, 20 Apr 2026 09:17:50 -0400
+Message-ID: <20260420132314.1023554-76-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -67,309 +69,461 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-35062-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35061-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A9BDF42CA7C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,quicinc.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 5EC2942C785
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
 
-[ Upstream commit 6678828eb78f3ae0bc6db90436068d5fd0387703 ]
+[ Upstream commit 594be50a3f0a6b7389f40f7acbf0dd731beb5204 ]
 
-Add the ID 37ad:0103 to the table to support an additional RTL8832CU
-adapter: TP-Link Archer TX50U.
+Currently ieee80211_send_4addr_nullfunc() uses deflink.u.mgd.bssid
+for addr1 and addr3 fields. In MLO configurations, deflink.u.mgd.bssid
+represents link 0's BSSID and is not updated when link 0 is not an
+assoc link. This causes 4-address NULL frames to be sent to the
+wrong address, preventing WDS AP_VLAN interface creation on the peer AP.
 
-Link: https://github.com/morrownr/rtl8852cu-20251113/issues/2
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260320093122.6754-1-zenmchen@gmail.com
+To fix this use sdata->vif.cfg.ap_addr instead, which contains the AP's MLD
+address populated during authentication/association and remains
+valid regardless of which links are active.
+
+This ensures 4-address NULL frames reach the correct AP, allowing
+proper WDS operation over MLO connections.
+
+Co-developed-by: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+Signed-off-by: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+Signed-off-by: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260326164723.553927-3-tamizh.raja@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have a clear picture. Let me compile the full analysis.
+Now I have all the information I need for the complete analysis. Let me
+compile the findings.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: PARSE THE SUBJECT LINE
-- **Subsystem**: `wifi: rtw89:`
-- **Action verb**: "Add support for" (device ID addition)
-- **Summary**: Adding USB device ID 37ad:0103 for TP-Link Archer TX50U
-  (RTL8832CU adapter)
+### Step 1.1: Parse the Subject Line
+- **Subsystem:** wifi: mac80211
+- **Action verb:** "use" (corrective - implying the current usage is
+  wrong)
+- **Summary:** Use the correct AP address (`ap_addr`) instead of deflink
+  BSSID for 4-address NULL frame destination in MLO configurations.
 
-### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
-- **Link**: https://github.com/morrownr/rtl8852cu-20251113/issues/2
-  (GitHub issue confirming user tested the ID)
-- **Signed-off-by**: Zenm Chen <zenmchen@gmail.com> (author)
-- **Signed-off-by**: Ping-Ke Shih <pkshih@realtek.com> (subsystem
-  maintainer - Realtek rtw89 driver)
-- **Link**:
-  https://patch.msgid.link/20260320093122.6754-1-zenmchen@gmail.com
-  (lore submission)
-- No Fixes: tag (expected for device ID additions), no Reported-by, no
-  Cc: stable.
+Record: [wifi: mac80211] [use/fix] [Correct the destination address for
+4-addr NULL frames in MLO mode]
 
-### Step 1.3: ANALYZE THE COMMIT BODY TEXT
-The commit body is straightforward: add USB ID 37ad:0103 to the existing
-rtw_8852cu_id_table to enable the TP-Link Archer TX50U, which uses the
-RTL8832CU chipset. The GitHub issue link confirms a real user verified
-the device works with this ID.
+### Step 1.2: Parse All Tags
+- **Co-developed-by:** Sathishkumar Muruganandam
+  <quic_murugana@quicinc.com>
+- **Signed-off-by:** Sathishkumar Muruganandam, Tamizh Chelvam Raja
+  (author), Johannes Berg (maintainer)
+- **Link:** https://patch.msgid.link/20260326164723.553927-3-
+  tamizh.raja@oss.qualcomm.com
+- **No Fixes: tag** (expected - that's why it needs review)
+- **No Reported-by:** (likely found through code review / internal
+  testing at Qualcomm)
+- **No Cc: stable** (expected)
 
-### Step 1.4: DETECT HIDDEN BUG FIXES
-This is not a hidden bug fix. It is a pure USB device ID addition. This
-falls squarely into the **DEVICE ID EXCEPTION** category for stable
-backports.
+Johannes Berg is the mac80211 maintainer who signed off — strong trust
+signal.
 
-## PHASE 2: DIFF ANALYSIS - LINE BY LINE
+Record: Co-developed by Qualcomm engineers, committed by mac80211
+maintainer Johannes Berg. Message-id suggests this is patch 3 of a
+series.
 
-### Step 2.1: INVENTORY THE CHANGES
-- **Files changed**: 1
-  (`drivers/net/wireless/realtek/rtw89/rtw8852cu.c`)
-- **Lines added**: 2 (one USB_DEVICE_AND_INTERFACE_INFO entry +
-  driver_info)
-- **Lines removed**: 0
-- **Functions modified**: None - only the `rtw_8852cu_id_table[]` static
-  const array
-- **Scope**: Single-file, trivial addition to a static USB ID table
+### Step 1.3: Analyze the Commit Body
+- **Bug:** `deflink.u.mgd.bssid` represents link 0's BSSID which is NOT
+  updated when link 0 is not an assoc link in MLO configurations
+- **Symptom:** 4-address NULL frames are sent to the WRONG address,
+  preventing WDS AP_VLAN interface creation on the peer AP
+- **Root cause:** Wrong field used for destination address in MLO mode
+- **Fix:** Use `sdata->vif.cfg.ap_addr` which contains the AP's MLD
+  address populated during authentication/association
 
-### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
-- **Before**: The `rtw_8852cu_id_table` contains 8 USB vendor/product ID
-  entries
-- **After**: The table contains 9 entries, with `{0x37ad, 0x0103}` added
-  before the sentinel
-- The entry uses the exact same `rtw89_8852cu_info` driver_info as all
-  other entries
-- This only affects USB device enumeration: when a device with
-  vendor=0x37ad product=0x0103 is plugged in, the kernel will now bind
-  the rtw89_8852cu driver to it
+Record: Bug is that WDS (4-addr mode) over MLO connections is completely
+broken. Frames go to wrong AP address, preventing the AP from creating
+VLAN interfaces for the client.
 
-### Step 2.3: IDENTIFY THE BUG MECHANISM
-Category: **Hardware enablement (Device ID addition)**. The TP-Link
-Archer TX50U uses the RTL8832CU chipset which is fully supported by the
-existing driver. Without this ID, the device simply isn't recognized and
-doesn't bind to the driver.
+### Step 1.4: Detect Hidden Bug Fixes
+This is clearly a bug fix, not hidden. The commit message explicitly
+describes broken functionality (wrong destination address for 4-addr
+NULL frames in MLO).
 
-### Step 2.4: ASSESS THE FIX QUALITY
-- **Obviously correct**: Yes - identical pattern to all other entries in
-  the table
-- **Minimal/surgical**: Yes - 2 lines, only touches the ID table
-- **Regression risk**: Effectively zero. Adding a USB ID cannot affect
-  existing IDs or any other code path. The entry only matches one
-  specific vendor/product pair.
+Record: This is an explicit bug fix for MLO+WDS functionality.
+
+---
+
+## PHASE 2: DIFF ANALYSIS
+
+### Step 2.1: Inventory the Changes
+- **File:** `net/mac80211/mlme.c`
+- **Lines changed:** 2 lines modified (addr1 and addr3 source changed)
+- **Function modified:** `ieee80211_send_4addr_nullfunc()`
+- **Scope:** Single-file, surgical, 2-line fix
+
+Record: 1 file, 2 lines changed. Scope: minimal surgical fix.
+
+### Step 2.2: Code Flow Change
+- **Before:** `memcpy(nullfunc->addr1, sdata->deflink.u.mgd.bssid, ...)`
+  and same for addr3
+- **After:** `memcpy(nullfunc->addr1, sdata->vif.cfg.ap_addr, ...)` and
+  same for addr3
+- **Path affected:** The 4-address NULL frame construction path (called
+  during association and interface config change)
+
+Record: Only the source of the MAC address for addr1/addr3 fields
+changes. Both are ETH_ALEN copies from valid struct members.
+
+### Step 2.3: Bug Mechanism
+Category: **Logic/correctness fix** — wrong data source used for frame
+addresses in MLO.
+
+- In non-MLO: `deflink.u.mgd.bssid` == `vif.cfg.ap_addr`, so behavior is
+  unchanged
+- In MLO: `deflink.u.mgd.bssid` may point to an uninitialized/wrong link
+  0 BSSID, while `vif.cfg.ap_addr` correctly holds the AP MLD address
+
+Record: Logic bug — wrong field referenced for AP address in MLO mode.
+Fix uses the documented correct field.
+
+### Step 2.4: Fix Quality
+- **Obviously correct?** YES — `vif.cfg.ap_addr` is documented as "AP
+  MLD address, or BSSID for non-MLO connections" which is exactly what's
+  needed here.
+- **Minimal?** YES — 2 lines changed.
+- **Regression risk?** Virtually zero — the same pattern was applied in
+  commit 8a9be422f5ff3 for tx.c paths, and `ap_addr` is already used
+  extensively in the same file for the same purpose.
+
+Record: Fix is obviously correct, minimal, follows established
+precedent. Zero regression risk.
+
+---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
-### Step 3.1: BLAME THE CHANGED LINES
-- The file was created in commit `406849000df41` by Bitterblue Smith on
-  2025-11-01
-- One additional USB ID was added by commit `5f65ebf9aaf00` (Shin-Yi
-  Lin, 2026-01-14)
-- The driver is relatively new but fully functional in v7.0
+### Step 3.1: Blame the Changed Lines
+- The buggy `sdata->deflink.u.mgd.bssid` was introduced by commit
+  **bfd8403adddd09** ("wifi: mac80211: reorg some iface data structs for
+  MLD") from May 2022 by Johannes Berg.
+- Before that commit, the code used `sdata->u.mgd.bssid` which was fine
+  for non-MLO.
+- The deflink reorg moved things to per-link structures but didn't
+  update this function to use the MLD-aware `ap_addr` for address
+  fields.
 
-### Step 3.2: FOLLOW THE FIXES: TAG
-No Fixes: tag - expected for a device ID addition.
+Record: Buggy code introduced in bfd8403adddd09 (May 2022), present in
+v6.1+.
 
-### Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-Only 2 commits in the file's history - the initial creation and one
-prior ID addition. No complex refactoring.
+### Step 3.2: Fixes Tag
+No Fixes: tag present. The implicit Fixes target is bfd8403adddd09.
 
-### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-Zenm Chen is a repeat contributor who adds USB device IDs to Realtek
-wireless drivers (rtw89, rtw88, rtl8xxxu) and Bluetooth (btusb). All
-their commits follow the same pattern of device ID additions. The patch
-is signed off by Ping-Ke Shih, the Realtek rtw89 subsystem maintainer.
+Record: No explicit Fixes tag. Implicit target is bfd8403adddd09 (in
+v6.1+).
 
-### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-No dependencies. The driver already exists with its full infrastructure.
-This is a standalone ID table addition.
+### Step 3.3: Related Changes
+- Commit **8a9be422f5ff3** ("wifi: mac80211: tx: use AP address in some
+  places for MLO") by Johannes Berg himself did the exact same fix
+  pattern for tx.c paths — changing `deflink.u.mgd.bssid` to
+  `vif.cfg.ap_addr`. This was the same class of bug that was missed in
+  `ieee80211_send_4addr_nullfunc()`.
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+Record: Strong precedent exists (8a9be422f5ff3). This is a missed
+instance of the same fix pattern.
 
-### Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
-Lore is behind anti-bot protection so direct fetch failed. The GitHub
-issue (successfully fetched) at
-https://github.com/morrownr/rtl8852cu-20251113/issues/2 confirms a real
-user (@wd5gnr) tested the TP-Link Archer TX50U adapter and confirmed it
-works with ID 37ad:0103. The user also wrote a Hackaday article about
-the experience.
+### Step 3.4: Author Context
+- Authors are Qualcomm engineers (Tamizh Chelvam Raja, Sathishkumar
+  Muruganandam)
+- Committed by Johannes Berg (mac80211 maintainer)
+- The maintainer's sign-off indicates review and approval
 
-### Step 4.2: CHECK WHO REVIEWED THE PATCH
-Signed-off-by from Ping-Ke Shih (pkshih@realtek.com) - the Realtek rtw89
-maintainer. Appropriate review for this type of change.
+Record: Fix accepted by subsystem maintainer.
 
-### Step 4.3-4.5: BUG REPORT / RELATED PATCHES / STABLE DISCUSSION
-The GitHub issue serves as the effective "report" - a user found their
-adapter wasn't recognized. No prior stable discussion found.
+### Step 3.5: Dependencies
+- `ap_addr` field exists since commit b65567b03c9502 (June 2022), which
+  is in v6.1+
+- The `deflink` structure exists since bfd8403adddd09, also in v6.1+
+- No code dependencies beyond what exists in stable trees
+
+Record: No additional dependencies. All required structures exist in
+v6.1+.
+
+---
+
+## PHASE 4: MAILING LIST RESEARCH
+
+### Step 4.1-4.5
+Lore.kernel.org was blocked by anti-bot protection. b4 dig couldn't find
+the commit (it's not yet in the tree as an applied commit). The Link:
+tag in the commit message references
+`20260326164723.553927-3-tamizh.raja@oss.qualcomm.com`, suggesting this
+is patch 3 of a series.
+
+The commit was signed off by Johannes Berg (mac80211 maintainer), which
+is a strong quality indicator.
+
+Record: Could not access lore discussion. Maintainer sign-off verified.
+
+---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1-5.4: FUNCTION ANALYSIS
-No functions are modified. The change is a static data table addition.
-The ID table is consumed by the USB core during device enumeration to
-match devices to drivers. The probe path (`rtw89_usb_probe`) is already
-exercised by all 8 existing IDs and is well-tested.
+### Step 5.1: Key Functions
+Modified function: `ieee80211_send_4addr_nullfunc()`
 
-### Step 5.5: SIMILAR PATTERNS
-The author (Zenm Chen) has contributed many identical ID additions to
-rtw89 and other Realtek drivers. The previous commit `5f65ebf9aaf00`
-follows the exact same pattern for the same file.
+### Step 5.2: Callers
+Two call sites:
+1. `net/mac80211/mlme.c:6555` — called during
+   `ieee80211_assoc_success()` when `ifmgd->use_4addr` is true
+2. `net/mac80211/cfg.c:298` — called when 4addr mode is enabled via
+   `ieee80211_change_iface()`
 
-## PHASE 6: CROSS-REFERENCING AND STABLE TREE ANALYSIS
+Record: Called from association path and interface config path. Both are
+normal operational paths.
 
-### Step 6.1: DOES THE BUGGY CODE EXIST IN STABLE TREES?
-Verified: The file exists in v7.0 (which is HEAD = the current stable
-tree). The v7.0 tree has `rtw8852cu.c` with 8 USB IDs. The new ID would
-be the 9th.
+### Step 5.3-5.4: Call Chain
+The function is reachable when:
+- A station associates with 4-addr mode (WDS) enabled → common for
+  mesh/backhaul setups
+- A user enables 4-addr mode via nl80211/iw
 
-### Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-The patch will apply cleanly. The v7.0 file already has the 28de:2432 ID
-that was added after initial creation, and the new 37ad:0103 entry goes
-right before the sentinel `{}`. No conflicts expected.
+Record: Reachable from normal user operations (association, interface
+config).
 
-### Step 6.3: CHECK IF RELATED FIXES ARE ALREADY IN STABLE
-No related fix for this specific USB ID exists.
+### Step 5.5: Similar Patterns
+The same bug pattern (`deflink.u.mgd.bssid` → `vif.cfg.ap_addr`) was
+fixed in tx.c (commit 8a9be422f5ff3). There are still 8 remaining
+instances of `deflink.u.mgd.bssid` in mlme.c — some may be correct
+(link-specific operations) while others might need similar fixes.
 
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+Record: Same pattern was already fixed in tx.c. This is a remaining
+instance.
 
-### Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
-- **Subsystem**: WiFi drivers (drivers/net/wireless/realtek/rtw89)
-- **Criticality**: IMPORTANT - USB WiFi adapters are widely used,
-  especially by Linux users who buy them specifically for Linux support
+---
 
-### Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-The rtw89 subsystem is actively developed with recent commits visible.
+## PHASE 6: STABLE TREE ANALYSIS
+
+### Step 6.1: Does Buggy Code Exist in Stable?
+- `deflink.u.mgd.bssid` was introduced by bfd8403adddd09 — confirmed in
+  v6.1+
+- `vif.cfg.ap_addr` was introduced by b65567b03c9502 — confirmed in
+  v6.1+
+- Both structures exist in all active stable trees (6.1.y, 6.6.y,
+  6.12.y)
+
+Record: Buggy code exists in v6.1+ stable trees.
+
+### Step 6.2: Backport Complications
+- mlme.c has had 233 changes since v6.6, so context may differ
+- However, the function `ieee80211_send_4addr_nullfunc()` is self-
+  contained and hasn't changed much
+- The 2-line fix should apply cleanly or with trivial context adjustment
+
+Record: Minor context conflicts possible but fix is self-contained. Low
+backport difficulty.
+
+### Step 6.3: Related Fixes Already in Stable
+The precedent fix 8a9be422f5ff3 (tx.c changes) is in v6.1+, establishing
+that `ap_addr` is the correct field for MLO-aware AP addressing.
+
+Record: Precedent fix already in stable trees.
+
+---
+
+## PHASE 7: SUBSYSTEM CONTEXT
+
+### Step 7.1: Subsystem Criticality
+- **Subsystem:** net/mac80211 (WiFi)
+- **Criticality:** IMPORTANT — WiFi is critical for many users;
+  4-addr/WDS mode is used in enterprise mesh/backhaul
+
+Record: IMPORTANT subsystem. WiFi WDS used in enterprise/mesh
+deployments.
+
+### Step 7.2: Activity
+mac80211 is very actively developed, especially around MLO support.
+
+Record: Highly active subsystem.
+
+---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-### Step 8.1: DETERMINE WHO IS AFFECTED
-Users of the TP-Link Archer TX50U USB WiFi adapter. This is a
-commercially available, retail WiFi adapter from a major brand.
+### Step 8.1: Who is Affected
+Users running MLO (WiFi 7) connections with 4-addr/WDS mode enabled.
+This is a specific but real use case (enterprise mesh backhaul over WiFi
+7).
 
-### Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-Without this ID, plugging in the adapter simply does nothing - the
-device is not recognized by any driver.
+Record: Affected: MLO + WDS users. Growing user base as WiFi 7 adoption
+increases.
 
-### Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-Without the fix: **Device non-functional** - the adapter cannot be used
-at all. With the fix: device works immediately on plug-in. Severity:
-HIGH for affected users (complete loss of WiFi functionality for their
-hardware).
+### Step 8.2: Trigger Conditions
+- Triggerable whenever an MLO station associates with 4-addr mode
+  enabled
+- Requires MLO-capable hardware and AP
+- No special privileges needed beyond configuring 4-addr mode
 
-### Step 8.4: CALCULATE RISK-BENEFIT RATIO
-- **BENEFIT**: HIGH - enables a commercially available WiFi adapter for
-  users who own it
-- **RISK**: NEGLIGIBLE - 2-line static data addition, cannot affect any
-  other device or code path
-- **Ratio**: Overwhelmingly favorable
+Record: Triggered on every MLO+WDS association. 100% reproducible for
+affected configurations.
+
+### Step 8.3: Failure Mode Severity
+- **Not a crash** — the frame is sent to the wrong address
+- **Functional failure** — WDS doesn't work at all over MLO (AP can't
+  create VLAN interface)
+- **Severity: MEDIUM-HIGH** — Complete feature breakage for affected
+  users, but no data corruption/crash
+
+Record: Severity MEDIUM-HIGH — complete WDS functionality failure over
+MLO.
+
+### Step 8.4: Risk-Benefit Ratio
+- **Benefit:** Enables WDS/4-addr mode to work over MLO connections
+  (currently completely broken)
+- **Risk:** 2-line change to memcpy source, using a well-documented
+  field already used extensively elsewhere. Virtually zero regression
+  risk.
+- **Ratio:** Very favorable — HIGH benefit, VERY LOW risk
+
+Record: HIGH benefit, VERY LOW risk.
+
+---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: COMPILE THE EVIDENCE
+### Step 9.1: Evidence Summary
 
 **FOR backporting:**
-- Classic USB device ID addition - explicitly called out as a stable
-  exception category
-- 2-line change, zero regression risk
-- Enables a real, commercially available TP-Link WiFi adapter
-- Confirmed working by a real user (GitHub issue)
-- Reviewed/signed-off by subsystem maintainer (Ping-Ke Shih)
-- Driver already exists in v7.0 stable tree
-- Will apply cleanly
-- Author has a track record of identical, successful ID additions
+- Fixes real broken functionality (WDS over MLO completely non-
+  functional)
+- Extremely small fix (2 lines) that is obviously correct
+- Uses `ap_addr` which is documented as "AP MLD address, or BSSID for
+  non-MLO"
+- Follows established precedent (commit 8a9be422f5ff3 did the same fix
+  for tx.c)
+- `ap_addr` is already used ~20+ times in the same file for the same
+  purpose
+- Accepted by mac80211 maintainer Johannes Berg
+- No behavior change for non-MLO configurations
+- All required data structures exist in stable trees (v6.1+)
 
 **AGAINST backporting:**
-- (none identified)
+- No Fixes: or Cc: stable tags (expected for AUTOSEL candidates)
+- MLO is relatively new and may not have many stable users yet
+- Not a crash/security/corruption bug — it's a functional regression
+- Part of a series (patch 3/N — other patches may or may not be needed)
 
-### Step 9.2: APPLY THE STABLE RULES CHECKLIST
-1. Obviously correct and tested? **YES** - identical to all other
-   entries, user-tested
-2. Fixes a real bug? **YES** - enables hardware that should work but
-   doesn't
-3. Important issue? **YES** - without it, the adapter is completely non-
-   functional
-4. Small and contained? **YES** - 2 lines in 1 file
-5. No new features or APIs? **YES** - just a data addition to existing
-   infrastructure
-6. Can apply to stable? **YES** - clean apply expected
+**UNRESOLVED:**
+- Could not access lore discussion to check if series patches are
+  independent
+- Could not verify exact stable tree code state
 
-### Step 9.3: CHECK FOR EXCEPTION CATEGORIES
-**YES - Device ID addition to existing driver.** This is the textbook
-example of the USB ID exception category.
+### Step 9.2: Stable Rules Checklist
+1. **Obviously correct and tested?** YES — change to documented correct
+   field, accepted by maintainer
+2. **Fixes a real bug?** YES — WDS over MLO doesn't work at all
+3. **Important issue?** MEDIUM-HIGH — complete feature breakage for
+   MLO+WDS users
+4. **Small and contained?** YES — 2 lines in one function
+5. **No new features?** Correct — no new features
+6. **Can apply to stable?** YES — all required structures present in
+   v6.1+
 
-### Verification:
-- [Phase 1] Parsed tags: Signed-off-by from Ping-Ke Shih (maintainer),
-  Link to GitHub issue and lore
-- [Phase 2] Diff analysis: 2 lines added to static USB ID table in
-  `rtw8852cu.c`, adds {0x37ad, 0x0103}
-- [Phase 3] git blame: file created in 406849000df41 (2025-11-01),
-  exists in v7.0
-- [Phase 3] git show v7.0:rtw8852cu.c: confirmed file exists with 8 IDs
-  in v7.0 stable tree
-- [Phase 3] git log --author: Zenm Chen contributes multiple identical
-  ID additions across Realtek drivers
-- [Phase 4] GitHub issue #2: user @wd5gnr confirmed TX50U works with
-  this ID, linked Hackaday article
-- [Phase 4] b4 dig on sibling commit 5f65ebf9aaf00: confirmed similar ID
-  additions go through the same maintainer
-- [Phase 4] Lore direct access blocked by anti-bot protection (Anubis)
-- [Phase 5] No functions modified - pure data table change; probe path
-  exercised by existing 8 IDs
-- [Phase 6] v7.0 tag contains the file; patch applies cleanly (no
-  intervening changes to this section)
-- [Phase 7] rtw89 is an actively maintained WiFi subsystem, TP-Link is a
-  major brand
-- [Phase 8] Risk: negligible (2-line data addition); Benefit: enables
-  hardware for real users
+### Step 9.3: Exception Categories
+Not an exception category — this is a standard bug fix.
+
+### Step 9.4: Decision
+The fix is tiny, obviously correct, follows an established pattern from
+the maintainer, fixes real broken functionality, and carries virtually
+zero regression risk. While it's not a crash or security fix, it fixes
+complete feature breakage for WDS over MLO — a real use case for
+enterprise WiFi deployments. The 2-line change is the kind of surgical
+fix that stable trees are designed to accept.
+
+---
+
+## Verification
+
+- [Phase 1] Parsed tags: Co-developed-by from Qualcomm, SOB from
+  mac80211 maintainer Johannes Berg
+- [Phase 2] Diff analysis: 2 lines changed in
+  `ieee80211_send_4addr_nullfunc()`, changing memcpy source from
+  `sdata->deflink.u.mgd.bssid` to `sdata->vif.cfg.ap_addr`
+- [Phase 3] git blame: Buggy lines introduced by bfd8403adddd09 (May
+  2022, Johannes Berg), confirmed in v6.1 via `git merge-base --is-
+  ancestor`
+- [Phase 3] Confirmed precedent commit 8a9be422f5ff3 exists doing same
+  fix pattern for tx.c
+- [Phase 3] `ap_addr` field introduced by b65567b03c9502, confirmed
+  present in v6.1 and v6.6
+- [Phase 5] Found 2 callers: mlme.c:6555 (assoc path) and cfg.c:298
+  (interface config)
+- [Phase 5] Verified `vif.cfg.ap_addr` is used extensively in mlme.c
+  (~20+ instances) for same purpose
+- [Phase 5] Verified `ap_addr` documented as "AP MLD address, or BSSID
+  for non-MLO connections"
+- [Phase 6] Confirmed buggy code and required structures exist in v6.1.y
+  and v6.6.y stable trees
+- [Phase 8] Failure mode: WDS completely non-functional over MLO,
+  severity MEDIUM-HIGH
+- UNVERIFIED: Could not access lore discussion to check series
+  independence (anti-bot protection)
+- UNVERIFIED: Exact patch applicability to specific stable tree branches
+  not tested
 
 **YES**
 
- drivers/net/wireless/realtek/rtw89/rtw8852cu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/mac80211/mlme.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-index a485dacbb0531..314ea7f0ba72d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-@@ -56,6 +56,8 @@ static const struct usb_device_id rtw_8852cu_id_table[] = {
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0102, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x37ad, 0x0103, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
- 	{},
- };
- MODULE_DEVICE_TABLE(usb, rtw_8852cu_id_table);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 68da06434bb5d..200a075c97c9c 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2496,9 +2496,9 @@ void ieee80211_send_4addr_nullfunc(struct ieee80211_local *local,
+ 	fc = cpu_to_le16(IEEE80211_FTYPE_DATA | IEEE80211_STYPE_NULLFUNC |
+ 			 IEEE80211_FCTL_FROMDS | IEEE80211_FCTL_TODS);
+ 	nullfunc->frame_control = fc;
+-	memcpy(nullfunc->addr1, sdata->deflink.u.mgd.bssid, ETH_ALEN);
++	memcpy(nullfunc->addr1, sdata->vif.cfg.ap_addr, ETH_ALEN);
+ 	memcpy(nullfunc->addr2, sdata->vif.addr, ETH_ALEN);
+-	memcpy(nullfunc->addr3, sdata->deflink.u.mgd.bssid, ETH_ALEN);
++	memcpy(nullfunc->addr3, sdata->vif.cfg.ap_addr, ETH_ALEN);
+ 	memcpy(nullfunc->addr4, sdata->vif.addr, ETH_ALEN);
+ 
+ 	IEEE80211_SKB_CB(skb)->flags |= IEEE80211_TX_INTFL_DONT_ENCRYPT;
 -- 
 2.53.0
 
