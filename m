@@ -1,105 +1,104 @@
-Return-Path: <linux-wireless+bounces-35112-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35113-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MQNgEaTm5mkv1wEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35112-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 04:53:24 +0200
+	id yKAKHmjn5mkv1wEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35113-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 04:56:40 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83B24359F4
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 04:53:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3DC435A3B
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 04:56:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BC0583005A89
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 02:53:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B35533007E23
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 02:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9E926B2DA;
-	Tue, 21 Apr 2026 02:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFEF3265CA8;
+	Tue, 21 Apr 2026 02:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GXamZDbu";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Gtykg6yq"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="o9TE/HKO";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="gsvaIM3n"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A91261B9E
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 02:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C6726AE5
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 02:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776740001; cv=none; b=jD7VwgjCSUtmsB1EycIvrCpgJWPoqRLD3m1VYajoMwJq4pEic5sdyCiZHT5KmOFm6hor/ucSE1mM/1aYhrIKVU6Et28N8enjN+qQ3EJbMtXD0N8zDizg3rRCQr0d4qo8xu5Um6Ozy8XGIn5dYuMZej/8vcX1T4oMbyWrBdz2paA=
+	t=1776740179; cv=none; b=urjc7iOgfXnwb9oXFmnSYm/WVY1UXcB0Lyz0rIh25Xm2M/JMsWaEP7gUBWbYganQYIyecDhBqC0LwBORWoefT2uO6tAKo9vh7jK62/MpZXENlt6APJgPmiKafbPMzstT5Y+2aUOfH79qhiU60vU2gNYBj909D2CMja8RdISgGLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776740001; c=relaxed/simple;
-	bh=4IjoQjwiFeLLeSO5t2hKnPbPnrdsdcns09X8bnj4R0s=;
+	s=arc-20240116; t=1776740179; c=relaxed/simple;
+	bh=01LHw69CfcRkJCLx0EOLBBPnBBkhBnSq1bf2+egQZ4k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f9hxt59iU6sKPeoO6rhDD1qGUtthdCKyY35PpDJsY42mejPkZUwV7vRxaNjN+u+WjP+nqft37yVUtAN/B3XHhmFtYJZuyHLKLTzBn3HbqeaDePaG0GDEOlHIF63Kf4UOyvo8eweEW+JGMQ3S7bSWticEI4ACgnr1uWW81DcYWgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GXamZDbu; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Gtykg6yq; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=ivmbKCdC7dUXCs1qeDE9Hb5bMfIpd0dAWQExfOX9zb8VBhH23FO4x3SQNnCmcxdIcp4v/yGv3vJlNkbFY4+Jmy6udIONEm0TCTuM7F9p9agS3sYloLhhixRjuLBpL9CHd97/bVqkaRTIcGqEpzTnE53vnrmZvNO1PS149ISPzmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=o9TE/HKO; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=gsvaIM3n; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63L2k05c2980962
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 02:53:19 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63KJ3ofu1532112
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 02:56:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nL9xUfvTkwQZncAFS6niHvBtOoZf0aD/RZbBCfCG6WA=; b=GXamZDbuUaHABGfK
-	aJuurbG23e5ntre5qvoQEd+XkZ6jN1novvAz6fn9kGhVfdwgOt0fg/AndDyiLUC+
-	EOjqyufcHc/iXz5ULKQXVelzdAgd7UfpZlqqs3A0KlLs8qOTGx8nJEdhRDegC8Ro
-	L5KHd7GfTcnjB4vrSr0GvGDcCzDl5Rq2PFIHLEbr5I+sBy2y1Sq1yemu8dWKMVYl
-	g0w2+sTkWrzdZG0KcspgI/d9J+eaqG2uynUVmSU9aU2hODtJlOLSKG6mB17vqUQt
-	RNsOWiWgoCpedwSIozAu7y/19o7enEd8rPfW5xmqQbERM4xiisQ/StbjIBgOMTFj
-	6DO4YA==
+	sEHBkFzrKWkCCiqEO5KBaKRSVTv6hNVHQcN9eRtDTRg=; b=o9TE/HKOuFtD+5zv
+	lx5uzoPoborH9eDlwu84CEJVAabpdR7CqrZ10Fiv3/a2gRxhz53IR1tta0UundZ+
+	ofy4CGt++wO7Ca+GA3SqqcY0yRhXQpkFGXLZg5BFkwSXTp3eRQN3wRcpvcg8rYkr
+	Ja6MBHHzTVKXMJeZr1fE/r25FTonZ21EpzNdONBvqqtJDBdjnio+5ikgSWdQ0w02
+	MAfXRUmR1UaJ0QnCfc3/kbxtCu6Uv0gZVIiJQpvFLUtHCIp678MXuPyoEkQs5xoB
+	HeaUNQjxZoUPn/hPcslU+9M5N8knJjeGb/j/3f0+rS0pLgY5Y9wqJ8HoTe4NGYc1
+	siR6MQ==
 Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dnj2pu5uy-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dnfus42gn-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 02:53:19 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2adef9d486bso34018535ad.2
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2026 19:53:19 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 02:56:17 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2b241be0126so75616305ad.3
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2026 19:56:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776739998; x=1777344798; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1776740177; x=1777344977; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=nL9xUfvTkwQZncAFS6niHvBtOoZf0aD/RZbBCfCG6WA=;
-        b=Gtykg6yq3LdnYNeifzQyijcQ+7lap2JkH/tF4Hs8BmDZ2LVTyGPX6feaS4mqmr3CwW
-         b3cwkfkJjTHVqxdR5zXjBIP9x6SLGtAc/QSH31GgNFmTBZx81ngkBYDR2iXIht7exyOV
-         udXmUF0DiHN8m/1DZQQ/co6VJ0Lemzgw8te1ZwIO862eS2nnAdbJLCd3RGWh0Dd9pkB4
-         wiCVhGeulthz0JpmUYVFtSzOomfU5tA2UT+JZaQ5GR53oLaSnF8lgb9J1ChW81+ZKkPv
-         +Su9wAhNxhXns1mSy+mv8RXctWoZIARrDy2zZ6U0c6MOOnqhRqz/0JXJVnCvESO3yUdp
-         G/KQ==
+        bh=sEHBkFzrKWkCCiqEO5KBaKRSVTv6hNVHQcN9eRtDTRg=;
+        b=gsvaIM3nruQYyMznt0NdYnrF+NfX1am+bFJ0L1ce6cY9ECQ8Z1eDskYUubOyFNFID6
+         opfrugHnletzSWRl3KC1gKtWZkp1Ise+DN4G9tsh6IhaqYrKVl5C/m85l5EltaZkIU1L
+         gwuJkdVA+iFo4VGqdQykeKQHwv4zzKdxE4tOygDq+GfHCOaH8sbs1LtKqfa9IrjbT117
+         oaTU0WmFT3xKRzOjBWltxQmihBFdi66qWAsw7jYkEGOwJG4apCsJnGN3y/34z7CNjd7u
+         FOB5sFtDA27AsHFmMDOgQE4RXbJmtWc7A/b0gfXZV8hchK5C+PGppWIsr+cKXAoMTKh1
+         BKMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776739998; x=1777344798;
+        d=1e100.net; s=20251104; t=1776740177; x=1777344977;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nL9xUfvTkwQZncAFS6niHvBtOoZf0aD/RZbBCfCG6WA=;
-        b=jxmGtvYfM8FCb2hJr3qKjna9pisDCWY988xxjrupZXEWLbslkph0OwUUzBwv56g5/6
-         9OcmwPoAFTWw1yDXv6twXjlXxpZuJEQ5VyvYA+Q7swb0aLr5BQkPlko2PEHHSD9e0efG
-         APejQU4hSr4R0TtDPiYTHgLjzMn3iopDdx2XpteunUu6qPMJtanLw8O75IRUuPRXFmQi
-         fvu4IIISoaSNtiGjasxQpm151EHJSQIbWpKb4dLKLbiTdVcQ9KZepRmw1AfmAqutv2AJ
-         Dgo9T2AjojWupY0ICkm4zinNPNTe6AnSBK/8Qj5+z/nZR5oX9Ne/Lgz2G24t26isgECX
-         ge3w==
-X-Forwarded-Encrypted: i=1; AFNElJ/HUwJv2wHQCtCEDeBEj9rBR2WHpuGHpUNfstnYvVDIWtQE4e89Sb5KNjywA7fVDLMPdrq1GsfyGZsYcbLXfw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywnfomk4ONmu0wzM7/Khjw83Kx5qyqn7zM+/VV8ukNpTGvAHs8Y
-	d5HiAp4OIYgRMH+rtn4WloI6+hqbFOulZZrR3AS+yXt6FPXyVaiB53uyvKUTbyYGzXnoRuofj19
-	pgT3+SJ7nzKjP4nicCncsxVMqK/lPSV04rgM6eBq1s1wCp6+BAIWa/UJOlValWln+svrYHQ==
-X-Gm-Gg: AeBDietKkumyu3d+qpm1Eh/p4Drm1s9pE7rsBJCkDZMMBpM++kT0PJ/UGW0fJPBjBWe
-	ttzDNHt8lgrYE/FgKZ6CofnF/Jv+T6CxJC6mkGt9g2owMmlFCa90SSG6N6nur7ePD3NgK87wxi1
-	thMTvOv0jxNkhLKwRKxDQq+Kk8sJWpMUhLjZNOOmHzX4k7Hf/NEfi83OTF9NC7CAy3YR9HzfrBE
-	Obw4eSSMDv9ytIwPeVsDY0Du4pIms6IdIR9uzpW4HsFqw4Wy/QqKw6+7pJVvlbdFIacA7GRJw21
-	z49YKfdRleZRn4BW95d/qlZynJRlh8NBPkfTrdilbd2gnlHWCTfOLTvFYzjusrdxcMpX1q8D8BS
-	rqQ4cZfR31mUFLuq+2QguRNPVZdD9n7PX5nhjAYDzu7eu950JW+PK9abBeob0g6AvY4F6kVFP56
-	DShtVOzuHXNzOR24F0qccPGVONBC3sbw==
-X-Received: by 2002:a17:902:6905:b0:2b2:49a7:a5bd with SMTP id d9443c01a7336-2b5f9e770c5mr113292125ad.1.1776739998393;
-        Mon, 20 Apr 2026 19:53:18 -0700 (PDT)
-X-Received: by 2002:a17:902:6905:b0:2b2:49a7:a5bd with SMTP id d9443c01a7336-2b5f9e770c5mr113291805ad.1.1776739997873;
-        Mon, 20 Apr 2026 19:53:17 -0700 (PDT)
+        bh=sEHBkFzrKWkCCiqEO5KBaKRSVTv6hNVHQcN9eRtDTRg=;
+        b=JCW5nn6hfoW+wZkd2XDzz10yVWqNkE57aS/T1ZQu0It6M6/pNxdgzgaZCjyIsJcxa9
+         crGPOR5YgBbDgDpc2ztGKKfSQZIgHXu115IIJLqZLu/vDEmXj1T412Z7JTSvf2bYWHVp
+         MKB2giOtlcdLSjBskmbm/rijhatkNa5/hGhuot6AAViIWlVAJ8b5o0/0OwlUm7BTFSrc
+         NXAbxiG2anBLxUbgqYGXcv3NxCUEwTkllvm77qZfEVVUrkAD0G9rf1iJb+6uo2kittB/
+         FqJ4ptcwfOkJNIluGcVVfYxGVubW4esqfvoiqrpgOF10XfUf/3a5+SLrygfug2YGKoc5
+         c6xA==
+X-Gm-Message-State: AOJu0YwtlQaN4tZoutvq8+d9Gi8rlNzSooKQwR9gCSCs35c5D4cGSK27
+	VQr0Th4S4QV1Zj8CD4NBWevfXpaetPJsTM9zCtvTaa3kn+XlPBqekhNxc2evsYiHBBoA39L4rPY
+	zxtT3Lz6meuoVKkY3GmJEQZoSTg9G1OCNM97Zu9hpeIzDuT0bBXvFy/eaACuuzR5MC4nSpA==
+X-Gm-Gg: AeBDiess5eBSzvVp9OuRbtHqrSP8Fs2Ihg9R0DKFY6B48/++o7GY06Whv2cjeXXlaPH
+	j5jUecRqKfwOrfvuF3A8khNStBL2BVcAMX+EUnog8w04sBu31Rt+w4asRxsn5V0iMz7BWmxHTHm
+	ffIEZW5IYi3rQIuNJEPMj15NefwNVF528RCrb892Pz5iDVN69O4xkUnMx7IYaU9N5TcSI29ZpvV
+	YuMubktebpEJ8xY7g7n4xuXUy9X7fqLiHEniKuRGlR9fht2MOEu5dAk6hnSL2ly9q7A8CXxt+El
+	c9ArZC3nl8tZlwAyN0HZNCuuDhG9xuvsSGpTSRAW9y1/qvC5zqBJf4iYCv01xtF8f4UOwqIV7ei
+	j2EmMh9zGhJLc09KoyMhy1wp74ofvBcKiVxd8qh2ThldlceJZa3bvhSxOnc/8THIdIUe0ALRGM3
+	9WgWTMgcL0e7MNRlsaxBzFOpZdeHYkLg==
+X-Received: by 2002:a17:903:1a88:b0:2b2:4c92:c389 with SMTP id d9443c01a7336-2b5f9fe62femr175063535ad.34.1776740176956;
+        Mon, 20 Apr 2026 19:56:16 -0700 (PDT)
+X-Received: by 2002:a17:903:1a88:b0:2b2:4c92:c389 with SMTP id d9443c01a7336-2b5f9fe62femr175063095ad.34.1776740176332;
+        Mon, 20 Apr 2026 19:56:16 -0700 (PDT)
 Received: from [10.133.33.231] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5faa16e72sm117632635ad.19.2026.04.20.19.53.14
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab0dafcsm121756405ad.52.2026.04.20.19.56.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Apr 2026 19:53:17 -0700 (PDT)
-Message-ID: <a92cb332-b525-47f4-a529-a59080cb33dd@oss.qualcomm.com>
-Date: Tue, 21 Apr 2026 10:53:13 +0800
+        Mon, 20 Apr 2026 19:56:15 -0700 (PDT)
+Message-ID: <f77c1e60-d0c4-4220-ba13-fd649a2edbef@oss.qualcomm.com>
+Date: Tue, 21 Apr 2026 10:56:13 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -107,186 +106,251 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next] wifi: ath12k: use kzalloc_flex
-To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
-Cc: Jeff Johnson <jjohnson@kernel.org>, Kees Cook <kees@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        "open list:QUALCOMM ATH12K WIRELESS DRIVER" <ath12k@lists.infradead.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        open "list:KERNEL" HARDENING "(not" covered by other
- "areas):Keyword:b__counted_by(_le|_be)?b" <linux-hardening@vger.kernel.org>
-References: <20260313001434.118010-1-rosenp@gmail.com>
+Subject: Re: [PATCH ath-next] wifi: ath12k: fix OF node refcount imbalance in
+ WSI graph traversal
+To: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20260410071300.2323603-1-aaradhana.sahu@oss.qualcomm.com>
 From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <20260313001434.118010-1-rosenp@gmail.com>
+In-Reply-To: <20260410071300.2323603-1-aaradhana.sahu@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: a_P2bRviifvXvu101D3sTcnNZph1dGZL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDAyNiBTYWx0ZWRfX4rVnXijGaeJ/
- BgUk7yueikaQpiqKn85kFOK2Lu/9eJtUQhn9dFbMjXWZehl9jpPO1XW2GNMQva2ysBMLg8+xLJG
- LaGKoOuiP1nr0nOsd2fSHrCbysOxFNl5Y+REDc9IBWaRa42hLkJWuqixnRM1BHqQW97LoWTaW0c
- nwWEI84WrtdxzVnGa+YGqFPLsBEujiJ8kgsuVDZW/2XAZsG95D6L02FbvF64jUEZGCZrJzllXXQ
- T5DrE5/jUYpgu/jFWpaditL2KioaIN/3ae1rupbt7JieGTWVxnDSqI02towEc2M8KqJzoYQZs0c
- XUX33Y/oPViY+GBoFuKPGnVj1wrt41NtAepaUcTbEEnmWvToKvP4/+vvTb4t4fI0VSNP+airN+M
- TARkC6q8hq5JE/cRztwa1S0TWiO8imPb5grExpPLk0PJmBbyM9aKSns2nZ6W9niJy1zB6B9Bl6n
- MJJovnj0CaMkJv5X6iA==
-X-Authority-Analysis: v=2.4 cv=XMoAjwhE c=1 sm=1 tr=0 ts=69e6e69f cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDAyNyBTYWx0ZWRfXzKRi/RmMAh5d
+ hCuidtPF6CYP8e5r2YSbDQUZWBNX+j9DtF45X5wQtS3gcaoqUuP1A6ncCvUHWwVRbHCi7I+muve
+ 1G69rC0Ckqh/6LtjP9WnINaBagJipYuZjRIh1dHOytHEuzLS3SzRof6EQwMN6aerJGaY3crr9xj
+ i5T5+kxDEfnkFB9JT630FBv/K+DbynYvTIbFja4Q47khwixEIAspv5D7OcVVOoThAKLbL2AJy8b
+ 0hYADMHPz+92lINOXDgulY5lPmd+/Df3ZdgmzD8NrvcBomVttPlSysAMjC8X0xj25717I3/EFvm
+ FKznxmpkam/6hwxIjgIhFuQfvZqGENBW3WbiER0pBmtOiRtq6VFbODrvL5DulLQIXXhTpK68fOO
+ pVw+7sHH2+ZxiXZHUKF71wLSpsYANwFG9AX3xJA6P7btawe/N/Lhv5c/sgZ6hrTLs9a2sAB5ASo
+ NJtQaVyTdw99/5cF+HA==
+X-Proofpoint-GUID: D53OcuQFlzGn6Y_30lw7gq940dmgzHlP
+X-Authority-Analysis: v=2.4 cv=PMQ/P/qC c=1 sm=1 tr=0 ts=69e6e751 cx=c_pps
  a=JL+w9abYAAE89/QcEU+0QA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
  a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=Axv3upY4dNLjRVsui8cA:9 a=QEXdDO2ut3YA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=EUspDBNiAAAA:8 a=UU95pK5i7bRfzSGnuscA:9 a=QEXdDO2ut3YA:10
  a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-GUID: a_P2bRviifvXvu101D3sTcnNZph1dGZL
+X-Proofpoint-ORIG-GUID: D53OcuQFlzGn6Y_30lw7gq940dmgzHlP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-20_05,2026-04-20_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 phishscore=0 adultscore=0 spamscore=0
- suspectscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
- definitions=main-2604210026
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+ phishscore=0 spamscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0
+ suspectscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604210027
+X-Spamd-Result: default: False [3.34 / 15.00];
+	SEM_URIBL(3.50)[0.0.0.0:email];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	TAGGED_FROM(0.00)[bounces-35112-lists,linux-wireless=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,0.0.0.0:email];
+	DMARC_POLICY_ALLOW(0.00)[qualcomm.com,reject];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35113-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	R_DKIM_ALLOW(0.00)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[baochen.qiang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.968];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: B83B24359F4
+X-Rspamd-Queue-Id: CD3DC435A3B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 
-On 3/13/2026 8:14 AM, Rosen Penev wrote:
-> Convert kzalloc_obj + kcalloc to kzalloc_flex to save an allocation.
+On 4/10/2026 3:13 PM, Aaradhana Sahu wrote:
+> ath12k_core_get_wsi_info() traverses the WSI (Wired Serial Interface)
+> device graph starting from dev->of_node. The current code uses
+> dev->of_node directly as the local traversal pointer and calls
+> of_node_put() on error.
 > 
-> Add __counted_by to get extra runtime analysis. Move counting variable
-> assignment immediately after allocation as required by __counted_by.
+> Since the driver does not own a reference to dev->of_node, dropping it
+> during traversal results in the following OF refcount underflow:
 > 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> OF: ERROR: of_node_release() detected bad of_node_put() on /soc@0/wifi@c000000
+> CPU: 1 UID: 0 PID: 210 Comm: insmod Not tainted 6.19.0-rc4-next-20260109-00023-g797dd36dc178 #26 PREEMPT
+> Hardware name: Qualcomm Technologies, Inc. IPQ5332 MI01.2 (DT)
+> Call trace:
+>  show_stack+0x18/0x24 (C)
+>  dump_stack_lvl+0x60/0x80
+>  dump_stack+0x18/0x24
+>  of_node_release+0x164/0x1a0
+>  kobject_put+0xb4/0x278
+>  of_node_put+0x18/0x28
+>  ath12k_core_init+0x29c/0x5d4 [ath12k]
+>  ath12k_ahb_probe+0x950/0xc14 [ath12k]
+>  platform_probe+0x5c/0xa4
+>  really_probe+0xc0/0x3ec
+>  __driver_probe_device+0x80/0x170
+>  driver_probe_device+0x3c/0x120
+>  __driver_attach+0xc4/0x218
+> OF: ERROR: next of_node_put() on this node will result in a kobject warning 'refcount_t: underflow; use-after-free.'
+> 
+> Fix this by explicitly acquiring a reference to the starting node
+> using of_node_get() and attaching automatic cleanup via
+> __free(device_node).
+> 
+> Each discovered WSI node is stored in ag->wsi_node[] with its own
+> of_node_get() reference. These references are later released in
+> ath12k_core_free_wsi_info() during driver teardown.
+> 
+> Also remove unnecessary memset() of wsi_node array since cleanup now
+> explicitly sets pointers to NULL.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01243-QCAHKSWPL_SILICONZ-1
+> Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.6-01275-QCAHKSWPL_SILICONZ-1
+> 
+> Fixes: 908c10c860e0 ("wifi: ath12k: parse multiple device information from Device Tree")
+> Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
 > ---
->  drivers/net/wireless/ath/ath12k/mac.c | 29 +++++++--------------------
->  drivers/net/wireless/ath/ath12k/wmi.h |  2 +-
->  2 files changed, 8 insertions(+), 23 deletions(-)
+>  drivers/net/wireless/ath/ath12k/core.c | 77 ++++++++++++++++----------
+>  1 file changed, 48 insertions(+), 29 deletions(-)
 > 
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 553ec28b6aaa..b7c43a64e37b 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -5611,12 +5611,14 @@ static int ath12k_mac_initiate_hw_scan(struct ieee80211_hw *hw,
->  	if (ret)
->  		goto exit;
-> 
-> -	arg = kzalloc_obj(*arg);
-> +	arg = kzalloc_flex(*arg, chan_list, n_channels);
->  	if (!arg) {
->  		ret = -ENOMEM;
->  		goto exit;
->  	}
-> 
-> +	arg->num_chan = n_channels;
+> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+> index 2519e2400d58..980a12fb2c6e 100644
+> --- a/drivers/net/wireless/ath/ath12k/core.c
+> +++ b/drivers/net/wireless/ath/ath12k/core.c
+> @@ -1838,10 +1838,22 @@ static struct ath12k_hw_group *ath12k_core_hw_group_alloc(struct ath12k_base *ab
+>  	return ag;
+>  }
+>  
+> +static void ath12k_core_free_wsi_info(struct ath12k_hw_group *ag)
+> +{
+> +	int i;
 > +
->  	ath12k_wmi_start_scan_init(ar, arg);
->  	arg->vdev_id = arvif->vdev_id;
->  	arg->scan_id = ATH12K_SCAN_ID;
-> @@ -5638,18 +5640,8 @@ static int ath12k_mac_initiate_hw_scan(struct ieee80211_hw *hw,
->  		arg->scan_f_passive = 1;
->  	}
-> 
-> -	if (n_channels) {
-> -		arg->num_chan = n_channels;
-> -		arg->chan_list = kcalloc(arg->num_chan, sizeof(*arg->chan_list),
-> -					 GFP_KERNEL);
-> -		if (!arg->chan_list) {
-> -			ret = -ENOMEM;
-> -			goto exit;
-> -		}
+> +	for (i = 0; i < ag->num_devices; i++) {
+> +		of_node_put(ag->wsi_node[i]);
+> +		ag->wsi_node[i] = NULL;
+> +	}
+> +	ag->num_devices = 0;
+> +}
+> +
+>  static void ath12k_core_hw_group_free(struct ath12k_hw_group *ag)
+>  {
+>  	mutex_lock(&ath12k_hw_group_mutex);
+>  
+> +	ath12k_core_free_wsi_info(ag);
+>  	list_del(&ag->list);
+>  	kfree(ag);
+>  
+> @@ -1867,52 +1879,59 @@ static struct ath12k_hw_group *ath12k_core_hw_group_find_by_dt(struct ath12k_bas
+>  static int ath12k_core_get_wsi_info(struct ath12k_hw_group *ag,
+>  				    struct ath12k_base *ab)
+>  {
+> -	struct device_node *wsi_dev = ab->dev->of_node, *next_wsi_dev;
+> -	struct device_node *tx_endpoint, *next_rx_endpoint;
+> -	int device_count = 0;
 > -
-> -		for (i = 0; i < arg->num_chan; i++)
-> -			arg->chan_list[i] = chan_list[i]->center_freq;
-> -	}
-> +	for (i = 0; i < arg->num_chan; i++)
-> +		arg->chan_list[i] = chan_list[i]->center_freq;
-> 
->  	ret = ath12k_start_scan(ar, arg);
->  	if (ret) {
-> @@ -5674,7 +5666,6 @@ static int ath12k_mac_initiate_hw_scan(struct ieee80211_hw *hw,
-> 
->  exit:
->  	if (arg) {
-> -		kfree(arg->chan_list);
->  		kfree(arg->extraie.ptr);
->  		kfree(arg);
->  	}
-> @@ -13735,19 +13726,13 @@ int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
->  	scan_time_msec = hw->wiphy->max_remain_on_channel_duration * 2;
-> 
->  	struct ath12k_wmi_scan_req_arg *arg __free(kfree) =
-> -					kzalloc_obj(*arg);
-> +					kzalloc_flex(*arg, chan_list, 1);
->  	if (!arg)
->  		return -ENOMEM;
-> 
-> -	ath12k_wmi_start_scan_init(ar, arg);
->  	arg->num_chan = 1;
-> +	ath12k_wmi_start_scan_init(ar, arg);
-> 
-> -	u32 *chan_list __free(kfree) = kcalloc(arg->num_chan, sizeof(*chan_list),
-> -					       GFP_KERNEL);
-> -	if (!chan_list)
-> -		return -ENOMEM;
+> -	next_wsi_dev = wsi_dev;
+> +	struct device_node *next_wsi_dev;
+> +	int device_count = 0, ret = 0;
+> +	struct device_node *wsi_dev;
+>  
+> -	if (!next_wsi_dev)
+> +	wsi_dev = of_node_get(ab->dev->of_node);
+> +	if (!wsi_dev)
+>  		return -ENODEV;
+>  
+>  	do {
+> -		ag->wsi_node[device_count] = next_wsi_dev;
+> +		if (device_count >= ATH12K_MAX_DEVICES) {
+> +			ath12k_warn(ab, "device count in DT %d is more than limit %d\n",
+> +				    device_count, ATH12K_MAX_DEVICES);
+> +			ret = -EINVAL;
+> +			break;
+> +		}
+> +
+> +		ag->wsi_node[device_count++] = of_node_get(wsi_dev);
+>  
+> -		tx_endpoint = of_graph_get_endpoint_by_regs(next_wsi_dev, 0, -1);
+> +		struct device_node *tx_endpoint __free(device_node) =
+> +					of_graph_get_endpoint_by_regs(wsi_dev, 0, -1);
+>  		if (!tx_endpoint) {
+> -			of_node_put(next_wsi_dev);
+> -			return -ENODEV;
+> +			ret = -ENODEV;
+> +			break;
+>  		}
+>  
+> -		next_rx_endpoint = of_graph_get_remote_endpoint(tx_endpoint);
+> +		struct device_node *next_rx_endpoint __free(device_node) =
+> +					of_graph_get_remote_endpoint(tx_endpoint);
+>  		if (!next_rx_endpoint) {
+> -			of_node_put(next_wsi_dev);
+> -			of_node_put(tx_endpoint);
+> -			return -ENODEV;
+> +			ret = -ENODEV;
+> +			break;
+>  		}
+>  
+> -		of_node_put(tx_endpoint);
+> -		of_node_put(next_wsi_dev);
 > -
-> -	arg->chan_list = chan_list;
->  	arg->vdev_id = arvif->vdev_id;
->  	arg->scan_id = ATH12K_SCAN_ID;
->  	arg->chan_list[0] = chan->center_freq;
-> diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-> index 0bf0a7941cd3..190e7a4a92d0 100644
-> --- a/drivers/net/wireless/ath/ath12k/wmi.h
-> +++ b/drivers/net/wireless/ath/ath12k/wmi.h
-> @@ -3586,7 +3586,6 @@ struct ath12k_wmi_scan_req_arg {
->  	u32 num_bssid;
->  	u32 num_ssids;
->  	u32 n_probes;
-> -	u32 *chan_list;
->  	u32 notify_scan_events;
->  	struct cfg80211_ssid ssid[WLAN_SCAN_MAX_NUM_SSID];
->  	struct ath12k_wmi_mac_addr_params bssid_list[WLAN_SCAN_MAX_NUM_BSSID];
-> @@ -3595,6 +3594,7 @@ struct ath12k_wmi_scan_req_arg {
->  	u32 num_hint_bssid;
->  	struct ath12k_wmi_hint_short_ssid_arg hint_s_ssid[WLAN_SCAN_MAX_HINT_S_SSID];
->  	struct ath12k_wmi_hint_bssid_arg hint_bssid[WLAN_SCAN_MAX_HINT_BSSID];
-> +	u32 chan_list[] __counted_by(num_chan);
->  };
+>  		next_wsi_dev = of_graph_get_port_parent(next_rx_endpoint);
+>  		if (!next_wsi_dev) {
+> -			of_node_put(next_rx_endpoint);
+> -			return -ENODEV;
+> +			ret = -ENODEV;
+> +			break;
+>  		}
+>  
+> -		of_node_put(next_rx_endpoint);
+> +		of_node_put(wsi_dev);
+> +		wsi_dev = next_wsi_dev;
+> +	} while (ab->dev->of_node != wsi_dev);
+>  
+> -		device_count++;
+> -		if (device_count > ATH12K_MAX_DEVICES) {
+> -			ath12k_warn(ab, "device count in DT %d is more than limit %d\n",
+> -				    device_count, ATH12K_MAX_DEVICES);
+> -			of_node_put(next_wsi_dev);
+> -			return -EINVAL;
+> +	if (ret) {
+> +		while (--device_count >= 0) {
+> +			of_node_put(ag->wsi_node[device_count]);
+> +			ag->wsi_node[device_count] = NULL;
+>  		}
+> -	} while (wsi_dev != next_wsi_dev);
+>  
+> -	of_node_put(next_wsi_dev);
+> +		of_node_put(wsi_dev);
+> +		return ret;
+> +	}
+> +
+> +	of_node_put(wsi_dev);
+>  	ag->num_devices = device_count;
+>  
+>  	return 0;
+> @@ -1983,9 +2002,9 @@ static struct ath12k_hw_group *ath12k_core_hw_group_assign(struct ath12k_base *a
+>  		    ath12k_core_get_wsi_index(ag, ab)) {
+>  			ath12k_dbg(ab, ATH12K_DBG_BOOT,
+>  				   "unable to get wsi info from dt, grouping single device");
+> +			ath12k_core_free_wsi_info(ag);
+>  			ag->id = ATH12K_INVALID_GROUP_ID;
+>  			ag->num_devices = 1;
+> -			memset(ag->wsi_node, 0, sizeof(ag->wsi_node));
+>  			wsi->index = 0;
+>  		}
+>  
 > 
->  struct wmi_ssid_arg {
-> --
-> 2.53.0
-> 
-> 
+> base-commit: ae530e0b135102c5fc08e64c39e7a18564a52b3e
 
 Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-
 
