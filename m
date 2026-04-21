@@ -1,195 +1,236 @@
-Return-Path: <linux-wireless+bounces-35119-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35120-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEhABUwp52mo4wEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35119-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 09:37:48 +0200
+	id MMy9J4Mx52kD5QEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35120-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 10:12:51 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1207D437B2E
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 09:37:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AD4437FE3
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 10:12:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E27E0300C343
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 07:28:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E5D03011F1A
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 08:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3523845A7;
-	Tue, 21 Apr 2026 07:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D906C38757F;
+	Tue, 21 Apr 2026 08:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dJS8Plrx";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RiE6q68r"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b="d2GffH6+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41E034CFC2
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 07:28:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861BB3845A9
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 08:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776756484; cv=none; b=jg0KHJlXn8SlIY/YJAQgjSXXqHXWEY0OIL14E0QDRwquNiYkXmQmizjoH6jFck7/vlqM/sAktBaTlTD8qKX9cAGLcDR+dbo5dT+SwfhdJ1ZCyrLaYyYNoro5osXkCAlHAeTY2m6YH1kjfNhGgwhcjerI4qJuQWYkwPlM2bOHLtc=
+	t=1776759167; cv=none; b=GJMugh9eejon/nJzvvOkOw/SusAN1TvVms4GXnHRCAWpwycZfS3gXoJTg8k1ezqFmLlOEiwePZl8LWzShr03bS9QZQdlMtc2d3W8GBPx8vRwMoCKAPnX3WvTVU2ZS5UNjdyfbcRWU8LVfH86YTNojJZR1Mu4brKbuxVFra2bvq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776756484; c=relaxed/simple;
-	bh=O7q5fXr0V7/bGYJbsoGVEcvkd/XnIyDF32etzYwJIuA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dQOP5XVydSepITgq9MDGOuuHnCPfDiU3zpwBWsIfMDR+x7o/k1FfiCtCaIr7YySi9N5XOPRtYpOXXAo+eZR/AAoCrPk9onfEhutz/4od76DTYZ0VkfTbkj07QUxe7j43dgNk2qHis26sOhpU9BHHvG6V5ICOiaNS2AZRD1fDWgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dJS8Plrx; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RiE6q68r; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63L6eb5p3574522
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 07:28:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	zPqpfOWqyDYIF6DBaSd1/JPEZbu/kYvM6kZKGAp3xwY=; b=dJS8Plrxau9v1LtM
-	TED6JlR9l2dmEmicOOl+M6v+HIidrrXIoCMz3/1Hu4646wxfL/Gb88/r5DVhvJ2w
-	S0g5IJBcbZV/vU8Mk6TuxtaJLkEB96PZISIQbqYd8NwKQI3yjV6NVnfQFPIDVtX8
-	0blZcPA9CdiMrSwvBj+s96jTefISiDmwRC6OzH5RTehA5z+mFLpUMMYZOGrQjGba
-	F2x3RyZOmF10cqPSeU7PtrmbeJKdOZzAySZGX8XOkildEN1iNU0GUFDszs/K8lLE
-	hma4aVAIGwB4EmRF/KAKH49AEJNBl0RVLZwjvJBDjHIfowPKjIs/K4prlXi74tan
-	+wijGg==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dp465g6cs-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 07:28:02 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-358e425c261so4515701a91.3
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 00:28:02 -0700 (PDT)
+	s=arc-20240116; t=1776759167; c=relaxed/simple;
+	bh=RXcEsPkaE3nBchm7YaHAcD5u2O6FyVBqda9tZxmDoL4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tzboqDN4WRpDCgj5AiPLxq2Ix6B1xjb3bkb9LeJrv9CxyF6+AyIpm2NTFq1ZZ9V/s45InNe1UHTl8NZgMi1E6F8XFJRbK3OEy+lPcqi1/HrtbVSvqIYW5rVgZoULGmuPLaaY+Iuik6vpb9fqpZqLKEbWZxTdQILZyyvntObee3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b=d2GffH6+; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488b150559bso30677105e9.1
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 01:12:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776756481; x=1777361281; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zPqpfOWqyDYIF6DBaSd1/JPEZbu/kYvM6kZKGAp3xwY=;
-        b=RiE6q68rhvZSqrF/605gZBBBz0IjUxPifVH2el7tRm+XMrdzT06HRM22u3MFLvh++b
-         qkywfNLvjxcYQBiIPufBai+GJCa1YifYFsmxfti36D1JKxPGgI++BpD2c0Ozq22Knp1W
-         ro72W3c44BE6NMu+9GbqydRB37oxi0yOHCP110w4El67avemjLNHeosBPM55UDzH8IN/
-         z6K3j94lO1tyYXPRnq24lBM7UKKqt1LQZnwpvK4JAv80y7k46W18OyYdaf0yEHui9p75
-         xQXqcFmgaS/myGhVK9pXmLG7sINMb7iBUUkBbGceC7Hf9qX+XiMe1Kk8+rCUYHQNBgj0
-         ntKQ==
+        d=baylibre-com.20251104.gappssmtp.com; s=20251104; t=1776759164; x=1777363964; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RXcEsPkaE3nBchm7YaHAcD5u2O6FyVBqda9tZxmDoL4=;
+        b=d2GffH6+aJqxEtb9FwtEW1zi7cAagx14LPltCUFLgNrA8etjDodpu8+02hSSgnd/lA
+         jjw+7matkAaJi9jJLhOpQrVx1B09ndqTXJGoupFQ5kUkeswkeoqRVQtG33pJNZo0nO4O
+         QLFcT1saJmG9W75QchuyXCaG1D2Rn6Iv4ETUfxbk+nCGF5GrBrOuQjUk/kuGHcHz2xzb
+         YkQSyrNvUik5BNaHut5d15sNpknbUqOAXiOfzpglxaPaH4nhl7hKU7EslliCBW+5jzUk
+         jFlO1LIxuowV9C4avtxwjeCtMrdjgBFG58F1YjuoIIq8RMtSgC+rOfq2ynutDfMD/SaN
+         lETQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776756481; x=1777361281;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zPqpfOWqyDYIF6DBaSd1/JPEZbu/kYvM6kZKGAp3xwY=;
-        b=nI4ZhXBdcLmFNvTXqAUr5mLoDFtpzAurFu+LzZUzHuEzSTzLvY4Ofj+tE7hX8VlM/G
-         knt+N4t+3zMRPyjtwKVuusbHpWA8Dxra+cVgPNweuZUntk8pTRs/m/5f5X3zLFika0u7
-         +G0Q1Q8Iscd7Wur/DCw7pnkJi9n0oan5zEMy7Hh4VDmJdDk5/zHwroES3rM4VX9Y/C4M
-         84IFJlhUaC51jPjktwFSi3ALLPfVm5bU1mV3UmtP3wzc5Ynv0vYSmHdZGqnt9uyjB1gq
-         shHG5wrN05/n+aeISosP52eRDJVlY6jIGV0yjKtPdRTea9rHDqqx6syKgJHG0ckDvaZ6
-         msZA==
-X-Forwarded-Encrypted: i=1; AFNElJ+m7B2tkj7GtfEL/SNCbGEY0onkfCG21WvRcPTN3+wq0dOMmLSQ/6FquZlVf59DU7zptpwdxcKmJL92VtLuSg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEnwR9EsDonFQ6XomXNgeXP6guCypbe7zf2DkiLSDIK2WoZf71
-	Lk1XkjfoRITMPYQB+UiG6V+wMD85eQfOowk7JAR2Vy79CrI5uUAzkuKG6ymnnI5GcGRX7Ezn+W2
-	6U/hZlo6Gp7+j92CFXwDYSv3XDSbUG5o4gO2jN02S7mmtUA9BeHiRAizPumzFkTPxiYZ0Yg==
-X-Gm-Gg: AeBDiesmD8Tpo5dmtPIUnsikeW9ZP5U0UkDKTSk8gpsPpdMFJsnp7Cd/AhkSA3WFTJ3
-	Bw0t81RHrndsH59g4UtJbDeAvYTU177sfY5dwN1jtB/nv074otShX6EjlfOjO8AkY9JEn1sQ03k
-	XQwGR+Hhx8W3ZJhSO/7RRPVA+SojRW+2N8sl+5+KE2dE5TKJnynF7XrINYOyjZh5AJd2bhtqMGC
-	GkAhmVQ2300CpP6D4cwxQO8vb7YOItrAXIsMWmSpgpQzQMg/yme4b5qorr0lIF46mMrrtyf73Fw
-	0oGAq9oZh7d/7MjsLSwhZlJ7ljJuay5XGRnqOzFtgVZZP5J10ra3qDad8SEWooNeatTQSVORpid
-	lOgedlH9vrqYROY7LHs3AS7HX1TpFNnFDdbOaS9jC2Kdy/4F4ZirqcduzaEeCzyQI1VLQL9dE
-X-Received: by 2002:a05:6a21:998e:b0:3a1:90ef:7e46 with SMTP id adf61e73a8af0-3a190ef81c2mr9209467637.33.1776756481556;
-        Tue, 21 Apr 2026 00:28:01 -0700 (PDT)
-X-Received: by 2002:a05:6a21:998e:b0:3a1:90ef:7e46 with SMTP id adf61e73a8af0-3a190ef81c2mr9209438637.33.1776756481128;
-        Tue, 21 Apr 2026 00:28:01 -0700 (PDT)
-Received: from [10.152.199.23] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7976fa40b2sm9026838a12.13.2026.04.21.00.27.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Apr 2026 00:28:00 -0700 (PDT)
-Message-ID: <7c89f639-fbb7-43a3-9bc4-668c16631ef5@oss.qualcomm.com>
-Date: Tue, 21 Apr 2026 12:57:56 +0530
+        d=1e100.net; s=20251104; t=1776759164; x=1777363964;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RXcEsPkaE3nBchm7YaHAcD5u2O6FyVBqda9tZxmDoL4=;
+        b=NOS8RvWzLR27lQi6iO3pN214fh6EsMgE4qR7S+ArlxMxvf/vuh8ZAUoZ8yuqhitEj+
+         cS3Bxd+emULAUeiX3mJL0YLPBZlV768E1R/qsPTIFigU6lOaLzg85IfVhO+XhgRa8P8x
+         wEt2hDAqJexBOsjGZCdjYww+pyHUj0yog2AJQtP9Xq45V+sWtADtfVr/ibbBR+3vi1jk
+         ku2IZIHlqmEfik3wtSlpUl1nGdnej+lamv91D9zgg6UqwDfbHXILbzbId3cfvKUYSpWn
+         DK7gO8J3xXfO5zuwaumnqDLRC+QkdWSdc5AkyIKMVNRUdwQQnlpYgrzKyKK5/bmJ12It
+         3umA==
+X-Forwarded-Encrypted: i=1; AFNElJ+I3vRUuWvq1IOV/foa9SDGnHtOxC0BUhqzB9qbuje7DbLTkKnzWIdeIDcGogWcv7XgGngH9FNbaHXEpcP9RA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTrsN0OAt+A+WRllkq3bHBzMtRyX1nXS+r9sEEwgthPlGLzcVu
+	NXsz68dtdOSEtZ7xVMAsybsrbbc4DXwThCuMnpfcFGwe4Es1fdglqH/3T4ufhKPmN2w=
+X-Gm-Gg: AeBDievsk2sXWCIi6zBsR2NczGLOGZzV2QZHisHFo5T3uPviBNR7oWzJnMpa6EL/pYT
+	UUGqZyRwWYEmDXrLeF8D9ud84sEGSaeRchlAIxRKqswOVAVH5/6pJkNR+FUDyFRa9eCfp9z+zPC
+	v9fnGXjlJIGFBT+uqH1ZQXnkDgCYPIA3L8ghwyHmMjnw3I6Ho7k3v4ev2FvYMKc6k4fLVEF/4OT
+	BiBBZzImb31yi2gr+gmEBFDmHOeAYvYdbdMAqhDE6IQNgMzDHkbXPFafvarvIVrxUaD+9324PB5
+	zt0eIlmRHs6YcdAVynM5ZPlJTQyGspfpyG79zBll2PgLjGeRodWGDj8yFfkVitP7CMNGVfd5ZWt
+	PkzAKPnhVQmM/Am0S9e8Kz257AGJjqUkJii+J9m2fSnHPMkBccOrPkkFLKYWG4SQyEYLBRxIH92
+	2ZWBn/xw+7coTL/C5bVXBd8gh0fSVWn18QvZnlZGg=
+X-Received: by 2002:a05:600d:1b:b0:483:8062:b43 with SMTP id 5b1f17b1804b1-488fb771438mr205335215e9.19.1776759163884;
+        Tue, 21 Apr 2026 01:12:43 -0700 (PDT)
+Received: from localhost ([2a02:8071:b783:6940:1d24:d58d:2b65:c291])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4891bb3d121sm239274565e9.14.2026.04.21.01.12.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Apr 2026 01:12:42 -0700 (PDT)
+Date: Tue, 21 Apr 2026 10:12:41 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Ulf Hansson <ulfh@kernel.org>, 
+	"Christian A. Ehrhardt" <christian.ehrhardt@codasip.com>, linux-mmc@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	linux-kernel@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>, 
+	linux-bluetooth@vger.kernel.org, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-mediatek@lists.infradead.org, 
+	Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Brian Norris <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 1/6] sdio: Add syntactic sugar to store a pointer in
+ sdio_driver_id
+Message-ID: <aecu1ixyHP2hQvgE@monoceros>
+References: <cover.1776429984.git.u.kleine-koenig@baylibre.com>
+ <c830049dcfcd99f005e2ff6742aace9341c61f13.1776429984.git.u.kleine-koenig@baylibre.com>
+ <aeaMkfk_1t98e7SU@monoceros>
+ <CABBYNZJzbEmYzTk2m+Y8SoHVouTMA6Gje_55iJsQ6cYtDLftbQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath10k: snoc: select POWER_SEQUENCING
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-References: <20260418-ath10k-snoc-pwrseq-v1-1-832594ba3294@oss.qualcomm.com>
-Content-Language: en-US
-From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-In-Reply-To: <20260418-ath10k-snoc-pwrseq-v1-1-832594ba3294@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDA3MSBTYWx0ZWRfXwbOOewWdgZPV
- DxCWSBJ/Yygr8UoBsKAAXAtQgSfGE6j12RFnVZ27mDeusnJg2Y3wTiHVyhB4JfRi+LS3Je1ltlS
- i6jXLQGHi8TUby8J7AjblO8Ubpfz2xaov+N1SFxdDg6ZxRj4ZgyGHSxqFPqxqtqE3rggOySIt9n
- nRag7nmyFBYJ4dFZKcqjzowfse7Qywu1QMi8K1gA1/dkQyolwxKTSVmWPN7rJ14o+XY2cgezWDi
- dxzN4pauSWuGDg2ch+FvjZBzmY5jiu05XebUbtfMnricnjZyU5z9x3aE9FrTyr/q7R6VU4WkdHI
- 2b2+xbId2jk4B3+qJQeyTVyJ80SVpVv9EunmJcUAiVsLE6RvR+hQTBX3J8zBLFq88ZLx4lzG8kz
- LZRWpH7QZkygp5R5KWvcmdIPUAYxOutawOk86WBpOXl/KebfiNQpJlG2pivYj15Jv1JNTucfW+z
- PAEuYspCfnxwVQLi9yA==
-X-Proofpoint-ORIG-GUID: fZkXlALxaz_RUOfsLcnTGhBUn_-IYWla
-X-Authority-Analysis: v=2.4 cv=YOSvDxGx c=1 sm=1 tr=0 ts=69e72702 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=VwQbUJbxAAAA:8 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=zpRtp0WXrNfT6zHCYYoA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=iS9zxrgQBfv6-_F4QbHw:22
- a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-GUID: fZkXlALxaz_RUOfsLcnTGhBUn_-IYWla
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-21_01,2026-04-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 bulkscore=0 adultscore=0 clxscore=1015
- spamscore=0 impostorscore=0 suspectscore=0 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604210071
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ou2vweurizbmr2mn"
+Content-Disposition: inline
+In-Reply-To: <CABBYNZJzbEmYzTk2m+Y8SoHVouTMA6Gje_55iJsQ6cYtDLftbQ@mail.gmail.com>
+X-Spamd-Result: default: False [-1.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[baylibre-com.20251104.gappssmtp.com:s=20251104];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:dkim,qualcomm.com:email,fairphone.com:email];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[baylibre.com];
+	TAGGED_FROM(0.00)[bounces-35120-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35119-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	FROM_NEQ_ENVFROM(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[baylibre-com.20251104.gappssmtp.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 1207D437B2E
+	FROM_NEQ_ENVFROM(0.00)[u.kleine-koenig@baylibre.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,codasip.com,vger.kernel.org,linuxfoundation.org,sang-engineering.com,holtmann.org,gmail.com,collabora.com,lists.infradead.org,realtek.com,nbd.name,mediatek.com,chromium.org,dolcini.it,linux.intel.com];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless,renesas];
+	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email]
+X-Rspamd-Queue-Id: E4AD4437FE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/19/2026 1:07 AM, Dmitry Baryshkov wrote:
-> The commit afcf3ec615c9 ("wifi: ath10k: snoc: support powering on the
-> device via pwrseq") made ath10k SNOC driver use devm_pwrseq_get().
-> Select the corresponding Kconfig symbol to make sure that API call is
-> always available and doesn't return an error per se.
 
-  “doesn't return an error per se” would be clearer as “doesn't fail 
-with -ENOSYS merely because CONFIG_POWER_SEQUENCING is disabled.”
+--ou2vweurizbmr2mn
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1 1/6] sdio: Add syntactic sugar to store a pointer in
+ sdio_driver_id
+MIME-Version: 1.0
 
+Hello Luiz,
 
-> 
-> Fixes: afcf3ec615c9 ("wifi: ath10k: snoc: support powering on the device via pwrseq")
-> Reported-by: Luca Weiss <luca.weiss@fairphone.com>
-> Closes: https://lore.kernel.org/r/DHUHU7UIT487.139L3KIVRVREU@fairphone.com
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+On Mon, Apr 20, 2026 at 04:46:56PM -0400, Luiz Augusto von Dentz wrote:
+> On Mon, Apr 20, 2026 at 4:31=E2=80=AFPM Uwe Kleine-K=C3=B6nig (The Capabl=
+e Hub)
+> <u.kleine-koenig@baylibre.com> wrote:
+> > On Fri, Apr 17, 2026 at 03:10:47PM +0200, Uwe Kleine-K=C3=B6nig (The Ca=
+pable Hub) wrote:
+> > > On all current Linux architectures sizeof(long) =3D=3D sizeof(void *)=
+ and
+> > > this is used a lot through the kernel. For example it enables the usu=
+al
+> > > practice to store pointers in sdio_driver_id's .driver_data member.
+> > >
+> > > This works fine, but involves casting and thus isn't type-safe.
 
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+To be honest, with the involved void* this isn't really type-safe
+either, but at least the data keeps being a pointer which is really
+helpful on CHERI. FTR: The alternative would be to use uintptr_t instead
+of unsigned long, which also has proponents in the CHERI community and
+which is used in the current vendor patch stack.
 
+> > > Additionally with the CHERI architecture extension there are machines
+> > > with sizeof(void *) > sizeof(long) for with the traditional approach =
+of
+> > > storing a pointer in .driver_data doesn't work.
+> > >
+> > > By replacing the plain unsigned long .driver_data by an anonymous uni=
+on,
+> > > most of the casting can be dropped and it yields a working solution f=
+or
+> > > CHERI.
+> > >
+> > > All users of struct sdio_driver_id are initialized in a way that is
+> > > compatible with the new definition, so no adaptions are needed there.
+> >
+> > sashiko.dev found s/sdio_driver_id/sdio_device_id/ twice in the commit
+> > log and once in the short log. If you consider applying this patch
+> > please adapt the commit message accordingly.
+>=20
+> No problem I can fix them up once applying.
+
+Thanks! If a new revision should be needed, of course I'll fix that,
+too.
+
+> > Many thanks to those who created sashiko.dev!
+> >
+> > Best regards
+> > Uwe
+>=20
+> We only received 1-3 of the 6:
+>=20
+> https://patchwork.kernel.org/project/bluetooth/list/?series=3D1082520
+>=20
+> Or is this on purpose, and we should consider the set complete?
+
+The remaining patches are for wifi. My expectation was that they go in
+via wifi+netdev once the first patch is in their base. But of course I'm
+open for maintainer coordination to let the series go in in less steps
+than I expected. If that helps I can also create an immutable branch,
+but I have no urge here, so if only the first patch goes in during the
+next merge window, I won't have problems to keep track of the remaining
+bits.
+
+Best regards
+Uwe
+
+--ou2vweurizbmr2mn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmnnMXcACgkQj4D7WH0S
+/k44bwgAnoMan1Imv3flaHCO3huDhjM34bPslVMZz9O3wxMMwFGStgpU3tDvAlFl
+FisTZf//q5YDKDMU8QV1lWvbQoFEpQzTG9y9T3kx535oPPgxlG2VOVssH/fhxPgC
+5WRR74C/5X9vCV6KRMHrD8GhGNsn2S9si+AjSVxGC6NWrVOrbIyK1lRHOACx6rFV
+eM3s+J44T3ZGK60m180+bEFUfCsmOqCLoOTOJ2dB4hxddm0VF0MLiuby8b4v8RvB
+/IPA8CqsKTVcj01EMr5853cJiCZjfq5CHdo2tTK9JScUUBXv0Azi7Rv3s3P0hV22
+e9swpLSspOKoPqq6qBNNDtr19tQDTg==
+=Mg7P
+-----END PGP SIGNATURE-----
+
+--ou2vweurizbmr2mn--
 
