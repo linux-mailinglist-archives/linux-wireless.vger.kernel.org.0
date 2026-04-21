@@ -1,236 +1,311 @@
-Return-Path: <linux-wireless+bounces-35120-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35121-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMy9J4Mx52kD5QEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35120-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 10:12:51 +0200
+	id kNnmDos652no5QEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35121-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 10:51:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4AD4437FE3
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 10:12:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 903E3438643
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 10:51:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E5D03011F1A
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 08:12:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3845302000C
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 08:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D906C38757F;
-	Tue, 21 Apr 2026 08:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE8D39FCA6;
+	Tue, 21 Apr 2026 08:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b="d2GffH6+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XV+Bb8sL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861BB3845A9
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 08:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776759167; cv=none; b=GJMugh9eejon/nJzvvOkOw/SusAN1TvVms4GXnHRCAWpwycZfS3gXoJTg8k1ezqFmLlOEiwePZl8LWzShr03bS9QZQdlMtc2d3W8GBPx8vRwMoCKAPnX3WvTVU2ZS5UNjdyfbcRWU8LVfH86YTNojJZR1Mu4brKbuxVFra2bvq0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776759167; c=relaxed/simple;
-	bh=RXcEsPkaE3nBchm7YaHAcD5u2O6FyVBqda9tZxmDoL4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tzboqDN4WRpDCgj5AiPLxq2Ix6B1xjb3bkb9LeJrv9CxyF6+AyIpm2NTFq1ZZ9V/s45InNe1UHTl8NZgMi1E6F8XFJRbK3OEy+lPcqi1/HrtbVSvqIYW5rVgZoULGmuPLaaY+Iuik6vpb9fqpZqLKEbWZxTdQILZyyvntObee3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b=d2GffH6+; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488b150559bso30677105e9.1
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 01:12:45 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA9F2AF1D
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 08:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776761464; cv=pass; b=Eg8Qg+i4DrtLM6xqJtOQqaq1a3P+fKz18KW39pxxKxXF5nY48hlN/Kc/CaoMn6+jPgTvgoFEHi1fSDtb0Zi8+qz8MGs5zeakqIf4AFuMh1XPcXK+RQofRKF6vVFXuRo2t+7MCcpS54UHXNdclkuxhr3gc0Y5l8Mf6FxDcmEEhXs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776761464; c=relaxed/simple;
+	bh=y77IYP6Hfi6BU2wcOSiDcNLVbYrOD1kTkZMOUnLAzJ8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MqjulcoWKUO0pPXe1PLgh/80MLnGUD1JtlPLQzfE7tE3gNx1f23HRr3pO/TaxS0l5VaTXAnd54sxMGCh33ddKGEr7yZw+LSz7R/oym9SStcpy8kLZGj4hdFccW99kkeDjbyi4Vk8KEEaIsBqb6dkIZepuIO9xFeag4UhMz60jaY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XV+Bb8sL; arc=pass smtp.client-ip=209.85.167.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-479ef2b7979so235051b6e.3
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 01:51:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776761461; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GTBJi4F76neFA1sVjP8Wm1XpOUkSy8DfLmoFMFeu4f7q+DR/kMG12McEWSVVq0cyeu
+         fDmVoCyWBkYfpRoky0O+draOA4oEstH8v8lHNY/WqgUV+cCYWIdgMN76sY4I3D0qlcCd
+         6nvrm6nDdn2Np1FyPhjs87nbIqkd0XuwRcbc4M/rSlgm9kT/yxnVt2Ma91EY9IZ+iAp1
+         XNE5O7Lmq8n6kS+Sgta1by/7mX6vAGWG/gvz7OgXXfEsimIaJQYzsZLaBo/A+sRAhnhR
+         hhN4Kac9SR+hF+uFhK5Yk7hrHyyUfrcUTsVgnSjJWIgLkkAdxmCOKIMM0eVbZn7UJdLW
+         W6dg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZrXwOSjEWlXRCH3bSQkhhPPRUpo780ifbYsUKTYhEY4=;
+        fh=tAkEC9qnlzGb3t1Mm4YpGMJKPNIA0kX6BrwQAn4jJhQ=;
+        b=Ogld8i0n9MQ8hk5/UpCumy/a9H0zzP4x4ANz/DoiJns0wPm023yAI4p02GChy3JIpC
+         liTqNo5UadttLRW68BX3i+96+OyGQ/U6peUt3AuV3Ku6WeKUvnSLEUkqeAj/MiWI+dTa
+         IlFT0/AUb74vdmWTRvw1M5vrNz2LixsESZTQN+CmsEJ8S2eLQVHDr/WJZHB+TTVBkEQ9
+         3oucKxUsloNW3zxnVXpVWmjrB+UnVZ7L9mmhWjm+KlF7/gQdzKD9ST2m0XnM3cFZJaUJ
+         C2Rb1U1bp/hlTHOpE9sUnEBvvlfZZVnaVPKihfmqxXNbXyUtHDz5HU3rB49KdrqNOLM3
+         b+Lg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20251104.gappssmtp.com; s=20251104; t=1776759164; x=1777363964; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RXcEsPkaE3nBchm7YaHAcD5u2O6FyVBqda9tZxmDoL4=;
-        b=d2GffH6+aJqxEtb9FwtEW1zi7cAagx14LPltCUFLgNrA8etjDodpu8+02hSSgnd/lA
-         jjw+7matkAaJi9jJLhOpQrVx1B09ndqTXJGoupFQ5kUkeswkeoqRVQtG33pJNZo0nO4O
-         QLFcT1saJmG9W75QchuyXCaG1D2Rn6Iv4ETUfxbk+nCGF5GrBrOuQjUk/kuGHcHz2xzb
-         YkQSyrNvUik5BNaHut5d15sNpknbUqOAXiOfzpglxaPaH4nhl7hKU7EslliCBW+5jzUk
-         jFlO1LIxuowV9C4avtxwjeCtMrdjgBFG58F1YjuoIIq8RMtSgC+rOfq2ynutDfMD/SaN
-         lETQ==
+        d=gmail.com; s=20251104; t=1776761461; x=1777366261; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZrXwOSjEWlXRCH3bSQkhhPPRUpo780ifbYsUKTYhEY4=;
+        b=XV+Bb8sLMG9kXgilN4sunJ3OPkamlh6R5tZjK1j9Lv3F7nyxzh8Zn+FFDnJJPSXXMu
+         GewAhEB3TPSoYIe9Z6fAUOjnQuXNX51P9Y0hX/6K1xPdVAUqLzpPV96xZSrqKpEO57JB
+         f16sFkiSAcS/wqsecqNt99hjmkg+EBA8AlDMJv/6Xnkbfd5nC35thQLWq7ePs2PROQ8h
+         jhaYu+FnNUSwKIrAk3XbrRiDZ4LPAHfeWCF/1gAcmQadDJPn0uChp2euxH/JJsU0OHLT
+         PJpLUCwUXXwevxXs52AkOeQQtlNBWZRZC1p3MMtkBbZSOE5R1PscX6MEMmTio8+wSFRX
+         GoSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776759164; x=1777363964;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RXcEsPkaE3nBchm7YaHAcD5u2O6FyVBqda9tZxmDoL4=;
-        b=NOS8RvWzLR27lQi6iO3pN214fh6EsMgE4qR7S+ArlxMxvf/vuh8ZAUoZ8yuqhitEj+
-         cS3Bxd+emULAUeiX3mJL0YLPBZlV768E1R/qsPTIFigU6lOaLzg85IfVhO+XhgRa8P8x
-         wEt2hDAqJexBOsjGZCdjYww+pyHUj0yog2AJQtP9Xq45V+sWtADtfVr/ibbBR+3vi1jk
-         ku2IZIHlqmEfik3wtSlpUl1nGdnej+lamv91D9zgg6UqwDfbHXILbzbId3cfvKUYSpWn
-         DK7gO8J3xXfO5zuwaumnqDLRC+QkdWSdc5AkyIKMVNRUdwQQnlpYgrzKyKK5/bmJ12It
-         3umA==
-X-Forwarded-Encrypted: i=1; AFNElJ+I3vRUuWvq1IOV/foa9SDGnHtOxC0BUhqzB9qbuje7DbLTkKnzWIdeIDcGogWcv7XgGngH9FNbaHXEpcP9RA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTrsN0OAt+A+WRllkq3bHBzMtRyX1nXS+r9sEEwgthPlGLzcVu
-	NXsz68dtdOSEtZ7xVMAsybsrbbc4DXwThCuMnpfcFGwe4Es1fdglqH/3T4ufhKPmN2w=
-X-Gm-Gg: AeBDievsk2sXWCIi6zBsR2NczGLOGZzV2QZHisHFo5T3uPviBNR7oWzJnMpa6EL/pYT
-	UUGqZyRwWYEmDXrLeF8D9ud84sEGSaeRchlAIxRKqswOVAVH5/6pJkNR+FUDyFRa9eCfp9z+zPC
-	v9fnGXjlJIGFBT+uqH1ZQXnkDgCYPIA3L8ghwyHmMjnw3I6Ho7k3v4ev2FvYMKc6k4fLVEF/4OT
-	BiBBZzImb31yi2gr+gmEBFDmHOeAYvYdbdMAqhDE6IQNgMzDHkbXPFafvarvIVrxUaD+9324PB5
-	zt0eIlmRHs6YcdAVynM5ZPlJTQyGspfpyG79zBll2PgLjGeRodWGDj8yFfkVitP7CMNGVfd5ZWt
-	PkzAKPnhVQmM/Am0S9e8Kz257AGJjqUkJii+J9m2fSnHPMkBccOrPkkFLKYWG4SQyEYLBRxIH92
-	2ZWBn/xw+7coTL/C5bVXBd8gh0fSVWn18QvZnlZGg=
-X-Received: by 2002:a05:600d:1b:b0:483:8062:b43 with SMTP id 5b1f17b1804b1-488fb771438mr205335215e9.19.1776759163884;
-        Tue, 21 Apr 2026 01:12:43 -0700 (PDT)
-Received: from localhost ([2a02:8071:b783:6940:1d24:d58d:2b65:c291])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4891bb3d121sm239274565e9.14.2026.04.21.01.12.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 01:12:42 -0700 (PDT)
-Date: Tue, 21 Apr 2026 10:12:41 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Ulf Hansson <ulfh@kernel.org>, 
-	"Christian A. Ehrhardt" <christian.ehrhardt@codasip.com>, linux-mmc@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	linux-kernel@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>, 
-	linux-bluetooth@vger.kernel.org, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-mediatek@lists.infradead.org, 
-	Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Brian Norris <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 1/6] sdio: Add syntactic sugar to store a pointer in
- sdio_driver_id
-Message-ID: <aecu1ixyHP2hQvgE@monoceros>
-References: <cover.1776429984.git.u.kleine-koenig@baylibre.com>
- <c830049dcfcd99f005e2ff6742aace9341c61f13.1776429984.git.u.kleine-koenig@baylibre.com>
- <aeaMkfk_1t98e7SU@monoceros>
- <CABBYNZJzbEmYzTk2m+Y8SoHVouTMA6Gje_55iJsQ6cYtDLftbQ@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1776761461; x=1777366261;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZrXwOSjEWlXRCH3bSQkhhPPRUpo780ifbYsUKTYhEY4=;
+        b=cn9ibRNjue+I+jN8bN88vvgRru7WmFEyXIU7ddPDYLqqruAHeZSMgeS3ggmODbHLIs
+         Y10QcSBBPSO+oUH4UQ9zhkGAKrpLF7EiWk0csP9TIKvKP/8oPcVCyq40o1h8mu4mIAnK
+         ybDOW6aYf3fFO8Vv88mREePdHLJPcTo/MKO49yIaLB7bqe+A7HvpJm1nwJTdWBx1+YQ8
+         /sn1N5k4Q0P1xPK6RFIzkEvr/djRoQNMOsUzoLhjEQr4IgGTsB1Uu66HQ5XN46b+ZIvZ
+         gmLTusq/rLPR2HUopKNktlkwyv1sV1r3THpTaZrOlYg4qyO2Wo9vCQvc4L1rfXoqSeuk
+         e7xA==
+X-Forwarded-Encrypted: i=1; AFNElJ/zPb5L008BVFWb0iEVoM2vuqG+4uK8B56bwdbmgIXHBaDliOlpXtB85++WDdkH7g+/AEleuXZfZOr7j4cM2w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZYmqRx3qeoJ5f60rNRxSZuXeXtzk5ARS7WcrX6a+kng968a0J
+	y0gOa/PNq9hVfJc922fJGqDz+DEGqlZgLAOn4OPARcYw7QLVdfVBaNBWzQRNRt5wY8dl/pelN18
+	2CS9R8qtd80ZIUH+OzjT8lDPpIDszcjs=
+X-Gm-Gg: AeBDietQOUHs+l97yBULDPfGQni7mj/K0kMgdBxEpDV57Phq66DHDLh6Q4+O1U3P/mN
+	7tAflqHydF2kJOMAGmwdv2o+q3g9qtWipML3hq3cPS8SvBXMa0K7YZ+0iVX2Snc8KWqnccXQgLr
+	POcQVVGKD6z/m0bizC+UmVQ87IC5l37YwlaIJPvD9y3lLlxxKSs8IEuCgeVSJR7flflQDMTIGMT
+	dfToZQtgZtXJKv1arDkeMte3APdJqAKmKNVR8cZPvvz6UhnS9oDSsEeVAmrGJv7eZ9k1eGjR0+z
+	XOGkcl2oY9v246KdSmA=
+X-Received: by 2002:a05:6820:c8d:b0:694:85a9:d8a9 with SMTP id
+ 006d021491bc7-69485a9e0a3mr3899810eaf.46.1776761461337; Tue, 21 Apr 2026
+ 01:51:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ou2vweurizbmr2mn"
-Content-Disposition: inline
-In-Reply-To: <CABBYNZJzbEmYzTk2m+Y8SoHVouTMA6Gje_55iJsQ6cYtDLftbQ@mail.gmail.com>
-X-Spamd-Result: default: False [-1.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[baylibre-com.20251104.gappssmtp.com:s=20251104];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+References: <CA+bbHrW0Z6NdFsUwycvRhLbe3xnbXSwmb24EW4FKFtn=0TVzBw@mail.gmail.com>
+ <20260326013719.1662-1-fjhhz1997@gmail.com> <CA+bbHrX3CdXqW6b0GbY_C7rmte3_9Q=89TJN=A2EBCQM1xSzag@mail.gmail.com>
+ <CA+bbHrUkGP5bX6SFVXLS-bTyHWUiRyHaSojvMW6RGPz+T55yHg@mail.gmail.com> <CA+bbHrVJz3O-2yUs-KJC5anADzqt-vA-5LNpu=nZsdxjRJ2U=A@mail.gmail.com>
+In-Reply-To: <CA+bbHrVJz3O-2yUs-KJC5anADzqt-vA-5LNpu=nZsdxjRJ2U=A@mail.gmail.com>
+From: =?UTF-8?B?w5NzY2FyIEFsZm9uc28gRMOtYXo=?= <oscar.alfonso.diaz@gmail.com>
+Date: Tue, 21 Apr 2026 10:50:51 +0200
+X-Gm-Features: AQROBzDLzt2nEeuvJml9b13__9hjzcZ8b-c7s6sxPrR06FTk8Dye17dQw-zo5Og
+Message-ID: <CA+bbHrVWmSpWZ9GBVJ5vffh1qYEye=EWMq9tKA-_uzfW+raC8A@mail.gmail.com>
+Subject: Re: [PATCH v2] wifi: mac80211: fix the issue of NULL pointer access
+ when deleting the virtual interface
+To: =?UTF-8?B?5YKF57un5pmX?= <fjhhz1997@gmail.com>, brite.airgeddon@gmail.com
+Cc: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[baylibre.com];
-	TAGGED_FROM(0.00)[bounces-35120-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[22];
+	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[baylibre-com.20251104.gappssmtp.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[u.kleine-koenig@baylibre.com,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,codasip.com,vger.kernel.org,linuxfoundation.org,sang-engineering.com,holtmann.org,gmail.com,collabora.com,lists.infradead.org,realtek.com,nbd.name,mediatek.com,chromium.org,dolcini.it,linux.intel.com];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless,renesas];
+	TAGGED_FROM(0.00)[bounces-35121-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email]
-X-Rspamd-Queue-Id: E4AD4437FE3
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oscaralfonsodiaz@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 903E3438643
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hello, I would like to copy Brite from the airgeddon team, who has
+come up with a solution. I will include him in the email, and he will
+send you a patch for you to review.
 
---ou2vweurizbmr2mn
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v1 1/6] sdio: Add syntactic sugar to store a pointer in
- sdio_driver_id
-MIME-Version: 1.0
+This patch has been refined after a lot of work and no longer has any
+=E2=80=9Cside effects=E2=80=9D. At least, we have not detected anything unu=
+sual, and
+it has been tested extensively with many different chipsets. In any
+case, it=E2=80=99s best if he replies to the email himself to explain it an=
+d
+propose the patch.
 
-Hello Luiz,
+Thanks and regards.
+--
+Oscar
 
-On Mon, Apr 20, 2026 at 04:46:56PM -0400, Luiz Augusto von Dentz wrote:
-> On Mon, Apr 20, 2026 at 4:31=E2=80=AFPM Uwe Kleine-K=C3=B6nig (The Capabl=
-e Hub)
-> <u.kleine-koenig@baylibre.com> wrote:
-> > On Fri, Apr 17, 2026 at 03:10:47PM +0200, Uwe Kleine-K=C3=B6nig (The Ca=
-pable Hub) wrote:
-> > > On all current Linux architectures sizeof(long) =3D=3D sizeof(void *)=
- and
-> > > this is used a lot through the kernel. For example it enables the usu=
-al
-> > > practice to store pointers in sdio_driver_id's .driver_data member.
-> > >
-> > > This works fine, but involves casting and thus isn't type-safe.
+OpenPGP Key: DA9C60E9 ||
+https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+--
 
-To be honest, with the involved void* this isn't really type-safe
-either, but at least the data keeps being a pointer which is really
-helpful on CHERI. FTR: The alternative would be to use uintptr_t instead
-of unsigned long, which also has proponents in the CHERI community and
-which is used in the current vendor patch stack.
-
-> > > Additionally with the CHERI architecture extension there are machines
-> > > with sizeof(void *) > sizeof(long) for with the traditional approach =
-of
-> > > storing a pointer in .driver_data doesn't work.
-> > >
-> > > By replacing the plain unsigned long .driver_data by an anonymous uni=
-on,
-> > > most of the casting can be dropped and it yields a working solution f=
-or
-> > > CHERI.
-> > >
-> > > All users of struct sdio_driver_id are initialized in a way that is
-> > > compatible with the new definition, so no adaptions are needed there.
+El jue, 2 abr 2026 a las 2:06, =C3=93scar Alfonso D=C3=ADaz
+(<oscar.alfonso.diaz@gmail.com>) escribi=C3=B3:
+>
+> Hello everyone, a member of the airgeddon team made a kernel
+> modification that seems to work. I=E2=80=99ve tested it on VMware and als=
+o on
+> bare metal with a 7.0.0-rc5 kernel, using both a Fenvi AX1800
+> (MT7921U) and an Alfa AWUS036AXML (MT7921AUN), and it appears to work
+> well. Deauthentication during VIF operation (evil twin attack) is now
+> working for MediaTek.
+>
+> Everything is documented at this comment in the GitHub thread
+> (https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-4167080451)=
+,
+> including the patch used. A patch that is modifying these three files
+> (tx.c, chan.c and ieee80211_i.h). Take a look at it  on the Github
+> thread please.
+>
+> Regards.
+> --
+> Oscar
+>
+> OpenPGP Key: DA9C60E9 ||
+> https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+> 4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+> --
+>
+> El dom, 29 mar 2026 a las 23:55, =C3=93scar Alfonso D=C3=ADaz
+> (<oscar.alfonso.diaz@gmail.com>) escribi=C3=B3:
 > >
-> > sashiko.dev found s/sdio_driver_id/sdio_device_id/ twice in the commit
-> > log and once in the short log. If you consider applying this patch
-> > please adapt the commit message accordingly.
->=20
-> No problem I can fix them up once applying.
-
-Thanks! If a new revision should be needed, of course I'll fix that,
-too.
-
-> > Many thanks to those who created sashiko.dev!
+> > Please review my latest messages in the GitHub thread.
+> > https://github.com/morrownr/USB-WiFi/issues/682
 > >
-> > Best regards
-> > Uwe
->=20
-> We only received 1-3 of the 6:
->=20
-> https://patchwork.kernel.org/project/bluetooth/list/?series=3D1082520
->=20
-> Or is this on purpose, and we should consider the set complete?
-
-The remaining patches are for wifi. My expectation was that they go in
-via wifi+netdev once the first patch is in their base. But of course I'm
-open for maintainer coordination to let the series go in in less steps
-than I expected. If that helps I can also create an immutable branch,
-but I have no urge here, so if only the first patch goes in during the
-next merge window, I won't have problems to keep track of the remaining
-bits.
-
-Best regards
-Uwe
-
---ou2vweurizbmr2mn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmnnMXcACgkQj4D7WH0S
-/k44bwgAnoMan1Imv3flaHCO3huDhjM34bPslVMZz9O3wxMMwFGStgpU3tDvAlFl
-FisTZf//q5YDKDMU8QV1lWvbQoFEpQzTG9y9T3kx535oPPgxlG2VOVssH/fhxPgC
-5WRR74C/5X9vCV6KRMHrD8GhGNsn2S9si+AjSVxGC6NWrVOrbIyK1lRHOACx6rFV
-eM3s+J44T3ZGK60m180+bEFUfCsmOqCLoOTOJ2dB4hxddm0VF0MLiuby8b4v8RvB
-/IPA8CqsKTVcj01EMr5853cJiCZjfq5CHdo2tTK9JScUUBXv0Azi7Rv3s3P0hV22
-e9swpLSspOKoPqq6qBNNDtr19tQDTg==
-=Mg7P
------END PGP SIGNATURE-----
-
---ou2vweurizbmr2mn--
+> > There you=E2=80=99ll even find a link to a video I recorded so you can =
+see
+> > that even on bare metal with Kali Linux installed natively, it still
+> > doesn=E2=80=99t work. It behaves exactly the same as it does in the VM.
+> >
+> > Here is the link
+> > https://www.dropbox.com/scl/fi/i6h8xbls5xkvae0pitrbg/video_2026-03-29_2=
+3-44-36.mp4?rlkey=3Djm48ly9tjwbhsi4aauml2auh9&dl=3D1
+> >
+> > Regards.
+> > --
+> > Oscar
+> >
+> > OpenPGP Key: DA9C60E9 ||
+> > https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+> > 4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+> > --
+> >
+> > El jue, 26 mar 2026 a las 13:16, =C3=93scar Alfonso D=C3=ADaz
+> > (<oscar.alfonso.diaz@gmail.com>) escribi=C3=B3:
+> > >
+> > > Hi, in response to the three points:
+> > >
+> > > 1. VMware
+> > >
+> > > 2. This is the output of the lsusb command: "Bus 004 Device 002: ID
+> > > 0e8d:7961 MediaTek Inc. Wireless_Device". The adapter is very cheap,
+> > > it=E2=80=99s a Fenvi AX1800 (MT7921U), this one:
+> > > https://s.click.aliexpress.com/e/_okxhxNl . But as I said, the bug
+> > > also happens when using the Alfa AWUS036AXML (MT7921AUN).
+> > >
+> > > 3. I=E2=80=99m not sure about this right now. I=E2=80=99d say everyth=
+ing dies. I=E2=80=99ll
+> > > test that to see if SSH is still available (I don=E2=80=99t think so,=
+ but I=E2=80=99m
+> > > not 100% sure at the moment).
+> > >
+> > > Give me a few days. I=E2=80=99ll test this again over the weekend. I=
+=E2=80=99ll also
+> > > run a test on bare metal (not in a VM). That said, like me, many
+> > > people use VMs for pentesting. So even if it works on bare metal,
+> > > which I=E2=80=99ll test this weekend, I think it would still be worth
+> > > investigating whether it can be fixed for VMs, since many people,
+> > > myself included, use them for work. If it works with other WiFi
+> > > adapters, it would be a big drawback if it didn=E2=80=99t work with M=
+ediaTek
+> > > adapters.
+> > >
+> > > I=E2=80=99ll also reply with a similar message in the thread.
+> > >
+> > > Thanks and regards.
+> > > --
+> > > Oscar
+> > >
+> > > OpenPGP Key: DA9C60E9 ||
+> > > https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+> > > 4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+> > > --
+> > >
+> > > El jue, 26 mar 2026 a las 2:37, =E5=82=85=E7=BB=A7=E6=99=97 (<fjhhz19=
+97@gmail.com>) escribi=C3=B3:
+> > > >
+> > > > Hi =C3=93scar,
+> > > >
+> > > > Lucid-Duck spent some time trying to reproduce your crash and wasn'=
+t able
+> > > > to trigger it. Here's a summary of what was tested:
+> > > >
+> > > > - Kali 2025.4 (kernel 6.18.12+kali-amd64) VM on QEMU/KVM, with my v=
+2
+> > > >   patch applied
+> > > > - MT7921AU USB adapter, passthrough to VM
+> > > > - Full airgeddon evil twin flow: monitor VIF + hostapd AP + continu=
+ous
+> > > >   deauth via aireplay-ng
+> > > > - Also tested on bare metal Fedora 6.19.8 with the same adapter
+> > > >
+> > > > All tests were stable -- no crash, no dmesg errors, load stayed low=
+. The
+> > > > deauth frames were confirmed sending for 30+ seconds under the v2 p=
+atch
+> > > > without issues.
+> > > >
+> > > > The one variable that couldn't be matched was the VM hypervisor.
+> > > > Lucid-Duck used QEMU/KVM, which handles USB passthrough at the kern=
+el
+> > > > level (xHCI). If you're using VirtualBox or VMware, the USB passthr=
+ough
+> > > > path is quite different (userspace proxy), and that could potential=
+ly
+> > > > explain a total VM freeze that isn't a kernel panic.
+> > > >
+> > > > Could you please reply to Lucid-Duck directly on GitHub with the
+> > > > following information? Here's the link:
+> > > > https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-412919=
+8757
+> > > >
+> > > > 1. Which hypervisor are you using? (VirtualBox, VMware, QEMU/KVM, e=
+tc.)
+> > > > 2. Your exact USB adapter model and ID? (0e8d:7961 covers several
+> > > >    MT7921 variants)
+> > > > 3. If possible, try SSHing into the VM from the host while the disp=
+lay
+> > > >    is frozen -- if SSH still works, the issue is at the hypervisor/=
+display
+> > > >    level, not the kernel.
+> > > >
+> > > > Thanks,
+> > > > =E5=82=85=E7=BB=A7=E6=99=97
 
