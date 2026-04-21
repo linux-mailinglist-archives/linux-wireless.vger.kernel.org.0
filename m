@@ -1,59 +1,59 @@
-Return-Path: <linux-wireless+bounces-35134-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35135-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJAxERds52ke8AEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35134-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 14:22:47 +0200
+	id OA9UBeBu52ke8AEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35135-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 14:34:40 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6DA43A92F
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 14:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2B043AAD9
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 14:34:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0E1730078DF
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 12:22:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22277300D144
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 12:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A703C3BFB;
-	Tue, 21 Apr 2026 12:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A973CF038;
+	Tue, 21 Apr 2026 12:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pDUCyVwG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lidjiUFB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368913C277F;
-	Tue, 21 Apr 2026 12:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755413C943B;
+	Tue, 21 Apr 2026 12:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776774161; cv=none; b=jTEebs0YEylwjxgR1g50jdh6pIS4KvH5hqQPJsy3SAsoFx5PKXZCG0pQAKxtxWafESD0VwXv2aWkIXAd4TM7qrYYkJpi18v6zejkdjVcwK5+oJ32wViXOmC93amEbZss6XGxslKsMjfJylhyYDwXyo5Hew8NTHWnZ0COMNW77d4=
+	t=1776774745; cv=none; b=qFer3IfNAaz/QFhPYrK9zPAyAD5Njs+UUST1SrAJdAIZjGVueNUhbE+6AYke/AsawYtZQ1aP9O+A0YfyFaH8DrQqJfzxaeZq3lt9fR5L3yk5L4UHCUbnc0WsEdXM9lTS/ApohYGGrazTop26tLxB6UhgwcZNRyloH5lBtURnPDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776774161; c=relaxed/simple;
-	bh=FjTWTBKyxU9wnoOFIU6eC+Zsg/ak07chnRRJ6hIxvXc=;
+	s=arc-20240116; t=1776774745; c=relaxed/simple;
+	bh=fHogJFUXtmJ8h9rv9J/W39FCHQRKZiuaR6kEImeePd4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hCuYTkFZJ5lNMw6qGCiWWRzBMh79+4I9ZaTxQmuVydrJW2JMDClZrFq5uMo6DPqXlewjJqfS3WN2urWk1bmydXlqXWPXpYOtYIGndJWyz7wud2w2b2TpgsMbjOpjK/8J8L6PNz8mZnfbmqBWGqXKdyUGU/6DLE8w4v4HS5Yn+Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pDUCyVwG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5106C2BCB0;
-	Tue, 21 Apr 2026 12:22:25 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=kQawcZPbPYes80frIFet65Rkq4BjMysryAdfvorF7FGNL6dlwKA6nMglY5DXFGJtR+d52fg2iIVQCJ+RNg9J5xb7W0mJoAw6CjHo2tfXExcA/AM1a47Gt7bDHCe/uRDmtMirzwL1oWDBu53FTu7dJ0QwE65G6kigWOlTa+zbUPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lidjiUFB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61D7C2BCB0;
+	Tue, 21 Apr 2026 12:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776774160;
-	bh=FjTWTBKyxU9wnoOFIU6eC+Zsg/ak07chnRRJ6hIxvXc=;
+	s=k20201202; t=1776774745;
+	bh=fHogJFUXtmJ8h9rv9J/W39FCHQRKZiuaR6kEImeePd4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pDUCyVwGb8ya/GZDqDieIScgOVrPOl3I/FJS9ccMew51Xp1PwcmYEtedShhwnrxmc
-	 RCa1sJsDGPFZz7l6xh8HYRvZ9j5G0bWWeLPo1qSM5vCkcLDW5wJx2OyFKcOZhGoLOI
-	 YwnWftevNO1eAx5/cWBBv5WlkJhG/5+YfhdJ7vYHIkPT3IgE3VLw8p3NofnqsNgFtH
-	 RYEOsuva6FlMuZC1XmZz9dmSpii3t/okBhMPqO1l7pjE1ED/sH7WZTsW/w8Cyns2AW
-	 HTHIQlNviNnES+NmZ/S8HynmnxRzzgDyzjO6jdJPH1Z83lN19f1bjFMnu8aORK25oM
-	 Z2/yYBPfJux+A==
-Date: Tue, 21 Apr 2026 17:52:22 +0530
+	b=lidjiUFBNlGW1ZK0cSZ+MOH/azPjNeQC2ufFrT3Euzuck2WCt3RLjFYrFRp0vfnli
+	 OuUlNVqJtli074ztaXzrFbQ/yRocV1IPcQWnHpns8hQ1NE57s+Sia+dZBi5TdWIkTa
+	 saMQNbkE5vLxG0Jay62Njd1XE4oPW1yWc7aBRs8YZU6awIQy0Yuhf4XkWVbBzy2F1K
+	 A4nPWMje0DwxXeQWCMRKEdOucnglxzzugl582jJbezldoCpkHno8lLygyOz7Ia9P8S
+	 H8bSr0zGdzaRMZRv3UWKdMFouo1Y6N2OwQIsWRisEmT9z48LmNyPoMWI4YzfzDIas8
+	 HLFwNc8s0xsjQ==
+Date: Tue, 21 Apr 2026 18:02:06 +0530
 From: Sumit Garg <sumit.garg@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>
+To: lumag@kernel.org, robin.clark@oss.qualcomm.com
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
 	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
 	linux-media@vger.kernel.org, netdev@vger.kernel.org,
 	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-remoteproc@vger.kernel.org, konradybcio@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	robin.clark@oss.qualcomm.com, sean@poorly.run,
+	linux-remoteproc@vger.kernel.org, andersson@kernel.org,
+	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
 	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
 	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
 	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
@@ -70,11 +70,10 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
 	skare@qti.qualcomm.com, harshal.dev@oss.qualcomm.com,
 	linux-kernel@vger.kernel.org,
 	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: Re: [PATCH v3 00/15] firmware: qcom: Add OP-TEE PAS service support
-Message-ID: <aedr_gE2Sxs-UvbL@sumit-xelite>
+Subject: Re: [PATCH v3 10/15] drm/msm: Switch to generic PAS TZ APIs
+Message-ID: <aeduRrAMOAW4f5TU@sumit-xelite>
 References: <20260327131043.627120-1-sumit.garg@kernel.org>
- <adPLx3nCBb8IHz2b@baldur>
- <adSOFCL26y5qt1Cu@sumit-xelite>
+ <20260327131043.627120-11-sumit.garg@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -83,7 +82,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <adSOFCL26y5qt1Cu@sumit-xelite>
+In-Reply-To: <20260327131043.627120-11-sumit.garg@kernel.org>
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -94,7 +93,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35134-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35135-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -103,7 +102,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[50];
+	RCPT_COUNT_GT_50(0.00)[52];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
@@ -113,48 +112,107 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: DA6DA43A92F
+X-Rspamd-Queue-Id: AB2B043AAD9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 07, 2026 at 10:24:44AM +0530, Sumit Garg wrote:
-> Hi Bjorn,
-> 
-> On Mon, Apr 06, 2026 at 10:09:27AM -0500, Bjorn Andersson wrote:
-> > On Fri, Mar 27, 2026 at 06:40:28PM +0530, Sumit Garg wrote:
-> > > From: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> > > 
-> > > Qcom platforms has the legacy of using non-standard SCM calls
-> > > splintered over the various kernel drivers. These SCM calls aren't
-> > > compliant with the standard SMC calling conventions which is a
-> > > prerequisite to enable migration to the FF-A specifications from Arm.
-> > > 
-> > 
-> > Please get our colleagues involved in this discussion, because this
-> > non-SCM interface does not match the direction we are taking.
-> 
-> I thought I have already involved folks from QTEE perspective (Apurupa
-> and Sree) actively working on FF-A implementation aligned to this
-> interface. It would have been better if you could let me know where is
-> the direction mismatch here. In case there is a better alternative
-> design proposal for PAS service with FF-A, I would be happy to hear
-> that.
-> 
-> Anyhow for the legacy SoCs like KLMT, we really don't have any
-> alternative but have to stick to existing QTEE PAS design with OP-TEE
-> providing as an alternative backend. Surely we want to support loading
-> of existing signed firmware present in linux-firmware repo for KLMT with
-> OP-TEE being the TZ.
+Hey Rob, Dmitry,
 
-After further offline internal Qcom discussions, the teams are aligned
-on the vision to use and extend generic Qcom PAS layer for all the TZ
-backends whether it's legacy SCM backend based on QTEE, OP-TEE backend
-as proposed by this patch-set or future object invoke (based on
-SMCInvoke) for QTEE.
+On Fri, Mar 27, 2026 at 06:40:38PM +0530, Sumit Garg wrote:
+> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> 
+> Switch drm/msm client drivers over to generic PAS TZ APIs. Generic PAS
+> TZ service allows to support multiple TZ implementation backends like QTEE
+> based SCM PAS service, OP-TEE based PAS service and any further future TZ
+> backend service.
+> 
+> Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> ---
+>  drivers/gpu/drm/msm/Kconfig             |  1 +
+>  drivers/gpu/drm/msm/adreno/a5xx_gpu.c   |  4 ++--
+>  drivers/gpu/drm/msm/adreno/adreno_gpu.c | 11 ++++++-----
+>  3 files changed, 9 insertions(+), 7 deletions(-)
+> 
 
-I hope with that we can progress to get this patch-set merged in next
-merge window. I will send v4 shortly after merge window closes to
-address misc. comments from Harshal on patch 04/15.
+Can I get an ack from you on this change? I expect this complete
+patch-set to land via Qcom SoC tree.
 
 -Sumit
+
+> diff --git a/drivers/gpu/drm/msm/Kconfig b/drivers/gpu/drm/msm/Kconfig
+> index 250246f81ea9..09469d56513b 100644
+> --- a/drivers/gpu/drm/msm/Kconfig
+> +++ b/drivers/gpu/drm/msm/Kconfig
+> @@ -21,6 +21,7 @@ config DRM_MSM
+>  	select SHMEM
+>  	select TMPFS
+>  	select QCOM_SCM
+> +	select QCOM_PAS
+>  	select QCOM_UBWC_CONFIG
+>  	select WANT_DEV_COREDUMP
+>  	select SND_SOC_HDMI_CODEC if SND_SOC
+> diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+> index ef9fd6171af7..3283852f9a14 100644
+> --- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+> +++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+> @@ -5,7 +5,7 @@
+>  #include <linux/kernel.h>
+>  #include <linux/types.h>
+>  #include <linux/cpumask.h>
+> -#include <linux/firmware/qcom/qcom_scm.h>
+> +#include <linux/firmware/qcom/qcom_pas.h>
+>  #include <linux/pm_opp.h>
+>  #include <linux/nvmem-consumer.h>
+>  #include <linux/slab.h>
+> @@ -653,7 +653,7 @@ static int a5xx_zap_shader_resume(struct msm_gpu *gpu)
+>  	if (adreno_is_a506(adreno_gpu))
+>  		return 0;
+>  
+> -	ret = qcom_scm_set_remote_state(SCM_GPU_ZAP_SHADER_RESUME, GPU_PAS_ID);
+> +	ret = qcom_pas_set_remote_state(SCM_GPU_ZAP_SHADER_RESUME, GPU_PAS_ID);
+>  	if (ret)
+>  		DRM_ERROR("%s: zap-shader resume failed: %d\n",
+>  			gpu->name, ret);
+> diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+> index d5fe6f6f0dec..047df0393128 100644
+> --- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+> +++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+> @@ -8,6 +8,7 @@
+>  
+>  #include <linux/ascii85.h>
+>  #include <linux/interconnect.h>
+> +#include <linux/firmware/qcom/qcom_pas.h>
+>  #include <linux/firmware/qcom/qcom_scm.h>
+>  #include <linux/kernel.h>
+>  #include <linux/of_reserved_mem.h>
+> @@ -146,10 +147,10 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname,
+>  		goto out;
+>  
+>  	/* Send the image to the secure world */
+> -	ret = qcom_scm_pas_auth_and_reset(pasid);
+> +	ret = qcom_pas_auth_and_reset(pasid);
+>  
+>  	/*
+> -	 * If the scm call returns -EOPNOTSUPP we assume that this target
+> +	 * If the pas call returns -EOPNOTSUPP we assume that this target
+>  	 * doesn't need/support the zap shader so quietly fail
+>  	 */
+>  	if (ret == -EOPNOTSUPP)
+> @@ -175,9 +176,9 @@ int adreno_zap_shader_load(struct msm_gpu *gpu, u32 pasid)
+>  	if (!zap_available)
+>  		return -ENODEV;
+>  
+> -	/* We need SCM to be able to load the firmware */
+> -	if (!qcom_scm_is_available()) {
+> -		DRM_DEV_ERROR(&pdev->dev, "SCM is not available\n");
+> +	/* We need PAS to be able to load the firmware */
+> +	if (!qcom_pas_is_available()) {
+> +		DRM_DEV_ERROR(&pdev->dev, "Qcom PAS is not available\n");
+>  		return -EPROBE_DEFER;
+>  	}
+>  
+> -- 
+> 2.51.0
+> 
+> 
 
