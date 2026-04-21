@@ -1,88 +1,88 @@
-Return-Path: <linux-wireless+bounces-35158-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35160-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPw0DFeC52k+9gEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35158-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 15:57:43 +0200
+	id 5+NjDmyC52mR9gEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35160-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 15:58:04 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A78943BA1D
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 15:57:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F022D43BA44
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 15:58:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D76EC307BB03
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 13:51:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 19A08305BDFB
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 13:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599DF3DB64D;
-	Tue, 21 Apr 2026 13:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8D73DBD5A;
+	Tue, 21 Apr 2026 13:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OUJtJdOs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nVH/AngT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC323D8114
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 13:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B521F3DB63F
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 13:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776779398; cv=none; b=MLJE8KfkRYxhyrX28RNUP90MHb7f2iKjvdGreOgYjaBtHG1wTduF3RpZcq1yWta9e0YIeXG0/m0Zpq81rHVezIHzdXhQeAUTPiLCfdSQZnWBOKImyrSDFwGuY1ycrtk2USx0KanTD/NXrRvm8+AP9xPUh0i6YQXi+R0biW4b2NA=
+	t=1776779399; cv=none; b=u3LJfWDSdaS0wkuPdwWtHjDJq9OIZcez4HV+UiQi9Jtj9b0owoA0aoAseIb/6YJbddTvWYhqvRUUx3sRS8LTvKqqvgWLKrzt3O6TnNvuvs1vgUNc8qYCGRvY1cj/Wg3+bLkGPK/OChld825xUL3OuFg2r/l4i3BDxuHZs4zRdYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776779398; c=relaxed/simple;
-	bh=VQJmGeicKEsi6S1aknxYXPHkbMtvDEapOhVDhRsNyb8=;
+	s=arc-20240116; t=1776779399; c=relaxed/simple;
+	bh=suTBYE1gP/R4ATTroFoL/2430iJXnOm52ISvcEoM5Ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9PA/B8Ri6BiSDsId7bsNSyTwZ4t+x+0cD6yJAV9CNxOLH52l12Ia0wEQ3aXuZn18Q916ApCLnAtNpQHXVnUnVz0WX/D1PMZaTPTmc2O5yCX19FV5oLshEF+rJRgI/i8SBA77vJ+ud/c2COJ5q1xz/s6qHtgu9+QO65JbJRbQnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OUJtJdOs; arc=none smtp.client-ip=209.85.128.45
+	 MIME-Version; b=PFVj25vXxH+vJLCDDCvKsW+p5j9+prWiCZbiaXCjVa/Fb3h/4+F/S+w1s9oO1pQje/D4shdV7aPXSp9bci7hHpz1Og38Z59qHm5uWPe0fdcdGU18/hr1BLjwb3UNMZZbhbhKYh6igCAz/bWAwT3oy/DmioOxxkJ29ap78ZrxUbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nVH/AngT; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4890098abbaso29139665e9.0
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 06:49:56 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488ad135063so35994935e9.0
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 06:49:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776779395; x=1777384195; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776779396; x=1777384196; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XW7SuI64R5lXg3EcFdNoYLk+o32d4vhook9t2qciYl4=;
-        b=OUJtJdOsxaoIeEDmx92xeuRCER3C+Hd8QJwVrboQYm2MTT5riRyXks6IeCSBiJaRij
-         7U++RfRQVKsycwu4D5aMaZmJsuzUeYOuiHfBNiOZfkKo4UeHgrBLUgDpkyZKFKEXLrtm
-         OFaG3n2/JSjjvS6MuwbpuNhN6mRMPBCJZHyiE9rD6TqHAt7EF+jdYJQ3cUr8Izu/9gQl
-         nSNVz5PFRjT+etzcomgb78QyUh9GAXxfSbZQBS+jD+zNUDsdtzzoDFW5srPeUZCP5HaN
-         0P91A9RAFgdc2I+F7JYysdtiyD6Bd1u1slNkb7Azf/O6qP2gzELEo7nhaY+ua8dUTGTe
-         IRuw==
+        bh=AKGjiE71pcy1j0gjcQ9BLUrLYWLwxIOwPknCBw0OO9w=;
+        b=nVH/AngTe1OASNbRMp0o1OkkDIpAIakHRONiCnkW4j518SdULB83geuAO0+xWjl3XJ
+         Vvw0nXcM06jdsANDgqv3HrXYodgnRKWN5DN6sr1c8+NUdGUuRn3C45GYJusj9GPPvSvy
+         JH0l9okLmj2Fyl/DGYTKFbIUmx/G2u18yRS9Igl/cas/5ML3hJmK8UeaqgdIzsqbkvpU
+         TiOyG/yBLsBJACOgEft+7b3KFujrGUdqOwLJP50pQf9gVIGhCmnBXGGzby6NA9syhh5S
+         Qc18RGKR2oQTjXSnbRmBUETQsynmXDUBYkZ/IQEUSvYmSgLKXWDTKTa9b24r118BIkt2
+         l5LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776779395; x=1777384195;
+        d=1e100.net; s=20251104; t=1776779396; x=1777384196;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=XW7SuI64R5lXg3EcFdNoYLk+o32d4vhook9t2qciYl4=;
-        b=JgurrfiR+DLG25G/UbBPSYO85ZHx8NhixreiBo4XTodxiIIs7U5JGcG+ejgrTDtUoK
-         U30wMvzxRUPTsjt2O6mzF4yBS2swuCX54+k81U65nG1M9fxGbL9xc91lfMK55T5KxlGu
-         TJPJYZwsedVzvXfsct5uxgnIBoPxVj1EYddz8KdPcGYXbyHr8nP9YWP30WBbZtAUeFcx
-         O+VcTS7okbV2Jwkj1rGrbaYTNli9ND+ux85fQGOPEIVd7+4Z+tBOTZT2JUod8NUsD+CH
-         dkEjsncjxnhTy3JvDQita/SjzopNr8FBNFwcSQOx4ixDpsu1+8AGU6Y7+JdxRjDP5ZdW
-         49bg==
-X-Gm-Message-State: AOJu0YyMZk/Xn+Wg3lGXX1O3P6KTUbBaCaqrkGMTeMXR1Y8krUz3q+wF
-	zPslQOHQEZQFyWsIuFo29YYxqGREp3kDYUPazUn7zD6ESci8CP2vWzza7taE
-X-Gm-Gg: AeBDievelvAaDJNeDR0Du29GpP8TbStSA4i1B9oFI78WXWGjMn4N8uYyCzQ9tWnzZHb
-	dvg5LAOtj4hzz2FB34Ju8ILAywrRTfXgNQa1/YWOQSnLexRdL41e3+eT/gq7gugBEE08YIHXZPj
-	uePVJSPEy3BSrPifXRuVT7UEri9DGadlbWBbb9vBZyaT72aEeenjjnCd/fXCbPVfTmVC7YO92MD
-	iIbDI8Kuigo3qmBYY49t9ZW/dvDHcDtQfbnDvvICdHKssN6QOhbb2bsKB6LRPlf7dnqVUdCLXS/
-	F2CFIyZGQrvRHDAMNKIbgXgfRPI7blqTG2vt/IqOtvOqY3t18eEzk5rrMqxk4yDcW6d+l+M7bCo
-	7tGEU9BLhXghsF4IrXNU9UeNvzPB7Db65pXOpbdipr9NzlDvwlJOEjQ/jNKcJ9xAQM512y+lyCp
-	FZpes=
-X-Received: by 2002:adf:f2c7:0:b0:43f:e44a:f276 with SMTP id ffacd0b85a97d-43fe44b01a5mr20217458f8f.3.1776779395152;
-        Tue, 21 Apr 2026 06:49:55 -0700 (PDT)
+        bh=AKGjiE71pcy1j0gjcQ9BLUrLYWLwxIOwPknCBw0OO9w=;
+        b=Vfv2tOEj9bX00gL/wpbiTuj/9puRER1aBomQh5CMcoI+gP9lvYg3pAH+QppMTTDYhM
+         VfPPWjxQ0JejnS1dPJDqeesSYlqo0eKnQM0w9gLEthm3ogxK4EtJQ2x7jdl5hLc6e7oL
+         da4FsOvS3K5wckj1Ho18/1enmb+lTbmdUhqvN06UF61smhBWTXeoSPNC6HZSGZBZfGLB
+         ShyewsemlujvXLIcOfgUn656MY7rwbhh0Th16dyt6/VBPfLCP96glw0CcjhbKUbNAGQp
+         usfpTcagupE7gh+dgJKKtECzRALiKLgLZvITfU0NS8OXwwYyuo0Qu/Q0jHVv9EukM/FG
+         dOgQ==
+X-Gm-Message-State: AOJu0YwAG+b4gr3u3fcoIMI9EGcbUCKcUSThvuTyJ7Vnqh/8rhj6Cgrz
+	gxfH08UmTxa1pnEEJ3QpuS+OrNmAhK9nI11/i+5iS608mbPxjursONA=
+X-Gm-Gg: AeBDieu37LM9YPURZUgRZWoIQdmxA24Wsi84D7bWP/lF5f23ypWzbV64hNkOiOg660P
+	60JiR9vnMnTkgKB6W0uhk8OYtQh5zhAJyXlUMHVPmCv1+5CmMUi6cm3dldfC0ntZYBWJJ/tC8SB
+	h7gzTHThKmhXlNwJFT8w4vBLq8f4yP9gNbcvZbLREy8JKaXkPLqwKsuS7s7mDZm+ZQcXVOXA5ay
+	yVK+fZVVNmp7VYMQWnHwWp1t4BG75Vl3y7q+BTWs5w6dpOnlGgLbMmr9msM6vmagmYJMmq0oEqD
+	A6j4vj68ouRbM6UgZOylAFdf124RJ1dcGk1dfIvpASngPGa+VI+sQBWreYFOoRZs5nQYZPgOUS6
+	Ni/rcIWN7S8hL3qqFxhkY9rW7tvN6eCT4lvXyYnREq8bWEw5FCpLKqknf4Eh/10cYcbkN5qM0EQ
+	6lKSEzrIggt3+8KQ==
+X-Received: by 2002:a05:600c:3483:b0:488:af7f:775f with SMTP id 5b1f17b1804b1-488fb77d343mr244770145e9.18.1776779396003;
+        Tue, 21 Apr 2026 06:49:56 -0700 (PDT)
 Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cb13a0sm37671480f8f.8.2026.04.21.06.49.54
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cb13a0sm37671480f8f.8.2026.04.21.06.49.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 06:49:54 -0700 (PDT)
+        Tue, 21 Apr 2026 06:49:55 -0700 (PDT)
 From: Tristan Madani <tristmd@gmail.com>
 To: Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH v3 2/3] wifi: wlcore: fix OOB read from firmware max_buff_size in logger handler
-Date: Tue, 21 Apr 2026 13:49:50 +0000
-Message-ID: <20260421134952.338301-3-tristmd@gmail.com>
+Subject: [PATCH v3 3/3] wifi: wl18xx: fix OOB read from firmware SSID/password lengths in smart config event
+Date: Tue, 21 Apr 2026 13:49:51 +0000
+Message-ID: <20260421134952.338301-4-tristmd@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260421134952.338301-1-tristmd@gmail.com>
 References: <20260421134952.338301-1-tristmd@gmail.com>
@@ -99,18 +99,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35158-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35160-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,linux-wireless@vger.kernel.org];
@@ -120,22 +120,21 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6A78943BA1D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F022D43BA44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Tristan Madani <tristan@talencesecurity.com>
 
-The firmware-controlled max_buff_size field is used to compute buffer
-offsets in wlcore_event_fw_logger() without validation against the
-4128-byte kernel allocation. An inflated value causes out-of-bounds
-reads from kernel heap, with the data written to the debugfs-accessible
-fwlog ring buffer.
+The firmware-controlled sc_ssid_len and sc_pwd_len values are used as
+nla_put sizes from fixed-size mailbox buffers (32 and 64 bytes) without
+bounds checking. Values exceeding the buffer sizes cause out-of-bounds
+reads delivered to userspace via nl80211 vendor events.
 
-Cap max_buff_size at the allocation size minus the header offset.
+Clamp the lengths to the mailbox buffer sizes before use.
 
-Fixes: 3719c17e1816 ("wlcore/wl18xx: fw logger over sdio")
+Fixes: e93e15fb47e5 ("wlcore/wl18xx: handle smart config events")
 Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 ---
 Changes in v3:
@@ -145,26 +144,22 @@ Changes in v3:
 Changes in v2:
   - No code changes from v1.
 
- drivers/net/wireless/ti/wlcore/event.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wireless/ti/wl18xx/event.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ti/wlcore/event.c b/drivers/net/wireless/ti/wlcore/event.c
-index 6c3a8ea9613e9..26c74dfcaeeff 100644
---- a/drivers/net/wireless/ti/wlcore/event.c
-+++ b/drivers/net/wireless/ti/wlcore/event.c
-@@ -61,6 +61,13 @@ int wlcore_event_fw_logger(struct wl1271 *wl)
- 	if (actual_len == 0)
- 		goto free_out;
+diff --git a/drivers/net/wireless/ti/wl18xx/event.c b/drivers/net/wireless/ti/wl18xx/event.c
+index fac12a8590355..19c7f5bdada5e 100644
+--- a/drivers/net/wireless/ti/wl18xx/event.c
++++ b/drivers/net/wireless/ti/wl18xx/event.c
+@@ -82,6 +82,9 @@ static int wlcore_smart_config_decode_event(struct wl1271 *wl,
+ {
+ 	struct sk_buff *skb;
  
-+	if (le32_to_cpu(fw_log.max_buff_size) >
-+	    WL18XX_LOGGER_SDIO_BUFF_MAX - WL18XX_LOGGER_BUFF_OFFSET) {
-+		wl1271_error("fw logger: max_buff_size %u exceeds buffer\n",
-+			     le32_to_cpu(fw_log.max_buff_size));
-+		goto free_out;
-+	}
++	ssid_len = min_t(u8, ssid_len, 32);
++	pwd_len = min_t(u8, pwd_len, 64);
 +
- 	/* Calculate the internal pointer to the fwlog structure */
- 	addr_ptr = internal_fw_addrbase + addr;
+ 	wl1271_debug(DEBUG_EVENT, "SMART_CONFIG_DECODE_EVENT_ID");
+ 	wl1271_dump_ascii(DEBUG_EVENT, "SSID:", ssid, ssid_len);
  
 -- 
 2.47.3
