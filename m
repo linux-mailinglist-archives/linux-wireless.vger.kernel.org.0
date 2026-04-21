@@ -1,189 +1,236 @@
-Return-Path: <linux-wireless+bounces-35187-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35188-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EfBITTt52mhCwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35187-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 23:33:40 +0200
+	id wHcxBR7u52mhCwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35188-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 23:37:34 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F1A43FC2D
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 23:33:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6077143FC95
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 23:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8197E306434D
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 21:33:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7153305E9E1
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 21:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF6A3DCD8D;
-	Tue, 21 Apr 2026 21:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2790C3DCDB1;
+	Tue, 21 Apr 2026 21:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RfEYijh7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NXO9/kcq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8DF2F4A05;
-	Tue, 21 Apr 2026 21:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FD73783C4
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 21:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776807212; cv=none; b=Zej1RspqZqcTNA2mbdXSbX5f34XMtajp+x1dAESkweSDIGZiBvs2GJwRm5dygFUMNHxG2JuA3WS/mas+1SnM28kMDbcevNWU61qR5LymuziDZs1YlZ0VrYYGpTtG4oHwlQhteRVSL9vp2banEGXKRf2jbvDaLzD+P1epPWnlAAc=
+	t=1776807364; cv=none; b=b1keiKUuANJkIafMtTt5LAKmV98hiNCpQeqb5G9O3os1NAMixJp42G0kqfRIv43VrQSKLW6osMFbUfdq92ktNfoPzCyx8Z1kPLxO4EZbsytrqw6JiTeldworVeCu6f/hmQKFn0H756sLTSJ+HXy9CoK4+1JxFl8qNUldXQaDnoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776807212; c=relaxed/simple;
-	bh=vatupuq4WrABpSuEUMYUtujivXgVDiHk3e1MmNVxM+Q=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=e1kkqojvvb7JKiyHcSlbBsam7OTIMBBZQS6ktaBp07FzxRJ+3rBhtw0Dv8FXXsQBEUiwlwc2CLnacNUxdPuAJ5Ocy8zyq/z+XSHghqguR+xsIvSi1ug384x3X+rnZ5AWH85zkZtAcmQlrZes8q6xS7T0aJ1i6xB0cPa0OZWuDlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RfEYijh7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D63C2BCB0;
-	Tue, 21 Apr 2026 21:33:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776807212;
-	bh=vatupuq4WrABpSuEUMYUtujivXgVDiHk3e1MmNVxM+Q=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=RfEYijh7XhOIIxtCBiZK1gn5IXNLv5qcn5amQw5CqC2XQ0mRjsWMy0SwC/jKxN8Ha
-	 +lGNHgaycbYUVz/8qUQTAV87+keU8WY1I1fe4qL/Cubm0CmcRljTFyT4oCGT3XsCWG
-	 21JAOI+XCTuLyqtAQ0JY89PQj9ztU0bsVRSzsv4sAV4REIQeaAk9EIXe86axCL8Lcv
-	 P49oQppEQE3W5ysKk35W1yekjIPJzFLIHvqS9YHqLVNNeeeAs1gWZnOJuQHTbQ76Mo
-	 fn4ArOBoMvEaOR/5jHbzodnC5RnVkOGNRxUq58/UbFZ0QTUKrwlb9kjzN5QiQ3GPHQ
-	 wuq7UQCA8GLiQ==
-Date: Tue, 21 Apr 2026 16:33:30 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1776807364; c=relaxed/simple;
+	bh=9I5kveaAdNuut0UZl02P16NYapFegdWhGD5fkgRUZTI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EUJl3bZGj4vu28kH/sqGP5RyCUlPF6x8P+6KgPAFVFsVXjQ9QItzhyyt6EuZrUT12iB3Q6PZzHvfVBWT1/mKLY5zAyNr56bSnZTpdv2L41ARs0rY6SwV+lOQT3nHrAXTxCPUxAa6/BygO7tLrPF8AzXFeh9hSm87Y9nVrSvzMdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NXO9/kcq; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3585ec417f6so2713336a91.1
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 14:36:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776807362; x=1777412162; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DXmPZkb/Svwu6Il6bmZz1uAoo07kk+9/HvI68DRq0LI=;
+        b=NXO9/kcqjqml/jhDCJ9NWVoHNi1oWnaz98qerEqtJYIb+HHK7e/4H+WQ61hlte1nWB
+         1CwWTkfSomjXmnsIIvwFz2dKV33WHKSncO96NxLfpwmk6j5IPUPOpOIDlbl6G/35pdDh
+         AClvcdV9Ac7Ps5kKojBsiigdaE4zS9IVoJaxk4jFeHoRGx2wwSUdHzUPxakhoSUKgv+e
+         Gp7JorTH7+0nMn/4WzMwwoX/fUs5w2lRC1nU7iRXMnka4c7lhwmT+EacA6DxIyAysd9P
+         BdxgvwMQaEm5rZZirbtDIdJnXyJOssHgPTYws8kbkV8ZlPleTnXqofRUIrXimURI5TF5
+         CtVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776807362; x=1777412162;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DXmPZkb/Svwu6Il6bmZz1uAoo07kk+9/HvI68DRq0LI=;
+        b=h2IySCSrXaaTFkAaCvBbn8/Tv2qTFAydNcDp+ioDTMJyUpTVCHlAbpefKnvaQwPirn
+         ekrraJBXJqaUrrAwJclphtr2QeSIHwpicI7A0A2drcRhuZrBjeWne3iC7r+U3JtYXskh
+         dBWDacpxeCFR+1f3D21y/6qlQ5u1YBdJlO3fJJj/GWOgDMx5nLFPcqihB3am3dQ0DGek
+         1eOYDvF5/dPvXzytFxRnuNYQpZtkdaBVtuHu1gruyFSiEtHCIf8+LT+Vo0YVyRKiKgQR
+         Y7m7f+mpc/tAl8PobmUBqdYVrJFDjYBEksCtySE3C/p5ZcCTOMnVr/Yis3zf9UwSVFXk
+         FKSA==
+X-Gm-Message-State: AOJu0YzNW9eApYc8FlhfKTeEhGXAI62OGNx8+fAZWZHqVY4+E/EmitU7
+	3OCDNrpM+/CvTq+pI+nMxWBiRQnog6ZB0Ymgc5hag5Q6r16dfgbU5ZPk3vZFcQ==
+X-Gm-Gg: AeBDievqUvU8XwlQTmyVESmTNoHsrgKmGEwDhdICFfZClh5xnvRVKxqu1b5bKgK2wbm
+	qdC6Rb69YUJeB95ueEgTNaKS7jB5h8ownbgTzCEmO+M+4In9YwTbuMpbsAORALtuqYgwPJEXgzu
+	19lFjI7SYZ3o1Gdi6KvzVd3GyHWxvZPYO0UDbTtQvHFTXXJ8uQ9j6bL6SftKTRpbSe/F9F8ni+k
+	tu97Lsu3RKV+/Pb/JAHZxghIkjBwJYvvU9LifuM2xC0MAbQo7PkUqAGQpFqmagm8EywwjjhytMK
+	4ffkAcvGOq7wEvHtLXpizTvU2xzgBsKGlEPztQ8EuHxuY1/QWELJxbBoc0E9/yWbfo12TNp2Is4
+	s1BvYlVwNJnBCaizhC1OZqYOzlXt75D9YczrqGH1NoEE+ufllWX34w90waLNheKl6Eecy+7xIPW
+	gsgD5vOIMINGcHqYJe4ZasjHQ+iCi8fFbMzgNeIigMnBsJCKVVuMkMQvAaA/8/wNvlYTO9ebAnr
+	Sqh
+X-Received: by 2002:a17:90b:2e4e:b0:35e:579a:7e9a with SMTP id 98e67ed59e1d1-36140204c56mr15021196a91.7.1776807361797;
+        Tue, 21 Apr 2026 14:36:01 -0700 (PDT)
+Received: from ryzen ([2601:644:8000:5b5d::8be])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3614195a92asm14352270a91.10.2026.04.21.14.36.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Apr 2026 14:36:01 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: Jeff Johnson <jjohnson@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	ath12k@lists.infradead.org (open list:QUALCOMM ATH12K WIRELESS DRIVER),
+	linux-kernel@vger.kernel.org (open list),
+	linux-hardening@vger.kernel.org (open list:KERNEL HARDENING (not covered by other areas):Keyword:\b__counted_by(_le|_be)?\b)
+Subject: [PATCHv2 ath-next] wifi: ath12k: use kzalloc_flex
+Date: Tue, 21 Apr 2026 14:35:44 -0700
+Message-ID: <20260421213544.6238-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Sylwester Nawrocki <s.nawrocki@samsung.com>, ath11k@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-pci@vger.kernel.org, 
- Mathieu Poirier <mathieu.poirier@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Xu Yang <xu.yang_2@nxp.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, linux-spi@vger.kernel.org, 
- Patrice Chotard <patrice.chotard@foss.st.com>, 
- Rao Mandadapu <quic_srivasam@quicinc.com>, Mark Brown <broonie@kernel.org>, 
- linux-sound@vger.kernel.org, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Bjorn Andersson <andersson@kernel.org>, linux-remoteproc@vger.kernel.org, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Thomas Zimmermann <tzimmermann@suse.de>, 
- Sibi Sankar <sibi.sankar@oss.qualcomm.com>, linux-wireless@vger.kernel.org, 
- Johannes Berg <johannes@sipsolutions.net>, 
- Yang Xiwen <forbidden405@outlook.com>, 
- Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
- Alex Elder <elder@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
- Ulf Hansson <ulf.hansson@linaro.org>, Stephan Gerhold <stephan@gerhold.net>, 
- linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, 
- linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org, 
- Bjorn Helgaas <bhelgaas@google.com>, Jeff Johnson <jjohnson@kernel.org>, 
- linux-mmc@vger.kernel.org, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, ath10k@lists.infradead.org, 
- netdev@vger.kernel.org, Maxime Ripard <mripard@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-In-Reply-To: <20260421195836.1547469-1-robh@kernel.org>
-References: <20260421195836.1547469-1-robh@kernel.org>
-Message-Id: <177680720998.183058.5012840252939438533.robh@kernel.org>
-Subject: Re: [PATCH] dt-bindings: Fix phandle-array constraints, again
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[46];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[samsung.com,lists.infradead.org,vger.kernel.org,linaro.org,kernel.org,nxp.com,lunn.ch,foss.st.com,quicinc.com,linux.intel.com,gmail.com,suse.de,oss.qualcomm.com,sipsolutions.net,outlook.com,gerhold.net,google.com,redhat.com,davemloft.net,linuxfoundation.org];
-	TAGGED_FROM(0.00)[bounces-35187-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-35188-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robh@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 46F1A43FC2D
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6077143FC95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Convert kzalloc_obj + kcalloc to kzalloc_flex to save an allocation.
 
-On Tue, 21 Apr 2026 14:55:25 -0500, Rob Herring (Arm) wrote:
-> The unfortunately named 'phandle-array' property type is really a matrix
-> with phandle and fixed arg cells entries. A matrix property should have 2
-> levels of items constraints.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
-> Can someone from QCom provide some descriptions for 'qcom,smem-states'
-> properties.
-> ---
->  .../display/rockchip/rockchip,rk3399-cdn-dp.yaml         | 2 ++
->  .../bindings/mmc/hisilicon,hi3798cv200-dw-mshc.yaml      | 7 ++++---
->  Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml | 6 ++++++
->  Documentation/devicetree/bindings/net/qcom,ipa.yaml      | 6 ++++++
->  .../devicetree/bindings/net/wireless/qcom,ath10k.yaml    | 5 ++++-
->  .../devicetree/bindings/net/wireless/qcom,ath11k.yaml    | 5 ++++-
->  .../bindings/net/wireless/qcom,ipq5332-wifi.yaml         | 9 +++++++++
->  .../devicetree/bindings/pci/toshiba,tc9563.yaml          | 5 +++--
->  .../bindings/remoteproc/qcom,msm8916-mss-pil.yaml        | 3 +++
->  .../bindings/remoteproc/qcom,msm8996-mss-pil.yaml        | 3 +++
->  .../devicetree/bindings/remoteproc/qcom,pas-common.yaml  | 4 ++++
->  .../bindings/remoteproc/qcom,qcs404-cdsp-pil.yaml        | 4 ++++
->  .../bindings/remoteproc/qcom,sc7180-mss-pil.yaml         | 3 +++
->  .../bindings/remoteproc/qcom,sc7280-adsp-pil.yaml        | 3 +++
->  .../bindings/remoteproc/qcom,sc7280-mss-pil.yaml         | 3 +++
->  .../bindings/remoteproc/qcom,sc7280-wpss-pil.yaml        | 3 +++
->  .../bindings/remoteproc/qcom,sdm845-adsp-pil.yaml        | 3 +++
->  .../devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml   | 3 +++
->  Documentation/devicetree/bindings/sound/samsung,tm2.yaml | 2 ++
->  .../devicetree/bindings/spi/st,stm32mp25-ospi.yaml       | 5 +++--
->  .../devicetree/bindings/usb/chipidea,usb2-common.yaml    | 2 ++
->  Documentation/devicetree/bindings/usb/ci-hdrc-usb2.yaml  | 7 ++++---
->  22 files changed, 81 insertions(+), 12 deletions(-)
-> 
+Add __counted_by to get extra runtime analysis. Move counting variable
+assignment immediately after allocation before any potential accesses.
+kzalloc_flex does this anyway for GCC >= 15.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+---
+ v2: reword last comment.
+ drivers/net/wireless/ath/ath12k/mac.c | 29 +++++++--------------------
+ drivers/net/wireless/ath/ath12k/wmi.h |  2 +-
+ 2 files changed, 8 insertions(+), 23 deletions(-)
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/remoteproc/qcom,qcs404-cdsp-pil.yaml:99:1: [warning] too many blank lines (2 > 1) (empty-lines)
-./Documentation/devicetree/bindings/remoteproc/qcom,pas-common.yaml:67:1: [warning] too many blank lines (2 > 1) (empty-lines)
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index fbdfe6424fd7..32d590504a80 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -5611,12 +5611,14 @@ static int ath12k_mac_initiate_hw_scan(struct ieee80211_hw *hw,
+ 	if (ret)
+ 		goto exit;
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/i2c/i2c-demux-pinctrl.example.dtb: i2c-mux3 (i2c-demux-pinctrl): i2c-parent:0: [2, 3, 4] is too long
-	from schema $id: http://devicetree.org/schemas/i2c/i2c-demux-pinctrl.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/sound/samsung,tm2.example.dtb: sound (samsung,tm2-audio): i2s-controller: [[4294967295], [0], [4294967295], [0]] is too long
-	from schema $id: http://devicetree.org/schemas/sound/samsung,tm2.yaml
+-	arg = kzalloc_obj(*arg);
++	arg = kzalloc_flex(*arg, chan_list, n_channels);
+ 	if (!arg) {
+ 		ret = -ENOMEM;
+ 		goto exit;
+ 	}
 
-doc reference errors (make refcheckdocs):
++	arg->num_chan = n_channels;
++
+ 	ath12k_wmi_start_scan_init(ar, arg);
+ 	arg->vdev_id = arvif->vdev_id;
+ 	arg->scan_id = ATH12K_SCAN_ID;
+@@ -5638,18 +5640,8 @@ static int ath12k_mac_initiate_hw_scan(struct ieee80211_hw *hw,
+ 		arg->scan_f_passive = 1;
+ 	}
 
-See https://patchwork.kernel.org/project/devicetree/patch/20260421195836.1547469-1-robh@kernel.org
+-	if (n_channels) {
+-		arg->num_chan = n_channels;
+-		arg->chan_list = kcalloc(arg->num_chan, sizeof(*arg->chan_list),
+-					 GFP_KERNEL);
+-		if (!arg->chan_list) {
+-			ret = -ENOMEM;
+-			goto exit;
+-		}
+-
+-		for (i = 0; i < arg->num_chan; i++)
+-			arg->chan_list[i] = chan_list[i]->center_freq;
+-	}
++	for (i = 0; i < arg->num_chan; i++)
++		arg->chan_list[i] = chan_list[i]->center_freq;
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+ 	ret = ath12k_start_scan(ar, arg);
+ 	if (ret) {
+@@ -5674,7 +5666,6 @@ static int ath12k_mac_initiate_hw_scan(struct ieee80211_hw *hw,
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+ exit:
+ 	if (arg) {
+-		kfree(arg->chan_list);
+ 		kfree(arg->extraie.ptr);
+ 		kfree(arg);
+ 	}
+@@ -13735,19 +13726,13 @@ int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
+ 	scan_time_msec = hw->wiphy->max_remain_on_channel_duration * 2;
 
-pip3 install dtschema --upgrade
+ 	struct ath12k_wmi_scan_req_arg *arg __free(kfree) =
+-					kzalloc_obj(*arg);
++					kzalloc_flex(*arg, chan_list, 1);
+ 	if (!arg)
+ 		return -ENOMEM;
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+-	ath12k_wmi_start_scan_init(ar, arg);
+ 	arg->num_chan = 1;
++	ath12k_wmi_start_scan_init(ar, arg);
+
+-	u32 *chan_list __free(kfree) = kcalloc(arg->num_chan, sizeof(*chan_list),
+-					       GFP_KERNEL);
+-	if (!chan_list)
+-		return -ENOMEM;
+-
+-	arg->chan_list = chan_list;
+ 	arg->vdev_id = arvif->vdev_id;
+ 	arg->scan_id = ATH12K_SCAN_ID;
+ 	arg->chan_list[0] = chan->center_freq;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index 5ba9b7d3a888..5f150f21c146 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -3586,7 +3586,6 @@ struct ath12k_wmi_scan_req_arg {
+ 	u32 num_bssid;
+ 	u32 num_ssids;
+ 	u32 n_probes;
+-	u32 *chan_list;
+ 	u32 notify_scan_events;
+ 	struct cfg80211_ssid ssid[WLAN_SCAN_MAX_NUM_SSID];
+ 	struct ath12k_wmi_mac_addr_params bssid_list[WLAN_SCAN_MAX_NUM_BSSID];
+@@ -3595,6 +3594,7 @@ struct ath12k_wmi_scan_req_arg {
+ 	u32 num_hint_bssid;
+ 	struct ath12k_wmi_hint_short_ssid_arg hint_s_ssid[WLAN_SCAN_MAX_HINT_S_SSID];
+ 	struct ath12k_wmi_hint_bssid_arg hint_bssid[WLAN_SCAN_MAX_HINT_BSSID];
++	u32 chan_list[] __counted_by(num_chan);
+ };
+
+ struct wmi_ssid_arg {
+--
+2.53.0
 
 
