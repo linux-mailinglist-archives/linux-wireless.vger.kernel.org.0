@@ -1,90 +1,90 @@
-Return-Path: <linux-wireless+bounces-35153-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35154-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UONTFNqB52k+9gEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35153-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 15:55:38 +0200
+	id 2BPbFeKB52k+9gEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35154-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 15:55:46 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED35343B994
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 15:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9FA43B9A3
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 15:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 500CD308F085
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 13:50:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2E6BB30914C8
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2026 13:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604613D9DD8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F4A3DA5A6;
 	Tue, 21 Apr 2026 13:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F40g/40P"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LcFV7ufZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8303D9050
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 13:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73E73D7D69
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 13:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776779387; cv=none; b=grXQl7iciga40+e6P2y+8jfQOKISxnh4E13I1hN9m0vr8Y8lj9YeLfMgS3AQGGV0nasgndjNy04lMX6Y3O2jofX6ATHynkgrWiNP//WzU3XbGy8emOlKm9SdATIO7W7obN4wNNgCghkal8wFk1tCU5jkTI/TK79vWwihmJMorlc=
+	t=1776779387; cv=none; b=kEBCmY7HBOCbd2mZBZsSKwloWfV7U1H/if6PNSPwZTc7WRyGgUTvH0KaQ3mvluL7DDqWXcJqiuW0GO9vnqlplgK9q0IcV6bOXb8otg6nupcGKe9kguNvk9CgVEluD326LBe3L6k/3srXAWAe0R4TLNXefTMPf9R/4aNTMV5i5Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776779387; c=relaxed/simple;
-	bh=c/bZxv6gDBXjU9aT8y6UhmuhShqHpL/bUDIqZjpYfmQ=;
+	bh=nolTxCBP9FHfSuvQ5EW7BS+a9LX6BS4H4Xj49Lp7QtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RrKlFs33kXV1TfmONRR3CXC+riJfsKxAdH3JrtlotAHyoG/oZyXOf8Jt/XTKh3N/PHw4jaEaIwR5vCRUW8azP8HcH2s/JoLsZKQRTd9h1kn4nIkK8aNwqCDBvAHRjg2DFvabbLPHLguMaTxG9OPwy5yuyVVmLGdrsc3wR0KiVFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F40g/40P; arc=none smtp.client-ip=209.85.128.42
+	 MIME-Version; b=Ep1F4V8IKJpjk3U00UfSpwV8Rs/c2XQm7BQwqdVJkh+fUlLM/fIfkEt0p79dQW8DsxAo2EK1b0fICrEDY5pRPcTNHQDMX+o9A7UP1zvTqWlQGlX54PVsxkWvmVX50vhp92FDtoqI2iRjSSl0D2HY1QuHvCP4FNcYtcP9Wt/C/kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LcFV7ufZ; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4890098abbaso29137825e9.0
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 06:49:44 -0700 (PDT)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488ff90d6c7so33115945e9.2
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2026 06:49:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776779383; x=1777384183; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776779384; x=1777384184; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Q0zzfI2rQEV+jXiB+O0qtXX4eVvaANJECW9EykocPFs=;
-        b=F40g/40PUbYT/5iR7MZSbfAR2SlITnGi5Mg8JsfiRrigdQyH54LEvzfYC8RjqBdkXa
-         zA1AKm3ZMrjfPBFaq67q4YpNlEGdNMdn6gY2xxf997Iw1G99ap+oIM50srk9kPDSXAFG
-         FQtjXQS7j8HLqhPNwEZAum47aTwLyAJfS9fQO6Xb5tCRSOXVTlTOhCZT0pzuEyy0RIdF
-         2D3Enw4Rt+aQXTe31UclsGzPPjwK+vHnfS4t1QfhISPH0ZL9+SHxouBdFhRDU0h2JvUk
-         ZASNcYsDi9/IKjhn5QMvMMXKOD8nQ1ZSsde33ozePU4XkgMdcSH2jNFH2iC9lLBGlINV
-         zteQ==
+        bh=UmFFDwy/wNWvl65UK2Lm+vY44R4kAs7LOrPcVbInZDM=;
+        b=LcFV7ufZb0Qujuvu3eoK0wwlJuWDjZU9vx67qeThkfAjBi1uL4hLNIRvKDBxtjnkgS
+         OELAruPAlEqNlfgbtv21dNzwxixB4+nxIlVjARCiLOAZIR11JapqIz4Z6EXJu+uBUMwN
+         Vy9pzeYWH+5uiKzro9XJPFKYfBdxkO08htSDSg6cy//gXUndR4JVjc8pYtbJtkmGZMDS
+         d93Sg+RpCjOALZ5z+jpkBl0QrdSGbJsF3moC39cvwJibTKMTlmtgF8Te4eqbNi+6/BT3
+         KuuashncCl+5KJ4nJfBZusuTVNvLg6PkGVc+DAzNhL9DY3cU/MCLvI/JalN0bENwnhxa
+         uqyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776779383; x=1777384183;
+        d=1e100.net; s=20251104; t=1776779384; x=1777384184;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Q0zzfI2rQEV+jXiB+O0qtXX4eVvaANJECW9EykocPFs=;
-        b=eGGPpuvhfnREe2VmyrjNWb441ahPM3BvbqFeMy/UW6feNZ7tfzfMYVU+L08UhF8tgN
-         ni7HyfgS/3oaLCvrpsJnCWUVsoK41RtOHaLqS2o5yBgQrxWCvBKuOrE5KqELw1bVCVwm
-         /WXi0mUN/uvnGDpgatj4aTc1+ipJlf6ZD4f6T3aLSgbzPlB6gPQDAWE+opT9oLuwbxm/
-         GwBnoQMmpbIWZePVY0/4UqIBP4N8lvOPmw0bpkGI3PTBdl+oUk04ue0DW4knkJnoriCc
-         5eSZv0gS6G1vROe0BwlEDvV7AeVFkfmNBqKNCzC9HqHdqA49ysdzAJBXU+Q03yI7gCJl
-         rqng==
-X-Forwarded-Encrypted: i=1; AFNElJ/KmEIFc8qnyMZFo/G/FNgIMcFv0ZK0ZyZw7fkL3KLCbDRAXyBIAs4lqQiOWxsMXon6T+KjA31KQ1Ft1vlp4A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi59XUedmrMjI9crvjjeD0LdytCjcHgBtssSK04llDcV+es7kb
-	ZPELl6nwlR7jJQO5ag4tZR8548npomo0RiCYtPmRI2Xt21DUeYBOh5Y=
-X-Gm-Gg: AeBDies49WRW0yEA7g1t23LF9G+XNdJ3UWA/memLM28ZMdrb0M4g8DtxRgCB75/W2a9
-	0Xo0/e6cL8engFo6nP8QtIEzAWTS58ku3P9Jl4JJyKWQlvytE9lHlofltGnDc0AZU4VVUdjhxPP
-	MTXKeBMU9O6aT3ttjnG42jyQj6FeWmVH6jK+BXmijkIstCNVQKQiCFVmq1FqOukeCLazUgOc6B/
-	MglSDvqJrizZAtKpomMmAVha7V0/gqYs1zFl0/TXVgZtfPDvYFPOcUuOLZY4120C0f25j948aSr
-	amdkuFbKBIdwEiWbihpivWOpBI0OZOpy4kCZqhn1N5dKa7bwvg/DYVllI6MzTgFaE4AKpIDD77F
-	nFi59098eAMOLwB7lf5VIWXqiFrUyp9l0etnFM0pU0NZY/QqRW8A5FuVhFpSKXhOi3yjsedh09I
-	ITrgg=
-X-Received: by 2002:a05:600c:c177:b0:488:a82f:bba9 with SMTP id 5b1f17b1804b1-488fb7804f3mr246600625e9.22.1776779383165;
+        bh=UmFFDwy/wNWvl65UK2Lm+vY44R4kAs7LOrPcVbInZDM=;
+        b=AcV2huk764/y5s1Hp/lWbvYxMW5M6TEE6ZQnhbZusBbwLDEe7/OWZEojduvIaUL3KN
+         1oOv0VU6yO4/vGLg4hQKVShHIYdEjqYOLN9qKjhyDBQsiURlaJYScu2tgpvkKUbDdKyY
+         pBiciBHqfl9NH0QSueLwYWUuIjHd4R+xx92uB9N/jyz7TVJ0lyg5v6Jg3H/sqJMbQtKc
+         VFgUj8wygODaEPFdx+e+KJkp6r80uxs+BxcFG4KV4zNmW0U8tS5iEkkMCwfBF+iWdAcO
+         Pumz9zGJZMPneGdsGqNHdhoGqpT6CQgZ7czAv9T6Ps/lEys6hCgjo09M2LooMsSEzxRs
+         1lVw==
+X-Forwarded-Encrypted: i=1; AFNElJ+8Wz9I7iNDKso4PF10FgIWKGUnJ5IqW8OdlxGp9ce0p1rnrXuC7ZZRzo4uukew5U6HkJwgI8e3/abf7wPf/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0I9KHfCs+xbJdch9MAP4M3N3VPx+lmKl+92XQWLV3Cawmo5jc
+	5jh4SfBdZTM1flY4ARfNHkJcfc0v8fYY5u7lTDBaBpdvS6tTgKCojxs=
+X-Gm-Gg: AeBDieshj5J/z4jfDMLuxtSox8lqJgkWHMiV8RPOYC44GHm16zuQ2MUw6HcW8QwTZSx
+	m6MKJMhItqRW7y4Wngq4OCvK0cPcG68u1gv54kDuJICMCJ1qS+PcrZllYINGjk0humUtcdhmcRc
+	Ez5AAOsE1K1HVkBy3XctMSm6aT7m2GndwB20h9j6ojeilU+sb69uM1UGjdXurT2fpeZFhn83kCp
+	9NKUBMyTcrgZBjFnvDolSbPLs0qfu0Wv2J3rpYrPfmw9qBxFNoMWq1hOD41fpmdfBm3UDyvvXth
+	MXrLENI3OLdMer1RaGYDjVQFvmMDc3X9K++gX7mQx3WSpTfp0mjTXx4R/LVcziml9qCz10LP8YY
+	+XLUTiYpaRxAtWj+DlEKATJEJsvofiMTE1umKkQcaHj2pB15pLgOSIFsIPLjCltGITq6z3Sc1p4
+	xYRrk=
+X-Received: by 2002:a05:600c:8909:b0:489:1b10:d896 with SMTP id 5b1f17b1804b1-4891b10dd45mr124444525e9.0.1776779383993;
         Tue, 21 Apr 2026 06:49:43 -0700 (PDT)
 Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb78becdsm176331185e9.5.2026.04.21.06.49.42
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb78becdsm176331185e9.5.2026.04.21.06.49.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 06:49:42 -0700 (PDT)
+        Tue, 21 Apr 2026 06:49:43 -0700 (PDT)
 From: Tristan Madani <tristmd@gmail.com>
 To: Brian Norris <briannorris@chromium.org>
 Cc: Johannes Berg <johannes@sipsolutions.net>,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH v3 3/6] wifi: mwifiex: fix OOB read from firmware sta_count in station list response
-Date: Tue, 21 Apr 2026 13:49:35 +0000
-Message-ID: <20260421134938.331334-4-tristmd@gmail.com>
+Subject: [PATCH v3 4/6] wifi: mwifiex: fix OOB read in scan response from mismatched TLV data sizes
+Date: Tue, 21 Apr 2026 13:49:36 +0000
+Message-ID: <20260421134938.331334-5-tristmd@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260421134938.331334-1-tristmd@gmail.com>
 References: <20260421134938.331334-1-tristmd@gmail.com>
@@ -101,13 +101,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-35153-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35154-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -123,19 +123,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ED35343B994
+X-Rspamd-Queue-Id: 0B9FA43B9A3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Tristan Madani <tristan@talencesecurity.com>
 
-The firmware-controlled sta_count (u16) is used as an unbounded loop
-counter for iterating station info entries. An inflated count drives
-reads past the response buffer into kernel heap memory.
+The TSF and ChanBand TLV arrays are indexed by the firmware-controlled
+number_of_sets without cross-checking against the TLV header length
+fields. When number_of_sets exceeds the TLV data, the loop reads past
+the TLV data into adjacent command response memory.
 
-Add a check that sta_count fits within the response size.
+Stop using the TLV data once the index exceeds its reported length.
 
-Fixes: b21783e94e20 ("mwifiex: add sta_list firmware command")
+Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
 Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 ---
 Changes in v3:
@@ -145,31 +146,30 @@ Changes in v3:
 Changes in v2:
   - No code changes from v1.
 
- drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/scan.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
-index 85512f526c5f2..4cf654046c6ae 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
-@@ -976,8 +976,16 @@ static int mwifiex_ret_uap_sta_list(struct mwifiex_private *priv,
- 	struct mwifiex_ie_types_sta_info *sta_info = (void *)&sta_list->tlv;
- 	int i;
- 	struct mwifiex_sta_node *sta_node;
-+	u16 resp_size = le16_to_cpu(resp->size);
-+	u16 count = le16_to_cpu(sta_list->sta_count);
-+	u16 max_count;
+diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+index 97c0ec3b822e7..059215c86dffd 100644
+--- a/drivers/net/wireless/marvell/mwifiex/scan.c
++++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+@@ -2187,10 +2187,13 @@ int mwifiex_ret_802_11_scan(struct mwifiex_private *priv,
+ 		 * received.
+ 		 */
+ 		if (tsf_tlv)
+-			memcpy(&fw_tsf, &tsf_tlv->tsf_data[idx * TSF_DATA_SIZE],
+-			       sizeof(fw_tsf));
++			if ((idx + 1) * TSF_DATA_SIZE <=
++			    le16_to_cpu(tsf_tlv->header.len))
++				memcpy(&fw_tsf, &tsf_tlv->tsf_data[idx * TSF_DATA_SIZE],
++				       sizeof(fw_tsf));
  
--	for (i = 0; i < (le16_to_cpu(sta_list->sta_count)); i++) {
-+	if (resp_size < sizeof(*resp) - sizeof(resp->params) + sizeof(*sta_list))
-+		return -EINVAL;
-+	max_count = (resp_size - sizeof(*resp) + sizeof(resp->params) -
-+		     sizeof(*sta_list)) / sizeof(*sta_info);
-+	count = min(count, max_count);
-+	for (i = 0; i < count; i++) {
- 		sta_node = mwifiex_get_sta_entry(priv, sta_info->mac);
- 		if (unlikely(!sta_node))
- 			continue;
+-		if (chan_band_tlv) {
++		if (chan_band_tlv && (idx + 1) * sizeof(*chan_band) <=
++		    le16_to_cpu(chan_band_tlv->header.len)) {
+ 			chan_band = &chan_band_tlv->chan_band_param[idx];
+ 			radio_type = &chan_band->radio_type;
+ 		} else {
 -- 
 2.47.3
 
