@@ -1,207 +1,174 @@
-Return-Path: <linux-wireless+bounces-35208-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35209-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJ9xA6iJ6Gk6LgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35208-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 10:41:12 +0200
+	id 0Es7FwOK6Gk6LgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35209-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 10:42:43 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2A4443945
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 10:41:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD898443987
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 10:42:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3396E3051D91
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 08:39:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CA60300362C
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 08:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAD23BFE3C;
-	Wed, 22 Apr 2026 08:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011D12ED15F;
+	Wed, 22 Apr 2026 08:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b="v1YTomew"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="SXvC8DKW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-yw1-f226.google.com (mail-yw1-f226.google.com [209.85.128.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD613BFE26
-	for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 08:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DCE336EDE
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 08:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776847154; cv=none; b=HEhdmvU7EFZ8Aya+k/hwflhbaTZjdY0xPpaDeECBIAlaofXA0lGGpsK52bUCWiY/Ng8rje51M+P8wz3aJNJqMMW+vDidLJgc+xKr19TnkYvQzGKvFomfFAOQvSGpVSUPBgUzNloCgpz6GbU5JDEVAkCqMHjglEOJqQL8Shl5rM0=
+	t=1776847329; cv=none; b=l3HKLW8VLyS6LTRdTQ1DYlxVmslp7a0q1AlKhpH0bFqBJ/I31MV+iDhJ/GR2moK4K0bctgxVcvONa4uINpAzRLxqsGUb6FiL7WizNE5rNThOhuvctrrSYlw7ODgEwm5ajUeCZLMb7ggFNnOQJdxpQno0eyjSHsOF8O8+kQhXV+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776847154; c=relaxed/simple;
-	bh=aD5ZKvzwCJWOAYfguqrWQTS2cpGeKYz2zFLAh1cyFuE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Km7Z0mzr0B6ZZ9vKJgJ57OIiFmwRT9L3LcuoSSuCoSg1NVyRNspArbbYNrJmstGVectSnWlTSISwjAroEaR9nEpS3OhvixRZhFuPAjVgjfe2iy22ZC8u/88QgEmZSByV91UUhADeFXHuRQHU2jNYjBcunM/eIzNUJ7stFn3gLPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b=v1YTomew; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so84839645e9.2
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 01:39:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20251104.gappssmtp.com; s=20251104; t=1776847152; x=1777451952; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aD5ZKvzwCJWOAYfguqrWQTS2cpGeKYz2zFLAh1cyFuE=;
-        b=v1YTomew26XxGa7wn6+QxxofnmzDY8MG8Q6rSlhbD8KbXbHX3swtg4/aqHuKZEt5Ml
-         5orPpH3A2YbkTX3LYpLEkerb58BPIUXoi+kYvqmVcgE/6QGws87PHA8mbzxqfVBLLihO
-         GFXGG0HV2wRSCNebZG7x1mB6lZ8pamVNKzxYgwGcr5lAEQccQYtCNnwFlWrTCTU+3yOD
-         n+2asT2SpzYDKVgGMCpnHu24R1rhDkcIqSL/6DE+q3ogCvfIPhS/gTpKhm9T9AVPIEBa
-         KXMaWwS4onPU15IoQv4TVWG2sEILmc5unmE+wcltWJ95wMM8f/RmGQE0KlCYjxgVQHJx
-         uQwg==
+	s=arc-20240116; t=1776847329; c=relaxed/simple;
+	bh=gWoeKAVK9W7vVlciLjZBHMdToMYeip3zGK7JNfHnd3g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oflz3axSPBIpNnAY0BaRwz7Ls45VM0ZF6NNLZA+ULnUtC6o8Y6bZcAYdq2+b+vAjW+t8ozwxrlFqQE7mZNF3QoXnFyZQzC+nDGI1eh1PLKfXpK9GW/wEDNOvN6JFoeRvf7S6OSGDNqUTkoSMLxHF6lHbFK4POSpL8x2JtN9l304=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=SXvC8DKW; arc=none smtp.client-ip=209.85.128.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-yw1-f226.google.com with SMTP id 00721157ae682-797ab169454so68623567b3.3
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 01:42:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776847152; x=1777451952;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aD5ZKvzwCJWOAYfguqrWQTS2cpGeKYz2zFLAh1cyFuE=;
-        b=Qs+hYybp7Mng75rQRDKVoVKWSZ4aAgbEm8shdK7lEVrz5uMbONxGpZ7KTcfRe8Fk8J
-         AX1ZlojmoGUXynjrr41wPsUCCRhLnRgb0cwDXTXiR0kKgYOQNLol/azzd1r2Ref7zgK9
-         DzRwuDBl1ssQjB99SmOUMrKlxeMC66cBxRSWYiBxs0htDzogFfHleMqddfuk6M6Mkrzb
-         AFEnkoN1BPUFtwfytClQT2WN06m1CE7RYn6VPgXv+jn08hHd++KzQ51VssdJWknCK5lE
-         Hljy9udCpO5IAZUASWKJ61ME4DyAeWxe5Vp8SRUxgQZsXA3xxaqvGC28uLVYNKRCE3Wi
-         hfQg==
-X-Forwarded-Encrypted: i=1; AFNElJ9IzWX+ovQH1zREHXjNUl2T3YEAfWpBtSucF/VJk+BuDh8BzzBjDelEZDJFz4XBU2DSNChqJL3a4YrkfmqSLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyR6ABa7WhcHykfPes32UbMGlqjZgDvOp3e5jMUsacvUaZl+2Na
-	cbCc48BeJ1QcKFh08xobvDSCUIqQ11cPtSIJoitStzvGmaBeIvsKHqVqsXEj9T1KjUU=
-X-Gm-Gg: AeBDiesoBsSPpuqUutM9M9kpuQ7Y8YIXD7MJlf3YNR5KnfJ1hR3MuE/STBX76IwQOQW
-	ilHMEp3v7m2YbVDGv3vg+9NfSXQuupMHJL+sUe0FkJ30r8z+zv75JOG182JuYpn9Vpemrb0wL56
-	xF1W5NTUCaaB7gCuh6gUCyPOg8VmuKLHbieHUxD5SlkgOmdxeHOz9O8Q6BwEXImAYRSRSeTj0fU
-	ht0iOxMryXAmrRKA296Izk8LWosOuZm51wrnZ/o1Qd3zocLxqhyH+Up65MQiYn0k+ag2aSjnYNK
-	95q3fM3WCZ4Da2jx15eWSKT9XfujVxNPtzggjB9OMWyzz4hJYZEJLdjdybjqA9Sl4gwM1fwqdF3
-	eHanWcl7ujWq+VrqsO2ksFrPdTFaGXtbokiDPtCWoJzkaCfokS9iFo91YKmfSpNbmk2ZlvKMmv5
-	VInHYgduUoKcoWNUmVHA0cPQVZEV7z4OdfQ2AsNFWBO1kW9E30SxQpgLmDK9C61a9GzFMhqIZM6
-	+TtWTKiqXPoX76GVs2dR+nDFA==
-X-Received: by 2002:a05:600c:890c:b0:487:1108:48af with SMTP id 5b1f17b1804b1-488fb7389a6mr245381575e9.4.1776847151437;
-        Wed, 22 Apr 2026 01:39:11 -0700 (PDT)
-Received: from localhost (p200300f65f114e08a760282010012dc7.dip0.t-ipconnect.de. [2003:f6:5f11:4e08:a760:2820:1001:2dc7])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-488fc0f8188sm455887645e9.2.2026.04.22.01.39.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 01:39:10 -0700 (PDT)
-Date: Wed, 22 Apr 2026 10:39:09 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Ulf Hansson <ulfh@kernel.org>, "Christian A. Ehrhardt" <christian.ehrhardt@codasip.com>, 
-	linux-mmc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-kernel@vger.kernel.org, 
-	Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-mediatek@lists.infradead.org, 
-	Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Brian Norris <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>
-Subject: Re: [PATCH v1 1/6] sdio: Add syntactic sugar to store a pointer in
- sdio_driver_id
-Message-ID: <aeiHTPOA9jQrNWkX@monoceros>
-References: <cover.1776429984.git.u.kleine-koenig@baylibre.com>
- <c830049dcfcd99f005e2ff6742aace9341c61f13.1776429984.git.u.kleine-koenig@baylibre.com>
- <aeaMkfk_1t98e7SU@monoceros>
- <CABBYNZJzbEmYzTk2m+Y8SoHVouTMA6Gje_55iJsQ6cYtDLftbQ@mail.gmail.com>
- <aecu1ixyHP2hQvgE@monoceros>
- <aehwG2Egt93-sPVB@ashevche-desk.local>
+        d=1e100.net; s=20251104; t=1776847327; x=1777452127;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9QFQoDaEWqT8ApSd3T/yPP9UgkoXGgDXy6M1Q+3Z+F4=;
+        b=CT/WRjEXkBQwT5A+O90LjZjPu489gj3SaQs3yugmH1K71iPejyvTd6VMnYCop2lz6O
+         ymnTDrFAgdPhN0yoVS6xfS3FXKUQJ2ZZwpUVOGmyEweBt9X4tC7UGK4TyEe4sRUVWgN5
+         yirqL9aE2UzbPjCFh4B7TIr4ZM8EYZEjRYIajDe9hQxTd9RTjl8yV9L54LNjNobew6Cw
+         uiZW1X5VsJdERW551ao7GSp61skndvEMSq6OygIoQzmMCQ4+3zbbAyStxGHtZIGNPgwd
+         TuYkLns/v6zU6atXBwdwULB2E60u6mGsKQCm2okIyAjxyCBEHA0eww3pnBSYP/2UEWt0
+         j1fw==
+X-Forwarded-Encrypted: i=1; AFNElJ+4w3z5xnpQ6eXIAarMlhhu6DckwZPZ9e8wKoznOGLzVaY7Ziwm5dZSFIWp0lsZLEZLrDXUtG4uGtvCA1IQGg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiMaexClXk7oCkstgJ50EOC9E0/jHJCte/hZ564bWu7495G8j7
+	w44XlAhsgmjt2bMJD375gzcRk9vYdicscf64BFdia2wpypWHk4q5Su1ysRTZYYVkPIcEO9qk8Jt
+	dF1S1kjOxN7A0DJl5mjsTADXOg6vdjCNnb/G/BzWxN+SRTWZZJDJeCd2MXcEkprDoS1bnc3+/5c
+	Wo3o/uefTFi9Ds8o883iRk/gZ/keQwwXSAwzVDknZOVYo19BFSdleaIsjMA+BpOOZCAxGIg8PnD
+	tID6XzeR0ymn8Ozs3N1FpQYX+zJ
+X-Gm-Gg: AeBDiesmcWqFsstAN8/Tt7xZxekcPwd28Q2D7IhNOwGQCB0Oy97zHc7q2UtNbcvFOiD
+	Qqv6Km9bZirCLvrrQMheeHjSz00Q4yeM5KBFRIRzgBvSjxfR3yMr2M4lTbkJKI49NYXljAfXa7Z
+	Y5ix+vyD+APBwYN9KKhUNi5pxUq31shencMIW73pmvChMw6JpfvD1PsjteNl14gxXbOVc20xFLp
+	UU/qfAYEUUID7x36TyEHZ0insvM2iTmIg7bZ0mznOta2JKjalFnK5WIHEjwGncB/Pwc8SxfGD6Z
+	9S6Zu6D8MCqVM9LCx0O6ej9or/kIWacnTb+8/yyzxe607RYO0kIj1w63SosidW8Z8t0g4JwMMks
+	H2kXzSHQ3pvyhDsKhkM8po7sPWmXJ1msv6pR0MZ/ASiHLY4CH8C+U1cp5xdrzklumQljDgArKb8
+	nGuW0uoQGlo8XDTMODSYQES816CYwgfnnwyaJDDK36WuBzWWHk72sLWuVNqelE2yjboAUoESE=
+X-Received: by 2002:a05:690c:698b:b0:7b4:e6dd:e9cb with SMTP id 00721157ae682-7b9ecfb121amr221062567b3.33.1776847327489;
+        Wed, 22 Apr 2026 01:42:07 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-15.dlp.protect.broadcom.com. [144.49.247.15])
+        by smtp-relay.gmail.com with ESMTPS id 00721157ae682-7b9ee9a8194sm10744387b3.19.2026.04.22.01.42.07
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 22 Apr 2026 01:42:07 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8b0312bb1dcso121792326d6.1
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 01:42:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1776847327; x=1777452127; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9QFQoDaEWqT8ApSd3T/yPP9UgkoXGgDXy6M1Q+3Z+F4=;
+        b=SXvC8DKWoxbBR3yEIOga3oj2ftxb8++HWmvKaPmDKhad4N2ZLqM+xz2cJ+xSKRcZ/J
+         NcwZkj2KcDMadAgyGCNhjIpNCI/hCVMkLRwf6Vr3puUtTD/hy9BR0b3aWNiD75HqsSJi
+         3ucVWD9Uq5IbNZzPyJeOBCNVCGpZU1J+jlLL8=
+X-Forwarded-Encrypted: i=1; AFNElJ8nB/0Uh7ysCjtKiKPpXB4+UInvzJ6gTF+6wGzDGXxUunBAlHgd91PQwI2SV/v3xLLgYd8L63xnW+AB7eVd5w==@vger.kernel.org
+X-Received: by 2002:ac8:5851:0:b0:50e:fcbc:6b7e with SMTP id d75a77b69052e-50efcbc6e9dmr135631961cf.29.1776847326749;
+        Wed, 22 Apr 2026 01:42:06 -0700 (PDT)
+X-Received: by 2002:ac8:5851:0:b0:50e:fcbc:6b7e with SMTP id d75a77b69052e-50efcbc6e9dmr135631701cf.29.1776847326249;
+        Wed, 22 Apr 2026 01:42:06 -0700 (PDT)
+Received: from [10.176.2.190] ([192.19.176.227])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ae6133dsm121556606d6.25.2026.04.22.01.42.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Apr 2026 01:42:05 -0700 (PDT)
+Message-ID: <1a3eafb8-f0a3-4da3-bf73-13e8e1a67045@broadcom.com>
+Date: Wed, 22 Apr 2026 10:42:04 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vqsqetyrnjrxwten"
-Content-Disposition: inline
-In-Reply-To: <aehwG2Egt93-sPVB@ashevche-desk.local>
-X-Spamd-Result: default: False [-1.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: nl80211: require admin perm on SET_PMK / DEL_PMK
+To: Johannes Berg <johannes@sipsolutions.net>,
+ Michael Bommarito <michael.bommarito@gmail.com>,
+ linux-wireless@vger.kernel.org
+Cc: Avraham Stern <avraham.stern@intel.com>, linux-kernel@vger.kernel.org
+References: <20260421224552.4044147-1-michael.bommarito@gmail.com>
+ <e4b3f365a32b633babcd4cefde3fc32460e07e0d.camel@sipsolutions.net>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <e4b3f365a32b633babcd4cefde3fc32460e07e0d.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[baylibre-com.20251104.gappssmtp.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
+	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[baylibre.com];
-	TAGGED_FROM(0.00)[bounces-35208-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	TAGGED_FROM(0.00)[bounces-35209-lists,linux-wireless=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:dkim,broadcom.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	FREEMAIL_TO(0.00)[sipsolutions.net,gmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[broadcom.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[baylibre-com.20251104.gappssmtp.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[u.kleine-koenig@baylibre.com,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,codasip.com,vger.kernel.org,linuxfoundation.org,sang-engineering.com,holtmann.org,collabora.com,lists.infradead.org,realtek.com,nbd.name,mediatek.com,chromium.org,dolcini.it];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless,renesas];
-	TO_DN_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,baylibre-com.20251104.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 6F2A4443945
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: CD898443987
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On 22/04/2026 08:23, Johannes Berg wrote:
+> On Tue, 2026-04-21 at 18:45 -0400, Michael Bommarito wrote:
+>>
+>> Both ops were introduced without a .flags gate, so the generic
+>> netlink layer dispatches them to an unprivileged caller instead
+>> of rejecting with -EPERM at the permission check.  Every other
+>> connection-state op in the adjacent block (CONNECT, ASSOCIATE,
+>> AUTHENTICATE, SET_KEY, ...) carries GENL_UNS_ADMIN_PERM; SET_PMK
+>> / DEL_PMK were introduced without the flag in 2017 and left
+>> unchanged by later refactors.  Johannes checked the original
+>> Intel submission history and confirmed there is no admin check
+>> in any prior revision either, so this seems likely to be a
+>> simple oversight rather than an intentional carve-out.
+> 
+> FWIW, this submission did originally come from Avi, but we no longer
+> have a driver using it (it was never upstream anyway), so that now the
+> only affected driver is brcmfmac, AFAICT (other non-upstream drivers I
+> wouldn't know, of course.)
+> 
+> Arend, it does seem like the right thing to do here, but I wanted to
+> confirm with you and thus asked Michael to CC you, what do you think?
 
---vqsqetyrnjrxwten
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v1 1/6] sdio: Add syntactic sugar to store a pointer in
- sdio_driver_id
-MIME-Version: 1.0
+I agree. I saw the patch earlier this morning and acked the patch just now.
 
-On Wed, Apr 22, 2026 at 09:52:11AM +0300, Andy Shevchenko wrote:
-> On Tue, Apr 21, 2026 at 10:12:41AM +0200, Uwe Kleine-K=C3=B6nig (The Capa=
-ble Hub) wrote:
-> > On Mon, Apr 20, 2026 at 04:46:56PM -0400, Luiz Augusto von Dentz wrote:
-> > > On Mon, Apr 20, 2026 at 4:31=E2=80=AFPM Uwe Kleine-K=C3=B6nig (The Ca=
-pable Hub)
-> > > <u.kleine-koenig@baylibre.com> wrote:
-> > > > On Fri, Apr 17, 2026 at 03:10:47PM +0200, Uwe Kleine-K=C3=B6nig (Th=
-e Capable Hub) wrote:
-> > > > > On all current Linux architectures sizeof(long) =3D=3D sizeof(voi=
-d *) and
-> > > > > this is used a lot through the kernel. For example it enables the=
- usual
-> > > > > practice to store pointers in sdio_driver_id's .driver_data membe=
-r.
-> > > > >
-> > > > > This works fine, but involves casting and thus isn't type-safe.
-> >=20
-> > To be honest, with the involved void* this isn't really type-safe
-> > either, but at least the data keeps being a pointer which is really
-> > helpful on CHERI. FTR: The alternative would be to use uintptr_t instead
-> > of unsigned long, which also has proponents in the CHERI community and
-> > which is used in the current vendor patch stack.
->=20
-> FWIW, Linus categorically told that it has to be no uintptr_t in the Linu=
-x kernel.
-
-Then I'm lucky that this patch set doesn't introduce uintptr_t and so we
-can delay the discussion with Linus about that. (And we will have to
-hold that discussion at some point, because on CHERI we have
-sizeof(unsigned long) =3D 8 < sizeof(void *) =3D 16. I didn't check, but I
-think also unsigned long long cannot hold a void*.
-
-Best regards
-Uwe
-
---vqsqetyrnjrxwten
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmnoiSsACgkQj4D7WH0S
-/k74eggAtKiYZRohFpdNo44fvylrlq/Mfus5ZHYrI8EWLZuC+qMr7/LiHwZ8cxVQ
-atxZNwrK0qRyfjUM/lFUKvVOSQwTQzqaMGF0dNjfTVALktKCe6sLNr+gOXDqofhx
-UZn90knvTDOO5WfcrIf1K/ojUlgsGJ/4r63JkF3ZXPn8I3zd3NFFjhgn/ZzJkx74
-5CJywELP1+kmz3pLRw0rHztfMl3gmPTsxCWqHmxLNsNtSVskl2dRZH9FMfvNKCQo
-KwuE7hCxtAWO4py/igcaNXz/fS0nMSCqIo3IbxAzqfJAnHgPpGrvAKSOB4GLVCoc
-hmaPoy6M67vqAg5NjGB4uniPlgvymw==
-=8Fwl
------END PGP SIGNATURE-----
-
---vqsqetyrnjrxwten--
+Regards,
+Arend
 
