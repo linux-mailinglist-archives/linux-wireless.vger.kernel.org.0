@@ -1,155 +1,181 @@
-Return-Path: <linux-wireless+bounces-35225-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35226-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EM+gNMYQ6WmiTwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35225-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 20:17:42 +0200
+	id aPYDOfgS6WmBUAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35226-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 20:27:04 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E69449A6D
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 20:17:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83643449B3C
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 20:27:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DFF7305E1F6
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 18:13:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8EAD630022D9
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 18:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CEB73C8728;
-	Wed, 22 Apr 2026 18:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DD739E191;
+	Wed, 22 Apr 2026 18:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sVsVQLBF"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nFup5lW1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65359392C39
-	for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 18:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9B819D08F
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 18:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776881581; cv=none; b=YgQ7VqClED4e7b8DdSqyXbLg1hZ2HdIZPkApMLaFaI6ZDCpXBjNsjbU2M/HIHNNZV5xcmwiWckD/jSQEEdgMqFxnQ1E7jIKo1S4W2sVRINhpqwTnbD0gfTMnegIP1p2DVp7ybQvPi+XnD9eR5gQD0ZmDZmK0bRY5u/PcKkumN2c=
+	t=1776882420; cv=none; b=eXjfbOmAKSQLI7IITgeAQdy1NA++MGRhcP3a4joK/BnNnMjLVTimjWVIq+NM2Tni0W9s6YPS2J7dhp6lfGWD3P5ou+mMbnD3taxNNOmuBceC+DkYi3r6d2SFeWgypFLesDq59ihF3KL3V8IgZBP+OCtrWQxE/Xn+I5hOYtlrZ0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776881581; c=relaxed/simple;
-	bh=zqzp6N+tteerZ43Wplk3qf9bDZUdzAlltR13R+ntqsE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vgqn34RyYX1Zwqg/2S5gc9PGZwmct8pZOrxQcUFXIlGAG86KCmuHift74RiBhXcaYq+2/scU0b5eH2xjZeDOJiMND/6/33pIZw7Bu8O7SM8+gsn/ePW4ZOyXgNpEd1zVSnFbDfUmaAlImkLZsZ5JsutPfr2acdc0QIWVAlfPp5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sVsVQLBF; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ab46931cf1so47811505ad.0
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 11:13:00 -0700 (PDT)
+	s=arc-20240116; t=1776882420; c=relaxed/simple;
+	bh=8RergTrTI+oq1eluZtHVRvXF6XK6PJEKkz9ihK4+5ak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h8Vc6w1JaTExP6fkFIVt+Fg8+iicVpsFJ8MFfa2M2ifopj2qpz5augPB+cy0mEK+Zu2AdMaY7w7nc2UK87SPd3pHVQcLZi4m/UqSiYvAKr5QmxynJPlm9AOaMj3SyaJmlSghH5lsj6PzkYofoOybdEHXPlEfUa9+q7vDo7gXPiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=nFup5lW1; arc=none smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2d8ffdc31d0so2976490eec.0
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 11:26:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776881580; x=1777486380; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fvJb0BsWSnyMQEp11ZDn/hO/2BNVrzmyvEY81XwYvWc=;
-        b=sVsVQLBFD5xL095uzvxAgaCx4wkdM7U9VTEex9nizrYS6kDkeLmUSdEV6UyRqT1fOb
-         A3laFCSq3wq9fImVzhoXz7mwF+/G4f+Sy1cHZaxzrtk2TzUTZEraYJj8RvSShcm1hJzT
-         cEzLuNdR7Kf9YkMk++6k8qWzAcP+dc88zMYnbfQDvZoVunRp7hp72w1JyvZchcmI0Qdo
-         BgMXAOtjxmJFhmF3i0tN+hJjh6I/NUVoGIUKKXjnsoi66COYd3d1vZxrVnBHpQFNLQKK
-         YLjApGmBsKylqvnNgfVCCVzkiCk2TjDySkIx87o6Ao6iw8pHClDeILl69Ne98Ba/Iz+v
-         nyTg==
+        d=chromium.org; s=google; t=1776882418; x=1777487218; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=u4f/jhZU0Q8lxdbDfcfDDZ8FwchpeiGu7u1OCYjraWQ=;
+        b=nFup5lW1eiwJdXb3oZfhRRZ1kGWnGWuv4ANN7qW9+rW4zwuZFeFXOMFAVBCW+hSqm/
+         wpDqgJ4J+bkj6t1qH5/DOggtuqGfjYWkjUGCO2uCjra0V8i3kzVnrdc8gVh+Kk9uMaav
+         GSQMG4moHQDspZfDSnOTKXpFiIz5ZfMPi6buU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776881580; x=1777486380;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fvJb0BsWSnyMQEp11ZDn/hO/2BNVrzmyvEY81XwYvWc=;
-        b=JEV3UpJJsct75PM+rZI4E6imzkxCQW40H2Qk1w02meF0Ke/NneFgL6/OxaUcrl2XKe
-         wkVnf443bJpFABuqQM5aUa0Q5/JTbCC8pFbGDQoZw7hKx2fRF0vnUstjRZlCDxMqPOGv
-         QNDZIhRXfh7JKwFuUyLAZKx0ewBw4wQjZFAMZ8DwLDS/NyyI/YpIN6czvnpP6Iifa27b
-         XU25tkjjrnpHULzj8qqIMirw4P3GNHzWUemm0k7ieWTfu9k6qH8PLGvMuX9tS3jaDti5
-         Uxa8DAtD7jvTeaKFYIf1IwzJ6XkDMWbYmonNoEZ9D5WQOS68AJ1mAVRnbr6UBCbkxIzd
-         DtGA==
-X-Forwarded-Encrypted: i=1; AFNElJ9xxz0XZBkZnWmv3tSahkd5Huq2/w1NFt3bRYX6NiE01YSwLTT44nXzHzhLXelgWRVWl0F+qFzZeZ8lWRtAwA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz523q3XBLWXKct8M6oEQHpL/cWxuvrVA4FCcFy8QnnR1GSbYV/
-	M6P2tR7+jtaCgU+LlgzhAy2u3QC+vUqnQ37Ltu8QVQpSV8hy0aRFfDnV
-X-Gm-Gg: AeBDietgzOhwbrTM2i1KkiUd1pFZ11///f/4u2JaBv6Xjo5eTOVZyYJo7UlCwGPNZCq
-	aW3lvEI+wFcMJWWhdwNqcZ72F7Bhj8/hymlZOG5QB6QTOWF2MwNFWwRIZJxh63bgE0lgJQ4zEbI
-	C38AAflhJulj0UKyV83HIIEWUdVG8DI/dWjYenxeVP4kE/EyOkjUsjZg0S4t+gdH/WqwwFZI1eR
-	ldFLrkhlpqe49+aNBsxIbCNpfQtAtDQIa/4bWcRcAiatHvjC1h0GS/Cy7CO3UaA425HZvKuCBS9
-	KtCge4PxjsxyIqFGw7PzzyiYHDtjo0iHKy63X/j6XsldVJo3OpitigwJxIl5LV0tbuVE/40Vmt3
-	FVt4LkjjV2vVeB45aRZEyvTLGbTaQV4qKItZYYouiSxk4PLJIDwunOlxfC60K/xN4nUrVQqybgn
-	mqgfpCfkj9NoGZiWxsjXIWEjw9mYqESaMPiLJEqkcbFwS5H+n7A+GcyCT0lFGYgOcoBdA3QMdgE
-	Y7VIQ==
-X-Received: by 2002:a17:902:e748:b0:2b4:5d0c:7a85 with SMTP id d9443c01a7336-2b5f9dbcd42mr221249815ad.3.1776881579714;
-        Wed, 22 Apr 2026 11:12:59 -0700 (PDT)
-Received: from lenovo.localdomain (211-23-53-87.hinet-ip.hinet.net. [211.23.53.87])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff713sm173734745ad.5.2026.04.22.11.12.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 11:12:59 -0700 (PDT)
-From: Yu-Hsiang Tseng <asas1asas200@gmail.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Jeff Johnson <jjohnson@kernel.org>,
-	ath12k@lists.infradead.org,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v2] wifi: ath12k: fix false positive RCU warnings on PREEMPT_RT
-Date: Thu, 23 Apr 2026 02:12:46 +0800
-Message-ID: <20260422181246.1944073-1-asas1asas200@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260422142325.Glnd_2Zc@linutronix.de>
-References: <20260422142325.Glnd_2Zc@linutronix.de>
+        d=1e100.net; s=20251104; t=1776882418; x=1777487218;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u4f/jhZU0Q8lxdbDfcfDDZ8FwchpeiGu7u1OCYjraWQ=;
+        b=Wvzg4Ahlp9NBJvvl82551fpcbVoGMSs01CCcOEp5i/INQ8VTirKMeaYpmO+3d7fRVW
+         fqlEjZrp/s+d9njR4xzixCa8TWBVY1jndRAL+LsW01OVXHJViaHm92GJxeQzJOL/ZGNJ
+         UfWLTb2X0XDH9K5QceThJ76eFugUl0/Tw4c+uEfCa+B8AzWA/JR1b8seaW5sBoFf4Gah
+         ICLxg75y32oc8LTB2c7fMtjrRoPqiYmxkvp56q+qipOoBJ8/PnKE3kMwSYPlq0fzuO+b
+         WvHV2qsfpNMN8XXlifi2avJhIaRaP6sTRwIRN4oUjkb3UOcfor85+5MMKPrpBgd7n+/e
+         2RXA==
+X-Forwarded-Encrypted: i=1; AFNElJ8ABLPAVfmpfNKeP77RMj1OeVhzNiD+W8ZSpStiXtNRXeFkjELwkfrAt22KGS4WELP7jOpSy+KNKpZ3xTwrQA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOl638fE09oKIK+yTZ1nD84Z+R9tKRFaEgD8ANezCQPej7eoTo
+	8aIuGXADVfj803MOxWk8b8CWF1JsSS9uvE2chgDVjOC6YPXMEtKlP9ZZa5gnPcBGAGcF+ZHsnV6
+	8vXY=
+X-Gm-Gg: AeBDiev4XTaSyaD/X8HVYMlE0zxZ1yG/u/VqzQDu9rkXHWX+FeAjUWkY5VNcanwA6tQ
+	N8kGi9hXatcm8R4OgO8axljlwABMwyUWVP8RlCMFWMQK/sJeR1G1ndBYz2xdPGTGBzhu6gYMU/u
+	ARCxKX4AgjTJHk8gzQwAWAm8P6ig3DGCHmnT1TyZInNqWoSGZZz0CnlolD9OVdaAqxQqrYvOYEE
+	uGllt8udjw2crWJ5SfqFuu2LQ+eW8i2hLpBudSBTCPY2D5h8lY0XmJ7BJ3AkOoGBqTmRzsSxF6s
+	+ZQEBt8o94ZbTwM331KphbMvkAeP6yG24MNTYNYriyc/Pz+k+9x5zUywJHd0j6Jf5wxs6MTg5SB
+	oSJd4Qf+r23rhUr10xnvXn8KzKHp+cF1WEbz3edEz5pxkANDrOAFgGpYHLGvCkvNmijMpk+9Mjr
+	JgwnEK1yZkL3Rmr2OxF4c/kVYY786IDrRYkKkEWOkHdYTMcTk660irV7JKlOTTxSQFzyqIDBxy
+X-Received: by 2002:a05:693c:300c:b0:2dd:c066:bfe with SMTP id 5a478bee46e88-2e478a331bfmr14869905eec.21.1776882418210;
+        Wed, 22 Apr 2026 11:26:58 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e7c:8:e136:eb5d:6ed2:47d5])
+        by smtp.gmail.com with UTF8SMTPSA id 5a478bee46e88-2e539fa3ce1sm23132837eec.4.2026.04.22.11.26.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Apr 2026 11:26:57 -0700 (PDT)
+Date: Wed, 22 Apr 2026 11:26:55 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Tristan Madani <tristmd@gmail.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Tristan Madani <tristan@talencesecurity.com>
+Subject: Re: [PATCH v3 3/6] wifi: mwifiex: fix OOB read from firmware
+ sta_count in station list response
+Message-ID: <aekS72ESOUlnqGIo@google.com>
+References: <20260421134938.331334-1-tristmd@gmail.com>
+ <20260421134938.331334-4-tristmd@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260421134938.331334-4-tristmd@gmail.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35225-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35226-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[asas1asas200@gmail.com,linux-wireless@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[briannorris@chromium.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[chromium.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 28E69449A6D
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 83643449B3C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 22, 2026 at 04:23:25PM +0200, Sebastian Andrzej Siewior wrote:
-> As elaborated above, this is not PREEMPT_RT specific but preemptible
-> TREE RCU.
+On Tue, Apr 21, 2026 at 01:49:35PM +0000, Tristan Madani wrote:
+> From: Tristan Madani <tristan@talencesecurity.com>
+> 
+> The firmware-controlled sta_count (u16) is used as an unbounded loop
+> counter for iterating station info entries. An inflated count drives
+> reads past the response buffer into kernel heap memory.
+> 
+> Add a check that sta_count fits within the response size.
+> 
+> Fixes: b21783e94e20 ("mwifiex: add sta_list firmware command")
+> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+> ---
+> Changes in v3:
+>   - Regenerated from wireless-next with proper git format-patch to
+>     produce valid index hashes (v2 had post-processed index lines).
+> 
+> Changes in v2:
+>   - No code changes from v1.
+> 
+>  drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
+> index 85512f526c5f2..4cf654046c6ae 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
+> @@ -976,8 +976,16 @@ static int mwifiex_ret_uap_sta_list(struct mwifiex_private *priv,
+>  	struct mwifiex_ie_types_sta_info *sta_info = (void *)&sta_list->tlv;
+>  	int i;
+>  	struct mwifiex_sta_node *sta_node;
+> +	u16 resp_size = le16_to_cpu(resp->size);
+> +	u16 count = le16_to_cpu(sta_list->sta_count);
+> +	u16 max_count;
+>  
+> -	for (i = 0; i < (le16_to_cpu(sta_list->sta_count)); i++) {
+> +	if (resp_size < sizeof(*resp) - sizeof(resp->params) + sizeof(*sta_list))
+> +		return -EINVAL;
+> +	max_count = (resp_size - sizeof(*resp) + sizeof(resp->params) -
+> +		     sizeof(*sta_list)) / sizeof(*sta_info);
 
-You're right. Sent v3 that clarifies the scope (preemptible RCU in
-general, not only PREEMPT_RT).
+The repeated arithmetic is a bit weird, but I'm not sure if it'd
+actually be better to stash it in its own variable. Seems good enough I
+suppose.
 
-> If both this then use this then I guess something like
->     lockdep_assert_in_rcu_read_lock()
-> is what you look for.
+Acked-by: Brian Norris <briannorris@chromium.org>
 
-Adopted in v3 - thanks for the pointer, it reads much cleaner than
-RCU_LOCKDEP_WARN().
-
-v3: https://lore.kernel.org/ath12k/20260422180814.1938317-1-asas1asas200@gmail.com/
-
-Thanks,
-Yu-Hsiang
+> +	count = min(count, max_count);
+> +	for (i = 0; i < count; i++) {
+>  		sta_node = mwifiex_get_sta_entry(priv, sta_info->mac);
+>  		if (unlikely(!sta_node))
+>  			continue;
+> -- 
+> 2.47.3
+> 
 
