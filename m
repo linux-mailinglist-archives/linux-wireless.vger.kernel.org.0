@@ -1,194 +1,207 @@
-Return-Path: <linux-wireless+bounces-35207-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35208-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCHmIdSH6Gk6LgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35207-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 10:33:24 +0200
+	id UJ9xA6iJ6Gk6LgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35208-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 10:41:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071834437F1
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 10:33:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2A4443945
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 10:41:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 718E130154A9
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 08:33:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3396E3051D91
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2026 08:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7BF377575;
-	Wed, 22 Apr 2026 08:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAD23BFE3C;
+	Wed, 22 Apr 2026 08:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fwWuJoPD"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b="v1YTomew"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dy1-f225.google.com (mail-dy1-f225.google.com [74.125.82.225])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37FB3BF673
-	for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 08:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD613BFE26
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 08:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776846788; cv=none; b=hEJ7mMJqpeY70njuQE2TymyUOtrVdNzo4g4C17pzBT/+PXEsfslceg+vg4MWKn25xZo1URwGuojxqA7C9FfkhOxf6mQz8zvtGtoGNhZ7/mnef+T7TcpQOI3w39IPHZ2/bVDksF2uk6N5zongFNjwHcnqqQg9D/Y4ZoFUpd2Rh6o=
+	t=1776847154; cv=none; b=HEhdmvU7EFZ8Aya+k/hwflhbaTZjdY0xPpaDeECBIAlaofXA0lGGpsK52bUCWiY/Ng8rje51M+P8wz3aJNJqMMW+vDidLJgc+xKr19TnkYvQzGKvFomfFAOQvSGpVSUPBgUzNloCgpz6GbU5JDEVAkCqMHjglEOJqQL8Shl5rM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776846788; c=relaxed/simple;
-	bh=41xW4ejv7T1CSV+3/l1A9VAHjhkxCJbB9E6clsG2pBA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mtOwZiE4FwNt09GDhoZ7q/VyNKSF26rg/FVq+7NtuZvewcvLoULqYNTfLQkVh4Z3tqpOm2P0AEKKcGZyAEK9V9RrzpEfQe+pMrsn08AVwkY3kpRafoSKrQHY2XMTNsX+491IDrRxLairXVqGHhPr2ht6Wls3iPNp9SPPU70URV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fwWuJoPD; arc=none smtp.client-ip=74.125.82.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-dy1-f225.google.com with SMTP id 5a478bee46e88-2dee127b3c5so6639749eec.1
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 01:33:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776846786; x=1777451586;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HwojWsoB4+OylC4P6G4YO5Qsy6kg6KFoVsUdEXs9maM=;
-        b=F5A9990zXu5w49yBU2kLR0W51/v90OCm608GH1VSNs3iUYR5w5t2JkXS6QKzcBZ7Sr
-         t7LYhseYSR85NJ4uA9JdnMg0oCQLfW6osFbtBU+htCPqQc33CCU7pWfVgirBTjMYPL5H
-         sr1oATe86KE6lYxFGANvQ1ANhv8U128cnsd6Asewlev5qYXZVMCLwkKOBYqIx3JLu5X3
-         eQkNdRHppsp6axvyTfz51OUFW+68D8dOGYWKsXNtRrCNYQP3o+8YmAkssg+fdBsczk7+
-         fPZs+jr4HHSZ3QoREfWDFY0Y+KoGti8KcOQhJrMpLU2t/Yb35DBqtnL1P6b/8fYbSiky
-         9RHA==
-X-Forwarded-Encrypted: i=1; AFNElJ/OyNIigZh7CGMVFfqn/dMa7r3XUzhyLrd+9QdnsfxUjALTVY0nBCeSOyj2PHJ9ugI79oc0pWjG4ezexbyeZg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YygkxHRFVNxImAdwNqd0dA7Ar5HqS8Q5zVpuur43SEVMLavLoCH
-	y3byX9myChwkJX9dUo8AimBwg/BXm6wV+CeJMC3FmasFusDw+Duxvr8nKHjJB7YklDbSqM0S4Z8
-	1OKv9rqEjQEg7FiF1GZ0so0k8T97R20Wx2jrTTu0VqDEMxsxysQHOnZfJmu5nGsP2PrbHLtX1Yy
-	FCekJQ+1LlSCbA6kq9yrdE1oRauKYz2b29cy8IVRQtghMSEqGSgjwxrYehrhtxWWayxrijNsLy7
-	TLLf3yXGkjLdUCOmomHin5Zd4pZ
-X-Gm-Gg: AeBDiesY27VCob+QP0fwaVdjFDr/oto4XoN5ImsQjF/d/tcyjyY3JW+/H+hmlJq8JHp
-	4OGSBRkO63015fO0NLGNgcnLdEshp3PClMRTSiTkxAtMxlNOe5Xw1jAaj5g2yYh1X3W/XBVOS/g
-	higgR6jeriYy60DYVbDLKZwEnDc06bAJ0Zq86WQ8//jsTmO5ZZqMnmdbm/d3DWlH2u/KXQMu145
-	vqHtnzThhdoGhxVafCf4sVJjjLKd7qb+pv0r54Fd34jfna96rqmUAa/0cg+vrtZp71F8ief75YV
-	JtraV01/P+Vm79Lewg62egFn4CkSoagWXfKX+Cj6kPVgSVzH+SbqAZRrR8FUD6VMEw9Me1JmKik
-	dExLI73Ksu2AFkS1T3j/UMzlzl/mlHq1/2VzHWvFXBfbHsSCmlIZntzlzCsfHvyF4wzy5NjOmC1
-	QSMuC/MMtsJ+Gkzop9WEUJV0PIljBCzgYS8flVi/8u/28iyNMOsytS/JNu+/7EWjoQQ9c4jnw=
-X-Received: by 2002:a05:7301:1291:b0:2ea:5057:a333 with SMTP id 5a478bee46e88-2ea5057b8dfmr4157215eec.15.1776846785603;
-        Wed, 22 Apr 2026 01:33:05 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-90.dlp.protect.broadcom.com. [144.49.247.90])
-        by smtp-relay.gmail.com with ESMTPS id 5a478bee46e88-2e53cccd9ccsm1085657eec.27.2026.04.22.01.33.05
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 22 Apr 2026 01:33:05 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-2e60238adb1so7895743eec.0
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 01:33:04 -0700 (PDT)
+	s=arc-20240116; t=1776847154; c=relaxed/simple;
+	bh=aD5ZKvzwCJWOAYfguqrWQTS2cpGeKYz2zFLAh1cyFuE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Km7Z0mzr0B6ZZ9vKJgJ57OIiFmwRT9L3LcuoSSuCoSg1NVyRNspArbbYNrJmstGVectSnWlTSISwjAroEaR9nEpS3OhvixRZhFuPAjVgjfe2iy22ZC8u/88QgEmZSByV91UUhADeFXHuRQHU2jNYjBcunM/eIzNUJ7stFn3gLPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b=v1YTomew; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so84839645e9.2
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2026 01:39:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1776846783; x=1777451583; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HwojWsoB4+OylC4P6G4YO5Qsy6kg6KFoVsUdEXs9maM=;
-        b=fwWuJoPDn9PIi15yGYKowRuXQkYMcaGR3/T2HJWZo1iQBUL3ZnASDgZorzr57sHI2p
-         zEZHrFHLdhV0EJPQV+Idi7XwNxXHBn+veZzP/EojpSQB3Cw10NTbeFlVb2XMQJwWjmTo
-         h5eAzvWqh2zmkkPSTrhCu+zUs0pMoOrg2wGYI=
-X-Forwarded-Encrypted: i=1; AFNElJ8h0A4zRwx8inawzUn0XI3oOrp9ZZcgkBjeSWts8MG0gN/hkG2J6R2W+OzUk+z1bOuUVhkV63yNUlQ6Dudh5w==@vger.kernel.org
-X-Received: by 2002:a05:693c:3007:b0:2df:5715:82ca with SMTP id 5a478bee46e88-2e46557d3b3mr11251560eec.11.1776846783458;
-        Wed, 22 Apr 2026 01:33:03 -0700 (PDT)
-X-Received: by 2002:a05:693c:3007:b0:2df:5715:82ca with SMTP id 5a478bee46e88-2e46557d3b3mr11251553eec.11.1776846782869;
-        Wed, 22 Apr 2026 01:33:02 -0700 (PDT)
-Received: from [10.176.2.190] ([192.19.176.227])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2e53d8b944bsm22570177eec.28.2026.04.22.01.33.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Apr 2026 01:33:02 -0700 (PDT)
-Message-ID: <bb2efbdf-5e46-4e56-b785-dda27759b70f@broadcom.com>
-Date: Wed, 22 Apr 2026 10:32:59 +0200
+        d=baylibre-com.20251104.gappssmtp.com; s=20251104; t=1776847152; x=1777451952; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aD5ZKvzwCJWOAYfguqrWQTS2cpGeKYz2zFLAh1cyFuE=;
+        b=v1YTomew26XxGa7wn6+QxxofnmzDY8MG8Q6rSlhbD8KbXbHX3swtg4/aqHuKZEt5Ml
+         5orPpH3A2YbkTX3LYpLEkerb58BPIUXoi+kYvqmVcgE/6QGws87PHA8mbzxqfVBLLihO
+         GFXGG0HV2wRSCNebZG7x1mB6lZ8pamVNKzxYgwGcr5lAEQccQYtCNnwFlWrTCTU+3yOD
+         n+2asT2SpzYDKVgGMCpnHu24R1rhDkcIqSL/6DE+q3ogCvfIPhS/gTpKhm9T9AVPIEBa
+         KXMaWwS4onPU15IoQv4TVWG2sEILmc5unmE+wcltWJ95wMM8f/RmGQE0KlCYjxgVQHJx
+         uQwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776847152; x=1777451952;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aD5ZKvzwCJWOAYfguqrWQTS2cpGeKYz2zFLAh1cyFuE=;
+        b=Qs+hYybp7Mng75rQRDKVoVKWSZ4aAgbEm8shdK7lEVrz5uMbONxGpZ7KTcfRe8Fk8J
+         AX1ZlojmoGUXynjrr41wPsUCCRhLnRgb0cwDXTXiR0kKgYOQNLol/azzd1r2Ref7zgK9
+         DzRwuDBl1ssQjB99SmOUMrKlxeMC66cBxRSWYiBxs0htDzogFfHleMqddfuk6M6Mkrzb
+         AFEnkoN1BPUFtwfytClQT2WN06m1CE7RYn6VPgXv+jn08hHd++KzQ51VssdJWknCK5lE
+         Hljy9udCpO5IAZUASWKJ61ME4DyAeWxe5Vp8SRUxgQZsXA3xxaqvGC28uLVYNKRCE3Wi
+         hfQg==
+X-Forwarded-Encrypted: i=1; AFNElJ9IzWX+ovQH1zREHXjNUl2T3YEAfWpBtSucF/VJk+BuDh8BzzBjDelEZDJFz4XBU2DSNChqJL3a4YrkfmqSLg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyR6ABa7WhcHykfPes32UbMGlqjZgDvOp3e5jMUsacvUaZl+2Na
+	cbCc48BeJ1QcKFh08xobvDSCUIqQ11cPtSIJoitStzvGmaBeIvsKHqVqsXEj9T1KjUU=
+X-Gm-Gg: AeBDiesoBsSPpuqUutM9M9kpuQ7Y8YIXD7MJlf3YNR5KnfJ1hR3MuE/STBX76IwQOQW
+	ilHMEp3v7m2YbVDGv3vg+9NfSXQuupMHJL+sUe0FkJ30r8z+zv75JOG182JuYpn9Vpemrb0wL56
+	xF1W5NTUCaaB7gCuh6gUCyPOg8VmuKLHbieHUxD5SlkgOmdxeHOz9O8Q6BwEXImAYRSRSeTj0fU
+	ht0iOxMryXAmrRKA296Izk8LWosOuZm51wrnZ/o1Qd3zocLxqhyH+Up65MQiYn0k+ag2aSjnYNK
+	95q3fM3WCZ4Da2jx15eWSKT9XfujVxNPtzggjB9OMWyzz4hJYZEJLdjdybjqA9Sl4gwM1fwqdF3
+	eHanWcl7ujWq+VrqsO2ksFrPdTFaGXtbokiDPtCWoJzkaCfokS9iFo91YKmfSpNbmk2ZlvKMmv5
+	VInHYgduUoKcoWNUmVHA0cPQVZEV7z4OdfQ2AsNFWBO1kW9E30SxQpgLmDK9C61a9GzFMhqIZM6
+	+TtWTKiqXPoX76GVs2dR+nDFA==
+X-Received: by 2002:a05:600c:890c:b0:487:1108:48af with SMTP id 5b1f17b1804b1-488fb7389a6mr245381575e9.4.1776847151437;
+        Wed, 22 Apr 2026 01:39:11 -0700 (PDT)
+Received: from localhost (p200300f65f114e08a760282010012dc7.dip0.t-ipconnect.de. [2003:f6:5f11:4e08:a760:2820:1001:2dc7])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-488fc0f8188sm455887645e9.2.2026.04.22.01.39.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2026 01:39:10 -0700 (PDT)
+Date: Wed, 22 Apr 2026 10:39:09 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Ulf Hansson <ulfh@kernel.org>, "Christian A. Ehrhardt" <christian.ehrhardt@codasip.com>, 
+	linux-mmc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-kernel@vger.kernel.org, 
+	Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-mediatek@lists.infradead.org, 
+	Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Brian Norris <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>
+Subject: Re: [PATCH v1 1/6] sdio: Add syntactic sugar to store a pointer in
+ sdio_driver_id
+Message-ID: <aeiHTPOA9jQrNWkX@monoceros>
+References: <cover.1776429984.git.u.kleine-koenig@baylibre.com>
+ <c830049dcfcd99f005e2ff6742aace9341c61f13.1776429984.git.u.kleine-koenig@baylibre.com>
+ <aeaMkfk_1t98e7SU@monoceros>
+ <CABBYNZJzbEmYzTk2m+Y8SoHVouTMA6Gje_55iJsQ6cYtDLftbQ@mail.gmail.com>
+ <aecu1ixyHP2hQvgE@monoceros>
+ <aehwG2Egt93-sPVB@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: nl80211: require admin perm on SET_PMK / DEL_PMK
-To: Michael Bommarito <michael.bommarito@gmail.com>,
- linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- Avraham Stern <avraham.stern@intel.com>, linux-kernel@vger.kernel.org
-References: <20260421224552.4044147-1-michael.bommarito@gmail.com>
-Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20260421224552.4044147-1-michael.bommarito@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vqsqetyrnjrxwten"
+Content-Disposition: inline
+In-Reply-To: <aehwG2Egt93-sPVB@ashevche-desk.local>
+X-Spamd-Result: default: False [-1.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
-	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[baylibre-com.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35207-lists,linux-wireless=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sipsolutions.net:email];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[broadcom.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
+	DMARC_NA(0.00)[baylibre.com];
+	TAGGED_FROM(0.00)[bounces-35208-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[baylibre-com.20251104.gappssmtp.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[u.kleine-koenig@baylibre.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,codasip.com,vger.kernel.org,linuxfoundation.org,sang-engineering.com,holtmann.org,collabora.com,lists.infradead.org,realtek.com,nbd.name,mediatek.com,chromium.org,dolcini.it];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 071834437F1
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless,renesas];
+	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,baylibre-com.20251104.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: 6F2A4443945
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 22/04/2026 00:45, Michael Bommarito wrote:
-> NL80211_CMD_SET_PMK and NL80211_CMD_DEL_PMK manage the offloaded
-> 4-way-handshake PMK state used by drivers advertising
-> NL80211_EXT_FEATURE_4WAY_HANDSHAKE_STA_1X.  The only in-tree
-> driver that wires up both ->set_pmk / ->del_pmk and advertises
-> the feature today is brcmfmac, so the practical reach of this
-> patch is narrow.
-> 
-> Both ops were introduced without a .flags gate, so the generic
-> netlink layer dispatches them to an unprivileged caller instead
-> of rejecting with -EPERM at the permission check.  Every other
-> connection-state op in the adjacent block (CONNECT, ASSOCIATE,
-> AUTHENTICATE, SET_KEY, ...) carries GENL_UNS_ADMIN_PERM; SET_PMK
-> / DEL_PMK were introduced without the flag in 2017 and left
-> unchanged by later refactors.  Johannes checked the original
-> Intel submission history and confirmed there is no admin check
-> in any prior revision either, so this seems likely to be a
-> simple oversight rather than an intentional carve-out.
-> 
-> Require GENL_UNS_ADMIN_PERM so the genl layer performs the same
-> capable(CAP_NET_ADMIN) check as its siblings.  wpa_supplicant
-> already needs CAP_NET_ADMIN for every other nl80211 op it issues,
-> so supplicant operation is unaffected.  The worst case the missing
-> gate enables today is an unprivileged local process on a
-> multi-user system invalidating the offloaded PMK state of another
-> user's 4-way-handshake session, forcing a full EAP re-auth on the
-> next reconnect.
-> 
-> Verified in UML: an unprivileged probe (uid=1000) sees
-> SET_MULTICAST_TO_UNICAST (sibling op with GENL_UNS_ADMIN_PERM)
-> return -EPERM on both pre- and post-fix kernels, while SET_PMK /
-> DEL_PMK return -ENODEV from nl80211_pre_doit()'s wdev lookup pre-
-> fix (proving dispatch crossed the genl permission check) and
-> -EPERM post-fix (rejected at the genl layer as intended).
-> 
-> Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-> Fixes: 3a00df5707b6 ("cfg80211: support 4-way handshake offloading for 802.1X")
 
-Good catch. Seems like good thing to do.
+--vqsqetyrnjrxwten
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1 1/6] sdio: Add syntactic sugar to store a pointer in
+ sdio_driver_id
+MIME-Version: 1.0
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom>
+On Wed, Apr 22, 2026 at 09:52:11AM +0300, Andy Shevchenko wrote:
+> On Tue, Apr 21, 2026 at 10:12:41AM +0200, Uwe Kleine-K=C3=B6nig (The Capa=
+ble Hub) wrote:
+> > On Mon, Apr 20, 2026 at 04:46:56PM -0400, Luiz Augusto von Dentz wrote:
+> > > On Mon, Apr 20, 2026 at 4:31=E2=80=AFPM Uwe Kleine-K=C3=B6nig (The Ca=
+pable Hub)
+> > > <u.kleine-koenig@baylibre.com> wrote:
+> > > > On Fri, Apr 17, 2026 at 03:10:47PM +0200, Uwe Kleine-K=C3=B6nig (Th=
+e Capable Hub) wrote:
+> > > > > On all current Linux architectures sizeof(long) =3D=3D sizeof(voi=
+d *) and
+> > > > > this is used a lot through the kernel. For example it enables the=
+ usual
+> > > > > practice to store pointers in sdio_driver_id's .driver_data membe=
+r.
+> > > > >
+> > > > > This works fine, but involves casting and thus isn't type-safe.
+> >=20
+> > To be honest, with the involved void* this isn't really type-safe
+> > either, but at least the data keeps being a pointer which is really
+> > helpful on CHERI. FTR: The alternative would be to use uintptr_t instead
+> > of unsigned long, which also has proponents in the CHERI community and
+> > which is used in the current vendor patch stack.
+>=20
+> FWIW, Linus categorically told that it has to be no uintptr_t in the Linu=
+x kernel.
 
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> Assisted-by: Claude:claude-opus-4-7
-> ---
->   net/wireless/nl80211.c | 2 ++
->   1 file changed, 2 insertions(+)
+Then I'm lucky that this patch set doesn't introduce uintptr_t and so we
+can delay the discussion with Linus about that. (And we will have to
+hold that discussion at some point, because on CHERI we have
+sizeof(unsigned long) =3D 8 < sizeof(void *) =3D 16. I didn't check, but I
+think also unsigned long long cannot hold a void*.
+
+Best regards
+Uwe
+
+--vqsqetyrnjrxwten
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmnoiSsACgkQj4D7WH0S
+/k74eggAtKiYZRohFpdNo44fvylrlq/Mfus5ZHYrI8EWLZuC+qMr7/LiHwZ8cxVQ
+atxZNwrK0qRyfjUM/lFUKvVOSQwTQzqaMGF0dNjfTVALktKCe6sLNr+gOXDqofhx
+UZn90knvTDOO5WfcrIf1K/ojUlgsGJ/4r63JkF3ZXPn8I3zd3NFFjhgn/ZzJkx74
+5CJywELP1+kmz3pLRw0rHztfMl3gmPTsxCWqHmxLNsNtSVskl2dRZH9FMfvNKCQo
+KwuE7hCxtAWO4py/igcaNXz/fS0nMSCqIo3IbxAzqfJAnHgPpGrvAKSOB4GLVCoc
+hmaPoy6M67vqAg5NjGB4uniPlgvymw==
+=8Fwl
+-----END PGP SIGNATURE-----
+
+--vqsqetyrnjrxwten--
 
