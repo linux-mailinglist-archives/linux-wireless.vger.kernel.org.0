@@ -1,185 +1,308 @@
-Return-Path: <linux-wireless+bounces-35242-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35243-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KzEEUkD6mk/rQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35242-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2026 13:32:25 +0200
+	id GAYVGKUh6mnKuwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35243-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2026 15:41:57 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18BA4514F9
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2026 13:32:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF8B453275
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2026 15:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9EAAB300D325
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2026 11:32:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30F72301224C
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2026 13:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7B524887E;
-	Thu, 23 Apr 2026 11:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C6E289E13;
+	Thu, 23 Apr 2026 13:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kYC0/WIt"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="CTOxuYDe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.162])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED2020B80B
-	for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2026 11:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B7929D26C
+	for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2026 13:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776943920; cv=none; b=Wr/cPNoRSLoxImP+uaD1xDXsradj+tKBXrz0ztgXME53Z63I5hry35nPTY344t5jU45NWaTL+N34kEilfoNfBkS2kLePxMlWqv7NR11EMK6jPCmh99WjmRonEX4ITNGyBnhESfHujeKKNe/AFeGB27+eds4FHtEA/fFJbL79xdE=
+	t=1776951580; cv=none; b=DH4IUFeuf9M5VcnJbacDeCKyj0wz8zcksrtFBZAwe+r6J+CV6/exyM/6FrmI+EzQYdcjiS/j9RGElNEZTOO/bWgvmH0q2TLwxh0579eF2RDchGDX5hbV0WAg/bLAkN/kOwdHVbg8IdEB2TiJd8om6HOJWlWaJDuczn5I4JBsW1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776943920; c=relaxed/simple;
-	bh=sNqc2IHHGZXE51XM9BY3L2IinRP76AhtsUz627y36/o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eb3R+Cc3n/bMAKItkUm/y2/GeoYJsEkAqZDZ0SCmXYmGwVZ/NbZ530hhB4UsHq04hRABnoQutK5PKGBmekbpmfxCcEzbaMXa/Zv0XM6tFm2RsZDL5rhl2+nzfC+0YNE5FCVVhG0F3n6HJVSrCyMRtcr3mvMicoFefzKn1wnKhJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kYC0/WIt; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-59dea72099eso6730948e87.0
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2026 04:31:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776943916; x=1777548716; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RvJx/7YrmzLtOh5FuR6naBRpDEPyldYeuzc2zm3U/2c=;
-        b=kYC0/WItnex/YIeipQY2Dw0BiM3c98MlGK6TJX/BgNO0xE46Ib3tD9JWn41ME3tURl
-         zXvxVEgPOjSh86KDZ4I/RZAjERBqObvtAWcfhemFpke2/OhHtecrPurFHedEjWAYYoFc
-         a/R/qkc/nFSwxvH7a8LhY1eizLPCZVQV1aLdcKkGtYJTdD2xzcvs97hjeZLAUmbo/zAF
-         dueLw7RjECora9b4lleOc+0JWZFEUZd6QQMTUv3YnVTeYeln+tiDtlX5siHRSM9VDYBp
-         zt4oavIefNPqLVIGHEm0svNh4vHIOZni73PT4A1GszQVb63CvJ/Lkttoj5NZQBwIz+RU
-         g/XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776943916; x=1777548716;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RvJx/7YrmzLtOh5FuR6naBRpDEPyldYeuzc2zm3U/2c=;
-        b=jmqoV1h3SgW60U/T/SULJDYTVYrFoQi4uRwp4KXbUXdIXvaB6SMLn1LaFm7H82JMUN
-         dlMcb4PlfUfjY02MpKviQLM4Z6kNmWqbw3eQeRhsXrXpJXsy8EBrRvzQGR7mpmKZq4if
-         HTkOK8JEq2uYcwV3L/q+sG+mkZtM3iYwVNuGI4K8D6fV5MM/7+r/9CSq681VeGJKVstW
-         ipjKa3bU/CrS46eqVgcfB5n+B0tWKLDRx4IBaXNrjoLcFUDKJ+yTaIQXaoTspnbDL2F2
-         q9RkZZymHQ8MSbZ3AOIx0QlV15CjsW4hPoucZSRZqIvHot82CV5DNwai2XVRfzzLUbN1
-         r7rA==
-X-Gm-Message-State: AOJu0YybX+tdv5YsjR28lbazPadJOAMBJmwGTIDp8u2471ZDB6n1hoQn
-	2qsE0+h3kv9lwgd8DUaEGWujYObLr1kuzJuxa4Z2Is/f0nhkC9rujOt8itfYZg==
-X-Gm-Gg: AeBDievbEu88/bLbCxZ1CP34RXJKb05ePPpCwpBSsxyRcleB3AB6ZACy6mYmv31QAcs
-	pfi+/MTME3IVs7K3ZU0VwxMkjMLmUQPi7JlTYe07uo2fSrWN1HSai6kntWwRRMV6WQRXWmnMHGP
-	3aITKUMgJgFzZKgchZawa9yOs/EjvBJtOfimq3aoaizyUUDShf6qiWiYVKxlvaJC+HJBoQp8HqC
-	GCtRHyroyYED3bWP9CPTFMCanwPrEB8CAcYLVRaL7Mh5Q1pwXmLmcWMBMj5Ad+/xlcoUTQ/lbWG
-	mfW6YtIDIHZTkwjixGrqeQT26RPGgDmr/wOofeYZGHiQZ7zXMTwchriXPFGqUFuXRJbBYgQ7JUg
-	vVJY6fBMGjDojjnt+g+qJWCTsE1Ggs1faNcTDyuJTv6ks6LpOfJ66zRGo/cGzVXw5L0CEpImuXJ
-	cNUdSl4afb2y91c+hGTVokJkpcJZ/BoXk23j8qux60zIajunVhLcQEHL3CMw+nn830QQewn0egH
-	C+uCCvQi4I=
-X-Received: by 2002:a05:6512:234b:b0:5a3:fc79:934 with SMTP id 2adb3069b0e04-5a4172de2b1mr8625353e87.30.1776943916076;
-        Thu, 23 Apr 2026 04:31:56 -0700 (PDT)
-Received: from Thor.lan (nb6bp2luucgh1ubvhqb-1.v6.elisa-laajakaista.fi. [2001:99a:a58:9b00:9119:221d:45f0:de83])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a4187e7b22sm5059394e87.62.2026.04.23.04.31.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 04:31:55 -0700 (PDT)
-From: Maxin John <maxin.john@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net
-Subject: [PATCH] iw: Makefile: support out-of-tree builds
-Date: Thu, 23 Apr 2026 14:31:54 +0300
-Message-ID: <20260423113154.1070521-1-maxin.john@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1776951580; c=relaxed/simple;
+	bh=9CROr8pnB7yS9k8SGzmXXx72owjtmyyq9MVTkVneo9c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qZOIgGasY/0sNIKDnVuJnQkkcdWjt47Oo63kFwsrsnwpM8qBph/4JdHXxOOTcrPbQ0BO47FJ1OQmVi5JKJZ+lO7c1ZSZUBkS8OgKynd3JeYc7xcL8ui8IlfYUOlzJ99IR6rWfQoRIBujVnIdcTVN4/ghYgVCQE4WqeDIXsdrTrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=CTOxuYDe; arc=none smtp.client-ip=188.68.63.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from mors-relay-8201.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4g1cdh0PCQz44Vc;
+	Thu, 23 Apr 2026 15:39:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1776951576;
+	bh=9CROr8pnB7yS9k8SGzmXXx72owjtmyyq9MVTkVneo9c=;
+	h=Date:Subject:To:Cc:References:From:Reply-To:In-Reply-To:From;
+	b=CTOxuYDe/2yMDQcFeka/AbsLUVNFnXLsPMkmnqfxC7A1+M/1VG4XZBLGd6Kv/rlXG
+	 hf3ORVCjFCqGVN5Yqi9FFcSPHiOCwQBhykQIX8edHHaxk9jsdpC1ufL3vOHXYq2GPx
+	 jfburY1eg/D3363g5T1g7xfN5TmeURJ0cr2wI3vnS0zKajMqacA/Zn583LafVNkDry
+	 FC88+maD7QqMZ1Px/Z4AAODt543FzNwQ6p9FVxYOywd+m1oY/RosXsvo5iLMbYInEb
+	 Jqo4bkuSz6lxPBAMrHL/FCezEspbrH+Ic9DqcIl9LUaJJSahc7v9ywP/zbb0Ghgy9g
+	 EVmfbPwVymz3Q==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4g1cd61Zhmz3psy;
+	Thu, 23 Apr 2026 15:39:06 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4g1cd53Z6Bz8sWT;
+	Thu, 23 Apr 2026 15:39:05 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id DE7C6632E5;
+	Thu, 23 Apr 2026 15:39:04 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <8a4c664f-231f-437e-b010-b741c7ed7be8@leemhuis.info>
+Date: Thu, 23 Apr 2026 15:39:03 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rtw-next v2 5/5] wifi: rtl8xxxu: Enable 40 MHz width by
+ default
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, Jes Sorensen <Jes.Sorensen@gmail.com>,
+ art1310@proton.me,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <c54a69c8-9c7a-4249-ac9c-8d6544483ae9@gmail.com>
+ <4f053103-adfd-4ead-acb3-ef69127a4bab@gmail.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+X-Enigmail-Draft-Status: N11222
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <4f053103-adfd-4ead-acb3-ef69127a4bab@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <177695154523.962063.8502374308296710241@mxe9fb.netcup.net>
+X-NC-CID: 6YBJTaf+yPW32GJHgXkB6tH+I5gZHyWKxXJ6a8glKo25EjRCLfk=
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35243-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-35242-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[realtek.com,gmail.com,proton.me,lists.linux.dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,leemhuis.info:dkim,leemhuis.info:mid];
+	DMARC_NA(0.00)[leemhuis.info];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	HAS_REPLYTO(0.00)[regressions@lists.linux.dev];
+	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	MAILSPIKE_FAIL(0.00)[172.234.253.10:server fail];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maxinjohn@gmail.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,version.sh:url]
-X-Rspamd-Queue-Id: D18BA4514F9
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 8CF8B453275
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Enable out-of-tree builds without modifying the source tree.
-Out-of-tree builds are required by build frameworks such as OpenEmbedded.
+On 11/20/25 15:13, Bitterblue Smith wrote:
+> 40 MHz support is hidden behind the ht40_2g module parameter with
+> this comment:
+> 
+> /*
+>  * Some APs will negotiate HT20_40 in a noisy environment leading
+>  * to miserable performance. Rather than defaulting to this, only
+>  * enable it if explicitly requested at module load time.
+>  */
 
-Signed-off-by: Maxin John <maxin.john@gmail.com>
----
- Makefile | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+FYI: this patch causes a regression that was reported to bugzilla
+(reporter CCed here): https://bugzilla.kernel.org/show_bug.cgi?id=221394
 
-diff --git a/Makefile b/Makefile
-index 2652fac4e6ee..fbbc3042cd37 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,5 +1,8 @@
- MAKEFLAGS += --no-print-directory
- 
-+SRCDIR := $(dir $(lastword $(MAKEFILE_LIST)))
-+VPATH := $(SRCDIR)
-+
- PREFIX ?= /usr
- SBINDIR ?= $(PREFIX)/sbin
- MANDIR ?= $(PREFIX)/share/man
-@@ -21,7 +24,11 @@ CFLAGS += -D__SANE_USERSPACE_TYPES__
- CFLAGS += $(CFLAGS_EVAL)
- CFLAGS += $(EXTRA_CFLAGS)
- 
--_OBJS := $(sort $(patsubst %.c,%.o,$(wildcard *.c)))
-+CPPFLAGS += -I$(SRCDIR)
-+CPPFLAGS += -I.
-+
-+_SRCS := $(wildcard $(SRCDIR)/*.c)
-+_OBJS := $(sort $(patsubst $(SRCDIR)/%.c,%.o,$(_SRCS)))
- VERSION_OBJS := $(filter-out version.o, $(_OBJS))
- OBJS := $(VERSION_OBJS) version.o
- 
-@@ -92,16 +99,18 @@ endif
- 
- all: $(ALL)
- 
--version.c: version.sh $(patsubst %.o,%.c,$(VERSION_OBJS)) nl80211.h iw.h Makefile \
--		$(wildcard .git/index .git/refs/tags)
-+version.c: $(SRCDIR)/version.sh \
-+	$(patsubst %.o,$(SRCDIR)/%.c,$(VERSION_OBJS)) \
-+	$(SRCDIR)/nl80211.h $(SRCDIR)/iw.h $(SRCDIR)/Makefile \
-+	$(wildcard $(SRCDIR)/.git/index $(SRCDIR)/.git/refs/tags)
- 	@$(NQ) ' GEN ' $@
--	$(Q)./version.sh $@
-+	$(Q)$(SRCDIR)/version.sh $@
- 
--nl80211-commands.inc: nl80211.h
-+nl80211-commands.inc: $(SRCDIR)/nl80211.h
- 	@$(NQ) ' GEN ' $@
--	$(Q)sed 's%^\tNL80211_CMD_%%;t n;d;:n s%^\([^=]*\),.*%\t[NL80211_CMD_\1] = \"\L\1\",%;t;d' nl80211.h | grep -v "reserved" > $@
-+	$(Q)sed 's%^\tNL80211_CMD_%%;t n;d;:n s%^\([^=]*\),.*%\t[NL80211_CMD_\1] = \"\L\1\",%;t;d' $(SRCDIR)/nl80211.h | grep -v "reserved" > $@
- 
--%.o: %.c iw.h nl80211.h nl80211-commands.inc
-+%.o: %.c $(SRCDIR)/iw.h $(SRCDIR)/nl80211.h nl80211-commands.inc
- 	@$(NQ) ' CC  ' $@
- 	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
- 
--- 
-2.47.3
+"""
+Since kernel 6.19.0, the rtl8xxxu driver fails to maintain a connection
+with the Realtek RTL8188FTV (0bda:f179) USB Wi-Fi adapter. The device
+gets stuck "configuring interface" and eventually times out, effectively
+disappearing from the network manager.
 
+Regression Window:
+Works perfectly on: 6.12.x (LTS) and 6.18.x (LTS and non LTS).
+Broken on: 6.19.x, up through 7.0.0.
+
+Notes:
+- The device remains visible on the USB bus (lsusb still shows 0bda:f179).
+- The wlan0 interface is created.
+- NetworkManager attempts to associate, but authentication times out.
+- Disabling USB autosuspend (usbcore.autosuspend=-1) does not resolve
+the issue.
+
+Hardware:
+Bus 001 Device 002: ID 0bda:f179 Realtek Semiconductor Corp. RTL8188FTV
+802.11b/g/n 1T1R 2.4G WLAN Adapter
+"""
+
+Then later:
+
+"""
+I confirmed that the Commit dbf9b7b "wifi: rtl8xxxu: Enable 40 MHz width
+by default" is the cause of the regression.
+
+I tested passing cfg80211_disable_40mhz_24ghz=1 to the cfg80211 module
+on 6.19.x and 7.0, and the adapter works perfectly again.
+
+In Windows, forcing the adapter to 20_40MHz causes it to be unable to
+connect to any AP, and it only works in 20MHz mode. In Linux 6.19+, it
+gets stuck configuring the interface and crashes. So this is most
+probably a hardware issue.
+"""
+
+Ciao, Thorsten
+
+> This parameter was added in commit 26f1fad29ad9 ("New driver:
+> rtl8xxxu (mac80211)"). Back then rtl8xxxu only supported RTL8723AU
+> and the RTL8192CU family. It's entirely possible the miserable
+> performance was due to mistakes in the channel switching function,
+> which were fixed in a previous patch.
+> 
+> Delete the ht40_2g module parameter. If someone still needs to
+> disable 40 MHz support, cfg80211 has the module parameter
+> cfg80211_disable_40mhz_24ghz. That works too.
+> 
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
+> v2:
+>  - Add Reviewed-by.
+> ---
+>  drivers/net/wireless/realtek/rtl8xxxu/core.c | 19 ++++---------------
+>  1 file changed, 4 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+> index a18f73aea837..c06ad064f37c 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+> @@ -20,7 +20,6 @@
+>  #define DRIVER_NAME "rtl8xxxu"
+>  
+>  int rtl8xxxu_debug;
+> -static bool rtl8xxxu_ht40_2g;
+>  static bool rtl8xxxu_dma_aggregation;
+>  static int rtl8xxxu_dma_agg_timeout = -1;
+>  static int rtl8xxxu_dma_agg_pages = -1;
+> @@ -45,8 +44,6 @@ MODULE_FIRMWARE("rtlwifi/rtl8192fufw.bin");
+>  
+>  module_param_named(debug, rtl8xxxu_debug, int, 0600);
+>  MODULE_PARM_DESC(debug, "Set debug mask");
+> -module_param_named(ht40_2g, rtl8xxxu_ht40_2g, bool, 0600);
+> -MODULE_PARM_DESC(ht40_2g, "Enable HT40 support on the 2.4GHz band");
+>  module_param_named(dma_aggregation, rtl8xxxu_dma_aggregation, bool, 0600);
+>  MODULE_PARM_DESC(dma_aggregation, "Enable DMA packet aggregation");
+>  module_param_named(dma_agg_timeout, rtl8xxxu_dma_agg_timeout, int, 0600);
+> @@ -4896,8 +4893,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>  				sgi = 1;
+>  
+>  			highest_rate = fls(ramask) - 1;
+> -			if (rtl8xxxu_ht40_2g &&
+> -			    (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40))
+> +			if (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40)
+>  				bw = RATE_INFO_BW_40;
+>  			else
+>  				bw = RATE_INFO_BW_20;
+> @@ -7851,7 +7847,8 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+>  	sband->ht_cap.ht_supported = true;
+>  	sband->ht_cap.ampdu_factor = IEEE80211_HT_MAX_AMPDU_64K;
+>  	sband->ht_cap.ampdu_density = IEEE80211_HT_MPDU_DENSITY_16;
+> -	sband->ht_cap.cap = IEEE80211_HT_CAP_SGI_20 | IEEE80211_HT_CAP_SGI_40;
+> +	sband->ht_cap.cap = IEEE80211_HT_CAP_SGI_20 | IEEE80211_HT_CAP_SGI_40 |
+> +			    IEEE80211_HT_CAP_SUP_WIDTH_20_40;
+>  	memset(&sband->ht_cap.mcs, 0, sizeof(sband->ht_cap.mcs));
+>  	sband->ht_cap.mcs.rx_mask[0] = 0xff;
+>  	sband->ht_cap.mcs.rx_mask[4] = 0x01;
+> @@ -7860,15 +7857,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+>  		sband->ht_cap.cap |= IEEE80211_HT_CAP_SGI_40;
+>  	}
+>  	sband->ht_cap.mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
+> -	/*
+> -	 * Some APs will negotiate HT20_40 in a noisy environment leading
+> -	 * to miserable performance. Rather than defaulting to this, only
+> -	 * enable it if explicitly requested at module load time.
+> -	 */
+> -	if (rtl8xxxu_ht40_2g) {
+> -		dev_info(&udev->dev, "Enabling HT_20_40 on the 2.4GHz band\n");
+> -		sband->ht_cap.cap |= IEEE80211_HT_CAP_SUP_WIDTH_20_40;
+> -	}
+> +
+>  	hw->wiphy->bands[NL80211_BAND_2GHZ] = sband;
+>  
+>  	hw->wiphy->rts_threshold = 2347;
+
+#regzbot introduced: dbf9b7b
+#regzbot title: wifi: rtl8xxxu: 40 MHz mode breaks things (just like in
+Windows)
+#regzbot dup: https://bugzilla.kernel.org/show_bug.cgi?id=221394
 
