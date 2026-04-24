@@ -1,135 +1,227 @@
-Return-Path: <linux-wireless+bounces-35264-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35265-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8OcLCK8s62mBJgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-35264-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 10:41:19 +0200
+	id cPWGIjou62mBJgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-35265-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 10:47:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B854D45B9FC
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 10:41:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B13145BAFC
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 10:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1EAFD30022E8
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 08:41:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3CE4830022E8
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 08:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236E533C19E;
-	Fri, 24 Apr 2026 08:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E724D31A7E4;
+	Fri, 24 Apr 2026 08:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="lmrY4JHU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HwmeQZhx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A48032A3E5
-	for <linux-wireless@vger.kernel.org>; Fri, 24 Apr 2026 08:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777020076; cv=none; b=mObIX5bNs2MzYWmc44rw8cuadRrl1RkuAGIjrrxCDKt4vrl214qpxNngXfuwmlg2wTHMNGvEtDoIXG6Sghwuk8o9P9ASPwhZ3oRsSbm4lHPbWxA2ung+VFijQ6qTyDZCY44oWfYa0IN7PXD9z6NuKiQuxzgQ6ueUXBZW12KGFZk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777020076; c=relaxed/simple;
-	bh=DKksjASOOqAqQTcMbQSn8hwSxzfGGydWIiG+EBSTjrA=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BBPHgXXI/I/EcVOuzzbZgWI65df8wXAoybeVMRbG8wqRRPacowPKeZjAH+3Y2BBJy62ijT27yxCd/QuVmcx5WaEwQTIg8dJqA807g7ASgfEY0VgosbFTwtLnR9r41U1qAZxsKXl6rYCJsAQGs9kgvmoi5f6ajUZ1/Vc7ZoumgHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=lmrY4JHU; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=DKksjASOOqAqQTcMbQSn8hwSxzfGGydWIiG+EBSTjrA=;
-	t=1777020073; x=1778229673; b=lmrY4JHUD3+PTWzM2rJbwbdLxe9T1rQI7xc7OsOwTINbB+f
-	WVNvahXzd5+PlNF6kR/s24x1nEIPrfZBAFD6qI9a1m9H1+LP3oCZU21uV19icZqF8tc5gKCml2n/+
-	N34YL7BqVFpNJ+/bDB6EdaqB8vyGyyP08oTbT8Il4chKwceTMILJ9H1Pc68qK7Os6ihbNaMKFHFxS
-	tBycUcKTtaat1DX7YRQTPmPS36oS0xZsBg7rNpiNaP1CGYNXDb7jBPpPd1DeNGVridMmHAJA1Roqv
-	hwuHRJIgzNR9J9rFaT9iDhG0MwTk1QJbU7Qp6TmmugAKpep2/b15b42YleSZQXLA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wGC5w-000000096PK-2pvg;
-	Fri, 24 Apr 2026 10:41:04 +0200
-Message-ID: <2572d9663012ac4481d6c32aa9a4f252162c9bce.camel@sipsolutions.net>
-Subject: Re: mac80211 HT/VHT MCS check change causing Wi-Fi speed drop (~20
- Mbps cap) on iwlwifi
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jayden Fowler <jaydenfowler831@gmail.com>, linux-wireless@vger.kernel.org
-Date: Fri, 24 Apr 2026 10:41:03 +0200
-In-Reply-To: <db830769-2681-48ea-a8aa-f4cf8f3dfa4d@gmail.com>
-References: <db830769-2681-48ea-a8aa-f4cf8f3dfa4d@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B73A2874FA
+	for <linux-wireless@vger.kernel.org>; Fri, 24 Apr 2026 08:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777020471; cv=pass; b=ImAv2P6QlsAVq8mXbh8zXHHY3IQXqZWDKVbfMDTmiKORedHNQAyZ9Dzum4fpQMUt9ylgxyGv0LWEvToVwFNh38jBEiZHuTdT8rc712RAHZr2xRzRGztacq1QqGmxZB9Xa36/INiHLpo9FVPo89pWSWwvw+jwBBLD4nbcmKTkWKk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777020471; c=relaxed/simple;
+	bh=E1kQr2KYle8iRZ9+CzOqMvN/GhEwBvQfkY5p7Jo7O0Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b9vW+A2T36bP5AVWXaJO6+H0rAE7ehCifXD+3pK7gACERCSIgeL6iT9YVbsqvr6u5WExjzAHpQeuoa/RKXJ2Dm4MgyNFwPZXTQFye5zEu4pbI5JDe34vHIzD69V9ljqQ+4Cw4C3C2J60udLhAal4GCwKf+w7nD/ZJSSdNQ+SRGo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HwmeQZhx; arc=pass smtp.client-ip=74.125.224.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-652f220595fso7908403d50.0
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Apr 2026 01:47:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777020469; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AuOrBl2qBmS3mh9RrNqe8Vh5Ahp+CsT1650KeZqM0Fv6v7YuDSXwoUXdc8QXs8dl6S
+         nyR74qbasQSUKTAD1XFGcmteuqH6QW8cpJyFNoAeOIIHiRKWZo8R5ms6dK8+zFZlSNBj
+         Ok4tbV3ROVKOs7mfb/02Q207cDN9+TwyACnCrDgrQkWxLAgXgioRL2LWKPE1aHNUhJ0G
+         idhoLe2w1qAv7fVVURk792fEvAmB8S+kotjFN5ZW04lakGbVviK6zYtuH/tWLVyltt8Y
+         3N50itdQXxIw2JPCO0xKEFt25nySJlZRBM5MNRKCVWK//LfM15c57X7qWlJYhqQRLMYj
+         XF3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=6X6FBpevR2jJBvwlKJsxHMc/LW+LNuSmstjH4HhlZlE=;
+        fh=uRuHliaEiK/zeJecLfmwvY6j3wXJPwujGJzZZasrIsA=;
+        b=dErBNbnWyu2XNdnOOQAZ+Bv8jt/5GcPz2COMBL7UGmMkLndjeEyZLm1C5xPytBC+84
+         72orlkz55I5cJH2PNAdgK4Bdxd+J9WVUal05LsJSB/wpm3wJX5HsOy0M6Eyu4iCU94Na
+         i/MJQsSMmwisbVQyY5iH3obVP8LbnolXrr4QdSDgdu6XRUQ9+zAtKHVji++MuXsO7TQW
+         h0A1oHjsbWYWp5zCgtFDO/p5GlmqEezq5o0thXNmtT4XmJpcX1X3Gg5iZ1U3oKZsHlpv
+         ut4jluG9DZY/FXswLY7N7vcXp5WSpEGXmGDpy+QgJxpGTvaqFmctOgOinbMjlf5l7jKT
+         Ob8Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777020469; x=1777625269; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=6X6FBpevR2jJBvwlKJsxHMc/LW+LNuSmstjH4HhlZlE=;
+        b=HwmeQZhx0yqwcgLuju2WmoAVFWO2p2xApQsFSurNZFHPRRX2NJkm9vxOn8DdQMRA4J
+         mXBmBkV9iCSBibbREbOgGV+t/0Vshm4PmuRNO1ocpMPJpUdxorYuGPXBxkQl5roJm1ES
+         F4wwmjTJMGCKJTUOcv+Y6l4z7PeLELNBW6quiFxPXK6GKx/k8tn03DTQbLjlFVPwXquy
+         lgkwkoecvK8qlV+ygdq4pZuObU42jrtwICe8rlz9jd5U0iBuAcN5cL7ehU7ToAqTJJZx
+         KMWqnjzJFa75XtV02ZBuXvUKkxwOTs0vlgs7jRe1V7rfmbdssRDvlUYDkUuryWDFoKZP
+         blaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777020469; x=1777625269;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6X6FBpevR2jJBvwlKJsxHMc/LW+LNuSmstjH4HhlZlE=;
+        b=ldaYQKQ68MVQr9AMaUKCWerjUggMXk/Jv6c9doqJNW03RFrvMZqhMdXmdDOCQ76Gik
+         NZXUYb39ZsOVsVOwcd/YxF029gb6jJowz6X8VtGkgMYKhtFdlAEYoesBpRGPIac7nld8
+         +ZXLdf+i5uwixvvA/Z9EYKl2qbRw/kcXb5emFL2cl+Bf1MaymrupwKkBX8RLN0nam9Zs
+         EASZsVJSUHeUklvV5Q4XbHzGTbQcZVVLzcEUr8mUnRCK1fJLun/2DKbtRI2h0NHzbt4Z
+         nQNlqVSrFwmc1fX+kKKHETGxghIrbFF6CuB94IOqDtg8/sjvBGLJg4Fh+mjjIn1Roy51
+         3mDQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8KByCplvXTINol2B16tDgn+gjrkM+MOIZe0IMt8EwTHdGarzy8ZKc9TiUYpPl0i9Jp3JRx1VgghGRkmyksMg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzp7mpaowHyeFZLEu1s21/uCn4pJ39g9Gro68YNdC7NsJmK0Oeq
+	iIfhtR1uSrj+Aw8hb/Rswjql2SjNhbQdUt6zEcg5ArHUEOm/GwhFBu6VhBIAq4JeHreEdhpEemI
+	fw3GayNlWEsr0VfAcuVuackW4MhOVgq4=
+X-Gm-Gg: AeBDieuoHiQAmaD+R8YHmUONI5wtyY5vpQirLfl4wXN15jzHVLX4PhPVexF83K68CGV
+	PAv4S+Gw4scFq/6YM3xf6juTZwhllc5ZBfWlgn/srCtETFXaL5WV+rtkvF5zIbojZF8wHUsn4WS
+	Wqk9axF56l3Pjc5u/1m+JDx54VQyqiSTUOS02ESlLwaEy1hrZbl6KVvnJLGbWo2k07p1kAmTIrL
+	bNSy5mt1dydfHvWk7TgHvityXhc2N2xDbPai65vYvzbYq2ob9NMJ/zD8++O6HxuNAzbgx0JtWCF
+	2rdjgVhrH07TsSA+FOuW
+X-Received: by 2002:a05:690e:e89:b0:654:2838:7789 with SMTP id
+ 956f58d0204a3-65428387dd5mr19457117d50.19.1777020469629; Fri, 24 Apr 2026
+ 01:47:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: B854D45B9FC
+References: <20260415183002.3752935-1-lgs201920130244@gmail.com>
+In-Reply-To: <20260415183002.3752935-1-lgs201920130244@gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Fri, 24 Apr 2026 16:47:35 +0800
+X-Gm-Features: AQROBzD9VPB99_HUqxe3kJ_u1LM7fMxeQL-UyLgjQtz5raXvqgz8yQ5xH6CNAas
+Message-ID: <CANUHTR_rbojBBZhq2qp+6ZHJsL8gXu=-s+iSp94BCya_srSR1g@mail.gmail.com>
+Subject: Re: [PATCH] ssb: fix reference leaks on failed flash device registration
+To: Michael Buesch <m@bues.ch>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
+	"John W. Linville" <linville@tuxdriver.com>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 2B13145BAFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35264-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-35265-lists,linux-wireless=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[bues.ch,gmail.com,tuxdriver.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid]
 
-On Fri, 2026-04-24 at 04:28 -0400, Jayden Fowler wrote:
-> Hello,
->=20
-> I think I=E2=80=99ve run into a regression in mac80211 that affects Wi-Fi=
- speeds=20
-> on Intel iwlwifi (and possibly some Realtek cards too).
->=20
-> After testing a bunch of kernels, I noticed something pretty consistent:
->=20
-> Kernels with this commit Wi-Fi gets stuck around ~20 Mbps max
-> Kernels without it (or after removing a small part of it) speeds go back=
-=20
-> to normal (hundreds of Mbps as expected)
->=20
-> The commit I bisected it to is:
->=20
-> 574faa0e936d12718e2cadad11ce1e184d9e5a32
-> "wifi: mac80211: add HT and VHT basic set verification"
->=20
-> The issue seems to come from the new HT/VHT MCS verification logic. When=
-=20
-> it runs, it sometimes decides the AP=E2=80=99s advertised rates are=20
-> =E2=80=9Cunsupported=E2=80=9D and then forces a downgrade in connection m=
-ode/bandwidth.
->=20
-> That downgrade looks like it=E2=80=99s what causes the big speed drop.
+Hi,
 
-Yeah, there are too many AP bugs ...
+Please disregard this patch.
 
-https://patchwork.kernel.org/project/linux-wireless/patch/99Mv9QEceyPrQhSP5=
-2MtAVmz0_kWJmzqotJjD9YW6LGLqk-AZloAueUyHCURilFkuqOh6Ecv8i2KKdSE1ujP3AnbU5QE=
-ouVisT1w_V3xdfc=3D@r26.me/
+On Thu, 16 Apr 2026 at 02:30, Guangshuo Li <lgs201920130244@gmail.com> wrote:
+>
+> When platform_device_register() fails in ssb_devices_register(), the
+> embedded struct device in ssb_pflash_dev or ssb_sflash_dev has already
+> been initialized by device_initialize(), but the failure paths only
+> report the error and do not drop the device reference for the current
+> platform device:
+>
+>   ssb_devices_register()
+>     -> platform_device_register(&ssb_pflash_dev)
+>        -> device_initialize(&ssb_pflash_dev.dev)
+>        -> setup_pdev_dma_masks(&ssb_pflash_dev)
+>        -> platform_device_add(&ssb_pflash_dev)
+>
+>   ssb_devices_register()
+>     -> platform_device_register(&ssb_sflash_dev)
+>        -> device_initialize(&ssb_sflash_dev.dev)
+>        -> setup_pdev_dma_masks(&ssb_sflash_dev)
+>        -> platform_device_add(&ssb_sflash_dev)
+>
+> This leads to reference leaks when platform_device_register() fails.
+> Fix this by calling platform_device_put() after reporting the error.
+>
+> The issue was identified by a static analysis tool I developed and
+> confirmed by manual review.
+>
+> Fixes: c7a4a9e3880cc ("ssb: register platform device for parallel flash")
+> Fixes: 7b5d6043de312 ("ssb: register serial flash as platform device")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> ---
+>  drivers/ssb/main.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+> index b2d339eb57d5..5cdf612a8516 100644
+> --- a/drivers/ssb/main.c
+> +++ b/drivers/ssb/main.c
+> @@ -535,16 +535,20 @@ static int ssb_devices_register(struct ssb_bus *bus)
+>  #ifdef CONFIG_SSB_DRIVER_MIPS
+>         if (bus->mipscore.pflash.present) {
+>                 err = platform_device_register(&ssb_pflash_dev);
+> -               if (err)
+> +               if (err) {
+>                         pr_err("Error registering parallel flash\n");
+> +                       platform_device_put(&ssb_pflash_dev);
+> +               }
+>         }
+>  #endif
+>
+>  #ifdef CONFIG_SSB_SFLASH
+>         if (bus->mipscore.sflash.present) {
+>                 err = platform_device_register(&ssb_sflash_dev);
+> -               if (err)
+> +               if (err) {
+>                         pr_err("Error registering serial flash\n");
+> +                       platform_device_put(&ssb_sflash_dev);
+> +               }
+>         }
+>  #endif
+>
+> --
+> 2.43.0
+>
 
-johannes
+After re-checking it, ssb_pflash_dev and ssb_sflash_dev are global
+platform_device objects and they do not provide dev.release callbacks.
+Therefore calling platform_device_put() on the platform_device_register()
+failure paths is not appropriate here and can trigger the missing release
+callback warning.
+
+This falls into the same static platform_device pattern pointed out in
+the other reviews, so I will drop this patch.
+
+Sorry for the noise.
+
+Best regards,
+Guangshuo Li
 
