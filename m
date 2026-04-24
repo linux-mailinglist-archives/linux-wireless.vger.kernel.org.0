@@ -1,227 +1,191 @@
-Return-Path: <linux-wireless+bounces-35281-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35282-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OOzRLFWR62lGOgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-35281-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 17:50:45 +0200
+	id WKSXJWuY62m7OgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-35282-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 18:20:59 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A461460FFB
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 17:50:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A0246141E
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 18:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 440643020A65
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 15:50:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8385930058E0
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 16:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B6E372690;
-	Fri, 24 Apr 2026 15:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26ACF3DBD48;
+	Fri, 24 Apr 2026 16:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Zf2iNEWJ"
+	dkim=pass (2048-bit key) header.d=animalcreek.com header.i=@animalcreek.com header.b="qr4ABPVY";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ihkj5RWx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013010.outbound.protection.outlook.com [40.93.196.10])
+Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8C634752D;
-	Fri, 24 Apr 2026 15:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777045819; cv=fail; b=ojzToXfo5u3qcCvoJWB3mp6K5zs1hRs1PIGDmDGurLVAOCWPoM1SWLvpIr5p3756QDHGffr3rO5tNuw0C4e2QSP+bxmk12y07ExEAtdnxSbsUhQYveYPpJS6EN5Z1287Z1gS/JtTsj57uu/ane2jmiWQBapukErHmLdeosIvfzE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777045819; c=relaxed/simple;
-	bh=4SwFeVDrMrDEPhg+Pv2NUAcMQiZBMWUlY4FH8TQf3Kw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=UrszgXE9ShVAPwUxwbLS1rWA7C24aox9m1qYC6GRqB76ZUEZ82IzUO0zL0n/lWc69F6FS6mcOuc5pyQQngkZL87d6Fe5mA/JTLGYKeHoTGnGCZgw045sAvfz24snTsTok38QxmoePLGP7LJ2mO0xISewGiu/egBuatNdsQflODQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Zf2iNEWJ; arc=fail smtp.client-ip=40.93.196.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bXHvintndVGh7SOrzPsS+g3y9VXRNsBhDvwxCfb3R1Et1w9wg6LSuoMBMiUtMTxFYW01AHLdKLYEkOFShWv1+wyOgXVon5hoZjw7xR1Zh6Qf4AxSDQDj0XWRmT+Tlc32T/2EI6Y1pDNn8NbODWt5THMRhxZT8Z3SYatdDoZ1ktiX8N3wr8nGhJYreUyx6ZhJIaDkLanLjBXwIQ4AaDCq4wA0gnti52rhd4dV8eLabvQxUAAVYpmRJsc6NptZjZQzJaGeYVYojWnlWdZx5JRD9Cm8c9rjUtsyWDs7/hoFuniNKaUJLOL/CDPasyZSnhnQXKET6Z0ew7qyishYgohm2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wltxVI/e7H6RNN8uqDmUfNU6ngytttCHXv6hlW0A67M=;
- b=EXBQvjzC9PDtcrOFw6YvWaXDmhN8V15t/h0AlrRllHkDPVrnDteHS2JP4udNXG6XvT6O745+Pg6uLV6Ks6qZN/32HD1GmDz/Txgj/jv8y87PG8AhBFCgYmIQjEajfvGt6iy128HqzaDEqSe9R9rdDAMpE0lptEvL1CyrmppCLY+jvzvDCyvzTs9RRB1NozRk627ABsIgUWQ0w7+hyYIhpuZkvHxqO3ZAiGyWVX/Q3HBzsY0rB/7J2LH4HF58RvDJmdePWp2A8D1ZoHgbOXFS+Wa4Whp6vFL160bEBht2yRt6z6sqXFkTHXERZt0SxGpRudYNWRCgvyjbJFrkiNzYrg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wltxVI/e7H6RNN8uqDmUfNU6ngytttCHXv6hlW0A67M=;
- b=Zf2iNEWJ4TJ7yFjppUdUsUDlca/whnvYZSY0phb1Qy8eNCPxZIRbgD9zJKCbvbqN90d8D1dBkc5cBmSbwBn5hdWFlPpx/JjsArn+xZCLwD6sHH7K4trJxVfo5ChTX46sVQHMZzg6LNH1KiydaInrLNB/zt33MvXItwmMLSQa1rTl3MoFg5mSoTHPy7QBANE2YZxG2THo/vtVIzPmIs9wFRjxOUf3kPcNjRTXwwxI+n8V54n1xJxWdbc3fuflUmi5xARsqo6xzTpUp79QOQ/iarPhCrFt+wKjwmknz9Qj04LepTGcLpDuZe2IPkV2mVrPjSmRkGoe39h4S3sHV4VmEA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16)
- by PH0PR12MB7816.namprd12.prod.outlook.com (2603:10b6:510:28c::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.22; Fri, 24 Apr
- 2026 15:50:13 +0000
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de]) by CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de%3]) with mapi id 15.20.9846.021; Fri, 24 Apr 2026
- 15:50:13 +0000
-Date: Fri, 24 Apr 2026 11:50:10 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Hans de Goede <hansg@kernel.org>, Linus Walleij <linusw@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Salah Triki <salah.triki@gmail.com>,
-	Achim Gratz <Achim.Gratz@stromeko.de>,
-	Ben Collins <bcollins@watter.com>, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH 0/9] bitfield: add FIELD_GET_SIGNED()
-Message-ID: <aeuRMiws8zCdkGXX@yury>
-References: <20260417173621.368914-1-ynorov@nvidia.com>
- <20260424130927.349ad3ae@jic23-huawei>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260424130927.349ad3ae@jic23-huawei>
-X-ClientProxiedBy: SJ0PR05CA0119.namprd05.prod.outlook.com
- (2603:10b6:a03:334::34) To CY8PR12MB8300.namprd12.prod.outlook.com
- (2603:10b6:930:7d::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE603C3452;
+	Fri, 24 Apr 2026 16:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777047655; cv=none; b=dPE2xbx4oJ3Xd5p6iFsqIpqTemusKe/+5mLjtYBQqYep6RzamcZu24RkqEInv+yDpfaYsOv1mKywD7aXbNh8nrGaADA/WFdh8PEvvlDHOzLhm7vr9wM5VoEP1InWQTK48r6SFGQBPTJN05btwOQWFL1czgLx2KjoH68uF7ndZ3c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777047655; c=relaxed/simple;
+	bh=1IqN3myNGyn5/4h0I7QYnz3X9j3NjD0M7B3fzq6u5iA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e2FLI+a21D5aaxWKj6QJcyy0bNt3J9H5lqulvqb+8ZQEyOPBQTc9Ov6ZhHftFdJBZr1Ut3m1alEjcawtiQKP5rJZOHgiU5HUDdEaJw6yG2fksm9sZkrqFn192qA4yPfzY8s9PFn5uaEfRa95400nveD5MRV/uUTz5daPwrVyMwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=animalcreek.com; spf=pass smtp.mailfrom=animalcreek.com; dkim=pass (2048-bit key) header.d=animalcreek.com header.i=@animalcreek.com header.b=qr4ABPVY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ihkj5RWx; arc=none smtp.client-ip=202.12.124.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=animalcreek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=animalcreek.com
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 27C891D0018A;
+	Fri, 24 Apr 2026 12:20:52 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 24 Apr 2026 12:20:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=animalcreek.com;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1777047651; x=1777134051; bh=LVq2Kle+d/Y+s8+bCyU5/Eq5sWVprcwc
+	qu5fxzL/SA0=; b=qr4ABPVY2RkcECGGD8eFZH1q1LrnWqK0e3l7XmXxnQ94VQqu
+	6voxw1I0W/qLeQZtCyP93cRJYLEDWsjYjc/Ba2zIRKMO8/nfWtDj/GgenhBg6oCs
+	ToPMyHSUTmboXy2QMBhcZrJibFTWLwU82qz40EGwdV8KKdB2TLLlRT/t8xpA7DzN
+	KxNszKKEadpDpUk5UpcCpVi3LUAuzGhINSQIvZSF0X6igeBSkEAfZEoaXzwFdpOn
+	Z+8StpEltJMqbpdxl9fIjdb59iC6RZ1/QIbW3S67CAon/ZgAZ0Z9CXiKmTDhISgm
+	sDxxJMcfQ5o/nTKBOIwN3IJPtVCO9ksL2OaUsg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1777047651; x=
+	1777134051; bh=LVq2Kle+d/Y+s8+bCyU5/Eq5sWVprcwcqu5fxzL/SA0=; b=I
+	hkj5RWxKSeKr45/vvp+bOY3+Ld1/rDtDDNLIZ7Dye417ajQz/s6tXevPY7DQuV+N
+	nzfymizGIHJ9K2UD8LPSUkcYOPNL4tXUsDUyRHcytueWSqH04NBmbL/SmUmTIAep
+	VlFou40B4cFFNdYUVm7U/r4YztTdj5TuCgXd8PzRK1r465nQyzkIrJijM/ZQXYea
+	R+c/tgdNnB8vlFu9xN90ESWj31SGQHKv0zaBE8oOCDDsVCkweObHKwiWhS8VPFHe
+	u/p0iQJ5soitAXOEoYrDsZdzdUwCbMaOskBuysSGlmAIoStnARQ/JvXt5p9zrKiA
+	AWvxiGx7yuvc2hpaGxu/A==
+X-ME-Sender: <xms:Y5jraRupid-aT-GnFYzOuSMPWZZLb56laterazZhVwt6kiKjlee7UA>
+    <xme:Y5jraZg92Li_Ht_O4Mtzjiwr76mTAi_P6suseaBswEnb67N6rUVTO0HUInQJPmITv
+    BaI97v3Q0wF2cNEAN4WGz2XTH82uS0aCuMhK6Wvc_UxK6wgJufOOYk>
+X-ME-Received: <xmr:Y5jraa-HFSdFwzMREf8oExpIm0-TA_aNeJZbCrBIxKJ24JGQ9fgxhlkUYM2GHgF_OCvTytztkbJrq858JDOk5FfPCAGT>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejtdehtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefkffggfgfuvfevfhfhohgjtgfgsehtjeertddtvdejnecuhfhrohhmpeforghrkhcu
+    ifhrvggvrhcuoehmghhrvggvrhesrghnihhmrghltghrvggvkhdrtghomheqnecuggftrf
+    grthhtvghrnhephfduteehueffkeelfeefkeefjeeuffdtuedvffeftdettdfhleduvddu
+    tdefheeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epmhhgrhgvvghrsegrnhhimhgrlhgtrhgvvghkrdgtohhmpdhnsggprhgtphhtthhopeej
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehprghulhdrghgvuhhrthhssehprh
+    houghrihhvvgdqthgvtghhnhholhhoghhivghsrdgtohhmpdhrtghpthhtohepshgrmhgv
+    oheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqdifihhrvg
+    hlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehnvghtuggvvhes
+    vhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlh
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghrthhijhhnrdguvgdr
+    ghhouhifsehprhhoughrihhvvgdqthgvtghhnhholhhoghhivghsrdgtohhmpdhrtghpth
+    htohepmhhgrhgvvghrsegrnhhimhgrlhgtrhgvvghkrdgtohhm
+X-ME-Proxy: <xmx:Y5jraUsdT0jL6MLd8sfKFnEw10lHU0gR1Gdqqhu1INX2tyKmBnrYzw>
+    <xmx:Y5jraWppYxFxR-1mNc64JXvsREAIckp3NOKi_Ag7HGiwlBySvo1VPQ>
+    <xmx:Y5jraQocebJFWW-TzE3WT4Q28mvQgXDcUDTrGxdudTZ2tWvrpDE5Aw>
+    <xmx:Y5jradY8vdRgphujM9TRUV3I7N3XfFf5IQxYZY0p9xFb9JAngBePqA>
+    <xmx:Y5jraSAqwnYdx8tvNd-cQ0rVkAaSgT78_nXthbO-ytNkGWEDfvjvA9Aa>
+Feedback-ID: i9cc843c7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 24 Apr 2026 12:20:50 -0400 (EDT)
+Message-ID: <19fae358-acc4-4b9e-8dec-b83af066a97d@animalcreek.com>
+Date: Fri, 24 Apr 2026 09:20:50 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB8300:EE_|PH0PR12MB7816:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2594ba65-cc19-4e93-c1bd-08dea2192be5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|10070799003|366016|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	H38jSwjsaKZj/z0L+WwisHJiG9Lhpdvcb5yAY57PksPLvhve6MZEMheO5bfreN6a0pFMRQXSnv36S/EpHZ+gknUqcpdIDYdNbEsLoA79ona+Qa8WkBNtdaaKrrktbKk2MUgjSCpl2lAAIsKovicV3ZZHVPyMRxxoQbw1j2mJldllivkx2N9pG5SaOgjbJmekZsMs3uIIvdQQSqz5J/jTKKzrxD5U1pDBpuORFOp5rvssDSNwzQOAj7XaJs4IuDcV2+dk9cE1kutmUgKjV2jzQUoSFKLDO3HIYIvZjFJLd2mLLej6SRdb30dw07JGVeJ9pk9OcFWJtqxwgb7doQOVwH4cEWjPkApyQZg2Kvn1zUEY2nHITQVxo9LDTP9ODqBrNhWrY2gT8YxP8suIUJ5VNEiEEP+q1mYCszNr7No+WByVqElAw6qKEoQ1ysspDNCAkgzFFqtEZOTN6Hk1HiYOKdNP3YyMiLO9PRvk37qRUp7QbD/MFHoLraW9BC40G82jLsu+myR9k0BGQP1Qo+E3YR9zr/upTJq1YucrXAy2+Pb0QgccjjTkfdihCfmqDJxoGYzzlZT6BPIKkml95GM4+1BQOQ/qZSSTmFhFMA5EPH6DtM0bYkW/9JEM3lHnAFU2++pqinShwAi0bX5LGYaO8KXKFrTjSPe0/oDYfw5OZfJtNj2fViRpuTc3tiupHH9lZXVmjobRBBjCvxBIOP9hofqO355giRID5WieAUUXFqM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8300.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(10070799003)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pN/xJq2+cUNLCBYNmfNq6x/beR/b3Ibt6Rx1ee8olLh+mkszFQrF0NRCiRuS?=
- =?us-ascii?Q?QJViQYbK3mN8wxuuyqzWnRHk4RZFI6ebozPQlBkrA/Y7mM4TzXg1wbcjAsni?=
- =?us-ascii?Q?xAIjOWY9jg2CzvCrUJKyrjYVBWVgyeGPJ1d6hLp5/I/WPtDA1maLWFLNr5RT?=
- =?us-ascii?Q?4KV22dE74PCLlyYZBLYtPsABJLriyFXdAKnSILRkbpG81WBmhsEhw2TfgpOZ?=
- =?us-ascii?Q?RJkjmVmp4hCYsT0NTPbuPnziY706R3lLK7vYWl456tQtSY0i+JEPsgrD3s9X?=
- =?us-ascii?Q?/VerzRllEs7Mx830iha/cshewJzQdGmoSG9up5MWJ1grQN+ae/S1o1NTJPJF?=
- =?us-ascii?Q?MGE188V6afmv96WbK5Zd9RRVQEtlWFp0I7nl8geX9t6BLCqQdWZbXQXMryqq?=
- =?us-ascii?Q?VsyHa6QRPDWHdGQ4UmnNFKltCkzygU+ERKXhxO72/lDZLvntsspNfp4jsCIb?=
- =?us-ascii?Q?NweA/Dp1pdDdx7VpnTxJ3ClqYyh7jka7Vkr7qyMUVNss//WImeYG9MKgh8bR?=
- =?us-ascii?Q?jPkhaUb3UKJQCW0v7dldgSB6GtLtv/kGcrNlZ2Ghf4NUQYU41ag0qq1D/I3z?=
- =?us-ascii?Q?OV506nR0Ahh0KLzEMyOsZpeasNADGVCnbbJEyYM236INm2YCbIdgDp/TH0az?=
- =?us-ascii?Q?d3UwWiaSCFyqm61J5GgB6ZUhXRyVl84I6TzmqNStGOWUKY+7T++iWTv1YRpU?=
- =?us-ascii?Q?o/QEtViO5EqSwsb5YVaKTneqTJqVeeQFmc3klxU0xzSw8s8AtvgVVNZjOc4o?=
- =?us-ascii?Q?3lMMKzwMY21OpWpl4Lx1tMZD56G/+zUJqXsrk6c1BAFKFjw04rBDp+DrEp1w?=
- =?us-ascii?Q?ACxkaAC+z5eG5u3t9x0LNcc66XQZ97KbzOEmQCOaR7X0Iy21XABYh05+/KRu?=
- =?us-ascii?Q?PN6sCsn4fYjE94eliq0E03Wduxi1U17FxrJwJJy/2+UYty9T8usOW0NzHMvk?=
- =?us-ascii?Q?RToB5ovTfUuqBNREAHVbqZ8OJ2+SEjEkMo1dSn4KH+FkcsMJposMGTQy32+J?=
- =?us-ascii?Q?PnJXUpkx5BSDd1mL+5bim4EwvK+ugY7Oo0R/d8RbYjmf3WtPwEqYorayDLDA?=
- =?us-ascii?Q?Kh8KmEzr7+Z3WNNILEE1Ofk9jJPtuQ/gyy8kjz+xwVe3UMTo8NGgxadwQ+WB?=
- =?us-ascii?Q?dxfUuimIP6nLas05PDg2tqKlAGaxvasYBSwbYhjAPPDeJF2O3cWE0NDGeBYb?=
- =?us-ascii?Q?HHFPTefVnYM0/inomKmtyXhnuGavyAYBDldvBcKk+gwNAdZ93JZ/wye74JbP?=
- =?us-ascii?Q?252qDTf5t1UQhDdtQ9xaui9cUlckxWW4MAKnCETtm7hFrZbelM0q+YsyMSm4?=
- =?us-ascii?Q?mY9w8r+if5Ha1xR5bjXeYdB3cTWnMQlHbMdiE4gIJNfGzzsH4a1Idl/kBQTj?=
- =?us-ascii?Q?GiyPEtXwSv+TToqIj+Ur7ggItM2S4vXgpmqbQenojS1uNleXGAq/Fyl1aruj?=
- =?us-ascii?Q?RVyiLriQe8U7YO1894prgWlkQU/8NYZALzUa8H/bgKBpT3eEj5Wz9NFK3U/Y?=
- =?us-ascii?Q?mcb3AipCis4WL4j3aOxnr3fWAoIIAtNxaBhpK9oV/r95Zfq3p7lhDiU0MWmO?=
- =?us-ascii?Q?2no2BjlsyLrvJrM0wisfi0cFSDQg1quhBl3qh+6Q00UM298ZbISxvDYD5cK/?=
- =?us-ascii?Q?peszfj7I9Hni7hZjcjCF+ecoh02rVR6yFW7R1dZL1wB2+gbWOQM0T1YUj6hu?=
- =?us-ascii?Q?j0IZl0GyR6vkcjTGJStd6oMVXLYEsXypN+KK9/WTvGAgVdm4GWqNMJLLHEqc?=
- =?us-ascii?Q?PUkRU4Y9k/ZoPhyEbKMTCV8bVRXmQg+xkeX/ALDAFvCq64Cau/SC?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2594ba65-cc19-4e93-c1bd-08dea2192be5
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8300.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 15:50:12.9665
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kc8RpdInEUsWPjOBbt8oWY7Vv06+ngm+EeSGAiqqcYAROkDOdauLgoxTwy0sVB1318yBfTURUDV+DCwwl3Xtqg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7816
-X-Rspamd-Queue-Id: 5A461460FFB
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] NFC: trf7970a: Ignore antenna noise when checking for RF
+ field
+To: Paul Geurts <paul.geurts@prodrive-technologies.com>,
+ sameo@linux.intel.com, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: martijn.de.gouw@prodrive-technologies.com
+References: <20260422100930.581237-1-paul.geurts@prodrive-technologies.com>
+Content-Language: en-US
+From: Mark Greer <mgreer@animalcreek.com>
+Organization: Animal Creek Technologies, Inc.
+In-Reply-To: <20260422100930.581237-1-paul.geurts@prodrive-technologies.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 15A0246141E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[animalcreek.com:s=fm3,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35281-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,infradead.org,baylibre.com,analog.com,realtek.com,gmail.com,lunn.ch,davemloft.net,google.com,bootlin.com,rasmusvillemoes.dk,stromeko.de,watter.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ynorov@nvidia.com,linux-wireless@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35282-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[animalcreek.com];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[animalcreek.com:+,messagingengine.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mgreer@animalcreek.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim,nvidia.com:email]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
 
-On Fri, Apr 24, 2026 at 01:09:27PM +0100, Jonathan Cameron wrote:
-> On Fri, 17 Apr 2026 13:36:11 -0400
-> Yury Norov <ynorov@nvidia.com> wrote:
+
+On 4/22/26 3:09 AM, Paul Geurts wrote:
+> The main channel Received Signal Strength Indicator (RSSI) measurement
+> is used to determine whether an RF field is present or not. RSSI != 0
+> is interpreted as an RF Field is present. This does not take RF noise
+> and measurement inaccuracy into account, and results in false positives
+> in the field.
 > 
-> > The bitfields are designed in assumption that fields contain unsigned
-> > integer values, thus extracting the values from the field implies
-> > zero-extending.
-> > 
-> > Some drivers need to sign-extend their fields, and currently do it like:
-> > 
-> > 	dc_re += sign_extend32(FIELD_GET(0xfff000, tmp), 11);
-> > 	dc_im += sign_extend32(FIELD_GET(0xfff, tmp), 11);
-> > 
-> > It's error-prone because it relies on user to provide the correct
-> > index of the most significant bit.
-> > 
-> > This series adds a signed version of FIELD_GET(), which is the more
-> > convenient and compiles (on x86_64) to just a couple instructions:
-> > shl and sar.
-> > 
-> > Patch #1 adds FIELD_GET_SIGNED(), and the rest of the series applies it
-> > tree-wide.
-> > 
+> Define a noise level and make sure the RF field is only interpreted as
+> present when the RSSI is above the noise level.
 > 
-> Just a quick heads up that I'm beginning to assume that this series
-> will land in some form.  If it does can we do it as an immutable branch
-> as I'm suggesting it gets used in some other patches in that should land
-> in the new cycle.
+> Fixes: 851ee3cbf850 ("NFC: trf7970a: Don't turn on RF if there is already an RF field")
+> Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
+> ---
+>   drivers/nfc/trf7970a.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+> index d17c701c7888..08c27bb438b5 100644
+> --- a/drivers/nfc/trf7970a.c
+> +++ b/drivers/nfc/trf7970a.c
+> @@ -317,6 +317,7 @@
+>   #define TRF7970A_RSSI_OSC_STATUS_RSSI_MASK	(BIT(2) | BIT(1) | BIT(0))
+>   #define TRF7970A_RSSI_OSC_STATUS_RSSI_X_MASK	(BIT(5) | BIT(4) | BIT(3))
+>   #define TRF7970A_RSSI_OSC_STATUS_RSSI_OSC_OK	BIT(6)
+> +#define TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL	1
+>   
+>   #define TRF7970A_SPECIAL_FCN_REG1_COL_7_6		BIT(0)
+>   #define TRF7970A_SPECIAL_FCN_REG1_14_ANTICOLL		BIT(1)
+> @@ -1300,7 +1301,7 @@ static int trf7970a_is_rf_field(struct trf7970a *trf, bool *is_rf_field)
+>   	if (ret)
+>   		return ret;
+>   
+> -	if (rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK)
+> +	if ((rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK) > TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL)
+>   		*is_rf_field = true;
+>   	else
+>   		*is_rf_field = false;
 
-I'm going to submit v2 soon, as seemingly the discussion is boiled
-down, and then will likely merge it with my tree. I'll create an
-immutable branch for you before the end of day.
+Given that false positives are happening in the field and assuming that 
+a value of 1 is enough to filter out those false positives, this seems 
+like a reasonable solution.
 
-Thanks,
-Yury
+Reviewed-by: Mark Greer <mgreer@animalcreek.com>
 
