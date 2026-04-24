@@ -1,286 +1,281 @@
-Return-Path: <linux-wireless+bounces-35256-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35257-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Sy1pAC246mmNCwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-35256-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 02:24:13 +0200
+	id s9fSCE/Q6mknEQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-35257-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 04:07:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459DA4588F4
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 02:24:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25DB2458F2D
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 04:07:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3BAF73006391
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 00:23:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F6793011585
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 02:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEDA1C5F27;
-	Fri, 24 Apr 2026 00:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683B423E342;
+	Fri, 24 Apr 2026 02:07:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="pkDf7tbv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f79.google.com (mail-ot1-f79.google.com [209.85.210.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azolkn19011034.outbound.protection.outlook.com [52.103.12.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D7240DFA3
-	for <linux-wireless@vger.kernel.org>; Fri, 24 Apr 2026 00:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.79
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776990213; cv=none; b=LfOqVdGbwUk5a6WEUEZJYOIsGIOOQUbyFYDiUvfXvSB0qayaqjTz1kByZhPsv6r5Azgt/679mzi885PbvGFPfVvyKNUew71yj+o5T2sO5HB3UT26cR2BC0bZOBbm1eyQKvXDGeKpiq2LB5pWDt3gostAr+0MFbRN0JuAOKogo3I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776990213; c=relaxed/simple;
-	bh=5m7vaCWCW/Dp50arIK7vZoYoBwVtPNWeTXYDEj46N3U=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=fkogTw5dpPxIRqoBb/vhr1W0Eo5X5JJqNZl90bYr/6cGKlcPBfekBuLCMeQ9DMBrgnrn7Nid/j5gTonBWmYgRmrTRvsawlVhIcRunzy8IdjCkMRHy0eLM4oTDOhvu7my4dltEstuB2Be6NpkbEkeTARI7R0hEg/r1d9NXwbpTKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f79.google.com with SMTP id 46e09a7af769-7dbe76e3abcso17573253a34.0
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2026 17:23:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776990211; x=1777595011;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IaunhynHfLXlsj+OKWi/KTfUfNlbIvYRUylj6i26Qx8=;
-        b=grY/ePdc/hJSyE0tW3+pEdvJfUoXSXXHvI2QmjYVDOLcdni+7fm2jv76bBFd2q+Tzf
-         nI1NtVg2IAn/liUqWLNLNabXUnWbY0GO7Sq71sjQxooSMywKCXWZs1+W+cUMYAc+Q4xO
-         q01br1aO/eOw7tLRyYj+3Z8Q1gAreyoXUWdMO3FxMdle+Pp2/OY9/j4XgCaO/HIVfnFU
-         P3929QumMgDk0dZAw1GHr6Mp2+i5u6Wug3dEuT6s89Mk7lr+96c8m2GjW4hEAB+NamJe
-         frYlXxl1nKDOl39nwNF/tIbBfmo5ZT9/EFliUDIzSqyvzDj6kiE4DtOt2ju0G7YmePMw
-         5iQQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8GLxbOsKrj+41tYk9dkpkBuXY/atPIL9l6AonM3LYA/ZlNVOvV17r1O2HjcIrwBaba6tnXvXBPvViaWhGdwg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+HtM/9EAJJJi8t+EpOMbXlF0JUJsmVbgV4bmOANZK/CEHIA+1
-	rCVvWc5OWyoElTu6awDH1E69+iUckeFw/4+X7wMvZJMKDW5gwMp54xsutFQaeZwL6BqOzOcS2yM
-	iQoje8T8V8kHE7lIkqNQeRWZC+ULh2E80r9EuQg4FE2/xyRPoSQb4qzPE/zU=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75782AEF5;
+	Fri, 24 Apr 2026 02:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.12.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776996427; cv=fail; b=bQpBqC0HH6jzQBo/QRRjGFXPLlDERhckQAgJ0WuGnx1kZnNBF1OsRrWG1KE0/OO4lXsx+rAX2774DdjT1PrkrmnzNTR55fmzzG/W+IyPtUVPaLb+SqAfPhMLEkrpKNiTNTetlgjJ9UFw9NB7aS+bafc0tIfNDtPN+cJtBNkdSdo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776996427; c=relaxed/simple;
+	bh=LaMSSsJL7SrkYdNqjuzJBnnPf3AFVwCY8Vp9Umv1tfk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XDuZVI14jIFQyUttrehRQjyLxug+UGhk/5XKzfpVq2wHNHM2VgF7brMvJPTNS3hYTiWSSV60bhwtF//IR35EHptm3NB9tVWLeXsrKzqzRqMbNL11aaYnel7pn/1XAWxd5vO3kSKyg7x7fp+QBCo4xCkqfW28rn2Dx4zzGtpn+OQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=pkDf7tbv; arc=fail smtp.client-ip=52.103.12.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hs3lZtXU1s3pL5BRv7wryfNOEFAk0eeroz/NrgM6ifydN0jDRhJv8B1gF0uHO64vJ3aGgp9zPEDglWHQJ5TMOurrnNXW4irTMr5o2QD8SVHQbNd1JlTgzJOggBx20lJ7Qdq84wa+wTaTCj4A8QTOg+y7oVVMyqqMvAuHI0kSlX13TbCY3jDhWiYjkm8E1uaJ3MOsavDVL+dExFZq8zrhmWRV8YTbm5J2GNG9kBOg3b2qOC+fsNyExDt4Rn8ESXpHOA1WMd0zBLFuiBmzR2mnHyUt0WBkyvN5yUn+lhpUuVMXQLalJzUqo24jACh48u8EOmGaaDXWCR/z0Rwf6Ey+WQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j/oAe5WAJR0Hau8bnlbPZKUUWTns+NjCrP+ar8tn4pY=;
+ b=daePu4DqvPVeIg5XCTeV9cCPbev0FzXn4BtY5JDyJa/Wxgux8qHRl5E2OvVuyLf0VQwYHdroI2kLDv4CXFm8p0GSQcayDX+xc0Abbx/FGF92kpOwqQTanOB+aW/Hs1MsZ8AUDHqPWAyyBI9VwWa0nRWesMUaxRc3tU4+NCincyCbZbCt8g1h5HEqCtj8BAIVMOsMpdvi78SHZqYSF1oz23htrZLkqX8TPfKxRbSJCEDvAuZijiFwONjQu3rQIztDo6AV2bEf4bWfLveidIUGV04ens6n31mYl/PhUQtTlbItJzvXJwHorqiZTgdDGIYVHLg83ak4zpnVHgbj8hDveQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=j/oAe5WAJR0Hau8bnlbPZKUUWTns+NjCrP+ar8tn4pY=;
+ b=pkDf7tbvgbmp48LibP1mvYb1eA1Tyh7j+ywHYwYRAZ2Fei6NR/pVHtOodJpz2bV/ub3tTLxqODzsFfv/fhM5UO0smDU8xHAEB7xYbkP6wEYuLlN5Dq0rbYT2MC6tJi3yCw8ODOw0v502qMRylmEB6ggoN8W5S7t4RynyzzfzBzc7SL1w1lBCESpbZYZImkp4fGVGUm9hZtmEax0GGi5brdSahfqW7zRKx0j3qkuxdxaZjAe7RTJE5KWbsPAFYA20BIGuD1MnX1PiZysLXZMBADToQ6MgCtCVFI8pEcqa2KDp9AZWHI5mnXls44qeKWCFUU/oN0kNryvaxKQ7fVHOBg==
+Received: from IA2P223MB1199.NAMP223.PROD.OUTLOOK.COM (2603:10b6:208:4ab::20)
+ by BN0P223MB0215.NAMP223.PROD.OUTLOOK.COM (2603:10b6:408:15e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.22; Fri, 24 Apr
+ 2026 02:07:03 +0000
+Received: from IA2P223MB1199.NAMP223.PROD.OUTLOOK.COM
+ ([fe80::af53:cbf1:1f4:2519]) by IA2P223MB1199.NAMP223.PROD.OUTLOOK.COM
+ ([fe80::af53:cbf1:1f4:2519%5]) with mapi id 15.20.9846.021; Fri, 24 Apr 2026
+ 02:07:03 +0000
+From: Kyle Farnung <kfarnung@outlook.com>
+To: =?iso-8859-1?Q?Santiago_Ruano_Rinc=F3n?= <santiagorr@riseup.net>, Jeff
+ Johnson <jjohnson@kernel.org>, "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>, "ath11k@lists.infradead.org"
+	<ath11k@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+CC: Mark Pearson <mpearson-lenovo@squebb.ca>, "koike@igalia.com"
+	<koike@igalia.com>, Kyle Farnung <kfarnung@gmail.com>
+Subject: Re: [PATCH] wifi: ath11k: Add two missing Lenovo IDs to the quirk
+ table
+Thread-Topic: [PATCH] wifi: ath11k: Add two missing Lenovo IDs to the quirk
+ table
+Thread-Index: AQHc02ZBYMNwSv09nEeYknyNqqNCq7Xtc5tg
+Date: Fri, 24 Apr 2026 02:07:03 +0000
+Message-ID:
+ <IA2P223MB1199153665E2AFF709BD2F52D02B2@IA2P223MB1199.NAMP223.PROD.OUTLOOK.COM>
+References: <20260423211458.458911-1-santiagorr@riseup.net>
+In-Reply-To: <20260423211458.458911-1-santiagorr@riseup.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA2P223MB1199:EE_|BN0P223MB0215:EE_
+x-ms-office365-filtering-correlation-id: 576be4bf-cb23-4d69-4b0c-08dea1a62d98
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|8060799015|31061999003|41001999006|8062599012|39105399006|24021099003|21061999006|19110799012|461199028|37011999003|15080799012|15030799006|1602099012|40105399003|4302099013|3412199025|440099028|10035399007|102099032;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?o7y4/3sWVywzjsWWaCX+3kKfXBK5zAlUCmUXLNwk4x79cKTeyl1y90mCJU?=
+ =?iso-8859-1?Q?DmHJOXFoqXcVlolhjpiirWKX2bH/iphEmo7UYatdag+z3Se7wZ2ybZgszA?=
+ =?iso-8859-1?Q?CL+PHEkdjUkWt1XNLM6vi+VL+nzLLX2Lo5QiWChxKriY/ZgMn7fNTd/zDC?=
+ =?iso-8859-1?Q?IUD9B3F45LyfFIWVtx/A1c+hrPxqoqBBGKWQGE3uifEdU1B4JVcNryFYcs?=
+ =?iso-8859-1?Q?2ZPUSU6jvyBwnZaa+Dw7OgpXWCEchPmdjNSyroK7/jWtjS/Y7JRwFzK/4e?=
+ =?iso-8859-1?Q?a2qXXDDMX/3mzEdNFgd7bq634QvCChEAx7Uvxfc6FcUXhdHZEEim7Q10Az?=
+ =?iso-8859-1?Q?U2biPnoMOHzkRNK4N2vpIIyXRUE997xVO8OvEMiGk+OYVaCRJ3+nOGD0FC?=
+ =?iso-8859-1?Q?vLhNrSlUYEeYf6czu4GYz2NOcdH8sGtvk9EfPs4IzGAHIRA5a7FaGa9OvR?=
+ =?iso-8859-1?Q?oa5D0bzF1yZQOPC+dkbW2NklBfbssIH+fgIuSA8I1LTO2LKwtY+iRPParD?=
+ =?iso-8859-1?Q?bzV+KBuHFrcVbRvkwO6lzXoPyrzXOo9o2VkxhtfOiGaBeKpRbxhyWwNPAg?=
+ =?iso-8859-1?Q?gVudRFsDlk3wvZCaxoMT53Ee3pm1hmtwZpKdOMWQ4jceLaDDbMmcJ+Zfd8?=
+ =?iso-8859-1?Q?fkFSu49bvijihePZMBHELy9+j7Lgln3+oOFv+RgoO1pC4O9dtJ+Q8jKEye?=
+ =?iso-8859-1?Q?tfQ30dtXJu8oo9d/usxTzP3Fp6AnmMjQ4SM4h8+Vge7Fs2krptyzdr0jm3?=
+ =?iso-8859-1?Q?chVZiv/U0tayvi70cNLggnMXbyoYcitp0FObGf6yiziIYkwTid6qd6nHpM?=
+ =?iso-8859-1?Q?q80lJv+k9uaLr/Wdlcq9TCjFrEYr+dWi29k1d23CaGzqD0CFrpT7qzCfrK?=
+ =?iso-8859-1?Q?KKIY3bYCG7ObM2NVeMAF8WtqCMNnLElih1EiBDS1xGcBPoGX2QoQeX7yak?=
+ =?iso-8859-1?Q?u652q/JiPTP3IljqJK4vn1ZF0CkFN63w7sowKBwk03sz5OXC1ZP2RyRLsc?=
+ =?iso-8859-1?Q?Pr6clPF6lpwf5FSELHAnR6yj5jTb5UB5BmoiyxPi3Xv2Dt1l0/7r13V69M?=
+ =?iso-8859-1?Q?T1MOiGXSfMhgDpKmgB2PWlaHQEZVD0toEkfYzVntzRPKe38qEhgFOg9vxr?=
+ =?iso-8859-1?Q?EW2k/ioDmSv8dorXyGDl7xZKevqAY=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?+fo7oKYeNrI6Td57xZlujoR6xEGEVv5V9u6M7k/ZIR8ptLdEcF/DRSwPsY?=
+ =?iso-8859-1?Q?nYXHVC0ndyaxtgU8xka+pNb7QdTh53mpiKj/K2ZWFJzqIGVgqTYRAH+mlI?=
+ =?iso-8859-1?Q?ausmw0f5zU1MrJ7Pf6tLpeRsEQT7gmirKVjR/lKu6VvIhWhYxQqG1PHClB?=
+ =?iso-8859-1?Q?QaYZAKADUcXK2LZ/WAUyiEbK9foUadsqfwvzOaeDLa7dCX7S7kqc8plqLC?=
+ =?iso-8859-1?Q?Z2HNWDCdagrbbIp+ka6WxSKX8nDenO5hz5bVOZdCm7+OweAwX+kBqbPyDZ?=
+ =?iso-8859-1?Q?oERtOZW+unTVnGD1nXqfpe7SM6wIfN3cuXYJZgVvzbvyT8ppetY+496Q37?=
+ =?iso-8859-1?Q?/xA8Ne6SN9JKZIhtgMehJps47Yq0N6Ie+F1BVtwZyG8Gz5i1VYgwKJfpK1?=
+ =?iso-8859-1?Q?shmPakhq/qCptRZK4xNWxjTjmnZZ85UVQ+pgWr9spfLz1nlceuwaeuj2S7?=
+ =?iso-8859-1?Q?/OKkLNIHoz6No3hYwKC5uvJXEjkgcOjlcOB2T0jHRFK4YOD97p2bSkXf2x?=
+ =?iso-8859-1?Q?ADcshVWGKI4NkfQ70hRmQgEpxL1aqCYwEGc+wS8hy2/t4vveDyLpB+S3uX?=
+ =?iso-8859-1?Q?zM+XikFZN1ko0MUzSQLFOATRAr/ytdnWjb7HXqrwgrHTTL2OblrkdywnEA?=
+ =?iso-8859-1?Q?riWCfl5LPcW/gupa6wcovT5UxO0ULgt27vYbsQ4+ATXYGt6icB3zhN7wta?=
+ =?iso-8859-1?Q?agLZtUpG7RXNeZhWoQ0nUsVDhMWS+e3xOMXFb9yRt6pvsg3NVn1mvTm+JB?=
+ =?iso-8859-1?Q?tmLY+C8/R8Up3MZtqLZH+zWk4mrs3zApIeOQmP8VfHbTPiVSBADKlC51zZ?=
+ =?iso-8859-1?Q?2DoHPP6sqYL0HgqPnbX8oYyOdQbKvGytpIzZTFmvWiZIUu5YhRe/85CVgM?=
+ =?iso-8859-1?Q?eSq97vbkuhFkVRbzzdJdftJbyAgey8S69sQlm9QIaeOwBq49e1ZY3qfPv4?=
+ =?iso-8859-1?Q?X10vdsnEZ4QKd4q+BYwMUUyxC5gnPDh/lYrKqS0gUNf88c6ZHIUeSa+kdm?=
+ =?iso-8859-1?Q?gto9jkuncfkGaYwyxcpGayg2bSpF7v6HqDKRB+zBQebo0V9j6WwU1pMkeX?=
+ =?iso-8859-1?Q?d6T5h/qHHtwjGAjqsxA9WWuTuYlKRefTwQL1zyKf+CRgLQOpvlk36k8utu?=
+ =?iso-8859-1?Q?fWUBvuILx+mPV3tx8QuA0MdymykXjovYWEhgpWHOVrxZyI/7so384OhdQf?=
+ =?iso-8859-1?Q?Fc0/Ei3rY/JwP6/ATq4CiessW6jJpOFx/VuNyvMgUiJpZtjqJeQCyX9fKL?=
+ =?iso-8859-1?Q?VZMamotRovwCRX4legGfA4zXDlzmNo4fjMY2YEqLwYJ5it8vFp8Tu/lrzn?=
+ =?iso-8859-1?Q?X5fFw9m+VCWtf6wqTsoYN2JCsQgUJxZItgLT+tDbZTZ7/0w5qHvaYI5Qb+?=
+ =?iso-8859-1?Q?TsIXViLDTwX8fmelCxiOyL1Obpx1JfsGfDKgTnfOfWBDn2T0EIs7oI4oK5?=
+ =?iso-8859-1?Q?kapGnfOFrS3zfbiIPFlsh1xR/RneZV9U+Z4F1g16YthVyIOL7mNEyGgQkI?=
+ =?iso-8859-1?Q?o=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2901:b0:694:9d3d:e040 with SMTP id
- 006d021491bc7-6949d3de22cmr7931783eaf.31.1776990210905; Thu, 23 Apr 2026
- 17:23:30 -0700 (PDT)
-Date: Thu, 23 Apr 2026 17:23:30 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69eab802.a00a0220.17a17.0049.GAE@google.com>
-Subject: [syzbot] [wireless?] [usb?] KASAN: stack-out-of-bounds Write in carl9170_handle_command_response
-From: syzbot <syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com>
-To: chunkeey@googlemail.com, linux-kernel@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 459DA4588F4
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA2P223MB1199.NAMP223.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 576be4bf-cb23-4d69-4b0c-08dea1a62d98
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Apr 2026 02:07:03.4712
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0P223MB0215
+X-Rspamd-Queue-Id: 25DB2458F2D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.36 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=37c3a614a8bc8d27];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35256-lists,linux-wireless=lfdr.de,5c1ca6ccaa1215781cac];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[googlemail.com,vger.kernel.org,googlegroups.com];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FREEMAIL_CC(0.00)[squebb.ca,igalia.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-35257-lists,linux-wireless=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kfarnung@outlook.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	REDIRECTOR_URL(0.00)[goo.gl];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	SUBJECT_HAS_QUESTION(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:dkim,outlook.com:email,infradead.org:email,lenovo.com:url,IA2P223MB1199.NAMP223.PROD.OUTLOOK.COM:mid]
 
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    2e6803928193 Merge tag 'tracefs-v7.1-2' of git://git.kerne..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=113342ce580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=37c3a614a8bc8d27
-dashboard link: https://syzkaller.appspot.com/bug?extid=5c1ca6ccaa1215781cac
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12acb1ba580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16acb1ba580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/592131f484c3/disk-2e680392.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2ca791aa3d9c/vmlinux-2e680392.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/3aaca7d6d8d9/bzImage-2e680392.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com
-
-usb 4-1: received invalid command response:got 60, instead of 0
-usb 4-1: restart device (9)
-usb 4-1: received invalid command response:got -2, instead of 0
-usb 4-1: received invalid command response:got 60, instead of 4
-==================================================================
-BUG: KASAN: stack-out-of-bounds in carl9170_cmd_callback drivers/net/wireless/ath/carl9170/rx.c:153 [inline]
-BUG: KASAN: stack-out-of-bounds in carl9170_handle_command_response+0x21f/0xc50 drivers/net/wireless/ath/carl9170/rx.c:168
-Write of size 60 at addr ffffc900001e7a38 by task swapper/1/0
-
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-Call Trace:
- <IRQ>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x13d/0x4b0 mm/kasan/report.c:482
- kasan_report+0xdf/0x1d0 mm/kasan/report.c:595
- check_region_inline mm/kasan/generic.c:186 [inline]
- kasan_check_range+0x10f/0x1e0 mm/kasan/generic.c:200
- __asan_memcpy+0x3c/0x60 mm/kasan/shadow.c:106
- carl9170_cmd_callback drivers/net/wireless/ath/carl9170/rx.c:153 [inline]
- carl9170_handle_command_response+0x21f/0xc50 drivers/net/wireless/ath/carl9170/rx.c:168
- carl9170_usb_rx_irq_complete+0xfc/0x1b0 drivers/net/wireless/ath/carl9170/usb.c:307
- __usb_hcd_giveback_urb+0x38d/0x610 drivers/usb/core/hcd.c:1657
- usb_hcd_giveback_urb+0x3ca/0x4a0 drivers/usb/core/hcd.c:1741
- dummy_timer+0xda1/0x36c0 drivers/usb/gadget/udc/dummy_hcd.c:2005
- __run_hrtimer kernel/time/hrtimer.c:1930 [inline]
- __hrtimer_run_queues+0x470/0xa00 kernel/time/hrtimer.c:1994
- hrtimer_run_softirq+0x17d/0x2c0 kernel/time/hrtimer.c:2011
- handle_softirqs+0x1dd/0x9e0 kernel/softirq.c:622
- __do_softirq kernel/softirq.c:656 [inline]
- invoke_softirq kernel/softirq.c:496 [inline]
- __irq_exit_rcu+0x160/0x210 kernel/softirq.c:735
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:752
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1061 [inline]
- sysvec_apic_timer_interrupt+0x8f/0xb0 arch/x86/kernel/apic/apic.c:1061
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-RIP: 0010:pv_native_safe_halt+0xf/0x20 arch/x86/kernel/paravirt.c:63
-Code: d4 b4 01 c3 cc cc cc cc 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d 63 9d 15 00 fb f4 <e9> 7c f2 02 00 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90
-RSP: 0018:ffffc9000013fe00 EFLAGS: 00000246
-RAX: 0000000000046e1b RBX: ffff8881022d9dc0 RCX: ffffffff8770e3f5
-RDX: 0000000000000000 RSI: ffffffff890d1d42 RDI: ffffffff87b03fe0
-RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed103eae673d
-R10: ffff8881f57339eb R11: 0000000000000000 R12: 0000000000000001
-R13: ffffed102045b3b8 R14: 0000000000000001 R15: ffffffff8af1a1d0
- arch_safe_halt arch/x86/include/asm/paravirt.h:62 [inline]
- default_idle+0x9/0x10 arch/x86/kernel/process.c:767
- default_idle_call+0x6c/0xb0 kernel/sched/idle.c:122
- cpuidle_idle_call kernel/sched/idle.c:199 [inline]
- do_idle+0x464/0x590 kernel/sched/idle.c:352
- cpu_startup_entry+0x4f/0x60 kernel/sched/idle.c:451
- start_secondary+0x21d/0x2d0 arch/x86/kernel/smpboot.c:312
- common_startup_64+0x13e/0x148
- </TASK>
-
-The buggy address belongs to a 8-page vmalloc region starting at 0xffffc900001e0000 allocated at kernel_clone+0x12e/0x9c0 kernel/fork.c:2723
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x102aa7
-flags: 0x200000000000000(node=0|zone=2)
-raw: 0200000000000000 ffffea00040aa9c8 ffffea00040aa9c8 0000000000000000
-raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask 0x29c2(GFP_NOWAIT|__GFP_HIGHMEM|__GFP_IO|__GFP_FS|__GFP_ZERO), pid 2, tgid 2 (kthreadd), ts 2543325669, free_ts 0
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x153/0x170 mm/page_alloc.c:1858
- prep_new_page mm/page_alloc.c:1866 [inline]
- get_page_from_freelist+0xf34/0x3a90 mm/page_alloc.c:3946
- __alloc_frozen_pages_noprof+0x273/0x28a0 mm/page_alloc.c:5226
- __alloc_pages_noprof+0xb/0x110 mm/page_alloc.c:5260
- __alloc_pages_node_noprof include/linux/gfp.h:289 [inline]
- alloc_pages_node_noprof include/linux/gfp.h:316 [inline]
- vm_area_alloc_pages mm/vmalloc.c:3655 [inline]
- __vmalloc_area_node mm/vmalloc.c:3878 [inline]
- __vmalloc_node_range_noprof+0xe0c/0x1630 mm/vmalloc.c:4064
- __vmalloc_node_noprof+0xad/0xf0 mm/vmalloc.c:4124
- alloc_thread_stack_node kernel/fork.c:357 [inline]
- dup_task_struct kernel/fork.c:926 [inline]
- copy_process+0x7fb/0x7d20 kernel/fork.c:2088
- kernel_clone+0x12e/0x9c0 kernel/fork.c:2723
- kernel_thread+0xdb/0x120 kernel/fork.c:2784
- create_kthread kernel/kthread.c:459 [inline]
- kthreadd+0x498/0x7a0 kernel/kthread.c:817
- ret_from_fork+0x69a/0xc80 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-page_owner free stack trace missing
-
-Memory state around the buggy address:
- ffffc900001e7900: f1 f1 f1 00 00 00 f3 f3 f3 f3 f3 00 00 00 00 00
- ffffc900001e7980: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffffc900001e7a00: 00 f1 f1 f1 f1 f1 f1 04 f2 04 f3 f3 f3 00 00 00
-                                        ^
- ffffc900001e7a80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffffc900001e7b00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-==================================================================
-----------------
-Code disassembly (best guess), 1 bytes skipped:
-   0:	b4 01                	mov    $0x1,%ah
-   2:	c3                   	ret
-   3:	cc                   	int3
-   4:	cc                   	int3
-   5:	cc                   	int3
-   6:	cc                   	int3
-   7:	0f 1f 00             	nopl   (%rax)
-   a:	90                   	nop
-   b:	90                   	nop
-   c:	90                   	nop
-   d:	90                   	nop
-   e:	90                   	nop
-   f:	90                   	nop
-  10:	90                   	nop
-  11:	90                   	nop
-  12:	90                   	nop
-  13:	90                   	nop
-  14:	90                   	nop
-  15:	90                   	nop
-  16:	90                   	nop
-  17:	90                   	nop
-  18:	90                   	nop
-  19:	90                   	nop
-  1a:	f3 0f 1e fa          	endbr64
-  1e:	66 90                	xchg   %ax,%ax
-  20:	0f 00 2d 63 9d 15 00 	verw   0x159d63(%rip)        # 0x159d8a
-  27:	fb                   	sti
-  28:	f4                   	hlt
-* 29:	e9 7c f2 02 00       	jmp    0x2f2aa <-- trapping instruction
-  2e:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-  35:	00 00 00
-  38:	66 90                	xchg   %ax,%ax
-  3a:	90                   	nop
-  3b:	90                   	nop
-  3c:	90                   	nop
-  3d:	90                   	nop
-  3e:	90                   	nop
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+> =0A=
+> =0A=
+> =0A=
+> ________________________________________=0A=
+> From: Santiago Ruano Rinc=F3n <santiagorr@riseup.net>=0A=
+> Sent: Thursday, April 23, 2026 2:14 PM=0A=
+> To: Jeff Johnson; linux-wireless@vger.kernel.org; ath11k@lists.infradead.=
+org; linux-kernel@vger.kernel.org=0A=
+> Cc: Mark Pearson; kfarnung@outlook.com; koike@igalia.com=0A=
+> Subject: [PATCH] wifi: ath11k: Add two missing Lenovo IDs to the quirk ta=
+ble=0A=
+> =0A=
+> Commit 0eb002c93c3b4 ("wifi: ath11k: Add missing platform IDs for quirk=
+=0A=
+> table") added some Lenovo platform IDs to the quirk table to address a=0A=
+> wakeup from suspend issue [1].  However, at least two more platform ID=0A=
+> are missing in that table: P14s Gen 5 AMD, as reported by Kyle Farnung [2=
+]=0A=
+> and P14s Gen 3 AMD.  This commit adds one ID for each.=0A=
+> =0A=
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D219196=0A=
+> [2] https://bugzilla.kernel.org/show_bug.cgi?id=3D219196#c23=0A=
+> =0A=
+> Tested-on: P14s G3 AMD.=0A=
+=0A=
+Lenovo products have a pair of IDs, you'll want 21J6 [3] and 21MF [4] as=0A=
+well. I submitted a patch myself [5], but I've been investigating another=
+=0A=
+symptom.=0A=
+=0A=
+I have the same "wake on power removed" issue, but I have another issue=0A=
+that's more annoying where the wifi just dies randomly. I only have the=0A=
+wake issue when power is disconnected, not when power is connected again.=
+=0A=
+I mostly leave my device connected, so I only realized the behavior while=
+=0A=
+doing the regression testing requested in the other patch.=0A=
+=0A=
+[3] https://pcsupport.lenovo.com/jm/en/products/laptops-and-netbooks/thinkp=
+ad-p-series-laptops/thinkpad-p14s-gen-3-type-21j5-21j6/21j5=0A=
+[4] https://pcsupport.lenovo.com/us/en/products/laptops-and-netbooks/thinkp=
+ad-p-series-laptops/thinkpad-p14s-gen-5-type-21me-21mf/21me/21me000pge=0A=
+[5] https://lore.kernel.org/all/ba4d194b-6d31-4d8a-a6a6-da116f9f56ac@oss.qu=
+alcomm.com/=0A=
+=0A=
+> =0A=
+> Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine =
+model")=0A=
+> Signed-off-by: Santiago Ruano Rinc=F3n <santiagorr@riseup.net>=0A=
+> ---=0A=
+>  drivers/net/wireless/ath/ath11k/core.c | 14 ++++++++++++++=0A=
+>  1 file changed, 14 insertions(+)=0A=
+> =0A=
+> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireles=
+s/ath/ath11k/core.c=0A=
+> index 3f6f4db5b7ee..56938d5d42a1 100644=0A=
+> --- a/drivers/net/wireless/ath/ath11k/core.c=0A=
+> +++ b/drivers/net/wireless/ath/ath11k/core.c=0A=
+> @@ -957,6 +957,13 @@ static const struct dmi_system_id ath11k_pm_quirk_ta=
+ble[] =3D {=0A=
+>                         DMI_MATCH(DMI_PRODUCT_NAME, "21K4"),=0A=
+>                 },=0A=
+>         },=0A=
+> +       {=0A=
+> +               .driver_data =3D (void *)ATH11K_PM_WOW,=0A=
+> +               .matches =3D { /* P14s G3 AMD */=0A=
+> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),=0A=
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "21J5"),=0A=
+> +               },=0A=
+> +       },=0A=
+>         {=0A=
+>                 .driver_data =3D (void *)ATH11K_PM_WOW,=0A=
+>                 .matches =3D { /* P14s G4 AMD #1 */=0A=
+> @@ -971,6 +978,13 @@ static const struct dmi_system_id ath11k_pm_quirk_ta=
+ble[] =3D {=0A=
+>                         DMI_MATCH(DMI_PRODUCT_NAME, "21K6"),=0A=
+>                 },=0A=
+>         },=0A=
+> +       {=0A=
+> +               .driver_data =3D (void *)ATH11K_PM_WOW,=0A=
+> +               .matches =3D { /* P14s Gen 5 AMD */=0A=
+> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),=0A=
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),=0A=
+> +               },=0A=
+> +       },=0A=
+>         {=0A=
+>                 .driver_data =3D (void *)ATH11K_PM_WOW,=0A=
+>                 .matches =3D { /* T16 G2 AMD #1 */=0A=
+> --=0A=
+> 2.53.0=0A=
+> =0A=
 
