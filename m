@@ -1,163 +1,196 @@
-Return-Path: <linux-wireless+bounces-35267-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35268-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKFIKl4662nRJwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-35267-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 11:39:42 +0200
+	id KOOjHnw962mfKAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-35268-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 11:53:00 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7BE45C53F
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 11:39:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF9945C8AF
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 11:52:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A6E553003638
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 09:39:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8038E3025915
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 09:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C6B38AC78;
-	Fri, 24 Apr 2026 09:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B048320A00;
+	Fri, 24 Apr 2026 09:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ISwcaTfF"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="kveuvuCz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F07737CD55;
-	Fri, 24 Apr 2026 09:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828E6359A9F;
+	Fri, 24 Apr 2026 09:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777023580; cv=none; b=kkUlwjwW9js4SBy1B/XDPmQSw2DMpwt0oVoN/ZONTVpCxJXOtdF84Q4x1aVTP8B2HjF0teeWx0C9KK7EJBIZsxOD9Vfy5WgTjPUwTeop/xdw3DlRYFbOSQPXJP32Nfv8W/RgVSh2PgLUOsaRo1BVAY+SkTWTBNW2qEtbyxJydWg=
+	t=1777024272; cv=none; b=j09UinxWhwr6kklNjbwUZ3fndGqJxvhACbhO7Wwyz+DZQ+KezxuFb8eYplWkEqSgH3BizQqva/GmlUFiKr1CZKBYWy0WYNCgvY/1xrzkneXA83gUmCcqti/a8eUv3deovoCZP4Jp6zQTCbk8RWJH0qi7FgxuI/bSpilkvlyXGtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777023580; c=relaxed/simple;
-	bh=7petuLofLdd2ZXeL3b1eIY4YZW0OIFBBgP9QdW66Wvg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=txtEPn4Mw/NsP2v1F67Sv7qvh1wUnpIFtEGiSvv1sXuEgNBf5iL5cFiYO+iFNFor6lULg7Ta7UvMWRs9RVBC1Tko1CgYGHOaug9sLLJwTdEvvs14cboAiVaT2v9/R/sil9CG3MWQ3ExT1V2XPK5UweWnnRpDCnGOfAynNKBNpBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ISwcaTfF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58801C19425;
-	Fri, 24 Apr 2026 09:39:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777023580;
-	bh=7petuLofLdd2ZXeL3b1eIY4YZW0OIFBBgP9QdW66Wvg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ISwcaTfF4JttQou7FYrCNQvfQ8tjGvDwJN1NTrBmPiAqnlZgwNNiIgxNZEB66McuC
-	 TrVQ/mi68T9KWS2R/X3ua+F4yEo9Bc0sipKCrT696Q7E6qSO2kYNU2OFmTrQxyjImv
-	 0nGZTiC0iP+6JiN325Jf0IiXBZMECfxsRiC7j+zVBvPexmAvkOA9Ix9UmJHu8O/qPA
-	 neUQeGSDigxsOzpcdkW2D1n653cxUqUPWoGNn8CfJv4Fu+547oJunHQn6aabNFXMUY
-	 qfnsNf/kdvr0vwwFmuG5VeqxGEy7Hlx5wKTTctmTLXS6+hdQqRdmAgxaSxA0QaUtvb
-	 SLwF/vgAZcySA==
-Message-ID: <0e274aa3-84a7-498e-a4ba-c677cda3e4df@kernel.org>
-Date: Fri, 24 Apr 2026 11:39:36 +0200
+	s=arc-20240116; t=1777024272; c=relaxed/simple;
+	bh=EK10yGwkXVQnZj51E7ttz818C88LRbsuydqLz2WzW7E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JbCmrJIHVtGRT63YA185d11qEcljbghOlL4/8qdIfVQznY15zzP7oNXDf2oZ424RXEuZd81V3phSwdhcJfKozkruzczZBSJEocjLgDLpECdUSJiqyvf5twRzjLsSE1un2uTuh7Qme1c4ST5Tht2OUsaG3Tix43wZShIXKcDzSK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=kveuvuCz; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1777024262;
+	bh=EK10yGwkXVQnZj51E7ttz818C88LRbsuydqLz2WzW7E=;
+	h=From:Date:Subject:To:Cc:From;
+	b=kveuvuCzBee3QivjhV4pxyXkhdCXE/uMSmzTYDnXm1Okw0XpA7Rw0eRuJRm0BHbJt
+	 waNMq53DXKOv07GkSHHvb/Y+CSjJ303VMFfViyGEX1neYY+JrqpP8rSDnpE57hTfTV
+	 GIT8wJtuUT+J5qI56X0S/Z6STIEQpTLbVZRPiJUrLtaT6T91YLWht+zn9zaQb3pGkd
+	 1Rekms+ZEPrfgPr9YfODxcJNPGxRZo2Uf7Uiy+FNPwVzMUOKVU4Sg8AFGmJmZDUcVr
+	 zW6wR7gFHAuyLVkD+0RIC6WPejzUb862/wsueuXLwZWEI0JhlRevhoxUdcDpXDIBti
+	 3MO5NUbTu/HUA==
+Received: from goku.local (unknown [100.64.0.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: mattl)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 8928F17E13B2;
+	Fri, 24 Apr 2026 11:51:02 +0200 (CEST)
+From: Matthew Leach <matthew.leach@collabora.com>
+Date: Fri, 24 Apr 2026 10:50:35 +0100
+Subject: [PATCH v4] wifi: ath11k: fix peer resolution on rx path when
+ peer_id=0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] NFC: trf7970a: Ignore antenna noise when checking for RF
- field
-To: Paul Geurts <paul.geurts@prodrive-technologies.com>,
- mgreer@animalcreek.com, sameo@linux.intel.com,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: martijn.de.gouw@prodrive-technologies.com
-References: <20260422100930.581237-1-paul.geurts@prodrive-technologies.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260422100930.581237-1-paul.geurts@prodrive-technologies.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4F7BE45C53F
+Message-Id: <20260424-ath11k-null-peerid-workaround-v4-1-252b224d3cf6@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43OTW7CMBAF4KsgrzHyjJ0QWPUeFYvxTxpDiCM7C
+ a1Q7o4DCyq1Eiyf9OZ7c2XJRe8S26+uLLrJJx+6HNR6xUxD3Zfj3ubMUGApJJachgbgxLuxbXn
+ v8rHllxBPFMPYWV5iQYC7bQUaWDb66Gr/ffc/D4+cRn10ZljQpdH4NIT4c39ggqX37tYEHLgwW
+ NtC5pO6+jChbUmHSBsTzmzZm/ApKiheiZhFJE1Oak0Gyv9E+VvcvhJlFq1QUiBWSlV/xHmeb7L
+ xdM2EAQAA
+X-Change-ID: 20260326-ath11k-null-peerid-workaround-625a129781b1
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>, 
+ Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>, 
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, kernel@collabora.com, 
+ Matthew Leach <matthew.leach@collabora.com>
+X-Mailer: b4 0.15.2
+X-Rspamd-Queue-Id: CCF9945C8AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35267-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35268-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[collabora.com:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,prodrive-technologies.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,collabora.com:dkim,collabora.com:mid,infradead.org:email,msgid.link:url,qualcomm.com:email]
 
-On 22/04/2026 12:09, Paul Geurts wrote:
-> The main channel Received Signal Strength Indicator (RSSI) measurement
-> is used to determine whether an RF field is present or not. RSSI != 0
-> is interpreted as an RF Field is present. This does not take RF noise
-> and measurement inaccuracy into account, and results in false positives
-> in the field.
-> 
-> Define a noise level and make sure the RF field is only interpreted as
-> present when the RSSI is above the noise level.
-> 
-> Fixes: 851ee3cbf850 ("NFC: trf7970a: Don't turn on RF if there is already an RF field")
-> Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
-> ---
->  drivers/nfc/trf7970a.c | 3 ++-
+It has been observed that on certain chipsets a peer can be assigned
+peer_id=0. For reception of non-aggregated MPDUs this is fine as
+ath11k_dp_rx_h_find_peer() has a fallback case where it locates the peer
+based upon the source MAC address. On an aggregated link, the mpdu_start
+header is only populated by hardware on the first sub-MSDU. This causes
+the peer resolution to be skipped for the subsequent MSDUs and the
+encryption type of these frames to be set to an incorrect value,
+resulting in these MSDUs being dropped by ieee80211.
 
-Looks reasonable so a poor man's review:
+ath11k_pci 0000:03:00.0: data rx skb 000000002f4b704d len 1534 peer xx:xx:xx:xx:xx:xx 0 ucast sn 3063 he160 rate_idx 9 vht_nss 2 freq 5240 band 1 flag 0x40d1a fcs-err 0 mic-err 0 amsdu-more 0 peer_id 0 first_msdu 1 last_msdu 0
+ath11k_pci 0000:03:00.0: data rx skb 0000000038acd580 len 1534 peer (null) 0 ucast sn 3063 he160 rate_idx 9 vht_nss 2 freq 5240 band 1 flag 0x40d00 fcs-err 0 mic-err 0 amsdu-more 0 peer_id 0 first_msdu 0 last_msdu 1
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Remove the null peer_id checks in ath11k_dp_rx_h_find_peer() and
+ath11k_hal_rx_parse_mon_status_tlv(), allowing peers with an assigned ID
+of 0 to be resolved.
+
+Fixes: 2167fa606c0f ("ath11k: Add support for RX decapsulation offload")
+Tested-on: QCA2066 hw2.1 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.9
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Signed-off-by: Matthew Leach <matthew.leach@collabora.com>
+---
+Changes in v4:
+- Prefix subsystem with 'wifi:'.
+- Added the 'Tested-by' and 'Fixes' trailers.
+- Link to v3: https://patch.msgid.link/20260417-ath11k-null-peerid-workaround-v3-1-d04302284486@collabora.com
+
+Changes in v3:
+- Clarified that the mpdu_start header isn't populated by the h/w for
+  all sub-MSDUs in the commit message.
+- Fix second null-peer check in ath11k_hal_rx_parse_mon_status_tlv().
+- Link to v2: https://patch.msgid.link/20260415-ath11k-null-peerid-workaround-v2-1-2abae3bbac16@collabora.com
+
+Changes in v2:
+
+- Since peer_id=0 is a valid condition on some chips, remove the guard
+  that prevented the peer lookup.
+- Link to v1: https://patch.msgid.link/20260326-ath11k-null-peerid-workaround-v1-1-0c2fd53202f8@collabora.com
+
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Cc: ath11k@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+ drivers/net/wireless/ath/ath11k/dp_rx.c  | 3 +--
+ drivers/net/wireless/ath/ath11k/hal_rx.c | 5 +----
+ 2 files changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 49d959b2e148..ff2c78a4e5f3 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -2215,8 +2215,7 @@ ath11k_dp_rx_h_find_peer(struct ath11k_base *ab, struct sk_buff *msdu)
+ 
+ 	lockdep_assert_held(&ab->base_lock);
+ 
+-	if (rxcb->peer_id)
+-		peer = ath11k_peer_find_by_id(ab, rxcb->peer_id);
++	peer = ath11k_peer_find_by_id(ab, rxcb->peer_id);
+ 
+ 	if (peer)
+ 		return peer;
+diff --git a/drivers/net/wireless/ath/ath11k/hal_rx.c b/drivers/net/wireless/ath/ath11k/hal_rx.c
+index 753bd93f0212..51e0840bc0d1 100644
+--- a/drivers/net/wireless/ath/ath11k/hal_rx.c
++++ b/drivers/net/wireless/ath/ath11k/hal_rx.c
+@@ -1467,11 +1467,8 @@ ath11k_hal_rx_parse_mon_status_tlv(struct ath11k_base *ab,
+ 	case HAL_RX_MPDU_START: {
+ 		struct hal_rx_mpdu_info *mpdu_info =
+ 				(struct hal_rx_mpdu_info *)tlv_data;
+-		u16 peer_id;
+ 
+-		peer_id = ath11k_hal_rx_mpduinfo_get_peerid(ab, mpdu_info);
+-		if (peer_id)
+-			ppdu_info->peer_id = peer_id;
++		ppdu_info->peer_id = ath11k_hal_rx_mpduinfo_get_peerid(ab, mpdu_info);
+ 		break;
+ 	}
+ 	case HAL_RXPCU_PPDU_END_INFO: {
+
+---
+base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
+change-id: 20260326-ath11k-null-peerid-workaround-625a129781b1
 
 Best regards,
-Krzysztof
+--  
+Matt
+
 
