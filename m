@@ -1,186 +1,162 @@
-Return-Path: <linux-wireless+bounces-35279-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35280-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIIXFFyD62kONwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-35279-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 16:51:08 +0200
+	id kJHwOO+H62lBNwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-35280-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 17:10:39 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E49146062F
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 16:51:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94300460884
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 17:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 78EAB3002F70
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 14:51:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A74E3009F95
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 15:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1993E0258;
-	Fri, 24 Apr 2026 14:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523882C027C;
+	Fri, 24 Apr 2026 15:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d8dBtik0"
+	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="pjAdZdoT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8063DF017
-	for <linux-wireless@vger.kernel.org>; Fri, 24 Apr 2026 14:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB9A2BDC13;
+	Fri, 24 Apr 2026 15:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777042261; cv=none; b=Z6m1FGBblfwgA6DUMFvGxskrRMMPu0q7CwVnPVCkQqTqXK+5Z+1tzllzyLRd5Jpx7RAKfCkfo7mSVI+gJx+9Rtiv/55j2ARSEY/xEcbVXlZKOnZd70rR05GC/kBliopHBv94/t3M2Xe+pfRMmgH1BfrS1Hd1pyr1cttewnAYWrw=
+	t=1777043436; cv=none; b=nJCKoiPVSGIxuftkFFqx6F1JumNs+mhlr/cuWpS1BtfkNtQDEkiM9/DQYBx0J2LovR/b4qc383/KZTz7Q0DScbwhWV2FTC6V6nTPf5fGlKMTi5hYpHU4tcsaOqgFjsubrL5dIsaNltSEaPepb0bBQ/MqLEiW2r/ozDv0mLlJiTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777042261; c=relaxed/simple;
-	bh=5DpfGg/7I3GkVZMMzWWKANoH36KXXpBqp0CbqHEpqqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GttOr9LtJBsWreE01z2i5tn6GeVzusc4r4FNiOgzrcIyYiA+O0gDe+onkwXYRHU2SW7cCpbaIRwRDXVwahnsm1QgPBOgCNGlFiOQuLRRCryqmf0PD0k0tryhkLpI0yGqHVE31r2mbxNr6U/3krL1nbNqgmpx1q2R4/Q0KxQLEK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d8dBtik0; arc=none smtp.client-ip=209.85.222.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-95699e8e26aso1958679241.0
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Apr 2026 07:51:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777042259; x=1777647059; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SBAWISZQQ83B65zp3ZGw7r9K/PhyBwFKKHiTM7zEE8s=;
-        b=d8dBtik0Wi2WX9fYplTr1J5vYxjM5ADq55TEHUXUwHS9NwhvPg+t7YdNG4txUCB42W
-         KMc6/OxMWVZuVwojSfwW1n3d59v+hXy92Djl6DMDzFeK2STgOEJIZ8uKl+9dRsAgYRRz
-         wyp/mnlhIqfrVPRpaPeVdFdBIsGnVo2MIBmMy4np5tEDBf8kXG4AoIq/pa41xyzHYzuE
-         gCEFsLIDufzX9kbBUBmY6iBcxl2l/gg2kikD0Z2iutF/wOzDE30FeT5mQLyxKmnm4lFn
-         ugu1XxES3ZuL0syK7bBbnm/eZu3hTlReuc8RMc2h930+SRHIzcSztqI1FIC08bxxJZWI
-         RCpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777042259; x=1777647059;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SBAWISZQQ83B65zp3ZGw7r9K/PhyBwFKKHiTM7zEE8s=;
-        b=Tff6+TVAjLbtacFsIcfJ2vp4dmEOU75aXMK8LV0AKBPM1Ev+3mVd2lWP8JUUwzAX8r
-         TEecToL1Cz9x+hAtTckunNwS4d9RNKb5twW36k0YwRleLh1iWRn5ZUZepZAI98WgRh0p
-         n1UV7ad6En9onbJYrxg4bR/3kq+zgwczT1+cfan05eULNFdcIzWDwTjqm6EKsO5YBwov
-         pV5s1Lub8TGFPmkDApWeeEvIKMmMkWqGNLlHLXiw2zZYGQXoGvgh9+Kk4Z1iOX6g4x8K
-         IzZiZFe6teW79opI6Q5zUjgIYDsVbzXP3XCyYW4HYGrLFZY5WsTxpapJMzm9sUag57FM
-         akhA==
-X-Forwarded-Encrypted: i=1; AFNElJ+oSjO6/d21alzjpHqlacC5qY/aHJJWzxr6EqHMQecGen/SnCD/Qo9f/e29N0UCtUSFJ1LnAUmPiWhdyU69Kg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlU9x0oP2L21V13tAXvbfCH2JJN9S1BGnsThF6f8j2LXEsMC6J
-	CqUND6vGx1fPYErP6UYnJw/LlPfishcDpVDxujlVQQb51JauJSQfffRf
-X-Gm-Gg: AeBDieuu2sNG7xtUUTPtox60VAWoJjbKcdjBGZC0Tbq0vJrv6oMDedw2mZBovN7BHby
-	1ZsimdVn7MAnUBX6c0N47sKCklIO18nbt5KHkzAGTKlD9YrIel3MnMHL56zx+RR7ood2UxDGLzT
-	dc14R5XVIwx8JvFo9k5mf+NCTnUV1TQIhn1G6efpRqX5Sc4gahH1Rtr2ZDEvO8ATSZn7bai/x6M
-	pLJnv8486xIab1yxtWh6nqq/gN+KxbWi5JOYr312sN9X1ryVAFCZaskBUWIJBVoTIAjj6cTWZ/V
-	m7wLLwQ0991PPY6EAFzZoUMvI/XpcIWo6t1OVSTNZV2VvjlPHnB+JeP61z7hWKX/IuhGUb6UFK8
-	J6F/LlbxUAYq4+CPjseVX4MkgyUVqznY3WrqmRPJ0tSMoMmaALZmVPu8+EvgvixM3EA9zFR4diq
-	2ylG60GL5i0yPyfsj4ONvzbLNh5oP4Rfuj1XoZFaxFEX7pGENPShqDFM5dLHXotnWo7pVYn3nE+
-	S8=
-X-Received: by 2002:a67:e711:0:b0:604:f849:462e with SMTP id ada2fe7eead31-616f8182663mr15135336137.25.1777042259406;
-        Fri, 24 Apr 2026 07:50:59 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-6174272f752sm11448711137.0.2026.04.24.07.50.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 07:50:58 -0700 (PDT)
-Date: Fri, 24 Apr 2026 15:50:53 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Yury Norov <ynorov@nvidia.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen	
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Andy Lutomirski	 <luto@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Jonathan Cameron	 <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=	 <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Ping-Ke Shih	 <pkshih@realtek.com>, Richard
- Cochran <richardcochran@gmail.com>, Andrew Lunn	 <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet	
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni	
- <pabeni@redhat.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
- <linux@rasmusvillemoes.dk>, Hans de Goede	 <hansg@kernel.org>, Linus
- Walleij <linusw@kernel.org>, Sakari Ailus	 <sakari.ailus@linux.intel.com>,
- Salah Triki <salah.triki@gmail.com>, Achim Gratz <Achim.Gratz@Stromeko.DE>,
- Ben Collins <bcollins@watter.com>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH 1/9] bitfield: add FIELD_GET_SIGNED()
-Message-ID: <20260424155053.1a98bf61@pumpkin>
-In-Reply-To: <6170788fcab2ec835597e3d7411928d36850c20a.camel@sipsolutions.net>
-References: <20260417173621.368914-1-ynorov@nvidia.com>
-	<20260417173621.368914-2-ynorov@nvidia.com>
-	<6170788fcab2ec835597e3d7411928d36850c20a.camel@sipsolutions.net>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1777043436; c=relaxed/simple;
+	bh=5MYXW1uttoTu1vXousTNqjD13y7aH/MxxWO2uDBrEug=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gJsl8hJ8bJ4vnPWyZjYiE+1op+krw7jWw+c3SZsln4h3OEL4UGFg1aaU6Geryj2Qdx8ICCmn46JYVtIIBYNTnCa80VH+B0eOvOmkBN46UClTRysxrXRf0XNjiuC5XbXhNOqblGcxB0TtuHI5Llk2ukMvN9M6fhENl1NOMsP8o2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=pjAdZdoT; arc=none smtp.client-ip=198.252.153.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
+Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1.riseup.net (Postfix) with ESMTPS id 4g2Gc82pqGzDq6T;
+	Fri, 24 Apr 2026 15:10:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=riseup.net; s=squak;
+	t=1777043432; bh=SB+7sytiJrz+IBEYLdZpkqol/yi+0XTJuxrciQQ6nB8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pjAdZdoTdOhAUZ8PWypgg8rv2AMA8YH+m0vc+/CYhXexg3q/Syh/KFxbGqHTna9EF
+	 K7arQ3yrHPpRlqUotJ8ZgAa2S6cTRVgCi3JGksPVDO109oGTBm2vAMpMAiYI/HVAm/
+	 z9JDlBYEZjQB2nggNoFPrMMg/y+SnPJ9zkwIJEF8=
+X-Riseup-User-ID: 7B37399610335E7FAE1B027EA79580CEA696040A5320EB4D035349338FC95F65
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4g2Gbw21nbz23Qn;
+	Fri, 24 Apr 2026 15:10:20 +0000 (UTC)
+Date: Fri, 24 Apr 2026 12:10:17 -0300
+From: Santiago Ruano =?iso-8859-1?Q?Rinc=F3n?= <santiagorr@riseup.net>
+To: Kyle Farnung <kfarnung@outlook.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"ath11k@lists.infradead.org" <ath11k@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	"koike@igalia.com" <koike@igalia.com>,
+	Kyle Farnung <kfarnung@gmail.com>, 1132343@bugs.debian.org
+Subject: Re: [PATCH] wifi: ath11k: Add two missing Lenovo IDs to the quirk
+ table
+Message-ID: <aeuH2chCSi57RYVU@voleno>
+References: <20260423211458.458911-1-santiagorr@riseup.net>
+ <IA2P223MB1199153665E2AFF709BD2F52D02B2@IA2P223MB1199.NAMP223.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6E49146062F
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <IA2P223MB1199153665E2AFF709BD2F52D02B2@IA2P223MB1199.NAMP223.PROD.OUTLOOK.COM>
+X-Rspamd-Queue-Id: 94300460884
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[riseup.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[riseup.net:s=squak];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35279-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[35];
-	FREEMAIL_CC(0.00)[nvidia.com,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,infradead.org,baylibre.com,analog.com,realtek.com,gmail.com,lunn.ch,davemloft.net,google.com,bootlin.com,rasmusvillemoes.dk,Stromeko.DE,watter.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35280-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.infradead.org,squebb.ca,igalia.com,gmail.com,bugs.debian.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[outlook.com];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[santiagorr@riseup.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[riseup.net:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,igalia.com:email,infradead.org:email,outlook.com:email,lenovo.com:url,riseup.net:dkim,riseup.net:email]
 
-On Mon, 20 Apr 2026 10:43:08 +0200
-Johannes Berg <johannes@sipsolutions.net> wrote:
-
-...
-> I (personally) tend to prefer the "__MAKE_OP" versions (*_get_bits()
-> etc.), in particular because WiFi and firmware interfaces deal a lot
-> with fixed endian fields.
+El 24/04/26 a las 02:07, Kyle Farnung escribió:
+> > From: Santiago Ruano Rincón <santiagorr@riseup.net>
+> > Sent: Thursday, April 23, 2026 2:14 PM
+> > To: Jeff Johnson; linux-wireless@vger.kernel.org; ath11k@lists.infradead.org; linux-kernel@vger.kernel.org
+> > Cc: Mark Pearson; kfarnung@outlook.com; koike@igalia.com
+> > Subject: [PATCH] wifi: ath11k: Add two missing Lenovo IDs to the quirk table
+> > 
+> > Commit 0eb002c93c3b4 ("wifi: ath11k: Add missing platform IDs for quirk
+> > table") added some Lenovo platform IDs to the quirk table to address a
+> > wakeup from suspend issue [1].  However, at least two more platform ID
+> > are missing in that table: P14s Gen 5 AMD, as reported by Kyle Farnung [2]
+> > and P14s Gen 3 AMD.  This commit adds one ID for each.
+> > 
+> > [1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
+> > [2] https://bugzilla.kernel.org/show_bug.cgi?id=219196#c23
+> > 
+> > Tested-on: P14s G3 AMD.
 > 
-> Any chance it'd be simple to generate u32_get_bits_signed() etc.? Could
-> be especially useful for le32_get_bits_signed() for example, to have the
-> endian conversion built-in unlike FIELD_GET_SIGNED().
+> Lenovo products have a pair of IDs, you'll want 21J6 [3] and 21MF [4] as
+> well. I submitted a patch myself [5], but I've been investigating another
+> symptom.
 
-The problem is that the number of options explodes.
-You need PREP/GET/GET_SIGNED functions x_64() x_64le() x_64be() x_32() x_32le()
-x_32be() x_16le() and x_16be().
-I make that 24 functions.
-For UPDATE you also need x_16() and x_8() for another 10.
-So at least 34 definitions - it is all getting silly.
-(And I've excluded the pointless 8/16 bit functions where the result
-is promoted to signed int.)
-
-Then you have the problem that some (common) architectures don't have
-byteswap instructions, but do have byteswapping memory accesses (maybe not
-16bit). Which means that is it generally better to byteswap the value
-before passing to FIELD_GET() and after building the full 'word' using
-FIELD_PREP() (and just | for single bits).
-(Except it is probably always better to byteswap constants.)
-
-It is also worth nothing that FIELD_PREP() will reject requests to
-fill signed fields with negative constants.
-
-	David
+Thanks for the notice. I will adapt my patch to remove the conflict with yours.
 
 > 
-> johannes
-> 
+> I have the same "wake on power removed" issue, but I have another issue
+> that's more annoying where the wifi just dies randomly. I only have the
+> wake issue when power is disconnected, not when power is connected again.
+> I mostly leave my device connected, so I only realized the behavior while
+> doing the regression testing requested in the other patch.
 
+I've also been hit by a similar annoying wifi randomly dying issue that
+you describe [deb#1132343].  With the patch that I attached applied to
+7.0.0, my P14s G3 AMD laptop has been running for more that 3 days, with
+several suspends / weak ups, either with power connected or
+disconnected.  And I haven't encountered that problem since it booted so
+I concluded that the patch fixed it.  But chances are that I am wrong.
+
+[deb#1132343] https://bugs.debian.org/1132343
+
+The latest bad version I tested where the wifi died was 6.9.11.  I plan
+test the patch on top of it.
+
+> 
+> [3] https://pcsupport.lenovo.com/jm/en/products/laptops-and-netbooks/thinkpad-p-series-laptops/thinkpad-p14s-gen-3-type-21j5-21j6/21j5
+> [4] https://pcsupport.lenovo.com/us/en/products/laptops-and-netbooks/thinkpad-p-series-laptops/thinkpad-p14s-gen-5-type-21me-21mf/21me/21me000pge
+> [5] https://lore.kernel.org/all/ba4d194b-6d31-4d8a-a6a6-da116f9f56ac@oss.qualcomm.com/
+
+[snip]
 
