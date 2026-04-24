@@ -1,122 +1,190 @@
-Return-Path: <linux-wireless+bounces-35273-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35274-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMzYG8J262kQNAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-35273-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 15:57:22 +0200
+	id sKFKCQ5762npNAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-35274-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 16:15:42 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60BC45FDF8
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 15:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 600DB460116
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 16:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 799973012C69
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 13:55:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A37130067B9
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2026 14:14:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CC93DA5D6;
-	Fri, 24 Apr 2026 13:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404FF3DA7E2;
+	Fri, 24 Apr 2026 14:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ne0MDl6Y"
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="KYiQDz40";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nopZRL20"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D553D6494;
-	Fri, 24 Apr 2026 13:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4406E3DBD4A;
+	Fri, 24 Apr 2026 14:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038957; cv=none; b=L9fXET5kEojQWFeT5OIxrUneYEu1+iU0gp5O0q2s6N+ss1XacBeXkDxSj9dkp83tWU0HoGo/RtofYzioX5UigvIyRxhS3reqS8HcM06Q+C//nlD/egqgodOdqn4psH4v9UE63ML3mre15TDa0GSdvY+yRFN+iw3hZix1vzyycEU=
+	t=1777040086; cv=none; b=eaVbOgrINADKbSHXdyURC8H8Nlf8ssWMms+VnUYRHxW8bAJYeDWK1IJizbZqyMiEnR3RxLXKc538wvfszeRjPxfqQYfqlpf9YIjT4R8MnOmP1NzpzJuAzhjDJ60f8hbMyQnYlHGiynWZjSQQo1vMpiCFBu2aUp50/6mXmUGaK1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038957; c=relaxed/simple;
-	bh=KIOumPPfyu6yk1E11eobp+/yQImq5ZMrtuLQbYTpbWg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KBmWAWX2V7pB07hB5a5d5+PW0CblEBNvzQmPx58/mTTT47XA8dsRcZd1VQAj+2Mw7tQAq6/I4XFbRE0DavqKm8hLCMdFPdi3cPhb7osE1b4gIJKEU6Dkur19LlE0GYF4wd5H/InjUGhJ6YlcYC1EXi83DnyspmVFbXVeMLgMbcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ne0MDl6Y; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=KIOumPPfyu6yk1E11eobp+/yQImq5ZMrtuLQbYTpbWg=;
-	t=1777038953; x=1778248553; b=ne0MDl6YNHkbNTEx18nSiYon5yVqqe17SpU7X8oajDIXzeU
-	8BqMqFrfD0D5HFKszOxsbxGsobz1jJ7bdfBtWtWBNx5OmgxA2TUkEQG3dUD5OjVo83lchHou64i3C
-	PR8Ph4+J8XinYQcBo77P2Z76ekk5MpzUtoCiTcEG4oN+4n1ep4oCFj1ibscSWFX07OC6ZYgPGe9tm
-	zsXZJTy8cAj8+dDpHKzfG1flp7GFgU8LJmB9BWGhZQM7XxRdu2p9YPs11iv2U+u1VHSbD5810NMt7
-	scw5u+d4UegM3fbM/+jpAitm5es8uaZ6IqstEyPMf0Ak9Dfjr61SJAorwJkN4GQw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wGH0V-00000009Gi4-3K93;
-	Fri, 24 Apr 2026 15:55:47 +0200
-Message-ID: <9f7df38831598001ac6cd79ab4fb95b4b6e042fd.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: restore monitor injection when
- coexisting with another VIF
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Brite <brite.airgeddon@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, fjhhz1997@gmail.com, oscar.alfonso.diaz@gmail.com
-Date: Fri, 24 Apr 2026 15:55:46 +0200
-In-Reply-To: <20260424120807.25005-1-brite.airgeddon@gmail.com> (sfid-20260424_140854_559281_CA03D57D)
-References: 
-	<CA+bbHrVWmSpWZ9GBVJ5vffh1qYEye=EWMq9tKA-_uzfW+raC8A@mail.gmail.com>
-	 <20260424120807.25005-1-brite.airgeddon@gmail.com>
-	 (sfid-20260424_140854_559281_CA03D57D)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1777040086; c=relaxed/simple;
+	bh=fYQ8VR7DAxlEoRAlG/wQmtY6yYFnXsPNkTF3TccrjUU=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=T8h/tlcPxiO5hJDo1inf0tIkQv03yilRsNGcJKLrXOrU9jQBoSYoQqOBdQfgDh6X+ghQ8II6l4b1AC+NGPk2KJLtNsVdum8RdZKpaz66sUMfmbyXXRosdY+LO3XVT0VcMINZTa5SnJRtgEFvPFgZ14sMwK4bQUtdOqVJRB82FSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=KYiQDz40; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nopZRL20; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 1F95014000B0;
+	Fri, 24 Apr 2026 10:14:42 -0400 (EDT)
+Received: from phl-imap-08 ([10.202.2.84])
+  by phl-compute-02.internal (MEProxy); Fri, 24 Apr 2026 10:14:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1777040082;
+	 x=1777126482; bh=Ifnuh73riQo8tGZfAnsdE17QTjWMPIDxYapxrOESda0=; b=
+	KYiQDz40A9fSnVFcvOv0HNSRroU5QPfj8quQ2Vn3QL7v1wTC7Ch21Nc+lW99WwES
+	uMRcQyTVoEb/p/ZHz4D6XdcQhhtQdF00v8LsGs8zpc9jaQLarMig+KfxLfAGTlRd
+	5zcVKl2I/vdiatAvyWWeY88euVhWzx+rbSRTs183Hwdbib6k6ITOyf/1r0M4EruV
+	iSSJ/SL3JWDdODIICfKndOvFAXzDIJ7kgdartwmpChZkzb2HelLoHIzKrr/n1Lw+
+	rEBoB/aQaioddyyui+vUIYx6h0NUPdGSnG+sAuJl8gi7MMb014+KokTcTtJbaZYy
+	yDxtwqqACOxaZrgvJjJtYg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1777040082; x=
+	1777126482; bh=Ifnuh73riQo8tGZfAnsdE17QTjWMPIDxYapxrOESda0=; b=n
+	opZRL20QK365pYIa2y7pk0uM9hhTGCFrVXInx7RqnfvP6ALnUkI80JCCoa51Ed6Y
+	odQ3IL7G9XoHQzuodjWK34hTJnJNryOfCaxt2OCGbCqxsv/Ghro4VrDPs/HTUAoF
+	8txZUiVB7Zbkk0wGxrjUBNhFFr08mVb6GinR7SRYWNLvkGrFIoh5PlJky2RLFVZk
+	QuBqzNeeCsdNqW/jp+nVAUNHnShE8BgbBS/nVMdaz2zivjw+QaFRjFzGf1chFfKc
+	JEMIHkdOij3a8rO/cghI2oiK7956PZ7f4RGkkClyxRcDXQu3GOUjjPXeaKoMUQwT
+	c+YUiC8SuEIPY6OIMrT6w==
+X-ME-Sender: <xms:0XrraTqe8XNRs-ycOmRiQ9LB9NkERNOGRZUQaD6HCnI0Lo6LFlvU_g>
+    <xme:0XrraYdOD3fkBGhgXeqUT7vZ3kFoWaUfS7PDVLRvo2VoNBaT-fYp5H8BDWV-8CP3q
+    NmWFWJWsqA0BX0SoOcaZtH77SHaAp-7kCV2nU5tRHN96hyj43xPylc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejtddvgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdforghrkhcu
+    rfgvrghrshhonhdfuceomhhpvggrrhhsohhnqdhlvghnohhvohesshhquhgvsggsrdgtrg
+    eqnecuggftrfgrthhtvghrnhepgedvgeeufffhtdeliefgjefhgffgiedvjeegleeujeeu
+    tdduteehjeduhedtiedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhush
+    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmphgvrghrshhonhdq
+    lhgvnhhovhhosehsqhhuvggssgdrtggrpdhnsggprhgtphhtthhopeekpdhmohguvgepsh
+    hmthhpohhuthdprhgtphhtthhopehkfhgrrhhnuhhnghesghhmrghilhdrtghomhdprhgt
+    phhtthhopehkohhikhgvsehighgrlhhirgdrtghomhdprhgtphhtthhopehjjhhohhhnsh
+    honheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghthhduudhksehlihhsthhsrdhi
+    nhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepkhhfrghrnhhunhhgsehouhhtlhhooh
+    hkrdgtohhmpdhrtghpthhtohepshgrnhhtihgrghhorhhrsehrihhsvghuphdrnhgvthdp
+    rhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehlihhnuhigqdifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdr
+    ohhrgh
+X-ME-Proxy: <xmx:0Xrraabbi4kq77MdKzQrRef6LHAgxMbQvnTL2PDrbka567AxmUR50g>
+    <xmx:0Xrraf-Jn9vsAu57-uTWyASi1a87sBe4T20YWyWw8dKH4M7Vvrh2HQ>
+    <xmx:0XrraYmwGrnPiyc1DXGBT4x9BpZDbQIfmnECkFSvZtFII1oksR_SDw>
+    <xmx:0Xrracz10GQt3G9atzlirQwG-PvnDGcgpduHI2r8P_vDosKN4-imDQ>
+    <xmx:0nrraWimNfB5pOKR7ww-4XsJfoVreqVyRU4ohJ5Y54BMVALQ71I3ApYa>
+Feedback-ID: ibe194615:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 8DD852CE3F93; Fri, 24 Apr 2026 10:14:41 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: B60BC45FDF8
+X-ThreadId: AmUhnMeJVjIs
+Date: Fri, 24 Apr 2026 10:14:21 -0400
+From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
+To: "Kyle Farnung" <kfarnung@outlook.com>,
+ =?UTF-8?Q?Santiago_Ruano_Rinc=C3=B3n?= <santiagorr@riseup.net>,
+ "Jeff Johnson" <jjohnson@kernel.org>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: "koike@igalia.com" <koike@igalia.com>, "Kyle Farnung" <kfarnung@gmail.com>
+Message-Id: <c3e0eff6-afa6-4054-9a37-fa3943442657@app.fastmail.com>
+In-Reply-To: 
+ <IA2P223MB1199153665E2AFF709BD2F52D02B2@IA2P223MB1199.NAMP223.PROD.OUTLOOK.COM>
+References: <20260423211458.458911-1-santiagorr@riseup.net>
+ <IA2P223MB1199153665E2AFF709BD2F52D02B2@IA2P223MB1199.NAMP223.PROD.OUTLOOK.COM>
+Subject: Re: [PATCH] wifi: ath11k: Add two missing Lenovo IDs to the quirk table
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 600DB460116
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.15 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[squebb.ca,none];
+	R_DKIM_ALLOW(-0.20)[squebb.ca:s=fm3,messagingengine.com:s=fm2];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	XM_UA_NO_VERSION(0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-35273-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35274-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[outlook.com,riseup.net,kernel.org,vger.kernel.org,lists.infradead.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[igalia.com,gmail.com];
 	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mpearson-lenovo@squebb.ca,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[squebb.ca:+,messagingengine.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:dkim,sipsolutions.net:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[app.fastmail.com:mid,outlook.com:email,igalia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email]
 
-On Sat, 2026-04-25 at 00:08 +1200, Brite wrote:
->=20
-> Earlier attempts on this thread addressed the same bug but had side
-> effects - notably full VM freezes during the airgeddon evil-twin flow,
-> reported by =C3=93scar in the thread. This patch takes a different approa=
-ch
-> and has not exhibited those side effects across the tested configurations=
-.
->=20
 
-I don't believe that all this complexity is necessary, and the code
-changes have are fairly clearly LLM-created w/o such disclosures.
-Dropping.
+On Thu, Apr 23, 2026, at 10:07 PM, Kyle Farnung wrote:
+>>=20
+>>=20
+>>=20
+>> ________________________________________
+>> From: Santiago Ruano Rinc=C3=B3n <santiagorr@riseup.net>
+>> Sent: Thursday, April 23, 2026 2:14 PM
+>> To: Jeff Johnson; linux-wireless@vger.kernel.org; ath11k@lists.infrad=
+ead.org; linux-kernel@vger.kernel.org
+>> Cc: Mark Pearson; kfarnung@outlook.com; koike@igalia.com
+>> Subject: [PATCH] wifi: ath11k: Add two missing Lenovo IDs to the quir=
+k table
+>>=20
+>> Commit 0eb002c93c3b4 ("wifi: ath11k: Add missing platform IDs for qui=
+rk
+>> table") added some Lenovo platform IDs to the quirk table to address a
+>> wakeup from suspend issue [1].  However, at least two more platform ID
+>> are missing in that table: P14s Gen 5 AMD, as reported by Kyle Farnun=
+g [2]
+>> and P14s Gen 3 AMD.  This commit adds one ID for each.
+>>=20
+>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D219196
+>> [2] https://bugzilla.kernel.org/show_bug.cgi?id=3D219196#c23
+>>=20
+>> Tested-on: P14s G3 AMD.
+>
+> Lenovo products have a pair of IDs, you'll want 21J6 [3] and 21MF [4] =
+as
+> well. I submitted a patch myself [5], but I've been investigating anot=
+her
+> symptom.
+>
 
-johannes
+Thanks - you beat me to it.
+Confirmed that you'll want to add those two.
+
+Mark
 
