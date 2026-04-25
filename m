@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-35300-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35301-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLvxBBcb7WnefQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-35300-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2026 21:50:47 +0200
+	id cEwEKyAb7WnefQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-35301-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2026 21:50:56 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53F1F4678EE
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2026 21:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E8B94678F5
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2026 21:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E19E3300B9A3
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2026 19:50:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 48C83300D702
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2026 19:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04DC303A0D;
-	Sat, 25 Apr 2026 19:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAD9303C83;
+	Sat, 25 Apr 2026 19:50:52 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5028C303C83
-	for <linux-wireless@vger.kernel.org>; Sat, 25 Apr 2026 19:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B7A303A0D
+	for <linux-wireless@vger.kernel.org>; Sat, 25 Apr 2026 19:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777146642; cv=none; b=qShWwzOPmvojgrgS/3d//TJvMks2toEkbQfmUHEo3TWCsr4hGLkQiX6xYTaP5niqL4hEGdOdhwm2wh/BhvMo53iOFQtoq/GrbSzI+mq/hV5ydcFBwTz0cJcTuaJUV6y78/9S2Eeg4Lju2ydAlBSD5e5eNH21fB5pdBpzpQaauhs=
+	t=1777146652; cv=none; b=oDuXXXr0koHGAhj5l+tH42A6np7QyQv5qb85CTWI3jB+hH+M1xCy+p7hb8qNWHZWrYcYXnVOc1qbu59spWTXxczqa6BCDbL+4vjIpYO46E4LKBhPOo9iv996RVeaU9o2/Uf9mCFIbZCrY2TruNThhqlz1CzrYagKx+WINRf8WOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777146642; c=relaxed/simple;
-	bh=v7G6hqNOK8wXhaK+lduzYZ38K2C/5WUrZdc7Veovg9s=;
+	s=arc-20240116; t=1777146652; c=relaxed/simple;
+	bh=K0OIUszuQgUsrQ5HyXT1n6dV6uBXP1gTaeGpcIJQpFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FXxvDsH12706H5LdyQCMXE3k32N0CajH6GyFZrNgkOPQwkjwjlz+jomMm3ZDNKE83AWzpECLxxBu8La1UvIaTgwumyQRBYjoVkAqy36nhbcGwpEfIyjDDFGCj8zswOFUQCclSvQVvZLJpqjwuYTwTQXdbxXyagsKyYs9XT1EbDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.46
+	 MIME-Version:Content-Type; b=Ed1TQikVE+bfaViqv11TV2h4ZiVddhB5ZsGN6in31oSDwwpUN3z4g1T/PhvwqfYR1oT08Mth/DPWSP/viDDMcN+xj8IJMu3SfMUWwkmhlW74iXDDBU6JmlguMTlWq8HKr1YHHfSTfmtS64tJ8Sy1G0uJMy0U9retIxEUgiW8ghQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7dcdd1b492eso4789658a34.1
-        for <linux-wireless@vger.kernel.org>; Sat, 25 Apr 2026 12:50:41 -0700 (PDT)
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7d4c12ff3d5so8111990a34.2
+        for <linux-wireless@vger.kernel.org>; Sat, 25 Apr 2026 12:50:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777146640; x=1777751440;
+        d=1e100.net; s=20251104; t=1777146650; x=1777751450;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=wlbgcyHHgMJ+HRdBcG0VPI5pwKjamNrjevADSB1tt3A=;
-        b=VaNZD1yz5PkZH5Gu5LelpDnPTWv+kVSJ2NTWYqa+97DmphAh9MNhITtHdcxpEY9v4s
-         WeDrwLKfBW5l/MYhYqAZBoOlsUCMFec2ihh3EpShV5Z/JJtVmsPlpgMy+oUCR+2RjpPr
-         svhXVVOksHs8oSdEFhqhGMsPJVUXniSEtQ9iWTWyTbC22/ae58RQreZkvBlSN6g27wyH
-         Wdzy9HAciWm8hiiTCF0Mq/mYKcC83J2AEltGMzgDMWBHTm3Py5f5QD0C5N8Z2ptq6qkB
-         lcjSXMof9LHdK6hQpxsS/jenJr8j3INBS2OpmOAJxlFu8RID1LxZevm9fpVopJOJf7sc
-         T0kA==
-X-Gm-Message-State: AOJu0YyNlhbP533Li3cAhOEN9DLjo7s+3KvkR2myJwh/lKul8GN7K7cM
-	vwfjFTMv07Dv4mhqlfODwi4cb23zkeOTH58pLNXOlrTgOZCy7mj3/R4Q
-X-Gm-Gg: AeBDietwXmJT5tVebh0VPvufCyXDSsN6P1qwNdgkTAdQTgpfMaCW5rDLbxZnozIZ3nG
-	xYyMdmo+8t0uTuTZw47IYQnfGs6XkGCD27fzuvNZboYehMudd/k2W2PvqkUm9yS6zxiPh7mvCqA
-	9uvxBRZVXKoJd/wDNvo6Q4ecvSta2zOVQ6/C1V+AUuVWy4mIksv9ZSHFZw/3j3uj0kVVGIRhXpF
-	k2jUoYMbj7xM0V/1U7R5FgWYYjnOEhIWRV3mAx7z9/yj3zwdK3rhEfm2ktsBgPlfsEINFtK0YoJ
-	+wNrM5thtggJaiUN/cFRtl5fKlMtnq6AkFKSB9G5HCjHURq7ClV6u0/B7q3J1vXTm+fxXIPOBjo
-	tRqXNUP8xCFZtXcwLYy66gbU2X+Qp4m3jdGkTVDPISW2ajyfVKbxXc9Ysq33po0za2O8iptW6ad
-	dd9q7wJXxNBtT4OkO0Dup+znLAgi4tzuo3Q3ekCzFQ33Btt0xv5ATobIg1g7mfoJy/MTKW5TFrr
-	X/EJn+2e77j
-X-Received: by 2002:a05:6830:3811:b0:7dc:e3ad:6088 with SMTP id 46e09a7af769-7dce3ad67f9mr10380486a34.0.1777146640247;
-        Sat, 25 Apr 2026 12:50:40 -0700 (PDT)
+        bh=VnXr/jzwqEDsGXW+QC8Pss1CT+aHwUpMjIqrf83mbHw=;
+        b=Tldr5BIGEBedJ1sWH3X0/phpMCHG3iWvx9AJDow0SUxtBsrRSq8Z2VzuE6RP2NKgj0
+         SD0iYWesz48rUzHYqy3gd1yCMHBApqq8WEVgNnmx76bvsOxBpfCTIrzwY/HvN4JHfqIF
+         ddkptGct5qv/pp2EotzltFLC6JbgmZ5rUWb52nKO7L2uH2hJMY48wXwKVWvrI6CoCEOa
+         /VQHBvmAZ7grYM0cR/hLN0YQpMeelFxwGA22L22P3OZwHSOn3DSfZ29tNMeaBQ+Uj4RP
+         4J8k2YdmP9/B111cbuJfjxtFRf2zPDuyD9VMADYGb/3Q9I9KbxZ/XiWfmw1+5JuxLPxd
+         gP+g==
+X-Gm-Message-State: AOJu0Yxhd9lWlXXcbOHsteSRrEmnt2BEQSBfiW4rkynSGA2UDPHPyEgY
+	9C69N8M9DT4S2xb4RX+0R7/a4gYeSeOh97/TH8Afy27kIRQN8dVVRxBL
+X-Gm-Gg: AeBDies+vRC+M2fSABhoeiBz0P1XboTbDGGPgkdNuLyhVDUI6Y2Nx7eiM+mTCXqPJV1
+	mZKlUwjpUZcsHqlVGrdeZg1ZBgxpRL0MzSjIN3NBp0sDa+m7LlcQaUIqv1tMqyrXsPjgxgpQDkD
+	Uo+p3yztomNUUqNz4AcixvSWn5dpkUJO4y9763e0vd0d7+ARwSzwE564Qdmlz0gCX74m5vpsVX4
+	ibQUQl30Y6T6r5aBh4L4ndB/UWytYyqeO/QTSCtW04iAxnz4Jc7Nq4AGhy5b+lGm4P3C+Gpief8
+	N7K1WBzUN3hXHV85p/VdcxfaIvaoLDpbEfleT9eOt485wkdKg3u2YG9YuhU4cXoId2pmMS71Aef
+	xoP1tiq+XY9XBTaOmEHvl2e7mP+ShfAPeZ+r3v7vE5ci3C5iYyCJrvtYG3tnf40cvY2oyexNdTO
+	81d/i9r8uE1EqTausmF0us5pQ0V9tCbWhUKptjKym25CLmHdl7wxJSRVlbyiRFWrXDBZi3py+To
+	A==
+X-Received: by 2002:a05:6830:411a:b0:7d7:570b:6800 with SMTP id 46e09a7af769-7dc951fc052mr23530525a34.23.1777146650499;
+        Sat, 25 Apr 2026 12:50:50 -0700 (PDT)
 Received: from sean-HP-EliteBook-830-G6.attlocal.net ([2600:1702:5083:7610:2e29:c3c3:de27:ce76])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dcd164d2c3sm13987624a34.24.2026.04.25.12.50.38
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dcd164d2c3sm13987624a34.24.2026.04.25.12.50.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2026 12:50:38 -0700 (PDT)
+        Sat, 25 Apr 2026 12:50:49 -0700 (PDT)
 From: Sean Wang <sean.wang@kernel.org>
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
@@ -78,9 +78,9 @@ Cc: linux-wireless@vger.kernel.org,
 	=?UTF-8?q?Thibaut=20Fran=C3=A7ois?= <tibo@humeurlibre.fr>,
 	=?UTF-8?q?=E5=BC=A0=E6=97=AD=E6=B6=B5?= <Loong.0x00@gmail.com>,
 	Sean Wang <sean.wang@mediatek.com>
-Subject: [PATCH v5 03/21] wifi: mt76: mt7925: handle 320MHz bandwidth in RXV and TXS
-Date: Sat, 25 Apr 2026 14:49:53 -0500
-Message-ID: <20260425195011.790265-4-sean.wang@kernel.org>
+Subject: [PATCH v5 04/21] wifi: mt76: mt7925: populate EHT 320MHz MCS map in sta_rec
+Date: Sat, 25 Apr 2026 14:49:54 -0500
+Message-ID: <20260425195011.790265-5-sean.wang@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260425195011.790265-1-sean.wang@kernel.org>
 References: <20260425195011.790265-1-sean.wang@kernel.org>
@@ -92,7 +92,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 53F1F4678EE
+X-Rspamd-Queue-Id: 4E8B94678F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.54 / 15.00];
@@ -107,7 +107,7 @@ X-Spamd-Result: default: False [0.54 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,jetm.me,lgic.pl,gmail.com,humeurlibre.fr,mediatek.com];
-	TAGGED_FROM(0.00)[bounces-35300-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35301-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -124,14 +124,14 @@ X-Spamd-Result: default: False [0.54 / 15.00];
 
 From: Javier Tia <floss@jetm.me>
 
-The RX vector (RXV) and TX status (TXS) parsing in mac.c lack handling
-for 320MHz channel width. When the hardware reports 320MHz in the
-bandwidth field, mt7925_mac_fill_rx_rate() returns -EINVAL and
-mt7925_mac_add_txs_skb() records no bandwidth stats.
+The sta_rec_eht structure has a mcs_map_bw320 field, and the channel
+width mapping includes NL80211_CHAN_WIDTH_320, but the 320MHz MCS/NSS
+map was never copied from the station's EHT capabilities to the MCU TLV.
+This prevents negotiation of 320MHz channel width even when both the
+hardware and firmware advertise support for it.
 
-Add IEEE80211_STA_RX_BW_320 cases to both functions. The RXV parser
-also handles BW_320+1 since the hardware can report 320MHz in two
-adjacent encoding positions.
+Add the missing memcpy for the 320MHz MCS map, matching the existing
+pattern for BW20, BW80, and BW160.
 
 Tested-by: Marcin FM <marcin@lgic.pl>
 Tested-by: Cristian-Florin Radoi <radoi.chris@gmail.com>
@@ -145,36 +145,21 @@ Tested-by: 张旭涵 <Loong.0x00@gmail.com>
 Reviewed-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Javier Tia <floss@jetm.me>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-index c47bd812b66b..d681005cc6ff 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-@@ -339,6 +339,11 @@ mt7925_mac_fill_rx_rate(struct mt792x_dev *dev,
- 	case IEEE80211_STA_RX_BW_160:
- 		status->bw = RATE_INFO_BW_160;
- 		break;
-+	/* RXV can report 320 in two positions */
-+	case IEEE80211_STA_RX_BW_320:
-+	case IEEE80211_STA_RX_BW_320 + 1:
-+		status->bw = RATE_INFO_BW_320;
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -997,6 +1002,10 @@ mt7925_mac_add_txs_skb(struct mt792x_dev *dev, struct mt76_wcid *wcid,
- 	stats->tx_mode[mode]++;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 016c534f748c..f403d9d925e3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -1667,6 +1667,7 @@ mt7925_mcu_sta_eht_tlv(struct sk_buff *skb, struct ieee80211_link_sta *link_sta)
+ 		memcpy(eht->mcs_map_bw20, &mcs_map->only_20mhz, sizeof(eht->mcs_map_bw20));
+ 	memcpy(eht->mcs_map_bw80, &mcs_map->bw._80, sizeof(eht->mcs_map_bw80));
+ 	memcpy(eht->mcs_map_bw160, &mcs_map->bw._160, sizeof(eht->mcs_map_bw160));
++	memcpy(eht->mcs_map_bw320, &mcs_map->bw._320, sizeof(eht->mcs_map_bw320));
+ }
  
- 	switch (FIELD_GET(MT_TXS0_BW, txs)) {
-+	case IEEE80211_STA_RX_BW_320:
-+		rate.bw = RATE_INFO_BW_320;
-+		stats->tx_bw[4]++;
-+		break;
- 	case IEEE80211_STA_RX_BW_160:
- 		rate.bw = RATE_INFO_BW_160;
- 		stats->tx_bw[3]++;
+ static void
 -- 
 2.43.0
 
