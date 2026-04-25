@@ -1,76 +1,76 @@
-Return-Path: <linux-wireless+bounces-35307-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35308-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFi9L0Ib7WnefQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-35307-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2026 21:51:30 +0200
+	id cAUDAEcb7WnefQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-35308-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2026 21:51:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831B1467921
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2026 21:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A696D467929
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2026 21:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8305130138BD
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2026 19:51:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D94F8300E250
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2026 19:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1F630595B;
-	Sat, 25 Apr 2026 19:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B005303C83;
+	Sat, 25 Apr 2026 19:51:29 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF98303A0D
-	for <linux-wireless@vger.kernel.org>; Sat, 25 Apr 2026 19:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E375303A0D
+	for <linux-wireless@vger.kernel.org>; Sat, 25 Apr 2026 19:51:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777146685; cv=none; b=YRqjy3hXQ6fwPBbq68x/M4x5Poi4XKjBhz0raTev0gaRcI8xJPkQRgvbOvcfuT6jhGF4voLsYDjPwaqzGXAQoVzxGkVTZFqCZ6RG+j31I49SvbLbW24O52KlJSxyFh7r/q422YmOTDKj+Ur/4vjB/IV5m1jpSnAW89GiB95+ZSQ=
+	t=1777146689; cv=none; b=SbBWhDX1pnmj6GoXereWVTYQxqQ+E6t+zmsJLhShTQmSsWxLS6B9qRsQYbLIGcw5B0koNrJhCR37RHnMb1bnpzwYX9V2ks4l8jbk+oOH76jMtI9lmkIn9SCyVDUbI+ZTkjeWPe/TFAx6Z6kO5mi5FaSJaMLRjNUoEb8Ik8ZQplg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777146685; c=relaxed/simple;
-	bh=b621fLrUqZ2uj/lyONIbQlqh1T7CJknCwIMmXS8evfI=;
+	s=arc-20240116; t=1777146689; c=relaxed/simple;
+	bh=c1rNSeL6KriYd3mxqPcgpQ3OntGtoX4pHWSo6zJnRNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JfctWKvcTYkWaihFU1S0dAXA1Hsg5Zj9R7AzAhSXLMsEDjFA1QswRtAKbN2jxVizRUs4W/131OvMjTVX8KeOkU5Tz2NbKHyliwVNhhpBhBNbciVn5wifFxDSjXsFSsEX3h5xefXqOpVrtvNlshzKoF8Okv4/UwHX0VWTLAfI1PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.51
+	 MIME-Version; b=TQaH2f9vfbJxmwCh1Em/KsIe4suyDmza2v6wslcuOcjIKfL+qDx1uh7qneghU7poWmhTz08k5oIxuCCwsNCoAGBRY1fhzU/vr1Sec1qSe0gJmW/506gPrtsZgGdAkO1K/IMbfUsGsrX3N8exbKgTtZx5BtTUiST7Qd9qeg9+RaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7dbd23bc684so5013245a34.2
-        for <linux-wireless@vger.kernel.org>; Sat, 25 Apr 2026 12:51:23 -0700 (PDT)
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7dbec19732eso7639574a34.3
+        for <linux-wireless@vger.kernel.org>; Sat, 25 Apr 2026 12:51:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777146683; x=1777751483;
+        d=1e100.net; s=20251104; t=1777146687; x=1777751487;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=CUG8ggOsQ0rrnBThrPNo+HKNnFOqSCMI0C+rNZSf4UI=;
-        b=VQp69meHwGMEM8F6f/4PncDDZvdZ02CbqYAMnifSZDjbCalfdrweU4owprCynOD62I
-         qHGt+kOMXnH+tLDR9DPJjsxfagBfxZwFpHK1Hwe2SDFa41lcQr37VcHXiIzBkQlFQBH4
-         mttKBogOZqTudMS40VWAK6c1uOmpg6feF23ZIDuEXjjh/YvxixHDlmRs5aa2aujCV0Hj
-         4nnRyHPm/NvacM8M6A/zgigpKNauf3B5PCiGGYLurmp/+zABzBsEjF2MHPQsAdZvdlHa
-         /0wPlCBJzrC00R2XAsE3XxuP+4kO3HFA0Jc/9hBXSWdmoNKC/wZ8HSVMVxJtGw8YJ8FD
-         3u2g==
-X-Gm-Message-State: AOJu0YzwJJi72qNt9kDFoNpqwkPbd99cPTMAvI9ZamqdePxRDUsc6rBi
-	Jjgvz9Mdcksx3UCjPhQra9Ao6jcA+Ljzk9KpcxKfJsgGCkSLrzUeHiR7kOPYAw==
-X-Gm-Gg: AeBDiesCweCA/m8pfd6KxXKsVYq8pFZ+D0kITxFvb01i3Ojwd4H9DNJL6IHTtO5A5OB
-	bjqW21s+0HGWHAJlHug1oaw7XJwcwfzYBWlJnsHs3avPpdIJIw/JrPlaWxfb39q1bxcNXaJ9WAr
-	g/yrMZ5UYRONsY/FwZlEUxP6Y0IOZDv191iPCzrsCY+KkJmWCA3OdN9QS11k5VF4AdBauh+AsJ3
-	9BiR1PDhp0sfe/KbH6tEmzn8Ve1cu19YrjDbRdHa3UyvrvW6D7qaOMXFwXFd3gDhc9nToFhOQKa
-	T5Bg/E7QTJwxt1N+yjhTtVhw9xpX0mr7rKBHaIe5xCimPXKpa9y9WjOABktk/MqcNnxotHgO0wW
-	xUP03JI/xcwNIcB1o+1Ge/lV7Cmhga05Rk5HcvZRetaNfShB4+gYp5KoVseskmj2Qo9FtOAHhw5
-	htTlro3yHcm3E0sFJIHTyeAYEJPIpNI8bmVYaqnXzNo/9vtInhkudjDBjCWmcs3dPP8angaZQhI
-	m4iwkpdMRWn
-X-Received: by 2002:a05:6830:6acc:b0:7d7:4a7d:fd40 with SMTP id 46e09a7af769-7dc9525302amr21505453a34.22.1777146682918;
-        Sat, 25 Apr 2026 12:51:22 -0700 (PDT)
+        bh=gSvcfLBOpoUTWN4tbv5S8Vjt79qJpmtw6Uk94nia/cU=;
+        b=QqegaoWEOyntVV6sUlkqR24oV37T+1xC/YGsXAOG8l7BnY8esc7DooqX3z8dSOcGI0
+         OeeLQJYoQ4jpTwhQeBHpJgrcHDqrLENp2cryBiotJYJVtR79KLKAKuP9U3Ea0yNCAhFH
+         ka47AjjRuF2S3M/BrlffonurQOQ0NNIkHaAyWJuLQZDhj1AKEkCddNAUlZlOVzsNYVB8
+         bhmRMDs9PHFmOCTDg3lBUvDsTKK0DhhTyyMMJKtEpJ90fFjXv8LH4tdJ6eCAE4y+q+Sd
+         7JrWZYOhmNmH/N3zZLONsKt5U1DPJ0pCPjoOFBAFxxiYOW++pCMCrQcI/YluunUx4Cgh
+         Ax3A==
+X-Gm-Message-State: AOJu0YzUQ7y+8NVKwR4l9AwO9gaXTqpw82b9fyL2P0iO+UkxZWi2+VLl
+	DeAFNVQ9drEP34mVkQHyCAFWsEw0ybef8dOH/zpLwxUgZAPI3w4NohDB
+X-Gm-Gg: AeBDievHNp6KaUddSRYXGJbChCxwva8aRou5IXf+dMsxOusBUKbFH2zhW3/jshpisCg
+	suNvPISjLaYp31zrWjjk/Gy4a1/GlZVwT8K/RFa8Jpf/u4qiNWTcD3ycAcUD0JXhhMm+ca9gZlU
+	kQKAgYZTCGgx//MDOY7xggct453d6MZ2/055niB7TNu7S8Edy+hGaSBBdnPxK4+Bm6a/nctkFZb
+	76QzkmzBumPH+V16sWo+gZm99gxZoayq1173NgFs2sXpJT92svPXjaraV2eoHPbkwcqTAOmEStW
+	JMrvFIc4VOg/WWjIT/Rap81AcYMw+x30d0Cm+Jyn+0BbZzB95l4E59oYkwsNrfrivIMLfhXWJdB
+	MYbNTn6xegINIL0C/B+q8VHMEIgWcrpcgL4POQwod7V+leryLZcXdEDUY94DQo20ss1iotPfLK+
+	O2AeKPbPNgCWFYgaTtnMDvhs/6nFyuc5RrXf/qK5pR/O382ssOqYQJ3ndKflKqyfdzAI/081cTK
+	bVov3qj6Ndu
+X-Received: by 2002:a05:6830:7315:b0:7db:a832:b329 with SMTP id 46e09a7af769-7dc9521f8f4mr22143740a34.21.1777146687361;
+        Sat, 25 Apr 2026 12:51:27 -0700 (PDT)
 Received: from sean-HP-EliteBook-830-G6.attlocal.net ([2600:1702:5083:7610:2e29:c3c3:de27:ce76])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dcd164d2c3sm13987624a34.24.2026.04.25.12.51.21
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dcd164d2c3sm13987624a34.24.2026.04.25.12.51.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2026 12:51:22 -0700 (PDT)
+        Sat, 25 Apr 2026 12:51:26 -0700 (PDT)
 From: Sean Wang <sean.wang@kernel.org>
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
 Cc: linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org,
 	Sean Wang <sean.wang@mediatek.com>
-Subject: [PATCH v5 10/21] wifi: mt76: connac: replace is_mt7925() with is_connac3()
-Date: Sat, 25 Apr 2026 14:50:00 -0500
-Message-ID: <20260425195011.790265-11-sean.wang@kernel.org>
+Subject: [PATCH v5 11/21] wifi: mt76: mt7925: use link-specific removal for non-MLD STA
+Date: Sat, 25 Apr 2026 14:50:01 -0500
+Message-ID: <20260425195011.790265-12-sean.wang@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260425195011.790265-1-sean.wang@kernel.org>
 References: <20260425195011.790265-1-sean.wang@kernel.org>
@@ -81,7 +81,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 831B1467921
+X-Rspamd-Queue-Id: A696D467929
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.46 / 15.00];
@@ -97,7 +97,7 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35307-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35308-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
@@ -112,110 +112,39 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Use is_connac3() instead of is_mt7925() to avoid confusion
-when more chips join.
+Use the default link removal path for non-MLD STA instead of the
+multi-link flow.
 
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac.h     | 7 ++++++-
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 2 +-
- drivers/net/wireless/mediatek/mt76/mt792x_usb.c      | 2 +-
- 5 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index 45479cc29134..1994863dc59d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -172,11 +172,16 @@ struct mt76_connac_tx_free {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index bf38d6502970..044043a8768d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1338,14 +1338,14 @@ void mt7925_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
+ 	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
+ 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+-	unsigned long rem;
  
- extern const struct wiphy_wowlan_support mt76_connac_wowlan_support;
+-	rem = ieee80211_vif_is_mld(vif) ? msta->valid_links : BIT(0);
+-
+-	mt7925_mac_sta_remove_links(dev, vif, sta, rem);
+-
+-	if (ieee80211_vif_is_mld(vif))
++	if (ieee80211_vif_is_mld(vif)) {
++		mt7925_mac_sta_remove_links(dev, vif, sta, msta->valid_links);
+ 		mt7925_mcu_del_dev(mdev, vif);
++	} else {
++		mt7925_mac_link_sta_remove(mdev, vif, &sta->deflink,
++					   &msta->deflink);
++	}
  
--static inline bool is_mt7925(struct mt76_dev *dev)
-+static inline bool is_connac3(struct mt76_dev *dev)
- {
- 	return mt76_chip(dev) == 0x7925 || mt76_chip(dev) == 0x7927;
- }
- 
-+static inline bool is_mt7925(struct mt76_dev *dev)
-+{
-+	return mt76_chip(dev) == 0x7925;
-+}
-+
- static inline bool is_mt7927(struct mt76_dev *dev)
- {
- 	return mt76_chip(dev) == 0x7927;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index 0339e2e7ab60..c341595e9138 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -173,7 +173,7 @@ void mt76_connac_write_hw_txp(struct mt76_dev *dev,
- 
- 	txp->msdu_id[0] = cpu_to_le16(id | MT_MSDU_ID_VALID);
- 
--	if (is_mt7663(dev) || is_connac2(dev) || is_mt7925(dev))
-+	if (is_mt7663(dev) || is_connac2(dev) || is_connac3(dev))
- 		last_mask = MT_TXD_LEN_LAST;
- 	else
- 		last_mask = MT_TXD_LEN_AMSDU_LAST |
-@@ -217,7 +217,7 @@ mt76_connac_txp_skb_unmap_hw(struct mt76_dev *dev,
- 	u32 last_mask;
- 	int i;
- 
--	if (is_mt7663(dev) || is_connac2(dev) || is_mt7925(dev))
-+	if (is_mt7663(dev) || is_connac2(dev) || is_connac3(dev))
- 		last_mask = MT_TXD_LEN_LAST;
- 	else
- 		last_mask = MT_TXD_LEN_MSDU_LAST;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 89bd52ea8bf7..2b1c887d6709 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -67,7 +67,7 @@ int mt76_connac_mcu_init_download(struct mt76_dev *dev, u32 addr, u32 len,
- 
- 	if ((!is_connac_v1(dev) && addr == MCU_PATCH_ADDRESS) ||
- 	    (is_connac2(dev) && addr == 0x900000) ||
--	    (is_mt7925(dev) && (addr == 0x900000 || addr == 0xe0002800)) ||
-+	    (is_connac3(dev) && (addr == 0x900000 || addr == 0xe0002800)) ||
- 	    (is_mt799x(dev) && addr == 0x900000))
- 		cmd = MCU_CMD(PATCH_START_REQ);
- 	else
-@@ -3084,7 +3084,7 @@ static u32 mt76_connac2_get_data_mode(struct mt76_dev *dev, u32 info)
- {
- 	u32 mode = DL_MODE_NEED_RSP;
- 
--	if ((!is_connac2(dev) && !is_mt7925(dev)) || info == PATCH_SEC_NOT_SUPPORT)
-+	if ((!is_connac2(dev) && !is_connac3(dev)) || info == PATCH_SEC_NOT_SUPPORT)
- 		return mode;
- 
- 	switch (FIELD_GET(PATCH_SEC_ENC_TYPE_MASK, info)) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index ac5126ab68ff..552cb94edaa0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1878,7 +1878,7 @@ mt76_connac_mcu_gen_dl_mode(struct mt76_dev *dev, u8 feature_set, bool is_wa)
- 
- 	ret |= feature_set & FW_FEATURE_SET_ENCRYPT ?
- 	       DL_MODE_ENCRYPT | DL_MODE_RESET_SEC_IV : 0;
--	if (is_connac2(dev) || is_mt7925(dev))
-+	if (is_connac2(dev) || is_connac3(dev))
- 		ret |= feature_set & FW_FEATURE_ENCRY_MODE ?
- 		       DL_CONFIG_ENCRY_MODE_SEL : 0;
- 	ret |= FIELD_PREP(DL_MODE_KEY_IDX,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-index 47827d1c5ccb..7bb9840112ac 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-@@ -263,7 +263,7 @@ EXPORT_SYMBOL_GPL(mt792xu_dma_init);
- 
- int mt792xu_wfsys_reset(struct mt792x_dev *dev)
- {
--	const struct mt792xu_wfsys_desc *desc = is_mt7925(&dev->mt76) ?
-+	const struct mt792xu_wfsys_desc *desc = is_connac3(&dev->mt76) ?
- 						&mt7925_wfsys_desc :
- 						&mt7921_wfsys_desc;
- 	u32 val;
+ 	if (vif->type == NL80211_IFTYPE_STATION) {
+ 		mvif->wep_sta = NULL;
 -- 
 2.43.0
 
