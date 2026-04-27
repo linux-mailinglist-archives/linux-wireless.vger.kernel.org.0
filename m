@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-35375-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35376-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HLnJPBx72n6BQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35375-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 16:25:52 +0200
+	id wK/mCGt272mZBgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35376-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 16:44:59 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320AF474531
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 16:25:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 858144749D0
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 16:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EBFFD301CE54
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 14:24:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D61CA3082A81
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 14:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3811B3D3D1A;
-	Mon, 27 Apr 2026 14:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C083D411A;
+	Mon, 27 Apr 2026 14:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qsQWO2DW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MqNrrf3g"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128F43D34B6;
-	Mon, 27 Apr 2026 14:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9AA26E142;
+	Mon, 27 Apr 2026 14:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777299851; cv=none; b=eXKex6K6tiSHVGEZIRWeq1+kyG3jay6vtztyAYVWnFpvs3XQKGZibfVX+/BCnFsF++J00A2OYzzYkIGNFQTv69wYar62HpyPHK3ay0I3P09uHyXGxXQVQe2zG1868P7UmTfMPGWKugeLq52a5WX4FQAzWa6pfQr0k2srKPAfHUI=
+	t=1777299856; cv=none; b=kKXRSW9llE6t71VRQsZVHrxjtfXI3vmVPRk5/zqC7w5uaF5mjyGNKpqeQtyVizNjekYPjZHhi39B4LTsk5lmv6jS5rEJvHbBUsLJlIUd5/ShgrkQScoX38TYAhu8lwPrcF2hhX/3IJ32jhwrJZN4g0t3lW7ynz80UWfENuvnNSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777299851; c=relaxed/simple;
-	bh=7Y8vgQ5oaQQ1eADmt9RQJb/9/dRh7wzS0n00a5vfL4Q=;
+	s=arc-20240116; t=1777299856; c=relaxed/simple;
+	bh=Nv1JYf3LO+jPMQgpo8pnXz9mJrVmyxe8ICeN5WxGts0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ggBM6+XssVXXf8XqUgYPd9Px+Y7IWlu/5xqZUU9GnxyKWlc1x0i1CG+GDZ2w5iWVNpClFulATgdai1Pk4foPDacW4Xmay1LKCINjuKaIvL/oZr/98ZwB6JY5pRUfmQWcAMGOywCBzlljxYgPmiqWWF4Bip7uGl2TAvObgH+lsVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qsQWO2DW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF564C2BCB4;
-	Mon, 27 Apr 2026 14:24:05 +0000 (UTC)
+	 MIME-Version; b=TaSHfRMPKJstMD0PO8juA+POXkmZo42HlE3FdfBTY+bT6/VCvgwB50p11pei9BAO4W54c2lNHLs+OgOrN3AJc6+2V/vXJ4NMtr656+D7rquJuzTDpIqRS6dMBIN7OisU4siMin9ev+TPj0/DqWIW2lKSd+PF+M5S9wreLg3KPtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MqNrrf3g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291B2C19425;
+	Mon, 27 Apr 2026 14:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777299850;
-	bh=7Y8vgQ5oaQQ1eADmt9RQJb/9/dRh7wzS0n00a5vfL4Q=;
+	s=k20201202; t=1777299856;
+	bh=Nv1JYf3LO+jPMQgpo8pnXz9mJrVmyxe8ICeN5WxGts0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsQWO2DWlqlAEh6KEPtkJCtTRC/t+Pot7fdDQCo6CjBn3k0liWl7zwSAyFTyjSufR
-	 vMX/O8Cizu1pCgc0PjuC2MqwFl4P2BCz1+bhdHxTowdpX9A/P9jdl7RmFfUrEp4r80
-	 eod90/FmuICu9XxZ1azHPR8HhC8iCKSjF8/+x5rKjr+/UvJ98b8nuCT6X9yWPU7Qq5
-	 h4FeuIMedSH7F1tcBBZc+tB3pZrxZBMOLHP+nDPzsnyupWrgdbKvRTsaXfXfS3l43v
-	 r8G+vYX8akZ/0zhVWz4XM2L9tfavLipRgNn78I6KqW79r8dmkdM2yQHnwWQEuuGrlk
-	 lmRcPIvKDGdEA==
+	b=MqNrrf3g5O6M65G1JhS7bEZJX1r8MEERTG22J+Ynebq3uEAY/PvQ7VWZhbWmuxA6Y
+	 8U1FJ4y47vfh6ZcPkCHxPBD70DnaqAuY/nfkaqwFSr+xOiKtX7ZMYsd+XdmF4vrO//
+	 kSjh7yQcq4iI6f6TTLgsRC0SH+DOGeKdQGuarmbU44+cnJ46gb27/SP71av0s3gZ07
+	 5dZr7nZCrtqFNugvftIk6vbTV602ox/34HBW3ZZzAngvZif8z5AGGToYTJ/V+OzVuk
+	 guMW+CUMhKZUuCeNW/Lnrf29IRET91h9LWu/JiqzLYeMNj/CYRJWROpZWW7DlK3Epz
+	 5+ndG4WFx1HwA==
 From: Arnd Bergmann <arnd@kernel.org>
 To: 
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -71,10 +71,10 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-gpio@vger.kernel.org,
 	linux-omap@vger.kernel.org,
-	Christian Lamparter <chunkeey@gmail.com>
-Subject: [PATCH v3 1/3] dt-bindings: net: add st,stlc45xx/p54spi binding
-Date: Mon, 27 Apr 2026 16:23:53 +0200
-Message-Id: <20260427142355.2532714-2-arnd@kernel.org>
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH v3 2/3] ARM: dts: omap2: add stlc4560 spi-wireless node
+Date: Mon, 27 Apr 2026 16:23:54 +0200
+Message-Id: <20260427142355.2532714-3-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260427142355.2532714-1-arnd@kernel.org>
 References: <20260427142355.2532714-1-arnd@kernel.org>
@@ -85,7 +85,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 320AF474531
+X-Rspamd-Queue-Id: 858144749D0
 X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [6.34 / 15.00];
@@ -98,9 +98,9 @@ X-Spamd-Result: default: False [6.34 / 15.00];
 	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[arndb.de,iki.fi,kemnade.info,kernel.org,baylibre.com,davemloft.net,gmail.com,google.com,sipsolutions.net,redhat.com,atomide.com,vger.kernel.org,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-35375-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35376-lists,linux-wireless=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[26];
-	GREYLIST(0.00)[pass,meta];
+	GREYLIST(0.00)[pass,body];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -113,112 +113,69 @@ X-Spamd-Result: default: False [6.34 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[arnd@kernel.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64];
+	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
 	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_SPAM(0.00)[0.883];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[devicetree.org:url,0.0.0.0:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	NEURAL_SPAM(0.00)[0.933];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[4809a000:email,0.0.0.5:email,arndb.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,0.0.0.0:email,2.221.234.208:email,2.221.133.64:email]
 X-Spam: Yes
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-The SPI version of Prism54 was sold under a couple of different
-names and supported by the Linux p54spi driver, but there was
-never a DT binding for it.
+Converted from the platform_device creation in board-n8x0.c.
 
-Document the four known names of this device and the properties
-that are sufficient for its use on the Nokia N8x0 tablet.
-
-As I don't have this hardware or documentation for it, this is
-purely based on existing usage in the driver.
-
-Link: https://lore.kernel.org/all/e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com/
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
+Link: https://lore.kernel.org/all/20230314163201.955689-1-arnd@kernel.org/
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- .../bindings/net/wireless/st,stlc45xx.yaml    | 58 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 2 files changed, 59 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
+ arch/arm/boot/dts/ti/omap/omap2.dtsi                |  4 ++++
+ arch/arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi | 12 ++++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml b/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
-new file mode 100644
-index 000000000000..12d907720ec4
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
-@@ -0,0 +1,58 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/wireless/st,stlc45xx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: ST/Intersil/Conexant stlc45xx/p54spi/cx3110x SPI wireless device
-+
-+maintainers:
-+  - Christian Lamparter <chunkeey@gmail.com>
-+
-+description:
-+  The SPI variant of the Intersil Prism54 wireless device was sold
-+  under a variety of names, including Conexant CX3110x and
-+  ST Microelectronics STLC5460.
-+
-+allOf:
-+  - $ref: ieee80211.yaml#
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - cnxt,3110x
-+      - isil,p54spi
-+      - st,stlc4550
-+      - st,stlc4560
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  powerdown-gpios:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        wifi@0 {
-+            compatible = "st,stlc4560";
-+            reg = <0>;
-+            spi-max-frequency = <48000000>;
-+            interrupts-extended = <&gpio 23>;
-+            powerdown-gpios = <&gpio 1>;
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 84afd29c9b1b..deacfc4e244d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20098,6 +20098,7 @@ M:	Christian Lamparter <chunkeey@googlemail.com>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
- W:	https://wireless.wiki.kernel.org/en/users/Drivers/p54
-+F:	Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
- F:	drivers/net/wireless/intersil/
+diff --git a/arch/arm/boot/dts/ti/omap/omap2.dtsi b/arch/arm/boot/dts/ti/omap/omap2.dtsi
+index afabb36a8ac1..fdc1790adf43 100644
+--- a/arch/arm/boot/dts/ti/omap/omap2.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap2.dtsi
+@@ -129,6 +129,8 @@ i2c2: i2c@48072000 {
+ 		};
  
- PACKET SOCKETS
+ 		mcspi1: spi@48098000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 			compatible = "ti,omap2-mcspi";
+ 			ti,hwmods = "mcspi1";
+ 			reg = <0x48098000 0x100>;
+@@ -140,6 +142,8 @@ mcspi1: spi@48098000 {
+ 		};
+ 
+ 		mcspi2: spi@4809a000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 			compatible = "ti,omap2-mcspi";
+ 			ti,hwmods = "mcspi2";
+ 			reg = <0x4809a000 0x100>;
+diff --git a/arch/arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi b/arch/arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi
+index 63b0b4921e4e..fe9dd8bbfc85 100644
+--- a/arch/arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi
+@@ -109,3 +109,15 @@ partition@5 {
+ 		};
+ 	};
+ };
++
++&mcspi2 {
++	status = "okay";
++
++	wifi@0 {
++		reg = <0>;
++		compatible = "st,stlc4560";
++		spi-max-frequency = <48000000>;
++		interrupts-extended = <&gpio3 23 IRQ_TYPE_EDGE_RISING>;
++		powerdown-gpios = <&gpio4 1 GPIO_ACTIVE_LOW>; /* gpio 97 */
++	};
++};
 -- 
 2.39.5
 
