@@ -1,160 +1,183 @@
-Return-Path: <linux-wireless+bounces-35342-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35343-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNdHGxMg72ml6wAAu9opvQ
-	(envelope-from <linux-wireless+bounces-35342-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 10:36:35 +0200
+	id gNgtEJMu72kI9QAAu9opvQ
+	(envelope-from <linux-wireless+bounces-35343-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 11:38:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D5F46F2C0
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 10:36:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A404E470024
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 11:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CA3493012CC0
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 08:30:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB7D63022064
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 09:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CAA399015;
-	Mon, 27 Apr 2026 08:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0623A1D01;
+	Mon, 27 Apr 2026 09:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="CI1A/ePC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yvrboc/z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7895399375;
-	Mon, 27 Apr 2026 08:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777278606; cv=none; b=aggM+CloF2aTy+JsN1OzWKv2C8VfQij9EZzZPZRhpqzQa5Zj8MknGJetKW1CEaLQJLYldkYoKPNlk8MJ0LsEa5YsZraCdu9T/ZZ9JigvH/8DKHH9/VFS4gW7iGUN+uHT1QUaqJW837AC7U7+dSU/j4r1ULLmAblCH1G+p3yoL60=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777278606; c=relaxed/simple;
-	bh=J+KZuJ+vJRzUEoUQtQeS5fdJnRKi3NFoXrjT3B1VtVg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pQTZgNlGRkcBR5WJabDHAqZkenTgUcWtQLu3S5jryOZBvGcsrrjZRKZpYMOCsvMRA2345HNBU29HizuIDA9RTKUrRRFJG2fQF2Zl/4YA7B15F93bqmAEjIEiqGzB7rxArLqsH+weDM0uezwvj9fR4Ao3LKmYEaAf4gLvg8DfrV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=CI1A/ePC; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=nXIok8hG8UF6yHkdapezYbfZnnwbb/+IZZVyVDYQA+4=;
-	t=1777278604; x=1778488204; b=CI1A/ePCJS6RKmGXLfskpbGvrv9kGSR5CiLZ4Ch0iGL0qb5
-	HZr5D++4WhgshA4BKO/yxPvC4lKwOWyqEUyYEgaf0EkPFBU9chFdyRuPyRSycIdxoxi6AZ6B1XxTA
-	p2EanXpPzBbF87NxN7GIsfa23Q6EMB6RRVcmVRryiSjVPh4VjlvuM2otpLxl55j8QgrOEvRV3vXId
-	jDzPghbgfhdLBD81Qhmu8rIv1t13wQmvCRXhzQWBbjlMYdUNKFMQFJPKMkKhV13uTEI3V36SxWiaf
-	/naPWQ+VH4IwZHOMPJtiTDnj3CVsQ5Mz6yOB5ozXknypCAL0yRXEYjHQO7C5hnoQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wHHLG-0000000EXjF-34ki;
-	Mon, 27 Apr 2026 10:29:23 +0200
-Message-ID: <dc1b12e74b3f487eb531bf7def806f10d9a18b5e.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/9] bitfield: add FIELD_GET_SIGNED()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov	 <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin"	 <hpa@zytor.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra	 <peterz@infradead.org>, Jonathan Cameron
- <jic23@kernel.org>, David Lechner	 <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,  Andy Shevchenko	
- <andy@kernel.org>, Ping-Ke Shih <pkshih@realtek.com>, Richard Cochran	
- <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, Alexandre
- Belloni <alexandre.belloni@bootlin.com>, Yury Norov	
- <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Hans
- de Goede <hansg@kernel.org>, Linus Walleij <linusw@kernel.org>, Sakari
- Ailus	 <sakari.ailus@linux.intel.com>, Salah Triki <salah.triki@gmail.com>,
- Achim Gratz <Achim.Gratz@stromeko.de>, Ben Collins <bcollins@watter.com>, 
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-rtc@vger.kernel.org
-Date: Mon, 27 Apr 2026 10:29:21 +0200
-In-Reply-To: <aeub59FBHbCy-KKP@yury>
-References: <20260417173621.368914-1-ynorov@nvidia.com>
-	 <20260417173621.368914-2-ynorov@nvidia.com>
-	 <6170788fcab2ec835597e3d7411928d36850c20a.camel@sipsolutions.net>
-	 <aeub59FBHbCy-KKP@yury>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BD53B2FFB
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 09:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777282675; cv=pass; b=uaB8G93VtB/xf5Jc+VpoZy5jv6wPnKTM77563miOOBczWcZWyuWA51Gv2NKj1Y0G30TWciKMkyvYASeci2eadcPWysiiLdhFJWeOARnsT006AZ73YvI1TQsdNCCAF0gBoUi255g8ZTXExgina8gwaeyq1FNq0X8s5sy15BL/Up4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777282675; c=relaxed/simple;
+	bh=khF6or3P7Ssf2kj43vsYhNI8CexRuRIQPUR2p95Zerc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Sepi1CU7A4L4v+0Jxj6mhcY3eTmtZqj4QHr0fvFI5XYDeSyWGaJLZAJGifJvIWL/nwgVxvXrJHAdbzxLSONCvWz6ZlNk4YMzaNiQZ1EGnDuUvMAkno77HDd6GBhstDmnWQQS2iLSgyZWW28WomNIbJRA+VbFivEKKHN9+wmEQ7Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yvrboc/z; arc=pass smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2adff872068so48126725ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 02:37:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777282673; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bPFw7SpIF7g3HqEYVhA4Yi9e5xd0dEoInNwLfRK6gfPrkueydcyMMSwxa+Giz410yo
+         aKs+CGp8sILPCjnhijVfnvSnAQfKuWWyJ1VQu/c4G12j3CoGFsx1ZsSvg50IDlrkl3iH
+         nSzuht1VTufNKWRE2s3+v+g0SN+YLzZkgDc46BCaV89bd9mHxGky3zrZBprgsiprnJhr
+         29sQ1TGQyC1wrCoTfKJ2sfftRDwZZy1JA18VlJsbqECo5I09iVSy6g0GarPNgx1FYwZP
+         nvmonsJq2f0/JIDvKaVWODn2FURpC8mROHDEuGw0KjcGXaGXHh/OEsgV188DI57qxkW9
+         +Vvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Kn6E9zoHRM2KLY1lbngZyriexLNgWW5A4g5dkFdwTns=;
+        fh=5jvRZGsScH8L1qb1gYzxrBGI2ZoygVGhgXh+qHdlaWo=;
+        b=HtUwmBxSmtsJH5AZ/Tw1jz6i2wl3l4ltkwa4LANa0RP4KzfirrcosmoLoAh4QC1rOl
+         5Xhi8jfFlOwcspf5Hk38eZ3m7HhHRiZRyNtHeahvIEpF4KQ4qYkOH9pbi9aVX9aFDv8N
+         8TORXWTgLzJHvxE+vLpTzlSHxOCd3yjiBk5X0hTGD1klK6nRPDCfx6g8kWMrMIeJasAS
+         fmlzten0HcCuD3w6rthupYeEl5m9HU5UQEE/xIArNvTUpWPZ/cvIwlKDYDopcGhW+bIq
+         ZSf97KPF+KwOCH2jxkMpyVmGCTqojQ3xux2aPvT8BcsAStQukKVubOxTbWoR7/O0sDb0
+         G0eA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777282673; x=1777887473; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kn6E9zoHRM2KLY1lbngZyriexLNgWW5A4g5dkFdwTns=;
+        b=Yvrboc/zkxGdplDhmWQRZkXBeVKRlUBeBm8CvRSCAsy5aIi+TYfZPIt0+qvyXr7+YU
+         Rk5x0ZGYImqKqzqI2m6CuXo3YAyGGn0uC9ixTUCj6BmCRU/tWl5qXU5o6HP3xTUaoigs
+         lVva3C34vewMxADKIcEaQFem5woqDuUNVGg0QFW6L6DVlEKlVKOKCq1YokrvLKAFtF+9
+         yG22WZuiCvYakpf/shmOFGHNkmucmgc2DDaE62gE4S+5kOoWeQJYWu9an3syIYtYAjTD
+         /fLCFcVYLebZAj89BwdtiGLM3IVHstyvfAIXB1EFUVQd08FsGXUR2zCvrc3wasOq9Usv
+         8/bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777282673; x=1777887473;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kn6E9zoHRM2KLY1lbngZyriexLNgWW5A4g5dkFdwTns=;
+        b=doRDf4xuGCxfB5Mk7LsA8A+zYkm7FqZcaUKi4V1BmhCKDrl7HVFRFDWIdRjsfS7PWM
+         5eU+pLgVU8f4lscO9JyWKrDKSUjUYkKvQ3zJv8xgqsqlJQIG8MQ6zQq7UmzVLwzuXjOg
+         Xlr/9Yn+TxxkCZACCfPuRuJ2NF7qJrcCJmYCEVhywH12GW7Dv9FyKkqoKjv+tENAImEq
+         LvC008UcRzkfkDlG82KJ5Hlaa5CJFmBtsa2z3vv5/8zkS67b65JklJU0im3O/UVdAqzV
+         +zz2xg+OGSxJqOlT8LGvkdooUGzRt5PTxBWnRL77NTVw6fcS5LVVecu3hH9zGKggsHOd
+         jRqw==
+X-Forwarded-Encrypted: i=1; AFNElJ/U62eH0Ld6oD9Q9Nl1WTNAdPE0tkwzzGGev4ZLZn605HiD3c6gkWQBVTvGYNsSd8tSnNCPSeuruivkCoLcug==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDp1rbJ2InhDkh0HPx8Xu1zHNEY3nDY7nPJUYVNUVf/sq4Vt/f
+	fzZzBizo0pfrfHH9XD78dWS/PAKovSt46QMxWBbkrW82Xm2G/LZqo7m6pnPzw+FOlE5i5gY+EKs
+	r4oRD9XWBHMsecwXIzO8RYTyonuKm7dk=
+X-Gm-Gg: AeBDiesF34w7tQsQOCg7zin+cU3K6h6OqJtu0YpRVkF1JvYwOUNE1yRL4/3J7itF9od
+	pSLFaUzPVpt81qKPR6OfNRaUGzFP9KBHlZvbfwQo9bhVWo6HTE/SasLYu8l1vu69LEg5RqlZmDO
+	KEqOMGZaAI3tahb8aunPhyTP7UQiH/Hvgo3UDOh1YdCLi/hQwP4KKajLsY7+ZVrVXi2rf6HSobX
+	n8vd2Hs6jpojg7YZAU3+Of8ThtUwgFVqM6ntpsidnXmxE0VXQ2Lo2MnW8CrfwMY+ahb686Z/qOx
+	wRH7nbQdmIXrjQ==
+X-Received: by 2002:a17:903:883:b0:2b2:9f45:2266 with SMTP id
+ d9443c01a7336-2b5f9f8302dmr320471305ad.21.1777282673433; Mon, 27 Apr 2026
+ 02:37:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: E9D5F46F2C0
+References: <20260422173846.37640-1-aha310510@gmail.com> <20260423041500.2020-1-hdanton@sina.com>
+In-Reply-To: <20260423041500.2020-1-hdanton@sina.com>
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Mon, 27 Apr 2026 18:37:44 +0900
+X-Gm-Features: AVHnY4I1UFGxx0A28CvrdAM8FeQdsO0M2pXwCD2tOB76rFmHE8O7ZLuo4xDPRRA
+Message-ID: <CAO9qdTGbB0YzvZYv1a4irM+i+P=GHYYVF=KwbYHKXr=f9rYUPQ@mail.gmail.com>
+Subject: Re: [PATCH] wifi: rsi: fix kthread lifetime race between self-exit
+ and external-stop
+To: Hillf Danton <hdanton@sina.com>
+Cc: Johannes Berg <johannes.berg@intel.com>, Kalle Valo <kvalo@kernel.org>, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com, 
+	syzkaller-bugs@googlegroups.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: A404E470024
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35342-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	TAGGED_FROM(0.00)[bounces-35343-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[sina.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[34];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,infradead.org,baylibre.com,analog.com,realtek.com,gmail.com,lunn.ch,davemloft.net,google.com,bootlin.com,rasmusvillemoes.dk,stromeko.de,watter.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:dkim,sipsolutions.net:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	FROM_NEQ_ENVFROM(0.00)[aha310510@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,5de83f57cd8531f55596];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sina.com:email]
 
-On Fri, 2026-04-24 at 12:35 -0400, Yury Norov wrote:
-> > I (personally) tend to prefer the "__MAKE_OP" versions (*_get_bits()
-> > etc.), in particular because WiFi and firmware interfaces deal a lot
-> > with fixed endian fields.
->=20
-> I don't like that __MAKE_OP magic because whatever it generates is not
-> greppable. And because we disable strict type checks for kernel, but
-> this API claims to typecheck the parameters for the user. So, the
-> following compiles well:
->=20
->         u64 val =3D 0;
->         ret =3D le16_get_bits(val, GENMASK(15, 10));
->=20
-> I don't like autogeneration in general. We generate, for example,
-> be32_get_bits(), but never use it.
+Hi Hillf,
 
-That's a lot of "I don't like", but whatever.
+Hillf Danton <hdanton@sina.com> wrote:
+>
+> On Thu, 23 Apr 2026 02:38:46 +0900 Jeongjun Park wrote:
+> > RSI driver use both self-exit(kthread_complete_and_exit) and external-stop
+> > (kthread_stop) when killing a kthread. Generally, kthread_stop() is called
+> > first, and in this case, no particular issues occur.
+> >
+> > However, in rare instances where kthread_complete_and_exit() is called
+> > first and then kthread_stop() is called, a UAF occurs because the kthread
+> > object, which has already exited and been freed, is accessed again.
+> >
+> Alternatively the race could be described with the regular diagram to better
+> understand the uaf.
+>
+>         rsi_kill_thread()       rsi_tx_scheduler_thread()
+>         ---                     ---
+>         atomic_inc(&handle->thread_done); // set the done flag
+>         rsi_set_event(&handle->event);
+>
+>                                 do {
+>                                         something;
+>                                 } while (atomic_read(&common->tx_thread.thread_done) == 0);
+>                                 // exit after done
+>                                 kthread_complete_and_exit(&common->tx_thread.completion, 0);
+>
+>         kthread_stop(handle->task); // uaf
+>
 
+I did not include the race scenario diagram separately to keep the
+description brief. Apart from that, Hillf's diagram itself is accurate.
 
-> We don't even know the level of the bloat.
-
-These are static inlines so there's no binary cost, and given that
-you're complaining about them being generated you can't really *also*
-complain about too much code...
-=20
-> > Any chance it'd be simple to generate u32_get_bits_signed() etc.? Could
-> > be especially useful for le32_get_bits_signed() for example, to have th=
-e
-> > endian conversion built-in unlike FIELD_GET_SIGNED().
->=20
-> Maybe this:
->=20
->         FIELD_GET_SIGNED(mask, le32_to_cpu(reg))
-
-Awful. "I don't like". But we rarely deal with bit-packed signed values
-anyway.
-
-johannes
+Regards,
+Jeongjun Park
 
