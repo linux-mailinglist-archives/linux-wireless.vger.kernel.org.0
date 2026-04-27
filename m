@@ -1,82 +1,82 @@
-Return-Path: <linux-wireless+bounces-35331-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35332-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGwmKQPc7mm+ygAAu9opvQ
-	(envelope-from <linux-wireless+bounces-35331-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 05:46:11 +0200
+	id 4BofLDzc7mm+ygAAu9opvQ
+	(envelope-from <linux-wireless+bounces-35332-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 05:47:08 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4291246C8F4
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 05:46:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC0346C934
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 05:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 040F3300B44A
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 03:44:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B68173034DF2
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 03:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B5335FF58;
-	Mon, 27 Apr 2026 03:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404692E11D2;
+	Mon, 27 Apr 2026 03:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EB9MyRgC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qokvMuaj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147FC3644CB
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 03:44:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD025363090
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 03:44:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777261491; cv=none; b=KkQy8XI+jwpe0R5wxCzf5fQc1LK5dndO/4pFLhYR7AdzbNg5N2+yS5zqlb9899jxRtt9ykFObwpw/M0hqpKbkekZAK3YUHPC9D2/OCwFBGiM0lFeeF9jt4qSrA5hdy5Sf5JkMBen2Ga5+34uCQa93E7ABR+8urhd/BEY0AlK6NI=
+	t=1777261493; cv=none; b=HkppNc5iPwOCszo5hG99uxsybCEouX4ZOiu6IpTItGHqsdm/FJ4NRiH1eIoS9mI7RWFR01+WNVYFHTW59GGbxEGZT+tMamEOn8vrXRz5fX2V7Nze9VUTdkJ8N6Kw2MY/Fl44iezthgMCaZzM3BE70PcUSx3/qND11AaW6+PHrHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777261491; c=relaxed/simple;
-	bh=AlqGAY2/4NNL+jMyIRi7fYh3ze89oIFRvHFa0sQLods=;
+	s=arc-20240116; t=1777261493; c=relaxed/simple;
+	bh=m8RlGgwURyICt4aQmcsLHhrwNopwUAIPa5Y88JK2eEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXKzH3KwKsQNxODlEH1tx29Y7esk/+oDz6cZOuby0JeBjwu+B4ei7d8IldpLgG1e3hoaJxhfw7NvogMhEXegXCy3rwcxR6SCfcCbA/tI7ORpsP+S+nLrTvfjhU+F1AVPBoI36A9aRpzUBQ5M2WFgMMldwZxDkgI3WQplGy3dqVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EB9MyRgC; arc=none smtp.client-ip=209.85.214.182
+	 MIME-Version; b=JQDcPO+VhixA82T12RC1s0G7rkUNF4VWeOwerDZOR6c/ZrTGhmlyF3lmWx8crv2WO5WExTUmkZg57XtUu6TqnGLE7rwBorEDwoy3wcUMSdwtPE04QKjTnKqPLBt4e43i8lhQt16ueVydDNh0tYBU98aGZZNmVWOPcZdFSE1Nceo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qokvMuaj; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b2503753efso101132825ad.0
-        for <linux-wireless@vger.kernel.org>; Sun, 26 Apr 2026 20:44:49 -0700 (PDT)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b24fdac394so93630205ad.3
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Apr 2026 20:44:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777261489; x=1777866289; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777261491; x=1777866291; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KLWnGZIr20U/8NXRxTbpdrnOVEAiLhYCZ2NPvdWXNF8=;
-        b=EB9MyRgCDNMOAifBuvL4E/fQOTgUNA45DUQiiJdXbk9hqZgkr4JlYgNPPBQjQfarxx
-         BdBcc8374LjSIsy6lnebz+ZishixE19m02QOzwqsyn/rDCaJpTXZ3vn0jvt0s9CwWl/l
-         mwi/2IiRnnbIrNDb8Ixf4mZy4742JbcaoB1jTGUVvL2wXsFb8N3ZzW90GpmT+GKIxtth
-         pkIwueEZpvi68Dms/xVG+FT8s/HoABSIG/UQaHMScDlR7J3jV072O5shvdfrrngDZime
-         7xOw0txPoPaJWBVW+yw9JY/hFVFJo892GV8ikjTHpCQ7pcnp8x/lFbYORbfE6bGLzUEv
-         vBVg==
+        bh=o7US79DzYi1oz6JsAlo7MAoEcS/s37RIVJeKWp9La9I=;
+        b=qokvMuajAOpzl26J9X6XYx+S01mVCKDdnmCS3nEbLfpkn3oNG017cUAmeUXmSKCotx
+         FpcVMKl+zZ4ZykBiuk9C601KcjNBzDZbsHqUt6e+ZnAqv3SCAzOu9gK534jyjtHI3AI+
+         CyYcStlv0V2c47jrEYyarsSek1Grcd40iLn3JCkXRt6uKMrbLhiECQHNG4hwj5o2p/0R
+         onaU41IYKuyaa5hg3tPAUnj8DV+Apm8lwBcE5wy4yB2i2lmm2cHD9PHy3bw78XLKvoan
+         azr2HpOv9nN3nNu9YpiSz7/7uJjJz34YwuR3oSrdvvJmGvVvvqNnuVNuEfHoG1wB2tig
+         z2Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777261489; x=1777866289;
+        d=1e100.net; s=20251104; t=1777261491; x=1777866291;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=KLWnGZIr20U/8NXRxTbpdrnOVEAiLhYCZ2NPvdWXNF8=;
-        b=akmrotfQu++lwOhuv8jD/GqmhJSMCpeAnFUhZ3yN4CN/i5U37w9Sr1n+m9srsOEeHx
-         ZZjE3qXQBAeNvv4sFoAlS1Y/iUG0oteAsMCnTqR/ks4kJy2d6ICpbs0Y73JhQtqedQfU
-         Xpn/O75DKMjia1rBUwW5AdehBwVEhOdBbEpmEdYYStkMjv4nzgJfEYJinkBFfdud1YHI
-         ZJbYdPJwSLyCsKcTh9l3tlpboM0b4jmInfdmj1Ws+qQh+Na0xUGAiliWswu24PAg7V79
-         Y9YTF8zJVtOSlh/gwFKwa0CrUzN1m/nTAYBoZlh2yULdC+zhUdEFucuROLew1JpuY64d
-         7tIA==
-X-Forwarded-Encrypted: i=1; AFNElJ9gptwE0BUiJ502jPcVYZUcnkmZncmgfKNbq0BkKgTvtDMCRoC0QLx9HWRjdFeCH6+NgHVE4KvuFsLIehmqpQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAYAs67VyLEgrhFnR4BbPzJtCQagnonjBpvBVDOKm187qiHEoV
-	UJlCdkoTizwnWGcosj7lEJvsdBQqyPU0ESskfErRligGHjRlC1P9VfLs
-X-Gm-Gg: AeBDiesRn5/kujh3iC3zpOhX5I6qJjKox/o90fsW2kH/o0JK9b5XyoL7L61zkjvJSBE
-	CWPale76SqZ5JS23Xbv6hEHdkY4+Su7BSicn9KZTz4kPfH0Vx3tvFaVoRkWSmz7pUVUYGQ+13Le
-	9xaQi4ImqDM1qwH/xGd/K4CKvFoSYKyiYY+mAyt7+afY4O/pYCfSvbOkV0fsKA0JE34HGbbfq6Q
-	GI6Ru1EBhVQcLWOIukBKSg7y0IVx8f3PilcFf7NsY3/Pa8KAEjZuk88zmnDFM31wHQkoHjkJO/0
-	tZ8AC1jmLFuyuM6oZLIoTqe4Xpz1pqKQ62cPaIiB4K/Udb7kSRaKZTFJbx/ALHgnF2wHjjgesU/
-	RZe2XIa0MNvH1f4j2gnoRuGIaOLn5K02vFpPMqSEWKk6gWvyOru621x0wMWmx6lPDoF9L7MeXBt
-	6b+eEaxuRSC91mU/ulSqT8xr2sfxwl6RgCu5k/kv5BAsXZDYc8wA8XLmShH2zUxAou1RsM0x6H0
-	H97UvsfeSmfQvAYwS5KhMY0yQ==
-X-Received: by 2002:a17:903:37c3:b0:2b7:aba0:ac10 with SMTP id d9443c01a7336-2b7aba0aea6mr161097325ad.11.1777261489333;
-        Sun, 26 Apr 2026 20:44:49 -0700 (PDT)
+        bh=o7US79DzYi1oz6JsAlo7MAoEcS/s37RIVJeKWp9La9I=;
+        b=U1mQwa4PaDE5TKOYfDAUC7Xh/uRie6rbHowZYk//K9i8FOBCjpoHmeGN3vK4TPMub5
+         iv75+KLZdi4Z/7MpDxk0mjS6U6dq0Pt+sLR2WWx9mKxBsmuujRestfSlzJ7DdZw8Q39w
+         g1+ueuRmPis1ESgnwhTLKfMHFWDEilytBQejh4Lkwe6m+0NjkDpuPZmtv+zaJSGKPB7o
+         DuHAvsAD7NPYS4LU3mVL8WMaH1qeBOXAkB3QQbddVIb8sS/CRR5pcYpSkNnwOsSRk/cU
+         tA9fgi5MMdkmRviu6G42XjDq8vo8mbLEd21sPI1D24WOcY/WREjRAGUiu5d8tV2KUz54
+         m0ug==
+X-Forwarded-Encrypted: i=1; AFNElJ873iV1wDjsYYxqMCjf0nmo2SbXfiA45Iw04JMYfFHfjffhhOJSpRC5tdhzPbrVb+SiXkpOu2D/X6did+Fyfg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNpTpm9PVhYfrkYi8qvBZsrNwW2RYojJulA+qQ6JSyGr4UMqlw
+	eNFlz10P9+ewPuovVcXvGUmbwAMSOMyrHIl/KDoM6aOCAFhiDUsMVaiU
+X-Gm-Gg: AeBDiescYZ4DMb+YY6svKovrMLVAwqdeVPq1burK09O9delD0ZAtn9chn1tcjn4l+7g
+	pf0uJ4S/jtwUqtBj+/N3B0BQrPpFOYs4e3SZUCIOu3nIWJ4Ky6v3k5yLH+AJe2onzVno7EMxZ1T
+	A4ewanSeIuQ6Er9UMSuFZyMTQiGKgE+iaeRqQwEMc5eadd3b09azs4sjbcrfyMoDPPhnjM7iHpX
+	s5AnhrNBk4Zvs9bHbs5edW5rS93C+PxjFVUkLQ39aPayXqnfbiaHZgSfu6DmerDXgXEM2k+v/wH
+	ymg9b5FgfcD/kYT74MvKOpdLKDfo7YNsmHaXGFPzGSyCjL6FKUrMD49vwzBGv3GbKyN/hgLFRo6
+	ZCZ9GyP0kSaAAgDAXs3bTDTkeHAYkxDchwNSgxgNbIAW9cxGG9fRD+0IKhKlHEIcxSORw8bGM8e
+	K9vZjDT7w6djVX3kLzQozbREfiCxLuTZsc9GzGOXgK28UVHiqFd2AD/R2o85bEN7+h4yoLt12/1
+	pQjNYwN4WsUWm4FskDoGEo1Cg==
+X-Received: by 2002:a17:903:32c9:b0:2b0:5923:5194 with SMTP id d9443c01a7336-2b5f9fa70e1mr428464165ad.27.1777261491168;
+        Sun, 26 Apr 2026 20:44:51 -0700 (PDT)
 Received: from ryzen ([2601:644:8000:5b5d::8bd])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5faa4f092sm290610585ad.36.2026.04.26.20.44.47
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5faa4f092sm290610585ad.36.2026.04.26.20.44.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 20:44:48 -0700 (PDT)
+        Sun, 26 Apr 2026 20:44:50 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: devicetree@vger.kernel.org
 Cc: Felix Fietkau <nbd@nbd.name>,
@@ -96,9 +96,9 @@ Cc: Felix Fietkau <nbd@nbd.name>,
 	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Mediatek SoC support),
 	linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC support),
 	linux-mips@vger.kernel.org (open list:MIPS)
-Subject: [PATCH 2/3] dt-bindings: net: wireless: mt76: remove mediatek,mtd-eeprom
-Date: Sun, 26 Apr 2026 20:44:26 -0700
-Message-ID: <20260427034427.881389-3-rosenp@gmail.com>
+Subject: [PATCH 3/3] wifi: mt76: remove mt76_get_of_data_from_mtd
+Date: Sun, 26 Apr 2026 20:44:27 -0700
+Message-ID: <20260427034427.881389-4-rosenp@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260427034427.881389-1-rosenp@gmail.com>
 References: <20260427034427.881389-1-rosenp@gmail.com>
@@ -109,7 +109,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4291246C8F4
+X-Rspamd-Queue-Id: 3FC0346C934
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
@@ -129,7 +129,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-35331-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35332-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -143,51 +143,151 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-mediatek,mtd-eeprom is a widely unused binding that predates and has
-been replaced by NVMEM. As there are no users, remove it.
+mt76_get_of_data_from_mtd has been replaced by
+mt76_get_of_data_from_nvmem in all usages.
+
+Remove it to prevent people from using the deprecated
+mediatek,mtd-eeprom binding.
 
 Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- .../bindings/net/wireless/mediatek,mt76.yaml  | 19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+ drivers/net/wireless/mediatek/mt76/eeprom.c   | 87 -------------------
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  1 -
+ .../wireless/mediatek/mt76/mt7915/eeprom.c    |  4 -
+ 3 files changed, 92 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-index ae6b97cdc44b..482c22cd6627 100644
---- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-@@ -87,21 +87,6 @@ properties:
-     description:
-       EEPROM data embedded as array.
+diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+index afdb73661866..092804323d81 100644
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -35,89 +35,6 @@ static int mt76_get_of_eeprom_data(struct mt76_dev *dev, void *eep, int len)
+ 	return 0;
+ }
  
--  mediatek,mtd-eeprom:
--    $ref: /schemas/types.yaml#/definitions/phandle-array
--    items:
--      - items:
--          - description: phandle to MTD partition
--          - description: offset containing EEPROM data
--    description:
--      Phandle to a MTD partition + offset containing EEPROM data
--    deprecated: true
+-int mt76_get_of_data_from_mtd(struct mt76_dev *dev, void *eep, int offset, int len)
+-{
+-#ifdef CONFIG_MTD
+-	struct device_node *np = dev->dev->of_node;
+-	struct mtd_info *mtd;
+-	const __be32 *list;
+-	const char *part;
+-	phandle phandle;
+-	size_t retlen;
+-	int size;
+-	int ret;
 -
--  big-endian:
--    $ref: /schemas/types.yaml#/definitions/flag
--    description:
--      Specify if the radio eeprom partition is written in big-endian
+-	list = of_get_property(np, "mediatek,mtd-eeprom", &size);
+-	if (!list)
+-		return -ENOENT;
 -
-   mediatek,eeprom-merge-otp:
-     type: boolean
-     description:
-@@ -314,8 +299,8 @@ examples:
-         compatible = "mediatek,mt76";
-         reg = <0x0000 0 0 0 0>;
-         ieee80211-freq-limit = <5000000 6000000>;
--        mediatek,mtd-eeprom = <&factory 0x8000>;
--        big-endian;
-+        nvmem-cells = <&eeprom>;
-+        nvmem-cell-names = "eeprom";
+-	phandle = be32_to_cpup(list++);
+-	if (!phandle)
+-		return -ENOENT;
+-
+-	np = of_find_node_by_phandle(phandle);
+-	if (!np)
+-		return -EINVAL;
+-
+-	part = of_get_property(np, "label", NULL);
+-	if (!part)
+-		part = np->name;
+-
+-	mtd = get_mtd_device_nm(part);
+-	if (IS_ERR(mtd)) {
+-		ret =  PTR_ERR(mtd);
+-		goto out_put_node;
+-	}
+-
+-	if (size <= sizeof(*list)) {
+-		ret = -EINVAL;
+-		goto out_put_node;
+-	}
+-
+-	offset += be32_to_cpup(list);
+-	ret = mtd_read(mtd, offset, len, &retlen, eep);
+-	put_mtd_device(mtd);
+-	if (mtd_is_bitflip(ret))
+-		ret = 0;
+-	if (ret) {
+-		dev_err(dev->dev, "reading EEPROM from mtd %s failed: %i\n",
+-			part, ret);
+-		goto out_put_node;
+-	}
+-
+-	if (retlen < len) {
+-		ret = -EINVAL;
+-		goto out_put_node;
+-	}
+-
+-	if (of_property_read_bool(dev->dev->of_node, "big-endian")) {
+-		u8 *data = (u8 *)eep;
+-		int i;
+-
+-		/* convert eeprom data in Little Endian */
+-		for (i = 0; i < round_down(len, 2); i += 2)
+-			put_unaligned_le16(get_unaligned_be16(&data[i]),
+-					   &data[i]);
+-	}
+-
+-#ifdef CONFIG_NL80211_TESTMODE
+-	dev->test_mtd.name = devm_kstrdup(dev->dev, part, GFP_KERNEL);
+-	if (!dev->test_mtd.name) {
+-		ret = -ENOMEM;
+-		goto out_put_node;
+-	}
+-	dev->test_mtd.offset = offset;
+-#endif
+-
+-out_put_node:
+-	of_node_put(np);
+-	return ret;
+-#else
+-	return -ENOENT;
+-#endif
+-}
+-EXPORT_SYMBOL_GPL(mt76_get_of_data_from_mtd);
+-
+ int mt76_get_of_data_from_nvmem(struct mt76_dev *dev, void *eep,
+ 				const char *cell_name, int len)
+ {
+@@ -163,10 +80,6 @@ static int mt76_get_of_eeprom(struct mt76_dev *dev, void *eep, int len)
+ 	if (!ret)
+ 		return 0;
  
-         led {
-           led-sources = <2>;
+-	ret = mt76_get_of_data_from_mtd(dev, eep, 0, len);
+-	if (!ret)
+-		return 0;
+-
+ 	return mt76_get_of_data_from_nvmem(dev, eep, "eeprom", len);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 527bef97e122..f447ecac664d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1339,7 +1339,6 @@ void mt76_seq_puts_array(struct seq_file *file, const char *str,
+ 
+ int mt76_eeprom_init(struct mt76_dev *dev, int len);
+ int mt76_eeprom_override(struct mt76_phy *phy);
+-int mt76_get_of_data_from_mtd(struct mt76_dev *dev, void *eep, int offset, int len);
+ int mt76_get_of_data_from_nvmem(struct mt76_dev *dev, void *eep,
+ 				const char *cell_name, int len);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+index eb92cbf1a284..c24e1276700b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -29,10 +29,6 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
+ 
+ 	offs = is_mt7915(&dev->mt76) ? MT_EE_PRECAL : MT_EE_PRECAL_V2;
+ 
+-	ret = mt76_get_of_data_from_mtd(mdev, dev->cal, offs, size);
+-	if (!ret)
+-		return ret;
+-
+ 	ret = mt76_get_of_data_from_nvmem(mdev, dev->cal, "precal", size);
+ 	if (!ret)
+ 		return ret;
 -- 
 2.54.0
 
