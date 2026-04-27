@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-35349-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35350-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gM8rGxkz72mA9wAAu9opvQ
-	(envelope-from <linux-wireless+bounces-35349-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 11:57:45 +0200
+	id UDYmCEI272kw+AAAu9opvQ
+	(envelope-from <linux-wireless+bounces-35350-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 12:11:14 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540A84703DF
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 11:57:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7841A470A46
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 12:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B474A3008279
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 09:57:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44886303526B
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 09:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509953B47CD;
-	Mon, 27 Apr 2026 09:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4FB3B47CD;
+	Mon, 27 Apr 2026 09:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tpl14dDs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tZmo+3c6"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EFA3B0ACA;
-	Mon, 27 Apr 2026 09:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B123B3BF2;
+	Mon, 27 Apr 2026 09:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777283830; cv=none; b=N5etst2GB5jfT3do2gzrw9B2dS0UoRALxKgT4YZcMzvfNu33PTzpSHgH2Fx6+UMKXmdZddVFhlyOj2b6QcD8ZLiGs7f5FKRhS+lnICNfV71bx3MbJNFr9YjZLi8Wwxhu0GLIyOs0gt7Da1sZYgk+Th9PEwxzR2RDDBZWjWKIYIs=
+	t=1777283844; cv=none; b=tcXENhYq4OI6DQRaGlNWFdNAz+nuLmP016UPFtAZBxdbZKKhuz33cst11FF8fkP9g3ZKbd4n7iG696VIcuNuNjxeBgfz4HhzcSQc6sZBw6zAdfMpVfJUVOHyX1rdjgVFzsoO5wZA33g2/0gblR8E+Xccq2HESSgO/dVT7++yWNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777283830; c=relaxed/simple;
-	bh=xvoMSqLb6SfP83UjzVWIR7N1shkeibHvTD3IB0YGMW0=;
+	s=arc-20240116; t=1777283844; c=relaxed/simple;
+	bh=OOblnkYddkRyc8tYMxdqgWXaI8R7SAn2dlqOhSRdSBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWU5SZthmqZzmjs07E8x786iOS3HR73Xd8h+1IibzTX2qdh78MWLxvwU4YNNfsqelDvY4JZHZFtaxt2+TJ3ne5fxi+StQsNBc2mKKV3sr78EkkZlLswpAvE81movvaCHCqvKop9UAqCLwxlwMb7GjkAAe+RKZkN2v5qq1iD4bBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tpl14dDs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73B3C2BCB4;
-	Mon, 27 Apr 2026 09:56:55 +0000 (UTC)
+	 MIME-Version; b=AKksb3n4N/E1RLeMRkI766rT5rUvHHMJ1Jjq/6Q5fPLgyiUcfj4AKAgoDFDdyF30xapok2Fs2GCGgyJzLQA6wp6vL2mqe/yrdRhGa3lcYHIbct5Rwp7M2YVKbPdyBJzGfwMryCZ2NcP+ZAt+pcGzaR722ul2nSYl32sS9wmqMKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tZmo+3c6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB2AC19425;
+	Mon, 27 Apr 2026 09:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777283829;
-	bh=xvoMSqLb6SfP83UjzVWIR7N1shkeibHvTD3IB0YGMW0=;
+	s=k20201202; t=1777283844;
+	bh=OOblnkYddkRyc8tYMxdqgWXaI8R7SAn2dlqOhSRdSBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tpl14dDsYIq6MoKnfbfToT3cXjHrr7pr7YZhsgOBdv6+kQE4R9h+WngfPo220yK4b
-	 Osczu9guAMcGFzjeqNce6LIm5d3ok9UL8jT6PcqzxxhliQj90yEj+vjmL34hmTpHIj
-	 lS1S5eP6d/6Bg42qVBln2YvESbxExiJjUDv8ELtr3zscQwWNELNtiHT5s7nzS+hnCY
-	 pDf/+eIxwF4Mzljo3pflUori6tBiRdVG5b1xHL6KfCUDBoqWEJxpQWDOLFy7smcbVv
-	 wapQRV9XqcQgaUVmhu2doSf854Q9/MjTxcqqVIcRI7vBIbVVnNxI66geYQ2BRHtgPU
-	 uD6FMLha/mZDg==
+	b=tZmo+3c6Vd95GD0sfR/6vDKiqdvSmgWxcWSPHK+9RCpJXz3W67QVkV0xWfggkGjnZ
+	 mw+yElXEyfAx6wSUWvm+fzn7MBNCS5d21u6NGBbxEQI90aw+D2gZK7enhxEBupoxpe
+	 qyRK9P2ypkJ3vriuFSeinRctg9zBmVy4KJhL5JpUH1LKQDUuLuR6InvY837H5SDqKm
+	 Dn5u04CTtDxRKICLJQIy7Gy7Fvw2j0fkysS5TptVgjjYZUS+Zs+FoJ8e78EmmT4IZx
+	 HFpdudMdLM89nPFUQHU8S4GnfCqPk+yDm1PmCqDL3YR5NYy04cn4dF85hbogoo0tjn
+	 b56qn/ON3IteA==
 From: Sumit Garg <sumit.garg@kernel.org>
 To: andersson@kernel.org,
 	konradybcio@kernel.org
@@ -94,9 +94,9 @@ Cc: linux-arm-msm@vger.kernel.org,
 	skare@qti.qualcomm.com,
 	linux-kernel@vger.kernel.org,
 	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: [PATCH v4 03/15] firmware: qcom_scm: Migrate to generic PAS service
-Date: Mon, 27 Apr 2026 15:25:51 +0530
-Message-ID: <20260427095603.1157963-4-sumit.garg@kernel.org>
+Subject: [PATCH v4 04/15] firmware: qcom: Add a PAS TEE service
+Date: Mon, 27 Apr 2026 15:25:52 +0530
+Message-ID: <20260427095603.1157963-5-sumit.garg@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260427095603.1157963-1-sumit.garg@kernel.org>
 References: <20260427095603.1157963-1-sumit.garg@kernel.org>
@@ -107,7 +107,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 540A84703DF
+X-Rspamd-Queue-Id: 7841A470A46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
@@ -117,14 +117,14 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCPT_COUNT_TWELVE(0.00)[49];
-	TAGGED_FROM(0.00)[bounces-35349-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35350-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -137,612 +137,542 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,qcom_pas_ops_tee.dev:url]
 
 From: Sumit Garg <sumit.garg@oss.qualcomm.com>
 
-With the availability of generic PAS service, let's add SCM calls as
-a backend to keep supporting legacy QTEE interfaces. The exported
-qcom_scm* wrappers will get dropped once all the client drivers get
-migrated as part of future patches.
+Add support for Peripheral Authentication Service (PAS) driver based
+on TEE bus with OP-TEE providing the backend PAS service implementation.
+
+The TEE PAS service ABI is designed to be extensible with additional API
+as PTA_QCOM_PAS_CAPABILITIES. This allows to accommodate any future
+extensions of the PAS service needed while still maintaining backwards
+compatibility.
 
 Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
 ---
- drivers/firmware/qcom/Kconfig    |   1 +
- drivers/firmware/qcom/qcom_scm.c | 335 ++++++++++++++-----------------
- 2 files changed, 155 insertions(+), 181 deletions(-)
+ drivers/firmware/qcom/Kconfig        |  10 +
+ drivers/firmware/qcom/Makefile       |   1 +
+ drivers/firmware/qcom/qcom_pas_tee.c | 479 +++++++++++++++++++++++++++
+ 3 files changed, 490 insertions(+)
+ create mode 100644 drivers/firmware/qcom/qcom_pas_tee.c
 
 diff --git a/drivers/firmware/qcom/Kconfig b/drivers/firmware/qcom/Kconfig
-index 8653639d06db..9a12ae2b639d 100644
+index 9a12ae2b639d..300b3a1bd178 100644
 --- a/drivers/firmware/qcom/Kconfig
 +++ b/drivers/firmware/qcom/Kconfig
-@@ -15,6 +15,7 @@ config QCOM_PAS
+@@ -14,6 +14,16 @@ config QCOM_PAS
+ 	  backends plugged in whether it's an SCM implementation or a proper
  	  TEE bus based PAS service implementation.
  
- config QCOM_SCM
++config QCOM_PAS_TEE
++	tristate
 +	select QCOM_PAS
++	depends on TEE
++	depends on !CPU_BIG_ENDIAN
++	default m if ARCH_QCOM
++	help
++	  Enable the generic Peripheral Authentication Service (PAS) provided
++	  by the firmware TEE implementation as the backend.
++
+ config QCOM_SCM
+ 	select QCOM_PAS
  	select QCOM_TZMEM
- 	tristate
- 
-diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
-index 9b06a69d3a6d..d87a962e93da 100644
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -13,6 +13,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/export.h>
+diff --git a/drivers/firmware/qcom/Makefile b/drivers/firmware/qcom/Makefile
+index dc5ab45f906a..48801d18f37b 100644
+--- a/drivers/firmware/qcom/Makefile
++++ b/drivers/firmware/qcom/Makefile
+@@ -9,3 +9,4 @@ obj-$(CONFIG_QCOM_TZMEM)	+= qcom_tzmem.o
+ obj-$(CONFIG_QCOM_QSEECOM)	+= qcom_qseecom.o
+ obj-$(CONFIG_QCOM_QSEECOM_UEFISECAPP) += qcom_qseecom_uefisecapp.o
+ obj-$(CONFIG_QCOM_PAS)		+= qcom_pas.o
++obj-$(CONFIG_QCOM_PAS_TEE)	+= qcom_pas_tee.o
+diff --git a/drivers/firmware/qcom/qcom_pas_tee.c b/drivers/firmware/qcom/qcom_pas_tee.c
+new file mode 100644
+index 000000000000..af73d0a68525
+--- /dev/null
++++ b/drivers/firmware/qcom/qcom_pas_tee.c
+@@ -0,0 +1,479 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
++ */
++
++#include <linux/delay.h>
++#include <linux/of.h>
 +#include <linux/firmware/qcom/qcom_pas.h>
- #include <linux/firmware/qcom/qcom_scm.h>
- #include <linux/firmware/qcom/qcom_tzmem.h>
- #include <linux/init.h>
-@@ -33,6 +34,7 @@
- 
- #include <dt-bindings/interrupt-controller/arm-gic.h>
- 
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/slab.h>
++#include <linux/tee_drv.h>
++#include <linux/uuid.h>
++
 +#include "qcom_pas.h"
- #include "qcom_scm.h"
- #include "qcom_tzmem.h"
- 
-@@ -479,25 +481,6 @@ void qcom_scm_cpu_power_down(u32 flags)
- }
- EXPORT_SYMBOL_GPL(qcom_scm_cpu_power_down);
- 
--int qcom_scm_set_remote_state(u32 state, u32 id)
--{
--	struct qcom_scm_desc desc = {
--		.svc = QCOM_SCM_SVC_BOOT,
--		.cmd = QCOM_SCM_BOOT_SET_REMOTE_STATE,
--		.arginfo = QCOM_SCM_ARGS(2),
--		.args[0] = state,
--		.args[1] = id,
--		.owner = ARM_SMCCC_OWNER_SIP,
--	};
--	struct qcom_scm_res res;
--	int ret;
--
--	ret = qcom_scm_call(__scm->dev, &desc, &res);
--
--	return ret ? : res.result[0];
--}
--EXPORT_SYMBOL_GPL(qcom_scm_set_remote_state);
--
- static int qcom_scm_disable_sdi(void)
- {
- 	int ret;
-@@ -570,26 +553,12 @@ static void qcom_scm_set_download_mode(u32 dload_mode)
- 		dev_err(__scm->dev, "failed to set download mode: %d\n", ret);
- }
- 
--/**
-- * devm_qcom_scm_pas_context_alloc() - Allocate peripheral authentication service
-- *				       context for a given peripheral
-- *
-- * PAS context is device-resource managed, so the caller does not need
-- * to worry about freeing the context memory.
-- *
-- * @dev:	  PAS firmware device
-- * @pas_id:	  peripheral authentication service id
-- * @mem_phys:	  Subsystem reserve memory start address
-- * @mem_size:	  Subsystem reserve memory size
-- *
-- * Returns: The new PAS context, or ERR_PTR() on failure.
-- */
- struct qcom_scm_pas_context *devm_qcom_scm_pas_context_alloc(struct device *dev,
- 							     u32 pas_id,
- 							     phys_addr_t mem_phys,
- 							     size_t mem_size)
- {
--	struct qcom_scm_pas_context *ctx;
-+	struct qcom_pas_context *ctx;
- 
- 	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
- 	if (!ctx)
-@@ -600,11 +569,12 @@ struct qcom_scm_pas_context *devm_qcom_scm_pas_context_alloc(struct device *dev,
- 	ctx->mem_phys = mem_phys;
- 	ctx->mem_size = mem_size;
- 
--	return ctx;
-+	return (struct qcom_scm_pas_context *)ctx;
- }
- EXPORT_SYMBOL_GPL(devm_qcom_scm_pas_context_alloc);
- 
--static int __qcom_scm_pas_init_image(u32 pas_id, dma_addr_t mdata_phys,
-+static int __qcom_scm_pas_init_image(struct device *dev, u32 pas_id,
-+				     dma_addr_t mdata_phys,
- 				     struct qcom_scm_res *res)
- {
- 	struct qcom_scm_desc desc = {
-@@ -626,7 +596,7 @@ static int __qcom_scm_pas_init_image(u32 pas_id, dma_addr_t mdata_phys,
- 
- 	desc.args[1] = mdata_phys;
- 
--	ret = qcom_scm_call(__scm->dev, &desc, res);
-+	ret = qcom_scm_call(dev, &desc, res);
- 	qcom_scm_bw_disable();
- 
- disable_clk:
-@@ -635,7 +605,8 @@ static int __qcom_scm_pas_init_image(u32 pas_id, dma_addr_t mdata_phys,
- 	return ret;
- }
- 
--static int qcom_scm_pas_prep_and_init_image(struct qcom_scm_pas_context *ctx,
-+static int qcom_scm_pas_prep_and_init_image(struct device *dev,
-+					    struct qcom_pas_context *ctx,
- 					    const void *metadata, size_t size)
- {
- 	struct qcom_scm_res res;
-@@ -650,7 +621,7 @@ static int qcom_scm_pas_prep_and_init_image(struct qcom_scm_pas_context *ctx,
- 	memcpy(mdata_buf, metadata, size);
- 	mdata_phys = qcom_tzmem_to_phys(mdata_buf);
- 
--	ret = __qcom_scm_pas_init_image(ctx->pas_id, mdata_phys, &res);
-+	ret = __qcom_scm_pas_init_image(dev, ctx->pas_id, mdata_phys, &res);
- 	if (ret < 0)
- 		qcom_tzmem_free(mdata_buf);
- 	else
-@@ -659,25 +630,9 @@ static int qcom_scm_pas_prep_and_init_image(struct qcom_scm_pas_context *ctx,
- 	return ret ? : res.result[0];
- }
- 
--/**
-- * qcom_scm_pas_init_image() - Initialize peripheral authentication service
-- *			       state machine for a given peripheral, using the
-- *			       metadata
-- * @pas_id:	peripheral authentication service id
-- * @metadata:	pointer to memory containing ELF header, program header table
-- *		and optional blob of data used for authenticating the metadata
-- *		and the rest of the firmware
-- * @size:	size of the metadata
-- * @ctx:	optional pas context
-- *
-- * Return: 0 on success.
-- *
-- * Upon successful return, the PAS metadata context (@ctx) will be used to
-- * track the metadata allocation, this needs to be released by invoking
-- * qcom_scm_pas_metadata_release() by the caller.
-- */
--int qcom_scm_pas_init_image(u32 pas_id, const void *metadata, size_t size,
--			    struct qcom_scm_pas_context *ctx)
-+static int __qcom_scm_pas_init_image2(struct device *dev, u32 pas_id,
-+				      const void *metadata, size_t size,
-+				      struct qcom_pas_context *ctx)
- {
- 	struct qcom_scm_res res;
- 	dma_addr_t mdata_phys;
-@@ -685,7 +640,7 @@ int qcom_scm_pas_init_image(u32 pas_id, const void *metadata, size_t size,
- 	int ret;
- 
- 	if (ctx && ctx->use_tzmem)
--		return qcom_scm_pas_prep_and_init_image(ctx, metadata, size);
-+		return qcom_scm_pas_prep_and_init_image(dev, ctx, metadata, size);
- 
- 	/*
- 	 * During the scm call memory protection will be enabled for the meta
-@@ -699,16 +654,15 @@ int qcom_scm_pas_init_image(u32 pas_id, const void *metadata, size_t size,
- 	 * If we pass a buffer that is already part of an SHM Bridge to this
- 	 * call, it will fail.
- 	 */
--	mdata_buf = dma_alloc_coherent(__scm->dev, size, &mdata_phys,
--				       GFP_KERNEL);
-+	mdata_buf = dma_alloc_coherent(dev, size, &mdata_phys, GFP_KERNEL);
- 	if (!mdata_buf)
- 		return -ENOMEM;
- 
- 	memcpy(mdata_buf, metadata, size);
- 
--	ret = __qcom_scm_pas_init_image(pas_id, mdata_phys, &res);
-+	ret = __qcom_scm_pas_init_image(dev, pas_id, mdata_phys, &res);
- 	if (ret < 0 || !ctx) {
--		dma_free_coherent(__scm->dev, size, mdata_buf, mdata_phys);
-+		dma_free_coherent(dev, size, mdata_buf, mdata_phys);
- 	} else if (ctx) {
- 		ctx->ptr = mdata_buf;
- 		ctx->phys = mdata_phys;
-@@ -717,36 +671,35 @@ int qcom_scm_pas_init_image(u32 pas_id, const void *metadata, size_t size,
- 
- 	return ret ? : res.result[0];
- }
--EXPORT_SYMBOL_GPL(qcom_scm_pas_init_image);
- 
--/**
-- * qcom_scm_pas_metadata_release() - release metadata context
-- * @ctx:	pas context
-- */
--void qcom_scm_pas_metadata_release(struct qcom_scm_pas_context *ctx)
-+int qcom_scm_pas_init_image(u32 pas_id, const void *metadata, size_t size,
-+			    struct qcom_scm_pas_context *ctx)
- {
--	if (!ctx->ptr)
--		return;
-+	return __qcom_scm_pas_init_image2(__scm->dev, pas_id, metadata, size,
-+					  (struct qcom_pas_context *)ctx);
-+}
-+EXPORT_SYMBOL_GPL(qcom_scm_pas_init_image);
- 
-+static void __qcom_scm_pas_metadata_release(struct device *dev,
-+					    struct qcom_pas_context *ctx)
-+{
- 	if (ctx->use_tzmem)
- 		qcom_tzmem_free(ctx->ptr);
- 	else
--		dma_free_coherent(__scm->dev, ctx->size, ctx->ptr, ctx->phys);
-+		dma_free_coherent(dev, ctx->size, ctx->ptr, ctx->phys);
- 
- 	ctx->ptr = NULL;
- }
 +
-+void qcom_scm_pas_metadata_release(struct qcom_scm_pas_context *ctx)
-+{
-+	__qcom_scm_pas_metadata_release(__scm->dev,
-+					(struct qcom_pas_context *)ctx);
-+}
- EXPORT_SYMBOL_GPL(qcom_scm_pas_metadata_release);
- 
--/**
-- * qcom_scm_pas_mem_setup() - Prepare the memory related to a given peripheral
-- *			      for firmware loading
-- * @pas_id:	peripheral authentication service id
-- * @addr:	start address of memory area to prepare
-- * @size:	size of the memory area to prepare
-- *
-- * Returns 0 on success.
-- */
--int qcom_scm_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size)
-+static int __qcom_scm_pas_mem_setup(struct device *dev, u32 pas_id,
-+				    phys_addr_t addr, phys_addr_t size)
- {
- 	int ret;
- 	struct qcom_scm_desc desc = {
-@@ -768,7 +721,7 @@ int qcom_scm_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size)
- 	if (ret)
- 		goto disable_clk;
- 
--	ret = qcom_scm_call(__scm->dev, &desc, &res);
-+	ret = qcom_scm_call(dev, &desc, &res);
- 	qcom_scm_bw_disable();
- 
- disable_clk:
-@@ -776,9 +729,15 @@ int qcom_scm_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size)
- 
- 	return ret ? : res.result[0];
- }
++/*
++ * Peripheral Authentication Service (PAS) supported.
++ *
++ * [in]  params[0].value.a:	Unique 32bit remote processor identifier
++ */
++#define TA_QCOM_PAS_IS_SUPPORTED		1
 +
-+int qcom_scm_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size)
-+{
-+	return __qcom_scm_pas_mem_setup(__scm->dev, pas_id, addr, size);
-+}
- EXPORT_SYMBOL_GPL(qcom_scm_pas_mem_setup);
- 
--static void *__qcom_scm_pas_get_rsc_table(u32 pas_id, void *input_rt_tzm,
-+static void *__qcom_scm_pas_get_rsc_table(struct device *dev, u32 pas_id,
-+					  void *input_rt_tzm,
- 					  size_t input_rt_size,
- 					  size_t *output_rt_size)
- {
-@@ -813,7 +772,7 @@ static void *__qcom_scm_pas_get_rsc_table(u32 pas_id, void *input_rt_tzm,
- 	 * with output_rt_tzm buffer with res.result[2] size however, It should not
- 	 * be of unresonable size.
- 	 */
--	ret = qcom_scm_call(__scm->dev, &desc, &res);
-+	ret = qcom_scm_call(dev, &desc, &res);
- 	if (!ret && res.result[2] > SZ_1G) {
- 		ret = -E2BIG;
- 		goto free_output_rt;
-@@ -830,51 +789,11 @@ static void *__qcom_scm_pas_get_rsc_table(u32 pas_id, void *input_rt_tzm,
- 	return ret ? ERR_PTR(ret) : output_rt_tzm;
- }
- 
--/**
-- * qcom_scm_pas_get_rsc_table() - Retrieve the resource table in passed output buffer
-- *				  for a given peripheral.
-- *
-- * Qualcomm remote processor may rely on both static and dynamic resources for
-- * its functionality. Static resources typically refer to memory-mapped addresses
-- * required by the subsystem and are often embedded within the firmware binary
-- * and dynamic resources, such as shared memory in DDR etc., are determined at
-- * runtime during the boot process.
-- *
-- * On Qualcomm Technologies devices, it's possible that static resources are not
-- * embedded in the firmware binary and instead are provided by TrustZone However,
-- * dynamic resources are always expected to come from TrustZone. This indicates
-- * that for Qualcomm devices, all resources (static and dynamic) will be provided
-- * by TrustZone via the SMC call.
-- *
-- * If the remote processor firmware binary does contain static resources, they
-- * should be passed in input_rt. These will be forwarded to TrustZone for
-- * authentication. TrustZone will then append the dynamic resources and return
-- * the complete resource table in output_rt_tzm.
-- *
-- * If the remote processor firmware binary does not include a resource table,
-- * the caller of this function should set input_rt as NULL and input_rt_size
-- * as zero respectively.
-- *
-- * More about documentation on resource table data structures can be found in
-- * include/linux/remoteproc.h
-- *
-- * @ctx:	    PAS context
-- * @pas_id:	    peripheral authentication service id
-- * @input_rt:       resource table buffer which is present in firmware binary
-- * @input_rt_size:  size of the resource table present in firmware binary
-- * @output_rt_size: TrustZone expects caller should pass worst case size for
-- *		    the output_rt_tzm.
-- *
-- * Return:
-- *  On success, returns a pointer to the allocated buffer containing the final
-- *  resource table and output_rt_size will have actual resource table size from
-- *  TrustZone. The caller is responsible for freeing the buffer. On failure,
-- *  returns ERR_PTR(-errno).
-- */
--struct resource_table *qcom_scm_pas_get_rsc_table(struct qcom_scm_pas_context *ctx,
--						  void *input_rt,
--						  size_t input_rt_size,
--						  size_t *output_rt_size)
-+static void *__qcom_scm_pas_get_rsc_table2(struct device *dev,
-+					   struct qcom_pas_context *ctx,
-+					   void *input_rt,
-+					   size_t input_rt_size,
-+					   size_t *output_rt_size)
- {
- 	struct resource_table empty_rsc = {};
- 	size_t size = SZ_16K;
-@@ -909,11 +828,12 @@ struct resource_table *qcom_scm_pas_get_rsc_table(struct qcom_scm_pas_context *c
- 
- 	memcpy(input_rt_tzm, input_rt, input_rt_size);
- 
--	output_rt_tzm = __qcom_scm_pas_get_rsc_table(ctx->pas_id, input_rt_tzm,
-+	output_rt_tzm = __qcom_scm_pas_get_rsc_table(dev, ctx->pas_id,
-+						     input_rt_tzm,
- 						     input_rt_size, &size);
- 	if (PTR_ERR(output_rt_tzm) == -EOVERFLOW)
- 		/* Try again with the size requested by the TZ */
--		output_rt_tzm = __qcom_scm_pas_get_rsc_table(ctx->pas_id,
-+		output_rt_tzm = __qcom_scm_pas_get_rsc_table(dev, ctx->pas_id,
- 							     input_rt_tzm,
- 							     input_rt_size,
- 							     &size);
-@@ -943,16 +863,20 @@ struct resource_table *qcom_scm_pas_get_rsc_table(struct qcom_scm_pas_context *c
- 
- 	return ret ? ERR_PTR(ret) : tbl_ptr;
- }
++/*
++ * PAS capabilities.
++ *
++ * [in]  params[0].value.a:	Unique 32bit remote processor identifier
++ * [out] params[1].value.a:	PAS capability flags
++ */
++#define TA_QCOM_PAS_CAPABILITIES		2
 +
-+struct resource_table *qcom_scm_pas_get_rsc_table(struct qcom_scm_pas_context *ctx,
-+						  void *input_rt,
-+						  size_t input_rt_size,
-+						  size_t *output_rt_size)
-+{
-+	return __qcom_scm_pas_get_rsc_table2(__scm->dev,
-+					     (struct qcom_pas_context *)ctx,
-+					     input_rt, input_rt_size,
-+					     output_rt_size);
-+}
- EXPORT_SYMBOL_GPL(qcom_scm_pas_get_rsc_table);
- 
--/**
-- * qcom_scm_pas_auth_and_reset() - Authenticate the given peripheral firmware
-- *				   and reset the remote processor
-- * @pas_id:	peripheral authentication service id
-- *
-- * Return 0 on success.
-- */
--int qcom_scm_pas_auth_and_reset(u32 pas_id)
-+static int __qcom_scm_pas_auth_and_reset(struct device *dev, u32 pas_id)
- {
- 	int ret;
- 	struct qcom_scm_desc desc = {
-@@ -972,7 +896,7 @@ int qcom_scm_pas_auth_and_reset(u32 pas_id)
- 	if (ret)
- 		goto disable_clk;
- 
--	ret = qcom_scm_call(__scm->dev, &desc, &res);
-+	ret = qcom_scm_call(dev, &desc, &res);
- 	qcom_scm_bw_disable();
- 
- disable_clk:
-@@ -980,28 +904,15 @@ int qcom_scm_pas_auth_and_reset(u32 pas_id)
- 
- 	return ret ? : res.result[0];
- }
++/*
++ * PAS image initialization.
++ *
++ * [in]  params[0].value.a:	Unique 32bit remote processor identifier
++ * [in]  params[1].memref:	Loadable firmware metadata
++ */
++#define TA_QCOM_PAS_INIT_IMAGE			3
 +
-+int qcom_scm_pas_auth_and_reset(u32 pas_id)
-+{
-+	return __qcom_scm_pas_auth_and_reset(__scm->dev, pas_id);
-+}
- EXPORT_SYMBOL_GPL(qcom_scm_pas_auth_and_reset);
- 
--/**
-- * qcom_scm_pas_prepare_and_auth_reset() - Prepare, authenticate, and reset the
-- *					   remote processor
-- *
-- * @ctx:	Context saved during call to qcom_scm_pas_context_init()
-- *
-- * This function performs the necessary steps to prepare a PAS subsystem,
-- * authenticate it using the provided metadata, and initiate a reset sequence.
-- *
-- * It should be used when Linux is in control setting up the IOMMU hardware
-- * for remote subsystem during secure firmware loading processes. The preparation
-- * step sets up a shmbridge over the firmware memory before TrustZone accesses the
-- * firmware memory region for authentication. The authentication step verifies
-- * the integrity and authenticity of the firmware or configuration using secure
-- * metadata. Finally, the reset step ensures the subsystem starts in a clean and
-- * sane state.
-- *
-- * Return: 0 on success, negative errno on failure.
-- */
--int qcom_scm_pas_prepare_and_auth_reset(struct qcom_scm_pas_context *ctx)
-+static int __qcom_scm_pas_prepare_and_auth_reset(struct device *dev,
-+						 struct qcom_pas_context *ctx)
- {
- 	u64 handle;
- 	int ret;
-@@ -1012,7 +923,7 @@ int qcom_scm_pas_prepare_and_auth_reset(struct qcom_scm_pas_context *ctx)
- 	 * memory region and then invokes a call to TrustZone to authenticate.
- 	 */
- 	if (!ctx->use_tzmem)
--		return qcom_scm_pas_auth_and_reset(ctx->pas_id);
-+		return __qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
- 
- 	/*
- 	 * When Linux runs @ EL2 Linux must create the shmbridge itself and then
-@@ -1022,20 +933,45 @@ int qcom_scm_pas_prepare_and_auth_reset(struct qcom_scm_pas_context *ctx)
- 	if (ret)
- 		return ret;
- 
--	ret = qcom_scm_pas_auth_and_reset(ctx->pas_id);
-+	ret = __qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
- 	qcom_tzmem_shm_bridge_delete(handle);
- 
- 	return ret;
- }
++/*
++ * PAS memory setup.
++ *
++ * [in]  params[0].value.a:	Unique 32bit remote processor identifier
++ * [in]  params[0].value.b:	Relocatable firmware size
++ * [in]  params[1].value.a:	32bit LSB relocatable firmware memory address
++ * [in]  params[1].value.b:	32bit MSB relocatable firmware memory address
++ */
++#define TA_QCOM_PAS_MEM_SETUP			4
 +
-+int qcom_scm_pas_prepare_and_auth_reset(struct qcom_scm_pas_context *ctx)
-+{
-+	return __qcom_scm_pas_prepare_and_auth_reset(__scm->dev,
-+						     (struct qcom_pas_context *)ctx);
-+}
- EXPORT_SYMBOL_GPL(qcom_scm_pas_prepare_and_auth_reset);
- 
--/**
-- * qcom_scm_pas_shutdown() - Shut down the remote processor
-- * @pas_id:	peripheral authentication service id
-- *
-- * Returns 0 on success.
-- */
--int qcom_scm_pas_shutdown(u32 pas_id)
-+static int __qcom_scm_pas_set_remote_state(struct device *dev, u32 state,
-+					   u32 pas_id)
-+{
-+	struct qcom_scm_desc desc = {
-+		.svc = QCOM_SCM_SVC_BOOT,
-+		.cmd = QCOM_SCM_BOOT_SET_REMOTE_STATE,
-+		.arginfo = QCOM_SCM_ARGS(2),
-+		.args[0] = state,
-+		.args[1] = pas_id,
-+		.owner = ARM_SMCCC_OWNER_SIP,
-+	};
-+	struct qcom_scm_res res;
-+	int ret;
++/*
++ * PAS get resource table.
++ *
++ * [in]     params[0].value.a:	Unique 32bit remote processor identifier
++ * [inout]  params[1].memref:	Resource table config
++ */
++#define TA_QCOM_PAS_GET_RESOURCE_TABLE		5
 +
-+	ret = qcom_scm_call(dev, &desc, &res);
++/*
++ * PAS image authentication and co-processor reset.
++ *
++ * [in]  params[0].value.a:	Unique 32bit remote processor identifier
++ * [in]  params[0].value.b:	Firmware size
++ * [in]  params[1].value.a:	32bit LSB firmware memory address
++ * [in]  params[1].value.b:	32bit MSB firmware memory address
++ * [in]  params[2].memref:	Optional fw memory space shared/lent
++ */
++#define TA_QCOM_PAS_AUTH_AND_RESET		6
 +
-+	return ret ? : res.result[0];
-+}
++/*
++ * PAS co-processor set suspend/resume state.
++ *
++ * [in]  params[0].value.a:	Unique 32bit remote processor identifier
++ * [in]  params[0].value.b:	Co-processor state identifier
++ */
++#define TA_QCOM_PAS_SET_REMOTE_STATE		7
 +
-+int qcom_scm_set_remote_state(u32 state, u32 id)
-+{
-+	return __qcom_scm_pas_set_remote_state(__scm->dev, state, id);
-+}
-+EXPORT_SYMBOL_GPL(qcom_scm_set_remote_state);
++/*
++ * PAS co-processor shutdown.
++ *
++ * [in]  params[0].value.a:	Unique 32bit remote processor identifier
++ */
++#define TA_QCOM_PAS_SHUTDOWN			8
 +
-+static int __qcom_scm_pas_shutdown(struct device *dev, u32 pas_id)
- {
- 	int ret;
- 	struct qcom_scm_desc desc = {
-@@ -1055,7 +991,7 @@ int qcom_scm_pas_shutdown(u32 pas_id)
- 	if (ret)
- 		goto disable_clk;
- 
--	ret = qcom_scm_call(__scm->dev, &desc, &res);
-+	ret = qcom_scm_call(dev, &desc, &res);
- 	qcom_scm_bw_disable();
- 
- disable_clk:
-@@ -1063,16 +999,14 @@ int qcom_scm_pas_shutdown(u32 pas_id)
- 
- 	return ret ? : res.result[0];
- }
-+
-+int qcom_scm_pas_shutdown(u32 pas_id)
-+{
-+	return __qcom_scm_pas_shutdown(__scm->dev, pas_id);
-+}
- EXPORT_SYMBOL_GPL(qcom_scm_pas_shutdown);
- 
--/**
-- * qcom_scm_pas_supported() - Check if the peripheral authentication service is
-- *			      available for the given peripherial
-- * @pas_id:	peripheral authentication service id
-- *
-- * Returns true if PAS is supported for this peripheral, otherwise false.
-- */
--bool qcom_scm_pas_supported(u32 pas_id)
-+static bool __qcom_scm_pas_supported(struct device *dev, u32 pas_id)
- {
- 	int ret;
- 	struct qcom_scm_desc desc = {
-@@ -1084,16 +1018,49 @@ bool qcom_scm_pas_supported(u32 pas_id)
- 	};
- 	struct qcom_scm_res res;
- 
--	if (!__qcom_scm_is_call_available(__scm->dev, QCOM_SCM_SVC_PIL,
-+	if (!__qcom_scm_is_call_available(dev, QCOM_SCM_SVC_PIL,
- 					  QCOM_SCM_PIL_PAS_IS_SUPPORTED))
- 		return false;
- 
--	ret = qcom_scm_call(__scm->dev, &desc, &res);
-+	ret = qcom_scm_call(dev, &desc, &res);
- 
- 	return ret ? false : !!res.result[0];
- }
-+
-+bool qcom_scm_pas_supported(u32 pas_id)
-+{
-+	return __qcom_scm_pas_supported(__scm->dev, pas_id);
-+}
- EXPORT_SYMBOL_GPL(qcom_scm_pas_supported);
- 
-+static struct qcom_pas_ops qcom_pas_ops_scm = {
-+	.drv_name		= "qcom_scm",
-+	.supported		= __qcom_scm_pas_supported,
-+	.init_image		= __qcom_scm_pas_init_image2,
-+	.mem_setup		= __qcom_scm_pas_mem_setup,
-+	.get_rsc_table		= __qcom_scm_pas_get_rsc_table2,
-+	.auth_and_reset		= __qcom_scm_pas_auth_and_reset,
-+	.prepare_and_auth_reset	= __qcom_scm_pas_prepare_and_auth_reset,
-+	.set_remote_state	= __qcom_scm_pas_set_remote_state,
-+	.shutdown		= __qcom_scm_pas_shutdown,
-+	.metadata_release	= __qcom_scm_pas_metadata_release,
-+};
++#define TEE_NUM_PARAMS				4
 +
 +/**
-+ * qcom_scm_is_pas_available() - Check if the peripheral authentication service
-+ *				 is available via SCM or not
-+ *
-+ * Returns true if PAS is available, otherwise false.
++ * struct qcom_pas_tee_private - PAS service private data
++ * @dev:		PAS service device.
++ * @ctx:		TEE context handler.
++ * @session_id:		PAS TA session identifier.
 + */
-+static bool qcom_scm_is_pas_available(void)
++struct qcom_pas_tee_private {
++	struct device *dev;
++	struct tee_context *ctx;
++	u32 session_id;
++};
++
++static bool qcom_pas_tee_supported(struct device *dev, u32 pas_id)
 +{
-+	if (!__qcom_scm_is_call_available(__scm->dev, QCOM_SCM_SVC_PIL,
-+					  QCOM_SCM_PIL_PAS_AUTH_AND_RESET))
++	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
++	struct tee_ioctl_invoke_arg inv_arg = {
++		.func = TA_QCOM_PAS_IS_SUPPORTED,
++		.session = data->session_id,
++		.num_params = TEE_NUM_PARAMS
++	};
++	struct tee_param param[4] = {
++		[0] = {
++			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
++			.u.value.a = pas_id
++		}
++	};
++	int ret;
++
++	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
++	if (ret < 0 || inv_arg.ret != 0) {
++		dev_err(dev, "PAS not supported, pas_id: %d, ret: %d, err: 0x%x\n",
++			pas_id, ret, inv_arg.ret);
 +		return false;
++	}
 +
 +	return true;
 +}
 +
- static int __qcom_scm_pas_mss_reset(struct device *dev, bool reset)
- {
- 	struct qcom_scm_desc desc = {
-@@ -2836,6 +2803,11 @@ static int qcom_scm_probe(struct platform_device *pdev)
- 
- 	__get_convention();
- 
-+	if (qcom_scm_is_pas_available()) {
-+		qcom_pas_ops_scm.dev = scm->dev;
-+		qcom_pas_ops_register(&qcom_pas_ops_scm);
++static int qcom_pas_tee_init_image(struct device *dev, u32 pas_id,
++				   const void *metadata, size_t size,
++				   struct qcom_pas_context *ctx)
++{
++	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
++	struct tee_ioctl_invoke_arg inv_arg = {
++		.func = TA_QCOM_PAS_INIT_IMAGE,
++		.session = data->session_id,
++		.num_params = TEE_NUM_PARAMS
++	};
++	struct tee_param param[4] = {
++		[0] = {
++			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
++			.u.value.a = pas_id
++		},
++		[1] = {
++			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT,
++		}
++	};
++	struct tee_shm *mdata_shm;
++	u8 *mdata_buf = NULL;
++	int ret;
++
++	mdata_shm = tee_shm_alloc_kernel_buf(data->ctx, size);
++	if (IS_ERR(mdata_shm)) {
++		dev_err(dev, "mdata_shm allocation failed\n");
++		return PTR_ERR(mdata_shm);
 +	}
 +
- 	/*
- 	 * If "download mode" is requested, from this point on warmboot
- 	 * will cause the boot stages to enter download mode, unless
-@@ -2875,6 +2847,7 @@ static void qcom_scm_shutdown(struct platform_device *pdev)
- {
- 	/* Clean shutdown, disable download mode to allow normal restart */
- 	qcom_scm_set_download_mode(QCOM_DLOAD_NODUMP);
++	mdata_buf = tee_shm_get_va(mdata_shm, 0);
++	if (IS_ERR(mdata_buf)) {
++		dev_err(dev, "mdata_buf get VA failed\n");
++		tee_shm_free(mdata_shm);
++		return PTR_ERR(mdata_buf);
++	}
++	memcpy(mdata_buf, metadata, size);
++
++	param[1].u.memref.shm = mdata_shm;
++	param[1].u.memref.size = size;
++
++	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
++	if (ret < 0 || inv_arg.ret != 0) {
++		dev_err(dev, "PAS init image failed, pas_id: %d, ret: %d, err: 0x%x\n",
++			pas_id, ret, inv_arg.ret);
++		tee_shm_free(mdata_shm);
++		return ret ?: -EINVAL;
++	}
++
++	if (ctx)
++		ctx->ptr = (void *)mdata_shm;
++	else
++		tee_shm_free(mdata_shm);
++
++	return ret;
++}
++
++static int qcom_pas_tee_mem_setup(struct device *dev, u32 pas_id,
++				  phys_addr_t addr, phys_addr_t size)
++{
++	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
++	struct tee_ioctl_invoke_arg inv_arg = {
++		.func = TA_QCOM_PAS_MEM_SETUP,
++		.session = data->session_id,
++		.num_params = TEE_NUM_PARAMS
++	};
++	struct tee_param param[4] = {
++		[0] = {
++			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
++			.u.value.a = pas_id,
++			.u.value.b = size,
++		},
++		[1] = {
++			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
++			.u.value.a = lower_32_bits(addr),
++			.u.value.b = upper_32_bits(addr),
++		}
++	};
++	int ret;
++
++	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
++	if (ret < 0 || inv_arg.ret != 0) {
++		dev_err(dev, "PAS mem setup failed, pas_id: %d, ret: %d, err: 0x%x\n",
++			pas_id, ret, inv_arg.ret);
++		return ret ?: -EINVAL;
++	}
++
++	return ret;
++}
++
++DEFINE_FREE(shm_free, struct tee_shm *, tee_shm_free(_T))
++
++static void *qcom_pas_tee_get_rsc_table(struct device *dev,
++					struct qcom_pas_context *ctx,
++					void *input_rt, size_t input_rt_size,
++					size_t *output_rt_size)
++{
++	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
++	struct tee_ioctl_invoke_arg inv_arg = {
++		.func = TA_QCOM_PAS_GET_RESOURCE_TABLE,
++		.session = data->session_id,
++		.num_params = TEE_NUM_PARAMS
++	};
++	struct tee_param param[4] = {
++		[0] = {
++			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
++			.u.value.a = ctx->pas_id,
++		},
++		[1] = {
++			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INOUT,
++			.u.memref.size = input_rt_size,
++		}
++	};
++	void *rt_buf = NULL;
++	int ret;
++
++	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
++	if (ret < 0 || inv_arg.ret != 0) {
++		dev_err(dev, "PAS get RT failed, pas_id: %d, ret: %d, err: 0x%x\n",
++			ctx->pas_id, ret, inv_arg.ret);
++		return ret ? ERR_PTR(ret) : ERR_PTR(-EINVAL);
++	}
++
++	if (param[1].u.memref.size) {
++		struct tee_shm *rt_shm __free(shm_free) =
++			tee_shm_alloc_kernel_buf(data->ctx,
++						 param[1].u.memref.size);
++		void *rt_shm_va;
++
++		if (IS_ERR(rt_shm)) {
++			dev_err(dev, "rt_shm allocation failed\n");
++			return rt_shm;
++		}
++
++		rt_shm_va = tee_shm_get_va(rt_shm, 0);
++		if (IS_ERR(rt_shm_va)) {
++			dev_err(dev, "rt_shm get VA failed\n");
++			return ERR_CAST(rt_shm_va);
++		}
++		memcpy(rt_shm_va, input_rt, input_rt_size);
++
++		param[1].u.memref.shm = rt_shm;
++		ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
++		if (ret < 0 || inv_arg.ret != 0) {
++			dev_err(dev, "PAS get RT failed, pas_id: %d, ret: %d, err: 0x%x\n",
++				ctx->pas_id, ret, inv_arg.ret);
++			return ret ? ERR_PTR(ret) : ERR_PTR(-EINVAL);
++		}
++
++		if (param[1].u.memref.size) {
++			*output_rt_size = param[1].u.memref.size;
++			rt_buf = kmemdup(rt_shm_va, *output_rt_size, GFP_KERNEL);
++			if (!rt_buf)
++				return ERR_PTR(-ENOMEM);
++		}
++	}
++
++	return rt_buf;
++}
++
++static int __qcom_pas_tee_auth_and_reset(struct device *dev, u32 pas_id,
++					 phys_addr_t mem_phys, size_t mem_size)
++{
++	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
++	struct tee_ioctl_invoke_arg inv_arg = {
++		.func = TA_QCOM_PAS_AUTH_AND_RESET,
++		.session = data->session_id,
++		.num_params = TEE_NUM_PARAMS
++	};
++	struct tee_param param[4] = {
++		[0] = {
++			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
++			.u.value.a = pas_id,
++			.u.value.b = mem_size,
++		},
++		[1] = {
++			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
++			.u.value.a = lower_32_bits(mem_phys),
++			.u.value.b = upper_32_bits(mem_phys),
++		},
++		/* Reserved for fw memory space to be shared or lent */
++		[2] = {
++			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT,
++		}
++	};
++	int ret;
++
++	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
++	if (ret < 0 || inv_arg.ret != 0) {
++		dev_err(dev, "PAS auth reset failed, pas_id: %d, ret: %d, err: 0x%x\n",
++			pas_id, ret, inv_arg.ret);
++		return ret ?: -EINVAL;
++	}
++
++	return ret;
++}
++
++static int qcom_pas_tee_auth_and_reset(struct device *dev, u32 pas_id)
++{
++	return __qcom_pas_tee_auth_and_reset(dev, pas_id, 0, 0);
++}
++
++static int qcom_pas_tee_prepare_and_auth_reset(struct device *dev,
++					       struct qcom_pas_context *ctx)
++{
++	return __qcom_pas_tee_auth_and_reset(dev, ctx->pas_id, ctx->mem_phys,
++					     ctx->mem_size);
++}
++
++static int qcom_pas_tee_set_remote_state(struct device *dev, u32 state,
++					 u32 pas_id)
++{
++	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
++	struct tee_ioctl_invoke_arg inv_arg = {
++		.func = TA_QCOM_PAS_SET_REMOTE_STATE,
++		.session = data->session_id,
++		.num_params = TEE_NUM_PARAMS
++	};
++	struct tee_param param[4] = {
++		[0] = {
++			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
++			.u.value.a = pas_id,
++			.u.value.b = state,
++		}
++	};
++	int ret;
++
++	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
++	if (ret < 0 || inv_arg.ret != 0) {
++		dev_err(dev, "PAS shutdown failed, pas_id: %d, ret: %d, err: 0x%x\n",
++			pas_id, ret, inv_arg.ret);
++		return ret ?: -EINVAL;
++	}
++
++	return ret;
++}
++
++static int qcom_pas_tee_shutdown(struct device *dev, u32 pas_id)
++{
++	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
++	struct tee_ioctl_invoke_arg inv_arg = {
++		.func = TA_QCOM_PAS_SHUTDOWN,
++		.session = data->session_id,
++		.num_params = TEE_NUM_PARAMS
++	};
++	struct tee_param param[4] = {
++		[0] = {
++			.attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT,
++			.u.value.a = pas_id
++		}
++	};
++	int ret;
++
++	ret = tee_client_invoke_func(data->ctx, &inv_arg, param);
++	if (ret < 0 || inv_arg.ret != 0) {
++		dev_err(dev, "PAS shutdown failed, pas_id: %d, ret: %d, err: 0x%x\n",
++			pas_id, ret, inv_arg.ret);
++		return ret ?: -EINVAL;
++	}
++
++	return ret;
++}
++
++static void qcom_pas_tee_metadata_release(struct device *dev,
++					  struct qcom_pas_context *ctx)
++{
++	struct tee_shm *mdata_shm = ctx->ptr;
++
++	tee_shm_free(mdata_shm);
++}
++
++static struct qcom_pas_ops qcom_pas_ops_tee = {
++	.drv_name		= "qcom-pas-tee",
++	.supported		= qcom_pas_tee_supported,
++	.init_image		= qcom_pas_tee_init_image,
++	.mem_setup		= qcom_pas_tee_mem_setup,
++	.get_rsc_table		= qcom_pas_tee_get_rsc_table,
++	.auth_and_reset		= qcom_pas_tee_auth_and_reset,
++	.prepare_and_auth_reset	= qcom_pas_tee_prepare_and_auth_reset,
++	.set_remote_state	= qcom_pas_tee_set_remote_state,
++	.shutdown		= qcom_pas_tee_shutdown,
++	.metadata_release	= qcom_pas_tee_metadata_release,
++};
++
++static int optee_ctx_match(struct tee_ioctl_version_data *ver, const void *data)
++{
++	return ver->impl_id == TEE_IMPL_ID_OPTEE;
++}
++
++static int qcom_pas_tee_probe(struct tee_client_device *pas_dev)
++{
++	struct device *dev = &pas_dev->dev;
++	struct qcom_pas_tee_private *data;
++	struct tee_ioctl_open_session_arg sess_arg = {
++		.clnt_login = TEE_IOCTL_LOGIN_REE_KERNEL
++	};
++	int ret, err = -ENODEV;
++
++	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
++	if (!data)
++		return -ENOMEM;
++
++	data->ctx = tee_client_open_context(NULL, optee_ctx_match, NULL, NULL);
++	if (IS_ERR(data->ctx))
++		return -ENODEV;
++
++	export_uuid(sess_arg.uuid, &pas_dev->id.uuid);
++	ret = tee_client_open_session(data->ctx, &sess_arg, NULL);
++	if (ret < 0 || sess_arg.ret != 0) {
++		dev_err(dev, "tee_client_open_session failed, ret: %d, err: 0x%x\n",
++			ret, sess_arg.ret);
++		err = ret ?: -EINVAL;
++		goto out_ctx;
++	}
++
++	data->session_id = sess_arg.session;
++	dev_set_drvdata(dev, data);
++	qcom_pas_ops_tee.dev = dev;
++	qcom_pas_ops_register(&qcom_pas_ops_tee);
++
++	return ret;
++out_ctx:
++	tee_client_close_context(data->ctx);
++
++	return err;
++}
++
++static void qcom_pas_tee_remove(struct tee_client_device *pas_dev)
++{
++	struct device *dev = &pas_dev->dev;
++	struct qcom_pas_tee_private *data = dev_get_drvdata(dev);
++
 +	qcom_pas_ops_unregister();
- }
- 
- static const struct of_device_id qcom_scm_dt_match[] = {
++	tee_client_close_session(data->ctx, data->session_id);
++	tee_client_close_context(data->ctx);
++}
++
++static const struct tee_client_device_id qcom_pas_tee_id_table[] = {
++	{UUID_INIT(0xcff7d191, 0x7ca0, 0x4784,
++		   0xaf, 0x13, 0x48, 0x22, 0x3b, 0x9a, 0x4f, 0xbe)},
++	{}
++};
++MODULE_DEVICE_TABLE(tee, qcom_pas_tee_id_table);
++
++static struct tee_client_driver optee_pas_tee_driver = {
++	.probe		= qcom_pas_tee_probe,
++	.remove		= qcom_pas_tee_remove,
++	.id_table	= qcom_pas_tee_id_table,
++	.driver		= {
++		.name		= "qcom-pas-tee",
++	},
++};
++
++module_tee_client_driver(optee_pas_tee_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Qualcomm PAS TEE driver");
 -- 
 2.51.0
 
