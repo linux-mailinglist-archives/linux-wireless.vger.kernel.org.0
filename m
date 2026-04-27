@@ -1,274 +1,177 @@
-Return-Path: <linux-wireless+bounces-35363-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35364-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDrLGH8372nV+QAAu9opvQ
-	(envelope-from <linux-wireless+bounces-35363-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 12:16:31 +0200
+	id SBUsF2s372nV+QAAu9opvQ
+	(envelope-from <linux-wireless+bounces-35364-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 12:16:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C016E470C20
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 12:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B444470BFC
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 12:16:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98FF23031031
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 10:03:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B9D1303A5F7
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 10:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFDA3AC00;
-	Mon, 27 Apr 2026 10:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76263B0ADB;
+	Mon, 27 Apr 2026 10:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dEVhJ9JH";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="LNTLHF1s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DY3/3tou"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBA5303A07
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 10:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777284237; cv=none; b=fuLEx2q1HZGGnIr1TVo95RExHbpLaBuZcnMsW1McCLiEZckX6GOkMX20jYf2p+ht/+sB4JEUrtznqfaZPpSy36xI2QbVxqdS/P+DEvOZvCu63EQ8p4NUmf78ZZhKkA7TibI75XePl8ztM58cIsSn4/r2/qWlYAASsO6cPeZTZ04=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777284237; c=relaxed/simple;
-	bh=S6uxfQn2+otkRfAL1NAtiDrK7ArtBpvrNSaE1m6sZ0k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TJns8ZpkFwKwr66hXgvot08p1IZ8w5pnFf+UuWT6C56s/oFMaV5AsCGFfO04w+5WoYapnvQe8GerHkFcQ9IiPYLHTAUaPUofLVBh61p4JNtT7M11lQltkxUXt/PoEbn9CMQYJhzKs1eQj8gQWq+S57u5AlBUoMWsdScMR8JHMDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dEVhJ9JH; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=LNTLHF1s; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63R9OcdQ3825222
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 10:03:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Kbkh1FNbNghjx7YSEVPr3LZXUM0UbtffMSfcjWSjjds=; b=dEVhJ9JHuuBfv0fV
-	/SPqp77XYPlrEV83G8ORNJ1lVIk7qTxxZSXvMTLPtP0F0FuZKG+6C8uL6gf3iSLV
-	sOngSZ9Ivue4/hrzO8aUBwX7IZBW7SF0x3ckIKZkMRE7wxIfWaqiFnkxBbkBZSZA
-	qMyX1OmvHF0EeVujyLlx7gMnmAXsNy6a0/p1oVM4n7Wa5UnNcMF0Vr+gH2ADLnX6
-	60T1oW9ekS26EFtPzZm3w67IRQNd7Nph0JBS8ED8F8quT5WK6E8GByfdK3lsUDC4
-	KxaRH3PteZ2OBLjVeOxD1VI9qsFfow2Z4mR7PMnyb+aDuDzswPB6KNcTJI7//ij8
-	42/qSw==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dt55506ep-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 10:03:55 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-82fa1c94b37so7353938b3a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 03:03:55 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559DB3B47EF
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 10:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777284568; cv=pass; b=KbXTH6gtkAwbn/z15jGBDQ05IjryUwv1OGitLEIU1k5lrXs1eQUAjO3q1lO/BxDadsJOW2Ws3da3Hr3dAmYSvrKXzCqZCafe8C17T2OJxy3z7pBKYnJ6y5hEhkBUuQbVQ2WjR+RsVcwr0XpwJL+9vZZ+9y1bBB69EMLEFNvn7Ok=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777284568; c=relaxed/simple;
+	bh=BpwJ31YoRKb682GNDyymER48bVYgnLpSpxFFPiMShVI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qS2eeQFmZ2RqUMfbuCYjFjmvofKn28KouJ7OwBpxqlEmzqinouD4LDVSAzl1uwE1okOoKMi6reuc+MJ/cZIzQ5w18rWpFFvOrcmT1dIyiTxTNXmbj6BkPn1nwLDsRaUgpsncBW8B5UL7tje2xTMNF941ijv98gV2bpfgVC3xeeM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DY3/3tou; arc=pass smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7de4a9cb8eeso3942610a34.0
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 03:09:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777284566; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PVo5NcjM9LpwHjeVvTGHY0qZDLhp4w5HsGDFrFiNNNNzonlP/pQa9c4bHdapaGwmnG
+         6Rz7wFEj+G+FE8Rl016Lrwu4GpZ2tRf1E4zgM9QC9+D0YxSqSypsBt6u9hN/9rO41clh
+         Vh0aeMpj6KW0E8nvgo3yr/wUqdw7KczkqpkyKalbnNJjSycLToGwlT2Dp3Y7B47QT2vJ
+         XeHkz3Z7Kqr6KrEfCWxNsaMXMkl1AQruN1TiR9MN3fQRlbzXNZqjxpDHbk+cC8tgIGTM
+         n8vrFNBB0gtJWpeZnWDpp4U/i1NoJYzgMfYOviLt/mrtOzALmf1jUeAprOCAFeuSeuoC
+         AU8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=BpwJ31YoRKb682GNDyymER48bVYgnLpSpxFFPiMShVI=;
+        fh=lH5IVTYY7VEEzLTiMMfzzSoXLLtu9PKhSYt2+YUCw6A=;
+        b=ALkA6LrFXFEgx8Vvr02Nxaazck5up83dD3bho712YZTUrtyKLeB8FmYq8344WH1OSf
+         vyZzvtbPQZxNi5v5tkH1XUaaWz0Mn+ZCbDloE3gwOrx76b8PaDY7ZyPyWmtv+GJ2hQzG
+         tiDH1CybGzZswbOZITt6mXAOZK0mPWs5GR9wTBFUWC1Q2SVdn44H/X5GNGJvRiWw/vkK
+         d2oPUfl1I7yI5U8pNmkDNGOAPPP9xdQ34oR+X1Gh/UyY7uhDSXQq97R7gurgDE8LvjE0
+         N7FDRGVD08ft09iehZIUR8yCIPTFrz4GvbkjXggyA1KILOzTIjdcVjpuhDHLnUHJIpbR
+         HL0Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1777284235; x=1777889035; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Kbkh1FNbNghjx7YSEVPr3LZXUM0UbtffMSfcjWSjjds=;
-        b=LNTLHF1spRK2BVMEetAZR3LZc+LhEfo4WLGRr8ZZCYBoXth+6Wb2sgFastxez/nzZ1
-         ZpZYQCfPUAyoTMR4Zh2ZUl1YcjVTzgQgN6wShWRRRnlCkEFAfFYeap2FKouP8opAgCQm
-         UZi4bChRWQmqbwoR9wxv7hyMJXiZHV4pvPc+wzbnMSK1IvgTbNE5n/wGu9puw5iVMCuY
-         80WnJOnYXVqFTUpMtetflu3CLWc8rsxLVjEmINlcJxYu5OxCUAYzFSmoMMwmajhRpefJ
-         fQ+vQQcHLrArncOAMZtRRJrMTdIS6Dgg4IgHwDz/3Z5HShuDVNPGYvCZMlh09qStHVe5
-         Epkw==
+        d=gmail.com; s=20251104; t=1777284566; x=1777889366; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=BpwJ31YoRKb682GNDyymER48bVYgnLpSpxFFPiMShVI=;
+        b=DY3/3touZ2x9cUYCaRa7c3Ow1XjuppvuJggfp2waIMgCPLtR6Z848dVc7OjW2Vmb31
+         dysMAXIv+/pF0tfoikoZFzAEldOMfAxqZAOkQt1VcaDJiQ0+2nJRXw+hMt0YJ/7mebbI
+         Ur5igkmxJ8b5WuZ0+sdm4wGcz3kTi4C+B773VvYOU9g3j95zSKi0v3dLqKLv7+B9Owsp
+         Qfe50F975afpg5vURlVwLsw9kM51Pjttk0mwsWIUbzEXHFvr4fTvUo3oaeWQPJ2LdXVr
+         sOAgyxmafq+9Il5UJizOf6TQ1FIusQYc+vL5hXMDdO7+xR4/cEAAbLsbXYAHdHksQhWh
+         iaGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777284235; x=1777889035;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Kbkh1FNbNghjx7YSEVPr3LZXUM0UbtffMSfcjWSjjds=;
-        b=lFHD8JNJIhVz99L+g2Arlh/roW0mnMEU7yjJH6jZUbvFX/h0aHXyRf3dsJ4afovtIb
-         wWQvPZNfW3DRDTe5pmuBWl30i3vkDWes7XA84ha8VkwQSijUOdTu2cYEOKlqV/CjL948
-         B8zx+TMNgi/4Zc4V+oqay2VcAlAxseUC44OjY7/DuhqqkEM69TtEctDNL//tzWLL9K9r
-         HyiNNA4C/fc8HHDmLc5i8lPJAkaYrzQta5XqeuAQW+qU4HhFcJQEmE8ST0M5s77BstSu
-         pqFQkfPYZ5ScWuQzMohBXEXyHzIeNA7sSa6RegGIbHeRr8iZRMcRuGofsaoITrOkpNao
-         tuxA==
-X-Forwarded-Encrypted: i=1; AFNElJ+Ll908WY36zyBu0FEslRqpZ8aUHUJq56ynWfIYXf86EF1msyTjRXMnxEuNVWM7D4GPuAX18LE9xEs0y0h2Jw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzDnmW5sN7Vxza5AAENzYY2HNKfMAlEBOiZkieArfgZQFLsNnp
-	1fdd2LkfZzjwedK0ugAZpuXGuPa+oNwDh9wQR8G4JcZe7yMTSWGkQF6AvhfiZRllQcojWGZT2lF
-	pJOIWnahMIPLwEporVIJ+ZBqpUBTG3j0LZ1AaROla/i9Jfto68I86rKGc/2i9E6z9cNuoUg==
-X-Gm-Gg: AeBDieu0Xo31i8fDzJ7aOYtLjCTC/j+GlXXxYHdK09xzv8caa/u6zpFyEo9sR4W1jHP
-	alGvJxgKi0qWBJzTYHyyZYJKjvv2fNLSnRri8qqnJwUIG7sfeMzMbiZ9Af80wFu469AbsU07o02
-	Aoxr74c8DzRXs6LJW5xkfPq7RCU9535I3+WpmfoFSqvwJBce0Cnkqse9h5ApeQWJc8tuA/Fss9D
-	mHPHASr/ivIS2Q2mxbF3EeitGftgfsTobZ8oUuA7ORnPxdoBSnTsPxHb05WcGKHNl4hee06lWvh
-	Hvou+s1IWSw8fV82vrR5TvTn+1GbpUdqKq6M17KjBTy8lDL3nKVcLotyHoYhMxtvP6FbJLlWwVA
-	YJstXoroS5vQtjKmUOJR/2Aj2kC5qXzBuzDOhXziv1KgZ7UIOckfZN7RlCT1kK6HRbvoVGxM=
-X-Received: by 2002:a05:6a00:17a6:b0:82f:7888:e2fa with SMTP id d2e1a72fcca58-82f8b542dbdmr37595320b3a.17.1777284234750;
-        Mon, 27 Apr 2026 03:03:54 -0700 (PDT)
-X-Received: by 2002:a05:6a00:17a6:b0:82f:7888:e2fa with SMTP id d2e1a72fcca58-82f8b542dbdmr37595257b3a.17.1777284234031;
-        Mon, 27 Apr 2026 03:03:54 -0700 (PDT)
-Received: from [10.152.200.247] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e981c07sm38888517b3a.1.2026.04.27.03.03.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Apr 2026 03:03:53 -0700 (PDT)
-Message-ID: <01295135-6bcf-4567-869b-75597649d11c@oss.qualcomm.com>
-Date: Mon, 27 Apr 2026 15:32:29 +0530
+        d=1e100.net; s=20251104; t=1777284566; x=1777889366;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BpwJ31YoRKb682GNDyymER48bVYgnLpSpxFFPiMShVI=;
+        b=tWOqPY7Ui65OVeqhhJMbwwXwpfd7W/11M2sicwxPq/PwGRrmGr5fIiUGTev7vf1VF5
+         ZNN1fOsoKCzpUDat5A6h6IjxGDx5ZwAQXNtefZrbh6mH7Z51AhCfK7nVDh55dz3PjYCo
+         2Q3R5N1DQ0kxdrt8ydlSIRA9XmdtoyyzkZkxRiZE2Zg9nVGqpLqdmjPY71qWlLExT2/Z
+         XZLA78LaQ8nB5Ai6kwfRGj1Y7Haxx3XRkBFrRKfCnkCNBcl0JvLa8XVNCVqfc9KCB5uk
+         cVJys1ZEt99FyHxkePFbLaArT3fJJ3RAqM7UruGvL3nhOzPYH7XtXVG4QO3tYtNBzqeN
+         I/TQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/JY7fHEIia+D0hs1tSb3oyR5xn4n9xT25JIi984yfy/WuDnR+uNMvh22xgvFVvTCxKnofKPdUgnM3yWTXerg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAtoosI1A2BHvplw/ypVTjEWbPrX5Ymviom4lDX6sBj8nnyYWb
+	Xu0nuvkjffpdIE1RuvxWYhbHwc3yCYtxX3hR/EYFNllv82XFl/jdpC0kImD+5H2fB1ohxYwYWPV
+	yfNQ6hKtx37WVjRh0pAiQKopzOpXEhZM=
+X-Gm-Gg: AeBDietTeihopH+f4D7J0eQ2MWut67a8xDOc+YnJsoXBAPJWrf4jk+CfZYRv7DE55lV
+	1kOfWsfbGw3RmgpRsnUqAHR6KgcZnXcBwGxwkKc3TdTN6oSgp5L5VQlVz5MVbR5m7O3jRiiPzGz
+	qcQwFcLkxXOpwdRwy+bhviYZNQUq9Fjl68QjDRzbL/lCUlEd+2cZf1Sxenn4RPL0DkGt0OJ4n7s
+	AgRxe4xuoMe5AZKN9QCbRTlxp6cgLB908dP1PRJ8ukvYCJqyD88ONed4lAsrH+tibrMBGLI/Vw+
+	Bv42P8PDxLEsPN6jb4w=
+X-Received: by 2002:a05:6830:411a:b0:7d7:eab6:fb23 with SMTP id
+ 46e09a7af769-7dc951fc6admr25734644a34.22.1777284566329; Mon, 27 Apr 2026
+ 03:09:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 0/8] Adding NO_STA flag and reworking RX link
- resolution
-To: Benjamin Berg <benjamin@sipsolutions.net>, linux-wireless@vger.kernel.org,
-        Jouni Malinen <jouni.malinen@oss.qualcomm.com>
-Cc: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-        Benjamin Berg <benjamin.berg@intel.com>
-References: <20260223123818.384184-10-benjamin@sipsolutions.net>
-Content-Language: en-US
-From: Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>
-In-Reply-To: <20260223123818.384184-10-benjamin@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 9C6cZucGbd0xrR3-4X-HTUGsGTtBoFxI
-X-Authority-Analysis: v=2.4 cv=CJEamxrD c=1 sm=1 tr=0 ts=69ef348b cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=QyXUC8HyAAAA:8 a=aP0UE0j1rqk7RjkCihsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDEwNSBTYWx0ZWRfXwLGw1Qqj3L6F
- XxwPlt7p3pPm35qhyB8JePA+2WLEu1GkqPcVvek3LwpyrEBO4J7mGjs+61bKR6yXGkl2bXQ41Ti
- uYaR6+AU1kh7BbnmWGCmEE0h5GOJfs/ywgiE6P11NnZLAEjspKDbKvrFiAHGBps4IK9eM6lW6/1
- 5hYd+s1cDY+vTIuL0wwKYzs7nEXY+hAEr6Biu9PLDpXIfssDBeBFo/JzYdH4s9QjwpxuxHO+i0k
- 4R48RA8P6OMQP603wD5Sc2h1PeoFZtEgbREyirnGO/E8IwWDCGx+S6+iy8FOR5+tjxeBiRySY+9
- fzpoOgrqh2QD8nk8n9Iv0ZkLcdXhXmO6/PSgBE29Y7WRu5Oi0QkIAzAlovoCeo5LF1wzUkEVr/C
- 8r/0+3LE06irQ8u5XQSsjfcWz8untt8fZqYnJ5hS1f/nVoKx/7z0UOJheb/Vs1cU+2YOunxOuQ9
- dSENUMSNmlvHWmDpQNg==
-X-Proofpoint-ORIG-GUID: 9C6cZucGbd0xrR3-4X-HTUGsGTtBoFxI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-27_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
- priorityscore=1501 adultscore=0 bulkscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604270105
-X-Rspamd-Queue-Id: C016E470C20
+References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
+ <b231d63665334ac786e808610fe4a1e9@realtek.com> <CALdGYqSd61wxNrPDui+m-S+Na_is-RM18-=L6xm-Jf4QQ+-DOg@mail.gmail.com>
+ <a8e187e1b40e4a35bbeb3bc3a3d21821@realtek.com> <CALdGYqRPcDRctCpNSJFatXvqMKLFiiRGXZoQa3KJwfwutHJEwA@mail.gmail.com>
+ <ba9790526e4e42c386642a05fcbc2f34@realtek.com> <CALdGYqQ5U2USCqVEixoDda1Xd2ugBakh1K1QkaKAU7HPSTTNWg@mail.gmail.com>
+ <CALdGYqQ_RCOwa2J-GsEyCxCQ4bztyxSzbc+6eYNesBSaY3Nt-w@mail.gmail.com>
+ <da30a61b-dad0-48ff-a283-3dd8e9bdf91d@gmail.com> <CALdGYqS53=MmG4yCLwgV+RJAZ=U8Aqi8QQZFZ5oFMernhSyxTg@mail.gmail.com>
+ <5eb90d6d-e590-4c9e-91c8-1ba315f45304@gmail.com> <CALdGYqRkX8=XMOePeauxvSTDZFLEYyJZKCtoxCzqaNwdO6BNnw@mail.gmail.com>
+ <a5ea6373-8c07-4fcd-95fc-d87ce6aef6d5@gmail.com> <6898154c58c84536a0dd4351b3b026fb@realtek.com>
+ <CALdGYqT2e+jt+mK-o_bL8hfdEwqZ44fUt9_N6-H4jYp8FpqQJw@mail.gmail.com>
+ <5fb2f699626b483b8a0a537960b274f0@realtek.com> <5f9003ca-3bfc-45aa-bf0e-35e9c991629d@gmail.com>
+ <faa215f1-ac2c-4072-9603-4baca1d5e07b@gmail.com> <CALdGYqQ+Syz+6weTChA=aXe=DBZSi1c0-7OYhJgkj7ahpR4EUA@mail.gmail.com>
+ <CALdGYqSS1WXdqHi1rp+PznVOW9wCF3vDC6qkScUXNV5YHQ=Bjg@mail.gmail.com>
+In-Reply-To: <CALdGYqSS1WXdqHi1rp+PznVOW9wCF3vDC6qkScUXNV5YHQ=Bjg@mail.gmail.com>
+From: LB F <goainwo@gmail.com>
+Date: Mon, 27 Apr 2026 13:08:49 +0300
+X-Gm-Features: AVHnY4KPa4dwGAINbK09KKxkGhO5h9cTo-NmBwrNMcg49XZd7LT3ryNtV6jRGXI
+Message-ID: <CALdGYqSS_4yrKn73UHR3zfgJN98wjR71V=pn+1C4pvg2UXGHyA@mail.gmail.com>
+Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
+ power_save is enabled (LPS/ASPM conflict)
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 1B444470BFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35363-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35364-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ramasamy.kaliappan@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
 
+Hi all,
 
+A quick erratum to my previous email:
 
-On 2/23/2026 6:08 PM, Benjamin Berg wrote:
-> From: Benjamin Berg <benjamin.berg@intel.com>
-> 
-> Hi,
-> 
-> This patchset refactors the RX link resolution a bit to fix some issues
-> where mac80211 might accept frames on the wrong link and incorrectly
-> translate the address. It also adds a new NL80211_ATTR_FRAME_CMD_NO_STA
-> flag so that userspace can know whether address translation was done by
-> the kernel on RX and can also prevent address translation for management
-> frames during TX.
-> 
-> This together should be enough to fix the existing issues in hostapd
-> where stations that are still associated try to authenticate again but
-> hostapd for example ends up sending the frame to an old link address.
-> 
-> I would appreciate if you test the patches and work on the hostapd side.
-> Note that I have not properly verified the new nl80211 API, so it could
-> well be that I missed something.
-> 
-> Benjamin
-> 
-> Changes in RFCv2:
->   * Port other drivers to new API (untested)
->   * Fix a checkpatch warning
-> 
-> Benjamin Berg (8):
->    wifi: iwlwifi: use link_sta internally to the driver
->    wifi: mac80211: change public RX API to use link stations
->    wifi: mac80211: refactor RX link_id and station handling
->    wifi: mac80211: rework RX packet handling
->    wifi: cfg80211: add attribute for TX/RX denoting there is no station
->    wifi: mac80211: report to cfg80211 when no STA is known for a frame
->    wifi: mac80211: pass station to ieee80211_tx_skb_tid
->    wifi: mac80211: pass error station if non-STA transmit was requested
-> 
->   drivers/net/wireless/ath/ath11k/dp_rx.c       |   2 +-
->   drivers/net/wireless/ath/ath12k/dp_mon.c      |  18 +-
->   drivers/net/wireless/ath/ath12k/dp_rx.c       |  15 +-
->   drivers/net/wireless/intel/iwlwifi/mld/agg.c  |  21 +-
->   drivers/net/wireless/intel/iwlwifi/mld/agg.h  |   4 +-
->   drivers/net/wireless/intel/iwlwifi/mld/rx.c   |  50 +-
->   drivers/net/wireless/intel/iwlwifi/mld/rx.h   |   2 +-
->   .../wireless/intel/iwlwifi/mld/tests/agg.c    |   7 +-
->   drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |   2 +-
->   drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |   6 +-
->   drivers/net/wireless/mediatek/mt76/mac80211.c |  22 +-
->   drivers/net/wireless/realtek/rtw89/core.c     |   6 -
->   drivers/net/wireless/virtual/mac80211_hwsim.c |   3 -
->   include/net/cfg80211.h                        |   4 +
->   include/net/mac80211.h                        |  25 +-
->   include/uapi/linux/nl80211.h                  |   7 +
->   net/mac80211/agg-tx.c                         |   6 +-
->   net/mac80211/eht.c                            |   3 -
->   net/mac80211/ht.c                             |   4 +-
->   net/mac80211/ieee80211_i.h                    |  14 +-
->   net/mac80211/iface.c                          |   7 +-
->   net/mac80211/mlme.c                           |   9 +-
->   net/mac80211/offchannel.c                     |  13 +-
->   net/mac80211/rx.c                             | 436 ++++++++++--------
->   net/mac80211/scan.c                           |  10 +-
->   net/mac80211/tdls.c                           |   4 +-
->   net/mac80211/tx.c                             |   8 +-
->   net/wireless/nl80211.c                        |   8 +-
->   28 files changed, 390 insertions(+), 326 deletions(-)
-> 
+I mistakenly wrote that the corrupted descriptor happened to have a
+`drv_info_sz` of 24. It actually matched 4 (`PHY_STATUS_SIZE`). Since
+`drv_info_sz` is in 8-byte units, this translates to 32 bytes.
 
-The hostapd changes were made and validated against the relevant test 
-cases. During testing, we observed some complexities in specific 
-scenarios particularly when a Non‑AP STA first associates as L1 (M1)
-and then reappears as L1 (M2) during the authentication/association phase.
-In this case, on the RX path, when an authentication frame for L1 (M2 in 
-the ML IE) is received, the driver finds the existing STA L1 (M1) and 
-therefore does not add the NO_STA attribute.
+The core conclusion remains exactly the same: the hardware randomly
+generated a `drv_info_sz` of 4 (or 0) by pure coincidence. This
+perfectly bypassed the `pkt_stat->drv_info_sz != PHY_STATUS_SIZE`
+check, proving once again that length validation alone isn't
+completely bulletproof and Panagiotis's NULL check is still required
+as a safety net.
 
-As a result, the complexity of handling authentication and association 
-frames increases within the user‑space hostapd application. While 
-processing the authentication frame, hostapd parses the ML IE
-but fails to create a new STA entry for L1 (M2) in the driver, 
-especially in scenarios involving different MLD addresses.
+Sorry for the typo!
 
-To simplify this handling, we would like to explore an alternative 
-approach that avoids address translation for management frames 
-(authentication, association, and reassociation),
-regardless of whether the STA already exists.
-
-However, this approach may introduce backward compatibility concerns 
-when either the driver or hostapd is not updated.
-To address this, we propose introducing a capability indication 
-mechanism between the driver and user space (driver ↔ hostapd).
-Based on the advertised capabilities, mac80211 can then skip 
-management‑frame address translation accordingly.
-
-Benjamin and Jouni, Could you please help share your thoughts on this?
-
-Thanks,
-Ramasamy
+Best regards,
+Oleksandr Havrylov
 
