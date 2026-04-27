@@ -1,158 +1,170 @@
-Return-Path: <linux-wireless+bounces-35412-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35423-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +P9cCpDV72nXGgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35412-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 23:30:56 +0200
+	id sJnkNRfa72mvGwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35423-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 23:50:15 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E1E547AA91
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 23:30:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2AB47AEE5
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 23:50:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3BF1D30091CC
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 21:30:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94A6D3044BBF
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 21:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71FD2F7478;
-	Mon, 27 Apr 2026 21:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AB023505E;
+	Mon, 27 Apr 2026 21:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dX7LcybM"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AD0zdoIb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535F740DFD3
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 21:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5A9373BE9
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 21:45:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777325449; cv=none; b=ZD651Qjq879RfkHDWAwb9sZlwjIODdNwOd17RF09O7EcNbwsVhDgHNkAUEJ+J+zZ2e+LhdLKIiNjGuySobI2tUMp+F1b3afWIUunpgSN7pi+WAPRvc8mvELgvF0JI09VJvyvOrh1fJo70H9ft71T9HeneH3tmt4jQ/1VdYogQjY=
+	t=1777326345; cv=none; b=tiT1K9/6Ci9dSlAcc1dMhMupBYBHp0rBuR2pogzi1JqqUdiAzXEFYsFTxAsaBOlasxPDwKUE4l6MTkMkndT0UHN9igZ808E1nWKRiCZH4ZuFyxUfb0WcWD8kV/LeUf/ETjovrGhW2gJOx1bpVaKZc16iRhBmaDfOxunBnSjZ2lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777325449; c=relaxed/simple;
-	bh=dZMg/iO3WT67p6o6CMNxNJ1RmI2LZm00xdN5WPD7stk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tujOPPSqkFjiyN3Vd2cFApHLr8VcgBDedogKKktForrryXwMU55HzslsKrcdZtBagirjztq+qMZ4HR8a6zp1mowT0thfeZl62sMXTWh4dEkD2C0NHcOWwzWDhk0sW7d78j4p1eC3Ybu4iUYmIuI+hNYwljlYLzHQc3KzO2OWOEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dX7LcybM; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso112153755e9.1
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 14:30:48 -0700 (PDT)
+	s=arc-20240116; t=1777326345; c=relaxed/simple;
+	bh=i/k46YQbNxc6jmDhpSrBTZQploRe2hY24KQV/uGHVj8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=E4aRVc6aNZXNBW/IcisG5WVlXfTBemGuL7p5Pzk9zQbLV8wU9uJebS2iopzijfXMR7iZxIY85mDqMkSs4Ix76hviOYacDVe8ntMjOG6DBkj5gsVaJvf6tEVlBx1QfsHZr2s7mCd7OzwfwJglW0i5YIal/D18OrmN14wY2UU9GVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AD0zdoIb; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b8f97c626aaso849420366b.2
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 14:45:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777325447; x=1777930247; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NGrdIB6e54iBDZR36z7TGsqEMccCh06sjtzlRZbmXwk=;
-        b=dX7LcybMRiOfFpKYoUU8olH26VcIC5Grhp8wmLerbHBb1o6JYgobj1AIaN4uoj6YCb
-         jbCSo7GtNds/+YIDXNHTWkM2pHPPAddjnlnmABE6+6dy+uw9FKwd1IPoXc24zDHANJH9
-         9kMxUEL5+Wx7zUWgEvYNCqzV/qZIQZvGZDiCz7w0Z0ZneDhkuk0cKbmzTkFH1qmHntSB
-         n9IP2NovUY1AsqaMzHXv8z7ixhehnJxG6J5Bqwix+Jau+0VA/uQ1dB5zT7oB2mj8AlBk
-         xExfIXoFU+FKgcBdPPwUNMxrxxI7TOLdsk8E+5oTgQWQD3FTUSoay3WGt4XeFTn4Mgqw
-         ByLw==
+        d=linux-foundation.org; s=google; t=1777326342; x=1777931142; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DjF1Jdn4Kp6xFyaBmAP2391GfFF2q7kuOVlruTChM90=;
+        b=AD0zdoIb4eC/JVHSjbM9DFD+WJbcHev1pXojDEytaAob6DnClJONAk6NjbB+wn8wwk
+         FqeL4lrtTmmNwepBeXZXI0NyWyGxUKWdo7KWc39P9+jwBfsFR2KDeuQnyYJRIRF07f62
+         QoxsI/kWj1s6MpzS3VJQ0VxHhahWn8Up6+O0U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777325447; x=1777930247;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NGrdIB6e54iBDZR36z7TGsqEMccCh06sjtzlRZbmXwk=;
-        b=qM/eRjd7oLnQzqg6mU0RLJOVNOpwC+9LvHIisfcvYV+IaFh1ikSOCNUD0EccPqoyr3
-         xRAov/nOP7ZwkjX25I2RL7Hc7Ir6HVu2vJPZcXrGZ64Y3CJm1VOLtP7F1evboD7UJ3HD
-         9pUaWN44wQxHoM2iW932l5MH80gLsA3YZls0beEH0LlvSPU+0CH17g+U3OHrHTWGDn/p
-         WQaaV6EaR5Kz4CIx5AaLDI32KEF4Y6BjQpzrvzPBpOQAdx6tEVUEa7YWR6UYnZQSoDxI
-         ThWHYtxu428RRGGf2Euih9rIRnmJcVfCVdWRt4ixiIU7pCUcV49PTr8qodMNEEsV5PB4
-         OXZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/CihLuzWpYbXZ7Qx6RVWkMtnpvbgAHkeW+uD5oEdWz926pcxACn4fasVXvKfZy5zUo+HnYSS2FAKSvuDBF+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPNxkUdum24lgoQM5letkCBkKB+Dq5GoCqnsoZ/+Iw1jnJ+agR
-	Q6PUz5wz/nNhdsWkDO6UQhufSdP/IdYrXRK2fWKheFL38WRBYsZOe4qH
-X-Gm-Gg: AeBDietRA+7v9q18TzMZ4Gu+OlNpVXCm4ErGXRXVY+oFuMYpDd8lU+2DjwmwiZVL6mh
-	A53hsAcQW3mhq9fl4jPZA4L35at6lktEKQh3M2KIKNTmy9s+hXITGmuMSJ/9aHQPlf2XWZjVcnC
-	ta4Fv5/Da7IpKXpDgWHqWnJbKqFOkcA19srfqhyuCCa+XvHX5ubZbLfssjmCm61rgCkTZZUGCJL
-	mKcvu/TxEtnWG0JtLQxFIt2XXX0Tg8Fn8DkPRwiuUR5Sr/wjXsdS7KI5y0Q6pmptiGjIAtxniFE
-	+OR2+6UXLRjv3+LiGdJaeekYxCX/DwA85VA/AzNLTWGZyx2BfJ2Z9eydQUJHCV3RjSACqSqmwel
-	lwEFgJ2msIYbdpRTKSgjNbCnDXDqkAWSQBWHJylcDK7YtDb0dEddLNls+iyEzF9uJ2scRz4GGCT
-	3Kx5/yp/V1PUV1aq1VzvsdxB9c6qqUgoNMF5OnIOst
-X-Received: by 2002:a05:600c:3b96:b0:485:35d3:ce59 with SMTP id 5b1f17b1804b1-48a77aefe5amr5438685e9.10.1777325446601;
-        Mon, 27 Apr 2026 14:30:46 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a77449ce5sm7309135e9.0.2026.04.27.14.30.45
+        d=1e100.net; s=20251104; t=1777326342; x=1777931142;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DjF1Jdn4Kp6xFyaBmAP2391GfFF2q7kuOVlruTChM90=;
+        b=Vn26FP80ZEPwBVwXc0qiOjZPQVNtRqflOg0HFyi4xEuwUBq+SLZ2NpsngHC5PE9OId
+         nNCk5qVHvLW3o4YZgIM62YaoKV4WikXvQ9Q4HOOa4k3Gc9BYhH14Aer3vEjZbmo66lke
+         8SZbHRYwxw2B/yZXpDDq3nttDwiOzmgttwxZB+Q63d+3oc/XDq+S7M8RdNV965XcxNwG
+         xOicQzrm15vVuDXz2uUX+Vn6sfK2ALmmVf/xAj1cBvFn6HTbYQ2J4b2nYa6d2cJyBJyC
+         mzK1mkMcZ9IwAxeYwP0vEa809HGfwHdIM+nRuPHPIMYgreKLXCRDd4uOTnf84H7152qi
+         fT2w==
+X-Forwarded-Encrypted: i=1; AFNElJ8R4LBTgKFvAZYsbhd3pIska83KhIb6G0he1FHzJTgeIkSSajzEiIZ5GaBzlI/8En8xvi21gch0vsTu/empvw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyGpNdHfglga2Fm0U3AXvRnVj2BbRL1gRMY4bzdkyts68+t7DV
+	nfb8Qk9jDhRSO6t9R82mqJ89RGynFWULxA2owl+sfWYU9v2fL/NqEce4q7B9UuYojgcQHdkKZTD
+	zDNrPhrJ+Mg==
+X-Gm-Gg: AeBDieuwGZdavDRk0wB/sO0MUSUNFEPkWYX9gFcnViLD1Ea4WqwehD+m/hlpaS+r/ed
+	LN7n4C6kdBphJNpTZAUF4A7S3BY7kktmgTKZ3N47wWkk+BNVzgZDHR4f5NGimHlBtlOyt5JLkmA
+	yYnCM4l3rulHsmFTGLMQlbQcuDehoD9R8Td4PUPgSE7eU86rsDgDfgezdnfLiaB36Jp4Kwsp1SV
+	0DbFevHHuyB7okfsGh3zoOH7mZXl6hi3zp8/xbsedJu1zCEtnoebITmxkf3Pxe+z27vTAmXVs6I
+	auTiUERSEOIFIzMKxrwOzaRSAmhukCo3UhWZ8w7c30aWwtuNgqChS6cihqwLNq7ZbEbv2RtkwvN
+	lDZkbH6qalqpZ5B+KjpRxG5iwJ1YP+18qE/YyhbLrGliIdT7Bsi2uONuURy8Milxh5RIj8rwkNC
+	HGrBCMG54yVx8t+sFkM2ZDsLs6xhpDYJdVn0kPrfCZ4s/W2L77kfx0Ry9WLvw9B/a6Qld/EKQ1E
+	dr71Y0ooRuRooyZR2+ZMA==
+X-Received: by 2002:a17:907:3e0c:b0:bb5:8503:fb03 with SMTP id a640c23a62f3a-bb8047283a6mr29919766b.28.1777326341260;
+        Mon, 27 Apr 2026 14:45:41 -0700 (PDT)
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bb809023ecesm10079666b.26.2026.04.27.14.45.41
+        for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Apr 2026 14:30:46 -0700 (PDT)
-Message-ID: <4f40d96c-4cd5-4e01-846b-745e346b6744@gmail.com>
-Date: Tue, 28 Apr 2026 00:30:43 +0300
+        Mon, 27 Apr 2026 14:45:41 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-67389cf78b0so18827472a12.2
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 14:45:41 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ85Wge/NJrnUANVD49dPO36uJVFwIQ+KZ4cDDAQWZ9zWhYk9w01KkjqfViBf2oqugV9HP2uzHqKfFS+NDnXvg==@vger.kernel.org
+X-Received: by 2002:a05:6402:5216:b0:679:1f4f:9d30 with SMTP id
+ 4fb4d7f45d1cf-679bb04c1a2mr179970a12.4.1777325976937; Mon, 27 Apr 2026
+ 14:39:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
- power_save is enabled (LPS/ASPM conflict)
-To: LB F <goainwo@gmail.com>
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
- <CALdGYqQ_RCOwa2J-GsEyCxCQ4bztyxSzbc+6eYNesBSaY3Nt-w@mail.gmail.com>
- <da30a61b-dad0-48ff-a283-3dd8e9bdf91d@gmail.com>
- <CALdGYqS53=MmG4yCLwgV+RJAZ=U8Aqi8QQZFZ5oFMernhSyxTg@mail.gmail.com>
- <5eb90d6d-e590-4c9e-91c8-1ba315f45304@gmail.com>
- <CALdGYqRkX8=XMOePeauxvSTDZFLEYyJZKCtoxCzqaNwdO6BNnw@mail.gmail.com>
- <a5ea6373-8c07-4fcd-95fc-d87ce6aef6d5@gmail.com>
- <6898154c58c84536a0dd4351b3b026fb@realtek.com>
- <CALdGYqT2e+jt+mK-o_bL8hfdEwqZ44fUt9_N6-H4jYp8FpqQJw@mail.gmail.com>
- <5fb2f699626b483b8a0a537960b274f0@realtek.com>
- <5f9003ca-3bfc-45aa-bf0e-35e9c991629d@gmail.com>
- <faa215f1-ac2c-4072-9603-4baca1d5e07b@gmail.com>
- <CALdGYqQ+Syz+6weTChA=aXe=DBZSi1c0-7OYhJgkj7ahpR4EUA@mail.gmail.com>
- <CALdGYqSS1WXdqHi1rp+PznVOW9wCF3vDC6qkScUXNV5YHQ=Bjg@mail.gmail.com>
- <CALdGYqSS_4yrKn73UHR3zfgJN98wjR71V=pn+1C4pvg2UXGHyA@mail.gmail.com>
- <CALdGYqRK+a7-7WEXgp1H-w-1AaQhhbTW9FTWtpmfGN_yXuDGSQ@mail.gmail.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <CALdGYqRK+a7-7WEXgp1H-w-1AaQhhbTW9FTWtpmfGN_yXuDGSQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1E1E547AA91
+References: <cover.1777306795.git.chleroy@kernel.org> <289b424e243ba2c4139ea04009cf8b9c448a87ff.1777306795.git.chleroy@kernel.org>
+ <CAHk-=whC1DZojwdMB1=sJWG2=dsCdfyU8N6tDE1qx50HRZ-WJQ@mail.gmail.com> <20260427222914.1cb2dd3b@pumpkin>
+In-Reply-To: <20260427222914.1cb2dd3b@pumpkin>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 27 Apr 2026 14:39:20 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wg0SGbRYhdZ1kvJUTv1HEvmRJyQauFtBGV_fMcZVF8UpQ@mail.gmail.com>
+X-Gm-Features: AVHnY4I-AxqvQRk42MegvhKMp_z4sSEpEzhzpgw2GyV2bV8dezSPoI0JTlwB18Y
+Message-ID: <CAHk-=wg0SGbRYhdZ1kvJUTv1HEvmRJyQauFtBGV_fMcZVF8UpQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 5/9] uaccess: Switch to copy_{to/from}_user_partial()
+ when relevant
+To: David Laight <david.laight.linux@gmail.com>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Yury Norov <ynorov@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-um@lists.infradead.org, dmaengine@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-fsi@lists.ozlabs.org, 
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	intel-gfx@lists.freedesktop.org, linux-wpan@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-staging@lists.linux.dev, linux-serial@vger.kernel.org, 
+	linux-usb@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-fsdevel@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
+	bpf@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org, 
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 3E2AB47AEE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35412-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	DMARC_NA(0.00)[linux-foundation.org];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35423-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[48];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[torvalds@linux-foundation.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim]
 
-On 28/04/2026 00:19, LB F wrote:
+On Mon, 27 Apr 2026 at 14:29, David Laight <david.laight.linux@gmail.com> wrote:
+>
+> I think there is a slight difference in that the normal copy_to_user()
+> will determine the exact offset of the error by retrying with byte copies.
 
-> I will continue monitoring over the next few days to confirm long-term
-> reliability.
-> 
-> Best regards, Oleksandr Havrylov
+I have this dim memory that we decided that you can't reply on byte
+exactness anyway, because not all architectures gave that guarantee
+for the user copies.
 
-Will you use the Bluetooth headphones again?
+But that thing came up many years ago, I might mis-remember.
+
+            Linus
 
