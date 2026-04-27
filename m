@@ -1,236 +1,214 @@
-Return-Path: <linux-wireless+bounces-35400-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35401-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJTLHem472kbEQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35400-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 21:28:41 +0200
+	id yJY2EOW472kbEQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35401-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 21:28:37 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269F947944E
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 21:28:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3ECB47942A
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 21:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 61449303FACE
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 19:19:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8ED003010EDA
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 19:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80453EF658;
-	Mon, 27 Apr 2026 19:19:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YPchTHpL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738BA359A6C;
+	Mon, 27 Apr 2026 19:28:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010069.outbound.protection.outlook.com [52.101.201.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f80.google.com (mail-oa1-f80.google.com [209.85.160.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A023E92A0;
-	Mon, 27 Apr 2026 19:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777317591; cv=fail; b=tH6yuCJbrB/omk9PJIL34WJcrsRDVjNHxx46cokL5tXSyBllBDzxZS+1X6QDODQTemV6Sd8/NswWmUjjNwKlXU0KGZA9UPEtuVvWB1KVpDEjpj64/q47+gT+fH12dfp92xU0YBBaj2NXDaKePigT7kr822LZHI42fK5iqySP3SI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777317591; c=relaxed/simple;
-	bh=QZFzIQdZ3YBkWl+pry9Vul/3AcxOOWxKfKh1ZrhYsFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uWc2Xus6gOAmT4Sm+7Thk/qLIGdcXfbCdX+C1ZeugXjwZdOkngjVFbezg23rsBNtJqFT8tryFNoYb+rlzGKqyvL5AsXo3h+GH0bXbWEqJFV/6rSeMHICIQdvvo91R9uNUFjTBfuaCJP9G7P6ZUd5/H+UHbxH9mt6VUsiO4ROIFw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YPchTHpL reason="signature verification failed"; arc=fail smtp.client-ip=52.101.201.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DVhEHbKse9FapnN2cz2aJUX+HTxcItqfquBUQFwLCiP5WPrtNQiNPTnGI4MIon3AgmkAQl5HhYuSQnuQt8IDeRYhgInyB/AOQdBwrpUiHITV3f694UVLHuUrOiv9b2cfG6r3+auR6MSVkkcLuQ4Y+tF/rhfDNeBCXess0F+F/TkXrV+dz92vsSLlL5tn1Ynl2fbpcNoIAef0KBxuv6gcdjE4t82LvHJAaDNASNUKyKFm7x4T0BsLAz0/sYnIg36y560VeNc7zOL4T4Ud5AI185ZovsKb5e37aJIb1I3/TkqG0ULl2gwnmAIb6WWT/tvMtVulTJ6c/93Ndgr0CuF4fg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/kehAw/qIO6D93HVE5am8hZKsLTTbdaFhcjGhCC5rQk=;
- b=barriPy2JoAhTOU2YWoiBczra9jgxyFIS6Vn5fMeLmZuoQbamS7hXIudelNBWOJlYCTT4fz6sLrJvnhUdW9BOtoGyJggKAsOzpYbdXTAoZYuiChGWVjjK4zj5T6ViLKFtxvsysAksVjZEfM7DJVmWiyYI9e45cpEy9i20IgZjrl32t2DE427qEOO5vlB9eYx56Yl/nXGgL4VLYapDOlIgCcuJftQuYsdND79AhJHc1YvPlUNuHXQ+n3CfukGLrY/uuf3W2l/Yujue6iK9C39RkCuvxgHmU04+3GeYVYQvrsxPBRvQZHz5V/LPu92hWZsyj93vuK0RwQezDTTJlGlNw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/kehAw/qIO6D93HVE5am8hZKsLTTbdaFhcjGhCC5rQk=;
- b=YPchTHpLT9QyaGFbz/V/HaxoYwml60CPwBCohwTGccSxQF5xp4aCWy87+9L75FNFxG+fxrmiBfrijK9S2U71MhRFySlXZXPcGWovjvdfkNvvp25q1PAB1mr+HmzjdR2xRedKx7NR5nzOddAsQnNEGyggXH0WqDfgUQo8MCzVvhQJIRQ9THI7KbDluLzImajEqpi/FOh1jFu/Gzsx5Px0K5iD8tBWuFPua2hJduhxINK682Oc8hT1rNV3ppOrrAFmrK5A2egSfIVt/1zbLX+OPjABfYsc675DnlpFoxG5tXvBSDdEGGHoW1lpS7Myqc3PGBqojvAzWyzSfMH/AHuVBg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16)
- by CY3PR12MB9678.namprd12.prod.outlook.com (2603:10b6:930:101::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.12; Mon, 27 Apr
- 2026 19:19:39 +0000
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de]) by CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de%3]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
- 19:19:39 +0000
-Date: Mon, 27 Apr 2026 15:19:36 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
-	Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	dmaengine@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
-Message-ID: <ae-2yLWSGnfeTvh1@yury>
-References: <cover.1777306795.git.chleroy@kernel.org>
- <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
- <ae-j2_QirCySZD02@yury>
- <63a4d0f6-0eb3-48cd-9f98-bf7b223b2606@kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <63a4d0f6-0eb3-48cd-9f98-bf7b223b2606@kernel.org>
-X-ClientProxiedBy: BLAPR03CA0031.namprd03.prod.outlook.com
- (2603:10b6:208:32d::6) To CY8PR12MB8300.namprd12.prod.outlook.com
- (2603:10b6:930:7d::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A2B3A9DB6
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 19:28:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.80
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777318114; cv=none; b=fQ/00vXv72k0uNBjVfhoWboPv1AdT5MJnkVeiLEzXUQT4VKAK2HUUwKdrHRXuJrSJ6AG2jrirX5SWpiC3wZzGDKX9zJml0cdoWssmhJ2rasu9XA1aIotIUecIKfijCLl/eEiBcUqvHYl7iCi0XZopdTc6xywIDwj8LmSHy4+aRA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777318114; c=relaxed/simple;
+	bh=vDnlNvFsiKfBUAeE3yo2FrQ/z2Fbdaq1YP6FVHqXliQ=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=WWH46po3yGq5Dd0t8weC0G7PJIapKeLKKOBu7gXTeYMeeF1YN+p/Pja6ENdvEeGAesKuyaXI9pU1RlPWC7ARKgFFs5aM6b0eTnADY7rGNojd/mN02S33Bs8Wpf9TVQvSvOs99qkuyUgtX4rhChjXUUlYfLQE/JCB6G42ASoQqBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f80.google.com with SMTP id 586e51a60fabf-415e1ea16b4so17056130fac.1
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 12:28:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777318109; x=1777922909;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=W/5m4sNbQauXf7WFmroEZt12sAZYc20CnXn6gV9B6iU=;
+        b=RBkS15fY1C65Y5Kqd26CYg+Kbv9tGD2VqKa0H2JN1c5A6+7L+JA6nF/tVa2s5ZtHhw
+         wRSGR7BJnHzwEGkub95O/YAiy+qsKVb+c/IFV4kboxYAqEep1HLgSDQqc0sl5ilYm+V8
+         gmLhIdKqzdFM42AXtHzTH+MUZ2YBKJqNDSK+5UHO2psYdmiMAO+cHnvYfus9cA34HHvb
+         2crnhra/Uca46wlsgkohPDsFXJheumczLi1EHh04BNMhZS3giwUoZ6GktPJtk4X407yR
+         hZ5IN+E5S9VJnMyragSZWqs2i5P/CnZTv+OYadviuzMLXp2MdbCrUH/sezQfYaXaS4WK
+         53SQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8nhIodmvnLEUQV96Zqpd3GAGNXgMAFKsNH1LTMyhdyhEddqQPMO5RKUwe4p51nfERShhDoyBL15hkFhhzl4g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyePYbzRlMakXMrz43u//swB6gZkwJwSN8aUDsI4SQs05LRVqZn
+	SjfAikyETqwy0XeYZJAPVdfBcXL17XZLdGmTQo3vHwXJH6Gosgq6Vvx7k96zak+fJCib3nmhCOm
+	+1NkJNFFbLmdix5JXKSExlty+zW1/fpz9/rf0OJa7ebTv9mJf63yQnZqc5oM=
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB8300:EE_|CY3PR12MB9678:EE_
-X-MS-Office365-Filtering-Correlation-Id: c742778b-fa9b-44f9-51b3-08dea491ed5d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	shZ1u0REr6wDLRLPyyEdIcR7HSBaBLI9bkPwQrtikVH2FtKB2JxFo1blEpu1cI3NJl8SRfbhAKLYIVGCuUMzmvBnxw+FuY/TWQm+eDHPdr22c6rn1JUuzt3nYVxIbuuLTVTRWsq+e+SUyzbYaEEs9iTQJbTfJiMIr1QcnMs7HyZ09hEYM4Y4qXo4Dqr7nhb5zdIkE0fiLtqy/Zisxe0E2yKOvU4HmFcaFOiR7Aq6DJwZzTG+BR733bn5EC71RBcWvOANFgJM2znxVv/dOuQYufc4G4dUHtXgydGyNUS+fngDUjvyX5MkmDLhOMznjZqXlYqgeu5lMUCpG8HffRFHlOXhBcrYgf+ovMMHaCYbFuDT66UC1VDFvb4rz83Hk2Lnl6vSSpPTv8rxpTSPpx4cdJdNmo0Mn5Mi/3x46vGIX9O5JTAct5Ir50zvkKLZe7/Kp1qSfB39msc26Lzz7LD733/o3mPnQXyAGLurnHZgJ5jM3FLt650dCqhJcZlPMaXHq6+AjtwJTG6y+mX2JUt2792E1LYJn7KjXVu8/xqn/7IpL5oC4IQQUgghT221wDL3lrh3xCL1IuqFJShNLP2kKxWwgFBJzIfU0pnScVGPPU9YsipaXNEtmsuD5RQqnXWq43E7KCoMjIP73gvWalBIhJkqTKcX6NUkX7ot5JSYyuNq1A833Lgaec6O0C//zC9ubi3rz9CymfV/P6BrxHZIhmtQ5semmv0gY0c6C5hRnqM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8300.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?T8W6XhUXwT9dv5kuj9kFMa1Pc+caKbpom/7i+ro0mWLEx/WsMCf7Uv+yLt?=
- =?iso-8859-1?Q?gAyF6hz8bSDC1bWR1FTEkkI65aMUmC7iyx7e6/xfNDa3Fqe7SiC1j77stI?=
- =?iso-8859-1?Q?LrG24onu6fFBF8DWYf6MIuIlkdgrbAd2EiVVGxnofgYgHTQhw5136OB8qO?=
- =?iso-8859-1?Q?CnzmyDAwjI33B1CjeJnNBBJkCzrksdZvxIcHW0uIe6E0PZHf537RLpIETM?=
- =?iso-8859-1?Q?s+cBh7JvH4GNxPjZACl7GXrozKiFqXSwFIzHaU9Zd4jSjyzd0KPJpIHPKf?=
- =?iso-8859-1?Q?8h/I+NEnIGw4Lnjlmh9mYKMwd0qS2GIHpVaOy1bH5MCjGmjowRaXjQ79be?=
- =?iso-8859-1?Q?jGRLn+Oomml9guRrsFzOQ7DbbOlFy8pqy9R+D9ZnGVn8wEgYSRw75xgmry?=
- =?iso-8859-1?Q?2ACNauoKPoUzpnRmfqW3sPF9JS/tvt2t2PPNVTZJLV6vuJBnNmyWilx/9u?=
- =?iso-8859-1?Q?SrlYzTyazTZWIZbUeG2soKD4eNVokxFYJQoBgEsGEV2njiNv6HUubbi0pF?=
- =?iso-8859-1?Q?Vqp14jJqz5sSfFayA6WZcArZ+USE5vjanuqRtNQfdkNsKj0R4pEMc493o0?=
- =?iso-8859-1?Q?NCXeFBw/ojt6aGg8g6h7tHIHZcYuw7ohhZUMOvg3ffhlK9u79tO7oKpC3u?=
- =?iso-8859-1?Q?wiPOjYl6brt/0GKfD3iRNbrV6TRbbioNcjuDS7LZqgWxe6vMy7NndX+woA?=
- =?iso-8859-1?Q?uRdr5blnc5k3cJWHAzCHgJ5WF2JWGApq1uyN9UWgvqNw083HRffGg6P5ix?=
- =?iso-8859-1?Q?cG24FhHq+kscs9DSxIC+Aujk67lP+3jqbld/7XWy8cKm8qvSHwRqhWblhk?=
- =?iso-8859-1?Q?2okcTJPbDNOuvYYOSGTPE+vmAEFbkK1UHPvMUY9ATxehETfXPZs7yjb3aq?=
- =?iso-8859-1?Q?w3hdW7xtyg3/7tDEWG7+fOEy9FFT/gEBpvxotxF6oySrb2HXqp/fqrjhbq?=
- =?iso-8859-1?Q?+CZwwgugua6eO4UL5qPz9hiIFbMAfNaGqRykJRiykn+pL+t1YHattmJ89+?=
- =?iso-8859-1?Q?zMjzPmRht5LCTdelXGsXfPIKJiFXD3T9vDfN3lmWj4Ts7wlilxpgiOpMaL?=
- =?iso-8859-1?Q?p7E3h5ji6cLKiR9cNwmzJTNOGBx5zvsEG4+PNQXhBDGMpxOVgOl+EeAV9d?=
- =?iso-8859-1?Q?2s3FGgMUZVYPP9cV5NsthWoh6iNfuRN7NkopE2q3yxMVZlN6dt7HdpbO1Y?=
- =?iso-8859-1?Q?0fu25Ra/a3yy2XE0TtJPHqDm12P85rdM3CgNkUv822FbtecXgL64Qkuo5p?=
- =?iso-8859-1?Q?bU1qrEG+LOPjM/jMvPhwRHc5ppnq/gaXYhFU5FH0G3K5d4d0ixkRyi37Wv?=
- =?iso-8859-1?Q?QFsdW6QrX/SrL3DsdbaAqQnL1rxC0EQG3YCsMUYGRLPRYd9ad5xPY0x+Rq?=
- =?iso-8859-1?Q?pi74xEsiw9PrH9X+6nGn6Y3d7VcpnV6Av8/J+hqLZLRt6W9B7IXfCaTIAV?=
- =?iso-8859-1?Q?8KCRWdm4ExrgkDdvMYea8olZLEBlvgMeZtCVoxZ810+OR4vZKUUMbB37Ha?=
- =?iso-8859-1?Q?gwC1ZTD4TpsWjGJNj5Ry/c9tX5RkpCdCKRBegPQIrqdU1WX41QArSPS9fb?=
- =?iso-8859-1?Q?xDEYSUCFDpxyHnIl4mh4MFcUHTIxFSpQAIB1z5w75JzJg+rYBE9y0Z0uA2?=
- =?iso-8859-1?Q?hx89znOZLi5+tvIZldfaxSE1Dk0RrYzkMtqQuuDh61/I6rksRc2kt6jYug?=
- =?iso-8859-1?Q?hvJgjrdcklYMst8NSnorft9iaeq41s5Z02Our3r1w88xwCK/RrRq8aIdSR?=
- =?iso-8859-1?Q?gpisMPDwKRAml31b4cWNg8wz9VF+bGszAp5BtKObcEufaeReWjiKmyXNV3?=
- =?iso-8859-1?Q?qbI4euw+Po2OswoqiwgiX8xIAeThU5sXrO2JRJTwu37/nYFGOi2s?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c742778b-fa9b-44f9-51b3-08dea491ed5d
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8300.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 19:19:39.4410
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 40kb2lLpGDA1U6OK1K/FxB8sAmuWJ+U6w4mJNOJ6ae5Bq52M+Y3YVxXlUqHMzI9liQk01DjxzLicYADua7DWLw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9678
-X-Rspamd-Queue-Id: 269F947944E
+X-Received: by 2002:a05:6820:3082:b0:68d:804:55d7 with SMTP id
+ 006d021491bc7-6965b94ced6mr228791eaf.17.1777318109582; Mon, 27 Apr 2026
+ 12:28:29 -0700 (PDT)
+Date: Mon, 27 Apr 2026 12:28:29 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69efb8dd.050a0220.18b4f.0006.GAE@google.com>
+Subject: [syzbot] [wireless?] divide error in mac80211_hwsim_link_info_changed (3)
+From: syzbot <syzbot+ca7a2759caaa6cd4e3db@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: A3ECB47942A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [5.54 / 15.00];
-	DMARC_POLICY_REJECT(2.00)[nvidia.com : SPF not aligned (relaxed),reject];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_DKIM_REJECT(1.00)[Nvidia.com:s=selector2];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-0.36 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=4caf64b1ee83dac0];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35400-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[49];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	GREYLIST(0.00)[pass,body];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[Nvidia.com:-];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ynorov@nvidia.com,linux-wireless@vger.kernel.org];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,gmail.com,linutronix.de,vger.kernel.org,lists.infradead.org,lists.ozlabs.org,lists.freedesktop.org,lists.linux.dev,lists.xenproject.org,googlegroups.com,kvack.org,alsa-project.org,lists.linux-m68k.org];
-	NEURAL_HAM(-0.00)[-0.749];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	TAGGED_FROM(0.00)[bounces-35401-lists,linux-wireless=lfdr.de,ca7a2759caaa6cd4e3db];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	SUBJECT_HAS_QUESTION(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	REDIRECTOR_URL(0.00)[goo.gl];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,storage.googleapis.com:url,googlegroups.com:email,appspotmail.com:email,syzkaller.appspot.com:url,goo.gl:url]
 
-On Mon, Apr 27, 2026 at 08:20:38PM +0200, Christophe Leroy (CS GROUP) wrote:
-> 
-> 
-> Le 27/04/2026 à 19:58, Yury Norov a écrit :
-> > On Mon, Apr 27, 2026 at 07:13:48PM +0200, Christophe Leroy (CS GROUP) wrote:
-> > > At the time being, x86 and arm64 are missing unsafe_copy_from_user().
-> > 
-> > No, they don't. They (should) rely on a generic implementation from
-> > linux/uaccess.h, like every other arch, except for  PPC and RISCV.
-> > 
-> > But they #define arch_unsafe_get_user, and the unsafe_copy_from_user()
-> > becomes undefined conditionally on that.
-> > 
-> > So please, fix that bug instead of introducing another arch flavor.
-> > We'd always choose generic version, unless there's strong evidence
-> > that arch one is better.
-> 
-> But they both implement the exact same unsafe_copy_to_user(). What is the
-> difference here ?
->
-> Should that function become generic too ?
+Hello,
 
-This is what Linus said when added x86 implementation for copy_from_user()
-in c512c69187197:
+syzbot found the following issue on:
 
-  Note that it only does this [arch version] for the copying _to_ user space,
-  and we still don't have a unsafe version of copy_from_user().
-  
-  That's partly because we have no current users of it, but also partly
-  because the copy_from_user() case is slightly different and cannot
-  efficiently be implemented in terms of a unsafe_get_user() loop (because
-  gcc can't do asm goto with outputs).
+HEAD commit:    254f49634ee1 Linux 7.1-rc1
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=13b32348580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=4caf64b1ee83dac0
+dashboard link: https://syzkaller.appspot.com/bug?extid=ca7a2759caaa6cd4e3db
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+userspace arch: i386
 
-In the unsafe_copy_to_user case, arch versions were justified. Just as
-said, I'm not against arch version for unsafe_copy_from_user(), but it
-should be explained very well.
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/fd59c3aee25f/disk-254f4963.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/2a93e1c819bd/vmlinux-254f4963.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/18c05b34ca3c/bzImage-254f4963.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+ca7a2759caaa6cd4e3db@syzkaller.appspotmail.com
+
+Oops: divide error: 0000 [#1] SMP KASAN PTI
+CPU: 1 UID: 0 PID: 193 Comm: kworker/u8:6 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+Workqueue: events_unbound cfg80211_wiphy_work
+RIP: 0010:mac80211_hwsim_link_info_changed+0x476/0xfc0 drivers/net/wireless/virtual/mac80211_hwsim.c:2734
+Code: 3c 06 00 49 89 c6 48 8b 7c 24 20 74 0a e8 42 72 26 fb 48 8b 7c 24 20 48 8b 0f 89 ce 4c 89 e0 48 c1 e8 20 74 60 4c 89 e0 31 d2 <48> f7 f6 eb 5d e8 30 37 bb fa 4c 8b 74 24 20 49 8d 7e 10 e8 a2 e4
+RSP: 0000:ffffc90002ea7860 EFLAGS: 00010246
+RAX: 000650757bb12572 RBX: 0000000000000200 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88806fbe7b98
+RBP: ffffc90002ea7958 R08: ffffffff903096f7 R09: 1ffffffff20612de
+R10: dffffc0000000000 R11: fffffbfff20612df R12: 000650757bb12572
+R13: ffff88806fbe7b18 R14: dffffc0000000000 R15: 1ffff920005d4f18
+FS:  0000000000000000(0000) GS:ffff888125393000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000f540c000 CR3: 0000000064b3a000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 000000000000000e DR6: 00000000ffff0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ drv_link_info_changed+0x505/0x880 net/mac80211/driver-ops.c:-1
+ ieee80211_offchannel_return+0x375/0x500 net/mac80211/offchannel.c:160
+ __ieee80211_scan_completed+0x75a/0xb40 net/mac80211/scan.c:519
+ cfg80211_wiphy_work+0x2cf/0x460 net/wireless/core.c:513
+ process_one_work kernel/workqueue.c:3302 [inline]
+ process_scheduled_works+0xb5d/0x1860 kernel/workqueue.c:3385
+ worker_thread+0xa53/0xfc0 kernel/workqueue.c:3466
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:mac80211_hwsim_link_info_changed+0x476/0xfc0 drivers/net/wireless/virtual/mac80211_hwsim.c:2734
+Code: 3c 06 00 49 89 c6 48 8b 7c 24 20 74 0a e8 42 72 26 fb 48 8b 7c 24 20 48 8b 0f 89 ce 4c 89 e0 48 c1 e8 20 74 60 4c 89 e0 31 d2 <48> f7 f6 eb 5d e8 30 37 bb fa 4c 8b 74 24 20 49 8d 7e 10 e8 a2 e4
+RSP: 0000:ffffc90002ea7860 EFLAGS: 00010246
+RAX: 000650757bb12572 RBX: 0000000000000200 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88806fbe7b98
+RBP: ffffc90002ea7958 R08: ffffffff903096f7 R09: 1ffffffff20612de
+R10: dffffc0000000000 R11: fffffbfff20612df R12: 000650757bb12572
+R13: ffff88806fbe7b18 R14: dffffc0000000000 R15: 1ffff920005d4f18
+FS:  0000000000000000(0000) GS:ffff888125393000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000f7487a54 CR3: 00000000608c4000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 000000000000000e DR6: 00000000ffff0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess), 3 bytes skipped:
+   0:	49 89 c6             	mov    %rax,%r14
+   3:	48 8b 7c 24 20       	mov    0x20(%rsp),%rdi
+   8:	74 0a                	je     0x14
+   a:	e8 42 72 26 fb       	call   0xfb267251
+   f:	48 8b 7c 24 20       	mov    0x20(%rsp),%rdi
+  14:	48 8b 0f             	mov    (%rdi),%rcx
+  17:	89 ce                	mov    %ecx,%esi
+  19:	4c 89 e0             	mov    %r12,%rax
+  1c:	48 c1 e8 20          	shr    $0x20,%rax
+  20:	74 60                	je     0x82
+  22:	4c 89 e0             	mov    %r12,%rax
+  25:	31 d2                	xor    %edx,%edx
+* 27:	48 f7 f6             	div    %rsi <-- trapping instruction
+  2a:	eb 5d                	jmp    0x89
+  2c:	e8 30 37 bb fa       	call   0xfabb3761
+  31:	4c 8b 74 24 20       	mov    0x20(%rsp),%r14
+  36:	49 8d 7e 10          	lea    0x10(%r14),%rdi
+  3a:	e8                   	.byte 0xe8
+  3b:	a2                   	.byte 0xa2
+  3c:	e4                   	.byte 0xe4
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
