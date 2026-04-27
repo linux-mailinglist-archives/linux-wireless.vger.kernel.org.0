@@ -1,333 +1,236 @@
-Return-Path: <linux-wireless+bounces-35399-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35400-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBNADXi272mFEAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35399-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 21:18:16 +0200
+	id KJTLHem472kbEQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35400-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 21:28:41 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D6C4792EF
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 21:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 269F947944E
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 21:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08BC93013A7B
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 19:17:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61449303FACE
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2026 19:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B893E959C;
-	Mon, 27 Apr 2026 19:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80453EF658;
+	Mon, 27 Apr 2026 19:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V2x4Dmtb"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YPchTHpL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010069.outbound.protection.outlook.com [52.101.201.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF4E3D6CD9
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 19:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A023E92A0;
+	Mon, 27 Apr 2026 19:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777317442; cv=pass; b=LIf3nwd3maOpsuIxCPWrwGv7X5lnxE1aiEGdGghEpqbqmOOAD4xvP9gXCsGYXi5id9rKLYO5FN5awUcxIm05aIYvviOO8Se0nvH4Zy6th/KOQyfBcVbvz1eC6DRYXc/lC7q1NEwGyD0f8yj1jxkqOu6CxBJzgUCWOta13CbBeIU=
+	t=1777317591; cv=fail; b=tH6yuCJbrB/omk9PJIL34WJcrsRDVjNHxx46cokL5tXSyBllBDzxZS+1X6QDODQTemV6Sd8/NswWmUjjNwKlXU0KGZA9UPEtuVvWB1KVpDEjpj64/q47+gT+fH12dfp92xU0YBBaj2NXDaKePigT7kr822LZHI42fK5iqySP3SI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777317442; c=relaxed/simple;
-	bh=3F8lak3aibVvF3EpcEo1ul2OoM98TrAYOLetRf4hJFc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BL99fgfedB3eD9rry3hmn99bqEpgMFGuD9yxZTiDSSpbpWxbtQts19UUpLfJQTApgro/DeJGTFCE5DDYxplRd8Blc+TsUy62lrJnPvQ3Ph9crTIVFFDdFrU8IzQbATU6QhGmQOj2FU8S2mi03NWs+KlbvKRgMJp3qP2hCsaeE0U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V2x4Dmtb; arc=pass smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-678adefbd26so5414503a12.3
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2026 12:17:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777317438; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EXpsXO4v9O/erMsjG4pUazu6wfpfvoVSthYYHST7TPhVwcD5n7rux5VslVgfnr27k/
-         VIdAy+gNVs4nfAywdx7aoh0Bqt5uentXCkz2oxGBOrx+rkYYmUegK3y6MUUq832oOH8J
-         8Q0LtjaQIl7I5134ETr6MXMiqFxk+B15c58DCSn3liTe/Ixj06+ycY93U59utIHW1sz6
-         l44vnAZZmP2IEoaa8IAALExPUoGGqOMjXnMW2pkqVDqKHa9WDWtYVCiIv0ds6tWf0RuQ
-         +x17EoeA/9falwNJAISNEkiExW+3gTERh5AHJJPxP+iHJ/puSQyA5a0GRKUX4mxSZ/8J
-         N30A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QEwJ0lK1FRVhZ82nSuKWtqBlS4HOBMbpzPCG8GR79rM=;
-        fh=II0xfuARQvd3KjSllQsukef48XrN7z9SZIVLVXGZ5B4=;
-        b=MWExSDIlf5KxkpaEyn2akRqfbWwyRAq2C7FS5hxXzVPYzNDlR0DGdJK3qPw/E5l+kD
-         t5TEJGt7dv5NVLlkMApfPrtQaIXBEHcsQnOBiFweWdWcIyNUS9rbci3m4DiB6h+b7/xM
-         mV8K6+zugJ1tu4CmXteiVappA1GePjevM5xW1JXgvv1og2r5Mz0v6GK5HHGRFqrh5YYd
-         KRvZfDJD5DgQHAYOOfcgUbPzHeuODTUjs7+2kjRMX/G/4uA/GSFheFq9hFD6oNvbkEEE
-         UsRkmEe9rmwOQrAzgo5ZnxG61RuOleTJ+tujbnTgnKQ4nMyHgwnuaVoE2XPu66N5D3pi
-         DQ4w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777317438; x=1777922238; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QEwJ0lK1FRVhZ82nSuKWtqBlS4HOBMbpzPCG8GR79rM=;
-        b=V2x4DmtbUzEE6LipAMjIX10MJTDrcljW6jvVo+CtOCDnDHw06yacCIt1gQXlH4ng6K
-         QILbneEbrakuY3JU2xUg052kUBzNj9/FNPavgQMUulKu1O9NLF8cD2eDZJDwBxcXk98v
-         dx8W3WOzqXZQFmd6zwnZbxB7S8wv7eyLKaWgSwN7AiLnV9Q55A0+TMlxD5HwbP7/W++v
-         XyL/E88xGCapUqB9/BvBAWt8SeENjKXhqWdSwTNAQHijE1YqmMcDe9MhD4l7sIB+QH23
-         +XXpHvjInKudmh3az68Rcvd++VJO6BhmgPgR1wgFBbQjTY/hOERGiFvchkvFEyC57Mgb
-         mR+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777317438; x=1777922238;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QEwJ0lK1FRVhZ82nSuKWtqBlS4HOBMbpzPCG8GR79rM=;
-        b=FmdZfYIChlv/ibrP4BhDYknX0oYd3m9FTi6YfxqdzCSDkWptUV2rLsfI7xKDk77MOK
-         6XLIhM8qWQapeyf8GZ62DvShdRItkwksqij3mGYWCx6KoCU5+UDBPnIRmKW6MMaPFG5k
-         FowmxFYWmDb584U+7JkjnuPPNjwJ5irbFwcmPUxzrBUaqlsUq62RaLJOdbLkwy/V3wpe
-         Zq+YlZMSCLVC6HI/OkO4amH5BfvDJNiDUW9me52S50j8pUOWQ/uW70GIsxTbzbSPz8zt
-         WOzK1akpYZWqT42IrXytO5WemiwyuYAxUGSsSTnUb4x4ViSZep7Vef/+xVtOIooLdOHD
-         OwUw==
-X-Forwarded-Encrypted: i=1; AFNElJ8DP1zB91PvaytAok+vMivzZaaEQJbU0tzpTuHumqlZ/yOpKzrc0FvLPu8ekL8+YiQgrnjcd9gZVDAk1McRyg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxI8ERX+JzUnvyRwe06BEYZyY4UERWZUyr8JChQ0EiWtT68Eegy
-	7E60aNaSHVdG9y3/iwd1wOVNEBOlG4cGL5L2GpVQTQr2dKAZaF+8QcNqjTNsy06NriKxlu27Cch
-	gTMfmEH8xKsx+5AomTLgSNmcEttB2Ebc=
-X-Gm-Gg: AeBDieu9z+2LBVP192LrvPb7HAlOHvP3j1s8pBrnA9c8Oo8xRZZNgakujQJ9a9jJ1/h
-	9QpCarFnfHgNyJzH3MI7LKPjVSKakHjr3u/QILU4uyGxBUG8ve/Uw+2cuZoSAHw3DiP0bi/YmrF
-	R64Oy67OfRdjO24DOybW3pUnVTL6D4osSpxv1dzQBXrsx4sMiJNdOmLEq/cmolA6GDiSjwWzhm6
-	zJvSflaJ248sFpbZWBD8KgMzMOq3W9PM5zWe+nzDXyGhyqgx15Q1kKE5Ry/uKdRA0KSxsjznG9G
-	8j1rad9WYtkYuBcekkImDxZXCeRKw47EmuvN1BJpstqTogTpbwQfIUpfTdBjjASBcQFygtzETci
-	sertHi/UaJfBhun2/zjlrTvFMiRzDwvpX4OdYtoTcN1ZpDcwM
-X-Received: by 2002:a17:907:9453:b0:ba4:73da:c with SMTP id
- a640c23a62f3a-bb80530197fmr4956166b.47.1777317437558; Mon, 27 Apr 2026
- 12:17:17 -0700 (PDT)
+	s=arc-20240116; t=1777317591; c=relaxed/simple;
+	bh=QZFzIQdZ3YBkWl+pry9Vul/3AcxOOWxKfKh1ZrhYsFw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=uWc2Xus6gOAmT4Sm+7Thk/qLIGdcXfbCdX+C1ZeugXjwZdOkngjVFbezg23rsBNtJqFT8tryFNoYb+rlzGKqyvL5AsXo3h+GH0bXbWEqJFV/6rSeMHICIQdvvo91R9uNUFjTBfuaCJP9G7P6ZUd5/H+UHbxH9mt6VUsiO4ROIFw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YPchTHpL reason="signature verification failed"; arc=fail smtp.client-ip=52.101.201.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DVhEHbKse9FapnN2cz2aJUX+HTxcItqfquBUQFwLCiP5WPrtNQiNPTnGI4MIon3AgmkAQl5HhYuSQnuQt8IDeRYhgInyB/AOQdBwrpUiHITV3f694UVLHuUrOiv9b2cfG6r3+auR6MSVkkcLuQ4Y+tF/rhfDNeBCXess0F+F/TkXrV+dz92vsSLlL5tn1Ynl2fbpcNoIAef0KBxuv6gcdjE4t82LvHJAaDNASNUKyKFm7x4T0BsLAz0/sYnIg36y560VeNc7zOL4T4Ud5AI185ZovsKb5e37aJIb1I3/TkqG0ULl2gwnmAIb6WWT/tvMtVulTJ6c/93Ndgr0CuF4fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/kehAw/qIO6D93HVE5am8hZKsLTTbdaFhcjGhCC5rQk=;
+ b=barriPy2JoAhTOU2YWoiBczra9jgxyFIS6Vn5fMeLmZuoQbamS7hXIudelNBWOJlYCTT4fz6sLrJvnhUdW9BOtoGyJggKAsOzpYbdXTAoZYuiChGWVjjK4zj5T6ViLKFtxvsysAksVjZEfM7DJVmWiyYI9e45cpEy9i20IgZjrl32t2DE427qEOO5vlB9eYx56Yl/nXGgL4VLYapDOlIgCcuJftQuYsdND79AhJHc1YvPlUNuHXQ+n3CfukGLrY/uuf3W2l/Yujue6iK9C39RkCuvxgHmU04+3GeYVYQvrsxPBRvQZHz5V/LPu92hWZsyj93vuK0RwQezDTTJlGlNw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/kehAw/qIO6D93HVE5am8hZKsLTTbdaFhcjGhCC5rQk=;
+ b=YPchTHpLT9QyaGFbz/V/HaxoYwml60CPwBCohwTGccSxQF5xp4aCWy87+9L75FNFxG+fxrmiBfrijK9S2U71MhRFySlXZXPcGWovjvdfkNvvp25q1PAB1mr+HmzjdR2xRedKx7NR5nzOddAsQnNEGyggXH0WqDfgUQo8MCzVvhQJIRQ9THI7KbDluLzImajEqpi/FOh1jFu/Gzsx5Px0K5iD8tBWuFPua2hJduhxINK682Oc8hT1rNV3ppOrrAFmrK5A2egSfIVt/1zbLX+OPjABfYsc675DnlpFoxG5tXvBSDdEGGHoW1lpS7Myqc3PGBqojvAzWyzSfMH/AHuVBg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16)
+ by CY3PR12MB9678.namprd12.prod.outlook.com (2603:10b6:930:101::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.12; Mon, 27 Apr
+ 2026 19:19:39 +0000
+Received: from CY8PR12MB8300.namprd12.prod.outlook.com
+ ([fe80::ce75:8187:3ac3:c5de]) by CY8PR12MB8300.namprd12.prod.outlook.com
+ ([fe80::ce75:8187:3ac3:c5de%3]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
+ 19:19:39 +0000
+Date: Mon, 27 Apr 2026 15:19:36 -0400
+From: Yury Norov <ynorov@nvidia.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
+	Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+	dmaengine@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+	linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-mm@kvack.org,
+	linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
+Message-ID: <ae-2yLWSGnfeTvh1@yury>
+References: <cover.1777306795.git.chleroy@kernel.org>
+ <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
+ <ae-j2_QirCySZD02@yury>
+ <63a4d0f6-0eb3-48cd-9f98-bf7b223b2606@kernel.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <63a4d0f6-0eb3-48cd-9f98-bf7b223b2606@kernel.org>
+X-ClientProxiedBy: BLAPR03CA0031.namprd03.prod.outlook.com
+ (2603:10b6:208:32d::6) To CY8PR12MB8300.namprd12.prod.outlook.com
+ (2603:10b6:930:7d::16)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260427034427.881389-1-rosenp@gmail.com> <20260427034427.881389-4-rosenp@gmail.com>
- <20260427-hug-baboon-d60bb8fdfa51@spud>
-In-Reply-To: <20260427-hug-baboon-d60bb8fdfa51@spud>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Mon, 27 Apr 2026 12:17:04 -0700
-X-Gm-Features: AVHnY4JrG3QUmyGyx0Gb_wy-V9vfTB4Vk66pF2gttwnm5MDKbGyJbNEFCLFWIDI
-Message-ID: <CAKxU2N-mhrhjDEc2MnOvDZC5PpMzj=vRgMemNK4qSQzNQ-=BPQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] wifi: mt76: remove mt76_get_of_data_from_mtd
-To: Conor Dooley <conor@kernel.org>
-Cc: devicetree@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"open list:MEDIATEK MT76 WIRELESS LAN DRIVER" <linux-wireless@vger.kernel.org>, 
-	"open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-arm-kernel@lists.infradead.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>, 
-	"open list:MIPS" <linux-mips@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 94D6C4792EF
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR12MB8300:EE_|CY3PR12MB9678:EE_
+X-MS-Office365-Filtering-Correlation-Id: c742778b-fa9b-44f9-51b3-08dea491ed5d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	shZ1u0REr6wDLRLPyyEdIcR7HSBaBLI9bkPwQrtikVH2FtKB2JxFo1blEpu1cI3NJl8SRfbhAKLYIVGCuUMzmvBnxw+FuY/TWQm+eDHPdr22c6rn1JUuzt3nYVxIbuuLTVTRWsq+e+SUyzbYaEEs9iTQJbTfJiMIr1QcnMs7HyZ09hEYM4Y4qXo4Dqr7nhb5zdIkE0fiLtqy/Zisxe0E2yKOvU4HmFcaFOiR7Aq6DJwZzTG+BR733bn5EC71RBcWvOANFgJM2znxVv/dOuQYufc4G4dUHtXgydGyNUS+fngDUjvyX5MkmDLhOMznjZqXlYqgeu5lMUCpG8HffRFHlOXhBcrYgf+ovMMHaCYbFuDT66UC1VDFvb4rz83Hk2Lnl6vSSpPTv8rxpTSPpx4cdJdNmo0Mn5Mi/3x46vGIX9O5JTAct5Ir50zvkKLZe7/Kp1qSfB39msc26Lzz7LD733/o3mPnQXyAGLurnHZgJ5jM3FLt650dCqhJcZlPMaXHq6+AjtwJTG6y+mX2JUt2792E1LYJn7KjXVu8/xqn/7IpL5oC4IQQUgghT221wDL3lrh3xCL1IuqFJShNLP2kKxWwgFBJzIfU0pnScVGPPU9YsipaXNEtmsuD5RQqnXWq43E7KCoMjIP73gvWalBIhJkqTKcX6NUkX7ot5JSYyuNq1A833Lgaec6O0C//zC9ubi3rz9CymfV/P6BrxHZIhmtQ5semmv0gY0c6C5hRnqM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8300.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?T8W6XhUXwT9dv5kuj9kFMa1Pc+caKbpom/7i+ro0mWLEx/WsMCf7Uv+yLt?=
+ =?iso-8859-1?Q?gAyF6hz8bSDC1bWR1FTEkkI65aMUmC7iyx7e6/xfNDa3Fqe7SiC1j77stI?=
+ =?iso-8859-1?Q?LrG24onu6fFBF8DWYf6MIuIlkdgrbAd2EiVVGxnofgYgHTQhw5136OB8qO?=
+ =?iso-8859-1?Q?CnzmyDAwjI33B1CjeJnNBBJkCzrksdZvxIcHW0uIe6E0PZHf537RLpIETM?=
+ =?iso-8859-1?Q?s+cBh7JvH4GNxPjZACl7GXrozKiFqXSwFIzHaU9Zd4jSjyzd0KPJpIHPKf?=
+ =?iso-8859-1?Q?8h/I+NEnIGw4Lnjlmh9mYKMwd0qS2GIHpVaOy1bH5MCjGmjowRaXjQ79be?=
+ =?iso-8859-1?Q?jGRLn+Oomml9guRrsFzOQ7DbbOlFy8pqy9R+D9ZnGVn8wEgYSRw75xgmry?=
+ =?iso-8859-1?Q?2ACNauoKPoUzpnRmfqW3sPF9JS/tvt2t2PPNVTZJLV6vuJBnNmyWilx/9u?=
+ =?iso-8859-1?Q?SrlYzTyazTZWIZbUeG2soKD4eNVokxFYJQoBgEsGEV2njiNv6HUubbi0pF?=
+ =?iso-8859-1?Q?Vqp14jJqz5sSfFayA6WZcArZ+USE5vjanuqRtNQfdkNsKj0R4pEMc493o0?=
+ =?iso-8859-1?Q?NCXeFBw/ojt6aGg8g6h7tHIHZcYuw7ohhZUMOvg3ffhlK9u79tO7oKpC3u?=
+ =?iso-8859-1?Q?wiPOjYl6brt/0GKfD3iRNbrV6TRbbioNcjuDS7LZqgWxe6vMy7NndX+woA?=
+ =?iso-8859-1?Q?uRdr5blnc5k3cJWHAzCHgJ5WF2JWGApq1uyN9UWgvqNw083HRffGg6P5ix?=
+ =?iso-8859-1?Q?cG24FhHq+kscs9DSxIC+Aujk67lP+3jqbld/7XWy8cKm8qvSHwRqhWblhk?=
+ =?iso-8859-1?Q?2okcTJPbDNOuvYYOSGTPE+vmAEFbkK1UHPvMUY9ATxehETfXPZs7yjb3aq?=
+ =?iso-8859-1?Q?w3hdW7xtyg3/7tDEWG7+fOEy9FFT/gEBpvxotxF6oySrb2HXqp/fqrjhbq?=
+ =?iso-8859-1?Q?+CZwwgugua6eO4UL5qPz9hiIFbMAfNaGqRykJRiykn+pL+t1YHattmJ89+?=
+ =?iso-8859-1?Q?zMjzPmRht5LCTdelXGsXfPIKJiFXD3T9vDfN3lmWj4Ts7wlilxpgiOpMaL?=
+ =?iso-8859-1?Q?p7E3h5ji6cLKiR9cNwmzJTNOGBx5zvsEG4+PNQXhBDGMpxOVgOl+EeAV9d?=
+ =?iso-8859-1?Q?2s3FGgMUZVYPP9cV5NsthWoh6iNfuRN7NkopE2q3yxMVZlN6dt7HdpbO1Y?=
+ =?iso-8859-1?Q?0fu25Ra/a3yy2XE0TtJPHqDm12P85rdM3CgNkUv822FbtecXgL64Qkuo5p?=
+ =?iso-8859-1?Q?bU1qrEG+LOPjM/jMvPhwRHc5ppnq/gaXYhFU5FH0G3K5d4d0ixkRyi37Wv?=
+ =?iso-8859-1?Q?QFsdW6QrX/SrL3DsdbaAqQnL1rxC0EQG3YCsMUYGRLPRYd9ad5xPY0x+Rq?=
+ =?iso-8859-1?Q?pi74xEsiw9PrH9X+6nGn6Y3d7VcpnV6Av8/J+hqLZLRt6W9B7IXfCaTIAV?=
+ =?iso-8859-1?Q?8KCRWdm4ExrgkDdvMYea8olZLEBlvgMeZtCVoxZ810+OR4vZKUUMbB37Ha?=
+ =?iso-8859-1?Q?gwC1ZTD4TpsWjGJNj5Ry/c9tX5RkpCdCKRBegPQIrqdU1WX41QArSPS9fb?=
+ =?iso-8859-1?Q?xDEYSUCFDpxyHnIl4mh4MFcUHTIxFSpQAIB1z5w75JzJg+rYBE9y0Z0uA2?=
+ =?iso-8859-1?Q?hx89znOZLi5+tvIZldfaxSE1Dk0RrYzkMtqQuuDh61/I6rksRc2kt6jYug?=
+ =?iso-8859-1?Q?hvJgjrdcklYMst8NSnorft9iaeq41s5Z02Our3r1w88xwCK/RrRq8aIdSR?=
+ =?iso-8859-1?Q?gpisMPDwKRAml31b4cWNg8wz9VF+bGszAp5BtKObcEufaeReWjiKmyXNV3?=
+ =?iso-8859-1?Q?qbI4euw+Po2OswoqiwgiX8xIAeThU5sXrO2JRJTwu37/nYFGOi2s?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c742778b-fa9b-44f9-51b3-08dea491ed5d
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8300.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 19:19:39.4410
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 40kb2lLpGDA1U6OK1K/FxB8sAmuWJ+U6w4mJNOJ6ae5Bq52M+Y3YVxXlUqHMzI9liQk01DjxzLicYADua7DWLw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9678
+X-Rspamd-Queue-Id: 269F947944E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [5.54 / 15.00];
+	DMARC_POLICY_REJECT(2.00)[nvidia.com : SPF not aligned (relaxed),reject];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_DKIM_REJECT(1.00)[Nvidia.com:s=selector2];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35399-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-35400-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[49];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	GREYLIST(0.00)[pass,body];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[Nvidia.com:-];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[ynorov@nvidia.com,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,nbd.name,kernel.org,mediatek.com,sipsolutions.net,gmail.com,collabora.com,alpha.franken.de,lists.infradead.org];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,gmail.com,linutronix.de,vger.kernel.org,lists.infradead.org,lists.ozlabs.org,lists.freedesktop.org,lists.linux.dev,lists.xenproject.org,googlegroups.com,kvack.org,alsa-project.org,lists.linux-m68k.org];
+	NEURAL_HAM(-0.00)[-0.749];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Mon, Apr 27, 2026 at 12:09=E2=80=AFPM Conor Dooley <conor@kernel.org> wr=
-ote:
+On Mon, Apr 27, 2026 at 08:20:38PM +0200, Christophe Leroy (CS GROUP) wrote:
+> 
+> 
+> Le 27/04/2026 à 19:58, Yury Norov a écrit :
+> > On Mon, Apr 27, 2026 at 07:13:48PM +0200, Christophe Leroy (CS GROUP) wrote:
+> > > At the time being, x86 and arm64 are missing unsafe_copy_from_user().
+> > 
+> > No, they don't. They (should) rely on a generic implementation from
+> > linux/uaccess.h, like every other arch, except for  PPC and RISCV.
+> > 
+> > But they #define arch_unsafe_get_user, and the unsafe_copy_from_user()
+> > becomes undefined conditionally on that.
+> > 
+> > So please, fix that bug instead of introducing another arch flavor.
+> > We'd always choose generic version, unless there's strong evidence
+> > that arch one is better.
+> 
+> But they both implement the exact same unsafe_copy_to_user(). What is the
+> difference here ?
 >
-> On Sun, Apr 26, 2026 at 08:44:27PM -0700, Rosen Penev wrote:
-> > mt76_get_of_data_from_mtd has been replaced by
-> > mt76_get_of_data_from_nvmem in all usages.
->
-> All users in the kernel, but what about other sources of devicetrees?
-> Those built into firmware etc? Are there none of those too?
-I'm actively removing those: https://github.com/openwrt/openwrt/pull/23113
+> Should that function become generic too ?
 
-Anyway, irrelevant here.
->
-> Conor.
->
-> >
-> > Remove it to prevent people from using the deprecated
-> > mediatek,mtd-eeprom binding.
-> >
-> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> > ---
-> >  drivers/net/wireless/mediatek/mt76/eeprom.c   | 87 -------------------
-> >  drivers/net/wireless/mediatek/mt76/mt76.h     |  1 -
-> >  .../wireless/mediatek/mt76/mt7915/eeprom.c    |  4 -
-> >  3 files changed, 92 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/=
-wireless/mediatek/mt76/eeprom.c
-> > index afdb73661866..092804323d81 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-> > @@ -35,89 +35,6 @@ static int mt76_get_of_eeprom_data(struct mt76_dev *=
-dev, void *eep, int len)
-> >       return 0;
-> >  }
-> >
-> > -int mt76_get_of_data_from_mtd(struct mt76_dev *dev, void *eep, int off=
-set, int len)
-> > -{
-> > -#ifdef CONFIG_MTD
-> > -     struct device_node *np =3D dev->dev->of_node;
-> > -     struct mtd_info *mtd;
-> > -     const __be32 *list;
-> > -     const char *part;
-> > -     phandle phandle;
-> > -     size_t retlen;
-> > -     int size;
-> > -     int ret;
-> > -
-> > -     list =3D of_get_property(np, "mediatek,mtd-eeprom", &size);
-> > -     if (!list)
-> > -             return -ENOENT;
-> > -
-> > -     phandle =3D be32_to_cpup(list++);
-> > -     if (!phandle)
-> > -             return -ENOENT;
-> > -
-> > -     np =3D of_find_node_by_phandle(phandle);
-> > -     if (!np)
-> > -             return -EINVAL;
-> > -
-> > -     part =3D of_get_property(np, "label", NULL);
-> > -     if (!part)
-> > -             part =3D np->name;
-> > -
-> > -     mtd =3D get_mtd_device_nm(part);
-> > -     if (IS_ERR(mtd)) {
-> > -             ret =3D  PTR_ERR(mtd);
-> > -             goto out_put_node;
-> > -     }
-> > -
-> > -     if (size <=3D sizeof(*list)) {
-> > -             ret =3D -EINVAL;
-> > -             goto out_put_node;
-> > -     }
-> > -
-> > -     offset +=3D be32_to_cpup(list);
-> > -     ret =3D mtd_read(mtd, offset, len, &retlen, eep);
-> > -     put_mtd_device(mtd);
-> > -     if (mtd_is_bitflip(ret))
-> > -             ret =3D 0;
-> > -     if (ret) {
-> > -             dev_err(dev->dev, "reading EEPROM from mtd %s failed: %i\=
-n",
-> > -                     part, ret);
-> > -             goto out_put_node;
-> > -     }
-> > -
-> > -     if (retlen < len) {
-> > -             ret =3D -EINVAL;
-> > -             goto out_put_node;
-> > -     }
-> > -
-> > -     if (of_property_read_bool(dev->dev->of_node, "big-endian")) {
-> > -             u8 *data =3D (u8 *)eep;
-> > -             int i;
-> > -
-> > -             /* convert eeprom data in Little Endian */
-> > -             for (i =3D 0; i < round_down(len, 2); i +=3D 2)
-> > -                     put_unaligned_le16(get_unaligned_be16(&data[i]),
-> > -                                        &data[i]);
-> > -     }
-> > -
-> > -#ifdef CONFIG_NL80211_TESTMODE
-> > -     dev->test_mtd.name =3D devm_kstrdup(dev->dev, part, GFP_KERNEL);
-> > -     if (!dev->test_mtd.name) {
-> > -             ret =3D -ENOMEM;
-> > -             goto out_put_node;
-> > -     }
-> > -     dev->test_mtd.offset =3D offset;
-> > -#endif
-> > -
-> > -out_put_node:
-> > -     of_node_put(np);
-> > -     return ret;
-> > -#else
-> > -     return -ENOENT;
-> > -#endif
-> > -}
-> > -EXPORT_SYMBOL_GPL(mt76_get_of_data_from_mtd);
-> > -
-> >  int mt76_get_of_data_from_nvmem(struct mt76_dev *dev, void *eep,
-> >                               const char *cell_name, int len)
-> >  {
-> > @@ -163,10 +80,6 @@ static int mt76_get_of_eeprom(struct mt76_dev *dev,=
- void *eep, int len)
-> >       if (!ret)
-> >               return 0;
-> >
-> > -     ret =3D mt76_get_of_data_from_mtd(dev, eep, 0, len);
-> > -     if (!ret)
-> > -             return 0;
-> > -
-> >       return mt76_get_of_data_from_nvmem(dev, eep, "eeprom", len);
-> >  }
-> >
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wi=
-reless/mediatek/mt76/mt76.h
-> > index 527bef97e122..f447ecac664d 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt76.h
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> > @@ -1339,7 +1339,6 @@ void mt76_seq_puts_array(struct seq_file *file, c=
-onst char *str,
-> >
-> >  int mt76_eeprom_init(struct mt76_dev *dev, int len);
-> >  int mt76_eeprom_override(struct mt76_phy *phy);
-> > -int mt76_get_of_data_from_mtd(struct mt76_dev *dev, void *eep, int off=
-set, int len);
-> >  int mt76_get_of_data_from_nvmem(struct mt76_dev *dev, void *eep,
-> >                               const char *cell_name, int len);
-> >
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drive=
-rs/net/wireless/mediatek/mt76/mt7915/eeprom.c
-> > index eb92cbf1a284..c24e1276700b 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-> > @@ -29,10 +29,6 @@ static int mt7915_eeprom_load_precal(struct mt7915_d=
-ev *dev)
-> >
-> >       offs =3D is_mt7915(&dev->mt76) ? MT_EE_PRECAL : MT_EE_PRECAL_V2;
-> >
-> > -     ret =3D mt76_get_of_data_from_mtd(mdev, dev->cal, offs, size);
-> > -     if (!ret)
-> > -             return ret;
-> > -
-> >       ret =3D mt76_get_of_data_from_nvmem(mdev, dev->cal, "precal", siz=
-e);
-> >       if (!ret)
-> >               return ret;
-> > --
-> > 2.54.0
-> >
+This is what Linus said when added x86 implementation for copy_from_user()
+in c512c69187197:
+
+  Note that it only does this [arch version] for the copying _to_ user space,
+  and we still don't have a unsafe version of copy_from_user().
+  
+  That's partly because we have no current users of it, but also partly
+  because the copy_from_user() case is slightly different and cannot
+  efficiently be implemented in terms of a unsafe_get_user() loop (because
+  gcc can't do asm goto with outputs).
+
+In the unsafe_copy_to_user case, arch versions were justified. Just as
+said, I'm not against arch version for unsafe_copy_from_user(), but it
+should be explained very well.
 
