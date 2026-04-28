@@ -1,135 +1,127 @@
-Return-Path: <linux-wireless+bounces-35479-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35481-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGgGE26H8GnuUQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35479-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 12:09:50 +0200
+	id aHAnFE6I8GnuUQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35481-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 12:13:34 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3CF482456
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 12:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C41F34825D3
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 12:13:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6648C3288847
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 09:28:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 203F0309B1CC
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 09:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41C7390222;
-	Tue, 28 Apr 2026 09:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06ADA3A7581;
+	Tue, 28 Apr 2026 09:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="M66l9P5Q"
+	dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b="gzjK+8xV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5815839BFEE
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 09:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C473434D929
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 09:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777368447; cv=none; b=YpKeOc+F/SK28M0Jxj8DowNo9vju1mlIfJVroisg0cOlcf+2NwWXg8H72J76329VaJ+v4lYcNyW0QDcnpWzOuP68u4L7jvtvqfRWHoO4QywnKocKa33USfHdHOwqI79/2/Gcb7+0t1quLTB8g+PDSIH55z0X6rVKqQgIjdI4LnM=
+	t=1777368712; cv=none; b=NnCYUuYXwqUYCHQjM2C/Cxdcsrb5lz+Ngz/ezuTXloDCVeFsdpCrlhM65GGZ3LNBLXEIjICB/g5aT+ibuqKdvCwGyTy1NLJL5u09AIwsWmDdvUIp440cDhWE6oHzfVoL8+XSH8Ad+MGCHVNxXShuY/ldsUB5DgtkZaaRsFjwsEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777368447; c=relaxed/simple;
-	bh=FzpdefMChzKrxAyys0rudWSRMVkpcIaKdmJYVulS3Rk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1hKRyqQmlAEi07SUe5KAkF5rcV/vqC9y2d2MErdF8z7tyVQ+L24iEGt/hjoEOaX4kwKF9M52YeOY/VgPcUTCb82ntjVFltS6AXyPd6iyWhX8Slr+i1lDeTgp6r0Gr0tbq0Tg0xLCkQLk/JukJmQSrMHQWaLlz1A7mxsh2KoPyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=M66l9P5Q; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=pnmzRitckKIAMEntcgv0lFhtwJ+e6bEVKyivXPq3DT4=;
-	t=1777368446; x=1778578046; b=M66l9P5QK3EnUHxU9guo0LGtpR4KTa5MNkmOV8XEcsRPldF
-	HW1eoyWVmsPyS83c5o8QL/B9doLV2ou47RDlh9JJiDhniFUWWs/DKbZYpX9sjjfjPgEzJ7F+Ner4M
-	RWy7PxsxA9OMfm0RDNtQg0/mppQNWq41qcPvhM9byg7fxRNfDlz1PNTwgAo+Jt3AGRnXZsU7d0z5f
-	tVysaL+5PLRBvDqGdwta02JkgeyHKAFvNFw9fWGqVr7SKGXHND+E4YuTChrHip4e4ihDoDwNZPJSd
-	UGPWO6e71meP6SDDnJ+KZJ3l5u9c97DP4v7OsdmwP5lLJeQU397W3D6SYxjVRQmQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wHeix-0000000HLwg-2orK;
-	Tue, 28 Apr 2026 11:27:24 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 14/14] wifi: mac80211: check AP using NPCA has NPCA capability
-Date: Tue, 28 Apr 2026 11:25:42 +0200
-Message-ID: <20260428112708.5c354a838ba5.I8e957767cdbc1b224a22dde0a9c343c3a5851783@changeid>
+	s=arc-20240116; t=1777368712; c=relaxed/simple;
+	bh=89u0Nra6HcCxiHVgf4hs8s+ke9wMHVAsbmNUydTt9Qg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XmfemwCvw+dFavVG23vjBHf22b4wOMps48o4nT2mDKD64FJJr/owPDxF5QXm6xlkU2JqpvMpQVcN5WphWpKEP9bPzJQdJOwPhhtjUPcKHDPdAYSwXHSDplIrDghjSbrowQQkaS7va+h3oj/oA7+aNUVSzra64dd+9VZgV8gGmMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me; spf=pass smtp.mailfrom=0upti.me; dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b=gzjK+8xV; arc=none smtp.client-ip=178.154.239.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0upti.me
+Received: from mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net [IPv6:2a02:6b8:c11:2281:0:640:870e:0])
+	by forward102b.mail.yandex.net (Yandex) with ESMTPS id BD1DBC00CD;
+	Tue, 28 Apr 2026 12:31:37 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net (smtp) with ESMTPSA id QVVcnN0Q9uQ0-UGZNg7xp;
+	Tue, 28 Apr 2026 12:31:36 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0upti.me; s=mail;
+	t=1777368696; bh=QanN1hvymPQkfK3pxfbCHGaN5t55yhRf2F2DTrO0/LA=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=gzjK+8xVMeZy8EWm1TVOI4sgG1FUDod6bB4Nn6zqLu1Hx4XspfuPMQq9yZp7Bp77O
+	 AU0iuVe1+KQXdc82+12mLUr1TEXe60/Vi6Xp9haTqOE4iZT3MD80HOEF2VzuCsxrvf
+	 IWg1Bcq6Jyz3bHt0Hz2mhh0hHJr/2b6DRLD7nvsM=
+Authentication-Results: mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net; dkim=pass header.i=@0upti.me
+From: K900 <me@0upti.me>
+To: wens@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	wireless-regdb@lists.infradead.org,
+	K900 <me@0upti.me>,
+	Louis Kotze <loukot@gmail.com>
+Subject: [PATCH v2] wireless-regdb: allow 320MHz channel width for Russia
+Date: Tue, 28 Apr 2026 12:30:53 +0300
+Message-ID: <20260428093058.3672383-1-me@0upti.me>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260428092708.71740-16-johannes@sipsolutions.net>
-References: <20260428092708.71740-16-johannes@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DC3CF482456
+X-Rspamd-Queue-Id: C41F34825D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[0upti.me,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_DKIM_ALLOW(-0.20)[0upti.me:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,0upti.me,gmail.com];
+	TAGGED_FROM(0.00)[bounces-35481-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35479-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	FROM_NEQ_ENVFROM(0.00)[me@0upti.me,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[0upti.me:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:dkim,intel.com:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,0upti.me:email,0upti.me:dkim,0upti.me:mid]
 
-From: Johannes Berg <johannes.berg@intel.com>
+The entry was added before 11be (and thus 320MHz) was a thing,
+and there is no actual legal restriction on channel width, so
+update it to allow 320MHz channels.
 
-If an AP advertises NPCA, it should also advertise NPCA
-capability. Validate this.
+Signed-off-by: K900 <me@0upti.me>
+Reviewed-by: Louis Kotze <loukot@gmail.com>
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/mlme.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index e23575745c38..f84bf50cb353 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -397,8 +397,19 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
- 		const struct ieee80211_sta_uhr_cap *uhr_cap;
- 		const struct ieee80211_uhr_npca_info *npca;
+Rebased from v1: https://lore.kernel.org/wireless-regdb/20250708-russia-320-v1-1-53641e8dd417@0upti.me/T/#u
+---
+ db.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/db.txt b/db.txt
+index c310b7f..de53874 100644
+--- a/db.txt
++++ b/db.txt
+@@ -1772,7 +1772,7 @@ country RU:
+ 	(2400 - 2483.5 @ 40), (100mW)
+ 	(5150 - 5350 @ 160), (100 mW), NO-OUTDOOR
+ 	(5650 - 5850 @ 160), (200 mW), NO-OUTDOOR
+-	(5925 - 6425 @ 160), (200 mW), NO-OUTDOOR
++	(5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
+ 	# 60 GHz band channels 1-4, ref: Changes to NLA 124_Order №129_22042015.pdf
+ 	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
  
-+		/* frames other than beacons carry UHR capability too */
-+		if (!elems->uhr_cap)
-+			return IEEE80211_CONN_MODE_EHT;
-+
- 		npca = ieee80211_uhr_npca_info(uhr_oper);
- 
-+		if (npca && !(elems->uhr_cap->mac.mac_cap[0] &
-+				IEEE80211_UHR_MAC_CAP0_NPCA_SUPP)) {
-+			sdata_info(sdata,
-+				   "AP without UHR NPCA capability uses it, disabling UHR\n");
-+			return IEEE80211_CONN_MODE_EHT;
-+		}
-+
- 		/* DBE is not considered yet, so this works */
- 		if (!cfg80211_chandef_npca_valid(sdata->local->hw.wiphy,
- 						 &npca_chandef, npca) ||
 -- 
 2.53.0
 
