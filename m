@@ -1,60 +1,60 @@
-Return-Path: <linux-wireless+bounces-35469-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35471-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APnrBs9/8GlSUAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35469-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 11:37:19 +0200
+	id 8E1HJdB/8GlSUAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35471-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 11:37:20 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F83481973
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 11:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 579A4481980
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 11:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B5D44305FC9E
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 09:27:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B5ABA30BCEF2
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 09:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC98389E18;
-	Tue, 28 Apr 2026 09:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59646394474;
+	Tue, 28 Apr 2026 09:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="O2ggMfnK"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="B3SHp9/r"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C8138B7C3
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 09:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0A638657A
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 09:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777368441; cv=none; b=kjzQvDDcQFp84c1f/VuWyeiFtNIUbdkCUlplXZuvyA6uyE+Z8hpWXxDoUKztmhqxvyhPvOTcJ3wV5IR3GjI1QxjXqGWgBNhAg6q6CSaZoKeUBiJpFXFe4MPMRnzV6WLRFBspVPH164rbZh2SEaJ255k3DE7nX4+sWtl4rY5rAp8=
+	t=1777368442; cv=none; b=rhnqhv+m5GlRhasAyjK5GNdrNPD0uI+tmiR1HDuavorFs8qwB73YjXbf8z5IMYLPAtTE3iD6dlfpXOT3HsEE5uJgiHrYryYgjkK5HzRb9onphlYze/uNncvmlewoOtjBOSm7Pnzkyc8JB0Z6ib2gZiQHYMVdQfwlMnBcN9k7Q5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777368441; c=relaxed/simple;
-	bh=a1r06fBOvQxwEZ3UQW8S799Hii7eQGSEwKebl7YjxJM=;
+	s=arc-20240116; t=1777368442; c=relaxed/simple;
+	bh=Xj39PN4ew4vu5LyqwFL8qG24/XPfX/H3FWqnrYhPnFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iet9JwkQCWzNr/bKoM29Hg/66ORPcw4z7ISUTS44cI07zNHp1xZkZ1AqD5vD3Q8Uy9rzYzS6j+HjsuTjrZpTGE9T7jTS0Fa+zGxNg5/lKAYAGVmfoLxRkip0wNlMbbSciaO9Q4aUh9k9Mnyl7/e3vv0hNnbk1ByKQ4lON6CMOzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=O2ggMfnK; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=P5MhQPnnxbNbb+YuQTO1PJYm3CFH3SYE9FneGYiXbL4Zqr3nk+BRlEldAIhqXaKK47KkxIVooz3TlT6oVLvV1b6vMOA2zqu5DpV1QBAbJf6EV8m3aZqzywyU4AOh8n6+7EDmVRKGla6EgryAZey5Dk1fxPC8JMetC4g3zFZtkIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=B3SHp9/r; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=NuBoAFPIQ6P9hUCItx0SjOwtURQ2+XkRFWiFN5ONUKU=;
-	t=1777368439; x=1778578039; b=O2ggMfnKo8IwGJRJVezWcKp+P7QMID5c+NZeA1ng4leUcpO
-	MYg+3bLtWt9pkBTgMujPWY/4yLwehiJFE0cwxc15j3l5dthIJzpoBP/kmt6n8sW40M52hadR9C+p3
-	JraqMMNV/CMVCK7tVjmZEw+dNsvkczBcmqI3Ik6aARjnHuq7Cw9xMMnrmIZMbk2/oMVneYuKwC8Hh
-	5mO0FYBSuHWI/qNWxMGcHTzpJClRRrvaKHhgPNVwI5LaYN1Tz4uwjuRlMZEiXtMgcVOR3YLAbQKvG
-	CyZd+FbH4aCecA+cWTOp5q390Hg2zijYESbE6JsmnNfO5ZbiBaFCSps09YGb8oPg==;
+	Resent-Cc:Resent-Message-ID; bh=G6cUAu2qyJTDPS3K8UU+zuGmhuNV03Vqqugz5lwV+yM=;
+	t=1777368440; x=1778578040; b=B3SHp9/rGQqaDkC5Jqek3Jo0VFbN1WqKTFHGuNMU1cVh9Tl
+	TnpYedVhoezkFzm35y1rY76uI3FYZjbpbVRGFgYaDWsGEvm8GPFllNDMMjSaDKRimgThVA49XEZrL
+	zCUSkBv9bv/E4UqDDSKV9nPq7wgDab2iisbIcrAoyNFSkBEiaeCHD8Aj6hZ1MtOCzeVXLtr70c5s3
+	WepPPBYFPRJtqMRJ+WGnWZDwc3pRPp6PK3Q0r300eTOdhxN7x1K91G/LBg8vOO8Q5C5yXvMgPXGv1
+	dHl57nNjeMoryBVUJ2/oINvb44NWCYDuuXW2E+E1cYb+4tZXnRXPAGswbDnWn88g==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1wHeiq-0000000HLwg-20UV;
+	id 1wHeir-0000000HLwg-1pzX;
 	Tue, 28 Apr 2026 11:27:17 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 05/14] wifi: cfg80211: add helper for parsing NPCA to chandef
-Date: Tue, 28 Apr 2026 11:25:33 +0200
-Message-ID: <20260428112708.5cdc4e69a306.I95d396ac671da438f340b1afb735ebfe33164894@changeid>
+Subject: [PATCH wireless-next 06/14] wifi: mac80211: use NPCA in chandef for validation
+Date: Tue, 28 Apr 2026 11:25:34 +0200
+Message-ID: <20260428112708.418e86f9444c.I54430f3018e39a26b4252d71000d7bb7dd744331@changeid>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260428092708.71740-16-johannes@sipsolutions.net>
 References: <20260428092708.71740-16-johannes@sipsolutions.net>
@@ -65,7 +65,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B2F83481973
+X-Rspamd-Queue-Id: 579A4481980
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35469-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35471-lists,linux-wireless=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -98,97 +98,70 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Add a cfg80211_chandef_add_npca() helper function that takes an
-existing chandef without NPCA and sets the NPCA information from
-the format used in UHR operation and UHR Parameters Update.
+Put the NPCA parameters into a chandef when parsing data from
+the AP to validate them using the cfg80211 code, rather than
+implementing that in mac80211 directly.
+
+Note that the parameters are not applied yet, since mac80211
+doesn't yet have NPCA support.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/cfg80211.h | 13 ++++++++++++
- net/wireless/chan.c    | 46 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 59 insertions(+)
+ net/mac80211/mlme.c | 37 +++----------------------------------
+ 1 file changed, 3 insertions(+), 34 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 9e66490dab4f..2546567792e2 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1150,6 +1150,19 @@ int cfg80211_chandef_primary(const struct cfg80211_chan_def *chandef,
- 			     enum nl80211_chan_width primary_chan_width,
- 			     u16 *punctured);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 0bf51774c155..247871c10615 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -402,44 +402,13 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
+ 				       false)) {
+ 		struct cfg80211_chan_def npca_chandef = *chandef;
+ 		const struct ieee80211_uhr_npca_info *npca;
+-		const __le16 *dis_subch_bmap;
+-		u16 punct = chandef->punctured, npca_punct;
  
-+/**
-+ * cfg80211_chandef_add_npca - parse and add NPCA information to chandef
-+ * @wiphy: the wiphy this will be used for, for channel pointer lookup
-+ * @chandef: the chandef to modify, must be a valid chandef without NPCA
-+ * @npca: the NPCA information, can be %NULL
-+ *
-+ * Returns: 0 if the NPCA information was added and the resulting
-+ *	chandef is valid, a negative error code on errors
-+ */
-+int cfg80211_chandef_add_npca(struct wiphy *wiphy,
-+			      struct cfg80211_chan_def *chandef,
-+			      const struct ieee80211_uhr_npca_info *npca);
-+
- /**
-  * nl80211_send_chandef - sends the channel definition.
-  * @msg: the msg to send channel definition
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index fae71f2d13ed..70fec444955e 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -556,6 +556,52 @@ int cfg80211_chandef_primary(const struct cfg80211_chan_def *c,
- }
- EXPORT_SYMBOL(cfg80211_chandef_primary);
+ 		npca = ieee80211_uhr_npca_info(uhr_oper);
+-		if (npca) {
+-			int width = cfg80211_chandef_get_width(chandef);
+-			u8 offs = le32_get_bits(npca->params,
+-						IEEE80211_UHR_NPCA_PARAMS_PRIMARY_CHAN_OFFS);
+-			u32 cf1 = chandef->center_freq1;
+-			bool pri_upper, npca_upper;
  
-+int cfg80211_chandef_add_npca(struct wiphy *wiphy,
-+			      struct cfg80211_chan_def *chandef,
-+			      const struct ieee80211_uhr_npca_info *npca)
-+{
-+	struct cfg80211_chan_def new_chandef = *chandef;
-+	u32 width, npca_freq;
-+	u8 offs;
-+
-+	if (chandef->npca_chan || chandef->npca_punctured)
-+		return -EINVAL;
-+
-+	if (WARN_ON(!cfg80211_chandef_valid(chandef)))
-+		return -EINVAL;
-+
-+	if (!npca)
-+		return 0;
-+
-+	switch (chandef->width) {
-+	case NL80211_CHAN_WIDTH_80:
-+	case NL80211_CHAN_WIDTH_160:
-+	case NL80211_CHAN_WIDTH_320:
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	offs = le32_get_bits(npca->params,
-+			     IEEE80211_UHR_NPCA_PARAMS_PRIMARY_CHAN_OFFS);
-+
-+	width = cfg80211_chandef_get_width(chandef);
-+	npca_freq = chandef->center_freq1 - width / 2 + 10 + 20 * offs;
-+	new_chandef.npca_chan = ieee80211_get_channel(wiphy, npca_freq);
-+	if (!new_chandef.npca_chan)
-+		return -EINVAL;
-+
-+	if (npca->params & cpu_to_le32(IEEE80211_UHR_NPCA_PARAMS_DIS_SUBCH_BMAP_PRES))
-+		new_chandef.npca_punctured = le16_to_cpu(npca->dis_subch_bmap[0]);
-+
-+	if (!cfg80211_chandef_valid(&new_chandef))
-+		return -EINVAL;
-+
-+	*chandef = new_chandef;
-+	return 0;
-+}
-+EXPORT_SYMBOL(cfg80211_chandef_add_npca);
-+
- static const struct cfg80211_chan_def *
- check_chandef_primary_compat(const struct cfg80211_chan_def *c1,
- 			     const struct cfg80211_chan_def *c2,
+-			pri_upper = chandef->chan->center_freq > cf1;
+-			npca_upper = 20 * offs >= width / 2;
+-
+-			if (20 * offs >= cfg80211_chandef_get_width(chandef) ||
+-			    pri_upper == npca_upper) {
+-				sdata_info(sdata,
+-					   "AP UHR NPCA primary channel invalid, disabling UHR\n");
+-				return IEEE80211_CONN_MODE_EHT;
+-			}
+-		}
+-
+-		dis_subch_bmap = ieee80211_uhr_npca_dis_subch_bitmap(uhr_oper);
+-
+-		if (dis_subch_bmap) {
+-			npca_punct = get_unaligned_le16(dis_subch_bmap);
+-			npca_chandef.punctured = npca_punct;
+-		}
+-
+-		/*
+-		 * must be a valid puncturing pattern for this channel as
+-		 * well as puncturing all subchannels that are already in
+-		 * the disabled subchannel bitmap on the primary channel
+-		 */
+-		if (!cfg80211_chandef_valid(&npca_chandef) ||
+-		    ((punct & npca_punct) != punct)) {
++		if (cfg80211_chandef_add_npca(sdata->local->hw.wiphy,
++					      &npca_chandef, npca)) {
+ 			sdata_info(sdata,
+-				   "AP UHR NPCA disabled subchannel bitmap invalid, disabling UHR\n");
++				   "AP UHR NPCA settings invalid, disabling UHR\n");
+ 			return IEEE80211_CONN_MODE_EHT;
+ 		}
+ 	}
 -- 
 2.53.0
 
