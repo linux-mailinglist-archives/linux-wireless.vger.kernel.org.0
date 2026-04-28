@@ -1,63 +1,106 @@
-Return-Path: <linux-wireless+bounces-35458-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35459-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIFMKo+C8Gn6UAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35458-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 11:49:03 +0200
+	id GJHvFjd98GlSUAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35459-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 11:26:15 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF02B481D49
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 11:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 800DE4815D4
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 11:26:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5639D30AFE7A
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 09:10:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5961530C940B
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 09:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4F33DA7ED;
-	Tue, 28 Apr 2026 09:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD423DEAC0;
+	Tue, 28 Apr 2026 09:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="DpRrim9q"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pwHbdrg+";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="BMBgqNzE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6303DC4D1
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 09:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACF03D8916
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 09:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777367368; cv=none; b=ox0mNL2aEGUmy1JGuVX63Veth3Pu1s03WXqDZUZ8mrUm5IxU73c1HQfhn8iU0NqYzkBdYoQGA16Acn7UrxUpo6K0q1ks/YR/zcinuP/SrzrvE0jEQHbfBW1/vdxEbxMq+4t4lJ52xyj8CA0lXp8lKk70ZkHhuE23yCXIscD0fSc=
+	t=1777367382; cv=none; b=aBMtbA8b0z/YgVIhrIiGBe4r9P2w7tVFhT6ISrN/sxF5HT9PJyT1Nixxyobt0ElwAkVUTg6SJkCFzzsx2Z/NB0mgVYmr0KCskjS9sHnLrIYxzXSBYhAo+9BSh6JaCqsQid4OqHRvCX+I785K5fX9v2O98kiO7wA6QfcajpFgIt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777367368; c=relaxed/simple;
-	bh=j3oJ2MitbT6lA0NYcTciUZ+2LhvnU/kRpLwHOFQpEw4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FxgrVt6U4BUMFJdLf+oXPdbmjJzlRbQSM/z6MBw2cGiviHx/AX4eKWCR2RVlb+Sj9sZ/4FiIimMxCX9T5ma8k+UwaHEUzNXswPJ7tzHHj3TKYav2ut2oC6c7yfp9DJvTdmKNJfLoH5vSmFwrrJUW3zSy0+bYpqUU327F8P7A1do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=DpRrim9q; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=RR4l2o76C713bB/VYAIisHjTOsvYzKXJHO9MVh+nPyc=;
-	t=1777367367; x=1778576967; b=DpRrim9qpzqCXh4j0z+Tpq/i0HmYjs5QcspFoUw/OsDJkFe
-	QtBE0urtuj55Ggh8qWr628ys8D/VYKcdSziboRLbiQnvAEQWeeBDFUj6ZsLaOS+CKLPQU1DsmVDJk
-	I4fTBpWW66ignueRNy5uTmx2oOZqlY218T1trIAYWJdgrOC4Q9OcBt5YjJb11vGF7T/4CaEuxN3xb
-	cdSLdDbck1bZFrFLof5A6oFr5SKt7dzxgpKzk3tO2rYsqriE+nZbOSnuNjIHKh/2vHYFKotbIjbEJ
-	ztmOaG1Lp861kaUezoxFyBicX04RQ/US/2oM2iYjV2mpPpGtyKV/HNZ0bnM8cHkQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wHeRX-0000000HGH2-29Lf;
-	Tue, 28 Apr 2026 11:09:24 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 5/5] wifi: mac80211: mlme: advertise driver's extended MLD capa/ops
-Date: Tue, 28 Apr 2026 11:07:00 +0200
-Message-ID: <20260428110915.8ddef945c81e.I43e05e424ff50a1d88b18161b843c1125c3e07fb@changeid>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260428090915.54717-7-johannes@sipsolutions.net>
-References: <20260428090915.54717-7-johannes@sipsolutions.net>
+	s=arc-20240116; t=1777367382; c=relaxed/simple;
+	bh=gfQW70BGaDeiOYc7g09LwaMgZyLe2NEVnRdgVOxOCh0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XjKgpeBK0UEze/Rvnth4LGaDOFk8iNLz9wVGBB34HVGPYZKoPr4wVP9QYIdgJuReCqvpfxKeT7fk/zhlGsqLxpEXpa8MnPY2GxOtHN00BiKoH/5hDkPGKKNB/o9NOWtcmrjkFk5V44XQjI8u5Wp1Mm/qGRk3ANIC7fWIiJXIAaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pwHbdrg+; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=BMBgqNzE; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63S7vq6o1744983
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 09:09:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=rejcaKQbQVspiMP7zsAnb21Ngjza9DO2Llg
+	iZ+FNct0=; b=pwHbdrg+tMwyh9A9T8NCLZtZuM0bKI36BFe57YIpEQ/y/VPE2e4
+	GyC6Af51oCjsmtoZy2fkta7/u+pwDg4YRDkFUhvbSQ5QaCvdvl+qQlG6qeclJ13m
+	bmZmoWbcYZnrYOZ1Fu1H6g/FCFgrVem++o9yWGDEV2SCigJMyY3TqfCDn6nuEEN6
+	icb5rvX4Yu/CZCEhqIN8EZUeza+HE7aC527IaZicp1d2miJflkKHohDY54ynuDmZ
+	IYgBHrwCI7sT4zF3TfcaOhUeZe6gy8Qljip496vJfRSIox/Gs8GYtE29ImtpfuKN
+	kCJBkRy9h+7J6Fuo+yt7FQNnctJLHuvsqRw==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dtryd88xr-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 09:09:40 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-35daf3d3030so11844628a91.1
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 02:09:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1777367379; x=1777972179; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rejcaKQbQVspiMP7zsAnb21Ngjza9DO2LlgiZ+FNct0=;
+        b=BMBgqNzEd4cVL7dN10yxreb9zudxduFusPGxufT8cwPB3i5bfwMctJe3asomyHW7uV
+         F9HZdedsvTRyUbERsMN9tGM+OsmHpm+hcT3wRJN0rlnLk1oUg+cZHhVxtA2p6QgZwHqK
+         sW1VH/L8jsmmDuxk/+HpKwg/DJSjk95HH7ckSHa8u8nPISkzFEgzPZ+qWeAl4UQIl8uj
+         jm9yUrmIJlHDZMV7kkplXjpbMraN6Jrdi/8jNP61AULzyq30BH4jGHZtrHW8lq1ZYsO0
+         gvFQTIR0pVyQHcXZiVeaGwuKj77d0Uy/7KLTkwWXdnd+wGAX9KL+t5TKPTdwNAy/DZ1Z
+         k/mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777367379; x=1777972179;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rejcaKQbQVspiMP7zsAnb21Ngjza9DO2LlgiZ+FNct0=;
+        b=C2Uj6VDQ00snyqoZ0tIU+lUiaZyuF/ZeHlXYN/f/bGCXXHRoj4OInWy+yQX/jOpVlt
+         MJDahN9PU0SLYR85155u6uTlL+Ra1ZpbIi5xV1L01H6OjPQIz90BetoNvUjTu5TyWpFW
+         C1hMZ6sguXI8jP2zEo29WLKzjdKWV0OuzCifETgyQc3JN50V7y7NcPWV3meNDPO5bVrW
+         mRTyRnXuaXBIfDn31k0N2HlRQafGU/uyuvZdw1TfO4eaVRFUN5XPKatTTh/CqesERoDa
+         s3DJb/jcLlBk+iRg2BLDfYnL+HZo0MvyBJqcxtc56FAbzX2M06R76yRaKK1MRY4qz34+
+         LgmA==
+X-Gm-Message-State: AOJu0YzWQiFP9S1UyedoFQ86088bQey40AnZVyX8/yG200CpFgPd5cRj
+	3Uqg/aXk//brgb8uBPN0c45u2GOn0pp2BtpIKAx9Gn2YYfPkHyU4IVTfmjhplqxBdBgJtb9JcmT
+	z2zMzq+OGwUMSw/wyYgksSJYEwZaGRZcddyDkioRq9Vf0Q0mtRNLo7E4hYFwEpsmnfPOvUg==
+X-Gm-Gg: AeBDieuJQZnNOeFFM9E8FgMZFkBPGYbcxWcU/7taiYWapHWIo8Cn8tPo5CigzwbV8m3
+	zRKlQuLjQ9WmNptmSEKVa68S6UpyJgBOmpOIkR3/8uhQXczdSVpi/sBxJgn13vmkfl9IB2NPcK+
+	mBF33phbZgtz7GWQw5LndQUxNf8sAlM26/FPpu6+c1BYl4bXuf8Q7wXvNDeO3BR1LfbVH+95XF3
+	Pqqzobo092W/1OVN+soVU2s6HTikzxd71PeT8S5zH2KsaAXFeeBgCKQ7/D2VExtUljeQnsZ3YL1
+	huUUT0dEeReXoFEkbbGgl+N7pbXg/SYWXxzVon4l/Vx7ZqkQ8W9nAVE9y/dKdstqNL9pzQK4YYP
+	f2lPG247Ql2LG/zexD7LxRK/D/A6fYZS1ultXPOUJwWmbGqR7eIVNUdTLpJdOXjmo/y6IuFQROw
+	ppKHfmnpc+dfR3iEDyVMcr0bd5FiorkHTTDnH+0pRQQCBliLr5NeMJmQ==
+X-Received: by 2002:a17:90a:da87:b0:35c:30a8:32a with SMTP id 98e67ed59e1d1-36491fbc576mr2408571a91.9.1777367379463;
+        Tue, 28 Apr 2026 02:09:39 -0700 (PDT)
+X-Received: by 2002:a17:90a:da87:b0:35c:30a8:32a with SMTP id 98e67ed59e1d1-36491fbc576mr2408542a91.9.1777367378925;
+        Tue, 28 Apr 2026 02:09:38 -0700 (PDT)
+Received: from hu-sarishar-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7fc33d5a53sm1898177a12.22.2026.04.28.02.09.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 02:09:38 -0700 (PDT)
+From: Sarika Sharma <sarika.sharma@oss.qualcomm.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+        Sarika Sharma <sarika.sharma@oss.qualcomm.com>
+Subject: [PATCH wireless-next 0/2] wifi: cfg80211/mac80211: optimize station info handling
+Date: Tue, 28 Apr 2026 14:39:17 +0530
+Message-Id: <20260428090919.1798601-1-sarika.sharma@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,128 +108,83 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AF02B481D49
+X-Proofpoint-GUID: 0e6l4Xzw-uCk5I7UBky2Uv_OTfHEJNW5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI4MDA4MSBTYWx0ZWRfX8/7/QRRM0bAn
+ FRuMKixHpb1ynFjW+vHb9BKL3fnPdFWrbqxwew6n+Y/1Vqze01/urCdt1eXxX46XI9bIUvH+jcz
+ sv/ztZBfv5WtGvOlke5DGj2sNFLBEU90RW5QcEXm45TDrf663aYqufVRQGucosTdeFVTqJX4mHK
+ QdCF/hQi2f4uP+aPL3yb4GrZkqAeNBGqqx296Jbmn+U0ZM+Qv7fUxqecxWP7zDElgknYbdeV+7v
+ N/fMTiXCkR5QCS2/0t3x9ECgHCNd0EXRSnJc9pfPlclvIs56ixzfKJpCD+ug9m95zvV7H2Ps+++
+ AMyE7/Vk05WIfx8kzEYKCMvITL78gwwz5TWwr9cI+ySp291+KrflFlikR/2bTQePS1FLOA2dtoy
+ UN/ftP9DsjpBgkcBOlX69XOFW9+Fp4uDhSluKNI3HIkc0v3C619Q/W9cv071MUnRkizOpz7ReOa
+ HR1SfZ71WyC9cYwTXWQ==
+X-Proofpoint-ORIG-GUID: 0e6l4Xzw-uCk5I7UBky2Uv_OTfHEJNW5
+X-Authority-Analysis: v=2.4 cv=cMnQdFeN c=1 sm=1 tr=0 ts=69f07954 cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=5koZO7XqIq10IgpX1VoA:9
+ a=zZCYzV9kfG8A:10 a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-28_02,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 lowpriorityscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2604280081
+X-Rspamd-Queue-Id: 800DE4815D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35458-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-35459-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,qualcomm.com:dkim];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sarika.sharma@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sipsolutions.net:dkim,intel.com:email]
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-From: Johannes Berg <johannes.berg@intel.com>
+This series improve memory and logic efficiency in cfg80211 and
+mac80211 during NL80211_CMD_GET_STATION. Allocate link_sinfo and
+link tidstats objects only for valid links to reduce memory usage.
+Avoid setting non-MLO applicable fields for MLO stations to
+eliminate redundant operations and simplify the code path.
 
-If the AP has extended MLD capa/ops we may advertise our own
-from userspace. Also add the driver's in this case. This is
-fine since the only one right now from the driver is UHR ML-PM
-and that's only relevant if the AP already has it too.
+Sarika Sharma (2):
+  wifi: cfg80211/mac80211: change memory allocation for link_sinfo
+    structure
+  wifi: cfg80211/mac80211: set only non-MLO-applicable fields for
+    non-MLO stations
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/mlme.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ include/net/cfg80211.h  | 29 ++++++++++++++++---
+ net/mac80211/ethtool.c  |  4 +++
+ net/mac80211/sta_info.c | 63 ++++++++++++++++++++++++-----------------
+ net/wireless/nl80211.c  | 35 ++++-------------------
+ net/wireless/util.c     | 21 ++++++++++++++
+ 5 files changed, 93 insertions(+), 59 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index d24db2c2cde9..9d7afbf3700e 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -9849,7 +9849,9 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_mgd_assoc_data *assoc_data;
- 	const struct element *ssid_elem;
- 	struct ieee80211_vif_cfg *vif_cfg = &sdata->vif.cfg;
-+	const struct wiphy_iftype_ext_capab *ift_ext_capa;
- 	struct ieee80211_link_data *link;
-+	u16 driver_ext_mld_capa_ops = 0;
- 	struct cfg80211_bss *cbss;
- 	bool override, uapsd_supported;
- 	bool match_auth;
-@@ -9888,17 +9890,26 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
- 	else
- 		memcpy(assoc_data->ap_addr, cbss->bssid, ETH_ALEN);
- 
-+	ift_ext_capa = cfg80211_get_iftype_ext_capa(local->hw.wiphy,
-+						    ieee80211_vif_type_p2p(&sdata->vif));
-+	if (ift_ext_capa)
-+		driver_ext_mld_capa_ops = ift_ext_capa->ext_mld_capa_and_ops;
-+
- 	/*
- 	 * Many APs have broken parsing of the extended MLD capa/ops field,
- 	 * dropping (re-)association request frames or replying with association
- 	 * response with a failure status if it's present.
- 	 * Set our value from the userspace request only in strict mode or if
- 	 * the AP also had that field present.
-+	 * For UHR we may want to advertise ML-PM (per driver_ext_mld_capa_ops)
-+	 * but if the AP doesn't have it then it's pointless, and if it does
-+	 * then it has to have the extended MLD capa/ops field.
- 	 */
- 	if (ieee80211_hw_check(&local->hw, STRICT) ||
- 	    ieee80211_mgd_assoc_bss_has_mld_ext_capa_ops(req))
- 		assoc_data->ext_mld_capa_ops =
--			cpu_to_le16(req->ext_mld_capa_ops);
-+			cpu_to_le16(req->ext_mld_capa_ops |
-+				    driver_ext_mld_capa_ops);
- 
- 	if (ifmgd->associated) {
- 		u8 frame_buf[IEEE80211_DEAUTH_FRAME_LEN];
-@@ -10892,11 +10903,13 @@ ieee80211_build_ml_reconf_req(struct ieee80211_sub_if_data *sdata,
- int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
- 				  struct cfg80211_ml_reconf_req *req)
- {
-+	const struct wiphy_iftype_ext_capab *ift_ext_capa;
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_mgd_assoc_data *data = NULL;
- 	struct sta_info *sta;
- 	struct sk_buff *skb;
- 	u16 added_links, new_valid_links;
-+	u16 driver_ext_mld_capa_ops = 0;
- 	int link_id, err;
- 
- 	if (!ieee80211_vif_is_mld(&sdata->vif) ||
-@@ -11054,6 +11067,11 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
- 		}
- 	}
- 
-+	ift_ext_capa = cfg80211_get_iftype_ext_capa(local->hw.wiphy,
-+						    ieee80211_vif_type_p2p(&sdata->vif));
-+	if (ift_ext_capa)
-+		driver_ext_mld_capa_ops = ift_ext_capa->ext_mld_capa_and_ops;
-+
- 	/* Build the SKB before the link removal as the construction of the
- 	 * station info for removed links requires the local address.
- 	 * Invalidate the removed links, so that the transmission of the ML
-@@ -11062,7 +11080,8 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
- 	 * on which the request was received.
- 	 */
- 	skb = ieee80211_build_ml_reconf_req(sdata, data, req->rem_links,
--					    cpu_to_le16(req->ext_mld_capa_ops));
-+					    cpu_to_le16(req->ext_mld_capa_ops |
-+							driver_ext_mld_capa_ops));
- 	if (!skb) {
- 		err = -ENOMEM;
- 		goto err_free;
+
+base-commit: 1f5ffc672165ff851063a5fd044b727ab2517ae3
 -- 
-2.53.0
+2.34.1
 
 
