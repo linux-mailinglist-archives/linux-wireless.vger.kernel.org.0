@@ -1,166 +1,121 @@
-Return-Path: <linux-wireless+bounces-35507-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35508-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPwOEr7r8GmBbAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35507-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 19:17:50 +0200
+	id 8PYoItvt8Gn9bAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35508-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 19:26:51 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98340489C32
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 19:17:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABB3489E9F
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 19:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4693304149D
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 17:12:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45A253007F57
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 17:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE8C33F377;
-	Tue, 28 Apr 2026 17:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8262C33D6F8;
+	Tue, 28 Apr 2026 17:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kJDDRvoT"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="HSGvve7k"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE49A125AA
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 17:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5AC2D73A6
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 17:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777396335; cv=none; b=A5paKhhBrvVP3+CRBgLgA955gzB4iNDQVsJcnjgXev+1gOXl09hqaNNwch7I/dG7aO6nRbgmIctkcRtTEa9f7Gk05Q4VLyAnhR/8S8qNItWafQ5bSsvVTzx/KqnOviVbJZwWFxyX7RcVuPIsTwWtw+R87gsU+KDFWo7RsXj2Kqg=
+	t=1777396718; cv=none; b=Pe7G8hjvZcR7yTAwTwh18skEM7zz2c1zl2zR0X9FHYhBvLILn9SrWyta6uNkWqyDXCWNd5ybn2DRMXS4R3vi1tg561CA3EvWwLcvzs05vq/HYt2BsELYAsLJSImfD5wwJQCZFV7dLAoEx4HaJR9IkezgCc1XubLP/OYn5OAQD7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777396335; c=relaxed/simple;
-	bh=31OmypALgw6Aq6kNGR9mt8YsQuZjcj+PgdNPgtmbOX0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cG5E+5r1qSFoo2As61m75YruBgTv131dhygrM1ykZix6YMKe1jL0gP1Z2dghnjVv3pOIbF7zqPTicrwOqv3oLS9IsFWC+yOkZ+cOBmSk5afNcPWYgnaocAZuPSqU2GEScCPmcuvrRJkOE/9WzTBnHiNQ0HFAgO7I9JEwCWkVxno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kJDDRvoT; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-38e936caafeso119729571fa.2
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 10:12:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777396332; x=1778001132; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VPcsAOQUvm2NFAOixpYW914de8cadeaU2Eu3SiUW0yA=;
-        b=kJDDRvoTYfF+vWyZu5U6Zq/tLwm5enQa1I9UQaH/bboZDlXgdpvUy9+OzHl66cIRTT
-         viz4eDxuiOFzYLuDL1MiW0pOG949Oi6A8Sg3AcWr+c3+e75viNkUEP2M/9nCOUfU4n/j
-         bPDyHMBouJqz5QnlunDXbLTUe0Ox/1zIr7C0ZJUYybDAt8V9a3OFtsIGVSVyemMnDoEL
-         QnoNU7SanjB/Nacfa0w3rn6VDwXpZGbJzOMjjAyuXQyxJCJbzuJfUqFXlGuE27NAR6V/
-         hD3tY9v3VgCBYqR0mZzBjlnbS7MEjX+/mPd7lf1whdCSR/LrKvH6mqcm/y7YMkO3cHYx
-         ERzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777396332; x=1778001132;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VPcsAOQUvm2NFAOixpYW914de8cadeaU2Eu3SiUW0yA=;
-        b=EJktfeZL/MLE/624AxRtEZN+5nquX0ANCgeMU8BDpXboxRTFlqQ6MfoAEq7jllRBas
-         asH2Ufu4C9XuKzXQv8m8LFby7Db83R6mf8my/VTSMvnDzG0d2C4NwTYRWyWuG1Yf9L85
-         WScXwiHs+8MSy+FOj7iVpsjQtSwjzu9W5gZZUHmtRUhgvr/p4xX8U6aszw8+AaPppaZh
-         hL2fFkwb0FOsB5lQO0x8WgmdMpb+4Q+yye66tXXTCG7swDeLNjzD5DbFd7n7MR/H9u64
-         jtI3qQ3ru8K22w3Rjci/zIj8JMaWswAD4gW37sccQCSsCw6Os6UT2oHK0K/e7c4JnbmN
-         EDEg==
-X-Gm-Message-State: AOJu0YyNzocyjtdJBNBx5xLEJ4SJljSa8n70l6VmhL9PQo+OfKDWZLPa
-	sC2JmeSYiMxBHOF56USXBbI3lBTw7h0U8nZMkifY2F+nAm87DvVhsnILFK3iNg==
-X-Gm-Gg: AeBDietpNtf3KUYbT5AKoMdgYT84Nuk8tWntXkmvICyG5uVMM7Ii261qY9zDERpe4ix
-	2CruJdVMR4pMpmmVXbYFI2FBJmvLjiQPf+9ARk5TTxaJllkLjXynoqsNPh8DpYMrRcEVdN4NZKF
-	mATxWdF2k+GLs7kB4FSy1vg4y0jnF7eBvE21sJ9RGyCf/P+xciDa23kUPc/NVgFcSiUmdIl7dBr
-	j6LE++KAFbe5HSlRDas+NVUyt28wtQuICc8uhTz0OZa1Gl6n0c1o1R5Jls4sXsXY1gK4hHuEcZn
-	bgDbyJ2hCC+I3bwhH5MhBNVqk64aX8sFvE3AHJY5jpDxrI04UvZ3xh4jD+gOgvIF1SRrgi0MXdy
-	EFqnSA+aeeAPNvSnbOI6QNsmsjVqsGBaoSCv/p/hUGNWuKC4ZvCeRq8AbJ7NjxLDLRub+tN+trO
-	WWuEnb04EjtxeSthSr6x7xkAtK3KUTh3T5I0nDxPELzWzc8d+GVoCE4or1IvaWzkYBd0TvmLUUp
-	c+aF0XStGd4
-X-Received: by 2002:a05:6512:118c:b0:5a4:6a5:9900 with SMTP id 2adb3069b0e04-5a74662a687mr1854102e87.34.1777396331610;
-        Tue, 28 Apr 2026 10:12:11 -0700 (PDT)
-Received: from Thor.home (nb6bp2luucgh1ubvhqb-1.v6.elisa-laajakaista.fi. [2001:99a:a58:9b00:9119:221d:45f0:de83])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a746408102sm752262e87.70.2026.04.28.10.12.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 10:12:11 -0700 (PDT)
-Date: Tue, 28 Apr 2026 20:12:09 +0300
-From: Maxin John <maxin.john@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
+	s=arc-20240116; t=1777396718; c=relaxed/simple;
+	bh=cCMHaeOZfeVIlgHCixdIf+pkdlAkra7/O8Ey0OifD+o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=G0m3OO1HSuakSui0ijCAAwY/2I5dW5hJ0KNZ0xhs+TEWGVuOp3HHcB8HEn4DBWXeTx4FlT4l+OzTbVPjZAAU8IG7ACNDhtZ2JppwI4Ld89Gf+pQfrm0uDpb/+SpMxTZ223MYKzrqHY78pcVzxdYRtexKNEFgsIhtvX5OPLmTQ18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=HSGvve7k; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=nIl+DSEzd37rA0Lvy34OOfo3qRh/kl30zRIJFIyaIdA=;
+	t=1777396716; x=1778606316; b=HSGvve7kzfcyVDy3AJd+FxYgKiSxXLbWTLKwRNOwu5+uwpL
+	deFQdChs4YHbr0gXlq9xgCuAML3r/nTabpqTUlR0H8y0F+CutpPAblT7OuE1q/vw0WVz51N64cdKJ
+	yrymx4+Ueahth0YCncDRvurROHCTogpjOYGjgj96w6ziNkSN76Arwprh4mXKmUXQZ6QrAKwDU+T3F
+	nyE+E4GRXdr5FWpafqTIlo3LFsUW+c6EwjKy5H09UkZn+GEuFV+l/zte5nNE2BLsi9himK32H/2KF
+	+TI/mpd7qcg94JIKntnCdXFUzqr33N6va8En0CIL0284HvDq1d7jDwlTQox4dPNw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wHm4v-00000000xnQ-0ehW;
+	Tue, 28 Apr 2026 19:18:33 +0200
+Message-ID: <d283177dcb103834969df55290fda3120c000f5c.camel@sipsolutions.net>
 Subject: Re: [PATCH] iw: Makefile: support out-of-tree builds
-Message-ID: <afDqaQc-Vxoz3OEL@Thor.home>
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Maxin John <maxin.john@gmail.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Tue, 28 Apr 2026 19:18:32 +0200
+In-Reply-To: <afDqaQc-Vxoz3OEL@Thor.home> (sfid-20260428_191213_746464_F0BF06E9)
 References: <20260423113154.1070521-1-maxin.john@gmail.com>
- <1672e78507b643f4610265f018ccddcb141ee726.camel@sipsolutions.net>
+	 <1672e78507b643f4610265f018ccddcb141ee726.camel@sipsolutions.net>
+	 <afDqaQc-Vxoz3OEL@Thor.home> (sfid-20260428_191213_746464_F0BF06E9)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1672e78507b643f4610265f018ccddcb141ee726.camel@sipsolutions.net>
-X-Rspamd-Queue-Id: 98340489C32
+X-malware-bazaar: not-scanned
+X-Rspamd-Queue-Id: 1ABB3489E9F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35507-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maxinjohn@gmail.com,linux-wireless@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-35508-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Hi Johannes,
+On Tue, 2026-04-28 at 20:12 +0300, Maxin John wrote:
+>=20
+> > > +CPPFLAGS +=3D -I.
+> >=20
+> > The "-I." seems questionable since you evidently intend to have "."
+> > *not* be the source dir?
+>=20
+> The -I. was intended to ensure that generated files such as
+> nl80211-commands.inc, which are produced in the build directory,
+>  remain discoverable by the compiler. Agree that it doesn't look right
+> and I will update it.=20
 
-Thanks for the review comments.
+Oh, I guess that makes sense, maybe just add a comment? But that's after
+guessing you somehow intend to call 'make -f ../src/Makefile' or
+something, which seems a little odd to me?
 
-On Mon, Apr 27, 2026 at 11:43:54AM +0200, Johannes Berg wrote:
-> On Thu, 2026-04-23 at 14:31 +0300, Maxin John wrote:
-> > Enable out-of-tree builds without modifying the source tree.
-> > Out-of-tree builds are required by build frameworks such as OpenEmbedded.
-> 
-> You should probably say how this is intended to be used, clearly not in
-> the O= way that the kernel has, for example.
-
-I will clarify the intended usage in the next iteration.  
-
-> > +SRCDIR := $(dir $(lastword $(MAKEFILE_LIST)))
-> 
-> That doesn't work if there's whitespace anywhere along the path.
-> 
-> > +CPPFLAGS += -I$(SRCDIR)
-> > +CPPFLAGS += -I.
-> 
-> The "-I." seems questionable since you evidently intend to have "."
-> *not* be the source dir?
-
-The -I. was intended to ensure that generated files such as
-nl80211-commands.inc, which are produced in the build directory,
- remain discoverable by the compiler. Agree that it doesn't look right
-and I will update it. 
-
-> 
-> Overall it might be simpler to actually do it with the kernel-style O=
-> so you just need to change all the outputs, rather than all the inputs?
-
-Got it. I will update it as per your comments and send a v2.
-
-> 
-> johannes
-
-Best Regards,
-Maxin
+johannes
 
