@@ -1,224 +1,300 @@
-Return-Path: <linux-wireless+bounces-35501-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35502-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LoIBCvE8GloYQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35501-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 16:28:59 +0200
+	id sGycI+nX8GkLaQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35502-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 17:53:13 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC371486F79
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 16:28:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A2B488478
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 17:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 307CF30379CF
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 14:26:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 65B2630C479E
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 14:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8823746AF38;
-	Tue, 28 Apr 2026 14:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996A1410D02;
+	Tue, 28 Apr 2026 14:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YeSWX8zH";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PepiAa20"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lxM7K8bj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FEB46AEDF
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 14:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777386222; cv=none; b=nOwkkeLgNTd+7bgc/a2wdr82PvKhENvDdND88gDlJZmIlL/yOMMEapOpIMHuq6cbj5r1kedj20a1GDOexML7CXcV/cUh0TwEOIYSoDy92Um64UaeWZui8aX6cWPrsGfIECy75QuBhLW1rUdk0XUm91MiXk6y1n9EGtkuhnjBuc8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777386222; c=relaxed/simple;
-	bh=2YNsiTXzXOv2m74/OS8Ei+h+JPVuKtHh0iQ7A9nDFxs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gWT1P+zLYZgzNiNpFdGOxzMPVW0dXc2VDEEQWsE9le1sRENdL1Au7xM42sjOY4tFtW9AZhSoLvVlo7PF8guVu8CGEfONc02OkIP//+jQoOxeKkvvUI9r6ihn7i2BbbUOLgkfcRmoTGy2baEx6NksKuO0oxlDTtPnSWkOczinPHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YeSWX8zH; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PepiAa20; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63SDovaG3967993
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 14:23:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	jmxuff+2VurCFsBMSjVHjuC/5j3liv6ORO4lRuTXi1A=; b=YeSWX8zHTFpVjfOZ
-	1TvwasJuLc6tZR6qWVFZ5/D+VqQMOc5XEvweZtcjneATHIW6Qam1L/asVbiW3AFZ
-	26ZbDI5WXvtwX75MY9/gSWNQZ81zHkfIhQT9B0H8JthJVrJ3ECPsvANPZwBTtYC0
-	rfCzp4COezjGHZsbLcyvA+x45yKA151lSZTykgAGtkd+lnzXjjkPRKZwoGH58sx3
-	4nU9qonJVXMWLo1C6xMuYNaY7IrL48Aam/0GCGn/EM/YdT9ZeL3OSeeqxAzhr6XM
-	lq0NmTjSP34soslkXXI37NPJo0HbNZsMFHnRwBoFdVIo5R7Q7h9SiR/oIdiwqz7r
-	wyvXAg==
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dtry0hgsu-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 14:23:35 +0000 (GMT)
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-2d93379001eso27343606eec.1
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 07:23:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F75143C07D
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 14:29:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777386547; cv=pass; b=JqGRbV7ngrh6zxHutAEvAsILFGNPzYZDlfJafnUdnnnSYNABG3iyl7260OFkHlVp/BRFW2xCD3cnhyztjPRT+3xaxrMipiwYHpaKyG1bto57uy1AZusjVRwhdPA5FmQvtY19QTV0vVgWcHrQ2lcpS0c/IKQZhNieNvNA7Md6LXY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777386547; c=relaxed/simple;
+	bh=1IokHuQGzwnJNd6L/gsJWyQg4KcmG22MANGwB/jX7b0=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=p3nBdjwGCV3OLVam3rv/zW5OtoIV1LG9sKiC2M2YaEF2R/Je1pkdoRwWpr+7+dDcVXFunF93Umj0lVic4CZmzqeQeAhxiiuHgy9e8IGwhYZ3y+UntyxVvEPbciRSuygM3WfkXVlfUVgE6mpOVfP11bqBMgg9aWzFSjAwrkfjarA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lxM7K8bj; arc=pass smtp.client-ip=209.85.167.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-479ef2b7979so5367310b6e.3
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 07:29:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777386540; cv=none;
+        d=google.com; s=arc-20240605;
+        b=I9HS/iir/9kTtOcbw8tgCHvDI/6TMCiIX9GMgiCxDHVoRg4xvd5MtHaqb9BMSGsvf9
+         PDgN83/2xCo+y4ryv9Jbx+fg/KHEeLGUunwuox/svgG/KvUWWZ7c3X4zR7Dd4mv9nJuT
+         6AhKkAbRzEkUtXTpmHH3wLQ7ad7FtmiFwtXN4Yjhc454Mo0L1C4lxXjW/j9LJ4OPf+eb
+         PxN/Gc44j/c2u9ka8s5A41fRfyFWbgNIec3NdtLk7tVvI4ZUYvmYH/5IxSJpLR1pSQpP
+         RQ8mWcr4LntjVQU8xe9Rx/ogSzP32hea8B2Qt8ZF6aSF87stcNTmRhBIkr5eDji6ZrB0
+         vLfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=GI1ISceRm3JTWJBds0vnqhvTttrC15nIKzYUYxEJH/A=;
+        fh=qW0phhq3fb3oiohK/Mu9j1KY1zyRNiiioKFc5anvatM=;
+        b=LqDoDfP9gUB+yDOf3VM5QjgnxVp9yUGqQq1C1Te67KhrpSAdRbZwFeWp6sOdf7QDx9
+         wiba7WzAzpww3Wmes4RNxP5qLvSVoQ6v5MfMwvZejwd1ft3b2q4PSM0DPSF3p5EqD5Mk
+         +6mwkvP0H5kvz6hV/v1R3OL6A8n6XlPt5DxxeHZVX7a7Jm/1VUzzIe5NIa8sCEIw/0me
+         SM4beiYjQr/h3v5kaWX9LdZZ2hAG46hp05tAT8+B+UZXv3Zn117NVrJSMpx8ydvaqWKr
+         uP9phYfQVSbskdK+aPrfla9eBKXyW32JQRacTAee2jKQTA0IVJQVKKUcevdXzhvoewpt
+         AMTg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1777386214; x=1777991014; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jmxuff+2VurCFsBMSjVHjuC/5j3liv6ORO4lRuTXi1A=;
-        b=PepiAa20QXOwsbUCYBuK/ape8Nz2spomDgKN6X3hemnWovCIG9/OO48ohMtjrY4TrT
-         HeGuWYc3+NI639YOoa4C7lfNCRXIMAzo9X/Ng2TDM0cwUvv/UriqXMToA+aed98B4F4n
-         GCmCpsuw/T6sQ717FXUAptQDo1K0TpKa4cUmIPAfoXNAeiYnDxlln48ROOpYS8og9GtC
-         jrpqy3fXUknZMNHzM4YZrk/NgVL8et8Rt3LtS1oUzMfAJZQuxq+CRH/BM/z2lDGG8/tS
-         Af0jQceVsBYoEuk6eQ682wR0F3X5QzB+LYFLd9gs8lng/5u6a8+lLgitl/OS7UJuaHaC
-         8GQA==
+        d=gmail.com; s=20251104; t=1777386540; x=1777991340; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GI1ISceRm3JTWJBds0vnqhvTttrC15nIKzYUYxEJH/A=;
+        b=lxM7K8bjFv1DFPisSk9xLtB2HQqDqJUHg8C4dJvUJs+pqhatlE3n2cPip0K7OgAYRb
+         koyTN2b7PNABchR1Cwd7TSxqo4bqNTGP2ESfWC5TRC9sjzf5lcWKK9nx6X02iqzRb0di
+         bE67v2Aemd8mkqUuhIqkpPohkt4KpWeN8zxi2VqACWnT/O2/SuUjQPz4wx2mVqesXZEg
+         oXN/6BBxUdlrFx0W8JFELgSEgAED8S+P5ZMmSPs+g+riv3eo/C1yosq0uao/RAwuKYrI
+         J6nOlw/vqp/WqtQHykGJhDt6e4RHbdqUPkuOjJ3RQzPNDGBm6CEqLh5AvB6DWYTehxae
+         Izpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777386214; x=1777991014;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jmxuff+2VurCFsBMSjVHjuC/5j3liv6ORO4lRuTXi1A=;
-        b=PAfYb+48ZExYjfTwYpPMvLiAWioKYVc4G8qh6RL6ZbRecrCscvtEdeIk18Cr1/Uwi6
-         FhrdHu/UIe5SmPgTem0PMDi2keluKUb7DSwAFl18c134txPJRbxpMmRzaL12iHMX/6ux
-         k7k8wAoJNtYbYkJTw62BBBlIb9fhMXNTdD25dSP5R+DlfVCYARrPH9bHbMdGkRodNLo9
-         oO9q3Wcel423uO8NB3xprAwSZjpAj4/tHqfIOVdqs8Sti4lghGfdRk1IE1YiwQEwpwmu
-         v+al2Slllv+7EWvjnfSyL0O8FUQAGf5UPTCsB/lS3cqoqRxoXpWyghBXGOMoQ5S3Vh68
-         GPpg==
-X-Forwarded-Encrypted: i=1; AFNElJ8UdCtEmSeijOSEE/MZ1LRF/0h6v0X6K92kUOMHNceMiLojQHuuEQcJpLGK2kC9zhGumHPWjkiWMpfXHV2dBg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlijTofPsrlSkzqsw1N5VyZIuDqZPD8+4+yl7/og9GQYRwdBQr
-	EqDnFIy5np2+OIbk/4kQKEiAOvZ4+5YGZ2qiNbVOZT8OsvwyKK8lfr0ruirxJAeNbh4PBTzvnv8
-	3g9L65+uMNLJmiJJ7m/hocM9TF+ZJQHSdRz9VfiHwTqfYvCqystDjJ1qdfiE5h/mD94zNIw==
-X-Gm-Gg: AeBDietxc/QTuqpmPoX7ZanLELDXd7xcfveb5XoIeEmQGmlhyBqE7pvMroyx1PN4kPo
-	wryDwKpZZx7OT/eakRoh7JrOqrPfXVYzIFTwpMFisDhFTnJN28HAHNIwZ8wISPSkW8UaMS5Cawb
-	VIgKjPXdKLZwDOHZnGfAxMt/HNOCbEE3rCD7HrS9bq0mvAcz/GtGLutj4ISKtqzZIviu6WgSszP
-	og9pBQpxqFQ9GJxnxpyyF2BBe2DBaC5n0mcDob9LoqmwKktl6rqT6iSeYzBXlOznHTMp9PzvT2+
-	Jwadf5M3adHB2IQkDQzyxsTA/H6riEWMjZbAC51FcHzun2r0FPEZrRqtzWYnNYWmsOyqRu76hvd
-	vLXottH53RBXXzPadbAAUX7LJycw+SN7BYnGNQGezykXp8ZL6JbPAJnjS442U8UqDNy+Ac+8ruM
-	BlASa9jPLYtFTctlJ0PDgAmUpK
-X-Received: by 2002:a05:7300:a148:b0:2ca:8099:ffc0 with SMTP id 5a478bee46e88-2ed09fcf030mr1547166eec.7.1777386214144;
-        Tue, 28 Apr 2026 07:23:34 -0700 (PDT)
-X-Received: by 2002:a05:7300:a148:b0:2ca:8099:ffc0 with SMTP id 5a478bee46e88-2ed09fcf030mr1547152eec.7.1777386213538;
-        Tue, 28 Apr 2026 07:23:33 -0700 (PDT)
-Received: from [192.168.1.47] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ed0a10678csm2467904eec.24.2026.04.28.07.23.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Apr 2026 07:23:32 -0700 (PDT)
-Message-ID: <17d5b91c-026f-4539-a39a-cfd976860273@oss.qualcomm.com>
-Date: Tue, 28 Apr 2026 07:23:30 -0700
+        d=1e100.net; s=20251104; t=1777386540; x=1777991340;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GI1ISceRm3JTWJBds0vnqhvTttrC15nIKzYUYxEJH/A=;
+        b=k9wXwxl3f99p2Ef5jn7itq9LXTsXvEAu3MCtE+jPvAtzRo4xhZfCv81MtRgXU5pWms
+         eja6Cz/McJ+WODSkWG5dFlWd+vFPPz6AA95sPIDNWc1lzFk8RmUeHcajlBcccgx9IsW6
+         m50byQ8vJbA33Nq9nJ4b0KzKDGGXEMYwDGC+2GDD/HeySSOVrPbcB2g3PqYduJQq53Ih
+         5qtSS0KYAJxf1oUFyJc9HlU+SpkchJAdc5XiLxrq3erNyUbT/XHSvZcCYeVNf/r05vF0
+         QqLSQQOShpoSRfvo9LScY1XzpJ7sjth4UIejLVrtexfcvZY5ZfJWgOknBJo9a7t9qa/+
+         WzVA==
+X-Gm-Message-State: AOJu0Yw1NTvjA4acTHTEniU8ZFHT5k0yXFys6r0H5ZguZOttEfB8FE/+
+	821YKPmQ0jCdRKnPuGLLbDUnQzXg8Hvd5f+Q3r41gIqoGyzdgwG0NDn0iOgLN11j9xGwkuYEp2M
+	2KScLH9Dag9yNoLACFoQOkwPEFqlVWoZv1mJh
+X-Gm-Gg: AeBDieuUoBE1P3HPqB2m9s7iBDUkFYgka94Ye8tvXGcuV8bZsoXemQILf6Uaw8RzfD/
+	FSsGc33aP59SPqzuWbX+/ZBTONfkdu+b2zGvqpg0U83whIq2vjWIHLTpoXVj3N+LBw6YzmZ3OvU
+	jDFSmD3PYP9SecIX8Rg7WoIjJFd5qUfAG12ouvsMzEDQS9yqAYE1U9kkoE/3hwNBurBhBSgDyAC
+	OjpSXD68ao2BNo/2mXpX/syRHWXKfGvYktf+N37GM4B+ecuF694X5kCtuLZcA/zw5iDb4+7ougF
+	OpfwvB7tRVj4cMKYo3BZOXKIR7ywWYphUTisRhz0CmNf7qyStg==
+X-Received: by 2002:a05:6808:1929:b0:46a:ccae:5517 with SMTP id
+ 5614622812f47-47c28f9a01cmr1839391b6e.28.1777386540311; Tue, 28 Apr 2026
+ 07:29:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80211: drop stray 'static' from fast-RX
- rx_result
-To: Catherine <enderaoelyther@gmail.com>, linux-wireless@vger.kernel.org,
-        Felix Fietkau <nbd@nbd.name>
-Cc: johannes@sipsolutions.net, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20260424131435.83212-2-enderaoelyther@gmail.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260424131435.83212-2-enderaoelyther@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=KuJ9H2WN c=1 sm=1 tr=0 ts=69f0c2e7 cx=c_pps
- a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=vluirgkKQf0QiLCMEdgA:9
- a=QEXdDO2ut3YA:10 a=6Ab_bkdmUrQuMsNx7PHu:22
-X-Proofpoint-GUID: pKUL7TOrP1NyP3sjhwbZnnsQWRBdosOs
-X-Proofpoint-ORIG-GUID: pKUL7TOrP1NyP3sjhwbZnnsQWRBdosOs
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI4MDEzNiBTYWx0ZWRfX8hVsfAs9CU39
- 5QdAL32PjnH8uem8V9kzGpgu+0sK7YkwRmVgwfy7ayb8Jcb57Lx8wV/lGVMdExWlDkbETM0+iDd
- eZBmmzL6WZuXVXXLHpw2IkvuuZDgPAnMX9h5I9dqEtwtAI6ox611Rfvsut/9TcYxtySu2LBXOcp
- InMypzeNh5u4n/FmUn7jbKAxrd2o8Pv1wHUGLpE4R/V4COv6dr33cWRbg79d2dGQKwM6DIDXn7I
- 9Np1zngPKONwRkFoeGWkoskU31SA/lIGeCBqEg2lxYK/+QN7FiUq3G8s9TNodCN1cLLKpFpd+c6
- YX1w/dcGc3UDPpXQ6+M7vdvMw1tP9YvbV8OFuY+IlyA3YIjssQuEPyeFA+I4ySJt6ZS1vNU1jv7
- bRqyCDirbKXvbOMwyOKScORFp4+NYpJUf9Z/pehYzkaRWTv0emq0ipiS3XnDyeIog3STaPqIT6b
- BBTNNc2zHGl2WCQpOfQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-28_04,2026-04-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 phishscore=0 bulkscore=0 malwarescore=0 impostorscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604280136
-X-Rspamd-Queue-Id: BC371486F79
+From: Sivanantham Chinnaiyan <sivananth321@gmail.com>
+Date: Tue, 28 Apr 2026 19:58:49 +0530
+X-Gm-Features: AVHnY4IqxISUVwPK2Nbb_0b14q2gSbQDX5Y2n0H3JUi61Vhwzwe2vD8a2CDxMys
+Message-ID: <CAEAGRPaA+Cw3wykVXpFHfs=qwQCv-=VuBpxisg6VjOPGaGfXDw@mail.gmail.com>
+Subject: RTL8922AE: Severe latency spikes (>200ms) during wifi scan triggers
+To: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 77A2B488478
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35501-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,nbd.name];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:dkim,qualcomm.com:email];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-35502-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_ONE(0.00)[1];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sivananth321@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-On 4/24/2026 6:14 AM, Catherine wrote:
-> ieee80211_invoke_fast_rx() is documented as safe for parallel RX, but
-> its per-invocation rx_result is declared static. Concurrent callers then
-> share one instance and can overwrite each other's result between
-> ieee80211_rx_mesh_data() and the switch on res.
-> 
-> That can make a packet that was queued or consumed by
-> ieee80211_rx_mesh_data() fall through into ieee80211_rx_8023(), or make
-> a packet that should continue return as queued.
-> 
-> Make res an automatic variable so each invocation keeps its own result.
-> 
-> Fixes: 3468e1e0c639 ("wifi: mac80211: add mesh fast-rx support")
+Severe latency spikes (200ms+) occur whenever a Wi-Fi scan is
+triggered (e.g., clicking Wi-Fi menu in GUI). This happens
+consistently on both 2.4 GHz and 5 GHz networks, though it is much
+more evident in 2.4GHz channel. I know that latency spikes during
+scans are normal. But I am not sure if 150+ms is considered normal.
 
-@Felix: Any recollection why this was static in your original patch?
+Hardware:
+Chipset: Realtek rtw89_8922ae
+Device: Lenovo Ideapad pro 5
+Firmware version: [from dmesg | grep firmware] 0.35.80.3 (8ef4f0cf)
+Kernel: fedora 6.19.13-200.fc43.x86_64
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Catherine <enderaoelyther@gmail.com>
+Software Stack:
+Network Manager: NetworkManager (iwd backend)
+Distribution: Fedora
+Configuration: default
 
-Is this an identity you commonly use? Note that anonymous contributions are
-not allowed:
+Steps to Reproduce:
+1. Connect to a Wi-Fi network (2.4 GHz or 5 GHz)
+2. Start continuous ping:
+3. ```ping 8.8.8.8```
+4.Open Wi-Fi menu in GUI (triggers scan)
 
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#developer-s-certificate-of-origin-1-1
+Behavior:
+Latency spikes to 200ms+ periodically
+Happens every time a scan is triggered
 
-> ---
->  net/mac80211/rx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-> index 3e5d1c47a..8719db8f3 100644
-> --- a/net/mac80211/rx.c
-> +++ b/net/mac80211/rx.c
-> @@ -4971,7 +4971,7 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
->  	struct sk_buff *skb = rx->skb;
->  	struct ieee80211_hdr *hdr = (void *)skb->data;
->  	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
-> -	static ieee80211_rx_result res;
-> +	ieee80211_rx_result res;
->  	int orig_len = skb->len;
->  	int hdrlen = ieee80211_hdrlen(hdr->frame_control);
->  	int snap_offs = hdrlen;
+Additional Observations:
+Issue reproducible 100% of the time
 
-Actual patch seem reasonable..
+Logs:
+1. sudo dmesg | grep rtw
 
-Reviewed-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+[    7.466016] rtw89_8922ae 0000:63:00.0: loaded firmware
+rtw89/rtw8922a_fw-4.bin
+[    7.466182] rtw89_8922ae 0000:63:00.0: enabling device (0000 -> 0003)
+[    7.473628] rtw89_8922ae 0000:63:00.0: Firmware version 0.35.80.3
+(8ef4f0cf), cmd version 1, type 1
+[    7.473635] rtw89_8922ae 0000:63:00.0: Firmware version 0.35.80.3
+(8ef4f0cf), cmd version 1, type 3
+[    7.491846] rtw89_8922ae 0000:63:00.0: chip rfe_type is 1
+[    7.494234] rtw89_8922ae 0000:63:00.0: Firmware version 0.1.0.0
+(7b393818), cmd version 0, type 64
+[    7.494239] rtw89_8922ae 0000:63:00.0: Firmware element BB version:
+00 49 00 00
+[    7.494244] rtw89_8922ae 0000:63:00.0: Firmware element radio A
+version: 00 33 00 00
+[    7.494252] rtw89_8922ae 0000:63:00.0: Firmware element NCTL
+version: 00 0f 00 00
+[    7.494296] rtw89_8922ae 0000:63:00.0: Firmware element TXPWR
+version: 00 46 00 00
+[    7.494297] rtw89_8922ae 0000:63:00.0: Firmware element TXPWR
+version: 00 46 00 00
+[    7.494297] rtw89_8922ae 0000:63:00.0: Firmware element TXPWR
+version: 00 46 00 00
+[    7.494307] rtw89_8922ae 0000:63:00.0: Firmware element PWR_TRK
+version: 00 33 00 00
+[    7.494313] rtw89_8922ae 0000:63:00.0: Firmware element REGD
+version: 00 49 00 08
+[    7.707799] rtw89_8922ae 0000:63:00.0: rfkill hardware state
+changed to enable
+[    7.717083] rtw89_8922ae 0000:63:00.0 wlp99s0: renamed from wlan0
 
+2. ping -i 0.2 8.8.8.8 while connected to 2.4GHz( scan simulated using
+`watch --interval=3 nmcli dev wifi rescan`)
+)
+
+64 bytes from 8.8.8.8: icmp_seq=24 ttl=118 time=34.9 ms
+64 bytes from 8.8.8.8: icmp_seq=25 ttl=118 time=44.2 ms
+64 bytes from 8.8.8.8: icmp_seq=26 ttl=118 time=6.61 ms
+64 bytes from 8.8.8.8: icmp_seq=27 ttl=118 time=4.51 ms
+64 bytes from 8.8.8.8: icmp_seq=28 ttl=118 time=92.3 ms
+64 bytes from 8.8.8.8: icmp_seq=29 ttl=118 time=82.8 ms
+64 bytes from 8.8.8.8: icmp_seq=30 ttl=118 time=20.4 ms
+64 bytes from 8.8.8.8: icmp_seq=31 ttl=118 time=306 ms
+64 bytes from 8.8.8.8: icmp_seq=32 ttl=118 time=102 ms
+64 bytes from 8.8.8.8: icmp_seq=33 ttl=118 time=59.3 ms
+64 bytes from 8.8.8.8: icmp_seq=34 ttl=118 time=183 ms
+64 bytes from 8.8.8.8: icmp_seq=35 ttl=118 time=10.5 ms
+64 bytes from 8.8.8.8: icmp_seq=36 ttl=118 time=116 ms
+64 bytes from 8.8.8.8: icmp_seq=38 ttl=118 time=112 ms
+64 bytes from 8.8.8.8: icmp_seq=39 ttl=118 time=108 ms
+64 bytes from 8.8.8.8: icmp_seq=40 ttl=118 time=231 ms
+64 bytes from 8.8.8.8: icmp_seq=41 ttl=118 time=24.0 ms
+64 bytes from 8.8.8.8: icmp_seq=42 ttl=118 time=28.2 ms
+64 bytes from 8.8.8.8: icmp_seq=43 ttl=118 time=32.0 ms
+64 bytes from 8.8.8.8: icmp_seq=44 ttl=118 time=140 ms
+64 bytes from 8.8.8.8: icmp_seq=45 ttl=118 time=146 ms
+64 bytes from 8.8.8.8: icmp_seq=46 ttl=118 time=47.6 ms
+64 bytes from 8.8.8.8: icmp_seq=47 ttl=118 time=52.0 ms
+64 bytes from 8.8.8.8: icmp_seq=48 ttl=118 time=57.1 ms
+64 bytes from 8.8.8.8: icmp_seq=49 ttl=118 time=60.9 ms
+64 bytes from 8.8.8.8: icmp_seq=50 ttl=118 time=67.0 ms
+64 bytes from 8.8.8.8: icmp_seq=51 ttl=118 time=3.90 ms
+64 bytes from 8.8.8.8: icmp_seq=52 ttl=118 time=20.3 ms
+64 bytes from 8.8.8.8: icmp_seq=53 ttl=118 time=4.81 ms
+64 bytes from 8.8.8.8: icmp_seq=54 ttl=118 time=87.0 ms
+64 bytes from 8.8.8.8: icmp_seq=55 ttl=118 time=92.9 ms
+64 bytes from 8.8.8.8: icmp_seq=56 ttl=118 time=200 ms
+64 bytes from 8.8.8.8: icmp_seq=57 ttl=118 time=4.52 ms
+64 bytes from 8.8.8.8: icmp_seq=58 ttl=118 time=5.47 ms
+64 bytes from 8.8.8.8: icmp_seq=59 ttl=118 time=98.4 ms
+64 bytes from 8.8.8.8: icmp_seq=61 ttl=118 time=120 ms
+64 bytes from 8.8.8.8: icmp_seq=62 ttl=118 time=133 ms
+64 bytes from 8.8.8.8: icmp_seq=63 ttl=118 time=128 ms
+64 bytes from 8.8.8.8: icmp_seq=64 ttl=118 time=235 ms
+64 bytes from 8.8.8.8: icmp_seq=65 ttl=118 time=30.6 ms
+64 bytes from 8.8.8.8: icmp_seq=66 ttl=118 time=139 ms
+64 bytes from 8.8.8.8: icmp_seq=67 ttl=118 time=245 ms
+64 bytes from 8.8.8.8: icmp_seq=68 ttl=118 time=41.3 ms
+64 bytes from 8.8.8.8: icmp_seq=69 ttl=118 time=138 ms
+64 bytes from 8.8.8.8: icmp_seq=70 ttl=118 time=253 ms
+64 bytes from 8.8.8.8: icmp_seq=71 ttl=118 time=47.8 ms
+64 bytes from 8.8.8.8: icmp_seq=72 ttl=118 time=51.9 ms
+64 bytes from 8.8.8.8: icmp_seq=73 ttl=118 time=56.8 ms
+64 bytes from 8.8.8.8: icmp_seq=74 ttl=118 time=62.3 ms
+64 bytes from 8.8.8.8: icmp_seq=75 ttl=118 time=67.8 ms
+64 bytes from 8.8.8.8: icmp_seq=76 ttl=118 time=206 ms
+64 bytes from 8.8.8.8: icmp_seq=77 ttl=118 time=4.67 ms
+64 bytes from 8.8.8.8: icmp_seq=78 ttl=118 time=148 ms
+64 bytes from 8.8.8.8: icmp_seq=79 ttl=118 time=207 ms
+64 bytes from 8.8.8.8: icmp_seq=80 ttl=118 time=3.99 ms
+64 bytes from 8.8.8.8: icmp_seq=81 ttl=118 time=4.59 ms
+64 bytes from 8.8.8.8: icmp_seq=82 ttl=118 time=38.8 ms
+64 bytes from 8.8.8.8: icmp_seq=83 ttl=118 time=4.59 ms
+64 bytes from 8.8.8.8: icmp_seq=84 ttl=118 time=82.3 ms
+64 bytes from 8.8.8.8: icmp_seq=85 ttl=118 time=105 ms
+64 bytes from 8.8.8.8: icmp_seq=86 ttl=118 time=54.2 ms
+64 bytes from 8.8.8.8: icmp_seq=87 ttl=118 time=15.2 ms
+64 bytes from 8.8.8.8: icmp_seq=88 ttl=118 time=4.62 ms
+64 bytes from 8.8.8.8: icmp_seq=89 ttl=118 time=104 ms
+64 bytes from 8.8.8.8: icmp_seq=90 ttl=118 time=69.6 ms
+64 bytes from 8.8.8.8: icmp_seq=91 ttl=118 time=28.3 ms
+64 bytes from 8.8.8.8: icmp_seq=92 ttl=118 time=6.45 ms
+64 bytes from 8.8.8.8: icmp_seq=93 ttl=118 time=113 ms
+64 bytes from 8.8.8.8: icmp_seq=94 ttl=118 time=77.2 ms
+64 bytes from 8.8.8.8: icmp_seq=95 ttl=118 time=38.4 ms
+64 bytes from 8.8.8.8: icmp_seq=96 ttl=118 time=6.64 ms
+64 bytes from 8.8.8.8: icmp_seq=97 ttl=118 time=120 ms
+64 bytes from 8.8.8.8: icmp_seq=98 ttl=118 time=60.1 ms
+64 bytes from 8.8.8.8: icmp_seq=99 ttl=118 time=155 ms
+64 bytes from 8.8.8.8: icmp_seq=100 ttl=118 time=107 ms
+64 bytes from 8.8.8.8: icmp_seq=101 ttl=118 time=56.9 ms
+64 bytes from 8.8.8.8: icmp_seq=102 ttl=118 time=14.3 ms
+64 bytes from 8.8.8.8: icmp_seq=103 ttl=118 time=5.59 ms
+64 bytes from 8.8.8.8: icmp_seq=104 ttl=118 time=4.53 ms
+64 bytes from 8.8.8.8: icmp_seq=105 ttl=118 time=117 ms
+64 bytes from 8.8.8.8: icmp_seq=106 ttl=118 time=4.51 ms
+64 bytes from 8.8.8.8: icmp_seq=107 ttl=118 time=4.54 ms
+64 bytes from 8.8.8.8: icmp_seq=108 ttl=118 time=150 ms
+64 bytes from 8.8.8.8: icmp_seq=109 ttl=118 time=5.36 ms
+64 bytes from 8.8.8.8: icmp_seq=110 ttl=118 time=10.1 ms
+64 bytes from 8.8.8.8: icmp_seq=111 ttl=118 time=32.2 ms
+64 bytes from 8.8.8.8: icmp_seq=112 ttl=118 time=70.1 ms
+64 bytes from 8.8.8.8: icmp_seq=113 ttl=118 time=23.4 ms
+64 bytes from 8.8.8.8: icmp_seq=114 ttl=118 time=4.57 ms
+64 bytes from 8.8.8.8: icmp_seq=115 ttl=118 time=122 ms
+64 bytes from 8.8.8.8: icmp_seq=116 ttl=118 time=84.8 ms
+64 bytes from 8.8.8.8: icmp_seq=117 ttl=118 time=45.8 ms
+64 bytes from 8.8.8.8: icmp_seq=118 ttl=118 time=7.48 ms
+64 bytes from 8.8.8.8: icmp_seq=119 ttl=118 time=4.42 ms
+^C
+--- 8.8.8.8 ping statistics ---
+119 packets transmitted, 116 received, 2.52101% packet loss, time 23754ms
+rtt min/avg/max/mdev = 3.624/70.204/305.533/64.207 ms, pipe 2
 
