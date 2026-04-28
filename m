@@ -1,127 +1,125 @@
-Return-Path: <linux-wireless+bounces-35446-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35447-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKQSGMhk8GmWSwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35446-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 09:42:00 +0200
+	id UE3dFpFn8GkITAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35447-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 09:53:53 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7CEA47F12D
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 09:41:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2EAC47F53D
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 09:53:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA9FB3252FD5
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 07:34:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 08F6A303DA27
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 07:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0B63D1CB1;
-	Tue, 28 Apr 2026 07:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E2F221DB3;
+	Tue, 28 Apr 2026 07:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MpGy7DVF"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qhY86nZM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74223CCA12;
-	Tue, 28 Apr 2026 07:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25DF2836A6
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 07:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777361583; cv=none; b=aOe+oIQEi7Z1qsAQtgotPWGaAaFV3mDoK2tlLC8NcYBjQSYNRBQpcIw3h3JnwBOxRpMHMIzliIAuRyiqsLHmIJ7R2ogCBfR5OBYBOaH36nXE08qovUemdjRaK0gUzchCQyY8r63XsbgFA3p2P+tojY56A8cXFmFrffXwQDauEW8=
+	t=1777361902; cv=none; b=CK0Tga0rmmqw4dEcFPgtJxF9NJYBjHEb8t85jVREdrPD/9uMmiE3BKBvbfkWlQZ3lsj36cmASULOr6udxmV/eBwmo5B4qsbyBay3KDg0cWXeJ4KCK7mg+sHyiy4psV1O/BHZ/hsF10SlmkQbmiSZLBjHTSVm4TxKRID5Q/C1PjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777361583; c=relaxed/simple;
-	bh=6fTlJi+u/tA4P3ALw32S+WETC0LTfCt2D17LQA//3Lo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ceM9sYHhug0BEFIuuCyEa0vpucbsmLNqgt+Xt6ow0cjJoE2ptzL78MlHs9md1K4rKUgNJN2DU46tMosfEWJUC4aA/ipJOzwooTZ45kBzOEuzvgMcNaxW7waFkN457jzPs/Y4U63+z5D5PFqE02mONWqY6rP+q9u9LazjI1aN2XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MpGy7DVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A9AC2BCB8;
-	Tue, 28 Apr 2026 07:33:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777361583;
-	bh=6fTlJi+u/tA4P3ALw32S+WETC0LTfCt2D17LQA//3Lo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MpGy7DVFCqc2tz+PaWmZ2p7pRNgg8LFETk0UaUVr5ifYJTOWvPRBN+vpeP22WoWDq
-	 C56OEtBNx7Q1r3apdzOEvOAq1SMo8UctK/m1K2F1bGNwyIU+N1WEjfDXxisU1KM4xg
-	 BjlHJzkvzY3wzGUoPkAmSdvm5YxZgECJPhZ9OMPH6fdM+B+h4498MOM+78ScIjw5/u
-	 fB46I4mKXaiN4n4YiZgYyk58xm3XVdkWLXwNVlXTGehM53Xc9jRizBsA4LXTZxredB
-	 6a1BmClEmFGmfrQPJPr1IVj8i7gFV4T4F850Sg0qTXIIw8fAJLEPqQgHbD8Y9B80F1
-	 TCH5DwTMzfA1Q==
-Date: Tue, 28 Apr 2026 09:33:00 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: devicetree@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"open list:MEDIATEK MT76 WIRELESS LAN DRIVER" <linux-wireless@vger.kernel.org>, 
-	"open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-arm-kernel@lists.infradead.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>, "open list:MIPS" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH 2/3] dt-bindings: net: wireless: mt76: remove
- mediatek,mtd-eeprom
-Message-ID: <20260428-mustang-of-therapeutic-upgrade-a95f9a@quoll>
-References: <20260427034427.881389-1-rosenp@gmail.com>
- <20260427034427.881389-3-rosenp@gmail.com>
+	s=arc-20240116; t=1777361902; c=relaxed/simple;
+	bh=PKZjXV+eX8pijZHkSm3/b1csnQl/dFw/8qvuicfBnv0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZOyHXzFhGQeiqbqQaCrg5UZRW0z5YrhBSVgLyjOKnhdxeM/6x8cGqDWBouu1nJcGdXW0fKRrMO+avlsU1ny7/8sqIsWRtZ6ybxktlhD5cXTneTFwqCKb5/U1TVWfpAJZnlkz7PLH1X++vP5JURfJfGQ/w0gf1nmAKsWqRUPp0Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qhY86nZM; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=PKZjXV+eX8pijZHkSm3/b1csnQl/dFw/8qvuicfBnv0=;
+	t=1777361899; x=1778571499; b=qhY86nZMew9l8fDZZ8+xkswIOfGDJJm0UUxye/YsxW88rhg
+	FSBgTOTNWcJSVJqdOQLdA7SlLACkBCBuM+mmSjfpGeFWrp2QFxA1xklR37qP0w1mViIji7iKcbNsP
+	gs0xqJcHBHt2KN8NnWr+rSgK0V2OAkROsOH0++aBqZgO5mwTvCP6tLHZ4L5eWhgFfTy+gAIh1ddHK
+	U5kFw476joaQ3strUqWC4V2mbEipDyddHMZYK7EPNFcetiS6hYTZIt90W34Hl6Solwvn0K/yYo6J3
+	1OYjtJpLd/WR44wASalftvtDrd8bHW1yPp8ciucyIdMZi/kuJsE0y69lg0njTTuQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wHd1M-0000000H4sK-0gU1;
+	Tue, 28 Apr 2026 09:38:16 +0200
+Message-ID: <e3fa97dc1d0bc69477d3a2d2b2bfec6ff0ddff4e.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next 2/2] wifi: cfg80211/mac80211: extend
+ cfg80211_rx_assoc_resp_data() for assoc encryption
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Tue, 28 Apr 2026 09:38:15 +0200
+In-Reply-To: <20260427150735.2391680-3-kavita.kavita@oss.qualcomm.com>
+References: <20260427150735.2391680-1-kavita.kavita@oss.qualcomm.com>
+	 <20260427150735.2391680-3-kavita.kavita@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260427034427.881389-3-rosenp@gmail.com>
-X-Rspamd-Queue-Id: C7CEA47F12D
+X-malware-bazaar: not-scanned
+X-Rspamd-Queue-Id: A2EAC47F53D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35446-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	TAGGED_FROM(0.00)[bounces-35447-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,nbd.name,kernel.org,mediatek.com,sipsolutions.net,gmail.com,collabora.com,alpha.franken.de,lists.infradead.org];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sipsolutions.net:dkim,sipsolutions.net:mid]
 
-On Sun, Apr 26, 2026 at 08:44:26PM -0700, Rosen Penev wrote:
-> mediatek,mtd-eeprom is a widely unused binding that predates and has
+On Mon, 2026-04-27 at 20:37 +0530, Kavita Kavita wrote:
+> Extend cfg80211_rx_assoc_resp_data with a new assoc_encrypted field to
+> indicate if the (re)association exchange is encrypted.
+>=20
+> Currently, when epp_peer flag is set, unprotected (Re)Association
+> Request/Response frames are dropped. This ensures that by the time
+> the (Re)Association Response is processed, the entire association
+> exchange is encrypted over the air.
+>=20
+> Set assoc_encrypted in cfg80211_rx_assoc_resp_data based on epp_peer
+> flag when processing the (Re)Association Response.
 
-I clearly see a user. Please use `git grep`.
- 
-> been replaced by NVMEM. As there are no users, remove it.
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->  .../bindings/net/wireless/mediatek,mt76.yaml  | 19 ++-----------------
->  1 file changed, 2 insertions(+), 17 deletions(-)
-> 
+I don't quite see how this is necessary, even in nl80211_send_rx_assoc()
+the whole frame, including header and protected bit, is available. Why
+does this need mac80211 involvement? One could ask why it's needed *at
+all* when userspace already gets the frame and should probably process
+the frame RX preferably over the connect result indication...
 
-Wrong order of patches, you have undocumented ABI.
+If this is needed for some reason please outline it in the commit
+message, and reshuffle the code to properly split between cfg80211 and
+mac80211 in the commits.
 
-Best regards,
-Krzysztof
-
+johannes
 
