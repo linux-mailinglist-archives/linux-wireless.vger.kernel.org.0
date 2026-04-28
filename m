@@ -1,127 +1,183 @@
-Return-Path: <linux-wireless+bounces-35464-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35482-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKptKcJ+8GlSUAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35464-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 11:32:50 +0200
+	id GLf/NT+A8GlSUAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35482-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 11:39:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D61E4817B5
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 11:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 589A4481A41
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 11:39:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5E13C30205CB
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 09:23:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 962F230F9B8C
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2026 09:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F50A37CD29;
-	Tue, 28 Apr 2026 09:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="si4DzF2u"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD643A6EE3;
+	Tue, 28 Apr 2026 09:32:15 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FEDD3793DE
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 09:23:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C76D3A63F6
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 09:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777368235; cv=none; b=Qi/Ve7y8ohyxRAiYpYHn16MpYhQnVBOgsNpcBAvnQ9Oz500jCZGBDKQ2uZEBpL9fhtR1xWaig8YOgcfceyXin3+6PwRDXxQQDK8ILhiiVlugBb/Vrx7Kmw/oQthrh2i8v6EVgFi53dFBrgLKxJKfCWKTbcx84eBcpQSLRI/Dc3Q=
+	t=1777368735; cv=none; b=bdK1HeiC6VIFYNAj69Zi/w33lov36nFZ4Gru7PDpKki014tf8XZHOk+1fgipaYIjkAkMmkNPJSgjHb/Bgop2ApbH8uV7uXaWnm7Zb3iSccXunqnYkWvhAJSV35+6WVzbQkjTXZY2QIBpHgT42c69McEQa2BDTcgudz+rqesTRv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777368235; c=relaxed/simple;
-	bh=9pkZ6oxnoncKr7jqUvyDrIdS2cxfpXEDf6Td11rH+FU=;
+	s=arc-20240116; t=1777368735; c=relaxed/simple;
+	bh=WZ0dv++aH+AeLwkvbNXxLqu7wJ3mA6GpS63WG1N27Uc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V0xTC45xCx2MDIYL78Q9BIFsABVe1zoEhYwpIsb8zPSn/cmyCnBkWvNtOPzu08Bw6ZbNP34oC6U6/xMbyZbzPeNMOdRR4k79Xoemdpkno6oPuljsy6ItRgTUZ/H/mXIN44slIvDi+J/hNXcJnnZuqYu7d6cVXAxlOSkBVxZMPLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=si4DzF2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48BBCC2BCB8
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 09:23:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777368234;
-	bh=9pkZ6oxnoncKr7jqUvyDrIdS2cxfpXEDf6Td11rH+FU=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=si4DzF2uqzT/VXlkmg6UQCU6fvWCLW0kNYoxT5kigUVg5+aztNt2nK+k6sFhE4Fg3
-	 ua53wAvDK33QOrnh8IcK1OX62JeSfAj5oQst4HGk+XkgCNdtCcfeRkLuKP9hN5s3YO
-	 YcUfYT1NQ6oyPM2WpqhJluttPOkf1x/C6t6c8DQZ3k1N3nxxULtPQy9tLYiIRS0WYp
-	 YpfWC8A9ULmcRyEiC53dgdRVhgQUPolxO7/kpEo1rZVfKVZ6UW04ddDBaeIcl7txWG
-	 k1NiCmjh97duvZnfMaSoUw2nrjPnODCJK8gY3yzdYmTTiR2k1TQ2BQcFOlD+FEk9nW
-	 FFaQPinWRlPSQ==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-38dd9f11a09so99620421fa.2
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 02:23:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8tvYixIBJj0lsvveREHjWjE6+p+SjskT/W4UdXEJNTCrYgq4MEIFiH06tB2QkdNbei0wmwt6Zc8ByWynwKjg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/1wcEAv/ThLwy3NWFV4gQQVceBpX+jW4Tol72dbZn6ustrrLZ
-	EbE71yEf6oGcT1+8NJ2/qFZ7WebtK68hdFh2rsN/g3FAEqYf5Q/iXXt57gcBFcLLFBkuwrbm7F3
-	VcEkww0K1ZXo5/WCLeN1h355DL4m8bNM=
-X-Received: by 2002:a05:651c:4191:b0:38e:9eb1:6940 with SMTP id
- 38308e7fff4ca-39240f694d5mr6737951fa.10.1777368232579; Tue, 28 Apr 2026
- 02:23:52 -0700 (PDT)
+	 To:Cc:Content-Type; b=XGsW4eTo7ifZOEjEiOZ1WhRtgc29vqWAsy/MVH3CaCW63/oiP2bmWtxnq89ZuiHbunIypDy05xkjBApOp0ydaW9VE269W/UfuIxuoT/F+iP6KUdLu0Nr71iH3yh3o+cTJlCH1W1xpRqNVliiYrjt+SyR87Ha+Zx4mPaTcTYLE+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-65c4152313fso15351874a12.1
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 02:32:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777368733; x=1777973533;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Al22kA6RCf7FSEzj29cZLSkjdM9EgXxihmBX7/SeSVI=;
+        b=aeEvuSJCQh+LQBpWSmdUABhDP2QwKt26gUAiqHq7RwH+H8FZQ+NlPrJI5nhhSPAvwJ
+         BGLlB0SN04BHth3BnWXmv0koKqa4SObzLRaZU5geaZi4dqe6aBn/FGLQZqflm/lT96wB
+         8rkZdQER5p5b+IpejOdXmh67NXc5LShwDxt/0dKJUtgS4bOaZczCS2oVfYe3HUR7t7cd
+         /QZiA1h4QVxloshnZh/4fxOdzvhdQd91USfdl6IiDauz4vak+0gPxR8hd0MZRgW32cl2
+         E6v8uTFrbpiMq2KQQtMyUItUpVP492bHcdi+sUAytPs+zSqO9IptVKajMEokv5fxbUyJ
+         Cg2w==
+X-Forwarded-Encrypted: i=1; AFNElJ8kmb095ki6Jk+/xTIcpFDJ4Ae6TPrSJ3oMxekyyGxxiwbU76jXe3j5lyrk2Lro82N4vZfWEasihjp3xI4ACA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx00RhEtUjyxvMst71U0ifmqrLGC/hMFh9EPr2EGQ5qp2Behz2q
+	54tvpM6pLKE6kr5Be5HtdqReXC/t5ZBfQvVcc/He8udZQYoVwEGINeKxuwCV3o4e9ek=
+X-Gm-Gg: AeBDietjheIZ7ZX6N8ihgiVZ9QkiVxBMO8uRvPsnc3nfCJnkXc8jXWhsWUHFW1TsI1C
+	iZBG14lTsoP3nmFvBWUSgKugZcvhHUud8XrBR6EftWI8swq+76ffXetYWUrUqHef+k7nmaeJKNG
+	kjwBwcSMWQmC3B/PBeNBcUmM1kCwg9pYBXwM/4JN5J0NwO024B/WGtb1SjQatzQsBmjI9Qdqfti
+	hBbnUflQT5TpWTyWryNRp6yf72Bsqcz1sxdOvok2tYXwY7/+aQ45GsFUoADBd3ssQx3YayNyg6L
+	RFPV89ZqKSWIQTOB16Bqj6y0AJds1l6XyC8RRyYKPqKf0lqczj1tWt7LQJxd0unHmc/VplEJl0/
+	xxPenlL91has1GI4bY1pLAYX1bRE0+/6wIXaIQ0jmrpjuzwEB4a1y9t2GhgCM3h0l4f1zNvTkhf
+	qIpgRDOtZhz01YzUl69u4eRlqSuCYOcw6ZtEySmAHi60I3O93aJIcdELWVh8zPE/DtCy0lfqU=
+X-Received: by 2002:a17:906:ba89:b0:bad:a28:e09 with SMTP id a640c23a62f3a-bb804d28002mr143779866b.41.1777368732328;
+        Tue, 28 Apr 2026 02:32:12 -0700 (PDT)
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com. [209.85.208.52])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bb80c57f559sm73985466b.61.2026.04.28.02.32.11
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Apr 2026 02:32:11 -0700 (PDT)
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-67389cf78b0so19506906a12.2
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2026 02:32:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/tDOo4dcBhTonq9JpUO5KnPiXgW2L3GZ1b49FjixsFR0MLBmrUT/NhfK95PCTE5rQ6HZysp65T1utbSfKIGw==@vger.kernel.org
+X-Received: by 2002:a05:6402:5056:b0:676:d8a1:7a04 with SMTP id
+ 4fb4d7f45d1cf-679bb09a4admr915149a12.23.1777368324094; Tue, 28 Apr 2026
+ 02:25:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250708-russia-320-v1-1-53641e8dd417@0upti.me>
- <20260428074500.ru-320-review-resend@gmail.com> <b9d9d6e1-91c4-487f-82af-e53d4148c11b@0upti.me>
-In-Reply-To: <b9d9d6e1-91c4-487f-82af-e53d4148c11b@0upti.me>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Tue, 28 Apr 2026 18:23:38 +0900
-X-Gmail-Original-Message-ID: <CAGb2v66SDbn7KV+ehT9qpEZa1RRYXSXCM_3O-0qgqayks8igqg@mail.gmail.com>
-X-Gm-Features: AVHnY4IY33HCwe-Lx3cMh6T9rTZtboswfbohryCVPxTEjpmsxN1GBvAQmwk1AqM
-Message-ID: <CAGb2v66SDbn7KV+ehT9qpEZa1RRYXSXCM_3O-0qgqayks8igqg@mail.gmail.com>
-Subject: Re: [PATCH] wireless-regdb: allow 320MHz channel width for Russia
-To: Ilya K <me@0upti.me>
-Cc: Louis Kotze <loukot@gmail.com>, Valeriy Kosikhin <vkosikhin@gmail.com>, 
-	wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <cover.1777306795.git.chleroy@kernel.org> <c73b90236f2810edd47c84edd2a8d8e8e0c816da.1777306795.git.chleroy@kernel.org>
+In-Reply-To: <c73b90236f2810edd47c84edd2a8d8e8e0c816da.1777306795.git.chleroy@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 28 Apr 2026 11:25:11 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUvTBWoDN_wUo2n8-gkoheJ+-rbwew53OvoAwo8G5n1qg@mail.gmail.com>
+X-Gm-Features: AVHnY4JEWBVPw4tSjHgbQTia8gZd2WGJ1sv6qLdKJbtvs4hms1blpvc35yb0VWw
+Message-ID: <CAMuHMdUvTBWoDN_wUo2n8-gkoheJ+-rbwew53OvoAwo8G5n1qg@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 4/9] uaccess: Introduce copy_{to/from}_user_partial()
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Yury Norov <ynorov@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, David Laight <david.laight.linux@gmail.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, 
+	dmaengine@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+	linux-wpan@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-staging@lists.linux.dev, 
+	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org, 
+	ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
+	linux-mm@kvack.org, linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org, 
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 4D61E4817B5
+X-Rspamd-Queue-Id: 589A4481A41
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,lists.infradead.org,vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-35464-lists,linux-wireless=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,0upti.me:email];
+	FREEMAIL_CC(0.00)[nvidia.com,linux-foundation.org,gmail.com,linutronix.de,vger.kernel.org,lists.infradead.org,lists.ozlabs.org,lists.freedesktop.org,lists.linux.dev,lists.xenproject.org,googlegroups.com,kvack.org,alsa-project.org,lists.linux-m68k.org];
+	TAGGED_FROM(0.00)[bounces-35482-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[linux-m68k.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wens@kernel.org,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[49];
+	MIME_TRACE(0.00)[0:+];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.984];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	HAS_REPLYTO(0.00)[wens@kernel.org]
+	R_DKIM_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-m68k.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
 
-On Tue, Apr 28, 2026 at 5:17=E2=80=AFPM Ilya K <me@0upti.me> wrote:
+Hi Christophe,
+
+Thanks for your patch!
+
+On Mon, 27 Apr 2026 at 19:18, Christophe Leroy (CS GROUP)
+<chleroy@kernel.org> wrote:
+> Today there are approximately 3000 calls for copy_to_user() and
+> 3000 calls to copy_from_user().
 >
-> On 2026-04-28 10:44, Louis Kotze wrote:
-> >
-> > Note that the patch base predates the recent RU power update (commit
-> > 6873bfe in wens/wireless-regdb), which changed 5925-6425 from 100 mW
-> > to 200 mW, so this needs a rebase on current HEAD before it can be
-> > applied.
-> >
-> I can resend a rebased version if necessary.
+> The majority of callers of copy_{to/from}_user() don't care about the
+> return value, they only check whether it is 0 or not, and when it is
+> not 0 they handle it as a -EACCES.
 
-Yes, please send a new version for the record.
+I think the "a" can be dropped.
 
+> In order to allow better optimisation of copy_{to/from}_user() when
+> the size of the copy is known at build time, create new fonctions
 
-Thanks
-ChenYu
+functions
+
+> named copy_{to/from}_user_partial() to be used by the few callers
+> that are interested in partial copies and need to now how many
+
+know
+
+> bytes remain at the end of the copy.
+>
+> For the time being it is just the same as copy_{to/from}_user().
+>
+> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
