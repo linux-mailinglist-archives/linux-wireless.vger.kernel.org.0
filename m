@@ -1,141 +1,167 @@
-Return-Path: <linux-wireless+bounces-35597-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35598-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAfwEAfr8WkLlgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35597-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 13:27:03 +0200
+	id UP4tJFfu8WmulgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35598-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 13:41:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931F449386F
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 13:27:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D8F493A50
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 13:41:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A3B230557CC
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 11:26:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CA41E3025148
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 11:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0EC3F1656;
-	Wed, 29 Apr 2026 11:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243593EFD39;
+	Wed, 29 Apr 2026 11:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ejvHWE1z"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P1oWejxb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA70302750;
-	Wed, 29 Apr 2026 11:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E42637F746
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 11:41:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777462002; cv=none; b=T4w88c8pfdui+uKTZ/A75N54vv5+ygt6XtOs+c3C834wo0jn3RKHbz8ymm034YMsyjybqeQRh4/Pkv4+hdKrXyhNd6+FeEmf1vc8g4TePtP2zeSpc7qPPwVv/agvMsclMeZvSkFsu2dIiPIE3NOV7HwPXDkT9IpDdJth3Fb3HrQ=
+	t=1777462865; cv=none; b=MYt9N5ra+HCl0Fg0AbEgrLgFY72UmR/KsVFcXlc2h+XBtDuohnT/oXW5ypKvbohrj8IFe/ZCSk0M8TL9THJOQ2s6K/gFdOFttQdpT5d2om3NLo7RsWDCnHd6GQYQSA037Qn5MyW2UYqaQOp2gwOSHIUlcEXeOIwoxRHVy3p+/WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777462002; c=relaxed/simple;
-	bh=HgV0q/+gZ9n2giWTxhUD6P3yQ6wEmY66ZwCWQHhgQ2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kKGPImIqofHhHWkrh4obt4PWgAsqITzuUZVnGNDkfXyNLSZcsDoFgpxWWpSmbc5g0edrzTytstBlWuiMROxKCSnCuFDN5vsyWoqKkpkiSdJCcn9sghnNkWFaAx9gXkuVuHeVxtZuU4tcBqXoQ9JIGTcKIDXLTkfHvbQdDMgSy0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ejvHWE1z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158D1C19425;
-	Wed, 29 Apr 2026 11:26:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777462002;
-	bh=HgV0q/+gZ9n2giWTxhUD6P3yQ6wEmY66ZwCWQHhgQ2g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ejvHWE1zJ0tb1KwQu/gVCMj0KcNhlMqCOjLI4kQmWC01EPIO4HFDTFQg5PpNyMx2F
-	 7OMWgwbyfp16yd5ZKGLwfDDMuBlWK8CK9qcSIqUHZRxyhnWE4iAN+OK+xmr5WBtr4T
-	 BgqmCB7r/rsFvwFu/mT2z67QkDE/mDzOf7GDi68KHsQjYM3r7svy7TXqJDW5kWsfNa
-	 xYHmkznhflijvwvOUJkH6AcM42ZHWo8kZp7k26fwbFC82N/jHC8/F/rL8GlM8z6Ksh
-	 UMOZ5KVH94exo80oAIrmoHKOK/k/qke5mU8V2uOXUW3Mlxuf7JynBO/Edq8wMcfI5M
-	 twwrBSWDcoLLw==
-Date: Wed, 29 Apr 2026 12:26:30 +0100
-From: Will Deacon <will@kernel.org>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Yury Norov <ynorov@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	dmaengine@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org,
-	catalin.marinas@arm.com
-Subject: Re: [RFC PATCH v1 8/9] arm64: Add unsafe_copy_from_user()
-Message-ID: <afHq5vyNUJzxVwDV@willie-the-truck>
-References: <cover.1777306795.git.chleroy@kernel.org>
- <5b09e58a84c9edcfe5724db5cd57e45d96a96bfa.1777306795.git.chleroy@kernel.org>
+	s=arc-20240116; t=1777462865; c=relaxed/simple;
+	bh=U0Fh4wxu9C19NYra7wFWY6D4h5H1mEEdUSu6Het0Hhw=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=RRDI/bbCYxIEcMIuX0aIXb2EYABBxqh5JPoWtrCIrpCjFgGTxrHnspea+DTNdykhW4g/zpgDoQH6gjdzlnT1ukrdjHH13YkjAcHKRsyIIZFWM3Tzm9yYbZxtUKJ2AFP7u3BWlUrNZx0mbpAOFYNGi2idYHeas851AJV5GVS3vk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P1oWejxb; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777462864; x=1808998864;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=U0Fh4wxu9C19NYra7wFWY6D4h5H1mEEdUSu6Het0Hhw=;
+  b=P1oWejxbcfU5LoidbX/AyCRlQkLYYzudbmZwLZJol5ENtEKdMd8lHxwL
+   x7hFf/xYFO79Hb53WfCRnQL9anzPEwolOjcFR+2pI3W8vxIy5zmPDzT3N
+   CbGbzVggJAA5NoQswpNuka9mUOFEMqw0uXgH/RCO71Bs/zl2A/ZOq/1m4
+   NGUOGRmN+Y7GMgKNe6G7LP9YIyaG1FusYBdJ1hTBzP9qSqYyefhHp26YZ
+   D9kbCZfhdyRokGBo52e75pDLTko39iAjci8sNq0jTHkmc9RB8WK5Vz5uo
+   zI/gkm5hskkjjZjyXBQnjL/bK2enLHs6ookN6BxIKoEC4u5yzNIkBLEWS
+   A==;
+X-CSE-ConnectionGUID: 2BPfr3X9S9e4DEIQHh2dRQ==
+X-CSE-MsgGUID: OKKVdfHNShyJg2Mz+Xp8mA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="88986104"
+X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; 
+   d="scan'208";a="88986104"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 04:41:03 -0700
+X-CSE-ConnectionGUID: ym2AMQR2QlS3KW1hLCkjdg==
+X-CSE-MsgGUID: KqBiNWKxTLSU29xILIXHeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; 
+   d="scan'208";a="234505099"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 04:41:02 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH v2 wireless-next 00/15] wifi: mac80211: more NAN patches
+Date: Wed, 29 Apr 2026 14:40:34 +0300
+Message-Id: <20260429114049.4167111-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5b09e58a84c9edcfe5724db5cd57e45d96a96bfa.1777306795.git.chleroy@kernel.org>
-X-Rspamd-Queue-Id: 931F449386F
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 38D8F493A50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35597-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-35598-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[nvidia.com,linux-foundation.org,gmail.com,linutronix.de,vger.kernel.org,lists.infradead.org,lists.ozlabs.org,lists.freedesktop.org,lists.linux.dev,lists.xenproject.org,googlegroups.com,kvack.org,alsa-project.org,lists.linux-m68k.org,arm.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[50];
+	HAS_ORG_HEADER(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[will@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_ONE(0.00)[1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,intel.com:mid]
 
-[+Catalin]
+Hi,
+This series adds a few more NAN features to mac80211 and mainly hwsim
+support.
 
-On Mon, Apr 27, 2026 at 07:13:49PM +0200, Christophe Leroy (CS GROUP) wrote:
-> At the time being, x86 and arm64 are missing unsafe_copy_from_user().
-> 
-> Add it.
-> 
-> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-> ---
->  arch/arm64/include/asm/uaccess.h | 29 ++++++++++++++++++++++++-----
->  1 file changed, 24 insertions(+), 5 deletions(-)
+Thanks,
+Miri
+---
 
-Why?
+Andrei Otcheretianski (1):
+  wifi: mac80211: Fix a kernel panic in ieee80211_encrypt_tx_skb()
 
-And please cc the arm64 maintainers on arm64 patches next time. You've
-managed to cc most of the world apart from us.
+Avraham Stern (1):
+  wifi: mac80211: accept protected frames for NAN device
 
-Will
+Benjamin Berg (8):
+  wifi: mac80211_hwsim: remove unused nan_vif struct member
+  wifi: mac80211_hwsim: move NAN related variables into a struct
+  wifi: mac80211_hwsim: split NAN handling into separate file
+  wifi: mac80211_hwsim: rename and switch simulation time to boottime
+  wifi: mac80211_hwsim: move timestamp writing later in the datapath
+  wifi: mac80211_hwsim: register beacon timer by calculating TBTT
+  wifi: mac80211_hwsim: refactor NAN timer handling
+  wifi: mac80211_hwsim: switch to use TXQs
+
+Ilan Peer (2):
+  wifi: mac80211: allow userspace TX/RX over NAN Data interfaces
+  wifi: mac80211: Allow setting MAC address on interface creation
+
+Miri Korenblit (3):
+  wifi: mac80211: track the id of the NAN cluster we joined
+  wifi: mac80211: avoid out-of-bounds access in monitor
+  wifi: mac80211: add NAN channel evacuation support
+
+ MAINTAINERS                                   |   2 +-
+ drivers/net/wireless/virtual/Makefile         |   2 +
+ .../net/wireless/virtual/mac80211_hwsim_i.h   | 139 +++++
+ ...mac80211_hwsim.c => mac80211_hwsim_main.c} | 508 +++++-------------
+ .../net/wireless/virtual/mac80211_hwsim_nan.c | 233 ++++++++
+ .../net/wireless/virtual/mac80211_hwsim_nan.h |  36 ++
+ include/net/mac80211.h                        |  29 +
+ net/mac80211/cfg.c                            |  19 +
+ net/mac80211/chan.c                           |  28 +-
+ net/mac80211/iface.c                          |   7 +-
+ net/mac80211/main.c                           |   4 +
+ net/mac80211/nan.c                            | 126 +++++
+ net/mac80211/offchannel.c                     |   9 +-
+ net/mac80211/rx.c                             |  26 +-
+ net/mac80211/status.c                         |   9 +-
+ net/mac80211/tx.c                             |  18 +-
+ 16 files changed, 786 insertions(+), 409 deletions(-)
+ create mode 100644 drivers/net/wireless/virtual/mac80211_hwsim_i.h
+ rename drivers/net/wireless/virtual/{mac80211_hwsim.c => mac80211_hwsim_main.c} (94%)
+ create mode 100644 drivers/net/wireless/virtual/mac80211_hwsim_nan.c
+ create mode 100644 drivers/net/wireless/virtual/mac80211_hwsim_nan.h
+
+-- 
+2.34.1
+---
+v2: fix MAINTAINERS file to include the newly added files
 
