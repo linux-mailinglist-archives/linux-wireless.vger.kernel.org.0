@@ -1,212 +1,297 @@
-Return-Path: <linux-wireless+bounces-35590-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35591-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBOPCxbd8Wn3kwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35590-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 12:27:34 +0200
+	id ePccKOXc8WnvkwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35591-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 12:26:45 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB026492E3C
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 12:27:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23FA2492DC6
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 12:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A2D80306C94E
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 10:25:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D30D1301DAFB
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 10:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2DD3D47A6;
-	Wed, 29 Apr 2026 10:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A673D1CD7;
+	Wed, 29 Apr 2026 10:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="syDuJ2eb"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b="Js30MjQk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F763CF02C;
-	Wed, 29 Apr 2026 10:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7013D1701
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 10:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777458338; cv=none; b=jv9TsR4XlQUXfIJtm2Z4MbAQM4WMWSBQGi9lj6KRfDtWcOscuUWz40TCuf2iXZuG4K2r5/MgUTlJn9o2l9SvudzdmQHmTJCHFiJzXVDYK3cbNzjO3hVTatAMibKQ3XfWheWIdqaSkQjZukAEDNAAV5rm0XeAnWO/elvmdGdgaXY=
+	t=1777458399; cv=none; b=O6W9xieCHA9VCPnkMjm7YjPVgwwJBmJGvRdpTUdO+3cicdaSEqN8DAmnJfbc28mlP48ZLP+FfYVkzxkkT8QK5VhzeNWA7a9DgiZgg5b2CPFnsR7hCDj3J0ELOFIXmLs0UQLMD5TRRgEZ2pUzuaof4cg8u8ky9Sd9DBI4VlHJc+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777458338; c=relaxed/simple;
-	bh=uKx2BLK4SWtORQ3Y1X9QU+u3JmhryAfpmr007sf8OrM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fgnPxhGfxGx0yj6ZrG/OE8VZdB3dqkRGI4DHgLXOoK8r7qy/GlGoIpraH3Msuj4OUSpsf9dfipUfJ5Ved7Zrsi+TTzyFhHFMVpWkccRElMKQHPsp2v+Tsf38kbZuQDiD6VGjkxomhuyG1J8rkGbS1kAZts/FT+3xiaGe5kuIYnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=syDuJ2eb; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777458333;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0ubnPqyEuUH+bb9tWP9+TOUp+n6C5onOR58LCuBDEiw=;
-	b=syDuJ2ebh9z2sjffREH58o0aT6Ajjew8W5I8ReEUtvp2EQkdghmYv8iT9JcU1iX87oMIbX
-	D+xmbMoFNHgWVKDoL6XEe6kPFjJgAeA5FQrv1tK/6uUbSyjmFqItMdxDS/n3eJA5ihtrWC
-	pDy1LXDxeyfrSgRVjezaD0bM6Fa+Scc=
-From: Usama Arif <usama.arif@linux.dev>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Yury Norov <ynorov@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	dmaengine@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-fsi@lists.ozlabs.org,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-serial@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	bpf@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	linux-x25@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	sound-open-firmware@alsa-project.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-arch@vger.kernel.org
-Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
-Date: Wed, 29 Apr 2026 03:25:19 -0700
-Message-ID: <20260429102520.1617327-1-usama.arif@linux.dev>
-In-Reply-To: <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
-References: 
+	s=arc-20240116; t=1777458399; c=relaxed/simple;
+	bh=G1W/SI+R62/Tf87Hp2bXOJ+Uw+JF2EHw6TW2eBuH8Go=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R7nx+5wdfWtxFXIx/44YiDNfvrIzpP2JE0dPg4T4cwAAoNSd84d3QqYatj9mri7GoIbLMu8I/+a52tcXH6nfZ5y+MAFDMR6tRg7ix/62llO7tr4kXp06owNAT6lq7zpur9cf7BuK1tiU9/ywOV1pxh13BaUa0EN0ZYQm3w8AJOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b=Js30MjQk; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-488b0046078so111446605e9.1
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 03:26:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20251104.gappssmtp.com; s=20251104; t=1777458395; x=1778063195; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mfvKfJJPf0ASmalSXv+63KXtxyjY0rmQCt/O1qy7v1U=;
+        b=Js30MjQkSNinhyHsnP1tkLeQTG/iIF/TT5f0UsCVWGg/eQtCeQ5ZuidcebKvZHmMCc
+         kvRUw2qysu5LiOakI1H8A6NbbH6hgyu98qtgV0UG/fSw5ZUN/E4/lYDNk51Bq9NYyC4N
+         49gjKk98coWgt6BL1jiauqJhyIdwRqo4xwih7iigAoNtInXhWhX1X2kIMZg4GtQXGQJU
+         mvxYYS31ygiufuijVxwEjPBF2fVNbDQdUlGJRAy/0wzLjsSfW4ULoGUPgb9ZAWBWDusM
+         asQok7GJ1q+NUm1ajtPRTl7ZODlHMHtvS4f0sOdtdwdPhzJICrBfHcptdZtu2f4JqzM2
+         3LXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777458395; x=1778063195;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mfvKfJJPf0ASmalSXv+63KXtxyjY0rmQCt/O1qy7v1U=;
+        b=SzAmYvzw9iqKDa/TCRSQStWfZHcck4fJ6VUhswOcfv9ienjDHNQk1c03yzhfAKubc0
+         VExGk05qaR0aonaysgTAzclsKcQ29xim/ovwLMbeSNMFZxP36P4uIhhygS3XdIbaKyqK
+         0nsVtB7mZ0i4BpDxDXnT2xsu4y4/KUpeKM0dbvReEBea+UutgW3gUTikaIG09nXXFIgl
+         PspqFpBvt+y2Z/R0h3++3oUoerazaxi6OZ+r5D4Ji0ga4fSp+4fE0CdXpOP8mVUGwHg0
+         FGQ06NRwfmWu+PxlYMTu3KE28ST17aAUUhA06nPo/ibl9Gvy3NUUTOGlhQNcAYKHcJUg
+         LC6A==
+X-Forwarded-Encrypted: i=1; AFNElJ+sZze8ALnZvOfz66a9Chc5trOC8d7MNuLl0y7FjuPlYXOz4t9/PYqtl9OyX26YLktl0eFu/MmjfqiCxbszIw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyg6DUjlXFYjc53f8UR5vnXBiLJrHO/zbCZdQfMrBQwAlwsNeNG
+	JgHE+Huhg6NjHOHndEk0ASy9Qmp/XHSeJKAxyUeHm6l+krtFK39+Qqsc4PZ9pTUsze0=
+X-Gm-Gg: AeBDies+x8bPbPK1AdHCSk2gFedj++HkQxshIWfZDu1pQFBjwWviRkwhQCmsLmJD+3x
+	RMHWQBXk+4FWAtS4uzlDXKQb4QOknGZm8Ps3Nwz3M7BANvRy37MhD/ivNpw3LmXwX4oTbnsR/pH
+	m76/InQlWRYMebd12fX4rJF/K2BlIYWTATtJkuC7fuSL6X1CMw6W0CM0I4KLg88ZZxYHi+4Eawx
+	Qck0Z9gp6JboG+UOZPf199z0lbpNh0uAezoqJozrNCvW+qkvFnMJrDfZHx7gHnnDmTGVrhE0p9k
+	mMqc7rB5N9E/NiK4rVV65FuHmF0k6OfBweHXGldHm+qXXJ7COBdidNzI/CQC1zYM5HnzgUB9M3/
+	sZ4zYtglS9nAMfdgtRqZIRSHcQX8UhyKw6ZKzXL3iSY5hxiopfCnNW5xg4WZW3pEKk+8yqSTVGl
+	5Q8eN2ocvqKM5Cks6JvkXGSKWGkDNIeF5QwBqP2NQQGyxvo53L6J0EdwCsXn4btkM7H4Tkm9PCH
+	RXI17nOvEtXnZWLgrUMcvZl8A==
+X-Received: by 2002:a05:600d:8402:b0:489:149a:f9e7 with SMTP id 5b1f17b1804b1-48a77b25340mr88922285e9.27.1777458393898;
+        Wed, 29 Apr 2026 03:26:33 -0700 (PDT)
+Received: from localhost (p200300f65f114e08936c55da887fa426.dip0.t-ipconnect.de. [2003:f6:5f11:4e08:936c:55da:887f:a426])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-48a7b912ee3sm28053445e9.2.2026.04.29.03.26.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2026 03:26:33 -0700 (PDT)
+Date: Wed, 29 Apr 2026 12:26:32 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Marc Kleine-Budde <mkl@pengutronix.de>, 
+	Vincent Mailhol <mailhol@kernel.org>, Krzysztof Halasa <khc@pm.waw.pl>, 
+	Johannes Berg <johannes@sipsolutions.net>, Markus Schneider-Pargmann <msp@baylibre.com>, 
+	Steffen Klassert <klassert@kernel.org>, David Dillow <dave@thedillows.org>, 
+	Ion Badulescu <ionut@badula.org>, Mark Einon <mark.einon@gmail.com>, 
+	Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com, 
+	Manish Chopra <manishc@marvell.com>, Potnuri Bharat Teja <bharat@chelsio.com>, 
+	Denis Kirjanov <kirjanov@gmail.com>, Jijie Shao <shaojijie@huawei.com>, 
+	Jian Shen <shenjian15@huawei.com>, Cai Huoqing <cai.huoqing@linux.dev>, 
+	Fan Gong <gongfan1@huawei.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+	Mark Bloch <mbloch@nvidia.com>, Ido Schimmel <idosch@nvidia.com>, 
+	Petr Machata <petrm@nvidia.com>, Yibo Dong <dong100@mucse.com>, Simon Horman <horms@kernel.org>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, Jiri Pirko <jiri@resnulli.us>, 
+	Francois Romieu <romieu@fr.zoreil.com>, Daniele Venzano <venza@brownhat.org>, 
+	Samuel Chessman <chessman@tux.org>, Jiawen Wu <jiawenwu@trustnetic.com>, 
+	Mengyuan Lou <mengyuanlou@net-swift.com>, Kevin Curtis <kevin.curtis@farsite.co.uk>, 
+	Arend van Spriel <arend.vanspriel@broadcom.com>, Stanislav Yakovlev <stas.yakovlev@gmail.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Kees Cook <kees@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Thomas Fourier <fourier.thomas@gmail.com>, Ingo Molnar <mingo@kernel.org>, 
+	Kory Maincent <kory.maincent@bootlin.com>, Zilin Guan <zilin@seu.edu.cn>, 
+	Marco Crivellari <marco.crivellari@suse.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Jacob Keller <jacob.e.keller@intel.com>, Philipp Stanner <phasta@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Yeounsu Moon <yyyynoom@gmail.com>, 
+	Denis Benato <benato.denis96@gmail.com>, Yonglong Liu <liuyonglong@huawei.com>, 
+	Yicong Hui <yiconghui@gmail.com>, Randy Dunlap <rdunlap@infradead.org>, 
+	MD Danish Anwar <danishanwar@ti.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Sai Krishna <saikrishnag@marvell.com>, Ethan Nelson-Moore <enelsonmoore@gmail.com>, 
+	Larysa Zaremba <larysa.zaremba@intel.com>, Joe Damato <joe@dama.to>, Double Lo <double.lo@cypress.com>, 
+	Colin Ian King <colin.i.king@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-can@vger.kernel.org, linux-parisc@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
+	linux-rdma@vger.kernel.org, oss-drivers@corigine.com, linux-wireless@vger.kernel.org, 
+	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com
+Subject: Re: [PATCH net-next] net: Consistently define pci_device_ids using
+ named initializers
+Message-ID: <afHbcwzVucHRYmDW@monoceros>
+References: <20260428171845.2288395-2-u.kleine-koenig@baylibre.com>
+ <afGrPvUeZ-DjWbC8@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: CB026492E3C
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="k4r3nmtfjdpszuus"
+Content-Disposition: inline
+In-Reply-To: <afGrPvUeZ-DjWbC8@ashevche-desk.local>
+X-Rspamd-Queue-Id: 23FA2492DC6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-1.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[baylibre-com.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.dev,nvidia.com,linux-foundation.org,gmail.com,linutronix.de,vger.kernel.org,lists.infradead.org,lists.ozlabs.org,lists.freedesktop.org,lists.linux.dev,lists.xenproject.org,googlegroups.com,kvack.org,alsa-project.org,lists.linux-m68k.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35591-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35590-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[baylibre.com];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[pengutronix.de,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,pm.waw.pl,sipsolutions.net,baylibre.com,thedillows.org,badula.org,gmail.com,marvell.com,chelsio.com,huawei.com,linux.dev,intel.com,nvidia.com,mucse.com,realtek.com,resnulli.us,fr.zoreil.com,brownhat.org,tux.org,trustnetic.com,net-swift.com,farsite.co.uk,broadcom.com,bootlin.com,seu.edu.cn,suse.com,infradead.org,ti.com,dama.to,cypress.com,vger.kernel.org,lists.osuosl.org,corigine.com,lists.linux.dev];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[usama.arif@linux.dev,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	RCPT_COUNT_GT_50(0.00)[50];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.997];
+	FROM_NEQ_ENVFROM(0.00)[u.kleine-koenig@baylibre.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[baylibre-com.20251104.gappssmtp.com:+];
+	RCPT_COUNT_GT_50(0.00)[81];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre-com.20251104.gappssmtp.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Mon, 27 Apr 2026 19:13:48 +0200 "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
 
-> At the time being, x86 and arm64 are missing unsafe_copy_from_user().
-> 
-> Add it.
-> 
-> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-> ---
->  arch/x86/include/asm/uaccess.h | 29 ++++++++++++++++++++++++-----
->  1 file changed, 24 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-> index 3a0dd3c2b233..10c458ffa399 100644
-> --- a/arch/x86/include/asm/uaccess.h
-> +++ b/arch/x86/include/asm/uaccess.h
-> @@ -598,7 +598,7 @@ _label:									\
->   * We want the unsafe accessors to always be inlined and use
->   * the error labels - thus the macro games.
->   */
-> -#define unsafe_copy_loop(dst, src, len, type, label)				\
-> +#define unsafe_put_loop(dst, src, len, type, label)				\
->  	while (len >= sizeof(type)) {						\
->  		unsafe_put_user(*(type *)(src),(type __user *)(dst),label);	\
->  		dst += sizeof(type);						\
-> @@ -611,10 +611,29 @@ do {									\
->  	char __user *__ucu_dst = (_dst);				\
->  	const char *__ucu_src = (_src);					\
->  	size_t __ucu_len = (_len);					\
-> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
-> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
-> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
-> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
-> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
-> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
-> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
-> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
-> +} while (0)
-> +
-> +#define unsafe_get_loop(dst, src, len, type, label)				\
-> +	while (len >= sizeof(type)) {						\
-> +		unsafe_get_user(*(type __user *)(src),(type *)(dst),label);	\
+--k4r3nmtfjdpszuus
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net-next] net: Consistently define pci_device_ids using
+ named initializers
+MIME-Version: 1.0
 
-Hi,
+[I dropped a few addresses from Cc: that bounced for me before.]
 
-Just wanted to check if src and dst need to be swapped? Same for arm64 patch.
+Hello Andy,
 
-> +		dst += sizeof(type);						\
-> +		src += sizeof(type);						\
-> +		len -= sizeof(type);						\
-> +	}
-> +
-> +#define unsafe_copy_from_user(_dst,_src,_len,label)			\
-> +do {									\
-> +	char *__ucu_dst = (_dst);					\
-> +	const char __user *__ucu_src = (_src);				\
-> +	size_t __ucu_len = (_len);					\
-> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
-> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
-> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
-> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
->  } while (0)
->  
->  #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
-> -- 
-> 2.49.0
-> 
-> 
+On Wed, Apr 29, 2026 at 09:54:54AM +0300, Andy Shevchenko wrote:
+> On Tue, Apr 28, 2026 at 07:18:44PM +0200, Uwe Kleine-K=F6nig (The Capable=
+ Hub) wrote:
+> > ... and PCI device helpers.
+> >=20
+> > The various struct pci_device_id arrays were initialized mostly by one
+> > the PCI_DEVICE macros and then list expressions. The latter isn't easily
+> > readable if you're not into PCI. Using named initializers is more
+> > explicit and thus easier to parse.
+> >=20
+> > Also use PCI_DEVICE* helper macros to assign .vendor, .device,
+> > .subvendor and .subdevice where appropriate and skip explicit
+> > assignments of 0 (which the compiler takes care of).
+> >=20
+> > The secret plan is to make struct pci_device_id::driver_data an
+> > anonymous union (similar to
+> > https://lore.kernel.org/all/cover.1776579304.git.u.kleine-koenig@baylib=
+re.com/)
+> > and that requires named initializers. But it's also a nice cleanup on
+> > its own.
+> >=20
+> > This change doesn't introduce changes to the compiled pci_device_id
+> > arrays. Tested on x86 and arm64.
+>=20
+> ...
+>=20
+> > -	{0,}						/* 0 terminated list. */
+> > +	{ }						/* 0 terminated list. */
+>=20
+> The comments like these are just noises.
+
+Agreed, but I'd consider it out of scope for this patch to drop these
+comments. That might also be subjective.
+
+> The rule of thumb is to play with a
+> trailing comma:
+> - always drop it in the terminator entry
+> - always keep it in the normal initialisers when semantically it's not a
+> terminator
+
+That was my intention. Will rework.
+
+> >  static const struct pci_device_id liquidio_pci_tbl[] =3D {
+> >  	{       /* 68xx */
+> > -		PCI_VENDOR_ID_CAVIUM, 0x91, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0
+> > +		PCI_VDEVICE(CAVIUM, 0x91)
+>=20
+> Use full fixed-width device id value(s). 0x0091 here and so on...
+
+Sounds fair.
+
+> >  	},
+>=20
+> Also seems that you may decrease number of LoC here putting it as
+>=20
+> 	{ PCI_VDEVICE(CAVIUM, 0x0091) }, /* 68xx */
+>=20
+> and so on...
+
+Agreed if all lines of an array can be compressed like that.
+
+> >  	{       /* 66xx */
+> > -		PCI_VENDOR_ID_CAVIUM, 0x92, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0
+> > +		PCI_VDEVICE(CAVIUM, 0x92)
+> >  	},
+> >  	{       /* 23xx pf */
+> > -		PCI_VENDOR_ID_CAVIUM, 0x9702, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0
+> > +		PCI_VDEVICE(CAVIUM, 0x9702)
+> >  	},
+> > -	{
+> > -		0, 0, 0, 0, 0, 0, 0
+> > -	}
+> > +	{ }
+> >  };
+>=20
+> ...
+>=20
+> >  #define CH_PCI_DEVICE_ID_TABLE_DEFINE_END \
+> > -		{ 0, } \
+> > +		{ } \
+> >  	}
+>=20
+> Why do we have this macro at all?
+
+Over engineering? Reworking that also seems to be out of scope for this
+patch to me.
+
+> Also I somehow managed to remove, but I remember you had an inner comma i=
+n some
+> cases after the .driver_data, when the full ID entry is located on a sing=
+le
+> line. I.o.w. do
+>=20
+> 	{ PCI_...(), .driver_data =3D ... // no trailing comma here! },
+
+That was also my intention. Will rework.
+
+Best regards
+Uwe
+
+--k4r3nmtfjdpszuus
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmnx3NUACgkQj4D7WH0S
+/k7M1wf/QelV4pupjiZbLcg8qPVRzGgZ0AKqDUMY0oLZjH5ck6W8VSMONm3Ln4fu
+Tbzeul8HVUK14PBHvYKQiDU7OCUzVwfgAgM2qs9BuyfAmX3mBr2SaZI1M1DtYNUv
+3FRPKSiDWXcbe5sguySJb0BKepJc6DdUYzpRBrF5m90mvuM2dZALWRiO3lFvMYlS
+Kls/wTkony/O5uB/oAAHI7y91nhHIw++GuY0fge4rmRUISKTZ+G1/Lz8VrcUzt+p
+8iTGVh5MpStGQuFRrjho2JzPcrXxcOYiI6Z3rRBMCu5qZbVlrzaKcVvwCMd7n4gc
+gbcV922oXzCW/OtCAcZtPNggcidTXA==
+=we79
+-----END PGP SIGNATURE-----
+
+--k4r3nmtfjdpszuus--
 
