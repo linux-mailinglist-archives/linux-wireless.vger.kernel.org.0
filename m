@@ -1,137 +1,145 @@
-Return-Path: <linux-wireless+bounces-35553-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35554-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPXxLrmT8WlxiQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35553-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 07:14:33 +0200
+	id WOghGxCW8WntiQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35554-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 07:24:32 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE2548F60E
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 07:14:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0855F48F6A1
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 07:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C00A3010B5F
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 05:14:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D4E5C300A511
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 05:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4832C11F1;
-	Wed, 29 Apr 2026 05:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5975633263E;
+	Wed, 29 Apr 2026 05:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z6FZ++cv"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="N2g5q/WQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8061B33AD9A
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 05:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7614929B79B
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 05:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777439667; cv=none; b=pKVoPOn598QXrki39u2Ypvre7IlUmJU9yEn3xl2+aWOsf6LdrYI8IvHB7GZ1nGlQPWfeoOz4j8WEySFdUTsgmnjffjps+5jzHlEhjE5OPIomFGfvUWKxTj+SQbK4E5r4HXHqHYyLCf6FOQTZDq9VUQCnFTHDO7RIwV9cLD4tWTY=
+	t=1777440264; cv=none; b=WmKsv+9JyWCxZqzYgeTsI4yi+AjS36SunZBY8lfnCjL9xJVWsKMgR9y68MQDnPkH1p031hXEinKiwjdzgQV6l810uGbjbsgiZGT3dsLy3mVxyEc8llXzew09plvP5rp40VE8SXto1VLBILyGjoxupWlOlxheoMiHNRUHcIU9qgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777439667; c=relaxed/simple;
-	bh=isNmRuNuMJx4i8ElKaXr/14tWumKpXs9Ca+p5ETyqY4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QvWy6GhpetU/2H2HMjhK8zqCnykxsehA5bzTOuE3+PVWZtCDUrMFJPBP4x9lFHn1+a/xbl+I6oqHjcH7yBpUnXBqoJeAB4JmFnt5gs0aPkPCQ1Uef3EhYnLr5cjYHFOYOyiq37lodrAslGFeVa50fNvmPVYr67l6IPDW9O5H9ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z6FZ++cv; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777439664;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=isNmRuNuMJx4i8ElKaXr/14tWumKpXs9Ca+p5ETyqY4=;
-	b=Z6FZ++cvqS/f8JfXGuePOjYhUip1TbbisQyEd8BVZEDPPsBA+t0Q4Y8mTmLi2prEKt3Li/
-	k13DHXjANvMQxq40AmeoPFL+LZYVNDpMDODjuKgnC8qVB68KtswutNw1K6VD7VQaX8+m4u
-	UNQr9xjsulsrQl8VXF/dmaIJ9g7mDmA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-587-olkNOLz3PZysue0b_2x2Eg-1; Wed,
- 29 Apr 2026 01:14:22 -0400
-X-MC-Unique: olkNOLz3PZysue0b_2x2Eg-1
-X-Mimecast-MFC-AGG-ID: olkNOLz3PZysue0b_2x2Eg_1777439661
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C3D4D195608B;
-	Wed, 29 Apr 2026 05:14:20 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.32.45])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0E77C300756E;
-	Wed, 29 Apr 2026 05:14:15 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: baochen.qiang@oss.qualcomm.com
-Cc: ath11k@lists.infradead.org,
-	jjohnson@kernel.org,
-	jtornosm@redhat.com,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] wifi: ath11k: fix warning when unbinding
-Date: Wed, 29 Apr 2026 07:14:03 +0200
-Message-ID: <20260429051414.6625-1-jtornosm@redhat.com>
-In-Reply-To: <c0d2b6df-4109-4c93-b229-7eb2d3fca6a7@oss.qualcomm.com>
-References: <c0d2b6df-4109-4c93-b229-7eb2d3fca6a7@oss.qualcomm.com>
+	s=arc-20240116; t=1777440264; c=relaxed/simple;
+	bh=B1gs/o97qS+QCyYKpH3/HuXGo3uwkBfv1bHGhUSlXVo=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type; b=dgYrPtWp1iFYDjhVvE2UHWaNKa8calXPq612LTjqk+IB6ODTp2rPFGpMaG/LAYPKJy+AYQDZqrNotXF/Jrmd8zjvhSEpQcRu2Zb4PbDJ1MwDuo+pFutoPT9qhR4IYAvYoQ605dGIuJqiCtqaWJ4LqesVhaVB5rLTqhquoVpmXRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=N2g5q/WQ; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63T5OKU201011250, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1777440260; bh=gd+HFKs559rXbhUjvqAU+i5alS6cFrnwEQUizeRcfME=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type;
+	b=N2g5q/WQ8YCkozUIMwAm5Howk68uaxstrakgfY9SVXMf6JIKuWEMzfrKp0/0uPHUB
+	 shwaRrfmJVDiCfQ4aATHvEB9nfvpgfdNchaC1oqLSMJDhTBGWY+I/3lCvAGv9c63i6
+	 vrL4V2NypfyPsaTj8TWP8pfU8ac+voSoUDKjCKSns/hA6wCBfeRi3hLIh3pE1hzKh5
+	 MtXGGRSYIe73WcUETwORWLyhnP656BKuX1kAF00yJKCMQmI88xLov8gU0lYdWq5yxL
+	 50AcuyZ1TPtNtP2mqSIHH3818O56mgY3QtjbPHB61hxpPii9lD+pd+gr5kX00IPIiq
+	 SJpiHMfd6vwww==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 63T5OKU201011250
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 13:24:20 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Wed, 29 Apr 2026 13:24:20 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Wed, 29 Apr 2026 13:24:20 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
+ (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
+ Transport; Wed, 29 Apr 2026 13:24:20 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <leo.li@realtek.com>, <gary.chang@realtek.com>, <echuang@realtek.com>,
+        <wenjie.tsai@realtek.com>, <phhuang@realtek.com>, <isaiah@realtek.com>,
+        <kevin_yang@realtek.com>, <mh_chen@realtek.com>
+Subject: Re: [PATCH rtw-next 01/16] wifi: rtw89: 8922d: fix typo rx_freq_frome_ie
+In-Reply-To: <20260420034051.17666-2-pkshih@realtek.com>
+References: <20260420034051.17666-1-pkshih@realtek.com> <20260420034051.17666-2-pkshih@realtek.com>
+Message-ID: <ef909647-a8a1-4693-ace5-ded54aad5944@RTKEXHMBS05.realtek.com.tw>
+Date: Wed, 29 Apr 2026 13:24:20 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Queue-Id: 5DE2548F60E
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 0855F48F6A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	TAGGED_FROM(0.00)[bounces-35553-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-35554-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:email];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-Hello Baochen,
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-As I try to comment in the commit description, the warning is not at
-the intialization, but comes up when the device is unbinded after a
-problem at the initialization stage, because due to the problem the
-buffers were released (probe). Later after the problem, if the unbinding
-is commanded the buffers are released again.
-Setting to NUll after releasing avoids the double free.
+> The commit 127ea8d0b068 ("wifi: rtw89: fix typo "frome" -> "from" in rx_freq_frome_ie")
+> change the struct field to correct the typo, but miss to fix this for
+> RTL8922D because it is submitting at the same time.
+> 
+> As RTL8922D is not enabled yet, this build error doesn't appear.
+> 
+> Fix it accordingly.
+> 
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-The easiest way to reproduce it is to run in a VM the default upstream
-kernel (that is always failing on VMs) and just unbind the device
-(ath11k_pci).
+16 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-The same problem was fixed by me for ath12k driver here ca68ce0d9f4b
-("wifi: ath12k: fix warning when unbinding"), and I have seen the same problem
-is also happening for ath11k driver.
+d6a3aac6ed5d wifi: rtw89: 8922d: fix typo rx_freq_frome_ie
+fdf0eb355182 wifi: rtw89: 8852a: refine power save to lower latency
+3da737c77764 wifi: rtw89: debug: disable hw_scan for latency-sensitive scenarios
+bd2d1abf74e4 wifi: rtw89: debug: disable inactive power save to reduce bus overhead
+e3ed82f19f13 wifi: rtw89: phy: support static PD level setting
+08fdcb529df6 wifi: rtw89: Correct data type for scan index to avoid infinite loop
+72b781d3bdd3 wifi: rtw89: 8852bt: configure support_noise field explicitly
+ae3d327515f2 wifi: rtw89: add IO offload support via firmware
+63586e841cf3 wifi: rtw89: offload DMAC and CMAC init IO to firmware
+850216ff7d12 wifi: rtw89: use firmware offload for PHY and RF batch register writes
+89058548dd14 wifi: rtw89: 8832cu: Add ID 2c7c:8206 for RTL8832CU
+8beba37615f2 wifi: rtw89: use struct to fill C2H recv ack
+6a9b4babeb9b wifi: rtw89: check scan C2H event recv ack instead of C2H event done ack
+602b58bb45b2 wifi: rtw89: suspend DIG when remain-on-channel
+2da590b9ccf5 wifi: rtw89: chan: introduce new helper to get entity current configuration
+b465bc7e18a7 wifi: rtw89: 8922d: update RF calibration flow for MLD
 
-Thanks
-
-Best regards
-José Ignacio
+---
+https://github.com/pkshih/rtw.git
 
 
