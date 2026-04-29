@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-35622-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35623-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOGIFHQJ8mnhmwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35622-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 15:36:52 +0200
+	id 8AcqEFgH8mkimwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35623-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 15:27:52 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B3A494F27
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 15:36:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 028EF494CBF
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 15:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4AFA7305FC9F
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 13:27:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ED57F3014FCE
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 13:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E993FD14F;
-	Wed, 29 Apr 2026 13:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FF62C159A;
+	Wed, 29 Apr 2026 13:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="GrGfdokB"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="jJqstlUB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41BB3FBEBB
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 13:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279963FE652
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 13:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777469206; cv=none; b=XhdP9FcFm1dQ0eltAnFIVgTN4duiTXdiWu58S6k/gHgvYm8cfC5E1SUVCpI1mUdE9Wiz8geS5aTApV8lOeK9YZ1ODAaux9ENNZK0GUFRWKDUY3ykz/I54fqtk+Tqe0EoV/FPZRu/gT5RyzQpt9pdgPR61fAop6UA9V8j71FdNVE=
+	t=1777469213; cv=none; b=o144noSxH/pJPkAYInxOHGTXYS73b1D1hz6WpqWZJUjPAH1Uc5jHVnI5RjEg+HlTty/yJnFM4Ye6tZgUUn5jDhjCVFUPjfQqKhVpRarULlZ35cjMTZ67V3g5ULFMXHk+xYkx+JCd8Ag8NgSqZ+4N12JK6VbLkFmcHMsJq0Uklr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777469206; c=relaxed/simple;
-	bh=ETlHeabXF+LvxwEtUQb3U40Y2XI95VRuYFIqzxggMD4=;
+	s=arc-20240116; t=1777469213; c=relaxed/simple;
+	bh=HZP2rOA9VSCyVehoOIMpGJDzd1NwmKkeBbBQtXDWJ18=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F1yxYyykTmqJCrvjWGcwVV8csYjFlfiWtAeMNl+AuFjfrEcP89KgajckdUCX0IZZz5I309N2pEJ3alAd2C/PHWchYLpJurBt0xCF+KflkpjFujhSsgfM58d7aGMlwZ9M4F7hpHLLlxn8Cx+ZqmZtQ/VqOpDPvMo1abnI0RDX8Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=GrGfdokB; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=Zy6ZVKgfo5mJVLRY//wBv87PaPT9zpsen5M23Khhx0isjqQ2m3cxD5HBv8+BEppraOTrI2UnjXgtdYydwGQHCCqncWAsH3f2M0fY5oDEPi8bpL+9bs7CilwB/tnD02xZYfwbVj0BVa9jauww7NEWlEQf45xLSARp/ElNQsXciyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=jJqstlUB; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63TDQgExA1223049, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63TDQlLaA1223064, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1777469202; bh=WsMV5zy7InJVas1iMOfzUdyt6R47SAcl23mMVzGRDgM=;
+	t=1777469207; bh=SAqGUsNxPGIgQ6NjNlGuo93wAwHhB36mkhWOdPJ+F10=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=GrGfdokBf9MgaExaJLvfvfScLVmbDTtwTIYfFNVVH4aro16HGjJFimHyGZptm4sfn
-	 4tNi9yt1VkGBzTu147EF71Thrw/aZ+/nRJxobdl+REyEd2FlirtbGbJ6qUyENtatvp
-	 HxXm3i7CYrCvOdkMGC7Jm3wYxPrJuPBD39/LCMK0457IpaMtzfbs6VyHr4du33xWkx
-	 YzapagUGDhb+5KsHqEx8B6K2KE7mQ9CcYil+W7udv6i4Ot1lRVYnoasNjVjVidQajO
-	 m++1ysEgL+GuXGL6kWBceGKNUePS/nTsjnB3/ALEXjV7YVe5m+A62xjwuKhTM3x2pE
-	 Kvphgzq5vBrxw==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 63TDQgExA1223049
+	b=jJqstlUBKYZ6fLnHHZ1Yt5UO+fcoOJ6ACjkYyk60I0o5ivh5CkkCf3yRNMl417ba1
+	 wbaWSvg400agyiJ3Yudi29BqwMwNrPPv6eV7u488i4M6NkOQCPDM6uUGShNpeZ5hoi
+	 tgczToWvJlIiGm1iVfz+ZKZULqVjhe35ZPpMGtt2d5e/Z3wtV1EWxn5P9pSX3Lpyo7
+	 +2kQ0NI08uGRESeXRii+UZj6g8GQM+QfdrpT7d4tCvB6E9/PN6CkxtO7AGhsVO7u97
+	 8RrrfzpRLyOnQx4ZZ96T+C8zyPk1bVdXHJmc8bkgz4ahLXr5mg4ldNayVeHpb7TDCP
+	 Q0Sn7yGxMjR+g==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 63TDQlLaA1223064
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:26:42 +0800
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:26:47 +0800
 Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 29 Apr 2026 21:26:42 +0800
+ 15.2.1748.10; Wed, 29 Apr 2026 21:26:47 +0800
 Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
  RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 29 Apr 2026 21:26:41 +0800
+ 15.2.1748.10; Wed, 29 Apr 2026 21:26:46 +0800
 Received: from [127.0.1.1] (172.21.40.76) by RTKEXHMBS03.realtek.com.tw
  (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Wed, 29 Apr 2026 21:26:41 +0800
+ Transport; Wed, 29 Apr 2026 21:26:46 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <damon.chen@realtek.com>
-Subject: [PATCH rtw-next 3/7] wifi: rtw89: debug: bb_info entry including TX rate count for WiFi 7 chips
-Date: Wed, 29 Apr 2026 21:26:21 +0800
-Message-ID: <20260429132625.1659182-4-pkshih@realtek.com>
+Subject: [PATCH rtw-next 4/7] wifi: rtw89: debug: add PMAC counter in bb_info
+Date: Wed, 29 Apr 2026 21:26:22 +0800
+Message-ID: <20260429132625.1659182-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260429132625.1659182-1-pkshih@realtek.com>
 References: <20260429132625.1659182-1-pkshih@realtek.com>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 56B3A494F27
+X-Rspamd-Queue-Id: 028EF494CBF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -86,13 +86,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-35623-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35622-lists,linux-wireless=lfdr.de];
 	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -101,606 +101,1091 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,realtek.com:dkim,realtek.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
 	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_SEVEN(0.00)[7]
 
 From: Kuan-Chung Chen <damon.chen@realtek.com>
 
-Enhance TX performance visibility for WiFi 7 chips by introducing TX
-rate count tracking. This is critical for debugging and validation.
-Additionally, introduce a new debugfs bb_info to enable and provide
-baseband status.
+PMAC (Pseudo MAC) is a circuit within the baseband that can report
+various packet-related counters through registers, such as TX ON,
+TX EN, CCA, FA, CRC, etc. The driver periodically collects per
+PHY PMAC counters in track_work and exposes them through the
+bb_info debugfs for easier debugging.
 
-Usage of bb_info debugfs:
-  $ echo enable 1 > bb_info  // Start logging BB statistics information
-  $ echo mac_id 0 > bb_info  // Specify mac_id for TX rate count tracking
+The output of PMAC counter:
 
-The output of bb_info:
-
-  TP TX: 0 [0] Mbps, RX: 0 [0] Mbps
-  Avg packet length: TX=118, RX=136
-  TF: 0
-  TX count [0]:
-     Legacy: [0, 0, 0, 0]
-       OFDM: [0, 0, 0, 0, 0, 0, 0, 0]
-    MCS 1SS: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    MCS 2SS: [183, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-  [PHY 0]
-  == RSSI/RX Rate
-  Beacon: 19 (-41 dBm)
-  RX count:
-     Legacy: [0, 0, 0, 0]
-       OFDM: [0, 0, 0, 0, 0, 0, 0, 0]
-       HT 0: [0, 0, 0, 0, 0, 0, 0, 0]
-       HT 1: [0, 0, 0, 0, 0, 0, 0, 0]
-    VHT 1SS: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0][0, 0]
-    VHT 2SS: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0][0, 0]
-     HE 1SS: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-     HE 2SS: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    EHT 1SS: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0][0, 0]
-    EHT 2SS: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 185]
-
-  TX rate [0, 2]: EHT 2SS MCS-0 GI:0.8 FB_G BW:160 (hw_rate=0x420) ==> agg_wait=-1 (1)
-  RX rate [0, 2]: EHT 2SS MCS-13 GI:0.8 BW:160 (hw_rate=0x42d)
-  RSSI: -43 dBm (raw=134, prev=135) [-43, -44]
-  EVM: [38.75, (41.50, 43.00)]    SNR: 39
+  == PMAC
+  TX [CCK_TXEN, CCK_TXON, OFDM_TXEN, OFDM_TXON]: [0, 0, 17, 17]
+  CRC  [CCK, OFDM, HT, VHT, HE, EHT, ALL, MPDU]
+   ok: [0, 301, 0, 0, 5, 0, 306, 5]
+  err: [0, 4, 0, 0, 0, 0, 4, 0]
+  CCA [CCK, OFDM]: [0, 353]
+  FA  [CCK, OFDM]: [0, 39]
+  CCA spoofing [CCK, OFDM]: [0, 0]
+  CCK SFD: 0, SIG_GG: 0
+  OFDM Parity: 4, Rate: 2, LSIG_BRK_S: 0, LSIG_BRK_L: 7, SBD: 5
+  AMPDU miss: 0
 
 Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c     |   2 +
- drivers/net/wireless/realtek/rtw89/core.h     |  13 ++
- drivers/net/wireless/realtek/rtw89/debug.c    | 110 +++++++++++++++-
- drivers/net/wireless/realtek/rtw89/fw.c       | 122 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/fw.h       |  35 +++++
- drivers/net/wireless/realtek/rtw89/mac80211.c |  11 +-
- drivers/net/wireless/realtek/rtw89/phy.c      |  29 +++++
- drivers/net/wireless/realtek/rtw89/phy.h      |   1 +
- 8 files changed, 314 insertions(+), 9 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h     |  87 ++++++++
+ drivers/net/wireless/realtek/rtw89/debug.c    |  33 +++
+ drivers/net/wireless/realtek/rtw89/phy.c      | 195 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h      | 127 ++++++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |  49 +++++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  49 +++++
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |  49 +++++
+ .../net/wireless/realtek/rtw89/rtw8852bt.c    |  49 +++++
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  49 +++++
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |  49 +++++
+ drivers/net/wireless/realtek/rtw89/rtw8922d.c |  49 +++++
+ 11 files changed, 785 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 81f3ae21dc18..d8f83623e54a 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -6613,6 +6613,8 @@ int rtw89_core_mlsr_switch(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
- 	if (RTW89_CHK_FW_FEATURE_GROUP(WITH_RFK_PRE_NOTIFY, &rtwdev->fw))
- 		rtw89_chip_rfk_channel(rtwdev, target);
- 
-+	rtw89_fw_h2c_tx_history(rtwdev, target->mac_id);
-+
- 	rtwvif->mlo_mode = RTW89_MLO_MODE_MLSR;
- 
- wake_queue:
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index f15a0c43ef6d..c4396f0100be 100644
+index c4396f0100be..7f869a339ee6 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4511,6 +4511,15 @@ struct rtw89_antdiv_info {
- 	bool get_stats;
+@@ -4487,6 +4487,54 @@ struct rtw89_edcca_regs {
+ 	u32 tx_collision_t2r_st_mask;
  };
  
-+struct rtw89_bb_stat_cfg {
-+	bool enable;
-+	u16 mac_id;
++struct rtw89_pmac_regs {
++	struct rtw89_reg_def cck_txon;
++	struct rtw89_reg_def cck_txen;
++	struct rtw89_reg_def cck_cca;
++	struct rtw89_reg_def cck_sfd_gg;
++	struct rtw89_reg_def cck_sig_gg;
++	struct rtw89_reg_def cck_spoofing;
++	struct rtw89_reg_def cck_brk;
++	struct rtw89_reg_def brk;
++	struct rtw89_reg_def brk_option;
++	struct rtw89_reg_def search_fail;
++	struct rtw89_reg_def lsig_brk_s_th;
++	struct rtw89_reg_def lsig_brk_l_th;
++	struct rtw89_reg_def rxl_err_parity;
++	struct rtw89_reg_def rxl_err_rate;
++	struct rtw89_reg_def ofdm_cca;
++	struct rtw89_reg_def cca_spoofing;
++	struct rtw89_reg_def ampdu_miss;
++	struct rtw89_reg_def r1b_rx_rpt_rst;
++	struct rtw89_reg_def r1b_rr_sel;
++	struct rtw89_reg_def enable_all_cnt;
++	struct rtw89_reg_def rst_all_cnt;
++	u32 cck_crc32;
++	u32 cck_crc32_ok_mask;
++	u32 cck_crc32_fail_mask;
++	u32 ofdm_txon;
++	u32 ofdm_txon_mask;
++	u32 ofdm_txen_mask;
++	u32 l_crc;
++	u32 l_crc_ok_mask;
++	u32 l_crc_err_mask;
++	u32 ht_crc;
++	u32 ht_crc_ok_mask;
++	u32 ht_crc_err_mask;
++	u32 vht_crc;
++	u32 vht_crc_ok_mask;
++	u32 vht_crc_err_mask;
++	u32 he_crc;
++	u32 he_crc_ok_mask;
++	u32 he_crc_err_mask;
++	u32 eht_crc;
++	u32 eht_crc_ok_mask;
++	u32 eht_crc_err_mask;
++	u32 ampdu_crc;
++	u32 ampdu_crc_ok_mask;
++	u32 ampdu_crc_err_mask;
 +};
 +
-+struct rtw89_phy_info {
-+	struct rtw89_bb_stat_cfg bb_stat_cfg;
+ struct rtw89_phy_ul_tb_info {
+ 	bool dyn_tb_tri_en;
+ 	u8 def_if_bandedge;
+@@ -4682,6 +4730,7 @@ struct rtw89_chip_info {
+ 	struct rtw89_sb_regs btc_sb;
+ 	u32 dma_ch_mask;
+ 	const struct rtw89_edcca_regs *edcca_regs;
++	const struct rtw89_pmac_regs *pmac_regs;
+ 	const struct wiphy_wowlan_support *wowlan_stub;
+ 	const struct rtw89_xtal_info *xtal_info;
+ 	unsigned long default_quirks; /* bitmap of rtw89_quirks */
+@@ -5505,6 +5554,43 @@ struct rtw89_phy_ch_info {
+ 	u8 is_noisy;
+ };
+ 
++struct rtw89_pmac_stat_info {
++	u32 cck_phy_txon;
++	u32 cck_mac_txen;
++	u32 ofdm_mac_txen;
++	u32 ofdm_phy_txon;
++	u32 cnt_ofdm_cca;
++	u32 cnt_cck_cca;
++	u32 cnt_cck_spoofing;
++	u32 cnt_ofdm_spoofing;
++	u32 cnt_ampdu_miss;
++	u32 cnt_ampdu_crc_error;
++	u32 cnt_ampdu_crc_ok;
++	u32 cnt_cck_crc32_error;
++	u32 cnt_cck_crc32_ok;
++	u32 cnt_ofdm_crc32_error;
++	u32 cnt_ofdm_crc32_ok;
++	u32 cnt_ht_crc32_error;
++	u32 cnt_ht_crc32_ok;
++	u32 cnt_vht_crc32_error;
++	u32 cnt_vht_crc32_ok;
++	u32 cnt_he_crc32_ok;
++	u32 cnt_he_crc32_error;
++	u32 cnt_eht_crc32_ok;
++	u32 cnt_eht_crc32_error;
++	u32 cnt_crc32_error_all;
++	u32 cnt_crc32_ok_all;
++	u32 cnt_sfd_gg;
++	u32 cnt_sig_gg;
++	u32 cnt_cck_fail;
++	u32 cnt_ofdm_fail;
++	u32 cnt_lsig_brk_s_th;
++	u32 cnt_lsig_brk_l_th;
++	u32 cnt_parity_fail;
++	u32 cnt_rate_illegal;
++	u32 cnt_sb_search_fail;
 +};
 +
- enum rtw89_chanctx_state {
- 	RTW89_CHANCTX_STATE_MCC_START,
- 	RTW89_CHANCTX_STATE_MCC_STOP,
-@@ -4831,6 +4840,7 @@ enum rtw89_fw_feature {
- 	RTW89_FW_FEATURE_SIM_SER_L0L1_BY_HALT_H2C,
- 	RTW89_FW_FEATURE_LPS_ML_INFO_V1,
- 	RTW89_FW_FEATURE_SER_POST_RECOVER_DMAC,
-+	RTW89_FW_FEATURE_TX_HISTORY_V1,
+ struct rtw89_agc_gaincode_set {
+ 	u8 lna_idx;
+ 	u8 tia_idx;
+@@ -6331,6 +6417,7 @@ struct rtw89_dev {
+ 		struct ewma_rssi bcn_rssi;
+ 		struct rtw89_pkt_stat cur_pkt_stat;
+ 		struct rtw89_pkt_stat last_pkt_stat;
++		struct rtw89_pmac_stat_info pmac_stat;
+ 	} bbs[RTW89_PHY_NUM];
  
- 	NUM_OF_RTW89_FW_FEATURES,
- };
-@@ -5342,9 +5352,11 @@ struct rtw89_beacon_stat {
- 
- DECLARE_EWMA(thermal, 4, 4);
- 
-+#define RTW89_TX_RATE_NR 40
- struct rtw89_phy_stat {
- 	struct ewma_thermal avg_thermal[RF_PATH_MAX];
- 	u8 last_thermal_max;
-+	u32 tx_rate_cnt[RTW89_TX_RATE_NR];
- 	struct rtw89_beacon_stat bcn_stat;
- };
- 
-@@ -6308,6 +6320,7 @@ struct rtw89_dev {
- 	struct rtw89_phy_efuse_gain efuse_gain;
- 	struct rtw89_phy_ul_tb_info ul_tb_info;
- 	struct rtw89_antdiv_info antdiv;
-+	struct rtw89_phy_info phy_info;
- 
- 	struct rtw89_bb_ctx {
- 		enum rtw89_phy_idx phy_idx;
+ 	struct wiphy_delayed_work track_work;
 diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index 2d953bec149b..b82b13645fb0 100644
+index b82b13645fb0..d8a183bfc6da 100644
 --- a/drivers/net/wireless/realtek/rtw89/debug.c
 +++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -85,6 +85,7 @@ struct rtw89_debugfs {
- 	struct rtw89_debugfs_priv btc_manual;
- 	struct rtw89_debugfs_priv fw_log_manual;
- 	struct rtw89_debugfs_priv phy_info;
-+	struct rtw89_debugfs_priv bb_info;
- 	struct rtw89_debugfs_priv stations;
- 	struct rtw89_debugfs_priv disable_dm;
- 	struct rtw89_debugfs_priv static_pd_th;
-@@ -4016,15 +4017,15 @@ static void rtw89_sta_info_get_iter(void *data, struct ieee80211_sta *sta)
- }
- 
- static int
--rtw89_debug_append_rx_rate(char *buf, size_t bufsz, struct rtw89_pkt_stat *pkt_stat,
--			   enum rtw89_hw_rate first_rate, int len)
-+rtw89_debug_append_rate(char *buf, size_t bufsz, const u32 *rate_cnt,
-+			int first_rate, int len)
+@@ -4141,10 +4141,43 @@ static ssize_t rtw89_debug_priv_phy_info_get(struct rtw89_dev *rtwdev,
+ static int rtw89_get_bb_stat(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb,
+ 			     char *buf, size_t bufsz)
  {
++	struct rtw89_pmac_stat_info *pmac = &bb->pmac_stat;
  	char *p = buf, *end = buf + bufsz;
- 	int i;
  
- 	for (i = 0; i < len; i++)
- 		p += scnprintf(p, end - p, "%s%u", i == 0 ? "" : ", ",
--			       pkt_stat->rx_rate_cnt[first_rate + i]);
-+			       rate_cnt[first_rate + i]);
+ 	p += scnprintf(p, end - p, "\n[PHY %u]\n", bb->phy_idx);
  
- 	return p - buf;
- }
-@@ -4051,6 +4052,17 @@ static const struct rtw89_rx_rate_cnt_info {
- 	{FIRST_RATE_GEV1(EHT_NSS2_MCS0), 14, 0, "EHT 2SS:"},
- };
- 
-+static const struct rtw89_tx_rate_cnt_info {
-+	int first_rate;
-+	int len;
-+	const char *rate_mode;
-+} rtw89_tx_rate_cnt_infos[] = {
-+	{0, 4, "Legacy:"},
-+	{4, 8, "OFDM:"},
-+	{12, 14, "MCS 1SS:"},
-+	{26, 14, "MCS 2SS:"},
-+};
++	p += scnprintf(p, end - p, "== PMAC\n");
++	p += scnprintf(p, end - p,
++		       "TX [CCK_TXEN, CCK_TXON, OFDM_TXEN, OFDM_TXON]: [%d, %d, %d, %d]\n",
++		       pmac->cck_mac_txen, pmac->cck_phy_txon,
++		       pmac->ofdm_mac_txen, pmac->ofdm_phy_txon);
++	p += scnprintf(p, end - p, "CRC  [CCK, OFDM, HT, VHT, HE, EHT, ALL, MPDU]\n");
++	p += scnprintf(p, end - p, " ok: [%d, %d, %d, %d, %d, %d, %d, %d]\n",
++		       pmac->cnt_cck_crc32_ok, pmac->cnt_ofdm_crc32_ok,
++		       pmac->cnt_ht_crc32_ok, pmac->cnt_vht_crc32_ok,
++		       pmac->cnt_he_crc32_ok, pmac->cnt_eht_crc32_ok,
++		       pmac->cnt_crc32_ok_all, pmac->cnt_ampdu_crc_ok);
++	p += scnprintf(p, end - p, "err: [%d, %d, %d, %d, %d, %d, %d, %d]\n",
++		       pmac->cnt_cck_crc32_error, pmac->cnt_ofdm_crc32_error,
++		       pmac->cnt_ht_crc32_error, pmac->cnt_vht_crc32_error,
++		       pmac->cnt_he_crc32_error, pmac->cnt_eht_crc32_error,
++		       pmac->cnt_crc32_error_all, pmac->cnt_ampdu_crc_error);
++	p += scnprintf(p, end - p, "CCA [CCK, OFDM]: [%d, %d]\n",
++		       pmac->cnt_cck_cca, pmac->cnt_ofdm_cca);
++	p += scnprintf(p, end - p, "FA  [CCK, OFDM]: [%d, %d]\n",
++		       pmac->cnt_cck_fail, pmac->cnt_ofdm_fail);
 +
- static int rtw89_get_rx_pkt_stat(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb,
- 				 char *buf, size_t bufsz)
- {
-@@ -4075,12 +4087,13 @@ static int rtw89_get_rx_pkt_stat(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *
- 			continue;
- 
- 		p += scnprintf(p, end - p, "%10s [", info->rate_mode);
--		p += rtw89_debug_append_rx_rate(p, end - p, pkt_stat,
--						first_rate, info->len);
-+		p += rtw89_debug_append_rate(p, end - p, pkt_stat->rx_rate_cnt,
-+					     first_rate, info->len);
- 		if (info->ext) {
- 			p += scnprintf(p, end - p, "][");
--			p += rtw89_debug_append_rx_rate(p, end - p, pkt_stat,
--							first_rate + info->len, info->ext);
-+			p += rtw89_debug_append_rate(p, end - p, pkt_stat->rx_rate_cnt,
-+						     first_rate + info->len,
-+						     info->ext);
- 		}
- 		p += scnprintf(p, end - p, "]\n");
- 	}
-@@ -4125,6 +4138,87 @@ static ssize_t rtw89_debug_priv_phy_info_get(struct rtw89_dev *rtwdev,
- 	return p - buf;
- }
- 
-+static int rtw89_get_bb_stat(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb,
-+			     char *buf, size_t bufsz)
-+{
-+	char *p = buf, *end = buf + bufsz;
++	p += scnprintf(p, end - p, "CCA spoofing [CCK, OFDM]: [%d, %d]\n",
++		       pmac->cnt_cck_spoofing, pmac->cnt_ofdm_spoofing);
++	p += scnprintf(p, end - p, "CCK SFD: %d, SIG_GG: %d\n",
++		       pmac->cnt_sfd_gg, pmac->cnt_sig_gg);
++	p += scnprintf(p, end - p,
++		       "OFDM Parity: %d, Rate: %d, LSIG_BRK_S: %d, LSIG_BRK_L: %d, SBD: %d\n",
++		       pmac->cnt_parity_fail, pmac->cnt_rate_illegal,
++		       pmac->cnt_lsig_brk_s_th, pmac->cnt_lsig_brk_l_th,
++		       pmac->cnt_sb_search_fail);
++	p += scnprintf(p, end - p, "AMPDU miss: %d\n\n", pmac->cnt_ampdu_miss);
 +
-+	p += scnprintf(p, end - p, "\n[PHY %u]\n", bb->phy_idx);
-+
-+	p += scnprintf(p, end - p, "== RSSI/RX Rate\n");
-+	p += rtw89_get_rx_pkt_stat(rtwdev, bb, p, end - p);
-+
-+	return p - buf;
-+}
-+
-+static ssize_t
-+rtw89_debug_priv_bb_info_get(struct rtw89_dev *rtwdev,
-+			     struct rtw89_debugfs_priv *debugfs_priv,
-+			     char *buf, size_t bufsz)
-+{
-+	struct rtw89_bb_stat_cfg *bb_stat = &rtwdev->phy_info.bb_stat_cfg;
-+	struct rtw89_traffic_stats *stats = &rtwdev->stats;
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	const struct rtw89_tx_rate_cnt_info *info;
-+	struct rtw89_debugfs_iter_data iter_data;
-+	char *p = buf, *end = buf + bufsz;
-+	struct rtw89_bb_ctx *bb;
-+	int i;
-+
-+	p += scnprintf(p, end - p, "TP TX: %u [%u] Mbps, RX: %u [%u] Mbps\n",
-+		       stats->tx_throughput, stats->tx_throughput_raw,
-+		       stats->rx_throughput, stats->rx_throughput_raw);
-+	p += scnprintf(p, end - p, "Avg packet length: TX=%u, RX=%u\n",
-+		       stats->tx_avg_len,
-+		       stats->rx_avg_len);
-+	p += scnprintf(p, end - p, "TF: %u\n", stats->rx_tf_periodic);
-+
-+	if (chip->chip_gen != RTW89_CHIP_AX) {
-+		p += scnprintf(p, end - p,
-+			       "TX count [0x%x]:\n", bb_stat->mac_id);
-+
-+		for (i = 0; i < ARRAY_SIZE(rtw89_tx_rate_cnt_infos); i++) {
-+			info = &rtw89_tx_rate_cnt_infos[i];
-+
-+			p += scnprintf(p, end - p, "%10s [", info->rate_mode);
-+			p += rtw89_debug_append_rate(p, end - p,
-+						     rtwdev->phystat.tx_rate_cnt,
-+						     info->first_rate, info->len);
-+			p += scnprintf(p, end - p, "]\n");
-+		}
-+	}
-+
-+	rtw89_for_each_active_bb(rtwdev, bb)
-+		p += rtw89_get_bb_stat(rtwdev, bb, p, end - p);
-+	p += scnprintf(p, end - p, "\n");
-+
-+	rtw89_debugfs_iter_data_setup(&iter_data, p, end - p);
-+	ieee80211_iterate_stations_atomic(rtwdev->hw, rtw89_sta_info_get_iter, &iter_data);
-+	p += iter_data.written_sz;
-+
-+	return p - buf;
-+}
-+
-+static ssize_t
-+rtw89_debug_priv_bb_info_set(struct rtw89_dev *rtwdev,
-+			     struct rtw89_debugfs_priv *debugfs_priv,
-+			     const char *buf, size_t count)
-+{
-+	struct rtw89_bb_stat_cfg *bb_stat = &rtwdev->phy_info.bb_stat_cfg;
-+	int val;
-+
-+	lockdep_assert_wiphy(rtwdev->hw->wiphy);
-+
-+	if (sscanf(buf, "enable %d", &val) == 1)
-+		bb_stat->enable = !!val;
-+	else if (sscanf(buf, "mac_id %x", &val) == 1)
-+		rtw89_fw_h2c_tx_history(rtwdev, val);
-+	else
-+		return -EINVAL;
-+
-+	return count;
-+}
-+
- static int rtw89_dump_addr_cam(struct rtw89_dev *rtwdev,
- 			       char *buf, size_t bufsz,
- 			       struct rtw89_addr_cam_entry *addr_cam)
-@@ -5000,6 +5094,7 @@ static const struct rtw89_debugfs rtw89_debugfs_templ = {
- 	.btc_manual = rtw89_debug_priv_set(btc_manual),
- 	.fw_log_manual = rtw89_debug_priv_set(fw_log_manual, WLOCK),
- 	.phy_info = rtw89_debug_priv_get(phy_info),
-+	.bb_info = rtw89_debug_priv_set_and_get(bb_info, RWLOCK),
- 	.stations = rtw89_debug_priv_get(stations, RLOCK),
- 	.disable_dm = rtw89_debug_priv_set_and_get(disable_dm, RWLOCK),
- 	.static_pd_th = rtw89_debug_priv_set_and_get(static_pd_th, RWLOCK),
-@@ -5049,6 +5144,7 @@ void rtw89_debugfs_add_sec1(struct rtw89_dev *rtwdev, struct dentry *debugfs_top
- 	rtw89_debugfs_add_w(btc_manual);
- 	rtw89_debugfs_add_w(fw_log_manual);
- 	rtw89_debugfs_add_r(phy_info);
-+	rtw89_debugfs_add_rw(bb_info);
- 	rtw89_debugfs_add_r(stations);
- 	rtw89_debugfs_add_rw(disable_dm);
- 	rtw89_debugfs_add_rw(static_pd_th);
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 2a3662ed733f..ff3914a16b81 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -930,6 +930,7 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
- 	__DIS_FW_FEAT(RTL8922A, ge, 0, 35, 84, 0, WITH_RFK_PRE_NOTIFY, G),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 84, 0, RFK_PRE_NOTIFY_MCC_V1),
- 	__CFG_FW_FEAT(RTL8922A, lt, 0, 35, 84, 0, ADDR_CAM_V0),
-+	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 92, 0, TX_HISTORY_V1),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 97, 0, SIM_SER_L0L1_BY_HALT_H2C),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 100, 0, SER_POST_RECOVER_DMAC),
- };
-@@ -5588,6 +5589,127 @@ int rtw89_fw_h2c_ra(struct rtw89_dev *rtwdev, struct rtw89_ra_info *ra, bool csi
- 	return ret;
- }
- 
-+int rtw89_fw_h2c_tx_history(struct rtw89_dev *rtwdev, u16 mac_id)
-+{
-+	struct rtw89_bb_stat_cfg *bb_stat = &rtwdev->phy_info.bb_stat_cfg;
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	struct rtw89_h2c_ra_tx_history *h2c;
-+	u32 len = sizeof(*h2c);
-+	struct sk_buff *skb;
-+	int ret;
-+
-+	if (chip->chip_gen == RTW89_CHIP_AX)
-+		return 0;
-+
-+	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
-+	if (!skb) {
-+		rtw89_err(rtwdev, "failed to alloc skb for h2c tx history\n");
-+		return -ENOMEM;
-+	}
-+
-+	skb_put(skb, len);
-+	h2c = (struct rtw89_h2c_ra_tx_history *)skb->data;
-+
-+	h2c->w0 = le32_encode_bits(mac_id, RTW89_H2C_RA_TX_HISTORY_W0_MACID) |
-+		  le32_encode_bits(0, RTW89_H2C_RA_TX_HISTORY_W0_PER_PPDU);
-+
-+	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
-+			      H2C_CAT_OUTSRC, H2C_CL_OUTSRC_RA,
-+			      H2C_FUNC_OUTSRC_RA_TX_HISTORY, 0, 0, len);
-+
-+	ret = rtw89_h2c_tx(rtwdev, skb, false);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to send h2c\n");
-+		goto fail;
-+	}
-+
-+	bb_stat->mac_id = mac_id;
-+
-+	return 0;
-+fail:
-+	dev_kfree_skb_any(skb);
-+
-+	return ret;
-+}
-+
-+int rtw89_fw_h2c_phy_ch_rpt(struct rtw89_dev *rtwdev)
-+{
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	struct rtw89_h2c_ra_phy_ch_rpt *h2c;
-+	u32 len = sizeof(*h2c);
-+	struct sk_buff *skb;
-+	int ret;
-+
-+	if (chip->chip_gen == RTW89_CHIP_AX)
-+		return 0;
-+
-+	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
-+	if (!skb) {
-+		rtw89_err(rtwdev, "failed to alloc skb for h2c phy ch rpt\n");
-+		return -ENOMEM;
-+	}
-+
-+	skb_put(skb, len);
-+	h2c = (struct rtw89_h2c_ra_phy_ch_rpt *)skb->data;
-+
-+	h2c->w1 = le32_encode_bits(1, RTW89_H2C_RA_PHY_CH_RPT_W1_RPT_TX_COUNT);
-+
-+	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
-+			      H2C_CAT_OUTSRC, H2C_CL_OUTSRC_RA,
-+			      H2C_FUNC_OUTSRC_RA_PHY_CH_RPT, 0, 0, len);
-+
-+	ret = rtw89_h2c_tx(rtwdev, skb, false);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to send h2c\n");
-+		goto fail;
-+	}
-+
-+	return 0;
-+fail:
-+	dev_kfree_skb_any(skb);
-+
-+	return ret;
-+}
-+
-+int rtw89_fw_h2c_drv_ctrl_fw(struct rtw89_dev *rtwdev)
-+{
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	struct rtw89_h2c_ra_drv_ctrl_fw *h2c;
-+	u32 len = sizeof(*h2c);
-+	struct sk_buff *skb;
-+	int ret;
-+
-+	if (chip->chip_gen == RTW89_CHIP_AX)
-+		return 0;
-+
-+	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
-+	if (!skb) {
-+		rtw89_err(rtwdev, "failed to alloc skb for h2c drv ctrl fw\n");
-+		return -ENOMEM;
-+	}
-+
-+	skb_put(skb, len);
-+	h2c = (struct rtw89_h2c_ra_drv_ctrl_fw *)skb->data;
-+
-+	h2c->w0 = le32_encode_bits(1, RTW89_H2C_RA_DRV_CTRL_FW_W0_RPT_TX_COUNT);
-+
-+	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
-+			      H2C_CAT_OUTSRC, H2C_CL_OUTSRC_RA,
-+			      H2C_FUNC_OUTSRC_RA_DRV_CTRL_FW, 0, 0, len);
-+
-+	ret = rtw89_h2c_tx(rtwdev, skb, false);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to send h2c\n");
-+		goto fail;
-+	}
-+
-+	return 0;
-+fail:
-+	dev_kfree_skb_any(skb);
-+
-+	return ret;
-+}
-+
- int rtw89_fw_h2c_cxdrv_init(struct rtw89_dev *rtwdev, u8 type)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 6ef53fcd0cce..cde8fd34723b 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -471,6 +471,28 @@ struct rtw89_h2c_ra_v1 {
- #define RTW89_H2C_RA_V1_W4_RAMASK_UHL16 GENMASK(31, 16)
- #define RTW89_H2C_RA_V1_W5_RAMASK_UHH16 GENMASK(15, 0)
- 
-+struct rtw89_h2c_ra_tx_history {
-+	__le32 w0;
-+} __packed;
-+
-+#define RTW89_H2C_RA_TX_HISTORY_W0_MACID GENMASK(15, 0)
-+#define RTW89_H2C_RA_TX_HISTORY_W0_PER_PPDU GENMASK(23, 16)
-+
-+struct rtw89_h2c_ra_phy_ch_rpt {
-+	__le32 w0;
-+	__le32 w1;
-+	__le32 w2;
-+	__le32 w3;
-+} __packed;
-+
-+#define RTW89_H2C_RA_PHY_CH_RPT_W1_RPT_TX_COUNT BIT(10)
-+
-+struct rtw89_h2c_ra_drv_ctrl_fw {
-+	__le32 w0;
-+} __packed;
-+
-+#define RTW89_H2C_RA_DRV_CTRL_FW_W0_RPT_TX_COUNT BIT(13)
-+
- static inline void RTW89_SET_FWCMD_SEC_IDX(void *cmd, u32 val)
- {
- 	le32p_replace_bits((__le32 *)(cmd) + 0x00, val, GENMASK(7, 0));
-@@ -3973,6 +3995,13 @@ struct rtw89_c2h_lps_rpt {
- 	 */
- } __packed;
- 
-+struct rtw89_c2h_ra_tx_history {
-+	struct rtw89_c2h_hdr hdr;
-+	__le32 ra_tbtt_cnt;
-+	__le32 tx_rate_tot_cnt_hist[RTW89_TX_RATE_NR];
-+	__le32 tx_cat_cnt[3];
-+} __packed;
-+
- struct rtw89_c2h_fw_scan_rpt {
- 	struct rtw89_c2h_hdr hdr;
- 	u8 phy_idx;
-@@ -4771,6 +4800,9 @@ enum rtw89_mrc_h2c_func {
- 
- #define H2C_CL_OUTSRC_RA		0x1
- #define H2C_FUNC_OUTSRC_RA_MACIDCFG	0x0
-+#define H2C_FUNC_OUTSRC_RA_TX_HISTORY	0x9
-+#define H2C_FUNC_OUTSRC_RA_PHY_CH_RPT	0xe
-+#define H2C_FUNC_OUTSRC_RA_DRV_CTRL_FW	0xf
- 
- #define H2C_CL_OUTSRC_DM		0x2
- #define H2C_FUNC_FW_MCC_DIG		0x6
-@@ -5349,6 +5381,9 @@ int rtw89_fw_h2c_rssi_offload(struct rtw89_dev *rtwdev,
- 			      struct rtw89_rx_phy_ppdu *phy_ppdu);
- int rtw89_fw_h2c_tp_offload(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rtwvif_link);
- int rtw89_fw_h2c_ra(struct rtw89_dev *rtwdev, struct rtw89_ra_info *ra, bool csi);
-+int rtw89_fw_h2c_phy_ch_rpt(struct rtw89_dev *rtwdev);
-+int rtw89_fw_h2c_tx_history(struct rtw89_dev *rtwdev, u16 mac_id);
-+int rtw89_fw_h2c_drv_ctrl_fw(struct rtw89_dev *rtwdev);
- int rtw89_fw_h2c_cxdrv_init(struct rtw89_dev *rtwdev, u8 type);
- int rtw89_fw_h2c_cxdrv_init_v7(struct rtw89_dev *rtwdev, u8 type);
- int rtw89_fw_h2c_cxdrv_role(struct rtw89_dev *rtwdev, u8 type);
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index 9ee2aa225976..b72f6661fbd1 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -721,14 +721,21 @@ static void rtw89_ops_vif_cfg_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & BSS_CHANGED_MLD_VALID_LINKS) {
- 		struct rtw89_vif_link *cur = rtw89_get_designated_link(rtwvif);
-+		u16 mac_id;
- 
- 		if (RTW89_CHK_FW_FEATURE_GROUP(WITH_RFK_PRE_NOTIFY, &rtwdev->fw))
- 			rtw89_chip_rfk_channel(rtwdev, cur);
- 
--		if (hweight16(vif->active_links) == 1)
-+		if (hweight16(vif->active_links) == 1) {
-+			mac_id = cur->mac_id;
- 			rtwvif->mlo_mode = RTW89_MLO_MODE_MLSR;
--		else
-+		} else {
-+			/* Specify for all MAC ID */
-+			mac_id = 0xffff;
- 			rtwvif->mlo_mode = RTW89_MLO_MODE_EMLSR;
-+		}
-+
-+		rtw89_fw_h2c_tx_history(rtwdev, mac_id);
- 	}
- }
+ 	p += scnprintf(p, end - p, "== RSSI/RX Rate\n");
+ 	p += rtw89_get_rx_pkt_stat(rtwdev, bb, p, end - p);
  
 diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 29770cc5ea60..3124a99d5381 100644
+index 3124a99d5381..80d358d80a38 100644
 --- a/drivers/net/wireless/realtek/rtw89/phy.c
 +++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -3379,12 +3379,24 @@ rtw89_phy_c2h_ra_rpt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
- 					  &ra_data);
- }
- 
-+static void
-+rtw89_phy_c2h_tx_history(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
-+{
-+	const struct rtw89_c2h_ra_tx_history *history = (const void *)c2h->data;
-+	u32 *tx_rate_cnt = rtwdev->phystat.tx_rate_cnt;
-+	u32 i;
-+
-+	for (i = 0; i < RTW89_TX_RATE_NR; i++)
-+		tx_rate_cnt[i] = le32_to_cpu(history->tx_rate_tot_cnt_hist[i]);
-+}
-+
- static
- void (* const rtw89_phy_c2h_ra_handler[])(struct rtw89_dev *rtwdev,
- 					  struct sk_buff *c2h, u32 len) = {
- 	[RTW89_PHY_C2H_FUNC_STS_RPT] = rtw89_phy_c2h_ra_rpt,
- 	[RTW89_PHY_C2H_FUNC_MU_GPTBL_RPT] = NULL,
- 	[RTW89_PHY_C2H_FUNC_TXSTS] = NULL,
-+	[RTW89_PHY_C2H_FUNC_TX_HISTORY] = rtw89_phy_c2h_tx_history,
- 	[RTW89_PHY_C2H_FUNC_ACCELERATE_EN] = rtw89_fw_c2h_dummy_handler,
- };
- 
-@@ -5832,6 +5844,22 @@ static void rtw89_phy_stat_init(struct rtw89_dev *rtwdev)
+@@ -5844,6 +5844,196 @@ static void rtw89_phy_stat_init(struct rtw89_dev *rtwdev)
  	rtwdev->hal.thermal_prot_lv = 0;
  }
  
-+static void rtw89_phy_trigger_tx_count(struct rtw89_dev *rtwdev)
++static void rtw89_phy_pmac_stat_reset(struct rtw89_dev *rtwdev,
++				      struct rtw89_bb_ctx *bb, bool cck)
 +{
-+	if (RTW89_CHK_FW_FEATURE(TX_HISTORY_V1, &rtwdev->fw))
-+		rtw89_fw_h2c_phy_ch_rpt(rtwdev);
++	const struct rtw89_pmac_regs *regs = rtwdev->chip->pmac_regs;
++
++	if (cck) {
++		rtw89_phy_write32_clr(rtwdev, regs->r1b_rx_rpt_rst.addr,
++				      regs->r1b_rx_rpt_rst.mask);
++		rtw89_phy_write32_set(rtwdev, regs->r1b_rx_rpt_rst.addr,
++				      regs->r1b_rx_rpt_rst.mask);
++	}
++
++	rtw89_phy_write32_idx_set(rtwdev, regs->enable_all_cnt.addr,
++				  regs->enable_all_cnt.mask, bb->phy_idx);
++	rtw89_phy_write32_idx_set(rtwdev, regs->rst_all_cnt.addr,
++				  regs->rst_all_cnt.mask, bb->phy_idx);
++	rtw89_phy_write32_idx_clr(rtwdev, regs->rst_all_cnt.addr,
++				  regs->rst_all_cnt.mask, bb->phy_idx);
++}
++
++static void rtw89_phy_pmac_stat_cck(struct rtw89_dev *rtwdev,
++				    struct rtw89_bb_ctx *bb)
++{
++	const struct rtw89_pmac_regs *regs = rtwdev->chip->pmac_regs;
++	struct rtw89_pmac_stat_info *pmac = &bb->pmac_stat;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
++	u32 val;
++
++	pmac->cck_phy_txon =
++		rtw89_phy_read32_mask(rtwdev, regs->cck_txon.addr, regs->cck_txon.mask);
++	pmac->cck_mac_txen =
++		rtw89_phy_read32_mask(rtwdev, regs->cck_txen.addr, regs->cck_txen.mask);
++
++	if (chip->chip_id == RTL8852A || rtw89_is_rtl885xb(rtwdev))
++		rtw89_phy_write32_mask(rtwdev, regs->r1b_rr_sel.addr,
++				       regs->r1b_rr_sel.mask, 0x2);
++
++	if (bb->phy_idx == RTW89_PHY_1)
++		pmac->cnt_cck_cca =
++			rtw89_phy_read32_mask(rtwdev, regs->cck_cca.addr + 8,
++					      regs->cck_cca.mask);
 +	else
-+		rtw89_fw_h2c_drv_ctrl_fw(rtwdev);
++		pmac->cnt_cck_cca =
++			rtw89_phy_read32_mask(rtwdev, regs->cck_cca.addr,
++					      regs->cck_cca.mask);
++
++	if (chip->chip_id == RTL8852A || rtw89_is_rtl885xb(rtwdev))
++		rtw89_phy_write32_mask(rtwdev, regs->r1b_rr_sel.addr,
++				       regs->r1b_rr_sel.mask, 0x1);
++
++	if (bb->phy_idx == RTW89_PHY_1)
++		val = rtw89_phy_read32(rtwdev, regs->cck_crc32 + 8);
++	else
++		val = rtw89_phy_read32(rtwdev, regs->cck_crc32);
++	pmac->cnt_cck_crc32_ok = field_get(regs->cck_crc32_ok_mask, val);
++	pmac->cnt_cck_crc32_error = field_get(regs->cck_crc32_fail_mask, val);
++
++	pmac->cnt_sfd_gg =
++		rtw89_phy_read32_idx(rtwdev, regs->cck_sfd_gg.addr,
++				     regs->cck_sfd_gg.mask, bb->phy_idx);
++	pmac->cnt_sig_gg =
++		rtw89_phy_read32_idx(rtwdev, regs->cck_sig_gg.addr,
++				     regs->cck_sig_gg.mask, bb->phy_idx);
++	pmac->cnt_cck_spoofing =
++		rtw89_phy_read32_idx(rtwdev, regs->cck_spoofing.addr,
++				     regs->cck_spoofing.mask, bb->phy_idx);
++
++	if (chip->chip_id == RTL8852A || rtw89_is_rtl885xb(rtwdev))
++		pmac->cnt_cck_fail =
++			pmac->cnt_cck_cca - pmac->cnt_cck_crc32_ok -
++			pmac->cnt_cck_crc32_error - pmac->cnt_cck_spoofing;
++	else
++		pmac->cnt_cck_fail =
++			rtw89_phy_read32_idx(rtwdev, regs->cck_brk.addr,
++					     regs->cck_brk.mask, bb->phy_idx);
 +}
 +
-+static void rtw89_phy_stat_update(struct rtw89_dev *rtwdev)
++static void rtw89_phy_pmac_stat_ofdm(struct rtw89_dev *rtwdev,
++				     struct rtw89_bb_ctx *bb)
 +{
-+	if (!rtwdev->phy_info.bb_stat_cfg.enable)
-+		return;
++	const struct rtw89_pmac_regs *regs = rtwdev->chip->pmac_regs;
++	struct rtw89_pmac_stat_info *pmac = &bb->pmac_stat;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
++	u32 val;
 +
-+	rtw89_phy_trigger_tx_count(rtwdev);
++	val = rtw89_phy_read32_idx(rtwdev, regs->ofdm_txon, MASKDWORD, bb->phy_idx);
++	pmac->ofdm_phy_txon = field_get(regs->ofdm_txon_mask, val);
++	pmac->ofdm_mac_txen = field_get(regs->ofdm_txen_mask, val);
++
++	val = rtw89_phy_read32_idx(rtwdev, regs->l_crc, MASKDWORD, bb->phy_idx);
++	pmac->cnt_ofdm_crc32_ok = field_get(regs->l_crc_ok_mask, val);
++	pmac->cnt_ofdm_crc32_error = field_get(regs->l_crc_err_mask, val);
++
++	val = rtw89_phy_read32_idx(rtwdev, regs->ht_crc, MASKDWORD, bb->phy_idx);
++	pmac->cnt_ht_crc32_ok = field_get(regs->ht_crc_ok_mask, val);
++	pmac->cnt_ht_crc32_error = field_get(regs->ht_crc_err_mask, val);
++
++	val = rtw89_phy_read32_idx(rtwdev, regs->vht_crc, MASKDWORD, bb->phy_idx);
++	pmac->cnt_vht_crc32_ok = field_get(regs->vht_crc_ok_mask, val);
++	pmac->cnt_vht_crc32_error = field_get(regs->vht_crc_err_mask, val);
++
++	val = rtw89_phy_read32_idx(rtwdev, regs->he_crc, MASKDWORD, bb->phy_idx);
++	pmac->cnt_he_crc32_ok = field_get(regs->he_crc_ok_mask, val);
++	pmac->cnt_he_crc32_error = field_get(regs->he_crc_err_mask, val);
++
++	if (chip->chip_gen == RTW89_CHIP_BE) {
++		val = rtw89_phy_read32_idx(rtwdev, regs->eht_crc,
++					   MASKDWORD, bb->phy_idx);
++		pmac->cnt_eht_crc32_ok = field_get(regs->eht_crc_ok_mask, val);
++		pmac->cnt_eht_crc32_error = field_get(regs->eht_crc_err_mask, val);
++	}
++
++	val = rtw89_phy_read32_idx(rtwdev, regs->ampdu_crc, MASKDWORD, bb->phy_idx);
++	pmac->cnt_ampdu_crc_ok = field_get(regs->ampdu_crc_ok_mask, val);
++	pmac->cnt_ampdu_crc_error = field_get(regs->ampdu_crc_err_mask, val);
++
++	val = rtw89_phy_read32_idx(rtwdev, regs->brk.addr, regs->brk.mask, bb->phy_idx);
++	if (chip->chip_id == RTL8852C &&
++	    rtw89_phy_read32_idx(rtwdev, regs->brk_option.addr,
++				 regs->brk_option.mask, bb->phy_idx) == 1) {
++		u32 tmp = pmac->ofdm_phy_txon + pmac->cck_phy_txon;
++
++		val = (val > tmp) ? (val - tmp) : 0;
++	}
++	pmac->cnt_ofdm_fail = val;
++
++	pmac->cnt_sb_search_fail =
++		rtw89_phy_read32_idx(rtwdev, regs->search_fail.addr,
++				     regs->search_fail.mask, bb->phy_idx);
++	pmac->cnt_lsig_brk_s_th =
++		rtw89_phy_read32_idx(rtwdev, regs->lsig_brk_s_th.addr,
++				     regs->lsig_brk_s_th.mask, bb->phy_idx);
++	pmac->cnt_lsig_brk_l_th =
++		rtw89_phy_read32_idx(rtwdev, regs->lsig_brk_l_th.addr,
++				     regs->lsig_brk_l_th.mask, bb->phy_idx);
++	pmac->cnt_parity_fail =
++		rtw89_phy_read32_idx(rtwdev, regs->rxl_err_parity.addr,
++				     regs->rxl_err_parity.mask, bb->phy_idx);
++	pmac->cnt_rate_illegal =
++		rtw89_phy_read32_idx(rtwdev, regs->rxl_err_rate.addr,
++				     regs->rxl_err_rate.mask, bb->phy_idx);
++	pmac->cnt_ofdm_cca =
++		rtw89_phy_read32_idx(rtwdev, regs->ofdm_cca.addr,
++				     regs->ofdm_cca.mask, bb->phy_idx);
++	pmac->cnt_ofdm_spoofing =
++		rtw89_phy_read32_idx(rtwdev, regs->cca_spoofing.addr,
++				     regs->cca_spoofing.mask, bb->phy_idx);
++	pmac->cnt_ampdu_miss =
++		rtw89_phy_read32_idx(rtwdev, regs->ampdu_miss.addr,
++				     regs->ampdu_miss.mask, bb->phy_idx);
 +}
 +
- void rtw89_phy_stat_track(struct rtw89_dev *rtwdev)
++static void rtw89_phy_pmac_stat_update(struct rtw89_dev *rtwdev,
++				       struct rtw89_bb_ctx *bb)
++{
++	struct rtw89_pmac_stat_info *pmac = &bb->pmac_stat;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
++	struct rtw89_entity_conf conf;
++	const struct rtw89_chan *chan;
++	bool cck;
++
++	rtw89_entity_get_conf(rtwdev, &conf);
++	chan = conf.chans[bb->phy_idx];
++	cck = chan->band_type == RTW89_BAND_2G;
++
++	if (cck)
++		rtw89_phy_pmac_stat_cck(rtwdev, bb);
++
++	rtw89_phy_pmac_stat_ofdm(rtwdev, bb);
++
++	pmac->cnt_crc32_error_all = pmac->cnt_he_crc32_error +
++				    pmac->cnt_vht_crc32_error +
++				    pmac->cnt_ht_crc32_error +
++				    pmac->cnt_ofdm_crc32_error +
++				    pmac->cnt_cck_crc32_error;
++
++	pmac->cnt_crc32_ok_all = pmac->cnt_he_crc32_ok +
++				 pmac->cnt_vht_crc32_ok +
++				 pmac->cnt_ht_crc32_ok +
++				 pmac->cnt_ofdm_crc32_ok +
++				 pmac->cnt_cck_crc32_ok;
++
++	if (chip->chip_gen == RTW89_CHIP_BE) {
++		pmac->cnt_crc32_error_all += pmac->cnt_eht_crc32_error;
++		pmac->cnt_crc32_ok_all += pmac->cnt_eht_crc32_ok;
++	}
++
++	rtw89_phy_pmac_stat_reset(rtwdev, bb, cck);
++}
++
+ static void rtw89_phy_trigger_tx_count(struct rtw89_dev *rtwdev)
  {
- 	struct rtw89_bb_ctx *bb;
-@@ -5839,6 +5867,7 @@ void rtw89_phy_stat_track(struct rtw89_dev *rtwdev)
- 	rtw89_phy_stat_thermal_update(rtwdev);
- 	rtw89_phy_thermal_protect(rtwdev);
- 	rtw89_phy_stat_rssi_update(rtwdev);
-+	rtw89_phy_stat_update(rtwdev);
+ 	if (RTW89_CHK_FW_FEATURE(TX_HISTORY_V1, &rtwdev->fw))
+@@ -5854,10 +6044,15 @@ static void rtw89_phy_trigger_tx_count(struct rtw89_dev *rtwdev)
  
- 	rtw89_for_each_active_bb(rtwdev, bb) {
- 		bb->last_pkt_stat = bb->cur_pkt_stat;
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index 3f9d306ff1ca..c6761cedc5a5 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.h
-+++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -139,6 +139,7 @@ enum rtw89_phy_c2h_ra_func {
- 	RTW89_PHY_C2H_FUNC_STS_RPT,
- 	RTW89_PHY_C2H_FUNC_MU_GPTBL_RPT,
- 	RTW89_PHY_C2H_FUNC_TXSTS,
-+	RTW89_PHY_C2H_FUNC_TX_HISTORY = 0x4,
- 	RTW89_PHY_C2H_FUNC_ACCELERATE_EN = 0x7,
+ static void rtw89_phy_stat_update(struct rtw89_dev *rtwdev)
+ {
++	struct rtw89_bb_ctx *bb;
++
+ 	if (!rtwdev->phy_info.bb_stat_cfg.enable)
+ 		return;
  
- 	RTW89_PHY_C2H_FUNC_RA_NUM,
+ 	rtw89_phy_trigger_tx_count(rtwdev);
++
++	rtw89_for_each_active_bb(rtwdev, bb)
++		rtw89_phy_pmac_stat_update(rtwdev, bb);
+ }
+ 
+ void rtw89_phy_stat_track(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index 1e1125235f0c..c054a402bd20 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -8799,6 +8799,12 @@
+ #define R_P0_ANT_SW 0x0728
+ #define B_P0_HW_ANTSW_DIS_BY_GNT_BT BIT(12)
+ #define B_P0_TRSW_TX_EXTEND GENMASK(3, 0)
++#define R_RST_ALL_CNT 0x0730
++#define R_RST_ALL_CNT_BE4 0x20730
++#define B_RST_ALL_CNT BIT(0)
++#define R_ENABLE_ALL_CNT 0x0730
++#define R_ENABLE_ALL_CNT_BE4 0x20730
++#define B_ENABLE_ALL_CNT BIT(1)
+ #define R_MAC_PIN_SEL 0x0734
+ #define R_MAC_PIN_SEL_BE4 0x20734
+ #define B_CH_IDX_SEG0 GENMASK(23, 16)
+@@ -8949,6 +8955,8 @@
+ #define B_RXHT_MCS_LIMIT GENMASK(9, 8)
+ #define R_RXVHT_MCS_LIMIT 0x0D18
+ #define B_RXVHT_MCS_LIMIT GENMASK(22, 21)
++#define R_BRK_OPT 0x0D44
++#define B_BRK_OPT BIT(31)
+ #define R_P0_EN_SOUND_WO_NDP 0x0D7C
+ #define B_P0_EN_SOUND_WO_NDP BIT(1)
+ #define R_RXHE 0x0D80
+@@ -9004,6 +9012,21 @@
+ #define R_CFO_COMP_SEG0_L 0x1384
+ #define R_CFO_COMP_SEG0_H 0x1388
+ #define R_CFO_COMP_SEG0_CTRL 0x138C
++#define R_CNT_CCKTXEN 0x1700
++#define R_CNT_CCKTXEN_V1 0x2E00
++#define R_CNT_CCKTXEN_BE4 0x2CF00
++#define B_CNT_CCKTXEN GENMASK(31, 16)
++#define R_CNT_CCKTXON 0x1704
++#define R_CNT_CCKTXON_V1 0x2E04
++#define R_CNT_CCKTXON_BE4 0x2CF04
++#define B_CNT_CCKTXON GENMASK(15, 0)
++#define R_CNT_CCK_CCA_P0 0x1710
++#define R_CNT_CCK_CCA_P0_V1 0x2E10
++#define B_CNT_CCK_CCA_P0 GENMASK(15, 0)
++#define R_CNT_CCK_CRC32_P0 0x1714
++#define R_CNT_CCK_CRC32_P0_V1 0x2E14
++#define B_CNT_CCK_CRC32OK_P0 GENMASK(15, 0)
++#define B_CNT_CCK_CRC32FAIL_P0 GENMASK(31, 16)
+ #define R_DBG32_D 0x1730
+ #define R_EDCCA_RPT_A 0x1738
+ #define R_EDCCA_RPT_B 0x173c
+@@ -9019,7 +9042,73 @@
+ #define B_SWSI_W_BUSY_V1 BIT(24)
+ #define B_SWSI_R_BUSY_V1 BIT(25)
+ #define B_SWSI_R_DATA_DONE_V1 BIT(26)
++#define R_CNT_LSIG_BRK_S_TH 0x1A00
++#define R_CNT_LSIG_BRK_S_TH_V1 0x0E00
++#define R_CNT_LSIG_BRK_S_TH_BE4 0x20E00
++#define B_CNT_LSIG_BRK_S_TH GENMASK(31, 16)
++#define R_CNT_CCA_SPOOFING 0x1A00
++#define R_CNT_CCA_SPOOFING_V1 0x0E00
++#define R_CNT_CCA_SPOOFING_BE4 0x20E00
++#define B_CNT_CCA_SPOOFING GENMASK(15, 0)
++#define R_CNT_LSIG_BRK_L_TH 0x1A04
++#define R_CNT_LSIG_BRK_L_TH_V1 0x0E04
++#define R_CNT_LSIG_BRK_L_TH_BE4 0x20E04
++#define B_CNT_LSIG_BRK_L_TH GENMASK(15, 0)
++#define R_CNT_BRK 0x1A08
++#define R_CNT_BRK_V1 0x0E08
++#define R_CNT_BRK_BE4 0x20E08
++#define B_CNT_BRK GENMASK(31, 16)
++#define R_CNT_RXL_ERR_PARITY 0x1A0C
++#define R_CNT_RXL_ERR_PARITY_V1 0x0E0C
++#define R_CNT_RXL_ERR_PARITY_BE4 0x20E0C
++#define B_CNT_RXL_ERR_PARITY GENMASK(31, 16)
++#define R_CNT_RXL_ERR_RATE 0x1A10
++#define R_CNT_RXL_ERR_RATE_V1 0x0E10
++#define R_CNT_RXL_ERR_RATE_BE4 0x20E10
++#define B_CNT_RXL_ERR_RATE GENMASK(15, 0)
++#define R_CNT_SEARCH_FAIL 0x1A20
++#define R_CNT_SEARCH_FAIL_V1 0x0E20
++#define R_CNT_SEARCH_FAIL_BE4 0x20E20
++#define B_CNT_SEARCH_FAIL GENMASK(31, 16)
++#define R_CNT_OFDM_CCA 0x1A24
++#define R_CNT_OFDM_CCA_V1 0x0E24
++#define R_CNT_OFDM_CCA_BE4 0x20E24
++#define B_CNT_OFDM_CCA GENMASK(15, 0)
+ #define R_TX_COUNTER 0x1A40
++#define R_CNT_OFDMTXON 0x1A40
++#define R_CNT_OFDMTXON_V1 0x0E40
++#define R_CNT_OFDMTXON_BE4 0x20E40
++#define B_CNT_OFDMTXON GENMASK(15, 0)
++#define B_CNT_OFDMTXEN GENMASK(31, 16)
++#define R_CNT_HE_CRC 0x1A58
++#define R_CNT_HE_CRC_V1 0x0E58
++#define R_CNT_HE_CRC_BE4 0x20E58
++#define B_CNT_HE_CRC_OK GENMASK(15, 0)
++#define B_CNT_HE_CRC_ERR GENMASK(31, 16)
++#define R_CNT_VHT_CRC 0x1A5C
++#define R_CNT_VHT_CRC_V1 0x0E5C
++#define R_CNT_VHT_CRC_BE4 0x20E5C
++#define B_CNT_VHT_CRC_OK GENMASK(15, 0)
++#define B_CNT_VHT_CRC_ERR GENMASK(31, 16)
++#define R_CNT_HT_CRC 0x1A60
++#define R_CNT_HT_CRC_V1 0x0E60
++#define R_CNT_HT_CRC_BE4 0x20E60
++#define B_CNT_HT_CRC_OK GENMASK(15, 0)
++#define B_CNT_HT_CRC_ERR GENMASK(31, 16)
++#define R_CNT_L_CRC 0x1A64
++#define R_CNT_L_CRC_V1 0x0E64
++#define R_CNT_L_CRC_BE4 0x20E64
++#define B_CNT_L_CRC_OK GENMASK(15, 0)
++#define B_CNT_L_CRC_ERR GENMASK(31, 16)
++#define R_CNT_AMPDU_MISS 0x1A7C
++#define R_CNT_AMPDU_MISS_V1 0x0E7C
++#define R_CNT_AMPDU_MISS_BE4 0x20E7C
++#define B_CNT_AMPDU_MISS GENMASK(31, 16)
++#define R_CNT_AMPDU_RX_CRC32 0x1A80
++#define R_CNT_AMPDU_RX_CRC32_V1 0x0E80
++#define R_CNT_AMPDU_RX_CRC32_BE4 0x20E80
++#define B_CNT_AMPDU_RX_CRC32_OK GENMASK(15, 0)
++#define B_CNT_AMPDU_RX_CRC32_ERR GENMASK(31, 16)
+ #define R_NHM_CNT0 0x1A88
+ #define B_NHM_CNT0_MSK GENMASK(15, 0)
+ #define B_NHM_CNT1_MSK GENMASK(31, 16)
+@@ -9137,12 +9226,41 @@
+ #define B_RXCCA_DIS_V1 BIT(0)
+ #define R_RXSC 0x237C
+ #define B_RXSC_EN BIT(0)
++#define R_R1B_RR_SEL 0x2388
++#define B_R1B_RR_SEL GENMASK(24, 23)
++#define R_R1B_RX_RPT_RST 0x2388
++#define R_R1B_RX_RPT_RST_V1 0x2340
++#define R_R1B_RX_RPT_RST_BE 0x0540
++#define R_R1B_RX_RPT_RST_BE4 0x20540
++#define B_R1B_RX_RPT_RST BIT(15)
++#define B_R1B_RX_RPT_RST_V1 BIT(7)
++#define R_BRK_CNT 0x239C
++#define R_BRK_CNT_V1 0x059C
++#define R_BRK_CNT_BE4 0x2059C
++#define B_BRK_CNT GENMASK(31, 16)
+ #define R_RX_RPL_OFST 0x23AC
+ #define B_RX_RPL_OFST_CCK_MASK GENMASK(6, 0)
+ #define R_RXSCOBC 0x23B0
+ #define B_RXSCOBC_TH GENMASK(18, 0)
+ #define R_RXSCOCCK 0x23B4
+ #define B_RXSCOCCK_TH GENMASK(18, 0)
++#define R_SFD_GG_CNT 0x23E0
++#define R_SFD_GG_CNT_V1 0x23A0
++#define R_SFD_GG_CNT_V2 0x05A0
++#define R_SFD_GG_CNT_BE4 0x205A0
++#define B_SFD_GG_CNT GENMASK(15, 0)
++#define R_SIG_GG_CNT 0x23E8
++#define R_SIG_GG_CNT_V1 0x23AC
++#define R_SIG_GG_CNT_V2 0x05AC
++#define R_SIG_GG_CNT_BE4 0x205AC
++#define B_SIG_GG_CNT GENMASK(15, 0)
++#define B_SIG_GG_CNT_V1 GENMASK(15, 8)
++#define R_SPOOF_CNT 0x23EC
++#define R_SPOOF_CNT_V1 0x23A8
++#define R_SPOOF_CNT_V2 0x05A8
++#define R_SPOOF_CNT_BE4 0x205A8
++#define B_SPOOF_CNT GENMASK(7, 0)
++#define B_SPOOF_CNT_V1 GENMASK(31, 16)
+ #define R_P80_AT_HIGH_FREQ_RU_ALLOC 0x2410
+ #define B_P80_AT_HIGH_FREQ_RU_ALLOC_PHY1 BIT(14)
+ #define B_P80_AT_HIGH_FREQ_RU_ALLOC_PHY0 BIT(13)
+@@ -9179,6 +9297,10 @@
+ #define R_EDCCA_RPT_B_BE4_C1 0x2FE34
+ #define R_EDCCA_RPT_P1_A_BE 0x2E40
+ #define R_EDCCA_RPT_P1_B_BE 0x2E44
++#define R_CNT_EHT_CRC 0x2F00
++#define R_CNT_EHT_CRC_BE4 0x22F00
++#define B_CNT_EHT_CRC_OK GENMASK(15, 0)
++#define B_CNT_EHT_CRC_ERR GENMASK(31, 16)
+ #define R_S1_HW_SI_DIS 0x3200
+ #define B_S1_HW_SI_DIS_W_R_TRIG GENMASK(30, 28)
+ #define R_P1_RXCK 0x32A0
+@@ -10547,6 +10669,11 @@
+ #define R_IFS_T3_HIS_BE4 0x20F54
+ #define B_IFS_T3_HIS_BE4 GENMASK(15, 0)
+ #define B_IFS_T4_HIS_BE4 GENMASK(31, 16)
++#define R_CNT_CCK_CCA_BE4 0x20FE8
++#define B_CNT_CCK_CCA_BE4 GENMASK(15, 0)
++#define R_CNT_CCK_CRC32_BE4 0x20FEC
++#define B_CNT_CCK_CRC32OK_BE4 GENMASK(15, 0)
++#define B_CNT_CCK_CRC32FAIL_BE4 GENMASK(31, 16)
+ 
+ #define R_TX_ERROR_SEL_BE4 0x21254
+ #define B_TX_ERROR_PSDU_BE4 BIT(11)
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+index d9a144b4bf58..e047e716d9e3 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+@@ -307,6 +307,54 @@ static const struct rtw89_edcca_regs rtw8851b_edcca_regs = {
+ 	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_M,
+ };
+ 
++static const struct rtw89_pmac_regs rtw8851b_pmac_regs = {
++	.cck_txon = {R_CNT_CCKTXON, B_CNT_CCKTXON},
++	.cck_txen = {R_CNT_CCKTXEN, B_CNT_CCKTXEN},
++	.cck_cca = {R_CNT_CCK_CCA_P0, B_CNT_CCK_CCA_P0},
++	.cck_sfd_gg = {R_SFD_GG_CNT, B_SFD_GG_CNT},
++	.cck_sig_gg = {R_SIG_GG_CNT, B_SIG_GG_CNT},
++	.cck_spoofing = {R_SPOOF_CNT, B_SPOOF_CNT},
++	.cck_brk = {},
++	.brk = {R_CNT_BRK, B_CNT_BRK},
++	.brk_option = {},
++	.search_fail = {R_CNT_SEARCH_FAIL, B_CNT_SEARCH_FAIL},
++	.lsig_brk_s_th = {R_CNT_LSIG_BRK_S_TH, B_CNT_LSIG_BRK_S_TH},
++	.lsig_brk_l_th = {R_CNT_LSIG_BRK_L_TH, B_CNT_LSIG_BRK_L_TH},
++	.rxl_err_parity = {R_CNT_RXL_ERR_PARITY, B_CNT_RXL_ERR_PARITY},
++	.rxl_err_rate = {R_CNT_RXL_ERR_RATE, B_CNT_RXL_ERR_RATE},
++	.ofdm_cca = {R_CNT_OFDM_CCA, B_CNT_OFDM_CCA},
++	.cca_spoofing = {R_CNT_CCA_SPOOFING, B_CNT_CCA_SPOOFING},
++	.ampdu_miss = {R_CNT_AMPDU_MISS, B_CNT_AMPDU_MISS},
++	.r1b_rx_rpt_rst = {R_R1B_RX_RPT_RST, B_R1B_RX_RPT_RST},
++	.r1b_rr_sel = {R_R1B_RR_SEL, B_R1B_RR_SEL},
++	.enable_all_cnt = {R_ENABLE_ALL_CNT, B_ENABLE_ALL_CNT},
++	.rst_all_cnt = {R_RST_ALL_CNT, B_RST_ALL_CNT},
++	.cck_crc32 = R_CNT_CCK_CRC32_P0,
++	.cck_crc32_ok_mask = B_CNT_CCK_CRC32OK_P0,
++	.cck_crc32_fail_mask = B_CNT_CCK_CRC32FAIL_P0,
++	.ofdm_txon = R_CNT_OFDMTXON,
++	.ofdm_txon_mask = B_CNT_OFDMTXON,
++	.ofdm_txen_mask = B_CNT_OFDMTXEN,
++	.l_crc = R_CNT_L_CRC,
++	.l_crc_ok_mask = B_CNT_L_CRC_OK,
++	.l_crc_err_mask = B_CNT_L_CRC_ERR,
++	.ht_crc = R_CNT_HT_CRC,
++	.ht_crc_ok_mask = B_CNT_HT_CRC_OK,
++	.ht_crc_err_mask = B_CNT_HT_CRC_ERR,
++	.vht_crc = R_CNT_VHT_CRC,
++	.vht_crc_ok_mask = B_CNT_VHT_CRC_OK,
++	.vht_crc_err_mask = B_CNT_VHT_CRC_ERR,
++	.he_crc = R_CNT_HE_CRC,
++	.he_crc_ok_mask = B_CNT_HE_CRC_OK,
++	.he_crc_err_mask = B_CNT_HE_CRC_ERR,
++	.eht_crc = 0,
++	.eht_crc_ok_mask = 0,
++	.eht_crc_err_mask = 0,
++	.ampdu_crc = R_CNT_AMPDU_RX_CRC32,
++	.ampdu_crc_ok_mask = B_CNT_AMPDU_RX_CRC32_OK,
++	.ampdu_crc_err_mask = B_CNT_AMPDU_RX_CRC32_ERR,
++};
++
+ static const struct rtw89_btc_rf_trx_para rtw89_btc_8851b_rf_ul[] = {
+ 	{255, 0, 0, 7}, /* 0 -> original */
+ 	{255, 2, 0, 7}, /* 1 -> for BT-connected ACI issue && BTG co-rx */
+@@ -2722,6 +2770,7 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
+ 				  BIT(RTW89_DMA_ACH6) | BIT(RTW89_DMA_ACH7) |
+ 				  BIT(RTW89_DMA_B1MG) | BIT(RTW89_DMA_B1HI),
+ 	.edcca_regs		= &rtw8851b_edcca_regs,
++	.pmac_regs		= &rtw8851b_pmac_regs,
+ #ifdef CONFIG_PM
+ 	.wowlan_stub		= &rtw_wowlan_stub_8851b,
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index b81eeb59be60..686e489d42f2 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -621,6 +621,54 @@ static const struct rtw89_edcca_regs rtw8852a_edcca_regs = {
+ 	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_M,
+ };
+ 
++static const struct rtw89_pmac_regs rtw8852a_pmac_regs = {
++	.cck_txon = {R_CNT_CCKTXON, B_CNT_CCKTXON},
++	.cck_txen = {R_CNT_CCKTXEN, B_CNT_CCKTXEN},
++	.cck_cca = {R_CNT_CCK_CCA_P0, B_CNT_CCK_CCA_P0},
++	.cck_sfd_gg = {R_SFD_GG_CNT, B_SFD_GG_CNT},
++	.cck_sig_gg = {R_SIG_GG_CNT, B_SIG_GG_CNT},
++	.cck_spoofing = {R_SPOOF_CNT, B_SPOOF_CNT},
++	.cck_brk = {},
++	.brk = {R_CNT_BRK, B_CNT_BRK},
++	.brk_option = {},
++	.search_fail = {R_CNT_SEARCH_FAIL, B_CNT_SEARCH_FAIL},
++	.lsig_brk_s_th = {R_CNT_LSIG_BRK_S_TH, B_CNT_LSIG_BRK_S_TH},
++	.lsig_brk_l_th = {R_CNT_LSIG_BRK_L_TH, B_CNT_LSIG_BRK_L_TH},
++	.rxl_err_parity = {R_CNT_RXL_ERR_PARITY, B_CNT_RXL_ERR_PARITY},
++	.rxl_err_rate = {R_CNT_RXL_ERR_RATE, B_CNT_RXL_ERR_RATE},
++	.ofdm_cca = {R_CNT_OFDM_CCA, B_CNT_OFDM_CCA},
++	.cca_spoofing = {R_CNT_CCA_SPOOFING, B_CNT_CCA_SPOOFING},
++	.ampdu_miss = {R_CNT_AMPDU_MISS, B_CNT_AMPDU_MISS},
++	.r1b_rx_rpt_rst = {R_R1B_RX_RPT_RST, B_R1B_RX_RPT_RST},
++	.r1b_rr_sel = {R_R1B_RR_SEL, B_R1B_RR_SEL},
++	.enable_all_cnt = {R_ENABLE_ALL_CNT, B_ENABLE_ALL_CNT},
++	.rst_all_cnt = {R_RST_ALL_CNT, B_RST_ALL_CNT},
++	.cck_crc32 = R_CNT_CCK_CRC32_P0,
++	.cck_crc32_ok_mask = B_CNT_CCK_CRC32OK_P0,
++	.cck_crc32_fail_mask = B_CNT_CCK_CRC32FAIL_P0,
++	.ofdm_txon = R_CNT_OFDMTXON,
++	.ofdm_txon_mask = B_CNT_OFDMTXON,
++	.ofdm_txen_mask = B_CNT_OFDMTXEN,
++	.l_crc = R_CNT_L_CRC,
++	.l_crc_ok_mask = B_CNT_L_CRC_OK,
++	.l_crc_err_mask = B_CNT_L_CRC_ERR,
++	.ht_crc = R_CNT_HT_CRC,
++	.ht_crc_ok_mask = B_CNT_HT_CRC_OK,
++	.ht_crc_err_mask = B_CNT_HT_CRC_ERR,
++	.vht_crc = R_CNT_VHT_CRC,
++	.vht_crc_ok_mask = B_CNT_VHT_CRC_OK,
++	.vht_crc_err_mask = B_CNT_VHT_CRC_ERR,
++	.he_crc = R_CNT_HE_CRC,
++	.he_crc_ok_mask = B_CNT_HE_CRC_OK,
++	.he_crc_err_mask = B_CNT_HE_CRC_ERR,
++	.eht_crc = 0,
++	.eht_crc_ok_mask = 0,
++	.eht_crc_err_mask = 0,
++	.ampdu_crc = R_CNT_AMPDU_RX_CRC32,
++	.ampdu_crc_ok_mask = B_CNT_AMPDU_RX_CRC32_OK,
++	.ampdu_crc_err_mask = B_CNT_AMPDU_RX_CRC32_ERR,
++};
++
+ static void rtw8852a_efuse_parsing_tssi(struct rtw89_dev *rtwdev,
+ 					struct rtw8852a_efuse *map)
+ {
+@@ -2459,6 +2507,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
+ 	.btc_sb			= {{{R_AX_SCOREBOARD, R_AX_SCOREBOARD},}},
+ 	.dma_ch_mask		= 0,
+ 	.edcca_regs		= &rtw8852a_edcca_regs,
++	.pmac_regs		= &rtw8852a_pmac_regs,
+ #ifdef CONFIG_PM
+ 	.wowlan_stub		= &rtw_wowlan_stub_8852a,
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index 13c942127225..6ab99f72fda7 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -259,6 +259,54 @@ static const struct rtw89_edcca_regs rtw8852b_edcca_regs = {
+ 	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_M,
+ };
+ 
++static const struct rtw89_pmac_regs rtw8852b_pmac_regs = {
++	.cck_txon = {R_CNT_CCKTXON, B_CNT_CCKTXON},
++	.cck_txen = {R_CNT_CCKTXEN, B_CNT_CCKTXEN},
++	.cck_cca = {R_CNT_CCK_CCA_P0, B_CNT_CCK_CCA_P0},
++	.cck_sfd_gg = {R_SFD_GG_CNT, B_SFD_GG_CNT},
++	.cck_sig_gg = {R_SIG_GG_CNT, B_SIG_GG_CNT},
++	.cck_spoofing = {R_SPOOF_CNT, B_SPOOF_CNT},
++	.cck_brk = {},
++	.brk = {R_CNT_BRK, B_CNT_BRK},
++	.brk_option = {},
++	.search_fail = {R_CNT_SEARCH_FAIL, B_CNT_SEARCH_FAIL},
++	.lsig_brk_s_th = {R_CNT_LSIG_BRK_S_TH, B_CNT_LSIG_BRK_S_TH},
++	.lsig_brk_l_th = {R_CNT_LSIG_BRK_L_TH, B_CNT_LSIG_BRK_L_TH},
++	.rxl_err_parity = {R_CNT_RXL_ERR_PARITY, B_CNT_RXL_ERR_PARITY},
++	.rxl_err_rate = {R_CNT_RXL_ERR_RATE, B_CNT_RXL_ERR_RATE},
++	.ofdm_cca = {R_CNT_OFDM_CCA, B_CNT_OFDM_CCA},
++	.cca_spoofing = {R_CNT_CCA_SPOOFING, B_CNT_CCA_SPOOFING},
++	.ampdu_miss = {R_CNT_AMPDU_MISS, B_CNT_AMPDU_MISS},
++	.r1b_rx_rpt_rst = {R_R1B_RX_RPT_RST, B_R1B_RX_RPT_RST},
++	.r1b_rr_sel = {R_R1B_RR_SEL, B_R1B_RR_SEL},
++	.enable_all_cnt = {R_ENABLE_ALL_CNT, B_ENABLE_ALL_CNT},
++	.rst_all_cnt = {R_RST_ALL_CNT, B_RST_ALL_CNT},
++	.cck_crc32 = R_CNT_CCK_CRC32_P0,
++	.cck_crc32_ok_mask = B_CNT_CCK_CRC32OK_P0,
++	.cck_crc32_fail_mask = B_CNT_CCK_CRC32FAIL_P0,
++	.ofdm_txon = R_CNT_OFDMTXON,
++	.ofdm_txon_mask = B_CNT_OFDMTXON,
++	.ofdm_txen_mask = B_CNT_OFDMTXEN,
++	.l_crc = R_CNT_L_CRC,
++	.l_crc_ok_mask = B_CNT_L_CRC_OK,
++	.l_crc_err_mask = B_CNT_L_CRC_ERR,
++	.ht_crc = R_CNT_HT_CRC,
++	.ht_crc_ok_mask = B_CNT_HT_CRC_OK,
++	.ht_crc_err_mask = B_CNT_HT_CRC_ERR,
++	.vht_crc = R_CNT_VHT_CRC,
++	.vht_crc_ok_mask = B_CNT_VHT_CRC_OK,
++	.vht_crc_err_mask = B_CNT_VHT_CRC_ERR,
++	.he_crc = R_CNT_HE_CRC,
++	.he_crc_ok_mask = B_CNT_HE_CRC_OK,
++	.he_crc_err_mask = B_CNT_HE_CRC_ERR,
++	.eht_crc = 0,
++	.eht_crc_ok_mask = 0,
++	.eht_crc_err_mask = 0,
++	.ampdu_crc = R_CNT_AMPDU_RX_CRC32,
++	.ampdu_crc_ok_mask = B_CNT_AMPDU_RX_CRC32_OK,
++	.ampdu_crc_err_mask = B_CNT_AMPDU_RX_CRC32_ERR,
++};
++
+ static const struct rtw89_btc_rf_trx_para rtw89_btc_8852b_rf_ul[] = {
+ 	{255, 0, 0, 7}, /* 0 -> original */
+ 	{255, 2, 0, 7}, /* 1 -> for BT-connected ACI issue && BTG co-rx */
+@@ -1056,6 +1104,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
+ 				  BIT(RTW89_DMA_ACH6) | BIT(RTW89_DMA_ACH7) |
+ 				  BIT(RTW89_DMA_B1MG) | BIT(RTW89_DMA_B1HI),
+ 	.edcca_regs		= &rtw8852b_edcca_regs,
++	.pmac_regs		= &rtw8852b_pmac_regs,
+ #ifdef CONFIG_PM
+ 	.wowlan_stub		= &rtw_wowlan_stub_8852b,
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
+index 3fd5990a8bc4..83de26273100 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
+@@ -202,6 +202,54 @@ static const struct rtw89_edcca_regs rtw8852bt_edcca_regs = {
+ 	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_M,
+ };
+ 
++static const struct rtw89_pmac_regs rtw8852bt_pmac_regs = {
++	.cck_txon = {R_CNT_CCKTXON, B_CNT_CCKTXON},
++	.cck_txen = {R_CNT_CCKTXEN, B_CNT_CCKTXEN},
++	.cck_cca = {R_CNT_CCK_CCA_P0, B_CNT_CCK_CCA_P0},
++	.cck_sfd_gg = {R_SFD_GG_CNT, B_SFD_GG_CNT},
++	.cck_sig_gg = {R_SIG_GG_CNT, B_SIG_GG_CNT},
++	.cck_spoofing = {R_SPOOF_CNT, B_SPOOF_CNT},
++	.cck_brk = {},
++	.brk = {R_CNT_BRK, B_CNT_BRK},
++	.brk_option = {},
++	.search_fail = {R_CNT_SEARCH_FAIL, B_CNT_SEARCH_FAIL},
++	.lsig_brk_s_th = {R_CNT_LSIG_BRK_S_TH, B_CNT_LSIG_BRK_S_TH},
++	.lsig_brk_l_th = {R_CNT_LSIG_BRK_L_TH, B_CNT_LSIG_BRK_L_TH},
++	.rxl_err_parity = {R_CNT_RXL_ERR_PARITY, B_CNT_RXL_ERR_PARITY},
++	.rxl_err_rate = {R_CNT_RXL_ERR_RATE, B_CNT_RXL_ERR_RATE},
++	.ofdm_cca = {R_CNT_OFDM_CCA, B_CNT_OFDM_CCA},
++	.cca_spoofing = {R_CNT_CCA_SPOOFING, B_CNT_CCA_SPOOFING},
++	.ampdu_miss = {R_CNT_AMPDU_MISS, B_CNT_AMPDU_MISS},
++	.r1b_rx_rpt_rst = {R_R1B_RX_RPT_RST, B_R1B_RX_RPT_RST},
++	.r1b_rr_sel = {R_R1B_RR_SEL, B_R1B_RR_SEL},
++	.enable_all_cnt = {R_ENABLE_ALL_CNT, B_ENABLE_ALL_CNT},
++	.rst_all_cnt = {R_RST_ALL_CNT, B_RST_ALL_CNT},
++	.cck_crc32 = R_CNT_CCK_CRC32_P0,
++	.cck_crc32_ok_mask = B_CNT_CCK_CRC32OK_P0,
++	.cck_crc32_fail_mask = B_CNT_CCK_CRC32FAIL_P0,
++	.ofdm_txon = R_CNT_OFDMTXON,
++	.ofdm_txon_mask = B_CNT_OFDMTXON,
++	.ofdm_txen_mask = B_CNT_OFDMTXEN,
++	.l_crc = R_CNT_L_CRC,
++	.l_crc_ok_mask = B_CNT_L_CRC_OK,
++	.l_crc_err_mask = B_CNT_L_CRC_ERR,
++	.ht_crc = R_CNT_HT_CRC,
++	.ht_crc_ok_mask = B_CNT_HT_CRC_OK,
++	.ht_crc_err_mask = B_CNT_HT_CRC_ERR,
++	.vht_crc = R_CNT_VHT_CRC,
++	.vht_crc_ok_mask = B_CNT_VHT_CRC_OK,
++	.vht_crc_err_mask = B_CNT_VHT_CRC_ERR,
++	.he_crc = R_CNT_HE_CRC,
++	.he_crc_ok_mask = B_CNT_HE_CRC_OK,
++	.he_crc_err_mask = B_CNT_HE_CRC_ERR,
++	.eht_crc = 0,
++	.eht_crc_ok_mask = 0,
++	.eht_crc_err_mask = 0,
++	.ampdu_crc = R_CNT_AMPDU_RX_CRC32,
++	.ampdu_crc_ok_mask = B_CNT_AMPDU_RX_CRC32_OK,
++	.ampdu_crc_err_mask = B_CNT_AMPDU_RX_CRC32_ERR,
++};
++
+ static const struct rtw89_btc_rf_trx_para rtw89_btc_8852bt_rf_ul[] = {
+ 	{255, 0, 0, 7}, /* 0 -> original */
+ 	{255, 2, 0, 7}, /* 1 -> for BT-connected ACI issue && BTG co-rx */
+@@ -893,6 +941,7 @@ const struct rtw89_chip_info rtw8852bt_chip_info = {
+ 				  BIT(RTW89_DMA_ACH6) | BIT(RTW89_DMA_ACH7) |
+ 				  BIT(RTW89_DMA_B1MG) | BIT(RTW89_DMA_B1HI),
+ 	.edcca_regs		= &rtw8852bt_edcca_regs,
++	.pmac_regs		= &rtw8852bt_pmac_regs,
+ #ifdef CONFIG_PM
+ 	.wowlan_stub		= &rtw_wowlan_stub_8852bt,
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 9ef469c1080e..cc278587b532 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -270,6 +270,54 @@ static const struct rtw89_edcca_regs rtw8852c_edcca_regs = {
+ 	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_M,
+ };
+ 
++static const struct rtw89_pmac_regs rtw8852c_pmac_regs = {
++	.cck_txon = {R_CNT_CCKTXON, B_CNT_CCKTXON},
++	.cck_txen = {R_CNT_CCKTXEN, B_CNT_CCKTXEN},
++	.cck_cca = {R_CNT_CCK_CCA_P0, B_CNT_CCK_CCA_P0},
++	.cck_sfd_gg = {R_SFD_GG_CNT_V1, B_SFD_GG_CNT},
++	.cck_sig_gg = {R_SIG_GG_CNT_V1, B_SIG_GG_CNT_V1},
++	.cck_spoofing = {R_SPOOF_CNT_V1, B_SPOOF_CNT_V1},
++	.cck_brk = {R_BRK_CNT, B_BRK_CNT},
++	.brk = {R_CNT_BRK, B_CNT_BRK},
++	.brk_option = {R_BRK_OPT, B_BRK_OPT},
++	.search_fail = {R_CNT_SEARCH_FAIL, B_CNT_SEARCH_FAIL},
++	.lsig_brk_s_th = {R_CNT_LSIG_BRK_S_TH, B_CNT_LSIG_BRK_S_TH},
++	.lsig_brk_l_th = {R_CNT_LSIG_BRK_L_TH, B_CNT_LSIG_BRK_L_TH},
++	.rxl_err_parity = {R_CNT_RXL_ERR_PARITY, B_CNT_RXL_ERR_PARITY},
++	.rxl_err_rate = {R_CNT_RXL_ERR_RATE, B_CNT_RXL_ERR_RATE},
++	.ofdm_cca = {R_CNT_OFDM_CCA, B_CNT_OFDM_CCA},
++	.cca_spoofing = {R_CNT_CCA_SPOOFING, B_CNT_CCA_SPOOFING},
++	.ampdu_miss = {R_CNT_AMPDU_MISS, B_CNT_AMPDU_MISS},
++	.r1b_rx_rpt_rst = {R_R1B_RX_RPT_RST_V1, B_R1B_RX_RPT_RST_V1},
++	.r1b_rr_sel = {},
++	.enable_all_cnt = {R_ENABLE_ALL_CNT, B_ENABLE_ALL_CNT},
++	.rst_all_cnt = {R_RST_ALL_CNT, B_RST_ALL_CNT},
++	.cck_crc32 = R_CNT_CCK_CRC32_P0,
++	.cck_crc32_ok_mask = B_CNT_CCK_CRC32OK_P0,
++	.cck_crc32_fail_mask = B_CNT_CCK_CRC32FAIL_P0,
++	.ofdm_txon = R_CNT_OFDMTXON,
++	.ofdm_txon_mask = B_CNT_OFDMTXON,
++	.ofdm_txen_mask = B_CNT_OFDMTXEN,
++	.l_crc = R_CNT_L_CRC,
++	.l_crc_ok_mask = B_CNT_L_CRC_OK,
++	.l_crc_err_mask = B_CNT_L_CRC_ERR,
++	.ht_crc = R_CNT_HT_CRC,
++	.ht_crc_ok_mask = B_CNT_HT_CRC_OK,
++	.ht_crc_err_mask = B_CNT_HT_CRC_ERR,
++	.vht_crc = R_CNT_VHT_CRC,
++	.vht_crc_ok_mask = B_CNT_VHT_CRC_OK,
++	.vht_crc_err_mask = B_CNT_VHT_CRC_ERR,
++	.he_crc = R_CNT_HE_CRC,
++	.he_crc_ok_mask = B_CNT_HE_CRC_OK,
++	.he_crc_err_mask = B_CNT_HE_CRC_ERR,
++	.eht_crc = 0,
++	.eht_crc_ok_mask = 0,
++	.eht_crc_err_mask = 0,
++	.ampdu_crc = R_CNT_AMPDU_RX_CRC32,
++	.ampdu_crc_ok_mask = B_CNT_AMPDU_RX_CRC32_OK,
++	.ampdu_crc_err_mask = B_CNT_AMPDU_RX_CRC32_ERR,
++};
++
+ static void rtw8852c_ctrl_btg_bt_rx(struct rtw89_dev *rtwdev, bool en,
+ 				    enum rtw89_phy_idx phy_idx);
+ 
+@@ -3252,6 +3300,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
+ 	.btc_sb			= {{{R_AX_SCOREBOARD, R_AX_SCOREBOARD},}},
+ 	.dma_ch_mask		= 0,
+ 	.edcca_regs		= &rtw8852c_edcca_regs,
++	.pmac_regs		= &rtw8852c_pmac_regs,
+ #ifdef CONFIG_PM
+ 	.wowlan_stub		= &rtw_wowlan_stub_8852c,
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+index 3c453b93c52e..e6f15ee2a86b 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+@@ -383,6 +383,54 @@ static const struct rtw89_edcca_regs rtw8922a_edcca_regs = {
+ 	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_BE_M,
+ };
+ 
++static const struct rtw89_pmac_regs rtw8922a_pmac_regs = {
++	.cck_txon = {R_CNT_CCKTXON_V1, B_CNT_CCKTXON},
++	.cck_txen = {R_CNT_CCKTXEN_V1, B_CNT_CCKTXEN},
++	.cck_cca = {R_CNT_CCK_CCA_P0_V1, B_CNT_CCK_CCA_P0},
++	.cck_sfd_gg = {R_SFD_GG_CNT_V2, B_SFD_GG_CNT},
++	.cck_sig_gg = {R_SIG_GG_CNT_V2, B_SIG_GG_CNT_V1},
++	.cck_spoofing = {R_SPOOF_CNT_V2, B_SPOOF_CNT_V1},
++	.cck_brk = {R_BRK_CNT_V1, B_BRK_CNT},
++	.brk = {R_CNT_BRK_V1, B_CNT_BRK},
++	.brk_option = {},
++	.search_fail = {R_CNT_SEARCH_FAIL_V1, B_CNT_SEARCH_FAIL},
++	.lsig_brk_s_th = {R_CNT_LSIG_BRK_S_TH_V1, B_CNT_LSIG_BRK_S_TH},
++	.lsig_brk_l_th = {R_CNT_LSIG_BRK_L_TH_V1, B_CNT_LSIG_BRK_L_TH},
++	.rxl_err_parity = {R_CNT_RXL_ERR_PARITY_V1, B_CNT_RXL_ERR_PARITY},
++	.rxl_err_rate = {R_CNT_RXL_ERR_RATE_V1, B_CNT_RXL_ERR_RATE},
++	.ofdm_cca = {R_CNT_OFDM_CCA_V1, B_CNT_OFDM_CCA},
++	.cca_spoofing = {R_CNT_CCA_SPOOFING_V1, B_CNT_CCA_SPOOFING},
++	.ampdu_miss = {R_CNT_AMPDU_MISS_V1, B_CNT_AMPDU_MISS},
++	.r1b_rx_rpt_rst = {R_R1B_RX_RPT_RST_BE, B_R1B_RX_RPT_RST_V1},
++	.r1b_rr_sel = {},
++	.enable_all_cnt = {R_ENABLE_ALL_CNT, B_ENABLE_ALL_CNT},
++	.rst_all_cnt = {R_RST_ALL_CNT, B_RST_ALL_CNT},
++	.cck_crc32 = R_CNT_CCK_CRC32_P0_V1,
++	.cck_crc32_ok_mask = B_CNT_CCK_CRC32OK_P0,
++	.cck_crc32_fail_mask = B_CNT_CCK_CRC32FAIL_P0,
++	.ofdm_txon = R_CNT_OFDMTXON_V1,
++	.ofdm_txon_mask = B_CNT_OFDMTXON,
++	.ofdm_txen_mask = B_CNT_OFDMTXEN,
++	.l_crc = R_CNT_L_CRC_V1,
++	.l_crc_ok_mask = B_CNT_L_CRC_OK,
++	.l_crc_err_mask = B_CNT_L_CRC_ERR,
++	.ht_crc = R_CNT_HT_CRC_V1,
++	.ht_crc_ok_mask = B_CNT_HT_CRC_OK,
++	.ht_crc_err_mask = B_CNT_HT_CRC_ERR,
++	.vht_crc = R_CNT_VHT_CRC_V1,
++	.vht_crc_ok_mask = B_CNT_VHT_CRC_OK,
++	.vht_crc_err_mask = B_CNT_VHT_CRC_ERR,
++	.he_crc = R_CNT_HE_CRC_V1,
++	.he_crc_ok_mask = B_CNT_HE_CRC_OK,
++	.he_crc_err_mask = B_CNT_HE_CRC_ERR,
++	.eht_crc = R_CNT_EHT_CRC,
++	.eht_crc_ok_mask = B_CNT_EHT_CRC_OK,
++	.eht_crc_err_mask = B_CNT_EHT_CRC_ERR,
++	.ampdu_crc = R_CNT_AMPDU_RX_CRC32_V1,
++	.ampdu_crc_ok_mask = B_CNT_AMPDU_RX_CRC32_OK,
++	.ampdu_crc_err_mask = B_CNT_AMPDU_RX_CRC32_ERR,
++};
++
+ static const struct rtw89_efuse_block_cfg rtw8922a_efuse_blocks[] = {
+ 	[RTW89_EFUSE_BLOCK_SYS]			= {.offset = 0x00000, .size = 0x310},
+ 	[RTW89_EFUSE_BLOCK_RF]			= {.offset = 0x10000, .size = 0x240},
+@@ -3245,6 +3293,7 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
+ 	.btc_sb			= {{{R_BE_SCOREBOARD, R_BE_SCOREBOARD},}},
+ 	.dma_ch_mask		= 0,
+ 	.edcca_regs		= &rtw8922a_edcca_regs,
++	.pmac_regs		= &rtw8922a_pmac_regs,
+ #ifdef CONFIG_PM
+ 	.wowlan_stub		= &rtw_wowlan_stub_8922a,
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.c b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
+index ba736b967880..b8b75fca0a1b 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922d.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
+@@ -227,6 +227,54 @@ static const struct rtw89_edcca_regs rtw8922d_edcca_regs = {
+ 	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_BE_M,
+ };
+ 
++static const struct rtw89_pmac_regs rtw8922d_pmac_regs = {
++	.cck_txon = {R_CNT_CCKTXON_BE4, B_CNT_CCKTXON},
++	.cck_txen = {R_CNT_CCKTXEN_BE4, B_CNT_CCKTXEN},
++	.cck_cca = {R_CNT_CCK_CCA_BE4, B_CNT_CCK_CCA_BE4},
++	.cck_sfd_gg = {R_SFD_GG_CNT_BE4, B_SFD_GG_CNT},
++	.cck_sig_gg = {R_SIG_GG_CNT_BE4, B_SIG_GG_CNT_V1},
++	.cck_spoofing = {R_SPOOF_CNT_BE4, B_SPOOF_CNT_V1},
++	.cck_brk = {R_BRK_CNT_BE4, B_BRK_CNT},
++	.brk = {R_CNT_BRK_BE4, B_CNT_BRK},
++	.brk_option = {},
++	.search_fail = {R_CNT_SEARCH_FAIL_BE4, B_CNT_SEARCH_FAIL},
++	.lsig_brk_s_th = {R_CNT_LSIG_BRK_S_TH_BE4, B_CNT_LSIG_BRK_S_TH},
++	.lsig_brk_l_th = {R_CNT_LSIG_BRK_L_TH_BE4, B_CNT_LSIG_BRK_L_TH},
++	.rxl_err_parity = {R_CNT_RXL_ERR_PARITY_BE4, B_CNT_RXL_ERR_PARITY},
++	.rxl_err_rate = {R_CNT_RXL_ERR_RATE_BE4, B_CNT_RXL_ERR_RATE},
++	.ofdm_cca = {R_CNT_OFDM_CCA_BE4, B_CNT_OFDM_CCA},
++	.cca_spoofing = {R_CNT_CCA_SPOOFING_BE4, B_CNT_CCA_SPOOFING},
++	.ampdu_miss = {R_CNT_AMPDU_MISS_BE4, B_CNT_AMPDU_MISS},
++	.r1b_rx_rpt_rst = {R_R1B_RX_RPT_RST_BE4, B_R1B_RX_RPT_RST_V1},
++	.r1b_rr_sel = {},
++	.enable_all_cnt = {R_ENABLE_ALL_CNT_BE4, B_ENABLE_ALL_CNT},
++	.rst_all_cnt = {R_RST_ALL_CNT_BE4, B_RST_ALL_CNT},
++	.cck_crc32 = R_CNT_CCK_CRC32_BE4,
++	.cck_crc32_ok_mask = B_CNT_CCK_CRC32OK_BE4,
++	.cck_crc32_fail_mask = B_CNT_CCK_CRC32FAIL_BE4,
++	.ofdm_txon = R_CNT_OFDMTXON_BE4,
++	.ofdm_txon_mask = B_CNT_OFDMTXON,
++	.ofdm_txen_mask = B_CNT_OFDMTXEN,
++	.l_crc = R_CNT_L_CRC_BE4,
++	.l_crc_ok_mask = B_CNT_L_CRC_OK,
++	.l_crc_err_mask = B_CNT_L_CRC_ERR,
++	.ht_crc = R_CNT_HT_CRC_BE4,
++	.ht_crc_ok_mask = B_CNT_HT_CRC_OK,
++	.ht_crc_err_mask = B_CNT_HT_CRC_ERR,
++	.vht_crc = R_CNT_VHT_CRC_BE4,
++	.vht_crc_ok_mask = B_CNT_VHT_CRC_OK,
++	.vht_crc_err_mask = B_CNT_VHT_CRC_ERR,
++	.he_crc = R_CNT_HE_CRC_BE4,
++	.he_crc_ok_mask = B_CNT_HE_CRC_OK,
++	.he_crc_err_mask = B_CNT_HE_CRC_ERR,
++	.eht_crc = R_CNT_EHT_CRC_BE4,
++	.eht_crc_ok_mask = B_CNT_EHT_CRC_OK,
++	.eht_crc_err_mask = B_CNT_EHT_CRC_ERR,
++	.ampdu_crc = R_CNT_AMPDU_RX_CRC32_BE4,
++	.ampdu_crc_ok_mask = B_CNT_AMPDU_RX_CRC32_OK,
++	.ampdu_crc_err_mask = B_CNT_AMPDU_RX_CRC32_ERR,
++};
++
+ static const struct rtw89_efuse_block_cfg rtw8922d_efuse_blocks[] = {
+ 	[RTW89_EFUSE_BLOCK_SYS]			= {.offset = 0x00000, .size = 0x310},
+ 	[RTW89_EFUSE_BLOCK_RF]			= {.offset = 0x10000, .size = 0x240},
+@@ -3085,6 +3133,7 @@ const struct rtw89_chip_info rtw8922d_chip_info = {
+ 				  BIT(RTW89_DMA_ACH5) | BIT(RTW89_DMA_ACH7) |
+ 				  BIT(RTW89_DMA_B0HI) | BIT(RTW89_DMA_B1HI),
+ 	.edcca_regs		= &rtw8922d_edcca_regs,
++	.pmac_regs		= &rtw8922d_pmac_regs,
+ #ifdef CONFIG_PM
+ 	.wowlan_stub		= &rtw_wowlan_stub_8922d,
+ #endif
 -- 
 2.25.1
 
