@@ -1,140 +1,400 @@
-Return-Path: <linux-wireless+bounces-35581-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35582-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BhvLxnH8WnnkQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35581-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 10:53:45 +0200
+	id 2LlmFuPL8WlCkgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35582-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 11:14:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C20A491628
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 10:53:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A32AC491A48
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 11:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D30C301B907
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 08:53:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A818A301F300
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 09:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F283B9601;
-	Wed, 29 Apr 2026 08:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y3UWQnzr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80EF73B9DA1;
+	Wed, 29 Apr 2026 09:11:35 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3323B38A7
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 08:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FF4379EF5
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 09:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777452808; cv=none; b=mCLj+TmZtqKYf7bdTgi4mT4CwlPCpu5qkxafE2GD4oTiAFifXgV7askZ5HbRWFb42EVTgEVpgBKqOyq8Dt7ieJGVoX3LPlaNZkZC3QIoyU+X3gdL9qmB4WyhFQueA+Uksc+xJjJtlA6p8yRTuB4lfLGKzvFT0WRQVji1UBHvpug=
+	t=1777453895; cv=none; b=tlSm+C664o7tN+tHiHSUQwAtR0cGZ7WyNZGtbAaMrHwgqWS7eyJKGmqfj+f9UgjclNEAh6IRsqNmXlJksrc/rRxNRn5z3/iCUAkbI8AXvaTYUfMFePJ6qDXJ67jKJfEsat3D2xTG3va8eBpmCOrIZhFwEeOCzn5j/fqKGikYVQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777452808; c=relaxed/simple;
-	bh=OJw0cqLkYrPfWmxwpz5gJ+Hg/xhQpokAFPoJSwnJrOs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k//H4dniKn9HclyDlh7S4lUtMOCbUjbYC41nt1ONt3HUKuWLP0zaGQeYzAezVU/kZyo/rdfFzGk3qllJTXZwINJgqKMRrHGWpjquBzBvDAWyuWnGWxrd9gixPjYbFgsr0VHKMlqYOvr2hV8mL4I4B+9jMnI2UHsIZgHRDgKHxyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y3UWQnzr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CC0C2BD01
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 08:53:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777452808;
-	bh=OJw0cqLkYrPfWmxwpz5gJ+Hg/xhQpokAFPoJSwnJrOs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Y3UWQnzrugN9g7H9n39KSSumKtrAVIdasAppLHzAlH98NZkxwIQz2dEqFdm+0df1W
-	 nb+rlwCt7e+lTtWWFXouOLexr04e7b7VqoYMY+vrlNjtRYIQMy5/ihOgrMObbCxrUy
-	 vzs/cqUMvxmgr6U87O9FjjAwe3huAVPGxywkpcRpDyslgiwKHty6inVTVwN5MT1YoS
-	 slP/fC9hAONh4xPfd/JmQgv+0BiiJvf43VIUHyOXKpTf4Nd94qgRkCxESRMmu3v40h
-	 yKOBB/8fwhJvYz385/Y41mkLaA8qOpejbv3ED0KmtWvFIsAV0JtNNBsnZy2JWSLz5B
-	 64hwJtq4rBNzw==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a62f43b76aso6710017e87.3
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 01:53:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9r7R0VeaswDZZxN9V8WA3CSgQqZ7+TfbrmtgzV5vKBoL3ousavdDFWjLBfj74mCccXqO6vfsk/w/pdQwji6Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSwKs9AnABQ3PaqfBmM34zRYL6D4/pHEu6Db7HIWSHvE+HPEfD
-	c1mAGGZkZhxcHsbWCwwqVI0/p7i2XnFtP2UrFAYNvDxirFVF7b+xKcxQiJZJaOXNEzAPW08U4Gi
-	ek2STZYDbmiiBQ+wyiJ+mqKo+OzSAGXqfeoukbz2HLA==
-X-Received: by 2002:a05:6512:2256:b0:5a4:2cf:601e with SMTP id
- 2adb3069b0e04-5a749cf3d3amr1183325e87.12.1777452806809; Wed, 29 Apr 2026
- 01:53:26 -0700 (PDT)
+	s=arc-20240116; t=1777453895; c=relaxed/simple;
+	bh=UJ5Ld2S+JHTepWdAusJVua3UcoslO/KbjwgVZRPx2Xw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nAAft5aMXlxnlrVqqm12V7yr71CfD9lOWmlcmWBMMJ8Pqvmgt7OxzisuVdsemHKyRjVK7+o+0ZLprzjKHLcZ3rMX56r26zoR/v+Mlce01/eMVR74cOGuy1s6YeqTEkusLUSxOguFPSQD58FwFIR8fPTuT7Ob5QH3ZPjJj03QUNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1wI0wA-0006pG-NU; Wed, 29 Apr 2026 11:10:30 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1wI0w3-007oJR-0R;
+	Wed, 29 Apr 2026 11:10:23 +0200
+Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 668E3526F68;
+	Wed, 29 Apr 2026 09:10:22 +0000 (UTC)
+Date: Wed, 29 Apr 2026 11:10:21 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Vincent Mailhol <mailhol@kernel.org>, 
+	Krzysztof Halasa <khc@pm.waw.pl>, Johannes Berg <johannes@sipsolutions.net>, 
+	Markus Schneider-Pargmann <msp@baylibre.com>, Steffen Klassert <klassert@kernel.org>, 
+	David Dillow <dave@thedillows.org>, Ion Badulescu <ionut@badula.org>, 
+	Mark Einon <mark.einon@gmail.com>, Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com, 
+	Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra <manishc@marvell.com>, 
+	Potnuri Bharat Teja <bharat@chelsio.com>, Denis Kirjanov <kirjanov@gmail.com>, 
+	Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
+	Cai Huoqing <cai.huoqing@linux.dev>, Fan Gong <gongfan1@huawei.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Tariq Toukan <tariqt@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>, Ido Schimmel <idosch@nvidia.com>, 
+	Petr Machata <petrm@nvidia.com>, Yibo Dong <dong100@mucse.com>, Simon Horman <horms@kernel.org>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, Jiri Pirko <jiri@resnulli.us>, 
+	Francois Romieu <romieu@fr.zoreil.com>, Daniele Venzano <venza@brownhat.org>, 
+	Samuel Chessman <chessman@tux.org>, Jiawen Wu <jiawenwu@trustnetic.com>, 
+	Mengyuan Lou <mengyuanlou@net-swift.com>, Kevin Curtis <kevin.curtis@farsite.co.uk>, 
+	Arend van Spriel <arend.vanspriel@broadcom.com>, Stanislav Yakovlev <stas.yakovlev@gmail.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Kees Cook <kees@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Thomas Fourier <fourier.thomas@gmail.com>, Ingo Molnar <mingo@kernel.org>, 
+	Kory Maincent <kory.maincent@bootlin.com>, Zilin Guan <zilin@seu.edu.cn>, 
+	Marco Crivellari <marco.crivellari@suse.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Jacob Keller <jacob.e.keller@intel.com>, Philipp Stanner <phasta@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Yeounsu Moon <yyyynoom@gmail.com>, 
+	Denis Benato <benato.denis96@gmail.com>, Peiyang Wang <wangpeiyang1@huawei.com>, 
+	Yonglong Liu <liuyonglong@huawei.com>, Andy Shevchenko <andriy.shevchenko@intel.com>, 
+	Yicong Hui <yiconghui@gmail.com>, Randy Dunlap <rdunlap@infradead.org>, 
+	MD Danish Anwar <danishanwar@ti.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Sai Krishna <saikrishnag@marvell.com>, Ethan Nelson-Moore <enelsonmoore@gmail.com>, 
+	Larysa Zaremba <larysa.zaremba@intel.com>, Joe Damato <joe@dama.to>, Double Lo <double.lo@cypress.com>, 
+	Chi-hsien Lin <chi-hsien.lin@cypress.com>, Colin Ian King <colin.i.king@gmail.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-can@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org, oss-drivers@corigine.com, 
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com
+Subject: Re: [PATCH net-next] net: Consistently define pci_device_ids using
+ named initializers
+Message-ID: <20260429-responsible-clever-coyote-6b79f1-mkl@pengutronix.de>
+X-AI: stop_reason: "refusal"
+References: <20260428171845.2288395-2-u.kleine-koenig@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260428-block-as-nvmem-v1-0-6ad23e75190a@oss.qualcomm.com> <20260428-block-as-nvmem-v1-7-6ad23e75190a@oss.qualcomm.com>
-In-Reply-To: <20260428-block-as-nvmem-v1-7-6ad23e75190a@oss.qualcomm.com>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Wed, 29 Apr 2026 10:53:13 +0200
-X-Gmail-Original-Message-ID: <CAMRc=Me9G9vd06a39vi_UrXCTkUtJQRogm2MqgnwLS_r3Thyzg@mail.gmail.com>
-X-Gm-Features: AVHnY4K2fPfnriRCC1GlEFUQD6V4mQElLKoEhFKcWJOmHGXZy_EUPGrUvrMD7WI
-Message-ID: <CAMRc=Me9G9vd06a39vi_UrXCTkUtJQRogm2MqgnwLS_r3Thyzg@mail.gmail.com>
-Subject: Re: [PATCH 7/9] Bluetooth: hci_sync: Add NVMEM-backed BD address retrieval
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Jens Axboe <axboe@kernel.dk>, Johannes Berg <johannes@sipsolutions.net>, 
-	Jeff Johnson <jjohnson@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, 
-	Rocky Liao <quic_rjliao@quicinc.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, daniel@makrotopia.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3C20A491628
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="v5gtri26mw6juc6y"
+Content-Disposition: inline
+In-Reply-To: <20260428171845.2288395-2-u.kleine-koenig@baylibre.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Rspamd-Queue-Id: A32AC491A48
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.06 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35581-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,kernel.dk,sipsolutions.net,holtmann.org,gmail.com,quicinc.com,davemloft.net,google.com,redhat.com,vger.kernel.org,lists.infradead.org,makrotopia.org];
+	FREEMAIL_CC(0.00)[pengutronix.de,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,pm.waw.pl,sipsolutions.net,baylibre.com,thedillows.org,badula.org,gmail.com,marvell.com,chelsio.com,huawei.com,linux.dev,intel.com,nvidia.com,mucse.com,realtek.com,resnulli.us,fr.zoreil.com,brownhat.org,tux.org,trustnetic.com,net-swift.com,farsite.co.uk,broadcom.com,bootlin.com,seu.edu.cn,suse.com,infradead.org,ti.com,dama.to,cypress.com,vger.kernel.org,lists.osuosl.org,corigine.com,lists.linux.dev];
+	TAGGED_FROM(0.00)[bounces-35582-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,qualcomm.com:email]
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_GT_50(0.00)[84];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.321];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:mid,pengutronix.de:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Tue, Apr 28, 2026 at 4:23=E2=80=AFPM Loic Poulain
-<loic.poulain@oss.qualcomm.com> wrote:
->
-> Some devices store the Bluetooth BD address in non-volatile
-> memory, which can be accessed through the NVMEM framework.
-> Similar to Ethernet or WiFi MAC addresses, add support for
-> reading the BD address from a 'local-bd-address' NVMEM cell.
->
-> As with the device-tree provided BD address, add a quirk to
-> indicate whether a device or platform should attempt to read
-> the address from NVMEM when no valid in-chip address is present.
-> Also add a quirk to indicate if the address is stored in
-> big-endian byte order.
->
-> Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-> ---
 
-Is there any reason why we can't extend the existing
-of_get_mac_address() with another property name and use it here? It
-already has support for mac addresses from nvmem.
+--v5gtri26mw6juc6y
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net-next] net: Consistently define pci_device_ids using
+ named initializers
+MIME-Version: 1.0
 
-Bart
+On 28.04.2026 19:18:44, Uwe Kleine-K=C3=B6nig (The Capable Hub) wrote:
+>  drivers/net/can/m_can/m_can_pci.c             |   6 +-
+>  drivers/net/can/sja1000/plx_pci.c             | 167 +++----
+[...]
+> diff --git a/drivers/net/can/sja1000/plx_pci.c b/drivers/net/can/sja1000/=
+plx_pci.c
+> index 08183833c9bc..a03553b80a5d 100644
+> --- a/drivers/net/can/sja1000/plx_pci.c
+> +++ b/drivers/net/can/sja1000/plx_pci.c
+> @@ -272,124 +272,89 @@ static struct plx_pci_card_info plx_pci_card_info_=
+asem_dual_can =3D {
+>  static const struct pci_device_id plx_pci_tbl[] =3D {
+>  	{
+>  		/* Adlink PCI-7841/cPCI-7841 */
+> -		ADLINK_PCI_VENDOR_ID, ADLINK_PCI_DEVICE_ID,
+> -		PCI_ANY_ID, PCI_ANY_ID,
+> -		PCI_CLASS_NETWORK_OTHER << 8, ~0,
+> -		(kernel_ulong_t)&plx_pci_card_info_adlink
+> -	},
+> -	{
+> +		PCI_DEVICE(ADLINK_PCI_VENDOR_ID, ADLINK_PCI_DEVICE_ID),
+> +		.class =3D PCI_CLASS_NETWORK_OTHER << 8,
+> +		.class_mask =3D ~0,
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_adlink,
+> +	}, {
+>  		/* Adlink PCI-7841/cPCI-7841 SE */
+> -		ADLINK_PCI_VENDOR_ID, ADLINK_PCI_DEVICE_ID,
+> -		PCI_ANY_ID, PCI_ANY_ID,
+> -		PCI_CLASS_COMMUNICATION_OTHER << 8, ~0,
+> -		(kernel_ulong_t)&plx_pci_card_info_adlink_se
+> -	},
+> -	{
+> +		PCI_DEVICE(ADLINK_PCI_VENDOR_ID, ADLINK_PCI_DEVICE_ID),
+> +		.class =3D PCI_CLASS_COMMUNICATION_OTHER << 8,
+> +		.class_mask =3D ~0,
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_adlink_se,
+> +	}, {
+>  		/* esd CAN-PCI/200 */
+> -		PCI_VENDOR_ID_PLX, PCI_DEVICE_ID_PLX_9050,
+> -		PCI_VENDOR_ID_ESDGMBH, ESD_PCI_SUB_SYS_ID_PCI200,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_esd200
+> -	},
+> -	{
+> +		PCI_VDEVICE_SUB(PLX, PCI_DEVICE_ID_PLX_9050,
+> +				PCI_VENDOR_ID_ESDGMBH, ESD_PCI_SUB_SYS_ID_PCI200),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_esd200,
+> +	}, {
+>  		/* esd CAN-CPCI/200 */
+> -		PCI_VENDOR_ID_PLX, PCI_DEVICE_ID_PLX_9030,
+> -		PCI_VENDOR_ID_ESDGMBH, ESD_PCI_SUB_SYS_ID_CPCI200,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_esd200
+> -	},
+> -	{
+> +		PCI_VDEVICE_SUB(PLX, PCI_DEVICE_ID_PLX_9030,
+> +				PCI_VENDOR_ID_ESDGMBH, ESD_PCI_SUB_SYS_ID_CPCI200),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_esd200,
+> +	}, {
+>  		/* esd CAN-PCI104/200 */
+> -		PCI_VENDOR_ID_PLX, PCI_DEVICE_ID_PLX_9030,
+> -		PCI_VENDOR_ID_ESDGMBH, ESD_PCI_SUB_SYS_ID_PCI104200,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_esd200
+> -	},
+> -	{
+> +		PCI_VDEVICE_SUB(PLX, PCI_DEVICE_ID_PLX_9030,
+> +				PCI_VENDOR_ID_ESDGMBH, ESD_PCI_SUB_SYS_ID_PCI104200),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_esd200,
+> +	}, {
+>  		/* esd CAN-PCI/266 */
+> -		PCI_VENDOR_ID_PLX, PCI_DEVICE_ID_PLX_9056,
+> -		PCI_VENDOR_ID_ESDGMBH, ESD_PCI_SUB_SYS_ID_PCI266,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_esd266
+> -	},
+> -	{
+> +		PCI_VDEVICE_SUB(PLX, PCI_DEVICE_ID_PLX_9056,
+> +				PCI_VENDOR_ID_ESDGMBH, ESD_PCI_SUB_SYS_ID_PCI266),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_esd266,
+> +	}, {
+>  		/* esd CAN-PMC/266 */
+> -		PCI_VENDOR_ID_PLX, PCI_DEVICE_ID_PLX_9056,
+> -		PCI_VENDOR_ID_ESDGMBH, ESD_PCI_SUB_SYS_ID_PMC266,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_esd266
+> -	},
+> -	{
+> +		PCI_VDEVICE_SUB(PLX, PCI_DEVICE_ID_PLX_9056,
+> +				PCI_VENDOR_ID_ESDGMBH, ESD_PCI_SUB_SYS_ID_PMC266),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_esd266,
+> +	}, {
+>  		/* esd CAN-PCIE/2000 */
+> -		PCI_VENDOR_ID_PLX, PCI_DEVICE_ID_PLX_9056,
+> -		PCI_VENDOR_ID_ESDGMBH, ESD_PCI_SUB_SYS_ID_PCIE2000,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_esd2000
+> -	},
+> -	{
+> +		PCI_VDEVICE_SUB(PLX, PCI_DEVICE_ID_PLX_9056,
+> +				PCI_VENDOR_ID_ESDGMBH, ESD_PCI_SUB_SYS_ID_PCIE2000),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_esd2000,
+> +	}, {
+>  		/* IXXAT PC-I 04/PCI card */
+> -		IXXAT_PCI_VENDOR_ID, IXXAT_PCI_DEVICE_ID,
+> -		PCI_ANY_ID, IXXAT_PCI_SUB_SYS_ID,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_ixxat
+> -	},
+> -	{
+> +		PCI_DEVICE_SUB(IXXAT_PCI_VENDOR_ID, IXXAT_PCI_DEVICE_ID,
+> +			       PCI_ANY_ID, IXXAT_PCI_SUB_SYS_ID),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_ixxat,
+> +	}, {
+>  		/* Marathon CAN-bus-PCI card */
+> -		PCI_VENDOR_ID_PLX, MARATHON_PCI_DEVICE_ID,
+> -		PCI_ANY_ID, PCI_ANY_ID,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_marathon_pci
+> -	},
+> -	{
+> +		PCI_VDEVICE(PLX, MARATHON_PCI_DEVICE_ID),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_marathon_pci,
+> +	}, {
+>  		/* Marathon CAN-bus-PCIe card */
+> -		PCI_VENDOR_ID_PLX, MARATHON_PCIE_DEVICE_ID,
+> -		PCI_ANY_ID, PCI_ANY_ID,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_marathon_pcie
+> -	},
+> -	{
+> +		PCI_VDEVICE(PLX, MARATHON_PCIE_DEVICE_ID),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_marathon_pcie,
+> +	}, {
+>  		/* TEWS TECHNOLOGIES TPMC810 card */
+> -		TEWS_PCI_VENDOR_ID, TEWS_PCI_DEVICE_ID_TMPC810,
+> -		PCI_ANY_ID, PCI_ANY_ID,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_tews
+> -	},
+> -	{
+> +		PCI_DEVICE(TEWS_PCI_VENDOR_ID, TEWS_PCI_DEVICE_ID_TMPC810),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_tews,
+> +	}, {
+>  		/* Connect Tech Inc. CANpro/104-Plus Opto (CRG001) card */
+> -		PCI_VENDOR_ID_PLX, PCI_DEVICE_ID_PLX_9030,
+> -		PCI_SUBVENDOR_ID_CONNECT_TECH, CTI_PCI_DEVICE_ID_CRG001,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_cti
+> -	},
+> -	{
+> +		PCI_VDEVICE_SUB(PLX, PCI_DEVICE_ID_PLX_9030,
+> +				PCI_SUBVENDOR_ID_CONNECT_TECH, CTI_PCI_DEVICE_ID_CRG001),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_cti,
+> +	}, {
+>  		/* Elcus CAN-200-PCI */
+> -		CAN200PCI_VENDOR_ID, CAN200PCI_DEVICE_ID,
+> -		CAN200PCI_SUB_VENDOR_ID, CAN200PCI_SUB_DEVICE_ID,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_elcus
+> -	},
+> -	{
+> +		PCI_DEVICE_SUB(CAN200PCI_VENDOR_ID, CAN200PCI_DEVICE_ID,
+> +			       CAN200PCI_SUB_VENDOR_ID, CAN200PCI_SUB_DEVICE_ID),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_elcus,
+> +	}, {
+>  		/* moxa */
+> -		MOXA_PCI_VENDOR_ID, MOXA_PCI_DEVICE_ID,
+> -		PCI_ANY_ID, PCI_ANY_ID,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_moxa
+> -	},
+> -	{
+> +		PCI_DEVICE(MOXA_PCI_VENDOR_ID, MOXA_PCI_DEVICE_ID),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_moxa,
+> +	}, {
+>  		/* ASEM Dual CAN raw */
+> -		ASEM_RAW_CAN_VENDOR_ID, ASEM_RAW_CAN_DEVICE_ID,
+> -		ASEM_RAW_CAN_SUB_VENDOR_ID, ASEM_RAW_CAN_SUB_DEVICE_ID,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_asem_dual_can
+> -	},
+> -	{
+> +		PCI_DEVICE_SUB(ASEM_RAW_CAN_VENDOR_ID, ASEM_RAW_CAN_DEVICE_ID,
+> +			       ASEM_RAW_CAN_SUB_VENDOR_ID, ASEM_RAW_CAN_SUB_DEVICE_ID),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_asem_dual_can,
+> +	}, {
+>  		/* ASEM Dual CAN raw -new model */
+> -		ASEM_RAW_CAN_VENDOR_ID, ASEM_RAW_CAN_DEVICE_ID,
+> -		ASEM_RAW_CAN_SUB_VENDOR_ID, ASEM_RAW_CAN_SUB_DEVICE_ID_BIS,
+> -		0, 0,
+> -		(kernel_ulong_t)&plx_pci_card_info_asem_dual_can
+> +		PCI_DEVICE_SUB(ASEM_RAW_CAN_VENDOR_ID, ASEM_RAW_CAN_DEVICE_ID,
+> +			       ASEM_RAW_CAN_SUB_VENDOR_ID, ASEM_RAW_CAN_SUB_DEVICE_ID_BIS),
+> +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_asem_dual_can,
+>  	},
+> -	{ 0,}
+> +	{ }
+
+Nitpick: can you convert the terminating entry to follow the same style
+as the rest of the driver:
+
+diff --git a/drivers/net/can/sja1000/plx_pci.c b/drivers/net/can/sja1000/pl=
+x_pci.c
+index a03553b80a5d..d69ff0ccfd94 100644
+--- a/drivers/net/can/sja1000/plx_pci.c
++++ b/drivers/net/can/sja1000/plx_pci.c
+@@ -353,8 +353,8 @@ static const struct pci_device_id plx_pci_tbl[] =3D {
+                 PCI_DEVICE_SUB(ASEM_RAW_CAN_VENDOR_ID, ASEM_RAW_CAN_DEVICE=
+_ID,
+                                ASEM_RAW_CAN_SUB_VENDOR_ID, ASEM_RAW_CAN_SU=
+B_DEVICE_ID_BIS),
+                 .driver_data =3D (kernel_ulong_t)&plx_pci_card_info_asem_d=
+ual_can,
+-        },
+-        { }
++        }, {
++        }
+ };
+ MODULE_DEVICE_TABLE(pci, plx_pci_tbl);
+
+>  };
+>  MODULE_DEVICE_TABLE(pci, plx_pci_tbl);
+>
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--v5gtri26mw6juc6y
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCafHK+wAKCRDMOmT6rpmt
+0kuPAP4rY0fDutYzl1X17t0y+XEGDgmxOmjPiXuxZCBfayCaXgD7BrMtvC4i+l07
+M4r5isb3cwO71VZn6lO9ZL8xNJtpyAo=
+=hO9H
+-----END PGP SIGNATURE-----
+
+--v5gtri26mw6juc6y--
 
