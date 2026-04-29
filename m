@@ -1,104 +1,51 @@
-Return-Path: <linux-wireless+bounces-35574-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35575-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAmtG2218WmjjwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35574-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 09:38:21 +0200
+	id yC/pNyS98WkHkQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35575-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 10:11:16 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DBE490921
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 09:38:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76EBC491065
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 10:11:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B7A9C30021E6
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 07:38:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3AE4F305D6C4
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 08:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DDE37E30F;
-	Wed, 29 Apr 2026 07:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F7D3A784E;
+	Wed, 29 Apr 2026 08:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nDS20lTU";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="KHgu6PGa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qNjpzERF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EDC3A545A
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 07:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E80B35C1B6;
+	Wed, 29 Apr 2026 08:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777448299; cv=none; b=GIh/6LhmzeZ1JOCjbwxgrEwXO+kDA/aKFceLeB7Yv+qv25DUMVFwL20mm2KfaTCravy04ZGHiis6H5FtLHr1db6ChMBMU8IGp5pNnR4U11FlTSFiDW1n0XcL2kwKqbwmDm7dz4uG8NIAZGXpzcmp7DqjnXZ+EbY4S0OQfQLT2ts=
+	t=1777450063; cv=none; b=hGIGV2UHiLbuPTzmP9YRaxmR0dbv+Ekb471dkBQBZzpbMMxMBMNxIOGNipgMs07YguPE0HRNMSQaxTmaYIQFSv08K6T+AsnbVWvF1YUCEt0B5eRxJKb/aSREPTofSdzS0PWmvQlVrAbvY1d5xt9xeNtIKb67agdADdO4HupGDRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777448299; c=relaxed/simple;
-	bh=rDq+zxbBhHGGNqc7oKTk0T2pHf9jkA9C58/PiWCh6Zg=;
+	s=arc-20240116; t=1777450063; c=relaxed/simple;
+	bh=BPtgstPyJu9Z1XyYiv+Qqirlz2ojBbfdDJaNCno6c0Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eRamAMVlb08SmpQm3cfLXaOdngbQpxY5h4KDYgbhlcpPznJ3yC/bOxPrzApCk63hNLgrZd41fdtFC1d90idt9zUKeWEGM8HbRH5pcCdGw4MDHcTGSNo8tvIzrfybGuhrQStZnvLd7AfEJadBWi2rxXKDaH8yZS1xCUc+QPeMyCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nDS20lTU; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KHgu6PGa; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63T56EFI3347481
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 07:38:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	DXVaAU1x/VRaf2sNF3EoAOzNFxD9AonZN9toVdN7ibg=; b=nDS20lTULIkN0Q9b
-	z1TAE6+NrHwNlwY1YHn+YfRCr/3Bcmz5uwOtoRIGXx/wOjS0+gF99u/TXmZ2X1Fg
-	sdCxRuK+RHhP7g/pvMSbXpeHFN0C+oP9JSu1m2ooKj4gfsKb3I3fQ2lytFEta02L
-	zpFd/Fnp2yB26NExg9RjzO+Cc3M5zRq2ZrSbq1rs9dqLmzHt9vrJnwBjtpAsISJn
-	Nbb4fXg2QxlcCredh8hovnX00oPMuwjWcjVI1/VL4zeqBXTrcsicaRgOu/U973Lj
-	JzbrrUzvaKcfEch9AkRpsyACJlpdxIRmKAJ3fwJ63qh9kZPm8BXhwTSEKaA7V4GX
-	blfKQQ==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4du2m4t82v-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 07:38:16 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c70f19f0f37so309447a12.0
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 00:38:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1777448295; x=1778053095; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DXVaAU1x/VRaf2sNF3EoAOzNFxD9AonZN9toVdN7ibg=;
-        b=KHgu6PGajuTtCzBIIe0qZWWaJYf/7U/ud2rH1c18UrMj7x/po/KH69xARNnPJcSmQH
-         kUCYB0cVqxygPYssBK9NVKn2oUN3R0dEhIrnZnWKWzm4QpEnWvD/jsv+WjdGGdzGyjPF
-         Eyt4Bn+VYU47TaVzcDXkEGqsp5gbH2/503kHvqND+dKgwMLdXTLspOQw+c7L3f5A4AAn
-         XFjVCHedE4X/QXWWArd/ifE5VoJHS0fdMyF1KuMJV4TQRYdbns+4HNUWzdW1aDhhJfRH
-         yrd8y4MV3mqG0ubwB23Z9te+UZ4JRB9BDJyn4W4Hsc6EjeehRayi+quiAg75/VKFI9rs
-         CwaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777448295; x=1778053095;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DXVaAU1x/VRaf2sNF3EoAOzNFxD9AonZN9toVdN7ibg=;
-        b=Trthq2z8PFH4/0SlJ5zh980iBxCWOLRd8DrO50G/P4KIBBkb8GXi1AdNfIdO95ONxu
-         LwqMJVQxITjlOu5FTkvueK31vW0RRUnukwhUQeWjEIU8zyYeFSPrJSAgBFr+Y36yGLwD
-         qHfoR6ElDuc7L2TZqGQ+TSAdEE0oRVMluCH3gWMBKI3jr9M+uazLqWi94kEDkgpKbWIX
-         rzrsiAMv53VPlI3fPMPc2ztl9njn2tB+IsUd0sqEUySG/vQ8nFOm8gAfb0X+WOgPxZaB
-         OoPSmJFTTw0X+mQ6DDPweeUpJRikMdi9OzkGdrHEhr8H0teRkRJ2sEaM0NzqKbgiCfyJ
-         7hBg==
-X-Forwarded-Encrypted: i=1; AFNElJ8kBkAlxct+IWshSf2Tu5iM9zfw7STfxGuV9YkQoFhgOrjxI4jjmnTlpzdgZsj4F5XEEsyJetAVVZ2Jgw8t+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YykiOPY0mSOUxX3UOn9lpzQb+5T3CzKhP41YR0d6H/oK6zsku2T
-	1D3VTYOLnhytP7bmM9ZyZgJGhCsyTPJizRRXRAwyc/SAjqxtS2KaWOeufuB5lv9XqHIonDKTVyQ
-	pfhu8HC7+KrIpBmuUwomtTGB3bNvplCBmf59TsTmtNcuuNjapiPbm+BOh1TXA9dux28EvKg==
-X-Gm-Gg: AeBDievFHaPCuyA68cV2R+x8B6SNuvNRBEXE/T+9MY2ucc9uvTlHNc/o/QpJTew2pqA
-	yEIZwLJ7grPUfH8ZfWGbwi9ZHssYOlhG8TVugQfESrOpILNInuX5AlkEjZYfYb5T69ReLpEsAbD
-	MaL+PcT4vkCvnJyf1I7q7b/W1m6snpb0+fZIFfZadZM8P9qk/dzViNPqXOrevYqOxDZonNOc5kW
-	19yiHQM3OLlougGGxJlQbolnW9V/vcw/lbF0R431xsxzOwQM5A6BLTzzVnbSpkzbFeZdWUfunoj
-	eK7dkMBqdh+zifeZDGKMSSBtmg2BQNK6fahf6hJsGZhpczp6UA4c0/QeSgomiNkLvEJrmQ8kL1R
-	IDdZIJpRlnFypkqIUR13IkqpWgrbQ+Dl0Pex5vCwz6heVBguAqRpGCSlONJHfEmXVSzRYsr5n
-X-Received: by 2002:a05:6a00:1950:b0:82c:6b16:c894 with SMTP id d2e1a72fcca58-834eb51b962mr1847889b3a.20.1777448295411;
-        Wed, 29 Apr 2026 00:38:15 -0700 (PDT)
-X-Received: by 2002:a05:6a00:1950:b0:82c:6b16:c894 with SMTP id d2e1a72fcca58-834eb51b962mr1847855b3a.20.1777448294872;
-        Wed, 29 Apr 2026 00:38:14 -0700 (PDT)
-Received: from [10.152.199.23] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed6debe4sm1089895b3a.36.2026.04.29.00.38.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Apr 2026 00:38:14 -0700 (PDT)
-Message-ID: <525f1330-eed2-43ed-a274-ead57b928ae9@oss.qualcomm.com>
-Date: Wed, 29 Apr 2026 13:08:10 +0530
+	 In-Reply-To:Content-Type; b=VAy/EClWN0Wp4t5f2CCWjJJo8IAS/9KB/acWa2K9eMX2JQL/vpQWr2n9UFPNWyKA+6x1F3A8r8Ud1J9Q8aC5pMnsJro4P02ts8b9iZa3WmNzdpkpE4EN3UkGkwpHUIk+k6lGrccmPfpLDILV1vQQper3BQxVISVi2hKlj8qDtD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qNjpzERF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8744BC19425;
+	Wed, 29 Apr 2026 08:07:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777450063;
+	bh=BPtgstPyJu9Z1XyYiv+Qqirlz2ojBbfdDJaNCno6c0Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qNjpzERFgA7GRrt3yoEzQ93KlfHO4r4qXsOOf6AFpc1HP7dYlsen6xWW+g6ViIsV2
+	 BfC2cKTxEWNWm/DdyUJuoNAaglqHUG5gR6MCh+q1TscaCrlZRA5t2APQ6XbSCs2fGS
+	 lSUzjRW24WJ1bZJf4trJNpKRCpkSyjrjdBzqjFy9dLIGYQlALweX7nFtP1phi6FhKD
+	 RcoBzMz/Zugrf+4cKAzBPRK4NirMen2MaV8ay8GZhtdPS+ivdE3BsoKqwmYdl0wazA
+	 2YQrgkHQWa+IbDp/2n73SAqVMsD1RFEVV5xWs2kB8EoYd77NIbYSw32MNDlZQslPGZ
+	 2ZfiK1BOS3umw==
+Message-ID: <e4a7e9d8-7091-4520-a634-ff0a44eb5139@kernel.org>
+Date: Wed, 29 Apr 2026 10:07:34 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -106,195 +53,201 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless] wifi: ath11k: fix monitor mode frame length by
- using correct descriptor size
-To: Joshua Klinesmith <joshuaklinesmith@gmail.com>,
-        linux-wireless@vger.kernel.org
-Cc: ath11k@lists.infradead.org
-References: <20260407024836.53871-1-joshuaklinesmith@gmail.com>
+Subject: Re: [PATCH v3 3/3] p54spi: convert to devicetree
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Andreas Kemnade <andreas@kemnade.info>, Bartosz Golaszewski
+ <brgl@kernel.org>, =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Eric Dumazet <edumazet@google.com>, Felipe Balbi <balbi@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Johannes Berg <johannes@sipsolutions.net>,
+ Kevin Hilman <khilman@baylibre.com>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Linus Walleij <linusw@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh+dt@kernel.org>,
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+ linux-omap@vger.kernel.org, Christian Lamparter <chunkeey@gmail.com>
+References: <20260427142355.2532714-1-arnd@kernel.org>
+ <20260427142355.2532714-4-arnd@kernel.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-In-Reply-To: <20260407024836.53871-1-joshuaklinesmith@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260427142355.2532714-4-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDA3NCBTYWx0ZWRfXz2z8XvYIcHWS
- zMETm1MV8mGu01K4FngEeM3f8s2CpSHhBS+HXH8zGPJL06w7UV5aAAFkMizz0MTA9441E3Bt4th
- NqZV5yqcuDxRUKpPvjl2sfs5wLKjfvbV/5hs81ZT1EYldGrTbI32qQxAfPXXK3MIX3ShnTm1Uz6
- 4c3hUD4oRdTIoxl34RkCaocxWProLeDVMtBMhRfAa7LzXEFwYkWXSaww+7MDXIImrdRq9QQ9ZOv
- zp4m/gtefU6oGuwTvPXAKQLHChmlC0RgSnYeCg5P/2D+zP+oJMtMofuHTR2PbBxQGB4Fy/vanVR
- 604yQA3nAZZgZZ9CaTTKc8qyHNuX3fP+WCCnymJtZaTztvVa8o6oKZp0z94GlUy4bsJZ8wR7zLy
- FDaF9pTlkNnRKPcY/h4p7KBtHvUpwlzaPpmnM001QZrrlGQXzQQqTtiTbOkclDtbXutY1Dja9uu
- d1eC0eFhLJjs39wC52Q==
-X-Proofpoint-GUID: Kq0uDqaTRS7ZsMLReokTexsBWmq2jDXZ
-X-Authority-Analysis: v=2.4 cv=MuFiLWae c=1 sm=1 tr=0 ts=69f1b568 cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=NEAV23lmAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=4T2M7ptt_QytPgkP2eEA:9
- a=QEXdDO2ut3YA:10 a=bFCP_H2QrGi7Okbo017w:22
-X-Proofpoint-ORIG-GUID: Kq0uDqaTRS7ZsMLReokTexsBWmq2jDXZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-28_05,2026-04-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 phishscore=0 impostorscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 suspectscore=0 lowpriorityscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604290074
-X-Rspamd-Queue-Id: D1DBE490921
+X-Rspamd-Queue-Id: 76EBC491065
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35574-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35575-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[arndb.de,iki.fi,kemnade.info,kernel.org,baylibre.com,davemloft.net,gmail.com,google.com,sipsolutions.net,redhat.com,atomide.com,vger.kernel.org,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On 4/7/2026 8:18 AM, Joshua Klinesmith wrote:
-> The monitor mode RX path in ath11k_dp_rx_mon_mpdu_pop() and
-> ath11k_dp_rx_full_mon_mpdu_pop() uses sizeof(struct hal_rx_desc) to
-> compute the packet buffer offset. This is the size of the union of all
-> chip-specific descriptors (the maximum), not the actual descriptor size
-> for the running chip. The later ath11k_dp_rx_msdus_set_payload() then
-> strips only hw_params.hal_desc_sz bytes (the chip-specific size) from
-> the front of the skb.
-> 
-> On IPQ8074 and QCN9074, sizeof(struct hal_rx_desc) is 392 but
-> hal_desc_sz is 384, leaving 8 extra bytes of descriptor data at the
-> end of every monitor mode frame delivered to userspace. On WCN6855 the
-> sizes happen to match so the bug is not visible.
-> 
-> The same mismatch in ath11k_dp_mon_set_frag_len() causes incorrect
-> fragment length calculation for multi-buffer MSDUs, under-counting
-> intermediate fragments by 8 bytes and over-counting the last fragment.
-> 
-> Fix by using ar->ab->hw_params.hal_desc_sz consistently in both
-> monitor mpdu_pop functions and passing it through to set_frag_len.
+On 27/04/2026 16:23, Arnd Bergmann wrote:
+>  
+> -	ret = gpio_request(p54spi_gpio_power, "p54spi power");
+> -	if (ret < 0) {
+> -		dev_err(&priv->spi->dev, "power GPIO request failed: %d", ret);
+> +	priv->gpio_powerdown = gpiod_get(&spi->dev, "powerdown", GPIOD_OUT_HIGH);
+> +	if (IS_ERR(priv->gpio_powerdown)) {
+> +		ret = PTR_ERR(priv->gpio_powerdown);
+> +		dev_err(&priv->spi->dev, "powerdown GPIO request failed: %d", ret);
 
-It would be useful to add a Tested-on: tag if this was validated on
-affected hardware, as suggested in the ath11k submission guidelines.
+Binding said it is optional, so this cannot be a failure.
 
-> 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-
-Since the full_mon side was added later by 7e2ea2e94704, it may be worth 
-adding that as a second Fixes: tag for completeness.
-
-> Link: https://github.com/openwrt/openwrt/issues/16183
-> Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
-> ---
->   drivers/net/wireless/ath/ath11k/dp_rx.c | 27 ++++++++++++++-----------
->   1 file changed, 15 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-> index 85defe11750d..c86ffc203f15 100644
-> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-> @@ -4511,10 +4511,11 @@ int ath11k_dp_rx_pdev_alloc(struct ath11k_base *ab, int mac_id)
->   	return 0;
->   }
->   
-> -static void ath11k_dp_mon_set_frag_len(u32 *total_len, u32 *frag_len)
-> +static void ath11k_dp_mon_set_frag_len(u32 *total_len, u32 *frag_len,
-> +				       u32 hal_desc_sz)
->   {
-> -	if (*total_len >= (DP_RX_BUFFER_SIZE - sizeof(struct hal_rx_desc))) {
-> -		*frag_len = DP_RX_BUFFER_SIZE - sizeof(struct hal_rx_desc);
-> +	if (*total_len >= (DP_RX_BUFFER_SIZE - hal_desc_sz)) {
-> +		*frag_len = DP_RX_BUFFER_SIZE - hal_desc_sz;
->   		*total_len -= *frag_len;
->   	} else {
->   		*frag_len = *total_len;
-> @@ -4658,19 +4659,19 @@ static u32 ath11k_dp_rx_mon_comp_ppduid(u32 msdu_ppdu_id, u32 *ppdu_id,
->   
->   static void ath11k_dp_mon_get_buf_len(struct hal_rx_msdu_desc_info *info,
->   				      bool *is_frag, u32 *total_len,
-> -				      u32 *frag_len, u32 *msdu_cnt)
-> +				      u32 *frag_len, u32 *msdu_cnt,
-> +				      u32 hal_desc_sz)
->   {
->   	if (info->msdu_flags & RX_MSDU_DESC_INFO0_MSDU_CONTINUATION) {
->   		if (!*is_frag) {
->   			*total_len = info->msdu_len;
->   			*is_frag = true;
->   		}
-> -		ath11k_dp_mon_set_frag_len(total_len,
-> -					   frag_len);
-> +		ath11k_dp_mon_set_frag_len(total_len, frag_len, hal_desc_sz);
->   	} else {
->   		if (*is_frag) {
-> -			ath11k_dp_mon_set_frag_len(total_len,
-> -						   frag_len);
-> +			ath11k_dp_mon_set_frag_len(total_len, frag_len,
-> +						   hal_desc_sz);
->   		} else {
->   			*frag_len = info->msdu_len;
->   		}
-> @@ -4792,7 +4793,7 @@ u32 ath11k_dp_rx_mon_mpdu_pop(struct ath11k *ar, int mac_id,
->   
->   			rx_desc = (struct hal_rx_desc *)msdu->data;
->   
-> -			rx_pkt_offset = sizeof(struct hal_rx_desc);
-> +			rx_pkt_offset = ar->ab->hw_params.hal_desc_sz;
->   			l2_hdr_offset = ath11k_dp_rx_h_msdu_end_l3pad(ar->ab, rx_desc);
->   
->   			if (is_first_msdu) {
-> @@ -4823,7 +4824,8 @@ u32 ath11k_dp_rx_mon_mpdu_pop(struct ath11k *ar, int mac_id,
->   			}
->   			ath11k_dp_mon_get_buf_len(&msdu_list.msdu_info[i],
->   						  &is_frag, &total_len,
-> -						  &frag_len, &msdu_cnt);
-> +						  &frag_len, &msdu_cnt,
-> +						  rx_pkt_offset);
->   			rx_buf_size = rx_pkt_offset + l2_hdr_offset + frag_len;
->   
->   			ath11k_dp_pkt_set_pktlen(msdu, rx_buf_size);
-> @@ -5424,7 +5426,7 @@ ath11k_dp_rx_full_mon_mpdu_pop(struct ath11k *ar,
->   
->   			rx_desc = (struct hal_rx_desc *)msdu->data;
->   
-> -			rx_pkt_offset = sizeof(struct hal_rx_desc);
-> +			rx_pkt_offset = ar->ab->hw_params.hal_desc_sz;
->   			l2_hdr_offset = ath11k_dp_rx_h_msdu_end_l3pad(ar->ab, rx_desc);
->   
->   			if (is_first_msdu) {
-> @@ -5439,7 +5441,8 @@ ath11k_dp_rx_full_mon_mpdu_pop(struct ath11k *ar,
->   
->   			ath11k_dp_mon_get_buf_len(&msdu_list.msdu_info[i],
->   						  &is_frag, &total_len,
-> -						  &frag_len, &msdu_cnt);
-> +						  &frag_len, &msdu_cnt,
-> +						  rx_pkt_offset);
->   
->   			rx_buf_size = rx_pkt_offset + l2_hdr_offset + frag_len;
->   
-
-The code change itself looks correct to me.
-
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Also, please use ret = dev_err_probe syntax.
 
 
+>  		goto err_free;
+>  	}
+>  
+> -	ret = gpio_request(p54spi_gpio_irq, "p54spi irq");
+> -	if (ret < 0) {
+> -		dev_err(&priv->spi->dev, "irq GPIO request failed: %d", ret);
+> -		goto err_free_gpio_power;
+> -	}
+> -
+> -	gpio_direction_output(p54spi_gpio_power, 0);
+> -	gpio_direction_input(p54spi_gpio_irq);
+> -
+> -	ret = request_irq(gpio_to_irq(p54spi_gpio_irq),
+> -			  p54spi_interrupt, IRQF_NO_AUTOEN, "p54spi",
+> -			  priv->spi);
+> +	ret = request_irq(spi->irq, p54spi_interrupt, IRQF_NO_AUTOEN, "p54spi", priv->spi);
+>  	if (ret < 0) {
+>  		dev_err(&priv->spi->dev, "request_irq() failed");
+> -		goto err_free_gpio_irq;
+> +		goto err_free_gpio_power;
+>  	}
+>  
+> -	irq_set_irq_type(gpio_to_irq(p54spi_gpio_irq), IRQ_TYPE_EDGE_RISING);
+>  
+>  	INIT_WORK(&priv->work, p54spi_work);
+>  	init_completion(&priv->fw_comp);
+> @@ -659,11 +636,9 @@ static int p54spi_probe(struct spi_device *spi)
+>  
+>  err_free_common:
+>  	release_firmware(priv->firmware);
+> -	free_irq(gpio_to_irq(p54spi_gpio_irq), spi);
+> -err_free_gpio_irq:
+> -	gpio_free(p54spi_gpio_irq);
+> +	free_irq(priv->irq, spi);
+>  err_free_gpio_power:
+> -	gpio_free(p54spi_gpio_power);
+> +	gpiod_put(priv->gpio_powerdown);
+>  err_free:
+>  	p54_free_common(priv->hw);
+>  	return ret;
+> @@ -675,10 +650,8 @@ static void p54spi_remove(struct spi_device *spi)
+>  
+>  	p54_unregister_common(priv->hw);
+>  
+> -	free_irq(gpio_to_irq(p54spi_gpio_irq), spi);
+> -
+> -	gpio_free(p54spi_gpio_power);
+> -	gpio_free(p54spi_gpio_irq);
+> +	free_irq(priv->irq, spi);
+> +	gpiod_put(priv->gpio_powerdown);
+>  	release_firmware(priv->firmware);
+>  
+>  	mutex_destroy(&priv->mutex);
+> @@ -686,10 +659,19 @@ static void p54spi_remove(struct spi_device *spi)
+>  	p54_free_common(priv->hw);
+>  }
+>  
+> +struct of_device_id p54spi_of_ids[] = {
+
+static const
+
+> +	{ .compatible = "cnxt,3110x", },
+> +	{ .compatible = "isil,p54spi", },
+> +	{ .compatible = "st,stlc4550", },
+> +	{ .compatible = "st,stlc4560", },
+
+At least last two devices are then compatible, so this should be
+expressed in the binding with fallback and drop stlc4560 here. Maybe all
+of them are compatible.
+
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(of, p54spi_of_ids);
+>  
+>  static struct spi_driver p54spi_driver = {
+>  	.driver = {
+>  		.name		= "p54spi",
+> +		.of_match_table = p54spi_of_ids,
+>  	},
+
+
+Best regards,
+Krzysztof
 
