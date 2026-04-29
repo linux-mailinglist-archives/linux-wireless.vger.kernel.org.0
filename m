@@ -1,228 +1,253 @@
-Return-Path: <linux-wireless+bounces-35636-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35637-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJ9vLXQS8mningEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35636-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 16:15:16 +0200
+	id oJSkHNIx8mkjowEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35637-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 18:29:06 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D26E49577B
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 16:15:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01180497BBB
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 18:29:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16FC63047418
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 14:09:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EFB3E30C523A
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 16:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987EB3FAE14;
-	Wed, 29 Apr 2026 14:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB2440B6D2;
+	Wed, 29 Apr 2026 16:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JgZmM9U9";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="D5bwTm2t"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jzRi40++";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="GkK2GDLC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AA529346F
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 14:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777471792; cv=none; b=ScbPkr2yf67TiKiOlKdM2aLSv34yvNox5bddeHvw70L1LFhiAgQTNVVYt2LWv75OqSwZbWvGNZKRvipXoFoIBnqQXwhbBtecHNRam83jC8Zlf9hlKieoII+kSGOTNT5AFKfBhFoIcGyk8PcEa6Zq/xXzviNyWDB1peNcjj5sQ+k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777471792; c=relaxed/simple;
-	bh=rlBEJqKNyuPquMgcrGD8UP2yC0h2pPL+aE4YXiUth9w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=As7njKGZTpjZN8oqAvrObW9eCi0dtgsgxYspob8Pno5Lsnb1vtm+A+wGLMlL6AvYeC8tbBc7a66UcOfHtO2z6YYyX2lbyJlXWvYElvtFjx0W/1VMNPYuKHTjdznj86/R2vT5ZpteoX8pz3wPHTig0VEpXw4PPgzQ3ndiIMcX/m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JgZmM9U9; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=D5bwTm2t; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38EE40F8DD
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 16:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777479758; cv=pass; b=mcar+NWJqQ6uay3itWnbp5bV0o7RMOYPM5UlWVxfgL/cv6AsYWvCAeXfqxAZQ8HRuyyvcC7Kk6yLl8nRDEBihibv8srSgujW8RGLEHQ2gd4j2lTqaXY/Mp3SRwUra6BfMKqUdwersszos09Btr/5U3HuR/PgTmj0rH/Fu6A0n/o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777479758; c=relaxed/simple;
+	bh=zeHlRNAL/iq8k8oB+OXu5Y2acD+IRikshmtnJE9EZ2k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jO6KWNjzLMbbG8/9mCJeWsC5uPz+9vAPZgUZlJbV+GaiEpjBPNRM9JUAO60G/1irl7dUs4E+eEdjs4jxezMVEK87hpmQQM75aEBFjakOghedkKEgXTa/sqPQW5kurdVp5hDmKu3ZmZkGPoK0GzIbYtAc9xPZoaPiBccYP74tyl0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jzRi40++; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GkK2GDLC; arc=pass smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63T8q7k41721227
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 14:09:50 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63TF4awD3066948
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 16:22:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Ao2CpI2lJEtQ46hy1HjSJpZTDoSBpZQJq0gr7WE7O2s=; b=JgZmM9U9b/1onUfp
-	L5F+KQ8a62d3JKiVa2joS7FTUJN3e/b3tkLPfisbdKMxc4L0StPP2mKJggXexW8B
-	/olvMihKmP6u9rTMfsPLV+xNHsvj+aytMW0CEGiNJl1JBC/ibYvUj+TTTsjeeR90
-	yNSftyKx3TqtX5Z4H3l0QK4f6pytNj1uH2Qg42IObSoImfZ1afo2oDmv/qC00Eaz
-	M3nVp/yYcZBQRQIdNDUyk95uBrjDE4o4U3Pl7UrzIJRBlg9acLif5On4aOhOldhW
-	y5r4nusp6wKNCStLBwj3a+pqTNm4+O57s99elqxwib0TvWXBDyi9w9MqZmjKan5d
-	C6LxEQ==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dua732bxx-1
+	zeHlRNAL/iq8k8oB+OXu5Y2acD+IRikshmtnJE9EZ2k=; b=jzRi40++qm9IKV3W
+	DFhl2OnAx5ljK0yTl5sdGb4NA1HEADBLS++TGqlMn+WPdwX2/6sEnm3lmv9ZYp99
+	LlEcReCx/bYzwF9NLAtO7bcrJFlciMJRn4aPd4eD+Stm98eR/lZ9R/efJuSpDVl6
+	p4AC2qFIxVW4C9vjed4kHsoulcpLPjlt7B+SFd8FKtUQRBzBx/9/HZp7wa0xKWjF
+	8rM2KO4apJFk/+YVNR4yaMCdO560y5Z1GaPSB3DeLIl+du/7wdBMFdHNxChQbTN3
+	j6zhYqIDgiwDKkVDo/UJGD/sin4FGYQlmLRq69LZ29Ly82bOVP73uBopj5ec+ouI
+	5qGwVQ==
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4du7sxbf6s-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 14:09:50 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-82fa5ecd760so6480568b3a.0
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 07:09:50 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 16:22:29 +0000 (GMT)
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-6966f1f4490so1134731eaf.1
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 09:22:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777479749; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Hh/bJUllHGTLLT8mt3B7R46MVofgOcqqrwLWXlQ8i0mziRfCUL0sY60k0EJpRvnr6o
+         goCr0/CrHdwTx+fbsYuwfDWtINYOsAoBCo4c0UrwSDhaREYqiKPJ5RVPseabrRd0XfZk
+         FuDhxLk3zOM+q9NHi79nBS+gz7exJq4qoTX1ziZrpGJuhP6Jpc9Q+f1Iql+banXBFAZh
+         91FpKLzqD5j8IDi5U1wOl1dAFUCG41jsPn/KPzl3ggwSXkF7Z4QS8FJLgvECTKOZpglz
+         e0JXSpcRj1OR4mvdYHit/swLuqFrVpMFh/6rrstjjbyNHSCMlzHN5DM7Levsamj+GQbK
+         Isxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zeHlRNAL/iq8k8oB+OXu5Y2acD+IRikshmtnJE9EZ2k=;
+        fh=yX3LeQwSrnv80IJZf28MQ8K+I+3kX+WhlMp55aFHDc8=;
+        b=XW25K+PueGEG0azW/IpxUfteLs/dAZ1WxnTCx9GN3gZ0z86j+iPkaGTFFVFa77LTAp
+         QZbPXvdOoLucuFY0yD6ZNI5KdfGWKco4QbgDVu3Dd49jtf3gVh5ToTf1iHEHQajP1YVl
+         0Ki74z12xukbc2M6GQM5WXaVI/5fRMAG+24epC67rEBXhhyDbMwucRlRsmAFBlAG7Cja
+         bkg4BkpdbdzOus6qi6XeIAWfshIYgvagykd2DBI4WiTu6ZK2w5jQ7Gp2qSzzMzzN7k4x
+         +mBE75ZPUXafr74b+wf3caymlosCoGv7UBlmn8XFYmAo9oMV+iskhJyxgrrh76iy2yLQ
+         pVAw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1777471790; x=1778076590; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ao2CpI2lJEtQ46hy1HjSJpZTDoSBpZQJq0gr7WE7O2s=;
-        b=D5bwTm2txbX/VTqkuaAU0b8ozJtgiFucx68unXCIFkuxIYiR3sb43VvALwwFYU+FzO
-         xAV3tJ+GTfwWdP5WTP0W98crBz/ELoA9VI9ugpmxnIxSAdKAA88bhzZaT7XZTRkFrgVI
-         H9wj3o6oWvqn48W+vTKr2FJKRGmfqIr42hLusgO5YLTuCkFaBEwB2tgaWYk0yWGcGi5O
-         3hoNCQFgIVuuKLHh0T7/D0onUCsA8pSFnK/gctcla38L8ntk/2zsFMBSxrOw5Q8BXhsp
-         OSUQoMtZihCTgwCZ/8S4VgWWAzgcjXXjur2FowTvZvzyhdOG2lXp4DmmMWlxI7j9Fqj1
-         98lw==
+        d=oss.qualcomm.com; s=google; t=1777479749; x=1778084549; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zeHlRNAL/iq8k8oB+OXu5Y2acD+IRikshmtnJE9EZ2k=;
+        b=GkK2GDLCkQqfYx6JvKVq9FxU+hMrvsfGpUfPRavqDCLTUpLBKUdKe5rLsqys6FDmtP
+         hIOvvEfK9Q6faBvDu4cyfg+UhizleVr7xWuPGM+/O/Smc7rzLbfFpORp6rQ6R9u9TB42
+         YPliTBBJ/jTM060xEkWFeIHanPsz3QjsND1QRwNRc75XReEhwvQYDq/sOJ5sAZqqa09m
+         mGS5XsOIV6arpJMMcEf7lnuj1cFn5E1nVJlL9a//ZJIk7eITAA7hTvndy26W2QBSoky3
+         Dia8pdzWoCz5Ns+Xld2S5VTzXxMwdwCZB56H5G8oStRP0rifd4r3PNpyuomi6/FBTwRr
+         emew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777471790; x=1778076590;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ao2CpI2lJEtQ46hy1HjSJpZTDoSBpZQJq0gr7WE7O2s=;
-        b=dJsu0Bi8+veSIscavGJruunVM+TaAm6j/4SjupockcMBWcAyvtfRdBg3DYUSxyufyO
-         FvkA6QyypYT2OWeP7Y7QWsDgOKW3Klz3dAqxMSbwNe1jRWRaNjozBBemWxyhySh5QB7W
-         EDNfzjb6CSwmZjXrWB4QWcKJWGbPl9P2R7W+g7sBqMjYhvZ5Tm1F7LEOOgScdq4LogIr
-         o1ZlZW4aJ8MipldeD0GiKBgN75pvYei/w2PT0B7SpHmdAQvtuQX50fh65UsX8UxuvZQQ
-         ITQ2ZGYAjzSGjPil88gY8rIecM5LqpqLxqG+HE/+reuejAEmWwjO4Z4E2rCt1TRv9HG8
-         slEw==
-X-Gm-Message-State: AOJu0YxHqZ8xzxFuEkkOfi2s+1Sw2IQw6m4uZjQy+WeLwvJl9M/58NdK
-	XgqLGc9ElLMq4fyPEHGBg+KX05ZRzSuKPoqz4d88hJ/VhZoIueAmdinEUiowRlIadLJfN5ktSsq
-	XfWlRYweYV4jPdfC+tzVrnSmgS5Y97GTa8CoMWyJbdL+jchKWeBMzR3tWlPIjc3k5bEGSOLkmPg
-	3KFA==
-X-Gm-Gg: AeBDievIOSEaV6JbkK3kCZd04nlOIX4o18SOue2T3yIAOsd/3UZRYeVqLi/+v6QvyMa
-	xmiLT6trq0/gXbUAkYwDqtFs81+Jb1GF9t19vst3MSclpKl2vQw50zRvgWVOZ2d3nSJHXGMxYJo
-	73bG2PQh3cz2Y0rwptdsjQmwNm+GnmV6VKNbeT/OVg2cFSVXppMvldXMdw86lNslpxL5Qh/Ah4p
-	DhsgJn2dMRQ4jm/pViaIsW/AbXQwHZYxiSoO+c5Eq+qdZHiC/b+yGe//JDVlc2XsJzoBxfxzcUg
-	j6nFXKw8kz8ZHocnLppFN6VXwEX0PgZID8+nfP7wNLrzbSC2axKpFgaCmEmR3t38lbGCmy7m51o
-	syqeAuxe5bOJgVL7RTD2PtEULUuJnlYUJRXvsUZpuLOMbqz/Ueo9my9qMvwLh74vFJuDn69nQ0Q
-	==
-X-Received: by 2002:a05:6a00:4286:b0:82f:316:3208 with SMTP id d2e1a72fcca58-834ddbf1ebamr8629972b3a.29.1777471789933;
-        Wed, 29 Apr 2026 07:09:49 -0700 (PDT)
-X-Received: by 2002:a05:6a00:4286:b0:82f:316:3208 with SMTP id d2e1a72fcca58-834ddbf1ebamr8629934b3a.29.1777471789362;
-        Wed, 29 Apr 2026 07:09:49 -0700 (PDT)
-Received: from [192.168.1.5] ([106.222.223.34])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed5cd407sm2212442b3a.13.2026.04.29.07.09.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Apr 2026 07:09:48 -0700 (PDT)
-Message-ID: <1d06b2a3-66d8-4c27-b965-6c21f80b7539@oss.qualcomm.com>
-Date: Wed, 29 Apr 2026 19:39:45 +0530
+        d=1e100.net; s=20251104; t=1777479749; x=1778084549;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zeHlRNAL/iq8k8oB+OXu5Y2acD+IRikshmtnJE9EZ2k=;
+        b=YOL9fRVw/BXGPTILEUD0tK5PQvecI+H32UAIq5kLuf3ndNbLiUN9W+HX91dmWuorZg
+         fHVW0GA60ZA64CKx1nf/oAIBYXS0Dw31sKuCFPI6BrPA1uHgSUvuMGiA21vswAgSrDFb
+         VRwI+7LfcwX3iItpD7YLPMx1myrFCNCw1koLNjwpqv/C5cKtzUC10zFsmCi+/9m7xJgm
+         vZQNDFQcWi3Qmon2IpG1a7DLQeAWiGMzLaUsgtg24klyQ+N35yBnMr3xDVvi0WRZwxhh
+         ueG9/caD0bNj3yhcQiMfHzEF3XeQBiHqpUsZeSpL0X2iClX0eKv8C0vUouLo61wxFdSW
+         B0mw==
+X-Forwarded-Encrypted: i=1; AFNElJ/Giatj4/XPJp8NwMiAozx9wFETkWUN8P9kS5MQUuZZWquReYC1YJSVmmoyqxCzLZ8F1TOvQS2t6Rv6be7JEQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+LPb542gcBwGiD8WiKkVgTSAgGKX7ntJ7Or+nC7vu8CHnO8p3
+	I/PionM+3j2y8s33cWlEuxolS/02jypINuSSOyXqiMZkHGV3slI4U0M96WT90TYKusGJyDpMM3e
+	O+iH3yjYu8A3u0h0Mg8aAfNtq9T/Weuej8CcsggqnsB5Z6QSnfr86dPO/rncUj2O1naWhOMm/2s
+	vLSamG5Mf9wuoiJdrzgRiwG4j/s5WHVXYw+LAdAGPGZ7UB
+X-Gm-Gg: AeBDiesK4mv03sTrA7MENyondabMHwNX05f7PsQKnB/lMjpAc/Wjbu5k9DYodG0Sytb
+	RPI9NOnnwPqFCMLiS6hdmeXUDD/+VegeS5LGLZN5PI4uLUNJ6JXj2vEejUu2FKNksPR9kcaKMeZ
+	MyKRbwZeA7ca+P+MmaXWrfqo2mgyNeucjb5wgdv42Dg0Yat0JKEcIO+h6lgFgjHEZFFdwbUna1y
+	8g0mTFKoV5AnpJ5BzDZLeSII3SoyCFnWqbGLW+eEh2EPsgb+g==
+X-Received: by 2002:a05:6820:1014:b0:696:6e28:8c19 with SMTP id 006d021491bc7-6966e288f89mr732632eaf.20.1777479748850;
+        Wed, 29 Apr 2026 09:22:28 -0700 (PDT)
+X-Received: by 2002:a05:6820:1014:b0:696:6e28:8c19 with SMTP id
+ 006d021491bc7-6966e288f89mr732600eaf.20.1777479748427; Wed, 29 Apr 2026
+ 09:22:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next] wifi: mac80211: Fix ADDBA request rejection
- after MLD link removal
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-        Hari Naraayana Desikan Kannan <hnaraaya@qti.qualcomm.com>
-References: <20260415-addba-req-v1-1-6eb9a33d8ca6@oss.qualcomm.com>
- <1f57207139c3fb955459425deda4d06c374ae212.camel@sipsolutions.net>
-Content-Language: en-US
-From: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
-In-Reply-To: <1f57207139c3fb955459425deda4d06c374ae212.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=XtvK/1F9 c=1 sm=1 tr=0 ts=69f2112e cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=fCcjYtuGweh8oyheFmjXfw==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=0ld2DFB2u2Pi5bvJUX4A:9 a=QEXdDO2ut3YA:10
- a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDE0MiBTYWx0ZWRfX6m/SLFaEM11W
- 0Y/Z1UeRYsRgNUmHmdy51gTBkWl74stU5FGwIBfoPFzEndeth/IDh5HupDkcixpVpRp6dG+xjh6
- KmuZvKSVBXfiinTlXN9+AVwjw1mRVeCWhVCEqarROM9bTs0PK5IXQsWrCrEEn2JxgqjYq/YloME
- NVPt5+mctEjkbSU092jFVr9jxrgpOgiD5Y2+JUwKfL7y7zmTHlzDoOSdfZ1KMzZMS6HE6uB9EgY
- x5+xY3eaCfFUGB7lBcGv9Crt+7X4JJHDkuKr9TCaphNXjtc6NM1kb+sUyDGfcCEvp8N7HXuXEyx
- hprqCFAIaQ2yIazKP/kGs9N0lYJEeXE24p/TxLjHwHTM7BsquCvTgC8jPdxoTL06qn2Ms7q8yHl
- A/b8hA/2es3BSPlEa/jWLmR3+DnCvdTF7cb6YgchpaXRd+7qEnih6Wpxu9Ca79rSRpXYRPKczNj
- W1xFUv1wsjG6h7hs1Fw==
-X-Proofpoint-GUID: mV8k6pjs7ljyRIsEQaOkurZZvewnR_cz
-X-Proofpoint-ORIG-GUID: mV8k6pjs7ljyRIsEQaOkurZZvewnR_cz
+References: <20260428-block-as-nvmem-v1-0-6ad23e75190a@oss.qualcomm.com>
+ <20260428-block-as-nvmem-v1-7-6ad23e75190a@oss.qualcomm.com>
+ <CAMRc=Me9G9vd06a39vi_UrXCTkUtJQRogm2MqgnwLS_r3Thyzg@mail.gmail.com> <e0adaf64-10d7-4e28-8403-769e3070ec30@lunn.ch>
+In-Reply-To: <e0adaf64-10d7-4e28-8403-769e3070ec30@lunn.ch>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Wed, 29 Apr 2026 18:22:16 +0200
+X-Gm-Features: AVHnY4IKbhM_HKhU56A0ru1z2waWryyeh9i-sfRAmlk4QJVuWsNhvXilz3QVxic
+Message-ID: <CAFEp6-26sVj21JVECREORdq+UeFTB22MoqAm6Pd2fTosCQau9Q@mail.gmail.com>
+Subject: Re: [PATCH 7/9] Bluetooth: hci_sync: Add NVMEM-backed BD address retrieval
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, Ulf Hansson <ulfh@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+        Rocky Liao <quic_rjliao@quicinc.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org,
+        netdev@vger.kernel.org, daniel@makrotopia.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: ymXhhGrU3UaVZ0AONryQgt85Vj_1YRRF
+X-Authority-Analysis: v=2.4 cv=eeANubEH c=1 sm=1 tr=0 ts=69f23045 cx=c_pps
+ a=lkkFf9KBb43tY3aOjL++dA==:117 a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=gowsoOTTUOVcmtlkKump:22 a=EUspDBNiAAAA:8 a=J1Chn9sQg74BwZjCRdUA:9
+ a=QEXdDO2ut3YA:10 a=k4UEASGLJojhI9HsvVT1:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDE2NSBTYWx0ZWRfX3qKWufnzYiYz
+ FQnb2kAyPlaQ3eIjeerZ8a/Ov4IOGrgRoK/PDiRxP45jkxak9nRbNDeAgWGMBtqJvtK4cTfRiRf
+ 6d7FE2JYKNOrVIj/JvS7I8dB98DL4yBTzgwJuXEWqzkhGaq1l8ac+7nSICFfD1+3MD23GRHMDvA
+ Cyhep8CcWUXz9pIYJA9kNlG/n+ONTdHQlPeeCV9z5VnJRcN4aqgBHSJwEfdTi3bl86Byafb3mkM
+ KDSeKCdrsiWhcl2uP+dQHxQDFeEBl9sLYgJ6wTGrJN8sxMcX+aGhIPn9imORWD8qo+4+iaVICq0
+ HaK/SRvhppG90RF4WRSmVMmqcaDkbPQVCr68nwyZTlKWEYY1TRa4lwTzu37C83GR8y3Tfs32UMG
+ sp/YdYVkH/5NHnHLVXcQ8RCEXt/ZCezT2+Re+vkmoipBoIY3+hejPAdfXOhnwZv9T3jghwDD56C
+ CUupYxjk+YI5eKZwtxQ==
+X-Proofpoint-ORIG-GUID: ymXhhGrU3UaVZ0AONryQgt85Vj_1YRRF
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-28_05,2026-04-28_01,2025-10-01_01
+ definitions=2026-04-29_01,2026-04-28_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 bulkscore=0
- adultscore=0 impostorscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ priorityscore=1501 adultscore=0 clxscore=1015 malwarescore=0 impostorscore=0
+ phishscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604290142
-X-Rspamd-Queue-Id: 2D26E49577B
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604290165
+X-Rspamd-Queue-Id: 01180497BBB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-35637-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[30];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35636-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[kernel.org,kernel.dk,sipsolutions.net,holtmann.org,gmail.com,quicinc.com,davemloft.net,google.com,redhat.com,vger.kernel.org,lists.infradead.org,makrotopia.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[manish.dharanenthiran@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[loic.poulain@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim]
 
+Hi Bartosz, Andrew,
 
+On Wed, Apr 29, 2026 at 3:15=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Wed, Apr 29, 2026 at 10:53:13AM +0200, Bartosz Golaszewski wrote:
+> > On Tue, Apr 28, 2026 at 4:23=E2=80=AFPM Loic Poulain
+> > <loic.poulain@oss.qualcomm.com> wrote:
+> > >
+> > > Some devices store the Bluetooth BD address in non-volatile
+> > > memory, which can be accessed through the NVMEM framework.
+> > > Similar to Ethernet or WiFi MAC addresses, add support for
+> > > reading the BD address from a 'local-bd-address' NVMEM cell.
+> > >
+> > > As with the device-tree provided BD address, add a quirk to
+> > > indicate whether a device or platform should attempt to read
+> > > the address from NVMEM when no valid in-chip address is present.
+> > > Also add a quirk to indicate if the address is stored in
+> > > big-endian byte order.
+> > >
+> > > Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+> > > ---
+> >
+> > Is there any reason why we can't extend the existing
+> > of_get_mac_address() with another property name and use it here? It
+> > already has support for mac addresses from nvmem.
+>
+> Does it even need to be a different property name? Is a bluetooth MAC
+> address somehow different to an Ethernet MAC address? Isn't it just a
+> EUI-48, independent of it being Ethernet, Bluetooth, wifi, fddi, token
+> ring, homing pigeon?
 
-On 4/27/2026 3:30 PM, Johannes Berg wrote:
-> On Wed, 2026-04-15 at 12:21 +0530, Manish Dharanenthiran wrote:
->> From: Hari Naraayana Desikan Kannan <hnaraaya@qti.qualcomm.com>
->>
->> Subsequent ADDBA requests from a non-AP MLD can be rejected with status
->> 0x0025 (Request declined), preventing BA establishment. This happens
->> because mac80211 checks the per-TID A-MPDU session's tid_rx pointer to
->> detect timeout changes on ADDBA updates. For drivers that set
->> SUPPORT_REORDERING_BUFFER, the reordering state is owned by the driver
->> and tid_rx will be NULL, causing mac80211 to incorrectly decline the
->> update.
->>
->> This can occur during MLO link reconfiguration, where a non-AP MLD may
->> remove one of its links while a Block Ack (BA) session is active. After
->> the link is removed, ADDBA update requests sent on the remaining links
->> are rejected, preventing BA establishment.
->>
->> Fix this by calling drv_ampdu_action() on ADDBA updates when
->> SUPPORT_REORDERING_BUFFER is set, so the driver can accept or reject the
->> update based on its capabilities and allow BA to be established on the
->> remaining links.
-> 
-> Pretty sure this will break drivers, particularly iwlwifi, if you don't
-> fix those first.
-> 
+In terms of naming, I followed the pattern of the existing DT
+properties: for Ethernet/WiFi there is mac-address property, and for
+Bluetooth a local-bd-address property. So it seems reasonable to reuse
+the same naming for the NVMEM labelling. Also One thing to keep in
+mind is that Bluetooth has historically handled addresses in
+little-endian format, while Ethernet MAC addresses are typically
+stored in big-endian format (as far as I know).
 
+That said, a more generic EUI-48 identifier could also make sense if
+we want to go in that direction, with expected property/nvmem-cell
+name(s) as parameters?
 
-With link reconfiguration, not handling the update requests sent on the 
-remaining links causes throughput drop, that's why went with handling 
-the update requests even-though the session is valid.
-Please let us know if we need to clear the old session and then proceed 
-with the update request to avoid breaking the other drivers.
->> Note: A similar fix has been proposed in [1]. This patch also fixes the
->> issue mentioned there. The difference in approach is to keep a similar
->> flow when the dialog_token matches. Previously only the timeout value
->> is checked, updated that to check the timeout only for the hardware that
->> doesn't set SUPPORT_REORDERING_BUFFER. In [1], it was changed to invoke
->> driver unconditionally when SUPPORT_REORDERING_BUFFER is set.
->>
->> https://lore.kernel.org/all/5806bab7e46506d3c300ab4eb66989d42936aeb0.1771323902.git.repk@triplefau.lt/
->>
-> What was wrong with the approach we discussed there, other than nobody
-> implementing it?
-> 
-> johannes
-
-Not a major different between the other change, thought of keeping the 
-similar version that we validated in the internal tree.
-
-Regards
-Manish Dharanenthiran
+Regards,
+Loic
 
