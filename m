@@ -1,149 +1,138 @@
-Return-Path: <linux-wireless+bounces-35595-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35596-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOzzFP3j8WlZlAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35595-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 12:57:01 +0200
+	id 0DkUHgzq8WmalQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35596-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 13:22:52 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A17BF493412
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 12:57:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CB1493724
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 13:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0EFA430173A6
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 10:55:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F262A300614A
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 11:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0A53EF0C4;
-	Wed, 29 Apr 2026 10:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6692C3F0A98;
+	Wed, 29 Apr 2026 11:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b="IE9hT5cj"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="wvEc/G6m"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from vinatta.cz (vinatta.cz [37.205.8.231])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE1021B9F6;
-	Wed, 29 Apr 2026 10:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01E7175A81;
+	Wed, 29 Apr 2026 11:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777460155; cv=none; b=Xc/aMmsGt0n7Y7xOyQzkR5vqQNHvaHpsnTc27VQ4BZg2XMmH0/rnA2MT0phG90aGYhDH8A0tdF+GRZLz/kANnZHmgCQw0yfvpbgmWteJHkqFBDK3akiq9kQaiqGuuBnpzDIGH/qlaloyJU7Sq452gllvQl7QRmp+RT4M9++BAMg=
+	t=1777461760; cv=none; b=ehGHuSWMM3CFYDm71iV25c2EVZEuFgGiRwFOziAz63MiZf9TxjcfMJpB+/+TN1nDpVj/3zf78Ti5jnAYLoX12SGQHGq+HoHTaK3DpFWr/Gf2blQK988rNddFpTfSlhsDXTmcfpPm/2XC1DvByGfdg2Cfba++S8VoCNOZbo3My1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777460155; c=relaxed/simple;
-	bh=Fmly2pB3Jdw6CU7aua3Gt1Tb8FZySUz2f9Q9kbm89gQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
-	 References:In-Reply-To; b=DBUVpHLdJ/nXCumu94PuKK74mFfYQCvS4uvaRD84QDJqnttDLwlj1eeG/emedUX1xqTjSetk3acvzITbS7Tod5KpprduhECwTNL79WyaZ1OD7YDITZogeVqPgA2VtHd04Gf2dt/VIsp4NEhMcIcH5NCUnpNdUG+T6n3z/tby5m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=vinatta.cz; dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b=IE9hT5cj; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vinatta.cz
-DKIM-Signature: a=rsa-sha256; bh=Fmly2pB3Jdw6CU7aua3Gt1Tb8FZySUz2f9Q9kbm89gQ=;
- c=relaxed/relaxed; d=vinatta.cz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@vinatta.cz; s=default; t=1777460123; v=1; x=1777892123;
- b=IE9hT5cjZEmIwG9IIdx+fcVqsAG5vT54+uzxwHiRxM0qxsFe8xvtdB5JsLOmQepxxwoCxtyb
- TM2YyAJJZ5UbMb5FtR5kcijOJLoblavspW1N+ZG7G3wkE5/DFWnrVyZmY0EoM2BBwceSKRh4Z4p
- vIzF+E6YexybCwcyabYmLNTEok0LHtxFh2l8fepePWj0RpUmB+J6ChmiJy5/EqCOhfhw6xb1qN3
- lP0CZiGLNO7QX/PTkLwUk9NVmRsPAgFAg5zHLuPRuOBi4mdC55z9zzj2ca/aoZvXzF6L1q0uuvF
- GxJEdCqfwVXGEGS7eiMO2CPd07ZakUhWpFIOe9f/L6ySA==
-Received: by vinatta.cz (envelope-sender <karel@vinatta.cz>) with ESMTPS id
- 740817af; Wed, 29 Apr 2026 12:55:23 +0200
+	s=arc-20240116; t=1777461760; c=relaxed/simple;
+	bh=nM00K1yCTGWbLJ67CLFAJLSKUSfe1ahbLuQbeMdnPGg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZpP5nS0MyMDWwmiexFNGAPdIAyIkGgoFIHKztNe6XqiIHmeqLEocerF7oZWigsS053/lRJpYRoIqzUAjZ/Q9o0eAYg0sw2vNQtPmGNzPtS7SF+u25vLRXBuy171twthZ+wXHC0g1qnam6D05tr2ihQXfEi6oJcFqB4bbhegsED4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=wvEc/G6m; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 6607C22850;
+	Wed, 29 Apr 2026 13:22:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1777461754;
+	bh=nM00K1yCTGWbLJ67CLFAJLSKUSfe1ahbLuQbeMdnPGg=; h=From:To:Subject;
+	b=wvEc/G6mjBE0GxM4bzoHZxQsbtrNL6QfVqrpNXiJgj2hb4jmIBOjrMSDhj60KFiyx
+	 B12XCyED6SS4fMNsRpXPB5tMRVDX92AngCp8liFagKw35mNqFJiemKeJK+ZMBeLGwZ
+	 X4u7CVL3qsNsThc1gr6U7bC3+gYI5dk3yJ/0hwgXCz+6+Srjfu5l/r89DAl1mE0QeI
+	 REAYWN5VZH3QzxUnIx24Bstqhc/FLR8MBs+0rYBMAY9znW8lPQ7B5bnQTEvoTK3bWQ
+	 b/3XkBTlpQq3tvVtsUOFt0rcHjSp+N6n3kkb9k932QfMll9U9D2BqNP8sAezcnpV2g
+	 FAr2AjoEa2Zmw==
+Date: Wed, 29 Apr 2026 13:22:32 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Karel Balej <balejk@matfyz.cz>
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>, Frank Li <Frank.Li@nxp.com>,
+	linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mmc@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org, Jeff Chen <jeff.chen_1@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>, david@ixit.cz
+Subject: Re: [DONOTAPPLY RFC PATCH v2 0/4] WiFi support for
+ samsung,coreprimevelte
+Message-ID: <20260429112232.GD17033@francesco-nb>
+References: <20251026182602.26464-1-balejk@matfyz.cz>
+ <DEJL1ATTQMVE.120JV9YW59I27@matfyz.cz>
+ <aSnWYS2g5slVFaSk@gaggiata.pivistrello.it>
+ <DI5L100Q1RKO.1A68EJIPWYSRC@matfyz.cz>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Apr 2026 12:55:23 +0200
-Message-Id: <DI5L100Q1RKO.1A68EJIPWYSRC@matfyz.cz>
-Cc: "Johannes Berg" <johannes@sipsolutions.net>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, =?utf-8?q?Duje_Mihanovi=C4=87?=
- <duje@dujemihanovic.xyz>, "Andrew Lunn" <andrew@lunn.ch>, "Gregory Clement"
- <gregory.clement@bootlin.com>, "Sebastian Hesselbarth"
- <sebastian.hesselbarth@gmail.com>, "Ulf Hansson" <ulf.hansson@linaro.org>,
- "Frank Li" <Frank.Li@nxp.com>, <linux-wireless@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linux-mmc@vger.kernel.org>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- "Jeff Chen" <jeff.chen_1@nxp.com>, "Peng Fan" <peng.fan@nxp.com>,
- <david@ixit.cz>
-Subject: Re: [DONOTAPPLY RFC PATCH v2 0/4] WiFi support for
- samsung,coreprimevelte
-To: "Brian Norris" <briannorris@chromium.org>, "Francesco Dolcini"
- <francesco@dolcini.it>
-From: "Karel Balej" <balejk@matfyz.cz>
-References: <20251026182602.26464-1-balejk@matfyz.cz>
- <DEJL1ATTQMVE.120JV9YW59I27@matfyz.cz>
- <aSnWYS2g5slVFaSk@gaggiata.pivistrello.it>
-In-Reply-To: <aSnWYS2g5slVFaSk@gaggiata.pivistrello.it>
-X-Rspamd-Queue-Id: A17BF493412
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DI5L100Q1RKO.1A68EJIPWYSRC@matfyz.cz>
+X-Rspamd-Queue-Id: 32CB1493724
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.44 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[vinatta.cz:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[dolcini.it,none];
+	R_DKIM_ALLOW(-0.20)[dolcini.it:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[matfyz.cz : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-35596-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35595-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[22];
+	RCPT_COUNT_TWELVE(0.00)[23];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[sipsolutions.net,kernel.org,dujemihanovic.xyz,lunn.ch,bootlin.com,gmail.com,linaro.org,nxp.com,vger.kernel.org,lists.infradead.org,lists.sr.ht,ixit.cz];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[chromium.org,dolcini.it,sipsolutions.net,kernel.org,dujemihanovic.xyz,lunn.ch,bootlin.com,gmail.com,linaro.org,nxp.com,vger.kernel.org,lists.infradead.org,lists.sr.ht,ixit.cz];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[balejk@matfyz.cz,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[vinatta.cz:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vinatta.cz:dkim]
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[francesco@dolcini.it,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[dolcini.it:+];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-Hello,
+Hello Karel,
 
-Francesco Dolcini, 2025-11-28T18:05:37+01:00:
-> Hello Karel,
->
-> On Thu, Nov 27, 2025 at 04:29:12PM +0100, Karel Balej wrote:
->> To reiterate, the firmware is generally available but is not part of
->> linux-firmware and the entire process of upstreaming the chipset support=
- is
->> stuck on that.
->
-> I'll try to see if any of my contact in NXP Wi-Fi group is able to help. =
-Give
-> me a few days.
+On Wed, Apr 29, 2026 at 12:55:23PM +0200, Karel Balej wrote:
+> without the firmware being in linux-firmware?
 
-so I was in a long conversation over the past months with Jeff from NXP
-who was very helpful and tried to arrange for the upstreaming of the
-firmware. Unfortunately however, his efforts were ultimately rejected by
-the internal management.
+What's the license of this firmware? Am I wrong saying that if
+the license allows it, you could just send a patch to have it integrated
+to the linux-firmware repository? Is there any history or documentation
+on the topic (please apologize if this is a well known topic, just
+answer RTFM if this is the case).
 
-We were directed to try to reach out to NXP via the customer support
-page which yielded nothing. The current situation is thus the same as a
-few months ago, summarized in my quote above.
+I read a couple of days ago that for example the firmwares for the
+various Apple arm64 laptop cannot be redistributed and every single
+individual that wants to use those needs to extract those from their
+system.
 
-Brian, what are the options here now? Would it be possible to make an
-exception and accept the patches without the firmware being in
-linux-firmware? This is an old device with no mainstream audience so I
-expect everyone who will want to use it will be able to supply the
-firmware themselves and it would be great to not have to keep the
-patches in a fork, especially when trying to build on top of them
-further (such as to fix the driver-firmware incompatibilities discussed
-in one of the patches of this series).
+All of that seems just a legal matter, and IANAL ...
 
-Francesco, would you perhaps still be able to help in any way?
+Francesco
 
-Thank you, kind regards,
-K. B.
+
 
