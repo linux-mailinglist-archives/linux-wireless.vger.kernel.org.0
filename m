@@ -1,307 +1,135 @@
-Return-Path: <linux-wireless+bounces-35568-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35569-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4JznDn2r8WkAjgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35568-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 08:55:57 +0200
+	id 6J8VDZ+r8WkAjgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35569-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 08:56:31 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8574900AB
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 08:55:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBC74900BB
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 08:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 07DCA303E8D6
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 06:55:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 06F793012CE4
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 06:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884BC39DBCD;
-	Wed, 29 Apr 2026 06:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459EB39BFE5;
+	Wed, 29 Apr 2026 06:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mRYNGpKk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VFhgfhPg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8D339BFE7;
-	Wed, 29 Apr 2026 06:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B82339719;
+	Wed, 29 Apr 2026 06:55:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777445716; cv=none; b=iCNcOo5r1JhTh9JhfmXjBcSbNMiIiNydzesToF6qZ1vKlr1PlYTTAS3LoB75+wGqXyAnnJqssvTxr+AiT2sGx5K77xbBPs17VL6idN28vz0FZvddLHAiLzI4VcSgyDgqcJoVsp/5Y3RukPV1i8R/HUsNbhLk73CMyvBBrc2y4iw=
+	t=1777445740; cv=none; b=epgDDHtJJAYuANHpDYOIdiRbRknLPAsOLt5XQY2k0EMtFgYWVYFA3zo9U3U7Hs8K6OHv2QTUL0RWfE8gqcNV7Gh5+QAXIDlKRRfGFKBFn1II+5uuHtxIJvqQjBfaFcC9SrD1RZ8ww8IdAf9+Q8iWk0MLOfRRX4vmfvsmxo3AQ5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777445716; c=relaxed/simple;
-	bh=kYYeufPkRyGcr0hiIW6bKGaXhz8Q+nnaSSo0fxSS6co=;
+	s=arc-20240116; t=1777445740; c=relaxed/simple;
+	bh=PHll4ZUqKiT08v1DLiiLenqv/Uz1VMM8r2/32Bt5mL4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UWdJy73NlEUWD1wNquPzln6IAf1BxlgxtcCXILsqpY95sYe3/5GW/kE0JsNUNgU6v30G/L9/8w49Fv+EzvvAWmozlyMm/Q8FGg3RbU5L8t6CaZdbofQtmzpKrHX/PS6Xv9LZtO8h/Qk5m6d0Ewbimrh13p9H1ZFG1nNlSGR/XhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mRYNGpKk; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777445715; x=1808981715;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=kYYeufPkRyGcr0hiIW6bKGaXhz8Q+nnaSSo0fxSS6co=;
-  b=mRYNGpKkdPZn92Js4w44vvHbhSgXVXy1f8mAr+/9W1FABmA43BvjO7EP
-   GVD0J2RI12BQWLSVn+4pSjmpK3tJLexJPN1TP7IkIGvcp1XQ3/d//xFrS
-   CJp3WQFbkvgN16LA4psH1fQ+t2XLRziSgU91OeRpokNK6AaSQAq0gdaSG
-   uvWDZk0FksjFnREON71yB0shU5ojBgYqTUbdKAnKCfQpfx76Fc62Dnd3u
-   WaBINNRZ0vVuN8peK/uponY/3gyaThgUpnevzRqr5fFlkDu/NtPvnOYcD
-   K8l9VlBFLlOf6aC4AUDY9hYTH3ZFoMnxoSpVTUBBdaTPfOlQyc0M39ger
-   w==;
-X-CSE-ConnectionGUID: UupN5YIITw+bGaoBrMuS9g==
-X-CSE-MsgGUID: BFAAvPR8QBqruOecGbaejw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="89456642"
-X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
-   d="scan'208";a="89456642"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 23:55:14 -0700
-X-CSE-ConnectionGUID: NWCIGupGRW+k5c69AnHXJQ==
-X-CSE-MsgGUID: 5oHPhrg7Q1iV2x0zLMtPhQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
-   d="scan'208";a="235958719"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.141])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 23:54:56 -0700
-Date: Wed, 29 Apr 2026 09:54:54 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Krzysztof Halasa <khc@pm.waw.pl>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Steffen Klassert <klassert@kernel.org>,
-	David Dillow <dave@thedillows.org>,
-	Ion Badulescu <ionut@badula.org>, Mark Einon <mark.einon@gmail.com>,
-	Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
-	Sudarsana Kalluru <skalluru@marvell.com>,
-	Manish Chopra <manishc@marvell.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Denis Kirjanov <kirjanov@gmail.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jian Shen <shenjian15@huawei.com>,
-	Cai Huoqing <cai.huoqing@linux.dev>, Fan Gong <gongfan1@huawei.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
-	Yibo Dong <dong100@mucse.com>, Simon Horman <horms@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com,
-	Jiri Pirko <jiri@resnulli.us>,
-	Francois Romieu <romieu@fr.zoreil.com>,
-	Daniele Venzano <venza@brownhat.org>,
-	Samuel Chessman <chessman@tux.org>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Kevin Curtis <kevin.curtis@farsite.co.uk>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Kees Cook <kees@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Yeounsu Moon <yyyynoom@gmail.com>,
-	Denis Benato <benato.denis96@gmail.com>,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Yicong Hui <yiconghui@gmail.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Sai Krishna <saikrishnag@marvell.com>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>, Joe Damato <joe@dama.to>,
-	Double Lo <double.lo@cypress.com>,
-	Chi-hsien Lin <chi-hsien.lin@cypress.com>,
-	Colin Ian King <colin.i.king@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-can@vger.kernel.org,
-	linux-parisc@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	linux-rdma@vger.kernel.org, oss-drivers@corigine.com,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH net-next] net: Consistently define pci_device_ids using
- named initializers
-Message-ID: <afGrPvUeZ-DjWbC8@ashevche-desk.local>
-References: <20260428171845.2288395-2-u.kleine-koenig@baylibre.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=pQUTEMsYWu9RU8g7LZbtLzxXBbzYYnvi/fw6MCEUsucIBpBk9+A//lQr8iuhcorvrvMs8s3V7aiEgxd2R8gW/LJBqvU/XcVe5heTvI7cwuewvykoj19BXBGTzjB2QAX/2/284DsREc55dgl6UGZWbD9dG50Ts9A1Puy5Eb8jl10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VFhgfhPg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420CAC2BCB3;
+	Wed, 29 Apr 2026 06:55:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777445739;
+	bh=PHll4ZUqKiT08v1DLiiLenqv/Uz1VMM8r2/32Bt5mL4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VFhgfhPge/7WpbcBc2sMONWoZHLu8VL0rWWNY364iv6D5SQfahsqi1hTa0Mluri7T
+	 CcsM9sRnXsc5j2lftprdsiE43Ve2gSwAKA3SrlIhJe5CZfOiaPJicX0CqQxJGvzlXK
+	 k3Z/NBSA+S0xnr9RC9d82YUQYsX9fqcIRwsTNbKULEiWGaINpTd4nW2TUhscX956B9
+	 mYacKBtQN4CXxY3ZZ5VMz6hwfmszSmT9R/ozpe2XRqycmy4FMJOTjAOojzHIqdjgup
+	 L4Ojis1NJn1aZkkLJdIXnN656kdewwcmDAhlweLtJZ8M/zK4nhhVxD/CLoBVJ6MCvd
+	 UvozQfhvMxJ0A==
+Date: Wed, 29 Apr 2026 08:55:37 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Andreas Kemnade <andreas@kemnade.info>, Bartosz Golaszewski <brgl@kernel.org>, 
+	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>, "David S. Miller" <davem@davemloft.net>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Eric Dumazet <edumazet@google.com>, 
+	Felipe Balbi <balbi@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Johannes Berg <johannes@sipsolutions.net>, Kevin Hilman <khilman@baylibre.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Linus Walleij <linusw@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh+dt@kernel.org>, 
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org, 
+	Christian Lamparter <chunkeey@gmail.com>
+Subject: Re: [PATCH v3 1/3] dt-bindings: net: add st,stlc45xx/p54spi binding
+Message-ID: <20260429-crouching-dangerous-basilisk-22cfda@quoll>
+References: <20260427142355.2532714-1-arnd@kernel.org>
+ <20260427142355.2532714-2-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260428171845.2288395-2-u.kleine-koenig@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Queue-Id: CC8574900AB
+In-Reply-To: <20260427142355.2532714-2-arnd@kernel.org>
+X-Rspamd-Queue-Id: AFBC74900BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[pengutronix.de,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,pm.waw.pl,sipsolutions.net,baylibre.com,thedillows.org,badula.org,gmail.com,marvell.com,chelsio.com,huawei.com,linux.dev,intel.com,nvidia.com,mucse.com,realtek.com,resnulli.us,fr.zoreil.com,brownhat.org,tux.org,trustnetic.com,net-swift.com,farsite.co.uk,broadcom.com,bootlin.com,seu.edu.cn,suse.com,infradead.org,ti.com,dama.to,cypress.com,vger.kernel.org,lists.osuosl.org,corigine.com,lists.linux.dev];
-	TAGGED_FROM(0.00)[bounces-35568-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35569-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[arndb.de,iki.fi,kemnade.info,kernel.org,baylibre.com,davemloft.net,gmail.com,google.com,sipsolutions.net,redhat.com,atomide.com,vger.kernel.org,lists.infradead.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[84];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ashevche-desk.local:mid]
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arndb.de:email]
 
-On Tue, Apr 28, 2026 at 07:18:44PM +0200, Uwe Kleine-König (The Capable Hub) wrote:
-> ... and PCI device helpers.
+On Mon, Apr 27, 2026 at 04:23:53PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> The various struct pci_device_id arrays were initialized mostly by one
-> the PCI_DEVICE macros and then list expressions. The latter isn't easily
-> readable if you're not into PCI. Using named initializers is more
-> explicit and thus easier to parse.
+> The SPI version of Prism54 was sold under a couple of different
+> names and supported by the Linux p54spi driver, but there was
+> never a DT binding for it.
 > 
-> Also use PCI_DEVICE* helper macros to assign .vendor, .device,
-> .subvendor and .subdevice where appropriate and skip explicit
-> assignments of 0 (which the compiler takes care of).
+> Document the four known names of this device and the properties
+> that are sufficient for its use on the Nokia N8x0 tablet.
 > 
-> The secret plan is to make struct pci_device_id::driver_data an
-> anonymous union (similar to
-> https://lore.kernel.org/all/cover.1776579304.git.u.kleine-koenig@baylibre.com/)
-> and that requires named initializers. But it's also a nice cleanup on
-> its own.
+> As I don't have this hardware or documentation for it, this is
+> purely based on existing usage in the driver.
 > 
-> This change doesn't introduce changes to the compiled pci_device_id
-> arrays. Tested on x86 and arm64.
+> Link: https://lore.kernel.org/all/e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com/
+> Acked-by: Christian Lamparter <chunkeey@gmail.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  .../bindings/net/wireless/st,stlc45xx.yaml    | 58 +++++++++++++++++++
+>  MAINTAINERS                                   |  1 +
+>  2 files changed, 59 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
 
-...
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-> -	{0,}						/* 0 terminated list. */
-> +	{ }						/* 0 terminated list. */
-
-The comments like these are just noises. The rule of thumb is to play with a
-trailing comma:
-- always drop it in the terminator entry
-- always keep it in the normal initialisers when semantically it's not a
-terminator
-
-...
-
->  static const struct pci_device_id liquidio_pci_tbl[] = {
->  	{       /* 68xx */
-> -		PCI_VENDOR_ID_CAVIUM, 0x91, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0
-> +		PCI_VDEVICE(CAVIUM, 0x91)
-
-Use full fixed-width device id value(s). 0x0091 here and so on...
-
->  	},
-
-Also seems that you may decrease number of LoC here putting it as
-
-	{ PCI_VDEVICE(CAVIUM, 0x0091) }, /* 68xx */
-
-and so on...
-
->  	{       /* 66xx */
-> -		PCI_VENDOR_ID_CAVIUM, 0x92, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0
-> +		PCI_VDEVICE(CAVIUM, 0x92)
->  	},
->  	{       /* 23xx pf */
-> -		PCI_VENDOR_ID_CAVIUM, 0x9702, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0
-> +		PCI_VDEVICE(CAVIUM, 0x9702)
->  	},
-> -	{
-> -		0, 0, 0, 0, 0, 0, 0
-> -	}
-> +	{ }
->  };
-
-...
-
->  #define CH_PCI_DEVICE_ID_TABLE_DEFINE_END \
-> -		{ 0, } \
-> +		{ } \
->  	}
-
-Why do we have this macro at all?
-
-
-> -#define CH_PCI_DEVICE_ID_TABLE_DEFINE_END { 0, } }
-> +#define CH_PCI_DEVICE_ID_TABLE_DEFINE_END { } }
-
-Ditto.
-
-...
-
->  static const struct pci_device_id de_pci_tbl[] = {
-> -	{ PCI_VENDOR_ID_DEC, PCI_DEVICE_ID_DEC_TULIP,
-> -	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0 },
-> -	{ PCI_VENDOR_ID_DEC, PCI_DEVICE_ID_DEC_TULIP_PLUS,
-> -	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, 1 },
-> +	{ PCI_VDEVICE(DEC, PCI_DEVICE_ID_DEC_TULIP), .driver_data = 0 },
-> +	{ PCI_VDEVICE(DEC, PCI_DEVICE_ID_DEC_TULIP_PLUS), .driver_data = 1 },
->  	{ },
-
-Drop comma. I.o.w. please make sure you also unify the style of the ID tables,
-including terminator entries.
-
->  };
-
-...
-
->  static const struct pci_device_id sis190_pci_tbl[] = {
-> -	{ PCI_DEVICE(PCI_VENDOR_ID_SI, 0x0190), 0, 0, 0 },
-> -	{ PCI_DEVICE(PCI_VENDOR_ID_SI, 0x0191), 0, 0, 1 },
-> -	{ 0, },
-> +	{ PCI_VDEVICE(SI, 0x0190), .driver_data = 0 },
-> +	{ PCI_VDEVICE(SI, 0x0191), .driver_data = 1 },
-> +	{ },
-
-Ditto and so on...
-
->  };
-
-...
-
-Also I somehow managed to remove, but I remember you had an inner comma in some
-cases after the .driver_data, when the full ID entry is located on a single
-line. I.o.w. do
-
-	{ PCI_...(), .driver_data = ... // no trailing comma here! },
-
-When it's a single line trailing comma inside helps nothing and just makes
-lines longer and harder to read.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Best regards,
+Krzysztof
 
 
