@@ -1,166 +1,133 @@
-Return-Path: <linux-wireless+bounces-35541-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35542-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMilItRT8WkugAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35541-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 02:41:56 +0200
+	id gEmDF7JZ8Wn/gAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35542-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 03:06:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F072048DCD1
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 02:41:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2B248DDF1
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 03:06:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 77BD530360B9
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 00:41:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35A48306DA59
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2026 01:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D16921773D;
-	Wed, 29 Apr 2026 00:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C30122F74A;
+	Wed, 29 Apr 2026 01:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Hd4gF/tn"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jcUaphJi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810051DD0D4;
-	Wed, 29 Apr 2026 00:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351A01514F8;
+	Wed, 29 Apr 2026 01:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777423308; cv=none; b=EtAdau46NEs9/7PPtO6KaTHuyFpTo0AHUOVdXSg2j6mpnGcPmL45B9BKiF6SUaUZUpMBUwQSOG4xxskFXx38/QG7HudC/ZkCRtiBcawJBZoO9h1XY1Z2g0e/zh2YODTGiwPgMXxMtVSkHI4Qymf09KH6UI1s4k36ruLllKzPz3c=
+	t=1777424788; cv=none; b=GcJoKJdB1X7lvRutpMjBvyg2SbXiDGxWfGiFEyuX5pXXMjFl0SlPgQhoc77r++WLdfUIORgO9GDl08YB1MX+tIMf7hfzeWNMk2F2EHiDQp8Jv9HfeleUmvMeu+nM1Se1Diqfjh/ttvo3eqKkmplR0O0rZMwQsl3H2IekDMYgav4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777423308; c=relaxed/simple;
-	bh=YQkVH7lirlYNBMaQ3LoLyoQpPlONIc2D3c8S5pNufuA=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=E+5svuubvj8p1uBS+Z48TmUKkIFF5kLTQwgaP1qLkalnxssTByfgTChi5LcXyA1qWQ2ZFWGvGM0fqBTKOmxkTtV78YSoHy488fqQZPN7Y66Wek49RZHNgZnUCG81rX1PiFU+VkCdv5NPk0WxzrVeAAhqZ2p4/keAFUk2CjAUyrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Hd4gF/tn; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 63T0eQy75850035, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1777423226; bh=YQkVH7lirlYNBMaQ3LoLyoQpPlONIc2D3c8S5pNufuA=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=Hd4gF/tnrGNSK0f4tEtSVhJIA/ckn7mucHDFLDFkjor7nufQbBpxJyk26DFueplr1
-	 H/kFO8EOYyrby+PZbEO7Llashb8Az5mbb8NiZ+JBZopF218JQBLBzWxWnSmcQeYMcG
-	 FE77Y5ZKQlUGv+v2el9rMqThvoL5BC/ktpVpBeukQ4miy2H5PEHRs+ilB2AdatZwrs
-	 Ef2dQUlKv+aju2AKz3inMgiYBJzaQmzqoFN7b1RZd4igd5kp0HJ78Ot0nlgQUxdpWb
-	 Wyf4YFkj8/hdebMyteQLs8kXpOTps7SaiG37U8B2OQAhSTs7lHMg/eNrTdpe4vHI9k
-	 EUJloqTHPgnQg==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 63T0eQy75850035
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 Apr 2026 08:40:26 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 29 Apr 2026 08:40:27 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::ed72:3015:2840:4458]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::ed72:3015:2840:4458%10]) with mapi id
- 15.02.1748.010; Wed, 29 Apr 2026 08:40:26 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Yury Norov <ynorov@nvidia.com>, Thomas Gleixner <tglx@kernel.org>,
-        "Ingo
- Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen
-	<dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, "Andy
- Lutomirski" <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Jonathan Cameron" <jic23@kernel.org>,
-        David Lechner <dlechner@baylibre.com>,
-        "Johannes Berg" <johannes@sipsolutions.net>,
-        David Laight
-	<david.laight.linux@gmail.com>,
-        =?iso-8859-1?Q?Nuno_S=E1?=
-	<nuno.sa@analog.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Richard Cochran
-	<richardcochran@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S.
- Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        "Alexandre
- Belloni" <alexandre.belloni@bootlin.com>,
-        Yury Norov <yury.norov@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Hans de Goede
-	<hansg@kernel.org>, Linus Walleij <linusw@kernel.org>,
-        Sakari Ailus
-	<sakari.ailus@linux.intel.com>,
-        Salah Triki <salah.triki@gmail.com>,
-        "Achim
- Gratz" <Achim.Gratz@Stromeko.DE>,
-        Ben Collins <bcollins@watter.com>, "x86@kernel.org" <x86@kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>,
-        "linux-rtc@vger.kernel.org"
-	<linux-rtc@vger.kernel.org>
-Subject: RE: [PATCH v2 7/9] wifi: rtw89: switch to using FIELD_GET_SIGNED()
-Thread-Topic: [PATCH v2 7/9] wifi: rtw89: switch to using FIELD_GET_SIGNED()
-Thread-Index: AQHc1o6xWsc4T9bdAkGO0jI3Cj/ORbX1Mn/A
-Date: Wed, 29 Apr 2026 00:40:26 +0000
-Message-ID: <571202270b0f4811b18cbd6c9381522c@realtek.com>
-References: <20260427214127.406067-1-ynorov@nvidia.com>
- <20260427214127.406067-8-ynorov@nvidia.com>
-In-Reply-To: <20260427214127.406067-8-ynorov@nvidia.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1777424788; c=relaxed/simple;
+	bh=FbbMYy43PUndM6JPNtV61qlInWSiX44oXWU5kPw/J1Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GQP52Y8d5iKuc4++UFbDv2854fx+/0dkprAiGhg+sRy8lADGeP8MpmvlOTgxREvsGs50Eb5UfBh0oGIUlBAuhN1aYw5lkQzhEKzy5z8kDdfJj/Rs5uqzKCrTKoSOFegysPrghO6IeikePq/a31pjlkgiCC2cWBPoWGy448rfCy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jcUaphJi; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=WJyEk5iF/qClSow4VldMYLiNlMJs/+IOgRx7E06PJ0E=; b=jcUaphJirF4jpAsR5pNq2ZozJW
+	w4uXI1olYO9kwy4WUOcz5TkLzG79ZBioNzGCAOCw+9PLMGxAPV7UKXq17hoEznOvhX1I9w5WgLmB4
+	79QLQFdKVGdcw7aEKo4Hc+cLHhIUuX1NQY88sWJ8zjfmVyGpAKSt6FrFdPhmBvhkxfds=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wHtNB-000RMN-PA; Wed, 29 Apr 2026 03:05:53 +0200
+Date: Wed, 29 Apr 2026 03:05:53 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Cc: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+	Rocky Liao <quic_rjliao@quicinc.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, linux-mmc@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+	daniel@makrotopia.org
+Subject: Re: [PATCH 0/9] Support for block device NVMEM providers
+Message-ID: <b4de6c89-dd89-4e02-8d79-911e4f9f0813@lunn.ch>
+References: <20260428-block-as-nvmem-v1-0-6ad23e75190a@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: F072048DCD1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428-block-as-nvmem-v1-0-6ad23e75190a@oss.qualcomm.com>
+X-Rspamd-Queue-Id: CF2B248DDF1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[lunn.ch,none];
+	R_DKIM_ALLOW(-0.20)[lunn.ch:s=20171124];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35541-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[nvidia.com,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,infradead.org,baylibre.com,sipsolutions.net,gmail.com,analog.com,lunn.ch,davemloft.net,google.com,bootlin.com,rasmusvillemoes.dk,Stromeko.DE,watter.com,vger.kernel.org];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[35];
+	TAGGED_FROM(0.00)[bounces-35542-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,kernel.dk,sipsolutions.net,holtmann.org,gmail.com,quicinc.com,davemloft.net,google.com,redhat.com,vger.kernel.org,lists.infradead.org,makrotopia.org];
+	RCPT_COUNT_TWELVE(0.00)[30];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,realtek.com:email,realtek.com:dkim,realtek.com:mid]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andrew@lunn.ch,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[lunn.ch:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lunn.ch:dkim,lunn.ch:mid,bootlin.com:url]
 
-Yury Norov <ynorov@nvidia.com> wrote:
-> Switch from sign_extend32(FIELD_GET()) to the dedicated
-> FIELD_GET_SIGNED() and don't calculate the fields length explicitly.
->=20
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+> Note that this is currently limited to eMMC-backed block devices, as
+> only the eMMC core associates a firmware node with the block device
+> (add_disk_fwnode). This can be easily extended in the future to
+> support additional block drivers.
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Would this be
 
+https://elixir.bootlin.com/linux/v7.0.1/source/drivers/mmc/core/block.c#L2641
+
+Looking at that function, mmc_blk_alloc_req() i don't see it doing
+anything different between an eMMC and MMC.
+
+An eMMC you don't expect to go away, since it is soldered
+down. However an MMC can be ejected. Is the code prepared for that?
+
+      Andrew
 
