@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-35696-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35699-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cItdEAwU82llxAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35696-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 10:34:20 +0200
+	id UJZpD2QU82llxAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35699-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 10:35:48 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC5A49F474
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 10:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB7949F4BD
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 10:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40EEC30221EB
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 08:33:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C53E6304CEBF
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 08:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7FA3FE364;
-	Thu, 30 Apr 2026 08:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C733FF8BA;
+	Thu, 30 Apr 2026 08:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IDOXNcIS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EubHyBUC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234353FA5E4;
-	Thu, 30 Apr 2026 08:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477973FE354;
+	Thu, 30 Apr 2026 08:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777538034; cv=none; b=M2zGhlGJyL4vkpW6zj6rHsPskgpDSU6Qko3svgerf0jjU77rVxEcvNmiZ9rjMzn4FdLBpijz0IBhs5cdQwAA+hI7vU15w3L8f6JjceQfXFwL46AHNVfpnNxCfHlF9sSpJqdN5b5iXdWbpyNGoZLzMtioozTqaftTrf2jNuwRntY=
+	t=1777538034; cv=none; b=poD459k8mnEu+YgiF/qN8s6I6sIlImUYqheWtsz6EGnC8pfwSufl5eyVfd7BvzAGJHJPSliOOvsKW47Xdl8+xHrhuHGue+U9guflXZ5dSye355ylPSnx9LNyY0Qc7Rx7vxjhbEWqVBbxOUDtsB0sCRtKmD6s0oZpgfJXd2ADO+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777538034; c=relaxed/simple;
-	bh=YO7Gtjp7Rhq78Vi+kItsnH71DQJHJ1pnJYYDbxGMe+8=;
+	bh=JCt6tWeOBXoxgLUmoQyal2hT8O3E6cJwSDW9MnTpiqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1j7MMQ/cl12nbfCNh2I4OMj23SuURovIrP/tqaPtJFROq6sstk70WiwzAOEYnRGXc19yW9VTa4xFJmII7llpDfiNiJaGB8xXD+ztECYN0VRhs+bDlXffRjFgkCgiFGH0NVqgz4v0ykHbf8T+GwOh9tibjMrHt7VivuSG7htLHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IDOXNcIS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C1DC2BCB3;
+	 MIME-Version; b=XrCrdTyUrUHrhwvIEfKzBC8SsjH8rzpf322NqYqy/FdgGdxLagGVorBi448oKav+cRS6VATKUQ2ktwfqNMsDJtn050RBANm/SIkFmG1wDgQ9/l0PpUXybGpzuP8n5i2fwDIJWxVOeSretoccO7UWGwhwIqiXuLNszTMRsvr5jCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EubHyBUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E42C2BCC7;
 	Thu, 30 Apr 2026 08:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777538033;
-	bh=YO7Gtjp7Rhq78Vi+kItsnH71DQJHJ1pnJYYDbxGMe+8=;
+	bh=JCt6tWeOBXoxgLUmoQyal2hT8O3E6cJwSDW9MnTpiqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDOXNcISNwOHmdvjlAuVgXfVejMPGwgZhctG7cnr1733J9TkluzPNLKuOiol1A+nK
-	 9Lcb4TnpLjLGPlV+F6i8TPap6JNINJUd1VeTGDSZYGqB1W1QZFl80KHyQZoOQL4SsP
-	 A6rtTtfIr13/i4EqUF4T+IIuplgXc+mqk3FJZRcn7MzoDSjMidJd0fTO2WzhSK9lM5
-	 2NFutflm4mgYKNZgBf2TwAIfGwWpF9lbvNi+rB5ntnUJ26hjwbWfR5lHQxTLVsQ49U
-	 Z0Rl1FU1aT62b1B+H4jUqFh2AFe6/fRs6LrtB90TNLMx4GF5DsDYcFCUA4dptTI6Xa
-	 adGmtl/Qk28MQ==
+	b=EubHyBUCQggaxhwStKQb2aj2yoDp5sa+R3y63rWzbrbiZGRLjFSFn6u44Vzfqyulz
+	 71jthDqzU6zIECne1eoG9VPFAW6dzKHdYO90CbocmjGvduXF+szcd5saqxapKX7v47
+	 k5SCPP6dyvtrQ6+laqCByU/jOklpx+OjmH/oQxxcdQjjaZd9gN3qrS2JlEBcLfcSDA
+	 eZSvMIANbZ3mx9xDaiUlMJTc+E5N2Ml6/PUCRlNsZ28H4MLqGANOA0xDbMf55ABaKV
+	 SIwWQB0PLjMvFy7gu8RO4zLs15rvVC4+yJf4lSaPdObSpFkKslhLlynOenccsasUig
+	 9otq6D9SBEWlQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wIMqF-00000000u0C-1oJe;
+	id 1wIMqF-00000000u0E-1qgX;
 	Thu, 30 Apr 2026 10:33:51 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Felix Fietkau <nbd@nbd.name>,
@@ -61,9 +61,9 @@ Cc: Shayne Chen <shayne.chen@mediatek.com>,
 	linux-mediatek@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH v2 RESEND 2/5] wifi: mt76x0u: drop redundant device reference
-Date: Thu, 30 Apr 2026 10:33:32 +0200
-Message-ID: <20260430083335.215239-3-johan@kernel.org>
+Subject: [PATCH v2 RESEND 3/5] wifi: mt76x2u: drop redundant device reference
+Date: Thu, 30 Apr 2026 10:33:33 +0200
+Message-ID: <20260430083335.215239-4-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260430083335.215239-1-johan@kernel.org>
 References: <20260430083335.215239-1-johan@kernel.org>
@@ -74,7 +74,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7AC5A49F474
+X-Rspamd-Queue-Id: 9BB7949F4BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FREEMAIL_CC(0.00)[mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org,kernel.org];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-35696-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35699-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
@@ -102,7 +102,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.994];
+	NEURAL_HAM(-0.00)[-0.995];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
@@ -118,37 +118,44 @@ the risk of memory leaks when drivers fail to release it.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x0/usb.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-index 90e5666c0857..2acce121fb14 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-@@ -245,7 +245,6 @@ static int mt76x0u_probe(struct usb_interface *usb_intf,
- 	if (id->driver_info)
- 		dev->no_2ghz = true;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index 01cb3b2830f3..8af360bca643 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -57,7 +57,6 @@ static int mt76x2u_probe(struct usb_interface *intf,
  
--	usb_dev = usb_get_dev(usb_dev);
- 	usb_reset_device(usb_dev);
+ 	dev = container_of(mdev, struct mt76x02_dev, mt76);
  
- 	usb_set_intfdata(usb_intf, dev);
-@@ -284,7 +283,6 @@ static int mt76x0u_probe(struct usb_interface *usb_intf,
+-	udev = usb_get_dev(udev);
+ 	usb_reset_device(udev);
  
- err:
- 	usb_set_intfdata(usb_intf, NULL);
--	usb_put_dev(interface_to_usbdev(usb_intf));
+ 	usb_set_intfdata(intf, dev);
+@@ -84,14 +83,12 @@ static int mt76x2u_probe(struct usb_interface *intf,
  	mt76u_queues_deinit(&dev->mt76);
  	mt76_free_device(&dev->mt76);
+ 	usb_set_intfdata(intf, NULL);
+-	usb_put_dev(udev);
  
-@@ -303,7 +301,6 @@ static void mt76x0_disconnect(struct usb_interface *usb_intf)
- 	mt76x0u_cleanup(dev);
- 
- 	usb_set_intfdata(usb_intf, NULL);
--	usb_put_dev(interface_to_usbdev(usb_intf));
- 
- 	mt76_free_device(&dev->mt76);
+ 	return err;
  }
+ 
+ static void mt76x2u_disconnect(struct usb_interface *intf)
+ {
+-	struct usb_device *udev = interface_to_usbdev(intf);
+ 	struct mt76x02_dev *dev = usb_get_intfdata(intf);
+ 	struct ieee80211_hw *hw = mt76_hw(dev);
+ 
+@@ -100,7 +97,6 @@ static void mt76x2u_disconnect(struct usb_interface *intf)
+ 	mt76x2u_cleanup(dev);
+ 	mt76_free_device(&dev->mt76);
+ 	usb_set_intfdata(intf, NULL);
+-	usb_put_dev(udev);
+ }
+ 
+ static int __maybe_unused mt76x2u_suspend(struct usb_interface *intf,
 -- 
 2.53.0
 
