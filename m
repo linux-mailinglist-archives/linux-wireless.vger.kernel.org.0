@@ -1,82 +1,82 @@
-Return-Path: <linux-wireless+bounces-35648-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35649-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHAOMg/h8mnyvAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35648-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 06:56:47 +0200
+	id gDaiATfh8mnyvAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35649-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 06:57:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC3849D649
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 06:56:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7D149D675
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 06:57:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AC5F43007A74
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 04:56:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97102301DE2C
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 04:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD49A3624CB;
-	Thu, 30 Apr 2026 04:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57742367F51;
+	Thu, 30 Apr 2026 04:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="tQPO0t73"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="vSjZQPQ5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FD52C2346
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 04:56:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774C2362138
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 04:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777525001; cv=none; b=qIS+/UwZ5D0hJG6YQEy2ikI7sjcQL8d7pfO5GGprF/3LXpfLzGM0PDhqDudhTRPvW+Loc1MqqKzUiW74SUYU3ckY629VIME6VaGQqRCVUqKemwFCbLYQ2Ub8WaWbrlrh9zVcqH43dvMsCM+8FsBqzCYTILelE/2kmeZV0ydvrtU=
+	t=1777525008; cv=none; b=QWdbcRnQDvdTDvVNJHj22abKrF0N90X+K5/81fF1ls/ewmUbJR2HagkRLZhioPs/Ru1ifWQaaFo8g/ovMOVLPZ10WSnZStClGe92uIWlx214Y3T10dgGT2t17XNtGzgHHmRHC3KhQaQz8SY99VbBhldO+f56fPBw5hdv8P7T3qU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777525001; c=relaxed/simple;
-	bh=8n+BFUdhDsBCw0istxO4mdMmXzGW06N0KXrjfqMuaEo=;
+	s=arc-20240116; t=1777525008; c=relaxed/simple;
+	bh=1jxDm05ISpS3T4I3AePi7lznZSwuMv97p43ZdhYtOFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOpWosFMOhbaTaWD5VF3FwZsxca8LU27ZxRGc53tyTVAlhihd+6xCj/4NZXmstbynMjzDy0Sfw4JFfmjv61R+suBWt886SliQDV4uCikbVNoFZhJ1LzwpM2Azkc4AjQGCp5La45WOpNOdsYoPcKeioELDRe3oqsDAj1oQyQGtFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=tQPO0t73; arc=none smtp.client-ip=209.85.210.172
+	 MIME-Version; b=A0Vnfxhh20RaUdTYmbXfIZdetp1Y0NiOW+Uzd6UviXDloDgUOEfHQrHNWytAJ0v2E9gx5UkBBstHvaD6duxqoFuiYAUbsGQFINz+551ffY6IlaAJjj22AaUD2mAuc+V8KFykakux+7w9uXHaZWh2MYnczpUEQCi80zxLsvpn6p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=vSjZQPQ5; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-82f0884bcfaso377688b3a.1
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:56:40 -0700 (PDT)
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-82f8bf96b46so222896b3a.2
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:56:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1777525000; x=1778129800; darn=vger.kernel.org;
+        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1777525006; x=1778129806; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=70b5gHJQ01tflJdtIQ7zVJ9S9n0xaR/1XxJQbiyV9eM=;
-        b=tQPO0t73cq2iCruSjKNZDNjQMUz6atoh1uMpWxsHyHo4vCVTRmZFKoP6MpIdIDtgeZ
-         QaZ1GsxPtlEcyrIOBPl1bzN0O9lrcRHaYKaUkBxcKMQF9CyDcd7znkiWl+8HuYBio4H0
-         44WHTLbN7rEbkOc9LIX7VQOFNjqrSjasgo4msnbi8S9htifmYxUrCIahivudwsn+0myl
-         kZlU8m8k/CBYJXyufV4o+xxclfFPMU3XCTW/+kJlVTnwRyuyqz0XQHu0qGnmq3JjDv0W
-         ajHh6qH5xvBDUUy+j30GolmFPHeQy8uCwe2MmFsMOU6uD2TJgTxUf2mgcucvdKnVq/39
-         ZIYw==
+        bh=shUhS+zrgQ5+RXATpwTbuc5gkCCV2H2YCh1V+9BN74M=;
+        b=vSjZQPQ57iDa+nA9vR3VMN7xhhuEW+OaMSaHXfuTwvsVOR8S48kdIvb19tGkA354Po
+         npHn+K/R4ZDgQK9yHw4vTbGKXB9UMGzXl/1SlZJcciQ5WPl1E1xbgkt0wnFSlDtBdOxy
+         MR479uqq3uTKptKWPItFS4JvQUVLALMvPwcGyP78TlDgjvBr8AGllYRGMK2hI3ZqIL32
+         fil6cX2BG7s86ZXDBMBiLParfGIIZi26/xytbtfdcclNkCqTYI1ejrLKOgswRm9Mf4Vh
+         QKy0rOpbjz10AJc9JM6pODa6ub+niTnBr6By9oWA2rTjZraiKSIbIPaD+wGyHnYh/sNV
+         Ys1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777525000; x=1778129800;
+        d=1e100.net; s=20251104; t=1777525006; x=1778129806;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=70b5gHJQ01tflJdtIQ7zVJ9S9n0xaR/1XxJQbiyV9eM=;
-        b=MznyDw1DYFWHElF+0bXjXK8L8dfSElLYVw5UcJaWUfQ2fqQf+fQqW9d0SDNJxKUd7g
-         fAFAsMBJCAv6nmD5oIg+aLL5S1DNnXk2y2nkk6LC1X/Czngtvd5Qw2Nryua6dDMOFS2/
-         LMHSFL06f1iYgKsrqmkniBjBoUGuiWYI/jzkyCr0JT+UlTcM23KSbizLc9lgp2Ui6aFs
-         Z23LHkEQusRh5vI3c+TZAMtk2tdZ2wPciMjHb67tCDRgzvsQlCN+deaJBWjyQ2SqDseL
-         nd4Rh6t/ttRs9ISBg7HcL/5LOb0Vmxyvx5ijXioJDh6Z+wR0YguA7daA8fufekLPJRPW
-         4K1w==
-X-Forwarded-Encrypted: i=1; AFNElJ/NDfVqM0Ks9nF+yyHNuyZ44vDMiM4gjdtYqEgyOfmCFSeX3hYAq6LRRwkNCNu8teHPeSB+bbIalyBMHfQSZw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9rZdiRVXDdkj83DqZf+M7YNq8OQ3ghmzYOlHe5TgtskimnmQh
-	fjacfhTMyF2GIgPcGi39mS6qNdACCXDwDYrPdB3ryqzTWT7J/jASTeNonqRmatrhITM=
-X-Gm-Gg: AeBDievGXYaE9PZew6hLdTdfJIQjPYR2LRTG/4FLKt/ZyCHVCI5dcGVrumGNdRg9MpU
-	6nEcP2OHOUTash9vulTzN9ZcBIg/AnLSl2GWfzh6oWUNt5wrUnRLRIv1DurQDwfjBox5R5p5/J/
-	JDlSpZ/u7HonkGZ+nuliVanUZkk2qGFP1/FQkFRL/6QjqL5tdqvTswshOqBYQqTuBWrUOHh8w4B
-	AaXB9B+yfFGqXlZGhI76XhavmVDrN+j9Rb7lat7sT2+mNwHQjshjgF2NF6glU6PMBkp8BO3+9Zf
-	UzWuIFBrOK/+07jCo21373jpWvwY4NHRr+ih967E1ECB268/Cw6yQ19XWXH75kxVZ26PaFADCkw
-	zZuvS73NeLh4PW1NJ0lKUnBQ1jt57sIDtWDdjLJmSUtLKNdGlno5jMSKy6kS+U8RgN7QWG6h9Ok
-	q+8HWE/YFgAk3Z9uoWH1Wm+c6qYgmIz3sm9umwWsTikOAdtX3ie/gm+5e6yxfNB9n63Hjxvtl/i
-	MYv6JVrBTTvsRHe7fHXD0OF5Da8gNGtSqKMKQkzVQ==
-X-Received: by 2002:a05:6a00:1a8b:b0:82f:6e9:d1ba with SMTP id d2e1a72fcca58-834fdc480bcmr1670871b3a.37.1777524999697;
-        Wed, 29 Apr 2026 21:56:39 -0700 (PDT)
+        bh=shUhS+zrgQ5+RXATpwTbuc5gkCCV2H2YCh1V+9BN74M=;
+        b=J0qJ9GpPvLTbcRGgxsPEusT0WonsK/3OwZ1H8dxxxnglZQxDFfjZ5yQJqZlhb6v22S
+         lp8PFkRxhqMtE6uvb15rPLfN6dvqFvhw6h5kihO6Ddh2uYAMCUadEcRNt1FpmMvPDET+
+         RwwUW56jQerq/znm/wByjWRyDWZf6usA/lsbAQdkbiX+J5qoAvgUiiTK09y5Bg3eTxlV
+         k8Dm2dKHlH4Qy3wHMEnCFJnQvJkHLIqARg/xqcuL/fC0pMEo4qYXdSU+E6RtTW4Om1ZE
+         VX5j8ZyWywfnEdK9utV82xB4JyfdNzrDP3dqqLykYYUT2wToxdY63HjUkDBQadN82b7m
+         moYQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8FdhU2oEmAtUpPZs7Nhj0/VqyeiJFJbU6B3dhfWAeliKyPJXRJgShU0wCJx+4pOQcuI6yXwMAfLOcEJj1ZmA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YycWhgr5nih7jXd64ulm3Xkf+F94mLOmazC+Ufo1R8DbOLeaH2n
+	aLwaQMuKOmkoFmYButXGp8LzUdk1z/+m3SVoT1QcKa2S6L91RrRrMiUiFhhalQPTGMY=
+X-Gm-Gg: AeBDieuUKHJ0M5+/ppJuDkgI5c7hczo0WeyH2bx7opEMHYmLt/XcoFRUm6RrWMuZa01
+	uPx415YxBZVqQZ8575GNXfhaZAMYxImYiqrF712P2EUPWGHeZoZ9MOIiRUYXSfQLvAhAVRFRIlU
+	N+DzXY0yMOxp5B51R+VnCiFEr/nfTFN49ieE7jzbzvvSHBpmUg8DsDhbOQcOpqZ4FVFU7i8sy+a
+	mC+GqsioWx4RfHWX0anBSK8r9tTdSfnOE4ZIMmuPy1LD/99mKL5XLUSTju2o1j9s8AnPtUuznD6
+	baHMCwEWQAcCF5OFgp80FZgv+e8rJz5vKmhptdZOikKwKZxrYeH7Wb+14nsV6LUyZIjfyA/yvYq
+	DyeaieXqyIuEG8tM2KR/7sANVQoEOCb6kiN2Q9X2HJKhwcsjSO00zCye3jgmaPy4BvBTLtdy+Hp
+	LRBp5bKNmsx5kZFtMfRkOt7h6TIH16840pvT2Djl8Qmz+RcZXj7xGAIqs9B8SiI41EJtBW21X0z
+	Qfgl8/91YQoFVWQpDyF1EXWEhlTVbRVHfObbKdnzA==
+X-Received: by 2002:a05:6a00:3cce:b0:82c:24d5:63e6 with SMTP id d2e1a72fcca58-834fdb5ff74mr1611537b3a.15.1777525005693;
+        Wed, 29 Apr 2026 21:56:45 -0700 (PDT)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed80df96sm3595073b3a.54.2026.04.29.21.56.35
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed80df96sm3595073b3a.54.2026.04.29.21.56.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 21:56:39 -0700 (PDT)
+        Wed, 29 Apr 2026 21:56:45 -0700 (PDT)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
@@ -85,9 +85,9 @@ To: johannes@sipsolutions.net,
 Cc: ayman.grais@morsemicro.com,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless-next v2 01/31] wifi: mm81x: add bus.h
-Date: Thu, 30 Apr 2026 14:55:27 +1000
-Message-ID: <20260430045615.334669-2-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next v2 02/31] wifi: mm81x: add command.c
+Date: Thu, 30 Apr 2026 14:55:28 +1000
+Message-ID: <20260430045615.334669-3-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
 References: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
@@ -98,14 +98,14 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BCC3849D649
+X-Rspamd-Queue-Id: 7F7D149D675
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.06 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[morsemicro-com.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -115,19 +115,19 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35648-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35649-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,morsemicro.com:mid,morsemicro.com:email,morsemicro-com.20251104.gappssmtp.com:dkim]
 
 (Patches split per file for review, will be a single commit alongside
 SDIO ids once review is complete. See cover letter for more
@@ -135,115 +135,585 @@ information)
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- drivers/net/wireless/morsemicro/mm81x/bus.h | 99 +++++++++++++++++++++
- 1 file changed, 99 insertions(+)
- create mode 100644 drivers/net/wireless/morsemicro/mm81x/bus.h
+ .../net/wireless/morsemicro/mm81x/command.c   | 569 ++++++++++++++++++
+ 1 file changed, 569 insertions(+)
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/command.c
 
-diff --git a/drivers/net/wireless/morsemicro/mm81x/bus.h b/drivers/net/wireless/morsemicro/mm81x/bus.h
+diff --git a/drivers/net/wireless/morsemicro/mm81x/command.c b/drivers/net/wireless/morsemicro/mm81x/command.c
 new file mode 100644
-index 000000000000..d2ccabc037fb
+index 000000000000..704453c6f139
 --- /dev/null
-+++ b/drivers/net/wireless/morsemicro/mm81x/bus.h
-@@ -0,0 +1,99 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/drivers/net/wireless/morsemicro/mm81x/command.c
+@@ -0,0 +1,569 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright (c) 2017-2026 Morse Micro
 + */
 +
-+#ifndef _MM81X_BUS_H_
-+#define _MM81X_BUS_H_
++#include <linux/types.h>
++#include <linux/atomic.h>
++#include <linux/slab.h>
++#include <linux/workqueue.h>
 +
-+#include <linux/skbuff.h>
-+#include "core.h"
++#include "command.h"
++#include "mac.h"
++#include "ps.h"
++#include "hif.h"
 +
-+enum mm81x_bus_type {
-+	MM81X_BUS_TYPE_USB,
-+	MM81X_BUS_TYPE_SDIO,
++#define MM_MAX_COMMAND_RETRY 2
++#define HOST_CMD_DEFAULT_TIMEOUT_MS 600
++#define HOST_CMD_POWERSAVE_TIMEOUT_MS 2000
++
++#define INIT_CMD_HDR(_req, _cmd, _vif_id)                              \
++	((struct host_cmd_header){                                     \
++		.flags = cpu_to_le16(0),                               \
++		.message_id = cpu_to_le16(_cmd),                       \
++		.len = cpu_to_le16(sizeof(_req) - sizeof((_req).hdr)), \
++		.host_id = cpu_to_le16(0),                             \
++		.vif_id = cpu_to_le16(_vif_id),                        \
++		.pad = cpu_to_le16(0),                                 \
++	})
++
++struct host_cmd_resp_cb {
++	int ret;
++	u32 length;
++	struct host_cmd_resp *dest_resp;
 +};
 +
-+struct mm81x_bus_ops {
-+	int (*dm_read)(struct mm81x *mors, u32 addr, u8 *data, int len);
-+	int (*dm_write)(struct mm81x *mors, u32 addr, const u8 *data, int len);
-+	int (*reg32_read)(struct mm81x *mors, u32 addr, u32 *data);
-+	int (*reg32_write)(struct mm81x *mors, u32 addr, u32 data);
-+	int (*digital_reset)(struct mm81x *mors);
-+	void (*set_bus_enable)(struct mm81x *mors, bool enable);
-+	void (*config_burst_mode)(struct mm81x *mors, bool enable_burst);
-+	void (*claim)(struct mm81x *mors);
-+	void (*set_irq)(struct mm81x *mors, bool enable);
-+	void (*release)(struct mm81x *mors);
-+	unsigned int bulk_alignment;
-+};
-+
-+/*
-+ * Default TX alignment for buses which don't care. mac80211 will give us
-+ * SKBs aligned to the 2 byte boundary, so 2 is effectively a noop.
-+ */
-+#define MM81X_BUS_DEFAULT_BULK_ALIGNMENT (2)
-+
-+/* mm81x_dm_read - len must be rounded up to the nearest 4-byte boundary */
-+static inline int mm81x_dm_read(struct mm81x *mors, u32 addr, u8 *data, int len)
++static int mm81x_cmd_tx(struct mm81x *mors, struct host_cmd_resp *resp,
++			struct host_cmd_req *req, u32 length, u32 timeout)
 +{
-+	return mors->bus_ops->dm_read(mors, addr, data, len);
++	int cmd_len;
++	int ret = 0;
++	u16 host_id;
++	int retry = 0;
++	unsigned long wait_ret = 0;
++	struct sk_buff *skb;
++	struct mm81x_skbq *cmd_q = mm81x_hif_get_tx_cmd_queue(mors);
++	struct host_cmd_resp_cb *resp_cb;
++	DECLARE_COMPLETION_ONSTACK(cmd_comp);
++
++	BUILD_BUG_ON(sizeof(struct host_cmd_resp_cb) >
++		     IEEE80211_TX_INFO_DRIVER_DATA_SIZE);
++
++	if (!cmd_q)
++		/* No control pageset, not supported by FW */
++		return -ENODEV;
++
++	cmd_len = sizeof(*req) + le16_to_cpu(req->hdr.len);
++	req->hdr.flags = cpu_to_le16(HOST_CMD_TYPE_REQ);
++
++	mutex_lock(&mors->cmd_wait);
++	mors->cmd_seq++;
++	if (mors->cmd_seq > HOST_CMD_HOST_ID_SEQ_MAX)
++		mors->cmd_seq = 1;
++	host_id = mors->cmd_seq << HOST_CMD_HOST_ID_SEQ_SHIFT;
++
++	mm81x_ps_disable(mors);
++
++	do {
++		req->hdr.host_id = cpu_to_le16(host_id | retry);
++
++		skb = mm81x_skbq_alloc_skb(cmd_q, cmd_len);
++		if (!skb) {
++			ret = -ENOMEM;
++			break;
++		}
++
++		memcpy(skb->data, req, cmd_len);
++		resp_cb = (struct host_cmd_resp_cb *)IEEE80211_SKB_CB(skb)
++				  ->driver_data;
++		resp_cb->length = length;
++		resp_cb->dest_resp = resp;
++
++		dev_dbg(mors->dev, "CMD 0x%04x:%04x",
++			le16_to_cpu(req->hdr.message_id),
++			le16_to_cpu(req->hdr.host_id));
++
++		mutex_lock(&mors->cmd_lock);
++		mors->cmd_comp = &cmd_comp;
++		if (retry > 0)
++			reinit_completion(&cmd_comp);
++		timeout = timeout ? timeout : HOST_CMD_DEFAULT_TIMEOUT_MS;
++		ret = mm81x_skbq_skb_tx(cmd_q, &skb, NULL,
++					MM81X_SKB_CHAN_COMMAND);
++		mutex_unlock(&mors->cmd_lock);
++
++		if (ret) {
++			dev_err(mors->dev, "mm81x_skbq_tx fail: %d", ret);
++			break;
++		}
++
++		wait_ret = wait_for_completion_timeout(
++			&cmd_comp, msecs_to_jiffies(timeout));
++		mutex_lock(&mors->cmd_lock);
++		mors->cmd_comp = NULL;
++
++		if (!wait_ret) {
++			dev_err(mors->dev,
++				"Try:%d Command %04x:%04x timeout after %u ms",
++				retry, le16_to_cpu(req->hdr.message_id),
++				le16_to_cpu(req->hdr.host_id), timeout);
++			ret = -ETIMEDOUT;
++		} else {
++			ret = (length && resp) ? le32_to_cpu(resp->status) :
++						 resp_cb->ret;
++
++			dev_dbg(mors->dev, "Command 0x%04x:%04x status 0x%08x",
++				le16_to_cpu(req->hdr.message_id),
++				le16_to_cpu(req->hdr.host_id), ret);
++			if (ret) {
++				dev_err(mors->dev,
++					"Command 0x%04x:%04x error %d",
++					le16_to_cpu(req->hdr.message_id),
++					le16_to_cpu(req->hdr.host_id), ret);
++			}
++		}
++		/* Free the command request */
++		spin_lock_bh(&cmd_q->lock);
++		mm81x_skbq_skb_finish(cmd_q, skb, NULL);
++		spin_unlock_bh(&cmd_q->lock);
++		mutex_unlock(&mors->cmd_lock);
++
++		retry++;
++	} while ((ret == -ETIMEDOUT) && retry < MM_MAX_COMMAND_RETRY);
++
++	mm81x_ps_enable(mors);
++	mutex_unlock(&mors->cmd_wait);
++
++	if (ret == -ETIMEDOUT) {
++		dev_err(mors->dev, "Command %02x:%02x timed out",
++			le16_to_cpu(req->hdr.message_id),
++			le16_to_cpu(req->hdr.host_id));
++	} else if (ret != 0) {
++		dev_err(mors->dev,
++			"Command %02x:%02x failed with rc %d (0x%x)\n",
++			le16_to_cpu(req->hdr.message_id),
++			le16_to_cpu(req->hdr.host_id), ret, ret);
++	}
++
++	return ret;
 +}
 +
-+static inline int mm81x_dm_write(struct mm81x *mors, u32 addr, const u8 *data,
-+				 int len)
++int mm81x_cmd_resp_process(struct mm81x *mors, struct sk_buff *skb)
 +{
-+	return mors->bus_ops->dm_write(mors, addr, data, len);
-+}
++	int length, ret = -ESRCH; /* No such process */
++	struct mm81x_skbq *cmd_q = mm81x_hif_get_tx_cmd_queue(mors);
++	struct host_cmd_resp *src_resp = (struct host_cmd_resp *)(skb->data);
++	struct sk_buff *cmd_skb = NULL;
++	struct host_cmd_resp_cb *resp_cb;
++	struct host_cmd_resp *dest_resp;
++	struct host_cmd_req *req;
++	u16 message_id = 0;
++	u16 host_id = 0;
++	u16 resp_message_id = le16_to_cpu(src_resp->hdr.message_id);
++	u16 resp_host_id = le16_to_cpu(src_resp->hdr.host_id);
++	bool is_late_response = false;
 +
-+static inline int mm81x_reg32_read(struct mm81x *mors, u32 addr, u32 *data)
-+{
-+	return mors->bus_ops->reg32_read(mors, addr, data);
-+}
++	dev_dbg(mors->dev, "EVT 0x%04x:0x%04x", resp_message_id, resp_host_id);
 +
-+static inline int mm81x_reg32_write(struct mm81x *mors, u32 addr, u32 data)
-+{
-+	return mors->bus_ops->reg32_write(mors, addr, data);
-+}
++	if (!HOST_CMD_IS_RESP(src_resp)) {
++		ret = mm81x_mac_event_recv(mors, skb);
++		goto exit_free;
++	}
 +
-+static inline int mm81x_bus_digital_reset(struct mm81x *mors)
-+{
-+	if (mors->bus_ops->digital_reset)
-+		return mors->bus_ops->digital_reset(mors);
++	mutex_lock(&mors->cmd_lock);
 +
++	cmd_skb = mm81x_skbq_tx_pending(cmd_q);
++	if (cmd_skb) {
++		mm81x_skbq_pull_hdr_post_tx(cmd_skb);
++		req = (struct host_cmd_req *)cmd_skb->data;
++		message_id = le16_to_cpu(req->hdr.message_id);
++		host_id = le16_to_cpu(req->hdr.host_id);
++	}
++
++	/*
++	 * If there is no pending command or the sequence ID does not match,
++	 * this is a late response for a timed out command which has been
++	 * cleaned up, so just free up the response. If a command was retried,
++	 * the response may be from the retry or from the original command
++	 * (late response) but not from both because the firmware will silently
++	 * drop a retry if it received the initial request. So a mismatched
++	 * retry counter is treated as a matched command and response.
++	 */
++	if (!cmd_skb || message_id != resp_message_id ||
++	    (host_id & HOST_CMD_HOST_ID_SEQ_MASK) !=
++		    (resp_host_id & HOST_CMD_HOST_ID_SEQ_MASK)) {
++		dev_err(mors->dev,
++			"Late response for timed out req 0x%04x:%04x have 0x%04x:%04x 0x%04x",
++			resp_message_id, resp_host_id, message_id, host_id,
++			mors->cmd_seq);
++		is_late_response = true;
++		goto exit;
++	}
++	if ((host_id & HOST_CMD_HOST_ID_RETRY_MASK) !=
++	    (resp_host_id & HOST_CMD_HOST_ID_RETRY_MASK))
++		dev_dbg(mors->dev,
++			"Command retry mismatch 0x%04x:%04x 0x%04x:%04x",
++			message_id, host_id, resp_message_id, resp_host_id);
++
++	resp_cb = (struct host_cmd_resp_cb *)IEEE80211_SKB_CB(cmd_skb)
++			  ->driver_data;
++	length = resp_cb->length;
++	dest_resp = resp_cb->dest_resp;
++	if (length >= sizeof(struct host_cmd_resp) && dest_resp) {
++		ret = 0;
++		length = min_t(int, length,
++			       le16_to_cpu(src_resp->hdr.len) +
++				       sizeof(struct host_cmd_header));
++		memcpy(dest_resp, src_resp, length);
++	} else {
++		ret = le32_to_cpu(src_resp->status);
++	}
++
++	resp_cb->ret = ret;
++
++exit:
++	if (cmd_skb && !is_late_response) {
++		/* Complete if not already timed out */
++		if (mors->cmd_comp)
++			complete(mors->cmd_comp);
++	}
++
++	mutex_unlock(&mors->cmd_lock);
++exit_free:
++	dev_kfree_skb(skb);
 +	return 0;
 +}
 +
-+static inline void mm81x_set_bus_enable(struct mm81x *mors, bool enable)
++int mm81x_cmd_sta_state(struct mm81x *mors, struct mm81x_vif *mors_vif, u16 aid,
++			struct ieee80211_sta *sta,
++			enum ieee80211_sta_state state)
 +{
-+	mors->bus_ops->set_bus_enable(mors, enable);
++	struct host_cmd_req_set_sta_state req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_SET_STA_STATE,
++				    mors_vif->id),
++		.aid = cpu_to_le16(aid),
++		.state = cpu_to_le16(state),
++		.uapsd_queues = sta->uapsd_queues,
++	};
++
++	memcpy(req.sta_addr, sta->addr, sizeof(req.sta_addr));
++
++	return mm81x_cmd_tx(mors, NULL, (struct host_cmd_req *)&req, 0, 0);
 +}
 +
-+static inline void mm81x_bus_config_burst_mode(struct mm81x *mors,
-+					       bool enable_burst)
++int mm81x_cmd_add_if(struct mm81x *mors, u16 *vif_id, const u8 *addr,
++		     enum nl80211_iftype type)
 +{
-+	if (mors->bus_ops->config_burst_mode)
-+		mors->bus_ops->config_burst_mode(mors, enable_burst);
++	int ret;
++	struct host_cmd_req_add_interface req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_ADD_INTERFACE, 0),
++	};
++	struct host_cmd_resp_add_interface resp;
++
++	switch (type) {
++	case NL80211_IFTYPE_STATION:
++		req.interface_type = cpu_to_le32(HOST_CMD_INTERFACE_TYPE_STA);
++		break;
++	case NL80211_IFTYPE_AP:
++		req.interface_type = cpu_to_le32(HOST_CMD_INTERFACE_TYPE_AP);
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	memcpy(req.addr.octet, addr, sizeof(req.addr.octet));
++
++	ret = mm81x_cmd_tx(mors, (struct host_cmd_resp *)&resp,
++			   (struct host_cmd_req *)&req, sizeof(resp), 0);
++	if (!ret)
++		*vif_id = le16_to_cpu(resp.hdr.vif_id);
++
++	return ret;
 +}
 +
-+static inline void mm81x_claim_bus(struct mm81x *mors)
++int mm81x_cmd_get_capabilities(struct mm81x *mors, u16 vif_id,
++			       struct mm81x_fw_caps *capabilities)
 +{
-+	mors->bus_ops->claim(mors);
++	int ret;
++	int i;
++	struct host_cmd_req_get_capabilities req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_GET_CAPABILITIES, vif_id),
++	};
++	struct host_cmd_resp_get_capabilities rsp;
++
++	ret = mm81x_cmd_tx(mors, (struct host_cmd_resp *)&rsp,
++			   (struct host_cmd_req *)&req, sizeof(rsp), 0);
++	if (ret)
++		return ret;
++
++	capabilities->ampdu_mss = rsp.capabilities.ampdu_mss;
++	capabilities->mm81x_mmss_offset = rsp.morse_mmss_offset;
++	capabilities->beamformee_sts_capability =
++		rsp.capabilities.beamformee_sts_capability;
++	capabilities->maximum_ampdu_length_exponent =
++		rsp.capabilities.maximum_ampdu_length_exponent;
++	capabilities->number_sounding_dimensions =
++		rsp.capabilities.number_sounding_dimensions;
++	for (i = 0; i < FW_CAPABILITIES_FLAGS_WIDTH; i++)
++		capabilities->flags[i] = le32_to_cpu(rsp.capabilities.flags[i]);
++
++	return ret;
 +}
 +
-+static inline void mm81x_bus_set_irq(struct mm81x *mors, bool enable)
++int mm81x_cmd_get_max_txpower(struct mm81x *mors, s32 *out_power_mbm)
 +{
-+	mors->bus_ops->set_irq(mors, enable);
++	int ret;
++	struct host_cmd_req_get_max_txpower req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_GET_MAX_TXPOWER, 0),
++	};
++	struct host_cmd_resp_get_max_txpower resp;
++
++	ret = mm81x_cmd_tx(mors, (struct host_cmd_resp *)&resp,
++			   (struct host_cmd_req *)&req, sizeof(resp), 0);
++	if (!ret)
++		*out_power_mbm = QDBM_TO_MBM(le32_to_cpu(resp.power_qdbm));
++
++	return ret;
 +}
 +
-+static inline void mm81x_release_bus(struct mm81x *mors)
++int mm81x_cmd_hw_scan(struct mm81x *mors, struct mm81x_hw_scan_params *params,
++		      bool store)
 +{
-+	mors->bus_ops->release(mors);
++	int ret;
++	struct host_cmd_req_hw_scan *req;
++	size_t cmd_size;
++	u8 *buf;
++	u32 flags = 0;
++
++	cmd_size = mm81x_hw_scan_h_get_cmd_size(params);
++	cmd_size = ROUND_BYTES_TO_WORD(cmd_size);
++
++	req = kzalloc(cmd_size, GFP_KERNEL);
++	if (!req)
++		return -ENOMEM;
++
++	buf = req->variable;
++
++	if (store)
++		flags = HOST_CMD_HW_SCAN_FLAGS_STORE;
++	else if (params->operation == MM81X_HW_SCAN_OP_START)
++		flags |= HOST_CMD_HW_SCAN_FLAGS_START;
++	else if (params->operation == MM81X_HW_SCAN_OP_STOP)
++		flags |= HOST_CMD_HW_SCAN_FLAGS_ABORT;
++
++	if (params->use_1mhz_probes)
++		flags |= HOST_CMD_HW_SCAN_FLAGS_1MHZ_PROBES;
++
++	if (params->operation == MM81X_HW_SCAN_OP_START) {
++		req->dwell_time_ms = cpu_to_le32(params->dwell_time_ms);
++		buf = mm81x_hw_scan_h_insert_tlvs(params, buf);
++	}
++
++	req->flags = cpu_to_le32(flags);
++	req->hdr = INIT_CMD_HDR((*req), HOST_CMD_ID_HW_SCAN, 0);
++	req->hdr.len = cpu_to_le16((u16)((buf - (u8 *)req) - sizeof(req->hdr)));
++	ret = mm81x_cmd_tx(mors, NULL, (struct host_cmd_req *)req, 0, 0);
++	kfree(req);
++
++	return ret;
 +}
 +
-+static inline unsigned int mm81x_bus_get_alignment(struct mm81x *mors)
++int mm81x_cmd_set_txpower(struct mm81x *mors, s32 *out_power_mbm,
++			  int txpower_mbm)
 +{
-+	return mors->bus_ops->bulk_alignment;
++	int ret;
++	struct host_cmd_req_set_txpower req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_SET_TXPOWER, 0),
++		.power_qdbm = cpu_to_le32(MBM_TO_QDBM(txpower_mbm)),
++	};
++	struct host_cmd_resp_set_txpower resp;
++
++	ret = mm81x_cmd_tx(mors, (struct host_cmd_resp *)&resp,
++			   (struct host_cmd_req *)&req, sizeof(resp), 0);
++	if (!ret)
++		*out_power_mbm = QDBM_TO_MBM(le32_to_cpu(resp.power_qdbm));
++
++	return ret;
 +}
 +
-+#endif /* !_MM81X_BUS_H_ */
++int mm81x_cmd_set_channel(struct mm81x *mors, u32 op_chan_freq_hz,
++			  u8 pri_1mhz_chan_idx, u8 op_bw_mhz, u8 pri_bw_mhz,
++			  s32 *power_mbm)
++{
++	int ret;
++	struct host_cmd_req_set_channel req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_SET_CHANNEL, 0),
++		.op_chan_freq_hz = cpu_to_le32(op_chan_freq_hz),
++		.op_bw_mhz = op_bw_mhz,
++		.pri_bw_mhz = pri_bw_mhz,
++		.pri_1mhz_chan_idx = pri_1mhz_chan_idx,
++		.dot11_mode = HOST_CMD_DOT11_PROTO_MODE_AH,
++	};
++	struct host_cmd_resp_set_channel resp;
++
++	ret = mm81x_cmd_tx(mors, (struct host_cmd_resp *)&resp,
++			   (struct host_cmd_req *)&req, sizeof(resp), 0);
++	if (!ret)
++		*power_mbm = QDBM_TO_MBM(le32_to_cpu(resp.power_qdbm));
++
++	return ret;
++}
++
++int mm81x_cmd_disable_key(struct mm81x *mors, struct mm81x_vif *mors_vif,
++			  u16 aid, struct ieee80211_key_conf *key)
++{
++	struct host_cmd_req_disable_key req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_DISABLE_KEY, mors_vif->id),
++		.aid = cpu_to_le32(aid),
++		.key_idx = key->hw_key_idx,
++		.key_type =
++			cpu_to_le32((key->flags & IEEE80211_KEY_FLAG_PAIRWISE) ?
++					    HOST_CMD_TEMPORAL_KEY_TYPE_PTK :
++					    HOST_CMD_TEMPORAL_KEY_TYPE_GTK),
++	};
++
++	return mm81x_cmd_tx(mors, NULL, (struct host_cmd_req *)&req, 0, 0);
++}
++
++int mm81x_cmd_install_key(struct mm81x *mors, struct mm81x_vif *mors_vif,
++			  u16 aid, struct ieee80211_key_conf *key,
++			  enum host_cmd_key_cipher cipher,
++			  enum host_cmd_aes_key_len length)
++{
++	int ret;
++	struct host_cmd_req_install_key req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_INSTALL_KEY, mors_vif->id),
++		.pn = cpu_to_le64(atomic64_read(&key->tx_pn)),
++		.aid = cpu_to_le32(aid),
++		.cipher = cipher,
++		.key_length = length,
++		.key_idx = key->keyidx,
++		.key_type = (key->flags & IEEE80211_KEY_FLAG_PAIRWISE) ?
++				    HOST_CMD_TEMPORAL_KEY_TYPE_PTK :
++				    HOST_CMD_TEMPORAL_KEY_TYPE_GTK,
++	};
++	struct host_cmd_resp_install_key resp;
++
++	if (key->keylen > sizeof(req.key))
++		return -EINVAL;
++
++	memcpy(req.key, key->key, key->keylen);
++
++	ret = mm81x_cmd_tx(mors, (struct host_cmd_resp *)&resp,
++			   (struct host_cmd_req *)&req, sizeof(resp), 0);
++	if (!ret) {
++		key->hw_key_idx = resp.key_idx;
++		dev_dbg(mors->dev, "Installed key @ hw index: %d",
++			resp.key_idx);
++	}
++
++	return ret;
++}
++
++int mm81x_cmd_cfg_multicast_filter(struct mm81x *mors,
++				   struct mm81x_vif *mors_vif)
++{
++	struct host_cmd_req_mcast_filter *req;
++	struct mcast_filter *filter = mors->mcast_filter;
++	u16 filter_list_len = sizeof(filter->addr_list[0]) * filter->count;
++	u16 alloc_len = filter_list_len + sizeof(*req);
++	int ret = 0;
++
++	req = kzalloc(alloc_len, GFP_KERNEL);
++	if (!req)
++		return -ENOMEM;
++
++	req->hdr = INIT_CMD_HDR((*req), HOST_CMD_ID_MCAST_FILTER, mors_vif->id);
++	req->hdr.len = cpu_to_le16(alloc_len - sizeof(req->hdr));
++	req->count = filter->count;
++	memcpy(req->hw_addr, filter->addr_list, filter_list_len);
++
++	ret = mm81x_cmd_tx(mors, NULL, (struct host_cmd_req *)req, 0, 0);
++	kfree(req);
++	return ret;
++}
++
++int mm81x_cmd_cfg_bss(struct mm81x *mors, u16 vif_id, u16 beacon_int,
++		      u16 dtim_period, u32 cssid)
++{
++	struct host_cmd_req_bss_config req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_BSS_CONFIG, vif_id),
++		.beacon_interval_tu = cpu_to_le16(beacon_int),
++		.cssid = cpu_to_le32(cssid),
++		.dtim_period = cpu_to_le16(dtim_period),
++	};
++
++	return mm81x_cmd_tx(mors, NULL, (struct host_cmd_req *)&req, 0, 0);
++}
++
++int mm81x_cmd_config_beacon_timer(struct mm81x *mors, void *mm81x_vif,
++				  bool enabled)
++{
++	struct mm81x_vif *vif = mm81x_vif;
++	struct host_cmd_req_bss_beacon_config req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_BSS_BEACON_CONFIG,
++				    vif->id),
++		.enable = enabled,
++	};
++
++	return mm81x_cmd_tx(mors, NULL, (struct host_cmd_req *)&req, 0, 0);
++}
++
++int mm81x_cmd_set_ps(struct mm81x *mors, bool enabled)
++{
++	struct host_cmd_req_config_ps req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_CONFIG_PS, 0),
++		.enabled = (u8)enabled,
++	};
++
++	return mm81x_cmd_tx(mors, NULL, (struct host_cmd_req *)&req, 0,
++			    HOST_CMD_POWERSAVE_TIMEOUT_MS);
++}
++
++int mm81x_cmd_cfg_qos(struct mm81x *mors, struct mm81x_queue_params *params)
++{
++	struct host_cmd_req_set_qos_params req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_SET_QOS_PARAMS, 0),
++		.uapsd = params->uapsd,
++		.queue_idx = params->aci,
++		.aifs_slot_count = params->aifs,
++		.contention_window_min = cpu_to_le16(params->cw_min),
++		.contention_window_max = cpu_to_le16(params->cw_max),
++		.max_txop_usec = cpu_to_le32(params->txop),
++	};
++
++	return mm81x_cmd_tx(mors, NULL, (struct host_cmd_req *)&req, 0, 0);
++}
++
++int mm81x_cmd_rm_if(struct mm81x *mors, u16 vif_id)
++{
++	struct host_cmd_req_remove_interface req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_REMOVE_INTERFACE, vif_id),
++	};
++
++	return mm81x_cmd_tx(mors, NULL, (struct host_cmd_req *)&req, 0, 0);
++}
++
++int mm81x_cmd_set_frag_threshold(struct mm81x *mors, u32 frag_threshold)
++{
++	struct host_cmd_req_get_set_generic_param req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_GET_SET_GENERIC_PARAM, 0),
++		.param_id = cpu_to_le32(HOST_CMD_PARAM_ID_FRAGMENT_THRESHOLD),
++		.action = cpu_to_le32(HOST_CMD_PARAM_ACTION_SET),
++		.value = cpu_to_le32(frag_threshold),
++	};
++
++	return mm81x_cmd_tx(mors, NULL, (struct host_cmd_req *)&req, 0, 0);
++}
++
++int mm81x_cmd_get_disabled_channels(
++	struct mm81x *mors, struct host_cmd_resp_get_disabled_channels *resp,
++	uint resp_len)
++{
++	struct host_cmd_req req = {
++		.hdr = INIT_CMD_HDR(req, HOST_CMD_ID_GET_DISABLED_CHANNELS, 0),
++	};
++
++	return mm81x_cmd_tx(mors, (struct host_cmd_resp *)resp, &req, resp_len,
++			    0);
++}
 -- 
 2.43.0
 
