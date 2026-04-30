@@ -1,82 +1,69 @@
-Return-Path: <linux-wireless+bounces-35693-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35697-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNroNn8R82kIxAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35693-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 10:23:27 +0200
+	id 2ID2Cg4U82llxAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35697-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 10:34:22 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3437949F313
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 10:23:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B568449F47B
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 10:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A1703062330
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 08:13:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8922C3024537
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 08:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DC73E0C59;
-	Thu, 30 Apr 2026 08:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E63C3FE371;
+	Thu, 30 Apr 2026 08:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JnXNUI2k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tqMMfLgn"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E91F1C5F11;
-	Thu, 30 Apr 2026 08:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2352F3FBEA9;
+	Thu, 30 Apr 2026 08:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777536822; cv=none; b=g9R/0UTW9mnsZnwFzSuGuGm1+YK3Vx1E6rPSvE3uu8tlOvrDhmrS72kyt/ALmn6lzrghoHMMJBD4HIf638SW2yXEGIQ5o8dnms7ktvNHvFdaQwdOmlYeQtcA95wQdZMm+UfkqzCKWiBYpzfi8+i9KG9fjlhDa0UPXd2FnKBagi8=
+	t=1777538034; cv=none; b=ciuqVfS2FXwuW9RQoERKFWu2AJJx20B9EQ68cM0hJrXUpspE9sSivI8evZq/qYORUBSJDN33dMy3IUBhw6XkrzTL3QBPsK7w+uS4qlZbfCNUVqACqKvyHp+W/2Jf0VDmBj83YC4GGW0ZUHJ6unvmYUqE0f3tm4bezrmk5wtNJu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777536822; c=relaxed/simple;
-	bh=Nv1JYf3LO+jPMQgpo8pnXz9mJrVmyxe8ICeN5WxGts0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G2NmflCEehtOI0PwxgJlnU5TMw/qNHmtjsHNjomJlyuzV2mYfBlnwSt8ZK1UpPdVi1p2t/9wIMPEeUwCjHD1Pt2OjTK50EOP86VPt0ByC7PvGYH6HhX283mPboOtA565KNTnNS3mZf1x+QGSkEtmbSskn6oIHT0H22ApIWl4UAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JnXNUI2k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E567C2BCB4;
-	Thu, 30 Apr 2026 08:13:37 +0000 (UTC)
+	s=arc-20240116; t=1777538034; c=relaxed/simple;
+	bh=7cebm5YPv+mGucLf4Q5+XECkTCK2rT5d7w8TTk15MGI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qY2c4ktIrtOwAUww0Y430pXWSEYCq2ddE67bnfGeqmRBSypSkybx5EB671iriHz7bzB5jqg9prHChJaQk12VEmtdujBk0kVVA8VCaTX9U9upmPS2T+MSfj01GRSTJfx9tnQcqfcBnVVTCGllTcf8X2j9q4lXFu9Vfx/J4n2KYzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tqMMfLgn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BF5C2BCB4;
+	Thu, 30 Apr 2026 08:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777536822;
-	bh=Nv1JYf3LO+jPMQgpo8pnXz9mJrVmyxe8ICeN5WxGts0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JnXNUI2kbvksQ919q/521+avcOx2zyEVqsVBqxwt3RH+ROKd/fUUSJM2rrjYPNmbw
-	 Q/9Ce43RKwDKkj0ud0TJw07+77hCYkRBEm9jiXX/78PnIDPPdbCs1kQueuYT7oaFhI
-	 oOsMhugqGFr8JP5pOTdkTbj8KkvTJj8XGx8uuIDrNHw4CFk94NWeWI7mb61GdIqetW
-	 2EdVMER7zLILK/DlEhSRGyCYQJ9PacbwJ1nXAyiLH4fcKkE0tkRnTN58kIU9pQQzuJ
-	 +UaqLXcKnzfZ5UwRymPYa0Se0wSbc/fyCijAcH2h37t6l7buHiEvCCvJHxRPwM/OVn
-	 8m2Z3vwErKoUA==
-From: Arnd Bergmann <arnd@kernel.org>
-To: netdev@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	"Aaro Koskinen" <aaro.koskinen@iki.fi>,
-	"Andreas Kemnade" <andreas@kemnade.info>,
-	"Bartosz Golaszewski" <brgl@kernel.org>,
-	=?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Felipe Balbi" <balbi@kernel.org>,
-	"Jakub Kicinski" <kuba@kernel.org>,
-	"Johannes Berg" <johannes@sipsolutions.net>,
-	"Kevin Hilman" <khilman@baylibre.com>,
-	"Krzysztof Kozlowski" <krzk+dt@kernel.org>,
-	"Linus Walleij" <linusw@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>,
-	"Rob Herring" <robh+dt@kernel.org>,
-	"Roger Quadros" <rogerq@kernel.org>,
-	"Tony Lindgren" <tony@atomide.com>,
+	s=k20201202; t=1777538033;
+	bh=7cebm5YPv+mGucLf4Q5+XECkTCK2rT5d7w8TTk15MGI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tqMMfLgn6fBcdopY5vSnOXlkgLZ4ZHed0koAx3pejdErGPtM9ZH6aLszqOW28rpQ4
+	 zni7Mh9Ee/mI9MqiqDbhC36vzo9IO2QWtjx+uvw9C3eRh6C88+d3EA5FqPHXTSBfsk
+	 tWqMEXwTlwkgzTaIRUy7fRwEsET6Z2RUCHDd3PGmu7nqx4dx5lgif0kgQ1w0fEHxEf
+	 TMb51kC7cFJHHqRyoEMSAHPi0RXT/G1VPXd9fG1x4WRL4auxOlE+3RzRj2x/SY669U
+	 aZzOnvXFo0xuh7m9c1291UiatOhoG10saFi7APAK1DHTH6iJJT/pkqtTHYBU0yWBpN
+	 lUd/Y8oB+zKpA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wIMqF-00000000u08-1fCH;
+	Thu, 30 Apr 2026 10:33:51 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	linux-wireless@vger.kernel.org,
-	devicetree@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH v4 3/3 omap] ARM: dts: omap2: add stlc4560 spi-wireless node
-Date: Thu, 30 Apr 2026 10:12:42 +0200
-Message-Id: <20260430081242.3686993-4-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260430081242.3686993-1-arnd@kernel.org>
-References: <20260430081242.3686993-1-arnd@kernel.org>
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH v2 RESEND 0/5] wifi: mediatek: drop redundant USB device references
+Date: Thu, 30 Apr 2026 10:33:30 +0200
+Message-ID: <20260430083335.215239-1-johan@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -84,98 +71,73 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3437949F313
-X-Rspamd-Action: add header
+X-Rspamd-Queue-Id: B568449F47B
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [6.34 / 15.00];
-	SEM_URIBL(3.50)[0.0.0.0:email];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[arndb.de,iki.fi,kemnade.info,kernel.org,baylibre.com,davemloft.net,gmail.com,google.com,sipsolutions.net,redhat.com,atomide.com,vger.kernel.org,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-35693-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[26];
-	GREYLIST(0.00)[pass,body];
+	FREEMAIL_CC(0.00)[mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org,kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-35697-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	FROM_NEQ_ENVFROM(0.00)[arnd@kernel.org,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_SPAM(0.00)[0.997];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[2.221.234.208:email,2.221.133.64:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,4809a000:email,arndb.de:email,0.0.0.5:email,0.0.0.0:email]
-X-Spam: Yes
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-0.977];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-From: Arnd Bergmann <arnd@arndb.de>
+[ This is a resend (with trimmed CC) of the five Mediatek patches which
+  still haven't been picked up from [1]. ]
 
-Converted from the platform_device creation in board-n8x0.c.
+Driver core holds a reference to the USB interface and its parent USB
+device while the interface is bound to a driver and there is no need to
+take additional references unless the structures are needed after
+disconnect.
 
-Link: https://lore.kernel.org/all/20230314163201.955689-1-arnd@kernel.org/
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/arm/boot/dts/ti/omap/omap2.dtsi                |  4 ++++
- arch/arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi | 12 ++++++++++++
- 2 files changed, 16 insertions(+)
+Drop redundant device references to reduce cargo culting, make it easier
+to spot drivers where an extra reference is needed, and reduce the risk
+of memory leaks when drivers fail to release them.
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap2.dtsi b/arch/arm/boot/dts/ti/omap/omap2.dtsi
-index afabb36a8ac1..fdc1790adf43 100644
---- a/arch/arm/boot/dts/ti/omap/omap2.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap2.dtsi
-@@ -129,6 +129,8 @@ i2c2: i2c@48072000 {
- 		};
- 
- 		mcspi1: spi@48098000 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
- 			compatible = "ti,omap2-mcspi";
- 			ti,hwmods = "mcspi1";
- 			reg = <0x48098000 0x100>;
-@@ -140,6 +142,8 @@ mcspi1: spi@48098000 {
- 		};
- 
- 		mcspi2: spi@4809a000 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
- 			compatible = "ti,omap2-mcspi";
- 			ti,hwmods = "mcspi2";
- 			reg = <0x4809a000 0x100>;
-diff --git a/arch/arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi b/arch/arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi
-index 63b0b4921e4e..fe9dd8bbfc85 100644
---- a/arch/arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi
-@@ -109,3 +109,15 @@ partition@5 {
- 		};
- 	};
- };
-+
-+&mcspi2 {
-+	status = "okay";
-+
-+	wifi@0 {
-+		reg = <0>;
-+		compatible = "st,stlc4560";
-+		spi-max-frequency = <48000000>;
-+		interrupts-extended = <&gpio3 23 IRQ_TYPE_EDGE_RISING>;
-+		powerdown-gpios = <&gpio4 1 GPIO_ACTIVE_LOW>; /* gpio 97 */
-+	};
-+};
+Johan
+
+[1] https://lore.kernel.org/all/20260306085144.12064-1-johan@kernel.org/
+
+
+Johan Hovold (5):
+  wifi: mt76: drop redundant device reference
+  wifi: mt76x0u: drop redundant device reference
+  wifi: mt76x2u: drop redundant device reference
+  wifi: mt76: mt792xu: drop redundant device reference
+  wifi: mt7601u: drop redundant device reference
+
+ drivers/net/wireless/mediatek/mt76/mt7615/usb.c | 3 ---
+ drivers/net/wireless/mediatek/mt76/mt76x0/usb.c | 3 ---
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 4 ----
+ drivers/net/wireless/mediatek/mt76/mt7921/usb.c | 2 --
+ drivers/net/wireless/mediatek/mt76/mt7925/usb.c | 2 --
+ drivers/net/wireless/mediatek/mt76/mt792x_usb.c | 1 -
+ drivers/net/wireless/mediatek/mt7601u/usb.c     | 3 ---
+ 7 files changed, 18 deletions(-)
+
 -- 
-2.39.5
+2.53.0
 
 
