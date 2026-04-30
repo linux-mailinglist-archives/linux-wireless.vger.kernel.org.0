@@ -1,272 +1,168 @@
-Return-Path: <linux-wireless+bounces-35701-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35702-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KEeYOZEZ82nNxAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35701-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 10:57:53 +0200
+	id UOO/Ag8g82lsxQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35702-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 11:25:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9621E49F8A1
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 10:57:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B7949FD3B
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 11:25:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 20A43302268A
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 08:55:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ACD7A3005989
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 09:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C113FFAA2;
-	Thu, 30 Apr 2026 08:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDAA3A0B32;
+	Thu, 30 Apr 2026 09:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b="sG9T6KPC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iot/Czbj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EDB3FCB1C
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 08:55:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A46A39F160;
+	Thu, 30 Apr 2026 09:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777539328; cv=none; b=VC5AzioDiEQztVjmDojKVD2vAysnlMosvugrI09JAlHIzr6Wn/6RaEL+gR7QFY3Wztgam0KjnQ6HD16kCe0XUrHorN+6CtAJn3Uq+nlUEJCZsGxZTtz8vMNakmXrto7hcAv6CQy4dqa+5FU7T4OtxvXPqiAfQDczsidFiQjtr20=
+	t=1777541129; cv=none; b=D5hMj1nxEpOETapXT0FoUcSQkrSkRioqQgDF90qKuHZPp9LrXx4U+bBGIZqoAU2ajYUaOJtc1EN+mrii8Uv1PYWrQaHQjI0yqPyGnedN0oc1bRYZI3Al6qqryjHew85osbwExpxeDf9RymHwn3osIPq/7qN4kIZpV4NZDxtuxYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777539328; c=relaxed/simple;
-	bh=Pqq8zSAcOFFR5+YaBlC+lfkekk7615G+YO4hKhKWJCU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=sZzKP8Ex+gu9a+jIHdD/P1hsD+eZj82Pbnf/tqqRVxHxiSoCk3iX4Qd+47n4aw3X3cT0Hl2DQKfFrnNSRIePhNvnVEFbVyxN3TqccL3xkRLaNyZ/CAvSK2bfUvcxlt5oRn8vYUAftvAFNR8iKxhd3lA60gzVHpnU3Cd7EqyyRZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b=sG9T6KPC; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-444826c16ffso595385f8f.1
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 01:55:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20251104.gappssmtp.com; s=20251104; t=1777539323; x=1778144123; darn=vger.kernel.org;
-        h=in-reply-to:references:content-transfer-encoding:to:from:subject:cc
-         :message-id:date:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oTklDTNdxgMiOr8HV0Z6gDUQcK4MMB7dBQkYfU4NXYc=;
-        b=sG9T6KPC866Z2GUGB8sKaxyruk7UrFIkcWncaHwiNWzI3GPtrpX2vLWbABrn1zff0C
-         FBCLzqJU+iA18ZKv+bdPJq5sw4Dn6MoQc/5+JUngXqaw0KW4k/wR0EMQdYt1aYIVOurC
-         v+45ReIUit/MbA+ap2CMIyYNoCqEHfO3eohN4LpbRwZTr8NmHUgERO4cbvrB1He995ip
-         oiFRc9o7uAl4CPBh+toq6+zBVycPnPi1kGp+o/HKHsWIy0yMWRB1XekrXSoTl2uUuvm/
-         KRHaaZVUHY7ijfFLaceAQh+Z54wAB1fT5XCgGkLmCWKvO4dpHRS6+zYGagcFmu4JCwTw
-         R09A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777539323; x=1778144123;
-        h=in-reply-to:references:content-transfer-encoding:to:from:subject:cc
-         :message-id:date:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oTklDTNdxgMiOr8HV0Z6gDUQcK4MMB7dBQkYfU4NXYc=;
-        b=nLThVfAUNFIadChwWdIQ8mYkBVvqgre+Z7wmZGkP/lJhIkAeFx1n2CEFxwzt+DmTrA
-         RiKJAbbjL+lfP+gH5N2imP71urDfaVvxO3HvLWycQz1cMYKp//uEb9fx1gAShxgy7wV0
-         wpSgpVro1C3A+v0+51KJNg7F+i9/GGT8+xDBJ3ZNgu0bELxVparIl2eWykzKPc4j9haK
-         ii4B9UEK5/FWZpARTiuDkvgQxtNNBVAvdwNYZwljTr7HEk9xqop9EUm/2C7AKd1bElKd
-         UP2xPmXXAL/RZEQUGYNVRwhuK+Brini0TZdEgIeorCaO3pSp0RfUGeHwbSJx5z01gmSk
-         /vpQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9Pn3M6B9IAlGLSihi77gu2/p37N1ca010TdJmkGlmKF6Jp6Jz8TSJSPEH1mJqbQeqIMj3vTYUoeOByLGcUJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpRTozUMXRMxr//qgqY9nAD4jhWfhtBvnjh2D/LZ3Ay1y3hyTU
-	yr9g7QQ2lKqSfVdvs/lxud38Bkp76K8NyKSLpWptOaJEAyRZhHRNkSg/4QvZVQDwDE8=
-X-Gm-Gg: AeBDieud3tnxqKBTimVtpbSgxk/p/guRZoPYidS3Izs+vMMy6UtuoZ0Uo/rf//B3BVV
-	Msuk5heAEuXoQzeID8Ptgv2oEdDKA24XD3EImbsZO0KNHWsUoYwrtd/U3DwCONkdR/w9iBbgp1h
-	OOR45I1oFfEnPZOOGKnBb1407HJ1T+1PVnn11WNH1ihFrg8CM0o0Bk6iLUGWPYE3SBhdXx9+w9a
-	H0FpA6OVtxXICsG1dCfgRTbeDOBGIxZu0vijH7XMr8usV/76M6oHLDUaeJtFqJUQo31zlcxTMR+
-	AZq5E9tFcPLVEBUB+qe+noOx0r62wawMyPVgkGIEj82ADYNHP9sJoD2FzwvaZx6aG3wqZXOKN26
-	E/cq4iblmBKi3MjRYfo5lb5FLAVw+sAGJLiU3NqXbIpWKV7oMyAnNmx5/OvacUqBTJMZbk/ZQ4l
-	BBBFOzvbVTyuuSVTHusJfKm7afizg=
-X-Received: by 2002:a05:6000:26d1:b0:43e:a703:3665 with SMTP id ffacd0b85a97d-4493f42ced4mr3244142f8f.25.1777539322750;
-        Thu, 30 Apr 2026 01:55:22 -0700 (PDT)
-Received: from localhost ([2001:4090:a246:83ca:298c:ceb1:1a:f428])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-447b7ca5fe6sm11988989f8f.32.2026.04.30.01.55.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 01:55:21 -0700 (PDT)
+	s=arc-20240116; t=1777541129; c=relaxed/simple;
+	bh=B853Eh9uk565MxVVpob3pa08VA0fsq5RODboe/BkwDg=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=Fs9Qj9uAzNV9xGK6MexXhqUIWgV+GRItq+yDB6BBdVRDB9TMOxqyDnAkI6yVJ+8IN55iGUiWzg6yjlNNd9wvxw/JAFoPnuPXTvDeSUI2Ui8fOLUwM2AcqG2c/M6C4i/L4TeBlGCg377xEJ57/7LPWwvHHrY0RidE7Mx3PElnUnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iot/Czbj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38C5C2BCB4;
+	Thu, 30 Apr 2026 09:25:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777541129;
+	bh=B853Eh9uk565MxVVpob3pa08VA0fsq5RODboe/BkwDg=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=iot/Czbj1UTXZtIKbuakUOJPEZf2jgEJsXUobkf3fTE6pxHY1WoYVSUKSdjGjweU2
+	 uJCII7hbjhIouQ7z+4khXHPcxKRfaQKW5M8Ob7Ff/2xSIiteOAtptRQ6PRVkaTUlXR
+	 m5hnmHC34YoQvr6bwwzWq2O9IDz3/7o6w2Ux/d7uBQOzrHFiHHPE6x5MGEwTHosl5Y
+	 FtyWqlDWOsE2uTUmk93O2vMxDZkoZBQ9EeRqJitySRYcWBAmbfCmXMjl7Y98+WSE2j
+	 s23YYEIaJkoJReZgcK3bIv8Gfrr3USg/F7iytFGSPEmXH9vDS7tcs9sL21B1DUkETF
+	 aW/y9woiMNIXw==
+Date: Thu, 30 Apr 2026 04:25:27 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed;
- boundary=49f7733329a22fff4b83a1680bdebfd7a9830dc80234132c7fb08fa112fd;
- micalg=pgp-sha512; protocol="application/pgp-signature"
-Date: Thu, 30 Apr 2026 10:55:14 +0200
-Message-Id: <DI6D3JVJ6JG6.8V4XUVGJA2D4@baylibre.com>
-Cc: "Markus Schneider-Pargmann" <msp@baylibre.com>, "Steffen Klassert"
- <klassert@kernel.org>, "David Dillow" <dave@thedillows.org>, "Ion
- Badulescu" <ionut@badula.org>, "Mark Einon" <mark.einon@gmail.com>, "Rasesh
- Mody" <rmody@marvell.com>, <GR-Linux-NIC-Dev@marvell.com>, "Sudarsana
- Kalluru" <skalluru@marvell.com>, "Manish Chopra" <manishc@marvell.com>,
- "Potnuri Bharat Teja" <bharat@chelsio.com>, "Denis Kirjanov"
- <kirjanov@gmail.com>, "Jijie Shao" <shaojijie@huawei.com>, "Jian Shen"
- <shenjian15@huawei.com>, "Cai Huoqing" <cai.huoqing@linux.dev>, "Fan Gong"
- <gongfan1@huawei.com>, "Tony Nguyen" <anthony.l.nguyen@intel.com>, "Przemek
- Kitszel" <przemyslaw.kitszel@intel.com>, "Tariq Toukan"
- <tariqt@nvidia.com>, "Saeed Mahameed" <saeedm@nvidia.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Mark Bloch" <mbloch@nvidia.com>, "Ido
- Schimmel" <idosch@nvidia.com>, "Petr Machata" <petrm@nvidia.com>, "Yibo
- Dong" <dong100@mucse.com>, "Simon Horman" <horms@kernel.org>, "Heiner
- Kallweit" <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, "Jiri Pirko"
- <jiri@resnulli.us>, "Francois Romieu" <romieu@fr.zoreil.com>, "Daniele
- Venzano" <venza@brownhat.org>, "Samuel Chessman" <chessman@tux.org>,
- "Jiawen Wu" <jiawenwu@trustnetic.com>, "Mengyuan Lou"
- <mengyuanlou@net-swift.com>, "Kevin Curtis" <kevin.curtis@farsite.co.uk>,
- "Arend van Spriel" <arend.vanspriel@broadcom.com>, "Stanislav Yakovlev"
- <stas.yakovlev@gmail.com>, "Richard Cochran" <richardcochran@gmail.com>,
- "Kees Cook" <kees@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>, "Thomas
- Fourier" <fourier.thomas@gmail.com>, "Ingo Molnar" <mingo@kernel.org>,
- "Kory Maincent" <kory.maincent@bootlin.com>, "Zilin Guan"
- <zilin@seu.edu.cn>, "Marco Crivellari" <marco.crivellari@suse.com>, "Vadim
- Fedorenko" <vadim.fedorenko@linux.dev>, "Jacob Keller"
- <jacob.e.keller@intel.com>, "Philipp Stanner" <phasta@kernel.org>, "Bjorn
- Helgaas" <bhelgaas@google.com>, "Yeounsu Moon" <yyyynoom@gmail.com>, "Denis
- Benato" <benato.denis96@gmail.com>, "Peiyang Wang"
- <wangpeiyang1@huawei.com>, "Yonglong Liu" <liuyonglong@huawei.com>, "Andy
- Shevchenko" <andriy.shevchenko@intel.com>, "Yicong Hui"
- <yiconghui@gmail.com>, "Randy Dunlap" <rdunlap@infradead.org>, "MD Danish
- Anwar" <danishanwar@ti.com>, "Nathan Chancellor" <nathan@kernel.org>, "Sai
- Krishna" <saikrishnag@marvell.com>, "Ethan Nelson-Moore"
- <enelsonmoore@gmail.com>, "Larysa Zaremba" <larysa.zaremba@intel.com>, "Joe
- Damato" <joe@dama.to>, "Double Lo" <double.lo@cypress.com>, "Chi-hsien Lin"
- <chi-hsien.lin@cypress.com>, "Colin Ian King" <colin.i.king@gmail.com>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-can@vger.kernel.org>, <linux-parisc@vger.kernel.org>,
- <intel-wired-lan@lists.osuosl.org>, <linux-rdma@vger.kernel.org>,
- <oss-drivers@corigine.com>, <linux-wireless@vger.kernel.org>,
- <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>
-Subject: Re: [PATCH net-next] net: Consistently define pci_device_ids using
- named initializers
-From: "Markus Schneider-Pargmann" <msp@baylibre.com>
-To: =?utf-8?b?VXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1Yik=?=
- <u.kleine-koenig@baylibre.com>, "Michael Grzeschik"
- <m.grzeschik@pengutronix.de>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Marc Kleine-Budde" <mkl@pengutronix.de>, "Vincent Mailhol"
- <mailhol@kernel.org>, "Krzysztof Halasa" <khc@pm.waw.pl>, "Johannes Berg"
- <johannes@sipsolutions.net>
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: aerc 0.21.0-126-g9e77103592fe
-References: <20260428171845.2288395-2-u.kleine-koenig@baylibre.com>
-In-Reply-To: <20260428171845.2288395-2-u.kleine-koenig@baylibre.com>
-X-Rspamd-Queue-Id: 9621E49F8A1
+MIME-Version: 1.0
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Christian Lamparter <chunkeey@gmail.com>, 
+ Andreas Kemnade <andreas@kemnade.info>, 
+ =?utf-8?q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, 
+ Eric Dumazet <edumazet@google.com>, Bartosz Golaszewski <brgl@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Johannes Berg <johannes@sipsolutions.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Kevin Hilman <khilman@baylibre.com>, Arnd Bergmann <arnd@arndb.de>, 
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ linux-omap@vger.kernel.org, Felipe Balbi <balbi@kernel.org>, 
+ Rob Herring <robh+dt@kernel.org>, linux-gpio@vger.kernel.org, 
+ Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, 
+ netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+ Roger Quadros <rogerq@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Aaro Koskinen <aaro.koskinen@iki.fi>, Tony Lindgren <tony@atomide.com>, 
+ Linus Walleij <linusw@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+In-Reply-To: <20260430081242.3686993-2-arnd@kernel.org>
+References: <20260430081242.3686993-1-arnd@kernel.org>
+ <20260430081242.3686993-2-arnd@kernel.org>
+Message-Id: <177754112702.3678889.4847926893667561974.robh@kernel.org>
+Subject: Re: [PATCH v4 1/3 net-next] dt-bindings: net: add
+ st,stlc4560/p54spi binding
+X-Rspamd-Queue-Id: 75B7949FD3B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[baylibre-com.20251104.gappssmtp.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35701-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FREEMAIL_CC(0.00)[baylibre.com,kernel.org,thedillows.org,badula.org,gmail.com,marvell.com,chelsio.com,huawei.com,linux.dev,intel.com,nvidia.com,mucse.com,realtek.com,resnulli.us,fr.zoreil.com,brownhat.org,tux.org,trustnetic.com,net-swift.com,farsite.co.uk,broadcom.com,bootlin.com,seu.edu.cn,suse.com,google.com,infradead.org,ti.com,dama.to,cypress.com,vger.kernel.org,lists.osuosl.org,corigine.com,lists.linux.dev];
+	RCPT_COUNT_TWELVE(0.00)[27];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[baylibre.com];
-	DKIM_TRACE(0.00)[baylibre-com.20251104.gappssmtp.com:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[msp@baylibre.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,kemnade.info,baylibre.com,google.com,kernel.org,sipsolutions.net,arndb.de,vger.kernel.org,redhat.com,davemloft.net,lists.infradead.org,iki.fi,atomide.com];
+	TAGGED_FROM(0.00)[bounces-35702-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[85];
-	NEURAL_HAM(-0.00)[-0.990];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre-com.20251104.gappssmtp.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre.com:mid,baylibre.com:email]
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[robh@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arndb.de:email]
 
---49f7733329a22fff4b83a1680bdebfd7a9830dc80234132c7fb08fa112fd
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
 
-Hi Uwe,
-
-On Tue Apr 28, 2026 at 7:18 PM CEST, Uwe Kleine-K=C3=B6nig (The Capable Hub=
-) wrote:
-> ... and PCI device helpers.
->
-> The various struct pci_device_id arrays were initialized mostly by one
-> the PCI_DEVICE macros and then list expressions. The latter isn't easily
-> readable if you're not into PCI. Using named initializers is more
-> explicit and thus easier to parse.
->
-> Also use PCI_DEVICE* helper macros to assign .vendor, .device,
-> .subvendor and .subdevice where appropriate and skip explicit
-> assignments of 0 (which the compiler takes care of).
->
-> The secret plan is to make struct pci_device_id::driver_data an
-> anonymous union (similar to
-> https://lore.kernel.org/all/cover.1776579304.git.u.kleine-koenig@baylibre=
-.com/)
-> and that requires named initializers. But it's also a nice cleanup on
-> its own.
->
-> This change doesn't introduce changes to the compiled pci_device_id
-> arrays. Tested on x86 and arm64.
->
-> Signed-off-by: Uwe Kleine-K=C3=B6nig (The Capable Hub) <u.kleine-koenig@b=
-aylibre.com>
+On Thu, 30 Apr 2026 10:12:40 +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The SPI version of Prism54 was sold under a couple of different
+> names and supported by the Linux p54spi driver, but there was
+> never a DT binding for it.
+> 
+> Document the four known names of this device and the properties
+> that are sufficient for its use on the Nokia N8x0 tablet.
+> 
+> As I don't have this hardware or documentation for it, this is
+> purely based on existing usage in the driver.
+> 
+> Link: https://lore.kernel.org/all/e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com/
+> Acked-by: Christian Lamparter <chunkeey@gmail.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
-> Hello,
->
-> the mentioned follow-up quest allows to do
->
-> 			PCI_DEVICE(0x1571, 0xa203),
-> 	+		.driver_data =3D (kernel_ulong_t)&card_info_10mbit,
-> 	-		.driver_data_ptr =3D &card_info_10mbit,
->
-> which gets rid of a bunch of casts and so brings a little bit more type
-> safety. This patch is a preparation for that.
->
-> I handled all of drivers/net/ in a single patch, please tell me if I
-> should split by subsystem.
->
-> Best regards
-> Uwe
+> v4: renamed file to st,stlc4560, matching the primary compatible string
+>     require st,stlc4560 string
 > ---
+>  .../bindings/net/wireless/st,stlc4560.yaml    | 61 +++++++++++++++++++
+>  MAINTAINERS                                   |  1 +
+>  2 files changed, 62 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
+> 
 
-[...]
+My bot found errors running 'make dt_binding_check' on your patch:
 
-> diff --git a/drivers/net/can/m_can/m_can_pci.c b/drivers/net/can/m_can/m_=
-can_pci.c
-> index eb31ed1f9644..cb9335c1d3ea 100644
-> --- a/drivers/net/can/m_can/m_can_pci.c
-> +++ b/drivers/net/can/m_can/m_can_pci.c
-> @@ -183,9 +183,9 @@ static SIMPLE_DEV_PM_OPS(m_can_pci_pm_ops,
->  			 m_can_pci_suspend, m_can_pci_resume);
-> =20
->  static const struct pci_device_id m_can_pci_id_table[] =3D {
-> -	{ PCI_VDEVICE(INTEL, 0x4bc1), M_CAN_CLOCK_FREQ_EHL, },
-> -	{ PCI_VDEVICE(INTEL, 0x4bc2), M_CAN_CLOCK_FREQ_EHL, },
-> -	{  }	/* Terminating Entry */
-> +	{ PCI_VDEVICE(INTEL, 0x4bc1), .driver_data =3D M_CAN_CLOCK_FREQ_EHL, },
-> +	{ PCI_VDEVICE(INTEL, 0x4bc2), .driver_data =3D M_CAN_CLOCK_FREQ_EHL, },
-> +	{ }	/* terminating entry */
+yamllint warnings/errors:
 
-M_CAN_CLOCK_FREQ_EHL is basically hardcoded for all PCI devices since
-2020. I don't think we need this driver data at all and can just drop it
-and use M_CAN_CLOCK_FREQ_EHL directly in the code for the frequency.
-Once a real new PCI device gets added we can see if and what driver_data
-is needed.
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml: $id: Cannot determine base path from $id, relative path/filename doesn't match actual path or filename
+ 	 $id: http://devicetree.org/schemas/net/wireless/st,stlc45xx.yaml
+ 	file: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
 
-Best
-Markus
+doc reference errors (make refcheckdocs):
+Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
+MAINTAINERS: Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
 
---49f7733329a22fff4b83a1680bdebfd7a9830dc80234132c7fb08fa112fd
-Content-Type: application/pgp-signature; name="signature.asc"
+See https://patchwork.kernel.org/project/devicetree/patch/20260430081242.3686993-2-arnd@kernel.org
 
------BEGIN PGP SIGNATURE-----
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
 
-iKMEABYKAEsWIQSJYVVm/x+5xmOiprOFwVZpkBVKUwUCafMY8hsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIRHG1zcEBiYXlsaWJyZS5jb20ACgkQhcFWaZAVSlPG
-LAD/fzJVNBHtKblmZr7CitXNgE0iUthbQCQShJJb37V4mMgA/2HCptgFXjEqdTdF
-h7pcmno1RbnSKnZ/TDh+JQ7CnAwN
-=RRmw
------END PGP SIGNATURE-----
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
---49f7733329a22fff4b83a1680bdebfd7a9830dc80234132c7fb08fa112fd--
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 
