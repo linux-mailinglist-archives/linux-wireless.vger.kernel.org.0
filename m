@@ -1,97 +1,106 @@
-Return-Path: <linux-wireless+bounces-35678-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35679-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GWyLH3j8mnyvAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35678-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 07:07:09 +0200
+	id 8JKXNdXq8mltvgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35679-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 07:38:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17BAF49D823
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 07:07:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C96449DA29
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 07:38:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF21D310FE63
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 05:00:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D545D300460A
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 05:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4306B37881E;
-	Thu, 30 Apr 2026 04:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56C91C28E;
+	Thu, 30 Apr 2026 05:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="GiiP12w0"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ggKf4wAR";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="j8dyKNBT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A7D372EC6
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 04:59:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6063034405B
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 05:38:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777525158; cv=none; b=H8mRhHZM5AnHr9/JY+zKOl5+sDOYIK+Kn3uYyHx8hSTnPafvBx3eAExZjpLLqa0STUexjWMa44UpIdRBcGZ4etHI7nX2iOYlYI2y8E/chK8RK/u34XIHqgvhyHNMNEUvBO9fqW9Lpo/99GXuafHkfprCx3iTo16DIvTA2VTe8k0=
+	t=1777527507; cv=none; b=AiKQPmv971EQtE+pD1g6ye8y7QthpqUpHzgLQTuJIL9ov2E45beXXIjtdz3HXBsAKuIm6sdBwQvIgbIscTTnld7Q75MyZs4XQfaDTbuKpc4d12ie6bUGmzC73Y6YeA411zWQ4Tx/SRCWLRPAcFR1P4GHKhMp8MqAy9RHnhmgI4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777525158; c=relaxed/simple;
-	bh=ZwVU2urQpy/QQ0fKIj5VurGhH1ajOHeOc6EE7xNV2SE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HzLQgA2lrhyAUcl6T04BSBvZ+mug4DuWwy63LhSgrflztsdxdO+OjC5QP2dhxakHVygztjZ3oQAxxvNhronyzZOS0lWYU1ZJPCvI89ub0duw6VII3gDcHkGioiGFAx44GHZbiSPYgdof9CuAtFD7Dnntiib6I0rKL0nW6Ln6bFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=GiiP12w0; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-82fbdd60b64so382982b3a.3
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:59:16 -0700 (PDT)
+	s=arc-20240116; t=1777527507; c=relaxed/simple;
+	bh=e+5SsONx0D6f5J3YVIYGlRKdgWCXyU+qHIzr36kWK8Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ETYzWeh/7ya6LMJ6UFHdkv0b+CW5QVbO+8PSkzXGArm5hxlIWzCu5DHAartAj1voxvz/DOyU4hfsyzKfg0uFUqmUeRRHFAUR55DH5vb31/LeTz7NCW7KImj5QJzXRylWyTj+vUP9nJb4AWSMsTDx/O0E9oM3HG+GyRxwEofxTp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ggKf4wAR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=j8dyKNBT; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63TNuP8c3636716
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 05:38:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=dhh9iWZ7IPZTLFJfGsFhUajLL4gqeHdwJ1x
+	FQGC1KHg=; b=ggKf4wARY18ee415mhOVYLrutzo1/2VUqjqDNuPAFO2OTad1rIZ
+	ySiS6yo/Jqo6pnWBf2kvuLpeKL9VlB5GiDPZqL5xDLtyWe0Ri2AcuXmFxSp1YVgP
+	JvQU59hY9N0HR1g4AUpdBdIwmgjuAKxM+85oCI9WkpREQNhTORxUHo8ROZS47rCV
+	lOqAdIqGqMyR2pazQuUOsIqtU9qK0YOXVW2++mCot+ogUvpfMR7QPf8CFo+hO1Iw
+	qCsG90rbieh0gAtzSVtfH9GdzxSe0EjjOIAyXl+tUBPWGtKzegyNlkBK90BRjUVX
+	Z4Mj6jWVHF3ZCxUuWez7lIwvIqIAVISlrmg==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4duv3q0yxf-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 05:38:25 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2b2497cc190so9782025ad.0
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 22:38:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1777525156; x=1778129956; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xpRnGjHscUyU9r37uJg079OfgXJLE23KAufHZZ9FZiY=;
-        b=GiiP12w0p3PcVQfuw/HG3hER1b5+8DbH/tysdATJovYpDXfl1rtXldZ0b6zzdT5KaX
-         2M8eav03bB+z49TCXtixkV4/mrnPhAQuS46Ze0W/XhwGCh/sdbBmsz45kQniTtAtwss1
-         iZYKdsTDt2NAdBa9d5q1DaDbLbxLmDKufDqBtYt9wM9qFCwrGFxBRu7sC9tD+zhqABWa
-         jcKOBVHZHZkxIhgoHAoM5g+4zrN6NXw/Kfv2S1ZOz1AA9TA8m0MYfBCoDmixwoZqJIgA
-         Do5WY+82vdjPtRM3oYv4Vy5EsI37neTqtKFchK/o4JOg+IFmJknK9XtMTKdngB0WTbrj
-         G0OA==
+        d=oss.qualcomm.com; s=google; t=1777527504; x=1778132304; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dhh9iWZ7IPZTLFJfGsFhUajLL4gqeHdwJ1xFQGC1KHg=;
+        b=j8dyKNBTe2RqVD8u5vNuJu/KAnN95Zsn+l8ZuvSwpPWLUZnqDqNWoxW0z4z7lPYxGt
+         yneHjt5u066AwF16VjOOD0ylKhDuB+5+Bw2rxxVAkwRsJj0GK42ZGKpi/FyhkwjEkAMn
+         vSn7lBYC4M3FHX+giafAgIUfZitXtO5qE54pqD+1/oxVcdUbRwtOPSR5I7jH5SDn60uR
+         +t5kt1251gPNO6/jxqr2BXD7SE607uTOsB539b63FBKy/fyfcWBpAe3USUcltIsCPrtI
+         BMA56vIeaYXHwpD2bEG32im2TW9dSOC86FkeHvQEO8XE3HXzg5Ob20lxNUVBuIq1Def7
+         maMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777525156; x=1778129956;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xpRnGjHscUyU9r37uJg079OfgXJLE23KAufHZZ9FZiY=;
-        b=jzc/yPOdLF85EhNj6I9zmYbJlm6YHcIfELzVZU8VWYliT3VsFXPMHpTXw6+DLNbqJQ
-         31KVWFD2dViQQNrIdk6kUm5fauDEHAzPq8XhljRZwrVgPg4FMIKrmD4+1eFaQsBGSHEt
-         vrGlOqc2yXzoRkfCDWOBtXxzUsJd4Is7Y8jcQbqfIS6+0DYgztzdc087XrRztcP7s1+L
-         1V67U8kE968QoXb4wEU4Pyi4mNxz0LuAyccQk9BtSzJMu3bT0BsOUj5G7pKg9sqm8HuE
-         StxarohHcsnmUJiqUOGNAVaDdMvaFCKHdivo1l/434CPNiydBTwg6AHet7s2sSLaTX01
-         gfoQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+V3rxd+kuEYm/ChN5pWS6r2PesnzjiFhgbVIJ9079Fr7wmLNzY16rP1FR4DQJa3Y+Itv/ySpvjMvR5tpWAWg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFlXuLQxHtQ/TKZ2FNBsOM+AR7+/FtBT1BK7LyKqUzeL/Ypifl
-	PcFO1woOXk6PAIz/gkMK+K/7CqXz97S0/cfU+Q5R08OeckQDJrKDXywVIempBRTcbAGWSFPvDQl
-	mLh/3
-X-Gm-Gg: AeBDiesZHIXz85oXkY8sdjcMtOikzEzKMoWgXP8MMlN942+ms+sLwz+aGv1VUrTmCzi
-	AqzTTQdA1OPsGGvssLAnM/gwqx0sPv6Yux1mRC86DVnOQdJNsoE5DO/KrC1MMSJA7HJRe7C60Yb
-	MREB8+03+B7ee/xnPlmEinuJv4pyjz5LOy5CM/Fq6FiRfdGsM0byCWzU0lAV+quaozoeah53x26
-	SrpWyas/qjeWd2mOny18L/9VyMKFDAPvoFdt2q6Tn0Ts2ZUG+1haeOlELZaw4UqXHGmkU9EHl43
-	2J6SeWoMudb5izzn+Nm5DHOY+DuBzWK0OkhRP3gPY9OUmPDWrBV7oie/V35EcIs6IbzezTDwB4o
-	kBxMImTgralKet97sJpQ4ksHFewRM176UmvWZinG926RvWnawpnR34XeVfKFLK9fKeaX/3ykqXb
-	7aTRoagDKdQt4sO6bS6kXWNZDV3uGuFFytqIEdQhA0Df9zE2yuwMNW4mJYrHYQyZWt1HDqI/aAN
-	SMkT0vFC9Wbnni2WI/+eHzl9Uwi6XiFtp+RAKjd8g==
-X-Received: by 2002:a05:6a00:28c5:b0:81e:e09d:2687 with SMTP id d2e1a72fcca58-834fdadfccbmr1806349b3a.1.1777525156295;
-        Wed, 29 Apr 2026 21:59:16 -0700 (PDT)
-Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed80df96sm3595073b3a.54.2026.04.29.21.59.12
+        d=1e100.net; s=20251104; t=1777527504; x=1778132304;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dhh9iWZ7IPZTLFJfGsFhUajLL4gqeHdwJ1xFQGC1KHg=;
+        b=KF5s7G7l/nP5qdH9d03iIr3lXHMXdPVU/tLhUGDzMqCQYFiCcPn6MVwGbocwkjjUOD
+         S0Ijt4uvUmISPgVsLawH53kGIpBv9lmKUtFIQKpmCgMxp6UxVV3zGy73okw74dRVHnzS
+         dcpjZ7+3MKGWmy18UCUQb8Z0Hb1MwTg4XgiFX55DeRbBYwD7UOOI2I8xWf4nRqbtNgNk
+         eTshj5QGykWK+Wg1uUOhgZABcRihtrYl4rprIINt2FrmyAGsiOtnjh4yzd4/Jz9c7XBs
+         ZtzkgInS6IPn1qxHwxeRh74RC/7K0IP1gMHPWuumhBb/zhdtqj/id25JyBeJuS9JJLlR
+         BAfQ==
+X-Gm-Message-State: AOJu0YwhWlfAG1VqcbZqHea3lxrjbifjvqbT0Bf4HukVymx2L1G5+iUS
+	f4ZpBzZcXwBmKqt0nEHLYEYogbKV4ZgSJ/JiT3WsNp6CZL+PsIRHwclZJH2YL+kNYLR/det/1OF
+	Xe8b/EUvC4mfJM2PeVe699AgfbMLDjS6VvbcAdyh6GpNb3H8JOducNfLmTkUppW3VrkY3dQ==
+X-Gm-Gg: AeBDieuTOISNpgbiwVwl2lU7z8ugD6ybDCtbeU5oOzW6KuI+PpSDKoPnbpFhxPiSu68
+	nXWL2Ks3hQVIKt1rdhcJfRAVWSW9GpWdWM7DXHhtb0nyJYuyf7qg5GLBGZYsex0AAF8KCUNazjn
+	a9YWJ7xuEXnMj5pB+9NMfPhUC4K4PKb8UDa2QzLerD5zaM889lDsB+3DIU0EMbR4l3bl4AL9s62
+	4A/yJqNbfrZwPs7GC/QBd11wSqAg1BGshmqsENdWDyT3V0oCRwBuStNL/aCcdX2PMy8xi7raoeh
+	LeCPB3XxvNrxJMqq1uMjxb6RQvjqPqCkrE1clJHc4lOeA6Q/rpPJz/r6LwR2rmKv5yxvs9jufNw
+	LNgdPEPqlYgiFxL1x0FAdLOOXxw2G8+zteQ8IZc2XOJYu6Bczwv6yP7FmGkxlOVDDnjayDr4iyA
+	pXMfTLteERVkFlT6BTIZtGwnCqcXi7FaZuq8CjApHXYGn+DTEUQfZx+g==
+X-Received: by 2002:a17:902:c102:b0:2aa:e47d:e3b with SMTP id d9443c01a7336-2b9a4029d73mr8772505ad.0.1777527503926;
+        Wed, 29 Apr 2026 22:38:23 -0700 (PDT)
+X-Received: by 2002:a17:902:c102:b0:2aa:e47d:e3b with SMTP id d9443c01a7336-2b9a4029d73mr8772355ad.0.1777527503428;
+        Wed, 29 Apr 2026 22:38:23 -0700 (PDT)
+Received: from hu-sarishar-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b98879656dsm39561425ad.25.2026.04.29.22.38.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 21:59:16 -0700 (PDT)
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+        Wed, 29 Apr 2026 22:38:23 -0700 (PDT)
+From: Sarika Sharma <sarika.sharma@oss.qualcomm.com>
 To: johannes@sipsolutions.net
-Cc: arien.judge@morsemicro.com,
-	dan.callaghan@morsemicro.com,
-	ayman.grais@morsemicro.com,
-	linux-wireless@vger.kernel.org,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless-next v2 31/31] wifi: mm81x: add MAINTAINERS entry
-Date: Thu, 30 Apr 2026 14:55:57 +1000
-Message-ID: <20260430045615.334669-32-lachlan.hodges@morsemicro.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
-References: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
+Cc: linux-wireless@vger.kernel.org,
+        Sarika Sharma <sarika.sharma@oss.qualcomm.com>
+Subject: [PATCH wireless-next v2 0/2] wifi: cfg80211/mac80211: optimize station info handling
+Date: Thu, 30 Apr 2026 11:08:08 +0530
+Message-Id: <20260430053810.2088793-1-sarika.sharma@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -99,66 +108,86 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 17BAF49D823
+X-Proofpoint-GUID: q6XKlF-QX4dClE5cUlFK9Inexki-cZnS
+X-Authority-Analysis: v=2.4 cv=dOyWXuZb c=1 sm=1 tr=0 ts=69f2ead1 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=5koZO7XqIq10IgpX1VoA:9
+ a=zZCYzV9kfG8A:10 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDMwMDA1MyBTYWx0ZWRfX8Jr3xYD9ud3F
+ MMOvmBK+ZCimCwSwE7vz/0BfD3JFl1OHLtikhVH4gEgMvoUy458NN+Ch3AuvJB230BBCdxY4DhR
+ YAlu+riEV+9QAY0FVdpH/+8i/s8wB+7JWumam1plTOZ8cCfnKLmDunqHvqo0sRcy2kkIr8xMc74
+ w8jfLaKi7DxzrnHXeJ7Z4UO13vTXU/y1OAa/wb2mKJaHsRgvTeYLbaGopxT0JtqHppoIIzF/AMH
+ TZkjrutrkdN+CabiZZTdqxomIn4k01ZsHY0XRZv6EES0ZOEQpylEBw3FsKvO5LDzTgsxiJCE3js
+ 94MKdyOQX2MaeYIeVCqhPpYwR3uDBpXDRTNB7e72aSxOq+Eol1lFd7dnd8YJqdn06+1vaLmAhWR
+ PNzvT1M/pWPre1jkxgpMUpYzacMLir7zooHHSL+DmXesnQm5IBF51oTnz1BotVRMfwz7swa0m4u
+ vOQ30kMguQlBrYZco9Q==
+X-Proofpoint-ORIG-GUID: q6XKlF-QX4dClE5cUlFK9Inexki-cZnS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-30_01,2026-04-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 adultscore=0 spamscore=0 lowpriorityscore=0
+ bulkscore=0 suspectscore=0 priorityscore=1501 phishscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604300053
+X-Rspamd-Queue-Id: 7C96449DA29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35678-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35679-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:dkim,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sarika.sharma@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,morsemicro-com.20251104.gappssmtp.com:dkim,morsemicro.com:mid,morsemicro.com:email,microchip.com:email]
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-(Patches split per file for review, will be a single commit alongside
-SDIO ids once review is complete. See cover letter for more
-information)
+This series improve memory and logic efficiency in cfg80211 and
+mac80211 during NL80211_CMD_GET_STATION. Allocate link_sinfo and
+link tidstats objects only for valid links to reduce memory usage.
+Avoid setting non-MLO applicable fields for MLO stations to
+eliminate redundant operations and simplify the code path.
 
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+V2:
+ - change int return to link_station_info return in
+   cfg80211_alloc_link_sinfo_stats()
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2fb1c75afd16..980d7658fc75 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17988,6 +17988,14 @@ F:	drivers/regulator/mpq7920.c
- F:	drivers/regulator/mpq7920.h
- F:	include/linux/mfd/mp2629.h
- 
-+MORSE MICRO MM81X WIRELESS DRIVER
-+M:	Lachlan Hodges <lachlan.hodges@morsemicro.com>
-+M:	Dan Callaghan <dan.callaghan@morsemicro.com>
-+R:	Arien Judge <arien.judge@morsemicro.com>
-+L:	linux-wireless@vger.kernel.org
-+S:	Supported
-+F:	drivers/net/wireless/morsemicro/mm81x/
-+
- MOST(R) TECHNOLOGY DRIVER
- M:	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
- M:	Christian Gromm <christian.gromm@microchip.com>
+Sarika Sharma (2):
+  wifi: cfg80211/mac80211: change memory allocation for link_sinfo
+    structure
+  wifi: cfg80211/mac80211: set only non-MLO-applicable fields for
+    non-MLO stations
+
+ include/net/cfg80211.h  | 29 ++++++++++++++++---
+ net/mac80211/ethtool.c  |  4 +++
+ net/mac80211/sta_info.c | 63 ++++++++++++++++++++++++-----------------
+ net/wireless/nl80211.c  | 35 ++++-------------------
+ net/wireless/util.c     | 21 ++++++++++++++
+ 5 files changed, 93 insertions(+), 59 deletions(-)
+
+
+base-commit: 1f5ffc672165ff851063a5fd044b727ab2517ae3
 -- 
-2.43.0
+2.34.1
 
 
