@@ -1,82 +1,83 @@
-Return-Path: <linux-wireless+bounces-35652-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35653-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0P2bCaPh8mnyvAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35652-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 06:59:15 +0200
+	id eH4EHs7h8mnyvAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35653-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 06:59:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DE449D6E2
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 06:59:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C931F49D709
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 06:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 976D73049948
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 04:57:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 225B33019079
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 04:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D14F363C74;
-	Thu, 30 Apr 2026 04:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C23364028;
+	Thu, 30 Apr 2026 04:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="jjOrYJ8/"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="S/RwDGyo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38AC367F51
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 04:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE57362138
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 04:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777525024; cv=none; b=PZElDWYoewW72UDh1Qb+dru0KgCgkqtFjZjuMJXPIMLnhikYMYN/qXHzaxh1B0M5Ej4IEIoqnmOhta6BPK7c8A1ppLKIeALP1xDCz3cgRaP3AJEWe+awtTSsXbTffEWB61k4ylARwu1+bXMyqUaCPeEkmK51ed8lcVM74+D210E=
+	t=1777525030; cv=none; b=idqxH8C5kaveNG88IA3eoZYVV3SwgICSs9JrJXyHYU5uItwufyixPSRcab4TUCRtBA2ZxakP5wDzVbj+p0HacWO7y5HDXRrSqm0DMTRSnj8TBJFWuitn6TSXj8HmuIe7lZ94ScGeZ1TJ35HY4Lu4RAK0KRoPRKAmHJvF/9mk7Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777525024; c=relaxed/simple;
-	bh=9TyB8vv5bdZStr/Q1niVBjRaeWUcL3/nyNMQiiUXakk=;
+	s=arc-20240116; t=1777525030; c=relaxed/simple;
+	bh=BOfLnJTWFY5/yt0txp1ZWj13yS0HWhij74+DubKV2Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/8/nPrbCHrS+MkCmratDJo5j8uHs2E1maHbWnFs3gAyTiqqyOvKjlGtaOrRlXpcDGKR4hX+AZK61rVxhEJtkmeTypGj3U0lhtM1RhcScC58S58YWo/Dc4/V+xgy4BUxYD9l+ow9CDSB5kHryeX6qx0LR5qYAHt4yHn/QB9kR3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=jjOrYJ8/; arc=none smtp.client-ip=209.85.210.180
+	 MIME-Version; b=OQ8syG5bdMvt5EOKk9QBUUZssGnX3l25nzjFCDrvWrN71wedG1eqWSoYIXPqayM0ZTjy9Xgq4ie8fOfOQ9Tqsba6d9qfhGY8WhS/CvFSEf/T8bbRChFyJZMzszL4xXz17zDdiBMBMv7IqiKSK9EFyKphzMawYN3UH7etakN8uII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=S/RwDGyo; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82f68b3aaf7so225197b3a.0
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:57:02 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82f0884bcfaso377945b3a.1
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:57:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1777525022; x=1778129822; darn=vger.kernel.org;
+        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1777525028; x=1778129828; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nVCjz/fVhCFpjcMt+RPvID80Nomp20lkcFEvzXdhCJA=;
-        b=jjOrYJ8/+jMN13F12diwGLblWvZyKJgCyWmLYhamQSBOI2UJ4mDNOj0OOSW1UTBs5n
-         +tgwBHXhDSjgXG8Yc6Nb9m6o0zuhrCaGMI49Oa2cWPk+5/2sx5saASuH+QmM/+Sq9Qnb
-         mnz7pd0Dpc4Jwz1USR5QDkfgLcZPrjtqzyR/Pkukf3yF/NhpDIZubJ2huwrQsDpRRYC7
-         znzVzX71A7385b4M0eEZnCObjRdHU4fdHPd6givyE5csuV+l1Zs+WJiBgZpnqkhv6fw/
-         k//qRBZB0jj8KQOCSHQqJEQfjM67kScdZiPWCOvh/t6rFzvZnjLtWu4cIswRRnXo+D6K
-         BhEg==
+        bh=6ZvEjFvVe7SCxEgVzCtRC6KzFyis4B4ziBUKypetjHU=;
+        b=S/RwDGyoV7PjCFisr2Lyw7Pm7UOGmIDkOMdndXMnSEqCdm7bQKw50a94n6jbvo9PVd
+         fI7XUaINlvlPZHO3ToMabV1yMe2j5vrNnwh8pgZnJX1VnmUeqKXYKzrFenxIXuQTYNUq
+         9j8DUVFQfxbfHQHeyw/G5AmhQmDuTVgps36tkgU9NWM7hMTsf9zRhvgzhYLM8qYKKj7u
+         5DUDbue5/VzPPHLdS1t8hy/BfC9bBux5VM5DdZWpV5FTlGJsHU9GNg7fXKZrH9V4fDf5
+         i0LRCyDbT+D7Xl9i2P0/Vagq24cHEAnIkzC6lLDgLAl1R9vxuHOeuO8feV8HaMi8DbnG
+         xMAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777525022; x=1778129822;
+        d=1e100.net; s=20251104; t=1777525028; x=1778129828;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=nVCjz/fVhCFpjcMt+RPvID80Nomp20lkcFEvzXdhCJA=;
-        b=V17KF13G6x/43aBYchXVQunzjSPseiZJRGyOeIRMI9Rmq0ObOoCpMuba55xckMoyJt
-         uTvA4nmOwgFZ4/aTBHVxV/K9Z0UxwIpucjOrlPZTc2HNd2u8rQOwnc8FG2K6BBiZUnnZ
-         iL9vw2Sl0YZHv7Du95qPGsN7iY8rAEr9a6j37x1OjU6fcYskOPDLBfV710druM3hhLPo
-         x4vFBlULY9C/bTiirKVb9nd2VQRJe6GQC5tWxjYoe7uDZAh4mHLLAf7QP64zKuGj4vkU
-         nvYj8skg6mvpDmO2e+kt3vku1Asb7NhSOHCw3ohKRlvA96N2WtYwseCOkL7xgM74VhN3
-         o2vQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9ZJqOwRvd2J9AWygkvY9fl+8aH6HcQneI6JAtvfh0NXWUjhLFyZ3aT17vNPz+ouZ4oVcsnlBaD2Hs5vuSq9Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8nO7aYS9hzWRTaLAiaja7YGUN6sCbrcEONCk/XPs858miwyE1
-	QbuuU123dIgCLMWwAaPIcA2CogAj79Vw7ku8fK6sFFmtbv/pSFMB2FC4u1HpKMRG8G8=
-X-Gm-Gg: AeBDietP46UEJeWaMVXoXU4cjnpBZszcRU3ld06c1d0dxhXp1Q1CRwJTW8PHKkLWecO
-	Ll5e90AsJD6uJXC9tA6VnLVdpl3KnKVSQBY0A3+cmmoPR2YU467H6ntNDwjIdj0W3H1s97NlknJ
-	sec/Dvls0es3AKWpbEXLoU0HElz3GZsvgcwyMslmaiLhM8JaH5ALZDdNh2GotfmQKUXx4BJUocf
-	tzSGwvAcQDfFqcwfYRWC4UUv9Q7CtaHxF/G9ZGJETHdSW8+s+or8YsG43D8k0komEX7G48KHMTU
-	tyQKl+PQ9VOprRoPinz01obarG1O69cZC9ZnVGKdM7o7BYaKEVBWU2ExpaSZCqmLDNh2s0Ktyv5
-	TgDa9f8s5tVD5Rwy2vbxZooHtRajQ5cWB5MCJddxvcwb+viUUmHdn7h6jrpZLPH9EtCbLVwPRJK
-	knFfJnemAm0DJ8U17T3Ad6f6BrUGHqhwSgesPh5/YcPm5svB9qarmVg7nPLMtXaWFwt+06V54BD
-	v+8OtyEeU/qbiIfFMnlt/2lZNtcyO49I6i7IdcO+w==
-X-Received: by 2002:a05:6a00:2441:b0:82f:6be8:6c0e with SMTP id d2e1a72fcca58-834fdc8d5d6mr1686595b3a.45.1777525021994;
-        Wed, 29 Apr 2026 21:57:01 -0700 (PDT)
+        bh=6ZvEjFvVe7SCxEgVzCtRC6KzFyis4B4ziBUKypetjHU=;
+        b=hCo/hrtkIs6fEB61WBGFA31XMvQLq7ZFYSoIjTuD8XHzqmp0X8UEEDO+qe3M5XJsRI
+         67t43wB0aJZhk1+Ws2kATBhTB7m8QhOcNhOa690WH5xUxgR2QzuHsE/0yI7SG2ri2kiB
+         jW1FJDYyC/HaiSfgo9+3lFalu2zvHh4rKLLesBkSYIjAyYAiWshIQxarI/p8PVMkHnmj
+         uf8VP5+IHyvOqe+XiGUUcOTd5Fe+AAFlAR12vygInKLPMyqcJVn8i7fV029IqVYAu8QH
+         EhMnJNRjIozHKbgSckuDZTNgP3II1UW9MVFX9AAmq74UeCjuyhaNtswJwkV6+OQjHftL
+         g4NA==
+X-Forwarded-Encrypted: i=1; AFNElJ+4lRt5KhCcOAozT6yNS5WfLXkKWfH+jFy+B7qo/ya81k8/KnxyCX/0bJWeucHA/VI0GXDvEpBkO+Faawp+yg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyzh83Shg7nM6rmtf4z6w2BfBKhTRyzjnhIKIhPSgzAXoCPAXnA
+	+WX1irS8vbE4XNzXOpmu1atn9rroScWbER72w2rOFtKQwtUPDJ3QioNbTZbkBPdm4hN3XILNIYO
+	j0AW8
+X-Gm-Gg: AeBDiev+4Z171GTWc9YcydWKfQIa8DqX2B/evrzEEOAmIoFybZBHR8aDIHVB1PJ25XQ
+	6ULj4dQ1BCpCF/YONWT8wXaEmW3WiyhYfvZlyRUdysislp7RYXH3H5AdiBtJ+gIZbNx7X91+MGo
+	CXgHubFLhwrIWXjKKeeK6C2wCu4AS7cX14hOBuAbJmsncz32itRVMm3JkMaFTcLORtcFyuE6fdT
+	i4ceW4MFmLAtzYvEVSFybBmb3o1bY50XwrjMygw59i9jULgLJ9RNGXRt92qVR16vXmTf1aHhtWn
+	SFW0gPF0OjSP+YgBfFhAd9xgzJDFAlAZc9H/DkjOpYuoESDyuZRKusXCgvPKpSPU4olF82HPRfM
+	xHxidLSERKP4BovdAZ297wQ5Hwj9IoRb3T10pYCPBABxVp60rTIr4MfQi707jCgVC1wcdQECF6G
+	7FY/awT/18cdLLyYXQIekBMLHok1MXDJktZPNY+Ljs5nUKpWNen+B4IeAZkk3u/iFe7dyUEzUkd
+	bPzt1JgwVtCnygFKCBQP3Phna5DPN9vVx9GGZb74w==
+X-Received: by 2002:a05:6a00:b86:b0:82f:6e9:d1c3 with SMTP id d2e1a72fcca58-834fdbe66c0mr1875701b3a.29.1777525028408;
+        Wed, 29 Apr 2026 21:57:08 -0700 (PDT)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed80df96sm3595073b3a.54.2026.04.29.21.56.58
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed80df96sm3595073b3a.54.2026.04.29.21.57.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 21:57:01 -0700 (PDT)
+        Wed, 29 Apr 2026 21:57:07 -0700 (PDT)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
@@ -85,9 +86,9 @@ To: johannes@sipsolutions.net,
 Cc: ayman.grais@morsemicro.com,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless-next v2 05/31] wifi: mm81x: add core.c
-Date: Thu, 30 Apr 2026 14:55:31 +1000
-Message-ID: <20260430045615.334669-6-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next v2 06/31] wifi: mm81x: add core.h
+Date: Thu, 30 Apr 2026 14:55:32 +1000
+Message-ID: <20260430045615.334669-7-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
 References: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
@@ -98,7 +99,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 85DE449D6E2
+X-Rspamd-Queue-Id: C931F49D709
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.06 / 15.00];
@@ -115,7 +116,7 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35652-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35653-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -135,162 +136,494 @@ information)
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- drivers/net/wireless/morsemicro/mm81x/core.c | 146 +++++++++++++++++++
- 1 file changed, 146 insertions(+)
- create mode 100644 drivers/net/wireless/morsemicro/mm81x/core.c
+ drivers/net/wireless/morsemicro/mm81x/core.h | 478 +++++++++++++++++++
+ 1 file changed, 478 insertions(+)
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/core.h
 
-diff --git a/drivers/net/wireless/morsemicro/mm81x/core.c b/drivers/net/wireless/morsemicro/mm81x/core.c
+diff --git a/drivers/net/wireless/morsemicro/mm81x/core.h b/drivers/net/wireless/morsemicro/mm81x/core.h
 new file mode 100644
-index 000000000000..b08f52921525
+index 000000000000..698353006865
 --- /dev/null
-+++ b/drivers/net/wireless/morsemicro/mm81x/core.c
-@@ -0,0 +1,146 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/net/wireless/morsemicro/mm81x/core.h
+@@ -0,0 +1,478 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
 + * Copyright (c) 2017-2026 Morse Micro
 + */
-+#include <linux/module.h>
-+#include "core.h"
-+#include "bus.h"
-+#include "hif.h"
-+#include "mac.h"
 +
-+char board_config_file[BCF_SIZE_MAX] = "";
-+module_param_string(bcf, board_config_file, BCF_SIZE_MAX, 0644);
-+MODULE_PARM_DESC(bcf, "BCF filename to load");
++#ifndef _MM81X_CORE_H_
++#define _MM81X_CORE_H_
 +
-+static int mm81x_core_attach_regs(struct mm81x *mors)
++#include <net/mac80211.h>
++#include <linux/workqueue.h>
++#include <linux/interrupt.h>
++#include <linux/kfifo.h>
++#include <linux/types.h>
++#include <linux/version.h>
++#include <linux/crc32.h>
++#include <linux/notifier.h>
++#include <linux/nospec.h>
++#include "yaps.h"
++#include "yaps_hw.h"
++#include "hw.h"
++#include "fw.h"
++#include "rc.h"
++
++#define MM81X_DRIVER_SEMVER_MAJOR 56
++#define MM81X_DRIVER_SEMVER_MINOR 3
++#define MM81X_DRIVER_SEMVER_PATCH 0
++
++#define MM81X_SEMVER_GET_MAJOR(x) (((x) >> 22) & 0x3FF)
++#define MM81X_SEMVER_GET_MINOR(x) (((x) >> 10) & 0xFFF)
++#define MM81X_SEMVER_GET_PATCH(x) ((x) & 0x3FF)
++
++#define DRV_VERSION __stringify(MM81X_VERSION)
++
++#define MM8108_FW_BASE "mm8108"
++
++#define BCF_SIZE_MAX 48
++
++/* Generate a device ID from chip ID, revision, and chip type */
++#define MM81X_DEVICE_ID(chip_id, chip_rev, chip_type) \
++	((chip_id) | ((chip_rev) << 8) | ((chip_type) << 12))
++
++/* Get constituents of the device ID */
++#define MM81X_DEVICE_GET_CHIP_ID(device_id) ((device_id) & 0xff)
++#define MM81X_DEVICE_GET_CHIP_REV(device_id) ((((device_id) >> 8) & 0xf))
++#define MM81X_DEVICE_GET_CHIP_TYPE(device_id) ((((device_id) >> 12) & 0xf))
++
++#define KHZ_TO_HZ(x) ((x) * 1000)
++#define KHZ100_TO_MHZ(x) ((x) / 10)
++#define KHZ100_TO_KHZ(freq) ((freq) * 100)
++#define KHZ100_TO_HZ(freq) ((freq) * 100000)
++
++#define QDBM_TO_MBM(gain) (((gain) * 100) >> 2)
++#define MBM_TO_QDBM(gain) (((gain) << 2) / 100)
++#define QDBM_TO_DBM(gain) ((gain) / 4)
++
++#define BPS_TO_KBPS(x) ((x) / 1000)
++
++#define NSS_IDX_TO_NSS(x) ((x) + 1)
++#define NSS_TO_NSS_IDX(x) ((x) - 1)
++
++#define ROUND_BYTES_TO_WORD(_nbytes) \
++	(((_nbytes) + 3) & ~((typeof(_nbytes))0x03))
++
++static inline u32 mm81x_fle32_to_cpu(u32 v)
 +{
-+	int ret = 0;
++	return le32_to_cpu((__force __le32)v);
++}
 +
-+	mm81x_claim_bus(mors);
-+	ret = mm81x_reg32_read(mors, MM8108_REG_CHIP_ID, &mors->chip_id);
-+	mm81x_release_bus(mors);
++static inline u16 mm81x_fle16_to_cpu(u16 v)
++{
++	return le16_to_cpu((__force __le16)v);
++}
 +
-+	if (ret < 0) {
-+		dev_err(mors->dev, "failed to read chip id %d", ret);
-+		return ret;
-+	}
++struct mm81x_bus_ops;
++struct mm81x_hif_ops;
 +
-+	switch (mors->chip_id) {
-+	case (MM8108B2_ID):
-+		mors->regs = &mm8108_regs;
-+		mors->hif.ops = &mm81x_yaps_ops;
-+		break;
++/* modparam variables */
++extern char board_config_file[];
++
++#define MM81X_CAPS_MAX_FW_VAL (128)
++
++/* Max number of interfaces */
++#define MM81X_MAX_IF (2)
++
++enum mm81x_caps_flags {
++	MM81X_CAPS_FW_START = 0,
++	MM81X_CAPS_2MHZ = MM81X_CAPS_FW_START,
++	MM81X_CAPS_4MHZ,
++	MM81X_CAPS_8MHZ,
++	MM81X_CAPS_16MHZ,
++	MM81X_CAPS_SGI,
++	MM81X_CAPS_S1G_LONG,
++	MM81X_CAPS_TRAVELING_PILOT_ONE_STREAM,
++	MM81X_CAPS_TRAVELING_PILOT_TWO_STREAM,
++	MM81X_CAPS_MU_BEAMFORMEE,
++	MM81X_CAPS_MU_BEAMFORMER,
++	MM81X_CAPS_RD_RESPONDER,
++	MM81X_CAPS_STA_TYPE_SENSOR,
++	MM81X_CAPS_STA_TYPE_NON_SENSOR,
++	MM81X_CAPS_GROUP_AID,
++	MM81X_CAPS_NON_TIM,
++	MM81X_CAPS_TIM_ADE,
++	MM81X_CAPS_BAT,
++	MM81X_CAPS_DYNAMIC_AID,
++	MM81X_CAPS_UPLINK_SYNC,
++	MM81X_CAPS_FLOW_CONTROL,
++	MM81X_CAPS_AMPDU,
++	MM81X_CAPS_AMSDU,
++	MM81X_CAPS_1MHZ_CONTROL_RESPONSE_PREAMBLE,
++	MM81X_CAPS_PAGE_SLICING,
++	MM81X_CAPS_RAW,
++	MM81X_CAPS_MCS8,
++	MM81X_CAPS_MCS9,
++	MM81X_CAPS_ASYMMETRIC_BA_SUPPORT,
++	MM81X_CAPS_DAC,
++	MM81X_CAPS_CAC,
++	MM81X_CAPS_TXOP_SHARING_IMPLICIT_ACK,
++	MM81X_CAPS_NDP_PSPOLL,
++	MM81X_CAPS_FRAGMENT_BA,
++	MM81X_CAPS_OBSS_MITIGATION,
++	MM81X_CAPS_TMP_PS_MODE_SWITCH,
++	MM81X_CAPS_SECTOR_TRAINING,
++	MM81X_CAPS_UNSOLICIT_DYNAMIC_AID,
++	MM81X_CAPS_NDP_BEAMFORMING_REPORT,
++	MM81X_CAPS_MCS_NEGOTIATION,
++	MM81X_CAPS_DUPLICATE_1MHZ,
++	MM81X_CAPS_TACK_AS_PSPOLL,
++	MM81X_CAPS_PV1,
++	MM81X_CAPS_TWT_RESPONDER,
++	MM81X_CAPS_TWT_REQUESTER,
++	MM81X_CAPS_BDT,
++	MM81X_CAPS_TWT_GROUPING,
++	MM81X_CAPS_LINK_ADAPTATION_WO_NDP_CMAC,
++	MM81X_CAPS_LONG_MPDU,
++	MM81X_CAPS_TXOP_SECTORIZATION,
++	MM81X_CAPS_GROUP_SECTORIZATION,
++	MM81X_CAPS_HTC_VHT,
++	MM81X_CAPS_HTC_VHT_MFB,
++	MM81X_CAPS_HTC_VHT_MRQ,
++	MM81X_CAPS_2SS,
++	MM81X_CAPS_3SS,
++	MM81X_CAPS_4SS,
++	MM81X_CAPS_SU_BEAMFORMEE,
++	MM81X_CAPS_SU_BEAMFORMER,
++	MM81X_CAPS_RX_STBC,
++	MM81X_CAPS_TX_STBC,
++	MM81X_CAPS_RX_LDPC,
++	MM81X_CAPS_HW_FRAGMENT,
++
++	MM81X_CAPS_FW_END = MM81X_CAPS_MAX_FW_VAL,
++	MM81X_CAPS_LAST = MM81X_CAPS_FW_END,
++};
++
++struct mm81x_fw_caps {
++	u32 flags[FW_CAPABILITIES_FLAGS_WIDTH];
++	u8 ampdu_mss;
++	u8 beamformee_sts_capability;
++	u8 number_sounding_dimensions;
++	u8 maximum_ampdu_length_exponent;
++	u8 mm81x_mmss_offset;
++};
++
++#define MM81X_FW_SUPP(MM81X_CAPS, CAPABILITY) \
++	mm81x_caps_supported(MM81X_CAPS, MM81X_CAPS_##CAPABILITY)
++
++static inline bool mm81x_caps_supported(struct mm81x_fw_caps *caps,
++					enum mm81x_caps_flags flag)
++{
++	const unsigned long *flags_ptr = (unsigned long *)caps->flags;
++
++	return test_bit(flag, flags_ptr);
++}
++
++struct mm81x_ps {
++	u32 wakers;
++	bool enable;
++	bool suspended;
++	/* PS state lock */
++	struct mutex lock;
++	struct delayed_work delayed_eval_work;
++};
++
++enum mm81x_page_aci {
++	MM81X_ACI_BE = 0,
++	MM81X_ACI_BK = 1,
++	MM81X_ACI_VI = 2,
++	MM81X_ACI_VO = 3,
++};
++
++enum mm81x_qos_tid_up_index {
++	MM81X_QOS_TID_UP_BK = 1,
++	MM81X_QOS_TID_UP_XX = 2,
++	MM81X_QOS_TID_UP_BE = 0,
++	MM81X_QOS_TID_UP_EE = 3,
++	MM81X_QOS_TID_UP_CL = 4,
++	MM81X_QOS_TID_UP_VI = 5,
++	MM81X_QOS_TID_UP_VO = 6,
++	MM81X_QOS_TID_UP_NC = 7,
++
++	MM81X_QOS_TID_UP_LOWEST = MM81X_QOS_TID_UP_BK,
++	MM81X_QOS_TID_UP_HIGHEST = MM81X_QOS_TID_UP_NC
++};
++
++struct mm81x_sw_version {
++	u8 major;
++	u8 minor;
++	u8 patch;
++};
++
++struct mm81x_sta {
++	const struct ieee80211_vif *vif;
++	u8 addr[ETH_ALEN];
++	enum ieee80211_sta_state state;
++	bool tid_tx[IEEE80211_NUM_TIDS];
++	bool tid_start_tx[IEEE80211_NUM_TIDS];
++	u8 tid_params[IEEE80211_NUM_TIDS];
++	int max_bw_mhz;
++	struct mm81x_rc_sta rc;
++	struct mmrc_rate last_sta_tx_rate;
++	s16 avg_rssi;
++	bool tx_ps_filter_en;
++};
++
++struct mm81x_vif {
++	struct mm81x *mors;
++	u16 id;
++
++	union {
++		struct {
++			bool is_assoc;
++		} sta;
++		struct {
++			u32 num_stas;
++			struct tasklet_struct beacon_tasklet;
++			bool beaconing_enabled;
++		} ap;
++	} u;
++};
++
++struct mm81x_stale_tx_status {
++	/* Stale Tx lock */
++	spinlock_t lock;
++	struct timer_list timer;
++};
++
++struct mcast_filter {
++	u8 count;
++	/*
++	 * Integer representation of the last four bytes of a multicast MAC
++	 * address. The first two bytes are always 0x0100 (IPv4) or 0x3333
++	 * (IPv6).
++	 */
++	__le32 addr_list[];
++};
++
++enum mm81x_hw_scan_op {
++	MM81X_HW_SCAN_OP_START,
++	MM81X_HW_SCAN_OP_STOP,
++};
++
++struct mm81x_hw_scan_params {
++	struct ieee80211_hw *hw;
++
++	/* vif which initiated the scan */
++	struct ieee80211_vif *vif;
++	bool has_directed_ssid;
++	u32 dwell_time_ms;
++	u32 dwell_on_home_ms;
++	enum mm81x_hw_scan_op operation;
++	bool store;
++	struct sk_buff *probe_req;
++	u16 num_chans;
++	u16 allocated_chans;
++
++	struct {
++		struct ieee80211_channel *channel;
++		/* Index into @ref powers_qdbm for the power of this channel */
++		u8 power_idx;
++	} *channels;
++
++	s32 *powers_qdbm;
++	u8 n_powers;
++	bool use_1mhz_probes;
++};
++
++enum mm81x_hw_scan_state {
++	HW_SCAN_STATE_IDLE,
++	HW_SCAN_STATE_RUNNING,
++	HW_SCAN_STATE_ABORTING,
++};
++
++struct mm81x_hw_scan {
++	enum mm81x_hw_scan_state state;
++	struct completion scan_done;
++	struct mm81x_hw_scan_params *params;
++	struct delayed_work timeout;
++	u32 home_dwell_ms;
++};
++
++enum mm81x_hif_event_flags {
++	MM81X_HIF_EVT_RX_PEND,
++	MM81X_HIF_EVT_PAGE_RETURN_PEND,
++	MM81X_HIF_EVT_TX_COMMAND_PEND,
++	MM81X_HIF_EVT_TX_BEACON_PEND,
++	MM81X_HIF_EVT_TX_MGMT_PEND,
++	MM81X_HIF_EVT_TX_DATA_PEND,
++	MM81X_HIF_EVT_TX_PACKET_FREED_UP_PEND,
++	MM81X_HIF_EVT_DATA_TRAFFIC_PAUSE_PEND,
++	MM81X_HIF_EVT_DATA_TRAFFIC_RESUME_PEND,
++	MM81X_HIF_EVT_UPDATE_HW_CLOCK_REFERENCE,
++};
++
++enum mm81x_state_flags {
++	MM81X_STATE_CHIP_UNRESPONSIVE,
++	MM81X_STATE_DATA_QS_STOPPED,
++	MM81X_STATE_DATA_TX_STOPPED,
++	MM81X_STATE_REGDOM_SET_BY_USER,
++	MM81X_STATE_REGDOM_SET_BY_OTP,
++	MM81X_STATE_RELOAD_FW_AFTER_START,
++	MM81X_STATE_HOST_TO_CHIP_TX_BLOCKED,
++	MM81X_STATE_HOST_TO_CHIP_CMD_BLOCKED,
++};
++
++#define MM81X_COUNTRY_LEN (3)
++#define INVALID_VIF_INDEX 0xFF
++
++struct mm81x {
++	u32 chip_id;
++	u32 host_table_ptr;
++
++	/* Refer to @enum mm81x_bus_type */
++	u32 bus_type;
++	u32 bcf_address;
++
++	/*
++	 * Parsed from the release tag, which should be in the format
++	 * 'rel_<major>_<minor>_<patch>'. If the tag is not in this format
++	 * then corresponding version field will be 0.
++	 */
++	struct mm81x_sw_version sw_ver;
++	u8 macaddr[ETH_ALEN];
++	u8 country[MM81X_COUNTRY_LEN];
++
++	/* Mask of type @enum host_table_firmware_flags */
++	u32 firmware_flags;
++	struct mm81x_fw_caps fw_caps;
++	bool started;
++	bool chip_was_reset;
++	struct wiphy *wiphy;
++	struct mm81x_hw_scan hw_scan;
++	struct ieee80211_hw *hw;
++	struct device *dev;
++
++	struct ieee80211_vif __rcu *vifs[MM81X_MAX_IF];
++
++	/* @mm81x_state_flags */
++	unsigned long state_flags;
++
++	u16 cmd_seq;
++	struct completion *cmd_comp;
++	/* Serialises commands */
++	struct mutex cmd_lock;
++
++	/* Serialises command completion */
++	struct mutex cmd_wait;
++
++	const struct mm81x_regs *regs;
++
++	struct {
++		union {
++			struct mm81x_yaps yaps;
++		} u;
++		const struct mm81x_hif_ops *ops;
++		/* See @enum mm81x_hif_event_flags for values */
++		unsigned long event_flags;
++		bool validate_skb_checksum;
++	} hif;
++
++	struct workqueue_struct *chip_wq;
++	struct work_struct hif_work;
++	struct work_struct usb_irq_work;
++	struct mm81x_stale_tx_status stale_status;
++	bool config_ps;
++	struct mm81x_ps ps;
++
++	/* Tx power in mBm received from the FW before association */
++	s32 tx_power_mbm;
++	s32 tx_max_power_mbm;
++
++	const struct mm81x_bus_ops *bus_ops;
++	struct mm81x_rc mrc;
++	int rts_threshold;
++	struct workqueue_struct *net_wq;
++	struct work_struct tx_stale_work;
++
++	struct cfg80211_chan_def chandef;
++	struct mcast_filter *mcast_filter;
++	atomic_t num_bcn_vifs;
++	unsigned long beacon_irqs_enabled;
++	u8 drv_priv[] __aligned(sizeof(void *));
++};
++
++/* Map from mac80211 queue to Morse ACI value for page metadata */
++static inline u8 map_mac80211q_2_mm81x_aci(u16 mac80211queue)
++{
++	switch (mac80211queue) {
++	case IEEE80211_AC_VO:
++		return MM81X_ACI_VO;
++	case IEEE80211_AC_VI:
++		return MM81X_ACI_VI;
++	case IEEE80211_AC_BK:
++		return MM81X_ACI_BK;
 +	default:
-+		return -ENODEV;
++		return MM81X_ACI_BE;
 +	}
-+
-+	return ret;
 +}
 +
-+static char *mm81x_core_get_revision_string(u32 chip_id)
++static inline enum mm81x_page_aci
++dot11_tid_to_ac(enum mm81x_qos_tid_up_index tid)
 +{
-+	u8 chip_rev = MM81X_DEVICE_GET_CHIP_REV(chip_id);
-+
-+	switch (chip_rev) {
-+	case MM8108B2_REV:
-+		return MM8108B2_REV_STRING;
++	switch (tid) {
++	case MM81X_QOS_TID_UP_BK:
++	case MM81X_QOS_TID_UP_XX:
++		return MM81X_ACI_BK;
++	case MM81X_QOS_TID_UP_CL:
++	case MM81X_QOS_TID_UP_VI:
++		return MM81X_ACI_VI;
++	case MM81X_QOS_TID_UP_VO:
++	case MM81X_QOS_TID_UP_NC:
++		return MM81X_ACI_VO;
++	case MM81X_QOS_TID_UP_BE:
++	case MM81X_QOS_TID_UP_EE:
 +	default:
-+		return "??";
++		return MM81X_ACI_BE;
 +	}
 +}
 +
-+static void mm81x_core_init_mac_addr(struct mm81x *mors)
++static inline bool mm81x_is_data_tx_allowed(struct mm81x *mors)
 +{
-+	int ret = mm81x_hw_otp_get_mac_addr(mors);
-+
-+	if (ret || !is_valid_ether_addr(mors->macaddr))
-+		eth_random_addr(mors->macaddr);
++	return !test_bit(MM81X_STATE_DATA_TX_STOPPED, &mors->state_flags) &&
++	       !test_bit(MM81X_HIF_EVT_DATA_TRAFFIC_PAUSE_PEND,
++			 &mors->hif.event_flags);
 +}
 +
-+char *mm81x_core_get_fw_path(u32 chip_id)
++static inline struct ieee80211_vif *
++mm81x_vif_to_ieee80211_vif(struct mm81x_vif *mors_vif)
 +{
-+	return kasprintf(GFP_KERNEL,
-+			 MM81X_FW_DIR "/" MM8108_FW_BASE
-+				      "%s" FW_ROM_LINKED_STRING MM81X_FW_EXT,
-+			 mm81x_core_get_revision_string(chip_id));
++	return container_of((void *)mors_vif, struct ieee80211_vif, drv_priv);
 +}
-+EXPORT_SYMBOL_GPL(mm81x_core_get_fw_path);
 +
-+struct mm81x *mm81x_core_alloc(size_t priv_size, struct device *dev)
++static inline struct mm81x_vif *
++ieee80211_vif_to_mors_vif(struct ieee80211_vif *vif)
 +{
-+	return mm81x_mac_alloc(priv_size, dev);
++	return (struct mm81x_vif *)vif->drv_priv;
 +}
-+EXPORT_SYMBOL_GPL(mm81x_core_alloc);
 +
-+int mm81x_core_init(struct mm81x *mors)
++static inline struct mm81x *mm81x_vif_to_mors(struct mm81x_vif *mors_vif)
 +{
-+	int ret;
-+
-+	set_bit(MM81X_STATE_CHIP_UNRESPONSIVE, &mors->state_flags);
-+	set_bit(MM81X_STATE_RELOAD_FW_AFTER_START, &mors->state_flags);
-+
-+	mm81x_core_init_mac_addr(mors);
-+
-+	ret = mm81x_core_attach_regs(mors);
-+	if (ret)
-+		return ret;
-+
-+	mors->chip_wq = create_singlethread_workqueue("chip_wq");
-+	if (!mors->chip_wq)
-+		return -ENOMEM;
-+
-+	mors->net_wq = create_singlethread_workqueue("net_wq");
-+	if (!mors->net_wq) {
-+		ret = -ENOMEM;
-+		goto err_chip_wq;
-+	}
-+
-+	ret = mm81x_hif_init(mors);
-+	if (ret)
-+		goto err_wqs;
-+
-+	return 0;
-+
-+err_wqs:
-+	flush_workqueue(mors->net_wq);
-+	destroy_workqueue(mors->net_wq);
-+
-+err_chip_wq:
-+	flush_workqueue(mors->chip_wq);
-+	destroy_workqueue(mors->chip_wq);
-+
-+	return ret;
++	return mors_vif->mors;
 +}
-+EXPORT_SYMBOL_GPL(mm81x_core_init);
 +
-+int mm81x_core_register(struct mm81x *mors)
++static inline u32 mm81x_generate_cssid(const u8 *ssid, u8 len)
 +{
-+	return mm81x_mac_register(mors);
++	return ~crc32(~0, ssid, len);
 +}
-+EXPORT_SYMBOL_GPL(mm81x_core_register);
 +
-+void mm81x_core_unregister(struct mm81x *mors)
-+{
-+	mm81x_mac_unregister(mors);
-+}
-+EXPORT_SYMBOL_GPL(mm81x_core_unregister);
++int mm81x_beacon_init(struct mm81x_vif *mors_vif);
++void mm81x_beacon_finish(struct mm81x_vif *mors_vif);
++void mm81x_beacon_irq_handle(struct mm81x *mors, u32 status);
++char *mm81x_core_get_fw_path(u32 chip_id);
++struct mm81x *mm81x_core_alloc(size_t priv_size, struct device *dev);
++int mm81x_core_init(struct mm81x *mors);
++int mm81x_core_register(struct mm81x *mors);
++void mm81x_core_unregister(struct mm81x *mors);
++void mm81x_core_deinit(struct mm81x *mors);
++void mm81x_core_free(struct mm81x *mors);
 +
-+void mm81x_core_deinit(struct mm81x *mors)
-+{
-+	mm81x_hif_finish(mors);
-+	flush_workqueue(mors->net_wq);
-+	destroy_workqueue(mors->net_wq);
-+	flush_workqueue(mors->chip_wq);
-+	destroy_workqueue(mors->chip_wq);
-+}
-+EXPORT_SYMBOL_GPL(mm81x_core_deinit);
-+
-+void mm81x_core_free(struct mm81x *mors)
-+{
-+	mm81x_mac_free(mors);
-+}
-+EXPORT_SYMBOL_GPL(mm81x_core_free);
-+
-+MODULE_AUTHOR("Morse Micro");
-+MODULE_DESCRIPTION("Driver support for Morse Micro MM81X core");
-+MODULE_LICENSE("Dual BSD/GPL");
++#endif /* !_MM81X_MM81X_H_ */
 -- 
 2.43.0
 
