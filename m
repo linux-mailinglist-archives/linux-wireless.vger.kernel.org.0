@@ -1,82 +1,83 @@
-Return-Path: <linux-wireless+bounces-35671-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35672-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNZOJhbj8mnyvAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35671-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 07:05:26 +0200
+	id wJDiDVXk8ml8vQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35672-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 07:10:45 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9E849D805
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 07:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73EED49D8AD
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 07:10:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA2B030E1807
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 04:59:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4124830E7B2E
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 05:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415DF37AA82;
-	Thu, 30 Apr 2026 04:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DF6371898;
+	Thu, 30 Apr 2026 04:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="dvZ+FUlC"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="ptKj5orJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F58369992
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 04:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C997371076
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 04:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777525123; cv=none; b=o0airHti6vpuz6/7NzCdGVfgwejaEtf78WWeWEB67Jq1DJKnL44wwVqw4jeiIjwYdKak1+ZJS1rz6JHVJVm67UObEB5cUjAi4bzzb3WDICEHm+zISZwZeNHTtz49JrLP8CXCOSpnO/c9q+yBRWTqmJtUO530w9mEV1nSYgFOUYc=
+	t=1777525129; cv=none; b=hzkVNxk55t45FwdgoslPedJn3iWaUrldg27O7aBnNggIBuC2Qgi8sHfvKwcXZ8A4EaE6kb0X19+ONQcm4/ESCLWyLNlx+Kwz04qo4zFsnXP9YtKG8swudQNRmDAe3DZ+GmGw1IQ345CW3PT0064WWTOFGsIiGT2R1npfYW7v7js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777525123; c=relaxed/simple;
-	bh=H4S4Vyzaexfx1ebghr+0pinXB2Moyt67SAIpt7j0AWc=;
+	s=arc-20240116; t=1777525129; c=relaxed/simple;
+	bh=3HIbr2FZwtuoUQy6/cG9+rUc30jG/qba4ZESgf+Cx40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ILu0JRT05DY0WIu8nV07ayLXNifMTm0XvFnjICb7rlhP2WfNN20VjEpVipy3KgvS04RXG9HlYRj6k2z5y3adj+5PIXYtJx6/4cnJUzuuHsol+PW7gRh+hDFoFpIOHmX898NQZTYoFX6vMVt7Tk5oVhC7OAB2ibIHPAB6hrgFfI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=dvZ+FUlC; arc=none smtp.client-ip=209.85.210.179
+	 MIME-Version; b=bj3Msyo2FcJcDNxdznItzp1b78NiMMvKKOInVxKiifRzeoMLZNDuB80pIO2LTLFbnFwKd3Qg42ETQIdfl7qL3XAIjCRCzE9zG8FjCIpotwNj1iKkn0WFKVXJ6dFQVBIS0gY1NIyHdSuxeobxLAd1jXJg+cZKuPikgz0DN9qoQgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=ptKj5orJ; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-82735a41920so197536b3a.2
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:58:41 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82f8bf96b46so223322b3a.2
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:58:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1777525121; x=1778129921; darn=vger.kernel.org;
+        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1777525127; x=1778129927; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oJnpO92li0kE+uWjGB7SHe7DGm1rsXTxY86XjNmpcH8=;
-        b=dvZ+FUlC+yevRTjqYxQaVDkgkZztiuH8qwjDpxJwMwKFDjPboOgEYJ8DYSyq+xGeKD
-         fQ0s1tJwCs1JAFiiV3t941FzIktdMUgGp8h5re6CWYGq6NWSc9pZSmiywtjafKM8qxld
-         XWbEnA09sMmgDLhpgyfsxK+LXVEtXxiNcwGbDkjRJlWHoXQdmPKnKtX3K3zaOa/f9gxI
-         r8y/4DzAnhyh5MI2kgqZCk2TI+bn/dANBpD2QRbl6tJI+xUQcBdPbXlyjFOBfi1HO5l6
-         T6KYYp4TS5b1VaEJhx+GYfm+y2e3jXSkkcI2QKNnPZEHh1jAf08P0JdL3ppndVX43LOK
-         ySGQ==
+        bh=Qca/cT4Mp+/nhWfMdCazLL9/fBqDyqB/YN1LaBdSbBM=;
+        b=ptKj5orJH1sIr22Bu0l2ToCMvI6tTnKgELyJ+Bx2SsuaqydNNMa7k1SZ/qQw2pan3q
+         YHz+tYpXMi44jKybOBEpiemR+yIVjmMlG35mR2tfH6REKULz4O/AFloM+QRwPsf5g2Rn
+         ThEYXZoBS6Wp/939iKn2hrf1Ir1W4vQ+3cksjefcgyb70R7r6Bh3MK9QVastvNeG0b7x
+         WCH3I4SFoUGe4VO3wX6fS2kY4YbYDBceTjYvgm5ZFF4CLvvXCvCDSaRatYRxtTjMFHjT
+         gFsFPNaxeO9yiYT9idBcx/2YAmZDNMRnc4G6x45RJjQAweTs2pQOgw+88VBqALbmLQOY
+         nKkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777525121; x=1778129921;
+        d=1e100.net; s=20251104; t=1777525127; x=1778129927;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=oJnpO92li0kE+uWjGB7SHe7DGm1rsXTxY86XjNmpcH8=;
-        b=H2A7j1h8iSdqw0a2fVdTG3qzKuQZJ5XOyvhsQTFEVWNFxIUeGFofoXnSMUNCNpdehR
-         lASN0uMMx3Fq/gRwkTtmLmzgdrAwc7ze6K20H8xzy89ISKXAxl080BPOGoVlU9/aApvg
-         3HzDcvVtaYdSO/EDzuhrKEq/Hyi8zKrrbJmbFaxcpPKAR1wRuTGaJhdxfOFofoQKDpgz
-         DnhJgdFnZoXefY2c+vc3rvvU05mI6U3nmyezfVUQbcshGVzRz/0lELDdgmx+iEwTFYus
-         XxinIIocL7ZwezDFdsMuP4Dqcqe8rX8PE89Z4CiJkb1hAta3xmo66qobWeepDkFx5lOY
-         9UHw==
-X-Forwarded-Encrypted: i=1; AFNElJ9Rpb1LXqaj+Jp5NM84Ywzp17UVCwI1CkNdLYCFZSEqLMkYnssWo30rK1zriILTayq3YGgaKNfSGLwa7ztEwQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywo48z0i2CEGT1ZhEN2HF2PY9lY1lUxGm/D8mufdKNfi6wcXWVV
-	kehJWvJc4bZc9c+BEhm6btRBZlnpzEDnXf9alS8sdgigDftzZ18XGxDcIUF1gBLJBhY=
-X-Gm-Gg: AeBDievBhRHXPHMOiIFo+2X9bGbGmIOdqjDCM3QNGpbPCtK/xoGcWlmTWbIPuNBoyJU
-	8RJ58dZLaK8KGz0EiGlSadWvJWcSqtCqQO8I7rRUCXvNc+N/UhVN+obVQy6A8j/f8ex6Tp+UW1T
-	E4EJCJqtCEuU1EBYEf325M0oZBSgFPKaG3ORgJU4AsWHR2NxDu0SzmtM3/wmD1IuQd5AHoXfyeR
-	pl1TdSMqGYGo8WgIvM+sgvn1KnejJ0J4PqodbQDlinF9Q5URQc7NduR1Dll1lbyMJGZ0o0VtVhR
-	5eTq4YvjOENRHDBsOug0OG0DNc/JTeEyXI1J68uGBJgYq4AvIurGHMKRrMrSCKa5V80TJwitAbL
-	GSGeZvv07g2SGRVW8GAxp8emGRn9hKs186j6Tmtxrd9IDLmsPJYUMdChFOET3C2O3cT4fSVRsn+
-	3o6O+EteV0QPbfG8fZRhx7fH2YoZFqY/Hx371wVj2nWY2/Jc68kbnyYe5gRUDVR/ahKOoijotVR
-	sHYFiIpif6fI/XK+mWmBhBFt59D8VOvCc8CW17i4A==
-X-Received: by 2002:a05:6a00:27a4:b0:81f:3fbd:ccf with SMTP id d2e1a72fcca58-834fdc5bfbemr1720333b3a.23.1777525121101;
-        Wed, 29 Apr 2026 21:58:41 -0700 (PDT)
+        bh=Qca/cT4Mp+/nhWfMdCazLL9/fBqDyqB/YN1LaBdSbBM=;
+        b=grfzxUaLD1EVy4RW3hH9U9f/g+bAo2LgzJIq0WhIo7EToe0GGeC79CsKsEj7DmX7je
+         pMnURuaQkgzUU7aFhkNdxyQteiNRU27LBWIRuS1w74y3ukJw4aMD1ffSYB1Io620CeCP
+         qRq512ILbdDlyH2+KHRJKdylzKjLZ0ET0rvmP44kP41qKvQg8MzOfcPzv3gJR9mHjemT
+         PM64rWOxkk8qaGkkvqgivsb/LHJrm/9GDjcQN2IdS/qHIrvewE+o7oAbGpR1b0YrS0nH
+         3AYnkBvcVrqwPLlPrh6YTlvBmPPMoQgSXf/8Ju89nu+MwQcxZOEq5IJW609L3BGOeo+R
+         YCLw==
+X-Forwarded-Encrypted: i=1; AFNElJ+/eKDlgR1XrJeP2KagpXKgeNouSQf6VMfT/4PCb39+b6aULu3NTNAZ366HC1F1Xwa/WR8x33t2fdoAf68xLA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywya6mwnq1H6E2yvQquowyL6kLrfClhWoRp1e7+sTotxLs8iyBv
+	XfvHR6sJq8uN3H2KiKWnXG3Arm9qPSAWkPNI6OUMj0o/nsF7IaS/nHj7V8+Qm55zFD8koRAHH+8
+	JYxI9
+X-Gm-Gg: AeBDietLWCMjMWGWJMCwr6dLA58DHZCTJg1UjV8Cyp/oOTmT/zrE5A02aiXB5hDMPbF
+	DV15ibAnSnbKCh2fm10/V2w8wBuWyVhtR0d8wtXpKd4zWroy/S/e8pnhSHFvLl4my4H8a3s1kYL
+	F0Yb6LHYxT+5ejB4GrU7RSLknrvdMNJFgYookg8guz+s1Rje2FI7BCLCPcXDcgbtHcqkWLioU8g
+	k0fDq2VkgGgouQlD+XcyMnALvtSc0Ddro2D1xsjJYEraGhMaG++fOhXUUmJblp3TH9qkjL3UN4h
+	z+z3/RzKj/KYdTDnlutl/UOoFADW4WX8dXiBLAqsEPjNvGNRyGELHKx8njHXCt1kOY3pApKEGu1
+	9mbKELiWH9AtjNAvzLFWjqKKzVMvyeENVmlsCcNG2SiUFpisRiSbaW3jiNC8FezbD2bbwCdmm3I
+	ItCF6clPhVpEh1HK7tEREMq9wIG0jI3vVCQQPiqg4Y3R9w48rIhpVnKJVbxoOFhE4nwjghDRSrL
+	Rj4Tm7/ZsfHHr5Z9x9z75lmdf/l2M3DpAxD+l2Epg==
+X-Received: by 2002:a05:6a00:198f:b0:82d:24f:2516 with SMTP id d2e1a72fcca58-834fdb458aemr1739040b3a.11.1777525126809;
+        Wed, 29 Apr 2026 21:58:46 -0700 (PDT)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed80df96sm3595073b3a.54.2026.04.29.21.58.37
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed80df96sm3595073b3a.54.2026.04.29.21.58.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 21:58:40 -0700 (PDT)
+        Wed, 29 Apr 2026 21:58:46 -0700 (PDT)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
@@ -85,9 +86,9 @@ To: johannes@sipsolutions.net,
 Cc: ayman.grais@morsemicro.com,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless-next v2 24/31] wifi: mm81x: add skbq.h
-Date: Thu, 30 Apr 2026 14:55:50 +1000
-Message-ID: <20260430045615.334669-25-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next v2 25/31] wifi: mm81x: add usb.c
+Date: Thu, 30 Apr 2026 14:55:51 +1000
+Message-ID: <20260430045615.334669-26-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
 References: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
@@ -98,7 +99,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EE9E849D805
+X-Rspamd-Queue-Id: 73EED49D8AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.06 / 15.00];
@@ -115,7 +116,7 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35671-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35672-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -127,7 +128,7 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,morsemicro-com.20251104.gappssmtp.com:dkim,morsemicro.com:mid,morsemicro.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[morsemicro.com:mid,morsemicro.com:email,morsemicro-com.20251104.gappssmtp.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
 (Patches split per file for review, will be a single commit alongside
 SDIO ids once review is complete. See cover letter for more
@@ -135,234 +136,954 @@ information)
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- drivers/net/wireless/morsemicro/mm81x/skbq.h | 218 +++++++++++++++++++
- 1 file changed, 218 insertions(+)
- create mode 100644 drivers/net/wireless/morsemicro/mm81x/skbq.h
+ drivers/net/wireless/morsemicro/mm81x/usb.c | 938 ++++++++++++++++++++
+ 1 file changed, 938 insertions(+)
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/usb.c
 
-diff --git a/drivers/net/wireless/morsemicro/mm81x/skbq.h b/drivers/net/wireless/morsemicro/mm81x/skbq.h
+diff --git a/drivers/net/wireless/morsemicro/mm81x/usb.c b/drivers/net/wireless/morsemicro/mm81x/usb.c
 new file mode 100644
-index 000000000000..9930493141cf
+index 000000000000..79958462c814
 --- /dev/null
-+++ b/drivers/net/wireless/morsemicro/mm81x/skbq.h
-@@ -0,0 +1,218 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/drivers/net/wireless/morsemicro/mm81x/usb.c
+@@ -0,0 +1,938 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright (c) 2017-2026 Morse Micro
 + */
++#include <linux/jiffies.h>
++#include <linux/module.h>
++#include <linux/usb.h>
++#include "hif.h"
++#include "bus.h"
++#include "mac.h"
++#include "core.h"
 +
-+#ifndef _MM81X_SKBQ_H_
-+#define _MM81X_SKBQ_H_
-+
-+#include <linux/skbuff.h>
-+#include <linux/workqueue.h>
-+#include "rate_code.h"
-+
-+/* Sync value of skb header to indicate a valid skb */
-+#define MM81X_SKB_HEADER_SYNC (0xAA)
-+/* Sync value indicating that the chip owns this skb */
-+#define MM81X_SKB_HEADER_CHIP_OWNED_SYNC (0xBB)
-+
-+enum mm81x_tx_status_and_conf_flags {
-+	MM81X_TX_STATUS_FLAGS_NO_ACK = BIT(0),
-+	MM81X_TX_STATUS_FLAGS_NO_REPORT = BIT(1),
-+	MM81X_TX_CONF_FLAGS_CTL_AMPDU = BIT(2),
-+	MM81X_TX_CONF_FLAGS_HW_ENCRYPT = BIT(3),
-+	MM81X_TX_CONF_FLAGS_VIF_ID = (BIT(4) | BIT(5) | BIT(6) | BIT(7) |
-+				      BIT(8) | BIT(9) | BIT(10) | BIT(11)),
-+	MM81X_TX_CONF_FLAGS_KEY_IDX = (BIT(12) | BIT(13) | BIT(14)),
-+	MM81X_TX_STATUS_FLAGS_PS_FILTERED = (BIT(15)),
-+	MM81X_TX_CONF_IGNORE_TWT = (BIT(16)),
-+	MM81X_TX_STATUS_PAGE_INVALID = (BIT(17)),
-+	MM81X_TX_CONF_NO_PS_BUFFER = (BIT(18)),
-+	MM81X_TX_STATUS_DUTY_CYCLE_CANT_SEND = (BIT(19)),
-+	MM81X_TX_CONF_HAS_PV1_BPN_IN_BODY = (BIT(21)),
-+	MM81X_TX_CONF_FLAGS_SEND_AFTER_DTIM = (BIT(22)),
-+	MM81X_TX_STATUS_WAS_AGGREGATED = (BIT(23)),
-+	MM81X_TX_CONF_FLAGS_FULLMAC_REPORT = BIT(24),
-+	MM81X_TX_CONF_FLAGS_IMMEDIATE_REPORT = (BIT(31))
-+};
-+
-+/* Getter and setter macros for vif id */
-+#define MM81X_TX_CONF_FLAGS_VIF_ID_MASK (0xFF)
-+#define MM81X_TX_CONF_FLAGS_VIF_ID_SET(x) \
-+	(((x) & MM81X_TX_CONF_FLAGS_VIF_ID_MASK) << 4)
-+#define MM81X_TX_CONF_FLAGS_VIF_ID_GET(x) \
-+	(((x) & MM81X_TX_CONF_FLAGS_VIF_ID) >> 4)
-+
-+/* Getter and setter macros for key index */
-+#define MM81X_TX_CONF_FLAGS_KEY_IDX_SET(x) (((x) & 0x07) << 12)
-+#define MM81X_TX_CONF_FLAGS_KEY_IDX_GET(x) \
-+	(((x) & MM81X_TX_CONF_FLAGS_KEY_IDX) >> 12)
-+
-+enum mm81x_rx_status_flags {
-+	MM81X_RX_STATUS_FLAGS_ERROR = BIT(0),
-+	MM81X_RX_STATUS_FLAGS_DECRYPTED = BIT(1),
-+	MM81X_RX_STATUS_FLAGS_FCS_INCLUDED = BIT(2),
-+	MM81X_RX_STATUS_FLAGS_EOF = BIT(3),
-+	MM81X_RX_STATUS_FLAGS_AMPDU = BIT(4),
-+	MM81X_RX_STATUS_FLAGS_NDP = BIT(7),
-+	MM81X_RX_STATUS_FLAGS_UPLINK = BIT(8),
-+	MM81X_RX_STATUS_FLAGS_RI = (BIT(9) | BIT(10)),
-+	MM81X_RX_STATUS_FLAGS_NDP_TYPE = (BIT(11) | BIT(12) | BIT(13)),
-+	MM81X_RX_STATUS_FLAGS_CRC_ERROR = BIT(14),
-+	MM81X_RX_STATUS_FLAGS_VIF_ID = GENMASK(24, 17),
-+};
-+
-+/* Getter and Setter macros for vif id */
-+#define MM81X_RX_STATUS_FLAGS_VIF_ID_MASK (0xFF)
-+#define MM81X_RX_STATUS_FLAGS_VIF_ID_SET(x) \
-+	(((x) & MM81X_RX_STATUS_FLAGS_VIF_ID_MASK) << 17)
-+#define MM81X_RX_STATUS_FLAGS_VIF_ID_GET(x) \
-+	(((x) & MM81X_RX_STATUS_FLAGS_VIF_ID) >> 17)
-+#define MM81X_RX_STATUS_FLAGS_VIF_ID_CLEAR(x) \
-+	((x) & ~(MM81X_RX_STATUS_FLAGS_VIF_ID_MASK << 17))
-+
-+/* Getter macro for guard interval */
-+#define MM81X_RX_STATUS_FLAGS_UPL_IND_GET(x) \
-+	(((x) & MM81X_RX_STATUS_FLAGS_UPLINK) >> 8)
-+
-+/* Getter macro for response indication */
-+#define MM81X_RX_STATUS_FLAGS_RI_GET(x) (((x) & MM81X_RX_STATUS_FLAGS_RI) >> 9)
-+
-+/* Getter macro for NDP type */
-+#define MM81X_RX_STATUS_FLAGS_NDP_TYPE_GET(x) \
-+	(((x) & MM81X_RX_STATUS_FLAGS_NDP_TYPE) >> 11)
-+
-+enum mm81x_skb_channel {
-+	MM81X_SKB_CHAN_DATA = 0x0,
-+	MM81X_SKB_CHAN_NDP_FRAMES = 0x1,
-+	MM81X_SKB_CHAN_DATA_NOACK = 0x2,
-+	MM81X_SKB_CHAN_BEACON = 0x3,
-+	MM81X_SKB_CHAN_MGMT = 0x4,
-+	MM81X_SKB_CHAN_INTERNAL_CRIT_BEACON = 0x80,
-+	MM81X_SKB_CHAN_COMMAND = 0xFE,
-+	MM81X_SKB_CHAN_TX_STATUS = 0xFF
-+};
-+
-+#define MM81X_SKB_MAX_RATES (4)
-+
-+struct mm81x_skb_rate_info {
-+	mm81x_rate_code_t mm81x_ratecode;
-+	u8 count;
-+} __packed;
-+
-+struct mm81x_skb_tx_status {
-+	__le32 flags;
-+	__le32 pkt_id;
-+	u8 tid;
-+	u8 channel;
-+	__le16 ampdu_info;
-+	struct mm81x_skb_rate_info rates[MM81X_SKB_MAX_RATES];
-+} __packed;
-+
-+#define MM81X_TXSTS_AMPDU_INFO_GET_TAG(x) (((x) >> 10) & 0x3F)
-+#define MM81X_TXSTS_AMPDU_INFO_GET_LEN(x) (((x) >> 5) & 0x1F)
-+#define MM81X_TXSTS_AMPDU_INFO_GET_SUC(x) ((x) & 0x1F)
-+
-+struct mm81x_skb_tx_info {
-+	__le32 flags;
-+	__le32 pkt_id;
-+	u8 tid;
-+	u8 tid_params;
-+	u8 mmss_params;
-+	u8 padding[1];
-+	struct mm81x_skb_rate_info rates[MM81X_SKB_MAX_RATES];
-+} __packed;
-+
-+#define TX_INFO_TID_PARAMS_MAX_REORDER_BUF 0x1f
-+#define TX_INFO_TID_PARAMS_AMPDU_ENABLED 0x20
-+#define TX_INFO_TID_PARAMS_AMSDU_SUPPORTED 0x40
-+#define TX_INFO_TID_PARAMS_USE_LEGACY_BA 0x80
-+
-+/* Bitmap for MMSS (Minimum MPDU start spacing) parameters
-+ * +-----------+-----------+
-+ * | Morse     | MMSS set  |
-+ * | MMSS      | by S1G cap|
-+ * | offset    | IE        |
-+ * |-----------|-----------|
-+ * |b7|b6|b5|b4|b3|b2|b1|b0|
++/*
++ * URB timeout in milliseconds. If an URB does not complete within this
++ * time, it will be killed. This timeout needs to account for USB suspendand
++ * resume occurring before the URB can be transferred, and it also needs to
++ * account for transferring USB_MAX_TRANSFER_SIZE bytes over a potentially
++ * slow, congested USB Full Speed link.
 + */
-+#define TX_INFO_MMSS_PARAMS_MMSS_MASK GENMASK(3, 0)
-+#define TX_INFO_MMSS_PARAMS_MMSS_OFFSET_START 4
-+#define TX_INFO_MMSS_PARAMS_MMSS_OFFSET_MASK GENMASK(7, 4)
-+#define TX_INFO_MMSS_PARAMS_SET_MMSS(x) ((x) & TX_INFO_MMSS_PARAMS_MMSS_MASK)
-+#define TX_INFO_MMSS_PARAMS_SET_MMSS_OFFSET(x)            \
-+	(((x) << TX_INFO_MMSS_PARAMS_MMSS_OFFSET_START) & \
-+	 TX_INFO_MMSS_PARAMS_MMSS_OFFSET_MASK)
++#define URB_TIMEOUT_MS 250
 +
-+struct mm81x_skb_rx_status {
-+	__le32 flags;
-+	mm81x_rate_code_t mm81x_ratecode;
-+	__le16 rssi;
-+	__le16 freq_100khz;
-+	u8 bss_color;
-+	s8 noise_dbm;
-+	/** Padding for word alignment */
-+	u8 padding[2];
-+	__le64 rx_timestamp_us;
-+} __packed;
++/* High speed USB 2^(4-1) * 125usec = 1msec */
++#define MM81X_USB_INTERRUPT_INTERVAL 4
 +
-+struct mm81x_skb_hdr {
-+	u8 sync;
-+	u8 channel;
-+	__le16 len;
-+	u8 offset;
-+	u8 checksum_lower;
-+	__le16 checksum_upper;
-+	union {
-+		struct mm81x_skb_tx_info tx_info;
-+		struct mm81x_skb_tx_status tx_status;
-+		struct mm81x_skb_rx_status rx_status;
-+	};
-+} __packed;
++/* Max bytes per USB read/write */
++#define USB_MAX_TRANSFER_SIZE (16 * 1024)
 +
-+#define MM81X_SKBQ_SIZE (4 * 128 * 1024)
++/* INT EP buffer size */
++#define MM81X_EP_INT_BUFFER_SIZE 8
 +
-+struct mm81x;
++/* Morse vendor IDs*/
++#define MM81X_VENDOR_ID 0x325b
++#define MM81X_MM810X_PRODUCT_ID 0x8100
 +
-+struct mm81x_skbq {
-+	struct mm81x *mors;
-+	u32 pkt_seq; /* SKB sequence used in tx_status */
-+	u16 flags;
-+	u32 skbq_size; /* current off loaded size */
-+	spinlock_t lock;
-+	struct sk_buff_head skbq;
-+	struct sk_buff_head pending; /* packets sent pending feedback */
-+	struct work_struct dispatch_work;
++/* Power management runtime auto-suspend delay value in milliseconds */
++#define PM_RUNTIME_AUTOSUSPEND_DELAY_MS 100
++
++enum mm81x_usb_endpoints {
++	MM81X_EP_CMD = 0,
++	MM81X_EP_INT,
++	MM81X_EP_MEM_RD,
++	MM81X_EP_MEM_WR,
++	MM81X_EP_REG_RD,
++	MM81X_EP_REG_WR,
++	MM81X_EP_EP_MAX,
 +};
 +
-+void mm81x_skbq_purge(struct mm81x_skbq *mq, struct sk_buff_head *skbq);
-+void mm81x_skbq_purge_aged(struct mm81x *mors, struct mm81x_skbq *mq);
-+u32 mm81x_skbq_space(struct mm81x_skbq *mq);
-+u32 mm81x_skbq_size(struct mm81x_skbq *mq);
-+int mm81x_skbq_deq_num_skb(struct mm81x_skbq *mq, struct sk_buff_head *skbq,
-+			   int num_skb);
-+struct sk_buff *mm81x_skbq_alloc_skb(struct mm81x_skbq *mq,
-+				     unsigned int length);
-+int mm81x_skbq_skb_tx(struct mm81x_skbq *mq, struct sk_buff **skb,
-+		      struct mm81x_skb_tx_info *tx_info, u8 channel);
-+int mm81x_skbq_put(struct mm81x_skbq *mq, struct sk_buff *skb);
-+void mm81x_skbq_enq(struct mm81x_skbq *mq, struct sk_buff_head *skbq);
-+void mm81x_skbq_enq_prepend(struct mm81x_skbq *mq, struct sk_buff_head *skbq);
-+void mm81x_skbq_tx_complete(struct mm81x_skbq *mq, struct sk_buff_head *skbq);
-+struct sk_buff *mm81x_skbq_tx_pending(struct mm81x_skbq *mq);
-+void mm81x_skbq_init(struct mm81x *mors, struct mm81x_skbq *mq, u16 flags);
-+void mm81x_skbq_finish(struct mm81x_skbq *mq);
-+void mm81x_skbq_pull_hdr_post_tx(struct sk_buff *skb);
-+void mm81x_skbq_mon_dump(struct mm81x *mors, struct seq_file *file);
-+void mm81x_skbq_skb_finish(struct mm81x_skbq *mq, struct sk_buff *skb,
-+			   struct mm81x_skb_tx_status *tx_sts);
-+void mm81x_skbq_tx_flush(struct mm81x_skbq *mq);
-+int mm81x_skbq_check_for_stale_tx(struct mm81x *mors, struct mm81x_skbq *mq);
-+void mm81x_skbq_may_wake_tx_queues(struct mm81x *mors);
-+u32 mm81x_skbq_count_tx_ready(struct mm81x_skbq *mq);
-+u32 mm81x_skbq_count(struct mm81x_skbq *mq);
-+u32 mm81x_skbq_pending_count(struct mm81x_skbq *mq);
-+void mm81x_skbq_data_traffic_pause(struct mm81x *mors);
-+void mm81x_skbq_data_traffic_resume(struct mm81x *mors);
-+bool mm81x_skbq_validate_checksum(u8 *data);
++struct mm81x_usb_endpoint {
++	unsigned char *buffer;
++	struct urb *urb;
++	__u8 addr;
++	int size;
++};
 +
-+#endif /* !_MM81X_SKBQ_H_ */
++enum mm81x_usb_flags { MM81X_USB_FLAG_ATTACHED, MM81X_USB_FLAG_SUSPENDED };
++
++struct mm81x_usb {
++	struct usb_device *udev;
++	struct usb_interface *interface;
++	struct mm81x_usb_endpoint endpoints[MM81X_EP_EP_MAX];
++	int errors;
++
++	/* serialise USB device struct */
++	struct mutex lock;
++
++	/* serialise USB bus access */
++	struct mutex bus_lock;
++
++	bool ongoing_cmd;
++	bool ongoing_rw;
++	wait_queue_head_t rw_in_wait;
++	unsigned long flags;
++};
++
++enum mm81x_usb_command_direction {
++	MM81X_USB_WRITE = 0x00,
++	MM81X_USB_READ = 0x80,
++	MM81X_USB_RESET = 0x02,
++};
++
++struct mm81x_usb_command {
++	__le32 dir; /* Next BULK direction */
++	__le32 address; /* Next BULK address */
++	__le32 length; /* Next BULK size */
++};
++
++static const struct usb_device_id mm81x_usb_table[] = {
++	{ USB_DEVICE(MM81X_VENDOR_ID, MM81X_MM810X_PRODUCT_ID) },
++	{} /* Terminating entry */
++};
++
++MODULE_DEVICE_TABLE(usb, mm81x_usb_table);
++
++static void mm81x_usb_irq_work(struct work_struct *work)
++{
++	struct mm81x *mors = container_of(work, struct mm81x, usb_irq_work);
++
++	mm81x_claim_bus(mors);
++	mm81x_hw_irq_handle(mors);
++	mm81x_release_bus(mors);
++}
++
++static bool mm81x_usb_urb_status_is_disconnect(const struct urb *urb)
++{
++	return ((urb->status == -EPROTO) || (urb->status == -EILSEQ) ||
++		(urb->status == -ETIME) || (urb->status == -EPIPE));
++}
++
++static void mm81x_usb_int_handler(struct urb *urb)
++{
++	int ret;
++	struct mm81x *mors = urb->context;
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++
++	if (!test_bit(MM81X_USB_FLAG_ATTACHED, &musb->flags))
++		return;
++
++	if (urb->status) {
++		if (mm81x_usb_urb_status_is_disconnect(urb)) {
++			clear_bit(MM81X_USB_FLAG_ATTACHED, &musb->flags);
++			set_bit(MM81X_STATE_CHIP_UNRESPONSIVE,
++				&mors->state_flags);
++			dev_dbg(mors->dev,
++				"USB sudden disconnect detected in %s",
++				__func__);
++			return;
++		}
++
++		if (!(urb->status == -ENOENT || urb->status == -ECONNRESET ||
++		      urb->status == -ESHUTDOWN))
++			dev_err(mors->dev, "- nonzero read status received: %d",
++				urb->status);
++	}
++
++	ret = usb_submit_urb(urb, GFP_ATOMIC);
++
++	/* usb_kill_urb has been called */
++	if (ret == -EPERM)
++		return;
++	else if (ret)
++		dev_err(mors->dev, "error: resubmit urb %p err code %d", urb,
++			ret);
++
++	queue_work(mors->chip_wq, &mors->usb_irq_work);
++}
++
++static int mm81x_usb_int_enable(struct mm81x *mors)
++{
++	int ret = 0;
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++	struct urb *urb;
++
++	if (!test_bit(MM81X_USB_FLAG_ATTACHED, &musb->flags))
++		return -ENODEV;
++
++	urb = usb_alloc_urb(0, GFP_KERNEL);
++	if (!urb) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	musb->endpoints[MM81X_EP_INT].urb = urb;
++
++	musb->endpoints[MM81X_EP_INT].buffer =
++		usb_alloc_coherent(musb->udev, MM81X_EP_INT_BUFFER_SIZE,
++				   GFP_KERNEL, &urb->transfer_dma);
++	if (!musb->endpoints[MM81X_EP_INT].buffer) {
++		dev_err(mors->dev, "couldn't allocate transfer_buffer");
++		ret = -ENOMEM;
++		goto error_set_urb_null;
++	}
++
++	usb_fill_int_urb(
++		musb->endpoints[MM81X_EP_INT].urb, musb->udev,
++		usb_rcvintpipe(musb->udev, musb->endpoints[MM81X_EP_INT].addr),
++		musb->endpoints[MM81X_EP_INT].buffer, MM81X_EP_INT_BUFFER_SIZE,
++		mm81x_usb_int_handler, mors, MM81X_USB_INTERRUPT_INTERVAL);
++	urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
++
++	ret = usb_submit_urb(urb, GFP_KERNEL);
++	if (ret) {
++		dev_err(mors->dev, "Couldn't submit urb. Error number %d", ret);
++		goto error;
++	}
++
++	return 0;
++
++error:
++	usb_free_coherent(musb->udev, MM81X_EP_INT_BUFFER_SIZE,
++			  musb->endpoints[MM81X_EP_INT].buffer,
++			  urb->transfer_dma);
++error_set_urb_null:
++	musb->endpoints[MM81X_EP_INT].urb = NULL;
++	usb_free_urb(urb);
++out:
++	return ret;
++}
++
++static void mm81x_usb_int_stop(struct mm81x *mors)
++{
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++
++	usb_kill_urb(musb->endpoints[MM81X_EP_INT].urb);
++	cancel_work_sync(&mors->usb_irq_work);
++}
++
++static void mm81x_usb_cmd_callback(struct urb *urb)
++{
++	struct mm81x *mors = urb->context;
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++
++	/* sync/async unlink faults aren't errors */
++	if (urb->status) {
++		if (!(urb->status == -ENOENT || urb->status == -ECONNRESET ||
++		      urb->status == -ESHUTDOWN))
++			dev_err(mors->dev,
++				"nonzero write bulk status received: %d",
++				urb->status);
++
++		musb->errors = urb->status;
++	}
++
++	musb->ongoing_cmd = false;
++	wake_up(&musb->rw_in_wait);
++}
++
++static int mm81x_usb_cmd(struct mm81x_usb *musb,
++			 const struct mm81x_usb_command *cmd)
++{
++	int retval = 0;
++	struct mm81x *mors = usb_get_intfdata(musb->interface);
++	struct mm81x_usb_endpoint *ep = &musb->endpoints[MM81X_EP_CMD];
++	size_t writesize = sizeof(*cmd);
++
++	if (!test_bit(MM81X_USB_FLAG_ATTACHED, &musb->flags))
++		return -ENODEV;
++
++	memcpy(ep->buffer, cmd, writesize);
++
++	usb_fill_bulk_urb(ep->urb, musb->udev,
++			  usb_sndbulkpipe(musb->udev, ep->addr), ep->buffer,
++			  writesize, mm81x_usb_cmd_callback, mors);
++	ep->urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
++
++	musb->ongoing_cmd = true;
++
++	retval = usb_submit_urb(ep->urb, GFP_KERNEL);
++	if (retval) {
++		dev_err(mors->dev, "- failed submitting write urb, error %d",
++			retval);
++
++		goto error;
++	}
++
++	retval = wait_event_interruptible_timeout(
++		musb->rw_in_wait, (!musb->ongoing_cmd),
++		msecs_to_jiffies(URB_TIMEOUT_MS));
++	if (retval < 0) {
++		dev_err(mors->dev, "error waiting for urb %d", retval);
++		goto error;
++	} else if (retval == 0) {
++		dev_err(mors->dev, "timed out waiting for urb");
++		usb_kill_urb(ep->urb);
++		retval = -ETIMEDOUT;
++		goto error;
++	}
++
++	musb->ongoing_cmd = false;
++	return writesize;
++
++error:
++	musb->ongoing_cmd = false;
++	return retval;
++}
++
++static int mm81x_usb_ndr_reset(struct mm81x *mors)
++{
++	int ret;
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++	struct mm81x_usb_command cmd;
++
++	mutex_lock(&musb->lock);
++
++	musb->ongoing_rw = true;
++	musb->errors = 0;
++
++	cmd.dir = cpu_to_le32(MM81X_USB_RESET);
++	cmd.address = cpu_to_le32(0);
++	cmd.length = cpu_to_le32(0);
++
++	ret = mm81x_usb_cmd(musb, &cmd);
++	if (ret < 0)
++		dev_err(mors->dev, "mm81x_usb_cmd (MM81X_USB_RESET) error %d\n",
++			ret);
++	else
++		ret = 0;
++
++	musb->ongoing_rw = false;
++	mutex_unlock(&musb->lock);
++	return ret;
++}
++
++static void mm81x_usb_mem_rw_callback(struct urb *urb)
++{
++	struct mm81x *mors = urb->context;
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++
++	/* sync/async unlink faults aren't errors */
++	if (urb->status) {
++		if (!(urb->status == -ENOENT || urb->status == -ECONNRESET ||
++		      urb->status == -ESHUTDOWN))
++			dev_err(mors->dev,
++				"nonzero write bulk status received: %d",
++				urb->status);
++
++		musb->errors = urb->status;
++	}
++
++	musb->ongoing_rw = false;
++	wake_up(&musb->rw_in_wait);
++}
++
++static int mm81x_usb_mem_read(struct mm81x_usb *musb, u32 address, u8 *data,
++			      ssize_t size)
++{
++	int ret;
++	struct mm81x_usb_command cmd;
++	struct mm81x *mors = usb_get_intfdata(musb->interface);
++
++	if (!test_bit(MM81X_USB_FLAG_ATTACHED, &musb->flags))
++		return -ENODEV;
++
++	mutex_lock(&musb->lock);
++
++	musb->ongoing_rw = true;
++	musb->errors = 0;
++
++	/* Send command ahead to prepare for Tokens */
++	cmd.dir = cpu_to_le32(MM81X_USB_READ);
++	cmd.address = cpu_to_le32(address);
++	cmd.length = cpu_to_le32(size);
++
++	ret = mm81x_usb_cmd(musb, &cmd);
++	if (ret < 0) {
++		dev_err(mors->dev, "mm81x_usb_cmd error %d", ret);
++		goto error;
++	}
++
++	/* Let's be fast push the next URB, don't wait until command is done */
++	usb_fill_bulk_urb(
++		musb->endpoints[MM81X_EP_MEM_RD].urb, musb->udev,
++		usb_rcvbulkpipe(musb->udev,
++				musb->endpoints[MM81X_EP_MEM_RD].addr),
++		musb->endpoints[MM81X_EP_MEM_RD].buffer, size,
++		mm81x_usb_mem_rw_callback, mors);
++
++	ret = usb_submit_urb(musb->endpoints[MM81X_EP_MEM_RD].urb, GFP_ATOMIC);
++	if (ret < 0) {
++		dev_err(mors->dev, "failed submitting read urb, error %d", ret);
++		ret = (ret == -ENOMEM) ? ret : -EIO;
++		goto error;
++	}
++
++	ret = wait_event_interruptible_timeout(
++		musb->rw_in_wait, (!musb->ongoing_rw),
++		msecs_to_jiffies(URB_TIMEOUT_MS));
++	if (ret < 0) {
++		dev_err(mors->dev, "wait_event_interruptible: error %d", ret);
++		goto error;
++	} else if (ret == 0) {
++		/* Timed out. */
++		usb_kill_urb(musb->endpoints[MM81X_EP_MEM_RD].urb);
++	}
++
++	if (musb->errors) {
++		ret = musb->errors;
++		dev_err(mors->dev, "mem read error %d", ret);
++		goto error;
++	}
++
++	memcpy(data, musb->endpoints[MM81X_EP_MEM_RD].buffer, size);
++	ret = size;
++
++error:
++	musb->ongoing_rw = false;
++	mutex_unlock(&musb->lock);
++
++	return ret;
++}
++
++static int mm81x_usb_mem_write(struct mm81x_usb *musb, u32 address, u8 *data,
++			       ssize_t size)
++{
++	int ret;
++	struct mm81x_usb_command cmd;
++	struct mm81x *mors = usb_get_intfdata(musb->interface);
++
++	if (!test_bit(MM81X_USB_FLAG_ATTACHED, &musb->flags))
++		return -ENODEV;
++
++	mutex_lock(&musb->lock);
++
++	musb->ongoing_rw = true;
++	musb->errors = 0;
++
++	/* Send command ahead to prepare for Tokens */
++	cmd.dir = cpu_to_le32(MM81X_USB_WRITE);
++	cmd.address = cpu_to_le32(address);
++	cmd.length = cpu_to_le32(size);
++	ret = mm81x_usb_cmd(musb, &cmd);
++	if (ret < 0) {
++		dev_err(mors->dev, "mm81x_usb_mem_read error %d", ret);
++		goto error;
++	}
++
++	memcpy(musb->endpoints[MM81X_EP_MEM_WR].buffer, data, size);
++
++	/* prepare a read */
++	usb_fill_bulk_urb(
++		musb->endpoints[MM81X_EP_MEM_WR].urb, musb->udev,
++		usb_sndbulkpipe(musb->udev,
++				musb->endpoints[MM81X_EP_MEM_WR].addr),
++		musb->endpoints[MM81X_EP_MEM_WR].buffer, size,
++		mm81x_usb_mem_rw_callback, mors);
++
++	ret = usb_submit_urb(musb->endpoints[MM81X_EP_MEM_WR].urb, GFP_ATOMIC);
++	if (ret < 0) {
++		dev_err(mors->dev, "- failed submitting write urb, error %d",
++			ret);
++		ret = (ret == -ENOMEM) ? ret : -EIO;
++		goto error;
++	}
++
++	ret = wait_event_interruptible_timeout(
++		musb->rw_in_wait, (!musb->ongoing_rw),
++		msecs_to_jiffies(URB_TIMEOUT_MS));
++	if (ret < 0) {
++		dev_err(mors->dev, "error %d", ret);
++		goto error;
++	} else if (ret == 0) {
++		/* Timed out. */
++		usb_kill_urb(musb->endpoints[MM81X_EP_MEM_WR].urb);
++	}
++
++	if (musb->errors) {
++		ret = musb->errors;
++		dev_err(mors->dev, "error %d", ret);
++		goto error;
++	}
++
++	ret = size;
++
++error:
++	musb->ongoing_rw = false;
++	mutex_unlock(&musb->lock);
++	return ret;
++}
++
++static int mm81x_usb_dm_read(struct mm81x *mors, u32 address, u8 *data, int len)
++{
++	ssize_t offset = 0;
++	int ret;
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++
++	while (offset < len) {
++		ret = mm81x_usb_mem_read(musb, address + offset,
++					 (u8 *)(data + offset),
++					 min((ssize_t)(len - offset),
++					     (ssize_t)USB_MAX_TRANSFER_SIZE));
++		if (ret < 0) {
++			dev_err(mors->dev, "%s failed (errno=%d)", __func__,
++				ret);
++			return ret;
++		}
++
++		offset += ret;
++	}
++
++	return 0;
++}
++
++static int mm81x_usb_dm_write(struct mm81x *mors, u32 address, const u8 *data,
++			      int len)
++{
++	ssize_t offset = 0;
++	int ret;
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++
++	while (offset < len) {
++		ret = mm81x_usb_mem_write(musb, address + offset,
++					  (u8 *)(data + offset),
++					  min((ssize_t)(len - offset),
++					      (ssize_t)USB_MAX_TRANSFER_SIZE));
++		if (ret < 0) {
++			dev_err(mors->dev, "%s failed (errno=%d)", __func__,
++				ret);
++			return ret;
++		}
++
++		offset += ret;
++	}
++
++	return 0;
++}
++
++static int mm81x_usb_reg32_read(struct mm81x *mors, u32 address, u32 *val)
++{
++	int ret = 0;
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++
++	ret = mm81x_usb_mem_read(musb, address, (u8 *)val, sizeof(*val));
++	if (ret == sizeof(*val)) {
++		*val = le32_to_cpup((__le32 *)val);
++		return 0;
++	}
++
++	dev_err(mors->dev, "usb reg32 read failed %d", ret);
++	return ret;
++}
++
++static int mm81x_usb_reg32_write(struct mm81x *mors, u32 address, u32 val)
++{
++	int ret = 0;
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++	__le32 val_le = cpu_to_le32(val);
++
++	ret = mm81x_usb_mem_write(musb, address, (u8 *)&val_le, sizeof(val_le));
++	if (ret == sizeof(val_le))
++		return 0;
++
++	dev_err(mors->dev, "usb reg32 write failed %d", ret);
++	return ret;
++}
++
++static void mm81x_usb_bus_enable(struct mm81x *mors, bool enable)
++{
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++
++	if (enable)
++		usb_autopm_get_interface(musb->interface);
++	else
++		usb_autopm_put_interface(musb->interface);
++}
++
++static void mm81x_usb_claim_bus(struct mm81x *mors)
++{
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++
++	mutex_lock(&musb->bus_lock);
++}
++
++static void mm81x_usb_release_bus(struct mm81x *mors)
++{
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++
++	mutex_unlock(&musb->bus_lock);
++}
++
++static void mm81x_usb_set_irq(struct mm81x *mors, bool enable)
++{
++}
++
++static const struct mm81x_bus_ops mm81x_usb_ops = {
++	.dm_read = mm81x_usb_dm_read,
++	.dm_write = mm81x_usb_dm_write,
++	.reg32_read = mm81x_usb_reg32_read,
++	.reg32_write = mm81x_usb_reg32_write,
++	.digital_reset = mm81x_usb_ndr_reset,
++	.set_bus_enable = mm81x_usb_bus_enable,
++	.claim = mm81x_usb_claim_bus,
++	.release = mm81x_usb_release_bus,
++	.set_irq = mm81x_usb_set_irq,
++	.bulk_alignment = MM81X_BUS_DEFAULT_BULK_ALIGNMENT,
++};
++
++static int mm81x_usb_detect_endpoints(struct mm81x *mors,
++				      const struct usb_interface *intf)
++{
++	int ret;
++	unsigned int i;
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++	struct usb_endpoint_descriptor *ep_desc;
++	struct usb_host_interface *intf_desc = intf->cur_altsetting;
++
++	for (i = 0; i < intf_desc->desc.bNumEndpoints; i++) {
++		ep_desc = &intf_desc->endpoint[i].desc;
++
++		if (usb_endpoint_is_bulk_in(ep_desc)) {
++			if (!musb->endpoints[MM81X_EP_MEM_RD].addr) {
++				musb->endpoints[MM81X_EP_MEM_RD].addr =
++					usb_endpoint_num(ep_desc);
++				musb->endpoints[MM81X_EP_MEM_RD].size =
++					usb_endpoint_maxp(ep_desc);
++			} else if (!musb->endpoints[MM81X_EP_REG_RD].addr) {
++				musb->endpoints[MM81X_EP_REG_RD].addr =
++					usb_endpoint_num(ep_desc);
++				musb->endpoints[MM81X_EP_REG_RD].size =
++					usb_endpoint_maxp(ep_desc);
++			}
++		} else if (usb_endpoint_is_bulk_out(ep_desc)) {
++			if (!musb->endpoints[MM81X_EP_MEM_WR].addr) {
++				musb->endpoints[MM81X_EP_MEM_WR].addr =
++					usb_endpoint_num(ep_desc);
++				musb->endpoints[MM81X_EP_MEM_WR].size =
++					usb_endpoint_maxp(ep_desc);
++			} else if (!musb->endpoints[MM81X_EP_REG_WR].addr) {
++				musb->endpoints[MM81X_EP_REG_WR].addr =
++					usb_endpoint_num(ep_desc);
++				musb->endpoints[MM81X_EP_REG_WR].size =
++					usb_endpoint_maxp(ep_desc);
++			}
++		} else if (usb_endpoint_is_int_in(ep_desc)) {
++			musb->endpoints[MM81X_EP_INT].addr =
++				usb_endpoint_num(ep_desc);
++			musb->endpoints[MM81X_EP_INT].size =
++				usb_endpoint_maxp(ep_desc);
++		}
++	}
++
++	dev_dbg(mors->dev, "\tMemory Endpoint IN %s detected: %u size %u",
++		musb->endpoints[MM81X_EP_MEM_RD].addr ? "" : "not",
++		musb->endpoints[MM81X_EP_MEM_RD].addr,
++		musb->endpoints[MM81X_EP_MEM_RD].size);
++	dev_dbg(mors->dev, "\tMemory Endpoint OUT %s detected: %u size %u",
++		musb->endpoints[MM81X_EP_MEM_WR].addr ? "" : "not",
++		musb->endpoints[MM81X_EP_MEM_WR].addr,
++		musb->endpoints[MM81X_EP_MEM_WR].size);
++	dev_dbg(mors->dev, "\tRegister Endpoint IN %s detected: %u",
++		musb->endpoints[MM81X_EP_REG_RD].addr ? "" : "not",
++		musb->endpoints[MM81X_EP_REG_RD].addr);
++	dev_dbg(mors->dev, "\tRegister Endpoint OUT %s detected: %u",
++		musb->endpoints[MM81X_EP_REG_WR].addr ? "" : "not",
++		musb->endpoints[MM81X_EP_REG_WR].addr);
++	dev_dbg(mors->dev, "\tStats IN endpoint %s detected: %u",
++		musb->endpoints[MM81X_EP_INT].addr ? "" : "not",
++		musb->endpoints[MM81X_EP_INT].addr);
++
++	/* Verify we have an IN and OUT */
++	if (!(musb->endpoints[MM81X_EP_MEM_RD].addr &&
++	      musb->endpoints[MM81X_EP_MEM_WR].addr))
++		return -ENODEV;
++
++	/* Verify the stats MM81X_EP_INT is detected */
++	if (!musb->endpoints[MM81X_EP_INT].addr)
++		return -ENODEV;
++
++	/* Verify minimum interrupt status read */
++	if (musb->endpoints[MM81X_EP_INT].size < 8)
++		return -ENODEV;
++
++	musb->endpoints[MM81X_EP_CMD].urb = usb_alloc_urb(0, GFP_KERNEL);
++	if (!musb->endpoints[MM81X_EP_CMD].urb) {
++		ret = -ENOMEM;
++		goto err_ep;
++	}
++
++	musb->endpoints[MM81X_EP_MEM_RD].urb = usb_alloc_urb(0, GFP_KERNEL);
++	if (!musb->endpoints[MM81X_EP_MEM_RD].urb) {
++		ret = -ENOMEM;
++		goto err_ep;
++	}
++
++	musb->endpoints[MM81X_EP_MEM_WR].urb = usb_alloc_urb(0, GFP_KERNEL);
++	if (!musb->endpoints[MM81X_EP_MEM_WR].urb) {
++		ret = -ENOMEM;
++		goto err_ep;
++	}
++
++	musb->endpoints[MM81X_EP_MEM_RD].buffer =
++		kmalloc(USB_MAX_TRANSFER_SIZE, GFP_KERNEL);
++	if (!musb->endpoints[MM81X_EP_MEM_RD].buffer) {
++		ret = -ENOMEM;
++		goto err_ep;
++	}
++
++	musb->endpoints[MM81X_EP_MEM_WR].buffer =
++		kmalloc(USB_MAX_TRANSFER_SIZE, GFP_KERNEL);
++	if (!musb->endpoints[MM81X_EP_MEM_WR].buffer) {
++		ret = -ENOMEM;
++		goto err_ep;
++	}
++
++	musb->endpoints[MM81X_EP_CMD].buffer = usb_alloc_coherent(
++		musb->udev, sizeof(struct mm81x_usb_command), GFP_KERNEL,
++		&musb->endpoints[MM81X_EP_CMD].urb->transfer_dma);
++
++	if (!musb->endpoints[MM81X_EP_CMD].buffer) {
++		ret = -ENOMEM;
++		goto err_ep;
++	}
++
++	/* Assign command to memory out end point */
++	musb->endpoints[MM81X_EP_CMD].addr =
++		musb->endpoints[MM81X_EP_MEM_WR].addr;
++	musb->endpoints[MM81X_EP_CMD].size =
++		musb->endpoints[MM81X_EP_MEM_WR].size;
++
++	return 0;
++
++err_ep:
++	if (musb->endpoints[MM81X_EP_CMD].urb &&
++	    musb->endpoints[MM81X_EP_CMD].buffer)
++		usb_free_coherent(
++			musb->udev, sizeof(struct mm81x_usb_command),
++			musb->endpoints[MM81X_EP_CMD].buffer,
++			musb->endpoints[MM81X_EP_CMD].urb->transfer_dma);
++	usb_free_urb(musb->endpoints[MM81X_EP_MEM_RD].urb);
++	usb_free_urb(musb->endpoints[MM81X_EP_CMD].urb);
++	usb_free_urb(musb->endpoints[MM81X_EP_MEM_WR].urb);
++	kfree(musb->endpoints[MM81X_EP_MEM_RD].buffer);
++	kfree(musb->endpoints[MM81X_EP_MEM_WR].buffer);
++
++	return ret;
++}
++
++static void mm81x_urb_cleanup(struct mm81x *mors)
++{
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++	struct mm81x_usb_endpoint *int_ep = &musb->endpoints[MM81X_EP_INT];
++	struct mm81x_usb_endpoint *rd_ep = &musb->endpoints[MM81X_EP_MEM_RD];
++	struct mm81x_usb_endpoint *wr_ep = &musb->endpoints[MM81X_EP_MEM_WR];
++	struct mm81x_usb_endpoint *cmd_ep = &musb->endpoints[MM81X_EP_CMD];
++
++	usb_kill_urb(rd_ep->urb);
++	usb_kill_urb(wr_ep->urb);
++	usb_kill_urb(cmd_ep->urb);
++
++	if (int_ep->urb)
++		usb_free_coherent(musb->udev, MM81X_EP_INT_BUFFER_SIZE,
++				  int_ep->buffer, int_ep->urb->transfer_dma);
++
++	if (cmd_ep->urb)
++		usb_free_coherent(musb->udev, sizeof(struct mm81x_usb_command),
++				  cmd_ep->buffer, cmd_ep->urb->transfer_dma);
++
++	kfree(wr_ep->buffer);
++	kfree(rd_ep->buffer);
++
++	usb_free_urb(int_ep->urb);
++	usb_free_urb(wr_ep->urb);
++	usb_free_urb(rd_ep->urb);
++	usb_free_urb(cmd_ep->urb);
++}
++
++static int mm81x_usb_probe(struct usb_interface *interface,
++			   const struct usb_device_id *id)
++{
++	int ret;
++	struct mm81x *mors;
++	struct mm81x_usb *musb;
++
++	mors = mm81x_core_alloc(sizeof(*musb), &interface->dev);
++	if (!mors)
++		return -ENOMEM;
++
++	mors->bus_ops = &mm81x_usb_ops;
++	mors->bus_type = MM81X_BUS_TYPE_USB;
++
++	musb = (struct mm81x_usb *)mors->drv_priv;
++	musb->udev = usb_get_dev(interface_to_usbdev(interface));
++	musb->interface = usb_get_intf(interface);
++
++	mutex_init(&musb->lock);
++	mutex_init(&musb->bus_lock);
++	init_waitqueue_head(&musb->rw_in_wait);
++	usb_set_intfdata(interface, mors);
++
++	ret = mm81x_usb_detect_endpoints(mors, interface);
++	if (ret < 0)
++		goto err_core_free;
++
++	set_bit(MM81X_USB_FLAG_ATTACHED, &musb->flags);
++
++	ret = mm81x_core_init(mors);
++	if (ret)
++		goto err_core_free;
++
++	INIT_WORK(&mors->usb_irq_work, mm81x_usb_irq_work);
++
++	ret = mm81x_usb_int_enable(mors);
++	if (ret)
++		goto err_core_deinit;
++
++	ret = mm81x_core_register(mors);
++	if (ret)
++		goto err_usb_int_stop;
++
++	/* USB requires remote wakeup functionality for suspend */
++	clear_bit(MM81X_USB_FLAG_SUSPENDED, &musb->flags);
++	musb->interface->needs_remote_wakeup = 1;
++	usb_enable_autosuspend(musb->udev);
++	pm_runtime_set_autosuspend_delay(&musb->udev->dev,
++					 PM_RUNTIME_AUTOSUSPEND_DELAY_MS);
++
++	usb_autopm_get_interface(interface);
++	return 0;
++
++err_usb_int_stop:
++	mm81x_usb_int_stop(mors);
++err_core_deinit:
++	mm81x_core_deinit(mors);
++err_core_free:
++	mm81x_core_free(mors);
++	return ret;
++}
++
++static void mm81x_usb_disconnect(struct usb_interface *interface)
++{
++	struct mm81x *mors = usb_get_intfdata(interface);
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++	int minor = interface->minor;
++	struct usb_device *udev = interface_to_usbdev(interface);
++
++	if (udev->state == USB_STATE_NOTATTACHED) {
++		clear_bit(MM81X_USB_FLAG_ATTACHED, &musb->flags);
++		set_bit(MM81X_STATE_CHIP_UNRESPONSIVE, &mors->state_flags);
++		dev_dbg(mors->dev, "USB suddenly unplugged");
++	}
++
++	usb_disable_autosuspend(usb_get_dev(udev));
++
++	if (test_bit(MM81X_USB_FLAG_SUSPENDED, &musb->flags)) {
++		dev_dbg(mors->dev, "USB was suspended: release locks");
++		mm81x_usb_release_bus(mors);
++		mutex_unlock(&musb->lock);
++	}
++
++	clear_bit(MM81X_USB_FLAG_SUSPENDED, &musb->flags);
++
++	mm81x_core_unregister(mors);
++	mm81x_usb_int_stop(mors);
++	mm81x_core_deinit(mors);
++	mm81x_urb_cleanup(mors);
++	mm81x_core_free(mors);
++
++	usb_autopm_put_interface(interface);
++	usb_set_intfdata(interface, NULL);
++	dev_info(&interface->dev, "USB Morse #%d now disconnected", minor);
++	usb_put_dev(udev);
++}
++
++static int mm81x_usb_suspend(struct usb_interface *intf, pm_message_t message)
++{
++	struct mm81x *mors = usb_get_intfdata(intf);
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++	struct mm81x_usb_endpoint *int_ep = &musb->endpoints[MM81X_EP_INT];
++	struct mm81x_usb_endpoint *rd_ep = &musb->endpoints[MM81X_EP_MEM_RD];
++	struct mm81x_usb_endpoint *wr_ep = &musb->endpoints[MM81X_EP_MEM_WR];
++	struct mm81x_usb_endpoint *cmd_ep = &musb->endpoints[MM81X_EP_CMD];
++
++	if (!test_bit(MM81X_USB_FLAG_ATTACHED, &musb->flags))
++		return -ENODEV;
++
++	usb_kill_urb(int_ep->urb);
++	usb_kill_urb(rd_ep->urb);
++	usb_kill_urb(wr_ep->urb);
++	usb_kill_urb(cmd_ep->urb);
++
++	/* Locking the bus. No USB communication after this point */
++	mm81x_usb_claim_bus(mors);
++	mutex_lock(&musb->lock);
++
++	set_bit(MM81X_USB_FLAG_SUSPENDED, &musb->flags);
++	return 0;
++}
++
++static int mm81x_usb_resume(struct usb_interface *intf)
++{
++	struct mm81x *mors = usb_get_intfdata(intf);
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++	int ret;
++	struct mm81x_usb_endpoint *int_ep = &musb->endpoints[MM81X_EP_INT];
++
++	if (!test_bit(MM81X_USB_FLAG_ATTACHED, &musb->flags))
++		return -ENODEV;
++
++	ret = usb_submit_urb(int_ep->urb, GFP_KERNEL);
++	if (ret)
++		dev_err(mors->dev, "Couldn't submit urb. Error number %d", ret);
++
++	mm81x_usb_release_bus(mors);
++	mutex_unlock(&musb->lock);
++
++	clear_bit(MM81X_USB_FLAG_SUSPENDED, &musb->flags);
++	return 0;
++}
++
++static int mm81x_usb_reset_resume(struct usb_interface *intf)
++{
++	struct mm81x *mors = usb_get_intfdata(intf);
++	struct mm81x_usb *musb = (struct mm81x_usb *)mors->drv_priv;
++	int ret;
++	struct mm81x_usb_endpoint *int_ep = &musb->endpoints[MM81X_EP_INT];
++
++	if (!test_bit(MM81X_USB_FLAG_ATTACHED, &musb->flags))
++		return -ENODEV;
++
++	ret = usb_submit_urb(int_ep->urb, GFP_KERNEL);
++	if (ret)
++		dev_err(mors->dev, "Couldn't submit urb. Error number %d", ret);
++
++	mm81x_usb_release_bus(mors);
++	mutex_unlock(&musb->lock);
++
++	clear_bit(MM81X_USB_FLAG_SUSPENDED, &musb->flags);
++
++	return 0;
++}
++
++static int mm81x_usb_pre_reset(struct usb_interface *intf)
++{
++	return 0;
++}
++
++static int mm81x_usb_post_reset(struct usb_interface *intf)
++{
++	return 0;
++}
++
++static struct usb_driver mm81x_usb_driver = {
++	.name = "mm81x_usb",
++	.probe = mm81x_usb_probe,
++	.disconnect = mm81x_usb_disconnect,
++	.suspend = mm81x_usb_suspend,
++	.resume = mm81x_usb_resume,
++	.reset_resume = mm81x_usb_reset_resume,
++	.pre_reset = mm81x_usb_pre_reset,
++	.post_reset = mm81x_usb_post_reset,
++	.id_table = mm81x_usb_table,
++	.supports_autosuspend = 1,
++	.soft_unbind = 1,
++};
++
++module_usb_driver(mm81x_usb_driver);
++
++MODULE_AUTHOR("Morse Micro");
++MODULE_DESCRIPTION("Driver support for Morse Micro MM81X USB devices");
++MODULE_LICENSE("Dual BSD/GPL");
 -- 
 2.43.0
 
