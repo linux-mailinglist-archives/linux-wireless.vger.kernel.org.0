@@ -1,93 +1,95 @@
-Return-Path: <linux-wireless+bounces-35667-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35668-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJUmNePi8mnyvAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35667-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 07:04:35 +0200
+	id qCxSGkvi8mkmvQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35668-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 07:02:03 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4092749D7E1
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 07:04:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4597E49D771
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 07:02:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E0B83047BEA
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 04:59:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6E8EE30296AC
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 04:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9E9372EE0;
-	Thu, 30 Apr 2026 04:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E026374E46;
+	Thu, 30 Apr 2026 04:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="sBH6MWMx"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="zPkTQ+bX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714B9372EC6
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 04:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327B2377ECA
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 04:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777525102; cv=none; b=Tz6Dtx5wfQEoLenwHdtWEG0u9Ty8dC4W1LXc46nLbfMo/zLs6PJG/ytyaaAK/JXDXrmmnyQeSM+Bkl8M/2iOtwDb+8xEz95b/n1NsOY5eGtIc5Mblp6YqCgpy9oiV7/TPqoimMNn2OKWcY/eg00ACrfCkyAKRJtaeTFWn9802YM=
+	t=1777525107; cv=none; b=LN5+BsUXW2nuhRYK4kCc2bMGqYXi6flXBWSyuZjeZzt2e5jMC/X4sjK2QjxUUUi4UvVRMhoHmVulMg64uYf0o2phVfjB8gDlCurAC0Z5B0eIQxaqKlIWadREhaSjxesvnlCAvQX+icA+9KMs8TNwELMedyASAbSp4+ClzgGpuLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777525102; c=relaxed/simple;
-	bh=U645tARfl/P0ORDY0mdr/ZR+rnYC/AJJ1y7ygKqCr7g=;
+	s=arc-20240116; t=1777525107; c=relaxed/simple;
+	bh=oCc7gcXJeu51Lta7mt7R5GL/+eB6xIUqhxFp3xd2m34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXKEV2xSVBm/a6bS9yxMD7ppskHoj+4laUi4JEVmUwa+E8Fx+KgTON+ytoi+/3HocHiL8Zk0STG+FYgAtHyLfLhJX6IxnnCwkgUzcFzmdSk4bbF0jSqAyCSzTCfCx513I1YKkEHU+ysHYuBiPzuHZUPgEHFj/oy8WaGay1Zkayo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=sBH6MWMx; arc=none smtp.client-ip=209.85.210.173
+	 MIME-Version; b=fAAs+y6Ie1v3LMFvaZlORKiB0iMbiImVSwlAlCXiPCSJulCralJn9njpFODRHu7fEkBZzcibuVnPadV+VNCJj3GmIL8ZMLCB874GDhsDlZcdMdYnfGV0uV+UKY36HrxJuJ2ROhTkmm1hveHkSV3O9baSyQ1lPISRVoJM6yg2vZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=zPkTQ+bX; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82f6b592fc7so216593b3a.3
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:58:21 -0700 (PDT)
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-83177129e28so230771b3a.1
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:58:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1777525101; x=1778129901; darn=vger.kernel.org;
+        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1777525105; x=1778129905; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XRAz9mKh/2TTFRFfJjJcbS3Vcqg1dm+gTi4eN+rMaF0=;
-        b=sBH6MWMxFePPX4k+HPWQD0HeI0kmljsnVXvrim8Q6q3CPoOG6VMj0TyApREqpx3owW
-         uK/xhQ9CCtp0Jx9jSo0xuOciygA3jN59VcSZz9AGzbsvs4iuUDP4KYFpJ21o+QmiEuoG
-         lCSWb4r6CesOyw789rg5i4tVR7C0LI3Et0qrr/eJiV03qhROeNQN1ao98UzOoKUJTHPc
-         WXe2PlJr3pzWNOKwMpp/307TfF4Q+sCVO02Fbio4d2r2KbV5GUBk5L0ISfSRwisP+Pk/
-         g6cgq4BpsU1O8GY2apBk+CL1vZqBWU7FVZw/0Rapuz+U59upQUg4CSSPRuMhTaO2aNGT
-         bW3g==
+        bh=XP095ZhYw2b8rtfTp1Te2wsBKkizx72gLLNn2a1UW1A=;
+        b=zPkTQ+bX/bbSzyFDp04IDLbdEMDQoIg6B/4YFAyvhHasCL7x6UVsxDgRcv0SFU6iFw
+         4ZMFP8udO85YbnluzmRF7r2Tzh3R5pgmbc/H6vpH2v+iltK5FiKvlQ64HCHKB2P1qYbP
+         eR58EiPhE3bZUeQ0buTIuyyc7hZPaTZvIocyLr6p/vZJhYLf2OJGgSiciroQoczxg17b
+         5zHk94U+dstDYvVZUGRaB7LMmCjpmeIFgXSDUBLY7opXF7p4C4TvaYdH8k6FkHEp5pVh
+         T4BT6MRFTB5zu8IVKOZjHq/2GyrrGcZaK0E3gwsdKWdxwAb9tFj+ebQeAKpjXLJX+c2T
+         Lj4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777525101; x=1778129901;
+        d=1e100.net; s=20251104; t=1777525105; x=1778129905;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=XRAz9mKh/2TTFRFfJjJcbS3Vcqg1dm+gTi4eN+rMaF0=;
-        b=EJyohamEiucbClG2IJZEqwtdM2bYt5OyBnKU4wSQaAKU5fi8Alt+FjEyPHOjTrqt5t
-         5m4SaZxcm9hsCrrfWJtxcmQSiH0WoiPWS9/ywsnMzJGEJhoeRRHBLBewZstQmsCgmsql
-         4J0pVG1/r1nYowfbr1eBs/8KTTi/XSJODMLSyBYbskMgaPuGsbnjB0fC7ey0E5ph5cle
-         dpkVqR9JWtkH0lj2Ji531cCKCpp/aYKlqWmna+5N0LAhzq3vMlEFwQnyhEtEbZ7bVhR+
-         +hO98Lcx1lhu99kfgGKUdGVVqOpla/LumQp/Sqr6tjVN2PfRsrXoLpv1ht5pAqNG0Z/z
-         8WNw==
-X-Forwarded-Encrypted: i=1; AFNElJ8WPCTRVffgUbNWG8mr2//q7TpeQPo7qdyqhtGKOYcFYQO8qAU2UJJyAgcl055Vq7beCYPlXGTvljj4fgOnDg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzc1NyHQVAgAovusxEZETWIGbGU7E9PNuA+BUs9FvBRXh1MSHLf
-	GoGrw5OBOP2LVYHnPO4k1koU0eKR4jvehOorsrM4KjDzD7QHLmKjB1QBHDbbkKhLHqQ=
-X-Gm-Gg: AeBDiesxWzz7OuBkL8Lz8RFnib0/wnX0j4Fdv4ILPIDxqPQ73SL93FHzPVu5KLM38xV
-	33UPUWLuf6/8cOaCGPyYnZdKK5Y3Dh6TK2m0k8fJSHPIexeLQzjuM5o/6q8d4UZOain046cmTz5
-	IBWBa3gAUhZHgeu4v90ISKnqN1dvIek5KkgjUISeJ/IYOydweSWMQwZ+CWOCShsk2wlE2N1kfT6
-	e6+VSd6bGogUAvZ879LZcEacWFq5O2rDPOYqjfuZKCefYnBcQRzSqa3AP9tIf/UOeOa51JRAllw
-	YX77hnvssrAd9K/G99sApPIuVZm0w7laTTVWMKJxGnUDzTRlmpoc+rM2Gcf5YnbGJkkgdUBRI71
-	KvJ41cgJY0sp3xLwhnOxHRZUBTgMarEQ56l4lM6K0y0UlqDCpb860EILQTo9fKyPL4dXw27uPtF
-	Dvbsroo23nuxGuc1ExDHTJFRdmxXDm23GXb8TFkdRSLYlHFgRAZGBw/TuwMZvxbEGafkhOaJIur
-	U5hCTtIw9uinvJB+iHu1x5F7UEOmVNAtZErkmqWjA==
-X-Received: by 2002:a05:6a00:2d1a:b0:82f:1d38:f68d with SMTP id d2e1a72fcca58-834fdc6affemr1693460b3a.34.1777525100790;
-        Wed, 29 Apr 2026 21:58:20 -0700 (PDT)
+        bh=XP095ZhYw2b8rtfTp1Te2wsBKkizx72gLLNn2a1UW1A=;
+        b=JypXBXSQ/7DwYWQuyM1lrpuNhTBLmsTqYw6H64I89VbHZ+Y6RpSUWYL+Gp0lW8e82N
+         cwDpRZaQivXvji3i9CDl8ZpzO8z7hk1UB/icJXE4UyhCW8WoB+UDGXrYTVujhWGtkhc/
+         VNEc1JdeChxOUxF4jaUs/NTksKIG61p2fmNGE8xVXbuTgi8W2U7bI4TIvyY/T3o8oUe2
+         55zZhFc4MeIHcNVHY0TfsYy7OHmdRSD15d3unynLeGr8MjPTmo/XNpcOIBMB+B1mwayc
+         FcUQh2BENHOwJRgn5BCe0nQzru5FW+I4h7Yb7lQOxJ05PMtdLhovT1A88MLVpy9QsW4+
+         bnug==
+X-Forwarded-Encrypted: i=1; AFNElJ+7FcYfF9DvvJ444SueANFYwcXW8VKfc63sfMrswsDH3Lvrv9E5sfryud0vdZkYxv0KOglAc0s9A9fOfBgNLQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnqAwfynzgO+1YWeqQFQfeFEV3+4U+Ofr9YmP4solV3RFp2xk/
+	ZBsph6D39WCnMtlB03aspXc+7xCFOrdvJdatxEtJcVxFDyX0Wcwkgw0ph6QknFRMdpE=
+X-Gm-Gg: AeBDieuPfPVSHeGbaqrS0a85dKR9ZM9zQZywll3RYP5KrSUHCvgtuvfqaPheAyUUBcP
+	cQc13E1l8CXVsYmK+L+5Cv7b9eshgjogOBJ9wOAjXJNo/w5hT0sGw9qofDolomS4vgOp0R86jTz
+	rNAjUQSrwopFXAmTFDZfyM4XVr3kug4JZtJeMJDH2E0qFAbFzNAflDNWK7qLEjaJm1WHwiNYV/y
+	spXRPQmCvgEvJpQRXvdZDc16/Jekmh9rQuYsirWkrfveeALU7KHReUpKVxfB5Q6dblqycAyzeR8
+	BcOtnr91oMWCUWWSsoblWwIiTsywPOiDERonXLsKFtwsvXpidBPPFFU4ACAxj5B4IqHrSHND0nG
+	4AbmwhC2o0q99nTX3EycnzX49kXT2J6Hd15WVqsWm2bk8XYnj+uW0kcZSxs6TWwnMPVGdySa9YP
+	/g/PIRPsPE7JJAN3Mujb4RPKPR2kQKuBsZ4ntGv1X1/AGTO3LdCqLpLWt55jQXtIpUmdW+Vbukc
+	+tAYkhCxqgsOy4Yxj8nL1pZYggjlLJ8T80FXN5qhw==
+X-Received: by 2002:a05:6a00:b605:b0:82f:453e:3863 with SMTP id d2e1a72fcca58-834fdbaca42mr1653172b3a.22.1777525105512;
+        Wed, 29 Apr 2026 21:58:25 -0700 (PDT)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed80df96sm3595073b3a.54.2026.04.29.21.58.17
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed80df96sm3595073b3a.54.2026.04.29.21.58.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 21:58:20 -0700 (PDT)
+        Wed, 29 Apr 2026 21:58:25 -0700 (PDT)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	Dan Callaghan <dan.callaghan@morsemicro.com>,
-	Arien Judge <arien.judge@morsemicro.com>
-Cc: ayman.grais@morsemicro.com,
+	Ulf Hansson <ulfh@kernel.org>
+Cc: arien.judge@morsemicro.com,
+	dan.callaghan@morsemicro.com,
+	ayman.grais@morsemicro.com,
 	linux-wireless@vger.kernel.org,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	linux-mmc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless-next v2 20/31] wifi: mm81x: add rc.h
-Date: Thu, 30 Apr 2026 14:55:46 +1000
-Message-ID: <20260430045615.334669-21-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next v2 21/31] mmc: sdio: add Morse Micro vendor ids
+Date: Thu, 30 Apr 2026 14:55:47 +1000
+Message-ID: <20260430045615.334669-22-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
 References: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
@@ -98,14 +100,14 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4092749D7E1
+X-Rspamd-Queue-Id: 4597E49D771
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.06 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[morsemicro-com.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -115,93 +117,59 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35667-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35668-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,morsemicro-com.20251104.gappssmtp.com:dkim,morsemicro.com:mid,morsemicro.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[morsemicro-com.20251104.gappssmtp.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,morsemicro.com:mid,morsemicro.com:email]
 
-(Patches split per file for review, will be a single commit alongside
-SDIO ids once review is complete. See cover letter for more
-information)
+Add the Morse Micro mm81x series vendor ids.
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- drivers/net/wireless/morsemicro/mm81x/rc.h | 57 ++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
- create mode 100644 drivers/net/wireless/morsemicro/mm81x/rc.h
 
-diff --git a/drivers/net/wireless/morsemicro/mm81x/rc.h b/drivers/net/wireless/morsemicro/mm81x/rc.h
-new file mode 100644
-index 000000000000..1a8d76d28c14
---- /dev/null
-+++ b/drivers/net/wireless/morsemicro/mm81x/rc.h
-@@ -0,0 +1,57 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (c) 2017-2026 Morse Micro
-+ */
+v1 -> v2:
+
+- Use a single VENDOR_ID
+- Drop B2 chip which is not needed
+
+Ulf, a mistake was made in v1 [1] listing multiple vendor IDs instead
+of a single vendor ID and the subsequent device IDs. As for why
+the series is structured as a series of singular patches is due to
+how wireless driver submissions are as per [2] to simplify review
+due to the size. The final submission will be sent as a pull request
+with all driver files as a single commit and this SDIO commit
+beforehand going through the wireless tree once you have acked.
+
+[1] https://lore.kernel.org/linux-wireless/CAPDyKFp6dhmpkMCs=ejYTpR9oNbNz0urtFD2HTvRwOp2Y7H3DA@mail.gmail.com/
+[2] https://wireless.docs.kernel.org/en/latest/en/developers/documentation/submittingpatches.html#new-driver
+
+---
+ include/linux/mmc/sdio_ids.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
+index 0685dd717e85..111cb1758830 100644
+--- a/include/linux/mmc/sdio_ids.h
++++ b/include/linux/mmc/sdio_ids.h
+@@ -117,6 +117,9 @@
+ #define SDIO_VENDOR_ID_MICROCHIP_WILC		0x0296
+ #define SDIO_DEVICE_ID_MICROCHIP_WILC1000	0x5347
+ 
++#define SDIO_VENDOR_ID_MORSEMICRO		0x325b
++#define SDIO_DEVICE_ID_MORSEMICRO_MM81XB2	0x0809
 +
-+#ifndef _MM81X_RC_H_
-+#define _MM81X_RC_H_
-+
-+#include <linux/list.h>
-+#include <linux/workqueue.h>
-+#include "core.h"
-+#include "mmrc.h"
-+
-+struct mm81x_vif;
-+
-+#define INIT_MAX_RATES_NUM 4
-+
-+struct mm81x_rc {
-+	/* Serialise rate control queue manipulation and timer functions */
-+	spinlock_t lock;
-+	struct list_head stas;
-+	struct timer_list timer;
-+	struct work_struct work;
-+	struct mm81x *mors;
-+};
-+
-+struct mm81x_rc_sta {
-+	struct mmrc_table *tb;
-+	struct list_head list;
-+	unsigned long last_update;
-+};
-+
-+void mm81x_rc_init(struct mm81x *mors);
-+void mm81x_rc_deinit(struct mm81x *mors);
-+int mm81x_rc_sta_add(struct mm81x *mors, struct ieee80211_vif *vif,
-+		     struct ieee80211_sta *sta);
-+#define mm81x_rc_set_fixed_rate(mors, sta, mcs, bw, ss, guard) \
-+	_mm81x_rc_set_fixed_rate(mors, sta, mcs, bw, ss, guard, __func__)
-+bool _mm81x_rc_set_fixed_rate(struct mm81x *mors, struct ieee80211_sta *sta,
-+			      int mcs, int bw, int ss, int guard,
-+			      const char *caller);
-+void mm81x_rc_sta_remove(struct mm81x *mors, struct ieee80211_sta *sta);
-+void mm81x_rc_sta_fill_tx_rates(struct mm81x *mors,
-+				struct mm81x_skb_tx_info *tx_info,
-+				struct sk_buff *skb, struct ieee80211_sta *sta,
-+				int tx_bw, bool rts_allowed);
-+void mm81x_rc_sta_feedback_rates(struct mm81x *mors, struct sk_buff *skb,
-+				 struct ieee80211_sta *sta,
-+				 struct mm81x_skb_tx_status *tx_sts,
-+				 int tx_attempts);
-+void mm81x_rc_sta_state_check(struct mm81x *mors, struct ieee80211_vif *vif,
-+			      struct ieee80211_sta *sta,
-+			      enum ieee80211_sta_state old_state,
-+			      enum ieee80211_sta_state new_state);
-+void mm81x_rc_reinit_stas(struct mm81x *mors, struct ieee80211_vif *vif);
-+
-+#endif /* !_MM81X_RC_H_ */
+ #define SDIO_VENDOR_ID_NXP			0x0471
+ #define SDIO_DEVICE_ID_NXP_IW61X		0x0205
+ 
 -- 
 2.43.0
 
