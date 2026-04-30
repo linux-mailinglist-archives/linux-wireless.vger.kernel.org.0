@@ -1,93 +1,98 @@
-Return-Path: <linux-wireless+bounces-35658-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35659-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OG1hHEnh8mnyvAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-35658-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 06:57:45 +0200
+	id kLlcGHXh8mnyvAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-35659-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 06:58:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1117D49D68C
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 06:57:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 129E849D6B6
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 06:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 71F57300831C
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 04:57:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 30BBD300B528
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2026 04:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0946436C580;
-	Thu, 30 Apr 2026 04:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F071136681F;
+	Thu, 30 Apr 2026 04:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="K5KqUtCY"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="XvYRLwZk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E4F362138
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 04:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00393624CB
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2026 04:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777525053; cv=none; b=d0fqBYcVHzO8hFr0WaK3SA8XxQznYw+XbwOlz9DnuPMsVmwMxa7+z+dkUtBaZJcslFXVa2mj2JszMqO9FP1eMyK7Ry7uuVYnRY5uFt/r5KA9bO5WbjuOYzf9iCha0N28uyCnv44hiJHK9ZiMaATupey6Gze3QaUJsrrQTJ0ofYY=
+	t=1777525066; cv=none; b=Vhjr3FuVVPExiZc0qZDSTxEKyhzB/6U7i3P2JX9KoMxhlZ6R4bu1EmVt4gWvqmwnhcX3G4EHHc2qYmrmJq12EY+HD7pOfY+Kiw34/IneXYsVI3uzL1m/sCL+Jox6+WdgYJ7FHQ1jxpmSyN3w86nsVuCn9RypQ9Xdtx2QY2hdues=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777525053; c=relaxed/simple;
-	bh=7tHGxXuCYQUUU7qzvn/X5wfqjgENtq46uBi4O9qu4AQ=;
+	s=arc-20240116; t=1777525066; c=relaxed/simple;
+	bh=QVsbq5TyPxDWs/QNb1ujCcWP58EJZhYfyvTzAHooSrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USVv5VUtIUWQ781MoGTs9y4UpIP+MQ0zgwFGSsfoNIjcLTx7JV0+rf6ig+qZGDREb2nDB8pFdwsOAiA5e/KeJhlOPUHJUInhKo7sm+xBZCVS25DApEUyEj7AhLmeoyvOYkVxEPkfHPBLwdKtRTSzM29Ihi146rJNMGh+Z5i7d9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=K5KqUtCY; arc=none smtp.client-ip=209.85.210.169
+	 MIME-Version; b=O5lfqJHX7KLL4YNbnlQ314yNoj3SpQz7cQk6KBdk+BougYBm0ntJ2dcPE0ez5di2h91UfAEX4ZslTFHE1kv4fqNkhjfLO5U8wle4uBuwMxQzqoD78JcjrOyHnlw7h+OrP3ZX1B+VeIScPmYOCFs4JXnoDA5uvBVaDxPHInUwqcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=XvYRLwZk; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-82faf871346so357968b3a.0
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:57:32 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82fbdd60b64so382253b3a.3
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Apr 2026 21:57:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1777525052; x=1778129852; darn=vger.kernel.org;
+        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1777525062; x=1778129862; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L88sInDtVP7+N0TQqLNr021f2vcKD/LjVB5YnZvvawA=;
-        b=K5KqUtCY6XFDDNGtp6n+4HB0XXXckVnzARFYHXVK3zvJ7DUtv8Rz2nKS0JxlzPBF2q
-         BBDbrtYS+elycSqrwbumsWW/Bb1fIuWmiC/f3nNx/6U6xMqkx8YbWhON69LOhjjaCdWG
-         IW/ANE2cinWgxm3eUoYnPOgEBxkAkO/8Jh7XKY7LtG/S1G8HsQgBlhkcOjfAsGjCA16R
-         oWmbwl/PMmbkIoj7XtZCga/F7ErZuF1nT4dNPJHK7I4GFyP8uQGVRzUzSQcd0xMDTqgK
-         MA10JtarWkjMsaE4CVVw3WWPUZxHHzHFKmhG3BZiXEXBIde3tXW5QhSRtkNZcz3wdpAk
-         INTg==
+        bh=HdogF9WqMEWAXJhx2700XgJxg7gi5MMysFq/6UnCOu8=;
+        b=XvYRLwZk9sGAtgN2sRc7Bw0E1L/U3a25SWg6hcM3Qi4VUVdeQosbHJdgVv3Tu7agok
+         cxIShhhyRIdvmqsveEwSPlS0kC2iiRO3sxeLvlC+GS59OwO3kqW6C1MCOrXcYF5neN98
+         BuYMWN8sS/t/FMx4ao8zumGN+0xC7AUITgF4OvkjXyQolC+DZCHs2AsBm8+SBBNgNl6v
+         xgHYaKT196Pg68wAGKjWlXlRsyv1HNin4B2edA0NY+q60Q4kY/D64B3ZE6+UKBmYNbLH
+         SFiBXjSAKXG2qbIX9tny8UtSbvIDBHsWS5kN2AqWjJMx2b0RgfMmhCTy+Urbf1K+RZSL
+         OAvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777525052; x=1778129852;
+        d=1e100.net; s=20251104; t=1777525062; x=1778129862;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=L88sInDtVP7+N0TQqLNr021f2vcKD/LjVB5YnZvvawA=;
-        b=plhaW6AbO5LN09xxybbKGyPCFPwgXevgPnOjpGh+vViGCW0yLDxkc7tOcdKyMip7bx
-         mMADzOJeshVnyxBo/7d7k61Qj0WHFe5wq4J70q/r4RqLJIvsKXkcWRwEKFgS/fj8Ckpz
-         qvaQ0l9PethGtX7IrTekUVr5ZKA+q9GhaZKra9vAPcG+nopYVElTTzTQlU29uyFdl4sK
-         P5v32eUJS7m/R5THH/pFlyZVUWmeqcg9r2SEg5WmKu0zAnxe/uGAXh1VUV4MycrXpeVA
-         n09nb4Dr9n8ly+LPgI3JZ5biLDjF4ZwWWn3BGLlB6h+46u47T50AWqT4NsuLP3F/wITZ
-         FAGw==
-X-Forwarded-Encrypted: i=1; AFNElJ/wvuH/KGdhc2rHm9TEtIr7kCIrbC6+buwf0m8QH/AB1J13W7z3a25cs5kbYgxgTqNXQaqb4dJSyIWx0ELQ+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtzDmPIqrIYbMqgVmvFU8WaSdkvCRAd+gcxYht6kd4KRj9Z8tN
-	WVfu2ybDAjaiDNhhBY81z3xyVQX6g6qtpEWJO9po/SXYDFc/OA2zbl0Q3SuxT9KjxsE=
-X-Gm-Gg: AeBDievjLTNCTobfIkVMuXqvY0EqdbRGNJmUegtzh1SWHFNatuc1MjQbTIM9uzyiFN7
-	lOCNi+Sx1W8fqw53dlCI5i7L7nNwb0aFWzQtpwI0jK9rlDneP+gKhB8oXiCqwkZoFMMcHwD0ISy
-	2e+4obRmWzTXfefdn0vKF9vf6+IRGwTAZJ1Q54jTzKTHhG/bFU3oJfTXsoKEptTYNb/Z6vpFCZF
-	Zp1q5aVDWPfh2gghjLdADU0l7SpOTgvJXVW7cTEfIK5y4Wo6VsWoKydxCx745ifssMrIMk8d6DI
-	/JYY52QpmlRLpf9IpXJbhD7Iq5u/JCJBQ7FvKhqLh5OSQSpOHYezHi1L8cCeshsyPCt4yg1PiTI
-	vQbN9IAxUqN4yFntNS5eLV0X9PuTz1EH1XbKhOpHz2mPXdi++XO2Ds1o8ao5q0LUtkkY78HAD4D
-	WxAqCYMEGVYBIpE5Scg63rF9Xq9YaPJRg8JWUaJPk5MJYJSr5We3xHERodKgL9/RB9vsrU2sPzp
-	qjF3Bhm9+KwSlglBBe7tAKunGTHCfI7XBnLPO0M2g==
-X-Received: by 2002:a05:6a00:1a8b:b0:82c:247b:ffdc with SMTP id d2e1a72fcca58-834fdbd8f3dmr1620006b3a.29.1777525051692;
-        Wed, 29 Apr 2026 21:57:31 -0700 (PDT)
+        bh=HdogF9WqMEWAXJhx2700XgJxg7gi5MMysFq/6UnCOu8=;
+        b=p/qkXYTzBrqH/7iOhEY+V6v0nv1/zCsqS9HB7lT0Z5dLn/wQ8f/HjNvW5b96iC+t4M
+         tumuzDUElM/RePZLtzTElcEMF3Sk2b2OUJTOsijDKufbLu//1SeRSkLQNtcE2W0WNJVz
+         xug5+R8carh7PBVn44EHSbULNuBY3NeeI/bxeY/RMZNTt/kKNmT/uRUWGagdvz93HMSS
+         nqjQ3sYTky+TlAWt5E1aKyFYDGa2JLH1//8fP0RL6XIpEH3Ibo+XneqKpqFTvuhMIpkh
+         Mxk2vMOQPz1BQYpRUC49y/IV+CE+L5Z34CAA3Uy2C9FhsAoHQ0a66oHWj9Gd9rltaOic
+         Ospg==
+X-Forwarded-Encrypted: i=1; AFNElJ+CBFcjKnzb7WjoPdT1qSzGErQYLBOCi91nLnwtCCRbWKQwUQ/43fn9B6tbJvE3VAvJOvtY50masScbcEKmAA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKmQ9W/eA5y5I35XiorNENxAZyJbsBti59gT2VwGN1Qd+zM90g
+	76JaGhlyvVKpBUsg8p4rmwZI6RCLDPp8rIYhy9MbNSvW2tDWn0pvP2aVF0lLJgJu7/o=
+X-Gm-Gg: AeBDiesp0c3AofqoBL0/XmjRzNEtepCUh2XtuImL1FUXgyY6XxAv80icVUfcGMF5YGB
+	ZTCkV+ox1WbhMbKDED8qtYuc0825XBiSUmGleMJQ3VTOFdRSCPO26cMB3arbVZ65U+NOlhdmZtd
+	9e4zOy9ULnopfyX/7s6AoOVqvOa/S+aHmaRpGqDA7VL2rvZpT8TJGcU5MIBZU7vJ7lc67G706GX
+	RXrhOEInPIuCYkzDSSrQypeCeW8xcSU1BKYYEt4vM4ixp4nIShTQYZ2TZ64DRVuvorOUbP8F02H
+	3df5Nlfv4cAGIwKwoxoSAv2kCEiHqxqcR2SymY6EAdxyqpKQ1z3kXGKF9cMOLnz26HDpJOO0IMO
+	+6cHAGJlHygAYnoaQnmtBbt3NGNzhhBQ4izBzX12K65TdvejoM673ptFHymHKiQY+1QxMrKlpHk
+	N9pop4Nqk39AkpDpJrqH38zBuwyT/aJA6APS+8EG+gHeMaRCdw0WuB8uHP5PIwHh5muvqHjKM/z
+	emqH0caUrKRpfZ8o0gboS0jKE36F6QCU4aORG8QBA==
+X-Received: by 2002:a05:6a00:bd89:b0:82f:1b42:11d0 with SMTP id d2e1a72fcca58-834fdb14acbmr1695024b3a.15.1777525061690;
+        Wed, 29 Apr 2026 21:57:41 -0700 (PDT)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed80df96sm3595073b3a.54.2026.04.29.21.57.27
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed80df96sm3595073b3a.54.2026.04.29.21.57.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 21:57:31 -0700 (PDT)
+        Wed, 29 Apr 2026 21:57:41 -0700 (PDT)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
 	Dan Callaghan <dan.callaghan@morsemicro.com>,
-	Arien Judge <arien.judge@morsemicro.com>
+	Arien Judge <arien.judge@morsemicro.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>
 Cc: ayman.grais@morsemicro.com,
 	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless-next v2 11/31] wifi: mm81x: add hw.h
-Date: Thu, 30 Apr 2026 14:55:37 +1000
-Message-ID: <20260430045615.334669-12-lachlan.hodges@morsemicro.com>
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH wireless-next v2 12/31] wifi: mm81x: add mac.c
+Date: Thu, 30 Apr 2026 14:55:38 +1000
+Message-ID: <20260430045615.334669-13-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
 References: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
@@ -98,36 +103,38 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1117D49D68C
+X-Rspamd-Queue-Id: 129E849D6B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [1.44 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[morsemicro-com.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35659-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35658-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[sipsolutions.net,morsemicro.com,kernel.org,gmail.com,google.com];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[morsemicro-com.20251104.gappssmtp.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,morsemicro.com:mid,morsemicro.com:email]
+	TAGGED_RCPT(0.00)[linux-wireless,lkml];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[morsemicro-com.20251104.gappssmtp.com:dkim,rate.ss:url,timeout.work:url,morsemicro.com:mid,morsemicro.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,rate.bw:url]
 
 (Patches split per file for review, will be a single commit alongside
 SDIO ids once review is complete. See cover letter for more
@@ -135,192 +142,2460 @@ information)
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- drivers/net/wireless/morsemicro/mm81x/hw.h | 176 +++++++++++++++++++++
- 1 file changed, 176 insertions(+)
- create mode 100644 drivers/net/wireless/morsemicro/mm81x/hw.h
+ drivers/net/wireless/morsemicro/mm81x/mac.c | 2444 +++++++++++++++++++
+ 1 file changed, 2444 insertions(+)
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/mac.c
 
-diff --git a/drivers/net/wireless/morsemicro/mm81x/hw.h b/drivers/net/wireless/morsemicro/mm81x/hw.h
+diff --git a/drivers/net/wireless/morsemicro/mm81x/mac.c b/drivers/net/wireless/morsemicro/mm81x/mac.c
 new file mode 100644
-index 000000000000..e22948f037bf
+index 000000000000..e4a6900f635d
 --- /dev/null
-+++ b/drivers/net/wireless/morsemicro/mm81x/hw.h
-@@ -0,0 +1,176 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/drivers/net/wireless/morsemicro/mm81x/mac.c
+@@ -0,0 +1,2444 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright (c) 2017-2026 Morse Micro
 + */
-+
-+#ifndef _MM81X_HW_H_
-+#define _MM81X_HW_H_
-+
-+#include <linux/gpio/consumer.h>
 +#include "core.h"
-+#include "command_defs.h"
-+
-+/* This should be at a fixed location for a family of chipset */
-+#define MM8108_REG_CHIP_ID 0x00002d20
-+
-+#define MM81X_SDIO_RW_ADDR_BOUNDARY_MASK ((u32)0xFFFF0000)
-+
-+#define MM81X_CONFIG_ACCESS_1BYTE 0
-+#define MM81X_CONFIG_ACCESS_2BYTE 1
-+#define MM81X_CONFIG_ACCESS_4BYTE 2
-+
-+#define MM81X_REG_TRGR_BASE(mors) ((mors)->regs->trgr_base_address)
-+#define MM81X_REG_TRGR1_STS(mors) (MM81X_REG_TRGR_BASE(mors) + 0x00)
-+#define MM81X_REG_TRGR1_SET(mors) (MM81X_REG_TRGR_BASE(mors) + 0x04)
-+#define MM81X_REG_TRGR1_CLR(mors) (MM81X_REG_TRGR_BASE(mors) + 0x08)
-+#define MM81X_REG_TRGR1_EN(mors) (MM81X_REG_TRGR_BASE(mors) + 0x0C)
-+#define MM81X_REG_TRGR2_STS(mors) (MM81X_REG_TRGR_BASE(mors) + 0x10)
-+#define MM81X_REG_TRGR2_SET(mors) (MM81X_REG_TRGR_BASE(mors) + 0x14)
-+#define MM81X_REG_TRGR2_CLR(mors) (MM81X_REG_TRGR_BASE(mors) + 0x18)
-+#define MM81X_REG_TRGR2_EN(mors) (MM81X_REG_TRGR_BASE(mors) + 0x1C)
-+
-+#define MM81X_REG_INT_BASE(mors) ((mors)->regs->irq_base_address)
-+#define MM81X_REG_INT1_STS(mors) (MM81X_REG_INT_BASE(mors) + 0x00)
-+#define MM81X_REG_INT1_SET(mors) (MM81X_REG_INT_BASE(mors) + 0x04)
-+#define MM81X_REG_INT1_CLR(mors) (MM81X_REG_INT_BASE(mors) + 0x08)
-+#define MM81X_REG_INT1_EN(mors) (MM81X_REG_INT_BASE(mors) + 0x0C)
-+#define MM81X_REG_INT2_STS(mors) (MM81X_REG_INT_BASE(mors) + 0x10)
-+#define MM81X_REG_INT2_SET(mors) (MM81X_REG_INT_BASE(mors) + 0x14)
-+#define MM81X_REG_INT2_CLR(mors) (MM81X_REG_INT_BASE(mors) + 0x18)
-+#define MM81X_REG_INT2_EN(mors) (MM81X_REG_INT_BASE(mors) + 0x1C)
-+
-+#define MM81X_REG_CHIP_ID(mors) ((mors)->regs->chip_id_address)
-+
-+#define MM81X_REG_MSI(mors) ((mors)->regs->msi_address)
-+#define MM81X_REG_MSI_HOST_INT(mors) ((mors)->regs->msi_value)
-+
-+#define MM81X_REG_HOST_MAGIC_VALUE(mors) ((mors)->regs->magic_num_value)
-+
-+#define MM81X_REG_RESET(mors) ((mors)->regs->cpu_reset_address)
-+#define MM81X_REG_RESET_VALUE(mors) ((mors)->regs->cpu_reset_value)
-+
-+#define MM81X_REG_HOST_MANIFEST_PTR(mors) ((mors)->regs->manifest_ptr_address)
-+
-+#define MM81X_REG_EARLY_CLK_CTRL_VALUE(mors) \
-+	((mors)->regs->early_clk_ctrl_value)
-+
-+#define MM81X_REG_CLK_CTRL(mors) ((mors)->regs->clk_ctrl_address)
-+#define MM81X_REG_CLK_CTRL_VALUE(mors) ((mors)->regs->clk_ctrl_value)
-+
-+#define MM81X_REG_BOOT_ADDR(mors) ((mors)->regs->boot_address)
-+#define MM81X_REG_BOOT_ADDR_VALUE(mors) ((mors)->regs->boot_value)
-+
-+#define MM81X_REG_AON_ADDR(mors) ((mors)->regs->aon)
-+#define MM81X_REG_AON_COUNT(mors) ((mors)->regs->aon_count)
-+#define MM81X_REG_AON_LATCH_ADDR(mors) ((mors)->regs->aon_latch)
-+#define MM81X_REG_AON_LATCH_MASK(mors) ((mors)->regs->aon_latch_mask)
-+#define MM81X_REG_AON_USB_RESET(mors) ((mors)->regs->aon_reset_usb_value)
-+
-+/* Bit 17 to 24 reserved for the beacon VIF 0 to 7 interrupts */
-+#define MM81X_INT_BEACON_VIF_MASK_ALL (GENMASK(24, 17))
-+#define MM81X_INT_BEACON_BASE_NUM (17)
-+
-+/* PV0 NDP probe interrupts (VIF 0 and 1). */
-+#define MM81X_INT_NDP_PROBE_REQ_PV0_VIF_MASK_ALL (GENMASK(26, 25))
-+#define MM81X_INT_NDP_PROBE_REQ_PV0_BASE_NUM (25)
-+
-+/* Bit 27 Chip to Host stop notify */
-+#define MM81X_INT_HW_STOP_NOTIFICATION_NUM (27)
-+#define MM81X_INT_HW_STOP_NOTIFICATION BIT(MM81X_INT_HW_STOP_NOTIFICATION_NUM)
-+
-+#define CHIP_TYPE_SILICON 0x0
-+
-+/* Chip ID */
-+#define MM8108XX_ID 0x9
-+
-+/* Chip Rev */
-+#define MM8108B2_REV 0x8
-+
-+/* Chip Rev String */
-+#define MM8108B_STRING "b"
-+#define MM8108B2_REV_STRING MM8108B_STRING "2"
-+
-+/* Chip ID for MM8108 */
-+#define MM8108B2_ID \
-+	MM81X_DEVICE_ID(MM8108XX_ID, MM8108B2_REV, CHIP_TYPE_SILICON)
-+
-+#define FW_RAM_ONLY_STRING ""
-+#define FW_ROM_LINKED_STRING "-rl"
-+#define FW_ROM_ALL_STRING "-ro"
++#include <linux/slab.h>
++#include <linux/jiffies.h>
++#include <linux/crc32.h>
++#include <net/mac80211.h>
++#include <asm/div64.h>
++#include <linux/kernel.h>
++#include "hif.h"
++#include "mac.h"
++#include "bus.h"
++#include "ps.h"
++#include "rc.h"
 +
 +/*
-+ * Minimum time we must wait between attempting to reload the HW after a
-+ * stop notification
++ * Arbitrary size limit for the filter command address list, to ensure that
++ * the command does not exceed page/MTU size. This will be far greater than
++ * the number of filters supported by the firmware.
 + */
-+#define HW_RELOAD_AFTER_STOP_WINDOW 5
++#define MCAST_FILTER_COUNT_MAX (1024 / sizeof(filter->addr_list[0]))
 +
-+enum host_table_firmware_flags {
-+	MM81X_FW_FLAGS_SUPPORT_S1G = BIT(0),
-+	MM81X_FW_FLAGS_BUSY_ACTIVE_LOW = BIT(1),
-+	MM81X_FW_FLAGS_REPORTS_TX_BEACON_COMPLETION = BIT(2),
-+	MM81X_FW_FLAGS_SUPPORT_HW_SCAN = BIT(3),
-+	MM81X_FW_FLAGS_SUPPORT_CHIP_HALT_IRQ = BIT(4),
++/* Calculate average RSSI for Rx status */
++#define CALC_AVG_RSSI(_avg, _sample) ((((_avg) * 9 + (_sample)) / 10))
++
++/*
++ * When automatically trying MCS0 before MCS10, this is how many
++ * MCS0 attempts to make
++ */
++#define MCS0_BEFORE_MCS10_COUNT (1)
++
++/* Maximum TX power (default) */
++#define MAX_TX_POWER_MBM (2200)
++
++/* Default queue count */
++#define MM81X_HW_QUEUE_COUNT (4)
++
++/* Max rates per skb */
++#define MM81X_HW_MAX_RATES (4)
++
++/* Max reported rates */
++#define MM81X_HW_MAX_REPORT_RATES (4)
++
++/* Max rate attempts */
++#define MM81X_HW_MAX_RATE_TRIES (1)
++
++/* Max sk pacing shift */
++#define MM81X_HW_TX_SK_PACING_SHIFT (3)
++
++/* NSS/MCS map values */
++#define MM81X_NSS_MCS_BYTE_0 0xfe /* 1SS */
++#define MM81X_NSS_MCS_BYTE_1 0x00
++#define MM81X_NSS_MCS_BYTE_2 0xfc /* 1SS */
++#define MM81X_NSS_MCS_BYTE_3 0x01
++#define MM81X_NSS_MCS_BYTE_4 0x00
++
++/* HW restart delay time before terminating hardware IF work items */
++#define MM81X_HW_RESTART_DELAY_MS 20
++
++/* clang-format off */
++
++/* mm81x chips do not support 16MHz */
++#define CHANS1G(channel, frequency, offset) \
++{                                                    \
++	.band            = NL80211_BAND_S1GHZ,       \
++	.center_freq     = (frequency),              \
++	.freq_offset     = (offset),                 \
++	.hw_value        = (channel),                \
++	.flags           = IEEE80211_CHAN_NO_16MHZ,  \
++	.max_antenna_gain = 0,                       \
++	.max_power        = 30,                      \
++}
++
++static struct ieee80211_channel mors_s1ghz_channels[] = {
++	CHANS1G(1, 902, 500),
++	CHANS1G(3, 903, 500),
++	CHANS1G(5, 904, 500),
++	CHANS1G(7, 905, 500),
++	CHANS1G(9, 906, 500),
++	CHANS1G(11, 907, 500),
++	CHANS1G(13, 908, 500),
++	CHANS1G(15, 909, 500),
++	CHANS1G(17, 910, 500),
++	CHANS1G(19, 911, 500),
++	CHANS1G(21, 912, 500),
++	CHANS1G(23, 913, 500),
++	CHANS1G(25, 914, 500),
++	CHANS1G(27, 915, 500),
++	CHANS1G(29, 916, 500),
++	CHANS1G(31, 917, 500),
++	CHANS1G(33, 918, 500),
++	CHANS1G(35, 919, 500),
++	CHANS1G(37, 920, 500),
++	CHANS1G(39, 921, 500),
++	CHANS1G(41, 922, 500),
++	CHANS1G(43, 923, 500),
++	CHANS1G(45, 924, 500),
++	CHANS1G(47, 925, 500),
++	CHANS1G(49, 926, 500),
++	CHANS1G(51, 927, 500),
 +};
 +
-+struct host_table {
-+	__le32 magic_number;
-+	__le32 fw_version_number;
-+	__le32 host_flags;
-+	__le32 firmware_flags;
-+	__le32 memcmd_cmd_addr;
-+	__le32 memcmd_resp_addr;
-+	__le32 ext_host_tbl_addr;
++/* clang-format on */
++
++static struct ieee80211_supported_band mors_band_s1ghz = {
++	.band = NL80211_BAND_S1GHZ,
++	.s1g_cap.s1g = true,
++	.channels = mors_s1ghz_channels,
++	.n_channels = ARRAY_SIZE(mors_s1ghz_channels),
++	.bitrates = NULL,
++	.n_bitrates = 0,
++	.s1g_cap.cap[4] = 0x80 /* STA type sensor only for AP & STA */
++};
++
++static struct ieee80211_iface_limit mors_if_limits[] = {
++	{
++		.max = MM81X_MAX_IF,
++		.types = BIT(NL80211_IFTYPE_STATION) | BIT(NL80211_IFTYPE_AP),
++	},
++};
++
++static struct ieee80211_iface_combination mors_if_combs[] = {
++	{
++		.limits = mors_if_limits,
++		.n_limits = ARRAY_SIZE(mors_if_limits),
++		.max_interfaces = MM81X_MAX_IF,
++		.num_different_channels = 1,
++	},
++};
++
++/* Convert from a time in time units (1024us) to us */
++#define MM81X_TU_TO_US(x) ((x) * 1024UL)
++
++/* Convert from a time in time units (1024us) to ms */
++#define MM81X_TU_TO_MS(x) (MM81X_TU_TO_US(x) / 1000UL)
++
++/* Default time to dwell on a scan channel */
++#define MM81X_HWSCAN_DEFAULT_DWELL_TIME_MS (30)
++
++/* Default time to dwell on a scan channel for passive scan */
++#define MM81X_HWSCAN_DEFAULT_PASSIVE_DWELL_TIME_MS (110)
++
++/* Default time to dwell on home channel, in between scan channels */
++#define MM81X_HWSCAN_DEFAULT_DWELL_ON_HOME_MS (200)
++
++/* Typical time it takes to send the probe */
++#define MM81X_HWSCAN_PROBE_DELAY_MS (30)
++
++/* A margin to account for event/command processing */
++#define MM81X_HWSCAN_TIMEOUT_OVERHEAD_MS (2000)
++
++/* Scan channel frequency mask */
++#define HW_SCAN_CH_LIST_FREQ_KHZ GENMASK(19, 0)
++
++/*
++ * Scan channel bandwidth mask.
++ * Encoded as: 0 = 1MHz, 1 = 2MHz, 2 = 4MHz, 3 = 8MHz
++ */
++#define HW_SCAN_CH_LIST_OP_BW GENMASK(21, 20)
++
++/*
++ * Scan channel primary channel width.
++ * Encoded as: 0 = 1MHz, 1 = 2MHz
++ */
++#define HW_SCAN_CH_LIST_PRIM_CH_WIDTH BIT(22)
++
++/* Index into power_list for tx power of channel */
++#define HW_SCAN_CH_LIST_PWR_LIST_IDX GENMASK(31, 26)
++
++struct hw_scan_tlv_hdr {
++	__le16 tag;
++	__le16 len;
 +} __packed;
 +
-+struct mm81x_regs {
-+	u32 chip_id_address;
-+	u32 irq_base_address;
-+	u32 trgr_base_address;
-+	u32 cpu_reset_address;
-+	u32 cpu_reset_value;
-+	u32 msi_address;
-+	u32 msi_value;
-+	u32 manifest_ptr_address;
-+	u32 magic_num_value;
-+	u32 clk_ctrl_address;
-+	u32 clk_ctrl_value;
-+	u32 early_clk_ctrl_value;
-+	u32 boot_address;
-+	u32 boot_value;
-+	u32 pager_base_address;
-+	u32 aon_latch;
-+	u32 aon_latch_mask;
-+	u32 aon_reset_usb_value;
-+	u32 aon;
-+	u8 aon_count;
++struct hw_scan_tlv_channel_list {
++	struct hw_scan_tlv_hdr hdr;
++	__le32 channels[];
++} __packed;
++
++struct hw_scan_tlv_power_list {
++	struct hw_scan_tlv_hdr hdr;
++	s32 tx_power_qdbm[];
++} __packed;
++
++struct hw_scan_tlv_probe_req {
++	struct hw_scan_tlv_hdr hdr;
++	/* Probe request frame template (including SSIDs) */
++	u8 buf[];
++} __packed;
++
++struct hw_scan_tlv_dwell_on_home {
++	struct hw_scan_tlv_hdr hdr;
++	/* Time to dwell on home between scan channels */
++	__le32 home_dwell_time_ms;
++} __packed;
++
++#define DOT11AH_BA_MAX_MPDU_PER_AMPDU (32)
++
++/* wiphy scan params */
++#define MM81X_MAX_SCAN_IE_LEN 512
++#define MM81X_MAX_SCAN_SSIDS 1
++#define MM81X_MAX_REMAIN_ON_CHAN_DURATION 10000
++
++static int mm81x_tx_h_get_prim_bw(struct cfg80211_chan_def *chandef)
++{
++	return chandef->s1g_primary_2mhz ? 2 : 1;
++}
++
++static bool mm81x_reg_h_cc_equal(const char *cc1, const char *cc2)
++{
++	return (cc1[0] == cc2[0]) && (cc1[1] == cc2[1]);
++}
++
++static bool mm81x_tx_h_pkt_over_rts_threshold(struct mm81x *mors,
++					      struct ieee80211_tx_info *info,
++					      struct sk_buff *skb)
++{
++	u8 ccmp_len;
++
++	if (!info->control.hw_key)
++		return ((skb->len + FCS_LEN) > mors->rts_threshold);
++
++	if (info->control.hw_key->keylen == 32)
++		ccmp_len =
++			IEEE80211_CCMP_256_HDR_LEN + IEEE80211_CCMP_256_MIC_LEN;
++	else if (info->control.hw_key->keylen == 16)
++		ccmp_len = IEEE80211_CCMP_HDR_LEN + IEEE80211_CCMP_MIC_LEN;
++	else
++		ccmp_len = 0;
++
++	return ((skb->len + FCS_LEN + ccmp_len) > mors->rts_threshold);
++}
++
++static bool mm81x_tx_h_ps_filtered_for_sta(struct mm81x *mors,
++					   struct sk_buff *skb,
++					   struct ieee80211_sta *sta)
++{
++	struct mm81x_sta *mors_sta;
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++
++	if (!sta)
++		return false;
++
++	mors_sta = (struct mm81x_sta *)sta->drv_priv;
++
++	if (!mors_sta->tx_ps_filter_en)
++		return false;
++
++	dev_dbg(mors->dev, "Frame for sta[%pM] PS filtered", mors_sta->addr);
++
++	info->flags |= IEEE80211_TX_STAT_TX_FILTERED;
++	info->flags &= ~IEEE80211_TX_CTL_AMPDU;
++
++	ieee80211_tx_status_skb(mors->hw, skb);
++	return true;
++}
++
++static void mm81x_mac_check_fw_disabled_chans(struct ieee80211_hw *hw)
++{
++	int ret = 0;
++	u32 i;
++	struct mm81x *mors = hw->priv;
++	struct host_cmd_resp_get_disabled_channels *resp;
++	u32 resp_len = sizeof(struct host_cmd_disabled_channel_entry) *
++			       ARRAY_SIZE(mors_s1ghz_channels) +
++		       sizeof(*resp);
++
++	resp = kzalloc(resp_len, GFP_KERNEL);
++	if (!resp) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	ret = mm81x_cmd_get_disabled_channels(mors, resp, resp_len);
++	if (ret)
++		goto out;
++
++	for (i = 0; i < ARRAY_SIZE(mors_s1ghz_channels); i++) {
++		struct ieee80211_channel *ch = &mors_s1ghz_channels[i];
++
++		if (ch->flags & IEEE80211_CHAN_DISABLED)
++			continue;
++
++		ch->flags &= ~IEEE80211_CHAN_S1G_NO_PRIMARY;
++	}
++
++	for (i = 0; i < le32_to_cpu(resp->n_channels); i++) {
++		struct ieee80211_channel *ch;
++		struct host_cmd_disabled_channel_entry *entry =
++			&resp->channels[i];
++
++		if (entry->bw_mhz != 1)
++			continue;
++
++		ch = ieee80211_get_channel_khz(
++			hw->wiphy,
++			KHZ100_TO_KHZ(le16_to_cpu(entry->freq_100khz)));
++		if (!ch)
++			continue;
++
++		ch->flags |= IEEE80211_CHAN_S1G_NO_PRIMARY;
++		dev_dbg(mors->dev, "set NO_PRIMARY on %u KHz",
++			ieee80211_channel_to_khz(ch));
++	}
++
++out:
++	if (ret)
++		dev_err(mors->dev, "failed to set disabled primary channels");
++
++	kfree(resp);
++}
++
++static int mm81x_mac_ops_start(struct ieee80211_hw *hw)
++{
++	struct mm81x *mors = hw->priv;
++
++	mors->started = true;
++	return 0;
++}
++
++static int mm81x_tx_h_get_max_bw(struct mm81x *mors)
++{
++	return MM81X_FW_SUPP(&mors->fw_caps, 8MHZ) ? 8 :
++	       MM81X_FW_SUPP(&mors->fw_caps, 4MHZ) ? 4 :
++	       MM81X_FW_SUPP(&mors->fw_caps, 2MHZ) ? 2 :
++						     1;
++}
++
++static void mm81x_mac_caps_init(struct mm81x *mors)
++{
++	struct mm81x_fw_caps *fw_caps = &mors->fw_caps;
++	struct ieee80211_sta_s1g_cap *s1g = &mors_band_s1ghz.s1g_cap;
++
++#define __FW_CAP_N(_n, _cap, _bit)                \
++	do {                                      \
++		if (MM81X_FW_SUPP(fw_caps, _cap)) \
++			s1g->cap[_n] |= (_bit);   \
++	} while (0)
++
++#define FW_CAP0(_cap, _bit) __FW_CAP_N(0, _cap, _bit)
++#define FW_CAP3(_cap, _bit) __FW_CAP_N(3, _cap, _bit)
++#define FW_CAP5(_cap, _bit) __FW_CAP_N(5, _cap, _bit)
++#define FW_CAP6(_cap, _bit) __FW_CAP_N(6, _cap, _bit)
++#define FW_CAP7(_cap, _bit) __FW_CAP_N(7, _cap, _bit)
++#define FW_CAP8(_cap, _bit) __FW_CAP_N(8, _cap, _bit)
++#define FW_CAP9(_cap, _bit) __FW_CAP_N(9, _cap, _bit)
++
++	FW_CAP0(S1G_LONG, S1G_CAP0_S1G_LONG);
++
++	s1g->cap[0] |= S1G_CAP0_SGI_1MHZ;
++	if (MM81X_FW_SUPP(fw_caps, SGI)) {
++		FW_CAP0(2MHZ, S1G_CAP0_SGI_2MHZ);
++		FW_CAP0(4MHZ, S1G_CAP0_SGI_4MHZ);
++		FW_CAP0(8MHZ, S1G_CAP0_SGI_8MHZ);
++	}
++
++	if (MM81X_FW_SUPP(fw_caps, 8MHZ))
++		s1g->cap[0] |= S1G_SUPP_CH_WIDTH_8;
++	else if (MM81X_FW_SUPP(fw_caps, 4MHZ))
++		s1g->cap[0] |= S1G_SUPP_CH_WIDTH_4;
++	else if (MM81X_FW_SUPP(fw_caps, 2MHZ))
++		s1g->cap[0] |= S1G_SUPP_CH_WIDTH_2;
++
++	FW_CAP3(RD_RESPONDER, S1G_CAP3_RD_RESPONDER);
++	FW_CAP3(LONG_MPDU, S1G_CAP3_MAX_MPDU_LEN);
++
++	FW_CAP5(AMSDU, S1G_CAP5_AMSDU);
++	FW_CAP5(AMPDU, S1G_CAP5_AMPDU);
++	FW_CAP5(ASYMMETRIC_BA_SUPPORT, S1G_CAP5_ASYMMETRIC_BA);
++	FW_CAP5(FLOW_CONTROL, S1G_CAP5_FLOW_CONTROL);
++
++	FW_CAP6(OBSS_MITIGATION, S1G_CAP6_OBSS_MITIGATION);
++	FW_CAP6(FRAGMENT_BA, S1G_CAP6_FRAGMENT_BA);
++	FW_CAP6(NDP_PSPOLL, S1G_CAP6_NDP_PS_POLL);
++	FW_CAP6(TXOP_SHARING_IMPLICIT_ACK, S1G_CAP6_TXOP_SHARING_IMP_ACK);
++	FW_CAP6(HTC_VHT_MFB, S1G_CAP6_VHT_LINK_ADAPT);
++
++	FW_CAP7(TACK_AS_PSPOLL, S1G_CAP7_TACK_AS_PS_POLL);
++	FW_CAP7(DUPLICATE_1MHZ, S1G_CAP7_DUP_1MHZ);
++	FW_CAP7(MCS_NEGOTIATION, S1G_CAP7_MCS_NEGOTIATION);
++	FW_CAP7(1MHZ_CONTROL_RESPONSE_PREAMBLE,
++		S1G_CAP7_1MHZ_CTL_RESPONSE_PREAMBLE);
++	FW_CAP7(SECTOR_TRAINING, S1G_CAP7_SECTOR_TRAINING_OPERATION);
++	FW_CAP7(TMP_PS_MODE_SWITCH, S1G_CAP7_TEMP_PS_MODE_SWITCH);
++
++	FW_CAP8(BDT, S1G_CAP8_BDT);
++
++	FW_CAP9(LINK_ADAPTATION_WO_NDP_CMAC,
++		S1G_CAP9_LINK_ADAPT_PER_CONTROL_RESPONSE);
++
++	/* 1SS MCS 9 for Rx / Tx map */
++	s1g->nss_mcs[0] = MM81X_NSS_MCS_BYTE_0;
++	s1g->nss_mcs[1] = MM81X_NSS_MCS_BYTE_1;
++	s1g->nss_mcs[2] = MM81X_NSS_MCS_BYTE_2;
++	s1g->nss_mcs[3] = MM81X_NSS_MCS_BYTE_3;
++	s1g->nss_mcs[4] = MM81X_NSS_MCS_BYTE_4;
++
++#undef FW_CAP0
++#undef FW_CAP3
++#undef FW_CAP5
++#undef FW_CAP6
++#undef FW_CAP7
++#undef FW_CAP8
++#undef FW_CAP9
++#undef __FW_CAP_N
++}
++
++static void mm81x_mac_beacon_irq_enable(struct mm81x_vif *mors_vif, bool enable)
++{
++	struct mm81x *mors = mm81x_vif_to_mors(mors_vif);
++	u8 beacon_irq_num = MM81X_INT_BEACON_BASE_NUM + mors_vif->id;
++
++	enable ? set_bit(beacon_irq_num, &mors->beacon_irqs_enabled) :
++		 clear_bit(beacon_irq_num, &mors->beacon_irqs_enabled);
++
++	mm81x_hw_irq_enable(mors, beacon_irq_num, enable);
++}
++
++static void mm81x_beacon_h_fill_tx_info(struct mm81x *mors,
++					struct mm81x_skb_tx_info *tx_info,
++					struct mm81x_vif *mors_vif,
++					int tx_bw_mhz)
++{
++	enum dot11_bandwidth bw_idx =
++		mm81x_ratecode_bw_mhz_to_bw_index(tx_bw_mhz);
++	enum mm81x_rate_preamble pream = MM81X_RATE_PREAMBLE_S1G_SHORT;
++
++	tx_info->flags |=
++		cpu_to_le32(MM81X_TX_CONF_FLAGS_VIF_ID_SET(mors_vif->id));
++
++	if (bw_idx == DOT11_BANDWIDTH_1MHZ)
++		pream = MM81X_RATE_PREAMBLE_S1G_1M;
++
++	tx_info->rates[0].count = 1;
++	tx_info->rates[1].count = 0;
++	tx_info->rates[0].mm81x_ratecode =
++		mm81x_ratecode_init(bw_idx, 0, 0, pream);
++
++	if (mors->firmware_flags & MM81X_FW_FLAGS_REPORTS_TX_BEACON_COMPLETION)
++		tx_info->flags |=
++			cpu_to_le32(MM81X_TX_CONF_FLAGS_IMMEDIATE_REPORT);
++}
++
++static void mm81x_mac_beacon_tasklet(struct tasklet_struct *t)
++{
++	struct mm81x_vif *mors_vif =
++		from_tasklet(mors_vif, t, u.ap.beacon_tasklet);
++	struct mm81x *mors = mm81x_vif_to_mors(mors_vif);
++	struct mm81x_skbq *mq;
++	struct sk_buff *beacon;
++	struct ieee80211_vif *vif = mm81x_vif_to_ieee80211_vif(mors_vif);
++	struct mm81x_skb_tx_info tx_info = { 0 };
++	int num_bcn_vifs = atomic_read(&mors->num_bcn_vifs);
++
++	mq = mm81x_hif_get_tx_beacon_queue(mors);
++	if (!mq) {
++		dev_err(mors->dev, "no matching beacon Q found");
++		return;
++	}
++
++	if (mm81x_skbq_count(mq) >= num_bcn_vifs) {
++		dev_err(mors->dev,
++			"previous beacon not consumed, dropping req [id:%d]",
++			mors_vif->id);
++		return;
++	}
++
++	beacon = ieee80211_beacon_get(mors->hw, vif, false);
++	if (!beacon) {
++		dev_err(mors->dev, "failed to retrieve beacon");
++		return;
++	}
++
++	mm81x_beacon_h_fill_tx_info(mors, &tx_info, mors_vif,
++				    mm81x_tx_h_get_prim_bw(&mors->chandef));
++	mm81x_skbq_skb_tx(mq, &beacon, &tx_info, MM81X_SKB_CHAN_BEACON);
++}
++
++void mm81x_mac_beacon_irq_handle(struct mm81x *mors, u32 status)
++{
++	int vif_id;
++	unsigned long masked_status = (status & mors->beacon_irqs_enabled) >>
++				      MM81X_INT_BEACON_BASE_NUM;
++
++	guard(rcu)();
++	for_each_set_bit(vif_id, &masked_status, MM81X_MAX_IF) {
++		struct mm81x_vif *mors_vif;
++		struct ieee80211_vif *vif;
++
++		vif = mm81x_rcu_dereference_vif_id(mors, vif_id, true);
++		if (!vif)
++			continue;
++
++		mors_vif = ieee80211_vif_to_mors_vif(vif);
++		tasklet_schedule(&mors_vif->u.ap.beacon_tasklet);
++	}
++}
++
++static void mm81x_mac_beacon_init(struct mm81x_vif *mors_vif)
++{
++	struct mm81x *mors = mm81x_vif_to_mors(mors_vif);
++
++	tasklet_setup(&mors_vif->u.ap.beacon_tasklet, mm81x_mac_beacon_tasklet);
++	mm81x_mac_beacon_irq_enable(mors_vif, true);
++	atomic_inc(&mors->num_bcn_vifs);
++}
++
++static struct hw_scan_tlv_hdr mm81x_hw_scan_h_pack_tlv_hdr(u16 tag, u16 len)
++{
++	struct hw_scan_tlv_hdr hdr = { .tag = cpu_to_le16(tag),
++				       .len = cpu_to_le16(len) };
++	return hdr;
++}
++
++static __le32 mm81x_hw_scan_h_pack_channel(struct ieee80211_channel *chan,
++					   u8 pwr_idx)
++{
++	__le32 packed = 0;
++	u32 freq_khz = ieee80211_channel_to_khz(chan);
++
++	packed |= le32_encode_bits(freq_khz, HW_SCAN_CH_LIST_FREQ_KHZ);
++	packed |= le32_encode_bits(mm81x_ratecode_bw_mhz_to_bw_index(1),
++				   HW_SCAN_CH_LIST_OP_BW);
++	packed |= le32_encode_bits(mm81x_ratecode_bw_mhz_to_bw_index(1),
++				   HW_SCAN_CH_LIST_PRIM_CH_WIDTH);
++	packed |= le32_encode_bits(pwr_idx, HW_SCAN_CH_LIST_PWR_LIST_IDX);
++
++	return packed;
++}
++
++static u8 *
++mm81x_hw_scan_h_add_channel_list_tlv(u8 *buf,
++				     struct mm81x_hw_scan_params *params)
++{
++	int i;
++	struct hw_scan_tlv_channel_list *ch_list =
++		(struct hw_scan_tlv_channel_list *)buf;
++
++	ch_list->hdr = mm81x_hw_scan_h_pack_tlv_hdr(
++		HOST_CMD_HW_SCAN_TLV_TAG_CHAN_LIST,
++		params->num_chans * sizeof(ch_list->channels[0]));
++
++	for (i = 0; i < params->num_chans; i++) {
++		struct ieee80211_channel *chan = params->channels[i].channel;
++
++		ch_list->channels[i] = mm81x_hw_scan_h_pack_channel(
++			chan, params->channels[i].power_idx);
++	}
++
++	return (u8 *)&ch_list->channels[i];
++}
++
++static u8 *
++mm81x_hw_scan_h_add_power_list_tlv(u8 *buf, struct mm81x_hw_scan_params *params)
++{
++	int i;
++	struct hw_scan_tlv_power_list *pwr_list =
++		(struct hw_scan_tlv_power_list *)buf;
++	size_t size = sizeof(pwr_list->tx_power_qdbm[0]) * params->n_powers;
++
++	pwr_list->hdr = mm81x_hw_scan_h_pack_tlv_hdr(
++		HOST_CMD_HW_SCAN_TLV_TAG_POWER_LIST, size);
++
++	for (i = 0; i < params->n_powers; i++)
++		pwr_list->tx_power_qdbm[i] = params->powers_qdbm[i];
++
++	return (u8 *)&pwr_list->tx_power_qdbm[i];
++}
++
++static u8 *
++mm81x_hw_scan_h_add_probe_req_tlv(u8 *buf, struct mm81x_hw_scan_params *params)
++{
++	struct sk_buff *skb = params->probe_req;
++	struct hw_scan_tlv_probe_req *probe_req =
++		(struct hw_scan_tlv_probe_req *)buf;
++
++	probe_req->hdr = mm81x_hw_scan_h_pack_tlv_hdr(
++		HOST_CMD_HW_SCAN_TLV_TAG_PROBE_REQ, skb->len);
++	memcpy(probe_req->buf, skb->data, skb->len);
++
++	return buf + sizeof(*probe_req) + skb->len;
++}
++
++static u8 *
++mm81x_hw_scan_h_insert_dwell_time_tlv(u8 *buf,
++				      struct mm81x_hw_scan_params *params)
++{
++	struct hw_scan_tlv_dwell_on_home *dwell =
++		(struct hw_scan_tlv_dwell_on_home *)buf;
++
++	dwell->hdr = mm81x_hw_scan_h_pack_tlv_hdr(
++		HOST_CMD_HW_SCAN_TLV_TAG_DWELL_ON_HOME,
++		sizeof(*dwell) - sizeof(dwell->hdr));
++	dwell->home_dwell_time_ms = cpu_to_le32(params->dwell_on_home_ms);
++
++	return buf + sizeof(*dwell);
++}
++
++static int __mm81x_hw_scan_h_init_probe_req(struct mm81x_hw_scan_params *params,
++					    u8 *ssid, u8 ssid_len,
++					    struct ieee80211_scan_ies *ies)
++{
++	u8 *pos;
++	struct sk_buff *probe_req;
++	struct ieee80211_tx_info *info;
++	u16 ies_len = ies->len[NL80211_BAND_S1GHZ] + ies->common_ie_len;
++
++	probe_req = ieee80211_probereq_get(params->hw, params->vif->addr, ssid,
++					   ssid_len, ies_len);
++	if (!probe_req)
++		return -ENOMEM;
++
++	pos = skb_put(probe_req, ies_len);
++	memcpy(pos, ies->common_ies, ies->common_ie_len);
++	pos += ies->common_ie_len;
++	memcpy(pos, ies->ies[NL80211_BAND_S1GHZ], ies->len[NL80211_BAND_S1GHZ]);
++
++	info = IEEE80211_SKB_CB(probe_req);
++	info->control.vif = params->vif;
++	params->probe_req = probe_req;
++
++	return 0;
++}
++
++static void mm81x_hw_scan_h_init_ssid(struct mm81x *mors,
++				      struct cfg80211_ssid *ssids, int n_ssids,
++				      u8 **out_ssid, u8 *out_ssid_len)
++{
++	*out_ssid = NULL;
++	*out_ssid_len = 0;
++
++	if (n_ssids > 0) {
++		if (n_ssids > 1) {
++			dev_warn(
++				mors->dev,
++				"Multiple SSIDs found when only one supported. Using the first only.");
++		}
++		*out_ssid_len = ssids[0].ssid_len;
++		*out_ssid = ssids[0].ssid;
++	}
++}
++
++static int
++mm81x_hw_scan_h_init_probe_req(struct mm81x_hw_scan_params *params,
++			       struct ieee80211_scan_request *scan_req)
++{
++	struct mm81x *mors = params->hw->priv;
++	struct cfg80211_scan_request *req = &scan_req->req;
++	struct ieee80211_scan_ies *ies = &scan_req->ies;
++	u8 ssid_len = 0;
++	u8 *ssid = NULL;
++
++	mm81x_hw_scan_h_init_ssid(mors, req->ssids, req->n_ssids, &ssid,
++				  &ssid_len);
++
++	return __mm81x_hw_scan_h_init_probe_req(params, ssid, ssid_len, ies);
++}
++
++static bool
++mm81x_hw_scan_h_is_chan_present(const struct mm81x_hw_scan_params *params,
++				const struct ieee80211_channel *chan)
++{
++	int channel;
++
++	for (channel = 0; channel < params->num_chans; channel++) {
++		if (params->channels[channel].channel == chan)
++			return true;
++	}
++
++	return false;
++}
++
++static int mm81x_hw_scan_h_insert_chan(struct mm81x_hw_scan_params *params,
++				       struct ieee80211_channel *chan)
++{
++	if (!params->channels)
++		return -EFAULT;
++
++	if (!chan)
++		return -EFAULT;
++
++	if (params->num_chans >= params->allocated_chans)
++		return -ENOMEM;
++
++	if (mm81x_hw_scan_h_is_chan_present(params, chan))
++		return 0;
++
++	params->channels[params->num_chans].channel = chan;
++	params->num_chans++;
++	return 0;
++}
++
++static int mm81x_hw_scan_h_init_chan_list(struct mm81x_hw_scan_params *params,
++					  struct ieee80211_channel **chans,
++					  u32 n_channels)
++{
++	int i, j;
++	int num_pwrs_coarse = 0;
++	int last_pwr = INT_MIN;
++	int chans_to_allocate = 0;
++
++	for (i = 0; i < n_channels; i++)
++		if (chans[i])
++			chans_to_allocate++;
++
++	params->num_chans = 0;
++	params->allocated_chans = 0;
++	params->channels = kcalloc(chans_to_allocate, sizeof(*params->channels),
++				   GFP_KERNEL);
++	if (!params->channels)
++		return -ENOMEM;
++
++	params->allocated_chans = chans_to_allocate;
++
++	for (i = 0; i < n_channels; i++)
++		if (chans[i])
++			mm81x_hw_scan_h_insert_chan(params, chans[i]);
++
++	/*
++	 * Calculate a rough estimate of number of different channel
++	 * powers required
++	 */
++	for (i = 0; i < params->num_chans; i++) {
++		if (chans[i]->max_reg_power != last_pwr) {
++			last_pwr = chans[i]->max_reg_power;
++			num_pwrs_coarse++;
++		}
++	}
++
++	params->powers_qdbm = kmalloc_array(
++		num_pwrs_coarse, sizeof(*params->powers_qdbm), GFP_KERNEL);
++	if (!params->powers_qdbm)
++		return -ENOMEM;
++
++	params->n_powers = 0;
++
++	for (i = 0; i < params->num_chans; i++) {
++		s32 power_qdbm =
++			MBM_TO_QDBM(DBM_TO_MBM(chans[i]->max_reg_power));
++
++		/* Try and find the power in the list */
++		for (j = 0; j < params->n_powers; j++)
++			if (params->powers_qdbm[j] == power_qdbm)
++				break;
++
++		/* Reached the end of the list - add the new power option */
++		if (j == params->n_powers) {
++			params->powers_qdbm[j] = power_qdbm;
++			params->n_powers++;
++			if (params->n_powers > num_pwrs_coarse) {
++				WARN_ON(1);
++				return -EFAULT;
++			}
++		}
++
++		/* Give the index of the power level to the channel */
++		params->channels[i].power_idx = j;
++	}
++	return 0;
++}
++
++static void mm81x_hw_scan_h_clean_params(struct mm81x_hw_scan_params *params)
++{
++	if (params->probe_req)
++		dev_kfree_skb_any(params->probe_req);
++	kfree(params->channels);
++	kfree(params->powers_qdbm);
++
++	params->num_chans = 0;
++	params->allocated_chans = 0;
++}
++
++size_t mm81x_hw_scan_h_get_cmd_size(struct mm81x_hw_scan_params *params)
++{
++	struct hw_scan_tlv_channel_list *ch_list;
++	struct hw_scan_tlv_power_list *pwr_list;
++	struct hw_scan_tlv_probe_req *probe_req;
++	struct hw_scan_tlv_dwell_on_home *dwell;
++	struct host_cmd_req_hw_scan *req;
++	size_t cmd_size = sizeof(*req);
++
++	/* No TLVs if simple abort command */
++	if (params->operation != MM81X_HW_SCAN_OP_START)
++		return cmd_size;
++
++	cmd_size += struct_size(ch_list, channels, params->num_chans);
++	cmd_size += struct_size(pwr_list, tx_power_qdbm, params->n_powers);
++
++	if (params->probe_req)
++		cmd_size += struct_size(probe_req, buf, params->probe_req->len);
++	if (params->dwell_on_home_ms)
++		cmd_size += sizeof(*dwell);
++
++	return cmd_size;
++}
++
++u8 *mm81x_hw_scan_h_insert_tlvs(struct mm81x_hw_scan_params *params, u8 *buf)
++{
++	buf = mm81x_hw_scan_h_add_channel_list_tlv(buf, params);
++	buf = mm81x_hw_scan_h_add_power_list_tlv(buf, params);
++
++	if (params->dwell_on_home_ms)
++		buf = mm81x_hw_scan_h_insert_dwell_time_tlv(buf, params);
++	if (params->probe_req)
++		buf = mm81x_hw_scan_h_add_probe_req_tlv(buf, params);
++
++	return buf;
++}
++
++static u32 mm81x_hw_scan_h_get_dwell_on_home(struct mm81x *mors,
++					     struct ieee80211_vif *vif)
++{
++	if (vif->type == NL80211_IFTYPE_STATION &&
++	    mm81x_mac_is_sta_vif_associated(vif))
++		return mors->hw_scan.home_dwell_ms;
++	return 0;
++}
++
++static struct mm81x_hw_scan_params *
++__mm81x_hw_scan_h_init_params(struct mm81x *mors)
++{
++	struct mm81x_hw_scan_params *params = mors->hw_scan.params;
++
++	if (!params) {
++		params = kzalloc_obj(*params, GFP_KERNEL);
++		if (params)
++			mors->hw_scan.params = params;
++	} else {
++		mm81x_hw_scan_h_clean_params(params);
++		memset(params, 0, sizeof(*params));
++	}
++
++	return params;
++}
++
++static int mm81x_hw_scan_h_init_params(struct mm81x *mors,
++				       struct ieee80211_hw *hw,
++				       struct ieee80211_vif *vif,
++				       struct cfg80211_scan_request *req)
++{
++	struct mm81x_hw_scan_params *params = mors->hw_scan.params;
++
++	params = __mm81x_hw_scan_h_init_params(mors);
++	if (!params) {
++		mors->hw_scan.state = HW_SCAN_STATE_IDLE;
++		return -ENOMEM;
++	}
++
++	params->hw = hw;
++	params->vif = vif;
++	params->has_directed_ssid = (req->ssids && req->ssids[0].ssid_len > 0);
++	params->operation = MM81X_HW_SCAN_OP_START;
++	params->dwell_on_home_ms = mm81x_hw_scan_h_get_dwell_on_home(mors, vif);
++	params->use_1mhz_probes = true;
++
++	if (req->duration)
++		params->dwell_time_ms = MM81X_TU_TO_MS(req->duration);
++	else if (req->n_ssids == 0)
++		params->dwell_time_ms =
++			MM81X_HWSCAN_DEFAULT_PASSIVE_DWELL_TIME_MS;
++	else
++		params->dwell_time_ms = MM81X_HWSCAN_DEFAULT_DWELL_TIME_MS;
++
++	return 0;
++}
++
++static u32 mm81x_hw_scan_h_calc_timeout(struct mm81x_hw_scan_params *params)
++{
++	u32 ret = 0;
++
++	ret = params->dwell_time_ms + params->dwell_on_home_ms;
++	if (params->probe_req)
++		ret += MM81X_HWSCAN_PROBE_DELAY_MS;
++
++	ret *= params->num_chans;
++	ret += MM81X_HWSCAN_TIMEOUT_OVERHEAD_MS;
++
++	return ret;
++}
++
++static int mm81x_mac_ops_hw_scan(struct ieee80211_hw *hw,
++				 struct ieee80211_vif *vif,
++				 struct ieee80211_scan_request *hw_req)
++{
++	int ret = 0;
++	struct mm81x *mors = hw->priv;
++	struct cfg80211_scan_request *req = &hw_req->req;
++	struct mm81x_hw_scan_params *params;
++	struct ieee80211_channel **chans = hw_req->req.channels;
++
++	dev_dbg(mors->dev, "state %d", mors->hw_scan.state);
++
++	if (!mors->started) {
++		dev_warn(mors->dev, "device not ready");
++		ret = -ENODEV;
++		goto exit;
++	}
++
++	switch (mors->hw_scan.state) {
++	case HW_SCAN_STATE_IDLE:
++		mors->hw_scan.state = HW_SCAN_STATE_RUNNING;
++		reinit_completion(&mors->hw_scan.scan_done);
++		break;
++	case HW_SCAN_STATE_RUNNING:
++	case HW_SCAN_STATE_ABORTING:
++		ret = -EBUSY;
++		goto exit;
++	}
++
++	ret = mm81x_hw_scan_h_init_params(mors, hw, vif, req);
++	if (ret)
++		goto exit;
++
++	params = mors->hw_scan.params;
++
++	ret = mm81x_hw_scan_h_init_chan_list(params, chans,
++					     hw_req->req.n_channels);
++	if (ret)
++		goto exit;
++
++	/* Only init the probe request template if this is an active scan */
++	if (req->n_ssids > 0) {
++		ret = mm81x_hw_scan_h_init_probe_req(params, hw_req);
++		if (ret) {
++			dev_err(mors->dev, "Failed to init probe req %d", ret);
++			goto exit;
++		}
++	}
++
++	ret = mm81x_cmd_hw_scan(mors, params, false);
++	if (ret) {
++		mors->hw_scan.state = HW_SCAN_STATE_IDLE;
++		goto exit;
++	}
++
++	ieee80211_queue_delayed_work(
++		mors->hw, &mors->hw_scan.timeout,
++		msecs_to_jiffies(mm81x_hw_scan_h_calc_timeout(params)));
++exit:
++	return ret;
++}
++
++static void mm81x_hw_scan_h_cancel(struct mm81x *mors)
++{
++	int ret;
++	struct mm81x_hw_scan_params params = { 0 };
++
++	cancel_delayed_work_sync(&mors->hw_scan.timeout);
++
++	switch (mors->hw_scan.state) {
++	case HW_SCAN_STATE_IDLE:
++	case HW_SCAN_STATE_ABORTING:
++		/* scan not running */
++		return;
++	case HW_SCAN_STATE_RUNNING:
++		mors->hw_scan.state = HW_SCAN_STATE_ABORTING;
++		break;
++	}
++
++	params.operation = MM81X_HW_SCAN_OP_STOP;
++
++	ret = mm81x_cmd_hw_scan(mors, &params, false);
++
++	if (ret || !mors->started ||
++	    !wait_for_completion_timeout(&mors->hw_scan.scan_done, 1 * HZ)) {
++		/*
++		 * We may have lost the event on the bus, the chip could be
++		 * wedged, or the cmd failed for another reason. Nevertheless,
++		 * we should call the done event so mac80211 knows to unblock
++		 * itself.
++		 */
++		struct cfg80211_scan_info info = { .aborted = true };
++
++		ieee80211_scan_completed(mors->hw, &info);
++		mors->hw_scan.state = HW_SCAN_STATE_IDLE;
++	}
++}
++
++static void mm81x_mac_ops_cancel_hw_scan(struct ieee80211_hw *hw,
++					 struct ieee80211_vif *vif)
++{
++	struct mm81x *mors = hw->priv;
++
++	cancel_delayed_work_sync(&mors->hw_scan.timeout);
++	mm81x_hw_scan_h_cancel(mors);
++}
++
++static void mm81x_mac_hw_scan_done_event(struct ieee80211_hw *hw)
++{
++	struct mm81x *mors = hw->priv;
++	struct cfg80211_scan_info info = { 0 };
++
++	dev_dbg(mors->dev, "completing hw scan");
++
++	switch (mors->hw_scan.state) {
++	case HW_SCAN_STATE_IDLE:
++		/* Scan has already been stopped. Just continue */
++		goto exit;
++	case HW_SCAN_STATE_RUNNING:
++	case HW_SCAN_STATE_ABORTING:
++		info.aborted = (mors->hw_scan.state == HW_SCAN_STATE_ABORTING);
++		mors->hw_scan.state = HW_SCAN_STATE_IDLE;
++	}
++
++	ieee80211_scan_completed(mors->hw, &info);
++exit:
++	complete(&mors->hw_scan.scan_done);
++	cancel_delayed_work_sync(&mors->hw_scan.timeout);
++}
++
++static void mm81x_mac_hw_scan_timeout_work(struct work_struct *work)
++{
++	struct mm81x *mors =
++		container_of(work, struct mm81x, hw_scan.timeout.work);
++
++	dev_err(mors->dev, "hw scan timed out, aborting");
++	mm81x_hw_scan_h_cancel(mors);
++}
++
++static void mm81x_mac_hw_scan_init(struct mm81x *mors)
++{
++	mors->hw_scan.state = HW_SCAN_STATE_IDLE;
++	mors->hw_scan.params = NULL;
++	mors->hw_scan.home_dwell_ms = MM81X_HWSCAN_DEFAULT_DWELL_ON_HOME_MS;
++
++	init_completion(&mors->hw_scan.scan_done);
++	INIT_DELAYED_WORK(&mors->hw_scan.timeout,
++			  mm81x_mac_hw_scan_timeout_work);
++}
++
++static void mm81x_mac_hw_scan_destroy(struct mm81x *mors)
++{
++	cancel_delayed_work_sync(&mors->hw_scan.timeout);
++	if (mors->hw_scan.params)
++		mm81x_hw_scan_h_clean_params(mors->hw_scan.params);
++	kfree(mors->hw_scan.params);
++	mors->hw_scan.params = NULL;
++}
++
++static void mm81x_mac_hw_scan_finish(struct mm81x *mors)
++{
++	struct cfg80211_scan_info info = {
++		.aborted = true,
++	};
++
++	if (mors->hw_scan.state == HW_SCAN_STATE_IDLE)
++		return;
++
++	ieee80211_scan_completed(mors->hw, &info);
++	complete(&mors->hw_scan.scan_done);
++	mors->hw_scan.state = HW_SCAN_STATE_IDLE;
++	cancel_delayed_work_sync(&mors->hw_scan.timeout);
++}
++
++int mm81x_mac_event_recv(struct mm81x *mors, struct sk_buff *skb)
++{
++	struct host_cmd_event *event = (struct host_cmd_event *)(skb->data);
++	u16 event_id = le16_to_cpu(event->hdr.message_id);
++	u16 event_iid = le16_to_cpu(event->hdr.host_id);
++	u16 vif_id = le16_to_cpu(event->hdr.vif_id);
++	struct ieee80211_vif *vif;
++	int ret = 0;
++
++	if (!HOST_CMD_IS_EVT(event) || event_iid != 0)
++		return -EINVAL;
++
++	switch (event_id) {
++	case HOST_CMD_ID_EVT_HW_SCAN_DONE:
++		dev_dbg(mors->dev,
++			"Event: HOST_CMD_ID_EVT_HW_SCAN_DONE Received.");
++		mm81x_mac_hw_scan_done_event(mors->hw);
++		break;
++	case HOST_CMD_ID_EVT_BEACON_LOSS:
++		dev_dbg(mors->dev,
++			"Event: HOST_CMD_ID_EVT_BEACON_LOSS Received");
++		scoped_guard(rcu) {
++			vif = mm81x_rcu_dereference_vif_id(mors, vif_id, true);
++			if (vif)
++				ieee80211_beacon_loss(vif);
++		}
++		break;
++	default:
++		break;
++	}
++
++	return ret;
++}
++
++static void mm81x_tx_h_apply_mcs10(struct mm81x *mors,
++				   struct mm81x_skb_tx_info *tx_info)
++{
++	u8 i;
++	u8 j;
++	int mcs0_first_idx = -1;
++	int mcs0_last_idx = -1;
++
++	/* Find out where our first and last MCS0 entries are. */
++	for (i = 0; i < IEEE80211_TX_MAX_RATES; i++) {
++		enum dot11_bandwidth bw_idx = mm81x_ratecode_bw_index_get(
++			tx_info->rates[i].mm81x_ratecode);
++
++		if (bw_idx == DOT11_BANDWIDTH_1MHZ) {
++			mcs0_last_idx = i;
++			if (mcs0_first_idx == -1)
++				mcs0_first_idx = i;
++		}
++
++		/*
++		 * If the count is 0 then we are at the end of the table.
++		 * Break to allow us to reuse i indicating the end of the
++		 * table.
++		 */
++		if (tx_info->rates[i].count == 0)
++			break;
++	}
++
++	/* If there aren't any MCS0 (at 1MHz) entries we are done. */
++	if (mcs0_first_idx < 0)
++		return;
++
++	/*
++	 * If we are in MCS10_MODE_AUTO add MCS10 counts to the table if they
++	 * will fit. There should be three cases:
++	 *
++	 * - There is one MSC0 entry and the table is full -> do nothing
++	 * - There is one MSC0 entry and the table has space -> adjust MSC0
++	 *   down and add MCS 10
++	 * - There are multiple MCS0 entries -> replace entries after the first
++	 *   with MCS 10
++	 */
++	/* Case 3 - replace additional entries. */
++	if (mcs0_last_idx > mcs0_first_idx) {
++		for (j = mcs0_first_idx + 1; j < i; j++) {
++			enum dot11_bandwidth bw_idx =
++				mm81x_ratecode_bw_index_get(
++					tx_info->rates[j].mm81x_ratecode);
++			u8 mcs_index = mm81x_ratecode_mcs_index_get(
++				tx_info->rates[j].mm81x_ratecode);
++			if (mcs_index == 0 && bw_idx == DOT11_BANDWIDTH_1MHZ) {
++				mm81x_ratecode_mcs_index_set(
++					&tx_info->rates[j].mm81x_ratecode, 10);
++			}
++		}
++		/* Case 2 - add additional MCS10 entry. */
++	} else if (mcs0_last_idx == mcs0_first_idx &&
++		   i < (IEEE80211_TX_MAX_RATES)) {
++		int pre_mcs10_mcs0_count =
++			min_t(u8, tx_info->rates[mcs0_last_idx].count,
++			      MCS0_BEFORE_MCS10_COUNT);
++		int mcs10_count = tx_info->rates[mcs0_last_idx].count -
++				  pre_mcs10_mcs0_count;
++
++		/*
++		 * If there were less retries than our desired minimum MCS0 we
++		 * don't add MCS10 retries.
++		 */
++		if (mcs10_count > 0) {
++			/* Use the same flags for MCS10 as MCS0. */
++			tx_info->rates[i].mm81x_ratecode =
++				tx_info->rates[mcs0_last_idx].mm81x_ratecode;
++			mm81x_ratecode_mcs_index_set(
++				&tx_info->rates[i].mm81x_ratecode, 10);
++			tx_info->rates[mcs0_last_idx].count =
++				pre_mcs10_mcs0_count;
++			tx_info->rates[i].count = mcs10_count;
++		}
++	}
++}
++
++void mm81x_tx_h_check_aggr(struct ieee80211_sta *pubsta, struct sk_buff *skb)
++{
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	struct mm81x_sta *mors_sta = (struct mm81x_sta *)pubsta->drv_priv;
++	u8 tid = ieee80211_get_tid(hdr);
++
++	/* we are already aggregating */
++	if (mors_sta->tid_tx[tid] || mors_sta->tid_start_tx[tid])
++		return;
++
++	if (mors_sta->state < IEEE80211_STA_AUTHORIZED)
++		return;
++
++	if (skb_get_queue_mapping(skb) == IEEE80211_AC_VO)
++		return;
++
++	if (unlikely(!ieee80211_is_data_qos(hdr->frame_control)))
++		return;
++
++	if (unlikely(skb->protocol == cpu_to_be16(ETH_P_PAE)))
++		return;
++
++	mors_sta->tid_start_tx[tid] = true;
++	ieee80211_start_tx_ba_session(pubsta, tid, 0);
++}
++
++int mm81x_tx_h_get_attempts(struct mm81x *mors,
++			    struct mm81x_skb_tx_status *tx_sts)
++{
++	int attempts = 0;
++	int i;
++	int count = min_t(int, MM81X_SKB_MAX_RATES, IEEE80211_TX_MAX_RATES);
++
++	for (i = 0; i < count; i++) {
++		if (tx_sts->rates[i].count > 0)
++			attempts += tx_sts->rates[i].count;
++		else
++			break;
++	}
++
++	return attempts;
++}
++
++static void mm81x_tx_h_fill_info(struct mm81x *mors,
++				 struct mm81x_skb_tx_info *tx_info,
++				 struct sk_buff *skb, struct ieee80211_vif *vif,
++				 int tx_bw_mhz, struct ieee80211_sta *sta)
++{
++	int i;
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct mm81x_vif *mors_vif = ieee80211_vif_to_mors_vif(vif);
++	struct mm81x_sta *mors_sta = NULL;
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	int op_bw_mhz = cfg80211_chandef_get_width(&mors->chandef);
++	u8 tid = skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
++	bool rts_allowed = op_bw_mhz < 8;
++
++	if (sta)
++		mors_sta = (struct mm81x_sta *)sta->drv_priv;
++
++	rts_allowed &= mm81x_tx_h_pkt_over_rts_threshold(mors, info, skb);
++
++	mm81x_rc_sta_fill_tx_rates(mors, tx_info, skb, sta, tx_bw_mhz,
++				   rts_allowed);
++
++	for (i = 0; i < IEEE80211_TX_MAX_RATES; i++) {
++		if (rts_allowed)
++			mm81x_ratecode_enable_rts(
++				&tx_info->rates[i].mm81x_ratecode);
++
++		if (info->control.rates[i].flags & IEEE80211_TX_RC_SHORT_GI)
++			mm81x_ratecode_enable_sgi(
++				&tx_info->rates[i].mm81x_ratecode);
++	}
++
++	/* Apply change of MCS0 to MCS10 if required. */
++	mm81x_tx_h_apply_mcs10(mors, tx_info);
++
++	tx_info->flags |=
++		cpu_to_le32(MM81X_TX_CONF_FLAGS_VIF_ID_SET(mors_vif->id));
++
++	if (info->flags & IEEE80211_TX_CTL_AMPDU)
++		tx_info->flags |= cpu_to_le32(MM81X_TX_CONF_FLAGS_CTL_AMPDU);
++
++	if (info->flags & IEEE80211_TX_CTL_SEND_AFTER_DTIM)
++		tx_info->flags |=
++			cpu_to_le32(MM81X_TX_CONF_FLAGS_SEND_AFTER_DTIM);
++
++	if (info->flags & IEEE80211_TX_CTL_NO_PS_BUFFER) {
++		tx_info->flags |= cpu_to_le32(MM81X_TX_CONF_NO_PS_BUFFER);
++
++		if (info->flags & IEEE80211_TX_STATUS_EOSP)
++			tx_info->flags |= cpu_to_le32(
++				MM81X_TX_CONF_FLAGS_IMMEDIATE_REPORT);
++	} else if (ieee80211_is_mgmt(hdr->frame_control) &&
++		   !ieee80211_is_bufferable_mmpdu(skb)) {
++		tx_info->flags |= cpu_to_le32(MM81X_TX_CONF_NO_PS_BUFFER);
++	}
++
++	if (info->control.hw_key) {
++		tx_info->flags |= cpu_to_le32(MM81X_TX_CONF_FLAGS_HW_ENCRYPT);
++		tx_info->flags |= cpu_to_le32(MM81X_TX_CONF_FLAGS_KEY_IDX_SET(
++			info->control.hw_key->hw_key_idx));
++	}
++
++	tx_info->tid = tid;
++	if (mors_sta) {
++		tx_info->tid_params = mors_sta->tid_params[tid];
++
++		if (info->flags & IEEE80211_TX_CTL_CLEAR_PS_FILT) {
++			if (mors_sta->tx_ps_filter_en)
++				dev_dbg(mors->dev,
++					"TX ps filter cleared sta[%pM]",
++					mors_sta->addr);
++			mors_sta->tx_ps_filter_en = false;
++		}
++	}
++}
++
++static void mm81x_mac_ops_tx(struct ieee80211_hw *hw,
++			     struct ieee80211_tx_control *control,
++			     struct sk_buff *skb)
++{
++	struct mm81x *mors = hw->priv;
++	struct mm81x_skbq *mq = NULL;
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct ieee80211_vif *vif = info->control.vif;
++	struct mm81x_skb_tx_info tx_info = { 0 };
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	bool is_mgmt = ieee80211_is_mgmt(hdr->frame_control);
++	int tx_bw_mhz = cfg80211_chandef_get_width(&mors->chandef);
++	struct ieee80211_sta *sta = control->sta;
++	int max_tx_bw = 0, sta_max_bw_mhz = 0;
++
++	if (sta) {
++		struct mm81x_sta *mors_sta = (struct mm81x_sta *)sta->drv_priv;
++
++		sta_max_bw_mhz = mors_sta->max_bw_mhz;
++	}
++
++	max_tx_bw = mm81x_tx_h_get_max_bw(mors);
++	tx_bw_mhz = min(max_tx_bw, tx_bw_mhz);
++
++	if (is_mgmt)
++		tx_bw_mhz = mm81x_tx_h_get_prim_bw(&mors->chandef);
++	if (sta_max_bw_mhz)
++		tx_bw_mhz = min(tx_bw_mhz, sta_max_bw_mhz);
++	if (ieee80211_is_probe_resp(hdr->frame_control))
++		tx_bw_mhz = 1;
++
++	mm81x_tx_h_fill_info(mors, &tx_info, skb, vif, tx_bw_mhz, sta);
++
++	if (mm81x_tx_h_ps_filtered_for_sta(mors, skb, sta))
++		return;
++
++	if (is_mgmt)
++		mq = mm81x_hif_get_tx_mgmt_queue(mors);
++	else
++		mq = mm81x_hif_get_tx_data_queue(mors,
++						 dot11_tid_to_ac(tx_info.tid));
++
++	mm81x_skbq_skb_tx(mq, &skb, &tx_info,
++			  (is_mgmt) ? MM81X_SKB_CHAN_MGMT :
++				      MM81X_SKB_CHAN_DATA);
++}
++
++static void mm81x_mac_ops_stop(struct ieee80211_hw *hw, bool suspend)
++{
++	struct mm81x *mors = hw->priv;
++
++	mors->started = false;
++}
++
++static void mm81x_mac_beacon_finish(struct mm81x_vif *mors_vif)
++{
++	struct mm81x *mors = mm81x_vif_to_mors(mors_vif);
++
++	mm81x_mac_beacon_irq_enable(mors_vif, false);
++	tasklet_kill(&mors_vif->u.ap.beacon_tasklet);
++	/*
++	 * Side effect of the restarting required when
++	 * reacting to regdom changes...
++	 */
++	atomic_add_unless(&mors->num_bcn_vifs, -1, 0);
++}
++
++static void mm81x_mac_ops_remove_interface(struct ieee80211_hw *hw,
++					   struct ieee80211_vif *vif)
++{
++	int ret;
++	struct mm81x *mors = hw->priv;
++	struct mm81x_vif *mors_vif = (struct mm81x_vif *)vif->drv_priv;
++
++	if (vif->type == NL80211_IFTYPE_AP)
++		mm81x_mac_beacon_finish(mors_vif);
++
++	ret = mm81x_cmd_rm_if(mors, mors_vif->id);
++	if (ret)
++		dev_err(mors->dev, "mm81x_cmd_rm_if failed %d", ret);
++
++	RCU_INIT_POINTER(mors->vifs[mors_vif->id], NULL);
++}
++
++static s32 mm81x_mac_get_max_txpower(struct mm81x *mors)
++{
++	int ret;
++	s32 power_mbm;
++
++	/* Retrieve maximum TX power the chip can transmit */
++	ret = mm81x_cmd_get_max_txpower(mors, &power_mbm);
++	if (ret) {
++		dev_err(mors->dev, "using default tx max power %d mBm",
++			MAX_TX_POWER_MBM);
++		return MAX_TX_POWER_MBM;
++	}
++
++	dev_dbg(mors->dev, "Max tx power detected %d mBm", power_mbm);
++	return power_mbm;
++}
++
++static s32 mm81x_mac_set_txpower(struct mm81x *mors, s32 power_mbm)
++{
++	int ret;
++	s32 out_power_mbm;
++
++	if (mors->tx_max_power_mbm == INT_MAX)
++		mors->tx_max_power_mbm = mm81x_mac_get_max_txpower(mors);
++
++	power_mbm = min(power_mbm, mors->tx_max_power_mbm);
++	if (power_mbm == mors->tx_power_mbm)
++		return mors->tx_power_mbm;
++
++	ret = mm81x_cmd_set_txpower(mors, &out_power_mbm, power_mbm);
++	if (ret) {
++		dev_err(mors->dev, "failed, power %d mBm ret %d", power_mbm,
++			ret);
++		return mors->tx_power_mbm;
++	}
++
++	if (out_power_mbm != mors->tx_power_mbm) {
++		dev_dbg(mors->dev, "%d -> %d mBm", mors->tx_power_mbm,
++			out_power_mbm);
++		mors->tx_power_mbm = out_power_mbm;
++	}
++
++	return mors->tx_power_mbm;
++}
++
++static int mm81x_mac_set_channel(struct mm81x *mors, u32 op_chan_freq_hz,
++				 u8 pri_1mhz_chan_idx, u8 op_bw_mhz,
++				 u8 pri_bw_mhz)
++{
++	int ret;
++
++	ret = mm81x_cmd_set_channel(mors, op_chan_freq_hz, pri_1mhz_chan_idx,
++				    op_bw_mhz, pri_bw_mhz, &mors->tx_power_mbm);
++	if (ret) {
++		dev_err(mors->dev, "mm81x_cmd_set_channel() failed, ret %d",
++			ret);
++		return ret;
++	}
++
++	mm81x_mac_set_txpower(mors, mors->tx_power_mbm);
++	return 0;
++}
++
++static u8 mm81x_mac_pri_chan_to_index(const struct cfg80211_chan_def *chandef)
++{
++	u32 bw_mhz = cfg80211_chandef_get_width(chandef);
++	u32 op_center_khz = ieee80211_chandef_to_khz(chandef);
++	u32 first_1mhz_center_khz = op_center_khz - (bw_mhz * 500) + 500;
++	u32 pri_1mhz_khz = ieee80211_channel_to_khz(chandef->chan);
++
++	return (pri_1mhz_khz - first_1mhz_center_khz) / 1000;
++}
++
++static int mm81x_mac_ops_change_channel(struct ieee80211_hw *hw,
++					struct cfg80211_chan_def *chandef)
++{
++	int ret;
++	struct mm81x *mors = hw->priv;
++	u64 freq_hz = KHZ_TO_HZ(ieee80211_chandef_to_khz(chandef));
++	u8 op_bw_mhz = cfg80211_chandef_get_width(chandef);
++	u8 pri_1mhz_idx = mm81x_mac_pri_chan_to_index(chandef);
++	int pri_chan_width_mhz = mm81x_tx_h_get_prim_bw(chandef);
++
++	dev_dbg(mors->dev, "ch: freq=%llu Hz bw=%u pri_idx=%d pri_bw=%d",
++		freq_hz, op_bw_mhz, pri_1mhz_idx, pri_chan_width_mhz);
++
++	ret = mm81x_mac_set_channel(mors, freq_hz, (u8)pri_1mhz_idx, op_bw_mhz,
++				    pri_chan_width_mhz);
++	if (ret)
++		return ret;
++
++	memcpy(&mors->chandef, chandef, sizeof(mors->chandef));
++	return 0;
++}
++
++static int mm81x_mac_ops_config(struct ieee80211_hw *hw, int radio_idx,
++				u32 changed)
++{
++	int ret;
++	struct mm81x *mors = hw->priv;
++	struct ieee80211_conf *conf = &hw->conf;
++	struct ieee80211_channel *channel = conf->chandef.chan;
++
++	if (!mors->started)
++		return 0;
++
++	if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
++		ret = mm81x_mac_ops_change_channel(hw, &conf->chandef);
++		if (ret < 0)
++			return ret;
++	}
++
++	if ((changed & IEEE80211_CONF_CHANGE_POWER) &&
++	    !(changed & IEEE80211_CONF_CHANGE_CHANNEL) &&
++	    !(conf->flags & IEEE80211_CONF_MONITOR)) {
++		s32 power_mbm = DBM_TO_MBM(conf->power_level);
++
++		power_mbm = min(DBM_TO_MBM(channel->max_reg_power), power_mbm);
++		power_mbm = mm81x_mac_set_txpower(mors, power_mbm);
++		conf->power_level = MBM_TO_DBM(power_mbm);
++	}
++
++	return 0;
++}
++
++static int mm81x_mac_ops_get_txpower(struct ieee80211_hw *hw,
++				     struct ieee80211_vif *vif,
++				     unsigned int link_id, int *dbm)
++{
++	struct mm81x *mors = hw->priv;
++	struct ieee80211_chanctx_conf *chanctx_conf;
++	struct cfg80211_chan_def *chandef = &vif->bss_conf.chanreq.oper;
++
++	scoped_guard(rcu) {
++		chanctx_conf = rcu_access_pointer(vif->bss_conf.chanctx_conf);
++		if (!chanctx_conf ||
++		    !cfg80211_chandef_identical(chandef, &chanctx_conf->def))
++			return -ENODATA;
++	}
++
++	*dbm = MBM_TO_DBM(mors->tx_power_mbm);
++	return 0;
++}
++
++static void mm81x_mac_config_ps(struct mm81x *mors, struct ieee80211_vif *vif)
++{
++	bool en_ps = vif->cfg.ps;
++
++	if (vif->type == NL80211_IFTYPE_AP || !mors->ps.enable)
++		return;
++
++	if (mors->config_ps == en_ps)
++		return;
++
++	dev_dbg(mors->dev, "change powersave mode: %d (current %d)", en_ps,
++		mors->config_ps);
++
++	mors->config_ps = en_ps;
++
++	if (en_ps) {
++		mm81x_cmd_set_ps(mors, true);
++		mm81x_ps_enable(mors);
++	} else {
++		mm81x_ps_disable(mors);
++		mm81x_cmd_set_ps(mors, false);
++	}
++}
++
++static void mm81x_mac_ops_bss_info_changed(struct ieee80211_hw *hw,
++					   struct ieee80211_vif *vif,
++					   struct ieee80211_bss_conf *info,
++					   u64 changed)
++{
++	int ret;
++	struct mm81x *mors = hw->priv;
++	struct mm81x_vif *mors_vif = (struct mm81x_vif *)vif->drv_priv;
++
++	if (changed & BSS_CHANGED_PS)
++		mm81x_mac_config_ps(mors, vif);
++
++	if (changed & BSS_CHANGED_BEACON_ENABLED) {
++		/* start command is sent, only if it was previously stopped */
++		if ((mors_vif->u.ap.beaconing_enabled && info->enable_beacon) ||
++		    !info->enable_beacon)
++			mm81x_cmd_config_beacon_timer(mors, mors_vif,
++						      info->enable_beacon);
++
++		mors_vif->u.ap.beaconing_enabled = true;
++	}
++
++	if (changed & BSS_CHANGED_BEACON_INT || changed & BSS_CHANGED_SSID) {
++		ret = mm81x_cmd_cfg_bss(mors, mors_vif->id, info->beacon_int,
++					info->dtim_period,
++					mm81x_vif_generate_cssid(vif));
++		if (ret)
++			dev_err(mors->dev, "mm81x_cmd_cfg_bss failed %d", ret);
++	}
++}
++
++static u64 mm81x_mac_ops_prepare_multicast(struct ieee80211_hw *hw,
++					   struct netdev_hw_addr_list *mc_list)
++{
++	struct mm81x *mors = hw->priv;
++	struct mcast_filter *filter;
++	struct netdev_hw_addr *addr;
++	u16 addr_count = netdev_hw_addr_list_count(mc_list);
++	u16 len = sizeof(*filter) + addr_count * sizeof(filter->addr_list[0]);
++
++	filter = kzalloc(len, GFP_ATOMIC);
++	if (!filter)
++		return 0;
++
++	if (addr_count > MCAST_FILTER_COUNT_MAX) {
++		dev_warn(
++			mors->dev,
++			"Multicast filtering disabled - too many groups (%d) > %u",
++			addr_count, (u16)MCAST_FILTER_COUNT_MAX);
++		filter->count = 0;
++	} else {
++		netdev_hw_addr_list_for_each(addr, mc_list) {
++			dev_dbg(mors->dev, "mcast whitelist (%d): %pM",
++				filter->count, addr->addr);
++			filter->addr_list[filter->count++] =
++				mac2leuint32(addr->addr);
++		}
++	}
++
++	return (u64)(unsigned long)filter;
++}
++
++static void mm81x_mac_ops_configure_filter(struct ieee80211_hw *hw,
++					   unsigned int changed_flags,
++					   unsigned int *total_flags,
++					   u64 multicast)
++{
++	struct mm81x *mors = hw->priv;
++	struct mcast_filter *cmd = (void *)(unsigned long)multicast;
++	struct mm81x_vif *mors_vif = NULL;
++	struct ieee80211_vif *vif = NULL;
++	int vif_id = 0;
++	int ret = 0;
++
++	if (!cmd)
++		goto out;
++
++	kfree(mors->mcast_filter);
++	mors->mcast_filter = cmd;
++
++	for (vif_id = 0; vif_id < ARRAY_SIZE(mors->vifs); vif_id++) {
++		vif = mm81x_rcu_dereference_vif_id(mors, vif_id, false);
++		if (!vif)
++			continue;
++
++		mors_vif = ieee80211_vif_to_mors_vif(vif);
++
++		ret = mm81x_cmd_cfg_multicast_filter(mors, mors_vif);
++		if (!ret)
++			continue;
++
++		dev_err(mors->dev, "Multicast filtering failed - rc=%d", ret);
++		mors->mcast_filter = NULL;
++		kfree(cmd);
++		break;
++	}
++
++out:
++	*total_flags &= 0;
++}
++
++static int mm81x_mac_ops_conf_tx(struct ieee80211_hw *hw,
++				 struct ieee80211_vif *vif,
++				 unsigned int link_id, u16 ac,
++				 const struct ieee80211_tx_queue_params *params)
++{
++	int ret;
++	struct mm81x *mors = hw->priv;
++	struct mm81x_queue_params mqp;
++
++	mqp.aci = map_mac80211q_2_mm81x_aci(ac);
++	mqp.aifs = params->aifs;
++	mqp.cw_max = params->cw_max;
++	mqp.cw_min = params->cw_min;
++	mqp.uapsd = params->uapsd;
++	mqp.txop = params->txop << 5;
++
++	dev_dbg(mors->dev, "queue:%d txop:%d cw_min:%d cw_max:%d aifs:%d",
++		mqp.aci, mqp.txop, mqp.cw_min, mqp.cw_max, mqp.aifs);
++
++	ret = mm81x_cmd_cfg_qos(mors, &mqp);
++	if (ret)
++		dev_dbg(mors->dev, "mm81x_cmd_cfg_qos failed %d", ret);
++	return ret;
++}
++
++static int mm81x_mac_ops_sta_state(struct ieee80211_hw *hw,
++				   struct ieee80211_vif *vif,
++				   struct ieee80211_sta *sta,
++				   enum ieee80211_sta_state old_state,
++				   enum ieee80211_sta_state new_state)
++{
++	u16 aid;
++	int ret;
++	struct mm81x *mors = hw->priv;
++	struct mm81x_vif *mors_vif = (struct mm81x_vif *)vif->drv_priv;
++	struct mm81x_sta *mors_sta = (struct mm81x_sta *)sta->drv_priv;
++
++	/* Ignore both NOTEXIST to NONE and NONE to NOTEXIST */
++	if ((old_state == IEEE80211_STA_NOTEXIST &&
++	     new_state == IEEE80211_STA_NONE) ||
++	    (old_state == IEEE80211_STA_NONE &&
++	     new_state == IEEE80211_STA_NOTEXIST))
++		return 0;
++
++	if (vif->type == NL80211_IFTYPE_STATION)
++		aid = mm81x_mac_sta_aid(vif);
++	else
++		aid = sta->aid;
++
++	ret = mm81x_cmd_sta_state(mors, mors_vif, aid, sta, new_state);
++	if (ret < 0)
++		goto exit;
++
++	ether_addr_copy(mors_sta->addr, sta->addr);
++	mors_sta->state = new_state;
++
++	if (new_state > old_state && new_state == IEEE80211_STA_ASSOC) {
++		if (vif->type == NL80211_IFTYPE_AP)
++			mors_vif->u.ap.num_stas++;
++		else if (vif->type == NL80211_IFTYPE_STATION)
++			mors_vif->u.sta.is_assoc = true;
++	}
++
++	if (new_state < old_state && new_state == IEEE80211_STA_NONE) {
++		if (vif->type == NL80211_IFTYPE_AP)
++			mors_vif->u.ap.num_stas--;
++		else if (vif->type == NL80211_IFTYPE_STATION)
++			mors_vif->u.sta.is_assoc = false;
++	}
++
++exit:
++	/*
++	 * Always update our mmrc sta state even on failure to ensure
++	 * we don't hold a dangling sta on error
++	 */
++	mm81x_rc_sta_state_check(mors, vif, sta, old_state, new_state);
++	return new_state < old_state ? 0 : ret;
++}
++
++static int mm81x_mac_ops_ampdu_action(struct ieee80211_hw *hw,
++				      struct ieee80211_vif *vif,
++				      struct ieee80211_ampdu_params *params)
++{
++	u16 tid = params->tid;
++	struct mm81x *mors = hw->priv;
++	struct ieee80211_sta *sta = params->sta;
++	struct mm81x_sta *mors_sta = (struct mm81x_sta *)sta->drv_priv;
++	u16 buf_size =
++		min_t(u16, params->buf_size, DOT11AH_BA_MAX_MPDU_PER_AMPDU);
++
++	switch (params->action) {
++	case IEEE80211_AMPDU_TX_START:
++		dev_dbg(mors->dev, "%pM.%d A-MPDU TX start", mors_sta->addr,
++			tid);
++		ieee80211_start_tx_ba_cb_irqsafe(vif, sta->addr, tid);
++		break;
++	case IEEE80211_AMPDU_TX_STOP_CONT:
++	case IEEE80211_AMPDU_TX_STOP_FLUSH:
++	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
++		dev_dbg(mors->dev, "%pM.%d A-MPDU TX flush", mors_sta->addr,
++			tid);
++		mors_sta->tid_start_tx[tid] = false;
++		mors_sta->tid_tx[tid] = false;
++		mors_sta->tid_params[tid] = 0;
++		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
++		break;
++	case IEEE80211_AMPDU_TX_OPERATIONAL:
++		dev_dbg(mors->dev, "%pM.%d A-MPDU TX oper", mors_sta->addr,
++			tid);
++		mors_sta->tid_tx[tid] = true;
++		if (!buf_size) {
++			dev_err(mors->dev, "%pM.%d A-MPDU Invalid buf size",
++				mors_sta->addr, tid);
++			break;
++		}
++		mors_sta->tid_params[tid] =
++			u8_encode_bits(buf_size - 1,
++				       TX_INFO_TID_PARAMS_MAX_REORDER_BUF) |
++			u8_encode_bits(1, TX_INFO_TID_PARAMS_AMPDU_ENABLED) |
++			u8_encode_bits(params->amsdu,
++				       TX_INFO_TID_PARAMS_AMSDU_SUPPORTED);
++		break;
++	default:
++		break;
++	}
++
++	return 0;
++}
++
++static int mm81x_mac_ops_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
++				 struct ieee80211_vif *vif,
++				 struct ieee80211_sta *sta,
++				 struct ieee80211_key_conf *key)
++{
++	u16 aid;
++	int ret = -EOPNOTSUPP;
++	struct mm81x *mors = hw->priv;
++	struct mm81x_vif *mors_vif = (struct mm81x_vif *)vif->drv_priv;
++	enum host_cmd_key_cipher cipher;
++	enum host_cmd_aes_key_len length;
++
++	if (vif->type == NL80211_IFTYPE_STATION) {
++		aid = mm81x_mac_sta_aid(vif);
++	} else if (sta) {
++		aid = sta->aid;
++	} else {
++		/* Is a group key - AID is unused */
++		WARN_ON(key->flags & IEEE80211_KEY_FLAG_PAIRWISE);
++		aid = 0;
++	}
++
++	switch (cmd) {
++	case SET_KEY: {
++		switch (key->cipher) {
++		case WLAN_CIPHER_SUITE_CCMP:
++		case WLAN_CIPHER_SUITE_CCMP_256:
++			cipher = HOST_CMD_KEY_CIPHER_AES_CCM;
++			break;
++		case WLAN_CIPHER_SUITE_GCMP:
++		case WLAN_CIPHER_SUITE_GCMP_256:
++			cipher = HOST_CMD_KEY_CIPHER_AES_GCM;
++			break;
++		default:
++			/* Cipher suite currently not supported */
++			ret = -EOPNOTSUPP;
++			goto exit;
++		}
++
++		switch (key->keylen) {
++		case 16:
++			length = HOST_CMD_AES_KEY_LEN_LENGTH_128;
++			break;
++		case 32:
++			length = HOST_CMD_AES_KEY_LEN_LENGTH_256;
++			break;
++		default:
++			/* Key length not supported */
++			ret = -EOPNOTSUPP;
++			goto exit;
++		}
++
++		ret = mm81x_cmd_install_key(mors, mors_vif, aid, key, cipher,
++					    length);
++		break;
++	}
++	case DISABLE_KEY:
++		ret = mm81x_cmd_disable_key(mors, mors_vif, aid, key);
++		if (ret) {
++			/* Must return 0 */
++			dev_warn(mors->dev, "Failed to remove key");
++			ret = 0;
++		}
++		break;
++	default:
++		WARN_ON(1);
++	}
++
++	if (ret) {
++		dev_dbg(mors->dev, "Falling back to software crypto");
++		ret = 1;
++	}
++
++exit:
++	return ret;
++}
++
++static int mm81x_mac_set_frag_threshold(struct ieee80211_hw *hw, int radio_idx,
++					u32 value)
++{
++	struct mm81x *mors = hw->priv;
++
++	return mm81x_cmd_set_frag_threshold(mors, value);
++}
++
++static void mm81x_rx_h_fill_status(struct mm81x *mors,
++				   struct mm81x_skb_rx_status *hdr_rx_status,
++				   struct ieee80211_rx_status *rx_status,
++				   struct sk_buff *skb)
++{
++	u8 mcs_index;
++	u32 flags = le32_to_cpu(hdr_rx_status->flags);
++	u16 freq_100khz = le16_to_cpu(hdr_rx_status->freq_100khz);
++	__le32 ratecode = hdr_rx_status->mm81x_ratecode;
++
++	rx_status->signal = le16_to_cpu(hdr_rx_status->rssi);
++	rx_status->encoding = RX_ENC_VHT;
++	rx_status->band = NL80211_BAND_S1GHZ;
++	rx_status->freq = KHZ100_TO_MHZ(freq_100khz);
++	rx_status->freq_offset = (freq_100khz % 10) ? 1 : 0;
++	rx_status->nss = NSS_IDX_TO_NSS(mm81x_ratecode_nss_index_get(ratecode));
++
++	if (flags & MM81X_RX_STATUS_FLAGS_DECRYPTED)
++		rx_status->flag |= RX_FLAG_DECRYPTED;
++
++	mcs_index = mm81x_ratecode_mcs_index_get(ratecode);
++	rx_status->rate_idx = (mcs_index == 10) ? 0 : mcs_index;
++
++	if (mm81x_ratecode_sgi_get(ratecode))
++		rx_status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
++}
++
++static void mm81x_rx_h_update_sta(struct ieee80211_vif *vif,
++				  struct ieee80211_hdr *hdr,
++				  struct ieee80211_rx_status *rx_status)
++{
++	struct ieee80211_sta *sta;
++	struct mm81x_sta *msta;
++	u8 *lookup = ieee80211_is_s1g_beacon(hdr->frame_control) ? hdr->addr1 :
++								   hdr->addr2;
++
++	lockdep_assert_in_rcu_read_lock();
++
++	sta = ieee80211_find_sta(vif, lookup);
++	if (!sta)
++		return;
++
++	msta = (void *)sta->drv_priv;
++	if (msta->avg_rssi) {
++		msta->avg_rssi =
++			CALC_AVG_RSSI(msta->avg_rssi, rx_status->signal);
++	} else {
++		msta->avg_rssi = rx_status->signal;
++	}
++}
++
++static struct ieee80211_vif *
++mm81x_rx_h_skb_get_vif(struct mm81x *mors, struct sk_buff *skb,
++		       struct mm81x_skb_rx_status *hdr_rx_status)
++{
++	u8 vif_id = u32_get_bits(le32_to_cpu(hdr_rx_status->flags),
++				 MM81X_RX_STATUS_FLAGS_VIF_ID);
++
++	lockdep_assert_in_rcu_read_lock();
++
++	if (vif_id == INVALID_VIF_INDEX)
++		return NULL;
++
++	return mm81x_rcu_dereference_vif_id(mors, vif_id, true);
++}
++
++void mm81x_mac_rx_skb(struct mm81x *mors, struct sk_buff *skb,
++		      struct mm81x_skb_rx_status *hdr_rx_status)
++{
++	struct ieee80211_vif *vif;
++	struct ieee80211_hw *hw = mors->hw;
++	struct ieee80211_rx_status rx_status;
++	struct ieee80211_hdr *hdr = (void *)skb->data;
++
++	memset(&rx_status, 0, sizeof(rx_status));
++
++	if (!mors->started || !skb->data || !skb->len) {
++		dev_kfree_skb_any(skb);
++		return;
++	}
++
++	mm81x_rx_h_fill_status(mors, hdr_rx_status, &rx_status, skb);
++
++	scoped_guard(rcu) {
++		vif = mm81x_rx_h_skb_get_vif(mors, skb, hdr_rx_status);
++		if (!vif)
++			goto rx;
++
++		mm81x_rx_h_update_sta(vif, hdr, &rx_status);
++	}
++
++rx:
++	memcpy(IEEE80211_SKB_RXCB(skb), &rx_status, sizeof(rx_status));
++	ieee80211_rx_ni(hw, skb);
++}
++
++static void mm81x_mac_ops_flush(struct ieee80211_hw *hw,
++				struct ieee80211_vif *vif, u32 queues,
++				bool drop)
++{
++	struct mm81x *mors = hw->priv;
++
++	/* We don't support IEEE80211_HW_QUEUE_CONTROL so flush all queues */
++	if (drop) {
++		/*
++		 * No need to call mm81x_skbq_stop_tx_queues as mac80211
++		 * has already cancelled each queue prior to calling .flush()
++		 */
++		mm81x_skbq_data_traffic_pause(mors);
++
++		flush_work(&mors->hif_work);
++		flush_work(&mors->tx_stale_work);
++
++		mm81x_hif_clear_events(mors);
++		mm81x_hif_flush_tx_data(mors);
++		mm81x_hif_flush_cmds(mors);
++
++		/* Reenable data, not that there will be any */
++		mm81x_skbq_data_traffic_resume(mors);
++	}
++}
++
++static int mm81x_mac_ops_set_rts_threshold(struct ieee80211_hw *hw,
++					   int radio_idx, u32 value)
++{
++	struct mm81x *mors = hw->priv;
++
++	mors->rts_threshold = value;
++	return 0;
++}
++
++static void mm81x_mac_ops_sta_rc_update(struct ieee80211_hw *hw,
++					struct ieee80211_vif *vif,
++					struct ieee80211_link_sta *link_sta,
++					u32 changed)
++{
++	struct mm81x *mors = hw->priv;
++	struct ieee80211_sta *sta = link_sta->sta;
++	enum ieee80211_sta_state old_state;
++	enum ieee80211_sta_state new_state;
++
++	dev_dbg(mors->dev,
++		"Rate control config updated (changed %u, peer address %pM)",
++		changed, sta->addr);
++
++	if (!(changed & IEEE80211_RC_BW_CHANGED))
++		return;
++
++	/*
++	 * Simulate the disconnection and connection to reinitialize the sta
++	 * in mmrc with new BW
++	 */
++	old_state = IEEE80211_STA_ASSOC;
++	new_state = IEEE80211_STA_NOTEXIST;
++
++	dev_dbg(mors->dev,
++		"Remove sta, old_state=%d, new_state=%d, changed=0x%x, bw_changed=%d",
++		old_state, new_state, changed,
++		(changed & IEEE80211_RC_BW_CHANGED));
++
++	mm81x_rc_sta_state_check(mors, vif, sta, old_state, new_state);
++
++	old_state = IEEE80211_STA_NOTEXIST;
++	new_state = IEEE80211_STA_ASSOC;
++
++	dev_dbg(mors->dev, "Add sta, old_state=%d, new_state=%d", old_state,
++		new_state);
++
++	mm81x_rc_sta_state_check(mors, vif, sta, old_state, new_state);
++}
++
++static void mm81x_mac_ops_sta_statistics(struct ieee80211_hw *hw,
++					 struct ieee80211_vif *vif,
++					 struct ieee80211_sta *sta,
++					 struct station_info *sinfo)
++{
++	struct mm81x_sta *msta = (struct mm81x_sta *)sta->drv_priv;
++	struct mm81x *mors = hw->priv;
++	const struct mmrc_table *tb = msta->rc.tb;
++	struct mmrc_rate rate;
++
++	if (!tb || tb->best_tp.rate == MMRC_MCS_UNUSED) {
++		sinfo->filled &= ~BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
++		return;
++	}
++
++	rate = tb->best_tp;
++	sinfo->txrate.mcs = rate.rate;
++	sinfo->txrate.nss = NSS_IDX_TO_NSS(rate.ss);
++	sinfo->txrate.flags = RATE_INFO_FLAGS_S1G_MCS;
++	switch (rate.bw) {
++	case MMRC_BW_1MHZ:
++		sinfo->txrate.bw = RATE_INFO_BW_1;
++		break;
++	case MMRC_BW_2MHZ:
++		sinfo->txrate.bw = RATE_INFO_BW_2;
++		break;
++	case MMRC_BW_4MHZ:
++		sinfo->txrate.bw = RATE_INFO_BW_4;
++		break;
++	case MMRC_BW_8MHZ:
++		sinfo->txrate.bw = RATE_INFO_BW_8;
++		break;
++	default:
++		break;
++	}
++
++	if (rate.guard == MMRC_GUARD_SHORT)
++		sinfo->txrate.flags |= (RATE_INFO_FLAGS_SHORT_GI);
++
++	dev_dbg(mors->dev, "mcs: %d, bw: %d, flag: 0x%x", rate.rate, rate.bw,
++		sinfo->txrate.flags);
++	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
++}
++
++static u32 mm81x_get_expected_throughput(struct ieee80211_hw *hw,
++					 struct ieee80211_sta *sta)
++{
++	struct mm81x_sta *msta = (struct mm81x_sta *)sta->drv_priv;
++	struct mm81x *mors = hw->priv;
++	const struct mmrc_table *tb = msta->rc.tb;
++	struct mmrc_rate rate;
++	u32 tput;
++
++	if (!tb || tb->best_tp.rate == MMRC_MCS_UNUSED)
++		return 0;
++
++	rate = tb->best_tp;
++	tput = BPS_TO_KBPS(mmrc_calculate_theoretical_throughput(rate));
++	dev_dbg(mors->dev, "Throughput: MCS: %d, BW: %d, GI: %d -> %u",
++		rate.rate, 1 << rate.bw, rate.guard, tput);
++
++	return tput;
++}
++
++static void mm81x_mac_restart_cleanup_iter(void *data, u8 *mac,
++					   struct ieee80211_vif *vif)
++{
++	if (vif->type == NL80211_IFTYPE_AP)
++		mm81x_mac_beacon_finish((struct mm81x_vif *)vif->drv_priv);
++}
++
++static void mm81x_mac_restart_cleanup(struct mm81x *mors)
++{
++	ieee80211_iterate_active_interfaces(mors->hw,
++					    IEEE80211_IFACE_ITER_NORMAL,
++					    mm81x_mac_restart_cleanup_iter,
++					    NULL);
++	mm81x_mac_hw_scan_finish(mors);
++}
++
++static int mm81x_mac_restart(struct mm81x *mors)
++{
++	int ret;
++	u32 chip_id;
++
++	mors->started = false;
++	mm81x_ps_disable(mors);
++	mm81x_bus_set_irq(mors, false);
++	mm81x_hw_irq_clear(mors);
++	ieee80211_stop_queues(mors->hw);
++
++	set_bit(MM81X_STATE_DATA_TX_STOPPED, &mors->state_flags);
++	set_bit(MM81X_STATE_DATA_QS_STOPPED, &mors->state_flags);
++
++	/* Allow time for in-transit tx/rx packets to settle */
++	mdelay(MM81X_HW_RESTART_DELAY_MS);
++	flush_work(&mors->hif_work);
++	flush_work(&mors->tx_stale_work);
++	mm81x_hif_clear_events(mors);
++	mm81x_hif_flush_tx_data(mors);
++	mm81x_hif_flush_cmds(mors);
++
++	mm81x_claim_bus(mors);
++	ret = mm81x_reg32_read(mors, MM81X_REG_CHIP_ID(mors), &chip_id);
++	mm81x_release_bus(mors);
++
++	if (ret < 0) {
++		dev_err(mors->dev, "Failed to access HW: %d", ret);
++		goto exit;
++	}
++
++	mm81x_mac_restart_cleanup(mors);
++
++	ret = mm81x_fw_init(mors, true);
++	if (ret < 0) {
++		dev_err(mors->dev, "Failed to init firmware: %d", ret);
++		goto exit;
++	}
++
++	mm81x_hw_irq_enable(mors, MM81X_INT_HW_STOP_NOTIFICATION_NUM, true);
++
++	ret = mm81x_fw_parse_ext_host_tbl(mors);
++	if (ret) {
++		dev_err(mors->dev, "failed to parse extended host table: %d",
++			ret);
++		goto exit;
++	}
++
++	mm81x_mac_caps_init(mors);
++
++	mm81x_bus_set_irq(mors, true);
++	clear_bit(MM81X_STATE_DATA_TX_STOPPED, &mors->state_flags);
++	clear_bit(MM81X_STATE_DATA_QS_STOPPED, &mors->state_flags);
++	clear_bit(MM81X_STATE_CHIP_UNRESPONSIVE, &mors->state_flags);
++	clear_bit(MM81X_STATE_RELOAD_FW_AFTER_START, &mors->state_flags);
++	mm81x_mac_check_fw_disabled_chans(mors->hw);
++	ieee80211_restart_hw(mors->hw);
++
++exit:
++	mm81x_ps_enable(mors);
++	return ret;
++}
++
++static int mm81x_mac_ops_add_interface(struct ieee80211_hw *hw,
++				       struct ieee80211_vif *vif)
++{
++	int ret = 0;
++	struct mm81x *mors = hw->priv;
++	struct mm81x_vif *mors_vif = (struct mm81x_vif *)vif->drv_priv;
++
++	if (test_bit(MM81X_STATE_RELOAD_FW_AFTER_START, &mors->state_flags)) {
++		dev_info(mors->dev, "Restarting chip with regdom: %s",
++			 mors->country);
++
++		ret = mm81x_mac_restart(mors);
++		if (ret) {
++			dev_err(mors->dev, "Failed to restart chip");
++			return ret;
++		}
++
++		/*
++		 * mac_restart will trigger ieee80211_hw_restart and
++		 * add_interface will re-enter. just exit here instead.
++		 */
++		return 0;
++	}
++
++	vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
++	mors_vif->u.ap.beaconing_enabled = false;
++	mors_vif->mors = mors;
++
++	ret = mm81x_cmd_add_if(mors, &mors_vif->id, vif->addr, vif->type);
++	if (ret) {
++		dev_err(mors->dev, "mm81x_cmd_add_if failed %d", ret);
++		return ret;
++	}
++
++	if (mors_vif->id >= ARRAY_SIZE(mors->vifs)) {
++		dev_err(mors->dev, "vif_id is too large %u", mors_vif->id);
++		ret = -EOPNOTSUPP;
++		return ret;
++	}
++
++	if (mors_vif->id != (mors_vif->id & MM81X_TX_CONF_FLAGS_VIF_ID_MASK)) {
++		dev_err(mors->dev, "invalid vif_id %u", mors_vif->id);
++		ret = -EOPNOTSUPP;
++		return ret;
++	}
++
++	rcu_assign_pointer(mors->vifs[mors_vif->id], vif);
++
++	if (vif->type == NL80211_IFTYPE_AP)
++		mm81x_mac_beacon_init(mors_vif);
++
++	ret = mm81x_cmd_get_capabilities(mors, mors_vif->id, &mors->fw_caps);
++	if (ret) {
++		dev_err(mors->dev,
++			"mm81x_cmd_get_capabilities failed for vif %d",
++			mors_vif->id);
++		return ret;
++	}
++
++	ieee80211_wake_queues(mors->hw);
++	return ret;
++}
++
++static const struct ieee80211_ops mm81x_ops = {
++	.start = mm81x_mac_ops_start,
++	.stop = mm81x_mac_ops_stop,
++	.config = mm81x_mac_ops_config,
++	.wake_tx_queue = ieee80211_handle_wake_tx_queue,
++	.tx = mm81x_mac_ops_tx,
++	.add_interface = mm81x_mac_ops_add_interface,
++	.remove_interface = mm81x_mac_ops_remove_interface,
++	.configure_filter = mm81x_mac_ops_configure_filter,
++	.sta_state = mm81x_mac_ops_sta_state,
++	.flush = mm81x_mac_ops_flush,
++	.set_frag_threshold = mm81x_mac_set_frag_threshold,
++	.set_rts_threshold = mm81x_mac_ops_set_rts_threshold,
++	.link_sta_rc_update = mm81x_mac_ops_sta_rc_update,
++	.sta_statistics = mm81x_mac_ops_sta_statistics,
++	.get_expected_throughput = mm81x_get_expected_throughput,
++	.hw_scan = mm81x_mac_ops_hw_scan,
++	.cancel_hw_scan = mm81x_mac_ops_cancel_hw_scan,
++	.get_txpower = mm81x_mac_ops_get_txpower,
++	.bss_info_changed = mm81x_mac_ops_bss_info_changed,
++	.prepare_multicast = mm81x_mac_ops_prepare_multicast,
++	.conf_tx = mm81x_mac_ops_conf_tx,
++	.ampdu_action = mm81x_mac_ops_ampdu_action,
++	.set_key = mm81x_mac_ops_set_key,
++	.add_chanctx = ieee80211_emulate_add_chanctx,
++	.remove_chanctx = ieee80211_emulate_remove_chanctx,
++	.change_chanctx = ieee80211_emulate_change_chanctx,
++	.switch_vif_chanctx = ieee80211_emulate_switch_vif_chanctx,
 +};
 +
-+int mm81x_hw_otp_get_board_type(struct mm81x *mors);
-+bool mm81x_hw_otp_valid_board_type(u32 board_type);
-+int mm81x_hw_otp_get_mac_addr(struct mm81x *mors);
++static void mm81x_reg_notifier(struct wiphy *wiphy,
++			       struct regulatory_request *request)
++{
++	int ret;
++	struct mm81x *mors = wiphy_to_ieee80211_hw(wiphy)->priv;
 +
-+void mm81x_hw_irq_enable(struct mm81x *mors, u32 irq, bool enable);
-+int mm81x_hw_irq_handle(struct mm81x *mors);
-+void mm81x_hw_irq_clear(struct mm81x *mors);
-+void mm81x_hw_toggle_aon_latch(struct mm81x *mors);
-+void mm81x_hw_enable_burst_mode(struct mm81x *mors, const u8 burst_mode);
-+int mm81x_hw_digital_reset(struct mm81x *mors);
-+void mm81x_hw_pre_firmware_ndr_hook(struct mm81x *mors);
-+void mm81x_hw_post_firmware_ndr_hook(struct mm81x *mors);
++	if (mm81x_reg_h_cc_equal(request->alpha2, "00") ||
++	    mm81x_reg_h_cc_equal(request->alpha2, mors->country))
++		return;
 +
-+enum sdio_burst_mode {
-+	SDIO_WORD_BURST_DISABLE =
-+		0, /* Intentionally duplicate to make it clear it's disabled */
-+	SDIO_WORD_BURST_SIZE_0 = 0, /* 000: no bursting (single 32bit word) */
-+	SDIO_WORD_BURST_SIZE_2 = 1, /* 001: bursts of 2 words */
-+	SDIO_WORD_BURST_SIZE_4 = 2, /* 010: bursts of 4 words */
-+	SDIO_WORD_BURST_SIZE_8 = 3, /* 011: bursts of 8 words */
-+	SDIO_WORD_BURST_SIZE_16 = 4, /* 100: bursts of 16 words */
-+	SDIO_WORD_BURST_MASK = 7,
-+};
++	memcpy(mors->country, request->alpha2, sizeof(mors->country));
 +
-+extern const struct mm81x_regs mm8108_regs;
++	ret = mm81x_mac_restart(mors);
++	if (ret)
++		dev_err(mors->dev, "Failed to restart chip: %d", ret);
++}
 +
-+void mm81x_hw_enable_stop_notifications(struct mm81x *mors, bool enable);
++static void mm81x_mac_config_hw(struct mm81x *mors)
++{
++	int i;
++	struct ieee80211_hw *hw = mors->hw;
++	struct wiphy *wiphy;
 +
-+#endif /* !_MM81X_HW_H_ */
++	for (i = 0; i < NUM_NL80211_BANDS; i++)
++		hw->wiphy->bands[i] = NULL;
++
++	hw->wiphy->bands[NL80211_BAND_S1GHZ] = &mors_band_s1ghz;
++	hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_AP) |
++				     BIT(NL80211_IFTYPE_STATION);
++	hw->wiphy->reg_notifier = mm81x_reg_notifier;
++	hw->queues = MM81X_HW_QUEUE_COUNT;
++	hw->max_rates = MM81X_HW_MAX_RATES;
++	hw->max_report_rates = MM81X_HW_MAX_REPORT_RATES;
++	hw->max_rate_tries = MM81X_HW_MAX_RATE_TRIES;
++	hw->tx_sk_pacing_shift = MM81X_HW_TX_SK_PACING_SHIFT;
++	hw->vif_data_size = sizeof(struct mm81x_vif);
++	hw->sta_data_size = sizeof(struct mm81x_sta);
++	hw->extra_tx_headroom =
++		sizeof(struct mm81x_skb_hdr) + mm81x_bus_get_alignment(mors);
++
++	mors->wiphy = hw->wiphy;
++
++	ieee80211_hw_set(hw, SIGNAL_DBM);
++	ieee80211_hw_set(hw, MFP_CAPABLE);
++	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
++	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
++	ieee80211_hw_set(hw, HOST_BROADCAST_PS_BUFFERING);
++	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
++	ieee80211_hw_set(hw, SUPPORTS_PS);
++	ieee80211_hw_set(hw, NEED_DTIM_BEFORE_ASSOC);
++	ieee80211_hw_set(hw, PS_NULLFUNC_STACK);
++	ieee80211_hw_set(hw, SUPPORTS_TX_FRAG);
++	ieee80211_hw_set(hw, SUPPORTS_NDP_BLOCKACK);
++
++	SET_IEEE80211_PERM_ADDR(hw, mors->macaddr);
++
++	wiphy = mors->wiphy;
++
++	wiphy->flags |= WIPHY_FLAG_AP_UAPSD;
++	wiphy->flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
++
++	if (!mors->ps.enable)
++		wiphy->flags &= ~WIPHY_FLAG_PS_ON_BY_DEFAULT;
++
++	wiphy->features |= NL80211_FEATURE_AP_MODE_CHAN_WIDTH_CHANGE |
++			   NL80211_FEATURE_TX_POWER_INSERTION;
++
++	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_AIRTIME_FAIRNESS);
++	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_SET_SCAN_DWELL);
++
++	wiphy->iface_combinations = mors_if_combs;
++	wiphy->n_iface_combinations = ARRAY_SIZE(mors_if_combs);
++	wiphy->max_scan_ie_len = MM81X_MAX_SCAN_IE_LEN;
++	wiphy->max_scan_ssids = MM81X_MAX_SCAN_SSIDS;
++	wiphy->signal_type = CFG80211_SIGNAL_TYPE_MBM;
++	wiphy->max_remain_on_channel_duration =
++		MM81X_MAX_REMAIN_ON_CHAN_DURATION;
++}
++
++static void mm81x_stale_tx_status_timer(struct timer_list *t)
++{
++	struct mm81x *mors = timer_container_of(mors, t, stale_status.timer);
++
++	spin_lock_bh(&mors->stale_status.lock);
++	if (mm81x_hif_get_tx_status_pending_count(mors))
++		queue_work(mors->net_wq, &mors->tx_stale_work);
++	spin_unlock_bh(&mors->stale_status.lock);
++}
++
++static void mm81x_stale_tx_status_timer_finish(struct mm81x *mors)
++{
++	timer_delete_sync_try(&mors->stale_status.timer);
++}
++
++static void mm81x_mac_stale_tx_status_timer_init(struct mm81x *mors)
++{
++	spin_lock_init(&mors->stale_status.lock);
++	timer_setup(&mors->stale_status.timer, mm81x_stale_tx_status_timer, 0);
++}
++
++int mm81x_mac_register(struct mm81x *mors)
++{
++	int ret;
++	struct ieee80211_hw *hw = mors->hw;
++
++	mors->tx_power_mbm = INT_MAX;
++	mors->tx_max_power_mbm = INT_MAX;
++	mors->rts_threshold = IEEE80211_MAX_RTS_THRESHOLD;
++
++	ret = mm81x_ps_init(mors);
++	if (ret < 0)
++		return ret;
++
++	mm81x_mac_config_hw(mors);
++	mm81x_mac_hw_scan_init(mors);
++	mm81x_mac_stale_tx_status_timer_init(mors);
++
++	ret = ieee80211_register_hw(hw);
++	if (ret) {
++		dev_err(mors->dev, "ieee80211_register_hw failed %d", ret);
++		mm81x_mac_unregister(mors);
++		return ret;
++	}
++
++	mm81x_rc_init(mors);
++
++	/*
++	 * At this stage, we know bus and pager system interrupts are enabled.
++	 * Trigger the receive workqueue to drain any incoming chip-to-host
++	 * pending packets been pushed in the period between the firmware
++	 * initialization and interrupts being enabled.
++	 */
++	set_bit(MM81X_HIF_EVT_RX_PEND, &mors->hif.event_flags);
++	queue_work(mors->chip_wq, &mors->hif_work);
++
++	return ret;
++}
++
++void mm81x_mac_unregister(struct mm81x *mors)
++{
++	mm81x_ps_disable(mors);
++	mm81x_rc_deinit(mors);
++	mm81x_mac_hw_scan_destroy(mors);
++
++	ieee80211_stop_queues(mors->hw);
++	ieee80211_unregister_hw(mors->hw);
++
++	mm81x_hif_flush_tx_data(mors);
++	mm81x_hif_flush_cmds(mors);
++	mm81x_stale_tx_status_timer_finish(mors);
++	mm81x_ps_finish(mors);
++}
++
++struct mm81x *mm81x_mac_alloc(size_t priv_size, struct device *dev)
++{
++	struct ieee80211_hw *hw;
++	struct mm81x *mors;
++
++	hw = ieee80211_alloc_hw(sizeof(*mors) + priv_size, &mm81x_ops);
++	if (!hw) {
++		dev_err(dev, "ieee80211_alloc_hw failed\r\n");
++		return NULL;
++	}
++
++	SET_IEEE80211_DEV(hw, dev);
++	memset(hw->priv, 0, sizeof(*mors));
++
++	mors = hw->priv;
++	mors->hw = hw;
++	mors->dev = dev;
++	mutex_init(&mors->cmd_lock);
++	mutex_init(&mors->cmd_wait);
++
++	return mors;
++}
++
++void mm81x_mac_free(struct mm81x *mors)
++{
++	ieee80211_free_hw(mors->hw);
++}
 -- 
 2.43.0
 
