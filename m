@@ -1,318 +1,214 @@
-Return-Path: <linux-wireless+bounces-35742-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35743-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IH43NHVR9GmKAgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35742-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 01 May 2026 09:08:37 +0200
+	id +IyhGlNx9GmKBQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35743-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 01 May 2026 11:24:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A444AAC90
-	for <lists+linux-wireless@lfdr.de>; Fri, 01 May 2026 09:08:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D9204AB511
+	for <lists+linux-wireless@lfdr.de>; Fri, 01 May 2026 11:24:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6F05430078BC
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 May 2026 07:08:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B646F305B0BF
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 May 2026 09:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D29363C79;
-	Fri,  1 May 2026 07:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8633803CF;
+	Fri,  1 May 2026 09:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cXTou/N1"
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="4cducM1g"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6413612D7
-	for <linux-wireless@vger.kernel.org>; Fri,  1 May 2026 07:08:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777619315; cv=pass; b=MZNjmnjc4WjGVGKSLAGc0q0EqCr15KevupuhpZDDC44tCzn20wVoltdQXwFO2IJJq9wa9xAtyh+U2OOZGxnjKSqntDjP8GzWEX/7UFUWpN/0Sn7qjw6Dpv68SazRWAuMVBEorg814oe6SVftzKUiFKobWFWz8JKxjt8gWgbLoiM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777619315; c=relaxed/simple;
-	bh=/2lPvMgBwRlXYz+hwNAd2sawmW+FBi4qQaQzXa4mF5U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QI826xUWyYdujoP3nLeSvOorD1fFxdXg3zG1k2jDctALpqj/ihiehdIxWZvNrFN0GdyXA65YXDlIa+fcEMNo23JhwAYyZaKBjwknI+IyrXpNW9if8kZRw0Xhhj9maJSF+zIXwdcApYp0FO0Am7Yd3qeSXtM7uNHcggcOHZuYTDs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cXTou/N1; arc=pass smtp.client-ip=209.85.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7dcd689829eso1541450a34.3
-        for <linux-wireless@vger.kernel.org>; Fri, 01 May 2026 00:08:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777619312; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JPFLla7xmd1v6JDVH/+JLOQP1MsNA5zs+VxA+AHVRS3a37xnZbXM5Un7tNNUI6Vsqz
-         YmOnyv1Zswf03cQ0zaROtfQlSRf/dYLxwRAgHdiOHyXkCoqnh7maYUn/XOKOgzXpgYtS
-         9TqHC89eSoVVXWqpGd/uxByJB7BguXt1CBO6SDbqlY/o2e/LeEOUD7cYsTAWZ5SANy51
-         q157CDG8EwY7Y7x4esccmLmz9+y+Zx4uaUjFv/pQwsKOEfqSN9qlkCHShtIoaYhQwWra
-         4K58EKwazjR/I2MPJmnHAGtR5x/GnctoIuWEkBbxkXlSB4BK8MOXZoEsP77hWO9h8Nya
-         Ws6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tGtVcTIpMWEwpucmYm7Gx7tK/7UnKyIDFZfgCJLjmmw=;
-        fh=THoG8FBKFssiqRn5NcDBSL8nR5Lr6qA9KrAPXCyExks=;
-        b=QFHiNxg6v2IhsHk7t/gJDEACDIMdzP/hiCrpZb/dD5mFnDcht9/vohPBlULdwro/J4
-         +cc16uygitec9S33347JDcLOXNDY54dr6s7OFPsbp7rm/eNC8Kfgpf2zF5agwFvsMW42
-         Hff4pFAjfL/zPjX9yjeeehyB9FNLoo6++B+vlZei2O4QBlPZkdGs1fvk7CfCU+fk8CCD
-         4kC9Kcw4Vs2fiyoVyIlMidey1ikmCNgsuRizLIqgIzSU8iNtOD3YzC4MXruVmqX0kj/m
-         Hd86jWgLRralyZ85uXVTIReUuf5kVpqRgsJrv77sXPsMg1RsQ1QruN4fX5sTyadUAcYy
-         PwXw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B753806C6
+	for <linux-wireless@vger.kernel.org>; Fri,  1 May 2026 09:20:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777627253; cv=none; b=pQstW1Q1qzSABBGBTRl/w/+XYnyvgMelMF0nvohq7LqWtkmOSOXMIB6gxZI2Lb3Bc4+EtNiSPVqDPwTzle/iEK/d5rkibRSRMWYRgojZObUikRQeSQdqIiJAkQo1C7IrsHYhHhyfdtuTm+QP7WN5JzqvMYgiT+FOBvQqJC0fl3A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777627253; c=relaxed/simple;
+	bh=t3nxPYsn/+uIJrb9cvX2Su+SoURhZtwc/pGiLCniQoM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=h8k+aP2yarShGWc3o+UXLn04YcvAUtd7hQOd+1p51Ayh5kjF7hevmhcGYhmq0fy353xZmirrtevDhYJTig1d1ROu1KX7me4BUJ3wD45gngf0Z0cNFBSZh4KESUkkPUYZJKq7kPhbsKh57waAllDxGIgT15J1Ah/TBMpYIUhcjro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=4cducM1g; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-44a786a9a35so322711f8f.3
+        for <linux-wireless@vger.kernel.org>; Fri, 01 May 2026 02:20:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777619312; x=1778224112; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=fairphone.com; s=fair; t=1777627250; x=1778232050; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tGtVcTIpMWEwpucmYm7Gx7tK/7UnKyIDFZfgCJLjmmw=;
-        b=cXTou/N1+kS9GIoVx1HqLcqUjD3JRvLuk2U20KpVJzepXqWsjhNbObYaPUerntmAkA
-         hLKC7yfpZcpTeKlWAnuPNwldnVlLzB2rLc6RLDJKaOj6oCy7SDyoao5AXWR40J24VUIN
-         Z63R4dLIc+kF9oJg8cg9fjXlFbv3AUVOMbRxUAgulD5igZKFZItYpo8eS3kt2NexIcbQ
-         dSVKBCjLUvaEjksY6/cJrnRdFSsgKl22RM78y2IQufQcibQfYIGHqqeyWiRnuKgfptJ6
-         20fEd+LYPTTkJ3wLe0FytePCUGQhqe8fSBZjfBmFJTEdsyCnPCzbKoOoGYUIrVerzlMU
-         99iA==
+        bh=0bfYkGp++VX2XGf/8Df8kQnMjnWB1zask25dl4NteK4=;
+        b=4cducM1goAgbmhRjB7BIeqVv4bhmvt/VGodszsfyXX9V+Y/WIx7CWBq3zq/e2LHY6v
+         oyxMrxfTKFkxp3Df6OIh7TXYpy5bkqrY9bWuoRADiTOVWKfVLpOp2nlyWdVm/NilvQt/
+         JeeHmwJiATC3bAGy/cvOYDsBxvMDA520LZnu3JNVxn3a7SZeB3zWHrgJFTgno9dL5XSq
+         39dVjZ/mzBqa+w9vf2fSkgec+ROGW1wPzHu8COQdnu5tVXASYxMAdDQmucxVlXla+46w
+         sd9xPL+p5rgFxJJZ2GuaYJlW0o5AzoTqx6A5qHlSh2qgcx7eO4vPrZfJ+AD33bB/taul
+         ZG3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777619312; x=1778224112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tGtVcTIpMWEwpucmYm7Gx7tK/7UnKyIDFZfgCJLjmmw=;
-        b=LKAmH9/ydjZdpLT3UUmEC0LQau3hwB8WXUc+Set/NgZKpf8Au+nQE+W7heLoz/Mbtt
-         Ka3o5gMIeOntg7Vmf1u0lq27YcCilSu7hNnMuRRu6Lr8iGqBw7QKcNKsKEZbVKoEsSFh
-         UzrCWuoadHzmOlTzPNk71S+z4MJ/rp9N3+2w//VuUFP1RJudWsObEyLxJz6IEDdiP/Tk
-         cGyzhIv/rC6x03XT3+48kCSfop4ZumpyDT0wexXyzJe47tg5oKphCq8G2NjGNSgIYWB1
-         zXSBxaqQU5TN8vfCzuIooTNSfQdAE7bYb+A9c/nE5GYZovhkw6rZwdp1FiTsauHCrQA7
-         B4IQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8c5upKJ+rqTklRQvOye7GBhjHCugQtLc1atQpGtgJ10wKyrFq1Oby/+bBUx/977IAIhjJwTDqsJsvGSgHTxQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJyCJBBgXLgbktyEiEqz9HknqFlGIWilpXFHnJFYClTBxk5SwN
-	8h3cS7EWlFfaju4k/wxsmhWzrlW+kXqTzFQTWNo1n3a/RTKAS5037KMNYZJVj9LYa6PlfwF409x
-	9HGs3Eg28fEJPu8LXbt5Y1iAUQB0HpIU=
-X-Gm-Gg: AeBDievgzQCowSxT5YF0LUZdmzSaF4UJXI6hVXwWapjJAHTlcMQ/OvAWpNgLlAanFwd
-	CvH1HuKiGLnTk95sVjhjtGc3QPW0efNstanjpTcQL26tbuJ+IZsg8YyvyRBO43qt/H2wteEXoNk
-	auER4dRrHPhDytSLu7z07tYX0QoyeqkzYNhgqRrPuxDl4fn8PBZAzyxq3RcN5RlgmQ7pg8Jhlnv
-	pVp+YWXTFXhDePcWER8BCcq1L0EBn+YrfP6zqYAOL7T5HVRpjCi3WI+//Zm4eeoswNvgEu7+pbh
-	nf3hub4UUND6KEAZnzi7du+vaIyrcuv29SnMIFHa7QliTew=
-X-Received: by 2002:a05:6830:2650:b0:7dc:c926:4f87 with SMTP id
- 46e09a7af769-7debdde82d2mr3374302a34.16.1777619311744; Fri, 01 May 2026
- 00:08:31 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777627250; x=1778232050;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0bfYkGp++VX2XGf/8Df8kQnMjnWB1zask25dl4NteK4=;
+        b=U762xVt16jYs5p/zBOdkZoME4gKTJe14zTgDn1EwdP5TxlwEXpm0VOvLBv80lCpRXQ
+         sLQjBhlUdfjBEf6VDg7dqr22WYvyrOe987aUA9M6LRuJD3pti7erEovfgsPanVQfRREV
+         7UhtlmB7kxi/rnKzKYAXA1GupVyWw6AmeeIFoQs/Xbto+DF8lXqZDaP1AaxcAC+8IVnP
+         JZ+SUlCcCeRGA3ahSJBgRPewErqwuPQ44qmkuTpXpPO6PbYQnKqQCcBMG5ccSOYaYPqD
+         X1mkqSR3SVG9r0/rBMo85qDolpe7uM4gC8MNcCsCPbWCUr7ebmcXusPoqG22LM/m5CSw
+         u80g==
+X-Forwarded-Encrypted: i=1; AFNElJ+re4M6sGXIxUOWjgTz/CAipxzuH30KGc1zOmgC6jKF3ZdIPlq5p1Hrp5B1GV6LPJTQchu4yO3yX8RXP34rwQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEgmBjrLNsZaJIxLmraoD6jklVUb4ZhvPAI8RLZP6VlEuA52aq
+	NC0XsHLxR6NZnbyZnVVoXT5xGU4JZb8LohimxTDO+yoleVF8+eQ5gJ3jZT6sVX17Z+0=
+X-Gm-Gg: AeBDievg+olT5f1F6HxQkiKfhDkUIjKxlyJuIVH5KYPosmd0wBqmM28Pwz7XCxGwmmY
+	L8hFGoXATxi1eIHOsQBNK7hlqlxjlbTThYbkT7qEMBMUVMK8TtPWGSQO+ih7foIrvTWzj9LW9tf
+	Qxel3pYq9QfiWwHTQrCb+FrIuDioHEqUwQs+dK9CPkvSdZi/8XFLdRgDoNF1EEsXrZOdT8bD4Uh
+	GZJmdreSh94UUqEwGtCWAHFdtsUbKhdl4L8ZcmNjvh7p238CcqqfOYuOzlt4soFSfCZymnxrgHr
+	qbhDNPTAxI53UmRDUGS4ZhmGu1ChwaVs6tdCOoJwtL869kfHAm9cl8KGHqtQt/cJadJfWDHc9Ne
+	YgbHFlATISkX52WFrGj9xYK0kKwG+whvTm1ke88qc5swJHEvXN4jJi85j+aY3Lb23iyxccdUfSm
+	SIJGs2QXNmO/ol2ksxxwcUnr5+FUX3EGpi8hUVHS0TyEzTJi4Oq6W/UUlI20pO9T1DjZTv5vt94
+	4gkF8ZDLw==
+X-Received: by 2002:a05:6000:240c:b0:43f:e43a:f4a6 with SMTP id ffacd0b85a97d-44a857c10e8mr3084632f8f.6.1777627250496;
+        Fri, 01 May 2026 02:20:50 -0700 (PDT)
+Received: from localhost (046124199213.public.t-mobile.at. [46.124.199.213])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a98b768fdsm3583191f8f.33.2026.05.01.02.20.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 May 2026 02:20:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260330-p14s-pm-quirk-v2-1-ef18ce07996b@gmail.com>
- <082b3d13-6fb1-4041-a187-fddec3b013e4@oss.qualcomm.com> <CAOPSVF0VHR4BQsmfWFeFnANsQYBw-x7fHxH2JFNO=oWjgeS66Q@mail.gmail.com>
- <ba4d194b-6d31-4d8a-a6a6-da116f9f56ac@oss.qualcomm.com>
-In-Reply-To: <ba4d194b-6d31-4d8a-a6a6-da116f9f56ac@oss.qualcomm.com>
-From: Kyle Farnung <kfarnung@gmail.com>
-Date: Fri, 1 May 2026 00:08:19 -0700
-X-Gm-Features: AVHnY4ICkNhQPdf3q3XMOiB8IYKOepiuhb0qIQbdpuz7l3PNcE3h0yiAcsn0i0o
-Message-ID: <CAOPSVF04q6uvVdq8GTRLHBrVMdpt9=o9wVcFMc6f-yhmSBcZqQ@mail.gmail.com>
-Subject: Re: [PATCH v2] wifi: ath11k: apply existing PM quirk to ThinkPad P14s
- Gen 5 AMD
-To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>, Baochen Qiang <quic_bqiang@quicinc.com>, 
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>, linux-wireless@vger.kernel.org, 
-	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 75A444AAC90
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 01 May 2026 11:20:47 +0200
+Message-Id: <DI789NOBWJHK.1V3SFQLCFLS4P@fairphone.com>
+Cc: "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Alexander Koskovich" <AKoskovich@pm.me>, "Liam Girdwood"
+ <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>, "Bartosz
+ Golaszewski" <brgl@kernel.org>, "Marcel Holtmann" <marcel@holtmann.org>,
+ "Luiz Augusto von Dentz" <luiz.dentz@gmail.com>, "Balakrishna Godavarthi"
+ <quic_bgodavar@quicinc.com>, "Rocky Liao" <quic_rjliao@quicinc.com>,
+ "Johannes Berg" <johannes@sipsolutions.net>, "Jeff Johnson"
+ <jjohnson@kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
+ <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-bluetooth@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+ <ath11k@lists.infradead.org>
+Subject: Re: [PATCH v2 7/7] arm64: dts: qcom: milos-fairphone-fp6: Enable
+ WiFi
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Dmitry Baryshkov"
+ <dmitry.baryshkov@oss.qualcomm.com>, "Luca Weiss"
+ <luca.weiss@fairphone.com>, "Jeff Johnson" <jeff.johnson@oss.qualcomm.com>,
+ "Baochen Qiang" <baochen.qiang@oss.qualcomm.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260403-milos-fp6-bt-wifi-v2-0-393322b27c5f@fairphone.com>
+ <20260403-milos-fp6-bt-wifi-v2-7-393322b27c5f@fairphone.com>
+ <4fbs4arx6sez6fffy75ctmzecfvitr6aocau3cczlr2ps2ptld@v7wpa2irsihl>
+ <2514523f-a43f-4470-a69b-3d5175d10385@oss.qualcomm.com>
+In-Reply-To: <2514523f-a43f-4470-a69b-3d5175d10385@oss.qualcomm.com>
+X-Rspamd-Queue-Id: 0D9204AB511
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[fairphone.com,quarantine];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[fairphone.com:s=fair];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35742-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35743-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kfarnung@gmail.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,pm.me,gmail.com,holtmann.org,quicinc.com,sipsolutions.net,lists.sr.ht,vger.kernel.org,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[28];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid,qualcomm.com:email]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luca.weiss@fairphone.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[fairphone.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,fairphone.com:email,fairphone.com:dkim,fairphone.com:mid]
 
-On Mon, Apr 13, 2026 at 11:43=E2=80=AFPM Baochen Qiang
-<baochen.qiang@oss.qualcomm.com> wrote:
->
->
->
-> On 4/1/2026 11:48 AM, Kyle Farnung wrote:
-> > On Tue, Mar 31, 2026 at 7:08=E2=80=AFPM Baochen Qiang
-> > <baochen.qiang@oss.qualcomm.com> wrote:
-> >>
-> >>
-> >>
-> >> On 3/31/2026 2:32 PM, Kyle Farnung via B4 Relay wrote:
-> >>> From: Kyle Farnung <kfarnung@gmail.com>
-> >>>
-> >>> Some ThinkPad P14s Gen 5 AMD systems experience suspend/resume
-> >>> reliability issues similar to those reported in [1]. These platforms
-> >>
-> >> how similar it is? can you describe the issue in details?
-> >
-> > The issue is that intermittently after suspend my WiFi adapter connects
-> > successfully for a few minutes and then drops. It will then keep trying=
- to
-> > reconnect in a loop but never succeed. A reboot will fix it, but eventu=
-ally
-> > I found that reloading the module also resolves the issue
-> > (modprobe -r ath11k_pci && modprobe ath11k_pci). Based on some searchin=
-g, I
-> > did try adding "ath11k_pci.disable_idle_ps=3D1" to my kernel arguments.=
- At
-> > first it looked like maybe it worked, but then I hit the same problem
-> > again. At that point I decided to try building a custom module with the
-> > ATH11K_PM_WOW override and so far I'm two days and 10 suspends in witho=
-ut
-> > issue.
-> >
-> > Looking through kernel logs, the issue appears to have started with ker=
-nel
-> > version 6.17.4. It looks like my Fedora install jumped from 6.16.10 to
-> > 6.17.4 on October 22, 2025 and I started seeing the issue two days late=
-r.
-> >
-> > Here are the logs from the most recent occurrence (filtered for brevity=
-):
-> >
-> > Mar 29 15:26:24 kjfp14sg5 kernel: PM: suspend exit
-> > Mar 29 15:26:24 kjfp14sg5 kernel: ath11k_pci 0000:02:00.0: chip_id
-> > 0x12 chip_family 0xb board_id 0xff soc_id 0x400c1211
-> > Mar 29 15:26:24 kjfp14sg5 kernel: ath11k_pci 0000:02:00.0: fw_version
-> > 0x11088c35 fw_build_timestamp 2024-04-17 08:34 fw_build_id
-> > WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-> > Mar 29 15:26:30 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
-> > CTRL-EVENT-REGDOM-CHANGE init=3DDRIVER type=3DCOUNTRY alpha2=3DUS
-> > Mar 29 15:26:30 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
-> > CTRL-EVENT-REGDOM-CHANGE init=3DDRIVER type=3DCOUNTRY alpha2=3DUS
-> > Mar 29 15:26:30 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
-> > CTRL-EVENT-REGDOM-CHANGE init=3DDRIVER type=3DCOUNTRY alpha2=3DUS
-> > Mar 29 15:26:35 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
-> > CTRL-EVENT-CONNECTED - Connection to 68:d7:9a:2a:94:f8 completed [id=3D=
-0
-> > id_str=3D]
-> > Mar 29 15:26:49 kjfp14sg5 wpa_supplicant[2373]: wlp2s0: CTRL-EVENT-BEAC=
-ON-LOSS
->
-> this is the reason to your disconnection
->
-> > Mar 29 15:26:55 kjfp14sg5 kernel: ath11k_pci 0000:02:00.0: failed to
-> > flush transmit queue, data pkts pending 9
-> > Mar 29 15:26:55 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
-> > CTRL-EVENT-DISCONNECTED bssid=3D68:d7:9a:2a:94:f8 reason=3D4
-> > locally_generated=3D1
-> > Mar 29 15:27:00 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
-> > CTRL-EVENT-DISCONNECTED bssid=3D80:2a:a8:98:26:3e reason=3D6
-> > Mar 29 15:27:05 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
-> > CTRL-EVENT-DISCONNECTED bssid=3D74:ac:b9:df:54:36 reason=3D6
-> > Mar 29 15:27:09 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
-> > CTRL-EVENT-DISCONNECTED bssid=3D68:d7:9a:2a:94:f8 reason=3D2
-> > Mar 29 15:27:09 kjfp14sg5 wpa_supplicant[2373]: wlp2s0:
-> > CTRL-EVENT-SSID-TEMP-DISABLED id=3D0 ssid=3D"Batman" auth_failures=3D1
-> > duration=3D10 reason=3DCONN_FAILED
->
-> and the bssid is disabled so association to this AP won't happen in a per=
-iod.
->
-> Anyway, although it works, using the PM quirk seems not the right fix. As=
- you mentioned it
-> seems like a regression starting to show in 6.17.4, can you do regression=
- test to locate
-> the issue commit?
+Hi Konrad,
 
-It took a bit of trial and error, but I'm reasonably confident that [3] is
-the culprit. The issue is pretty sporadic, but I've been able to reproduce
-it twice in ~50 sleep/wake cycles on that commit, while the immediate
-ancestor has been clean for 17 cycles so far. I'll continue testing and
-report back.
-
-The change looks suspicious as it modifies a code path that runs on every
-sleep/wake cycle, and the failure appears to be some sort of corrupted
-firmware state. In a couple of cases the WiFi firmware crashed outright
-(MHI_CB_EE_RDDM) while the issue was occurring.
-
-[3] 79266fd78df1 ("wifi: ath11k: HAL SRNG: don't deinitialize and
-re-initialize again")
-
+On Tue Apr 7, 2026 at 3:16 PM CEST, Konrad Dybcio wrote:
+> On 4/3/26 9:35 PM, Dmitry Baryshkov wrote:
+>> On Fri, Apr 03, 2026 at 03:52:53PM +0200, Luca Weiss wrote:
+>>> Configure and enable the WiFi node, and add the required pinctrl to
+>>> provide the sleep clock from the PMK8550 (PMK7635) to WCN6755.
+>>>
+>>> Thanks to Alexander Koskovich for helping with the bringup, adding
+>>> the missing pinctrl to make the WPSS stop crashing.
+>>>
+>>> Link: https://lore.kernel.org/linux-arm-msm/DBF7OWAWQ94M.FSCP4DPF8ZJY@f=
+airphone.com/
+>>> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>> ---
+>>>  arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts | 19 ++++++++++++++++=
+++-
+>>>  1 file changed, 18 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/ar=
+m64/boot/dts/qcom/milos-fairphone-fp6.dts
+>>> index db72418b7195..d8ac495ca7c8 100644
+>>> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>>> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>>> @@ -242,7 +242,7 @@ wcn6750-pmu {
+>>> =20
+>>>  		clocks =3D <&rpmhcc RPMH_RF_CLK1>;
+>>> =20
+>>> -		pinctrl-0 =3D <&bluetooth_enable_default>;
+>>> +		pinctrl-0 =3D <&bluetooth_enable_default>, <&pmk8550_sleep_clk_defau=
+lt>;
+>>>  		pinctrl-names =3D "default";
+>>> =20
+>>>  		regulators {
+>>> @@ -766,6 +766,17 @@ &pmiv0104_eusb2_repeater {
+>>>  	qcom,tune-usb2-preem =3D /bits/ 8 <0x6>;
+>>>  };
+>>> =20
+>>> +&pmk8550_gpios {
+>>> +	pmk8550_sleep_clk_default: sleep-clk-default-state {
+>>> +		pins =3D "gpio5";
+>>> +		function =3D "func1";
+>>> +		input-disable;
+>>> +		output-enable;
+>>=20
+>> Hmm, if it's a sleep_clk, should it not be handled via the power
+>> sequencer?
 >
-> >
-> >>
-> >>> were not previously included in the ath11k PM quirk table.
-> >>>
-> >>> Add DMI matches for product IDs 21ME and 21MF to apply the existing
-> >>> ATH11K_PM_WOW override, improving suspend/resume behavior on these
-> >>> systems.
-> >>>
-> >>> Tested on a ThinkPad P14s Gen 5 AMD (21ME) running 6.19.9.
-> >>>
-> >>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D219196
-> >>> [2] https://pcsupport.lenovo.com/us/en/products/laptops-and-netbooks/=
-thinkpad-p-series-laptops/thinkpad-p14s-gen-5-type-21me-21mf/
-> >>>
-> >>> Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on mach=
-ine model")
-> >>> Cc: stable@vger.kernel.org
-> >>> Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
-> >>> ---
-> >>> Changes in v2:
-> >>> - Fix missing mailing list recipients (linux-wireless, ath11k, linux-=
-kernel)
-> >>> - Link to v1: https://lore.kernel.org/r/20260330-p14s-pm-quirk-v1-1-c=
-f2fa39cc2d5@gmail.com
-> >>> ---
-> >>>  drivers/net/wireless/ath/ath11k/core.c | 14 ++++++++++++++
-> >>>  1 file changed, 14 insertions(+)
-> >>>
-> >>> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wir=
-eless/ath/ath11k/core.c
-> >>> index 3f6f4db5b7ee1aba79fd7526e5d59d068e0f4a2e..21d366224e75904feeae6=
-cb9c93d9ef692d127fe 100644
-> >>> --- a/drivers/net/wireless/ath/ath11k/core.c
-> >>> +++ b/drivers/net/wireless/ath/ath11k/core.c
-> >>> @@ -1041,6 +1041,20 @@ static const struct dmi_system_id ath11k_pm_qu=
-irk_table[] =3D {
-> >>>                       DMI_MATCH(DMI_PRODUCT_NAME, "21D5"),
-> >>>               },
-> >>>       },
-> >>> +     {
-> >>> +             .driver_data =3D (void *)ATH11K_PM_WOW,
-> >>> +             .matches =3D { /* P14s G5 AMD #1 */
-> >>> +                     DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> >>> +                     DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
-> >>> +             },
-> >>> +     },
-> >>> +     {
-> >>> +             .driver_data =3D (void *)ATH11K_PM_WOW,
-> >>> +             .matches =3D { /* P14s G5 AMD #2 */
-> >>> +                     DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> >>> +                     DMI_MATCH(DMI_PRODUCT_NAME, "21MF"),
-> >>> +             },
-> >>> +     },
-> >>>       {}
-> >>>  };
-> >>>
-> >>>
-> >>> ---
-> >>> base-commit: dbd94b9831bc52a1efb7ff3de841ffc3457428ce
-> >>> change-id: 20260330-p14s-pm-quirk-0a51ba19235f
-> >>>
-> >>> Best regards,
-> >>
+> If you mean that it may be needed to toggle it with specific timings,
+> possibly..  seems that WCN6855 has a "xo-clk" GPIO defined. I requested
+> access to some docs that I think should have the answer, hopefully should
+> get it soon.
+
+Did you manage to get anything there yet?
+
+Regards
+Luca
+
+> Or maybe +Jeff/Baochen could answer faster?
 >
+> Konrad
+
 
