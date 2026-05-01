@@ -1,214 +1,222 @@
-Return-Path: <linux-wireless+bounces-35743-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35744-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IyhGlNx9GmKBQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35743-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 01 May 2026 11:24:35 +0200
+	id WOVmGst99GlDBwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35744-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 01 May 2026 12:17:47 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D9204AB511
-	for <lists+linux-wireless@lfdr.de>; Fri, 01 May 2026 11:24:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C3C4AB8FE
+	for <lists+linux-wireless@lfdr.de>; Fri, 01 May 2026 12:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B646F305B0BF
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 May 2026 09:20:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7859B300A11F
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 May 2026 10:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8633803CF;
-	Fri,  1 May 2026 09:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E674A386566;
+	Fri,  1 May 2026 10:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="4cducM1g"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mki+X5g/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B753806C6
-	for <linux-wireless@vger.kernel.org>; Fri,  1 May 2026 09:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4503859E0
+	for <linux-wireless@vger.kernel.org>; Fri,  1 May 2026 10:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777627253; cv=none; b=pQstW1Q1qzSABBGBTRl/w/+XYnyvgMelMF0nvohq7LqWtkmOSOXMIB6gxZI2Lb3Bc4+EtNiSPVqDPwTzle/iEK/d5rkibRSRMWYRgojZObUikRQeSQdqIiJAkQo1C7IrsHYhHhyfdtuTm+QP7WN5JzqvMYgiT+FOBvQqJC0fl3A=
+	t=1777630664; cv=none; b=Zx3RyRmtGBfcfnPsmC7BHiWkx+tyFD/6+QdhX+YRMoZJozRJ79PnBi+vEP93TEA+WsUJmoiYxefq10XffOsWUUqtTy3O9znSSfzEYSlwgHw+Wo93CC+ukfTtXf/pW9y6AlrBxV45CC2F+snxe3jzkOKd/zdnxacW7940bhhSqqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777627253; c=relaxed/simple;
-	bh=t3nxPYsn/+uIJrb9cvX2Su+SoURhZtwc/pGiLCniQoM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=h8k+aP2yarShGWc3o+UXLn04YcvAUtd7hQOd+1p51Ayh5kjF7hevmhcGYhmq0fy353xZmirrtevDhYJTig1d1ROu1KX7me4BUJ3wD45gngf0Z0cNFBSZh4KESUkkPUYZJKq7kPhbsKh57waAllDxGIgT15J1Ah/TBMpYIUhcjro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=4cducM1g; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-44a786a9a35so322711f8f.3
-        for <linux-wireless@vger.kernel.org>; Fri, 01 May 2026 02:20:51 -0700 (PDT)
+	s=arc-20240116; t=1777630664; c=relaxed/simple;
+	bh=+yeYmE6NYLRk9ifgWABsVNa2UEapjwCOUIDjJzHIIUY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XJWmRED9im6+JqDuaZRfGed8/FNzBfH6LzGxFm+EzpTolBOp3RC4vlpQRRKZBbfeNEd4M2z0/gPdkEsuMxv1lQv8n3zJxPR9Xzut97kmIcalOGoUP3Db04VHlYyQeMkPAqU49u7kMm/Ob0s8Hhodi7cxAxPQ3FhGXslfrzza9k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mki+X5g/; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488e1a8ac40so17406655e9.2
+        for <linux-wireless@vger.kernel.org>; Fri, 01 May 2026 03:17:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1777627250; x=1778232050; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0bfYkGp++VX2XGf/8Df8kQnMjnWB1zask25dl4NteK4=;
-        b=4cducM1goAgbmhRjB7BIeqVv4bhmvt/VGodszsfyXX9V+Y/WIx7CWBq3zq/e2LHY6v
-         oyxMrxfTKFkxp3Df6OIh7TXYpy5bkqrY9bWuoRADiTOVWKfVLpOp2nlyWdVm/NilvQt/
-         JeeHmwJiATC3bAGy/cvOYDsBxvMDA520LZnu3JNVxn3a7SZeB3zWHrgJFTgno9dL5XSq
-         39dVjZ/mzBqa+w9vf2fSkgec+ROGW1wPzHu8COQdnu5tVXASYxMAdDQmucxVlXla+46w
-         sd9xPL+p5rgFxJJZ2GuaYJlW0o5AzoTqx6A5qHlSh2qgcx7eO4vPrZfJ+AD33bB/taul
-         ZG3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777627250; x=1778232050;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+        d=gmail.com; s=20251104; t=1777630662; x=1778235462; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=0bfYkGp++VX2XGf/8Df8kQnMjnWB1zask25dl4NteK4=;
-        b=U762xVt16jYs5p/zBOdkZoME4gKTJe14zTgDn1EwdP5TxlwEXpm0VOvLBv80lCpRXQ
-         sLQjBhlUdfjBEf6VDg7dqr22WYvyrOe987aUA9M6LRuJD3pti7erEovfgsPanVQfRREV
-         7UhtlmB7kxi/rnKzKYAXA1GupVyWw6AmeeIFoQs/Xbto+DF8lXqZDaP1AaxcAC+8IVnP
-         JZ+SUlCcCeRGA3ahSJBgRPewErqwuPQ44qmkuTpXpPO6PbYQnKqQCcBMG5ccSOYaYPqD
-         X1mkqSR3SVG9r0/rBMo85qDolpe7uM4gC8MNcCsCPbWCUr7ebmcXusPoqG22LM/m5CSw
-         u80g==
-X-Forwarded-Encrypted: i=1; AFNElJ+re4M6sGXIxUOWjgTz/CAipxzuH30KGc1zOmgC6jKF3ZdIPlq5p1Hrp5B1GV6LPJTQchu4yO3yX8RXP34rwQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEgmBjrLNsZaJIxLmraoD6jklVUb4ZhvPAI8RLZP6VlEuA52aq
-	NC0XsHLxR6NZnbyZnVVoXT5xGU4JZb8LohimxTDO+yoleVF8+eQ5gJ3jZT6sVX17Z+0=
-X-Gm-Gg: AeBDievg+olT5f1F6HxQkiKfhDkUIjKxlyJuIVH5KYPosmd0wBqmM28Pwz7XCxGwmmY
-	L8hFGoXATxi1eIHOsQBNK7hlqlxjlbTThYbkT7qEMBMUVMK8TtPWGSQO+ih7foIrvTWzj9LW9tf
-	Qxel3pYq9QfiWwHTQrCb+FrIuDioHEqUwQs+dK9CPkvSdZi/8XFLdRgDoNF1EEsXrZOdT8bD4Uh
-	GZJmdreSh94UUqEwGtCWAHFdtsUbKhdl4L8ZcmNjvh7p238CcqqfOYuOzlt4soFSfCZymnxrgHr
-	qbhDNPTAxI53UmRDUGS4ZhmGu1ChwaVs6tdCOoJwtL869kfHAm9cl8KGHqtQt/cJadJfWDHc9Ne
-	YgbHFlATISkX52WFrGj9xYK0kKwG+whvTm1ke88qc5swJHEvXN4jJi85j+aY3Lb23iyxccdUfSm
-	SIJGs2QXNmO/ol2ksxxwcUnr5+FUX3EGpi8hUVHS0TyEzTJi4Oq6W/UUlI20pO9T1DjZTv5vt94
-	4gkF8ZDLw==
-X-Received: by 2002:a05:6000:240c:b0:43f:e43a:f4a6 with SMTP id ffacd0b85a97d-44a857c10e8mr3084632f8f.6.1777627250496;
-        Fri, 01 May 2026 02:20:50 -0700 (PDT)
-Received: from localhost (046124199213.public.t-mobile.at. [46.124.199.213])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a98b768fdsm3583191f8f.33.2026.05.01.02.20.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 May 2026 02:20:49 -0700 (PDT)
+        bh=OYjyCXD0QWyyHk9mNisFX8algpLc7AwOspU1e+v3Szg=;
+        b=Mki+X5g/1LV/H17crZkK2eZIb7JZtVgrGxI+lm7tG5TjLt+j1Sd91l9K1ppYpSgQCW
+         uOf/S8ffKmtwZ/PdgLiANVcjxaRzY/2QZp9TastJecSfCjl1LXOh64LtY6zpbrD37Of8
+         cNcVUzz63dDamdq63K5r6+PRYNUJ+1wNfhFTiC+u1rBgsMInhypYki9nZTNaURqDd7Cb
+         bRB0QBNwx5qZaJaeOQxlRwX8QzenEK5aJnVlWEh3DQlFB1vuRWmDrqX7w9xeJ28jGDdo
+         zBuzk+8khz7rasXq+NhdO5ZdkbwER4QPGNot71RbIIbq/Z4k/3i9WslxjNPpZyC2nwvW
+         +76A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777630662; x=1778235462;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OYjyCXD0QWyyHk9mNisFX8algpLc7AwOspU1e+v3Szg=;
+        b=hGYZC6Zd5knebX3JQMPbHSdBiQlnU8dwyakMAuAkL5MvHlETJ1iTioqGn2rx/8kITO
+         JFnOeZKEgxzWIQrQ4b0nNB4K7rVpKFwtGk1EQf8RFwehnp2Q+5onKRIm3aiWUGXn9C1u
+         y2kxf/fdenIfhoEFFp126JfxmHUyuHUgYbajIkkEw8zn5jcqI2biIBsnBWcH97MMLR3g
+         rfmWOxc7HdzCpHIxsxPPKdc5PPj15k+kgrjU+8ZDJV5Ejedh3lSpjvE8xrkPna6/Tz+l
+         saK7etdvEL/OY7Ur48MlKP6t9S3Cy5dKfYjsAsBkqIl6bVd/7tPZqaJTTm9PTTgBqA3p
+         vxMA==
+X-Gm-Message-State: AOJu0Yz0RhR6cNodZsDOeRXb2v2JcQQDyv2KhhtZNu73YBAMuZuFGCU/
+	cMeMJj80ZiGi4tjuxL6CP+9rvE74RvuK19XxNfXys9CBCoLSJw3b7NNFohk0rQ==
+X-Gm-Gg: AeBDietUwGvLBVIHCAoDChStF5hzyW8hT7+TVARagcTTRK24HDKdk6uUlTBe+7I4/GP
+	ykUSMYp3AITkGgxWa9mIisVJoZDiWB2SLeEgFQDAlesZC35USnIXb+VWNetseyv5ogz8S9S+iWC
+	IBdz+2gF/dxJqkbY5KLiNi0+4XZ+MwjTiDr5jY8HbK3K0LqFEjrh3CoIGq/WmBXv9K/bBOTio1v
+	A2Eg/AUJ15S4xjSS4kHRbhrUOZ1cdHaFRinGzG2J2Gp9znQ2qh/yK8bEU8m30vip+1OzIufYPFN
+	Xboma96rqAZEX3u/tPntWhFJT/R8l9PM1Qyq/teSWuAlJahL15offSHO7w9TaPtZsWcqq+Lc2iR
+	VExd/nuOQ0OkuUk8sx8jyp8ecZ65BnklyRouj3HKPxvvg6SklY3DMXtyoOhEDIM1cn/eVPaQ1h2
+	fQ56uKjT4j8qUjAe5tRCeamGaE7wqPWOWkXt7SG1lBLa2Pyox0WB4z39LGZ3HEjeRvWgDRmBosR
+	/7CCormd+ThaDvnsS96x952GO3YAM9b6ExGS383X/A=
+X-Received: by 2002:a05:600c:a315:b0:488:9e54:94c0 with SMTP id 5b1f17b1804b1-48a83d6ec9emr84634615e9.8.1777630661417;
+        Fri, 01 May 2026 03:17:41 -0700 (PDT)
+Received: from shift.daheim (p200300d5ff07e00050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff07:e000:50f4:96ff:fe46:beef])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8fede418sm12915405e9.6.2026.05.01.03.17.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 May 2026 03:17:40 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
+	by shift.daheim with esmtp (Exim 4.99.2)
+	(envelope-from <chunkeey@gmail.com>)
+	id 1wIkwG-000000006rJ-0kE0;
+	Fri, 01 May 2026 12:17:40 +0200
+Message-ID: <26e33fea-c81e-48f4-a058-4b3bf0dc95c5@gmail.com>
+Date: Fri, 1 May 2026 12:17:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 01 May 2026 11:20:47 +0200
-Message-Id: <DI789NOBWJHK.1V3SFQLCFLS4P@fairphone.com>
-Cc: "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Alexander Koskovich" <AKoskovich@pm.me>, "Liam Girdwood"
- <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>, "Bartosz
- Golaszewski" <brgl@kernel.org>, "Marcel Holtmann" <marcel@holtmann.org>,
- "Luiz Augusto von Dentz" <luiz.dentz@gmail.com>, "Balakrishna Godavarthi"
- <quic_bgodavar@quicinc.com>, "Rocky Liao" <quic_rjliao@quicinc.com>,
- "Johannes Berg" <johannes@sipsolutions.net>, "Jeff Johnson"
- <jjohnson@kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
- <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-bluetooth@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
- <ath11k@lists.infradead.org>
-Subject: Re: [PATCH v2 7/7] arm64: dts: qcom: milos-fairphone-fp6: Enable
- WiFi
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Dmitry Baryshkov"
- <dmitry.baryshkov@oss.qualcomm.com>, "Luca Weiss"
- <luca.weiss@fairphone.com>, "Jeff Johnson" <jeff.johnson@oss.qualcomm.com>,
- "Baochen Qiang" <baochen.qiang@oss.qualcomm.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260403-milos-fp6-bt-wifi-v2-0-393322b27c5f@fairphone.com>
- <20260403-milos-fp6-bt-wifi-v2-7-393322b27c5f@fairphone.com>
- <4fbs4arx6sez6fffy75ctmzecfvitr6aocau3cczlr2ps2ptld@v7wpa2irsihl>
- <2514523f-a43f-4470-a69b-3d5175d10385@oss.qualcomm.com>
-In-Reply-To: <2514523f-a43f-4470-a69b-3d5175d10385@oss.qualcomm.com>
-X-Rspamd-Queue-Id: 0D9204AB511
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: carl9170: fix stack-out-of-bounds in
+ carl9170_cmd_callback
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com,
+ tristan@talencesecurity.com, TristanInSec@gmail.com
+References: <20260424031711.53104-1-kartikey406@gmail.com>
+Content-Language: de-DE
+From: Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <20260424031711.53104-1-kartikey406@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C3C3C4AB8FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[fairphone.com,quarantine];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[fairphone.com:s=fair];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35743-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35744-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,pm.me,gmail.com,holtmann.org,quicinc.com,sipsolutions.net,lists.sr.ht,vger.kernel.org,lists.infradead.org];
-	RCPT_COUNT_TWELVE(0.00)[28];
+	FREEMAIL_CC(0.00)[vger.kernel.org,syzkaller.appspotmail.com,talencesecurity.com,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luca.weiss@fairphone.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[fairphone.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	FROM_NEQ_ENVFROM(0.00)[chunkeey@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,5c1ca6ccaa1215781cac];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,fairphone.com:email,fairphone.com:dkim,fairphone.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url]
 
-Hi Konrad,
+Hi,
 
-On Tue Apr 7, 2026 at 3:16 PM CEST, Konrad Dybcio wrote:
-> On 4/3/26 9:35 PM, Dmitry Baryshkov wrote:
->> On Fri, Apr 03, 2026 at 03:52:53PM +0200, Luca Weiss wrote:
->>> Configure and enable the WiFi node, and add the required pinctrl to
->>> provide the sleep clock from the PMK8550 (PMK7635) to WCN6755.
->>>
->>> Thanks to Alexander Koskovich for helping with the bringup, adding
->>> the missing pinctrl to make the WPSS stop crashing.
->>>
->>> Link: https://lore.kernel.org/linux-arm-msm/DBF7OWAWQ94M.FSCP4DPF8ZJY@f=
-airphone.com/
->>> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>> ---
->>>  arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts | 19 ++++++++++++++++=
-++-
->>>  1 file changed, 18 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/ar=
-m64/boot/dts/qcom/milos-fairphone-fp6.dts
->>> index db72418b7195..d8ac495ca7c8 100644
->>> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->>> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->>> @@ -242,7 +242,7 @@ wcn6750-pmu {
->>> =20
->>>  		clocks =3D <&rpmhcc RPMH_RF_CLK1>;
->>> =20
->>> -		pinctrl-0 =3D <&bluetooth_enable_default>;
->>> +		pinctrl-0 =3D <&bluetooth_enable_default>, <&pmk8550_sleep_clk_defau=
-lt>;
->>>  		pinctrl-names =3D "default";
->>> =20
->>>  		regulators {
->>> @@ -766,6 +766,17 @@ &pmiv0104_eusb2_repeater {
->>>  	qcom,tune-usb2-preem =3D /bits/ 8 <0x6>;
->>>  };
->>> =20
->>> +&pmk8550_gpios {
->>> +	pmk8550_sleep_clk_default: sleep-clk-default-state {
->>> +		pins =3D "gpio5";
->>> +		function =3D "func1";
->>> +		input-disable;
->>> +		output-enable;
->>=20
->> Hmm, if it's a sleep_clk, should it not be handled via the power
->> sequencer?
->
-> If you mean that it may be needed to toggle it with specific timings,
-> possibly..  seems that WCN6855 has a "xo-clk" GPIO defined. I requested
-> access to some docs that I think should have the answer, hopefully should
-> get it soon.
+On 4/24/26 5:17 AM, Deepanshu Kartikey wrote:
+> carl9170_cmd_callback() does not return after calling
+> carl9170_restart() when an invalid command response is detected.
+> This causes a fall-through into the memcpy block below, where
+> ar->readbuf is written with a device-controlled length (len - 4)
+> instead of the expected ar->readlen bytes.
+> 
+> A malicious or fuzzing USB device can send an oversized response
+> (e.g. 60 bytes) causing a stack-out-of-bounds write into ar->readbuf,
+> as detected by KASAN.
+> 
+> Fix this by adding a return after carl9170_restart() to match the
+> original intent stated in the comment ("Do not complete"). Also cap
+> the memcpy with min_t() as defense-in-depth to prevent overflow even
+> if the control flow changes in future.
+> 
+> The bug has been present since the initial driver submission in 2010.
 
-Did you manage to get anything there yet?
 
-Regards
-Luca
+I've seen this before in a mail from Tristan Madani (CC'd) on the 13th of April 2026.
+Unfortunately, he didn't post this to the linux-wireless mailing-list. Instead
+he went for the Security Officers <security@kernel.org> , so I can't provide any link to it.
+That said, he since changed it because of the notes I had about the driver actually want to process
+further so only the memcpy that caused the overflow was modified with the same
+"min_t(u32, len - 4, ar->readlen)" instead of "len -4" as the length:
+"[PATCH v3 1/3] wifi: carl9170: bound memcpy length in cmd callback to prevent OOB read"
 
-> Or maybe +Jeff/Baochen could answer faster?
->
-> Konrad
+https://lore.kernel.org/linux-wireless/20260421134929.325662-2-tristmd@gmail.com/
 
+So, who should get the credit? Maybe another person will post a patch soon too? Who knows.
+
+Note: if you used any assistents. Please also check out the (new) guide-lines:
+https://docs.kernel.org/process/coding-assistants.html and give proper attributions
+to the used tools.
+
+> Fixes: a84fab3cbfdc ("carl9170: 802.11 rx/tx processing and usb backend")
+> Reported-by: syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=5c1ca6ccaa1215781cac
+
+
+> Tested-by: syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+> ---
+>   drivers/net/wireless/ath/carl9170/rx.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
+> index 6833430130f4..6a5923495a01 100644
+> --- a/drivers/net/wireless/ath/carl9170/rx.c
+> +++ b/drivers/net/wireless/ath/carl9170/rx.c
+> @@ -145,12 +145,14 @@ static void carl9170_cmd_callback(struct ar9170 *ar, u32 len, void *buffer)
+>   		 * and we get a stack trace from there.
+>   		 */
+>   		carl9170_restart(ar, CARL9170_RR_INVALID_RSP);
+> +		return;
+
+It does happen that the driver receives garbage from the device. To remain bug-to-bug compatible with
+the rest of the driver should just handle it gracefully. (It's more like the comment above the
+carl9170_restart outdated and could be removed. Because carl9170_restart can start an async process that
+nukes the whole driver with a full usb_reset which will unbind the device... And if its too far gone it
+won't be able to rebind - then it requires the user to either physically unplugged and reinserted the
+wifi stick or reboot (only if it helps) or shutdown the machine)
+
+>   	}
+>   
+>   	spin_lock(&ar->cmd_lock);
+>   	if (ar->readbuf) {
+>   		if (len >= 4)
+> -			memcpy(ar->readbuf, buffer + 4, len - 4);
+> +			memcpy(ar->readbuf, buffer + 4,
+> +			       min_t(u32, len - 4, ar->readlen));
+
+yes.
+
+>   
+>   		ar->readbuf = NULL;
+>   	}
+
+
+Cheers,
+Christian
 
