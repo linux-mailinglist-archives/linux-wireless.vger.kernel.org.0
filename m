@@ -1,143 +1,144 @@
-Return-Path: <linux-wireless+bounces-35768-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35770-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPvkHgTv9WlAQgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35768-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 02 May 2026 14:33:08 +0200
+	id f0qbMGH59Wn0QwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35770-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 02 May 2026 15:17:21 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27EF84B1EA9
-	for <lists+linux-wireless@lfdr.de>; Sat, 02 May 2026 14:33:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6C64B21B0
+	for <lists+linux-wireless@lfdr.de>; Sat, 02 May 2026 15:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9507A300683A
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 May 2026 12:32:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 08497300A8DA
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 May 2026 13:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA0C3451D5;
-	Sat,  2 May 2026 12:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31721195811;
+	Sat,  2 May 2026 13:17:17 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA7F33AD8B
-	for <linux-wireless@vger.kernel.org>; Sat,  2 May 2026 12:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC29B40DFAF;
+	Sat,  2 May 2026 13:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.53.16.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777725155; cv=none; b=MGORfCoMHt5mQGnFzazGWmykLjSSKUmEndDf+V5WFE50dXBrGzRQ9ao+CMh3pj2DikCRz98DEYugzJB8QAWQVGF5GWa10U2h0kNKAeCHxmmv+R6fj2s5BxQ92wUEC79Zo+kikIL30HsiWUDVyRrpvwTLGu7hzB5Spe379itU3/g=
+	t=1777727837; cv=none; b=pnB8xOQFdCyGdcnfFPq/IjPMQDnV0rOP5mDc3wdIWJio46/s4TPpMrbLXTXiwJLObXrOpr4eCImUCuVee28wDgItJSIPApQxh8hoiKXtAuHHp4Hm9ZY9n1O/qDsxv29TwJFmzOCTrsi9r7Bz6bSKvKhdP7gGH4VCypp47Mk45wA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777725155; c=relaxed/simple;
-	bh=sTr2k1p+vYAdc3NlN2mbDcOc2gd7gos7jK7isFMlanc=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=cJmFlFybU8uWRbVZ5GUL5C2ZJwgGLJIkGrQTeUh562ZU7cbtjXEKB/TLvxyo1o9luUp1V82svPmbgDReJipb3LPA4/8PFqEhDP1W2SRpJqWayY9Gb8HLTmkwjYiiXiMJdVFrlulsi8z94CLbfW4Lg47XUmAa9LgFATxZDwijhdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-415e1ea16b4so9688227fac.1
-        for <linux-wireless@vger.kernel.org>; Sat, 02 May 2026 05:32:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777725153; x=1778329953;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Qjec6RlBuMYLsnhjQESjpB9D+UssHcI3JK88LEn7a5o=;
-        b=SaFKcaPNieZbLsNYD/LfvprgXp8sq6lAs7O8FCUnLeHDR+bD78sgu9GHGuniDDLYpW
-         45/eJ1+6EM0CsSHU4/3QZ8JyGVtJrLgu8L5+/WWPi6ZP0gbMMW4A9mGMLisEi3C44K+2
-         7JSHjiN0UDkzKs7rw/0mfGTvJXnLcASArBELH00tLnOf/ZFfXnoR95sshXkFVze2EVVA
-         ys3kVaw0IYIxraeBTjwyZOjmd31rh41RvINlKcV/rjRBr3EU7j2lMUlObqtmFwh6eW4l
-         mDW21mZTQUDq0MZXtnMkCVu+bJPJy2ol+39TqHBguVZc8zQxbRIdbDmm4P7HIlrcFzwP
-         7gSg==
-X-Forwarded-Encrypted: i=1; AFNElJ++VfL/cMeNilt97Nn9GXLg3Zy/CyLTphLqRHg/OgcGvZKe56J3J0bFSrADn080amOc74xEdk9etqSW1flBaQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyu/GvnlBpRslZI/s8yQmRaZfrckeCOLdRWetN10NKCVP7sRp+V
-	5YsUO43Em3Nu/fJdkPYFZF2QhufhMFW+fopyWfL/7vUC49N+PyQSfzJnz/d+g2utJ2e1qrmX+ux
-	JtScUMlcnsLkzOvoauZOANp9+ZychQfH3Y2poH6CBZcOgQvXKib0OYmfbFwQ=
+	s=arc-20240116; t=1777727837; c=relaxed/simple;
+	bh=BeONgfL4ZRZrt7n6ZM40omPDvpQXX+BUAqSanCgBLVw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gMaITCYqawKcEJHGIT2JrCpZ9ZLwHSS6RZ8PDCAAzkI6NR+u7N3G+9ew6Tvdd+htbdCe+q6G1KaMjIjk5bTH6/shBIv3F+/5UQeHSIN/jp+000Jxp97h4W/zjdYz3wPIV5mhkDKvXF0hD2vt2dMB0Gm8jcCvrdojF2aNsSLtYV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kaiser.cx; spf=pass smtp.mailfrom=kaiser.cx; arc=none smtp.client-ip=152.53.16.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kaiser.cx
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaiser.cx
+Received: from ipservice-092-208-105-007.092.208.pools.vodafone-ip.de ([92.208.105.7] helo=nb282.user.codasip.com)
+	by akranes.kaiser.cx with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <martin@kaiser.cx>)
+	id 1wJADW-000000001S7-3s6k;
+	Sat, 02 May 2026 15:17:10 +0200
+From: Martin Kaiser <martin@kaiser.cx>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Martin Kaiser <martin@kaiser.cx>
+Subject: [PATCH] wifi: rtw88: remove rtw_txq_dequeue
+Date: Sat,  2 May 2026 15:15:41 +0200
+Message-ID: <20260502131641.141136-1-martin@kaiser.cx>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:20c:b0:694:8f5d:3cb with SMTP id
- 006d021491bc7-69697e18bcfmr1275076eaf.57.1777725153292; Sat, 02 May 2026
- 05:32:33 -0700 (PDT)
-Date: Sat, 02 May 2026 05:32:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69f5eee1.050a0220.3cbe47.001c.GAE@google.com>
-Subject: [syzbot] Monthly wireless report (May 2026)
-From: syzbot <syzbot+list042322f6865e4ba59322@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 27EF84B1EA9
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EF6C64B21B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [0.14 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[kaiser.cx : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-35768-lists,linux-wireless=lfdr.de,list042322f6865e4ba59322];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	REDIRECTOR_URL(0.00)[goo.gl];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35770-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,kaiser.cx];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[martin@kaiser.cx,linux-wireless@vger.kernel.org];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.962];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,googlegroups.com:email,goo.gl:url]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kaiser.cx:mid,kaiser.cx:email]
 
-Hello wireless maintainers/developers,
+Remove the rtw_txq_dequeue helper. It's a wrapper around
+ieee80211_tx_dequeue with just one caller.
 
-This is a 31-day syzbot report for the wireless subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/wireless
+Call ieee80211_tx_dequeue directly in rtw_txq_push. There's no need to
+fetch txq for every frame, we can do this once outside of the rcu lock.
 
-During the period, 2 new issues were detected and 0 were fixed.
-In total, 47 issues are still open and 174 have already been fixed.
+Make the loop variable i unsigned long, it should have the same type as
+frames.
 
-Some of the still happening issues:
-
-Ref  Crashes Repro Title
-<1>  28976   Yes   WARNING in rate_control_rate_init (3)
-                   https://syzkaller.appspot.com/bug?extid=9bdc0c5998ab45b05030
-<2>  18964   No    WARNING in kcov_remote_start (6)
-                   https://syzkaller.appspot.com/bug?extid=3f51ad7ac3ae57a6fdcc
-<3>  10661   Yes   WARNING in __rate_control_send_low (3)
-                   https://syzkaller.appspot.com/bug?extid=34463a129786910405dd
-<4>  6955    Yes   WARNING in __cfg80211_ibss_joined (2)
-                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
-<5>  1227    Yes   WARNING in ieee80211_start_next_roc
-                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
-<6>  1049    Yes   INFO: task hung in reg_process_self_managed_hints
-                   https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
-<7>  903     Yes   INFO: task hung in reg_check_chans_work (7)
-                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
-<8>  827     Yes   INFO: rcu detected stall in ieee80211_handle_queued_frames
-                   https://syzkaller.appspot.com/bug?extid=1c991592da3ef18957c0
-<9>  624     Yes   INFO: task hung in crda_timeout_work (8)
-                   https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
-<10> 382     Yes   WARNING in ieee80211_tx_skb_tid
-                   https://syzkaller.appspot.com/bug?extid=8bd4574e8c52c48c2595
-
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/realtek/rtw88/tx.c | 18 +++---------------
+ 1 file changed, 3 insertions(+), 15 deletions(-)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index 3106edb84fb4..ea2dc9bda1b6 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -619,31 +619,19 @@ static int rtw_txq_push_skb(struct rtw_dev *rtwdev,
+ 	return 0;
+ }
+ 
+-static struct sk_buff *rtw_txq_dequeue(struct rtw_dev *rtwdev,
+-				       struct rtw_txq *rtwtxq)
+-{
+-	struct ieee80211_txq *txq = rtwtxq_to_txq(rtwtxq);
+-	struct sk_buff *skb;
+-
+-	skb = ieee80211_tx_dequeue(rtwdev->hw, txq);
+-	if (!skb)
+-		return NULL;
+-
+-	return skb;
+-}
+-
+ static void rtw_txq_push(struct rtw_dev *rtwdev,
+ 			 struct rtw_txq *rtwtxq,
+ 			 unsigned long frames)
+ {
++	struct ieee80211_txq *txq = rtwtxq_to_txq(rtwtxq);
+ 	struct sk_buff *skb;
+ 	int ret;
+-	int i;
++	unsigned long i;
+ 
+ 	rcu_read_lock();
+ 
+ 	for (i = 0; i < frames; i++) {
+-		skb = rtw_txq_dequeue(rtwdev, rtwtxq);
++		skb = ieee80211_tx_dequeue(rtwdev->hw, txq);
+ 		if (!skb)
+ 			break;
+ 
+-- 
+2.43.7
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
 
