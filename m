@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-35792-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35793-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uI3XHogO92mQbgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35792-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 10:59:52 +0200
+	id +PzRAYsO92mQbgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35793-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 10:59:55 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12264B5038
-	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 10:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C7E4B503F
+	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 10:59:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 68DF53003707
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 May 2026 08:59:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 31A403006228
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 May 2026 08:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B64B27EFEE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C331E3AE191;
 	Sun,  3 May 2026 08:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EFywAJpB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RwDZ2WIq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEA830E835
-	for <linux-wireless@vger.kernel.org>; Sun,  3 May 2026 08:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FB72D0C7E
+	for <linux-wireless@vger.kernel.org>; Sun,  3 May 2026 08:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777798778; cv=none; b=AAZdxwRB0nVyNjxdq/Z5OxL9G4GYEB3zqwXQIxGdG37IqoXq4f6NEKrG/+kLJVy1qfhYC3C2q0jvXnxmToTUqw88Q5sTJOEPd2IjkSEL16fp9G0Rso5/aQCiXZOe6o6NhlNGZxYvPJHvc+AEw1cDAF9f28T6qb0TQRuLn6OYxlY=
+	t=1777798779; cv=none; b=WfHxEmNGqJs9oloomml0HtGs78aJSUlulSUgB094hW34Tzw+Ywwctzfm6Ha+sUXwSmS+wrUrjdLGnwmC+KfaJ5uVQUS0PrlFB1CmHXf2Xa4ESh+UOP3JFRYRA77B0lj3PNnsNu3cjFRUqsCfdcFnBlFHi9hNyOas57oUFNoN2PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777798778; c=relaxed/simple;
-	bh=OTpgdChdFLZFw2d4H6idhTZ6IVZ61nG5YAHP4DlLwAM=;
+	s=arc-20240116; t=1777798779; c=relaxed/simple;
+	bh=bvVSoWbmVX8hEz4sUSz+J78YC7+cKs8BWcq6a7J7WwI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IbeOjzsdN3pr+D8+OTabq7E4O+Eg+5r6fi/8pnFcn3r6YOtpG2MFxWadN2Qpa2UDsy7YhDcCztfouvlkxmCQxMq7MhG1yqkfNSjgUHpyFVwZU4RDzi43p9gl4A4mcaM+PLlVPLfZfNaWdvAcp/ACCkt7dgE1iZW2zkUTvtSO6oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EFywAJpB; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=LEpTy43x7JUxVviYtBThEPKkBLWHOylzg/dRsdBBol8K8ydlZIGrXxF6FCPxgMaSnwt8wIsDcqtrCqr2eWhUDEX2NouDcH66SemId0vMp9fOPPz97uNdnb20dca+Q9cvESrQPB9hoB0lBhH0v7oGgxOYlQ8Jm/SBrESGOF8e2W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RwDZ2WIq; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777798777; x=1809334777;
+  t=1777798778; x=1809334778;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=OTpgdChdFLZFw2d4H6idhTZ6IVZ61nG5YAHP4DlLwAM=;
-  b=EFywAJpBTKsUK/RJpnJyCFTMH0FVFLwM7y160WJlAfnWEBs4rhHJl7JW
-   dXzqiYUznYPq+0dwp6uYshynxONCiBnEb13QvMbXAB+2y7VNFUIphJODV
-   J8NT06E/B6vuNFcB8obi7yTEyozlR5n734yhVrbvtchmHwqUZp+oSFRBo
-   wkU0tNyvdwTB/2qFuxNa4LIM++7jfljsquSp5/4y0gkOKgVCTJpo7otyM
-   kbdCKA1itw636hgyG/3YiZVVOcXcgNiXPblPRW8Y/nbGgwzy5wt1vaDfK
-   FcrXSMWRqMG1EK9peaz/Z1/4bCLuOoJmparC0bA5Z5eXInhGbsO1w0cXm
+  bh=bvVSoWbmVX8hEz4sUSz+J78YC7+cKs8BWcq6a7J7WwI=;
+  b=RwDZ2WIq213IvCQ0n+lUL0gnXFDFuAYEvW5SeFUXGfmCzqpnQexDgE2g
+   R5OMF7Kfg7Kw7nhMiSjvGMZk+hpcIecme9WE5VzeoRwvlepcc/ct8nHVn
+   +z1TOA65/HBKlt+P77pwaCsKRhGBvsfDY4CUJZGGT9f3KkcYx3XtTb8+Q
+   tD8VAne/qoQ8GJ1pNbKKwBAVCqH7L2/kXe+MGb8MYmKfStXLc2y602SwZ
+   7OPwiFztTL4QZfMQ9EIQ3K9at1xSXjXTvejAOlO62cfUvkn69UVVlMbS8
+   mmSIe28EPZRLwIUIwn+ELRpyDW6YLv5kcLAcuIjSCszemHKaimSmZ7V/P
    A==;
-X-CSE-ConnectionGUID: w/uTa1bJR9SJekHPGskGtw==
-X-CSE-MsgGUID: XcEghZONTSCKpV8v+XLqVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11774"; a="89380415"
+X-CSE-ConnectionGUID: KFbWcWNeQF2fhK8ec/aCCg==
+X-CSE-MsgGUID: UfSGiK22QB6tQaBJo6TqhA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11774"; a="89380418"
 X-IronPort-AV: E=Sophos;i="6.23,213,1770624000"; 
-   d="scan'208";a="89380415"
+   d="scan'208";a="89380418"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2026 01:59:36 -0700
-X-CSE-ConnectionGUID: Jb2JzbzfR+eG30xkIWu8wA==
-X-CSE-MsgGUID: 0WrsM6+DTvWdSvm95gduow==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2026 01:59:38 -0700
+X-CSE-ConnectionGUID: o8YkT8wSR9uwprpeBOqU0w==
+X-CSE-MsgGUID: +140eNXGQ8Gw9JnBx3r7Fg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,213,1770624000"; 
-   d="scan'208";a="235123818"
+   d="scan'208";a="235123826"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2026 01:59:35 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2026 01:59:37 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH v3 wireless-next 12/15] wifi: mac80211_hwsim: move timestamp writing later in the datapath
-Date: Sun,  3 May 2026 11:59:04 +0300
-Message-Id: <20260503115440.b2c16aa41f8b.I86810bbbf9b171acc6dbf07f9904ce1686b5167a@changeid>
+Subject: [PATCH v3 wireless-next 13/15] wifi: mac80211_hwsim: register beacon timer by calculating TBTT
+Date: Sun,  3 May 2026 11:59:05 +0300
+Message-Id: <20260503115440.69356963ef49.Iccf6164f3feeb5350fcfe0df666248c686b226ae@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260503085907.257378-1-miriam.rachel.korenblit@intel.com>
 References: <20260503085907.257378-1-miriam.rachel.korenblit@intel.com>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C12264B5038
+X-Rspamd-Queue-Id: 50C7E4B503F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
@@ -94,7 +94,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-35792-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35793-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
@@ -111,219 +111,111 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 
 From: Benjamin Berg <benjamin.berg@intel.com>
 
-By delegating writing the timestamp into beacons and probe responses, we
-can remove the abs_bcn_ts from the global data and still avoid any time
-offset issues. This also seems conceptually closer to "real" hardware
-where the timestamp will be written late in the TX path.
+It is easy to calculate the next target beacon transmission time (TBTT)
+based on the current TSF and the beacon interval. Use this method to
+calculate the time to the next beacon.
 
-Move sending the SKB to the monitor interface to happen later, so that
-the frame timestamp has the value filled in by mac80211_hwsim.
+With this, the bcn_delta variable can be removed and drift over time due
+to the timer firing late is fully avoided.
 
 Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/virtual/mac80211_hwsim_i.h   |   2 -
- .../wireless/virtual/mac80211_hwsim_main.c    | 110 ++++++++----------
- 2 files changed, 49 insertions(+), 63 deletions(-)
+ .../net/wireless/virtual/mac80211_hwsim_i.h   |  1 -
+ .../wireless/virtual/mac80211_hwsim_main.c    | 39 ++++++++++++-------
+ 2 files changed, 24 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_i.h b/drivers/net/wireless/virtual/mac80211_hwsim_i.h
-index 741eb08f8a85..b4d0a3869619 100644
+index b4d0a3869619..d345595ca588 100644
 --- a/drivers/net/wireless/virtual/mac80211_hwsim_i.h
 +++ b/drivers/net/wireless/virtual/mac80211_hwsim_i.h
-@@ -104,8 +104,6 @@ struct mac80211_hwsim_data {
+@@ -103,7 +103,6 @@ struct mac80211_hwsim_data {
+ 
  	/* difference between this hw's clock and the real clock, in usecs */
  	s64 tsf_offset;
- 	s64 bcn_delta;
--	/* absolute beacon transmission time. Used to cover up "tx" delay. */
--	u64 abs_bcn_ts;
+-	s64 bcn_delta;
  
  	/* Stats */
  	u64 tx_pkts;
 diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-index 3bda5532ab62..5bf6541498ec 100644
+index 5bf6541498ec..ba2aa09b37cb 100644
 --- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
 +++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-@@ -1523,6 +1523,43 @@ static inline u16 trans_tx_rate_flags_ieee2hwsim(struct ieee80211_tx_rate *rate)
- 	return result;
+@@ -1216,6 +1216,12 @@ static inline u64 mac80211_hwsim_get_sim_tsf(void)
+ 	return ktime_to_us(ktime_get_boottime());
  }
  
-+static void mac80211_hwsim_write_tsf(struct mac80211_hwsim_data *data,
-+				     struct sk_buff *skb, u64 sim_time)
++static ktime_t mac80211_hwsim_tsf_to_boottime(struct mac80211_hwsim_data *data,
++					      u64 tsf)
 +{
-+	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
-+	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-+	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb->data;
-+	struct ieee80211_rate *txrate;
-+	/* TODO: get MCS */
-+	int bitrate = 100;
-+
-+	txrate = ieee80211_get_tx_rate(data->hw, info);
-+	if (txrate)
-+		bitrate = txrate->bitrate;
-+
-+	if (skb->len >= offsetofend(typeof(*mgmt), u.probe_resp.timestamp) &&
-+	    ieee80211_is_probe_resp(hdr->frame_control)) {
-+		mgmt->u.probe_resp.timestamp =
-+			cpu_to_le64(sim_time + data->tsf_offset +
-+				    24 * 8 * 10 / bitrate);
-+	} else if (skb->len >= offsetofend(typeof(*mgmt), u.beacon.timestamp) &&
-+		   ieee80211_is_beacon(mgmt->frame_control)) {
-+		mgmt->u.beacon.timestamp = cpu_to_le64(sim_time +
-+						       data->tsf_offset +
-+						       24 * 8 * 10 /
-+						       bitrate);
-+	} else if (skb->len >= offsetofend(struct ieee80211_ext,
-+					   u.s1g_beacon.timestamp) &&
-+		   ieee80211_is_s1g_beacon(mgmt->frame_control)) {
-+		struct ieee80211_ext *ext = (void *)mgmt;
-+
-+		ext->u.s1g_beacon.timestamp = cpu_to_le32(sim_time +
-+							  data->tsf_offset +
-+							  10 * 8 * 10 /
-+							  bitrate);
-+	}
++	return us_to_ktime(tsf - data->tsf_offset);
 +}
 +
- static void mac80211_hwsim_tx_frame_nl(struct ieee80211_hw *hw,
- 				       struct sk_buff *my_skb,
- 				       int dst_portid,
-@@ -1538,6 +1575,7 @@ static void mac80211_hwsim_tx_frame_nl(struct ieee80211_hw *hw,
- 	struct hwsim_tx_rate tx_attempts[IEEE80211_TX_MAX_RATES];
- 	struct hwsim_tx_rate_flag tx_attempts_flags[IEEE80211_TX_MAX_RATES];
- 	uintptr_t cookie;
-+	u64 sim_tsf;
- 
- 	if (data->ps != PS_DISABLED)
- 		hdr->frame_control |= cpu_to_le16(IEEE80211_FCTL_PM);
-@@ -1550,6 +1588,9 @@ static void mac80211_hwsim_tx_frame_nl(struct ieee80211_hw *hw,
- 		}
- 	}
- 
-+	sim_tsf = mac80211_hwsim_get_sim_tsf();
-+	mac80211_hwsim_write_tsf(data, my_skb, sim_tsf);
-+
- 	skb = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_ATOMIC);
- 	if (skb == NULL)
- 		goto nla_put_failure;
-@@ -1781,7 +1822,11 @@ static bool mac80211_hwsim_tx_frame_no_nl(struct ieee80211_hw *hw,
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *) skb->data;
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 	struct ieee80211_rx_status rx_status;
--	u64 sim_tsf;
-+	u64 sim_tsf = mac80211_hwsim_get_sim_tsf();
-+
-+	mac80211_hwsim_write_tsf(data, skb, sim_tsf);
-+
-+	mac80211_hwsim_monitor_rx(hw, skb, chan);
- 
- 	memset(&rx_status, 0, sizeof(rx_status));
- 	rx_status.flag |= RX_FLAG_MACTIME_START;
-@@ -1824,20 +1869,9 @@ static bool mac80211_hwsim_tx_frame_no_nl(struct ieee80211_hw *hw,
- 	skb_ext_reset(skb);
- 	nf_reset_ct(skb);
- 
--	/*
--	 * Get absolute mactime here so all HWs RX at the "same time", and
--	 * absolute TX time for beacon mactime so the timestamp matches.
--	 * Giving beacons a different mactime than non-beacons looks messy, but
--	 * it helps the Toffset be exact and a ~10us mactime discrepancy
--	 * probably doesn't really matter.
--	 */
- 	if (ieee80211_is_beacon(hdr->frame_control) ||
--	    ieee80211_is_probe_resp(hdr->frame_control)) {
-+	    ieee80211_is_probe_resp(hdr->frame_control))
- 		rx_status.boottime_ns = ktime_get_boottime_ns();
--		sim_tsf = data->abs_bcn_ts;
--	} else {
--		sim_tsf = mac80211_hwsim_get_sim_tsf();
--	}
- 
- 	/* Copy skb to all enabled radios that are on the current frequency */
- 	spin_lock(&hwsim_radio_lock);
-@@ -2137,27 +2171,6 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 			return;
- 	}
- 
--	if (skb->len >= 24 + 8 &&
--	    ieee80211_is_probe_resp(hdr->frame_control)) {
--		/* fake header transmission time */
--		struct ieee80211_mgmt *mgmt;
--		struct ieee80211_rate *txrate;
--		/* TODO: get MCS */
--		int bitrate = 100;
--		u64 ts;
--
--		mgmt = (struct ieee80211_mgmt *)skb->data;
--		txrate = ieee80211_get_tx_rate(hw, txi);
--		if (txrate)
--			bitrate = txrate->bitrate;
--		ts = mac80211_hwsim_get_sim_tsf();
--		mgmt->u.probe_resp.timestamp =
--			cpu_to_le64(ts + data->tsf_offset +
--				    24 * 8 * 10 / bitrate);
--	}
--
--	mac80211_hwsim_monitor_rx(hw, skb, channel);
--
- 	/* wmediumd mode check */
- 	_portid = READ_ONCE(data->wmediumd);
- 
-@@ -2291,8 +2304,6 @@ static void mac80211_hwsim_tx_frame(struct ieee80211_hw *hw,
- 				       ARRAY_SIZE(txi->control.rates));
- 	}
- 
--	mac80211_hwsim_monitor_rx(hw, skb, chan);
--
- 	if (_portid || hwsim_virtio_enabled)
- 		return mac80211_hwsim_tx_frame_nl(hw, skb, _portid, chan);
- 
-@@ -2310,10 +2321,6 @@ static void __mac80211_hwsim_beacon_tx(struct ieee80211_bss_conf *link_conf,
+ u64 mac80211_hwsim_get_tsf(struct ieee80211_hw *hw,
+ 			   struct ieee80211_vif *vif)
  {
- 	struct hwsim_vif_priv *vp = (void *)vif->drv_priv;
- 	struct ieee80211_tx_info *info;
--	struct ieee80211_rate *txrate;
--	struct ieee80211_mgmt *mgmt;
--	/* TODO: get MCS */
--	int bitrate = 100;
+@@ -1237,8 +1243,6 @@ static void mac80211_hwsim_set_tsf(struct ieee80211_hw *hw,
+ {
+ 	struct mac80211_hwsim_data *data = hw->priv;
+ 	u64 now = mac80211_hwsim_get_tsf(hw, vif);
+-	/* MLD not supported here */
+-	u32 bcn_int = data->link_data[0].beacon_int;
+ 	u64 delta = abs(tsf - now);
+ 	struct ieee80211_bss_conf *conf;
  
- 	if (vp->skip_beacons[link_conf->link_id]) {
- 		vp->skip_beacons[link_conf->link_id]--;
-@@ -2327,27 +2334,6 @@ static void __mac80211_hwsim_beacon_tx(struct ieee80211_bss_conf *link_conf,
- 				       info->control.rates,
- 				       ARRAY_SIZE(info->control.rates));
+@@ -1247,13 +1251,10 @@ static void mac80211_hwsim_set_tsf(struct ieee80211_hw *hw,
+ 		return;
  
--	txrate = ieee80211_get_tx_rate(hw, info);
--	if (txrate)
--		bitrate = txrate->bitrate;
--
--	mgmt = (struct ieee80211_mgmt *) skb->data;
--	/* fake header transmission time */
--	data->abs_bcn_ts = mac80211_hwsim_get_sim_tsf();
--	if (ieee80211_is_s1g_beacon(mgmt->frame_control)) {
--		struct ieee80211_ext *ext = (void *) mgmt;
--
--		ext->u.s1g_beacon.timestamp = cpu_to_le32(data->abs_bcn_ts +
--							  data->tsf_offset +
--							  10 * 8 * 10 /
--							  bitrate);
+ 	/* adjust after beaconing with new timestamp at old TBTT */
+-	if (tsf > now) {
++	if (tsf > now)
+ 		data->tsf_offset += delta;
+-		data->bcn_delta = do_div(delta, bcn_int);
 -	} else {
--		mgmt->u.beacon.timestamp = cpu_to_le64(data->abs_bcn_ts +
--						       data->tsf_offset +
--						       24 * 8 * 10 /
--						       bitrate);
++	else
+ 		data->tsf_offset -= delta;
+-		data->bcn_delta = -(s64)do_div(delta, bcn_int);
 -	}
--
- 	mac80211_hwsim_tx_frame(hw, skb,
- 			rcu_dereference(link_conf->chanctx_conf)->def.chan);
  }
-@@ -6033,6 +6019,8 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
- 	if (!found)
- 		goto out;
  
-+	mac80211_hwsim_monitor_rx(data2->hw, skb, data2->channel);
+ static void mac80211_hwsim_monitor_rx(struct ieee80211_hw *hw,
+@@ -2410,7 +2411,9 @@ mac80211_hwsim_beacon(struct hrtimer *timer)
+ 		container_of(link_data, struct mac80211_hwsim_data,
+ 			     link_data[link_data->link_id]);
+ 	struct ieee80211_hw *hw = data->hw;
+-	u64 bcn_int = link_data->beacon_int;
++	u32 remainder;
++	u64 tsf_now;
++	u64 tbtt;
+ 
+ 	if (!data->started)
+ 		return HRTIMER_NORESTART;
+@@ -2419,13 +2422,19 @@ mac80211_hwsim_beacon(struct hrtimer *timer)
+ 		hw, IEEE80211_IFACE_ITER_NORMAL,
+ 		mac80211_hwsim_beacon_tx, link_data);
+ 
+-	/* beacon at new TBTT + beacon interval */
+-	if (data->bcn_delta) {
+-		bcn_int -= data->bcn_delta;
+-		data->bcn_delta = 0;
+-	}
+-	hrtimer_forward_now(&link_data->beacon_timer,
+-			    ns_to_ktime(bcn_int * NSEC_PER_USEC));
++	/* TSF is the same for all VIFs, parameter is unused */
++	tsf_now = mac80211_hwsim_get_tsf(hw, NULL);
 +
- 	/* Tx info received because the frame was broadcasted on user space,
- 	 so we get all the necessary info: tx attempts and skb control buff */
++	/* Wrap value to be after the next TBTT */
++	tbtt = tsf_now + link_data->beacon_int;
++
++	/* Round TBTT down to the correct time */
++	div_u64_rem(tbtt, link_data->beacon_int, &remainder);
++	tbtt = tbtt - remainder;
++
++	hrtimer_set_expires(&link_data->beacon_timer,
++			    mac80211_hwsim_tsf_to_boottime(data, tbtt));
++
+ 	return HRTIMER_RESTART;
+ }
  
 -- 
 2.34.1
