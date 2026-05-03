@@ -1,85 +1,85 @@
-Return-Path: <linux-wireless+bounces-35777-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35778-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKliGGOn9mmYXQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35777-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 03:39:47 +0200
+	id ILxBAGSn9mmYXQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35778-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 03:39:48 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E924B3FFF
-	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 03:39:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C57544B4006
+	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 03:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 056D6300372D
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 May 2026 01:39:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0DDDA3004F30
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 May 2026 01:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C56246BCD;
-	Sun,  3 May 2026 01:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E209257824;
+	Sun,  3 May 2026 01:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z6TYdVQ6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fLpPy3SN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C322821771B
-	for <linux-wireless@vger.kernel.org>; Sun,  3 May 2026 01:39:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51C6244687
+	for <linux-wireless@vger.kernel.org>; Sun,  3 May 2026 01:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777772371; cv=none; b=pamdbKV3ZzK8M3sP+X6J1Ny1cSVOaWFvaLUP9mPLrNUNIpuDUqzZa8HJGOcMK3H6fKiIV3vj0/XjAWCI7WCBR7e9mkwVUpEZIJeB6Q4zpyC5khsorM87Y7FN3LgRoqOErwtqApKVJr/9Twoi5gAXK3aynWr02IXgz/hKJ4nx01Q=
+	t=1777772372; cv=none; b=T3K0S8iSX67uFpFjMNyvcAwL8KWm4dChO//OrpD/2uJk6e6yHcewxVYRnVEpZkb8YBiSR8FFnx6haW3VRrQ6ByggvD5teKcg1U3zOY1EWPcAqnLiEZOA+v9eqkpJLH+XeuuJR4RZW8vlcUCJ0THsJD/gGFA60WXwnl5VgDOlwb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777772371; c=relaxed/simple;
-	bh=7uwJxgvTxpOn6gNEIOPNEioHiEozfkGob7zPtdELUWI=;
+	s=arc-20240116; t=1777772372; c=relaxed/simple;
+	bh=uAMNZJNELeTW91RepEFHxSC/5cFK8pGWTHntf3vPjy0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=opIMbjg5l+QSUmk9VGMXJq/tWvhDltkYJF7ulGKZEQ2zEeLz0TGEooRusEBmsp1d3HDwbWzQN/gX5u2r+go3Yf+i3UttyJA57i3LnGlyZa3K2KLkkfAe+TnQdVt44CQQ+sH6r9Xl/Z2lG8FPD0EjL4xUuH9L3AxY1zhM6MLYC7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z6TYdVQ6; arc=none smtp.client-ip=209.85.218.52
+	 In-Reply-To:To:Cc; b=l5eyeH7y3JJVDB74dXVgd/yoFslJNL4Do2lg1YIqqaOAwXj30igLQVdiHz9W5eQvAhALjEZx0TzjDoGQBYMZL7kaDTonhS9BOkWiqIDL1wQb3rdrdk2dYszF776gQ8D/gfIkbXS5Svf/W/qWuh7O3RVySWH1zC2jNRvPkjzAtJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fLpPy3SN; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-bb3c4d8cc29so502248366b.1
-        for <linux-wireless@vger.kernel.org>; Sat, 02 May 2026 18:39:29 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b8f9568e074so450753966b.0
+        for <linux-wireless@vger.kernel.org>; Sat, 02 May 2026 18:39:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777772368; x=1778377168; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777772369; x=1778377169; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mCD/2g9DiH7IGmCylqgN8SVqRAlReG1YJkLOG3TO9pw=;
-        b=Z6TYdVQ67nfpyM+Eky4qqdjd4e497GCIMbYd4QHCVjZ6qs01j1aYs6VUHihBfs22sX
-         9M5m/ZrQwC+YCE7X09PIrjZOYgS1Q9foAsm6n/AKPzfLe6TuwDKH+Q7h1WIINYGIBGrC
-         CQOUeEYYeL682Np0WzDsw5iRytj7XeK+vtzf1qYuK6OVSYdspCeRuPDd6ImpDBHwvwAb
-         MkvTJUviwS0m4Txd+0U4OzZFMOedbM/aereboqo7dDWT5NZhoI8hoJhSBvHzmksk3EAE
-         8oRORoxChAnGp3Wn8dbYSEDrJOxECSJtCzG88fPA+6ctaKhcbLRDP3u8PXyld7ncHT1o
-         inkg==
+        bh=IkJvgTcI4nUUQ/9kKtwsMfSDSEk8uVrEpeWRMA7wuFg=;
+        b=fLpPy3SNgOV03pbBxbrVcQffTMp0jHYaYs/K4qlIuvEF1esVOemrPYzlEh8N9PqCat
+         24KEMOFRrkn/0RWBJS/5sfE308B4P94CABsQv1UZ2ypRXxSBjDQxPg0wHXQUeVnVd1zc
+         uzQ5FLcSHfKJiHOvVtjvzbAYcB4XuWCAa4QmmT4FX/qNtKxdGqtidi/RCM9IuP8tzyW/
+         Iy5iGMpWVakIcJSayyG6QUaFOL9E3GMpVYrx+5B8H1JxsUmrtTWPRQHwf5FUB9swjeD1
+         tS+5Ky7EvTU4a5qJoOxPh6zU5xdH4Mk4lassITUrzt+ds8jiw7vIfFaT31pB+BjfsYvV
+         a97Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777772368; x=1778377168;
+        d=1e100.net; s=20251104; t=1777772369; x=1778377169;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=mCD/2g9DiH7IGmCylqgN8SVqRAlReG1YJkLOG3TO9pw=;
-        b=qmrl1MYLrtO83oviKHjLQL46JFLobtYGpGtn7Twe2iLLeLnMxG3BaUv6pMr2x2oRjW
-         XUurrhqn3PMZqTRV7xYBlzgRlswd5EHAHV3n3xu4dhefB86jFXQkt+A0AGTSsYyF/VvJ
-         FSnGIr4qxDR9RsRv7Zb7dm6BmnqDU0rSoEk2vE+FXqItDh0YuMoSmIhasc5jexwYRnsJ
-         CdQWKeCTtxE5oOkZ93pS5BdLMCd0w5hI7NBc/T+B+R5S/bvB3c8UgsnSCXdphP9ptCh3
-         4oWhXuWcVXF+1Vv3TjdaYiekzETJldEZamR87sDpyerBWDpFFYfinkR1y3fH/N86pIMk
-         HAxA==
-X-Gm-Message-State: AOJu0Ywgk9GDPoowCLx7MERW2Blh5/cpdzjGJT90OdxOLW/ASCujOUVF
-	oFqCfMiUqj409WxfOStIWgTc2nDTf63okbPbpEguzsKHqOxthF5yGFDa
-X-Gm-Gg: AeBDiesM82zcMZr8/hrDTsssmjxR5QX/e4fVNi2iQNHHmeGl0IxKV5qs0Yk2Zo5drQQ
-	4PKxC08Ynj4JwBXfsqRYKc1nB0E7pjNVgJDexKoU2q5UKXFtS+U1w53Ah42e9HonRBIbUlnHk/G
-	Xm9IMyUFQff4EE2CRO+m3w5mJqAtdBO97+a/tyXbXbEQfTVMIl2cJjf0q2FLIyieMZvtEvyfiiw
-	nvSuX2SsXk0PIInbm7wkE7aE0o+gJ9ltN2TTCh6mUR9DBqrQkXid+hnwsYwuWUhtKbfw0kaPdVn
-	6e1ZDXusaioVt3l65SKdrPeKQ0Sj9n8McbdO73vvGwwkfrYjXIsAZ1b4lzRTJCgip3yAAklCxP1
-	fUSaq4gtWG8TfQW3EYhCgbmR2R6YFb3mVCfMrnvBV1cyrzlJq+CsLrOd3AblzRS/bE6q6oYsuts
-	s4UQMFQmlSw9w7T4sn/65LuiHlVFSL5TVbMhe6iGKF8iqKuUyK1wEmzVtyyE5EseHELF3Uokdkg
-	JrWLay3o/Oy9cL7PZNaxwQ9y/8M
-X-Received: by 2002:a17:907:198c:b0:b9e:8e4:8765 with SMTP id a640c23a62f3a-bbffb23fe1amr237176266b.10.1777772368030;
-        Sat, 02 May 2026 18:39:28 -0700 (PDT)
+        bh=IkJvgTcI4nUUQ/9kKtwsMfSDSEk8uVrEpeWRMA7wuFg=;
+        b=f79bBbR/8WU21Y84S8U4M3WMbZGR+5Vn2XJGPfyoBkF9jmqWQ+A7UFCRP4A9d8k2mN
+         NeMcrzCYdXx4yuFFL6HAee7syW7dzK1NqcsN7dR3vUu87aI7NMX40WaTQXjbwE/c7/ct
+         gWVJd1D0j3XN38ZNQE9tNe3UGO7bSldAAWQ/jsnAJjY5x4zHfJlIKU8HLattLV4vYiZ2
+         suBwJs1xiRdwRkf6cqrXNyoAHHK+lzPkMQaJobjk+KYQ/4+4nAglAX5g5s2bK5pU8AKB
+         36eSK5cZ5rbXMwjnM/ZZNWk/ePfr5olLv0BpykGTPjfs42dhZok2Ew98hsFxTnm06ArC
+         mpUg==
+X-Gm-Message-State: AOJu0YzcTUmdQv083UdQWzbJituClJ+Eca1HIu8EcrqDbaVwgJyHvdxI
+	cbobOirOX5WTIwguE/CCHvy9tsjMhwwpoiwR7QHgYVzpHa3unDihNvxf
+X-Gm-Gg: AeBDiesPlkVEOGor1RqvaiWOmTJejCqGmCFnbNxGDJHaejK9+lynXIwPWv56nDAsCoP
+	aD1/OPErag2jUdlkvwFn5konuxogianTB8EmdzYHUrBiI2VCQIYZHF11gogDOQ6NlWnKbxc5HI0
+	WtJdsMUSfeiL11KNnX8tfWJ+uKZPJk7aN2Qj5SEUytNVM5FIAib6vnwv4agjb1o4aDA+zRdNlSJ
+	f23FC6+h9dI+IhKdoOpzY1gx/xzE7MyNCqhcGs9Ju2dThg2Vk/2SOYuStEHeSG5G/9KLeI/Hx8c
+	G4sTWrCi+fXyhuQ0+cVNopint0kc61V8+ffn01tRHY7KyX4bygMhbFt5iR/oHR3bR8GDiDN5sU5
+	nl/2yx2bmAk7A6JHSMYMRAClf0Iw5QYtHo/HlgsPiuvWije4Q04IXG7k9eFnYyB7KYtcByLH+TY
+	nMTh6ZYiFBlf4m2VdXA+5GtOX025Owe/IoNGtCwVQUTbZmf/Udv658rW32xPKn20mlm9l+u9m6h
+	krq4FMq/9HlR9otqP0tVuY6oFR7
+X-Received: by 2002:a17:907:a06:b0:bb9:c62:2c04 with SMTP id a640c23a62f3a-bbff9933024mr206200166b.10.1777772369341;
+        Sat, 02 May 2026 18:39:29 -0700 (PDT)
 Received: from KURWA.angora-ide.ts.net (mm-39-71-126-178.vitebsk.dynamic.pppoe.byfly.by. [178.126.71.39])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bc1671c1d3esm24796466b.42.2026.05.02.18.39.26
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bc1671c1d3esm24796466b.42.2026.05.02.18.39.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 May 2026 18:39:27 -0700 (PDT)
+        Sat, 02 May 2026 18:39:28 -0700 (PDT)
 From: ElXreno <elxreno@gmail.com>
-Date: Sun, 03 May 2026 04:38:30 +0300
-Subject: [PATCH 1/2] wifi: mt76: mt792x: disable HW TX/RX encap offload to
- fix TDLS direct-link
+Date: Sun, 03 May 2026 04:38:31 +0300
+Subject: [PATCH 2/2] wifi: mt76: mt7925: don't disable AP BSS when removing
+ TDLS peer
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,7 +88,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260503-mt7925-tdls-fixes-v1-1-dde847e21081@gmail.com>
+Message-Id: <20260503-mt7925-tdls-fixes-v1-2-dde847e21081@gmail.com>
 References: <20260503-mt7925-tdls-fixes-v1-0-dde847e21081@gmail.com>
 In-Reply-To: <20260503-mt7925-tdls-fixes-v1-0-dde847e21081@gmail.com>
 To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
@@ -103,15 +103,15 @@ Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
  stable@vger.kernel.org, ElXreno <elxreno@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4215; i=elxreno@gmail.com;
- h=from:subject:message-id; bh=7uwJxgvTxpOn6gNEIOPNEioHiEozfkGob7zPtdELUWI=;
- b=owJ4nJvAy8zAJXa0WDmKX5v/EeNptSSGzG/LfTNMDDbv83x9t8ziV+VZJeNKo5MB9cwrXz83n
- G6x792x7W4dpSwMYlwMsmKKLDzn9tbmLKtbMrmeKwNmDisTyBAGLk4BmEgYD8P/JKl3nJpLa/Ka
- bl5Idnp1ekbCjzrz/qdJrJfP1259uTL4GsP/7BX+oeF7w3Y+5euOWn36UPq8FvE7J+wZ5pQrrju
- 6pUKAFQAL90r/
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3207; i=elxreno@gmail.com;
+ h=from:subject:message-id; bh=uAMNZJNELeTW91RepEFHxSC/5cFK8pGWTHntf3vPjy0=;
+ b=owJ4nJvAy8zAJXa0WDmKX5v/EeNptSSGzG/LfVlS+BMnzPKMFGComFxwcnOSX4zj+c2njmcvL
+ HFa2jGR+WFHKQuDGBeDrJgiC8+5vbU5y+qWTK7nyoCZw8oEMoSBi1MAJiLxiZFhqnGD+9dv22e8
+ j+faISvyxHGrrHJ7m+aGV2l35AQm9F8MYvgf69L9rHvtLQuly6/WCE3Q4GHeHtf+XJMp2rL+pbb
+ 3MxUeAFDqRN8=
 X-Developer-Key: i=elxreno@gmail.com; a=openpgp;
  fpr=0CCEBD7D6CA67EA4937F0A68C573235A0F2B0FE2
-X-Rspamd-Queue-Id: 73E924B3FFF
+X-Rspamd-Queue-Id: C57544B4006
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -119,11 +119,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35777-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35778-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_TO(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -131,7 +131,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -144,88 +144,72 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[]
 
-On MediaTek MT7925 (Connac3), QoS Data frames whose destination WCID
-is a TDLS direct-link peer are silently dropped after submission to
-firmware via the HW_80211_ENCAP TX path. The driver sees submit and
-complete counts match (firmware reports success on TX queue
-submission), but the frames never reach the PHY. iw counters show
-tx_packets growing, tx_failed = 0, tx_retries low; on the air,
-nothing.
+On a STATION vif, removing a TDLS peer takes the mt7925_mac_sta_remove
+-> mt7925_mac_sta_remove_links path. The first loop in that function
+calls mt7925_mcu_add_bss_info(..., enable=false) for every link of the
+station being removed. For a non-MLO STATION vif there is exactly one
+link, link 0, whose bss_conf is the AP's. TDLS peers do not have their
+own bss_conf - they share the AP's BSS.
 
-This breaks TDLS direct-link as soon as a peer auto-initiates one
-(Samsung phones do this aggressively when both peers share a BSS and
-traffic exceeds a threshold). Pattern is:
+The result is that every TDLS peer teardown sends a BSS_INFO_UPDATE
+with enable=0 for the AP's BSS to the firmware, which wipes the AP-side
+rate-control context. The connection stays associated and TX from the
+host still works at the negotiated rate, but the AP's downlink to us
+collapses to the lowest mandatory OFDM rate (HE-MCS 0 / 6 Mbit/s OFDM)
+and only slowly recovers as rate adaptation re-learns under sustained
+traffic. With brief or bursty traffic the link can stay at 6-72 Mbit/s
+indefinitely, requiring a manual reconnect.
 
-  1. Any sustained direct traffic between two STAs sharing the BSS
-     reaches the auto-TDLS threshold within ~1 s.
-  2. Peer initiates TDLS; mac80211 routes data frames to the TDLS-peer
-     WCID and the AP stops forwarding peer-to-peer traffic per the
-     802.11z spec.
-  3. Direct-link frames are accepted by firmware, completed in the TX
-     descriptor pool, but never PHY-transmitted.
-  4. TCP collapses; the peer eventually tears down the TDLS link with
-     reason WLAN_REASON_TDLS_TEARDOWN_UNSPECIFIED. Cycle repeats.
+mt7925_mac_link_sta_remove() already guards its own
+mt7925_mcu_add_bss_info(..., false) call with
+"vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls".
+Add the equivalent guard at the top of the cleanup loop in
+mt7925_mac_sta_remove_links(), above the link_sta / link_conf /
+mlink / mconf lookups, so TDLS peer teardown skips the loop body
+entirely without doing the per-link work that would just be thrown
+away.
 
-Effective TCP throughput drops from ~300 Mbit/s (AP route) to ~6
-Mbit/s with TDLS active.
+Verified on mt7925e by triggering Samsung-S938B auto-TDLS via iperf3
+and watching iw rx bitrate after teardown:
 
-Verified on mt7925e (PCIe) at 5 GHz HE NSS 2 MCS 11 80 MHz and at
-2.4 GHz 802.11n HT NSS 2 MCS 15. With this patch, TDLS direct link
-sustains ~750 Mbit/s and ~130 Mbit/s respectively.
+  Before: rx bitrate collapses to 6.0-72.0 Mbit/s, oscillates 17/72/
+          137/288/432 Mbit/s for 30+ seconds, no full recovery without
+          an NM reconnect.
+  After:  rx bitrate stays at 1200.9 Mbit/s HE-MCS 11 NSS 2 80 MHz
+          across the entire TDLS lifecycle.
 
-mt76 advertises WIPHY_FLAG_SUPPORTS_TDLS via the shared
-mt76_register_phy_helper() but does not provide TDLS-aware
-firmware-facing peer setup: no CONNECTION_TDLS constant in
-mt76_connac_mcu.h, no STA_REC_TDLS TLV, no TDLS bit in
-mt76_wcid_flags, and no TDLS-specific code in
-mt7925_mac_write_txwi_8023(). TDLS peers are registered as
-CONNECTION_INFRA_STA with peer_addr set to the peer's MAC and
-nothing else. The proprietary out-of-tree MediaTek driver carries an
-explicit cfg80211_tdls.c (PTK/TK install paths, etc.) with no
-in-tree equivalent. Whether the underlying gap is in the firmware
-HW_ENCAP path or in mt76's missing TDLS-aware setup is unclear from
-the kernel side; the software-encap path sidesteps it either way.
+bpftrace confirms a single mt7925_mcu_add_bss_info(enable=0) call per
+teardown before the fix; zero such calls after.
 
-Work around the issue by not advertising SUPPORTS_TX_ENCAP_OFFLOAD
-and SUPPORTS_RX_DECAP_OFFLOAD in mt792x_init_wiphy(). mac80211 then
-takes the software 802.11 encap path, which submits already-formed
-802.11 frames via a different firmware path that handles all WCIDs
-correctly, including TDLS peers.
-
-mt792x_init_wiphy() is shared with the Connac2 family (mt7921/22/20/02),
-which uses the same firmware HW_ENCAP path; the disable is applied
-globally to cover the likely-affected chips. If Connac2 is later
-confirmed unaffected, the disable can be narrowed with is_mt7925().
-
-Fixes: 5c14a5f944b9 ("mt76: mt7921: introduce mt7921e support")
+Fixes: 3878b4333602 ("wifi: mt76: mt7925: update mt7925_mac_link_sta_[add, assoc, remove] for MLO")
 Cc: stable@vger.kernel.org
 Signed-off-by: ElXreno <elxreno@gmail.com>
 Assisted-by: Claude:claude-opus-4-7 bpftrace
 ---
- drivers/net/wireless/mediatek/mt76/mt792x_core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index 152cfcca2f90..f9610c6c1597 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -681,8 +681,14 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 73d3722739d0..7220bf2c0afa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1265,6 +1265,16 @@ mt7925_mac_sta_remove_links(struct mt792x_dev *dev, struct ieee80211_vif *vif,
+ 		if (vif->type == NL80211_IFTYPE_AP)
+ 			break;
  
- 	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
- 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
--	ieee80211_hw_set(hw, SUPPORTS_TX_ENCAP_OFFLOAD);
--	ieee80211_hw_set(hw, SUPPORTS_RX_DECAP_OFFLOAD);
-+	/* HW TX/RX 802.11 encap offload is intentionally NOT advertised:
-+	 * the firmware HW_80211_ENCAP path silently drops QoS Data frames
-+	 * whose destination WCID is a TDLS direct-link peer, breaking TDLS
-+	 * data flow. The mac80211 software encap path submits already-formed
-+	 * 802.11 frames, which the firmware handles correctly for all WCIDs.
-+	 * Re-add SUPPORTS_TX_ENCAP_OFFLOAD / SUPPORTS_RX_DECAP_OFFLOAD here
-+	 * once the firmware HW_ENCAP path is fixed.
-+	 */
- 	ieee80211_hw_set(hw, WANT_MONITOR_VIF);
- 	ieee80211_hw_set(hw, SUPPORTS_PS);
- 	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
++		/* TDLS peers on a STATION vif share the AP's bss_conf. The
++		 * link_conf retrieved below would be the AP's, and calling
++		 * mcu_add_bss_info(..., false) for a TDLS peer teardown
++		 * would disable the AP's BSS in firmware, wiping its
++		 * rate-control context. mt7925_mac_link_sta_remove() has
++		 * the symmetric guard for its own bss-info call.
++		 */
++		if (vif->type == NL80211_IFTYPE_STATION && sta->tdls)
++			continue;
++
+ 		link_sta = mt792x_sta_to_link_sta(vif, sta, link_id);
+ 		if (!link_sta)
+ 			continue;
 
 -- 
 2.53.0
