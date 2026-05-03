@@ -1,194 +1,163 @@
-Return-Path: <linux-wireless+bounces-35796-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35797-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2u4HC9sY92nfbwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35796-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 11:43:55 +0200
+	id mJJgM71892kpiQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35797-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 18:50:05 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E884B511E
-	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 11:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A704B6994
+	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 18:50:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 380513006F24
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 May 2026 09:43:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 952983005AFC
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 May 2026 16:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DED3101CD;
-	Sun,  3 May 2026 09:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD02417BA6;
+	Sun,  3 May 2026 16:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bMNHnv71"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gK16SjkX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D1012D1F1
-	for <linux-wireless@vger.kernel.org>; Sun,  3 May 2026 09:43:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777801430; cv=pass; b=PizpRobVYdQup7eH8LZTD/vHQQpWKYMsgp3nK9EwHGswTff0MCjcOpx2RRRO/LIie24lQCVk9b3D96vzoClP4VdRXf6Fimm5wj2Hp2rT3uU0e/xLn3yJNvV4vX6WLr0RVKJg4b3KFjungDkbz/+fifsvU0GSf+dIS+PVIDY9sMw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777801430; c=relaxed/simple;
-	bh=S58LiDZYeD8av5YE0RLUeISTTdxg4Ej4Pc67gLRe674=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=SSX2oliLC+RW+eEC3sEMRVhUAKHeqRbqRNwrM4aHHZEd71aUWiG/3t97K1UWZ1eO3hcjg4/6DNXU7a6BBVkxnMplpUoN6caCsB1ocRqaNR56UBSgTw8eJIcm7lzeld3BE9/ZhktQtTvng+2NSaeDpiEufJ8LkJz59HmKuiCZN3M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bMNHnv71; arc=pass smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745852E8B81
+	for <linux-wireless@vger.kernel.org>; Sun,  3 May 2026 16:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777827002; cv=none; b=h1JPYOUaH3zhBHkexHetURX8Bxv+gId2BIERNbVYz6TfSIQiJ0mSsN9jLDlig5kd6DSZiwMQz4aB3GdQRqqf0OyYTu/nWqqSfQrMuvmms2Ga/ro9eX3GIvcBM8hBmMnM1PCZBySY9oeXDfWzxhPgA4aP8eyz013wa8euis0i6fE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777827002; c=relaxed/simple;
+	bh=MAesLbO3pFPQdmzgxMe1gJcBgyrryDC3PINM8UT9X5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tJF+h7RvgrWoeRx++tbIG6EOQuxhf3L+Fq51wV3zmOgcmADLO7SKkYZcQwk9NU0mf3NqsLXIdErZOyRUmWDRpe4PO2XKcYlJfytfOcSxR8Z3iFG//L+oWCQe638FLlawLe4EGmILuNji1725NLcOWZtJ9Fgy7UWvx/Rcy5Byrvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gK16SjkX; arc=none smtp.client-ip=74.125.82.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-12c88e5f4aeso1892856c88.0
-        for <linux-wireless@vger.kernel.org>; Sun, 03 May 2026 02:43:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777801428; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dkrQpqtrKhtiygu3USQ1zP0WUvgp54YkMxBv+twfdeOeY7DkMtQiW5S5JWkH5bicrE
-         12eanKYFhm9/NPJ8a52ppecKj03XNuQ4hQuOnSRcnN6345Lg2oJdukzaJTYjO00tTeUX
-         BfMo47fx2VTzP2FrVU0QUY6XYKxaXg81tn9VMsQm6CtqyfAOkHgALAouyS+4qIAVimwj
-         YmnBvUqCgTch6RhGVzk6LFsHlZ9Ts7DTbfmCYvNUkPmW6JKqPm9/YfQV6VOQxFEDjeTZ
-         dLzR1eQLpb2FwQzYMEmwcZvcqVp3GpUgfv8U+24cinNfPQ0g9k9avUfEATceoMd8MPae
-         UOEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=S58LiDZYeD8av5YE0RLUeISTTdxg4Ej4Pc67gLRe674=;
-        fh=qW0phhq3fb3oiohK/Mu9j1KY1zyRNiiioKFc5anvatM=;
-        b=iqBMe4Z+u1gX23vIAwuWeYX3IsRn0Lj6p11kCZv2xjAsnxM3AV83CfshvpBOQl1hy4
-         vHbxW4zDSdOvUaZA4lGevJnQTLTsZQ/9UKMCpksw8qzr1cDPqrV3kZ+7tK3+kUQ6VBEe
-         LVIGOlUqGFoUF8J8JSKx6+VruRTDUx/t61v3YQJFeL3y1OXkKiZV4QWKgnqZMRbghc7z
-         C3NekOilJY8mOeD/bblCtWTbPdAdilXw/msPnSBYGvoCwJFbDm1QQATLV9QIl2ZMmigX
-         mtDcspv+PYJfgL2hwR0b7Rzt1WndYsWM3jSegSHfGJUXCJn9Xu29C/efd0mk2GGuYEO0
-         6cIg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-12c726ef332so5170064c88.1
+        for <linux-wireless@vger.kernel.org>; Sun, 03 May 2026 09:50:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777801428; x=1778406228; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=S58LiDZYeD8av5YE0RLUeISTTdxg4Ej4Pc67gLRe674=;
-        b=bMNHnv713W9iNb4RdlmGDhtMNC1RqPqKsxN8eyKoGTIzmEheGUjKXr1IeB7A0qaZY9
-         /yhLkiBLX6dGorWFdoUSCFkHCjzPZo5kZw/t1lPHAvp+uZ5iEvhVNTTYVLC7QtsijMMj
-         MesfUnb1mueT+ocUME3GJcseEsUnCMvFpiaURBPO+bNs5wGW2DMs9xBzwVgq8p9KCi8q
-         vJFjjIJ5xTZY8PqNdxgjAcC88M4PZKYv8qchXxOPGSFlCAh/2wV0CJA9YQpeIqGkXr6/
-         m0ah4A41zBdW8CtRvoVG0vy+gbJz8T9wjElDVFDVwg1lz1VrlVFME9suspMZixqpGUHm
-         v5nw==
+        d=gmail.com; s=20251104; t=1777827000; x=1778431800; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fWQc0FrxtuCv5JOC4nMJvPeh+aN3vn/WOEafPkyT4Nw=;
+        b=gK16SjkXjiBoULIIpyOn5LceApM97qrBFQabT49yZqJ+Hx/OIk0WpLMIxqmLVyH8dU
+         K9kg5khDlnMtjHV4BA+iWKBI6hKduzNPc5c14O/veGjQC6Y81Edb16uJmGZsDQconHQq
+         oo5JpW4dsMnwQQNkJRYzj6hm7oUPJHzsCPeg4fP3O+KJB50M5D8eGa8MT5GScwTS61tC
+         T2HGgykzwdOIiw/7MaFH8g9olgEbZBKtwI2gfP5iVQUFECvCGKdPLYQrESUAKzDLF/rn
+         wVg/y5WR+/8tGajQ4Y8WXTpcs7qEqyUb8DZ45LGP8FWnmRC8YRf3PuzKPtMVaxhiJlXm
+         Xiwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777801428; x=1778406228;
-        h=to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=S58LiDZYeD8av5YE0RLUeISTTdxg4Ej4Pc67gLRe674=;
-        b=VWeN6u7Tcxpou8OIYTxyEs256bBvrQYht3Jz2jDarYLDIPooLAci3Ugj6RIWknC0Vr
-         An40WBLMtche0wLBTCb/E4xDgnrofLb8bsdzvkpkfLFlLQO9KTPQCVTyZOz7dyjIBYh+
-         RhNWdRMawGPfYJgu86ED8T6O/IiFKk64ZDxPDRsXlscY4FgVUNsvqxXAQHMjg7jbzHEC
-         dgHkMhxJaixl71WqmaSFf9cWKcULb4xTE0aehHin1uqcj1yYR/vJYMV57KVUHMxQk63o
-         9bVQF4E/tcDEIkKrr4Chd+TMedbKq+3+EeFdETwPmmXH4PrGuVKVocmBpfSftFU/YLSq
-         zt+w==
-X-Gm-Message-State: AOJu0YyhjPHls5FAXvmCBWvyJUuDj2GOnNvKiLeo9DdvYuLwPoqGm324
-	76x7aqnPiZV7KJosX6TYnD9lnK1hdRvqDswwWbJm0VSK7VcTwPoHLWtuxmKjPOtHkJQcqk4h7Lr
-	rYd6qEraBZQM26nKhqK5/9T9U49IZqkRhjvYtRdY=
-X-Gm-Gg: AeBDieslny99xa92ccKwWmOSO/trq3FdrzfoHC+4I5HPB7A3oU1Pk1SG6sYMWqELRCb
-	Kz2DruHEPw9ASbyL9I4QhU1VTXjMgspG/uVlXyMhJsVqmJlGTgQfsm0dxOJiloqgq9VbxFjJNFy
-	JciHwFaHAVoGbrKQEqGLRY3ioJxgjRxhNMBc2kmvIz8WPHmaqqdHq0T+wBKpLiBEsnhgSVhCBUM
-	IyI+p1R0LDqCdG3WlYBmSH+G+Lo3AhDyzo3TnDeSA3WFcyAym/RBHcvvdGHfjs/cwRe2CVOxUQP
-	Kdz19X2l9yqOBoJ+fVBAuCpeDYbhjnnKFva5dtgY+XDB1n8XcA==
-X-Received: by 2002:a05:7022:1e11:b0:12c:839:7462 with SMTP id
- a92af1059eb24-12dfd598ea5mr2436559c88.12.1777801428174; Sun, 03 May 2026
- 02:43:48 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777827000; x=1778431800;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fWQc0FrxtuCv5JOC4nMJvPeh+aN3vn/WOEafPkyT4Nw=;
+        b=IBDdOeoOEsCXbwnb7VpnmTKmkMjrE8rlDAl4E/hqJcRLtChSBi711UizrYo72yJgZR
+         JFQNXsKKSx+FcBj0xozU9FsrsvkAydtAlCspGh5TXlfBQppbaKt75gxzRi17eHvaT4AR
+         9HJ/kbgkrcNqOBqNyz2MyjEppf0qp+M7NGLlJs/0nZiMtH5p5fh0xGb4nyyLhOnyBV2F
+         Fssc94m34hh3C0hwOzGhuJEAvxPJR8GXIeCPhxkFqb1gypaWIEfayf3RwrpFSv7W+9UC
+         DBxIV6ozuuGFDCnrB6W1kcJ8UIz5oem39OR3r41WxIxoQ9vsGQ0aJP881fLOP6eet0X6
+         uovg==
+X-Gm-Message-State: AOJu0Yyk/1eNUEl7CL94l3+X/ZOGOXHxANdctdPDVNMLXMZQRyFWPczF
+	qXpDWRCZoRsLgMcDUijlycVrRSXPLa/HeSJ7/2H5jqtyFVAKtnyWyT4EzlrpbI2y
+X-Gm-Gg: AeBDieshq2EkXvjeNLvqFhZFXIw0KmssFGWrn5FytjjMfvBa5DrBPWV4M+LlJBeSwN2
+	QvXjGRKiC6qtAn9/Y0hxTu2Lb9/tm3DtEnbcwy+r/ExPJyZxXnoZP6rCkEgcC2NyJS4rXUzg9sq
+	GzjkGj0yVzshbS8tgMZYgHFtB74j+6G3AQIO/Zh7TVH4WJg8mI7uwznuQW3RoBSqzdkoFiAlIMA
+	28CDr0Oawj9LFEDExpdXRj8aSD2XekuIzgXOw65UXrfs5Kvmd34JWT2oEmGjX5AYzzbVSkFeR1b
+	mbdTPsmVHiXDV6fTN6dkYG8RsghUYzvGhCXMicCDBi2nRoid6CkXlkko4urO7rhIdjwyOmFKTKp
+	dn2aYkXn4wINZmEt1m4DRGHSLahG5z8WOZvWWrtFsstQzTQ10Er0AWi3qjiMvhuRCBkq3FWFg8J
+	i717UIJqJm22d1zJWd4XaHoK6CStJpnPdmbCgiPJsw
+X-Received: by 2002:a05:7300:f194:b0:2e2:a4ba:84ae with SMTP id 5a478bee46e88-2efba28b2f0mr2830806eec.25.1777826999983;
+        Sun, 03 May 2026 09:49:59 -0700 (PDT)
+Received: from fedora ([2804:14c:f288:8f8d::1b2e])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee3bb63c5fsm12316928eec.25.2026.05.03.09.49.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 May 2026 09:49:59 -0700 (PDT)
+From: Gabriel Maia <gabrielvinicius.damaia@gmail.com>
+X-Google-Original-From: Gabriel Maia <gabriel_v_maia@estudante.sesisenai.org.br>
+To: linux-wireless@vger.kernel.org
+Cc: pkshih@realtek.com,
+	kvalo@kernel.org,
+	Gabriel Maia <gabriel_v_maia@estudante.sesisenai.org.br>
+Subject: [PATCH] wifi: rtw88: add quirk to disable deep LPS for ASUS VivoBook X515JA
+Date: Sun,  3 May 2026 13:49:44 -0300
+Message-ID: <20260503164944.27114-1-gabriel_v_maia@estudante.sesisenai.org.br>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Malik Belhajji <belhajjimalik1@gmail.com>
-Date: Sun, 3 May 2026 11:43:36 +0200
-X-Gm-Features: AVHnY4IrEfu0QCGgbm6c3d4gdl8lk_VUfpmRrq8z00T8acMGshIuZZ_58J1ypJ8
-Message-ID: <CAB+Ar-G7JXAJTCG4SeJP83hTx8n0ObzVRoW7jcbERj8y1soAAA@mail.gmail.com>
-Subject: Bug report on the mt7921e for Linux
-To: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 80E884B511E
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 44A704B6994
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35796-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35797-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_ONE(0.00)[1];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[belhajjimalik1@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,amdgpu.sg:url]
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gabrielviniciusdamaia@gmail.com,linux-wireless@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sesisenai.org.br:email]
 
-Hello I am reporting a bug in Linux Kernel 7.1 rc-1 when rebooting at
-"Stop job for Wireless service" and Network Service a kernel panics
-occurs with "Fatal Exception in Interrupt". And resuming from sleep
-this occurs :
-$ sudo dmesg | grep -i mt7921 [ 0.000000] Command line:
-root=UUID=6a9e638f-42a5-4439-b42f-706d2e3cbf68 rw pcie_aspm=off
-mt7921e.disable_aspm=1 [amdgpu.sg](http://amdgpu.sg)_display=0 quiet
-splash drm.panic_screen=qr_code
-initrd=\09d8cc21236248aa9d49bfef3d6bb139\7.1.0-rc1-1-mainline\initrd [
-0.038745] Kernel command line:
-root=UUID=6a9e638f-42a5-4439-b42f-706d2e3cbf68 rw pcie_aspm=off
-mt7921e.disable_aspm=1 [amdgpu.sg](http://amdgpu.sg)_display=0 quiet
-splash drm.panic_screen=qr_code
-initrd=\09d8cc21236248aa9d49bfef3d6bb139\7.1.0-rc1-1-mainline\initrd [
-12.372208] mt7921_common: unknown parameter 'disable_aspm' ignored [
-12.401344] mt7921e 0000:03:00.0: enabling device (0000 -> 0002) [
-12.410993] mt7921e 0000:03:00.0: disabling ASPM L1 [ 12.418543]
-mt7921e 0000:03:00.0: ASIC revision: 79610010 [ 12.513540] mt7921e
-0000:03:00.0: HW/SW Version: 0x8a108a10, Build Time: 20260224110909a [
-12.775301] mt7921e 0000:03:00.0: WM Firmware Version: ____010000,
-Build Time: 20260224110949 [ 50.403949] mt7921e 0000:03:00.0: Unable
-to change power state from D3cold to D0, device inaccessible [
-50.409580] mt7921e 0000:03:00.0: disabling ASPM L0s L1 [ 51.444481]
-mt7921e 0000:03:00.0: driver own failed [ 51.444528] mt7921e
-0000:03:00.0: probe with driver mt7921e failed with error -5 ~ $ sudo
-modprobe -r mt7921e ~ $ sudo modprobe mt7921e ~ $ sudo dmesg | grep -i
-mt7921 [ 0.000000] Command line:
-root=UUID=6a9e638f-42a5-4439-b42f-706d2e3cbf68 rw pcie_aspm=off
-mt7921e.disable_aspm=1 [amdgpu.sg](http://amdgpu.sg)_display=0 quiet
-splash drm.panic_screen=qr_code
-initrd=\09d8cc21236248aa9d49bfef3d6bb139\7.1.0-rc1-1-mainline\initrd [
-0.038745] Kernel command line:
-root=UUID=6a9e638f-42a5-4439-b42f-706d2e3cbf68 rw pcie_aspm=off
-mt7921e.disable_aspm=1 [amdgpu.sg](http://amdgpu.sg)_display=0 quiet
-splash drm.panic_screen=qr_code
-initrd=\09d8cc21236248aa9d49bfef3d6bb139\7.1.0-rc1-1-mainline\initrd [
-12.372208] mt7921_common: unknown parameter 'disable_aspm' ignored [
-12.401344] mt7921e 0000:03:00.0: enabling device (0000 -> 0002) [
-12.410993] mt7921e 0000:03:00.0: disabling ASPM L1 [ 12.418543]
-mt7921e 0000:03:00.0: ASIC revision: 79610010 [ 12.513540] mt7921e
-0000:03:00.0: HW/SW Version: 0x8a108a10, Build Time: 20260224110909a [
-12.775301] mt7921e 0000:03:00.0: WM Firmware Version: ____010000,
-Build Time: 20260224110949 [ 50.403949] mt7921e 0000:03:00.0: Unable
-to change power state from D3cold to D0, device inaccessible [
-50.409580] mt7921e 0000:03:00.0: disabling ASPM L0s L1 [ 51.444481]
-mt7921e 0000:03:00.0: driver own failed [ 51.444528] mt7921e
-0000:03:00.0: probe with driver mt7921e failed with error -5 [
-94.446687] mt7921_common: unknown parameter 'disable_aspm' ignored [
-94.460319] mt7921e 0000:03:00.0: Unable to change power state from
-D3cold to D0, device inaccessible [ 94.460516] mt7921e 0000:03:00.0:
-disabling ASPM L0s L1 [ 95.486486] mt7921e 0000:03:00.0: driver own
-failed [ 95.486533] mt7921e 0000:03:00.0: probe with driver mt7921e
-failed with error -5
+On ASUS VivoBook X515JA laptops equipped with a Realtek RTL8821CE
+802.11ac PCIe adapter (PCI ID: 10ec:c821, subsystem: 1a3b:3040),
+the driver periodically emits the following messages:
 
-This happens on older kernels (6.18 and 7.0) and it's annoying that
-kernel panics occurs randomly with this card. Specs are ASUS TUF A17
-2021 (FA706IC) EndeavourOS (Arch Linux) and dual booting with Windows
-(fast startup disabled).
-Best regards
+  rtw88_8821ce 0000:01:00.0: firmware failed to leave lps state
+  rtw88_8821ce 0000:01:00.0: failed to send h2c command
+
+The firmware fails to leave the Low Power State (LPS) in time,
+causing subsequent h2c commands to be dropped. Disable deep LPS
+to avoid this issue.
+
+Signed-off-by: Gabriel Maia <gabriel_v_maia@estudante.sesisenai.org.br>
+---
+ drivers/net/wireless/realtek/rtw88/pci.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index bba370ad510c..b0eae0971ef4 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -1770,6 +1770,15 @@ static const struct dmi_system_id rtw_pci_quirks[] = {
+ 		.driver_data = (void *)(BIT(QUIRK_DIS_CAP_PCI_ASPM) |
+ 					BIT(QUIRK_DIS_CAP_LPS_DEEP)),
+ 	},
++	{
++		.callback = rtw_pci_disable_caps,
++		.ident = "ASUS VivoBook X515JA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "VivoBook_ASUSLaptop X515JA_X515JA"),
++		},
++		.driver_data = (void *)BIT(QUIRK_DIS_CAP_LPS_DEEP),
++	},
+ 	{}
+ };
+ 
+-- 
+2.53.0
+
 
