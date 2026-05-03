@@ -1,155 +1,236 @@
-Return-Path: <linux-wireless+bounces-35799-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35798-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBEQHPuM92mIiwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35799-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 19:59:23 +0200
+	id OFfLBMmL92l8iwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35798-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 19:54:17 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622EA4B6E25
-	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 19:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E8644B6D8B
+	for <lists+linux-wireless@lfdr.de>; Sun, 03 May 2026 19:54:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4DC4E30015BE
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 May 2026 17:59:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8DF543001873
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 May 2026 17:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC10F39A046;
-	Sun,  3 May 2026 17:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FF6383C85;
+	Sun,  3 May 2026 17:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DntaQs3+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fzw+uEFQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE2C30C601
-	for <linux-wireless@vger.kernel.org>; Sun,  3 May 2026 17:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F832F5321
+	for <linux-wireless@vger.kernel.org>; Sun,  3 May 2026 17:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777831155; cv=none; b=GRMcbSMBF3PDwWTrhVOoyTWyMknDwA6R3UL8rd0rJsQLhVOt/xD0UL2LDvmRPL83Wfkynsl/rC7QEfbAGeaWbAZL5UITEsCGAjFqE92GmD8C6yRoyeOACyy0BWDx0rxag7s9KTBrvUDeNO2mFTfb4fCbVyc6bQKGiEVSA+od1Eg=
+	t=1777830851; cv=none; b=ZR4TPeT+TSOvchVhU4gBFeimDcSt+/+K7E8/QtsxKAr3veZe8ALDiHnIsWJbKQnAWB8WSNwDM00K9w5oU7rTaX9bda5pEs9YWXxxIq2fy/9E9zVfdk8lw+6q5PbSbGwaEqy5LdIMwHlRb8qdP1kJTtuPQs/AUTVaPAjNbIxXZ9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777831155; c=relaxed/simple;
-	bh=55hS+nkbs8cNwB/CscFBNjnUKq11eBxzc5WKp6ErFmE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uTo4oIzl0PAU/bUbt9oGkmuFbDjp4Uw5Bwv5FsVoVAvQnhiqKQVJUOCuVTQUlcLflMNfJgdx3kDZv0U/8m0tvDeLr85H1sngjQEOQdPHcdvz6pD080PRj/F5zIKqKjMup/TQzHMh9N1982ilDtJ5BtoL3LbfxpfMRUrRaJogZ3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DntaQs3+; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48371104ffdso4117345e9.1
-        for <linux-wireless@vger.kernel.org>; Sun, 03 May 2026 10:59:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777831153; x=1778435953; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FzylD/T8jSqe6CUhpsMK3i3vWHnrfWhou+rGEeiWrTI=;
-        b=DntaQs3+RNNx/rvq5/XlExTsdTo+SopvJJm9pQ8ecKiiaX9IQka1Fj4Zia+AlFt6jG
-         YQ9CH//fWG695QxdwcG9Qn50XrPCXv4k0VVRgF6XVIQQK5KdqMvossvmqvumc4F24g7q
-         ZE8IPOPfeisEi5yInWRkd9/Q1SrwWqLzeoRmHhEbVkYwkI5ry8BZKfkGhnExXdB3tD1r
-         q5Hga5W4K0tGSP8BBXFWVW8moI/15ocZUnQgL/9vE88UMYY5VNbXwf0v/JE4eetaUef3
-         YYEso4iYpSTwX2h0Ihks8b39coJ7ZggxTcEWP2hRTrQYyFmAgho55nhYV23LWAi50lCV
-         iG9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777831153; x=1778435953;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FzylD/T8jSqe6CUhpsMK3i3vWHnrfWhou+rGEeiWrTI=;
-        b=kMEcQ2ncEbkxrc3M6QwC949uXYET3VKJdqQsdaBSHhI2/qzOu6MHneHXmtEib14b04
-         4wFn4h5wOw8N6818c4LWumLiaBjnWHjf2DYjylKMtqI724XTMdsMfiGHKQtXbloOkGXc
-         a3+W4dNpvmQdZTetmlnlKWGhZcRd4QMpByyEJQQriJ9ZwOVQI6M3GJ0WLD5ZZV9sdTwu
-         wN+eYeMND5iVx2ybWJPmF3ikJWAoK1zilcNs51iazhK+NpKXQLTDYGp4nMelhBlzGWnR
-         8puOjRr1Pp0cdC5q0hAfwIujfbIQsXPPIR9yglBg+bnJSKFvpafh1lgwYz+Gkk+pH/Mb
-         xVfQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+cAptlg9Qq9WUrzd8EKtmIGXbDLBTqrr6o7/QkNKd3Mzw5wKEpXzdaKpxryC3sJ+aK0P6mp+PfWM/CbQXVvQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYX4iJxgwcYcOeP2jYXkPh1xClvBYFeW9GWHdFLA1oI5Lrzedm
-	Th8ld7UcHvd8g+EbdGOYmab9ZVaD2HQDk9bk0+F38Q4fztrcNb/cXANF
-X-Gm-Gg: AeBDietCGpdbbnidbX+eisHXdiSuaarIMreZLy2E1evN2VVn1a5fS5sK+e6NzQaLjrl
-	L0zHGquzQ7fsP6XjjMmILtR2hwEXCGdnBEhghAUfCsuOvHjBSwD7ZaBH4Y/5AELO/AiEtGPayZ8
-	/hCM7P6kvgNxfuE1/E3j/WgYXzLKKyO4INPwWLMPCFnZ+0UPgFiWeS1+++hbqWxH6JcGXQCEsIX
-	UU1ObVozPP+tv26kA7j0nl8yYUEDSeabKLP6QqWwFRc+XS6oKBiepxJiinOwOJ4a3pmuEdqXtiG
-	VhVhEaQj6THln3+HKmOEMKDWyzfDd1gCUlOCnHNeaucqdKIrHUPSisHeKgvTGSKdhC/3bKXaba3
-	h0Kq4eburVIxdfuq9ccn0Dghz7vil4Y3JExjvU5gLH0f9xyLl0OOMESBi04ZDPTwnNaVb8j2mhA
-	PBSUkmoOFu+tGKqC17CLOOCIBAE8bnTAoHTINxGXdW/LooJVSXDUHd5zo=
-X-Received: by 2002:a05:600c:1d21:b0:48a:5758:7999 with SMTP id 5b1f17b1804b1-48a9865e099mr52070525e9.4.1777831152797;
-        Sun, 03 May 2026 10:59:12 -0700 (PDT)
-Received: from localhost.localdomain ([82.215.118.79])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48af0d5a613sm63660635e9.2.2026.05.03.10.59.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 May 2026 10:59:12 -0700 (PDT)
-From: Stepan Ionichev <sozdayvek@gmail.com>
-To: loic.poulain@oss.qualcomm.com
-Cc: wcn36xx@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Stepan Ionichev <sozdayvek@gmail.com>
-Subject: [PATCH] wifi: wcn36xx: fix spelling mistakes in dxe header comment
-Date: Sun,  3 May 2026 21:58:32 +0500
-Message-Id: <20260503165832.1675-1-sozdayvek@gmail.com>
-X-Mailer: git-send-email 2.33.0.windows.2
+	s=arc-20240116; t=1777830851; c=relaxed/simple;
+	bh=vZix6njdv2p1CVHPQk3N5+z8QTc46xF0Umj6dJoNSss=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pLhXPGMoJvftAbjP6tFRuB90sYJn4QRfPjZUt8tWI23m4WQR6AFrMKdMlKE8UvHv/bp4JQa9Ia/1OloqDO3BPf39eA58ctFXoGXpkQwvDiAyoK0aTmfjDjF1q7/s+InaVOrADfUR2n330pPgkCfKYXJAKo4BhjOK1HSFdEStHrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fzw+uEFQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C791BC2BD00
+	for <linux-wireless@vger.kernel.org>; Sun,  3 May 2026 17:54:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777830850;
+	bh=vZix6njdv2p1CVHPQk3N5+z8QTc46xF0Umj6dJoNSss=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=fzw+uEFQ1htYzOl+xFJqUU+e7m4wKFi685C/CP8i1VOOvuHtLSJP+gW2oAn56LhFE
+	 Hj6oAPcSoEty8SFElbgQhmfO0Gpkja/vOoqkQSBVBfSQ8r/JnwW6qWXTiclf+fMbuo
+	 IqoXiRG+V/Nln17tZ/g9SHdwwmIcBXQahmHH3n3u2HDyCbdF8z1VYHY8S8PhVwR6yn
+	 xNQZmayPAw4tk7idT/+b+O0UItKuH3AXnbyXFPeH+VSBg3dvHEWTH0Bmq8K8wBU+QJ
+	 BNJ2Ufhw7VmHeS5Qo41wPK7rXmlNL6n0zzMIXynggnKT2ngA9WRnJ5ZIlgUQUH+oSk
+	 qjXAeptDzK32w==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3938cc204a7so7913261fa.1
+        for <linux-wireless@vger.kernel.org>; Sun, 03 May 2026 10:54:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9H/e2bGvB1sI6fWo8yXqp+xQL0r45pVGm6Ier40S1gQtb+kBYdJ2pRp2D/hfKT0Cz2z7kHDS+hGI+uSlZ3GA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0oHPJRtp7EnKo0VA6xMOxn4wxLVJ+GoOvZ4RNwSo5aTEtZu/O
+	4a8no46OQmq/v/HRmnUmfSA1e69qaHQm8TqWpk4fKZAPRaF2BHpI907B8dbA+iACRnBZXgd3NMT
+	AqYPjug5lRWy98mQ6NGircJ4OwhdVpI8=
+X-Received: by 2002:a2e:7c0b:0:b0:393:71d3:d019 with SMTP id
+ 38308e7fff4ca-393784e5ffbmr21655141fa.15.1777830848881; Sun, 03 May 2026
+ 10:54:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 622EA4B6E25
+References: <20260503-mt7925-tdls-fixes-v1-0-dde847e21081@gmail.com> <20260503-mt7925-tdls-fixes-v1-1-dde847e21081@gmail.com>
+In-Reply-To: <20260503-mt7925-tdls-fixes-v1-1-dde847e21081@gmail.com>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Sun, 3 May 2026 12:53:57 -0500
+X-Gmail-Original-Message-ID: <CAGp9LzogKfGovfDw+=m4BkqWAakFTStXH20cQ_FA_5-zo+rmGA@mail.gmail.com>
+X-Gm-Features: AVHnY4KyXQ7oHCi5bs4lLYBGHsaGNKAAiWN14GcaixGFGQwp3VhrQVd9985J61o
+Message-ID: <CAGp9LzogKfGovfDw+=m4BkqWAakFTStXH20cQ_FA_5-zo+rmGA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] wifi: mt76: mt792x: disable HW TX/RX encap offload to
+ fix TDLS direct-link
+To: ElXreno <elxreno@gmail.com>
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Soul Huang <Soul.Huang@mediatek.com>, Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, 
+	Deren Wu <deren.wu@mediatek.com>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 0E8644B6D8B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-35799-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35798-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sozdayvek@gmail.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-Fix three spelling mistakes in the DMA Transfer Engine (DXE)
-description comment at the top of dxe.c.
+Hi ElXreno,
 
-No functional change.
+On Sat, May 2, 2026 at 8:40=E2=80=AFPM ElXreno <elxreno@gmail.com> wrote:
+>
+> On MediaTek MT7925 (Connac3), QoS Data frames whose destination WCID
+> is a TDLS direct-link peer are silently dropped after submission to
+> firmware via the HW_80211_ENCAP TX path. The driver sees submit and
+> complete counts match (firmware reports success on TX queue
+> submission), but the frames never reach the PHY. iw counters show
+> tx_packets growing, tx_failed =3D 0, tx_retries low; on the air,
+> nothing.
+>
+> This breaks TDLS direct-link as soon as a peer auto-initiates one
+> (Samsung phones do this aggressively when both peers share a BSS and
+> traffic exceeds a threshold). Pattern is:
+>
+>   1. Any sustained direct traffic between two STAs sharing the BSS
+>      reaches the auto-TDLS threshold within ~1 s.
+>   2. Peer initiates TDLS; mac80211 routes data frames to the TDLS-peer
+>      WCID and the AP stops forwarding peer-to-peer traffic per the
+>      802.11z spec.
+>   3. Direct-link frames are accepted by firmware, completed in the TX
+>      descriptor pool, but never PHY-transmitted.
+>   4. TCP collapses; the peer eventually tears down the TDLS link with
+>      reason WLAN_REASON_TDLS_TEARDOWN_UNSPECIFIED. Cycle repeats.
+>
+> Effective TCP throughput drops from ~300 Mbit/s (AP route) to ~6
+> Mbit/s with TDLS active.
+>
+> Verified on mt7925e (PCIe) at 5 GHz HE NSS 2 MCS 11 80 MHz and at
+> 2.4 GHz 802.11n HT NSS 2 MCS 15. With this patch, TDLS direct link
+> sustains ~750 Mbit/s and ~130 Mbit/s respectively.
+>
+> mt76 advertises WIPHY_FLAG_SUPPORTS_TDLS via the shared
+> mt76_register_phy_helper() but does not provide TDLS-aware
+> firmware-facing peer setup: no CONNECTION_TDLS constant in
+> mt76_connac_mcu.h, no STA_REC_TDLS TLV, no TDLS bit in
+> mt76_wcid_flags, and no TDLS-specific code in
+> mt7925_mac_write_txwi_8023(). TDLS peers are registered as
+> CONNECTION_INFRA_STA with peer_addr set to the peer's MAC and
+> nothing else. The proprietary out-of-tree MediaTek driver carries an
+> explicit cfg80211_tdls.c (PTK/TK install paths, etc.) with no
+> in-tree equivalent. Whether the underlying gap is in the firmware
+> HW_ENCAP path or in mt76's missing TDLS-aware setup is unclear from
+> the kernel side; the software-encap path sidesteps it either way.
+>
+> Work around the issue by not advertising SUPPORTS_TX_ENCAP_OFFLOAD
+> and SUPPORTS_RX_DECAP_OFFLOAD in mt792x_init_wiphy(). mac80211 then
+> takes the software 802.11 encap path, which submits already-formed
+> 802.11 frames via a different firmware path that handles all WCIDs
+> correctly, including TDLS peers.
+>
+> mt792x_init_wiphy() is shared with the Connac2 family (mt7921/22/20/02),
+> which uses the same firmware HW_ENCAP path; the disable is applied
+> globally to cover the likely-affected chips. If Connac2 is later
+> confirmed unaffected, the disable can be narrowed with is_mt7925().
+>
+> Fixes: 5c14a5f944b9 ("mt76: mt7921: introduce mt7921e support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: ElXreno <elxreno@gmail.com>
+> Assisted-by: Claude:claude-opus-4-7 bpftrace
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt792x_core.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/n=
+et/wireless/mediatek/mt76/mt792x_core.c
+> index 152cfcca2f90..f9610c6c1597 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+> @@ -681,8 +681,14 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
+>
+>         ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
+>         ieee80211_hw_set(hw, HAS_RATE_CONTROL);
+> -       ieee80211_hw_set(hw, SUPPORTS_TX_ENCAP_OFFLOAD);
+> -       ieee80211_hw_set(hw, SUPPORTS_RX_DECAP_OFFLOAD);
+> +       /* HW TX/RX 802.11 encap offload is intentionally NOT advertised:
+> +        * the firmware HW_80211_ENCAP path silently drops QoS Data frame=
+s
+> +        * whose destination WCID is a TDLS direct-link peer, breaking TD=
+LS
+> +        * data flow. The mac80211 software encap path submits already-fo=
+rmed
+> +        * 802.11 frames, which the firmware handles correctly for all WC=
+IDs.
+> +        * Re-add SUPPORTS_TX_ENCAP_OFFLOAD / SUPPORTS_RX_DECAP_OFFLOAD h=
+ere
+> +        * once the firmware HW_ENCAP path is fixed.
+> +        */
 
-Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
----
- drivers/net/wireless/ath/wcn36xx/dxe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I do not think disabling TX/RX encap offload globally in
+mt792x_init_wiphy() is the right fix.
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/dxe.c b/drivers/net/wireless/ath/wcn36xx/dxe.c
-index 5a0ef2295..44020ec26 100644
---- a/drivers/net/wireless/ath/wcn36xx/dxe.c
-+++ b/drivers/net/wireless/ath/wcn36xx/dxe.c
-@@ -16,8 +16,8 @@
- 
- /* DXE - DMA transfer engine
-  * we have 2 channels(High prio and Low prio) for TX and 2 channels for RX.
-- * through low channels data packets are transfered
-- * through high channels managment packets are transfered
-+ * through low channels data packets are transferred
-+ * through high channels management packets are transferred
-  */
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
--- 
-2.33.0.windows.2
+The reported failure is specific to TDLS direct-link peers, while this
+change affects all normal STA/AP/P2P data paths and all mt792x chips,
+including mt7925/mt7921/22/20/02. This is too broad for a TDLS-specific iss=
+ue.
 
+The commit message already points out that mt76 lacks TDLS-aware
+firmware-facing peer setup, and also mentions that the proprietary
+out-of-tree MediaTek driver has an explicit cfg80211_tdls.c
+implementation. If that driver supports TDLS on top of the firmware HW
+encap model, I think we should try to align the in-tree driver with that
+design by adding the missing TDLS-aware firmware-facing peer setup,
+instead of disabling HW encap globally.
+
+In particular, I would prefer to first check whether adding
+CONNECTION_TDLS / proper TDLS peer setup on top of the current code is
+enough to fix the issue.
+
+Please avoid removing SUPPORTS_TX_ENCAP_OFFLOAD and
+SUPPORTS_RX_DECAP_OFFLOAD globally from mt792x_init_wiphy().
+
+>         ieee80211_hw_set(hw, WANT_MONITOR_VIF);
+>         ieee80211_hw_set(hw, SUPPORTS_PS);
+>         ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
+>
+> --
+> 2.53.0
+>
+>
 
