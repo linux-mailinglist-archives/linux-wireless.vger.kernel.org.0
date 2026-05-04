@@ -1,226 +1,173 @@
-Return-Path: <linux-wireless+bounces-35861-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35862-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOFKFcGe+GnlxAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35861-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 15:27:29 +0200
+	id wGvCAiil+GnQxQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35862-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 15:54:48 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082874BDE12
-	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 15:27:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 009E14BE1B0
+	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 15:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 458A43062D96
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2026 13:21:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 70CBF30011A9
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2026 13:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2519A3D9DB5;
-	Mon,  4 May 2026 13:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5731C3DE423;
+	Mon,  4 May 2026 13:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Vfe34t3l"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vs/+Qfoc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93703D6698
-	for <linux-wireless@vger.kernel.org>; Mon,  4 May 2026 13:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C173DDDC7
+	for <linux-wireless@vger.kernel.org>; Mon,  4 May 2026 13:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777900880; cv=none; b=nbLvi7kvVCfRxUjdxaRF09eY5nMWNCMo2gPBcMJUUTwDufSHgYpTVxT3P23EAMiOu1evpFFkFTPv2jypC2rFQBj5jumSOhNN5eB0Rh/nH7ktRLNSmXU9l5+GkncD8u8yKXv+aHbLimeweyqymNuD6Qj/dzGw9lpyzQ2aDhSAC+U=
+	t=1777902867; cv=none; b=rjHXIEV9X+cAxFfAKTJVcKNgeKv9XjvhuQaKW6Rs3Pi4Ao5Zbl0/BZrXcMHHfQM9lsOsYs6XONSRsVHciR9sn+WJfRsMi9nQzUG0dEocSn6yBrjpuj0QZn2tPpyvYCHAFT+g1kD4ba6qbslS6hHJxjcybUqRShyULUEMioJPI+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777900880; c=relaxed/simple;
-	bh=RRcMT5aXF695WT2y3yloWwLGYO0Wery2Qd+Ip0HySMg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=UPIfA8gQUPx33/LaM+Ay6UupVazoFDYGXK8Z3l7ATRWs4Nxz0QaP7fyzuI0RS9cMSrI0OjRUhtFQm2hmt7ha8Arqwh2fxZP0ghyDD7xi6j3f8wNZjvLMikT0pzbszeLafCLEjLJ4rfEKjGlVsB84Qw6qu6nNiqbsONWVbbj1ZlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Vfe34t3l; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-65c0891f4e9so6451905a12.1
-        for <linux-wireless@vger.kernel.org>; Mon, 04 May 2026 06:21:16 -0700 (PDT)
+	s=arc-20240116; t=1777902867; c=relaxed/simple;
+	bh=qACKovDwWl0XRpk1VBafKxa+X+VCmOUgOltqbeYqeDU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EQ5SAEvqFGzYRACyy0IeOq3inRhhr5uYWNglkQ0oEEgrystGtBFjOey0FDFsDID11zDVoFYj1xFSfSFf/Mg1lv9CxDmxXIh4ViDA32GVGK0futzHuc+x4MzeMMRcuIXBbmExwqhuRlWiNckvtVpWF/MJymM0n6G5VH+9pau0RVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vs/+Qfoc; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-36505450d0dso2475199a91.1
+        for <linux-wireless@vger.kernel.org>; Mon, 04 May 2026 06:54:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1777900875; x=1778505675; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1777902865; x=1778507665; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Cu51mh4jahJU18+vQyHL65Jaia7lK69Ad8pkf9BheHQ=;
-        b=Vfe34t3lpzoBSlxMarmtHtJZ6Tq8MHmt9dUapF07HnO9QtHzkXSFoBbdbpjPA/dNPd
-         LSHmqVNmgtS/Qcz5ksymrf9ETnAbokCKpfuGVccUjzpRCz3iZfwmdp5yZYdVq8Qt2rXb
-         kdmeUi0CpFyYSoEkHdYKBEQXmmzp9qGQOvMJyM1TVUQzcM5LKckfhLkLah/YA0tu/aWL
-         AEKft72sUUKEP3w0ESKp/LA2MAZHBaBmQ35/ntiwCWK00l+dTtboshhep/kHmoHX4Y+4
-         G+tTJq9M8uDty92qngjUPNEuJEfMnojvoEJikJPylhqyWkRItzTDCliU/KwFuZt80ntD
-         2dDw==
+        bh=BDH/Z3ZdpxZLnUyA8N8nJBFQauhNZTO1Pv4UHEM+LGQ=;
+        b=Vs/+QfocrLcmeEoq05UTx0RI/iLbP9h8cXEkXTcIwiRWu4SqlpCY0WvtPhXW8kJc7s
+         OwSL+N6NGl30ko71KClqyKj3ggunhUPlWeOJXn6iCam4LguU+5scVtA/L36xTDd+R4zA
+         M4bxpFug3mkiwZZ0A/uA31YIQBqjSI5zfLpnTRyupVYJoN22ls+gorFfJfNHg2oQq+BW
+         datJsmGp4a7/SxEVdyap8I6fvL+GJy52MeOhgkRKIB6BbQUppvPOLb7MzKqLu9cHZcor
+         +YMCEKfeB65ZlE25xRq2tkB6m/pBogJFwfFN/0O0ddcl0tsWw7uoC+kH8i7DribsU5Ns
+         PGOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777900875; x=1778505675;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Cu51mh4jahJU18+vQyHL65Jaia7lK69Ad8pkf9BheHQ=;
-        b=tQ/Q6KpMTauzu8jJsBuHBU068HYV0hBCpfztDjYImJWXqqDTQRJkObeMOotMLY6YCA
-         HuoYouK/nyIxSHuWTikTBqXtFkDiA+09JSCk4oeZK3YMlwB7Y0+3NdZstDX6NcuS7wCW
-         FnEnV0L/dzey5HFR9vw/2vatwXdMukktFGBpdhDQr3lTrTsg4kxn8rQ3XwBSXnK5U6Ki
-         zJ88Tvz2KJDBTrR8/PyFwD5t0Qh2s1HQnboGkSCfjoxJd2vESYQwnSNfy31Aqfll7PlG
-         pk2i8f22Trh+DTQ2iWe2Y12COOVzIIBeFwHOmICXulhrYpBrf+XUEeueVw+Ud28BYMTm
-         srBA==
-X-Forwarded-Encrypted: i=1; AFNElJ/2vTRTLMvdx5LshjbQU2NyXaxRWEms8P38EafPAhWUQLVyoXeuDcRCiaF3PmnRlIgQd6fGjDmRN5rjj1id7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOD+L2Pl2rUiSd0wvO6zARTb0pSv0s3wki04eeAQZo5eslbSMy
-	VUODCW+RWd6FlGmxgUAoqgnnhYlIT0oF5XDlVwCcSxZCC3Z2zONZFp0j9uFfUCpf0gw=
-X-Gm-Gg: AeBDieuwp/0xHhkVk55+28y5btU8P2HHYleZ896CpnOZH/iC8/6s3tXfLRCzb4NooOQ
-	nTkjChFZFdTdKqOhsq78B368PjncvYqs3IVgbWpSITmWW28PS2HCeNsjpy9PWXqA5f/G64mdMgI
-	ENh3kxovaxjEeUJiXrMIeTbvVeFR/HV1cWhEKGBU69jpj/Vwqssgh0U7S8ZJdoRLfgjvUozRILt
-	sBcycSw1BDMCYtWzOtz9IwmE9Kd9OOp3rYiQnw8vEX5bmE/diC3EltS5krvsEEtdqLGrnH3hPgn
-	6pYpWSfoXBWmBRuFMvgXonkxtPqt73n1cz52TM1IuxYRubadpakMp8+D6/90cA6tEu58lUpWW65
-	vVT3Hznbr+MwhNefl+iyg4KrunhSy7FQ1FCyDJ/c9qP/HQW0AhV4CMZBBhkoPBzF40nE+JQXnsw
-	jXNzr5qSJunO4nctB+jYTCHbAko2HZAFmhiGMS31cWN8x/lctBMNGG8cX+ZBmgahNdDkLGvrLc4
-	kY+2bY=
-X-Received: by 2002:a05:6402:2b99:b0:671:eac2:d328 with SMTP id 4fb4d7f45d1cf-67c1992a1c7mr4428495a12.10.1777900875106;
-        Mon, 04 May 2026 06:21:15 -0700 (PDT)
-Received: from localhost (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67b85e28ef8sm3367092a12.2.2026.05.04.06.21.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 May 2026 06:21:14 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777902865; x=1778507665;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BDH/Z3ZdpxZLnUyA8N8nJBFQauhNZTO1Pv4UHEM+LGQ=;
+        b=CSIB5omKZxJJXnP2lris+dgqvnuoCwYGLxumkGTFOt5Q1Mr68KpaDcmNgu9+lq3PAt
+         HHOLQipLVihZQidkNqT4fiOGcjFbrwS2gWdDFgESZDLzPC0nAG6cDohXk7CTSCdmU0Kk
+         Fa8bV1MQJRWsF9pIj7eoVTyQpxPfrLuwTgMXd8wQSjcdR+G3mt6EkdvJsR5zPofrqpX1
+         vgplhJiV2RO2+g5J1uqaguJ+gLKnCeHt7HkrP8I6aZIOaTSPtFdGs354XJvvS00RXMuY
+         jZjdiwQcOE+c8aQGSSofiU6NluIEosLSEQY8WaBFpt/JnWgMHdmC0fQiY+BrcFnP/iB7
+         oarA==
+X-Gm-Message-State: AOJu0Yy+uvAO20O1/lcwd9BBe6lTFHoiImBFKFaeRdaog8PO3jqFh1wS
+	OZw7hrobqjLrgbKUU8jBMos1265EGZGBIBQP4sfDSmE8RPkwta+Gy2Y5IT884Q==
+X-Gm-Gg: AeBDiesRVUiTge6ZK631zfiJ5Eh1RWbWBIawQDFvEuumUHIZmtXtfOwkVZFoJ/pOu71
+	PfhU39ndNvg03gQjpjW8QIHYkSnDCQm9hAckWO9G4sPgPlEdUPa7qofbGnZx58Lms3BF6o+IExH
+	hZp39L6AO2UUmyAz3XOr7+7hkN7Rwd7anG/j7OmqwYIEAtbsz9rwAsKRNphc3gxLphQ4iYkz5Qm
+	LRpeJDXr0b8+D0KOaASfsahpHM79TFLPm3j7Z818MHEv7i7VLmI4oRLhenY0Uc3/LZGsxKV6ulX
+	P2UxRUlAyYQ0XCok2yAI5ACfyfoUHd5dmp3IFKHXrOr9rNgjW0lCiooo1JEKDSA63mBwRfSi0zc
+	fWKfZMxA44hdCGhtPlkQyWGPxWjPqb8YSsizwfHkRAR3r4NMsMvHfihAxtYC1+IhQxWvIS/di70
+	GHV4mZUiIydrGPffDkcoYI03GhrYb1s+huGcna94slF97B5HTqhY0s/npy
+X-Received: by 2002:a17:90a:ec86:b0:35f:bd29:75b9 with SMTP id 98e67ed59e1d1-3650cee7ca6mr9612982a91.22.1777902865182;
+        Mon, 04 May 2026 06:54:25 -0700 (PDT)
+Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36528ad3154sm5798811a91.2.2026.05.04.06.54.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 06:54:24 -0700 (PDT)
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+X-Google-Original-From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] wifi: nl80211: tighten netns handling in SET_WIPHY_NETNS and dump continuation
+Date: Mon,  4 May 2026 21:54:18 +0800
+Message-Id: <20260504135420.1178443-1-maoyi.xie@ntu.edu.sg>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260504125753.1154601-1-maoyi.xie@ntu.edu.sg>
+References: <20260504125753.1154601-1-maoyi.xie@ntu.edu.sg>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 04 May 2026 15:21:11 +0200
-Message-Id: <DI9X9D3TTIRE.1CGHQI2LEZ1UL@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Luca Weiss"
- <luca.weiss@fairphone.com>, "Dmitry Baryshkov"
- <dmitry.baryshkov@oss.qualcomm.com>, "Jeff Johnson"
- <jeff.johnson@oss.qualcomm.com>, "Baochen Qiang"
- <baochen.qiang@oss.qualcomm.com>
-Cc: "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Alexander Koskovich" <AKoskovich@pm.me>, "Liam Girdwood"
- <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>, "Bartosz
- Golaszewski" <brgl@kernel.org>, "Marcel Holtmann" <marcel@holtmann.org>,
- "Luiz Augusto von Dentz" <luiz.dentz@gmail.com>, "Balakrishna Godavarthi"
- <quic_bgodavar@quicinc.com>, "Rocky Liao" <quic_rjliao@quicinc.com>,
- "Johannes Berg" <johannes@sipsolutions.net>, "Jeff Johnson"
- <jjohnson@kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
- <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-bluetooth@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
- <ath11k@lists.infradead.org>
-Subject: Re: [PATCH v2 7/7] arm64: dts: qcom: milos-fairphone-fp6: Enable
- WiFi
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260403-milos-fp6-bt-wifi-v2-0-393322b27c5f@fairphone.com>
- <20260403-milos-fp6-bt-wifi-v2-7-393322b27c5f@fairphone.com>
- <4fbs4arx6sez6fffy75ctmzecfvitr6aocau3cczlr2ps2ptld@v7wpa2irsihl>
- <2514523f-a43f-4470-a69b-3d5175d10385@oss.qualcomm.com>
- <DI789NOBWJHK.1V3SFQLCFLS4P@fairphone.com>
- <870d16bb-b426-4285-a299-deb09ae90243@oss.qualcomm.com>
-In-Reply-To: <870d16bb-b426-4285-a299-deb09ae90243@oss.qualcomm.com>
-X-Rspamd-Queue-Id: 082874BDE12
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 009E14BE1B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[fairphone.com,quarantine];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[fairphone.com:s=fair];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35861-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,pm.me,gmail.com,holtmann.org,quicinc.com,sipsolutions.net,lists.sr.ht,vger.kernel.org,lists.infradead.org];
-	RCPT_COUNT_TWELVE(0.00)[28];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-35862-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luca.weiss@fairphone.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[fairphone.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fairphone.com:email,fairphone.com:dkim,fairphone.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-On Mon May 4, 2026 at 3:10 PM CEST, Konrad Dybcio wrote:
-> On 5/1/26 11:20 AM, Luca Weiss wrote:
->> Hi Konrad,
->>=20
->> On Tue Apr 7, 2026 at 3:16 PM CEST, Konrad Dybcio wrote:
->>> On 4/3/26 9:35 PM, Dmitry Baryshkov wrote:
->>>> On Fri, Apr 03, 2026 at 03:52:53PM +0200, Luca Weiss wrote:
->>>>> Configure and enable the WiFi node, and add the required pinctrl to
->>>>> provide the sleep clock from the PMK8550 (PMK7635) to WCN6755.
->>>>>
->>>>> Thanks to Alexander Koskovich for helping with the bringup, adding
->>>>> the missing pinctrl to make the WPSS stop crashing.
->>>>>
->>>>> Link: https://lore.kernel.org/linux-arm-msm/DBF7OWAWQ94M.FSCP4DPF8ZJY=
-@fairphone.com/
->>>>> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>>> ---
->>>>>  arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts | 19 ++++++++++++++=
-++++-
->>>>>  1 file changed, 18 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/=
-arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->>>>> index db72418b7195..d8ac495ca7c8 100644
->>>>> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->>>>> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->>>>> @@ -242,7 +242,7 @@ wcn6750-pmu {
->>>>> =20
->>>>>  		clocks =3D <&rpmhcc RPMH_RF_CLK1>;
->>>>> =20
->>>>> -		pinctrl-0 =3D <&bluetooth_enable_default>;
->>>>> +		pinctrl-0 =3D <&bluetooth_enable_default>, <&pmk8550_sleep_clk_def=
-ault>;
->>>>>  		pinctrl-names =3D "default";
->>>>> =20
->>>>>  		regulators {
->>>>> @@ -766,6 +766,17 @@ &pmiv0104_eusb2_repeater {
->>>>>  	qcom,tune-usb2-preem =3D /bits/ 8 <0x6>;
->>>>>  };
->>>>> =20
->>>>> +&pmk8550_gpios {
->>>>> +	pmk8550_sleep_clk_default: sleep-clk-default-state {
->>>>> +		pins =3D "gpio5";
->>>>> +		function =3D "func1";
->>>>> +		input-disable;
->>>>> +		output-enable;
->>>>
->>>> Hmm, if it's a sleep_clk, should it not be handled via the power
->>>> sequencer?
->>>
->>> If you mean that it may be needed to toggle it with specific timings,
->>> possibly..  seems that WCN6855 has a "xo-clk" GPIO defined. I requested
->>> access to some docs that I think should have the answer, hopefully shou=
-ld
->>> get it soon.
->>=20
->> Did you manage to get anything there yet?
->
-> Yeah, sorry, it got lost in the sea of emails..
->
-> The PDF talks about the electrical requirements of the clock signal and
-> the section titled "Power-up sequence timing" doesn't mention it at all,
-> so my assumption would be "OK so long as it's ticking before you power
-> up the WCN"
+This series addresses two related namespace handling gaps in
+nl80211 that came up during a recent inquiry on the list. Both
+follow the netdev convention.
 
-Thanks for checking!
+Patch 1/2: NL80211_CMD_SET_WIPHY_NETNS uses GENL_UNS_ADMIN_PERM,
+which only checks CAP_NET_ADMIN over the source netns. The target
+netns selected via NL80211_ATTR_NETNS_FD or NL80211_ATTR_PID is
+not checked. Mirror the rtnetlink convention spelled out by
+rtnl_get_net_ns_capable() and require ns_capable(target_net->user_ns,
+CAP_NET_ADMIN) on the resolved target netns. Reachable from an
+unprivileged user namespace whenever the caller already holds a
+WIPHY_FLAG_NETNS_OK wiphy in their own netns (mac80211_hwsim, or
+an admin-delegated container scenario). PoC reproduces on a KASAN
+VM with mac80211_hwsim and shows the call now returns -EPERM.
 
-Is this an R-b then?
+Patch 2/2: nl80211_prepare_wdev_dump() validates the wdev's netns
+on the first dumpit invocation but not on subsequent ones, where
+it looks up the wiphy by global index. If the wiphy moves netns
+between dumpit invocations (via SET_WIPHY_NETNS), the dump silently
+keeps copying BSS list contents from the wiphy's new netns into
+the caller's netns. Add a net_eq() check on the continuation path
+so the dump terminates cleanly. This is mostly a clarity-and-convention
+fix. Combined with 1/2 it also closes the path by which an
+unprivileged-userns caller could trigger the race themselves.
 
-Regards
-Luca
+Changes since v1:
+  Patch 2/2: trimmed the comment per Johannes's review. The
+    comment now describes the invariant being protected (wiphy
+    may move between dumpit invocations) rather than referencing
+    other dump callers as motivation.
+  Patch 1/2: unchanged.
+
+Maoyi Xie (2):
+  wifi: nl80211: require CAP_NET_ADMIN over the target netns in
+    SET_WIPHY_NETNS
+  wifi: nl80211: re-check wiphy netns in nl80211_prepare_wdev_dump()
+    continuation
+
+ net/wireless/nl80211.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+
+base-commit: 65493f27a6008bf84bd11bd41c5e1ea6b0bf3c3d
+-- 
+2.34.1
+
 
