@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-35852-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35853-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPTPJzec+GlgxAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35852-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 15:16:39 +0200
+	id yNsUMwyc+GmdxAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35853-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 15:15:56 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601C34BDB27
-	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 15:16:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B55B4BDAD4
+	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 15:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C3933046CFB
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2026 13:09:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 863BF30EFC3D
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2026 13:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D733D891A;
-	Mon,  4 May 2026 13:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D0C3D9022;
+	Mon,  4 May 2026 13:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RwT4SPx8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZJYfVLmB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428DD3D523C;
-	Mon,  4 May 2026 13:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B405F3793B5;
+	Mon,  4 May 2026 13:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777900152; cv=none; b=g+x2VtzA5CC4LIbObauz9RA8PmmhglQAQVleN+Fievf2MVVkSRMKFpMvVbY/LFEc1bJZvtbUWaW7D1vgYezz/7PwtTE7BJvlUDbvxVzem2YqMHaZqckCeJxbCzqu5CqzM7O/rcz3+0zI1RO/rrxxF4G998l9IqWWKo5YimkOEIM=
+	t=1777900167; cv=none; b=IYFkFMGnhIVSRGL/cUfmPGDwO5eENw9AtfhkUYK804BXp21fa7DcO8aSRIAwXcKV6AKXo3ruupdkkvg6biiycufDdnttKnojahLydR3CY9KJpe+UckNyyiFf7im1UVc+ycD3Fe17ras8+ExctNi1Jo9ml1rFCXnNGItKEU+04zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777900152; c=relaxed/simple;
-	bh=Ww69rZmwVfBry2lRl5WuseohUPKiZtw6HZ59g3rgRO4=;
+	s=arc-20240116; t=1777900167; c=relaxed/simple;
+	bh=MQ04LvOdFtPiYRe2pIYqNHIMNscNznxQvxkIS8rauvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTTf8BhVh+PlhK8JVd9TQXrYSaFgcnwUY/17c0uhu4nQNlaxL6ASOuIxZzJgFZjndX+UfJhjzc227+G3Bzd/EnwTW0WpeaF1LO50N7kumFTPy+lVnTrqOVnJRqKbRKU0jcIwQyaajfr77EYGjGDa94oo2zu2CE8conb54js3tyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RwT4SPx8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F33CC2BCB8;
-	Mon,  4 May 2026 13:08:57 +0000 (UTC)
+	 MIME-Version; b=TWilWQxgK+HlvUVIIn2Cls3vB1Ph0O5ARm6tNOq4MnBxZ6u9AlyCbFgxdqIl6KNWpyrPBCGvyyE5UpQKn8L4lTnXeY55R9crDgQ7m0pSwqJxj7tST6grckdNY8dqMC/7LBzJcsFPEbs10XivOAGa0dxy+oHAwrgw0wsaNftk+Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZJYfVLmB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C35C4AF0B;
+	Mon,  4 May 2026 13:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777900151;
-	bh=Ww69rZmwVfBry2lRl5WuseohUPKiZtw6HZ59g3rgRO4=;
+	s=k20201202; t=1777900167;
+	bh=MQ04LvOdFtPiYRe2pIYqNHIMNscNznxQvxkIS8rauvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwT4SPx8fDc3IWKVYzvLC/6GjTeDBR12CeCMECLKgRvSNW+C1LpPLY6gDVW0pGIkC
-	 oubAKUE/l8N9wN5MtnNmUCgZEpk7y1zDe5JI1zNLmRUIn0Nh32ZlnJd10MpKvhu6IA
-	 wB83+Yj+tfPWGeHw+nE/DFZfCfPprMsCLeYUu4ZiNaWQOQkl0PrIcjd5IILHTXLw09
-	 dN8Z07KqzNYiJHM9ZxvM1rgvPBoO+rer/3hnMZiPH0E8v+vfThDTL64GktPczO7JaP
-	 OPB2U96vAkgxj8ziYK+1gVJ63ZN6ZQIu42gKIf5y110+wI/M/CqxNnjXQlgEp7LlRR
-	 0sMa74wRGE9Ew==
+	b=ZJYfVLmBhDjHlgmfEV7Z3E/wReu8i0G2s2cjpF+sUwrRexFHMTuCN8IFfrkw8h0wK
+	 Wuqy/sS7zMT6ibg9vOgXIrhgaCPEX4Sc5SDyr/qfkBmUO3ue2b1u7zbmywXVIaglLo
+	 /eoX3Y3DweexuW8bOuOsdCVF2kz9dZzE4VzQjyuxk5WtKAnUCtfI/yDij1ONW/12Pl
+	 +ir+gxLvinC/f8K1oFB1UYZuLf1mjyzLGR+k6IvOMx318FabTjWl5zeGnAT+Ziuv1U
+	 qWkHNpGXgrgx0JDFNTVigRPkl1BiLsi1K45XCvE3xiJESXqp90D6Ax/l7QkBq0PH0b
+	 y7uhJPZNMuq7A==
 From: Sumit Garg <sumit.garg@kernel.org>
 To: andersson@kernel.org,
 	konradybcio@kernel.org
@@ -93,10 +93,11 @@ Cc: linux-arm-msm@vger.kernel.org,
 	apurupa@qti.qualcomm.com,
 	skare@qti.qualcomm.com,
 	linux-kernel@vger.kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: [PATCH v5 09/16] remoteproc: qcom: Select QCOM_PAS generic service
-Date: Mon,  4 May 2026 18:35:56 +0530
-Message-ID: <20260504130603.1474043-10-sumit.garg@kernel.org>
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH v5 10/16] drm/msm: Switch to generic PAS TZ APIs
+Date: Mon,  4 May 2026 18:35:57 +0530
+Message-ID: <20260504130603.1474043-11-sumit.garg@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260504130603.1474043-1-sumit.garg@kernel.org>
 References: <20260504130603.1474043-1-sumit.garg@kernel.org>
@@ -107,79 +108,128 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 601C34BDB27
+X-Rspamd-Queue-Id: 1B55B4BDAD4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[49];
-	TAGGED_FROM(0.00)[bounces-35852-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35853-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[50];
 	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-0.998];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
 
 From: Sumit Garg <sumit.garg@oss.qualcomm.com>
 
-Select PAS generic service driver to enable support for multiple PAS
-backends like OP-TEE in addition to SCM.
+Switch drm/msm client drivers over to generic PAS TZ APIs. Generic PAS
+TZ service allows to support multiple TZ implementation backends like QTEE
+based SCM PAS service, OP-TEE based PAS service and any further future TZ
+backend service.
 
+Acked-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 Tested-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com> # Lemans
 Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
 ---
- drivers/remoteproc/Kconfig | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/Kconfig             |  1 +
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c   |  4 ++--
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c | 11 ++++++-----
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/remoteproc/Kconfig b/drivers/remoteproc/Kconfig
-index ee54436fea5a..9a6ca30e1481 100644
---- a/drivers/remoteproc/Kconfig
-+++ b/drivers/remoteproc/Kconfig
-@@ -210,6 +210,7 @@ config QCOM_Q6V5_MSS
- 	select QCOM_Q6V5_COMMON
- 	select QCOM_RPROC_COMMON
+diff --git a/drivers/gpu/drm/msm/Kconfig b/drivers/gpu/drm/msm/Kconfig
+index 250246f81ea9..09469d56513b 100644
+--- a/drivers/gpu/drm/msm/Kconfig
++++ b/drivers/gpu/drm/msm/Kconfig
+@@ -21,6 +21,7 @@ config DRM_MSM
+ 	select SHMEM
+ 	select TMPFS
  	select QCOM_SCM
 +	select QCOM_PAS
- 	help
- 	  Say y here to support the Qualcomm self-authenticating modem
- 	  subsystem based on Hexagon V5. The TrustZone based system is
-@@ -230,6 +231,7 @@ config QCOM_Q6V5_PAS
- 	select QCOM_Q6V5_COMMON
- 	select QCOM_RPROC_COMMON
- 	select QCOM_SCM
-+	select QCOM_PAS
- 	help
- 	  Say y here to support the TrustZone based Peripheral Image Loader for
- 	  the Qualcomm remote processors. This is commonly used to control
-@@ -282,7 +284,7 @@ config QCOM_WCNSS_PIL
- 	select QCOM_MDT_LOADER
- 	select QCOM_PIL_INFO
- 	select QCOM_RPROC_COMMON
--	select QCOM_SCM
-+	select QCOM_PAS
- 	help
- 	  Say y here to support the Peripheral Image Loader for loading WCNSS
- 	  firmware and boot the core on e.g. MSM8974, MSM8916. The firmware is
+ 	select QCOM_UBWC_CONFIG
+ 	select WANT_DEV_COREDUMP
+ 	select SND_SOC_HDMI_CODEC if SND_SOC
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+index 79acae11154a..b556da823897 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+@@ -5,7 +5,7 @@
+ #include <linux/kernel.h>
+ #include <linux/types.h>
+ #include <linux/cpumask.h>
+-#include <linux/firmware/qcom/qcom_scm.h>
++#include <linux/firmware/qcom/qcom_pas.h>
+ #include <linux/pm_opp.h>
+ #include <linux/nvmem-consumer.h>
+ #include <linux/slab.h>
+@@ -653,7 +653,7 @@ static int a5xx_zap_shader_resume(struct msm_gpu *gpu)
+ 	if (adreno_is_a506(adreno_gpu))
+ 		return 0;
+ 
+-	ret = qcom_scm_set_remote_state(SCM_GPU_ZAP_SHADER_RESUME, GPU_PAS_ID);
++	ret = qcom_pas_set_remote_state(SCM_GPU_ZAP_SHADER_RESUME, GPU_PAS_ID);
+ 	if (ret)
+ 		DRM_ERROR("%s: zap-shader resume failed: %d\n",
+ 			gpu->name, ret);
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+index 66f80f2d12f9..6d68edf0578c 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+@@ -8,6 +8,7 @@
+ 
+ #include <linux/ascii85.h>
+ #include <linux/interconnect.h>
++#include <linux/firmware/qcom/qcom_pas.h>
+ #include <linux/firmware/qcom/qcom_scm.h>
+ #include <linux/kernel.h>
+ #include <linux/of_reserved_mem.h>
+@@ -146,10 +147,10 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname,
+ 		goto out;
+ 
+ 	/* Send the image to the secure world */
+-	ret = qcom_scm_pas_auth_and_reset(pasid);
++	ret = qcom_pas_auth_and_reset(pasid);
+ 
+ 	/*
+-	 * If the scm call returns -EOPNOTSUPP we assume that this target
++	 * If the pas call returns -EOPNOTSUPP we assume that this target
+ 	 * doesn't need/support the zap shader so quietly fail
+ 	 */
+ 	if (ret == -EOPNOTSUPP)
+@@ -175,9 +176,9 @@ int adreno_zap_shader_load(struct msm_gpu *gpu, u32 pasid)
+ 	if (!zap_available)
+ 		return -ENODEV;
+ 
+-	/* We need SCM to be able to load the firmware */
+-	if (!qcom_scm_is_available()) {
+-		DRM_DEV_ERROR(&pdev->dev, "SCM is not available\n");
++	/* We need PAS to be able to load the firmware */
++	if (!qcom_pas_is_available()) {
++		DRM_DEV_ERROR(&pdev->dev, "Qcom PAS is not available\n");
+ 		return -EPROBE_DEFER;
+ 	}
+ 
 -- 
 2.51.0
 
