@@ -1,181 +1,197 @@
-Return-Path: <linux-wireless+bounces-35840-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35841-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKhAByyY+GliwwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35840-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 14:59:24 +0200
+	id IF0LHc2Y+GmcwwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35841-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 15:02:05 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DABB4BD520
-	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 14:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2921A4BD5CC
+	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 15:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 65C11302F7D7
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2026 12:58:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2BACC3025F46
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2026 12:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6917F3D812B;
-	Mon,  4 May 2026 12:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DFB3D812E;
+	Mon,  4 May 2026 12:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CkgJhMCK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jGxgXcMF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25283D8136
-	for <linux-wireless@vger.kernel.org>; Mon,  4 May 2026 12:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DA63D7D91
+	for <linux-wireless@vger.kernel.org>; Mon,  4 May 2026 12:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777899484; cv=none; b=uXhz0O1L/erppjQQMtwzpc+jqJoaYcQp0Wa3+6cIgpi+aCZzERmXBTkaVNi9Qa1FVU1/TCpuaeZBqTETq8WspHcWY3SlPbWDvdkQip5vUerzDSY12Rf3YuKV3wbDbgK3/Z+bPnQxWpf5ulLRa11QE0ytHwhgG62xkvHjr6z4tV0=
+	t=1777899526; cv=none; b=AtQLcTbzgQLRCsvcKOKaxSSlUO7wWOAylLTVRkcm9OzuAqLkPMf2eknIDK3i3FnE67qFNR1Q6Nj+9UzrAOscHdkLS3xoBvdAQVeDBB3Ge0M1Rw8uYNI9Ud0Cq0SSrVYQA55cLOdkj3GXh6Qn9pGpEDOLf4hQEWdUlW4oUYwZ4o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777899484; c=relaxed/simple;
-	bh=WGxwPMj0Jvf62Qf3yIRmxkG+rH8nxvYdAc3vMvAc7YU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qGf91f7+dZ4Hmwwoz/vshTmxczURF16ZJq0I47mOLdgxr3DxUu2A4SDujGhw0lD39KWh1R2YdrG+Han2zi3PnMUHwbuRKpSgHaiOwPcPIf2Pjc4p6BjistPmViPs8qo7QZHd4VzzlNRhFWfUkx5rKgCQfpRbui1XUAMY2r1EHqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CkgJhMCK; arc=none smtp.client-ip=209.85.210.177
+	s=arc-20240116; t=1777899526; c=relaxed/simple;
+	bh=NmoK00K18ee0KWR0BRNW6Sy1q35LGoXy6wYg8Lac6Ro=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Go29a6npZOSvfv0G/wcZFZcmivKqvxqYmZ8qwtkNXnDRb2Sto/a85Wh4AzZZsDlUOaWYs/VUqtlPk8S39hYJvHmV276NgbIheXkbVxl8F6Nq4mQmjGX9LjpVILhPIMR7Xy9xKgFF2CkHVKaGuQ4Tmos38t0+t3bJKZdmiUBAmQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jGxgXcMF; arc=none smtp.client-ip=209.85.222.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-82f8b60e54dso3093855b3a.2
-        for <linux-wireless@vger.kernel.org>; Mon, 04 May 2026 05:58:02 -0700 (PDT)
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8ee63e91acfso309199285a.2
+        for <linux-wireless@vger.kernel.org>; Mon, 04 May 2026 05:58:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777899482; x=1778504282; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4UnTF1dih5K5oi/fx4+6E+Hsrs0XoMIeCSQF+wiUqTc=;
-        b=CkgJhMCK+rjEZhU7f3CSJEnhPuWiCdCKtHUryJzcW/C0BBDrXeRkHuFHgoOFiAX2qW
-         mY2CHzS/cD3F8/OQl267Icr7fIt0Fly+vP+O6XA0zYlNHHhITXAPF/Zx8LYCxCrVlRIU
-         AOyeg2jO8QSLGY0lI9SK+oFoQ8falTR/JTnKK7QJw1jVQDA/AEW3wzhQOWrP+dmfAs8O
-         rxUIDI1KSlPeIoX0USvSacTxnwRlzzKHexdXkYfnso58pFoNBkYj8Agn1Gs4qWCS2sbI
-         actKjiMtcEPgBacMmLfvb/KalKmzkf1ORL6/OSuyqGlmZiq5Dv6MynbiY0VrfpINH3Fk
-         7LTg==
+        d=gmail.com; s=20251104; t=1777899523; x=1778504323; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ypd1QBD8IL5nEI5wKW5JxIvcEM/x3rJY8yhwAEDZ758=;
+        b=jGxgXcMFQYkTOXfAZCzIdJyr2IXdpGEw92l5CjA9XZNUnMhxhXH/LYIPsmMOl2FYhl
+         X7CgKOkL3SKD/83wujPXWnPASXjH0uFdb+SDexSlkXLswQiJFe8kzjjYAhd9UdK3ptxq
+         H2x/bX+WAxMkh0AGMpEYK/v+8L2NO/NIEeUAV5WYvFtJThvZh6Tw+dUQEgCS92ismGws
+         a6XriNoomevi8IIYK3rpMwysiky28dnzQZC8hm80kuO8cJ2WG0MqgvLcGJqdO3+/PN/i
+         XBf2p4yUMwEygnaB23AU5PMkqXQlOjGFnn7a/tpExw3e507jE+WW4wB3B4fA/VBpTtLx
+         PFJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777899482; x=1778504282;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4UnTF1dih5K5oi/fx4+6E+Hsrs0XoMIeCSQF+wiUqTc=;
-        b=E639xP1vpkTIA4y7+pT/3f7XDm3KwIuOM3x83Xeqdt5VRIeMxHZ7Bzesgh0BQKpXUZ
-         378atB8C2zsDbwecoyEePlzXgvbgoqiHA8dtGcMI1tKt5cqJCghCeytBihexkBxgdUuR
-         GdelT8YkWeYQVIqK+1IxKT2/4xEAQM4ejiICGJxyZ2r2L/xA4I7AY/A3+76NYr8nWXYA
-         yMTotzDOOTEPxH0C/m94Ucp2hiZtkk9XBmVxCKoV2GGXcSlIHuv8I6cpgY54fhuXB+o8
-         93Gzq5WNreEs4WGjPg4IrbwVI8LtjGIzCvj6CjeHB2Ps8MG7+qdo7A0w+QiAQcFNgvEk
-         Pd4A==
-X-Gm-Message-State: AOJu0Yx3jZGa0Oq+fogltQk0dGbw8K8wKDmYJdyUZV0hegKOwPq1iBZS
-	PgVMrYv9GSOd4EwlPeIc6Bf3gzw9cdcatH4ehu+fdW5pqipdOYq90JNZvwMD+w==
-X-Gm-Gg: AeBDiesxgpaIMFDRF8e8fmDMcE3mfJ+bFBdTiu+kqZkBaVBTgL/8ZZR+AdSCNvsL7mG
-	leqQruTC1fsWkXig+blrKG0pEVQGb9jRvhTgWpkisrOxZwpEpAA0xizYobngDgsc/w1Q4u/M1Aj
-	TFfwZnf4n6NCB1G41SS1saWn5kcWvlxNkly4kOmnnrqTNPJDONpx6vQF0hDvn+rxJEMudU84U08
-	VmyNbeD/6gr0aO3NZOLu/WzQ9bTR5Vgs/gZxsoT9gWbazHV2mpYC2gX8mC+EINcPGD4mGbmpgYg
-	3LtIoa2UXgzempXfF6WWeUx/fO/vxIRkGJqsR/O5GRdM3FVBJv2UAlRsaPNcPRPiqEkleGA4fY/
-	ojRbYBRGCiwWtZIlDu/EwomNDomTAuAZ4/E99JmXhFL83ge2inRthdPLc3P+a9YuT03m7JGmEMk
-	agWCcFE0ElWyA8n9ZlOz5Lpx771KOJty2J/CBGI1APIqSpQSBd12O2JJYQ
-X-Received: by 2002:a05:6a00:3a15:b0:82f:390a:69c7 with SMTP id d2e1a72fcca58-8352d2b58ccmr8968444b3a.33.1777899482140;
-        Mon, 04 May 2026 05:58:02 -0700 (PDT)
-Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-835158aeebesm10748864b3a.21.2026.05.04.05.58.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 05:58:01 -0700 (PDT)
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-X-Google-Original-From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] wifi: nl80211: re-check wiphy netns in nl80211_prepare_wdev_dump() continuation
-Date: Mon,  4 May 2026 20:57:53 +0800
-Message-Id: <20260504125753.1154601-3-maoyi.xie@ntu.edu.sg>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260504125753.1154601-1-maoyi.xie@ntu.edu.sg>
-References: <20260504125753.1154601-1-maoyi.xie@ntu.edu.sg>
+        d=1e100.net; s=20251104; t=1777899523; x=1778504323;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ypd1QBD8IL5nEI5wKW5JxIvcEM/x3rJY8yhwAEDZ758=;
+        b=NVLoItrqQjpv8DPyqMu7aQUDBNwwQ3yhLjag2PTEJzhkCc7/Slva7szKnwBksEhVLr
+         fQQY7As8Payb6IewXHlgBEu2d1Vi/MGEIlLm3g6x8YcHJdExFJJO1CmyTGoTi/rE+mBc
+         y9BSCjolurS9Bfwycjf93w6hq7pUicMrqADZrx3SABS7ZpI4jMKoZthMGPKwHbLbmBkw
+         zxGTN7g/YGIoyJJrHuPBEvD+2HAzqAUf5RJuZdMWydtu/OSWkLKY/3ORHqBXpOUeqlK+
+         BaLHikD0G6fpMoJrTBhK+OIoAF2NjVZz/kpbnwicg85DOAnX/87AAyiGM0vQ7gN0sp0Q
+         OILw==
+X-Forwarded-Encrypted: i=1; AFNElJ9Tgt29/Ntyb6HamL59d+SdRHEPGKPpa6oiIvRcl+z9GeyaGitCfhlNlmt/ZLMXJ72xN/K4KvHjI/jTwz2jsg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxFUU41HAjHJY8RT6c3fSi8s5DTLpl+mc7Kryv/7eQRLoKmYGG
+	5GgSkibECS4NR2hosIytTjr70ktaBMCR8N9lurkxUr1Wo314XnI95qD3
+X-Gm-Gg: AeBDietmF0MDKqtPwpfOMn4aYMKZPsJQE1457m42QVWupYpIDzxhBJXImOouzEGcbi8
+	f7jsSpJK3Raeqd9WSY4uDwLI/rRdv5pVLU+EHIs2p1HdV0Zt+mrjXI97JoOhrL1+OHUg+vr6drt
+	9LnggXYU3zeiTf9vPEZb8Fymx+YlLQ/6/i+6J0TyCZMnMPRcF5rKafx0v6ktf2hJNQ+l3uuvILo
+	X4AAhiTLyljADUGcH5YzPUOq78wfEp3cW6HJKBNWn47oKQBQg7z9SH1ptbmZck4hTlh2Dd4TzjK
+	iRW141SLK3mY7fHaVIgEHhtTh7by/vORPfyShsJ+QtQPBpsZvKfs0SrxK9anJsQ0xH/Zc7aZfGY
+	OSDHsS7nnzKOa/YT4qQ197wTtMUkDExtE+J4UuOss+G16vmcjmb/dKbLUlwenMG1CMzROMyFzGJ
+	17fjTBdzleOZrgnASbbmaCRMfvDJAcnT7eFEfZCqP3KH4T/dlDscAroWWT/a1a+IIDbs46D4R3C
+	JRlr1A=
+X-Received: by 2002:a05:620a:4010:b0:8ed:c0bf:2c24 with SMTP id af79cd13be357-8fd19122e53mr1413514585a.62.1777899522542;
+        Mon, 04 May 2026 05:58:42 -0700 (PDT)
+Received: from [10.100.121.202] ([152.193.78.90])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2c91cd7dsm1031615585a.37.2026.05.04.05.58.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 May 2026 05:58:42 -0700 (PDT)
+Message-ID: <bcbbef00-5881-421b-8892-7be6c04b832d@gmail.com>
+Date: Mon, 4 May 2026 05:58:39 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8DABB4BD520
+User-Agent: Mozilla Thunderbird
+Subject: Re: Complete list of AF_ALG algorithms used by iwd
+To: Eric Biggers <ebiggers@kernel.org>, iwd@lists.linux.dev,
+ Marcel Holtmann <marcel@holtmann.org>
+Cc: linux-crypto@vger.kernel.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Demi Marie Obenour <demiobenour@gmail.com>
+References: <20260504045007.GA2289@sol>
+Content-Language: en-US
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <20260504045007.GA2289@sol>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2921A4BD5CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-35840-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-35841-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[prestwoj@gmail.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ntu.edu.sg:mid,ntu.edu.sg:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-NL80211_CMD_GET_SCAN is implemented as a multi-call dumpit. The first
-invocation of nl80211_prepare_wdev_dump() validates the requested wdev
-against the caller's netns via __cfg80211_wdev_from_attrs(). Subsequent
-invocations look up the same wiphy by global index via
-wiphy_idx_to_wiphy() and do not re-check that the wiphy is still in
-the caller's netns.
+Hi Eric,
 
-If the wiphy is moved between dumpit invocations (via
-NL80211_CMD_SET_WIPHY_NETNS), the dump silently continues to copy BSS
-list contents from the wiphy's new netns into the caller's netns
-socket buffer. The other dump paths in nl80211.c (e.g.
-nl80211_dump_wiphy() and the parallel scheduled scan dump) already
-filter by net_eq(wiphy_net(...), sock_net(skb->sk)) on every iteration.
+On 5/3/26 9:50 PM, Eric Biggers wrote:
+> With AF_ALG being on its way out due to its frequent vulnerabilities,
+> iwd will need to be fixed to follow the standard practice of using
+> userspace crypto code (for example, libcrypto) instead.  In the mean
+> time, AF_ALG is at least going to need to be hardened by removing
+> unnecessary functionality, for example unnecessary algorithms.
+>
+> Based on the iwd and libell source code, it appears iwd is relying on
+> the following algorithm names from AF_ALG.  Please confirm that this
+> list is correct and that these are the ones we need to keep for iwd:
+>
+>      cmac(aes)
+>      hmac(md5)
+>      hmac(sha1)
+>      hmac(sha224)
+>      hmac(sha256)
+>      hmac(sha384)
+>      hmac(sha512)
+>      md4
+>      md5
+>      sha1
+>      sha224
+>      sha256
+>      sha384
+>      sha512
+>      ecb(aes)
+>      cbc(aes)
+>      ctr(aes)
+>      ecb(des)
+>      cbc(des)
+>      cbc(des3_ede)
 
-Add the same filter to the continuation path. If the wiphy's netns no
-longer matches the caller's, return -ENODEV and the netlink dump
-machinery terminates the walk cleanly.
+This looks correct from IWD's standpoint, but ELL does support 
+additional checksums:
 
-This is most usefully fixed alongside the SET_WIPHY_NETNS target-cap
-hardening in patch 1/2, which closes the path by which an
-unprivileged-userns caller could trigger this race themselves.
+- sha3-224
+- sha3-256
+- sha3-384
+- sha3-512
+- hmac(sha3-224)
+- hmac(sha3-256)
+- hmac(sha3-384)
+- hmac(sha3-512)
 
-Reported-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
----
- net/wireless/nl80211.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Marcel may be able to comment on what projects are using these, if any.
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index db546dd93..61b9e5eb0 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1276,6 +1276,18 @@ static int nl80211_prepare_wdev_dump(struct netlink_callback *cb,
- 			rtnl_unlock();
- 			return -ENODEV;
- 		}
-+		/*
-+		 * The first invocation validated the wdev's netns against
-+		 * the caller via __cfg80211_wdev_from_attrs(). The wiphy
-+		 * may have moved netns between dumpit invocations (via
-+		 * NL80211_CMD_SET_WIPHY_NETNS), so re-check here. Other
-+		 * dump paths in this file (nl80211_dump_wiphy() and friends)
-+		 * already do this check on every iteration.
-+		 */
-+		if (!net_eq(wiphy_net(wiphy), sock_net(cb->skb->sk))) {
-+			rtnl_unlock();
-+			return -ENODEV;
-+		}
- 		*rdev = wiphy_to_rdev(wiphy);
- 		*wdev = NULL;
- 
--- 
-2.34.1
+>
+> Also, does iwd always hold CAP_NET_ADMIN?  We're also considering adding
+> a privilege check to AF_ALG.  (It's TBD whether it would be
+> unconditional or controlled by a sysctl.)
 
+Yes we require CAP_NET_ADMIN:
+
+https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/src/iwd.service.in#n15
+
+
+Thanks,
+
+James
+
+>
+> - Eric
 
