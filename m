@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-35879-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35880-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDXvOY/z+GkD3gIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35879-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 21:29:19 +0200
+	id OE27AJLz+Gke3gIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35880-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 21:29:22 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516F64C33EA
-	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 21:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB1F4C33F2
+	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 21:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C962305116E
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2026 19:15:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 251B8311AA3A
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2026 19:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747A43EFD03;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A912C3EFD09;
 	Mon,  4 May 2026 19:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tGh5aL94"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TYa+07ex"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDAB3E6DD3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCEA3E1D1D
 	for <linux-wireless@vger.kernel.org>; Mon,  4 May 2026 19:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777922098; cv=none; b=ZBn5yEmHVbhDD3OSMhnxMI6RXGcTviBtZkfG12BSWrqRmrs8tYSO2+w+nAuqAvnfa5s6oDWcRTgzFMsByGkDGajoLQsqeBTsaSLXulg/Kx27/vhDa+11OjHXDzEB98Qs7Ifkbm9Lho0kT8mXC8knKFnRvVP3pxmpJm3VrleBBPM=
+	t=1777922098; cv=none; b=GD9wDmjBKmSsRIDUt8bQao0zeW7ryK+xj67hlP7wtLNcYc4mrZjCnNfAcaEDZaLq3ihFLxoWuSQxTSFSNIyqCxZsXMntOntE3EihSqf0tKSdMONjtp0CZJCeBv33BSJS5NlAmJxbr2jGfWwc3vjr1vaRSQveBuBW9Kz1LLzGQZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777922098; c=relaxed/simple;
-	bh=XZj1cYMT/zbS9qnfbhvpEi1WV/yWnWc3iVHjB0Esjro=;
+	bh=8hz3nNbpDkgK7Ir5P2gvyuc2i6jQwzqDnKD15YME4FU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HoXoZ2WEgFCvXKEitwAU1ejIegg2eMUB+q/cu+oq5oIm6bCYp3AZk47UGVZJRzhITVkm5tjSfi4b6zqhtq6QMJ3AIgzgh2+u7wupEc0l0l5fNhZaOCUv9I0R6CiaTnRfV3wXUchWP8LKm8VZN9qR9leXyvW1at1lfNlVjmfAdJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tGh5aL94; arc=none smtp.client-ip=209.85.128.41
+	 MIME-Version; b=MFUPuPCjam0ySHCvtWPQ0E5cuctpHKujR94AadvE32vowil1VEplVFkLlWII3jCh2jzYGJn7mOC4n2ZvRomUcPGvUfXLTj5taEUwHmcn8Mj7gZabnmrNn4/hrBeHXQmPoN4ZhxDXIWc84+HDEu5rqcmGIZJ5lcLuoqrHkAT9XC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TYa+07ex; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4838c15e3cbso35391325e9.3
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48a7fe4f40bso46713765e9.0
         for <linux-wireless@vger.kernel.org>; Mon, 04 May 2026 12:14:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20251104; t=1777922095; x=1778526895; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uR6jnaQsF5aEXCsWH61cE2ueX8vtoQ4x8FrOBogd8II=;
-        b=tGh5aL94RS3bdty+piLJ73YiGO7ppAb16CGIYWCkD+qP7ZGS8acKBpEqlr6pJye/jp
-         LKcFVisXqIcJsrN9TL/MtL4qUOOAIhEj86rBXPoGlgDcB7QlT2DpYQNEXorDoxw2NeGE
-         LYWhDHcycTol0TcpVv2n1oFvAFWhewKSWAyftc4ZaR0fnMPkEl03fMewxpQTfCaRW5t8
-         aC7zlNv57Qw3oqiVUBvfSlHH1fLrGu1j8OxxdhqUmfJ/j8ynp5hpG2JJ8BjO7zTimB9N
-         nWCvKuSqxPKXqmdW/6syj1H8Q8IzGQrEdie4RGl5c8ym/IbJlQaRJL00MZ613thJC51f
-         KwOQ==
+        bh=Z4XWmoLuuce+y2fX+lK8lyMcj1Ej13XR6oe3HMUEPQw=;
+        b=TYa+07exHjDIekJX6Y2Axl7tvmSst0hwqXHshUa2ovdqdpXfLPptfLQFcvN9mpZpaT
+         gagoQ/bgXtuDHh8PDZRS3e+mTfvYF9xHlo+yqGLjMv2IBiQSwHdCDopxfRVfZxYwEujY
+         6Bmga8n+O3E2R2sYJ7i1fMjGEUnrSE8lggZ89xtTh7bBb90A5cOb7LeNST+J4WpKJ/I6
+         AQluAANoy47tiuqrMrZdz1ndyXkqmpt7co7X1NJzwExbbpzYO+V1FoCVixlJATQl1Tnp
+         VoMbLEBlHSIFR08faAAOJ3JijGXq1oEi1noGGAR5X3pPbjAc51yeJmCg9Xb+L1N5vTay
+         AXlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1777922095; x=1778526895;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=uR6jnaQsF5aEXCsWH61cE2ueX8vtoQ4x8FrOBogd8II=;
-        b=gZ1AnIe/gC94hJOHiZeGN7sHfAFd+dOeaMDOjOEEcDeJxj3g9dZomt2MjIuaWYwPnx
-         zHaITpoXcpdbaRKyTWal7k9MvA/lhz6o8TNrO30SxQM7N5xqcPoWs9+nNnNIRD80VNNh
-         UCLS2Ikx72vpjOyxiE1n4GujGWK6lJE80YrvUe1omNn5XwsIxOFzVdbtxsLG3DekRPk0
-         YXOd4MI4Q/mXILeOmQOT2hSU8XzeSoefgOMkVrsNDOrhHKTqTeuSDAZMD+cVAYCcKQxB
-         B0cMbQjIaa5g++vvk9aSRWtUUPaPAnODh1zQSqpVVG8/FbzvnqwHOiNYfHheLxmaFmrE
-         DAnQ==
-X-Gm-Message-State: AOJu0YzeU+OsVbJ8qn2775mmhlfneckl1mSTxrhlWdUh86rpB9LgzpS1
-	gKoJhnqD6Srt5dt3BUAshmMhKwMcOZw3MvnGvT79Tf1fA9GweJA215v0Rowr
-X-Gm-Gg: AeBDievCpiDXNXIN4Wo94THpSnAZ0UhI0f0lxSZryJTfDoc3Ci1m0RGBoxOHc+BTCXy
-	2d2BwVsue0sFy/1RuXkTOLlgN8SO7jeeuC1AK431kql06f1MWos0+uCwKxrE5ZIksjBuuZU7WFs
-	NHieIFFNjgshtCcE8sQUErrDZ64nZcthgc17DcgpbFITdlOCpqP12jsejjEWUrvxCg+vX2ktKD+
-	HQbLOCxm1Va7/qOYcSwVgtpnXdImnnioqFCZwFDLSHA9nIhGvHOax8xU3zrXASn5DobpoDqVXiP
-	57c84PvBjRNNZA19yQvI2li0ew6hGggvRtaAETWlxAwR7LQMtDd8MB31cmd411DppuiCkMl5r2V
-	mi6f8CWRaEO8OqltXLWGDrk8TN7FqkWMfJpsfiV595/Ey9GcAKXXKC7OdRCfRqHYJ7cM2jWPFPO
-	bwSvFM/0yaAb9aGE/l
-X-Received: by 2002:a05:600c:c0c2:b0:48a:76a3:2b9b with SMTP id 5b1f17b1804b1-48a9865ea56mr132197625e9.17.1777922094544;
-        Mon, 04 May 2026 12:14:54 -0700 (PDT)
+        bh=Z4XWmoLuuce+y2fX+lK8lyMcj1Ej13XR6oe3HMUEPQw=;
+        b=M5dmQzNrY3igHBBmbhvzPxp85D13Xhn7GBldA4Y5n4M4jigaA3i2TMvH5NRMyCSkMr
+         zuzgwucIejEKAmo2BPXBcrtjB1ctmEMJre65GOo9IQ+L1zGk+1e7acZar9UdOhFD4Mr5
+         KTiXau/ssTdWGsTV43LQGu7uFFANqf4L30RNJsEcRpZw2d/2BHtzM7RnbQksOQqdRuhP
+         e6XNdp0ltQfxeuicRwr55fdWI9sqON6z/aE1hW8l/rostXP/kPzpDuuDhfI+e1gyeLw4
+         jh51ga3R0opAzBN9Apc2IpKTsEofoJlWc41YylCJocW335pV5f8oKhtPOQ80758h4n4t
+         0qPw==
+X-Gm-Message-State: AOJu0YwbyH3Egp+r+xoNha73wd8EVikKYT0/8ZgzL3wpo911rY4SIHsJ
+	B5NclRmDNtB8bDK2/Cm2BfIvci9Xgcoj3hy0RLAtkrtfs69FE5ejAMyh+pkq
+X-Gm-Gg: AeBDietxV694zbxHE0ylfgKU01y5HndCaEycl5EjgEhnXfqZaqY7EYWA/jt2faaaqnW
+	09DUbzGONNrOpcJHsyL0f5oNxheh5SOzjxP0VbtMuMYDY5GtOU1LAiIjw1dwUAJ6YhYDFJz9OI8
+	CfOpdv+mjL+6ejaZa2467dQfLICJmO4fe44mTIOzmqVMho6u1bJCPSTJ7iTTNo+f7RtJPZZb7vP
+	PEa4qHS0Z46yJ43b4SOBJXyZrV1IIdULkzZFBPhR5SVHX7G5GV0xqJZNTHXi/nHbcurARCLuLgd
+	Us/mHf9TCMgqQJ5fmnHSrjvC1271fw8Y1ryEc67yG/O3BqiO05LWjC3S9gyJkc3xj6YOVjqEDHU
+	9GAsgt+ExgiOeEe+jAvclxxPHNkOO6gRLDT+LAOo5qDiZuHzgzt3iPL34uh/0ycMIuzhNewTnH8
+	/hmMvnNOXlVYfJHFNi
+X-Received: by 2002:a05:600d:8496:20b0:48a:7605:751e with SMTP id 5b1f17b1804b1-48a9853c928mr119382975e9.4.1777922095300;
+        Mon, 04 May 2026 12:14:55 -0700 (PDT)
 Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4500d73510csm105445f8f.14.2026.05.04.12.14.53
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4500d73510csm105445f8f.14.2026.05.04.12.14.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 04 May 2026 12:14:54 -0700 (PDT)
 From: Tristan Madani <tristmd@gmail.com>
@@ -84,9 +84,9 @@ Cc: error27@gmail.com,
 	dcbw@redhat.com,
 	linville@tuxdriver.com,
 	lkp@intel.com
-Subject: [PATCH v4 1/2] wifi: libertas: fix OOB read from firmware pkt_ptr offset in RX path
-Date: Mon,  4 May 2026 19:14:51 +0000
-Message-ID: <20260504191452.3408257-2-tristan@talencesecurity.com>
+Subject: [PATCH v4 2/2] wifi: libertas: fix OOB read from firmware bssdescriptsize in scan response
+Date: Mon,  4 May 2026 19:14:52 +0000
+Message-ID: <20260504191452.3408257-3-tristan@talencesecurity.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260504191452.3408257-1-tristan@talencesecurity.com>
 References: <20260504191452.3408257-1-tristan@talencesecurity.com>
@@ -97,21 +97,21 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 516F64C33EA
+X-Rspamd-Queue-Id: 9FB1F4C33F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35879-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35880-lists,linux-wireless=lfdr.de];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	FREEMAIL_CC(0.00)[gmail.com,kernel.org,intel.com,redhat.com,tuxdriver.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -124,58 +124,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-0.998];
 	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,talencesecurity.com:mid,talencesecurity.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:mid,talencesecurity.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-lbs_process_rxed_packet() uses the firmware-supplied pkt_ptr as an
-offset into the skb data without validating that it falls within the
-skb buffer bounds. A malicious pkt_ptr value causes out-of-bounds
-memory access when the function subsequently reads ethernet header
-fields from p_rx_pkt.
+The firmware-controlled bssdescriptsize field in lbs_ret_scan() is used
+to compute the TSF descriptor position without validation against the
+response buffer size. An inflated value causes out-of-bounds reads from
+the 2312-byte response buffer into adjacent struct lbs_private members.
 
-Add a bounds check using size_add() to ensure pkt_ptr plus the minimum
-packet header size does not exceed skb->len, without risking integer
-overflow on 32-bit platforms.
+Add a check using size_add() that bssdescriptsize plus the response
+header size does not exceed the total response size, avoiding integer
+wrapping on 32-bit platforms.
 
-Fixes: e45d8e534b67 ("libertas: add support for Marvell SD8688 chip")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202605030019.lL8x0ZPx-lkp@intel.com/
+Fixes: ff9fc791940f ("libertas: first stab at cfg80211 support")
 Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 ---
- drivers/net/wireless/marvell/libertas/rx.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/marvell/libertas/cfg.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/rx.c b/drivers/net/wireless/marvell/libertas/rx.c
-index c34d30f7cbe03..e6378be4266e1 100644
---- a/drivers/net/wireless/marvell/libertas/rx.c
-+++ b/drivers/net/wireless/marvell/libertas/rx.c
-@@ -9,6 +9,7 @@
- #include <linux/hardirq.h>
+diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
+index 41dee6e0ca9fa..8015adf37c4b0 100644
+--- a/drivers/net/wireless/marvell/libertas/cfg.c
++++ b/drivers/net/wireless/marvell/libertas/cfg.c
+@@ -13,6 +13,7 @@
+ #include <linux/sched.h>
+ #include <linux/wait.h>
  #include <linux/slab.h>
- #include <linux/types.h>
 +#include <linux/overflow.h>
- #include <linux/export.h>
+ #include <linux/ieee80211.h>
  #include <net/cfg80211.h>
+ #include <linux/unaligned.h>
+@@ -554,8 +555,8 @@ static int lbs_ret_scan(struct lbs_private *priv, unsigned long dummy,
  
-@@ -73,6 +74,15 @@ int lbs_process_rxed_packet(struct lbs_private *priv, struct sk_buff *skb)
- 	}
+ 	bsssize = get_unaligned_le16(&scanresp->bssdescriptsize);
  
- 	p_rx_pd = (struct rxpd *) skb->data;
-+
-+	if (size_add(le32_to_cpu(p_rx_pd->pkt_ptr), sizeof(struct rxpackethdr)) >
-+	    skb->len) {
-+		lbs_deb_rx("rx err: pkt_ptr %u beyond skb len %u\n",
-+			   le32_to_cpu(p_rx_pd->pkt_ptr), skb->len);
-+		ret = -EINVAL;
-+		dev_kfree_skb(skb);
-+		goto done;
-+	}
- 	p_rx_pkt = (struct rxpackethdr *) ((u8 *)p_rx_pd +
- 		le32_to_cpu(p_rx_pd->pkt_ptr));
- 
+-	if (bsssize > le16_to_cpu(resp->size) -
+-	    sizeof(struct cmd_ds_802_11_scan_rsp)) {
++	if (size_add(bsssize, sizeof(struct cmd_ds_802_11_scan_rsp)) >
++	    le16_to_cpu(resp->size)) {
+ 		lbs_deb_scan(
+ 			"scan response: bssdescriptsize %d exceeds response\n",
+ 			bsssize);
 -- 
 2.47.3
 
