@@ -1,156 +1,143 @@
-Return-Path: <linux-wireless+bounces-35822-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35823-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOq3F49Z+GlStQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-35822-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 10:32:15 +0200
+	id mK8LL0hk+GlJtgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-35823-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 11:18:00 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5684BA416
-	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 10:32:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D934BAD44
+	for <lists+linux-wireless@lfdr.de>; Mon, 04 May 2026 11:17:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4709A3010B93
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2026 08:28:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5ED663006149
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2026 09:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B16FE331A76;
-	Mon,  4 May 2026 08:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC58363C63;
+	Mon,  4 May 2026 09:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LDyW/NZU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OmUTRzWH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA87A331A61;
-	Mon,  4 May 2026 08:28:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D22D35BDA0
+	for <linux-wireless@vger.kernel.org>; Mon,  4 May 2026 09:17:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777883293; cv=none; b=tG5obAHb7kG/n9IjxYL4IL+F3pNMcB0lrgtnUTbK2buS/xf4m0U+lcjZqLrRM29dZtokrhJNJ88mErWMH6Ul5laKqk8K9aQHhbWuPlPPsOQzJTHGRnhOuzw6AVIBBDFkYumM0dPsAC/P98PYPSh58PjZH7fK6SHH2fpP6Durw9s=
+	t=1777886278; cv=none; b=OWXTIZHKVyI8kFBq2nhfyQlsgLDeQN7Rzaj91gzjoXUql8nGMneipDVEles690j0XTgq89Q3fJM+VmWx3itSK510T2YUWN3QhYRl1Y273HdkDGb+x+fRx3lOyz3pIiTWFDZQHURwxYpp6Vs29/LuHQVA60ejiORgaoA7mzGBcJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777883293; c=relaxed/simple;
-	bh=vpVfXkwpSYaRIefcy0a61BzjkpwY7MPWY+jgKHbMKMY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FBi1U7oWqe8xmVuQ7eGXODLD3WHGbIdkoGBRILe+1KooPIddzAU9rfo3YIDxvmOJAZQGCIMKvPpY6zWgm4A2LQfNI1a8ihwvdDq1k3e9Xr7J7cKpvHzhJRNpfDqMsK02ibSWWP6Q+eQKNg/uC4P7cVvVtN9uouP6z71VJYdV/Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LDyW/NZU; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=BN4uSPdgnhHaUi6vQoU5jOpHW/0+tIz+jFTceVnzRvY=;
-	t=1777883291; x=1779092891; b=LDyW/NZUpuU5JKgYIuP4ky975STQ7+LmwAd6M1t1QRtANtb
-	g2vwZEARtCqnowsyLqpqbHgGHaKMPMTVAs0iM0IhwVy7kEr6NZOC6V4KSXzjGG9bX+wk8THO4ggcL
-	J5Iy3XyQeK3wsAzN+TDsnAvVz6gI10eHGKHURLVpJeff9sOaT6jkS4us1iR1GgaaH2s03cQ2R/47D
-	YcviQrniQ1ZQYEmvWXpU5qGFpDFIHXSNzIuPW3Z/9qwoR4KxDuSjeG2GNQJq2hJOCzcjvHQd25NVW
-	lzq/Eyc7IpDG9beHNr4JEWINQFyKzHROG5UTOiENm8OFfFMrM4TzPu8XDz5p/p8Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wJoen-0000000EpQB-2exg;
-	Mon, 04 May 2026 10:28:01 +0200
-Message-ID: <316680e2dc0103774bf0cfb77f60341a85ef5b81.camel@sipsolutions.net>
-Subject: Re: nl80211: SET_WIPHY_NETNS does not check caller's CAP_NET_ADMIN 
- over the target netns
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Xie Maoyi <maoyi.xie@ntu.edu.sg>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
- "linux-kernel@vger.kernel.org"
-	 <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org
-Date: Mon, 04 May 2026 10:28:00 +0200
-In-Reply-To: <TYZPR01MB6758FE8FDBB58A6CAA4DC6BBDC302@TYZPR01MB6758.apcprd01.prod.exchangelabs.com>
-References: 
-	<TYZPR01MB6758FE8FDBB58A6CAA4DC6BBDC302@TYZPR01MB6758.apcprd01.prod.exchangelabs.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1777886278; c=relaxed/simple;
+	bh=EuDWuiym17FumPo76TXx+m42cbGaFJp7toK6Zl4Az+Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=POdbC7Cv4pSE3zFCEtKxCbitvp9ABKtcp7oWBcGjXe6WhkafvwTEKIX2SyMi/jXJ+2eNOKW5NrVoSkh6otL/T2JFXZ3PNcbqpJx8+lBZ6Q7/NySZ2gwu7/7u6IrZ4T6THtlbDV/kmL9JXpLT/Ylceb1YYxn3o9IuVP1J2y6UMdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OmUTRzWH; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777886275; x=1809422275;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=EuDWuiym17FumPo76TXx+m42cbGaFJp7toK6Zl4Az+Q=;
+  b=OmUTRzWHF+AfC8U6oiQqejldbc98AhOCTdLQ0iXOMioFx7ZWEYS6x13Z
+   ob4TWtKQHnok4KeD93geNA2Shf8swA7sJxyspRKHpFf3YdspJgv2LdQ3C
+   M4sg754tNfb6L1Etjpc41z+xvRG2nID04feD2DHm/t0w9O17yE9V5oYak
+   jrT3K3ltJjufCubRRN4+VEnAjyvKs8EMj0PIvnCR6z7xlYIJSa5OLu9c/
+   nEfpHwhm60LQctsUG4N/6HUDLU3HWVDoDLsWQG7Tf4OHQmjuliefDwsfg
+   PmGagG1iTMTN6TEGPxfgxftk40ek0leFQDMinjZwLQZy+xLK//ZJKXaG5
+   g==;
+X-CSE-ConnectionGUID: zS4FsYwsToCtk5t7Ooh7zw==
+X-CSE-MsgGUID: MyZGksc7ReasUhmpuHHy1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11775"; a="78446944"
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="78446944"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 02:17:55 -0700
+X-CSE-ConnectionGUID: cMuv3J9DRnanF9b8p7RBCA==
+X-CSE-MsgGUID: NMllK8oAQiOT8+VhwLz2LQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="240449961"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 02:17:53 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Cc: Israel Kozitz <israel.kozitz@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>
+Subject: [PATCH wireless-next] wifi: cfg80211: fix max_channel_switch_time documentation unit
+Date: Mon,  4 May 2026 12:17:40 +0300
+Message-Id: <20260504121734.d0a0152f7d8c.I47e5c91f7ead4f8006fb13f9194d95a55cf9c398@changeid>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: AD5684BA416
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 66D934BAD44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35822-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-35823-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:dkim,sipsolutions.net:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-Hi,
+From: Israel Kozitz <israel.kozitz@intel.com>
 
-On Sun, 2026-05-03 at 06:55 +0000, Xie Maoyi wrote:
-> Hi Johannes,
->=20
-> I think I have found two related namespace handling gaps in nl80211 on v7=
-.0 mainline. I would appreciate your view on whether they are bugs and whet=
-her they are worth fixing. The second one is much narrower than the first.
->=20
-> Bug A: NL80211_CMD_SET_WIPHY_NETNS does not check the target netns.
+The max_channel_switch_time field in struct wiphy_nan_capa was documented
+as being in milliseconds, but it is actually in microseconds as defined
+in the Wi-Fi Aware specification and as indicated in the nl80211
+NL80211_NAN_CAPA_MAX_CHANNEL_SWITCH_TIME attribute.
 
-I guess that's more a question of convention than anything else?
+Fix the documentation to say microseconds.
 
-But I guess we should follow the netdev convention:
+Signed-off-by: Israel Kozitz <israel.kozitz@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
 
-> By comparison, net/core/rtnetlink.c::rtnl_get_net_ns_capable() spells out=
- the convention:
->=20
->     /* For now, the caller is required to have CAP_NET_ADMIN in
->      * the user namespace owning the target net ns. */
->     if (!sk_ns_capable(sk, net->user_ns, CAP_NET_ADMIN))
->         return ERR_PTR(-EACCES);
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ include/net/cfg80211.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-which (also?) requires access in the target netns.
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index a40ab36b8edb..51eded4204cf 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -6027,7 +6027,7 @@ enum wiphy_nan_flags {
+  *     nibble indicates the number of TX antennas and upper nibble indicates the
+  *     number of RX antennas. Value 0 indicates the information is not
+  *     available.
+- * @max_channel_switch_time: maximum channel switch time in milliseconds.
++ * @max_channel_switch_time: maximum channel switch time in microseconds.
+  * @dev_capabilities: NAN device capabilities as defined in Wi-Fi Aware (TM)
+  *     specification Table 79 (Capabilities field).
+  * @phy: Band-agnostic capabilities for NAN data interfaces. Since NAN
+-- 
+2.34.1
 
-> Bug B: nl80211_prepare_wdev_dump() continuation does not re-check netns.
->=20
-> The first dumpit invocation validates the wdev against the caller via __c=
-fg80211_wdev_from_attrs(..., sock_net(cb->skb->sk), ...). Subsequent invoca=
-tions look up the wiphy by global index via wiphy_idx_to_wiphy(). They do n=
-ot re-check sock_net(cb->skb->sk) against the wiphy's current netns.
->=20
-> Other dump paths in the same file do this check on every iteration. See n=
-l80211_dump_wiphy() at line 3437 and the parallel scheduled scan dump at li=
-ne 4420.
->=20
-> If a wiphy moves between dumpit invocations of NL80211_CMD_GET_SCAN via N=
-L80211_CMD_SET_WIPHY_NETNS, the dump silently keeps copying BSS list conten=
-ts from the wiphy's new netns into the caller's netns. On its own this race=
- needs a separate caller to migrate the wiphy mid-dump. With bug A, the att=
-acker can arrange the race themselves.
-
-This seems ... inconsequential? After all, moving a wireless device
-between namespaces doesn't really change the physical layout of the
-machine. Perhaps that'd give someone access to the SSID of some hidden
-network but that's not really a secret anyway since it's over the air.
-
-Maybe we should fix it for clarity and convention, but I don't see it's
-really an issue?
-
-johannes
 
