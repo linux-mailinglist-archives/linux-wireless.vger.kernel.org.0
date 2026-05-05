@@ -1,61 +1,60 @@
-Return-Path: <linux-wireless+bounces-35892-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35893-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAy5Lc+2+Wn5CAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-35892-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 11:22:23 +0200
+	id uFYIB2q3+WmNBAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-35893-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 11:24:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B5D4C986C
-	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 11:22:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 268FE4C9960
+	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 11:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1784830302A6
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2026 09:18:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6AC9F3008CB6
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2026 09:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8CC28C2BF;
-	Tue,  5 May 2026 09:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B3730F534;
+	Tue,  5 May 2026 09:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwml+pO3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TSp273iy"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0C3201004;
-	Tue,  5 May 2026 09:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA0A30CD85;
+	Tue,  5 May 2026 09:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777972700; cv=none; b=sM40kvpn2O96SePAXoGGf+ma1Lw3pNhWC+8JUqecOpofuYIt3UTIIMvu85gagKtEc108CH4Y80U9c1dbW54J1UG/DVJwRfarysxk46ks5vbid2W6pRzuAbpzxLnZxtohReaA51gsZ3/mhjpro3Z0XZeDxcEBJMyu4+EaMoAyZZI=
+	t=1777972783; cv=none; b=sacYY+Qqm9OXH+pVIGu58XnOM2vjCatkkTfrqh2/VoAJMjPWFOsUbkTvs6ova8mk7AJ210vzovghHuo/jH/OuxoitOptwkyUYsw6FZSk/chuCt0sqxArtwgUOJ18hKzxIGVxlw1oL6DbItGUQ3o7KfDb/drchxHYvP2Vltqdf40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777972700; c=relaxed/simple;
-	bh=XYLTOou88xcJgyj5ngZphltJcAZ2mOyF1cyM4ekPk+Q=;
+	s=arc-20240116; t=1777972783; c=relaxed/simple;
+	bh=CPglZ9VeE7ocMLt+W0T6FvtLOr0yuBeE1tDtdf0luXU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lhfl/B+u2xOlmdX6GjBQ7oQmsCrEbQmsKE3pSjaQNRjtFlJAXIt8LDgbcKLuN1g3xmdiTI/TtapgmxVrz/20okic4zrK/dVyjS5mNZjPk/ACHqFji9PZKi5yjLRh70JCbYvsI3iKkvQvHAGQkkQ5k/MlQGJKfGFklNioXP01tG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dwml+pO3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77B9C2BCB4;
-	Tue,  5 May 2026 09:18:19 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=AlohetxsomP2o1YPHprYaW9nnMBm55HmUJzItnPOag8apKD2UF3YUmdEWiB3tWBg89x6TUqnMLqi2/j3KzskYXLYILej6+hWyvYJyGCd7zmfoRxjR3QwS2zJKUOaMlj9KuSFF37FlLA+YW0WG1mibpSe0bC3MzhMxQEGImNA3Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TSp273iy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E269C2BCB4;
+	Tue,  5 May 2026 09:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777972700;
-	bh=XYLTOou88xcJgyj5ngZphltJcAZ2mOyF1cyM4ekPk+Q=;
+	s=k20201202; t=1777972783;
+	bh=CPglZ9VeE7ocMLt+W0T6FvtLOr0yuBeE1tDtdf0luXU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dwml+pO3ofDNjb8XBIbrf15zt3TdWIGK1gPwROuqXvz5fNnnT6w2EWB9nB1Wdgmrc
-	 GEArnDGDDzNU9k3qOIUJID8C1XN2Rx9rC08CaVBRgqdo9ObjZCZFPfSpJbsl0/2bCO
-	 qzhjvXS89ChXJY/TViR/tsJsgP5Tkqll0XC3+R/6vMetG65YF9X7A/g/BXxWuAVOne
-	 pvfwpV3z5XUpZwkhBdnAmbq9paaF2aPbBVv7WmZdKvoxZKPO4NRxravDunU+EZjQe4
-	 Y2f+kpaKDOi7tsEl6bZJrVMkBESuKNUGOK3oLOkmMwuESQVoQf9wKAyQPuWuLsa9ev
-	 g/Hv83ietzcxg==
-Date: Tue, 5 May 2026 11:18:17 +0200
+	b=TSp273iyNnDHL6irJQvf6PWCKoMgLTRUA7hP9f+yTr+InUAI+Gbp20QdCmT0hmydp
+	 ljQnhCunhl2IZoaymvaSZBz7jO4U4LPAv2LfAlDpFx6+cAibG3ydSgTlf3UUrdYRl/
+	 mQEiccspeMdQAaIZXWuOQ60KVfBlQEuF7NUWbZXgWazp0Chl/KfZp0cfvGui5AgVxE
+	 U3gV4ugDTEOl2d1UEcI2FHs6hTrKtJ8/37TKPv7vyvGahsm0/YUDmpw2X8r0myywrU
+	 RbXGTYRA+iAEVv5Ar7VtWWJqULO7Q4zPS+ciWMm4Ph933yUldlA0KEjgNkWUGccbCs
+	 1anetaEMIY9NQ==
+Date: Tue, 5 May 2026 11:19:40 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Avinash Bhatt <avinash.bhatt@intel.com>
 Cc: devicetree@vger.kernel.org, linux-wireless@vger.kernel.org, 
 	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
 	johannes@sipsolutions.net, miriam.rachel.korenblit@intel.com, linux-kernel@vger.kernel.org, 
 	kobi.guetta@intel.com, emmanuel.grumbach@intel.com
-Subject: Re: [PATCH v2 2/3] wifi: iwlwifi: dt: add Device Tree BIOS
- configuration infrastructure
-Message-ID: <20260505-sincere-electric-lobster-2a7bc3@quoll>
+Subject: Re: [PATCH v2 0/3] wifi: iwlwifi: add Device Tree hardware
+ integration information
+Message-ID: <20260505-crouching-albatross-of-beauty-a5ac6b@quoll>
 References: <20260504095327.30892-1-avinash.bhatt@intel.com>
- <20260504095327.30892-3-avinash.bhatt@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -64,8 +63,8 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260504095327.30892-3-avinash.bhatt@intel.com>
-X-Rspamd-Queue-Id: 67B5D4C986C
+In-Reply-To: <20260504095327.30892-1-avinash.bhatt@intel.com>
+X-Rspamd-Queue-Id: 268FE4C9960
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -73,18 +72,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35892-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35893-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
@@ -95,32 +94,16 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[]
 
-On Mon, May 04, 2026 at 12:53:26PM +0300, Avinash Bhatt wrote:
-> +
-> +/*
-> + * Mapping from DSM function index to Device Tree property name.
-> + * Returns the DT property name for a given DSM function, or NULL if the
-> + * function has no Device Tree representation.
-> + */
-> +static const char *dsm_func_to_prop_name(enum iwl_dsm_funcs func)
-> +{
-> +	switch (func) {
-> +	case DSM_FUNC_DISABLE_SRD:          return IWL_DT_PROP_SRD;
-> +	case DSM_FUNC_ENABLE_6E:            return IWL_DT_PROP_6E_UHB;
-> +	case DSM_FUNC_REGULATORY_CONFIG:    return IWL_DT_PROP_REG_SPECIAL;
-> +	case DSM_FUNC_ACTIVATE_CHANNEL:     return IWL_DT_PROP_ACTIVATE_CH;
-> +	case DSM_FUNC_FORCE_DISABLE_CHANNELS:
-> +		return IWL_DT_PROP_FORCE_DISABLE_CH;
-> +	case DSM_FUNC_ENABLE_11BE:          return IWL_DT_PROP_11BE;
-> +	default:                            return NULL;
+On Mon, May 04, 2026 at 12:53:24PM +0300, Avinash Bhatt wrote:
+> Add Device Tree support for Intel Wi-Fi hardware integration information
+> on platforms that do not provide UEFI variables or ACPI methods.
+> 
+> Patch 1/3 adds the DT binding schema for the Intel iwlwifi compatible
+> node. Patches 2/3 and 3/3 add the driver infrastructure and integrate DT
+> as the lowest-priority fallback after UEFI and ACPI.
 
-Pointless function and only making DT ABI checks difficult. Drop.
-
-Don't invent API wrappers or other HAL over simple calls to OF or device
-API.
-
-Drop also ALL defines and use OF API like EVERY other driver. This is
-not a special place.
+Please provide link to any upstream DTS user of this binding, either
+complete or work in progress.
 
 Best regards,
 Krzysztof
