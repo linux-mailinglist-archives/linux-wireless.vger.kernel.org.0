@@ -1,132 +1,129 @@
-Return-Path: <linux-wireless+bounces-35941-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35942-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGEPJeof+mkJJgMAu9opvQ
-	(envelope-from <linux-wireless+bounces-35941-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 18:50:50 +0200
+	id 4OteNM0h+mlvKAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-35942-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 18:58:53 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55B14D1A6F
-	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 18:50:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 356754D1B4E
+	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 18:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2B3E5306AB60
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2026 16:47:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA76F3061ACF
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2026 16:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B990D49252C;
-	Tue,  5 May 2026 16:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38B24963CA;
+	Tue,  5 May 2026 16:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bf7bwH7/"
+	dkim=pass (2048-bit key) header.d=met-dubbel-l.nl header.i=@met-dubbel-l.nl header.b="NYGi0P8J"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mail-244119.protonmail.ch (mail-244119.protonmail.ch [109.224.244.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6546048C8D4
-	for <linux-wireless@vger.kernel.org>; Tue,  5 May 2026 16:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEB13DDDD1
+	for <linux-wireless@vger.kernel.org>; Tue,  5 May 2026 16:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777999632; cv=none; b=e72BhzQpktVLw5QAAiX3Lh6jJMxB3DQOc/KRUrel1CuRMuCtoipcfPORiS9qUWydzvKZ1MvbIWeT+HYhFOVQO/8NlIEBP/u13MhKNYD/pBVUjfwq3Yw4ef9ok4GWP4O45o4loaZgbDUmIgjBLoRpIA7dcXECdd/VxnCgigXFGl4=
+	t=1778000048; cv=none; b=neuBRsS3XvWUQk7C+RQt7LBN5sNkkIOtLyoUHi6bCDmdD+REatOIcedh38MTzq0aUJqA3zqq1BHSmI75TTfy98gkdi2ioiaQbi1DAuYPG/bZwr5MDqz2FCDNBtHP6bTBoiMlvVUrK505gbwXgE0SzO9kJJqNlMx11+UwLHaqAHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777999632; c=relaxed/simple;
-	bh=lCmxcN+v0FFE9HdnugQFPfSM9zej4qPEsANm7NSVmuk=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=qm413ZMLAzrKgfR3UmcNMaTp0CQU89IIIaUTt4DhTHgbjEYkzo50kioZxcCU2HijjymTPxuYrnpR4ZpsgHd4uw3YQfnRoDZ/QSUBjR4O2dg7fhpDNvwCXWck5EYV4oq0NT/LQioFm8mSA2Zyzb0MXxc0NZ+z3+Uyz5gIUPcZ3lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bf7bwH7/; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777999632; x=1809535632;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=lCmxcN+v0FFE9HdnugQFPfSM9zej4qPEsANm7NSVmuk=;
-  b=bf7bwH7/ZUT5NByHob4k23ThbAAbLP7baHXmIFK1CEkiqpP1AgI40SmN
-   3lChZ2ls3DJCQel0CGVj7J6QYbmNSBk0SSnf4tO33CR2xMpku35u1Z31b
-   W4K9Bsztvvcqpsv53r6zdl13BCTG5zNO4AL/36oe+IqA5rgoB03IiU/zw
-   kvd2/nMlZKDHlo2R2Xp31dD+XlcdbM2d05ll/XDQ/v5kE4OnGHuAAJLd0
-   bIxg/rVVUH/UC4isRWt0h+l5ql6UONr/SjF+rx40N4yO9WvkzzeuvEVoi
-   cqS4LzOcqMpyec5u3BhjcYXjAZdfZS7sIEW+axWaM33K+L4nGmybLLBgl
-   g==;
-X-CSE-ConnectionGUID: KFLy/pHdREO9BLsxQidpBQ==
-X-CSE-MsgGUID: D58Ig0nsSnaSG6JbN/u7oA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="89181533"
-X-IronPort-AV: E=Sophos;i="6.23,217,1770624000"; 
-   d="scan'208";a="89181533"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 09:47:11 -0700
-X-CSE-ConnectionGUID: N/UhKIR6TN+2yxtfOETaOg==
-X-CSE-MsgGUID: dKiz5QOEQqS9GndzbhBGMQ==
-X-ExtLoop1: 1
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 09:46:26 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Subject: [PATCH wireless-next] wifi: cfg80211: don't allow NAN DATA on multi radio devices
-Date: Tue,  5 May 2026 19:46:13 +0300
-Message-Id: <20260505194607.ff87e6fcff56.If201aa58119d2a6b08223ecb63bc2869f63ff5a1@changeid>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1778000048; c=relaxed/simple;
+	bh=RgjykZJQtq/5oxPuYAxsDhObBg9LJKnrRy9mZLWFBgU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GbCdmtx9jl8PAC4u8Y56fwMfPI2PtKIrMp3g7cZm0Mjvybg5OLprErwG6IWrIx84nP0QgxtuIK5vvgiEFPHXTjDSCfbebKTycXp8Kw+ihOzJIjedbJLxjuXxE27CquigR/6P+rQ/C9/dop/9JHOukoxi7/AS/mcHqU5W6+/7aos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=met-dubbel-l.nl; spf=pass smtp.mailfrom=met-dubbel-l.nl; dkim=pass (2048-bit key) header.d=met-dubbel-l.nl header.i=@met-dubbel-l.nl header.b=NYGi0P8J; arc=none smtp.client-ip=109.224.244.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=met-dubbel-l.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=met-dubbel-l.nl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=met-dubbel-l.nl;
+	s=protonmail; t=1778000032; x=1778259232;
+	bh=RgjykZJQtq/5oxPuYAxsDhObBg9LJKnrRy9mZLWFBgU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=NYGi0P8JMu7RSnZSF9MAiAEV762qY3ETuy0Aj/z8OI7oPKGqCMa+jKmTftvQtknBe
+	 /wLVfaVnZBrrrZibS2R5+jl2VsUbfwvfFrhgGLMYqV11/MW14iIWVwccjVuPDWqrZc
+	 DZ01adqNrQ+1LvZ9UVoHtdI6hYvUwssZWYy8N+zUjU/+o1Hgn+trCrEfxFHopMKIlG
+	 66IfO7+puOwy21lC9u/OtKDN1+vnbs+6rc2N1sGxF0a55uqhwooEg5RWqVIWM/xoHr
+	 BWWprImUW2baaiEux5W09xrJ9Ol1aq+RMdGm/xkbQWueSIuoc8XGf73ITHo1i2QKlU
+	 T6MBF6RKSw2mg==
+Date: Tue, 05 May 2026 16:53:46 +0000
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+From: Willmar Knikker <willmar@met-dubbel-l.nl>
+Cc: jjohnson@kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: ath11k: fix use after free in ath11k_dp_rx_msdu_coalesce.
+Message-ID: <20260505180437.73b03be9@WillmarsWorkFidge>
+In-Reply-To: <7d3c5eae-233a-4c31-b64e-70f0afe74da6@oss.qualcomm.com>
+References: <20260505143025.234292-1-willmar@met-dubbel-l.nl> <7d3c5eae-233a-4c31-b64e-70f0afe74da6@oss.qualcomm.com>
+Feedback-ID: 179140708:user:proton
+X-Pm-Message-ID: 9691e8226cd1b459a1f5c5de37cc561a41464191
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E55B14D1A6F
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 356754D1B4E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[met-dubbel-l.nl,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[met-dubbel-l.nl:s=protonmail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-35941-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-35942-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_ONE(0.00)[1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[met-dubbel-l.nl:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[willmar@met-dubbel-l.nl,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,met-dubbel-l.nl:dkim,qualcomm.com:email]
 
-The support for NAN DATA was added for single radio devices only. For
-example, checking the interface combinations is done for a single radio.
-Prevent registration with NAN DATA interface type for multi radio
-devices.
+On Tue, 05 May 2026 08:08:48 -0700
+"Jeff Johnson" <jeff.johnson@oss.qualcomm.com> wrote:
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- net/wireless/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> rather than repeating code imo it would be "better" to cache the flag bef=
+ore
+> freeing and then test the cached flag.
+>=20
+> however as you note this proposed logic matches the logic already present=
+ in
+> the "Free up all buffers of the MSDU" portion of the function, so from th=
+at
+> perspective the proposal is consistent with that logic.
+>=20
+> let's see if anyone else has an opinion...
+>=20
+> /jeff
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 4dd1981a3629..62ab5e4639be 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -882,7 +882,7 @@ int wiphy_register(struct wiphy *wiphy)
- 		return -EINVAL;
- 
- 	if (WARN_ON((wiphy->interface_modes & BIT(NL80211_IFTYPE_NAN_DATA)) &&
--		    !wiphy->nan_capa.phy.ht.ht_supported))
-+		    (!wiphy->nan_capa.phy.ht.ht_supported || wiphy->n_radio > 1)))
- 		return -EINVAL;
- 
- 	if (WARN_ON(wiphy->interface_modes & BIT(NL80211_IFTYPE_WDS)))
--- 
-2.34.1
+imo, i would agree that would be cleaner.
+But as this is my first patch i did not want to make to big of a change
+so reusing the pattern from above felt te safest.
+
+> This issue is present since day 1...
+>=20
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+
+Should i make v2 commit to add that tag?=20
+
+Thanks for taking the time.
+
+=09--- Willmar K.
 
 
