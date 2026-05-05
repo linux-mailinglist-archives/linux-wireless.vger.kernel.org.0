@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-35932-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35933-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wN1JE4Ye+mkJJgMAu9opvQ
-	(envelope-from <linux-wireless+bounces-35932-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 18:44:54 +0200
+	id WEmAGige+mkJJgMAu9opvQ
+	(envelope-from <linux-wireless+bounces-35933-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 18:43:20 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE454D191F
-	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 18:44:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AECA4D184E
+	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 18:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7AD153086B35
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2026 16:43:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2805E30234F2
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2026 16:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3283D4949ED;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9E54949FF;
 	Tue,  5 May 2026 16:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VRKONM94"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jcGdLKx6"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C754921A9
-	for <linux-wireless@vger.kernel.org>; Tue,  5 May 2026 16:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BBA49252B
+	for <linux-wireless@vger.kernel.org>; Tue,  5 May 2026 16:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777999366; cv=none; b=BOi/SCbi8eadSAJB5ov7Js3V+/FHB5qoRLJ1UiGdfcyhxyFa6azsKZm1T6AMbFU2Ra3nXgddH27YdgbnmgVM0OtV6pT8DzNv4jbVU/Fn09ge02Z5fZhj1/Y7LUpUq6EFIOBysgB9JNq1K/q09Ljg9bYWTEhKCPeVPWDA9ZEL3mg=
+	t=1777999366; cv=none; b=XhmLIrzywrwGfJQvPk5o6VtC8/l1EpUanM2tNZKbVWyoKQcS2sDZxEbS08FKah9C1TjP4j8TKCf/vQ+TUgxIn6/Sf1jFy4C76r8Kk8pLWLfcyylfUJOwkBTBOwneL/XAj0MzhFwyPrTs0dY2YLBOyVjhqvjOEdRofJdch2nEp+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777999366; c=relaxed/simple;
-	bh=+RufibweACO2MM6njvGrrruEzu3EdQNikKfFawavdb0=;
+	bh=K1qFXLm0yqvq1YMDCTnqBT0AGwnkq8PWFGjNMbZP+D8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nG2oumr3KiB800p2KCMt4hoKmiuuyVrj+SfkeN3ZqRjzR0xLWXe81poQr1FMpNrKimLZ+h8dDBi+lhIVXv0inlu7ni8iYeE6Nyar6IUjCgoh6mHrJzD1g2rC3I0rzZ5DNGaDDojoTUqEe+3WsC1ne1uWc8Sl3lzz3yyj+q8saCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VRKONM94; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=Mq9BynDyD9I7lXk/jVwoeZQYpv/fVblJlnAk1V8uXwZjNhJNa3lIHkURtzPMaXiO8k1IxKk6qe5hw2fxIpOQfC/8cFpLXXD4Dxy6N9w7X4VMqn1mdN9dp9VfdsDFGvnIaLWJyOeOQQbM7aAtA02xVseiXowhK2V8N9mgZIxa04I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jcGdLKx6; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777999363; x=1809535363;
+  t=1777999364; x=1809535364;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+RufibweACO2MM6njvGrrruEzu3EdQNikKfFawavdb0=;
-  b=VRKONM94xx5S+JPGydEWJOkWWRzQwH8PzDhUUUK3DZXutWHDbP2ugAag
-   bSyuw3CDTjjpvUf7kEbA8cTTuN40QOYslVbQFLv+m1VJ14XvCEc78hh+k
-   iQHT3UlR2OYhhJCfduN2AFBQLmUikBUPEx8lpIPbRluSoSBMzlsYcQb58
-   932ZPwQixgZZvpc85ANz/s4mhYPyl0q64FXyVzUXkiR8mUpPYLzz3QOO5
-   Uz72GjXm2H1uN47ksDNItWwpbrhVR845/ni3NevYtkz8K/aR2qPNqONL8
-   1XsI7AZh+g5glK79GmCbOBvbSH+z+teyguq60PAWdumjdRt7bfaj1p+SR
-   g==;
-X-CSE-ConnectionGUID: V9j86L2STEa33ITFT6MaZA==
-X-CSE-MsgGUID: I7+e9+W6TkOhPeXtXnV0og==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="77898983"
+  bh=K1qFXLm0yqvq1YMDCTnqBT0AGwnkq8PWFGjNMbZP+D8=;
+  b=jcGdLKx6nyhsoWO15+qalT9rCXr+InkPGcMYqSbDGB660+CzBC/Srj+u
+   jEwTv2lTrGNUSzhnV046u5z7vWO5g+JzUtujx4BU83gX+UQL4IVjGuMVW
+   1ilAOleAhiNSRdgf++w3Sl7huaPoaWjCiGsodHA/UeXiB5NeM6D6YX5tw
+   EmlhycAFVEygS4xO+gRI2csM8HWI5sF8W687HFehSz1/HiM6AloAGW13n
+   J2DdGA99Knd6Sh4hWJtwKdU/CvNqLA3zVNmcRZ+FNEZAyfRj2BzaV9REc
+   u93OxfuSQLU6zoVlCZEbpkLVpVbvJPHsVd22JbCSMZ1UjvmRnTO90LRUb
+   Q==;
+X-CSE-ConnectionGUID: iRaKp2MWQySfuR9WGE+ULA==
+X-CSE-MsgGUID: 0SoA1f4aTjqzKOzSTiw0lA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="77898984"
 X-IronPort-AV: E=Sophos;i="6.23,217,1770624000"; 
-   d="scan'208";a="77898983"
+   d="scan'208";a="77898984"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 09:42:42 -0700
-X-CSE-ConnectionGUID: QHLFUwWgQ9GdgrZ+TfODuA==
-X-CSE-MsgGUID: zTVFq0WSSTeQ1VauxRgQcQ==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 09:42:44 -0700
+X-CSE-ConnectionGUID: bqht1m+UTxu8YRMuPhZReA==
+X-CSE-MsgGUID: rjZ/M8w9QI6Lgzsv6Qehjw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,217,1770624000"; 
-   d="scan'208";a="259206402"
+   d="scan'208";a="259206408"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 09:42:41 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 09:42:42 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Daniel Gabay <daniel.gabay@intel.com>
-Subject: [PATCH wireless-next 08/14] wifi: mac80211_hwsim: implement NAN schedule callbacks
-Date: Tue,  5 May 2026 19:42:13 +0300
-Message-Id: <20260505194007.f3ad9e3dc9d4.I75cf3555b7506d5b8bb30e70a0f3721ab73477cb@changeid>
+Subject: [PATCH wireless-next 09/14] wifi: mac80211_hwsim: set HAS_RATE_CONTROL when using NAN
+Date: Tue,  5 May 2026 19:42:14 +0300
+Message-Id: <20260505194007.216e68be61ac.If9ef94a12cec8dfc55416afaf745d6e5025a5ec9@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260505164219.2806117-1-miriam.rachel.korenblit@intel.com>
 References: <20260505164219.2806117-1-miriam.rachel.korenblit@intel.com>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9DE454D191F
+X-Rspamd-Queue-Id: 1AECA4D184E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -94,10 +94,10 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-35932-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35933-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -107,238 +107,79 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
 
 From: Daniel Gabay <daniel.gabay@intel.com>
 
-Implement mac80211 schedule callbacks for NAN Data Path support:
-
-- Track local schedule via BSS_CHANGED_NAN_LOCAL_SCHED, caching
-  the channel for each 16TU time slot.
-- Copy peer schedule to driver-private storage in
-  nan_peer_sched_changed callback for use in TX availability
-  decisions.
+- NAN switches between bands/channels per its schedule, so mac80211
+  rate control can't work, set HAS_RATE_CONTROL instead.
+- Skip rate control checks for NAN interfaces in
+  mac80211_hwsim_sta_rc_update() as it's not relevant.
+- Move set_rts_threshold stub to HWSIM_COMMON_OPS and return 0 instead
+  of -EOPNOTSUPP to prevent failures in non-MLO tests that set RTS
+  threshold (hwsim ignores the use_rts instruction from mac80211
+  anyway).
 
 Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/virtual/mac80211_hwsim_i.h   | 21 +++++
- .../wireless/virtual/mac80211_hwsim_main.c    | 14 ++--
- .../net/wireless/virtual/mac80211_hwsim_nan.c | 80 +++++++++++++++++++
- .../net/wireless/virtual/mac80211_hwsim_nan.h | 15 +++-
- 4 files changed, 121 insertions(+), 9 deletions(-)
+ .../net/wireless/virtual/mac80211_hwsim_main.c    | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_i.h b/drivers/net/wireless/virtual/mac80211_hwsim_i.h
-index d182b5117bfb..0f0f2ac6d80e 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim_i.h
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim_i.h
-@@ -14,6 +14,27 @@
- #include "mac80211_hwsim.h"
- #include "mac80211_hwsim_nan.h"
- 
-+struct hwsim_sta_nan_sched {
-+	/* Later members are protected by this lock */
-+	spinlock_t lock;
-+	u16 committed_dw;
-+	struct {
-+		u8 map_id;
-+		struct cfg80211_chan_def chans[CFG80211_NAN_SCHED_NUM_TIME_SLOTS];
-+	} maps[CFG80211_NAN_MAX_PEER_MAPS];
-+};
-+
-+struct hwsim_sta_priv {
-+	u32 magic;
-+	unsigned int last_link;
-+	u16 active_links_rx;
-+
-+	/* NAN peer schedule - must be accessed under nan_sched.lock */
-+	struct hwsim_sta_nan_sched nan_sched;
-+};
-+
-+#define HWSIM_STA_MAGIC	0x6d537749
-+
- struct mac80211_hwsim_link_data {
- 	u32 link_id;
- 	u64 beacon_int	/* beacon interval in us */;
 diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-index fc940b38c52c..1ea33ec577dd 100644
+index 1ea33ec577dd..107d47d31073 100644
 --- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
 +++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-@@ -252,14 +252,6 @@ static inline void hwsim_clear_magic(struct ieee80211_vif *vif)
- 	vp->magic = 0;
- }
+@@ -2747,6 +2747,10 @@ mac80211_hwsim_sta_rc_update(struct ieee80211_hw *hw,
+ 	u32 bw = U32_MAX;
+ 	int link_id;
  
--struct hwsim_sta_priv {
--	u32 magic;
--	unsigned int last_link;
--	u16 active_links_rx;
--};
--
--#define HWSIM_STA_MAGIC	0x6d537749
--
- static inline void hwsim_check_sta_magic(struct ieee80211_sta *sta)
++	if (vif->type == NL80211_IFTYPE_NAN ||
++	    vif->type == NL80211_IFTYPE_NAN_DATA)
++		return;
++
+ 	rcu_read_lock();
+ 	for (link_id = 0;
+ 	     link_id < ARRAY_SIZE(vif->link_conf);
+@@ -3475,7 +3479,8 @@ static int mac80211_hwsim_tx_last_beacon(struct ieee80211_hw *hw)
+ static int mac80211_hwsim_set_rts_threshold(struct ieee80211_hw *hw,
+ 					    int radio_idx, u32 value)
  {
- 	struct hwsim_sta_priv *sp = (void *)sta->drv_priv;
-@@ -2652,6 +2644,9 @@ static void mac80211_hwsim_vif_info_changed(struct ieee80211_hw *hw,
- 		vp->aid = vif->cfg.aid;
- 	}
- 
-+	if (changed & BSS_CHANGED_NAN_LOCAL_SCHED)
-+		mac80211_hwsim_nan_local_sched_changed(hw, vif);
-+
- 	if (vif->type == NL80211_IFTYPE_STATION &&
- 	    changed & (BSS_CHANGED_MLD_VALID_LINKS | BSS_CHANGED_MLD_TTLM)) {
- 		u16 usable_links = ieee80211_vif_usable_links(vif);
-@@ -2818,6 +2813,8 @@ static int mac80211_hwsim_sta_add(struct ieee80211_hw *hw,
- 		sp->active_links_rx = sta->valid_links;
- 	}
- 
-+	spin_lock_init(&sp->nan_sched.lock);
-+
- 	return 0;
+-	return -EOPNOTSUPP;
++	/* hwsim ignores the use_rts instruction from mac80211 anyway */
++	return 0;
  }
  
-@@ -4245,6 +4242,7 @@ static int mac80211_hwsim_set_radar_background(struct ieee80211_hw *hw,
+ static int mac80211_hwsim_change_vif_links(struct ieee80211_hw *hw,
+@@ -4239,6 +4244,7 @@ static int mac80211_hwsim_set_radar_background(struct ieee80211_hw *hw,
+ 	.abort_pmsr = mac80211_hwsim_abort_pmsr,		\
+ 	.set_radar_background = mac80211_hwsim_set_radar_background, \
+ 	.set_key = mac80211_hwsim_set_key,			\
++	.set_rts_threshold = mac80211_hwsim_set_rts_threshold,	\
  	.start_nan = mac80211_hwsim_nan_start,			\
  	.stop_nan = mac80211_hwsim_nan_stop,			\
  	.nan_change_conf = mac80211_hwsim_nan_change_config,	\
-+	.nan_peer_sched_changed = mac80211_hwsim_nan_peer_sched_changed, \
- 	HWSIM_DEBUGFS_OPS
+@@ -4284,7 +4290,6 @@ static const struct ieee80211_ops mac80211_hwsim_mchan_ops = {
+ static const struct ieee80211_ops mac80211_hwsim_mlo_ops = {
+ 	HWSIM_COMMON_OPS
+ 	HWSIM_CHANCTX_OPS
+-	.set_rts_threshold = mac80211_hwsim_set_rts_threshold,
+ 	.change_vif_links = mac80211_hwsim_change_vif_links,
+ 	.change_sta_links = mac80211_hwsim_change_sta_links,
+ 	.sta_state = mac80211_hwsim_sta_state,
+@@ -5726,6 +5731,12 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 		hw->wiphy->nan_capa.phy.ht = hwsim_nan_ht_cap;
+ 		hw->wiphy->nan_capa.phy.vht = hwsim_nan_vht_cap;
+ 		hw->wiphy->nan_capa.phy.he = hwsim_nan_he_cap;
++
++		/*
++		 * NAN switches between bands/channels per its schedule,
++		 * so mac80211 rate control can't work here.
++		 */
++		ieee80211_hw_set(hw, HAS_RATE_CONTROL);
+ 	}
  
- #define HWSIM_NON_MLO_OPS					\
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_nan.c b/drivers/net/wireless/virtual/mac80211_hwsim_nan.c
-index 6053b6f8f91f..16883edd2215 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim_nan.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim_nan.c
-@@ -1008,3 +1008,83 @@ bool mac80211_hwsim_nan_receive(struct ieee80211_hw *hw,
- 
- 	return false;
- }
-+
-+void mac80211_hwsim_nan_local_sched_changed(struct ieee80211_hw *hw,
-+					    struct ieee80211_vif *vif)
-+{
-+	struct mac80211_hwsim_data *data = hw->priv;
-+	struct ieee80211_nan_channel **slots = vif->cfg.nan_sched.schedule;
-+
-+	if (WARN_ON(vif->type != NL80211_IFTYPE_NAN))
-+		return;
-+
-+	spin_lock_bh(&data->nan.state_lock);
-+
-+	for (int i = 0; i < ARRAY_SIZE(data->nan.local_sched); i++) {
-+		struct ieee80211_chanctx_conf *chanctx;
-+
-+		if (!slots[i] || IS_ERR(slots[i])) {
-+			memset(&data->nan.local_sched[i], 0,
-+			       sizeof(data->nan.local_sched[i]));
-+			continue;
-+		}
-+
-+		chanctx = slots[i]->chanctx_conf;
-+		if (!chanctx) {
-+			memset(&data->nan.local_sched[i], 0,
-+			       sizeof(data->nan.local_sched[i]));
-+			continue;
-+		}
-+
-+		data->nan.local_sched[i] = chanctx->def;
-+	}
-+
-+	spin_unlock_bh(&data->nan.state_lock);
-+}
-+
-+int mac80211_hwsim_nan_peer_sched_changed(struct ieee80211_hw *hw,
-+					  struct ieee80211_sta *sta)
-+{
-+	struct hwsim_sta_priv *sp = (void *)sta->drv_priv;
-+	struct ieee80211_nan_peer_sched *sched = sta->nan_sched;
-+
-+	spin_lock_bh(&sp->nan_sched.lock);
-+
-+	/* Clear existing schedule */
-+	sp->nan_sched.committed_dw = 0;
-+	for (int i = 0; i < CFG80211_NAN_MAX_PEER_MAPS; i++) {
-+		sp->nan_sched.maps[i].map_id = CFG80211_NAN_INVALID_MAP_ID;
-+		memset(sp->nan_sched.maps[i].chans, 0,
-+		       sizeof(sp->nan_sched.maps[i].chans));
-+	}
-+
-+	if (!sched)
-+		goto out;
-+
-+	sp->nan_sched.committed_dw = sched->committed_dw;
-+
-+	for (int i = 0; i < CFG80211_NAN_MAX_PEER_MAPS; i++) {
-+		struct ieee80211_nan_peer_map *map = &sched->maps[i];
-+
-+		if (map->map_id == CFG80211_NAN_INVALID_MAP_ID)
-+			continue;
-+
-+		sp->nan_sched.maps[i].map_id = map->map_id;
-+
-+		for (int j = 0; j < CFG80211_NAN_SCHED_NUM_TIME_SLOTS; j++) {
-+			struct ieee80211_nan_channel *peer_chan =
-+				map->slots[j];
-+
-+			if (peer_chan && peer_chan->chanreq.oper.chan)
-+				sp->nan_sched.maps[i].chans[j] =
-+					peer_chan->chanreq.oper;
-+			else
-+				memset(&sp->nan_sched.maps[i].chans[j], 0,
-+				       sizeof(sp->nan_sched.maps[i].chans[j]));
-+		}
-+	}
-+
-+out:
-+	spin_unlock_bh(&sp->nan_sched.lock);
-+	return 0;
-+}
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_nan.h b/drivers/net/wireless/virtual/mac80211_hwsim_nan.h
-index 3199e5c5376b..eb53bacee206 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim_nan.h
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim_nan.h
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-  * mac80211_hwsim_nan - NAN software simulation for mac80211_hwsim
-- * Copyright (C) 2025 Intel Corporation
-+ * Copyright (C) 2025-2026 Intel Corporation
-  */
- 
- #ifndef __MAC80211_HWSIM_NAN_H
-@@ -52,6 +52,13 @@ struct mac80211_hwsim_nan_data {
- 
- 	bool tsf_adjusted;
- 	bool tsf_discontinuity;
-+
-+	/*
-+	 * Local schedule - stores channel definition for each 16TU slot.
-+	 * Derived from NMI vif->cfg.nan_schedule. chan == NULL means not
-+	 * available in that slot (except DW which is implicit).
-+	 */
-+	struct cfg80211_chan_def local_sched[CFG80211_NAN_SCHED_NUM_TIME_SLOTS];
- };
- 
- enum hrtimer_restart
-@@ -73,6 +80,9 @@ int mac80211_hwsim_nan_change_config(struct ieee80211_hw *hw,
- 				     struct cfg80211_nan_conf *conf,
- 				     u32 changes);
- 
-+int mac80211_hwsim_nan_peer_sched_changed(struct ieee80211_hw *hw,
-+					  struct ieee80211_sta *sta);
-+
- bool mac80211_hwsim_nan_txq_transmitting(struct ieee80211_hw *hw,
- 					 struct ieee80211_txq *txq);
- 
-@@ -86,4 +96,7 @@ bool mac80211_hwsim_nan_receive(struct ieee80211_hw *hw,
- void mac80211_hwsim_nan_rx(struct ieee80211_hw *hw,
- 			   struct sk_buff *skb);
- 
-+void mac80211_hwsim_nan_local_sched_changed(struct ieee80211_hw *hw,
-+					    struct ieee80211_vif *vif);
-+
- #endif /* __MAC80211_HWSIM_NAN_H */
+ 	data->if_combination.radar_detect_widths =
 -- 
 2.34.1
 
