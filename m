@@ -1,65 +1,63 @@
-Return-Path: <linux-wireless+bounces-35895-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35896-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mA2MHpfB+Wn/DAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-35895-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 12:08:23 +0200
+	id oLCIEpjH+WkwEAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-35896-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 12:34:00 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70F04CA92B
-	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 12:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2A04CB6E9
+	for <lists+linux-wireless@lfdr.de>; Tue, 05 May 2026 12:33:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E491301CCFC
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2026 10:00:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 594B630F124E
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2026 10:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90923318EC4;
-	Tue,  5 May 2026 10:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FD8334688;
+	Tue,  5 May 2026 10:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="CaIXBa28"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="TFpwLBJR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D8821B9F5;
-	Tue,  5 May 2026 10:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D403246FE
+	for <linux-wireless@vger.kernel.org>; Tue,  5 May 2026 10:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777975207; cv=none; b=sdTujTpszK3bRo3QgrasxdfgSm0fVgGa1aTUdcvNqRuoPpl09wL3PxbpR39ybyx6Mczi7Sv8NEfIxs774kmtTp6lAKQdbKLemfUN6/oagXPnV3pYINIfR2FnG5sEDBnnhEFHgE5BOxsomhs4LiYdOpXMcnb7TwEEfAc0GemHQwM=
+	t=1777976482; cv=none; b=N4u6fxUN/xdPbsn0XbshMz/0Wa+EK3yU22ar9f773Lfg3aeCk9UWEkK4TgzlioxMGdKmQG87uU5+KXxi73iv7dyOEoT++EJVgdvXMMEZCH5kKDMfTJRRL3xmGbrx+NcMUmU7jnLwkaVEku6kJd4A/AoMvqLcVwX1QYRCqaaYX2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777975207; c=relaxed/simple;
-	bh=gFaYlaL4YkMpsWbcnTxCieY/znEYLvRPKhdzSywIghY=;
+	s=arc-20240116; t=1777976482; c=relaxed/simple;
+	bh=MpnWS41ynyb3wJhRKbT6t0+0HM7QrOJwtRSMJennjo0=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TtklIhRZYcD+Wk6FS58NK/Cl4nxFGtwQFHnimVUiLE6xB0oZdhtyD0lHtGD9ArzCIfJgCOjz33kGb9hNGES6Q3/RS267DIANoE8iMgVcguADw1iEnifAq1urt9XsZ4eTbyheZCx0iN+kyEQ4UiO4F2y+Ka7nUkvM1YyjycrI8a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=CaIXBa28; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=Gyvs0ayXEjhfU6OE7Fi8okTqrvxThkmD2IQxR1GD2NfbcybCbNiovYgpOUdhfde7vpaHqArhav+sgDMOxXm2W2oOk+mFhh8LvQivQyU+hexgHoPOm3LIerjvUqcEbaDOpGyN1tOopx1eLGKFY+WcGSEaVvl9RMC8ClSETYuSFw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=TFpwLBJR; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=gFaYlaL4YkMpsWbcnTxCieY/znEYLvRPKhdzSywIghY=;
-	t=1777975206; x=1779184806; b=CaIXBa28MY8GnjOkF3aEw2YgQyRAaVY9EguKI7d5IyuDCbz
-	MOq7s0n6FDw4tBDGtr+V1CXFFD5iVf3xIg4e4WOmgjqPiU5AteqI8Sn1vIbFFuRWG/ukm6a7NuqVt
-	R0UcF0yp5OCS192jNG2zJ4P+GIAgdQK16/GEuXK232/xQXpj2kZG68dFS0TunXeaiTwMf86OQhUQR
-	0wNKCG6WfXSRVneZOTPr1K+hgdI8Xv8q8P+ruz6hbIT7MA9hSWwyzr+OE/ReRCCbh1j/Mb1QSE440
-	OtVFhSMo6+vrtibd9ZxxwSMq/01R1KRlEDis+svViO/IMFAZqw4azAn5j7SPzQZw==;
+	Resent-Cc:Resent-Message-ID; bh=MpnWS41ynyb3wJhRKbT6t0+0HM7QrOJwtRSMJennjo0=;
+	t=1777976480; x=1779186080; b=TFpwLBJR75awlg1+4SeEbfUH2BS3N/zwu8VnytWx4vIfZxs
+	uQLV5YDFy+z/wpDsBlt/PiJ2fmmYjIvY+szJ6Llc3zbIytoMwxByOAftpSQP5h9g7jOsGCxnoLEBR
+	fO0973e8JX7/pD5K1Lwrr6HuZfu/S2IhcKwMaZEP6Aq0nF90D9BGziixXJFARhv0ktDVBB+DE34Yn
+	8XBvPoc/2zvdMCbgkA3nw1/KFO5joLeqzT6K2D4pXhSFe6vYKXvL3dcZxxW9kgv2fHmdUaa705FIF
+	Tgn3iIuh/PVUW56z3cAHM1xLJSGkaYlNla9K4Drqdp1III8tpvJbmoDhrU41mQDQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1wKCZP-0000000FxlB-1530;
-	Tue, 05 May 2026 12:00:03 +0200
-Message-ID: <4a80d9a16c37af6f35904b5298238f64f030c374.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/2] wifi: nl80211: require CAP_NET_ADMIN over the
- target netns in SET_WIPHY_NETNS
+	id 1wKCtx-0000000FzR2-0fMv;
+	Tue, 05 May 2026 12:21:17 +0200
+Message-ID: <f127429e45d55ff29822856c892556966589e217.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v2 0/2] wifi: cfg80211/mac80211: optimize
+ station info handling
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 05 May 2026 12:00:02 +0200
-In-Reply-To: <20260504135420.1178443-2-maoyi.xie@ntu.edu.sg>
-References: <20260504125753.1154601-1-maoyi.xie@ntu.edu.sg>
-	 <20260504135420.1178443-1-maoyi.xie@ntu.edu.sg>
-	 <20260504135420.1178443-2-maoyi.xie@ntu.edu.sg>
+To: Sarika Sharma <sarika.sharma@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Tue, 05 May 2026 12:21:16 +0200
+In-Reply-To: <20260430053810.2088793-1-sarika.sharma@oss.qualcomm.com>
+References: <20260430053810.2088793-1-sarika.sharma@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
@@ -70,7 +68,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: D70F04CA92B
+X-Rspamd-Queue-Id: AC2A04CB6E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -83,44 +81,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
 	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-35895-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35896-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:dkim,sipsolutions.net:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Mon, 2026-05-04 at 21:54 +0800, Maoyi Xie wrote:
+On Thu, 2026-04-30 at 11:08 +0530, Sarika Sharma wrote:
+> This series improve memory and logic efficiency in cfg80211 and
+> mac80211 during NL80211_CMD_GET_STATION. Allocate link_sinfo and
+> link tidstats objects only for valid links to reduce memory usage.
+> Avoid setting non-MLO applicable fields for MLO stations to
+> eliminate redundant operations and simplify the code path.
 
-[...]
+OK ... so taking a closer look now.
 
-> Reported-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+There's altogether too much going on in these patches - the first one is
+really cfg80211 only and should be tagged as such (API updates across
+consumers don't count), and I'm not sure the cfg80211_free_link_sinfo()
+refactoring is useful - but if so maybe it should be NULL checked
+inside?
 
-Crediting yourself with finding the bug seems ... a bit weird?
+The second patch *should* be mac80211 only, but magically removes also
+the cfg80211 code ... I guess I can see that's no longer needed, but it
+might better be a separate commit that explains that.
 
-But anyway
+And finally, given that all of this is entirely dead code since my
+commit c3f8d13357de ("wifi: nl80211: completely disable per-link stats
+for now"), I'm not really all that interested in optimising it.
 
-> Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-
-Bot reports
-
- WARNING: From:/Signed-off-by: email address mismatch: 'From: Maoyi Xie <ma=
-oyixie.tju@gmail.com>' !=3D 'Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg=
->'=20
-
-so wonder if that was intentional? Maybe you wanted to include another
-From: line?
+If you care so much about memory consumption then we can just delete the
+code. If you actually care about exposing the information to userspace
+(e.g. for the, entirely broken, MLO_SIGNAL_POLL in wpa_s) then you
+should really fix those issues, and maybe then figure out any memory
+issues.
 
 johannes
 
