@@ -1,902 +1,298 @@
-Return-Path: <linux-wireless+bounces-35983-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35984-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ljnMOOrR+mlJTAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-35983-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 07:30:18 +0200
+	id JIeHKpbS+ml0TAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-35984-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 07:33:10 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E214D64B3
-	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 07:30:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F6D4D64BD
+	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 07:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26AB6301349F
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2026 05:30:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B743B300F151
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2026 05:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CF52DEA93;
-	Wed,  6 May 2026 05:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A532D12B94;
+	Wed,  6 May 2026 05:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Q5UbWyVl"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="O9J3K/+m";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IG+gjtwW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B0B3043DB
-	for <linux-wireless@vger.kernel.org>; Wed,  6 May 2026 05:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778045415; cv=none; b=evWUF0aDoPZGvcFo+UFWMqmE4uEXRbh06mBF4CwWiwL3BtRwg8EJOyzrjMk2EzLwiqo4YU4bs7cAO6/PsMkhxEBCX6VGSMOWnmBzPH9ut8Ot84sFLjoCPVYeBymUTuD2LbNNsdzbhTU2CawDrz/sLeV0msjAyfH97E2PXpuiHRo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778045415; c=relaxed/simple;
-	bh=UiNWvEMJFfY4c/3NzAa+5kO4IwhsvmnYJymqeRCKREo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DA/vxYrcP8unXkyL5oOWbjJaqlQTer75ylKmCKwuZZim4GTqgRy1NZ1pXozEAjzR+8s/Ul5HN4O53KDeOlhskphH3gxfqYvFZoYd+Ww2vjEd4YdEhRMD+YdY4/D5NyUWNMXi0GgZU+LSpCnLqiRO+KWoaHiHVEj6ly/eecFFSFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Q5UbWyVl; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 9f14b9b8490c11f1a4e839cc21f16abe-20260506
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=3z67sMsaC0SquPdPMHb9dwJ5Ps2FLE4CIoJO3aG2m4Q=;
-	b=Q5UbWyVlM0b86cAYJuzBdKn3cOSInS4YOVhq2ahZgnlhG3KGhbADHayvcO2y/i01w5UR64ylo5fDfG4ldjSggQQWHPjE4bGwx13TYUwTZqc18TfUr51/zwSvbZ6FOBIQ5aqGgZzz9xlyu+RkHlCS1ZiTrjjd9wwobHtmFDSgzX4=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:0d0975a7-67cf-44aa-ab0f-16e0ca8e8904,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:85b40171-3b7f-4b26-b2f9-40f0deecb36d,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|865|888|898,TC:-5,Content:0|
-	15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0
-	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 9f14b9b8490c11f1a4e839cc21f16abe-20260506
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-	(envelope-from <jb.tsai@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 2022295534; Wed, 06 May 2026 13:29:58 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 6 May 2026 13:29:57 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Wed, 6 May 2026 13:29:56 +0800
-From: JB Tsai <jb.tsai@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	<Deren.Wu@mediatek.com>, <Sean.Wang@mediatek.com>, <Quan.Zhou@mediatek.com>,
-	<Ryder.Lee@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<litien.chang@mediatek.com>, <eason.lai@mediatek.com>,
-	<jb.tsai@mediatek.com>, Eason Lai <Eason.Lai@mediatek.com>
-Subject: [PATCH v2] wifi: mt76: mt792x: fix use-after-free in  mt76_rx_poll_complete
-Date: Wed, 6 May 2026 13:29:54 +0800
-Message-ID: <20260506052955.3048766-1-jb.tsai@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426D3E54B
+	for <linux-wireless@vger.kernel.org>; Wed,  6 May 2026 05:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.168.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778045587; cv=pass; b=mzXb43NT3mY+8dEYy+4a5b/UXBm9cItJR/0yTdQbCINixZbiyRROv4e9e2h/tPIBvi6YbdZlg7Bcqq1ze8dWB9TQj9aA7PSfENGLzjWygI6qcMBYpN6IHQ5FapaikwFxYD1Ootdg7jK6Dj9f/1nAv/z7tv6mSZZzbN4pLznEvdc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778045587; c=relaxed/simple;
+	bh=9v6O990mkErFL60w75A4U14iLUG64G/pvNkasHB4ilg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=swLlvCn5OC1ka3c4F31IUuPzKpR+YsWOqe0GuMXOHCep3FInnReVTUWvHizAiW97VBP9/AvBvvPxCIqenNiVg9fIv/Xa0FehB3D2i5rGZGpKcXM5lY14Idi8jqWyV+gTLo5YzFqQP3B+7K1Ql22gIGoOC6vf6ESk9FftN9QdBfM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=O9J3K/+m; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IG+gjtwW; arc=pass smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 645MKj74912393
+	for <linux-wireless@vger.kernel.org>; Wed, 6 May 2026 05:33:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	x2tY4+pnycU+w90UF9osCn3xcRDllh+pintXaUXr9DI=; b=O9J3K/+mtcme+e4O
+	vZbL3VNY+sudp7t5Z9HM6QqrpKY9RWTWx4HZU6TY9OKEhEFz4+2qrhf1iIEXIE0m
+	jW0jzJ9wiMfXnl6x3TuxQCm+x0hJk+ptWUmHF9f31k/ib+FSQGjKGP63yaGCytVt
+	fI+nOfyVmhkmVcmCVOW5AxGfS7Js1o6FGpxsniFv6nm90ZRHRqZcrmQ98hiEzAlZ
+	Yi8x9NBBiMavTzbrMY9+MNI8appZDFdLjfBMe6+xJXctzZvmdp9LsDyiRVTOYLHb
+	oMmjulRjIZLkf+3aR9YJ7+kzHitL2vPWmoa778KtT8vox3pFjbSIO8ISku+bt5f/
+	2Qtdag==
+Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dyj7jk1dj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 06 May 2026 05:33:05 +0000 (GMT)
+Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-12c8ca57a23so743919c88.0
+        for <linux-wireless@vger.kernel.org>; Tue, 05 May 2026 22:33:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778045584; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SKNH5prRlTcm2BD88J0fHiDdGHYYwx/6Zf5qKgrtOWX6R9pyJGUx5v/NbP9hxazPdL
+         4XbnL6JqCI2iUpcxyDc939k1o8bhoLfQ6CxUc1B7h6yzH+Gn/9kNmRVrAXclkawA9gde
+         bGFu0LyURpWq23p+M/hy4dYMLmN9O14RpzWKGQvW2a/fkf7ft/QNlAQVObZGAXtRXpub
+         0843UTeaKzyxB2H6uA9mx1QOJBYeCJc0NHBOTtrL5vRyXRSHEhFDBkHcgAPP+t3FB4tz
+         OhtSZBMQZI+nGMHeTR6iKRc2ZnqtOmp1SuH9gjTYwGQVIwHMNX8L3YtXr8Oz+FYKPzP2
+         cFqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=x2tY4+pnycU+w90UF9osCn3xcRDllh+pintXaUXr9DI=;
+        fh=3OdLH0vdBSfuPtusJQYsc2KK026peqjJnuWhwAG1O/4=;
+        b=NqO1UcqUgoHggJwYQlVHmqaCZ35D2m3OvWo01R772EFgLBgJv4SElm/4K3p6NfUOc1
+         n25zS8//48Lk+2yftAJiEdbLcrbCltCw47cDkwrNQWuOD38bJxmThNBw1noBeIyjE20n
+         iX2GAOkC8gNvVCA8shpYTCPVdOF5hrOf/p41HAMPIA6k7eWcHFRO9LntFLWlfkVDGchb
+         K6KIdMsYV6ImJTphQqFk7MkNmR8T+l0YJq2cGmzuy4brKMpxWbNSfLuKS78WdOIuJDOF
+         DOhffpexIzAAAWgmZktoJmB3OybzG1tMwXlcB2WfBYp2dAfwn5LK42JxexqyuNL1A5CN
+         wqZg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1778045584; x=1778650384; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x2tY4+pnycU+w90UF9osCn3xcRDllh+pintXaUXr9DI=;
+        b=IG+gjtwW/tGRjKWreppIp98rm53X45NKdIdSYAwQEWj7vPRyAwYPYbb7KqLhmHGuzk
+         m36IvH1bDAvhWq1vmZSp/ytHbvXpgfDUt8vHxYxXjBj3Gd5eKMdvVe+F1tAdgpY+y9B9
+         VYNKoWwMGqy8I0HOPlf3byjOKhQWXKWBWqo5AARtGBVOCI02UKZF716wda8eQb/MHbn+
+         PvTpJjlV8Tv8m8HlVB9dx78mjfRxEPRpJwIDTarS6ZHR3Ha5s1Vg4VBiGQsUyqgWkRU5
+         hIonPPoaxQD4YgDV0p7RDFEziMAa4y2CPuvHoGG9dPRPdTstVNlXoB08SVTh4MYM6fJm
+         dW8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778045584; x=1778650384;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=x2tY4+pnycU+w90UF9osCn3xcRDllh+pintXaUXr9DI=;
+        b=qVk2K6dQSmbA7br+Kk7jdYnNg7Nd9K8FEGwBXhsr0ihE/7RcUCA3XV1xm1G8do1WPD
+         J/TBPZm0XRltN4CBgBgHTMNRhycxMFXWLQ15W4n8kCOzkblKJHUeFnBuRzYmOxI40tfJ
+         fvsW0k5sBTbmuH3kdmRhWcCymqaSFF0VxHhzTLHGJypGi4npf5BjLMQro2SFCa/JzWZo
+         LKvf4AsGf6hAk5tMTSGxv03kxV/6sgxA0CLa2LoGoyhFslPWiV3lRY7iXZtal3HDGGgl
+         dxPG6ndjfpGVI30EE0qHLzoq9oedcPGR5wJxRE2YPk+7i+3/djj7C6qIn0apeXYVe5OM
+         zsNg==
+X-Forwarded-Encrypted: i=1; AFNElJ/vB/l4bdbWP4E8svwti1hwS9tLaI5Ux6uyal2a4Dd/SUa9RKFN3DJO0uBkvZO0zCi6ME6yTPu+/UyXduQK9w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwT5mb5yzWreaU/etsQKgdkRTsS8kPTJMDrWM65RyrUlkEJ/4gK
+	P/FoFmuIaHA6YCWkmADmjesjVGKlLC7+cmxEpMpGdvqFF+wORZBXog56ek99Dw2ufRxagI+G1dN
+	Es/evPtJccybqZe8na3kqpwVeQ1wIF5B0+uwA5AmQqtoxqLoqLYO7L9gmFJ2VxV2iOFA5qPP3mV
+	E/8y1+5tLtjV5MQrXCOH1CrXvYQwAtKj5hZa2xbGCG1sYaXc8ZAnLd
+X-Gm-Gg: AeBDievpnxgeG6sYNVcrteQOQ9gPxdMUKgFoo5IZOIbEN+czGJZ1hyO7+XhHxeQlfbr
+	9W/PKsMaRRqG0c/CW+bqGeLAjIZzLRD7BtytyTf8S1iPUZV45yHMcm8UxDIrnfggjBWwr32a9Jx
+	2mnsK21eOFz/jCSIHcd+rQKSNDOh6EvOV8r81oJFPDRRa/4+cC4icwuOw3irq8c688m/lrfTGGn
+	0JVINsEDi16tTErzQ==
+X-Received: by 2002:a05:7300:2327:b0:2d5:9438:2a02 with SMTP id 5a478bee46e88-2f5671e15a8mr425072eec.1.1778045584218;
+        Tue, 05 May 2026 22:33:04 -0700 (PDT)
+X-Received: by 2002:a05:7300:2327:b0:2d5:9438:2a02 with SMTP id
+ 5a478bee46e88-2f5671e15a8mr425065eec.1.1778045583591; Tue, 05 May 2026
+ 22:33:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260505040920.57521-1-laicheehou9@gmail.com> <CABkEBKbVG-UGWOQUgi0Q4M9HkMqOF-nc2gWTwBn9gebC8s7U8Q@mail.gmail.com>
+ <69fd7b6b-ebda-4203-a798-6227feba7350@oss.qualcomm.com>
+In-Reply-To: <69fd7b6b-ebda-4203-a798-6227feba7350@oss.qualcomm.com>
+From: Tamizh Raja <tamizh.raja@oss.qualcomm.com>
+Date: Wed, 6 May 2026 11:02:52 +0530
+X-Gm-Features: AVHnY4I4gzfpUwgkPXbBTsTjvICWhp0LY0e-Oi5BVBF1LqxZflnFqdSaxaU8mOU
+Message-ID: <CABkEBKaMvDsACmKzXy7RyrF7eJ+5hAxbG3LcZOZ9b_eENbqnpA@mail.gmail.com>
+Subject: Re: [PATCH v2] wifi: ath12k: fix incorrect HT/VHT/HE/EHT MCS
+ reporting in monitor mode
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: kwan1996 <laicheehou9@gmail.com>, ath12k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-MTK: N
-X-Rspamd-Queue-Id: B1E214D64B3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDA1MSBTYWx0ZWRfX1ZtuQWd/CGmE
+ aieHUEa6JQ/MwCEQdMOP3Sau+VrqQJs9lbV72z69x2vIv5cowZ0Djrp2zAi15RtOLYdC+jiqdWS
+ KbiK9jMakzGvGS9RrYXYFfpQ0BEbF2LqixIzO/fAzWyxWfecpvqv35vFR2G9eoJRjX26cVv8VIy
+ YwHUFITp+PzGQjMkyS9CMF7sOLB3JP+gdrx8DwX12gRa/Rx4qoaaP1PiAOzukNhwJZYv2Bf3m4Y
+ gM6jtEi7x+Z+CGgSwXlOBrPHuHTKtQ/8DH3WYLAi/8kz/5KJiZuNzD50YW2hF4fxAMIP0MULAbh
+ vEhgpFKnc4ZdooHRKmLzQyOBnxL+xPoh34Wr6heaQ4q9AF2gEWRygJACd9eNubUQqxuahXZkgHT
+ j9aGPAeN7EMBC5Zxa9lFNjQq2KSDF7CRV3V9ssxUMAuWRJ3fN++hTfkjPmannApf1cUAZ+B83z7
+ BF5xKCyNvya7CD2Zhrw==
+X-Proofpoint-GUID: nyapSsRYbMIcVSeFYN99j29uYKiasbMR
+X-Authority-Analysis: v=2.4 cv=FpA1OWrq c=1 sm=1 tr=0 ts=69fad291 cx=c_pps
+ a=kVLUcbK0zfr7ocalXnG1qA==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=_K5XuSEh1TEqbUxoQ0s3:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=pGLkceISAAAA:8
+ a=rYbqYaeFVUH_0xll3yUA:9 a=QEXdDO2ut3YA:10 a=vr4QvYf-bLy2KjpDp97w:22
+X-Proofpoint-ORIG-GUID: nyapSsRYbMIcVSeFYN99j29uYKiasbMR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
+ impostorscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605060051
+X-Rspamd-Queue-Id: 00F6D4D64BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35983-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jb.tsai@mediatek.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,lists.infradead.org,vger.kernel.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-35984-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[tamizh.raja@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:dkim,qualcomm.com:dkim,qualcomm.com:email]
 
-From: Eason Lai <Eason.Lai@mediatek.com>=0D
+On Tue, May 5, 2026 at 10:52=E2=80=AFPM Jeff Johnson
+<jeff.johnson@oss.qualcomm.com> wrote:
+>
+> On 5/5/2026 9:43 AM, Tamizh Raja wrote:
+> > On Tue, May 5, 2026 at 9:40=E2=80=AFAM kwan1996 <laicheehou9@gmail.com>=
+ wrote:
+> >>
+> >> In monitor mode, the driver incorrectly assigns the legacy rate
+> >> to the rate_idx field of the radiotap header for HT/VHT/HE/EHT
+> >> frames, ignoring the actual MCS value parsed from the hardware.
+> >>
+> >> This causes packet analyzers (like Wireshark) to display incorrect
+> >> MCS values (e.g., legacy base rates instead of the true MCS).
+> >>
+> >> Fix this by assigning ppdu_info->mcs instead of ppdu_info->rate
+> >> for HT/VHT/HE/EHT frame types in ath12k_dp_mon_fill_rx_rate()
+> >> and ath12k_dp_mon_update_radiotap().
+> >>
+> >> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D220864
+> >>
+> >> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ
+> >>
+> >> Signed-off-by: kwan1996 <laicheehou9@gmail.com>
+> >>
+> >> ---
+> >>
+> >> v2: Fix indentation and formatting issues in v1.
+> >>
+> >> ---
+> >>  drivers/net/wireless/ath/ath12k/dp_mon.c | 10 +++++++---
+> >>  1 file changed, 7 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wi=
+reless/ath/ath12k/dp_mon.c
+> >> index 39d1967..4119bb8 100644
+> >> --- a/drivers/net/wireless/ath/ath12k/dp_mon.c
+> >> +++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+> >> @@ -1925,6 +1925,7 @@ ath12k_dp_mon_fill_rx_rate(struct ath12k *ar,
+> >>                 }
+> >>                 break;
+> >>         case RX_MSDU_START_PKT_TYPE_11N:
+> >> +               rate_mcs =3D ppdu_info->mcs;
+> >
+> > Can we assign this rate_mcs before the switch case? Since in all cases
+> > we are assigning unmodified ppdu_info->mcs.
+> >>                 rx_status->encoding =3D RX_ENC_HT;
+> >>                 if (rate_mcs > ATH12K_HT_MCS_MAX) {
+> >>                         ath12k_warn(ar->ab,
+> >> @@ -1937,6 +1938,7 @@ ath12k_dp_mon_fill_rx_rate(struct ath12k *ar,
+> >>                         rx_status->enc_flags |=3D RX_ENC_FLAG_SHORT_GI=
+;
+> >>                 break;
+> >>         case RX_MSDU_START_PKT_TYPE_11AC:
+> >> +               rate_mcs =3D ppdu_info->mcs;
+> >>                 rx_status->encoding =3D RX_ENC_VHT;
+> >>                 rx_status->rate_idx =3D rate_mcs;
+> >>                 if (rate_mcs > ATH12K_VHT_MCS_MAX) {
+> >> @@ -1949,6 +1951,7 @@ ath12k_dp_mon_fill_rx_rate(struct ath12k *ar,
+> >>                         rx_status->enc_flags |=3D RX_ENC_FLAG_SHORT_GI=
+;
+> >>                 break;
+> >>         case RX_MSDU_START_PKT_TYPE_11AX:
+> >> +               rate_mcs =3D ppdu_info->mcs;
+> >>                 rx_status->rate_idx =3D rate_mcs;
+> >>                 if (rate_mcs > ATH12K_HE_MCS_MAX) {
+> >>                         ath12k_warn(ar->ab,
+> >> @@ -1960,6 +1963,7 @@ ath12k_dp_mon_fill_rx_rate(struct ath12k *ar,
+> >>                 rx_status->he_gi =3D ath12k_he_gi_to_nl80211_he_gi(sgi=
+);
+> >>                 break;
+> >>         case RX_MSDU_START_PKT_TYPE_11BE:
+> >> +               rate_mcs =3D ppdu_info->mcs;
+> >>                 rx_status->rate_idx =3D rate_mcs;
+> >>                 if (rate_mcs > ATH12K_EHT_MCS_MAX) {
+> >>                         ath12k_warn(ar->ab,
+> >> @@ -2259,13 +2263,13 @@ static void ath12k_dp_mon_update_radiotap(stru=
+ct ath12k *ar,
+> >>                 rxs->encoding =3D RX_ENC_HE;
+> >>                 ptr =3D skb_push(mon_skb, sizeof(struct ieee80211_radi=
+otap_he));
+> >>                 ath12k_dp_mon_rx_update_radiotap_he(ppduinfo, ptr);
+> >> -               rxs->rate_idx =3D ppduinfo->rate;
+> >> +               rxs->rate_idx =3D ppduinfo->mcs;
+> >>         } else if (ppduinfo->vht_flags) {
+> >>                 rxs->encoding =3D RX_ENC_VHT;
+> >> -               rxs->rate_idx =3D ppduinfo->rate;
+> >> +               rxs->rate_idx =3D ppduinfo->mcs;
+> >>         } else if (ppduinfo->ht_flags) {
+> >>                 rxs->encoding =3D RX_ENC_HT;
+> >> -               rxs->rate_idx =3D ppduinfo->rate;
+> >> +               rxs->rate_idx =3D ppduinfo->mcs;
+> >
+> > rate_idx should be assigned with ppdu_info->rate only not mcs.
+>
+> why is that? documentation says:
+>  * @rate_idx: index of data rate into band's supported rates or MCS index=
+ if
+>  *      HT or VHT is used (%RX_FLAG_HT/%RX_FLAG_VHT)
+>
+> ppduinfo contains separate rate and mcs so doesn't one or the other need =
+to be
+> copied to rxs->rate_idx based upon the current PHY configuration?
+>
+Yeah, sorry for the confusion. Change looks good to me, We need this
+fix for ath11k as well.
 
-A use-after-free issue occurs in mt76_rx_poll_complete due to a race=0D
-condition. The STA has already been removed, but the rx_status still=0D
-had a pointer to the wcid in the STA.=0D
-=0D
-Use wcid_idx instead of storing the wcid pointer, and look up the wcid=0D
-via rcu_dereference() by wcid_idx.=0D
-=0D
-BUG: KASAN: invalid-access in mt76_rx_poll_complete+0x280/0x470 [mt76]=0D
-Call trace:=0D
-dump_backtrace+0xec/0x128=0D
-show_stack+0x18/0x28=0D
-dump_stack_lvl+0x40/0xc8=0D
-print_report+0x1b8/0x710=0D
-kasan_report+0xe0/0x144=0D
-do_bad_area+0x120/0x260=0D
-do_tag_check_fault+0x20/0x34=0D
-do_mem_abort+0x54/0xa8=0D
-el1_abort+0x3c/0x5c=0D
-el1h_64_sync_handler+0x40/0xcc=0D
-el1h_64_sync+0x7c/0x80=0D
-mt76_rx_poll_complete+0x280/0x470=0D
-mt76_dma_rx_poll+0x114/0x51c=0D
-mt792x_poll_rx+0x60/0xf8=0D
-napi_threaded_poll_loop+0xe0/0x450=0D
-napi_threaded_poll+0x80/0x9c=0D
-kthread+0x11c/0x158=0D
-ret_from_fork+0x10/0x20=0D
-=0D
-Fixes: 9c68a57bc22d ("mt76: get station pointer by wcid and pass it to mac8=
-0211")=0D
-Signed-off-by: Eason Lai <Eason.Lai@mediatek.com>=0D
----=0D
-v2: fix mt76x02 build errors=0D
----=0D
- drivers/net/wireless/mediatek/mt76/agg-rx.c   | 18 ++++---=0D
- drivers/net/wireless/mediatek/mt76/mac80211.c | 47 ++++++++-----------=0D
- drivers/net/wireless/mediatek/mt76/mt76.h     |  9 ++--=0D
- .../net/wireless/mediatek/mt76/mt7603/mac.c   |  6 ++-=0D
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 19 +++++---=0D
- .../net/wireless/mediatek/mt76/mt76_connac.h  |  3 +-=0D
- .../wireless/mediatek/mt76/mt76_connac_mac.c  | 12 ++++-=0D
- .../net/wireless/mediatek/mt76/mt76x02_mac.c  |  9 ++--=0D
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 16 +++++--=0D
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 13 +++--=0D
- .../net/wireless/mediatek/mt76/mt7925/mac.c   | 19 +++++---=0D
- .../net/wireless/mediatek/mt76/mt7996/mac.c   | 29 ++++++++----=0D
- 12 files changed, 119 insertions(+), 81 deletions(-)=0D
-=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/agg-rx.c b/drivers/net/wire=
-less/mediatek/mt76/agg-rx.c=0D
-index bf1babac3895..b72d13975466 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/agg-rx.c=0D
-+++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c=0D
-@@ -116,14 +116,15 @@ mt76_rx_aggr_reorder_work(struct work_struct *work)=0D
- }=0D
- =0D
- static void=0D
--mt76_rx_aggr_check_ctl(struct sk_buff *skb, struct sk_buff_head *frames)=0D
-+mt76_rx_aggr_check_ctl(struct mt76_dev *dev, struct sk_buff *skb,=0D
-+		       struct sk_buff_head *frames)=0D
- {=0D
- 	struct mt76_rx_status *status =3D (struct mt76_rx_status *)skb->cb;=0D
- 	struct ieee80211_bar *bar =3D mt76_skb_get_hdr(skb);=0D
--	struct mt76_wcid *wcid =3D status->wcid;=0D
- 	struct mt76_rx_tid *tid;=0D
--	u8 tidno;=0D
-+	struct mt76_wcid *wcid;=0D
- 	u16 seqno;=0D
-+	u8 tidno;=0D
- =0D
- 	if (!ieee80211_is_ctl(bar->frame_control))=0D
- 		return;=0D
-@@ -131,6 +132,10 @@ mt76_rx_aggr_check_ctl(struct sk_buff *skb, struct sk_=
-buff_head *frames)=0D
- 	if (!ieee80211_is_back_req(bar->frame_control))=0D
- 		return;=0D
- =0D
-+	wcid =3D __mt76_wcid_ptr(dev, status->wcid_idx);=0D
-+	if (!wcid)=0D
-+		return;=0D
-+=0D
- 	status->qos_ctl =3D tidno =3D le16_to_cpu(bar->control) >> 12;=0D
- 	seqno =3D IEEE80211_SEQ_TO_SN(le16_to_cpu(bar->start_seq_num));=0D
- 	tid =3D rcu_dereference(wcid->aggr[tidno]);=0D
-@@ -145,10 +150,11 @@ mt76_rx_aggr_check_ctl(struct sk_buff *skb, struct sk=
-_buff_head *frames)=0D
- 	spin_unlock_bh(&tid->lock);=0D
- }=0D
- =0D
--void mt76_rx_aggr_reorder(struct sk_buff *skb, struct sk_buff_head *frames=
-)=0D
-+void mt76_rx_aggr_reorder(struct mt76_dev *dev, struct sk_buff *skb,=0D
-+			  struct sk_buff_head *frames)=0D
- {=0D
- 	struct mt76_rx_status *status =3D (struct mt76_rx_status *)skb->cb;=0D
--	struct mt76_wcid *wcid =3D status->wcid;=0D
-+	struct mt76_wcid *wcid =3D __mt76_wcid_ptr(dev, status->wcid_idx);=0D
- 	struct ieee80211_sta *sta;=0D
- 	struct mt76_rx_tid *tid;=0D
- 	bool sn_less;=0D
-@@ -164,7 +170,7 @@ void mt76_rx_aggr_reorder(struct sk_buff *skb, struct s=
-k_buff_head *frames)=0D
- =0D
- 	if (!status->aggr) {=0D
- 		if (!(status->flag & RX_FLAG_8023))=0D
--			mt76_rx_aggr_check_ctl(skb, frames);=0D
-+			mt76_rx_aggr_check_ctl(dev, skb, frames);=0D
- 		return;=0D
- 	}=0D
- =0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wi=
-reless/mediatek/mt76/mac80211.c=0D
-index 4ae5e4715a9c..2933b29782d3 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c=0D
-@@ -1283,21 +1283,24 @@ mt76_rx_convert(struct mt76_dev *dev, struct sk_buf=
-f *skb,=0D
- 	memcpy(status->chain_signal, mstat.chain_signal,=0D
- 	       sizeof(mstat.chain_signal));=0D
- =0D
--	if (mstat.wcid) {=0D
--		status->link_valid =3D mstat.wcid->link_valid;=0D
--		status->link_id =3D mstat.wcid->link_id;=0D
--	}=0D
-+	if (mstat.wcid_idx !=3D MT76_WCID_IDX_INVALID) {=0D
-+		struct mt76_wcid *wcid =3D __mt76_wcid_ptr(dev, mstat.wcid_idx);=0D
- =0D
--	*sta =3D wcid_to_sta(mstat.wcid);=0D
-+		if (wcid) {=0D
-+			status->link_valid =3D wcid->link_valid;=0D
-+			status->link_id =3D wcid->link_id;=0D
-+			*sta =3D wcid_to_sta(wcid);=0D
-+		}=0D
-+	}=0D
- 	*hw =3D mt76_phy_hw(dev, mstat.phy_idx);=0D
- }=0D
- =0D
- static void=0D
--mt76_check_ccmp_pn(struct sk_buff *skb)=0D
-+mt76_check_ccmp_pn(struct mt76_dev *dev, struct sk_buff *skb)=0D
- {=0D
- 	struct mt76_rx_status *status =3D (struct mt76_rx_status *)skb->cb;=0D
--	struct mt76_wcid *wcid =3D status->wcid;=0D
- 	struct ieee80211_hdr *hdr;=0D
-+	struct mt76_wcid *wcid;=0D
- 	int security_idx;=0D
- 	int ret;=0D
- =0D
-@@ -1307,6 +1310,7 @@ mt76_check_ccmp_pn(struct sk_buff *skb)=0D
- 	if (status->flag & RX_FLAG_ONLY_MONITOR)=0D
- 		return;=0D
- =0D
-+	wcid =3D __mt76_wcid_ptr(dev, status->wcid_idx);=0D
- 	if (!wcid || !wcid->rx_check_pn)=0D
- 		return;=0D
- =0D
-@@ -1354,7 +1358,7 @@ static void=0D
- mt76_airtime_report(struct mt76_dev *dev, struct mt76_rx_status *status,=0D
- 		    int len)=0D
- {=0D
--	struct mt76_wcid *wcid =3D status->wcid;=0D
-+	struct mt76_wcid *wcid =3D __mt76_wcid_ptr(dev, status->wcid_idx);=0D
- 	struct ieee80211_rx_status info =3D {=0D
- 		.enc_flags =3D status->enc_flags,=0D
- 		.rate_idx =3D status->rate_idx,=0D
-@@ -1382,19 +1386,9 @@ mt76_airtime_report(struct mt76_dev *dev, struct mt7=
-6_rx_status *status,=0D
- static void=0D
- mt76_airtime_flush_ampdu(struct mt76_dev *dev)=0D
- {=0D
--	struct mt76_wcid *wcid;=0D
--	int wcid_idx;=0D
--=0D
- 	if (!dev->rx_ampdu_len)=0D
- 		return;=0D
- =0D
--	wcid_idx =3D dev->rx_ampdu_status.wcid_idx;=0D
--	if (wcid_idx < ARRAY_SIZE(dev->wcid))=0D
--		wcid =3D rcu_dereference(dev->wcid[wcid_idx]);=0D
--	else=0D
--		wcid =3D NULL;=0D
--	dev->rx_ampdu_status.wcid =3D wcid;=0D
--=0D
- 	mt76_airtime_report(dev, &dev->rx_ampdu_status, dev->rx_ampdu_len);=0D
- =0D
- 	dev->rx_ampdu_len =3D 0;=0D
-@@ -1405,7 +1399,7 @@ static void=0D
- mt76_airtime_check(struct mt76_dev *dev, struct sk_buff *skb)=0D
- {=0D
- 	struct mt76_rx_status *status =3D (struct mt76_rx_status *)skb->cb;=0D
--	struct mt76_wcid *wcid =3D status->wcid;=0D
-+	struct mt76_wcid *wcid =3D __mt76_wcid_ptr(dev, status->wcid_idx);=0D
- =0D
- 	if (!(dev->drv->drv_flags & MT_DRV_SW_RX_AIRTIME))=0D
- 		return;=0D
-@@ -1418,8 +1412,6 @@ mt76_airtime_check(struct mt76_dev *dev, struct sk_bu=
-ff *skb)=0D
- =0D
- 		if (!ether_addr_equal(hdr->addr1, dev->phy.macaddr))=0D
- 			return;=0D
--=0D
--		wcid =3D NULL;=0D
- 	}=0D
- =0D
- 	if (!(status->flag & RX_FLAG_AMPDU_DETAILS) ||=0D
-@@ -1430,7 +1422,6 @@ mt76_airtime_check(struct mt76_dev *dev, struct sk_bu=
-ff *skb)=0D
- 		if (!dev->rx_ampdu_len ||=0D
- 		    status->ampdu_ref !=3D dev->rx_ampdu_ref) {=0D
- 			dev->rx_ampdu_status =3D *status;=0D
--			dev->rx_ampdu_status.wcid_idx =3D wcid ? wcid->idx : 0xff;=0D
- 			dev->rx_ampdu_ref =3D status->ampdu_ref;=0D
- 		}=0D
- =0D
-@@ -1448,7 +1439,7 @@ mt76_check_sta(struct mt76_dev *dev, struct sk_buff *=
-skb)=0D
- 	struct ieee80211_hdr *hdr =3D mt76_skb_get_hdr(skb);=0D
- 	struct ieee80211_sta *sta;=0D
- 	struct ieee80211_hw *hw;=0D
--	struct mt76_wcid *wcid =3D status->wcid;=0D
-+	struct mt76_wcid *wcid =3D __mt76_wcid_ptr(dev, status->wcid_idx);=0D
- 	u8 tidno =3D status->qos_ctl & IEEE80211_QOS_CTL_TID_MASK;=0D
- 	bool ps;=0D
- =0D
-@@ -1456,8 +1447,10 @@ mt76_check_sta(struct mt76_dev *dev, struct sk_buff =
-*skb)=0D
- 	if (ieee80211_is_pspoll(hdr->frame_control) && !wcid &&=0D
- 	    !(status->flag & RX_FLAG_8023)) {=0D
- 		sta =3D ieee80211_find_sta_by_ifaddr(hw, hdr->addr2, NULL);=0D
--		if (sta)=0D
--			wcid =3D status->wcid =3D (struct mt76_wcid *)sta->drv_priv;=0D
-+		if (sta) {=0D
-+			wcid =3D (struct mt76_wcid *)sta->drv_priv;=0D
-+			status->wcid_idx =3D wcid->idx;=0D
-+		}=0D
- 	}=0D
- =0D
- 	mt76_airtime_check(dev, skb);=0D
-@@ -1521,7 +1514,7 @@ void mt76_rx_complete(struct mt76_dev *dev, struct sk=
-_buff_head *frames,=0D
- 	while ((skb =3D __skb_dequeue(frames)) !=3D NULL) {=0D
- 		struct sk_buff *nskb =3D skb_shinfo(skb)->frag_list;=0D
- =0D
--		mt76_check_ccmp_pn(skb);=0D
-+		mt76_check_ccmp_pn(dev, skb);=0D
- 		skb_shinfo(skb)->frag_list =3D NULL;=0D
- 		mt76_rx_convert(dev, skb, &hw, &sta);=0D
- 		ieee80211_rx_list(hw, sta, skb, &list);=0D
-@@ -1563,7 +1556,7 @@ void mt76_rx_poll_complete(struct mt76_dev *dev, enum=
- mt76_rxq_id q,=0D
- 		    mt76_npu_device_active(dev))=0D
- 			__skb_queue_tail(&frames, skb);=0D
- 		else=0D
--			mt76_rx_aggr_reorder(skb, &frames);=0D
-+			mt76_rx_aggr_reorder(dev, skb, &frames);=0D
- 	}=0D
- =0D
- 	mt76_rx_complete(dev, &frames, napi);=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wirele=
-ss/mediatek/mt76/mt76.h=0D
-index 527bef97e122..1e1bd410a7a7 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mt76.h=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h=0D
-@@ -364,6 +364,7 @@ enum mt76_wcid_flags {=0D
- };=0D
- =0D
- #define MT76_N_WCIDS 1088=0D
-+#define MT76_WCID_IDX_INVALID		0xffff=0D
- #define MT76_BEACON_MON_MAX_MISS	7=0D
- =0D
- /* stored in ieee80211_tx_info::hw_queue */=0D
-@@ -728,10 +729,7 @@ struct mt76_mmio {=0D
- };=0D
- =0D
- struct mt76_rx_status {=0D
--	union {=0D
--		struct mt76_wcid *wcid;=0D
--		u16 wcid_idx;=0D
--	};=0D
-+	u16 wcid_idx;=0D
- =0D
- 	u32 reorder_time;=0D
- =0D
-@@ -1793,7 +1791,8 @@ void mt76_rx_complete(struct mt76_dev *dev, struct sk=
-_buff_head *frames,=0D
- 		      struct napi_struct *napi);=0D
- void mt76_rx_poll_complete(struct mt76_dev *dev, enum mt76_rxq_id q,=0D
- 			   struct napi_struct *napi);=0D
--void mt76_rx_aggr_reorder(struct sk_buff *skb, struct sk_buff_head *frames=
-);=0D
-+void mt76_rx_aggr_reorder(struct mt76_dev *dev, struct sk_buff *skb,=0D
-+			  struct sk_buff_head *frames);=0D
- void mt76_testmode_tx_pending(struct mt76_phy *phy);=0D
- void mt76_queue_tx_complete(struct mt76_dev *dev, struct mt76_queue *q,=0D
- 			    struct mt76_queue_entry *e);=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/=
-wireless/mediatek/mt76/mt7603/mac.c=0D
-index d3110eeb45d7..aeb890df808e 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c=0D
-@@ -513,6 +513,7 @@ mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_bu=
-ff *skb)=0D
- 	u32 rxd2 =3D le32_to_cpu(rxd[2]);=0D
- 	bool unicast =3D rxd1 & MT_RXD1_NORMAL_U2M;=0D
- 	bool insert_ccmp_hdr =3D false;=0D
-+	struct mt76_wcid *wcid;=0D
- 	bool remove_pad;=0D
- 	int idx;=0D
- 	int i;=0D
-@@ -524,7 +525,8 @@ mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_bu=
-ff *skb)=0D
- 	i >>=3D 1;=0D
- =0D
- 	idx =3D FIELD_GET(MT_RXD2_NORMAL_WLAN_IDX, rxd2);=0D
--	status->wcid =3D mt7603_rx_get_wcid(dev, idx, unicast);=0D
-+	wcid =3D mt7603_rx_get_wcid(dev, idx, unicast);=0D
-+	status->wcid_idx =3D wcid ? wcid->idx : MT76_WCID_IDX_INVALID;=0D
- =0D
- 	status->band =3D sband->band;=0D
- 	if (i < sband->n_channels)=0D
-@@ -672,7 +674,7 @@ mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_bu=
-ff *skb)=0D
- 	}=0D
- =0D
- 	hdr =3D (struct ieee80211_hdr *)skb->data;=0D
--	if (!status->wcid || !ieee80211_is_data_qos(hdr->frame_control))=0D
-+	if (!wcid || !ieee80211_is_data_qos(hdr->frame_control))=0D
- 		return 0;=0D
- =0D
- 	status->aggr =3D unicast &&=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/=
-wireless/mediatek/mt76/mt7615/mac.c=0D
-index ce0051468501..84be00a13930 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c=0D
-@@ -246,17 +246,20 @@ static void mt7615_mac_fill_tm_rx(struct mt7615_phy *=
-phy, __le32 *rxv)=0D
- }=0D
- =0D
- /* The HW does not translate the mac header to 802.3 for mesh point */=0D
--static int mt7615_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap=
-)=0D
-+static int mt7615_reverse_frag0_hdr_trans(struct mt7615_dev *dev,=0D
-+					  struct sk_buff *skb, u16 hdr_gap)=0D
- {=0D
- 	struct mt76_rx_status *status =3D (struct mt76_rx_status *)skb->cb;=0D
- 	struct ethhdr *eth_hdr =3D (struct ethhdr *)(skb->data + hdr_gap);=0D
--	struct mt7615_sta *msta =3D (struct mt7615_sta *)status->wcid;=0D
- 	__le32 *rxd =3D (__le32 *)skb->data;=0D
- 	struct ieee80211_sta *sta;=0D
- 	struct ieee80211_vif *vif;=0D
- 	struct ieee80211_hdr hdr;=0D
-+	struct mt7615_sta *msta;=0D
- 	u16 frame_control;=0D
- =0D
-+	msta =3D (struct mt7615_sta *)mt76_wcid_ptr(dev, status->wcid_idx);=0D
-+=0D
- 	if (le32_get_bits(rxd[1], MT_RXD1_NORMAL_ADDR_TYPE) !=3D=0D
- 	    MT_RXD1_NORMAL_U2M)=0D
- 		return -EINVAL;=0D
-@@ -335,6 +338,7 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, s=
-truct sk_buff *skb)=0D
- 	struct ieee80211_supported_band *sband;=0D
- 	struct ieee80211_hdr *hdr;=0D
- 	struct mt7615_phy *phy2;=0D
-+	struct mt76_wcid *wcid;=0D
- 	__le32 *rxd =3D (__le32 *)skb->data;=0D
- 	u32 rxd0 =3D le32_to_cpu(rxd[0]);=0D
- 	u32 rxd1 =3D le32_to_cpu(rxd[1]);=0D
-@@ -378,12 +382,13 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev,=
- struct sk_buff *skb)=0D
- =0D
- 	unicast =3D (rxd1 & MT_RXD1_NORMAL_ADDR_TYPE) =3D=3D MT_RXD1_NORMAL_U2M;=
-=0D
- 	idx =3D FIELD_GET(MT_RXD2_NORMAL_WLAN_IDX, rxd2);=0D
--	status->wcid =3D mt7615_rx_get_wcid(dev, idx, unicast);=0D
-+	wcid =3D mt7615_rx_get_wcid(dev, idx, unicast);=0D
-+	status->wcid_idx =3D wcid ? wcid->idx : MT76_WCID_IDX_INVALID;=0D
- =0D
--	if (status->wcid) {=0D
-+	if (wcid) {=0D
- 		struct mt7615_sta *msta;=0D
- =0D
--		msta =3D container_of(status->wcid, struct mt7615_sta, wcid);=0D
-+		msta =3D container_of(wcid, struct mt7615_sta, wcid);=0D
- 		mt76_wcid_add_poll(&dev->mt76, &msta->wcid);=0D
- 	}=0D
- =0D
-@@ -590,7 +595,7 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, s=
-truct sk_buff *skb)=0D
- =0D
- 	hdr_gap =3D (u8 *)rxd - skb->data + 2 * remove_pad;=0D
- 	if (hdr_trans && ieee80211_has_morefrags(fc)) {=0D
--		if (mt7615_reverse_frag0_hdr_trans(skb, hdr_gap))=0D
-+		if (mt7615_reverse_frag0_hdr_trans(dev, skb, hdr_gap))=0D
- 			return -EINVAL;=0D
- 		hdr_trans =3D false;=0D
- 	} else {=0D
-@@ -638,7 +643,7 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, s=
-truct sk_buff *skb)=0D
- 		status->flag |=3D RX_FLAG_8023;=0D
- 	}=0D
- =0D
--	if (!status->wcid || !ieee80211_is_data_qos(fc))=0D
-+	if (!wcid || !ieee80211_is_data_qos(fc))=0D
- 		return 0;=0D
- =0D
- 	status->aggr =3D unicast &&=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net=
-/wireless/mediatek/mt76/mt76_connac.h=0D
-index 51423c7740bd..d9ae8d204442 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h=0D
-@@ -448,7 +448,8 @@ bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev,=
- struct mt76_wcid *wcid,=0D
- void mt76_connac2_mac_decode_he_radiotap(struct mt76_dev *dev,=0D
- 					 struct sk_buff *skb,=0D
- 					 __le32 *rxv, u32 mode);=0D
--int mt76_connac2_reverse_frag0_hdr_trans(struct ieee80211_vif *vif,=0D
-+int mt76_connac2_reverse_frag0_hdr_trans(struct mt76_dev *dev,=0D
-+					 struct ieee80211_vif *vif,=0D
- 					 struct sk_buff *skb, u16 hdr_offset);=0D
- int mt76_connac2_mac_fill_rx_rate(struct mt76_dev *dev,=0D
- 				  struct mt76_rx_status *status,=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers=
-/net/wireless/mediatek/mt76/mt76_connac_mac.c=0D
-index 0339e2e7ab60..376d59d517cc 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c=0D
-@@ -952,7 +952,8 @@ void mt76_connac2_mac_decode_he_radiotap(struct mt76_de=
-v *dev,=0D
- EXPORT_SYMBOL_GPL(mt76_connac2_mac_decode_he_radiotap);=0D
- =0D
- /* The HW does not translate the mac header to 802.3 for mesh point */=0D
--int mt76_connac2_reverse_frag0_hdr_trans(struct ieee80211_vif *vif,=0D
-+int mt76_connac2_reverse_frag0_hdr_trans(struct mt76_dev *dev,=0D
-+					 struct ieee80211_vif *vif,=0D
- 					 struct sk_buff *skb, u16 hdr_offset)=0D
- {=0D
- 	struct mt76_rx_status *status =3D (struct mt76_rx_status *)skb->cb;=0D
-@@ -960,6 +961,7 @@ int mt76_connac2_reverse_frag0_hdr_trans(struct ieee802=
-11_vif *vif,=0D
- 	__le32 *rxd =3D (__le32 *)skb->data;=0D
- 	struct ieee80211_sta *sta;=0D
- 	struct ieee80211_hdr hdr;=0D
-+	struct mt76_wcid *wcid;=0D
- 	u16 frame_control;=0D
- =0D
- 	if (le32_get_bits(rxd[3], MT_RXD3_NORMAL_ADDR_TYPE) !=3D=0D
-@@ -969,7 +971,13 @@ int mt76_connac2_reverse_frag0_hdr_trans(struct ieee80=
-211_vif *vif,=0D
- 	if (!(le32_to_cpu(rxd[1]) & MT_RXD1_NORMAL_GROUP_4))=0D
- 		return -EINVAL;=0D
- =0D
--	sta =3D container_of((void *)status->wcid, struct ieee80211_sta, drv_priv=
-);=0D
-+	wcid =3D __mt76_wcid_ptr(dev, status->wcid_idx);=0D
-+	if (!wcid)=0D
-+		return -EINVAL;=0D
-+=0D
-+	sta =3D container_of((void *)wcid, struct ieee80211_sta, drv_priv);=0D
-+	if (!sta)=0D
-+		return -EINVAL;=0D
- =0D
- 	/* store the info from RXD and ethhdr to avoid being overridden */=0D
- 	frame_control =3D le32_get_bits(rxd[6], MT_RXD6_FRAME_CONTROL);=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net=
-/wireless/mediatek/mt76/mt76x02_mac.c=0D
-index 14ee5b3b94d3..ce5d3f8f019a 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c=0D
-@@ -779,11 +779,10 @@ int mt76x02_mac_process_rx(struct mt76x02_dev *dev, s=
-truct sk_buff *skb,=0D
- 	u32 ctl =3D le32_to_cpu(rxwi->ctl);=0D
- 	u16 rate =3D le16_to_cpu(rxwi->rate);=0D
- 	u16 tid_sn =3D le16_to_cpu(rxwi->tid_sn);=0D
--	bool unicast =3D rxwi->rxinfo & cpu_to_le32(MT_RXINFO_UNICAST);=0D
- 	int pad_len =3D 0, nstreams =3D dev->mphy.chainmask & 0xf;=0D
-+	u8 wcid_idx;=0D
- 	s8 signal;=0D
- 	u8 pn_len;=0D
--	u8 wcid;=0D
- 	int len;=0D
- =0D
- 	if (!test_bit(MT76_STATE_RUNNING, &dev->mphy.state))=0D
-@@ -799,9 +798,9 @@ int mt76x02_mac_process_rx(struct mt76x02_dev *dev, str=
-uct sk_buff *skb,=0D
- 		status->flag |=3D RX_FLAG_IV_STRIPPED;=0D
- 	}=0D
- =0D
--	wcid =3D FIELD_GET(MT_RXWI_CTL_WCID, ctl);=0D
--	sta =3D mt76x02_rx_get_sta(&dev->mt76, wcid);=0D
--	status->wcid =3D mt76x02_rx_get_sta_wcid(sta, unicast);=0D
-+	wcid_idx =3D FIELD_GET(MT_RXWI_CTL_WCID, ctl);=0D
-+	sta =3D mt76x02_rx_get_sta(&dev->mt76, wcid_idx);=0D
-+	status->wcid_idx =3D wcid_idx;=0D
- =0D
- 	len =3D FIELD_GET(MT_RXWI_CTL_MPDU_LEN, ctl);=0D
- 	pn_len =3D FIELD_GET(MT_RXINFO_PN_LEN, rxinfo);=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/=
-wireless/mediatek/mt76/mt7915/mac.c=0D
-index cec2c4208255..30672713323f 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c=0D
-@@ -280,6 +280,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_bu=
-ff *skb,=0D
- 	u8 mode =3D 0, qos_ctl =3D 0;=0D
- 	struct mt7915_sta *msta =3D NULL;=0D
- 	u32 csum_status =3D *(u32 *)skb->cb;=0D
-+	struct mt76_wcid *wcid;=0D
- 	bool hdr_trans;=0D
- 	u16 hdr_gap;=0D
- 	u16 seq_ctrl =3D 0;=0D
-@@ -313,10 +314,13 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_=
-buff *skb,=0D
- =0D
- 	unicast =3D FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, rxd3) =3D=3D MT_RXD3_NORM=
-AL_U2M;=0D
- 	idx =3D FIELD_GET(MT_RXD1_NORMAL_WLAN_IDX, rxd1);=0D
--	status->wcid =3D mt7915_rx_get_wcid(dev, idx, unicast);=0D
- =0D
--	if (status->wcid) {=0D
--		msta =3D container_of(status->wcid, struct mt7915_sta, wcid);=0D
-+	wcid =3D mt7915_rx_get_wcid(dev, idx, unicast);=0D
-+=0D
-+	status->wcid_idx =3D wcid ? wcid->idx : MT76_WCID_IDX_INVALID;=0D
-+=0D
-+	if (wcid) {=0D
-+		msta =3D container_of(wcid, struct mt7915_sta, wcid);=0D
- 		mt76_wcid_add_poll(&dev->mt76, &msta->wcid);=0D
- 	}=0D
- =0D
-@@ -475,7 +479,8 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_bu=
-ff *skb,=0D
- =0D
- 		vif =3D container_of((void *)msta->vif, struct ieee80211_vif,=0D
- 				   drv_priv);=0D
--		err =3D mt76_connac2_reverse_frag0_hdr_trans(vif, skb, hdr_gap);=0D
-+		err =3D mt76_connac2_reverse_frag0_hdr_trans(&dev->mt76, vif,=0D
-+							   skb, hdr_gap);=0D
- 		if (err)=0D
- 			return err;=0D
- =0D
-@@ -532,7 +537,8 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_bu=
-ff *skb,=0D
- 	if (rxv && mode >=3D MT_PHY_TYPE_HE_SU && !(status->flag & RX_FLAG_8023))=
-=0D
- 		mt76_connac2_mac_decode_he_radiotap(&dev->mt76, skb, rxv, mode);=0D
- =0D
--	if (!status->wcid || !ieee80211_is_data_qos(fc))=0D
-+	if (status->wcid_idx =3D=3D MT76_WCID_IDX_INVALID ||=0D
-+	    !ieee80211_is_data_qos(fc))=0D
- 		return 0;=0D
- =0D
- 	status->aggr =3D unicast &&=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/=
-wireless/mediatek/mt76/mt7921/mac.c=0D
-index 03b4960db73f..59c64b951678 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c=0D
-@@ -184,6 +184,7 @@ mt7921_mac_fill_rx(struct mt792x_dev *dev, struct sk_bu=
-ff *skb)=0D
- 	u32 rxd4 =3D le32_to_cpu(rxd[4]);=0D
- 	struct mt792x_sta *msta =3D NULL;=0D
- 	struct mt792x_link_sta *mlink;=0D
-+	struct mt76_wcid *wcid;=0D
- 	u16 seq_ctrl =3D 0;=0D
- 	__le16 fc =3D 0;=0D
- 	u8 mode =3D 0;=0D
-@@ -211,10 +212,11 @@ mt7921_mac_fill_rx(struct mt792x_dev *dev, struct sk_=
-buff *skb)=0D
- 	chfreq =3D FIELD_GET(MT_RXD3_NORMAL_CH_FREQ, rxd3);=0D
- 	unicast =3D FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, rxd3) =3D=3D MT_RXD3_NORM=
-AL_U2M;=0D
- 	idx =3D FIELD_GET(MT_RXD1_NORMAL_WLAN_IDX, rxd1);=0D
--	status->wcid =3D mt792x_rx_get_wcid(dev, idx, unicast);=0D
-+	wcid =3D mt792x_rx_get_wcid(dev, idx, unicast);=0D
-+	status->wcid_idx =3D wcid ? wcid->idx : MT76_WCID_IDX_INVALID;=0D
- =0D
--	if (status->wcid) {=0D
--		mlink =3D container_of(status->wcid, struct mt792x_link_sta, wcid);=0D
-+	if (wcid) {=0D
-+		mlink =3D container_of(wcid, struct mt792x_link_sta, wcid);=0D
- 		msta =3D container_of(mlink, struct mt792x_sta, deflink);=0D
- 		mt76_wcid_add_poll(&dev->mt76, &mlink->wcid);=0D
- 	}=0D
-@@ -395,7 +397,8 @@ mt7921_mac_fill_rx(struct mt792x_dev *dev, struct sk_bu=
-ff *skb)=0D
- =0D
- 		vif =3D container_of((void *)msta->vif, struct ieee80211_vif,=0D
- 				   drv_priv);=0D
--		err =3D mt76_connac2_reverse_frag0_hdr_trans(vif, skb, hdr_gap);=0D
-+		err =3D mt76_connac2_reverse_frag0_hdr_trans(&dev->mt76, vif,=0D
-+							   skb, hdr_gap);=0D
- 		if (err)=0D
- 			return err;=0D
- =0D
-@@ -433,7 +436,7 @@ mt7921_mac_fill_rx(struct mt792x_dev *dev, struct sk_bu=
-ff *skb)=0D
- 	if (rxv && mode >=3D MT_PHY_TYPE_HE_SU && !(status->flag & RX_FLAG_8023))=
-=0D
- 		mt76_connac2_mac_decode_he_radiotap(&dev->mt76, skb, rxv, mode);=0D
- =0D
--	if (!status->wcid || !ieee80211_is_data_qos(fc))=0D
-+	if (!wcid || !ieee80211_is_data_qos(fc))=0D
- 		return 0;=0D
- =0D
- 	status->aggr =3D unicast && !ieee80211_is_qos_nullfunc(fc);=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/=
-wireless/mediatek/mt76/mt7925/mac.c=0D
-index c47bd812b66b..e429f78596e2 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c=0D
-@@ -166,17 +166,20 @@ void mt7925_mac_set_fixed_rate_table(struct mt792x_de=
-v *dev,=0D
- }=0D
- =0D
- /* The HW does not translate the mac header to 802.3 for mesh point */=0D
--static int mt7925_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap=
-)=0D
-+static int mt7925_reverse_frag0_hdr_trans(struct mt792x_dev *dev,=0D
-+					  struct sk_buff *skb, u16 hdr_gap)=0D
- {=0D
- 	struct mt76_rx_status *status =3D (struct mt76_rx_status *)skb->cb;=0D
- 	struct ethhdr *eth_hdr =3D (struct ethhdr *)(skb->data + hdr_gap);=0D
--	struct mt792x_sta *msta =3D (struct mt792x_sta *)status->wcid;=0D
- 	__le32 *rxd =3D (__le32 *)skb->data;=0D
- 	struct ieee80211_sta *sta;=0D
- 	struct ieee80211_vif *vif;=0D
- 	struct ieee80211_hdr hdr;=0D
-+	struct mt792x_sta *msta;=0D
- 	u16 frame_control;=0D
- =0D
-+	msta =3D (struct mt792x_sta *)mt76_wcid_ptr(dev, status->wcid_idx);=0D
-+=0D
- 	if (le32_get_bits(rxd[3], MT_RXD3_NORMAL_ADDR_TYPE) !=3D=0D
- 	    MT_RXD3_NORMAL_U2M)=0D
- 		return -EINVAL;=0D
-@@ -368,6 +371,7 @@ mt7925_mac_fill_rx(struct mt792x_dev *dev, struct sk_bu=
-ff *skb)=0D
- 	u32 rxd3 =3D le32_to_cpu(rxd[3]);=0D
- 	u32 rxd4 =3D le32_to_cpu(rxd[4]);=0D
- 	struct mt792x_link_sta *mlink;=0D
-+	struct mt76_wcid *wcid;=0D
- 	u8 mode =3D 0; /* , band_idx; */=0D
- 	u16 seq_ctrl =3D 0;=0D
- 	__le16 fc =3D 0;=0D
-@@ -392,10 +396,11 @@ mt7925_mac_fill_rx(struct mt792x_dev *dev, struct sk_=
-buff *skb)=0D
- 	chfreq =3D FIELD_GET(MT_RXD3_NORMAL_CH_FREQ, rxd3);=0D
- 	unicast =3D FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, rxd3) =3D=3D MT_RXD3_NORM=
-AL_U2M;=0D
- 	idx =3D FIELD_GET(MT_RXD1_NORMAL_WLAN_IDX, rxd1);=0D
--	status->wcid =3D mt792x_rx_get_wcid(dev, idx, unicast);=0D
-+	wcid =3D mt792x_rx_get_wcid(dev, idx, unicast);=0D
-+	status->wcid_idx =3D wcid ? wcid->idx : MT76_WCID_IDX_INVALID;=0D
- =0D
--	if (status->wcid) {=0D
--		mlink =3D container_of(status->wcid, struct mt792x_link_sta, wcid);=0D
-+	if (wcid) {=0D
-+		mlink =3D container_of(wcid, struct mt792x_link_sta, wcid);=0D
- 		mt76_wcid_add_poll(&dev->mt76, &mlink->wcid);=0D
- 	}=0D
- =0D
-@@ -545,7 +550,7 @@ mt7925_mac_fill_rx(struct mt792x_dev *dev, struct sk_bu=
-ff *skb)=0D
- =0D
- 	hdr_gap =3D (u8 *)rxd - skb->data + 2 * remove_pad;=0D
- 	if (hdr_trans && ieee80211_has_morefrags(fc)) {=0D
--		if (mt7925_reverse_frag0_hdr_trans(skb, hdr_gap))=0D
-+		if (mt7925_reverse_frag0_hdr_trans(dev, skb, hdr_gap))=0D
- 			return -EINVAL;=0D
- 		hdr_trans =3D false;=0D
- 	} else {=0D
-@@ -608,7 +613,7 @@ mt7925_mac_fill_rx(struct mt792x_dev *dev, struct sk_bu=
-ff *skb)=0D
- 		}=0D
- 	}=0D
- =0D
--	if (!status->wcid || !ieee80211_is_data_qos(fc))=0D
-+	if (!wcid || !ieee80211_is_data_qos(fc))=0D
- 		return 0;=0D
- =0D
- 	status->aggr =3D unicast && !ieee80211_is_qos_nullfunc(fc);=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/=
-wireless/mediatek/mt76/mt7996/mac.c=0D
-index e2a83da3a09c..98c30957dd76 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c=0D
-@@ -186,17 +186,19 @@ static void mt7996_mac_sta_poll(struct mt7996_dev *de=
-v)=0D
- }=0D
- =0D
- /* The HW does not translate the mac header to 802.3 for mesh point */=0D
--static int mt7996_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap=
-)=0D
-+static int mt7996_reverse_frag0_hdr_trans(struct mt7996_dev *dev,=0D
-+					  struct sk_buff *skb, u16 hdr_gap)=0D
- {=0D
- 	struct mt76_rx_status *status =3D (struct mt76_rx_status *)skb->cb;=0D
- 	struct ethhdr *eth_hdr =3D (struct ethhdr *)(skb->data + hdr_gap);=0D
--	struct mt7996_sta_link *msta_link =3D (void *)status->wcid;=0D
--	struct mt7996_sta *msta =3D msta_link->sta;=0D
-+	struct mt76_wcid *wcid =3D mt76_wcid_ptr(dev, status->wcid_idx);=0D
-+	struct mt7996_sta_link *msta_link;=0D
- 	struct ieee80211_bss_conf *link_conf;=0D
- 	__le32 *rxd =3D (__le32 *)skb->data;=0D
- 	struct ieee80211_sta *sta;=0D
- 	struct ieee80211_vif *vif;=0D
- 	struct ieee80211_hdr hdr;=0D
-+	struct mt7996_sta *msta;=0D
- 	u16 frame_control;=0D
- =0D
- 	if (le32_get_bits(rxd[3], MT_RXD3_NORMAL_ADDR_TYPE) !=3D=0D
-@@ -206,10 +208,16 @@ static int mt7996_reverse_frag0_hdr_trans(struct sk_b=
-uff *skb, u16 hdr_gap)=0D
- 	if (!(le32_to_cpu(rxd[1]) & MT_RXD1_NORMAL_GROUP_4))=0D
- 		return -EINVAL;=0D
- =0D
-+	if (!wcid)=0D
-+		return -EINVAL;=0D
-+=0D
-+	msta_link =3D container_of(wcid, struct mt7996_sta_link, wcid);=0D
-+	msta =3D msta_link->sta;=0D
-+=0D
- 	if (!msta || !msta->vif)=0D
- 		return -EINVAL;=0D
- =0D
--	sta =3D wcid_to_sta(status->wcid);=0D
-+	sta =3D wcid_to_sta(wcid);=0D
- 	vif =3D container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);=
-=0D
- 	link_conf =3D rcu_dereference(vif->link_conf[msta_link->wcid.link_id]);=0D
- 	if (!link_conf)=0D
-@@ -429,6 +437,7 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, enum mt76_rx=
-q_id q,=0D
- 	bool unicast, insert_ccmp_hdr =3D false;=0D
- 	u8 remove_pad, amsdu_info, band_idx;=0D
- 	u8 mode =3D 0, qos_ctl =3D 0;=0D
-+	struct mt76_wcid *wcid;=0D
- 	bool hdr_trans;=0D
- 	u16 hdr_gap;=0D
- 	u16 seq_ctrl =3D 0;=0D
-@@ -461,12 +470,14 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, enum mt76_=
-rxq_id q,=0D
- =0D
- 	unicast =3D FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, rxd3) =3D=3D MT_RXD3_NORM=
-AL_U2M;=0D
- 	idx =3D FIELD_GET(MT_RXD1_NORMAL_WLAN_IDX, rxd1);=0D
--	status->wcid =3D mt7996_rx_get_wcid(dev, idx, band_idx);=0D
- =0D
--	if (status->wcid) {=0D
-+	wcid =3D mt7996_rx_get_wcid(dev, idx, band_idx);=0D
-+	status->wcid_idx =3D wcid ? wcid->idx : MT76_WCID_IDX_INVALID;=0D
-+=0D
-+	if (wcid) {=0D
- 		struct mt7996_sta_link *msta_link;=0D
- =0D
--		msta_link =3D container_of(status->wcid, struct mt7996_sta_link,=0D
-+		msta_link =3D container_of(wcid, struct mt7996_sta_link,=0D
- 					 wcid);=0D
- 		msta =3D msta_link->sta;=0D
- 		mt76_wcid_add_poll(&dev->mt76, &msta_link->wcid);=0D
-@@ -620,7 +631,7 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, enum mt76_rx=
-q_id q,=0D
- =0D
- 	hdr_gap =3D (u8 *)rxd - skb->data + 2 * remove_pad;=0D
- 	if (hdr_trans && ieee80211_has_morefrags(fc)) {=0D
--		if (mt7996_reverse_frag0_hdr_trans(skb, hdr_gap))=0D
-+		if (mt7996_reverse_frag0_hdr_trans(dev, skb, hdr_gap))=0D
- 			return -EINVAL;=0D
- 		hdr_trans =3D false;=0D
- 	} else {=0D
-@@ -697,7 +708,7 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, enum mt76_rx=
-q_id q,=0D
- 		}=0D
- 	}=0D
- =0D
--	if (!status->wcid || !ieee80211_is_data_qos(fc) || hw_aggr)=0D
-+	if (!wcid || !ieee80211_is_data_qos(fc) || hw_aggr)=0D
- 		return 0;=0D
- =0D
- 	status->aggr =3D unicast &&=0D
--- =0D
-2.45.2=0D
-=0D
+> btw looks like the struct ieee80211_rx_status documentation needs to be
+> updated for HE & EHT (and UHR?)
+Yes.
 
