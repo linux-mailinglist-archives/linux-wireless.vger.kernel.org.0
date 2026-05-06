@@ -1,160 +1,165 @@
-Return-Path: <linux-wireless+bounces-36041-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36042-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLuaB9Oi+2mvegMAu9opvQ
-	(envelope-from <linux-wireless+bounces-36041-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 22:21:39 +0200
+	id 8K4WJzSj+2mvegMAu9opvQ
+	(envelope-from <linux-wireless+bounces-36042-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 22:23:16 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DF64E01FE
-	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 22:21:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A2E4E0227
+	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 22:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F1E6E3009839
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2026 20:21:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B29A53007F63
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2026 20:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE40533A9CF;
-	Wed,  6 May 2026 20:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403043128CA;
+	Wed,  6 May 2026 20:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K34bdA0x"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rn84xYbS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB7233A711
-	for <linux-wireless@vger.kernel.org>; Wed,  6 May 2026 20:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778098891; cv=pass; b=IIrUGeQb77hiHllftOeH4PGMBLyVm74R1Q8Bi9m4tUzduLurRQb52V61no8PUWhX1Y+S/aTbKUXTRlNPlPBGzq1Pcpk1oBwoNwoUxGTaDYrKgGgiKfBCVjPCtfKS5xvdeXYoVVpBjFU7hdc6yEVRpYIJJrD6gktOvPVxGNtz37M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778098891; c=relaxed/simple;
-	bh=QAqsL+P/EADi7i+Ad2gryAbkt9BAPf51xGRCB34VjX8=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=iaTZ5CwcFPBi+KZCYPZaS9Mx/4QsngyALjRR7DY0E3ltF+wcJqIWhMgfzI3ZBtOWuIwSnGINBxRqULh0FGiQy/LCQEdAqWKd6dQNlTNyi6svg+C/YWnIUAAdXoHIKsxUDtzlY4w8DEvtyaDBl47PE9A5XO0WCkE24Hd7AYwIDjI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K34bdA0x; arc=pass smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA82D131E49
+	for <linux-wireless@vger.kernel.org>; Wed,  6 May 2026 20:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778098994; cv=none; b=HRkKdTyKIoguA/iJ4Srqx+L4so5hbtGiAL1w2BBSis31pR8ZqJsI+BNF70SShdOZaPe9OIvAjEz6vAvVfX7sMWLyxl9huIe6da0B+6gSLcdn6QZtvIXEFzceMU6ZsGvO4mal1Dn3rmTwHuSVHae4cZ2cFDx5jJ4u+jjQhmnRlP0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778098994; c=relaxed/simple;
+	bh=Siu9sv8+Et6ROYSfq3g/Mzatj+4CNxewMbURJRWAVb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b4ffu3H/RxcVq9lav1fhNuQVFsNmxpMl0d3t3+TgQjZz9gZaW80DTpno5Ar+zbrkL6jC2Z+pX944hC/BjxjFYIhpPLVjWrOOdNQmAUu2rjEFzyjBopgAcAaAwCRC2m0SJ6UVyntg0k7CnBMGruQqOijh/mzE+DLE+SVjyUF++ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rn84xYbS; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79a2ee65171so505687b3.2
-        for <linux-wireless@vger.kernel.org>; Wed, 06 May 2026 13:21:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778098889; cv=none;
-        d=google.com; s=arc-20240605;
-        b=R5vORGK4FdOMUz2olaaQERlsXumoJsevQcSg6i4BHzU21hgNHyDlCLQyRYgyhsExEq
-         Sz+TtEbHDGnNnYTToXIa5elDpWz+IdQ25ipg7vp5WeJQJC2FH0B6C3Mj2uFN1+DBaGZK
-         03VuUpY+knVs+LdRhcHdhcQkZxH33KCHybpqkasrZfDUnIkGMfB4Z0RIrU+IJSiL5xmh
-         rySbqXkNrRqnUR8fNmKE5Vhj4W+0hCfh9TXnHlE1foGEGOifFS4AYikxQCwaD+L/3veS
-         7pnBWQxCkJQaMDpca4rDthT+TLOD23zwxWp+8Gfp9dMx+q8jVkeRo0RhDHjcp7TI8avj
-         9C2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=QAqsL+P/EADi7i+Ad2gryAbkt9BAPf51xGRCB34VjX8=;
-        fh=dcVxwJA/j6dv2elbHLlvH74hf1891TMHOuctm5VwxCQ=;
-        b=Rc/pqs5U+eWh0JWwyEGUe0gu9BjQSxAALoRWy59dhR24105Bs5axMG4VZ8vmAFn2SI
-         Mwj26ygymjR2HvlABYyGjyVexMFV9JvM+4Gb75yACeOokyiNCAATe+uFdWkLbDDOUq+H
-         xOVxurL66rVwLYvURxCNxVlIpseblL1EByunsXdZ/S+KT3YqXXRTJn+C9Xxg1IMApqir
-         cRnxvZ1LZorPe/yFp5lEcIvC1rRVWDNbHYTrxt/vYdAAGISqvbddR3bKZcMTtwm4ijey
-         PYcbC/Ssfmz7Gnpo7MQ2Wckr90l9gxadeJ7XrpdSx1Bp3tgawPx3/3OgiKgM3tOjrnJL
-         jHsw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5a86c1fe573so16921e87.3
+        for <linux-wireless@vger.kernel.org>; Wed, 06 May 2026 13:23:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778098889; x=1778703689; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QAqsL+P/EADi7i+Ad2gryAbkt9BAPf51xGRCB34VjX8=;
-        b=K34bdA0xZfjembZQ0UZFzUqgKEfqLXMDfVZciVNVIK/sgWYAsedwcOTRB2pXOoNmrR
-         wTQZUHuIQLxrtIUDo/ZX0d6Up62i9gXC3oQGiaTtG7N/Ne5jYbLM6PkKs7iREEF4+KvQ
-         qVNrIzPztwnxlY55D7wNHFkNCQDsSoMNBhaCf0Htfl2EOUiWcOlPTYFIQVcHXgMaCE84
-         GtsNWn7QhNBdQ/LKnFirEPDRlbCfYZMBCvvMGZkiF3K0yAlHyFtwmzeCKKYowRbzp4if
-         jsqUeZFEt6A1o+C0TdgTJYnm4rTWy9qcGt0+Ilpd09Yh3aSkYsLyRDyPT/jfJTzl84W4
-         SjWg==
+        d=gmail.com; s=20251104; t=1778098991; x=1778703791; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/P0Aph1wAQ3XWsOraX0sVIJSBkb9IvsSRZW7RubQb4M=;
+        b=rn84xYbSDLNxE47RtnS7y1DmxXZhJHu5slw+tP0bwjsdHpI3FtGqPYgcMuVPTz4C8Z
+         5et7SHw2R21vULuoFQUmSCpRignTffqEPbkNrFLtPsdO3ezKHX3e8Yh4LJEwpLwdvmaH
+         BDw1izDL47WcXIkCpGOozg4hQbw42VaA3ACNAi7vBG7lRvoTy2jkx/LN/4o+Epsi2JHH
+         RD3cQf9gYUa/pgnrohUrC2R9s19lfgX/KRux5HGyYibgUWUTw6Mx9M+IqFV1t2l0sgp/
+         Ge4vRze/hDsFt0CshVVpjM60yugwIpUGQvST21/CUdTpCb2tQLcFT92B95GjfxZUVgDD
+         IiKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778098889; x=1778703689;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QAqsL+P/EADi7i+Ad2gryAbkt9BAPf51xGRCB34VjX8=;
-        b=GE1pHYtkpmJ501SvNEMxVb7SAKp+YZ5C2cgwQyhWHxY0T1F3onMG0jdt+4h2H3+1BM
-         s10715inPgO4MlWWHHh+agyejW+FQ1BvRHzKGXvcVVOBJe+o0VXPsvcOiQoi9lE5F4q0
-         xlFZGC33Ngnpwy0vVHi0zAWOXrNWJnMvIttSdoQVe1a7eQhsjeeD7aJ3PLVuYTA94X0u
-         evVm438TKtGu5diYK6x60W+8KJd91HvsaTc7Z1fQ1FP28UinDS6C+m7G3Uv3+f2vFHpG
-         SMOV4COswYM8k7uvkvUudsc/AQiL0Iqib63y/HAwjNNZZF8XzQjssigpJKAy0zXhgnTN
-         3nVA==
-X-Gm-Message-State: AOJu0YzZ5sFqm3Zifx+e9gqMwXxgCu9uoPPkMsszZdUJbq/Rz6p8vpxr
-	31qRVIXm6cYzueK04vggWN8RiaA59IJZzjjgWPiJLidU8CRZWwtBbJDad+J+xd/LHeROZPyus9z
-	XIj0RaIwDjYrNkvBHG+CNoFmDbaDiOHbmIG9vH4I=
-X-Gm-Gg: AeBDiespLsRA5thnmIJeVgqrxsDNISyFjSwzDfJF0LSIVKdVeYCs6yvdrlJFY7HJhX0
-	RpLSw6QM4pjJrVBPJQzd/MenUn6tFppNu5C9medVZDUNnJrPm71Kb2RJiTsJE7v7PdYt3xWFBYG
-	IIqguXyodbcjGlECZsxhFcuy3aeH+Rqru4JD4sW1y8dk/eLK9JFn+kPNmSxMYQXV1iES7XPITFu
-	jzBhAUJWT3ZM0OfnR2bvg03SeOUSueWOC6z6A32dKCQIFw4m0ziUaK/H9yIfgUaBkRkI93sgQmo
-	8JsAn3FQThFEKNZ7i8BtfFPEcst0kwk=
-X-Received: by 2002:a05:690c:92:b0:7bd:8752:cdc7 with SMTP id
- 00721157ae682-7bdf5ed03edmr57314817b3.39.1778098889546; Wed, 06 May 2026
- 13:21:29 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778098991; x=1778703791;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/P0Aph1wAQ3XWsOraX0sVIJSBkb9IvsSRZW7RubQb4M=;
+        b=eZRF+RQnXSJ+jDMV4CdEVCSjdXHd/WATrbVu+ZGpVa9KnNxzw3T8VTMw504LLj+CpR
+         2FzU7ENgNH99nhkgwbCK8aGWF+L0OexDJLxCzF+55e7CFASFyT+K/VN7cxip1eCFPih7
+         skxftEazCgfkM8YllG9KE7wr3p6REGILKFI2bh9YIdnK141BlI00O/KEJHNuk69ue4Cg
+         TG0QB51fcm4M+/7mck/tnOrUMlapdEXfHNWJ1KHDLCLT46c9eWP6FoZYK2hLby9g1fzv
+         UW/d2EA5xM3Xc5dPoTfEHYdb9axMXGyytcJp0fNr7Oxu/xw/YWjv6O52DKnXYVejGL7j
+         Egsg==
+X-Gm-Message-State: AOJu0YxWaHzTKjEUmhbdCPdIjV0Erw40h1MUbPF30k/Hs5GVcjfiAYS1
+	MdSYjSzs3HJkjeN+f9mtOHUKTgzVPXPg8Vb7dEGouQ8eRIQwrhloFErn
+X-Gm-Gg: AeBDievQK3zyuY7FffgUdhjJLnRLXNzcW3dTj7b/rG6Vzkh4pFeK2dUUNPz96TzYNCP
+	X5wyExk8rRrvkI0F11wMVzQTv7u6fbJVbwz7VIR8ufcuobqKrC1ocCGDqE0OziAcHVJJ+ZBib+N
+	YY5sfFgO+77wcPJ7bwDDtaRJvV7L4h4dDDmxLIVVa6ek8/EfpYyZWcm/APXbQYrLr2vMSojYUGU
+	c1qe3QXDhIptYFVyGJ6Fr2JrIbiMnIYhOJdkg+G/tJavGcC+63UuZPO8cRihn71Dyqlzs3tISBz
+	35m8sraqV7nDSrQ4FYzLdCkgSg7zV/2lIPW8CDwsJkC7av4xNaeBRUugLrAyjx3bfs8yUbH6nOB
+	tdZvC69pEnSS+mGdgCCBN6e0TzvpEvJnlreJ8jtpFRKKtMM65Qvl1zuKPdRoK/02RGdFLEXqojw
+	83ZDnL/khXpbiZm09g9FNmj9jBb3U0w/nbUUF36h1XNkBzlXGq+p2nCaiEtU97e90RZuI9r89Zv
+	/Ue5SlLzIMR
+X-Received: by 2002:a05:6512:3da8:b0:5a3:eb4b:37a7 with SMTP id 2adb3069b0e04-5a887adcd69mr2337365e87.6.1778098990756;
+        Wed, 06 May 2026 13:23:10 -0700 (PDT)
+Received: from Thor.home (nb6bp2luucgh1ubvhqb-1.v6.elisa-laajakaista.fi. [2001:99a:a58:9b00:9119:221d:45f0:de83])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a870f96cb1sm3114134e87.22.2026.05.06.13.23.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 13:23:10 -0700 (PDT)
+Date: Wed, 6 May 2026 23:23:07 +0300
+From: Maxin John <maxin.john@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2] iw: Makefile: support out-of-tree builds
+Message-ID: <afujK_-G8ty4LnBD@Thor.home>
+References: <20260429210808.1497335-1-maxin.john@gmail.com>
+ <6d1b6079bd0c0318e4311bc41a35fc2169a0b4e8.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Jorge Mayorga <mayorvlf@gmail.com>
-Date: Wed, 6 May 2026 14:21:17 -0600
-X-Gm-Features: AVHnY4KmODo-emmWNrM3WYgqpixKknjVjoIsDpk2RHha45bWNLj5eq5bXX3aMmM
-Message-ID: <CAGK_M0RWxDBY4CP-M9PxMf2codLim-xXdZ4BH158vW+FTq+8Ng@mail.gmail.com>
-Subject: [BUG] EM9293 PCIe (MHI) WWAN RX path broken on kernel 7.0
-To: netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 18DF64E01FE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6d1b6079bd0c0318e4311bc41a35fc2169a0b4e8.camel@sipsolutions.net>
+X-Rspamd-Queue-Id: F1A2E4E0227
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36041-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-36042-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mayorvlf@gmail.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[maxinjohn@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,Thor.home:mid]
 
-Hello, We are observing a data-plane failure with a PCIe-based WWAN
-modem (Sierra Wireless EM9293) using the MHI subsystem on Linux kernel
-7.0. Environment: Kernel: 7.0.0-15-generic OS: Ubuntu 26.04
-ModemManager: 1.25.95 Modem: Sierra Wireless EM9293 Bus: PCIe (MHI)
-Driver: mhi_net, mhi-pci-generic Issue summary: Two distinct failure
-modes depending on protocol: 1. MBIM mode Interface created: mhi_hwip0
-State: UP, LOWER_UP, POINTOPOINT, NOARP IP assigned correctly Traffic:
-TX packets increase normally RX packets remain near zero Ping: 100%
-packet loss Counters: TX: ~15000 packets RX: ~7 packets This indicates
-TX path is functional but RX path is not working. 2. QMI multiplexed
-mode Interface qmapmux0.0 is created Traffic works briefly Interface
-is removed shortly after connection Interpretation: MBIM: control
-plane OK TX OK RX not functional QMI: data path partially works netdev
-lifecycle unstable Low-level interpretation: TX path: host -> mhi_net
--> modem OK RX path: modem -> mhi_net -> host FAIL Additional
-observations: No routing issues No firewall interference No userspace
-misconfiguration Same failure persists regardless of routing setup USB
-(cdc_mbim) works correctly on same hardware This appears to be a
-kernel-level issue in the MHI WWAN data path. Likely areas: mhi_net RX
-handling downlink channel setup rmnet/qmap lifecycle possible race
-condition in netdev teardown Request: Any guidance on debugging the RX
-path in mhi_net would be appreciated. Also confirming whether current
-MHI WWAN support is expected to fully support RX on PCIe devices like
-EM9293. Thanks
+Hi,
+
+On Tue, May 05, 2026 at 12:35:16PM +0200, Johannes Berg wrote:
+> On Thu, 2026-04-30 at 00:08 +0300, Maxin John wrote:
+> 
+> 
+> >   - Add support for kernel-style out-of-tree builds using:
+> >       make O=<builddir>
+> >   - Make SRCDIR computation whitespace-safe by switching to realpath
+> >   - Remove ambiguous use of "-I." from CPPFLAGS
+> 
+> Thanks for fixing that.
+> 
+> Right now I don't really see _why_ it doesn't work, but it seems
+> confusing that if you build in-tree first and then try to build out-of-
+> tree, it just says
+> 
+> 	make[1]: Nothing to be done for 'all'.
+> 
+> Maybe that should abort? Or work?
+
+Thanks for sharing this observation. Yes, this is not ideal. I will update that
+part based on your suggestion.
+
+> It seems that removing VPATH and changing the %.o rule
+> 
+> -%.o: %.c iw.h nl80211.h nl80211-commands.inc
+> +%.o: $(SRCDIR)/%.c $(SRCDIR)/iw.h $(SRCDIR)/nl80211.h nl80211-commands.inc
+> 
+> makes that work?
+> 
+> I'll leave it to you though.
+
+I will send a v3 to fix it.
+ 
+> johannes
+
+Best Regards,
+Maxin
 
