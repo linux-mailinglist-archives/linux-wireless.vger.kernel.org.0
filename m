@@ -1,187 +1,185 @@
-Return-Path: <linux-wireless+bounces-36040-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36039-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AFROIig+2kZegMAu9opvQ
-	(envelope-from <linux-wireless+bounces-36040-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 22:11:52 +0200
+	id cAKhBfWf+2kZegMAu9opvQ
+	(envelope-from <linux-wireless+bounces-36039-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 22:09:25 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D29F4E0146
-	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 22:11:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9634E0119
+	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 22:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E891630097D8
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2026 20:11:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB784301CFD3
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2026 20:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A33633EAEC;
-	Wed,  6 May 2026 20:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001D23112AB;
+	Wed,  6 May 2026 20:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="rPgOx3jt"
+	dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b="daqSAmkr";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="URK7ISgF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1295314A86;
-	Wed,  6 May 2026 20:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDA52E9757;
+	Wed,  6 May 2026 20:09:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778098286; cv=none; b=ZmD7UV6mQytmkIS0SFujA+2J2mapsT3AbRQgWVLvuHp0jsjtdrxlfNyUnZ8ICLshPx3Tz5pn11gtiQqmyEHD1S4rf7ZtbMFHos/v1N1mHgVoebQI9Am80nQlb96oo/F98Uh8PxWu2OgQeBWJINGZz1fs2OVzqDzNbtCUPaM3NWI=
+	t=1778098161; cv=none; b=ImlP9Rtb0ON2a75CBY3imPiQD4frxQrPgRHT53azGwwBa8UxngMwoVPDVaMAo9moCdNxNtfBZLm2NOg2Lqv/7KpmLlx8nGKaVtGnSkl25QJXuyQzamYjKyh4CV+NxkRM1cZqAKWnlt67ApIHGfvdfEHc3d4xoPTjpgHDA/pwMzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778098286; c=relaxed/simple;
-	bh=ZzWNw099T3hlULv2mT6i+/AwSfAsML1KA3LVuYsrTjk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i+tnljOmilzyEBkH9Ci8/esvgyXnywePrAHT/4ZUMNMYmjNWDKyleHFE/uS5fJML8FwkyR3YPVyCAjHmrLJWP2py1MAcQOlJ9hoFSUOhWLK63yYggAfycElsuoevi8fvgZTSMy1Tmwdxn59SS0eDr9AuL6Vz8yoz5ZgNUxF3O3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=rPgOx3jt; arc=none smtp.client-ip=198.252.153.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
-Received: from mx0.riseup.net (mx0-pn.riseup.net [10.0.1.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx1.riseup.net (Postfix) with ESMTPS id 4g9mX55J7RzDryq;
-	Wed,  6 May 2026 20:03:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=riseup.net; s=squak;
-	t=1778097781; bh=FBStJu5AVvcG88W9ms1p6fIs0VIKAoPet7WSD3JdXYY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=rPgOx3jtlBkq4LCBpLrjAJSaSRO7s2Q1JWuKk4I3t2mDeDODd12RpKuwGHO0e+qdX
-	 Zeq+FALXAf7CbkpArY0Hg+IQsgSX2gFWC3bQqmDLj0YpWXb3qUn9w1wbpxMOk/HvdN
-	 fLmOYWPyEO9M7fLDbG3sQr1Z0d2ohD+Q/9LMRY80=
-Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx0.riseup.net (Postfix) with ESMTPS id 4g9mWy6nlBz9shx;
-	Wed,  6 May 2026 20:02:54 +0000 (UTC)
-X-Riseup-User-ID: CCE37216CA06750F7617076F546FDAFBDF4B17FA4091129CBB3034E01BC13F24
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4g9mWx0SxXz1y6Y;
-	Wed,  6 May 2026 20:02:52 +0000 (UTC)
-From: =?UTF-8?q?Santiago=20Ruano=20Rinc=C3=B3n?= <santiagorr@riseup.net>
-To: Jeff Johnson <jjohnson@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Mark Pearson <mpearson-lenovo@squebb.ca>,
-	kfarnung@outlook.com,
-	koike@igalia.com
-Subject: [PATCH v2] wifi: ath11k: Add two missing Lenovo IDs to the quirk table
-Date: Wed,  6 May 2026 16:54:46 -0300
-Message-ID: <20260506200249.317690-1-santiagorr@riseup.net>
+	s=arc-20240116; t=1778098161; c=relaxed/simple;
+	bh=x4OPdXSil4/3tqs8a1SjyLj4aGFinVsgsTUC8WLuF5Y=;
+	h=Content-Type:MIME-Version:From:To:Date:Subject:Cc:In-Reply-To:
+	 References:Message-Id; b=KVF55PfJWpTBqLhazPtggEnGbuek3dYVzyR28r89/GcuE6i37eOKPIN5xobD/DYTKes88Lbx1rSccQxIhOMHxjq6rxIdclN3OVEG+qu9absXAomJovMGxHjwzZLr6u/q88c5+VDCeB9k1Zkq41b+CJwbvkTsrcfg8AnX3C1V6t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me; spf=pass smtp.mailfrom=jetm.me; dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b=daqSAmkr; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=URK7ISgF; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jetm.me
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 6D8131400070;
+	Wed,  6 May 2026 16:09:19 -0400 (EDT)
+Received: from phl-imap-07 ([10.202.2.97])
+  by phl-compute-02.internal (MEProxy); Wed, 06 May 2026 16:09:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jetm.me; h=cc:cc
+	:content-transfer-encoding:content-type:content-type:date:date
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1778098159;
+	 x=1778184559; bh=45fzbr5u0590fQqlzP1nzbj90VoHWyrUuJIXnMHC0JA=; b=
+	daqSAmkr/rCqg7/cylMR5qWxeLSyXoINIWrU7l0ljmWrD2afiY35gKZM46EzVLE2
+	1s2GYrmP0FClj0kI1AkhM4EQCtG8cZYg+Wm7Wvd8QNp7/VKJtJhDsGhCePufKm22
+	BCU4Qi68JBZ7wSrixpgq0Zg8AYmGVsn+7KSF5YbxGgc5eQq1ZZsCK7jk21PgwLT8
+	gL5l6XtidazcsICs0vYGNFdgsJBtM4+Koq2UD46esYx51JfntWrFnTchjOxCvPnQ
+	8j1hr25Yh1RAaRAemRW6/EUrKPml1kMoDW2YbAHhCKZUBtikif1KEnpCnKyySbKA
+	oCRu4yr5qtG5AjEBq63+lA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778098159; x=
+	1778184559; bh=45fzbr5u0590fQqlzP1nzbj90VoHWyrUuJIXnMHC0JA=; b=U
+	RK7ISgFBN31jC0gTaq7VjwC5YeE9NSAuL+JyMU4HfLBC2Eb5lH7tv95EEgqXZ20/
+	2ZV5DpMA4VSIayx/zGxMf5w4fruPSpRhbBya0pi3oNwYJEkq8257LuPkJj+HFhzK
+	gmOy2+fFeUWoJ6przJCAf81pAVIUdxli9kJrh3eg8N/uSR/fEFHPKE/MEOIMeBPq
+	xD++l62CHRivC7RlQ9Qn8OzBXHEDeXPxoiFINr5Gz1FCtxMNIbNukoofrOvSXSqP
+	k3dVfnjmaWsa87+p0vkOu9uF09uHGzMWt+LAcaLx4gnfRpWH2XctJr1vrWhlxcm7
+	u0R6Z6y9ihLGvUjWOzooQ==
+X-ME-Sender: <xms:7p_7aeaqhonRvp1gf_cncceRwXgMXKLnbVswBPgy0zYKmnSXDFm_Cg>
+    <xme:7p_7acM7eGdwD29XzFVxhSMVVmYsn6EUgUHyqvtDjvUDIx1Km5JqPZC9Lmwfpb1oH
+    zVZ5CYfeuowwIsxUXnDiwmXOqawpljVwWSoYx2gCSBsffy2Xt_OOUQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutdehhedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegopf
+    hokfffucdluddtmdenucfjughrpefotggggffhvfffufevjghfsehtkedttdertdejnecu
+    hfhrohhmpeflrghvihgvrhcuvfhirgcuoehflhhoshhssehjvghtmhdrmhgvqeenucggtf
+    frrghtthgvrhhnpeegfeduffefgeejvdehgedtffdutedvveehvdekvdetleekjedvheev
+    vdelgffgteenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfhhlohhsshesjhgvthhmrdhmvgdp
+    nhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepsghrrg
+    gurdhpihiiiihimhgvnhhtihesghhmrghilhdrtghomhdprhgtphhtthhopehlohhrvghn
+    iihosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrhiguvghrrdhlvggvsehmvgguih
+    grthgvkhdrtghomhdprhgtphhtthhopehsvggrnhdrfigrnhhgsehmvgguihgrthgvkhdr
+    tghomhdprhgtphhtthhopehshhgrhihnvgdrtghhvghnsehmvgguihgrthgvkhdrtghomh
+    dprhgtphhtthhopehnsggusehnsggurdhnrghmvgdprhgtphhtthhopehlihhnuhigqdhk
+    vghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqd
+    ifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:75_7aXYEqKiGN5LgVIiWnXkqjgddRREM8eLBcba29tUTgaBx0TOT_A>
+    <xmx:75_7adI6F7fIB2e-dDpNrFRqwJYZaRsFWN7tfyelENmklloYf-uTPA>
+    <xmx:75_7abuXCFyuNunssISECyj29DqV4mZL-LzVTdqruuWtnEpYcHoTCg>
+    <xmx:75_7aZVxfHkQG017sKaP7OGlajFLdKsWIkggauLbjcdk57RBKnx77g>
+    <xmx:75_7adIkhkEcvSHxDrZz7VR0Aj2_PmmV-VrUHxneLFSlTwYD5t4bL2MU>
+Feedback-ID: i9dde48b3:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id D68321EA006C; Wed,  6 May 2026 16:09:18 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1D29F4E0146
+From: Javier Tia <floss@jetm.me>
+To: Bradley Pizzimenti <brad.pizzimenti@gmail.com>
+Date: Wed, 06 May 2026 14:02:32 -0600
+Subject: Re: [bug report] wifi: mt76: mt7925: iw set txpower fixed accepted but ignored
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com
+In-Reply-To: <CACjnFagN9zeSkwEv3-CSPJDUENPcEcOLjKyQoLQ91Yjn=rq5ww@mail.gmail.com>
+References: <CACjnFagN9zeSkwEv3-CSPJDUENPcEcOLjKyQoLQ91Yjn=rq5ww@mail.gmail.com>
+Message-Id: <20260506200918.D68321EA006C@mailuser.phl.internal>
+X-Rspamd-Queue-Id: 6B9634E0119
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[riseup.net,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[riseup.net:s=squak];
+	DMARC_POLICY_ALLOW(-0.50)[jetm.me,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[jetm.me:s=fm2,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[squebb.ca,outlook.com,igalia.com];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36040-lists,linux-wireless=lfdr.de];
+	XM_UA_NO_VERSION(0.01)[];
+	TAGGED_FROM(0.00)[bounces-36039-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[riseup.net:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[santiagorr@riseup.net,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[floss@jetm.me,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[jetm.me:+,messagingengine.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,riseup.net:email,riseup.net:dkim,riseup.net:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mailuser.phl.internal:mid]
 
-Commit 0eb002c93c3b4 ("wifi: ath11k: Add missing platform IDs for quirk
-table") added some Lenovo platform IDs to the quirk table to address a
-wakeup from suspend issue [1].  However, at least P14s Gen 5 AMD, as
-reported by Kyle Farnung [2], and P14s Gen 3 AMD are missing in the
-table.  This commit adds the two corresponding Lenovo version IDs for
-each.
+On Sun May  4 22:04:48 2026 Bradley Pizzimenti wrote:
+> `iw dev <iface> set txpower fixed N` returns success on mt7925 for
+> any N tested, but the reported txpower never changes from a stuck
+> value of 3.00 dBm.
 
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
-[2] https://bugzilla.kernel.org/show_bug.cgi?id=219196#c23
+Hi Bradley,
 
-Tested-on: P14s G3 AMD running 7.0.3.
+The 3 dBm display bug is a known issue we have seen when using mt7927
+and a tested fix has been working well so far. The root cause is that
+mt7925_mcu_set_rate_txpower() programs the per-band SKU tables into
+firmware but never assigns phy->txpower_cur. mt76_get_txpower() then
+computes:
 
-Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine model")
-Co-authored-by: Kyle Farnung <kfarnung@gmail.com>
-Signed-off-by: Santiago Ruano Rincón <santiagorr@riseup.net>
----
-Changes in v2:
-- Merged the Lenovo P14s G5 AMD #1 and #2 related changes proposed by
-  Kyle Farnung in
-  https://lore.kernel.org/all/20260330-p14s-pm-quirk-v2-1-ef18ce07996b@gmail.com/
-- Added Kyle Farnung as Co-author of the commit
-- Added the second ID of Lenovo P14s G3 AMD, and adapt the comments
-  accordingly
-- v1: https://lore.kernel.org/ath11k/20260423211458.458911-1-santiagorr@riseup.net/
----
- drivers/net/wireless/ath/ath11k/core.c | 28 ++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+  DIV_ROUND_UP(0 + 6, 2) = 3
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 3f6f4db5b7ee..c1ce0a11af44 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -957,6 +957,20 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21K4"),
- 		},
- 	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* P14s G3 AMD #1 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21J5"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* P14s G3 AMD #2 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21J6"),
-+		},
-+	},
- 	{
- 		.driver_data = (void *)ATH11K_PM_WOW,
- 		.matches = { /* P14s G4 AMD #1 */
-@@ -971,6 +985,20 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21K6"),
- 		},
- 	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* P14s G5 AMD #1 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* P14s G5 AMD #2 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21MF"),
-+		},
-+	},
- 	{
- 		.driver_data = (void *)ATH11K_PM_WOW,
- 		.matches = { /* T16 G2 AMD #1 */
--- 
-2.53.0
+regardless of the actual power level. The RF output is unaffected;
+it is a display-only bug.
 
+The fix reads the effective TX power back from the rate power limits
+after programming the SKU tables and writes it to phy->txpower_cur,
+following the same pattern used by mt7996:
+
+  https://github.com/jetm/mediatek-mt7927-dkms/blob/master/mt7927-wifi-14-fix-reported-txpower-always-showing-3-db.patch
+
+This is part of a series we are targeting for wireless-next; not
+yet upstream.
+
+> What seems potentially distinct here is that the user-issued
+> `iw set txpower fixed N` itself is silently no-op'd, separate
+> from the reported-value question.
+
+Agreed those are two separate issues. Our patch addresses the
+display-only side: after applying it, iw will report the value the
+firmware is actually using based on the SKU tables, rather than
+always 3 dBm. Whether `set txpower fixed N` propagates to firmware
+to change actual output power is orthogonal and not addressed here.
+
+If you can test the patch on your MT7925 and confirm the displayed
+value reflects the correct power after association, a Tested-by
+would be appreciated.
+
+Best,
+Javier
 
