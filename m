@@ -1,88 +1,88 @@
-Return-Path: <linux-wireless+bounces-35989-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-35990-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGKgM3Tk+mmGTgMAu9opvQ
-	(envelope-from <linux-wireless+bounces-35989-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 08:49:24 +0200
+	id 6AoxCW3k+mmGTgMAu9opvQ
+	(envelope-from <linux-wireless+bounces-35990-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 08:49:17 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D223D4D6C5B
-	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 08:49:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF72B4D6C4D
+	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 08:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 93A90301F4F2
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2026 06:49:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 59496300E292
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2026 06:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F12C368276;
-	Wed,  6 May 2026 06:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2D9369206;
+	Wed,  6 May 2026 06:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bA77DnCv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dES6HfGw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32676367F51
-	for <linux-wireless@vger.kernel.org>; Wed,  6 May 2026 06:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1036A368958
+	for <linux-wireless@vger.kernel.org>; Wed,  6 May 2026 06:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778050142; cv=none; b=MTpFLYsSUAAz1YmjucGZscT8N3KZn/6y2h3PiOY2JtwKKTyqhI9MXzTYm3sepkUQ0Qn5Hzffp2WE8YDAlEsN0kUZPZjKWlbsm+jKEcV0Lbvdo9bZQnUgjEtK/QK274BwYC8QRIx3GLi7pfjrk4Nf1Y6eVGpog9ekU9lfZPjrYao=
+	t=1778050144; cv=none; b=EOrbAgG3lJjAA3hPtOle+NAhd22xPBHzl13ca70Q0K9+UfP4zKGWGQBmf/aghmHDBza1kUNk90QULOgNGX/LACRbm82oUuIZiJ4lXQMbft9ov3GluIthJsh0eIhk29ZTJfXTJnnQtswdxqR/pKj9pdySOC5C+L+XZv8IvJA7SQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778050142; c=relaxed/simple;
-	bh=k+uzamRbo0nKKagULwVG/B+k3B3TJdppE8sMG29amlY=;
+	s=arc-20240116; t=1778050144; c=relaxed/simple;
+	bh=ZdZ25Cwyc8EI9KIsO67eAsM12WkNodGogI80eVVD8ew=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nECANjGQ2Fse3B9F4aw9wcup6lCpwcSoS2pHXWt1CBd0n6VGItPFUmd1sEyJ7WaN/wnLbmplpLEQKd3a61Bcplj98PJWRSY3PMtHyR48tQnAuhnd03eroS5QiT6oBvlSIe+9hVvzjFe94+aZxCPOij1vLOnNuLbxBfgW1aFaQbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bA77DnCv; arc=none smtp.client-ip=209.85.210.182
+	 MIME-Version; b=H5OtsBU7QIYYaiw/uq9khx5++J2YIVBzEuPSHKDHDcuhDUxeC7SSzgxRmYyYgURCdtJDQNRInyhu3Z+1m3BcJyjp32rKsX2cHI8FLoI3M0ZBVMuUlU/a3pRNF7dh7fvTrtaJIq+XtVyHFEIbWgW84caIsxrFaaKu68wxeWbUGuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dES6HfGw; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-83945063f70so294656b3a.0
-        for <linux-wireless@vger.kernel.org>; Tue, 05 May 2026 23:49:01 -0700 (PDT)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-824c9da9928so2737150b3a.3
+        for <linux-wireless@vger.kernel.org>; Tue, 05 May 2026 23:49:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778050140; x=1778654940; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778050142; x=1778654942; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SJykL2m6ICx+4XkwZ+Xgccbe84118vMdIZH0tGbTgkg=;
-        b=bA77DnCvIpu8xf4L4kTcKw19u4hzKuxlU7yH4Cmk3Fc2AFi2Z0lG1zQCCJc7dWLa1Q
-         Y90nvB++D0rI4AdNC7c5RTNQryxVLBDkX47DBRFRJ8a54dUUefLsGPKB6MWW/nb+VpSw
-         mybJhw4bsXODYPWC8/Bm+4kZqBaoxfbmTdAnoSwPChWLfBmRekmUzxbrYeZHoELkRw11
-         I47+f8vq4viUwVuUqoinTmMCqhL4Fd+iqbNrSP39GFwaljERpZgJVBEnoEi+mgsRM3HQ
-         L2kvN5N2E13m4bT/5Oe5d4TT62JdxfkBjZli5n8jSY2bEFNXhISUQDQzZlwS4Z+wJfDt
-         IcaA==
+        bh=Db185kstbdGF6yJwsHK4uxlvTdgmksgpvYFORZok+t4=;
+        b=dES6HfGwfQ36pyjK51EavTdzdOy4JGt7atKkk8eSmKo8oEABGi2VwDQpNq0EdPNAJz
+         97meXtcF9p9zqEceK6wMP56vsBz9MIUbYo/qu/SUVfqbLR8CBOnunbgmPXaltezMd/aS
+         EEDJ8TOgdLdyFfWBfAxgqE66EGUXX8LK5LVvrrR6pmIoenE11CtjLoXw9Vq4oLlFU44q
+         8OFGUicUMJZqVXRbzSlZSDT4OV991VzGne/QJfINCeHOm81aW98Hp5WepfHfPnGLiZAN
+         ENp9P3GKdozh32R9wzF1UgrB5rG262NiUBFDeTPGG8Re1aCaL0Et8SFCfx3PM39CfT4y
+         ex0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778050140; x=1778654940;
+        d=1e100.net; s=20251104; t=1778050142; x=1778654942;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=SJykL2m6ICx+4XkwZ+Xgccbe84118vMdIZH0tGbTgkg=;
-        b=BsEPhDQkIyQkREolNBHFvRoECg2ZTsK32aLhx4EBP2cWhm6tLpkgKdSGHVwnf1SIbj
-         kcrdbiWAuwcFu6A2WdNtOV6hOfaGnYzseFjv/56l3BpCWeL8yLeg5txwdPcOYvD7L+By
-         22f+h4VCdkUiPbt9xtFv+QMNDIIZCzSeVfT7ZtEi7kFXLET8QKjwBlnxfNCZpsRaxVo3
-         XmC6Osf/Dh/0yjuO2ag1DUcN+PFDp+H8i+Xej/giIsr26YezTbWNggXhrYjVQknPzMOX
-         xVHoJ5++H1VzMt3+oNFNp9PehSMS1S/VeIuJoJp9Zl9fDm2aECqdCuj3Dm2DkQozT3zo
-         chlw==
-X-Gm-Message-State: AOJu0YyVx1Yei2EdAbI3ur8yCBpRKjtn0Idkegt1xyeWDFeEmD2FKNyc
-	Bu6fMVT0TnOAk8S293DBOcGrQWtr0gZqNBpCcN/iPRcjmto7+sIOngkW
-X-Gm-Gg: AeBDietKSiMF5NS/9qgusgrQHOgWMEY0njR0hvO6XvpH/zddOJ6ucBGT49gylKEjXl5
-	q/mAVxwk2dvrvkm9/6IWK21tRdkILlHaI0J6OhsO67kuvWaMb9OpKtCHq56rhBP1AQ+gSZ+Kr/B
-	z7PwBFZBJYuYxhSwEAsTM26WthjSrOay2kVslC1rH9+q0MIQ0pq5Nh2cwrSamxiZ1gYaMdvuFD6
-	3/bJSI9Hl22B+obkziuLEW81Sl33tmKx+bshzNw63rLWixXT1M+gQv7F/u/3aU7YMGKKNwf9ie3
-	nJFphw2BxKNw4RAFPxOeWGMpKOeReSnH/L0ga91rVvTFg7G5woEdYeTMQuwTer2JCXy1BFUB90G
-	nX/48i2J+m3l2emx2o2OqZe2WlEsghUqaX1k3PoQP/4UOc7UyCwhJwdjKCKz09J0uQAN2aWl+0D
-	Q8oEpnZFisZ6c8CL9YhiQ3gWUY+yv6hSvbnq/Rk9YZaiFTXiPRIdoLS2y/bmU=
-X-Received: by 2002:a05:6a00:300f:b0:82f:6d4a:df3e with SMTP id d2e1a72fcca58-83a543f60f9mr1650768b3a.5.1778050140495;
-        Tue, 05 May 2026 23:49:00 -0700 (PDT)
+        bh=Db185kstbdGF6yJwsHK4uxlvTdgmksgpvYFORZok+t4=;
+        b=YDJBDufIZ/Vq3BvU97/cnus6GYCT0MuHrvOyVdgyPRDK/G5014+yVc67dQPzDll1u4
+         lj/h8dnUUMk8LnvDkz9XAWL6ZDddDHGv7TPlZtxJerRw3YKrBv+7qaXIyig3//S4/y6H
+         3NnI0Q71hEthm1S1ikdSKWIjGcm21pTji8Gn4Oj3IkxsJlvvIKD3o4GrHzrtlr3ew4H0
+         Mgr315QuuXpsGPW1MyAFrjzz41tznqIrZADReZTJDkp04zU93YcnVCZxB2ndmHdh2wHU
+         ZrzFXzzH3I0jClOcChAWIhhnsZLoKJGEFpZ6SpZ0RIjGr81fYfz5Z6VKsoxW9ilVqhtn
+         MwOA==
+X-Gm-Message-State: AOJu0YwhmdpzSRAItZyuUcF+u3dTFgGZCo1qAhLqOTTBFLJbEbCYfbBx
+	WQwEl3qDoZY1jRTzOw+/kz/ToXCMotU6ZwwbGLsWnXw+CEGjXq2ztWMC
+X-Gm-Gg: AeBDieuMdTSofuMJs55M4y0/+zidF6+zaPC5kh6n6XA4u/i7G4A64uQUJ0A8NZyPpD/
+	HlGyACFZ/JvCNpZ0dFJ6zYWAKKcmXKW4DHwCnuawqJsDmenusmtjLJ3pQXoqUU67++5Vf8HD4vp
+	hFPoIhOfYcTf3nEL2D9S2vW8j1wfiFvM7egNB4j1etKGWi2aJG3jp5yOcDpwYXMnkL9qNkkpVOE
+	OnDiZDSlbA5cNIIoDzOG3Uv0ONGUMFDMW0ds8PqGy8eDwjgEpYkYrbzq9lyQVOqhbWznxpKW6UH
+	OTlhN8ul+cb3vcvWdXy2vVXX2Obo6VBiUvYhKOAueoVR5LayWF3K3QBoYkX3e7qOT0AXOGtQn2C
+	ZepLDM2oasXgSz03NtQ8UNaAwZy9TQsmBgFE+rTcRhx/6R6f5F0s4Si6yR4px65G7ceHOSxdmD8
+	I9QcP0ys+OfVMayCsWDq+nN78YRYfSzp8ACyFh94BdxPvE8YTRZFsOBHJMdhE=
+X-Received: by 2002:a05:6a00:bd04:b0:835:4447:69cf with SMTP id d2e1a72fcca58-83a5d3874camr1966759b3a.27.1778050142340;
+        Tue, 05 May 2026 23:49:02 -0700 (PDT)
 Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839681a9e33sm5136490b3a.50.2026.05.05.23.48.58
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839681a9e33sm5136490b3a.50.2026.05.05.23.49.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 23:49:00 -0700 (PDT)
+        Tue, 05 May 2026 23:49:01 -0700 (PDT)
 From: Maoyi Xie <maoyixie.tju@gmail.com>
 To: Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Subject: [PATCH v3 1/2] wifi: nl80211: require CAP_NET_ADMIN over the target netns in SET_WIPHY_NETNS
-Date: Wed,  6 May 2026 14:48:53 +0800
-Message-Id: <20260506064854.2207105-2-maoyixie.tju@gmail.com>
+Subject: [PATCH v3 2/2] wifi: nl80211: re-check wiphy netns in nl80211_prepare_wdev_dump() continuation
+Date: Wed,  6 May 2026 14:48:54 +0800
+Message-Id: <20260506064854.2207105-3-maoyixie.tju@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260506064854.2207105-1-maoyixie.tju@gmail.com>
 References: <20260506064854.2207105-1-maoyixie.tju@gmail.com>
@@ -93,20 +93,20 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D223D4D6C5B
+X-Rspamd-Queue-Id: CF72B4D6C4D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-35989-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-35990-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -114,7 +114,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,linux-wireless@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -123,79 +123,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ntu.edu.sg:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ntu.edu.sg:email]
 
 From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
 
-NL80211_CMD_SET_WIPHY_NETNS dispatches with GENL_UNS_ADMIN_PERM, which
-verifies that the caller has CAP_NET_ADMIN over the user namespace
-owning the source netns (the netlink socket's netns). It does not
-verify that the caller has CAP_NET_ADMIN over the target netns
-selected by NL80211_ATTR_NETNS_FD or NL80211_ATTR_PID.
+NL80211_CMD_GET_SCAN is implemented as a multi-call dumpit. The first
+invocation of nl80211_prepare_wdev_dump() validates the requested wdev
+against the caller's netns via __cfg80211_wdev_from_attrs(). Subsequent
+invocations look up the same wiphy by global index via
+wiphy_idx_to_wiphy() and do not re-check that the wiphy is still in
+the caller's netns.
 
-This diverges from the convention enforced in
-net/core/rtnetlink.c::rtnl_get_net_ns_capable():
+If the wiphy is moved between dumpit invocations (via
+NL80211_CMD_SET_WIPHY_NETNS), the dump silently continues to copy BSS
+list contents from the wiphy's new netns into the caller's netns
+socket buffer. The other dump paths in nl80211.c (e.g.
+nl80211_dump_wiphy() and the parallel scheduled scan dump) already
+filter by net_eq(wiphy_net(...), sock_net(skb->sk)) on every iteration.
 
-    /* For now, the caller is required to have CAP_NET_ADMIN in
-     * the user namespace owning the target net ns.
-     */
-    if (!sk_ns_capable(sk, net->user_ns, CAP_NET_ADMIN))
-        return ERR_PTR(-EACCES);
+Add the same filter to the continuation path. If the wiphy's netns no
+longer matches the caller's, return -ENODEV and the netlink dump
+machinery terminates the walk cleanly.
 
-A user with CAP_NET_ADMIN in their own user namespace can therefore
-push a wiphy into an arbitrary netns (including init_net) over which
-they have no privilege.
-
-Reachable from an unprivileged user namespace as soon as the caller
-holds, in their own netns, a wiphy that has WIPHY_FLAG_NETNS_OK set
-(true for mac80211_hwsim and for any wiphy that an administrator has
-delegated into a container).
-
-Reproducer (mac80211_hwsim, KASAN VM):
-
-    1. As real root, modprobe mac80211_hwsim radios=1 in init_net.
-    2. fork(); child unshare(CLONE_NEWUSER | CLONE_NEWNET) and writes
-       0-mapped uid_map.
-    3. Real root migrates phyN into the child's netns via
-       NL80211_CMD_SET_WIPHY_NETNS (legitimate admin step).
-    4. Child, with CAP_NET_ADMIN only in its own user_ns, sends
-       NL80211_CMD_SET_WIPHY_NETNS targeting init_net's netns fd.
-    5. The kernel honours the request and the wiphy is moved back
-       to init_net even though the caller has no privilege there.
-
-Mirror the rtnetlink convention by requiring ns_capable(net->user_ns,
-CAP_NET_ADMIN) on the resolved target netns before calling
-cfg80211_switch_netns().
+This is most usefully fixed alongside the SET_WIPHY_NETNS target-cap
+hardening in patch 1/2, which closes the path by which an
+unprivileged-userns caller could trigger this race themselves.
 
 Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
 ---
- net/wireless/nl80211.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/wireless/nl80211.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 67088804d..db546dd93 100644
+index db546dd93..f2c91a939 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -13867,6 +13867,19 @@ static int nl80211_wiphy_netns(struct sk_buff *skb, struct genl_info *info)
- 	if (IS_ERR(net))
- 		return PTR_ERR(net);
+@@ -1276,6 +1276,16 @@ static int nl80211_prepare_wdev_dump(struct netlink_callback *cb,
+ 			rtnl_unlock();
+ 			return -ENODEV;
+ 		}
++		/*
++		 * The first invocation validated the wdev's netns against
++		 * the caller via __cfg80211_wdev_from_attrs(). The wiphy
++		 * may have moved netns between dumpit invocations (via
++		 * NL80211_CMD_SET_WIPHY_NETNS), so re-check here.
++		 */
++		if (!net_eq(wiphy_net(wiphy), sock_net(cb->skb->sk))) {
++			rtnl_unlock();
++			return -ENODEV;
++		}
+ 		*rdev = wiphy_to_rdev(wiphy);
+ 		*wdev = NULL;
  
-+	/*
-+	 * The caller already has CAP_NET_ADMIN over the source netns
-+	 * (enforced by GENL_UNS_ADMIN_PERM on the genl op). Mirror the
-+	 * convention used by net/core/rtnetlink.c::rtnl_get_net_ns_capable()
-+	 * and require CAP_NET_ADMIN over the target netns as well, so that
-+	 * a caller that is privileged in their own user namespace cannot
-+	 * push a wiphy into a netns where they have no privilege.
-+	 */
-+	if (!ns_capable(net->user_ns, CAP_NET_ADMIN)) {
-+		put_net(net);
-+		return -EPERM;
-+	}
-+
- 	err = 0;
- 
- 	/* check if anything to do */
 -- 
 2.34.1
 
