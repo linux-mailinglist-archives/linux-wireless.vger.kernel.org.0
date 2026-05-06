@@ -1,71 +1,67 @@
-Return-Path: <linux-wireless+bounces-36019-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36020-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4B0vCps++2nTYQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-36019-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 15:14:03 +0200
+	id WMAVLKA++2nTYQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-36020-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 15:14:08 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A35B4DACE1
-	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 15:14:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BEB4DACE8
+	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 15:14:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5AACE3013D55
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2026 13:10:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5EAC93016CB5
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2026 13:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F3B3EF65D;
-	Wed,  6 May 2026 13:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED03632BF5A;
+	Wed,  6 May 2026 13:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="eDiRmJ95"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="RobYHH6S"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2557C23D7FF
-	for <linux-wireless@vger.kernel.org>; Wed,  6 May 2026 13:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A8323D7FF
+	for <linux-wireless@vger.kernel.org>; Wed,  6 May 2026 13:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778073051; cv=none; b=Z6Fb/rx0kBoFU3oPBk+l0dDXYvioGFnCwI6TyrVbL1roRNVn5yEnW3qWJib6MOnn50XgZakm4Wh2wCongF+6YmaIpzZADJJZgUwTA0H8JWVfAZG/ksA2wFi7nOeJMNxpATrbT6f5XZxim9ZAEy0HxD0UeOu73/EPfh3HWR1JyXo=
+	t=1778073056; cv=none; b=QCA8GSkld1GrFZH5Iku7NRlBVBr0d51iR+FQwaEVeTahp6KX689KutBWcJNNqNbqp1cMv1roHg6TC1bPqkMAoQkpCW4pfv9oB8l0Ld9gnlZd4gbyCLqyIOV7wobzPR+xH8VnUcQ2wDW0aHRGwTZMdix5ly7ubV1D5dH6I4BJ3I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778073051; c=relaxed/simple;
-	bh=0GbHNaf/iUgzcZEpZpgfxTlbCjJUeEffWKaup192+Q0=;
+	s=arc-20240116; t=1778073056; c=relaxed/simple;
+	bh=yeIfsHCF7ealiL8+Qjn4nymfmLs1ImzJ9EKDsgh9tnw=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KcONZOYZpo5SrF4+O5MPfY/mgpUV+ym1RwFtbbCO8hJNcM5L/k38YBDhcNwHkGiLu4i258dEO9nSrobtNfB3pYyDLDZ7Qwvxat0cDcHMbEy/Pbt8xSdPfM5i4iVSbgiKRszi29iKvGKtF57Fp8s5x0gfGPVsHKR5YlP8VwzqwxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=eDiRmJ95; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=MjGZBUWCS6wICZyshf9EHWePTarkIrnez6MNpVP+IY1AWUCog1tXDIi3aQAgjaTakZKrTgjfY9PfvEOfHp+5JujfnAGCOvvMA24WR/VH5yaTvSjbCpwM93Jcny5qBTzf1/tB+2DPhXClXaQ13Dholqs/fLNuP8rHzeuMZW/OQpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=RobYHH6S; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 646DAm8821987056, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 646DArz761987147, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1778073048; bh=B8fxowS7NmJBput09Aan5H3j+pMfqbAqWOoBCHypZXQ=;
+	t=1778073053; bh=MptVeJaR9ijAaNsOQe1dnoL97aGK1Ni3+rTmkKNmNlA=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=eDiRmJ95iL/I6YaEWQ97MSk0Q/HhsDZpqfZizB+ty1vCzVHW2Vti1Rr21jgyI7rJJ
-	 HGAcQxRuqUAo1Nh9Ngcml+Z+QDBgM6VtWfyryKdtzrISK11sau/WH8DGbe9oWV/9qM
-	 7++alNYI+stDaCRwog6rKWSj9A7l/mUrVZyPTzvlzZC9t/4VsJi6I+SzanMORMHdOK
-	 FU8doyJ2G8PW89t+tk3qCfdHSud3GfM86Z930UGd6OMGUM4XFileHS+XuZHU9wFz4m
-	 YSboxhpnwP0zCx8+wCDL5EgBhzYcMIiOIKNR4WtOKEVZC5NkAhoVRQPh83CZFu76/w
-	 JHOw91P5B8S1g==
+	b=RobYHH6SsC7u0xJLw3ztT4AbsUwMG5bcR1xYw1BnUbZDIS8/JxLuQy4oNfDJ5pDT9
+	 cFO0P49ZninM1dKi65nkEKzzqENJCpWG5NO848QRJDmBuu8EbGyokFITbE8ebhXEJO
+	 Sg9OsJ4ZqzVyM1CACqVKSZkWyDIsXXB8CTdi+sQEEGSXrStAicu2cNdesrW+y9SQDH
+	 FHa/0xlO/6Xg4nRr6k3bKK/IYga038lxGKTEdY7Gu7fpVXtCQDWu9Pb6UQw4dOCkxQ
+	 bI2ob75U4GDFV9yW8p3oTUKOJn5tSf/102qG/j/RDjQAk3VFlFNTgb9pXTFCa9nr6S
+	 9P9GIBfEHmmrQ==
 Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 646DAm8821987056
+	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 646DArz761987147
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 6 May 2026 21:10:48 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+	for <linux-wireless@vger.kernel.org>; Wed, 6 May 2026 21:10:53 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
  RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 6 May 2026 21:10:48 +0800
-Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 6 May 2026 21:10:48 +0800
+ 15.2.1748.10; Wed, 6 May 2026 21:10:53 +0800
 Received: from [127.0.1.1] (172.21.40.76) by RTKEXHMBS04.realtek.com.tw
  (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Wed, 6 May 2026 21:10:48 +0800
+ Transport; Wed, 6 May 2026 21:10:53 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH rtw-next 09/14] wifi: rtw89: debug: make implementation of beacon_info entry in order
-Date: Wed, 6 May 2026 21:09:55 +0800
-Message-ID: <20260506131000.1706298-10-pkshih@realtek.com>
+Subject: [PATCH rtw-next 10/14] wifi: rtw89: add debugfs entry of monitor mode options to capture HE-MU packets
+Date: Wed, 6 May 2026 21:09:56 +0800
+Message-ID: <20260506131000.1706298-11-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260506131000.1706298-1-pkshih@realtek.com>
 References: <20260506131000.1706298-1-pkshih@realtek.com>
@@ -77,7 +73,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 7A35B4DACE1
+X-Rspamd-Queue-Id: 47BEB4DACE8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -85,14 +81,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36019-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36020-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	RCPT_COUNT_ONE(0.00)[1];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
@@ -100,181 +96,193 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,realtek.com:dkim,realtek.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TO_DN_NONE(0.00)[];
 	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,realtek.com:dkim,realtek.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-When adding more debugfs entries, the beacon_info entry becomes not in
-order. Move to correct location. Don't change logic at all.
+To capture HE-MU packets, set BSS color and AID for specific connected
+station.
+
+The writing format: <bss color> <aid>
+For example,
+  $ echo 0x4 0x16 > monitor_opts
+
+Read this entry to get current setting:
+  bss_color=0x4 aid=0x16
+
+By the way, add another sec2() function to create debugfs entries to
+prevent running smatch timeout.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/debug.c | 142 ++++++++++-----------
- 1 file changed, 71 insertions(+), 71 deletions(-)
+ drivers/net/wireless/realtek/rtw89/debug.c | 57 ++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/phy.c   | 23 ++++++---
+ drivers/net/wireless/realtek/rtw89/phy.h   |  2 +
+ 3 files changed, 74 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index 597052261974..6fe8e7254e80 100644
+index 6fe8e7254e80..8ee800c76cfe 100644
 --- a/drivers/net/wireless/realtek/rtw89/debug.c
 +++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -4919,6 +4919,77 @@ rtw89_debug_priv_mlo_mode_set(struct rtw89_dev *rtwdev,
- 	return count;
+@@ -93,6 +93,7 @@ struct rtw89_debugfs {
+ 	struct rtw89_debugfs_priv beacon_info;
+ 	struct rtw89_debugfs_priv diag_mac;
+ 	struct rtw89_debugfs_priv diag_bb;
++	struct rtw89_debugfs_priv monitor_opts;
+ };
+ 
+ struct rtw89_debugfs_iter_data {
+@@ -5326,6 +5327,54 @@ rtw89_debug_priv_diag_bb_get(struct rtw89_dev *rtwdev,
+ 	return p - buf;
  }
  
-+static int rtw89_get_beacon_info(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb,
-+				 char *buf, size_t bufsz)
++static ssize_t
++rtw89_debug_priv_monitor_opts_get(struct rtw89_dev *rtwdev,
++				  struct rtw89_debugfs_priv *debugfs_priv,
++				  char *buf, size_t bufsz)
 +{
-+	struct rtw89_pkt_stat *pkt_stat = &bb->last_pkt_stat;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
 +	char *p = buf, *end = buf + bufsz;
++	u32 bss_color;
++	u32 aid;
 +
-+	p += scnprintf(p, end - p, "[PHY %u]\n", bb->phy_idx);
-+	p += scnprintf(p, end - p, "Beacon: %u\n", pkt_stat->beacon_nr);
-+	p += scnprintf(p, end - p, "raw rssi: %lu\n", ewma_rssi_read(&bb->bcn_rssi));
-+	p += scnprintf(p, end - p, "hw rate: %u\n", pkt_stat->beacon_rate);
-+	p += scnprintf(p, end - p, "length: %u\n\n", pkt_stat->beacon_len);
++	lockdep_assert_wiphy(rtwdev->hw->wiphy);
++
++	rtw89_leave_ps_mode(rtwdev);
++
++	bss_color = rtw89_phy_read32_idx(rtwdev, chip->bss_clr_map_reg,
++					 B_BSS_CLR_MAP_TGT, RTW89_PHY_0);
++	aid = rtw89_phy_read32_idx(rtwdev, chip->bss_clr_map_reg,
++				   B_BSS_CLR_MAP_STAID, RTW89_PHY_0);
++
++	p += scnprintf(p, end - p, "bss_color=0x%x aid=0x%x\n", bss_color, aid);
 +
 +	return p - buf;
 +}
 +
 +static ssize_t
-+rtw89_debug_priv_beacon_info_get(struct rtw89_dev *rtwdev,
-+				 struct rtw89_debugfs_priv *debugfs_priv,
-+				 char *buf, size_t bufsz)
++rtw89_debug_priv_monitor_opts_set(struct rtw89_dev *rtwdev,
++				  struct rtw89_debugfs_priv *debugfs_priv,
++				  const char *buf, size_t count)
 +{
-+	struct rtw89_beacon_track_info *bcn_track = &rtwdev->bcn_track;
-+	struct rtw89_beacon_stat *bcn_stat = &rtwdev->phystat.bcn_stat;
-+	struct rtw89_beacon_dist *bcn_dist = &bcn_stat->bcn_dist;
-+	u16 upper, lower = bcn_stat->tbtt_tu_min;
-+	char *p = buf, *end = buf + bufsz;
-+	u16 *drift = bcn_stat->drift;
-+	u8 bcn_num = bcn_stat->num;
-+	struct rtw89_bb_ctx *bb;
-+	u8 count;
-+	u8 i;
++	u32 bss_color;
++	u32 aid;
++	int num;
 +
-+	rtw89_for_each_active_bb(rtwdev, bb)
-+		p += rtw89_get_beacon_info(rtwdev, bb, p, end - p);
++	lockdep_assert_wiphy(rtwdev->hw->wiphy);
 +
-+	p += scnprintf(p, end - p, "[Beacon info]\n");
-+	p += scnprintf(p, end - p, "interval: %u\n", bcn_track->beacon_int);
-+	p += scnprintf(p, end - p, "dtim: %u\n", bcn_track->dtim);
-+
-+	p += scnprintf(p, end - p, "\n[Distribution]\n");
-+	p += scnprintf(p, end - p, "tbtt\n");
-+	for (i = 0; i < RTW89_BCN_TRACK_MAX_BIN_NUM; i++) {
-+		upper = lower + RTW89_BCN_TRACK_BIN_WIDTH - 1;
-+		if (i == RTW89_BCN_TRACK_MAX_BIN_NUM - 1)
-+			upper = max(upper, bcn_stat->tbtt_tu_max);
-+
-+		p += scnprintf(p, end - p, "%02u - %02u: %u\n",
-+			       lower, upper, bcn_dist->bins[i]);
-+
-+		lower = upper + 1;
++	num = sscanf(buf, "%x %x", &bss_color, &aid);
++	if (num != 2) {
++		rtw89_info(rtwdev, "valid format: <bss color> <aid>\n");
++		return -EINVAL;
 +	}
 +
-+	p += scnprintf(p, end - p, "\ndrift\n");
++	rtw89_leave_ps_mode(rtwdev);
 +
-+	for (i = 0; i < bcn_num; i += count) {
-+		count = 1;
-+		while (i + count < bcn_num && drift[i] == drift[i + count])
-+			count++;
++	__rtw89_phy_set_bss_color(rtwdev, bss_color, aid, RTW89_PHY_0);
 +
-+		p += scnprintf(p, end - p, "%u: %u\n", drift[i], count);
-+	}
-+	p += scnprintf(p, end - p, "\nlower bound: %u\n", bcn_dist->lower_bound);
-+	p += scnprintf(p, end - p, "upper bound: %u\n", bcn_dist->upper_bound);
-+	p += scnprintf(p, end - p, "outlier count: %u\n", bcn_dist->outlier_count);
-+
-+	p += scnprintf(p, end - p, "\n[Tracking]\n");
-+	p += scnprintf(p, end - p, "tbtt offset: %u\n", bcn_track->tbtt_offset);
-+	p += scnprintf(p, end - p, "bcn timeout: %u\n", bcn_track->bcn_timeout);
-+
-+	return p - buf;
++	return count;
 +}
 +
- enum __diag_mac_cmd {
- 	__CMD_EQUALV,
- 	__CMD_EQUALO,
-@@ -5255,77 +5326,6 @@ rtw89_debug_priv_diag_bb_get(struct rtw89_dev *rtwdev,
- 	return p - buf;
- }
- 
--static int rtw89_get_beacon_info(struct rtw89_dev *rtwdev, struct rtw89_bb_ctx *bb,
--				 char *buf, size_t bufsz)
--{
--	struct rtw89_pkt_stat *pkt_stat = &bb->last_pkt_stat;
--	char *p = buf, *end = buf + bufsz;
--
--	p += scnprintf(p, end - p, "[PHY %u]\n", bb->phy_idx);
--	p += scnprintf(p, end - p, "Beacon: %u\n", pkt_stat->beacon_nr);
--	p += scnprintf(p, end - p, "raw rssi: %lu\n", ewma_rssi_read(&bb->bcn_rssi));
--	p += scnprintf(p, end - p, "hw rate: %u\n", pkt_stat->beacon_rate);
--	p += scnprintf(p, end - p, "length: %u\n\n", pkt_stat->beacon_len);
--
--	return p - buf;
--}
--
--static ssize_t
--rtw89_debug_priv_beacon_info_get(struct rtw89_dev *rtwdev,
--				 struct rtw89_debugfs_priv *debugfs_priv,
--				 char *buf, size_t bufsz)
--{
--	struct rtw89_beacon_track_info *bcn_track = &rtwdev->bcn_track;
--	struct rtw89_beacon_stat *bcn_stat = &rtwdev->phystat.bcn_stat;
--	struct rtw89_beacon_dist *bcn_dist = &bcn_stat->bcn_dist;
--	u16 upper, lower = bcn_stat->tbtt_tu_min;
--	char *p = buf, *end = buf + bufsz;
--	u16 *drift = bcn_stat->drift;
--	u8 bcn_num = bcn_stat->num;
--	struct rtw89_bb_ctx *bb;
--	u8 count;
--	u8 i;
--
--	rtw89_for_each_active_bb(rtwdev, bb)
--		p += rtw89_get_beacon_info(rtwdev, bb, p, end - p);
--
--	p += scnprintf(p, end - p, "[Beacon info]\n");
--	p += scnprintf(p, end - p, "interval: %u\n", bcn_track->beacon_int);
--	p += scnprintf(p, end - p, "dtim: %u\n", bcn_track->dtim);
--
--	p += scnprintf(p, end - p, "\n[Distribution]\n");
--	p += scnprintf(p, end - p, "tbtt\n");
--	for (i = 0; i < RTW89_BCN_TRACK_MAX_BIN_NUM; i++) {
--		upper = lower + RTW89_BCN_TRACK_BIN_WIDTH - 1;
--		if (i == RTW89_BCN_TRACK_MAX_BIN_NUM - 1)
--			upper = max(upper, bcn_stat->tbtt_tu_max);
--
--		p += scnprintf(p, end - p, "%02u - %02u: %u\n",
--			       lower, upper, bcn_dist->bins[i]);
--
--		lower = upper + 1;
--	}
--
--	p += scnprintf(p, end - p, "\ndrift\n");
--
--	for (i = 0; i < bcn_num; i += count) {
--		count = 1;
--		while (i + count < bcn_num && drift[i] == drift[i + count])
--			count++;
--
--		p += scnprintf(p, end - p, "%u: %u\n", drift[i], count);
--	}
--	p += scnprintf(p, end - p, "\nlower bound: %u\n", bcn_dist->lower_bound);
--	p += scnprintf(p, end - p, "upper bound: %u\n", bcn_dist->upper_bound);
--	p += scnprintf(p, end - p, "outlier count: %u\n", bcn_dist->outlier_count);
--
--	p += scnprintf(p, end - p, "\n[Tracking]\n");
--	p += scnprintf(p, end - p, "tbtt offset: %u\n", bcn_track->tbtt_offset);
--	p += scnprintf(p, end - p, "bcn timeout: %u\n", bcn_track->bcn_timeout);
--
--	return p - buf;
--}
--
  #define rtw89_debug_priv_get(name, opts...)			\
  {								\
  	.cb_read = rtw89_debug_priv_ ##name## _get,		\
+@@ -5390,6 +5439,7 @@ static const struct rtw89_debugfs rtw89_debugfs_templ = {
+ 	.beacon_info = rtw89_debug_priv_get(beacon_info),
+ 	.diag_mac = rtw89_debug_priv_get(diag_mac, RSIZE_16K, RLOCK),
+ 	.diag_bb = rtw89_debug_priv_get(diag_bb, RSIZE_8K, RLOCK),
++	.monitor_opts = rtw89_debug_priv_set_and_get(monitor_opts, RWLOCK),
+ };
+ 
+ #define rtw89_debugfs_add(name, mode, fopname, parent)				\
+@@ -5435,12 +5485,18 @@ void rtw89_debugfs_add_sec1(struct rtw89_dev *rtwdev, struct dentry *debugfs_top
+ 	rtw89_debugfs_add_r(phy_info);
+ 	rtw89_debugfs_add_rw(bb_info);
+ 	rtw89_debugfs_add_r(stations);
++}
++
++static
++void rtw89_debugfs_add_sec2(struct rtw89_dev *rtwdev, struct dentry *debugfs_topdir)
++{
+ 	rtw89_debugfs_add_rw(disable_dm);
+ 	rtw89_debugfs_add_rw(static_pd_th);
+ 	rtw89_debugfs_add_rw(mlo_mode);
+ 	rtw89_debugfs_add_r(beacon_info);
+ 	rtw89_debugfs_add_r(diag_mac);
+ 	rtw89_debugfs_add_r(diag_bb);
++	rtw89_debugfs_add_rw(monitor_opts);
+ }
+ 
+ void rtw89_debugfs_init(struct rtw89_dev *rtwdev)
+@@ -5457,6 +5513,7 @@ void rtw89_debugfs_init(struct rtw89_dev *rtwdev)
+ 
+ 	rtw89_debugfs_add_sec0(rtwdev, debugfs_topdir);
+ 	rtw89_debugfs_add_sec1(rtwdev, debugfs_topdir);
++	rtw89_debugfs_add_sec2(rtwdev, debugfs_topdir);
+ }
+ 
+ void rtw89_debugfs_deinit(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 15483a86951d..759be4dab42b 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -8231,12 +8231,24 @@ void rtw89_phy_dm_init_data(struct rtw89_dev *rtwdev)
+ 		__rtw89_phy_dm_init_data(rtwdev, bb);
+ }
+ 
++void __rtw89_phy_set_bss_color(struct rtw89_dev *rtwdev, u8 bss_color, u16 aid,
++			       enum rtw89_phy_idx phy_idx)
++{
++	const struct rtw89_chip_info *chip = rtwdev->chip;
++	const struct rtw89_reg_def *bss_clr_vld = &chip->bss_clr_vld;
++
++	rtw89_phy_write32_idx(rtwdev, bss_clr_vld->addr, bss_clr_vld->mask, 0x1,
++			      phy_idx);
++	rtw89_phy_write32_idx(rtwdev, chip->bss_clr_map_reg, B_BSS_CLR_MAP_TGT,
++			      bss_color, phy_idx);
++	rtw89_phy_write32_idx(rtwdev, chip->bss_clr_map_reg, B_BSS_CLR_MAP_STAID,
++			      aid, phy_idx);
++}
++
+ void rtw89_phy_set_bss_color(struct rtw89_dev *rtwdev,
+ 			     struct rtw89_vif_link *rtwvif_link)
+ {
+ 	struct ieee80211_vif *vif = rtwvif_link_to_vif(rtwvif_link);
+-	const struct rtw89_chip_info *chip = rtwdev->chip;
+-	const struct rtw89_reg_def *bss_clr_vld = &chip->bss_clr_vld;
+ 	enum rtw89_phy_idx phy_idx = rtwvif_link->phy_idx;
+ 	struct ieee80211_bss_conf *bss_conf;
+ 	u8 bss_color;
+@@ -8253,12 +8265,7 @@ void rtw89_phy_set_bss_color(struct rtw89_dev *rtwdev,
+ 
+ 	rcu_read_unlock();
+ 
+-	rtw89_phy_write32_idx(rtwdev, bss_clr_vld->addr, bss_clr_vld->mask, 0x1,
+-			      phy_idx);
+-	rtw89_phy_write32_idx(rtwdev, chip->bss_clr_map_reg, B_BSS_CLR_MAP_TGT,
+-			      bss_color, phy_idx);
+-	rtw89_phy_write32_idx(rtwdev, chip->bss_clr_map_reg, B_BSS_CLR_MAP_STAID,
+-			      vif->cfg.aid, phy_idx);
++	__rtw89_phy_set_bss_color(rtwdev, bss_color, vif->cfg.aid, phy_idx);
+ }
+ 
+ static bool rfk_chan_validate_desc(const struct rtw89_rfk_chan_desc *desc)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
+index 74fbf5baff58..b4b818f786df 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -1128,6 +1128,8 @@ void rtw89_phy_antdiv_track(struct rtw89_dev *rtwdev);
+ void rtw89_phy_antdiv_work(struct wiphy *wiphy, struct wiphy_work *work);
+ void rtw89_phy_set_bss_color(struct rtw89_dev *rtwdev,
+ 			     struct rtw89_vif_link *rtwvif_link);
++void __rtw89_phy_set_bss_color(struct rtw89_dev *rtwdev, u8 bss_color, u16 aid,
++			       enum rtw89_phy_idx phy_idx);
+ void rtw89_phy_tssi_ctrl_set_bandedge_cfg(struct rtw89_dev *rtwdev,
+ 					  enum rtw89_mac_idx mac_idx,
+ 					  enum rtw89_tssi_bandedge_cfg bandedge_cfg);
 -- 
 2.25.1
 
