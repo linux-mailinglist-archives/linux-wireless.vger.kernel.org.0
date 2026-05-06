@@ -1,93 +1,71 @@
-Return-Path: <linux-wireless+bounces-36009-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36010-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KOhFrQ4+2nUXwMAu9opvQ
-	(envelope-from <linux-wireless+bounces-36009-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 14:48:52 +0200
+	id OC7yELA9+2nUXwMAu9opvQ
+	(envelope-from <linux-wireless+bounces-36010-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 15:10:08 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5BC4DA7BC
-	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 14:48:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF6C44DABBF
+	for <lists+linux-wireless@lfdr.de>; Wed, 06 May 2026 15:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D8EF3034643
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2026 12:43:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 94162300828A
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2026 13:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7CF644D696;
-	Wed,  6 May 2026 12:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6931D3ED5D8;
+	Wed,  6 May 2026 13:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="kUnNmCli"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="G2W5il9+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20B9305E32
-	for <linux-wireless@vger.kernel.org>; Wed,  6 May 2026 12:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1E623D7FF
+	for <linux-wireless@vger.kernel.org>; Wed,  6 May 2026 13:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778071403; cv=none; b=C+IFBe7UJlSTj1gEl+kSsNhbzJa/Qkq+GNH7Qu2T+sj/1njV6QApMHo932vBwFs71zbVQjbMBsq1FMmCYk02/w7V2jW4KghqE2LZv8LuptsksSTAyKDV227dPVeyA3l333gPH6MFuQ/hX1Mhdejdy4nzqX3R35WcoZ4gI/oTE6U=
+	t=1778073004; cv=none; b=IC+4BKy+q2ZDMoeWs9eyFSVstSzGXfpFEfU4xsR8Ll0LJT2PgI01c2yHenzmP6DH1LPixyoOROvPWQBN7rlNKXKLdPty3jSUBcLVlX5stPDqT9qjd+Af0qxxmvBkIm4Q1PLV3eG2U4H4phna2VT9/ijOGvlCAk3A3LcuthBxoWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778071403; c=relaxed/simple;
-	bh=YhHNqsg/tURdQNxFzMuH4ytP1oeHS4uyt0QZrhHvzJs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8Q3FdNLtfnqle4uqyBRx52iYKh1Mkov/6ad/fe015+tBTiHteRPCkoUMFMLCn/5/ibn7xl+DuGszViVBDunptvkOkf3PH9DPnypjQRBPhjGmv7hHYzJBDcWGx7FK3mHxjr/C52ab1J0Ewp31WZAge5kmSkdXDH2svcS5UH8Txk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=kUnNmCli; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-364ff382b0bso5288656a91.2
-        for <linux-wireless@vger.kernel.org>; Wed, 06 May 2026 05:43:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1778071402; x=1778676202; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0ssi6CVzQIVVUnPNmT1gr/sI4bY2x5eM4QCor84gRb8=;
-        b=kUnNmCliaUkGoFP5C48WfysWXVHSrNYGEHq3eJpBezac5FUALf0bEyRekYWTaIrRNL
-         QiG5AmAXglhMS2CzZ5Z12fp83XSUHY1VzsB4WEU1iZgKQeGv4e/6kuxlsIIhWDorcMSQ
-         zmwfkSxv2SRhCtI3bWJNQWuDxgkMhFnYuL+5KjNKJhRMyG4hmYcwt//npsTobMRNP7OS
-         3rPv/W6YcMilCVTmLn4X4lQGg1uKnI3L79hhtqqhY1DR5x2EWxeAt+HkzlHO+8u1u+ts
-         vqhPCt3sWFmmEetRzs/S+P4OABBAur479Cez9trfLk1nlszUoPcZPQdcr06anr/O9t2M
-         L+qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778071402; x=1778676202;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0ssi6CVzQIVVUnPNmT1gr/sI4bY2x5eM4QCor84gRb8=;
-        b=r6YiIk2XZ5ibXzgVtOJmrlZ52lYZFFDqxA4Jds64obASbAbpY3J+UHFr70vtTfCC0P
-         v9SFIhljTn7cN3jLVl6aZTvwU66drFOgWVRfOx9kZPqjysV0usMNwqi2C+94Hf5uieRt
-         StvQSCJYUH/Pq63fbMg9k4JhcflXijYhTiaifQ/CUow7BcyKFs1UBSQVuB+AMoDobwVL
-         Y7ffoiryBcWZUnzRHHABYoaFi0Dmj2RMPkobMCyFPqXN0NWOKGiki015EGgQN7dUTzOv
-         ylXflJhzVgyuI/ygwjJxGsNcM7fKB6bXD8VUDN+8/SW/2PHT3KmyEa9B1QCwd6EMwOew
-         1LZg==
-X-Gm-Message-State: AOJu0YxiomjAc1Bu3bQd5QzNxSoDDV+t3h4SeLjAsmFnIbveU6NHM47S
-	jF3Xib24KRsguvO7j07x22Nwvqbg0AxX/HoLDAWmp9QvE3J4QiLu85yPaJPk+VZiWbtZ2e/x7JD
-	XSa0o
-X-Gm-Gg: AeBDieuMhBVS0P9brnUn+Ykz3a/4Tsky8rNRgwDr+u+gDqYvs2t5OfOMi4qhKakZh6Z
-	M7BEuYQXziG5g+vkgTPM8du9eCWBssfsA22VXY0Mi57za9Rr9bRnk/ERFMkWARC0RsesjO3RE5Y
-	jtcMggp6z6EYT/e2IXtRt2EPRYlVwbN3H4HF7zHt5Fb5vtL8EL6IXA960BVYt29WS438OZCKcs6
-	TxMTRJNwjW0PN6YIoY6jLLoMAy9Xzki7pYgxI3i/ElBNRGI3Sv3boDQq3pNg9UNgpAFEEm0SB6T
-	636JUqj5DRplYqyERn7pkGJJXyUds8l+VxfOLBtFChtbkYmCKmzQb6AujvJj4nb49pbDpB3W8QC
-	WorlFjWNHoxZJTrx5fMBmqXhA0HFq6cM2CVb2F/A1mJ/zCZ9sPls9igjaGk9NHxMS4V01Qiff4P
-	ieZB6vmVqFemQFROUfyTMA4fPdYZYtoIXqiiZRBiAYpGxf9BNzuW/QAU/A3iAlsHfJV9mkipAuP
-	XyLSft1JHs=
-X-Received: by 2002:a17:903:4304:b0:2b2:6b58:9317 with SMTP id d9443c01a7336-2ba799d6c69mr19568775ad.39.1778071402003;
-        Wed, 06 May 2026 05:43:22 -0700 (PDT)
-Received: from mma-H9MHD44.lan ([60.227.167.223])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ba7ca244cfsm25172405ad.71.2026.05.06.05.43.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 05:43:21 -0700 (PDT)
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	arien.judge@morsemicro.com,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Subject: [PATCH wireless 2/2] wifi: mac80211: don't recalc min def for S1G chan ctx
-Date: Wed,  6 May 2026 22:43:07 +1000
-Message-ID: <20260506124307.2070157-3-lachlan.hodges@morsemicro.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260506124307.2070157-1-lachlan.hodges@morsemicro.com>
-References: <20260506124307.2070157-1-lachlan.hodges@morsemicro.com>
+	s=arc-20240116; t=1778073004; c=relaxed/simple;
+	bh=TM+5R3prQDWrnKjAKpyUBJ9Jq12EBpvTYaZi1vGnXbY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MiMB0m3Ol95+GQv32R/aaUhF1UHK1mGQwRUQfQ+zg1RUdXIwCqEXPEWbQYPlI7f+CXukJrzjP4DLM2WGtSjevZCK0wXlGTCFJclvx7FgMlIEuIvmmwxU6ccPVhJNR3Gf4L0T1UKIexd2jIcLaVYobrkma/LNIqypaDDZo9d7etg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=G2W5il9+; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 646DA0lE41986792, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1778073000; bh=+b9ImRn4QVnErFGrb4pe1r9zgZmGZu4U9VxjWJ8SmPA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=G2W5il9+RxryHUDAylcvUH2/GpJgFKkSGpRHz3pKW1TTFpGM2jYSzylZQpAnVCD2e
+	 3bcMKQ/6ktXiN2uRkKGa8OA+SRhu1a+BNY+AQdpuh0bBxlz+8h2Ms22YNb8xNlwIDJ
+	 orr9Z8dQpuOyBczPDtC6g3dbPv9P7203AdYjN4YC64IztLIJNZbYXImS6i6EN5ZpwI
+	 4EqpNOX5GeWMIYpC6GBOMke11MzoU5Uh18q9CWuzDP6pMENQY4oC0UfZq7S77hI87D
+	 ex/5MzadX7ztISKVQztC047C2O+lmuYoQrPJ7pq8+oMrngyhEtC71kjCHCWgNjiXgn
+	 Csm3qKUb2C9Bw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 646DA0lE41986792
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Wed, 6 May 2026 21:10:00 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Wed, 6 May 2026 21:10:00 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 6 May 2026 21:10:00 +0800
+Received: from [127.0.1.1] (172.21.40.76) by RTKEXHMBS06.realtek.com.tw
+ (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
+ Transport; Wed, 6 May 2026 21:10:00 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+Subject: [PATCH rtw-next 00/14] wifi: rtw89: improve radiotap especially HE SIG-A/SIG-B
+Date: Wed, 6 May 2026 21:09:46 +0800
+Message-ID: <20260506131000.1706298-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -95,73 +73,77 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AC5BC4DA7BC
+Content-Type: text/plain
+X-Rspamd-Queue-Id: AF6C44DABBF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-36010-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36009-lists,linux-wireless=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_ONE(0.00)[1];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,morsemicro-com.20251104.gappssmtp.com:dkim,morsemicro.com:mid,morsemicro.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-__ieee80211_recalc_chanctx_min_def() currently does not attempt
-to find the min def for S1G widths, meaning the BW will never change.
-However, the following call into ieee80211_chan_bw_change() will
-lead to a WARN within ieee80211_chan_width_to_rx_bw(). Not only that,
-this entire path is geared towards 20MHz based channels, so it doesn't
-make sense anyway. For now, return early when calculating the mindef
-for S1G channels.
+The rtw89 has supported monitor mode already, but only basic channel,
+bandwidth and data rate. This patchset introduces SIG-A/SIG-B from
+PHY status IE-09/IE-10 to fill VHT and HE-SU/HE-TB/HE-MU/HE-EXT_SU
+radiotap.
 
-Fixes: d879d4da4579 ("wifi: mac80211: clean up initial STA NSS/bandwidth handling")
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
----
- net/mac80211/chan.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Hardware captures HE-MU packets by target BSS color and AID, so add a
+debugfs to fill the target values.
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index b9d563f927da..c64a99131954 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -751,8 +751,14 @@ _ieee80211_recalc_chanctx_min_def(struct ieee80211_local *local,
- 				  struct ieee80211_link_data *rsvd_for,
- 				  bool check_reserved)
- {
--	u32 changed = __ieee80211_recalc_chanctx_min_def(local, ctx, rsvd_for,
--							 check_reserved);
-+	u32 changed;
-+
-+	/* No recalc for S1G chan ctx's */
-+	if (cfg80211_chandef_is_s1g(&ctx->conf.def))
-+		return;
-+
-+	changed = __ieee80211_recalc_chanctx_min_def(local, ctx, rsvd_for,
-+						     check_reserved);
- 
- 	/* check is BW narrowed */
- 	ieee80211_chan_bw_change(local, ctx, false, true);
+Ping-Ke Shih (14):
+  wifi: rtw89: add AMPDU to radiotap
+  wifi: rtw89: add VHT beamformed to radiotap
+  wifi: rtw89: SNIFFER_MODE bit along IEEE80211_CONF_MONITOR
+  wifi: rtw89: phy: define PHY status IE length for generations
+  wifi: rtw89: phy: enable IE-09/IE-10 PHY status report for monitor
+    mode
+  wifi: rtw89: move HE radiotap to an individual function
+  wifi: rtw89: fill VHT radiotap
+  wifi: rtw89: fill HE-SU/HE-TB/HE-MU/HE-EXT_SU radiotap
+  wifi: rtw89: debug: make implementation of beacon_info entry in order
+  wifi: rtw89: add debugfs entry of monitor mode options to capture
+    HE-MU packets
+  wifi: rtw89: phy: check length before parsing PHY status IE
+  wifi: rtw89: phy: skip trailing 8-byte zeros of PHY status IE for
+    RTL8922D
+  wifi: rtw89: phy: support PHY status IE-09 GEN2 for RTL8922D
+  wifi: rtw89: check skb headroom before adding radiotap
+
+ drivers/net/wireless/realtek/rtw89/core.c     | 615 ++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/core.h     |  29 +-
+ drivers/net/wireless/realtek/rtw89/debug.c    | 165 +++--
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   8 +
+ drivers/net/wireless/realtek/rtw89/phy.c      |  44 +-
+ drivers/net/wireless/realtek/rtw89/phy.h      |   8 +
+ drivers/net/wireless/realtek/rtw89/phy_be.c   |   8 +
+ drivers/net/wireless/realtek/rtw89/txrx.h     | 108 +++
+ 8 files changed, 879 insertions(+), 106 deletions(-)
+
+
+base-commit: c1ed02655f9134d6af6a01a58b734329c2f4f22c
 -- 
-2.43.0
+2.25.1
 
 
