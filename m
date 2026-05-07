@@ -1,188 +1,158 @@
-Return-Path: <linux-wireless+bounces-36080-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36081-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sA7+OHi+/GnSTAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-36080-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 18:31:52 +0200
+	id wGgAGL6//GnSTAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-36081-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 18:37:18 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863284EC42F
-	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 18:31:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B654EC535
+	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 18:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E43803001FF0
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2026 16:31:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 18CA73004637
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2026 16:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF54336EAAD;
-	Thu,  7 May 2026 16:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B053EE1C4;
+	Thu,  7 May 2026 16:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZVbHTPAV"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="v06fNJxb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189803B776D
-	for <linux-wireless@vger.kernel.org>; Thu,  7 May 2026 16:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B7F3793CD
+	for <linux-wireless@vger.kernel.org>; Thu,  7 May 2026 16:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778171510; cv=none; b=nMcpy/wHuHhRl0B6nSbGOgkmSEIup+X0NzzYf8f3QoQoDPp9CyJpqLyVLlNyLk/0P2HtOWwoKwcM6bfJLA6r1LFdNU6vj5WCAZra5xJqhaAqvhv2GFsznCIDJithxhQ//Ny6cCU6umvvEcnoNj6K/qF6TjKXgIEWiNLupUhqQrM=
+	t=1778171825; cv=none; b=fmatP6twXg/qvwS5fZF3sdekRaCWARh/ThGTdFt4P9IbbceaidYnmZZoikL06INo6/RB2Tu3lqndpQfPP9GPcpwBxfU2NpZLM4wwc+4HsznZeTPeZW59+OEpyrQm0d1CeYerxyY3FG168HlNjMuvyGGkNvJqJkVq7ajhLcfyE80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778171510; c=relaxed/simple;
-	bh=pXaSTwr6SF5+9EYapof1jJc5b5kisnmHUKIU9Ei24MI=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=Kzb6rKsjkJ2++OUgrUF/MoaIRxChQXOoBZtQwydMNItpv7V+RAqsfw8E31T9XsOXmjb8dFfOJiregL8r2XWdYB5JLBbCPMbFFMvHV+QiUZmCneC5rJWhEiHgI0OFs2rwP/MkXfhgVRzZ3EKTnaZFMNkHGwn9XhmmtO905nojq7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZVbHTPAV; arc=none smtp.client-ip=95.215.58.188
+	s=arc-20240116; t=1778171825; c=relaxed/simple;
+	bh=Xr1PRu2BgzSpDj3RS03CjWCgwoqsxe1LZ73FJODdbs4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m75GfhzGv6wgVeBVChCBu8X/T2oGg11WWrnA1HlT7WYYrh+BggyCVxuA9CvnB87V9vZW9IQ9KS79FeYJGxDk1b2gZxL5Q3389MmDYqsaVGoFmMnotOoSPbjBMqmswZqR6GufWtu1UwTDmIkL4Ee6BcI968mCUK1Y1WgKRoqeflA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=v06fNJxb; arc=none smtp.client-ip=95.215.58.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Thu, 07 May 2026 18:31:40 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778171506;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ENtXVSGTxn1voqd0nkqw8w327Dc3JzFVnzwPTKRp1rY=;
-	b=ZVbHTPAVui49HJehuFLz41RN5WTw0FQfGRP7oPtbVoRdR96XcsjBfVS5WCgtk7aPvMHwW3
-	fQZIVzDQz4NYss0OSOTD8owsRzNzj6HqmDP0fPOZCAhwiH08I+VtYMjMlUGa3/1P+Ag4no
-	J/YI3dq8qu2P8L/MsiYy9BEtV4tjbiM=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Luka Gejak <luka.gejak@linux.dev>
-To: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
-CC: Sascha Hauer <s.hauer@pengutronix.de>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_2/2=5D_wifi=3A_rtw88=3A_usb=3A_?=
- =?US-ASCII?Q?fix_memory_leaks_on_USB_write_failures?=
-In-Reply-To: <20260507162827.69168-1-luka.gejak@linux.dev>
-References: <20260507162827.69168-1-luka.gejak@linux.dev>
-Message-ID: <DBEAB6DF-B4E4-4C4A-A570-0CC0392B0406@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778171812;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=gb9ChjzShQDBgeDOk51gMnRUsvuczWK282t+xBJEbjk=;
+	b=v06fNJxb3m4XU99i8GK/K+ZKB2iJVtUYDSv1y0ZJN9pbohrKQiXmizlEGPKDDxbcko5cys
+	Dzi35RzR9P6OZF2Gz8Krsgf9dYyZiXWkEI9YkRaTa9OwmA2TU2GuQlDjFpNzC2FKT62uRr
+	86jSQD+DVcb9jVkjnhPm5aDWIwy0cNI=
+From: luka.gejak@linux.dev
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: Stanislaw Gruszka <sgruszka@redhat.com>,
+	Yan-Hsuan Chuang <yhchuang@realtek.com>,
+	Brian Norris <briannorris@chromium.org>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Luka Gejak <luka.gejak@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] wifi: rtw88: increase TX report timeout to fix race condition
+Date: Thu,  7 May 2026 18:36:21 +0200
+Message-ID: <20260507163621.73295-1-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 863284EC42F
+X-Rspamd-Queue-Id: 56B654EC535
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	SUBJ_EXCESS_QP(1.20)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36080-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-36081-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linux.dev:+];
 	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6]
+	FROM_NO_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,linux-wireless@vger.kernel.org]
 X-Rspamd-Action: no action
 
-On May 7, 2026 6:28:27 PM GMT+02:00, luka=2Egejak@linux=2Edev wrote:
->From: Luka Gejak <luka=2Egejak@linux=2Edev>
->
->When rtw_usb_write_port() fails to submit a USB Request Block (URB)
->(e=2Eg=2E, due to device disconnect or ENOMEM), the completion callback i=
-s
->never executed=2E
->
->Currently, the driver ignores the return value of rtw_usb_write_port()
->in rtw_usb_write_data() and rtw_usb_tx_agg_skb()=2E Because these
->functions rely on the completion callback to free the socket buffers
->(skbs) and the transaction control block (txcb), a submission failure
->results in:
->1=2E A memory leak of the allocated skb in rtw_usb_write_data()=2E
->2=2E A memory leak of the txcb structure and all aggregated skbs in
->   rtw_usb_tx_agg_skb()=2E
->
->Fix this by checking the return value of rtw_usb_write_port()=2E If it
->fails, explicitly free the skb in rtw_usb_write_data(), and properly
->purge the tx_ack_queue and free the txcb in rtw_usb_tx_agg_skb()=2E
->
->The issue was discovered in practice during device disconnect/reconnect
->scenarios and memory pressure conditions=2E Tested by verifying normal TX
->operation continues after the fix without regressions=2E
->
->Fixes: 87caeef032fc ("wifi: rtw88: Add rtw8723du chipset support")
->Cc: stable@vger=2Ekernel=2Eorg
->Tested-by: Luka Gejak <luka=2Egejak@linux=2Edev>
->Signed-off-by: Luka Gejak <luka=2Egejak@linux=2Edev>
->---
->Changes in v2:
-> - Use ret =3D rtw_usb_write_port(=2E=2E=2E); style, and check by next li=
-ne (in
->   rtw_usb_tx_agg_skb)
-> - Remove unnecessary comment
-> - Use ieee80211_purge_tx_queue() instead of skb_queue_purge()
-> - Add testing details to commit message
->
-> drivers/net/wireless/realtek/rtw88/usb=2Ec | 13 +++++++++++--
-> 1 file changed, 11 insertions(+), 2 deletions(-)
->
->diff --git a/drivers/net/wireless/realtek/rtw88/usb=2Ec b/drivers/net/wir=
-eless/realtek/rtw88/usb=2Ec
->index 718940ebba31=2E=2E1bb922cc2928 100644
->--- a/drivers/net/wireless/realtek/rtw88/usb=2Ec
->+++ b/drivers/net/wireless/realtek/rtw88/usb=2Ec
->@@ -399,6 +399,7 @@ static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwusb=
-, struct sk_buff_head *list
-> 	int agg_num =3D 0;
-> 	unsigned int align_next =3D 0;
-> 	u8 qsel;
->+	int ret;
->=20
-> 	if (skb_queue_empty(list))
-> 		return false;
->@@ -456,7 +457,13 @@ static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwus=
-b, struct sk_buff_head *list
-> 	tx_desc =3D (struct rtw_tx_desc *)skb_head->data;
-> 	qsel =3D le32_get_bits(tx_desc->w1, RTW_TX_DESC_W1_QSEL);
->=20
->-	rtw_usb_write_port(rtwdev, qsel, skb_head, rtw_usb_write_port_tx_comple=
-te, txcb);
->+	ret =3D rtw_usb_write_port(rtwdev, qsel, skb_head,
->+			         rtw_usb_write_port_tx_complete, txcb);
->+	if (ret) {
->+		ieee80211_purge_tx_queue(rtwdev->hw, &txcb->tx_ack_queue);
->+		kfree(txcb);
->+		return false;
->+	}
->=20
-> 	return true;
-> }
->@@ -518,8 +525,10 @@ static int rtw_usb_write_data(struct rtw_dev *rtwdev=
-,
->=20
-> 	ret =3D rtw_usb_write_port(rtwdev, qsel, skb,
-> 				 rtw_usb_write_port_complete, skb);
->-	if (unlikely(ret))
->+	if (unlikely(ret)) {
-> 		rtw_err(rtwdev, "failed to do USB write, ret=3D%d\n", ret);
->+		dev_kfree_skb_any(skb);
->+	}
->=20
-> 	return ret;
-> }
+From: Luka Gejak <luka.gejak@linux.dev>
 
-I accidentally sent this as part of the patch series but it is clearly
-not=2E Resending as a standalone patch=2E Sorry for the noise=2E
-Best regards,
-Luka Gejak
+The driver expects the firmware to report TX status within 500ms.
+However, a timeout can be triggered when the hardware performs
+background scans while under TX load. During these scans, the firmware
+stays off-channel for periods exceeding 500ms, delaying the delivery of
+TX reports back to the driver.
+
+When this occurs, the purge timer fires prematurely and drops the
+tracking skbs from the queue. This results in the host stack
+interpreting the missing status as packet loss, leading to TCP window
+collapse. In testing with iperf3, this causes throughput to drop from
+~90 Mbps to near-zero for approximately 2 seconds until the connection
+recovers.
+
+Increase RTW_TX_PROBE_TIMEOUT to 2500ms for RTL8723DU. This duration is
+sufficient to accommodate off-channel dwell time during full background
+scans, ensuring the purge timer only trips during genuine firmware
+lockups and preventing unnecessary TCP retransmission cycles.
+
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+Cc: stable@vger.kernel.org
+Tested-by: Luka Gejak <luka.gejak@linux.dev>
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+---
+Changes in v2:
+ -Isolated the change to RTL8723DU as requested by Ping-Ke
+
+ drivers/net/wireless/realtek/rtw88/tx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index 3106edb84fb4..7fab83c3f6b5 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -196,6 +196,7 @@ void rtw_tx_report_purge_timer(struct timer_list *t)
+ void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn)
+ {
+ 	struct rtw_tx_report *tx_report = &rtwdev->tx_report;
++	unsigned long timeout;
+ 	unsigned long flags;
+ 	u8 *drv_data;
+ 
+@@ -207,7 +208,13 @@ void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn)
+ 	__skb_queue_tail(&tx_report->queue, skb);
+ 	spin_unlock_irqrestore(&tx_report->q_lock, flags);
+ 
+-	mod_timer(&tx_report->purge_timer, jiffies + RTW_TX_PROBE_TIMEOUT);
++	if (rtwdev->chip->id == RTW_CHIP_TYPE_8723D &&
++	    rtwdev->hci.type == RTW_HCI_TYPE_USB)
++		timeout = msecs_to_jiffies(2500);
++	else
++		timeout = RTW_TX_PROBE_TIMEOUT;
++
++	mod_timer(&tx_report->purge_timer, jiffies + timeout);
+ }
+ EXPORT_SYMBOL(rtw_tx_report_enqueue);
+ 
+-- 
+2.54.0
+
 
