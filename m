@@ -1,79 +1,81 @@
-Return-Path: <linux-wireless+bounces-36059-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36060-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sI3hISlz/GkEQQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-36059-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 13:10:33 +0200
+	id IAnvI89x/GkEQQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-36060-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 13:04:47 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FE174E7422
-	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 13:10:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A724E733C
+	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 13:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5AA43038165
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2026 11:04:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 05A243001BF2
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2026 11:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D2A34F24E;
-	Thu,  7 May 2026 11:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56654358363;
+	Thu,  7 May 2026 11:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lg6aOoCs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hnw1Q3hu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6523093D8
-	for <linux-wireless@vger.kernel.org>; Thu,  7 May 2026 11:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0183C3168EB
+	for <linux-wireless@vger.kernel.org>; Thu,  7 May 2026 11:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778151852; cv=none; b=SHHEIAaW3NSIdfn05PowHQp8D/nkOa7gdO+NQ2phO919e/Yya7YUFEVC2c8HPJu6bQAXsSxY9xwHdKYOiU8uQToGNSfyAQnOJZ0irfGrki11eM3tAAxbYWVMmtpY3wmeR6Gn0Vi8B1mSOvshPoHTm1tbU1xSf8Woj1R+4Yz0HN8=
+	t=1778151870; cv=none; b=p/XW1MhT2uw6tdaLLJr2gb4Dd/lgecFhQZrhjrjYBs5mZw+eTe7ZaEENhSpYTzBAXnBeIJOuBLyzWGssw8yfdF/d78sdcnI/dKoA2KEv+sFHkBZt92uLQcZQ41LhtfPHGOhfZ6ITjaJ1x/QsnTl0zkTZcBoyzcjzdKEnSEj+XS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778151852; c=relaxed/simple;
-	bh=muy4ln8oosRMTLMN8Ir5RlGdNWkfxHNe7px5ZbQvV90=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LsSjg1FoG5u+RsSiJby8fnpyXJ7HljedBnQJevlS1dnuDZVN/kPXpMy41/0UT6rNfAFvLAmRe7tneTzgy0sBXHHaTVHBnBMXOB8rJCsNQ0wcY0gPq1VUX3MrxASCMV6EBJ1FbKeE/RMZNTtxuE94hhcmE9cowVRmc7Myu5xK44w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lg6aOoCs; arc=none smtp.client-ip=209.85.215.172
+	s=arc-20240116; t=1778151870; c=relaxed/simple;
+	bh=0SGyG17o2tJGzWQ0udzyOUcT09bMtcXqi5lkxseaC4Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mUFgL56q8m5xKypmWYWrwcafe/E79B/Cfjj8Ol13f1EvOB4FWNQuDO/fwOOxUEuwzJ82AwY9Pv2RuuxMTOFH8nPG9IlylPOcMT3wz02DgW6U/nfg0vH08Evyl9an9dMNby+LlZukAUnulgwxtnYSZDS8YOXz1TGOn8v2TLR75a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hnw1Q3hu; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c801b30188dso260911a12.3
-        for <linux-wireless@vger.kernel.org>; Thu, 07 May 2026 04:04:10 -0700 (PDT)
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-364eef1891dso489949a91.1
+        for <linux-wireless@vger.kernel.org>; Thu, 07 May 2026 04:04:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778151850; x=1778756650; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZmrgafWER5TklrlynvzNXexUVxLr7++bugjx6nPpFyQ=;
-        b=lg6aOoCsQOoRdgaZ6Nb2ZcEFdGIAiz7gAVSladZLaak2XyA7i95gK9R1azMUrrRtub
-         lDo+c0Na/EB+3lAnGUxtSKwxI1JSu8tFG7gva28yJHzkYtJyASBm+adtHFi8QFTquOPf
-         wJfwY8hLRfywKCaIdKPdJkIDk91alavQDlu4A5JixVSbjP5QJaHPPhllQcJN9zJWXodQ
-         6ahgX3GgJ1tPG1ldemGuPvpOrp6GWTdVZPJv9D0lVLuLHGzJpYAYXVUOKUU4lt7qDqX6
-         oBsuDrT6kKItitC/jm8IcvEK37DhJxIvCIh4yu/muvPk8Zk3uMzUELHAppNjlic0Pzlu
-         bFWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778151850; x=1778756650;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778151868; x=1778756668; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZmrgafWER5TklrlynvzNXexUVxLr7++bugjx6nPpFyQ=;
-        b=diPDpZ/WBboY5Ryml9RhnqlOE4G9TjB1411/2VTCRfLEMc6rIwl62mQHGJZBsHyUJW
-         ShC7T+N4Gdpf5xj59l052DarRG6yhjT+KbhCqLLjiu1Qd+AMcAxR8pvjjZQCQRR+tze3
-         ne4VtxsAo3aFK8TxxeVMZJFpA0XLnxIGoQ+Awb63bwFjHY/jxyRiJpjIBNBkQjehQzZR
-         Ozx9DXQSPq9jy3GLISMQy0479fFqA12kqXcjWPU88BSnIzbbaDlrCb1MMqIklMfRN+5j
-         VMN25URhvAnzFO7XIXdqwa5vhG/XeDdc0t2P79cJgdBVLVMOulDD4FZQci36a9OiPnc8
-         l+Yw==
-X-Forwarded-Encrypted: i=1; AFNElJ+lyFD6ulHIDEUgpf2Gm9tBnMJFkb8CS980nlH9Wx+byymEq5t2iTqtDtbtojieifGTSV0biiBak/TFEfWW/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHK3F90ubTbs7WppEbmJ1jq56fVYHdSj6+KhlKGI2s7DNls04Q
-	Cl81D8alqkrnEZUSXg4mo6KZpZBW5qSXfmso6f7Tja0Y8ks+dfN1bgsk
-X-Gm-Gg: AeBDies4hqZySh0RDtSAnEFACM0llHrwne/CW0l4ISL4Bib+aegusxsT8U1mrOE+JiD
-	MbAzWb7b4m4PShBxm9NvC8v2w16n8QH2Fj8LxsuAcmzXsHQ+5aiLak3+vLtARVdozaZ1mXBVMfw
-	Ga2pCau5qRlL6NbkvmvuI/BAfPx4WemkJrSEVTDYhFD/xq00WifwywdwlfZ7YtNAwC5Cy9oiXk3
-	645iNs/dvsDjjpI3gycTNbnZHpQu0u/nxfhmKF+SXulypQFWNQOs20UC1UNgPj/Y2gu4uVeJsIU
-	NayzvckvDFId/aI06BurWlaT5qb6AedG5wcR2O/E5hGf4klejSk0TN8oPGud60wWc2D7uge5pKt
-	DdDOynSLTsUOuG+rOVlXfNiHe7afkg6/HiFr+nm3EX/swWbT6gmz3k1q3hOUYk/hcAL7X2hfx6b
-	xwHkTopx0i9b0hhT2KbOaRknZFDmVcTBcfEmiJrJCLy1o6AZ0n9LM=
-X-Received: by 2002:a05:6a20:6a2c:b0:39f:24a5:3065 with SMTP id adf61e73a8af0-3aa5a72c4abmr8140964637.7.1778151849968;
-        Thu, 07 May 2026 04:04:09 -0700 (PDT)
+        bh=LbHKY59I43VJu3Inx5ITaB5XIt+9MgBqVQXP8HKYePo=;
+        b=Hnw1Q3huyHTUbxbRFlKpSA06o+Q/8ukNrnjtHoaKw4OGE8i9DpLhYUVqcp8TMA3ZVk
+         kDerwMPs+wB8JuusqsYijD6wmCB9DJNFfjgFTLiV5dlxxSkbr1bX13D/KwPlo7GA/FwG
+         ce/nLHCIrdJ5eMJw491p4S4qSd1vIYzyjxrCFYqco2v9OMHh8oDnruUpwLk9mc93KLvw
+         aqw3j8sLQH8l1EwvSzh+erNdjp7s0SY+7TcKoR21JIvWUwlxqN3qMPBsOgr1lwQPgRDA
+         DwCqxV9403CBXh8iabP5MsgwgRB8FXb5iVKIWGZBQe5BEWAYhCgXUhcC2Lkv+pYLITCS
+         lEsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778151868; x=1778756668;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LbHKY59I43VJu3Inx5ITaB5XIt+9MgBqVQXP8HKYePo=;
+        b=VfoHJsMNXsU1edgWWAj8nPhW0Tppl66CF8EiVoHfX9ftEvhtKabWd9ysjUwWfeSMKf
+         hHb8ivW6tUotm1Bapr4C5NEdiN7MobinneVtkh/1+eiC3BBQdHuwZbweJU0oU9Cc0TyD
+         7XZMfwSiXPQfNIbZSBpUKQVs5SkAghr89526CkQlzANQOF/xIijDaX4QPLftMnM6FuY+
+         +gsryq3wmT0DYcmy7wilC5Un8prHR2zwDfQYyv0lyWHqR1rGtV/tb67J0KKYNqEpDFBL
+         3NoVB/B0PMw9OS3T8Bst9d4AvGluA2+nRmZrPxz9fXGJEbVktMYqj9weMxhkYxQDXPgH
+         wn1A==
+X-Forwarded-Encrypted: i=1; AFNElJ8te5eXpLEAkow2LbTJzFBQVFrRqePNcn2rnNnfZknlSNacsyJOMlc2AMz0xw9+2sFpcTd1Uxl/0TWf26Qkgg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHSeUJ04ilzWFkKbi7or/HD7iW3gDIV7FW/8V7cpa12npbp+7H
+	cuZbXTUh+I1y+nFuNhao0A8D9scm4a9hMfd7mw0rHqPHlMoK5d0O0TolJa36yQ==
+X-Gm-Gg: AeBDieu+JYqdTqjrZFPPL4paBtjcKZBRV/xeKe9gLJ2oyWakG4w2e0HUq4ld7f2JNRM
+	7McpU2fYavP9GphHXjL34dk0mWGveUZg4UqyetFitgX8WIQO3rdJ+9DN0wMr5qyviMpEFc1igwT
+	fZFGT5vanjzxdtlKn1hqu0V8T7YxGNPA9lezGoC9jCcFxeb2RLVWFTgd00wzAP3dwhu2svnrPyP
+	S0lQEfgP3M2yNzknr34RPrRGzKiauYq/jM6rg/AEPVwHO4+zy0z6TZVnYZ65MRzcg3irjp6awOv
+	4ivNIJCSl8KJEa4MEJkxQyNpWSS/KUdCsbmgmVW46SKOSW2+Sswnk8KhmedZRImVjqo+LwL2TR6
+	HYeB5kTwWWUT4U7Pja/c9hGKy2grgdPFIigxhN9ZyKcrYBBca3NuRL7JAFGnjzNT2qAtbC1OHAu
+	dQzjJbdG6PqX2U3hu6443tD4GL7hOyCe0/UgqCeaG0
+X-Received: by 2002:a17:90b:2d4b:b0:366:527:3c9a with SMTP id 98e67ed59e1d1-3660527402bmr2738189a91.15.1778151868319;
+        Thu, 07 May 2026 04:04:28 -0700 (PDT)
 Received: from localhost ([103.74.250.37])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8253b493c5sm1835163a12.28.2026.05.07.04.04.09
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-365b4c28b1asm5720264a91.8.2026.05.07.04.04.27
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 07 May 2026 04:04:09 -0700 (PDT)
+        Thu, 07 May 2026 04:04:28 -0700 (PDT)
 From: Jiazi Li <jqqlijiazi@gmail.com>
 To: Kees Cook <kees@kernel.org>,
 	Andy Shevchenko <andy@kernel.org>,
@@ -82,11 +84,14 @@ To: Kees Cook <kees@kernel.org>,
 	Nicolas Palix <nicolas.palix@imag.fr>
 Cc: Jiazi Li <jqqlijiazi@gmail.com>,
 	linux-hardening@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH v3 0/3] Add str_alloc_free() helper
-Date: Thu,  7 May 2026 19:03:02 +0800
-Message-ID: <cover.1778051552.git.jqqlijiazi@gmail.com>
+	linux-wireless@vger.kernel.org,
+	"mingzhu.wang" <mingzhu.wang@transsion.com>
+Subject: [PATCH v3 1/3] lib/string_choices: Add str_alloc_free() helper
+Date: Thu,  7 May 2026 19:03:22 +0800
+Message-ID: <9663db399276de3ce91a77b8a8be8220132e74a8.1778051552.git.jqqlijiazi@gmail.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1778051552.git.jqqlijiazi@gmail.com>
+References: <cover.1778051552.git.jqqlijiazi@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -94,64 +99,67 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1FE174E7422
+X-Rspamd-Queue-Id: 03A724E733C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,transsion.com];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36059-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36060-lists,linux-wireless=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jqqlijiazi@gmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,transsion.com:email,mingzhu.wang:url]
 X-Rspamd-Action: no action
 
-Currently finds 4 locations:
-./drivers/net/wireless/realtek/rtw89/fw.c:2557:7-12: opportunity for str_alloc_free(valid)
-./drivers/net/wireless/realtek/rtw89/fw.c:2693:7-12: opportunity for str_alloc_free(valid)
-./drivers/android/tests/binder_alloc_kunit.c:196:6-21: opportunity for str_alloc_free(alloc -> pages [ i ])
-./mm/slub.c:1634:3-8: opportunity for str_alloc_free(alloc)
+Add str_alloc_free() helper to return "alloc" or "free"
+string literal depending on the boolean argument. Also add the
+inversed variant str_free_alloc().
 
-Patch 3 is based on
-https://lore.kernel.org/linux-hardening/CAHp75VdHY814NRfyUfWeqRd4-DwYzHGh25OTsUB5EFpRKpVQLQ@mail.gmail.com/T/#t.
-
+Tested-by: mingzhu.wang <mingzhu.wang@transsion.com>
+Signed-off-by: Jiazi Li <jqqlijiazi@gmail.com>
 ---
-Changes in v3: Add first user for this helper
+ include/linux/string_choices.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-v2: https://lore.kernel.org/linux-hardening/CAHp75Vdvdr0TPzuDDPSoJ4Nixk-6qO_x6Or9iY9LNwSO1Q6mHg@mail.gmail.com/T/#mfb405519f7b3a06f4fcaa8e5a799da5299d9ee85
-
-Jiazi Li (3):
-  lib/string_choices: Add str_alloc_free() helper
-  wifi: rtw89: Make use of str_alloc_free helper
-  coccinelle: Add rules to find str_alloc_free() replacements
-
- drivers/net/wireless/realtek/rtw89/fw.c     |  4 +--
- include/linux/string_choices.h              |  6 ++++
- scripts/coccinelle/api/string_choices.cocci | 38 +++++++++++++++++++++
- 3 files changed, 46 insertions(+), 2 deletions(-)
-
+diff --git a/include/linux/string_choices.h b/include/linux/string_choices.h
+index ee84087d4b26..65f346db95ba 100644
+--- a/include/linux/string_choices.h
++++ b/include/linux/string_choices.h
+@@ -17,6 +17,12 @@
+ 
+ #include <linux/types.h>
+ 
++static inline const char *str_alloc_free(bool v)
++{
++	return v ? "alloc" : "free";
++}
++#define str_free_alloc(v)		str_alloc_free(!(v))
++
+ static inline const char *str_assert_deassert(bool v)
+ {
+ 	return v ? "assert" : "deassert";
 -- 
 2.49.0
 
