@@ -1,277 +1,183 @@
-Return-Path: <linux-wireless+bounces-36087-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36088-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPd4IvzI/Gn1TgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-36087-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 19:16:44 +0200
+	id 6G4IFE/Z/GkgUgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-36088-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 20:26:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A71D4ECC6F
-	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 19:16:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540B54ED65D
+	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 20:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BF2F7301436F
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2026 17:16:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 707063002505
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2026 18:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536992E1F02;
-	Thu,  7 May 2026 17:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E4331E824;
+	Thu,  7 May 2026 18:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Xj8WLnVG";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Iu9tyFSC"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QZB5hK0z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F285444E045
-	for <linux-wireless@vger.kernel.org>; Thu,  7 May 2026 17:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEC62BCF4C
+	for <linux-wireless@vger.kernel.org>; Thu,  7 May 2026 18:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778174195; cv=none; b=CXWhYLH7qnR347aRqubLwl++VmvThMdpn6TVUSXi/GFNyHULxkCVkLqjUbXsulg83Xpdi0ZkVaM8GdevNxMnsrwf47OOaiTmK6zE6c8cpFxe4tZDmHbKpb4Z8MfnA3R2K1ijzoWMIzch/PIRMlZcwoEqQKtg3jilADfHpwCORjQ=
+	t=1778178378; cv=none; b=qjNkzBkgPUPDKYzsyPfnRUX+tnSfQ5ConW1tGGIjE7aF7MmivaMaNHdAxhkt/vjlK8BgQ6JJKCLiPiuPT+yCaQIO43CAlcey9Zk+yoADcpkXj/IbWUC9TUzPALTZEqoXf/COGohd/4jEoZZf8E7jDiavjowjHDrhUXojDrLpjy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778174195; c=relaxed/simple;
-	bh=GvJc1lSPtpSgv2IF0WMJEWMjSUgZil4pFug0UjPxyxc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PthNxETJApXxURG7jgoBduxaLSKZqxv+BTG0mQ7OfIK8YoFBGrhh77pL9HMyLNGkYvID8nFEGqiiQGgS4GTtSaWnrGU7WFrZEIOZ4789h6c5piy7PL/erJCAU733+R7vWtyZ+rfajQy+Q06DotTMm2+62FeVQGIBueeI7GKpON8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Xj8WLnVG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Iu9tyFSC; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647C5Wsh1971634
-	for <linux-wireless@vger.kernel.org>; Thu, 7 May 2026 17:16:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=ROxcqDbdPdC
-	LMmcWeZnJr9Q9GkqlfiECDl0b7n3aIuo=; b=Xj8WLnVG6VxN0R/9ToKxLdVNCVU
-	+OCeLdeDSCspTLwbjqA5KSlf+qiwvdLsDPedhqvqOPNCbHgskAVU3y+B88817mYD
-	1jzoEaSSk0tpc+COPj3fDGSvQlKK/kNEAJWPvxWy6c0tnNRWsv1yfKU6i/ENSusa
-	BKd+RtE0aiUqtWv3rMttGADZlbH6KK0854067jHRULaRbeCEWoGhAV1VbQwkws6f
-	wIjNm1Vt5J1YqrIBJ7yvlduPO0yMQxmeLAOajGGQ1NAbPEwK8HAnwJZ3TWICs+rU
-	jQ14RxX0Y+YoXHZu1GfipVdEsLyc/ojtACL6qkgZOKmsiHnozxgBrBn+2kw==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e0tej9bkb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 07 May 2026 17:16:33 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3651991d0bcso2237559a91.0
-        for <linux-wireless@vger.kernel.org>; Thu, 07 May 2026 10:16:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778174192; x=1778778992; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ROxcqDbdPdCLMmcWeZnJr9Q9GkqlfiECDl0b7n3aIuo=;
-        b=Iu9tyFSCG7jyJDwdXI1yeeQmr7NQvl/WzfHGw6WI6N1fZBIbWq4cfrf5tX329Glgi2
-         G4FdRhdnojGDtNrS5MRMf1DW742t1UAzRvy8DF6eIORUNb32c0//0aaw9FZXuzHqcOPW
-         Nb9JE4DQE6e6uNy9Ebv4HPhw/qvakU1WFdI55/p3G6MEqeR4TAH5h9QCrArVdFlIPpOB
-         r/tTq+vb6ajQlbinsJLt/R0iYcXbggcOUxyJ7a6z/ARZgMx+5r85VrUAn2BFcEtA/YtU
-         U24mglvX9wnA8ZiOcJddsusZZp2LZ4MuBWLficXZ4en3FBgYTY7mxNsNsot+AozhhBJn
-         Z0dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778174192; x=1778778992;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ROxcqDbdPdCLMmcWeZnJr9Q9GkqlfiECDl0b7n3aIuo=;
-        b=qsiJYnqBQcUkU466f0ceuwPAmBDKP7KzlK2UeCXWHLXuXvo0ztEjqOOYURkTtLNfLt
-         zqRoJvBlHu4skDR/fizc7xFK03FFQ/6ZCe7tDB+H7nU+1KLb+yLSXxIobHDHZBAmXRhg
-         0VtEhMnWF9pQFpdmZYcqlzoEQRscMckkLwV/fw3NLRiKtyr/ykL2kyp3+1Z+abR99J+P
-         3mC3x7/LvukA9iD0LFIicNxwaYJjbp7q1YRMINqUtUDOkoy9R3hrI5vpnweFwTwTQdcd
-         StmGU9cW1KVhr9/TIFrrF9m8Kg2ZC2k5S+x+6lIseDydRarrDSMBrvmWoXZxoTJG02hf
-         wlBg==
-X-Gm-Message-State: AOJu0YxmVkrx4QTw4yeQE5LIoM1qZ7aeKES2fCy8KrPPTE8LbJ3VwhEt
-	1UBj7izV8s91bNALx7nPnWyDZ7yFG8ApSoVPk3Cp241bXpatUck6M07bBBDAzEKQ+IJAL+UxHqp
-	APpjkFbCs6sTbVH8etxvbBHZRAuW3GkBzZSsUEs2UtKvoIJax7Fz21CbG04wBZYNyuCREeg==
-X-Gm-Gg: AeBDieum01YSeUfSClf6zlth7dLa9B+eeXI+iHILZV6ZSWsbVEwqVrLv4Yakz2fqFaA
-	FvzPOr6gKuTsId6k1SmySNYuyMYnIAFA9+x8u3HpM8pWTjri0jeIThOk6dZDSheFPsQl+wD08lC
-	IswsRh5G4BiofD9N/InrXzA5C4Wyfd4+ihwVV6UHbCBgjZb3HVbgE6F+wIBNIjfIXI7Iyovw4qz
-	eTIgG0j2r8iWlWj0xPQICmneu0EYDvQKSg7fK4t/Ewy49by5ljT+NJazCA7SGwILuKiEM3XPDHw
-	NpbXhsbmhMp2om7jX229znCEvduvgjiSxivEAOZdjaLGDbxQqyw9cXPrOBrT/xeeNgUNmdON098
-	UxbflKJYuI2LrQ/QTPkAmBZTUpa4TfnOiRbwWB7IUu1lkEOHjyQZynjrq
-X-Received: by 2002:a17:90b:4b87:b0:35c:1f29:712f with SMTP id 98e67ed59e1d1-365ac76bae1mr9124346a91.24.1778174192431;
-        Thu, 07 May 2026 10:16:32 -0700 (PDT)
-X-Received: by 2002:a17:90b:4b87:b0:35c:1f29:712f with SMTP id 98e67ed59e1d1-365ac76bae1mr9124308a91.24.1778174191973;
-        Thu, 07 May 2026 10:16:31 -0700 (PDT)
-Received: from hu-pritiwa-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82640f7838sm121457a12.32.2026.05.07.10.16.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 10:16:31 -0700 (PDT)
-From: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
-X-Google-Original-From: Priyansha Tiwari <pritiwa@qti.qualcomm.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, quic_drohan@quicinc.com
-Subject: [PATCH wireless-next v3 4/4] wifi: mac80211_hwsim: report TX status link_id
-Date: Thu,  7 May 2026 22:46:03 +0530
-Message-Id: <20260507171603.1007812-5-pritiwa@qti.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260507171603.1007812-1-pritiwa@qti.qualcomm.com>
-References: <20260507171603.1007812-1-pritiwa@qti.qualcomm.com>
+	s=arc-20240116; t=1778178378; c=relaxed/simple;
+	bh=neRrY21R+GHrULaZM86q5cmvbIA3qdx+eZpjHML5pCA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JCRGvK7C7PRtuz+ODLW/7E7aZ8Sj8u1OhSxPhQP8wv+5Ovu+wjLDLGcKTfCQf0ByYSt8J8lSWg58tKOEyTQMMIhtTlXK/YTcw9UFwxbgmNkch9gWaCjgtUuSTeGyUxIbxJ5iI8IZM6lTnpp/R1zuGI2IvtsVay/UCuilL4X4d+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QZB5hK0z; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=GaXb/2nrWWRhSCIBDS6/VHMjhtS0soG7Xw53BfdGC0s=;
+	t=1778178375; x=1779387975; b=QZB5hK0z1Igm/9NUFR/7POsIO4Nq0T2rMPio11aVeXtV4gS
+	hrqZnAo3uHiTh7kbaVlgbnpajlgLPmJG8CXAMGZhM36DDUwtCOG0cPP0iIY8dFViVoHZq7SBOyzyZ
+	7XbWuYr5em85nXM2d7dV4MgMwUWhc+a6gJabVMyvuXIUSoLIVBlp7t02B/zgNYVLCWImplK7TvpJ7
+	Xkd15Qgwv6ak6lbiISaTcpmMZOBEOHLKeX/Cog4Zc9/X1kcyKgTF62FZeq3ZyjId5MToosa0nczKs
+	zZGhE3nT1GI8B5r2Fba+Vn9+hzsaHjnR87FcbAe5+VST7g6wBa6AEy/Zw9eHa6lg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wL3QJ-00000004K4e-0WRJ;
+	Thu, 07 May 2026 20:26:11 +0200
+Message-ID: <a5b6798819178dd2995c34ec817457e90985708e.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next] wifi: mac80211: Fix ADDBA request
+ rejection after MLD link removal
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org, Hari Naraayana Desikan Kannan
+	 <hnaraaya@qti.qualcomm.com>
+Date: Thu, 07 May 2026 20:26:10 +0200
+In-Reply-To: <1d06b2a3-66d8-4c27-b965-6c21f80b7539@oss.qualcomm.com>
+References: <20260415-addba-req-v1-1-6eb9a33d8ca6@oss.qualcomm.com>
+	 <1f57207139c3fb955459425deda4d06c374ae212.camel@sipsolutions.net>
+	 <1d06b2a3-66d8-4c27-b965-6c21f80b7539@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDE3NCBTYWx0ZWRfX9TmZklh+Pxft
- RVa+HFiFzvU+45uAke5ofk/HjcNvmZI/8Keb1jjnljk0OYAuN7MQB+9M9RF3yZoLnlGpQ5jcDIY
- CksF3JkZZfeF+D+yhDOoDd2vPkQpX3vckDK8FsmVVyrwjHpH0VU/bfRCxtkVz3Lc5htiYLENRsI
- q2RBKUgqCa9EKmA506Tm8mbp5YdskQmVKZSTgd7hQLEhPGEBTyEOXLmM7QBcxbH1IbD5XA4BORU
- JznL5oJTQsgHfJ4kWZJwt1KXtm0LFmcf1bBOAG6MhlXtQyrzJpr3yNXK01y+IvqlK9eBMnKV6+D
- wBGmIUf3sPltmGAI+Es98VuwWTFfaLSyfiDbZQKbq3t5pQo1uTfS3dtA0GYHRgNXG7nFuu9/9nO
- Lr6fG6cGvmDiIRs4Lth9dIh5RT/swxhJiKr8lFvk0AE2c2qY2B6HBCpofl0uUiWRKRnyrtczunM
- TDQt8XceMD/KBdSB04Q==
-X-Proofpoint-GUID: TUdTzkgKw6vDAe6OIulraiiFaQp5RACK
-X-Authority-Analysis: v=2.4 cv=VNbtWdPX c=1 sm=1 tr=0 ts=69fcc8f1 cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22 a=EUspDBNiAAAA:8
- a=NjFlLJTsBWwvL5VAOx4A:9 a=mQ_c8vxmzFEMiUWkPHU9:22
-X-Proofpoint-ORIG-GUID: TUdTzkgKw6vDAe6OIulraiiFaQp5RACK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
- bulkscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070174
-X-Rspamd-Queue-Id: 2A71D4ECC6F
+X-malware-bazaar: not-scanned
+X-Rspamd-Queue-Id: 540B54ED65D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[priyansha.tiwari@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36087-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36088-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:dkim,qti.qualcomm.com:mid];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:mid,sipsolutions.net:dkim]
 X-Rspamd-Action: no action
 
-From: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
+Hi,
 
-Populate link_valid/link_id in mac80211_hwsim TX status so the
-transmitted link is reported to mac80211.
+Sorry, I've definitely fallen behind on some topics.
 
-Set the link information in both the direct TX status path and the
-wmediumd/netlink TX status path.
+> With link reconfiguration, not handling the update requests sent on the=
+=20
+> remaining links causes throughput drop, that's why went with handling=20
+> the update requests even-though the session is valid.
 
-Signed-off-by: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
----
- .../wireless/virtual/mac80211_hwsim_main.c    | 43 +++++++++++++++++--
- 1 file changed, 40 insertions(+), 3 deletions(-)
+I'm not sure I see the relation right now, how does link reconfiguration
+relate to AddBA re-negotiation? Are there implementations that
+necessarily combine the two somehow?
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-index dc9775cd9f54..4ad39cdfb7a7 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-@@ -2077,6 +2077,7 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 	bool ack, unicast_data;
- 	enum nl80211_chan_width confbw = NL80211_CHAN_WIDTH_20_NOHT;
- 	u32 _portid, i;
-+	int tx_link_id = -1;
- 
- 	if (WARN_ON(skb->len < 10)) {
- 		/* Should not happen; just a sanity check for addr1 use */
-@@ -2134,6 +2135,9 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 								 hdr, &link_sta);
- 		}
- 
-+		if (bss_conf)
-+			tx_link_id = bss_conf->link_id;
-+
- 		if (unlikely(!bss_conf)) {
- 			/* if it's an MLO STA, it might have deactivated all
- 			 * links temporarily - but we don't handle real PS in
-@@ -2245,6 +2249,12 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 
- 	if (!(txi->flags & IEEE80211_TX_CTL_NO_ACK) && ack)
- 		txi->flags |= IEEE80211_TX_STAT_ACK;
-+
-+	if (tx_link_id >= 0) {
-+		txi->status.link_valid = 1;
-+		txi->status.link_id = tx_link_id;
-+	}
-+
- 	ieee80211_tx_status_irqsafe(hw, skb);
- }
- 
-@@ -6037,6 +6047,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 
- 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
- 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_PUNCT);
-+	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_PROBE_AP);
- 
- 	for (i = 0; i < ARRAY_SIZE(data->link_data); i++) {
- 		hrtimer_setup(&data->link_data[i].beacon_timer, mac80211_hwsim_beacon,
-@@ -6262,6 +6273,27 @@ static void hwsim_register_wmediumd(struct net *net, u32 portid)
- 	spin_unlock_bh(&hwsim_radio_lock);
- }
- 
-+static int mac80211_hwsim_get_link_id(struct ieee80211_vif *vif,
-+				      struct ieee80211_hdr *hdr)
-+{
-+	int i;
-+
-+	if (!vif || !ieee80211_vif_is_mld(vif))
-+		return -1;
-+
-+	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
-+		struct ieee80211_bss_conf *link_conf;
-+
-+		link_conf = rcu_dereference(vif->link_conf[i]);
-+		if (!link_conf)
-+			continue;
-+		if (ether_addr_equal(link_conf->addr, hdr->addr2))
-+			return i;
-+	}
-+
-+	return -1;
-+}
-+
- static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
- 					   struct genl_info *info)
- {
-@@ -6342,13 +6374,18 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
- 
- 	txi->status.ack_signal = nla_get_u32(info->attrs[HWSIM_ATTR_SIGNAL]);
- 
-+	hdr = (struct ieee80211_hdr *)skb->data;
-+	i = mac80211_hwsim_get_link_id(txi->control.vif, hdr);
-+	if (i >= 0) {
-+		txi->status.link_valid = 1;
-+		txi->status.link_id = i;
-+	}
-+
- 	if (!(hwsim_flags & HWSIM_TX_CTL_NO_ACK) &&
- 	   (hwsim_flags & HWSIM_TX_STAT_ACK)) {
--		if (skb->len >= 16) {
--			hdr = (struct ieee80211_hdr *) skb->data;
-+		if (skb->len >= 16)
- 			mac80211_hwsim_monitor_ack(data2->channel,
- 						   hdr->addr2);
--		}
- 		txi->flags |= IEEE80211_TX_STAT_ACK;
- 	}
- 
--- 
-2.34.1
+> Please let us know if we need to clear the old session and then proceed=
+=20
+> with the update request to avoid breaking the other drivers.
 
+I'm not sure what you're trying to achieve, so I'm not entirely sure
+what to say. I thought we were starting from "we should accept no-op
+updates".
+
+> > > Note: A similar fix has been proposed in [1]. This patch also fixes t=
+he
+> > > issue mentioned there. The difference in approach is to keep a simila=
+r
+> > > flow when the dialog_token matches. Previously only the timeout value
+> > > is checked, updated that to check the timeout only for the hardware t=
+hat
+> > > doesn't set SUPPORT_REORDERING_BUFFER. In [1], it was changed to invo=
+ke
+> > > driver unconditionally when SUPPORT_REORDERING_BUFFER is set.
+> > >=20
+> > > https://lore.kernel.org/all/5806bab7e46506d3c300ab4eb66989d42936aeb0.=
+1771323902.git.repk@triplefau.lt/
+> > >=20
+> > What was wrong with the approach we discussed there, other than nobody
+> > implementing it?
+> >=20
+> > johannes
+>=20
+> Not a major different between the other change, thought of keeping the=
+=20
+> similar version that we validated in the internal tree.
+
+I don't think it _is_ that similar though? Or maybe it is, but I didn't
+think the other patch was correct (either).
+
+Basically I'm concerned that calling drv_ampdu_action() with
+IEEE80211_AMPDU_RX_START when the session is already active may break
+things depending on the driver.
+
+If you think there's a need to _really_ update parameters, then we
+should probably add a IEEE80211_AMPDU_RX_UPDATE operation, and implement
+it in drivers, and of course in some drivers that might just be
+equivalent to IEEE80211_AMPDU_RX_START (though that seems unlikely in
+general, given you may have to allocate reorder buffers etc.)
+
+Regardless of that, if you think we need to accept no-op updates (I
+don't think we've seen the need so far), then the code shouldn't really
+(need to) call the driver at all, since things don't really change. For
+that I'd argue we should go with the approached discussed in the thread
+of [1], but not really that change itself.
+
+[1] https://lore.kernel.org/all/5806bab7e46506d3c300ab4eb66989d42936aeb0.17=
+71323902.git.repk@triplefau.lt/
+
+I'm perfectly willing to believe the need for both, but I'd argue that
+ - no-op updates can be handled by mac80211 entirely by itself, as
+  =C2=A0discussed in that thread, just someone needs to implement it
+ - updates with changes need a separate call to the driver, which might
+   fail (either because of the change, or because it's not implemented)
+
+As is, I don't think the code is safe in general. It may be that you
+validated it against your driver, but then I'd argue that it worked for
+your driver only because a new IEEE80211_AMPDU_RX_UPDATE would be
+equivalent to IEEE80211_AMPDU_RX_START for that driver for some reason,
+not because there's a general reason that this should work.
+
+johannes
 
