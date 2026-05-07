@@ -1,48 +1,49 @@
-Return-Path: <linux-wireless+bounces-36090-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36091-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIQvAI0D/WmIWgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-36090-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 23:26:37 +0200
+	id OI3UAccD/WmIWgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-36091-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 23:27:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913874EF401
-	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 23:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D334EF41F
+	for <lists+linux-wireless@lfdr.de>; Thu, 07 May 2026 23:27:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13B75305C583
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2026 21:25:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 597793084658
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2026 21:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795DD3446DE;
-	Thu,  7 May 2026 21:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E9D344D95;
+	Thu,  7 May 2026 21:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOLHZcyn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+kqvGXz"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5388B326928;
-	Thu,  7 May 2026 21:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8323446A3;
+	Thu,  7 May 2026 21:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778189110; cv=none; b=AfEW2E4VsENoaXr8ZUX8BRKrVtqKHjT6FAa/RruSQ1hSOqg38x7qRoU3LReSTvfmiGtHrrQUenuH4fJRuzQ0EcKB7OiTuWMPrz70B8vGTs80TApn7WeUGBpG2k48/9mkne22xiKfle3YdIGgVtrbvwXVBwXEEwWKmKsmDmkCSno=
+	t=1778189115; cv=none; b=jwSQN6INDnb+BfEM+3VdtDev7/Xpr7IqVr2LFhsLa4l+/Kx6O487UsLcWKOnJjpYsGvQ6+vCu5IxSsXg4fciy6xOyaf0m65zeV9zOlZufbEysB2MDOwTYiBGVe7uq7dzJOGwbL8nac1lDjkxscKa2QoW0fG04sJFnUkXpK+t1sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778189110; c=relaxed/simple;
-	bh=4xVIrB3BoO25kpWCsGNHbaYhrNjLMgOZJqdAM781Ba0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=n0RDcVjmpVHCAak8NfVXrfTAVvp9qv8WTrD413/RuGZXTEuogo19LHXsGbf+znv9FoK1ef/bUP5aIxrcCMSh6KGHqRspykuMYkPIQK89WqSd8px9XmOfY5B+fDjZ3Ve4cV8rSaANIcvIjLVvz2pDu90+J1nVuLktrgnjl5319dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOLHZcyn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F25C2BCB2;
-	Thu,  7 May 2026 21:25:04 +0000 (UTC)
+	s=arc-20240116; t=1778189115; c=relaxed/simple;
+	bh=lExF+Vps5ZWvx5USh6xM+CXm5v6V7QZEs/hLepP2+QM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=cQna/SO5VXGRsqiWTs+mrIAryRHr55cIl/cTsgKxuwNjLSN0Usm0n4Gh3+hH4pgtYZ9GJwizLL/SLy+y8GK7CYR9zzd5uSgFSWYUlh0SnwVQ4Ls4HKDzkoaq8I8CeAAUWZHIUEaUhNGOXFR7PjVexIZVNprpRRYAJ4iQNYfw1fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+kqvGXz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64CD4C2BCB8;
+	Thu,  7 May 2026 21:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778189109;
-	bh=4xVIrB3BoO25kpWCsGNHbaYhrNjLMgOZJqdAM781Ba0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=sOLHZcyng7jEWIx7N1q/jm8C7FHsoVY69SWitvcQ7M2O3YjaRO9f7ONaz7MrP3Wqa
-	 zsOxPtOgvSlQRjbcbARjJBV/yD8Aqs1xPgzFBZLfUeXPOFSEyvJJMsB566vkV3/ZZx
-	 5ldy6tithi+fVbc0+oAG5cpq8XutxP0NFtqvrABUuxyKT7A6rXYBpUK1QP6M2cSIFz
-	 1CQEpg5eA2oUtBWWEpxV8o0iB8+ibyMDGPW58JJdUU/E79Slein8QzNBNHRCZ3aW6J
-	 VRa8cW1ZzlEtBdCkU665GDlHWNTPM4X1S5XsWpDNGi/4HTBxpCcBHux36YsNIMvkfa
-	 FiQl6pTFGzUqg==
+	s=k20201202; t=1778189115;
+	bh=lExF+Vps5ZWvx5USh6xM+CXm5v6V7QZEs/hLepP2+QM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=S+kqvGXzI4A796QYpHubo3JRsp6VrCnQcp5MxufXdPBJSrSfAMECAUQFPOiTQNMip
+	 IGDuq/4vP4Kh2JQr3sqdoz5bbNBsVaXlA4F3bVlve3H3gnifqfJLpSyZVkeUiBEZw/
+	 /BLMK0JlEuIYSRQEZ1gLxNHMi+6bODwChs0h10rl3BbI2LgzTFep9oxX7QUngldqGg
+	 wBo+go2QfpITnVC2QdlNrkh+y/zUbLCpgnghSyNoqUTtBVjvq3bkUGdmZ48xzSxo5H
+	 TAi51YeVsnIcFmGhTSurBstRdOcv4A7m5XoIXMrqEqDpBMlguFQ3BsA2BAFm+pdY8+
+	 jmCFGP48A9sLw==
 From: Arnd Bergmann <arnd@kernel.org>
 To: netdev@vger.kernel.org
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -68,113 +69,162 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-gpio@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Subject: [PATCH 0/3] [v5 net-next] wireless: p54 devicetree conversion
-Date: Thu,  7 May 2026 23:24:48 +0200
-Message-Id: <20260507212451.3333185-1-arnd@kernel.org>
+	linux-omap@vger.kernel.org,
+	Christian Lamparter <chunkeey@gmail.com>
+Subject: [PATCH 1/3] [v5 net-next] dt-bindings: net: add st,stlc4560/p54spi binding
+Date: Thu,  7 May 2026 23:24:49 +0200
+Message-Id: <20260507212451.3333185-2-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260507212451.3333185-1-arnd@kernel.org>
+References: <20260507212451.3333185-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 913874EF401
+X-Rspamd-Queue-Id: 55D334EF41F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [6.34 / 15.00];
+	SEM_URIBL(3.50)[0.0.0.0:email];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-36091-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36090-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
+	GREYLIST(0.00)[pass,meta];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[26];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[arndb.de,iki.fi,kemnade.info,kernel.org,baylibre.com,davemloft.net,gmail.com,google.com,sipsolutions.net,redhat.com,atomide.com,vger.kernel.org,lists.infradead.org];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[arnd@kernel.org,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Action: no action
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_SPAM(0.00)[0.855];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Action: add header
+X-Spam: Yes
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-This is an older patch of mine that I lost track of. We already decided
-a while ago that the OMAP2 platform should probably be removed entirely,
-and this is the only known user, but it's probably a good idea to still
-get the driver changes in, in case there are other out-of-tree users.
+The SPI version of Prism54 was sold under a couple of different
+names and supported by the Linux p54spi driver, but there was
+never a DT binding for it.
 
-We probably don't have to worry about bisectability any more though,
-so the devicetree and driver changes can just get merged independently
-through the OMAP and wireless trees, respectively.
+Document the four known names of this device and the properties
+that are sufficient for its use on the Nokia N8x0 tablet.
 
-     Arnd
+As I don't have this hardware or documentation for it, this is
+purely based on existing usage in the driver.
 
+Link: https://lore.kernel.org/all/e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com/
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
-
-v4 Link: https://lore.kernel.org/all/20260430081242.3686993-1-arnd@kernel.org/
-v3 Link: https://lore.kernel.org/all/20260427142355.2532714-1-arnd@kernel.org/
-v2 Link: https://lore.kernel.org/all/20230404082401.1087835-1-arnd@kernel.org/
-
-Cc: "Aaro Koskinen" <aaro.koskinen@iki.fi>
-Cc: "Andreas Kemnade" <andreas@kemnade.info>
-Cc: "Arnd Bergmann" <arnd@arndb.de>
-Cc: "Bartosz Golaszewski" <brgl@kernel.org>
-Cc: "Benoît Cousson" <bcousson@baylibre.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: "Dmitry Torokhov" <dmitry.torokhov@gmail.com>
-Cc: "Eric Dumazet" <edumazet@google.com>
-Cc: "Felipe Balbi" <balbi@kernel.org>
-Cc: "Jakub Kicinski" <kuba@kernel.org>
-Cc: "Johannes Berg" <johannes@sipsolutions.net>
-Cc: "Kevin Hilman" <khilman@baylibre.com>
-Cc: "Krzysztof Kozlowski" <krzk+dt@kernel.org>
-Cc: "Linus Walleij" <linusw@kernel.org>
-Cc: "Paolo Abeni" <pabeni@redhat.com>
-Cc: "Rob Herring" <robh+dt@kernel.org>
-Cc: "Roger Quadros" <rogerq@kernel.org>
-Cc: "Tony Lindgren" <tony@atomide.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-gpio@vger.kernel.org
-Cc: linux-omap@vger.kernel.org
-
-
-
-Arnd Bergmann (3):
-  [v5 net-next] dt-bindings: net: add st,stlc4560/p54spi binding
-  [v5 net-next] p54spi: convert to devicetree
-  [v5 omap] ARM: dts: omap2: add stlc4560 spi-wireless node
-
- .../bindings/net/wireless/st,stlc4560.yaml    | 61 +++++++++++++++++
+v5: fix name in MAINTAINERS file
+v4: renamed file to st,stlc4560, matching the primary compatible string
+    require st,stlc4560 string
+---
+ .../bindings/net/wireless/st,stlc4560.yaml    | 61 +++++++++++++++++++
  MAINTAINERS                                   |  1 +
- arch/arm/boot/dts/ti/omap/omap2.dtsi          |  4 ++
- .../dts/ti/omap/omap2420-n8x0-common.dtsi     | 12 ++++
- arch/arm/mach-omap2/board-n8x0.c              | 18 -----
- drivers/net/wireless/intersil/p54/p54spi.c    | 67 +++++++------------
- drivers/net/wireless/intersil/p54/p54spi.h    |  3 +
- 7 files changed, 104 insertions(+), 62 deletions(-)
+ 2 files changed, 62 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
 
+diff --git a/Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml b/Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
+new file mode 100644
+index 000000000000..a32265c07350
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
+@@ -0,0 +1,61 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/wireless/st,stlc4560.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ST/Intersil/Conexant stlc45xx/p54spi/cx3110x SPI wireless device
++
++maintainers:
++  - Christian Lamparter <chunkeey@gmail.com>
++
++description:
++  The SPI variant of the Intersil Prism54 wireless device was sold
++  under a variety of names, including Conexant CX3110x and
++  ST Microelectronics STLC5460.
++
++allOf:
++  - $ref: ieee80211.yaml#
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++properties:
++  compatible:
++    oneOf:
++      - const: st,stlc4560
++      - items:
++          - enum:
++              - cnxt,3110x
++              - isil,p54spi
++              - st,stlc4550
++          - const: st,stlc4560
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  powerdown-gpios:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        wifi@0 {
++            compatible = "st,stlc4560";
++            reg = <0>;
++            spi-max-frequency = <48000000>;
++            interrupts-extended = <&gpio 23>;
++            powerdown-gpios = <&gpio 1>;
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 21c0ef0b9ce5..7defcc6e2072 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -20142,6 +20142,7 @@ M:	Christian Lamparter <chunkeey@googlemail.com>
+ L:	linux-wireless@vger.kernel.org
+ S:	Maintained
+ W:	https://wireless.wiki.kernel.org/en/users/Drivers/p54
++F:	Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
+ F:	drivers/net/wireless/intersil/
+ 
+ PACKET SOCKETS
 -- 
 2.39.5
 
