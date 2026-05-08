@@ -1,184 +1,132 @@
-Return-Path: <linux-wireless+bounces-36108-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36109-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEIDOfR//WnnegAAu9opvQ
-	(envelope-from <linux-wireless+bounces-36108-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 08 May 2026 08:17:24 +0200
+	id 4EddFguK/WnWfgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-36109-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 08 May 2026 09:00:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4524D4F254E
-	for <lists+linux-wireless@lfdr.de>; Fri, 08 May 2026 08:17:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D12DF4F2B40
+	for <lists+linux-wireless@lfdr.de>; Fri, 08 May 2026 09:00:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 333A2303D322
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2026 06:16:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8CA2B3034AB7
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2026 06:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C6D35E94E;
-	Fri,  8 May 2026 06:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212873502A9;
+	Fri,  8 May 2026 06:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="iEZ8x5Wm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dQDoXFJt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE93E335091;
-	Fri,  8 May 2026 06:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8608E35AC1E
+	for <linux-wireless@vger.kernel.org>; Fri,  8 May 2026 06:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778221003; cv=none; b=O95PsWMMNG4a7+975wjh3MmjV3ffRuC2uGkNWtoL1d8+mA9K5CoeV6rCpbRsnPZ7dI0o9URTeHOsoqlxsmOArKA13SG8hhVQycb8DArRZmU7UJgj4hkIb6mz+r3ED93Wv/LtGgS4QvituefB9EW14MAJpHs8nB6cMd4WkU4DEWM=
+	t=1778223553; cv=none; b=WpzW5hlSaW2ROls7gx5LSZR5XmSnupvZO9nDSUHiL4Mz9BPw5Wh6KIYUMgu0SD1uGs0ardQuQOjkIRZN7MBPpcDrt0gGh7B7zXt1oPCUOpgGCBRFTPY0xF8b0gbsEUQsrv21A94jBkRVevpG/VZg/+vd0Eijo98rjWon7Z5TmEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778221003; c=relaxed/simple;
-	bh=njU0df4x2/SD5Lpv2ll03Aq096sdPexedEotJp3tmDg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=HawMa5mFYHr7tNMXoLKVIN2wNDzSSAZPLFUmMBB00cuee1xpGXDTN59OQsubq38YgICIRM0oaMV/cCgkv5PIIT1ILt63VMZOhCpj1wZsVUUutp8yZS2p8cD/fiJjYMG5ujVL62g6agoMe/XiAZi+/PrCeX6G5bWhwgppfYnWHmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=iEZ8x5Wm; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6486GEZG03369196, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1778220974; bh=njU0df4x2/SD5Lpv2ll03Aq096sdPexedEotJp3tmDg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=iEZ8x5WmzwMC4TTT/4MFn9E6oLWFPhYXfKh06M+4jBckCZTQnVI4ZV4btD6+yZ7Db
-	 wIOb1AbS4PLKe7X/4aq/byeSGt4llzj0HlistKSs7an4PmOddDuN6dZYJUzNPBUUsA
-	 u6R+jGUTJ6hl+8GcMw9dQQVzX+ggivvk4ygguuE5s2lBMA7qNaC/H81JHh5FXQjT0V
-	 vzj8vNLZbV86ZmYdf0ntA359Ej+IzZte+ghSn5pQup9+x362jFqxLT1rZFdv5a2/x2
-	 Z+Qb4EiRIVZorXgkZDlT69RKH2VJQ+jebRr7HFyOxbwOtianzz6kGVf3Buh6EA3Rh+
-	 qjniKw2dzCmlg==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 6486GEZG03369196
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 8 May 2026 14:16:14 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 8 May 2026 14:16:14 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Fri, 8 May 2026 14:16:14 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::e6fd:5a3f:8946:92c4%10]) with mapi id
- 15.02.2562.017; Fri, 8 May 2026 14:16:14 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Luka Gejak <luka.gejak@linux.dev>, Kalle Valo <kvalo@kernel.org>
-CC: Sascha Hauer <s.hauer@pengutronix.de>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v2] wifi: rtw88: usb: fix memory leaks on USB write
- failures
-Thread-Topic: [PATCH v2] wifi: rtw88: usb: fix memory leaks on USB write
- failures
-Thread-Index: AQHc3j/OOu/4/utTZEaDbodmaqilHLYDe5ug//+JaACAAKIUEA==
-Date: Fri, 8 May 2026 06:16:14 +0000
-Message-ID: <7381bc07c1734fd9b2e5d2cb6071d957@realtek.com>
-References: <20260507163709.73581-1-luka.gejak@linux.dev>
- <25a127932474456f862b0a20f7c60b65@realtek.com>
- <1C7E1191-635B-4806-946C-62DD1C82F79A@linux.dev>
-In-Reply-To: <1C7E1191-635B-4806-946C-62DD1C82F79A@linux.dev>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1778223553; c=relaxed/simple;
+	bh=zJ3Rgqy/OY55KE7/hjKXeVg0Qb9DTMFvoIw7T7QmRfw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SSX9PA9atJStjhyWClOC4h6w15PwmPr5YjiiPAhq6wPddmMXtJtOw7k+8GHzAU0ZzxCNmfgd7T2GjsCnuGWBXDQd440UWkui/8YtMVNPYbCWRnYXICrQ5VFveH346xgpDtwYYm7N5LhpJe4tleqNKQ60l4htNlJl6CyumwgzDQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dQDoXFJt; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ba856db1c0so11681535ad.3
+        for <linux-wireless@vger.kernel.org>; Thu, 07 May 2026 23:59:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778223549; x=1778828349; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zJ3Rgqy/OY55KE7/hjKXeVg0Qb9DTMFvoIw7T7QmRfw=;
+        b=dQDoXFJti0H2Y8pYI/mLCsRtMnxCTjA4iX6FVcIKRmbA8lEeZyqk+4LPm4j6AkFXnk
+         T+s/X7qEwFw7mWLdILHzIztMvMO1VlpO/nXUwx0AvLZlLDALscZ9yt44yUTT+bCPZpWI
+         YIcoQhndcNsFXoFgPs4gQXqYXivBasMip06W00WMEG7pLcJaSjh3JccHEzAs5ZIrjRXZ
+         Cqyqt/BwBdZe7qovE206AlXFpHAokRmLlq2cC5j0H/2mI4t6aAUnvaIeKBycJkdcpU3u
+         +Uh+tDaxiZgydiH8BwvFV92V9tUjwGaT8PPiK74VV4nh0ntm7jTwGR/heLiYAuBy0tcH
+         Q5XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778223549; x=1778828349;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zJ3Rgqy/OY55KE7/hjKXeVg0Qb9DTMFvoIw7T7QmRfw=;
+        b=DDUXcT9YnNFQBxw9sJZl8qsMFvI5Myl0GQl4Zg4xOVVx+2co49JDEp4v62TqLUjn5K
+         kqQ07tyjovWDZL4EX5lmmR0nsy9opNRN5LA6B7wxX5UenNciVbhvAxj2o3RKdof8KCwg
+         bgv9HGyFtqAGqonEMCD5Qc/iJs/7QWrTgUHxUg2zCUU53iJqmysqHyxq+rV/FyZgY4QN
+         Z3THEcbKMdEnusXfcXIOMNi1+KjRD0U3XePP9kpdHcsR0I4YIUG/U3cTxjA3g+2YpnAc
+         OeGkFe5rL7cOJ7p8jOB9FSTG0jiD5U54YSEGkui01R1glWosa3fGYbr0Cs+q5EWQZxwb
+         KqTA==
+X-Forwarded-Encrypted: i=1; AFNElJ+gB/uJouGsjKj29l+Ogjh26axhJN1c7hxI/CvJCC6UppnsNJ1/5hZW3gin347Jjgyh1Fz0Fgi6szXjN+e0mQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7TKEktktmb80+x7IjyJfMV28DYkNpG6jvR+tQ+fvKFbEwXq/K
+	7Mbna03MC/hCtOj/tydrNbVtazHE1SiE75PkMSs22+RqnjkioO+95fmN
+X-Gm-Gg: Acq92OEH6TSPC15EXojsZM6FG0V5DlO/Z3XJg+zvX0Cij8eJ8hOw+nZemKv/LJgTbP7
+	RohqbEa5vRSg8FY9SQjO4Ac7MgaETi1Q84CA6hZ+W69cXf50m+CK/Mm5DdJVzNr4w2QFYlwc36g
+	XrXoBHtkqUFfPrVPTUkgi7TT6CbNnSMtd6EHRqRGVlQbd9mvmWcYt03NMncjgQTKRRdF6UsEaor
+	6Ayk2idMPx9qP9uQanVDU+oTx8icPOUfsh0B0BPQcbM+U2Eprv0v0gRLMiQaJj19E/Cmew9KwCF
+	Y9lK3vb69apjWMdqUQNVxmXQYrvfH3gD2MZFl+6ZCdEbNAidKSkpdach3j97I9Nt+1CrkrE2yZl
+	27UcF8FtJDVvOyta9Xjt9Jj/XXXYJ9WcZdvJg8ySZbbw68ZaybExwNjyhkRJLrEkE2FMR9FaPFO
+	ebzN2KkGPcOXMI24d++zyezbsVBsAzE3teZHelhkszS2M/x2/HC0cW
+X-Received: by 2002:a17:903:151:b0:2b4:5cea:f61c with SMTP id d9443c01a7336-2ba78b48767mr80839585ad.4.1778223549526;
+        Thu, 07 May 2026 23:59:09 -0700 (PDT)
+Received: from BM5220 (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2baf1e36596sm10188935ad.48.2026.05.07.23.59.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 23:59:09 -0700 (PDT)
+From: Zenm Chen <zenmchen@gmail.com>
+To: lucid_duck@justthetip.ca
+Cc: linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	pkshih@realtek.com,
+	rtl8821cerfe2@gmail.com
+Subject: RE: [PATCH 1/1] wifi: rtw89: usb: Support switching to USB 3 mode
+Date: Fri,  8 May 2026 14:59:04 +0800
+Message-ID: <20260508065904.1925-1-zenmchen@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260508054421.128938-2-lucid_duck@justthetip.ca>
+References: <20260508054421.128938-2-lucid_duck@justthetip.ca>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 4524D4F254E
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D12DF4F2B40
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36108-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36109-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,realtek.com,gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,realtek.com:mid,realtek.com:dkim,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_NEQ_ENVFROM(0.00)[zenmchen@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-THVrYSBHZWphayA8bHVrYS5nZWpha0BsaW51eC5kZXY+IHdyb3RlOg0KPiBPbiBNYXkgOCwgMjAy
-NiA1OjQ3OjU1IEFNIEdNVCswMjowMCwgUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+
-IHdyb3RlOg0KPiA+bHVrYS5nZWpha0BsaW51eC5kZXYgPGx1a2EuZ2VqYWtAbGludXguZGV2PiB3
-cm90ZToNCj4gPj4gRnJvbTogTHVrYSBHZWphayA8bHVrYS5nZWpha0BsaW51eC5kZXY+DQo+ID4+
-DQo+ID4+IFdoZW4gcnR3X3VzYl93cml0ZV9wb3J0KCkgZmFpbHMgdG8gc3VibWl0IGEgVVNCIFJl
-cXVlc3QgQmxvY2sgKFVSQikNCj4gPj4gKGUuZy4sIGR1ZSB0byBkZXZpY2UgZGlzY29ubmVjdCBv
-ciBFTk9NRU0pLCB0aGUgY29tcGxldGlvbiBjYWxsYmFjayBpcw0KPiA+PiBuZXZlciBleGVjdXRl
-ZC4NCj4gPj4NCj4gPj4gQ3VycmVudGx5LCB0aGUgZHJpdmVyIGlnbm9yZXMgdGhlIHJldHVybiB2
-YWx1ZSBvZiBydHdfdXNiX3dyaXRlX3BvcnQoKQ0KPiA+PiBpbiBydHdfdXNiX3dyaXRlX2RhdGEo
-KSBhbmQgcnR3X3VzYl90eF9hZ2dfc2tiKCkuIEJlY2F1c2UgdGhlc2UNCj4gPj4gZnVuY3Rpb25z
-IHJlbHkgb24gdGhlIGNvbXBsZXRpb24gY2FsbGJhY2sgdG8gZnJlZSB0aGUgc29ja2V0IGJ1ZmZl
-cnMNCj4gPj4gKHNrYnMpIGFuZCB0aGUgdHJhbnNhY3Rpb24gY29udHJvbCBibG9jayAodHhjYiks
-IGEgc3VibWlzc2lvbiBmYWlsdXJlDQo+ID4+IHJlc3VsdHMgaW46DQo+ID4+IDEuIEEgbWVtb3J5
-IGxlYWsgb2YgdGhlIGFsbG9jYXRlZCBza2IgaW4gcnR3X3VzYl93cml0ZV9kYXRhKCkuDQo+ID4+
-IDIuIEEgbWVtb3J5IGxlYWsgb2YgdGhlIHR4Y2Igc3RydWN0dXJlIGFuZCBhbGwgYWdncmVnYXRl
-ZCBza2JzIGluDQo+ID4+ICAgIHJ0d191c2JfdHhfYWdnX3NrYigpLg0KPiA+Pg0KPiA+PiBGaXgg
-dGhpcyBieSBjaGVja2luZyB0aGUgcmV0dXJuIHZhbHVlIG9mIHJ0d191c2Jfd3JpdGVfcG9ydCgp
-LiBJZiBpdA0KPiA+PiBmYWlscywgZXhwbGljaXRseSBmcmVlIHRoZSBza2IgaW4gcnR3X3VzYl93
-cml0ZV9kYXRhKCksIGFuZCBwcm9wZXJseQ0KPiA+PiBwdXJnZSB0aGUgdHhfYWNrX3F1ZXVlIGFu
-ZCBmcmVlIHRoZSB0eGNiIGluIHJ0d191c2JfdHhfYWdnX3NrYigpLg0KPiA+Pg0KPiA+PiBUaGUg
-aXNzdWUgd2FzIGRpc2NvdmVyZWQgaW4gcHJhY3RpY2UgZHVyaW5nIGRldmljZSBkaXNjb25uZWN0
-L3JlY29ubmVjdA0KPiA+PiBzY2VuYXJpb3MgYW5kIG1lbW9yeSBwcmVzc3VyZSBjb25kaXRpb25z
-LiBUZXN0ZWQgYnkgdmVyaWZ5aW5nIG5vcm1hbCBUWA0KPiA+PiBvcGVyYXRpb24gY29udGludWVz
-IGFmdGVyIHRoZSBmaXggd2l0aG91dCByZWdyZXNzaW9ucy4NCj4gPg0KPiA+RGlkIHRoZSBtZW1v
-cnkgcHJlc3N1cmUgY29uZGl0aW9uIGhhcHBlbj8gYW5kIGZhbGxzIGludG8gdGhlIGNhc2VzIHlv
-dSBhcmUNCj4gPmFkZGluZz8gVGhpcyBpcyBtYWluIHRoaW5nIEkgd2FudCB0byBrbm93Lg0KPiA+
-DQo+ID4+DQo+ID4+IEZpeGVzOiA4N2NhZWVmMDMyZmMgKCJ3aWZpOiBydHc4ODogQWRkIHJ0dzg3
-MjNkdSBjaGlwc2V0IHN1cHBvcnQiKQ0KPiA+DQo+ID5JIGRvbid0IGZpbmQgdGhpcyBjb21taXQg
-dG91Y2hpbmcgdGhlIGNvZGUgcmVsYXRlZCB0byB0aGlzIHBhdGNoLg0KPiA+DQo+ID4+IENjOiBz
-dGFibGVAdmdlci5rZXJuZWwub3JnDQo+ID4+IFRlc3RlZC1ieTogTHVrYSBHZWphayA8bHVrYS5n
-ZWpha0BsaW51eC5kZXY+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IEx1a2EgR2VqYWsgPGx1a2EuZ2Vq
-YWtAbGludXguZGV2Pg0KPiA+PiAtLS0NCj4gPj4gQ2hhbmdlcyBpbiB2MjoNCj4gPj4gIC0gVXNl
-IHJldCA9IHJ0d191c2Jfd3JpdGVfcG9ydCguLi4pOyBzdHlsZSwgYW5kIGNoZWNrIGJ5IG5leHQg
-bGluZSAoaW4NCj4gPj4gICAgcnR3X3VzYl90eF9hZ2dfc2tiKQ0KPiA+PiAgLSBSZW1vdmUgdW5u
-ZWNlc3NhcnkgY29tbWVudA0KPiA+PiAgLSBVc2UgaWVlZTgwMjExX3B1cmdlX3R4X3F1ZXVlKCkg
-aW5zdGVhZCBvZiBza2JfcXVldWVfcHVyZ2UoKQ0KPiA+DQo+ID5JZiBpdCBmYWxscyBpbnRvIHRo
-ZSBjYXNlLCB5b3Ugd2lsbCBzZWUgc29tZSB3YXJuaW5ncyB3aXRob3V0IHRoaXMgY2hhbmdlLg0K
-PiA+DQo+ID5BZ2FpbiwgSSdkIGxpa2UgdG8ga25vdyBpZiBPT00gY2FuIGhhcHBlbiBpbiB5b3Vy
-IHRlc3Q/IElmIG5vdCwgdGhlIHRlc3QNCj4gPnlvdSBhcmUgZG9pbmcgd2lsbCBwcm92ZSBub3Ro
-aW5nLCBzaW5jZSB5b3VyIGNoYW5nZXMgYXJlIGV4ZWN1dGVkIG9ubHkgaWYgT09NLg0KPiA+DQo+
-ID4+ICAtIEFkZCB0ZXN0aW5nIGRldGFpbHMgdG8gY29tbWl0IG1lc3NhZ2UNCj4gPj4NCj4gPg0K
-PiBXaGlsZSB0cmlnZ2VyaW5nIGEgZ2VudWluZSBPT00gY29uZGl0aW9uICgtRU5PTUVNKSBkdXJp
-bmcNCj4gdXNiX3N1Ym1pdF91cmIgaXMgYWRtaXR0ZWRseSBkaWZmaWN1bHQgdG8gZm9yY2UgYW5k
-IHJhcmUgaW4gc3RhbmRhcmQNCj4gZW52aXJvbm1lbnRzLCBteSB0ZXN0aW5nIHByaW1hcmlseSBy
-ZWxpZWQgb24gZGV2aWNlIGRpc2Nvbm5lY3RzLg0KPiBXaGVuIGEgVVNCIGFkYXB0ZXIgaXMgYWJy
-dXB0bHkgdW5wbHVnZ2VkLCBydHdfdXNiX3dyaXRlX3BvcnQoKQ0KPiBuYXR1cmFsbHkgZmFpbHMg
-dG8gc3VibWl0IHRoZSBVUkINCj4gKHJldHVybmluZyAtRU5PREVWLCAtRVNIVVRET1dOLCBldGMu
-KS4gDQoNCkkgZ290IHRoZSBwb2ludCB0aGF0IHlvdSBkaWQgdW5wbHVnIHRoZSBkZXZpY2UuDQoN
-Cj4gV2hlbiB0aGlzIGhhcHBlbnMsIHRoZSBVU0INCj4gc3Vic3lzdGVtIG5ldmVyIGV4ZWN1dGVz
-IHRoZSBjb21wbGV0aW9uIGNhbGxiYWNrDQo+IChydHdfdXNiX3dyaXRlX3BvcnRfdHhfY29tcGxl
-dGUgb3IgcnR3X3VzYl93cml0ZV9wb3J0X2NvbXBsZXRlKS4NCj4gQmVjYXVzZSB0aGUgb3JpZ2lu
-YWwgY29kZSBpZ25vcmVkIHRoZSByZXR1cm4gdmFsdWUgb2YNCj4gcnR3X3VzYl93cml0ZV9wb3J0
-KCksIGl0IGxlYWtlZCB0aGUgc2tiIGFuZCB0eGNiIHN0cnVjdHVyZXMgZXZlcnkgdGltZQ0KPiBh
-IHdyaXRlIHdhcyBhdHRlbXB0ZWQgaW1tZWRpYXRlbHkgZm9sbG93aW5nIGEgZGlzY29ubmVjdC4g
-Q2hlY2tpbmcgdGhlDQo+IHJldHVybiB2YWx1ZSBjYXRjaGVzIHRoaXMgZXhhY3Qgc3VibWlzc2lv
-biBmYWlsdXJlIGFuZCBmcmVlcyB0aGUNCj4gc3RydWN0dXJlcyBvbiB0aGUgc3BvdC4NCj4gQW5k
-IHNob3VsZCBJIHVzZSBjb21taXQgdGhhdCBpbnRyb2R1Y2VkIFVTQiBzdXBwb3J0IGZvciBGaXhl
-cyB0YWc/DQoNCkkgdGhpbmsgaXQgc2hvdWxkIGJlLg0KDQpQaW5nLUtlIA0KDQo=
+I don't remember Bitterblue allows you to upstream his work.
 
