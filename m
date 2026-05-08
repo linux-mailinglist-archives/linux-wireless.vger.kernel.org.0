@@ -1,87 +1,87 @@
-Return-Path: <linux-wireless+bounces-36122-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36123-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WH/hMspq/mn3qQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-36122-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 00:59:22 +0200
+	id UJSxCtJq/mn3qQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-36123-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 00:59:30 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A634FC8AC
-	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 00:59:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 689074FC8B3
+	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 00:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03E3230219A4
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2026 22:59:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DC3713015084
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2026 22:59:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADA5376467;
-	Fri,  8 May 2026 22:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1829B3A7F6D;
+	Fri,  8 May 2026 22:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A29k9VK+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hnirUnvy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560523A7F6D
-	for <linux-wireless@vger.kernel.org>; Fri,  8 May 2026 22:59:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD013A8746
+	for <linux-wireless@vger.kernel.org>; Fri,  8 May 2026 22:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778281156; cv=none; b=Tavcg8xsmO2J+Gl3iw73f3pV6aYJ7iTZuP8hAxp0t83aE7RiG2kFOHYBiDsfQ79egmNpal6bmXQKjSSBDE/rtHxU3/G5S6DZ5b4FEhiXmm2HuMeJA+4Q6aAah7xPPArIYZUXt3nJZCgFjBEmI/Cmp+fY2RcpfmAYPUPKWuOhLqM=
+	t=1778281158; cv=none; b=HHu/8bk1Kqh0NrHsdFUyvk9Ogn24rJF4w3KdIcEaMQriayHGlWeHnZdl1KDkRzI7ZsTW6088kElW7vuWQqMGm7HFEou3ruTbeDJGBh42HHV8cUO97UFDDx7WO9r8AihrZyZhuOIa1gNXHy4gkWNXntni722O20W5kU06DoSB/I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778281156; c=relaxed/simple;
-	bh=5XtQkhT23owkfYE7/oQGvfHbFDsIFb863PL4UgPR+Xg=;
+	s=arc-20240116; t=1778281158; c=relaxed/simple;
+	bh=MuxhZ7/DcAJBSb+eXHtB/Efz3FRU+Hzh+RP73R96AAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9MLKR8UZ4GOmYe9EoPYBpzpvbdHV8uVWXirGQ3fcc9eZDhS9j6pyx1EU5999e51RFZ6L7ElSZxXuk9kr5lDoBx9FgW6dWLPlS+L4hBgU/H5xj7zWGsKaiUNFHwy8JUeoWGlRGqiyAtZ9dN9tzdm2ilDhac3dlwFYgkgFixA4D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A29k9VK+; arc=none smtp.client-ip=209.85.216.42
+	 MIME-Version; b=bnJ9bd8WEipb0EAJdaJ9aWNl455yvwWO0b0sUN8jYL8iOlru7Puyd08WdHoc7SRswqW4x8flL0CQ623jKBLZSstONk/I1l8J8vViW7FqxEsHKJoG8uAVHttJF8aBKVQ+ylGprOPVre6qOus1QbXdrfAvj1+V+/ji1UuHO4TIb5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hnirUnvy; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-364eef1891dso2007339a91.1
-        for <linux-wireless@vger.kernel.org>; Fri, 08 May 2026 15:59:15 -0700 (PDT)
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-36535998b71so1325469a91.0
+        for <linux-wireless@vger.kernel.org>; Fri, 08 May 2026 15:59:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778281155; x=1778885955; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778281156; x=1778885956; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zxJDbErB2Y0+/2u5sAL8YUpQDOeEJOrPLvUR3aNMlnM=;
-        b=A29k9VK+0ax+ZknEvILguCDDGzNh38UYhzh9eiLvk188zAnQvofhY4Vh4cuvNF+Rmj
-         Tq8EsqSmyruolT2KisV3jN5km7RpyJyIkNK2xKp++Jhw/NjmRJXKUNOm9Nm2WDJtaK1p
-         qYqYuorpkBCylSNqSDhyebyZBV+agRbfsm8tsUCTiVYYGJV6OHx8lJuptjeBm6nF9mqV
-         V057dY599uAKZIEZxxnS6LFsaoOPdE53MdnXkH0o9vz1RfSATJSgGuhLhYIYyG49aDHw
-         x1ubWB4wJExsDLWqYCKEryaLH6gP5SmKRSlzykAdTCCFWeRwBLqc9dCDFSZSRPFoVMoY
-         nWaQ==
+        bh=sHQJ20atnCC4y+56eM5GouyWRqWW4vCgBEmnFC6aYyI=;
+        b=hnirUnvyAILsyjFUHe6WWJk0RDFeV8OhbXx3D/IIs/Rt+X5JnL1xvXy+ltc56NFQZ/
+         W1afPr5oNniVtHDGQVr76lhvhLLoRUBfraNLFTSDuJjLQX5tsVLp4JYaEqPtGSQswMnJ
+         ADfsaP8pdLxltFDsEDT6hH/85Pr0kP7wHN9mPbe6KW1rli5/KjBAyC6gx5dY1z/q9qjV
+         kJGhkT7WY1wWDJD6Gc6655CZiOTj71DeaZeHBYL1e85BzVFSK5IC2wZGhWUU1tlOsZZR
+         6mNrpKaP1VzQndsAAsaMWVNDcgdxopkl37Shamu8wVE+/jIhB7P70zOQ/YqRFzJavg8u
+         6Ceg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778281155; x=1778885955;
+        d=1e100.net; s=20251104; t=1778281156; x=1778885956;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=zxJDbErB2Y0+/2u5sAL8YUpQDOeEJOrPLvUR3aNMlnM=;
-        b=RjZIGaigt5O9uQtMfIbi2j1w7tB0H60Y4UFSSy72X9sE3gS+DZ7OIWnUxqIFUtqJE8
-         fTZhJWSbbaFTdg0lL45cehq0DVNWrOW1Vth6TPtVpEusZrkfqm3M9lkUb3//6q5h/Op7
-         09gH/hdX37a+swAYpDJKCI9NnsT1PChMEx2pq6UhVVuZKMLnptmKVf1sR7WTNd/B6/h1
-         8HIAWPUSGjDVMT0AzI5iNw6PBrrCJvFF1fayKfC0aEpmvqVnRU9a/6F0QN9qT4mV//7z
-         s7hvB2lHs5+ZPlrNfksW/RULmojTDaWGsGlzoBzu013/j9KStyNfFSXkB7VwQYRDlhxH
-         Bk7A==
-X-Gm-Message-State: AOJu0Yz8cHRJHamNvnJPZqa5xS6Ioq/HJzJBkhh3ETSLlFUvj1yZxJrI
-	72mHQnCahjkm8JBi3kJU2oXJ/ZPCwNEUSgwlGs8h9Ep4hJaMlOxB6tTBJIN47w==
-X-Gm-Gg: Acq92OF57mUEAUcaY7Lju0265y4AfzttSwOortdNs1o5sUkECEWsK75OEt/nHkhzIk8
-	igKv8lAaEyW0u5s3QLBQxhtSEqyNEf0JtQIChm2U1RJ9WQlZF64+mQEBCvlQUl7YnCJIZDVsy14
-	rdkNct/4D4mZUHUvuIE+k4PfD1VYvCOBIxg+zUv86H51rz08aqrH3lXM/A2ehDQJaIDN9VG0eaY
-	bPl0Mj4DL9Mq2WN8Zs/Gb7o8GWXWgm80B7My8sv45jXujH/SLw0OT2Y3yb4/GyGYRSJ70gH3MFi
-	RN9WtVX88pXdQJI3wF+vjDW3PewUtkITvWxyjoDY2S+3+Il0qathCME0SjT+SK4lgkfKMBgR8p3
-	Ev7tiG6ZQpkqmp+WvJbfCX0FmzMyph0v7xB7udxxZksXavoAC89CqW2LoMBeGRmMoSZ7ZCoCHnr
-	jsiCoMIg==
-X-Received: by 2002:a17:90b:2884:b0:366:159a:c1ba with SMTP id 98e67ed59e1d1-3664c8db9acmr5325688a91.3.1778281154496;
-        Fri, 08 May 2026 15:59:14 -0700 (PDT)
+        bh=sHQJ20atnCC4y+56eM5GouyWRqWW4vCgBEmnFC6aYyI=;
+        b=C22sPduVgaRUgAmOM0qt2XojXk/HWFuhade6WQJTZj8bFvzvYNyiUteeel0cVJatIg
+         +Z/TAw0bO1RTGApCyaT5pbozEo7fCzTcs3Y6gG4zXSIBI8TbAQjpyddK7eAhnnqurmf8
+         icvSJtOkTOA/Kvwfjbs7sPkx3urwDRTcxb/+WRf2hOqK5qfxAJ7D7zNjIfgCbKW3/ipl
+         t7f63JngalQZ0FSNmJoRmSjSuaqlN1AF4y/2mUvZ9ioT/a1awOJoSNxeFLicHmn9cYe5
+         au/awqug9ZnN07OxP4bbdh7cGHi6l5WNQ/HEYwMLeDxSNdBFbkM0z9T3//MB2vqKIr++
+         sKRA==
+X-Gm-Message-State: AOJu0YxRBxW9AZIHo/E4d3ReMwSwaeWNNudWD9BIkdDn6aBRGZ4RBEfh
+	dIYE+Yf+iJleieDX0gD+M+JUMyusKs3jkWQkOWM/RPTy57IrumUB5FNGJg3nBg==
+X-Gm-Gg: Acq92OF9ues1xsJp2wxmlwucIPtx0irEKorGmVkFXZepnQgjPuYWdcfybexmkVtG1tR
+	GUA1k3uxGYyC8OvAcWZWfb6VcN1sJgyRcbxcShFJmC8ZthmZKdzIkt2zBcZIxCsyvxwrutWjl3M
+	x+FN3FMKLhicZqnDBroovlX+q6egbmARej0tsc0jU4x4g1VkrsuxYT8vT4YMCHFp+1oe5fYPnn6
+	4OlVwQVuRfh4xTxJ1mvjsnoBii6A6a24UHdSApu+eJNkNjz984VNd7AFG03ZAkLH5//wHuI5MqR
+	bwnbHGrxtBNyN2EoixOibVhLRBnj8HIAkdK8BsW6SUEEIdtNRfE2ed6DKY4iQ7dt1f0u3eYjTjY
+	7bw9cchKneSdP6FNGPW7SJDruoxM8Jj9A77uNY1XiBqBsDLCRjArK6MCyMRudcdCMtWN0UoOr5K
+	QpSDAniw==
+X-Received: by 2002:a17:90b:3c8e:b0:364:52d1:32b6 with SMTP id 98e67ed59e1d1-366055e2b88mr7602644a91.10.1778281156103;
+        Fri, 08 May 2026 15:59:16 -0700 (PDT)
 Received: from ryzen9.. ([2a02:6ea0:d33b:6276::23])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-367d683fb92sm74472a91.12.2026.05.08.15.59.13
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-367d683fb92sm74472a91.12.2026.05.08.15.59.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 15:59:13 -0700 (PDT)
+        Fri, 08 May 2026 15:59:15 -0700 (PDT)
 From: Masashi Honma <masashi.honma@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: johannes@sipsolutions.net,
 	Masashi Honma <masashi.honma@gmail.com>
-Subject: [PATCH 2/3] Fix overread in PREP frame processing
-Date: Sat,  9 May 2026 07:59:04 +0900
-Message-ID: <20260508225905.29998-2-masashi.honma@gmail.com>
+Subject: [PATCH 3/3] Fix PERR frame processing
+Date: Sat,  9 May 2026 07:59:05 +0900
+Message-ID: <20260508225905.29998-3-masashi.honma@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260508225905.29998-1-masashi.honma@gmail.com>
 References: <8f0a2488540f4a65ea4d837a06225a27a10cc305.camel@sipsolutions.net>
@@ -93,13 +93,13 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 43A634FC8AC
+X-Rspamd-Queue-Id: 689074FC8B3
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -109,10 +109,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FREEMAIL_CC(0.00)[sipsolutions.net,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36122-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36123-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -125,56 +125,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-When the AF flag is enabled, hwmp_prep_frame_process() overreads orig_addr
-by 2 bytes. Since this occurs within the socket buffer, it does not read across
-memory boundaries and therefore poses no security risk; however, we will fix it
-as a precaution.
-
-In this fix, a new function mesh_path_parse_reply_frame() is established to
-separate the implementation of frame format validation and the check for
-unsupported features. This is intended to facilitate future work when
-implementing the currently unsupported parts.
+There are no issues with the PERR processing itself; however, to maintain
+consistency with the previous PREQ/PREP code modifications, I will create a new
+mesh_path_parse_error_frame() function to separately implement the frame format
+validation and the "not supported" check.
 
 Assisted-by: Claude:Sonnet 4.6
 Signed-off-by: Masashi Honma <masashi.honma@gmail.com>
 ---
  net/mac80211/mesh.h      |  1 +
- net/mac80211/mesh_hwmp.c | 24 ++++++++++++++++++++++--
- net/mac80211/parse.c     |  7 +++++--
- 3 files changed, 28 insertions(+), 4 deletions(-)
+ net/mac80211/mesh_hwmp.c | 48 ++++++++++++++++++++++++++++++++++++++--
+ net/mac80211/parse.c     |  7 ++++--
+ 3 files changed, 52 insertions(+), 4 deletions(-)
 
 diff --git a/net/mac80211/mesh.h b/net/mac80211/mesh.h
-index 331d2d774196..aba7ef59195a 100644
+index aba7ef59195a..610c34e35e64 100644
 --- a/net/mac80211/mesh.h
 +++ b/net/mac80211/mesh.h
-@@ -318,6 +318,7 @@ mpp_path_lookup_by_idx(struct ieee80211_sub_if_data *sdata, int idx);
- void mesh_path_fix_nexthop(struct mesh_path *mpath, struct sta_info *next_hop);
+@@ -319,6 +319,7 @@ void mesh_path_fix_nexthop(struct mesh_path *mpath, struct sta_info *next_hop);
  void mesh_path_expire(struct ieee80211_sub_if_data *sdata);
  u8 mesh_path_parse_request_frame(const u8 *pos, u8 elen);
-+u8 mesh_path_parse_reply_frame(const u8 *pos, u8 elen);
+ u8 mesh_path_parse_reply_frame(const u8 *pos, u8 elen);
++u8 mesh_path_parse_error_frame(const u8 *pos, u8 elen);
  void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
  			    struct ieee80211_mgmt *mgmt, size_t len);
  struct mesh_path *
 diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 4239412d12c7..9f903a2408f7 100644
+index 9f903a2408f7..2a293b771f79 100644
 --- a/net/mac80211/mesh_hwmp.c
 +++ b/net/mac80211/mesh_hwmp.c
-@@ -949,6 +949,25 @@ u8 mesh_path_parse_request_frame(const u8 *pos, u8 elen)
+@@ -62,6 +62,7 @@ static inline u16 u16_field_get(const u8 *preq_elem, int offset, bool ae)
+ #define PREP_IE_TARGET_SN(x)	u32_field_get(x, 9, 0)
+ 
+ #define PERR_IE_TTL(x)		(*(x))
++#define PERR_IE_NUMBER_OF_DST(x)	(*(x + 1))
+ #define PERR_IE_TARGET_FLAGS(x)	(*(x + 2))
+ #define PERR_IE_TARGET_ADDR(x)	(x + 3)
+ #define PERR_IE_TARGET_SN(x)	u32_field_get(x, 9, 0)
+@@ -968,6 +969,42 @@ u8 mesh_path_parse_reply_frame(const u8 *pos, u8 elen)
  	return 0;
  }
  
-+/* IEEE Std 802.11-2016 9.4.2.114 PREP element */
-+u8 mesh_path_parse_reply_frame(const u8 *pos, u8 elen)
++/* IEEE Std 802.11-2016 9.4.2.115 PERR element */
++u8 mesh_path_parse_error_frame(const u8 *pos, u8 elen)
 +{
++	u8 number_of_dst;
 +	u8 expected_len;
++	const u8 *start;
++	int i;
 +
-+	expected_len = 1 /* Flags */ + 1 /* Hop Count */ + 1 /* Element TTL */ +
-+		       6 /* Target Mesh STA Address */ +
-+		       4 /* Target HWMP Sequence Number */ +
-+		       (AE_F_SET(pos) ? 6 : 0) /* Target External Address */ +
-+		       4 /* Lifetime */ + 4 /* Metric */ +
-+		       6 /* Originator Mesh STA Address */ +
-+		       4 /* Originator HWMP Sequence Number */;
++	number_of_dst = PERR_IE_NUMBER_OF_DST(pos);
++	if (unlikely(number_of_dst < 1 || number_of_dst > 19))
++		return IEEE80211_PARSE_ERR_UNEXPECTED_ELEM;
++
++	start = pos;
++	expected_len = 1 /* Element TTL */ + 1 /* Number of Destinations */;
++	pos += 2;
++
++	for (i = 0; i < number_of_dst; i++) {
++		u8 dst_len;
++
++		if (unlikely(pos - start >= elen))
++			return IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
++
++		dst_len = 1 /* Flags */ + 6 /* Destination Address */ +
++			  4 /* HWMP Sequence Number */ +
++			  (AE_F_SET(pos) ? 6 : 0) /* Destination External Address */ +
++			  2 /* Reason Code */;
++		expected_len += dst_len;
++		pos += dst_len;
++	}
 +
 +	if (unlikely(elen != expected_len))
 +		return IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
@@ -185,37 +205,50 @@ index 4239412d12c7..9f903a2408f7 100644
  void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
  			    struct ieee80211_mgmt *mgmt, size_t len)
  {
-@@ -996,9 +1015,10 @@ void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
+@@ -976,6 +1013,7 @@ void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
+ 	u32 path_metric;
+ 	struct sta_info *sta;
+ 	u8 target_count;
++	u8 number_of_dst;
+ 
+ 	/* need action_code */
+ 	if (len < IEEE80211_MIN_ACTION_SIZE(mesh_action))
+@@ -1026,9 +1064,15 @@ void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
  						path_metric);
  	}
- 	if (elems->prep) {
--		if (elems->prep_len != 31)
--			/* Right now we support no AE */
-+		/* Right now we do not support AE (Address Extension) */
-+		if (AE_F_SET(elems->prep))
+ 	if (elems->perr) {
+-		if (elems->perr_len != 15)
+-			/* Right now we support only one destination per PERR */
++		/* Right now we support only one destination per PERR */
++		number_of_dst = PERR_IE_NUMBER_OF_DST(elems->perr);
++		if (number_of_dst != 1)
  			goto free;
 +
- 		path_metric = hwmp_route_info_get(sdata, mgmt, elems->prep,
- 						  MPATH_PREP);
- 		if (path_metric)
++		/* Right now we do not support AE (Address Extension) */
++		if (PERR_IE_TARGET_FLAGS(elems->perr) & AE_F)
++			goto free;
++
+ 		hwmp_perr_frame_process(sdata, mgmt, elems->perr);
+ 	}
+ 	if (elems->rann)
 diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index 7a2abe676361..cdc549055242 100644
+index cdc549055242..dfc326db0471 100644
 --- a/net/mac80211/parse.c
 +++ b/net/mac80211/parse.c
-@@ -554,8 +554,11 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
+@@ -561,8 +561,11 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
  			}
  			break;
- 		case WLAN_EID_PREP:
--			elems->prep = pos;
--			elems->prep_len = elen;
-+			elem_parse_failed = mesh_path_parse_reply_frame(pos, elen);
+ 		case WLAN_EID_PERR:
+-			elems->perr = pos;
+-			elems->perr_len = elen;
++			elem_parse_failed = mesh_path_parse_error_frame(pos, elen);
 +			if (likely(!elem_parse_failed)) {
-+				elems->prep = pos;
-+				elems->prep_len = elen;
++				elems->perr = pos;
++				elems->perr_len = elen;
 +			}
  			break;
- 		case WLAN_EID_PERR:
- 			elems->perr = pos;
+ 		case WLAN_EID_RANN:
+ 			if (elen >= sizeof(struct ieee80211_rann_ie))
 -- 
 2.43.0
 
