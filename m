@@ -1,212 +1,268 @@
-Return-Path: <linux-wireless+bounces-36106-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36107-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHKGJe18/WnnegAAu9opvQ
-	(envelope-from <linux-wireless+bounces-36106-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 08 May 2026 08:04:29 +0200
+	id 6NvyJZd//WnnegAAu9opvQ
+	(envelope-from <linux-wireless+bounces-36107-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 08 May 2026 08:15:51 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE0A4F2385
-	for <lists+linux-wireless@lfdr.de>; Fri, 08 May 2026 08:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F02594F250B
+	for <lists+linux-wireless@lfdr.de>; Fri, 08 May 2026 08:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E5513126A66
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2026 05:46:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8684A30363AA
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2026 06:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15D037B00E;
-	Fri,  8 May 2026 05:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FE13750AC;
+	Fri,  8 May 2026 06:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="Y5uXiDNR"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BRPvAEkS";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CdlP/qdX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559F1371CF5
-	for <linux-wireless@vger.kernel.org>; Fri,  8 May 2026 05:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779B535DA6F
+	for <linux-wireless@vger.kernel.org>; Fri,  8 May 2026 06:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778219087; cv=none; b=rGuhvgEcs5tf84zTBD2QqUxPpqZq3CzQjYu+p1v21DM9pu4JwFGqevJvTESWII6qApFSVK96w20VLuFadhfwzM6kCyUgw9lISL7mcIteNWV0cf2qOTqQADZfD4diX1yronwtWV/SezMEpEdV8aiukw2Z8eaCL4zHcC9th3RBeqQ=
+	t=1778220838; cv=none; b=fDnRMqeIB41uG7qnkn2RpbUJKiBW24X0EYYT7hgVJJmQPaUs5Ly/xSp5izNJ70aN0Fg4c7bHnZBsGq2i9Znipd8rJCBM/f2JkGRMT5V+qgZOfIQnDJzr9bVYzvSeiVMMhBaUpIEE/TVkj+sGK813cN68i/l4A49DV67vGF8fpfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778219087; c=relaxed/simple;
-	bh=A/Fj+NFOPcUtK+kbHgS4pzM5XLYsm/Hze0cqyL9ImZY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PbRkpasFAHQeLn92r96NJVzfdMyte0D1GV/IzC954EmHcXF9qB9EsKwAcLTuwAWY6JJ3DZKQDlUBtF7IOlNM5GwX4vF96rFPVNlg4nXGBbjPrfcyeSMj4lfNLObK3o09fRxr98JKCmx6Or7imG3CIs/fklyKjyP6B4NPiAf0RsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=Y5uXiDNR; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
-	s=key1; t=1778219070;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RMo8rsH9EAVl21A/VusLdNr6UnE6XSL7Qp9X5I4tchE=;
-	b=Y5uXiDNR8QlOXkfEMfjSXgqJQK1gtgjopXutdrqZ9fURbK+ZnfmOeiQLCirIAyusAE4Jl6
-	2TLu7gcpnCq+krUA35koJJkNYFLfUqWPBFYj5cG19nR5sOrEeUJX205YIjXx0LeBQBhipt
-	LvDJJiK4gV9MuZ6VzknS6+NUyNLU4vADMVyF2I7u6PJDN5gnHpOcFpd2RSJBE+gapmVPsm
-	fgZp4uX6QDmyB4G1Odi/87uvkcoNeBjE8sDBGOiOJq4GQhsQvZFFtLiB0qlY1Hqdxc10cJ
-	Kz1b9OODZ/Kd5FD+z8rKRPTAgIGCV5OxROX+1GV+ZmItuDCeSEDmIbsFD9dTIg==
-From: Lucid Duck <lucid_duck@justthetip.ca>
-To: linux-wireless@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	Devin Wittmayer <lucid_duck@justthetip.ca>
-Subject: [PATCH 1/1] wifi: rtw89: usb: Support switching to USB 3 mode
-Date: Thu,  7 May 2026 22:44:21 -0700
-Message-ID: <20260508054421.128938-2-lucid_duck@justthetip.ca>
-In-Reply-To: <20260508054421.128938-1-lucid_duck@justthetip.ca>
-References: <20260508054421.128938-1-lucid_duck@justthetip.ca>
+	s=arc-20240116; t=1778220838; c=relaxed/simple;
+	bh=Ap5sFCs9XX4OaGtvqGVm5br60V/e/jcsdUm9yxaZCmY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=f6Q4EeKerYpzxGymigYU6J3uAWNgIVjBEMgUS7trFCQlgPNqWG5ZLi39V4PfIGxiBW5OpyQuhecwMwuK7f/JwLNrRuasvNap5VQKu8hb+0RKQVKpq0sRvvd/HmSWxwkB+eN6D6ZdpzBvrEOFvnLM2URnY+qHwHHwlR4PXQJXZ08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BRPvAEkS; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CdlP/qdX; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6485CeOJ2531307
+	for <linux-wireless@vger.kernel.org>; Fri, 8 May 2026 06:13:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	cFBuui+wGCwe3wsLc6JIAOYifQN8Kjh7VqLeN4nLlPc=; b=BRPvAEkSE0HdboLr
+	tar18Loxy6uWSOgI1M/OidFVpKR6wGoRgOWRBf+mU/qKPdPz2sDnTUfp1UEC/BoG
+	n1AzFojOIv2SbVEAQFG12vpe+kIh+V9h81FHxvwjUm1AZmDKyZ9lU1UMa6xMIkmd
+	Zeg6ZA1GB7rmqKnGV6EVOKw4pns2lpB55fIrCujIl+sBTHKlVT0L2nfoD/eGF9PG
+	swaY1zzr39zJqqLMRX53TjHZJEsPZxU6MXbM6oGc7ViO755lQWea+wZxRCa7jaPV
+	LcLaa6kGLbhhpH7wwi2i4pmu6pR32wWd9j/bLRuNugvukqlN6H4mX49D+GXJ0tAV
+	Rhugyg==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e10m9sy1d-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 08 May 2026 06:13:51 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-837d0d71c61so1003922b3a.1
+        for <linux-wireless@vger.kernel.org>; Thu, 07 May 2026 23:13:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1778220831; x=1778825631; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cFBuui+wGCwe3wsLc6JIAOYifQN8Kjh7VqLeN4nLlPc=;
+        b=CdlP/qdXmsreEuuRie3wIoZKYLVI7gQ1phG8QJZnzJU6gS2kWvRnnyz5I4coavb5cS
+         4E2woIdfzCjKWv0iPYsRv59jS54GXRY01Z6C409+XgzaaXqt30UMW1ocN3K9wor8BYF0
+         kp0YPM23yTXGFBSpALX5GEOXxLly+B7o1Hw4o1UFYsSICJlb8nBbfVSxZ9vhVXSZT2OZ
+         sosNMoH78h0+HcXOXDk2a3LT1iK8Mshd8YSyul8xh7Pnh1mN5oy/4ksWwjNv0lz7fJ0h
+         8kzyagivMzAqloTP+do5WOOP1D13MIHK3GmtJu87MLIQ5uihUB6XdKiHArDHd2gO6cwR
+         m0VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778220831; x=1778825631;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cFBuui+wGCwe3wsLc6JIAOYifQN8Kjh7VqLeN4nLlPc=;
+        b=ZCtx+Wo29KFRnKi9KLjNjNCNMJ1wW4ImJvFDbzfLsky8BAENqoPsK5tfZkc4zbaTQV
+         8IV5pM6LMR3/WS/8dhF3T2vUFBZXuhl0NbJWQrm4ikeiBO0dF+ei9U0q5HD/BCHvbf1B
+         aZ8P3KD805HOya21+Y4IzKFCnEeAgSDbPKbD1rIFJkJgWQkTwRKs6dtdTuPpoR1On7s1
+         INfeNq/SuP+XNRZYlZkK9fYAVkaWwBZSUcH94jbmZyf9iigSLTIq8hh5GEStZ6ZJEZhC
+         DSR5UjiCNZqPayofvndJ0t6JUOSGhNGn1RXPldJdHQL3EIq51R2lZV92cEFMjzH7tavJ
+         TbjQ==
+X-Gm-Message-State: AOJu0YxKhKVinWI7oTUE1nrluFA6hUWdYiJ/gEqjJCPvJ+pstCMYO87l
+	iEGCTgERElEBknHWsa2WZ/pcJqLwe8E+5vCL0f2sDgfMUu6PnfXG1rsCwgI3Ryo3q0YnhvAWRBC
+	0ktftVMhI3noKmdPym7WqipADyp5V/G+5W3/J50GlOm1vxmr900LqiBWZRXphQejIpwxxFA==
+X-Gm-Gg: AeBDiesnJixuNuFxPKRye/bgtZ5D7QWwAvAoYwjOZX9rygWPOrb2vdiWDJtkHrRuehM
+	sc7R0OzKeMYuoAGeEhsszGQyKj7T51vMZ6i5ALDfgNkZMe2T1oxiGjq7gT60rKJMRXI5sGrYSI/
+	v+i3Hcf54EU0G6mpLT92JUBoPhk4M49G/S7g4HW83Yd/e58p05VkfXivZd2eW9uhazmHFOQtXne
+	wcY6c3GziqRCHdOCYM64mtJPjhgB+0sHl8f+tSHDnOUOvs5ziRNhOB7u2/VJaPYfjaocbBAeYdh
+	UFwnlhndgIMBJkBS4wLbGrt/FbDNlCf4sj5HuScWr9uCfKADGzUV98BIPQ7iEmO0XaPXLZ/aE0f
+	04AChKNmtAvGHV1EtwsQdaYsWxeLcfkUjA/saGo45U1Nb4gQCndUZ1nYwNbE7sw==
+X-Received: by 2002:a05:6a00:10d2:b0:82c:6bcc:f3fa with SMTP id d2e1a72fcca58-83a5e23c9abmr10450497b3a.35.1778220830640;
+        Thu, 07 May 2026 23:13:50 -0700 (PDT)
+X-Received: by 2002:a05:6a00:10d2:b0:82c:6bcc:f3fa with SMTP id d2e1a72fcca58-83a5e23c9abmr10450457b3a.35.1778220829939;
+        Thu, 07 May 2026 23:13:49 -0700 (PDT)
+Received: from [10.152.199.23] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83967dbf7d2sm14718219b3a.49.2026.05.07.23.13.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 May 2026 23:13:49 -0700 (PDT)
+Message-ID: <6ebbe7ef-b867-4d5f-838c-7f6224e38891@oss.qualcomm.com>
+Date: Fri, 8 May 2026 11:43:45 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: EDE0A4F2385
+User-Agent: Mozilla Thunderbird
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Subject: Re: [PATCH ath-next 1/2] wifi: ath12k: Add support for handling
+ incumbent signal interference in 6 GHz
+To: Amith A <amith.a@oss.qualcomm.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Aishwarya R
+ <aishwarya.r@oss.qualcomm.com>,
+        Hari Chandrakanthan <quic_haric@quicinc.com>
+References: <20260505143853.295368-1-amith.a@oss.qualcomm.com>
+ <20260505143853.295368-2-amith.a@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260505143853.295368-2-amith.a@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: Lhav8VLXtYmdcoElNX-y0wkIpQpZViNe
+X-Authority-Analysis: v=2.4 cv=VP3tWdPX c=1 sm=1 tr=0 ts=69fd7f1f cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=EUspDBNiAAAA:8 a=COk6AnOGAAAA:8 a=IYzlEOER3vfPUB5pnoYA:9 a=QEXdDO2ut3YA:10
+ a=IoOABgeZipijB_acs4fv:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDA1OSBTYWx0ZWRfX1neG77gX5Qsk
+ jrL9d7xLd0ewxUEQYcQ4WFqNlwUHrtElDAP9SHL+qydxPwlz+WURoThFyK5qrZh3K5mOvs2XOoE
+ bYVbtU4i3XzQRP3a1K6U3KTaHpGSw1AsA2d+21+HFxLubYftGk38s7UH19Rfac8XhQ4zccnHP89
+ syCAV+QGPadrvK8xTvV9cm12memxuL0R5+IijZuMh45XQVM7yEsdg0JX3J0qSRtkRxixpqhgp+Z
+ JZZ3u42z+iV0mEnS25tsyJOdDDY5DafW3V0JL1wDDZvG0ZsuuOmAjch6BVn4mCl88uQI6jto55t
+ DPjnIZ328ZHD7mBLN+qWXHEPw3EBQhqHsKWmro2AK9z40K9i0XcvCWTNp6SXTyXCCTnEgaUO/uB
+ Z2OSUIHpvpXjwIG1i0ijRSVwG9LTPQ1sK1ruDr6WwiFoDgI9PjQbW2dCufaVp36eB92M2F5ESQ5
+ Me6R4Kkb1VXvheaM07A==
+X-Proofpoint-ORIG-GUID: Lhav8VLXtYmdcoElNX-y0wkIpQpZViNe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 clxscore=1015 suspectscore=0 phishscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605080059
+X-Rspamd-Queue-Id: F02594F250B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[realtek.com,gmail.com,vger.kernel.org,justthetip.ca];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36106-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36107-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[justthetip.ca:+];
-	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,justthetip.ca:email,justthetip.ca:mid,justthetip.ca:dkim]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+On 5/5/2026 8:08 PM, Amith A wrote:
+> From: Aishwarya R <aishwarya.r@oss.qualcomm.com>
+> 
+> When incumbent signal interference is detected by an AP/mesh interface
+> operating in the 6 GHz band, as mandated by the FCC, it is expected to
+> vacate the affected channels. The firmware indicates the interference to
+> the host using the WMI_DCS_INTERFERENCE_EVENT.
+> 
+> To handle the new WMI event, first parse it to retrieve the interference
+> information. Next, validate the interference-detected channel and
+> the interference bitmap. The interference bitmap received from the
+> firmware uses a mapping where bit 0 corresponds to the primary
+> 20 MHz segment, regardless of its position within the operating
+> bandwidth. Bit 1 represents the next adjacent 20 MHz segment, bit 2
+> the lower 20 MHz segment of the adjacent 40 MHz segment, and so
+> on, progressing sequentially across the bandwidth. However, for userspace
+> consumption via mac80211, this bitmap must be transformed into a
+> standardized format such that each bit position directly maps to the
+> corresponding sub-channel index within the operating bandwidth.
+> Finally, indicate the transformed interference bitmap to mac80211, which
+> then notifies userspace of the interference. Once the incumbent signal
+> interference is detected, firmware suspends TX internally on the affected
+> operating channel while userspace decides the mitigation action. Userspace
+> is expected to trigger a channel switch or bandwidth reduction to mitigate
+> the interference. Also, add a flag handling_in_progress to indicate that
+> handling of interference is in progress. Set it to true after
+> indicating to mac80211 about the interference. Reset the flag to false
+> after the operating channel is switched by userspace. This prevents
+> processing any further interference events when there is already a
+> previous event being handled. Hence, further events are processed only
+> after a channel switch request is received from userspace for the
+> previous event.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Aishwarya R <aishwarya.r@oss.qualcomm.com>
+> Co-developed-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+> Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+> Signed-off-by: Amith A <amith.a@oss.qualcomm.com>
+> ---
+>   drivers/net/wireless/ath/ath12k/core.h |   8 +
+>   drivers/net/wireless/ath/ath12k/mac.c  |  46 +++
+>   drivers/net/wireless/ath/ath12k/wmi.c  | 382 +++++++++++++++++++++++++
+>   drivers/net/wireless/ath/ath12k/wmi.h  |  58 +++-
+>   4 files changed, 493 insertions(+), 1 deletion(-)
+> 
 
-The Realtek wifi 6/7 devices which support USB 3 are weird: when first
-plugged in, they pretend to be USB 2. The driver needs to send some
-commands to the device, which make it disappear and come back as a
-USB 3 device.
+{ ... }
 
-Implement the required commands in rtw89.
 
-When a USB 3 device is plugged into a USB 2 port, rtw89 will try to
-switch it to USB 3 mode only once. The device will disappear and come
-back still in USB 2 mode, of course.
+> +static int
+> +ath12k_wmi_incumbent_signal_interference_subtlv_parser(struct ath12k_base *ab,
+> +						       u16 tag, u16 len,
+> +						       const void *ptr,
+> +						       void *data)
+> +{
+> +	const struct ath12k_wmi_incumbent_signal_interference_params *info;
+> +	struct ath12k_wmi_incumbent_signal_interference_arg *arg = data;
+> +
+> +	switch (tag) {
+> +	case WMI_TAG_DCS_INCUMBENT_SIGNAL_INTERFERENCE_TYPE:
+> +		info = ptr;
+> +
 
-Some people experience heavy interference in the 2.4 GHz band in
-USB 3 mode, so add a module parameter switch_usb_mode with the
-default value 1 to let people disable the switching.
+should we validate len before accessing info ? or may be add an entry 
+for WMI_TAG_DCS_INCUMBENT_SIGNAL_INTERFERENCE_TYPE in 
+ath12k_wmi_tlv_policies so that ath12k_wmi_tlv_iter() can take care of 
+the validation.
 
-Tested with RTL8832BU and RTL8832CU.
+> +		arg->chan_width = le32_to_cpu(info->chan_width);
+> +		arg->chan_freq = le32_to_cpu(info->chan_freq);
+> +		arg->center_freq0 = le32_to_cpu(info->center_freq0);
+> +		arg->center_freq1 = le32_to_cpu(info->center_freq1);
+> +		arg->chan_bw_interference_bitmap =
+> +			le32_to_cpu(info->chan_bw_interference_bitmap);
+> +
+> +		ath12k_dbg(ab, ATH12K_DBG_WMI,
+> +			   "incumbent signal interference chan width %u freq %u center_freq0 %u center_freq1 %u bitmap 0x%x\n",
+> +			   arg->chan_width, arg->chan_freq,
+> +			   arg->center_freq0, arg->center_freq1,
+> +			   arg->chan_bw_interference_bitmap);
+> +		break;
+> +	default:
+> +		ath12k_warn(ab, "Received invalid tag 0x%x for WMI DCS interference in subtlvs\n",
+> +			    tag);
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Devin Wittmayer <lucid_duck@justthetip.ca>
-Tested-by: Devin Wittmayer <lucid_duck@justthetip.ca>
----
- drivers/net/wireless/realtek/rtw89/reg.h |  4 +++
- drivers/net/wireless/realtek/rtw89/usb.c | 41 ++++++++++++++++++++++++
- 2 files changed, 45 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 42ffe83931a3..7d4c085d9fb2 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -164,6 +164,10 @@
- #define R_AX_DBG_PORT_SEL 0x00C0
- #define B_AX_DEBUG_ST_MASK GENMASK(31, 0)
- 
-+#define R_AX_PAD_CTRL2 0x00C4
-+#define U2SWITCHU3 0xB
-+#define USB_SWITCH_DELAY 0xF
-+
- #define R_AX_PMC_DBG_CTRL2 0x00CC
- #define B_AX_SYSON_DIS_PMCR_AX_WRMSK BIT(2)
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
-index 767a95f759b1..4fb25791d118 100644
---- a/drivers/net/wireless/realtek/rtw89/usb.c
-+++ b/drivers/net/wireless/realtek/rtw89/usb.c
-@@ -9,6 +9,11 @@
- #include "txrx.h"
- #include "usb.h"
- 
-+static bool rtw89_switch_usb_mode = true;
-+module_param_named(switch_usb_mode, rtw89_switch_usb_mode, bool, 0644);
-+MODULE_PARM_DESC(switch_usb_mode,
-+		 "Set to N to disable switching to USB 3 mode to avoid potential interference in the 2.4 GHz band (default: Y)");
-+
- static void rtw89_usb_read_port_complete(struct urb *urb);
- 
- static void rtw89_usb_vendorreq(struct rtw89_dev *rtwdev, u32 addr,
-@@ -1027,6 +1032,35 @@ static void rtw89_usb_intf_deinit(struct rtw89_dev *rtwdev,
- 	usb_set_intfdata(intf, NULL);
- }
- 
-+static int rtw89_usb_switch_mode(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
-+
-+	if (!rtw89_switch_usb_mode)
-+		return 0;
-+
-+	/* No known USB 3 devices with this chip. */
-+	if (rtwdev->chip->chip_id == RTL8851B)
-+		return 0;
-+
-+	if (rtwusb->udev->speed == USB_SPEED_SUPER)
-+		return 0;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_HCI, "%s: pad_ctrl2: %#x %#x\n",
-+		    __func__,
-+		    rtw89_read8(rtwdev, R_AX_PAD_CTRL2 + 1),
-+		    rtw89_read8(rtwdev, R_AX_PAD_CTRL2 + 2));
-+
-+	/* Already tried to switch but it's a USB 2 port. */
-+	if (rtw89_read8(rtwdev, R_AX_PAD_CTRL2 + 1) == USB_SWITCH_DELAY)
-+		return 0;
-+
-+	rtw89_write8(rtwdev, R_AX_PAD_CTRL2 + 1, USB_SWITCH_DELAY);
-+	rtw89_write8(rtwdev, R_AX_PAD_CTRL2 + 2, U2SWITCHU3);
-+
-+	return 1;
-+}
-+
- int rtw89_usb_probe(struct usb_interface *intf,
- 		    const struct usb_device_id *id)
- {
-@@ -1059,6 +1093,13 @@ int rtw89_usb_probe(struct usb_interface *intf,
- 		goto err_free_hw;
- 	}
- 
-+	ret = rtw89_usb_switch_mode(rtwdev);
-+	if (ret) {
-+		/* Not a fail, but we do need to skip rtw89_core_register. */
-+		ret = 0;
-+		goto err_intf_deinit;
-+	}
-+
- 	if (rtwusb->udev->speed == USB_SPEED_SUPER)
- 		rtwdev->hci.dle_type = RTW89_HCI_DLE_TYPE_USB3;
- 	else
--- 
-2.53.0
-
+--
+Ramesh
 
