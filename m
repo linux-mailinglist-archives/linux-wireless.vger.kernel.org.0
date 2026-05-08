@@ -1,63 +1,65 @@
-Return-Path: <linux-wireless+bounces-36110-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36111-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIybKnaM/WnWfgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-36110-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 08 May 2026 09:10:46 +0200
+	id WLcbDHuO/WnWfgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-36111-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 08 May 2026 09:19:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156E44F2D77
-	for <lists+linux-wireless@lfdr.de>; Fri, 08 May 2026 09:10:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 346F24F2E6A
+	for <lists+linux-wireless@lfdr.de>; Fri, 08 May 2026 09:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8E9B3001865
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2026 07:10:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 06958300F622
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2026 07:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB2537AA97;
-	Fri,  8 May 2026 07:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8441437B000;
+	Fri,  8 May 2026 07:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="HnouVuGW"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="TBGPqopm"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FD131AAB8
-	for <linux-wireless@vger.kernel.org>; Fri,  8 May 2026 07:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7605D378D82
+	for <linux-wireless@vger.kernel.org>; Fri,  8 May 2026 07:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778224242; cv=none; b=IMnrKk4DMZ3WpJ2fkZrAqsDVJNfAjMGh7/Ywm1LRcFFpXaqHDh2JKnCPy52nuLzx6hs5q4JItvXNnDNjhh4u5UKh4TqrAyTUJK6duzHZArPvjANn8jz1hZrkW5Iaj4DotAhyb+9k/AxCBHwv4Q+tIkLSKVOIQSmjmxX4YzUXiYc=
+	t=1778224243; cv=none; b=oLQOeTi4Npg3Cu4s4DDwbS+yIohmzHI3kItPGGki5QkikYvWGNo2PQgGJP78wPbwgpduaY0UggCM1Bb5zaj8174WNLxChgDnqhKlMJy4f8FEx7wOZIuaeMn6/qWuJMZGD52517jFiVXLd/3mIY9Pjcp+3HSvWlFd9vlHoAHXPqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778224242; c=relaxed/simple;
-	bh=/3a3KtOmi5HLW0vDVypPKVSrmy8AXVF5hn9TjW+p7Uk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l3cyqMjlRPa7j55FM/9iN4pp26VUhy+5wky9rTgPj3Bl5CrerDiKexfOpOuqrg6ucmnL01FRu9bUokUJfRsIJEWN3VCQwCXnFgvF/LVh3/0uKeUgzk2o1aVSR9mOl1Tjj1Rep2fMW6dUezLQ1dw1iREWNH2kTMh5c4KriC/nC/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=HnouVuGW; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1778224243; c=relaxed/simple;
+	bh=8gZiv4s3p2zBASdbkFXPjXShk6/dme1z7nE5TVuacAM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pGaUXzJh4OwAw79LAjlT+E1Zh8+vNNLJsNvS7I2a3+SKdVGCOdYg3v2GIGw+wbtyPV1epK/COQzFT5LkdTTwpGEzrlNN3Vpdi7DydGHMazGT2vJhkHU4jqUeKYFmbv5579Jp7DYXsQoeOLYrC0xP2hdeHGYIv4EldIeuzXTi7dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=TBGPqopm; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=B3fhZWVbjdn88yQBr/5AcDHwbeXkb5Df6McegTG8j9w=; t=1778224239; x=1779433839; 
-	b=HnouVuGWgRQdPxQiQteyWWdNChfsxv5rhVlrRJzgjJO+77Cx9a7J6WwSbnSiQ0ww4Rlgm1U+67+
-	5Rl19WQnQuCt45BL7YMU8aHpjV1ahVhJBwX1W5Vv8bZZIyjVjF25zNi3XwFnt1bfQ9h0I86zEWgLi
-	sxV5YwcH5qd5ddXY33vt0z/0hvovKSb86YsKLuLRnv1zLP+QQY0kiwTsNxMHdlxc2EV4c7iUrBuH2
-	PqGa7FQ+cZgsppsMej/unTChvonYX5kHJVRwKTBEjnrKCNQ72qF7+0irrNt3NqxFKfw8U5eND0ehR
-	9WDXdL1EWHYtqdzvreASXzQeiZ6uU6rVU69A==;
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=CJ8Ygff8fkOBqu8Ssz73usXVr7veKnrFA3lJhMXksoQ=;
+	t=1778224240; x=1779433840; b=TBGPqopmWeVV1nXv1SAW+DlqKDDKilL7hk/FuLqZsGM96Ue
+	dtZMK9CWwHSMiJphI5tHAJs7DdXMpnA+OG398pRiQJrS27vqDsXfMRtG+eu+ErNP2t65JTpe+WZqA
+	RPQR8w+v8iJPsE49yWdiuZeEEMD/nSq0hiiaWxyJkYu3rqPZmY11hAWcOS3KjAu63n0WdL4koJWqF
+	Z9o7Qt90cjdcjxtKkBqC1WUOFMPRHQJNRc4h0iafKgkUEKTeVx3/p3bKo5jl+pdmjRg7PUGXXH/NC
+	DciXkWgRrvW6Si36aK6H0XA/PKAisYX78+aQu934kCEWXO/gLU7a7qDPDqfPbUnw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1wLFM3-000000064Um-1CF6;
-	Fri, 08 May 2026 09:10:35 +0200
+	id 1wLFM4-000000064Um-169R;
+	Fri, 08 May 2026 09:10:36 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH wireless 1/2] wifi: mac80211: fix MLE defragmentation
-Date: Fri,  8 May 2026 09:10:31 +0200
-Message-ID: <20260508091031.8a6c34613178.I4de16ebbce2d27f2f8f98fc49949c7a376c2fe8d@changeid>
+	Ilan Peer <ilan.peer@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>
+Subject: [PATCH wireless 2/2] wifi: mac80211: fix multi-link element inheritance
+Date: Fri,  8 May 2026 09:10:32 +0200
+Message-ID: <20260508091032.92184c0a3f08.I3c43b0b63d2cef8a4ddddaef1c2faaeb1de711ad@changeid>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260508091031.8a6c34613178.I4de16ebbce2d27f2f8f98fc49949c7a376c2fe8d@changeid>
+References: <20260508091031.8a6c34613178.I4de16ebbce2d27f2f8f98fc49949c7a376c2fe8d@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,13 +67,13 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 156E44F2D77
+X-Rspamd-Queue-Id: 346F24F2E6A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,11 +81,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	TAGGED_FROM(0.00)[bounces-36110-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36111-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
@@ -93,157 +95,109 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,sipsolutions.net:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sipsolutions.net:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-If either reconf or EPCS multi-link element (MLE) is contained in
-a non-transmitted profile, the defragmentation routine is called
-with a pointer to the defragmented copy, but the original elements.
+When parsing a beacon, mac80211 erroneously inherits any
+reconfiguration or EPCS multi-link elements from the outer
+elements into the multi-BSSID profile that's requested, if
+connected to a non-transmitted BSS, unless that profile
+has a non-inheritance element.
 
-This is incorrect for two reasons:
- - if the original defragmentation was needed, it will not find the
-   correct data
- - if the original frame is at a higher address, the parsing will
-   potentially overrun the heap data (though given the layout of
-   the buffers, only into the new defragmentation buffer, and then
-   it has to stop and fail once that's filled with copied data.
+This also happens if parsing a multi-BSSID profile that
+doesn't have a non-inheritance element.
 
-Fix it by tracking the container along with the pointer and in
-doing so also unify the two almost identical defragmentation
-routines.
+Fix this by having an empty non-inheritance element so
+cfg80211_is_element_inherited() is invoked in these cases
+and causes the parser to skip the elements that should
+never be inherited.
 
-Fixes: 4d70e9c5488d ("wifi: mac80211: defragment reconfiguration MLE when parsing")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Fixes: cf36cdef10e2 ("wifi: mac80211: Add support for parsing Reconfiguration Multi Link element")
+Fixes: 24711d60f849 ("wifi: mac80211: Support parsing EPCS ML element")
 Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/parse.c | 71 +++++++++++++++++++-------------------------
- 1 file changed, 31 insertions(+), 40 deletions(-)
+ net/mac80211/parse.c | 36 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 33 insertions(+), 3 deletions(-)
 
 diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index 2b3632c6008a..666cdd5fd0ea 100644
+index 666cdd5fd0ea..77894d997113 100644
 --- a/net/mac80211/parse.c
 +++ b/net/mac80211/parse.c
-@@ -34,6 +34,13 @@
+@@ -34,6 +34,15 @@
  #include "led.h"
  #include "wep.h"
  
-+struct ieee80211_elem_defrag {
-+	const struct element *elem;
-+	/* container start/len */
-+	const u8 *start;
-+	size_t len;
++static const u8 empty_non_inheritance[] = {
++	WLAN_EID_EXTENSION, 1, WLAN_EID_EXT_NON_INHERITANCE,
++	/*
++	 * cfg80211_is_element_inherited() hardcodes elements that
++	 * cannot be inherited, so we just need an empty one to be
++	 * calling it at all.
++	 */
 +};
 +
- struct ieee80211_elems_parse {
- 	/* must be first for kfree to work */
- 	struct ieee802_11_elems elems;
-@@ -41,11 +48,7 @@ struct ieee80211_elems_parse {
- 	/* The basic Multi-Link element in the original elements */
- 	const struct element *ml_basic_elem;
- 
--	/* The reconfiguration Multi-Link element in the original elements */
--	const struct element *ml_reconf_elem;
--
--	/* The EPCS Multi-Link element in the original elements */
--	const struct element *ml_epcs_elem;
-+	struct ieee80211_elem_defrag ml_reconf, ml_epcs;
- 
- 	bool multi_link_inner;
- 	bool skip_vendor;
-@@ -162,10 +165,14 @@ ieee80211_parse_extension_element(u32 *crc,
- 				}
- 				break;
- 			case IEEE80211_ML_CONTROL_TYPE_RECONF:
--				elems_parse->ml_reconf_elem = elem;
-+				elems_parse->ml_reconf.elem = elem;
-+				elems_parse->ml_reconf.start = params->start;
-+				elems_parse->ml_reconf.len = params->len;
- 				break;
- 			case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
--				elems_parse->ml_epcs_elem = elem;
-+				elems_parse->ml_epcs.elem = elem;
-+				elems_parse->ml_epcs.start = params->start;
-+				elems_parse->ml_epcs.len = params->len;
- 				break;
- 			default:
- 				break;
-@@ -990,46 +997,27 @@ ieee80211_prep_mle_link_parse(struct ieee80211_elems_parse *elems_parse,
- 				      sub->start, sub->len);
- }
- 
--static void
--ieee80211_mle_defrag_reconf(struct ieee80211_elems_parse *elems_parse)
-+static const void *
-+ieee80211_mle_defrag(struct ieee80211_elems_parse *elems_parse,
-+		     struct ieee80211_elem_defrag *defrag,
-+		     size_t *out_len)
+ struct ieee80211_elem_defrag {
+ 	const struct element *elem;
+ 	/* container start/len */
+@@ -923,7 +932,7 @@ ieee80211_prep_mle_link_parse(struct ieee80211_elems_parse *elems_parse,
  {
--	struct ieee802_11_elems *elems = &elems_parse->elems;
-+	const void *ret;
+ 	struct ieee802_11_elems *elems = &elems_parse->elems;
+ 	struct ieee80211_mle_per_sta_profile *prof;
+-	const struct element *tmp;
++	const struct element *tmp, *ret;
  	ssize_t ml_len;
+ 	const u8 *end;
  
--	ml_len = cfg80211_defragment_element(elems_parse->ml_reconf_elem,
--					     elems->ie_start,
--					     elems->total_len,
-+	ml_len = cfg80211_defragment_element(defrag->elem,
-+					     defrag->start, defrag->len,
- 					     elems_parse->scratch_pos,
- 					     elems_parse->scratch +
- 						elems_parse->scratch_len -
- 						elems_parse->scratch_pos,
- 					     WLAN_EID_FRAGMENT);
- 	if (ml_len < 0)
--		return;
--	elems->ml_reconf = (void *)elems_parse->scratch_pos;
--	elems->ml_reconf_len = ml_len;
--	elems_parse->scratch_pos += ml_len;
--}
--
--static void
--ieee80211_mle_defrag_epcs(struct ieee80211_elems_parse *elems_parse)
--{
--	struct ieee802_11_elems *elems = &elems_parse->elems;
--	ssize_t ml_len;
--
--	ml_len = cfg80211_defragment_element(elems_parse->ml_epcs_elem,
--					     elems->ie_start,
--					     elems->total_len,
--					     elems_parse->scratch_pos,
--					     elems_parse->scratch +
--						elems_parse->scratch_len -
--						elems_parse->scratch_pos,
--					     WLAN_EID_FRAGMENT);
--	if (ml_len < 0)
--		return;
--	elems->ml_epcs = (void *)elems_parse->scratch_pos;
--	elems->ml_epcs_len = ml_len;
-+		return NULL;
-+	ret = elems_parse->scratch_pos;
-+	*out_len = ml_len;
- 	elems_parse->scratch_pos += ml_len;
-+	return ret;
+@@ -993,8 +1002,17 @@ ieee80211_prep_mle_link_parse(struct ieee80211_elems_parse *elems_parse,
+ 	sub->from_ap = params->from_ap;
+ 	sub->link_id = -1;
+ 
+-	return cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
+-				      sub->start, sub->len);
++	ret = cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
++				     sub->start, sub->len);
++	if (ret)
++		return ret;
++
++	/*
++	 * Since we know we want and found a profile, apply an empty
++	 * non-inheritance if the profile didn't have one, so that any
++	 * element that shouldn't be inherited by spec isn't.
++	 */
++	return (const void *)empty_non_inheritance;
  }
  
- struct ieee802_11_elems *
-@@ -1109,9 +1097,12 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
- 		_ieee802_11_parse_elems_full(&sub, elems_parse, NULL);
- 	}
+ static const void *
+@@ -1030,6 +1048,7 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
+ 	size_t scratch_len = 3 * params->len;
+ 	bool multi_link_inner = false;
  
--	ieee80211_mle_defrag_reconf(elems_parse);
--
--	ieee80211_mle_defrag_epcs(elems_parse);
-+	elems->ml_reconf = ieee80211_mle_defrag(elems_parse,
-+						&elems_parse->ml_reconf,
-+						&elems->ml_reconf_len);
-+	elems->ml_epcs = ieee80211_mle_defrag(elems_parse,
-+					      &elems_parse->ml_epcs,
-+					      &elems->ml_epcs_len);
++	BUILD_BUG_ON(sizeof(empty_non_inheritance) != empty_non_inheritance[1] + 2);
+ 	BUILD_BUG_ON(offsetof(typeof(*elems_parse), elems) != 0);
  
- 	if (elems->tim && !elems->parse_error) {
- 		const struct ieee80211_tim_ie *tim_ie = elems->tim;
+ 	/* cannot parse for both a specific link and non-transmitted BSS */
+@@ -1077,6 +1096,17 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
+ 
+ 		non_inherit = cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
+ 						     sub.start, nontx_len);
++		/*
++		 * If it's a non-transmitted BSS, we shouldn't pick
++		 * any elements in the outer parsing that shouldn't
++		 * be inherited. If the profile has a non-inheritance
++		 * element this automatically happens, but if not then
++		 * provide an empty one so that the hard-coded elements
++		 * in cfg80211_is_element_inherited() are ignored, but
++		 * it must be called.
++		 */
++		if (params->bss->transmitted_bss && !non_inherit)
++			non_inherit = (const void *)empty_non_inheritance;
+ 	} else {
+ 		/* must always parse to get elems_parse->ml_basic_elem */
+ 		non_inherit = ieee80211_prep_mle_link_parse(elems_parse, params,
 -- 
 2.53.0
 
