@@ -1,91 +1,92 @@
-Return-Path: <linux-wireless+bounces-36123-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36124-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJSxCtJq/mn3qQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-36123-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 00:59:30 +0200
+	id YP+HI/2D/mkusQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-36124-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 02:46:53 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689074FC8B3
-	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 00:59:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7AA4FD1A7
+	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 02:46:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DC3713015084
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2026 22:59:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D30D30099B5
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2026 00:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1829B3A7F6D;
-	Fri,  8 May 2026 22:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D61136672;
+	Sat,  9 May 2026 00:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hnirUnvy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YFRODFRv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD013A8746
-	for <linux-wireless@vger.kernel.org>; Fri,  8 May 2026 22:59:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6873A1B5
+	for <linux-wireless@vger.kernel.org>; Sat,  9 May 2026 00:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778281158; cv=none; b=HHu/8bk1Kqh0NrHsdFUyvk9Ogn24rJF4w3KdIcEaMQriayHGlWeHnZdl1KDkRzI7ZsTW6088kElW7vuWQqMGm7HFEou3ruTbeDJGBh42HHV8cUO97UFDDx7WO9r8AihrZyZhuOIa1gNXHy4gkWNXntni722O20W5kU06DoSB/I0=
+	t=1778287608; cv=none; b=UgLaB9E5m5kp3PP2FLg0cfRhhHSf7AOV20r0sAONyLA9kB38vG9xavPEu/Zp39Hxy+0fZbvasFFvywrEbuc+Fu9EUyU2rpnaZIMtGr4IcQh5tmwKwS3yLIMaNC18xvi/r8uwh3PSofEa55vJ8QOlDu9USQs3LIoNcUSnf3AYZwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778281158; c=relaxed/simple;
-	bh=MuxhZ7/DcAJBSb+eXHtB/Efz3FRU+Hzh+RP73R96AAc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnJ9bd8WEipb0EAJdaJ9aWNl455yvwWO0b0sUN8jYL8iOlru7Puyd08WdHoc7SRswqW4x8flL0CQ623jKBLZSstONk/I1l8J8vViW7FqxEsHKJoG8uAVHttJF8aBKVQ+ylGprOPVre6qOus1QbXdrfAvj1+V+/ji1UuHO4TIb5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hnirUnvy; arc=none smtp.client-ip=209.85.216.45
+	s=arc-20240116; t=1778287608; c=relaxed/simple;
+	bh=Qy/C8lPPAxSDdYSX0HVNrhkDW+Sflu2K6O7wQ27lKDE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pjPKICg48uHcjhAJSSkgrAp4ooLwx688K9JQVpzsmwjgzXuCCbAmi1LdcSgmrD0dBsTs6KZbgDVsz/m8poGE0yXkuewdjlZXCaHmgiuLCOFDMTGTwG8j1T2c5vHqFks/HD7VRUyboAKSiTw55V+SRgDVBGgM11ET+sufi4iqEas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YFRODFRv; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-36535998b71so1325469a91.0
-        for <linux-wireless@vger.kernel.org>; Fri, 08 May 2026 15:59:16 -0700 (PDT)
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-36622412e97so1474735a91.2
+        for <linux-wireless@vger.kernel.org>; Fri, 08 May 2026 17:46:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778281156; x=1778885956; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sHQJ20atnCC4y+56eM5GouyWRqWW4vCgBEmnFC6aYyI=;
-        b=hnirUnvyAILsyjFUHe6WWJk0RDFeV8OhbXx3D/IIs/Rt+X5JnL1xvXy+ltc56NFQZ/
-         W1afPr5oNniVtHDGQVr76lhvhLLoRUBfraNLFTSDuJjLQX5tsVLp4JYaEqPtGSQswMnJ
-         ADfsaP8pdLxltFDsEDT6hH/85Pr0kP7wHN9mPbe6KW1rli5/KjBAyC6gx5dY1z/q9qjV
-         kJGhkT7WY1wWDJD6Gc6655CZiOTj71DeaZeHBYL1e85BzVFSK5IC2wZGhWUU1tlOsZZR
-         6mNrpKaP1VzQndsAAsaMWVNDcgdxopkl37Shamu8wVE+/jIhB7P70zOQ/YqRFzJavg8u
-         6Ceg==
+        d=gmail.com; s=20251104; t=1778287607; x=1778892407; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=m5ayDC9zM93PcmzZdMOeR4wwyCx+XWYV6FtY/Z5CzfA=;
+        b=YFRODFRvD+ETpiD651mx2nKNTCxLzWs6jsqMUwrxWp+mdj3DasvY5IqYz6c/XM9BNM
+         ZnE/J4IiLIBPNvYFnn7UsrC4f3Ba8/vfP4yx/uIiKcxyuo2/DYOIvlbnvqN4ZSd3d9dm
+         3Uba8qnIpiWu9UCmZvAYFk+lReL2thqaz0Gdc61w8xcrF6vA6KrIBjkCUeLswH33Orj0
+         B6u4zUG5vS8JG4XHuzvDa+v11SQbK+LBJstZ0E6WSfJhg281zXPNdSByUEW6VumELFg1
+         QxXS5l3ssWJGfSbs2lm1j4h0j/eMdkLSIAm6SI1mI+U3cV8D6+s9jiTea08IJ1/N1INq
+         RZGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778281156; x=1778885956;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sHQJ20atnCC4y+56eM5GouyWRqWW4vCgBEmnFC6aYyI=;
-        b=C22sPduVgaRUgAmOM0qt2XojXk/HWFuhade6WQJTZj8bFvzvYNyiUteeel0cVJatIg
-         +Z/TAw0bO1RTGApCyaT5pbozEo7fCzTcs3Y6gG4zXSIBI8TbAQjpyddK7eAhnnqurmf8
-         icvSJtOkTOA/Kvwfjbs7sPkx3urwDRTcxb/+WRf2hOqK5qfxAJ7D7zNjIfgCbKW3/ipl
-         t7f63JngalQZ0FSNmJoRmSjSuaqlN1AF4y/2mUvZ9ioT/a1awOJoSNxeFLicHmn9cYe5
-         au/awqug9ZnN07OxP4bbdh7cGHi6l5WNQ/HEYwMLeDxSNdBFbkM0z9T3//MB2vqKIr++
-         sKRA==
-X-Gm-Message-State: AOJu0YxRBxW9AZIHo/E4d3ReMwSwaeWNNudWD9BIkdDn6aBRGZ4RBEfh
-	dIYE+Yf+iJleieDX0gD+M+JUMyusKs3jkWQkOWM/RPTy57IrumUB5FNGJg3nBg==
-X-Gm-Gg: Acq92OF9ues1xsJp2wxmlwucIPtx0irEKorGmVkFXZepnQgjPuYWdcfybexmkVtG1tR
-	GUA1k3uxGYyC8OvAcWZWfb6VcN1sJgyRcbxcShFJmC8ZthmZKdzIkt2zBcZIxCsyvxwrutWjl3M
-	x+FN3FMKLhicZqnDBroovlX+q6egbmARej0tsc0jU4x4g1VkrsuxYT8vT4YMCHFp+1oe5fYPnn6
-	4OlVwQVuRfh4xTxJ1mvjsnoBii6A6a24UHdSApu+eJNkNjz984VNd7AFG03ZAkLH5//wHuI5MqR
-	bwnbHGrxtBNyN2EoixOibVhLRBnj8HIAkdK8BsW6SUEEIdtNRfE2ed6DKY4iQ7dt1f0u3eYjTjY
-	7bw9cchKneSdP6FNGPW7SJDruoxM8Jj9A77uNY1XiBqBsDLCRjArK6MCyMRudcdCMtWN0UoOr5K
-	QpSDAniw==
-X-Received: by 2002:a17:90b:3c8e:b0:364:52d1:32b6 with SMTP id 98e67ed59e1d1-366055e2b88mr7602644a91.10.1778281156103;
-        Fri, 08 May 2026 15:59:16 -0700 (PDT)
-Received: from ryzen9.. ([2a02:6ea0:d33b:6276::23])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-367d683fb92sm74472a91.12.2026.05.08.15.59.14
+        d=1e100.net; s=20251104; t=1778287607; x=1778892407;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m5ayDC9zM93PcmzZdMOeR4wwyCx+XWYV6FtY/Z5CzfA=;
+        b=p2sIWU7pWrtToUJNVnpFv3monzr1bA1yceQbac6nN4uNOqnlhfspLLuxcLKcqyVSzg
+         A58QJrAgerb2bNcBAs5fvjNrA4mfo4LdHf9EIYhQ6ejn8Zx3d7ryw3Xsud9y3LZzE4vy
+         DiKVA87rOM0esDM99yKO1/gtJl2WSkDi3/le1bieb7ag6dNMbXy9pqJ9PlkBjZUWfZs6
+         jKMjFMwB4jlwkO321BVcsJ1fgL52EX10bPAChVKAQY2nn1dehWrvNxJ4t5Y5trFJwxoN
+         c1EwjwejgDB4AxAsI/dadDK+sJQCljchXD2JE09aGvPWL5uzJ3FnUrPLGqClELg2eSXB
+         fHCg==
+X-Forwarded-Encrypted: i=1; AFNElJ9XWC9GSWlHt7X2yQhVwI+4wLo+ihntmIN0Qbg5Y5SZLIqzrvAyHJ2TRAo0vxt2z/LMema6i8WylhQCAgi5Cg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZBGd4hz5K2IUsY9SpLpN3cxPhyyE8NCrwT7QFkYfAZwF/mszU
+	TEqUXz4dBAjiZFUJ1v26R5GlDeAbD60MAjfySt5qgW1tQ9TNEeW+KKdwvY3Lyw==
+X-Gm-Gg: Acq92OEKe9r5lO24EGgivV4HkGqMdLRAK9xm+WP7mCSwr0Ehda77lLMsYvFBDwMT9x5
+	LXGdqh3X497y/IHucV294YrNQP/iNciI+1LOv5p+WjcJyQQ1ZINo0NnYi5tbqCTUQ3vcS623Jh0
+	VwSurMq2eNkkREjAa0KT9K+FC9nsxw3kEOVHOGUnRG1gHqoa0GTjUy8FFh0D8ucBTVdU5ZXP+wE
+	8BLO+J5pdL5JVvPExsEi0DlxwzON+S6Vd/GgwAaxuSaoBIbaj8jekNhbyej4xZtRMMb5qpCMJv8
+	xuTC3CGupyt9IhsuSyxJ7y9y0G8l1tOBMwErbjgHd1cH8aj1dHPWpey6Fjgz9hPVJB0lRny/geJ
+	mYTDBLCtX8k6Gop1OWUKiX0B9SdH1yZWQp62V+pYP8VWr3e7Hpmrj/K9Vt4GNlJSdj/65D1JM4A
+	KIat3BEhDTHvJ+LqzZYemL1aF8VefxXyTmT0grFogjeFBvBK/v1A3s/7LDj2uhQMa44SLHKW5QX
+	/r616DVW0veTYmpcw==
+X-Received: by 2002:a17:90b:4c46:b0:35b:e56e:a17e with SMTP id 98e67ed59e1d1-367d48465f6mr845498a91.17.1778287606686;
+        Fri, 08 May 2026 17:46:46 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:383f:1ef5:8ccc:13df:edc6])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-367d6262349sm266926a91.6.2026.05.08.17.46.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 15:59:15 -0700 (PDT)
-From: Masashi Honma <masashi.honma@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net,
-	Masashi Honma <masashi.honma@gmail.com>
-Subject: [PATCH 3/3] Fix PERR frame processing
-Date: Sat,  9 May 2026 07:59:05 +0900
-Message-ID: <20260508225905.29998-3-masashi.honma@gmail.com>
+        Fri, 08 May 2026 17:46:45 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: johannes@sipsolutions.net
+Cc: daniel.gabay@intel.com,
+	miriam.rachel.korenblit@intel.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+2002864e6c6895cb0ac3@syzkaller.appspotmail.com
+Subject: [PATCH] wifi: mac80211_hwsim: reject NAN on multi-radio wiphys
+Date: Sat,  9 May 2026 06:16:28 +0530
+Message-ID: <20260509004628.79446-1-kartikey406@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260508225905.29998-1-masashi.honma@gmail.com>
-References: <8f0a2488540f4a65ea4d837a06225a27a10cc305.camel@sipsolutions.net>
- <20260508225905.29998-1-masashi.honma@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -93,162 +94,87 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 689074FC8B3
+X-Rspamd-Queue-Id: ED7AA4FD1A7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[sipsolutions.net,gmail.com];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[intel.com,vger.kernel.org,gmail.com,syzkaller.appspotmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36123-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36124-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[masashihonma@gmail.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[kartikey406@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	TAGGED_RCPT(0.00)[linux-wireless,2002864e6c6895cb0ac3];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,syzkaller.appspot.com:url]
 X-Rspamd-Action: no action
 
-There are no issues with the PERR processing itself; however, to maintain
-consistency with the previous PREQ/PREP code modifications, I will create a new
-mesh_path_parse_error_frame() function to separately implement the frame format
-validation and the "not supported" check.
+When userspace creates a new hwsim radio with both
+HWSIM_ATTR_MULTI_RADIO and HWSIM_ATTR_SUPPORT_NAN_DEVICE,
+hwsim_new_radio_nl() sets BIT(NL80211_IFTYPE_NAN_DATA) in
+wiphy->interface_modes while configuring the wiphy with
+n_radio > 1. This violates the invariant checked in
+wiphy_register():
 
-Assisted-by: Claude:Sonnet 4.6
-Signed-off-by: Masashi Honma <masashi.honma@gmail.com>
+    (interface_modes & BIT(NL80211_IFTYPE_NAN_DATA)) &&
+    (!nan_capa.phy.ht.ht_supported || n_radio > 1)
+
+triggering a WARN reachable from userspace via genetlink.
+With panic_on_warn this becomes a denial of service.
+
+Refuse the combination at parse time with -EINVAL and an
+extack message, matching the cfg80211 constraint that NAN
+is not supported on multi-radio wiphys.
+
+Reported-by: syzbot+2002864e6c6895cb0ac3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2002864e6c6895cb0ac3
+Fixes: 2c7c70ee7cee ("wifi: mac80211_hwsim: enable NAN_DATA interface simulation support")
+Tested-by: syzbot+2002864e6c6895cb0ac3@syzkaller.appspotmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
 ---
- net/mac80211/mesh.h      |  1 +
- net/mac80211/mesh_hwmp.c | 48 ++++++++++++++++++++++++++++++++++++++--
- net/mac80211/parse.c     |  7 ++++--
- 3 files changed, 52 insertions(+), 4 deletions(-)
+ drivers/net/wireless/virtual/mac80211_hwsim_main.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mesh.h b/net/mac80211/mesh.h
-index aba7ef59195a..610c34e35e64 100644
---- a/net/mac80211/mesh.h
-+++ b/net/mac80211/mesh.h
-@@ -319,6 +319,7 @@ void mesh_path_fix_nexthop(struct mesh_path *mpath, struct sta_info *next_hop);
- void mesh_path_expire(struct ieee80211_sub_if_data *sdata);
- u8 mesh_path_parse_request_frame(const u8 *pos, u8 elen);
- u8 mesh_path_parse_reply_frame(const u8 *pos, u8 elen);
-+u8 mesh_path_parse_error_frame(const u8 *pos, u8 elen);
- void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
- 			    struct ieee80211_mgmt *mgmt, size_t len);
- struct mesh_path *
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 9f903a2408f7..2a293b771f79 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -62,6 +62,7 @@ static inline u16 u16_field_get(const u8 *preq_elem, int offset, bool ae)
- #define PREP_IE_TARGET_SN(x)	u32_field_get(x, 9, 0)
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
+index dc9775cd9f54..a625a9e3caa7 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
+@@ -6766,9 +6766,15 @@ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
+ 		param.p2p_device = true;
+ 	}
  
- #define PERR_IE_TTL(x)		(*(x))
-+#define PERR_IE_NUMBER_OF_DST(x)	(*(x + 1))
- #define PERR_IE_TARGET_FLAGS(x)	(*(x + 2))
- #define PERR_IE_TARGET_ADDR(x)	(x + 3)
- #define PERR_IE_TARGET_SN(x)	u32_field_get(x, 9, 0)
-@@ -968,6 +969,42 @@ u8 mesh_path_parse_reply_frame(const u8 *pos, u8 elen)
- 	return 0;
- }
- 
-+/* IEEE Std 802.11-2016 9.4.2.115 PERR element */
-+u8 mesh_path_parse_error_frame(const u8 *pos, u8 elen)
-+{
-+	u8 number_of_dst;
-+	u8 expected_len;
-+	const u8 *start;
-+	int i;
-+
-+	number_of_dst = PERR_IE_NUMBER_OF_DST(pos);
-+	if (unlikely(number_of_dst < 1 || number_of_dst > 19))
-+		return IEEE80211_PARSE_ERR_UNEXPECTED_ELEM;
-+
-+	start = pos;
-+	expected_len = 1 /* Element TTL */ + 1 /* Number of Destinations */;
-+	pos += 2;
-+
-+	for (i = 0; i < number_of_dst; i++) {
-+		u8 dst_len;
-+
-+		if (unlikely(pos - start >= elen))
-+			return IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
-+
-+		dst_len = 1 /* Flags */ + 6 /* Destination Address */ +
-+			  4 /* HWMP Sequence Number */ +
-+			  (AE_F_SET(pos) ? 6 : 0) /* Destination External Address */ +
-+			  2 /* Reason Code */;
-+		expected_len += dst_len;
-+		pos += dst_len;
+-	if (param.nan_device)
++	if (param.nan_device) {
++		if (param.multi_radio) {
++			NL_SET_ERR_MSG(info->extack,
++				       "NAN is not supported on multi-radio wiphys");
++			return -EINVAL;
++		}
+ 		param.iftypes |= BIT(NL80211_IFTYPE_NAN) |
+ 				 BIT(NL80211_IFTYPE_NAN_DATA);
 +	}
-+
-+	if (unlikely(elen != expected_len))
-+		return IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
-+
-+	return 0;
-+}
-+
- void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
- 			    struct ieee80211_mgmt *mgmt, size_t len)
- {
-@@ -976,6 +1013,7 @@ void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
- 	u32 path_metric;
- 	struct sta_info *sta;
- 	u8 target_count;
-+	u8 number_of_dst;
  
- 	/* need action_code */
- 	if (len < IEEE80211_MIN_ACTION_SIZE(mesh_action))
-@@ -1026,9 +1064,15 @@ void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
- 						path_metric);
- 	}
- 	if (elems->perr) {
--		if (elems->perr_len != 15)
--			/* Right now we support only one destination per PERR */
-+		/* Right now we support only one destination per PERR */
-+		number_of_dst = PERR_IE_NUMBER_OF_DST(elems->perr);
-+		if (number_of_dst != 1)
- 			goto free;
-+
-+		/* Right now we do not support AE (Address Extension) */
-+		if (PERR_IE_TARGET_FLAGS(elems->perr) & AE_F)
-+			goto free;
-+
- 		hwmp_perr_frame_process(sdata, mgmt, elems->perr);
- 	}
- 	if (elems->rann)
-diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index cdc549055242..dfc326db0471 100644
---- a/net/mac80211/parse.c
-+++ b/net/mac80211/parse.c
-@@ -561,8 +561,11 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
- 			}
- 			break;
- 		case WLAN_EID_PERR:
--			elems->perr = pos;
--			elems->perr_len = elen;
-+			elem_parse_failed = mesh_path_parse_error_frame(pos, elen);
-+			if (likely(!elem_parse_failed)) {
-+				elems->perr = pos;
-+				elems->perr_len = elen;
-+			}
- 			break;
- 		case WLAN_EID_RANN:
- 			if (elen >= sizeof(struct ieee80211_rann_ie))
+ 	if (info->attrs[HWSIM_ATTR_CIPHER_SUPPORT]) {
+ 		u32 len = nla_len(info->attrs[HWSIM_ATTR_CIPHER_SUPPORT]);
 -- 
 2.43.0
 
