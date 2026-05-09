@@ -1,90 +1,91 @@
-Return-Path: <linux-wireless+bounces-36138-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36139-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aRyJDEHG/2kA+gAAu9opvQ
-	(envelope-from <linux-wireless+bounces-36138-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 01:41:53 +0200
+	id KLF1LkfG/2kA+gAAu9opvQ
+	(envelope-from <linux-wireless+bounces-36139-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 01:41:59 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9148C502030
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 01:41:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18410502038
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 01:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0CFBE3018C0B
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2026 23:41:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05AA1303AF1B
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2026 23:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618A13D5662;
-	Sat,  9 May 2026 23:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518DE78F2B;
+	Sat,  9 May 2026 23:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lcl0+WLW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qwyFStvn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52EE78F2B
-	for <linux-wireless@vger.kernel.org>; Sat,  9 May 2026 23:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03C8393DFB
+	for <linux-wireless@vger.kernel.org>; Sat,  9 May 2026 23:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778370110; cv=none; b=SbGGPJJjwcrVcnEV/TLoWrEZJXmlRaNNExQy/megp/0ZUVyOa/ZxC4Xi/Cu97ji9hyb1HH3i8o9cdsJB2J91GOi8qvuO9IUaWrUzsmARtF3o2yAuqylUCGimoVRg5urtSZNkXhANcllMA+jcArGmjiY1kP+6/QIeII/NbSPHAkk=
+	t=1778370111; cv=none; b=MofFzRq7n4PVFfFYeHZpHIoNUZpPI6dZgzNt084SuJQbDGTg+G6LaB6w8Lf+CHso+s4SiCMFbLjhIctYGgu9DdAYGg8l95Kw2gsXES8lryvMNCO1t0hS3QGNi40aNU9HFM025IXHVKDxogsdfKemQ2j/mPo8SPxdCoNXqteYTqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778370110; c=relaxed/simple;
-	bh=oNtEwBxsMq0vLxKKN3nKGx+7660608AsOZOLwj2Iue4=;
+	s=arc-20240116; t=1778370111; c=relaxed/simple;
+	bh=KkDDlC5a7szOxLHqfVqcRbMtA8rSPD+0hKcivGmlcMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZMV/7LcCYYNRh8KeRGoYjTMk8PdVTmn3CHPM+0T/QUzlTKu8G7gDIOOgEgWUQtKg6aHzrivrZE4ratkv0KZ1NVwIdyZRA1mREDjLvBxe7QkdG+pKzTYdjyVBHdm4ODK4BRbTIAtzlqQxUAuUlUBZsWemxDb1AvPbVsV9sV6tQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lcl0+WLW; arc=none smtp.client-ip=209.85.214.173
+	 MIME-Version; b=V79BhmeQKZnwZhi+tAxNiZx13HhYY9XC8cu7AVKqw9HSHPl5pqAf4Iry1AsDkxPxzZ0AGzuHsZsOT7Hka67HzpJTjss5euQZJkz4BJxfOlA0eD7L4XOJucCr6fSQOJHE3VvHsR0dgVVsH9zB+Ms94pvjIJ7JwMrI39VEk0tfYUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qwyFStvn; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2b788a98557so23502885ad.2
-        for <linux-wireless@vger.kernel.org>; Sat, 09 May 2026 16:41:48 -0700 (PDT)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2b7d3ecc10dso30796365ad.2
+        for <linux-wireless@vger.kernel.org>; Sat, 09 May 2026 16:41:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778370108; x=1778974908; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778370109; x=1778974909; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5tXCIxyh2WIRhaTJRyNlw53Gk/Y7Ow55sVrpcQLe5rw=;
-        b=lcl0+WLWFNjA7eRjpk2TUSFJayOcEoawovn/L3PkYSKVyqdwEizamY1YCSz/ciN0ij
-         BIsWXMgW5xj9J+yUCYKYgqienvBEUq8SG7W4pEKC/B/uaCxQcI8xCu4trRzza9K62fvF
-         qH5BGkKKRHoCX1GSJ9LOL329CkpmoM05tGl31L3ZSixCM0d6b9uvp6TrWWyHQNUaFi3d
-         mmsNFHTgGMU/mCLXjNq/QAuKVL8HraB6gxt4H2PskjuU5Bj56uoBfjQnHSRmVF0gu+hV
-         2GWbkMS/yaeCYZdIm7kOR8rNuoMglmTCp6MuOHegxDnoa385n+xhGZbcqSTGhx+7nB0H
-         26WQ==
+        bh=GHcG6yB9CqQ7oMOhQZ9yqSHrLMra509MO4r9JlQna/I=;
+        b=qwyFStvnOqbx1S+e59Tuxl7cCa0fCHFTtMWZ32EhFpUSUBhKk8DG0Puqqw6hCapfLb
+         rbQ9bO2UALJrzI0dD6T+Svso2Q5tOmBA/w9wZLJMLkne0Wu3F0hIllzvU8hr2yue9XYX
+         /V5919VJ+YqjdtSXIYTrbPKhtoSk23/NCx56vKQWm6Bj+xlKrcdRjoP7JGozmsbXditj
+         Jdfpl7Z+54VY6eBs9TD4b+UIDB+th+IvWgFauEwXHWOQdahePJ2M5uYPKOZ6rB2VwhUS
+         7uQqx/rWkr/gAQ4tm1Ld5I/SOH6SR0YembVhvBtv5BMxLTSnFrhCedEdFrItuGxXU+Z2
+         Hf1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778370108; x=1778974908;
+        d=1e100.net; s=20251104; t=1778370109; x=1778974909;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=5tXCIxyh2WIRhaTJRyNlw53Gk/Y7Ow55sVrpcQLe5rw=;
-        b=YOeaZLu5BuYZK+lqOyxRJ9tCpjq/fcXo8cYr8XNrXSg5LtiSHoSnp+LQDMNwftUdta
-         uNeig/pOzBT7ByZw3iNxkuAvfGEOnqsFeKI2jO/5hFV6dxryGDKDtjMgyOjQiJifVp2Q
-         lEbtB/dWEIlvzl8nXuwP3dmmri7J/fzQhxrSb8lGliPEcShgKHwGIxXkqxGA6u6fvWKU
-         +dVM7dqYPAzPeEQhW+4FJlJ7AliJq1GOQ+Teskejjs+/GKPeA+hO/w1q1XaX9JldwKnT
-         taElhduXbTGL/nwHazc8vQZpxg7DHqsfg5IDpjbg/5WZL2sozpoo35eveElAyztAyTix
-         qXNA==
-X-Gm-Message-State: AOJu0YyDKWcSO3a40yxD5Z7bEgTpI3LfmEHDj8cvqNf6JH4GktEdH5BA
-	/16BLklhR/LI84TuDYFo7eTXWJjGtFpszMrm8Gb+yQOFt+CCKlkzMa1bJrv7lQ==
-X-Gm-Gg: Acq92OHSy0AbETkb415h7zHrJ9N78h4dsOd6EX1tSfudabQOByYWPxd9S4Z1Z3hOEQC
-	8ikO3Z3ec5WAv1QaIAO8PWYg/BRE00GLTSDgh8oh2Ni9tMxRAieb4JjLAsbCS/qCL7LcMIKFDyw
-	70mojUmSsbaf+uhpeWA/f4A48f75E/1dznHRwIdwltXv+WpOxUrkwl7Y1xI3wZrGrbp5y/+4o8+
-	QUFSIR3bTC2nCOW7NZHS7NRWFCkXOblYkQLmGDzXI/alKB5Exm3Q5vuXkCa+YQOwGpcoqlVR7tV
-	2mT9m5gffPumwVkYe0pEoa9hVWnGuWgbiiweyWp6+d2HHcw88lA8qXxkHkz1M1CZ4hc+OOeSnLK
-	t6TIFHls05dzeCt6s6ug/dCzNgJxn4X24siVmpbTGEzH6Hnf4q110KjEtiZ+ZN1jhtcY2Zi9Vxa
-	JuS2pJnGaKUnLN0952720CRsrSsw==
-X-Received: by 2002:a17:903:186:b0:2b7:975c:dacc with SMTP id d9443c01a7336-2baf0cf4251mr93000295ad.1.1778370108072;
-        Sat, 09 May 2026 16:41:48 -0700 (PDT)
+        bh=GHcG6yB9CqQ7oMOhQZ9yqSHrLMra509MO4r9JlQna/I=;
+        b=oj+GurxOfoSVhLui2mzJ80IXWoTjQLwu4oqnGy5lYcaX2ZOOiymTBNkSVPE+D0xFgF
+         N+tkTuTdSwrz2tcMvJJULV4P4Up1EPlq1PmMN42WvsAnluJ1Bb6IMAHodZmSqnkBOwQr
+         hb5TMO/oZFqkRYh6Ynf/SIp93vP9xsKKdjVeJzaD6J4cODtr1PdIy7EKW8tIMW5jk61i
+         QAtOWIpSt3JmJw5hVV9MAaG52iSMM8uvAquS/ytuCOwclzJKc18CAGIT0blodANCxClu
+         jKh2Jfb30TyC+mmtOjEGetFvXjDnooXgxOUD28rbBuuV0bCrUeGBcOwubcKBGgJUR/49
+         n/ug==
+X-Gm-Message-State: AOJu0Yx4A3CAQYtWtcRbO9vbZVa3C8+8penhiO1R1maV0pSFOb9dx8rh
+	JyfxqnyNybbMWU7cuDvZkuTlYtMYD9tofC/LLLY52pDTUFIRu8obpfDUktzWSQ==
+X-Gm-Gg: Acq92OGMuXOoxPxizWaS+VTi+a/x1/rm0gHpmfIZxSy9wgVGVo2sw38RoAReVg+lVG4
+	z5gnvQQ2oN6P9uGWYRbgky0eEsXbuOmBCHNsq72lKYzRONHUfgKBYbYrc7Jde0BoYRWO3OUHsUg
+	1fHmSBMwcJMOpFXxzQ4cpJPO8m2MIKn42tIEKV+w+FrPYhR8vMAoQrCK/8PM66jhdtNkl4/i4+S
+	IrfPJWjVFcJwAUTAJNMQqqV2lrNJ+izq48YM/09w4xc3hqyB4yQ8bRwav3FZBs6uq0dLpYgKdvn
+	JFOwrdayrjD9kw3/popOgVTkiCxMo5eIJYZh6Rxk5P1BaJ1+P4TFUjiLKuSBWYMXgtYG7svXugm
+	bhnk+omfl6fqr8sQYVd2f4SeG224kNcCetUiVzd8A/HgoMr+jxrReGtp1f3PQFw2TQOwao9BFp0
+	5172g3Y3gaVH5gm8/2mumoSpQQrA==
+X-Received: by 2002:a17:903:283:b0:2b9:8d39:5e87 with SMTP id d9443c01a7336-2bc7a997974mr37371455ad.10.1778370109386;
+        Sat, 09 May 2026 16:41:49 -0700 (PDT)
 Received: from ryzen9.. ([2409:11:4b40:1900:7ef3:a74c:6b41:8c9c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d27109sm61078635ad.1.2026.05.09.16.41.46
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d27109sm61078635ad.1.2026.05.09.16.41.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 May 2026 16:41:47 -0700 (PDT)
+        Sat, 09 May 2026 16:41:48 -0700 (PDT)
 From: Masashi Honma <masashi.honma@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: johannes@sipsolutions.net,
 	Masashi Honma <masashi.honma@gmail.com>
-Subject: [PATCH 1/3] Fix overread in PREQ frame processing
-Date: Sun, 10 May 2026 08:41:41 +0900
-Message-ID: <20260509234143.101237-1-masashi.honma@gmail.com>
+Subject: [PATCH 2/3] Fix overread in PREP frame processing
+Date: Sun, 10 May 2026 08:41:42 +0900
+Message-ID: <20260509234143.101237-2-masashi.honma@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <db11380dfbe7fff538a1a052fdfc5905202981a4.camel@sipsolutions.net>
+In-Reply-To: <20260509234143.101237-1-masashi.honma@gmail.com>
 References: <db11380dfbe7fff538a1a052fdfc5905202981a4.camel@sipsolutions.net>
+ <20260509234143.101237-1-masashi.honma@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -92,19 +93,19 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9148C502030
+X-Rspamd-Queue-Id: 18410502038
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36138-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36139-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -121,16 +122,16 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-When the AF flag is enabled, hwmp_preq_frame_process() overreads target_addr
+When the AF flag is enabled, hwmp_prep_frame_process() overreads orig_addr
 by 2 bytes. Since this occurs within the socket buffer, it does not read across
 memory boundaries and therefore poses no security risk; however, we will fix it
 as a precaution.
 
-In this fix, a new function mesh_path_parse_request_frame() is established to
+In this fix, a new function mesh_path_parse_reply_frame() is established to
 separate the implementation of frame format validation and the check for
 unsupported features. This is intended to facilitate future work when
 implementing the currently unsupported parts.
@@ -138,76 +139,31 @@ implementing the currently unsupported parts.
 Assisted-by: Claude:Sonnet 4.6
 Signed-off-by: Masashi Honma <masashi.honma@gmail.com>
 ---
- include/linux/ieee80211-mesh.h | 56 ++++++++++++++++++++++++++++++++++
- net/mac80211/mesh_hwmp.c       | 42 ++++++-------------------
- net/mac80211/parse.c           |  9 ++++--
- 3 files changed, 72 insertions(+), 35 deletions(-)
+ include/linux/ieee80211-mesh.h | 18 ++++++++++++++++++
+ net/mac80211/mesh_hwmp.c       |  5 +++--
+ net/mac80211/parse.c           |  9 +++++++--
+ 3 files changed, 28 insertions(+), 4 deletions(-)
 
 diff --git a/include/linux/ieee80211-mesh.h b/include/linux/ieee80211-mesh.h
-index 4b829bcb38b6..8ff68cf539ff 100644
+index 8ff68cf539ff..ddbf475c1cc8 100644
 --- a/include/linux/ieee80211-mesh.h
 +++ b/include/linux/ieee80211-mesh.h
-@@ -34,6 +34,38 @@ struct ieee80211s_hdr {
- #define MESH_FLAGS_AE		0x3
- #define MESH_FLAGS_PS_DEEP	0x4
+@@ -283,4 +283,22 @@ static inline bool ieee80211_mesh_preq_size_ok(const u8 *pos, u8 elen)
+ 	return true;
+ }
  
-+/* HWMP IE processing macros */
-+#define AE_F			(1<<6)
-+#define AE_F_SET(x)		(*x & AE_F)
-+#define PREQ_IE_FLAGS(x)	(*(x))
-+#define PREQ_IE_HOPCOUNT(x)	(*(x + 1))
-+#define PREQ_IE_TTL(x)		(*(x + 2))
-+#define PREQ_IE_PREQ_ID(x)	u32_field_get(x, 3, 0)
-+#define PREQ_IE_ORIG_ADDR(x)	(x + 7)
-+#define PREQ_IE_ORIG_SN(x)	u32_field_get(x, 13, 0)
-+#define PREQ_IE_LIFETIME(x)	u32_field_get(x, 17, AE_F_SET(x))
-+#define PREQ_IE_METRIC(x) 	u32_field_get(x, 21, AE_F_SET(x))
-+#define PREQ_IE_TARGET_COUNT(x)	(*(AE_F_SET(x) ? x + 31 : x + 25))
-+#define PREQ_IE_TARGET_F(x)	(*(AE_F_SET(x) ? x + 32 : x + 26))
-+#define PREQ_IE_TARGET_ADDR(x) 	(AE_F_SET(x) ? x + 33 : x + 27)
-+#define PREQ_IE_TARGET_SN(x) 	u32_field_get(x, 33, AE_F_SET(x))
-+
-+#define PREP_IE_FLAGS(x)	PREQ_IE_FLAGS(x)
-+#define PREP_IE_HOPCOUNT(x)	PREQ_IE_HOPCOUNT(x)
-+#define PREP_IE_TTL(x)		PREQ_IE_TTL(x)
-+#define PREP_IE_ORIG_ADDR(x)	(AE_F_SET(x) ? x + 27 : x + 21)
-+#define PREP_IE_ORIG_SN(x)	u32_field_get(x, 27, AE_F_SET(x))
-+#define PREP_IE_LIFETIME(x)	u32_field_get(x, 13, AE_F_SET(x))
-+#define PREP_IE_METRIC(x)	u32_field_get(x, 17, AE_F_SET(x))
-+#define PREP_IE_TARGET_ADDR(x)	(x + 3)
-+#define PREP_IE_TARGET_SN(x)	u32_field_get(x, 9, 0)
-+
-+#define PERR_IE_TTL(x)			(*(x))
-+#define PERR_IE_TARGET_FLAGS(x)		(*(x + 2))
-+#define PERR_IE_TARGET_ADDR(x)		(x + 3)
-+#define PERR_IE_TARGET_SN(x)		u32_field_get(x, 9, 0)
-+#define PERR_IE_TARGET_RCODE(x)		u16_field_get(x, 13, 0)
-+
- /**
-  * enum ieee80211_preq_flags - mesh PREQ element flags
-  *
-@@ -227,4 +259,28 @@ enum ieee80211_root_mode_identifier {
- 	IEEE80211_PROACTIVE_RANN = 4,
- };
- 
-+/* IEEE Std 802.11-2016 9.4.2.113 PREQ element */
-+static inline bool ieee80211_mesh_preq_size_ok(const u8 *pos, u8 elen)
++/* IEEE Std 802.11-2016 9.4.2.114 PREP element */
++static inline bool ieee80211_mesh_prep_size_ok(const u8 *pos, u8 elen)
 +{
-+	u8 target_count;
 +	u8 needed;
 +
-+	target_count = PREQ_IE_TARGET_COUNT(pos);
-+	if (target_count < 1 || target_count > 20)
-+		return false;
-+
 +	needed = 1 /* Flags */ + 1 /* Hop Count */ + 1 /* Element TTL */ +
-+		 4 /* Path Discovery ID */ +
++		 6 /* Target Mesh STA Address */ +
++		 4 /* Target HWMP Sequence Number */ +
++		 (AE_F_SET(pos) ? 6 : 0) /* Target External Address */ +
++		 4 /* Lifetime */ + 4 /* Metric */ +
 +		 6 /* Originator Mesh STA Address */ +
-+		 4 /* Originator HWMP Sequence Number */ +
-+		 (AE_F_SET(pos) ? 6 : 0) /* Originator External Address */ +
-+		 4 /* Lifetime */ + 4 /* Metric */ + 1 + /* Target Count */ +
-+		 target_count * (1 /* Per Target Flags */ +
-+		 6 /* Target Address */ + 4 /* Target HWMP Sequence Number */);
++		 4 /* Originator HWMP Sequence Number */;
 +	if (elen != needed)
 +		return false;
 +
@@ -216,93 +172,42 @@ index 4b829bcb38b6..8ff68cf539ff 100644
 +
  #endif /* LINUX_IEEE80211_MESH_H */
 diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 9d89ebcce1c1..a4984b015995 100644
+index a4984b015995..c70cfc2d6299 100644
 --- a/net/mac80211/mesh_hwmp.c
 +++ b/net/mac80211/mesh_hwmp.c
-@@ -35,37 +35,6 @@ static inline u16 u16_field_get(const u8 *preq_elem, int offset, bool ae)
- }
- 
- /* HWMP IE processing macros */
--#define AE_F			(1<<6)
--#define AE_F_SET(x)		(*x & AE_F)
--#define PREQ_IE_FLAGS(x)	(*(x))
--#define PREQ_IE_HOPCOUNT(x)	(*(x + 1))
--#define PREQ_IE_TTL(x)		(*(x + 2))
--#define PREQ_IE_PREQ_ID(x)	u32_field_get(x, 3, 0)
--#define PREQ_IE_ORIG_ADDR(x)	(x + 7)
--#define PREQ_IE_ORIG_SN(x)	u32_field_get(x, 13, 0)
--#define PREQ_IE_LIFETIME(x)	u32_field_get(x, 17, AE_F_SET(x))
--#define PREQ_IE_METRIC(x) 	u32_field_get(x, 21, AE_F_SET(x))
--#define PREQ_IE_TARGET_F(x)	(*(AE_F_SET(x) ? x + 32 : x + 26))
--#define PREQ_IE_TARGET_ADDR(x) 	(AE_F_SET(x) ? x + 33 : x + 27)
--#define PREQ_IE_TARGET_SN(x) 	u32_field_get(x, 33, AE_F_SET(x))
--
--
--#define PREP_IE_FLAGS(x)	PREQ_IE_FLAGS(x)
--#define PREP_IE_HOPCOUNT(x)	PREQ_IE_HOPCOUNT(x)
--#define PREP_IE_TTL(x)		PREQ_IE_TTL(x)
--#define PREP_IE_ORIG_ADDR(x)	(AE_F_SET(x) ? x + 27 : x + 21)
--#define PREP_IE_ORIG_SN(x)	u32_field_get(x, 27, AE_F_SET(x))
--#define PREP_IE_LIFETIME(x)	u32_field_get(x, 13, AE_F_SET(x))
--#define PREP_IE_METRIC(x)	u32_field_get(x, 17, AE_F_SET(x))
--#define PREP_IE_TARGET_ADDR(x)	(x + 3)
--#define PREP_IE_TARGET_SN(x)	u32_field_get(x, 9, 0)
--
--#define PERR_IE_TTL(x)		(*(x))
--#define PERR_IE_TARGET_FLAGS(x)	(*(x + 2))
--#define PERR_IE_TARGET_ADDR(x)	(x + 3)
--#define PERR_IE_TARGET_SN(x)	u32_field_get(x, 9, 0)
--#define PERR_IE_TARGET_RCODE(x)	u16_field_get(x, 13, 0)
--
- #define MSEC_TO_TU(x) (x*1000/1024)
- #define SN_GT(x, y) ((s32)(y - x) < 0)
- #define SN_LT(x, y) ((s32)(x - y) < 0)
-@@ -932,6 +901,7 @@ void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
- 	size_t baselen;
- 	u32 path_metric;
- 	struct sta_info *sta;
-+	u8 target_count;
- 
- 	/* need action_code */
- 	if (len < IEEE80211_MIN_ACTION_SIZE(mesh_action))
-@@ -955,9 +925,15 @@ void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
- 		return;
- 
- 	if (elems->preq) {
--		if (elems->preq_len != 37)
--			/* Right now we support just 1 destination and no AE */
+@@ -941,9 +941,10 @@ void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
+ 						path_metric);
+ 	}
+ 	if (elems->prep) {
+-		if (elems->prep_len != 31)
+-			/* Right now we support no AE */
 +		/* Right now we do not support AE (Address Extension) */
-+		if (AE_F_SET(elems->preq))
-+			goto free;
-+
-+		/* Right now we only supports 1 target */
-+		target_count = PREQ_IE_TARGET_COUNT(elems->preq);
-+		if (target_count != 1)
++		if (AE_F_SET(elems->prep))
  			goto free;
 +
- 		path_metric = hwmp_route_info_get(sdata, mgmt, elems->preq,
- 						  MPATH_PREQ);
+ 		path_metric = hwmp_route_info_get(sdata, mgmt, elems->prep,
+ 						  MPATH_PREP);
  		if (path_metric)
 diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index 5e61457be0f3..9e52cc48fc18 100644
+index 9e52cc48fc18..bbd1e1bc77b4 100644
 --- a/net/mac80211/parse.c
 +++ b/net/mac80211/parse.c
-@@ -547,8 +547,13 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
- 				elems->awake_window = (void *)pos;
+@@ -556,8 +556,13 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
+ 			}
  			break;
- 		case WLAN_EID_PREQ:
--			elems->preq = pos;
--			elems->preq_len = elen;
-+			if (ieee80211_mesh_preq_size_ok(pos, elen)) {
-+				elems->preq = pos;
-+				elems->preq_len = elen;
+ 		case WLAN_EID_PREP:
+-			elems->prep = pos;
+-			elems->prep_len = elen;
++			if (ieee80211_mesh_prep_size_ok(pos, elen)) {
++				elems->prep = pos;
++				elems->prep_len = elen;
 +			} else {
 +				elem_parse_failed =
 +					IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
 +			}
  			break;
- 		case WLAN_EID_PREP:
- 			elems->prep = pos;
+ 		case WLAN_EID_PERR:
+ 			elems->perr = pos;
 -- 
 2.43.0
 
