@@ -1,151 +1,184 @@
-Return-Path: <linux-wireless+bounces-36134-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36136-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAC0C6f7/mlW0wAAu9opvQ
-	(envelope-from <linux-wireless+bounces-36134-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 11:17:27 +0200
+	id 4PPJG6cJ/2mv1QAAu9opvQ
+	(envelope-from <linux-wireless+bounces-36136-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 12:17:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74AB4FEF70
-	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 11:17:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE20B4FF2D7
+	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 12:17:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F41B6300679A
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2026 09:17:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E670D30056D9
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2026 10:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C71E1FECAB;
-	Sat,  9 May 2026 09:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658B93A0EB3;
+	Sat,  9 May 2026 10:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FSvBxDMj"
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="Zg8+2tq0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C86318EFD1
-	for <linux-wireless@vger.kernel.org>; Sat,  9 May 2026 09:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8C237BE84
+	for <linux-wireless@vger.kernel.org>; Sat,  9 May 2026 10:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778318243; cv=none; b=f3LehMfmqMQiWcfY4rsnjOECJcf/jbaRRj3iL0qTwu+ZRFOKUCEG7VArgcnioIi94ERero13u7QTzMZgTSmzqBws6lLRf8M5kzFvJ5bkc548qu3VxV+pwmdsk4Nrd9fZYKaVyUG3vBuDBvjBcc5GCVAMGKwDBAHxE85xzB+HqSs=
+	t=1778321620; cv=none; b=CR8Cf+2kSZlNGUR41KuuVd8z60vAE6p9HfvA7atvilJ9pJUxYNURC2dwi0ljSXEb5UpjVtDzLgp5sMG7+RUIUKxDK3ebBv3rvNp49TWHZw2JXX3nEcK41oo4B9/5G6lebywmfnpLCV9q6R8L3yAGwwF7LWCTjkznhhqWwVz8VXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778318243; c=relaxed/simple;
-	bh=T6MVhYtFeOr3eNNZasT58f6aaudbyenuiHAAJM1InBA=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nRXZMNZJTM4NQ5mU4i5d5SNVeEs8aV8xAgj2Op8p0I85RotMb554wiz862/qPqSOfyfeP7oxOIsvGJvOOy6cwJ9gzwMpRKfmp28DQagITZbLFM/Kr/2G+7GRuzBk2tRF4Jgfx0RxCxshEpm9gAuB0mAYTR4gxIUi/dzCgaUpv+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FSvBxDMj; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=mxOD7ZYzvGXJIa7M6XOxZ9jj1YNFwwtB8UwJWUbmNUg=;
-	t=1778318240; x=1779527840; b=FSvBxDMjXn4ZS8LSJry0DGtky2pb0H/TT3jqYuDewqeoe6R
-	am8L03nh6NGSB7Fn7oVRdKpbKX76Em5VMPiIkcy1eeTXcD4WNyrkcuQ0IxDH91ZzK9tpB/ZwnScjG
-	N0g9tXLy76BSk2B7XamQiEHPDCSyJ480BaPBwloomUy+SvjfAc9rR+SGF1s8ED6sh5+mnF457CPS2
-	/u1nrNVK40GEqHboa2Gl2csolQKrp0vL8VxaziBvN8Xd4e/9p4Xcs2HeoOT1l2CzkV3rc3kHwV+yn
-	s301ioUD51yefH0ATAmvpsOzY6nHNO5aRjXznlqhKAPxlkXPmkVtZLDrWN+a4ijA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wLdo7-000000096yg-0K84;
-	Sat, 09 May 2026 11:17:11 +0200
-Message-ID: <db11380dfbe7fff538a1a052fdfc5905202981a4.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/3] Fix overread in PREQ frame processing
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Masashi Honma <masashi.honma@gmail.com>, linux-wireless@vger.kernel.org
-Date: Sat, 09 May 2026 11:17:10 +0200
-In-Reply-To: <20260508225905.29998-1-masashi.honma@gmail.com>
-References: 
-	<8f0a2488540f4a65ea4d837a06225a27a10cc305.camel@sipsolutions.net>
-	 <20260508225905.29998-1-masashi.honma@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1778321620; c=relaxed/simple;
+	bh=9bxNQaqsDNMu6TKjidxrJlXeWZkeA13IKD/dWzkKxEE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pwjh3WpmEzSifPeidsspwVk0Xz18UoNlBICbiLDQNT4MUlguxw13iCdTGlczxxgtuNblhaXzd13xvQ/DaotoFJJzeKyaH0mVqxpmyQid1mTXwRGh0K8j6F6KLrPVeOYNNdmNIl5uygGK4HxyVrKmmbZbyj/1ijyZMMm9yG7d4dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=Zg8+2tq0; arc=none smtp.client-ip=212.77.101.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+Received: (wp-smtpd smtp.wp.pl 5859 invoked from network); 9 May 2026 12:13:27 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1778321607; bh=jIdxinbdgJMMMfk7uVVnJm1N47P2HSHNC1jvpWELkwU=;
+          h=From:To:Cc:Subject;
+          b=Zg8+2tq0ONfEVN9Jncw8nxb4Qt2J9J3h6Sgu53UEUK7iRWK6nG/pVkDx2eNtSpR1S
+           LSkl4IloYNJ0PBRMhmdNsxMq7fCT2ACTSBdwlIj6BO8NwSMeACxAByCPSsrJ0XDnEv
+           hvG9mr7PFHw5zGvOromMQN8hBwwgVrmZUQdYLTOOTb8X4CSshTghFle4c0tnk7yecJ
+           HAam4mfUslAvzzR+t15CJGQ80ohgMxefk4lOi4BHvi19WUc/1GwVH59GQC5chzyCEl
+           hH9YNMxe4bVAxH6CirtIzUpTKvZDVC11Rh8C+D6YaIkZHLthR4pDexEIcg4VB7P7qB
+           zjFE2Ewp1No6Q==
+Received: from 77-236-5-241.static.play.pl (HELO localhost) (stf_xl@wp.pl@[77.236.5.241])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
+          for <rosenp@gmail.com>; 9 May 2026 12:13:27 +0200
+Date: Sat, 9 May 2026 12:13:26 +0200
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-wireless@vger.kernel.org,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH wireless-next] wifi: rt2x00: allocate anchor with
+ rt2x00dev
+Message-ID: <20260509101326.GA2170@wp.pl>
+References: <20260430232206.141461-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: C74AB4FEF70
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260430232206.141461-1-rosenp@gmail.com>
+X-WP-MailID: e19a3bbd0e37514d669a47517fbefaec
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [UXNx]                               
+X-Rspamd-Queue-Id: BE20B4FF2D7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	DMARC_POLICY_ALLOW(-0.50)[wp.pl,none];
+	R_DKIM_ALLOW(-0.20)[wp.pl:s=20241105];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	TAGGED_FROM(0.00)[bounces-36136-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36134-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FREEMAIL_FROM(0.00)[wp.pl];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	FROM_NEQ_ENVFROM(0.00)[stf_xl@wp.pl,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[wp.pl:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wp.pl:email,wp.pl:mid,wp.pl:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Sat, 2026-05-09 at 07:59 +0900, Masashi Honma wrote:
-> =20
-> +/* IEEE Std 802.11-2016 9.4.2.113 PREQ element */
-> +u8 mesh_path_parse_request_frame(const u8 *pos, u8 elen)
-> +{
-> +	u8 target_count;
-> +	u8 expected_len;
+Hi,
+
+On Thu, Apr 30, 2026 at 04:22:06PM -0700, Rosen Penev wrote:
+> Instead of being creative with devm, allocate with rt2x00dev by using a
+> flexible array member. Simplifies code slightly.
+
+I think this patch is more creative. Using a flexible array member
+is less conventional than the current approach of allocating separately
+and storing a pointer. But OK, lets get rid of 9 LOC.
+
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+
+> It's worth noting that in 25369b22223d1c56e42a0cd4ac9137349d5a898e , the
+> proper device was set to the devm call as it seems there was confusion
+> there.
+> 
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+>
+> ---
+>  drivers/net/wireless/ralink/rt2x00/rt2x00.h    |  3 ++-
+>  drivers/net/wireless/ralink/rt2x00/rt2x00usb.c | 11 +----------
+>  2 files changed, 3 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00.h b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
+> index 665887e9b118..7d313e86d3f2 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00.h
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
+> @@ -1009,11 +1009,12 @@ struct rt2x00_dev {
+>  	/* Extra TX headroom required for alignment purposes. */
+>  	unsigned int extra_tx_headroom;
+> 
+> -	struct usb_anchor *anchor;
+>  	unsigned int num_proto_errs;
+> 
+>  	/* Clock for System On Chip devices. */
+>  	struct clk *clk;
 > +
-> +	target_count =3D PREQ_IE_TARGET_COUNT(pos);
-> +	if (unlikely(target_count < 1 || target_count > 20))
-> +		return IEEE80211_PARSE_ERR_UNEXPECTED_ELEM;
-
-not sure the likely/unlikely really is worth anything there - we don't
-process *that* many frames.
-
-> +
-> +	expected_len =3D 1 /* Flags */ + 1 /* Hop Count */ + 1 /* Element TTL *=
-/ +
-> +		       4 /* Path Discovery ID */ +
-> +		       6 /* Originator Mesh STA Address */ +
-> +		       4 /* Originator HWMP Sequence Number */ +
-> +		       (AE_F_SET(pos) ? 6 : 0) /* Originator External Address */ +
-> +		       4 /* Lifetime */ + 4 /* Metric */ + 1 + /* Target Count */ +
-> +		       target_count * (1 /* Per Target Flags */ +
-> +		       6 /* Target Address */ + 4 /* Target HWMP Sequence Number */);
-> +	if (unlikely(elen !=3D expected_len))
-> +		return IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
-
-I think there's a case to be made for doing this like many others, in an
-inline in ieee80211-mesh.h, and calling it ..._size_ok() with a bool
-return.
-
-> +++ b/net/mac80211/parse.c
-> @@ -547,8 +547,11 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_=
-parse_params *params,
->  				elems->awake_window =3D (void *)pos;
->  			break;
->  		case WLAN_EID_PREQ:
-> -			elems->preq =3D pos;
-> -			elems->preq_len =3D elen;
-> +			elem_parse_failed =3D mesh_path_parse_request_frame(pos, elen);
-> +			if (likely(!elem_parse_failed)) {
-
-that would also fix the build issue here if mesh isn't compiled in.
-
-(and also here, not sure about likely/unlikely, doesn't really seem
-worth it, and under attack maybe the failure becomes likely?)
-
-johannes
+> +	struct usb_anchor anchor[];
+>  };
+> 
+>  struct rt2x00_bar_list_entry {
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+> index 174d89b0b1d7..47e427ea8622 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+> @@ -804,7 +804,7 @@ int rt2x00usb_probe(struct usb_interface *usb_intf,
+> 
+>  	usb_reset_device(usb_dev);
+> 
+> -	hw = ieee80211_alloc_hw(sizeof(struct rt2x00_dev), ops->hw);
+> +	hw = ieee80211_alloc_hw(struct_size(rt2x00dev, anchor, 1), ops->hw);
+>  	if (!hw) {
+>  		rt2x00_probe_err("Failed to allocate hardware\n");
+>  		return -ENOMEM;
+> @@ -826,13 +826,6 @@ int rt2x00usb_probe(struct usb_interface *usb_intf,
+>  	if (retval)
+>  		goto exit_free_device;
+> 
+> -	rt2x00dev->anchor = devm_kmalloc(&usb_intf->dev,
+> -					sizeof(struct usb_anchor),
+> -					GFP_KERNEL);
+> -	if (!rt2x00dev->anchor) {
+> -		retval = -ENOMEM;
+> -		goto exit_free_reg;
+> -	}
+>  	init_usb_anchor(rt2x00dev->anchor);
+> 
+>  	retval = rt2x00lib_probe_dev(rt2x00dev);
+> @@ -843,8 +836,6 @@ int rt2x00usb_probe(struct usb_interface *usb_intf,
+> 
+>  exit_free_anchor:
+>  	usb_kill_anchored_urbs(rt2x00dev->anchor);
+> -
+> -exit_free_reg:
+>  	rt2x00usb_free_reg(rt2x00dev);
+> 
+>  exit_free_device:
+> --
+> 2.54.0
+> 
 
