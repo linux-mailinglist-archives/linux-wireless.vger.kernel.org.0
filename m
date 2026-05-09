@@ -1,218 +1,151 @@
-Return-Path: <linux-wireless+bounces-36135-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36134-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAsBB0EA/2lR1AAAu9opvQ
-	(envelope-from <linux-wireless+bounces-36135-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 11:37:05 +0200
+	id kAC0C6f7/mlW0wAAu9opvQ
+	(envelope-from <linux-wireless+bounces-36134-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 11:17:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E12394FF021
-	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 11:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C74AB4FEF70
+	for <lists+linux-wireless@lfdr.de>; Sat, 09 May 2026 11:17:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BB7FA30065CB
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2026 09:37:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F41B6300679A
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2026 09:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F9D3101A9;
-	Sat,  9 May 2026 09:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C71E1FECAB;
+	Sat,  9 May 2026 09:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=hlope.org.za header.i=@hlope.org.za header.b="TvM5nuSB"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FSvBxDMj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from spe9-1.ucebox.co.za (spe9-1.ucebox.co.za [197.242.159.189])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5C7846A
-	for <linux-wireless@vger.kernel.org>; Sat,  9 May 2026 09:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=197.242.159.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C86318EFD1
+	for <linux-wireless@vger.kernel.org>; Sat,  9 May 2026 09:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778319419; cv=none; b=hmAKCYIN4nCa/amocyCz8de4W6Y/b5e5N9d6qO/DWZFHq1JZ77vhidXv1E3an8cQHzZ+TMxxbRc+UYIcLBRVy1i1wcIWcZEAy0dBJndvmQOyVPf79H1/V7rHQSwBWYlaBfLopAxF8LVIFEMZK5m+nk7be2rNmmls0cgUwldE5c0=
+	t=1778318243; cv=none; b=f3LehMfmqMQiWcfY4rsnjOECJcf/jbaRRj3iL0qTwu+ZRFOKUCEG7VArgcnioIi94ERero13u7QTzMZgTSmzqBws6lLRf8M5kzFvJ5bkc548qu3VxV+pwmdsk4Nrd9fZYKaVyUG3vBuDBvjBcc5GCVAMGKwDBAHxE85xzB+HqSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778319419; c=relaxed/simple;
-	bh=w2Uhob8BnfQANd1hHoB+agOsiCGWUhjPbv1W+GnSHQ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eyJZK3DgXVIUtXSbP4vvpfFL9FcZm5u71d5yGSsJNNQW62TsJw4RYmzVpgNl7rmWrsfb4b9Yw1V5NWnEGaGxiaYLiuAxDnS9jVo5hucXG4gZM8HteD6eewsSyOeO72EUgIZrRuTLtPyOGv4gecV68wACd4R6dlV92YImxC5eTLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hlope.org.za; spf=pass smtp.mailfrom=hlope.org.za; dkim=fail (0-bit key) header.d=hlope.org.za header.i=@hlope.org.za header.b=TvM5nuSB reason="key not found in DNS"; arc=none smtp.client-ip=197.242.159.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hlope.org.za
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hlope.org.za
-Received: from zulu.aserv.co.za ([154.0.174.187])
-	by spe11.ucebox.co.za with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <developer@hlope.org.za>)
-	id 1wLcu0-004eq2-Uz; Sat, 09 May 2026 10:23:36 +0200
+	s=arc-20240116; t=1778318243; c=relaxed/simple;
+	bh=T6MVhYtFeOr3eNNZasT58f6aaudbyenuiHAAJM1InBA=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nRXZMNZJTM4NQ5mU4i5d5SNVeEs8aV8xAgj2Op8p0I85RotMb554wiz862/qPqSOfyfeP7oxOIsvGJvOOy6cwJ9gzwMpRKfmp28DQagITZbLFM/Kr/2G+7GRuzBk2tRF4Jgfx0RxCxshEpm9gAuB0mAYTR4gxIUi/dzCgaUpv+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FSvBxDMj; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=hlope.org.za; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=KM+PhIlgwvO1UsKJY62GfJBC621wDFP9y6GILYNBU7s=; b=TvM5nuSBhM88Qwk6sJX4AUSRFN
-	mcGwaE74fNKGnNGos8iiQPZe3HxGBi2VmcBYiBlh5Ohj1K4scEDjqa52ma8Qw+IQAooIV16ielEPI
-	rCUkijJN17Y/ud+55lytAwOkjiT7+O5hoBSnj4BKJ4DezQJhYMgpY82hgm5En3I6mAITXcUVo5jiz
-	ITg3Zi2EqMuXPDlbjEZZnyhRNIHiWWhNB4uKRD3f5D0RIPwYFTPu0iUBJoAIwG/UM5cntbMW3vMCq
-	Rb4fBiUZP2LZid9CZYWL8E2LhcEMHAJL6HBahKkuIb2vD/Uf55MrHZ2+NyaGYVYrArr4/BmXflmuL
-	vv/Pw1hg==;
-Received: from vc-vb-41-1-137-10.umts.vodacom.co.za ([41.1.137.10]:35008 helo=bongani-mini.home.org.za)
-	by zulu.aserv.co.za with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.2)
-	(envelope-from <developer@hlope.org.za>)
-	id 1wLcy1-00000002Iq7-2DWu;
-	Sat, 09 May 2026 10:23:21 +0200
-Date: Sat, 9 May 2026 10:23:19 +0200
-From: Bongani Hlope <developer@hlope.org.za>
-To: Sean Wang <sean.wang@kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, Sean
- Wang <sean.wang@mediatek.com>
-Subject: Re: [PATCH] wifi: mt76: mt792x: fix NULL dereference during CSA
- beacon handling
-Message-ID: <20260509102319.43c14125@bongani-mini.home.org.za>
-In-Reply-To: <20260503004613.17903-1-sean.wang@kernel.org>
-References: <20260503004613.17903-1-sean.wang@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=mxOD7ZYzvGXJIa7M6XOxZ9jj1YNFwwtB8UwJWUbmNUg=;
+	t=1778318240; x=1779527840; b=FSvBxDMjXn4ZS8LSJry0DGtky2pb0H/TT3jqYuDewqeoe6R
+	am8L03nh6NGSB7Fn7oVRdKpbKX76Em5VMPiIkcy1eeTXcD4WNyrkcuQ0IxDH91ZzK9tpB/ZwnScjG
+	N0g9tXLy76BSk2B7XamQiEHPDCSyJ480BaPBwloomUy+SvjfAc9rR+SGF1s8ED6sh5+mnF457CPS2
+	/u1nrNVK40GEqHboa2Gl2csolQKrp0vL8VxaziBvN8Xd4e/9p4Xcs2HeoOT1l2CzkV3rc3kHwV+yn
+	s301ioUD51yefH0ATAmvpsOzY6nHNO5aRjXznlqhKAPxlkXPmkVtZLDrWN+a4ijA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wLdo7-000000096yg-0K84;
+	Sat, 09 May 2026 11:17:11 +0200
+Message-ID: <db11380dfbe7fff538a1a052fdfc5905202981a4.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/3] Fix overread in PREQ frame processing
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Masashi Honma <masashi.honma@gmail.com>, linux-wireless@vger.kernel.org
+Date: Sat, 09 May 2026 11:17:10 +0200
+In-Reply-To: <20260508225905.29998-1-masashi.honma@gmail.com>
+References: 
+	<8f0a2488540f4a65ea4d837a06225a27a10cc305.camel@sipsolutions.net>
+	 <20260508225905.29998-1-masashi.honma@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Get-Message-Sender-Via: zulu.aserv.co.za: authenticated_id: developer@hlope.org.za
-X-Authenticated-Sender: zulu.aserv.co.za: developer@hlope.org.za
-X-Afrihost-Domain: zulu.aserv.co.za
-X-Afrihost-Username: 154.0.174.187
-Authentication-Results: ucebox.co.za; auth=pass smtp.auth=154.0.174.187@zulu.aserv.co.za
-X-Afrihost-Outgoing-Class: ham
-X-Afrihost-Outgoing-Evidence: SB/global_tokens (0.00134300060253)
-X-Recommended-Action: accept
-X-Filter-ID: 9kzQTOBWQUFZTohSKvQbgI7ZDo5ubYELi59AwcWUnuWttwhTDfbOFm1IrTV+N0tt5W8I8I5o/07Q
- djfeDWgbhyu2SmbhJN1U9FKs8X3+Nt1zK+WV213mG9v1wBG3CJSJghHNKUD0bxViKcuMBmKJGtCI
- EVI9LzXDA1Xh+DPG4pIRM0tjkoPC0oPEvsMNWBXdk31k9aIIh+zJRA1xOJoRUKPGxjczx15onleF
- Kw2Xyyt6ZP2tC/xa8XrsQTYQrzShFpLBrlhgaheoKeMzRkq15aAsLnBQySPkxRUcL6SRMtkAGpRG
- q7O/mMOjYzEVVhqKzO11BRKqT8B4uLrn7iz8ujemlCquzrJ0YZ1VzniO/xNwFnDSg8Na/uzow/Qd
- /TXu3FtekKBuIoGwD4N2LqZrB81WEz3zuqka4Leqo6VkfdEs9H9vRWZELOiK/O0f2DQLszMSIo1O
- FBBNLYHJjrLx7KD+PcKoiyuHYH027/azHsfyF0j07IuLxHAIhMOSKZ8SXPwDOp0XzVcbaKehNrQC
- lyWECWLQqrwwfOypInY7IE4WqyvWaJHVy0dAJPh1agO+W712/S7qYELcBqskFxaN0IK3H3zddGMG
- ENsySGnKddaNyIe8PyhXeURjgDQvgYtvI3imOCD2AcAqzAUqPiQ+vsS4KCvAQlb64nmNydRDntbP
- WdUomhZ6E4lig4P8DOupvCrJPmnnTHzVkpybMK7ZTQU1FjzOY34M4LJ5dj1U5QyziKIm/RF17S5j
- mZvsrbOk5ELSSdBCZ+Th+/7SXdAc1ioAdl/0YclQj65KFqyldCtoh9VoIekQHpwUfpYnEThmL9mh
- N2sn9+cD9nPx2dLCkiB0zjmVxLBXMwzcQyZ7VrYMoghy8rP7ZskpYo0tCvJdhNHL4hwDAmUJZftc
- /qh2BVCQMm9F7O0YHLH+UPatjf1O+Mr36p/04lq7E2PTupJG5wvZFPBM8z1lzyXsCKUbkUYxAR1g
- dzpfCT8MW3+36Tt6QlFXnpAsrR1nIklsIaLGO3WRj39GEtKMyPBWDu+J2o+4/pO6PSl14xj6c8yM
- qw/uUkAZolzVpVG7k+diMar4p8r4UU10Bm5re8g+XyEpvJ3iGKWnonO9OJmckd63zPaLkuXizJSN
- HcvSgL08BiJQP2BxhnbeXg/cmvNZLyNaHzJB4EN9jDRWx0Y3AfLsh+PBDQgjxYblsNqNdMJKP021
- Q7gXso7XeulA+cWxJX+boA5kTebrYQ7/3TrJAF4KqX0=
-X-Report-Abuse-To: spam@spe1.ucebox.co.za
-X-Complaints-To: abuse@spe1.ucebox.co.za
-X-Rspamd-Queue-Id: E12394FF021
+X-malware-bazaar: not-scanned
+X-Rspamd-Queue-Id: C74AB4FEF70
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[hlope.org.za];
-	HAS_X_AS(0.00)[developer@hlope.org.za];
-	HAS_X_GMSV(0.00)[developer@hlope.org.za];
-	R_DKIM_PERMFAIL(0.00)[hlope.org.za:s=default];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36135-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[developer@hlope.org.za,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[hlope.org.za:~];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.459];
+	TAGGED_FROM(0.00)[bounces-36134-lists,linux-wireless=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,hlope.org.za:email]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim]
 X-Rspamd-Action: no action
 
-Sorry I had some down time on my mail server. I can confirm this patch
-works for me, I have been running with it since you sent it through.
-
-Regards
-
-On Sat,  2 May 2026 19:46:13 -0500
-Sean Wang <sean.wang@kernel.org> wrote:
-
-> From: Sean Wang <sean.wang@mediatek.com>
-> 
-> mac80211 may call channel_switch_rx_beacon() while CSA is active, but
-> mt76's cached dev->new_ctx is not guaranteed to be valid at that
-> point.
-> 
-> Avoid dereferencing dev->new_ctx when the target channel context is
-> not available and leave the existing CSA timer unchanged.
-> 
-> kernel: Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
-> kernel: RIP: 0010:mt7921_channel_switch_rx_beacon+0x1f/0x100
-> [mt7921_common]
-> kernel: RAX: 0000000000000000
-> kernel: CR2: 0000000000000000
-> kernel: Call Trace:
-> kernel:  <TASK>
-> kernel:  ieee80211_sta_process_chanswitch+0x67c/0xee0 [mac80211]
-> kernel:  ieee80211_rx_mgmt_beacon+0x842/0x22a0 [mac80211]
-> kernel:  ieee80211_sta_rx_queued_mgmt+0xa7/0xbb0 [mac80211]
-> kernel:  ieee80211_iface_work+0x62e/0x890 [mac80211]
-> kernel:  cfg80211_wiphy_work+0x1ee/0x280 [cfg80211]
-> kernel:  process_scheduled_works+0x180/0x680
-> kernel:  worker_thread+0x1aa/0x450
-> kernel:  kthread+0x181/0x1e0
-> kernel:  ret_from_fork+0x405/0x600
-> kernel:  ret_from_fork_asm+0x11/0x20
-> kernel:  </TASK>
-> kernel: CR2: 0000000000000000
-> kernel: ---[ end trace 0000000000000000 ]---
-> 
-> mt7925 has the same unsafe dev->new_ctx dereference in its CSA beacon
-> handling path, so guard both drivers against the missing target
-> channel context and leave the existing CSA timer unchanged.
-> 
-> Reported-by: Bongani Hlope <developer@hlope.org.za>
-> Closes:
-> https://lore.kernel.org/linux-wireless/20260502140616.7672da98@bongani-mini.home.org.za/
-> Fixes: 8aa2f59260eb ("wifi: mt76: mt7921: introduce CSA support")
-> Fixes: 7900da40e315 ("wifi: mt76: mt7925: introduce CSA support in
-> non-MLO mode") Signed-off-by: Sean Wang <sean.wang@mediatek.com> ---
->  drivers/net/wireless/mediatek/mt76/mt7921/main.c | 3 +++
->  drivers/net/wireless/mediatek/mt76/mt7925/main.c | 3 +++
->  2 files changed, 6 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> b/drivers/net/wireless/mediatek/mt76/mt7921/main.c index
-> 3d74fabe7408..a326f4c95c7c 100644 ---
-> a/drivers/net/wireless/mediatek/mt76/mt7921/main.c +++
-> b/drivers/net/wireless/mediatek/mt76/mt7921/main.c @@ -1508,6 +1508,9
-> @@ static void mt7921_channel_switch_rx_beacon(struct ieee80211_hw
-> *hw, struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-> u16 beacon_interval = vif->bss_conf.beacon_int; 
-> +	if (!dev->new_ctx)
-> +		return;
+On Sat, 2026-05-09 at 07:59 +0900, Masashi Honma wrote:
+> =20
+> +/* IEEE Std 802.11-2016 9.4.2.113 PREQ element */
+> +u8 mesh_path_parse_request_frame(const u8 *pos, u8 elen)
+> +{
+> +	u8 target_count;
+> +	u8 expected_len;
 > +
->  	if (cfg80211_chandef_identical(&chsw->chandef,
->  				       &dev->new_ctx->def) &&
->  				       chsw->count) {
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-> b/drivers/net/wireless/mediatek/mt76/mt7925/main.c index
-> 73d3722739d0..b96a8e2efcbc 100644 ---
-> a/drivers/net/wireless/mediatek/mt76/mt7925/main.c +++
-> b/drivers/net/wireless/mediatek/mt76/mt7925/main.c @@ -2402,6 +2402,9
-> @@ static void mt7925_channel_switch_rx_beacon(struct ieee80211_hw
-> *hw, beacon_interval = vif->bss_conf.beacon_int;
->  
-> +	if (!dev->new_ctx)
-> +		return;
-> +
->  	if (cfg80211_chandef_identical(&chsw->chandef,
->  				       &dev->new_ctx->def) &&
->  				       chsw->count) {
+> +	target_count =3D PREQ_IE_TARGET_COUNT(pos);
+> +	if (unlikely(target_count < 1 || target_count > 20))
+> +		return IEEE80211_PARSE_ERR_UNEXPECTED_ELEM;
 
+not sure the likely/unlikely really is worth anything there - we don't
+process *that* many frames.
+
+> +
+> +	expected_len =3D 1 /* Flags */ + 1 /* Hop Count */ + 1 /* Element TTL *=
+/ +
+> +		       4 /* Path Discovery ID */ +
+> +		       6 /* Originator Mesh STA Address */ +
+> +		       4 /* Originator HWMP Sequence Number */ +
+> +		       (AE_F_SET(pos) ? 6 : 0) /* Originator External Address */ +
+> +		       4 /* Lifetime */ + 4 /* Metric */ + 1 + /* Target Count */ +
+> +		       target_count * (1 /* Per Target Flags */ +
+> +		       6 /* Target Address */ + 4 /* Target HWMP Sequence Number */);
+> +	if (unlikely(elen !=3D expected_len))
+> +		return IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
+
+I think there's a case to be made for doing this like many others, in an
+inline in ieee80211-mesh.h, and calling it ..._size_ok() with a bool
+return.
+
+> +++ b/net/mac80211/parse.c
+> @@ -547,8 +547,11 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_=
+parse_params *params,
+>  				elems->awake_window =3D (void *)pos;
+>  			break;
+>  		case WLAN_EID_PREQ:
+> -			elems->preq =3D pos;
+> -			elems->preq_len =3D elen;
+> +			elem_parse_failed =3D mesh_path_parse_request_frame(pos, elen);
+> +			if (likely(!elem_parse_failed)) {
+
+that would also fix the build issue here if mesh isn't compiled in.
+
+(and also here, not sure about likely/unlikely, doesn't really seem
+worth it, and under attack maybe the failure becomes likely?)
+
+johannes
 
