@@ -1,87 +1,87 @@
-Return-Path: <linux-wireless+bounces-36142-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36143-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAwzIwxeAGoGHgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36142-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 12:29:32 +0200
+	id cEnBFg1eAGoGHgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36143-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 12:29:33 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8549F503A00
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 12:29:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1432C503A08
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 12:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 64E0A30028D8
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 10:29:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E3ADA300A7EF
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 10:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E06257854;
-	Sun, 10 May 2026 10:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CFD3368B6;
+	Sun, 10 May 2026 10:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UxfqNKKl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CdtaF5g7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AED2032D
-	for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 10:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120272032D
+	for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 10:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778408965; cv=none; b=kBINnUm94+1aicVXwi4hSeCeNG/Vgwv55ImmnwiQu10Ef4OQCqVXbOUI3i2+7LpfmnJNbyvleXtoSeB+rY4FIT2T53NMiQsWI9FBoKBu8KekfyC/9D+zFhS1PZ/ozI+Sk3U03NOqdBEkURBvrKp3h60HmokOZECRy2gsGUoRzn0=
+	t=1778408970; cv=none; b=SafmwMf8Nb3gCwJHhny/OJg4+MtDflbs6RZZ1n7CccIEM1gfY1MEOXdwb5t8D0rpUjpVkYDBvUH3ee1ARLsneF4+mE80Vjl4hutneun0yjTIgys4Es51CfIzAr6HpTHUryWmgcbBtPbwI1/PhfZxppmfpgJQX+zNO5joUVQRZJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778408965; c=relaxed/simple;
-	bh=ltj5jIJz3jYCHSiK7lEvLQu2k3TOuna65NztmtuWlN0=;
+	s=arc-20240116; t=1778408970; c=relaxed/simple;
+	bh=xy2+CwIhydcVKMMoS8RkSqHdjchn7QoIRDu4IuwXbB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c2hIB9lT7ZaiZBZpyR7i+QJybfgouX3ue9oETgbYPw/1W052bM5o5INGRdPfxQyvBh2LXWINbL5RM+HbWeO+npDN3cUubvbHPTPakJ8+SC+pZvHx7tzmCXPKsO1NLAcdDzS15FUOvyqOA6GaCZtjb1WGezi/+iwsq8ZsuZv8ZmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UxfqNKKl; arc=none smtp.client-ip=209.85.167.48
+	 MIME-Version; b=Q5tlu1o76kZ9JgFRFfW44ifAKoZdmb9sNfwa2tUOC1TIIDfCaJzZssfcUuIg5066VmkWtbm5cCi6hgnbS8lSEH0oloEeQQzVhv1lq4qxAUtPIaA7kAt563rissU+MkO+KqD0AAgV/eSLbvcQhNVnySYIkSisBQ1VjhMGL03j6IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CdtaF5g7; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a86e4b950cso2443351e87.0
-        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 03:29:23 -0700 (PDT)
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-393da8f389bso31787031fa.1
+        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 03:29:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778408962; x=1779013762; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778408966; x=1779013766; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jm2NpUzclqN0IBZ/9uP+FCJu6yyefdMO0RcOxoVsf2Q=;
-        b=UxfqNKKlhNz7TptZw63JxTCYHmpvvb+yc03dxmmhAVCKe0I5RUR+8GS8tvLj8jbKVg
-         8+0L4UTLnpbzt5XEBx+4tLBIVwRyFJiVtBF2UBf211BAcb2kZEKbo7kSbyvvhz1edahz
-         aRzazfYoOuKLvb3Y30QioNqJ0DLlJl0FxkdxBYIRbbOhMKV/mAmFeoMwzeFUHg4jrDGN
-         2/a+hUXsgfJqUoqXiTSboRfY6WHdqnI9WENLGdL2Y2GBGVk9xUiftlaVZyZhYLDo6rq5
-         8KtM7IVbmAmZ1MNAzry8zQ5bMNdNNMIFsBOb2KvzZYLt6/NnHGLSiEGFclf6zZjm8au8
-         v/7A==
+        bh=Tx8GM/RHj/cuBV12qSf4om3o67O47ImlKSvlgIRTtzM=;
+        b=CdtaF5g7gIjKf7t7HopuVXBpy4R1EnDexyeHV3Q7yWsXlP7lrWy2ulAFr6qqRadxJG
+         7TloH4h1ZPcvdItttXA1UxWJcfnVrJ0w8ysFu0GNMODa/HUohx4L6FNuYyOexwxc+KMD
+         CJ2BOdnrBbmj3rFzv/N86TsSrLxp946y5IaecBWdPi8qXb+tS2OV2Ch7tShpyzcgMziZ
+         YHnIcvYzcWSjfgJ/j+MZ+Bcl93GkTiURXZ91ztJFmj22apsNvmzFWu9t1/lXk9PYzqWA
+         gGx2xMCi3r7bHkBPoC6tV6xWNZNyUHLXNOiduYyGQb4FxVtNglGpTVSewWMPt49x1se5
+         Hlxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778408962; x=1779013762;
+        d=1e100.net; s=20251104; t=1778408966; x=1779013766;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=jm2NpUzclqN0IBZ/9uP+FCJu6yyefdMO0RcOxoVsf2Q=;
-        b=H6l+nzA++sAcGxvVjwiLNKX10DaSMKaGjhK6k1xLTz6Szg4N2ZkzXlVW06rTITu3h4
-         AhjwpBfrfd841zr4qlUKQOtTaTS6iiE2uuB3/C3h2JPWt+qIIjRkduWaG32MzJy53QX1
-         4Bz1tzEnO0+eQ6A0UIF7nDwS2zRjCS3mVI0zwTac3UGM4p6AKxMCWEomDs/fEima+H/p
-         gL8IfTb7JpNU1P/qsOUxAEqhPurR+FbPCbbqpepqWj4kQHNlMb5O/6Q0siyK27KhFUw0
-         olARdodbUPvGRESj5NnUp/pNg9UFEv/z3j7nqxxHOsKD1U5sdZ798UYN7XYNmCzhBAba
-         y57A==
-X-Gm-Message-State: AOJu0YxXE8q/Slo6eHNDoiIU3+RKfqFTLvJpIxfYoSsqEmRxMESJYYAb
-	q5J9qaPP9DAxZpCnNZeZZwHanMFkCJcKLcJzRBPgi6V6i5kfQ2I27/Pw8kxNDhsG
-X-Gm-Gg: Acq92OF+r5JEt0DraLjfmWf1ZH5mHHqukxKoRb+dH2yMgAOwZkBEwAYNowedvxSsr7/
-	/k68BCq9Wrq1O6YWIENE5DjdLNK5f7xX4fCEXuG49ARjRena/rTCFXJ5+FSChaHo8W7MYi1giMS
-	owXCv+45Qo6qKvqXh3OkXJFgZyfzjxNHkiRr9RHCyVTcQu+QgVtWb4I/1oAi34TD627zkhYS+Ii
-	Dsg1AJiWS6if0O29une0OW0e5sOphTcQIHyBAVkjdZ8l6bdEszsdu6JJzfKNF0uVnfdeumhJito
-	Hv/U2pdHOC/nA9h4lMoOO6OrrcEsh7GyWr/742BmbxncNd1kQAao7F56cW77TdwzEo2+qM9hDjt
-	nNIZD/JC7PFFedm72tgkDao036KTN+hhsbXhJv9lUcqOgsevyzw7ZVrYnTKOCbQl7XLtRjZfbLF
-	XM5NcUiYQk//WIF5i9txaTvjRts6pnkw==
-X-Received: by 2002:a05:6512:3e04:b0:5a4:d44:99f0 with SMTP id 2adb3069b0e04-5a887ada973mr6764095e87.6.1778408961711;
-        Sun, 10 May 2026 03:29:21 -0700 (PDT)
+        bh=Tx8GM/RHj/cuBV12qSf4om3o67O47ImlKSvlgIRTtzM=;
+        b=pNiQt7wWr/qW2gwjzzWnfbZzz1AcyqVL1Lkd+BQn/PVypfjzmr0s0ziGHxPegmidnj
+         Iigg5YbDxMPxjVfpWU5++iCG1pHLEVxp8T1PYJiRwqzXm1HgxZaGgwiInIqFsOHAiLvd
+         CFMx/6o9NeGWGxyofvHtHKwCyVkhVUEvUBep46VoFrCyPdQTW6UZsFpDG2s9FYG8AkA8
+         tjhDahiDoJrJUAuRo9Ehgr+JTl4jEoiyloV9jbeQ1PkwNV+Ib/U5vWLhHvVX0IyavKrS
+         AlGdsKp1SUcjIzI4uVCxFsQa0USoLbV0JukbQ3FduU7YrWlOqfXwEl3yu3rWXjIOHrI8
+         wJKA==
+X-Gm-Message-State: AOJu0YzaNBdgtGZgZddVADRNHyQb4vOhMgVDdCHdvQSbbiPZg8OQ4URc
+	Cw/UT0UmBF+vXOMBfLPo/yu9PzKf8p9gGaPqpDX1DPdL9r3S9lxdbcRY4dxGlOHh
+X-Gm-Gg: Acq92OHP4wXpdYtZgaQ8bjoLKRICisEBwZRYV1lP6Ya/fAcTjpIrSNu4rOSAGIuK5/X
+	quNiQaTA+plJdqKHCOPFsFsFlAvvDIwlO0zJOytzV0WvZSRlsdQlZl6h77ur+9kCpcptRyK9mvZ
+	iG3CRil36pYIlEFMAf2Y6aZqEM2gyq1XX/xK5VDVJS5JsIiel70fCC1mvlt6okaqG1LLEKS6Kzd
+	evbpTOgFvskZP9Ee8UK6lk1CtG8I6LYdv4Me1vl2WDWj0je9jnG1+EnP/2g0Ozmk0jS/3ihhc2L
+	dqfX78bHtH/89sfSu+wuVcBxCBcjDJ2vDfOU7+D5A7ZmzAc+kodh8lSK2pcasuVdxyNRDUDdKgO
+	jg/cDIukhidPyfQIfoWChMxvAh9ySdb9T2U2thriTFE5Xha+7ZSqbEUkrdT7/XRpR5R8z6dLQDw
+	Tr1EV4p8cGZH8N2lbKmjVgACsG2tkdGQ==
+X-Received: by 2002:a05:651c:41ca:b0:38a:27b1:4e60 with SMTP id 38308e7fff4ca-39408176999mr16248611fa.27.1778408966135;
+        Sun, 10 May 2026 03:29:26 -0700 (PDT)
 Received: from arch ([217.76.176.49])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-393f60db2f3sm17956511fa.22.2026.05.10.03.29.18
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-393f60db2f3sm17956511fa.22.2026.05.10.03.29.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 03:29:19 -0700 (PDT)
+        Sun, 10 May 2026 03:29:24 -0700 (PDT)
 From: Dmitry Gomzyakov <nicerok11@gmail.com>
 X-Google-Original-From: Dmitry Gomzyakov <kyoto1337@protonmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: Dmitry Gomzyakov <nicerok11@gmail.com>
-Subject: [PATCH 1/2] wifi: mt76: connac: add MT7991A (0x7991) to is_mt7996()
-Date: Sun, 10 May 2026 15:29:10 +0500
-Message-ID: <20260510102911.1883849-2-kyoto1337@protonmail.com>
+Subject: [PATCH 2/2] wifi: mt76: mt7996: always fill txwi for 802.3 packets
+Date: Sun, 10 May 2026 15:29:11 +0500
+Message-ID: <20260510102911.1883849-3-kyoto1337@protonmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260510102911.1883849-1-kyoto1337@protonmail.com>
 References: <20260510102911.1883849-1-kyoto1337@protonmail.com>
@@ -92,18 +92,18 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8549F503A00
+X-Rspamd-Queue-Id: 1432C503A08
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36142-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36143-lists,linux-wireless=lfdr.de];
 	FREEMAIL_CC(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -111,7 +111,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[nicerok11@gmail.com,linux-wireless@vger.kernel.org];
@@ -121,38 +121,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[protonmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,protonmail.com:mid]
 X-Rspamd-Action: no action
 
 From: Dmitry Gomzyakov <nicerok11@gmail.com>
 
-The MT7991A chipset uses PCI device ID 0x7991 (MT7996_DEVICE_ID_2),
-but is_mt7996() only checks for 0x7990. This causes MT7991A devices
-to use incorrect chip-specific settings, such as:
-- MSDU_CNT_V2 instead of MSDU_CNT in TX descriptors
-- Wrong WTBL BMC size (32 instead of 64)
-- Incorrect prefetch depth for MCU queues
+Commit 55218e636092 reverted host-driven TXD filling to rely on
+Software Defined Offload (SDO). However, SDO cannot correctly parse
+IPv4 packets modified by NAT (changed TTL and recalculated IP/TCP
+checksums), leaving TXWI mostly zero-filled.
 
-Fixes: 63a4edf1cb74 ("wifi: mt76: mt7996: add macros for pci decive id")
+This causes the firmware to misinterpret or drop packets,
+resulting in severe throughput degradation (30-40 Mbps limit on
+WiFi IPv4 download through NAT).
+
+Always fill TXWI via mt7996_mac_write_txwi() and always set
+MT_CT_INFO_APPLY_TXD, matching the behavior of mt7915 and the
+proprietary driver.
+
+Fixes: 55218e636092 ("Revert \"wifi: mt76: mt7996: fill txd by host driver\"")
 Signed-off-by: Dmitry Gomzyakov <nicerok11@gmail.com>
 ---
- mt76_connac.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mt7996/mac.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/mt76_connac.h b/mt76_connac.h
-index 51423c77..db07f3dc 100644
---- a/mt76_connac.h
-+++ b/mt76_connac.h
-@@ -230,7 +230,8 @@ static inline bool is_mt798x(struct mt76_dev *dev)
+diff --git a/mt7996/mac.c b/mt7996/mac.c
+index 7d454e21..a219b063 100644
+--- a/mt7996/mac.c
++++ b/mt7996/mac.c
+@@ -1093,10 +1093,9 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
  
- static inline bool is_mt7996(struct mt76_dev *dev)
- {
--	return mt76_chip(dev) == 0x7990;
-+	u16 chip = mt76_chip(dev);
-+	return chip == 0x7990 || chip == 0x7991;
- }
+ 	pid = mt76_tx_status_skb_add(mdev, wcid, tx_info->skb);
+ 	memset(txwi_ptr, 0, MT_TXD_SIZE);
+-	/* Transmit non qos data by 802.11 header and need to fill txd by host*/
+-	if (!is_8023 || pid >= MT_PACKET_ID_FIRST)
+-		mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, key,
+-				      pid, qid, 0);
++	/* Always fill txwi for firmware to avoid incorrect header processing */
++	mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, key,
++			      pid, qid, 0);
  
- static inline bool is_mt7992(struct mt76_dev *dev)
+ 	/* MT7996 and MT7992 require driver to provide the MAC TXP for AddBA
+ 	 * req
+@@ -1145,9 +1144,8 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 		txp->fw.nbuf = nbuf;
+ 
+ 		txp->fw.flags = cpu_to_le16(MT_CT_INFO_FROM_HOST);
+-
+-		if (!is_8023 || pid >= MT_PACKET_ID_FIRST)
+-			txp->fw.flags |= cpu_to_le16(MT_CT_INFO_APPLY_TXD);
++		/* Always apply TXD to ensure correct firmware processing */
++		txp->fw.flags |= cpu_to_le16(MT_CT_INFO_APPLY_TXD);
+ 
+ 		if (!key)
+ 			txp->fw.flags |= cpu_to_le16(MT_CT_INFO_NONE_CIPHER_FRAME);
 -- 
 2.54.0
 
