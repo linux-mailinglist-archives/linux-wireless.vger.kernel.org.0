@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-36149-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36150-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPppDAfRAGoMNAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36149-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 20:40:07 +0200
+	id WGccFQnRAGoMNAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36150-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 20:40:09 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02322505B82
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 20:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B0A505B94
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 20:40:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E778F3004D3A
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 18:40:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AAA0830058E4
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 18:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DB53128A2;
-	Sun, 10 May 2026 18:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56664313522;
+	Sun, 10 May 2026 18:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P+HC31j3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jJMLie8R"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2061F315D5B
-	for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 18:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A143002A0
+	for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 18:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778438399; cv=none; b=S5Jf4nKPctHzNx8NHjJGPKuPnoGvlUFfwoRp5kc1TDddaODb5ACXbJQJGOGU3pueCsEU5PvzaaGmlmqyMjv7wi2CovXczxVtodfoMqo6m62UaIG14JEOiui1XsNCa4+jREPCPaMhauUuediXPHwFJeR0QW/UOzRfdheLuRjRBNg=
+	t=1778438400; cv=none; b=gfa9JudQePdaLvv0xh6fYP4gTTnC4vuoK1B4Y6KYA6pCuMg/OdU2UEezFU0qritOavWkkRIRLvNeIT084VwWiWnD9wpyfS9F4z0oStHgiwhT4WDGmuk9/k1LgmzwkRBwMPJeqkloGsiswwyX+mlChSzFnFKmM8c3Wz5XNNmX4hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778438399; c=relaxed/simple;
-	bh=6ZjC00m5YElCarDjeqPR8h6+PmUItHiIEUe4apIzOGQ=;
+	s=arc-20240116; t=1778438400; c=relaxed/simple;
+	bh=mxeCko/rSefmibJOmRwa3kSxv1JkqBrXHTQDSWP5BE8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PVKTPtxe0pP95aeFwBQ2KFdO6JjUSDgjf3EBgCvgB6RxITGV3sB/kZBMLFXRomZQ3eIvaR1ZrmVqPj1g2xKkELZFfuoUQoCFxf+YCd49N1UcZ3s2lcPm2JuL2qHVDyopxCd0vqQdJ/06B6zkdSYoxDgM1RDBJT1ANDB0w3PsfxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P+HC31j3; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=pJY2NEmWe7eJhmiR54WjCJjssMaoDwI6LQ4pny5WBO9s6T4rGKHrJ8N0jMgzCRqOLtyU58m6ZLaGeQ0ehPklp71aEUFUmjEc7JsP5Rpq+wFOIzY1nMVExzrPAcKRIgAyiI9wzS2hC2rOR94UZVSBPrLfpspKCwsj+E92+Nsz12s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jJMLie8R; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778438397; x=1809974397;
+  t=1778438398; x=1809974398;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6ZjC00m5YElCarDjeqPR8h6+PmUItHiIEUe4apIzOGQ=;
-  b=P+HC31j3a8zpXvHtuR8PQU5yTwYzxvWQBUhXCSCV5D46MUEAPKGdsEZ0
-   8hfQqRGU5/wQIK3PRGdUBiPhYTqS9x+2gvm2TBdqtffkrVblV+4nt0FpT
-   Feiuud/um8yYJ3HR1H5OxUqQ1e11/Q/ddZ0zTBRHfQ34zGfwWyrCe5Z0k
-   PnKYHQWUieQA/TYyA71zUF70a+S43IRg5PQ7cltC6IYvBanS9pWSqvY2J
-   xk8ju1Q9P+o6f95wi+Ib/jAvOipZmftC+AHHp+oTHOXu9EjhyRPen2WmR
-   z/vPSXoLhBM8GXCM45fgnNC0o9ecRY7QLuSqfd05NXlESt561ZvYgjGYh
-   A==;
-X-CSE-ConnectionGUID: 3SPjjZE6TQev1noQ0UmuIA==
-X-CSE-MsgGUID: VFoyBNipRfenrh3f2m1XvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11782"; a="83208973"
+  bh=mxeCko/rSefmibJOmRwa3kSxv1JkqBrXHTQDSWP5BE8=;
+  b=jJMLie8RWvMoALVHzAPMuLOA6oDkK1Q3pK4E3s5T42FpCbg8oxJDNZHO
+   oxDHqxKYwGPRj7iooCrntjMdbqJAnHlPPN8iEw/5AbOFTWOUU6fr0zLKp
+   fK//+9UTQuMpQpoGY7kzceHWrF6zSt4r0PpUK1uFTi4L4yix3r8JUo7Pb
+   B9AK88zGvJzKwUCi7XOlG3DOgaxh+Onuvt+0w2Lb8D+nWMbwBL43V1i0f
+   HfhjoDeemp6uB6L+NZZz4p1dWsjHMU+KFSZBPXCaW0GNt97TUX2L1Hh4K
+   zMDSfobDkAaYOHoDohO9U7Bjzy5n7BQMWDTuJxF228s0tvkWZo8ZvsieU
+   Q==;
+X-CSE-ConnectionGUID: d0F/FN/LSiqv6pG673ZHHQ==
+X-CSE-MsgGUID: XaRObJHwS9qyXEkIA0hdHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11782"; a="83208974"
 X-IronPort-AV: E=Sophos;i="6.23,227,1770624000"; 
-   d="scan'208";a="83208973"
+   d="scan'208";a="83208974"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2026 11:39:57 -0700
-X-CSE-ConnectionGUID: pjRQHUcER7mdAAWwXgjv0Q==
-X-CSE-MsgGUID: +EAA6pSBRWGOFGgYWH3F7w==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2026 11:39:58 -0700
+X-CSE-ConnectionGUID: 9iPDUedgTL2rCrWjmDGMxg==
+X-CSE-MsgGUID: dQF0vNKxSVeNLNXurCe0ug==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,227,1770624000"; 
-   d="scan'208";a="267626763"
+   d="scan'208";a="267626766"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2026 11:39:55 -0700
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2026 11:39:57 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 04/15] wifi: iwlwifi: mld: support NAN and NAN_DATA interfaces
-Date: Sun, 10 May 2026 21:39:27 +0300
-Message-Id: <20260510213745.c57bb2f9741c.I3578198660a533faf9f6a94432ef2114f4a9dfae@changeid>
+Subject: [PATCH iwlwifi-next 05/15] wifi: iwlwifi: mld: add NAN link management
+Date: Sun, 10 May 2026 21:39:28 +0300
+Message-Id: <20260510213745.a39f125ea998.I81ff6dc02e912396040f922e21888fd94b3c26e6@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260510183938.4182886-1-miriam.rachel.korenblit@intel.com>
 References: <20260510183938.4182886-1-miriam.rachel.korenblit@intel.com>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 02322505B82
+X-Rspamd-Queue-Id: E2B0A505B94
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -93,7 +93,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36149-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36150-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
@@ -111,419 +111,574 @@ X-Rspamd-Action: no action
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Until now we maintained the NAN vif in the driver only. The fw used the
-AUX MAC for sync and discovery operations.
-But when we want to configure a local schedule, we need to add the MAC
-first.
+The firmware requires links for NAN which mac80211 doesn't use,
+so introduce a new NAN link data structure that the driver has
+for itself only, and handle the link command sending code for
+NAN using this data structure, most of the bss_conf data isn't
+used for NAN anyway, so those structures aren't useful.
 
-NAN_DATA interfaces are not added to the FW. Instead, the local
-address of these interfaces are configured to the FW via the NAN MAC.
-
-Add the add/remove/update operations for the NAN interface, and fill the
-NAN special parameters in it.
-
-Note that this doesn't fully implement the schedule change, but only the
-addition/removal of the NAN MAC. The full schedule management
-implementation will come in a later patch.
+With that, add, activate, deactivate or remove links depending
+on the local NAN schedule updates.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Co-developed-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mld/iface.c    | 134 ++++++++++++++++--
- .../net/wireless/intel/iwlwifi/mld/iface.h    |  22 +++
- .../net/wireless/intel/iwlwifi/mld/mac80211.c |  16 ++-
- drivers/net/wireless/intel/iwlwifi/mld/nan.c  |  22 +++
- drivers/net/wireless/intel/iwlwifi/mld/nan.h  |   5 +-
- 5 files changed, 184 insertions(+), 15 deletions(-)
+ .../net/wireless/intel/iwlwifi/mld/iface.c    |  15 +-
+ .../net/wireless/intel/iwlwifi/mld/iface.h    |   9 +
+ drivers/net/wireless/intel/iwlwifi/mld/link.c |  12 +-
+ drivers/net/wireless/intel/iwlwifi/mld/link.h |   7 +
+ drivers/net/wireless/intel/iwlwifi/mld/mld.h  |   8 +-
+ drivers/net/wireless/intel/iwlwifi/mld/nan.c  | 301 +++++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/mld/nan.h  |  19 ++
+ drivers/net/wireless/intel/iwlwifi/mld/rx.c   |   2 +-
+ .../wireless/intel/iwlwifi/mld/tests/utils.c  |   2 -
+ 9 files changed, 356 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.c b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
-index 1e85a9168d2b..150ad095e0ae 100644
+index 150ad095e0ae..5fc3f6729455 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/iface.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2024-2025 Intel Corporation
-+ * Copyright (C) 2024-2026 Intel Corporation
-  */
+@@ -5,6 +5,7 @@
  #include <net/cfg80211.h>
  
-@@ -55,6 +55,9 @@ void iwl_mld_cleanup_vif(void *data, u8 *mac, struct ieee80211_vif *vif)
+ #include "iface.h"
++#include "nan.h"
+ #include "hcmd.h"
+ #include "key.h"
+ #include "mlo.h"
+@@ -55,8 +56,12 @@ void iwl_mld_cleanup_vif(void *data, u8 *mac, struct ieee80211_vif *vif)
  
  	ieee80211_iter_keys(mld->hw, vif, iwl_mld_cleanup_keys_iter, NULL);
  
-+	if (vif->type == NL80211_IFTYPE_NAN)
-+		mld_vif->nan.mac_added = false;
-+
+-	if (vif->type == NL80211_IFTYPE_NAN)
++	if (vif->type == NL80211_IFTYPE_NAN) {
+ 		mld_vif->nan.mac_added = false;
++		/* Clean up NAN links */
++		for (int i = 0; i < ARRAY_SIZE(mld_vif->nan.links); i++)
++			iwl_mld_cleanup_nan_link(&mld_vif->nan.links[i]);
++	}
+ 
  	CLEANUP_STRUCT(mld_vif);
  }
- 
-@@ -94,6 +97,8 @@ static int iwl_mld_mac80211_iftype_to_fw(const struct ieee80211_vif *vif)
- 		return FW_MAC_TYPE_P2P_DEVICE;
- 	case NL80211_IFTYPE_ADHOC:
- 		return FW_MAC_TYPE_IBSS;
-+	case NL80211_IFTYPE_NAN:
-+		return FW_MAC_TYPE_NAN;
- 	default:
- 		WARN_ON_ONCE(1);
+@@ -515,6 +520,14 @@ iwl_mld_init_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
+ 		wiphy_delayed_work_init(&mld_vif->mlo_scan_start_wk,
+ 					iwl_mld_mlo_scan_start_wk);
  	}
-@@ -362,6 +367,42 @@ static void iwl_mld_fill_mac_cmd_ibss(struct iwl_mld *mld,
- 					 MAC_CFG_FILTER_ACCEPT_GRP);
- }
- 
-+static int iwl_mld_fill_mac_cmd_nan(struct iwl_mld *mld,
-+				    struct ieee80211_vif *vif,
-+				    struct ieee80211_vif *ndi_being_added,
-+				    struct iwl_mac_config_cmd *cmd)
-+{
-+	struct ieee80211_vif *iter;
-+	u32 idx = 0;
 +
-+	cmd->filter_flags = cpu_to_le32(MAC_CFG_FILTER_ACCEPT_CONTROL_AND_MGMT);
-+
-+	/*
-+	 * A NAN_DATA vif might be in the process of being added - it won't
-+	 * be found by the iteration below since it's not yet active/in-driver.
-+	 * In hw restart, the iteration below will find the ndi_being_added.
-+	 */
-+	if (ndi_being_added && !mld->fw_status.in_hw_restart) {
-+		memcpy(cmd->nan.ndi_addrs[idx].addr, ndi_being_added->addr, ETH_ALEN);
-+		idx++;
++	if (vif->type == NL80211_IFTYPE_NAN) {
++		for (int i = 0; i < ARRAY_SIZE(mld_vif->nan.links); i++) {
++			memset(&mld_vif->nan.links[i], 0, sizeof(mld_vif->nan.links[i]));
++			mld_vif->nan.links[i].fw_id = FW_CTXT_ID_INVALID;
++		}
 +	}
 +
-+	for_each_active_interface(iter, mld->hw) {
-+		if (iter->type != NL80211_IFTYPE_NAN_DATA)
-+			continue;
-+
-+		if (WARN_ON_ONCE(idx >= ARRAY_SIZE(cmd->nan.ndi_addrs)))
-+			return -EINVAL;
-+
-+		memcpy(cmd->nan.ndi_addrs[idx].addr, iter->addr, ETH_ALEN);
-+		idx++;
-+	}
-+
-+	cmd->nan.ndi_addrs_count = cpu_to_le32(idx);
-+
-+	return 0;
-+}
-+
- static int
- iwl_mld_rm_mac_from_fw(struct iwl_mld *mld, struct ieee80211_vif *vif)
- {
-@@ -374,16 +415,23 @@ iwl_mld_rm_mac_from_fw(struct iwl_mld *mld, struct ieee80211_vif *vif)
- 	return iwl_mld_send_mac_cmd(mld, &cmd);
- }
- 
--int iwl_mld_mac_fw_action(struct iwl_mld *mld, struct ieee80211_vif *vif,
--			  u32 action)
-+static int
-+__iwl_mld_mac_fw_action(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+			u32 action, struct ieee80211_vif *ndi_being_added)
- {
- 	struct iwl_mac_config_cmd cmd = {};
-+	int ret;
- 
- 	lockdep_assert_wiphy(mld->wiphy);
- 
--	/* NAN interface type is not known to FW */
--	if (vif->type == NL80211_IFTYPE_NAN)
--		return 0;
-+	/* NAN_DATA interface type is not known to FW */
-+	if (WARN_ON(vif->type == NL80211_IFTYPE_NAN_DATA))
-+		return -EINVAL;
-+
-+	/* ndi_being_added is only relevant for NAN and when adding a NAN_DATA interface */
-+	if (WARN_ON(ndi_being_added &&
-+		    (vif->type != NL80211_IFTYPE_NAN || action != FW_CTXT_ACTION_MODIFY)))
-+		return -EINVAL;
- 
- 	if (action == FW_CTXT_ACTION_REMOVE)
- 		return iwl_mld_rm_mac_from_fw(mld, vif);
-@@ -411,6 +459,11 @@ int iwl_mld_mac_fw_action(struct iwl_mld *mld, struct ieee80211_vif *vif,
- 	case NL80211_IFTYPE_ADHOC:
- 		iwl_mld_fill_mac_cmd_ibss(mld, vif, &cmd);
- 		break;
-+	case NL80211_IFTYPE_NAN:
-+		ret = iwl_mld_fill_mac_cmd_nan(mld, vif, ndi_being_added, &cmd);
-+		if (ret)
-+			return ret;
-+		break;
- 	default:
- 		WARN(1, "not supported yet\n");
- 		return -EOPNOTSUPP;
-@@ -419,6 +472,12 @@ int iwl_mld_mac_fw_action(struct iwl_mld *mld, struct ieee80211_vif *vif,
- 	return iwl_mld_send_mac_cmd(mld, &cmd);
- }
- 
-+int iwl_mld_mac_fw_action(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+			  u32 action)
-+{
-+	return __iwl_mld_mac_fw_action(mld, vif, action, NULL);
-+}
-+
- static void iwl_mld_mlo_scan_start_wk(struct wiphy *wiphy,
- 				      struct wiphy_work *wk)
- {
-@@ -459,6 +518,24 @@ iwl_mld_init_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
  	iwl_mld_init_internal_sta(&mld_vif->aux_sta);
  }
  
-+static int iwl_mld_update_nan_mac(struct iwl_mld *mld,
-+				  struct ieee80211_vif *ndi_being_added)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.h b/drivers/net/wireless/intel/iwlwifi/mld/iface.h
+index 1ac14996985c..ce4f8ca885cf 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/iface.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.h
+@@ -8,6 +8,7 @@
+ #include <net/mac80211.h>
+ 
+ #include "link.h"
++#include "nan.h"
+ #include "session-protect.h"
+ #include "d3.h"
+ #include "fw/api/time-event.h"
+@@ -153,6 +154,7 @@ struct iwl_mld_emlsr {
+  * @aux_sta: station used for remain on channel. Used in P2P device.
+  * @mlo_scan_start_wk: worker to start a deferred MLO scan
+  * @nan: NAN parameters
++ * @nan.links: NAN links for FW (indexed by FW link ID)
+  * @nan.mac_added: track whether or not the MAC was added to FW
+  */
+ struct iwl_mld_vif {
+@@ -179,6 +181,7 @@ struct iwl_mld_vif {
+ 
+ 	struct {
+ 		/* use only with wiphy protection */
++		struct iwl_mld_nan_link links[IWL_FW_MAX_LINKS];
+ 		bool mac_added;
+ 	} nan;
+ 
+@@ -242,6 +245,12 @@ static inline bool iwl_mld_vif_fw_id_valid(struct iwl_mld_vif *mld_vif)
+ 	     link_id++)							\
+ 		if ((mld_link = iwl_mld_link_dereference_check(mld_vif, link_id)))
+ 
++#define for_each_mld_nan_valid_link(mld_vif, nan_link)			\
++	for (nan_link = &(mld_vif)->nan.links[0];			\
++	     nan_link < &(mld_vif)->nan.links[ARRAY_SIZE((mld_vif)->nan.links)]; \
++	     nan_link++)						\
++		if (nan_link->fw_id != FW_CTXT_ID_INVALID)
++
+ /* Retrieve pointer to mld link from mac80211 structures */
+ static inline struct iwl_mld_link *
+ iwl_mld_link_from_mac80211(struct ieee80211_bss_conf *bss_conf)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+index b66e84d2365f..9e40b334ee1f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+@@ -16,14 +16,17 @@
+ #include "fw/api/context.h"
+ #include "fw/dbg.h"
+ 
+-static int iwl_mld_send_link_cmd(struct iwl_mld *mld,
+-				 struct iwl_link_config_cmd *cmd,
+-				 enum iwl_ctxt_action action)
++int iwl_mld_send_link_cmd(struct iwl_mld *mld,
++			  struct iwl_link_config_cmd *cmd,
++			  enum iwl_ctxt_action action)
+ {
+ 	int ret;
+ 
+ 	lockdep_assert_wiphy(mld->wiphy);
+ 
++	if (WARN_ON_ONCE(cmd->link_id == cpu_to_le32(FW_CTXT_ID_INVALID)))
++		return -EINVAL;
++
+ 	cmd->action = cpu_to_le32(action);
+ 	ret = iwl_mld_send_cmd_pdu(mld,
+ 				   WIDE_ID(MAC_CONF_GROUP, LINK_CONFIG_CMD),
+@@ -437,7 +440,8 @@ iwl_mld_rm_link_from_fw(struct iwl_mld *mld, struct ieee80211_bss_conf *link)
+ 	iwl_mld_send_link_cmd(mld, &cmd, FW_CTXT_ACTION_REMOVE);
+ }
+ 
+-static IWL_MLD_ALLOC_FN(link, bss_conf)
++IWL_MLD_ALLOC_FN(link, bss_conf)
++EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_mld_allocate_link_fw_id);
+ 
+ /* Constructor function for struct iwl_mld_link */
+ static int
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.h b/drivers/net/wireless/intel/iwlwifi/mld/link.h
+index ca691259fc5e..84d9a24134a8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/link.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/link.h
+@@ -99,6 +99,13 @@ iwl_mld_cleanup_link(struct iwl_mld *mld, struct iwl_mld_link *link)
+ /* Convert a percentage from [0,100] to [0,255] */
+ #define NORMALIZE_PERCENT_TO_255(percentage) ((percentage) * 256 / 100)
+ 
++int iwl_mld_allocate_link_fw_id(struct iwl_mld *mld, u8 *fw_id,
++				struct ieee80211_bss_conf *mac80211_ptr);
++
++int iwl_mld_send_link_cmd(struct iwl_mld *mld,
++			  struct iwl_link_config_cmd *cmd,
++			  enum iwl_ctxt_action action);
++
+ int iwl_mld_add_link(struct iwl_mld *mld,
+ 		     struct ieee80211_bss_conf *bss_conf);
+ void iwl_mld_remove_link(struct iwl_mld *mld,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.h b/drivers/net/wireless/intel/iwlwifi/mld/mld.h
+index 606cb64f8ea4..69da3c346394 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mld.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.h
+@@ -558,12 +558,18 @@ iwl_mld_allocate_##_type##_fw_id(struct iwl_mld *mld,					\
+ static inline struct ieee80211_bss_conf *
+ iwl_mld_fw_id_to_link_conf(struct iwl_mld *mld, u8 fw_link_id)
+ {
++	struct ieee80211_bss_conf *link;
++
+ 	if (IWL_FW_CHECK(mld, fw_link_id >= mld->fw->ucode_capa.num_links,
+ 			 "Invalid fw_link_id: %d\n", fw_link_id))
+ 		return NULL;
+ 
+-	return wiphy_dereference(mld->wiphy,
++	link = wiphy_dereference(mld->wiphy,
+ 				 mld->fw_id_to_bss_conf[fw_link_id]);
++	if (IS_ERR(link))
++		return NULL;
++
++	return link;
+ }
+ 
+ #define MSEC_TO_TU(_msec)	((_msec) * 1000 / 1024)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/nan.c b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
+index 96e79ba5234a..6ea11b66a545 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/nan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
+@@ -5,8 +5,11 @@
+ 
+ #include "mld.h"
+ #include "iface.h"
++#include "link.h"
+ #include "mlo.h"
+ #include "fw/api/mac-cfg.h"
++#include "fw/api/mac.h"
++#include "fw/api/rs.h"
+ 
+ #define IWL_NAN_DISOVERY_BEACON_INTERNVAL_TU 512
+ #define IWL_NAN_RSSI_CLOSE 55
+@@ -297,24 +300,302 @@ void iwl_mld_handle_nan_dw_end_notif(struct iwl_mld *mld,
+ 	cfg80211_next_nan_dw_notif(wdev, chan, GFP_KERNEL);
+ }
+ 
++static void iwl_mld_nan_fill_rates(struct iwl_link_config_cmd *cmd)
++{
++	u32 ofdm = 0;
++
++	/* All OFDM rates - NAN uses OFDM only, no CCK */
++	ofdm |= IWL_RATE_BIT_MSK(6) >> IWL_FIRST_OFDM_RATE;
++	ofdm |= IWL_RATE_BIT_MSK(9) >> IWL_FIRST_OFDM_RATE;
++	ofdm |= IWL_RATE_BIT_MSK(12) >> IWL_FIRST_OFDM_RATE;
++	ofdm |= IWL_RATE_BIT_MSK(18) >> IWL_FIRST_OFDM_RATE;
++	ofdm |= IWL_RATE_BIT_MSK(24) >> IWL_FIRST_OFDM_RATE;
++	ofdm |= IWL_RATE_BIT_MSK(36) >> IWL_FIRST_OFDM_RATE;
++	ofdm |= IWL_RATE_BIT_MSK(48) >> IWL_FIRST_OFDM_RATE;
++	ofdm |= IWL_RATE_BIT_MSK(54) >> IWL_FIRST_OFDM_RATE;
++
++	cmd->ofdm_rates = cpu_to_le32(ofdm);
++	cmd->short_slot = cpu_to_le32(1);
++}
++
++static void iwl_mld_nan_fill_qos(struct iwl_ac_qos *ac, __le32 *qos_flags)
++{
++	/* AC_BK: CWmin=15, CWmax=1023, AIFSN=7, TXOP=0 */
++	ac[AC_BK].cw_min = cpu_to_le16(15);
++	ac[AC_BK].cw_max = cpu_to_le16(1023);
++	ac[AC_BK].aifsn = 7;
++	ac[AC_BK].fifos_mask = BIT(IWL_BZ_EDCA_TX_FIFO_BK);
++	ac[AC_BK].edca_txop = 0;
++
++	/* AC_BE: CWmin=15, CWmax=1023, AIFSN=3, TXOP=0 */
++	ac[AC_BE].cw_min = cpu_to_le16(15);
++	ac[AC_BE].cw_max = cpu_to_le16(1023);
++	ac[AC_BE].aifsn = 3;
++	ac[AC_BE].fifos_mask = BIT(IWL_BZ_EDCA_TX_FIFO_BE);
++	ac[AC_BE].edca_txop = 0;
++
++	/* AC_VI: CWmin=7, CWmax=15, AIFSN=2, TXOP=3008us */
++	ac[AC_VI].cw_min = cpu_to_le16(7);
++	ac[AC_VI].cw_max = cpu_to_le16(15);
++	ac[AC_VI].aifsn = 2;
++	ac[AC_VI].fifos_mask = BIT(IWL_BZ_EDCA_TX_FIFO_VI);
++	ac[AC_VI].edca_txop = cpu_to_le16(3008);
++
++	/* AC_VO: CWmin=3, CWmax=7, AIFSN=2, TXOP=1504us */
++	ac[AC_VO].cw_min = cpu_to_le16(3);
++	ac[AC_VO].cw_max = cpu_to_le16(7);
++	ac[AC_VO].aifsn = 2;
++	ac[AC_VO].fifos_mask = BIT(IWL_BZ_EDCA_TX_FIFO_VO);
++	ac[AC_VO].edca_txop = cpu_to_le16(1504);
++
++	*qos_flags |= cpu_to_le32(MAC_QOS_FLG_UPDATE_EDCA);
++}
++
++static void
++iwl_mld_nan_link_prep_cmd(struct iwl_mld *mld,
++			  struct iwl_mld_nan_link *nan_link,
++			  struct iwl_link_config_cmd *cmd,
++			  u32 modify_flags)
 +{
 +	struct ieee80211_vif *vif = mld->nan_device_vif;
 +	struct iwl_mld_vif *mld_vif;
 +
 +	if (WARN_ON_ONCE(!vif))
-+		return -ENODEV;
++		return;
 +
 +	mld_vif = iwl_mld_vif_from_mac80211(vif);
 +
-+	if (!iwl_mld_vif_fw_id_valid(mld_vif))
-+		return 0;
++	memset(cmd, 0, sizeof(*cmd));
 +
-+	return __iwl_mld_mac_fw_action(mld, vif, FW_CTXT_ACTION_MODIFY,
-+				       ndi_being_added);
++	if (!nan_link->chanctx) {
++		cmd->phy_id = cpu_to_le32(FW_CTXT_ID_INVALID);
++	} else {
++		struct iwl_mld_phy *mld_phy;
++
++		mld_phy = iwl_mld_phy_from_mac80211(nan_link->chanctx);
++		cmd->phy_id = cpu_to_le32(mld_phy->fw_id);
++	}
++
++	if (modify_flags & LINK_CONTEXT_MODIFY_RATES_INFO)
++		iwl_mld_nan_fill_rates(cmd);
++
++	if (modify_flags & LINK_CONTEXT_MODIFY_QOS_PARAMS)
++		iwl_mld_nan_fill_qos(cmd->ac, &cmd->qos_flags);
++
++	cmd->link_id = cpu_to_le32(nan_link->fw_id);
++	cmd->mac_id = cpu_to_le32(mld_vif->fw_id);
++	cmd->active = cpu_to_le32(nan_link->active);
++
++	ether_addr_copy(cmd->local_link_addr, vif->addr);
++
++	cmd->modify_mask = cpu_to_le32(modify_flags);
 +}
 +
- int iwl_mld_add_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
- {
- 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
-@@ -468,10 +545,14 @@ int iwl_mld_add_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
- 
- 	iwl_mld_init_vif(mld, vif);
- 
--	/* NAN interface type is not known to FW */
-+	/* NAN MACs are added to FW only when a schedule is set */
- 	if (vif->type == NL80211_IFTYPE_NAN)
- 		return 0;
- 
-+	/* NAN_DATA interface type is not known to FW, but we need to update NAN MAC */
-+	if (vif->type == NL80211_IFTYPE_NAN_DATA)
-+		return iwl_mld_update_nan_mac(mld, vif);
-+
- 	ret = iwl_mld_allocate_vif_fw_id(mld, &mld_vif->fw_id, vif);
- 	if (ret)
- 		return ret;
-@@ -483,23 +564,52 @@ int iwl_mld_add_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
- 	return ret;
- }
- 
-+int iwl_mld_add_nan_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
++static struct iwl_mld_nan_link *
++iwl_mld_nan_link_add(struct iwl_mld *mld,
++		     struct iwl_mld_vif *mld_vif,
++		     struct ieee80211_chanctx_conf *chanctx)
 +{
-+	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
++	struct iwl_mld_nan_link *nan_link;
++	struct iwl_link_config_cmd cmd;
++	u8 fw_id;
 +	int ret;
 +
-+	lockdep_assert_wiphy(mld->wiphy);
++	ret = iwl_mld_allocate_link_fw_id(mld, &fw_id, ERR_PTR(-ENODEV));
++	if (ret < 0)
++		return NULL;
 +
-+	if (WARN_ON(vif->type != NL80211_IFTYPE_NAN))
-+		return -EINVAL;
++	nan_link = &mld_vif->nan.links[fw_id];
 +
-+	ret = iwl_mld_allocate_vif_fw_id(mld, &mld_vif->fw_id, vif);
-+	if (ret)
-+		return ret;
++	if (WARN_ON_ONCE(nan_link->fw_id != FW_CTXT_ID_INVALID))
++		goto err;
 +
-+	ret = iwl_mld_mac_fw_action(mld, vif, FW_CTXT_ACTION_ADD);
++	nan_link->fw_id = fw_id;
++	nan_link->chanctx = chanctx;
++
++	iwl_mld_nan_link_prep_cmd(mld, nan_link, &cmd,
++				  LINK_CONTEXT_MODIFY_RATES_INFO |
++				  LINK_CONTEXT_MODIFY_QOS_PARAMS);
++
++	ret = iwl_mld_send_link_cmd(mld, &cmd, FW_CTXT_ACTION_ADD);
 +	if (ret) {
-+		RCU_INIT_POINTER(mld->fw_id_to_vif[mld_vif->fw_id], NULL);
++		nan_link->fw_id = FW_CTXT_ID_INVALID;
++		nan_link->chanctx = NULL;
++		goto err;
++	}
++
++	return nan_link;
++err:
++	RCU_INIT_POINTER(mld->fw_id_to_bss_conf[fw_id], NULL);
++	return NULL;
++}
++
++static int iwl_mld_nan_link_set_active(struct iwl_mld *mld,
++				       struct iwl_mld_nan_link *nan_link,
++				       bool active)
++{
++	struct iwl_link_config_cmd cmd;
++	int ret;
++
++	if (nan_link->active == active)
++		return 0;
++
++	nan_link->active = active;
++
++	iwl_mld_nan_link_prep_cmd(mld, nan_link, &cmd,
++				  LINK_CONTEXT_MODIFY_ACTIVE);
++
++	ret = iwl_mld_send_link_cmd(mld, &cmd, FW_CTXT_ACTION_MODIFY);
++	if (ret) {
++		nan_link->active = !nan_link->active;
 +		return ret;
 +	}
 +
-+	mld_vif->nan.mac_added = true;
++	if (!active)
++		nan_link->chanctx = NULL;
 +
 +	return 0;
 +}
 +
- void iwl_mld_rm_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
- {
- 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
- 
- 	lockdep_assert_wiphy(mld->wiphy);
- 
--	/* NAN interface type is not known to FW */
--	if (vif->type == NL80211_IFTYPE_NAN)
-+	if (vif->type == NL80211_IFTYPE_NAN_DATA) {
-+		iwl_mld_update_nan_mac(mld, NULL);
- 		return;
-+	}
- 
--	iwl_mld_mac_fw_action(mld, vif, FW_CTXT_ACTION_REMOVE);
--
--	if (WARN_ON(mld_vif->fw_id >= ARRAY_SIZE(mld->fw_id_to_vif)))
-+	if (!iwl_mld_vif_fw_id_valid(mld_vif))
- 		return;
- 
-+	iwl_mld_mac_fw_action(mld, vif, FW_CTXT_ACTION_REMOVE);
-+
- 	RCU_INIT_POINTER(mld->fw_id_to_vif[mld_vif->fw_id], NULL);
- 
-+	if (vif->type == NL80211_IFTYPE_NAN)
-+		mld_vif->nan.mac_added = false;
-+
- 	iwl_mld_cancel_notifications_of_object(mld, IWL_MLD_OBJECT_TYPE_VIF,
- 					       mld_vif->fw_id);
- }
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.h b/drivers/net/wireless/intel/iwlwifi/mld/iface.h
-index 8dfc79fed253..1ac14996985c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/iface.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.h
-@@ -152,6 +152,8 @@ struct iwl_mld_emlsr {
-  *	p2p device only. Set to %ROC_NUM_ACTIVITIES when not in use.
-  * @aux_sta: station used for remain on channel. Used in P2P device.
-  * @mlo_scan_start_wk: worker to start a deferred MLO scan
-+ * @nan: NAN parameters
-+ * @nan.mac_added: track whether or not the MAC was added to FW
-  */
- struct iwl_mld_vif {
- 	/* Add here fields that need clean up on restart */
-@@ -175,6 +177,11 @@ struct iwl_mld_vif {
- 	struct iwl_mld_link deflink;
- 	struct iwl_mld_link __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
- 
-+	struct {
-+		/* use only with wiphy protection */
-+		bool mac_added;
-+	} nan;
-+
- 	struct iwl_mld_emlsr emlsr;
- 
- #ifdef CONFIG_PM_SLEEP
-@@ -206,6 +213,20 @@ iwl_mld_vif_to_mac80211(struct iwl_mld_vif *mld_vif)
- /* Call only for interfaces that were added to the driver! */
- static inline bool iwl_mld_vif_fw_id_valid(struct iwl_mld_vif *mld_vif)
- {
-+	struct ieee80211_vif *vif = iwl_mld_vif_to_mac80211(mld_vif);
-+
-+	switch (vif->type) {
-+	case NL80211_IFTYPE_NAN_DATA:
-+		return false;
-+	case NL80211_IFTYPE_NAN:
-+		if (!mld_vif->nan.mac_added)
-+			return false;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	/* Should be added to FW */
- 	if (WARN_ON(mld_vif->fw_id >= ARRAY_SIZE(mld_vif->mld->fw_id_to_vif)))
- 		return false;
- 
-@@ -235,6 +256,7 @@ void iwl_mld_cleanup_vif(void *data, u8 *mac, struct ieee80211_vif *vif);
- int iwl_mld_mac_fw_action(struct iwl_mld *mld, struct ieee80211_vif *vif,
- 			  u32 action);
- int iwl_mld_add_vif(struct iwl_mld *mld, struct ieee80211_vif *vif);
-+int iwl_mld_add_nan_vif(struct iwl_mld *mld, struct ieee80211_vif *vif);
- void iwl_mld_rm_vif(struct iwl_mld *mld, struct ieee80211_vif *vif);
- void iwl_mld_set_vif_associated(struct iwl_mld *mld,
- 				struct ieee80211_vif *vif);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index e66b304f345a..3c84c6b0faaa 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -677,6 +677,9 @@ int iwl_mld_mac80211_add_interface(struct ieee80211_hw *hw,
- 	if (ret)
- 		return ret;
- 
-+	if (vif->type == NL80211_IFTYPE_NAN_DATA)
-+		return 0;
-+
- 	/*
- 	 * Add the default link, but not if this is an MLD vif as that implies
- 	 * the HW is restarting and it will be configured by change_vif_links.
-@@ -745,7 +748,7 @@ void iwl_mld_mac80211_remove_interface(struct ieee80211_hw *hw,
- 
- 	if (vif->type == NL80211_IFTYPE_NAN)
- 		mld->nan_device_vif = NULL;
--	else
-+	else if (vif->type != NL80211_IFTYPE_NAN_DATA)
- 		iwl_mld_remove_link(mld, &vif->bss_conf);
- 
- #ifdef CONFIG_IWLWIFI_DEBUGFS
-@@ -1371,6 +1374,10 @@ iwl_mld_mac80211_link_info_changed(struct ieee80211_hw *hw,
- 		if (changes & BSS_CHANGED_MU_GROUPS)
- 			iwl_mld_update_mu_groups(mld, link_conf);
- 		break;
-+	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_NAN_DATA:
-+		/* NAN has no links */
-+		break;
- 	default:
- 		/* shouldn't happen */
- 		WARN_ON_ONCE(1);
-@@ -1418,6 +1425,11 @@ void iwl_mld_mac80211_vif_cfg_changed(struct ieee80211_hw *hw,
- 
- 	lockdep_assert_wiphy(mld->wiphy);
- 
-+	if (vif->type == NL80211_IFTYPE_NAN) {
-+		iwl_mld_nan_vif_cfg_changed(mld, vif, changes);
-+		return;
-+	}
-+
- 	if (vif->type != NL80211_IFTYPE_STATION)
- 		return;
- 
-@@ -1613,7 +1625,7 @@ iwl_mld_mac80211_conf_tx(struct ieee80211_hw *hw,
- 
- 	lockdep_assert_wiphy(mld->wiphy);
- 
--	if (vif->type == NL80211_IFTYPE_NAN)
-+	if (vif->type == NL80211_IFTYPE_NAN || vif->type == NL80211_IFTYPE_NAN_DATA)
- 		return 0;
- 
- 	link = iwl_mld_link_dereference_check(mld_vif, link_id);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/nan.c b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-index 4d8e85f2bd7c..96e79ba5234a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-@@ -296,3 +296,25 @@ void iwl_mld_handle_nan_dw_end_notif(struct iwl_mld *mld,
- 	wdev = ieee80211_vif_to_wdev(mld->nan_device_vif);
- 	cfg80211_next_nan_dw_notif(wdev, chan, GFP_KERNEL);
- }
-+
-+void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
-+				 struct ieee80211_vif *vif,
-+				 u64 changes)
++static void iwl_mld_nan_link_remove(struct iwl_mld *mld,
++				    struct iwl_mld_nan_link *nan_link)
 +{
-+	struct ieee80211_nan_sched_cfg *sched_cfg = &vif->cfg.nan_sched;
-+	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
-+	bool has_sched = memchr_inv(sched_cfg->schedule, 0,
-+				    sizeof(sched_cfg->schedule));
++	struct iwl_link_config_cmd cmd = {
++		.link_id = cpu_to_le32(nan_link->fw_id),
++		.phy_id = cpu_to_le32(FW_CTXT_ID_INVALID),
++	};
 +
-+	lockdep_assert_wiphy(mld->wiphy);
-+
-+	if (!(changes & BSS_CHANGED_NAN_LOCAL_SCHED))
++	if (WARN_ON_ONCE(nan_link->fw_id == FW_CTXT_ID_INVALID))
 +		return;
 +
-+	if (has_sched && !mld_vif->nan.mac_added) {
-+		if (iwl_mld_add_nan_vif(mld, vif))
-+			IWL_ERR(mld, "Failed to add NAN vif\n");
-+	} else if (!has_sched && mld_vif->nan.mac_added) {
-+		iwl_mld_rm_vif(mld, vif);
-+	}
++	iwl_mld_send_link_cmd(mld, &cmd, FW_CTXT_ACTION_REMOVE);
++
++	RCU_INIT_POINTER(mld->fw_id_to_bss_conf[nan_link->fw_id], NULL);
++	nan_link->fw_id = FW_CTXT_ID_INVALID;
++	nan_link->active = false;
++	nan_link->chanctx = NULL;
 +}
++
++static bool iwl_mld_nan_have_links(struct iwl_mld_vif *mld_vif)
++{
++	struct iwl_mld_nan_link *nan_link;
++
++	for_each_mld_nan_valid_link(mld_vif, nan_link)
++		return true;
++
++	return false;
++}
++
++static struct iwl_mld_nan_link *
++iwl_mld_nan_find_link(struct iwl_mld_vif *mld_vif,
++		      struct ieee80211_chanctx_conf *chanctx)
++{
++	struct iwl_mld_nan_link *nan_link;
++
++	for_each_mld_nan_valid_link(mld_vif, nan_link) {
++		if (nan_link->chanctx == chanctx)
++			return nan_link;
++	}
++
++	return NULL;
++}
++
+ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
+ 				 struct ieee80211_vif *vif,
+ 				 u64 changes)
+ {
+-	struct ieee80211_nan_sched_cfg *sched_cfg = &vif->cfg.nan_sched;
+ 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
+-	bool has_sched = memchr_inv(sched_cfg->schedule, 0,
+-				    sizeof(sched_cfg->schedule));
+-
+-	lockdep_assert_wiphy(mld->wiphy);
++	bool previously_empty_schedule = !iwl_mld_nan_have_links(mld_vif);
++	struct ieee80211_nan_sched_cfg *sched_cfg = &vif->cfg.nan_sched;
++	struct iwl_mld_nan_link *links[ARRAY_SIZE(sched_cfg->channels)] = {};
++	bool link_used[ARRAY_SIZE(mld_vif->nan.links)] = {};
++	struct iwl_mld_nan_link *nan_link;
++	bool empty_schedule = true;
++	int ret;
+ 
+ 	if (!(changes & BSS_CHANGED_NAN_LOCAL_SCHED))
+ 		return;
+ 
+-	if (has_sched && !mld_vif->nan.mac_added) {
+-		if (iwl_mld_add_nan_vif(mld, vif))
+-			IWL_ERR(mld, "Failed to add NAN vif\n");
+-	} else if (!has_sched && mld_vif->nan.mac_added) {
+-		iwl_mld_rm_vif(mld, vif);
++	for (int i = 0; i < ARRAY_SIZE(sched_cfg->channels); i++) {
++		if (!sched_cfg->channels[i].chanreq.oper.chan)
++			continue;
++		empty_schedule = false;
++		break;
++	}
++
++	/* add the MAC if needed (before adding links) */
++	if (!empty_schedule && previously_empty_schedule) {
++		WARN_ON(mld_vif->nan.mac_added);
++		ret = iwl_mld_add_nan_vif(mld, vif);
++
++		if (ret) {
++			IWL_ERR(mld, "NAN: failed to add MAC (%d)\n", ret);
++			return;
++		}
++	}
++
++	if (!mld_vif->nan.mac_added) {
++		/* nothing to do */
++		return;
++	}
++
++	/* find links we can keep (same chanctx/PHY) */
++	for (int i = 0; i < ARRAY_SIZE(sched_cfg->channels); i++) {
++		struct ieee80211_chanctx_conf *chanctx;
++		struct iwl_mld_nan_link *link;
++
++		chanctx = sched_cfg->channels[i].chanctx_conf;
++		/* ULW */
++		if (!chanctx)
++			continue;
++
++		link = iwl_mld_nan_find_link(mld_vif, chanctx);
++		links[i] = link;
++		if (link)
++			link_used[link->fw_id] = true;
++	}
++
++	/* add/reassign links for new channels */
++	for (int i = 0; i < ARRAY_SIZE(sched_cfg->channels); i++) {
++		struct ieee80211_chanctx_conf *chanctx;
++
++		/* already have an existing active link */
++		if (links[i])
++			continue;
++
++		chanctx = sched_cfg->channels[i].chanctx_conf;
++		/* ULW or unused slot */
++		if (!chanctx)
++			continue;
++
++		/*
++		 * if this fails we still update the schedule, but
++		 * without a valid link we'll always ULW it
++		 */
++		links[i] = iwl_mld_nan_link_add(mld, mld_vif, chanctx);
++
++		/* we have a link, activate it */
++		if (links[i]) {
++			link_used[links[i]->fw_id] = true;
++			iwl_mld_nan_link_set_active(mld, links[i], true);
++		}
++	}
++
++	/* delete unused links */
++	for_each_mld_nan_valid_link(mld_vif, nan_link) {
++		if (!link_used[nan_link->fw_id]) {
++			iwl_mld_nan_link_set_active(mld, nan_link, false);
++			iwl_mld_nan_link_remove(mld, nan_link);
++		}
++	}
++
++	/* remove MAC if needed */
++	if (!previously_empty_schedule && empty_schedule) {
++		/* must have been added */
++		WARN_ON_ONCE(!mld_vif->nan.mac_added);
++
++		/* mac80211 should reconfigure same state */
++		if (!WARN_ON_ONCE(mld->fw_status.in_hw_restart))
++			iwl_mld_rm_vif(mld, vif);
+ 	}
+ }
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/nan.h b/drivers/net/wireless/intel/iwlwifi/mld/nan.h
-index c04d77208971..9487155cf6b3 100644
+index 9487155cf6b3..933e16c3c274 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/nan.h
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/nan.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2025 Intel Corporation
-+ * Copyright (C) 2025-2026 Intel Corporation
-  */
- #ifndef __iwl_mld_nan_h__
- #define __iwl_mld_nan_h__
-@@ -27,5 +27,8 @@ bool iwl_mld_cancel_nan_cluster_notif(struct iwl_mld *mld,
- bool iwl_mld_cancel_nan_dw_end_notif(struct iwl_mld *mld,
- 				     struct iwl_rx_packet *pkt,
- 				     u32 obj_id);
-+void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
-+				 struct ieee80211_vif *vif,
-+				 u64 changes);
+@@ -7,6 +7,25 @@
+ #include <net/cfg80211.h>
+ #include <linux/etherdevice.h>
  
- #endif /* __iwl_mld_nan_h__ */
++/**
++ * struct iwl_mld_nan_link - struct representing a NAN link
++ * @chanctx: the channel context
++ * @active: indicates the NAN link is currently active
++ * @fw_id: FW link ID
++ */
++struct iwl_mld_nan_link {
++	struct ieee80211_chanctx_conf *chanctx;
++	bool active;
++	u8 fw_id;
++};
++
++/* Cleanup function for struct iwl_mld_nan_link, will be called in restart */
++static inline void iwl_mld_cleanup_nan_link(struct iwl_mld_nan_link *nan_link)
++{
++	memset(nan_link, 0, sizeof(*nan_link));
++	nan_link->fw_id = FW_CTXT_ID_INVALID;
++}
++
+ bool iwl_mld_nan_supported(struct iwl_mld *mld);
+ int iwl_mld_start_nan(struct ieee80211_hw *hw,
+ 		      struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/rx.c b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
+index a2e586c6ea67..b270cf87824d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
+@@ -158,7 +158,7 @@ static bool iwl_mld_used_average_energy(struct iwl_mld *mld, int link_id,
+ 	guard(rcu)();
+ 
+ 	link_conf = rcu_dereference(mld->fw_id_to_bss_conf[link_id]);
+-	if (!link_conf)
++	if (IS_ERR_OR_NULL(link_conf))
+ 		return false;
+ 
+ 	mld_link = iwl_mld_link_from_mac80211(link_conf);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c b/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c
+index dce747270167..0cdbbb86dbd9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c
+@@ -68,8 +68,6 @@ int iwlmld_kunit_test_init(struct kunit *test)
+ 	return 0;
+ }
+ 
+-static IWL_MLD_ALLOC_FN(link, bss_conf)
+-
+ static void iwlmld_kunit_init_link(struct ieee80211_vif *vif,
+ 				   struct ieee80211_bss_conf *link,
+ 				   struct iwl_mld_link *mld_link, int link_id)
 -- 
 2.34.1
 
