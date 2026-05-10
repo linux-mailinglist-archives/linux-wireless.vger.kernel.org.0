@@ -1,86 +1,90 @@
-Return-Path: <linux-wireless+bounces-36141-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36142-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id jCs5OwNeAGoGHgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36141-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 12:29:23 +0200
+	id IAwzIwxeAGoGHgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36142-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 12:29:32 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638C25039F9
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 12:29:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8549F503A00
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 12:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AEFF3300A109
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 10:29:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 64E0A30028D8
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 10:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0533E257854;
-	Sun, 10 May 2026 10:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E06257854;
+	Sun, 10 May 2026 10:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fZ+pYkhZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UxfqNKKl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FF62032D
-	for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 10:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AED2032D
+	for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 10:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778408958; cv=none; b=enai5pHBm6nTCJ2vnwGaRB66zy16ns7fwl5HFqo6WQZm/D4+R6LwAUOPMjITY8ra3SflYc7SIAPka46g6PceisSyrmRbfabbyS8cUhJwfWFeCtHTmd4EmqFdwsgwe004KehLiiCoRCuXvvjylpRXdYgi4M1sI1E9lnd7cxodw8I=
+	t=1778408965; cv=none; b=kBINnUm94+1aicVXwi4hSeCeNG/Vgwv55ImmnwiQu10Ef4OQCqVXbOUI3i2+7LpfmnJNbyvleXtoSeB+rY4FIT2T53NMiQsWI9FBoKBu8KekfyC/9D+zFhS1PZ/ozI+Sk3U03NOqdBEkURBvrKp3h60HmokOZECRy2gsGUoRzn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778408958; c=relaxed/simple;
-	bh=o8eLa5U7RGyJZuBKXY2A3Mt8d1mQXIUPlY3RV7+a67A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F1ncNN9KCzZ1sD06XawnrdWWLrbYD8Lv6uw1yU807wgPlH6blXJth9gj5A/Mb+k8ur2r5XGqMTGBYxr25nFi7A77IiSb6F1FTI8QODuPleRFp/7TrQ+jQTCoPL634ZCzWK4R9r1XJ6sj5gca+fo15ExhXpBWbAzbTVfSCOhoorE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fZ+pYkhZ; arc=none smtp.client-ip=209.85.208.174
+	s=arc-20240116; t=1778408965; c=relaxed/simple;
+	bh=ltj5jIJz3jYCHSiK7lEvLQu2k3TOuna65NztmtuWlN0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=c2hIB9lT7ZaiZBZpyR7i+QJybfgouX3ue9oETgbYPw/1W052bM5o5INGRdPfxQyvBh2LXWINbL5RM+HbWeO+npDN3cUubvbHPTPakJ8+SC+pZvHx7tzmCXPKsO1NLAcdDzS15FUOvyqOA6GaCZtjb1WGezi/+iwsq8ZsuZv8ZmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UxfqNKKl; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-393800586aeso43496421fa.1
-        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 03:29:17 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a86e4b950cso2443351e87.0
+        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 03:29:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778408955; x=1779013755; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8H4uVV5AgLYrtuJu7CeuLlxyoa7HTanOvw0Zw/EkqYY=;
-        b=fZ+pYkhZB3Lliyi4jA0gY0IUdGjOR8tZ94Lu7FE6vTm81i7REFGuD8sB3SbdvOTQJH
-         1mZ9nEIHJoTzEhYPyCUo0Hp4wWIdFACV/XbePpaqWC79hE+qNQJ1THpBVLyQ4Gr2gGN1
-         AtpARgyn15UBx6NYwY5UcKIMDKoLkG9xRxdq0D9H5ibQMRY7HJxGIyZF8YE45BBcqrWA
-         z/r0O9FXq4zYnUNTC4sUhBkQ3pWtlOxDJQBVmwp9eDLa6FItBNI1wOc850XpSdljrX77
-         Yd5r3RqW65dHK72OiRR53xIhDts4BPACHAE0/dqpWuGmJvdAxIGhkLuTRCTB/UVPZ8NN
-         bbIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778408955; x=1779013755;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778408962; x=1779013762; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8H4uVV5AgLYrtuJu7CeuLlxyoa7HTanOvw0Zw/EkqYY=;
-        b=PAGDj+4FHWFGiZSnWv1EamoQgobTZfqHMVfl1mW88BmSoBe+LKYxEwgi59eZTZkBtA
-         RxpZeBLdpwDlW5+hMZ4se04Qs7IIFQMNkKB+2Kxt/GQla5WNg5p0U5nateSHDz+NgGkZ
-         ebbQ0qfeXFOFFDWLBxkU5SaGX0/wtvrpMsnG7g0GfEakq9ZYaLkWNzfR2qLuj9TG+JHY
-         5Syslsx++X+Ii9BmGHrbgLnrhA6g8LeTnQAMdzZePJiyjGuwy9DHGRkGLjDz7atu+0W2
-         06H0E/43QMrln/XuyxpGuAdfZRkMcAOCcLjl2BJ3kGezlCBniDgZF+yQ+bStfi8yUdwO
-         8hlA==
-X-Gm-Message-State: AOJu0YxoejoAcObK06l+3WP/UZsbVrLifPQ/lvVbyxFgdAy3ZyJpR2ED
-	g0ME6p2jjiZBJg2zX2PmmCobAFsq97dhG6TXleLxst6e49W2Y04Nnt647kQ4bmaE
-X-Gm-Gg: Acq92OGxmjRL8Lr/jMsYY5kX8qXAS4mJpYptAtv/+UbjqX3E9oY2lKEaKbPVbcRsHcd
-	QNt8M+xIVgduBGSuy0Un9SmH5epuyjI1oXStBdRiHB6Mzy7UqJVyhDvO5vmpJun3NHY8mAnaA8u
-	K3qJlp4X8xf2ynBDfQmeoAWTgoz2G59PQ2QfwpUyhhrsHlTc5AzsL7e/XiAvJRHwsM6rXzwnDsX
-	Jsn+3sVuzVr9OxTIE687a/0s9LDXxbOe8KxdfoWbXNHb7AWRHGfgGlrXtwo3bIpK8+o/6hJSrc1
-	BkzgsEWY6wWbNnmNYbQsl83S5/pXSoA6Mqy2YB7f5sllDLQtQut8dUv0OdeEqL1yKJPZ60v/90j
-	CCjz7AU9Oj2DbzZVktGwdwl/oZ7CjAEWIX8bh6oJ05ZAaGSplqHlHM9f9DEkQIhOSMnirHIH9XV
-	oIKz96TtythvxRMci0v1RfB1y8ofVxU48KTZUbSn7h
-X-Received: by 2002:a05:651c:2113:b0:38a:5bf2:80d6 with SMTP id 38308e7fff4ca-393daec8fd3mr47745331fa.5.1778408954818;
-        Sun, 10 May 2026 03:29:14 -0700 (PDT)
+        bh=jm2NpUzclqN0IBZ/9uP+FCJu6yyefdMO0RcOxoVsf2Q=;
+        b=UxfqNKKlhNz7TptZw63JxTCYHmpvvb+yc03dxmmhAVCKe0I5RUR+8GS8tvLj8jbKVg
+         8+0L4UTLnpbzt5XEBx+4tLBIVwRyFJiVtBF2UBf211BAcb2kZEKbo7kSbyvvhz1edahz
+         aRzazfYoOuKLvb3Y30QioNqJ0DLlJl0FxkdxBYIRbbOhMKV/mAmFeoMwzeFUHg4jrDGN
+         2/a+hUXsgfJqUoqXiTSboRfY6WHdqnI9WENLGdL2Y2GBGVk9xUiftlaVZyZhYLDo6rq5
+         8KtM7IVbmAmZ1MNAzry8zQ5bMNdNNMIFsBOb2KvzZYLt6/NnHGLSiEGFclf6zZjm8au8
+         v/7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778408962; x=1779013762;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jm2NpUzclqN0IBZ/9uP+FCJu6yyefdMO0RcOxoVsf2Q=;
+        b=H6l+nzA++sAcGxvVjwiLNKX10DaSMKaGjhK6k1xLTz6Szg4N2ZkzXlVW06rTITu3h4
+         AhjwpBfrfd841zr4qlUKQOtTaTS6iiE2uuB3/C3h2JPWt+qIIjRkduWaG32MzJy53QX1
+         4Bz1tzEnO0+eQ6A0UIF7nDwS2zRjCS3mVI0zwTac3UGM4p6AKxMCWEomDs/fEima+H/p
+         gL8IfTb7JpNU1P/qsOUxAEqhPurR+FbPCbbqpepqWj4kQHNlMb5O/6Q0siyK27KhFUw0
+         olARdodbUPvGRESj5NnUp/pNg9UFEv/z3j7nqxxHOsKD1U5sdZ798UYN7XYNmCzhBAba
+         y57A==
+X-Gm-Message-State: AOJu0YxXE8q/Slo6eHNDoiIU3+RKfqFTLvJpIxfYoSsqEmRxMESJYYAb
+	q5J9qaPP9DAxZpCnNZeZZwHanMFkCJcKLcJzRBPgi6V6i5kfQ2I27/Pw8kxNDhsG
+X-Gm-Gg: Acq92OF+r5JEt0DraLjfmWf1ZH5mHHqukxKoRb+dH2yMgAOwZkBEwAYNowedvxSsr7/
+	/k68BCq9Wrq1O6YWIENE5DjdLNK5f7xX4fCEXuG49ARjRena/rTCFXJ5+FSChaHo8W7MYi1giMS
+	owXCv+45Qo6qKvqXh3OkXJFgZyfzjxNHkiRr9RHCyVTcQu+QgVtWb4I/1oAi34TD627zkhYS+Ii
+	Dsg1AJiWS6if0O29une0OW0e5sOphTcQIHyBAVkjdZ8l6bdEszsdu6JJzfKNF0uVnfdeumhJito
+	Hv/U2pdHOC/nA9h4lMoOO6OrrcEsh7GyWr/742BmbxncNd1kQAao7F56cW77TdwzEo2+qM9hDjt
+	nNIZD/JC7PFFedm72tgkDao036KTN+hhsbXhJv9lUcqOgsevyzw7ZVrYnTKOCbQl7XLtRjZfbLF
+	XM5NcUiYQk//WIF5i9txaTvjRts6pnkw==
+X-Received: by 2002:a05:6512:3e04:b0:5a4:d44:99f0 with SMTP id 2adb3069b0e04-5a887ada973mr6764095e87.6.1778408961711;
+        Sun, 10 May 2026 03:29:21 -0700 (PDT)
 Received: from arch ([217.76.176.49])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-393f60db2f3sm17956511fa.22.2026.05.10.03.29.13
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-393f60db2f3sm17956511fa.22.2026.05.10.03.29.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 03:29:14 -0700 (PDT)
+        Sun, 10 May 2026 03:29:19 -0700 (PDT)
 From: Dmitry Gomzyakov <nicerok11@gmail.com>
 X-Google-Original-From: Dmitry Gomzyakov <kyoto1337@protonmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: Dmitry Gomzyakov <nicerok11@gmail.com>
-Subject: [PATCH 0/2] wifi: mt76: fix NAT performance degradation on MT799x
-Date: Sun, 10 May 2026 15:29:09 +0500
-Message-ID: <20260510102911.1883849-1-kyoto1337@protonmail.com>
+Subject: [PATCH 1/2] wifi: mt76: connac: add MT7991A (0x7991) to is_mt7996()
+Date: Sun, 10 May 2026 15:29:10 +0500
+Message-ID: <20260510102911.1883849-2-kyoto1337@protonmail.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260510102911.1883849-1-kyoto1337@protonmail.com>
+References: <20260510102911.1883849-1-kyoto1337@protonmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,18 +92,18 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 638C25039F9
+X-Rspamd-Queue-Id: 8549F503A00
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36141-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36142-lists,linux-wireless=lfdr.de];
 	FREEMAIL_CC(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -107,7 +111,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[nicerok11@gmail.com,linux-wireless@vger.kernel.org];
@@ -117,29 +121,39 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,protonmail.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[protonmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 From: Dmitry Gomzyakov <nicerok11@gmail.com>
 
-This series fixes severe IPv4 NAT download performance degradation
-(30-40 Mbps limit) observed on MT799x platforms (MT7987A+MT7991A,
-MT7992, MT7996).
+The MT7991A chipset uses PCI device ID 0x7991 (MT7996_DEVICE_ID_2),
+but is_mt7996() only checks for 0x7990. This causes MT7991A devices
+to use incorrect chip-specific settings, such as:
+- MSDU_CNT_V2 instead of MSDU_CNT in TX descriptors
+- Wrong WTBL BMC size (32 instead of 64)
+- Incorrect prefetch depth for MCU queues
 
-Patch 1 adds MT7991A (0x7991) to is_mt7996() to ensure correct
-chip-specific settings are used.
+Fixes: 63a4edf1cb74 ("wifi: mt76: mt7996: add macros for pci decive id")
+Signed-off-by: Dmitry Gomzyakov <nicerok11@gmail.com>
+---
+ mt76_connac.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Patch 2 restores host-driven TXWI filling for all packets, fixing
-firmware misinterpretation of NAT-modified IPv4 packets.
-
-Dmitry Gomzyakov (2):
-  wifi: mt76: connac: add MT7991A (0x7991) to is_mt7996()
-  wifi: mt76: mt7996: always fill txwi for 802.3 packets
-
- mt76_connac.h |  3 ++-
- mt7996/mac.c  | 12 +++++-------
- 2 files changed, 7 insertions(+), 8 deletions(-)
-
---
+diff --git a/mt76_connac.h b/mt76_connac.h
+index 51423c77..db07f3dc 100644
+--- a/mt76_connac.h
++++ b/mt76_connac.h
+@@ -230,7 +230,8 @@ static inline bool is_mt798x(struct mt76_dev *dev)
+ 
+ static inline bool is_mt7996(struct mt76_dev *dev)
+ {
+-	return mt76_chip(dev) == 0x7990;
++	u16 chip = mt76_chip(dev);
++	return chip == 0x7990 || chip == 0x7991;
+ }
+ 
+ static inline bool is_mt7992(struct mt76_dev *dev)
+-- 
 2.54.0
+
 
