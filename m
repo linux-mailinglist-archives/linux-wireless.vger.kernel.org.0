@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-36151-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36152-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aE62Cx7RAGoxNAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36151-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 20:40:30 +0200
+	id OLHxEAzRAGoMNAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36152-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 20:40:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE042505BB0
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 20:40:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B79F505B9B
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 20:40:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 497C13015481
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 18:40:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2B381300288B
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 18:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823833002A0;
-	Sun, 10 May 2026 18:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9712FF641;
+	Sun, 10 May 2026 18:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E1WWem2d"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g7dS+Z5q"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8CE2FF641
-	for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 18:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B148F315D5B
+	for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 18:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778438401; cv=none; b=Lmykm+1HL/exiRdIkjYBUYdJu9+67mQBoG28pKRTY0JFcNaxjmq0xqLQgDIjdx7maHYg2cHoWn+CcyIzMSrBTSuCnm6dG12r/f11rKrlKTsd+6jLCGK3TxpWfLC0PDSe1a2dbJH3CIw68D/enIKVAHvHi+oImNJgz/oEJz6Drjs=
+	t=1778438402; cv=none; b=huMCP7p4sy0sQxHEwjjXhWe2K4JO1RbP9D1JNg+PTzZD7kHDYDoJAEPPf5resGmqXtjVqxoQSBG5KL9VZ3vy61Q+1cdNTdT5EIaj1FT9W5hIsrB1+p7i1P4qHhaIzY2oGlyuSD4RdpMMt2KXh2qQ6EQNBdDS6e/xZTxUSCfsmKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778438401; c=relaxed/simple;
-	bh=CpH0StW1gCEgt7ONu7PKO7cAOQ+kkKsXOnmIORFXnx0=;
+	s=arc-20240116; t=1778438402; c=relaxed/simple;
+	bh=fIM9dYnNXKPnNvkWH26idswA/I6YD1ImfWVSA7CrQHI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BirDgXFKCbhHmhD7DLtG+74OW+cN2dSetEIb74Ed25RD/9pZZhXJHrVqYaduI3/mGFYHnfIsHI8OBotT63wNLriE2CBsojccDeCBR7HmLaDek4tNXA/nXHeVe6cFFrol5BJejWI0hzv9kVIh7o62N8raOiXDjUOdh8W/4qJQ8NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E1WWem2d; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=XdSh2qWxKOLI1inm1eUq6Fk0UIkjunbvraz/uxs8G0IY2gxLW8aIv1faLsYcHEQQPfKttFECNk0LWY9zkigjhPO9mhWOppd+rgmQocclhfrejTuJgwe6jeJ2TwMxTqeIRlZ1w2DsNY5FIvt0C4Xil+ObrYMSGAOys5hHAHgx8YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g7dS+Z5q; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778438400; x=1809974400;
+  t=1778438401; x=1809974401;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=CpH0StW1gCEgt7ONu7PKO7cAOQ+kkKsXOnmIORFXnx0=;
-  b=E1WWem2dxo9Hs7a13FJr/mVvVrML3+dWuabBH6w8i0pSDEZQmEx7lYyt
-   W17+uFde/0T+jAWl/xpAVd4n9cD7M1IHym2s4gxNoX137IGNW1AKBXPgm
-   5tCnw9cqXJkpZZGXY4tgkE0sfkDG02Kbr6KjCEwEyyUQN5yeXwCvLNLLX
-   PF5TqShio4Ay+qo+9W5DuClaKYU4555pVL2HMSjVE49oEihCvc+p0docy
-   16inPXBvEew5/QMdBct0WT2wA2QJNiU9Ybm2KkbAJVIfjpQxZ6VuDIGGM
-   ueZrl+dLP6ko9OAgsoJ+sliKXimb6FAFmTjxN0JeVEkp+4gBA96B/Zawe
-   w==;
-X-CSE-ConnectionGUID: OqVy7kPIS+iXJODnjQHY/A==
-X-CSE-MsgGUID: GpDpNsj9QT6xQgBx/7WNyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11782"; a="83208975"
+  bh=fIM9dYnNXKPnNvkWH26idswA/I6YD1ImfWVSA7CrQHI=;
+  b=g7dS+Z5qOscfTDK6wxwFJHafk+lH/2hZl5TRbSZwKI6d9FAHvRq1Q8QL
+   nVaYopmftd+EBhHXV5JRpNpPM5gc1XZ7Y/zjd7NbF3JDf0OM5ykBcLt3z
+   V4iRsCVBosTXJl0VN52To9fetWmYfb4zX0J13dEz0s7K9hhATsDRq619p
+   IzJOeXGf0uvslNTMZkqnU4cQmWaTyFglhV94DK/QqIre3Gg6JbHtIdBoY
+   cdGCGsPfWFG1EkSUI0aplppHXiu3z+4yhKjetw+7j7sdYFnZX1u9PWN37
+   rKYPiSqKqs3spmP9uHcOKBPMjGoJz1E5Eq1d6wHUNr045kYSxch+/cay6
+   g==;
+X-CSE-ConnectionGUID: w/rh8a9MSBOUJfZc99sZbw==
+X-CSE-MsgGUID: C8Y+kUi+SOKeEC9Tf+NpGQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11782"; a="83208977"
 X-IronPort-AV: E=Sophos;i="6.23,227,1770624000"; 
-   d="scan'208";a="83208975"
+   d="scan'208";a="83208977"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2026 11:40:00 -0700
-X-CSE-ConnectionGUID: nQ9AZ4XQQ9CHCGV0a8R9Og==
-X-CSE-MsgGUID: Qh3ArBO/QXaALtMN3eZFCQ==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2026 11:40:01 -0700
+X-CSE-ConnectionGUID: cC00pvs4SLCw0qx1ZxC7Wg==
+X-CSE-MsgGUID: 9joC3unQSvuTnI1eUo606w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,227,1770624000"; 
-   d="scan'208";a="267626772"
+   d="scan'208";a="267626775"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2026 11:39:58 -0700
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2026 11:39:59 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 06/15] wifi: iwlwifi: add NAN schedule command support
-Date: Sun, 10 May 2026 21:39:29 +0300
-Message-Id: <20260510213745.f5a90c262cbb.I7cbe877f3b13a44554d95e56b10d930dde4704c9@changeid>
+Subject: [PATCH iwlwifi-next 07/15] wifi: iwlwifi: mld: implement NAN peer station management
+Date: Sun, 10 May 2026 21:39:30 +0300
+Message-Id: <20260510213745.31762a2ad747.I3bd01266e47f24fb7f1240db62ac3bd47c479127@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260510183938.4182886-1-miriam.rachel.korenblit@intel.com>
 References: <20260510183938.4182886-1-miriam.rachel.korenblit@intel.com>
@@ -78,14 +78,14 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AE042505BB0
+X-Rspamd-Queue-Id: 1B79F505B9B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -93,10 +93,10 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36151-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36152-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -106,209 +106,320 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Add the NAN schedule command API definition and implementation
-of the schedule updates.
+Implement peer station management for NAN, i.e. support for adding,
+removing, and updating NMI and NDI stations.
 
-Co-developed-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Co-developed-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 24 ++++++++
- drivers/net/wireless/intel/iwlwifi/mld/mld.c  |  3 +-
- drivers/net/wireless/intel/iwlwifi/mld/nan.c  | 58 +++++++++++++++++--
- 3 files changed, 78 insertions(+), 7 deletions(-)
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mld/nan.c  | 35 +++++--
+ drivers/net/wireless/intel/iwlwifi/mld/sta.c  | 96 +++++++++++++++----
+ drivers/net/wireless/intel/iwlwifi/mld/sta.h  |  4 +-
+ 4 files changed, 109 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-index b398c582b867..d98c6d991a88 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-@@ -8,6 +8,7 @@
- #define __iwl_fw_api_mac_cfg_h__
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+index 3c84c6b0faaa..6b4b2683cd1e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+@@ -1841,7 +1841,7 @@ static int iwl_mld_move_sta_state_up(struct iwl_mld *mld,
+ 		   new_state == IEEE80211_STA_AUTHORIZED) {
+ 		ret = 0;
  
- #include "mac.h"
-+#include "phy-ctxt.h"
+-		if (!sta->tdls) {
++		if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls) {
+ 			mld_vif->authorized = true;
  
- /**
-  * enum iwl_mac_conf_subcmd_ids - mac configuration command IDs
-@@ -71,6 +72,10 @@ enum iwl_mac_conf_subcmd_ids {
- 	 * @NAN_CFG_CMD: &struct iwl_nan_config_cmd
- 	 */
- 	NAN_CFG_CMD = 0x12,
-+	/**
-+	 * @NAN_SCHEDULE_CMD: &struct iwl_nan_schedule_cmd
-+	 */
-+	NAN_SCHEDULE_CMD = 0x13,
- 	/**
- 	 * @NAN_DW_END_NOTIF: &struct iwl_nan_dw_end_notif
- 	 */
-@@ -1244,6 +1249,25 @@ struct iwl_nan_config_cmd {
- 	u8 beacon_data[];
- } __packed; /*  NAN_CONFIG_CMD_API_S_VER_1 */
+ 			/* Ensure any block due to a non-BSS link is synced */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/nan.c b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
+index eba79aca8c06..53d39717deab 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/nan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
+@@ -464,19 +464,17 @@ static int iwl_mld_nan_link_set_active(struct iwl_mld *mld,
+ }
  
-+/**
-+ * struct iwl_nan_schedule_cmd - NAN schedule command
-+ * @channels: per channel information
-+ * @channels.availability_map: bitmap of slots this channel is advertising
-+ *	availability on, will be ULW'ed out if no link/inactive link is
-+ *	referenced by the link ID below
-+ * @channels.channel_entry: NAN channel entry descriptor
-+ * @channels.link_id: FW link ID, or %0xFF for unset
-+ * @channels.reserved: (reserved)
-+ */
-+struct iwl_nan_schedule_cmd {
-+	struct {
-+		__le32 availability_map;
-+		u8 channel_entry[6];
-+		u8 link_id;
-+		u8 reserved;
-+	} __packed channels[NUM_PHY_CTX];
-+} __packed; /* NAN_SCHEDULE_CMD_API_S_VER_1 */
+ static void iwl_mld_nan_link_remove(struct iwl_mld *mld,
+-				    struct iwl_mld_nan_link *nan_link)
++				    struct iwl_mld_nan_link *nan_link,
++				    u32 link_id)
+ {
+ 	struct iwl_link_config_cmd cmd = {
+-		.link_id = cpu_to_le32(nan_link->fw_id),
++		.link_id = cpu_to_le32(link_id),
+ 		.phy_id = cpu_to_le32(FW_CTXT_ID_INVALID),
+ 	};
+ 
+-	if (WARN_ON_ONCE(nan_link->fw_id == FW_CTXT_ID_INVALID))
+-		return;
+-
+ 	iwl_mld_send_link_cmd(mld, &cmd, FW_CTXT_ACTION_REMOVE);
+ 
+-	RCU_INIT_POINTER(mld->fw_id_to_bss_conf[nan_link->fw_id], NULL);
++	RCU_INIT_POINTER(mld->fw_id_to_bss_conf[link_id], NULL);
+ 	nan_link->fw_id = FW_CTXT_ID_INVALID;
+ 	nan_link->active = false;
+ 	nan_link->chanctx = NULL;
+@@ -518,6 +516,8 @@ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
+ 	struct ieee80211_nan_channel **slots = sched_cfg->schedule;
+ 	bool link_used[ARRAY_SIZE(mld_vif->nan.links)] = {};
+ 	struct iwl_mld_nan_link *nan_link;
++	unsigned long remove_link_ids = 0;
++	bool added_links = false;
+ 	bool empty_schedule = true;
+ 	int ret, i;
+ 
+@@ -588,6 +588,7 @@ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
+ 
+ 		/* we have a link, activate it */
+ 		if (links[i]) {
++			added_links = true;
+ 			link_used[links[i]->fw_id] = true;
+ 			iwl_mld_nan_link_set_active(mld, links[i], true);
+ 		}
+@@ -626,14 +627,32 @@ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
+ 	if (ret)
+ 		IWL_ERR(mld, "NAN: failed to update schedule (%d)\n", ret);
+ 
+-	/* delete unused links */
++	/* prepare stations for links we'll remove */
+ 	for_each_mld_nan_valid_link(mld_vif, nan_link) {
+ 		if (!link_used[nan_link->fw_id]) {
+ 			iwl_mld_nan_link_set_active(mld, nan_link, false);
+-			iwl_mld_nan_link_remove(mld, nan_link);
++			remove_link_ids |= BIT(nan_link->fw_id);
++			/* mark unused for STA updates */
++			nan_link->fw_id = FW_CTXT_ID_INVALID;
++		}
++	}
 +
- /**
-  * enum iwl_nan_cluster_notif_flags - flags for the cluster notification
-  *
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index 9af79297c3b6..c038a0cde36b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
++	if (added_links || remove_link_ids) {
++		struct ieee80211_sta *sta;
++
++		for_each_station(sta, mld->hw) {
++			struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(sta);
++
++			if (mld_sta->sta_type == STATION_TYPE_NAN_PEER_NMI ||
++			    mld_sta->sta_type == STATION_TYPE_NAN_PEER_NDI)
++				iwl_mld_add_modify_sta_cmd(mld, &sta->deflink);
+ 		}
+ 	}
+ 
++	/* delete unused links */
++	for_each_set_bit(i, &remove_link_ids, ARRAY_SIZE(mld_vif->nan.links))
++		iwl_mld_nan_link_remove(mld, &mld_vif->nan.links[i], i);
++
+ 	/* remove MAC if needed */
+ 	if (!previously_empty_schedule && empty_schedule) {
+ 		/* must have been added */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/sta.c b/drivers/net/wireless/intel/iwlwifi/mld/sta.c
+index 4c97d12ce2d0..f794f80b0fdd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/sta.c
 @@ -1,6 +1,6 @@
  // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
  /*
 - * Copyright (C) 2024-2025 Intel Corporation
 + * Copyright (C) 2024-2026 Intel Corporation
   */
- #include <linux/rtnetlink.h>
- #include <net/mac80211.h>
-@@ -236,6 +236,7 @@ static const struct iwl_hcmd_names iwl_mld_mac_conf_names[] = {
- 	HCMD_NAME(STA_REMOVE_CMD),
- 	HCMD_NAME(ROC_CMD),
- 	HCMD_NAME(NAN_CFG_CMD),
-+	HCMD_NAME(NAN_SCHEDULE_CMD),
- 	HCMD_NAME(NAN_DW_END_NOTIF),
- 	HCMD_NAME(NAN_JOINED_CLUSTER_NOTIF),
- 	HCMD_NAME(MISSED_BEACONS_NOTIF),
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/nan.c b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-index 6ea11b66a545..eba79aca8c06 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-@@ -401,8 +401,14 @@ iwl_mld_nan_link_add(struct iwl_mld *mld,
- 	u8 fw_id;
+ 
+ #include <linux/ieee80211.h>
+@@ -13,6 +13,7 @@
+ #include "key.h"
+ #include "agg.h"
+ #include "tlc.h"
++#include "nan.h"
+ #include "fw/api/sta.h"
+ #include "fw/api/mac.h"
+ #include "fw/api/rx.h"
+@@ -43,13 +44,13 @@ int iwl_mld_fw_sta_id_from_link_sta(struct iwl_mld *mld,
+ 
+ static void
+ iwl_mld_fill_ampdu_size_and_dens(struct ieee80211_link_sta *link_sta,
+-				 struct ieee80211_bss_conf *link,
++				 bool is_6ghz,
+ 				 __le32 *tx_ampdu_max_size,
+ 				 __le32 *tx_ampdu_spacing)
+ {
+ 	u32 agg_size = 0, mpdu_dens = 0;
+ 
+-	if (WARN_ON(!link_sta || !link))
++	if (WARN_ON(!link_sta))
+ 		return;
+ 
+ 	/* Note that we always use only legacy & highest supported PPDUs, so
+@@ -63,7 +64,7 @@ iwl_mld_fill_ampdu_size_and_dens(struct ieee80211_link_sta *link_sta,
+ 		mpdu_dens = link_sta->ht_cap.ampdu_density;
+ 	}
+ 
+-	if (link->chanreq.oper.chan->band == NL80211_BAND_6GHZ) {
++	if (is_6ghz) {
+ 		/* overwrite HT values on 6 GHz */
+ 		mpdu_dens =
+ 			le16_get_bits(link_sta->he_6ghz_capa.capa,
+@@ -439,29 +440,56 @@ static int iwl_mld_send_sta_cmd(struct iwl_mld *mld,
+ 	return ret;
+ }
+ 
+-static int
+-iwl_mld_add_modify_sta_cmd(struct iwl_mld *mld,
+-			   struct ieee80211_link_sta *link_sta)
++int iwl_mld_add_modify_sta_cmd(struct iwl_mld *mld,
++			      struct ieee80211_link_sta *link_sta)
+ {
+ 	struct ieee80211_sta *sta = link_sta->sta;
+ 	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(sta);
+-	struct ieee80211_bss_conf *link;
+-	struct iwl_mld_link *mld_link;
+ 	struct iwl_sta_cfg_cmd cmd = {};
+ 	int fw_id = iwl_mld_fw_sta_id_from_link_sta(mld, link_sta);
++	bool is_6ghz, uora_exists;
++	u32 link_mask;
+ 
+ 	lockdep_assert_wiphy(mld->wiphy);
+ 
+-	link = link_conf_dereference_protected(mld_sta->vif,
+-					       link_sta->link_id);
++	if (WARN_ON(fw_id < 0))
++		return -EINVAL;
++
++	if (mld_sta->sta_type == STATION_TYPE_NAN_PEER_NMI ||
++	    mld_sta->sta_type == STATION_TYPE_NAN_PEER_NDI) {
++		struct iwl_mld_nan_link *nan_link;
++		struct iwl_mld_vif *nan_dev;
+ 
+-	mld_link = iwl_mld_link_from_mac80211(link);
++		is_6ghz = false;
++		uora_exists = false;
+ 
+-	if (WARN_ON(!link || !mld_link) || fw_id < 0)
+-		return -EINVAL;
++		if (WARN_ON(!mld->nan_device_vif))
++			return -EINVAL;
++
++		nan_dev = iwl_mld_vif_from_mac80211(mld->nan_device_vif);
++
++		link_mask = 0;
++
++		for_each_mld_nan_valid_link(nan_dev, nan_link)
++			link_mask |= BIT(nan_link->fw_id);
++	} else {
++		struct ieee80211_bss_conf *link;
++		struct iwl_mld_link *mld_link;
++
++		link = link_conf_dereference_protected(mld_sta->vif,
++						       link_sta->link_id);
++		mld_link = iwl_mld_link_from_mac80211(link);
++
++		if (WARN_ON(!link || !mld_link))
++			return -EINVAL;
++
++		link_mask = BIT(mld_link->fw_id);
++		is_6ghz = link->chanreq.oper.chan->band == NL80211_BAND_6GHZ;
++		uora_exists = link->uora_exists;
++	}
+ 
+ 	cmd.sta_id = cpu_to_le32(fw_id);
+-	cmd.link_mask = cpu_to_le32(BIT(mld_link->fw_id));
++	cmd.link_mask = cpu_to_le32(link_mask);
+ 	cmd.station_type = cpu_to_le32(mld_sta->sta_type);
+ 
+ 	memcpy(&cmd.peer_mld_address, sta->addr, ETH_ALEN);
+@@ -499,7 +527,7 @@ iwl_mld_add_modify_sta_cmd(struct iwl_mld *mld,
+ 		break;
+ 	}
+ 
+-	iwl_mld_fill_ampdu_size_and_dens(link_sta, link,
++	iwl_mld_fill_ampdu_size_and_dens(link_sta, is_6ghz,
+ 					 &cmd.tx_ampdu_max_size,
+ 					 &cmd.tx_ampdu_spacing);
+ 
+@@ -511,7 +539,7 @@ iwl_mld_add_modify_sta_cmd(struct iwl_mld *mld,
+ 
+ 	if (link_sta->he_cap.has_he) {
+ 		cmd.trig_rnd_alloc =
+-			cpu_to_le32(link->uora_exists ? 1 : 0);
++			cpu_to_le32(uora_exists ? 1 : 0);
+ 
+ 		/* PPE Thresholds */
+ 		iwl_mld_fill_pkt_ext(mld, link_sta, &cmd.pkt_ext);
+@@ -525,6 +553,25 @@ iwl_mld_add_modify_sta_cmd(struct iwl_mld *mld,
+ 			cmd.ack_enabled = cpu_to_le32(1);
+ 	}
+ 
++	if (mld_sta->sta_type == STATION_TYPE_NAN_PEER_NDI) {
++		struct ieee80211_sta *nmi_sta =
++			wiphy_dereference(mld->wiphy, sta->nmi);
++		int nmi_fw_id;
++
++		/* copy the local NDI address */
++		ether_addr_copy(cmd.ndi_local_addr, mld_sta->vif->addr);
++
++		if (WARN_ON(!nmi_sta))
++			return -EINVAL;
++
++		nmi_fw_id = iwl_mld_fw_sta_id_from_link_sta(mld,
++					&nmi_sta->deflink);
++		if (nmi_fw_id < 0)
++			return -EINVAL;
++
++		cmd.nmi_sta_id = (u8) nmi_fw_id;
++	}
++
+ 	return iwl_mld_send_sta_cmd(mld, &cmd);
+ }
+ 
+@@ -759,10 +806,23 @@ int iwl_mld_add_sta(struct iwl_mld *mld, struct ieee80211_sta *sta,
+ {
+ 	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(sta);
+ 	struct ieee80211_link_sta *link_sta;
++	enum iwl_fw_sta_type type;
+ 	int link_id;
  	int ret;
  
-+	lockdep_assert_wiphy(mld->wiphy);
-+
- 	ret = iwl_mld_allocate_link_fw_id(mld, &fw_id, ERR_PTR(-ENODEV));
--	if (ret < 0)
-+	/*
-+	 * We should always have enough links. The schedule contains up to 3,
-+	 * and the BSS vif cannot do EMLSR - so can only have 1.
-+	 */
-+	if (WARN_ON(ret < 0))
- 		return NULL;
- 
- 	nan_link = &mld_vif->nan.links[fw_id];
-@@ -504,19 +510,21 @@ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
- 				 struct ieee80211_vif *vif,
- 				 u64 changes)
- {
-+	struct iwl_nan_schedule_cmd cmd = {};
- 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
- 	bool previously_empty_schedule = !iwl_mld_nan_have_links(mld_vif);
- 	struct ieee80211_nan_sched_cfg *sched_cfg = &vif->cfg.nan_sched;
- 	struct iwl_mld_nan_link *links[ARRAY_SIZE(sched_cfg->channels)] = {};
-+	struct ieee80211_nan_channel **slots = sched_cfg->schedule;
- 	bool link_used[ARRAY_SIZE(mld_vif->nan.links)] = {};
- 	struct iwl_mld_nan_link *nan_link;
- 	bool empty_schedule = true;
--	int ret;
-+	int ret, i;
- 
- 	if (!(changes & BSS_CHANGED_NAN_LOCAL_SCHED))
- 		return;
- 
--	for (int i = 0; i < ARRAY_SIZE(sched_cfg->channels); i++) {
-+	for (i = 0; i <  ARRAY_SIZE(sched_cfg->channels); i++) {
- 		if (!sched_cfg->channels[i].chanreq.oper.chan)
- 			continue;
- 		empty_schedule = false;
-@@ -539,8 +547,12 @@ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
- 		return;
- 	}
- 
-+	/* this currently just uses the same index */
-+	BUILD_BUG_ON(ARRAY_SIZE(sched_cfg->channels) !=
-+		     ARRAY_SIZE(cmd.channels));
-+
- 	/* find links we can keep (same chanctx/PHY) */
--	for (int i = 0; i < ARRAY_SIZE(sched_cfg->channels); i++) {
-+	for (i = 0; i < ARRAY_SIZE(sched_cfg->channels); i++) {
- 		struct ieee80211_chanctx_conf *chanctx;
- 		struct iwl_mld_nan_link *link;
- 
-@@ -556,7 +568,7 @@ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
- 	}
- 
- 	/* add/reassign links for new channels */
--	for (int i = 0; i < ARRAY_SIZE(sched_cfg->channels); i++) {
-+	for (i = 0; i < ARRAY_SIZE(sched_cfg->channels); i++) {
- 		struct ieee80211_chanctx_conf *chanctx;
- 
- 		/* already have an existing active link */
-@@ -581,6 +593,39 @@ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
- 		}
- 	}
- 
-+	/* fill the command */
-+	for (i = 0; i < ARRAY_SIZE(sched_cfg->channels); i++) {
-+		cmd.channels[i].link_id = FW_CTXT_ID_INVALID;
-+
-+		if (!sched_cfg->channels[i].chanreq.oper.chan)
-+			continue;
-+
-+		memcpy(cmd.channels[i].channel_entry,
-+		       sched_cfg->channels[i].channel_entry, 6);
-+		cmd.channels[i].link_id =
-+			links[i] ? links[i]->fw_id : FW_CTXT_ID_INVALID;
+-	ret = iwl_mld_init_sta(mld, sta, vif, STATION_TYPE_PEER);
++	switch (vif->type) {
++	case NL80211_IFTYPE_NAN:
++		type = STATION_TYPE_NAN_PEER_NMI;
++		break;
++	case NL80211_IFTYPE_NAN_DATA:
++		type = STATION_TYPE_NAN_PEER_NDI;
++		break;
++	default:
++		type = STATION_TYPE_PEER;
++		break;
 +	}
 +
-+	for (i = 0; i < CFG80211_NAN_SCHED_NUM_TIME_SLOTS; i++) {
-+		int chan_idx;
-+
-+		if (!slots[i])
-+			continue;
-+
-+		chan_idx = slots[i] - sched_cfg->channels;
-+		if (WARN_ON_ONCE(chan_idx < 0 ||
-+				 chan_idx >= ARRAY_SIZE(cmd.channels)))
-+			continue;
-+
-+		cmd.channels[chan_idx].availability_map |= cpu_to_le32(BIT(i));
-+	}
-+
-+	ret = iwl_mld_send_cmd_pdu(mld,
-+				   WIDE_ID(MAC_CONF_GROUP, NAN_SCHEDULE_CMD),
-+				   &cmd);
-+	if (ret)
-+		IWL_ERR(mld, "NAN: failed to update schedule (%d)\n", ret);
-+
- 	/* delete unused links */
- 	for_each_mld_nan_valid_link(mld_vif, nan_link) {
- 		if (!link_used[nan_link->fw_id]) {
-@@ -595,7 +640,8 @@ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
- 		WARN_ON_ONCE(!mld_vif->nan.mac_added);
++	ret = iwl_mld_init_sta(mld, sta, vif, type);
+ 	if (ret)
+ 		return ret;
  
- 		/* mac80211 should reconfigure same state */
--		if (!WARN_ON_ONCE(mld->fw_status.in_hw_restart))
-+		if (!WARN_ON_ONCE(mld->fw_status.in_hw_restart &&
-+				  !iwl_mld_error_before_recovery(mld)))
- 			iwl_mld_rm_vif(mld, vif);
- 	}
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/sta.h b/drivers/net/wireless/intel/iwlwifi/mld/sta.h
+index 36288c2fb38c..13644ffd185d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/sta.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/sta.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2024-2025 Intel Corporation
++ * Copyright (C) 2024-2026 Intel Corporation
+  */
+ 
+ #ifndef __iwl_mld_sta_h__
+@@ -195,6 +195,8 @@ void iwl_mld_remove_sta(struct iwl_mld *mld, struct ieee80211_sta *sta);
+ int iwl_mld_fw_sta_id_from_link_sta(struct iwl_mld *mld,
+ 				    struct ieee80211_link_sta *link_sta);
+ u32 iwl_mld_fw_sta_id_mask(struct iwl_mld *mld, struct ieee80211_sta *sta);
++int iwl_mld_add_modify_sta_cmd(struct iwl_mld *mld,
++			       struct ieee80211_link_sta *link_sta);
+ int iwl_mld_update_all_link_stations(struct iwl_mld *mld,
+ 				     struct ieee80211_sta *sta);
+ void iwl_mld_flush_sta_txqs(struct iwl_mld *mld, struct ieee80211_sta *sta);
 -- 
 2.34.1
 
