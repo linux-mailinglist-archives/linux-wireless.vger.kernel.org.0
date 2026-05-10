@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-36178-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36179-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGU8IG7yAGo9OwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36178-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 23:02:38 +0200
+	id OOfnJVX/AGolPgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36179-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 23:57:41 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD91A506642
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 23:02:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 067795069A9
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 23:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C9C03019807
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 21:02:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8C8F930073CA
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2026 21:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1AA309EFF;
-	Sun, 10 May 2026 21:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8ADC34CFBA;
+	Sun, 10 May 2026 21:57:36 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f80.google.com (mail-ot1-f80.google.com [209.85.210.80])
+Received: from mail-ot1-f77.google.com (mail-ot1-f77.google.com [209.85.210.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB402D949B
-	for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 21:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5074033EAEC
+	for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 21:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778446955; cv=none; b=nTwZ7xQ7uesvCrZ7JN6mjzc5bsy4xOb2VNE5QESrlyNyyRx+B+L3TX0yr6TZ0jJyWejuJ3rKFO7TzZIzCjOTVLl4r5sHSyob1ci+IlDV0Is6ASKDFK6AhUfWO9M78LniwdO6BcP6/O88p/xxlsk67bKT5ikUERogGvX0/PXSagk=
+	t=1778450256; cv=none; b=nIJgxXcOv0mxgmgFnYHgx0noJJO+G0miSep4iBDAV3pGRI61KARRAIsth0fpMgmEEBmMMHvkOjpK5t4XOX4gRGrn3Ed+YQsyiwx/z2F1/7WjVreFN53s19gnWEl4LwDc/v8nhyNwUb0POd8BXew/GTfxsYpbCCHPVvXqMG6Z3ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778446955; c=relaxed/simple;
-	bh=qiMiUP4GWNA2w9vRiyBT9N3XWrpmuvhai0+xrt4hld8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=sodPIRYnX+4s0Rj2h1KxKeatM3Vj4Qm8FC3xVS0/UCLPQWmdMueWw63xxPywVMjo55oK5eRLQFwuu1/qBUGtoUriQYbdQg73TwoKK5tKCAmbyNsu47rmVHUjPvlR13uQDThYRhhXwSBQygSUlcDjf5lMyTIJvjYWLTlMQeMPcG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.80
+	s=arc-20240116; t=1778450256; c=relaxed/simple;
+	bh=TRo/27K1NjP2wNlz7gI3GKSwraU84oOs4e6O3VxvVXI=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=O5b9VG9H5WENFUU+h6XuaY/LlvZ8lbJAq1tnUjKS6ubg/D/MJdFL6l1XPjf5LA5dq183fou8O8DWGF4fmls3XVgP99Xm/YuShwTgdDxbQtI/33O6CotJpIBHlhDpHfyUwwwTBdVtoUTzs2jcudvtRgDOerClZSnKRV0fa7USr+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f80.google.com with SMTP id 46e09a7af769-7e1f3a293aeso8320176a34.2
-        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 14:02:33 -0700 (PDT)
+Received: by mail-ot1-f77.google.com with SMTP id 46e09a7af769-7deb9de359bso6011612a34.3
+        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 14:57:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778446952; x=1779051752;
+        d=1e100.net; s=20251104; t=1778450254; x=1779055054;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tQFzIGJ6E8REtW8EJbiqWNpybEWzfPqgcYj9hEdNyVo=;
-        b=ULBnmx77ejN9pjRYw5kvgZt/Q0WmEHQTSGEe/onv2UOFCBbEQVu0eJDqUhVQZMwrpc
-         gxVIyJosxnOVhzlm2/xy0sm6UHvbRcU6n76b0mekeZDuLnL0917EGEt2PVJHD86DjP6G
-         dIbHCDIw+hWeK0K5j0F0kP4uqc2yq+sIrQzuUq4i1A4fhfdGyLS/3azSCnhEZQuXAHaD
-         ZBRo/VYGt3mayc/BThqffDkl//P/HJcxL0eCufLeGGiJFtWIjvETpTaGnQ7lbyZPUY87
-         y1Wn72BzYAEvSuK3a7B+0u7twjHGa7i4eN0w7jOqe6yAOca68rU66+UG+cbjYwN/PypV
-         YSSg==
-X-Forwarded-Encrypted: i=1; AFNElJ/fplR0Wu0thUlYYjNAkI30yyxFiT8JN2b6rLgCJcHSC0GOWyL5VKrNfJ0yk7t9LKyBcH1IwSJVxxMxDTz9tw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5FIZSqWo/50V1rdj2KPVw7ku3KnUSoHJuFWrNcONxqMSENOhi
-	O8ypD4+AemtXAXrmxJFrVrR5SCdx6iQoo9jY1UQxWl9515axUEsbevfchsqZF+YDuxettKlHGei
-	8UcwuYxTZtAloIx+JGSsKnlCcfORyHmVfW1eZShzoX2mxFAGhnZBCHhpNcfc=
+        bh=a5zz8JJ6yN1hwedf89sUkMHjvnyxInLqXs9nvE/Ihto=;
+        b=pSxDkE4jJm+4gIHKU29jezCxzxcnSBUf4Wzg+QFCR64uRVSxhoVKryhkeqn+aVKaVo
+         iD61qsYHB3CWvaAZPZLUFub/ZHJj70J4w6hPcSviSOIxALCp7fpYqUj1F0P0Cyd2My1+
+         cLnNE9ZjZf3b+gKp41P0gpPrs7AKK++bIGxZIznU5golGpdbwrC879rnniaZ3QU8tKSB
+         U7Fr0kll+pEVQPQ6rarYgemz4k5itrpdco+UCWDAlMk3sRRMQXdQHYOpkxtwSri7Ru4T
+         mlvg9B7ZFP/rvjmUkNE5wjHpwYSt5GEZwMyk2JuY84IjsFt0Kja2S7fmGMhbtA8UO6pa
+         yong==
+X-Forwarded-Encrypted: i=1; AFNElJ8ndJOHHEkdsIOxcLJyZgIJDmvZWObyNhp9LGIHflV69vbRblXaWn62TUrxs/6nSmRauIVa6VbCF1IPBCtovw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB/SA3F28S7cHMLW0BTbdb38jWdzcGSPZDS+AhQ8l67gT0Nz1B
+	Yibav2zhcf6Z9Q+mX8TfXRue/QsxOQQdX94MgiyNrTLxSz0Xfn2zpgoIEaVzF4pU+NbheyGtMQB
+	REA28EEs2Ty9P36HbNVLq2H8o7Krwi3KUyxx3Jpm7vJIcEHhFp/ZgaK5K0t8=
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2905:b0:696:924d:2956 with SMTP id
- 006d021491bc7-69998cc6047mr12641138eaf.14.1778446952588; Sun, 10 May 2026
- 14:02:32 -0700 (PDT)
-Date: Sun, 10 May 2026 14:02:32 -0700
+X-Received: by 2002:a05:6820:883:b0:696:8ccc:5588 with SMTP id
+ 006d021491bc7-69998d4534bmr12723017eaf.42.1778450254413; Sun, 10 May 2026
+ 14:57:34 -0700 (PDT)
+Date: Sun, 10 May 2026 14:57:34 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a00f268.170a0220.1c0296.021c.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in mac80211_hwsim_tx (2)
-From: syzbot <syzbot+435fdb053cf98bfa5778@syzkaller.appspotmail.com>
+Message-ID: <6a00ff4e.170a0220.1c0296.021e.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in ieee80211_sta_current_bw
+From: syzbot <syzbot+e2a0da81361722f4df3b@syzkaller.appspotmail.com>
 To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
 	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: DD91A506642
+X-Rspamd-Queue-Id: 067795069A9
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=59da38148f3a3d24];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=f2b487b72ffad035];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,11 +80,11 @@ X-Spamd-Result: default: False [-0.36 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36178-lists,linux-wireless=lfdr.de,435fdb053cf98bfa5778];
+	TAGGED_FROM(0.00)[bounces-36179-lists,linux-wireless=lfdr.de,e2a0da81361722f4df3b];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	SUBJECT_HAS_QUESTION(0.00)[];
 	REDIRECTOR_URL(0.00)[goo.gl];
 	PRECEDENCE_BULK(0.00)[];
@@ -93,91 +93,92 @@ X-Spamd-Result: default: False [-0.36 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	TO_DN_NONE(0.00)[];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[storage.googleapis.com:url,goo.gl:url,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,googlegroups.com:email,goo.gl:url,storage.googleapis.com:url]
 X-Rspamd-Action: no action
 
 Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    adc1e5c6203c Merge tag 'efi-fixes-for-v7.1-1' of git://git..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1369cd06580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=59da38148f3a3d24
-dashboard link: https://syzkaller.appspot.com/bug?extid=435fdb053cf98bfa5778
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+HEAD commit:    2281958e6007 Merge tag 'wireless-next-2026-05-06' of https..
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=1513e696580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f2b487b72ffad035
+dashboard link: https://syzkaller.appspot.com/bug?extid=e2a0da81361722f4df3b
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
 
 Unfortunately, I don't have any reproducer for this issue yet.
 
 Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/e1ec8b63537e/disk-adc1e5c6.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2030fc4d0035/vmlinux-adc1e5c6.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/a50679f39f63/bzImage-adc1e5c6.xz
+disk image: https://storage.googleapis.com/syzbot-assets/4df17f60254b/disk-2281958e.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/1e93157edd25/vmlinux-2281958e.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/60dbf6a0a81c/bzImage-2281958e.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+435fdb053cf98bfa5778@syzkaller.appspotmail.com
+Reported-by: syzbot+e2a0da81361722f4df3b@syzkaller.appspotmail.com
 
 ------------[ cut here ]------------
-sp->magic != HWSIM_STA_MAGIC
-WARNING: drivers/net/wireless/virtual/mac80211_hwsim.c:265 at hwsim_check_sta_magic drivers/net/wireless/virtual/mac80211_hwsim.c:265 [inline], CPU#1: syz.3.8603/32057
-WARNING: drivers/net/wireless/virtual/mac80211_hwsim.c:265 at hwsim_check_sta_magic drivers/net/wireless/virtual/mac80211_hwsim.c:262 [inline], CPU#1: syz.3.8603/32057
-WARNING: drivers/net/wireless/virtual/mac80211_hwsim.c:265 at mac80211_hwsim_tx+0x2085/0x2b10 drivers/net/wireless/virtual/mac80211_hwsim.c:2213, CPU#1: syz.3.8603/32057
+1
+WARNING: ./include/net/mac80211.h:8114 at ieee80211_chan_width_to_rx_bw include/net/mac80211.h:8114 [inline], CPU#1: syz.4.4769/22510
+WARNING: ./include/net/mac80211.h:8114 at ieee80211_sta_current_bw_tx_to_sta net/mac80211/sta_info.c:3719 [inline], CPU#1: syz.4.4769/22510
+WARNING: ./include/net/mac80211.h:8114 at ieee80211_sta_current_bw+0x36d/0x510 net/mac80211/sta_info.c:3745, CPU#1: syz.4.4769/22510
 Modules linked in:
-CPU: 1 UID: 0 PID: 32057 Comm: syz.3.8603 Tainted: G             L      syzkaller #0 PREEMPT(full) 
-Tainted: [L]=SOFTLOCKUP
+CPU: 1 UID: 0 PID: 22510 Comm: syz.4.4769 Not tainted syzkaller #0 PREEMPT(full) 
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-RIP: 0010:hwsim_check_sta_magic drivers/net/wireless/virtual/mac80211_hwsim.c:265 [inline]
-RIP: 0010:hwsim_check_sta_magic drivers/net/wireless/virtual/mac80211_hwsim.c:262 [inline]
-RIP: 0010:mac80211_hwsim_tx+0x2085/0x2b10 drivers/net/wireless/virtual/mac80211_hwsim.c:2213
-Code: 44 24 20 e8 fd a6 dc fa 48 8d 3d a6 50 b8 09 48 8b 54 24 20 8b 74 24 30 89 d9 67 48 0f b9 3a e9 f7 ec ff ff e8 dc a6 dc fa 90 <0f> 0b 90 e9 a0 e3 ff ff e8 ce a6 dc fa 48 8d bb f1 07 00 00 48 b8
-RSP: 0018:ffffc900040eeea0 EFLAGS: 00010283
-RAX: 000000000000075e RBX: ffff888083a0eb78 RCX: ffffc90011de4000
-RDX: 0000000000080000 RSI: ffffffff872bec44 RDI: ffff8880663e0000
-RBP: 0000000000000000 R08: 0000000000000005 R09: 000000006d537749
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff888067c460c0
-R13: ffff888074694780 R14: ffff8880401231c0 R15: ffff888074694780
-FS:  00007f439aedf6c0(0000) GS:ffff888124475000(0000) knlGS:0000000000000000
+RIP: 0010:ieee80211_chan_width_to_rx_bw include/net/mac80211.h:8114 [inline]
+RIP: 0010:ieee80211_sta_current_bw_tx_to_sta net/mac80211/sta_info.c:3719 [inline]
+RIP: 0010:ieee80211_sta_current_bw+0x36d/0x510 net/mac80211/sta_info.c:3745
+Code: 00 00 00 eb 49 41 83 fe 05 74 30 41 83 fe 0d 75 13 e8 47 8f af f6 b8 04 00 00 00 eb 31 e8 3b 8f af f6 eb 28 e8 34 8f af f6 90 <0f> 0b 90 eb 1d e8 29 8f af f6 b8 02 00 00 00 eb 13 e8 1d 8f af f6
+RSP: 0018:ffffc90006f4eed8 EFLAGS: 00010283
+RAX: ffffffff8b161cfc RBX: 1ffff1100d1da030 RCX: 0000000000080000
+RDX: ffffc9000e5d2000 RSI: 0000000000000e31 RDI: 0000000000000e32
+RBP: 0000000000000004 R08: ffff888054ad5c40 R09: 0000000000000007
+R10: 000000000000000d R11: 0000000000000002 R12: ffff888068ed0180
+R13: dffffc0000000000 R14: 0000000000000007 R15: 0000000000000000
+FS:  00007fe58f5f66c0(0000) GS:ffff888125389000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000003540 CR3: 000000003994c000 CR4: 00000000003526f0
+CR2: 000000110c2c8823 CR3: 0000000038486000 CR4: 00000000003526f0
 Call Trace:
  <TASK>
- drv_tx net/mac80211/driver-ops.h:38 [inline]
- ieee80211_tx_frags+0x5c9/0xa70 net/mac80211/tx.c:1746
- __ieee80211_tx+0x145/0x5b0 net/mac80211/tx.c:1801
- ieee80211_tx+0x336/0x460 net/mac80211/tx.c:1984
- ieee80211_xmit+0x30f/0x3e0 net/mac80211/tx.c:2076
- __ieee80211_tx_skb_tid_band+0x2c2/0x720 net/mac80211/tx.c:6369
- ieee80211_tx_skb_tid+0x1c1/0x550 net/mac80211/tx.c:6399
- ieee80211_mgmt_tx+0x1326/0x2590 net/mac80211/offchannel.c:1029
- rdev_mgmt_tx net/wireless/rdev-ops.h:767 [inline]
- cfg80211_mlme_mgmt_tx+0x803/0x1600 net/wireless/mlme.c:961
- nl80211_tx_mgmt+0x9f9/0xf30 net/wireless/nl80211.c:14358
- genl_family_rcv_msg_doit+0x214/0x300 net/netlink/genetlink.c:1114
+ ieee80211_chan_bw_change+0x459/0x740 net/mac80211/chan.c:719
+ _ieee80211_recalc_chanctx_min_def net/mac80211/chan.c:758 [inline]
+ ieee80211_recalc_chanctx_min_def+0x36/0x70 net/mac80211/chan.c:770
+ ieee80211_recalc_min_chandef+0x491/0x580 net/mac80211/util.c:2501
+ sta_info_insert_finish net/mac80211/sta_info.c:946 [inline]
+ sta_info_insert_rcu+0x15da/0x26b0 net/mac80211/sta_info.c:1029
+ sta_info_insert+0x16/0xc0 net/mac80211/sta_info.c:1034
+ ieee80211_add_station+0x4c7/0x710 net/mac80211/cfg.c:2666
+ rdev_add_station+0xfc/0x290 net/wireless/rdev-ops.h:201
+ nl80211_new_station+0x1cab/0x2130 net/wireless/nl80211.c:9490
+ genl_family_rcv_msg_doit+0x22a/0x330 net/netlink/genetlink.c:1114
  genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
- genl_rcv_msg+0x560/0x800 net/netlink/genetlink.c:1209
- netlink_rcv_skb+0x159/0x420 net/netlink/af_netlink.c:2550
+ genl_rcv_msg+0x61c/0x7a0 net/netlink/genetlink.c:1209
+ netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2551
  genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x585/0x850 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1894
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x75c/0x8e0 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1895
  sock_sendmsg_nosec net/socket.c:787 [inline]
  __sock_sendmsg net/socket.c:802 [inline]
- ____sys_sendmsg+0x9e1/0xb70 net/socket.c:2698
- ___sys_sendmsg+0x190/0x1e0 net/socket.c:2752
- __sys_sendmsg+0x170/0x220 net/socket.c:2784
+ ____sys_sendmsg+0x972/0x9f0 net/socket.c:2698
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2752
+ __sys_sendmsg net/socket.c:2784 [inline]
+ __do_sys_sendmsg net/socket.c:2789 [inline]
+ __se_sys_sendmsg net/socket.c:2787 [inline]
+ __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2787
  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x10b/0xf80 arch/x86/entry/syscall_64.c:94
+ do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f4399f9cdd9
+RIP: 0033:0x7fe59139cdd9
 Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f439aedf028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f439a216090 RCX: 00007f4399f9cdd9
-RDX: 0000000028004800 RSI: 0000200000003740 RDI: 0000000000000003
-RBP: 00007f439a032d69 R08: 0000000000000000 R09: 0000000000000000
+RSP: 002b:00007fe58f5f6028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007fe591616090 RCX: 00007fe59139cdd9
+RDX: 0000000000000000 RSI: 0000200000001080 RDI: 0000000000000006
+RBP: 00007fe591432d69 R08: 0000000000000000 R09: 0000000000000000
 R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f439a216128 R14: 00007f439a216090 R15: 00007ffff74f7008
+R13: 00007fe591616128 R14: 00007fe591616090 R15: 00007fff2b0f3978
  </TASK>
 
 
