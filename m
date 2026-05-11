@@ -1,105 +1,112 @@
-Return-Path: <linux-wireless+bounces-36185-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36186-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UI8HI+1UAWpvVQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36185-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 06:02:53 +0200
+	id 8McoC/NUAWpvVQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36186-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 06:02:59 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4063507C68
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 06:02:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CB0507C70
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 06:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 829513007AD4
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 04:02:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5506730073C4
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 04:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066371FF1B5;
-	Mon, 11 May 2026 04:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933F81FF1B5;
+	Mon, 11 May 2026 04:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="M8q2cPBC";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="KvOL9EDb"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="OxpTJudy";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jLJbaFUu"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A875854652
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 04:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8219754652
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 04:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778472170; cv=none; b=CJL30Bwr9UdBPD4hF/aPwzP3ZFlNs4PqUyWqa/FFmRaitOq6azwBG0WhmBz0Y9dwV1VwdqP8nendSogniVWU3PJExNtj3IYC2ULKH6/SmTivb2SxkC1NzmZly7ya0NcRzAynnDlrToXjT5mpCyHUQ5kW9/abdNANMz/NYN36kfE=
+	t=1778472176; cv=none; b=BQYcSmglNxFfzQU1w610zYeuvFbEYGnVW/bDrSUDOWM+t7SSvNUuChRBX8hCNplaQtejFXux7YACoQ34PKE9Ip6NfxRtc9Z1RyFNE6SkoghzbcAFRh1XYIw583gGUXpWtaiupgJltQZlgO+grLt3jbCtR8SU99imDpYSqY16kpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778472170; c=relaxed/simple;
-	bh=8ue4lmodgiQg2ySfi/zjO6aIp5nELR9fhUffT5UvFqg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fCaEZYAN763EPup5Ce3Vqsq0JIaYGvXpsRfaSMuadJPCqGtn0ijybX4a+gr4QsrCWD9ojW7hSxRxId7/seyBbqPM2NwvzGjiyH5bD/Fm6ysYbuixKaQJ+iutX4RfhwtOTj8rvaP80RJs1VFy6vrfyARKY+CP/a9+D7oek8p1PZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=M8q2cPBC; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KvOL9EDb; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1778472176; c=relaxed/simple;
+	bh=wJfU5et2Kt1GjFl2wbF+4NCnVIvjp2TEnYWgFXIzl60=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=bU/tYPvwSSrCBx/EuEPpZ3bLP7UjDzSVwGhzAl12sTY9RlA42llndms+FEpzrWOHoOMB9x78UGuetusaEH+BNIUN+gi+FBreriMe231+hBAXop6gWvIvfA9bibHK45RqNTANVOhn8p/EzQiaGhZ2/dRhOXRmyGCF17JiOy68kJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=OxpTJudy; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jLJbaFUu; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64AMUXLW134370
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 04:02:48 GMT
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64B3UKvE2286036
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 04:02:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=v+VIpKzdOH/gc9Iwpm5muVNuFBdw1lCxrFt
-	lQ3zbJTI=; b=M8q2cPBCmu36dVmHCfLskkSUoy7RwbUpT11EGo4HTUx3ZUZqQsS
-	fNgaKqBPc+RqqZUXHO5c+mK/2MMu9EEAXbmk/UiQrgQoQJIJZ92nUbw8u1uXgfYZ
-	V8blXM2u/q57fWfsZ2YXm+pMeB/1GqrFiv3OpDhoUE7aC+1K2i6BnAumXj5KeJE5
-	CFES2ZaX4aZ05CPNCCNj563EDqNctGkqieK4/qmAiFpYKH6vQDb+miR6CUkh636+
-	2rU49Rtd51MvcvG2kCAoIdY5uroOJ1FuQotIfFroHOJ+gKEezO2LVDpl0zGgG3IK
-	nH3LBn00oJavIc+hO2nCbAaEQ4tX6oIAMyw==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e1vgy4b4c-1
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=z6prkCLEfLQ
+	B1rqfWCfoImh0AvJMjdGPFqS1iy1PW8w=; b=OxpTJudySvxIMVKZDE99kskyX7A
+	2tCm2bBx60ryGCaqbcoRMwB3Sq5ZwuIN1GksZZT7DcmiEbqr9JOC6Ra0q4y9v8G8
+	dWR35rdhkWB/AqmyCLWKSo8WZeZ1sFMOABSNzdMc/celq1omULTq9xM4gDUeUhH6
+	lYVW42RcYIe+Lm0I+lYXTvmNBdY/MNPCHvjNslewJeKMGZDX40bCmWtARdTZL0NX
+	kPu8VYFAbjV/Qrg3+LJnK+2CdpiEffmAZ78x+Mz/OL1V10FRYx64lvuFHkR3WlsS
+	PtxtYDGTzn/v7iovjNwFF/EF2Um9swCF7QWGkqfJoEvGNGTqDlJUn3XnogQ==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e1wa9c9kv-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 04:02:48 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-82f6e6a3a76so3962211b3a.0
-        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 21:02:48 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 04:02:53 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c829586e894so82841a12.2
+        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 21:02:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778472167; x=1779076967; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=v+VIpKzdOH/gc9Iwpm5muVNuFBdw1lCxrFtlQ3zbJTI=;
-        b=KvOL9EDbZ0cuwEMawrnoj7F0JvvwiG958Qavk9QFtx3bdCMj8UQqGQTCvKtG50a04q
-         XTcNbVpMGM5i48eBkmhf6ngQkyblB5lxfUZqh7gtP5M59I/refHmM4n5a8OW3BTxXuut
-         UeFgF5p6FYd2e15C6WdoCu2Dvip5BNb8N5x/Ve6j7cso9vAeJMAB5NZnw5hbrdP6+HQy
-         WlvuiUvq/2zGI/hIlY/X/XqKjD0YpeMGyR5i5G3uFhA0SiI+SEChGMBH3UBNp/rhY+6d
-         PN4T+H1Fhslu/ch7Y5HRYaX8lPIgtkuHl/HepfbEMWTTJNxP5HOQRDO6bxrh/K9zZVTl
-         LYLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778472167; x=1779076967;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=oss.qualcomm.com; s=google; t=1778472172; x=1779076972; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=v+VIpKzdOH/gc9Iwpm5muVNuFBdw1lCxrFtlQ3zbJTI=;
-        b=kIH4/1LJsRC5ZpgubpVplHmkGq9n4EcRHI65a7vFlhDjkm5myO0/RV1124y9ZRYobc
-         Y6DIyT8yej7gMl2YxDUWlcarRsJcZ2AaNmWMvlhAaazoMyGVBGfcnHAtA1PQQEaiF3yS
-         a1peZVd6Ijo5obGowuN0ruuq/8I2PEG+F0E2I+LVdT+oOBQ+KDvq0OBeLe+FPd5cjyAV
-         s7xK88pCt/MPF+9Ez5M7n2VjHcPZCHhAjxRAnJoDoYl9TrZnLdpdNs54p7IaBAfey4TD
-         0wRPWEVAxJiDPochjIciBY5rLiuAxU6JXYq3OCkaZRiNwcHfbKapxIBXT0lWVKj5qs5o
-         XD9g==
-X-Gm-Message-State: AOJu0YyWwUHhBmYHH2ilsvfqgcuoWksErn7cTgE8SukCRaKBEN8SYfH/
-	Kx4w7wElLcEcEcf8+JhMH4oCi/fRnpo5pmmDSOW3wwluT/yQAPj9k73xCAX7nv0D4MRtLjruNUt
-	rEc66xE8g0Rm0TjOlkPPTH01aK/c91C+1GCU5KkVNBao8cVVEKVzmZsBiE0uR48++EHpdUw==
-X-Gm-Gg: Acq92OFfFdMYXdyXZcekBsYydaqtrpwHSM5Sg/j0i3ZU2tJZkCPlV+/bRIZnOMYPR/u
-	eYKyAR5AFv+3vWFY8CwZJr4I4V5O8Fqomm6rNIMRlDWAJ2QaKcexVja06lnbqf6CK6Nws+MYei1
-	XZKtu7nOIhO2+G2TuRdp+haf13qAhHJkCSiTWMjz1qs18D4xyEoFR8e8ljJ6POA9kfxqFAZievx
-	taeDdPnI5ldPpkdG9kgoLnm2ufdrszElV0OPaiQGBu0wPNIKmifdf0W1eHAyn9AnN6pklwtLb3F
-	ZxkOH821KCy6fRHXp41o6SXi1MaEuCYcVhSfutpPa/2DDNWzoQ8cIw2ZZAvnaK94U7ZRdWXZiB3
-	PZ8zSmWZUtkyQZLzlkz7ooJfx4XdsxHNA9+jko7OR1vWMcpompRu/zoKl1KLf2F4adMK4hJBwD9
-	zbSY40hfUSdEzjkJln0PYIyjG74Qb7uJDHKSw=
-X-Received: by 2002:a05:6a00:1a02:b0:83e:adf1:bf34 with SMTP id d2e1a72fcca58-83eadf1ce1cmr4685343b3a.28.1778472167300;
-        Sun, 10 May 2026 21:02:47 -0700 (PDT)
-X-Received: by 2002:a05:6a00:1a02:b0:83e:adf1:bf34 with SMTP id d2e1a72fcca58-83eadf1ce1cmr4685311b3a.28.1778472166750;
-        Sun, 10 May 2026 21:02:46 -0700 (PDT)
+        bh=z6prkCLEfLQB1rqfWCfoImh0AvJMjdGPFqS1iy1PW8w=;
+        b=jLJbaFUuVFaIsJGV8hys+XN6wFazrfRY4MEbR8GOJkkb5OvENl6mEysfyt/LGPdzAX
+         BmZhFjXI74rOCMufU0zE1XBuT46K6MwGsKD3znCo7XtVkF1F/fPbf4T/AgndAjA4R8Pc
+         jecdTswkd0fjEgaQB9ay0V8EmThuWPbx3O7KFvua1lPrZRs2F7WRXiam8SifqGx++FWh
+         o3j/jQhkHKOZ8F5wdj1ZJBv5EikvwzIdTKu6O8fHQrJkJA8c+l2eiOQSGJVCZ5RKMhE7
+         ch4/17GRvxMbiBVIM32y1MHTJ17aIB1MvLf2RrGv0gQ6SUY91aCJec+n34fO2m9l1Imp
+         Swnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778472172; x=1779076972;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=z6prkCLEfLQB1rqfWCfoImh0AvJMjdGPFqS1iy1PW8w=;
+        b=hFjn1mIEanREB+wnN4tbvOpNJfmwW8a0Gu4LWoScR0arB1pFRguzI1s/JI0/zqWSwK
+         iiaPq/SJ+XtgLmvdLp7sXDkWg6L1orMDueEdWzFGvDJOvlEPiUjH2ngrh4iNdQZTaQGL
+         ABXFbwLod45z/zDfdEfBMs2vE8Qbwt/+xkMNbpc64NbCHv+jO3gHYlv/2urGNlclwi5O
+         x436Y2ZM5m1p6AGiJtoWrUskmRaLCvgFkULVHGuMKgolYGlf7GcN8i/YpnJ1rz1+YYvj
+         oUho2JlKn3s+C3b/8wO5YbfhuPs6C5+p6qDNleePf7iQdfKQIVv12dF19TyTNGtMUM5k
+         27qw==
+X-Gm-Message-State: AOJu0Yxj0xl1sbLQLv4agGkuK6CvHwQzwUC9P+Hbyem58NMjoIcvKOBQ
+	gUr2/QAfCu0f8CiRn66iIkm40/MSv9Sp/avMEKhChIwF54vp4o5aOmIUfX/mQDdyCK3+oG6cHi6
+	TgEkp1Ya5HHa2hdIgs4G77D94mU9i9RVmesLjhHBB9pvZOLjkiIcvwrMNj+9bQWhzK6mEslRKcg
+	fvSQ==
+X-Gm-Gg: Acq92OHYpBIsOJk+Mtrk6FNeTwqwam9UwGK12K5HiopsZ5Rek/avi010GN2Pan2RWlt
+	I6FOgolCbOUmvQMIHRxe/M8dC2ezvte9woaaZXSV9+SaozDZdCo/wSgUKlbfsOfy8Lh1NUJc0o0
+	z/XdivGWMceZA3jkssyJDb0HCkuZ1u7BjWZNpkx6IZ9OgHUVnX/IAl5zBsDXCI0HO/kE0Ah4B0y
+	hZj+QMIx9QB1DhhFjoKWHaYoG95lGokCT+A+H2Dm7CVW1dXutSg6FgPeeMn2iSyQtVMRBxj5odZ
+	r9AibOrOR5tzpzV5gY1dnYVFklOCduYxNlfY7tyzqmeL5IyTi62uW65ULvcE62jTDvNWkrtmhXy
+	1PMSGEc3zN69ZJvfDXDPWOZobNCU/HKPsxhnsjU0sqdNBy3WJn/dHXmohPGBgn3NfBMfA0Yps0h
+	EZVQw/kl207PKCuWMwYVj9ryzLfTM0sIN1EEE=
+X-Received: by 2002:a05:6a20:244d:b0:3a3:a69c:216e with SMTP id adf61e73a8af0-3aa5ac23e75mr24278384637.38.1778472171873;
+        Sun, 10 May 2026 21:02:51 -0700 (PDT)
+X-Received: by 2002:a05:6a20:244d:b0:3a3:a69c:216e with SMTP id adf61e73a8af0-3aa5ac23e75mr24278342637.38.1778472171221;
+        Sun, 10 May 2026 21:02:51 -0700 (PDT)
 Received: from hu-amitajit-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83967dbf0cesm22792259b3a.46.2026.05.10.21.02.44
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83967dbf0cesm22792259b3a.46.2026.05.10.21.02.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 21:02:46 -0700 (PDT)
+        Sun, 10 May 2026 21:02:50 -0700 (PDT)
 From: Amith A <amith.a@oss.qualcomm.com>
 To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, amith.a@oss.qualcomm.com
-Subject: [PATCH ath-next v2 0/2] wifi: ath12k: Add support for handling incumbent signal interference in 6 GHz
-Date: Mon, 11 May 2026 09:32:40 +0530
-Message-Id: <20260511040242.1351792-1-amith.a@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org, amith.a@oss.qualcomm.com,
+        Aishwarya R <aishwarya.r@oss.qualcomm.com>,
+        Hari Chandrakanthan <quic_haric@quicinc.com>
+Subject: [PATCH ath-next v2 1/2] wifi: ath12k: Add support for handling incumbent signal interference in 6 GHz
+Date: Mon, 11 May 2026 09:32:41 +0530
+Message-Id: <20260511040242.1351792-2-amith.a@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260511040242.1351792-1-amith.a@oss.qualcomm.com>
+References: <20260511040242.1351792-1-amith.a@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -107,89 +114,695 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=fpHsol4f c=1 sm=1 tr=0 ts=6a0154e8 cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDA0MSBTYWx0ZWRfX8pN6k5RvzzIK
+ RB7PpuZhpy7necC2zwhFmPQLJSZLzQm7bN5hY+ZeTBmdOgtoOaNrq0sUxkFhg85xNYx8X1dgPvI
+ U9daNG+hNErMhQF0Ysq4qGh6Wgssed3pIDKUQI0IkGruHort2Zs2llpUpw8JnEMTbpQt9dKtjVs
+ YytZQif8yHjHcBTEn04wXDRBeI5cHi+zgR2xepjPl7JFZcmwPZloioIOERcSuWetjyEMWnAc1op
+ bvP10k/TtkdkTZ8X7XrVSmJkydmwKlBypdk/kFjH+dwuOARjmJiiwL+D/xSZHU19aXoILBUMZKn
+ 6BQVyt+z/XbI5Eo8Z/QJUf722ZAqQbvPbugfGZVZL7aOcD3F4n5bhdgLv7r3yl6C0iTnFBO7cbL
+ ON1HnZ2VWVGtILaOVsljdNHXS7fHOOhBanHw98uLxhDouJT5WvKpznvy39H8ZMxoD5eYso6RZ9u
+ UZvY1wS2+V/b4RL1Gew==
+X-Authority-Analysis: v=2.4 cv=HO7z0Itv c=1 sm=1 tr=0 ts=6a0154ed cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
  a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=Qv-E1znO2Y0tXsqnBgEA:9
- a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-ORIG-GUID: Nd4R38suU8nKYZiGOqdSYKtvN1nlOku6
-X-Proofpoint-GUID: Nd4R38suU8nKYZiGOqdSYKtvN1nlOku6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDA0MSBTYWx0ZWRfXwfWmMnRyaS+s
- eNCixfldn8YB2JMichKEGQWbtEVnaTf8Rxq+If2Y+Y6ztjfwGC9qqe5ApcqXWlc4R6uv5OvPXG2
- 0HR/HXifqZLjtGWtCU2vDcdh0RqgM72I29+e0KLY9JTW8ayhXohwLkX191zK2+e7KIpcEDChqLF
- WDyfiBNgxPzDARfAimSybjymT7UAHkRciITGo35awEIWW4F9HnGP9Td2pVR2rw7I5SHwmz7mfwb
- 1lZxWvokbQB9aOETYuSNv/7LqkE3bzvDLkJg5FqTw9KT8lQGzDspPtdKwJmEqQcseyf5W9TBa9P
- UHyZHND6DLPlKogGohUEjLz6tC1m28pbe78DQsAYzkiOEBZ7rIu0gN9tnO8UowuHAk/cKGvhzFo
- a8vUN406gEFjGkZLlVfQ6PN0m0CpkN0lHcnNR11BrSjhpeeG9HM4XdUxqLRCcuWWT5qSU0DbpYS
- /Ueu3+QqQpB25mSa6uw==
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=EUspDBNiAAAA:8
+ a=COk6AnOGAAAA:8 a=jAPGQAQIC87bCrM3vxMA:9 a=3WC7DwWrALyhR5TkjVHa:22
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: 0XJkvz3GBR9tmiJK_5i2Tr7qaOdKAzUP
+X-Proofpoint-ORIG-GUID: 0XJkvz3GBR9tmiJK_5i2Tr7qaOdKAzUP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-11_01,2026-05-08_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
- adultscore=0 phishscore=0 clxscore=1015 spamscore=0 impostorscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2605110041
-X-Rspamd-Queue-Id: E4063507C68
+ spamscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
+ malwarescore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605110041
+X-Rspamd-Queue-Id: 83CB0507C70
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36185-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36186-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[amith.a@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[amith.a@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-This patch series adds the implementation of handling of interferences
-due to incumbent signals in 6 GHz channels. When an interference is
-detected, the firmware indicates it to the host using the
-WMI_DCS_INTERFERENCE_EVENT.
+From: Aishwarya R <aishwarya.r@oss.qualcomm.com>
 
-The driver is expected to parse the new WMI event to retrieve the
-interference information, validate the interference detected channel and
-bitmap, and indicate the interference to mac80211, which then notifies
-this interference to the userspace.
+When incumbent signal interference is detected by an AP/mesh interface
+operating in the 6 GHz band, as mandated by the FCC, it is expected to
+vacate the affected channels. The firmware indicates the interference to
+the host using the WMI_DCS_INTERFERENCE_EVENT.
+
+To handle the new WMI event, first parse it to retrieve the interference
+information. Next, validate the interference-detected channel and
+the interference bitmap. The interference bitmap received from the
+firmware uses a mapping where bit 0 corresponds to the primary
+20 MHz segment, regardless of its position within the operating
+bandwidth. Bit 1 represents the next adjacent 20 MHz segment, bit 2
+the lower 20 MHz segment of the adjacent 40 MHz segment, and so
+on, progressing sequentially across the bandwidth. However, for userspace
+consumption via mac80211, this bitmap must be transformed into a
+standardized format such that each bit position directly maps to the
+corresponding sub-channel index within the operating bandwidth.
+Finally, indicate the transformed interference bitmap to mac80211, which
+then notifies userspace of the interference. Once the incumbent signal
+interference is detected, firmware suspends TX internally on the affected
+operating channel while userspace decides the mitigation action. Userspace
+is expected to trigger a channel switch or bandwidth reduction to mitigate
+the interference. Also, add a flag handling_in_progress to indicate that
+handling of interference is in progress. Set it to true after
+indicating to mac80211 about the interference. Reset the flag to false
+after the operating channel is switched by userspace. This prevents
+processing any further interference events when there is already a
+previous event being handled. Hence, further events are processed only
+after a channel switch request is received from userspace for the
+previous event.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Aishwarya R <aishwarya.r@oss.qualcomm.com>
+Co-developed-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+Signed-off-by: Amith A <amith.a@oss.qualcomm.com>
 ---
-Changes in v2:
-    - Added an explicit len check in sub-TLV parser before accessing info.
----
-Aishwarya R (2):
-  wifi: ath12k: Add support for handling incumbent signal interference
-    in 6 GHz
-  wifi: ath12k: Add debugfs support to simulate incumbent signal
-    interference
+ drivers/net/wireless/ath/ath12k/core.h |   8 +
+ drivers/net/wireless/ath/ath12k/mac.c  |  46 +++
+ drivers/net/wireless/ath/ath12k/wmi.c  | 389 +++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h  |  58 +++-
+ 4 files changed, 500 insertions(+), 1 deletion(-)
 
- drivers/net/wireless/ath/ath12k/core.h    |   8 +
- drivers/net/wireless/ath/ath12k/debugfs.c |  46 +++
- drivers/net/wireless/ath/ath12k/mac.c     |  46 +++
- drivers/net/wireless/ath/ath12k/wmi.c     | 425 ++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/wmi.h     |  72 +++-
- 5 files changed, 596 insertions(+), 1 deletion(-)
-
-
-base-commit: e12d2d3983acb150fd987d19ec6a2a530da110df
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 8be435535a4e..3aa25db9264e 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -763,6 +763,14 @@ struct ath12k {
+ 	struct ath12k_pdev_rssi_offsets rssi_info;
+ 
+ 	struct ath12k_thermal thermal;
++
++	/* Protected by ar->data_lock */
++	struct ath12k_incumbent_signal_interference {
++		u32 center_freq;
++		enum nl80211_chan_width width;
++		u32 chan_bw_interference_bitmap;
++		bool handling_in_progress;
++	} incumbent_signal_interference;
+ };
+ 
+ struct ath12k_hw {
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 9ce759626f18..75881fccd175 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -9637,6 +9637,10 @@ static int ath12k_mac_start(struct ath12k *ar)
+ 	ar->allocated_vdev_map = 0;
+ 	ar->chan_tx_pwr = ATH12K_PDEV_TX_POWER_INVALID;
+ 
++	spin_lock_bh(&ar->data_lock);
++	ar->incumbent_signal_interference.handling_in_progress = false;
++	spin_unlock_bh(&ar->data_lock);
++
+ 	/* Configure monitor status ring with default rx_filter to get rx status
+ 	 * such as rssi, rx_duration.
+ 	 */
+@@ -9850,6 +9854,10 @@ static void ath12k_mac_stop(struct ath12k *ar)
+ 	synchronize_rcu();
+ 
+ 	atomic_set(&ar->num_pending_mgmt_tx, 0);
++
++	spin_lock_bh(&ar->data_lock);
++	ar->incumbent_signal_interference.handling_in_progress = false;
++	spin_unlock_bh(&ar->data_lock);
+ }
+ 
+ void ath12k_mac_op_stop(struct ieee80211_hw *hw, bool suspend)
+@@ -11436,8 +11444,10 @@ ath12k_mac_update_vif_chan(struct ath12k *ar,
+ 			   struct ieee80211_vif_chanctx_switch *vifs,
+ 			   int n_vifs)
+ {
++	struct ath12k_incumbent_signal_interference *incumbent;
+ 	struct ath12k_wmi_vdev_up_params params = {};
+ 	struct ieee80211_bss_conf *link_conf;
++	struct cfg80211_chan_def *chandef;
+ 	struct ath12k_base *ab = ar->ab;
+ 	struct ath12k_link_vif *arvif;
+ 	struct ieee80211_vif *vif;
+@@ -11549,6 +11559,42 @@ ath12k_mac_update_vif_chan(struct ath12k *ar,
+ 		if (!ath12k_mac_monitor_stop(ar))
+ 			ath12k_mac_monitor_start(ar);
+ 	}
++
++	incumbent = &ar->incumbent_signal_interference;
++	spin_lock_bh(&ar->data_lock);
++	if (incumbent->handling_in_progress) {
++		chandef = &vifs[0].new_ctx->def;
++		if (incumbent->chan_bw_interference_bitmap &
++		    ATH12K_WMI_DCS_SEG_PRI20) {
++			if (incumbent->center_freq !=
++			    chandef->chan->center_freq) {
++				incumbent->chan_bw_interference_bitmap = 0;
++				incumbent->handling_in_progress = false;
++				ath12k_dbg(ab, ATH12K_DBG_MAC,
++					   "incumbent signal interference chan switch completed\n");
++			} else {
++				ath12k_warn(ab,
++					    "incumbent signal interference chan switch not done, freq %u\n",
++					    incumbent->center_freq);
++			}
++		} else {
++			if (incumbent->center_freq !=
++			    chandef->chan->center_freq ||
++			    incumbent->width != chandef->width) {
++				incumbent->chan_bw_interference_bitmap = 0;
++				incumbent->handling_in_progress = false;
++				ath12k_dbg(ab, ATH12K_DBG_MAC,
++					   "Bandwidth/channel change due to incumbent signal interference completed\n");
++			} else {
++				ath12k_warn(ab, "Bandwidth/channel change due to incumbent sig intf not done intf_freq %u chan_freq %u intf_width %u chan_width %u\n",
++					    incumbent->center_freq,
++					    chandef->chan->center_freq,
++					    incumbent->width,
++					    chandef->width);
++			}
++		}
++	}
++	spin_unlock_bh(&ar->data_lock);
+ }
+ 
+ static void
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index c7559938564c..8609c612aa2c 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -234,6 +234,68 @@ static const int ath12k_hw_mode_pri_map[] = {
+ 	PRIMAP(WMI_HOST_HW_MODE_MAX),
+ };
+ 
++/*
++ * Interference bitmap transform maps used by
++ * ath12k_wmi_transform_interference_bitmap().
++ *
++ * Firmware reports bitmap bits in a primary-based order where:
++ * - bit 0 is always the primary 20 MHz segment,
++ * - bit 1 is the adjacent 20 MHz in the same 40 MHz block,
++ * - bit 2 is the lower 20 MHz segment of the adjacent 40 MHz segment
++ * - bit 3 is the higher 20 MHz segment of the adjacent 40 MHz segment
++ * - remaining bits continue outward in 80/160/320 MHz groups.
++ *
++ * cfg80211 userspace notification expects absolute frequency order where:
++ * - bit 0 is the lowest-frequency 20 MHz segment in the current chandef,
++ * - bit N increases monotonically toward higher frequency.
++ *
++ * For each bandwidth-specific map:
++ * - row index    = primary 20 MHz index in absolute (low->high) order,
++ * - column index = source bit position from firmware bitmap,
++ * - value        = destination bit position in absolute order bitmap.
++ *
++ * Example for 80 MHz: if primary index is 2 (third 20 MHz chunk from low
++ * frequency), row intf_map_80[2] = { 2, 3, 0, 1 } means firmware bits {0,1,2,3}
++ * are remapped to destination bits {2,3,0,1} before notifying cfg80211.
++ */
++
++static const int intf_map_80[4][4] = {
++	{ 0, 1, 2, 3 },
++	{ 1, 0, 2, 3 },
++	{ 2, 3, 0, 1 },
++	{ 3, 2, 0, 1 }
++};
++
++static const int intf_map_160[8][8] = {
++	{ 0, 1, 2, 3, 4, 5, 6, 7 },
++	{ 1, 0, 2, 3, 4, 5, 6, 7 },
++	{ 2, 3, 0, 1, 4, 5, 6, 7 },
++	{ 3, 2, 0, 1, 4, 5, 6, 7 },
++	{ 4, 5, 6, 7, 0, 1, 2, 3 },
++	{ 5, 4, 6, 7, 0, 1, 2, 3 },
++	{ 6, 7, 4, 5, 0, 1, 2, 3 },
++	{ 7, 6, 4, 5, 0, 1, 2, 3 }
++};
++
++static const int intf_map_320[16][16] = {
++	{ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11,  12,  13,  14,  15 },
++	{ 1,  0,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11,  12,  13,  14,  15 },
++	{ 2,  3,  0,  1,  4,  5,  6,  7,  8,  9,  10,  11,  12,  13,  14,  15 },
++	{ 3,  2,  0,  1,  4,  5,  6,  7,  8,  9,  10,  11,  12,  13,  14,  15 },
++	{ 4,  5,  6,  7,  0,  1,  2,  3,  8,  9,  10,  11,  12,  13,  14,  15 },
++	{ 5,  4,  6,  7,  0,  1,  2,  3,  8,  9,  10,  11,  12,  13,  14,  15 },
++	{ 6,  7,  4,  5,  0,  1,  2,  3,  8,  9,  10,  11,  12,  13,  14,  15 },
++	{ 7,  6,  4,  5,  0,  1,  2,  3,  8,  9,  10,  11,  12,  13,  14,  15 },
++	{ 8,  9,  10, 11, 12, 13, 14, 15, 0,  1,  2,   3,   4,   5,   6,   7  },
++	{ 9,  8,  10, 11, 12, 13, 14, 15, 0,  1,  2,   3,   4,   5,   6,   7  },
++	{ 10, 11, 8,  9,  12, 13, 14, 15, 0,  1,  2,   3,   4,   5,   6,   7  },
++	{ 11, 10, 8,  9,  12, 13, 14, 15, 0,  1,  2,   3,   4,   5,   6,   7  },
++	{ 12, 13, 14, 15, 8,  9,  10, 11, 0,  1,  2,   3,   4,   5,   6,   7  },
++	{ 13, 12, 14, 15, 8,  9,  10, 11, 0,  1,  2,   3,   4,   5,   6,   7  },
++	{ 14, 15, 12, 13, 8,  9,  10, 11, 0,  1,  2,   3,   4,   5,   6,   7  },
++	{ 15, 14, 12, 13, 8,  9,  10, 11, 0,  1,  2,   3,   4,   5,   6,   7  }
++};
++
+ static int
+ ath12k_wmi_tlv_iter(struct ath12k_base *ab, const void *ptr, size_t len,
+ 		    int (*iter)(struct ath12k_base *ab, u16 tag, u16 len,
+@@ -8597,6 +8659,330 @@ static void ath12k_pdev_ctl_failsafe_check_event(struct ath12k_base *ab,
+ 			    ev->ctl_failsafe_status);
+ }
+ 
++static int
++ath12k_wmi_incumbent_signal_interference_subtlv_parser(struct ath12k_base *ab,
++						       u16 tag, u16 len,
++						       const void *ptr,
++						       void *data)
++{
++	const struct ath12k_wmi_incumbent_signal_interference_params *info;
++	struct ath12k_wmi_incumbent_signal_interference_arg *arg = data;
++
++	switch (tag) {
++	case WMI_TAG_DCS_INCUMBENT_SIGNAL_INTERFERENCE_TYPE:
++		if (len < sizeof(*info)) {
++			ath12k_warn(ab,
++				    "DCS incumbent signal interference subtlv 0x%x invalid len %u\n",
++				    tag, len);
++			return -EINVAL;
++		}
++
++		info = ptr;
++
++		arg->chan_width = le32_to_cpu(info->chan_width);
++		arg->chan_freq = le32_to_cpu(info->chan_freq);
++		arg->center_freq0 = le32_to_cpu(info->center_freq0);
++		arg->center_freq1 = le32_to_cpu(info->center_freq1);
++		arg->chan_bw_interference_bitmap =
++			le32_to_cpu(info->chan_bw_interference_bitmap);
++
++		ath12k_dbg(ab, ATH12K_DBG_WMI,
++			   "incumbent signal interference chan width %u freq %u center_freq0 %u center_freq1 %u bitmap 0x%x\n",
++			   arg->chan_width, arg->chan_freq,
++			   arg->center_freq0, arg->center_freq1,
++			   arg->chan_bw_interference_bitmap);
++		break;
++	default:
++		ath12k_warn(ab, "Received invalid tag 0x%x for WMI DCS interference in subtlvs\n",
++			    tag);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int ath12k_wmi_dcs_interference_event_parser(struct ath12k_base *ab,
++						    u16 tag, u16 len,
++						    const void *ptr, void *data)
++{
++	int ret = 0;
++
++	switch (tag) {
++	case WMI_TAG_DCS_INTERFERENCE_EVENT:
++		/* Fixed param should already be processed */
++		break;
++	case WMI_TAG_ARRAY_STRUCT:
++		ret = ath12k_wmi_tlv_iter(ab, ptr, len,
++					  ath12k_wmi_incumbent_signal_interference_subtlv_parser,
++					  data);
++		break;
++	default:
++		ath12k_warn(ab, "Received invalid tag 0x%x for WMI DCS interference event\n",
++			    tag);
++		ret = -EINVAL;
++		break;
++	}
++
++	return ret;
++}
++
++static bool
++ath12k_wmi_validate_interference_info(struct ath12k *ar,
++				      struct ath12k_wmi_incumbent_signal_interference_arg *info)
++{
++	switch (info->chan_width) {
++	case WMI_CHAN_WIDTH_20:
++		if (info->chan_bw_interference_bitmap > ATH12K_WMI_DCS_SEG_PRI20) {
++			ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
++				   "DCS interference event received with wrong chan width bmap 0x%x for 20 MHz",
++				   info->chan_bw_interference_bitmap);
++			return false;
++		}
++		break;
++	case WMI_CHAN_WIDTH_40:
++		if (info->chan_bw_interference_bitmap > (ATH12K_WMI_DCS_SEG_PRI20 |
++							 ATH12K_WMI_DCS_SEG_SEC20)) {
++			ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
++				   "DCS interference event received with wrong chan width bmap 0x%x for 40 MHz",
++				   info->chan_bw_interference_bitmap);
++			return false;
++		}
++		break;
++	case WMI_CHAN_WIDTH_80:
++		if (info->chan_bw_interference_bitmap > (ATH12K_WMI_DCS_SEG_PRI20 |
++							 ATH12K_WMI_DCS_SEG_SEC20 |
++							 ATH12K_WMI_DCS_SEG_SEC40)) {
++			ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
++				   "DCS interference event received with wrong chan width bmap 0x%x for 80 MHz",
++				   info->chan_bw_interference_bitmap);
++			return false;
++		}
++		break;
++	case WMI_CHAN_WIDTH_160:
++		if (info->chan_bw_interference_bitmap > (ATH12K_WMI_DCS_SEG_PRI20 |
++							 ATH12K_WMI_DCS_SEG_SEC20 |
++							 ATH12K_WMI_DCS_SEG_SEC40 |
++							 ATH12K_WMI_DCS_SEG_SEC80)) {
++			ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
++				   "DCS interference event received with wrong chan width bmap 0x%x for 160 MHz",
++				   info->chan_bw_interference_bitmap);
++			return false;
++		}
++		break;
++	case WMI_CHAN_WIDTH_320:
++		if (info->chan_bw_interference_bitmap > (ATH12K_WMI_DCS_SEG_PRI20 |
++							 ATH12K_WMI_DCS_SEG_SEC20 |
++							 ATH12K_WMI_DCS_SEG_SEC40 |
++							 ATH12K_WMI_DCS_SEG_SEC80 |
++							 ATH12K_WMI_DCS_SEG_SEC160)) {
++			ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
++				   "DCS interference event received with wrong chan width bmap 0x%x for 320 MHz",
++				   info->chan_bw_interference_bitmap);
++			return false;
++		}
++		break;
++	default:
++		ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
++			   "DCS interference event received with unknown channel width %u",
++			   info->chan_width);
++		return false;
++	}
++	return true;
++}
++
++static u32
++ath12k_wmi_transform_interference_bitmap(int input_bitmap,
++					 struct cfg80211_chan_def *chandef)
++{
++	u16 output_bits[ATH12K_MAX_20MHZ_SEGMENTS] = {};
++	u16 input_bits[ATH12K_MAX_20MHZ_SEGMENTS] = {};
++	u32 start_freq, segment_freq;
++	int primary_index = -1;
++	u32 output_bitmap = 0;
++	u16 num_sub_chans;
++	int bandwidth;
++
++	bandwidth = nl80211_chan_width_to_mhz(chandef->width);
++	if (bandwidth < 0)
++		return 0;
++
++	/*
++	 * Firmware reports bit 0 as primary 20 MHz irrespective of absolute
++	 * frequency position. Convert to standardized lowest-to-highest 20 MHz
++	 * ordering expected by cfg80211/mac80211 userspace consumers.
++	 */
++	num_sub_chans = bandwidth / 20;
++	start_freq = (chandef->center_freq1 - bandwidth / 2) + 10;
++
++	for (int i = 0; i < ATH12K_MAX_20MHZ_SEGMENTS; i++) {
++		segment_freq = start_freq + (i * 20);
++		if (segment_freq == chandef->chan->center_freq) {
++			primary_index = i;
++			break;
++		}
++	}
++	if (primary_index == -1)
++		return 0;
++
++	for (int i = 0; i < ATH12K_MAX_20MHZ_SEGMENTS; ++i)
++		input_bits[i] = BIT(i) & input_bitmap;
++
++	for (int i = 0; i < num_sub_chans; ++i) {
++		int src = i, dst = i;
++
++		switch (bandwidth) {
++		case 40:
++			if (primary_index == 1)
++				dst = 1 - i;
++			break;
++		case 80:
++			dst = intf_map_80[primary_index][i];
++			break;
++		case 160:
++			dst = intf_map_160[primary_index][i];
++			break;
++		case 320:
++			dst = intf_map_320[primary_index][i];
++			break;
++		}
++		output_bits[dst] = input_bits[src];
++	}
++
++	for (int i = 0; i < ATH12K_MAX_20MHZ_SEGMENTS; ++i)
++		output_bitmap |= output_bits[i] ? BIT(i) : 0;
++
++	return output_bitmap;
++}
++
++static void
++ath12k_wmi_process_incumbent_signal_interference_evt(struct ath12k_base *ab,
++						     struct sk_buff *skb,
++						     const struct ath12k_wmi_intf_arg *intf_arg)
++{
++	struct ath12k_wmi_incumbent_signal_interference_arg info = {};
++	struct ath12k_incumbent_signal_interference *incumbent;
++	struct ath12k_mac_get_any_chanctx_conf_arg arg;
++	u32 transformed_intf_bitmap;
++	struct ieee80211_hw *hw;
++	struct ath12k *ar;
++	int ret;
++
++	guard(rcu)();
++
++	ar = ath12k_mac_get_ar_by_pdev_id(ab, intf_arg->pdev_id);
++	if (!ar) {
++		ath12k_warn(ab, "incumbent signal interference detected on invalid pdev %d\n",
++			    intf_arg->pdev_id);
++		return;
++	}
++	if (!ar->supports_6ghz) {
++		ath12k_warn(ab, "pdev does not support 6 GHz, dropping DCS interference event\n");
++		return;
++	}
++
++	incumbent = &ar->incumbent_signal_interference;
++	spin_lock_bh(&ar->data_lock);
++	if (incumbent->handling_in_progress) {
++		spin_unlock_bh(&ar->data_lock);
++		ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
++			   "incumbent signal interference handling ongoing, dropping DCS interference event");
++		return;
++	}
++	spin_unlock_bh(&ar->data_lock);
++
++	ret = ath12k_wmi_tlv_iter(ab, skb->data, skb->len,
++				  ath12k_wmi_dcs_interference_event_parser,
++				  &info);
++	if (ret) {
++		ath12k_warn(ab,
++			    "failed to parse incumbent signal interference TLV. Error %d\n",
++			    ret);
++		return;
++	}
++
++	if (!ath12k_wmi_validate_interference_info(ar, &info)) {
++		ath12k_warn(ab, "invalid DCS incumbent signal interference TLV - Skipping event");
++		return;
++	}
++
++	arg.ar = ar;
++	arg.chanctx_conf = NULL;
++	hw = ath12k_ar_to_hw(ar);
++	ieee80211_iter_chan_contexts_atomic(hw,
++					    ath12k_mac_get_any_chanctx_conf_iter,
++					    &arg);
++	if (!arg.chanctx_conf) {
++		ath12k_warn(ab, "failed to find valid chanctx_conf in incumbent signal intf detected event\n");
++		return;
++	}
++
++	if (info.chan_freq != arg.chanctx_conf->def.chan->center_freq) {
++		ath12k_dbg(ab, ATH12K_DBG_WMI,
++			   "dcs interference event received with wrong channel %d (ctx freq %d)",
++			   info.chan_freq, arg.chanctx_conf->def.chan->center_freq);
++		return;
++	}
++
++	spin_lock_bh(&ar->data_lock);
++	incumbent->center_freq = arg.chanctx_conf->def.chan->center_freq;
++	incumbent->width = arg.chanctx_conf->def.width;
++	incumbent->chan_bw_interference_bitmap = info.chan_bw_interference_bitmap;
++	incumbent->handling_in_progress = true;
++	spin_unlock_bh(&ar->data_lock);
++	transformed_intf_bitmap =
++		ath12k_wmi_transform_interference_bitmap(info.chan_bw_interference_bitmap,
++							 &arg.chanctx_conf->def);
++	ath12k_dbg(ab, ATH12K_DBG_WMI,
++		   "incumbent signal interference bitmap 0x%x (transformed 0x%x)\n",
++		   info.chan_bw_interference_bitmap, transformed_intf_bitmap);
++	cfg80211_incumbent_signal_notify(hw->wiphy,
++					 &arg.chanctx_conf->def,
++					 transformed_intf_bitmap,
++					 GFP_ATOMIC);
++}
++
++static void
++ath12k_wmi_dcs_interference_event(struct ath12k_base *ab,
++				  struct sk_buff *skb)
++{
++	const struct ath12k_wmi_dcs_interference_ev_fixed_params *dcs_intf_ev;
++	struct ath12k_wmi_intf_arg dcs_intf_arg;
++	const struct wmi_tlv *tlv;
++	u16 tlv_tag;
++	u8 *ptr;
++
++	if (skb->len < (sizeof(*dcs_intf_ev) + TLV_HDR_SIZE)) {
++		ath12k_warn(ab, "DCS interference event is of incorrect length\n");
++		return;
++	}
++
++	ptr = skb->data;
++	tlv = (struct wmi_tlv *)ptr;
++	tlv_tag = le32_get_bits(tlv->header, WMI_TLV_TAG);
++	ptr += sizeof(*tlv);
++
++	if (tlv_tag != WMI_TAG_DCS_INTERFERENCE_EVENT) {
++		ath12k_warn(ab, "DCS interference event received with wrong tag\n");
++		return;
++	}
++
++	dcs_intf_ev = (struct ath12k_wmi_dcs_interference_ev_fixed_params *)ptr;
++
++	dcs_intf_arg.interference_type =
++		le32_to_cpu(dcs_intf_ev->interference_type);
++	dcs_intf_arg.pdev_id = le32_to_cpu(dcs_intf_ev->pdev_id);
++
++	if (dcs_intf_arg.interference_type ==
++	    ATH12K_WMI_DCS_INCUMBENT_SIGNAL_INTERFERENCE) {
++		ath12k_dbg(ab, ATH12K_DBG_WMI,
++			   "incumbent signal interference (Type %u) detected on pdev %u.",
++			   dcs_intf_arg.interference_type,
++			   dcs_intf_arg.pdev_id);
++		ath12k_wmi_process_incumbent_signal_interference_evt(ab, skb,
++								     &dcs_intf_arg);
++	}
++}
++
+ static void
+ ath12k_wmi_process_csa_switch_count_event(struct ath12k_base *ab,
+ 					  const struct ath12k_wmi_pdev_csa_event *ev,
+@@ -9961,6 +10347,9 @@ static void ath12k_wmi_op_rx(struct ath12k_base *ab, struct sk_buff *skb)
+ 	case WMI_OBSS_COLOR_COLLISION_DETECTION_EVENTID:
+ 		ath12k_wmi_obss_color_collision_event(ab, skb);
+ 		break;
++	case WMI_DCS_INTERFERENCE_EVENTID:
++		ath12k_wmi_dcs_interference_event(ab, skb);
++		break;
+ 	/* add Unsupported events (rare) here */
+ 	case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
+ 	case WMI_PEER_OPER_MODE_CHANGE_EVENTID:
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index c644604c1426..d74f7fca7678 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -2015,7 +2015,7 @@ enum wmi_tlv_tag {
+ 	WMI_TAG_VDEV_CH_POWER_INFO,
+ 	WMI_TAG_MLO_LINK_SET_ACTIVE_CMD = 0x3BE,
+ 	WMI_TAG_EHT_RATE_SET = 0x3C4,
+-	WMI_TAG_DCS_AWGN_INT_TYPE = 0x3C5,
++	WMI_TAG_DCS_INCUMBENT_SIGNAL_INTERFERENCE_TYPE = 0x3C5,
+ 	WMI_TAG_MLO_TX_SEND_PARAMS,
+ 	WMI_TAG_MLO_PARTNER_LINK_PARAMS,
+ 	WMI_TAG_MLO_PARTNER_LINK_PARAMS_PEER_ASSOC,
+@@ -4535,6 +4535,62 @@ struct ath12k_wmi_pdev_radar_event {
+ 	a_sle32 sidx;
+ } __packed;
+ 
++#define ATH12K_WMI_DCS_INCUMBENT_SIGNAL_INTERFERENCE	0x04
++
++struct ath12k_wmi_dcs_interference_ev_fixed_params {
++	__le32 interference_type;
++	__le32 pdev_id;
++} __packed;
++
++struct ath12k_wmi_incumbent_signal_interference_params {
++	__le32 chan_width;
++	__le32 chan_freq;
++	__le32 center_freq0;
++	__le32 center_freq1;
++	__le32 chan_bw_interference_bitmap;
++} __packed;
++
++struct ath12k_wmi_incumbent_signal_interference_arg {
++	u32 chan_width;
++	u32 chan_freq;
++	u32 center_freq0;
++	u32 center_freq1;
++	u32 chan_bw_interference_bitmap;
++};
++
++struct ath12k_wmi_intf_arg {
++	u32 interference_type;
++	u32 pdev_id;
++};
++
++enum ath12k_wmi_dcs_interference_chan_segment {
++	/*
++	 * Firmware reports interference bitmap in primary-based order.
++	 * Bit 0 is the primary 20 MHz, bit 1 is the adjacent 20 MHz within
++	 * the primary 40 MHz. Bits 2-3 cover the secondary 40 MHz, bits 4-7
++	 * cover the secondary 80 MHz, and bits 8-15 cover the secondary 160 MHz.
++	 */
++	ATH12K_WMI_DCS_SEG_PRI20                 = 0x1,
++	ATH12K_WMI_DCS_SEG_SEC20                 = 0x2,
++	ATH12K_WMI_DCS_SEG_SEC40_LOW             = 0x4,
++	ATH12K_WMI_DCS_SEG_SEC40_UP              = 0x8,
++	ATH12K_WMI_DCS_SEG_SEC40                 = 0xC,
++	ATH12K_WMI_DCS_SEG_SEC80_LOW             = 0x10,
++	ATH12K_WMI_DCS_SEG_SEC80_LOW_UP          = 0x20,
++	ATH12K_WMI_DCS_SEG_SEC80_UP_LOW          = 0x40,
++	ATH12K_WMI_DCS_SEG_SEC80_UP              = 0x80,
++	ATH12K_WMI_DCS_SEG_SEC80                 = 0xF0,
++	ATH12K_WMI_DCS_SEG_SEC160_LOW            = 0x0100,
++	ATH12K_WMI_DCS_SEG_SEC160_LOW_UP         = 0x0200,
++	ATH12K_WMI_DCS_SEG_SEC160_LOW_UP_UP      = 0x0400,
++	ATH12K_WMI_DCS_SEG_SEC160_LOW_UP_UP_UP   = 0x0800,
++	ATH12K_WMI_DCS_SEG_SEC160_UP_LOW_LOW_LOW = 0x1000,
++	ATH12K_WMI_DCS_SEG_SEC160_UP_LOW_LOW     = 0x2000,
++	ATH12K_WMI_DCS_SEG_SEC160_UP_LOW         = 0x4000,
++	ATH12K_WMI_DCS_SEG_SEC160_UP             = 0x8000,
++	ATH12K_WMI_DCS_SEG_SEC160                = 0xFF00,
++};
++
+ struct wmi_pdev_temperature_event {
+ 	/* temperature value in Celsius degree */
+ 	a_sle32 temp;
 -- 
 2.34.1
 
