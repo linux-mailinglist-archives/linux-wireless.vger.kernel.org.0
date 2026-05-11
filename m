@@ -1,131 +1,186 @@
-Return-Path: <linux-wireless+bounces-36264-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36265-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJWvIFg2AmocpAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36264-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 22:04:40 +0200
+	id IAYuJL83AmrmpAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36265-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 22:10:39 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6835156D3
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 22:04:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296CF5158B1
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 22:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A31A3009534
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:04:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5332F3041B88
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D87632E8DEC;
-	Mon, 11 May 2026 20:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C2F37EFF4;
+	Mon, 11 May 2026 20:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="qVYKb7L+"
+	dkim=pass (2048-bit key) header.d=mokrynskyi.com header.i=@mokrynskyi.com header.b="c4iJ3gZL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from mail.mokrynskyi.com (mail.mokrynskyi.com [65.109.39.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4108F328B5E
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 20:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C799537F756
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 20:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.39.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778529865; cv=none; b=SCqEMCpKOsZMwRTyfuyK72d6ltYishBwQT0NdahlSDH4nQTLw3Ir7gseNW6VYep7d/QiWz61m/dQ4/vQmX+HRz3mcq3b6E0h+Vx7t/WO/hi642+3I7dUHVg1/FnqDxBdfE6DAOUrC8pDQbBNbbtvi5Wd2rXBpz9Ja8bnqWQbGKY=
+	t=1778530230; cv=none; b=mhyBKMtRfkdLcbSnBoDoWgNqAzPQU9w15aw6NiWd0uw/8MbOuJbBmIthn92wQSphWgCThzWMENcZo/0OTqs6ACmJ/YynYFYgTqWzUqNdSSERBplboS9FgWBBCeHFEFx9exNerU6yvV/tSiA7/JnA7oOK7f9778y7S6U1x/77DQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778529865; c=relaxed/simple;
-	bh=dA6hLylhlWosG7c58rSUqa8iEFQ5WzADGJf5YNAzqsQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZ8OgqmZq8TXOg3k89hruuTln5XPhhLEbCtghjwB28MfNf4JgD8Cb6ZQnls2sHy2pCRALJrhUPtANVP5u/jQT6M5Xp1z0qx23I3kWY6WosB4tdf5t/Z+6GaDh8Y80GJ6CPWWERLS5PxDaAy+s46CCyNsh6ZBv8DqZmu68FcEAUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=qVYKb7L+; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
-	s=key1; t=1778529860;
+	s=arc-20240116; t=1778530230; c=relaxed/simple;
+	bh=ztZdhbgWXhPzT0sfkkOZxRpF1XHqJWmOUFUhm+EdMvk=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Gc8g+kxrkLIOrisJ73qubT6YF8XzU+YmW3h0q1H5FE6QX6ZpOFkGcEOAgjenWtF8tveZScmlXmsTFJMQe28VKkuEK4IcKwrjmZMjfPNSZ5eNBvBcs54niSv4RFyzqQidPu7VQU0F4J3RlCJiFbkz8GXguUCrlX/UP4B8UWndBlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mokrynskyi.com; spf=pass smtp.mailfrom=mokrynskyi.com; dkim=pass (2048-bit key) header.d=mokrynskyi.com header.i=@mokrynskyi.com header.b=c4iJ3gZL; arc=none smtp.client-ip=65.109.39.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mokrynskyi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mokrynskyi.com
+Message-ID: <07a1e340-cfdf-4027-861e-8f2a940bd21c@mokrynskyi.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mokrynskyi.com;
+	s=dkim; t=1778530215;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dA6hLylhlWosG7c58rSUqa8iEFQ5WzADGJf5YNAzqsQ=;
-	b=qVYKb7L+oXZowLz+oOsDu9EETXd2eTWNi6ryCVe9XEWlWJZPM/4nNsWW1Ejlxs0goRmVVT
-	D8W6OVFO1KXDoYS2xHq5Zo71a+QlhPsOuMrF3HcENUn/an3ylxCHXsbewkKrsWPPkJPtn7
-	R7H2CM/BAz37XUmgzE20v4+0mctb6vG4CBdhh+D2UhEzWW/zkEhapnohVKF/7cE0waj6pw
-	ZGTw17XmaK7KIk3LWGKlevHa6Vx8tEyc4H8QIbBmZC9OS3n1LD361307EPdfWvqZmsHs81
-	NmMXxU0HcILtLbHhKGGqU5GjUoaRqzTlyC7C4fdNxS7MgWY7i8Ag2pkNavl93g==
-From: Devin Wittmayer <lucid_duck@justthetip.ca>
-To: rtl8821cerfe2@gmail.com,
-	linux-wireless@vger.kernel.org
-Cc: pkshih@realtek.com,
-	johannes@sipsolutions.net,
-	linux-kernel@vger.kernel.org,
-	Devin Wittmayer <lucid_duck@justthetip.ca>
-Subject: Re: [PATCH rtw-next v2 1/1] wifi: rtw89: usb: Support switching to USB 3 mode
-Date: Mon, 11 May 2026 13:03:39 -0700
-Message-ID: <20260511200339.33682-1-lucid_duck@justthetip.ca>
-In-Reply-To: <639b2f23-bff3-400f-b5ef-e7d0c39196bc@gmail.com>
-References: <639b2f23-bff3-400f-b5ef-e7d0c39196bc@gmail.com>
+	bh=giGsVPtUVT/cf4JDNMmZ8q221H1xhgSTW77E8jnggRk=;
+	b=c4iJ3gZLyLub2VnuIdek26p/6ZfUDLXwzaKGw1N2qgoPHA6S5jOZVayFdX80HlM1J7JGf/
+	qsGTEZrBz7P8Caas0G4NvmAzS4pfjeyTyyXNzApzg57ikTnFnHXFwW3KUHggQ+L5eKuZgt
+	rgmVC57AAP/nLk4H+uPYMg0eXMmrjvhtnqQzz7lp8PmAdxJni9KNasiF/q9mIDjvY4ZmKt
+	Dd06ocaDx4R7/3iKnADHPzRMhe+LtsWSDj+w448oeoy8/kYm/S2rbcWB0n2a98KkOhOsnu
+	VNutY9RjS2cPtDTy0SIsr8u8Io2D8u+cq6wclH+gj4Pm4mzFD/gsHfPeKAQBIA==
+Authentication-Results: mail.mokrynskyi.com;
+	auth=pass smtp.mailfrom=nazar@mokrynskyi.com
+Date: Mon, 11 May 2026 23:10:13 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+From: Nazar Mokrynskyi <nazar@mokrynskyi.com>
+Subject: Re: [PATCH 2/2] wifi: ath12k: skip unknown direct buffer ring module
+ IDs
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20260505172415.566328-1-nazar@mokrynskyi.com>
+ <20260505172415.566328-3-nazar@mokrynskyi.com>
+ <89f30996-3210-403b-8c9a-52cf6d5fcb51@oss.qualcomm.com>
+Content-Language: en-US, uk, uk-UA
+In-Reply-To: <89f30996-3210-403b-8c9a-52cf6d5fcb51@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 9C6835156D3
+X-Spamd-Bar: ---
+X-Rspamd-Queue-Id: 296CF5158B1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[mokrynskyi.com,reject];
+	R_DKIM_ALLOW(-0.20)[mokrynskyi.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36264-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[mokrynskyi.com:+];
+	TAGGED_FROM(0.00)[bounces-36265-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[justthetip.ca:+];
-	NEURAL_HAM(-0.00)[-0.988];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nazar@mokrynskyi.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mokrynskyi.com:email,mokrynskyi.com:mid,mokrynskyi.com:dkim]
 X-Rspamd-Action: no action
 
-On Mon, 2026-05-11 at 21:14 +0300, Bitterblue Smith wrote:
-> Are you quite sure you tested this?
 
-Yes. Full test matrix is in the v2 cover letter (PATCH 0/1) of
-this series:
+11.05.26 22:02, Jeff Johnson:
+> On 5/5/2026 10:24 AM, Nazar Mokrynskyi wrote:
+>> The firmware may advertise direct buffer ring capabilities for module
+>> IDs beyond what the driver currently knows about (WMI_DIRECT_BUF_MAX).
+>> This happens with newer firmware versions that support additional ring
+>> types not yet implemented in the driver.
+> What "newer firmware version" are you using that has this issue?
+>
+> Can you share the "Skipping unknown direct buf ring module id" logs from your
+> modified driver?
+ID is the same as in the original warning:
 
-- DWA-X1850 A1 / B1 (RTL8852AU)
-- BrosTrend AX1L / AX4L (RTL8852BU)
-- BrosTrend AX8L / EDUP AXE5400 (RTL8852CU)
+[   10.611560] ath12k_pci 0000:01:00.0: Invalid module id 2
+[   10.616467] ath12k_pci 0000:01:00.0: failed to parse tlv -22
 
-Six adapters, x86_64 Tiger Lake xHCI + aarch64 BCM2712 / RP1 hosts.
-60 plug-cycles + 30+ throughput cells captured 2026-04-11 to
-2026-05-07. USB enumeration verified at SuperSpeed (5000 Mbps) on
-every patched cell.
+The firmware according to system logs (all this info is provided in [PATCH 0/2] email):
 
-Per-cell raw evidence for the May 2026 expanded matrix (40 iperf3
-JSON files per cell, byte-counter deltas, pre/post link state,
-pre/post USB enumeration speeds, per-iteration timestamps) at:
+[    7.688137] ath12k_pci 0000:01:00.0: fw_version 0x160484db fw_build_timestamp 2025-12-09 20:09 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.WBE.1.6-01243-QCAHKSWPL_SILICONZ-1
 
-https://github.com/Lucid-Duck/rtw89-usb3-gap/tree/main/evidence/may-2026-laptop
+This is running on OpenWRT 25.12, which uses 6.12.74 kernel with modules backported from 6.18.7 kernel:
+[    0.000000] Linux version 6.12.74 (builder@buildhost) (x86_64-openwrt-linux-musl-gcc (OpenWrt GCC 14.3.0 r32802-f505120278) 14.3.0, GNU ld (GNU Binutils) 2.44) #0 SMP Wed Mar 25 20:09:53 2026
+[    6.997293] Loading modules backported from Linux version v6.18.7-0-g5dfbc5357
+[    6.999210] Backport generated by backports.git c8a37ce
 
-Per-adapter summaries:
+>> The current code treats an unknown module_id as a fatal error, returning
+>> -EINVAL and tearing down the entire driver initialization. This is
+>> incorrect: the driver only needs to set up rings for types it uses
+>> (SPECTRAL=0, CFR=1) and can safely ignore capability advertisements for
+>> unknown types.
+>>
+>> Change the unknown module_id handling to skip the entry with a debug
+>> message rather than failing, allowing initialization to proceed.
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01243-QCAHKSWPL_SILICONZ-1
+>>
+>> Signed-off-by: Nazar Mokrynskyi <nazar@mokrynskyi.com>
+>> ---
+>>  drivers/net/wireless/ath/ath12k/wmi.c | 12 ++++--------
+>>  1 file changed, 4 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+>> index 484fdd3b1..0e776a8d8 100644
+>> --- a/drivers/net/wireless/ath/ath12k/wmi.c
+>> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
+>> @@ -4814,10 +4814,10 @@ static int ath12k_wmi_dma_ring_caps(struct ath12k_base *ab,
+>>  	dir_buff_caps = ab->db_caps;
+>>  	for (i = 0; i < dma_caps_parse->n_dma_ring_caps; i++) {
+>>  		if (le32_to_cpu(dma_caps[i].module_id) >= WMI_DIRECT_BUF_MAX) {
+>> -			ath12k_warn(ab, "Invalid module id %d\n",
+>> -				    le32_to_cpu(dma_caps[i].module_id));
+>> -			ret = -EINVAL;
+>> -			goto free_dir_buff;
+>> +			ath12k_dbg(ab, ATH12K_DBG_WMI,
+>> +				   "Skipping unknown direct buf ring module id %d\n",
+>> +				   le32_to_cpu(dma_caps[i].module_id));
+>> +			continue;
+> by continuing you don't populate the dir_buff_caps[i] information below,
+> leaving that record with zeroed data from the initial allocation. Does other
+> code correctly handle that?
+>
+> would it be better to have a separate count of the number of dir_buff_caps
+> records that are actually filled, and then update
+> dma_caps_parse->n_dma_ring_caps to match once the parsing has completed?
+I'm very far from kernel development, let alone ath12k driver specifically.
+The patch is provided to better showcase the problems I had.
+If there is a better way to address it, I'd really appreciate if someone more knowledgeable could take over, I just hope this is helpful.
 
-https://github.com/Lucid-Duck/rtw89-usb3-gap/tree/main/adapters
-
-If the Tested-by trailer should be annotated with the specific chip
-list, I will add that when, and if, a v3 is needed.
-
-Devin
+With these changes QCN9274 runs an access point with over 3 weeks uptime as of right now.
+That is not necessary the proof of anything, but it does seem to work in practice so far.
+>>  		}
+>>  
+>>  		dir_buff_caps[i].id = le32_to_cpu(dma_caps[i].module_id);
+>> @@ -4829,10 +4829,6 @@ static int ath12k_wmi_dma_ring_caps(struct ath12k_base *ab,
+>>  	}
+>>  
+>>  	return 0;
+>> -
+>> -free_dir_buff:
+>> -	ath12k_wmi_free_dbring_caps(ab);
+>> -	return ret;
+>>  }
+>>  
+>>  static void
 
