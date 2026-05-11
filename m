@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-36252-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36253-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLfPM9UaAmofoAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36252-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:07:17 +0200
+	id 0F+iKD0VAmr+ngEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36253-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 19:43:25 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3133751413D
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:07:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3568B513AAC
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 19:43:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A97131E8A81
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 17:37:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DBFEE308C374
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 17:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A0C4657C8;
-	Mon, 11 May 2026 17:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CC7466B48;
+	Mon, 11 May 2026 17:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gbTaGm1e"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="REiEj7XD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D41146AF1A
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 17:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B8246AF02
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 17:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778521025; cv=none; b=fvtSii5dCOCl2UvFaOdwo+OJCLMtbqH0TXDN99I2ljAXBKtK0S0ycuuuWsMLW54Jy7GuYpBYFVGYxHNdgoJ6v9D3ckzMXUzWnE8j8sAnrFdg70AuU1me7QAqyxsJv9QbHuyNYnOjlBHPwI6I3Ct+seE2PdlCL6rAk8paymT6lTI=
+	t=1778521027; cv=none; b=gME3x2GFTKAYC4wERUGOH4KJLie31StJCxGY8qxX91nljpKqkYMA5Fyovb/flXeKGQQuUoa1crKq1fKjdjq1zB5IID9gsB85tpz51gt2JouDqKcHlmjJc3izCudKVAlh/wlyCIixbe/cxG1fDXGxvJB85pU2QnwjvbLDVWEUjWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778521025; c=relaxed/simple;
-	bh=y0sobE/aSisDiEmtqon+dKwHCupSqkybIVTFjrhqe+U=;
+	s=arc-20240116; t=1778521027; c=relaxed/simple;
+	bh=axWT8gcgt5PuWLgtnVzBkva7inYvm2q2PJhZR91lc4w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YyoQyM2KlQQDXSnGALbYtzNmYbm9RofOaJIldJVvIvjlZ0mDV9BihEDRdKSPBW7PVaEo/BkqJIIdnL5tnFw2S7p5tKIqDyAwtuXyokoYjfFYAGvo5HqNhef+3iU0VGXtA+fmwu0/gyVQPDw2VG9Ob86JFMC3RVOyE+K4g6Nn0oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gbTaGm1e; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=m/ME44YZFydgI6gwD0xIE6QdCN6lvD/IjdNVovGMNwlSLrVw89jOOlRXeVFfp7MuyZ3C2r3FGf+a60C58x8ErrhNW2CuorUkr76VlMPeYMdiJ4AkgEarDt5/nvTm5TA8PY8mnvwKl7KuzksmT7QB8TmWnX5fk/ohNGBfU5+esOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=REiEj7XD; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778521025; x=1810057025;
+  t=1778521027; x=1810057027;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=y0sobE/aSisDiEmtqon+dKwHCupSqkybIVTFjrhqe+U=;
-  b=gbTaGm1e5zkUVE+90s/kzJPzf7Fu8dGdKSW7ICjuRsEM1PXq8wtuCPaM
-   0CE+RBuOTWVjnKbzeC1EtwZrKV0kJJcRBDnYDUoq2QdkKplVIqLUJlUNe
-   2u3KOjOVBd+DMhnfCcidKtP3ZkyaQw+NduIDTpVZIYl1WhJHAqA1LQVN3
-   wt/Ly2p8KSU6JDsEfuLBTPTmOVoJHrrSniXVXWn7mVDzZaDAbfRbdm+li
-   0MJM2K9qRcd5JcFUfiwIAopK2uCYxU5ERiSMdqpXUZ6M/Pq/hBHoe+Dku
-   ldqoHswmFLismvNp6/V77+0Dum8qahmc6mhMU4jz3g/t/gBC+Xnqxmblz
-   g==;
-X-CSE-ConnectionGUID: 2WKFqV4/SZai4Sh5UDudgw==
-X-CSE-MsgGUID: v21V5iuFT9W+jeyZgQUZSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79314848"
+  bh=axWT8gcgt5PuWLgtnVzBkva7inYvm2q2PJhZR91lc4w=;
+  b=REiEj7XDVOD8oYlN04h6fWXd9rA+p+hLLaU43l3sF+jJRL1C4lrwo6gq
+   +I9U6T+WJrR2P8nwzmQ5C2e9QKXEpPp4aPBqigFdbruQiIosoYpf+D3f2
+   mxFxnmT0lDp+bT4SA+SUvb2f1XDmw1vY2dxwHSc7RPcwFpKdtzqiRezyb
+   T/MNM7/GdGCLAWcHpQbPBL/PtBfebMWG8jZuHN2sj5sm8nihyooElvfgj
+   RlvFnmcKhm5De/AVqn0/nRq82y5N4JhXrhmgGHrpRyUA4a6Jur6fQQND0
+   iz2NvmZCrvPxuFPOwj505pOTH6nC1vY8uSlQo4KfPJxyCFhfFJniferfc
+   w==;
+X-CSE-ConnectionGUID: EmQ612e9TzOSCR5SrT/wqA==
+X-CSE-MsgGUID: yvuP1dfYRxCvBRLw5oTnBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79314854"
 X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="79314848"
+   d="scan'208";a="79314854"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:37:04 -0700
-X-CSE-ConnectionGUID: NUnwzFEgQSuHBfnFzic7vg==
-X-CSE-MsgGUID: 7DJ5vHcVTseI2MBQ8os4jQ==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:37:05 -0700
+X-CSE-ConnectionGUID: xzdX5YEOQz2s+SPB1ENfTQ==
+X-CSE-MsgGUID: YTWJyNPXTdqYtoBe/FKNVA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="261004949"
+   d="scan'208";a="261005058"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:58 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:59 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 11/15] wifi: iwlwifi: mld: don't report bad STA ID in EHT TB sniffer
-Date: Mon, 11 May 2026 20:36:27 +0300
-Message-Id: <20260511203428.b23984f12a46.Ia25014392129d5815facaacec78ea8ba7f35d9a0@changeid>
+Subject: [PATCH iwlwifi-next 12/15] wifi: iwlwifi: api: RX: define UHR RX PHY flags
+Date: Mon, 11 May 2026 20:36:28 +0300
+Message-Id: <20260511203428.cfca1a7d40cf.I32b51dc6eae98787533c64ccf2a73789409dfcb9@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260511173631.1067831-1-miriam.rachel.korenblit@intel.com>
 References: <20260511173631.1067831-1-miriam.rachel.korenblit@intel.com>
@@ -78,14 +78,14 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3133751413D
+X-Rspamd-Queue-Id: 3568B513AAC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -93,10 +93,10 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36252-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36253-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -106,56 +106,34 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-The field being reported here is part of the EHT union, and not
-valid in EHT TB. Don't report it there. We could probably report
-the station ID we're following, but for now just don't, since it
-appears nobody really cared.
+Define a couple of UHR PHY flags in the metadata that carry
+information about 2x LDPC, UEQM and NPCA.
 
-Fixes: 92e87cee465c ("wifi: iwlwifi: mld: update to new sniffer API")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/rx.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/api/rx.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/rx.c b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
-index b270cf87824d..a9f08f984633 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
-@@ -1206,6 +1206,13 @@ static void iwl_mld_decode_eht_non_tb(struct iwl_mld_rx_phy_data *phy_data,
- 	iwl_mld_eht_set_ru_alloc(rx_status,
- 				 le32_get_bits(phy_data->ntfy->sigs.eht.b2,
- 					       OFDM_RX_FRAME_EHT_STA_RU));
-+
-+	if (phy_data->with_data)
-+		eht->user_info[0] |=
-+			cpu_to_le32(IEEE80211_RADIOTAP_EHT_USER_INFO_STA_ID_KNOWN) |
-+			LE32_DEC_ENC(phy_data->ntfy->sigs.eht.user_id,
-+				     OFDM_RX_FRAME_EHT_USER_FIELD_ID,
-+				     IEEE80211_RADIOTAP_EHT_USER_INFO_STA_ID);
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
+index ac6c1ef2cbcd..8ef764787ba4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
+@@ -263,6 +263,9 @@ enum iwl_rx_mpdu_reorder_data {
  
- static void iwl_mld_decode_eht_phy_data(struct iwl_mld_rx_phy_data *phy_data,
-@@ -1314,14 +1321,6 @@ static void iwl_mld_rx_eht(struct iwl_mld *mld, struct sk_buff *skb,
- 	if (likely(!phy_data->ntfy))
- 		return;
- 
--	if (phy_data->with_data) {
--		eht->user_info[0] |=
--			cpu_to_le32(IEEE80211_RADIOTAP_EHT_USER_INFO_STA_ID_KNOWN) |
--			LE32_DEC_ENC(phy_data->ntfy->sigs.eht.user_id,
--				     OFDM_RX_FRAME_EHT_USER_FIELD_ID,
--				     IEEE80211_RADIOTAP_EHT_USER_INFO_STA_ID);
--	}
--
- 	iwl_mld_decode_eht_usig(phy_data, skb);
- 	iwl_mld_decode_eht_phy_data(phy_data, rx_status, eht);
- }
+ enum iwl_rx_mpdu_phy_info {
+ 	IWL_RX_MPDU_PHY_EOF_INDICATION	= BIT(0),
++	IWL_RX_MPDU_PHY_UEQM		= BIT(1) | BIT(2),
++	IWL_RX_MPDU_PHY_2X_LDPC		= BIT(3),
++	IWL_RX_MPDU_PHY_NPCA		= BIT(4),
+ 	IWL_RX_MPDU_PHY_AMPDU		= BIT(5),
+ 	IWL_RX_MPDU_PHY_AMPDU_TOGGLE	= BIT(6),
+ 	IWL_RX_MPDU_PHY_SHORT_PREAMBLE	= BIT(7),
 -- 
 2.34.1
 
