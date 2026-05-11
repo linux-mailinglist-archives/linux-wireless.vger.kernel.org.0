@@ -1,245 +1,197 @@
-Return-Path: <linux-wireless+bounces-36259-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36260-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EKwVHz0fAmqloAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36259-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:26:05 +0200
+	id aJ2GN7QgAmocoAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36260-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:32:20 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD71951460C
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:26:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 081475147DC
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:32:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BFBC30D8813
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 18:14:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2145A300BBAA
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 18:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B46647AF61;
-	Mon, 11 May 2026 18:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD39E47B437;
+	Mon, 11 May 2026 18:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SLZzgBI+"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="jlTNHED6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0CF37A494
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 18:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66088364EB8
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 18:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778523281; cv=none; b=C60USF3LwUjPX+J2uiagPAgpqtCpQ1/hf2CzJVBT4fs6CGVNT0rA7wp3pQFr3ApYnshnX59KOPVfPMCY3pS13YP97X1IyBISO4lSLvqJVx8HcgoXq1sj8KG8cgqiGDXVcUV8IuraciCRLpR9iUEoQlkoGexUQVq2xARJG3mC1JU=
+	t=1778524337; cv=none; b=G2JVjruiV7/5elHieRgFZtpM0NFX4rkdhJVo6iP+thAW5NFXg4QXeVp5uoTGBQZrV29SatHcqk3XYqIO7QFwRjMbqvcf2cVurSltkBI2tTkmBwfYEWh1qcAfeYdDPARYRBRLeyoiZxeXdOQJnJ4lBplqi4uQWe57lJCPvNXKG90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778523281; c=relaxed/simple;
-	bh=M7y8d+ewhVaZ762+P18JmMhtV/4Or+AW8PguEo8GasI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LPVjZyPIcL9E+mknYdEbpAU8agQRjYTNH4Crpmiq5BJN3iQMxGvMIby5hdod2sxnPasnaNVwW7x6AXZReNqJ3VLvz5e9kcWOOju2IdhUvqDdM612ICxMFdwCF3gtcyFnatEWbGKdWjo89zjuPkT69hS3n9FBbvJB/HKiqfKAGdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SLZzgBI+; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-44a14580111so3409218f8f.0
-        for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 11:14:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778523278; x=1779128078; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=E0uzosvprbfI3xU6tZxgwhc5c0UNuG1K2cj973x8GOI=;
-        b=SLZzgBI+5hz8W2uQXjBkMqTFE9Ggs3yhStBZWhT6bcmXtjBTTUs5m4OYk0l7qnoK7B
-         1NVOOflHuJJx9LUQfVyNlXGG0qQtLUquvrKt7NJUmnfXVut/sVyaWZsnJ0Aeh2hlGNGP
-         JPl/ON4vFjsdgrMCwDdx+mm3v0AjvxuYIYBb68YgfHHg7crlUfbuN/m1BLWdVBnVdsjQ
-         8aD4OywNh4oPy1VYQJXzrvTYLKDPxNDU9GBbQK5YDOJrloHAEtAYV/5hkIV1rayDaxe+
-         YSM8jG1ULPKWNtabK4Uk1rXqDnHLbdQhijj4Yv4yyu6fBBD077YInLre5dF/2fFEJWhd
-         9RRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778523278; x=1779128078;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E0uzosvprbfI3xU6tZxgwhc5c0UNuG1K2cj973x8GOI=;
-        b=DZuW90qCqrCEDjY+vmKxCz7+yqd1LnNR2YeZV7bvNOpV24v/mHuFo5gh9SXrm+3JDA
-         qdahmTATizANpzI/pqeTJH06DDy2DcxjDNmKePjvDae9Jlu4haE3BZUtvhr6mpRwngze
-         9+VCQO23GTYEpI6FiI0RIqDEITShz28TnYAm4lAsrfSu4t/0Fpawz2zJI3GkBTJsqhQ5
-         WGogJwNg7XQjHrSaQONGyZkS/RTP5ZeQInwKY/bxSoIIhvKwclDZqO0ji/aaSXjrcxos
-         tDFu8L0zryEzYO6XRcw5a4B9r1zdsaqG7LsGi5ZVCsTJjX5RLCRGjF9D59jeN6C5mbLl
-         5orA==
-X-Forwarded-Encrypted: i=1; AFNElJ9CvVcj3oHIld3giPHjKKO9mbEIEBCpm2azD0UagVLZulmw/yysVMx3664pg+y02TzidplkMT1Z/uzm1m01oQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YySAgffcCtj15Nlhu/RQPCXaWFUx1MC5DQkdg65Tgwi40R60HeU
-	+BVIKT92u9MzF/1LbTmvnLCaZ1/GQzCXIC4bhvDW0vhmoMuvfcJnWrW8
-X-Gm-Gg: Acq92OF+grYs4UQlsFuLrfDgBkoR3ZMbz6sra2eUo4y1E2S3ANcPAjF60+gvgujCh4b
-	//s6N/nYZS/4EBACBBcx+tpmxUNabe8wHRLNYVjlzmGeHGisrC+k4tO1YsT0pbbVo+cEWhKZ/VQ
-	fgxbBhj13+K78UHEA5/8GKze2cROoibZ59acQJVaP482dLRbAEzcDVbvmWbxSpLYSiBkIATUZnQ
-	33GikfjbfXxxn6kczcg8+gs5TyvYHvvtpFf5Izx+C2MOIxLTQk95ZlFTbGxNFvNTRrwfOpBcx4O
-	GCQTq4TkpfKgjyKt0pSHZzycC3HMF99LJU87M64WenWgLEZo1eQUcrkZ9wrzpj3Ajogb/pQLDqd
-	vJcM+ffytiKPWm8UWpDTIeWJes+94gVZfzFszt5osJqEodbUGy0OK78dr1SRDxgSTP/x+TrA7hB
-	FVxGOrI7MNAPth8G+Kqk4FozVeupLFSg==
-X-Received: by 2002:a05:6000:4027:b0:454:4472:6234 with SMTP id ffacd0b85a97d-45444726351mr24306076f8f.1.1778523277521;
-        Mon, 11 May 2026 11:14:37 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-458b3664e3esm11484900f8f.3.2026.05.11.11.14.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 May 2026 11:14:37 -0700 (PDT)
-Message-ID: <639b2f23-bff3-400f-b5ef-e7d0c39196bc@gmail.com>
-Date: Mon, 11 May 2026 21:14:35 +0300
+	s=arc-20240116; t=1778524337; c=relaxed/simple;
+	bh=U7DyHDFWsODzrIE5Y5zvUxa2K2N31v7JVT1aqndTGfk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LQ4IzjlfqAFoO+pKK6G6ck6hmRM5tvm3sdmaWaZ3Y616ioh1Vnyqqji20rnf9S8wADDjF/wLZDF8w2Sekmn2R1ipP5sNRVeZTuevld+jlKQKXktv/YU9tpBSAIENtWkSjQ1WyWhcb0/lIhUQvxrfYgWRDePyQksNIHRsc3cWBAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=jlTNHED6; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: b84117564d6711f1b96f91537e34a508-20260512
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=euveLJGxSvPWJZ9qF7eSEYwUYjl8arjj3nB8s2YoTmk=;
+	b=jlTNHED6xHfLdzPUt2j+xAZu67e+ISIgwpA6aHj+k0/C1+kpR3eF98ubEH1nrwiQAfqTWTdv2DSCG/IAlAXRbnpNBXKDs4HPXwvCkwmcx8avNfwZ+AVDZqOH4TtumjT2ChGVwVIgnBREBKZZ44OhYsoc1Kvov9qkHzpWOqBN1js=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:4481a882-580a-4bc4-a01d-4a8ccb69bfc2,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:e56c4771-3b7f-4b26-b2f9-40f0deecb36d,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|865|888|898,TC:-5,Content:0|
+	15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0
+	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: b84117564d6711f1b96f91537e34a508-20260512
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
+	(envelope-from <ryder.lee@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 337347264; Tue, 12 May 2026 02:32:09 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Tue, 12 May 2026 02:32:08 +0800
+Received: from mussdccf250.eus.mediatek.inc (10.73.250.250) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Tue, 12 May 2026 02:32:07 +0800
+From: Ryder Lee <ryder.lee@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>
+CC: <linux-mediatek@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+	Shayne Chen <shayne.chen@mediatek.com>, Roy Luo <roy-ch.luo@mediatek.com>,
+	Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7996: avoid memset overwriting tx_info->control.flags
+Date: Mon, 11 May 2026 11:32:04 -0700
+Message-ID: <5ecac6a9b7d29526e8438dea105b58f5487c93aa.1778521232.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next v2 1/1] wifi: rtw89: usb: Support switching to
- USB 3 mode
-To: Devin Wittmayer <lucid_duck@justthetip.ca>, linux-wireless@vger.kernel.org
-Cc: pkshih@realtek.com, linux-kernel@vger.kernel.org
-References: <20260508054421.128938-1-lucid_duck@justthetip.ca>
- <20260511160811.17647-1-lucid_duck@justthetip.ca>
- <20260511160811.17647-2-lucid_duck@justthetip.ca>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <20260511160811.17647-2-lucid_duck@justthetip.ca>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: DD71951460C
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
+X-Rspamd-Queue-Id: 081475147DC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36259-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36260-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[mediatek.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[ryder.lee@mediatek.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,justthetip.ca:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mediatek.com:email,mediatek.com:mid,mediatek.com:dkim]
 X-Rspamd-Action: no action
 
-On 11/05/2026 19:08, Devin Wittmayer wrote:
-> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> 
-> The Realtek wifi 6/7 devices which support USB 3 are weird: when first
-> plugged in, they pretend to be USB 2. The driver needs to send some
-> commands to the device, which make it disappear and come back as a
-> USB 3 device.
-> 
-> Implement the required commands in rtw89.
-> 
-> When a USB 3 device is plugged into a USB 2 port, rtw89 will try to
-> switch it to USB 3 mode only once. The device will disappear and come
-> back still in USB 2 mode, of course.
-> 
-> Some people experience heavy interference in the 2.4 GHz band in
-> USB 3 mode, so add a module parameter switch_usb_mode with the
-> default value 1 to let people disable the switching.
-> 
-> Tested with RTL8832BU and RTL8832CU.
-> 
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> Signed-off-by: Devin Wittmayer <lucid_duck@justthetip.ca>
-> Tested-by: Devin Wittmayer <lucid_duck@justthetip.ca>
+mt76_tx_status_skb_add uses memset on status.status_driver_data, which
+overwrite  info->control.flags in ieee80211_tx_info. Copy tx_info before
+calling mt76_tx_status_skb_add to ensure control fields are preserved
+and remain valid for later processing.
 
-Are you quite sure you tested this?
+Reported-By: Roy Luo <roy-ch.luo@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 17 +++++++++--------
+ .../net/wireless/mediatek/mt76/mt7996/mt7996.h  |  2 +-
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-> ---
->  drivers/net/wireless/realtek/rtw89/reg.h |  4 +++
->  drivers/net/wireless/realtek/rtw89/usb.c | 41 ++++++++++++++++++++++++
->  2 files changed, 45 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-> index 42ffe83931a3..7d4c085d9fb2 100644
-> --- a/drivers/net/wireless/realtek/rtw89/reg.h
-> +++ b/drivers/net/wireless/realtek/rtw89/reg.h
-> @@ -164,6 +164,10 @@
->  #define R_AX_DBG_PORT_SEL 0x00C0
->  #define B_AX_DEBUG_ST_MASK GENMASK(31, 0)
->  
-> +#define R_AX_PAD_CTRL2 0x00C4
-> +#define U2SWITCHU3 0xB
-> +#define USB_SWITCH_DELAY 0xF
-> +
->  #define R_AX_PMC_DBG_CTRL2 0x00CC
->  #define B_AX_SYSON_DIS_PMCR_AX_WRMSK BIT(2)
->  
-> diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
-> index 767a95f759b1..4fb25791d118 100644
-> --- a/drivers/net/wireless/realtek/rtw89/usb.c
-> +++ b/drivers/net/wireless/realtek/rtw89/usb.c
-> @@ -9,6 +9,11 @@
->  #include "txrx.h"
->  #include "usb.h"
->  
-> +static bool rtw89_switch_usb_mode = true;
-> +module_param_named(switch_usb_mode, rtw89_switch_usb_mode, bool, 0644);
-> +MODULE_PARM_DESC(switch_usb_mode,
-> +		 "Set to N to disable switching to USB 3 mode to avoid potential interference in the 2.4 GHz band (default: Y)");
-> +
->  static void rtw89_usb_read_port_complete(struct urb *urb);
->  
->  static void rtw89_usb_vendorreq(struct rtw89_dev *rtwdev, u32 addr,
-> @@ -1027,6 +1032,35 @@ static void rtw89_usb_intf_deinit(struct rtw89_dev *rtwdev,
->  	usb_set_intfdata(intf, NULL);
->  }
->  
-> +static int rtw89_usb_switch_mode(struct rtw89_dev *rtwdev)
-> +{
-> +	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
-> +
-> +	if (!rtw89_switch_usb_mode)
-> +		return 0;
-> +
-> +	/* No known USB 3 devices with this chip. */
-> +	if (rtwdev->chip->chip_id == RTL8851B)
-> +		return 0;
-> +
-> +	if (rtwusb->udev->speed == USB_SPEED_SUPER)
-> +		return 0;
-> +
-> +	rtw89_debug(rtwdev, RTW89_DBG_HCI, "%s: pad_ctrl2: %#x %#x\n",
-> +		    __func__,
-> +		    rtw89_read8(rtwdev, R_AX_PAD_CTRL2 + 1),
-> +		    rtw89_read8(rtwdev, R_AX_PAD_CTRL2 + 2));
-> +
-> +	/* Already tried to switch but it's a USB 2 port. */
-> +	if (rtw89_read8(rtwdev, R_AX_PAD_CTRL2 + 1) == USB_SWITCH_DELAY)
-> +		return 0;
-> +
-> +	rtw89_write8(rtwdev, R_AX_PAD_CTRL2 + 1, USB_SWITCH_DELAY);
-> +	rtw89_write8(rtwdev, R_AX_PAD_CTRL2 + 2, U2SWITCHU3);
-> +
-> +	return 1;
-> +}
-> +
->  int rtw89_usb_probe(struct usb_interface *intf,
->  		    const struct usb_device_id *id)
->  {
-> @@ -1059,6 +1093,13 @@ int rtw89_usb_probe(struct usb_interface *intf,
->  		goto err_free_hw;
->  	}
->  
-> +	ret = rtw89_usb_switch_mode(rtwdev);
-> +	if (ret) {
-> +		/* Not a fail, but we do need to skip rtw89_core_register. */
-> +		ret = 0;
-> +		goto err_intf_deinit;
-> +	}
-> +
->  	if (rtwusb->udev->speed == USB_SPEED_SUPER)
->  		rtwdev->hci.dle_type = RTW89_HCI_DLE_TYPE_USB3;
->  	else
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index e2a83da3a09c..a59c14c8f2af 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -855,11 +855,12 @@ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
+ 
+ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 			   struct sk_buff *skb, struct mt76_wcid *wcid,
+-			   struct ieee80211_key_conf *key, int pid,
++			   struct ieee80211_tx_info *tx_info, int pid,
+ 			   enum mt76_txq_id qid, u32 changed)
+ {
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+-	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct ieee80211_key_conf *key = tx_info ? tx_info->control.hw_key : NULL;
++	struct ieee80211_tx_info *info = tx_info ? tx_info : IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_vif *vif = info->control.vif;
+ 	u8 band_idx = (info->hw_queue & MT_TX_HW_QUEUE_PHY) >> 2;
+ 	u8 p_fmt, q_idx, omac_idx = 0, wmm_idx = 0;
+@@ -1006,15 +1007,15 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ {
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)tx_info->skb->data;
+ 	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
+-	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_info->skb);
+-	struct ieee80211_key_conf *key = info->control.hw_key;
+-	struct ieee80211_vif *vif = info->control.vif;
++	struct ieee80211_tx_info info = *IEEE80211_SKB_CB(tx_info->skb);
++	struct ieee80211_key_conf *key = info.control.hw_key;
++	struct ieee80211_vif *vif = info.control.vif;
+ 	struct mt7996_vif *mvif = vif ? (struct mt7996_vif *)vif->drv_priv : NULL;
+ 	struct mt7996_sta *msta = sta ? (struct mt7996_sta *)sta->drv_priv : NULL;
+ 	struct mt76_vif_link *mlink = NULL;
+ 	struct mt76_txwi_cache *t;
+ 	int id, i, pid, nbuf = tx_info->nbuf - 1;
+-	bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
++	bool is_8023 = info.flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
+ 	__le32 *ptr = (__le32 *)txwi_ptr;
+ 	u8 *txwi = (u8 *)txwi_ptr;
+ 	u8 link_id;
+@@ -1031,7 +1032,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 
+ 		link_id = (tid % 2) ? msta->seclink_id : msta->deflink_id;
+ 	} else {
+-		link_id = u32_get_bits(info->control.flags,
++		link_id = u32_get_bits(info.control.flags,
+ 				       IEEE80211_TX_CTRL_MLO_LINK);
+ 	}
+ 
+@@ -1095,7 +1096,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	memset(txwi_ptr, 0, MT_TXD_SIZE);
+ 	/* Transmit non qos data by 802.11 header and need to fill txd by host*/
+ 	if (!is_8023 || pid >= MT_PACKET_ID_FIRST)
+-		mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, key,
++		mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, &info,
+ 				      pid, qid, 0);
+ 
+ 	/* MT7996 and MT7992 require driver to provide the MAC TXP for AddBA
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index bdcf72457954..319fcc4fb469 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -854,7 +854,7 @@ void mt7996_mac_cca_stats_reset(struct mt7996_phy *phy);
+ void mt7996_mac_enable_nf(struct mt7996_dev *dev, u8 band);
+ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 			   struct sk_buff *skb, struct mt76_wcid *wcid,
+-			   struct ieee80211_key_conf *key, int pid,
++			   struct ieee80211_tx_info *tx_info, int pid,
+ 			   enum mt76_txq_id qid, u32 changed);
+ void mt7996_mac_update_beacons(struct mt7996_phy *phy);
+ void mt7996_mac_set_coverage_class(struct mt7996_phy *phy);
+-- 
+2.45.2
 
 
