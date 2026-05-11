@@ -1,161 +1,286 @@
-Return-Path: <linux-wireless+bounces-36183-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36184-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBU4Ons9AWqcSQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36183-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 04:22:51 +0200
+	id jes6EDxSAWpSVAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36184-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 05:51:24 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE7F5072A4
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 04:22:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B92507C3F
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 05:51:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 36BFD300796B
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 02:22:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E16630048F9
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 03:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64EC263F5E;
-	Mon, 11 May 2026 02:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDB321B191;
+	Mon, 11 May 2026 03:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="Sxl8OIpK"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QNCf7MYP";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="MLGfYEkH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F70175A6B
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 02:22:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EF41B7910
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 03:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778466167; cv=none; b=KJr05ZbXoO37/MogtVm2QkPa5lrOV6zknYMiO8aNxfLABnA13DZVphr9bh9qUvRDeATH2/GihadPYzOxiqeq7q7lAGy2XSPgTyG1ySWn1JaC7aEZVPK+tcVDU13LojSRI67FjmgKzIqVX3R2QK26H0OWZr1Hf/uVqeWGwUtEVeQ=
+	t=1778471480; cv=none; b=R+XleABcdsYWcL1pE1XBVQR4w3M2/RSSoi+h5ehcHH0psfUxyt9x7t9b/WsQPmIBVl2BScbSDsk/0pxC4vZ/EKjqZd8W45csgMDHEamJScIFHnuTTaMTzUai9kejv5J6mwaGVi4i1jjB47WMjODcXJhixH179Z4YtBQS20FZZvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778466167; c=relaxed/simple;
-	bh=P5b8yxYPfyAANI5U5tIfYy8OHoL+A6T8uuLLf+MS2IY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fIz6haE8CqsBP/IHtv3eR87aAFK+3p4x8gTfr/SCoEadIyQLSoyquYFt4SbLh3PAKheYK8PEm11+a+vDGlx7VyQoTJCnTo6fJlAqs9J6Dgf8JZD0BN6ZbthA1fZ8trAtZ4DRWrTC3ksiJcEOF6TBxVwy09mAkFJMGHKPS0nfkK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=Sxl8OIpK; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-367d88b9940so772372a91.1
-        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 19:22:46 -0700 (PDT)
+	s=arc-20240116; t=1778471480; c=relaxed/simple;
+	bh=QCUmhcoNXMlrIlvwMBnyt+dP1zB5MW+w8kvDi1x7m9M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mp3TRdVCROOr2Sc+fWLJHtsfzr6q3znesn9v9yJCyKudHvlk1z718y1lzTjcJ0QRPv3DHoW9nKYv/oGK65kxiZGufMxo4eWnATJx89WC/VyXSLuF5B8xjDdkQtk4Epp1kPa4WCptgWfKnNz4EsOH/1aBwXNLC3d/vakYPV+M2HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QNCf7MYP; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=MLGfYEkH; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64B2p3OC1375306
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 03:51:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	pbKzUHT/58wGHmoxf6T9tOqHYXHEYsbOKeCSqodQo4o=; b=QNCf7MYPWX02Xp9O
+	JQudjx+gijv3kGM0dWQHAMh+UG6v7K0rVqkngM8DwyMRklihzq/28WPuZXQVCocf
+	ZP1wAH8AyWsUq3d4r3LB2bfPaptMQ/i3F/jxwEooElamTonPeFdWPpmDd9pvHr57
+	y2jEn7gAzP+hrp6RGyw11AOs6DB0HGtLQAvhdbPAtdnayXlAW7E6JfLJmUXw6I6M
+	AXcRS6gIoeT5cHP8dMH8n7Kh4g2n++dJh7HjiGJSzRxAtxfThYFl/5SOju0C2VCI
+	e8FbQHyfonh8RdFncplA9IQXCHTxHaxO8WgfwzGgkr5JFtNiHrbxywT5kEl3Tu+A
+	8u+mmA==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e1w0um742-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 03:51:18 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8230d6d54a5so3528122b3a.1
+        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 20:51:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1778466166; x=1779070966; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vWtWKj/H/hggR9+BAUGtE7bs1FF6c85mqJVTgnUQx8o=;
-        b=Sxl8OIpKExWsFmsxjVC0PITka4z6TfVDJgNdVFoMlRhkh8e5f69VM9QH3Gt1bSVSl0
-         K3kxwpjS3weqK7L4txk3VC1gaYmKOzig5seoWUUCxhFOh7zy+GldyPIFeV9B2N209mx6
-         x352w89wVdK9JCFIUqkCaYH58Ulv7ySosjuxme0Zf6vXBGsfRIet7xHyYEVK8sbhMlJq
-         cDHBzHvYbS77tMJSIft3MGl23LkU4GhSR5IIEtKtNMiddJ2vwpnEeIM+GbQCPQVAxbL9
-         gJTwCBMeoLUKqJpWFpZkbDnqLqSaSmTlvU8Fp4HZh8H0/BsN+dlE7qfv9UuRmpPIK4B5
-         MSPA==
+        d=oss.qualcomm.com; s=google; t=1778471477; x=1779076277; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pbKzUHT/58wGHmoxf6T9tOqHYXHEYsbOKeCSqodQo4o=;
+        b=MLGfYEkHDWacB3DNE2d6YzEnve9Q8oKYRT33zTKuCLwocH5FRzpXcH1ojjizSHzrFu
+         dfdwvIyOjyWH9t2f4mhhDjUod1D06twogwWfoJRWa9VhPtkhpnI+I44rfpyU42nFncC7
+         g074v7CVV1aFxW1KLbwO+yx6UA5d2IeeA3evk1wOY9IYhBqtOeoNn6ihB+dGrKSx0bR9
+         oC0g8ZRXH63eOv6niLt2gTrQOaa1M5IarmboCk+17+mKSOdtj8ap1oCqtpaEEBGP/0G7
+         XwJLCVgDbtpyOmI/bRtWJKUggYAgyY2aN3lnKHH7uziNGw9wAxFY4UADIkaaXW06BrFX
+         o6TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778466166; x=1779070966;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vWtWKj/H/hggR9+BAUGtE7bs1FF6c85mqJVTgnUQx8o=;
-        b=He/gbFtaCb65qTZbwpIotj8NO2ILeWpfxeTX7mnccTRTAIgsV8LvtzKTOLYe19WEar
-         95Xs318eFw/GUCSU9atbTrmNDOcU1dySr21sjbW2WNFtVwFG3BshAkrV3UHkp8lm+fGU
-         e5HFUlC8zdRDNB7o/6Q90hieBqivapNIktC2pYDaMFe98HT9ZCSDB0w9xP5MoVoQCEOl
-         YnXV4l92blIpRo5YsHsmgiURji2rnudcMiqhGzL21GVEx6BNty6IXUc5CsGrcVaZmscv
-         W+Cfvuku++JkW6o6e1np+cDrLWg6RviFfEtSnyevxvFFcdtc5BHGgHfiXunwhvSYM8Va
-         nJeg==
-X-Forwarded-Encrypted: i=1; AFNElJ8YAqusq6j6uzLsnvPN7JEeTAVyjLLmDiIZYNyb/WimvVsWTMp4ZsL02tHZ8z/uPDV0lOTtFCeTXIgbtfKMBw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcQo6M3xDyCan7YVFInPsmGmGcmQgT8K9d+tkBFYtBoqvVbwTy
-	kS0dIyAF9z/yt65mHH5BGphj7/0mFpgC6qLnSf+JX3tlq2Yol8SEBmklU4LqXMpMWd0=
-X-Gm-Gg: Acq92OF5JESAKzILQoMOSFq6HoLqMAvuGtF9gQRaQISq1ezafrkUGNYmEQ9uN0SAPjz
-	VQZGxq7orzmvCihLQnx/0lm/Hf/rW+DUZRoAhPsh0EbwCl019wNIMl7nY9EF3HsvQWXldsYMazn
-	UeG8IXH8vd4+SXs0WsnuaVZREQOwA5rGaj1NyRDzPExCWKk7vpbWtojNHl8xzswaxSrYzOMqwNr
-	HXiJFsgMFcVTO71IoIJfDtIIavZ49cgQPh04bqGLa0jYFLDMc9pQpXIk0jTAxkp98DpxYr6xDoF
-	vpUkZORAjCJpCRtIMHvPaiHUeC06Cr6qb0B+9b8IeIVZmdZk6zhrHftg+XGSOSpcpvn5b4IwAyD
-	x7d1JPZOIXkgC8NskqMun9FnnzNhrRxNPgVm8EQAx52cr3CgStPRsovi/BqvXqorInYrzE9c03I
-	m4HdsNjmvWezZdZdHQiEnlBLhOMm1dlM3AXQ3/9tok88oTGrQ8u/yk0hH5q/RCDBOVZ7VlUmI7p
-	t73Bpq93PoGtLHGWkKa3BA=
-X-Received: by 2002:a17:902:e547:b0:2b2:b117:1d5d with SMTP id d9443c01a7336-2baf0e4fedcmr127957845ad.33.1778466165669;
-        Sun, 10 May 2026 19:22:45 -0700 (PDT)
-Received: from localhost (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1e3715csm87472735ad.45.2026.05.10.19.22.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 19:22:45 -0700 (PDT)
-Date: Mon, 11 May 2026 12:22:42 +1000
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: syzbot <syzbot+e2a0da81361722f4df3b@syzkaller.appspotmail.com>
-Cc: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [wireless?] WARNING in ieee80211_sta_current_bw
-Message-ID: <64ddfb37q7ll3uyxbf3vuaicurz2p2lwqf5shnoepk53bucsll@o6uvujysizof>
-References: <6a00ff4e.170a0220.1c0296.021e.GAE@google.com>
+        d=1e100.net; s=20251104; t=1778471477; x=1779076277;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pbKzUHT/58wGHmoxf6T9tOqHYXHEYsbOKeCSqodQo4o=;
+        b=MGTXZXw7b3fiEFjMwV25dAefhoWz23FjnC1u/lUjkaGMKE504l3pG6JWamp/FyteED
+         a0pn1uYXVB9hamn2lZA5mNObdcbctaJMqd74lXRGKbgwPoHd/g3YjeSNispiaN9GW7HJ
+         aZD5UevwBk1XT+dip5VWc3xOWF84ZIuu+b9kYAK1cSA2kElEW58xRQ+vdet0YUCpymNX
+         7LhlWq2K98opshnhxu07DkAU2t8NQ5BTwlC/YvzsnsdwvmHixFLFjiWr9bKjrbRMLtYo
+         DV3JyX4szzFoRMwHsLqeW6IRmF3JPwe6gt12Xaxet1VHkUH/XFlIVYg8J/tGcHky7kk7
+         XXpQ==
+X-Gm-Message-State: AOJu0YxKem70p62Exd/iV2B3eWOvxF5c/buXfD25lrdD9vuwV/WJhHML
+	H/PkF8O491MrcOkXTg1idudNVi6KJ6JxJkpjod0ZeePXi4v8dOo2tIk6J0uVaHMciJKD7B5ydkZ
+	vmjQoxsd3rVSsb5waI7zu1noyap1XFLUvfcSLelzTN9rK1ovCv7yirg9cOqqoj5LYKo57ZSTTYs
+	g9Vg==
+X-Gm-Gg: Acq92OGjBjklBEhtohwKmjdXl4/cHSyYEeJjak+0YOkeGk7b63NrE+zT+ATWchyr6fs
+	Wq9CUUo4VJlDVOi/8bFWL82u4eshvwxscxyyVBOLuO3oa2zfIB7P8KsfcqKdVDQ5nQ5dx4XFfEq
+	AULVa/9byRYdXGkaeX2ISOrdzZE78D9NUrqPc6dXWIWYHsT0D5PL/bQ26FMQ+tIaIL3fjyuuxuQ
+	8+qOCqsN95f7ujP4lKj77/wsic27gS5XdDz4fbIukjYshvGoEad/3NLO7ItG/ISKYjH4fAb3Cr/
+	e41B/tsBm4CO6+lju4KezfGenov/wU7RHQ7qbi6AnknZDrJde8Rgi+hZy56aoDR15xzllYRwmpV
+	vvldu0c9z2cFf+V54+KDuo/t1tqKY48Hi7B0B6EQzdH4VNAQOV2p3IoYRiqFlboS17FmTkz06r6
+	DEyRYfg1B0VaPwhNeBzhCuo8wAD0yHdio=
+X-Received: by 2002:a05:6a00:4219:b0:82a:146d:36a3 with SMTP id d2e1a72fcca58-83bb85919abmr15930623b3a.21.1778471476735;
+        Sun, 10 May 2026 20:51:16 -0700 (PDT)
+X-Received: by 2002:a05:6a00:4219:b0:82a:146d:36a3 with SMTP id d2e1a72fcca58-83bb85919abmr15930582b3a.21.1778471476209;
+        Sun, 10 May 2026 20:51:16 -0700 (PDT)
+Received: from [10.79.193.74] (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839683a088fsm18614780b3a.58.2026.05.10.20.51.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 10 May 2026 20:51:15 -0700 (PDT)
+Message-ID: <60d67218-aaf4-4639-b5e9-973e6b63bac0@oss.qualcomm.com>
+Date: Mon, 11 May 2026 09:21:12 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a00ff4e.170a0220.1c0296.021e.GAE@google.com>
-X-Rspamd-Queue-Id: 5FE7F5072A4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next 1/2] wifi: ath12k: Add support for handling
+ incumbent signal interference in 6 GHz
+To: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Aishwarya R
+ <aishwarya.r@oss.qualcomm.com>,
+        Hari Chandrakanthan <quic_haric@quicinc.com>
+References: <20260505143853.295368-1-amith.a@oss.qualcomm.com>
+ <20260505143853.295368-2-amith.a@oss.qualcomm.com>
+ <6ebbe7ef-b867-4d5f-838c-7f6224e38891@oss.qualcomm.com>
+Content-Language: en-US
+From: Amith A <amith.a@oss.qualcomm.com>
+In-Reply-To: <6ebbe7ef-b867-4d5f-838c-7f6224e38891@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: QdY37snD0qHm9VYVvMM-JGabCuMZrQtV
+X-Authority-Analysis: v=2.4 cv=asaCzyZV c=1 sm=1 tr=0 ts=6a015236 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
+ a=EUspDBNiAAAA:8 a=COk6AnOGAAAA:8 a=-JVo_sVfTxQHn8smsngA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: QdY37snD0qHm9VYVvMM-JGabCuMZrQtV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDAzOSBTYWx0ZWRfX7iFqJ8LONapv
+ LeZITieOJaGXVLxqMW7AztZXY3/ykcQNjqetobcsUsuwN8sHtlET3mi+Ae3j4EwS1nquBje2/dF
+ ML8hAIXjWY7iP0NJXp6K3pPQ1SW+dJ+JGN4+YIgb60tGqUUaTlP494CqP8C939nnqRy60yZeevT
+ atSRpTjQzxTLnRSxAPvTxNEPx3BAnlaY8PU8bOagtH9hlpC2Iqjxpt2Rpl164YnXQ4Fq50/UuZa
+ Q8lqkremv7AODXk5eovAh3Z/wIh3L/nF57HJUc6Rce973aG5pj4TRmRF/WUg0/V5ZF+7uUKNPRC
+ ivO0QwwP9pVFulbuee2h8hdaDe06NjhBTJLMSLaKKRm9F12bo8P56PHCFUagYekjruTX+f8lyms
+ k1Hz9UBXm+RbTHM+XEUKUBjqlKfxqOueGA6KOL62n/lc/ImovKOh9HxafeaWp+cATWbhUiJAZzI
+ QyRVFThlmGDz3qyu+hQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_01,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
+ adultscore=0 clxscore=1015 suspectscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605110039
+X-Rspamd-Queue-Id: 60B92507C3F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.44 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36183-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,morsemicro-com.20251104.gappssmtp.com:dkim];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36184-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless,e2a0da81361722f4df3b];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[amith.a@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	SUBJECT_HAS_QUESTION(0.00)[]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-> WARNING: ./include/net/mac80211.h:8114 at ieee80211_chan_width_to_rx_bw include/net/mac80211.h:8114 [inline], CPU#1: syz.4.4769/22510
-> WARNING: ./include/net/mac80211.h:8114 at ieee80211_sta_current_bw_tx_to_sta net/mac80211/sta_info.c:3719 [inline], CPU#1: syz.4.4769/22510
-> WARNING: ./include/net/mac80211.h:8114 at ieee80211_sta_current_bw+0x36d/0x510 net/mac80211/sta_info.c:3745, CPU#1: syz.4.4769/22510
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 22510 Comm: syz.4.4769 Not tainted syzkaller #0 PREEMPT(full) 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-> RIP: 0010:ieee80211_chan_width_to_rx_bw include/net/mac80211.h:8114 [inline]
-> RIP: 0010:ieee80211_sta_current_bw_tx_to_sta net/mac80211/sta_info.c:3719 [inline]
-> RIP: 0010:ieee80211_sta_current_bw+0x36d/0x510 net/mac80211/sta_info.c:3745
-> Code: 00 00 00 eb 49 41 83 fe 05 74 30 41 83 fe 0d 75 13 e8 47 8f af f6 b8 04 00 00 00 eb 31 e8 3b 8f af f6 eb 28 e8 34 8f af f6 90 <0f> 0b 90 eb 1d e8 29 8f af f6 b8 02 00 00 00 eb 13 e8 1d 8f af f6
-> RSP: 0018:ffffc90006f4eed8 EFLAGS: 00010283
-> RAX: ffffffff8b161cfc RBX: 1ffff1100d1da030 RCX: 0000000000080000
-> RDX: ffffc9000e5d2000 RSI: 0000000000000e31 RDI: 0000000000000e32
-> RBP: 0000000000000004 R08: ffff888054ad5c40 R09: 0000000000000007
-> R10: 000000000000000d R11: 0000000000000002 R12: ffff888068ed0180
-> R13: dffffc0000000000 R14: 0000000000000007 R15: 0000000000000000
-> FS:  00007fe58f5f66c0(0000) GS:ffff888125389000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 000000110c2c8823 CR3: 0000000038486000 CR4: 00000000003526f0
 
-This looks to be 10MHz given R14 = 7 which seems to be the operand
-being compared I think. The 2 patches I sent the other week should
-fix this occuring for any S1G bandwidths, not sure about 5 and 10MHz.
 
-Atleast for this situation, it would be the same - we don't wanna
-recalc the mindef for 5 and 10MHz since the mindef isn't recalculated
-for 5/10MHz like S1G. But then I'm not sure the S1G workaround for
-ieee80211_sta_init_nss_bw_capa since maybe nss might be greater than
-1 for 5/10MHz?
+On 5/8/2026 11:43 AM, Rameshkumar Sundaram wrote:
+> On 5/5/2026 8:08 PM, Amith A wrote:
+>> From: Aishwarya R <aishwarya.r@oss.qualcomm.com>
+>>
+>> When incumbent signal interference is detected by an AP/mesh interface
+>> operating in the 6 GHz band, as mandated by the FCC, it is expected to
+>> vacate the affected channels. The firmware indicates the interference to
+>> the host using the WMI_DCS_INTERFERENCE_EVENT.
+>>
+>> To handle the new WMI event, first parse it to retrieve the interference
+>> information. Next, validate the interference-detected channel and
+>> the interference bitmap. The interference bitmap received from the
+>> firmware uses a mapping where bit 0 corresponds to the primary
+>> 20 MHz segment, regardless of its position within the operating
+>> bandwidth. Bit 1 represents the next adjacent 20 MHz segment, bit 2
+>> the lower 20 MHz segment of the adjacent 40 MHz segment, and so
+>> on, progressing sequentially across the bandwidth. However, for
+>> userspace
+>> consumption via mac80211, this bitmap must be transformed into a
+>> standardized format such that each bit position directly maps to the
+>> corresponding sub-channel index within the operating bandwidth.
+>> Finally, indicate the transformed interference bitmap to mac80211, which
+>> then notifies userspace of the interference. Once the incumbent signal
+>> interference is detected, firmware suspends TX internally on the
+>> affected
+>> operating channel while userspace decides the mitigation action.
+>> Userspace
+>> is expected to trigger a channel switch or bandwidth reduction to
+>> mitigate
+>> the interference. Also, add a flag handling_in_progress to indicate that
+>> handling of interference is in progress. Set it to true after
+>> indicating to mac80211 about the interference. Reset the flag to false
+>> after the operating channel is switched by userspace. This prevents
+>> processing any further interference events when there is already a
+>> previous event being handled. Hence, further events are processed only
+>> after a channel switch request is received from userspace for the
+>> previous event.
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
+>>
+>> Signed-off-by: Aishwarya R <aishwarya.r@oss.qualcomm.com>
+>> Co-developed-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+>> Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+>> Signed-off-by: Amith A <amith.a@oss.qualcomm.com>
+>> ---
+>>   drivers/net/wireless/ath/ath12k/core.h |   8 +
+>>   drivers/net/wireless/ath/ath12k/mac.c  |  46 +++
+>>   drivers/net/wireless/ath/ath12k/wmi.c  | 382 +++++++++++++++++++++++++
+>>   drivers/net/wireless/ath/ath12k/wmi.h  |  58 +++-
+>>   4 files changed, 493 insertions(+), 1 deletion(-)
+>>
+>
+> { ... }
+>
+>
+>> +static int
+>> +ath12k_wmi_incumbent_signal_interference_subtlv_parser(struct
+>> ath12k_base *ab,
+>> +                               u16 tag, u16 len,
+>> +                               const void *ptr,
+>> +                               void *data)
+>> +{
+>> +    const struct ath12k_wmi_incumbent_signal_interference_params *info;
+>> +    struct ath12k_wmi_incumbent_signal_interference_arg *arg = data;
+>> +
+>> +    switch (tag) {
+>> +    case WMI_TAG_DCS_INCUMBENT_SIGNAL_INTERFERENCE_TYPE:
+>> +        info = ptr;
+>> +
+>
+> should we validate len before accessing info ? or may be add an entry
+> for WMI_TAG_DCS_INCUMBENT_SIGNAL_INTERFERENCE_TYPE in
+> ath12k_wmi_tlv_policies so that ath12k_wmi_tlv_iter() can take care of
+> the validation.
+Will add an explicit len < sizeof(*info) check in the parser before
+accessing info.
+>
+>> +        arg->chan_width = le32_to_cpu(info->chan_width);
+>> +        arg->chan_freq = le32_to_cpu(info->chan_freq);
+>> +        arg->center_freq0 = le32_to_cpu(info->center_freq0);
+>> +        arg->center_freq1 = le32_to_cpu(info->center_freq1);
+>> +        arg->chan_bw_interference_bitmap =
+>> +            le32_to_cpu(info->chan_bw_interference_bitmap);
+>> +
+>> +        ath12k_dbg(ab, ATH12K_DBG_WMI,
+>> +               "incumbent signal interference chan width %u freq %u
+>> center_freq0 %u center_freq1 %u bitmap 0x%x\n",
+>> +               arg->chan_width, arg->chan_freq,
+>> +               arg->center_freq0, arg->center_freq1,
+>> +               arg->chan_bw_interference_bitmap);
+>> +        break;
+>> +    default:
+>> +        ath12k_warn(ab, "Received invalid tag 0x%x for WMI DCS
+>> interference in subtlvs\n",
+>> +                tag);
+>> +        return -EINVAL;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>
+> -- 
+> Ramesh
 
-lachlan
 
