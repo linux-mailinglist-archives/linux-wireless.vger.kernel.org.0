@@ -1,400 +1,194 @@
-Return-Path: <linux-wireless+bounces-36268-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36269-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PccB4FWAmoOrgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36268-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 00:21:53 +0200
+	id MA/gHN1ZAmosrgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36269-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 00:36:13 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6C1516BA9
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 00:21:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8AE4516FC3
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 00:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 86C143021F68
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 22:20:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F3F13020AB8
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 22:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21A342DFF6;
-	Mon, 11 May 2026 22:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB02383305;
+	Mon, 11 May 2026 22:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SWbOOmdb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BbVL+L4E"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAA6423A7B;
-	Mon, 11 May 2026 22:19:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778537992; cv=none; b=g8INZXAD0x4DzpuS1F53rjmbuqxp0M2EtKiXFi95DVHRCh8SR9wGDXIyO+P8RSITPSh5Dg1kSr/ld5SLWF5WmC1vXTCumHdHS2r1MzlISzpDH+ds+vphtKQkS/ZnCHjj8fd19vFNIETqdGtkG+dQ+EqomPCWAkNRPHc+4hYvLTo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778537992; c=relaxed/simple;
-	bh=HaYXk42WvCSIShW8FZ0bSZslAXirNKtycnqzXYI2XpY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aTT9BCraJXgKCwKVJDgb7zb+dvf50Udf+QCYg0MPr5eJMkokUqgIeUilIMdnWCF6yzS4qnJ6YFAfPRwsCbNgLrc4pmnlLyd+toI1l9jIwrUZzJDCJVxGvyRP3lFXq5MxWYxr3p7WTJkTzgypoVz6wuDmbX+PGg62A8cHeZ8H6Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SWbOOmdb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42531C2BCF7;
-	Mon, 11 May 2026 22:19:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778537992;
-	bh=HaYXk42WvCSIShW8FZ0bSZslAXirNKtycnqzXYI2XpY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SWbOOmdbhph7gAhY8ds3O0gOLXUE1uCohdW1HllrLZ/jqP8bs6VRQwbkvlr7qeosO
-	 eX6rZKrNIiAcC1toDD4iff5B3JPi6Ry+PUEJGc6DJ9l7vQ2dNnOPzeHy3UldftChv2
-	 vEwEQ9Qj12fAcqR77W1CNkPBEKJP7HDcoUmCaJJCosvDOdBM9MVrMCEKMD9KgB5LWe
-	 U4PQPnIqKhIPsSxTtkkteAbkvPhiRoa7954BSt2V72b3eSY2XMHU4A6dGeHcsW+Udw
-	 NXCyH5nL78heXr02AH338DlCFj+Q8nUkuuClw2+QeIo9U0jYB4Cvu+zxfS0pQTyQCK
-	 hYlSt4xwKMd0Q==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Maoyi Xie <maoyi.xie@ntu.edu.sg>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-5.10] wifi: nl80211: require CAP_NET_ADMIN over the target netns in SET_WIPHY_NETNS
-Date: Mon, 11 May 2026 18:19:13 -0400
-Message-ID: <20260511221931.2370053-14-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260511221931.2370053-1-sashal@kernel.org>
-References: <20260511221931.2370053-1-sashal@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFED383326
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 22:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778538366; cv=pass; b=ISzQWonTcDKY89/onExd8Q7jYGe8ROKNhs1+2N8GMnrBpxBfES3V62e/ZAI/5/8uYrP0JbRsfeI3ebOp2LXxj0CDh7fLKKekdVSV40ms5pcg/ODlFp1qyRkib8sVR7N06lrS0OR68Y/BE/JtvJ4qZNQ4xgVCLPEjzGZtndRCWZE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778538366; c=relaxed/simple;
+	bh=l/s3TIkqEL+5WLPIuBaC7pUXbyWhgdR0ZeoA66dq1RU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U/mGwXQRSlwyo31ys9yJIz5SsLeydLCCHSM7SwXjBC4Syr6ysWBsf/kkyaViRh1p4MUche8ZxNVlW/c6vA2MX6v7Smuov0lVJ+Lyrcy8ioc3H9WlU6ExCHx5FVwZ5wbWE4fSSAklo0ajMwXHswWwbUQOYELMA0xeavCNLeJwSSw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BbVL+L4E; arc=pass smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso42352515e9.0
+        for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 15:26:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778538363; cv=none;
+        d=google.com; s=arc-20240605;
+        b=i9T7UHkpgkhauYxbFWJN3Ne86jxVt2MJB6e4EaR2pCAIyJzvaCUfRNZzGlGtGoiYuv
+         ofHpSMxCZAPrNT+hh0WLrwb0iitGnsMiIwekkeFOBwdvyYUeJuoM4ZY2TBnGO/+oEu3C
+         vS3GEXrKA4mrReK5YoOpLGM5fo6S2MNDNX8NMcxO6UtgfzIyYksrXC48pjy82K0AsxMw
+         A+v0BbvJLOunNCdU0LpB11QuBrRZbXn4oAM8mNkJ39mT7Q+2Dkj/wOdbxqDSzeGtENtC
+         jKYI25psxgamIrPYVXHB2/EgSsi3xHcn60Waw0afCRqSQGgXHhzQnka+LAV+13L6PR8b
+         B83A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=l/s3TIkqEL+5WLPIuBaC7pUXbyWhgdR0ZeoA66dq1RU=;
+        fh=kiH9BsJ+TyHZ/0f9lp96S1R8k/374lMiI4doNuDXH6k=;
+        b=GMI1nibUMuyRJndBgkLEJ40F8vKimQKsoGGA4i59GBGljrdvzspH0HKXmgPNVnB8TP
+         ukjIq8o9zxN6y877DKFosDb4e8WZ/OYJYmY0I8cwZrRV3FSrxViGrqPrAcJgO059c8e2
+         bTWodWs0dArJTkVegHSQ5GaZmlj6HWI8Ill8Y6pBBw13MdbVEWAr/kVs9k8nWjlPnH2O
+         Krkn9fAGGrOC2FHkIucyEWmazxji4/4AQjYGABMnR5r5/pOh6Z/xgxc01CsNKqjR4vPc
+         Ad8LMFZfRe2K9BDtIan6oWhtVpXafz3EDZI5zVEp1FL01LE7lPoTUoEy1S8UfNs6ok9S
+         BNxw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778538363; x=1779143163; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l/s3TIkqEL+5WLPIuBaC7pUXbyWhgdR0ZeoA66dq1RU=;
+        b=BbVL+L4E3qoXCnBe5R7p9CfloFOePp/WNCQyUuK2MKMrSoTTBhGimQZzPjlTJTlxIf
+         JCpr7xMTFm/QozxpaCfVlo7bGccOCEfgcrf9dFBrbSyni5Wpffv0ivoPFRJ96fm+wcC9
+         y9Z5CeJQov+FSSqM0qUGh1x+iv/gFLBGmdWtYaP2jQ9JGZjkH8jhpHAXyOq9Vq3EPOsv
+         rlYjcIsk95FG7o3R9MDXVKOJV+TdQGI9hWJdM/PT2SwExC2Pk4J3+49/CiQzauJMBAPt
+         vWeQ76LDZBplVnd36Bu387y1wKkRdq3dQ0HFExcRW2/NEzve9hxcP61qLlR3n0TNE+ue
+         4RDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778538363; x=1779143163;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=l/s3TIkqEL+5WLPIuBaC7pUXbyWhgdR0ZeoA66dq1RU=;
+        b=ccXgVevr1zoiK1lJ4FEtEm++ztMEPCMbDRZHZK9UCL1Jd6yY/KPoZH4ObU6zzbwizZ
+         jcGMV2mbqNQw5Oz/y6Ex2w7IpWXozX7LsiV+04K38ipJV4w+WSYHRekNcfqfqMoDtJj8
+         r1wT4bvYwedzrDI6Odz/5njoML9kYGtjAItnDZl//zpSenfZ5bhu9J9orIq9bAlsKM0o
+         ylaEUqnPuUi14dGbyvzuU1VBgH7SAHqMbwdmzApFZDmd86VJnEeUgZ2vCYQKhSd9GRew
+         3WjS9bRrqcO8ISlSR+h6A3OrzpCUk45SJd8knKSrBaOP61MI+zt+doycQsurDY/cKnjy
+         tCpA==
+X-Gm-Message-State: AOJu0YwLn6VtsvxB5xhYWfYw8CCi/34EEVkkJ7ypX4D0JdNoMahlyvq4
+	GYOwDAxqobfLZwZHNeQbZxGGNnLvZgR7G+vGpB0eqs7YPCnnHr6dGr2fBL/bOEoOxkJaqkEw+I6
+	SIDG3IBsKXclFbWHvpLScJXfteavCYrM=
+X-Gm-Gg: Acq92OGP5rtnWrmMlKp/tIXJ69TKsXvYJeWDbhpVkuC3BB0H+V06gnmVUPXHqEA8um+
+	0Gd5ZYR5K7YZrdEoxEZCrWdnf3DRE4LvIh2PVpvcHBtNFNYXPjijxWLRqrMCcqkdi3i/mpfPL9e
+	gQ3m5ndD+FPWil4Z0UPYw+SHHkT5K4K8BzHUwmFDRwsjeUHfwGuat/Pdotz0GvNayR4SoN7oQLo
+	t7Lhg8WapCHwyLzsro/SUwPjKRSzquDWnytdis1nxt+uNgh9Ar612aKqvZn9bhsYGn2pb+twOF/
+	f451oGBeb7wSgTWTE7LY
+X-Received: by 2002:a05:600c:8706:b0:48a:8905:a500 with SMTP id
+ 5b1f17b1804b1-48e70696dfdmr197141135e9.12.1778538362782; Mon, 11 May 2026
+ 15:26:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 7.0.6
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AF6C1516BA9
+References: <db11380dfbe7fff538a1a052fdfc5905202981a4.camel@sipsolutions.net>
+ <20260509234143.101237-1-masashi.honma@gmail.com> <ecb7aef2f18cc7c04817be155017a54a45fa579e.camel@sipsolutions.net>
+ <CAFk-A4mD=tKHMp8qqAvrsFZjmJHsA1sBe9Wmmn=qEacNMxTH_A@mail.gmail.com> <725b56f42b5fec58196e4055bccb74236145986b.camel@sipsolutions.net>
+In-Reply-To: <725b56f42b5fec58196e4055bccb74236145986b.camel@sipsolutions.net>
+From: Masashi Honma <masashi.honma@gmail.com>
+Date: Tue, 12 May 2026 07:25:51 +0900
+X-Gm-Features: AVHnY4Kfid5P-syOqVCpHvlN3AgM8hXXhwzuD5HZEc_QPjFzdGjWlVUbfBSQst0
+Message-ID: <CAFk-A4kwASJL4Hdb0TAkyQ38ZGx2Mom1Pn6cbDR7gL_c_x_4Sg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] Fix overread in PREQ frame processing
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D8AE4516FC3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36268-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36269-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[masashihonma@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ntu.edu.sg:email,msgid.link:url,patch:url]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+> Oh sure, as far as I'm concerned there's no urgency, I just didn't want
+> to keep asking you to make changes too much.
 
-[ Upstream commit 15994bb0cbb8fc4879da7552ddd08c1896261c39 ]
+No problem. The code is getting better and better, so your reviews are very
+welcome.
 
-NL80211_CMD_SET_WIPHY_NETNS dispatches with GENL_UNS_ADMIN_PERM, which
-verifies that the caller has CAP_NET_ADMIN for the source netns. It
-doesn't verify that the caller has CAP_NET_ADMIN over the target netns
-selected by NL80211_ATTR_NETNS_FD or NL80211_ATTR_PID.
+> Oh OK :) Maybe we need that as a kind of Reported-by? Hmm.
+> Or you could send a separate bug report email, say there Claude found
+> it, and then do a Closes: link :-p
 
-This diverges from the convention enforced in
-net/core/rtnetlink.c::rtnl_get_net_ns_capable():
+Ha ha, no problem. I am happy to tag Claude because I wouldn't have even be=
+en
+able to find this issue if I hadn't used an LLM.
 
-    /* For now, the caller is required to have CAP_NET_ADMIN in
-     * the user namespace owning the target net ns.
-     */
-    if (!sk_ns_capable(sk, net->user_ns, CAP_NET_ADMIN))
-        return ERR_PTR(-EACCES);
-
-A user with CAP_NET_ADMIN in their own user namespace can therefore
-push a wiphy into an arbitrary netns (including init_net) over which
-they have no privilege.
-
-Mirror the rtnetlink convention by requiring CAP_NET_ADMIN in the
-target netns before calling cfg80211_switch_netns().
-
-Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Link: https://patch.msgid.link/20260506064854.2207105-2-maoyixie.tju@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-## Phase Walkthrough
-
-### Phase 1: Commit Message Forensics
-Record: `wifi: nl80211` subsystem; action verb `require`; intent is to
-require `CAP_NET_ADMIN` over the target network namespace before
-`NL80211_CMD_SET_WIPHY_NETNS` moves a wiphy.
-
-Record: Tags in the provided commit message:
-`Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>`, `Link: https://patch.
-msgid.link/20260506064854.2207105-2-maoyixie.tju@gmail.com`, `Signed-
-off-by: Johannes Berg <johannes.berg@intel.com>`. No `Fixes:`,
-`Reported-by:`, `Tested-by:`, `Reviewed-by:`, or `Cc: stable` tag was
-present in the provided message.
-
-Record: The described bug is an authorization gap. `GENL_UNS_ADMIN_PERM`
-verifies `CAP_NET_ADMIN` for the netlink socket/source netns, but
-`NL80211_ATTR_NETNS_FD` / `NL80211_ATTR_PID` selects a target netns that
-was not separately checked. The b4-fetched cover letter includes a
-concrete reproducer with `mac80211_hwsim`: a caller privileged only in
-its own user namespace can move a delegated wiphy back into `init_net`.
-
-Record: This is not a hidden cleanup fix; it is an explicit
-security/permission bug fix.
-
-### Phase 2: Diff Analysis
-Record: One file changed, `net/wireless/nl80211.c`, with 13 insertions
-in `nl80211_wiphy_netns()`. Scope is a single-function surgical fix.
-
-Record: Before: after resolving the target netns and checking
-`IS_ERR(net)`, the function directly called `cfg80211_switch_netns()` if
-the wiphy was not already in that netns. After: it first checks
-`ns_capable(net->user_ns, CAP_NET_ADMIN)`, drops the netns reference
-with `put_net(net)`, and returns `-EPERM` on failure.
-
-Record: Bug category is security authorization / logic correctness. The
-missing check allowed a source-netns-capable caller to affect a
-different target netns without privilege there.
-
-Record: Fix quality is high: small, localized, follows the verified
-rtnetlink convention in `rtnl_get_net_ns_capable()`, and preserves
-reference cleanup. Regression risk is low and limited to denying
-previously accepted unauthorized cross-netns moves.
-
-### Phase 3: Git History Investigation
-Record: `git blame` on the current stable checkout blamed the function
-body to a repository snapshot-style commit, so it was not useful for
-introduction history. `git log v2.6.29..v2.6.32 -S...` found the
-command/function introduced by `463d018323851` (`cfg80211: make aware of
-net namespaces`), first contained in `v2.6.32-rc1`.
-
-Record: No `Fixes:` tag is present, so there was no tagged commit to
-follow.
-
-Record: Recent local `net/wireless/nl80211.c` history showed unrelated
-wireless fixes/conversions and no existing equivalent target-netns
-capability fix.
-
-Record: No local prior `Maoyi Xie` commits were found under
-`net/wireless`. `MAINTAINERS` verifies Johannes Berg as maintainer for
-`802.11 (including CFG80211/NL80211)`, and the patch was addressed to
-Johannes on linux-wireless.
-
-Record: No code dependency was found for this patch. It is patch 1/2 in
-the submitted series; patch 2 is related namespace hardening, but patch
-1 is standalone for the direct permission bypass.
-
-### Phase 4: Mailing List And External Research
-Record: No commit hash was provided and the exact subject was not found
-in local `master`, `wireless-next`, `net-next`, or `fixes-next`, so `b4
-dig -c <commit>` was not applicable. I used the provided message-id with
-`b4 am`/`b4 mbox`.
-
-Record: `b4 am` found `[PATCH v3 0/2] wifi: nl80211: tighten netns
-handling in SET_WIPHY_NETNS and dump continuation`, including this patch
-as `v3 1/2`. `b4 am -c` did not report a newer revision. Attempts to
-fetch v1/v2 directly with `b4 -v 1/-v 2` did not find those revisions,
-but the v3 cover records that patch 1 was unchanged since v1.
-
-Record: The full mbox contained three messages: cover, patch 1, patch 2.
-It did not contain reviewer reply messages, but the cover records
-Johannes review feedback about trailers/comment wording and says no code
-changes since v2.
-
-Record: Original recipients were Johannes Berg, `linux-
-wireless@vger.kernel.org`, and `linux-kernel@vger.kernel.org`. No stable
-nomination or NAK was found in the fetched mbox. Lore WebFetch searches
-were blocked by Anubis, so stable-list discussion could not be
-independently verified through WebFetch.
-
-### Phase 5: Code Semantic Analysis
-Record: Modified function: `nl80211_wiphy_netns()`.
-
-Record: Caller surface: the only direct reference is the generic-netlink
-op for `NL80211_CMD_SET_WIPHY_NETNS`; `genl_family_rcv_msg()` checks
-`GENL_UNS_ADMIN_PERM` against `net->user_ns`, then
-`genl_family_rcv_msg_doit()` calls `ops->doit()`, reaching
-`nl80211_wiphy_netns()` from userspace netlink.
-
-Record: Key callees: `get_net_ns_by_pid()`, `get_net_ns_by_fd()`, new
-`ns_capable(net->user_ns, CAP_NET_ADMIN)`, `cfg80211_switch_netns()`,
-and `put_net()`. `cfg80211_switch_netns()` moves associated wireless
-netdevs with `dev_change_net_namespace()` and updates `wiphy_net_set()`.
-
-Record: Reachability is verified by the op table and by the b4 cover’s
-PoC. A userspace caller can trigger the path by sending
-`NL80211_CMD_SET_WIPHY_NETNS` with target PID or netns fd.
-
-Record: Similar convention verified in `rtnl_get_net_ns_capable()`,
-which checks target `net->user_ns` before using another netns.
-
-### Phase 6: Stable Tree Analysis
-Record: The vulnerable handler/op shape exists in `v5.4`, `v5.10`,
-`v5.15`, `v6.1`, `v6.6`, `v6.12`, `v6.19`, and current `7.0.y`, with no
-`ns_capable(net->user_ns, CAP_NET_ADMIN)` check in the handler.
-
-Record: `v3.18` has `NL80211_CMD_SET_WIPHY_NETNS`, but uses
-`GENL_ADMIN_PERM`, so the unprivileged-user-namespace aspect is not the
-same there. For active modern stable trees, the issue is present.
-
-Record: `git apply --check` of the fetched v3 mbox succeeds on the
-current `7.0.y` checkout. Older stable trees have line offsets and minor
-surrounding differences, but the same local hunk context exists at least
-in `v5.4`; expected backport difficulty is clean or minor-context-only.
-
-Record: No related local fix already present was found by subject/grep
-searches.
-
-### Phase 7: Subsystem Context
-Record: Subsystem is cfg80211/nl80211 wireless configuration.
-Criticality is IMPORTANT: it is not core-mm/VFS, but it is a userspace-
-facing network configuration and permission boundary.
-
-Record: The wireless subsystem is active in local history, with recent
-cfg80211/nl80211-adjacent fixes.
-
-### Phase 8: Impact And Risk
-Record: Affected users are systems with cfg80211/nl80211, network
-namespaces/user namespaces, and a `WIPHY_FLAG_NETNS_OK` wiphy. Verified
-examples include `mac80211` and drivers setting the flag such as
-`brcmfmac`, `mwifiex`, and `qtnfmac`.
-
-Record: Trigger requires the caller to hold a movable wiphy in its own
-netns and pass a target netns fd or pid. The b4 cover verifies this is
-reachable from an unprivileged user namespace after legitimate admin
-delegation using `mac80211_hwsim`.
-
-Record: Failure mode is a security/namespace isolation violation:
-unauthorized movement of a wiphy into a netns, including `init_net`,
-where the caller lacks privilege. Severity is HIGH because it bypasses
-kernel namespace permission boundaries.
-
-Record: Benefit is high for stable users because it closes a concrete
-privilege boundary bug. Risk is low: 13 lines, one function, no new API,
-no data structure change, and only unauthorized operations change
-behavior.
-
-### Phase 9: Final Synthesis
-Record: Evidence for backporting: real security/authorization bug,
-concrete PoC in the submitted cover, reachable userspace netlink
-command, vulnerable code present across modern stable trees, small
-contained fix, and it mirrors an existing rtnetlink convention.
-
-Record: Evidence against backporting: no `Fixes:`/stable tag, no fetched
-reviewer reply carrying an explicit stable nomination, and the exact
-applied commit hash was not present in local searched branches. These do
-not outweigh the verified technical issue.
-
-Record: Unresolved: I could not verify the final applied commit object
-or run `b4 dig -c` because no commit hash was provided and local branch
-searches did not find the subject. WebFetch to lore/stable was blocked
-by Anubis. I did not run the runtime PoC or a kernel build.
-
-Stable rules checklist:
-1. Obviously correct and tested: yes by inspection; PoC result described
-   in b4 cover, though not locally rerun.
-2. Fixes a real bug affecting users: yes, verified missing target-netns
-   authorization.
-3. Important issue: yes, security/namespace permission bypass.
-4. Small and contained: yes, one function, 13 added lines.
-5. No new features or APIs: yes.
-6. Can apply to stable: yes for current `7.0.y`; older active stable
-   trees likely clean/minor context based on matching code.
-
-Exception category: none. This is not a device ID/quirk/build/doc fix;
-it is a security permission fix.
-
-## Verification
-- [Phase 1] Parsed provided subject/tags and b4-fetched patch/cover;
-  found no `Fixes:`, `Reported-by:`, `Tested-by:`, `Reviewed-by:`, or
-  stable tag.
-- [Phase 2] Compared provided diff and b4 mbox patch; confirmed 13 lines
-  added to `nl80211_wiphy_netns()`.
-- [Phase 3] `git blame -L` was not useful due snapshot-style history;
-  `git log v2.6.29..v2.6.32 -S...` found `463d018323851`, first
-  contained in `v2.6.32-rc1`.
-- [Phase 3] `git log --author='Maoyi Xie' -- net/wireless` found no
-  local prior commits.
-- [Phase 3] `MAINTAINERS` confirms Johannes Berg maintains `802.11
-  (including CFG80211/NL80211)`.
-- [Phase 4] `b4 am` found v3 2-patch series and the supplied patch
-  message-id.
-- [Phase 4] `b4 am -c` found no newer revision.
-- [Phase 4] `b4 mbox` saved the full 3-message thread; no stable
-  nomination or NAK was present there.
-- [Phase 5] `rg` confirmed `nl80211_wiphy_netns()` is reached via the
-  `NL80211_CMD_SET_WIPHY_NETNS` generic-netlink op.
-- [Phase 5] Read `genetlink.c`; confirmed `GENL_UNS_ADMIN_PERM` checks
-  `net->user_ns` before calling `ops->doit()`.
-- [Phase 5] Read `cfg80211_switch_netns()`; confirmed it moves wireless
-  netdevs and changes the wiphy netns.
-- [Phase 6] Checked `v5.4`, `v5.10`, `v5.15`, `v6.1`, `v6.6`, `v6.12`,
-  `v6.19`, and current `7.0.y`; all have the handler/op without the
-  target `ns_capable()` check.
-- [Phase 6] `git apply --check` of the b4 mbox succeeded on current
-  `7.0.y`.
-- [Phase 8] `rg WIPHY_FLAG_NETNS_OK` verified affected mac80211 and
-  several wireless drivers expose movable wiphys.
-- UNVERIFIED: exact final commit SHA and final applied-object metadata,
-  because the subject was not found in local searched branches.
-- UNVERIFIED: stable-list discussion via WebFetch, because lore WebFetch
-  returned Anubis anti-bot pages.
-- UNVERIFIED: local runtime PoC/build; not performed.
-
-This should be backported to stable kernel trees that contain the
-`GENL_UNS_ADMIN_PERM` version of `NL80211_CMD_SET_WIPHY_NETNS`,
-especially active v5.4+ stable/LTS trees.
-
-**YES**
-
- net/wireless/nl80211.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index ce3121b1c3319..13c2943ad3e4b 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -13568,6 +13568,19 @@ static int nl80211_wiphy_netns(struct sk_buff *skb, struct genl_info *info)
- 	if (IS_ERR(net))
- 		return PTR_ERR(net);
- 
-+	/*
-+	 * The caller already has CAP_NET_ADMIN over the source netns
-+	 * (enforced by GENL_UNS_ADMIN_PERM on the genl op). Mirror the
-+	 * convention used by net/core/rtnetlink.c::rtnl_get_net_ns_capable()
-+	 * and require CAP_NET_ADMIN over the target netns as well, so that
-+	 * a caller that is privileged in their own user namespace cannot
-+	 * push a wiphy into a netns where they have no privilege.
-+	 */
-+	if (!ns_capable(net->user_ns, CAP_NET_ADMIN)) {
-+		put_net(net);
-+		return -EPERM;
-+	}
-+
- 	err = 0;
- 
- 	/* check if anything to do */
--- 
-2.53.0
-
+2026=E5=B9=B45=E6=9C=8811=E6=97=A5(=E6=9C=88) 18:01 Johannes Berg <johannes=
+@sipsolutions.net>:
+>
+> On Mon, 2026-05-11 at 17:58 +0900, Masashi Honma wrote:
+> > > This isn't really right since u32_field_get() exists only within
+> > > mesh_hwmp.c ... it's probably better to modernise all this while at i=
+t:
+> >
+> > Ah, yes. Both the build and tests passed, so I overlooked it.
+>
+> Yes, it would, but it's basically not self-contained. More of a code
+> hygiene issue I guess than a real problem right now.
+>
+> > > and restructure the code accordingly?
+> > > Anyway, I dunno. Maybe we should just go with your original patch for
+> > > now. Maybe I'm also asking more of you than others because you have a=
+n
+> > > LLM to help ;-)
+> >
+> > If it is not urgent, I would like to proceed with the requested restruc=
+turing.
+>
+> Oh sure, as far as I'm concerned there's no urgency, I just didn't want
+> to keep asking you to make changes too much.
+>
+> > Actually, I only used the LLM to find potential vulnerabilities, and I =
+wrote
+> > the code myself :)
+>
+> Oh OK :) Maybe we need that as a kind of Reported-by? Hmm.
+>
+> Or you could send a separate bug report email, say there Claude found
+> it, and then do a Closes: link :-p
+>
+> johannes
 
