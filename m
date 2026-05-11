@@ -1,93 +1,93 @@
-Return-Path: <linux-wireless+bounces-36189-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36190-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AsmQJQNbAWrlWAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36189-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 06:28:51 +0200
+	id ELQBMCJcAWpRWQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36190-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 06:33:38 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D59507D42
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 06:28:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E37C507D92
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 06:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 658CE30062DE
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 04:28:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0550C300A8F9
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 04:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343BD351C06;
-	Mon, 11 May 2026 04:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567AE35F172;
+	Mon, 11 May 2026 04:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nJrff5Qr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dBGLo12Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22FC1E98FF
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 04:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2333C1CD2C
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 04:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778473728; cv=none; b=MINg3ctvnw6xsLR3KXXRqxQjmmCAkTluokxi7JRJS7QeTPk8y2rFiKBucgMORKsPE2EpChwfhbr0htJ3TZ/Hwr0/IOoE1mZSaAd+N9X5uJycwasaMdSib7A+Oj5jIsGUjsrnRv+tw7YWUrvLKzabd5X+WVlnqlEWam3Dqm/+JjI=
+	t=1778473994; cv=none; b=YBtAwM8JkopgE9JNt1I2BDY/yHkTfNowLkQFgobIRgweQfdChPkqsys+YX0kMvT0Er1Vb+UGpiriptYLlXw4uHFNDSpQrZlYMMz4tlTqWMRebPWXcfQA6xmPK51vFPQoto79SJS/4EVOBwrZXF6508eo9OqyD8ub5id5OCT0jLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778473728; c=relaxed/simple;
-	bh=ANYTj5FKK8fZ407SEAKLB8j5DfQii61HUCj0j8WodM0=;
+	s=arc-20240116; t=1778473994; c=relaxed/simple;
+	bh=TG/vQLaXbRfd6lJCu7ood/bYwWzjkW1iUumYzPNE/qE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mrfTOhqn2IVjZblQZaLLa/2TLmg/T2S1NJbDwlXVnkZpN93dIN0IbPmFxWNogQ/PZivn9djQwsS50nsa0ytZhRbqaLpjeB2WSJIFycwe2J0EqAmRGKF40WI8NFck4p8jP/YwJc8iIJXXRR82krJmfbyX9hKhZg96zJICk75YMhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nJrff5Qr; arc=none smtp.client-ip=209.85.214.173
+	 MIME-Version; b=fD+vQKzjdfSA+FBuLNeNPUNIh7nl4zrIdEtRu1gLAOvoLU0mrmsKApIfy6HroQOPG8KbXXbedLHxQom8MdYXpNQyLIdtW66lat+mF/duyp5a2ilG8kldujDPxx2b3Ea/n4NsYa+1PLgbUSrRkRMBAa9rJGXE5+13U0EPi6jNpeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dBGLo12Z; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2baef9f5ecdso19566715ad.1
-        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 21:28:46 -0700 (PDT)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2baca78cfaaso26172165ad.1
+        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 21:33:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778473726; x=1779078526; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778473992; x=1779078792; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OGc1sHXGI9jk1rFS6hqXBE05iQZt/kMXUpe8P2KJtOE=;
-        b=nJrff5QraQMjlzEFRP26OmN9jNrrHCfwqY2gJJ7I+zqdWxoMtZpFiPFtmBEbM1vN9U
-         byEP+09tcinqMsd+TXNOBMqBQlPqKQvY0z/WOw9vKBJ0ZtFmgmaiTaKQ2LctwjtR3izp
-         fkBykP+NBH0VdBJjmk8xdcyZlfPqfBSvgxHqj/pC5nLQWorxK4ayb+Pe+fya5sll9NZs
-         hDJAP5P+Y4UqmLD0BlDzhhbYSmpTaYW9CDC63qR0ROe7YM79wFCpAxyq15PPfIqT871w
-         6VWvHivs5R96vkdYuh0TXK6N3QpXRd9btOudk/N83b1JsXfQNyf3T98XHLF1dPPny5LX
-         LMqA==
+        bh=TG/vQLaXbRfd6lJCu7ood/bYwWzjkW1iUumYzPNE/qE=;
+        b=dBGLo12ZloAc+VJzSH2CCD3+cx07+7oiUkM174fM1hYWagO+vtdO4qxCgqOtW9Bbdi
+         Y2WYZ85b/rbWYQ1DL4hz5/IJk/xoU5bxnX3zFF1X1hnOad+jYi8y7shas5fGyAQBsuSY
+         hkbJ08A8KNH0GJ6rq9bE8t6Z81rNNXuT+++L+nFqjs3rixCDrE7PVC2UgmnIjPyEqzbJ
+         FmMOOhzjQhbxHPrdFJhJYAcLv9Vm1yCSJooagYEaev40Gp0QxdaLLP8uD1fUpaKx7e7r
+         koZpHx6h0HgkOesnqb+PN4ekJ7rj9/gNQrI1ajnOAJhF+MRIHxd6NVs+MXjP0d//8081
+         C/Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778473726; x=1779078526;
+        d=1e100.net; s=20251104; t=1778473992; x=1779078792;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=OGc1sHXGI9jk1rFS6hqXBE05iQZt/kMXUpe8P2KJtOE=;
-        b=E3Wq6IPc3kZI765gSvMAqbwSR2eSBk3VB2V/koysYjMfLL/o1dCe66DxFnbRW1Hj3E
-         R75+EIYCvWKUeFowD2TzDIr7MUMxpuZMMgfiRUt+M16dNVbvQbmmtL/PDqq7OhDf6sNM
-         FUjO4sC71nRjhWe4+eDLmfVIPmP9GyPiiJ9v98bP6LKzEF44O7y97WtIMOVNKP/7jN4b
-         7eY2DMvt82sPA2pfe7fzEQBMIb7ae2oTkhzoE1S7Ik9sGYwN8bivpjdH8WKEU8Tuej6v
-         lLxVoquR8GbGtDXyWqLm/RE96RgCIklx7LL0QGI9mNv9nTcG7hz2RdqnwLKhoMa5Ssnt
-         fBJA==
-X-Forwarded-Encrypted: i=1; AFNElJ93erf9af2gkqq+KMmQQyhD/ekxoT04vpQscVGIxlasIZO+7fHHVkN5I30nZ8MTw7GuDgFr/WfSCILzQvH8fw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdlXR0XoiF+AkY29SM4P2vLUFULsXl4y6A1hOa1sx6ikPf11mt
-	sTl/CUFjHEdAWuH98JNGBnH6H/e8bvSunKbYtwjzwFDePnsop059e/hK
-X-Gm-Gg: Acq92OGijZNQBrCJXbAtg0igSuCIw7WO0xWgHohgwT44jpVsiGNwxairH6qxx0z0E+d
-	psam4z3LxzMUOuh18T3m7IuZkh17GDXxqLuZdX3eFvaKArFvBxs21WYb9G+nZA63x/wkIaXO4qC
-	iLZpZydvR7PUEPvQkKWaE7AdMrEbOhxqWVLPuVQ8JJojkIKCFM9QfF7awAnYkCqim9QjV5rNn6J
-	FVr4lXrnUXJzRWukuA9luoRbFt6hMjkaZ60h7HaBcHwdepCzwx4BvwQ9CzgyIyqrKL9iCOVnBdo
-	B6bP5oJBGVW5GhshsJxRzTTFMGO2tEZ6ojWcKXlCMSUSSeH37xJ+rnnDBKxaepg1mAp90aqyWVk
-	EJB3xRQqem6FtZWAEd5dQDyxf25naS4gVvoiKr2b4UIOJ7WYbUAffLNKSqugQSzKV94epRPytBW
-	uKyDnOv19+4gDM0/hRexj3PLrYI4JSegnwfmDj84AXEpZUt6xH6CUHK41CKqIBQA==
-X-Received: by 2002:a17:903:1aae:b0:2b7:88f9:9c3d with SMTP id d9443c01a7336-2bc7a9a0d0emr87611055ad.12.1778473726160;
-        Sun, 10 May 2026 21:28:46 -0700 (PDT)
+        bh=TG/vQLaXbRfd6lJCu7ood/bYwWzjkW1iUumYzPNE/qE=;
+        b=mY9K8FHWZQN0g7Q7Hbk9MWuO069kjE60QVtll8OyoIndd+L5FEoD/a5Qvn5MwNYD2+
+         3k6YBVXHSZB5m82Wkk/DVmGeXkTmfSM7TvAhYw9n768udmxFIEobto4OOv+EPte7+fCY
+         b7vPIddB+6v09dKGRIF2t+rgBtW3l35FsXDBIrjFV2Crhml2dU/BOf1HrkQ0bpuoSTge
+         gdqM/059ZmonjTwxCImLuc2gl5sSKUgWAZJbPFf/ROL2swN3mGvMmhY3IHlBlPbKiQCj
+         0AoYQ9xgpw2//Xg7BrDLoBQf+/9s3Si4MoByscoihL0QD80LuVXVeMx2+LEmVVykUut1
+         npBw==
+X-Forwarded-Encrypted: i=1; AFNElJ8Zq35KDvPg2+l4mDlLRTyhU2AJcS/5Cfzgp0+zI6FZhDzbGB/Ano2kliTArh+4hMFgUyXwQucdMW82kgjS9g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4t4LWooLKVwUvbLsipUzeiTRq+tFhdrLmXkw4KMEmAPpkrgIq
+	GxpVo0HmBCA9at2cUQkY8FOIXvaRbTDVytHP3C52IJSnZvjWhKJGpVx50gVG7A==
+X-Gm-Gg: Acq92OH7ub4y42LS2BPYEjE1nbF7WItZ51Xkmv/J/ykeUfokP6M0tLt0sJE4wYY21Gv
+	rQoRe6nvwULCHoNCs/wcOnD4S0ypJtsLm1hkU93PIiT2Z1BwwWsrQb9P/lGTryX52VwF53tM5xQ
+	v2MkPOQ1OxNZzLIfpIak/V2JfhiehFqPozDWbO0bgXAqDxwD0Rc8phALw+Fabg4BYq/vLyeOFAy
+	PcjRWClHrXHGH7cctVX98c51ciS2dKhwlAoQju6WrOVU1Hv9O0+IYHGcHZo+tXKtn1CPc9Zh95X
+	AGs5vCOMTahbQmOGQR/OyxMw4sSKWxCq58ffmXuI55346QXncmUQXI1pVv1zrfc4DXaAQdu7b0r
+	JV2bogX0JHY7SoPgQOFYIy4yy+QpY+n5b8UGas+RiWG2Esz9PWEtdc5HWooJeQhsC2mc7nTqPs6
+	ZZTuGNzAbUK3vSsnKrGgccaKy/raBwP+99nHEfcZRylqB5JwreZ17YyoW+JVka+w==
+X-Received: by 2002:a17:903:903:b0:2b2:50bd:83b3 with SMTP id d9443c01a7336-2ba7908b656mr230847755ad.10.1778473992394;
+        Sun, 10 May 2026 21:33:12 -0700 (PDT)
 Received: from localhost.localdomain ([115.110.225.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d27062sm88740375ad.3.2026.05.10.21.28.43
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d271d1sm89109725ad.11.2026.05.10.21.33.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 21:28:45 -0700 (PDT)
+        Sun, 10 May 2026 21:33:12 -0700 (PDT)
 From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
 X-Google-Original-From: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-To: ajay.kathat@microchip.com,
-	claudiu.beznea@tuxon.dev
-Cc: kvalo@kernel.org,
+To: ajay.kathat@microchip.com
+Cc: claudiu.beznea@tuxon.dev,
+	kvalo@kernel.org,
 	linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Subject: [PATCH v2 v2] wifi: wilc1000: fix dma_buffer leak on bus acquire failure
-Date: Mon, 11 May 2026 09:57:32 +0530
-Message-Id: <20260511042732.998311-1-shitalkumar.gandhi@cambiumnetworks.com>
+Subject: Re: [PATCH] wifi: wilc1000: fix dma_buffer leak on bus acquire failure
+Date: Mon, 11 May 2026 10:02:25 +0530
+Message-Id: <20260511043225.1000323-1-shitalkumar.gandhi@cambiumnetworks.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260510112520.977360-1-shitalkumar.gandhi@cambiumnetworks.com>
 References: <20260510112520.977360-1-shitalkumar.gandhi@cambiumnetworks.com>
@@ -98,78 +98,43 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 02D59507D42
+X-Rspamd-Queue-Id: 6E37C507D92
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36189-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[shitalgandhi45@gmail.com,linux-wireless@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36190-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shitalgandhi45@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cambiumnetworks.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-wilc_wlan_firmware_download() allocates dma_buffer with kmalloc() at
-the top of the function and uses a 'fail:' label to free it via
-kfree(dma_buffer) on error.
+Please disregard v1. The author attribution and Signed-off-by were
+incorrect due to a local git config mistake. v2 with the corrected
+identity has been sent and is threaded as a reply to this message.
 
-All later error paths correctly use 'goto fail' to route through this
-cleanup. However, the early failure path after the first acquire_bus()
-call uses a bare 'return ret;', which leaks dma_buffer whenever the bus
-acquire fails.
+Sorry for the noise.
 
-Replace the early return with goto fail so the existing cleanup path
-runs.
-
-Found via a custom Coccinelle semantic patch hunting for kmalloc'd
-locals leaked on early-return error paths in driver firmware-download
-code.
-
-Fixes: 1241c5650ff7 ("wifi: wilc1000: Fill in missing error handling")
-Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
----
-Changes since v1:
-  - Corrected From: and Signed-off-by: to author's real identity
-    (Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>).
-    v1 was sent with incorrect author attribution due to a local
-    git config mistake. No code changes.
-
- drivers/net/wireless/microchip/wilc1000/wlan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 3fa8592eb250..4b116fe6f9ea 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -1265,7 +1265,7 @@ int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
- 
- 	ret = acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
- 	if (ret)
--		return ret;
-+		goto fail;
- 
- 	wilc->hif_func->hif_read_reg(wilc, WILC_GLB_RESET_0, &reg);
- 	reg &= ~BIT(10);
--- 
-2.25.1
-
+Thanks,
+Shital
 
