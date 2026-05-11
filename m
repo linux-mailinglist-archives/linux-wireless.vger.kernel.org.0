@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-36199-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36200-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AdZK/1+AWoMbQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36199-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 09:02:21 +0200
+	id aAjYKgR/AWqkbQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36200-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 09:02:28 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10FEB508C9C
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 09:02:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 392C8508CAA
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 09:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1A0B3007E28
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 07:02:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 257C7301455A
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 07:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1A13115A5;
-	Mon, 11 May 2026 07:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7547B19E839;
+	Mon, 11 May 2026 07:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="YORcowV4"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="csmGxi9z"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB51232B9B5
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 07:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F26A30E85C
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 07:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778482937; cv=none; b=cmtUr6c/dbUtkEkg+RwQG8XC9js/kD2QfxoApaZWPwcDlSyEateOqWi8A7cqD3FKj3ryoi9JX0fZulZTrhOyqMJqF3qs7iL4fDm7xSWV1hiSWoJgvAGe91d4Ur/Ta7Q5AW4wIZtp841GOe0me7Sx/iV+TctukiksayRWjcxHbYU=
+	t=1778482941; cv=none; b=Fte0/t1AXQSl0f7n2vVkLH2UZ3EWt4LKH/Pjkk+zr1Pof38TTWapjntp3KhQzjiNnN0iJiCFhWcYVSVvzPIL1xd7WkIs2gse08K+5bfj7hY1RkSgJk/NlwqhZltdhe10xZhAFeFas9UHsxSLkTUO5HWRdpXRRIpMgKOmLbgKmKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778482937; c=relaxed/simple;
-	bh=PGzf4KiCiNa6Oesui3nD9DJAPLdh9ECIReB419CYIvs=;
+	s=arc-20240116; t=1778482941; c=relaxed/simple;
+	bh=hj8M9TgIcPXA9AmkazJeZDmWZRV4FOMs8sxQSRwjC14=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M3QWrY8BNJ5jBzoDfs9z54awvguf0GiPahO1Csc4tXkIaorxit+92usgPDrIG0HGaOS1NIuAwXJSLPECnGGD2pOwyX+936G2PL2gqWpgJQFvUhvPqqXV7FW7cZMhIt/BxsofVT1GCxdokOqQo3HGVo+qgAxABD6RZJXNI4oJVW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=YORcowV4; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=E5TFQxOu8XgqO7coSQlwGJyWTQiyzNL2TCyDO9OO0ITwJnO5/5c1z60QXm9Qr4GtsVfqAR1a+zSQlJBdmFO4T5AYq4zGEH+JkNdckudCHIzcz9bVId7HDazN1R/RhHQakZazbL7qmpMHDhSB0vZ/fcW5bwGqNaTw1UuLRcWksKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=csmGxi9z; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64B728Mm82540453, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64B72DZk82540475, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1778482928; bh=7H4V5RtNCXhkkDBLLdnkobs5gVvv94A4wuF7BScBg3U=;
+	t=1778482934; bh=MZ4rPwLkNnhuuxmhxCb9rT3cuXHj5rEsYn519J9LYWM=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=YORcowV4bgpK7NP5KK8EiKDeiWteU53VTUeuW4yfICAkxuTaqNzH0CE6uz/s0cwyo
-	 O80qDm9T66z2PSWqGb3RADyXigAJ4XDVyN89kn88Cu/Wy4aVrV+tlQDsj9ZgBi8xL6
-	 +FCFeJ15rcMzW2KIRkR5864yyn7nO8hDI67qCzpJQm9nj3iHpyk3jRPOxQajIs5I2J
-	 LcEKxYidUZMlVQzVVMLYvf6bH8I8vWlqkiRlt4u9XL5jnvzF273irNKbqHFif2RFpK
-	 7MTuVwzcJBezkkjfaz56cLLuPxbP2VKrCZG+SrIP3Ydd3cRoPJBLZmIQlGnXp0/0Ka
-	 hIapp3KiQxySg==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 64B728Mm82540453
+	b=csmGxi9z80g2c/MmxWOycS5JmqfdutLY4CM/yKA79/JsPZU3CvTsqlikMm5bAnno9
+	 46gDxRRoR7atObhzkoEOWL6pm1GwhZIOK7Ke0EPPCjgC0pkgw2qdE7rwTj1ubQ23WB
+	 eWW4OtvmY8293qFCIyNGFuBg0likI32iIATJSmmGzq0hi2wRIfG4aTTxFIj+zLvFCE
+	 fFay4WXFJeyh1MbA1BEBlfZsnlW7cdmnHSYjsUm3xhljdIK29lPdK45mTSXybJPcjc
+	 3qJsgkzPWI8xIcZMerzaEywnLNXvFUF4VnBis0cohJqf5qfNasAom/RVeDLLEjZKEd
+	 RoiY3fAKVhSiQ==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 64B72DZk82540475
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 15:02:08 +0800
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 15:02:14 +0800
 Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 11 May 2026 15:02:09 +0800
+ 15.2.2562.17; Mon, 11 May 2026 15:02:14 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
  (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Mon, 11 May 2026 15:02:09 +0800
+ Transport; Mon, 11 May 2026 15:02:14 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH rtw-next 03/11] wifi: rtw89: phy: set BB wrap of DPD by bandwidth
-Date: Mon, 11 May 2026 15:01:40 +0800
-Message-ID: <20260511070148.25257-4-pkshih@realtek.com>
+Subject: [PATCH rtw-next 04/11] wifi: rtw89: phy: set BB wrap of control options
+Date: Mon, 11 May 2026 15:01:41 +0800
+Message-ID: <20260511070148.25257-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260511070148.25257-1-pkshih@realtek.com>
 References: <20260511070148.25257-1-pkshih@realtek.com>
@@ -73,19 +73,19 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 10FEB508C9C
+X-Rspamd-Queue-Id: 392C8508CAA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36199-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36200-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	RCPT_COUNT_ONE(0.00)[1];
@@ -94,7 +94,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	TO_DN_NONE(0.00)[];
 	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
@@ -103,261 +103,119 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:email,realtek.com:mid,realtek.com:dkim]
 X-Rspamd-Action: no action
 
-Apply different settings to out-of-band DPD (digital pre-distortion) by
-bandwidth, as hardware defines separate registers.
+Set main options to control BB wrap functions. For example, enable options
+by data bandwidth or channel bandwidth.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/phy.h      |  15 ++
- drivers/net/wireless/realtek/rtw89/phy_be.c   | 156 ++++++++++--------
- drivers/net/wireless/realtek/rtw89/rtw8922d.c |  27 +++
- 3 files changed, 127 insertions(+), 71 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.h      | 11 ++++++++
+ drivers/net/wireless/realtek/rtw89/phy_be.c   | 11 ++++++--
+ drivers/net/wireless/realtek/rtw89/rtw8922d.c | 27 +++++++++++++++++++
+ 3 files changed, 47 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index 0851a56cfe61..c7cf99fe46fb 100644
+index c7cf99fe46fb..a3e12590f473 100644
 --- a/drivers/net/wireless/realtek/rtw89/phy.h
 +++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -569,12 +569,27 @@ struct rtw89_phy_rfk_log_fmt {
- 	const struct rtw89_fw_element_hdr *elm[RTW89_PHY_C2H_RFK_LOG_FUNC_NUM];
+@@ -586,7 +586,18 @@ enum rtw89_oob_dpd_onoff {
+ 	OOB_DPD_ON = 1,
  };
  
-+enum rtw89_rfsi_ctrl_band {
-+	RFSI_CTRL_BAND_5_6GHZ,
-+	RFSI_CTRL_BAND_2GHZ,
++#define _8nibble(n0, n1, n2, n3, n4, n5, n6, n7) \
++	((n0) << 0  | (n1) << 4  | (n2) << 8  | (n3) << 12 | \
++	 (n4) << 16 | (n5) << 20 | (n6) << 24 | (n7) << 28)
 +
-+	RFSI_CTRL_BAND_NUM,
-+};
-+
- enum rtw89_mdpd_onoff {
- 	MDPD_ON = 0,
- 	MDPD_OFF = 1,
- };
- 
-+enum rtw89_oob_dpd_onoff {
-+	OOB_DPD_OFF = 0,
-+	OOB_DPD_ON = 1,
++struct rtw89_bb_wrap_common_data {
++	struct {
++		u32 rfsi_ct_opt[2];
++	} bands[RFSI_CTRL_BAND_NUM];
 +};
 +
  struct rtw89_bb_wrap_data {
-+	struct {
-+		u8 oob_dpd_by_cbw[8];
-+	} bands[RFSI_CTRL_BAND_NUM];
- 	u8 mdpd_by_dbw[4];
- };
- 
++	const struct rtw89_bb_wrap_common_data *common;
+ 	struct {
+ 		u8 oob_dpd_by_cbw[8];
+ 	} bands[RFSI_CTRL_BAND_NUM];
 diff --git a/drivers/net/wireless/realtek/rtw89/phy_be.c b/drivers/net/wireless/realtek/rtw89/phy_be.c
-index 94b977d29518..4ba18e821578 100644
+index 4ba18e821578..c52306b9fec4 100644
 --- a/drivers/net/wireless/realtek/rtw89/phy_be.c
 +++ b/drivers/net/wireless/realtek/rtw89/phy_be.c
-@@ -810,77 +810,91 @@ static void rtw89_phy_bb_wrap_tx_rfsi_qam_comp_val(struct rtw89_dev *rtwdev,
- static void rtw89_phy_bb_set_oob_dpd_qam_comp_val(struct rtw89_dev *rtwdev,
- 						  enum rtw89_mac_idx mac_idx)
+@@ -648,13 +648,20 @@ static u32 rtw89_phy_bb_wrap_be_bandedge_decision(struct rtw89_dev *rtwdev,
+ void rtw89_phy_bb_wrap_set_rfsi_ct_opt(struct rtw89_dev *rtwdev,
+ 				       enum rtw89_phy_idx phy_idx)
  {
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK0_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK1_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK2_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK3_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK4_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK5_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK6_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK7_BE4, 0x0, mac_idx);
--
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK0_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK1_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK2_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK3_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK4_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK5_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK6_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK7_BE4, 0x0, mac_idx);
--
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH0_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH1_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH2_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH3_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH4_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH5_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH6_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH7_BE4, 0x0, mac_idx);
--
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH0_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH1_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH2_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH3_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH4_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH5_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH6_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH7_BE4, 0x0, mac_idx);
--
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH0_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH1_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH2_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH3_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH4_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH5_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH6_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH7_BE4, 0x0, mac_idx);
--
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW0_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW1_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW2_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW3_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW4_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW5_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW6_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW7_BE4, 0x0, mac_idx);
--
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW0_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW1_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW2_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW3_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW4_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW5_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW6_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW7_BE4, 0x0, mac_idx);
--
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW0_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW1_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW2_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW3_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW4_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW5_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW6_BE4, 0x0, mac_idx);
--	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW7_BE4, 0x0, mac_idx);
 +	const struct rtw89_bb_wrap_data *d = rtwdev->phy_info.bb_wrap_data;
-+	u8 th;
-+
-+	if (!d)
++	const u32 *val;
+ 	u32 reg;
+ 
++	if (!d || !d->common)
 +		return;
 +
-+	th = d->bands[0].oob_dpd_by_cbw[0];
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK0_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK1_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK2_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK3_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK4_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK5_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK6_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_CCK7_BE4, th, mac_idx);
++	val = d->common->bands[0].rfsi_ct_opt;
 +
-+	th = d->bands[0].oob_dpd_by_cbw[1];
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK0_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK1_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK2_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK3_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK4_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK5_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK6_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_CCK7_BE4, th, mac_idx);
-+
-+	th = d->bands[0].oob_dpd_by_cbw[2];
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH0_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH1_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH2_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH3_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH4_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH5_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH6_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW20_BE4, B_OOB_CBW20_TH7_BE4, th, mac_idx);
-+
-+	th = d->bands[0].oob_dpd_by_cbw[3];
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH0_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH1_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH2_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH3_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH4_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH5_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH6_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_TH7_BE4, th, mac_idx);
-+
-+	th = d->bands[0].oob_dpd_by_cbw[4];
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH0_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH1_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH2_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH3_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH4_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH5_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH6_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_TH7_BE4, th, mac_idx);
-+
-+	th = d->bands[0].oob_dpd_by_cbw[5];
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW0_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW1_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW2_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW3_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW4_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW5_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW6_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW20_OW7_BE4, th, mac_idx);
-+
-+	th = d->bands[0].oob_dpd_by_cbw[6];
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW0_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW1_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW2_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW3_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW4_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW5_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW6_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW40_BE4, B_OOB_CBW40_OW7_BE4, th, mac_idx);
-+
-+	th = d->bands[0].oob_dpd_by_cbw[7];
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW0_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW1_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW2_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW3_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW4_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW5_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW6_BE4, th, mac_idx);
-+	rtw89_write32_idx(rtwdev, R_OOB_CBW80_BE4, B_OOB_CBW80_OW7_BE4, th, mac_idx);
- }
+ 	reg = rtw89_mac_reg_by_idx(rtwdev, R_RFSI_CT_OPT_0_BE4, phy_idx);
+-	rtw89_write32(rtwdev, reg, 0x00010001);
++	rtw89_write32(rtwdev, reg, val[0]);
  
- static void rtw89_phy_bb_set_mdpd_qam_comp_val(struct rtw89_dev *rtwdev,
+ 	reg = rtw89_mac_reg_by_idx(rtwdev, R_RFSI_CT_OPT_8_BE4, phy_idx);
+-	rtw89_write32(rtwdev, reg, 0x00010001);
++	rtw89_write32(rtwdev, reg, val[1]);
+ }
+ EXPORT_SYMBOL(rtw89_phy_bb_wrap_set_rfsi_ct_opt);
+ 
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.c b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-index 326d12da2962..2e5e264e75db 100644
+index 2e5e264e75db..18d75184f82b 100644
 --- a/drivers/net/wireless/realtek/rtw89/rtw8922d.c
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-@@ -287,14 +287,41 @@ static const struct rtw89_efuse_block_cfg rtw8922d_efuse_blocks[] = {
+@@ -286,7 +286,32 @@ static const struct rtw89_efuse_block_cfg rtw8922d_efuse_blocks[] = {
+ 	[RTW89_EFUSE_BLOCK_ADIE]		= {.offset = 0x70000, .size = 0x10},
  };
  
- static const struct rtw89_bb_wrap_data rtw8922d_bb_wrap_data_7025_default = {
++static const struct rtw89_bb_wrap_common_data rtw8922d_bb_wrap_common_data_7025 = {
 +	.bands = {
 +	[RFSI_CTRL_BAND_5_6GHZ] = {
-+		.oob_dpd_by_cbw = {OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF,
-+				   OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF},
++		.rfsi_ct_opt = {_8nibble(2, 2, 2, 2, 1, 1, 1, 1),
++				_8nibble(2, 2, 2, 2, 1, 1, 1, 1)},
 +	},
 +	[RFSI_CTRL_BAND_2GHZ] = {
-+		.oob_dpd_by_cbw = {OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF,
-+				   OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF},
++		.rfsi_ct_opt = {_8nibble(2, 2, 2, 2, 1, 1, 1, 1),
++				_8nibble(2, 2, 2, 2, 1, 1, 1, 1)},
 +	}},
- 	.mdpd_by_dbw = {MDPD_ON, MDPD_ON, MDPD_ON, MDPD_ON},
++};
++
++static const struct rtw89_bb_wrap_common_data rtw8922d_bb_wrap_common_data_7090 = {
++	.bands = {
++	[RFSI_CTRL_BAND_5_6GHZ] = {
++		.rfsi_ct_opt = {_8nibble(2, 2, 2, 2, 1, 1, 1, 1),
++				_8nibble(2, 2, 2, 2, 1, 1, 1, 1)},
++	},
++	[RFSI_CTRL_BAND_2GHZ] = {
++		.rfsi_ct_opt = {_8nibble(2, 2, 2, 2, 1, 1, 1, 1),
++				_8nibble(2, 2, 2, 2, 1, 1, 1, 1)},
++	}},
++};
++
+ static const struct rtw89_bb_wrap_data rtw8922d_bb_wrap_data_7025_default = {
++	.common = &rtw8922d_bb_wrap_common_data_7025,
+ 	.bands = {
+ 	[RFSI_CTRL_BAND_5_6GHZ] = {
+ 		.oob_dpd_by_cbw = {OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF,
+@@ -300,6 +325,7 @@ static const struct rtw89_bb_wrap_data rtw8922d_bb_wrap_data_7025_default = {
  };
  
  static const struct rtw89_bb_wrap_data rtw8922d_bb_wrap_data_7090_default = {
-+	.bands = {
-+	[RFSI_CTRL_BAND_5_6GHZ] = {
-+		.oob_dpd_by_cbw = {OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF,
-+				   OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF},
-+	},
-+	[RFSI_CTRL_BAND_2GHZ] = {
-+		.oob_dpd_by_cbw = {OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF,
-+				   OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF},
-+	}},
- 	.mdpd_by_dbw = {MDPD_OFF, MDPD_OFF, MDPD_ON, MDPD_ON},
++	.common = &rtw8922d_bb_wrap_common_data_7090,
+ 	.bands = {
+ 	[RFSI_CTRL_BAND_5_6GHZ] = {
+ 		.oob_dpd_by_cbw = {OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF,
+@@ -313,6 +339,7 @@ static const struct rtw89_bb_wrap_data rtw8922d_bb_wrap_data_7090_default = {
  };
  
  static const struct rtw89_bb_wrap_data rtw8922d_bb_wrap_data_7090_rfe35_41_44 = {
-+	.bands = {
-+	[RFSI_CTRL_BAND_5_6GHZ] = {
-+		.oob_dpd_by_cbw = {OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF,
-+				   OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF},
-+	},
-+	[RFSI_CTRL_BAND_2GHZ] = {
-+		.oob_dpd_by_cbw = {OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF,
-+				   OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF},
-+	}},
- 	.mdpd_by_dbw = {MDPD_OFF, MDPD_OFF, MDPD_ON, MDPD_ON},
- };
- 
++	.common = &rtw8922d_bb_wrap_common_data_7090,
+ 	.bands = {
+ 	[RFSI_CTRL_BAND_5_6GHZ] = {
+ 		.oob_dpd_by_cbw = {OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF, OOB_DPD_OFF,
 -- 
 2.25.1
 
