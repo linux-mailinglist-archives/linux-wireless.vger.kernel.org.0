@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-36246-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36247-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2K9/ICAVAmrangEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36246-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 19:42:56 +0200
+	id iIsHOskaAmocoAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36247-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:07:05 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8EBC513A81
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 19:42:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9440751412F
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 12FEF306BEBC
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 17:37:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E9D930C10B3
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 17:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACACA43DA43;
-	Mon, 11 May 2026 17:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782B64657F8;
+	Mon, 11 May 2026 17:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nX7bcgSs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F2Udokan"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F70F4534A8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A965945BD6B
 	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 17:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778521018; cv=none; b=unL4XkWnV1IsQP9oB0nAvGK4qh0F1T7uGGmXVP5cr8dzrhWYfCNMMvdZtM474kiMvgNeBT9Q1AGlJtCPzMx0yp+rFNY/XC1jJLrfLCiyzAK/oTgCTIty8PfWnjfFaXmDDzUkeKNppwQgfzff219j8dLeGSJTsaXB1jlgoJQ38vA=
+	t=1778521019; cv=none; b=jIXy6lHzot2GHZINVcM8aw+x+lEJIoAKRds4xSUahDwuD2ECk9AgMVAMaecY9AJVKc+z+tc8KLuhX9nHGILs77Ir71EwfVzwsj71nr5YeMcDszkeCZ5+mgiAXP7pSwSttQfAzYtqeNNWTXow5lXib2dTTQz7XZiJdQR6ya0Bw3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778521018; c=relaxed/simple;
-	bh=UzT0POQvA1Q7rOM/qAnrxmHWnavI04n1fHN1+nxV+Es=;
+	s=arc-20240116; t=1778521019; c=relaxed/simple;
+	bh=l7OWc82FRDKrG1ghK2X/QWZ/gBipnaVZniZwDrBVRhA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m4Ju/WMYddZELLUKPiBz8gBffozimXXOApSpZslRg17wUaGBOzN3iMKq7eGTcsUqY5A9c+Wf2ZfjLf1jVsiVfcCtw0r0q0Z0BgyMuFMKhzjl9eIO93h/RA/L4D6SxxtFCMoIrQgCp3wMM8ih3MtXa2MUbghGjt6eXFSJhZp14To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nX7bcgSs; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=EyV7YNJMbdNYA5NZB8hgMae0R94Id+8tTwPv/tSSb+0erTsD0GC06eeTzSyGXRTZe7aP9oAhQ6CE5FxMYZfD/hJ6lS2i1Ec7K0SAVgcGqsVpEqYP3pBADk2w4HmC1aVCNec4sNtRB1iAgUtKFwTbvFB4aWMffPJXuMLzEg8i9JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F2Udokan; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -39,34 +39,34 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1778521018; x=1810057018;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UzT0POQvA1Q7rOM/qAnrxmHWnavI04n1fHN1+nxV+Es=;
-  b=nX7bcgSsuPw0AzqZX9QGusupTt4eYxwbKhFVvRdeLfbDhJnnh02i9Hn9
-   Uf8wYk7vASxJgW4BqvcEinD5Rdb/kz926+2DhyfTqMj50fpicUKB2L/Zx
-   0b+BiMEUMmBsI9MfdFqjV41o/eos6dR8MTDIcXwUdNeHbDfq7woQOwOFd
-   FeK74M+JEb2K2sErn4A5Fnt0ssRzBsC0TJITWO5S+BENIrPZVPjYKSL4S
-   Gp4KojuELGPCgmzBHMSkE+8nlrF9Up6gpS8kM6WEmyf+t8kVCa8/YxDEG
-   X4turQa4vmBBMfrbO8UqS+rWCeEx/BdqPMwNfasFvPs1txj3q+yMvOY2/
-   Q==;
-X-CSE-ConnectionGUID: MLTloxdrQ5eJ/Wj2uSyyYg==
-X-CSE-MsgGUID: kVacy74VSuygVwJTmpmShQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79314798"
+  bh=l7OWc82FRDKrG1ghK2X/QWZ/gBipnaVZniZwDrBVRhA=;
+  b=F2UdokangdvawMrJ20j5ACFYbAV1TG1bNPuMCBtOmnOKiuBqIrbQ8lc5
+   euk5lCiP5LH/CTcT0DVqsPm1M/g3NJBBV4a0fk0nE4uUt/s13I5UAG5Kf
+   d0iI60IXtHDkIgrc619T8O1kmlSDObMYJFdu9XN27VDqDIxYOW4RBXVyM
+   xpwjbYFToD35H5Zd8qveXtrl1/EtFFXSME1n3treiZ0tkECL025votSzd
+   gPFMMseIcaBkt8YhxfZ2oy1uwq4G0Pz+xIaYbm/liet9Why+kQE6Dabmw
+   fdzuzyINIE0N+Ny/zvT3tAioY0Y1+Imky/FiMROBcLT7AvByzvFHCo5L/
+   g==;
+X-CSE-ConnectionGUID: BpclfTEkR7e9B5cCiBPIfQ==
+X-CSE-MsgGUID: VKSBpK+jQ1Kl2wyNDqDFjQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79314807"
 X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="79314798"
+   d="scan'208";a="79314807"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
   by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:56 -0700
-X-CSE-ConnectionGUID: PgacZArCQAqdZuvNLp/9yw==
-X-CSE-MsgGUID: 1cjh4COeQee7DyZx5fVjWA==
+X-CSE-ConnectionGUID: aFTNqcToSjiQ8TfjZePrWg==
+X-CSE-MsgGUID: +nasf9MwRh2GP7h/opCtZQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="261004708"
+   d="scan'208";a="261004732"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:51 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:52 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-next 05/15] wifi: iwlwifi: mld: move iwl_mld_link_info_changed_ap_ibss to ap.c
-Date: Mon, 11 May 2026 20:36:21 +0300
-Message-Id: <20260511203428.83ea430fbd74.I5ac85373c250b684cb46978d9e6bd42ba0e88171@changeid>
+Cc: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Subject: [PATCH iwlwifi-next 06/15] wifi: iwlwifi: add XIAOMI to PPAG approved list
+Date: Mon, 11 May 2026 20:36:22 +0300
+Message-Id: <20260511203428.a6f01de83902.I9d5b5122d71ba872974f9e506e033dcb457d80a2@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260511173631.1067831-1-miriam.rachel.korenblit@intel.com>
 References: <20260511173631.1067831-1-miriam.rachel.korenblit@intel.com>
@@ -78,14 +78,14 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E8EBC513A81
+X-Rspamd-Queue-Id: 9440751412F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -93,10 +93,10 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36246-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36247-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -106,141 +106,44 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-This function is ap mode related, move it to ap.c.
-Also, don't call iwl_mld_ftm_responder_clear from stop_ap() since
-mac80211 does it now before stopping the AP.
+Add XIAOMI to the list of the OEMs that are allowed to use
+the PPAG feature
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/ap.c   | 37 ++++++++++++++++++-
- drivers/net/wireless/intel/iwlwifi/mld/ap.h   |  8 ++--
- .../net/wireless/intel/iwlwifi/mld/mac80211.c | 33 -----------------
- 3 files changed, 40 insertions(+), 38 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/regulatory.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ap.c b/drivers/net/wireless/intel/iwlwifi/mld/ap.c
-index c29e4a77be05..bc426b911ce5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/ap.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/ap.c
-@@ -239,8 +239,8 @@ int iwl_mld_store_ap_early_key(struct iwl_mld *mld,
- 	return -ENOSPC;
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
+index 55128caac7ed..8d9ff36e30f5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2023, 2025 Intel Corporation
++ * Copyright (C) 2023, 2025-2026 Intel Corporation
+  */
+ #include <linux/dmi.h>
+ #include "iwl-drv.h"
+@@ -112,6 +112,11 @@ static const struct dmi_system_id dmi_ppag_approved_list[] = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "WIKO"),
+ 		},
+ 	},
++	{ .ident = "XIAOMI",
++	  .matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "XIAOMI"),
++		},
++	},
+ 	{}
+ };
  
--void iwl_mld_stop_beacon(struct iwl_mld *mld, struct ieee80211_vif *vif,
--			 struct ieee80211_bss_conf *link)
-+static void iwl_mld_stop_beacon(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+				struct ieee80211_bss_conf *link)
- {
- 	struct iwl_mld_link *mld_link = iwl_mld_link_from_mac80211(link);
- 	struct iwl_mac_beacon_cmd cmd = {};
-@@ -258,6 +258,39 @@ void iwl_mld_stop_beacon(struct iwl_mld *mld, struct ieee80211_vif *vif,
- 	iwl_mld_send_cmd_pdu(mld, BEACON_TEMPLATE_CMD, &cmd);
- }
- 
-+void
-+iwl_mld_link_info_changed_ap_ibss(struct iwl_mld *mld,
-+				  struct ieee80211_vif *vif,
-+				  struct ieee80211_bss_conf *link,
-+				  u64 changes)
-+{
-+	u32 link_changes = 0;
-+
-+	if (changes & BSS_CHANGED_ERP_SLOT)
-+		link_changes |= LINK_CONTEXT_MODIFY_RATES_INFO;
-+
-+	if (changes & (BSS_CHANGED_ERP_CTS_PROT | BSS_CHANGED_HT))
-+		link_changes |= LINK_CONTEXT_MODIFY_PROTECT_FLAGS;
-+
-+	if (changes & (BSS_CHANGED_QOS | BSS_CHANGED_BANDWIDTH))
-+		link_changes |= LINK_CONTEXT_MODIFY_QOS_PARAMS;
-+
-+	if (changes & BSS_CHANGED_HE_BSS_COLOR)
-+		link_changes |= LINK_CONTEXT_MODIFY_HE_PARAMS;
-+
-+	if (link_changes)
-+		iwl_mld_change_link_in_fw(mld, link, link_changes);
-+
-+	if (changes & BSS_CHANGED_BEACON) {
-+		WARN_ON(!link->enable_beacon);
-+		iwl_mld_update_beacon_template(mld, vif, link);
-+	}
-+
-+	/* Enabling beacons was already covered above */
-+	if ((changes & BSS_CHANGED_BEACON_ENABLED) && !link->enable_beacon)
-+		iwl_mld_stop_beacon(mld, vif, link);
-+}
-+
- static int iwl_mld_send_ap_early_keys(struct iwl_mld *mld,
- 				      struct ieee80211_vif *vif,
- 				      struct ieee80211_bss_conf *link)
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ap.h b/drivers/net/wireless/intel/iwlwifi/mld/ap.h
-index a3b6bed814ad..f10e9c9a38ff 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/ap.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/ap.h
-@@ -14,9 +14,11 @@ int iwl_mld_update_beacon_template(struct iwl_mld *mld,
- 				   struct ieee80211_vif *vif,
- 				   struct ieee80211_bss_conf *link_conf);
- 
--void iwl_mld_stop_beacon(struct iwl_mld *mld,
--			 struct ieee80211_vif *vif,
--			 struct ieee80211_bss_conf *link_conf);
-+void
-+iwl_mld_link_info_changed_ap_ibss(struct iwl_mld *mld,
-+				  struct ieee80211_vif *vif,
-+				  struct ieee80211_bss_conf *link,
-+				  u64 changes);
- 
- int iwl_mld_start_ap_ibss(struct ieee80211_hw *hw,
- 			  struct ieee80211_vif *vif,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index 403bc38ac2bc..c02994e63b14 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -1235,39 +1235,6 @@ int iwl_mld_mac80211_set_rts_threshold(struct ieee80211_hw *hw, int radio_idx,
- 	return 0;
- }
- 
--static void
--iwl_mld_link_info_changed_ap_ibss(struct iwl_mld *mld,
--				  struct ieee80211_vif *vif,
--				  struct ieee80211_bss_conf *link,
--				  u64 changes)
--{
--	u32 link_changes = 0;
--
--	if (changes & BSS_CHANGED_ERP_SLOT)
--		link_changes |= LINK_CONTEXT_MODIFY_RATES_INFO;
--
--	if (changes & (BSS_CHANGED_ERP_CTS_PROT | BSS_CHANGED_HT))
--		link_changes |= LINK_CONTEXT_MODIFY_PROTECT_FLAGS;
--
--	if (changes & (BSS_CHANGED_QOS | BSS_CHANGED_BANDWIDTH))
--		link_changes |= LINK_CONTEXT_MODIFY_QOS_PARAMS;
--
--	if (changes & BSS_CHANGED_HE_BSS_COLOR)
--		link_changes |= LINK_CONTEXT_MODIFY_HE_PARAMS;
--
--	if (link_changes)
--		iwl_mld_change_link_in_fw(mld, link, link_changes);
--
--	if (changes & BSS_CHANGED_BEACON) {
--		WARN_ON(!link->enable_beacon);
--		iwl_mld_update_beacon_template(mld, vif, link);
--	}
--
--	/* Enabling beacons was already covered above */
--	if ((changes & BSS_CHANGED_BEACON_ENABLED) && !link->enable_beacon)
--		iwl_mld_stop_beacon(mld, vif, link);
--}
--
- static
- u32 iwl_mld_link_changed_mapping(struct iwl_mld *mld,
- 				 struct ieee80211_vif *vif,
 -- 
 2.34.1
 
