@@ -1,197 +1,242 @@
-Return-Path: <linux-wireless+bounces-36260-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36261-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJ2GN7QgAmocoAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36260-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:32:20 +0200
+	id MMe0OnEoAmrFoQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36261-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 21:05:21 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081475147DC
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:32:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48EE3514D4A
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 21:05:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2145A300BBAA
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 18:32:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 119723037418
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 19:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD39E47B437;
-	Mon, 11 May 2026 18:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846C64C9009;
+	Mon, 11 May 2026 19:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="jlTNHED6"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LjUI3YTZ";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TIhg52Zy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66088364EB8
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 18:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C175B44E027
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 19:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778524337; cv=none; b=G2JVjruiV7/5elHieRgFZtpM0NFX4rkdhJVo6iP+thAW5NFXg4QXeVp5uoTGBQZrV29SatHcqk3XYqIO7QFwRjMbqvcf2cVurSltkBI2tTkmBwfYEWh1qcAfeYdDPARYRBRLeyoiZxeXdOQJnJ4lBplqi4uQWe57lJCPvNXKG90=
+	t=1778526171; cv=none; b=lmMRM2zNdR7v5rW1VLcfNW3I2xdekDjc0kBJ4d1gueQohP77bORLQLCpHQCoBUV4Xl+eQIN9meePPcgVuuJ/jjKkmKl6nqiDo45ETEkBW9kcUxMgn8X/JO37TzOC9IAZLXCY1jsEBY8YJRF05Ralazunn5Ss8d7PMfyT4Hr+ZTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778524337; c=relaxed/simple;
-	bh=U7DyHDFWsODzrIE5Y5zvUxa2K2N31v7JVT1aqndTGfk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LQ4IzjlfqAFoO+pKK6G6ck6hmRM5tvm3sdmaWaZ3Y616ioh1Vnyqqji20rnf9S8wADDjF/wLZDF8w2Sekmn2R1ipP5sNRVeZTuevld+jlKQKXktv/YU9tpBSAIENtWkSjQ1WyWhcb0/lIhUQvxrfYgWRDePyQksNIHRsc3cWBAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=jlTNHED6; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: b84117564d6711f1b96f91537e34a508-20260512
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=euveLJGxSvPWJZ9qF7eSEYwUYjl8arjj3nB8s2YoTmk=;
-	b=jlTNHED6xHfLdzPUt2j+xAZu67e+ISIgwpA6aHj+k0/C1+kpR3eF98ubEH1nrwiQAfqTWTdv2DSCG/IAlAXRbnpNBXKDs4HPXwvCkwmcx8avNfwZ+AVDZqOH4TtumjT2ChGVwVIgnBREBKZZ44OhYsoc1Kvov9qkHzpWOqBN1js=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:4481a882-580a-4bc4-a01d-4a8ccb69bfc2,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:e56c4771-3b7f-4b26-b2f9-40f0deecb36d,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|865|888|898,TC:-5,Content:0|
-	15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0
-	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: b84117564d6711f1b96f91537e34a508-20260512
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
-	(envelope-from <ryder.lee@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 337347264; Tue, 12 May 2026 02:32:09 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 12 May 2026 02:32:08 +0800
-Received: from mussdccf250.eus.mediatek.inc (10.73.250.250) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Tue, 12 May 2026 02:32:07 +0800
-From: Ryder Lee <ryder.lee@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>
-CC: <linux-mediatek@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-	Shayne Chen <shayne.chen@mediatek.com>, Roy Luo <roy-ch.luo@mediatek.com>,
-	Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7996: avoid memset overwriting tx_info->control.flags
-Date: Mon, 11 May 2026 11:32:04 -0700
-Message-ID: <5ecac6a9b7d29526e8438dea105b58f5487c93aa.1778521232.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1778526171; c=relaxed/simple;
+	bh=m9OAJXlTmnWaX5FCM1so3RbP9Q6zSw3FLjQaJS1Dbks=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W2XwUvuIoqMc55FwUaX5K5xYtIV7yFsLESI2DHej1Yvunan6g13Im4hSzNyL7YtPXxPd5/WgKbSQeQHVMkofNBShCDOE/sBUh8h1IkSOoHjzZo9XzMM13u7gmoHsf3C4I1+cknXuoK5yebZUyWjZvqYIU9+olcgot0oczApH6Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LjUI3YTZ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TIhg52Zy; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64BINVY11106444
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 19:02:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	K6AYKxAAyxziRqLJJS3fTnBEpzVHpo8LX+0srwQemhM=; b=LjUI3YTZ/1aPNY4A
+	G4ziUYssJ17TtnFeY9ukYmuI9mcCHSzdB/R7zKZ+fXEl7lnRIMxD3F5tA2Jt0Xdp
+	pujjAinCEmcv1dqFi4nxX5nuBoR3R/XW8cuVTLZ7/M+3GArMxp4GFNhvfI4X7pXy
+	4cYWyKjQIg1qmEYiZ8OoXEdDxM1bnmsslKotd3e3C4TUDEVeOiYcPYSXz88iWPdD
+	eUVErf0Ko1lpyP+fmH+Fbho3nHW1uG5VUdZohCUK7MwGpZcilQmwAyLl5JGeezCg
+	Cc6N5ZzkTzN63wynEbV0kyC+yv0boibvTTqWzDNzPZ0ogusPpyV0RH0vtoqJ9mNO
+	0dz1Ng==
+Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com [74.125.82.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e3esr9tbg-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 19:02:48 +0000 (GMT)
+Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-1270dcd11c1so9717171c88.0
+        for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 12:02:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1778526168; x=1779130968; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=K6AYKxAAyxziRqLJJS3fTnBEpzVHpo8LX+0srwQemhM=;
+        b=TIhg52ZyVRZ/yKqArDo8AbuJM57GpNHfQkLG9pgei9f5sEi7zGUEO1LAKLiwh32zZl
+         bkSl865tHn/oILW4w5iH5aSfOtGD6sNMY/7Rj6RlBhVCIYBnhP6DaG5JjExWXEsyaD9B
+         PFwvcgFELEAZpZPOQ+V+kx3NV6l8xhjZqEhL6zBUUJ7a0zBoGnq+hXRkeN9TL20C4c3Z
+         zeYNOzBHwWOP77rYFqbiODfCZ3M1+aQ/LLfTE4oV9ZesuY9LzgW5NaaKoTD0jzsDZf7o
+         EDQ9TGJnU6SBiepb/gfUjiuPQo/nky4YwzEdol94PKf8AExFPivjqdEHvZFZRpIXIzbG
+         7tlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778526168; x=1779130968;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=K6AYKxAAyxziRqLJJS3fTnBEpzVHpo8LX+0srwQemhM=;
+        b=ArTvrsQ2/fBAOiG/a0wKJNhYturePDbdvrANoq9AHiL4DKqJe3PgPMJsre9HUhhqm0
+         T+ZpxBw5gxZkaKXqvy1AjFUqpxwnbVV5vS2hwNDRJ41K03O2fRCezNJqEiKx5nPMmij/
+         FN7LSbJjt3nNoqfFjtkzXdR/iDveGt63AIkWo9F62kn21ypH3HTvDMJJh24Yie1QWB7E
+         okyh20R0ME8Z3JFFWcNA1FLcKRw3wKDXjDKIkR1T1vreceSbYHZMzvxwXI/b/tOeqzUb
+         MZenxHr1KTdJNPnmUqSKg+TgpVXhGnVG1ydH6faa9Ka5g2pL5XiN/Joy4mV1L1edcLrh
+         oIdg==
+X-Gm-Message-State: AOJu0YzqDywOKSM06tdA4uaKcq83OW49kTjYGwQWx10HhtF3YAGsrN8g
+	/HqmdA3SAH68mlOqtifZibKfuDLkiHPZVQ3k9No5Rlh0pBldT8F64PdjwH9/KyasYIjsGqGH/Bp
+	lXseA1e5Ck7TIlgIOcTi0KMai7NGukEQTSgaVQczbZujb6B4S7RQ9yxViNnzYHAhVXoRbbg==
+X-Gm-Gg: Acq92OFOvABXJHGxDZTF05t7ikd5NYBhe8IxgVeNnIHs6cCGFolHWxN3sJGAMSVOsau
+	2mnqZTqwIqtXPgQLwTt7RfaHiJ7Chv043jdBxXa50xcCUBiGzsKznHTNkx2fZg5UL2Fd40rC9m1
+	DoGR7lA8/QhlOt1JQSHPRqFTnWJJrfuWNjSGSecSmJBrvXfumVcMseVin4IU98juHJ6jDyXNpTE
+	A6xZL8PnpNsDqyJ8buJUhIWrcUEVeRDT+ex+HAYV1+K9Gr+mpf6pqotlMobWTAZscVWEXDc4oQ6
+	X7CVL02X21jhHA+GbkFEgL1gP1wrq4nMONkf1ENiac6LcirPV7tZGBmR2ttViiejDcAblBLdvzh
+	h3bVEOl+TSw/CcVO6lHizUhBhDPxP7vjuNjgleTRyT94n/UwZ3QPfrPh5I2G6mATaDuXij10lTF
+	5xs/2PO63uhBy0UQ==
+X-Received: by 2002:a05:7022:1b0e:b0:12f:1f67:e747 with SMTP id a92af1059eb24-131a6af4231mr11030903c88.40.1778526167778;
+        Mon, 11 May 2026 12:02:47 -0700 (PDT)
+X-Received: by 2002:a05:7022:1b0e:b0:12f:1f67:e747 with SMTP id a92af1059eb24-131a6af4231mr11030867c88.40.1778526167111;
+        Mon, 11 May 2026 12:02:47 -0700 (PDT)
+Received: from [192.168.1.59] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-132787673ffsm19710428c88.15.2026.05.11.12.02.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 May 2026 12:02:46 -0700 (PDT)
+Message-ID: <89f30996-3210-403b-8c9a-52cf6d5fcb51@oss.qualcomm.com>
+Date: Mon, 11 May 2026 12:02:45 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
-X-Rspamd-Queue-Id: 081475147DC
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] wifi: ath12k: skip unknown direct buffer ring module
+ IDs
+To: Nazar Mokrynskyi <nazar@mokrynskyi.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20260505172415.566328-1-nazar@mokrynskyi.com>
+ <20260505172415.566328-3-nazar@mokrynskyi.com>
+Content-Language: en-US
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+In-Reply-To: <20260505172415.566328-3-nazar@mokrynskyi.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 91ItF9V5aiZzBx50BUZVAut-KAiVOaaB
+X-Proofpoint-ORIG-GUID: 91ItF9V5aiZzBx50BUZVAut-KAiVOaaB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDIwMiBTYWx0ZWRfX1lyyNzltoPae
+ qmUVU7npKYRITrn5WtUfHcuJKuAZbUhZQU7A6ryTGWkf05uvJseX44+QGIAXwdF4f02OeAVmhxk
+ pY8UFpq8f7R9QSXE4MzRRdhVD2cM+VXleQlI7k7aHzDqYrdI5IoXJbYoT2KIWBL6xPuIXb989e+
+ Yr6PIQPyE6E5/RDS/O1L5rVVrs2gm2wnz+EV7WMP/6705XONbviC5YgvxsPdI/PeOwRkZiR7t0i
+ 0IoKpKjKOnT7iM3uxLpaNfMemqRDKNXbzEjcc+buf4W73XfaH4xQJR7httnP7BIgpAj7gs6gpr1
+ 0T3boh2m89Ssh0xb7rSfVqUizimXoW7W9TiHRW0BFl8jUWY9ICSbJHK5rjqwwlG0Q5KwnFypezX
+ WZfN/N/XHZuU1mI4CXS/6563bq65Na4JeTsdY9IBQuA9N5DIKWG6xcmqowrkwHgGvcoI2vx3fHy
+ F1DDX11PQHg7Ox+r8SQ==
+X-Authority-Analysis: v=2.4 cv=G40s1dk5 c=1 sm=1 tr=0 ts=6a0227d8 cx=c_pps
+ a=SvEPeNj+VMjHSW//kvnxuw==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=TD6mGIVpAAAA:8 a=MjesTKNxIBkL7_LiPggA:9 a=QEXdDO2ut3YA:10
+ a=Kq8ClHjjuc5pcCNDwlU0:22 a=V7iCuLqznmuTtf2Pv1nF:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1015
+ malwarescore=0 impostorscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605110202
+X-Rspamd-Queue-Id: 48EE3514D4A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36260-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[ryder.lee@mediatek.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36261-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:dkim];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mediatek.com:email,mediatek.com:mid,mediatek.com:dkim]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-mt76_tx_status_skb_add uses memset on status.status_driver_data, which
-overwrite  info->control.flags in ieee80211_tx_info. Copy tx_info before
-calling mt76_tx_status_skb_add to ensure control fields are preserved
-and remain valid for later processing.
+On 5/5/2026 10:24 AM, Nazar Mokrynskyi wrote:
+> The firmware may advertise direct buffer ring capabilities for module
+> IDs beyond what the driver currently knows about (WMI_DIRECT_BUF_MAX).
+> This happens with newer firmware versions that support additional ring
+> types not yet implemented in the driver.
 
-Reported-By: Roy Luo <roy-ch.luo@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 17 +++++++++--------
- .../net/wireless/mediatek/mt76/mt7996/mt7996.h  |  2 +-
- 2 files changed, 10 insertions(+), 9 deletions(-)
+What "newer firmware version" are you using that has this issue?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index e2a83da3a09c..a59c14c8f2af 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -855,11 +855,12 @@ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
- 
- void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 			   struct sk_buff *skb, struct mt76_wcid *wcid,
--			   struct ieee80211_key_conf *key, int pid,
-+			   struct ieee80211_tx_info *tx_info, int pid,
- 			   enum mt76_txq_id qid, u32 changed)
- {
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
--	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-+	struct ieee80211_key_conf *key = tx_info ? tx_info->control.hw_key : NULL;
-+	struct ieee80211_tx_info *info = tx_info ? tx_info : IEEE80211_SKB_CB(skb);
- 	struct ieee80211_vif *vif = info->control.vif;
- 	u8 band_idx = (info->hw_queue & MT_TX_HW_QUEUE_PHY) >> 2;
- 	u8 p_fmt, q_idx, omac_idx = 0, wmm_idx = 0;
-@@ -1006,15 +1007,15 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- {
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)tx_info->skb->data;
- 	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
--	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_info->skb);
--	struct ieee80211_key_conf *key = info->control.hw_key;
--	struct ieee80211_vif *vif = info->control.vif;
-+	struct ieee80211_tx_info info = *IEEE80211_SKB_CB(tx_info->skb);
-+	struct ieee80211_key_conf *key = info.control.hw_key;
-+	struct ieee80211_vif *vif = info.control.vif;
- 	struct mt7996_vif *mvif = vif ? (struct mt7996_vif *)vif->drv_priv : NULL;
- 	struct mt7996_sta *msta = sta ? (struct mt7996_sta *)sta->drv_priv : NULL;
- 	struct mt76_vif_link *mlink = NULL;
- 	struct mt76_txwi_cache *t;
- 	int id, i, pid, nbuf = tx_info->nbuf - 1;
--	bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
-+	bool is_8023 = info.flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
- 	__le32 *ptr = (__le32 *)txwi_ptr;
- 	u8 *txwi = (u8 *)txwi_ptr;
- 	u8 link_id;
-@@ -1031,7 +1032,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 
- 		link_id = (tid % 2) ? msta->seclink_id : msta->deflink_id;
- 	} else {
--		link_id = u32_get_bits(info->control.flags,
-+		link_id = u32_get_bits(info.control.flags,
- 				       IEEE80211_TX_CTRL_MLO_LINK);
- 	}
- 
-@@ -1095,7 +1096,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	memset(txwi_ptr, 0, MT_TXD_SIZE);
- 	/* Transmit non qos data by 802.11 header and need to fill txd by host*/
- 	if (!is_8023 || pid >= MT_PACKET_ID_FIRST)
--		mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, key,
-+		mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, &info,
- 				      pid, qid, 0);
- 
- 	/* MT7996 and MT7992 require driver to provide the MAC TXP for AddBA
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index bdcf72457954..319fcc4fb469 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -854,7 +854,7 @@ void mt7996_mac_cca_stats_reset(struct mt7996_phy *phy);
- void mt7996_mac_enable_nf(struct mt7996_dev *dev, u8 band);
- void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 			   struct sk_buff *skb, struct mt76_wcid *wcid,
--			   struct ieee80211_key_conf *key, int pid,
-+			   struct ieee80211_tx_info *tx_info, int pid,
- 			   enum mt76_txq_id qid, u32 changed);
- void mt7996_mac_update_beacons(struct mt7996_phy *phy);
- void mt7996_mac_set_coverage_class(struct mt7996_phy *phy);
--- 
-2.45.2
+Can you share the "Skipping unknown direct buf ring module id" logs from your
+modified driver?
+
+> 
+> The current code treats an unknown module_id as a fatal error, returning
+> -EINVAL and tearing down the entire driver initialization. This is
+> incorrect: the driver only needs to set up rings for types it uses
+> (SPECTRAL=0, CFR=1) and can safely ignore capability advertisements for
+> unknown types.
+> 
+> Change the unknown module_id handling to skip the entry with a debug
+> message rather than failing, allowing initialization to proceed.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01243-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Nazar Mokrynskyi <nazar@mokrynskyi.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/wmi.c | 12 ++++--------
+>  1 file changed, 4 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+> index 484fdd3b1..0e776a8d8 100644
+> --- a/drivers/net/wireless/ath/ath12k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
+> @@ -4814,10 +4814,10 @@ static int ath12k_wmi_dma_ring_caps(struct ath12k_base *ab,
+>  	dir_buff_caps = ab->db_caps;
+>  	for (i = 0; i < dma_caps_parse->n_dma_ring_caps; i++) {
+>  		if (le32_to_cpu(dma_caps[i].module_id) >= WMI_DIRECT_BUF_MAX) {
+> -			ath12k_warn(ab, "Invalid module id %d\n",
+> -				    le32_to_cpu(dma_caps[i].module_id));
+> -			ret = -EINVAL;
+> -			goto free_dir_buff;
+> +			ath12k_dbg(ab, ATH12K_DBG_WMI,
+> +				   "Skipping unknown direct buf ring module id %d\n",
+> +				   le32_to_cpu(dma_caps[i].module_id));
+> +			continue;
+
+by continuing you don't populate the dir_buff_caps[i] information below,
+leaving that record with zeroed data from the initial allocation. Does other
+code correctly handle that?
+
+would it be better to have a separate count of the number of dir_buff_caps
+records that are actually filled, and then update
+dma_caps_parse->n_dma_ring_caps to match once the parsing has completed?
+
+>  		}
+>  
+>  		dir_buff_caps[i].id = le32_to_cpu(dma_caps[i].module_id);
+> @@ -4829,10 +4829,6 @@ static int ath12k_wmi_dma_ring_caps(struct ath12k_base *ab,
+>  	}
+>  
+>  	return 0;
+> -
+> -free_dir_buff:
+> -	ath12k_wmi_free_dbring_caps(ab);
+> -	return ret;
+>  }
+>  
+>  static void
 
 
