@@ -1,71 +1,75 @@
-Return-Path: <linux-wireless+bounces-36241-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36242-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JNwOL8aAmocoAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36241-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:06:55 +0200
+	id KJdjD7UTAmrangEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36242-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 19:36:53 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771BA514121
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:06:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6B8513975
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 19:36:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 813F430305CB
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 17:36:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BB0CB300F5DE
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 17:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A933B4E9A;
-	Mon, 11 May 2026 17:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7913FF8BF;
+	Mon, 11 May 2026 17:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g+EogzMA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RHH3ObiA"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4465E3D16FD
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 17:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793FD441022
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 17:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778521008; cv=none; b=g1enFTwNsADdzV+T9u/MR4QzUOQIDu3jS3WXg3eubdJsrxIEBt9dNKfqeH1lMiDo/4/WavEM+csN2GFK9Eke8wy8RInw5Jaxaj3hD6L/FywIV0q0L9aIB7RGfg9NOShd4A7fL/NyiWqsoyxfNveSeVOtNmFJn/tggpXEJiQhsbM=
+	t=1778521011; cv=none; b=CPNgNuyrRhWBLMflMGSjmIsaUEWoz9jhGf4ZVSeuIqeuhS0to42tRekGjUPAFaabRhEqnelAwvP9uEqw4iZY5VWdDXOk4CxS8l6JO80Mp90m586rPiLlzYIAT/JcEDPYhkv0LsjWvPuzcHO0tNB+0FdsW094OYxoziipKF+ug0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778521008; c=relaxed/simple;
-	bh=fJpA7FefBWdq1nhb31eLuuLHzR1QKDq9Z3y+lxUtKpg=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=YpOEuK26syuO1QVwXt7cbRnZVqIsC7cPK0W1H2YSNqVcOyffFPzt2+/D9XVqcltIzvP5MbiiTI2G2GZEmASmM9n4rB6D3KWJ6ZJC4tMXxIPHmOoG6Y/hXovhNYWPDciQJzQHWSoEPZ+uOOGkTNtXrSzQ/EabdzwXiNK/fSczkVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g+EogzMA; arc=none smtp.client-ip=198.175.65.21
+	s=arc-20240116; t=1778521011; c=relaxed/simple;
+	bh=QO1FtNCoBEL6OjZkJikcorJExnUqFassmHs/peZWi5g=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=VvaVYEf0CH3R2WXBescubvm4rn1xWuoNr3jKTDFjpfzhJGnwvlcpbxJYV7Dn4jr6/NyUJVkUn/M6/gS9cqtH+NafyZNfS4Ss+o8gJzzq87KKDI2ECLvZOS7mirdgIAe98faxqRCIqKDfh7OPzd+LVRAj7Fu7wTIoiEpEcspEYDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RHH3ObiA; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778521008; x=1810057008;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=fJpA7FefBWdq1nhb31eLuuLHzR1QKDq9Z3y+lxUtKpg=;
-  b=g+EogzMAI5dklVqphl8bkusj2zq3DGhrKVbQ6UI79OejOZp+ivB7Zh1P
-   nlqRAu2F5CAgx9zxlosCzRzQRX1aFvLA/fEk6Iu/nFNTxfU0Ai6LqqO5A
-   45bgi0R7kfTwT4Xj3qpAKussURk+2sPvBWUDLCEGWnlkO8qPE0RtjoR0P
-   gnJbTmO+92R86RbUFOyrzEFlxjncA9kUF4qmSkM61eJpumRRIomIXsLpD
-   YexesJnNC/HM+F7ohQsfj0/xDEAU8SE+Bfk4NFn4rgn5txnjUbgAoKedk
-   T2YHbBUkkvBTay9CVsgTfCI6wXbg3/kOfpLZxuX3jP88vnLyWJyZsOEft
-   w==;
-X-CSE-ConnectionGUID: sCgu3wmrRZOVmf/2wunxgg==
-X-CSE-MsgGUID: WVOcXdqxSui5yPz+BGpjRA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79314757"
+  t=1778521010; x=1810057010;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=QO1FtNCoBEL6OjZkJikcorJExnUqFassmHs/peZWi5g=;
+  b=RHH3ObiAbb7dyMaj1RdN6wz4QWPare1NXWqRNo1kSo/QFgjG6abTWV6B
+   w/AUk2SYt1RN1K9aH4t+mORsFYfPVz/H2Gg+DWz0hV3aFQg+pPpG7pSxJ
+   S+9ACNW+qnoBClPl2IbVCLDQOGFPFREjIr7Qwt2PbnPHDDhSkHGBVxIOt
+   XRo42j/7JwsTx0OAqXlbRlzg9lDW0UqwNb41aCRAyJF36cvSGoSkEzhVb
+   U7OLNlYjRU+YHcn/U24+kpkbXWCcJh2Arz0CoBD0Ca77sxwvGc4mZTr/O
+   AQGQ2ufrs5RYU891hAfYk/F39M0yDtsmQwTNWHzpheCDe8oiwaCfaXHcJ
+   Q==;
+X-CSE-ConnectionGUID: 82CKIIoqSTyueEbF6zNBgA==
+X-CSE-MsgGUID: 5EWsJr7EQ/SCzfLm0r2CbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79314764"
 X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="79314757"
+   d="scan'208";a="79314764"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:47 -0700
-X-CSE-ConnectionGUID: 9bx+lMifSCWPtzdPzCV9Xg==
-X-CSE-MsgGUID: EsaN0u6XQ3+kClmi8Zf6eg==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:50 -0700
+X-CSE-ConnectionGUID: rNoIwV5NQPubibAHNU+dKw==
+X-CSE-MsgGUID: RIU0McnQTnad+acU2FtsEQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="261004350"
+   d="scan'208";a="261004518"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:44 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:46 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH iwlwifi-next 00/15] wifi: iwlwifi: updates - 2026-05-11
-Date: Mon, 11 May 2026 20:36:16 +0300
-Message-Id: <20260511173631.1067831-1-miriam.rachel.korenblit@intel.com>
+Cc: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Subject: [PATCH iwlwifi-next 01/15] wifi: iwlwifi: add RF name handling for PE chip type for debugfs
+Date: Mon, 11 May 2026 20:36:17 +0300
+Message-Id: <20260511203428.f49fbbe61925.I7e001558e66eb2c6c5081be7c21defe6a81aa265@changeid>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260511173631.1067831-1-miriam.rachel.korenblit@intel.com>
+References: <20260511173631.1067831-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,96 +78,97 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 771BA514121
+X-Rspamd-Queue-Id: CD6B8513975
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-36241-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-36242-lists,linux-wireless=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_ONE(0.00)[1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
 X-Rspamd-Action: no action
 
-Hi,
+From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-Features, cleanups and fixes from our internal tree.
-A few more NAN commits.
+Implement RF name handling for PE chip type in debugfs,
+including special case handling to show PETC when the
+silicon is in Z step.
 
-Thanks,
-Miri
+Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h             | 3 ++-
+ .../net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c  | 9 ++++++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-Avinash Bhatt (1):
-  wifi: iwlwifi: fix buffer overflow when firmware reports no channels
-
-Emmanuel Grumbach (3):
-  wifi: iwlwifi: fix the access to CNVR TOP registers
-  wifi: iwlwifi: mld: honor BSS_CHANGED_BEACON_ENABLED
-  wifi: iwlwifi: mld: move iwl_mld_link_info_changed_ap_ibss to ap.c
-
-Johannes Berg (7):
-  wifi: iwlwifi: mld: clean up station handling in key APIs
-  wifi: iwlwifi: mld: add TLC support for NAN stations
-  wifi: iwlwifi: mld: track TX/RX IGTKs separately
-  wifi: iwlwifi: mld: don't report bad STA ID in EHT TB sniffer
-  wifi: iwlwifi: api: RX: define UHR RX PHY flags
-  wifi: iwlwifi: fw: api: fix UHR U-SIG whitespace
-  wifi: iwlwifi: fw: api: add/fix some UHR sniffer definitions
-
-Miri Korenblit (2):
-  wifi: iwlwifi: bump core version for BZ/SC/DR to 103
-  wifi: iwlwifi: mld: allow NAN data
-
-Pagadala Yesu Anjaneyulu (2):
-  wifi: iwlwifi: add RF name handling for PE chip type for debugfs
-  wifi: iwlwifi: add XIAOMI to PPAG approved list
-
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |   2 +-
- drivers/net/wireless/intel/iwlwifi/cfg/dr.c   |   2 +-
- drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |   2 +-
- .../net/wireless/intel/iwlwifi/fw/api/rx.h    |  38 +++-
- .../wireless/intel/iwlwifi/fw/regulatory.c    |   7 +-
- drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |   3 +-
- drivers/net/wireless/intel/iwlwifi/iwl-io.c   |  18 +-
- drivers/net/wireless/intel/iwlwifi/iwl-io.h   |   4 +-
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  21 +-
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h |   7 +-
- drivers/net/wireless/intel/iwlwifi/mld/ap.c   |  58 +++++-
- drivers/net/wireless/intel/iwlwifi/mld/ap.h   |   8 +-
- drivers/net/wireless/intel/iwlwifi/mld/d3.c   |  20 +-
- .../net/wireless/intel/iwlwifi/mld/iface.h    |  15 ++
- drivers/net/wireless/intel/iwlwifi/mld/key.c  | 110 +++++-----
- drivers/net/wireless/intel/iwlwifi/mld/link.h |   9 +-
- .../net/wireless/intel/iwlwifi/mld/mac80211.c |  51 ++---
- drivers/net/wireless/intel/iwlwifi/mld/nan.c  |  41 +++-
- drivers/net/wireless/intel/iwlwifi/mld/rx.c   |  15 +-
- drivers/net/wireless/intel/iwlwifi/mld/sta.h  |   4 +
- drivers/net/wireless/intel/iwlwifi/mld/tlc.c  | 189 +++++++++++++++---
- .../intel/iwlwifi/pcie/gen1_2/trans-gen2.c    |   9 +-
- .../intel/iwlwifi/pcie/gen1_2/trans.c         |  26 ++-
- 23 files changed, 486 insertions(+), 173 deletions(-)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
+index f3fa37fee2e4..d2fa80a3dd04 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2005-2014, 2018-2025 Intel Corporation
++ * Copyright (C) 2005-2014, 2018-2026 Intel Corporation
+  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
+  * Copyright (C) 2016 Intel Deutschland GmbH
+  */
+@@ -366,6 +366,7 @@ enum {
+ #define CSR_HW_RF_ID_TYPE_GF4		(0x0010E000)
+ #define CSR_HW_RF_ID_TYPE_FM		(0x00112000)
+ #define CSR_HW_RF_ID_TYPE_WP		(0x00113000)
++#define CSR_HW_RF_ID_TYPE_PE		(0x00114000)
+ 
+ /* HW_RF CHIP STEP  */
+ #define CSR_HW_RF_STEP(_val) (((_val) >> 8) & 0xF)
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
+index a50e845cea42..87e5f79ccb3c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+  * Copyright (C) 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2025 Intel Corporation
++ * Copyright (C) 2018-2026 Intel Corporation
+  */
+ #include "iwl-trans.h"
+ #include "iwl-prph.h"
+@@ -327,6 +327,13 @@ static void iwl_pcie_get_rf_name(struct iwl_trans *trans)
+ 		else
+ 			pos = scnprintf(buf, buflen, "WH");
+ 		break;
++	case CSR_HW_RFID_TYPE(CSR_HW_RF_ID_TYPE_PE):
++		if (SILICON_Z_STEP ==
++		    CSR_HW_RFID_STEP(trans->info.hw_rf_id))
++			pos = scnprintf(buf, buflen, "PETC");
++		else
++			pos = scnprintf(buf, buflen, "PE");
++		break;
+ 	default:
+ 		return;
+ 	}
 -- 
 2.34.1
 
