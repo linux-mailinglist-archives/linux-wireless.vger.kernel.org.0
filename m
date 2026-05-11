@@ -1,92 +1,71 @@
-Return-Path: <linux-wireless+bounces-36195-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36196-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QB2IGgp+AWoMbQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36195-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 08:58:18 +0200
+	id WKxKAbN/AWqkbQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36196-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 09:05:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55754508BDF
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 08:58:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB32508D93
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 09:05:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B4CF53004056
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 06:58:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2ED6F30234FB
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 07:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1A22DB7A3;
-	Mon, 11 May 2026 06:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7128296BAF;
+	Mon, 11 May 2026 07:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b="G7KiyDDv"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="RL4XfHUu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959DD2D5922
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 06:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2F033B6D5
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 07:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778482692; cv=none; b=qzbNGJPj8YOw6avV5+RlG4N9WkqlwS0i1sqDj53Fkqs2tZkHQROP79Vw2QuT0Mb97Yuy7pdoCgUuOgAACvM9bupW9y+/qLTmCkcRpWyC3fqjXwDLEhISjkFCkW3O0p44sAfMR+yUj/JJPF0QYeYwVzHKBeSV8fLCm1cCbBNBLZA=
+	t=1778482917; cv=none; b=raKvGhlUZGf6C1hfwzQS7ZMnlrpXh4E0OcrRcOu95qfcQ2GSB1JR/2TW244A5sC2K7KqXfu0npdpvOjwDUXCkW4hNHEAx4E6lMkUhH8zPsrpoa+UQHf3j4Ngl6YxexCReOS58osQG9/AsqnU97VA5JrnElHk3oVwEEX2d7T2ldc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778482692; c=relaxed/simple;
-	bh=pAfSR+l7wN17yt/DIe6cWy36lj4IM5O/wJ/9Kftnl3k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W1WXlDjYgWgdl9ZbvPMcuqgMgETQJjG32F8NeSmgQR4RsCV2Rl0X/BSdMDNdlD4XEQMjUi1J/6QATRhpgt7RR4fBu0LlffkAwwMmKo5W9qmUnJHWXI8ZhT1BWwHvifkg8UlVn6gywQbrXkpgYGgSWL+uflQ35mJfjWaAiMSgyxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=G7KiyDDv; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-82f8b60e54dso3098697b3a.2
-        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2026 23:58:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1778482690; x=1779087490; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4r0tJ9SsE9hnxxU34JfGu26fGcFCd7TwYQ/xqlalG2M=;
-        b=G7KiyDDvFxCeMsvIKgsRcZ3MWZGAgIQBAq88EdM4FjOgvB3sDcSwxxeGufqcCGbWqn
-         xpT6DLitSSDzXvMACVQLMTeahy6IlbaCoK55KvzdWd/UDZKSkEMA3qcxjPaPAVJmlVuk
-         OznuusblkBXTd85G/XU4syUwUAaay9ZjpRyM9k5v9kZp75mTaqWAXBxv0fAVEZhvtCNw
-         p6jaX/cwH8bdWu+2Vjnfw1m9d8ArX8D7cIHNp0F0fGWy1kiRE0veMoUb2R4v8sPAXiCH
-         CLCvD9JxYhOIx2Hy4JdGeQlbdRVg8RiJiutZjQSFgoXTpVim6NezMzK1uRxjRmkAOc8i
-         9ejQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778482690; x=1779087490;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4r0tJ9SsE9hnxxU34JfGu26fGcFCd7TwYQ/xqlalG2M=;
-        b=r3OCAFmj9hs+FxFQPlVtKScl8zUJH/TbEx0P3YlsJn329tSu5lPUNbBfGziY5cWG/F
-         Jpc992NlC2yuJKhn4myu4Lt4JHllDpzNcina3W5GSYc1EH9j+ZjRd2O3p4xUQIm34zjw
-         nt21tDNTC0II8Q1KskYZkyDsY/d+GzH32vp/zKAxtoBIJ8V99aZtmt2MBvWYlF9rDaBo
-         NXtcbL3DUO9oRW18kVwPE376ajRJUQXBHvQrPUzZUsLSBw/B+uF3PAoEd9zW3WEwEwkK
-         qr4wjcHBf8VJjTnuypocvJovdZ/KI+KhJd/8FGyY9CpdjJhHmklBO1XjObwEgaAWX9Fy
-         K6fw==
-X-Forwarded-Encrypted: i=1; AFNElJ/BolzKPdg7O0QNe5EN28PscakHXb2q7eHRNEksFsEdEwUxbHIE1GM1yhu1USNXd7HCe6INn/NOvvSL1b6IkA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YymtBlNsf3uRY6/yqo+MM8QiHkH3A2Zi7Wj1XTgFImVujtM6fj4
-	u54wQwyNCvKNgI2cItQ4AwAcLVLFKTioO7qj/xlk2wcTDly3P/9XMH23EvwAr9QUN/4=
-X-Gm-Gg: Acq92OGHVgq2Af1QOlWHNAojTgcb4kWMEJi5+XXDJ/b9fZxfLWdCMxRU31dxYWDcL9K
-	E0ROvgmq8WymANmsjDQcpPiYL5vBhHYqIHen4hq0enkIqp4R5DZbAAf76b5xMd5qD9QpvhYENbT
-	ewjlfsb1VM9UikSIGm4PvQOjMRdNiMQAdQCQvdaC2QDMHltGjkJGVx7BR5dU97IN2A/Jxuns+7E
-	PLnO6Vbvd3Pj2AxFx1gHzsdHYt4TP9Pz9mKEHLiqTf69qm9zM/3b9HZ5odwP4V35S9cnPxsjOg/
-	ZHRlJCY9K1JOAugZtdclooO39UlCyWMgp4yjOA+rZjZ+NZG6XaHwb35ZGaN5CDArjKNIB/VJnW3
-	52Y6yQFR+Dl/0ZAgkzMkO1vrdNynAliJmZvLfwS+09/I+6uP0J2cb06b3Iek0I3b6IESVyfWJ8Y
-	Y/DynGPk/w2IZZ1fcxKl5MmXIcMIsC3zdw58Cb+5Tnqnqj2SmB2zWR5cvPorImEZLslTKjV0+4i
-	60R8SEcgw1eQajDhHGiQOJ2ZG+oQxeC5K0Yq1uYGlqHqJSGEEMctEdNAg==
-X-Received: by 2002:a05:6a00:2d24:b0:81f:31c3:2e34 with SMTP id d2e1a72fcca58-83e3afd78f8mr8387020b3a.25.1778482689898;
-        Sun, 10 May 2026 23:58:09 -0700 (PDT)
-Received: from localhost.localdomain ([103.158.43.41])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-839679c861esm23913907b3a.30.2026.05.10.23.58.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 23:58:09 -0700 (PDT)
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: ajay.kathat@microchip.com
-Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	claudiu.beznea@tuxon.dev,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	marex@denx.de,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: wilc1000: Fix memory leak in wilc_wlan_firmware_download()
-Date: Mon, 11 May 2026 12:27:57 +0530
-Message-ID: <20260511065759.37713-1-nihaal@cse.iitm.ac.in>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1778482917; c=relaxed/simple;
+	bh=ezeSzgit+nAeAOpFRKxYmSqlNwh6b/S97GokTikjLa4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eTPZWID9ZtXSoHUQR43t1O+ITTapck4qoYhhx0aug3pHm+oBdc0cl40We3Y1/ACy6svjlDqBgqM6Ig/+WymQMhhvy/Z9Lpsas7HsjqQTFRXTAKD76zHqXJUpurrTOiYu1OkA1J3fPKJtQprk6OCC8ww62dR+RwXKrJWIiX/pHD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=RL4XfHUu; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64B71qqmE2540377, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1778482913; bh=DT4NZB1zl4yopLdygyq3OxsVTtszhU0I3SP4wLOu1WM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=RL4XfHUuzUmIprMzKT4iNu9BKWF3Ny7qegoOBRpFR/PZ+Fse2I01RZm1xVIBxaqcd
+	 XkjfvrakaQ9oYa1F8c55C9TCAnsuTc5DqmBWBILdl8pTLpHH3B1OrCqEGYtkQswYne
+	 20hBBZO6gpsOY2rIPFcOYyg1vuJFsfjeQ+Lg7jCCj+nQ9gUwUdWrYxKPMS6iDnEUya
+	 AH0JufgOP8E9Ik9cAvIryet3ui7Zp6OOIRlrF/xwZHnBU6HRk4WsR/tprMIlTmnYbU
+	 QpWzFa5bxSUauBm7psYWoEMKcVPg10rskixJ99ozacrTFRWBNxMUcz1MPR6MAa1/BK
+	 2Lvm7aARyN4TA==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 64B71qqmE2540377
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 15:01:53 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 11 May 2026 15:01:53 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 11 May 2026 15:01:53 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
+ (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
+ Transport; Mon, 11 May 2026 15:01:53 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+Subject: [PATCH rtw-next 00/11] wifi: rtw89: update BB wrap for RTL8922D
+Date: Mon, 11 May 2026 15:01:37 +0800
+Message-ID: <20260511070148.25257-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -94,64 +73,73 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 55754508BDF
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 8EB32508D93
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[cse-iitm-ac-in.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[iitm.ac.in : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[cse-iitm-ac-in.20251104.gappssmtp.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36196-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36195-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nihaal@cse.iitm.ac.in,linux-wireless@vger.kernel.org];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_ONE(0.00)[1];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,realtek.com:mid,realtek.com:dkim];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[cse.iitm.ac.in:mid,cse-iitm-ac-in.20251104.gappssmtp.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iitm.ac.in:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-The memory allocated for dma_buffer is not freed in the error path
-following the acquire_bus() call. Fix that by jumping to the error
-unwind path which frees the dma_buffer.
+The BB wrap is a set of registers to control TX power and shape.
 
-Fixes: 1241c5650ff7 ("wifi: wilc1000: Fill in missing error handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
----
-Compile tested only. Issue found using static analysis.
+The RTL8922D add more registers to fine tune performance by QAM, bandwidth
+and etc. Add them according to hardware design.
 
- drivers/net/wireless/microchip/wilc1000/wlan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Ping-Ke Shih (11):
+  wifi: rtw89: phy: define BB wrap data for RTL8922D variants
+  wifi: rtw89: phy: set BB wrap of out-of-band DPD
+  wifi: rtw89: phy: set BB wrap of DPD by bandwidth
+  wifi: rtw89: phy: set BB wrap of control options
+  wifi: rtw89: phy: set BB wrap of QAM threshold
+  wifi: rtw89: phy: set BB wrap of QAM options
+  wifi: rtw89: phy: set BB wrap of trigger-base partial band
+  wifi: rtw89: phy: set BB wrap of CIM3K
+  wifi: rtw89: phy: change order to align register order
+  wifi: rtw89: phy: configure control options of BB wrapper by RFSI band
+  wifi: rtw89: phy: add BB wrapper generation 3 for RTL8922D variant
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 3fa8592eb250..4b116fe6f9ea 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -1265,7 +1265,7 @@ int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
- 
- 	ret = acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
- 	if (ret)
--		return ret;
-+		goto fail;
- 
- 	wilc->hif_func->hif_read_reg(wilc, WILC_GLB_RESET_0, &reg);
- 	reg &= ~BIT(10);
+ drivers/net/wireless/realtek/rtw89/chan.c     |   2 +
+ drivers/net/wireless/realtek/rtw89/core.c     |   4 +
+ drivers/net/wireless/realtek/rtw89/core.h     |  21 +
+ drivers/net/wireless/realtek/rtw89/phy.h      |  88 +++
+ drivers/net/wireless/realtek/rtw89/phy_be.c   | 517 ++++++++++++------
+ drivers/net/wireless/realtek/rtw89/reg.h      |  73 +++
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |   1 +
+ .../net/wireless/realtek/rtw89/rtw8852bt.c    |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8922d.c | 160 +++++-
+ 13 files changed, 699 insertions(+), 172 deletions(-)
+
+
+base-commit: c1ed02655f9134d6af6a01a58b734329c2f4f22c
 -- 
-2.43.0
+2.25.1
 
 
