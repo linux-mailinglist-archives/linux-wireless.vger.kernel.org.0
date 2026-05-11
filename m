@@ -1,73 +1,72 @@
-Return-Path: <linux-wireless+bounces-36244-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36245-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJfHA7oaAmofoAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36244-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:06:50 +0200
+	id OPMONMYaAmocoAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36245-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:07:02 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56233514113
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA7E514128
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:07:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 434DE31DD265
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 17:36:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6415231DDE9B
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 17:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2946935958;
-	Mon, 11 May 2026 17:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197404534A7;
+	Mon, 11 May 2026 17:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kVC1Xsug"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XWMwD2z6"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6043B4E9A
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 17:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CD743DA43
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 17:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778521015; cv=none; b=QA48fzeeT25DKHuHpHIu7TeKBQRxhCgXlvDBAJJHgPxPJK7MDPmP1P14wnZ3ngqXHPqigxqJI6Zjh19tgq3U8K/eMzR3xKN9ahvxgqVz2pYa5hyMkAtuYKqjq67Qb1b89b2518nw8aLhJMF82C6BJ3sTh56hUY9+dWaIEfsJvBE=
+	t=1778521017; cv=none; b=oMc5en/8F2purOGCyBI+OkIAKe+ecU03Zoi3sO/nMfaydTmCa37PcuTZOWKqyeDQ3W7MMXuYzzgXFpqt7bbRpYzlJt1lyFMRkC1LysD9efw6w12zfPmsBcvoHbbFJcK8lQzOd0zOA5q0w7H8ChqrXTXoAwkpDUuN+GN9z+M8lCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778521015; c=relaxed/simple;
-	bh=cQyr0cUqZeZnDxUc//o5E1nebVxLFsvoOwDLFCQvlRw=;
+	s=arc-20240116; t=1778521017; c=relaxed/simple;
+	bh=LMSbHNlnEEYL5B9EO4cKwQAKkyGLB5SMXGn5qQ02rAw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QCkGjGtm4s8ElxvPDlqi84Zer0F2NR5ucdJxS0zj4sqhj9qvz1ZlJvqkSZd3O+HjKzqw+B1bwv5jgKkcsyKoxcXslmYEe4AMADTagYw07MWdWKS15fJQA82ErF2VJSHft36e5kDb402H3flgoqsXvYFN0gE1dJ3UZpat+Cz/zoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kVC1Xsug; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=q6kBzXdCUISDRORAw+AHyujBovPXYMG4gdj7M53RZSHtpx2tBmDx5OGI+oJIhU9ehR/ckhw/Me9zI1wKA4U9A+R9Sct/qwQxV+iT+rsCc+LkOLMJUwKv27KGofGyaC+oRTneTG6+FUYwYarsoXo2yMH9CmQEbQ8Wm/5kQFQBoDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XWMwD2z6; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778521014; x=1810057014;
+  t=1778521016; x=1810057016;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=cQyr0cUqZeZnDxUc//o5E1nebVxLFsvoOwDLFCQvlRw=;
-  b=kVC1XsugEaNcXuGfJiJ8BtP4oylqevpuqo4HNcGsEESR2FHEWgzyHDtr
-   ehlU8qecA7Z65V7eMk8iKwIdD+MiFY66P3e78ohwGZql+n3zWPRNZJ993
-   bS9rDgFxGTsLmsY9/AMv/Tf2iegWSrd0deUK5eJMoF5xTwGWWXTYDLrQ1
-   rIbwklE9HKXXyc1SHd+eRwFMgB0E5ZNfShMCNCmmbp38dGGL7yS6gpOLm
-   c8racds17qfQAIqIUvxLia24Vo5tDT5j7K5y84Z109Bpg43yMk2CZiJck
-   iMp0zJxe/FZdE9I08H5T3C3nxwn16/mX5pkPdpP/nvReAeM0FqoRVKXrA
-   g==;
-X-CSE-ConnectionGUID: T9m5YXGNTUOkA9uSbIliIw==
-X-CSE-MsgGUID: sH/KvMV5Qq6E20gmeSyR6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79314775"
+  bh=LMSbHNlnEEYL5B9EO4cKwQAKkyGLB5SMXGn5qQ02rAw=;
+  b=XWMwD2z6kTcuyhZK89jGSeLNPgKlo2wy+xzSztvoAP/5NtoWGzQFJH39
+   BvqU6f2LqPSah9+I5lxHgz+lDxzvX7B7xL7+KLCvTHcUMSKWMHslNfPIT
+   n6kdZXtbxKYCd7+VW7Yu8onV6poZI1olGMQ2ZQHoFMEfOZHgFvbvcbQR/
+   NRzlbFMuntts+9dyBkgTbsvFZ1dSui6srCETjnMOYG4oPn9SVcceHgPDe
+   TXjA4qxFejvjdz9F8K1PeHw+KnFzz/nbQpR0FKpYRtL3tv+D78GoXClgh
+   wbfCM+QqT7lmP/gcBhEsLj1D4tjyhAhxfyyEcwOxTmdCJ0Flay237Enpk
+   Q==;
+X-CSE-ConnectionGUID: 0aTX3YyuTACCAY3uBKfYSQ==
+X-CSE-MsgGUID: fOcNQ3L6RbaetstrotpuIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79314780"
 X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="79314775"
+   d="scan'208";a="79314780"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:53 -0700
-X-CSE-ConnectionGUID: IfZ2fC7hTIuDzKIAB2zE+w==
-X-CSE-MsgGUID: 5LibCFgwQZeRoAbWmJTpMw==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:54 -0700
+X-CSE-ConnectionGUID: BX44+S+BQ9S4583JoO66hA==
+X-CSE-MsgGUID: W3e4aLMkQweTNMT+BrV4PQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="261004627"
+   d="scan'208";a="261004680"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:48 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:36:49 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Daniel Gabay <daniel.gabay@intel.com>
-Subject: [PATCH iwlwifi-next 03/15] wifi: iwlwifi: fix the access to CNVR TOP registers
-Date: Mon, 11 May 2026 20:36:19 +0300
-Message-Id: <20260511203428.09778340db51.I28d678ad404bbf8068f139666d38e29be5aa063b@changeid>
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH iwlwifi-next 04/15] wifi: iwlwifi: mld: honor BSS_CHANGED_BEACON_ENABLED
+Date: Mon, 11 May 2026 20:36:20 +0300
+Message-Id: <20260511203428.cf10e5754171.I8022517c6c5aedb4b56fba30a5545de8f62dddbe@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260511173631.1067831-1-miriam.rachel.korenblit@intel.com>
 References: <20260511173631.1067831-1-miriam.rachel.korenblit@intel.com>
@@ -79,26 +78,26 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 56233514113
+X-Rspamd-Queue-Id: 3CA7E514128
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36244-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-36245-lists,linux-wireless=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -112,142 +111,121 @@ X-Rspamd-Action: no action
 
 From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-For Dr and Sc, we need to wait until the TOP is ready to gets its
-registers read by the host.
+We should stick to mac80211's flow to start / stop beaconing. This
+allows to stop beaconing before we remove the BIGTK.
+
+Note that the start and stop beaconing flows are not exactly symmetric.
+When we start beaconing, we just update the beacon template. We assume
+that mac80211 won't update the beacons, if we're not supposed to be
+sending it.
+
+Also note that we now send the beacon template after the broadcast
+station was added to the firmware: the broadcast station is added in
+the start_ap() flow, while the beacon template is now added in the
+link_changed() flow which happens later. This is not what we did
+before this patch, but this sequence is supported by the firmware as
+well.
 
 Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-io.c   | 18 ++++++++++++-
- drivers/net/wireless/intel/iwlwifi/iwl-io.h   |  4 ++-
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  7 ++++-
- .../intel/iwlwifi/pcie/gen1_2/trans.c         | 26 ++++++++++++++++++-
- 4 files changed, 51 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/ap.c   | 25 +++++++++++++++----
+ drivers/net/wireless/intel/iwlwifi/mld/ap.h   |  6 ++++-
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c |  8 +++++-
+ 3 files changed, 32 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-io.c b/drivers/net/wireless/intel/iwlwifi/iwl-io.c
-index b1944584c693..c4ccfffdf6af 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-io.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-io.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ap.c b/drivers/net/wireless/intel/iwlwifi/mld/ap.c
+index 5c59acc8c4c5..c29e4a77be05 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/ap.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/ap.c
 @@ -1,6 +1,6 @@
  // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
  /*
-- * Copyright (C) 2003-2014, 2018-2022, 2024-2025 Intel Corporation
-+ * Copyright (C) 2003-2014, 2018-2022, 2024-2026 Intel Corporation
-  * Copyright (C) 2015-2016 Intel Deutschland GmbH
+- * Copyright (C) 2024 Intel Corporation
++ * Copyright (C) 2024, 2026 Intel Corporation
   */
- #include <linux/device.h>
-@@ -168,6 +168,22 @@ int iwl_poll_prph_bit(struct iwl_trans *trans, u32 addr,
- 	return -ETIMEDOUT;
+ #include <linux/crc32.h>
+ 
+@@ -239,6 +239,25 @@ int iwl_mld_store_ap_early_key(struct iwl_mld *mld,
+ 	return -ENOSPC;
  }
  
-+int iwl_poll_umac_prph_bits_no_grab(struct iwl_trans *trans, u32 addr,
-+				    u32 bits, u32 mask, int timeout)
++void iwl_mld_stop_beacon(struct iwl_mld *mld, struct ieee80211_vif *vif,
++			 struct ieee80211_bss_conf *link)
 +{
-+	int t = 0;
++	struct iwl_mld_link *mld_link = iwl_mld_link_from_mac80211(link);
++	struct iwl_mac_beacon_cmd cmd = {};
++	int cmd_ver = iwl_fw_lookup_cmd_ver(mld->fw, BEACON_TEMPLATE_CMD, 14);
 +
-+	do {
-+		if ((iwl_read_umac_prph_no_grab(trans, addr) & mask) ==
-+		    (bits & mask))
-+			return 0;
-+		udelay(IWL_POLL_INTERVAL);
-+		t += IWL_POLL_INTERVAL;
-+	} while (t < timeout);
++	if (WARN_ON(!mld_link))
++		return;
 +
-+	return -ETIMEDOUT;
++	if (cmd_ver < 15)
++		return;
++
++	/* leave byte_cnt 0 */
++	cmd.link_id = cpu_to_le32(mld_link->fw_id);
++
++	iwl_mld_send_cmd_pdu(mld, BEACON_TEMPLATE_CMD, &cmd);
 +}
 +
- void iwl_set_bits_prph(struct iwl_trans *trans, u32 ofs, u32 mask)
- {
- 	if (iwl_trans_grab_nic_access(trans)) {
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-io.h b/drivers/net/wireless/intel/iwlwifi/iwl-io.h
-index 5bcec239ffc4..d920a32fc173 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-io.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-io.h
+ static int iwl_mld_send_ap_early_keys(struct iwl_mld *mld,
+ 				      struct ieee80211_vif *vif,
+ 				      struct ieee80211_bss_conf *link)
+@@ -276,10 +295,6 @@ int iwl_mld_start_ap_ibss(struct ieee80211_hw *hw,
+ 	if (vif->type == NL80211_IFTYPE_AP)
+ 		iwl_mld_send_ap_tx_power_constraint_cmd(mld, vif, link);
+ 
+-	ret = iwl_mld_update_beacon_template(mld, vif, link);
+-	if (ret)
+-		return ret;
+-
+ 	/* the link should be already activated when assigning chan context,
+ 	 * and LINK_CONTEXT_MODIFY_EHT_PARAMS is deprecated
+ 	 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ap.h b/drivers/net/wireless/intel/iwlwifi/mld/ap.h
+index 4a6f52b9552d..a3b6bed814ad 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/ap.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/ap.h
 @@ -1,6 +1,6 @@
  /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
  /*
-- * Copyright (C) 2018-2021, 2025 Intel Corporation
-+ * Copyright (C) 2018-2021, 2025-2026 Intel Corporation
+- * Copyright (C) 2024 Intel Corporation
++ * Copyright (C) 2024, 2026 Intel Corporation
   */
- #ifndef __iwl_io_h__
- #define __iwl_io_h__
-@@ -51,6 +51,8 @@ static inline void iwl_write_prph(struct iwl_trans *trans, u32 ofs, u32 val)
+ #ifndef __iwl_ap_h__
+ #define __iwl_ap_h__
+@@ -14,6 +14,10 @@ int iwl_mld_update_beacon_template(struct iwl_mld *mld,
+ 				   struct ieee80211_vif *vif,
+ 				   struct ieee80211_bss_conf *link_conf);
  
- int iwl_poll_prph_bit(struct iwl_trans *trans, u32 addr,
- 		      u32 bits, u32 mask, int timeout);
-+int iwl_poll_umac_prph_bits_no_grab(struct iwl_trans *trans, u32 addr,
-+				    u32 bits, u32 mask, int timeout);
- void iwl_set_bits_prph(struct iwl_trans *trans, u32 ofs, u32 mask);
- void iwl_set_bits_mask_prph(struct iwl_trans *trans, u32 ofs,
- 			    u32 bits, u32 mask);
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-index a7214ddcfaf5..6ca1f51b69a1 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2005-2014, 2018-2025 Intel Corporation
-+ * Copyright (C) 2005-2014, 2018-2026 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016 Intel Deutschland GmbH
-  */
-@@ -411,6 +411,11 @@ enum {
- #define HPM_SECONDARY_DEVICE_STATE      0xa03404
- #define WFPM_MAC_OTP_CFG7_ADDR		0xa03338
- #define WFPM_MAC_OTP_CFG7_DATA		0xa0333c
-+#define WFPM_RSRCS_4PHS_REQ_STTS	0xa033f8
-+#define WFPM_RSRCS_4PHS_ACK_STTS	0xa033fc
++void iwl_mld_stop_beacon(struct iwl_mld *mld,
++			 struct ieee80211_vif *vif,
++			 struct ieee80211_bss_conf *link_conf);
 +
-+#define RSRC_REQ_CNVR_TOP BIT(6)
-+#define RSRC_ACK_CNVR_TOP BIT(6)
+ int iwl_mld_start_ap_ibss(struct ieee80211_hw *hw,
+ 			  struct ieee80211_vif *vif,
+ 			  struct ieee80211_bss_conf *link);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+index 1106ad651cfe..403bc38ac2bc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+@@ -1258,8 +1258,14 @@ iwl_mld_link_info_changed_ap_ibss(struct iwl_mld *mld,
+ 	if (link_changes)
+ 		iwl_mld_change_link_in_fw(mld, link, link_changes);
  
- 
- /* For UMAG_GEN_HW_STATUS reg check */
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
-index a05f60f9224b..377b2e30b540 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2007-2015, 2018-2024 Intel Corporation
-+ * Copyright (C) 2007-2015, 2018-2024, 2026 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -4000,6 +4000,30 @@ static void get_crf_id(struct iwl_trans *iwl_trans,
- 	else
- 		sd_reg_ver_addr = SD_REG_VER;
- 
-+	/* wait until the device is ready to access the prph registers */
-+	if (iwl_trans->mac_cfg->device_family == IWL_DEVICE_FAMILY_DR ||
-+	    iwl_trans->mac_cfg->device_family == IWL_DEVICE_FAMILY_SC) {
-+		u32 req = iwl_read_umac_prph_no_grab(iwl_trans,
-+						     WFPM_RSRCS_4PHS_REQ_STTS);
-+		int ret;
-+
-+		if (!(req & RSRC_REQ_CNVR_TOP)) {
-+			IWL_ERR(iwl_trans,
-+				"WFPM_RSRCS_4PHS_REQ_STTS bit 6 is clear 0x%x\n",
-+				req);
-+			return;
-+		}
-+
-+		ret = iwl_poll_umac_prph_bits_no_grab(iwl_trans,
-+						      WFPM_RSRCS_4PHS_ACK_STTS,
-+						      RSRC_ACK_CNVR_TOP,
-+						      RSRC_ACK_CNVR_TOP,
-+						      50 * 1000);
-+		if (ret < 0)
-+			IWL_ERR(iwl_trans,
-+				"WFPM_RSRCS_4PHS_ACK_STTS bit 6 is clear\n");
+-	if (changes & BSS_CHANGED_BEACON)
++	if (changes & BSS_CHANGED_BEACON) {
++		WARN_ON(!link->enable_beacon);
+ 		iwl_mld_update_beacon_template(mld, vif, link);
 +	}
 +
- 	/* Enable access to peripheral registers */
- 	val = iwl_read_umac_prph_no_grab(iwl_trans, WFPM_CTRL_REG);
- 	val |= WFPM_AUX_CTL_AUX_IF_MAC_OWNER_MSK;
++	/* Enabling beacons was already covered above */
++	if ((changes & BSS_CHANGED_BEACON_ENABLED) && !link->enable_beacon)
++		iwl_mld_stop_beacon(mld, vif, link);
+ }
+ 
+ static
 -- 
 2.34.1
 
