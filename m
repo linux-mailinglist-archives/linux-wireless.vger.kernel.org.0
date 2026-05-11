@@ -1,169 +1,344 @@
-Return-Path: <linux-wireless+bounces-36256-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36257-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILyaBg4ZAmognwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36256-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 19:59:42 +0200
+	id MCkYDKodAmocoAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36257-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:19:22 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB40513F83
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 19:59:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BFC05143BF
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4118131F020D
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 17:37:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44939314889C
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 17:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C954508FF;
-	Mon, 11 May 2026 17:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD98D3FE35F;
+	Mon, 11 May 2026 17:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TavP+nsQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TsFIHQnJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B476A466B52
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 17:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778521032; cv=none; b=Q9jJhkX6VdGArmcCRtMUsowvs8BOZH/z9W+Im2EEqewpeydsmeX8QF8aU112UmgNInQkmHkvNwFKGLPgHXJVLGNlyxIgmlQSc3w4sPyU00m6Di/wnguS/rZmR+80M4H46/RlHLx+rseMhwgSl1ARSiporg7sHT40sTSKtQN6UMY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778521032; c=relaxed/simple;
-	bh=QRrLvkLN+f0C4ox8cdFUS+7maYN7JT6zlWF+pDXSIJs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=I2V6T5rqAQjKABQPq2p1JuBd7PD1XvPcQpHpxedXU3zNnNmrCu65nzZWYN1BRkcPVgvFRen5/zlmg0kdla32fBLFmiMgGbuZI2uZxEd1Dx5VCdZCqneJycwePZLCzaAqSrpekOR2sgr4+RSZ+ZsBTPFTEStJIvobVkbV7Tqd14U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TavP+nsQ; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778521032; x=1810057032;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=QRrLvkLN+f0C4ox8cdFUS+7maYN7JT6zlWF+pDXSIJs=;
-  b=TavP+nsQBuktqYDN29EPYEUKGk83IbCt3crAzjiTlYgc08znJJPHvRCD
-   Jsa4DSzia83vzieMKFvOBz/RLM+62kJ+IqIHWPzOW42f3ztBM/z++SV/i
-   MYqrbvCIzlYwtSB6Bgo9T3ZPO+7ufF4v82egUZTknByu9IpgfOAyEQYB0
-   CgqXERplwywzgKERR3Oy909EtfJb5EPxS7z4/vLMQGKgm37BDRQMr94OV
-   jF6AS5VBSBMJIrugmEJnJC2MD05W+hxqaZfZdmq8dwEvYfzK/dsuj71XC
-   ycP7GGwM/ZG1gk0z5Yq8zU22E3QMQ/xUosj6QMaoUikepMbxSI06L85i4
-   g==;
-X-CSE-ConnectionGUID: ZXwBo4PXRw+C7dmpxD4HLg==
-X-CSE-MsgGUID: rv2UpCucSUCdqklRYsJP3Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79314882"
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="79314882"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:37:11 -0700
-X-CSE-ConnectionGUID: yhUhMA8rSkOKNPXMB+TfIw==
-X-CSE-MsgGUID: sjup5qc1Qn+UVtuMxdY0cg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
-   d="scan'208";a="261005344"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 10:37:03 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Avinash Bhatt <avinash.bhatt@intel.com>
-Subject: [PATCH iwlwifi-next 15/15] wifi: iwlwifi: fix buffer overflow when firmware reports no channels
-Date: Mon, 11 May 2026 20:36:31 +0300
-Message-Id: <20260511203428.e03cd831bc96.I8260d881eebe3e83d3208959b525c51af26414e6@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260511173631.1067831-1-miriam.rachel.korenblit@intel.com>
-References: <20260511173631.1067831-1-miriam.rachel.korenblit@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BDB2248AF
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 17:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778522301; cv=pass; b=WBPVGMX6Kg7+85FHXESg7kXLRtjfqOxtkY2Vk8taQTjpVutlIAZ+FF3ZlBRWSfPhIL+1BNKBejdYKZLi5OiK78ESEpupptWfkc1YzLr0zMgelA4bMLC2vB14ylVifgfYqD96YLac1JIHo4ewqxDyCF3Px0inl2iunNDcYitW9nk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778522301; c=relaxed/simple;
+	bh=AN2OJZKTXXJdYUx+dGLGxX0PB9rZ1AHUss2wsvmnTGA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dDIVh04sDlJ3iEstXWd18CBoefzs5Su9p2cFtJ3Qb6ChDjLCiwXZ+a0Ui8RtXYotFQ+9tgO8ovmWWEm3BRswaf0NkN+Nq9V9CeK0o7yNwu/5KxZZcbQhrhKmyZnh5G8rFzVw+CSZk+fvS81Fg80dfuJs13M415mvzHwcDciUkIs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TsFIHQnJ; arc=pass smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a525aedb24so4602174e87.2
+        for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 10:58:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778522298; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lJqZN1cOVRWUfxY9WWp/uaGz/doTwzIhk1kasueMdRVoMFoQIIFJM9LO5vuEyafwOC
+         SyGtaSANUVZya7YBlhZPOQRm3/kXfQIw9Rne3j6NKYQPn3LrFAQK0qpMEZkAJABUjHTc
+         MHpd8nUywV9YBDf7eNl+kzhE+wqKoKbs+UEfsKUw4ecy1G1q7BdlmbUPrB/fw/uaEgPK
+         DbqOqVKHYbughjCWN7ufmEoB+s2LJsIyxTTo4hKS9eJz2spsegCKcxKGlTPb+xP/KJ+/
+         iS656xSVAD91Egr6Sv1s2sSuqj8KBtiw6fM6XauHil67Q5Vl6HnAmWCjOWrHgXEP56hS
+         pfgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SY9JiJtIYDNHwNHrC1dYRjhPzwG3k19YHr9rjoF6vFE=;
+        fh=Ix2ZZhTNiXGbORYZ+BDgqiEz+x9VQCoZjwc4q4yy+ao=;
+        b=F/hEySGISsVHeqqTbdhoypOkm8qDf83x7ZWcBDTDxZscIjCuXPSZiQZLwLp8ezA/5q
+         UJD9XL0vhGiItDoNtu266e3cDkLxJPgFOzHLbtURPC9ISvShUrpP5unu0ix0Zrgxq6mj
+         cQjIMES2GbN/3wbXRnasQUYtL0SKCBHhNaSz2qP+GaW3NVb6oAq7T2cvY5KziPVBNp4o
+         Z/oxFiAqDsvSEwdIV+hbTx1ocomCvzOX7yUOP1MSkr6Ye8eQw6f+5daqQd06ABSl+EcU
+         4RStqVuQhEnit6OSyuzdpWsbPlVU+nxFtZh3Ry90VS5/T9b0275bTzV9vON5WXBa01Ar
+         LHTw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778522298; x=1779127098; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SY9JiJtIYDNHwNHrC1dYRjhPzwG3k19YHr9rjoF6vFE=;
+        b=TsFIHQnJP1kLtMt4DmyLwO7Xoqq8Ag3lRlkXKdka2pg0u15gN63eJGia7fQgorMDD0
+         3ER9XJyYcpAymsrb3Br3b7LzrVKK0GcBt3L9SATziSEGGOyXdT+OwyWETxnWolV2emVz
+         8eaHXNEGLuILp8RgdUmp40Q/YIMYl75tEZoEs6+C7AT5640xEwSrVeZm3g4ZCSpVzcfE
+         Ec+YTw4l06+GkUmeC1SRdHAdIVa9NkWNM/jD7fZk1Vv10KHvGhTVbWMvaoIM3mYOa6xn
+         sMu6n9j2ijU2QzoyWlwOkUZrjJf+DG5ToVANGnK+cWzzhYl2i10Mi2emzSwoUo1vQqMQ
+         oE8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778522298; x=1779127098;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SY9JiJtIYDNHwNHrC1dYRjhPzwG3k19YHr9rjoF6vFE=;
+        b=KHGGsAxxwDGNb6u0u1qvIAJb9keEehHHTgiGleUEBkfsWLGsmJzt94kvH61ei0hxT0
+         KP8XjlOAewtZUbY1nAHf4lFfzVPF68m3kBnwXoBNbSBH2gJB5zLFOoAyaL9B86TsO/+d
+         qHZ+pSSzUpcBVYjIwxYln3TUg38GYyGaIMJAJJkgRXh+Qn7ee8v904SRH50Bf18fFdhO
+         KZ5HiEfFCvdVBz+qskz2Exw6gKFGJm5iE5Q+XSwLRGUBl6ZklBKtFidqmL48N+p9LYRL
+         uzaYBIr5ly8TW29RP99m56xGjAA2SIUOqEZ6ON5GCH5O1Xq82SCSSbYAbGhJgUZiWJfW
+         884A==
+X-Forwarded-Encrypted: i=1; AFNElJ9+SoUhk0u3o4eVm4mkIylmAVo/08yuEx6i0nuGs4hWrCmgdbq0hd9XNIR/1I/liMC0Gtm26Jwf3nb8edtp6w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfJHySvv+M3psHBKgVCbG/NkDFTKaKb1+8JBPeqBUlRn1M7f59
+	SyhDJtHGUctHu1fV1n533AR2Dp2IG/IoQy+YPOqji9R7V76AhQN5PHLXW+M+HV8oaQ0qEGbHGvb
+	a8wWjOUFlcWP8goW4NkdrTY+Su9uC9fE=
+X-Gm-Gg: Acq92OEVG+NdqPlxJ+2aYEvlbjs8mCWhGt9sydSnGfGWEU7XDp29ooWKZAzDlQLJxJQ
+	z4hl5JZc8t4ZltdK4SQiuoaaeR9MRpOcUMXRISDylwRnmY5N4uJMA3fojGzN7CSzLc8cwmhmGLM
+	g/cSirTkE6dHSKNLT62CzXqfJBGzutXWGHqXJPtTRiQQWwALrI+/bYwU1X0uL0cWKNzWCGqqbsz
+	qKV5RWzdAd5VTiToJX+RlqMEHJ3qZQEBOSLIynI3yD8wv/pgbFoHx9RZF1nmgehnEXMd6XO59mC
+	QhbGts0=
+X-Received: by 2002:a05:6512:10cf:b0:5a8:9fd7:c248 with SMTP id
+ 2adb3069b0e04-5a89fd7c28cmr7353682e87.37.1778522297853; Mon, 11 May 2026
+ 10:58:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: ACB40513F83
+References: <CACjnFagN9zeSkwEv3-CSPJDUENPcEcOLjKyQoLQ91Yjn=rq5ww@mail.gmail.com>
+ <20260506200918.D68321EA006C@mailuser.phl.internal> <CAGp9LzqkJ8QoOnBAiGu=uum3-LmCB3yHr91sw1HoLw+7ewNx6A@mail.gmail.com>
+In-Reply-To: <CAGp9LzqkJ8QoOnBAiGu=uum3-LmCB3yHr91sw1HoLw+7ewNx6A@mail.gmail.com>
+From: John Henry <jshenry1963@gmail.com>
+Date: Mon, 11 May 2026 13:58:05 -0400
+X-Gm-Features: AVHnY4K5s9op3gblhN4NTbgI2jjORItyQKxqE8drbRi9J1gF2iMeHy5tqEB-kgA
+Message-ID: <CAN6xzWdsYY0eni7aHG2Q=i2zz-rVxFRJJhCJbUsn=Pn_oDY-bQ@mail.gmail.com>
+Subject: Re: [bug report] wifi: mt76: mt7925: iw set txpower fixed accepted
+ but ignored
+To: Sean Wang <sean.wang@kernel.org>
+Cc: Javier Tia <floss@jetm.me>, Bradley Pizzimenti <brad.pizzimenti@gmail.com>, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, nbd@nbd.name, 
+	lorenzo@kernel.org, ryder.lee@mediatek.com, shayne.chen@mediatek.com, 
+	sean.wang@mediatek.com, 
+	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7BFC05143BF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36257-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36256-lists,linux-wireless=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FREEMAIL_CC(0.00)[jetm.me,gmail.com,vger.kernel.org,nbd.name,kernel.org,mediatek.com,lists.infradead.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jshenry1963@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[jetm.me:email,infradead.org:url,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Avinash Bhatt <avinash.bhatt@intel.com>
+Bradley/Sean,
 
-On parsing NVM in setting country code, if firmware reports 0 channels,
-buffer is allocated for 0 rules but a dummy rule is added for cfg80211
-compatibility, causing kmemdup() to read 128 bytes from a 32-byte buffer.
+Thank you all very much for the information.
+I tested this on mt7921u based Alfa AWUS unit and also an mt7925 based
+Netgear Nighthawk unit.
+I can confirm that the RF tick issue is present on both models when in
+Monitor Mode. I'm assuming it is in the base mt76?
 
-Allocate regd buffer for one rule addition when reported
-channels are 0.
+I attempted sudo iw dev wlxxx set txpower fixed nn where nn is the
+minimum value, next few values up, and then a few near the max values,
+and see no change in the signal strength of the RF Ticks when scanning
+through 5 or more channels.
 
-Signed-off-by: Avinash Bhatt <avinash.bhatt@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 21 ++++++++++---------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+Please keep this in mind when attempting to resolve the known txpower
+3dBm issue if possible, or please generate a new bug report for that
+specifically so that I can track when it is patched, or in ??? version
+so that I can test here locally.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 0736c8c00d4e..455d6e8c7028 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -1724,8 +1724,16 @@ iwl_parse_nvm_mcc_info(struct iwl_trans *trans,
- 	IWL_DEBUG_DEV(dev, IWL_DL_LAR, "building regdom for %d channels\n",
- 		      num_of_ch);
- 
--	/* build a regdomain rule for every valid channel */
--	regd = kzalloc_flex(*regd, reg_rules, num_of_ch);
-+	/* build a regdomain rule for every valid channel.
-+	 * Certain firmware versions might report no valid channels
-+	 * if booted in RF-kill, i.e. not all calibrations etc. are
-+	 * running. We'll get out of this situation later when the
-+	 * rfkill is removed and we update the regdomain again, but
-+	 * since cfg80211 doesn't accept an empty regdomain, we need
-+	 * to allocate space for at least one rule to add a dummy
-+	 * (unusable) rule in this case so we can init.
-+	 */
-+	regd = kzalloc_flex(*regd, reg_rules, num_of_ch ?: 1);
- 	if (!regd)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -1799,14 +1807,7 @@ iwl_parse_nvm_mcc_info(struct iwl_trans *trans,
- 		reg_query_regdb_wmm(regd->alpha2, center_freq, rule);
- 	}
- 
--	/*
--	 * Certain firmware versions might report no valid channels
--	 * if booted in RF-kill, i.e. not all calibrations etc. are
--	 * running. We'll get out of this situation later when the
--	 * rfkill is removed and we update the regdomain again, but
--	 * since cfg80211 doesn't accept an empty regdomain, add a
--	 * dummy (unusable) rule here in this case so we can init.
--	 */
-+	/* If no valid rules were found, add a dummy rule */
- 	if (!valid_rules) {
- 		valid_rules = 1;
- 		rule = &regd->reg_rules[valid_rules - 1];
--- 
-2.34.1
+Incidentally, I'd appreciate it if anyone could please attempt to
+repeat using the scripts I had shown in the previous posts and confirm
+it is indeed seen by others.
 
+Thank you very much for your time and assistance
+
+John Henry
+
+
+
+
+From: Bradley Pizzimenti <brad.pizzimenti@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+ryder.lee@mediatek.com, shayne.chen@mediatek.com,
+sean.wang@mediatek.com
+Subject: [bug report] wifi: mt76: mt7925: iw set txpower fixed
+accepted but ignored
+Date: Mon, 4 May 2026 15:04:35 -0700 [thread overview]
+Message-ID: <CACjnFagN9zeSkwEv3-CSPJDUENPcEcOLjKyQoLQ91Yjn=3Drq5ww@mail.gma=
+il.com>
+(raw)
+
+Hi there maintainers,
+
+`iw dev <iface> set txpower fixed N` returns success on mt7925 for any
+N tested, but the reported txpower never changes from a stuck value of
+3.00 dBm. The kernel accepts and ignores the call silently in both
+directions (above and below the displayed value), and well below the
+regulatory ceiling.
+
+I'm aware there's prior art on the cosmetic 3.00 dBm display issue
+(Razvan Grigore's v2 series, Feb 2025; Ming Yen Hsieh's txpower init
+refactor, Sept 2025). What seems potentially distinct here is that the
+user-issued `iw set txpower fixed N` itself is silently no-op'd,
+separate from the reported-value question. Reporting as breadcrumbs
+in case the second observation is a separate bug rather than the same
+one.
+
+Hardware
+--------
+MEDIATEK MT7925 [Filogic 360], 802.11be 2x2, PCI 14c3:7925
+ASIC revision 0x79250000
+Driver in use: mt7925e (in-tree)
+
+Firmware (from dmesg at probe)
+------------------------------
+mt7925e 0000:01:00.0: HW/SW Version: 0x8a108a10,
+                     Build Time: 20260106153007a
+mt7925e 0000:01:00.0: WM Firmware Version: ____000000,
+                     Build Time: 20260106153120
+Files: mediatek/mt7925/WIFI_MT7925_PATCH_MCU_1_1_hdr.bin
+       mediatek/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin
+
+Kernel
+------
+6.18.18-1-MANJARO (close to vanilla 6.18 stable; not yet tested on
+wireless-next or nbd168/wireless HEAD -- happy to retest if needed,
+but flagging the data point in case it helps as-is).
+
+Tools: iw version 6.17
+
+Regulatory
+----------
+$ iw reg get
+country US: DFS-FCC
+   ...
+   (5730 - 5850 @ 80), (N/A, 30), (N/A), AUTO-BW
+   ...
+
+Connection context: 5GHz channel 161 (5805 MHz), 80 MHz, VHT-MCS,
+NSS 1. So we are on a band with a 30 dBm regulatory cap.
+
+Observed
+--------
+$ iw dev wlp1s0 info | grep txpower
+        txpower 3.00 dBm
+
+$ sudo iw dev wlp1s0 set txpower fixed 100   # 1 dBm
+$ iw dev wlp1s0 info | grep txpower
+        txpower 3.00 dBm
+
+$ sudo iw dev wlp1s0 set txpower fixed 1500  # 15 dBm
+$ iw dev wlp1s0 info | grep txpower
+        txpower 3.00 dBm
+
+$ sudo iw dev wlp1s0 set txpower auto
+$ iw dev wlp1s0 info | grep txpower
+        txpower 3.00 dBm
+
+All four `set` invocations return exit code 0. The reported value
+never moves.
+
+Expected
+--------
+Either:
+  - The reported txpower follows the requested value (or, where
+    capped, the actual applied value with extack indicating the
+    cap reason), or
+  - The set call returns an error rather than silently ignoring the
+    request.
+
+Caveats
+-------
+- Not yet tested on wireless-next or nbd168/wireless HEAD. If a
+  reproduction on a current dev tree would be useful, I can do that.
+- I have not verified whether the actual radiated TX power changes
+  in response to `set txpower fixed`; I am reporting only the
+  user-visible behavior.
+
+Thanks,
+Bradley
+
+On Wed, May 6, 2026 at 8:12=E2=80=AFPM Sean Wang <sean.wang@kernel.org> wro=
+te:
+>
+> Hi,
+>
+> The TX power reporting issue has already been investigated by Lucid
+> from the Linux WiFi USB community, and there is a proposed solution.
+> I think we can continue checking whether there are any remaining
+> issues on top of that work. Please refer to the patches here:
+> https://lists.infradead.org/pipermail/linux-mediatek/2026-April/105726.ht=
+ml
+> Thanks everyone for reporting and raising these concerns.
+>
+> On Wed, May 6, 2026 at 3:09=E2=80=AFPM Javier Tia <floss@jetm.me> wrote:
+> >
+> > On Sun May  4 22:04:48 2026 Bradley Pizzimenti wrote:
+> > > `iw dev <iface> set txpower fixed N` returns success on mt7925 for
+> > > any N tested, but the reported txpower never changes from a stuck
+> > > value of 3.00 dBm.
+> >
+> > Hi Bradley,
+> >
+> > The 3 dBm display bug is a known issue we have seen when using mt7927
+> > and a tested fix has been working well so far. The root cause is that
+> > mt7925_mcu_set_rate_txpower() programs the per-band SKU tables into
+> > firmware but never assigns phy->txpower_cur. mt76_get_txpower() then
+> > computes:
+> >
+> >   DIV_ROUND_UP(0 + 6, 2) =3D 3
+> >
+> > regardless of the actual power level. The RF output is unaffected;
+> > it is a display-only bug.
+> >
+> > The fix reads the effective TX power back from the rate power limits
+> > after programming the SKU tables and writes it to phy->txpower_cur,
+> > following the same pattern used by mt7996:
+> >
+> >   https://github.com/jetm/mediatek-mt7927-dkms/blob/master/mt7927-wifi-=
+14-fix-reported-txpower-always-showing-3-db.patch
+> >
+> > This is part of a series we are targeting for wireless-next; not
+> > yet upstream.
+> >
+> > > What seems potentially distinct here is that the user-issued
+> > > `iw set txpower fixed N` itself is silently no-op'd, separate
+> > > from the reported-value question.
+> >
+> > Agreed those are two separate issues. Our patch addresses the
+> > display-only side: after applying it, iw will report the value the
+> > firmware is actually using based on the SKU tables, rather than
+> > always 3 dBm. Whether `set txpower fixed N` propagates to firmware
+> > to change actual output power is orthogonal and not addressed here.
+> >
+> > If you can test the patch on your MT7925 and confirm the displayed
+> > value reflects the correct power after association, a Tested-by
+> > would be appreciated.
+> >
+> > Best,
+> > Javier
+> >
+>
 
