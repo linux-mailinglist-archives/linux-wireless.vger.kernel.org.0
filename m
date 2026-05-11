@@ -1,84 +1,69 @@
-Return-Path: <linux-wireless+bounces-36224-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36225-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKZGDTa2AWr2igEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36224-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 12:57:58 +0200
+	id kJyTIca4AWocjAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36225-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 13:08:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC4F50C5E7
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 12:57:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D432150C7EA
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 13:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F40583019FE2
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 10:55:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 46D5D3005795
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 11:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6FD43C7E1B;
-	Mon, 11 May 2026 10:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A891E98EF;
+	Mon, 11 May 2026 11:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y2yG9bHy"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="KtjtES4e"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.103])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB87E346E5A
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 10:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33983624CE
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 11:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.61.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778496924; cv=none; b=bgUGjSx4DBzAhVuRRNYrgLY3il6KVo5GCxGgh3UIFiSnIj2vunuMefdp4TEsRLbTjNKLSgV8ERAjOJ1TiP+zZ7K/NPw5gihLevA+V4RQkdjh8Ga8qaT9GVtT8XN3KF0+drWrISBnOF8sFYLYI1WCBy8tpyMQIVnYOZR9La1usVw=
+	t=1778497548; cv=none; b=hRJnYcnwNsBKAO95jj/R2LhRcOzYuCG19nM4qAE5hbsVrV45iipA+4f3rMFUDrNR3YHlHKC/l/CnWAKJF0DfH5GRsUEpoRL1TPczcv2yYSYju/e9C0DPtnqQmHhIVgr7QR0JseBQk0HuInNwwiuZPeFaBpjBHYjs7Nu4r0GWDzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778496924; c=relaxed/simple;
-	bh=jY/4U4NvAuCXUM8W1XcxHDLJhhLC1SsxoRTCHwOhFD8=;
+	s=arc-20240116; t=1778497548; c=relaxed/simple;
+	bh=bLyVVZgWui7j2mjx7HxCtxWnC/K3u20Fp0Cy227Vdcw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lX2WG0ZQzn7wLZLPhg1ICPJQ+5pZN7cOErk5qgGys/+SsNoarhmzcxO+ag2TMSMql+K9BwaPPpNfMkBbpp2qpnHwMOvR+B1TbIDjNFCcYu7uKDzkjxLWK+bGXKkWkPeiEXA7r9Owmye2lb3VsJVqj6Ca27X+6rdPIGPdMd5xhHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y2yG9bHy; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-67b6a6bd7b8so8618241a12.0
-        for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 03:55:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778496921; x=1779101721; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pRz3ZIzUquJZrfpxHjLbsp8xXHQjqMlXKjZ8oqjwmrY=;
-        b=Y2yG9bHyfe0wHrRRvdbzBofbpieHe+7qB/ezxV+E1xTNW9Jcfmrl+VMJSfsGWJXRwG
-         CFcpT4LqPbVcnfmoZqS9JqGtfULJHoukLC2uZyIUSuBadJIoQVnNirMsg96bidViPlDh
-         3I9Ve/4H+L0XO+h7+0lkVrlgXXqC/OfLZfgMMvFgxyd4yP3r2HVSgwytqv5+DR5w/Uf4
-         lV6K4o9lPgKP4xjV7WDTz+jnxv78TczVTLLUo1/9YVp46JeanB8tTNHEOmK+xU9bDsOe
-         7omBLbFedR6f/5kWGC+Gq5Duo2VA77QJg50pYd0UZXjVHFU9m9Cn1QlN9RgQAhH5dLcs
-         tRhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778496921; x=1779101721;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pRz3ZIzUquJZrfpxHjLbsp8xXHQjqMlXKjZ8oqjwmrY=;
-        b=mdHZz/DUWoI4Mfr0b5lLJRR+KpY2bOWCfNeMRPNGMlPPB1bsYTPg/+AiGw+hE0ohd1
-         Ara72N7+j3nQfK/xc9m1wmYAqmxI/d6CoSnQQMB7DaxsJcFnP3RVhNCL4DzeMT0H4/gA
-         X36flPe676JEniBV755o9JIMpJx4+62o2ZRIa9uFtkX81x/+NTSnpSsjppLmNreIjfbT
-         Ro7eITKyKDw0X31B3BMqM0YEwUcsFjh+sGY78k4tHBdGPngMW68RdPoTDTC2A1Lv6G9m
-         K+hnI3qIPI86JjxryzXlqB8UCoOfe2IeBuHpbqSJ0CLIzB6glrOfTu53+BZxmuMcHFEZ
-         1qkA==
-X-Forwarded-Encrypted: i=1; AFNElJ9kbmtt/fH6q7jGKxO/NSi9RFTe5ElhRuapxFbFlYS88BL+rg4nMzsBnbYrf1L9DTa9PTooOSBATZNMBs5vPA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGlaMui1VpUoS2sYo0aYtJ8QGW1KKOZtf9gRxI/Irwfmza+1QZ
-	deeQOUhQPKLbN9C5ivoyGrTZpR4hjB147iPvaxa3Hw9iNqUUpGcYBfES
-X-Gm-Gg: Acq92OH8W4dHH28hNuvPUJdDaSDyXewIIZ0YhLoeFoLH2yBofeodIRsMj8PDJlCWQp/
-	NR0A0oUa+j4u86YxZoDjpra9bxaFUin02C7ui6LUn8Vx+5C6JATrHH7AY0cXrmARYnnmUxorkdH
-	9gWQDuhyHrlFwjzTXDJbG/c/poDrlt+KgWCd9jAPA4dGs3ebbYBBVe/jIFN+lwFaG32RgDIT7Gi
-	CRnKUJKWrOeoAg5XEF5uHGCIN58DVpUiiiBgTSGTGNNFLJd9C8M0rjAc8FQDuRt90E/wrRoi46D
-	9aLVu9X5FxQkZVRbNtcPGR6wVYQW7mWK9YfA0xzQR5v4BWTcXL/Nu9/6je/8QiFPLD68Cgqokdy
-	dSMEUnQgsraU170qfqkdEdK80MY/g4rrRr45cwMHYXyZO3VB9URUg8Spy/HaYxuFpNC0VzvNWVI
-	gJvvReOnvnzeTg0K6L1SuAZqDUO4UmuQ==
-X-Received: by 2002:a05:6402:4506:b0:676:5872:c686 with SMTP id 4fb4d7f45d1cf-67e0dbfa7cfmr7937110a12.2.1778496921031;
-        Mon, 11 May 2026 03:55:21 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67ef0b3b904sm3472736a12.1.2026.05.11.03.55.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 May 2026 03:55:20 -0700 (PDT)
-Message-ID: <fe81de61-f22b-4331-9ef2-fe602f9880ea@gmail.com>
-Date: Mon, 11 May 2026 13:55:19 +0300
+	 In-Reply-To:Content-Type; b=dGehDiC6D56/yRKgoXokIB/lbgmSdTSOL2ybmjJxkCdNpw1f92wjkrfqHQ3hG2TKOKlKNcgcmYTfntzTAQJ6/Z5ldyrJYGunE4jI3bRUnfWvs56vaejmjTISz8AfRilKI+1MpJMYzfEXupjAqS9POlM6VAXoHQ5nl7b8A+LpPI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=KtjtES4e; arc=none smtp.client-ip=188.68.61.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from mors-relay-8403.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4gDcMq31jlz88DY;
+	Mon, 11 May 2026 13:05:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1778497543;
+	bh=bLyVVZgWui7j2mjx7HxCtxWnC/K3u20Fp0Cy227Vdcw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KtjtES4ebSL+osPA4ybjY08FO/mHkb4QfUPl8FVgGg1BKRbNbB150vaD3HXLY/nsu
+	 NcFoobLE1W1ZA1aoJFjquY0UA2kpuQuyQaKYOu8CJhohwa3j8fHapvBXrV6Du3DAw6
+	 0RTRXyg2wMVN8J2BfsiMUOkIkLdCOMugdsyZDOKJBGbnYvvyTgZXMJgNkw7o+YqSKU
+	 156gsotsDQuGXmN1PAGWSaaZknXmRqbulxc43UqpjHk/urXswV5IHcEpj9ng3CGUGa
+	 XLtdyVygfwiuGm1NQUP2xiL7ycbZCB1N8t0KM2GJvRZDKREBm1DWpRKdCyiYJM5jq7
+	 ZFqXPUFjZ27Pw==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4gDcMq2Jzyz88DN;
+	Mon, 11 May 2026 13:05:43 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4gDcMp61TZz8sbB;
+	Mon, 11 May 2026 13:05:42 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 25CD160300;
+	Mon, 11 May 2026 13:05:42 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <41693ffc-926c-4e67-9a48-b6e1b1d150bd@leemhuis.info>
+Date: Mon, 11 May 2026 13:05:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -86,219 +71,137 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/1] wifi: rtw89: usb: Support switching to USB 3 mode
-To: Lucid Duck <lucid_duck@justthetip.ca>, linux-wireless@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>, linux-kernel@vger.kernel.org
-References: <20260508054421.128938-1-lucid_duck@justthetip.ca>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <20260508054421.128938-1-lucid_duck@justthetip.ca>
+Subject: Re: [PATCH rtw-next v2] wifi: rtl8xxxu: Detect the maximum supported
+ channel width
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+ Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ art1310@proton.me,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <c57de68e-5d57-4c26-898f-8a284bb25381@gmail.com>
+ <ee88b3a2-2cc9-4370-b782-189a603a7fa1@RTKEXHMBS04.realtek.com.tw>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: de-DE, en-US
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+In-Reply-To: <ee88b3a2-2cc9-4370-b782-189a603a7fa1@RTKEXHMBS04.realtek.com.tw>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9DC4F50C5E7
+X-PPP-Message-ID: 
+ <177849754241.4032573.15788250310150312319@mxe9fb.netcup.net>
+X-NC-CID: vERHvys/En1qe5VdxtLCooosOddGuyOz4MG3GmsdrjrV1mphiKU=
+X-Rspamd-Queue-Id: D432150C7EA
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36224-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36225-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[leemhuis.info];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,proton.me,lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[linux@leemhuis.info,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,justthetip.ca:email,checkpatch.pl:url]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-On 08/05/2026 08:44, Lucid Duck wrote:
-> From: Devin Wittmayer <lucid_duck@justthetip.ca>
+On 5/6/26 09:57, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
 > 
-> This patch adds USB 2 to USB 3 mode switching for the AX-generation
-> chips in the rtw89 USB driver (8852AU, 8852BU, 8852CU and helper
-> variants). Without it, those adapters enumerate at USB 2.0
-> high-speed on first plug and stay there, capping real-world
-> throughput around 260 Mbps TCP regardless of radio capability.
-> 
-> It is Bitterblue Smith's morrownr/rtw89 commit cd287ccf544b
-> (2025-07-16) rebased onto wireless-next without code changes:
-> author's Signed-off-by preserved, my Signed-off-by added as
-> relayer, Tested-by per chip based on the matrix below.
-> 
-> The bug
-> =======
-> 
-> These chips present as USB 2 devices on first plug. The driver is
-> expected to send a switch-mode register write to make them disappear
-> and re-enumerate as USB 3 SuperSpeed. Mainline rtw89 does not issue
-> these commands anywhere. Every user with one of these adapters on
-> a mainline-derived distribution sits at the USB 2.0 ceiling for
-> the life of the plug, regardless of negotiated radio rate.
-> 
-> The fix
-> =======
-> 
-> The patch covers AX-generation chips (8852AU, 8852BU, 8852CU and
-> helper variants) via R_AX_PAD_CTRL2. It also adds the
-> switch_usb_mode module parameter (default on) for users who
-> experience 2.4 GHz interference under USB 3.
-> 
-> Mainline precedent
-> ==================
-> 
-> The same mechanism is in mainline rtw88 across three commits
-> between July 2024 and April 2025, all authored by Bitterblue Smith:
-> 
->   commit 315c23a64e99 ("wifi: rtw88: usb: Support USB 3 with RTL8822CU/RTL8822BU")
->   commit 82a35723a67c ("wifi: rtw88: usb: Support USB 3 with RTL8812AU")
->   commit bf1103654df9 ("wifi: rtw88: usb: Enable switching the RTL8814AU to USB 3")
-> 
-> Reviewer of record: Ping-Ke Shih, current rtw89 maintainer.
-> 
-> Test results
-> ============
-> 
-> 60 plug-cycles + 30+ gated throughput cells captured 2026-04-11
-> to 2026-05-07. Both x86_64 (Tiger Lake xHCI) and aarch64
-> (Broadcom RP1 xHCI) reproductions confirm the bug and the fix.
-> 
->   Hosts:    Framework 13 (x86_64, Fedora 43 / 6.19.13, Tiger Lake xHCI)
->             NucBox K8 Plus (x86_64, Arch Linux / 6.17.9, AMD F19h USB)
->             Raspberry Pi 5 (aarch64, Pi OS / 6.12.47, BCM2712 + RP1)
->             Banana Pi BPi-R4 Pro (aarch64, OpenWrt / 6.6.93, MT7988A;
->                                   also used as a controlled lab AP)
->   Adapters: D-Link DWA-X1850 A1 / B1 (RTL8852AU)
->             BrosTrend AX1L compact / AX4L high-gain (RTL8852BU)
->             BrosTrend AX8L AXE5400 / EDUP AXE5400 (RTL8852CU)
->   APs:      consumer multi-band router (WPA3-SAE / WPA2-PSK)
->             BPi-R4 Pro single-band lab AP (WPA3-SAE)
->   Server:   Linux iperf3 host on 2.5 GbE wired Ethernet
-> 
-> Full per-cell evidence (raw iperf3 stdout, dmesg captures, sysfs
-> snapshots, iw link snapshots, byte-counter deltas, per-host detail)
-> at https://github.com/Lucid-Duck/rtw89-usb3-gap.
-> 
-> Plug-cycle. N=10 cycles per (chip, host) cell. Pass = post-plug
-> /sys/bus/usb/devices/<id>/speed reads 5000 (USB 3 SuperSpeed),
-> zero WARN/BUG/Oops in cycle-bracketed dmesg, non-empty association
-> BSSID after settle.
-> 
->   Adapter (chip)               FW13 6.19      K8 Plus 6.17
->   ---------------------------  -------------  --------------
->   DWA-X1850 A1 (RTL8852AU)     10/10 PASS     10/10 PASS
->   BrosTrend AX1L (RTL8852BU)   10/10 PASS     10/10 PASS
-> 
->   FW13:    Fedora 43, 6.19.13, wireless-next + this patch
->   K8 Plus: Arch Linux, 6.17.9-arch1-1, morrownr/rtw89 (upstream
->            fork; identical AX-gen behavior to this patch)
-> 
-> Throughput. TCP iperf3, N=10 30-second iterations per sub-cell,
-> four sub-cells per cell (P=8 and P=1, each direction), to a Linux
-> 2.5 GbE host. Per-cell /32 host route forces traffic onto the WiFi
-> adapter; per-iteration byte-counter cross-check on every cited cell
-> shows wireless tx/rx delta at 103-108% of iperf3 reported bytes
-> (excess is normal TCP/IP framing), so wired-NIC bleed is ruled out.
-> Linux tuning applied (rmem 32 MB, RPS=ff on the WiFi RX queue).
-> 
-> FW13 stock (in-kernel rtw89, USB 2 stuck) vs patched (USB 3
-> SuperSpeed), same adapter / AP / kernel / capture script, P=8 mean
-> Mbps, AP is the consumer multi-band router:
-> 
->   Adapter (chip)              Band, width      UL stock  UL patched  DL stock  DL patched
->   --------------------------  ---------------  --------  ----------  --------  ----------
->   EDUP AXE5400 (RTL8852CU)    6 GHz, 160 MHz       269        1364       327         579
->   AX8L AXE5400 (RTL8852CU)    6 GHz, 160 MHz       269        1440       324         510
->   AX4L AX1800 (RTL8852BU)     5 GHz,  80 MHz       208         597       293         695
->   AX1L AX1800 (RTL8852BU)     5 GHz,  80 MHz       235         608       273         843
->   DWA-X1850 A1 (RTL8852AU)    5 GHz,  80 MHz       254         748       264         707
->   DWA-X1850 B1 (RTL8852AU)    5 GHz,  80 MHz       248         706       265         679
-> 
-> USB enumeration verified at SuperSpeed (5000 Mbps) on every
-> patched cell, both pre and post.
-> 
-> K8 Plus second-rig spot check, kernel 6.17.9-arch1-1, consumer
-> multi-band router, single-link 5 GHz 80 MHz, TCP P=1, N=10:
-> 
->   DWA-X1850 A1 (RTL8852AU)    788 UL / 693 DL Mbps (sigma 16 / 54)
-> 
-> For comparison, every stock cell above caps at 208-327 Mbps, the
-> USB 2.0 ceiling.
-> 
-> Future work: BE-generation (RTL8922AU) USB switch-mode
-> ======================================================
-> 
-> The same mechanism applies to BE-generation chips (RTL8922AU) via
-> R_BE_PAD_CTRL2.
-> The implementation is in morrownr/rtw89 commit c8a8ac49996b
-> ("wifi: rtw89: usb: USB 3 switching for RTL8922AU", 2025-08-07)
-> by Bitterblue Smith, but that commit has no Signed-off-by; the
-> public two-week notice in
-> https://github.com/morrownr/rtw89/issues/82 (2026-04-21,
-> deadline 2026-05-05) did not produce one. checkpatch --strict
-> rejects third-party submission on the missing trailer.
-> 
+>> Some devices malfunction when connected to a network with 40 MHz channel
+>> width, because they don't support that.
+>>
+>> RTL8188FU, RTL8192FU, and RTL8710BU (RTL8188GU) have a way to signal
+>> this (and some other capabilities) to the driver. Get this information
+>> from the hardware and advertise 40 MHz support only when the hardware
+>> can handle it. We assume the other chips can always handle it.
+>>
+>> RTL8710BU needs a different way to retrieve this information, which will
+>> be implemented some other time.
+>>
+>> Fixes: dbf9b7bb0edf ("wifi: rtl8xxxu: Enable 40 MHz width by default")
+>> Cc: stable@vger.kernel.org
+>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221394
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
-This is what's stopping you? Haha.
+Thx for fixing this!
 
-> I tested c8a8ac49996b on a BrosTrend BE6500 (RTL8922AU): plug-
-> cycle 10/10 PASS on both FW13 and K8 Plus; consumer-router MLO
-> 3-link 1430 UL / 995 DL Mbps P=8; BPi-R4 Pro single-link 5 GHz
-> 160 MHz EHT 1335 UL / 1058 DL Mbps P=8; switch_usb_mode=N forces
-> USB 2 at 255 UL / 311 DL Mbps. Detail in the rtw89-usb3-gap repo
-> above.
-> 
-> Adding the BE-gen switch-mode to mainline today cannot yet help
-> RTL8922AU users on its own, because mainline rtw89 has no
-> in-kernel rtw89_8922au USB driver: RTL8922AU adapters do not
-> attach to mainline at all. Switch-mode becomes load-bearing for
-> BE-gen the moment the rtw89_8922au USB driver lands upstream;
-> until then it would sit as dormant code. The path upstream for
-> the switch-mode itself is either Bitterblue's Signed-off-by on
-> c8a8ac49996b, or a Realtek developer carrying it as part of the
-> broader 8922au USB enablement.
-> 
-> (The AX-gen gap that this patch fixes does affect every mainline
-> user with an RTL8852AU/BU/CU adapter today. BE-gen is a separate,
-> strictly forward-looking concern.)
-> 
-> Submission notes
-> ================
-> 
-> Applies cleanly on wireless-next HEAD 7baf5857e15d.
-> checkpatch.pl --strict: zero errors, zero warnings, zero checks.
-> 
+> 1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+> ef771eabc79d wifi: rtl8xxxu: Detect the maximum supported channel width
+> https://github.com/pkshih/rtw.git
 
-Realtek wifi patches should be based on rtw-next (or rtw if it's an
-urgent bug fix):
+rtw-next sounds like it aims for the next merge window; and it seems the
+fix hasn't even hit -next yet. This is slightly unfortunate, as this
+afaics is a fix for a recent regression -- so it ideally should head
+towards mainline by now[1], as Linus' the rule of thumb is to "generally
+fix regressions "within a week", preferably before the next rc"[1].
 
-https://github.com/pkshih/rtw/
+Or am I missing something? That might very well be the case, so do not
+hesitate to tell me!
 
-The subject should include the tree: "[PATCH rtw-next 0/1]"
+Ciao, Thorsten
 
-> Bitterblue Smith (1):
->   wifi: rtw89: usb: Support switching to USB 3 mode
-> 
->  drivers/net/wireless/realtek/rtw89/reg.h |  4 +++
->  drivers/net/wireless/realtek/rtw89/usb.c | 41 ++++++++++++++++++++++++
->  2 files changed, 45 insertions(+)
-> 
-> --
-> 2.53.0
-> 
-
+[1]
+https://www.kernel.org/doc/html/latest/process/handling-regressions.html#on-how-quickly-regressions-should-be-fixed
 
