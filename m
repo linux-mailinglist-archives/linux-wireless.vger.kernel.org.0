@@ -1,186 +1,310 @@
-Return-Path: <linux-wireless+bounces-36265-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36266-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAYuJL83AmrmpAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36265-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 22:10:39 +0200
+	id 2B3eMPlWAmosrgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36266-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 00:23:53 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296CF5158B1
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 22:10:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72EAB516C86
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 00:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5332F3041B88
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 20:10:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9BC3306BFC0
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 22:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C2F37EFF4;
-	Mon, 11 May 2026 20:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F444DB556;
+	Mon, 11 May 2026 22:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mokrynskyi.com header.i=@mokrynskyi.com header.b="c4iJ3gZL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e8rOUNwd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.mokrynskyi.com (mail.mokrynskyi.com [65.109.39.229])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C799537F756
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 20:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.39.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF504DB554;
+	Mon, 11 May 2026 22:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778530230; cv=none; b=mhyBKMtRfkdLcbSnBoDoWgNqAzPQU9w15aw6NiWd0uw/8MbOuJbBmIthn92wQSphWgCThzWMENcZo/0OTqs6ACmJ/YynYFYgTqWzUqNdSSERBplboS9FgWBBCeHFEFx9exNerU6yvV/tSiA7/JnA7oOK7f9778y7S6U1x/77DQQ=
+	t=1778537979; cv=none; b=MMOG3CCm8VgNsi/8V/gPuFE7ru1r3DS/RiXtbaZwzPZcWt+S7hOwdVKB5zbZTYCL//7/2VvP1vZOsfrRt7mXZZE4XNqwnwL9ZMPW6Bhbs9REUSZzC6Nic/aEZTt8DIAvav1RJiW4LfPT0DkZUVyDf/LhKtE6DftUnYLmnEuFeMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778530230; c=relaxed/simple;
-	bh=ztZdhbgWXhPzT0sfkkOZxRpF1XHqJWmOUFUhm+EdMvk=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Gc8g+kxrkLIOrisJ73qubT6YF8XzU+YmW3h0q1H5FE6QX6ZpOFkGcEOAgjenWtF8tveZScmlXmsTFJMQe28VKkuEK4IcKwrjmZMjfPNSZ5eNBvBcs54niSv4RFyzqQidPu7VQU0F4J3RlCJiFbkz8GXguUCrlX/UP4B8UWndBlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mokrynskyi.com; spf=pass smtp.mailfrom=mokrynskyi.com; dkim=pass (2048-bit key) header.d=mokrynskyi.com header.i=@mokrynskyi.com header.b=c4iJ3gZL; arc=none smtp.client-ip=65.109.39.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mokrynskyi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mokrynskyi.com
-Message-ID: <07a1e340-cfdf-4027-861e-8f2a940bd21c@mokrynskyi.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mokrynskyi.com;
-	s=dkim; t=1778530215;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=giGsVPtUVT/cf4JDNMmZ8q221H1xhgSTW77E8jnggRk=;
-	b=c4iJ3gZLyLub2VnuIdek26p/6ZfUDLXwzaKGw1N2qgoPHA6S5jOZVayFdX80HlM1J7JGf/
-	qsGTEZrBz7P8Caas0G4NvmAzS4pfjeyTyyXNzApzg57ikTnFnHXFwW3KUHggQ+L5eKuZgt
-	rgmVC57AAP/nLk4H+uPYMg0eXMmrjvhtnqQzz7lp8PmAdxJni9KNasiF/q9mIDjvY4ZmKt
-	Dd06ocaDx4R7/3iKnADHPzRMhe+LtsWSDj+w448oeoy8/kYm/S2rbcWB0n2a98KkOhOsnu
-	VNutY9RjS2cPtDTy0SIsr8u8Io2D8u+cq6wclH+gj4Pm4mzFD/gsHfPeKAQBIA==
-Authentication-Results: mail.mokrynskyi.com;
-	auth=pass smtp.mailfrom=nazar@mokrynskyi.com
-Date: Mon, 11 May 2026 23:10:13 +0300
+	s=arc-20240116; t=1778537979; c=relaxed/simple;
+	bh=GECVds6PVy5qQArWNQudsG6SbMG1H5Ihikpk5pwJxCE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZMnDqfpoFZ5JeK69vSCshuTY0EKprO24cG7kZ4QAf2GXiAjbzB9jik/xDDqnFStmx0WonWL6UGe9lm3SSOMYeMjJ9mw5jY15+QkQNoe2LlUdPsN7aw9lSCx377zhdtpdPe9wlHDlfAYGau8+FUJxeINu9Oh+xdamlw7A80nK1RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e8rOUNwd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D0DC2BCB0;
+	Mon, 11 May 2026 22:19:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778537979;
+	bh=GECVds6PVy5qQArWNQudsG6SbMG1H5Ihikpk5pwJxCE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=e8rOUNwdO/t3Gk27U4UEPph8XZEbTjvWsmhZ6n2ZV1j44BkshNBdIX4atv3zv646L
+	 x5cMuFL511cbBhnIFvQFUpXVjZTE0wMRFfnqGxRX+ydq0XsyRJSINKgEzvAnxILaib
+	 ++YX24ezFYOMGKUxH4GpdEk/BwFqfpccZr+ZTldHe3b1phFIgy9UVGxsG1Q7goPLDD
+	 U7mIXphZuyWWh+5Y9x4Ma65Ny30NNNllU9Nv1mPMDO8KIGzXGvoVmN6TCr/WJ6uUzg
+	 mYpkeeFbViKIWRM3ALqDmkcXkQvkyj9UWfrF597k4TFnMPxED0SZdi/K7Zjx1WJTDN
+	 8/CpGIYZwpXDA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Maoyi Xie <maoyi.xie@ntu.edu.sg>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 7.0-5.15] wifi: nl80211: re-check wiphy netns in nl80211_prepare_wdev_dump() continuation
+Date: Mon, 11 May 2026 18:19:04 -0400
+Message-ID: <20260511221931.2370053-5-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260511221931.2370053-1-sashal@kernel.org>
+References: <20260511221931.2370053-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Nazar Mokrynskyi <nazar@mokrynskyi.com>
-Subject: Re: [PATCH 2/2] wifi: ath12k: skip unknown direct buffer ring module
- IDs
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20260505172415.566328-1-nazar@mokrynskyi.com>
- <20260505172415.566328-3-nazar@mokrynskyi.com>
- <89f30996-3210-403b-8c9a-52cf6d5fcb51@oss.qualcomm.com>
-Content-Language: en-US, uk, uk-UA
-In-Reply-To: <89f30996-3210-403b-8c9a-52cf6d5fcb51@oss.qualcomm.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 7.0.6
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: ---
-X-Rspamd-Queue-Id: 296CF5158B1
+X-Rspamd-Queue-Id: 72EAB516C86
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mokrynskyi.com,reject];
-	R_DKIM_ALLOW(-0.20)[mokrynskyi.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[mokrynskyi.com:+];
-	TAGGED_FROM(0.00)[bounces-36265-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36266-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nazar@mokrynskyi.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mokrynskyi.com:email,mokrynskyi.com:mid,mokrynskyi.com:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,p:url,ntu.edu.sg:email,msgid.link:url]
 X-Rspamd-Action: no action
 
+From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
 
-11.05.26 22:02, Jeff Johnson:
-> On 5/5/2026 10:24 AM, Nazar Mokrynskyi wrote:
->> The firmware may advertise direct buffer ring capabilities for module
->> IDs beyond what the driver currently knows about (WMI_DIRECT_BUF_MAX).
->> This happens with newer firmware versions that support additional ring
->> types not yet implemented in the driver.
-> What "newer firmware version" are you using that has this issue?
->
-> Can you share the "Skipping unknown direct buf ring module id" logs from your
-> modified driver?
-ID is the same as in the original warning:
+[ Upstream commit 79240f3f6d766b342b57c32397d643e1cfa26b81 ]
 
-[   10.611560] ath12k_pci 0000:01:00.0: Invalid module id 2
-[   10.616467] ath12k_pci 0000:01:00.0: failed to parse tlv -22
+NL80211_CMD_GET_SCAN is implemented as a multi-call dumpit. The first
+invocation of nl80211_prepare_wdev_dump() validates the requested wdev
+against the caller's netns via __cfg80211_wdev_from_attrs(). Subsequent
+invocations look up the same wiphy by its global index and do not check
+that the wiphy is still in the caller's netns.
 
-The firmware according to system logs (all this info is provided in [PATCH 0/2] email):
+Add the same filter to the continuation path. If the wiphy's netns no
+longer matches the caller's, return -ENODEV and the netlink dump
+machinery terminates the walk cleanly.
 
-[    7.688137] ath12k_pci 0000:01:00.0: fw_version 0x160484db fw_build_timestamp 2025-12-09 20:09 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.WBE.1.6-01243-QCAHKSWPL_SILICONZ-1
+Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+Link: https://patch.msgid.link/20260506064854.2207105-3-maoyixie.tju@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-This is running on OpenWRT 25.12, which uses 6.12.74 kernel with modules backported from 6.18.7 kernel:
-[    0.000000] Linux version 6.12.74 (builder@buildhost) (x86_64-openwrt-linux-musl-gcc (OpenWrt GCC 14.3.0 r32802-f505120278) 14.3.0, GNU ld (GNU Binutils) 2.44) #0 SMP Wed Mar 25 20:09:53 2026
-[    6.997293] Loading modules backported from Linux version v6.18.7-0-g5dfbc5357
-[    6.999210] Backport generated by backports.git c8a37ce
+LLM Generated explanations, may be completely bogus:
 
->> The current code treats an unknown module_id as a fatal error, returning
->> -EINVAL and tearing down the entire driver initialization. This is
->> incorrect: the driver only needs to set up rings for types it uses
->> (SPECTRAL=0, CFR=1) and can safely ignore capability advertisements for
->> unknown types.
->>
->> Change the unknown module_id handling to skip the entry with a debug
->> message rather than failing, allowing initialization to proceed.
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01243-QCAHKSWPL_SILICONZ-1
->>
->> Signed-off-by: Nazar Mokrynskyi <nazar@mokrynskyi.com>
->> ---
->>  drivers/net/wireless/ath/ath12k/wmi.c | 12 ++++--------
->>  1 file changed, 4 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
->> index 484fdd3b1..0e776a8d8 100644
->> --- a/drivers/net/wireless/ath/ath12k/wmi.c
->> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
->> @@ -4814,10 +4814,10 @@ static int ath12k_wmi_dma_ring_caps(struct ath12k_base *ab,
->>  	dir_buff_caps = ab->db_caps;
->>  	for (i = 0; i < dma_caps_parse->n_dma_ring_caps; i++) {
->>  		if (le32_to_cpu(dma_caps[i].module_id) >= WMI_DIRECT_BUF_MAX) {
->> -			ath12k_warn(ab, "Invalid module id %d\n",
->> -				    le32_to_cpu(dma_caps[i].module_id));
->> -			ret = -EINVAL;
->> -			goto free_dir_buff;
->> +			ath12k_dbg(ab, ATH12K_DBG_WMI,
->> +				   "Skipping unknown direct buf ring module id %d\n",
->> +				   le32_to_cpu(dma_caps[i].module_id));
->> +			continue;
-> by continuing you don't populate the dir_buff_caps[i] information below,
-> leaving that record with zeroed data from the initial allocation. Does other
-> code correctly handle that?
->
-> would it be better to have a separate count of the number of dir_buff_caps
-> records that are actually filled, and then update
-> dma_caps_parse->n_dma_ring_caps to match once the parsing has completed?
-I'm very far from kernel development, let alone ath12k driver specifically.
-The patch is provided to better showcase the problems I had.
-If there is a better way to address it, I'd really appreciate if someone more knowledgeable could take over, I just hope this is helpful.
+## Phase Walkthrough
 
-With these changes QCN9274 runs an access point with over 3 weeks uptime as of right now.
-That is not necessary the proof of anything, but it does seem to work in practice so far.
->>  		}
->>  
->>  		dir_buff_caps[i].id = le32_to_cpu(dma_caps[i].module_id);
->> @@ -4829,10 +4829,6 @@ static int ath12k_wmi_dma_ring_caps(struct ath12k_base *ab,
->>  	}
->>  
->>  	return 0;
->> -
->> -free_dir_buff:
->> -	ath12k_wmi_free_dbring_caps(ab);
->> -	return ret;
->>  }
->>  
->>  static void
+**Phase 1: Commit Message Forensics**
+- Step 1.1 Record: Subsystem `wifi: nl80211`; action verb `re-check`;
+  intent is to revalidate the wiphy net namespace during
+  `nl80211_prepare_wdev_dump()` continuation.
+- Step 1.2 Record: Tags are `Signed-off-by: Maoyi Xie`, `Link: https://p
+  atch.msgid.link/20260506064854.2207105-3-maoyixie.tju@gmail.com`,
+  `Signed-off-by: Johannes Berg`. No `Fixes`, `Reported-by`, `Tested-
+  by`, `Reviewed-by`, `Acked-by`, or `Cc: stable`.
+- Step 1.3 Record: The committed message says first dump invocation
+  validates via `__cfg80211_wdev_from_attrs()`, but later invocations
+  recover the wiphy by global index and lacked a netns check. The v3
+  mailing-list patch further states the failure mode: BSS scan data can
+  continue being copied from a wiphy after it moved to another netns.
+- Step 1.4 Record: This is a hidden security/correctness fix, not a
+  cleanup. It fixes a namespace isolation race in a multi-call netlink
+  dump.
+
+**Phase 2: Diff Analysis**
+- Step 2.1 Record: One file changed, `net/wireless/nl80211.c`; commit
+  stat is 12 insertions. One function changed:
+  `nl80211_prepare_wdev_dump()`. Scope is single-file surgical.
+- Step 2.2 Record: Before, continuation path did
+  `wiphy_idx_to_wiphy(cb->args[0] - 1)`, accepted the wiphy, then
+  searched `wdev_list`. After, it returns `-ENODEV` if
+  `!net_eq(wiphy_net(wiphy), sock_net(cb->skb->sk))`.
+- Step 2.3 Record: Bug category is race / namespace isolation /
+  information disclosure. A wiphy can move netns between dumpit calls
+  via `NL80211_CMD_SET_WIPHY_NETNS`.
+- Step 2.4 Record: Fix quality is high: one predicate and clean error
+  return before taking `wiphy.mtx`. Regression risk is low; it only
+  rejects a continuation whose object no longer belongs to the caller’s
+  netns.
+
+**Phase 3: Git History**
+- Step 3.1 Record: Current checkout is shallow; `git blame` attributed
+  the region to a shallow boundary, so that blame is not reliable.
+  Pickaxe history found the continuation-by-global-wiphy-index pattern
+  in old history, including `c319d50bfcf67` (`nl80211: fix another
+  nl80211_fam.attrbuf race`), contained by `v3.11-rc6`. Netns support
+  for cfg80211/nl80211 was introduced by `463d018323851`, contained by
+  `v2.6.32-rc1`.
+- Step 3.2 Record: No `Fixes:` tag, so no tagged introducer to follow.
+- Step 3.3 Record: Fetched wireless history shows the candidate
+  immediately follows companion commit `15994bb0cbb8f` (`wifi: nl80211:
+  require CAP_NET_ADMIN over the target netns in SET_WIPHY_NETNS`). No
+  intermediate commit between them.
+- Step 3.4 Record: Author has only these two fetched wireless commits.
+  Committer is Johannes Berg, the nl80211/cfg80211 maintainer.
+- Step 3.5 Record: No compile dependency on the companion commit, but
+  logical/security context is stronger if `15994bb0cbb8f` is backported
+  too.
+
+**Phase 4: Mailing List / External Research**
+- Step 4.1 Record: `b4 dig -c 79240f3f6d766...` found the v3 patch at
+  the provided `patch.msgid.link` URL. `b4 dig -a` found v1 and v3; `b4
+  am` showed v1, v2, v3. v3 cover says no code changes since v2 and that
+  Johannes review caused comment/trailer cleanup.
+- Step 4.2 Record: `b4 dig -w` shows Johannes Berg, `linux-wireless`,
+  and `linux-kernel` were included.
+- Step 4.3 Record: No syzbot/bugzilla report. The series cover and patch
+  body provide the bug explanation and patch 1 includes a mac80211_hwsim
+  reproducer for the related `SET_WIPHY_NETNS` privilege path.
+- Step 4.4 Record: This is patch 2/2 in a series. Patch 1 hardens
+  target-netns capability checks; patch 2 fixes dump continuation
+  filtering.
+- Step 4.5 Record: Lore WebFetch was blocked by Anubis; WebSearch did
+  not find stable-specific discussion.
+
+**Phase 5: Code Semantic Analysis**
+- Step 5.1 Record: Modified function is `nl80211_prepare_wdev_dump()`.
+- Step 5.2 Record: Exact callers are `nl80211_dump_station()`,
+  `nl80211_dump_mpath()`, `nl80211_dump_mpp()`, `nl80211_dump_scan()`,
+  and `nl80211_dump_survey()`.
+- Step 5.3 Record: Key callees are `__cfg80211_wdev_from_attrs()`,
+  `wiphy_idx_to_wiphy()`, `wiphy_net()`, `sock_net()`, `net_eq()`,
+  `wiphy_to_rdev()`, and list walk over `wiphy.wdev_list`.
+- Step 5.4 Record: `NL80211_CMD_GET_SCAN` maps to `nl80211_dump_scan()`
+  and has no admin flag in the ops entry; `NL80211_CMD_SET_WIPHY_NETNS`
+  maps to `nl80211_wiphy_netns()` with `GENL_UNS_ADMIN_PERM`.
+- Step 5.5 Record: Similar dump paths `nl80211_dump_wiphy()` and
+  `nl80211_dump_interface()` already filter by `net_eq(wiphy_net(...),
+  sock_net(skb->sk))` each iteration.
+
+**Phase 6: Stable Tree Analysis**
+- Step 6.1 Record: The affected continuation code exists in checked tags
+  `v6.19`, `v6.18`, `v6.12`, `v6.6`, `v6.1`, `v5.15`, `v5.10`, `v5.4`,
+  `v4.19`, and `v4.14`.
+- Step 6.2 Record: Modern stable trees have the same helper shape. Older
+  trees such as `v5.4` and `v4.14` have different function
+  signatures/locking, so they may need small backport adjustment.
+- Step 6.3 Record: Searches in checked stable tags did not find this
+  candidate or the companion commit already present.
+
+**Phase 7: Subsystem Context**
+- Step 7.1 Record: Subsystem is wireless cfg80211/nl80211, an important
+  networking control-plane subsystem.
+- Step 7.2 Record: `net/wireless/nl80211.c` is actively maintained;
+  fetched wireless history shows this series was taken through Johannes
+  Berg’s wireless tree.
+
+**Phase 8: Impact / Risk**
+- Step 8.1 Record: Affected users are systems using wireless devices
+  with nl80211 netns movement support, including delegated/container
+  wireless setups and mac80211_hwsim.
+- Step 8.2 Record: Trigger requires a multi-call dump and a wiphy netns
+  move between invocations. The related series verifies an unprivileged
+  userns path when the caller has a delegated `WIPHY_FLAG_NETNS_OK`
+  wiphy.
+- Step 8.3 Record: Failure mode is namespace isolation breach / cross-
+  netns scan-result exposure, not a crash. Severity: HIGH due
+  security/isolation impact.
+- Step 8.4 Record: Benefit is high for isolation correctness; risk is
+  very low because the patch adds one local validation and returns an
+  existing error code.
+
+**Phase 9: Final Synthesis**
+- Step 9.1 Record: Evidence for backporting: real namespace isolation
+  bug, old code present across stable trees, small surgical fix,
+  maintainer-applied, aligns with existing dump filtering. Evidence
+  against: companion patch should also be considered, and older trees
+  may require minor backport edits. Unresolved: no independent `Tested-
+  by`; stable-specific lore discussion could not be fetched.
+- Step 9.2 Record: Stable rules: obviously correct yes; fixes real bug
+  yes; important issue yes due namespace isolation/security; small and
+  contained yes; no new API/feature yes; applies cleanly or with minor
+  adjustment depending on tree.
+- Step 9.3 Record: No exception category applies.
+- Step 9.4 Record: Backport is warranted, preferably together with
+  `15994bb0cbb8f` for the complete netns hardening series.
+
+## Verification
+- Phase 1: Parsed `git show 79240f3f6d766...` and b4 v3 patch text;
+  verified tags and commit body.
+- Phase 2: Verified diff is one hunk in `nl80211_prepare_wdev_dump()`
+  with 12 insertions.
+- Phase 3: Ran `git blame`, pickaxe history, `git show` for
+  `c319d50bfcf67`, `463d018323851`, companion `15994bb0cbb8f`, and
+  fetched wireless history.
+- Phase 4: Ran `b4 dig`, `b4 dig -a`, `b4 dig -w`, `b4 am` for v1/v2/v3,
+  saved/read mbox; WebFetch to lore was blocked by Anubis.
+- Phase 5: Verified callers and relevant ops entries in
+  `net/wireless/nl80211.c`.
+- Phase 6: Used `git grep` across stable tags to confirm affected code
+  exists and checked stable logs for absence of the candidate.
+- Phase 8: Severity is based on verified patch text plus code paths; no
+  build or runtime test was run.
+
+**YES**
+
+ net/wireless/nl80211.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index b94231c8441c4..ce3121b1c3319 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -1146,6 +1146,18 @@ static int nl80211_prepare_wdev_dump(struct netlink_callback *cb,
+ 			rtnl_unlock();
+ 			return -ENODEV;
+ 		}
++
++		/*
++		 * The first invocation validated the wdev's netns against
++		 * the caller via __cfg80211_wdev_from_attrs(). The wiphy
++		 * may have moved netns between dumpit invocations (via
++		 * NL80211_CMD_SET_WIPHY_NETNS), so re-check here.
++		 */
++		if (!net_eq(wiphy_net(wiphy), sock_net(cb->skb->sk))) {
++			rtnl_unlock();
++			return -ENODEV;
++		}
++
+ 		*rdev = wiphy_to_rdev(wiphy);
+ 		*wdev = NULL;
+ 
+-- 
+2.53.0
+
 
