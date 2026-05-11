@@ -1,194 +1,166 @@
-Return-Path: <linux-wireless+bounces-36269-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36270-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MA/gHN1ZAmosrgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36269-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 00:36:13 +0200
+	id +FlUCclYAmosrgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36270-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 00:31:37 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AE4516FC3
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 00:36:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DA1516EEC
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 00:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F3F13020AB8
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 22:26:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A2145301081A
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 22:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB02383305;
-	Mon, 11 May 2026 22:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF55B38332E;
+	Mon, 11 May 2026 22:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BbVL+L4E"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rqsetq6C"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFED383326
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 22:26:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778538366; cv=pass; b=ISzQWonTcDKY89/onExd8Q7jYGe8ROKNhs1+2N8GMnrBpxBfES3V62e/ZAI/5/8uYrP0JbRsfeI3ebOp2LXxj0CDh7fLKKekdVSV40ms5pcg/ODlFp1qyRkib8sVR7N06lrS0OR68Y/BE/JtvJ4qZNQ4xgVCLPEjzGZtndRCWZE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778538366; c=relaxed/simple;
-	bh=l/s3TIkqEL+5WLPIuBaC7pUXbyWhgdR0ZeoA66dq1RU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U/mGwXQRSlwyo31ys9yJIz5SsLeydLCCHSM7SwXjBC4Syr6ysWBsf/kkyaViRh1p4MUche8ZxNVlW/c6vA2MX6v7Smuov0lVJ+Lyrcy8ioc3H9WlU6ExCHx5FVwZ5wbWE4fSSAklo0ajMwXHswWwbUQOYELMA0xeavCNLeJwSSw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BbVL+L4E; arc=pass smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FCE38331E
+	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 22:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778538443; cv=none; b=QA6fdD8K3nOurFxLhd0aThTPTg/+6wS81ZnJHu03MqPb8+0kGrNWLRPHGHLyH3/ErrOxsWJaqO1luiXV9QOS1hioh5vj3UjXv4MX0NsNOOAo4FaVA6F8cQbcHqnNdr5rslFORoU7yO9iDeusci5Vbl9bn0AP5I2TsXIB+VMSdbA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778538443; c=relaxed/simple;
+	bh=FWlyBh2q5V+zPZMy+exr9+ArEJtrhdsx0i5p6S0h32U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TR2dyQ9+Xp+tStgh29FSGqnyoQK7kRvCjf636981XDk89ScongGma7YpgPYs9y803P6D89ukzzzV1IZkmNazOARtSZZYSpU3X0U43I7fjTTUFBqDEqgZL56tnC1+vy5gIu1txSUa1X3omEZdnwGhpINp1QPRK1Hd8221sYejgv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rqsetq6C; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso42352515e9.0
-        for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 15:26:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778538363; cv=none;
-        d=google.com; s=arc-20240605;
-        b=i9T7UHkpgkhauYxbFWJN3Ne86jxVt2MJB6e4EaR2pCAIyJzvaCUfRNZzGlGtGoiYuv
-         ofHpSMxCZAPrNT+hh0WLrwb0iitGnsMiIwekkeFOBwdvyYUeJuoM4ZY2TBnGO/+oEu3C
-         vS3GEXrKA4mrReK5YoOpLGM5fo6S2MNDNX8NMcxO6UtgfzIyYksrXC48pjy82K0AsxMw
-         A+v0BbvJLOunNCdU0LpB11QuBrRZbXn4oAM8mNkJ39mT7Q+2Dkj/wOdbxqDSzeGtENtC
-         jKYI25psxgamIrPYVXHB2/EgSsi3xHcn60Waw0afCRqSQGgXHhzQnka+LAV+13L6PR8b
-         B83A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=l/s3TIkqEL+5WLPIuBaC7pUXbyWhgdR0ZeoA66dq1RU=;
-        fh=kiH9BsJ+TyHZ/0f9lp96S1R8k/374lMiI4doNuDXH6k=;
-        b=GMI1nibUMuyRJndBgkLEJ40F8vKimQKsoGGA4i59GBGljrdvzspH0HKXmgPNVnB8TP
-         ukjIq8o9zxN6y877DKFosDb4e8WZ/OYJYmY0I8cwZrRV3FSrxViGrqPrAcJgO059c8e2
-         bTWodWs0dArJTkVegHSQ5GaZmlj6HWI8Ill8Y6pBBw13MdbVEWAr/kVs9k8nWjlPnH2O
-         Krkn9fAGGrOC2FHkIucyEWmazxji4/4AQjYGABMnR5r5/pOh6Z/xgxc01CsNKqjR4vPc
-         Ad8LMFZfRe2K9BDtIan6oWhtVpXafz3EDZI5zVEp1FL01LE7lPoTUoEy1S8UfNs6ok9S
-         BNxw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-44509921fbcso2446086f8f.3
+        for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 15:27:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778538363; x=1779143163; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l/s3TIkqEL+5WLPIuBaC7pUXbyWhgdR0ZeoA66dq1RU=;
-        b=BbVL+L4E3qoXCnBe5R7p9CfloFOePp/WNCQyUuK2MKMrSoTTBhGimQZzPjlTJTlxIf
-         JCpr7xMTFm/QozxpaCfVlo7bGccOCEfgcrf9dFBrbSyni5Wpffv0ivoPFRJ96fm+wcC9
-         y9Z5CeJQov+FSSqM0qUGh1x+iv/gFLBGmdWtYaP2jQ9JGZjkH8jhpHAXyOq9Vq3EPOsv
-         rlYjcIsk95FG7o3R9MDXVKOJV+TdQGI9hWJdM/PT2SwExC2Pk4J3+49/CiQzauJMBAPt
-         vWeQ76LDZBplVnd36Bu387y1wKkRdq3dQ0HFExcRW2/NEzve9hxcP61qLlR3n0TNE+ue
-         4RDQ==
+        d=gmail.com; s=20251104; t=1778538440; x=1779143240; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kZ+TNFFo0ZvACDVJbx2uKJL3MGxTnCe+bTWA4bE1edA=;
+        b=Rqsetq6CbA1op4pJNLYcSdicU4MXsATlyJ6Ofozvp8bXPdr7UC5GxFiNTFZb+84ZcP
+         /EVmZr94c1cBbfmWkJyozt3hld7d/B7KeJZUP9uWuzx8IYJ2t2yZJbxWCmR4NAcqZ7rJ
+         +WOR1rP7ORmBXGV6RSpT4EQSaOILRwYcXnWMTFw5q13poQ6sLjtxE7lNHufpdNgLsDx3
+         7mhUG7LyDQf/zvrIQMLoNZ6VXU6/T9/XyEs59snJkistqJfOATbEnsonBln27QjqyrnC
+         HNCsHQG4fRh/3G0zeC08DDb7XQkBk9JixLOkX5n9MsQeKtnXPw5mo09YwFs8aF08Aicw
+         KuMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778538363; x=1779143163;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=l/s3TIkqEL+5WLPIuBaC7pUXbyWhgdR0ZeoA66dq1RU=;
-        b=ccXgVevr1zoiK1lJ4FEtEm++ztMEPCMbDRZHZK9UCL1Jd6yY/KPoZH4ObU6zzbwizZ
-         jcGMV2mbqNQw5Oz/y6Ex2w7IpWXozX7LsiV+04K38ipJV4w+WSYHRekNcfqfqMoDtJj8
-         r1wT4bvYwedzrDI6Odz/5njoML9kYGtjAItnDZl//zpSenfZ5bhu9J9orIq9bAlsKM0o
-         ylaEUqnPuUi14dGbyvzuU1VBgH7SAHqMbwdmzApFZDmd86VJnEeUgZ2vCYQKhSd9GRew
-         3WjS9bRrqcO8ISlSR+h6A3OrzpCUk45SJd8knKSrBaOP61MI+zt+doycQsurDY/cKnjy
-         tCpA==
-X-Gm-Message-State: AOJu0YwLn6VtsvxB5xhYWfYw8CCi/34EEVkkJ7ypX4D0JdNoMahlyvq4
-	GYOwDAxqobfLZwZHNeQbZxGGNnLvZgR7G+vGpB0eqs7YPCnnHr6dGr2fBL/bOEoOxkJaqkEw+I6
-	SIDG3IBsKXclFbWHvpLScJXfteavCYrM=
-X-Gm-Gg: Acq92OGP5rtnWrmMlKp/tIXJ69TKsXvYJeWDbhpVkuC3BB0H+V06gnmVUPXHqEA8um+
-	0Gd5ZYR5K7YZrdEoxEZCrWdnf3DRE4LvIh2PVpvcHBtNFNYXPjijxWLRqrMCcqkdi3i/mpfPL9e
-	gQ3m5ndD+FPWil4Z0UPYw+SHHkT5K4K8BzHUwmFDRwsjeUHfwGuat/Pdotz0GvNayR4SoN7oQLo
-	t7Lhg8WapCHwyLzsro/SUwPjKRSzquDWnytdis1nxt+uNgh9Ar612aKqvZn9bhsYGn2pb+twOF/
-	f451oGBeb7wSgTWTE7LY
-X-Received: by 2002:a05:600c:8706:b0:48a:8905:a500 with SMTP id
- 5b1f17b1804b1-48e70696dfdmr197141135e9.12.1778538362782; Mon, 11 May 2026
- 15:26:02 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778538440; x=1779143240;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kZ+TNFFo0ZvACDVJbx2uKJL3MGxTnCe+bTWA4bE1edA=;
+        b=IJNGbBMNdVYtlFFd7B83p6zMtnWpnlPO+MW00KkFLXh8XyvQ8FG3rWVf6Uubagub/b
+         Q5VUD1sAJiIPbKPQckheWCgOUwDSc+RSskID8ETWfBmmdmvz9huXSEs7yf9W2nj8nLea
+         2L45UlnyO5yeNrHApjkbYNJFqnuqRXkFgNr/pTZiJN2i0J/YTWWZP39INDUCVsHW6SAZ
+         HSGkcS6feRAdaOVqKIlBFqR5v8PxIlNiVgVXZF2+y/qgZraHWpDYLnia8MSTCQ39Vu+Y
+         Oe7FHq4Yfb4s/ZyK4S06KZFLtZ+qHolbATHY6HYl9D8Jiv5sdfarFHTe4PD1c2G0FHwJ
+         wrYQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+6LD+nK56Ebrx+V36V2pUJuMmsNVTgl9CODxouFTy5RM8jWi9UFHmop8zhuFhcH0oUd/aX7cXLOY9Rv+e3aA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/0E4Q2Qj/YtDLHrltEWpznttAsJ0ybg8YoSqu/sUNil/Tv6Ob
+	t+6uXOMVY1UKiaQOHO5OWdS8ndjRBLC8QvhtmU4RCfw+ffU2emLtYuLy
+X-Gm-Gg: Acq92OGQSsCkiz9sh40hIpB16dXTIPYBcWHSDfWsmH2AQZcJ+JpmsWI4sqibYcFMYy5
+	jtis/ca5Pa1c9GQn4fDq416ofKC3wVi11/CGhDJ6eHjMNKQDW6qTMfJcQfKYszjtY/IHbkWYnVZ
+	iE38o7Z4eoJTF6DjdaCaZg/aJwCbm3IT/ST1YuoLZrMMYTsFt74FyLOsSTUtE09Wv/oL7AfKER5
+	JtpfOn1/jwWXP53/c1tL57EjuC9beBvgeQSEaLssz00fyMOXRhB/ZZddBqqsh1lHC5ryqHTu00h
+	Zdz7MiGn69JGbwMhKEdHeBG64pENrx/Yi6XChldBIxB0VonJNPASwez6cmUMNUqNDLjkz8NFjgv
+	xOx4TCTleZ/uVhoBlC0u7XjBTapbd/VI1L8fQ+FkoXWsgJgjx1sWj54jWaVaTpB1DTUGyRbAHDQ
+	Om/PtBVWLM+Du81P3xZB67cNa9Sfu5YQ==
+X-Received: by 2002:a05:6000:4381:b0:44f:ba97:6d8c with SMTP id ffacd0b85a97d-4515ce1c7f9mr41603131f8f.23.1778538440445;
+        Mon, 11 May 2026 15:27:20 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.93])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4548e6a6470sm24300117f8f.7.2026.05.11.15.27.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 May 2026 15:27:20 -0700 (PDT)
+Message-ID: <2bc415d6-f0ae-42ab-8ffa-19cfb1df5954@gmail.com>
+Date: Tue, 12 May 2026 01:27:18 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <db11380dfbe7fff538a1a052fdfc5905202981a4.camel@sipsolutions.net>
- <20260509234143.101237-1-masashi.honma@gmail.com> <ecb7aef2f18cc7c04817be155017a54a45fa579e.camel@sipsolutions.net>
- <CAFk-A4mD=tKHMp8qqAvrsFZjmJHsA1sBe9Wmmn=qEacNMxTH_A@mail.gmail.com> <725b56f42b5fec58196e4055bccb74236145986b.camel@sipsolutions.net>
-In-Reply-To: <725b56f42b5fec58196e4055bccb74236145986b.camel@sipsolutions.net>
-From: Masashi Honma <masashi.honma@gmail.com>
-Date: Tue, 12 May 2026 07:25:51 +0900
-X-Gm-Features: AVHnY4Kfid5P-syOqVCpHvlN3AgM8hXXhwzuD5HZEc_QPjFzdGjWlVUbfBSQst0
-Message-ID: <CAFk-A4kwASJL4Hdb0TAkyQ38ZGx2Mom1Pn6cbDR7gL_c_x_4Sg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] Fix overread in PREQ frame processing
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D8AE4516FC3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rtw-next v2 1/1] wifi: rtw89: usb: Support switching to
+ USB 3 mode
+To: Devin Wittmayer <lucid_duck@justthetip.ca>, linux-wireless@vger.kernel.org
+Cc: pkshih@realtek.com, johannes@sipsolutions.net,
+ linux-kernel@vger.kernel.org
+References: <639b2f23-bff3-400f-b5ef-e7d0c39196bc@gmail.com>
+ <20260511200339.33682-1-lucid_duck@justthetip.ca>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <20260511200339.33682-1-lucid_duck@justthetip.ca>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 69DA1516EEC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-36270-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36269-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[masashihonma@gmail.com,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-> Oh sure, as far as I'm concerned there's no urgency, I just didn't want
-> to keep asking you to make changes too much.
+On 11/05/2026 23:03, Devin Wittmayer wrote:
+> On Mon, 2026-05-11 at 21:14 +0300, Bitterblue Smith wrote:
+>> Are you quite sure you tested this?
+> 
+> Yes. Full test matrix is in the v2 cover letter (PATCH 0/1) of
+> this series:
+> 
 
-No problem. The code is getting better and better, so your reviews are very
-welcome.
+Good, good. So how did you avoid the crash?
 
-> Oh OK :) Maybe we need that as a kind of Reported-by? Hmm.
-> Or you could send a separate bug report email, say there Claude found
-> it, and then do a Closes: link :-p
+> - DWA-X1850 A1 / B1 (RTL8852AU)
+> - BrosTrend AX1L / AX4L (RTL8852BU)
+> - BrosTrend AX8L / EDUP AXE5400 (RTL8852CU)
+> 
+> Six adapters, x86_64 Tiger Lake xHCI + aarch64 BCM2712 / RP1 hosts.
+> 60 plug-cycles + 30+ throughput cells captured 2026-04-11 to
+> 2026-05-07. USB enumeration verified at SuperSpeed (5000 Mbps) on
+> every patched cell.
+> 
+> Per-cell raw evidence for the May 2026 expanded matrix (40 iperf3
+> JSON files per cell, byte-counter deltas, pre/post link state,
+> pre/post USB enumeration speeds, per-iteration timestamps) at:
+> 
+> https://github.com/Lucid-Duck/rtw89-usb3-gap/tree/main/evidence/may-2026-laptop
+> 
+> Per-adapter summaries:
+> 
+> https://github.com/Lucid-Duck/rtw89-usb3-gap/tree/main/adapters
+> 
+> If the Tested-by trailer should be annotated with the specific chip
+> list, I will add that when, and if, a v3 is needed.
+> 
+> Devin
 
-Ha ha, no problem. I am happy to tag Claude because I wouldn't have even be=
-en
-able to find this issue if I hadn't used an LLM.
-
-2026=E5=B9=B45=E6=9C=8811=E6=97=A5(=E6=9C=88) 18:01 Johannes Berg <johannes=
-@sipsolutions.net>:
->
-> On Mon, 2026-05-11 at 17:58 +0900, Masashi Honma wrote:
-> > > This isn't really right since u32_field_get() exists only within
-> > > mesh_hwmp.c ... it's probably better to modernise all this while at i=
-t:
-> >
-> > Ah, yes. Both the build and tests passed, so I overlooked it.
->
-> Yes, it would, but it's basically not self-contained. More of a code
-> hygiene issue I guess than a real problem right now.
->
-> > > and restructure the code accordingly?
-> > > Anyway, I dunno. Maybe we should just go with your original patch for
-> > > now. Maybe I'm also asking more of you than others because you have a=
-n
-> > > LLM to help ;-)
-> >
-> > If it is not urgent, I would like to proceed with the requested restruc=
-turing.
->
-> Oh sure, as far as I'm concerned there's no urgency, I just didn't want
-> to keep asking you to make changes too much.
->
-> > Actually, I only used the LLM to find potential vulnerabilities, and I =
-wrote
-> > the code myself :)
->
-> Oh OK :) Maybe we need that as a kind of Reported-by? Hmm.
->
-> Or you could send a separate bug report email, say there Claude found
-> it, and then do a Closes: link :-p
->
-> johannes
 
