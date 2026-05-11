@@ -1,202 +1,158 @@
-Return-Path: <linux-wireless+bounces-36210-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36211-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPkXEh2SAWrsegEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36210-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 10:23:57 +0200
+	id mIIVOUaYAWomfgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36211-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 10:50:14 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1AE350A094
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 10:23:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E28450A54F
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 10:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6EC0E3030D61
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 08:01:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 31FB230071E8
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2026 08:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560F73B6C1F;
-	Mon, 11 May 2026 07:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F099A3B3BF0;
+	Mon, 11 May 2026 08:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f+zTVlho"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QJvoOsSX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346E03AE704
-	for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 07:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10CE3803EB;
+	Mon, 11 May 2026 08:42:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778486230; cv=none; b=cE5abwz3042FC44sc4K3PFT08fdnucMKWv5Ok1aQ28+doKDaPq9qFMfJrWE+zO09rI/DU+e6WLVrPh+TOsDFYewbFLEc8m0ctEhJnENYex7BOyUibmILrvWAfYHHqGgyxKkkpAAllpxVEvSxjhiiQFdJfrFdTJrjDG4mjxzlH8I=
+	t=1778488981; cv=none; b=jnCbKDhLQbtqORZhVtQCgesWcIdfoyDuQmbvv3fWqS1dvkwTvWiLyUtzO7OaocT6EubucytNri415Ct3XLo1384AaT6qrEg68i84/7KxoiN/1KmvKf6cQAU9VXOGmG7lJ/y0dAXwcruTWJ2Yua2qbbO6qj2dbcWoA9u63LZlZfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778486230; c=relaxed/simple;
-	bh=8fKsYpQ2rofgYvPFqVTqHqV3iwH1OdGnQ3Q0OFMQAZs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DVMdyZgs+9FgIR45HDySML6SMxqd/zahqTGpXhDckPrKqTyvCFUFlVWl+/Wp7ClU4DDRRuwJTV+dvbR/xvZDpHPQiIdYC9xkVbYtBPn0rFPdDLwtQQHpdvBCdLRzUDpRuZWSefGWIWnBxUXVdOLuL/18hlR2vyPN0kZoO6PJhuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f+zTVlho; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-82fbf5d4dc2so2813392b3a.1
-        for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 00:57:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778486218; x=1779091018; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SuDIDre46wS+yv63NbwPzOOkKtvuj3ZvNxFH0y1TnKY=;
-        b=f+zTVlhokB90lRHfBWoCedoqsBEu9XCTA9heaFXin8XTojburHmH+SIn+JKDuIRw0n
-         Y3UrfJP5OGoexgkY5jz3u7jnNoM4/0Bryw8d0Nnpxem21KRPRGoO1ShO6aXdlHwZoGlN
-         hafhJZ9WfF09VnVX25ORkuy1iBot5m5o/6d2rCk62h/+pFLLc8ef3QN3yEH0DLRKnBRd
-         /iTGAyIFDTibOCIIQM3fcIptWCZ83SbUHQcRFIfFmD/5/pcg7r0443EOO+r/B0OGGXLz
-         JSk2oFnAksQKlZNviHDUUOEsvxBYLVt4AylH6ROPUgUykgU4MAME9itgkNRASGa588fT
-         DptQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778486218; x=1779091018;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SuDIDre46wS+yv63NbwPzOOkKtvuj3ZvNxFH0y1TnKY=;
-        b=BWWXYXfntiY0orQN2vdOuWeDLDg9b1yHVjg9ExQRyw7Jpyx7nIKQGujzPI+9klFV2U
-         G5/4gCr2l6Y/0fnTQ45lupdM6I7fG86EvfEnLLtni7Z1SWO4KqWPNcDZQyqI6g5eGizB
-         8LtuSBT2lMDNDKyprhKaaRyXGKouwh7KBZAk5z2R6IxfTaouHAYolMKAb+v+oGaZ2xrb
-         uVGJ9waSMks//QKVDqTdSak6ieQhvBMMtmOYfmhxPJdj3gbZeKIMc9YYEsq0cyrrpLf3
-         McYnPxw56E/rA/fDiWA4b1Dl/A9jyCt3LQ9Bj4xOskDM0VG2xj7qAApn4atguu730qzE
-         ScJw==
-X-Gm-Message-State: AOJu0YxdtRjFrQw8JmYoo6ui2AnhqMTXJZFkvKfMS/TtPOOblu3GvNMd
-	bI11JxQiQDcOHzEJK3WkW5Rp248aFmmztO2/ZuZMbxeiRyyucHBHmNDGNnRhbC70
-X-Gm-Gg: Acq92OFupJCP0fDDxd0+rS9VkuJShPnz1dpA+mzTRxsXXnpDEPKWzDuct7oDJL3TUAK
-	T/nR0/W6McaBw1cAfX22BSLXpfmjxP1YtAIiLoWnPDub/Zmvgd5KvlQoEghd95EQJMGPAxmNsfJ
-	mLj1qR/3J59pEb0auZqvwfYUVNrhZ7KzB4TEBJQTFtmkOH1Wd2+HyaXBbVmis1AQBnZpt3vI4BQ
-	THgaHzVC9Kpk3qdD3v6TveLloe18Psba9Og9U7cfB05XfB+Kl3XBCv3DJFHAmVwUt3A7Pt73Mqi
-	rlksS3CAK+mlplOqld7WTAsGkqx70cX8/56r0qjGRxsMbnwDBoYoMQbfbffsiVEyV/Rm3id9sbI
-	4zBS1TSQVP+cnshRavPdrXXuW3o0iNbwrXlBogfSIPUfwWw3k4MqBZ4gXvNMBNuUsM1p8fmpDyE
-	D5gyGv6N9g4J15Nv+9c0jTHCfDpGw+cAYmwh6r+/MrOOwGWngQpsWeDAR65bqddcOnWPFrqukif
-	qy35x2qYMFk7wbb5iPD74I6zEG26sewxxc=
-X-Received: by 2002:a05:6a00:cc1:b0:827:2a07:231d with SMTP id d2e1a72fcca58-83a5c4bfddamr21886438b3a.17.1778486217918;
-        Mon, 11 May 2026 00:56:57 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83967dbcf36sm23680825b3a.41.2026.05.11.00.56.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 00:56:57 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Christian Lamparter <chunkeey@googlemail.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-kernel@vger.kernel.org (open list),
-	linux-hardening@vger.kernel.org (open list:KERNEL HARDENING (not covered by other areas):Keyword:\b__counted_by(_le|_be)?\b)
-Subject: [PATCH wireless-next] wifi: p54: Use flexible array for channel list
-Date: Mon, 11 May 2026 00:56:40 -0700
-Message-ID: <20260511075640.446181-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1778488981; c=relaxed/simple;
+	bh=qjylKIBc5KinUUjxo7Y/aTLegs0v1G2kqDTtxsBiSvo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=sTe+N8PhI+CXbGYqKGwEexNH4qZMis6LAGcWSGAdU19ljQXh4bMaAH2yUDzQ/WxFalWGZNNXRjVWpngubbSGTLlCXF6Pmb2EJ6CGVmr4i8BD8sf1f1oi/MFqAjQDs+x2Z7CE0+3PapBm1oCfdUxbDwWRgOG5tqa2Plj87UDZzI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QJvoOsSX; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=XwL3IDuqaomcFx34nmfwW2LzMKHeaT4hfv7erpJXnj8=;
+	t=1778488978; x=1779698578; b=QJvoOsSX50Yz6CiOJsNp5NbWRt6n6CE92PTnKS0X5qrgXDb
+	IxSqv48fvsJrgT1qV1gaqBwtn4+E+OEVX9Sld66xnZyX7YbbcCgMLM+529CLqpEAa1TuVOyOOHqBv
+	/ZCpJuGDThDgEfq7mL8ES61GkVFqJXq2/M8iRpVyOvwlQrdmCpAAsdKittMQ98QJaMQwyYAS9mUNN
+	AuHOO9BFnGOLR4a1EZCk4iowwpzwNjxO9Cj2lHEEzx0zvhgeKRzgGNfs1hhVWp44d1cgcuhK/Dbu2
+	U7KQOvPEyVY+qsdizNfuyNf0VHP7wK1RIij+98uYFgJ1M0CipDGep0hLtnuzOhCg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wMME3-0000000Ebsw-12Hs;
+	Mon, 11 May 2026 10:42:55 +0200
+Message-ID: <167a6eb4b9fd7c5f547f3b97a025ecc2705e3b8b.camel@sipsolutions.net>
+Subject: Re: [syzbot] [wireless?] WARNING in ieee80211_sta_current_bw
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>, syzbot
+	 <syzbot+e2a0da81361722f4df3b@syzkaller.appspotmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Date: Mon, 11 May 2026 10:42:54 +0200
+In-Reply-To: <64ddfb37q7ll3uyxbf3vuaicurz2p2lwqf5shnoepk53bucsll@o6uvujysizof> (sfid-20260511_042248_770794_A9B8EEF3)
+References: <6a00ff4e.170a0220.1c0296.021e.GAE@google.com>
+	 <64ddfb37q7ll3uyxbf3vuaicurz2p2lwqf5shnoepk53bucsll@o6uvujysizof>
+	 (sfid-20260511_042248_770794_A9B8EEF3)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F1AE350A094
+X-malware-bazaar: not-scanned
+X-Rspamd-Queue-Id: 1E28450A54F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[googlemail.com,kernel.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-36210-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36211-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless,e2a0da81361722f4df3b];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	SUBJECT_HAS_QUESTION(0.00)[]
 X-Rspamd-Action: no action
 
-Store generated channel entries in the p54 channel list allocation
-instead of allocating them separately.
+Hi Lachlan,
 
-This ties the temporary channel entries to the list lifetime, removes a
-separate allocation failure path, and lets __counted_by() describe the
-array bounds.
+On Mon, 2026-05-11 at 12:22 +1000, Lachlan Hodges wrote:
+> > WARNING: ./include/net/mac80211.h:8114 at ieee80211_chan_width_to_rx_bw=
+ include/net/mac80211.h:8114 [inline], CPU#1: syz.4.4769/22510
+> > WARNING: ./include/net/mac80211.h:8114 at ieee80211_sta_current_bw_tx_t=
+o_sta net/mac80211/sta_info.c:3719 [inline], CPU#1: syz.4.4769/22510
+> > WARNING: ./include/net/mac80211.h:8114 at ieee80211_sta_current_bw+0x36=
+d/0x510 net/mac80211/sta_info.c:3745, CPU#1: syz.4.4769/22510
+> > Modules linked in:
+> > CPU: 1 UID: 0 PID: 22510 Comm: syz.4.4769 Not tainted syzkaller #0 PREE=
+MPT(full)=20
+> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS=
+ Google 04/18/2026
+> > RIP: 0010:ieee80211_chan_width_to_rx_bw include/net/mac80211.h:8114 [in=
+line]
+> > RIP: 0010:ieee80211_sta_current_bw_tx_to_sta net/mac80211/sta_info.c:37=
+19 [inline]
+> > RIP: 0010:ieee80211_sta_current_bw+0x36d/0x510 net/mac80211/sta_info.c:=
+3745
+> > Code: 00 00 00 eb 49 41 83 fe 05 74 30 41 83 fe 0d 75 13 e8 47 8f af f6=
+ b8 04 00 00 00 eb 31 e8 3b 8f af f6 eb 28 e8 34 8f af f6 90 <0f> 0b 90 eb =
+1d e8 29 8f af f6 b8 02 00 00 00 eb 13 e8 1d 8f af f6
+> > RSP: 0018:ffffc90006f4eed8 EFLAGS: 00010283
+> > RAX: ffffffff8b161cfc RBX: 1ffff1100d1da030 RCX: 0000000000080000
+> > RDX: ffffc9000e5d2000 RSI: 0000000000000e31 RDI: 0000000000000e32
+> > RBP: 0000000000000004 R08: ffff888054ad5c40 R09: 0000000000000007
+> > R10: 000000000000000d R11: 0000000000000002 R12: ffff888068ed0180
+> > R13: dffffc0000000000 R14: 0000000000000007 R15: 0000000000000000
+> > FS:  00007fe58f5f66c0(0000) GS:ffff888125389000(0000) knlGS:00000000000=
+00000
+> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > CR2: 000000110c2c8823 CR3: 0000000038486000 CR4: 00000000003526f0
+>=20
+> This looks to be 10MHz given R14 =3D 7 which seems to be the operand
+> being compared I think. The 2 patches I sent the other week should
+> fix this occuring for any S1G bandwidths, not sure about 5 and 10MHz.
 
-Assisted-by: Codex:GPT-5.5
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/net/wireless/intersil/p54/eeprom.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+Thanks for taking a look at this! I'll apply those soon, seems the test
+bot got stuck again.
 
-diff --git a/drivers/net/wireless/intersil/p54/eeprom.c b/drivers/net/wireless/intersil/p54/eeprom.c
-index 95580921d933..c617bec787a3 100644
---- a/drivers/net/wireless/intersil/p54/eeprom.c
-+++ b/drivers/net/wireless/intersil/p54/eeprom.c
-@@ -77,10 +77,10 @@ struct p54_channel_entry {
- };
- 
- struct p54_channel_list {
--	struct p54_channel_entry *channels;
- 	size_t entries;
- 	size_t max_entries;
- 	size_t band_channel_num[NUM_NL80211_BANDS];
-+	struct p54_channel_entry channels[] __counted_by(max_entries);
- };
- 
- static int p54_get_band_from_freq(u16 freq)
-@@ -335,24 +335,21 @@ static int p54_generate_channel_lists(struct ieee80211_hw *dev)
- 	max_channel_num = max_t(unsigned int, max_channel_num,
- 				priv->curve_data->entries);
- 
--	list = kzalloc_obj(*list);
-+	list = kzalloc_flex(*list, channels, max_channel_num);
- 	if (!list) {
- 		ret = -ENOMEM;
- 		goto free;
- 	}
--	priv->chan_num = max_channel_num;
-+
-+	list->max_entries = max_channel_num;
-+
- 	priv->survey = kzalloc_objs(struct survey_info, max_channel_num);
- 	if (!priv->survey) {
- 		ret = -ENOMEM;
- 		goto free;
- 	}
- 
--	list->max_entries = max_channel_num;
--	list->channels = kzalloc_objs(struct p54_channel_entry, max_channel_num);
--	if (!list->channels) {
--		ret = -ENOMEM;
--		goto free;
--	}
-+	priv->chan_num = max_channel_num;
- 
- 	for (i = 0; i < max_channel_num; i++) {
- 		if (i < priv->iq_autocal_len) {
-@@ -401,10 +398,7 @@ static int p54_generate_channel_lists(struct ieee80211_hw *dev)
- 	}
- 
- free:
--	if (list) {
--		kfree(list->channels);
--		kfree(list);
--	}
-+	kfree(list);
- 	if (ret) {
- 		kfree(priv->survey);
- 		priv->survey = NULL;
--- 
-2.54.0
+> Atleast for this situation, it would be the same - we don't wanna
+> recalc the mindef for 5 and 10MHz since the mindef isn't recalculated
+> for 5/10MHz like S1G. But then I'm not sure the S1G workaround for
+> ieee80211_sta_init_nss_bw_capa since maybe nss might be greater than
+> 1 for 5/10MHz?
 
+Technically, yes. However, 5/10 is pretty much unreachable in practice.
+I had proposed removing it a long time ago, we should probably just do
+that...
+
+johannes
 
