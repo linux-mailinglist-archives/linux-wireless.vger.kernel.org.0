@@ -1,187 +1,196 @@
-Return-Path: <linux-wireless+bounces-36309-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36310-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPtzLk3UAmrPxwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36309-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 09:18:37 +0200
+	id WBuTJsvYAmqbyAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36310-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 09:37:47 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC7551BAA3
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 09:18:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2555A51BFBE
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 09:37:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 003D33020BD5
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 07:17:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D363F3021BD0
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 07:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AF4263C7F;
-	Tue, 12 May 2026 07:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E093368D74;
+	Tue, 12 May 2026 07:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Nn+WSIsG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dNGf+EKP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [194.59.206.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD0034A795
-	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 07:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.59.206.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE75384CF2
+	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 07:37:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778570253; cv=none; b=FrFJNJyvsPp/BOyAJl/4jBoN3zjYpWWzcSF4DZbMswPRPI+YU2cEMKTTwJ4s+R7pz093eI/fAvtj5HnAvC9yoi/jzoouqVDS2BLM4hHHj8X+Z3A94mgLssX/wWV6iTziOHZMjOMOPKfHEfNeYIydJYr/ibRFE/1uhSo3UAzZqBw=
+	t=1778571443; cv=none; b=jNsbvC67ByxAxRUdSmT8xABowxfHC92S1C3LYBTqI7ldD0T8dDSDXBsTFf3Co3x5pCJTVfk7v4ZrOZDxLf/gd0VZWmufo0WriZpsYgwYl1rzU4/eW3w/1Hx6zZyza0JsRFu8S3QnSByj63b/m8PVKQyOzJln3iWCawxoNtPgFAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778570253; c=relaxed/simple;
-	bh=PGK8gd6RLPN8TVxowId4B7hcSPJeq9KHicvlzsl8Knw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AN+PxFbI9OGyZ1gttsKwvegWkHqdoidRLzAPv1aa+ObEyDP2wycl8GlOkWWbbEetIJ4m1UcEjtUuDhvvqfmYaJwEgJ4EdjxOVeezxN1rJkfmprowqhbBv/iApd11tMD6DsKSONDszK5Q1JGV21FUecKM/dghhzGnL6ffJIusm6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Nn+WSIsG; arc=none smtp.client-ip=194.59.206.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from relay02-mors.netcup.net (localhost [127.0.0.1])
-	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4gF7Fn2NFtz4DjS;
-	Tue, 12 May 2026 09:17:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1778570237;
-	bh=PGK8gd6RLPN8TVxowId4B7hcSPJeq9KHicvlzsl8Knw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Nn+WSIsGKMUArqFjDfeL3a5xe6RMrjbsPFAzWGkjBgssAnjNfFmDD+tmucG055shE
-	 G0iLf/F5cgcvqoryLTDupvCdImdTgbnJVXFhsO33SphWxInnXhclguuuNJPW3TsLxp
-	 F5Xjdvw7SnZRX1tTXa8HIKbw4+R9BpU6ITtRJ8B2UfzpUwfpkt3bfLJgRz+U5a9+B8
-	 bJ2jDQlafeKlDIurzIlCdbFB6BpA1lMOZYSRURw9zG3QFgmo2BxOVsw5RB/1u4EkXL
-	 G55jEnuBTprwwF2zoHtMcEktxVyNCkFGwPNPSrcPTN8xBrzSPP7nF3KRTg4FH9bXtS
-	 Fc1yU70L/4XDQ==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4gF7Fn1h2yz7vt2;
-	Tue, 12 May 2026 09:17:17 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.899
-X-Spam-Level: 
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4gF7Fm1Nlcz8tgR;
-	Tue, 12 May 2026 09:17:16 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 9893F6184E;
-	Tue, 12 May 2026 09:17:15 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <1cf071e9-5d3c-4d55-ac75-49eb4c461422@leemhuis.info>
-Date: Tue, 12 May 2026 09:17:15 +0200
+	s=arc-20240116; t=1778571443; c=relaxed/simple;
+	bh=dTmrkJn4weiuNg0VBlPnKFt/P9440EYzy09QpnPlOH0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NsFijw04OLzjSGnKJgZicVUQVKFOQnX2Zy/JaQd4fElVjaMiLIOWAHg+YWwfS1GW3kFM9gr77ftrL9K/JdNxfbO5mXbnkNpOBNQWNQy5JsWXZ5A0YYulL3cC9ROBCjCw/eUkBlM0xTp+rRTo/NlHWkCTCRsIDxLjXQTbiferDW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dNGf+EKP; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-48896199cbaso46769345e9.1
+        for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 00:37:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778571440; x=1779176240; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PnFqd4eoebq6QO9QB+ogH2edRmONki+/t3a+recyMXU=;
+        b=dNGf+EKP8X/nJTSkKvkSSIwcjtKcekO52ctrgH2rUoggXXnC2SBPbX39sgofnQtS+t
+         WvlXHBmc3uqH94Bk76cnTps+o21xzs71qXE/08fMujVr699G/PS3EPCvO1XY6C8DbUF7
+         701SuBBwlEJwvTsN+EvqHjRGsvnya1h3vajQSCJ97N3kgSp3d5ia0qKvezBS8Pop0UhW
+         freiAs3GIrwXzlxp0TZtv4/+BuLUErtmaAA31lmtqciB10jg3pgMSV/J1odOmSNrEbqe
+         sKzUaQk08I3pOmjYcMu2i0EmzTBVbp8QYQtEUtxKwyafRN5nAVp79Z4KXiaRlvn+36Jo
+         Jn0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778571440; x=1779176240;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PnFqd4eoebq6QO9QB+ogH2edRmONki+/t3a+recyMXU=;
+        b=jPb2d3j3lbh4FSECuvNA31/mFRA6FxojLgg7f6IzXZ+Sy7e273QIFBgpYmvZJPdTKL
+         phZ3rcHZmywSXbIQl8i5YYi2EmXRmVYaxUpehSum6NZdH91xkWx8qqXsMGYtoorFQ/up
+         Pw+Ytix8xxUFwYXNBgFKD/pmTatI12owbO8uuKqkhjFXL3duNGIAOeAphyin1ObuN22o
+         fqSAtfE+/Zyoe1ebu5zo0QIlPhexKufow61OF6aHpQOVfv3xY1cYY992QJ6Bm1pRekyB
+         pPxYr4FOhM6gCpT4oi5z+yo601EIpQ3a0pbVzqeGDIiIsGo9f5zD/XBiIjSON25iXLo+
+         Ikdw==
+X-Forwarded-Encrypted: i=1; AFNElJ/SpxfzlgzRkTUl5sMlAj6eUx+M+BEoWG7LLSHxGduOumXqOMUbSRb3SgLw0Q1Xpv5NbajtFI9o1c/PbYQ2qQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoV/CGOjHSPRrvvCtQZ03OW+I8ngZXhaREKty/g6nMdyZ8o+lA
+	qUL7njTIBZVz1zPoKfgO93d4s20aZgeNev4WLudSP0h72hLtibXGCg8a
+X-Gm-Gg: Acq92OEMO+jdlaCjIh5CP1bVJeUbewPbXXxwpXbnW89kIGaxtRlzaq2IZEuh+XIMOpZ
+	Rh9e4c6fjqyuidqhKPhoitLXOg2KoEN2EsifEqe12SEgjfIFqgxENtd6NVBj/pygdT9vCwfhIBm
+	XiAB3fo6jmUlqbOmqHaD0EMVvL0/3Bvzwk4j64gn4ooeG6FkPeGQLbNrdjBIeX1XAzLDWmFWKFx
+	fc+epdRc/Rfc4L2jLokQTbn3BvOV+LUR5YXLLX8l7TTWa/5hQalNhesPh3ncApT9P/oHnAZNU8C
+	xFQcHhaPtfloV6cbb3MNOjhIDpHBR9ga/u3Csz7IXRSothLnxdBd+N9RcWZ/D+c3bZ46LKZH9ad
+	E7u8REMDIffEHFNlEU9I1Fzm1KmRjE0Fb50AxHJrOJGiOYSBWv+g0SPnlsJX6TlYQVNshmsvvOt
+	OW5eO3+t2U3rOpSJYZhJjK2t+wDEA0/Q==
+X-Received: by 2002:a05:600c:474b:b0:488:9e54:94c0 with SMTP id 5b1f17b1804b1-48e8fe5017fmr25335265e9.8.1778571439934;
+        Tue, 12 May 2026 00:37:19 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8f43de84sm11609595e9.26.2026.05.12.00.37.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 00:37:19 -0700 (PDT)
+Date: Tue, 12 May 2026 10:37:15 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: Shayaun Nejad <snejad123@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] staging: rtl8723bs: bound SUPP_RATES IE length in
+ rtw_check_beacon_data
+Message-ID: <agLYq3tu0M4QpSmo@stanley.mountain>
+References: <cover.1778550157.git.snejad123@gmail.com>
+ <a56d8fa71dc6843e5096ce69d4c216c0ca99a7de.1778550157.git.snejad123@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next v2] wifi: rtl8xxxu: Detect the maximum supported
- channel width
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
- Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "art1310@proton.me" <art1310@proton.me>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <c57de68e-5d57-4c26-898f-8a284bb25381@gmail.com>
- <ee88b3a2-2cc9-4370-b782-189a603a7fa1@RTKEXHMBS04.realtek.com.tw>
- <41693ffc-926c-4e67-9a48-b6e1b1d150bd@leemhuis.info>
- <f26992e669744e6f87084e017f897275@realtek.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <f26992e669744e6f87084e017f897275@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <177857023592.2936282.8027880108869927067@mxe9fb.netcup.net>
-X-NC-CID: cRX10LR12CGbJk05VwtesGzqXrlvOYJOYxN7G/QGIRCguOG3psQ=
-X-Rspamd-Queue-Id: AFC7551BAA3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a56d8fa71dc6843e5096ce69d4c216c0ca99a7de.1778550157.git.snejad123@gmail.com>
+X-Rspamd-Queue-Id: 2555A51BFBE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36309-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,leemhuis.info:email,leemhuis.info:mid,leemhuis.info:dkim];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[leemhuis.info];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36310-lists,linux-wireless=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,proton.me,lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[error27@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[stanley.mountain:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-
-
-On 5/12/26 02:44, Ping-Ke Shih wrote:
-> Thorsten Leemhuis <linux@leemhuis.info> wrote:
->> On 5/6/26 09:57, Ping-Ke Shih wrote:
->>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>>
->>>> Some devices malfunction when connected to a network with 40 MHz channel
->>>> width, because they don't support that.
->>>>
->>>> RTL8188FU, RTL8192FU, and RTL8710BU (RTL8188GU) have a way to signal
->>>> this (and some other capabilities) to the driver. Get this information
->>>> from the hardware and advertise 40 MHz support only when the hardware
->>>> can handle it. We assume the other chips can always handle it.
->>>>
->>>> RTL8710BU needs a different way to retrieve this information, which will
->>>> be implemented some other time.
->>>>
->>>> Fixes: dbf9b7bb0edf ("wifi: rtl8xxxu: Enable 40 MHz width by default")
->>>> Cc: stable@vger.kernel.org
->>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221394
->>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->>>> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
->>
->> Thx for fixing this!
->>
->>> 1 patch(es) applied to rtw-next branch of rtw.git, thanks.
->>> ef771eabc79d wifi: rtl8xxxu: Detect the maximum supported channel width
->>> https://github.com/pkshih/rtw.git
->>
->> rtw-next sounds like it aims for the next merge window; and it seems the
->> fix hasn't even hit -next yet. This is slightly unfortunate, as this
->> afaics is a fix for a recent regression -- so it ideally should head
->> towards mainline by now[1], as Linus' the rule of thumb is to "generally
->> fix regressions "within a week", preferably before the next rc"[1].
->>
->> Or am I missing something? That might very well be the case, so do not
->> hesitate to tell me!
+On Mon, May 11, 2026 at 06:44:56PM -0700, Shayaun Nejad wrote:
+> rtw_check_beacon_data() copies SUPP_RATES and EXT_SUPP_RATES IE
+> payloads into a 16-byte support_rate[] buffer.
 > 
-> As this patch applied to public rtw tree, and people who encountered the
-> problem in bugzilla can work again. To prevent breaking the public tree,
-> I'd keep it as was.
+> The IE lengths are used directly, so oversized rate IEs can overflow the
+> stack buffer.
+> 
+> Clamp the supported rates copy and the combined extended supported rates
+> copy to NDIS_802_11_LENGTH_RATES_EX.
+> 
+> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shayaun Nejad <snejad123@gmail.com>
+> ---
+>  drivers/staging/rtl8723bs/core/rtw_ap.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/rtl8723bs/core/rtw_ap.c b/drivers/staging/rtl8723bs/core/rtw_ap.c
+> index 4b40124110..363ecb02b5 100644
+> --- a/drivers/staging/rtl8723bs/core/rtw_ap.c
+> +++ b/drivers/staging/rtl8723bs/core/rtw_ap.c
+> @@ -873,6 +873,7 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
+>  		       &ie_len,
+>  		       (pbss_network->ie_length - _BEACON_IE_OFFSET_));
+>  	if (p) {
+> +		ie_len = min_t(uint, ie_len, NDIS_802_11_LENGTH_RATES_EX);
 
-I'm not sure I understand this correctly.
+These days we would use umin()
 
-Do you mean something like "the fix is now in the rtw-next tree, so I
-can't mainline it now, as this would break the rtw-next"? But why? You
-can cherry-pick or directly apply the fix to a pending branch (or even
-ask Linus to merge it directly from the list, but that is likely not
-worth it here) and git will normally later notice this and fully
-automatically handle everything when the fix comes in again during the
-next merge window.
+>  		memcpy(support_rate, p + 2, ie_len);
+>  		support_rate_num = ie_len;
 
-Or did I misinterpret what you meant?
+support_rate_num is set here.  We know from the min_t() that it's less
+<= NDIS_802_11_LENGTH_RATES_EX.
 
-Ciao, Thorsten
+>  	}
+> @@ -882,8 +883,11 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
+>  		       WLAN_EID_EXT_SUPP_RATES,
+>  		       &ie_len,
+>  		       pbss_network->ie_length - _BEACON_IE_OFFSET_);
+> -	if (p)
+> +	if (p && support_rate_num < NDIS_802_11_LENGTH_RATES_EX) {
 
+We know that support_rate_num <= NDIS_802_11_LENGTH_RATES_EX.  Allowing
+== NDIS_802_11_LENGTH_RATES_EX is okay because memcpy() of zero bytes is
+a no-op.
+
+> +		ie_len = min_t(uint, ie_len,
+> +			       NDIS_802_11_LENGTH_RATES_EX - support_rate_num);
+
+Use umin() here too.
+
+Otherwise the patch is fine.
+
+regards,
+dan carpenter
+
+>  		memcpy(support_rate + support_rate_num, p + 2, ie_len);
+> +	}
+>  
+>  	network_type = rtw_check_network_type(support_rate, channel);
+>  
+> -- 
+> 2.43.0
+> 
 
