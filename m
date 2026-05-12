@@ -1,200 +1,161 @@
-Return-Path: <linux-wireless+bounces-36321-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36322-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLE4No0QA2qX0AEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36321-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 13:35:41 +0200
+	id eCQIC0YmA2oF1AEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36322-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 15:08:22 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3612F51F6C2
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 13:35:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D45520CA7
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 15:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D19413079147
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 11:30:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B4F2230BDE29
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 13:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E833EF673;
-	Tue, 12 May 2026 11:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E8539E9B1;
+	Tue, 12 May 2026 12:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="izC/dNUA"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MOIzxd8M"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.103])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7F33C3C00
-	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 11:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.61.103
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4EB39AD42
+	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 12:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778585449; cv=none; b=ngTOEAyPha2bkDMm9VmbzAnVOFjuUKHuQEkycGdkxVrpVbHzP25Lg8T57aho+3sHpb+WVZwHqXIgVgiQw75APS0EXhcB3bE+0wOdlYbQAEfYQDyCPA50AsjjvlaoEkU8OZS1r/zIAJW1i51y+bAvtwBufWMHX6pTaPN5ZfXa1WM=
+	t=1778590706; cv=none; b=Mt71FDxBKM/wiH81uBRcXYUej4ze+Zx5CqgvoQOEnXmbxOPRB/ZBNSba2HEuIy8frVZoHAYDjld6P7qTCbjV3jDi/awl/QAIKeVA3emJRu7offDPvklYnsRt6gNxdz/y/9SfxhwNAbVi35vL+E1nlsZXLwVp+ADnBA5Tle25Iwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778585449; c=relaxed/simple;
-	bh=HtglGrCwkqjrWXXrzziX1/ariNbTdqIlOZLeVmCI7Pg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eZJSLT5RBpfMX8tWrNSsyAigZmKV/8kgWy8dUwf7C+EgcTXORGwRWao/wjDZUhYi/URwLTkFl74lj4HJz3D09rGdxpMEKtsPjnFsVeNh1yqv+1NlmVXnPb6dM3Uam1dZseNTbdzr/sxKGtic9ImQIiupWVasf3eNTBQk7PoPANY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=izC/dNUA; arc=none smtp.client-ip=188.68.61.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from mors-relay-8403.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4gFDt700lnz8B6w;
-	Tue, 12 May 2026 13:30:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1778585439;
-	bh=HtglGrCwkqjrWXXrzziX1/ariNbTdqIlOZLeVmCI7Pg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=izC/dNUAhWPeAwVJ6WiUj8ZFBhA3NE07CNMH/jxNX6Z8QZF7aK2pmNgDQAGvRSlGq
-	 U/Ik+aVk2B8bJznFihO7elRJXZarKRoBqVAfu/OnN6tbgBX6TRhMC0DiE0gUYkEuVG
-	 SdFNn7+S8+7HViS6bNe9gXz60YicsJR2wlMeP1Fc/v/f4olrgv2Cm5ZwVtL65mSuC2
-	 9MmVNEo5QSHrcQUlhr8kOqFCZDpQ31nGNm53PnAN/6+fOp3Sa211hh93dheLPrS9zT
-	 CCkUZIXANHXW3vnACmfcpSPSMITguLyVQgkgrlH65puzIK90/RMU8J7ejJXbkjyJKQ
-	 2Fk5WDcz7UJ+A==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4gFDt66Q04z8B6p;
-	Tue, 12 May 2026 13:30:38 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4gFDt6130Vz8sh8;
-	Tue, 12 May 2026 13:30:38 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 7C633617A5;
-	Tue, 12 May 2026 13:30:37 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <ac56117b-0c16-4d98-95f7-8415ccabdc6d@leemhuis.info>
-Date: Tue, 12 May 2026 13:30:35 +0200
+	s=arc-20240116; t=1778590706; c=relaxed/simple;
+	bh=pLY3GB/npkRWavBDYzVZGZTO+VbOpmmXpr9lI4mz4fA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=mV9CeVPQQZCRWDM8s3a0Em+CO82t5xhLQg8Y5ZY2D8HmOLymKZXy/6E5bEEpJ8Ak5jdysoa8kYCPpNClFczC6FR/r+JELcAxCfY6NFx4frgeL44yS1OP9xObnCFSz64U9ZBNcD4mnPZyHpHfRbMf0P6xP3SWGRgyWNtzXOfFDdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MOIzxd8M; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48d144d3428so32077465e9.3
+        for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 05:58:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778590702; x=1779195502; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vDWMnr041UI5ryil+k7XvoK/2F/EkGtTQwaeX0kDxi0=;
+        b=MOIzxd8M06jLqZdVnSSn+fl9/YjNb4fjltt3R3ync0g1aVCwi8YsgnwqqEWpVN8yDC
+         n+OZ7ayH7XM6XVwBPjR1+VLhNblCt+0q//YKBpjHER2l7IYfYuYOOxQ7f8ecykI7F02P
+         qkpSKl184Vd6WqziVquto1rxJ8hyAXM56pR5oWegNIdo1wSO0nnxkzMeh/4dD3Wh1nVf
+         nooc/ABS+gZVsfESPEkewzYXTezcopIVf1niMTLkEcyFxRmkfrARRbeksuYo94w0359A
+         VfwaoWUawNdMkdyXjfVfZJEmZG/iFsEiRQH/30Eqo3ct21ffxyFsmlAAXOItNxt9+WeH
+         W3Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778590702; x=1779195502;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vDWMnr041UI5ryil+k7XvoK/2F/EkGtTQwaeX0kDxi0=;
+        b=jjr14QB8sJ6YYpD9mn8yaW0R4d/afRawVZI7topg6AD75Wx4t5y7GzA3WtyUQCVnpQ
+         +SmT6oHL7fSOGaYFVh3kN27emwH3/yT29uoXTmuPNq751Oe2hgEXxdy6hnF8pl3b+gfw
+         FT/tu/m3SocOXpNBza8988g0UjoMndL6H5EAEK7at/kLRaa/ec6zgZezFiPhreFz+X7b
+         NTwAEqnpEIbgpmIlj8trsPPdpD8hbxzf0feXZ1wxFQecXGLvniD8vOgIhw9oU3A0QAN6
+         QnjsZiyTkpgHbSvNdcCPQpNmq1VLhqb/uA/oKO01j0TVWESpU1H2TCTikPR/TBEFuuP0
+         jOeQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/7h9um9ERXeapyMRdqy+6/BcVi8WrcM4ChnO5hLQb0tt2CTcu8Mwi4RSXWdDcnBR0Ucq9l6B00OzONlgXyQw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxO7uzt9Qs0ZQFRILNkaXOh236RefJ98mtY6fRj1lxqys/jZ0cQ
+	Jn54CPT84vAcElRQ3hdazBMkvvg1RUmwwF2Z4juVKGtRcGtw/pwDupGXy+TjPP6+cPsle2LPpOZ
+	I1Vy+8XzoveXiRg==
+X-Received: from wmby19.prod.google.com ([2002:a05:600c:c053:b0:485:3aa2:da59])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8010:b0:48a:5339:ef0e with SMTP id 5b1f17b1804b1-48e70687eabmr216165565e9.3.1778590701567;
+ Tue, 12 May 2026 05:58:21 -0700 (PDT)
+Date: Tue, 12 May 2026 12:58:20 +0000
+In-Reply-To: <20260326-gfp64-v2-0-d916021cecdf@google.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next v2] wifi: rtl8xxxu: Detect the maximum supported
- channel width
-To: Johannes Berg <johannes@sipsolutions.net>,
- Ping-Ke Shih <pkshih@realtek.com>
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
- Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "art1310@proton.me" <art1310@proton.me>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <c57de68e-5d57-4c26-898f-8a284bb25381@gmail.com>
- <ee88b3a2-2cc9-4370-b782-189a603a7fa1@RTKEXHMBS04.realtek.com.tw>
- <41693ffc-926c-4e67-9a48-b6e1b1d150bd@leemhuis.info>
- <f26992e669744e6f87084e017f897275@realtek.com>
- <1cf071e9-5d3c-4d55-ac75-49eb4c461422@leemhuis.info>
- <29a93dc3d9d24b3a809310694ffc5d34@realtek.com>
- <02c073d8-d2c9-4faa-be51-9ba38247b24e@leemhuis.info>
- <522d09d5fad2fdebc89419a7e75b89ff14de162a.camel@sipsolutions.net>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <522d09d5fad2fdebc89419a7e75b89ff14de162a.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <177858543781.3310061.8800170906185187943@mxe9fb.netcup.net>
-X-NC-CID: Z45TeTFUU3Y+NC07r4Asj4VSzFwrNRqL+8SE5Rqwpru6aizQmMM=
-X-Rspamd-Queue-Id: 3612F51F6C2
+Mime-Version: 1.0
+References: <20260326-gfp64-v2-0-d916021cecdf@google.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DIGPS83BGEGA.5I7VLH8TV7XE@google.com>
+Subject: Re: [PATCH v2 0/4] treewide: fixup gfp_t printks
+From: Brendan Jackman <jackmanb@google.com>
+To: Brendan Jackman <jackmanb@google.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Stanislaw Gruszka <stf_xl@wp.pl>, 
+	Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Allison Henderson <allison.henderson@oracle.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>
+Cc: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-wireless@vger.kernel.org>, <kasan-dev@googlegroups.com>, 
+	<linux-mm@kvack.org>, <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>, 
+	<rds-devel@oss.oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: E5D45520CA7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36321-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,proton.me,lists.linux.dev];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-36322-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[google.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,wp.pl,linux-foundation.org,oracle.com,davemloft.net,redhat.com];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jackmanb@google.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	NEURAL_HAM(-0.00)[-0.998];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On 5/12/26 11:36, Johannes Berg wrote:
-> On Tue, 2026-05-12 at 10:54 +0200, Thorsten Leemhuis wrote:
->>>> You
->>>> can cherry-pick or directly apply the fix to a pending branch (or even
->>>> ask Linus to merge it directly from the list, but that is likely not
->>>> worth it here) and git will normally later notice this and fully
->>>> automatically handle everything when the fix comes in again during the
->>>> next merge window.
->>>
->>> I know git can handle that, but is it an acceptable practice for single one
->>> commit to appear twice?
->>
->> Depends on whom you ask. I'd say: It's kinda normal. It's best avoided
->> if there is no need, but if there is a need (like here) it's fine. And
->> some subsystems it even happens regularly iirc.
-> > FWIW, it's generally frowned upon and actually uncommon enough that
-> linux-next actively warns about it [1] (or at least used to?), so I
-> wouldn't really say your description here is all that accurate.
+On Thu Mar 26, 2026 at 12:31 PM UTC, Brendan Jackman wrote:
+> This patchset used to be about switching gfp_t to unsigned long. That is
+> probably not gonna happen any more but while writing it I found these
+> cleanups that seem worthwhile regardless.
 >
-> [1] https://lore.kernel.org/lkml/?q=%22duplicate+patch+in+the%22
-> 
-> What does happen fairly frequently is the same immutable commit getting
-> merged through different branches, but that's a single commit, not the
-> same change being committed twice.
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+> Changes in v2:
+> - Drop gfp_t changes
+> - Add correct CCs
+> - Add minor fixups to preexisting code spotted by AI review
+> - Link to v1: https://lore.kernel.org/r/20260319-gfp64-v1-0-2c73b8d42b7f@google.com
+>
+> ---
+> Brendan Jackman (4):
+>       drm/managed: Use special gfp_t format specifier
+>       iwlegacy: 3945-mac: Fixup allocation failure log
+>       mm/kfence: Use special gfp_t format specifier
+>       net/rds: Use special gfp_t format specifier
+>
+>  drivers/gpu/drm/drm_managed.c                  | 4 ++--
+>  drivers/net/wireless/intel/iwlegacy/3945-mac.c | 4 ++--
+>  mm/kfence/kfence_test.c                        | 2 +-
+>  net/rds/tcp_recv.c                             | 2 +-
+>  4 files changed, 6 insertions(+), 6 deletions(-)
+> ---
+> base-commit: c369299895a591d96745d6492d4888259b004a9e
+> change-id: 20260319-gfp64-7a970a80ba4e
+>
+> Best regards,
 
-Well, that made me look up my "regularly iirc" claim. Now I remember
-where I got that from: the cherry-picking (which results in a second
-commit-id) the DRM subsystem regularly did:
-https://lwn.net/Articles/1005222/
+Hi all,
 
-That's was early 2025, so the workflows there might have changed in
-between due to the criticism. But from a quick 'git log --grep "(cherry
-picked from commit"' in mainline it doesn't look like it did. Here is
-one example of a commit that made it into 7.0 that sits with a different
-commit-id in -next a second time:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/?qt=grep&q=Avoid+memory+allocations+in+xe_device_declare_wedged
-b08ceb44386680 ("drm/xe: Avoid memory allocations in
-xe_device_declare_wedged()") [next-20260330]
-56b7432b7e8e6a ("drm/xe: Avoid memory allocations in
-xe_device_declare_wedged()") [v7.0-rc7]
-
-Here are a few from the current cycle:
-
-0d831487b5be0a ("drm/amdgpu: nuke amdgpu_userq_fence_slab v2")
-[next-20260506]
-4e02e0afa95f69 ("drm/amdgpu: nuke amdgpu_userq_fence_slab v2") [v7.1-rc3]
-1fc6c8ab45dbee ("drm/amdgpu/userq: fix access to stale wptr mapping")
-[next-20260506]
-6da7b1242da445 ("drm/amdgpu/userq: fix access to stale wptr mapping")
-[v7.1-rc3]
-d12d05c4bc4c15 ("drm/amdkfd: Check if there are kfd porcesses using adev
-by kfd_processes_count") [next-20260506]
-81665e35f143d9 ("drm/amdkfd: Check if there are kfd porcesses using adev
-by kfd_processes_count") [v7.1-rc3]
-d9af8263b82b6e ("drm/amdgpu: zero-initialize GART table on allocation")
-[next-20260506]
-e6c2e6c2e1fa06 ("drm/amdgpu: zero-initialize GART table on allocation")
-[v7.1-rc3]
-
-I found a few dozen more. But this is not my area of expertise, so
-please correct me if I'm missing something.
-
-In the end I don't care about all that. I just think it would be good to
-get this regression fixed in mainline this cycle. And I suspect Linus
-wants that, too. For example due to previous discussions like this:
-https://lore.kernel.org/all/CAHk-=wis_qQy4oDNynNKi5b7Qhosmxtoj1jxo5wmB6SRUwQUBQ@mail.gmail.com/
-
-Ciao, Thorsten
+Any chance someone can take these?
 
