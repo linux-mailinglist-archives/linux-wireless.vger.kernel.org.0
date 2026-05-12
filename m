@@ -1,143 +1,172 @@
-Return-Path: <linux-wireless+bounces-36315-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36316-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGFICz31AmqfzAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36315-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 11:39:09 +0200
+	id QNuqFp/1AmqvzAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36316-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 11:40:47 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C68D51DE2E
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 11:39:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 070BD51DEB2
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 11:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1134C3014770
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 09:36:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EA6D6300F5C3
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 09:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742AE3C3BF6;
-	Tue, 12 May 2026 09:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532D33ACA5C;
+	Tue, 12 May 2026 09:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qt1PoSHM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UD4r/Q8S"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133153B95EC;
-	Tue, 12 May 2026 09:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E440388374;
+	Tue, 12 May 2026 09:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778578600; cv=none; b=a/9Zb5EWhg45IsM955QiFBj/3I81M/RkFrajYEuKg4BoKQQx9BId3bcSTprPgQIEt7R2KgdUaXXPCoA5P6LRcRYbscz6IqS0skBYcwBW06BoPbyTVgwsb6FS5Muh1ip8l9CkyuhJjxgYhqUYbuuPnzHHhNZTbvvKUPIUnsdFsmw=
+	t=1778578840; cv=none; b=usJt5GOHXz6tKcObh0V5+JaUiGa4o1LQ0tqj2e1tIbfUiAlF6eueAyWzQ9EO9uhsSGOIEzAn7lOKYGRuPUy5PWrbXxwDeenF1ta7V+x+9iqx/CmDnKc9MdnXjRlgTmSlNc70Zlfu9oxJeayiwqrK/CztHCJvkojobkGsEuvziU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778578600; c=relaxed/simple;
-	bh=5imsN2GRDgEnQmP7IgCKhWEjk3S4UBKSkBhZKZxcuhc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZjjPuSSOW7XjD6UOEkOOh9oZ75c1sP/crwOb2FUH0wUCmx2P22OfAj9suqh6Rr9XKYshwZY4jmb4XjA+RJhYHRIcrMj0VtdEG+ufia0K+vwCaXA5JE+cZdoSpfAtZfch1+RrQt/6FA0WOUlW/n88CRvKtCcAd97gqwVbBAfmpSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qt1PoSHM; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=5imsN2GRDgEnQmP7IgCKhWEjk3S4UBKSkBhZKZxcuhc=;
-	t=1778578597; x=1779788197; b=qt1PoSHMIQrbMiHdMDsu7n+0b0GPztxL9ywEYXpHK0sRWsN
-	o+x3PEdXgEuy8OcoUzPjBvqY6wT+seJ+5NrxP5maSztd5fObqY4hcyA6ct1TuJcw9Q8OSRZPEscPI
-	+VlJ4HCEhjHMO8CyrEwhGOwAPkFAqyz89J5P8kYs0el5aah2WJp837fBzeho33hEFNmgEWX5JJ0AS
-	Gnj6W7vkc8jbUibBK4sT050H3Qrg9P53ADbUh3iSCr7J7iKWDKzVYREXbKyD0W/EUCbGrtaTuPCm7
-	QsdfM774aVCEvL5KrVP+sxbsYn6M4oYsEOpB+MTdlcT4HIECPfIhJN4Jp8W2ocag==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wMjXP-00000000KzB-10oU;
-	Tue, 12 May 2026 11:36:27 +0200
-Message-ID: <522d09d5fad2fdebc89419a7e75b89ff14de162a.camel@sipsolutions.net>
-Subject: Re: [PATCH rtw-next v2] wifi: rtl8xxxu: Detect the maximum
- supported channel width
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Thorsten Leemhuis <regressions@leemhuis.info>, Ping-Ke Shih
-	 <pkshih@realtek.com>
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Bitterblue Smith	
- <rtl8821cerfe2@gmail.com>, "linux-wireless@vger.kernel.org"	
- <linux-wireless@vger.kernel.org>, "art1310@proton.me" <art1310@proton.me>, 
- Linux kernel regressions list	 <regressions@lists.linux.dev>
-Date: Tue, 12 May 2026 11:36:26 +0200
-In-Reply-To: <02c073d8-d2c9-4faa-be51-9ba38247b24e@leemhuis.info>
-References: <c57de68e-5d57-4c26-898f-8a284bb25381@gmail.com>
-	 <ee88b3a2-2cc9-4370-b782-189a603a7fa1@RTKEXHMBS04.realtek.com.tw>
-	 <41693ffc-926c-4e67-9a48-b6e1b1d150bd@leemhuis.info>
-	 <f26992e669744e6f87084e017f897275@realtek.com>
-	 <1cf071e9-5d3c-4d55-ac75-49eb4c461422@leemhuis.info>
-	 <29a93dc3d9d24b3a809310694ffc5d34@realtek.com>
-	 <02c073d8-d2c9-4faa-be51-9ba38247b24e@leemhuis.info>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1778578840; c=relaxed/simple;
+	bh=MQw7xk7AK7vUUFTxVKsaMlXHU3CigVS/H91vrn522b8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZhUNmc44qX/L3V4LEf8sqa1/BgEhFAmhiv+T4NXAFxitCnea02T9Zw7qYnYESd5eBbcxz6eITJwXPbS4QWq5faODaV3ro2txcwvpln7548Q4SFRLpj80ONheqr05/xUa5/nmfhe/go7XR8CUASa6btzC/SkrXb3J5VjsLXOuJvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UD4r/Q8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2D3C2BCF5;
+	Tue, 12 May 2026 09:40:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778578839;
+	bh=MQw7xk7AK7vUUFTxVKsaMlXHU3CigVS/H91vrn522b8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UD4r/Q8SkhsDvHSeevTzvHmw6vz0Z+dZ58YkwWZkda6Ul7/l5f/CCzmlRP0IomKA5
+	 aynp0zH103Kmr4Eixzpci+QzROxprbZXnvAw0q4d0E7PC5QHBqpo0cU9PttPlRhM2o
+	 Bdw0s7lt2PrsE/IHKalO15/J1qYM4kTagd1v6cpiQ0mKs7DaCXmN0MRyaLV1YrKq8+
+	 RJUw/11YbCCJnOd2h1H2WCehjtJquNzS9aYRZboEYm25V81Ez7OhUt59g/Z2oSEvmv
+	 vOi0ZyWhaAd7tY1WjTQJ4L1LIQsKnm2wiBFX87ptwvUgcm1pwEg7kA05doboaeXvDK
+	 fJfUQXv/NTBTA==
+Date: Tue, 12 May 2026 10:40:32 +0100
+From: Simon Horman <horms@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Arnd Bergmann <arnd@kernel.org>, Netdev <netdev@vger.kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	=?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Eric Dumazet <edumazet@google.com>, Felipe Balbi <balbi@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Kevin Hilman <khilman@baylibre.com>, krzk+dt@kernel.org,
+	Linus Walleij <linusw@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh+dt@kernel.org>, Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>, linux-wireless@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+	Linux-OMAP <linux-omap@vger.kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH 2/3] [v5 net-next] p54spi: convert to devicetree
+Message-ID: <20260512094032.GI27589@horms.kernel.org>
+References: <20260507212451.3333185-3-arnd@kernel.org>
+ <20260511161243.49098-3-horms@kernel.org>
+ <edc4d6d6-7a43-442e-adb5-148e37402924@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: 9C68D51DE2E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <edc4d6d6-7a43-442e-adb5-148e37402924@app.fastmail.com>
+X-Rspamd-Queue-Id: 070BD51DEB2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-36316-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36315-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,iki.fi,kemnade.info,baylibre.com,davemloft.net,gmail.com,google.com,sipsolutions.net,redhat.com,atomide.com,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[27];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,proton.me,lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,horms.kernel.org:mid]
 X-Rspamd-Action: no action
 
-On Tue, 2026-05-12 at 10:54 +0200, Thorsten Leemhuis wrote:
-> > > You
-> > > can cherry-pick or directly apply the fix to a pending branch (or eve=
-n
-> > > ask Linus to merge it directly from the list, but that is likely not
-> > > worth it here) and git will normally later notice this and fully
-> > > automatically handle everything when the fix comes in again during th=
-e
-> > > next merge window.
-> >=20
-> > I know git can handle that, but is it an acceptable practice for single=
- one
-> > commit to appear twice?
->=20
-> Depends on whom you ask. I'd say: It's kinda normal. It's best avoided
-> if there is no need, but if there is a need (like here) it's fine. And
-> some subsystems it even happens regularly iirc.
+On Mon, May 11, 2026 at 09:45:18PM +0200, Arnd Bergmann wrote:
+> On Mon, May 11, 2026, at 18:12, Simon Horman wrote:
+> >
+> > Simon says: As a pre-existing issue I don't think we need to be concerned
+> >             about this in the scope of this patch-set. But it may
+> > 	    be a potential for follow-up.
+> >
+> > This problem wasn't introduced by this patch, but I noticed a pre-existing
+> > issue in the context here. Does the p54spi_spi_read() function perform an SPI
+> > transfer using a stack-allocated buffer?
+> >
+> > Looking at p54spi_spi_read(), the addr variable is allocated on the stack and
+> > passed as a transfer buffer to spi_sync(). The SPI framework maps transfer
+> > buffers for DMA. Passing a stack-allocated buffer is illegal, particularly with
+> > CONFIG_VMAP_STACK enabled, because stack memory resides in vmalloc space and
+> > cannot be safely DMA-mapped.
+> >
+> > Could this cause memory corruption or a kernel panic during the transfer?
+> 
+> I already commented on this earlier: This is indeed a theoretical
+> bug, but it works in practice because DMA-capable SPI controllers
+> tend to all use MMIO for short transfers instead of DMA.
+> 
+> SPI is very fragile this way, and I do have some patches to improve
+> that overall, but it seems out of scope for this one driver.
 
-FWIW, it's generally frowned upon and actually uncommon enough that
-linux-next actively warns about it [1] (or at least used to?), so I
-wouldn't really say your description here is all that accurate.
+Thanks, I agree this is out of scope.
 
-[1] https://lore.kernel.org/lkml/?q=3D%22duplicate+patch+in+the%22
+> >> -
+> >> -	gpio_direction_output(p54spi_gpio_power, 0);
+> >> -	gpio_direction_input(p54spi_gpio_irq);
+> >> -
+> >> -	ret = request_irq(gpio_to_irq(p54spi_gpio_irq),
+> >> -			  p54spi_interrupt, IRQF_NO_AUTOEN, "p54spi",
+> >> -			  priv->spi);
+> >> +	ret = request_irq(spi->irq, p54spi_interrupt, IRQF_NO_AUTOEN, "p54spi", priv->spi);
+> >
+> > Simon says: This one seems more concerning in the context of this patch-set.
+> >
+> > Is there missing validation for spi->irq before calling request_irq()?
+> >
+> > If the device tree node lacks an interrupts property, the SPI core may set
+> > spi->irq to 0 or a negative error code.
+> >
+> > Passing this directly to request_irq() without validation can successfully
+> > hijack a core system interrupt like the system timer on some architectures,
+> > leading to system instability or deadlocks.
+> >
+> > Should there be a check like if (spi->irq <= 0) to fail the probe gracefully?
+> 
+> I also commented on this: request_irq() already fails gracefully
+> with -EINVAL when presented with an invalid IRQ. IRQ 0 is guaranteed
+> to be invalid on any target that uses devicetree.
 
-What does happen fairly frequently is the same immutable commit getting
-merged through different branches, but that's a single commit, not the
-same change being committed twice.
-
-johannes
+Thanks, and sorry for not seeing your earlier comment.
+Or realising it is a false positive.
 
