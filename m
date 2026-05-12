@@ -1,176 +1,179 @@
-Return-Path: <linux-wireless+bounces-36311-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36312-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFWREMfhAmpEyQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36311-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 10:16:07 +0200
+	id OFwwNtzmAmpEyQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36312-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 10:37:48 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56E151C8DD
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 10:16:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBCB51CD0F
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 10:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C63F0300AB28
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 08:16:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0CAE43088DBE
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 08:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B57C384CEA;
-	Tue, 12 May 2026 08:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62003492505;
+	Tue, 12 May 2026 08:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="rt05J3CN"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="t8u2cEa/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4C31FC101
-	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 08:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.84.6.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0A9492514;
+	Tue, 12 May 2026 08:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778573763; cv=none; b=eDuDpLNGb6cf9oVoS9ObGmk9iCpTu5Wsys7qklzldikz4dFAp0ZdOGYxhZusq5ULkfjdedyEtYpgOqcxImEgGeKPVEdzMI240/4bvsGrWCcstuT1OWGpST82g5wOvW95nAhaJ9bXLGHxGE6NeTwMPc9N99gITrU5IuZWaSILKb0=
+	t=1778574747; cv=none; b=kyORYYTKFWCK/G2Kev06PNXf+ncyv2cZajq/mWwxbHu8R9O0Agpt+KL40nYLJ0EH/AmX8yUljgWcMjCrSdjvUgJGwaJy4IdxrAVAGPw1ve+Rx4ICftljJZZsmlDRMmEjMmiwMCXG5jxq0x4zQNVtuyQQPWk8C9e73Ys1hA6l35w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778573763; c=relaxed/simple;
-	bh=6RwYt3qBaE2l5UICmIe8KOSWsmk6DJrzr+C6VJY3UXw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hu2/h7rtNhNtKsCcjJ6kCClI3bdmd13LEW1ZnPcXayIm+HU617JMhaHnCNiF04rVSlbl7pyYugu5msAuA00dOlMTTkO/AVsv73RRFfVUJxYyB99l/JVA19hnL6TbOlR9w0+DPMEBNAf+DG9iTjT6U8ircLxyrLdvg5MmRfxVMQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=rt05J3CN; arc=none smtp.client-ip=185.84.6.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dd-wrt.com
-Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:59280 helo=webmail.newmedia-net.de)
-	by mail.as201155.net with esmtps  (TLS1) tls TLS_RSA_WITH_AES_256_CBC_SHA
-	(Exim 4.97.1)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1wMiEn-000000007lO-17tF
-	for linux-wireless@vger.kernel.org;
-	Tue, 12 May 2026 10:13:09 +0200
-X-SASI-Hits: BODYTEXTP_SIZE_3000_LESS 0.000000, BODY_SIZE_2000_2999 0.000000,
-	BODY_SIZE_5000_LESS 0.000000, BODY_SIZE_7000_LESS 0.000000,
-	CTE_8BIT 0.000000, DKIM_ALIGNS 0.000000, DKIM_SIGNATURE 0.000000,
-	HTML_00_01 0.050000, HTML_00_10 0.050000, LEGITIMATE_SIGNS 0.000000,
-	MULTIPLE_REAL_RCPTS 0.000000, NO_CTA_URI_FOUND 0.000000,
-	NO_FUR_HEADER 0.000000, NO_URI_HTTPS 0.000000, OUTBOUND 0.000000,
-	OUTBOUND_SOPHOS 0.000000, SENDER_NO_AUTH 0.000000, SUSP_DH_NEG 0.000000,
-	__ANY_URI 0.000000, __BODY_NO_MAILTO 0.000000, __BULK_NEGATE 0.000000,
-	__CC_NAME 0.000000, __CC_NAME_DIFF_FROM_ACC 0.000000,
-	__CC_REAL_NAMES 0.000000, __CTE 0.000000, __DKIM_ALIGNS_1 0.000000,
-	__DKIM_ALIGNS_2 0.000000, __DQ_NEG_DOMAIN 0.000000, __DQ_NEG_HEUR 0.000000,
-	__DQ_NEG_IP 0.000000, __FRAUD_BADTHINGS 0.000000,
-	__FROM_DOMAIN_IN_ANY_CC1 0.000000, __FROM_DOMAIN_IN_RCPT 0.000000,
-	__FUR_RDNS_SOPHOS 0.000000, __HAS_CC_HDR 0.000000, __HAS_FROM 0.000000,
-	__HAS_MSGID 0.000000, __HAS_X_MAILER 0.000000, __MIME_TEXT_ONLY 0.000000,
-	__MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000, __MIME_VERSION 0.000000,
-	__NO_HTML_TAG_RAW 0.000000, __OUTBOUND_SOPHOS_FUR 0.000000,
-	__OUTBOUND_SOPHOS_FUR_IP 0.000000, __OUTBOUND_SOPHOS_FUR_RDNS 0.000000,
-	__RCVD_PASS 0.000000, __SANE_MSGID 0.000000, __SL_HEAVY 0.000000,
-	__SUBJ_ALPHA_END 0.000000, __SUBJ_STARTS_S_BRACKETS 0.000000,
-	__TO_MALFORMED_2 0.000000, __TO_NO_NAME 0.000000, __URI_MAILTO 0.000000,
-	__URI_NO_WWW 0.000000, __URI_NS 0.000000, __X_MAILSCANNER 0.000000
-X-SASI-Probability: 7%
-X-SASI-RCODE: 200
-X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2026.5.12.75719
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
-	h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:To:From; bh=vKU4pQmE3L/XjIfYjhU7sj8Ooq/2wcIT1kv/cz8f7gk=;
-	b=rt05J3CNoQKnXeE7VGv9cvW6ESci6Wb+i44gPoF1lp0xtFdtafvr5Reza4cvg0ez6CymPhyEKmC2rHPZ48Y8QrGogvpk8FD5TtujV72d+jNmk6RAdVcnnh9rctm1Qu/xpiETahX313uwIWyxbhkfdn2aOk0uQOaj4NUx1haA04c=;
-From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-To: linux-wireless@vger.kernel.org
-Cc: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-Subject: [PATCH] wifi: ath11k: fix txpower in ap mode for 6 Ghz
-Date: Tue, 12 May 2026 14:12:59 +0600
-Message-ID: <20260512081259.3208746-1-s.gottschall@dd-wrt.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1778574747; c=relaxed/simple;
+	bh=lhC6FGHVTldczQBnXN69+M2T0emEbfSX+YIiX7+rU+w=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=K7CgzMdjmKIdAs7Eou+qoZ+xgRPPgaF7KL+lFXl9fBWUJfcK8ZNziwpHUxC/0PLsrSs+CgnR7nDmCN4CMdSVf37q75/P1kQMcJf4oAndgvsoS8Ie+FCiu2/o2k0iDJISSflCHhkDFVwJNntkWUtELONQyXac6zrHXMgF2F3vwXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=t8u2cEa/; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64C8WBJp83817931, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1778574731; bh=lhC6FGHVTldczQBnXN69+M2T0emEbfSX+YIiX7+rU+w=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=t8u2cEa/Yt9JAtKwdBlgVe4L8yhbcf4oHmHIcn5dv8RjqfoEdVauCQ2/amdgzVJEx
+	 WHT9SiSx7oLKOC1Mjs2tjjNbOi02voaIUWM4CE0hB1Cc6swpO8J7UPiw6GKToU8QIr
+	 jtZwtcrBO2HZ+FdIVXKAhCNug4yQw/4oOczZRGiAoBO3sfIkY/Hv0aIAmz3rMssXZe
+	 6kXt//AxwRAK0AMCu+kLXZWPiw/EVIssh69ktiVCHbtv3BxPff1Z0Ok0LRIl8P3sI4
+	 FjxDIoliySzGZVMRdQm1yrftyUCj4gQ2gFRdjO7V0SRfWDcNkQ1nvs475wqxE+8lWi
+	 4wglzzo4ggF/w==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 64C8WBJp83817931
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 May 2026 16:32:11 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 12 May 2026 16:32:11 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 12 May 2026 16:32:11 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::e6fd:5a3f:8946:92c4%10]) with mapi id
+ 15.02.2562.017; Tue, 12 May 2026 16:32:11 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+CC: Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Bitterblue Smith
+	<rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "art1310@proton.me" <art1310@proton.me>,
+        Linux kernel regressions list <regressions@lists.linux.dev>
+Subject: RE: [PATCH rtw-next v2] wifi: rtl8xxxu: Detect the maximum supported
+ channel width
+Thread-Topic: [PATCH rtw-next v2] wifi: rtl8xxxu: Detect the maximum supported
+ channel width
+Thread-Index: AQHc19AdbF1YRPFzdU66bhcRCp5GbrYAJkIAgAgQNgCAAWlB8P//6UKAgACZGmA=
+Date: Tue, 12 May 2026 08:32:11 +0000
+Message-ID: <29a93dc3d9d24b3a809310694ffc5d34@realtek.com>
+References: <c57de68e-5d57-4c26-898f-8a284bb25381@gmail.com>
+ <ee88b3a2-2cc9-4370-b782-189a603a7fa1@RTKEXHMBS04.realtek.com.tw>
+ <41693ffc-926c-4e67-9a48-b6e1b1d150bd@leemhuis.info>
+ <f26992e669744e6f87084e017f897275@realtek.com>
+ <1cf071e9-5d3c-4d55-ac75-49eb4c461422@leemhuis.info>
+In-Reply-To: <1cf071e9-5d3c-4d55-ac75-49eb4c461422@leemhuis.info>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass (webmail.newmedia-net.de: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=s.gottschall@dd-wrt.com; helo=webmail.newmedia-net.de;
-X-SA-Exim-Connect-IP: 127.0.0.1
-X-SA-Exim-Mail-From: s.gottschall@dd-wrt.com
-X-SA-Exim-Scanned: No (on webmail.newmedia-net.de); SAEximRunCond expanded to false
-X-NMN-MailScanner-Information: Please contact the ISP for more information
-X-NMN-MailScanner-ID: 1wMiEm-000BId-WD
-X-NMN-MailScanner: Found to be clean
-X-NMN-MailScanner-From: s.gottschall@dd-wrt.com
-X-Received:  from localhost ([127.0.0.1] helo=webmail.newmedia-net.de)
-	by webmail.newmedia-net.de with esmtp (Exim 4.72)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1wMiEm-000BId-WD; Tue, 12 May 2026 10:13:09 +0200
-X-Rspamd-Queue-Id: D56E151C8DD
+X-Rspamd-Queue-Id: 3DBCB51CD0F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.44 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[dd-wrt.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[dd-wrt.com:s=mikd];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
+	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	TAGGED_FROM(0.00)[bounces-36311-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36312-lists,linux-wireless=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,leemhuis.info:email];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[s.gottschall@dd-wrt.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[dd-wrt.com:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,proton.me,lists.linux.dev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,dd-wrt.com:email,dd-wrt.com:mid,dd-wrt.com:dkim]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-there is an issue which has been discovered a while ago while testing
-which killed txpower to 0dbm once scanning is triggered in AP mode
-on QCN9074 based chipsets if 6 Ghz is in use.
-ath11k_wmi_send_vdev_set_tpc_power must be set in AP mode in the same
-way is it is for STA as it is implemented in ath12k and in the
-qsdk version for ath11k.
-this patch must be considered to be backported (i discovered that issue
-already 2 years ago)
-
-Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index a48b6bf1f29a..dc192152b2e8 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3497,13 +3497,14 @@ static int ath11k_mac_config_obss_pd(struct ath11k *ar,
- 	return 0;
- }
- 
--static bool ath11k_mac_supports_station_tpc(struct ath11k *ar,
-+static bool ath11k_mac_supports_tpc(struct ath11k *ar,
- 					    struct ath11k_vif *arvif,
- 					    const struct cfg80211_chan_def *chandef)
- {
- 	return ath11k_wmi_supports_6ghz_cc_ext(ar) &&
- 		test_bit(WMI_TLV_SERVICE_EXT_TPC_REG_SUPPORT, ar->ab->wmi_ab.svc_map) &&
--		arvif->vdev_type == WMI_VDEV_TYPE_STA &&
-+		(arvif->vdev_type == WMI_VDEV_TYPE_STA ||
-+		arvif->vdev_type == WMI_VDEV_TYPE_AP) &&
- 		arvif->vdev_subtype == WMI_VDEV_SUBTYPE_NONE &&
- 		chandef->chan &&
- 		chandef->chan->band == NL80211_BAND_6GHZ;
-@@ -7647,8 +7648,8 @@ ath11k_mac_vdev_start_restart(struct ath11k_vif *arvif,
- 	/* TODO: For now we only set TPC power here. However when
- 	 * channel changes, say CSA, it should be updated again.
- 	 */
--	if (ath11k_mac_supports_station_tpc(ar, arvif, chandef)) {
--		ath11k_mac_fill_reg_tpc_info(ar, arvif->vif, &arvif->chanctx);
-+	if (ath11k_mac_supports_tpc(ar, arvif, chandef)) {
-+		ath11k_mac_fill_reg_tpc_info(ar, arvif->vif, ctx);
- 		ath11k_wmi_send_vdev_set_tpc_power(ar, arvif->vdev_id,
- 						   &arvif->reg_tpc_info);
- 	}
--- 
-2.51.0
-
+VGhvcnN0ZW4gTGVlbWh1aXMgPHJlZ3Jlc3Npb25zQGxlZW1odWlzLmluZm8+IHdyb3RlOg0KPiBP
+biA1LzEyLzI2IDAyOjQ0LCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4gVGhvcnN0ZW4gTGVlbWh1
+aXMgPGxpbnV4QGxlZW1odWlzLmluZm8+IHdyb3RlOg0KPiA+PiBPbiA1LzYvMjYgMDk6NTcsIFBp
+bmctS2UgU2hpaCB3cm90ZToNCj4gPj4+IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJA
+Z21haWwuY29tPiB3cm90ZToNCj4gPj4+DQo+ID4+Pj4gU29tZSBkZXZpY2VzIG1hbGZ1bmN0aW9u
+IHdoZW4gY29ubmVjdGVkIHRvIGEgbmV0d29yayB3aXRoIDQwIE1IeiBjaGFubmVsDQo+ID4+Pj4g
+d2lkdGgsIGJlY2F1c2UgdGhleSBkb24ndCBzdXBwb3J0IHRoYXQuDQo+ID4+Pj4NCj4gPj4+PiBS
+VEw4MTg4RlUsIFJUTDgxOTJGVSwgYW5kIFJUTDg3MTBCVSAoUlRMODE4OEdVKSBoYXZlIGEgd2F5
+IHRvIHNpZ25hbA0KPiA+Pj4+IHRoaXMgKGFuZCBzb21lIG90aGVyIGNhcGFiaWxpdGllcykgdG8g
+dGhlIGRyaXZlci4gR2V0IHRoaXMgaW5mb3JtYXRpb24NCj4gPj4+PiBmcm9tIHRoZSBoYXJkd2Fy
+ZSBhbmQgYWR2ZXJ0aXNlIDQwIE1IeiBzdXBwb3J0IG9ubHkgd2hlbiB0aGUgaGFyZHdhcmUNCj4g
+Pj4+PiBjYW4gaGFuZGxlIGl0LiBXZSBhc3N1bWUgdGhlIG90aGVyIGNoaXBzIGNhbiBhbHdheXMg
+aGFuZGxlIGl0Lg0KPiA+Pj4+DQo+ID4+Pj4gUlRMODcxMEJVIG5lZWRzIGEgZGlmZmVyZW50IHdh
+eSB0byByZXRyaWV2ZSB0aGlzIGluZm9ybWF0aW9uLCB3aGljaCB3aWxsDQo+ID4+Pj4gYmUgaW1w
+bGVtZW50ZWQgc29tZSBvdGhlciB0aW1lLg0KPiA+Pj4+DQo+ID4+Pj4gRml4ZXM6IGRiZjliN2Ji
+MGVkZiAoIndpZmk6IHJ0bDh4eHh1OiBFbmFibGUgNDAgTUh6IHdpZHRoIGJ5IGRlZmF1bHQiKQ0K
+PiA+Pj4+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+ID4+Pj4gQ2xvc2VzOiBodHRwczov
+L2J1Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19idWcuY2dpP2lkPTIyMTM5NA0KPiA+Pj4+IFNpZ25l
+ZC1vZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPg0KPiA+
+Pj4+IFJldmlld2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCj4gPj4N
+Cj4gPj4gVGh4IGZvciBmaXhpbmcgdGhpcyENCj4gPj4NCj4gPj4+IDEgcGF0Y2goZXMpIGFwcGxp
+ZWQgdG8gcnR3LW5leHQgYnJhbmNoIG9mIHJ0dy5naXQsIHRoYW5rcy4NCj4gPj4+IGVmNzcxZWFi
+Yzc5ZCB3aWZpOiBydGw4eHh4dTogRGV0ZWN0IHRoZSBtYXhpbXVtIHN1cHBvcnRlZCBjaGFubmVs
+IHdpZHRoDQo+ID4+PiBodHRwczovL2dpdGh1Yi5jb20vcGtzaGloL3J0dy5naXQNCj4gPj4NCj4g
+Pj4gcnR3LW5leHQgc291bmRzIGxpa2UgaXQgYWltcyBmb3IgdGhlIG5leHQgbWVyZ2Ugd2luZG93
+OyBhbmQgaXQgc2VlbXMgdGhlDQo+ID4+IGZpeCBoYXNuJ3QgZXZlbiBoaXQgLW5leHQgeWV0LiBU
+aGlzIGlzIHNsaWdodGx5IHVuZm9ydHVuYXRlLCBhcyB0aGlzDQo+ID4+IGFmYWljcyBpcyBhIGZp
+eCBmb3IgYSByZWNlbnQgcmVncmVzc2lvbiAtLSBzbyBpdCBpZGVhbGx5IHNob3VsZCBoZWFkDQo+
+ID4+IHRvd2FyZHMgbWFpbmxpbmUgYnkgbm93WzFdLCBhcyBMaW51cycgdGhlIHJ1bGUgb2YgdGh1
+bWIgaXMgdG8gImdlbmVyYWxseQ0KPiA+PiBmaXggcmVncmVzc2lvbnMgIndpdGhpbiBhIHdlZWsi
+LCBwcmVmZXJhYmx5IGJlZm9yZSB0aGUgbmV4dCByYyJbMV0uDQo+ID4+DQo+ID4+IE9yIGFtIEkg
+bWlzc2luZyBzb21ldGhpbmc/IFRoYXQgbWlnaHQgdmVyeSB3ZWxsIGJlIHRoZSBjYXNlLCBzbyBk
+byBub3QNCj4gPj4gaGVzaXRhdGUgdG8gdGVsbCBtZSENCj4gPg0KPiA+IEFzIHRoaXMgcGF0Y2gg
+YXBwbGllZCB0byBwdWJsaWMgcnR3IHRyZWUsIGFuZCBwZW9wbGUgd2hvIGVuY291bnRlcmVkIHRo
+ZQ0KPiA+IHByb2JsZW0gaW4gYnVnemlsbGEgY2FuIHdvcmsgYWdhaW4uIFRvIHByZXZlbnQgYnJl
+YWtpbmcgdGhlIHB1YmxpYyB0cmVlLA0KPiA+IEknZCBrZWVwIGl0IGFzIHdhcy4NCj4gDQo+IEkn
+bSBub3Qgc3VyZSBJIHVuZGVyc3RhbmQgdGhpcyBjb3JyZWN0bHkuDQo+IA0KPiBEbyB5b3UgbWVh
+biBzb21ldGhpbmcgbGlrZSAidGhlIGZpeCBpcyBub3cgaW4gdGhlIHJ0dy1uZXh0IHRyZWUsIHNv
+IEkNCj4gY2FuJ3QgbWFpbmxpbmUgaXQgbm93LCBhcyB0aGlzIHdvdWxkIGJyZWFrIHRoZSBydHct
+bmV4dCI/IEJ1dCB3aHk/DQoNClllcy4gKEkgbWVhbnQgcnR3LW5leHQgdHJlZSkNCg0KPiBZb3UN
+Cj4gY2FuIGNoZXJyeS1waWNrIG9yIGRpcmVjdGx5IGFwcGx5IHRoZSBmaXggdG8gYSBwZW5kaW5n
+IGJyYW5jaCAob3IgZXZlbg0KPiBhc2sgTGludXMgdG8gbWVyZ2UgaXQgZGlyZWN0bHkgZnJvbSB0
+aGUgbGlzdCwgYnV0IHRoYXQgaXMgbGlrZWx5IG5vdA0KPiB3b3J0aCBpdCBoZXJlKSBhbmQgZ2l0
+IHdpbGwgbm9ybWFsbHkgbGF0ZXIgbm90aWNlIHRoaXMgYW5kIGZ1bGx5DQo+IGF1dG9tYXRpY2Fs
+bHkgaGFuZGxlIGV2ZXJ5dGhpbmcgd2hlbiB0aGUgZml4IGNvbWVzIGluIGFnYWluIGR1cmluZyB0
+aGUNCj4gbmV4dCBtZXJnZSB3aW5kb3cuDQoNCkkga25vdyBnaXQgY2FuIGhhbmRsZSB0aGF0LCBi
+dXQgaXMgaXQgYW4gYWNjZXB0YWJsZSBwcmFjdGljZSBmb3Igc2luZ2xlIG9uZQ0KY29tbWl0IHRv
+IGFwcGVhciB0d2ljZT8NCg0KQXMgdGhlIHJlcG9ydGVyIGhhcyBmaXhlZCBoaXMgcHJvYmxlbSwg
+Y2FuIHdlIGtlZXAgdGhpcyBjb21taXQgYXMgaXQgd2FzPw0KDQpQaW5nLUtlDQoNCg==
 
