@@ -1,84 +1,73 @@
-Return-Path: <linux-wireless+bounces-36313-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36314-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJn2F9bpAmpKygEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36313-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 10:50:30 +0200
+	id +P7sNMXqAmpKygEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36314-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 10:54:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB93851D09F
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 10:50:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B7251D150
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 10:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 97F2C307824F
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 08:48:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 676FD3001314
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 08:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D71389DE3;
-	Tue, 12 May 2026 08:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C9039C623;
+	Tue, 12 May 2026 08:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ob8LcxcG"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="fnAHUDDb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [46.38.247.119])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B432A3876CE
-	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 08:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FD739A06F
+	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 08:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.38.247.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778575699; cv=none; b=MBc3bKlWwiDthDEeHCTOhDRyA+dnpv4hebCiQGRdRGd22Of3NwO21YI3QeEIf8/Fc4Ltw7/uruLWp3XaScYskrwSy2tb0KjXGR3xrlPp4rRDfCSA2h1uLPqs0YbiZj0iiBA5p9l4FTcX1q4HtI5alxpMcv1Ty74SicgorIUTWrg=
+	t=1778576063; cv=none; b=gF6pGNujVNlb/GV8O8N0i2XKMF0AjvgRA75WZJxTwsA7Q+eHFPedTtnkRYgHslXdSOfkDkCqnxxZ4DC59Sqn9nhRW0jKdw7yY76NBLtVuHtpoPI0xcJKUfvYdH8Fm1LpgtaOqCWRiHtrvnGF4xwOWjU4tQQwlEeJF8pyoQDNb+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778575699; c=relaxed/simple;
-	bh=IlUzYZxqBAH0Q6WDCPJrudBD5c5TZ+XGUokZlRc6Po0=;
+	s=arc-20240116; t=1778576063; c=relaxed/simple;
+	bh=SsfLpbhZImgwN6CkAYtcMbgUHWERyMGmhq4hPuuYk7Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XnTAaq4zy/5huSnFfzg9PjePD+JnEkFIwU6RpsOyrNbt7Y4Fm9ItTKzGn10m9V/BIs9og/d1Ztw02FQYzl++YfAzammHV8+6Uh81jyvg2fvbbLn3mw59vKqHLH733gVEEgpQtKvmlDNz8cB5DcBGyhCn3nS5wNA6+bsF0bGoSm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ob8LcxcG; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so47232245e9.0
-        for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 01:48:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778575690; x=1779180490; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Xj1G1pSEqbcJ5QxMmU1lhUr+tLYTe93/lkIQVH+0lO0=;
-        b=ob8LcxcGj6XyPo4ggOsCs8NTrHAMZu/pDto7Dqlvz1XgxnZYMzcxy+ByUtEdtjMuLV
-         bj9z5yLxm8DQriX89/hkZSo4HUKrPpC9iPqy4nUoSBA0bgt52mHPTKsdlbXW+kT7p5r1
-         BfP3th50+QTq5ksg8J7ro7nWi3b1/8X9Eti2bt4/6P//mBln86t9mHJTZ8jHBAie8pcZ
-         PybVr6kDXuYAPubY8F79OFVPDasygipSGeGG+q71iaQV0Y5DLNYFEkrC8LVnvwcQ/mZ0
-         g9/ICFelMEsRyrpKNlvASS04k/09W5mmDSpChl+RKxOELKuvfIBUzLOeavwGOyJuCign
-         r6/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778575690; x=1779180490;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xj1G1pSEqbcJ5QxMmU1lhUr+tLYTe93/lkIQVH+0lO0=;
-        b=Fw0MKwIStPecem+UJvjiZOs3lxo1PwanceAtDHgL41EgJrlf+yf+W/XW0F9WGDSgsb
-         txLW2jcIEEDKw1iEdl8YvtayXwo/X0+Djba4hi+pe9A6SDbBDU6rQTYRDdwKD+0+c+Zp
-         1dAx8QBaV12g4TWZmW8wutHXhOy6PJAi7KrHa76qCz7DMH950KhBl3bIa8VYr4cB7D/O
-         b0NxShWmFM4ZFhyjyEFIl6mn0LK0kjqHRbvN9IMPmJ2WASLddWv/QQRBD19nqGhmpDrk
-         dksfc9tNnDpigqvDHynW4edCqTbxX8EDMkwfMonH+vjHpXH/8nTu/+i9OchXU17Zg7kv
-         XgTA==
-X-Forwarded-Encrypted: i=1; AFNElJ9ztuG0I8H4dUBTCugBmtAt320FD6zaGRJGQXTE6axsY6JvcFU3OsS+0cKhl5n69zKRc9w0Fh1L3ND14hitRA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYq6lDtUg/Pxo0DAiNzb1DE/Y4Zx8MS2lMIdrGqGpnk/EC0GtR
-	QxKPPDfe5ld/psrOafE+AquRCyFhYcnkw5dtizIygeA0jabuvQ37rMW1
-X-Gm-Gg: Acq92OFix0OvPbdAXf7+uY2uk1VJRadYQYfDoWP0GzmVAifE4VVE4h/89HXGQlAiSSc
-	qsQax7ihXLemvV1yNXWaaABL+4/7snS0GQYXty8Gh2XH4Kzm5JYZjvdCJfhhB4EAW5PLrMfMcp6
-	mZYxhOeWfFhJxU5GuKItsvT0zrWj8Ee79s5i/f8mTpQRI9+ypCmF/0hLXaUSe3w650QBsz5C0zv
-	kZZQVyOps4F0J98203rIya2lhSX+jNB8GoXasOUMtJdNhSd3shFA7gGRy9C6e40hdbLluYN6e4l
-	pWANrLBMOFMYRpCN0SlR2JJUX/AdTBmFd6VjmQ0d8bKDpazK2mcjfX+ySCKqWfIWi/kNqby4jeL
-	s7Ur2Yu8tOA7SuZKwVkW/Mc83yO8np5L68lue3dd2SJeLOZuz3aaUoIkWZrYq1+bm6w4zBUTMp2
-	95+GHM5F9dxXRZldxZVbU0NiV2E7/eiA==
-X-Received: by 2002:a05:600c:c166:b0:48a:93f8:dd02 with SMTP id 5b1f17b1804b1-48e8fe7227cmr30377025e9.14.1778575690240;
-        Tue, 12 May 2026 01:48:10 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e906b04a9sm50467325e9.7.2026.05.12.01.48.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 May 2026 01:48:09 -0700 (PDT)
-Message-ID: <90a92b9c-98dc-4852-bde2-73558d9508b5@gmail.com>
-Date: Tue, 12 May 2026 11:48:07 +0300
+	 In-Reply-To:Content-Type; b=DgBChCD0RlaEnoZJvmWChJCxDcD4E/HO2SFX77Dp6Q7MyG3Dxiwj9z+lmdc6LUSkVLDkWEsw4Z47rcVDGLQBskJN4q0RJSdHnOO9v+Oy73gKxOUMc3Dhh9tkGCDnRpDhSDIG4XPLQpYg1KKO5Rbed/8FMwkxDteiYQKrdE4JIS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=fnAHUDDb; arc=none smtp.client-ip=46.38.247.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from mors-relay-8404.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8404.netcup.net (Postfix) with ESMTPS id 4gF9PX0WD9z89D9;
+	Tue, 12 May 2026 10:54:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1778576048;
+	bh=SsfLpbhZImgwN6CkAYtcMbgUHWERyMGmhq4hPuuYk7Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fnAHUDDbY4ydh2DuZcpTb/LkKJi0WNfGBXX+oe7A+pJ4YgpgcgDcTvVzV8mUWTFuj
+	 r294gYhQjYJKtdZkcrjCj7MIsVm60JKsqSiO+OnbipUqc94AqyBiIyd7ZXv9eKlVIx
+	 MAjuYG92ED7rtRKtzGLFQlmWthX9bJ99024S9VBWartT7kyB3utulBtF92nKAvfy1I
+	 McuRVhb5G5yTPQp0c/YONNvSocaxW2HvqvmaSU/hBFBmOzpE75SiQnewYrGS/cW18B
+	 L0WLpEXaD7HC7BelVy+nF3MQlrHF3kLWYdSx4U5KAO42MXdwss8fiw2y6CKroA0PrM
+	 x9SOzN80wkfBg==
+Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8404.netcup.net (Postfix) with ESMTPS id 4gF9PW6wgKz4y7f;
+	Tue, 12 May 2026 10:54:07 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
+X-Spam-Flag: NO
+X-Spam-Score: -2.898
+X-Spam-Level: 
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4gF9PW00Fyz8tbR;
+	Tue, 12 May 2026 10:54:06 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 2892F6183E;
+	Tue, 12 May 2026 10:54:06 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <02c073d8-d2c9-4faa-be51-9ba38247b24e@leemhuis.info>
+Date: Tue, 12 May 2026 10:54:05 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -86,63 +75,127 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next v2 1/1] wifi: rtw89: usb: Support switching to
- USB 3 mode
-To: Devin Wittmayer <lucid_duck@justthetip.ca>, linux-wireless@vger.kernel.org
-Cc: pkshih@realtek.com, johannes@sipsolutions.net,
- linux-kernel@vger.kernel.org
-References: <2bc415d6-f0ae-42ab-8ffa-19cfb1df5954@gmail.com>
- <20260512003559.44110-1-lucid_duck@justthetip.ca>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <20260512003559.44110-1-lucid_duck@justthetip.ca>
+Subject: Re: [PATCH rtw-next v2] wifi: rtl8xxxu: Detect the maximum supported
+ channel width
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+ Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "art1310@proton.me" <art1310@proton.me>,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <c57de68e-5d57-4c26-898f-8a284bb25381@gmail.com>
+ <ee88b3a2-2cc9-4370-b782-189a603a7fa1@RTKEXHMBS04.realtek.com.tw>
+ <41693ffc-926c-4e67-9a48-b6e1b1d150bd@leemhuis.info>
+ <f26992e669744e6f87084e017f897275@realtek.com>
+ <1cf071e9-5d3c-4d55-ac75-49eb4c461422@leemhuis.info>
+ <29a93dc3d9d24b3a809310694ffc5d34@realtek.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <29a93dc3d9d24b3a809310694ffc5d34@realtek.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CB93851D09F
+X-PPP-Message-ID: <177857604647.3064895.3471843442888703462@mxe9fb.netcup.net>
+X-NC-CID: x+9Qo54u3HJNq64amWrXPVssz3jQaNLp5++GZNFx98bYHiHSkas=
+X-Rspamd-Queue-Id: 72B7251D150
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36313-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36314-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[leemhuis.info:email,leemhuis.info:mid,leemhuis.info:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	DMARC_NA(0.00)[leemhuis.info];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,proton.me,lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-On 12/05/2026 03:35, Devin Wittmayer wrote:
-> On Tue, 2026-05-12 at 01:27 +0300, Bitterblue Smith wrote:
->> Good, good. So how did you avoid the crash?
+On 5/12/26 10:32, Ping-Ke Shih wrote:
+> Thorsten Leemhuis <regressions@leemhuis.info> wrote:
+>> On 5/12/26 02:44, Ping-Ke Shih wrote:
+>>> Thorsten Leemhuis <linux@leemhuis.info> wrote:
+>>>> On 5/6/26 09:57, Ping-Ke Shih wrote:
+>>>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>>>>>
+>>>>>> Some devices malfunction when connected to a network with 40 MHz channel
+>>>>>> width, because they don't support that.
+>>>>>>
+>>>>>> RTL8188FU, RTL8192FU, and RTL8710BU (RTL8188GU) have a way to signal
+>>>>>> this (and some other capabilities) to the driver. Get this information
+>>>>>> from the hardware and advertise 40 MHz support only when the hardware
+>>>>>> can handle it. We assume the other chips can always handle it.
+>>>>>>
+>>>>>> RTL8710BU needs a different way to retrieve this information, which will
+>>>>>> be implemented some other time.
+>>>>>>
+>>>>>> Fixes: dbf9b7bb0edf ("wifi: rtl8xxxu: Enable 40 MHz width by default")
+>>>>>> Cc: stable@vger.kernel.org
+>>>>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221394
+>>>>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>>>>>> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+>>>>
+>>>> Thx for fixing this!
+>>>>
+>>>>> 1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+>>>>> ef771eabc79d wifi: rtl8xxxu: Detect the maximum supported channel width
+>>>>> https://github.com/pkshih/rtw.git
+>>>>
+>>>> rtw-next sounds like it aims for the next merge window; and it seems the
+>>>> fix hasn't even hit -next yet. This is slightly unfortunate, as this
+>>>> afaics is a fix for a recent regression -- so it ideally should head
+>>>> towards mainline by now[1], as Linus' the rule of thumb is to "generally
+>>>> fix regressions "within a week", preferably before the next rc"[1].
+>>>>
+>>>> Or am I missing something? That might very well be the case, so do not
+>>>> hesitate to tell me!
+>>>
+>>> As this patch applied to public rtw tree, and people who encountered the
+>>> problem in bugzilla can work again. To prevent breaking the public tree,
+>>> I'd keep it as was.
+>> I'm not sure I understand this correctly.
+>>
+>> Do you mean something like "the fix is now in the rtw-next tree, so I
+>> can't mainline it now, as this would break the rtw-next"? But why?
+> Yes. (I meant rtw-next tree)
 > 
-> If you mean the crash at
-> https://github.com/Lucid-Duck/rtw89-usb3-gap/tree/main/evidence/crash-2026-04-11
-
-No, not that one.
-
-> -- that was BE-gen DACK calibration and is unrelated to this
-> USB 2-to-3 switch-mode patch. Four AX-gen adapters concurrent on
-> one xHCI host complete switch-mode and RF calibration without
-> DACK errors.
+>> You
+>> can cherry-pick or directly apply the fix to a pending branch (or even
+>> ask Linus to merge it directly from the list, but that is likely not
+>> worth it here) and git will normally later notice this and fully
+>> automatically handle everything when the fix comes in again during the
+>> next merge window.
 > 
-> Devin
+> I know git can handle that, but is it an acceptable practice for single one
+> commit to appear twice?
 
+Depends on whom you ask. I'd say: It's kinda normal. It's best avoided
+if there is no need, but if there is a need (like here) it's fine. And
+some subsystems it even happens regularly iirc.
+
+> As the reporter has fixed his problem, can we keep this commit as it was?
+
+Well, it boils down to: we don't know how many others are affected that
+are unable to bisect and/or report the problem. So usually it's best to
+fix things like this for everyone.
+
+Ciao, Thorsten
 
