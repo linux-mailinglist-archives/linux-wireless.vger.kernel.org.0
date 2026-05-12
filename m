@@ -1,110 +1,109 @@
-Return-Path: <linux-wireless+bounces-36280-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36281-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EK4D2SPAmryuQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36280-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 04:24:36 +0200
+	id GNdCI3WPAmryuQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36281-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 04:24:53 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98AC7518EB8
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 04:24:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A2B518ECF
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 04:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F9883038F54
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 02:24:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DAF343044225
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 02:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0AAC35E940;
-	Tue, 12 May 2026 02:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843B5364032;
+	Tue, 12 May 2026 02:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Eo9tHR3A";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="iMzdyfjc"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Ar/aVTTL";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CwC13A9U"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7B13630AC
-	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 02:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DEA35F5E1
+	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 02:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778552643; cv=none; b=qAV2ZD5NzczeoaFtu5Y+WhB18+44/ntf/LoVBi5SmSVHZbRKq4+U+Ufj1NBWm+q8hkZA5sg0/oPCoRjaQyMzb48AiWyVnOvtauI57PllagFb6DR9oYcG8DuraHTIFGYspBEMrF3OQqvdD+9Mgg2G5qx0VF+p9+Yi9Dgb7tmuu8I=
+	t=1778552645; cv=none; b=izk53Jto+SDwk8IgfJ2IRH+yRt8msO6rQThXasNM7SlALNNmGiUDF0eW5tutQ8+GSlPDOGbf5a2Bc/4HzunH3AHQ5Rnk9KhI+m4WthqcPEl3EGRPSDgYbLXfPTb8f2P61pf8vxAcLgnL05hd19VkICBSQC768ko69qMpd8S1Dmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778552643; c=relaxed/simple;
-	bh=ExgOHaVKcNUPGCyLrKtdzPOXtp8E34JaZXanUGoXV0Y=;
+	s=arc-20240116; t=1778552645; c=relaxed/simple;
+	bh=ShPdVghUhjVpekgUmJLaLvAYO0epA2adRUBRf/f4EyA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=V3Qy/y4uGITTZk9Ii0H33nClTi+WDb84gCYHsajfu1gxVpu9Ulaz9uPgM8btPFAR7hzlVbTcQYC2TYhmiiKBQPddZVLHxnrlt0G5z76hqIGzNuIYnS/uJJ+/Q2EwFt20eKZQy/OSUXc6ewTMVIUB+Jhz6B42ZQLno62advpvZ5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Eo9tHR3A; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=iMzdyfjc; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version; b=eM2Xhas43+9PLPgn4mVT0euPkj4CiirZFSO1Det4rMfmLPRSFU7CWJk2kpJMK9L9/QJmx3CUl2JH6euzlhJoea3Br9TrTQTH0riX11phuBkfOSnW0PWq5gHNwpffjNzFmgI1oyMSSYvTtl+0vkUTnpRV/+Mtlx0Wxa3KGxXSuD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Ar/aVTTL; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CwC13A9U; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64BK6hrL2803762
-	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 02:24:01 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64BK6aqB2518218
+	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 02:24:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=vHuEOWTWgku
-	FCgRCml8bt7nPD8/09L3zu8ijOwpUPws=; b=Eo9tHR3AVszig8PXZK7//OygSEa
-	mfAMvqEh2o8mzVDkFu2ZbTUxZv/96QNGEf3SOoD/meaaAsnMP+y5hkcl32RvFqAP
-	XSFA7IbkYxFNstTOzZeJf6FersXOmLvkdRBH+EvYRFMbfnKHn3hkcbMgr7B8AvLW
-	fawyVruhB2uTuPialscJaE8Roog6lHxMEyRsAcem0cleEwUE0ttpqzPXfr66nNWx
-	gBxes5lVGU6eQ5NjCh8M7TMKFLafwpABlpzSyWdLJYeIrDac/vmU2GpUjMSJHpDq
-	688/qyKkRWZ5fNMQNETXD3XysXg2Mp0tfjD/Qjc28hcXA3PKl5Ta9dmz1SQ==
+	:mime-version:references:subject:to; s=qcppdkim1; bh=036Lv6cF0PV
+	z0F6Xudk21JbDMRzEenikh7GX3NZQ5lo=; b=Ar/aVTTLNkaXYOShCjKifxRPeaf
+	5ePAtsIXGA6Z24CRsxRHW926YDFHDPRyH0b435DXDPaJc+TjmJ6qGEFCvI4D4Jqu
+	usqCNkcqhLEkF74JZR4cXVd/7Ng+FaEOSwkuVmpKsJSq1X3TqNTIOLsYdsLWHayY
+	3qjbaovyhAdWISRSj0wbnyn/llAN/FycRGCG2LtOTXYVEUNaCW2wHsZYTjXvJryf
+	xjItF9JkqPYWoFB8UhCYgXH7JD/3qXud3SY8IIXr3dbTKIk5LcGmPyFMXwZRhdpe
+	vbWRRAwy4cIe3uozpT2BDA6M8GrtpUWt8+c7f4z2hHuCEQMf7ehkWXd4vVA==
 Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e3nv393kc-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e3nv1h2vj-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 02:24:01 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-82fa860e71eso2743196b3a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 19:24:01 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 02:24:03 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-82f7bec24fdso2909844b3a.2
+        for <linux-wireless@vger.kernel.org>; Mon, 11 May 2026 19:24:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778552640; x=1779157440; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1778552642; x=1779157442; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vHuEOWTWgkuFCgRCml8bt7nPD8/09L3zu8ijOwpUPws=;
-        b=iMzdyfjcWoNd6X7Kr8HusTbR1J/+S/1UvyX1LzigzNZZJ+VHs9BGoTudytmFSLLv2H
-         j6aQ37qGWL6dMArl0RQagc6t/TEr/P+/fAtG7Kq6YMEfWIOb5tbjQWo2FSvvZUUJbsFh
-         +ardd3al1ajPhTtpVKn1pVSPRe8+wlZ+FVjtCtF0u5mF6AT+bgUf1+reacV6Ge0mJwvk
-         myxFIL8tY91XbNlQg9J7/dFo/UGZp3UiB2pvoV8bMf6kCffVWmYCNiNAPZRJvNLF8YsV
-         Ooq2+rjZcRLNboTZUFjoOUj5/Jqu93yKQmPwFcbTlaTbPIFzPCka79K+rI0pbwKvEiMv
-         hKSQ==
+        bh=036Lv6cF0PVz0F6Xudk21JbDMRzEenikh7GX3NZQ5lo=;
+        b=CwC13A9Ur5xNaicr4VvHuYjedM8J/gK6CBc2qhaF5NfdWYJKFED/UBJ1SnGoDtLe+j
+         KdU3agNH/NwH26My4xnuBwr/NAyFimB3NGmYbR4xZyOdcKhGR+fmojpinwpNYJaJEeML
+         7iAXSUx+1BHhRYWwsRDynFImnAbS3/OgfmpFQtc+mSpCUrz9E3cRhtWJ2f0KJZJ/8jGR
+         7Zn8OCBThn/LwV49OiWXjjCFG8WzOe3FcwlJr8Ht2cv08T+q50/ssIS7DV7sK124n56m
+         STUVm15TJKjpA0VnOOnQcVgnqipuM7gkbs8DtC0wan397vQEVYyG83deoYkljm/pFQxn
+         /1VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778552640; x=1779157440;
+        d=1e100.net; s=20251104; t=1778552642; x=1779157442;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=vHuEOWTWgkuFCgRCml8bt7nPD8/09L3zu8ijOwpUPws=;
-        b=mUNcqvSN9joI8+Ep+8UhIwvSKLG1tuFXUwafMHhmnE0vXorRiRBpAgG1kbKEJrUg2N
-         YBQxPtlxpfpTVtVR2KKyVAwBNN18yifMrI7Q2wPeVf9fhBXLVN30kuQ1RKChZnaK4qP9
-         giI0f4m4ZRP19VkGjib9kaRBuM1MHl12ILEl7RZVfWdG815Mst0zW/Af/1vLjQfWDPiW
-         nuE51BBHXte08VsSHIFxj06u1+5E+7+H6uSaOTdtJWHVlBslplbCUr1c1mhxe6NqW4C3
-         Ou5L/FQTDgTflj7bPp0YRXq4KXVV9cOqfb8KzpAnLL2QR5AHI+fJT9+CBlvffrnZKKMV
-         Furw==
-X-Forwarded-Encrypted: i=1; AFNElJ9Czb1p6uRvxaAqgGITCIGLi8BqA8eVBmYOT24XgQg2cFXnSCCblnQ+0nPtoF7nuFsR/O0GWyXfFFiUQT6Fcw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2XM+bHrKXiaBbk7sXG0Es9yGueJBIrosDXo7tAQRVuO5+88E4
-	xIKnjKIcs4Vr9IgflARUtUk/VRv/GBlIEZLtUjaZhw2CTqOaU/t8GQOauYXtHNFJn3FRQ/rF1Vr
-	Ay0GnjO/5aWMPSsFqsXkW/iNUm+AkrN1iuFp6kauCQ+Dp8d8HrqBKEyVLAKHnKxe6KZH5dx3kYO
-	BFuDeL/p4=
-X-Gm-Gg: Acq92OGDazzG5gbyml6nWYHcmPXSsk8F6TVUD2gqDQg8XHzGg7ys1bZAH9AuaRQCJNp
-	VuQeuaZ+BazhOqWVMkhE1GbrOIMgQ995b4ndpSuqf8Sajb9M33vLB/lVIuDr0Ibrl9UqYiHkVNl
-	XyRwyog1hag6mg6uaGJeWVzB0nsI0NvzIoBMpa3aOiQ85ITvd4b5qjrVFlKVT0ev2/I96C9GdNL
-	qt3B6o9T5H5GZOnl7Wu5FWSoyfl2nsVecruMEx9FKG/O+ucgLMsZ/+a+/WzlnYbth0EFkX1v6NP
-	CzPlZYTQYXrs+kBKL80R8qZ6V6XZqcAxJvsXof3MgSKZSi2uq35i7hidKIY1Itj5lmjqprAJ7Uc
-	DrPQDhBbCDGMa7rfrP2FneSLmo181Zqu6hT1YX4aT1qHWFixVjpwfsfG9uUOVuRtIhsZRq9KiiZ
-	i+e8bg
-X-Received: by 2002:aa7:9314:0:b0:82f:5d4f:7355 with SMTP id d2e1a72fcca58-83eebc2c657mr972670b3a.33.1778552639860;
-        Mon, 11 May 2026 19:23:59 -0700 (PDT)
-X-Received: by 2002:aa7:9314:0:b0:82f:5d4f:7355 with SMTP id d2e1a72fcca58-83eebc2c657mr972652b3a.33.1778552639338;
-        Mon, 11 May 2026 19:23:59 -0700 (PDT)
+        bh=036Lv6cF0PVz0F6Xudk21JbDMRzEenikh7GX3NZQ5lo=;
+        b=L9Y9s3EDLnhtK29B+FdWyTGtyLlx7M/ilHrnrXfx24cDoV0NhXYSWKmlTF60strqY9
+         Fj1oYQr38vrUDCoaY0p9ACQE3MhWvqbkhEz8Ewu0g82c9Pq/L9mOuNs8VYe997NM3qfC
+         1xHFsJhjiu0IiXP2tJwrZ1whBXV0/Gz15HeWjFbf1NYbHZazdoGzgcKwnIL0Dg8Swt7l
+         LVKcmugm7VQVlexTQOYIsv7VNIA1/VZOR53d6q6SIJM6X+S7AidP4R+V8zNM4PRFjhcQ
+         UKXpmx3vyUXg3MuWp9FK18dWLLRGMYlsX29zdnC4n2X32+2Cip/nq1y1v+jRmlU7BSKn
+         5phQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/wFWFi0zPBOb88amyoRr7O8wLt0VX2ku1XRUVfw+/hr0Z+LpxNxI2cRrTlpeFtRB+Te50umQVwyJu8kbGRCQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuocIUvFZZlVqyxtiBhRNbhm++lTgv+CnLAnx87tfKeFzbW/7g
+	gq8YkYByGWi3EwNhfzHf92Uelyf1zyNoQo2QLeqJQXXz/h9fbOM3cMNpgdgg0K8mUN8Cxz6d/IL
+	LvKdE608SJ5UnI1zgz2jWJpG9EXhktfg8c/pyd9xDTadLAT8lQ8eLnQvZg4xuoQ4rk1Xh5A==
+X-Gm-Gg: Acq92OGwmJSo/4l22IZ9dhtE/2f4NoMAITITlcD7jHZhFchKFA/l/pbyaCy4VdKL0y5
+	CDYtAE7vpbj5H3NSjx4IGL0VuCO+83ucq74BTXN8J9V29nuJGZtGzQ23gqP3+P0YoJF+72xecTG
+	3037ZU/DsZWu+0Ag1qQJrGkDMgP7DCVKsemQvPps+z/iSO7GRdakpFBTeXr9CKsx2mOief9HhsP
+	Cdjp3QKOKKMScSwX6EPoOQN1c6/4WeSDrBJT9I4W2AprAlSm/0LbeSgdOLL4T+S5OLIDT8j5yWP
+	i7IEvKrgERwdT04ZSw2ljCdKnSR8y1qdwsVTauVm3neGkRiRAjXYm0kG3cRIYbc71rb/h5jo3Tf
+	RrCzn7OKB7ONcHdORbZL6iZsfQdzuepbKpefeFh3myjPzDuBGacCk2JaO8phkzeRM5Q57pI1afA
+	rmUxlO
+X-Received: by 2002:a05:6a00:1bc9:b0:82c:d7c4:4c5c with SMTP id d2e1a72fcca58-83a5bae02b6mr24671155b3a.20.1778552642083;
+        Mon, 11 May 2026 19:24:02 -0700 (PDT)
+X-Received: by 2002:a05:6a00:1bc9:b0:82c:d7c4:4c5c with SMTP id d2e1a72fcca58-83a5bae02b6mr24671129b3a.20.1778552641599;
+        Mon, 11 May 2026 19:24:01 -0700 (PDT)
 Received: from Z2-SFF-G9-MQ.ap.qualcomm.com (i-global052.qualcomm.com. [199.106.103.52])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83967dbcf16sm25199256b3a.40.2026.05.11.19.23.57
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83967dbcf16sm25199256b3a.40.2026.05.11.19.23.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 19:23:59 -0700 (PDT)
+        Mon, 11 May 2026 19:24:01 -0700 (PDT)
 From: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
 To: jjohnson@kernel.org
 Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
-Subject: [PATCH ath-next 1/2] wifi: ath11k: fix invalid data access in ath11k_dp_rx_h_undecap_nwifi
-Date: Tue, 12 May 2026 10:23:50 +0800
-Message-Id: <20260512022351.2033155-2-miaoqing.pan@oss.qualcomm.com>
+Subject: [PATCH ath-next 2/2] wifi: ath11k: add MSDU length validation for TKIP MIC error
+Date: Tue, 12 May 2026 10:23:51 +0800
+Message-Id: <20260512022351.2033155-3-miaoqing.pan@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260512022351.2033155-1-miaoqing.pan@oss.qualcomm.com>
 References: <20260512022351.2033155-1-miaoqing.pan@oss.qualcomm.com>
@@ -115,43 +114,44 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEyMDAyMCBTYWx0ZWRfX0eUKF4G6y83W
- svzO4f0+ExQ1zZtsD9wvet25wehNiAyOdDghIkERjKuxhfpnCxuteD+esOlvFaUpf/PahXPPW8w
- imNLAneOGRHeBqQy1bRmaa9bKpL9aY2gzviPrI/KvIbpl4Yb7IVscUKtT7FUe52jDTK2DNSKwfG
- /5vGEAy0t8b4HAc5+USqv2b01BVsZJKyBpwyUC7SvcBegvD/vbSfLaH4b8Zj4e+FbURpE4oXKfS
- yfkuA/+hUbMFgtDajrAlBWGt/oMNFWoH5KxRPmXvWaWRZl7djBmtrnAcUyZt5ce/ZdElur4UgWM
- 4fhFt9OPmaf06ewXRMMePaFEyV2NhFlz+n1peABrXxS+uj9y0NXyEsA+tnUJhMRXEhGBFKsNfYq
- 73TTu1lWT4tUjJoKqX1EP6gwDgu0z/k/YSxvN5mqG8PtBAfadjjhjqyE4b2KdF+4Cg44Cv2i1jY
- CeYPMVqO/g5iCk4HMoQ==
-X-Authority-Analysis: v=2.4 cv=Kvp9H2WN c=1 sm=1 tr=0 ts=6a028f41 cx=c_pps
+X-Proofpoint-GUID: qQqw6cHGTwi-OGiHYdlZbVNoPV4ZqX42
+X-Proofpoint-ORIG-GUID: qQqw6cHGTwi-OGiHYdlZbVNoPV4ZqX42
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEyMDAyMCBTYWx0ZWRfX7HRYGzZDnhhB
+ Uf/AAOplFKZ6QYM1cVuW2XPQt7G/JmGLK3tiwuJ6xOirL7HVQKOY8g6yS8H4r5PiNNIL5QsAl9y
+ eNHBxo0dxYXdlMZ23lckXKEbfsuqEj4u0HCGJDwxRB9lkw4z17yPc16xHPxwTC9wxjlkUArmPfF
+ R4CCiy9b8h8A5uWg0azsOOSeKG1tXZiW/4J6hW5tPik4giBFonJEsB56eOiUisyDr3NdXdfTUW5
+ noeWZoE7+U5WPCxgfjeIU3opAnQLqP5AGbUrjVMw3xum7xPUn1emKEikJJ2zLkfTa6yxZrWQKfL
+ Y+txep8If/RSOjCQUdaljvLvcrhLvVCvJeYT5LUeikdpojapmo7vAUbn/gjZo4//c5kesvTJHfX
+ I+SjgLSZaPKfSj+UhRXOwDEhQsSPYgWHnydZJjdSinCX7Xohyhdi0FmRb7ufuH2t00LNJUqn/bv
+ yFBwYyLVmyIiL5yho1Q==
+X-Authority-Analysis: v=2.4 cv=c6ebhx9l c=1 sm=1 tr=0 ts=6a028f43 cx=c_pps
  a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=b9+bayejhc3NMeqCNyeLQQ==:17
  a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=pyFkC3i_6phWDu-JDTMA:9 a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-ORIG-GUID: ysC_i7YFAhTS4iCTsK7JyyZJLnBTPxW-
-X-Proofpoint-GUID: ysC_i7YFAhTS4iCTsK7JyyZJLnBTPxW-
+ a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=7QbXSr-hkXkeXhD5LnUA:9 a=IoOABgeZipijB_acs4fv:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 bulkscore=0 suspectscore=0 spamscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605050000 definitions=main-2605120020
-X-Rspamd-Queue-Id: 98AC7518EB8
+ clxscore=1015 adultscore=0 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 bulkscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605050000
+ definitions=main-2605120020
+X-Rspamd-Queue-Id: E0A2B518ECF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36280-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36281-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	MIME_TRACE(0.00)[0:+];
@@ -164,161 +164,50 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.998];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-In certain cases, hardware might provide packets with a
-length greater than the maximum native Wi-Fi header length.
-This can lead to accessing and modifying fields in the header
-within the ath11k_dp_rx_h_undecap_nwifi() function for the
-DP_RX_DECAP_TYPE_NATIVE_WIFI decap type and
-potentially result in invalid data access and memory corruption.
+In the WBM error path, while processing TKIP MIC errors, MSDU length
+is fetched from the hal_rx_desc's msdu_end. This MSDU length is
+directly passed to skb_put() without validation. In stress test
+scenarios, the WBM error ring may receive invalid descriptors, which
+could lead to an invalid MSDU length.
 
-Kernel stack is corrupted in: ath11k_dp_rx_h_undecap+0x6b0/0x6b0 [ath11k]
-Call trace:
- ath11k_dp_rx_h_mpdu+0x0/0x2e8 [ath11k]
- ath11k_dp_rx_h_mpdu+0x1e0/0x2e8 [ath11k]
- ath11k_dp_rx_wbm_err+0x1e0/0x450 [ath11k]
- ath11k_dp_rx_process_wbm_err+0x2fc/0x460 [ath11k]
- ath11k_dp_service_srng+0x2e0/0x348 [ath11k]
+To fix this, add a check to drop the skb when the calculated MSDU
+length is greater than the skb size.
 
-Add a sanity check before processing the SKB to prevent invalid
-data access in the undecap native Wi-Fi function for the
-DP_RX_DECAP_TYPE_NATIVE_WIFI decap type.
-
-This adapted from the discussion/patch of the ath12k driver [1].
+This is adapted from the discussion/patch of the ath12k driver [1].
 
 Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04685-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
 
-Link: https://lore.kernel.org/linux-wireless/20250211090302.4105141-1-tamizh.raja@oss.qualcomm.com/ # [1]
+Link: https://lore.kernel.org/linux-wireless/20250416021903.3178962-1-nithyanantham.paramasivam@oss.qualcomm.com/ # [1]
 Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 50 +++++++++++++++++++++++--
- 1 file changed, 47 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index fe79109adc70..fbe2061a544d 100644
+index fbe2061a544d..9c31bb7efcc8 100644
 --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
 +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2502,6 +2502,29 @@ static void ath11k_dp_rx_deliver_msdu(struct ath11k *ar, struct napi_struct *nap
- 	ieee80211_rx_napi(ar->hw, pubsta, msdu, napi);
- }
+@@ -4050,6 +4050,15 @@ static bool ath11k_dp_rx_h_tkip_mic_err(struct ath11k *ar, struct sk_buff *msdu,
  
-+static bool ath11k_dp_rx_check_nwifi_hdr_len_valid(struct ath11k_base *ab,
-+						   struct hal_rx_desc *rx_desc,
-+						   struct sk_buff *msdu)
-+{
-+	struct ieee80211_hdr *hdr;
-+	u8 decap_type;
-+	u32 hdr_len;
+ 	l3pad_bytes = ath11k_dp_rx_h_msdu_end_l3pad(ar->ab, desc);
+ 	msdu_len = ath11k_dp_rx_h_msdu_start_msdu_len(ar->ab, desc);
 +
-+	decap_type = ath11k_dp_rx_h_msdu_start_decap_type(ab, rx_desc);
-+	if (decap_type != DP_RX_DECAP_TYPE_NATIVE_WIFI)
++	if (unlikely(hal_rx_desc_sz + l3pad_bytes + msdu_len > DP_RX_BUFFER_SIZE)) {
++		ath11k_dbg(ab, ATH11K_DBG_DATA,
++			   "invalid msdu len in tkip mic err %u\n", msdu_len);
++		ath11k_dbg_dump(ab, ATH11K_DBG_DATA, NULL, "", desc,
++				sizeof(*desc));
 +		return true;
-+
-+	hdr = (struct ieee80211_hdr *)msdu->data;
-+	hdr_len = ieee80211_hdrlen(hdr->frame_control);
-+
-+	if ((likely(hdr_len <= DP_MAX_NWIFI_HDR_LEN)))
-+		return true;
-+
-+	ab->soc_stats.invalid_rbm++;
-+	WARN_ON_ONCE(1);
-+	return false;
-+}
-+
- static int ath11k_dp_rx_process_msdu(struct ath11k *ar,
- 				     struct sk_buff *msdu,
- 				     struct sk_buff_head *msdu_list,
-@@ -2572,6 +2595,11 @@ static int ath11k_dp_rx_process_msdu(struct ath11k *ar,
- 		}
- 	}
- 
-+	if (unlikely(!ath11k_dp_rx_check_nwifi_hdr_len_valid(ab, rx_desc, msdu))) {
-+		ret = -EINVAL;
-+		goto free_out;
 +	}
 +
- 	ath11k_dp_rx_h_ppdu(ar, rx_desc, rx_status);
- 	ath11k_dp_rx_h_mpdu(ar, msdu, rx_desc, rx_status);
- 
-@@ -3261,6 +3289,12 @@ static int ath11k_dp_rx_h_verify_tkip_mic(struct ath11k *ar, struct ath11k_peer
- 		    RX_FLAG_IV_STRIPPED | RX_FLAG_DECRYPTED;
- 	skb_pull(msdu, hal_rx_desc_sz);
- 
-+	if (unlikely(!ath11k_dp_rx_check_nwifi_hdr_len_valid(ar->ab, rx_desc,
-+							     msdu))) {
-+		dev_kfree_skb_any(msdu);
-+		return -EINVAL;
-+	}
-+
- 	ath11k_dp_rx_h_ppdu(ar, rx_desc, rxs);
- 	ath11k_dp_rx_h_undecap(ar, msdu, rx_desc,
- 			       HAL_ENCRYPT_TYPE_TKIP_MIC, rxs, true);
-@@ -3953,6 +3987,10 @@ static int ath11k_dp_rx_h_null_q_desc(struct ath11k *ar, struct sk_buff *msdu,
- 		skb_put(msdu, hal_rx_desc_sz + l3pad_bytes + msdu_len);
- 		skb_pull(msdu, hal_rx_desc_sz + l3pad_bytes);
- 	}
-+
-+	if (unlikely(!ath11k_dp_rx_check_nwifi_hdr_len_valid(ar->ab, desc, msdu)))
-+		return -EINVAL;
-+
- 	ath11k_dp_rx_h_ppdu(ar, desc, status);
- 
- 	ath11k_dp_rx_h_mpdu(ar, msdu, desc, status);
-@@ -3997,7 +4035,7 @@ static bool ath11k_dp_rx_h_reo_err(struct ath11k *ar, struct sk_buff *msdu,
- 	return drop;
- }
- 
--static void ath11k_dp_rx_h_tkip_mic_err(struct ath11k *ar, struct sk_buff *msdu,
-+static bool ath11k_dp_rx_h_tkip_mic_err(struct ath11k *ar, struct sk_buff *msdu,
- 					struct ieee80211_rx_status *status)
- {
- 	u16 msdu_len;
-@@ -4005,6 +4043,7 @@ static void ath11k_dp_rx_h_tkip_mic_err(struct ath11k *ar, struct sk_buff *msdu,
- 	u8 l3pad_bytes;
- 	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(msdu);
- 	u32 hal_rx_desc_sz = ar->ab->hw_params.hal_desc_sz;
-+	struct ath11k_base *ab = ar->ab;
- 
- 	rxcb->is_first_msdu = ath11k_dp_rx_h_msdu_end_first_msdu(ar->ab, desc);
- 	rxcb->is_last_msdu = ath11k_dp_rx_h_msdu_end_last_msdu(ar->ab, desc);
-@@ -4014,6 +4053,9 @@ static void ath11k_dp_rx_h_tkip_mic_err(struct ath11k *ar, struct sk_buff *msdu,
  	skb_put(msdu, hal_rx_desc_sz + l3pad_bytes + msdu_len);
  	skb_pull(msdu, hal_rx_desc_sz + l3pad_bytes);
  
-+	if (unlikely(!ath11k_dp_rx_check_nwifi_hdr_len_valid(ab, desc, msdu)))
-+		return true;
-+
- 	ath11k_dp_rx_h_ppdu(ar, desc, status);
- 
- 	status->flag |= (RX_FLAG_MMIC_STRIPPED | RX_FLAG_MMIC_ERROR |
-@@ -4021,19 +4063,21 @@ static void ath11k_dp_rx_h_tkip_mic_err(struct ath11k *ar, struct sk_buff *msdu,
- 
- 	ath11k_dp_rx_h_undecap(ar, msdu, desc,
- 			       HAL_ENCRYPT_TYPE_TKIP_MIC, status, false);
-+
-+	return false;
- }
- 
- static bool ath11k_dp_rx_h_rxdma_err(struct ath11k *ar,  struct sk_buff *msdu,
- 				     struct ieee80211_rx_status *status)
- {
- 	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(msdu);
--	bool drop = false;
-+	bool drop;
- 
- 	ar->ab->soc_stats.rxdma_error[rxcb->err_code]++;
- 
- 	switch (rxcb->err_code) {
- 	case HAL_REO_ENTR_RING_RXDMA_ECODE_TKIP_MIC_ERR:
--		ath11k_dp_rx_h_tkip_mic_err(ar, msdu, status);
-+		drop = ath11k_dp_rx_h_tkip_mic_err(ar, msdu, status);
- 		break;
- 	default:
- 		/* TODO: Review other rxdma error code to check if anything is
 -- 
 2.34.1
 
