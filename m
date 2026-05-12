@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-36300-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36301-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPQFH826AmonwAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36300-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 07:29:49 +0200
+	id MCz1MNK6AmonwAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36301-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 07:29:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD5251A0F4
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 07:29:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F9951A10B
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 07:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3DCE305C8D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 05:24:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2AA1F305EA88
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 05:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14BE37267B;
-	Tue, 12 May 2026 05:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC8D37F73E;
+	Tue, 12 May 2026 05:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HvokSoQM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cQDloNp4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A23637F73E
-	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 05:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732263815DB
+	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 05:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778563413; cv=none; b=kngLvozxORf7iU19eW7OatSAsrhAUZVO+upRa0CUmUtrfMbNnZtPKW5nEtyhKlpHHIdhDPIo8bHIlI3kZXrPJqmkAGBvTv59q8MxPgbBJFHwFfpW7mAoQ8oqWbDhARxwyXsQS8HlcS6Fd5ciwHXKVAvyPEcTWurLmWo9GzyuyHE=
+	t=1778563414; cv=none; b=YtfhiogVm/WN5eXD3x1NLVfmihFsrld7i/rnAIPkMqpkQR8OTKBJjqiALyNaMjGM0UJFlqxxNgFreMFcE1nWgaK3I5VF36V/niYMsYHA9rk01eL+yBUAobYqExb43mixzd7znGdpMmdJH3vb94FSPRcADv9y0hH4WEdpR2eWE/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778563413; c=relaxed/simple;
-	bh=GNUQIqDpLu66+5weZr/m26SFG88hRLvpFgnDmRhPQZ4=;
+	s=arc-20240116; t=1778563414; c=relaxed/simple;
+	bh=zTb793EQoBm9mclVFP2EAd5rKZ4HdJvehdvu4wWcWg0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ktuLZQskoasN4lds6gV0/6arH1QL6z0z0lZSPLSprF37K7BWklGDxB8FKouw48Sk8ixefP+9pNwjvZgJXzqyqEX5MezTzHt9Pg1RbhG8OtAVzgfcOWT6D1XYKB38IhoxPVhDjFIENt8XVxb2BatBCx2q11naW/DhGYGRVaetrhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HvokSoQM; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=ZBpNimbcRCK1ZO7t3Bo2X896tRZqBJrZ0eQLb1zb8tiN0gMtZDDRdAXwojnZe0DA3hgAtT72OHPMZGtpfjIWiqZryU87OeQat0ajPrDcg1WbVp7mpXbraxudwVOIiB1TX7LkYFdA7Vjqky3bPtiSWPX/kMpWPViHW5wdVWxpxgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cQDloNp4; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778563412; x=1810099412;
+  t=1778563413; x=1810099413;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GNUQIqDpLu66+5weZr/m26SFG88hRLvpFgnDmRhPQZ4=;
-  b=HvokSoQMdE7yPFuDySKRjwTYE6n5zmpI255SdIXHNBjBURA4vt4BFOBS
-   rFSxVnN72DsVbnG1WkaBrQfsBVgCrLdgthznoIwZdPtLD53Kr70D9ZvK0
-   WIWmMLRVyeNLxtyZ5F+hVY6UkREDmSH+2DKDywiw8hz/EQDHiFbp1IUl8
-   b19Imz6uN5BA8lgxKHS/wd0RA8itnQfjAa0Y7hVuFJ5nulHFtyoBUep4Q
-   8/svxnHdU6JFddTZYk/Sis8LLnOxJX7cs9zYlJhXinVGHtQJLkIV25ZUC
-   kRjQci+JRP09DxoSQUHOTE2QBeHwpvebVGOlapYbdaHEK5dH7BQE1Xd0Y
-   Q==;
-X-CSE-ConnectionGUID: 04mkXckaT6ulKHGTdXTMQA==
-X-CSE-MsgGUID: ubI1ugBFQhyeURkfOd/46Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="78495097"
+  bh=zTb793EQoBm9mclVFP2EAd5rKZ4HdJvehdvu4wWcWg0=;
+  b=cQDloNp4BC9lHRRPEwoZnNEZoWbzHwsmuzCUt6WwJCPsSV0bEf6awqk6
+   cXnaYNCGZwHfAV5I3cURbkQ/khSO6KvhHHMhKjsAbAMJVRyugzqYrjyST
+   8EcMIB2HhvrDDK18gyYjOWkw1h1ke/ob357UNQYWGqMz7pNBBdTnHlw0W
+   tKLtBB0gT/ISSTAcXsTSsxnXkPMzPYvP0A+7Gr3s4zA2nyKIUWUvs/JNy
+   sJK9teN1Xjkk3nXS6AmDaWxiJCXQtyHt2VmbNNunWUdXnIG4XeSfT8w65
+   eLohxrAwlNmli6n8Tz/vWRLmBdFH/QP16aEFf6EeBJUtll2UBxhz3aw2r
+   w==;
+X-CSE-ConnectionGUID: E6fB/T1OQuKWxSSSgQoAag==
+X-CSE-MsgGUID: Ggg1K7GARziSxUg8m1Dx/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="78495098"
 X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="78495097"
+   d="scan'208";a="78495098"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 22:23:31 -0700
-X-CSE-ConnectionGUID: dTs3tZgyTI6pXNms2rdUWQ==
-X-CSE-MsgGUID: eqfFKDq7TqC/oAsdfsWg+Q==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 22:23:33 -0700
+X-CSE-ConnectionGUID: O4bfqsDwRTaGPdTYXUzD/A==
+X-CSE-MsgGUID: KOZ2NXXuQWSy7Zt8Y9RX/g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="233187569"
+   d="scan'208";a="233187572"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 22:23:31 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 22:23:32 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 09/15] wifi: iwlwifi: support a TLV indicating num of mgmt mcast keys
-Date: Tue, 12 May 2026 08:23:01 +0300
-Message-Id: <20260512082114.f171962abd2e.Ic678616c7d574de257e5923d56258043a5261674@changeid>
+Subject: [PATCH iwlwifi-next 10/15] wifi: iwlwifi: mark that we support iwl_rx_mpdu_desc version 7 and 8
+Date: Tue, 12 May 2026 08:23:02 +0300
+Message-Id: <20260512082114.3604e2111b27.I1f44475b56e084ee4aaeaed11b8a4fe2d27bed0c@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260512052307.1603442-1-miriam.rachel.korenblit@intel.com>
 References: <20260512052307.1603442-1-miriam.rachel.korenblit@intel.com>
@@ -78,14 +78,14 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EBD5251A0F4
+X-Rspamd-Queue-Id: 62F9951A10B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -93,7 +93,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36300-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36301-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
@@ -106,124 +106,31 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-FW has a limitation of how many multicast management keys it supports.
-Until today we just assumed this limitation. But now as it is changing,
-due to NAN, we need a clear indication from the FW so we know how many
-we can install.
-
-Read and store this indication from the FW's TLV.
+Mark the driver struct as matching RX_MPDU_RES_START_API_S_VER_7 and
+RX_MPDU_RES_START_API_S_VER_8
 
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/sta.h | 3 +--
- drivers/net/wireless/intel/iwlwifi/fw/file.h    | 3 ++-
- drivers/net/wireless/intel/iwlwifi/fw/img.h     | 3 ++-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c    | 7 +++++++
- drivers/net/wireless/intel/iwlwifi/mld/key.c    | 2 +-
- 5 files changed, 13 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/api/rx.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/sta.h b/drivers/net/wireless/intel/iwlwifi/fw/api/sta.h
-index e6f9abdfa546..3e62a458b131 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/sta.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/sta.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2012-2014, 2018-2021, 2023, 2025 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2021, 2023, 2025-2026 Intel Corporation
-  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -191,7 +191,6 @@ enum iwl_sta_sleep_flag {
- #define STA_KEY_IDX_INVALID (0xff)
- #define STA_KEY_MAX_DATA_KEY_NUM (4)
- #define IWL_MAX_GLOBAL_KEYS (4)
--#define IWL_MAX_NUM_IGTKS 2
- #define STA_KEY_LEN_WEP40 (5)
- #define STA_KEY_LEN_WEP104 (13)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
+index aa4e5e9d4d4e..699343cf0279 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
+@@ -735,6 +735,8 @@ struct iwl_rx_mpdu_desc {
+ 	     * RX_MPDU_RES_START_API_S_VER_4,
+ 	     * RX_MPDU_RES_START_API_S_VER_5,
+ 	     * RX_MPDU_RES_START_API_S_VER_6
++	     * RX_MPDU_RES_START_API_S_VER_7
++	     * RX_MPDU_RES_START_API_S_VER_8
+ 	     */
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-index f7a6f21267e9..68ddd99a9f7d 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2008-2014, 2018-2024 Intel Corporation
-+ * Copyright (C) 2008-2014, 2018-2024, 2026 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -111,6 +111,7 @@ enum iwl_ucode_tlv_type {
- 	IWL_UCODE_TLV_FW_NUM_STATIONS		= IWL_UCODE_TLV_CONST_BASE + 0,
- 	IWL_UCODE_TLV_FW_NUM_LINKS		= IWL_UCODE_TLV_CONST_BASE + 1,
- 	IWL_UCODE_TLV_FW_NUM_BEACONS		= IWL_UCODE_TLV_CONST_BASE + 2,
-+	IWL_UCODE_TLV_FW_NUM_MCAST_KEY_ENTRIES	= IWL_UCODE_TLV_CONST_BASE + 3,
- 
- 	IWL_UCODE_TLV_TYPE_DEBUG_INFO		= IWL_UCODE_TLV_DEBUG_BASE + 0,
- 	IWL_UCODE_TLV_TYPE_BUFFER_ALLOCATION	= IWL_UCODE_TLV_DEBUG_BASE + 1,
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/img.h b/drivers/net/wireless/intel/iwlwifi/fw/img.h
-index 94113d1db8e1..75b1344f6cbe 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/img.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/img.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2005-2014, 2018-2024 Intel Corporation
-+ * Copyright (C) 2005-2014, 2018-2024, 2026 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016 Intel Deutschland GmbH
-  */
-@@ -53,6 +53,7 @@ struct iwl_ucode_capabilities {
- 	u32 num_stations;
- 	u32 num_links;
- 	u32 num_beacons;
-+	u32 num_mcast_key_entries;
- 	DECLARE_BITMAP(_api, NUM_IWL_UCODE_TLV_API);
- 	DECLARE_BITMAP(_capa, NUM_IWL_UCODE_TLV_CAPA);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index 83a63be90e46..488524529538 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1331,6 +1331,12 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
- 			capa->num_beacons =
- 				le32_to_cpup((const __le32 *)tlv_data);
- 			break;
-+		case IWL_UCODE_TLV_FW_NUM_MCAST_KEY_ENTRIES:
-+			if (tlv_len != sizeof(u32))
-+				goto invalid_tlv_len;
-+			capa->num_mcast_key_entries =
-+				le32_to_cpup((const __le32 *)tlv_data);
-+			break;
- 		case IWL_UCODE_TLV_UMAC_DEBUG_ADDRS: {
- 			const struct iwl_umac_debug_addrs *dbg_ptrs =
- 				(const void *)tlv_data;
-@@ -1641,6 +1647,7 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
- 	fw->ucode_capa.n_scan_channels = IWL_DEFAULT_SCAN_CHANNELS;
- 	fw->ucode_capa.num_stations = IWL_STATION_COUNT_MAX;
- 	fw->ucode_capa.num_beacons = 1;
-+	fw->ucode_capa.num_mcast_key_entries = 2;
- 	/* dump all fw memory areas by default */
- 	fw->dbg.dump_mask = 0xffffffff;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/key.c b/drivers/net/wireless/intel/iwlwifi/mld/key.c
-index 944d5487c110..151e35b851f7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/key.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/key.c
-@@ -259,7 +259,7 @@ int iwl_mld_add_key(struct iwl_mld *mld,
- 
- 	igtk_ptr = iwl_mld_get_igtk_ptr(vif, sta, key);
- 	if (igtk_ptr) {
--		if (mld->num_igtks == IWL_MAX_NUM_IGTKS)
-+		if (mld->num_igtks == mld->fw->ucode_capa.num_mcast_key_entries)
- 			return -EOPNOTSUPP;
- 
- 		if (*igtk_ptr) {
+ #define IWL_RX_DESC_SIZE_V1 offsetofend(struct iwl_rx_mpdu_desc, v1)
 -- 
 2.34.1
 
