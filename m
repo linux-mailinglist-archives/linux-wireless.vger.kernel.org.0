@@ -1,177 +1,170 @@
-Return-Path: <linux-wireless+bounces-36378-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36379-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MENGWonBGqDEwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36378-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 09:25:30 +0200
+	id KBpKKJhABGopGQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36379-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 11:12:56 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0973752E996
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 09:25:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41AC85305C3
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 11:12:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 02899304D8CB
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 07:24:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 189113067401
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 09:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D484391517;
-	Wed, 13 May 2026 07:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F42093E63BE;
+	Wed, 13 May 2026 09:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="ZGoMH7G9"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S7ryPilF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB25E26FD93
-	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 07:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778657051; cv=none; b=i13N5+okC58itml7JRzHH/5BIAkszGxwfYKn7U6U5lukTSe2W1DzO8gckW85cQHc+KjRxNliiRrLioSFolWDHRUaIq0FpbWYji+5ujKEu3lxcpqKHaBiKUkcVdzwBgzT/51D2NqUSqnQ3SEB41KCT1Q/SOhQYT6T0q2+kTfWCLE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778657051; c=relaxed/simple;
-	bh=QescUNFOehQDOuOu93CMpheB+8RU3Vh92gB2q3nE18o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PngTSN0s498kqSIyqqj4G1jmhHkwRDJ/1uVtahx3YzZHQ+59Oa5qpQkfWEys+1aDKQ8c2DRKp/f75beP6KutH+VY9/rXAQPWQK18mzh1Q/6WoTaFZmGX9ktHLg5sdbaYI0uTpg5EoXVJRn5082/toVU2PvntOLxOeP8rnvNnM7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=ZGoMH7G9; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: b75fa3a84e9c11f1a3561939bc42ff46-20260513
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=fXhtRM5RjLRQdXVr5ShuzzkhGZfrC2llytA16/b+um8=;
-	b=ZGoMH7G9YR0E/aNSHER/eeLONP846ZTHg2ltYLXBsDXx/FIfP+1d0WACgGnQy3w0TRjRMSw5YhWzXedGjgvGtaMkmNnIYQgHaEHfBLImkrqX/WQDmIbknKf26NILI4ZqR/FMCfO34dTo+eND2EGo8mQpiqOUH21hMOlc8GfRi6o=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.14,REQID:79f9e0b6-f29f-4621-b248-7959129629e1,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:9091e75,CLOUDID:e7fd4cbf-65a8-4b41-ac18-3671578a914d,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|865|888|898,TC:-5,Content:0|
-	15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0
-	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: b75fa3a84e9c11f1a3561939bc42ff46-20260513
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
-	(envelope-from <jb.tsai@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 36229382; Wed, 13 May 2026 15:24:02 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 13 May 2026 15:24:01 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Wed, 13 May 2026 15:24:01 +0800
-From: JB Tsai <jb.tsai@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	<Deren.Wu@mediatek.com>, <Sean.Wang@mediatek.com>, <Quan.Zhou@mediatek.com>,
-	<Ryder.Lee@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<litien.chang@mediatek.com>, <jeff.hsu@mediatek.com>, <jb.tsai@mediatek.com>,
-	Jeff Hsu <Jeff.Hsu@mediatek.com>
-Subject: [PATCH v2] wifi: mt76: mt7925: Add coredump callback in pci_driver
-Date: Wed, 13 May 2026 15:23:59 +0800
-Message-ID: <20260513072359.3943517-1-jb.tsai@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA213E0C48
+	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 09:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778663513; cv=pass; b=e/byuGLe/0/bfdQ7G7fBZ4ANx0j5Rs6sV5SinettF6vH0/PdtJbCRSJhxaxy7xboMql2/k3TrqTo0DkWEdOxfDedxosw/qlA9Oaj0Z7/D6EoL8ecAy+UMT6yMLKhFUuenEI1MZe26vHHsmxRag1wOU8b8YWDVZuv1d8E/j3u4qM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778663513; c=relaxed/simple;
+	bh=iL1VE3JAw0z9ArYGQdRAyJCMAXYUM0ge6pat/8Z8ryQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bDp815g/T0LxDFMgAJlFSWw6PMd99yKJt5gwVu5vOYAWkBB1RZVhwUwjIsyb7U5mVOHPY7JO0MgDaFi0fbdXoa0ZQdJ88nuEx9EVgnj3lKiiYngdeAQSTuZdYEfosr/hv9pZbb0myMBYfPY5AuP8lM9OE4Y+4gZ6b2sngq7VU+g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S7ryPilF; arc=pass smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5a86d384ca6so154e87.1
+        for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 02:11:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778663508; cv=none;
+        d=google.com; s=arc-20240605;
+        b=c9uR9rvZasjkvdpoguGQLE3pkHkTF75JdjuhePzghrAplqkKKYdP6a2h47mYcVrDar
+         u//nOqvByk60ng+hPpVjJrMZmfNMkxBAlQYcETOut8SSlipLsOlvrweOZGL0AibG8sn/
+         7IgWANYi97A8AGRAhBSzwOLLI/XcjKJi1gV7COlhzFMBnaxAGX5SxNFMIUa5nUdfDrd/
+         IPQRl0qZWJarjUu51Ygf9qkZxIiHz4os7xbAQoJmavmTPZHyoJ/32++F2CPBgk0phbGv
+         Y7E/qyCER6ASd4R3veBYeyWOoZHHYAusHKPskrU4mT6orravWIlAFCXJJMHJLhmDHPtR
+         rH3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=iL1VE3JAw0z9ArYGQdRAyJCMAXYUM0ge6pat/8Z8ryQ=;
+        fh=duuVRguYiclAdu3ZclLZmvuLoHT1wZK+clyYHGB4a1U=;
+        b=FKer5ucna/z6rGEDu7/9adqt9DlYq8nAUeej75J4TI+7leCLD84wjjo5qoTPqno/3w
+         BOHBaMTM3GpkGUTE08iD9NSQMyPK75d9TNmdaX5lE/pYbQXQR/GFUEUyplpBUki4HTRr
+         hbwsbzjSq/wmJIic+/1XchnfiroYnq/0boT3jVtnZnJ/rc0e0E+I95ce5wh1U30R2sQy
+         Z1IniWCKJhqLonznbimj4bdwiKlYB4dNPN2ySioc1P3bJ+G621N6tbZR5yxyYK4T3tU4
+         iJFKhxBWB29/lPzbcf30eHsW3XvPn2v9TVCtsnGbZrnAVmJ9JQ2tkmHvhPCvXCTrrWUp
+         u+HA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778663508; x=1779268308; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=iL1VE3JAw0z9ArYGQdRAyJCMAXYUM0ge6pat/8Z8ryQ=;
+        b=S7ryPilFOx0/UAiSqx0Yhty3Eu8rBXOXDy1/PjJlDqDZuwVUEGoYZ+ahFB8pt0j/Te
+         7xfUa6fnvFpSYRQdMCS6op4+ZOybEB/KRuEHUQQUHhYFhhjRcsE5mah2RQ4R8au2k3DR
+         XPKOTL6TuzW70m4/k857B2eqS8UIalpaqeqV6WNNa/zidj/vIHNQVVFkYvVbh5AuX70E
+         XeXTNiKZWZ30LvS8MerGab6bn6pQv+cAitV5TbIEgBgCHGl0WyJVB9U5iUoPenv5vZa0
+         wM8z31ab0uzOyJuM7V4Wl8GUqYNEHuJhP2o776ADF9x3/uuD0pHkBHpY0ONYiY41iZs0
+         055Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778663508; x=1779268308;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iL1VE3JAw0z9ArYGQdRAyJCMAXYUM0ge6pat/8Z8ryQ=;
+        b=kJejIEezihyPcS/KNwmDUBN76isjKDQaP52BM5HsMyAnOJNLZ0EffDxEM7C663vzut
+         yRKRwKYhUA8v9QYqdWLqgguvqg4E6/rKU3sFhCVaw6foXSxO1TMFpebM9uDwa//sY6YJ
+         to1eNLe+nDhrhESF3BtA/F0sDYvkZm6LKJaradjVNwgoYl1cGxzk5tW74lCo5LJ74ys8
+         Ws3MZzjdLpoLLyRMSWmkcP8UKllxHjNy0gZMMdEnXa1tWBxJ31Gw6pWHbcrTRNxyRYu2
+         QOSEGgl+e79l4WajBvtFkLGWHdj3F0UjuS7gMuAd8lnppwbUrY7SQVacJ8y67gWHy9Cs
+         69Ig==
+X-Forwarded-Encrypted: i=1; AFNElJ87O2gEfPezd4E9mtsrIK042BZqRXcj59P18yyuxhFDPje+mLe7UetqAry4D7IhmPCan/7KZs/aW5tTqyDxfg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwivzJZ1y2v65wbMzfMkO/ZQFNaCbTG3f5LmrLkLAeLyx2fmCHo
+	6LiWtI+SGGLkjpx2JOaWBxxLHs3QZ8R2g8gNfUto+xG9i8od/UpF15JE8YDMUwWLGUoi/K4gzRw
+	cKP1YM0vm0zO27ACo2d7FQE7uBFn60H4CQB6/PVE3
+X-Gm-Gg: Acq92OGCt/59VltNjeqbcpwJr6JnlH7e+uh/yVD6oEHMXi3mLOOJWBQnBjpCI03S5F9
+	AZpu92h5zq24Au2YQy20lmbxhXG/Qf6nEiNHAiur0Xyz8AEwyFnf2bB/XLoxpJNuJbfFXcpixUx
+	GqJ+b+6fx0RBCFLINEZ9pvvul7kr0eubagLMFJXvQQlUGMNN/pJhAWLcn6Q615UPVlDghHFzO4S
+	Oi6W3d+HtnFTmuLspeFnuBLmz7qHKdcHdRjC7UffGoSAAqzrin4uWiKFm22zFizoYZ984n4XWyH
+	AAmbLc+t14bgFSdFa/+v3JO5/VjY2uL5yqsC8HOxVa+Erdrk
+X-Received: by 2002:a05:6512:1146:b0:5a4:462:a470 with SMTP id
+ 2adb3069b0e04-5a8f1a27ed7mr127165e87.7.1778663507927; Wed, 13 May 2026
+ 02:11:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-MTK: N
-X-Rspamd-Queue-Id: 0973752E996
+References: <20260326-gfp64-v2-0-d916021cecdf@google.com> <DIGPS83BGEGA.5I7VLH8TV7XE@google.com>
+ <20260512140532.f16379be75ab006f2cca4747@linux-foundation.org>
+In-Reply-To: <20260512140532.f16379be75ab006f2cca4747@linux-foundation.org>
+From: Brendan Jackman <jackmanb@google.com>
+Date: Wed, 13 May 2026 11:11:34 +0200
+X-Gm-Features: AVHnY4JkYKmjfMjoxQK2Kv5dUgGHN1tiwBYPl837ha0neUHazremeoJt4lAaHiI
+Message-ID: <CA+i-1C0pUX33A6zPFzk-2UtiQgAZG3hss3-aNcf1RYauUuQUWA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] treewide: fixup gfp_t printks
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Stanislaw Gruszka <stf_xl@wp.pl>, Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Allison Henderson <allison.henderson@oracle.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, kasan-dev@googlegroups.com, 
+	linux-mm@kvack.org, netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	rds-devel@oss.oracle.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 41AC85305C3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36379-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36378-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jb.tsai@mediatek.com,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,wp.pl,google.com,oracle.com,davemloft.net,redhat.com,lists.freedesktop.org,vger.kernel.org,googlegroups.com,kvack.org,oss.oracle.com];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jackmanb@google.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mediatek.com:email,mediatek.com:mid,mediatek.com:dkim]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Jeff Hsu <Jeff.Hsu@mediatek.com>=0D
+On Tue, 12 May 2026 at 23:05, Andrew Morton <akpm@linux-foundation.org> wrote:
+>
+> On Tue, 12 May 2026 12:58:20 +0000 Brendan Jackman <jackmanb@google.com> wrote:
+>
+> > On Thu Mar 26, 2026 at 12:31 PM UTC, Brendan Jackman wrote:
+> > > This patchset used to be about switching gfp_t to unsigned long. That is
+> > > probably not gonna happen any more but while writing it I found these
+> > > cleanups that seem worthwhile regardless.
+> > >
+> >
+> > ...
+> >
+> > Any chance someone can take these?
+>
+> [2/4] is merged into the wireless tree (I assume) and the other three
+> are in mm.git's mm-unstable branch.
 
-Register coredump callback(mt7925_coredump) in pci_driver,=0D
-it can let platform can trigger core dump to collect the=0D
-log and recover back after coredump complete without debugfs=0D
-=0D
-Some platform not have debugfs=0D
-=0D
-Signed-off-by: Jeff Hsu <Jeff.Hsu@mediatek.com>=0D
----=0D
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c |  1 +=0D
- drivers/net/wireless/mediatek/mt76/mt7925/pci.c | 12 ++++++++++++=0D
- 2 files changed, 13 insertions(+)=0D
-=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/=
-wireless/mediatek/mt76/mt7925/mcu.c=0D
-index 37cdf3e8a067..cd502166a7f9 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c=0D
-@@ -1014,6 +1014,7 @@ int mt7925_mcu_chip_config(struct mt792x_dev *dev, co=
-nst char *cmd)=0D
- 	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(CHIP_CONFIG),=0D
- 				 &req, sizeof(req), false);=0D
- }=0D
-+EXPORT_SYMBOL_GPL(mt7925_mcu_chip_config);=0D
- =0D
- int mt7925_mcu_set_deep_sleep(struct mt792x_dev *dev, bool enable)=0D
- {=0D
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/=
-wireless/mediatek/mt76/mt7925/pci.c=0D
-index c4161754c01d..57006cd75b1c 100644=0D
---- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c=0D
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c=0D
-@@ -610,6 +610,17 @@ static int mt7925_pci_restore(struct device *device)=0D
- 	return _mt7925_pci_resume(device, true);=0D
- }=0D
- =0D
-+static void mt7925_coredump(struct device *dev)=0D
-+{=0D
-+	struct pci_dev *pdev =3D to_pci_dev(dev);=0D
-+	struct mt76_dev *mdev =3D pci_get_drvdata(pdev);=0D
-+	struct mt792x_dev *dev_792x =3D container_of(mdev, struct mt792x_dev, mt7=
-6);=0D
-+=0D
-+	mt792x_mutex_acquire(dev_792x);=0D
-+	mt7925_mcu_chip_config(dev_792x, "assert");=0D
-+	mt792x_mutex_release(dev_792x);=0D
-+}=0D
-+=0D
- static const struct dev_pm_ops mt7925_pm_ops =3D {=0D
- 	.suspend =3D pm_sleep_ptr(mt7925_pci_suspend),=0D
- 	.resume  =3D pm_sleep_ptr(mt7925_pci_resume),=0D
-@@ -626,6 +637,7 @@ static struct pci_driver mt7925_pci_driver =3D {=0D
- 	.remove		=3D mt7925_pci_remove,=0D
- 	.shutdown       =3D mt7925_pci_shutdown,=0D
- 	.driver.pm	=3D pm_sleep_ptr(&mt7925_pm_ops),=0D
-+	.driver.coredump =3D mt7925_coredump,=0D
- };=0D
- =0D
- module_pci_driver(mt7925_pci_driver);=0D
--- =0D
-2.45.2=0D
-=0D
+Oh sorry, I just checked and I did actually receive the notification
+when you queued it, I guess I just didn't parse it mentally.
 
