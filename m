@@ -1,104 +1,105 @@
-Return-Path: <linux-wireless+bounces-36349-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36350-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id TW7WG3C1A2pg9QEAu9opvQ
-	(envelope-from <linux-wireless+bounces-36349-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 01:19:12 +0200
+	id wFCqJu6/A2or+AEAu9opvQ
+	(envelope-from <linux-wireless+bounces-36350-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 02:03:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E7252B3CC
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 01:19:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2AE52B777
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 02:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 462E5304E303
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2026 23:19:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 094A0303670B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 00:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A774028CF6F;
-	Tue, 12 May 2026 23:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF1A4086A;
+	Wed, 13 May 2026 00:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JzujmVnb";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Hz0cxZfx"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QnKuHmYc";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="iZXXS/qM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E85C33EF
-	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 23:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9A24594A
+	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 00:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778627949; cv=none; b=G1QG/y+4zhAKGDsYtV1KAcxPXHT6KHKIWmwBKpETBfovzuN0QsMz6QPqsuD7JVlt+kslZMft8uVuhmuNfySg/M5AoyHmyfVO5qOolOJ3Vlh2UDIbKMzT8f4nC6zdqjQsAS5wSQkgg8FfGMql1RS8o13140Pv8ZKDta38AiOdnr0=
+	t=1778630634; cv=none; b=KikV0SUZIRo/lX75h0WwpwPlEgh5w1jaxjzY26uOUoCog1xi2vexh16ta4yiggS2kallz/cMlcqeWXZFuCpyhAVGS5WD+VxAL9CMsJeq/PbThRN2bsHhgV3ZXx4CAoJghshXbLQKTJs6TY4mpCtMVEmxPu+dmbSnkqqhVANivyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778627949; c=relaxed/simple;
-	bh=CxS4nMuBBeDuzDW4c0xWu7ac3A8aiNO1+WzOxiE9PI0=;
+	s=arc-20240116; t=1778630634; c=relaxed/simple;
+	bh=GMKySTkBDCMEn9cmriP73JC1ihzNspkvfuySUl79jbo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oZDUpae3NzpdFHEhmuF3M2qLMn2iQaFxLh3vSUwGWll9+EcT9GPrf/heuCYseKNloYTDMqBeA1Jg3TX80n4ulGR/kTOHCBrHXN1vo/H7syZJ7lUXOiFHLPLvzunTDJc4s9oc6pit8LYLCK0B6nKcPwEhvRuYxtGHrBkWXB1/GOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JzujmVnb; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Hz0cxZfx; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=SS8tBPEGICkf9tA9713PfkCqbI53DumIs3Dm8H/d4m75rQiYxfzwALgRX+YBZr+ur8Q/5Lg/MtfWLijzJidGPl1GqK5QbDuK3QFCBkKABSgD32js7Y8lduUomk84Q7aEMNxHe17la7PRRY4ujGVfWQQPepCx93I2CQsGSAd4X7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QnKuHmYc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=iZXXS/qM; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64CLnJFQ1414434
-	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 23:19:07 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64CLnDGK1414297
+	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 00:03:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	j27ntAJ+N1LZSw0iXAtPGZfZuXUE/x84Crfg5pmEaIY=; b=JzujmVnb1gC8bscZ
-	Hzt1tsDSD+8WUB2IskIW6OEaYO679MD5yVKeZY0q+skQXve0Y5P9WMnbELBEbzjj
-	IlawRRsBofNjsMPQyO43k6NXf6snePYb75crICP0KW02ID4Q1axVFErT0xDchCm6
-	wvSXBsK03PKf5ANg8ttqCZp9IW/Tp54gLxSvxm3UeCFSbu6XiRyVmjJa1cRWpbao
-	V7R6rWrRuLCGj7ZOg0c2BwFOvmy5nPYSZvUpuG/VLE5HaOy7EGkRhpPnV1dApvk9
-	gPTZuKacC4GM1OxzNP8rnI9CyaIdqUfQTxeIf3Ptt1jgaTMS7HjWgA3W8kTFa2ku
-	lCTuog==
+	xRsjr2XRZOOe7w30bXakQLv+3EIBrw/fqmP4NplYARU=; b=QnKuHmYcWDLtAAK/
+	dYhFRpF35KvwqrM+LmDM+7qj7VOFKPXjTjZCXndOu/8GxLi48MihMt20Eff+n5F2
+	n/XGV8wGMq8+NvO0ZoL7eYS0eAW+nOstLlKH/PxgQeEEkIz/v4V3hlXfNudQHJqS
+	9eMLfyMxSvAzDlajY43NeGr5FeBamP872//7Csz84bAFAX2gkoutmdSRG0Ag2CDf
+	2UIxxQZpwIBblPsZFKj/rhcBshguwSZ4gzwuwJz8ScZLEbx9rn7J20sRjXbZ5Jx+
+	3VJn74ZvCPCCASOCMrsC3MfVyXCIjdwM7SojfgOxNhnzPiNj3Lpc0o2RqUwyEGAG
+	vGz2Kg==
 Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e45v59x80-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e45v5a1ah-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 23:19:07 +0000 (GMT)
-Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-130aab78a09so6010898c88.0
-        for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 16:19:07 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 00:03:51 +0000 (GMT)
+Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-1270dcd11c1so12244803c88.0
+        for <linux-wireless@vger.kernel.org>; Tue, 12 May 2026 17:03:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778627947; x=1779232747; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1778630631; x=1779235431; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=j27ntAJ+N1LZSw0iXAtPGZfZuXUE/x84Crfg5pmEaIY=;
-        b=Hz0cxZfxJCtcqZijVOJ3vxzKJCV9fBIK4by2c3gzZ9ltQ+2XHIqx46Ko5ZMyc05xzW
-         hWOr3ud1czRrNwCiheMRgdRrcxnnKUVALakv596KDzf9Bb+EVaHozKNnX1U+GK1TnITL
-         Ae8BAxnmbCKaFtEDBbSzbgCZlrmt8SchxwvI23yzEcO0MTjVAaSfCPwyDdPg+AJk2qGT
-         7xP8jvzZw8lVdY41JEO/0bSpGPI1jWuo/jr/Qb7W9V6Gg2+ykN6uuOfrcLy9Ll3AnByj
-         u6EuFg63mD8OREoUy98TVo7axXroFWfNUGPVehZ6/AMUfjssELAF24ABulfYOmQ5syIs
-         +3VQ==
+        bh=xRsjr2XRZOOe7w30bXakQLv+3EIBrw/fqmP4NplYARU=;
+        b=iZXXS/qMENcMO15pu8UynqGHCoQP19mCP1XzjlpyHkrGwbOv5xguXBT6wj+nXsVpvQ
+         5MGmw54fGmHy3OoOUvXqQTfqA0BUGvd+UPaSWqQikjzzVrD7VSaT7UgADi15VSgOeRoW
+         TIznHLF8ysXQQ3wgzYVQ9ck0W9DvsU5YAMKte5JNRNT8t2r5uSAE/ifcA/0KG4ZXcHod
+         sVMX8nq1brZ5hZmGoUe98wzx6oiMSk44zkJeRu2dSMG1jbOsHYfYSyKNwPoC4qE6aJc0
+         Rb3UZ5/CXmz6UW4ILl3zx2fZvpoXxnuAUfqXnUexywQX/U27dR0oCH8Kdl24lKjD0Gxi
+         SsQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778627947; x=1779232747;
+        d=1e100.net; s=20251104; t=1778630631; x=1779235431;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=j27ntAJ+N1LZSw0iXAtPGZfZuXUE/x84Crfg5pmEaIY=;
-        b=bk9rwQrkJ2pjMPoiYJZwOuL3ieY8EpO+fH3bOEiboHlV4rOBq4/eqPbWvwR0VvSElZ
-         Z78P4wj5WO0yP2WHQDhgL9oRh0xRBAWnUg857ct3HG+CkFMFWPF37O9iSzfndCnJnJrd
-         WmoXu2PKLX02GHuBTtk9JtHQwE63Amb2oUkZK9nGf3TRGT2kQTi34epENph4Um1vZASV
-         PLmeejL0sKPhziH5sbTMXuZNi68VmstFzuJPtoWeiGUpXduqToA9CWxQ7ag5nrjPOwCT
-         JL6cnHxzyBjBqCCmMR6gZ7FccJFNSBQOz+r7SWXHFQlipiyNvmqNDEZNJ5m+GnXc3Rmi
-         VJww==
-X-Gm-Message-State: AOJu0YzkxUp76fqp0BBGIhAYyO3DbyFhHFKldKkdLqqASKOHktVYGVsK
-	AVXKfH2MouDY082yhpGh4/43pgMIZCmJkFrbOUHpkt1577zJcKtdlZjPMSH2I9BwRKImCAJIbDR
-	nSpsw/tlcPM1GG1Qrs5KqZj/9gvjfIDBqKN8mvfJCEYi+m/G6rbtjOQcaMbWE1dKmXxsjKw==
-X-Gm-Gg: Acq92OFzKJgYgMg0atX8Sjz7Z5EAeBu3cE5SoUOgq76DmyHfMZvQ2xVaHHNizai59sh
-	b10IIwWvHVuLEP0suu/uYHDfnbdUjup5rYCkxn5XsE7qNEg1wbqiRsrg2MwJ11hvWQlcQcW0Hw1
-	lfzr23NBFZUQjpsaVxmtqEieHfXkCeZxM2PmPTPGw6Cy0C2jkBrBh4TbFBQpXr3PzPQ0HwHsjn4
-	03VJOidT4vh9dksn3hLKpgMUeTLyxF8tqa+K0bru+RG6jAYo3ZVy2LtyAxH1UUBxE44gG14aA+9
-	s/hGIZDWbMb6kP54OABZsMriA9cKKrAL8EL6t4Tg1RNpSGnqErB6loDPOg5LYhU3AcwIf7B4hxd
-	SDZQp6Y7LN904qNC+YyHIEJ5nGJOCgq8Jj8ZCftRMYB3PSsgTcUXHvO1hqAE8pwYwiuusMfJVve
-	AuMw+yDXF+0/vtEQ==
-X-Received: by 2002:a05:7022:225:b0:128:cf80:deea with SMTP id a92af1059eb24-1342ee3a12cmr528528c88.1.1778627946476;
-        Tue, 12 May 2026 16:19:06 -0700 (PDT)
-X-Received: by 2002:a05:7022:225:b0:128:cf80:deea with SMTP id a92af1059eb24-1342ee3a12cmr528505c88.1.1778627945868;
-        Tue, 12 May 2026 16:19:05 -0700 (PDT)
+        bh=xRsjr2XRZOOe7w30bXakQLv+3EIBrw/fqmP4NplYARU=;
+        b=S5oT+rfZQT/jDNUmSZe2c7peFM7Xvmv1S4mTrDALXmp+KXqyEBcFfUb3RVuGjeGLYe
+         5TIVTqVfGtbO1tTXTVeyNdMyiDkR0VMo1kvPPqrHvbFPVBEfxQp3jVLlHQwPhIDh7dcU
+         +rqj/xZe5GCZl16+LjVW2aHJmV9qR+paRIpopMggqxO+yI7ve890mzUlb6uU3/FMkaWN
+         6sJcd2LL22xMo1kuNshWhPSLm6MN1UmFGFbrnr03wb6juctm3eFK0hohcVM/oZow1jRT
+         vr9vhW+cPo4rvxrnIFBicQxWvoOeiVOnVDARZYbHsIfZpaRpnmy5ZG+ydaBEnEA7cYVu
+         uxpw==
+X-Forwarded-Encrypted: i=1; AFNElJ+j6IZfkCBPnBjxbTDKRxwRGkoVXRlhRZmzi1ugZZX8FblV2cWmCm27Cis+Z282gz6V9u0OgEvBJJjaa6cFNg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZYPFJ/407F2hD+CI8iGcBL3o8eZxBOP+WzGim0wctGXLDBKLo
+	LlcNeFFphs1GR0mmpQJT3v8QgIdKxTrCA2g7mTiGwMHfrL/4j5/O+BoFPleeeI6q1b6cukp/MX+
+	W1baNe6dhza7tBGMLTr+k6ILTobQiUflTPSYGSExmz2C7AU6BIkaBA88x0lW3B+BaqYkmAA==
+X-Gm-Gg: Acq92OH0Geex7maw4PWnHBkpe0Ye7QYRD3uvduxG0fvR8KsWEJASDnxZ+m8vjbYViTp
+	JMAi0KufsVpM1RzLyhU5jKvXURE48x8afQAObFFWj9jsnCQk34gG8/xbl5wCf6hKQfev9nO2+kK
+	bpY+WqqF7y4PqoDSC+xwiw/aqdV5kM2M83grdMdpgs92eLALjbVN9DovoE58PexBA+kTPVon+nS
+	lAhvARyCwZFSnwIJEr95xhzE68TtPk9i0CV6cc4l4i1g0ebShH39ilnKb0UqxScpp4Q/HrqQ+cU
+	1wC8slN8Hgjc7P8oIzz5xz9cm/3d7KisCdifpRFHizJFya0xDVK6+ZS9HUuOGYTkZLi1o68XlFx
+	SWkb6Dy2HUSe+PN+GGBxf3EAloXf/PXEtdZRU9hmgT+GfmPCyYK42x7IJCKINStrWKpwfvVenLx
+	D9aMK5vRHo6/iAow==
+X-Received: by 2002:a05:701a:c971:b0:119:e56b:98a4 with SMTP id a92af1059eb24-1349a80b5a7mr296500c88.11.1778630630866;
+        Tue, 12 May 2026 17:03:50 -0700 (PDT)
+X-Received: by 2002:a05:701a:c971:b0:119:e56b:98a4 with SMTP id a92af1059eb24-1349a80b5a7mr296484c88.11.1778630630286;
+        Tue, 12 May 2026 17:03:50 -0700 (PDT)
 Received: from [192.168.1.59] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13278210d40sm25517183c88.4.2026.05.12.16.19.05
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13278210ff2sm21412690c88.6.2026.05.12.17.03.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 May 2026 16:19:05 -0700 (PDT)
-Message-ID: <2edfe25b-2190-4463-bbba-b2468d872a4c@oss.qualcomm.com>
-Date: Tue, 12 May 2026 16:19:04 -0700
+        Tue, 12 May 2026 17:03:49 -0700 (PDT)
+Message-ID: <45f1c979-ea8d-4118-8551-eff93966b4e1@oss.qualcomm.com>
+Date: Tue, 12 May 2026 17:03:48 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -106,35 +107,36 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND RFC 3/3] net: ath11k: add lockup simulation via
- debugfs
-To: Matthew Leach <matthew.leach@collabora.com>,
-        Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com
-References: <20260330-ath11k-lockup-fixes-v1-0-7ed21095c2c4@collabora.com>
- <20260330-ath11k-lockup-fixes-v1-3-7ed21095c2c4@collabora.com>
+Subject: Re: [PATCH v2] wifi: ath11k: Add two missing Lenovo IDs to the quirk
+ table
+To: =?UTF-8?Q?Santiago_Ruano_Rinc=C3=B3n?= <santiagorr@riseup.net>,
+        Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kfarnung@outlook.com, Kyle Farnung <kfarnung@gmail.com>
+Cc: Mark Pearson <mpearson-lenovo@squebb.ca>, koike@igalia.com
+References: <20260506200249.317690-1-santiagorr@riseup.net>
 From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <20260330-ath11k-lockup-fixes-v1-3-7ed21095c2c4@collabora.com>
+In-Reply-To: <20260506200249.317690-1-santiagorr@riseup.net>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEyMDIzOCBTYWx0ZWRfX55lPusJm7YOI
- atyrz2nSxfrz898BnV7fdRNO8+nOs4LGwapfR02QxCQnRpeMqhtshVZqYDmjB2AKVBujsRSA1P5
- gfAi9S1h1BGc0sMg4owa/X5ca9ooUBAjR4SWGclWGm99s/MEMomCToT+z4zdWPo1LeDcWIqz4h5
- HxbWKFWdFihJtSfRwVVFWkgQJxJR5PCUn/Zpgot8/9Rd2IVIYRyrYVCnWfRdmqVLymuSDbm/LiL
- QRzfRozE/p80EQA35Kk8MhKa+S6XzAsVttycTmRESZo0PG3xQhh6bWNXuP4T1gkn8dK1w0kdfK3
- 7EosyBdRP2e7PTzKHFQDNnQI+60Ltioq4I+bs5zq1mSZugKP6DGEc1vOQO3Im3b4ImK7Kct7tGt
- ZgrDqRQMTahqH7jeB1v8G3sWsdUJKPMztEE4il/sUCJLW+7m5gKq8PRrXSJe2WU1BYlXP7kM/wU
- yhhhBCxEo9ZqJohQzWw==
-X-Authority-Analysis: v=2.4 cv=GZ8nWwXL c=1 sm=1 tr=0 ts=6a03b56b cx=c_pps
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEyMDI0NiBTYWx0ZWRfXxTId8IQCADsr
+ zubtp4TA+tdMHO+csRpWcT1QWAjz5ZFssu3A2FOv/zAY9bkaL7Mfc+HxebCzCempbg0EZfL/Bb+
+ TbPDa+FQssKMAd6KivHa0i53xqXS4+4/9SDDnqCtEkqhbnSu0OfZNkGJomwMbPaUSe0d6XLGDOr
+ pPBoJOvm8YTDJa43hiOrP9kYCi+wjMMP35Ks1Dh4kgr62WUhMlEdpxu55oKXhBIYDOxOCVljLv5
+ 7lLpCmkj8QG78pr6Fnux7qFk6kPQHVdP1vb2s1swJq4u2otQb2/yWbAy4PPsEnFKS3PzBJz8zg8
+ GNt1JHcDpu7lB433RUl9dK9hV5bIo1o9CbhSPxtdAXK3gophkG9pUTRcjVYtP9ENzCFlNEA/gYz
+ S+7oJDXn06P62hoslodyPA8x3KGbKZaBNCChQR2VsVEPYS/lOwvmGRlENUmo5KU1ntkN7bEkldy
+ YU+9diC4dHZ/RVkILyA==
+X-Authority-Analysis: v=2.4 cv=GZ8nWwXL c=1 sm=1 tr=0 ts=6a03bfe7 cx=c_pps
  a=JYo30EpNSr/tUYqK9jHPoA==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
  a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
  a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=QX4gbG5DAAAA:8 a=MEfDkqlxHPSrZSc_TmcA:9 a=QEXdDO2ut3YA:10
- a=Fk4IpSoW4aLDllm1B1p-:22 a=AbAUZ8qAyYyZVLSsDulk:22
-X-Proofpoint-GUID: mhg151N5eOB71vgBKR8044hlq_Nh01UX
-X-Proofpoint-ORIG-GUID: mhg151N5eOB71vgBKR8044hlq_Nh01UX
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=bBqXziUQAAAA:8 a=UdeeB3KLDkuo1hJFcNUA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=Fk4IpSoW4aLDllm1B1p-:22
+ a=BjKv_IHbNJvPKzgot4uq:22
+X-Proofpoint-GUID: e2PuMrBJvvR6n2xzH2bwiY5XcQ21z8GJ
+X-Proofpoint-ORIG-GUID: e2PuMrBJvvR6n2xzH2bwiY5XcQ21z8GJ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
@@ -142,169 +144,123 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  clxscore=1015 priorityscore=1501 spamscore=0 malwarescore=0 phishscore=0
  impostorscore=0 bulkscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605050000 definitions=main-2605120238
-X-Rspamd-Queue-Id: B0E7252B3CC
+ reason=mlx scancount=1 engine=8.22.0-2605050000 definitions=main-2605120246
+X-Rspamd-Queue-Id: 0F2AE52B777
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36349-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	TAGGED_FROM(0.00)[bounces-36350-lists,linux-wireless=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
+	FREEMAIL_TO(0.00)[riseup.net,kernel.org,vger.kernel.org,lists.infradead.org,outlook.com,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-On 3/30/2026 3:05 AM, Matthew Leach wrote:
-> Add a debugfs command to simulate a firmware lockup.
+On 5/6/2026 12:54 PM, Santiago Ruano Rincón wrote:
+> Commit 0eb002c93c3b4 ("wifi: ath11k: Add missing platform IDs for quirk
+> table") added some Lenovo platform IDs to the quirk table to address a
+> wakeup from suspend issue [1].  However, at least P14s Gen 5 AMD, as
+> reported by Kyle Farnung [2], and P14s Gen 3 AMD are missing in the
+> table.  This commit adds the two corresponding Lenovo version IDs for
+> each.
 > 
-> This does not hang the hardware. Instead, it forces the driver down an
-> error path that reproduces the sequence observed during real lockups:
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
+> [2] https://bugzilla.kernel.org/show_bug.cgi?id=219196#c23
 > 
->   ath11k_pci 0000:03:00.0: failed to transmit frame -12
->   ath11k_pci 0000:03:00.0: failed to transmit frame -12
->   ath11k_pci 0000:03:00.0: failed to transmit frame -12
->   ...
->   ath11k_pci 0000:03:00.0: wmi command 28680 timeout
->   ath11k_pci 0000:03:00.0: failed to submit WMI_MGMT_TX_SEND_CMDID cmd
->   ath11k_pci 0000:03:00.0: failed to send mgmt frame: -11
+> Tested-on: P14s G3 AMD running 7.0.3.
 > 
-> This allows validation of the firmware lockup detection and recovery
-> mechanism without requiring a real hardware failure.
-> 
-> Signed-off-by: Matthew Leach <matthew.leach@collabora.com>
+> Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine model")
+> Co-authored-by: Kyle Farnung <kfarnung@gmail.com>
+
+This is not a standard Linux kernel commit tag.
+Co-developed-by: could be used, but I'd need a Signed-off-by: from Kyle
+
+Kyle, if you'd like these added please reply with both a Co-developed-by and
+a Signed-off-by tag
+
+I can apply these fixes when I process the patch in my tree.
+
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
+
+> Signed-off-by: Santiago Ruano Rincón <santiagorr@riseup.net>
 > ---
->  drivers/net/wireless/ath/ath11k/core.h    | 1 +
->  drivers/net/wireless/ath/ath11k/debugfs.c | 7 ++++++-
->  drivers/net/wireless/ath/ath11k/hal.c     | 7 +++++--
->  drivers/net/wireless/ath/ath11k/htc.c     | 2 +-
->  drivers/net/wireless/ath/ath11k/wmi.c     | 6 +++++-
->  5 files changed, 18 insertions(+), 5 deletions(-)
+> Changes in v2:
+> - Merged the Lenovo P14s G5 AMD #1 and #2 related changes proposed by
+>   Kyle Farnung in
+>   https://lore.kernel.org/all/20260330-p14s-pm-quirk-v2-1-ef18ce07996b@gmail.com/
+> - Added Kyle Farnung as Co-author of the commit
+> - Added the second ID of Lenovo P14s G3 AMD, and adapt the comments
+>   accordingly
+> - v1: https://lore.kernel.org/ath11k/20260423211458.458911-1-santiagorr@riseup.net/
+> ---
+>  drivers/net/wireless/ath/ath11k/core.c | 28 ++++++++++++++++++++++++++
+>  1 file changed, 28 insertions(+)
 > 
-> diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-> index 221dcd23b3dd..44b02ae1e85b 100644
-> --- a/drivers/net/wireless/ath/ath11k/core.h
-> +++ b/drivers/net/wireless/ath/ath11k/core.h
-> @@ -1041,6 +1041,7 @@ struct ath11k_base {
->  	struct ath11k_dbring_cap *db_caps;
->  	u32 num_db_cap;
->  	u64 last_frame_tx_error_jiffies;
-> +	bool simulate_lockup;
->  
->  	/* To synchronize 11d scan vdev id */
->  	struct mutex vdev_id_11d_lock;
-> diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-> index 0c1138407838..ca0b72a3e0b0 100644
-> --- a/drivers/net/wireless/ath/ath11k/debugfs.c
-> +++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-> @@ -356,7 +356,8 @@ static ssize_t ath11k_read_simulate_fw_crash(struct file *file,
->  	const char buf[] =
->  		"To simulate firmware crash write one of the keywords to this file:\n"
->  		"`assert` - this will send WMI_FORCE_FW_HANG_CMDID to firmware to cause assert.\n"
-> -		"`hw-restart` - this will simply queue hw restart without fw/hw actually crashing.\n";
-> +		"`hw-restart` - this will simply queue hw restart without fw/hw actually crashing.\n"
-> +		"`lockup` - simulate a firmware lockup without the h/w actually hanging.\n";
->  
->  	return simple_read_from_buffer(user_buf, count, ppos, buf, strlen(buf));
->  }
-> @@ -413,6 +414,10 @@ static ssize_t ath11k_write_simulate_fw_crash(struct file *file,
->  		ath11k_info(ab, "user requested hw restart\n");
->  		queue_work(ab->workqueue_aux, &ab->reset_work);
->  		ret = 0;
-> +	} else if (!strcmp(buf, "lockup")) {
-> +		ath11k_info(ab, "simulating lockup\n");
-> +		ab->simulate_lockup = true;
-> +		ret = 0;
->  	} else {
->  		ret = -EINVAL;
->  		goto exit;
-> diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-> index e821e5a62c1c..e01fb17a4734 100644
-> --- a/drivers/net/wireless/ath/ath11k/hal.c
-> +++ b/drivers/net/wireless/ath/ath11k/hal.c
-> @@ -691,7 +691,7 @@ int ath11k_hal_srng_dst_num_free(struct ath11k_base *ab, struct hal_srng *srng,
->  
->  	tp = srng->u.dst_ring.tp;
->  
-> -	if (sync_hw_ptr) {
-> +	if (sync_hw_ptr && !ab->simulate_lockup) {
->  		hp = *srng->u.dst_ring.hp_addr;
->  		srng->u.dst_ring.cached_hp = hp;
->  	} else {
-> @@ -743,7 +743,7 @@ u32 *ath11k_hal_srng_src_get_next_entry(struct ath11k_base *ab,
->  	 */
->  	next_hp = (srng->u.src_ring.hp + srng->entry_size) % srng->ring_size;
->  
-> -	if (next_hp == srng->u.src_ring.cached_tp)
-> +	if (next_hp == srng->u.src_ring.cached_tp || ab->simulate_lockup)
->  		return NULL;
->  
->  	desc = srng->ring_base_vaddr + srng->u.src_ring.hp;
-> @@ -828,6 +828,9 @@ void ath11k_hal_srng_access_begin(struct ath11k_base *ab, struct hal_srng *srng)
->  
->  	lockdep_assert_held(&srng->lock);
->  
-> +	if (ab->simulate_lockup)
-> +		return;
-> +
->  	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
->  		srng->u.src_ring.cached_tp =
->  			*(volatile u32 *)srng->u.src_ring.tp_addr;
-> diff --git a/drivers/net/wireless/ath/ath11k/htc.c b/drivers/net/wireless/ath/ath11k/htc.c
-> index 4571d01cc33d..b05d04a1f5e8 100644
-> --- a/drivers/net/wireless/ath/ath11k/htc.c
-> +++ b/drivers/net/wireless/ath/ath11k/htc.c
-> @@ -208,7 +208,7 @@ static int ath11k_htc_process_trailer(struct ath11k_htc *htc,
->  			break;
->  		}
->  
-> -		if (ab->hw_params.credit_flow) {
-> +		if (ab->hw_params.credit_flow && !ab->simulate_lockup) {
->  			switch (record->hdr.id) {
->  			case ATH11K_HTC_RECORD_CREDITS:
->  				len = sizeof(struct ath11k_htc_credit_report);
-> diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-> index 7d9f0bcbb3b0..27d6d4a2f803 100644
-> --- a/drivers/net/wireless/ath/ath11k/wmi.c
-> +++ b/drivers/net/wireless/ath/ath11k/wmi.c
-> @@ -345,9 +345,13 @@ int ath11k_wmi_cmd_send(struct ath11k_pdev_wmi *wmi, struct sk_buff *skb,
->  
->  		if (time_in_range64(ab->last_frame_tx_error_jiffies,
->  				    range_start, jiffies_64) &&
-> -		    queue_work(ab->workqueue_aux, &ab->reset_work))
-> +		    queue_work(ab->workqueue_aux, &ab->reset_work)) {
->  			ath11k_err(wmi_ab->ab,
->  				   "Firmware lockup detected.  Resetting.");
-> +
-> +			/* Assume that reset gets us out of lockup. */
-> +			ab->simulate_lockup = false;
-> +		}
->  	}
->  
->  	if (ret == -ENOBUFS)
-> 
+> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+> index 3f6f4db5b7ee..c1ce0a11af44 100644
+> --- a/drivers/net/wireless/ath/ath11k/core.c
+> +++ b/drivers/net/wireless/ath/ath11k/core.c
+> @@ -957,6 +957,20 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
+>  			DMI_MATCH(DMI_PRODUCT_NAME, "21K4"),
+>  		},
+>  	},
+> +	{
+> +		.driver_data = (void *)ATH11K_PM_WOW,
+> +		.matches = { /* P14s G3 AMD #1 */
+> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "21J5"),
+> +		},
+> +	},
+> +	{
+> +		.driver_data = (void *)ATH11K_PM_WOW,
+> +		.matches = { /* P14s G3 AMD #2 */
+> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "21J6"),
+> +		},
+> +	},
+>  	{
+>  		.driver_data = (void *)ATH11K_PM_WOW,
+>  		.matches = { /* P14s G4 AMD #1 */
+> @@ -971,6 +985,20 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
+>  			DMI_MATCH(DMI_PRODUCT_NAME, "21K6"),
+>  		},
+>  	},
+> +	{
+> +		.driver_data = (void *)ATH11K_PM_WOW,
+> +		.matches = { /* P14s G5 AMD #1 */
+> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
+> +		},
+> +	},
+> +	{
+> +		.driver_data = (void *)ATH11K_PM_WOW,
+> +		.matches = { /* P14s G5 AMD #2 */
+> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "21MF"),
+> +		},
+> +	},
+>  	{
+>  		.driver_data = (void *)ATH11K_PM_WOW,
+>  		.matches = { /* T16 G2 AMD #1 */
 
-My 1st impression of this patch is that the datapath folks are not going to
-like the ab->simulate_lockup checks in the hot path. But I'll let the
-engineers speak for themselves.
-
-/jeff
 
