@@ -1,204 +1,177 @@
-Return-Path: <linux-wireless+bounces-36377-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36378-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MALODg0VBGqDDQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36377-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 08:07:09 +0200
+	id 4MENGWonBGqDEwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36378-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 09:25:30 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F2C52DEFC
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 08:07:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0973752E996
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 09:25:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ACFC8309A940
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 06:05:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 02899304D8CB
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 07:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6859B3D3326;
-	Wed, 13 May 2026 06:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D484391517;
+	Wed, 13 May 2026 07:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n8+amBEn"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="ZGoMH7G9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB0F3D3302;
-	Wed, 13 May 2026 06:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB25E26FD93
+	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 07:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778652350; cv=none; b=m3+HWKsC/Nkhy61O8YR0gjQ++h9rWdrJVWScPFggzAWbuQ6zZVZ5gt6c/dAfLc+9DRGwkLbxybNKac7lrDPBVYWQvNX6fPxGzDmtaDZoVxwbhaLCCnUhiev8FxaGrFEvgpgGdSrUP4N6ObpMjRUFuPuUwhIeHZ8rOzc3Kc2vdxk=
+	t=1778657051; cv=none; b=i13N5+okC58itml7JRzHH/5BIAkszGxwfYKn7U6U5lukTSe2W1DzO8gckW85cQHc+KjRxNliiRrLioSFolWDHRUaIq0FpbWYji+5ujKEu3lxcpqKHaBiKUkcVdzwBgzT/51D2NqUSqnQ3SEB41KCT1Q/SOhQYT6T0q2+kTfWCLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778652350; c=relaxed/simple;
-	bh=vNaQjYEzsW3hrnW4jAtb5W62bkbeqFDjM4KUyUPNwoo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eYO8Zow2FXLiOmOhKdZtSkD7b0OaNp8JqD9rH2t1BxtULczZIiZEksu5Wa9/RHDL1VjhItacD0fkz8MLjS2hWN5/Us4TL8UDS5MHHSPaSrxhNKruwwGq+ruTHQPZfwVeCvFhLY0hOaDc7Lpa2oGyt6etfblIrsnfe9DZe7R2AZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n8+amBEn; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778652348; x=1810188348;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vNaQjYEzsW3hrnW4jAtb5W62bkbeqFDjM4KUyUPNwoo=;
-  b=n8+amBEnTQebUWB8mIDZ12VyTrgfnRl3r8Dm8A7FLgpk0spFN6bUVAQs
-   oDwJTGVbwAINHCIdx5G/fuqeJCBnmPgc9HwX9CUMi+CFMlj0/z1P/9IyQ
-   OtqzoErxVvJy+ftN6GaQ4r5bhiv6+YeAX2amOj00wxmx0ftJ//NVAZQcz
-   1/V9h/wtlYXuLJNhoYS4XnwjdsMJ0fYBtYGupRLVGW+c++eYMLF5LahqA
-   tgDOL/fnpNJl0fOeTI0Ifig3pnQSxgOembeFyrp41uKV9aBWOijP8Xeah
-   QHV+D/a/63uHgjmxV1nhl1bF9IEoCbcwYjO3GzskoUxSXCqxYAiGg1Mtj
-   A==;
-X-CSE-ConnectionGUID: 6qdSMZtgQpmKqvNyLJCk2g==
-X-CSE-MsgGUID: Z7Mi4YBGSeOFwZ85h5Ihtw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="90954413"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="90954413"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:05:45 -0700
-X-CSE-ConnectionGUID: 2STAC0B+THOQSMqEy6Hlog==
-X-CSE-MsgGUID: V160g7j/Sii/HC6LzW7XXw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="233712408"
-Received: from iapp347.iil.intel.com (HELO localhost) ([10.167.28.6])
-  by fmviesa010.fm.intel.com with ESMTP; 12 May 2026 23:05:43 -0700
-From: Avinash Bhatt <avinash.bhatt@intel.com>
-To: devicetree@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	johannes@sipsolutions.net,
-	miriam.rachel.korenblit@intel.com,
-	linux-kernel@vger.kernel.org,
-	kobi.guetta@intel.com,
-	emmanuel.grumbach@intel.com
-Subject: [PATCH v3 3/3] wifi: iwlwifi: dt: use Device Tree as fallback BIOS configuration source
-Date: Wed, 13 May 2026 09:05:31 +0300
-Message-Id: <20260513060531.8130-4-avinash.bhatt@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260513060531.8130-1-avinash.bhatt@intel.com>
-References: <20260513060531.8130-1-avinash.bhatt@intel.com>
+	s=arc-20240116; t=1778657051; c=relaxed/simple;
+	bh=QescUNFOehQDOuOu93CMpheB+8RU3Vh92gB2q3nE18o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PngTSN0s498kqSIyqqj4G1jmhHkwRDJ/1uVtahx3YzZHQ+59Oa5qpQkfWEys+1aDKQ8c2DRKp/f75beP6KutH+VY9/rXAQPWQK18mzh1Q/6WoTaFZmGX9ktHLg5sdbaYI0uTpg5EoXVJRn5082/toVU2PvntOLxOeP8rnvNnM7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=ZGoMH7G9; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: b75fa3a84e9c11f1a3561939bc42ff46-20260513
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=fXhtRM5RjLRQdXVr5ShuzzkhGZfrC2llytA16/b+um8=;
+	b=ZGoMH7G9YR0E/aNSHER/eeLONP846ZTHg2ltYLXBsDXx/FIfP+1d0WACgGnQy3w0TRjRMSw5YhWzXedGjgvGtaMkmNnIYQgHaEHfBLImkrqX/WQDmIbknKf26NILI4ZqR/FMCfO34dTo+eND2EGo8mQpiqOUH21hMOlc8GfRi6o=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.14,REQID:79f9e0b6-f29f-4621-b248-7959129629e1,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:9091e75,CLOUDID:e7fd4cbf-65a8-4b41-ac18-3671578a914d,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|865|888|898,TC:-5,Content:0|
+	15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0
+	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: b75fa3a84e9c11f1a3561939bc42ff46-20260513
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
+	(envelope-from <jb.tsai@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 36229382; Wed, 13 May 2026 15:24:02 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 13 May 2026 15:24:01 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Wed, 13 May 2026 15:24:01 +0800
+From: JB Tsai <jb.tsai@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	<Deren.Wu@mediatek.com>, <Sean.Wang@mediatek.com>, <Quan.Zhou@mediatek.com>,
+	<Ryder.Lee@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<litien.chang@mediatek.com>, <jeff.hsu@mediatek.com>, <jb.tsai@mediatek.com>,
+	Jeff Hsu <Jeff.Hsu@mediatek.com>
+Subject: [PATCH v2] wifi: mt76: mt7925: Add coredump callback in pci_driver
+Date: Wed, 13 May 2026 15:23:59 +0800
+Message-ID: <20260513072359.3943517-1-jb.tsai@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 96F2C52DEFC
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-MTK: N
+X-Rspamd-Queue-Id: 0973752E996
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[avinash.bhatt@intel.com,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-36377-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	RCVD_COUNT_FIVE(0.00)[5];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36378-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[mediatek.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jb.tsai@mediatek.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mediatek.com:email,mediatek.com:mid,mediatek.com:dkim]
 X-Rspamd-Action: no action
 
-When neither UEFI variables nor ACPI methods provide a BIOS
-configuration table, fall back to Device Tree. This preserves the
-existing UEFI -> ACPI priority order and extends it with DT as the
-lowest-priority source.
+From: Jeff Hsu <Jeff.Hsu@mediatek.com>=0D
 
-Signed-off-by: Avinash Bhatt <avinash.bhatt@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/regulatory.c  | 3 +++
- drivers/net/wireless/intel/iwlwifi/mld/mld.c        | 3 +++
- drivers/net/wireless/intel/iwlwifi/mld/regulatory.c | 5 ++++-
- 3 files changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-index 640e729091..d7ead787c2 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-@@ -8,6 +8,7 @@
- #include "regulatory.h"
- #include "fw/runtime.h"
- #include "fw/uefi.h"
-+#include "fw/dt.h"
- 
- #define GET_BIOS_TABLE(__name, ...)					\
- do {									\
-@@ -16,6 +17,8 @@ do {									\
- 		ret = iwl_uefi_get_ ## __name(__VA_ARGS__);		\
- 	if (ret < 0)							\
- 		ret = iwl_acpi_get_ ## __name(__VA_ARGS__);		\
-+	if (ret < 0 && iwl_dt_is_compatible(fwrt))			\
-+		ret = iwl_dt_get_ ## __name(__VA_ARGS__);		\
- 	return ret;							\
- } while (0)
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index 130eba60b4..1a95b19d33 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -12,6 +12,7 @@
- #include "fw/api/coex.h"
- #include "fw/dbg.h"
- #include "fw/uefi.h"
-+#include "fw/dt.h"
- 
- #include "mld.h"
- #include "mlo.h"
-@@ -466,6 +467,8 @@ iwl_op_mode_mld_start(struct iwl_trans *trans, const struct iwl_rf_cfg *cfg,
- 	iwl_mld_get_bios_tables(mld);
- 	iwl_uefi_get_sgom_table(trans, &mld->fwrt);
- 	mld->bios_enable_puncturing = iwl_uefi_get_puncturing(&mld->fwrt);
-+	if (!mld->bios_enable_puncturing && iwl_dt_is_compatible(&mld->fwrt))
-+		mld->bios_enable_puncturing = iwl_dt_get_puncturing(&mld->fwrt);
- 	mld->rfi.bios_enabled = iwl_rfi_is_enabled_in_bios(&mld->fwrt);
- 
- 	iwl_mld_hw_set_regulatory(mld);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c b/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
-index 97b2283f51..ce539a0be7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2024-2025 Intel Corporation
-+ * Copyright (C) 2024-2026 Intel Corporation
-  */
- 
- #include <linux/dmi.h>
-@@ -8,6 +8,7 @@
- #include "fw/regulatory.h"
- #include "fw/acpi.h"
- #include "fw/uefi.h"
-+#include "fw/dt.h"
- 
- #include "regulatory.h"
- #include "mld.h"
-@@ -64,6 +65,8 @@ void iwl_mld_get_bios_tables(struct iwl_mld *mld)
- 	}
- 
- 	iwl_uefi_get_uats_table(mld->trans, &mld->fwrt);
-+	if (!mld->fwrt.ap_type_cmd_valid && iwl_dt_is_compatible(&mld->fwrt))
-+		iwl_dt_get_uats_table(&mld->fwrt);
- 	iwl_uefi_get_uneb_table(mld->trans, &mld->fwrt);
- 
- 	iwl_bios_get_phy_filters(&mld->fwrt);
--- 
-2.34.1
-
+Register coredump callback(mt7925_coredump) in pci_driver,=0D
+it can let platform can trigger core dump to collect the=0D
+log and recover back after coredump complete without debugfs=0D
+=0D
+Some platform not have debugfs=0D
+=0D
+Signed-off-by: Jeff Hsu <Jeff.Hsu@mediatek.com>=0D
+---=0D
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c |  1 +=0D
+ drivers/net/wireless/mediatek/mt76/mt7925/pci.c | 12 ++++++++++++=0D
+ 2 files changed, 13 insertions(+)=0D
+=0D
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/=
+wireless/mediatek/mt76/mt7925/mcu.c=0D
+index 37cdf3e8a067..cd502166a7f9 100644=0D
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c=0D
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c=0D
+@@ -1014,6 +1014,7 @@ int mt7925_mcu_chip_config(struct mt792x_dev *dev, co=
+nst char *cmd)=0D
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(CHIP_CONFIG),=0D
+ 				 &req, sizeof(req), false);=0D
+ }=0D
++EXPORT_SYMBOL_GPL(mt7925_mcu_chip_config);=0D
+ =0D
+ int mt7925_mcu_set_deep_sleep(struct mt792x_dev *dev, bool enable)=0D
+ {=0D
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/=
+wireless/mediatek/mt76/mt7925/pci.c=0D
+index c4161754c01d..57006cd75b1c 100644=0D
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c=0D
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c=0D
+@@ -610,6 +610,17 @@ static int mt7925_pci_restore(struct device *device)=0D
+ 	return _mt7925_pci_resume(device, true);=0D
+ }=0D
+ =0D
++static void mt7925_coredump(struct device *dev)=0D
++{=0D
++	struct pci_dev *pdev =3D to_pci_dev(dev);=0D
++	struct mt76_dev *mdev =3D pci_get_drvdata(pdev);=0D
++	struct mt792x_dev *dev_792x =3D container_of(mdev, struct mt792x_dev, mt7=
+6);=0D
++=0D
++	mt792x_mutex_acquire(dev_792x);=0D
++	mt7925_mcu_chip_config(dev_792x, "assert");=0D
++	mt792x_mutex_release(dev_792x);=0D
++}=0D
++=0D
+ static const struct dev_pm_ops mt7925_pm_ops =3D {=0D
+ 	.suspend =3D pm_sleep_ptr(mt7925_pci_suspend),=0D
+ 	.resume  =3D pm_sleep_ptr(mt7925_pci_resume),=0D
+@@ -626,6 +637,7 @@ static struct pci_driver mt7925_pci_driver =3D {=0D
+ 	.remove		=3D mt7925_pci_remove,=0D
+ 	.shutdown       =3D mt7925_pci_shutdown,=0D
+ 	.driver.pm	=3D pm_sleep_ptr(&mt7925_pm_ops),=0D
++	.driver.coredump =3D mt7925_coredump,=0D
+ };=0D
+ =0D
+ module_pci_driver(mt7925_pci_driver);=0D
+-- =0D
+2.45.2=0D
+=0D
 
