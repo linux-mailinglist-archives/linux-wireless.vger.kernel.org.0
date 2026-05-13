@@ -1,153 +1,223 @@
-Return-Path: <linux-wireless+bounces-36388-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36389-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIgMLTSdBGr3LwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36388-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 17:48:04 +0200
+	id 0KrxOC+9BGrrNQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36389-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 20:04:31 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA8E53671B
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 17:48:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F885388CC
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 20:04:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 400E83013EF9
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 15:27:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D77F330B184F
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 17:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD8238D3E4;
-	Wed, 13 May 2026 15:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D86541C310;
+	Wed, 13 May 2026 17:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F9pdqBR3"
+	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="TQkgR1YS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324B440B6C5
-	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 15:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD6738C2B8;
+	Wed, 13 May 2026 17:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778686034; cv=none; b=BxlvIKklccFF6KIC+z3PF1DKzOL9542EhspNKzjVK/F2gLaNYKG9nT5Rqint9Sh+q6M3bGOUa6oRpaN7AfYCsydDhLW+OqQwQ3E+hGl64sAVtGv3VEy5JggFepKxi4aManwpR3or9qwwPvq0/n26GdvxJbAwrv+/kHbDpwC1q0A=
+	t=1778695055; cv=none; b=Fv8KEoyiFskayFZ4+NwVcLOTT/ZnVeGRUMCJ332v3aPjI51YqJlD9Npu1gPyIun7nOHmN6DQciKZQtVNkq78T2Ns23A+HersnZv8kR2kKLFwmFskPG6EYfqNMEKyV0HFHnuFKwc1Jx75cmyk+4dhtfy1CyvRZnXCJTLhguyfhkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778686034; c=relaxed/simple;
-	bh=Kk76HFcwFNIDtzPxH2/h3k9TiI68XiaWNbmm/qnytto=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=LGH092x2VwIDaWJYO6Gn6tqostaAXY+WTos77g2/vNrIA6+4Ng2eZNlEkZiM140kdtIl+vwa+3K5dVKVDZiRYI5LnfaXeFcMfAAjpgSo0zRYycyV5WaNVT/G/luP2v7pTgsRmaBsKsxMdj6dIOZy6yLrfJnQwSI6Mjx4EcphOik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F9pdqBR3; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778686032; x=1810222032;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Kk76HFcwFNIDtzPxH2/h3k9TiI68XiaWNbmm/qnytto=;
-  b=F9pdqBR3M1gnDoDHc/i3dQAGBv8n1pIP1lWy+uAmYO5ZzCTMmLiaMz1N
-   wuNJ1g21wAK32al1aZO79PkIyN7fBvXOG9R10fCGJUyOEiaRDB0OoygcV
-   hWMmfeAxw5Z872CNCXXOT0rfO4syCJu8R1UpWgSbyYdMAY+8IooFR+XO+
-   ChYel3fcxlyPRsH3ZWJA0iUitDTT8es8H+E6+ETRizFYdGkUvaLhxWLgK
-   75Q2CiPY/jlj0tny90bB3edgGuq+LsU/1zM5Y8NJxswGIpeyC/5H3PfT4
-   R7CHNMipn0B1eXuxu34r+rnOC2hIBj+sgkCNE6Nblwqi5WvyknXgdEvy7
-   A==;
-X-CSE-ConnectionGUID: TOiM1EzUQbS8eEhlvNyNIg==
-X-CSE-MsgGUID: l0RnB1ziSGKi8eWE+Q/pYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="90719298"
-X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; 
-   d="scan'208";a="90719298"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:27:12 -0700
-X-CSE-ConnectionGUID: L0zcZa/ZQhyP77RcqIFgSQ==
-X-CSE-MsgGUID: 5i6WOkx5Sqa+mcUomKBGmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="276218872"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:27:11 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Subject: [PATCH wireless] wifi: mac80211: don't call ieee80211_handle_reconfig_failure when not needed
-Date: Wed, 13 May 2026 18:26:56 +0300
-Message-Id: <20260513182548.6a25f3a0a6ec.I83d1f2a7eed20200a78a62757c6b193e3bab892b@changeid>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1778695055; c=relaxed/simple;
+	bh=XmrrPmZdJaPkEwoIwjxVVxewS4D228++acby7DpxpQc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p7VyFepizKmtp3pGjTzCPghxBN0slEh9Qi64pcY3rV3e5y9ynbR5ATFEhf+4u31UynapyMi/I/QHHqJIIZH8XMgUiCM7aQnaA1Vgv3G0TjE2hR4kWL+fOnn20DqWdgXMFNz+D+Ja5jUSHUvTKs9/cQo+U/NkmHC+m1B4EoJB9r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=TQkgR1YS; arc=none smtp.client-ip=198.252.153.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
+Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1.riseup.net (Postfix) with ESMTPS id 4gG1Pz13rtzDtMg;
+	Wed, 13 May 2026 17:57:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=riseup.net; s=squak;
+	t=1778695047; bh=Uu0Ury0RB4Jz8n9cKBHsi6ncR/kg9AlVj4sjmyqoarQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TQkgR1YSoPPecXK7tPD2J+PWn9Lo27uUCM/PructzgOmUzWI1yRMnxQw10PLe0vV+
+	 r/KKAx0EepIwxhKVeW/8HmEf9IP8aIehQqJZkqY4MZviI4O4qUHoFlTQnL61OZoaay
+	 6Bojo3j80wrVNtDjlhxW5zVzc5C3fnJSTlmT8bQ4=
+X-Riseup-User-ID: FDEA97DCFEFD1AD42A6E284BEB520E068F61E67A59937672D6FCB631F4E492EE
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4gG1Px56s6z1yhC;
+	Wed, 13 May 2026 17:57:25 +0000 (UTC)
+Date: Wed, 13 May 2026 14:57:18 -0300
+From: Santiago Ruano =?iso-8859-1?Q?Rinc=F3n?= <santiagorr@riseup.net>
+To: Kyle Farnung <kfarnung@gmail.com>
+Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kfarnung@outlook.com, Mark Pearson <mpearson-lenovo@squebb.ca>,
+	koike@igalia.com
+Subject: Re: [PATCH v2] wifi: ath11k: Add two missing Lenovo IDs to the quirk
+ table
+Message-ID: <agS7fr8mDI9TLpvh@voleno>
+References: <20260506200249.317690-1-santiagorr@riseup.net>
+ <45f1c979-ea8d-4118-8551-eff93966b4e1@oss.qualcomm.com>
+ <CAOPSVF29ofKi8fpmJxuq9F5uQXHe4RrFvGb2V-odGMNA77NWXw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4CA8E53671B
+In-Reply-To: <CAOPSVF29ofKi8fpmJxuq9F5uQXHe4RrFvGb2V-odGMNA77NWXw@mail.gmail.com>
+X-Rspamd-Queue-Id: 43F885388CC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[riseup.net,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[riseup.net:s=squak];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36388-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,kernel.org,vger.kernel.org,lists.infradead.org,outlook.com,squebb.ca,igalia.com];
+	TAGGED_FROM(0.00)[bounces-36389-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[riseup.net:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_ONE(0.00)[1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[santiagorr@riseup.net,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,riseup.net:email,riseup.net:dkim]
 X-Rspamd-Action: no action
 
-In case reconfiguration of NAN fails, we call
-ieee80211_handle_reconfig_failure, that marks all interfaces as not in
-the driver.
-Then, at the error path of the reconfig, cfg80211_shutdown_all_interfaces
-is called to destroy all the interfaces.
+El 12/05/26 a las 20:30, Kyle Farnung escribió:
+> On Tue, May 12, 2026 at 5:03 PM Jeff Johnson
+> <jeff.johnson@oss.qualcomm.com> wrote:
+> >
+> > On 5/6/2026 12:54 PM, Santiago Ruano Rincón wrote:
+> > > Commit 0eb002c93c3b4 ("wifi: ath11k: Add missing platform IDs for quirk
+> > > table") added some Lenovo platform IDs to the quirk table to address a
+> > > wakeup from suspend issue [1].  However, at least P14s Gen 5 AMD, as
+> > > reported by Kyle Farnung [2], and P14s Gen 3 AMD are missing in the
+> > > table.  This commit adds the two corresponding Lenovo version IDs for
+> > > each.
+> > >
+> > > [1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
+> > > [2] https://bugzilla.kernel.org/show_bug.cgi?id=219196#c23
+> > >
+> > > Tested-on: P14s G3 AMD running 7.0.3.
+> > >
+> > > Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine model")
+> > > Co-authored-by: Kyle Farnung <kfarnung@gmail.com>
+> >
+> > This is not a standard Linux kernel commit tag.
+> > Co-developed-by: could be used, but I'd need a Signed-off-by: from Kyle
+> >
+> > Kyle, if you'd like these added please reply with both a Co-developed-by and
+> > a Signed-off-by tag
+> 
+> I re-tested the bug behavior on the v7.0.4 tag and found that I'm not able
+> to reproduce it on my device. I put the device to sleep and then unplugged
+> and replugged power; it never woke up until I intentionally woke it.
+> 
+> Based on discussion in [3], I narrowed my issue with wi-fi disassociation
+> on wake to a suspect commit [4]. I'm developing a patch that clears the rdp
+> and wrp buffers during wake to clear out any stale state in the LMAC rings.
+> I'll submit that once I'm done testing it.
+> 
+> Santiago: Are you seeing the sleep/wake bug from [1] or something similar
+> to what I was seeing around disconnections on wake?
 
-If we have any other interface but the NAN one, for example a BSS
-station, then when its state (links, stations) will be removed, we
-won't tell the driver about this, because we will think that the
-interfaces are not in the driver, and then drivers might remain with
-dangling pointers to objects like stations and links (at least for
-iwlwifi this is the case).
+I was seeing wifi issues after wake-up, including disassociations, as
+described at https://bugs.debian.org/1132343.
 
-ieee80211_handle_reconfig_failure is meant to be called after we cleaned
-up the state in the driver, there is no reason to call it for NAN
-reconfiguration failure.
-
-Fix the code to just warn in such a case, as we do in other error paths
-in reconfig where it is too complicated to rewind.
-
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- net/mac80211/util.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
-
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 2529b01e2cd5..dd2ba0fa0331 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2200,11 +2200,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 			}
- 			break;
- 		case NL80211_IFTYPE_NAN:
--			res = ieee80211_reconfig_nan(sdata);
--			if (res < 0) {
--				ieee80211_handle_reconfig_failure(local);
--				return res;
--			}
-+			WARN_ON(ieee80211_reconfig_nan(sdata));
- 			break;
- 		case NL80211_IFTYPE_NAN_DATA:
- 		case NL80211_IFTYPE_AP_VLAN:
--- 
-2.34.1
-
+> 
+> [3] https://lore.kernel.org/all/CAOPSVF04q6uvVdq8GTRLHBrVMdpt9=o9wVcFMc6f-yhmSBcZqQ@mail.gmail.com/
+> [4] 32be3ca4cf78b ("wifi: ath11k: HAL SRNG: don't deinitialize and
+> re-initialize again")
+> 
+> >
+> > I can apply these fixes when I process the patch in my tree.
+> >
+> > https://www.kernel.org/doc/html/latest/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
+> >
+> > > Signed-off-by: Santiago Ruano Rincón <santiagorr@riseup.net>
+> > > ---
+> > > Changes in v2:
+> > > - Merged the Lenovo P14s G5 AMD #1 and #2 related changes proposed by
+> > >   Kyle Farnung in
+> > >   https://lore.kernel.org/all/20260330-p14s-pm-quirk-v2-1-ef18ce07996b@gmail.com/
+> > > - Added Kyle Farnung as Co-author of the commit
+> > > - Added the second ID of Lenovo P14s G3 AMD, and adapt the comments
+> > >   accordingly
+> > > - v1: https://lore.kernel.org/ath11k/20260423211458.458911-1-santiagorr@riseup.net/
+> > > ---
+> > >  drivers/net/wireless/ath/ath11k/core.c | 28 ++++++++++++++++++++++++++
+> > >  1 file changed, 28 insertions(+)
+> > >
+> > > diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+> > > index 3f6f4db5b7ee..c1ce0a11af44 100644
+> > > --- a/drivers/net/wireless/ath/ath11k/core.c
+> > > +++ b/drivers/net/wireless/ath/ath11k/core.c
+> > > @@ -957,6 +957,20 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
+> > >                       DMI_MATCH(DMI_PRODUCT_NAME, "21K4"),
+> > >               },
+> > >       },
+> > > +     {
+> > > +             .driver_data = (void *)ATH11K_PM_WOW,
+> > > +             .matches = { /* P14s G3 AMD #1 */
+> > > +                     DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+> > > +                     DMI_MATCH(DMI_PRODUCT_NAME, "21J5"),
+> > > +             },
+> > > +     },
+> > > +     {
+> > > +             .driver_data = (void *)ATH11K_PM_WOW,
+> > > +             .matches = { /* P14s G3 AMD #2 */
+> > > +                     DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+> > > +                     DMI_MATCH(DMI_PRODUCT_NAME, "21J6"),
+> > > +             },
+> > > +     },
+> > >       {
+> > >               .driver_data = (void *)ATH11K_PM_WOW,
+> > >               .matches = { /* P14s G4 AMD #1 */
+> > > @@ -971,6 +985,20 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
+> > >                       DMI_MATCH(DMI_PRODUCT_NAME, "21K6"),
+> > >               },
+> > >       },
+> > > +     {
+> > > +             .driver_data = (void *)ATH11K_PM_WOW,
+> > > +             .matches = { /* P14s G5 AMD #1 */
+> > > +                     DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+> > > +                     DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
+> > > +             },
+> > > +     },
+> > > +     {
+> > > +             .driver_data = (void *)ATH11K_PM_WOW,
+> > > +             .matches = { /* P14s G5 AMD #2 */
+> > > +                     DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+> > > +                     DMI_MATCH(DMI_PRODUCT_NAME, "21MF"),
+> > > +             },
+> > > +     },
+> > >       {
+> > >               .driver_data = (void *)ATH11K_PM_WOW,
+> > >               .matches = { /* T16 G2 AMD #1 */
+> >
 
