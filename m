@@ -1,178 +1,217 @@
-Return-Path: <linux-wireless+bounces-36391-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36392-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id l7+YMDjABGpQNgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36391-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 20:17:28 +0200
+	id QA1mLgHABGoeNgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36392-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 20:16:33 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F4C538C07
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 20:17:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4CA538BB8
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 20:16:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72E2F312A197
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 18:10:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 425143010670
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 18:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2E64E376B;
-	Wed, 13 May 2026 18:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E941F378D8C;
+	Wed, 13 May 2026 18:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WeddPYpk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MM64SEcV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562453A7194
-	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 18:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433323F4115;
+	Wed, 13 May 2026 18:16:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778695833; cv=none; b=FnByIhxP+IrUUCUBwTJ99P79Kq2D7O2k+xeoviQzlAS2y/12qSS4/1wedrHjlGgQECyjQWpr4YcOyJ35kn6cjkDLGTfJJyyNxsF9MY6CSCgJF/lhxkQZVhvTj32eDsdlIPQbrviYEqTBAMLAeSHNhvJDAc+QjNTgID7ua2Es+iI=
+	t=1778696189; cv=none; b=g3tCerua+kLMg2CowNWvkqW4ijlFnw+tsS/qEkwghbwvgMTksaTxQRhK6K9qVinpKJRWMkZiJZX5AoO1w1n6zjFh1GM6W5cAehJv2Se9ZxBkRt1qXw+tRPqHW8NUfXxrh7damf13lTRoH2zaILKIaohvNF04MZLrJAq15zvIE+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778695833; c=relaxed/simple;
-	bh=epicXnbB/pM3asGKTTsEDj5mlISm0shL3WYSAcMAQxM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D5XiGz5iC4To94/er+jjhtIGQH/SL5VErHHr0S9OJLHhYpQ/AGkpAIZHR7TMqIVxhNCcOK9Fv8WHN+Gy54zM1kaFMOha59HXcAM53EHwxv1Wx1KFj9fP1mXB5eCiLMx2FUfW7yUySHUnWVMUgDhVHRjvfWFJV7NVUZuKNjFPxqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WeddPYpk; arc=none smtp.client-ip=95.215.58.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778695830;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=NWRrOqCbg1MQoEcy5/B/+aBjcxq3k+Op6OO8uy8W9YY=;
-	b=WeddPYpkKCUC3FPkJljRgvdnGl/K/aNIOJ5WY6Mldc7pgD+c/puMf/WzJ1x7RIKeg+SesX
-	d0c0UbQuzxS+tiS1yGQXTKO0qeqL4ZBSRt2YwRJCVUCLC2nI0/fWA6fVYq0diPbYfbgbVi
-	mZq536jLWC50kCXPa1TrrMvRK2xafRA=
-From: luka.gejak@linux.dev
-To: Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Luka Gejak <luka.gejak@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] wifi: rtw88: usb: fix memory leaks on USB write failures
-Date: Wed, 13 May 2026 20:10:08 +0200
-Message-ID: <20260513181008.13470-1-luka.gejak@linux.dev>
+	s=arc-20240116; t=1778696189; c=relaxed/simple;
+	bh=3llgRJ9rM94AnLULhT58OrpcTkA18s5QGlESv6m9e1I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qMig2zzs8yF83F/qMdMZU58T2WVjL969JY9EsJTgssdKnKfqqUXKYkgHYHquHsh67Z2b4YZU0a1jeEUrWgyTjR0ZKiL8ma2Vojm4fskWZIfdFPc/1LgZj1oOu+VnXwWwwgbKi8F8ZvX0ZgZeQCH2XV44Uaa4G6xZoET6BoPfEJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MM64SEcV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2F9C19425;
+	Wed, 13 May 2026 18:16:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778696188;
+	bh=3llgRJ9rM94AnLULhT58OrpcTkA18s5QGlESv6m9e1I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MM64SEcVLEXM1v0XH+bed/phFVq1O3wEtVMc0ykrSDJtQZbHaNnmXkKOFE+LnX1wQ
+	 ejUi4ZNlVi0gN3yBo4dzzN3qQa/2620xGabs9eu9LEV7mo1+/MkgzcryXKn1B0j0EC
+	 WbiVGsIGHYylQvUc6rLfrZtrFYPWucHBoLpef+7dFO1RUxYRnuW99v8r9xlzmRUpYz
+	 3kemM0Lgjx8132hv+8hVN48zoLeEq1LA1WnGcz2cU6VPpD8lyVHC3a/0Q/dfBVlGIw
+	 Y0PUi36jJ+bi3fvsW3dwjdRcYrNmrpLqUogKou4K15KvTlYOlt56PtfE080prKrOH8
+	 wBU/jKRrjntww==
+Message-ID: <6b722eda-a22e-4037-86c3-7f1231022af9@kernel.org>
+Date: Wed, 13 May 2026 20:16:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] wifi: iwlwifi: dt: add Device Tree BIOS
+ configuration infrastructure
+To: "Bhatt, Avinash" <avinash.bhatt@intel.com>
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+ <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+ "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Guetta, Kobi" <kobi.guetta@intel.com>,
+ "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+References: <20260504095327.30892-1-avinash.bhatt@intel.com>
+ <20260504095327.30892-3-avinash.bhatt@intel.com>
+ <20260505-sincere-electric-lobster-2a7bc3@quoll>
+ <BL1PR11MB595490A72F8319FBB23194F1E0392@BL1PR11MB5954.namprd11.prod.outlook.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <BL1PR11MB595490A72F8319FBB23194F1E0392@BL1PR11MB5954.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 19F4C538C07
+X-Rspamd-Queue-Id: 5B4CA538BB8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36391-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36392-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:mid,linux.dev:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Luka Gejak <luka.gejak@linux.dev>
+On 12/05/2026 12:03, Bhatt, Avinash wrote:
+> Hi Krzysztof,
+> 
+> Thank you for the review. Please find our response inline below.
+> We have made several changes in the driver as part of v3 and will be
+> sending it shortly.
+> 
+> On Mon, May 04, 2026 at 12:53:26PM +0300, Krzysztof Kozlowski wrote:
+>> +static const char *dsm_func_to_prop_name(enum iwl_dsm_funcs func) {
+>> +	switch (func) {
+>> +	case DSM_FUNC_DISABLE_SRD:          return IWL_DT_PROP_SRD;
+>> +	case DSM_FUNC_ENABLE_6E:            return IWL_DT_PROP_6E_UHB;
+>> ...
+>>
+>> Pointless function and only making DT ABI checks difficult. Drop.
+>> Don't invent API wrappers or other HAL over simple calls to OF or
+>> device API.
+>> Drop also ALL defines and use OF API like EVERY other driver.
+> 
+> Fixed in v3. Removed dsm_func_to_prop_name() and all IWL_DT_PROP_*
+> defines. iwl_dt_get_dsm() now dispatches via a direct switch on the
+> function index to individual per-property functions (iwl_dt_get_srd(),
+> iwl_dt_get_6e_uhb(), etc.), each calling of_property_read_*() directly
+> with the literal property string — consistent with how every other
+> driver uses the OF API.
+> 
+> Best Regards,
+> Avinash
+> 
+> -----Original Message-----
+> From: Krzysztof Kozlowski <krzk@kernel.org> 
+> Sent: 05 May 2026 14:48
+> To: Bhatt, Avinash <avinash.bhatt@intel.com>
+> Cc: devicetree@vger.kernel.org; linux-wireless@vger.kernel.org; robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org; johannes@sipsolutions.net; Korenblit, Miriam Rachel <miriam.rachel.korenblit@intel.com>; linux-kernel@vger.kernel.org; Guetta, Kobi <kobi.guetta@intel.com>; Grumbach, Emmanuel <emmanuel.grumbach@intel.com>
+> Subject: Re: [PATCH v2 2/3] wifi: iwlwifi: dt: add Device Tree BIOS configuration infrastructure
+> 
+> On Mon, May 04, 2026 at 12:53:26PM +0300, Avinash Bhatt wrote:
+>> +
+>> +/*
+>> + * Mapping from DSM function index to Device Tree property name.
+>> + * Returns the DT property name for a given DSM function, or NULL if 
+>> +the
+>> + * function has no Device Tree representation.
+>> + */
+>> +static const char *dsm_func_to_prop_name(enum iwl_dsm_funcs func) {
+>> +	switch (func) {
+>> +	case DSM_FUNC_DISABLE_SRD:          return IWL_DT_PROP_SRD;
+>> +	case DSM_FUNC_ENABLE_6E:            return IWL_DT_PROP_6E_UHB;
+>> +	case DSM_FUNC_REGULATORY_CONFIG:    return IWL_DT_PROP_REG_SPECIAL;
+>> +	case DSM_FUNC_ACTIVATE_CHANNEL:     return IWL_DT_PROP_ACTIVATE_CH;
+>> +	case DSM_FUNC_FORCE_DISABLE_CHANNELS:
+>> +		return IWL_DT_PROP_FORCE_DISABLE_CH;
+>> +	case DSM_FUNC_ENABLE_11BE:          return IWL_DT_PROP_11BE;
+>> +	default:                            return NULL;
+> 
+> Pointless function and only making DT ABI checks difficult. Drop.
+> 
+> Don't invent API wrappers or other HAL over simple calls to OF or device API.
+> 
+> Drop also ALL defines and use OF API like EVERY other driver. This is not a special place.
+> 
 
-When rtw_usb_write_port() fails to submit a USB Request Block (URB)
-(e.g., due to device disconnect or ENOMEM), the completion callback is
-never executed.
+What is this style of answering? Am I replying now to my own email?
 
-Currently, the driver ignores the return value of rtw_usb_write_port()
-in rtw_usb_write_data() and rtw_usb_tx_agg_skb(). Because these
-functions rely on the completion callback to free the socket buffers
-(skbs) and the transaction control block (txcb), a submission failure
-results in:
-1. A memory leak of the allocated skb in rtw_usb_write_data().
-2. A memory leak of the txcb structure and all aggregated skbs in
-   rtw_usb_tx_agg_skb().
-
-Fix this by checking the return value of rtw_usb_write_port(). If it
-fails, explicitly free the skb in rtw_usb_write_data(), and properly
-purge the tx_ack_queue and free the txcb in rtw_usb_tx_agg_skb().
-
-The issue was discovered in practice during device disconnect/reconnect
-scenarios and memory pressure conditions. Tested by verifying normal TX
-operation continues after the fix without regressions.
-
-Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
-Cc: stable@vger.kernel.org
-Tested-by: Luka Gejak <luka.gejak@linux.dev>
-Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
----
-Changes in v3:
- - Updated the Fixes tag to the commit that introduced USB support.
-Changes in v2:
- - Use ret = rtw_usb_write_port(...); style, and check by next line (in
-   rtw_usb_tx_agg_skb)
- - Remove unnecessary comment
- - Use ieee80211_purge_tx_queue() instead of skb_queue_purge()
- - Add testing details to commit message
-
- drivers/net/wireless/realtek/rtw88/usb.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index 718940ebba31..1bb922cc2928 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -399,6 +399,7 @@ static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwusb, struct sk_buff_head *list
- 	int agg_num = 0;
- 	unsigned int align_next = 0;
- 	u8 qsel;
-+	int ret;
- 
- 	if (skb_queue_empty(list))
- 		return false;
-@@ -456,7 +457,13 @@ static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwusb, struct sk_buff_head *list
- 	tx_desc = (struct rtw_tx_desc *)skb_head->data;
- 	qsel = le32_get_bits(tx_desc->w1, RTW_TX_DESC_W1_QSEL);
- 
--	rtw_usb_write_port(rtwdev, qsel, skb_head, rtw_usb_write_port_tx_complete, txcb);
-+	ret = rtw_usb_write_port(rtwdev, qsel, skb_head,
-+			         rtw_usb_write_port_tx_complete, txcb);
-+	if (ret) {
-+		ieee80211_purge_tx_queue(rtwdev->hw, &txcb->tx_ack_queue);
-+		kfree(txcb);
-+		return false;
-+	}
- 
- 	return true;
- }
-@@ -518,8 +525,10 @@ static int rtw_usb_write_data(struct rtw_dev *rtwdev,
- 
- 	ret = rtw_usb_write_port(rtwdev, qsel, skb,
- 				 rtw_usb_write_port_complete, skb);
--	if (unlikely(ret))
-+	if (unlikely(ret)) {
- 		rtw_err(rtwdev, "failed to do USB write, ret=%d\n", ret);
-+		dev_kfree_skb_any(skb);
-+	}
- 
- 	return ret;
- }
--- 
-2.54.0
-
+Best regards,
+Krzysztof
 
