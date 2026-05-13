@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-36387-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36388-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPk5I32LBGqvLQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36387-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 16:32:29 +0200
+	id IIgMLTSdBGr3LwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36388-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 17:48:04 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4D05351D5
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 16:32:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA8E53671B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 17:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1A0D530AFF64
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 14:24:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 400E83013EF9
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 15:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F56641B346;
-	Wed, 13 May 2026 14:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD8238D3E4;
+	Wed, 13 May 2026 15:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kLb2sEdi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F9pdqBR3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C71133D6E1
-	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 14:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324B440B6C5
+	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 15:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778682281; cv=none; b=KE9YrDJ+wiJoxBuziCR1GAPeAC6sH2rBFhK7seqga9d4l67b/ZFzP1s3qrRWHuWCWnsU8CbrNu1eqjJBWcsBq9vyNEaRnSia3d7hNlYn9DOSZXcoZKfxF0OPZagI1JnCBOgAtnRnLui+P8gfW1xLZygwT8R+vJj8Sdm8G3DaTds=
+	t=1778686034; cv=none; b=BxlvIKklccFF6KIC+z3PF1DKzOL9542EhspNKzjVK/F2gLaNYKG9nT5Rqint9Sh+q6M3bGOUa6oRpaN7AfYCsydDhLW+OqQwQ3E+hGl64sAVtGv3VEy5JggFepKxi4aManwpR3or9qwwPvq0/n26GdvxJbAwrv+/kHbDpwC1q0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778682281; c=relaxed/simple;
-	bh=uVUo77H0bjGtSnzoIrRwR0Iu0tx67qbhk4wc5XH6gUg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ar5DUXO1M1Qqhm5JxZWfLdrWWCqBLv7AERjFKjt1Zowhkkub05loH0sdgD+BknQENMFKk3zC2w2PTqeMqe4oq++CuDMd5EdfUga6GJLYgUue+a1hN7EEhXAnVa3qcn767n388tB4/dqf4NAtuBpx4Pmrs1JGTbKjX/7YNzO+48c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kLb2sEdi; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1778686034; c=relaxed/simple;
+	bh=Kk76HFcwFNIDtzPxH2/h3k9TiI68XiaWNbmm/qnytto=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=LGH092x2VwIDaWJYO6Gn6tqostaAXY+WTos77g2/vNrIA6+4Ng2eZNlEkZiM140kdtIl+vwa+3K5dVKVDZiRYI5LnfaXeFcMfAAjpgSo0zRYycyV5WaNVT/G/luP2v7pTgsRmaBsKsxMdj6dIOZy6yLrfJnQwSI6Mjx4EcphOik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F9pdqBR3; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778682279; x=1810218279;
-  h=from:to:cc:subject:date:message-id:mime-version:
+  t=1778686032; x=1810222032;
+  h=from:to:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=uVUo77H0bjGtSnzoIrRwR0Iu0tx67qbhk4wc5XH6gUg=;
-  b=kLb2sEdi69zyeb0TcfxApbtyBdGGQtMvswataf0/ko5Ag0dOoEJ56obV
-   LXbWBbcSRX5SADS87VK7Fyb4bEtNFkMLlK0b2sWCTMUFDsogwujXr3UAn
-   kDqMdvCsYPV0r+Rj7xIKZ3CN70ejO1HhMVGqcNC5nZic+ZrHqxItImow1
-   66DqfWQy6RTBegyz0CuFCecmiI5zbhjCq5mOqG2dNI2siGHj0oqkncdAU
-   vVd/olH7M604E2ozHVwfD/qcGpayA6clIqPOyMF7rgK2eiqoNBn4WXsa4
-   TI7AGGWtAcmjEZKXKPgn/oD4RBXHdH/FrFSxVUzvJ47saYguWxtZkiR5f
-   g==;
-X-CSE-ConnectionGUID: lSvUHS4EQwmsFWHBk7Wkwg==
-X-CSE-MsgGUID: V25NhRLGRMKfFwzBo5rUdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="97179307"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="97179307"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 07:24:38 -0700
-X-CSE-ConnectionGUID: MRxAQY52REiYleNleNQhHg==
-X-CSE-MsgGUID: T13gWfmHQ8uoKlH0Gauv+A==
+  bh=Kk76HFcwFNIDtzPxH2/h3k9TiI68XiaWNbmm/qnytto=;
+  b=F9pdqBR3M1gnDoDHc/i3dQAGBv8n1pIP1lWy+uAmYO5ZzCTMmLiaMz1N
+   wuNJ1g21wAK32al1aZO79PkIyN7fBvXOG9R10fCGJUyOEiaRDB0OoygcV
+   hWMmfeAxw5Z872CNCXXOT0rfO4syCJu8R1UpWgSbyYdMAY+8IooFR+XO+
+   ChYel3fcxlyPRsH3ZWJA0iUitDTT8es8H+E6+ETRizFYdGkUvaLhxWLgK
+   75Q2CiPY/jlj0tny90bB3edgGuq+LsU/1zM5Y8NJxswGIpeyC/5H3PfT4
+   R7CHNMipn0B1eXuxu34r+rnOC2hIBj+sgkCNE6Nblwqi5WvyknXgdEvy7
+   A==;
+X-CSE-ConnectionGUID: TOiM1EzUQbS8eEhlvNyNIg==
+X-CSE-MsgGUID: l0RnB1ziSGKi8eWE+Q/pYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="90719298"
+X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; 
+   d="scan'208";a="90719298"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:27:12 -0700
+X-CSE-ConnectionGUID: L0zcZa/ZQhyP77RcqIFgSQ==
+X-CSE-MsgGUID: 5i6WOkx5Sqa+mcUomKBGmQ==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="276218872"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 07:24:37 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:27:11 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Ilan Peer <ilan.peer@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH wireless-next] wifi: mac80211: Allow per station GTK for NAN Data interfaces
-Date: Wed, 13 May 2026 17:24:22 +0300
-Message-Id: <20260513172418.37a8e259e611.I39bb9f3c1a65a8184124f531c18e121dc123d411@changeid>
+Subject: [PATCH wireless] wifi: mac80211: don't call ieee80211_handle_reconfig_failure when not needed
+Date: Wed, 13 May 2026 18:26:56 +0300
+Message-Id: <20260513182548.6a25f3a0a6ec.I83d1f2a7eed20200a78a62757c6b193e3bab892b@changeid>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -75,83 +74,79 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CD4D05351D5
+X-Rspamd-Queue-Id: 4CA8E53671B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36387-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36388-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_ONE(0.00)[1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Ilan Peer <ilan.peer@intel.com>
+In case reconfiguration of NAN fails, we call
+ieee80211_handle_reconfig_failure, that marks all interfaces as not in
+the driver.
+Then, at the error path of the reconfig, cfg80211_shutdown_all_interfaces
+is called to destroy all the interfaces.
 
-The WiFi Aware specification (v4.0) requires that NAN devices that
-support security would also support per station GTK. Thus, allow
-per station GTK installation to the driver on NAN Data interfaces.
+If we have any other interface but the NAN one, for example a BSS
+station, then when its state (links, stations) will be removed, we
+won't tell the driver about this, because we will think that the
+interfaces are not in the driver, and then drivers might remain with
+dangling pointers to objects like stations and links (at least for
+iwlwifi this is the case).
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Tested-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-tested: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+ieee80211_handle_reconfig_failure is meant to be called after we cleaned
+up the state in the driver, there is no reason to call it for NAN
+reconfiguration failure.
+
+Fix the code to just warn in such a case, as we do in other error paths
+in reconfig where it is too complicated to rewind.
+
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/key.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/mac80211/util.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index 4b8965633df3..3030bd40bca0 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -6,7 +6,7 @@
-  * Copyright 2007-2008	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright 2015-2017	Intel Deutschland GmbH
-- * Copyright 2018-2020, 2022-2025  Intel Corporation
-+ * Copyright 2018-2020, 2022-2026  Intel Corporation
-  */
- 
- #include <crypto/utils.h>
-@@ -150,11 +150,14 @@ static int ieee80211_key_enable_hw_accel(struct ieee80211_key *key)
- 	sta = key->sta;
- 
- 	/*
--	 * If this is a per-STA GTK, check if it
--	 * is supported; if not, return.
-+	 * Allow installation of a per-STA GTK if per-STA GTK is supported
-+	 * by the driver or the interface is a NAN Data interface (as
-+	 * per-station GTKs are required to be supported if secure NAN is
-+	 * supported).
- 	 */
- 	if (sta && !(key->conf.flags & IEEE80211_KEY_FLAG_PAIRWISE) &&
--	    !ieee80211_hw_check(&key->local->hw, SUPPORTS_PER_STA_GTK))
-+	    !(ieee80211_hw_check(&key->local->hw, SUPPORTS_PER_STA_GTK) ||
-+	      sdata->vif.type == NL80211_IFTYPE_NAN_DATA))
- 		goto out_unsupported;
- 
- 	if (sta && !sta->uploaded)
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 2529b01e2cd5..dd2ba0fa0331 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2200,11 +2200,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 			}
+ 			break;
+ 		case NL80211_IFTYPE_NAN:
+-			res = ieee80211_reconfig_nan(sdata);
+-			if (res < 0) {
+-				ieee80211_handle_reconfig_failure(local);
+-				return res;
+-			}
++			WARN_ON(ieee80211_reconfig_nan(sdata));
+ 			break;
+ 		case NL80211_IFTYPE_NAN_DATA:
+ 		case NL80211_IFTYPE_AP_VLAN:
 -- 
 2.34.1
 
