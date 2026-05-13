@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-36395-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36396-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MyCBGfCBGp7NgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36395-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 20:26:47 +0200
+	id yO5dDjvDBGoxNwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36396-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 20:30:19 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648EF538E94
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 20:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8931C538F5F
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 20:30:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 46A19301D337
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 18:20:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2F9330075C5
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 18:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7A5387345;
-	Wed, 13 May 2026 18:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD813A7597;
+	Wed, 13 May 2026 18:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dfqZjykM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GfBGjWgH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94132253FC;
-	Wed, 13 May 2026 18:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD4D25B0A4;
+	Wed, 13 May 2026 18:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778696450; cv=none; b=uYMct3vEPTm6xC44NEL/HKLHuqpi1AAbuUL7K9ApaemPhYeqyJnC8kj2cKeQ+kVpjBntqKu0w53OADY19+OXoklzIbZgtwUS1f62xTHiWJKnSg88o842jXWr1AxirIzSnZK0qWnLruWk18Z1A5mlRvsKWGUb1OWUBharEp25A+A=
+	t=1778696611; cv=none; b=OVdteR1whelRfNkBGc4X0x+Ui6hw/cZeAXtLnegb8nJxGx6zdzOkefZXx7/NAjcYiCXg9J5jViXo7otYhSpnv2Hw1MrymTVyBgLNPSiwAG7UpX2m/7LbT8ucmXVBGhoJzjwM4bOtfsw8z7X2rwgT2lqSkvifmCNIbdxisNDNCMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778696450; c=relaxed/simple;
-	bh=q2sqcAUA6IT0ZdejsXfhrGdQFhFZ3JupbKWyQtnlYgw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=s5RxLLbW5uY9sEOJb1FzyasgMUDisYyCV2HdvZaIrFxJfzpjwosUKTnCVRcaET9LqTG1lg1mOgCX+58X9izzv84M/TbRjVfsCk3KyX3Z4uSCv34MXbvl4pA+WZ4d8VQmWaNvnhC61gojUjaxtm2fQVey6V4EKP2J+I+WHdqi9xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dfqZjykM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF731C19425;
-	Wed, 13 May 2026 18:20:47 +0000 (UTC)
+	s=arc-20240116; t=1778696611; c=relaxed/simple;
+	bh=Ir1ydXwT7hX6vQUoANvhMvxFoWMMInqxn3VfjU1hA6c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UHZYHJLMrrtvQhvY3zwd6LTCdICI55cdzTIdS3NxZ0uObg8NNKTOMC0+zssspo4ZcMS/E56NZuKWugx27Y4b0VNcyCXwfXMnHy3JowGmP9wJbEuK19+7McZcAb3tcpAhKzS/RlpfsYLRLuvoJmfq5BwW9r+PUMvKG+n/yyAVPac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GfBGjWgH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF9CC19425;
+	Wed, 13 May 2026 18:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778696450;
-	bh=q2sqcAUA6IT0ZdejsXfhrGdQFhFZ3JupbKWyQtnlYgw=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=dfqZjykMOjzxXkDyuxWCZ2YD16MN26MKFzMc+Cv8tgc/FTyAEQBiskdgP6KSRTEry
-	 UcBtZX80ZLPNoA8hzfl5GCZDW6yMoleqv1cQuoo1NEgAJj7Qcs1YykBAWO75DMDXEc
-	 sSHmRhJnzcxlnj3yrsSe+ltETsHHQMbkdxJryFenwz2E2pSBo9LbFa89fwZAvMfJ+e
-	 zkDCu4JxUQSBVpKx8LBcIuaLPdHKrEHUrHb9x9iXuPOFlWc5TAfVZhLMdzNPHQKAoA
-	 139o6sMUu5LhdYZzGD8fRAyu3aWyDO992FdzkT80y4/Q7d4KfcSp3jv2C9F4J3hv78
-	 4nROaOlFyVHPQ==
-Message-ID: <affe7824-120a-45db-ac11-c62a46b42e39@kernel.org>
-Date: Wed, 13 May 2026 20:20:46 +0200
+	s=k20201202; t=1778696611;
+	bh=Ir1ydXwT7hX6vQUoANvhMvxFoWMMInqxn3VfjU1hA6c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GfBGjWgHuawHBYVTRQsGISCmCh4POPSfUlFtSUtpPbzY6ikwMNGzQo2dZZNxhgVIK
+	 uWi3rGz/XT+KFPaHBQU+ghBskNSK/b1MTrtl6VsuabYlb3qreUuIFTR9ABzbcXX4+7
+	 vO73lOFOxH6FEfANVoUvSpjL5uynx1EAoae7DBpbpfabvUzzqmVGBGZAgaauTK8S2W
+	 m/c/f1CaZNv9o6W6kY7y5Kor7Omz5hV0O8UqGUBtjuJxeSje7H4s4fkzjxoCQmmIns
+	 f/UNsSdGiVyXVKw7Ny6eeQkmgZjvMxz/DN3/g8GhzlHArQXoLNZFATGfsCBvkICC8r
+	 tlMI7Blc+I7ZQ==
+Message-ID: <9c3f68f4-abaa-4de9-8eca-713d163f397f@kernel.org>
+Date: Wed, 13 May 2026 20:23:27 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,7 +55,6 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 1/3] dt-bindings: net: wireless: Add Intel Wi-Fi 7
  BE200 PCIe adapter
-From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Avinash Bhatt <avinash.bhatt@intel.com>, devicetree@vger.kernel.org,
  linux-wireless@vger.kernel.org
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
@@ -64,7 +63,7 @@ Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
  emmanuel.grumbach@intel.com
 References: <20260513060531.8130-1-avinash.bhatt@intel.com>
  <20260513060531.8130-2-avinash.bhatt@intel.com>
- <9801b98f-3806-435e-a2e8-80fab22fde0b@kernel.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -109,10 +108,10 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <9801b98f-3806-435e-a2e8-80fab22fde0b@kernel.org>
+In-Reply-To: <20260513060531.8130-2-avinash.bhatt@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 648EF538E94
+X-Rspamd-Queue-Id: 8931C538F5F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -122,7 +121,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36395-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36396-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -139,29 +138,36 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On 13/05/2026 20:19, Krzysztof Kozlowski wrote:
-> On 13/05/2026 08:05, Avinash Bhatt wrote:
->> The Intel Wi-Fi 7 BE200 is a discrete PCIe Wi-Fi adapter supporting
->> 802.11be with tri-band operation including the 6 GHz band.
->>
->> Signed-off-by: Avinash Bhatt <avinash.bhatt@intel.com>
->> ---
-> You sent v2 on 4th of May.
-> 
-> I replied one day later, on 4th of May.
-
-4th -> 5th of May
-
-> 
-> It took you entire week to reply to my comments, but then you do not
-> wait for my replies one week. You send v3 the next day.
-> 
-> DO NOT POST new versions while discussion is going.
+On 13/05/2026 08:05, Avinash Bhatt wrote:
+> +        bit 23:    Paraguay
+> +        bit 24:    Vietnam
+> +        bit 25:    India
+> +        bit 27:    enable VLP active scan, SoftAP, and P2P-GO in Japan
+> +        bit 29:    enable VLP mode per intel,uats country table
+> +        bit 30:    enable AFC mode per intel,uats country table
+> +        bit 31:    use intel,uats country table for LPI (0 = group mode)
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +  intel,regulatory-special:
+> +    description: |
+> +      Special regulatory configuration flags.
+> +
+> +        bit 4:    enable Australia UHB band extension
+> +        bit 5:    Bangladesh 6 GHz UHB enablement
 
 
+I already NAK-ed this.
+
+You took one week to reply to my comments but then gave me only one day
+to disagree.
+
+This is not how it works.
+
+Implement previous comments. v2 discussion is still going, but this time
+read netiquette and configure your email systems correctly.
 
 Best regards,
 Krzysztof
