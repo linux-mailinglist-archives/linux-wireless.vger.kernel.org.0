@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-36367-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36366-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UN0MIB8QBGoMDAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36367-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 07:46:07 +0200
+	id gLe3LhcQBGouDAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36366-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 07:45:59 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28E352DB45
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 07:46:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1DB52DB37
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 07:45:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 426E030BB748
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 05:44:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B25D330B66FF
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 05:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A95A3A6EEC;
-	Wed, 13 May 2026 05:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709063A6EF4;
+	Wed, 13 May 2026 05:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZfzCQT2r"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jU2byE81"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBCD3A6EEE
-	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 05:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8344F3A4F46
+	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 05:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778651071; cv=none; b=Lxq5CDSJpU3Efh1HhlCrY+RFBdjZCpaSsTu95QvDmTBDS/rKy/HiMmRtEs835gdGKsUGnbZnHD5mdDsZt5VXWyBeufeNOd+3gfZmxgmL14j8v3FfLRYdR7hAqnAGiRwPmJQBzVlUXcnlit11yr81MAXkUMunWAwrBUilSrOnLmQ=
+	t=1778651071; cv=none; b=MW5hoW6RplH0Jco5IP19EobVB58e+6/q/1m6PIHHIN8T7If1wAOhPn6dI+rcQOSxrUR+/VZPK5e+FsxThOtzyjXoWgvlz52umxqmvNNM/1PbeKQjIa4pFGxvspRH0WAhcxloz8DSWP4EiMfhNtvfb++MF5D8DbuazBN2NaM7r6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778651071; c=relaxed/simple;
-	bh=O92nAE98UPPJr8XOS7tH1ppqAw60hwfnt6RHEDtYlPU=;
+	bh=0mQ0DTEIYxib9BKSkOGsOhImtew7OvBA0Rgqh1iv794=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p4D8j2/ddcQLJ8ru9lPF9+nI8Urm5uapVIhrXHwGEzkm8QIduNdOSnbFsoGmmDZgZf9BTZZ01xuaniyAyVuJaJkoTqNWCcuUB4nLwyJE79p2Wj1tf3oPe94ZVRmP8ZBC+OI1/o0eH9cSMByMm4eRF8xQT/z7ZV/gpuhbkWWr2nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZfzCQT2r; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=CgpRKe1fhnXUaq3Ovoh2x40Nd+eidep825ftlOQgcSZ+EJ0xz172Y4CZzpThqneRohqPuBJnfPgOBxPzBMW1OlHhkEtF+z4y52oz8UqocLN0cwiHNaSndxHOjWA8SYaevf5ZRS997YXF6ihMQvQV3cLppxnVamh1JBa2Zw9J7Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jU2byE81; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -39,34 +39,35 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1778651070; x=1810187070;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=O92nAE98UPPJr8XOS7tH1ppqAw60hwfnt6RHEDtYlPU=;
-  b=ZfzCQT2rIbfUtU/AjKFGN2GoPxvojmzaNXo9EOOOt2GgmODNrABw2Owe
-   JJ23cKF2J7amTTnsJR5gP+h683C9O9HIdhX0lpJe5ZhLPIW7dTSmjhO1l
-   HQRNI9zNfhUxBrbXfO2a32dWaZXQfKnI3VmpBQfgIf0S246drhp9M0dVY
-   UWjmMn2BXhlxc2V1z76w8hf1XIuBL/gw3JGb5Rrl8C+0VDUo7eEe5QwRp
-   RW5JA2Jy578xp2OcqCQf9FwJsMHWGpE9K64Uhmy68S+c6lyQPD6oeNrzt
-   uhixxqtG9LAxxpUjbSW5++a6AjRVXAiNeIUszuDqUrbfZQsPj/iRRw6oa
-   Q==;
-X-CSE-ConnectionGUID: 34pVlsQCTju2wyG/x63hjA==
-X-CSE-MsgGUID: bxHQQgNoRd2/xBb1Bznncg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79552838"
+  bh=0mQ0DTEIYxib9BKSkOGsOhImtew7OvBA0Rgqh1iv794=;
+  b=jU2byE81az4S16z9TpH3yIKlL5W3gOUWN1OxqVnOeAOV47o0IGQyCjVJ
+   PxAxQMQqTY5XjrbdXly5spOz53N18tR2jnImJlbjOZH0XHdPkvdk7ISFH
+   1ZKReYOa9ZgXtFVA0sA7ya51blopsphuNzV67vcZ4ryyDloKo0GcQZ/GQ
+   mSKqj/4qtCiwHV6j+j4fI8wUzzqAl5y94GpoAjguEr0ia5sVJ6aFB4onc
+   mNa0f3PpkWjzXimZWd/uA2kqPu9xlVUE00fXkV5ciYaW6ZvSEyAx49z2W
+   pllmwNkINKTxGWKfRJ2fdSNQZfZ9w8MJh9TTPbIa87I1HZ/r+3OxGGjnP
+   A==;
+X-CSE-ConnectionGUID: B6NplQSjR16QtPPhr+A1Vw==
+X-CSE-MsgGUID: fbPzyncIQ+yiADI4M4GnnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79552840"
 X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="79552838"
+   d="scan'208";a="79552840"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 22:44:28 -0700
-X-CSE-ConnectionGUID: sk4GPB4ESwyOJ/M7/HpdgA==
-X-CSE-MsgGUID: TWrWJqhJQy2flaGppqibcw==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 22:44:30 -0700
+X-CSE-ConnectionGUID: pMO1TKDCR6uVi8jLneSg7w==
+X-CSE-MsgGUID: 9xrWvCKQQR2YcZdpZSYwxA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="238077937"
+   d="scan'208";a="238077940"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 22:44:26 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 22:44:27 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Avinash Bhatt <avinash.bhatt@intel.com>
-Subject: [PATCH iwlwifi-next 09/15] wifi: iwlwifi: mld: implement PSD/EIRP RSSI adjustment
-Date: Wed, 13 May 2026 08:43:56 +0300
-Message-Id: <20260513084215.ff1c5ba7491f.I2403678e34625809a7edf02f18760eda16a2c906@changeid>
+Cc: Avinash Bhatt <avinash.bhatt@intel.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH iwlwifi-next 10/15] wifi: iwlwifi: mld: update link grading tables per bandwidth
+Date: Wed, 13 May 2026 08:43:57 +0300
+Message-Id: <20260513084215.9f848b0da851.Id239216fda62e25d343495696cc60742e57d56ea@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260513054402.2897702-1-miriam.rachel.korenblit@intel.com>
 References: <20260513054402.2897702-1-miriam.rachel.korenblit@intel.com>
@@ -78,26 +79,27 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D28E352DB45
+X-Rspamd-Queue-Id: 1A1DB52DB37
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36367-lists,linux-wireless=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-36366-lists,linux-wireless=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,intel.com:server fail];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -105,185 +107,366 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
 X-Rspamd-Action: no action
 
 From: Avinash Bhatt <avinash.bhatt@intel.com>
 
-APs operating in PSD mode increase transmit power with bandwidth,
-requiring RSSI compensation for accurate link grading.
+Replace single RSSI-to-grade table with separate tables for each
+operational bandwidth. Grade selection now depends on both RSSI and
+the link's operational bandwidth.
 
-Parse TPE elements to determine power mode and apply RSSI adjustment
-based on operational bandwidth and power constraints.
+Improve puncturing penalty calculation to apply proportional reduction
+based on unusable spectrum percentage rather than absolute channel count.
+
+Update existing KUnit tests with RSSI values for new grading tables.
 
 Signed-off-by: Avinash Bhatt <avinash.bhatt@intel.com>
+Tested-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/link.c | 143 ++++++++++++++++++
- 1 file changed, 143 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mld/link.c | 228 ++++++++++++++----
+ .../intel/iwlwifi/mld/tests/link-selection.c  |   6 +-
+ 2 files changed, 183 insertions(+), 51 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-index 785459937fbe..70965627e2dd 100644
+index 70965627e2dd..3c1825ba2b86 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-@@ -972,6 +972,145 @@ iwl_mld_get_dup_beacon_rssi_adjust(struct iwl_mld *mld,
+@@ -696,35 +696,131 @@ struct iwl_mld_rssi_to_grade {
+ 	u16 grade;
+ };
+ 
+-#define RSSI_TO_GRADE_LINE(_lb, _hb_uhb, _grade) \
++#define RSSI_TO_GRADE_LINE_WITH_LB(_lb, _hb_uhb, _grade) \
+ 	{ \
+ 		.rssi = {_lb, _hb_uhb}, \
+ 		.grade = _grade \
  	}
+ 
+-/*
+- * This array must be sorted by increasing RSSI for proper functionality.
+- * The grades are actually estimated throughput, represented as fixed-point
+- * with a scale factor of 1/10.
+- */
+-static const struct iwl_mld_rssi_to_grade rssi_to_grade_map[] = {
+-	RSSI_TO_GRADE_LINE(-85, -89, 172),
+-	RSSI_TO_GRADE_LINE(-83, -86, 344),
+-	RSSI_TO_GRADE_LINE(-82, -85, 516),
+-	RSSI_TO_GRADE_LINE(-80, -83, 688),
+-	RSSI_TO_GRADE_LINE(-77, -79, 1032),
+-	RSSI_TO_GRADE_LINE(-73, -76, 1376),
+-	RSSI_TO_GRADE_LINE(-70, -74, 1548),
+-	RSSI_TO_GRADE_LINE(-69, -72, 1720),
+-	RSSI_TO_GRADE_LINE(-65, -68, 2064),
+-	RSSI_TO_GRADE_LINE(-61, -66, 2294),
+-	RSSI_TO_GRADE_LINE(-58, -61, 2580),
+-	RSSI_TO_GRADE_LINE(-55, -58, 2868),
+-	RSSI_TO_GRADE_LINE(-46, -55, 3098),
+-	RSSI_TO_GRADE_LINE(-43, -54, 3442)
++#define RSSI_TO_GRADE_LINE(_rssi, _grade) \
++	RSSI_TO_GRADE_LINE_WITH_LB(_rssi, _rssi, _grade)
++
++/* Tables must be sorted by increasing RSSI */
++
++/* 20 MHz Operational BW Grading Table */
++static const struct iwl_mld_rssi_to_grade rssi_to_grade_20mhz[] = {
++	RSSI_TO_GRADE_LINE_WITH_LB(-94, -95, 9),
++	RSSI_TO_GRADE_LINE_WITH_LB(-92, -93, 17),
++	RSSI_TO_GRADE_LINE_WITH_LB(-90, -90, 34),
++	RSSI_TO_GRADE_LINE_WITH_LB(-87, -87, 52),
++	RSSI_TO_GRADE_LINE_WITH_LB(-83, -84, 69),
++	RSSI_TO_GRADE_LINE_WITH_LB(-79, -80, 103),
++	RSSI_TO_GRADE_LINE_WITH_LB(-75, -75, 137),
++	RSSI_TO_GRADE_LINE_WITH_LB(-72, -73, 155),
++	RSSI_TO_GRADE_LINE_WITH_LB(-70, -71, 172),
++	RSSI_TO_GRADE_LINE_WITH_LB(-67, -68, 206),
++	RSSI_TO_GRADE_LINE_WITH_LB(-64, -65, 230),
++	RSSI_TO_GRADE_LINE_WITH_LB(-59, -60, 258),
++	RSSI_TO_GRADE_LINE_WITH_LB(-57, -58, 287),
++	RSSI_TO_GRADE_LINE_WITH_LB(-52, -53, 310),
++	RSSI_TO_GRADE_LINE_WITH_LB(-50, -50, 345),
+ };
+ 
+-#define MAX_GRADE (rssi_to_grade_map[ARRAY_SIZE(rssi_to_grade_map) - 1].grade)
++/* 40 MHz Operational BW Grading Table */
++static const struct iwl_mld_rssi_to_grade rssi_to_grade_40mhz[] = {
++	RSSI_TO_GRADE_LINE_WITH_LB(-95, -95, 9),
++	RSSI_TO_GRADE_LINE_WITH_LB(-93, -93, 17),
++	RSSI_TO_GRADE_LINE_WITH_LB(-91, -92, 18),
++	RSSI_TO_GRADE_LINE_WITH_LB(-89, -90, 34),
++	RSSI_TO_GRADE_LINE_WITH_LB(-87, -87, 68),
++	RSSI_TO_GRADE_LINE_WITH_LB(-84, -84, 104),
++	RSSI_TO_GRADE_LINE_WITH_LB(-80, -81, 138),
++	RSSI_TO_GRADE_LINE_WITH_LB(-77, -77, 206),
++	RSSI_TO_GRADE_LINE_WITH_LB(-72, -72, 274),
++	RSSI_TO_GRADE_LINE_WITH_LB(-69, -70, 310),
++	RSSI_TO_GRADE_LINE_WITH_LB(-67, -68, 344),
++	RSSI_TO_GRADE_LINE_WITH_LB(-64, -65, 412),
++	RSSI_TO_GRADE_LINE_WITH_LB(-61, -62, 460),
++	RSSI_TO_GRADE_LINE_WITH_LB(-56, -57, 516),
++	RSSI_TO_GRADE_LINE_WITH_LB(-54, -55, 574),
++	RSSI_TO_GRADE_LINE_WITH_LB(-49, -50, 620),
++	RSSI_TO_GRADE_LINE_WITH_LB(-46, -47, 690),
++};
++
++/* 80 MHz Operational BW Grading Table */
++static const struct iwl_mld_rssi_to_grade rssi_to_grade_80mhz[] = {
++	RSSI_TO_GRADE_LINE(-95, 9),
++	RSSI_TO_GRADE_LINE(-93, 17),
++	RSSI_TO_GRADE_LINE(-92, 18),
++	RSSI_TO_GRADE_LINE(-90, 34),
++	RSSI_TO_GRADE_LINE(-89, 36),
++	RSSI_TO_GRADE_LINE(-87, 68),
++	RSSI_TO_GRADE_LINE(-83, 136),
++	RSSI_TO_GRADE_LINE(-80, 208),
++	RSSI_TO_GRADE_LINE(-77, 276),
++	RSSI_TO_GRADE_LINE(-74, 412),
++	RSSI_TO_GRADE_LINE(-69, 548),
++	RSSI_TO_GRADE_LINE(-67, 620),
++	RSSI_TO_GRADE_LINE(-66, 688),
++	RSSI_TO_GRADE_LINE(-61, 824),
++	RSSI_TO_GRADE_LINE(-59, 920),
++	RSSI_TO_GRADE_LINE(-54, 1032),
++	RSSI_TO_GRADE_LINE(-52, 1148),
++	RSSI_TO_GRADE_LINE(-47, 1240),
++	RSSI_TO_GRADE_LINE(-44, 1380),
++};
++
++/* 160 MHz Operational BW Grading Table */
++static const struct iwl_mld_rssi_to_grade rssi_to_grade_160mhz[] = {
++	RSSI_TO_GRADE_LINE(-95, 9),
++	RSSI_TO_GRADE_LINE(-93, 17),
++	RSSI_TO_GRADE_LINE(-92, 18),
++	RSSI_TO_GRADE_LINE(-90, 34),
++	RSSI_TO_GRADE_LINE(-89, 36),
++	RSSI_TO_GRADE_LINE(-87, 68),
++	RSSI_TO_GRADE_LINE(-86, 72),
++	RSSI_TO_GRADE_LINE(-84, 136),
++	RSSI_TO_GRADE_LINE(-81, 272),
++	RSSI_TO_GRADE_LINE(-78, 416),
++	RSSI_TO_GRADE_LINE(-75, 552),
++	RSSI_TO_GRADE_LINE(-71, 824),
++	RSSI_TO_GRADE_LINE(-67, 1096),
++	RSSI_TO_GRADE_LINE(-65, 1240),
++	RSSI_TO_GRADE_LINE(-63, 1376),
++	RSSI_TO_GRADE_LINE(-59, 1648),
++	RSSI_TO_GRADE_LINE(-57, 1840),
++	RSSI_TO_GRADE_LINE(-52, 2064),
++	RSSI_TO_GRADE_LINE(-50, 2296),
++	RSSI_TO_GRADE_LINE(-46, 2480),
++	RSSI_TO_GRADE_LINE(-42, 2760),
++};
++
++/* 320 MHz Operational BW Grading Table */
++static const struct iwl_mld_rssi_to_grade rssi_to_grade_320mhz[] = {
++	RSSI_TO_GRADE_LINE(-95, 9),
++	RSSI_TO_GRADE_LINE(-93, 17),
++	RSSI_TO_GRADE_LINE(-92, 18),
++	RSSI_TO_GRADE_LINE(-90, 34),
++	RSSI_TO_GRADE_LINE(-89, 36),
++	RSSI_TO_GRADE_LINE(-87, 68),
++	RSSI_TO_GRADE_LINE(-86, 72),
++	RSSI_TO_GRADE_LINE(-84, 136),
++	RSSI_TO_GRADE_LINE(-83, 144),
++	RSSI_TO_GRADE_LINE(-81, 272),
++	RSSI_TO_GRADE_LINE(-78, 544),
++	RSSI_TO_GRADE_LINE(-75, 832),
++	RSSI_TO_GRADE_LINE(-72, 1104),
++	RSSI_TO_GRADE_LINE(-69, 1648),
++	RSSI_TO_GRADE_LINE(-64, 2192),
++	RSSI_TO_GRADE_LINE(-62, 2480),
++	RSSI_TO_GRADE_LINE(-61, 2752),
++	RSSI_TO_GRADE_LINE(-57, 3296),
++	RSSI_TO_GRADE_LINE(-55, 3680),
++	RSSI_TO_GRADE_LINE(-50, 4128),
++	RSSI_TO_GRADE_LINE(-47, 4592),
++	RSSI_TO_GRADE_LINE(-43, 4960),
++	RSSI_TO_GRADE_LINE(-40, 5520),
++};
+ 
+ #define DEFAULT_CHAN_LOAD_2GHZ	30
+ #define DEFAULT_CHAN_LOAD_5GHZ	15
+@@ -734,26 +830,23 @@ static const struct iwl_mld_rssi_to_grade rssi_to_grade_map[] = {
+ #define SCALE_FACTOR 256
+ #define MAX_CHAN_LOAD 256
+ 
+-static unsigned int
+-iwl_mld_get_n_subchannels(const struct ieee80211_bss_conf *link_conf)
++static void
++iwl_mld_apply_puncturing_penalty(const struct ieee80211_bss_conf *link_conf,
++				 unsigned int *grade, int bw_mhz)
+ {
+-	enum nl80211_chan_width chan_width =
+-		link_conf->chanreq.oper.width;
+-	int mhz = nl80211_chan_width_to_mhz(chan_width);
+-	unsigned int n_subchannels;
++	unsigned int n_punctured, n_subchannels;
+ 
+-	if (WARN_ONCE(mhz < 20 || mhz > 320,
+-		      "Invalid channel width : (%d)\n", mhz))
+-		return 1;
++	/* Puncturing only applicable for BW >= 80 MHz */
++	if (bw_mhz < 80)
++		return;
+ 
+-	/* total number of subchannels */
+-	n_subchannels = mhz / 20;
++	n_punctured = hweight16(link_conf->chanreq.oper.punctured);
++	if (n_punctured == 0)
++		return;
+ 
+-	/* No puncturing if less than 80 MHz */
+-	if (mhz >= 80)
+-		n_subchannels -= hweight16(link_conf->chanreq.oper.punctured);
++	n_subchannels = bw_mhz / 20;
+ 
+-	return n_subchannels;
++	*grade = *grade * (n_subchannels - n_punctured) / n_subchannels;
  }
  
-+static s8 iwl_mld_get_primary_psd(const struct ieee80211_parsed_tpe_psd *psd,
-+				  const struct cfg80211_chan_def *chandef,
-+				  int bw_mhz)
-+{
-+	int start_freq, primary_idx;
-+
-+	if (!psd->valid)
-+		return S8_MAX;
-+
-+	start_freq = chandef->center_freq1 - (bw_mhz / 2);
-+	primary_idx = (chandef->chan->center_freq - start_freq - 10) / 20;
-+
-+	if (primary_idx < 0 || primary_idx >= psd->count)
-+		return S8_MAX;
-+
-+	/* TPE element stores PSD limit as value * 2 */
-+	return psd->power[primary_idx] / 2;
-+}
-+
-+static s8 iwl_mld_get_psd_eirp_rssi_adjust(struct ieee80211_bss_conf *link_conf)
-+{
-+	const struct ieee80211_parsed_tpe *tpe = &link_conf->tpe;
-+	s8 psd_20mhz, psd_oper, psd_local, psd_reg, psd_boost;
-+	s8 min_20mhz, min_oper, adjustment, ap_power_limit;
-+	s8 psd_avg_local = S8_MAX, psd_avg_reg = S8_MAX;
-+	s8 eirp_20mhz, eirp_oper, eirp_local, eirp_reg;
-+	int bw_mhz, num_subchans;
-+	u8 bw_index;
-+
-+	/* PSD/EIRP adjustment is only specific to 6 GHz */
-+	if (WARN_ONCE(link_conf->chanreq.oper.chan->band != NL80211_BAND_6GHZ,
-+		      "PSD/EIRP adjustment called for non-6 GHz band %d\n",
-+		      link_conf->chanreq.oper.chan->band))
-+		return 0;
-+
-+	bw_mhz = nl80211_chan_width_to_mhz(link_conf->chanreq.oper.width);
-+
-+	switch (bw_mhz) {
-+	case 20:
-+		bw_index = 0;
-+		break;
-+	case 40:
-+		bw_index = 1;
-+		break;
-+	case 80:
-+		bw_index = 2;
-+		break;
-+	case 160:
-+		bw_index = 3;
-+		break;
-+	case 320:
-+		bw_index = 4;
-+		break;
-+	default:
-+		WARN_ONCE(1, "Unexpected bandwidth: %d MHz\n", bw_mhz);
-+		return 0;
-+	}
-+
-+	if (link_conf->power_type == IEEE80211_REG_VLP_AP)
-+		ap_power_limit = 14;
-+	else
-+		ap_power_limit = 23;
-+
-+	/* Primary 20 MHz PSD */
-+	psd_local = iwl_mld_get_primary_psd(&tpe->psd_local[0],
-+					    &link_conf->chanreq.oper,
-+					    bw_mhz);
-+	psd_reg = iwl_mld_get_primary_psd(&tpe->psd_reg_client[0],
-+					  &link_conf->chanreq.oper,
-+					  bw_mhz);
-+	psd_20mhz = min(psd_local, psd_reg);
-+
-+	/* TPE element stores EIRP limit as value * 2 */
-+	eirp_local = (tpe->max_local[0].valid && tpe->max_local[0].count > 0) ?
-+			tpe->max_local[0].power[0] / 2 : S8_MAX;
-+	eirp_reg = (tpe->max_reg_client[0].valid &&
-+		    tpe->max_reg_client[0].count > 0) ?
-+		      tpe->max_reg_client[0].power[0] / 2 : S8_MAX;
-+	eirp_20mhz = min(eirp_local, eirp_reg);
-+
-+	num_subchans = bw_mhz / 20;
-+
-+	if (tpe->psd_local[0].valid) {
-+		int sum_local = 0, valid_local = 0;
-+		int count_local = min(num_subchans, tpe->psd_local[0].count);
-+
-+		for (int i = 0; i < count_local; i++) {
-+			if (tpe->psd_local[0].power[i] != S8_MIN) {
-+				sum_local += tpe->psd_local[0].power[i];
-+				valid_local++;
-+			}
-+		}
-+		/* TPE element stores PSD limit as value * 2 */
-+		if (valid_local > 0)
-+			psd_avg_local = sum_local / valid_local / 2;
-+	}
-+
-+	if (tpe->psd_reg_client[0].valid) {
-+		int sum_reg = 0, valid_reg = 0;
-+		int count_reg = min(num_subchans, tpe->psd_reg_client[0].count);
-+
-+		for (int i = 0; i < count_reg; i++) {
-+			if (tpe->psd_reg_client[0].power[i] != S8_MIN) {
-+				sum_reg +=
-+					tpe->psd_reg_client[0].power[i];
-+				valid_reg++;
-+			}
-+		}
-+		/* TPE element stores PSD limit as value * 2 */
-+		if (valid_reg > 0)
-+			psd_avg_reg = sum_reg / valid_reg / 2;
-+	}
-+
-+	psd_oper = min(psd_avg_local, psd_avg_reg);
-+
-+	/* TPE element stores EIRP limit as value * 2 */
-+	eirp_local = (tpe->max_local[0].valid &&
-+		      tpe->max_local[0].count > bw_index) ?
-+			tpe->max_local[0].power[bw_index] / 2 : S8_MAX;
-+	eirp_reg = (tpe->max_reg_client[0].valid &&
-+		    tpe->max_reg_client[0].count > bw_index) ?
-+		      tpe->max_reg_client[0].power[bw_index] / 2 : S8_MAX;
-+	eirp_oper = min(eirp_local, eirp_reg);
-+
-+	min_20mhz = min(ap_power_limit, min(eirp_20mhz, psd_20mhz));
-+
-+	/* PSD boost: 10*log10(BW/20) approximated as 3*ilog2(BW/20) */
-+	psd_boost = 3 * ilog2(bw_mhz / 20);
-+
-+	/* Use int for psd_oper + psd_boost to prevent s8 overflow */
-+	min_oper = min(ap_power_limit,
-+		       min(eirp_oper,
-+			   (s8)min_t(int, psd_oper + psd_boost, S8_MAX)));
-+
-+	adjustment = max(min_oper - min_20mhz, 0);
-+
-+	return adjustment;
-+}
-+
- /* This function calculates the grade of a link. Returns 0 in error case */
+ static int
+@@ -1115,14 +1208,19 @@ static s8 iwl_mld_get_psd_eirp_rssi_adjust(struct ieee80211_bss_conf *link_conf)
  unsigned int iwl_mld_get_link_grade(struct iwl_mld *mld,
  				    struct ieee80211_bss_conf *link_conf)
-@@ -1000,6 +1139,10 @@ unsigned int iwl_mld_get_link_grade(struct iwl_mld *mld,
- 		s8 rssi_adj_6g =
- 			iwl_mld_get_dup_beacon_rssi_adjust(mld, link_conf);
+ {
++	const struct iwl_mld_rssi_to_grade *grade_table;
+ 	enum nl80211_band band;
+-	int rssi_idx;
++	int rssi_idx, table_size, bw_mhz;
+ 	s32 link_rssi;
+-	unsigned int grade = MAX_GRADE;
++	unsigned int grade;
  
-+		if (!rssi_adj_6g)
-+			rssi_adj_6g =
-+				iwl_mld_get_psd_eirp_rssi_adjust(link_conf);
+ 	if (WARN_ON_ONCE(!link_conf || !link_conf->bss))
+ 		return 0;
+ 
++	bw_mhz = nl80211_chan_width_to_mhz(link_conf->chanreq.oper.width);
++	if (bw_mhz < 0)
++		return 0;
 +
- 		if (!rssi_adj_6g)
- 			rssi_adj_6g = 4;
+ 	band = link_conf->chanreq.oper.chan->band;
+ 	if (WARN_ONCE(band != NL80211_BAND_2GHZ &&
+ 		      band != NL80211_BAND_5GHZ &&
+@@ -1149,22 +1247,50 @@ unsigned int iwl_mld_get_link_grade(struct iwl_mld *mld,
+ 		link_rssi += rssi_adj_6g;
+ 	}
  
++	/* Select grading table based on operational bandwidth */
++	switch (bw_mhz) {
++	case 20:
++		grade_table = rssi_to_grade_20mhz;
++		table_size = ARRAY_SIZE(rssi_to_grade_20mhz);
++		break;
++	case 40:
++		grade_table = rssi_to_grade_40mhz;
++		table_size = ARRAY_SIZE(rssi_to_grade_40mhz);
++		break;
++	case 80:
++		grade_table = rssi_to_grade_80mhz;
++		table_size = ARRAY_SIZE(rssi_to_grade_80mhz);
++		break;
++	case 160:
++		grade_table = rssi_to_grade_160mhz;
++		table_size = ARRAY_SIZE(rssi_to_grade_160mhz);
++		break;
++	case 320:
++		grade_table = rssi_to_grade_320mhz;
++		table_size = ARRAY_SIZE(rssi_to_grade_320mhz);
++		break;
++	default:
++		WARN_ONCE(1, "Invalid bandwidth: %d MHz\n", bw_mhz);
++		return 0;
++	}
++
++	/* Initialize grade to maximum value from selected table */
++	grade = grade_table[table_size - 1].grade;
++
+ 	rssi_idx = band == NL80211_BAND_2GHZ ? 0 : 1;
+ 
+-	/* No valid RSSI - take the lowest grade */
++	/* No valid RSSI - take the lowest grade from selected table */
+ 	if (!link_rssi)
+-		link_rssi = rssi_to_grade_map[0].rssi[rssi_idx];
++		link_rssi = grade_table[0].rssi[rssi_idx];
+ 
+ 	IWL_DEBUG_EHT(mld,
+-		      "Calculating grade of link %d: band = %d, bandwidth = %d, punctured subchannels =0x%x RSSI = %d\n",
+-		      link_conf->link_id, band,
+-		      link_conf->chanreq.oper.width,
++		      "Calculating grade of link %d: band = %d, BW = %d, punct subchannels = 0x%x RSSI = %d\n",
++		      link_conf->link_id, band, bw_mhz,
+ 		      link_conf->chanreq.oper.punctured, link_rssi);
+ 
+-	/* Get grade based on RSSI */
+-	for (int i = 0; i < ARRAY_SIZE(rssi_to_grade_map); i++) {
+-		const struct iwl_mld_rssi_to_grade *line =
+-			&rssi_to_grade_map[i];
++	/* Get grade based on RSSI from the bandwidth-specific table */
++	for (int i = 0; i < table_size; i++) {
++		const struct iwl_mld_rssi_to_grade *line = &grade_table[i];
+ 
+ 		if (link_rssi > line->rssi[rssi_idx])
+ 			continue;
+@@ -1173,8 +1299,10 @@ unsigned int iwl_mld_get_link_grade(struct iwl_mld *mld,
+ 	}
+ 
+ 	/* Apply the channel load and puncturing factors */
+-	grade = grade * iwl_mld_get_avail_chan_load(mld, link_conf) / SCALE_FACTOR;
+-	grade = grade * iwl_mld_get_n_subchannels(link_conf);
++	grade = grade * iwl_mld_get_avail_chan_load(mld, link_conf) /
++		SCALE_FACTOR;
++
++	iwl_mld_apply_puncturing_penalty(link_conf, &grade, bw_mhz);
+ 
+ 	IWL_DEBUG_EHT(mld, "Link %d's grade: %d\n", link_conf->link_id, grade);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c b/drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c
+index 766c24db3613..69d222a8194c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/link-selection.c
+@@ -2,7 +2,7 @@
+ /*
+  * KUnit tests for link selection functions
+  *
+- * Copyright (C) 2025 Intel Corporation
++ * Copyright (C) 2025-2026 Intel Corporation
+  */
+ #include <kunit/static_stub.h>
+ 
+@@ -34,6 +34,7 @@ static const struct link_grading_test_case {
+ 			.link_id = 0,
+ 			.chandef = &chandef_2ghz_20mhz,
+ 			.active = false,
++			.signal = -70,
+ 			.has_chan_util_elem = true,
+ 			.chan_util = 128,
+ 		},
+@@ -45,6 +46,7 @@ static const struct link_grading_test_case {
+ 			.link_id = 0,
+ 			.chandef = &chandef_2ghz_20mhz,
+ 			.active = false,
++			.signal = -70,
+ 			.has_chan_util_elem = true,
+ 			.chan_util = 180,
+ 		},
+@@ -55,6 +57,7 @@ static const struct link_grading_test_case {
+ 		.input.link = {
+ 			.link_id = 0,
+ 			.chandef = &chandef_2ghz_20mhz,
++			.signal = -70,
+ 			.has_chan_util_elem = true,
+ 			.chan_util = 180,
+ 			.active = true,
+@@ -67,6 +70,7 @@ static const struct link_grading_test_case {
+ 		.input.link = {
+ 			.link_id = 0,
+ 			.chandef = &chandef_2ghz_20mhz,
++			.signal = -70,
+ 			.active = true,
+ 		},
+ 		.expected_grade = 120,
 -- 
 2.34.1
 
