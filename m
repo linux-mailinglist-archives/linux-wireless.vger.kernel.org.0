@@ -1,297 +1,154 @@
-Return-Path: <linux-wireless+bounces-36385-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36386-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLgBOcuFBGrVKwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36385-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 16:08:11 +0200
+	id mFPCGmGJBGoxLQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36386-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 16:23:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865CD534B59
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 16:08:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 385F3534F8B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 16:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A2511307E0AF
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 13:44:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7989C3026EB7
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 14:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398A43F4115;
-	Wed, 13 May 2026 13:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B443306775;
+	Wed, 13 May 2026 14:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FDYher6R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eyvlAjOZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FC63F4108;
-	Wed, 13 May 2026 13:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3050D2F9D98
+	for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 14:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778679872; cv=none; b=tYIsXnAKv1yUZot+cUzqEVv4cOuSE+3Fr94dN7P7XnDsaHME1E+gGpy04BfdqDDAIl54w4v03EeFnuwsihnoR9XaPdDvWMswDMmxTld0HwKH0LNpG3RK3LraqbrgG2YLNDJW5W5Tksyv6nwIVxIaoHggAjlrNxohsYbOUHluoHo=
+	t=1778681204; cv=none; b=WIXdsLNuIvSg64XuSPA2gUflEJYUZA/9wZWYdcOj+w2YgXD32pjoBt9ANLMiQxe/hlWkUE8l8CMy9flgtst5A09oYuEsAe6ISfYehP3/IPt8/FSZ9vLxkiV8RjFqvC8D+mjQ2X2yBXSdfAtqgeb84xH/UFz9zJMWPh+NFF5aYJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778679872; c=relaxed/simple;
-	bh=is0KYTGOsVpRCsXKi6U0CNrbeApTd8okxTWcWkH/G7U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QKE/A0x1xx8KgEvYJKGEyQCLWrjBHOYOP/pyzS4AIxw4y2rKTUu5SySPt9NS4JA0CIx+ghNqx89yZ9q8Y0oOMtvjlOXLDYyJ0VwQ7jpKqv+6wkJwNZ3a6uaNiiGlsaQ3ME385f31+kOdTyh64JLOKKTl3tHuzlizaOu37rZFFso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FDYher6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1176C2BCB7;
-	Wed, 13 May 2026 13:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778679871;
-	bh=is0KYTGOsVpRCsXKi6U0CNrbeApTd8okxTWcWkH/G7U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FDYher6RCd6Ke0F5yUffKCKOC4y3xlzyoZKSBFkMJxoIC8Lc4IX9X1CLNBQ3rxPin
-	 9A/hq5dKEtapvWudtRQBVIrMBJYCoZKJTft3WjA0Nsvq/i0xaL+Cj7Rbgkzyw2tt53
-	 aQlUtznOwMkhk6fYk5Fn9aP1M2dvDN1tBFx//19W0mYq3k6p+CoCXJDmk9JwWRuFXG
-	 TEMtP6jgsl7WCoNqSlqbH1PXDpHeMUB0QbDwLEdOSFa5c0iYyne8Gb/GoopDsRPNSN
-	 J4gzj/2yKopaFOlM5fOwDxoWa0412qbWVWuEXbt4pPdBQRcv5M1MMrZLSMmQtkydQc
-	 GoKFaBp1SPdgA==
-Date: Wed, 13 May 2026 19:14:15 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: andersson@kernel.org, konradybcio@kernel.org
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-	linux-media@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-remoteproc@vger.kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org,
-	robin.clark@oss.qualcomm.com, sean@poorly.run,
-	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
-	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
-	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
-	dikshita.agarwal@oss.qualcomm.com, bod@kernel.org,
-	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
-	trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
-	pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com,
-	tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com,
-	srinivas.kandagatla@oss.qualcomm.com,
-	amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
-	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
-	skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: Re: [PATCH v5 00/16] firmware: qcom: Add OP-TEE PAS service support
-Message-ID: <agSAL-z6NUV1p2kH@sumit-xelite>
-References: <20260504130603.1474043-1-sumit.garg@kernel.org>
+	s=arc-20240116; t=1778681204; c=relaxed/simple;
+	bh=L/W/h5hvF9v5cBHWSBQKkZX6UYqAciaCC3oGwUTrbeE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aAI8oJ8uc1MqgNOuifMVi1720RZ6xGAe1IBsteN5IViUKsSbMbdZPvBQIJ0WrpVj2KLz/lVYdPACrC2fMacVLEfyOflfZja+57nPh1xjBwv4uPjzjzt8Bl2XOT1g1S2oxfBd7Zl5uRuBK70yadwuvDSE5Ma90c5MbhHnCnxBE4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eyvlAjOZ; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778681202; x=1810217202;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=L/W/h5hvF9v5cBHWSBQKkZX6UYqAciaCC3oGwUTrbeE=;
+  b=eyvlAjOZfagUlVBqRWasPMQ8nuuAfeCYJ63Yl73ad8Ytlls8rGhcfjef
+   26A0APstPtVtJtwyo2yjnd0hgbNiNbw7qXxj95hqzVWe4eiuddAP4SP0O
+   6LsLyWTiBUO1SJpI+6gVsJ5yHo8XpYoLHANm4GPoXlRbfpXLIGi6r5mmp
+   UCFQV7er/5h4hTAtCDfFfOo7BkQtkyrY4ZARM7JKtopAMIDn0TDB7D+MI
+   scjE5LLPLv9A+SqZuBgFcYRJ9oHCF69i+m0jYFRSRtgG/kX5/5gCAt6w4
+   /ANge8wYMXXaivt/M/6YyA9lVQDDOL+mA84j7Ufaz6CV5LIpkIrg5n2Da
+   A==;
+X-CSE-ConnectionGUID: sJroYBuBSRmmYyPRKViJKg==
+X-CSE-MsgGUID: 4Cp/PEYTQ7em/DiAfMG+Iw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79591431"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="79591431"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 07:06:41 -0700
+X-CSE-ConnectionGUID: rn1ekUZWS1u+y6rtiqondA==
+X-CSE-MsgGUID: S0YGYFDuTdquks4ILow5PQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="237990730"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 07:06:41 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless] wifi: mac80211: don't override max_amsdu_subframes
+Date: Wed, 13 May 2026 17:06:27 +0300
+Message-Id: <20260513170623.828dbb58c782.Ifd2bfc190c26140e919127adb02ffddd7b551499@changeid>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260504130603.1474043-1-sumit.garg@kernel.org>
-X-Rspamd-Queue-Id: 865CD534B59
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 385F3534F8B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36385-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[49];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-36386-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email]
+	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
 X-Rspamd-Action: no action
 
-Hi Bjorn,
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-Just a gentle reminder for any further reviews for this series. If not
-then please help to pick it up this merge window since we have got acks
-from corresponding subsystem maintainer too. There were few minor comments
-addressed by following diff on top of this series. Let me know if you
-need a new version for that or can they be folded in when you pick this
-series?
+In client mode, the extended capabilities are handled by the kernel
+looking at the association frame.  When the supplicant installs the keys
+it calls sta_apply_parameters and it doesn't include the extended
+capabilities since those can't change after association.
+As a result, we overrode the max_amsdu_subframes that we set after
+association.
 
-diff --git a/drivers/firmware/qcom/qcom_pas.c b/drivers/firmware/qcom/qcom_pas.c
-index 025308adf553..bc6c42f2b3c6 100644
---- a/drivers/firmware/qcom/qcom_pas.c
-+++ b/drivers/firmware/qcom/qcom_pas.c
-@@ -181,7 +181,7 @@ EXPORT_SYMBOL_GPL(qcom_pas_auth_and_reset);
-  * qcom_pas_prepare_and_auth_reset() - Prepare, authenticate, and reset the
-  *                                    remote processor
-  *
-- * @ctx:       Context saved during call to qcom_scm_pas_context_init()
-+ * @ctx:       Context saved during call to devm_qcom_pas_context_alloc()
-  *
-  * This function performs the necessary steps to prepare a PAS subsystem,
-  * authenticate it using the provided metadata, and initiate a reset sequence.
-diff --git a/drivers/net/wireless/ath/ath12k/ahb.c b/drivers/net/wireless/ath/ath12k/ahb.c
-index c5ba91e6f95e..dff7fa7027c5 100644
---- a/drivers/net/wireless/ath/ath12k/ahb.c
-+++ b/drivers/net/wireless/ath/ath12k/ahb.c
-@@ -488,7 +488,7 @@ static void ath12k_ahb_power_down(struct ath12k_base *ab, bool is_suspend)
-                ret = qcom_pas_shutdown(pasid);
-                if (ret)
-                        ath12k_err(ab, "pas shutdown failed for userPD%d: %d\n",
--                                  ab_ahb->userpd_id);
-+                                  ab_ahb->userpd_id, ret);
-        }
- }
+Check that the ext_capa coming from the user space is valid before
+looking at it. If the ext_capa is NULL, it really means that the
+extended capabilities are not changed (as opposed to cleared).
 
--Sumit
+The default value for max_amsdu_subframes is 0, which means there is no
+limit. This value is valid and in case the association response frame
+does not have extended capabilities, this is the value we should use.
 
-On Mon, May 04, 2026 at 06:35:47PM +0530, Sumit Garg wrote:
-> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> 
-> Qcom platforms has the legacy of using non-standard SCM calls
-> splintered over the various kernel drivers. These SCM calls aren't
-> compliant with the standard SMC calling conventions which is a
-> prerequisite to enable migration to the FF-A specifications from Arm.
-> 
-> OP-TEE as an alternative trusted OS to Qualcomm TEE (QTEE) can't
-> support these non-standard SCM calls. And even for newer architectures
-> using S-EL2 with Hafnium support, QTEE won't be able to support SCM
-> calls either with FF-A requirements coming in. And with both OP-TEE
-> and QTEE drivers well integrated in the TEE subsystem, it makes further
-> sense to reuse the TEE bus client drivers infrastructure.
-> 
-> The added benefit of TEE bus infrastructure is that there is support
-> for discoverable/enumerable services. With that client drivers don't
-> have to manually invoke a special SCM call to know the service status.
-> 
-> So enable the generic Peripheral Authentication Service (PAS) provided
-> by the firmware. It acts as the common layer with different TZ
-> backends plugged in whether it's an SCM implementation or a proper
-> TEE bus based PAS service implementation.
-> 
-> The TEE PAS service ABI is designed to be extensible with additional API
-> as PTA_QCOM_PAS_CAPABILITIES. This allows to accommodate any future
-> extensions of the PAS service needed while still maintaining backwards
-> compatibility.
-> 
-> Currently OP-TEE support is being added to provide the backend PAS
-> service implementation which can be found as part of this PR [1].
-> This implementation has been tested on Kodiak/RB3Gen2 board with lemans
-> EVK board being the next target. In addition to that WIN/IPQ targets
-> planning to use OP-TEE will use this service too. Surely the backwards
-> compatibility is maintained and tested for SCM backend.
-> 
-> Note that kernel PAS service support while running in EL2 is at parity
-> among OP-TEE vs QTEE. Especially the media (venus/iris) support depends
-> on proper IOMMU support being worked out on the PAS client end.
-> 
-> Patch summary:
-> - Patch #1: adds Kodiak EL2 overlay since boot stack with TF-A/OP-TEE
->   only allow UEFI and Linux to boot in EL2.
-> - Patch #2: adds generic PAS service.
-> - Patch #3: migrates SCM backend to generic PAS service.
-> - Patch #4: adds TEE/OP-TEE backend for generic PAS service.
-> - Patch #5-#14: migrates all client drivers to generic PAS service.
-> - Patch #15: drops legacy PAS SCM exported APIs.
-> 
-> The patch-set is based on v7.1-rc1 tag and can be found in git tree here
-> [2].
-> 
-> Merge strategy:
-> 
-> It is expected due to APIs dependency, the entire patch-set to go via
-> the Qcom tree. All other subsystem maintainers, it will be great if I
-> can get acks for the corresponding subsystem patches.
-> 
-> [1] https://github.com/OP-TEE/optee_os/pull/7721 (already merged)
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/sumit.garg/linux.git/log/?h=qcom-pas-v5
-> 
-> ---
-> Changes in v5:
-> - Incorporated misc. comments from Mukesh.
-> - Split up patch #11 into 2 to add an independent commit for passing
->   proper PAS ID to set_remote_state API.
-> - Picked up tags.
-> 
-> Changes in v4:
-> - Incorporate misc. comments on patch #4.
-> - Picked up an ack for patch #10.
-> - Clarify in cover letter about state of media support.
-> 
-> Changes in v3:
-> - Incorporated some style and misc. comments for patch #2, #3 and #4.
-> - Add QCOM_PAS Kconfig dependency for various subsystems.
-> - Switch from pseudo TA to proper TA invoke commands.
-> 
-> Changes in v2:
-> - Fixed kernel doc warnings.
-> - Polish commit message and comments for patch #2.
-> - Pass proper PAS ID in set_remote_state API for media firmware drivers.
-> - Added Maintainer entry and dropped MODULE_AUTHOR.
-> 
-> Mukesh Ojha (1):
->   arm64: dts: qcom: kodiak: Add EL2 overlay
-> 
-> Sumit Garg (15):
->   firmware: qcom: Add a generic PAS service
->   firmware: qcom_scm: Migrate to generic PAS service
->   firmware: qcom: Add a PAS TEE service
->   remoteproc: qcom_q6v5_pas: Switch over to generic PAS TZ APIs
->   remoteproc: qcom_q6v5_mss: Switch to generic PAS TZ APIs
->   soc: qcom: mdtloader: Switch to generic PAS TZ APIs
->   remoteproc: qcom_wcnss: Switch to generic PAS TZ APIs
->   remoteproc: qcom: Select QCOM_PAS generic service
->   drm/msm: Switch to generic PAS TZ APIs
->   media: qcom: Switch to generic PAS TZ APIs
->   media: qcom: Pass proper PAS ID to set_remote_state API
->   net: ipa: Switch to generic PAS TZ APIs
->   wifi: ath12k: Switch to generic PAS TZ APIs
->   firmware: qcom_scm: Remove SCM PAS wrappers
->   MAINTAINERS: Add maintainer entry for Qualcomm PAS TZ service
-> 
->  MAINTAINERS                                   |   9 +
->  arch/arm64/boot/dts/qcom/Makefile             |   2 +
->  arch/arm64/boot/dts/qcom/kodiak-el2.dtso      |  35 ++
->  drivers/firmware/qcom/Kconfig                 |  19 +
->  drivers/firmware/qcom/Makefile                |   2 +
->  drivers/firmware/qcom/qcom_pas.c              | 291 +++++++++++
->  drivers/firmware/qcom/qcom_pas.h              |  50 ++
->  drivers/firmware/qcom/qcom_pas_tee.c          | 476 ++++++++++++++++++
->  drivers/firmware/qcom/qcom_scm.c              | 302 ++++-------
->  drivers/gpu/drm/msm/Kconfig                   |   1 +
->  drivers/gpu/drm/msm/adreno/a5xx_gpu.c         |   4 +-
->  drivers/gpu/drm/msm/adreno/adreno_gpu.c       |  11 +-
->  drivers/media/platform/qcom/iris/Kconfig      |  25 +-
->  .../media/platform/qcom/iris/iris_firmware.c  |   9 +-
->  drivers/media/platform/qcom/venus/Kconfig     |   1 +
->  drivers/media/platform/qcom/venus/firmware.c  |  11 +-
->  drivers/net/ipa/Kconfig                       |   2 +-
->  drivers/net/ipa/ipa_main.c                    |  13 +-
->  drivers/net/wireless/ath/ath12k/Kconfig       |   2 +-
->  drivers/net/wireless/ath/ath12k/ahb.c         |   8 +-
->  drivers/remoteproc/Kconfig                    |   4 +-
->  drivers/remoteproc/qcom_q6v5_mss.c            |   5 +-
->  drivers/remoteproc/qcom_q6v5_pas.c            |  51 +-
->  drivers/remoteproc/qcom_wcnss.c               |  12 +-
->  drivers/soc/qcom/mdt_loader.c                 |  12 +-
->  include/linux/firmware/qcom/qcom_pas.h        |  43 ++
->  include/linux/firmware/qcom/qcom_scm.h        |  29 --
->  include/linux/soc/qcom/mdt_loader.h           |   6 +-
->  28 files changed, 1117 insertions(+), 318 deletions(-)
->  create mode 100644 arch/arm64/boot/dts/qcom/kodiak-el2.dtso
->  create mode 100644 drivers/firmware/qcom/qcom_pas.c
->  create mode 100644 drivers/firmware/qcom/qcom_pas.h
->  create mode 100644 drivers/firmware/qcom/qcom_pas_tee.c
->  create mode 100644 include/linux/firmware/qcom/qcom_pas.h
-> 
-> -- 
-> 2.51.0
-> 
-> 
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221079
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ net/mac80211/cfg.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 7b77d57c9f96..f9ee9947a94d 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2344,8 +2344,9 @@ static int sta_apply_parameters(struct ieee80211_local *local,
+ 		sta->sta.max_sp = params->max_sp;
+ 	}
+ 
+-	ieee80211_sta_set_max_amsdu_subframes(sta, params->ext_capab,
+-					      params->ext_capab_len);
++	if (params->ext_capab)
++		ieee80211_sta_set_max_amsdu_subframes(sta, params->ext_capab,
++						      params->ext_capab_len);
+ 
+ 	/*
+ 	 * cfg80211 validates this (1-2007) and allows setting the AID
+-- 
+2.34.1
+
 
