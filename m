@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-36375-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36376-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEdvD7gUBGq0DQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36375-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 08:05:44 +0200
+	id YFnFOusUBGqDDQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36376-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 08:06:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA0C52DEB4
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 08:05:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8412352DEE6
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 08:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CB9C73047450
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 06:05:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D24A63083A03
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2026 06:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4585F3D3334;
-	Wed, 13 May 2026 06:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7F83D3326;
+	Wed, 13 May 2026 06:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nknJDJuG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TejMABEi"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DEA3D348F;
-	Wed, 13 May 2026 06:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BC63D3334;
+	Wed, 13 May 2026 06:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778652341; cv=none; b=GtIt9zgtg/8rf0+1OQvBJLcDbL0HXLpYbDPYi6XjjLJ9Knf3s4Hyee3Tt5bQEc5N79w0EMlIud1juJAfo7mlgqRl93B0+iT08Pt5eG/PiKHUD5Ws4QdgHjs2CHFrLJUpi8iq5Ep1BoYTNKDVCtUxozpdBUlD4jHkuZk/lSGF6EI=
+	t=1778652344; cv=none; b=NBeSgrXJqky4By5of3Vkoj9OQgWNWmvRw27mU7CNX4UlaBqpVlAcMdu9FcL7BpdwRwLM8ZPXK7nEJClwz4AOdOFT2hLpGBH40nTc/MEAP4f+rmdfduHXHffpIMQB4Osw7WWS2tD58nypXeR9pgBmBcKhHkLKruTGxpKvatLkWoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778652341; c=relaxed/simple;
-	bh=Z/MCK6kaDdlIm5kIcWfkbQzDqJchtn0mu7ja5gL+52g=;
+	s=arc-20240116; t=1778652344; c=relaxed/simple;
+	bh=fXv+4EiCVA/KJO0BsPrdEclpsjmgzJ7xpOenbwrD/So=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kv9nOAO8Y2uHClk+l0I7gdcbHoyQ6tWaiczdBf+XlE8NUYPnB2EDOIl/MAMFGnMGy8glzWLcwftbYRT8BfAKme5fzYDl1SDFsTyQB3JDhiD3t/9lyrotOr4AFF4m8tKFwJQ1lctAMz/bZPtjBUjCY/YTXPD/CStrq6wMv7Nz1os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nknJDJuG; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=QzHWjNOeSsNok0z71WSaBTydX1MNyjPGXgdjvIOQmS7mUpa5kNjgz3TOjfy8iPod5l5ZvggQAZ4rmFoYGshzlKvDsYN2eSfZO3ABSmuMpS9qJh0KtpMjzlybsPPrZ68d4295TAGrbxPi91uww6Y1xZRjrstJUipxDR5CLmBRumE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TejMABEi; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778652339; x=1810188339;
+  t=1778652342; x=1810188342;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Z/MCK6kaDdlIm5kIcWfkbQzDqJchtn0mu7ja5gL+52g=;
-  b=nknJDJuGhJ+oX2aQLUhu2EE5CvaJWAUZzdkkSYkUPlsInBG6QJdBET1p
-   Sfe8U4lWr17VPlzB2k9jw6jCHNkfP9jxSkpxNr9one7nlRs7uVZHdxR4A
-   oVDTloj5DpBbeBCrongngIeOjUtjuROANGNPEVDebJ59+qqmF1QOY49d4
-   sE5U2NdpXUc+QxhGl90m7CL/5auuw5p7yDQ/avMKbfMc3QSDLlktPA0lT
-   XKkVooFFLWrdY9WQ/HjHc4jHDGN8XaGAC/EeYRg27mMwnpmcsapw3hiw5
-   lAev4M3QPd62YNhJSe9XTbLDYtvXQgRHILWEncfJLv0222HOnBw8bFbyP
-   g==;
-X-CSE-ConnectionGUID: k0WXJ8YTRaqFan+ClioYyA==
-X-CSE-MsgGUID: nCIRceu+Tv+QD6LQio2sWA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="90954396"
+  bh=fXv+4EiCVA/KJO0BsPrdEclpsjmgzJ7xpOenbwrD/So=;
+  b=TejMABEi0KXRyl2msBMkuOLseU1Q45HAry5OOVFFvolhBvPjJd6JMOE9
+   3EZK0KhPA1TnBvx3AsKIbwk6jWcwbGcru6i/eNoZOLreFFkJ8zSdnWKit
+   xU1NmmCYIkILtcWQXlN33vtoHFsheJiV2YiblKzsPHmr3bTFARgPxAsxn
+   L6KAKbJ3z6ENKBkXf62NK1jnGRCUk7AGPdfLCtlaE1HLZtsR7zYq3a3vT
+   J1RNeYpzDqMYXbAL/Doi2j8gXS9MYdoXp6hyyZmnm7jWDxiqhMp78ohNh
+   9xnQ36nTxBuIGKh778guDD7Ve3TzdN8RaA98qbODQO9arg7hBo27cXFbm
+   Q==;
+X-CSE-ConnectionGUID: Ip4MI67DSXe/MyLBa21Wng==
+X-CSE-MsgGUID: fj2afdRDScOMxmSDEPuyEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="90954403"
 X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="90954396"
+   d="scan'208";a="90954403"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:05:38 -0700
-X-CSE-ConnectionGUID: uLFIWRTxTtK7FyPCfEJk1w==
-X-CSE-MsgGUID: wmmnPcDeRb2A+DoiMGOocQ==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 23:05:42 -0700
+X-CSE-ConnectionGUID: DaOQexrtRrmAeX1ikZi9Vg==
+X-CSE-MsgGUID: SxVsI1+YRvOs/w6uYWZoRQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="233712387"
+   d="scan'208";a="233712400"
 Received: from iapp347.iil.intel.com (HELO localhost) ([10.167.28.6])
-  by fmviesa010.fm.intel.com with ESMTP; 12 May 2026 23:05:36 -0700
+  by fmviesa010.fm.intel.com with ESMTP; 12 May 2026 23:05:39 -0700
 From: Avinash Bhatt <avinash.bhatt@intel.com>
 To: devicetree@vger.kernel.org,
 	linux-wireless@vger.kernel.org
@@ -72,9 +72,9 @@ Cc: robh@kernel.org,
 	linux-kernel@vger.kernel.org,
 	kobi.guetta@intel.com,
 	emmanuel.grumbach@intel.com
-Subject: [PATCH v3 1/3] dt-bindings: net: wireless: Add Intel Wi-Fi 7 BE200 PCIe adapter
-Date: Wed, 13 May 2026 09:05:29 +0300
-Message-Id: <20260513060531.8130-2-avinash.bhatt@intel.com>
+Subject: [PATCH v3 2/3] wifi: iwlwifi: dt: add Device Tree BIOS configuration infrastructure
+Date: Wed, 13 May 2026 09:05:30 +0300
+Message-Id: <20260513060531.8130-3-avinash.bhatt@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260513060531.8130-1-avinash.bhatt@intel.com>
 References: <20260513060531.8130-1-avinash.bhatt@intel.com>
@@ -85,7 +85,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AFA0C52DEB4
+X-Rspamd-Queue-Id: 8412352DEE6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -93,304 +93,709 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_NEQ_ENVFROM(0.00)[avinash.bhatt@intel.com,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-36375-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36376-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-0.999];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	RCVD_COUNT_FIVE(0.00)[5];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:mid,intel.com:dkim,0.0.0.0:email,devicetree.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-The Intel Wi-Fi 7 BE200 is a discrete PCIe Wi-Fi adapter supporting
-802.11be with tri-band operation including the 6 GHz band.
+On platforms that use Device Tree and do not provide UEFI variables or
+ACPI methods, discrete Intel Wi-Fi adapters have no way to receive BIOS
+configuration. Add Device Tree as a supported configuration source for
+SAR limits and 6 GHz AP type support, with stub hooks for TAS and
+per-platform antenna gain tables.
+
+DT support is gated on CONFIG_OF and is a no-op on x86. BIOS_SOURCE_DT
+is added to enum bios_source to track the configuration origin.
 
 Signed-off-by: Avinash Bhatt <avinash.bhatt@intel.com>
 ---
- .../bindings/net/wireless/intel,iwlwifi.yaml  | 248 ++++++++++++++++++
- MAINTAINERS                                   |   1 +
- 2 files changed, 249 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/wireless/intel,iwlwifi.yaml
+ drivers/net/wireless/intel/iwlwifi/Makefile   |   1 +
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |   5 +-
+ .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dt.c    | 332 ++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/fw/dt.h    | 161 +++++++++
+ drivers/net/wireless/intel/iwlwifi/fw/init.c  |   4 +-
+ .../wireless/intel/iwlwifi/fw/regulatory.h    |   3 +-
+ .../net/wireless/intel/iwlwifi/fw/runtime.h   |   6 +-
+ intc-scripts/publishable-files                |   2 +
+ 9 files changed, 510 insertions(+), 8 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/fw/dt.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/fw/dt.h
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/intel,iwlwifi.yaml b/Documentation/devicetree/bindings/net/wireless/intel,iwlwifi.yaml
-new file mode 100644
-index 000000000000..e5ba5e7608e2
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/wireless/intel,iwlwifi.yaml
-@@ -0,0 +1,248 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+# Copyright (c) 2026 Intel Corporation
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/wireless/intel,iwlwifi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Intel Wi-Fi 7 BE200 PCIe adapter
-+
-+maintainers:
-+  - Avinash Bhatt <avinash.bhatt@intel.com>
-+  - Miri Korenblit <miriam.rachel.korenblit@intel.com>
-+
-+description:
-+  Intel Wi-Fi 7 BE200 (BE200NGW) IEEE 802.11be discrete PCIe adapter.
-+
-+allOf:
-+  - $ref: /schemas/net/wireless/ieee80211.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - pci8086,272b
-+
-+  reg:
-+    maxItems: 1
-+
-+  intel,wrds:
-+    description: |
-+      SAR (Specific Absorption Rate) transmit power limits per antenna chain
-+      and frequency subband, in units of 0.125 dBm.
-+
-+      First cell is the mode word: bit 0 set enables SAR limiting, bit 0
-+      clear disables it (device uses its certified maximum).
-+
-+      Followed by 48 limit values for four antenna chains in order:
-+      chain A, chain B, CDB chain A, CDB chain B. Each chain has 12
-+      subband values covering the following frequency ranges:
-+
-+        [0]  2.4 GHz  ch  1-13   (2412-2472 MHz)
-+        [1]  5 GHz    ch 36-64   (5180-5320 MHz)
-+        [2]  5 GHz    ch 68-96   (5340-5480 MHz)
-+        [3]  5 GHz    ch 100-144 (5500-5720 MHz)
-+        [4]  5 GHz    ch 149-177 (5745-5885 MHz)
-+        [5]  6 GHz    ch  1-45   (5955-6175 MHz)
-+        [6]  6 GHz    ch 49-93   (6195-6415 MHz)
-+        [7]  6 GHz    ch 97-115  (6435-6525 MHz)
-+        [8]  6 GHz    ch 117-151 (6535-6705 MHz)
-+        [9]  6 GHz    ch 153-183 (6715-6865 MHz)
-+        [10] 6 GHz    ch 185-233 (6875-7115 MHz)
-+        [11] 6 GHz    ch 237-253 (7135-7215 MHz)
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    minItems: 49
-+    maxItems: 49
-+
-+  intel,uats:
-+    description: |
-+      Per-country enablement matrix for 6 GHz AP types. 338-byte array
-+      encoding which AP types (AFC, VLP, LPI) are permitted per country.
-+
-+      Countries are identified by ISO 3166-1 alpha-2 code. The matrix
-+      covers all 26x26 = 676 two-letter combinations (AA..ZZ), stored
-+      column-major (all second-letter variants for first letter A first,
-+      then B, and so on). 26 columns x 13 bytes = 338 bytes total.
-+
-+      Each country occupies 4 bits (a nibble); two countries are packed
-+      per byte, low nibble first:
-+        bit 0: AFC (Standard Power AP) permitted
-+        bit 1: VLP (Very Low Power AP) permitted
-+        bit 2: LPI (Low Power Indoor AP) permitted
-+
-+      A bit is only effective when the corresponding control bit in
-+      intel,6e-uhb is also set (bit 30 for AFC, bit 29 for VLP,
-+      bit 31 for LPI per-country mode).
-+    $ref: /schemas/types.yaml#/definitions/uint8-array
-+    minItems: 338
-+    maxItems: 338
-+
-+  intel,srd:
-+    description: |
-+      ETSI 5.8 GHz SRD (Short Range Device) channel behaviour in the
-+      5725-5875 MHz band for ETSI regulatory domains.
-+
-+        active-scan  - active scanning permitted (default)
-+        passive-scan - device may associate and transfer data but must
-+                       not transmit probe requests on SRD channels
-+        disabled     - device must not scan, associate, or operate on
-+                       any SRD channel
-+    enum:
-+      - active-scan
-+      - passive-scan
-+      - disabled
-+
-+  intel,6e-uhb:
-+    description: |
-+      6-7 GHz Ultra-High Band (UHB) per-country enable bitmask.
-+
-+        bit 0:     override control; 0 = use device defaults,
-+                   1 = force-disable all countries not explicitly
-+                   enabled in bits 1-25
-+        bit  1:    USA
-+        bit  2:    Rest of World (ROW)
-+        bit  3:    EU
-+        bit  4:    South Korea
-+        bit  5:    Brazil
-+        bit  6:    Chile
-+        bit  7:    Japan
-+        bit  8:    Canada
-+        bit  9:    Morocco
-+        bit 10:    Mongolia
-+        bit 11:    Malaysia
-+        bit 12:    Saudi Arabia
-+        bit 13:    Mexico
-+        bit 14:    Nigeria
-+        bit 15:    Thailand
-+        bit 16:    Singapore
-+        bit 17:    Taiwan
-+        bit 18:    South Africa
-+        bit 19:    Philippines
-+        bit 20:    Serbia
-+        bit 21:    Indonesia
-+        bit 22:    Azerbaijan
-+        bit 23:    Paraguay
-+        bit 24:    Vietnam
-+        bit 25:    India
-+        bit 27:    enable VLP active scan, SoftAP, and P2P-GO in Japan
-+        bit 29:    enable VLP mode per intel,uats country table
-+        bit 30:    enable AFC mode per intel,uats country table
-+        bit 31:    use intel,uats country table for LPI (0 = group mode)
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  intel,regulatory-special:
-+    description: |
-+      Special regulatory configuration flags.
-+
-+        bit 4:    enable Australia UHB band extension
-+        bit 5:    Bangladesh 6 GHz UHB enablement
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  intel,activate-channel:
-+    description: |
-+      Indoor channel activation bitmask. Enables specific frequency bands
-+      for active use when the platform is operating indoors.
-+
-+        bit 0:    EU U-NII-1 (5150-5250 MHz)
-+        bit 1:    Japan U-NII-1 (5150-5250 MHz)
-+        bit 2:    China Mainland U-NII-1 (5150-5250 MHz)
-+        bit 3:    USA U-NII-4 (5850-5925 MHz)
-+        bit 4:    Worldwide U-NII-1 (5150-5250 MHz) for any country
-+                  where the band is permitted indoors
-+        bit 5:    Canada U-NII-4 (5850-5925 MHz)
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  intel,force-disable-channels:
-+    description: |
-+      Per-band force-disable bitmask. Permanently disables specific
-+      frequency bands regardless of regulatory domain.
-+
-+        bit  0:    2.4 GHz  (ch   1-13,  2412-2472 MHz)
-+        bit  1:    5.2 GHz  (ch  36-48,  5180-5240 MHz)
-+        bit  2:    5.3 GHz  (ch  52-64,  5260-5320 MHz)
-+        bit  3:    5.5 GHz  (ch 100-144, 5500-5720 MHz)
-+        bit  4:    5.8 GHz  (ch 149-165, 5745-5825 MHz)
-+        bit  5:    5.9 GHz  (ch 169-177, 5845-5885 MHz)
-+        bit  6:    6.2 GHz  (ch   1-93,  5955-6415 MHz)
-+        bit  7:    6.5 GHz  (ch  97-113, 6435-6525 MHz)
-+        bit  8:    6.6 GHz  (ch 117-153, 6535-6705 MHz)
-+        bit  9:    6.8 GHz  (ch 157-185, 6715-6885 MHz)
-+        bit 10:    7.0 GHz  (ch 185-233, 6875-7115 MHz)
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  intel,11be:
-+    description: |
-+      802.11be (Wi-Fi 7) per-country enable bitmask.
-+
-+        bit 0:    China (CN)
-+        bit 1:    South Korea
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  intel,splc:
-+    description:
-+      Platform thermal power limit for the Wi-Fi core in mW. The device
-+      will not exceed this limit regardless of regulatory maximums.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 1
-+
-+  intel,wcpe:
-+    description: |
-+      802.11be channel puncturing enable bitmask. When set, allows the
-+      device to puncture (skip) sub-channels within a wide channel for
-+      coexistence with incumbents, subject to country certification.
-+
-+        bit 0:    USA
-+        bit 1:    Canada
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  intel,wbem:
-+    description: |
-+      320 MHz channel bandwidth enable bitmask per country. Each bit
-+      takes effect only if the installed module is certified for 320 MHz
-+      in that country.
-+
-+        bit 0:    Japan
-+        bit 1:    South Korea
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    pcie {
-+        #address-cells = <3>;
-+        #size-cells = <2>;
-+
-+        pcie@0 {
-+            device_type = "pci";
-+            reg = <0x0 0x0 0x0 0x0 0x0>;
-+            #address-cells = <3>;
-+            #size-cells = <2>;
-+            ranges;
-+            bus-range = <0x01 0xff>;
-+
-+            wifi@0 {
-+                compatible = "pci8086,272b";
-+                reg = <0x10000 0x0 0x0 0x0 0x0>;
-+
-+                /* SAR power limits: mode + 4 chains x 12 subbands */
-+                intel,wrds = <
-+                    0x01
-+                    0x38 0x38 0x38 0x38 0x38 0x38 0x38 0x38 0x38 0x38 0x38 0x38
-+                    0x38 0x38 0x38 0x38 0x38 0x38 0x38 0x38 0x38 0x38 0x38 0x38
-+                    0x3c 0x3c 0x3c 0x3c 0x3c 0x3c 0x3c 0x3c 0x3c 0x3c 0x3c 0x3c
-+                    0x3c 0x3c 0x3c 0x3c 0x3c 0x3c 0x3c 0x3c 0x3c 0x3c 0x3c 0x3c
-+                >;
-+
-+                intel,splc = <4500>;
-+                intel,wcpe = <0x03>;
-+                intel,wbem = <0x03>;
-+                intel,srd = "passive-scan";
-+                intel,activate-channel = <0x01>;
-+                intel,6e-uhb = <0x06>;
-+            };
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 77fdfcb55f06..674320ef137e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13256,6 +13256,7 @@ L:	linux-wireless@vger.kernel.org
- S:	Supported
- W:	https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi
- T:	git https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git/
-+F:	Documentation/devicetree/bindings/net/wireless/intel,iwlwifi.yaml
- F:	drivers/net/wireless/intel/iwlwifi/
+diff --git a/drivers/net/wireless/intel/iwlwifi/Makefile b/drivers/net/wireless/intel/iwlwifi/Makefile
+index 060604fa6c..c7a2d5ee66 100644
+--- a/drivers/net/wireless/intel/iwlwifi/Makefile
++++ b/drivers/net/wireless/intel/iwlwifi/Makefile
+@@ -18,6 +18,7 @@ iwlwifi-$(CPTCFG_IWLMVM) += fw/paging.o fw/smem.o fw/init.o
+ iwlwifi-$(CPTCFG_IWLMLD) += fw/smem.o fw/init.o
+ iwlwifi-$(CONFIG_ACPI) += fw/acpi.o
+ iwlwifi-$(CONFIG_EFI)	+= fw/uefi.o
++iwlwifi-$(CONFIG_OF)	+= fw/dt.o
  
- INTEL VISION SENSING CONTROLLER DRIVER
+ iwlwifi-$(CPTCFG_IWLXVT)	+= fw/paging.o fw/smem.o
+ iwlwifi-$(CPTCFG_IWLPROD)	+= fw/init.o
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+index a1f89ced15..2356365db2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+  * Copyright (C) 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2023, 2025 Intel Corporation
++ * Copyright (C) 2018-2023, 2025-2026 Intel Corporation
+  */
+ #ifndef __iwl_fw_acpi__
+ #define __iwl_fw_acpi__
+@@ -115,9 +115,6 @@
+ #define ACPI_PPAG_WIFI_DATA_SIZE_V3	((ACPI_PPAG_NUM_CHAINS * \
+ 					  ACPI_PPAG_NUM_BANDS_V3) + 2)
+ 
+-#define IWL_SAR_ENABLE_MSK		BIT(0)
+-#define IWL_REDUCE_POWER_FLAGS_POS	1
+-
+ /* The Inidcator whether UEFI WIFI GUID tables are locked is read from ACPI */
+ #define UEFI_WIFI_GUID_UNLOCKED		0
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
+index 2bec56937c..4b3b97f137 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2026 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -527,11 +527,13 @@ struct iwl_tas_config_cmd_v2_v4 {
+  * @BIOS_SOURCE_NONE: BIOS source is not defined
+  * @BIOS_SOURCE_ACPI: BIOS source is ACPI
+  * @BIOS_SOURCE_UEFI: BIOS source is UEFI
++ * @BIOS_SOURCE_DT: BIOS source is Device Tree
+  */
+ enum bios_source {
+ 	BIOS_SOURCE_NONE,
+ 	BIOS_SOURCE_ACPI,
+ 	BIOS_SOURCE_UEFI,
++	BIOS_SOURCE_DT,
+ };
+ 
+ /**
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dt.c b/drivers/net/wireless/intel/iwlwifi/fw/dt.c
+new file mode 100644
+index 0000000000..5fd7628ec1
+--- /dev/null
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dt.c
+@@ -0,0 +1,332 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++/*
++ * Copyright (C) 2026 Intel Corporation
++ */
++#include <linux/of.h>
++#include "iwl-drv.h"
++#include "iwl-debug.h"
++#include "fw/runtime.h"
++#include "fw/regulatory.h"
++#include "dt.h"
++
++/* PCI compatible strings for supported hardware */
++static const char * const iwl_dt_compatible[] = {
++	"pci8086,272b",	/* Intel Wi-Fi 7 BE200 */
++	NULL
++};
++
++void iwl_dt_init(struct iwl_fw_runtime *fwrt)
++{
++	struct device_node *node = dev_of_node(fwrt->dev);
++	const char * const *compat;
++
++	if (!node)
++		return;
++
++	for (compat = iwl_dt_compatible; *compat; compat++) {
++		if (of_device_is_compatible(node, *compat)) {
++			fwrt->dt_compatible = true;
++			return;
++		}
++	}
++
++	IWL_ERR(fwrt,
++		"DT node compatible does not match any supported hardware - ignoring DT\n");
++}
++IWL_EXPORT_SYMBOL(iwl_dt_init);
++
++/* intel,wcpe - channel puncturing enable bits */
++#define IWL_DT_WCPE_USA_EN		BIT(0)	/* USA */
++#define IWL_DT_WCPE_CANADA_EN		BIT(1)	/* Canada */
++#define IWL_DT_WCPE_MASK \
++	(IWL_DT_WCPE_USA_EN | IWL_DT_WCPE_CANADA_EN)
++
++/* SAR layout for "intel,wrds": 4 chains x 12 subbands */
++#define IWL_DT_WRDS_NUM_CHAINS		4
++#define IWL_DT_WRDS_NUM_SUBBANDS	12
++/* Total cell count: 1-cell mode header + SAR data */
++#define IWL_DT_WRDS_MAX_CELLS \
++	(1 + IWL_DT_WRDS_NUM_CHAINS * IWL_DT_WRDS_NUM_SUBBANDS)
++
++int iwl_dt_get_wrds_table(struct iwl_fw_runtime *fwrt)
++{
++	struct device_node *node = dev_of_node(fwrt->dev);
++	u32 buf[IWL_DT_WRDS_MAX_CELLS];
++	int ret;
++
++	if (!node)
++		return -ENOENT;
++
++	ret = of_property_read_u32_array(node, "intel,wrds", buf,
++					 IWL_DT_WRDS_MAX_CELLS);
++	if (ret) {
++		IWL_DEBUG_RADIO(fwrt, "DT: intel,wrds read failed (%d)\n", ret);
++		return ret;
++	}
++
++	IWL_DEBUG_RADIO(fwrt,
++			"DT: reading intel,wrds (%u chains, %u subbands)\n",
++			IWL_DT_WRDS_NUM_CHAINS, IWL_DT_WRDS_NUM_SUBBANDS);
++
++	/* buf[0]: mode; bit 0 (IWL_SAR_ENABLE_MSK) enables SAR */
++
++	BUILD_BUG_ON(IWL_DT_WRDS_NUM_CHAINS > BIOS_SAR_MAX_CHAINS_PER_PROFILE);
++	BUILD_BUG_ON(IWL_DT_WRDS_NUM_SUBBANDS > BIOS_SAR_MAX_SUB_BANDS_NUM);
++
++	/* buf[1..]: chains[0..N-1] x subbands[0..M-1] in row-major order */
++	for (int i = 0; i < IWL_DT_WRDS_NUM_CHAINS; i++) {
++		for (int j = 0; j < IWL_DT_WRDS_NUM_SUBBANDS; j++) {
++			u32 val = buf[1 + i * IWL_DT_WRDS_NUM_SUBBANDS + j];
++
++			if (val > U8_MAX) {
++				IWL_DEBUG_RADIO(fwrt,
++						"DT: intel,wrds OOB [%u][%u]=%u\n",
++						i, j, val);
++				return -EINVAL;
++			}
++			fwrt->sar_profiles[0].chains[i].subbands[j] = (u8)val;
++		}
++	}
++
++	if (buf[0] & IWL_SAR_ENABLE_MSK)
++		fwrt->sar_profiles[0].enabled = true;
++
++	return 0;
++}
++
++void iwl_dt_get_uats_table(struct iwl_fw_runtime *fwrt)
++{
++	size_t map_size = sizeof(fwrt->ap_type_cmd.mcc_to_ap_type_map);
++	struct device_node *node = dev_of_node(fwrt->dev);
++	const u8 *prop_data;
++	int len;
++
++	if (!node)
++		return;
++
++	prop_data = of_get_property(node, "intel,uats", &len);
++	if (!prop_data)
++		return;
++
++	if (len != (int)map_size) {
++		IWL_DEBUG_FW(fwrt,
++			     "DT: intel,uats bad length %d (expected %zu)\n",
++			     len, map_size);
++		return;
++	}
++
++	IWL_DEBUG_FW(fwrt, "DT: reading intel,uats\n");
++	memcpy(fwrt->ap_type_cmd.mcc_to_ap_type_map, prop_data, map_size);
++	fwrt->ap_type_cmd_valid = true;
++}
++IWL_EXPORT_SYMBOL(iwl_dt_get_uats_table);
++
++int iwl_dt_get_srd(struct iwl_fw_runtime *fwrt, u32 *value)
++{
++	struct device_node *node = dev_of_node(fwrt->dev);
++	const char *str;
++	int ret;
++
++	if (!node)
++		return -ENOENT;
++
++	ret = of_property_read_string(node, "intel,srd", &str);
++	if (ret)
++		return ret;
++
++	if (!strcmp(str, "active-scan"))
++		*value = 0;
++	else if (!strcmp(str, "passive-scan"))
++		*value = 1;
++	else if (!strcmp(str, "disabled"))
++		*value = 2;
++	else
++		return -EINVAL;
++
++	if (fwrt->dsm_source == BIOS_SOURCE_NONE) {
++		fwrt->dsm_source = BIOS_SOURCE_DT;
++		fwrt->dsm_revision = 0;
++	}
++
++	IWL_DEBUG_RADIO(fwrt, "DT: intel,srd = %s (%u)\n", str, *value);
++	return 0;
++}
++
++int iwl_dt_get_6e_uhb(struct iwl_fw_runtime *fwrt, u32 *value)
++{
++	struct device_node *node = dev_of_node(fwrt->dev);
++	int ret;
++
++	if (!node)
++		return -ENOENT;
++
++	ret = of_property_read_u32(node, "intel,6e-uhb", value);
++	if (ret)
++		return ret;
++
++	if (fwrt->dsm_source == BIOS_SOURCE_NONE) {
++		fwrt->dsm_source = BIOS_SOURCE_DT;
++		fwrt->dsm_revision = 0;
++	}
++
++	IWL_DEBUG_RADIO(fwrt, "DT: intel,6e-uhb = 0x%x\n", *value);
++	return 0;
++}
++
++int iwl_dt_get_regulatory_special(struct iwl_fw_runtime *fwrt, u32 *value)
++{
++	struct device_node *node = dev_of_node(fwrt->dev);
++	int ret;
++
++	if (!node)
++		return -ENOENT;
++
++	ret = of_property_read_u32(node, "intel,regulatory-special", value);
++	if (ret)
++		return ret;
++
++	if (fwrt->dsm_source == BIOS_SOURCE_NONE) {
++		fwrt->dsm_source = BIOS_SOURCE_DT;
++		fwrt->dsm_revision = 0;
++	}
++
++	IWL_DEBUG_RADIO(fwrt, "DT: intel,regulatory-special = 0x%x\n", *value);
++	return 0;
++}
++
++int iwl_dt_get_activate_channel(struct iwl_fw_runtime *fwrt, u32 *value)
++{
++	struct device_node *node = dev_of_node(fwrt->dev);
++	int ret;
++
++	if (!node)
++		return -ENOENT;
++
++	ret = of_property_read_u32(node, "intel,activate-channel", value);
++	if (ret)
++		return ret;
++
++	if (fwrt->dsm_source == BIOS_SOURCE_NONE) {
++		fwrt->dsm_source = BIOS_SOURCE_DT;
++		fwrt->dsm_revision = 0;
++	}
++
++	IWL_DEBUG_RADIO(fwrt, "DT: intel,activate-channel = 0x%x\n", *value);
++	return 0;
++}
++
++int iwl_dt_get_force_disable_channels(struct iwl_fw_runtime *fwrt, u32 *value)
++{
++	struct device_node *node = dev_of_node(fwrt->dev);
++	int ret;
++
++	if (!node)
++		return -ENOENT;
++
++	ret = of_property_read_u32(node, "intel,force-disable-channels", value);
++	if (ret)
++		return ret;
++
++	if (fwrt->dsm_source == BIOS_SOURCE_NONE) {
++		fwrt->dsm_source = BIOS_SOURCE_DT;
++		fwrt->dsm_revision = 0;
++	}
++
++	IWL_DEBUG_RADIO(fwrt, "DT: intel,force-disable-channels = 0x%x\n",
++			*value);
++	return 0;
++}
++
++int iwl_dt_get_11be(struct iwl_fw_runtime *fwrt, u32 *value)
++{
++	struct device_node *node = dev_of_node(fwrt->dev);
++	int ret;
++
++	if (!node)
++		return -ENOENT;
++
++	ret = of_property_read_u32(node, "intel,11be", value);
++	if (ret)
++		return ret;
++
++	if (fwrt->dsm_source == BIOS_SOURCE_NONE) {
++		fwrt->dsm_source = BIOS_SOURCE_DT;
++		fwrt->dsm_revision = 0;
++	}
++
++	IWL_DEBUG_RADIO(fwrt, "DT: intel,11be = 0x%x\n", *value);
++	return 0;
++}
++
++int iwl_dt_get_dsm(struct iwl_fw_runtime *fwrt, enum iwl_dsm_funcs func,
++		   u32 *value)
++{
++	switch (func) {
++	case DSM_FUNC_DISABLE_SRD:
++		return iwl_dt_get_srd(fwrt, value);
++	case DSM_FUNC_ENABLE_6E:
++		return iwl_dt_get_6e_uhb(fwrt, value);
++	case DSM_FUNC_REGULATORY_CONFIG:
++		return iwl_dt_get_regulatory_special(fwrt, value);
++	case DSM_FUNC_ACTIVATE_CHANNEL:
++		return iwl_dt_get_activate_channel(fwrt, value);
++	case DSM_FUNC_FORCE_DISABLE_CHANNELS:
++		return iwl_dt_get_force_disable_channels(fwrt, value);
++	case DSM_FUNC_ENABLE_11BE:
++		return iwl_dt_get_11be(fwrt, value);
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++int iwl_dt_get_pwr_limit(struct iwl_fw_runtime *fwrt, u64 *data)
++{
++	struct device_node *node = dev_of_node(fwrt->dev);
++	u32 val;
++	int ret;
++
++	if (!node)
++		return -ENOENT;
++
++	ret = of_property_read_u32(node, "intel,splc", &val);
++	if (ret)
++		return ret;
++
++	*data = val;
++	IWL_DEBUG_RADIO(fwrt, "DT: intel,splc = %u mW\n", val);
++	return 0;
++}
++
++int iwl_dt_get_wbem(struct iwl_fw_runtime *fwrt, u32 *data)
++{
++	struct device_node *node = dev_of_node(fwrt->dev);
++	int ret;
++
++	if (!node)
++		return -ENOENT;
++
++	ret = of_property_read_u32(node, "intel,wbem", data);
++	if (ret)
++		return ret;
++
++	IWL_DEBUG_RADIO(fwrt, "DT: intel,wbem = 0x%x\n", *data);
++	return 0;
++}
++
++int iwl_dt_get_puncturing(struct iwl_fw_runtime *fwrt)
++{
++	struct device_node *node = dev_of_node(fwrt->dev);
++	u32 val;
++	int ret;
++
++	if (!node)
++		return 0;
++
++	ret = of_property_read_u32(node, "intel,wcpe", &val);
++	if (ret)
++		return 0;
++
++	IWL_DEBUG_RADIO(fwrt, "DT: intel,wcpe = 0x%x\n", val);
++	return val & IWL_DT_WCPE_MASK;
++}
++IWL_EXPORT_SYMBOL(iwl_dt_get_puncturing);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dt.h b/drivers/net/wireless/intel/iwlwifi/fw/dt.h
+new file mode 100644
+index 0000000000..70ab6f309b
+--- /dev/null
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dt.h
+@@ -0,0 +1,161 @@
++/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
++/*
++ * Copyright (C) 2026 Intel Corporation
++ */
++#ifndef __iwl_fw_dt_h__
++#define __iwl_fw_dt_h__
++
++#include "fw/runtime.h"
++
++/*
++ * Device Tree property parsing for Intel Wi-Fi 7 BE200 PCIe adapters.
++ *
++ * On platforms without UEFI variables or ACPI methods, regulatory and
++ * power configuration can be supplied via Device Tree properties in the
++ * Wi-Fi PCIe device node.
++ *
++ * DT is the lowest-priority source: UEFI variables take precedence, then
++ * ACPI methods, and finally these DT properties.
++ */
++
++#if IS_ENABLED(CONFIG_OF)
++
++/* Functions implemented in fw/dt.c */
++void iwl_dt_init(struct iwl_fw_runtime *fwrt);
++
++static inline bool iwl_dt_is_compatible(struct iwl_fw_runtime *fwrt)
++{
++	return fwrt->dt_compatible;
++}
++
++int iwl_dt_get_wrds_table(struct iwl_fw_runtime *fwrt);
++void iwl_dt_get_uats_table(struct iwl_fw_runtime *fwrt);
++int iwl_dt_get_srd(struct iwl_fw_runtime *fwrt, u32 *value);
++int iwl_dt_get_6e_uhb(struct iwl_fw_runtime *fwrt, u32 *value);
++int iwl_dt_get_regulatory_special(struct iwl_fw_runtime *fwrt, u32 *value);
++int iwl_dt_get_activate_channel(struct iwl_fw_runtime *fwrt, u32 *value);
++int iwl_dt_get_force_disable_channels(struct iwl_fw_runtime *fwrt, u32 *value);
++int iwl_dt_get_11be(struct iwl_fw_runtime *fwrt, u32 *value);
++int iwl_dt_get_dsm(struct iwl_fw_runtime *fwrt, enum iwl_dsm_funcs func,
++		   u32 *value);
++int iwl_dt_get_pwr_limit(struct iwl_fw_runtime *fwrt, u64 *data);
++int iwl_dt_get_wbem(struct iwl_fw_runtime *fwrt, u32 *data);
++int iwl_dt_get_puncturing(struct iwl_fw_runtime *fwrt);
++#else /* !CONFIG_OF */
++
++static inline void iwl_dt_init(struct iwl_fw_runtime *fwrt) {}
++
++static inline bool iwl_dt_is_compatible(struct iwl_fw_runtime *fwrt)
++{
++	return false;
++}
++
++static inline int iwl_dt_get_wrds_table(struct iwl_fw_runtime *fwrt)
++{
++	return -ENOENT;
++}
++
++static inline void iwl_dt_get_uats_table(struct iwl_fw_runtime *fwrt) {}
++
++static inline int iwl_dt_get_srd(struct iwl_fw_runtime *fwrt, u32 *value)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_6e_uhb(struct iwl_fw_runtime *fwrt, u32 *value)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_regulatory_special(struct iwl_fw_runtime *fwrt,
++						u32 *value)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_activate_channel(struct iwl_fw_runtime *fwrt,
++					      u32 *value)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_force_disable_channels(struct iwl_fw_runtime *fwrt,
++						    u32 *value)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_11be(struct iwl_fw_runtime *fwrt, u32 *value)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_pwr_limit(struct iwl_fw_runtime *fwrt, u64 *data)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_wbem(struct iwl_fw_runtime *fwrt, u32 *data)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_puncturing(struct iwl_fw_runtime *fwrt)
++{
++	return 0;
++}
++
++static inline int iwl_dt_get_dsm(struct iwl_fw_runtime *fwrt,
++				 enum iwl_dsm_funcs func, u32 *value)
++{
++	return -ENOENT;
++}
++
++#endif /* CONFIG_OF */
++
++/*
++ * The following tables have no Device Tree implementation regardless of
++ * CONFIG_OF. Callers fall back gracefully when these return -ENOENT.
++ */
++static inline int iwl_dt_get_ppag_table(struct iwl_fw_runtime *fwrt)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_tas_table(struct iwl_fw_runtime *fwrt,
++				       struct iwl_tas_data *data)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_ewrd_table(struct iwl_fw_runtime *fwrt)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_wgds_table(struct iwl_fw_runtime *fwrt)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_phy_filters(struct iwl_fw_runtime *fwrt)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_mcc(struct iwl_fw_runtime *fwrt, char *data)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_eckv(struct iwl_fw_runtime *fwrt, u32 *data)
++{
++	return -ENOENT;
++}
++
++static inline int iwl_dt_get_dsbr(struct iwl_fw_runtime *fwrt, u32 *data)
++{
++	return -ENOENT;
++}
++
++#endif /* __iwl_fw_dt_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/init.c b/drivers/net/wireless/intel/iwlwifi/fw/init.c
+index d1d8058ad2..7d365947b3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/init.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/init.c
+@@ -1,12 +1,13 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+  * Copyright (C) 2017 Intel Deutschland GmbH
+- * Copyright (C) 2019-2021, 2024-2025 Intel Corporation
++ * Copyright (C) 2019-2021, 2024-2026 Intel Corporation
+  */
+ #include "iwl-drv.h"
+ #include "runtime.h"
+ #include "dbg.h"
+ #include "debugfs.h"
++#include "dt.h"
+ 
+ #include "fw/api/system.h"
+ #include "fw/api/commands.h"
+@@ -36,6 +37,7 @@ void iwl_fw_runtime_init(struct iwl_fw_runtime *fwrt, struct iwl_trans *trans,
+ 		INIT_DELAYED_WORK(&fwrt->dump.wks[i].wk, iwl_fw_error_dump_wk);
+ 	}
+ 	iwl_fwrt_dbgfs_register(fwrt, dbgfs_dir);
++	iwl_dt_init(fwrt);
+ }
+ IWL_EXPORT_SYMBOL(iwl_fw_runtime_init);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
+index 0f6bc61142..a6add973ba 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2023-2025 Intel Corporation
++ * Copyright (C) 2023-2026 Intel Corporation
+  */
+ 
+ #ifndef __fw_regulatory_h__
+@@ -30,6 +30,7 @@
+ #define BIOS_GEO_MIN_PROFILE_NUM	3
+ 
+ #define IWL_SAR_ENABLE_MSK		BIT(0)
++#define IWL_REDUCE_POWER_FLAGS_POS	1
+ 
+ /* PPAG gain value bounds in 1/8 dBm */
+ #define IWL_PPAG_MIN_LB	-16
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
+index cc976195b1..28161da63c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+  * Copyright (C) 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2025 Intel Corporation
++ * Copyright (C) 2018-2026 Intel Corporation
+  */
+ #ifndef __iwl_fw_runtime_h__
+ #define __iwl_fw_runtime_h__
+@@ -108,6 +108,7 @@ struct iwl_txf_iter_data {
+  * @dump: debug dump data
+  * @ap_type_cmd: AP type tables (for enablement on 6 GHz)
+  * @ap_type_cmd_valid: if &ap_type_cmd is valid
++ * @dt_compatible: true if the DT node compatible matches a supported device
+  * @uefi_tables_lock_status: The status of the WIFI GUID UEFI variables lock:
+  *	0: Unlocked, 1 and 2: Locked.
+  *	Only read the UEFI variables if locked.
+@@ -217,6 +218,9 @@ struct iwl_fw_runtime {
+ 	bool sgom_enabled;
+ 	struct iwl_mcc_allowed_ap_type_cmd ap_type_cmd;
+ 	bool ap_type_cmd_valid;
++#if IS_ENABLED(CONFIG_OF)
++	bool dt_compatible;
++#endif
+ 	u8 uefi_tables_lock_status;
+ 	struct iwl_phy_specific_cfg phy_filters;
+ 	enum bios_source dsm_source;
+diff --git a/intc-scripts/publishable-files b/intc-scripts/publishable-files
+index 81871178ba..91fc3f4d15 100644
+--- a/intc-scripts/publishable-files
++++ b/intc-scripts/publishable-files
+@@ -76,6 +76,8 @@ drivers/net/wireless/intel/iwlwifi/fw/dbg.h
+ drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+ drivers/net/wireless/intel/iwlwifi/fw/debugfs.h
+ drivers/net/wireless/intel/iwlwifi/fw/dhc-utils.h
++drivers/net/wireless/intel/iwlwifi/fw/dt.c
++drivers/net/wireless/intel/iwlwifi/fw/dt.h
+ drivers/net/wireless/intel/iwlwifi/fw/dump.c
+ drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
+ drivers/net/wireless/intel/iwlwifi/fw/file.h
 -- 
 2.34.1
 
