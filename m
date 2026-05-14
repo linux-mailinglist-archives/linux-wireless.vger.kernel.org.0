@@ -1,217 +1,183 @@
-Return-Path: <linux-wireless+bounces-36408-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36409-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OISK/9ZBWomVQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36408-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 07:13:35 +0200
+	id WDThAGFpBWq5WgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36409-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 08:19:13 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9BF53DEDC
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 07:13:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BAA653E3EE
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 08:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CE53430166BC
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 05:13:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A90ED3038BB8
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 06:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FA13BED6E;
-	Thu, 14 May 2026 05:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E5B3932D5;
+	Thu, 14 May 2026 06:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YVTUu3HB";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Bu2Kg7KM"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CGOcCj39"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A811C5F39
-	for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 05:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685713ACA5A
+	for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 06:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778735610; cv=none; b=SANaZT5WFyuS2WxqH4TBQAFS/qsZrcuT1sCmb1tEOM2NGPkEP4vpXKzCNvga7hxl5EeBm0bxs1VhchnfWxGEPHaCgRhZpOycjxi47wl0PHJ3SuP4LlwoPeBi7QjB52aqKLyNgAKiqtPOQjleBG9FV7cx4IDnsu+GV8AsS6TmINc=
+	t=1778739534; cv=none; b=UGOfDN9Zn6ruB5LYVhwoZ82AlGagQwyiCKnca30BULyo0YzFZLShJfZzjKpdMIvLIuNn7ebg0nrrRzUoUhm5vgIZGvmLlry+/p7jRxFbu64KEY11iP8I2hmdaPk82u4lF/uEaqxXCICm9ObuAojPKS0Ub9QKVjIqaKVwUC/1FDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778735610; c=relaxed/simple;
-	bh=VJEi+LQjQvpb2sBPTQT1s79F8yD/a6RpDiryNNJ90X8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hgsErdDUEMw2+vg5vmctp0xEsjZ0WhGOBw20ujj8SAYWt61VDSkFp5g/VR21Xwen9CikJwcDrkKmjIU6qqB01GsKkptSDWL6Vc6wOvSNZukaECc7gHSH2Cj3/d9mMmfO3zO8+QsWj/opfCVVU9rDTZsVhrMW4oRtlcVMA2JuGd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YVTUu3HB; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Bu2Kg7KM; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64E0dPLV3474773
-	for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 05:13:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	/5XMCJRSZDY0XJc+QOdRMaoXWGMiebQeGgCNmc9Dhbs=; b=YVTUu3HB0OTW8g6S
-	R9JolPsDru3tA2U0h83Ia7AiNOV20/+g7nHPh8dtQ64n/gt9wr44JLeIe+Ttrodx
-	1ZMGUHQzywewPAW1GQ1l4bM9ATYLhgiUQ6gpeH/7JXBwLIwQSDpWdbigaZEqhAtR
-	PMl8XvAlReEfSe4hgiJ9wwhYSG1WleqysuXTTSAqPpMtP750KWrxGPtbjcq4FUB4
-	5a+Wrwk8rLTIEEmuT0b6ibbziYLc6d/DQR3WhcmOOUAbs6bO47rd1TTsnLDFN2LK
-	0dK3UDAlDMtgDeFSYLOmrhofF9RP0UdOMOwepIREPFNpfHGszISEUPJNUgOkV4jE
-	3STyjw==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e4p41c3xg-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 05:13:28 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-368edd5fec4so2736763a91.0
-        for <linux-wireless@vger.kernel.org>; Wed, 13 May 2026 22:13:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778735607; x=1779340407; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/5XMCJRSZDY0XJc+QOdRMaoXWGMiebQeGgCNmc9Dhbs=;
-        b=Bu2Kg7KM0cRiA6S1QedtfjPnqPhg2oEVy7n1zh8hxlyqctNy1CLyLCbceWvmhjV5HM
-         Ie4gd/jCngrdQDrjbmzZZCCFx4d6XQVBpiMWgLy/5Uk0HaMbKcrYH/QYzjroE4Q0Mlth
-         7xoUzbSjJHbtje/J0sdAKDtaNxPGmoBzmfYrsCkNDLAJ07jISDB3DVJWirRZ+YtAm7Lx
-         tRTMNnF1jH3jsH++9GiWQcKnCH/SvsgbCYpAWWqNZ1gKTcWEmfBX0qNup3ZNUV1iVhJc
-         H4J3L7t/3XGSF8QOFlWk+Sk+/v6NyCmIF0ecQrkQ5byE+NKveIjB14GpX30leqXTWUEM
-         bMSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778735607; x=1779340407;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/5XMCJRSZDY0XJc+QOdRMaoXWGMiebQeGgCNmc9Dhbs=;
-        b=hgq6HGgEzO3kNkaSQRnK9u6Fu4prEYGPQ0USECpg4pEyGyXe5Qkvj89AmghsvkgENO
-         bmSopQ+L25DgXMQ+sqMtLFoEI5r3qy+bCDzHs8nEcFZ7+Tc4e+DOry/yzuZDXpM7kRU7
-         ouF/Cwf4f3i5PTO3ixPvqf5V3d1e9V88r2Vxsyubhgxsl2S0yZ7fZKoKZ60wNk4QYDWc
-         7Ye2gfV/+U63hLHgkGqc2nJkVOxoE+A325ZbT7Tynx1NyHFrvbQsOZgfec4CJ1GI+mEY
-         RyiesqsLQLzdG8vqkn1tPaafze+k3OsJHl02XbzeeKO3yct1R++0CbyrZ8Lyt1pQMiPS
-         d/tQ==
-X-Gm-Message-State: AOJu0YzinCaRLvialEqfu/OUobKAFRaCCuJtz646tAqUNqEnUi+MthVB
-	y3ZIT332ZZgici5WPbiGlf7PawcuSh5jRNK2ifPwCeBhIEVn9UAYlfW643cHudLuWZ0pcxqHBJ9
-	3sa486xXkuz/6UwJKbjL37yv0eXOS0R1aY2+3kXhvnAYBeSQyOIjFZTx4PmgriBX0C2DoFQ==
-X-Gm-Gg: Acq92OE5apo368OH+njptEpAcyVU8q/mUWVDxwIT4+g/x8jdpY2gSpclC4R40DvjmBf
-	Hl7GTl7mmtT98xxOsRVmoPZtKFcl9QtOj6K6ADZwwA7NSoDhzHjaqWhAtyYXrPCK799wco+l8sE
-	jWwoEzAyNYtsfxTuI+hcrTKizEJyz34pYhcF77hTegWYWS1fzzSpJgGI9aWVMLGpZ0CFD5gHc8M
-	nyTUF8H/zA+q6h34tFifC/G2SHr485WED8mkHwoWrrB4ydi+DwtPwanzF6ew/NeKgNpEeDsUVmJ
-	Nc+4jdTlY6Y5Cl3/rstxYOR4MYXnvb7rT7xw/diZ4Mtri8m+12sjD6dnL5YFW6Au+76x+AcS3HN
-	ScPq/7xWTKA3sNFl31RRCVvJgYap6Oojh9lQXmVqk2a5cvZoAUb8l183W09zZTA==
-X-Received: by 2002:a17:90b:3c8e:b0:367:e244:4c40 with SMTP id 98e67ed59e1d1-368f7a19606mr6334599a91.26.1778735607037;
-        Wed, 13 May 2026 22:13:27 -0700 (PDT)
-X-Received: by 2002:a17:90b:3c8e:b0:367:e244:4c40 with SMTP id 98e67ed59e1d1-368f7a19606mr6334573a91.26.1778735606406;
-        Wed, 13 May 2026 22:13:26 -0700 (PDT)
-Received: from [10.152.199.23] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368eea199fbsm5025698a91.17.2026.05.13.22.13.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 May 2026 22:13:26 -0700 (PDT)
-Message-ID: <781c9c44-bd2e-4d12-b29b-daff0f86aea0@oss.qualcomm.com>
-Date: Thu, 14 May 2026 10:43:22 +0530
+	s=arc-20240116; t=1778739534; c=relaxed/simple;
+	bh=71nKI1Wj3adc1WFn8mrqz2Le/gBm5yHAgiVE3gL2oys=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fvWcuaqAQGVPhGfrF9BeKMBs7Q74WgyURNg8oupge2ks4pHAADTTvimjtdZ54rqrDV/dVF6fWcTZHJ5Vo+qI5RLPbGuiF29qy3ukK0fPoQXYPAECHwwLsRL8JKB5NvKm/ntZYena/mvDp02G3Sgjjdd5lEBu4vFD7yGacNu9rlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CGOcCj39; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778739532;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gx9J2zQCCR0v83fPqRH4Wf+USVyuXb4hC/B1FjQBSfM=;
+	b=CGOcCj398QVrLzbE8g3FGXEUS4ZDCMga1Xj4BhWRR86Afs+fy3fP3PEtfBRU7kNLbVzaj4
+	uXha6EYz3lQLU9saX+zPvLSexBIRYeE+RNj3EW2kcvxVvZs2e4ZUEVmi7hsU8NX+v8rmHN
+	fbwiLYRow532Grfi8SKV+4tH6hsFlpE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-52-eSeZBx29N8Oz51wzAnDxAQ-1; Thu,
+ 14 May 2026 02:18:48 -0400
+X-MC-Unique: eSeZBx29N8Oz51wzAnDxAQ-1
+X-Mimecast-MFC-AGG-ID: eSeZBx29N8Oz51wzAnDxAQ_1778739527
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D3F0119560AA;
+	Thu, 14 May 2026 06:18:46 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.48.46])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1F2E71955F22;
+	Thu, 14 May 2026 06:18:43 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: jtornosm@redhat.com
+Cc: ath11k@lists.infradead.org,
+	jjohnson@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	rameshkumar.sundaram@oss.qualcomm.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] wifi: ath11k: fix warning when unbinding
+Date: Thu, 14 May 2026 08:18:40 +0200
+Message-ID: <20260514061841.9517-1-jtornosm@redhat.com>
+In-Reply-To: <20260507070808.367442-1-jtornosm@redhat.com>
+References: <20260507070808.367442-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-current] wifi: ath12k: fix EHT TX MCS limitation due
- to wrong 20 MHz-only parsing
-To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-        Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20260514-ath12k-fix-20mhz-only-mcs-map-v1-1-a38d4a9b21a2@oss.qualcomm.com>
-Content-Language: en-US
-From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-In-Reply-To: <20260514-ath12k-fix-20mhz-only-mcs-map-v1-1-a38d4a9b21a2@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=df+wG3Xe c=1 sm=1 tr=0 ts=6a0559f8 cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=EUspDBNiAAAA:8 a=Iu_Yf0RYHa-hsXmiW2AA:9 a=QEXdDO2ut3YA:10
- a=uKXjsCUrEbL0IQVhDsJ9:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE0MDA0OSBTYWx0ZWRfX5wdVaBvPNXK1
- TGC+vYCfccuaWRbNS+fORRQ6o4yOfv205XEZDPjddDlEkk26fuYYwAzuSaMIw7m5z93F0y/GDKm
- qVG9G9OcTJJDmghVAJxzvQ5pPEypvvjzitDhJ3AYXLVVZ/dpUdsjeTezEU7gB4nlFtNUcpe8ZYx
- lVnr4Mldx1alxeahffPkF6xMGGbJPinyz9uJjp0Hk540rekSQ9gwHR7SmKkbK9H6ehG76Gl6VKI
- vqqgtlmHlGSGTdSXaucFmQjEwPbopKLAb+aigh3mdiNVH1VfAWLpOpzyKmj92jKYBN3Ri/Y/deu
- WhtaqMp3NDBc4UHsmNIhNh2h947a96xzQ6CpDIA/S6hd2xVdjL809gSm6k+oP2Z6SZ7zDjBsn9q
- abMzz9VdAno8KBKBJ5ZNwI4vvUQT+hSkEOObjJo9mQblcr9j5POr3uUf3QvCYJS7mTupVOAdZIN
- 4OSHPEaagu+a2w5RcnQ==
-X-Proofpoint-GUID: DZPChpkGEjCykqpiLZ5x_Cv0k0v4vUck
-X-Proofpoint-ORIG-GUID: DZPChpkGEjCykqpiLZ5x_Cv0k0v4vUck
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-14_01,2026-05-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 malwarescore=0 priorityscore=1501 suspectscore=0 clxscore=1015
- impostorscore=0 phishscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605050000 definitions=main-2605140049
-X-Rspamd-Queue-Id: AF9BF53DEDC
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Rspamd-Queue-Id: 7BAA653E3EE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36408-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	TAGGED_FROM(0.00)[bounces-36409-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On 5/14/2026 9:02 AM, Baochen Qiang wrote:
-> When connecting to an AP configured for EHT 20 MHz with a full EHT
-> MCS/NSS map (supporting MCS 0-13)
-> 
-> Supported EHT-MCS and NSS Set
->      EHT-MCS Map (BW <= 80MHz): 0x444444
->          .... .... .... .... .... 0100 = Rx Max Nss That Supports EHT-MCS 0-9: 4
->          .... .... .... .... 0100 .... = Tx Max Nss That Supports EHT-MCS 0-9: 4
->          .... .... .... 0100 .... .... = Rx Max Nss That Supports EHT-MCS 10-11: 4
->          .... .... 0100 .... .... .... = Tx Max Nss That Supports EHT-MCS 10-11: 4
->          .... 0100 .... .... .... .... = Rx Max Nss That Supports EHT-MCS 12-13: 4
->          0100 .... .... .... .... .... = Tx Max Nss That Supports EHT-MCS 12-13: 4
-> 
-> TX throughput is observed to be significantly lower than expected.
-> Investigation shows that TX rates are limited to EHT MCS 11, even though
-> the AP advertises support for EHT MCS 12/13.
-> 
-> The root cause is an incorrect parsing of the Supported EHT-MCS and NSS
-> Set element in ath12k_peer_assoc_h_eht().
-> 
-> IEEE Std 802.11be-2024 Figure 9-1074as describes the format for 20
-> MHz-Only Non-AP STAs.
-> 
-> IEEE Std 802.11be-2024 Figure 9-1074at describes the format for all
-> other AP and non-AP STAs.
-> 
-> Currently the first format is parsed when the peer advertises no wider
-> HE channel width support, without considering whether it is an AP or a
-> non-AP STA. This is incorrect: the peer AP's capabilities must be parsed
-> using Figure 9-1074at even when it operates on 20 MHz only. Parsing it
-> as Figure 9-1074as causes rx_tx_mcs13_max_nss to be interpreted as zero,
-> which is then passed to firmware, leading firmware to assume the peer
-> does not support MCS 13 and to limit TX rates at MCS 11.
-> 
-> Fix this by parsing the Figure 9-1074as format only when the peer is a
-> 20 MHz-Only non-AP STA, i.e. when the local interface operates as AP or
-> mesh point.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
-> 
-> Fixes: 6c95151e2e77 ("wifi: ath12k: Add EHT MCS/NSS rates to Peer Assoc")
-> Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Hello Rameshkumar,
+
+> I agree that setting tx_status to NULL makes ath11k_dp_free() more
+> defensive, and it matches the ath12k fix.
+Ok, I agree too.
+
+> However, i am still wondering how the second ath11k_dp_free() is reached 
+> if ATH11K_FLAG_QMI_FAIL is set.
+>
+> In ath11k_pci_remove(), when ATH11K_FLAG_QMI_FAIL is set, we take the
+> qmi_fail path and skip ath11k_core_deinit(). So the normal remove path:
+>
+>     ath11k_pci_remove()
+>       ath11k_core_deinit()
+>         ath11k_core_soc_destroy()
+>           ath11k_dp_free()
+>
+> should not run.
+>
+> So if the double free is still reproducible with QMI_FAIL set (with the 
+> change i proposed), either the flag is not actually set in this failure 
+> case, or there is another path calling ath11k_dp_free() ?
+Let me try to clarify the issue more.
+There are two error actions:
+- First the previous error. I reproduce the situation as I commented: running
+in a VM the default upstream kernel (with this card using PCI passthrough),
+since this is always failing. Let me show the logs in this situation:
+[   15.906564] ath11k_pci 0000:07:00.0: BAR 0 [mem 0xfdc00000-0xfddfffff 64bit]: assigned
+[   15.926520] ath11k_pci 0000:07:00.0: MSI vectors: 32
+[   15.928572] ath11k_pci 0000:07:00.0: wcn6855 hw2.0
+[   16.984192] ath11k_pci 0000:07:00.0: chip_id 0x2 chip_family 0xb board_id 0xff soc_id 0x400c0200
+[   16.984351] ath11k_pci 0000:07:00.0: fw_version 0x11088c35 fw_build_timestamp 2024-04-17 08:34 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+[   18.186971] ath11k_pci 0000:07:00.0: failed to receive control response completion, polling..
+[   19.211036] ath11k_pci 0000:07:00.0: Service connect timeout
+[   19.211815] ath11k_pci 0000:07:00.0: failed to connect to HTT: -110
+[   19.214181] ath11k_pci 0000:07:00.0: failed to start core: -110
+[   19.531989] ath11k_pci 0000:07:00.0: firmware crashed: MHI_CB_EE_RDDM
+[   19.532930] ath11k_pci 0000:07:00.0: ignore reset dev flags 0xc000
+[   29.259157] ath11k_pci 0000:07:00.0: failed to wait wlan mode request (mode 4): -110
+[   29.259229] ath11k_pci 0000:07:00.0: qmi failed to send wlan mode off: -110
+- Second after this, I commanded the unbinded (ath11_pci) and I get the
+warning. Let extend here the stack trace:
+[   24.238198]  ? free_large_kmalloc+0x57/0x90
+[   24.238199]  ? report_bug+0x16b/0x180
+[   24.238210]  ? handle_bug+0x3c/0x70
+[   24.238218]  ? exc_invalid_op+0x14/0x70
+[   24.238218]  ? asm_exc_invalid_op+0x16/0x20
+[   24.238224]  ? free_large_kmalloc+0x57/0x90
+[   24.238227]  ath11k_dp_free+0x99/0xb0 [ath11k]
+[   24.238275]  ath11k_core_deinit+0x12b/0x1a0 [ath11k]
+[   24.238287]  ath11k_pci_remove+0x7b/0x120 [ath11k_pci]
+[   24.238294]  pci_device_remove+0x3e/0xb0
+[   24.238304]  device_release_driver_internal+0x193/0x200
+[   24.238315]  unbind_store+0x9d/0xb0
+[   24.238320]  kernfs_fop_write_iter+0x13a/0x1d0
+[   24.238330]  vfs_write+0x32e/0x470
+[   24.238335]  ksys_write+0x5f/0xe0
+[   24.238336]  do_syscall_64+0x5f/0xe0
+Very easy to reproduce.
+
+Anyway, although you can avoid a specific path, IMHO this small fix is
+recommendable to avoid other similar situations.
+
+Thanks
+
+Best regards
+José Ignacio
+
 
