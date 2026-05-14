@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-36434-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36435-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLg6A4smBmqmfgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36434-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 21:46:19 +0200
+	id 8K3LNpImBmqmfgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36435-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 21:46:26 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614FD5467B7
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 21:46:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B735467BE
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 21:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CBC023050463
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 19:45:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6003C3054F78
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 19:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBE839AD32;
-	Thu, 14 May 2026 19:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358EA3B6344;
+	Thu, 14 May 2026 19:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c7qmodEv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j7x7r35m"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C003BA239
-	for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 19:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4783AA1AE
+	for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 19:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778787911; cv=none; b=dCUexl+awPWI8tWDWefXdG9oDQ39+TIyaQB/MpUF/K2N30UPFd73X3hoRjGpV86d80zZsglLj6npBhOxRNNpSXxG4HrATk2cMssaB8BttDcAEEAOt075E1ekmSXjIER5XiL0H70H2KYgkjp3x6xo+o8nOwDxQj18wjZ63FsSntc=
+	t=1778787913; cv=none; b=Tp8tFYInGIfPBu91bgl1QnF1dnMPTrG9RTF6dr0HRKElI3UMvOCm+a1v+WCy1YjqpcpOGdjPbD/AF3LcEzxz9CwiHsnraBCZogQYNjeoGmF3Xv7B/OXqYrkcOJXaPOLwe6kbOtqyyQgzq/7cEBcAyWt022tZgtdbV7enO3+dovs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778787911; c=relaxed/simple;
-	bh=QhImjUglwWPaN+T49e+GQRpzTlOwIg2Dck913odjZM4=;
+	s=arc-20240116; t=1778787913; c=relaxed/simple;
+	bh=wClORBy9VhIJ4YdlVpnz6KvNJUTeSqLAp75ElW4c9O4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=W/mNcmV8jhzFvck3BkHk+zaKZI4gPMX7JzTamFClkfJqijTCraiD8GLkLrK8cOUHG+ZRlZpZKvIKtluaMtvXs5KbeAu09IDbPAkKQSZQydCxyKzJ2FiUbNVOQymJfr9rGsTVvuX4QS2PTcKikoXe+Yr0jDLE0qEHQpf+pgcvGpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c7qmodEv; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=lMG5zh4mZ8HVNejMvlm/mNefjnwygOKzF5y4tyxACN6PIknU0tZs7L0+XED1hZzVTaWmqYA963guMl6rY4cImeIgKkRHkcCLwacgu0/pV0oGO5myS4rXh8MzVDLvZAys6c9mbEPpeSyGySRmcWM6IV5r55DtMaOU1FrfUd7OAf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j7x7r35m; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778787910; x=1810323910;
+  t=1778787911; x=1810323911;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=QhImjUglwWPaN+T49e+GQRpzTlOwIg2Dck913odjZM4=;
-  b=c7qmodEvKASbji69H1qyDWu/ETCJeKrziCGa+JLrnbw3fsLKyA/ZWMYe
-   Vn2QM32ThryUUhnx2emo046wv/J3rZYPOjOut3meMfZ00ZspdoYbAZ+OY
-   +zeU+j/KLRz3aQRQ7ts+uixVyXdF7JMCdXZb7OJfyz3E2mh9SowH99xCR
-   sfsq5RHQrXwWlyGFMFc2SB1gIN8zEiMR/tb2WG3UjVspECY9K4romED6K
-   u2fUFdKpuKGxSiDCAEz3yAzjjZZrLLlMCOQTgAZa8SSaQiQTOUoBPY+Zi
-   8UHEmJZRCDT6tmxnMgiIfOKZPRS5/mQVcUXysk8gjbyRrp8A/RaNaHf8d
-   A==;
-X-CSE-ConnectionGUID: Ql1VnUegTCe/72VBcX167Q==
-X-CSE-MsgGUID: dcJvzrv4RVK6gTJNZwI6Pg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="83352620"
+  bh=wClORBy9VhIJ4YdlVpnz6KvNJUTeSqLAp75ElW4c9O4=;
+  b=j7x7r35mAgP+myVeqW4wD5O2ajwK+qa8JbUq5ZXVG6UE+w58jOw+I7Ln
+   RcoTHR2M/JWfmUD1+f5xkH0kU2S6YU11u5h3NC/HFpNDAmQY44X6S3vLw
+   j+/t9r13GWlPkiGw7ULenii2BcpTj7bYnAUGbvJ2X9suxXaUUUlsRcVu9
+   EbUd7dQJEmypPZKgZjleypg3x5CQbEzTNqe1l1XfhTsUP9j8upgAtniRu
+   1rsZF9KdOCUs/+Rpyr4PHcjU3JrcSD9Don3IgdrjD3kuI1nI1hSfVw4E2
+   Dz/MI9074RjsU+O0TxhB5uihUDf4CWUIDnLRGbNf2GSNzFZj2QVa091Z9
+   Q==;
+X-CSE-ConnectionGUID: 4Hb3Cq4eSjmxMMwdA19KRQ==
+X-CSE-MsgGUID: j0AezBXbRBaPxHS7+Qq7ig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="83352626"
 X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
-   d="scan'208";a="83352620"
+   d="scan'208";a="83352626"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 12:45:09 -0700
-X-CSE-ConnectionGUID: tTFrjQ9GSEO5JwL4xkHpZQ==
-X-CSE-MsgGUID: Ogr7sc3DT3+YrmYazzcuRA==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 12:45:11 -0700
+X-CSE-ConnectionGUID: IVt2ylyPTJWK1WCj9YIT1w==
+X-CSE-MsgGUID: UlKXR7d2QaWAbIvKYmYs/A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
-   d="scan'208";a="237616382"
+   d="scan'208";a="237616396"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 12:45:08 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 12:45:09 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Shahar Tzarfati <shahar.tzarfati@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH iwlwifi-next 14/15] wifi: iwlwifi: mld: expose beacon avg signal
-Date: Thu, 14 May 2026 22:44:33 +0300
-Message-Id: <20260514224230.cf98920a8ba5.I74d596359c5b69364fb977fdf31396eb57ca0927@changeid>
+Cc: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH iwlwifi-next 15/15] wifi: iwlwifi: mld: disallow puncturing in US/CA for WH
+Date: Thu, 14 May 2026 22:44:34 +0300
+Message-Id: <20260514224230.f1421d30fde1.I900c9e2e3dd722619db12ba10d0879a56a2a55f2@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260514194434.401241-1-miriam.rachel.korenblit@intel.com>
 References: <20260514194434.401241-1-miriam.rachel.korenblit@intel.com>
@@ -79,7 +79,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 614FD5467B7
+X-Rspamd-Queue-Id: 61B735467BE
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -87,17 +87,17 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36434-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36435-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -110,124 +110,56 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Shahar Tzarfati <shahar.tzarfati@intel.com>
+From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-Store beacon_average_energy from per-link FW statistics and expose it
-via station_info as rx_beacon_signal_avg in sta statistics.
+FM continues to follow the BIOS/MCC policy, while WH sets
+DISALLOW_PUNCTURING for US/CA and clears it for other MCC values.
+Update the MCC handling accordingly.
 
-This fixes missing beacon average signal reporting to upper layers.
-
-Signed-off-by: Shahar Tzarfati <shahar.tzarfati@intel.com>
-tested: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-PerCI-Ready: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Tested-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/link.h |  3 ++
- .../net/wireless/intel/iwlwifi/mld/stats.c    | 47 ++++++++++++++++++-
- 2 files changed, 48 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/mcc.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.h b/drivers/net/wireless/intel/iwlwifi/mld/link.h
-index 4527f054ce92..0b3974d86531 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/link.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/link.h
-@@ -36,6 +36,8 @@ struct iwl_probe_resp_data {
-  * @rcu_head: RCU head for freeing this data.
-  * @fw_id: the fw id of the link.
-  * @active: if the link is active or not.
-+ * @avg_signal: The current average signal of beacons [dBm] retrieved from
-+ *	firmware per-link periodic stats (STATISTICS_OPER_NOTIF).
-  * @queue_params: QoS data from mac80211. This is updated with a call to
-  *	drv_conf_tx per each AC, and then notified once with BSS_CHANGED_QOS.
-  *	So we store it here and then send one link cmd for all the ACs.
-@@ -68,6 +70,7 @@ struct iwl_mld_link {
- 	struct_group(zeroed_on_hw_restart,
- 		u8 fw_id;
- 		bool active;
-+		s8 avg_signal;
- 		struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
- 		struct ieee80211_chanctx_conf __rcu *chan_ctx;
- 		bool he_ru_2mhz_block;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/stats.c b/drivers/net/wireless/intel/iwlwifi/mld/stats.c
-index b93e0f8ab5fb..e7b283cbe199 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/stats.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/stats.c
-@@ -311,6 +311,40 @@ static void iwl_mld_sta_stats_fill_txrate(struct iwl_mld_sta *mld_sta,
- 	}
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mcc.c b/drivers/net/wireless/intel/iwlwifi/mld/mcc.c
+index 16bb1b4904f9..8502129abe49 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mcc.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mcc.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2024-2025 Intel Corporation
++ * Copyright (C) 2024-2026 Intel Corporation
+  */
  
-+static void iwl_mld_sta_stats_fill_beacon_signal_avg(struct ieee80211_vif *vif,
-+						     struct station_info *sinfo)
-+{
-+	struct ieee80211_bss_conf *link_conf;
-+	struct iwl_mld_link *link;
-+	u8 link_id;
-+
-+	if (iwl_mld_emlsr_active(vif))
-+		return;
-+
-+	/* TODO: support statistics for NAN */
-+	if (vif->type == NL80211_IFTYPE_NAN ||
-+	    vif->type == NL80211_IFTYPE_NAN_DATA)
-+		return;
-+
-+	link_id = iwl_mld_get_primary_link(vif);
-+	link_conf = link_conf_dereference_protected(vif, link_id);
-+
-+	if (WARN_ONCE(!link_conf,
-+		      "link_conf is NULL for link_id=%u\n", link_id))
-+		return;
-+
-+	link = iwl_mld_link_from_mac80211(link_conf);
-+	if (WARN_ONCE(!link,
-+		      "iwl_mld_link is NULL for link_id=%u\n", link_id))
-+		return;
-+
-+	if (!link->avg_signal)
-+		return;
-+
-+	sinfo->rx_beacon_signal_avg = link->avg_signal;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_BEACON_SIGNAL_AVG);
-+}
-+
- void iwl_mld_mac80211_sta_statistics(struct ieee80211_hw *hw,
- 				     struct ieee80211_vif *vif,
- 				     struct ieee80211_sta *sta,
-@@ -329,9 +363,9 @@ void iwl_mld_mac80211_sta_statistics(struct ieee80211_hw *hw,
+ #include <net/cfg80211.h>
+@@ -129,7 +129,7 @@ iwl_mld_get_regdomain(struct iwl_mld *mld,
  
- 	iwl_mld_sta_stats_fill_txrate(mld_sta, sinfo);
+ 	mld->mcc_src = resp->source_id;
  
--	/* TODO: NL80211_STA_INFO_BEACON_RX */
-+	iwl_mld_sta_stats_fill_beacon_signal_avg(vif, sinfo);
- 
--	/* TODO: NL80211_STA_INFO_BEACON_SIGNAL_AVG */
-+	/* TODO: NL80211_STA_INFO_BEACON_RX */
- }
- 
- #define IWL_MLD_TRAFFIC_LOAD_MEDIUM_THRESH	10 /* percentage */
-@@ -443,6 +477,8 @@ iwl_mld_process_per_link_stats(struct iwl_mld *mld,
- 	     fw_id++) {
- 		const struct iwl_stats_ntfy_per_link *link_stats;
- 		struct ieee80211_bss_conf *bss_conf;
-+		struct iwl_mld_link *link;
-+		u32 avg_raw;
- 		int sig;
- 
- 		bss_conf = iwl_mld_fw_id_to_link_conf(mld, fw_id);
-@@ -456,6 +492,13 @@ iwl_mld_process_per_link_stats(struct iwl_mld *mld,
- 		sig = -le32_to_cpu(link_stats->beacon_filter_average_energy);
- 		iwl_mld_update_link_sig(bss_conf->vif, sig, bss_conf);
- 
-+		link = iwl_mld_link_from_mac80211(bss_conf);
-+		if (WARN_ON_ONCE(!link))
-+			continue;
+-	/* FM is the earliest supported and later always do puncturing */
++	/* FM follows BIOS/MCC policy, WH disallows puncturing only in US/CA. */
+ 	if (CSR_HW_RFID_TYPE(mld->trans->info.hw_rf_id) == IWL_CFG_RF_TYPE_FM) {
+ 		if (!iwl_puncturing_is_allowed_in_bios(mld->bios_enable_puncturing,
+ 						       le16_to_cpu(resp->mcc)))
+@@ -137,6 +137,15 @@ iwl_mld_get_regdomain(struct iwl_mld *mld,
+ 		else
+ 			__clear_bit(IEEE80211_HW_DISALLOW_PUNCTURING,
+ 				    mld->hw->flags);
++	} else if (CSR_HW_RFID_TYPE(mld->trans->info.hw_rf_id) ==
++			IWL_CFG_RF_TYPE_WH) {
++		u16 mcc = le16_to_cpu(resp->mcc);
 +
-+		avg_raw = le32_to_cpu(link_stats->beacon_average_energy);
-+		link->avg_signal = clamp_t(int, -(int)avg_raw, S8_MIN, 0);
-+
- 		/* TODO: parse more fields here (task=statistics)*/
++		if (mcc == IWL_MCC_US || mcc == IWL_MCC_CANADA)
++			ieee80211_hw_set(mld->hw, DISALLOW_PUNCTURING);
++		else
++			__clear_bit(IEEE80211_HW_DISALLOW_PUNCTURING,
++				    mld->hw->flags);
  	}
  
+ out:
 -- 
 2.34.1
 
