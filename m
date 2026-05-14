@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-36421-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36422-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OK7oHDwmBmqmfgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36421-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 21:45:00 +0200
+	id 8GYzOTgmBmqmfgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36422-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 21:44:56 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE7E54675A
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 21:44:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B39C546751
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 21:44:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9BD8E3041A90
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 19:44:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6FC6D3025A70
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 19:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0163C389E1A;
-	Thu, 14 May 2026 19:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B76D389E1A;
+	Thu, 14 May 2026 19:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JU7UTKQn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BXVrsUkX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F2239E9A0
-	for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 19:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D4E3B19A1
+	for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 19:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778787892; cv=none; b=mZPFrOfoqbeQ+Mpqv9rJuY8TbOwFGrknXJZPrTw//ZufM0rgF0qnUb0bHomtnotXWwQV6ioenHF0TSbqRhsKNLr5dp+sbjpbz2Snstyuq3tfTKdLfO6vN7c9kxGkPwxJa6S9GmEVDmxipSFNRY5XOEVZILU/3dL/tLU8RWsCapU=
+	t=1778787894; cv=none; b=bxEcDNHu3aWa8pFZV7p6fH8c+CbhDOPk8yuZlv05ES5HCN1OeE+X0uC/YF8ZqFcCNUiagYRwcKubwICWbpUD3mv0dMlnlvLkCuVHE7y3HdTjSkF1/N+tUi36dqlMVHU07OsbzvfKdOhZbGOrMqZLrDVII7zitKkfuw3Ftt0odUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778787892; c=relaxed/simple;
-	bh=CET4Qgc/De/+tevN55TNyZDMwhLlRkFzRBCdKp0x5GA=;
+	s=arc-20240116; t=1778787894; c=relaxed/simple;
+	bh=gNwc0dosNMtTFxzmv6WOS18GGV3axZx67CqT9wqo8g4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=O+Dmmpxl/fjut93AvNd4qfhvUUWV2WEYfompvMZiX4uMo/HVKIC/mggQgHr3g0nddkiRZtd6XYNfnr15F5xjq+KGohLSVlDEz2xXqztMhdJB8dqIYC1TMlR/ujIptDJf8rUGpoGD3uH5IlvZVco1Qp5FLOc5YI8XYRAlMZqvDXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JU7UTKQn; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=Y1FLij7QgTzG4yRyfQDMiM2BvpvHRObxYyydgogWT9HcWAfxvDjh9DfHFejb+oRSRGaV5od4nn/k4YQ67KpvGuWuL9WdFoQXxP+g5H6c1XtVfkXuk/MgVgm6EqgP83BskUAm+PSQ5fbZADtteNOjmmHkofhtir3hhWJZrfGF3iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BXVrsUkX; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778787892; x=1810323892;
+  t=1778787893; x=1810323893;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=CET4Qgc/De/+tevN55TNyZDMwhLlRkFzRBCdKp0x5GA=;
-  b=JU7UTKQn/ck5ydjgI5unVo0HJxHTAl0721de9t0A7c0L1BwLmd2XiRZG
-   tC+Xn6NTsTgIieU9DBffWeHrwnwPia2GinS7iuj/TJyPFb+UjdcEOeq+T
-   +oVLUpEdJ55GoQVxcw2KVg/gXdQ4gLXYBjO6SkRr2J2mYtA54yHRWmsxK
-   YUja1op+3p1S4c66x4JlDFsbXgQNzAQQDvWdzJQ56cjXzN4KRKQINe8oV
-   gLTVTVuSpiFnYod3Wmpo7k0pzC9iz+AMq944uWrg4r8em+LvTIHxVwLZ3
-   LhdYKdxxSZXkcuwq3Jnh0HGKkJi7+NTsY2Jf58dqDS78hb7oBd5Dy6RDC
-   Q==;
-X-CSE-ConnectionGUID: oP3hn9QfRsuIhRzlBhZbSQ==
-X-CSE-MsgGUID: tL8I4h/VQv6/jaOmAldSmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="83352573"
+  bh=gNwc0dosNMtTFxzmv6WOS18GGV3axZx67CqT9wqo8g4=;
+  b=BXVrsUkXfqFfdxW/HFrs3BbosxD+lKT7zpQlWJd4q6aEx27oTN8nErO5
+   xzkDBpQNCQiKSUlCMcuxIJfbeMzBCBCClRBHQZT4ufHw4n48NfIhBqNEE
+   tWCd+MZWwR11mIVEjnZw/LapdOa77hMonjkqNpPm8eI5xJHUDSIyiJXvS
+   ykmHc4VEczbqLQ0njp0eXEIXC5yeXmRisUENOACfCyPjAywJUk7crBcEy
+   A8SmvVBDRzdmll5KopntLZScdDx3yYcra4GhFeiIGQG83fMJbX5mASLZ5
+   gbr/aN/cRR74KFziI9/H6uOKFtjDUMOMxMOck8qx/Si/cW5tm+iGQlun5
+   g==;
+X-CSE-ConnectionGUID: XHKY6HD6R2ejupI2Xklysg==
+X-CSE-MsgGUID: YLSJA1DSQK6WhkyZ4c3odg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="83352578"
 X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
-   d="scan'208";a="83352573"
+   d="scan'208";a="83352578"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 12:44:51 -0700
-X-CSE-ConnectionGUID: sl+AAl+YTE+X98fetFpp1Q==
-X-CSE-MsgGUID: 41YvFrZpTIC9bugWZgdSFw==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 12:44:52 -0700
+X-CSE-ConnectionGUID: yrEzSrQNQfybQmp/Eqd6Pw==
+X-CSE-MsgGUID: 84VSd9sSSdOIVDvaa/47VA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
-   d="scan'208";a="237616240"
+   d="scan'208";a="237616243"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 12:44:50 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 12:44:51 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Avraham Stern <avraham.stern@intel.com>
-Subject: [PATCH iwlwifi-next 01/15] wifi: iwlwifi: mld: nan: add availability attribute to schedule config
-Date: Thu, 14 May 2026 22:44:20 +0300
-Message-Id: <20260514224230.97809376508e.Ie7f00f97992016c6bb2f4a5c9fc201ac58eed8ce@changeid>
+Subject: [PATCH iwlwifi-next 02/15] wifi: iwlwifi: mld: add support for deferred nan schedule config
+Date: Thu, 14 May 2026 22:44:21 +0300
+Message-Id: <20260514224230.a69730d26890.I2ae54cbed8b507e6398a55c19795b27d5ea03aba@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260514194434.401241-1-miriam.rachel.korenblit@intel.com>
 References: <20260514194434.401241-1-miriam.rachel.korenblit@intel.com>
@@ -78,14 +78,14 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CCE7E54675A
+X-Rspamd-Queue-Id: 6B39C546751
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -93,10 +93,10 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36421-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36422-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -106,56 +106,193 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 From: Avraham Stern <avraham.stern@intel.com>
 
-Add the availability attribute to the schedule config command. The
-firmware needs to add this attribute to schedule update frames
-(e.g. when ULW changed or the local schedule changed).
+Add support for deferred schedule update. Notify mac80211 that the
+schedule update is done when the firmware notifies that the schedule
+is applied.
 
 Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/nan.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 29 +++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mld/mld.c  |  1 +
+ drivers/net/wireless/intel/iwlwifi/mld/nan.c  | 43 +++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mld/nan.h  |  5 +++
+ .../net/wireless/intel/iwlwifi/mld/notif.c    |  4 ++
+ 5 files changed, 82 insertions(+)
 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+index d03a2bda4e68..09f869b5be0c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+@@ -84,6 +84,11 @@ enum iwl_mac_conf_subcmd_ids {
+ 	 * @NAN_ULW_ATTR_NOTIF: &struct iwl_nan_ulw_attr_notif
+ 	 */
+ 	NAN_ULW_ATTR_NOTIF = 0xf2,
++	/**
++	 * @NAN_SCHED_UPDATE_COMPLETED_NOTIF:
++	 *	&struct iwl_nan_sched_update_completed_notif
++	 */
++	NAN_SCHED_UPDATE_COMPLETED_NOTIF = 0xf3,
+ 	/**
+ 	 * @NAN_DW_END_NOTIF: &struct iwl_nan_dw_end_notif
+ 	 */
+@@ -1421,4 +1426,28 @@ struct iwl_nan_ulw_attr_notif {
+ 	u8 attr[IWL_NAN_MAX_ENDLESS_ULW_ATTR_LEN];
+ } __packed; /* NAN_ULW_ATTR_NOTIF_API_S_VER_1 */
+ 
++/**
++ * enum iwl_nan_sched_update_status - NAN schedule update status
++ *
++ * @IWL_NAN_SCHED_UPDATE_SUCCESS: schedule update completed successfully
++ * @IWL_NAN_SCHED_UPDATE_FAILURE: schedule update failed. Currently not expected
++ *	to happen, but reserved for future use.
++ */
++enum iwl_nan_sched_update_status {
++	IWL_NAN_SCHED_UPDATE_SUCCESS = 0,
++	IWL_NAN_SCHED_UPDATE_FAILURE = 1,
++};
++
++/**
++ * struct iwl_nan_sched_update_completed_notif - NAN schedule update completed
++ *
++ * @status: status of the schedule update operation. See
++ *	&enum iwl_nan_sched_update_status
++ * @reserved: reserved
++ */
++struct iwl_nan_sched_update_completed_notif {
++	u8 status;
++	u8 reserved[3];
++} __packed; /* NAN_SCHED_UPDATE_COMPLETED_NTF_API_S_VER_1 */
++
+ #endif /* __iwl_fw_api_mac_cfg_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
+index 054bb1134425..0ef7c24831d8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
+@@ -238,6 +238,7 @@ static const struct iwl_hcmd_names iwl_mld_mac_conf_names[] = {
+ 	HCMD_NAME(NAN_SCHEDULE_CMD),
+ 	HCMD_NAME(NAN_PEER_CMD),
+ 	HCMD_NAME(NAN_ULW_ATTR_NOTIF),
++	HCMD_NAME(NAN_SCHED_UPDATE_COMPLETED_NOTIF),
+ 	HCMD_NAME(NAN_DW_END_NOTIF),
+ 	HCMD_NAME(NAN_JOINED_CLUSTER_NOTIF),
+ 	HCMD_NAME(MISSED_BEACONS_NOTIF),
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/nan.c b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-index 530ba263c5f0..d13b2374b642 100644
+index d13b2374b642..d34a9a2cbeae 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/nan.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-@@ -693,6 +693,14 @@ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
+@@ -689,11 +689,20 @@ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
+ 
+ 	switch (version) {
+ 	case 1:
++		if (sched_cfg->deferred) {
++			IWL_ERR(mld,
++				"NAN: deferred schedule not supported by FW\n");
++			return;
++		}
++
+ 		cmd_size = sizeof(struct iwl_nan_schedule_cmd_v1);
  		break;
  	case 2:
  		cmd_size = sizeof(struct iwl_nan_schedule_cmd);
-+
-+		if (sched_cfg->avail_blob_len &&
-+		    !WARN_ON(sched_cfg->avail_blob_len >
-+			     sizeof(cmd.avail_attr.attr))) {
-+			cmd.avail_attr.attr_len = sched_cfg->avail_blob_len;
-+			memcpy(cmd.avail_attr.attr, sched_cfg->avail_blob,
-+			       sched_cfg->avail_blob_len);
-+		}
- 		break;
- 	default:
- 		IWL_ERR(mld, "NAN: unsupported NAN schedule cmd version %d\n",
-@@ -727,6 +735,15 @@ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
- 	BUILD_BUG_ON(ARRAY_SIZE(sched_cfg->channels) !=
- 		     ARRAY_SIZE(cmd.channels));
  
-+	/*
-+	 * mac80211 removes unused channels before adding new ones, so it may
-+	 * update an empty schedule with an availability attribute because it
-+	 * is going to add channels later. Since the firmware does not expect
-+	 * an availability attribute without channels, ignore it in that case.
-+	 */
-+	if (empty_schedule)
-+		cmd.avail_attr.attr_len = 0;
++		if (sched_cfg->deferred)
++			cmd.deferred = 1;
 +
- 	/* find links we can keep (same chanctx/PHY) */
- 	for (i = 0; i < ARRAY_SIZE(sched_cfg->channels); i++) {
- 		struct ieee80211_chanctx_conf *chanctx;
+ 		if (sched_cfg->avail_blob_len &&
+ 		    !WARN_ON(sched_cfg->avail_blob_len >
+ 			     sizeof(cmd.avail_attr.attr))) {
+@@ -869,6 +878,40 @@ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
+ 	}
+ }
+ 
++bool iwl_mld_cancel_nan_sched_update_completed_notif(struct iwl_mld *mld,
++						     struct iwl_rx_packet *pkt,
++						     u32 obj_id)
++{
++	return true;
++}
++
++void iwl_mld_handle_nan_sched_update_completed_notif(struct iwl_mld *mld,
++						     struct iwl_rx_packet *pkt)
++{
++	struct iwl_nan_sched_update_completed_notif *notif = (void *)pkt->data;
++	struct ieee80211_vif *vif = mld->nan_device_vif;
++
++	if (IWL_FW_CHECK(mld, !vif,
++			 "NAN: schedule update completed without NAN vif\n"))
++		return;
++
++	if (IWL_FW_CHECK(mld, !ieee80211_vif_nan_started(vif),
++			 "NAN: schedule update completed without NAN started\n"))
++		return;
++
++	/*
++	 * Deferred schedule update should not fail in firmware since all
++	 * channels and links were added.
++	 */
++	IWL_FW_CHECK(mld, notif->status != IWL_NAN_SCHED_UPDATE_SUCCESS,
++		     "NAN: deferred schedule update failed\n");
++
++	if (WARN_ON(!vif->cfg.nan_sched.deferred))
++		return;
++
++	ieee80211_nan_sched_update_done(vif);
++}
++
+ int iwl_mld_mac802111_nan_peer_sched_changed(struct ieee80211_hw *hw,
+ 					     struct ieee80211_sta *sta)
+ {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/nan.h b/drivers/net/wireless/intel/iwlwifi/mld/nan.h
+index f4e4cd4b4e8d..5411bca52cde 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/nan.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/nan.h
+@@ -42,6 +42,8 @@ void iwl_mld_handle_nan_ulw_attr_notif(struct iwl_mld *mld,
+ 				       struct iwl_rx_packet *pkt);
+ void iwl_mld_handle_nan_dw_end_notif(struct iwl_mld *mld,
+ 				     struct iwl_rx_packet *pkt);
++void iwl_mld_handle_nan_sched_update_completed_notif(struct iwl_mld *mld,
++						     struct iwl_rx_packet *pkt);
+ bool iwl_mld_cancel_nan_cluster_notif(struct iwl_mld *mld,
+ 				      struct iwl_rx_packet *pkt,
+ 				      u32 obj_id);
+@@ -51,6 +53,9 @@ bool iwl_mld_cancel_nan_ulw_attr_notif(struct iwl_mld *mld,
+ bool iwl_mld_cancel_nan_dw_end_notif(struct iwl_mld *mld,
+ 				     struct iwl_rx_packet *pkt,
+ 				     u32 obj_id);
++bool iwl_mld_cancel_nan_sched_update_completed_notif(struct iwl_mld *mld,
++						     struct iwl_rx_packet *pkt,
++						     u32 obj_id);
+ void iwl_mld_nan_vif_cfg_changed(struct iwl_mld *mld,
+ 				 struct ieee80211_vif *vif,
+ 				 u64 changes);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/notif.c b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
+index a5074bbc7e24..d7383022a0ed 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/notif.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
+@@ -348,6 +348,8 @@ CMD_VERSIONS(beacon_filter_notif, CMD_VER_ENTRY(2, iwl_beacon_filter_notif))
+ CMD_VERSIONS(nan_cluster_notif, CMD_VER_ENTRY(1, iwl_nan_cluster_notif))
+ CMD_VERSIONS(nan_ulw_attr_notif, CMD_VER_ENTRY(1, iwl_nan_ulw_attr_notif))
+ CMD_VERSIONS(nan_dw_end_notif, CMD_VER_ENTRY(1, iwl_nan_dw_end_notif))
++CMD_VERSIONS(nan_sched_update_completed_notif,
++	     CMD_VER_ENTRY(1, iwl_nan_sched_update_completed_notif))
+ 
+ DEFINE_SIMPLE_CANCELLATION(session_prot, iwl_session_prot_notif, mac_link_id)
+ DEFINE_SIMPLE_CANCELLATION(tlc, iwl_tlc_update_notif, sta_id)
+@@ -468,6 +470,8 @@ const struct iwl_rx_handler iwl_mld_rx_handlers[] = {
+ 			  nan_ulw_attr_notif)
+ 	RX_HANDLER_OF_NAN(MAC_CONF_GROUP, NAN_DW_END_NOTIF,
+ 			  nan_dw_end_notif)
++	RX_HANDLER_OF_NAN(MAC_CONF_GROUP, NAN_SCHED_UPDATE_COMPLETED_NOTIF,
++			  nan_sched_update_completed_notif)
+ };
+ EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_mld_rx_handlers);
+ 
 -- 
 2.34.1
 
