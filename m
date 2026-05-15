@@ -1,244 +1,253 @@
-Return-Path: <linux-wireless+bounces-36437-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36438-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPvJBL1SBmqnigIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36437-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 00:54:53 +0200
+	id qBcSBg5yBmqyjwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36438-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 03:08:30 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D766547982
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 00:54:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7005B54842C
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 03:08:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B2ECE3020A62
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2026 22:54:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F237303EF57
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 01:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F4633689B;
-	Thu, 14 May 2026 22:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB4A346FC3;
+	Fri, 15 May 2026 01:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Nx5FoWJv";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kdmChSeL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i1MwaPxK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851B13CF970
-	for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 22:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778799289; cv=none; b=Dg6DYF4Rjqqmy7SW7kt2VArv532h2Ttrd58kbiJDB+gvwzFvCxcHKNSLYkRPAxGI09WsFxNqTBrWEDmsbp5u7ZdRsyd/gLgOKMj6lbk1PzvGxIDDojgKeA3c+4sV46NeHFVPwlwpHiwsI9GND/enH1r0qVgdKcPxx6fEhZcSOCc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778799289; c=relaxed/simple;
-	bh=7pcu30mhmwKQgnuLcNvcTinjtLncCTeM6Bfvrq5FRBE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oKxETbV+T7Uqmp4XVNV3VFB+qwbWN+Rc6PBxOZ/2GAkfv6Xu0CT3BSQ5J72pntLaiXyI1Oa4yEC0EGKy0aUj8zBwNFoD+b63s0cJA6AzFMfWjRpmCg0fcv3n59ft1TTF0HVTKGRExQAPNix9dxAYDduNFAdOGXh6ijcOfBzS1Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Nx5FoWJv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kdmChSeL; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64EIq5uT3514759
-	for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 22:54:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	MpHjBeDGHzNDOy9dbVQ2YOk7VWW2/RGBa4Tmtno8w1k=; b=Nx5FoWJvd5v89gZM
-	48c8IU7tmuw3OcJM4gr0WF9gTq98/wF9hZ5SYkbulVprYU4V67F263wDBeUmxTYu
-	m3CfzV0CKmQ408Rfo9YEyib1wVdwgZRpkrhKOqTZDVw8U601wM3vMFWIlAxyFPOa
-	N26Ytij/r03rJQoI3k2cUZ3AnyLF3riblfIsqybx0pbw0FUTSPtQWEsIJbLk4uob
-	pMFovlkSFQeCyJ+Uus50+ZZjQmN97Sicrfv/f+qU70qaYh8VNBzcFdGD5F6t5cfc
-	GJOwqX3rzI/pdzx3cB0HtPA4WUM66aLP716hzWcpXjKUaQaSKkCYmO2QA2GWlkhW
-	Odel6w==
-Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e5m1v8p26-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 22:54:46 +0000 (GMT)
-Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-132d5ad9c32so10281980c88.0
-        for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 15:54:46 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF2E2FD68B
+	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 01:08:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778807306; cv=pass; b=mbDx9YPPJlLHP7v69I6i0Hb5MaUcdQaHWovhXvovUuRzKdMoA+P60/41SRQctVqnIbnBv0/54ANeEkf5+0lJTNARWea1cR74jgqrwDmHLbkbb02hUY2zcJkZ0yhVzBAabIs9Dtaqz578RxxuM34yVLkptSityiXSrPdMu9Bpd2I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778807306; c=relaxed/simple;
+	bh=Tjy+wLAt76/SgLvXzCA18dCPcMxTTSJKx0uzseG+k/4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OZa6+zbxlznouU953g6x/D2mTLT/UVNjgE7e6MUdseCoumSsWscHT8fivT3swof4sabr/ZhRhdR/Kv8UmXoM8SC9fuGvnY7gQoicmzAfW2SJvVmW5wSElLjtocvx6UyvwVwWzPZDUe0Ok8rvI3e9cMVTcqlCxbqmsIz5RJWc60k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i1MwaPxK; arc=pass smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7dcd689829eso7669162a34.3
+        for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 18:08:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778807304; cv=none;
+        d=google.com; s=arc-20240605;
+        b=WXV1e1eEvehmPKRQSviivCh4bzu8qMT/WUirXSQlv6qNdRqz0k2rtI5PF2flxmOi8D
+         jnuwDJvFAQy22fKSd/S+6u1d1h8bK4prXfHC0j8/Mi90VfrOXVVX5gXOKfu6tuVxQw0a
+         XHhjwb5NQY2QHI9+RvGM1a35+pjsXROvUUScsw1ORbNKEU23q/DplXViAB1uFo5+Mu81
+         1ruaR+YnL4DLa9cRMvRL9SfmfGq1TkTCXUcWDZca2mea9FtTxV6fMELFNHDO2btMNB3C
+         ZTTsgrATQ9Kc3ac912laqFUpCPw/ZAtzllBBfWTMwtGM+kQpvHtA2YFNOZzf2RuzR+8y
+         XdMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4uAqE+q2UzPII5vnt4wx5yy+f2NRVPMEBmYSwydEl30=;
+        fh=GtlxNgPtFq8U+yhKqoyZquRae9D1z6htTbkdAEJgrYY=;
+        b=LXWtFS0x1oz6n6/7cHIqnFwnJJ/tzRugX0LloJoqp5cg+rB/fqjQIsXucgrauL0Dnz
+         Kgh7pjimmpWsuiIoboQ311dnlI2AWYjFNAFu/CeojvdTzyYPyhM3Hce2TidHXJBJaORF
+         ZDSS+e786X6NvEVmeQQuQjciSB0ex+dbfPzrhaUUJzCVs/URnvsZckG7Bwc7EZIAzl32
+         pPafOq3jTwQC4fFeWSCdvwvoCGCRCa7O2n14il+9BZuOtFmqfiWhb6fbbk/KKNMkiGCE
+         VToFjzCrt+8LLQbZTL8tOfV6BxLIi9LuEj+4PRXcP2bAND4hZLlsCMAYNGzRmvgxy1sy
+         seBA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778799285; x=1779404085; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MpHjBeDGHzNDOy9dbVQ2YOk7VWW2/RGBa4Tmtno8w1k=;
-        b=kdmChSeLNClZGDfAd2cK2o1B5K2iqQHucKHaO7IFkjQ/2MoQg5wj2R+c+Uose34RUh
-         MZjr8Mk5oWvDufD+IyhOC6ARK4cD4IQc1eJMD+OZa4uS1r8fiFzwh5JBuJU39mhIlMY5
-         yDEvmIp4LYIaVXBmNZWL9eRWkLVL35rXRGft+0bTekWcgFP1aDzZJ5JuB1YQ0Z/m188Q
-         WlogzsG8289sN/HKW+xLbq0zpqI3gKxAEp26gYWM0IGt7GtNe8tOA16nME1bTjhlOPG2
-         QuNP4vtk6DFWjAtovibPYbNqThksXPFYej5xNBt6SJiUMRvC2eDP8hY5wIII9dNrNuGU
-         bHVA==
+        d=gmail.com; s=20251104; t=1778807304; x=1779412104; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4uAqE+q2UzPII5vnt4wx5yy+f2NRVPMEBmYSwydEl30=;
+        b=i1MwaPxKlJBj6YnS33rrgrCoAF74MxK+bSVTgeZN5u86Iqj+xrX0paCiEVEqmSBk19
+         uT1MRbVCdWh95NSkLnJS6lkPbDwBMZFSrfuguUrvJASsjkd+jDSCT/0WPaefPDXgZ9NQ
+         oqJxyiNqaYwmoPKHH8o95KlkGklmKHLfGokGEukZFZRu9ik+0+lY2HKrvfigWhz/HvGl
+         8qWzQXPYQ+IFjjTCT0Dx0v4tMRbnO2OlXZUcepqMfmjB+1zPnU7A3hzpsS6TbWPsYQIo
+         QEA9KIAuZcz69lzZpEXsy2gF4Vk2EcPDZGxrY4EXS6/9kTb+Twit2qyvyrrmZ5FBSpJ8
+         rv4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778799285; x=1779404085;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MpHjBeDGHzNDOy9dbVQ2YOk7VWW2/RGBa4Tmtno8w1k=;
-        b=ptd8ti/FaNRqb31KmSx3iGU6ztjG9abLds3DBJqVy3EDkZYwvbpKRwxb9nF0vi1ppT
-         sl62FSWFE4bGfPGqoq8SnthMAotml7ypoJA+IiJj0VA06S/NuxebNGguz1lps3vqulWc
-         fVOxCVlyB1oKHB0Fi7Su0dI7N5ctkHyXQspCir8klpYU7o4H3E89TTE8IYqRjxG+XcxV
-         jCb0AQp9TupWvCca0rVReBef8rdQ9DXueNOBAv30oaLgxs5oh85rp//j3gD+6kWYxZ+R
-         Fq9y8q66xxoranIv6+BoiyT549eJYEz9Lf3XnuYD6Hei1/Gz0u8qzxkwFuZGoWjhnpld
-         AGZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ82hTvjAWsQKGmOcwOQ2D1kKZhvyFNcTrhRtJuWtd7OqRj05UmrEM1ul/z3vwVSMWAc4JxIN7z3gP7h9Ev8wg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqlwTlMGCA75Xllx4QdMNQKSTGzsvpDTCQS9OuBiX1f/zADEbM
-	tb9iseb21lCOU/Xo16ARnj7Y61B4YabAIU6Radjsw5xsEwpe9n68Yc8syP6KHbYarkH9g+OzEJG
-	GZXzqWBtWQ7fzHOmZAcrWAv7RoEf6p1Y66lXVIIcLgP5tV+tBNf9j1YMFjGR+DxERJJZsTQ==
-X-Gm-Gg: Acq92OHbLs2YA5a+P/+qYyljO2aS407E9pOFnGqQ0g98tYauVW2Ajys0lbAayaCsyGU
-	/1A19nzIetDBdvCMpTfEaJ4dL4HmP0PHanQiRl2OQDKHaiwPIhDnAssNH7Y5H62TEn4iw2BZFTP
-	seQm5BTmmK6p4VbtiRF870+Nuyiuxk4Q78NkKqKnbmev1gjK9ZOFsRoui8k0lMIvJyq7QX8ztgu
-	oCM4z3+mPrBAXAgwsbG9TKGdc39hk71TC+HwaYG05Yr1AVieWL+IKj6Q8JyhhCIlftirObou2Vl
-	PEJHCd4fkogpqHuBO63Lkp7MjnZYBiRwWMeKfpc9hMz9JxjcsOlgfFV/AZ0J9UV2DaMt1hRDh9E
-	Nh0kBjWSDBQm+0bu1egfafZvqvCHfCIqMD7E4e7rIrsW9/YFuPvxynaLYShwyKEw3jlnjp5VEV8
-	tG2nSnNfarV9L+owae7er5eTBA
-X-Received: by 2002:a05:7300:8b95:b0:2f2:5c68:5052 with SMTP id 5a478bee46e88-3039817fe1fmr697854eec.13.1778799285239;
-        Thu, 14 May 2026 15:54:45 -0700 (PDT)
-X-Received: by 2002:a05:7300:8b95:b0:2f2:5c68:5052 with SMTP id 5a478bee46e88-3039817fe1fmr697835eec.13.1778799284735;
-        Thu, 14 May 2026 15:54:44 -0700 (PDT)
-Received: from [192.168.1.59] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30294500a97sm5423975eec.9.2026.05.14.15.54.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 May 2026 15:54:43 -0700 (PDT)
-Message-ID: <930c0363-74e2-41dc-9aae-2af431ae441d@oss.qualcomm.com>
-Date: Thu, 14 May 2026 15:54:42 -0700
+        d=1e100.net; s=20251104; t=1778807304; x=1779412104;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4uAqE+q2UzPII5vnt4wx5yy+f2NRVPMEBmYSwydEl30=;
+        b=jU3b+pVAdsvSpceEpVKJHADzBRlUHmr/FdSklXxMtKv7glItUWwr10d64tFEvjGFTD
+         ncgo6R5Dy1sVto6KoX1bFc9Jh2RM8SlNNilZYXd5umKBE47jtJbEgziGTgKx8MPaH2Uq
+         EEo7xwTvE6BTbf8ZaRZ/qOJfTMiXpD5U2oBsVSqsIDpkVTK76bZg1OCJUCbVLR6EVUR4
+         cc/KkfI/BQtIdRG41F8HXGgFMHbkPMV3FIbLOhjBQKytrepsITgEWrWT9MyRHBuD5+nk
+         Tp7iQ4QUYY6EqZjGZdzGwaPy48e6c/tAxcI5LG20SbJ1GQqkoJnC3p2OWeFGjA0Wu2jt
+         cqzA==
+X-Forwarded-Encrypted: i=1; AFNElJ+/xv4fWVOmQH9dWakkCwRaag6Y0ZP6RPZLCVCQ46IjpkVpnRhDWm34UbIvcD0VO1S/EVb/Hz00maE/Gd0cqw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQyyDPOv7+ANK9jZnUsLX7c5iZmzVJk5DJEE3uFBplyUO6KnC/
+	sL47bVLFUFvZ/gMpWPfXZFBXNn0smWciZym1r/ZUKoQbYUrEv4FJIMSkk24Geu3qC9wyU1rSN/V
+	WfgoZNlgx2O6dP23HzlbzGJDxMm0pdfCi3mkeqhM=
+X-Gm-Gg: Acq92OFJtU5Hy/UBou6Yyq+O05yLmxCKyYfRA+hQonyWvvjN3TgxKnrjH6I8cm9Kzen
+	+VNcKUQvCkG/xw4C4jqN/Dxgu+Hq8ui4iiSpf+vAUA3ZcT1X/LVjHh5DlWygjKFRGloM2bXJ47R
+	AKTeuzQVbc3Vi09owN2DktUDCpFaMp+HjKt1EVVHlz+mmExPctNNwLYrtNzfGXsZzrDC25nSb2O
+	2349XC1mE0qvz+wzuo8z/+0SarEFhsU24EbOHvjYgaAEYoNkoS343qunoeLQho84C5jx1sOEM0f
+	dkpKD4mNqOiHInJilrjE7HWaJQtaE38BUspCHlJHbX6l9Gfyng==
+X-Received: by 2002:a05:6820:2982:b0:67e:160c:36ba with SMTP id
+ 006d021491bc7-69c9bfb1664mr1186419eaf.48.1778807304424; Thu, 14 May 2026
+ 18:08:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath11k: Add two missing Lenovo IDs to the quirk
- table
-To: Kyle Farnung <kfarnung@gmail.com>,
-        =?UTF-8?Q?Santiago_Ruano_Rinc=C3=B3n?= <santiagorr@riseup.net>
-Cc: Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kfarnung@outlook.com, Mark Pearson <mpearson-lenovo@squebb.ca>,
-        koike@igalia.com
-References: <20260506200249.317690-1-santiagorr@riseup.net>
- <45f1c979-ea8d-4118-8551-eff93966b4e1@oss.qualcomm.com>
- <CAOPSVF29ofKi8fpmJxuq9F5uQXHe4RrFvGb2V-odGMNA77NWXw@mail.gmail.com>
- <agS7fr8mDI9TLpvh@voleno>
- <CAOPSVF2xwpR63MmngbG06_wPtQe2tOoVe87fanzXGRHBeJGYUA@mail.gmail.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <CAOPSVF2xwpR63MmngbG06_wPtQe2tOoVe87fanzXGRHBeJGYUA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE0MDIyNCBTYWx0ZWRfX8IOKwwJ5+jZT
- FpQ4Hn0kC/lNYH+EsLsRrmDXocpiRThaCIpNASzfl1YqlDY/wMHs/rswQtKV+yfyq0HZzyCkAde
- Lt2v+qYwMMofuTiLzbL7Pszyn1OCDMkyJ9fBSgS8K+oU4bzeYe2Mcv0MP5lmfgjAMiUUOn9JCo2
- cBAAlJWx5KEAXFUwTo8oJoH/XRtcNAymqknnWbBG12yj5jFEh9EmjPTpFRjw3IobzLJuHj6Wipx
- xPEJm6WX2CYLWksmiaW8dtMziQ50mWTmS43g6128AGKgoxxos3zFQroPStk2rZvmDo2X+Bumqlz
- ZoFvLFubDjeY/7Ah05UehxWdsO7nNyi+Gspnhun7KAVm68hPz36PgYWPhXuaZv0Db9RE4D+AfT0
- vWBbGVp4vj4+o0G65t7LCXdkDSfWI6Y2lcvocEKEdOTrFSIfrbUuiKCUW53aurovmj9DFJsLQd3
- qFUtW2qI2DJnhUc9mBA==
-X-Proofpoint-GUID: oZqJbZ0l7vLyCrBU16L1lid1oP3Tln2a
-X-Proofpoint-ORIG-GUID: oZqJbZ0l7vLyCrBU16L1lid1oP3Tln2a
-X-Authority-Analysis: v=2.4 cv=BvqtB4X5 c=1 sm=1 tr=0 ts=6a0652b6 cx=c_pps
- a=JYo30EpNSr/tUYqK9jHPoA==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=VwQbUJbxAAAA:8 a=xNf9USuDAAAA:8 a=bBqXziUQAAAA:8 a=EUspDBNiAAAA:8
- a=pGLkceISAAAA:8 a=nagzklUHWQTCT_ILTRoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=Fk4IpSoW4aLDllm1B1p-:22 a=BjKv_IHbNJvPKzgot4uq:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-14_06,2026-05-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- spamscore=0 malwarescore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605140224
-X-Rspamd-Queue-Id: 6D766547982
+References: <20260513-kfarnung-ath11k-srng-clear-pointer-state-v1-1-bc700dd8b333@gmail.com>
+ <ddd1601d-2eef-4a52-af16-594223449c8c@oss.qualcomm.com>
+In-Reply-To: <ddd1601d-2eef-4a52-af16-594223449c8c@oss.qualcomm.com>
+From: Kyle Farnung <kfarnung@gmail.com>
+Date: Thu, 14 May 2026 18:08:12 -0700
+X-Gm-Features: AVHnY4Lvlc5Ig89TV5C-ke-68Gt-iwIwGCcyok9295LT1kww5dL6ntxLMQaGick
+Message-ID: <CAOPSVF3RgoV0e2EGbpy8t36mPKnn95_KWGt4_xSL7B9m6pv_RQ@mail.gmail.com>
+Subject: Re: [PATCH] wifi: ath11k: clear shared SRNG pointer state on restart
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>, linux-wireless@vger.kernel.org, 
+	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	santiagorr@riseup.net, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7005B54842C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36438-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.infradead.org,outlook.com,squebb.ca,igalia.com];
-	TAGGED_FROM(0.00)[bounces-36437-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,riseup.net];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,riseup.net:email];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kfarnung@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-On 5/13/2026 10:01 PM, Kyle Farnung wrote:
-> On Wed, May 13, 2026 at 10:57 AM Santiago Ruano Rincón
-> <santiagorr@riseup.net> wrote:
->>
->> El 12/05/26 a las 20:30, Kyle Farnung escribió:
->>> On Tue, May 12, 2026 at 5:03 PM Jeff Johnson
->>> <jeff.johnson@oss.qualcomm.com> wrote:
->>>>
->>>> On 5/6/2026 12:54 PM, Santiago Ruano Rincón wrote:
->>>>> Commit 0eb002c93c3b4 ("wifi: ath11k: Add missing platform IDs for quirk
->>>>> table") added some Lenovo platform IDs to the quirk table to address a
->>>>> wakeup from suspend issue [1].  However, at least P14s Gen 5 AMD, as
->>>>> reported by Kyle Farnung [2], and P14s Gen 3 AMD are missing in the
->>>>> table.  This commit adds the two corresponding Lenovo version IDs for
->>>>> each.
->>>>>
->>>>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
->>>>> [2] https://bugzilla.kernel.org/show_bug.cgi?id=219196#c23
->>>>>
->>>>> Tested-on: P14s G3 AMD running 7.0.3.
->>>>>
->>>>> Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine model")
->>>>> Co-authored-by: Kyle Farnung <kfarnung@gmail.com>
->>>>
->>>> This is not a standard Linux kernel commit tag.
->>>> Co-developed-by: could be used, but I'd need a Signed-off-by: from Kyle
->>>>
->>>> Kyle, if you'd like these added please reply with both a Co-developed-by and
->>>> a Signed-off-by tag
->>>
->>> I re-tested the bug behavior on the v7.0.4 tag and found that I'm not able
->>> to reproduce it on my device. I put the device to sleep and then unplugged
->>> and replugged power; it never woke up until I intentionally woke it.
->>>
->>> Based on discussion in [3], I narrowed my issue with wi-fi disassociation
->>> on wake to a suspect commit [4]. I'm developing a patch that clears the rdp
->>> and wrp buffers during wake to clear out any stale state in the LMAC rings.
->>> I'll submit that once I'm done testing it.
->>>
->>> Santiago: Are you seeing the sleep/wake bug from [1] or something similar
->>> to what I was seeing around disconnections on wake?
->>
->> I was seeing wifi issues after wake-up, including disassociations, as
->> described at https://bugs.debian.org/1132343.
-> 
-> Thanks for the confirmation. I went ahead and submitted a patch for the
-> suspected SRNG restart issue in [5].
-> 
-> For my P14s Gen 5 AMD, I don't think the PM quirk is the right fix at
-> this point, so please don't include the 21ME/21MF IDs on my account for
-> now. This new patch seems like a better match for the disassociation
-> issue I was seeing after resume.
+On Thu, May 14, 2026 at 8:16=E2=80=AFAM Jeff Johnson
+<jeff.johnson@oss.qualcomm.com> wrote:
+>
+> On 5/13/2026 9:52 PM, Kyle Farnung via B4 Relay wrote:
+> > From: Kyle Farnung <kfarnung@gmail.com>
+> >
+> > LMAC rings reuse the shared rdp/wrp pointer buffers without going
+> > through the normal SRNG hw-init path that zeros non-LMAC ring
+> > pointers. After restart, ath11k_hal_srng_clear() can therefore hand
+> > stale hp/tp state from the previous firmware instance back to the new
+> > one.
+> >
+> > Clear the shared pointer buffers while keeping the allocations in
+> > place so restart still avoids reallocating SRNG DMA memory, but starts
+> > with fresh ring-pointer state.
+> >
+> > Fixes: 32be3ca4cf78b ("wifi: ath11k: HAL SRNG: don't deinitialize and r=
+e-initialize again")
+> > Cc: stable@vger.kernel.org
+> > Link: https://lore.kernel.org/all/CAOPSVF04q6uvVdq8GTRLHBrVMdpt9=3Do9wV=
+cFMc6f-yhmSBcZqQ@mail.gmail.com/
+>
+> I'm going to change this to a Closes: tag in my pending branch
 
-Based upon this I'm dropping this patch.
+Thanks, that all makes sense.
 
-Santiago, if Kyle's patch doesn't fix your problem feel free to resubmit
-adding just the quirks needed by your machine.
+I'm still running the fix locally and haven't seen the issue again after 9
+suspend/resume cycles.
 
-/jeff
+>
+> > Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
+> > ---
+> > This patch is the result of investigating suspend/resume failures on a
+> > Lenovo ThinkPad P14s Gen 5 AMD with ath11k.
+> >
+> > I originally proposed extending the existing ath11k PM quirk for this
+> > platform, but after discussion in [1] and bisection the issue appears t=
+o
+> > be a regression introduced by [2]. There is also a parallel report in [=
+3]
+> > that appears consistent with the same root cause. This patch keeps the
+> > intended no-reallocation behavior from that change, but clears the
+> > preserved shared SRNG pointer state so restart begins from a clean stat=
+e.
+> >
+> > Testing so far has been limited to local suspend/resume cycling on the
+> > affected system. The issue was originally reproduced on v7.0.4, and the
+> > patch was also built and tested on top of ath-current with repeated
+> > suspend/resume cycles on a Lenovo ThinkPad P14s Gen 5 AMD.
+> >
+> > [1] https://lore.kernel.org/all/CAOPSVF04q6uvVdq8GTRLHBrVMdpt9=3Do9wVcF=
+Mc6f-yhmSBcZqQ@mail.gmail.com/
+> > [2] 32be3ca4cf78b ("wifi: ath11k: HAL SRNG: don't deinitialize and re-i=
+nitialize again")
+> > [3] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1132343
+> > ---
+> >  drivers/net/wireless/ath/ath11k/hal.c | 13 ++++++++++---
+> >  1 file changed, 10 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wirele=
+ss/ath/ath11k/hal.c
+> > index e821e5a62c1c0..0c0aeb803018e 100644
+> > --- a/drivers/net/wireless/ath/ath11k/hal.c
+> > +++ b/drivers/net/wireless/ath/ath11k/hal.c
+> > @@ -1387,14 +1387,21 @@ EXPORT_SYMBOL(ath11k_hal_srng_deinit);
+> >
+> >  void ath11k_hal_srng_clear(struct ath11k_base *ab)
+> >  {
+> > -     /* No need to memset rdp and wrp memory since each individual
+> > -      * segment would get cleared in ath11k_hal_srng_src_hw_init()
+> > -      * and ath11k_hal_srng_dst_hw_init().
+> > +     /* Preserve the shared pointer buffers, but clear the previous
+>
+> Since you are touching it I'm going to change this from the obsolete
+> networking block comment style to the universal block comment style with
+> /* on a line by itself
+>
+> > +      * firmware instance's hp/tp state before handing them back to FW=
+.
+> > +      * LMAC rings reuse this shared memory without going through the
+> > +      * normal SRNG hw-init path that zeros non-LMAC ring pointers.
+> >        */
+> >       memset(ab->hal.srng_list, 0,
+> >              sizeof(ab->hal.srng_list));
+> >       memset(ab->hal.shadow_reg_addr, 0,
+> >              sizeof(ab->hal.shadow_reg_addr));
+> > +     if (ab->hal.rdp.vaddr)
+> > +             memset(ab->hal.rdp.vaddr, 0,
+> > +                    sizeof(*ab->hal.rdp.vaddr) * HAL_SRNG_RING_ID_MAX)=
+;
+> > +     if (ab->hal.wrp.vaddr)
+> > +             memset(ab->hal.wrp.vaddr, 0,
+> > +                    sizeof(*ab->hal.wrp.vaddr) * HAL_SRNG_NUM_LMAC_RIN=
+GS);
+> >       ab->hal.avail_blk_resource =3D 0;
+> >       ab->hal.current_blk_index =3D 0;
+> >       ab->hal.num_shadow_reg_configured =3D 0;
+> >
+> > ---
+> > base-commit: 54a5b38e4396530e5b2f12b54d3844e860ab6784
+> > change-id: 20260513-kfarnung-ath11k-srng-clear-pointer-state-91d8ab07e5=
+e2
+> >
+> > Best regards,
+>
 
