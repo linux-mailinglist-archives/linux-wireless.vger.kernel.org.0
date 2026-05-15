@@ -1,253 +1,174 @@
-Return-Path: <linux-wireless+bounces-36438-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36439-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qBcSBg5yBmqyjwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36438-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 03:08:30 +0200
+	id 2K0rNZF6BmqFkAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36439-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 03:44:49 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7005B54842C
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 03:08:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EFEB5487F7
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 03:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F237303EF57
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 01:08:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B6CEA30041D3
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 01:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB4A346FC3;
-	Fri, 15 May 2026 01:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF15336EDE;
+	Fri, 15 May 2026 01:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i1MwaPxK"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="IGDVr3Qz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF2E2FD68B
-	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 01:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778807306; cv=pass; b=mbDx9YPPJlLHP7v69I6i0Hb5MaUcdQaHWovhXvovUuRzKdMoA+P60/41SRQctVqnIbnBv0/54ANeEkf5+0lJTNARWea1cR74jgqrwDmHLbkbb02hUY2zcJkZ0yhVzBAabIs9Dtaqz578RxxuM34yVLkptSityiXSrPdMu9Bpd2I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778807306; c=relaxed/simple;
-	bh=Tjy+wLAt76/SgLvXzCA18dCPcMxTTSJKx0uzseG+k/4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OZa6+zbxlznouU953g6x/D2mTLT/UVNjgE7e6MUdseCoumSsWscHT8fivT3swof4sabr/ZhRhdR/Kv8UmXoM8SC9fuGvnY7gQoicmzAfW2SJvVmW5wSElLjtocvx6UyvwVwWzPZDUe0Ok8rvI3e9cMVTcqlCxbqmsIz5RJWc60k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i1MwaPxK; arc=pass smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7dcd689829eso7669162a34.3
-        for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 18:08:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778807304; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WXV1e1eEvehmPKRQSviivCh4bzu8qMT/WUirXSQlv6qNdRqz0k2rtI5PF2flxmOi8D
-         jnuwDJvFAQy22fKSd/S+6u1d1h8bK4prXfHC0j8/Mi90VfrOXVVX5gXOKfu6tuVxQw0a
-         XHhjwb5NQY2QHI9+RvGM1a35+pjsXROvUUScsw1ORbNKEU23q/DplXViAB1uFo5+Mu81
-         1ruaR+YnL4DLa9cRMvRL9SfmfGq1TkTCXUcWDZca2mea9FtTxV6fMELFNHDO2btMNB3C
-         ZTTsgrATQ9Kc3ac912laqFUpCPw/ZAtzllBBfWTMwtGM+kQpvHtA2YFNOZzf2RuzR+8y
-         XdMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4uAqE+q2UzPII5vnt4wx5yy+f2NRVPMEBmYSwydEl30=;
-        fh=GtlxNgPtFq8U+yhKqoyZquRae9D1z6htTbkdAEJgrYY=;
-        b=LXWtFS0x1oz6n6/7cHIqnFwnJJ/tzRugX0LloJoqp5cg+rB/fqjQIsXucgrauL0Dnz
-         Kgh7pjimmpWsuiIoboQ311dnlI2AWYjFNAFu/CeojvdTzyYPyhM3Hce2TidHXJBJaORF
-         ZDSS+e786X6NvEVmeQQuQjciSB0ex+dbfPzrhaUUJzCVs/URnvsZckG7Bwc7EZIAzl32
-         pPafOq3jTwQC4fFeWSCdvwvoCGCRCa7O2n14il+9BZuOtFmqfiWhb6fbbk/KKNMkiGCE
-         VToFjzCrt+8LLQbZTL8tOfV6BxLIi9LuEj+4PRXcP2bAND4hZLlsCMAYNGzRmvgxy1sy
-         seBA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778807304; x=1779412104; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4uAqE+q2UzPII5vnt4wx5yy+f2NRVPMEBmYSwydEl30=;
-        b=i1MwaPxKlJBj6YnS33rrgrCoAF74MxK+bSVTgeZN5u86Iqj+xrX0paCiEVEqmSBk19
-         uT1MRbVCdWh95NSkLnJS6lkPbDwBMZFSrfuguUrvJASsjkd+jDSCT/0WPaefPDXgZ9NQ
-         oqJxyiNqaYwmoPKHH8o95KlkGklmKHLfGokGEukZFZRu9ik+0+lY2HKrvfigWhz/HvGl
-         8qWzQXPYQ+IFjjTCT0Dx0v4tMRbnO2OlXZUcepqMfmjB+1zPnU7A3hzpsS6TbWPsYQIo
-         QEA9KIAuZcz69lzZpEXsy2gF4Vk2EcPDZGxrY4EXS6/9kTb+Twit2qyvyrrmZ5FBSpJ8
-         rv4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778807304; x=1779412104;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4uAqE+q2UzPII5vnt4wx5yy+f2NRVPMEBmYSwydEl30=;
-        b=jU3b+pVAdsvSpceEpVKJHADzBRlUHmr/FdSklXxMtKv7glItUWwr10d64tFEvjGFTD
-         ncgo6R5Dy1sVto6KoX1bFc9Jh2RM8SlNNilZYXd5umKBE47jtJbEgziGTgKx8MPaH2Uq
-         EEo7xwTvE6BTbf8ZaRZ/qOJfTMiXpD5U2oBsVSqsIDpkVTK76bZg1OCJUCbVLR6EVUR4
-         cc/KkfI/BQtIdRG41F8HXGgFMHbkPMV3FIbLOhjBQKytrepsITgEWrWT9MyRHBuD5+nk
-         Tp7iQ4QUYY6EqZjGZdzGwaPy48e6c/tAxcI5LG20SbJ1GQqkoJnC3p2OWeFGjA0Wu2jt
-         cqzA==
-X-Forwarded-Encrypted: i=1; AFNElJ+/xv4fWVOmQH9dWakkCwRaag6Y0ZP6RPZLCVCQ46IjpkVpnRhDWm34UbIvcD0VO1S/EVb/Hz00maE/Gd0cqw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQyyDPOv7+ANK9jZnUsLX7c5iZmzVJk5DJEE3uFBplyUO6KnC/
-	sL47bVLFUFvZ/gMpWPfXZFBXNn0smWciZym1r/ZUKoQbYUrEv4FJIMSkk24Geu3qC9wyU1rSN/V
-	WfgoZNlgx2O6dP23HzlbzGJDxMm0pdfCi3mkeqhM=
-X-Gm-Gg: Acq92OFJtU5Hy/UBou6Yyq+O05yLmxCKyYfRA+hQonyWvvjN3TgxKnrjH6I8cm9Kzen
-	+VNcKUQvCkG/xw4C4jqN/Dxgu+Hq8ui4iiSpf+vAUA3ZcT1X/LVjHh5DlWygjKFRGloM2bXJ47R
-	AKTeuzQVbc3Vi09owN2DktUDCpFaMp+HjKt1EVVHlz+mmExPctNNwLYrtNzfGXsZzrDC25nSb2O
-	2349XC1mE0qvz+wzuo8z/+0SarEFhsU24EbOHvjYgaAEYoNkoS343qunoeLQho84C5jx1sOEM0f
-	dkpKD4mNqOiHInJilrjE7HWaJQtaE38BUspCHlJHbX6l9Gfyng==
-X-Received: by 2002:a05:6820:2982:b0:67e:160c:36ba with SMTP id
- 006d021491bc7-69c9bfb1664mr1186419eaf.48.1778807304424; Thu, 14 May 2026
- 18:08:24 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA60C2C08AB
+	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 01:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778809486; cv=none; b=NNRBf7M+XebI8jCbhGJmqs9BwOQMPqgQGmEvEDe2JFkUl98O4DOBmJotTqfYKPbWSiQuQyjMJEV28MWLxApGEQhpaVbTCZugXC5nN1Ep0UV142GyF08atdSDUeyOffohWxedqvU9cElPGi4caypa8r/nD1anOufU2/ydFEMdlV0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778809486; c=relaxed/simple;
+	bh=g6Qwv2KNj+BTaJE47Dod2+MYXXgrONp7EFBIbwhHyJY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=luESjLG7qzM73b5TSbCkwDXg9ph5FRkUp6rsNZLY39jJiBZxrKm2jDS2r69I8PiHxOT65K70dWg7GBTWmazZ/B1qRXQegGDYKQhiB7H6UbbB+7afDbLxq0nwo/5z6KyYNvMpWU300Ay27R8U8WGeGU0+xUvtUJqE/SjURrHaeZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=IGDVr3Qz; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64F1iflaF2587034, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1778809481; bh=C08if+aanXkAtJAY6zkI5DlVe27kc3O2lQ64JTTmv00=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=IGDVr3Qz7DmwHZXBolrkQzzyLYLHmXzdygM+DcG7OwpoG2F8CJja1+OQx1MGPE1wP
+	 dW4qKc7UU8GXY341vWjpDAziDL11kFJUqPnbhy8YvGJDnp123MAy1ndRh2Mg9+YIbe
+	 Z7q2tC14mHKrDv9lFNGHpH15kqmozTHwrRBqfv9IYvupCmhfrUcfdYRNId7jY5YGLn
+	 8YWl9r3woiWUJ9/sv2nUm7sSAhOzt9vPGiX8Cr8mvBQPKCCu9qq4oSynU7VeLoT6Pc
+	 DRUJnxbpDLkAntXAuxbgooseq60aIGF+ijiUa7MH2Wx3bR5L/xPWiHaImaxySexPXo
+	 iR53cXj01H1KA==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 64F1iflaF2587034
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 09:44:41 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Fri, 15 May 2026 09:44:41 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
+ (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
+ Transport; Fri, 15 May 2026 09:44:41 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <timlee@realtek.com>, <dian_syuan0116@realtek.com>, <phhuang@realtek.com>,
+        <kevin_yang@realtek.com>
+Subject: [PATCH rtw-next 00/13] wifi: rtw89: update SER, PCI, WoW and quota settings
+Date: Fri, 15 May 2026 09:44:20 +0800
+Message-ID: <20260515014433.16168-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260513-kfarnung-ath11k-srng-clear-pointer-state-v1-1-bc700dd8b333@gmail.com>
- <ddd1601d-2eef-4a52-af16-594223449c8c@oss.qualcomm.com>
-In-Reply-To: <ddd1601d-2eef-4a52-af16-594223449c8c@oss.qualcomm.com>
-From: Kyle Farnung <kfarnung@gmail.com>
-Date: Thu, 14 May 2026 18:08:12 -0700
-X-Gm-Features: AVHnY4Lvlc5Ig89TV5C-ke-68Gt-iwIwGCcyok9295LT1kww5dL6ntxLMQaGick
-Message-ID: <CAOPSVF3RgoV0e2EGbpy8t36mPKnn95_KWGt4_xSL7B9m6pv_RQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: ath11k: clear shared SRNG pointer state on restart
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>, linux-wireless@vger.kernel.org, 
-	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	santiagorr@riseup.net, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7005B54842C
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 7EFEB5487F7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36438-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36439-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kfarnung@gmail.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Thu, May 14, 2026 at 8:16=E2=80=AFAM Jeff Johnson
-<jeff.johnson@oss.qualcomm.com> wrote:
->
-> On 5/13/2026 9:52 PM, Kyle Farnung via B4 Relay wrote:
-> > From: Kyle Farnung <kfarnung@gmail.com>
-> >
-> > LMAC rings reuse the shared rdp/wrp pointer buffers without going
-> > through the normal SRNG hw-init path that zeros non-LMAC ring
-> > pointers. After restart, ath11k_hal_srng_clear() can therefore hand
-> > stale hp/tp state from the previous firmware instance back to the new
-> > one.
-> >
-> > Clear the shared pointer buffers while keeping the allocations in
-> > place so restart still avoids reallocating SRNG DMA memory, but starts
-> > with fresh ring-pointer state.
-> >
-> > Fixes: 32be3ca4cf78b ("wifi: ath11k: HAL SRNG: don't deinitialize and r=
-e-initialize again")
-> > Cc: stable@vger.kernel.org
-> > Link: https://lore.kernel.org/all/CAOPSVF04q6uvVdq8GTRLHBrVMdpt9=3Do9wV=
-cFMc6f-yhmSBcZqQ@mail.gmail.com/
->
-> I'm going to change this to a Closes: tag in my pending branch
+Update many stuffs according to internal updates.
 
-Thanks, that all makes sense.
+Patches 1-3 are related to SER, which is to simulate SER trigger and dump
+more related registers for debugging.
 
-I'm still running the fix locally and haven't seen the issue again after 9
-suspend/resume cycles.
+Patches 4-6 are PCIE PHY settings.
 
->
-> > Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
-> > ---
-> > This patch is the result of investigating suspend/resume failures on a
-> > Lenovo ThinkPad P14s Gen 5 AMD with ath11k.
-> >
-> > I originally proposed extending the existing ath11k PM quirk for this
-> > platform, but after discussion in [1] and bisection the issue appears t=
-o
-> > be a regression introduced by [2]. There is also a parallel report in [=
-3]
-> > that appears consistent with the same root cause. This patch keeps the
-> > intended no-reallocation behavior from that change, but clears the
-> > preserved shared SRNG pointer state so restart begins from a clean stat=
-e.
-> >
-> > Testing so far has been limited to local suspend/resume cycling on the
-> > affected system. The issue was originally reproduced on v7.0.4, and the
-> > patch was also built and tested on top of ath-current with repeated
-> > suspend/resume cycles on a Lenovo ThinkPad P14s Gen 5 AMD.
-> >
-> > [1] https://lore.kernel.org/all/CAOPSVF04q6uvVdq8GTRLHBrVMdpt9=3Do9wVcF=
-Mc6f-yhmSBcZqQ@mail.gmail.com/
-> > [2] 32be3ca4cf78b ("wifi: ath11k: HAL SRNG: don't deinitialize and re-i=
-nitialize again")
-> > [3] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1132343
-> > ---
-> >  drivers/net/wireless/ath/ath11k/hal.c | 13 ++++++++++---
-> >  1 file changed, 10 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wirele=
-ss/ath/ath11k/hal.c
-> > index e821e5a62c1c0..0c0aeb803018e 100644
-> > --- a/drivers/net/wireless/ath/ath11k/hal.c
-> > +++ b/drivers/net/wireless/ath/ath11k/hal.c
-> > @@ -1387,14 +1387,21 @@ EXPORT_SYMBOL(ath11k_hal_srng_deinit);
-> >
-> >  void ath11k_hal_srng_clear(struct ath11k_base *ab)
-> >  {
-> > -     /* No need to memset rdp and wrp memory since each individual
-> > -      * segment would get cleared in ath11k_hal_srng_src_hw_init()
-> > -      * and ath11k_hal_srng_dst_hw_init().
-> > +     /* Preserve the shared pointer buffers, but clear the previous
->
-> Since you are touching it I'm going to change this from the obsolete
-> networking block comment style to the universal block comment style with
-> /* on a line by itself
->
-> > +      * firmware instance's hp/tp state before handing them back to FW=
-.
-> > +      * LMAC rings reuse this shared memory without going through the
-> > +      * normal SRNG hw-init path that zeros non-LMAC ring pointers.
-> >        */
-> >       memset(ab->hal.srng_list, 0,
-> >              sizeof(ab->hal.srng_list));
-> >       memset(ab->hal.shadow_reg_addr, 0,
-> >              sizeof(ab->hal.shadow_reg_addr));
-> > +     if (ab->hal.rdp.vaddr)
-> > +             memset(ab->hal.rdp.vaddr, 0,
-> > +                    sizeof(*ab->hal.rdp.vaddr) * HAL_SRNG_RING_ID_MAX)=
-;
-> > +     if (ab->hal.wrp.vaddr)
-> > +             memset(ab->hal.wrp.vaddr, 0,
-> > +                    sizeof(*ab->hal.wrp.vaddr) * HAL_SRNG_NUM_LMAC_RIN=
-GS);
-> >       ab->hal.avail_blk_resource =3D 0;
-> >       ab->hal.current_blk_index =3D 0;
-> >       ab->hal.num_shadow_reg_configured =3D 0;
-> >
-> > ---
-> > base-commit: 54a5b38e4396530e5b2f12b54d3844e860ab6784
-> > change-id: 20260513-kfarnung-ath11k-srng-clear-pointer-state-91d8ab07e5=
-e2
-> >
-> > Best regards,
->
+Patch 7 is to clear (reset) calibration value of delay function.
+
+Patch 8 is to keep connection alive in WoWLAN mode.
+
+Patch 9 is used to correct logic to handle malformed AMPDU packets.
+
+Patches 10-13 are to extend quota definition for RTL8922D, because there
+are many variants with different quota values.
+
+Chin-Yen Lee (1):
+  wifi: rtw89: wow: send ARP reply packets instead of Null packets to
+    keep alive
+
+Dian-Syuan Yang (1):
+  wifi: rtw89: pci: enable LTR based on pcie control register
+
+Ping-Ke Shih (7):
+  wifi: rtw89: pci: not disable PCI completion timeout control for a
+    variant of RTL8922DE
+  wifi: rtw89: pci: disable PCI PHY error flag 8
+  wifi: rtw89: clear auto K delay value before downloading firmware
+  wifi: rtw89: 8922d: change naming number and update values for WDE/PLE
+    quota
+  wifi: rtw89: mac: add field of release report size to DLE quota
+  wifi: rtw89: mac: consolidate quota into a struct for variant chips
+  wifi: rtw89: 8922d: add quota for RTL8922DE variant
+
+Po-Hao Huang (1):
+  wifi: rtw89: correct drop logic for malformed AMPDU frames
+
+Zong-Zhe Yang (3):
+  wifi: rtw89: debug: Wi-Fi 7 show count of SER L0 simulation
+  wifi: rtw89: debug: Wi-Fi 7 update simulation of SER L0/L1 by halt H2C
+    command
+  wifi: rtw89: fw: dump status of H2C command and C2H event for SER
+
+ drivers/net/wireless/realtek/rtw89/core.c     |   3 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |  21 +++-
+ drivers/net/wireless/realtek/rtw89/debug.c    | 107 ++++++++----------
+ drivers/net/wireless/realtek/rtw89/fw.c       |  12 +-
+ drivers/net/wireless/realtek/rtw89/mac.c      |  26 ++++-
+ drivers/net/wireless/realtek/rtw89/mac.h      |  27 ++++-
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   3 +-
+ drivers/net/wireless/realtek/rtw89/mac_be.c   |   7 ++
+ drivers/net/wireless/realtek/rtw89/pci.c      |  30 ++++-
+ drivers/net/wireless/realtek/rtw89/pci.h      |   4 +-
+ drivers/net/wireless/realtek/rtw89/pci_be.c   |   3 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |   4 +
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |   6 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   6 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |   6 +-
+ .../net/wireless/realtek/rtw89/rtw8852bt.c    |   6 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |   6 +-
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |   7 +-
+ drivers/net/wireless/realtek/rtw89/rtw8922d.c |  96 +++++++++++++---
+ 19 files changed, 275 insertions(+), 105 deletions(-)
+
+
+base-commit: 4c13e00cc6798f8e63354982ec172b7829ae825a
+-- 
+2.25.1
+
 
