@@ -1,148 +1,137 @@
-Return-Path: <linux-wireless+bounces-36491-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36492-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sAuSFrMaB2rnrgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36491-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 15:08:03 +0200
+	id IL2dAscaB2rnrgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36492-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 15:08:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE35550335
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 15:08:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55EC955034B
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 15:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 530673147CB6
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 12:15:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C7A730142A1
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 12:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF3E47ECC5;
-	Fri, 15 May 2026 12:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65942DFA4A;
+	Fri, 15 May 2026 12:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JJiuTTUl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dlpOYtuC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9D547F2CA
-	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 12:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269172D46B3
+	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 12:57:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778847324; cv=none; b=KfCJl+abv61kRZMjJJIO53SATOke68KvSZZ7wrPccY+VyUrX+12DdaF2lawdRza8stIqGLs8M6tFCwYQ4DzOmQYqf/67GGUNOek+lu56PAf8v9TEOcqYKsafYZkJ2HJcEoOxAQRXUtg1I6DB1PKtvxu61Qfwuv64JKMAUzQG2Rg=
+	t=1778849867; cv=none; b=mwhmPiymj8Bj42HEh6uKrFRUt0MM73DOF67vC9r3WkzBsZ/YeJN8FhXeFs/nitzwyPo234vwEYuN0txaZfBm5b71ZvW4Fz/SKwA9ssVHynrLcNqf6hilaXpeFc/JBChb81nOQRiiGqWYsP/5SwO4OipSCchmfFZdO8LyAKh5tQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778847324; c=relaxed/simple;
-	bh=vEH4g6DQ104S2FgvOZv30HIlTG80m5IoryEPhQjlUj8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UO6E7C/wLFZHpdMB9e7cGkhimfzZUAbqSGZeGoo7uF/WKIt9hR7EgBYJBFFAGvfAegnaIkrcg6BuhwnQJzULLNFnSVPAcDwGCDrBqgzVbB/RtOEBEgmhnMZIig8IT4nCIUBRgm1hbivxXA9JGl16alb08EEaUGZgEJMO8a4K874=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JJiuTTUl; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778847322; x=1810383322;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vEH4g6DQ104S2FgvOZv30HIlTG80m5IoryEPhQjlUj8=;
-  b=JJiuTTUlAHzlrtiRvp4uZIBZM4JxuCVUaCM1SpG6KjzklTrX36y1KQbz
-   TcsuVnG7zeNhcFg9hOZCIuD7qGj6an8Nz4cSymwFYo8EnIxjF6BCwxam2
-   aqTmbO1YdHVBb64V2yiJESFa19JyhByhTGgMM0EtNY0wkbi/P7qELVCAm
-   dmwEH4J+4ItomsJUZAmazFc6bWrInpeB092NMpCoBzx/AlfwKGJZBERum
-   tqSHztk0hUyTgOQu88o2qrEhW3WmSnQPCfIs1zr89pZ4Ta5AaFYj/IKlW
-   NqMWXc/S1vTvcL5Ey6HwndElk9KLWJRRriCYlH68fZSbRpIA3MoOl6b+9
-   g==;
-X-CSE-ConnectionGUID: 894ilQ87S5av/8KolXpGNw==
-X-CSE-MsgGUID: SfX16tpESOuHpCfBIj8jCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="79657847"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="79657847"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 05:15:21 -0700
-X-CSE-ConnectionGUID: 6ES/Oa/HRBKwVBSus8vxBQ==
-X-CSE-MsgGUID: PGT3nYLHQAG+egPuWKNZEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="262201067"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 05:15:20 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-fixes 5/5] wifi: iwlwifi: mld: disconnect only after 6 beacons without Rx
-Date: Fri, 15 May 2026 15:15:00 +0300
-Message-Id: <20260515151352.c4ed0d849f98.Iefa2e8be9edfc74683997eea60bb53c2002f31f0@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260515121500.1170852-1-miriam.rachel.korenblit@intel.com>
-References: <20260515121500.1170852-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1778849867; c=relaxed/simple;
+	bh=JuEbyIHQNKVq2shsEIVk0SOKxj3Yc5IqX78ZUG/AtAY=;
+	h=Message-ID:Date:Content-Type:MIME-Version:From:To:Cc:Subject:
+	 In-Reply-To:References; b=iYwvPFb81CtpA5Xf8oe7Qv4+5I9qdd0iPtenPgBuolXSbfbrDfBQ2XPlKABZ3SsggN3GyxEAXbptAk731p1OA4iduftIIafCYd5fVDqzsLwJZtOUDiKIJTnbf/Rh++0lPnaktZYUjmdFgnAEp3qO3qlP0C/W9XFhqLkWHwyb6Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dlpOYtuC; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bd373f83042so628802266b.1
+        for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 05:57:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778849863; x=1779454663; darn=vger.kernel.org;
+        h=references:in-reply-to:subject:cc:to:from:content-transfer-encoding
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JuEbyIHQNKVq2shsEIVk0SOKxj3Yc5IqX78ZUG/AtAY=;
+        b=dlpOYtuCQOC8S22IEFFzRtS/pZCjizGA4fvUQ7ZcqFztBTOprsFfB0gypEAJozY0W0
+         oNnzTX0RuiINsFV9DjqmpMimnI9JC4A84OsxaLD7XqQpvQZTL85VjvMXDf7NunC3JyMA
+         ReWdvkUybrLQeo5XSD3GmF2aoRlkSUEa8aye0tqTmKsKwrD5K3t4OsU0UzgfoOL/JEkY
+         P935fYg3Zg01wy9ta8R8D1raZ47ThMc0SIz5vh+84bFYK6NMwbpC8hnqke++SfFcNq56
+         PrRltMdhJFJRtNo18xY8488bE+FTkSqEeOR2xqO2SD4ttG/r4cxBLTq3h9ycvRvSiDPw
+         N3MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778849863; x=1779454663;
+        h=references:in-reply-to:subject:cc:to:from:content-transfer-encoding
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JuEbyIHQNKVq2shsEIVk0SOKxj3Yc5IqX78ZUG/AtAY=;
+        b=ssEePNfNdxdSCHmDp4gi2/8rvSMqCyps7jVX7PZTdVgt60yZdJpF84FQD+eE9eSsxK
+         q3zv5qGnbE5zuSo18RgDvbkQDPakYAE+Uca1g6Jt4WKfFLUehesj/d322/ZyDoQZmEM4
+         Lp32W52Q5X3LOawryw1N8Jm0+EPXRryo3SbbPXN9kZbWD5lu/bznUJquZbOsWYDUg+2r
+         pcKhwPi1fziSnXIODnPPwTqdOMr1bxI5zw9b5FRqm7Rp+rblwvmP8WqS/zYm0vxDt3Wy
+         QA+IWDhsYmnaQhuZyba0OufgMHqElsp0S02fe8E4FYu7Kpr+ubgiZEeM43L3ciYVQ+zx
+         5KOg==
+X-Forwarded-Encrypted: i=1; AFNElJ9anpv/UUPrNSfOwTUMK/Gmm5cF0F5YWJYJyib2RA9ZWNHQCvvPCrPkrqi8Gd5PS8bdv5mdFPYm5xZr8tI7IA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyApQXweFcYqZ80W1Nu967DW1danHTNdV3cZNUGibP/LRmyEbI6
+	PdMeL+TkEyMmt2bJ2UGNIpfQoFUbHuK2FP2wjHAhgE+yiU4yuh7OdQPf
+X-Gm-Gg: Acq92OGpMWAjnCsVCU/GeTyhPCs9oUKvKleBi+iSXqqaZQHLtRLDGO89blvC9Nq+Gdr
+	DbScn5PM0OEIV+yQ8J9wS5vdTOLm8y0n60J6I3oq9sjhLTUmbExkrnoNTBVSXKtss2y0qAxKgaD
+	ZvHmEZo/AuLy3yKHQxluikEd02iDtb8edQRckeIMyhEzV9b5rA0Rxgn367hvt7hArtnaPOjWFVz
+	3IPrU3PdaosF9JApQXOwI3YxhzZosnN5lOVdRoqHAFjjVp+xVJ9UMAKLmDw+fvvq7lzqAuPEbNl
+	Ac8UBmqaQS2mXRvBbZfQVdkwRxZX37pWbdXxeUtSHhoOVudeXXpkRLdGm4ABFlI7271UuCMS+Yw
+	zm+or27GMphIJxHEvdmnmf60QWq8RFbzkkXje41gSZv5Ybkmyu+G1I7jbnRwe+5jYCt1J89BhCk
+	gND7k+9BVhudz8eXS1gPlURCopADcvz8I+yDPMK42zj6386YA7/todFg0MgNv3LCsxMf7N0ewjG
+	7OfA2Xzh/STkV3K1ApcAsHlQy/Xdi+AwyiSuWekkcOEGZoZpd2rLfDtaMT1NZZTv7S3lHlTehVO
+	pX4Q4uPr1oOUSE3WtlH2h/AZNFxe
+X-Received: by 2002:a17:907:a807:b0:bd4:f854:27b5 with SMTP id a640c23a62f3a-bd5177da46bmr236055566b.9.1778849863225;
+        Fri, 15 May 2026 05:57:43 -0700 (PDT)
+Received: from ahossu.localdomain (ip-217-105-56-94.ip.prioritytelecom.net. [217.105.56.94])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4ded942sm223467766b.36.2026.05.15.05.57.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2026 05:57:42 -0700 (PDT)
+Message-ID: <6a071846.b4198512.207f7f.03be@mx.google.com>
+Date: Fri, 15 May 2026 05:57:42 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5BE35550335
+Content-Transfer-Encoding: base64
+From: Alexandru Hossu <hossu.alexandru@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: security@kernel.org, linux-wireless@vger.kernel.org, johannes@sipsolutions.net
+Subject: Re: [PATCH] wifi: cfg80211: validate common_info length in ieee80211_mle_size_ok()
+In-Reply-To: <2026051527-scrooge-oppressor-1500@gregkh>
+References: <6a06f87c.643c4978.1f1059.84ae@mx.google.com> <2026051527-scrooge-oppressor-1500@gregkh>
+X-Rspamd-Queue-Id: 55EC955034B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.06 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	HAS_ORG_HEADER(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36491-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36492-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hossualexandru@gmail.com,linux-wireless@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com]
 X-Rspamd-Action: no action
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-
-After 4 missed beacons since last Rx, the firmware will send an NDP to the
-AP. If the NDP is ACK'ed, it'll reset the missed_beacons_since_last_rx
-counter.
-Disconnecting after 4 beacons doesn't give enough time to the firmware
-to send the NDP.
-
-Wait until we get 6 missed beacons since last Rx before disconnecting.
-
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mld/constants.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/constants.h b/drivers/net/wireless/intel/iwlwifi/mld/constants.h
-index e2a5eecc18c3..890abcab3837 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/constants.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/constants.h
-@@ -1,11 +1,11 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2024-2025 Intel Corporation
-+ * Copyright (C) 2024-2026 Intel Corporation
-  */
- #ifndef __iwl_mld_constants_h__
- #define __iwl_mld_constants_h__
- 
--#define IWL_MLD_MISSED_BEACONS_SINCE_RX_THOLD			4
-+#define IWL_MLD_MISSED_BEACONS_SINCE_RX_THOLD			6
- #define IWL_MLD_MISSED_BEACONS_THRESHOLD			8
- #define IWL_MLD_MISSED_BEACONS_THRESHOLD_LONG			19
- #define IWL_MLD_BCN_LOSS_EXIT_ESR_THRESH_2_LINKS		5
--- 
-2.34.1
-
+T24gRnJpLCBNYXkgMTUsIDIwMjYgYXQgMDE6MzY6MDNQTSArMDIwMCwgR3JlZyBLSCB3cm90ZToK
+PiBDb250ZXh0IG1hdHRlcnMgOikKPiBBbHNvLCB0aGlzIGlzbid0IGluIGEgbWVyZ2FibGUgZm9y
+bWF0LCBwbGVhc2UgdGFrZSBhIGxvb2sgYXQgdGhlIGtlcm5lbAo+IGRvY3VtZW50YXRpb24gZm9y
+IGhvdyB0byBkbyB0aGlzIHByb3Blcmx5LgoKU29ycnkgZm9yIGJvdGggaXNzdWVzLiBUaGUgZ3Jl
+ZXRpbmcgd2FzIHdyb25nLCB0aGUgZm9ybWF0IHdhcyB3cm9uZywKYW5kIG1vc3QgaW1wb3J0YW50
+bHkgSSBkaWRuJ3QgY2hlY2sgdGhlIHRyZWUgZmlyc3QgLS0gdGhlIGZpeCBpcwphbHJlYWR5IGF0
+IGllZWU4MDIxMS1laHQuaDo5MTIgaW4gbGludXgtbmV4dC4gSSB3YXN0ZWQgeW91ciB0aW1lLgoK
+V2l0aGRyYXdpbmcgdGhpcy4KCkFsZXhhbmRydQ==
 
