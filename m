@@ -1,396 +1,213 @@
-Return-Path: <linux-wireless+bounces-36495-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36496-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mP22Ons7B2ottwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36495-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 17:27:55 +0200
+	id sEdAIghDB2oCvAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36496-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 18:00:08 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 674C85521F1
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 17:27:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AAFE55290E
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 18:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E47E230B307A
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 15:17:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CB183055BDF
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 15:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85CF47279E;
-	Fri, 15 May 2026 15:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5153EFFC9;
+	Fri, 15 May 2026 15:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hsg4sxkd"
+	dkim=pass (2048-bit key) header.d=ntu.edu.sg header.i=@ntu.edu.sg header.b="Na9C+nLY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11013030.outbound.protection.outlook.com [52.101.127.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA3A3CC320
-	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 15:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778858261; cv=none; b=TibsRhVwBGzRLux13TuoOyja68Oc5mgUho3CviKpE//bDvGU6lks+5OwH9l9wZKRucNGJqR7OnuN29c7fFO8zpLohQ3X0zofSqJyPPXsolnsq0Z0Hfq9GF2MTZcnwAqyxpIX543hhkNQ3SgGaJpEBiVSUBLwFvFUlRe88V5UAJ8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778858261; c=relaxed/simple;
-	bh=Z75usw3QhAEglguIEOhIGPUv3SaIuY5V+MKHcB1EJ3A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mSPqcKtZ9HJmpG/dCPF6SNYx0mronNln3n409hrAFGwc3e4DZFqgkSNaoLGTIyb0fzZPkCYLck62sjcMO3QZ0opCI6GxEhyeFd/7cf9OCDx4E4o5aO/duiad7BpLTTZgZHl2HAzTTIFfi5fVD2lHR2CQ/QE5k2KETWiAiofKYTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hsg4sxkd; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-90fbf21d9d3so467415085a.1
-        for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 08:17:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778858255; x=1779463055; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p4US3tDvikO40MDXGe3cYhe8E3tMaY5/koyKTZbuTHc=;
-        b=Hsg4sxkdWwwrUtB1Ib8cLR1KujlWodqUpbGkmZ8ZhylsECTRmhYQRkOC24izLoqPd9
-         4pqse742CYo4ca25dtjtm8DgSs2TZDM45CART5s3RIafwgnKLzkxR8GjXLEhqfHbvUre
-         MznKv4CsIaEesrpc3x/TKCGxk1FORUpNiTdtBdd4yRXWjMfcgQoqYT+R3pfXpszNmJkL
-         mvIvhSvhWFyhRFA7e99eqa9ioMD1vIL0qCRJ3dfTJW2gA13Z3ujm34WeG+r5XeMx2Gvd
-         21sIGP3pmX6tGKiiqkiDq7V1c6akX0Fuy7hdY5/79jiye5SQYqPyoyNel6UD0YSpJBLx
-         Uigw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778858255; x=1779463055;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=p4US3tDvikO40MDXGe3cYhe8E3tMaY5/koyKTZbuTHc=;
-        b=Rkol2/0wuSG9SUMjaeLbu2NucJTsKELq3gDPNQEminBDa+IVvSNZbnY3BE1NGnX9Rr
-         a3+YDyDuBCUdNM/Zbv9UEHNbIAN2M2cf33LCG9iqgG9yuE4OAfN+9dce47l/CsV7gaS5
-         JUJhw2e3A4YeQlRrpT2iiBkeZAeXZOm50YHoKG6bUUtv4imidGKv+erMLGKHMTqD4LxR
-         q5fli2M3haTWx6YBmwWkajg5JH37xHiya8JQ3gbk07kYdZoofh5u8Pec+RgZBUHBb2r7
-         cvqN3Z4Ja5AvMNF2ulT6rag5JCzEp2v3CGdo/4FjcZWzBT8pk9w1NBP7hbLn5wsfA3Hp
-         nJcQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8S5yCiLJbNCm319yUwmF55IP3UtEn3CCZJC3wSC9xLXid/RIyN63alw/aKfudRmNi4qltxAb7mH8gSapvHSg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkW9uIUII904WeAVJ5s8qFUoV+uj1tcI3TayGgqEo6MmYgcd7N
-	yK2FpNg9yMf7yb5MhrXonUlaBkefyzp6M1vCjUE48xj5l2IzC85iCLxHk3KS/A60
-X-Gm-Gg: Acq92OFTF5VQI6I/aOleo2t/C+5qt2bxqW5VmdR2O6NNKIAjApINP6WvHOLLSy25Dvp
-	tpHIXvsrzfTjhphOPdVlPheZidkP6jiIbD/NLP/5lny9lg/OL+iCppqHkKRUcetYbSvat3iOoLg
-	O2HrP/LvxT3BWdEEz1xevBB3vWSTzg6Sy5Bo1jbrmBvSp9MCRyOY5B7ZZ9WIeG5f4OWwWYSHf1v
-	AgpY1hrh+3w8J9ocG40EzOT0SHvI6a/QvoBrBQdAaJ0Od/o4gHbV/pTwFwwiUzjSBcHq+YanwF/
-	J4z5kPwYeEyBUNuIoD/Hep+gZnEyhqPdejDEDxtNVPqZqM1aSkxcgavgiDtTKgM7LIeEROODe7n
-	MFviPS4zOM+86vgm9oe27RaeLuTUBVAY2xRAtzkysn6d1DP7dEFm6gV73vWJWfOFA3ZSERN/xPq
-	eQ7lBTPaLpQ8iq34Xn1+DAPiKwz65UZpFeWttIKfzQWs78NuM3ukNAFViLU64e94oJmYdtM/XIY
-	AN1Rph1T+lBu357dHKdYUP8WR94uRDzuEKy8tjMhSw=
-X-Received: by 2002:a05:620a:7112:b0:8f0:7516:da99 with SMTP id af79cd13be357-911ce90bc41mr703018185a.60.1778858254803;
-        Fri, 15 May 2026 08:17:34 -0700 (PDT)
-Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910ba36e638sm569877385a.9.2026.05.15.08.17.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 08:17:34 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Ayala Beker <ayala.beker@intel.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless 2/2] wifi: mac80211: add KUnit coverage for negotiated TTLM parser
-Date: Fri, 15 May 2026 11:17:19 -0400
-Message-ID: <20260515151719.1317659-3-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260515151719.1317659-1-michael.bommarito@gmail.com>
-References: <20260515151719.1317659-1-michael.bommarito@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF923EFFC1
+	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 15:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.127.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778859659; cv=fail; b=LxnqHK8i6d/Oy4Dg0lqS4tzPzRaxi4Oh2yiYYF4DOrKIVG1iMPvJnDVX3vUYvxaxDUDuABr+1Q9JeNP+E2TqDwa/2ufgOwvuO6mmONublThFMWSIKNHCJaXbIS2KP3PNkkcqJRaGl9U0LevIokVGWnR8uiK4Ty4+wS58R47qbJM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778859659; c=relaxed/simple;
+	bh=rNSyGNJ1hVkEMwRxPfcZ+1IdyIT7ZPN9ocgHLlQOKww=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=bC5xzFYZga3E905w5HsVa9NPYf+aerMTM33dymVBOfySTeaO27Clh4EzSKagTOuRE8oAgfWdzlX5oRyYDusCtgRqbChVqhTgc61O1XclpbFxla8JFu6IMf33kkZ+xriTnKXdlA4flP1X/98DpaxWRWHMribpELbMx0LSVL8PTUc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ntu.edu.sg; spf=pass smtp.mailfrom=ntu.edu.sg; dkim=pass (2048-bit key) header.d=ntu.edu.sg header.i=@ntu.edu.sg header.b=Na9C+nLY; arc=fail smtp.client-ip=52.101.127.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ntu.edu.sg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ntu.edu.sg
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=msxEKdJmLn0zQaUu5v4IO4mJYz+x8j94LmgM6OiGuVAiqZDAthbjUX4/mwlE7+QEHNG7+VEq68Fqox3aQ5MR/S1TtH4NBl0O7EaZ2JvBwToB8tegJbvsfhFluJgHsM3wZxlbkoQT4mvj8qKviK++ozz8dqt2I81FIgNi8MY7k6be8xubjn5OWHTc+LX6h9LZStp/Tg6ZravsJ7gjPcZHpE+g+gONjt4wTpTtiOsdrN6yVgkWOS1ajdbkEcNVcEE8M58hYxD4+gPxoh359SIF0uleAmvSw+d1uZoGB2yQGVBgzBm5CGGO+nA0qUACxp4qjsR2gpETFR/muSj4Z3i/9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rNSyGNJ1hVkEMwRxPfcZ+1IdyIT7ZPN9ocgHLlQOKww=;
+ b=OiPg2ESnoWIUaiDeuf0AY0QR3jHQ4t7vFY2MxMsPMcjDBaBlGnbeKVmCeJCfF7V9YIQG3OcmRCvNcfGKpzRT4ITEL8fHIrw0ssPbr7pJdgc7U4XSIgHinUn+HvTADPK8/TTIlDVWMEmlmOpL4OHNsykK0JeNjNDHnH4vgqtchLCzmp3zbI3IOaDJe8Ukn250QSQQf+8c2NXOIGWAgroioob/XDzThRr9RFHMeW+PhYCRuRIATAKea0nB0JmRuNskm1gvNdnr71RfXDm7OkoojH/g61zVJYxrFF0m8xH5+YsKNUxtL+YzgJOB6V/rkBnyDr5sbGzOrMUiYKtRZIczqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ntu.edu.sg; dmarc=pass action=none header.from=ntu.edu.sg;
+ dkim=pass header.d=ntu.edu.sg; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ntu.edu.sg;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rNSyGNJ1hVkEMwRxPfcZ+1IdyIT7ZPN9ocgHLlQOKww=;
+ b=Na9C+nLY2S6rCoxTTXBR7pKVThJNkleVYPwtU/rQ3IsAQ+wTEhsEcmFy5pt+Fl7aPq0w5Xl7/6lokxbApMz2dwddxM5dkftjwCibpkmqHvANdJXsvQrVcVLV1aZSvKkWyOVrvPcckQqo1NhUhvPpPffP822gllBgJHnYE1dS79v5NfpiMotmKFuJ3vIkmvV/cezOJtCtuCxxjhOfGFuMvJxE+bepmv5amL5R6NtwUT2xG6Vp5rRC6SKfHzH9usB0rqBROC/FfSX/3fKYlblEM3nZGfGokGEkqxLQUJsEJaVZq1QofFVYZBZSNs4yHLYAYGDXVpQDN79sh8tnWkAzEw==
+Received: from TYZPR01MB6758.apcprd01.prod.exchangelabs.com
+ (2603:1096:405:a2::6) by TY0PR0101MB4466.apcprd01.prod.exchangelabs.com
+ (2603:1096:400:21e::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.19; Fri, 15 May
+ 2026 15:40:48 +0000
+Received: from TYZPR01MB6758.apcprd01.prod.exchangelabs.com
+ ([fe80::bbb1:1ecd:fe69:9743]) by TYZPR01MB6758.apcprd01.prod.exchangelabs.com
+ ([fe80::bbb1:1ecd:fe69:9743%4]) with mapi id 15.21.0025.016; Fri, 15 May 2026
+ 15:40:48 +0000
+From: Xie Maoyi <maoyi.xie@ntu.edu.sg>
+To: "johannes@sipsolutions.net" <johannes@sipsolutions.net>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Question: nl80211 testmode_dump and prepare_vendor_dump  continuation
+ missing netns recheck
+Thread-Topic: Question: nl80211 testmode_dump and prepare_vendor_dump
+  continuation missing netns recheck
+Thread-Index: AQHc5IDBcj0CX9y5xE+fLFwQAUOndg==
+Date: Fri, 15 May 2026 15:40:48 +0000
+Message-ID:
+ <TYZPR01MB67585C3E22F1E7EE1A801741DC042@TYZPR01MB6758.apcprd01.prod.exchangelabs.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-GB
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=ntu.edu.sg;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYZPR01MB6758:EE_|TY0PR0101MB4466:EE_
+x-ms-office365-filtering-correlation-id: 95bf0266-febe-43ee-4cc9-08deb298562b
+x-o365: NTU-OFF365
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|1800799024|366016|786006|11063799003|56012099003|18002099003|38070700021;
+x-microsoft-antispam-message-info:
+ 3rcs9+89bv1ktkNzbC3tqCZMWAVWSqQZsarND+pqE5s+6BGUT6jsBbLSS5hWzLRX80PZwlRd7kdKDLW3sLZcGKuzBog5t3eSAeyOUVuLwRMISfT+3Iue4eLgW6v31Ty+MUz6bp+H/TV9AqBujlZzk1r5vNVtdtJAZNuXxTwcjTU7HaHKHxeH/CBZ5Z3nzHnecrNpuoWDCdPBj3Q82N5kQmyQFNYQRA21XxPcfmobWtUWPXBByMkHD7AgjPeFcuUssuVkpF6fiQCaajJzgryvzJCyo6enCwAcCa4S9R4Wvn0RM7Bbq5grTtyVGN0MeGmHfpNGF7PWA0yChR3ORH3X/dQ58Hh2s9sNO2qkF0+vvZmzQPIdlnz0i8Z0PQLaro7WIXet6kGWzhnvewO7E8bGAv+eGioPDn25kXE6Y6HXGxHZfOw8bMZrrNn4Rwt9Hs7iHd1b5M86F3iLUz+qP7TCy2K04egzhIZoS40+8/5zrDEIKKZ6xAI0vsjdZc3BgRWstvvcs/cVV16TMjBsFBvzXU7YLd6Zlx0h9Q7Q7LB2iF0Vv4yY8nfOBYCULAmopq55PMWF2dj9GNPWZKuUdn8cFV87BvwEGZXajITedKj/5eett22UrkzwLHtmjSFja29UnkWGpuXRWWUFqLb9nCO8gJhogzcO5u2SmiTzSwSrZbeSA79KbxlYBvjFbt+/jVe+
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR01MB6758.apcprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(786006)(11063799003)(56012099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?hax4U+3hLNbKTKYyNGdx0S58ijcE/JxQCDVmkIPurrYtzmmGjafz6JXoml?=
+ =?iso-8859-1?Q?b/F9Al4MsezJ2lqaO7Q3DTQwMdkhebEWTy/UAKAkAvc/tKh/M9j01vadSj?=
+ =?iso-8859-1?Q?0OhFLkiSYcNKEN1b8Ke3T1fyACnWmkR9Xa+QJSn24hOBFp6MniwxgPQt3E?=
+ =?iso-8859-1?Q?BBJ+wrA7mf6IiSiSoSttDOmsxKjpKGUZ5CdYuDd001FciZevUByCtgD6Q+?=
+ =?iso-8859-1?Q?cFGdzGc5kc6yCUVs0fyPEYu/S8FfVG60x1Ix9MxOx5WsGX0MXJWnEon1ZF?=
+ =?iso-8859-1?Q?6SKXQYGMHzl4yOdAUdkyB/UXhJCJnInSDZjmCsow6yAI1Jr14tGqX0XlRJ?=
+ =?iso-8859-1?Q?ZN24OjWwMJyyLsJG5BKP2PwmuohUVrcgA1m3Y2JWZu28VYnlglkoGNQe15?=
+ =?iso-8859-1?Q?G6l9G7v4G/8RvXacaqBbxwH3LaDOd6dEEHI8uF8guUjqb+LQ0DWhgAWlvM?=
+ =?iso-8859-1?Q?c60ubQ/LzH1Mz0P7rGQ80oepnp8MxC2DK9VUqk3Vuzn46/dQm3RKryLZPo?=
+ =?iso-8859-1?Q?B0WqjZ+TgMrHrN1P72b4v30zLx1hn8b0+D9UkyhLaTGdI+AR86IBYRxt4q?=
+ =?iso-8859-1?Q?AEpTFciwdfs5sbIhMvPwqcSSqalAUQmhg8QCVCempRy43p+NRwwCSLbYSQ?=
+ =?iso-8859-1?Q?iovAus5TLuBYB0faEeslwTf7EsjOnDv/D1tJopqnVCq5+Xqa+cYGVE3N/A?=
+ =?iso-8859-1?Q?zLA1Z01zj7l4Rdvm8kbCAUMMNn0Oa1lFl4/O9PTq8WozOzlMwWSyIygvde?=
+ =?iso-8859-1?Q?mIf/071D/fE1aCULE+AARSQDlty1vUrydcveKoT9+fA8C70iWBWR6xgS0u?=
+ =?iso-8859-1?Q?pYN8vX3DSinqLfPthejNYzD4bqpScYXTDu49zTWBGdDlYLBkLW5Huel2Eg?=
+ =?iso-8859-1?Q?/jQPE82r00C5suCDNwPGJ6efHdkUGeTdooEr+YgFSK1aBvsP+dRgFmytCm?=
+ =?iso-8859-1?Q?y1e3QTqY4Uhc6L6G66sDRQ1mW+OOUYPeBtDjZyv+FEfLUtPuaEbABo5vTF?=
+ =?iso-8859-1?Q?DRJWQmfMvwRbHlwFvnkepng4TbsZdg66WmHSw5pDwRwvI92YMyRKA9uZip?=
+ =?iso-8859-1?Q?viJDTVB+nn86FAHNaT3M7HpKDDBMpBiZYpEjpuYMKpVZM5JnaDT3z/KeuS?=
+ =?iso-8859-1?Q?qc5QBjfynsR9o1LUu9F1gdk9cOEvb2XyrdUGRLmmK15K8f7lf78Q6JYnsB?=
+ =?iso-8859-1?Q?fShIRiMSIXsutWMVfgrzJWdR0PFtQUNAgzpUStN+9di1EMgyzxUo2XmJM6?=
+ =?iso-8859-1?Q?7vnf3yPzlUqz+KGSs0g6OeAzGRY7RYFdxzoQL+tNIE3M2TCxEVFwQiEpxa?=
+ =?iso-8859-1?Q?kW2MsKVgNTialVKrlqbxDvwgrm/yvBwX4l6WF3OUNl/yo0ATTWvbsy1d9B?=
+ =?iso-8859-1?Q?6o4zmDotrjAjO5OfpAzrdAXrqIyqMKJxdciLFVttbm2Z6Ygvakw7xzUbx2?=
+ =?iso-8859-1?Q?AMTz3EZR0ciW1uRntI9p2f0htuJaohXaseNkpj9MlwKg3y0jfYblTHhBkU?=
+ =?iso-8859-1?Q?IU2Tgx9x86LMWtRC2dn+QWEpdQZykRJHaKa6vumTU2XKezIWjMXVplXD9t?=
+ =?iso-8859-1?Q?lqiJT9g5zyHTVPEdhbHzZXZ20YlDn4anQKJJFKUpnb8O9uVlvKT9jR48GU?=
+ =?iso-8859-1?Q?+dgjiNa5s1/pUsNbq3Pu4WIOxqdLBByr28gB5tSzYrXlzAltWeh6Tcwbpw?=
+ =?iso-8859-1?Q?dhZMSekm2lgo0yTF3y2JjOsp5Gw6Y5GIM/zHUcALEpPL2wlSlQRysymClC?=
+ =?iso-8859-1?Q?ZSbU8zb4w8l5/3oWkw5Z8RRUdcU7jjKfYH1oNgkkgpesx8NyRXCyJMsBee?=
+ =?iso-8859-1?Q?VVto3/29DVTeeO8VPk9HI4y3PGAmco0=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 674C85521F1
+X-OriginatorOrg: ntu.edu.sg
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYZPR01MB6758.apcprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95bf0266-febe-43ee-4cc9-08deb298562b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 May 2026 15:40:48.3565
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 15ce9348-be2a-462b-8fc0-e1765a9b204a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KNNPlzx+rdc0g4OW9e7zouTvaXqhrM/qDYL3dNHDdQ2SiJkFwn1+cPCyFR1yvJAfFd8csSN4jr38snhnIHDuSLftvw6T4w4d8JgzUqq9/n4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY0PR0101MB4466
+X-Rspamd-Queue-Id: 8AAFE55290E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[ntu.edu.sg,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[ntu.edu.sg:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36495-lists,linux-wireless=lfdr.de];
+	TO_DN_EQ_ADDR_ALL(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36496-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[ntu.edu.sg:+];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[maoyi.xie@ntu.edu.sg,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,TYZPR01MB6758.apcprd01.prod.exchangelabs.com:mid]
 X-Rspamd-Action: no action
 
-Add KUnit coverage for ieee80211_parse_neg_ttlm() to lock the sparse
-link_map_presence layout against future regressions.
+Hi Johannes,
 
-The sparse_presence_no_oob_read case crafts a negotiated TTLM element
-with link_map_presence = BIT(0) | BIT(7) and bm_size = 2 in a buffer
-sized exactly to the validated element length.  Without the parser
-fix this would read 14 bytes past the buffer when processing TID 7;
-under KASAN that is a slab-out-of-bounds report.
+After your acceptance of 79240f3f6d76 ("wifi: nl80211: re-check
+wiphy netns in nl80211_prepare_wdev_dump() continuation"), I
+looked at the other dumpit callbacks in net/wireless/nl80211.c.
+Two sites read state from cb->args[] across continuations without
+a comparable net_eq() recheck.
 
-The dense_presence_baseline case crafts a fully populated
-link_map_presence = 0xff element to confirm that the cursor-advance
-fix does not regress the path that was already correct.
+Site 1: nl80211_testmode_dump().
 
-Export ieee80211_parse_neg_ttlm via VISIBLE_IF_MAC80211_KUNIT so the
-test can call it directly.
+The continuation branch resolves rdev via
+cfg80211_rdev_by_wiphy_idx() on cb->args[0]. It does not verify
+that wiphy_net matches sock_net(cb->skb->sk).
 
-Assisted-by: Claude:claude-sonnet-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
----
- net/mac80211/ieee80211_i.h      |   4 +
- net/mac80211/mlme.c             |   3 +-
- net/mac80211/tests/.kunitconfig |   4 +
- net/mac80211/tests/Makefile     |   2 +-
- net/mac80211/tests/ttlm.c       | 175 ++++++++++++++++++++++++++++++++
- 5 files changed, 186 insertions(+), 2 deletions(-)
- create mode 100644 net/mac80211/tests/.kunitconfig
- create mode 100644 net/mac80211/tests/ttlm.c
+Site 2: nl80211_prepare_vendor_dump().
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 2a693406294bc..aa9c9781db92e 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2948,6 +2948,10 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
- 			      struct ieee80211_chan_req *chanreq,
- 			      struct cfg80211_chan_def *ap_chandef,
- 			      unsigned long *userspace_selectors);
-+int ieee80211_parse_neg_ttlm(struct ieee80211_sub_if_data *sdata,
-+			     const struct ieee80211_ttlm_elem *ttlm,
-+			     struct ieee80211_neg_ttlm *neg_ttlm,
-+			     u8 *direction);
- #else
- #define EXPORT_SYMBOL_IF_MAC80211_KUNIT(sym)
- #define VISIBLE_IF_MAC80211_KUNIT static
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index c3a2844740a14..9a51870a818da 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -8096,7 +8096,7 @@ ieee80211_send_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
- 	ieee80211_tx_skb(sdata, skb);
- }
- 
--static int
-+VISIBLE_IF_MAC80211_KUNIT int
- ieee80211_parse_neg_ttlm(struct ieee80211_sub_if_data *sdata,
- 			 const struct ieee80211_ttlm_elem *ttlm,
- 			 struct ieee80211_neg_ttlm *neg_ttlm,
-@@ -8177,6 +8177,7 @@ ieee80211_parse_neg_ttlm(struct ieee80211_sub_if_data *sdata,
- 	}
- 	return 0;
- }
-+EXPORT_SYMBOL_IF_MAC80211_KUNIT(ieee80211_parse_neg_ttlm);
- 
- void ieee80211_process_neg_ttlm_req(struct ieee80211_sub_if_data *sdata,
- 				    struct ieee80211_mgmt *mgmt, size_t len)
-diff --git a/net/mac80211/tests/.kunitconfig b/net/mac80211/tests/.kunitconfig
-new file mode 100644
-index 0000000000000..ab2cc5cfc1f5c
---- /dev/null
-+++ b/net/mac80211/tests/.kunitconfig
-@@ -0,0 +1,4 @@
-+CONFIG_KUNIT=y
-+CONFIG_CFG80211=y
-+CONFIG_MAC80211=y
-+CONFIG_MAC80211_KUNIT_TEST=y
-diff --git a/net/mac80211/tests/Makefile b/net/mac80211/tests/Makefile
-index 3c7f874e5c412..2e9ade90f7b63 100644
---- a/net/mac80211/tests/Makefile
-+++ b/net/mac80211/tests/Makefile
-@@ -1,3 +1,3 @@
--mac80211-tests-y += module.o util.o elems.o mfp.o tpe.o chan-mode.o s1g_tim.o
-+mac80211-tests-y += module.o util.o elems.o mfp.o tpe.o chan-mode.o s1g_tim.o ttlm.o
- 
- obj-$(CONFIG_MAC80211_KUNIT_TEST) += mac80211-tests.o
-diff --git a/net/mac80211/tests/ttlm.c b/net/mac80211/tests/ttlm.c
-new file mode 100644
-index 0000000000000..18d0592b13d9e
---- /dev/null
-+++ b/net/mac80211/tests/ttlm.c
-@@ -0,0 +1,175 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * KUnit tests for negotiated TTLM (TID-To-Link Mapping) parsing
-+ *
-+ * Copyright (C) 2026 Michael Bommarito <michael.bommarito@gmail.com>
-+ */
-+#include <kunit/test.h>
-+#include <linux/ieee80211.h>
-+#include "../ieee80211_i.h"
-+
-+MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
-+
-+/*
-+ * Build a negotiated TTLM element in caller-supplied buffer.
-+ *
-+ * @buf:       destination buffer (must be at least elem_size bytes)
-+ * @elem_size: sizeof(ttlm_elem) + 1 (presence byte) + npresent * bm_size
-+ * @presence:  link_map_presence bitmask; each set bit => one map follows
-+ * @bm_size:   bytes per map (1 or 2); 2 => LINK_MAP_SIZE bit clear
-+ * @maps:      array of npresent u16 maps, one per set bit in presence
-+ *
-+ * Control field encodes direction=BOTH; no switch-time, no expected-dur,
-+ * no DEF_LINK_MAP.  LINK_MAP_SIZE bit is set iff bm_size==1.
-+ *
-+ * Returns pointer to the ieee80211_ttlm_elem at buf.
-+ */
-+static const struct ieee80211_ttlm_elem *
-+build_neg_ttlm_elem(u8 *buf, size_t elem_size,
-+		    u8 presence, u8 bm_size, const u16 *maps)
-+{
-+	struct ieee80211_ttlm_elem *t = (void *)buf;
-+	u8 control;
-+	u8 *pos;
-+	int i, tid;
-+
-+	memset(buf, 0, elem_size);
-+
-+	control = IEEE80211_TTLM_DIRECTION_BOTH; /* bits [1:0] = 2 */
-+	if (bm_size == 1)
-+		control |= IEEE80211_TTLM_CONTROL_LINK_MAP_SIZE;
-+
-+	t->control = control;
-+
-+	pos = (u8 *)t->optional;
-+	*pos++ = presence;
-+
-+	i = 0;
-+	for (tid = 0; tid < IEEE80211_TTLM_NUM_TIDS; tid++) {
-+		if (!(presence & BIT(tid)))
-+			continue;
-+		if (bm_size == 1)
-+			*pos = (u8)maps[i];
-+		else
-+			put_unaligned_le16(maps[i], pos);
-+		pos += bm_size;
-+		i++;
-+	}
-+
-+	return t;
-+}
-+
-+/*
-+ * sparse_presence_no_oob_read - BIT(0)|BIT(7) presence, bm_size=2
-+ *
-+ * Only TID 0 and TID 7 have maps; TIDs 1-6 are absent.  Element length
-+ * is exactly 6 bytes (1 control + 1 presence + 2 * 2-byte maps).
-+ *
-+ * Pre-fix the parser advanced pos by bm_size AFTER the switch() block
-+ * (i.e. unconditionally for every TID), so when processing TID 7 it
-+ * had already advanced 6 * bm_size = 12 bytes past the presence byte
-+ * for the absent TIDs before reading the TID-7 map - 14 bytes past the
-+ * end of the 2-byte TID-7 map.  Under KASAN that is a slab-out-of-bounds.
-+ *
-+ * After the fix pos is advanced only inside the presence-bit branch so
-+ * the cursor lands exactly at end-of-element after processing TID 7.
-+ */
-+static void sparse_presence_no_oob_read(struct kunit *test)
-+{
-+	/*
-+	 * presence = BIT(0)|BIT(7): 2 maps present.
-+	 * elem_size = sizeof(ttlm_elem) + 1 (presence) + 2*2 (maps) = 6.
-+	 */
-+	const u8 presence = BIT(0) | BIT(7);
-+	const u8 bm_size = 2;
-+	const int npresent = 2;
-+	const size_t elem_size = sizeof(struct ieee80211_ttlm_elem)
-+				 + 1 + npresent * bm_size;
-+	/*
-+	 * Allocate exact-size buffer so a pre-fix OOB read walks into the
-+	 * KASAN red zone immediately after the allocation.
-+	 */
-+	u8 *buf = kunit_kzalloc(test, elem_size, GFP_KERNEL);
-+	const struct ieee80211_ttlm_elem *ttlm;
-+	struct ieee80211_neg_ttlm neg_ttlm = {};
-+	/* Non-zero maps so the parser does not reject with -EINVAL. */
-+	const u16 maps[2] = { 0x0001, 0x0001 };
-+	u8 direction = 0;
-+	int ret;
-+
-+	KUNIT_ASSERT_NOT_NULL(test, buf);
-+
-+	ttlm = build_neg_ttlm_elem(buf, elem_size, presence, bm_size, maps);
-+
-+	/*
-+	 * Pass NULL for sdata: the only sdata dereference in this code path
-+	 * is inside mlme_dbg() on error returns, which are guarded by
-+	 * MAC80211_MLME_DEBUG == 0 in non-debug builds and by the dead-code
-+	 * eliminator in KUnit builds.  The success path does not touch sdata.
-+	 */
-+	ret = ieee80211_parse_neg_ttlm(NULL, ttlm, &neg_ttlm, &direction);
-+
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+	KUNIT_EXPECT_EQ(test, (int)direction, IEEE80211_TTLM_DIRECTION_BOTH);
-+	/* TID 0: map present */
-+	KUNIT_EXPECT_EQ(test, (int)neg_ttlm.downlink[0], 0x0001);
-+	KUNIT_EXPECT_EQ(test, (int)neg_ttlm.uplink[0],   0x0001);
-+	/* TID 3: absent => map should be 0 */
-+	KUNIT_EXPECT_EQ(test, (int)neg_ttlm.downlink[3], 0);
-+	KUNIT_EXPECT_EQ(test, (int)neg_ttlm.uplink[3],   0);
-+	/* TID 7: map present */
-+	KUNIT_EXPECT_EQ(test, (int)neg_ttlm.downlink[7], 0x0001);
-+	KUNIT_EXPECT_EQ(test, (int)neg_ttlm.uplink[7],   0x0001);
-+}
-+
-+/*
-+ * dense_presence_baseline - presence=0xff (all 8 TIDs), bm_size=2
-+ *
-+ * Every TID has a map; this is the dense layout the parser handled
-+ * correctly even before the fix.  Confirms the cursor-advance fix
-+ * does not regress the already-correct path.
-+ */
-+static void dense_presence_baseline(struct kunit *test)
-+{
-+	const u8 presence = 0xff;
-+	const u8 bm_size = 2;
-+	const int npresent = 8;
-+	const size_t elem_size = sizeof(struct ieee80211_ttlm_elem)
-+				 + 1 + npresent * bm_size;
-+	u8 *buf = kunit_kzalloc(test, elem_size, GFP_KERNEL);
-+	const struct ieee80211_ttlm_elem *ttlm;
-+	struct ieee80211_neg_ttlm neg_ttlm = {};
-+	const u16 maps[8] = {
-+		0x0003, 0x0003, 0x0003, 0x0003,
-+		0x0003, 0x0003, 0x0003, 0x0003,
-+	};
-+	u8 direction = 0;
-+	int ret;
-+
-+	KUNIT_ASSERT_NOT_NULL(test, buf);
-+
-+	ttlm = build_neg_ttlm_elem(buf, elem_size, presence, bm_size, maps);
-+
-+	ret = ieee80211_parse_neg_ttlm(NULL, ttlm, &neg_ttlm, &direction);
-+
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+	KUNIT_EXPECT_EQ(test, (int)direction, IEEE80211_TTLM_DIRECTION_BOTH);
-+	/* All TIDs present: every downlink/uplink entry must be 0x0003. */
-+	for (int tid = 0; tid < IEEE80211_TTLM_NUM_TIDS; tid++) {
-+		KUNIT_EXPECT_EQ(test, (int)neg_ttlm.downlink[tid], 0x0003);
-+		KUNIT_EXPECT_EQ(test, (int)neg_ttlm.uplink[tid],   0x0003);
-+	}
-+}
-+
-+static struct kunit_case mac80211_ttlm_test_cases[] = {
-+	KUNIT_CASE(sparse_presence_no_oob_read),
-+	KUNIT_CASE(dense_presence_baseline),
-+	{}
-+};
-+
-+static struct kunit_suite mac80211_ttlm = {
-+	.name = "mac80211-ttlm",
-+	.test_cases = mac80211_ttlm_test_cases,
-+};
-+
-+kunit_test_suite(mac80211_ttlm);
--- 
-2.53.0
+The continuation branch resolves wiphy via wiphy_idx_to_wiphy()
+on cb->args[0] and proceeds. Same gap. This helper is called by
+nl80211_vendor_cmd_dump, so a fix here covers that path too.
 
+I notice one practical limit. No in-tree mainline driver currently
+registers .testmode_dump or wiphy_vendor_command.dumpit, so the
+paths are latent today. Out-of-tree drivers may register either.
+
+I wanted to check with you before sending anything. If you read
+these as the same class of bug as 79240f3f6d76 and a short series
+mirroring that fix would be useful, I would be glad to put one
+together when it fits your queue, or to drop the thread if you
+prefer.
+
+Thanks,
+Maoyi
+--
+Nanyang Technological University
+https://maoyixie.com/
+________________________________
+
+CONFIDENTIALITY: This email is intended solely for the person(s) named and =
+may be confidential and/or privileged. If you are not the intended recipien=
+t, please delete it, notify us and do not copy, use, or disclose its conten=
+ts.
+Towards a sustainable earth: Print only when necessary. Thank you.
 
