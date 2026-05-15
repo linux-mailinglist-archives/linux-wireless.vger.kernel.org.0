@@ -1,339 +1,266 @@
-Return-Path: <linux-wireless+bounces-36452-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36453-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KafKtZ6BmqFkAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36452-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 03:45:58 +0200
+	id WFYsOaiEBmr0kQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36453-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 04:27:52 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF7454884C
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 03:45:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC04548B80
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 04:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A82D3009CF3
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 01:45:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1184D302D900
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 02:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB79A2472A2;
-	Fri, 15 May 2026 01:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4D53BA236;
+	Fri, 15 May 2026 02:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="jXxY23gK"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HVpdbuqq";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="EqbZfbVp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2531A680E
-	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 01:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170D03BA220
+	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 02:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778809554; cv=none; b=Qugv5c0HyO3hPVVUS6eJtwDetiyR/nWHxgiajXYN28F82Iutow+95tL3KMbdbco60+RgiFMY4WUtcvVmGXomyaPQKajrbYG83h03jMgeH5DmvsFzr1QVSqfE307a4aSDzB8sY5SWmD8+iW++EBqvVfGbKikVOX6UehlrDDlIUKk=
+	t=1778812069; cv=none; b=FHPWn1vdJTRR/w1M3buhB/SOgUv5PYZtRhVMhb3aVJ+1vm6fJjrA77iv26QMHwWDzTtn3kSGZqyVfGvqN+u6AyoXJQBHn1ZtFDdcMujnS5jyaqLdQ6C45/ok3/cPscFCDMS44PvXSoUK70gi9f12qa5uzrECm7GGjxEt3TE0KGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778809554; c=relaxed/simple;
-	bh=t9yYdx49Zfd7sqnze/IDB6y0CJ/OOCmFy5rHhEhKxwY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iAvAvoRjVcDiFVMmGQ7uoGE+k2n672PuaC2Eem3sXtOWw/quUuxdn/9A9dhRBvPnsexAZb19Ic9671AUTrozmN7hjQ6bLQr0aypllXZT3E3z7cXXIrpaI+ApptFuqSsr92e0LXSN/foLkm1Dw5ZrPwf6zCogfKvZ0bHH0AH01HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=jXxY23gK; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64F1jowbF2587357, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1778809550; bh=pEQ2BRLdEPCmdlG6ywoc06oXzeF5bNYtNkOwCRa2jHA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=jXxY23gKSuVi0GOnSCa60O5QdISAWfQQjZzRj7ZBdzEqXFxWzs3Mc7D27/0hMLE0C
-	 MKdQo0kKi+yjCaRzIUlxIvBgKi2uu6VgwWLKJ6Nqg2CZl6nI5UStQCWXVWpaAPcuNH
-	 bws2bAw5Oh9vDpZXxiB8+BXcP6W140o4/WG79yh4b7QPSVWyv1mpyy5Fm9sKMM3nQr
-	 5zucpfmVxWJ26JP0+OfxNqkt5lodWUsW9XaiuKSekBPrtFE2enAtCGEP9lX0GSnlee
-	 6lBV991qWkAMgAj9CZrtZRfu5qr4wAYtsTg7shZzNLYAUVJBsIUvfc4CLLpGzJQP9k
-	 lFSxVN8o6HU0Q==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 64F1jowbF2587357
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 09:45:50 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Fri, 15 May 2026 09:45:50 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
- (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Fri, 15 May 2026 09:45:50 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <timlee@realtek.com>, <dian_syuan0116@realtek.com>, <phhuang@realtek.com>,
-        <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 13/13] wifi: rtw89: 8922d: add quota for RTL8922DE variant
-Date: Fri, 15 May 2026 09:44:33 +0800
-Message-ID: <20260515014433.16168-14-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260515014433.16168-1-pkshih@realtek.com>
-References: <20260515014433.16168-1-pkshih@realtek.com>
+	s=arc-20240116; t=1778812069; c=relaxed/simple;
+	bh=ZGLrgcKzSMYLUuc3NYqgkyKk39yYXLvWcx1OoQhBENY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hWfGy+huc2l9bcGJbcEdu3W27HiQ7+tTO4z2/vDuvoo/Ai6aZt9ZAxAavcPLsW6h5VstlC2uB3EoHqC56EBPowVi0g0byZj5QxMU3nqkBhLCgB9xDaw+5zPSI9FXEFFXIPbYOqT/L9l/SAdvhr2l3KB4wpt/bgn6xbk+7HF3oXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HVpdbuqq; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=EqbZfbVp; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64EIpN1v655391
+	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 02:27:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	GG4jPt4PsiOv78ZDySQX+4PT9DNiaDGHP2Yb7bOsOys=; b=HVpdbuqq6AIg0+Cc
+	DdYjfeJU5dVxaT1HZfXj+0xOOuRgc2blLDzJNnE7u0XVk/RQuaHS7xdBoqJTf1fY
+	DTNL4n6bCIjaWpeP12UmoI9Ik44nf+JhXkRGp5MpoPHfYlXkFQyOsiuKGFUCnOC/
+	seQroQ68j4hP9+Ze4idscchpY9iIJt5Zi4O9JP0mS4et9EPj5Er4x0kK+dMksAZd
+	9xXR22Zp8ZKG2YdjVT8xEnruzKvO0GpnakQUL7iswRaNkIhAGApfvC+7iX49a4js
+	YAYG9YrCKUvFcU/oA7K45eSdM1UJI0byXliZC/qTsJ6Ch5s9rq59AGHhED5iDYd4
+	da2rZQ==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e5m1ps767-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 02:27:47 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2b9a3c3c4eeso92707745ad.3
+        for <linux-wireless@vger.kernel.org>; Thu, 14 May 2026 19:27:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1778812066; x=1779416866; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GG4jPt4PsiOv78ZDySQX+4PT9DNiaDGHP2Yb7bOsOys=;
+        b=EqbZfbVp42ycigYxUdgsKgTxMLQzId63tvDQmcG8ihZ532eDsAhBl+VHxGb2bTezXh
+         fvoMQMvOZ/2ulF0AdKXPBDKlfuHdfztSZZtN9IiZ5/EpQEulja2XNCRNwkzZI0Pz85Q7
+         MWeYoC3kBfDs3309q3SFvkev+b5v1nr9HLMx5tnueIWkEwO5vTw9lFwCG2qI1HcJ1JBC
+         6VlJfO11DO6sO4wZfDx5E2L3ZMpGnikKojfkAoNYpzmn0/B43pRK4HcwYrZ060qznRAD
+         u0pbqfJE6MXbzbjq0hCf00pntJiWphQfsFEEl8KCT+cS95OmwSKIosB6W/hdgg5XbTT5
+         u6Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778812066; x=1779416866;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GG4jPt4PsiOv78ZDySQX+4PT9DNiaDGHP2Yb7bOsOys=;
+        b=JdmrXp9JmEWbwQATFJFd+0F6kFY/s/imSkOZuQ+RmNJUrz2D1XYXMxya8HacCQARr+
+         U+i7PwyY+ODg0xLpyk0TSdhYLedLO4u12p9Ub8vTSL+3CdtFNeM0qfdSzRgBDBadMp2N
+         MYHAo3KJWU1xXEuHD9Cf5Tlbe6/ezwOwWwVktramCqI+sOulNumw4D130UKkm5VgbKJ2
+         svnDiaf9trC6ZiEsewed8zZSN8e6GbrBOkXVKyt6aflav4F5SijIFOoeHz94i9wVMmSx
+         +VRwvXJC93e100evK0vsgjB6BC9nZUt7X+O7IEuM2Tl0abaBW1pPssPRXFKoz89NHkzu
+         z5GQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9cdY/R85pY3UwYn/GkkXVVYkExyaQC9hxzELjzrhZTAECY7JHPd6KIglS3Z2u0lNG1CqJOfOdIMMtU+o7z9g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVtxPbBdiGD9FZbzF64/IUctl40K+vryXyyLxkqccUfctgsEyE
+	U1xJ/FTvU3Gy+cxzKRrpTcsMM5yODHihh4QfuV1+Wu/q06weW7SpmoGuHJzc7r2ZW0GtuKl/NXt
+	SdkS8zYET9cjqEFlahUC+vwvZG9Mg9XpdMfUD14APURVUxCGxJKBvQEiQUH+tQ0a71btRCw==
+X-Gm-Gg: Acq92OGPglbNP632832xnBhOCFIS3UjyA2VXzY7VPIObYKdsCBj1Q2M+9BOw/syocFr
+	4SEBExjaofl70g5g2315p72DU/G5WKxMrKJnWwqBBzgo5X8JTqUeqC1T8O4Y7YGHYt6mKteff4U
+	ZYxU4B+lQ0TBi8V4mPto83ewYuyRzeZ4Dy8xO+4iMSDcFdpwYsyyGqlzafDdO7cMswLfT9x3F/h
+	ICTun0UYSA6EdJq2EOE9tuwfETteM3lV3nkZeB6VDYg2FyzfeKTZyVh+SrSIxPieW8mHCNUnA4F
+	/8VkmVxGrfQqDktdW3IZRFfxnNGUjzWXXd3cR7CDpaj3bHA7yd4X0m8l6B0zjBMoS5PfCktfOd7
+	qTQGeXAIMxnztA+79/e6TUGQR3oVCuLThbEn9T3GrHqL8JQ4YfwBBdKmpOOXtIgWLSY1G
+X-Received: by 2002:a17:903:240c:b0:2bd:2439:25e9 with SMTP id d9443c01a7336-2bd7e9e263emr21145085ad.40.1778812066412;
+        Thu, 14 May 2026 19:27:46 -0700 (PDT)
+X-Received: by 2002:a17:903:240c:b0:2bd:2439:25e9 with SMTP id d9443c01a7336-2bd7e9e263emr21144885ad.40.1778812065866;
+        Thu, 14 May 2026 19:27:45 -0700 (PDT)
+Received: from [192.168.58.30] ([152.57.206.198])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5bd5fe44sm41884845ad.11.2026.05.14.19.27.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 May 2026 19:27:45 -0700 (PDT)
+Message-ID: <fdff6264-9c35-4c77-bab2-6db9125d77af@oss.qualcomm.com>
+Date: Fri, 15 May 2026 07:57:34 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: fix warning when unbinding
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+        Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: ath11k@lists.infradead.org, jjohnson@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20260507070808.367442-1-jtornosm@redhat.com>
+ <20260514061841.9517-1-jtornosm@redhat.com>
+ <95bff017-3554-425f-ad8e-767f9cbe1277@oss.qualcomm.com>
+ <c2523379-ab12-47e1-a0d0-ef6073deaf11@oss.qualcomm.com>
+Content-Language: en-US
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+In-Reply-To: <c2523379-ab12-47e1-a0d0-ef6073deaf11@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 6EF7454884C
+X-Proofpoint-GUID: llM9gjSU9MXnlBKdxZvr2CjgbyzugtLz
+X-Proofpoint-ORIG-GUID: llM9gjSU9MXnlBKdxZvr2CjgbyzugtLz
+X-Authority-Analysis: v=2.4 cv=GrhyPE1C c=1 sm=1 tr=0 ts=6a0684a3 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=YxPPAu78v9FaI4eag4rAcQ==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=eGHVyj3czf8DJk7V1mEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE1MDAyMiBTYWx0ZWRfX0UPuR0yQHEj1
+ BYFkoaAdLq3In9Ax2GCoS/2+qNN5BxFJjdpq8t9/wuzH4HdI1kyvp0E1TQtcW5/YB1ozaTz0kur
+ MvkXBEkqubZmkDmGm2cObjnzNfn1bvs9OYKzz2WzV9Aob687JgwpUwMAk6UC+5JkrU+WzJZIU/Y
+ l8zGtffG/phC3QOX1jupx4lPVXiZFhbx0HRkBHAcIJbDWC5lT39T74HP23/KEWTROv20ozoKUFk
+ CAF6hG4zy+jX/lNi0wJOqCpE6Exty35eWAOct+3mi/b+qxaIzsQD7j216y/I2sEBxVhH1376mmn
+ KCAgpqnlaGtqNQSBu7GTKqHd6NcwSLIvBI7qla7AWKnaPw642x1+tFAt0IcETr0rAN0Mfowpl/Q
+ P66ogsZYxvZ4/nVZfGmLPq5pJlRO8OcMlOGUcXNsNaqbwr0olakMyBC8rTEtd3ICuPYdJ6IXR+O
+ pv1rsVANQ8x26TD0tJA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-14_06,2026-05-13_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 clxscore=1015 lowpriorityscore=0 adultscore=0 bulkscore=0
+ spamscore=0 suspectscore=0 impostorscore=0 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605150022
+X-Rspamd-Queue-Id: 8DC04548B80
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36452-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36453-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,realtek.com:mid,realtek.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	FROM_NEQ_ENVFROM(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-The existing quota set is for RTL8922DE-VS, so rename the existing tables.
-Add new quota set for RTL8922DE, containing more memory to yield better
-performance, so rearrange quota accordingly.
+On 5/14/2026 1:45 PM, Baochen Qiang wrote:
+> 
+> 
+> On 5/14/2026 2:55 PM, Rameshkumar Sundaram wrote:
+>> On 5/14/2026 11:48 AM, Jose Ignacio Tornos Martinez wrote:
+>>> Hello Rameshkumar,
+>>>
+>>>> I agree that setting tx_status to NULL makes ath11k_dp_free() more
+>>>> defensive, and it matches the ath12k fix.
+>>> Ok, I agree too.
+>>>
+>>>> However, i am still wondering how the second ath11k_dp_free() is reached
+>>>> if ATH11K_FLAG_QMI_FAIL is set.
+>>>>
+>>>> In ath11k_pci_remove(), when ATH11K_FLAG_QMI_FAIL is set, we take the
+>>>> qmi_fail path and skip ath11k_core_deinit(). So the normal remove path:
+>>>>
+>>>>       ath11k_pci_remove()
+>>>>         ath11k_core_deinit()
+>>>>           ath11k_core_soc_destroy()
+>>>>             ath11k_dp_free()
+>>>>
+>>>> should not run.
+>>>>
+>>>> So if the double free is still reproducible with QMI_FAIL set (with the
+>>>> change i proposed), either the flag is not actually set in this failure
+>>>> case, or there is another path calling ath11k_dp_free() ?
+>>> Let me try to clarify the issue more.
+>>> There are two error actions:
+>>> - First the previous error. I reproduce the situation as I commented: running
+>>> in a VM the default upstream kernel (with this card using PCI passthrough),
+>>> since this is always failing. Let me show the logs in this situation:
+>>> [   15.906564] ath11k_pci 0000:07:00.0: BAR 0 [mem 0xfdc00000-0xfddfffff 64bit]: assigned
+>>> [   15.926520] ath11k_pci 0000:07:00.0: MSI vectors: 32
+>>> [   15.928572] ath11k_pci 0000:07:00.0: wcn6855 hw2.0
+>>> [   16.984192] ath11k_pci 0000:07:00.0: chip_id 0x2 chip_family 0xb board_id 0xff soc_id
+>>> 0x400c0200
+>>> [   16.984351] ath11k_pci 0000:07:00.0: fw_version 0x11088c35 fw_build_timestamp
+>>> 2024-04-17 08:34 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+>>> [   18.186971] ath11k_pci 0000:07:00.0: failed to receive control response completion,
+>>> polling..
+>>> [   19.211036] ath11k_pci 0000:07:00.0: Service connect timeout
+>>> [   19.211815] ath11k_pci 0000:07:00.0: failed to connect to HTT: -110
+>>> [   19.214181] ath11k_pci 0000:07:00.0: failed to start core: -110
+>>> [   19.531989] ath11k_pci 0000:07:00.0: firmware crashed: MHI_CB_EE_RDDM
+>>> [   19.532930] ath11k_pci 0000:07:00.0: ignore reset dev flags 0xc000
+>>> [   29.259157] ath11k_pci 0000:07:00.0: failed to wait wlan mode request (mode 4): -110
+>>> [   29.259229] ath11k_pci 0000:07:00.0: qmi failed to send wlan mode off: -110
+>>> - Second after this, I commanded the unbinded (ath11_pci) and I get the
+>>> warning. Let extend here the stack trace:
+>>> [   24.238198]  ? free_large_kmalloc+0x57/0x90
+>>> [   24.238199]  ? report_bug+0x16b/0x180
+>>> [   24.238210]  ? handle_bug+0x3c/0x70
+>>> [   24.238218]  ? exc_invalid_op+0x14/0x70
+>>> [   24.238218]  ? asm_exc_invalid_op+0x16/0x20
+>>> [   24.238224]  ? free_large_kmalloc+0x57/0x90
+>>> [   24.238227]  ath11k_dp_free+0x99/0xb0 [ath11k]
+>>> [   24.238275]  ath11k_core_deinit+0x12b/0x1a0 [ath11k]
+>>> [   24.238287]  ath11k_pci_remove+0x7b/0x120 [ath11k_pci]
+>>> [   24.238294]  pci_device_remove+0x3e/0xb0
+>>> [   24.238304]  device_release_driver_internal+0x193/0x200
+>>> [   24.238315]  unbind_store+0x9d/0xb0
+>>> [   24.238320]  kernfs_fop_write_iter+0x13a/0x1d0
+>>> [   24.238330]  vfs_write+0x32e/0x470
+>>> [   24.238335]  ksys_write+0x5f/0xe0
+>>> [   24.238336]  do_syscall_64+0x5f/0xe0
+>>> Very easy to reproduce.
+>>>
+>>
+>>
+>> Thanks much for the logs, that makes sense. The timestamps explain why my earlier
+>> reasoning did not match the trace: unbind reaches ath11k_pci_remove() before
+>> ATH11K_FLAG_QMI_FAIL is set by the QMI event worker as it is held up on wlan mode off qmi
+> 
+> how could QMI worker set this flag? the first failure happens in
+> ath12k_core_qmi_firmware_ready() and upon this failure the QMI worker just break out
+> without setting any flag, no?
+> 
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/mac.c      |  8 ++
- drivers/net/wireless/realtek/rtw89/mac.h      |  8 ++
- drivers/net/wireless/realtek/rtw89/rtw8922d.c | 73 +++++++++++++++++--
- 3 files changed, 83 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index bd606d1da634..8c395517bd2f 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1748,6 +1748,7 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	.wde_size18_v1 = {RTW89_WDE_PG_64, 0, 640, 0,},
- 	/* 8852C PCIE SCC */
- 	.wde_size19 = {RTW89_WDE_PG_64, 3328, 0,},
-+	.wde_size22_v1 = {RTW89_WDE_PG_128, 384, 0, 0,},
- 	.wde_size23 = {RTW89_WDE_PG_64, 1022, 2,},
- 	/* 8852B USB2.0/USB3.0 SCC turbo */
- 	.wde_size30 = {RTW89_WDE_PG_64, 220, 36,},
-@@ -1781,6 +1782,7 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	.ple_size22_v1 = {RTW89_PLE_PG_128, 2736, 0, 40960,},
- 	/* 8851B USB2.0 SCC turbo */
- 	.ple_size27 = {RTW89_PLE_PG_128, 1396, 12,},
-+	.ple_size29_v1 = {RTW89_PLE_PG_128, 1895, 182, 49152,},
- 	/* 8852B USB3.0 SCC turbo */
- 	.ple_size31 = {RTW89_PLE_PG_128, 1392, 16,},
- 	/* 8852C USB2.0 */
-@@ -1811,6 +1813,7 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	.wde_qt18 = {3228, 60, 0, 40,},
- 	.wde_qt19_v1 = {613, 6, 0, 20,},
- 	.wde_qt23 = {958, 48, 0, 16,},
-+	.wde_qt23_v1 = {371, 3, 0, 10,},
- 	/* 8852B USB2.0/USB3.0 SCC turbo */
- 	.wde_qt30 = {210, 2, 0, 8,},
- 	/* 8852C USB2.0 */
-@@ -1868,6 +1871,8 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	/* 8851B USB2.0 SCC turbo */
- 	.ple_qt61 = {858, 0, 16, 48, 4, 13, 370, 0, 32, 14, 8, 0, 0,},
- 	.ple_qt62 = {858, 0, 32, 48, 37, 13, 403, 0, 65, 14, 24, 0, 0,},
-+	.ple_qt64_v2 = {91, 91, 32, 16, 19, 13, 93, 93, 44, 34, 1, 4, 0, 0,},
-+	.ple_qt65_v2 = {645, 645, 32, 1380, 1383, 1377, 1457, 1457, 1408, 1398, 1, 1368,},
- 	/* USB2.0 52C */
- 	.ple_qt78 = {1560, 0, 16, 48, 13, 13, 390, 0, 32, 38, 8, 16, 0,},
- 	/* USB2.0 52C */
-@@ -1888,10 +1893,13 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	.rsvd0_size3 = {57344, 0,},
- 	.rsvd0_size5 = {32768, 0,},
- 	.rsvd0_size6 = {40960, 0,},
-+	.rsvd0_size17 = {49152, 0,},
- 	.rsvd1_size0 = {587776, 2048,},
- 	.rsvd1_size2 = {391168, 2048,},
-+	.rsvd1_size3 = {315008, 78208,},
- 	.dle_input3 = {0, 0, 0, 16384, 0, 2048, 0, 0, 0,},
- 	.dle_input20 = {128, 128, 11454, 2048, 0, 2048, 1024, 24, 24,},
-+	.dle_input28 = {128, 128, 11454, 2048, 0, 2048, 2048, 24, 24,},
- };
- EXPORT_SYMBOL(rtw89_mac_size);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 3d57f0acfba1..539061fc15e8 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -946,6 +946,7 @@ struct rtw89_mac_size_set {
- 	const struct rtw89_dle_size wde_size18;
- 	const struct rtw89_dle_size wde_size18_v1;
- 	const struct rtw89_dle_size wde_size19;
-+	const struct rtw89_dle_size wde_size22_v1;
- 	const struct rtw89_dle_size wde_size23;
- 	const struct rtw89_dle_size wde_size30;
- 	const struct rtw89_dle_size wde_size31;
-@@ -966,6 +967,7 @@ struct rtw89_mac_size_set {
- 	const struct rtw89_dle_size ple_size20_v1;
- 	const struct rtw89_dle_size ple_size22_v1;
- 	const struct rtw89_dle_size ple_size27;
-+	const struct rtw89_dle_size ple_size29_v1;
- 	const struct rtw89_dle_size ple_size31;
- 	const struct rtw89_dle_size ple_size34;
- 	const struct rtw89_wde_quota wde_qt0;
-@@ -984,6 +986,7 @@ struct rtw89_mac_size_set {
- 	const struct rtw89_wde_quota wde_qt18;
- 	const struct rtw89_wde_quota wde_qt19_v1;
- 	const struct rtw89_wde_quota wde_qt23;
-+	const struct rtw89_wde_quota wde_qt23_v1;
- 	const struct rtw89_wde_quota wde_qt30;
- 	const struct rtw89_wde_quota wde_qt31;
- 	const struct rtw89_ple_quota ple_qt0;
-@@ -1020,6 +1023,8 @@ struct rtw89_mac_size_set {
- 	const struct rtw89_ple_quota ple_qt59;
- 	const struct rtw89_ple_quota ple_qt61;
- 	const struct rtw89_ple_quota ple_qt62;
-+	const struct rtw89_ple_quota ple_qt64_v2;
-+	const struct rtw89_ple_quota ple_qt65_v2;
- 	const struct rtw89_ple_quota ple_qt78;
- 	const struct rtw89_ple_quota ple_qt79;
- 	const struct rtw89_ple_quota ple_qt_52a_wow;
-@@ -1035,10 +1040,13 @@ struct rtw89_mac_size_set {
- 	const struct rtw89_dle_rsvd_size rsvd0_size3;
- 	const struct rtw89_dle_rsvd_size rsvd0_size5;
- 	const struct rtw89_dle_rsvd_size rsvd0_size6;
-+	const struct rtw89_dle_rsvd_size rsvd0_size17;
- 	const struct rtw89_dle_rsvd_size rsvd1_size0;
- 	const struct rtw89_dle_rsvd_size rsvd1_size2;
-+	const struct rtw89_dle_rsvd_size rsvd1_size3;
- 	const struct rtw89_dle_input dle_input3;
- 	const struct rtw89_dle_input dle_input20;
-+	const struct rtw89_dle_input dle_input28;
- };
- 
- extern const struct rtw89_mac_size_set rtw89_mac_size;
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.c b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-index 2f0c3a5d937c..a453b220d7ae 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-@@ -25,6 +25,62 @@
- 	RTW89_GEN_MODULE_FWNAME(RTW8922DS_FW_BASENAME, RTW8922DS_FW_FORMAT_MAX)
- 
- static const struct rtw89_hfc_ch_cfg rtw8922d_hfc_chcfg_pcie[] = {
-+	{2, 732, 0}, /* ACH 0 */
-+	{0, 730, 0}, /* ACH 1 */
-+	{2, 732, 0}, /* ACH 2 */
-+	{0, 730, 0}, /* ACH 3 */
-+	{2, 732, 0}, /* ACH 4 */
-+	{0, 730, 0}, /* ACH 5 */
-+	{2, 732, 0}, /* ACH 6 */
-+	{0, 730, 0}, /* ACH 7 */
-+	{2, 732, 0}, /* B0MGQ */
-+	{0, 730, 0}, /* B0HIQ */
-+	{2, 732, 0}, /* B1MGQ */
-+	{0, 730, 0}, /* B1HIQ */
-+	{0, 0, 0}, /* GCQ */
-+};
-+
-+static const struct rtw89_hfc_pub_cfg rtw8922d_hfc_pubcfg_pcie = {
-+	742, /* Group 0 */
-+	0, /* Group 1 */
-+	742, /* Public Max */
-+	0, /* WP threshold */
-+};
-+
-+static const struct rtw89_hfc_param_ini rtw8922d_hfc_param_ini_pcie[] = {
-+	[RTW89_QTA_SCC] = {rtw8922d_hfc_chcfg_pcie, &rtw8922d_hfc_pubcfg_pcie,
-+			   &rtw89_mac_size.hfc_prec_cfg_c0, RTW89_HCIFC_POH},
-+	[RTW89_QTA_DBCC] = {rtw8922d_hfc_chcfg_pcie, &rtw8922d_hfc_pubcfg_pcie,
-+			    &rtw89_mac_size.hfc_prec_cfg_c0, RTW89_HCIFC_POH},
-+	[RTW89_QTA_DLFW] = {NULL, NULL, &rtw89_mac_size.hfc_prec_cfg_c2,
-+			    RTW89_HCIFC_POH},
-+	[RTW89_QTA_INVALID] = {NULL},
-+};
-+
-+static const struct rtw89_dle_mem rtw8922d_dle_mem_pcie[] = {
-+	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_mac_size.wde_size22_v1,
-+			   &rtw89_mac_size.ple_size29_v1, &rtw89_mac_size.wde_qt23_v1,
-+			   &rtw89_mac_size.wde_qt23_v1, &rtw89_mac_size.ple_qt64_v2,
-+			   &rtw89_mac_size.ple_qt65_v2, &rtw89_mac_size.ple_rsvd_qt9,
-+			   &rtw89_mac_size.rsvd0_size17, &rtw89_mac_size.rsvd1_size3,
-+			   &rtw89_mac_size.dle_input28},
-+	[RTW89_QTA_DBCC] = {RTW89_QTA_DBCC, &rtw89_mac_size.wde_size22_v1,
-+			    &rtw89_mac_size.ple_size29_v1, &rtw89_mac_size.wde_qt23_v1,
-+			    &rtw89_mac_size.wde_qt23_v1, &rtw89_mac_size.ple_qt64_v2,
-+			    &rtw89_mac_size.ple_qt65_v2, &rtw89_mac_size.ple_rsvd_qt9,
-+			    &rtw89_mac_size.rsvd0_size17, &rtw89_mac_size.rsvd1_size3,
-+			    &rtw89_mac_size.dle_input28},
-+	[RTW89_QTA_DLFW] = {RTW89_QTA_DLFW, &rtw89_mac_size.wde_size18_v1,
-+			    &rtw89_mac_size.ple_size22_v1, &rtw89_mac_size.wde_qt3,
-+			    &rtw89_mac_size.wde_qt3, &rtw89_mac_size.ple_qt5_v2,
-+			    &rtw89_mac_size.ple_qt47_v2, &rtw89_mac_size.ple_rsvd_qt1,
-+			    &rtw89_mac_size.rsvd0_size6, &rtw89_mac_size.rsvd1_size2,
-+			    &rtw89_mac_size.dle_input3},
-+	[RTW89_QTA_INVALID] = {RTW89_QTA_INVALID, NULL, NULL, NULL, NULL, NULL,
-+			       NULL},
-+};
-+
-+static const struct rtw89_hfc_ch_cfg rtw8922ds_hfc_chcfg_pcie[] = {
- 	{2, 603, 0}, /* ACH 0 */
- 	{0, 601, 0}, /* ACH 1 */
- 	{2, 603, 0}, /* ACH 2 */
-@@ -40,24 +96,24 @@ static const struct rtw89_hfc_ch_cfg rtw8922d_hfc_chcfg_pcie[] = {
- 	{0, 0, 0}, /* GCQ */
- };
- 
--static const struct rtw89_hfc_pub_cfg rtw8922d_hfc_pubcfg_pcie = {
-+static const struct rtw89_hfc_pub_cfg rtw8922ds_hfc_pubcfg_pcie = {
- 	613, /* Group 0 */
- 	0, /* Group 1 */
- 	613, /* Public Max */
- 	0, /* WP threshold */
- };
- 
--static const struct rtw89_hfc_param_ini rtw8922d_hfc_param_ini_pcie[] = {
--	[RTW89_QTA_SCC] = {rtw8922d_hfc_chcfg_pcie, &rtw8922d_hfc_pubcfg_pcie,
-+static const struct rtw89_hfc_param_ini rtw8922ds_hfc_param_ini_pcie[] = {
-+	[RTW89_QTA_SCC] = {rtw8922ds_hfc_chcfg_pcie, &rtw8922ds_hfc_pubcfg_pcie,
- 			   &rtw89_mac_size.hfc_prec_cfg_c0, RTW89_HCIFC_POH},
--	[RTW89_QTA_DBCC] = {rtw8922d_hfc_chcfg_pcie, &rtw8922d_hfc_pubcfg_pcie,
-+	[RTW89_QTA_DBCC] = {rtw8922ds_hfc_chcfg_pcie, &rtw8922ds_hfc_pubcfg_pcie,
- 			   &rtw89_mac_size.hfc_prec_cfg_c0, RTW89_HCIFC_POH},
- 	[RTW89_QTA_DLFW] = {NULL, NULL, &rtw89_mac_size.hfc_prec_cfg_c2,
- 			    RTW89_HCIFC_POH},
- 	[RTW89_QTA_INVALID] = {NULL},
- };
- 
--static const struct rtw89_dle_mem rtw8922d_dle_mem_pcie[] = {
-+static const struct rtw89_dle_mem rtw8922ds_dle_mem_pcie[] = {
- 	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_mac_size.wde_size16_v1,
- 			   &rtw89_mac_size.ple_size20_v1, &rtw89_mac_size.wde_qt19_v1,
- 			   &rtw89_mac_size.wde_qt19_v1, &rtw89_mac_size.ple_qt44_v2,
-@@ -3148,11 +3204,16 @@ static const struct rtw89_fw_def rtw8922de_vs_fw_def = {
- 	.fw_b_aid		= RTL8922D_AID7060,
- };
- 
-+static const struct rtw89_qta_def rtw8922ds_qta_def = {
-+	.hfc_param_ini		= {rtw8922ds_hfc_param_ini_pcie, NULL, NULL},
-+	.dle_mem		= {rtw8922ds_dle_mem_pcie, NULL, NULL, NULL},
-+};
-+
- const struct rtw89_chip_variant rtw8922de_vs_variant = {
- 	.no_mcs_12_13 = true,
- 	.fw_min_ver_code = RTW89_FW_VER_CODE(0, 0, 0, 0),
- 	.fw_def_override = &rtw8922de_vs_fw_def,
--	.qta_def_override = NULL,
-+	.qta_def_override = &rtw8922ds_qta_def,
- };
- EXPORT_SYMBOL(rtw8922de_vs_variant);
- 
--- 
-2.25.1
+you mean ath1*1*k_core_qmi_firmware_ready() ?. Yes in ToT it breaks out 
+without setting any flags, so I proposed to set that on failure case 
+ATH11K_QMI_EVENT_FW_READY: (similar to case 
+ATH11K_QMI_EVENT_FW_INIT_DONE:) in this mail thread.
 
+
+--
+Ramesh
 
