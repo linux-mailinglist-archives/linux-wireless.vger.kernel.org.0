@@ -1,233 +1,141 @@
-Return-Path: <linux-wireless+bounces-36499-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36500-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OIpxHMVhB2q90wIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36499-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 20:11:17 +0200
+	id uE+rLkNpB2oJ2QIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36500-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 20:43:15 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958E2555F2D
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 20:11:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1955566E4
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 20:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 504FF3022AA5
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 18:05:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 284BD30063A1
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 18:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633D43EFFB2;
-	Fri, 15 May 2026 18:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E9F3EEAEA;
+	Fri, 15 May 2026 18:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n9QGZE+1"
+	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="dnaC/HaX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8A03FDBFC
-	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 18:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778868294; cv=pass; b=C3nWcoKXLgYunjfXwH6sdsglm2kVKsyNEwnobFcjfhHG+exyJjrQ/4YekFTlRfukf5wChDhGnBP0Sk/t1pRs1/E4JPeLrYAzxiLHrlf8Uxdij2u7MsVGT5g+etPEV6Q8FEoZURK0hoobZjnaTJ11mDtapyvxmMYLqgE+zqm+ep8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778868294; c=relaxed/simple;
-	bh=d7NbIZXo+ERkUX/2/I0SU5fUURc4zvWrPIReK+qEBwY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TWAggc+cJpzUMKFqJmQ+9bdj4LEh/7I2jX0lWLAW0zQdaIucYRAHPMMvlz1ACTdM27jGDTe2CcsIrsWn5as5Y1Me4qRtgQiQmrX5cXGUbjHwjBHLs25DeDAIY9zzZmTBJeT2GKLB7J9c1cSNz8DP6SI07nHHTtov1XFdxfD/ptU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n9QGZE+1; arc=pass smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-bd11a3729e8so8798966b.0
-        for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 11:04:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778868291; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bVCMV1jD3DBK1vZqV4T7jWODlBshphBkNiP89TAo9JbHj1BQZrMW1iecrio5ioYUoP
-         AzaGrLA9VowLPZQEEIXeJw4tkVZZWawVIb9ypsTLCBuFpgpqn6kSQtwVuoNgQ/nfhgQ0
-         fqJ/jOjm+JY0HQTPrGKn/tZwg/kgz0FlWH1TgKNC1ZMgtqbIr/mr1U+/sgdfiwYsmesN
-         zD8+P2NCZNAJBazCgAhW4Cts9FZeAJD8itXYkptGemv/Dvxn7ZsPcJajnoFE/TRMKEcH
-         msKN9OoMDcJ1UOKvzn+XjVVHmuORmUYB8IccPCaZCoGhYS8OMkOpj4HZyhaut2xbcyxl
-         dC6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=YriEPBtKGtIXqM5Df/lPqipwYiY6kEfqEv/SB2R7NXc=;
-        fh=KZ8xS6HGrGQtEu6PADRXNcS4vAiKlO48ZYCBDiDL5Io=;
-        b=beiFPcKthf/xVd7ZQVe2/IOion6kAEpTIBmo6YrxUQx4N3ehV+G3quxqXrDBPyQVqX
-         +fGWwPyjtgwdBQbCcKPPrvHhpxWWv5DHoeL9BN9HJB7cIAI9YxixzoPFPRYmB8ywuooy
-         AIk1TkeoMgF5vo2MnArwL5LFvtOHozOaJB40L/RIgyWhOMW+4qTVjuDBvc4YKB1aRAK3
-         yNxD+mZk7YQq7/zMouwddGm/cUKyt3d+FtF9E4/Dp0t/RmCaRBUdI4k1Y9npw+SUbOHF
-         FRrFiErnCLUeufZk8+t6dskQgywmMFjsum446fsOuEnUutFAufrRO1eFpnWSz4RrL962
-         Yr3A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778868291; x=1779473091; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YriEPBtKGtIXqM5Df/lPqipwYiY6kEfqEv/SB2R7NXc=;
-        b=n9QGZE+1ZJVEoyFLhgu7nH3xNCGBZQ9cVyj5Pc19wduIFN/YVzf6qpZ02VktjQ2iHG
-         sgiv+7TKcst8lsJ4ytOk4xDTX+eujS74sbnqMRZYriQg8739jUh4xssiic+RkCW0o8I8
-         wvKqn+BHglFTvhVj9izq2JrsbusUsVEzip7vB4Jsv7rh+X3D3TgNafUbpifsBOKa25JZ
-         zTVBB0HKYP3S+6+LsJTFO7rDQy2WvMqiF9nNl7F2IPh3Xvfrdj9FSEpa8RPVpA7gNFE9
-         E7l9b4XvxzZhQuhhlFihBVJX3lD3xWa1+SwkeNrFJ7zp6iuMlyMqTG7qDNoDz0tEJpwX
-         m88Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778868291; x=1779473091;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YriEPBtKGtIXqM5Df/lPqipwYiY6kEfqEv/SB2R7NXc=;
-        b=htugGSLZbAshoHA1e7PKOGH0kYG/PPeVRXu1eIvVLrgEU2uQsnbouBIDpa4lJujpc+
-         uTlw0bwA860Zfv6Q6wiOVDT+Y3r4STWsqXlWD3kjLyZXnkw8TCc2L4ZZccLcfs4Z9c1r
-         O6TKCLimPpUDD/WjBSq7f2TWkeONo39JquK10/t7o5CZK6GR8XFvychrQlbTR1Y1cGOw
-         6wiCOdrH+FNOhGBcPtDGK4NpY3v8LE7tNLOvpjfT7Sov8c5mTJRi+y2jSqnWn9UTjywm
-         a0PV3mJLi3yK+8lbUJuqztYm4ntjIIQReiqNaRYlBeY0yZ2gBKxQegGL9vw9l+QY4Vyv
-         BjYg==
-X-Forwarded-Encrypted: i=1; AFNElJ8IP3hc75Ni9VC/2kefiF2BP0epoSpUPYdld/Hy7iU/2BEEocQQBmo+gyjZKqpq3KC6/YEzSXdR/dYJcnpvTQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcafUMc+0KWrFX4c8g9yN/Yvfypk+dDw6yyPC59uEoHgYNKQ/O
-	2bxkJzUSnzJZrnQCP2eQru+eApxsrNdWcQR5voAv9EZjcaf8hStfuJSEqg6BLtcfPxSoVNnoimY
-	hK8wKoizlj4lXjZ3sXoxa48sdJaNsuYI=
-X-Gm-Gg: Acq92OEa+7BuLd8ptQ9JUx0+K0wT6BxNhdUOtDJiIT3AypGGL/DgMKJX3MpJlP32Wcv
-	t29CkaSwhg0J+7y4pYgSklTgN8lL/4V0D8oB322puFzfaGDnkXc9O21ub+0+9tpvMpwDPoBAc4d
-	o5+Ufh32bJV/E9kjsSyqlQW4oBVohAO57YyZd/bctZXtKssBzl4IZPAdj/3VlOczkEY77JIXpHr
-	0uMyQ1OLh5r5f+F0dJBwuM85afUqCJbEir1YHfBbnKfJz6sZRjw0hnQ5SYxbpFTkztg4oKVaHEb
-	gtxbLXbbRUW6efE6FrNEudZ9spUSWIGVnq0CRPGn
-X-Received: by 2002:a17:907:e15c:10b0:bd3:417e:b85d with SMTP id
- a640c23a62f3a-bd5177ea873mr224170666b.13.1778868290941; Fri, 15 May 2026
- 11:04:50 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFADF3F44F6
+	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 18:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778870374; cv=none; b=s1Ce1nak9oKQiMo2ZGTFMxHGYdQILJPARSW4YMER45CXBSiouzCGfYWU0SzbX0wAfachYI9ganbEj/X0V5ByC/6UJnaxogeoEe5RHX9cjUp02EwGQeYhdZW7GhNxmHW2+dErQmDMf7KkTkKNvmiu/PZMXvtyxjqHrqxZk+CGiUU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778870374; c=relaxed/simple;
+	bh=EKxsl5E2M8E7QMXwaS5Z8b0/PEJ1bez4Bgf7i4lbFpg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PkF3krS7VnTgQ0lz8Va8M3Pw/RmrAsaReDqwMmoiUHuUzzA/kEEWni0yIhZ8m2bukRnb/PLRss338n6my6SlpOwCS8tjS6L1YQEL7SDV0BxzFeYl3m3KJdqCGQMeUC5QgxEYhxfnN1XrF56YgqtaEbTLNY9UlFEC1GrKJWfSPJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=dnaC/HaX; arc=none smtp.client-ip=91.218.175.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
+	s=key1; t=1778870367;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=U/jjmpLvObTvHV9hKFKnoUw9o9V/WxOQQ1aWJYolflY=;
+	b=dnaC/HaXTrd1HN65qJlPNvodOGgPnHpnIbq9bzDw81zwAz1zH+NGN5gmwyBSeZRcMsy9Zj
+	MhPGbLHqPDKi7mCObKhZo1Vm911TPoreaxJYuMB3fOm4IwGsHrnj5bHB/e7UUSMEM29aqy
+	GnA1iUzT+nwlunVnEOq0CpDvbL7OHRsd8l7M31Evn1s5tTU9QWGS8hR5638rfxMc9DZx8y
+	WNFZycEzjsfFT6EkifMG5efww8+Fg/hKjLbQ59zW9VVgNPBlRQVew3weDdvnvEdIz/8ufs
+	irgwAn4CR88QCoV4FZOE0poXnrEsMH0ul99FGlhXB7dwrGZo1gExJu2iAsewug==
+From: Devin Wittmayer <lucid_duck@justthetip.ca>
+To: linux-wireless@vger.kernel.org
+Cc: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Deren Wu <deren.wu@mediatek.com>,
+	Nick Morrow <morrownr@gmail.com>,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: mt76: mt7921: assert sniffer on chanctx change
+Date: Fri, 15 May 2026 11:39:21 -0700
+Message-ID: <20260515183921.23484-1-lucid_duck@justthetip.ca>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5ecac6a9b7d29526e8438dea105b58f5487c93aa.1778521232.git.ryder.lee@mediatek.com>
- <agdJ1EtZjjWh2R1h@lore-desk>
-In-Reply-To: <agdJ1EtZjjWh2R1h@lore-desk>
-From: Cheng Hao Luo <roychl666@gmail.com>
-Date: Fri, 15 May 2026 11:04:39 -0700
-X-Gm-Features: AVHnY4KbrKR9CaA_jQmHLyQZ08ngRHLldKj46sSAK1t83aUKIVFRDiqTWe1rvrA
-Message-ID: <CAHoxojJX2BRRTLMuM_QcJqMMmshxS4EAwrB1VjU3rsZ+0k2PAg@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mt76: mt7996: avoid memset overwriting tx_info->control.flags
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Ryder Lee <ryder.lee@mediatek.com>, Felix Fietkau <nbd@nbd.name>, 
-	linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	Shayne Chen <shayne.chen@mediatek.com>, Roy Luo <roy-ch.luo@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 958E2555F2D
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 3C1955566E4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36499-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,lists.infradead.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36500-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[justthetip.ca:+];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[roychl666@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,justthetip.ca:email,justthetip.ca:mid,justthetip.ca:dkim]
 X-Rspamd-Action: no action
 
-> struct ieee80211_tx_info {
->         u32                        flags;                /*     0     4 */
->         u32                        band:3;               /*     4: 0  4 */
->         u32                        status_data_idr:1;    /*     4: 3  4 */
->         u32                        status_data:13;       /*     4: 4  4 */
->         u32                        hw_queue:4;           /*     4:17  4 */
->         u32                        tx_time_est:10;       /*     4:21  4 */
->
->         /* XXX 1 bit hole, try to pack */
->
->         union {
->                 struct {
->                         union {
->                                 struct {
->                                         struct ieee80211_tx_rate rates[4]; /*     8    12 */
->                                         s8     rts_cts_rate_idx; /*    20     1 */
->                                         u8     use_rts:1; /*    21: 0  1 */
->                                         u8     use_cts_prot:1; /*    21: 1  1 */
->                                         u8     short_preamble:1; /*    21: 2  1 */
->                                         u8     skip_table:1; /*    21: 3  1 */
->                                         u8     antennas:2; /*    21: 4  1 */
->                                 };                       /*     8    14 */
->                                 long unsigned int jiffies; /*     8     8 */
->                         };                               /*     8    16 */
->                         struct ieee80211_vif * vif;      /*    24     8 */
->                         struct ieee80211_key_conf * hw_key; /*    32     8 */
->                         u32        flags;                /*    40     4 */
->                         codel_time_t enqueue_time;       /*    44     4 */
->                 } control;                               /*     8    40 */
->                 struct {
->                         u64        cookie;               /*     8     8 */
->                 } ack;                                   /*     8     8 */
->                 struct {
->                         struct ieee80211_tx_rate rates[4]; /*     8    12 */
->                         s32        ack_signal;           /*    20     4 */
->                         u8         ampdu_ack_len;        /*    24     1 */
->                         u8         ampdu_len;            /*    25     1 */
->                         u8         antenna;              /*    26     1 */
->                         u8         pad;                  /*    27     1 */
->                         u16        tx_time;              /*    28     2 */
->                         u8         flags;                /*    30     1 */
->                         u8         pad2;                 /*    31     1 */
->                         void *     status_driver_data[2]; /*    32    16 */
->                 } status;                                /*     8    40 */
->                 struct {
->                         struct ieee80211_tx_rate driver_rates[4]; /*     8    12 */
->                         u8         pad[4];               /*    20     4 */
->                         void *     rate_driver_data[3];  /*    24    24 */
->                 };                                       /*     8    40 */
->                 void *             driver_data[5];       /*     8    40 */
->         };                                               /*     8    40 */
->
->         /* size: 48, cachelines: 1, members: 7 */
->         /* sum members: 44 */
->         /* sum bitfield members: 31 bits, bit holes: 1, sum bit holes: 1 bits */
->         /* last cacheline: 48 bytes */
-> };
->
-> According to pahole, the size of the control inner union is actually 16 bytes
-> since the compiler adds 2 bytes of padding. Since mt76_tx_status_skb_add()
-> meset to 0 just mt76_tx_cb size (that is 16 bytes) I can't see how
-> control.flags is overwritten. Am I missing something?
->
-> struct mt76_tx_cb {
->         long unsigned int          jiffies;              /*     0     8 */
->         u16                        wcid;                 /*     8     2 */
->         u8                         pktid;                /*    10     1 */
->         u8                         flags;                /*    11     1 */
->
->         /* size: 16, cachelines: 1, members: 4 */
->         /* padding: 4 */
->         /* last cacheline: 16 bytes */
-> };
+mt7921_change_chanctx() configures the channel for monitor vifs but
+does not re-assert sniffer mode. mt7925_change_chanctx() does. Match
+mt7925 by adding the missing mt7921_mcu_set_sniffer(true) call,
+completing the architectural pattern from commit 914189af23b8 ("wifi:
+mt76: mt7921: fix channel switch fail in monitor mode").
 
-Hi Lorenzo,
+The user-visible regression this asymmetry produced on v6.17 and v6.18
+was addressed by commit cdb2941a516c ("Revert "wifi: mt76: mt792x:
+improve monitor interface handling"") in v6.19 and backported to the
+6.17.y and 6.18.y stable trees. This patch is defense in depth in
+case the NO_VIRTUAL_MONITOR change is reintroduced in a future series.
 
-The mt76_tx_cb is placed at status.status_driver_data (offset 32).
-It overlaps with hw_key, flags and enqueue_time in the control union.
+Tested-by: Nick Morrow <morrownr@gmail.com>
+Tested-on: RasPi4B, RasPiOS 64 bit, Alfa AWUS036AXML mt7921u
+Tested-on: RasPi4B, RasPiOS 64 bit, Netgear A9000 mt7925u
+Signed-off-by: Devin Wittmayer <lucid_duck@justthetip.ca>
 
-static inline struct mt76_tx_cb *mt76_tx_skb_cb(struct sk_buff *skb)
-{
-BUILD_BUG_ON(sizeof(struct mt76_tx_cb) >
-    sizeof(IEEE80211_SKB_CB(skb)->status.status_driver_data));
-return ((void *)IEEE80211_SKB_CB(skb)->status.status_driver_data);
-}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 3d74fabe7408..fec9ab577dd1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -1405,10 +1405,12 @@ mt7921_change_chanctx(struct ieee80211_hw *hw,
+ 	vif = container_of((void *)mvif, struct ieee80211_vif, drv_priv);
+ 
+ 	mt792x_mutex_acquire(phy->dev);
+-	if (vif->type == NL80211_IFTYPE_MONITOR)
++	if (vif->type == NL80211_IFTYPE_MONITOR) {
++		mt7921_mcu_set_sniffer(mvif->phy->dev, vif, true);
+ 		mt7921_mcu_config_sniffer(mvif, ctx);
+-	else
++	} else {
+ 		mt76_connac_mcu_uni_set_chctx(mvif->phy->mt76, &mvif->bss_conf.mt76, ctx);
++	}
+ 	mt792x_mutex_release(phy->dev);
+ }
+ 
+-- 
+2.54.0
 
-Regards,
-Roy Luo
 
