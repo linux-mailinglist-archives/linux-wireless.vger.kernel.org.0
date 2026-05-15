@@ -1,275 +1,506 @@
-Return-Path: <linux-wireless+bounces-36460-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36461-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gI7ZJtH+BmpiqgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36460-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 13:09:05 +0200
+	id MItIJI8HB2qcqwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36461-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 13:46:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E696554E1BC
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 13:09:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 959E454EB65
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 13:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BAC19308DB9D
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 10:52:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 81F833022BA5
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 11:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D52946AF20;
-	Fri, 15 May 2026 10:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9ECC3CE4BA;
+	Fri, 15 May 2026 11:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HY2l0Gaa";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Dy6qCKYu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h3c+Us5Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFABE46AF00
-	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 10:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5EE4779B3
+	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 11:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778842377; cv=none; b=O5RqfcVxmFTNM38C36Jgsl+KWYiGSXwhs8cZtwMWOcYmxvzxOIdrDx8vEYZ47a8zIvFF6MFipvtZ6TnB1YQCvEkJtPa6YPFMOjqv5SjyIuTwa3abt5DumTPTU1LxrQezXVyS3I7xs1qHjzP8NATd2xYTVCAjZ8aScyYifAp4mrw=
+	t=1778843548; cv=none; b=cUxPBfse0nSF8NhzsCNSVv664g+N1sAUSnaAkBKNcQX7iWYWXJX5vLiFaQVPnfliXCy2hUfwhv76ylR0B7vF6lfLFped4ekDAvWbN6fri5jAFWYF7AtZAlX0CIZEvY67GzbUorzZ/D4yTxABYdI1PmZlfP2iVeQMrCQG/yf8Tyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778842377; c=relaxed/simple;
-	bh=GYRqtEFORIGvBXtjHRIEjsIKBIBEvrSiUzkUEEbUTL0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kFCs3KOG9jMm98/SKAqUpp4SESeuteZqoN4hH6LEy4D6fVl+O89w1RQJaVQU19udRcyboIQCNAHjytTbx/8oAGn61+YQsro1fcSjXzc/Wlm5XxQGP7d1mdvscx8KxDaHQArI8G6is4qqWkzQH7Yg1KuVUmL3CuN47hUkXSoEcY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HY2l0Gaa; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Dy6qCKYu; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64F59pPt1847949
-	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 10:52:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	q74vIe1vHtsQlNs4raX5h9oaRxwa1dTxwCCq8Ygatgk=; b=HY2l0GaaIOTOInh/
-	lFpvlr8nwTsjS56jmB7h0lPRnvOanPA/m/eV3BcO6oG5eMK2vPQdUEp4gJNnF38m
-	XPzngmatmyIHiMrJLkxDkdoF9xrC+Zt57rUipSc9dzWg2ZtPCDLvK5z2inJTgk2s
-	BFF7u53xBs69A24v+0fL4xvXgxXQcmj56gtNh+ADEYvzie4wRTuJhfo9WLqiSLgO
-	x8ipv9BeW8TNAncwLGXl93rgMkV7kSccbsmAqP4Ue8JoLqb4C2iEXvBF+MW2wHRG
-	vKb/vFWvPtSn0sXc9zf/MKjZnIkGMQB8PScv4STA2Qj+xP1qY6j9oorZJBfepGDW
-	/gDJBQ==
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com [209.85.222.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e5m1t2vpq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 10:52:54 +0000 (GMT)
-Received: by mail-ua1-f72.google.com with SMTP id a1e0cc1a2514c-95cd22ec862so500055241.3
-        for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 03:52:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778842374; x=1779447174; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q74vIe1vHtsQlNs4raX5h9oaRxwa1dTxwCCq8Ygatgk=;
-        b=Dy6qCKYu1gTJSyr4LtWIPQP1jaVOpQNHWWlJPvt4VGpvc3hM1AeulShAAdHtl5VWXj
-         BXoDt1A4oSXHl0zuBQsr798O/t+63Zv+bDM83D8d86kZ06kB5g/ACDnkoCWozsKZWNWM
-         MvVqrSTUlNXoFFfrQMZMGYJZraJo6FO4BTH7FfIxSfFWc6J/l2FHsYXreK92OhUDbg2S
-         KKzmkDBPL8x8xzF1u2cB7EDDiWXfZ954sa+Vik7yeygDKJ2/VQv9zsG0E0e7y3LjPT78
-         6iZnJ4CxPSN1AeaY6Fn/k4JVPS8Xi9Bteh9SrhKc3dFHQhdIbi3g6cSqE1XixuYLPOWU
-         tQMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778842374; x=1779447174;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=q74vIe1vHtsQlNs4raX5h9oaRxwa1dTxwCCq8Ygatgk=;
-        b=YzrTuvLtUFYOJuMwiPUlK6NxBnRmqJDaLVIlRs4ubMUUquYMhnYuCgt6ATH3Hj8HtJ
-         e4ciYaTKSfCYrElYRFXsHbNXgcr3IebI2lL6sj7akpqyJ/QR5ZBOJ/Sdns8kWVtxqc+f
-         IPjHL/oIMOYkqb6jO/4pVe2iSi9PN5Nb37NXUff/TDk9c76FvEUV18I4sPTKj6jJWnRf
-         ag85D979paB68GmqVHvjpIwktFqZunKwOXDjwX80GBShQby3z6rYKVdh4z6BX5WXpcXT
-         IxWh1L1/H6PxZYL9vBC3qAutYV2Vb2xM4CBzXLc4CsE4yk5EW//foYK9RXBfgV9E1SXm
-         DILA==
-X-Forwarded-Encrypted: i=1; AFNElJ8jY/44q33/pJvt+X5GID5JBa6PDmt4rdvgW/PlkzgT3w/VFFlf4CKT+3w3NxwMqSOSx3BReaiWFgFexeGh5g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmFeGYihZmXSxj5Wol1tpu9jneRJ/Qwx0KoYs096cCEM2gnn4Y
-	BlfAZoVNuSLMwWeSaFvmoNL6Us6Dhlfwibu9IucICZQ8OuHEqdMS3cRTuOdK3cFJHPwENX1MMmN
-	kDjxaaNWqgZo9bQylYe+P7smLPFybCK9UlNf3JY9QOB5y+V5vzk+GlbqenfZIblj0wP0adQ==
-X-Gm-Gg: Acq92OGf24kJ1qi5fSQKuZATCoLiZBvu9WOiZzc7HfvNrpmLHz0lWWXJUipE5IgsXis
-	B5Jj79ozQwdejq7I9QphWQr3REy8s3rKxDoXF0oJ+F3KkslZy13p5KsUFC3J/DReHu0jJbSSQM5
-	+s5oAPLR26Xnhq5jmWXC/f9/STsOPPnUBG4vjpshsz0EZsRS2rBfTrx61kABgL8K/G81YWcuPNC
-	8O6Tg8qqTyM9xkryrBIleJ94/q/gW5V52dxDsjQeNI69GYUuw/gPQHCRyo4PqFe1Khq+4tLlqyq
-	9oHfiRsGvNKqbvm1IucNdBYtY6biEhrmF2AVrK+/hPAcyyvtn6xH1xoLoNsMP+WOEi6/CZZOxz8
-	P45SFhdtln2Lynzidx8UPlzu1w1g+N+ycj8Vd5DvpQAx+nzCJjecgdFMw0555gcdqpElxpuU/eF
-	7sYxg=
-X-Received: by 2002:a05:6122:6117:b0:575:dcec:efc1 with SMTP id 71dfb90a1353d-5760bc49d2emr517885e0c.0.1778842373938;
-        Fri, 15 May 2026 03:52:53 -0700 (PDT)
-X-Received: by 2002:a05:6122:6117:b0:575:dcec:efc1 with SMTP id 71dfb90a1353d-5760bc49d2emr517858e0c.0.1778842373403;
-        Fri, 15 May 2026 03:52:53 -0700 (PDT)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4bd1bc9sm212603566b.9.2026.05.15.03.52.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 May 2026 03:52:52 -0700 (PDT)
-Message-ID: <bad20423-de93-416e-896f-002e7c05e4ec@oss.qualcomm.com>
-Date: Fri, 15 May 2026 12:52:48 +0200
+	s=arc-20240116; t=1778843548; c=relaxed/simple;
+	bh=oTa1MU05OLlfwZHp5MaVD9izIWlbShThvuFl4Gm3NaQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AK1bUTlnvPBGS5yYcgK0XHC3p3n2B6Mx7ObsGfVHkHhgUGCF+RvqYlzjmEhWDDQaimaBfcqRr/AleY4+CIQfKkvHeG6Y/7NTW94P6mEyZFmWFZ9/070SSoUCKPbqc4Pvl2cLKqVw/7te7r+kIzLdHIZw6dFQ5aBIwSCH3v2j/hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h3c+Us5Z; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778843547; x=1810379547;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oTa1MU05OLlfwZHp5MaVD9izIWlbShThvuFl4Gm3NaQ=;
+  b=h3c+Us5ZPTpytgb5IORLpzLAUXK7QuP7SQiN2qkTXtj3axFxMbP/ATHm
+   blyGccRmXEw15f2viiZ6mF49lrkyDnXGvlDcSw3FvnuInvpowO2i2eLUy
+   3oLFCx8jg3Fx+hsQiILses2VwUtO63G/QV5qAXmjs1V2z/Hjjti4ITRB5
+   nqKsIZ6ic0HTHimO2DYV+VUgkiaouUPe+XHiqSw/0yTilSLkjafXog/7u
+   sbZ5Pq8ISf9yvm5RRx8Pz37hmbed8XaGvGnY6bxwRcZX7YpqboStPf7rm
+   PgjnKbVkxspv3DxGkZGMdhPwzfijzl49JGzxuW/YMrvqZqn+h/2y3IO/y
+   Q==;
+X-CSE-ConnectionGUID: bGgZkmksRM+XffrJ+D8qNA==
+X-CSE-MsgGUID: 0kKKKkFEQFq1uBlkGz1FJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="97226575"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="97226575"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 04:12:26 -0700
+X-CSE-ConnectionGUID: OGD1H8fkQPKPphOxUShgrw==
+X-CSE-MsgGUID: vuVLAIbxS/SNIul6FWSv5A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="269016777"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 04:12:25 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless-next] wifi: cfg80211: add a function to parse UHR DBE
+Date: Fri, 15 May 2026 14:12:12 +0300
+Message-Id: <20260515141209.4eb1490f5cc6.I3ca9421f1fe4c31073846b1b62017f12c75889de@changeid>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/7] arm64: dts: qcom: milos-fairphone-fp6: Enable WiFi
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Alexander Koskovich <AKoskovich@pm.me>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Marcel Holtmann
- <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-        Rocky Liao <quic_rjliao@quicinc.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jeff Johnson
- <jjohnson@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-References: <20260403-milos-fp6-bt-wifi-v2-0-393322b27c5f@fairphone.com>
- <20260403-milos-fp6-bt-wifi-v2-7-393322b27c5f@fairphone.com>
- <4fbs4arx6sez6fffy75ctmzecfvitr6aocau3cczlr2ps2ptld@v7wpa2irsihl>
- <2514523f-a43f-4470-a69b-3d5175d10385@oss.qualcomm.com>
- <DI789NOBWJHK.1V3SFQLCFLS4P@fairphone.com>
- <870d16bb-b426-4285-a299-deb09ae90243@oss.qualcomm.com>
- <DI9X9D3TTIRE.1CGHQI2LEZ1UL@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <DI9X9D3TTIRE.1CGHQI2LEZ1UL@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=D7Z37PRj c=1 sm=1 tr=0 ts=6a06fb06 cx=c_pps
- a=ULNsgckmlI/WJG3HAyAuOQ==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=VwQbUJbxAAAA:8 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=jmRdrQK5CiodBuYeE2YA:9
- a=QEXdDO2ut3YA:10 a=1WsBpfsz9X-RYQiigVTh:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE1MDExMCBTYWx0ZWRfXzgSqYrcqojGc
- X/G5Nk+byKLabvu0eVkdMa01S1dx4HssR55cfuZGqO1Gkjej/P901zXNpvGDsRhIk+e/+owuIxZ
- 3CgfPCVEEnUEpm+b2GU1cT0t+Nvi6rb7CsL05qoTEDGNt9I4kbiHYXrxco0q+ZqxujuryikeXZ9
- G/19rngJrlsXCRSLnPIapaO3MyOTsJ7VwvdWzmUHxgEyMvuqWiX9GdZW02CeCb+b9upLylkQPg/
- exuy18O34EQLQ+Ru0gwGxpUl3dRJcvyrH83uQWC2djkFjBn8FRjmo39uierLGJvPbKKW9RBOP++
- Hj1kB3oP0ZG7WMI5LIaFdrGGNTK3i/m0RbpJ4oasx+d5s4Jd6Qqiz8UnIT1EI3GMPqGkFuG7ctj
- TcbKhhUSZCqyE0ue2kOVrk5GJMDjxIcF+aySlKa0KyTA0OeghgYKyFsiT309l2p0346C5asV3bs
- pzvbirLR69XAvwx65Fw==
-X-Proofpoint-ORIG-GUID: k13ghlQtEGgOuPfoyNj79_Rmif4rb-5F
-X-Proofpoint-GUID: k13ghlQtEGgOuPfoyNj79_Rmif4rb-5F
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-15_02,2026-05-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
- adultscore=0 phishscore=0 clxscore=1015 bulkscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
- definitions=main-2605150110
-X-Rspamd-Queue-Id: E696554E1BC
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 959E454EB65
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,pm.me,gmail.com,holtmann.org,quicinc.com,sipsolutions.net,lists.sr.ht,vger.kernel.org,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-36460-lists,linux-wireless=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,fairphone.com:email,qualcomm.com:email,qualcomm.com:dkim];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[konrad.dybcio@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-36461-lists,linux-wireless=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
 X-Rspamd-Action: no action
 
-On 5/4/26 3:21 PM, Luca Weiss wrote:
-> On Mon May 4, 2026 at 3:10 PM CEST, Konrad Dybcio wrote:
->> On 5/1/26 11:20 AM, Luca Weiss wrote:
->>> Hi Konrad,
->>>
->>> On Tue Apr 7, 2026 at 3:16 PM CEST, Konrad Dybcio wrote:
->>>> On 4/3/26 9:35 PM, Dmitry Baryshkov wrote:
->>>>> On Fri, Apr 03, 2026 at 03:52:53PM +0200, Luca Weiss wrote:
->>>>>> Configure and enable the WiFi node, and add the required pinctrl to
->>>>>> provide the sleep clock from the PMK8550 (PMK7635) to WCN6755.
->>>>>>
->>>>>> Thanks to Alexander Koskovich for helping with the bringup, adding
->>>>>> the missing pinctrl to make the WPSS stop crashing.
->>>>>>
->>>>>> Link: https://lore.kernel.org/linux-arm-msm/DBF7OWAWQ94M.FSCP4DPF8ZJY@fairphone.com/
->>>>>> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>>>> ---
->>>>>>  arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts | 19 ++++++++++++++++++-
->>>>>>  1 file changed, 18 insertions(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->>>>>> index db72418b7195..d8ac495ca7c8 100644
->>>>>> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->>>>>> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->>>>>> @@ -242,7 +242,7 @@ wcn6750-pmu {
->>>>>>  
->>>>>>  		clocks = <&rpmhcc RPMH_RF_CLK1>;
->>>>>>  
->>>>>> -		pinctrl-0 = <&bluetooth_enable_default>;
->>>>>> +		pinctrl-0 = <&bluetooth_enable_default>, <&pmk8550_sleep_clk_default>;
->>>>>>  		pinctrl-names = "default";
->>>>>>  
->>>>>>  		regulators {
->>>>>> @@ -766,6 +766,17 @@ &pmiv0104_eusb2_repeater {
->>>>>>  	qcom,tune-usb2-preem = /bits/ 8 <0x6>;
->>>>>>  };
->>>>>>  
->>>>>> +&pmk8550_gpios {
->>>>>> +	pmk8550_sleep_clk_default: sleep-clk-default-state {
->>>>>> +		pins = "gpio5";
->>>>>> +		function = "func1";
->>>>>> +		input-disable;
->>>>>> +		output-enable;
->>>>>
->>>>> Hmm, if it's a sleep_clk, should it not be handled via the power
->>>>> sequencer?
->>>>
->>>> If you mean that it may be needed to toggle it with specific timings,
->>>> possibly..  seems that WCN6855 has a "xo-clk" GPIO defined. I requested
->>>> access to some docs that I think should have the answer, hopefully should
->>>> get it soon.
->>>
->>> Did you manage to get anything there yet?
->>
->> Yeah, sorry, it got lost in the sea of emails..
->>
->> The PDF talks about the electrical requirements of the clock signal and
->> the section titled "Power-up sequence timing" doesn't mention it at all,
->> so my assumption would be "OK so long as it's ticking before you power
->> up the WCN"
-> 
-> Thanks for checking!
-> 
-> Is this an R-b then?
+From: Johannes Berg <johannes.berg@intel.com>
 
-Yes
+Add a function that takes the DBE information and parses it
+into an existing chandef that should hold the BSS channel.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ include/net/cfg80211.h    |  10 ++
+ net/wireless/chan.c       | 130 ++++++++++++++++++++++++++
+ net/wireless/tests/chan.c | 192 ++++++++++++++++++++++++++++++++++++--
+ 3 files changed, 326 insertions(+), 6 deletions(-)
 
-Konrad
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index ddcf559430dd..69dc9a978861 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1190,6 +1190,16 @@ int cfg80211_chandef_add_npca(struct wiphy *wiphy,
+ 			      struct cfg80211_chan_def *chandef,
+ 			      const struct ieee80211_uhr_npca_info *npca);
+ 
++/**
++ * cfg80211_chandef_add_dbe - parse and add DBE information to chandef
++ * @chandef: the chandef to expand
++ * @dbe: the DBE information, must be size-checked if not %NULL
++ *
++ * Returns: 0 for success, a negative error code otherwise
++ */
++int cfg80211_chandef_add_dbe(struct cfg80211_chan_def *chandef,
++			     const struct ieee80211_uhr_dbe_info *dbe);
++
+ /**
+  * nl80211_send_chandef - sends the channel definition.
+  * @msg: the msg to send channel definition
+diff --git a/net/wireless/chan.c b/net/wireless/chan.c
+index ed35b55b1b67..f0811efb5d0f 100644
+--- a/net/wireless/chan.c
++++ b/net/wireless/chan.c
+@@ -619,6 +619,136 @@ int cfg80211_chandef_add_npca(struct wiphy *wiphy,
+ }
+ EXPORT_SYMBOL(cfg80211_chandef_add_npca);
+ 
++int cfg80211_chandef_add_dbe(struct cfg80211_chan_def *chandef,
++			     const struct ieee80211_uhr_dbe_info *dbe)
++{
++	struct cfg80211_chan_def new_chandef = *chandef;
++	u16 starting_freq, bw_mhz, start_old, start_new;
++	u8 bw, punct_shift;
++	int offset, index;
++
++	if (!dbe)
++		return 0;
++
++	if (!cfg80211_chandef_valid(chandef))
++		return -EINVAL;
++
++	if (chandef->width == NL80211_CHAN_WIDTH_20_NOHT)
++		return -EINVAL;
++
++	bw = u8_get_bits(dbe->params, IEEE80211_UHR_DBE_OPER_BANDWIDTH);
++
++	switch (chandef->chan->band) {
++	case NL80211_BAND_5GHZ:
++		if (bw > IEEE80211_UHR_DBE_OPER_BW_160)
++			return -EINVAL;
++		if (chandef->chan->center_freq < 5745)
++			starting_freq = 5180; /* channel 36 */
++		else
++			starting_freq = 5745; /* channel 149 */
++		break;
++	case NL80211_BAND_6GHZ:
++		starting_freq = 5955; /* channel 1 center */
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	switch (bw) {
++	case IEEE80211_UHR_DBE_OPER_BW_320_2:
++	case IEEE80211_UHR_DBE_OPER_BW_320_1:
++		if (chandef->width == NL80211_CHAN_WIDTH_160)
++			break;
++		fallthrough;
++	case IEEE80211_UHR_DBE_OPER_BW_160:
++		if (chandef->width == NL80211_CHAN_WIDTH_80)
++			break;
++		fallthrough;
++	case IEEE80211_UHR_DBE_OPER_BW_80:
++		if (chandef->width == NL80211_CHAN_WIDTH_40)
++			break;
++		fallthrough;
++	case IEEE80211_UHR_DBE_OPER_BW_40:
++		if (chandef->width == NL80211_CHAN_WIDTH_20)
++			break;
++		fallthrough;
++	default:
++		return -EINVAL;
++	}
++
++	switch (bw) {
++	case IEEE80211_UHR_DBE_OPER_BW_320_2:
++		/* 320-2 starts shifted by 160 */
++		starting_freq += 160;
++		fallthrough;
++	case IEEE80211_UHR_DBE_OPER_BW_320_1:
++		new_chandef.width = NL80211_CHAN_WIDTH_320;
++		bw_mhz = 320;
++		break;
++	case IEEE80211_UHR_DBE_OPER_BW_160:
++		new_chandef.width = NL80211_CHAN_WIDTH_160;
++		bw_mhz = 160;
++		break;
++	case IEEE80211_UHR_DBE_OPER_BW_80:
++		new_chandef.width = NL80211_CHAN_WIDTH_80;
++		bw_mhz = 80;
++		break;
++	case IEEE80211_UHR_DBE_OPER_BW_40:
++		new_chandef.width = NL80211_CHAN_WIDTH_40;
++		bw_mhz = 40;
++		break;
++	}
++
++	/* this should only happen for 320-2 and misconfigured AP */
++	if (chandef->chan->center_freq < starting_freq)
++		return -EINVAL;
++
++	offset = chandef->chan->center_freq - starting_freq;
++	index = offset / bw_mhz;
++	start_new = starting_freq - 10 + index * bw_mhz;
++	new_chandef.center_freq1 = start_new + bw_mhz / 2;
++
++	start_old = chandef->center_freq1 -
++		    cfg80211_chandef_get_width(chandef) / 2;
++
++	/*
++	 * If the DBE channel extends downward below the lower
++	 * edge of the BSS channel, we need to shift puncturing
++	 * bitmaps up to adjust for that.
++	 */
++	if (start_new < start_old)
++		punct_shift = (start_old - start_new) / 20;
++	else
++		punct_shift = 0;
++
++	new_chandef.punctured <<= punct_shift;
++	new_chandef.npca_punctured <<= punct_shift;
++
++	if (dbe->params & IEEE80211_UHR_DBE_OPER_DIS_SUBCHANNEL_BITMAP_PRES) {
++		u16 punct_mask = ((1 << (bw_mhz / 40)) - 1) << punct_shift;
++		u16 punctured = le16_to_cpu(dbe->dis_subch_bmap[0]);
++
++		if ((punctured & punct_mask) != (new_chandef.punctured & punct_mask))
++			return -EINVAL;
++
++		new_chandef.punctured = punctured;
++	}
++
++	if (!cfg80211_chandef_valid(&new_chandef))
++		return -EINVAL;
++
++	/*
++	 * If e.g. a 40 MHz BSS channel (erroneously) occupies the center of the
++	 * DBE 80 MHz channel, they would be incompatible; check and reject.
++	 */
++	if (!cfg80211_chandef_compatible(&new_chandef, chandef))
++		return -EINVAL;
++
++	*chandef = new_chandef;
++	return 0;
++}
++EXPORT_SYMBOL(cfg80211_chandef_add_dbe);
++
+ static const struct cfg80211_chan_def *
+ check_chandef_primary_compat(const struct cfg80211_chan_def *c1,
+ 			     const struct cfg80211_chan_def *c2,
+diff --git a/net/wireless/tests/chan.c b/net/wireless/tests/chan.c
+index 7b97b731993c..65eb18c498de 100644
+--- a/net/wireless/tests/chan.c
++++ b/net/wireless/tests/chan.c
+@@ -2,13 +2,18 @@
+ /*
+  * KUnit tests for channel helper functions
+  *
+- * Copyright (C) 2023-2024 Intel Corporation
++ * Copyright (C) 2023-2024, 2026 Intel Corporation
+  */
+ #include <net/cfg80211.h>
+ #include <kunit/test.h>
+ 
+ MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
+ 
++static struct ieee80211_channel chan_2ghz_1 = {
++	.band = NL80211_BAND_2GHZ,
++	.center_freq = 2412,
++};
++
+ static struct ieee80211_channel chan_6ghz_1 = {
+ 	.band = NL80211_BAND_6GHZ,
+ 	.center_freq = 5955,
+@@ -215,14 +220,189 @@ static void test_chandef_compat(struct kunit *test)
+ 	KUNIT_EXPECT_PTR_EQ(test, ret, expect);
+ }
+ 
+-static struct kunit_case chandef_compat_test_cases[] = {
++static const struct chandef_dbe_case {
++	const char *desc;
++	struct cfg80211_chan_def c;
++	u8 dbe[3];
++	bool fails;
++	u16 cf1;
++} chandef_dbe_cases[] = {
++	{
++		.desc = "non-HT failure",
++		.c = {
++			.width = NL80211_CHAN_WIDTH_20_NOHT,
++			.chan = &chan_6ghz_1,
++			.center_freq1 = 5955,
++		},
++		.dbe[0] = IEEE80211_UHR_DBE_OPER_BW_40,
++		.fails = true,
++	},
++	{
++		.desc = "2.4 GHz fails",
++		.c = {
++			.width = NL80211_CHAN_WIDTH_20,
++			.chan = &chan_2ghz_1,
++			.center_freq1 = 2412,
++		},
++		.dbe[0] = IEEE80211_UHR_DBE_OPER_BW_40,
++		.fails = true,
++	},
++	{
++		.desc = "DBE narrower",
++		.c = {
++			.width = NL80211_CHAN_WIDTH_320,
++			.chan = &chan_6ghz_1,
++			.center_freq1 = 5955 + 10 + 20 + 40 + 80,
++		},
++		.dbe[0] = IEEE80211_UHR_DBE_OPER_BW_160,
++		.fails = true,
++	},
++	{
++		.desc = "DBE to 320-1",
++		.c = {
++			.width = NL80211_CHAN_WIDTH_160,
++			.chan = &chan_6ghz_105,
++			.center_freq1 = 6475 + 30,
++		},
++		.dbe[0] = IEEE80211_UHR_DBE_OPER_BW_320_1,
++		.cf1 = 6425,
++	},
++	{
++		.desc = "DBE to 320-2",
++		.c = {
++			.width = NL80211_CHAN_WIDTH_160,
++			.chan = &chan_6ghz_105,
++			.center_freq1 = 6475 + 30,
++		},
++		.dbe[0] = IEEE80211_UHR_DBE_OPER_BW_320_2,
++		.cf1 = 6585,
++	},
++	{
++		.desc = "bad disabled subchannel bitmap - not enough in BSS (1)",
++		.c = {
++			.width = NL80211_CHAN_WIDTH_160,
++			.chan = &chan_6ghz_105,
++			.center_freq1 = 6475 + 30,
++			.punctured = 0x0001,
++		},
++		.dbe[0] = IEEE80211_UHR_DBE_OPER_BW_320_1 |
++			  IEEE80211_UHR_DBE_OPER_DIS_SUBCHANNEL_BITMAP_PRES,
++		/* DBE disabled subchannel bitmap == 0 */
++		.fails = true,
++	},
++	{
++		.desc = "bad disabled subchannel bitmap - too much in BSS (1)",
++		.c = {
++			.width = NL80211_CHAN_WIDTH_160,
++			.chan = &chan_6ghz_105,
++			.center_freq1 = 6475 + 30,
++			.punctured = 0x0001,
++		},
++		.dbe[0] = IEEE80211_UHR_DBE_OPER_BW_320_1 |
++			  IEEE80211_UHR_DBE_OPER_DIS_SUBCHANNEL_BITMAP_PRES,
++		/* DBE disabled subchannel bitmap == 0x0300 */
++		.dbe[2] = 0x03,
++		.fails = true,
++	},
++	{
++		.desc = "bad disabled subchannel bitmap - not enough in BSS (2)",
++		.c = {
++			.width = NL80211_CHAN_WIDTH_160,
++			.chan = &chan_6ghz_105,
++			.center_freq1 = 6475 + 30,
++			.punctured = 0x0001,
++		},
++		.dbe[0] = IEEE80211_UHR_DBE_OPER_BW_320_2 |
++			  IEEE80211_UHR_DBE_OPER_DIS_SUBCHANNEL_BITMAP_PRES,
++		/* DBE disabled subchannel bitmap == 0 */
++		.fails = true,
++	},
++	{
++		.desc = "bad disabled subchannel bitmap - too much in BSS (2)",
++		.c = {
++			.width = NL80211_CHAN_WIDTH_160,
++			.chan = &chan_6ghz_105,
++			.center_freq1 = 6475 + 30,
++			.punctured = 0x0001,
++		},
++		.dbe[0] = IEEE80211_UHR_DBE_OPER_BW_320_2 |
++			  IEEE80211_UHR_DBE_OPER_DIS_SUBCHANNEL_BITMAP_PRES,
++		/* DBE disabled subchannel bitmap == 0x03 */
++		.dbe[1] = 0x03,
++		.fails = true,
++	},
++	{
++		.desc = "bad disabled subchannel bitmap - bad bitmap",
++		.c = {
++			.width = NL80211_CHAN_WIDTH_160,
++			.chan = &chan_6ghz_105,
++			.center_freq1 = 6475 + 30,
++			.punctured = 0x0001,
++		},
++		.dbe[0] = IEEE80211_UHR_DBE_OPER_BW_320_1 |
++			  IEEE80211_UHR_DBE_OPER_DIS_SUBCHANNEL_BITMAP_PRES,
++		/* DBE disabled subchannel bitmap == 0x1100 */
++		.dbe[2] = 0x11,
++		.fails = true,
++	},
++	{
++		.desc = "good disabled subchannel bitmap (1)",
++		.c = {
++			.width = NL80211_CHAN_WIDTH_160,
++			.chan = &chan_6ghz_105,
++			.center_freq1 = 6475 + 30,
++			.punctured = 0x0003,
++		},
++		.dbe[0] = IEEE80211_UHR_DBE_OPER_BW_320_1 |
++			  IEEE80211_UHR_DBE_OPER_DIS_SUBCHANNEL_BITMAP_PRES,
++		/* DBE disabled subchannel bitmap == 0x0300 */
++		.dbe[2] = 0x03,
++		.cf1 = 6425,
++	},
++	{
++		.desc = "good disabled subchannel bitmap (2)",
++		.c = {
++			.width = NL80211_CHAN_WIDTH_160,
++			.chan = &chan_6ghz_105,
++			.center_freq1 = 6475 + 30,
++			.punctured = 0x0003,
++		},
++		.dbe[0] = IEEE80211_UHR_DBE_OPER_BW_320_2 |
++			  IEEE80211_UHR_DBE_OPER_DIS_SUBCHANNEL_BITMAP_PRES,
++		/* DBE disabled subchannel bitmap == 0x0003 */
++		.dbe[1] = 0x03,
++		.cf1 = 6585,
++	},
++};
++
++KUNIT_ARRAY_PARAM_DESC(chandef_dbe, chandef_dbe_cases, desc)
++
++static void test_chandef_dbe(struct kunit *test)
++{
++	const struct chandef_dbe_case *params = test->param_value;
++	struct cfg80211_chan_def c = params->c;
++	int ret;
++
++	KUNIT_EXPECT_EQ(test, cfg80211_chandef_valid(&params->c), true);
++
++	ret = cfg80211_chandef_add_dbe(&c, (void *)params->dbe);
++	KUNIT_EXPECT_EQ(test, ret != 0, params->fails);
++
++	if (params->fails)
++		return;
++
++	KUNIT_EXPECT_EQ(test, c.center_freq1, params->cf1);
++}
++
++static struct kunit_case chandef_test_cases[] = {
+ 	KUNIT_CASE_PARAM(test_chandef_compat, chandef_compat_gen_params),
++	KUNIT_CASE_PARAM(test_chandef_dbe, chandef_dbe_gen_params),
+ 	{}
+ };
+ 
+-static struct kunit_suite chandef_compat = {
+-	.name = "cfg80211-chandef-compat",
+-	.test_cases = chandef_compat_test_cases,
++static struct kunit_suite chandef = {
++	.name = "cfg80211-chandef",
++	.test_cases = chandef_test_cases,
+ };
+ 
+-kunit_test_suite(chandef_compat);
++kunit_test_suite(chandef);
+-- 
+2.34.1
+
 
