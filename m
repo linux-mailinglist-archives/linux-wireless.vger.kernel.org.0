@@ -1,82 +1,82 @@
-Return-Path: <linux-wireless+bounces-36483-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36484-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMmsHTISB2rgrQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36483-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 14:31:46 +0200
+	id +GTeCmkcB2rnrgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36484-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 15:15:21 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0951654F9A4
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 14:31:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A86A550509
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 15:15:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 788FB31352AD
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 12:12:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EE0A930FB779
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 12:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160C747DF96;
-	Fri, 15 May 2026 12:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E8F480342;
+	Fri, 15 May 2026 12:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C48BC3qt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mBKI0WdU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8859047ECC8
-	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 12:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9310147ECF3
+	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 12:12:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778847149; cv=none; b=UYGQwhkeyp+NRMTIMpqnQcullx4FcpjpiDDB//o8ZKItgBxD73hWW0CjaecZ1d1yAUaB/CK1qSMKk4jzcZS8wVDY623HOOBg0bb36rVdqSA0eEYUlmmHWX1IXguc2nUJkpzIyoH178np6YRkzpcr+sU0gLgbGyoK/XRRmcDSyIc=
+	t=1778847150; cv=none; b=PdnnkRGiPdElXJVvCNLOo13cSVW9TS+rRIcj7a6SoZMVBcpGJ04PNkULzWksVJOBEOaGt6i2D5AqoDb5a9Ktvbchdf6TLOEr8QCPox/3ldPM3XWanoOa8ICGRWpFZ2t6WXVKmW9+1bklA2LIpi1bXrabBTEGUfhWVHPuHoNdUs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778847149; c=relaxed/simple;
-	bh=nHcMBK6wG0TOu22YqkQZEX4prF+OO2NceKdzMNQ1dEA=;
+	s=arc-20240116; t=1778847150; c=relaxed/simple;
+	bh=2R3vKeNVW74nHrBVufrdcdbAaqqXsE5GSwxXB5EcMe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHkFtTtJOCh0BCCY28ybXMd6QeobABDznlWvZmyVm6I8s74QNkNxt6eXePTKU2MMplr9NLcqxqPggC30eRBkfzDTopzBJv2qEY34KjaXRyY90xIifSTcLCWA5hH9Q4scRYteGlTRhBhVFJ5AktKp8ctyt0UiPJHAvZzgmZNuCbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C48BC3qt; arc=none smtp.client-ip=209.85.160.173
+	 MIME-Version; b=AcozTBkRTSQ1uMYoMOhwdxRegWmftT+08hYV3F9OMhC5l4sHOCvFhi0fgWqH1jWaXo8GXVE+JHagYOYNeVfjA9nwpdLeD95hpIGhu4akO+c1GVxatvhRskfZQwAAfZVSSUCZD1+1iRp0uKkixKpaa9hK6ubaThRd6DatsEyfjUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mBKI0WdU; arc=none smtp.client-ip=209.85.160.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50e5ad864a6so88930141cf.0
-        for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 05:12:27 -0700 (PDT)
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-50e63771d91so88335621cf.0
+        for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 05:12:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778847146; x=1779451946; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778847148; x=1779451948; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rUcmngTs7ey+uIUzuqkXpKib26TeG2lJPiT+fn8FBYQ=;
-        b=C48BC3qtQ/OEIcT6iVMy8ZntDBUF4J7uQIHsgV7vRP7+l7C039gUMXoe2zxXsxTfPB
-         efexjD9gl7Akx9q8z6Savg0ii+7yBfoyczswGzXDfjR1Ec2GAyTpYRKux4TRubgPSi8R
-         4IYjUPqXDm50QzDc2Q9pORCCvrqcaewyuphXPuOAZWjINFskWsiyMLqga7r9K56152wT
-         0Uj+uM1gQRVy6ozQYHgZzFzm3SKKeBvntzIyzxdydXJz6wRiWngnvD9cqa6XwwD9RIRI
-         v3j+xjCLdEZD718L/uvZ6kwEqls2Jt0zqDAAeiIOkNtS4CLiTm9y/gSxxRTgL3F86dOG
-         43HA==
+        bh=amCrfYz+XZIkhe1QNRlSts2vKTBkBvty+ZpNysynPNw=;
+        b=mBKI0WdUBvoFb/OCKDjYLq67HP0ZPOpVe51UHLstAoW4bb4W3AQJIkXzrREm6wI96r
+         Y0vZDKVVcFQC1NqOALdKla57kQJeV6rUqGiau/sz4pe+MdWv6fmO7UVjZNSPt8OVdIyO
+         QB7iIXtG5vwb6LFGFpf4X1v1eFDWHUHXwDBWZLPw7nTvH0wsN0MlAjKnZhf66gkH7au2
+         AdagbL6qjCj+Dz6HzKXGkBrfsR5P7/3/QIT6MmbTFPSE/tXDsquKM+tigbXI+7T6ZdAL
+         5i6LvsTyTALE5iGWo9+t3Nt7/LpUo/aNbLyZd0Wj5LnldHvtlgbmnfDY4/g8LfLhbPcL
+         l5Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778847146; x=1779451946;
+        d=1e100.net; s=20251104; t=1778847148; x=1779451948;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rUcmngTs7ey+uIUzuqkXpKib26TeG2lJPiT+fn8FBYQ=;
-        b=j8SJ2DbQ3RrIkYvmz3yLmSADUPSMnvBaAdJjlWEnYB1pPFsVdAu2N9SES3+XRO4RHu
-         VJY9utLhx68Cj77775BXFoWOGZ9GffnH4s7JkSmtpit37Gwz4zdIOHJb9Ci9Xzy3Syig
-         QyR/Pvamzj6XAZbLBHZCVa8mpvFmWxpJrxop7WK3JS0mHFayDe54sxXaPM2T8ssnK+yd
-         +TadN5t66ThqRgrFR1gV8jLjzntMbigMs99zkbd7Mj9kOViS2YFyGNRgWzWcvfnT9B1i
-         Iruf2IIXBh0WHZotkshvaZb4zGUqrPCPVU6bbkb1qDEBNFpFnkvUmvCmeE2vBDWQR2TT
-         htfQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/yz4D3I+G6XAkt7tI4Afj1pAlWAbVUtCFSji1HJ+Nb0u9Ou4eLdKj2AsXVMr2t8sTDfLJPSKxs++H1H+JBkw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNTkkstowo+pXpyDAvREJ2NY5ESnQ/7poXyzRZ8ZEbk2f/RPs1
-	oSdRhAvWwfobtCQWaPBPSlHSBXyvj2sdzuuPkSI6aMJ0xddJK9lhaCl3
-X-Gm-Gg: Acq92OFxyAVArsverKJLnBCWRs7dy3UcbNkRNPC/j1Lpl2l68bQi42SBfYI+8mQ2q8l
-	AbVAzwJbNrDSsCBODUwFKVV06z8mRvVAu0mNqn6kx7TpomgxxJtEZdQjtioElAmJxNn+7eT0V7D
-	8sMELilTxfSVTBH35PVKzSXlnbkap6KwADjKb3MKfkmr5kd/DSFPnGSul1goBkg72EfE1pShSd6
-	kUE7Zp24LpRAvdDVgQkbpLdnjrSdB6cJO76Bmh3DdqRdhkfTLk1j8886uTZ3bHjUwfGrRHoeVmU
-	zjB6jBcQMyQn4AyWF7yfc4lx14ix1v867ozGkt5u/aVnKdnJe7NbBNYqBdqzJSfQVtqzdzbJvnl
-	fRcbzVFKHA3WNfADqB6SpNdhxKjGjdPuc0iHworEB+A5BKdLq1RWqazV2obe6YIFucM/hm3+qBH
-	zVoc9bN+Xc7RUvj2nk+hLzYt6Yb3zUmsgyDBYF2CDnqaBPAPeKpwpztQzex8tpTZa1Qa84fr9Gb
-	7+J4IS5M5JmH2P/HwUbPLxglytS2Seq27ksHJdCGWM=
-X-Received: by 2002:a05:622a:1e89:b0:509:30b0:8323 with SMTP id d75a77b69052e-5165a0a4269mr49097671cf.31.1778847146567;
-        Fri, 15 May 2026 05:12:26 -0700 (PDT)
+        bh=amCrfYz+XZIkhe1QNRlSts2vKTBkBvty+ZpNysynPNw=;
+        b=p0Nn1QBr/S31OjtIhag5qKvhCGavdTF+o8lJpUa/ObCYZhitGzuKd7Pznqa88IbUTK
+         VVSjKo/cRNJu6Dv8ZUIq7ds6DkGtG/BAAOJ0KaL6KuJLwTq9QsOrFwCkd+xoJXIuQRZS
+         IH8zi8CtLRIYuADndqY94cZY98t+uRz5Kkoe3gAFn5Bd0sNOAPELAm/EtF9DPTkmeB70
+         uA/FXfeybQDEz87kLC9fPG/wuZ0l/gEa3mSKiZrartn1YXcyxNfVMUXrbfpKGE3zjDDd
+         KGrsShKtZKf3b13kwtgnBJZCrn3odmGWd6Yr+YAJafNjW2jFN0Kg++Wx4e7V8vwk/Apu
+         hv/w==
+X-Forwarded-Encrypted: i=1; AFNElJ+oc+3vSHj0pGpKM0tMA7s07OX8Qfsa8gZFwXlFXeNQf95oSYDBbHHnRHpQKGK4mLDc6r51Qt3IbZbQ9hXMZA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwANcFJ6LeD/UpdS93fEC4Z7WY/yYRtK96RSbAftF6KSyWj3ida
+	QwUnLCrfVxVXyqZNhMi8ruvJCYB+gRXKepQY85UUjjsIBYDnux3AotM4
+X-Gm-Gg: Acq92OGOpQ0nyharTA3YjIYgIWPjTQlO5JcOOjDZ3sV8dmL1ESHJbt4yFot+cy6nTAb
+	BpIj7eyN0+JjZu6PatP8LLjHCOmWeh5OP+BhtzTy49cnSaamc2DCxjlSwASxG8O7GjjJ9/VFmzz
+	jqz4NLcNdZYCSMFmAcoCJbxGFNnf3yDu2H3T9yLUWEn2H9+HUAv2Z4XbEFUZYCtpoXNFP1vdtQH
+	1EVH55IFlJDBQwqITprzxwvFp6VIViAHxHMo5vZ8L8YZbQ6IP1Dqh4xBQ1hsFI4+r2KvUK2fgb/
+	+uhuKE0jBmBZI3jFJPwASGExx1ORRXkXkASIC4wK1UEpdgeBIYRRqPEAkobbHNO2KvIhZDiuH/i
+	mBWj2rfCw7XLUgZs5YsOB5OmK8QqnqDtsPDsWkylKv/n+USAX9chnqE4l0+XQQKc5GIVayITDIZ
+	wtX1iRusINQ2zuEpT5BBCqEeouSee7dkmgKej3odG+Cms8uHBxHJa7vEUp4p/KfiwpFsbCvSSTz
+	/5MfKzJk6QmW4T7HvB4DxpIeeliJrNup1f2he0q2vA=
+X-Received: by 2002:a05:622a:1f16:b0:50f:bc57:d69 with SMTP id d75a77b69052e-51659ed0e67mr48506521cf.0.1778847147439;
+        Fri, 15 May 2026 05:12:27 -0700 (PDT)
 Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516456888f6sm45534491cf.3.2026.05.15.05.12.25
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516456888f6sm45534491cf.3.2026.05.15.05.12.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 05:12:26 -0700 (PDT)
+        Fri, 15 May 2026 05:12:27 -0700 (PDT)
 From: Michael Bommarito <michael.bommarito@gmail.com>
 To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Cc: Johannes Berg <johannes.berg@intel.com>,
@@ -84,9 +84,9 @@ Cc: Johannes Berg <johannes.berg@intel.com>,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 2/4] wifi: iwlwifi: mvm: clamp set_freqs iteration to n_nd_channels
-Date: Fri, 15 May 2026 08:10:58 -0400
-Message-ID: <20260515121100.649334-3-michael.bommarito@gmail.com>
+Subject: [PATCH 3/4] wifi: iwlwifi: mld: include matches tail in match-info length check
+Date: Fri, 15 May 2026 08:10:59 -0400
+Message-ID: <20260515121100.649334-4-michael.bommarito@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260515121100.649334-1-michael.bommarito@gmail.com>
 References: <20260515121100.649334-1-michael.bommarito@gmail.com>
@@ -97,120 +97,101 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0951654F9A4
+X-Rspamd-Queue-Id: 2A86A550509
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36484-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36483-lists,linux-wireless=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,linux-wireless@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-iwl_mvm_query_set_freqs() iterates over bit positions
-0 .. SCAN_OFFLOAD_MATCHING_CHANNELS_LEN * 8 - 1 (= 0..55 on the v2
-path, 0..39 on the v1 path) and, for each set bit, performs:
+iwl_mld_netdetect_match_info_handler() validates the firmware
+notification length against sizeof(*notif) (the fixed-header
+size of struct iwl_scan_offload_match_info, 24 bytes) but then
+immediately memcpys NETDETECT_QUERY_BUF_LEN bytes from
+notif->matches:
 
-	match->channels[n_channels++] =
-		mvm->nd_channels[i]->center_freq;
+	if (IWL_FW_CHECK(mld, len < sizeof(*notif),
+			 "Invalid scan offload match notif of length: %d\n",
+			 len))
+		return true;
+	...
+	if (results->matched_profiles)
+		memcpy(results->matches, notif->matches,
+		       NETDETECT_QUERY_BUF_LEN);
 
-without constraining i against mvm->n_nd_channels. The pointer
-table mvm->nd_channels is kmemdup()ed at suspend time with
-exactly mvm->n_nd_channels entries (whatever the userspace
-NL80211_CMD_SET_WOWLAN request supplied as
-nd_config->n_channels; typical real-world values are 5..50).
-If the firmware response contains any matching_channels[] bit
-set at a position >= mvm->n_nd_channels, the indexed load reads
-a u8* slot past the end of the pointer-table allocation, then
-the immediate ->center_freq dereferences that wild pointer.
+NETDETECT_QUERY_BUF_LEN is
 
-The pre-existing caller guard
+	(sizeof(struct iwl_scan_offload_profile_match) *
+	 IWL_SCAN_MAX_PROFILES_V2)
+	= 18 * 8 = 144 bytes
 
-	if (mvm->n_nd_channels < n_channels)
-		continue;
-
-compares the bitmap's popcount to the table length, not the bit
-positions to the table length. A bitmap with three set bits at
-positions {50, 51, 52} has popcount 3 and passes the guard
-unconditionally, then walks 50+ entries off the end of
-mvm->nd_channels.
+so a firmware-emitted notif sized at exactly sizeof(*notif)
+(24 bytes) satisfies the guard yet the memcpy reads 144 bytes
+past the slab-allocated notification buffer.
 
 Reproduced under UML+KASAN via a KUnit harness that lifts the
-iteration logic. With nd_channels allocated as 5 entries and
-matching_channels bits set at positions 7 (immediate redzone)
-and 50 (far OOB), the kernel panics on the wild deref:
+length-validation + memcpy logic into a self-contained test.
+KASAN reports
 
-  Kernel panic - not syncing: Segfault with no mm
-  RIP: 0033:set_freqs_buggy.constprop.0+0xc1/0x15e
+  BUG: KASAN: slab-out-of-bounds in mld_match_info_buggy.constprop.0
+  Read of size 144 at addr ...
 
-(The selector 0x0033 in the RIP line is UML's user-mode segment;
-under UML, in-kernel code runs in ring 3 on the host. The trap
-is a kernel-context page fault on the wild-pointer deref.)
-
-Building drivers/net/wireless/intel/iwlwifi/mvm/d3.o under
+Building drivers/net/wireless/intel/iwlwifi/mld/d3.o under
 x86_64 allmodconfig with the fix applied yields no new warnings.
 
-Clamp the iteration upper bound to min(matching-bits-width,
-mvm->n_nd_channels) so high-position bits, however the firmware
-emitted them, cannot index past the pointer table. Mirror the
-fix for the v1 fallback arm.
+This is the same bug shape as the previously fixed sibling
+commit 744fabc338e8 ("wifi: iwlwifi: mvm: fix potential
+out-of-bounds read in iwl_mvm_nd_match_info_handler()") applied
+to the mvm peer function. The mld driver was added in February
+2025 and inherited the same length-check miss; apply the same
+correction shape.
 
 Cc: stable@vger.kernel.org
-Fixes: 8ed4e659f34c ("iwlwifi: mvm: add channel information to the netdetect notifications")
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
 Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 Assisted-by: Claude:claude-opus-4-7
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index c17ac62feec3..b04d8dd26cd0 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2514,16 +2514,20 @@ static void iwl_mvm_query_set_freqs(struct iwl_mvm *mvm,
- 		       IWL_UCODE_TLV_API_SCAN_OFFLOAD_CHANS)) {
- 		struct iwl_scan_offload_profile_match *matches =
- 			 (void *)results->matches;
-+		int max = min_t(int, SCAN_OFFLOAD_MATCHING_CHANNELS_LEN * 8,
-+				mvm->n_nd_channels);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+index ef98efc8fb1b..e89ec531cb06 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+@@ -1128,7 +1128,7 @@ iwl_mld_netdetect_match_info_handler(struct iwl_mld *mld,
+ 			 mld->netdetect))
+ 		return true;
  
--		for (i = 0; i < SCAN_OFFLOAD_MATCHING_CHANNELS_LEN * 8; i++)
-+		for (i = 0; i < max; i++)
- 			if (matches[idx].matching_channels[i / 8] & (BIT(i % 8)))
- 				match->channels[n_channels++] =
- 					mvm->nd_channels[i]->center_freq;
- 	} else {
- 		struct iwl_scan_offload_profile_match_v1 *matches =
- 			 (void *)results->matches;
-+		int max = min_t(int, SCAN_OFFLOAD_MATCHING_CHANNELS_LEN_V1 * 8,
-+				mvm->n_nd_channels);
- 
--		for (i = 0; i < SCAN_OFFLOAD_MATCHING_CHANNELS_LEN_V1 * 8; i++)
-+		for (i = 0; i < max; i++)
- 			if (matches[idx].matching_channels[i / 8] & (BIT(i % 8)))
- 				match->channels[n_channels++] =
- 					mvm->nd_channels[i]->center_freq;
+-	if (IWL_FW_CHECK(mld, len < sizeof(*notif),
++	if (IWL_FW_CHECK(mld, len < sizeof(*notif) + NETDETECT_QUERY_BUF_LEN,
+ 			 "Invalid scan offload match notif of length: %d\n",
+ 			 len))
+ 		return true;
 -- 
 2.53.0
 
