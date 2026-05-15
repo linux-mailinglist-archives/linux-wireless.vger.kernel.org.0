@@ -1,71 +1,73 @@
-Return-Path: <linux-wireless+bounces-36462-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36463-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKd8FqgGB2p+qwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-36462-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 13:42:32 +0200
+	id uGFuDncMB2oLrAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-36463-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 14:07:19 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E48D154EA5A
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 13:42:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D28754F144
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 14:07:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D64CF313E50D
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 11:15:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DA90F3222A33
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2026 11:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCC91A4F3C;
-	Fri, 15 May 2026 11:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF08D436346;
+	Fri, 15 May 2026 11:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M+q2eBMP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PNg+SmKT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F4947A0C7
-	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 11:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAC738425D
+	for <linux-wireless@vger.kernel.org>; Fri, 15 May 2026 11:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778843732; cv=none; b=JLg0rHV/AzGLX/Apm+60fJszTa09jdldMqokYGOiDJtP88LLbkvqAolUGJRwC1JVweil7NpNdaDlA622AJ28XnRmhXZDsC+zz87e3Sp1+wDQc7VM0rIemU9POhVNzYomlV+zSj0hXtQqpA5W7ig+F4Q8Nw+D2caNWhy9pFjD1Q0=
+	t=1778844503; cv=none; b=KFduLMG48/a3V8a9q8WcWDeskuoEaeU2F8dvApbckNIXurU2+cnUwbW1ofGH1NZwwOVP7poClIPTK5qVprsCynSreuJOujYH0vrnzi6Z5UKwTHzDCsUZgUkBBuCRKthx6X2qce13iQaASYW4yTG7yjmdJt3s4YACDtgJTo9B2qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778843732; c=relaxed/simple;
-	bh=wgl3D2ZhsYpbgMgKn9QJIJ3vT/u2hJLifclMt5mD+c0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HW0H6wSZt1k6M4z/mfBczPRnhXgk7ApNTNWDTdOJvbjIRr9Fvc8kgDHKIBGCyzVpYsP7ZFw3564h7YLEH1UorLtRMmPnIIRnIpPN4qLqVsaY8m8O9eh4U0YlOpOydGdMeH47Xz9k9594zQvnp1eu1AhnfZQgKMRUWxBEdvptAao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M+q2eBMP; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1778844503; c=relaxed/simple;
+	bh=1jyHj16GQck6/P85Sk8E38gjHLJVnFTSFrWlMKs+yDw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=K59mCsLNzvXGC5qnnMwW9D09/J6QaB5rZYOHPnJ5Ss5IixP3Db7jcxpEVTnzbEU0cA4meGMNxlViNDnhK6FOX01uMNIoSjnZIe5Kw1YNwgSu6HWKnchg/4imczXIlZaJJPDO/vpS4oFxp7gVSbl/jsUNgQ5sV1MKqHE+njyEXgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PNg+SmKT; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778843731; x=1810379731;
+  t=1778844502; x=1810380502;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=wgl3D2ZhsYpbgMgKn9QJIJ3vT/u2hJLifclMt5mD+c0=;
-  b=M+q2eBMPKhVGi7vHN8FW4MJqn8rG3BULB5l69PVOfDya6PvwzJICzQd5
-   tFyzDIWpvJnsgaCdsTOhnkr2ObOjtOA3u3d3n5Zt8b/ffriRM1SfmuFHc
-   sCJtdfL61bh/b5bmOJ060GgcoagB+3dmnDhqyMr+YQUwzknZrG+sLU37b
-   T3A8F5whA8s6Ot9TDb9anuw/nY10gb7sBXErtdcs9gJm4EG9Opn5F8YYW
-   WHhX+jyB2VO1ziv3dmwS9lqLfxvR5Ati7BNg9xAbD+O4Dw8t1MugwmCYr
-   DclGxks5F3piHnGBqZRFr8bnP/fLKmRGUOsfnt18XUdLVfE882LW8C9Y7
-   Q==;
-X-CSE-ConnectionGUID: vAkavoYqR9WzxMExLYFeww==
-X-CSE-MsgGUID: JtOYVm75TYCTz06Z8oqAvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="90901446"
+  bh=1jyHj16GQck6/P85Sk8E38gjHLJVnFTSFrWlMKs+yDw=;
+  b=PNg+SmKT1IPZeIXa2W+GEINQOO6SbJs4YdNJIWUQ5L7ez3tLQYK4x667
+   NnfbPK5dbFlsBcW/BKd0QBrZmzsEmXNRoppVPnN9PBIrYPuYeEia5dQjv
+   z25Zzu29QscOibphwaAv2jSLGMZmvCovubHsILuWdYBhDdiJGqfixhXlk
+   /3qIrVH/EIvOQqYvsqU+SPvuf3ZL3qFDH23kgGJtWDdcA5k18MW7kTRMG
+   f8q37dRTZefQ5asx0tIza+6pwZ1be6uNHFLoAdoWPcGhlWb1S5SVbbSUW
+   kQ9HhID1SvlZlN1W3JGRogrbfsZ/Fz6VzLT70mkAwSWfXVslC2mSa8iz9
+   A==;
+X-CSE-ConnectionGUID: Y0EtEaW1QxixkCw7Wq8OOw==
+X-CSE-MsgGUID: vyoerM+sTda25y9/gBpWGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="90902493"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="90901446"
+   d="scan'208";a="90902493"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 04:15:31 -0700
-X-CSE-ConnectionGUID: WwuLIoq+RTSnahTpRNP/5Q==
-X-CSE-MsgGUID: XcG9zU8bS42w9VpmWRIAOQ==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 04:28:22 -0700
+X-CSE-ConnectionGUID: 4u/MEO1jTuy6bVKc4ZRPRA==
+X-CSE-MsgGUID: eujwTsK6RhqA8IS0efVH1Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="262187832"
+   d="scan'208";a="262190550"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 04:15:29 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 04:28:20 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH wireless-next] wifi: mac80211_hwsim: Do not declare NAN support for Extended Key ID
-Date: Fri, 15 May 2026 14:15:16 +0300
-Message-Id: <20260515141442.365ca3ab29f9.Ib435168dcc1d7d8719a5612109035ca1950967ed@changeid>
+Cc: Daniel Gabay <daniel.gabay@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless-next] wifi: mac80211: allow cipher change on NAN_DATA interfaces
+Date: Fri, 15 May 2026 14:28:06 +0300
+Message-Id: <20260515142736.3188a47a23bf.I5fba3a111ffe054b46928aefa5c2d763fef51d4d@changeid>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -75,63 +77,78 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E48D154EA5A
+X-Rspamd-Queue-Id: 3D28754F144
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36462-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36463-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-Do not declare support for Extended Key ID for NAN, as defined in
-section 7.4 in the WiFi Aware specification v4.0 (in order to support
-security association upgrade).
+ieee80211_key_link() rejects pairwise key installation when the
+cipher differs from the existing PTK. Per Wi-Fi Aware version 4.0
+section 7.4, the ND-TKSA between the same NDI pair shall be updated
+when a new NDP requires a stronger cipher suite.
 
-Fixes: eaa7ce66c3e2 ("wifi: mac80211_hwsim: Fix possible NULL dereference")
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Exempt NL80211_IFTYPE_NAN_DATA from the same-cipher enforcement so
+the PTK can be replaced with a different cipher.
+
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim_main.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/mac80211/key.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-index dc9775cd9f54..d23b50b1ce86 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-@@ -5714,8 +5714,6 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+diff --git a/net/mac80211/key.c b/net/mac80211/key.c
+index 4b8965633df3..11c666bbbdb2 100644
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -867,11 +867,16 @@ int ieee80211_key_link(struct ieee80211_key *key,
+ 		alt_key = wiphy_dereference(sdata->local->hw.wiphy,
+ 					    sta->ptk[idx ^ 1]);
  
- 		hw->wiphy->nan_capa.n_antennas = 0x22;
- 		hw->wiphy->nan_capa.max_channel_switch_time = 0;
--		hw->wiphy->nan_capa.dev_capabilities =
--			NAN_DEV_CAPA_EXT_KEY_ID_SUPPORTED;
- 
- 		wiphy_ext_feature_set(hw->wiphy,
- 				      NL80211_EXT_FEATURE_SECURE_NAN);
+-		/* The rekey code assumes that the old and new key are using
++		/*
++		 * The rekey code assumes that the old and new key are using
+ 		 * the same cipher. Enforce the assumption for pairwise keys.
++		 * NAN Data interfaces are exempt: Wi-Fi Aware v4.0 section 7.4
++		 * requires upgrading the ND-TKSA when a new NDP negotiates a
++		 * stronger cipher suite.
+ 		 */
+-		if ((alt_key && alt_key->conf.cipher != key->conf.cipher) ||
+-		    (old_key && old_key->conf.cipher != key->conf.cipher)) {
++		if (sdata->vif.type != NL80211_IFTYPE_NAN_DATA &&
++		    ((alt_key && alt_key->conf.cipher != key->conf.cipher) ||
++		     (old_key && old_key->conf.cipher != key->conf.cipher))) {
+ 			ret = -EOPNOTSUPP;
+ 			goto out;
+ 		}
 -- 
 2.34.1
 
