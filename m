@@ -1,155 +1,164 @@
-Return-Path: <linux-wireless+bounces-36509-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36510-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFylLgZVCGqQjwMAu9opvQ
-	(envelope-from <linux-wireless+bounces-36509-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2026 13:29:10 +0200
+	id mLRuDdhjCGoQmAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-36510-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2026 14:32:24 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220A655B727
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2026 13:29:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBAC55BC62
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2026 14:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0B2E13007896
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2026 11:29:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 424493006038
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2026 12:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580D12DECDF;
-	Sat, 16 May 2026 11:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CF51DED40;
+	Sat, 16 May 2026 12:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o2GMWrD3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from gollum.nazgul.ch (gollum.nazgul.ch [82.197.176.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D10D3CF043
-	for <linux-wireless@vger.kernel.org>; Sat, 16 May 2026 11:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.197.176.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F571C5D72
+	for <linux-wireless@vger.kernel.org>; Sat, 16 May 2026 12:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778930946; cv=none; b=ZGefeVSLf2dV9lyhTkzyN2ZxP5c0zx2mVygyXyQ6bAMHJIhkSmDBdm5DYhyZboqj/GI4ukmshGA1/iA039o1/l4RM0WZw32XfLxzYZWSJ3vyAWBgqmZeXJDxP61P/lLKCHvogfHRmxWfRmxEc3vKinrSJllVzXlJ7Ljc9dWLJ5M=
+	t=1778934737; cv=none; b=iLQuts6utjrUk6wJ396Ha1beAHmu/acLKV8pbBmhxiZ3bX2fziZhGD1mNG2qSUv/ftwk+SY2jZWOZfCii/1VRIJWxOQog6nnGoJz0rRC32NQdSe1ko9mA/Xe719btgtXAaFzuJVJOHcuLlsZgocIQWK2kBZXsUp98PKq0OAUfmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778930946; c=relaxed/simple;
-	bh=992DBl48OGUizMmAn48mg1AQqW5a+TPeNno80dNlk6g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bewzgysikov4zvfypBzPO3Nu+h8tYYIZdZJ+3/XjGLbPHY5boTz4Xgcswt8Iqxo7AbjVSznUMtFWEcpfgQ0DxdWMbCWcQzSZBkOtCzZG2Yr333J+hFJ3Eva5UX908Kkc39kNpHSp+jDmMFcoIhWOROGBjhQ6l/ttzzEN7oxNFUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nazgul.ch; spf=pass smtp.mailfrom=nazgul.ch; arc=none smtp.client-ip=82.197.176.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nazgul.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nazgul.ch
-Received: from localhost (gollum.nazgul.ch [local])
-	by gollum.nazgul.ch (OpenSMTPD) with ESMTPA id 54103abb;
-	Sat, 16 May 2026 13:28:54 +0200 (CEST)
-Date: Sat, 16 May 2026 13:28:54 +0200
-From: Marcus Glocker <marcus@nazgul.ch>
-To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>, 
-	Jeff Johnson <jjohnson@qti.qualcomm.com>, Can Erkin Acar <canacar@gmail.com>
-Cc: Maxim Storetvedt <m.tvedt@tutanota.com>, ath12k@lists.infradead.org, 
-	linux-wireless@vger.kernel.org, jjohnson@kernel.org, kvalo@kernel.org, 
-	Mark Kettenis <mark.kettenis@xs4all.nl>
-Subject: Re: ath12k WCN7850: Q6 Hexagon fault at WLAON region 0x1792000 ~2s
- post-AUTHORIZE on X1E80100
-Message-ID: <qjzrnkxn5qjbdw6wwwxs5eigktut2ivsguoqbvejssqkuhadxx@iwahnswwhu57>
-References: <g7dkeq3uwg7eby57zcuu5eysf4tqomh5civlvkpnlziipn6xis@45eevyzgfmaq>
- <0b450204-9afc-4ba1-b9c5-1876b5a7078a@oss.qualcomm.com>
- <tzkh5t3bmiqff67g72rihapizz2u2dlj4xfrr324d6yg4rtltt@3qrsymzw7c2c>
- <92ace4b9-143e-4962-90fa-215a22e24796@oss.qualcomm.com>
- <cz6dbqafvulifyrefsxzwrlq5z5uojylphqkq5oydbn2bvcns5@bhj3hr2rvxhq>
- <fxrzvhcrbkugzfzmj6h5netczccav5hxfefzyns67t5jhakk5w@pp6addxjkdb2>
- <0ef41d1f-e9ec-4f90-9f6a-77cb8fa3a7e7@oss.qualcomm.com>
- <yjintdxwvtkgpehyjdtrs4wdwfli3c2vdyp2bweiauwssywjl5@srrtguf5eq4i>
+	s=arc-20240116; t=1778934737; c=relaxed/simple;
+	bh=QMUkT4N2a8PoJET3/9dopLGW6y/Irf6RMHjGFwjxeAU=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=pMWgbfpoDBv1+oIi169Jy4+Wjh6fkghq4dAbEvgQhu9dplfUrhuLHrrO14PdYDVFi/72oEbxZ8OHxWsI5Nex9o7dXhs73JEHtr//O2NCjDMcP8vyeQgW9n7w7KKCU49MUun7vG6h1ym3XF1PrKvbQMi1ZFpZ2Ub/aJ7LLr1/qVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o2GMWrD3; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488b0046078so5921255e9.1
+        for <linux-wireless@vger.kernel.org>; Sat, 16 May 2026 05:32:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778934734; x=1779539534; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mu+0i3burGzSu+GRGlH3AsPtWTpcj2oG1kS3CMN0aoo=;
+        b=o2GMWrD3tb7/XGJfXRLLJNjtmBLeGiRa5tEjk2uWfyvABvl49spBYJUkuNi64Zr6+I
+         MDyTNxTUSTxlDoffG1yns5ieI7wTRVH9oRjGOGpbA+w6TTNkIYmzYmizGRBlna50h5kV
+         WvXsi24vxeUCm+oqK1fDh1rzKELuy17OyyZaqyuJIIa0u5giPZXJ5yRiT3PwGfUoz1ow
+         Drxk30hufjWgJfCkmNuF3qR0e60ljwxIuOiu8HKj+po6HYVAFPZwJ1bwMY31SK6+3OQf
+         PvLDCWk2C4KFA0YVbm+rhOKG3p64RGsDDVyekFPz2ubNyuIQ9mgYu15WrMtuq3XUuq4W
+         ZNng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778934734; x=1779539534;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Mu+0i3burGzSu+GRGlH3AsPtWTpcj2oG1kS3CMN0aoo=;
+        b=EaoszI6lpt9YFzY6uLI4Viw3X6eGicRi2YWJmxrqhxJVP32/v2zSNovFqOH70QRGJ4
+         gmI9R+Xne64+wnUxk/GjSKgW/Htr/7vCW67oA3HKYM5NpudVFgDDL08jU5yfSU5Q+vcj
+         s3jGjCYKwcQDbGKPHGgcjNq9q4FrvqovRePMW4iBfN1J3zK+cDo3k2lWM0+DdT1lTUhw
+         bDzWg0jexe+Q+vU83yz7cRir+kG/TKsw7thXF7LUR7Yu5EP+8ExXQ1TGXspkll/J5bBW
+         ApeeLGb5kSuoxLeQ9gSh1faneuTgUF1A156b51L+kkOYpaIJQLqJ8lcGBy0jzIYO8bX/
+         NMaw==
+X-Gm-Message-State: AOJu0YyfY6U65wBQNLm89GnEkQhLxcDDWn+gLKlXpQam9icyb1RgHA9I
+	YxjsoHoYAVSlmYPzcPcQgXXxxnq9FZN/OZrx+229t+AKt47s81dw64duEevFUw==
+X-Gm-Gg: Acq92OF2pZEMddsTQZVwg+QvgWdtZ0bKz5BSlNRzdnvHnjONWZ42Kxndo9+BuygwW9u
+	CNeU5rBKkSCqmgSVvg9iXyf9K9Ai6pl3V8LqJx9Y4gaySTya+V6iUIxxcwViFmXYpTzmHHWkiS/
+	gd54wEibBLyUUHezNbYGZPN68nfCUzxCszsbn8S2GiEDn2ZuMAvgx5zcZscKN6k3ntZNXgYJ9rk
+	qCbb7XUcLngut5JXmxyvcBde1YAFDdW1k00rgisYA3f79DFkd7y/WOF7/TzWYs7UQ0oVxvyiSTU
+	QWK4JAC2vyUBFZbO+zOysKHN31iTmKpMlM0FVZTGyp1OS6hunuG3S/emYISedmYPlwW8Ocopk9H
+	fQgs/+gWxmWxDznLM+vErZ3IF7ssD4suXugQl0xp/az2BenlPPO9E2vukwH15TFapf6LdwRqlEJ
+	VW1nxzUAj2GhMty8ivqg7unDengVEAzA==
+X-Received: by 2002:a05:600c:8b18:b0:48f:e230:1d14 with SMTP id 5b1f17b1804b1-48fe632a187mr118856625e9.33.1778934734381;
+        Sat, 16 May 2026 05:32:14 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.93])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe5e9d5d9sm146249675e9.15.2026.05.16.05.32.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 16 May 2026 05:32:13 -0700 (PDT)
+Message-ID: <0c8e0cf1-13e9-4c67-a67f-5f6f79fd0658@gmail.com>
+Date: Sat, 16 May 2026 15:32:12 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yjintdxwvtkgpehyjdtrs4wdwfli3c2vdyp2bweiauwssywjl5@srrtguf5eq4i>
-X-Rspamd-Queue-Id: 220A655B727
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH rtw-next] wifi: rtw89: Add missing TX queue mappings for
+ RTL8922AU
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2CBAC55BC62
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.96 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36510-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[nazgul.ch];
-	TAGGED_FROM(0.00)[bounces-36509-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,qti.qualcomm.com,gmail.com];
-	FREEMAIL_CC(0.00)[tutanota.com,lists.infradead.org,vger.kernel.org,kernel.org,xs4all.nl];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[marcus@nazgul.ch,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Thu, May 14, 2026 at 07:20:51PM +0200, Marcus Glocker wrote:
+A user with MLO-capable router reports:
 
-> Hi Baochen, all,
-> 
-> On Thu, May 14, 2026 at 09:55:30AM +0800, Baochen Qiang wrote:
-> 
-> > > With that fixed, the firmware error is gone, and we can now receive
-> > > and IP from DHCP.  We're working on getting the TX path work next.
-> > 
-> > OK, good to see it gets fixed!
-> 
-> Since today we also got RX/TX fixed, so we have now an initial working
-> ath12k device with our qwz driver on OpenBSD.
-> 
-> What is still missing from the firmware side;  The PCI-id of the
-> WCN7850 chip included in the Samsung Galaxy Book4 Edge isn't included
-> yet in to the Linux firmware package.  I've addressed this a few times,
-> but unfortunately no feedback.  That's the additional PCI-id line
-> which is required for the Samsung Galaxy Book4 Edge:
-> 
-> --- board-2.json.orig	Sun Apr 26 08:06:37 2026
-> +++ board-2.json	Sun Apr 26 08:07:45 2026
-> @@ -160,7 +160,8 @@
->              {
->                  "names": [
->                      "bus=pci,vendor=17cb,device=1107,subsystem-vendor=17aa,subsystem-device=e0e6,qmi-chip-id=2,qmi-board-id=255",
-> -                    "bus=pci,vendor=17cb,device=1107,subsystem-vendor=1eac,subsystem-device=8003,qmi-chip-id=2,qmi-board-id=255"
-> +                    "bus=pci,vendor=17cb,device=1107,subsystem-vendor=1eac,subsystem-device=8003,qmi-chip-id=2,qmi-board-id=255",
-> +		    "bus=pci,vendor=17cb,device=1107,subsystem-vendor=17cb,subsystem-device=1107,qmi-chip-id=2,qmi-board-id=255"
->                  ],
->                  "data": "bus=pci,vendor=17cb,device=1107,subsystem-vendor=17aa,subsystem-device=e0e6,qmi-chip-id=2,qmi-board-id=255.bin"
->              },
-> @@ -202,4 +203,4 @@
->              }
->          ]
->      }
-> -]
-> \ No newline at end of file
-> +]
-> 
-> With the resulting 'qwz-wcn7850-hw2.0-board-2' firmware board file,
-> we have now proved that the ath12k driver is working with Linux and
-> OpenBSD on the Samsung Galaxy Book4 Edge.  Maxim Storetvedt did test
-> with Linux.
-> 
-> Given that, would it be possible to include this PCI-id to the next
-> linux-firmware package?
-> 
-> Thanks and Regards,
-> Marcus
+[ 753.080409] rtw89_8922au_git 2-2:1.0: Cannot map qsel to dma v2: 26
+[ 753.080417] rtw89_8922au_git 2-2:1.0: Cannot map qsel to dma v2: 26
+[ 813.649426] rtw89_8922au_git 2-2:1.0: Cannot map qsel to dma v2: 26
+[ 813.649445] rtw89_8922au_git 2-2:1.0: Cannot map qsel to dma v2: 26
+[ 813.855983] rtw89_8922au_git 2-2:1.0: Cannot map qsel to dma v2: 26
 
-Hi Jeff, Can,
+Map RTW89_TX_QSEL_B1_MGMT and RTW89_TX_QSEL_B1_HI to RTW89_TXCH_CH10.
+This is probably the right channel for these queues.
 
-Could you please help me with my above request?
+This function is also used for RTL8852AU and RTL8852CU, but those
+currently aren't used in DBCC mode with rtw89 so it makes no difference
+for them.
 
-Thanks,
-Marcus
+Link: https://github.com/morrownr/rtw89/issues/83#issuecomment-4314735734
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw89/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 432d46dfd26a..e370339569f1 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -854,6 +854,9 @@ u8 rtw89_core_get_ch_dma_v2(struct rtw89_dev *rtwdev, u8 qsel)
+ 	case RTW89_TX_QSEL_B0_MGMT:
+ 	case RTW89_TX_QSEL_B0_HI:
+ 		return RTW89_TXCH_CH8;
++	case RTW89_TX_QSEL_B1_MGMT:
++	case RTW89_TX_QSEL_B1_HI:
++		return RTW89_TXCH_CH10;
+ 	}
+ }
+ EXPORT_SYMBOL(rtw89_core_get_ch_dma_v2);
+-- 
+2.53.0
+
 
