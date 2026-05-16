@@ -1,193 +1,155 @@
-Return-Path: <linux-wireless+bounces-36508-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36509-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GTPNLJACGpEggMAu9opvQ
-	(envelope-from <linux-wireless+bounces-36508-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2026 12:02:26 +0200
+	id SFylLgZVCGqQjwMAu9opvQ
+	(envelope-from <linux-wireless+bounces-36509-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2026 13:29:10 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3806C55B033
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2026 12:02:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220A655B727
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2026 13:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 760DB300FB7B
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2026 10:02:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0B2E13007896
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2026 11:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12224355055;
-	Sat, 16 May 2026 10:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cOCdqW3X"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580D12DECDF;
+	Sat, 16 May 2026 11:29:06 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gollum.nazgul.ch (gollum.nazgul.ch [82.197.176.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29E32D662F
-	for <linux-wireless@vger.kernel.org>; Sat, 16 May 2026 10:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D10D3CF043
+	for <linux-wireless@vger.kernel.org>; Sat, 16 May 2026 11:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.197.176.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778925742; cv=none; b=L8/jNF8XvaW6+FHac2yVU9/jeEfid/w+8mrdIX7HJC4109Mjq5m6sL+ILUE5/vs/O9EXuPyq8edTfAMydavH/XJrxxL30Zgv6OEuKd7ibbYFMe10+LLnmKXEb8O49bO+1da/QGH8BZiYK6fhgczwNQVivWEkJk18Cp4ij9migac=
+	t=1778930946; cv=none; b=ZGefeVSLf2dV9lyhTkzyN2ZxP5c0zx2mVygyXyQ6bAMHJIhkSmDBdm5DYhyZboqj/GI4ukmshGA1/iA039o1/l4RM0WZw32XfLxzYZWSJ3vyAWBgqmZeXJDxP61P/lLKCHvogfHRmxWfRmxEc3vKinrSJllVzXlJ7Ljc9dWLJ5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778925742; c=relaxed/simple;
-	bh=OmhJi+nTOlnVfftR6ChzOJv5KbtlkxKshUmdIKoJllY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJo7v6fU4DiViIIFgsS1uV6nTAEiiCD6QYH9MyJpOEcGbdJ55AiETIbWffrp9V0990WhmD0e8r4GW1T2oH/4TYqDUvd2vuX4phx4wVHNA6nLJG/kc6Gs2iO5HUWKU6zwzjQFmrl9Q60E5zlpyJE6oLH6J9TOe6FwaN0LIeKVm6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cOCdqW3X; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c8095d7d75bso238584a12.1
-        for <linux-wireless@vger.kernel.org>; Sat, 16 May 2026 03:02:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778925740; x=1779530540; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6CDTu0uMmnhCUoH+aSiyceKxfV77uqNspzafxvvFlRg=;
-        b=cOCdqW3XOZOkk5pT9lpjYK+mLh8MLPRkAwD0DvZHlYuPrBgc+ZFs0C0nhXs6L1EXP4
-         hVTFIk2HomQXz8Kz11t2B3UQhMRdOAiHEg2tW3/ClVo993u28HZSS9CUaxPFxNiPDzUs
-         fGqxv/Qd9xjmHkATQ2GV9siPGRqUGUQAaRSaMtzzK/wWHOv7vYAiAEWp7QDU1bkekuuZ
-         914C0YFJ8kbA7txPvp1Q6RPptnF09PslDNEjbuL9YNIKoZ7vY5Y+N3LMF/jWv/qagync
-         BvhTP1O1tLb3j7ZRRCpGtZKwTbDhaZzLXNaNvy0r3CeUlP5jR+qgWnVrR0f+kmKS7n3f
-         +tuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778925740; x=1779530540;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6CDTu0uMmnhCUoH+aSiyceKxfV77uqNspzafxvvFlRg=;
-        b=tAbo9nMWMJrkeHaHwPOwMHsqkkrUdPlm7CTBpE0YbsdCy0mq/V8otBs09AJ04vK41Q
-         mIg5JCvsKYpwreUB6+OPIpOXPbze9S6/54GKUmJc3vhSJECO3DO5le/YTjYuLjdDMqu6
-         O+NhXIINfcyaiE/0mWWbt2OPhOHWFDQY/apSPlOTf53wi5avTs1y5Sn/KSn41Ww5p2YT
-         e+vmfhHPQ0cJ58D7N3Wva2UP6YjSyVAnqg8vr+UrvzdR0afOnohpcGIaSoTMzmIaBwBu
-         asQBTcl33JpUZ9ZzmjVtE/cKaLlOkOVRWseISFA2d63gCO6TiX1Z/oKJ9m1vy4EsKVYs
-         bflw==
-X-Gm-Message-State: AOJu0Ywi/Z65ENDwqTMBOOSURpWoftC3zhKibHDHOwNDA+77mji6DPIS
-	0zXV94qR7zLfDh1OAt5pwr5MlMWJxEJP4KHvlE/BXDtGMfjKke42wAcAroFc4BHlvxEOGA==
-X-Gm-Gg: Acq92OHvzph17iMX66kZnJ86/56IVork9bpDOG3sm3J0RSFrqi4ghYzHd9ehO939kQ3
-	gJ6xp5j/CPH+CIGca9XTLvJc/GI7tsmpqkUsdclBWpupiD58V/5a1yfimWN87sLn1uHhFlcK+Ge
-	E5G0xtrFCNtwQLNncRhW1bFj6vo+ZLqXc5gtb8YApzmLBdvZPn1rSYaOYXXIqIq95wwBtJyoJk/
-	sjqq+c+yaocMUwn89V7hEHJl/AxUuwNTzl7FOMT9JQz7uTgxtMTfT3Ky3SrWqJER74ARJCvOG7O
-	+570zZrGzs6Rlo6f7jiuzoFOdLakTaHdsSHtDsUEICLa3aCPx+teqI6RLkv25FiZJBQHm79mkZI
-	73ZPPd8B7DLHK16pmGjL2UdGo4x3tO1vB11IBTwOxY91xpag9ykwp7byBe2AvS8xiJsVSn+kJ3m
-	pFuWdmlJRPjSLcLrBVdKicLnkf4AD6ZuBs9d82cDG84acJWw==
-X-Received: by 2002:a17:903:fa5:b0:2b4:5cb8:99eb with SMTP id d9443c01a7336-2bd7e8bd34fmr89152795ad.27.1778925739604;
-        Sat, 16 May 2026 03:02:19 -0700 (PDT)
-Received: from adsl-dynamic-ipv6.slt.lk ([2402:d000:813c:1db1:d202:27df:3833:73d0])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d235c18sm81015995ad.81.2026.05.16.03.02.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2026 03:02:19 -0700 (PDT)
-From: Mohamed Aashif <maashif011@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: wireless-regdb@lists.infradead.org,
-	pkshih@gmail.com,
-	Mohamed Aashif <maashif011@gmail.com>
-Subject: [PATCH v2] wireless-regdb: Update regulatory rules for Sri Lanka (LK)
-Date: Sat, 16 May 2026 15:30:24 +0530
-Message-ID: <20260516100024.103241-1-maashif011@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <CAHrRpu=Ku=cK2Hd8xzJr82iPkj4Jzp57ch9wEE1KsoCiExbhbA@mail.gmail.com>
-References: <CAHrRpu=Ku=cK2Hd8xzJr82iPkj4Jzp57ch9wEE1KsoCiExbhbA@mail.gmail.com>
+	s=arc-20240116; t=1778930946; c=relaxed/simple;
+	bh=992DBl48OGUizMmAn48mg1AQqW5a+TPeNno80dNlk6g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bewzgysikov4zvfypBzPO3Nu+h8tYYIZdZJ+3/XjGLbPHY5boTz4Xgcswt8Iqxo7AbjVSznUMtFWEcpfgQ0DxdWMbCWcQzSZBkOtCzZG2Yr333J+hFJ3Eva5UX908Kkc39kNpHSp+jDmMFcoIhWOROGBjhQ6l/ttzzEN7oxNFUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nazgul.ch; spf=pass smtp.mailfrom=nazgul.ch; arc=none smtp.client-ip=82.197.176.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nazgul.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nazgul.ch
+Received: from localhost (gollum.nazgul.ch [local])
+	by gollum.nazgul.ch (OpenSMTPD) with ESMTPA id 54103abb;
+	Sat, 16 May 2026 13:28:54 +0200 (CEST)
+Date: Sat, 16 May 2026 13:28:54 +0200
+From: Marcus Glocker <marcus@nazgul.ch>
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>, 
+	Jeff Johnson <jjohnson@qti.qualcomm.com>, Can Erkin Acar <canacar@gmail.com>
+Cc: Maxim Storetvedt <m.tvedt@tutanota.com>, ath12k@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, jjohnson@kernel.org, kvalo@kernel.org, 
+	Mark Kettenis <mark.kettenis@xs4all.nl>
+Subject: Re: ath12k WCN7850: Q6 Hexagon fault at WLAON region 0x1792000 ~2s
+ post-AUTHORIZE on X1E80100
+Message-ID: <qjzrnkxn5qjbdw6wwwxs5eigktut2ivsguoqbvejssqkuhadxx@iwahnswwhu57>
+References: <g7dkeq3uwg7eby57zcuu5eysf4tqomh5civlvkpnlziipn6xis@45eevyzgfmaq>
+ <0b450204-9afc-4ba1-b9c5-1876b5a7078a@oss.qualcomm.com>
+ <tzkh5t3bmiqff67g72rihapizz2u2dlj4xfrr324d6yg4rtltt@3qrsymzw7c2c>
+ <92ace4b9-143e-4962-90fa-215a22e24796@oss.qualcomm.com>
+ <cz6dbqafvulifyrefsxzwrlq5z5uojylphqkq5oydbn2bvcns5@bhj3hr2rvxhq>
+ <fxrzvhcrbkugzfzmj6h5netczccav5hxfefzyns67t5jhakk5w@pp6addxjkdb2>
+ <0ef41d1f-e9ec-4f90-9f6a-77cb8fa3a7e7@oss.qualcomm.com>
+ <yjintdxwvtkgpehyjdtrs4wdwfli3c2vdyp2bweiauwssywjl5@srrtguf5eq4i>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3806C55B033
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yjintdxwvtkgpehyjdtrs4wdwfli3c2vdyp2bweiauwssywjl5@srrtguf5eq4i>
+X-Rspamd-Queue-Id: 220A655B727
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[lists.infradead.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36508-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maashif011@gmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[nazgul.ch];
+	TAGGED_FROM(0.00)[bounces-36509-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,qti.qualcomm.com,gmail.com];
+	FREEMAIL_CC(0.00)[tutanota.com,lists.infradead.org,vger.kernel.org,kernel.org,xs4all.nl];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[marcus@nazgul.ch,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,trc.gov.lk:url,lca.org.ls:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Update Sri Lanka regulatory domain based on the RTTE Type Approval
-Rules 2020 from the Telecommunications Regulatory Commission of
-Sri Lanka (TRC).
+On Thu, May 14, 2026 at 07:20:51PM +0200, Marcus Glocker wrote:
 
-Source: https://www.trc.gov.lk/content/files/licensing/RTTE_GAZETTE-English.pdf
+> Hi Baochen, all,
+> 
+> On Thu, May 14, 2026 at 09:55:30AM +0800, Baochen Qiang wrote:
+> 
+> > > With that fixed, the firmware error is gone, and we can now receive
+> > > and IP from DHCP.  We're working on getting the TX path work next.
+> > 
+> > OK, good to see it gets fixed!
+> 
+> Since today we also got RX/TX fixed, so we have now an initial working
+> ath12k device with our qwz driver on OpenBSD.
+> 
+> What is still missing from the firmware side;  The PCI-id of the
+> WCN7850 chip included in the Samsung Galaxy Book4 Edge isn't included
+> yet in to the Linux firmware package.  I've addressed this a few times,
+> but unfortunately no feedback.  That's the additional PCI-id line
+> which is required for the Samsung Galaxy Book4 Edge:
+> 
+> --- board-2.json.orig	Sun Apr 26 08:06:37 2026
+> +++ board-2.json	Sun Apr 26 08:07:45 2026
+> @@ -160,7 +160,8 @@
+>              {
+>                  "names": [
+>                      "bus=pci,vendor=17cb,device=1107,subsystem-vendor=17aa,subsystem-device=e0e6,qmi-chip-id=2,qmi-board-id=255",
+> -                    "bus=pci,vendor=17cb,device=1107,subsystem-vendor=1eac,subsystem-device=8003,qmi-chip-id=2,qmi-board-id=255"
+> +                    "bus=pci,vendor=17cb,device=1107,subsystem-vendor=1eac,subsystem-device=8003,qmi-chip-id=2,qmi-board-id=255",
+> +		    "bus=pci,vendor=17cb,device=1107,subsystem-vendor=17cb,subsystem-device=1107,qmi-chip-id=2,qmi-board-id=255"
+>                  ],
+>                  "data": "bus=pci,vendor=17cb,device=1107,subsystem-vendor=17aa,subsystem-device=e0e6,qmi-chip-id=2,qmi-board-id=255.bin"
+>              },
+> @@ -202,4 +203,4 @@
+>              }
+>          ]
+>      }
+> -]
+> \ No newline at end of file
+> +]
+> 
+> With the resulting 'qwz-wcn7850-hw2.0-board-2' firmware board file,
+> we have now proved that the ath12k driver is working with Linux and
+> OpenBSD on the Samsung Galaxy Book4 Edge.  Maxim Storetvedt did test
+> with Linux.
+> 
+> Given that, would it be possible to include this PCI-id to the next
+> linux-firmware package?
+> 
+> Thanks and Regards,
+> Marcus
 
-Key changes:
-- Change DFS region from FCC to ETSI (document references ETSI
-  standards EN 300 328 and EN 301 893 as the applicable radio
-  interface standards)
-- 2.4 GHz: expand to 2400-2483.5 MHz at 23 dBm
-- 5150-5250 MHz: 23 dBm with DFS
-- 5250-5350 MHz: 20 dBm with DFS (no TPC, 3 dB reduction per EN 301 893)
-- 5470-5725 MHz: 27 dBm with DFS (no TPC, per EN 301 893)
-- 5725-5875 MHz: 24 dBm with DFS (per ETSI EN 302 502)
+Hi Jeff, Can,
 
-Note: The TRC gazette conflicts internally by allowing 30 dBm for
-5725-5875 MHz while citing EN 301 893 (which doesn't cover this band).
-Lacking TRC clarification, we conservatively default to the ETSI
-EN 302 502 limits (24 dBm).
+Could you please help me with my above request?
 
-Signed-off-by: Mohamed Aashif <maashif011@gmail.com>
----
-Thanks for the review and catching the TPC and ETSI standard details!
-
-Changes in v2:
-- Split 5150-5350 MHz into 5150-5250 MHz (23 dBm) and 5250-5350 MHz
-  (20 dBm), adding AUTO-BW to both.
-- Applied a 3 dB reduction to 5250-5350 MHz and 5470-5725 MHz (now
-  27 dBm) to comply with ETSI limits since TPC is unsupported.
-- Capped 5725-5875 MHz at 24 dBm per ETSI EN 302 502.
-
- db.txt | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
-
-diff --git a/db.txt b/db.txt
-index fdc2c13..12cdafd 100644
---- a/db.txt
-+++ b/db.txt
-@@ -1058,12 +1058,15 @@ country LI: DFS-ETSI
- 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
- 	(57000 - 66000 @ 2160), (40)
- 
--country LK: DFS-FCC
--	(2402 - 2482 @ 40), (20)
--	(5170 - 5250 @ 20), (17)
--	(5250 - 5330 @ 20), (24), DFS
--	(5490 - 5730 @ 20), (24), DFS
--	(5735 - 5835 @ 20), (30)
-+# Source:
-+# https://www.trc.gov.lk/content/files/licensing/RTTE_GAZETTE-English.pdf
-+# Sri Lanka RTTE Type Approval Rules 2020, Table 2 - Wideband Data Transmission
-+country LK: DFS-ETSI
-+	(2400 - 2483.5 @ 40), (23)
-+	(5150 - 5250 @ 80), (23), DFS, AUTO-BW
-+	(5250 - 5350 @ 80), (20), DFS, AUTO-BW
-+	(5470 - 5725 @ 160), (27), DFS
-+	(5725 - 5875 @ 80), (24), DFS
- 
- # Source:
- # http://lca.org.ls/images/documents/lesotho_national_frequency_allocation_plan.pdf
--- 
-2.54.0
-
+Thanks,
+Marcus
 
