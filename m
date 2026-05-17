@@ -1,267 +1,130 @@
-Return-Path: <linux-wireless+bounces-36550-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36552-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FM1IfN1CWokbAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-36550-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 May 2026 10:01:55 +0200
+	id tZzjGjV9CWqVcQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-36552-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 May 2026 10:32:53 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263F455FDAB
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 May 2026 10:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC74F55FFA5
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 May 2026 10:32:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13F2E3019BAF
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 May 2026 08:00:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 785ED3009149
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 May 2026 08:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06DB33987;
-	Sun, 17 May 2026 08:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47DE345CCE;
+	Sun, 17 May 2026 08:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ArpiaEU7"
+	dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b="PMO/+ude"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from vinatta.cz (vinatta.cz [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214AA2798F3
-	for <linux-wireless@vger.kernel.org>; Sun, 17 May 2026 08:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED7B36AF6;
+	Sun, 17 May 2026 08:32:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779004846; cv=none; b=C87fOqmGGxeEB0wALPzIQhirErFHUV20C/T6Um6IwNkGCC78q7YjN73qly9rzmrFN5fEd1Zwn+MOn6zHhbY+wrTqWEjyMW8oCwv6gUUlK1AOXmXoMi6ogpEwEnPTPS3pjKk9+rzi/y/JfwpnL9Q3XN+XKgwJ5R8GmAqLkru5CrY=
+	t=1779006769; cv=none; b=Xl/6miQSGPYNW7Ox07HFGBnLJpwMUnx5rXc8xrTIsPsrsBc4hyK1/62DZ0mH9VXUfk1Q5yzZS0h/5faw+ZevPFkG+ueJtV+dlrH7JpkQLs8pGMs80HK2R9k0/4xPpd1CtTYm92h6YWxyVeEOkKtuuWedipPl67O6hhfL4XT/8KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779004846; c=relaxed/simple;
-	bh=3qYSn0QtRRhkl8spkxwYCc/uTts7ClJ17G8FhUtBOOg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kvNdVuWS8NOdc/RSj0a1Se0tw5ODCfwVhFyk0K9DERSVnSw+Qp3vyjqX2nJpZWDA9ItYk+qwW2Y+6IE3CcBb/buc9vbK7hmuxGEK1Afmy8S2P3SmbZbd21DLSq051qgmmBCT9TVOp5YG2TXAVcFO8A2N9/VOQ3zjWvWcK0lhFyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ArpiaEU7; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779004845; x=1810540845;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3qYSn0QtRRhkl8spkxwYCc/uTts7ClJ17G8FhUtBOOg=;
-  b=ArpiaEU7uMlxHyFQPHM9dpCqhMm4n82EhQGFzgN+NilEQXVIEFkl9Zor
-   suHV+uYSxJMAnq4Oh2W+w+eKdW7R0pl6rUzhdksXYTLua+5g8vee7ISee
-   KApWGeEJogBRRYF21GIIJM98uzflTDntT+LNJYwI2XMljD3X9DSvnbuaX
-   kiGS0njvagd5Ab0uxcTlaxEvgk4pBA6ZIzdFl6sINl7DC3TMML+iFQaAi
-   +SMcTIuzNkk6h6JbLa9KyarlTh/Gk6BC+zthzxgYvwoD/lOZ2EHbv5HVM
-   3Q5WL7QgTP9EWKpBoLmwrhqSHxQ6FTDYmVoaUGkYc92vyl0NJHD+HKi93
-   A==;
-X-CSE-ConnectionGUID: j8V/fOZTSeCshTZx53o/vQ==
-X-CSE-MsgGUID: Gop2wIgSTFeA6pH5ZTunWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11788"; a="79606981"
-X-IronPort-AV: E=Sophos;i="6.23,239,1770624000"; 
-   d="scan'208";a="79606981"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2026 01:00:44 -0700
-X-CSE-ConnectionGUID: H7FjBUujQ9el84RYA1QSCg==
-X-CSE-MsgGUID: 2AdZ1YTESQim8o7gO6h+6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,239,1770624000"; 
-   d="scan'208";a="236490536"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2026 01:00:44 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 iwlwifi-next 15/15] wifi: iwlwifi: transport: add memory read under NIC access
-Date: Sun, 17 May 2026 10:59:59 +0300
-Message-Id: <20260517100550.7bb1ea51c347.I91420a24fb0c481c75a2600d60e1365c15c1c5a9@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260517075959.2815365-1-miriam.rachel.korenblit@intel.com>
-References: <20260517075959.2815365-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1779006769; c=relaxed/simple;
+	bh=OxaLP5J/GZlEF9ERJgv3Nk5LgC1koMIzY2yYzqkHqo0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=tgV0fNw/TrQSa7Pn6fprKnoNMIZ4GCn69huMOT8To+hcxEU9nhAJUxt49rjp4e7xuyq8XBnp/gxfzgsMY79/b4lNhjAyrn127+Q+gCLMvFNtywjRCtu7ekFL4VU10DRJLstaftSQ8KlY6KkEGunQqsTRUQdOy+1Z+126nQv5HpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=vinatta.cz; dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b=PMO/+ude; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vinatta.cz
+DKIM-Signature: a=rsa-sha256; bh=OxaLP5J/GZlEF9ERJgv3Nk5LgC1koMIzY2yYzqkHqo0=;
+ c=relaxed/relaxed; d=vinatta.cz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@vinatta.cz; s=default; t=1779005699; v=1; x=1779437699;
+ b=PMO/+udeo7XzeJ8ziq0fMVnhQ+lOkfiqksINzGQTUTMbfUvnCquMjhKwC3iwPY69pXYaTPBr
+ 0sYDtwXBrRrnzTxUb9iMiyQ1fWScUadCw1gNsRPnH3MAf89gDDidD+fIjXGtKdtEbyaylXRkjb4
+ KAqHsz2O73Xe2rKMmCUWIhfn6x0SyvfnJuJubOJMAZyWwgoOn7RAC9RN8hQjUIlP9S8R6bWfN0p
+ gslmcWbFPc1rV0XGiUzGb/CTfDGc+N/Z2rK0l6C+Yi008AthGl+Yt8jxLtjvtzfoUe37i/vEH38
+ XEL331//YH1DNuli4G5ud92X6UHMl0ipgir8EUdNwZs0w==
+Received: by vinatta.cz (envelope-sender <karel@vinatta.cz>) with ESMTPS id
+ 6a5c1ecf; Sun, 17 May 2026 10:14:59 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 263F455FDAB
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 17 May 2026 10:14:58 +0200
+Message-Id: <DIKSVZCAQES1.35I4QY11LBVNV@matfyz.cz>
+Cc: "Brian Norris" <briannorris@chromium.org>, "Francesco Dolcini"
+ <francesco@dolcini.it>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, "Andrew Lunn"
+ <andrew@lunn.ch>, "Gregory Clement" <gregory.clement@bootlin.com>,
+ "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>, "Ulf Hansson"
+ <ulf.hansson@linaro.org>, "Frank Li" <Frank.Li@nxp.com>,
+ <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-mmc@vger.kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
+ <phone-devel@vger.kernel.org>, "Jeff Chen" <jeff.chen_1@nxp.com>, "Peng
+ Fan" <peng.fan@nxp.com>, <david@ixit.cz>
+Subject: Re: [DONOTAPPLY RFC PATCH v2 0/4] WiFi support for
+ samsung,coreprimevelte
+To: "Johannes Berg" <johannes@sipsolutions.net>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <20251026182602.26464-1-balejk@matfyz.cz>
+ <DEJL1ATTQMVE.120JV9YW59I27@matfyz.cz>
+ <aSnWYS2g5slVFaSk@gaggiata.pivistrello.it>
+ <DI5L100Q1RKO.1A68EJIPWYSRC@matfyz.cz>
+In-Reply-To: <DI5L100Q1RKO.1A68EJIPWYSRC@matfyz.cz>
+X-Rspamd-Queue-Id: DC74F55FFA5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.44 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[vinatta.cz:s=default];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[matfyz.cz : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36550-lists,linux-wireless=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-36552-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[chromium.org,dolcini.it,kernel.org,dujemihanovic.xyz,lunn.ch,bootlin.com,gmail.com,linaro.org,nxp.com,vger.kernel.org,lists.infradead.org,lists.sr.ht,ixit.cz];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[balejk@matfyz.cz,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[vinatta.cz:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vinatta.cz:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Johannes Berg <johannes.berg@intel.com>
+Johannes,
 
-Add functions to be able to do memory read under NIC access,
-in order to use them later during firmware dump. These may
-drop and re-acquire the spinlock, but will not acquire and
-release the NIC access.
+Karel Balej, 2026-04-29T12:55:23+02:00:
+> Brian, what are the options here now? Would it be possible to make an
+> exception and accept the patches without the firmware being in
+> linux-firmware? This is an old device with no mainstream audience so I
+> expect everyone who will want to use it will be able to supply the
+> firmware themselves and it would be great to not have to keep the
+> patches in a fork, especially when trying to build on top of them
+> further (such as to fix the driver-firmware incompatibilities discussed
+> in one of the patches of this series).
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- .../net/wireless/intel/iwlwifi/iwl-trans.c    |  6 +++
- .../net/wireless/intel/iwlwifi/iwl-trans.h    | 16 ++++++
- .../intel/iwlwifi/pcie/gen1_2/internal.h      |  2 +
- .../intel/iwlwifi/pcie/gen1_2/trans.c         | 54 +++++++++++++++++++
- 4 files changed, 78 insertions(+)
+would you please let us know whether there is any chance an exception
+could be made for this chip regarding the firmware or whether there is
+any other way to upstream the support?
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-index 5b44e15fe64d..0009488ca51b 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-@@ -459,6 +459,12 @@ int iwl_trans_read_mem(struct iwl_trans *trans, u32 addr,
- }
- IWL_EXPORT_SYMBOL(iwl_trans_read_mem);
- 
-+int iwl_trans_read_mem_no_grab(struct iwl_trans *trans, u32 addr,
-+			       void *buf, u32 dwords)
-+{
-+	return iwl_trans_pcie_read_mem_no_grab(trans, addr, buf, dwords);
-+}
-+
- int iwl_trans_write_mem(struct iwl_trans *trans, u32 addr,
- 			const void *buf, int dwords)
- {
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 1ed6bcb7882c..3ae840e546e8 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -919,6 +919,14 @@ void iwl_trans_write_prph(struct iwl_trans *trans, u32 ofs, u32 val);
- int iwl_trans_read_mem(struct iwl_trans *trans, u32 addr,
- 		       void *buf, int dwords);
- 
-+/*
-+ * Note the special calling convention - it's allowed to drop the
-+ * internal transport lock and re-enable BHs temporarily, but will
-+ * not release NIC access.
-+ */
-+int iwl_trans_read_mem_no_grab(struct iwl_trans *trans, u32 addr,
-+			       void *buf, u32 dwords);
-+
- int iwl_trans_read_config32(struct iwl_trans *trans, u32 ofs,
- 			    u32 *val);
- 
-@@ -934,6 +942,14 @@ void iwl_trans_debugfs_cleanup(struct iwl_trans *trans);
- 				   (bufsize) / sizeof(u32));	\
- 	})
- 
-+static inline int
-+iwl_trans_read_mem_bytes_no_grab(struct iwl_trans *trans,
-+				 u32 addr, void *buf, u32 bufsize)
-+{
-+	return iwl_trans_read_mem_no_grab(trans, addr, buf,
-+					  bufsize / sizeof(u32));
-+}
-+
- int iwl_trans_write_imr_mem(struct iwl_trans *trans, u32 dst_addr,
- 			    u64 src_addr, u32 byte_cnt);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
-index 24f8714eae9f..abc0c831d1ca 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
-@@ -1186,6 +1186,8 @@ u32 iwl_trans_pcie_read_prph(struct iwl_trans *trans, u32 reg);
- void iwl_trans_pcie_write_prph(struct iwl_trans *trans, u32 addr, u32 val);
- int iwl_trans_pcie_read_mem(struct iwl_trans *trans, u32 addr,
- 			    void *buf, int dwords);
-+int iwl_trans_pcie_read_mem_no_grab(struct iwl_trans *trans, u32 addr,
-+				    void *buf, u32 dwords);
- int iwl_trans_pcie_sw_reset(struct iwl_trans *trans, bool retake_ownership);
- struct iwl_trans_dump_data *
- iwl_trans_pcie_dump_data(struct iwl_trans *trans, u32 dump_mask,
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
-index 50342604491d..1c4ee76d8387 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
-@@ -2424,6 +2424,15 @@ bool iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
- 	return false;
- }
- 
-+static void iwl_trans_pcie_resched_with_nic_access(struct iwl_trans *trans)
-+{
-+	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
-+
-+	spin_unlock_bh(&trans_pcie->reg_lock);
-+	cond_resched();
-+	spin_lock_bh(&trans_pcie->reg_lock);
-+}
-+
- void __releases(nic_access_nobh)
- iwl_trans_pcie_release_nic_access(struct iwl_trans *trans)
- {
-@@ -2506,6 +2515,51 @@ int iwl_trans_pcie_read_mem(struct iwl_trans *trans, u32 addr,
- 	return 0;
- }
- 
-+int iwl_trans_pcie_read_mem_no_grab(struct iwl_trans *trans, u32 addr,
-+				    void *buf, u32 dwords)
-+{
-+	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
-+#define IWL_MAX_HW_ERRS 5
-+	unsigned int num_consec_hw_errors = 0;
-+	u32 offs = 0;
-+	u32 *vals = buf;
-+
-+	lockdep_assert_held(&trans_pcie->reg_lock);
-+
-+	while (offs < dwords) {
-+		/* limit the time we spin here under lock to 1/2s */
-+		unsigned long end = jiffies + HZ / 2;
-+		bool resched = false;
-+
-+		iwl_write32(trans, HBUS_TARG_MEM_RADDR,
-+			    addr + 4 * offs);
-+
-+		while (offs < dwords) {
-+			vals[offs] = iwl_read32(trans, HBUS_TARG_MEM_RDAT);
-+
-+			if (iwl_trans_is_hw_error_value(vals[offs]))
-+				num_consec_hw_errors++;
-+			else
-+				num_consec_hw_errors = 0;
-+
-+			if (num_consec_hw_errors >= IWL_MAX_HW_ERRS)
-+				return -EIO;
-+
-+			offs++;
-+
-+			if (time_after(jiffies, end)) {
-+				resched = true;
-+				break;
-+			}
-+		}
-+
-+		if (resched)
-+			iwl_trans_pcie_resched_with_nic_access(trans);
-+	}
-+
-+	return 0;
-+}
-+
- int iwl_trans_pcie_read_config32(struct iwl_trans *trans, u32 ofs,
- 				 u32 *val)
- {
--- 
-2.34.1
-
+Thank you and best regards,
+Karel
 
