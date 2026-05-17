@@ -1,157 +1,165 @@
-Return-Path: <linux-wireless+bounces-36556-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36557-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cD+MLY0/CmqbyAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-36556-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 00:22:05 +0200
+	id 4aCEOEpFCmqcygQAu9opvQ
+	(envelope-from <linux-wireless+bounces-36557-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 00:46:34 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234C3564291
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 00:22:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E6156434D
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 00:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 741CA3006B0D
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 May 2026 22:22:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4CFDC30087A3
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 May 2026 22:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4C83D4114;
-	Sun, 17 May 2026 22:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8DD302753;
+	Sun, 17 May 2026 22:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hahzvdQm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JhN56VSA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A7C3D47C4
-	for <linux-wireless@vger.kernel.org>; Sun, 17 May 2026 22:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766203009E1
+	for <linux-wireless@vger.kernel.org>; Sun, 17 May 2026 22:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779056520; cv=none; b=b0UUym4qR/eOoFDSWWg4illz5BpeDyTYuc6JINGXvVwSjOpkPtuKhDXgR+6Kfm5Gg7Z6dIrTOORIRECPbtOCDPCtMO+L8/AWWHBLGf0kuS/7EZf9RFiTqvbBCXQzXlwIroKsaIi1dNhTmuz8soyRWuzT4pMugPFKqGEXgIsnhxI=
+	t=1779057991; cv=none; b=URUDPcJ3sNKt75lm9zARaLJrWyrIaKJFnBrI9cl+0G50hxtfjUrR/jU98f0nq8jZgJZrrkNsTLeBAtVOWeb8wGSEFFrCR7aIXZdsv4OIZyJxidIf9XpmvYclmQwhLGCYVVUnoUEDxMWPh4hPonYpdbCug4leDxODoJHou/GHukA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779056520; c=relaxed/simple;
-	bh=K0SSn60mCQl56nz9f9e2zbyY44JFauDepI04YuVqcic=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fU7lSU/gzYkruc0QqugmsBnjdss3C3VGx+dBno3RXS0FvgvJleTsCGUsjMVA9WCPrgBRsHQ6ZJUNp/cdDmxD4vxE/oLBVbuqFRuufkKWhDeiJGm2CFhFWGrS6rf7KzBQuv+lyxSvVtHk8xL2m7sfBfA6i65uCtNtcozybdtn+4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hahzvdQm; arc=none smtp.client-ip=209.85.210.181
+	s=arc-20240116; t=1779057991; c=relaxed/simple;
+	bh=6H1Vsu3hcFYqN/1J56hlrnz9lSQww5OPgA0UX662gFw=;
+	h=From:Date:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=HstMMwA0Jl8p83uCugTUKwEd8OFnVsz+A7Y9eGGzB7fsRJoYvZs3Bom5+V5RmcY7KwSsHu3WjUPwoZRPO8WI1XUkLQffhcecFTQcatIvD3DrWmm7ZgjF1xP0356VU+iQm995ostZmpww5fkuki+F3C9Jf+s2lyJd5XP8Stv3r1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JhN56VSA; arc=none smtp.client-ip=74.125.82.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82fa8d6425bso666338b3a.0
-        for <linux-wireless@vger.kernel.org>; Sun, 17 May 2026 15:21:57 -0700 (PDT)
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2f0d3e07e30so6934647eec.0
+        for <linux-wireless@vger.kernel.org>; Sun, 17 May 2026 15:46:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779056516; x=1779661316; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=za5+H7IhaEyLgXUVDAOZc+B91qrQGFaHEmPiC7q8H9E=;
-        b=hahzvdQmKWjswZ7kD/6xBrTq0dn3p8xdfICAYiZpgnZ89frgSgDH/FlOLIGwWr7mWX
-         EAsnrEcPJLGAZOrujqOXHolmsBGQP293w/Y5ht4ffgMgv1XzP3mPPg/XIla91Rp579lz
-         GhBOlMRNm/ggLQpu7gLHyZw2cZI6lLCPrE70nVJCPiZWwcVuS6db60DvRqg1WJZfcPhX
-         3aIaItgTz+97jrDzlcfiAHbRMAnjGQzhrMEw3dDLAaBv+Pos4G9pQHjkwscHvgsY/2m1
-         EB3o6+ZDD2hlMFhkyImNCmKr3OWTe3/Gg06jEg+Fs2kVxjVdzIuMRIUgom/n/eFdO8k8
-         Pu8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779056516; x=1779661316;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779057989; x=1779662789; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:date:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=za5+H7IhaEyLgXUVDAOZc+B91qrQGFaHEmPiC7q8H9E=;
-        b=DqY331lnkTKGpoJDy9CEpMFuJzcQhCF7fgl3qv4Uolz73vk6ibxgGJCU0ng2JgldYE
-         Icw7Dsy8YBEqh84JS9z9eUmmLQDZFcsO+QYNdUURMZp0TH/kk1RIuPenbBGIucvZY3ZI
-         LgqQujFsCMamATWokChCqAKg8m247A0lGwlEe5Q2c/dDpFzcXC4vNqyh8NuSn69lF31W
-         KSPO3BgbecAP0/ZvwwG5shrKqLuOqHs5KEMZDcrqtdK7nQ/ZodHZd28me37V7yx0//fy
-         49srUC+Ow0P5vQfbo1iLda5r1ySn34hS15GMTrOoWMFzIHsyyz0/C8F8lAfscIhnqh2N
-         Yigg==
-X-Gm-Message-State: AOJu0YwSX8T5gQ9KcpT9CLA88AaOxPd0IviBUeDfWwowt1nk3LArMvgw
-	bUhivzivBSFLwJLVWmY/G4icVdE3ApZ6gbAfgTD/J9sZKh2yfHASDlb+uH/lGA==
-X-Gm-Gg: Acq92OH4VYARXif4yUih3eICOgLaSnXB7RE3jtJyG7txvTvklfP2qq19jcSz1s+Zdax
-	LZNiknPXLpWDzu/BldmHa9d9LXoZXpFauVkg3WpomcwlmYyszvlXg425eUuxtjfxF7zmGw8uYJt
-	kqHSWBBVQPkGFwrjImalZ5+bG/I1JkbVMRLQG/kSFcmC0PAP2tiWODJrXX6O+q7yGmntUBm8omi
-	MBCwDi2bYp+k1mOMVyQLldOtMd3C5qt8aXUv8tAom8msQ0pHkjORkmCLnMXTN1b8QPrHJh01s4E
-	SDZdYFFG0ISqWmd7KjcqsRtBe/RjGr1vNUzgKDIm9wM5j5PeGqBNVSOQE4pHDuc/1Wxi/5y0QPI
-	YQwA3ZdCXMnmermM8hufkNBMkCYaKUT1dcpSeUGDBC/Nz6CRFZ+O1yW8BJBPcqJ0ityVk1OEfY7
-	VaJunGz9+xkbk2rpwaWrIBA+kAwjMfmyCyYvVxu36JxMh1qT0LTKBFYM8i0n5P+fs1Ec9sKwdbU
-	5nKAjSjQDA6Pou7P0uSj7FnYiZJwdJZ1og=
-X-Received: by 2002:a05:6a00:398d:b0:83e:d957:e5b6 with SMTP id d2e1a72fcca58-83f33de50e3mr11389471b3a.36.1779056515912;
-        Sun, 17 May 2026 15:21:55 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f19664212sm14366243b3a.2.2026.05.17.15.21.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 15:21:53 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
+        bh=6H1Vsu3hcFYqN/1J56hlrnz9lSQww5OPgA0UX662gFw=;
+        b=JhN56VSAcNrzz7vVFtQHh6LD+ksXISLTn18Ia3iHt4cILMkpGj5WtHQ5BRgsaH8zWI
+         y/AqdI/7RZ1Ehn3aGG1DoB/NXn8/pVIOaYgHovXTAu3+i2N7yPWSPYBzja6aJeYZ6V3m
+         PSJiBvP2kx5XODs1c8GoGZ9/sUxG2mCOBMENXg+vAxTFgcCnGqYSI+2DYamOorJeLV2J
+         KS4nwqrsJhCC723QSnWv/WBS97uKJrJIVRW/B8AEZhZRFKq5e5vSj2COyKk7o4CEOi6C
+         3GG89OZ5eAmndTQYTSVfKWb6e2EWbXJF34446BBgek76Iu8Z5bAD/br4WeVJHEb7YIHo
+         /psA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779057989; x=1779662789;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:date:from:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6H1Vsu3hcFYqN/1J56hlrnz9lSQww5OPgA0UX662gFw=;
+        b=MS6ao3kgUAImj0s9X+tg/PrhGZSJzQrcrdr0Szw5oB2py9FlYvrwLniFjoktrRufo5
+         uzeOUnXiZfYTCUYHy3D6TCsGHr0a+N/v0Toq8WY+JN7JoSQEdnOxxAK3NLOm19N+DteZ
+         D6/RlnYZnwAAUSHbx4vtN5SxpQ3sfpKhymrMVD27nTHPF9JEpddZIX6iavtSONqQRUBR
+         /PaYgFTeUzp74pFtZBe3kfmbzQ4cEN9GUaMh1IW3neJry4t1IQ2YuLQyyEldHQAd5vyD
+         300mT7wnIYpbAfuAmzebVWsLAYuV+C3k2ahxViB71xgyFWuT1QTONx6ZqCEvfsO9usQh
+         Gz4Q==
+X-Gm-Message-State: AOJu0YztniMA9sicIQBLhjtbLyZOOKe2LqXQz7TmyvvOJ4IiAoIpKW5S
+	WICb0zgYuNFw7uofSgRvfEReNnkTWWbB8We6zwti/rF99uTkpF8VJVV/WcxksfDuG8o=
+X-Gm-Gg: Acq92OHrJmfjsmyb/qbzmZMaFWZQ1jjNiYFFLxgbMQW3hpGqpnZTnWf20ebarVG74Ae
+	l0S98Qe07Yqbjr4cPY5F7D5BECl/4LIZ3+54Lg3BLPHqI6IQ45AerQP60A+v7R8LgsYC1bpiS0A
+	O17pIAVtD7Ufjhqtyuf28T4mRFCjGL0BOQGw07r5VgZWeTLzCxfAd5DN9DpNj2rSxbQbVEbXy9Y
+	sIOa5YWuTLVxxG0JBl8M1Bxo7zc2t9zZCk6ifGTajC0ZMt5zuysCFm9Z70QslOMBxUq84kopKHs
+	kGa6MWZM3II6UG+ueOs+3+IUqdEPDW+QzVhsQKLdMVAZgm8C/7GU6Ghl28ADULOKpMHao+rXnMO
+	uCmvCRLILHEC/1nIYDBr6qrFdN1DpK5SmF4eWPs/5UdyP+oo4oY+ETGiYKh2ifrXEvi0OfuHbIT
+	OzXsY8j1dhY6ZptVk8HZwFzcv2LZ5umT/ki+scSw==
+X-Received: by 2002:a05:7300:6429:b0:2df:7fe3:96a with SMTP id 5a478bee46e88-30397c321d6mr6481143eec.0.1779057989443;
+        Sun, 17 May 2026 15:46:29 -0700 (PDT)
+Received: from [127.0.0.1] ([104.28.195.186])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30290c4a699sm12727633eec.0.2026.05.17.15.46.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 17 May 2026 15:46:29 -0700 (PDT)
+From: Ruslan Isaev <legale.legale@gmail.com>
+X-Google-Original-From: Ruslan Isaev <Legale.Legale@gmail.Com>
+Date: Mon, 18 May 2026 01:46:19 +0300
 To: linux-wireless@vger.kernel.org
-Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH ath-next] wifi: ath9k: remove TX99 power array zero init
-Date: Sun, 17 May 2026 15:21:36 -0700
-Message-ID: <20260517222136.1660347-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.54.0
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>
+Message-ID: <79943c87-b920-4ef8-a471-61b03792e097@gmail.Com>
+In-Reply-To: <agEbiurBZzZv_Yt0@wico-dev.wnam.ru>
+References: <agEbiurBZzZv_Yt0@wico-dev.wnam.ru>
+Subject: Re: [PATCH] wifi: mt76: disable rx napi before queue cleanup
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 234C3564291
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Correlation-ID: <79943c87-b920-4ef8-a471-61b03792e097@gmail.Com>
+X-Rspamd-Queue-Id: 19E6156434D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36557-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36556-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[legalelegale@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FROM_HAS_DN(0.00)[]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-This array is fully initialized in the loop itself. No need to zero
-initialize and then overwrite.
+Gentle ping for review
 
-Remove static from the array. This was a holdover from when the array
-was a static global variable. It no longer confers any benefit.
+May 11, 2026 02:58:02 Ruslan Isaev <legale.legale@gmail.com>:
 
-Also add a min() call to avoid the manual if/ternary operation.
-
-Assisted-by: Codex:GPT-5.5
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/net/wireless/ath/ath9k/ar9003_phy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.c b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-index 6274d1624261..5d0433f2ae37 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-@@ -1811,10 +1811,10 @@ static void ar9003_hw_tx99_stop(struct ath_hw *ah)
- 
- static void ar9003_hw_tx99_set_txpower(struct ath_hw *ah, u8 txpower)
- {
--	static u8 p_pwr_array[ar9300RateSize] = { 0 };
-+	u8 p_pwr_array[ar9300RateSize];
- 	unsigned int i;
- 
--	txpower = txpower <= MAX_RATE_POWER ? txpower : MAX_RATE_POWER;
-+	txpower = min(txpower, MAX_RATE_POWER);
- 	for (i = 0; i < ar9300RateSize; i++)
- 		p_pwr_array[i] = txpower;
- 
--- 
-2.54.0
-
+> mt76_dma_cleanup() already disables tx napi before deleting it, but
+> it still removes rx napi instances while they can remain enabled on the
+> normal device remove path. On mt7915 this triggers a warning.
+>=20
+> Disable each rx napi instance before netif_napi_del() and page pool
+> destruction. This fixes repeated warnings on rmmod mt7915e on
+> mt7915e/mt7981b.
+>=20
+> Signed-off-by: Ruslan Isaev <legale.legale@gmail.com>
+> ---
+> drivers/net/wireless/mediatek/mt76/dma.c | 1 +
+> 1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wirel=
+ess/mediatek/mt76/dma.c
+> index f8c2fe5f2..12183142f 100644
+> --- a/drivers/net/wireless/mediatek/mt76/dma.c
+> +++ b/drivers/net/wireless/mediatek/mt76/dma.c
+> @@ -1189,6 +1189,7 @@ void mt76_dma_cleanup(struct mt76_dev *dev)
+> =C2=A0=C2=A0=C2=A0 mt76_for_each_q_rx(dev, i) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct mt76_queue *q =3D &dev-=
+>q_rx[i];
+>=20
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 napi_disable(&dev->napi[i]);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 netif_napi_del(&dev->napi[i]);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mt76_dma_rx_cleanup(dev, q);
+>=20
+> --=20
+> 2.39.5
 
