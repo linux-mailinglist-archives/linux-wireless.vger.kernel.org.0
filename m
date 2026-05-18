@@ -1,303 +1,307 @@
-Return-Path: <linux-wireless+bounces-36598-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36599-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMGtG9PsCmo89gQAu9opvQ
-	(envelope-from <linux-wireless+bounces-36598-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 12:41:23 +0200
+	id cJHvNv7zCmpZ+QQAu9opvQ
+	(envelope-from <linux-wireless+bounces-36599-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 13:11:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C172E56AD9F
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 12:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A7056B4FF
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 13:11:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA2123051289
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 10:32:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BD1B03187244
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 10:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D753ED5AE;
-	Mon, 18 May 2026 10:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9373F0777;
+	Mon, 18 May 2026 10:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FVwlzaC8";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kpiR2kmQ"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="o4QPHGZy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA602FB969
-	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 10:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7811B3F0772
+	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 10:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779100298; cv=none; b=VwNStNySa+AP7YBwi97RMgTFCpDdCaQFZ7MMhH/lXIPrSDeulllvtVresRlp/L3Z1UBlqgUNUvwLywr86MonzlIyZsrmkMbam6D34BMNsQvSV4vfA/Jan9exyswT7vpUJxgAttoX9OXpCO5g9caNhlqYzixZk2QsVm2uWPgzjGE=
+	t=1779101908; cv=none; b=U1+ArNJ1nBAb374t4Hcpx8Jq4SwAsg8+v+mg56XEpMBpVTI65BDzQ8sr+yZLV3v93tthiPLcjdvowbwmHZavc0/HcjWuQf19YIuOrM7SAtBP7echZ61BAOAT7Kc0xJJ+V2ahCnccLzujDbW+U0PlTeexPeNjS77YEVjadxn6d8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779100298; c=relaxed/simple;
-	bh=AyR1nfNOOB2OmgVPXbtw2qMwCY2l2jq7GZh//B0ZdLU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lzDbMTkcvUwoXHth+P7Q48LAJQBsjtfKKfZm/zdQ6lZT5kWP0ruWrkw64TlVqz63cJlMMwZRLO14s8OVKh5sq/VlcFsqdwKSf02pDPnQTrrTCtPWMlF1hX+d6XDOXaP0FKw05gwOC+UR3q/AX0nfhMeb2h7h4uyBGntznXzM9A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FVwlzaC8; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kpiR2kmQ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64I7faKW2188804
-	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 10:31:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=UsrB8P290O/
-	USMAC10uk93dQneTBe2ZXxLR/4g7icds=; b=FVwlzaC8QAHryHSNTnQ7g5Kq+63
-	ocF70WZr/HL5jHVWQHLheH2Wq39Frq3fIyrsOSRr2XvKEvJcWc9NB8oEQWCHvxWs
-	0nGXWaAClx5KWaU0dSNXR2qyjLdhffJ7P1cnySIvSAscbIyYJ1Ox7f34hV7UojFI
-	MVXJsjjvPYh4OoS5lz9yKb4FA9utkoYr7mpzSCCDhOyx2X9Ndmy1h4FaGpXD6crw
-	pa6JFnyYLz2mhGCNGDHN6kGMDCg+wq+RMKcdd3FTRO7RNOv/72qGOeG8nE51XwGr
-	jl+336BrDLqhDWdQVBd3YDIeQuhZIVXV/uzp0ddrXGZFU0WizVfr9/zWo5g==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e7xkugqk7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 10:31:22 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-82f6a5b4f88so3599169b3a.2
-        for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 03:31:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779100281; x=1779705081; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UsrB8P290O/USMAC10uk93dQneTBe2ZXxLR/4g7icds=;
-        b=kpiR2kmQrItLPLgwfVeIn5Oa3DKOXOD9rws9xCvEGIADYGd18HR1XjrpzpqGKnws3F
-         zGohzSFi0Maus0yjs2O2I0BHJw+SK05zaz8iwcmVXQcukAsy9ASnF3rnRdxRAiVmwV25
-         +bXCoIMbfxQY2j08VRV7Rp67Ps5GBlERoh6SalVqvgLCaHSAbsapTqr3JiaCc1TEe5lZ
-         VbzTa02kzQmvzlNZDd7jOkwIcogxjwr8Ns2kp0rS6jMIxzSEuFa24gKyHabWuQsyx74E
-         kfpRl4QUI/Xq/E5onYpuVgkbRm+9p+ZIUTjnG8Tqi3R/BqU9/WzjU8nyaBgSsTHuEAQY
-         3WUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779100281; x=1779705081;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UsrB8P290O/USMAC10uk93dQneTBe2ZXxLR/4g7icds=;
-        b=h50b2cfw5i+gUFWVB6UxogzUSBgynXd6UZXbNZDk+g8FWxe8aa/oNKHvJttLMXG3lw
-         0P3bGDdl+0vCzmB8EJ0l6xMPZxo7FGYEv5cSr0dCQ/cROYYeYjat+NBR/8ynRlfI3JEb
-         PhB772U7L1bJ5Iyo5sGxQU+duzgdaGqI37U9Xxws7Ao9vwMNAluADgySr8CebVj68Ihy
-         QQ7sIflZD5w7caorfQwuMm3sA1uwRczCdLeYWmRIIWsdyul3GWM58E3C3BL542xZmgUv
-         hZisyC1GAXM/r0OEjX1puyQaq0sTxH8ZjWCyWvg6NoOLvAijtLLJ8zU43uY7by6RiT5c
-         IbSw==
-X-Gm-Message-State: AOJu0YwCF2ZdT84vmRkHRIgngFbw0dd3OOUSOMmtEd2u9lw2IFA2Zq+4
-	9b02TJjcCm7KkAkYtUbC3I+br9UElkM+NUgIYgkMsAtAYI1+QO8M7eaLZqpgutW8z/E+SYGQfyk
-	2Hd+49/vjgQmbY/ULVjiO+yURL9davqpBAr4w6fqxInSa5MZx1J8dicgDD3qEGqI3JPGx
-X-Gm-Gg: Acq92OGubUaqgkjiNaPcB07QV8EfeVg83zAWVRcmuSsDoUlyyHaiVUNIGSIm5NDyjw2
-	GAEvNMH7dkGJBIaghuOEVW4sKXKhKHr8FfQ5Kc9UUC6ImXRH67dK6k1VGI5W+a/z56sP6Qx36Ke
-	Aqix/Qu1LS8AK6/K/nOzJDDG6zTKb9JovRA4/79+KxE230KCzBLOKhK+dRAWu2vfYMTNcDWumxY
-	29fekZqe5VbpNnU02/sXi7ckZdDssoOJBUX1bua971RdM4xvd8uEkWawZXFagA3cwU4+srfks5n
-	OZOQA5Hg5TWTtmPO5YCC/rY0QsYGrn3S/dsl29xjP8CYAVZLq25zbVIwX4ykJcIqRKdb5QkDvJL
-	uKIa1LFgxFfGyp/5ui6JouPilN7f32LFFrvi9Dha2kAGR+CRS1/AyjrJpBDKbZcgPiEQR6KNIcY
-	xxM4dqm1EeCYWF/oQK17mzT4I6r9SidneO9ONDWhdWYPyZfk8=
-X-Received: by 2002:aa7:88d1:0:b0:83d:b0a0:90e3 with SMTP id d2e1a72fcca58-83f33c344a1mr15052332b3a.31.1779100281040;
-        Mon, 18 May 2026 03:31:21 -0700 (PDT)
-X-Received: by 2002:aa7:88d1:0:b0:83d:b0a0:90e3 with SMTP id d2e1a72fcca58-83f33c344a1mr15052297b3a.31.1779100280558;
-        Mon, 18 May 2026 03:31:20 -0700 (PDT)
-Received: from hu-pshashik-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f19775ca3sm15107597b3a.14.2026.05.18.03.31.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 03:31:20 -0700 (PDT)
-From: Shashikala Prabhu <shashikala.prabhu@oss.qualcomm.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, vikram@qti.qualcomm.com,
-        kiranv@qti.qualcomm.com, pshashik@qti.qualcomm.com,
-        cgopi@qti.qualcomm.com, ybasamma@qti.qualcomm.com,
-        vthiagar@qti.qualcomm.com, sivad@qti.qualcomm.com,
-        uvignesh@qti.qualcomm.com, mohathan@qti.qualcomm.com,
-        abishekg@qti.qualcomm.com
-Subject: [PATCH wireless-next 2/2] wifi: cfg80211/mac80211: Pass MCST element value in ch_switch_started_notify
-Date: Mon, 18 May 2026 16:01:06 +0530
-Message-Id: <20260518103106.1462604-3-shashikala.prabhu@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260518103106.1462604-1-shashikala.prabhu@oss.qualcomm.com>
-References: <20260518103106.1462604-1-shashikala.prabhu@oss.qualcomm.com>
+	s=arc-20240116; t=1779101908; c=relaxed/simple;
+	bh=y5db7xXvIg/mACuWbNijMu8LoDbiMhC/c2uL5wb4YWU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=YyGqgdTMhSwhqMg8B4BFDqilKXj14zY8GKbkNTaVux0wELwxPhDz5FH9fTdXRDbn5n7L4Qo/gOlJh7xwqIzrAf3sVThrhz4bGvq6wB3fWuPC2O5LAhTBCuKSQu3EGkJiqJYXNtCid/Zxn24cfY/tdMnwIrGCtC+hIoPdIjWGdHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=o4QPHGZy; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64IAw8akD1819910, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1779101888; bh=d4pwud2CRxr9RYIT+yMhbdJIcfKesSdue/HvhESSYIY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=o4QPHGZykWjEaaVvjd1QRfo+H/udA4yvVBn+J6joBDK9ODmpw6EDz9g8gz8LxWvwx
+	 aC2vJEFL9djrmxQIl+Hx/52XPNYbenb6nB96OUwZ+Ib60mBfEfYLYSawiXgAo9Vlxt
+	 7ViaZ/Ybb7fadBKfFBhtZB9SJLbQSrLZoSJmGRGJA/RX7r870ECODxpwhio04H01Li
+	 R3I6Fwf2+VnLHg7dXTlV8TVRCwm0TCPysopFVGliiWVTThnWrEVXGNlh1SSaRmddvI
+	 LWHWVqq4ZAupEoUTN0vkG9S8VEiHgxKKbdymgukoYEx96L0rS7OvTNhI2jxK0vU2EA
+	 5O12ZAZTHZu8g==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 64IAw8akD1819910
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 18 May 2026 18:58:08 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 18 May 2026 18:58:08 +0800
+Received: from RTKEXHMBS03.realtek.com.tw ([::1]) by
+ RTKEXHMBS03.realtek.com.tw ([fe80::a2e:aeb4:fa27:c32f%9]) with mapi id
+ 15.02.2562.017; Mon, 18 May 2026 18:58:08 +0800
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+        Ping-Ke Shih
+	<pkshih@realtek.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [RFT rtw/rtw-next] wifi: rtw88: check if center channel is
+ supported before setting
+Thread-Topic: [RFT rtw/rtw-next] wifi: rtw88: check if center channel is
+ supported before setting
+Thread-Index: AQHcywd1Kx+cfkNEaU6FsyLRHWz2UbYNdYeAgAYqdxA=
+Date: Mon, 18 May 2026 10:58:08 +0000
+Message-ID: <a7f59b380639458eb1dc54e9b16fab14@realtek.com>
+References: <20260413053601.13037-1-pkshih@realtek.com>
+ <agYJNW7Mxt0dOfTw@quatroqueijos.cascardo.eti.br>
+In-Reply-To: <agYJNW7Mxt0dOfTw@quatroqueijos.cascardo.eti.br>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDEwMSBTYWx0ZWRfX2K2SoRm6EFYg
- 04fXZ1CYSFAkFLMVi5pTLrqNu17TxTaH/l/kGed+J99YZeRao+82X53HlsRFKIe9y4Enc9CZTl2
- RvP++sWEKCEGVqg7KNxnshR0XU/jnjFdP04ytIHTIYRkjUvh9nIuWHa3UO2XxiQNsrjInSMG3ji
- QMLC98h0whw96sOgghmP2O4K9emeOJUMPGk5IfD8A1YxORANcNySBWeI+m2RnhfxFx/effJPp3M
- pTt162UyCzTHAKR8/LZuFGSJKfM+ka8XEIe7fLZMPHUyKutY6De2DmlZKey5mrnsKm308sCE2lQ
- 1z9ncl8pd051h1/VPD8z5tx00YfOysm53aiSxnkNaDBve17DuwObNSOfU5ssKPNqesYd5Dmjbv2
- ZXNeYqK/oDNl0NDxH6dIg6JC0oYkGLYbD2Q1oIrq7M0Q5D/bmfCUYi9pTQQR6zbw1C/l+B3ZsxL
- FPdpWeJnkg2EkMAEedw==
-X-Proofpoint-GUID: zU5S4ZU6BdfkSMdnpUSKgcTMdGa6PJuF
-X-Proofpoint-ORIG-GUID: zU5S4ZU6BdfkSMdnpUSKgcTMdGa6PJuF
-X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=6a0aea7a cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=EUspDBNiAAAA:8
- a=XG50IErifMXcszP_SugA:9 a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-18_02,2026-05-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 clxscore=1015 phishscore=0 priorityscore=1501
- malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180101
-X-Rspamd-Queue-Id: C172E56AD9F
+X-Rspamd-Queue-Id: 59A7056B4FF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	TAGGED_FROM(0.00)[bounces-36598-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shashikala.prabhu@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-36599-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kevin_yang@realtek.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,igalia.com:email,realtek.com:email,realtek.com:mid,realtek.com:dkim]
 X-Rspamd-Action: no action
 
-From: Chandru Gopi <cgopi@qti.qualcomm.com>
+Thadeu Lima de Souza Cascardo <cascardo@igalia.com> wrote:
+>=20
+> On Mon, Apr 13, 2026 at 01:36:01PM +0800, Ping-Ke Shih wrote:
+> > From: Zong-Zhe Yang <kevin_yang@realtek.com>
+> >
+> > Some unusual center channels may be assigned to driver. However, RF
+> > doesn't really expect them, and then warnings happen due to lack of TX
+> > power limit configurations. For example, center channel 114/130 with
+> > 80MHz. So, add a check before setting the channel.
+> >
+> > Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+>=20
+> Hi,
+>=20
+> I have tested this patch and it does prevent 80MHz from being used.
+> However, RF seems to accept those center channels with 80MHz just fine. I=
+ can
+> get up to 600Mbps with UDP while I can get past 300Mbps after applying th=
+is
+> patch.
+>=20
+> Should we apply something like [1] instead?
+>=20
+> https://lore.kernel.org/linux-wireless/20260306-rtw88_channel130-v1-1-ff2=
+5a5
+> bc930a@igalia.com
+>=20
+> Regards.
+> Cascardo.
+>=20
 
-IEEE Std 802.11-2024 subclause 9.4.2.216 (Max Channel Switch Time element)
-defines a Switch Time field in the Channel Switch Announcement (CSA)
-element that indicates the time delta between the time the last beacon
-is transmitted by the AP in the current channel and the expected time
-of the first beacon transmitted by the AP in the new channel.
+Hi,
 
-Forward the already-parsed MCST (Maximum Channel Switch Time) element
-value to userspace via the NL80211_CMD_CH_SWITCH_STARTED_NOTIFY netlink
-command. Userspace can use this information to decide whether to remain
-connected or disconnect before the AP moves to the new channel.
+The chipsets supported by rtw88 are only verified with the existing center =
+channels
+before 160MHz. Although you set 80MHz here, but these center channels actua=
+lly
+appeared after 160MHz. I also have checked with our HW members. They said t=
+hey
+cannot guarantee everything will be right. So, we won't officially allow th=
+ese center
+channels.
 
-Pass mcst_tu=0 in the __ieee80211_channel_switch() call to
-cfg80211_ch_switch_started_notify() since the AP-initiated channel
-switch path does not carry a MCST element, as this element is only
-present in Beacon/Probe Response frames processed on the STA side via
-ieee80211_sta_process_chanswitch().
+Maybe you think your test result is fine to you, but throughput test doesn'=
+t tell the
+whole story, e.g., is it really fine for regulatory? So, I suggest that you=
+ change the AP
+configuration to use another center channel with 80MHz.
 
-Signed-off-by: Chandru Gopi <cgopi@qti.qualcomm.com>
-Signed-off-by: Shashikala Prabhu <shashikala.prabhu@oss.qualcomm.com>
----
- include/net/cfg80211.h |  4 +++-
- net/mac80211/cfg.c     |  2 +-
- net/mac80211/mlme.c    |  2 +-
- net/wireless/nl80211.c | 12 ++++++++----
- 4 files changed, 13 insertions(+), 7 deletions(-)
+Thanks.
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index ddcf559430dd..c55b7f4ea48a 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -9979,6 +9979,8 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
-  * @link_id: the link ID for MLO, must be 0 for non-MLO
-  * @count: the number of TBTTs until the channel switch happens
-  * @quiet: whether or not immediate quiet was requested by the AP
-+ * @mcst_tu: max channel switch time in TUs, 0 if the MCST element was not
-+ *	present
-  *
-  * Inform the userspace about the channel switch that has just
-  * started, so that it can take appropriate actions (eg. starting
-@@ -9987,7 +9989,7 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
- void cfg80211_ch_switch_started_notify(struct net_device *dev,
- 				       struct cfg80211_chan_def *chandef,
- 				       unsigned int link_id, u8 count,
--				       bool quiet);
-+				       bool quiet, u32 mcst_tu);
- 
- /**
-  * ieee80211_operating_class_to_band - convert operating class to band
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 0b1291ff7a2c..0cb6d949665a 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4768,7 +4768,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 
- 	cfg80211_ch_switch_started_notify(sdata->dev,
- 					  &link_data->csa.chanreq.oper, link_id,
--					  params->count, params->block_tx);
-+					  params->count, params->block_tx, 0);
- 
- 	if (changed) {
- 		ieee80211_link_info_change_notify(sdata, link_data, changed);
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 5b02141b0cb2..76f3c3a8feba 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -3182,7 +3182,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 
- 	cfg80211_ch_switch_started_notify(sdata->dev, &csa_ie.chanreq.oper,
- 					  link->link_id, csa_ie.count,
--					  csa_ie.mode);
-+					  csa_ie.mode, csa_ie.max_switch_time);
- 
- 	/* we may have to handle timeout for deactivated link in software */
- 	now = ktime_get_boottime();
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 14d41142cf79..a17e87e782e4 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -22271,7 +22271,8 @@ static void nl80211_ch_switch_notify(struct cfg80211_registered_device *rdev,
- 				     struct cfg80211_chan_def *chandef,
- 				     gfp_t gfp,
- 				     enum nl80211_commands notif,
--				     u8 count, bool quiet)
-+				     u8 count, bool quiet,
-+				     u32 mcst_tu)
- {
- 	struct wireless_dev *wdev = netdev->ieee80211_ptr;
- 	struct sk_buff *msg;
-@@ -22303,6 +22304,9 @@ static void nl80211_ch_switch_notify(struct cfg80211_registered_device *rdev,
- 		if (quiet &&
- 		    nla_put_flag(msg, NL80211_ATTR_CH_SWITCH_BLOCK_TX))
- 			goto nla_put_failure;
-+		if (mcst_tu &&
-+		    nla_put_u32(msg, NL80211_ATTR_MAX_CH_SWITCH_TIME, mcst_tu))
-+			goto nla_put_failure;
- 	}
- 
- 	genlmsg_end(msg, hdr);
-@@ -22355,7 +22359,7 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
- 	cfg80211_sched_dfs_chan_update(rdev);
- 
- 	nl80211_ch_switch_notify(rdev, dev, link_id, chandef, GFP_KERNEL,
--				 NL80211_CMD_CH_SWITCH_NOTIFY, 0, false);
-+				 NL80211_CMD_CH_SWITCH_NOTIFY, 0, false, 0);
- }
- EXPORT_SYMBOL(cfg80211_ch_switch_notify);
- 
-@@ -22402,7 +22406,7 @@ EXPORT_SYMBOL(cfg80211_incumbent_signal_notify);
- void cfg80211_ch_switch_started_notify(struct net_device *dev,
- 				       struct cfg80211_chan_def *chandef,
- 				       unsigned int link_id, u8 count,
--				       bool quiet)
-+				       bool quiet, u32 mcst_tu)
- {
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
- 	struct wiphy *wiphy = wdev->wiphy;
-@@ -22416,7 +22420,7 @@ void cfg80211_ch_switch_started_notify(struct net_device *dev,
- 
- 	nl80211_ch_switch_notify(rdev, dev, link_id, chandef, GFP_KERNEL,
- 				 NL80211_CMD_CH_SWITCH_STARTED_NOTIFY,
--				 count, quiet);
-+				 count, quiet, mcst_tu);
- }
- EXPORT_SYMBOL(cfg80211_ch_switch_started_notify);
- 
--- 
-2.34.1
-
+> > ---
+> >  drivers/net/wireless/realtek/rtw88/mac80211.c |  7 +++++--
+> >  drivers/net/wireless/realtek/rtw88/main.c     | 13 +++++++++++--
+> >  drivers/net/wireless/realtek/rtw88/main.h     |  2 +-
+> >  drivers/net/wireless/realtek/rtw88/phy.c      | 18 ++++++++++++++++++
+> >  drivers/net/wireless/realtek/rtw88/phy.h      |  2 ++
+> >  5 files changed, 37 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c
+> > b/drivers/net/wireless/realtek/rtw88/mac80211.c
+> > index 766f22d31079..9d97e8dd0c1e 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/mac80211.c
+> > +++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+> > @@ -92,8 +92,11 @@ static int rtw_ops_config(struct ieee80211_hw *hw,
+> int radio_idx, u32 changed)
+> >               }
+> >       }
+> >
+> > -     if (changed & IEEE80211_CONF_CHANGE_CHANNEL)
+> > -             rtw_set_channel(rtwdev);
+> > +     if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
+> > +             ret =3D rtw_set_channel(rtwdev);
+> > +             if (ret)
+> > +                     goto out;
+> > +     }
+> >
+> >       if ((changed & IEEE80211_CONF_CHANGE_IDLE) &&
+> >           (hw->conf.flags & IEEE80211_CONF_IDLE) && diff --git
+> > a/drivers/net/wireless/realtek/rtw88/main.c
+> > b/drivers/net/wireless/realtek/rtw88/main.c
+> > index cd9254370fcc..08aebb3c5a78 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/main.c
+> > +++ b/drivers/net/wireless/realtek/rtw88/main.c
+> > @@ -868,23 +868,30 @@ void rtw_get_channel_params(struct
+> cfg80211_chan_def *chandef,
+> >       chan_params->primary_chan =3D channel->hw_value;  }
+> >
+> > -void rtw_set_channel(struct rtw_dev *rtwdev)
+> > +int rtw_set_channel(struct rtw_dev *rtwdev)
+> >  {
+> >       const struct rtw_chip_info *chip =3D rtwdev->chip;
+> >       struct ieee80211_hw *hw =3D rtwdev->hw;
+> >       struct rtw_hal *hal =3D &rtwdev->hal;
+> >       struct rtw_channel_params ch_param;
+> >       u8 center_chan, primary_chan, bandwidth, band;
+> > +     int ch_idx;
+> >
+> >       rtw_get_channel_params(&hw->conf.chandef, &ch_param);
+> >       if (WARN(ch_param.center_chan =3D=3D 0, "Invalid channel\n"))
+> > -             return;
+> > +             return -EINVAL;
+> >
+> >       center_chan =3D ch_param.center_chan;
+> >       primary_chan =3D ch_param.primary_chan;
+> >       bandwidth =3D ch_param.bandwidth;
+> >       band =3D ch_param.center_chan > 14 ? RTW_BAND_5G :
+> RTW_BAND_2G;
+> >
+> > +     ch_idx =3D rtw_band_channel_to_idx(band, center_chan);
+> > +     if (ch_idx < 0) {
+> > +             rtw_warn(rtwdev, "not support band %d ch %d\n", band,
+> center_chan);
+> > +             return -EOPNOTSUPP;
+> > +     }
+> > +
+> >       rtw_update_channel(rtwdev, center_chan, primary_chan, band,
+> > bandwidth);
+> >
+> >       if (rtwdev->scan_info.op_chan)
+> > @@ -910,6 +917,8 @@ void rtw_set_channel(struct rtw_dev *rtwdev)
+> >        */
+> >       if (!test_bit(RTW_FLAG_SCANNING, rtwdev->flags))
+> >               rtwdev->need_rfk =3D true;
+> > +
+> > +     return 0;
+> >  }
+> >
+> >  void rtw_chip_prepare_tx(struct rtw_dev *rtwdev) diff --git
+> > a/drivers/net/wireless/realtek/rtw88/main.h
+> > b/drivers/net/wireless/realtek/rtw88/main.h
+> > index 9c0b746540b0..a368f1a4a003 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/main.h
+> > +++ b/drivers/net/wireless/realtek/rtw88/main.h
+> > @@ -2241,7 +2241,7 @@ bool ltecoex_reg_write(struct rtw_dev *rtwdev,
+> > u16 offset, u32 value);  void rtw_restore_reg(struct rtw_dev *rtwdev,
+> >                    struct rtw_backup_info *bckp, u32 num);  void
+> > rtw_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss); -void
+> > rtw_set_channel(struct rtw_dev *rtwdev);
+> > +int rtw_set_channel(struct rtw_dev *rtwdev);
+> >  void rtw_chip_prepare_tx(struct rtw_dev *rtwdev);  void
+> > rtw_vif_port_config(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif,
+> >                        u32 config);
+> > diff --git a/drivers/net/wireless/realtek/rtw88/phy.c
+> > b/drivers/net/wireless/realtek/rtw88/phy.c
+> > index e2ac5c6fd500..a543eaa57f2c 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/phy.c
+> > +++ b/drivers/net/wireless/realtek/rtw88/phy.c
+> > @@ -1630,6 +1630,24 @@ static int rtw_channel_to_idx(u8 band, u8
+> channel)
+> >       return ch_idx;
+> >  }
+> >
+> > +int rtw_band_channel_to_idx(enum rtw_supported_band band, u8 channel)
+> > +{
+> > +     u8 phy_band;
+> > +
+> > +     switch (band) {
+> > +     case RTW_BAND_2G:
+> > +             phy_band =3D PHY_BAND_2G;
+> > +             break;
+> > +     case RTW_BAND_5G:
+> > +             phy_band =3D PHY_BAND_5G;
+> > +             break;
+> > +     default:
+> > +             return -1;
+> > +     }
+> > +
+> > +     return rtw_channel_to_idx(phy_band, channel); }
+> > +
+> >  static void rtw_phy_set_tx_power_limit(struct rtw_dev *rtwdev, u8 regd=
+,
+> u8 band,
+> >                                      u8 bw, u8 rs, u8 ch, s8
+> > pwr_limit)  { diff --git a/drivers/net/wireless/realtek/rtw88/phy.h
+> > b/drivers/net/wireless/realtek/rtw88/phy.h
+> > index 8449936497bb..98aeb576e24d 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/phy.h
+> > +++ b/drivers/net/wireless/realtek/rtw88/phy.h
+> > @@ -201,4 +201,6 @@ enum rtw_phy_cck_pd_lv {  #define
+> > RRSR_RATE_ORDER_MAX  0xfffff
+> >  #define RRSR_RATE_ORDER_CCK_LEN      4
+> >
+> > +int rtw_band_channel_to_idx(enum rtw_supported_band band, u8
+> > +channel);
+> > +
+> >  #endif
+> > --
+> > 2.25.1
+> >
+> >
 
