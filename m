@@ -1,100 +1,100 @@
-Return-Path: <linux-wireless+bounces-36597-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36598-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8C07GpDsCmo89gQAu9opvQ
-	(envelope-from <linux-wireless+bounces-36597-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 12:40:16 +0200
+	id IMGtG9PsCmo89gQAu9opvQ
+	(envelope-from <linux-wireless+bounces-36598-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 12:41:23 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30AC56AD4D
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 12:40:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C172E56AD9F
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 12:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C21F3024105
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 10:32:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA2123051289
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 10:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEADD3EDAB9;
-	Mon, 18 May 2026 10:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D753ED5AE;
+	Mon, 18 May 2026 10:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Dhhw4Lz5";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kF8fSU3h"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FVwlzaC8";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kpiR2kmQ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A453ED114
-	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 10:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA602FB969
+	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 10:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779100293; cv=none; b=T3spHJXSOwH4OiffrE1qefDGmiWm/N1iiq6D74YVp9F/IuiC8ItRW5qjJ7Rje9jCD/KxsbpUe1irVlTGP5vNtZ7baTf/H9QTMbz2KiLxhiBLVdu9yI076SxekUmgo5O3Byj1Nq+Ko+MQvL76i4SZdAooUwNCf1l0HPBZuwWnBlU=
+	t=1779100298; cv=none; b=VwNStNySa+AP7YBwi97RMgTFCpDdCaQFZ7MMhH/lXIPrSDeulllvtVresRlp/L3Z1UBlqgUNUvwLywr86MonzlIyZsrmkMbam6D34BMNsQvSV4vfA/Jan9exyswT7vpUJxgAttoX9OXpCO5g9caNhlqYzixZk2QsVm2uWPgzjGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779100293; c=relaxed/simple;
-	bh=XGuKjmjrdRYD8Hzddl+eLlemEV5gwR29fayRSwiJum4=;
+	s=arc-20240116; t=1779100298; c=relaxed/simple;
+	bh=AyR1nfNOOB2OmgVPXbtw2qMwCY2l2jq7GZh//B0ZdLU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Op2Rzd4lPuBU3cN0jeMSgTjFVaN1jePnS9B5Ln3MUhkccDmxBRlBL96lRBesJbNeyi6avnmW+NT2uKwUnZHrAnV5ADc5CaDf6X0oI6op+SqG0xJYRghscvCTh5jnWggiLf7chYEKlpP4iwm+P7vwZCov6EWvhLWzGR/RtHwU/QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Dhhw4Lz5; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kF8fSU3h; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version; b=lzDbMTkcvUwoXHth+P7Q48LAJQBsjtfKKfZm/zdQ6lZT5kWP0ruWrkw64TlVqz63cJlMMwZRLO14s8OVKh5sq/VlcFsqdwKSf02pDPnQTrrTCtPWMlF1hX+d6XDOXaP0FKw05gwOC+UR3q/AX0nfhMeb2h7h4uyBGntznXzM9A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FVwlzaC8; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kpiR2kmQ; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64I7fjYk2189450
-	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 10:31:18 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64I7faKW2188804
+	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 10:31:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=fNhRY8+/bR4
-	nJS0grtSiCy2zaI//jOXpMzGUkhOAVZ0=; b=Dhhw4Lz5KI+hN05wVTw+HujLlRk
-	PEWhojPezGfTMxnWDCTjWERLfQ6vl6pev+8rxZXc7+vljauOHgJ1f19pg30Pt0uI
-	lHgEfR34R4fcyliiWNe1RbcMAcfB1OjSbUKYlcAOQIRNwAmwlSkF8Vjjh1o+D+n6
-	NSa3nHsU9XzlSvLsT+tAkZUq1l+VR97dogIZiW7EljnhsMknUbsz7C5coBlk8yE8
-	vnbrmPTesXpmFRqYuHn74i4KpSrfkX69sjgBKC8xXKNOiyxb0XcNpg3w/tM3FqF0
-	0rJefHzaWEfx0FwW0cdnf5Thm2sAQY6dDZCXmdhSZG0YYQhgBDOJM6SXN6Q==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e7xkugqjy-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=UsrB8P290O/
+	USMAC10uk93dQneTBe2ZXxLR/4g7icds=; b=FVwlzaC8QAHryHSNTnQ7g5Kq+63
+	ocF70WZr/HL5jHVWQHLheH2Wq39Frq3fIyrsOSRr2XvKEvJcWc9NB8oEQWCHvxWs
+	0nGXWaAClx5KWaU0dSNXR2qyjLdhffJ7P1cnySIvSAscbIyYJ1Ox7f34hV7UojFI
+	MVXJsjjvPYh4OoS5lz9yKb4FA9utkoYr7mpzSCCDhOyx2X9Ndmy1h4FaGpXD6crw
+	pa6JFnyYLz2mhGCNGDHN6kGMDCg+wq+RMKcdd3FTRO7RNOv/72qGOeG8nE51XwGr
+	jl+336BrDLqhDWdQVBd3YDIeQuhZIVXV/uzp0ddrXGZFU0WizVfr9/zWo5g==
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e7xkugqk7-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 10:31:17 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c82bd90afbbso1115049a12.0
-        for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 03:31:17 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 10:31:22 +0000 (GMT)
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-82f6a5b4f88so3599169b3a.2
+        for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 03:31:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779100277; x=1779705077; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1779100281; x=1779705081; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fNhRY8+/bR4nJS0grtSiCy2zaI//jOXpMzGUkhOAVZ0=;
-        b=kF8fSU3h6hnMhMiD5vqiY0sDIYEA0PffFz0ucuF49K7OYkKNWtFliSmnAHNlZtCPuM
-         DVja/VimrmQh4sKkM0TBP4HGPUhYBFYIEZN7duva19PItb3wi1iFH0fz9U17vFUc7htL
-         q0gCMLmaMDTVVrFACXBZ+xNo1oiS4/EfA3IqPFaP9RGCFBsZsqT6wYmXQbPBv5pFL6di
-         ujcZAY/dIU8azNwRzqLDFtgmT/yqRVcMqG0bXnih1O5vrgxJNKuJQMmbslcIUTISWR+K
-         VezXenra+sRINLdc3E1fOfeX/ZmWd7itZuKrtLQ1ByOKYn3RbThqXYQPp8e8SsQ08MRm
-         0aPg==
+        bh=UsrB8P290O/USMAC10uk93dQneTBe2ZXxLR/4g7icds=;
+        b=kpiR2kmQrItLPLgwfVeIn5Oa3DKOXOD9rws9xCvEGIADYGd18HR1XjrpzpqGKnws3F
+         zGohzSFi0Maus0yjs2O2I0BHJw+SK05zaz8iwcmVXQcukAsy9ASnF3rnRdxRAiVmwV25
+         +bXCoIMbfxQY2j08VRV7Rp67Ps5GBlERoh6SalVqvgLCaHSAbsapTqr3JiaCc1TEe5lZ
+         VbzTa02kzQmvzlNZDd7jOkwIcogxjwr8Ns2kp0rS6jMIxzSEuFa24gKyHabWuQsyx74E
+         kfpRl4QUI/Xq/E5onYpuVgkbRm+9p+ZIUTjnG8Tqi3R/BqU9/WzjU8nyaBgSsTHuEAQY
+         3WUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779100277; x=1779705077;
+        d=1e100.net; s=20251104; t=1779100281; x=1779705081;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=fNhRY8+/bR4nJS0grtSiCy2zaI//jOXpMzGUkhOAVZ0=;
-        b=Yx3tiI9MqqD/+2pfnVx4M2FYVPa1K+X+cnuJhxYHPhC5uHqlGZJLkLQgJR74rwcJLg
-         PsprKoevlFL/eYSTSx6tsvaNnr1v0E7lnEodUEWXvD0wg7wUrOTeJ66k/R26iYOWTRWN
-         BK2GQrgADteP7N4dKczzCRu7nNGTDgMi3PtjgV74bL4nBWK0ImoZxtP/UJLs3Su1U4f/
-         peWqgEvROTZd6E/tlQRA67SQxQWvZ6wUbLaHoxeE4/CeMieP+fuZAZq2eaVzLgH3HyxJ
-         YZoZppvbaMDjsvuPt61rJRxlHSSQjWSn4yrvjN/PqwNSsKJmEd9Mv3bphazVM1oUXvy5
-         yWCw==
-X-Gm-Message-State: AOJu0Yx8+elNBwLdA50d2Hw6lDb+wPAMqjMvvX0REnQ0YSbRIpHDB6oD
-	rWhiv2oipMhFQNk4LJyhZV0pE7mn6hxVJEZuIXI2uAdbCArTX2dHkkwbvbP3fIOvkf+iEwXxZ2T
-	kQLF8de1T6bbeEbdljloBEpPb1HNyhe+ItNcOlhiNpYP9HrjmWnVx6/hHR3WABOoV2gRM
-X-Gm-Gg: Acq92OGRa6Q0pYtsYLKe/H+MCdU6xAoZ3Cj96yfVDeyBCzgeZV7YcYa2BIavqCaqats
-	THhGXlp/UmWOROj79QqxZLmd5uHEqhKHjaR2blKt6q7LHox5t2mn1j5fNxfCHVlyC9p5DQLANTE
-	coX9X8ayTElb/zjP2T17nLWCDD0CVeb7FeMj8MAbLWGNyDX4Zt7N2xCiDeZsQBVNxiHsg1oOfTQ
-	+8LypBRA8rHJdB7Yy5o0zi9Cg9hg8uEpCfJ30zHY9cAmc0XRKUX2I7cYfJjm4EcnNRK326td/Xs
-	09WbiMFyUpHq1JzhKfLDxc2Eeyk8pqmNGff9iSQw8iTKGISeyO8wHvdKQxVJGZsh/ERfkeOLWEW
-	a4KEiR6EbrIRw+3yTu47h9i9fxEFyiGk6aYaWimzHgAKrB8xfERFbqG258NNgAOWHq38ehdlJhf
-	fxY8cj4XYbZWNsutD98CxWzMjdjsOWnKGyFl8mmIVEmou6LMY=
-X-Received: by 2002:a05:6a00:1904:b0:839:12a7:70f7 with SMTP id d2e1a72fcca58-83f33d94ce8mr14850553b3a.31.1779100276911;
-        Mon, 18 May 2026 03:31:16 -0700 (PDT)
-X-Received: by 2002:a05:6a00:1904:b0:839:12a7:70f7 with SMTP id d2e1a72fcca58-83f33d94ce8mr14850520b3a.31.1779100276398;
-        Mon, 18 May 2026 03:31:16 -0700 (PDT)
+        bh=UsrB8P290O/USMAC10uk93dQneTBe2ZXxLR/4g7icds=;
+        b=h50b2cfw5i+gUFWVB6UxogzUSBgynXd6UZXbNZDk+g8FWxe8aa/oNKHvJttLMXG3lw
+         0P3bGDdl+0vCzmB8EJ0l6xMPZxo7FGYEv5cSr0dCQ/cROYYeYjat+NBR/8ynRlfI3JEb
+         PhB772U7L1bJ5Iyo5sGxQU+duzgdaGqI37U9Xxws7Ao9vwMNAluADgySr8CebVj68Ihy
+         QQ7sIflZD5w7caorfQwuMm3sA1uwRczCdLeYWmRIIWsdyul3GWM58E3C3BL542xZmgUv
+         hZisyC1GAXM/r0OEjX1puyQaq0sTxH8ZjWCyWvg6NoOLvAijtLLJ8zU43uY7by6RiT5c
+         IbSw==
+X-Gm-Message-State: AOJu0YwCF2ZdT84vmRkHRIgngFbw0dd3OOUSOMmtEd2u9lw2IFA2Zq+4
+	9b02TJjcCm7KkAkYtUbC3I+br9UElkM+NUgIYgkMsAtAYI1+QO8M7eaLZqpgutW8z/E+SYGQfyk
+	2Hd+49/vjgQmbY/ULVjiO+yURL9davqpBAr4w6fqxInSa5MZx1J8dicgDD3qEGqI3JPGx
+X-Gm-Gg: Acq92OGubUaqgkjiNaPcB07QV8EfeVg83zAWVRcmuSsDoUlyyHaiVUNIGSIm5NDyjw2
+	GAEvNMH7dkGJBIaghuOEVW4sKXKhKHr8FfQ5Kc9UUC6ImXRH67dK6k1VGI5W+a/z56sP6Qx36Ke
+	Aqix/Qu1LS8AK6/K/nOzJDDG6zTKb9JovRA4/79+KxE230KCzBLOKhK+dRAWu2vfYMTNcDWumxY
+	29fekZqe5VbpNnU02/sXi7ckZdDssoOJBUX1bua971RdM4xvd8uEkWawZXFagA3cwU4+srfks5n
+	OZOQA5Hg5TWTtmPO5YCC/rY0QsYGrn3S/dsl29xjP8CYAVZLq25zbVIwX4ykJcIqRKdb5QkDvJL
+	uKIa1LFgxFfGyp/5ui6JouPilN7f32LFFrvi9Dha2kAGR+CRS1/AyjrJpBDKbZcgPiEQR6KNIcY
+	xxM4dqm1EeCYWF/oQK17mzT4I6r9SidneO9ONDWhdWYPyZfk8=
+X-Received: by 2002:aa7:88d1:0:b0:83d:b0a0:90e3 with SMTP id d2e1a72fcca58-83f33c344a1mr15052332b3a.31.1779100281040;
+        Mon, 18 May 2026 03:31:21 -0700 (PDT)
+X-Received: by 2002:aa7:88d1:0:b0:83d:b0a0:90e3 with SMTP id d2e1a72fcca58-83f33c344a1mr15052297b3a.31.1779100280558;
+        Mon, 18 May 2026 03:31:20 -0700 (PDT)
 Received: from hu-pshashik-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f19775ca3sm15107597b3a.14.2026.05.18.03.31.12
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f19775ca3sm15107597b3a.14.2026.05.18.03.31.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 03:31:16 -0700 (PDT)
+        Mon, 18 May 2026 03:31:20 -0700 (PDT)
 From: Shashikala Prabhu <shashikala.prabhu@oss.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org, vikram@qti.qualcomm.com,
@@ -103,9 +103,9 @@ Cc: linux-wireless@vger.kernel.org, vikram@qti.qualcomm.com,
         vthiagar@qti.qualcomm.com, sivad@qti.qualcomm.com,
         uvignesh@qti.qualcomm.com, mohathan@qti.qualcomm.com,
         abishekg@qti.qualcomm.com
-Subject: [PATCH wireless-next 1/2] wifi: nl80211: Add NL80211_ATTR_MAX_CH_SWITCH_TIME attribute
-Date: Mon, 18 May 2026 16:01:05 +0530
-Message-Id: <20260518103106.1462604-2-shashikala.prabhu@oss.qualcomm.com>
+Subject: [PATCH wireless-next 2/2] wifi: cfg80211/mac80211: Pass MCST element value in ch_switch_started_notify
+Date: Mon, 18 May 2026 16:01:06 +0530
+Message-Id: <20260518103106.1462604-3-shashikala.prabhu@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260518103106.1462604-1-shashikala.prabhu@oss.qualcomm.com>
 References: <20260518103106.1462604-1-shashikala.prabhu@oss.qualcomm.com>
@@ -116,30 +116,30 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDEwMSBTYWx0ZWRfX/WvoltBFz0ph
- x4o4BV2JHhiI9rfwH+m/yGCqsL/I8yeOX+li7YJj/iUsxfr0beqE8l8gWkbp4sCI5Dtzx4W7Ekd
- 6pWcbrFu6/7c0ywMVuKPFpOLIWK4b5SLFAKY5bLLUEumWE8JPbpZ9Fnzw5rDSg3JUODLI50o6ta
- lO+z83eJII0oIbZf0A/KbRdNhHciDdmKugNhgE9gFgQwQ1qU2Q0kOVF1WPWh8Kq+beJrqZtPFy1
- BiToWxkrUb40QoHxyjPAALIapFoxPRAIGQ8cgYTW13tVfW2TaKYoqCTEqkxPy0cLIxe9zLkdbLG
- WETqVQkLOxTZBx33GQ2erJDRp9mDpM398VoxQllxEe11wNCjnLT8FXnRaQTgzQL7wuB4UyKdkFK
- 6yAJQXrolZH40vUe59MpRYpUFlaoNUjh2BX15hibyhA2dALWjzWyZp+E7SqveQSTza3JzqT0omc
- kJiPOH/n0daBHemoATw==
-X-Proofpoint-GUID: ZMs0ym-LHvSuqj0ndv1rZHjitd1M4pAl
-X-Proofpoint-ORIG-GUID: ZMs0ym-LHvSuqj0ndv1rZHjitd1M4pAl
-X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=6a0aea75 cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDEwMSBTYWx0ZWRfX2K2SoRm6EFYg
+ 04fXZ1CYSFAkFLMVi5pTLrqNu17TxTaH/l/kGed+J99YZeRao+82X53HlsRFKIe9y4Enc9CZTl2
+ RvP++sWEKCEGVqg7KNxnshR0XU/jnjFdP04ytIHTIYRkjUvh9nIuWHa3UO2XxiQNsrjInSMG3ji
+ QMLC98h0whw96sOgghmP2O4K9emeOJUMPGk5IfD8A1YxORANcNySBWeI+m2RnhfxFx/effJPp3M
+ pTt162UyCzTHAKR8/LZuFGSJKfM+ka8XEIe7fLZMPHUyKutY6De2DmlZKey5mrnsKm308sCE2lQ
+ 1z9ncl8pd051h1/VPD8z5tx00YfOysm53aiSxnkNaDBve17DuwObNSOfU5ssKPNqesYd5Dmjbv2
+ ZXNeYqK/oDNl0NDxH6dIg6JC0oYkGLYbD2Q1oIrq7M0Q5D/bmfCUYi9pTQQR6zbw1C/l+B3ZsxL
+ FPdpWeJnkg2EkMAEedw==
+X-Proofpoint-GUID: zU5S4ZU6BdfkSMdnpUSKgcTMdGa6PJuF
+X-Proofpoint-ORIG-GUID: zU5S4ZU6BdfkSMdnpUSKgcTMdGa6PJuF
+X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=6a0aea7a cx=c_pps
+ a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
  a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
  a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=EUspDBNiAAAA:8
- a=IzhiUX0hILMTxzPMbFsA:9 a=3WC7DwWrALyhR5TkjVHa:22
+ a=XG50IErifMXcszP_SugA:9 a=2VI0MkxyNR6bbpdq8BZq:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-18_02,2026-05-15_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 clxscore=1011 phishscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 clxscore=1015 phishscore=0 priorityscore=1501
  malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180101
-X-Rspamd-Queue-Id: C30AC56AD4D
+X-Rspamd-Queue-Id: C172E56AD9F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -152,7 +152,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	TAGGED_FROM(0.00)[bounces-36597-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36598-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -165,7 +165,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_NONE(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
@@ -178,67 +178,125 @@ element that indicates the time delta between the time the last beacon
 is transmitted by the AP in the current channel and the expected time
 of the first beacon transmitted by the AP in the new channel.
 
-Add a new u32 nl80211 attribute, NL80211_ATTR_MAX_CH_SWITCH_TIME,
-to carry this value in the NL80211_CMD_CH_SWITCH_STARTED_NOTIFY
-event. Userspace can use this information to decide whether to
-remain connected or disconnect before the AP moves to the new
-channel.
+Forward the already-parsed MCST (Maximum Channel Switch Time) element
+value to userspace via the NL80211_CMD_CH_SWITCH_STARTED_NOTIFY netlink
+command. Userspace can use this information to decide whether to remain
+connected or disconnect before the AP moves to the new channel.
+
+Pass mcst_tu=0 in the __ieee80211_channel_switch() call to
+cfg80211_ch_switch_started_notify() since the AP-initiated channel
+switch path does not carry a MCST element, as this element is only
+present in Beacon/Probe Response frames processed on the STA side via
+ieee80211_sta_process_chanswitch().
 
 Signed-off-by: Chandru Gopi <cgopi@qti.qualcomm.com>
 Signed-off-by: Shashikala Prabhu <shashikala.prabhu@oss.qualcomm.com>
 ---
- include/uapi/linux/nl80211.h | 11 +++++++++++
- net/wireless/nl80211.c       |  1 +
- 2 files changed, 12 insertions(+)
+ include/net/cfg80211.h |  4 +++-
+ net/mac80211/cfg.c     |  2 +-
+ net/mac80211/mlme.c    |  2 +-
+ net/wireless/nl80211.c | 12 ++++++++----
+ 4 files changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 9998f6c0a665..65c04e1e54b6 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -953,6 +953,10 @@
-  *	after %NL80211_ATTR_CH_SWITCH_COUNT TBTT's.  The userspace may
-  *	decide to react to this indication by requesting other
-  *	interfaces to change channel as well.
-+ *	%NL80211_ATTR_MAX_CH_SWITCH_TIME included in this command indicates the
-+ *	AP's Max Channel Switch Time. Userspace can use this information to
-+ *	decide whether to remain connected or disconnect before the AP moves to
-+ *	the new channel.
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index ddcf559430dd..c55b7f4ea48a 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -9979,6 +9979,8 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
+  * @link_id: the link ID for MLO, must be 0 for non-MLO
+  * @count: the number of TBTTs until the channel switch happens
+  * @quiet: whether or not immediate quiet was requested by the AP
++ * @mcst_tu: max channel switch time in TUs, 0 if the MCST element was not
++ *	present
   *
-  * @NL80211_CMD_START_P2P_DEVICE: Start the given P2P Device, identified by
-  *	its %NL80211_ATTR_WDEV identifier. It must have been created with
-@@ -3165,6 +3169,12 @@ enum nl80211_commands {
-  * @NL80211_ATTR_NPCA_PRIMARY_FREQ: NPCA primary channel (u32)
-  * @NL80211_ATTR_NPCA_PUNCT_BITMAP: NPCA puncturing bitmap (u32)
-  *
-+ * @NL80211_ATTR_MAX_CH_SWITCH_TIME: u32 attribute carrying the Switch Time
-+ *	field from the MCST (Max Channel Switch Time) element, indicating the
-+ *	time delta between the time the last beacon is transmitted by the AP in
-+ *	the current channel and the expected time of the first beacon
-+ *	transmitted by the AP in the new channel, expressed in TUs.
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3763,6 +3773,7 @@ enum nl80211_attrs {
- 	NL80211_ATTR_NPCA_PRIMARY_FREQ,
- 	NL80211_ATTR_NPCA_PUNCT_BITMAP,
+  * Inform the userspace about the channel switch that has just
+  * started, so that it can take appropriate actions (eg. starting
+@@ -9987,7 +9989,7 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
+ void cfg80211_ch_switch_started_notify(struct net_device *dev,
+ 				       struct cfg80211_chan_def *chandef,
+ 				       unsigned int link_id, u8 count,
+-				       bool quiet);
++				       bool quiet, u32 mcst_tu);
  
-+	NL80211_ATTR_MAX_CH_SWITCH_TIME,
- 	/* add attributes here, update the policy in nl80211.c */
+ /**
+  * ieee80211_operating_class_to_band - convert operating class to band
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 0b1291ff7a2c..0cb6d949665a 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -4768,7 +4768,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
  
- 	__NL80211_ATTR_AFTER_LAST,
+ 	cfg80211_ch_switch_started_notify(sdata->dev,
+ 					  &link_data->csa.chanreq.oper, link_id,
+-					  params->count, params->block_tx);
++					  params->count, params->block_tx, 0);
+ 
+ 	if (changed) {
+ 		ieee80211_link_info_change_notify(sdata, link_data, changed);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 5b02141b0cb2..76f3c3a8feba 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3182,7 +3182,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
+ 
+ 	cfg80211_ch_switch_started_notify(sdata->dev, &csa_ie.chanreq.oper,
+ 					  link->link_id, csa_ie.count,
+-					  csa_ie.mode);
++					  csa_ie.mode, csa_ie.max_switch_time);
+ 
+ 	/* we may have to handle timeout for deactivated link in software */
+ 	now = ktime_get_boottime();
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index c272a2fbad03..14d41142cf79 100644
+index 14d41142cf79..a17e87e782e4 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -1093,6 +1093,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_NPCA_PRIMARY_FREQ] = { .type = NLA_U32 },
- 	[NL80211_ATTR_NPCA_PUNCT_BITMAP] =
- 		NLA_POLICY_FULL_RANGE(NLA_U32, &nl80211_punct_bitmap_range),
-+	[NL80211_ATTR_MAX_CH_SWITCH_TIME] = { .type = NLA_U32 },
- };
+@@ -22271,7 +22271,8 @@ static void nl80211_ch_switch_notify(struct cfg80211_registered_device *rdev,
+ 				     struct cfg80211_chan_def *chandef,
+ 				     gfp_t gfp,
+ 				     enum nl80211_commands notif,
+-				     u8 count, bool quiet)
++				     u8 count, bool quiet,
++				     u32 mcst_tu)
+ {
+ 	struct wireless_dev *wdev = netdev->ieee80211_ptr;
+ 	struct sk_buff *msg;
+@@ -22303,6 +22304,9 @@ static void nl80211_ch_switch_notify(struct cfg80211_registered_device *rdev,
+ 		if (quiet &&
+ 		    nla_put_flag(msg, NL80211_ATTR_CH_SWITCH_BLOCK_TX))
+ 			goto nla_put_failure;
++		if (mcst_tu &&
++		    nla_put_u32(msg, NL80211_ATTR_MAX_CH_SWITCH_TIME, mcst_tu))
++			goto nla_put_failure;
+ 	}
  
- /* policy for the key attributes */
+ 	genlmsg_end(msg, hdr);
+@@ -22355,7 +22359,7 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
+ 	cfg80211_sched_dfs_chan_update(rdev);
+ 
+ 	nl80211_ch_switch_notify(rdev, dev, link_id, chandef, GFP_KERNEL,
+-				 NL80211_CMD_CH_SWITCH_NOTIFY, 0, false);
++				 NL80211_CMD_CH_SWITCH_NOTIFY, 0, false, 0);
+ }
+ EXPORT_SYMBOL(cfg80211_ch_switch_notify);
+ 
+@@ -22402,7 +22406,7 @@ EXPORT_SYMBOL(cfg80211_incumbent_signal_notify);
+ void cfg80211_ch_switch_started_notify(struct net_device *dev,
+ 				       struct cfg80211_chan_def *chandef,
+ 				       unsigned int link_id, u8 count,
+-				       bool quiet)
++				       bool quiet, u32 mcst_tu)
+ {
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+ 	struct wiphy *wiphy = wdev->wiphy;
+@@ -22416,7 +22420,7 @@ void cfg80211_ch_switch_started_notify(struct net_device *dev,
+ 
+ 	nl80211_ch_switch_notify(rdev, dev, link_id, chandef, GFP_KERNEL,
+ 				 NL80211_CMD_CH_SWITCH_STARTED_NOTIFY,
+-				 count, quiet);
++				 count, quiet, mcst_tu);
+ }
+ EXPORT_SYMBOL(cfg80211_ch_switch_started_notify);
+ 
 -- 
 2.34.1
 
