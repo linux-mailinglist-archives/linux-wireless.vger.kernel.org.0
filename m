@@ -1,310 +1,223 @@
-Return-Path: <linux-wireless+bounces-36612-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36613-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KM0qF15aC2oCGAUAu9opvQ
-	(envelope-from <linux-wireless+bounces-36612-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 20:28:46 +0200
+	id mGe/E0CCC2oNIwUAu9opvQ
+	(envelope-from <linux-wireless+bounces-36613-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 23:18:56 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17A5572410
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 20:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 105DB573BFC
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 23:18:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F1F263036CEA
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 18:24:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8987430391D8
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 21:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A775382296;
-	Mon, 18 May 2026 18:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C209397E91;
+	Mon, 18 May 2026 21:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CKMub3Jk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QTzT0fqj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E777E380FF2
-	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 18:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779128645; cv=pass; b=XKUPFz7giYQdL8okhbqMZP8yxt4WtaE6AJrdaz177KqD4LNq6oOR5eV1wXjzLuMDY5FaLlgR4fIoHjD1KW8nGpYUa8kbUTH71Y5oYfP95SX9AYHH9tC2qVlTO13LZJnOJO+aQTmWJEadioiv+1iahKmqmsgYXf9SeTIfcP5ftP0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779128645; c=relaxed/simple;
-	bh=9BGJGdDGBwxuTjXu+vZPGTzZyWZz+B3c2qrTOIN7wUo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FaEhZb7Mioj7n6/TypVp1yqsNWPvwQiam8V4S29TVcHFSA+2dIetnlQnjHj6kp/uXXN19t/CB3BuKxIq0VBMkUprkvzPemI7FNkG5cF96GiuL9RUryfwK05pboC1BhNtrUewrqeHO7hNCBO3CYvc2yKaz9V0Xi6Ffy6zfvsy+TM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CKMub3Jk; arc=pass smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07BC393DE0
+	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 21:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779139128; cv=none; b=TKaf0uaPuAJNnQ79fINavtELdDrJ0K8PuVC2tUKY/CZJC3vodE2POQQm+kmKaiKRGTHyXYfzbJdxrbuT0lRtVOxeGjsB6V8aCLFsLsyTOVMUgzJl0RziIpIapsYBzikNXLozYM4Z4VPBT4LfUMRvyy+X9OmUED23ai8g/PEp2X4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779139128; c=relaxed/simple;
+	bh=g/xJZ+OYh1mkHmn3+sQ2z7XA33HLjy2TXP/ltrNVdjE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=giqZK4gAOL94p0OROIxaTTiQV6IFXUzaHZ6jTBkqsdZEGqH1DZ5Ngg3jXugBbjQo4yzOLEnzJ2fS49VSSO7fFgrKMX3dvqKDWI4H+XK6QocozFk6mMJm/wN9bAxMJZLEsJPqKE6m5/0mG14sfZ2XkhQbCYHSg3Zn7GGTEhaAH7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QTzT0fqj; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bcd3c190f71so465333866b.0
-        for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 11:24:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779128642; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Rrn3S/NdxtpFbflO5tCnN7qCNsfe7/Ad1FecI7Do1ShJ+ph2EV2Mt0WhI1RMg4GLO6
-         PF+WVQc+bZ2i57WxXTeWeIigcsW8DkDgwyu4QZUcPqN8xuu19BSIuoFgQpm8ifDzpt38
-         qY1rvyC2ZXluydSsOZxxKzL5xs05Z56pblg4cUe/0B7ZljdLfijiDboJkk3j6dA5aNEB
-         mAHKfhUrwWbWzcQTF6Vz1F0m51UEmCD0Gmkx4Hi1DtU7GSrpgBp2J6zro4HxS6oIiCAu
-         /DLClUj+Fi9je0uwa5l1BTitG+kaxjNaXVKPlAf4v8ozqJ+DIVkEvZPCOfa+ItRxAh+1
-         x5Ig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MkRwRwwQI9Lvwqp+ZfDsXnx8pCUGF38PtuwOnzRf8PA=;
-        fh=nhtPxshgUuizRTEqVVps+DZdW4ET4o3XZwuFF+LyPso=;
-        b=BsRjIf4VDDjr5kNVD/zGfQBTKFwWuiy0ZySs4wyDENn30ENLeSUZdYMF+fQAGYaGUb
-         cXJvsMwN2VA+2ckOfpt4TjRZ2F6JgGVtAweo9U2NfpZQjhuN65RE+7d+HNgfuMcgM4i8
-         ewPtzPi+eHNUJZSXhQN5CRAfEL+Kn8j+nP3kftRDLl21jjqPx5qJ688S5K4X+luAWbrG
-         UBOPQfZOxgdcPLyIeB+E12ZhknGXXK4+Jw8gI0tFhLtbL/xaeNRqhxjqYTmSTaqn6bDb
-         XzFmFx6sD0KV31IxFN0f0MHe0nb/joWqJ9srIcJW8XrKZMJHYpPfT1tPyDEXiVZ8+HJm
-         ebrQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3665a90bcd3so2861726a91.1
+        for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 14:18:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779128642; x=1779733442; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MkRwRwwQI9Lvwqp+ZfDsXnx8pCUGF38PtuwOnzRf8PA=;
-        b=CKMub3JkaRKCTxt9CBTESHE3emmVaRnTQGPLwJtFHfSxYizoQPTTXX36IK2uUwsMXl
-         T3hQojB2DoIx9fEtGVDtMFnfmZ5Fy8OalqwPadQBsNTv0iVg3R776fypGwxBgR/BVHuo
-         kGcpffYeFPK0KMZLb6b0Jnig9C/+Z4QUM8Xa2M9VjzuTtpAUzXZwff9pu+PYcjiBGdzF
-         dm6cbpCjOnnYHcxHW9OVI3nqBU1Xi+J1fn4iyORoh/+q5Fw7O75qMl42uaGrXGd+u0yo
-         ScD/7hrtmrU8HNasg9hp8swC6xp0nne66FdseF/idIj2HSKTcZM4071FR3NbS/msiKGR
-         ZLBw==
+        d=gmail.com; s=20251104; t=1779139126; x=1779743926; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DYl12Kfn/OxyVfyG979gVQDEq7mBiScEt37GaLdil1A=;
+        b=QTzT0fqjDQ4fTAyk9w1haDp2lZCCvtTO7OejfYejXr4K0qO4DM/9DdZsgTStecQ33L
+         D+AYq+1pzMi0nWRnAPeoxDxqeJx6aqaCcLtoAOrcUEF+uAStgBwhX7KhYHGSywcnj9vg
+         vxmn0XDQDOsiupxpFGyYnEfxw3Y4W/xB0NnAGmQo6QJcRPDAiNhvCmdZmRLCJ+Uj/1uU
+         iN1p9joGHtNmKqt8D2yM1aVPhGSPbX6acurkcEh68Ow5OYNEqDzDCHtcx+EQ72vjQsoE
+         vqnasDsmBLj6GAFAg+0Jxur20JwRT9GMhb344dAnvHE1aVklxmxPz98md6Ot6HnnzVeB
+         65jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779128642; x=1779733442;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MkRwRwwQI9Lvwqp+ZfDsXnx8pCUGF38PtuwOnzRf8PA=;
-        b=omwDfzIZBVlz7j9eDVoY2u9rMV2BcBInqvGivb18KTV29CkPOb/yaSR1TThfmXtDf4
-         1cnbmThSXicezmD34vPXEjZ09XMRCahzFtoDZH+WobRHNGVhGaxzOLenO1LlNlZSPWs2
-         lFA/+/Khq3StYiRnedBFGr4uyPt8032XRxoU4JhUyW/1o4KYqc9cP1h5sNTpOpAvGrUZ
-         XrF+8QpVrTwHUs5dldI12jko9fTHgkl8+G91r5cpnZIIZRFr7B77YDryeODgLVv3YsZs
-         ZGs2gzUyqEVP2/6nUTgBn3u3NmNWxEUv4vCe98/LTD73ayNxlCPEMQFCRQw6loSf7sKs
-         o73g==
-X-Forwarded-Encrypted: i=1; AFNElJ/mGAC4+bMaklAqi805q+H9RRZOmwZ2tzDL6szX8eHzeHUF9BD3OSc2IPTW7SX5nMXmOXLanQWuB0yv6p9jWA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9BM9+CIgTHa0ySrATplCV2yDg7xiVQxczYJicLevYbjKcjfth
-	VxEv6QvnYlE8XR05MfTeFuiQtH2ZI/01xfB7i2kjI3RA5xCD8Lfi3Pb6U+JNgg3UR/2hL9tLrF8
-	pCzyaY8n5D0LVibTCFh5pCNKHJZ+zCNY=
-X-Gm-Gg: Acq92OFtM/aqNjmiRFH0Epz0yqOefdZn5+DoGX15jkLNm2yrQljutAExDUjeNPHU0w1
-	uw68AMDtDxFh0nXg7HzJhoantC80f1Hx8x5lV5eU82JO7iX7QLJ3Bou9FxoZuCEO8QZH2ysq1Id
-	6W6uLSxjj2SoeLL+RdFVNf+XD8/DTEwGrZm88oux4QF26O90m3oyqJEPQQc7vLI61fBa9i0ivCU
-	1pcxv+quSI3IatSW0ufx1Sh/hyXKD+DoCh2HsHe2RT1K5QnLlxaHxwsgU7Faa6ZFP0VuZXarZPA
-	J9DW/7x6HgrBHJFdCmYAEEarEpBmek8g88//BMJChN4O4WaVjqM=
-X-Received: by 2002:a17:907:c50e:b0:bd4:f3e5:b0f6 with SMTP id
- a640c23a62f3a-bd517964d1fmr901741666b.28.1779128642168; Mon, 18 May 2026
- 11:24:02 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779139126; x=1779743926;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DYl12Kfn/OxyVfyG979gVQDEq7mBiScEt37GaLdil1A=;
+        b=JVt77trg4yCNVTYiWbZ9tS3Wp8MZOhn8DMUP2A41FCfk+70EmOwkF8r1nRbxlZhf4q
+         UGIPU7usbdm7YEsG/eTTv82EjClKVTGd+qnDhlWmnQoXfvNdLtZkoI8jB0DZwnSsMi/1
+         94ukc8uF6iSO5RF7gxx+M02DYRryV62PrgyS9VL0vHq+03I+4rbxPieJAaxKsxcRU8DH
+         4km97EnMVwhwftbsj/qEjYlHK6pWgF0dZ55M5boVjAFgmT7AZcipntyuNetapc24yRmW
+         Q+dyocuYFKH+H5XTV5KLseuZVxqIfxzoiC5WfZih3NdbxTzY/0AYD/2OYGrx0AfAT/9X
+         cl2w==
+X-Gm-Message-State: AOJu0YysUbseeAnYFMcYbKFp0t9OL9HHmOaDTUUox7V09D2TCFo6xdLx
+	PrpbfHgXrCNCczPfT7J9sQQnj1cpXgy6rV2JYtw1ULkW3IPiXrap8fmZM/sT/Mi3
+X-Gm-Gg: Acq92OEsd9GKGo9uRpGzLhFsfGEBznHkrMspnbuBAumjPw3DbkTleiNAFHyg63Tk1Pd
+	aJJ/0dyLsuuWC+FR6fPUPFaO4vh6iUKsEwlVQLByOLO48G50Yf9BpsAtRWFwWBOCSnO2TL0bbzZ
+	gNIhTs7d18+we5K9YfYA2HQkSNHEjlDcLG6RhvANBgL8wwPDn7zHnsi5Y7yJMhoxbv57UdNomqK
+	KxEBFItAvQieWEzmvd2fPtjkfn3G+bVHqD8VBG8SlusTIzTrxiGkNV5uwU5Lcrnug/UUfRxbSY9
+	lDbugplAoXfmZue9gX67sMePkKqf5Syy02M7ERJ4Bm1IgZHwtkfh3ah2QlVLRf5BtHdz1wl1UmA
+	3LGs9HykOb2EC1GZqNYEBkpp6Fh4UViS1shBdxzMKiDAI6Y8VRR6UysEgYscIPPQYrHDw7Nm6LK
+	BFHFvYUYOSDxkPM3cO4sj8w08kx1Axhop34Gcdny+DKs3HlbDmn/sjMWLoomM8xOY3xezWNBCjN
+	fsBd3SfoFldAF1Drz2wji5TRSrRzenMf1w=
+X-Received: by 2002:a17:90b:4c50:b0:369:d7c6:450a with SMTP id 98e67ed59e1d1-369d7c64a4bmr4286889a91.0.1779139125662;
+        Mon, 18 May 2026 14:18:45 -0700 (PDT)
+Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3695157d963sm11466999a91.6.2026.05.18.14.18.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 14:18:44 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-kernel@vger.kernel.org (open list),
+	linux-hardening@vger.kernel.org (open list:KERNEL HARDENING (not covered by other areas):Keyword:\b__counted_by(_le|_be|_ptr)?\b)
+Subject: [PATCH wireless-next] wifi: mwifiex: Use flexible array for RX reorder table
+Date: Mon, 18 May 2026 14:18:26 -0700
+Message-ID: <20260518211826.11245-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5ecac6a9b7d29526e8438dea105b58f5487c93aa.1778521232.git.ryder.lee@mediatek.com>
- <agdJ1EtZjjWh2R1h@lore-desk> <CAHoxojJX2BRRTLMuM_QcJqMMmshxS4EAwrB1VjU3rsZ+0k2PAg@mail.gmail.com>
- <agsGiHKH6ly1afaf@lore-desk>
-In-Reply-To: <agsGiHKH6ly1afaf@lore-desk>
-From: Roy Luo <roychl666@gmail.com>
-Date: Mon, 18 May 2026 11:23:51 -0700
-X-Gm-Features: AVHnY4I8XXaA-Ix7yIv2zNLRgB6T4AcoApIY86IDAvHLUZ-cOoSi0nKs1Qxz7eM
-Message-ID: <CAHoxojKeXCCnJoO7yBBmTM9euiTf38orujOhOK00X8bb3ctWuA@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mt76: mt7996: avoid memset overwriting tx_info->control.flags
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Ryder Lee <ryder.lee@mediatek.com>, Felix Fietkau <nbd@nbd.name>, 
-	linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	Shayne Chen <shayne.chen@mediatek.com>, Roy Luo <roy-ch.luo@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36612-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-36613-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[roychl666@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
-X-Rspamd-Queue-Id: C17A5572410
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 105DB573BFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, May 18, 2026 at 5:31=E2=80=AFAM Lorenzo Bianconi <lorenzo@kernel.or=
-g> wrote:
->
-> On May 15, Cheng Hao Luo wrote:
-> > > struct ieee80211_tx_info {
-> > >         u32                        flags;                /*     0    =
- 4 */
-> > >         u32                        band:3;               /*     4: 0 =
- 4 */
-> > >         u32                        status_data_idr:1;    /*     4: 3 =
- 4 */
-> > >         u32                        status_data:13;       /*     4: 4 =
- 4 */
-> > >         u32                        hw_queue:4;           /*     4:17 =
- 4 */
-> > >         u32                        tx_time_est:10;       /*     4:21 =
- 4 */
-> > >
-> > >         /* XXX 1 bit hole, try to pack */
-> > >
-> > >         union {
-> > >                 struct {
-> > >                         union {
-> > >                                 struct {
-> > >                                         struct ieee80211_tx_rate rate=
-s[4]; /*     8    12 */
-> > >                                         s8     rts_cts_rate_idx; /*  =
-  20     1 */
-> > >                                         u8     use_rts:1; /*    21: 0=
-  1 */
-> > >                                         u8     use_cts_prot:1; /*    =
-21: 1  1 */
-> > >                                         u8     short_preamble:1; /*  =
-  21: 2  1 */
-> > >                                         u8     skip_table:1; /*    21=
-: 3  1 */
-> > >                                         u8     antennas:2; /*    21: =
-4  1 */
-> > >                                 };                       /*     8    =
-14 */
-> > >                                 long unsigned int jiffies; /*     8  =
-   8 */
-> > >                         };                               /*     8    =
-16 */
-> > >                         struct ieee80211_vif * vif;      /*    24    =
- 8 */
-> > >                         struct ieee80211_key_conf * hw_key; /*    32 =
-    8 */
-> > >                         u32        flags;                /*    40    =
- 4 */
-> > >                         codel_time_t enqueue_time;       /*    44    =
- 4 */
-> > >                 } control;                               /*     8    =
-40 */
-> > >                 struct {
-> > >                         u64        cookie;               /*     8    =
- 8 */
-> > >                 } ack;                                   /*     8    =
- 8 */
-> > >                 struct {
-> > >                         struct ieee80211_tx_rate rates[4]; /*     8  =
-  12 */
-> > >                         s32        ack_signal;           /*    20    =
- 4 */
-> > >                         u8         ampdu_ack_len;        /*    24    =
- 1 */
-> > >                         u8         ampdu_len;            /*    25    =
- 1 */
-> > >                         u8         antenna;              /*    26    =
- 1 */
-> > >                         u8         pad;                  /*    27    =
- 1 */
-> > >                         u16        tx_time;              /*    28    =
- 2 */
-> > >                         u8         flags;                /*    30    =
- 1 */
-> > >                         u8         pad2;                 /*    31    =
- 1 */
-> > >                         void *     status_driver_data[2]; /*    32   =
- 16 */
-> > >                 } status;                                /*     8    =
-40 */
-> > >                 struct {
-> > >                         struct ieee80211_tx_rate driver_rates[4]; /* =
-    8    12 */
-> > >                         u8         pad[4];               /*    20    =
- 4 */
-> > >                         void *     rate_driver_data[3];  /*    24    =
-24 */
-> > >                 };                                       /*     8    =
-40 */
-> > >                 void *             driver_data[5];       /*     8    =
-40 */
-> > >         };                                               /*     8    =
-40 */
-> > >
-> > >         /* size: 48, cachelines: 1, members: 7 */
-> > >         /* sum members: 44 */
-> > >         /* sum bitfield members: 31 bits, bit holes: 1, sum bit holes=
-: 1 bits */
-> > >         /* last cacheline: 48 bytes */
-> > > };
-> > >
-> > > According to pahole, the size of the control inner union is actually =
-16 bytes
-> > > since the compiler adds 2 bytes of padding. Since mt76_tx_status_skb_=
-add()
-> > > meset to 0 just mt76_tx_cb size (that is 16 bytes) I can't see how
-> > > control.flags is overwritten. Am I missing something?
-> > >
-> > > struct mt76_tx_cb {
-> > >         long unsigned int          jiffies;              /*     0    =
- 8 */
-> > >         u16                        wcid;                 /*     8    =
- 2 */
-> > >         u8                         pktid;                /*    10    =
- 1 */
-> > >         u8                         flags;                /*    11    =
- 1 */
-> > >
-> > >         /* size: 16, cachelines: 1, members: 4 */
-> > >         /* padding: 4 */
-> > >         /* last cacheline: 16 bytes */
-> > > };
-> >
-> > Hi Lorenzo,
-> >
-> > The mt76_tx_cb is placed at status.status_driver_data (offset 32).
-> > It overlaps with hw_key, flags and enqueue_time in the control union.
-> >
-> > static inline struct mt76_tx_cb *mt76_tx_skb_cb(struct sk_buff *skb)
-> > {
-> > BUILD_BUG_ON(sizeof(struct mt76_tx_cb) >
-> >     sizeof(IEEE80211_SKB_CB(skb)->status.status_driver_data));
-> > return ((void *)IEEE80211_SKB_CB(skb)->status.status_driver_data);
-> > }
->
-> Hi Roy,
->
-> I still do not understand since mt76_tx_status_skb_add() sets to 0 just s=
-izeof
-> of mt76_tx_cb, that according to pahole is 16 bytes, so it can't overwrit=
-e
-> hw_key pointer (whose offset respect to the beginning of the control stru=
-ct is
-> 24, 32 - 8).
->
-> Regards,
-> Lorenzo
->
-> >
-> > Regards,
-> > Roy Luo
+Embed the RX reorder pointer array in struct mwifiex_rx_reorder_tbl
+instead of allocating it separately.
 
-Hi Lorenzo,
+This ties the array to the reorder table lifetime and removes a separate
+allocation and cleanup path.
 
-The mt76_tx_status_skb_add() memset zero the 16 bytes starting from
-status.status_driver_data (please see the above inline function shared
-in my last response) whose offset with respect to the beginning of
-the control/status union is exactly 24 (32 - 8) instead of 0.
+Use kzalloc_flex() for this and move the counting variable assignment to
+after it as it does for GCC >= 15 already.
 
-Regards,
-Roy Luo
+Assisted-by: Codex:GPT-5.5
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ .../wireless/marvell/mwifiex/11n_rxreorder.c  | 20 +++----------------
+ drivers/net/wireless/marvell/mwifiex/main.h   |  2 +-
+ 2 files changed, 4 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+index 610ec8302adf..a266f09cb763 100644
+--- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+@@ -213,7 +213,6 @@ mwifiex_del_rx_reorder_entry(struct mwifiex_private *priv,
+ 	list_del(&tbl->list);
+ 	spin_unlock_bh(&priv->rx_reorder_tbl_lock);
+
+-	kfree(tbl->rx_reorder_ptr);
+ 	kfree(tbl);
+
+ 	spin_lock_bh(&priv->adapter->rx_proc_lock);
+@@ -329,7 +328,6 @@ static void
+ mwifiex_11n_create_rx_reorder_tbl(struct mwifiex_private *priv, u8 *ta,
+ 				  int tid, int win_size, int seq_num)
+ {
+-	int i;
+ 	struct mwifiex_rx_reorder_tbl *tbl, *new_node;
+ 	u16 last_seq = 0;
+ 	struct mwifiex_sta_node *node;
+@@ -344,10 +342,12 @@ mwifiex_11n_create_rx_reorder_tbl(struct mwifiex_private *priv, u8 *ta,
+ 		return;
+ 	}
+ 	/* if !tbl then create one */
+-	new_node = kzalloc_obj(struct mwifiex_rx_reorder_tbl);
++	new_node = kzalloc_flex(*new_node, rx_reorder_ptr, win_size);
+ 	if (!new_node)
+ 		return;
+
++	new_node->win_size = win_size;
++
+ 	INIT_LIST_HEAD(&new_node->list);
+ 	new_node->tid = tid;
+ 	memcpy(new_node->ta, ta, ETH_ALEN);
+@@ -381,26 +381,12 @@ mwifiex_11n_create_rx_reorder_tbl(struct mwifiex_private *priv, u8 *ta,
+ 		new_node->flags |= RXREOR_INIT_WINDOW_SHIFT;
+ 	}
+
+-	new_node->win_size = win_size;
+-
+-	new_node->rx_reorder_ptr = kcalloc(win_size, sizeof(void *),
+-					   GFP_KERNEL);
+-	if (!new_node->rx_reorder_ptr) {
+-		kfree(new_node);
+-		mwifiex_dbg(priv->adapter, ERROR,
+-			    "%s: failed to alloc reorder_ptr\n", __func__);
+-		return;
+-	}
+-
+ 	new_node->timer_context.ptr = new_node;
+ 	new_node->timer_context.priv = priv;
+ 	new_node->timer_context.timer_is_set = false;
+
+ 	timer_setup(&new_node->timer_context.timer, mwifiex_flush_data, 0);
+
+-	for (i = 0; i < win_size; ++i)
+-		new_node->rx_reorder_ptr[i] = NULL;
+-
+ 	spin_lock_bh(&priv->rx_reorder_tbl_lock);
+ 	list_add_tail(&new_node->list, &priv->rx_reorder_tbl_ptr);
+ 	spin_unlock_bh(&priv->rx_reorder_tbl_lock);
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index 27559e2ddc31..67da5daa48b4 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -708,10 +708,10 @@ struct mwifiex_rx_reorder_tbl {
+ 	int init_win;
+ 	int start_win;
+ 	int win_size;
+-	void **rx_reorder_ptr;
+ 	struct reorder_tmr_cnxt timer_context;
+ 	u8 amsdu;
+ 	u8 flags;
++	void *rx_reorder_ptr[] __counted_by(win_size);
+ };
+
+ struct mwifiex_bss_prio_node {
+--
+2.54.0
+
 
