@@ -1,62 +1,78 @@
-Return-Path: <linux-wireless+bounces-36590-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36591-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCEnHpTFCmqa7wQAu9opvQ
-	(envelope-from <linux-wireless+bounces-36590-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 09:53:56 +0200
+	id oJijIxfECmoI7gQAu9opvQ
+	(envelope-from <linux-wireless+bounces-36591-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 09:47:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823DC5682A7
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 09:53:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ACEF568118
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 09:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DD11C3001CF1
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 07:41:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 231263015896
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2026 07:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038C13D16EB;
-	Mon, 18 May 2026 07:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7173DFC7B;
+	Mon, 18 May 2026 07:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="EEWov21j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QBFC1mp3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250AA3DDDC3
-	for <linux-wireless@vger.kernel.org>; Mon, 18 May 2026 07:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B393AF666;
+	Mon, 18 May 2026 07:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779090066; cv=none; b=l9hRrkZTA0cXS2sM5ltngCYA/r79vFgUtklNUT/GyDWyrfQusE7F7oCVBtOyznLq4BJtQPjVG3Tkc7GvLpaMfDm1Czavz2QdfK9TY8dyVFGfcfiqFPC0B+G7m806LJhdvolYQKSO/DucZLs+zKyxTGh2RHIP9KT6UxOwTQpAGKQ=
+	t=1779090270; cv=none; b=H+P72Bi3Zvpg/XH222MrlMmHSCE3unqAHMFVePnxYApKl8HpGX1XdErO1EKSnOzTFLea+rs2+pc5wCzfNTf3/giXubjOHlvf9SszmtT4XfLRVmYTtufc4/9UuIlV6NSyZMgUF4gpVHOUr4sd/Cn+A5XA3mgT0x9HHCEtcyHQpyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779090066; c=relaxed/simple;
-	bh=+t7eCfHcu99uc/1gojh87pyUWrkEoYqEbDEsnP8cOTA=;
+	s=arc-20240116; t=1779090270; c=relaxed/simple;
+	bh=2VgfqRzwkyb5bRCypLGDNrZHPZPUmDh1p0S4IvBWaA0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eNsRo8Yr5FpAYhMvWuYP5S6J6sJ3m/EwdkaB+1AyRc0Ky/opZU24UUz8v9jgJpWVS7ODKBzd3V6Ju/eKv6Y5LhZ+mPYXftBIlK3BQPlDeNtGDvO5OId7K4DToa5oda4MbnTLnv/3ciBGE9oaU8J2ZCMpM5ssCznoz6a4B5RGA+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=EEWov21j; arc=none smtp.client-ip=212.77.101.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 30207 invoked from network); 18 May 2026 09:40:55 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1779090055; bh=HYgurHUU4+knRgMSE8vU6X7ApzfW3qHKdUoHfCKhVRs=;
-          h=From:To:Cc:Subject;
-          b=EEWov21jQZeVL0UYxkkUkyEaIK9CJBW5PhGMRGLejvAMFMx9tJO2+r1M7jsxokQDm
-           hJuJcTmhxsMmizt4YeliIr0kylCUoEbWWKK/+U0MvmFnwsTNDh55kwnhTvq8Y4hdaR
-           8n7YXlECR0PR4KnE30Hzaw52W/4mQKe/rm+0TlRRAl0XS+7B9ETEQ2Ik3oH0wPWFw/
-           oBbimc7HJf7VtGjONGLpFZQSJv3SNF6CeJ7G5EBSEZ5GsJWzaPOlc68itLJc8mUDqd
-           MHFCeIna2uwJIIuMhN8jl/dtJdcBYAhcE3ykfeFTApWY3BC+YR/1WIhmiCMXEIx7Gv
-           w+/m3G0oL79BA==
-Received: from 77-236-5-199.static.play.pl (HELO localhost) (stf_xl@wp.pl@[77.236.5.199])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
-          for <rosenp@gmail.com>; 18 May 2026 09:40:55 +0200
-Date: Mon, 18 May 2026 09:40:54 +0200
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: linux-wireless@vger.kernel.org,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH wireless-next] wifi: rt2x00: Allocate LED names
- dynamically
-Message-ID: <20260518074054.GA20466@wp.pl>
-References: <20260517231759.56638-1-rosenp@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=EwSRjgSCuBYtS/jYH0KxWE4hG+K+2aqABR/uWjYXDc8SOevW95OqEY8h4rU15s4w0sNWcIF4x9Cc+gIInP318y24uVjDwhpmx847FYXLu0gtMPDibWv1GWYO739/+CnGJIrZzbLnbCcFkz9+8CfENn/0gV/Ecaa6os0BKc1AxrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QBFC1mp3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEABFC2BCB7;
+	Mon, 18 May 2026 07:44:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779090269;
+	bh=2VgfqRzwkyb5bRCypLGDNrZHPZPUmDh1p0S4IvBWaA0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QBFC1mp3CcT7A19F66kJxDLr/EwzcxFYyB54RQgNL6HJN90bbyxiIi1rVk8oNYmjW
+	 N7pkQjsG/+FJJrlvVNGlHWEGy7se1TxSu6KZy7K+7E+wZQXS/IeZ9wxlPYV9Qh520z
+	 tF3L46YTZbdEwuPeMbgS4uAMVc8ag5tiw8vB13KNQSyPFFSqbZqDegfvvZVivFQ6Mc
+	 9CopzrMSyHYPLAZbl108nRjMfWutLPptrqdvSU5zJmh18l1VyT1kuqCtr1GZvIsCKQ
+	 FZ9L0xvHZfBPuVzOK3neMz+v7hFl2OwzvUctTjjeOaECUjpT7NsuxTBbg0zMwOLRhZ
+	 Cd9EP5GLpeXzw==
+Date: Mon, 18 May 2026 13:14:12 +0530
+From: Sumit Garg <sumit.garg@kernel.org>
+To: andersson@kernel.org, konradybcio@kernel.org
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-media@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org,
+	robin.clark@oss.qualcomm.com, sean@poorly.run,
+	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
+	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
+	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
+	dikshita.agarwal@oss.qualcomm.com, bod@kernel.org,
+	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
+	trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
+	pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com,
+	tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com,
+	srinivas.kandagatla@oss.qualcomm.com,
+	amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
+	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
+	skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: Re: [PATCH v5 00/16] firmware: qcom: Add OP-TEE PAS service support
+Message-ID: <agrDTB5ewEgibQLJ@sumit-xelite>
+References: <20260504130603.1474043-1-sumit.garg@kernel.org>
+ <agSAL-z6NUV1p2kH@sumit-xelite>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,143 +81,228 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260517231759.56638-1-rosenp@gmail.com>
-X-WP-MailID: ac132383b09a213990f7798b1bab3ac7
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [MaMx]                               
-X-Rspamd-Queue-Id: 823DC5682A7
+In-Reply-To: <agSAL-z6NUV1p2kH@sumit-xelite>
+X-Rspamd-Queue-Id: 4ACEF568118
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[wp.pl,none];
-	R_DKIM_ALLOW(-0.20)[wp.pl:s=20241105];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36590-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36591-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[49];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	FREEMAIL_FROM(0.00)[wp.pl];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stf_xl@wp.pl,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[wp.pl:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,wp.pl:mid,wp.pl:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
 X-Rspamd-Action: no action
 
-Hi,
-
-On Sun, May 17, 2026 at 04:17:59PM -0700, Rosen Penev wrote:
-> The rt2x00 LED registration path builds LED class names from the
-> driver and wiphy names. A fixed stack buffer can truncate those names
-> before they are passed to the LED core.
-
-To properly justify the change you'll need to provide real world
-example when the size is not sufficient.
-
-> Allocate each LED name with kasprintf(), check allocation failures, and
-> release the stored name when the LED is unregistered.
+On Wed, May 13, 2026 at 07:14:15PM +0530, Sumit Garg wrote:
+> Hi Bjorn,
 > 
-> Assisted-by: Codex:GPT-5.5
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->  .../net/wireless/ralink/rt2x00/rt2x00leds.c   | 30 ++++++++++++++-----
->  1 file changed, 23 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00leds.c b/drivers/net/wireless/ralink/rt2x00/rt2x00leds.c
-> index f5361d582d4e..8818e0b2447b 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00leds.c
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00leds.c
-> @@ -100,6 +100,8 @@ static int rt2x00leds_register_led(struct rt2x00_dev *rt2x00dev,
->  
->  	retval = led_classdev_register(device, &led->led_dev);
->  	if (retval) {
-> +		kfree(name);
-> +		led->led_dev.name = NULL;
->  		rt2x00_err(rt2x00dev, "Failed to register led handler\n");
->  		return retval;
->  	}
-> @@ -111,15 +113,19 @@ static int rt2x00leds_register_led(struct rt2x00_dev *rt2x00dev,
->  
->  void rt2x00leds_register(struct rt2x00_dev *rt2x00dev)
->  {
-> -	char name[36];
-> +	char *name;
->  	int retval;
->  	unsigned long on_period;
->  	unsigned long off_period;
->  	const char *phy_name = wiphy_name(rt2x00dev->hw->wiphy);
->  
->  	if (rt2x00dev->led_radio.flags & LED_INITIALIZED) {
-> -		snprintf(name, sizeof(name), "%s-%s::radio",
-> -			 rt2x00dev->ops->name, phy_name);
-> +		name = kasprintf(GFP_KERNEL, "%s-%s::radio",
-> +				 rt2x00dev->ops->name, phy_name);
-> +		if (!name) {
-> +			retval = -ENOMEM;
-> +			goto exit_fail;
-> +		}
+> Just a gentle reminder for any further reviews for this series. If not
+> then please help to pick it up this merge window since we have got acks
+> from corresponding subsystem maintainer too. There were few minor comments
+> addressed by following diff on top of this series. Let me know if you
+> need a new version for that or can they be folded in when you pick this
+> series?
+>
 
-This is overengineering. If needed, the name size can be increased.
+Okay, so I went ahead with v6 [1] for this series including below fixes.
+Let me know if I miss anything to get this into linux-next.
 
-Regards
-Stanislaw
+[1] https://lore.kernel.org/all/20260518072856.22790-1-sumit.garg@kernel.org/
 
->  
->  		retval = rt2x00leds_register_led(rt2x00dev,
->  						 &rt2x00dev->led_radio,
-> @@ -129,8 +135,12 @@ void rt2x00leds_register(struct rt2x00_dev *rt2x00dev)
->  	}
->  
->  	if (rt2x00dev->led_assoc.flags & LED_INITIALIZED) {
-> -		snprintf(name, sizeof(name), "%s-%s::assoc",
-> -			 rt2x00dev->ops->name, phy_name);
-> +		name = kasprintf(GFP_KERNEL, "%s-%s::assoc",
-> +				 rt2x00dev->ops->name, phy_name);
-> +		if (!name) {
-> +			retval = -ENOMEM;
-> +			goto exit_fail;
-> +		}
->  
->  		retval = rt2x00leds_register_led(rt2x00dev,
->  						 &rt2x00dev->led_assoc,
-> @@ -140,8 +150,12 @@ void rt2x00leds_register(struct rt2x00_dev *rt2x00dev)
->  	}
->  
->  	if (rt2x00dev->led_qual.flags & LED_INITIALIZED) {
-> -		snprintf(name, sizeof(name), "%s-%s::quality",
-> -			 rt2x00dev->ops->name, phy_name);
-> +		name = kasprintf(GFP_KERNEL, "%s-%s::quality",
-> +				 rt2x00dev->ops->name, phy_name);
-> +		if (!name) {
-> +			retval = -ENOMEM;
-> +			goto exit_fail;
-> +		}
->  
->  		retval = rt2x00leds_register_led(rt2x00dev,
->  						 &rt2x00dev->led_qual,
-> @@ -182,6 +196,8 @@ static void rt2x00leds_unregister_led(struct rt2x00_led *led)
->  		led->led_dev.brightness_set(&led->led_dev, LED_OFF);
->  
->  	led->flags &= ~LED_REGISTERED;
-> +	kfree(led->led_dev.name);
-> +	led->led_dev.name = NULL;
+-Sumit
+
+> diff --git a/drivers/firmware/qcom/qcom_pas.c b/drivers/firmware/qcom/qcom_pas.c
+> index 025308adf553..bc6c42f2b3c6 100644
+> --- a/drivers/firmware/qcom/qcom_pas.c
+> +++ b/drivers/firmware/qcom/qcom_pas.c
+> @@ -181,7 +181,7 @@ EXPORT_SYMBOL_GPL(qcom_pas_auth_and_reset);
+>   * qcom_pas_prepare_and_auth_reset() - Prepare, authenticate, and reset the
+>   *                                    remote processor
+>   *
+> - * @ctx:       Context saved during call to qcom_scm_pas_context_init()
+> + * @ctx:       Context saved during call to devm_qcom_pas_context_alloc()
+>   *
+>   * This function performs the necessary steps to prepare a PAS subsystem,
+>   * authenticate it using the provided metadata, and initiate a reset sequence.
+> diff --git a/drivers/net/wireless/ath/ath12k/ahb.c b/drivers/net/wireless/ath/ath12k/ahb.c
+> index c5ba91e6f95e..dff7fa7027c5 100644
+> --- a/drivers/net/wireless/ath/ath12k/ahb.c
+> +++ b/drivers/net/wireless/ath/ath12k/ahb.c
+> @@ -488,7 +488,7 @@ static void ath12k_ahb_power_down(struct ath12k_base *ab, bool is_suspend)
+>                 ret = qcom_pas_shutdown(pasid);
+>                 if (ret)
+>                         ath12k_err(ab, "pas shutdown failed for userPD%d: %d\n",
+> -                                  ab_ahb->userpd_id);
+> +                                  ab_ahb->userpd_id, ret);
+>         }
 >  }
->  
->  void rt2x00leds_unregister(struct rt2x00_dev *rt2x00dev)
-> -- 
-> 2.54.0
+> 
+> -Sumit
+> 
+> On Mon, May 04, 2026 at 06:35:47PM +0530, Sumit Garg wrote:
+> > From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> > 
+> > Qcom platforms has the legacy of using non-standard SCM calls
+> > splintered over the various kernel drivers. These SCM calls aren't
+> > compliant with the standard SMC calling conventions which is a
+> > prerequisite to enable migration to the FF-A specifications from Arm.
+> > 
+> > OP-TEE as an alternative trusted OS to Qualcomm TEE (QTEE) can't
+> > support these non-standard SCM calls. And even for newer architectures
+> > using S-EL2 with Hafnium support, QTEE won't be able to support SCM
+> > calls either with FF-A requirements coming in. And with both OP-TEE
+> > and QTEE drivers well integrated in the TEE subsystem, it makes further
+> > sense to reuse the TEE bus client drivers infrastructure.
+> > 
+> > The added benefit of TEE bus infrastructure is that there is support
+> > for discoverable/enumerable services. With that client drivers don't
+> > have to manually invoke a special SCM call to know the service status.
+> > 
+> > So enable the generic Peripheral Authentication Service (PAS) provided
+> > by the firmware. It acts as the common layer with different TZ
+> > backends plugged in whether it's an SCM implementation or a proper
+> > TEE bus based PAS service implementation.
+> > 
+> > The TEE PAS service ABI is designed to be extensible with additional API
+> > as PTA_QCOM_PAS_CAPABILITIES. This allows to accommodate any future
+> > extensions of the PAS service needed while still maintaining backwards
+> > compatibility.
+> > 
+> > Currently OP-TEE support is being added to provide the backend PAS
+> > service implementation which can be found as part of this PR [1].
+> > This implementation has been tested on Kodiak/RB3Gen2 board with lemans
+> > EVK board being the next target. In addition to that WIN/IPQ targets
+> > planning to use OP-TEE will use this service too. Surely the backwards
+> > compatibility is maintained and tested for SCM backend.
+> > 
+> > Note that kernel PAS service support while running in EL2 is at parity
+> > among OP-TEE vs QTEE. Especially the media (venus/iris) support depends
+> > on proper IOMMU support being worked out on the PAS client end.
+> > 
+> > Patch summary:
+> > - Patch #1: adds Kodiak EL2 overlay since boot stack with TF-A/OP-TEE
+> >   only allow UEFI and Linux to boot in EL2.
+> > - Patch #2: adds generic PAS service.
+> > - Patch #3: migrates SCM backend to generic PAS service.
+> > - Patch #4: adds TEE/OP-TEE backend for generic PAS service.
+> > - Patch #5-#14: migrates all client drivers to generic PAS service.
+> > - Patch #15: drops legacy PAS SCM exported APIs.
+> > 
+> > The patch-set is based on v7.1-rc1 tag and can be found in git tree here
+> > [2].
+> > 
+> > Merge strategy:
+> > 
+> > It is expected due to APIs dependency, the entire patch-set to go via
+> > the Qcom tree. All other subsystem maintainers, it will be great if I
+> > can get acks for the corresponding subsystem patches.
+> > 
+> > [1] https://github.com/OP-TEE/optee_os/pull/7721 (already merged)
+> > [2] https://git.kernel.org/pub/scm/linux/kernel/git/sumit.garg/linux.git/log/?h=qcom-pas-v5
+> > 
+> > ---
+> > Changes in v5:
+> > - Incorporated misc. comments from Mukesh.
+> > - Split up patch #11 into 2 to add an independent commit for passing
+> >   proper PAS ID to set_remote_state API.
+> > - Picked up tags.
+> > 
+> > Changes in v4:
+> > - Incorporate misc. comments on patch #4.
+> > - Picked up an ack for patch #10.
+> > - Clarify in cover letter about state of media support.
+> > 
+> > Changes in v3:
+> > - Incorporated some style and misc. comments for patch #2, #3 and #4.
+> > - Add QCOM_PAS Kconfig dependency for various subsystems.
+> > - Switch from pseudo TA to proper TA invoke commands.
+> > 
+> > Changes in v2:
+> > - Fixed kernel doc warnings.
+> > - Polish commit message and comments for patch #2.
+> > - Pass proper PAS ID in set_remote_state API for media firmware drivers.
+> > - Added Maintainer entry and dropped MODULE_AUTHOR.
+> > 
+> > Mukesh Ojha (1):
+> >   arm64: dts: qcom: kodiak: Add EL2 overlay
+> > 
+> > Sumit Garg (15):
+> >   firmware: qcom: Add a generic PAS service
+> >   firmware: qcom_scm: Migrate to generic PAS service
+> >   firmware: qcom: Add a PAS TEE service
+> >   remoteproc: qcom_q6v5_pas: Switch over to generic PAS TZ APIs
+> >   remoteproc: qcom_q6v5_mss: Switch to generic PAS TZ APIs
+> >   soc: qcom: mdtloader: Switch to generic PAS TZ APIs
+> >   remoteproc: qcom_wcnss: Switch to generic PAS TZ APIs
+> >   remoteproc: qcom: Select QCOM_PAS generic service
+> >   drm/msm: Switch to generic PAS TZ APIs
+> >   media: qcom: Switch to generic PAS TZ APIs
+> >   media: qcom: Pass proper PAS ID to set_remote_state API
+> >   net: ipa: Switch to generic PAS TZ APIs
+> >   wifi: ath12k: Switch to generic PAS TZ APIs
+> >   firmware: qcom_scm: Remove SCM PAS wrappers
+> >   MAINTAINERS: Add maintainer entry for Qualcomm PAS TZ service
+> > 
+> >  MAINTAINERS                                   |   9 +
+> >  arch/arm64/boot/dts/qcom/Makefile             |   2 +
+> >  arch/arm64/boot/dts/qcom/kodiak-el2.dtso      |  35 ++
+> >  drivers/firmware/qcom/Kconfig                 |  19 +
+> >  drivers/firmware/qcom/Makefile                |   2 +
+> >  drivers/firmware/qcom/qcom_pas.c              | 291 +++++++++++
+> >  drivers/firmware/qcom/qcom_pas.h              |  50 ++
+> >  drivers/firmware/qcom/qcom_pas_tee.c          | 476 ++++++++++++++++++
+> >  drivers/firmware/qcom/qcom_scm.c              | 302 ++++-------
+> >  drivers/gpu/drm/msm/Kconfig                   |   1 +
+> >  drivers/gpu/drm/msm/adreno/a5xx_gpu.c         |   4 +-
+> >  drivers/gpu/drm/msm/adreno/adreno_gpu.c       |  11 +-
+> >  drivers/media/platform/qcom/iris/Kconfig      |  25 +-
+> >  .../media/platform/qcom/iris/iris_firmware.c  |   9 +-
+> >  drivers/media/platform/qcom/venus/Kconfig     |   1 +
+> >  drivers/media/platform/qcom/venus/firmware.c  |  11 +-
+> >  drivers/net/ipa/Kconfig                       |   2 +-
+> >  drivers/net/ipa/ipa_main.c                    |  13 +-
+> >  drivers/net/wireless/ath/ath12k/Kconfig       |   2 +-
+> >  drivers/net/wireless/ath/ath12k/ahb.c         |   8 +-
+> >  drivers/remoteproc/Kconfig                    |   4 +-
+> >  drivers/remoteproc/qcom_q6v5_mss.c            |   5 +-
+> >  drivers/remoteproc/qcom_q6v5_pas.c            |  51 +-
+> >  drivers/remoteproc/qcom_wcnss.c               |  12 +-
+> >  drivers/soc/qcom/mdt_loader.c                 |  12 +-
+> >  include/linux/firmware/qcom/qcom_pas.h        |  43 ++
+> >  include/linux/firmware/qcom/qcom_scm.h        |  29 --
+> >  include/linux/soc/qcom/mdt_loader.h           |   6 +-
+> >  28 files changed, 1117 insertions(+), 318 deletions(-)
+> >  create mode 100644 arch/arm64/boot/dts/qcom/kodiak-el2.dtso
+> >  create mode 100644 drivers/firmware/qcom/qcom_pas.c
+> >  create mode 100644 drivers/firmware/qcom/qcom_pas.h
+> >  create mode 100644 drivers/firmware/qcom/qcom_pas_tee.c
+> >  create mode 100644 include/linux/firmware/qcom/qcom_pas.h
+> > 
+> > -- 
+> > 2.51.0
+> > 
+> > 
 > 
 
