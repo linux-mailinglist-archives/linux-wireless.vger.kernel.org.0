@@ -1,133 +1,125 @@
-Return-Path: <linux-wireless+bounces-36655-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36656-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHWKCbZUDGqmfAUAu9opvQ
-	(envelope-from <linux-wireless+bounces-36655-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 14:16:54 +0200
+	id OKfTOMNXDGodfwUAu9opvQ
+	(envelope-from <linux-wireless+bounces-36656-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 14:29:55 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1EE557E7CC
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 14:16:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6467257EB1A
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 14:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8909530182B0
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 12:11:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E59F301F9A1
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 12:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916743BCD3D;
-	Tue, 19 May 2026 12:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D123E3C5550;
+	Tue, 19 May 2026 12:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="WMk6sCbk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ct1Ne8MA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D255A4C77AD;
-	Tue, 19 May 2026 12:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE461319871;
+	Tue, 19 May 2026 12:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779192701; cv=none; b=Nro1WBaTI6b/myNfvxnxoil5hG3QF6BL4L5MOrMAfsDxFXvl6ztZqvr2fBimwZZ1ReseCCfGY3esqq9WKYARVNF01iFutBOgD3PGO2clzqN0ndpeIultAKMqMSxqX7xUqOdCcUbqtC2F1ACpj0eTnNufnfs+r5mOmWhh3ApVmX4=
+	t=1779193417; cv=none; b=LFGs2o4JbDcXDL1KZrQlAomcbfKBv40kdYOsAEjupKhM2A/2youD4hiqvR+jM3YLoV+wsnYSXi7tjDFeIapZzRAgvkJDjXQRvzdnC1j1blKtNaNh8dhuUqhw33E9JiTPKibs6abx1+TrfUR6hESrqM1PpVdLndrXSgEgK52vENY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779192701; c=relaxed/simple;
-	bh=BzPILivh8u0VPbKcKjEXQnpX2c2Ts/Bj0Ue0PAy66jM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mEOmtaoeDbsOecbhWBcKqwQSJ/nGo9IleLaXdQZnCO2yAl7HoQoTrJ5xCdc8ZpQFhOa+5Mtv6qr+XibsZPraT6gMSweze4hrL8Z+4AwU1NP3YH/8AEeMCnV0iiNVdelHH93INkSU23GXG6A7DF++YUBGJShadsiy7PLExJsXfxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=WMk6sCbk; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Ii8DV8jwO7CRY9lsiWuhphBYKigNJYNHkFu2YjA2p4A=;
-	t=1779192699; x=1780402299; b=WMk6sCbkgzb+GmDru/5SYDjY9GXm07/dJ8pUJEWBXFOlDtk
-	LmREyj2tBD9njzGSAMmvQBo9oW+j6GYSQ/xrwrNApiA3jD3b0RPt/4nK61yTuHbdEo7LEf9E+J3eN
-	4SvJnrLd18eo1JpSDsn+ZLoX0m2P036t1L2/sRRUZ55Re8zwxj/dSFlVRJoqlgLIWFPDyzMLEfZJR
-	ubqlGgRpL0GcoJRjIaA/7n2etvvjt4wQQxCtFpq0LpTtBSpFL+BeaIp9OSgqxyTCpJuJHdxxe3UIR
-	S3E5qanhtPbBo6vLJKI2Th4nn7CQYZ9UpJj8FRIvKQp0y6QXgIvyUbhehBkBfJDQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wPJIO-00000006ZBJ-1TkK;
-	Tue, 19 May 2026 14:11:36 +0200
-Message-ID: <83ddb427597663b947c49afd835014f2bc1033f2.camel@sipsolutions.net>
+	s=arc-20240116; t=1779193417; c=relaxed/simple;
+	bh=qGZP8hXYGPQB/iOgWSSD3DsF3WO8hjlg2hcQI+4q6Jo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qrfhJ3yuLFxzcYMVwve8qDFnUANgj+NCMi5t3RDTo+HF7TAN65ccTPZ2RWs9wFtyEhBtDAavkfNR37zwoAXWpj1x6FnYIyWXAmCD8hVsRMY2m1Wd7RXW8HKWCAqOrM19osFz2gTZesd7NHstTn/AH+3N0xy+VOwSbR+aKg62tCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ct1Ne8MA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C3BC2BCB8;
+	Tue, 19 May 2026 12:23:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1779193417;
+	bh=qGZP8hXYGPQB/iOgWSSD3DsF3WO8hjlg2hcQI+4q6Jo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ct1Ne8MAEsBe7HdF9DS3R9J2gQcEvg/MS4xCUyHRGSmMckS58uaQq+4uqrzPyCVkG
+	 f4UxT9i5/jjjCo8tQgDexwg+WM21vkKo7HpB/WwY0+hM2y3ut/T4+t5wr98aS5r/tn
+	 yxzTY1E3h3lX5eROnxGj7b+QkvTa7RKLMSYw1v8s=
+Date: Tue, 19 May 2026 14:22:50 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	Johnson Tsai <wenjie.tsai@realtek.com>, driver-core@lists.linux.dev
 Subject: Re: [RFC rtw-next 1/2] wifi: rtw89: usb: add hw_info sysfs attribute
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ping-Ke Shih <pkshih@realtek.com>, "linux-wireless@vger.kernel.org"
-	 <linux-wireless@vger.kernel.org>
-Cc: Johnson Tsai <wenjie.tsai@realtek.com>, driver-core@lists.linux.dev
-Date: Tue, 19 May 2026 14:11:32 +0200
-In-Reply-To: <efb61959e14e4f57b78fbd49a563398e@realtek.com>
+Message-ID: <2026051957-refract-barge-b21e@gregkh>
 References: <20260519072415.25746-1-pkshih@realtek.com>
-	 <efb61959e14e4f57b78fbd49a563398e@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+ <efb61959e14e4f57b78fbd49a563398e@realtek.com>
+ <83ddb427597663b947c49afd835014f2bc1033f2.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <83ddb427597663b947c49afd835014f2bc1033f2.camel@sipsolutions.net>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36655-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36656-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email,sipsolutions.net:mid,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: A1EE557E7CC
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6467257EB1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+On Tue, May 19, 2026 at 02:11:32PM +0200, Johannes Berg wrote:
+> Hi,
+> 
+> > > Example usage from user-space:
+> > >   $ cat /sys/bus/usb/devices/2-3.1.2:1.0/hw_info
+> > >   SN: 36 42 00 01 23
+> > >   UUID: aa ec 2b 7c 0a 55 47 27 8d e0 b3 0f eb cc bb aa
+> 
+> Sysfs has a "one value per file" rule (soft rule according to the docs,
+> but harder in practice, I believe), so seems if anything that should be
+> two files. Maybe a UUID should also be formatted as such with %pU or
+> similar.
 
-> > Example usage from user-space:
-> >   $ cat /sys/bus/usb/devices/2-3.1.2:1.0/hw_info
-> >   SN: 36 42 00 01 23
-> >   UUID: aa ec 2b 7c 0a 55 47 27 8d e0 b3 0f eb cc bb aa
+That should be 2 separate sysfs files please.
 
-Sysfs has a "one value per file" rule (soft rule according to the docs,
-but harder in practice, I believe), so seems if anything that should be
-two files. Maybe a UUID should also be formatted as such with %pU or
-similar.
+And yes, use %pU.
 
-> I also looked up lore.kernel.org and only found a thread commented by Kal=
-le [1].
-> However, it is not clear to us if sysfs is suitable to read efuse SN/UUID=
-.
->=20
-> [1] https://lore.kernel.org/linux-wireless/87ziib3da5.fsf@kamboji.qca.qua=
-lcomm.com/
+And be careful about exposing serial numbers to userspace, some systems
+don't like normal users to read them so be sure to get the permissions
+correct.  We had to add some USB code for ALLOW_SERIAL_NUMBER to make it
+so that systems can handle this if they want to.
 
-It seems to me this was more in the context of _writable_ files to do
-some operations.
+And shouldn't this just be the USB serial number to start with?  Why is
+there a different string here?  We already have a sysfs file for this
+value.
 
-I don't think I have a problem with this, but sysfs also has
-documentation requirements, and we should probably ask
-driver-core@lists.linux.dev.
+thanks,
 
-I'm not really quite sure I see the _point_ of identifying the serial
-number of a wifi device in a container, but I guess you do.
-
-johannes
+greg k-h
 
