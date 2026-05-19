@@ -1,152 +1,133 @@
-Return-Path: <linux-wireless+bounces-36654-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36655-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJVkKj0rDGq0XwUAu9opvQ
-	(envelope-from <linux-wireless+bounces-36654-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 11:19:57 +0200
+	id iHWKCbZUDGqmfAUAu9opvQ
+	(envelope-from <linux-wireless+bounces-36655-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 14:16:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29EC857B1A9
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 11:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1EE557E7CC
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 14:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A12A73290E64
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 09:01:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8909530182B0
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 12:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613713E1232;
-	Tue, 19 May 2026 08:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916743BCD3D;
+	Tue, 19 May 2026 12:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AMm8iQRD"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="WMk6sCbk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5023A1A58
-	for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 08:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D255A4C77AD;
+	Tue, 19 May 2026 12:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779181196; cv=none; b=V0Em3jFK1rCudm1zgZ6+9YgLDQzckdtfjdKJLnVFa+o8wfPFD/iNIyUyEjgJz9K71yl6nBqkJ5Jyj6PedrZHvqeoW471FC29rr961XHwdgRjssPC+uloBbtLPBKePr43qUbFxxnjfsET3VZaL8uoW8AcAw2DOUdQ1XzfDOdoZrU=
+	t=1779192701; cv=none; b=Nro1WBaTI6b/myNfvxnxoil5hG3QF6BL4L5MOrMAfsDxFXvl6ztZqvr2fBimwZZ1ReseCCfGY3esqq9WKYARVNF01iFutBOgD3PGO2clzqN0ndpeIultAKMqMSxqX7xUqOdCcUbqtC2F1ACpj0eTnNufnfs+r5mOmWhh3ApVmX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779181196; c=relaxed/simple;
-	bh=5tZw93ICj25PnnYmvR4YeRspHxfndEVNyr3lMAYxh/k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q5/2lr5EYZlKrpj+i30eqIcY5I1FmlnRELSp/J4+zbyMVhCJzTj1ZMcwEdoj2QbreTWH7h9UaR8yGSajcDYj/C6rzCnvrBy2WLkEjKLck/M5IULxA6/Yr+becap1PbQSMNWx4Q2/vtaMDXHH4DayhxBUx2FVEF65SHiufjgHBd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AMm8iQRD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE37C2BCF6
-	for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 08:59:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779181195;
-	bh=5tZw93ICj25PnnYmvR4YeRspHxfndEVNyr3lMAYxh/k=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=AMm8iQRDn1b3QQ/hPLNQ/UGIGvCF0ErlJ4dzN3aD+lQ+H3aYvv8VYt9COVVqG/G98
-	 vJApltRLq4ojf0eTH0EIcXKeuThuF1XiLTcw2/iD4ApcWBzHJYP2F9ycZCpAQT/Cag
-	 JY/mh7rmRlzGgU1n+ufTPaUdNImn+Wych5F+wG2onLLL83S7RwSS2vqn9unHuRzMMB
-	 aoWefXET+Wg6bK6eVgaOWUpzDM3vTSny9TS468TpdLtNl0OFjsRUKSeI9yp1z4SzBL
-	 ijAsssXQIfu4i8wMW+LxTTbQN4a8N4Xld/b73tSPhF0SBvSMocfyJIhBGYCEOT4PB8
-	 BFkr6iMziFYNA==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-395317d8852so29326801fa.2
-        for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 01:59:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+JkUoEuWwhdkKUovuBqo8YhGhqx6beQFEeOUz7LpdJ+kzgJ2scNgmiq9OqhtwFI8Ko58s2aVeo0HFolbEQOA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbR+grinRypSuTaHMezYLMvlWTEKa2o3SK17/8+dErzrJQP6fv
-	hEh6GyDKY7uiM1bn+DPqmtp+QhUf8IddEU1SYZmCIoTlh1Dk8YlYJ7EBvyDJ1/IHfYInK5Z6ziz
-	aaxPwSjQ3iAuB3VjzHE0e337ZeUuFGII=
-X-Received: by 2002:a05:651c:440d:20b0:394:2c5d:8514 with SMTP id
- 38308e7fff4ca-39561cc2043mr42013771fa.12.1779181194283; Tue, 19 May 2026
- 01:59:54 -0700 (PDT)
+	s=arc-20240116; t=1779192701; c=relaxed/simple;
+	bh=BzPILivh8u0VPbKcKjEXQnpX2c2Ts/Bj0Ue0PAy66jM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mEOmtaoeDbsOecbhWBcKqwQSJ/nGo9IleLaXdQZnCO2yAl7HoQoTrJ5xCdc8ZpQFhOa+5Mtv6qr+XibsZPraT6gMSweze4hrL8Z+4AwU1NP3YH/8AEeMCnV0iiNVdelHH93INkSU23GXG6A7DF++YUBGJShadsiy7PLExJsXfxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=WMk6sCbk; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=Ii8DV8jwO7CRY9lsiWuhphBYKigNJYNHkFu2YjA2p4A=;
+	t=1779192699; x=1780402299; b=WMk6sCbkgzb+GmDru/5SYDjY9GXm07/dJ8pUJEWBXFOlDtk
+	LmREyj2tBD9njzGSAMmvQBo9oW+j6GYSQ/xrwrNApiA3jD3b0RPt/4nK61yTuHbdEo7LEf9E+J3eN
+	4SvJnrLd18eo1JpSDsn+ZLoX0m2P036t1L2/sRRUZ55Re8zwxj/dSFlVRJoqlgLIWFPDyzMLEfZJR
+	ubqlGgRpL0GcoJRjIaA/7n2etvvjt4wQQxCtFpq0LpTtBSpFL+BeaIp9OSgqxyTCpJuJHdxxe3UIR
+	S3E5qanhtPbBo6vLJKI2Th4nn7CQYZ9UpJj8FRIvKQp0y6QXgIvyUbhehBkBfJDQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wPJIO-00000006ZBJ-1TkK;
+	Tue, 19 May 2026 14:11:36 +0200
+Message-ID: <83ddb427597663b947c49afd835014f2bc1033f2.camel@sipsolutions.net>
+Subject: Re: [RFC rtw-next 1/2] wifi: rtw89: usb: add hw_info sysfs attribute
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ping-Ke Shih <pkshih@realtek.com>, "linux-wireless@vger.kernel.org"
+	 <linux-wireless@vger.kernel.org>
+Cc: Johnson Tsai <wenjie.tsai@realtek.com>, driver-core@lists.linux.dev
+Date: Tue, 19 May 2026 14:11:32 +0200
+In-Reply-To: <efb61959e14e4f57b78fbd49a563398e@realtek.com>
+References: <20260519072415.25746-1-pkshih@realtek.com>
+	 <efb61959e14e4f57b78fbd49a563398e@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1886262646.6291779.1777997531793.ref@mail.yahoo.com>
- <1886262646.6291779.1777997531793@mail.yahoo.com> <dc91809a60874f87a5e9d67f0c4696e5@badraproject.com>
- <CAGb2v66mCBP8KiMF3nRTix_zYDhsb_o4KNj-7-enB0+ULvh0_A@mail.gmail.com> <21a4cc48403b338311ea0ff76d757893b1f765cd.camel@sipsolutions.net>
-In-Reply-To: <21a4cc48403b338311ea0ff76d757893b1f765cd.camel@sipsolutions.net>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Tue, 19 May 2026 16:59:39 +0800
-X-Gmail-Original-Message-ID: <CAGb2v6624U99E6AG1Yi5JrEpP4P9V8TmorJ4=GNK-R4Mxo9upA@mail.gmail.com>
-X-Gm-Features: AVHnY4L_q8NPWKnpISJpvljFh593OtSjwPgq2P5kIDA2-ifC0GTqRV7V5dhNao0
-Message-ID: <CAGb2v6624U99E6AG1Yi5JrEpP4P9V8TmorJ4=GNK-R4Mxo9upA@mail.gmail.com>
-Subject: Re: [PATCH] wireless-regdb: add regulatory rules for Iraq (IQ)
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Mohammed.Al-Obaidi@badraproject.com, wireless-regdb@lists.infradead.org, 
-	linux-wireless@vger.kernel.org, mnewiraq2000@gmail.com, mnew_iraq@yahoo.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-malware-bazaar: not-scanned
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36654-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[badraproject.com,lists.infradead.org,vger.kernel.org,gmail.com,yahoo.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sipsolutions.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wens@kernel.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36655-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	HAS_REPLYTO(0.00)[wens@kernel.org]
-X-Rspamd-Queue-Id: 29EC857B1A9
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email,sipsolutions.net:mid,sipsolutions.net:dkim]
+X-Rspamd-Queue-Id: A1EE557E7CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 19, 2026 at 4:55=E2=80=AFPM Johannes Berg <johannes@sipsolution=
-s.net> wrote:
->
-> Hi,
->
-> > As for 10 MHz, I don't think it is supported, so we don't really consid=
-er
-> > that case. I could be wrong though.
-> >
-> > Johannes, could you shed some light on 10 MHz channel width support?
->
-> It's ... complicated?
->
-> We support a _very_ limited set of 5/10 MHz operation, but I think most
-> of it is fairly much unreachable from userspace. I asked about removing
-> it entirely a few years ago, and some people were opposed, but said
-> people also haven't actually helped take care of it or anything ... I
-> was just tempted again a little while back to remove it due to the rates
-> issues.
->
-> Ever since my commit 5add321c329b ("wifi: cfg80211: remove scan_width
-> support") I believe it has been unreachable on the *client* side, but
-> given that we still have some support in _nl80211_parse_chandef() and
-> chandef functions, I expect that it would be possible to still configure
-> an AP or monitor interface with 5/10 MHz, though only with drivers that
-> have WIPHY_FLAG_SUPPORTS_5_10_MHZ, i.e. ath5k, ath9k and hwsim. I
-> wouldn't mind removing it all though.
->
->
-> Is this a concern from a regulatory POV right now, due to say power
-> density by channel width? This feels somewhat familiar even with higher
-> channel widths - maybe it's time to add such an attribute to the regdb?
+Hi,
 
-There are some regulations that say X dBm for 10 MHz or X*2 dBm for 20 MHz.
-I've mostly been ignoring 10 MHz since that doesn't seem to be a thing
-in modern WiFi. This is slightly different from the newer PSD rules we
-are seeing with 6 GHz, since it only gives two points instead of an
-actual density value.
+> > Example usage from user-space:
+> >   $ cat /sys/bus/usb/devices/2-3.1.2:1.0/hw_info
+> >   SN: 36 42 00 01 23
+> >   UUID: aa ec 2b 7c 0a 55 47 27 8d e0 b3 0f eb cc bb aa
 
+Sysfs has a "one value per file" rule (soft rule according to the docs,
+but harder in practice, I believe), so seems if anything that should be
+two files. Maybe a UUID should also be formatted as such with %pU or
+similar.
 
-ChenYu
+> I also looked up lore.kernel.org and only found a thread commented by Kal=
+le [1].
+> However, it is not clear to us if sysfs is suitable to read efuse SN/UUID=
+.
+>=20
+> [1] https://lore.kernel.org/linux-wireless/87ziib3da5.fsf@kamboji.qca.qua=
+lcomm.com/
+
+It seems to me this was more in the context of _writable_ files to do
+some operations.
+
+I don't think I have a problem with this, but sysfs also has
+documentation requirements, and we should probably ask
+driver-core@lists.linux.dev.
+
+I'm not really quite sure I see the _point_ of identifying the serial
+number of a wifi device in a container, but I guess you do.
+
+johannes
 
