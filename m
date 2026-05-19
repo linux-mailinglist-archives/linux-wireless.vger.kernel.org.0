@@ -1,139 +1,147 @@
-Return-Path: <linux-wireless+bounces-36673-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36674-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCCYLwjRDGrImQUAu9opvQ
-	(envelope-from <linux-wireless+bounces-36673-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 23:07:20 +0200
+	id 7OEaIc3uDGqzqAUAu9opvQ
+	(envelope-from <linux-wireless+bounces-36674-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 01:14:21 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1140E584FEB
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 23:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE952585F45
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 01:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7261302FA98
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 21:05:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E1AB3021739
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 23:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C14D3E2ACD;
-	Tue, 19 May 2026 21:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909F5369D66;
+	Tue, 19 May 2026 23:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b="m7NDfQmG"
+	dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b="sv0JPw1R"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtpdh19-2.aruba.it (smtpdh19-2.aruba.it [62.149.155.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC853E2ADD
-	for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 21:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.155.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991AF233943
+	for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 23:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779224759; cv=none; b=vAA3MnbntFEMHEKDbyBY8rGF6NMlFPdLHFLgsc90SduFXq7enKGXWtNMqbLJ+Q5cdeVHOUM8mL9PtE7nJlcjl6XsLG0BQ5NbCcyWH7tdrX77vDfZ8HqVf1Na/AA8BqWnyjfE5yXCSpe95hjSXCP0f1PcHtSnIlvO1gC7PebYW6M=
+	t=1779232458; cv=none; b=bFMfeEZOrqduajy2h8Vx8spyaSjapGhlhOVt9EjyJOu9L53+t2g+AFvlT9EUQSdzIEu9iaGQ6xpFx5QVH1hBfnuc2/di6l1g6G02v3p/+ai1hY3xPnFEsYFWZct27zIuu+coxKGW6xgfZD3IulSL9nHYT44v2SDAN7w4IAN3sXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779224759; c=relaxed/simple;
-	bh=ujZgbuLmLq7XJpjZV4Ih/yi4oCXNZPTLTJydWGuDM5w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CKSE5udSviYp/TqVXFrnjiYx4gQQnkklN9UGvWjFbyxhWvAWnC5qFEOaERloSyA/OaQDqwouts/p1q6Ls5+UeCu1cslpvpnozXtgB4Qxk1FiaFiJ81LVV9dcIXAywztQxFWjUiWeNf7r25ZtGkhZcr9YA40Vj+q0nHPlqNDb2cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it; spf=pass smtp.mailfrom=mythread.it; dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b=m7NDfQmG; arc=none smtp.client-ip=62.149.155.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mythread.it
-Received: from DELL-MOBILE03.ad.smart.it ([79.1.230.118])
-	by Aruba SMTP with ESMTPSA
-	id PRaMwASX8clBZPRaQwVBEu; Tue, 19 May 2026 23:02:46 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mythread.it; s=a1;
-	t=1779224566; bh=ujZgbuLmLq7XJpjZV4Ih/yi4oCXNZPTLTJydWGuDM5w=;
-	h=Date:From:To:Subject:MIME-Version:Content-Type;
-	b=m7NDfQmGvRbxNVrVY8UTUKLKUptB85R0iOmDyIjuYhVz2Lq9MzRpx7cr8YE8gTZd6
-	 D7/F3/egDImxH8/Kix+/s3I/LsDqaMRTrczsS33HsKCfKfBniYFFu3xPa9ACIHb/fk
-	 4+OWfCDw0Wmg2FL1qHeiIxm5M2qfgmFHkbOeNs9eziX4MvHlA3+10xKIX8Xj0ZLDZ4
-	 18eATkSAeU4LI8G2ecyd9tp8Gm8LW0mKObz7m5wwI8MpYneb6hpsA5PkvYjeqmSQCI
-	 yAb9rDl63uUieUeBxJDI+Wt7q1zlGHkiyRGBPGLqISWl1cSDAFPx+NWCOTToVZxqJR
-	 ff5Wnf56DWqKg==
-Date: Tue, 19 May 2026 23:02:41 +0200
-From: Alessio Ferri <alessio.ferri@mythread.it>
-To: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-Cc: linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
- kvalo@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/6] b43: complete N-PHY rev 8 + radio 2057 rev 8
- support
-Message-ID: <20260519230241.49489a8f@DELL-MOBILE03.ad.smart.it>
-In-Reply-To: <20260519175812.7ce97ba1@barney>
-References: <8c0a07d2-9ec9-43d6-bdf7-f625bbb4a38a@mythread.it>
-	<20260519175812.7ce97ba1@barney>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1779232458; c=relaxed/simple;
+	bh=OpnXccnP1ozNGUSdnlbBvP1rS6zNyiymHfxwBsbuhWU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=mM4YfEP0BlNDEkxPQdQXHtxQeQ1I8q3tdhgilOLrdrmW9qJlxi6tb0t8EzUKAmrWV7By9BR/a0IufAm9J3VSJLqZTNqiPOa0PCh4cUGbZj1sfhFW+24jyunhEyiFG5h6aU8ErKX6JmcYUx/Fa/DFelADfEO0NAe3A0L67+N895E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com; dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b=sv0JPw1R; arc=none smtp.client-ip=121.127.44.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ubuntu.com;
+ h=In-Reply-To: References: To: From: Subject: Cc: Message-Id: Date:
+ Content-Type: Content-Transfer-Encoding: Mime-Version; q=dns/txt;
+ s=fe-953a8a3ca9; t=1779232453;
+ bh=OpnXccnP1ozNGUSdnlbBvP1rS6zNyiymHfxwBsbuhWU=;
+ b=sv0JPw1RqtGIuHxNwlQOZ1kx0OSSXclHlTdrg6h96IrxlivjRsaceNTo7aJELIwLJG5uuRyPC
+ nreP13BXvX+QVKY0afLK9eK1thWdNHIgvwKsLZZs0PfxKzv5VFPq6CMdBc6kJtBwU4GPuhukFfk
+ kOeACgCWqekOVBjEou808n3O9axxdv+EfptEZ4VMqBBY3jFwiXYJsy+vc/zPICuhN/mZ1ybXqJl
+ JLpXpxXT5/RbOoUZw9J60T4Az2fC4pxEiRoT1kYss357HvaH9UwbQKUs9a+Cqn5EpheY+mHIV9I
+ nHVvp3dQzNWdOiZanxepKWqWxFGWSYXYARi3IZx7DaBw==
+X-Forward-Email-ID: 6a0ceeb7dba98f5f2747cad7
+X-Forward-Email-Sender: rfc822; jpeisach@ubuntu.com, smtp.forwardemail.net,
+ 121.127.44.66
+X-Forward-Email-Version: 2.8.12
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-CMAE-Envelope: MS4xfFgs5MMznpo/fxx8eqZIOPS7R3UkKsdWw4iyVw0Me6g6caCbCepXEDQTB8AIw/3XQvnN3kUUif//2Dejf9/I6AHJ14zINjx70Rou0Tf6piHZXJvE8/aa
- +IRCRemlvHAPe4XnRnCSUIhe4YN9iDiRrIr4sKR7qTPuVfi8Wy6k2i7tC2vecekZgVfRY7iXG0n3X1ocCIx3qm/mYG6VM8eLhS72qwUtSqzjnCduMmOa2nXe
- 4YfLJlAZd+4NPlaIj3Qt0XPF+p6Uln/X4IlPwIVBx7q3Xt1/gP6HAgZoXs6N6vTmDQdXGEO8mRBFU9rtC+ScdgBYC8V2j3VhUUT0zAhqirosAUe8ECZtlYhx
- D7HBRY69
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mythread.it,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[mythread.it:s=a1];
+Content-Type: text/plain; charset=UTF-8; format=Flowed
+Date: Tue, 19 May 2026 19:13:58 -0400
+Message-Id: <DIN19EEVA93R.2R8BXOUKWJ0GA@ubuntu.com>
+Cc: "Alessio Ferri" <alessio.ferri@mythread.it>,
+ <linux-wireless@vger.kernel.org>, <b43-dev@lists.infradead.org>,
+ <kvalo@kernel.org>, <linux-kernel@vger.kernel.org>, "b43-dev"
+ <b43-dev-bounces@lists.infradead.org>
+Subject: Re: [PATCH 0/6] b43: complete N-PHY rev 8 + radio 2057 rev 8
+ support
+From: "Joshua Peisach" <jpeisach@ubuntu.com>
+To: =?utf-8?q?Michael_B=C3=BCsch?= <m@bues.ch>, "Joshua Peisach"
+ <jpeisach@ubuntu.com>
+X-Mailer: aerc 0.21.0
+References: <8c0a07d2-9ec9-43d6-bdf7-f625bbb4a38a@mythread.it>
+ <20260519175812.7ce97ba1@barney> <DIMWK04RLFCG.17KT0R0YCUMRW@ubuntu.com>
+ <20260519215244.2a0d2b29@barney>
+In-Reply-To: <20260519215244.2a0d2b29@barney>
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[ubuntu.com:email,ubuntu.com:dkim];
+	MV_CASE(0.50)[];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alessio.ferri@mythread.it,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[ubuntu.com,none];
+	TAGGED_FROM(0.00)[bounces-36674-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[ubuntu.com:+];
+	R_DKIM_ALLOW(0.00)[ubuntu.com:s=fe-953a8a3ca9];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36673-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[mythread.it:+]
-X-Rspamd-Queue-Id: 1140E584FEB
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jpeisach@ubuntu.com,linux-wireless@vger.kernel.org];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-0.999];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ubuntu.com:email,ubuntu.com:mid,ubuntu.com:dkim,mythread.it:email]
+X-Rspamd-Queue-Id: CE952585F45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 19 May 2026 17:58:12 +0200
-Michael B=C3=BCsch <m@bues.ch> wrote:
+On Tue May 19, 2026 at 3:52 PM EDT, Michael B=C3=BCsch wrote:
+> On Tue, 19 May 2026 15:32:44 -0400
+> "Joshua Peisach" <jpeisach@ubuntu.com> wrote:
+>
+>> On Tue May 19, 2026 at 11:58 AM EDT, Michael B=C3=BCsch wrote:
+>> > On Mon, 18 May 2026 03:49:33 +0200
+>> > Alessio Ferri <alessio.ferri@mythread.it> wrote:
+>> >
+>> > In general this looks Ok.
+>> > From the style I assume that this is AI generated, right?
+>> > If so, can you tell us a bit more about the inputs used for the AI?
+>> > What information is this implementation based on? =20
+>>=20
+>> So... awkward question.
+>
+> Why?
+>
+>> Wasn't there just a conversation[1] about the
+>> future development of this module, that was left off at "don't touch it
+>> unless you're going to thouroughly test this",
+>
+> Sure. That's why I ask about the development methods used.
+>
+>> and now we are going to have a *LLM* work on this?
+>
+> I don't care whether code was generated with an LLM or not.
+> What matters is the development methods used.
 
-> On Mon, 18 May 2026 03:49:33 +0200
-> Alessio Ferri <alessio.ferri@mythread.it> wrote:
->=20
-> > This series completes b43 support for the Broadcom N-PHY revision 8
-> > paired with radio 2057 revision 8. b43 already supports the
-> > surrounding PHY family - N-PHY rev 8 with radio 2057 rev 5 and rev
-> > 7 are handled, and rev 16 with radio 2057 rev 9 is handled - but
-> > the rev 8 + rev 8 combination falls through four dispatcher gaps: =20
->=20
-> > Alessio Ferri (6):
-> >   b43: add d11 core revision 0x16 to id table
-> >   b43: route d11 corerev 22 to 24-bit indirect radio access
-> >   b43: support radio 2057 rev 8
-> >   b43: add IPA TX gain table for N-PHY r8 + radio 2057 r8
-> >   b43: add channel info table for N-PHY r8 + radio 2057 r8
-> >   b43: add RF power offset for N-PHY r8 + radio 2057 r8 =20
->=20
->=20
-> In general this looks Ok.
-> From the style I assume that this is AI generated, right?
-> If so, can you tell us a bit more about the inputs used for the AI?
-> What information is this implementation based on?
->=20
+Fair enough. And it was tested anyway :) sorry for any perceived
+arrogance.
 
-The patchset is tested on my own DLink DSL 3580L router and generated by
-claude from our shared notes, i then reviewed it for sanity and
-verified it by navigating from the router with modified b43 driver with
-my phone.
-The shared notes were: logs and dumps taken from the proprietary binary
-driver while running the stock firmware in the router, files from
-brcmsmac that had some details for rev 22, GPL released broadcom code
-in the GPL dump of the vendor, .rodata pieces from the binary driver and
-finally logs and dumps from the live b43 running in the router flashed
-with openwrt. Gathering all of this was a week long task, and writing
-code was only a small part of it, like in the 5% range.
+I would tag Reviewed-by but I don't have a script to check the tables
+(there probably is somewhere... it's a personal problem - a "skill
+issue" as I sometimes like to call it).
+
+-Josh
 
