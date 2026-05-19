@@ -1,72 +1,75 @@
-Return-Path: <linux-wireless+bounces-36649-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36650-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +KBzLwkRDGr6VQUAu9opvQ
-	(envelope-from <linux-wireless+bounces-36649-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 09:28:09 +0200
+	id OM+xBaIRDGoZVQUAu9opvQ
+	(envelope-from <linux-wireless+bounces-36650-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 09:30:42 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 432ED57911E
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 09:28:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612865791D6
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 09:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 501C830A0C88
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 07:24:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7987130F8A2E
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 07:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D563D6461;
-	Tue, 19 May 2026 07:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73853D3CFB;
+	Tue, 19 May 2026 07:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="gBHAWm59"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZapgHjqR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12E73D349C
-	for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 07:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82953D47C6
+	for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 07:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779175474; cv=none; b=uObMx3B5W5xEXzDJf+Sa4VwzhPOjN+GYq2rOp+9OXASWr/liALbnE1LTX/hkb7gGCLAxi3pEFtdRRtjfkO4XsFde5lqgQsDmIvvkjWDgi5j1iucuBVrPsdbhNWNpcYkMflXvWF9iTyjIlIqZvh1o41044ENg34VdFxlHtlQmt78=
+	t=1779175488; cv=none; b=qXjYxdzWv3jaIikD5UQgB4u0Bp1VUQSBQDxMAncQ64ovRSGDlceWKPxir0rT5ymFU+BYgXtN40FGd+eOBpdgrRWnicsnW83U753a4+Th4BZ9xqU8HIMq+mShrLHnXYajZ/r0LyA1DPfz4z2nahvwopAVhJ4ax1FFjCllmnXjriQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779175474; c=relaxed/simple;
-	bh=7IQfH24EzbVSysR/boRCqNPCEggZ1AYwVhiRqTSwTG8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EP3DsUz0WqPxDIso7VLSzJeJ9VYc4SCFyD/165FDTGDGGnNH56pcqnnO3r9LDBhoOyBuTS71h31vm/9hKx/z9sWI2MyftF/oqa2uKq/Pxz0i/z8j1k3TWXKIqr7LwvOzJZjL1EIau7G6ulMV3h09/9FO1RNNPxJiw9c1ynuIFKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=gBHAWm59; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1779175488; c=relaxed/simple;
+	bh=8qUbwbBFT7bVcWHxVfl3oSakpv8QaULn8YYEOZrmxSk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PwdU6QlS9t93F56T45KGx2PE1Me2WNsCboanfxG34LLACson+5m8FcT5hoRzyfy/Hw8qSoJFq7qtOoAseLAsFpP0Wbh5YV/wrrbJVU8zaebpzIiuX4BozdLE7vaM6pZLfFkoysrtRY2rq+Z1MCo3RGR//8fYIkumF9W/RMZhqIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZapgHjqR; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64J7OSSH02916505, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64J7OXWg82916586, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1779175468; bh=N7miYF4+SVqWW5XC+spmp9mPf+fv1hA2w9LDfo6atFc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=gBHAWm594OvWZz+vbbXoRvKY5Z+Xhe5jrOsxd72ajsGiBZhXB3Urw7V0pF0mzX156
-	 tov2BV6L2jRZuaCDGAABhxEwk6BcquoE4GyQbh7pjbPREvKRaR79BGm52o4ecOnJQQ
-	 lDOddA4mrpF517SaSHC5poKa6rgCgN2Lo2DabJih23cmU6WFiNsgNtuf6jmXing47T
-	 6aCjFQDX92sPuSTfqLc6z/BHMvRtuQfyg9a6kdw0Oy5jVrCnap7HDYpZ61kyYL5Bj9
-	 Cvg7+UppFfE7yTZ3pTUtNAXtqKLNABt6cFfSm9gHoSZ6g0Tjutxwj7vsANxoUZ2hlK
-	 8slC5Xy7PISow==
+	t=1779175474; bh=yPFbW0fcMXPRPv+0gXdCsnHuBFf+HybPLYmc5zA2Mek=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=ZapgHjqRDBcU9/VnJ7SDEIjpp0Udr03t/LfXaZ0R9zBqmKaKOR6QmVpErCwojdWLH
+	 FAtxFH58m0DHaSdZh9IekPBWtfhVXNUrqPlKWwwqeq3/0Kqyti9aRZIid/O7InQZj5
+	 V6ziX8yp00b4obQ/endb5VExiy5XCspeINOTE449cpET+wiRu9h5TcDfqpnfcHxLaw
+	 UqahbZUDxOOmVLQ/oxFauOp0EThcuoQW0VhyvwN4W1BbLE19k/vxeLUQk0vPzw5K5s
+	 ENmcGEkkJwuy7eMUN+aBd+NrZG59WGuisplZYsdow34V4NKHBGFJK5uTFc2OKIk+ZB
+	 hmlI2FBVRfJGg==
 Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 64J7OSSH02916505
+	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 64J7OXWg82916586
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 15:24:28 +0800
+	for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 15:24:33 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 19 May 2026 15:24:28 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ 15.2.2562.17; Tue, 19 May 2026 15:24:34 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
  RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 19 May 2026 15:24:28 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
- (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
+ 15.2.2562.17; Tue, 19 May 2026 15:24:34 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
+ (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Tue, 19 May 2026 15:24:27 +0800
+ Transport; Tue, 19 May 2026 15:24:33 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <wenjie.tsai@realtek.com>
-Subject: [RFC rtw-next 1/2] wifi: rtw89: usb: add hw_info sysfs attribute
-Date: Tue, 19 May 2026 15:24:14 +0800
-Message-ID: <20260519072415.25746-1-pkshih@realtek.com>
+Subject: [RFC rtw-next 2/2] wifi: rtw89: usb: add sysfs write example
+Date: Tue, 19 May 2026 15:24:15 +0800
+Message-ID: <20260519072415.25746-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260519072415.25746-1-pkshih@realtek.com>
+References: <20260519072415.25746-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -78,182 +81,118 @@ Content-Type: text/plain
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36649-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36650-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,realtek.com:server fail];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,realtek.com:email,realtek.com:mid,realtek.com:dkim];
-	DKIM_TRACE(0.00)[realtek.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 432ED57911E
+X-Rspamd-Queue-Id: 612865791D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Johnson Tsai <wenjie.tsai@realtek.com>
 
-Expose the device's Serial Number (SN) and UUID from EFUSE through a
-read-only `hw_info` sysfs attribute on the USB interface device.
+Add a simple echo_sum sysfs attribute on the USB interface device as
+an RFC example for discussing whether a writable sysfs interface is
+acceptable for this driver.
 
-This hardware identification information is essential for user-space
-applications to uniquely identify, track, and manage specific Wi-Fi
-adapters. For example, in automated factory provisioning or device
-management systems, user-space tools rely on the EFUSE SN and UUID
-to bind specific configurations to a physical adapter. Currently,
-standard wireless APIs do not expose this low-level hardware
-information, making this sysfs node the only viable and necessary
-solution for user space to extract this data.
-
-Relying on debugfs or setuid binaries is unviable for production
-environments, as explicitly requested by Valve (Steam). Steam frequently
-runs inside unprivileged containers (e.g., Flatpak) where debugfs and
-setuid binaries are inaccessible. Furthermore, many end-user systems
-disable debugfs in their kernel configs, and strict access controls
-(SELinux, AppArmor) block it regardless of permissions. Since Steam
-installs as an unprivileged user, setuid deployments are impossible.
-Consequently, exposing this data via a world-readable (0444) sysfs
-node is the only functional approach to ensure reliable, unprivileged
-access across diverse customer systems.
-
-Example usage from user-space:
-  $ cat /sys/bus/usb/devices/2-3.1.2:1.0/hw_info
-  SN: 36 42 00 01 23
-  UUID: aa ec 2b 7c 0a 55 47 27 8d e0 b3 0f eb cc bb aa
-
-User-space scripts can easily iterate over bound devices to extract
-this information:
-  for dev in /sys/bus/usb/drivers/rtw89_8852cu/[0-9]*:*; do
-      dev_id=$(basename "$dev")
-      echo "--- Device: /sys/bus/usb/devices/$dev_id ---"
-      cat "$dev/hw_info"
-  done
+The attribute accepts two integers from userspace, stores their sum in
+driver private data, and exposes the result.
 
 Signed-off-by: Johnson Tsai <wenjie.tsai@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
-Hi maintainers,
-
-We are submitting this RFC to discuss the most appropriate upstream path for
-exposing hardware-specific IDs to unprivileged container environments.
-
-1. Given the strict environment limitations (Flatpak, missing debugfs, LSMs),
-   is a read-only sysfs attribute acceptable for this specific hardware data?
-2. If exposing this globally via sysfs is not preferred, would it be acceptable
-   to restrict the creation of this node to specific vendor VID/PIDs only?
-3. If sysfs is strictly a no-go for this use case, what is the upstream-recommended
-   method for an unprivileged, sandboxed application to retrieve eFuse data?
----
- drivers/net/wireless/realtek/rtw89/usb.c | 51 +++++++++++++++++++++++-
- 1 file changed, 50 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/usb.c | 38 ++++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/usb.h |  2 ++
+ 2 files changed, 40 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
-index c6d55e669776..53dcb84af5c0 100644
+index 53dcb84af5c0..566618e9f3b8 100644
 --- a/drivers/net/wireless/realtek/rtw89/usb.c
 +++ b/drivers/net/wireless/realtek/rtw89/usb.c
-@@ -1059,6 +1059,41 @@ static void rtw89_usb_intf_deinit(struct rtw89_dev *rtwdev,
+@@ -1059,6 +1059,43 @@ static void rtw89_usb_intf_deinit(struct rtw89_dev *rtwdev,
  	usb_set_intfdata(intf, NULL);
  }
  
-+static ssize_t hw_info_show(struct device *dev,
-+			    struct device_attribute *attr, char *buf)
++static ssize_t echo_sum_show(struct device *dev,
++			     struct device_attribute *attr, char *buf)
 +{
 +	struct usb_interface *intf = to_usb_interface(dev);
-+	struct ieee80211_hw *hw;
-+	struct rtw89_dev *rtwdev;
-+	struct rtw89_efuse *efuse;
-+	ssize_t ret;
++	struct ieee80211_hw *hw = usb_get_intfdata(intf);
++	struct rtw89_usb *rtwusb;
 +
-+	device_lock(dev);
-+
-+	hw = usb_get_intfdata(intf);
-+	if (!hw) {
-+		device_unlock(dev);
++	if (!hw)
 +		return -ENODEV;
-+	}
 +
-+	rtwdev = hw->priv;
-+	efuse = &rtwdev->efuse;
++	rtwusb = rtw89_usb_priv(hw->priv);
 +
-+	ret = sysfs_emit(buf, "SN: %*ph\nUUID: %*ph\n",
-+			 (int)sizeof(efuse->sn), efuse->sn,
-+			 (int)sizeof(efuse->uuid), efuse->uuid);
-+
-+	device_unlock(dev);
-+	return ret;
++	return sysfs_emit(buf, "%u\n", rtwusb->echo_sum);
 +}
-+static DEVICE_ATTR_RO(hw_info);
 +
-+static struct attribute *rtw89_usb_attrs[] = {
-+	&dev_attr_hw_info.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(rtw89_usb);
++static ssize_t echo_sum_store(struct device *dev,
++			      struct device_attribute *attr,
++			      const char *buf, size_t count)
++{
++	struct usb_interface *intf = to_usb_interface(dev);
++	struct ieee80211_hw *hw = usb_get_intfdata(intf);
++	struct rtw89_usb *rtwusb;
++	int a, b;
 +
- int rtw89_usb_probe(struct usb_interface *intf,
- 		    const struct usb_device_id *id)
++	if (!hw)
++		return -ENODEV;
++
++	if (sscanf(buf, "%d %d", &a, &b) != 2)
++		return -EINVAL;
++
++	rtwusb = rtw89_usb_priv(hw->priv);
++	rtwusb->echo_sum = a + b;
++
++	return count;
++}
++static DEVICE_ATTR_ADMIN_RW(echo_sum);
++
+ static ssize_t hw_info_show(struct device *dev,
+ 			    struct device_attribute *attr, char *buf)
  {
-@@ -1118,10 +1153,16 @@ int rtw89_usb_probe(struct usb_interface *intf,
- 		goto err_core_deinit;
- 	}
+@@ -1089,6 +1126,7 @@ static ssize_t hw_info_show(struct device *dev,
+ static DEVICE_ATTR_RO(hw_info);
  
-+	ret = sysfs_create_groups(&intf->dev.kobj, rtw89_usb_groups);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to create sysfs groups: %d\n", ret);
-+		goto err_core_deinit;
-+	}
+ static struct attribute *rtw89_usb_attrs[] = {
++	&dev_attr_echo_sum.attr,
+ 	&dev_attr_hw_info.attr,
+ 	NULL,
+ };
+diff --git a/drivers/net/wireless/realtek/rtw89/usb.h b/drivers/net/wireless/realtek/rtw89/usb.h
+index bdf312559743..9eba6264a9a2 100644
+--- a/drivers/net/wireless/realtek/rtw89/usb.h
++++ b/drivers/net/wireless/realtek/rtw89/usb.h
+@@ -87,6 +87,8 @@ struct rtw89_usb {
+ 
+ 	struct sk_buff_head tx_queue[RTW89_TXCH_NUM];
+ 	atomic_t tx_inflight[RTW89_TXCH_NUM];
 +
- 	ret = rtw89_core_register(rtwdev);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to register core\n");
--		goto err_core_deinit;
-+		goto err_remove_sysfs;
- 	}
++	u32 echo_sum;
+ };
  
- 	rtw89_usb_start_rx(rtwdev);
-@@ -1130,6 +1171,8 @@ int rtw89_usb_probe(struct usb_interface *intf,
- 
- 	return 0;
- 
-+err_remove_sysfs:
-+	sysfs_remove_groups(&intf->dev.kobj, rtw89_usb_groups);
- err_core_deinit:
- 	rtw89_core_deinit(rtwdev);
- err_deinit_rx:
-@@ -1154,12 +1197,18 @@ void rtw89_usb_disconnect(struct usb_interface *intf)
- 	if (!hw)
- 		return;
- 
-+	/* Clear intfdata immediately so any concurrent sysfs show waiting on
-+	 * device_lock will see NULL and bail out safely.
-+	 */
-+	usb_set_intfdata(intf, NULL);
-+
- 	rtwdev = hw->priv;
- 	rtwusb = rtw89_usb_priv(rtwdev);
- 
- 	rtw89_usb_cancel_rx_bufs(rtwusb);
- 	rtw89_usb_cancel_tx_bufs(rtwusb);
- 
-+	sysfs_remove_groups(&intf->dev.kobj, rtw89_usb_groups);
- 	rtw89_core_unregister(rtwdev);
- 	rtw89_core_deinit(rtwdev);
- 	rtw89_usb_deinit_rx(rtwdev);
-
-base-commit: 7076af642955693935e60bc94546d105fb0395ca
+ static inline struct rtw89_usb *rtw89_usb_priv(struct rtw89_dev *rtwdev)
 -- 
 2.25.1
 
