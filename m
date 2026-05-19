@@ -1,101 +1,84 @@
-Return-Path: <linux-wireless+bounces-36662-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36663-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UB4EOBx2DGqihwUAu9opvQ
-	(envelope-from <linux-wireless+bounces-36662-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 16:39:24 +0200
+	id kkxYEASDDGrIigUAu9opvQ
+	(envelope-from <linux-wireless+bounces-36663-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 17:34:28 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A44A580AE8
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 16:39:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD2558189B
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 17:34:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 697853059FB2
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 14:34:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9418B300B472
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2026 15:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29D12D0C63;
-	Tue, 19 May 2026 14:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1177725CC79;
+	Tue, 19 May 2026 15:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DK0MDlr0";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="cbju8xZ/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NkwUBgKf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF01327C13
-	for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 14:34:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E1A1A3172
+	for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 15:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779201279; cv=none; b=otZghZ53E47fz3vlky9uEn6OHr1RIIminhfxwyuTJ+vdgpsZfY88GLYFQZOi1aW99wu55Cs8IM+OU+4d0VpgC7mo3LiFIvqw0GSVG+K0jVzGhmsb76U878Dxtuno5WHUgaNRA/a29x0NuAqyj5vgUOt9jB4td/dnrDQHN3BV+io=
+	t=1779204858; cv=none; b=R4a8/IpppFG0ZMdhnRryekO8z+EdR+f6CWLBgGguYvYegwNNLmy1OTS+Pwi3BBPsbpjN22s90odYt1OtqtxfN6Py2avEaYE8S1micXoCv66k3JnhpsZj6r6EsFObx6/e5NV9v1pwbi5xtkTL3hZRZaTqJVvFoEdOawqKzrJC0nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779201279; c=relaxed/simple;
-	bh=jJcddQjTm3RafCJKkZPbcoFZiP4B7Jn0jPZO52rtKSY=;
-	h=Message-ID:Date:MIME-Version:To:Cc:Subject:From:Content-Type; b=tL0gqANhqOrq12K85tZU6JKcq7/cBKDQJ7RdARNTXYbxkbZzZrASE9acWzSqZjUBqGVDgLA9+F0aa5//lggfgxGtiYEzHipRs2G+sUiMt4kUtQBlRiJbdoC7CgFO8KeK+1oiP7kMHbUcEuNEhTNaa4YDgs6bFaGdFkJUic4Gk/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DK0MDlr0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=cbju8xZ/; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64JAwUqF867200
-	for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 14:34:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=bIoRuAJAPcJrNuPsGqklan
-	qR/gpLUP+rn1KnUvtrXQA=; b=DK0MDlr0X1ZNkZUEDuVb36fmYCLwDy3nHTXVte
-	ouDf7K9IzR+CyHYWNCoAZIBSvBOId1+NkhxKeDuahqK752emdnVzUMdW8mN+t78x
-	SDPZPCixbZ0YccLP/5XQUjQH/UlPdS7nrEifmaxj4C9UezJJkPtEfUWFdsUn7Id/
-	udeN6bY3Z+FyzQcJ7uZEnU3JKt9zif85GrSDh+He/yAkAEIDwgFJJ76wZpWZtCpP
-	znN6xcP0nSl1eKIP5XIvfsfwe9OagJeZJAr4Td2WMwsXHhMmsxt5IzXbd6YiJyEn
-	5nHDvc6KVefe1wLoNW+9YxI0r5wp2tJrW+2F8hWbo8t5hpWw==
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e8hv1j81n-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 14:34:37 +0000 (GMT)
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-2fe1cf409a1so6928593eec.1
-        for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 07:34:37 -0700 (PDT)
+	s=arc-20240116; t=1779204858; c=relaxed/simple;
+	bh=XSarc6FRunJFDvO0DT2otOO6hhszPFn4ljtLoQ+NmeU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=OxO+prLsr5rI31gzLCKUE8wpVNzDYpkaP0eRw0g/IUTQmIbFSdkKRZRHPG9v1usoO+9HxEtiEyoExW7wh3uNpo2ZTutStI9rbwuTG+bFU/8SG5xDncbGTshGiHRZuvYqUqzH+1p40jyvD+enzCtfmLSNv48yoF8lFojCT0T1Wec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NkwUBgKf; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-459bf19e87bso2232797f8f.1
+        for <linux-wireless@vger.kernel.org>; Tue, 19 May 2026 08:34:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779201276; x=1779806076; darn=vger.kernel.org;
-        h=content-transfer-encoding:from:content-language:subject:cc:to
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bIoRuAJAPcJrNuPsGqklanqR/gpLUP+rn1KnUvtrXQA=;
-        b=cbju8xZ/dbCVmcMgz3YJ8pcWwS6yKxBb0jOfFWHP8EmMDKe1waZs9zzW7IWSh/5qUa
-         8Dklu+fOh7vmCaEQxbVdrE1HP9zOUnzDcsBYLm5ooudNm2l8ehRsN1IWXCIKyJui0sRF
-         ahLsiID4d25Pp/zBhb6XyPZgx9h5QrcJQUhJAJUH5lxIcgPTwkNhSNPTLqwtb+pud2h3
-         7uoIn4gF3AQnOMpMEZ0Qtei9b4ipD62/ikr/rgk/43/cUEGh8As5qHK6h1CKI7acG9Qb
-         5lv+IRgsrpSMRVXB7/ak0dqR972c1eoFmKR5M7yf/lB8eTYfejUi77NS1G0eZJ6g5GgP
-         PO5Q==
+        d=gmail.com; s=20251104; t=1779204855; x=1779809655; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8QHWSbgdDGS8eo2iN9v8RlgQnH8AM8INRGn/uRuYgZU=;
+        b=NkwUBgKfkeggqRI9XEm+STelerhQvsogMjmGoV1Pxwpy28sVrL9KRaRIxjCRh4upU7
+         n34m8dsHdvQ7kC8y9V0tgbbGi1Q0NgUJ+1K0mQ6tnM2/RoUI8O3LZpwK3XqQ55LlOsEv
+         jPsATak6HxHQ3hqjNEzk1NygiNCCVGxDRr0ktVAtO6VfQDwGdb8X30+gsB8h5dS9ldRd
+         eeL7PiJ/xHs8kUuprZKHptVM+FWoqD4jJuBOr1ek8D7Bl0MR6fAMtU+OtYuvgHlo7ipv
+         hmtL0LPN/nyvHncn45aewSNI6WQ7xBWWno2wU1aQ4HD7ggfXcI209bA9u8c2U9kOVnqV
+         nLvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779201276; x=1779806076;
-        h=content-transfer-encoding:from:content-language:subject:cc:to
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bIoRuAJAPcJrNuPsGqklanqR/gpLUP+rn1KnUvtrXQA=;
-        b=gg4SNRndiB8wcq824Ko2naJql731L5LW+XIFh17BBBdHLXrl8OsGu5AyULeSvQH1+j
-         LNB5jAZ7gu2Ng3JDJItUpq9p3WlTKIrdRkbfvjqPC2nLnYzp7JDwNkMCD6mCtCGOLRB8
-         CdSQBV7Bx+qCQFw1/loHFcesBz2mDVjFY7LHLw1h+fKww7birUtapXgQCdcEkssli3QE
-         odbsC4O30LzxbZYHaPAhofb9eBrzjGUwHbHBa/1PL2U2vrJDf6XijuLD92F2RTluwXRq
-         tVLjzWt6hWvo2e/RKPdQWDyegmvIj7UbkR0reGEPOEVhV0tqPLJ6c0zipydyaOCeyQfu
-         y+2g==
-X-Gm-Message-State: AOJu0YzVJtwVGuhdoag5/LTBVy9W6KpkfJpW/q3vgxnZsfiySKjY5j5w
-	CRnej1sqB+/JfhbdNkywEUhwblHylMr5KXAnVcUoxoIDotQgfXheYTrEKqFf4lmasbFnUI9becK
-	0xbLzH7u4A+kLBxZaxdLHt/FothWiXAAFpPReYjrpVkFIjQme9F8OSAmgq0trcWHvR7eV+KUdbY
-	rAJQ==
-X-Gm-Gg: Acq92OE92CXaJOFWj10Fqrp3GqmSMGEpws5p9oo4kZrwBuJ5HEEtFWkreid51aizcug
-	WiMIOa0VB036/ql9KEM218+ykyxVG6eAebwgz7Rk5sRB6rzqw7RIM7fKhCxCnuSuf17kot+gpjw
-	K64KV1wvT7k5dInm9z4oYP2dBOH7Wpb3c60mBMw9Mp9bWe6CDPl4ovPcdR8i2MIxTnoigjOMPVr
-	rsmY/BJxLKvRvWskXqEUL3pqru2J0TjfpEuvl5UsgjaAX56Uyc3qQ0DPsXzILNzQ60V6+SlcEDD
-	Sg+Cgz9CyXNi8hz6xaKyGWM5M/vgA3uJkra4QKhhiz2VvTAK2syPQgaLaH483q5uMeDsNsUtx4C
-	KBlJajXvo4G9hv4X06+lom+GdSe7NPWDOWA/K3wvXltkmxbGCCoLrPQK/og==
-X-Received: by 2002:a05:7300:fb83:b0:2de:cc07:e8b with SMTP id 5a478bee46e88-3039818afa7mr9591098eec.1.1779201275487;
-        Tue, 19 May 2026 07:34:35 -0700 (PDT)
-X-Received: by 2002:a05:7300:fb83:b0:2de:cc07:e8b with SMTP id 5a478bee46e88-3039818afa7mr9591070eec.1.1779201274916;
-        Tue, 19 May 2026 07:34:34 -0700 (PDT)
-Received: from [10.81.91.45] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-302978afdd3sm16526448eec.29.2026.05.19.07.34.34
+        d=1e100.net; s=20251104; t=1779204855; x=1779809655;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8QHWSbgdDGS8eo2iN9v8RlgQnH8AM8INRGn/uRuYgZU=;
+        b=rrSNPRGEDirovWcmEKtVlfJAOVvXt9kA318a4EQjYbi4CQamcoktDE0lXurPRAOTH3
+         ntfS/0sGfAq2veLvKHcdmaGhs5PPDTWy4RyULbW68FTdTzpsrLeGZ+h0Y6EZ7x4MOB0R
+         qjfxf1+qI3UVuYIf1KvylR4ZOBGjXDy3fL1g+KnBzFSvo+Qp7L94/37olwKbkvsEx7fQ
+         KiZNZD5AfUby3UOlxV6Q85mabnuHIn7TdnhT7XXK2qJdg13I6uDB1wbfrOPtT460i7KG
+         QkLTSGV/mlA1KZRj+27/Utb2um3WhmZVW24Zjpyy22nF2geZZetLlFJWwD/awguqajKU
+         6u6w==
+X-Forwarded-Encrypted: i=1; AFNElJ8PWpE6eblMwwnczHo1sM5M5s4cYS4TPxaOytNGhK9waNyoGgaEaA1LJzx4Llnf8B9HdpuXl+K8YJddGtaiyg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwScO6LCPLnBcVIsplqPZAjBzEWGTDM3uuXX8gRLH3SB1edUOO5
+	KbFV/4jMP4+ckysDSBEyfmmWcJOUPL8GQaLTNsY/eqbMLKCFrl0WSw4wZ1uN2A==
+X-Gm-Gg: Acq92OENkMPlCbro6nmnXeMHt5z6dw3FObx7ADlhiZXxwpi3IGSMIgjkDOHwwHSM6kO
+	1rL0d+UvGuhm/5UwknGSyL+YreanJgrTq/7lk2ZEbgkTiH9lkYjl+QeGn+FOck/Y6axfPzNinYQ
+	1dtyZZBwCe5myotaOJWtdjk9+DYBdTrsOp8YrPwWUpbbAn8E2wwvEd2qsbalK6P3DXv3bQ/TffC
+	2cO762nionBXktfGGt7ut4SUNHKiKYvgRjtPXRO6yc/85Z54dig3mT93tVWxZyt1FOuyOzjfvi/
+	QV3SVYMrWTAdR5ikQHx25mdHh497URqfMKHqOkWpPgnfpyRLbLYrlOM9UDzJtZMkwNIqWXFJ/Uh
+	CZLz0UWl6oyVkm/k0kMWqK4GXqgzZAX7FVbhmMHcm1aMfNEBJg4HoHcSlrCHQ17WLanoqcOgxwA
+	wRbnkIHlUQe8nBBF/VQLARNtctUU/SqBI=
+X-Received: by 2002:a05:6000:1885:b0:45e:8978:f176 with SMTP id ffacd0b85a97d-45e8978f1aemr5631672f8f.0.1779204854708;
+        Tue, 19 May 2026 08:34:14 -0700 (PDT)
+Received: from [192.168.1.50] ([79.119.240.27])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0fe13a7sm48503288f8f.29.2026.05.19.08.34.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 May 2026 07:34:34 -0700 (PDT)
-Message-ID: <651b9fa7-ac08-4b50-bb68-1d649d27ed91@oss.qualcomm.com>
-Date: Tue, 19 May 2026 07:34:33 -0700
+        Tue, 19 May 2026 08:34:14 -0700 (PDT)
+Message-ID: <b4da28cd-17e0-46f2-a73c-e77d9c96cca1@gmail.com>
+Date: Tue, 19 May 2026 18:34:12 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -103,122 +86,138 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: linux-wireless@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>
-Cc: ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, jjohnson@kernel.org
-Subject: pull-request: ath-current-20260519
+Subject: Re: [PATCH rtw-next v3] wifi: rtw89: usb: Support switching to USB 3
+ mode
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <fcdde81a-97ec-458f-8e70-ac024938f1d7@gmail.com>
+ <5fc263787831471f87585fb90a9b0fcb@realtek.com>
 Content-Language: en-US
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <5fc263787831471f87585fb90a9b0fcb@realtek.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDE0MyBTYWx0ZWRfX7q7tBxwSKEwu
- WDsRgBQdIkxcsR7XDQLPn58gYYt0+JJghNjFRY24Goh9lIArAReU5NPdd+7fQh9AGVG7ihSyxSE
- 1cen4vYAczrBKy7IuQxBcSm5cOa/VKqnN3L+raYS0R22leyx/W6QQrDgSOdC3XnZvgyjJbtrnrZ
- ymkBxhHy8xWLp5rEtyoBBfDtbVkyX8R5sA7WwvyLtPpknsJgoPxxEm8pFDOJrEV/O7FF/Trslp1
- Wl/5lTzYf6Kpo9AcbzJ9TqOtxDvMZaKJF7RtkVI/WR/wRCMyoDXnTFsUG4N7TS4MyEd9WrnWwGS
- ABII+ry+HgLL8NTVKHhjGNTDltROqH2fRMbTqJa9kQH+1VI+lNxl+dINeOF2xNJkyBFsquLqsjT
- ZhSJvEkc4zImhOI/pWPNR3CgrHkjFtWoIiiQRVec86J+IWvg2Yi4Db7DZl5dcGgnsvSb3D/WFCs
- praCKZAyIAEw7SQbH0w==
-X-Proofpoint-GUID: PHDLCHVfUj51BUR4pM3nKOvFuv-mrg72
-X-Proofpoint-ORIG-GUID: PHDLCHVfUj51BUR4pM3nKOvFuv-mrg72
-X-Authority-Analysis: v=2.4 cv=WZM8rUhX c=1 sm=1 tr=0 ts=6a0c74fd cx=c_pps
- a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=VwQbUJbxAAAA:8 a=MhPGfwmvrDdq-928PkYA:9 a=QEXdDO2ut3YA:10
- a=bBxd6f-gb0O0v-kibOvt:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-19_03,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
- phishscore=0 spamscore=0 impostorscore=0 adultscore=0 bulkscore=0
- clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
- definitions=main-2605190143
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36662-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:dkim];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_TWO(0.00)[2];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-36663-lists,linux-wireless=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 5A44A580AE8
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,realtek.com:email]
+X-Rspamd-Queue-Id: CCD2558189B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The following changes since commit 7666dbb1bacc4ba522b96740cba7283d243d16e1:
+On 18/05/2026 10:51, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> The Realtek wifi 6/7 devices which support USB 3 are weird: when first
+>> plugged in, they pretend to be USB 2. The driver needs to send some
+>> commands to the device, which make it disappear and come back as a
+>> USB 3 device.
+>>
+>> Implement the required commands in rtw89.
+>>
+>> Add a new function rtw89_usb_write32_quiet() to avoid the warnings
+>> when writing to R_{AX,BE}_PAD_CTRL2. Even though the write succeeds,
+>> usb_control_msg() returns -EPROTO, probably because the USB device
+>> disappears immediately. This results in some confusing warnings in
+>> the kernel log.
+>>
+>> When a USB 3 device is plugged into a USB 2 port, rtw89 will try to
+>> switch it to USB 3 mode only once. The device will disappear and come
+>> back still in USB 2 mode, of course.
+> 
+> As we always try to switch USB 3, is it needed to add a hint to users
+> to plug USB 2 port if he has a bad performance on 2GHz band?
+> 
 
-  wifi: cfg80211: advance loop vars in cfg80211_merge_profile() (2026-05-08 09:20:03 +0200)
+I can add a message like "2.4 GHz performance may be better in a USB 2
+port".
 
-are available in the Git repository at:
+>>
+>> Tested with RTL8832AU, RTL8832BU, RTL8832CU, and RTL8912AU.
+>>
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> 
+> Some minor suggestions. Otherwise, 
+> 
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> 
+> [...]
+> 
+>> diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
+>> index c6d55e669776..bfe004a49ccc 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/usb.c
+>> +++ b/drivers/net/wireless/realtek/rtw89/usb.c
+>> @@ -12,7 +12,7 @@
+>>  static void rtw89_usb_read_port_complete(struct urb *urb);
+>>
+>>  static void rtw89_usb_vendorreq(struct rtw89_dev *rtwdev, u32 addr,
+>> -                               void *data, u16 len, u8 reqtype)
+>> +                               void *data, u16 len, u8 reqtype, bool warn)
+>>  {
+>>         struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
+>>         struct usb_device *udev = rtwusb->udev;
+>> @@ -52,7 +52,7 @@ static void rtw89_usb_vendorreq(struct rtw89_dev *rtwdev, u32 addr,
+>>
+>>                 if (ret == -ESHUTDOWN || ret == -ENODEV)
+>>                         set_bit(RTW89_FLAG_UNPLUGGED, rtwdev->flags);
+>> -               else if (ret < 0)
+>> +               else if (ret < 0 && warn)
+>>                         rtw89_warn(rtwdev,
+>>                                    "usb %s%u 0x%x fail ret=%d value=0x%x attempt=%d\n",
+>>                                    str_read_write(reqtype == RTW89_USB_VENQT_READ),
+>> @@ -80,7 +80,7 @@ static u32 rtw89_usb_read_cmac(struct rtw89_dev *rtwdev, u32 addr)
+>>
+>>         for (count = 0; ; count++) {
+>>                 rtw89_usb_vendorreq(rtwdev, addr32, &data, 4,
+>> -                                   RTW89_USB_VENQT_READ);
+>> +                                   RTW89_USB_VENQT_READ, true);
+> 
+> Not sure if you like to implement a __rtw89_usb_vendorreq(), and 
+> preserve rtw89_usb_vendorreq() as a wrapper with original prototype.
+> Then, no need to stir here. 
+> 
+> I mean:
+> 
+> __rtw89_usb_vendorreq(..., bool warn);
+> 
+> static void rtw89_usb_vendorreq(struct rtw89_dev *rtwdev, u32 addr,
+> 				void *data, u16 len, u8 reqtype)
+> {
+> 	__rtw89_usb_vendorreq(rtwdev, addr, data, len, reqtype, true);
+> }
+> 
+> (just a soft suggestion)
+> 
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git tags/ath-current-20260519
+Yes, that looks good.
 
-for you to fetch changes up to 60fb2cf51e77bb1c0261160b4be44209d68956b1:
+>>
+>>                 val32 = le32_to_cpu(data);
+>>                 if (val32 != RTW89_R32_DEAD)
+> 
+> [...]
+> 
 
-  wifi: ath12k: fix EHT TX MCS limitation due to wrong 20 MHz-only parsing (2026-05-18 06:47:03 -0700)
-
-----------------------------------------------------------------
-ath.git update for v7.1-rc5
-
-ath10k:
-- avoid sending any commands to firmware when it is wedged
-
-ath11k:
-- fix WMI buffer leaks on error conditions
-- fix UAF in RX MSDU coalesce path
-- allow peer ID 0 on RX path (legal for mobile devices)
-- reinitialize shared SRNG pointers on restart
-
-ath12k:
-- fix 20 MHz-only parsing of EHT-MCS map
-
-----------------------------------------------------------------
-Baochen Qiang (1):
-      wifi: ath12k: fix EHT TX MCS limitation due to wrong 20 MHz-only parsing
-
-Kang Yang (1):
-      wifi: ath10k: skip WMI and beacon transmission when device is wedged
-
-Kyle Farnung (1):
-      wifi: ath11k: clear shared SRNG pointer state on restart
-
-Matthew Leach (1):
-      wifi: ath11k: fix peer resolution on rx path when peer_id=0
-
-Nicolas Escande (3):
-      wifi: ath11k: fix error path leaks in some WMI WOW calls
-      wifi: ath11k: fix error path leaks in some WMI calls
-      wifi: ath11k: fix error path leak in ath11k_tm_cmd_wmi_ftm()
-
-Willmar Knikker (1):
-      wifi: ath11k: fix use after free in ath11k_dp_rx_msdu_coalesce()
-
- drivers/net/wireless/ath/ath10k/wmi.c      |  15 ++--
- drivers/net/wireless/ath/ath11k/dp_rx.c    |   9 +-
- drivers/net/wireless/ath/ath11k/hal.c      |  14 ++-
- drivers/net/wireless/ath/ath11k/hal_rx.c   |   5 +-
- drivers/net/wireless/ath/ath11k/testmode.c |   1 +
- drivers/net/wireless/ath/ath11k/wmi.c      | 131 ++++++++++++++++++++++++-----
- drivers/net/wireless/ath/ath12k/mac.c      |   8 +-
- 7 files changed, 143 insertions(+), 40 deletions(-)
 
