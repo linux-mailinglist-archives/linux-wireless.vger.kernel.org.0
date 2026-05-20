@@ -1,180 +1,171 @@
-Return-Path: <linux-wireless+bounces-36690-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36691-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8ExXEcV/DWosyAUAu9opvQ
-	(envelope-from <linux-wireless+bounces-36690-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 11:32:53 +0200
+	id gDNLGgSEDWoTygUAu9opvQ
+	(envelope-from <linux-wireless+bounces-36691-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 11:51:00 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A1C58AD34
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 11:32:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C72BF58B17D
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 11:50:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8617C30207C0
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 09:32:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C69631344C9
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 09:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B0B3C7DF0;
-	Wed, 20 May 2026 09:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7EF3D6690;
+	Wed, 20 May 2026 09:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IbNQ5TGo"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="GXbYkWcY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541CF3C5859
-	for <linux-wireless@vger.kernel.org>; Wed, 20 May 2026 09:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779269554; cv=pass; b=TMpDN9F63DEifVQr7UvVNOp8cGhKKoM0e+ND5o7aE8rIwYtjAazEuuINtr1QbjXywwtWdwHlMUciRZpmcXHzc2w1MV4uO0i/hX6cXYWomHpLpYdV/XeUHSCc9DxRnzaIszywV1J1C5yf7fZHa2f+Ec/x5e1UrL6VlHdzqEN+KmE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779269554; c=relaxed/simple;
-	bh=T9ao8cUQVvg6n4ivFEhZHRUILcJAkmgexz/HSrqn5a0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NjyvGHz05zBT8ejfi2X/6YGXbjq8bn6elqVKyipaBuetT08+4rKLP5w3IAuyD6hpjTfRYKB8zpyrnjKkIwBxJR63lDpjQ/cPq/1hIrevYF6p5BZCNa+rI7mXrdQQ+uxgzcPg0FF0ZLBbXblVZganQ6niXxcFxjFKI3or0WJTlM4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IbNQ5TGo; arc=pass smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-394413a63d3so38911221fa.1
-        for <linux-wireless@vger.kernel.org>; Wed, 20 May 2026 02:32:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779269541; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XBa2T5h1RUeN24TXAgbxqjxjCa7x3702tcranpoBmsXlvkmUhR6AuAQrivyYtIkA72
-         YyZ17O+RHjH2J8H+Axa2EL2r2sYkIdWRb65xPotQ3lCxEHC0wyf4IdeLaTArC5wfMtjN
-         onZomYdLOpquB48bRxznisxVBv6YI+KmhcRTOTexXq2KjKYFnYgJEsFz781MgE1yiMJY
-         FXu5F8y4BlX9INATkuCSpdJJHtcyWieXQ7Mc9PCfAxxY859gZUoNT1314B1qnCcQLk2K
-         Uu8QGgxLg1b2eVnm7Y2WQ35BM7uQVfNfzFrVzGRnAx6nhWX/m4Zuqkz88solli9GPKf3
-         1mRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:dkim-signature;
-        bh=T9ao8cUQVvg6n4ivFEhZHRUILcJAkmgexz/HSrqn5a0=;
-        fh=fY+ClKWvxu8PR26t2ryTvKGVqzCs5LX+VkZyjdOQ7LM=;
-        b=KtRmNKYjyLzTNprSpA9NwcHJB8w2VENQLmwxsZoks4Raq3pKwQ/kUopgEORbJyHCyZ
-         VZeoXrU0sznJPiJbsfxRIeivBv7Jkmw2ALyn6Yk9Xh9L3ag69H1uc7BFD1uAUf9UnAls
-         ESfWCHNwZKulfOd00sG6Kk5CxNs1Z/I9bwcmeA0+Axf2k2bSGKxODA0938TPKtoMoeNq
-         pk1HjO9dfumH54k2RM9FHL053SQ6ysWJR7YDZJYsUGwPGOr5ZVO4eA7Ww0ufv6oHvjjM
-         dhtkilJhPi4EhTRZsWgaI+gIBKOPlfUthv3YWdeYwxrcKZNZDqzLOBkxo/AbPoQwx2Jc
-         T1Rg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779269541; x=1779874341; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=T9ao8cUQVvg6n4ivFEhZHRUILcJAkmgexz/HSrqn5a0=;
-        b=IbNQ5TGoesfCfa6SUEK8w8ohiDVYWlxbO8bmu/AIcTD+XqdVUV1wCGhBVc+q3c4Nlm
-         ExdLPVpWW4r8m6OBB+3EYFpF4cH6zMCF5QgcHNM9DVz0yph1ccRpgd9FX/jln4uvqdqh
-         njXVqXdMIi0gxoV3SIYraIBXy0aT/J4HZJRBZvZj+f7hnqwresl/kbnXpMTYYOgluHY8
-         6vT28eT2Ivke2u82MgJgSLss7prxjf5uf/HrCPmp5Efswk5R6OJUoQ2UjzjRxWIGVJ7o
-         QPlSL2t2yFwe1Q7aLe+oS/9DxeJ4tvoTeu/RMVHGHdiZwxKJccRWeE84BBzdCXROzSrr
-         GeSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779269541; x=1779874341;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T9ao8cUQVvg6n4ivFEhZHRUILcJAkmgexz/HSrqn5a0=;
-        b=gzBcuRgm4tA84+NahRh0rrF99wOe6n0f/uiZ3YrnIu/yAnE/0HllNa3Osiy+sZd/s5
-         G6ZVRjj4cf5vK0UGo+GN5fZIbrJD9j4RgQ5lvrJC37dq1TsSksLtFlQt/Bp0H8M50cXL
-         DIiGUuk1SnZdFHhFhz1zVuxYnoDAUlzZ4zjwi9s1Ceibl25gZC08R71DDLmyqC0RhliI
-         TZqurvBVcXuz587gRPuXXjpzV0b4Mp8aVyp7UzJEfBoXM99bcTL/bewIIb6sjVAtkiRl
-         YsKU4iKVXzOr+N3bmBJcFi7QSnBKYjRJUd1T15wupkovyutisNgM78OiV0L9ouQ819e5
-         WybA==
-X-Gm-Message-State: AOJu0Ywqa/C1xd0IA9Y7iRGtyrWqY8p9n1IDBiZYIQK9G+zoYrCEynpT
-	vIDFgR1ZpPytuT+JHWy9Cqhn4FtS8n9KqD5MIvJ17Dbbyn5onzLXKYQrEqo/PjD3hEgubeazArv
-	Wlx1EFcn39eOpf9ebuqK8LXAzmWMkTI2H6mcx
-X-Gm-Gg: Acq92OHGWCFwExaSfYSsdtrOB4VB14Xx7dXutD5pcFQ9NkwJ7dI90KqFGsIV+KtdYlM
-	lYPVRcLu/HPYv9cMCqkgTHJOLblqp4Y/ojrqjZcvJYX0N5X0Ki229aqmPC3N/E+A463RscCdtUg
-	0vUbn/JCRjLLhfDb0KSvFvqCHeRdaT3eKqpTVPxruakPitCH4C5NNX1/zQV7DM/P1ugz6+9DfaG
-	jsYAMs2k61vikQplNGt6rm3UL5hgdomM4W2RmwmGo3bdUXvPnWgESijWu+K25rOkr26lGMPUP23
-	ZEPpgznwfCdOIxo9xfg=
-X-Received: by 2002:a2e:a992:0:b0:38e:27f6:41e2 with SMTP id
- 38308e7fff4ca-39561d4be99mr70760891fa.18.1779269541185; Wed, 20 May 2026
- 02:32:21 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5DD3D525F;
+	Wed, 20 May 2026 09:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779270122; cv=none; b=Fm8Sujq5yPBBO70wx0LG/9ZLRyziQCy8rUwwsKknphsALtnV4iBC2Ach6/93jhlJGj2HEvVClqlW5RH8BkxL+hScG4O/KK1xvKGtOZpmR/KlbQYc+8CxUt/VMO0R/EKPqZai4W65N6aXL/hDU9SjyZ+PAjfna5Uk1NbjLeLGuV0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779270122; c=relaxed/simple;
+	bh=PNkrzmGBLmsK4+moTXk9hO6Q9VekSgGwVt/iwFGPMTg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=iMl5GVYfVLCxv9STyzwNkXD7v7RAaMCllZPM+E8yDdzq0fWqMkWGXOsGvYZdggg1JdWd18NlxktYJRgE6FD84ZlxkcaWmxNtwO6c0tgJv1cgP/mycLb5dbAiRczEzwy0kaQKX2CsjTmArsv22O1vwGkMvD8UnkUEJ20yoMgriwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=GXbYkWcY; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64K9fmdZ7012899, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1779270108; bh=Z8IrZGgYitLHMLLS1HXSi7SkcWX36UenWXqwZz6hcWE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=GXbYkWcYeXJ7ybLfg4tn/4YjOLW9X3JKmIpJgB1jtf1V0Z91kD81k2NnMqwcRf7tE
+	 O9nAKnCk0qDwP73gokdeAcBLRKEVqwtF/qNp5XHpZvD+3t467o6oQHwraiNmdmPeeb
+	 olPCOycZKi8hfwNJwgMd/pC3RdiBo8dXq0zGhQczhTmfKpRadlX2+ue11hL/821wiO
+	 wjyoOArVF+arOw9Hsc7wlWUlUqD3IYttpptaIWoor1uvxYSXGFNqCFH/r1G8QF/6EE
+	 CnV9fP9Qv6ZBu5w8GktuPg0IlbCDahIxzKWTQWqpYId82th6pbH5ZRpMrxHkSYtBPU
+	 VCg0NTeB/5yLQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 64K9fmdZ7012899
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 20 May 2026 17:41:48 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 20 May 2026 17:41:48 +0800
+Received: from RTKEXHMBS04.realtek.com.tw ([::1]) by
+ RTKEXHMBS04.realtek.com.tw ([fe80::552f:8b32:656c:c395%6]) with mapi id
+ 15.02.2562.017; Wed, 20 May 2026 17:41:48 +0800
+From: Johnson Tsai <wenjie.tsai@realtek.com>
+To: Greg KH <gregkh@linuxfoundation.org>,
+        Johannes Berg
+	<johannes@sipsolutions.net>
+CC: Ping-Ke Shih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "driver-core@lists.linux.dev"
+	<driver-core@lists.linux.dev>,
+        "sabae@valvesoftware.com"
+	<sabae@valvesoftware.com>,
+        Charles Lohr <charlesl@valvesoftware.com>
+Subject: RE: [RFC rtw-next 1/2] wifi: rtw89: usb: add hw_info sysfs attribute
+Thread-Topic: [RFC rtw-next 1/2] wifi: rtw89: usb: add hw_info sysfs attribute
+Thread-Index: AQHc52CHOsKUzQ+SEUSORaNAsdGbNbYUb+IAgABMgwCAAAMoAIAB5JEQ
+Date: Wed, 20 May 2026 09:41:46 +0000
+Message-ID: <b8640de28c5e4a94a3c2bbc3a101c1fa@realtek.com>
+References: <20260519072415.25746-1-pkshih@realtek.com>
+ <efb61959e14e4f57b78fbd49a563398e@realtek.com>
+ <83ddb427597663b947c49afd835014f2bc1033f2.camel@sipsolutions.net>
+ <2026051957-refract-barge-b21e@gregkh>
+In-Reply-To: <2026051957-refract-barge-b21e@gregkh>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1779269054-14963-mlmmj-1e4bac1a@vger.kernel.org>
-In-Reply-To: <1779269054-14963-mlmmj-1e4bac1a@vger.kernel.org>
-Reply-To: sedat.dilek@gmail.com
-From: Sedat Dilek <sedat.dilek@gmail.com>
-Date: Wed, 20 May 2026 11:31:44 +0200
-X-Gm-Features: AVHnY4IIdAZQ5EmE4qT3XY08K70QcZ1YzXYJF-LwLNiNKhpR45cmC159_Qhzr3w
-Message-ID: <CA+icZUVmdgL1A6mpFxMEtMtikwbkH5qWWyuEn-JOeSU80Q-mvA@mail.gmail.com>
-Subject: Fwd: Unable to unsubscribe from linux-wireless@vger.kernel.org
-To: postmaster@kernel.org
-Cc: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36690-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_REPLYTO(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36691-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sedatdilek@gmail.com,linux-wireless@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wenjie.tsai@realtek.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	HAS_REPLYTO(0.00)[sedat.dilek@gmail.com];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 67A1C58AD34
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C72BF58B17D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Postmaster,
-
-can you help me with the unsubscription?
-
-I sent an email to:
-
-linux-wireless+unsubscribe@vger.kernel.org
-
-And get the below answer.
-
-Best thanks and Best regards,
--Sedat-
-
----------- Forwarded message ---------
-From: <linux-wireless+help@vger.kernel.org>
-Date: Wed, May 20, 2026 at 11:26=E2=80=AFAM
-Subject: Unable to unsubscribe from linux-wireless@vger.kernel.org
-To: <sedat.dilek@gmail.com>
 
 
-Greetings!
+On Tuesday, May 19, 2026 20:23, Greg KH <gregkh@linuxfoundation.org> wrote:
+> On Tue, May 19, 2026 at 02:11:32PM +0200, Johannes Berg wrote:
+> > Hi,
+> >
+> > > > Example usage from user-space:
+> > > >   $ cat /sys/bus/usb/devices/2-3.1.2:1.0/hw_info
+> > > >   SN: 36 42 00 01 23
+> > > >   UUID: aa ec 2b 7c 0a 55 47 27 8d e0 b3 0f eb cc bb aa
+> >
+> > Sysfs has a "one value per file" rule (soft rule according to the
+> > docs, but harder in practice, I believe), so seems if anything that
+> > should be two files. Maybe a UUID should also be formatted as such
+> > with %pU or similar.
+>=20
+> That should be 2 separate sysfs files please.
+>=20
+> And yes, use %pU.
 
-This is the mlmmj program managing the <linux-wireless@vger.kernel.org>
-mailing list.
+The v2 patch will use separate `sn` and `uuid` attributes, with `uuid`
+formatted via `%pU`. We also removed the spaces in `sn` to provide a clean
+string.
 
-You were unable to be unsubscribed from the list because you are not
-subscribed.
+Example usage from user-space:
+  $ cat /sys/bus/usb/devices/2-3.1.2:1.0/sn
+  3642000123
+  $ cat /sys/bus/usb/devices/2-3.1.2:1.0/uuid
+  aaec2b7c-0a55-4727-8de0-b30febccbbaa
 
-If you are receiving messages, perhaps a different email address is
-subscribed. To find out which address you are subscribed with, refer to the
-message welcoming you to the list, or look at the envelope "Return-Path"
-header of a message you receive from the list.
+>=20
+> And be careful about exposing serial numbers to userspace, some systems
+> don't like normal users to read them so be sure to get the permissions co=
+rrect.
+> We had to add some USB code for ALLOW_SERIAL_NUMBER to make it so that
+> systems can handle this if they want to.
+>=20
+> And shouldn't this just be the USB serial number to start with?  Why is t=
+here a
+> different string here?  We already have a sysfs file for this value.
+
+Regarding the serial number and permission design, these are requirements=20
+from Valve, so we have CC'd them here to provide the background.
+
+Hi Elliot and Charles, could you please help explain the requirements and u=
+se case here?
+
+
+
 
