@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-36725-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36726-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJ6WKl0cDmpT6AUAu9opvQ
-	(envelope-from <linux-wireless+bounces-36725-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 22:41:01 +0200
+	id sAj/OPItDmoK7wUAu9opvQ
+	(envelope-from <linux-wireless+bounces-36726-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 23:56:02 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16AD599EBD
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 22:41:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D2859B7F4
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 23:56:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A39C93246019
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 18:45:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 699A8383CCEB
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 18:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51B44534A2;
-	Wed, 20 May 2026 18:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0945046AED1;
+	Wed, 20 May 2026 18:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M/QzPQdc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nj4jdjHy"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7DE3FE66D;
-	Wed, 20 May 2026 18:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FED3FE66D;
+	Wed, 20 May 2026 18:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302374; cv=none; b=cu6HHSCIGQlNDGmXEYioAyPZplIUQ8IxgM0GUHZBPH9cUR6k/uqLesLeWBEqwHzH0aMgB4NKsXyJoERC7xFsaLBKaKJ8BTMhSgAH+8PeV6I7dCKxoPF/gv9sQs6S0+uRLv9UZYSa9AZW8v5t/6ocC3w60EMboxCtSdCY2gT0RsM=
+	t=1779302382; cv=none; b=CqLLjrQowEsQ+GEpDA8gZULy+9l9YvJ6+bN82sy3eUp8qy2lMJ6bpn4ot4x2fH4ab+EdsTHUFqw/TTuPusBR2v08vfHIRqzPHzIetOV7Dr/rDlYQRfTq4NmH2iSoXXeWiXBBWrc0EV+yGSpYS35Ynv8c6qRAzUnPykhALZx82qU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302374; c=relaxed/simple;
-	bh=/dw3Bj3qEtbY3UGw59TiDqCEQ67ekEoGdNXRX+RmKeM=;
+	s=arc-20240116; t=1779302382; c=relaxed/simple;
+	bh=QnhxnHtucHKw6Uua/rQwPfSkr3Npc8iASaSu0+j3ytM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=W/X3GYNHAZzRcrJVDkmeuZwbpfo5X+M2FxZzcl7ID3H9/k6h0nRnLVALe692QhAB7T1s6H3gAtSyDBF3Odu7ZIdRC3XxBmM5N7qyCdsKqB8Dzj0I+PSq1uPdh1Wl0NPosAhlekNr4aI4q1IYDiN+gXrOFm3XH9HvensTyQYxafY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M/QzPQdc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103C51F00896;
-	Wed, 20 May 2026 18:39:24 +0000 (UTC)
+	 MIME-Version; b=e3n55OptMuPWlya9bGB07ZCJJDWMyrEjvFhnsWAMkWgi03TIEpL+V6frX0c7bITaUab+h5ZG5V9ztRZyYVKPWl3Gq2nr+2NQpWjYP/18kxVtH9HXs5C7xmdF9+0oS5OJMF4fHlZkvTOQl/Y7Epdr6VBUe+rGGp5EMR2kzbeFF/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nj4jdjHy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC9F1F00897;
+	Wed, 20 May 2026 18:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779302373;
-	bh=y7ad9YS8GKFX6PUFbYIYBW6JWmL7J5wY6hoTgHoU3QQ=;
+	s=k20260515; t=1779302381;
+	bh=Kx7bWM1kJr6AOGlca9EF/UDaya3vcfDIi8gsI0tM7xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M/QzPQdcsRJdC6Ljg5UpTwgWtuxhkJstW01aGvTw4RUpEjn4DFc4JGJpClJWMiTyX
-	 Uax1ukCuzqo2DkHStJzSrNzBoOhBtgAf3d6pbUgvxDAaC5mAvLB0WWupx2hCr+raMW
-	 0bT1SX3UQeTWwOp/CHqXdJ30GDCmBaZ6F8y2ndgaKy3NoIGD7FTS7rWNHDqHaZu016
-	 ldOM8cp2fpMe0/Kbnxdc4R5EzBeQ99FWzB9/fhSXFDKlN7MNCjxGtX9jtGpn3Lnew3
-	 uTm16eyJm403jVRTftzcSx//sTI5vPNcxIfQg5Kw1FqrlqBH74zoUjxqbeeJqhRyHp
-	 8DIOJqZ2M2Aqg==
+	b=Nj4jdjHyclmkGQphNLKvljHh2Oh2mJxYSFwUYxk8N4A0juSC3p4zrdZpAPwmwED7O
+	 XNvE3oLYFJqleRrk3PSuNs9F/+FEieEzGuJ4abKxgNQ7KZofHNo33I9+e4ddCwocbQ
+	 x3I+o46EultDco4KSYYQ0w7dRLVfrr9n8XmrLqTu4cOXhRdfRt0ccSS/0kq4in+3Yp
+	 GywhzsoRU74CftCcgAA1LsEUDjPBejWNSDXZa3t+tk+agf6MR7ileZJ/V3tETZEwIR
+	 y1sisiWPqk3zz9juYnIctU7rYebD9DyJ+XBcLeX5utyxkwMHQqsFdSzNGQWrHFbyCL
+	 T/r7hTlGIBNXA==
 From: Arnd Bergmann <arnd@kernel.org>
 To: linux-gpio@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -85,11 +85,11 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-input@vger.kernel.org,
 	linux-leds@vger.kernel.org,
 	netdev@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 06/10] [v4] leds: gpio: make legacy gpiolib interface optional
-Date: Wed, 20 May 2026 20:38:11 +0200
-Message-Id: <20260520183815.2510387-7-arnd@kernel.org>
+	Christian Lamparter <chunkeey@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 07/10] [v6 net-next] dt-bindings: net: add st,stlc4560/p54spi binding
+Date: Wed, 20 May 2026 20:38:12 +0200
+Message-Id: <20260520183815.2510387-8-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260520183815.2510387-1-arnd@kernel.org>
 References: <20260520183815.2510387-1-arnd@kernel.org>
@@ -107,18 +107,18 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36725-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36726-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCPT_COUNT_TWELVE(0.00)[42];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,googlemail.com,sipsolutions.net,iki.fi,kemnade.info,baylibre.com,kernel.org,atomide.com,alpha.franken.de,physik.fu-berlin.de,redhat.com,alien8.de,linux.intel.com,zytor.com,gmail.com,broadcom.com,lunn.ch,davemloft.net,google.com,lists.infradead.org,oss.qualcomm.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,googlemail.com,sipsolutions.net,iki.fi,kemnade.info,baylibre.com,kernel.org,atomide.com,alpha.franken.de,physik.fu-berlin.de,redhat.com,alien8.de,linux.intel.com,zytor.com,gmail.com,broadcom.com,lunn.ch,davemloft.net,google.com,lists.infradead.org,microchip.com];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -128,151 +128,119 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: B16AD599EBD
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,0.0.0.0:email,microchip.com:email,devicetree.org:url]
+X-Rspamd-Queue-Id: 33D2859B7F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-There are still a handful of ancient mips/armv5/sh boards that use the
-gpio_led:gpio member to pass an old-style gpio number, but all modern
-users have been converted to gpio descriptors.
+The SPI version of Prism54 was sold under a couple of different
+names and supported by the Linux p54spi driver, but there was
+never a DT binding for it.
 
-While the CONFIG_GPIOLIB_LEGACY option that guards devm_gpio_request_one()
-and related helpers is currently turned on in all kernel builds,
-the plan is to only enable it on the few platforms that actually
-pass gpio numbers in any platform_data.
+Document the four known names of this device and the properties
+that are sufficient for its use on the Nokia N8x0 tablet.
 
-Split out the legacy portion of the platform_data handling into a custom
-helper function that is guarded with in #ifdef block, to allow the
-the leds-gpio driver to compile cleanly when CONFIG_GPIOLIB_LEGACY
-gets turned off. Once the last user is converted, this function can
-be removed.
+As I don't have this hardware or documentation for it, this is
+purely based on existing usage in the driver.
 
-Link: https://lore.kernel.org/all/e9252384-a55c-4a91-9c61-06e05a0b2ce4@app.fastmail.com/
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/all/e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com/
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
+
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
-v4: whitespace changes only
-v3: simplify gpio_led_get_gpiod
-v2: rework a little bit to keep the legacy code path more separate,
-    extend changelog description
-
-Related to this, we may also want to remove support for passing
-a gpio descriptor in the ->gpiod flag. The only user doing this
-at the moment was introduced in commit 1892e87a3e91 ("powerpc/warp:
-switch to using gpiod API").
+v6: no changes
+v5: fix name in MAINTAINERS file
+v4: renamed file to st,stlc4560, matching the primary compatible string
+    require st,stlc4560 string
 ---
- drivers/leds/leds-gpio.c | 51 ++++++++++++++++++++++++++--------------
- include/linux/leds.h     |  2 ++
- 2 files changed, 36 insertions(+), 17 deletions(-)
+ .../bindings/net/wireless/st,stlc4560.yaml    | 61 +++++++++++++++++++
+ MAINTAINERS                                   |  1 +
+ 2 files changed, 62 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
 
-diff --git a/drivers/leds/leds-gpio.c b/drivers/leds/leds-gpio.c
-index a3428b22de3a..d6a0369eeb92 100644
---- a/drivers/leds/leds-gpio.c
-+++ b/drivers/leds/leds-gpio.c
-@@ -212,7 +212,6 @@ static struct gpio_desc *gpio_led_get_gpiod(struct device *dev, int idx,
- 					    const struct gpio_led *template)
- {
- 	struct gpio_desc *gpiod;
--	int ret;
- 
- 	/*
- 	 * This means the LED does not come from the device tree
-@@ -221,18 +220,30 @@ static struct gpio_desc *gpio_led_get_gpiod(struct device *dev, int idx,
- 	 * the GPIO from there.
- 	 */
- 	gpiod = devm_gpiod_get_index_optional(dev, NULL, idx, GPIOD_OUT_LOW);
--	if (IS_ERR(gpiod))
--		return gpiod;
--	if (gpiod) {
-+	if (!IS_ERR(gpiod))
- 		gpiod_set_consumer_name(gpiod, template->name);
--		return gpiod;
--	}
- 
--	/*
--	 * This is the legacy code path for platform code that
--	 * still uses GPIO numbers. Ultimately we would like to get
--	 * rid of this block completely.
--	 */
-+	return gpiod;
-+}
+diff --git a/Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml b/Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
+new file mode 100644
+index 000000000000..a32265c07350
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
+@@ -0,0 +1,61 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/wireless/st,stlc4560.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+#ifdef CONFIG_GPIOLIB_LEGACY
-+/*
-+ * This is the legacy code path for platform code that still uses
-+ * GPIO numbers, mainly MIPS and SuperH board files.
-+ * Ultimately we would like to get rid of this block completely.
-+ *
-+ * ppc44x-warp sets the template->gpiod directly instead of
-+ * adding a lookup table or device properties. This is not
-+ * much better.
-+ */
-+static struct gpio_desc *gpio_led_get_legacy_gpiod(struct device *dev, int idx,
-+						   const struct gpio_led *template)
-+{
-+	struct gpio_desc *gpiod;
-+	int ret;
++title: ST/Intersil/Conexant stlc45xx/p54spi/cx3110x SPI wireless device
 +
-+	if (template->gpiod)
-+		return template->gpiod;
++maintainers:
++  - Christian Lamparter <chunkeey@gmail.com>
++
++description:
++  The SPI variant of the Intersil Prism54 wireless device was sold
++  under a variety of names, including Conexant CX3110x and
++  ST Microelectronics STLC4560.
++
++allOf:
++  - $ref: ieee80211.yaml#
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++properties:
++  compatible:
++    oneOf:
++      - const: st,stlc4560
++      - items:
++          - enum:
++              - cnxt,3110x
++              - isil,p54spi
++              - st,stlc4550
++          - const: st,stlc4560
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  powerdown-gpios:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        wifi@0 {
++            compatible = "st,stlc4560";
++            reg = <0>;
++            spi-max-frequency = <48000000>;
++            interrupts-extended = <&gpio 23>;
++            powerdown-gpios = <&gpio 1>;
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8063cb56feef..93cf1fb72357 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -20306,6 +20306,7 @@ M:	Christian Lamparter <chunkeey@googlemail.com>
+ L:	linux-wireless@vger.kernel.org
+ S:	Maintained
+ W:	https://wireless.wiki.kernel.org/en/users/Drivers/p54
++F:	Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
+ F:	drivers/net/wireless/intersil/
  
- 	/* skip leds that aren't available */
- 	if (!gpio_is_valid(template->gpio))
-@@ -252,6 +263,13 @@ static struct gpio_desc *gpio_led_get_gpiod(struct device *dev, int idx,
- 
- 	return gpiod;
- }
-+#else
-+static struct gpio_desc *gpio_led_get_legacy_gpiod(struct device *dev, int idx,
-+						   const struct gpio_led *template)
-+{
-+	return template->gpiod ?: ERR_PTR(-ENOENT);
-+}
-+#endif
- 
- static int gpio_led_probe(struct platform_device *pdev)
- {
-@@ -270,14 +288,13 @@ static int gpio_led_probe(struct platform_device *pdev)
- 			const struct gpio_led *template = &pdata->leds[i];
- 			struct gpio_led_data *led_dat = &priv->leds[i];
- 
--			if (template->gpiod)
--				led_dat->gpiod = template->gpiod;
--			else
-+			led_dat->gpiod = gpio_led_get_gpiod(dev, i, template);
-+			if (!led_dat->gpiod)
- 				led_dat->gpiod =
--					gpio_led_get_gpiod(dev, i, template);
-+					 gpio_led_get_legacy_gpiod(dev, i, template);
- 			if (IS_ERR(led_dat->gpiod)) {
--				dev_info(dev, "Skipping unavailable LED gpio %d (%s)\n",
--					 template->gpio, template->name);
-+				dev_info(dev, "Skipping unavailable LED gpio %s\n",
-+					 template->name);
- 				continue;
- 			}
- 
-diff --git a/include/linux/leds.h b/include/linux/leds.h
-index b16b803cc1ac..e646bffcd8e7 100644
---- a/include/linux/leds.h
-+++ b/include/linux/leds.h
-@@ -676,8 +676,10 @@ typedef int (*gpio_blink_set_t)(struct gpio_desc *desc, int state,
- struct gpio_led {
- 	const char *name;
- 	const char *default_trigger;
-+#ifdef CONFIG_GPIOLIB_LEGACY
- 	unsigned 	gpio;
- 	unsigned	active_low : 1;
-+#endif
- 	unsigned	retain_state_suspended : 1;
- 	unsigned	panic_indicator : 1;
- 	unsigned	default_state : 2;
+ PACKET SOCKETS
 -- 
 2.39.5
 
