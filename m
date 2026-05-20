@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-36723-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36724-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mN3DFmgDDmoD5gUAu9opvQ
-	(envelope-from <linux-wireless+bounces-36723-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 20:54:32 +0200
+	id cJMyEHMDDmqs5QUAu9opvQ
+	(envelope-from <linux-wireless+bounces-36724-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 20:54:43 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75CD5975FE
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 20:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D91597616
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 20:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 47923322D91F
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 18:45:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0B8623236E89
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 18:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFEE43C047;
-	Wed, 20 May 2026 18:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF6B3FE646;
+	Wed, 20 May 2026 18:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CqMa3b0K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JLCEdIhj"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619FD3FE347;
-	Wed, 20 May 2026 18:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C483E3D1CA0;
+	Wed, 20 May 2026 18:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302357; cv=none; b=AIcgfycvsIMw2PAxJT7PoLi2GTPMEM7LS6GPQryzbmZ6aGfkHOCBqtr5WzhVw8A/VVtCrpY3np3HeJaoQ+cPl66TaJYr4czckRsZzsOBBTy75ULzQTsEVyyqrxHURhbj1Q6syfIDlv0j7jXtBJJMVbPSWdwWs3izhYzW4d9QafQ=
+	t=1779302365; cv=none; b=Q9IVCFAaT4vPnB70IQPB7NZecvAY/NeREe70i7T/tGqTS1uyzcIH7bKOankTGAU1FJC8dcjKfOQxy8/z+Ey5k5FUlBOkGtW1uTm6vCDDGcnwYt1AopIj8+1F5FefXP560HIWx9g5WK4L6Ns7uUYPApG09hP9hRV2lzcNj1+P/eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302357; c=relaxed/simple;
-	bh=aNAlqkthpe10xYpNkC2BmzB2OQKzPr8kINA577EZeVo=;
+	s=arc-20240116; t=1779302365; c=relaxed/simple;
+	bh=1rBsdHO5ii6LAwx4TaDAiy+62lktJt4MM8CtSkPPwkk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hqNLiTkhotKhWdcXvEnwprDtHzGWPenbGA94S8peeTqdH1WJTxxX5oB4dN30bpS6oaligq1gEXCFJviI8aRAvhgyrA9WOI1eMaUjFPwydpofgU8cuxcHuaVxdXKAiruQ9JqAjVg8NwV+vCyakQqPvE656R9WnbM6W7PPhIt8K8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CqMa3b0K; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2541F00896;
-	Wed, 20 May 2026 18:39:08 +0000 (UTC)
+	 MIME-Version; b=OmZasYugYRtPqcm7WisfjcXjPofjV8s8RrlLzgNi6m6C90EccMbpYNMRDF9nyQBfDhhTizofZKQuYg9uS/58Q546o9lQisrVjib80tRp/1RsKOp/DNy+nXvNf+no42syvOAwjycOgK1WCUZR09xmzQkRh5ICKKas7yx31bcSSXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JLCEdIhj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8921F0089D;
+	Wed, 20 May 2026 18:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779302356;
-	bh=mIbLYIR4qOinVPSLahPalENeT18/s9zq2XWQrVCVaRU=;
+	s=k20260515; t=1779302364;
+	bh=TV0+qdcdmk/5gJ3OGKgI5SQDH91h3lWhZ4d8lGRbL9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CqMa3b0K6yilhMP8W6/z8wMrypYc8Bx3ZdaOFKtCffLHlXg6yDY4Uf4N9Yh4Otc+r
-	 0czwFzNB+xyJSwDOfoq+kfnNnGx/6SFS4Y5+Y0oB65KBe4R4XoROpy/hzeSI1r+Or7
-	 h4ZQ7eGVSNOfAPhXVrjb2Urbghf/Whrbl26oESPLWHlpgZY5fPPR5fDcuzZw56Jph3
-	 eap+xYP1AcFJy7mrot9mcJs/Pn48b4MD6EZdOYZuUhPv1zVMgxk1m8HdZssHE6fLJG
-	 f5GuqEvoG+Vt0o/Fv8y5DwaW9MdkgLlRlaEGURyv7e2LXyJZqY+D4TdACo+R4aYlUZ
-	 ZW3tF7mNaDaUA==
+	b=JLCEdIhj+ggOrppkcYTTrQNTM5KqIoCtxO1KENxrD+9U8PWht6Vy6TAMPqqiknlxb
+	 6a1MobDRSDwonLHkb8k6hipwd6d7okdssLui9BmALeqBm36GRhcBjxVXezpAYhtc3P
+	 nMTGo+V4DYSSFLuRGdYBj4xSWfM8HAPTM0kpSBxtn78GbWehT1cK1V9zzYmqM/FNKE
+	 Or49PD8deMVtSMSljqB0Zu+RaI7Rj2FQRkH4sZHZtZ/lBsn3Z0sAfD84FsIflSjV5l
+	 nTzEA0Jh7v/sS3RlFlLhW2mz5htjnN1eTc3joHVAhGl7tXJh8xU5n1O9t7dhqWVbHO
+	 MfjrowIjjlgwg==
 From: Arnd Bergmann <arnd@kernel.org>
 To: linux-gpio@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -84,10 +84,11 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-sh@vger.kernel.org,
 	linux-input@vger.kernel.org,
 	linux-leds@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 04/10] [v2] sh: select legacy gpiolib interface
-Date: Wed, 20 May 2026 20:38:09 +0200
-Message-Id: <20260520183815.2510387-5-arnd@kernel.org>
+	netdev@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 05/10] [v2] mips: select legacy gpiolib interfaces where used
+Date: Wed, 20 May 2026 20:38:10 +0200
+Message-Id: <20260520183815.2510387-6-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260520183815.2510387-1-arnd@kernel.org>
 References: <20260520183815.2510387-1-arnd@kernel.org>
@@ -109,14 +110,14 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36723-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36724-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[40];
+	RCPT_COUNT_TWELVE(0.00)[41];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,googlemail.com,sipsolutions.net,iki.fi,kemnade.info,baylibre.com,kernel.org,atomide.com,alpha.franken.de,physik.fu-berlin.de,redhat.com,alien8.de,linux.intel.com,zytor.com,gmail.com,broadcom.com,lunn.ch,davemloft.net,google.com,lists.infradead.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,googlemail.com,sipsolutions.net,iki.fi,kemnade.info,baylibre.com,kernel.org,atomide.com,alpha.franken.de,physik.fu-berlin.de,redhat.com,alien8.de,linux.intel.com,zytor.com,gmail.com,broadcom.com,lunn.ch,davemloft.net,google.com,lists.infradead.org,oss.qualcomm.com];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -127,147 +128,104 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arndb.de:email]
-X-Rspamd-Queue-Id: C75CD5975FE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,arndb.de:email]
+X-Rspamd-Queue-Id: F3D91597616
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-Many board files on sh reference the legacy gpiolib interfaces that
-are becoming optional. To ensure the boards can keep building, select
-CONFIG_GPIOLIB_LEGACY on each of the boards that have one of the
-hardcoded calls.
+A few old machines have not been converted away from the old-style
+gpiolib interfaces. Make these select the new CONFIG_GPIOLIB_LEGACY
+symbol so the code still works where it is needed but can be left
+out otherwise.
 
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+This is the list of all gpio_request() calls in mips:
+
+  arch/mips/alchemy/devboards/db1000.c:           gpio_request(19, "sd0_cd");
+  arch/mips/alchemy/devboards/db1000.c:           gpio_request(20, "sd1_cd");
+  arch/mips/alchemy/devboards/db1200.c:   gpio_request(215, "otg-vbus");
+  arch/mips/bcm47xx/workarounds.c:        err = gpio_request_one(usb_power, GPIOF_OUT_INIT_HIGH, "usb_power");
+  arch/mips/bcm63xx/boards/board_bcm963xx.c:              gpio_request_one(board.ephy_reset_gpio,
+  arch/mips/txx9/rbtx4927/setup.c:        gpio_request(15, "sio-dtr");
+
+Most of these should be easy enough to change to modern gpio descriptors
+or remove if they are no longer in use.
+
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
-v2: no changes. Adrian said he'll pick it up for 7.2, but so
-    far the patch is not in linux-next yet, so I'm including it
-    for completeness here.
+v2: no changes. There was no discussion on this, but the patch
+    has so far not made it into the linux-mips tree, so I'm including
+    it for completeness.
 ---
- arch/sh/Kconfig                        | 1 +
- arch/sh/boards/Kconfig                 | 8 ++++++++
- arch/sh/boards/mach-highlander/Kconfig | 1 +
- arch/sh/boards/mach-rsk/Kconfig        | 3 +++
- 4 files changed, 13 insertions(+)
+ arch/mips/Kconfig         | 5 +++++
+ arch/mips/alchemy/Kconfig | 1 -
+ arch/mips/txx9/Kconfig    | 1 +
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index d5795067befa..d60f1d5a94c0 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -462,6 +462,7 @@ config CPU_SUBTYPE_SHX3
- 	select CPU_SHX3
- 	select GENERIC_CLOCKEVENTS_BROADCAST if SMP
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 4364f3dba688..b91e62d69a5d 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -206,6 +206,8 @@ config MIPS_ALCHEMY
+ 	select CSRC_R4K
+ 	select IRQ_MIPS_CPU
+ 	select DMA_NONCOHERENT		# Au1000,1500,1100 aren't, rest is
++	select GPIOLIB
++	select GPIOLIB_LEGACY
+ 	select MIPS_FIXUP_BIGPHYS_ADDR if PCI
+ 	select SYS_HAS_CPU_MIPS32_R1
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+@@ -307,6 +309,7 @@ config BCM47XX
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select USE_GENERIC_EARLY_PRINTK_8250
  	select GPIOLIB
 +	select GPIOLIB_LEGACY
- 	select PINCTRL
- 
- # SH4AL-DSP Processor Support
-diff --git a/arch/sh/boards/Kconfig b/arch/sh/boards/Kconfig
-index 1af93be61b1f..d89b74177233 100644
---- a/arch/sh/boards/Kconfig
-+++ b/arch/sh/boards/Kconfig
-@@ -80,6 +80,7 @@ config SH_7724_SOLUTION_ENGINE
- 	select SOLUTION_ENGINE
- 	depends on CPU_SUBTYPE_SH7724
+ 	select LEDS_GPIO_REGISTER
+ 	select BCM47XX_NVRAM
+ 	select BCM47XX_SPROM
+@@ -330,6 +333,7 @@ config BCM63XX
+ 	select SYS_HAS_CPU_BMIPS4380
+ 	select SWAP_IO_SPACE
  	select GPIOLIB
 +	select GPIOLIB_LEGACY
- 	select REGULATOR_FIXED_VOLTAGE if REGULATOR
- 	imply SND_SOC_AK4642 if SND_SIMPLE_CARD
+ 	select MIPS_L1_CACHE_SHIFT_4
+ 	select HAVE_LEGACY_CLK
  	help
-@@ -199,6 +200,7 @@ config SH_SH7757LCR
- 	bool "SH7757LCR"
- 	depends on CPU_SUBTYPE_SH7757
+@@ -999,6 +1003,7 @@ config MIKROTIK_RB532
+ 	select SWAP_IO_SPACE
+ 	select BOOT_RAW
  	select GPIOLIB
 +	select GPIOLIB_LEGACY
- 	select REGULATOR_FIXED_VOLTAGE if REGULATOR
+ 	select MIPS_L1_CACHE_SHIFT_4
+ 	help
+ 	  Support the Mikrotik(tm) RouterBoard 532 series,
+diff --git a/arch/mips/alchemy/Kconfig b/arch/mips/alchemy/Kconfig
+index 6ca81e1bd35c..cf5ad52c0a0f 100644
+--- a/arch/mips/alchemy/Kconfig
++++ b/arch/mips/alchemy/Kconfig
+@@ -12,7 +12,6 @@ config MIPS_MTX1
  
- config SH_SH7785LCR
-@@ -226,6 +228,7 @@ config SH_URQUELL
- 	bool "Urquell"
- 	depends on CPU_SUBTYPE_SH7786
- 	select GPIOLIB
-+	select GPIOLIB_LEGACY
+ config MIPS_DB1XXX
+ 	bool "Alchemy DB1XXX / PB1XXX boards"
+-	select GPIOLIB
  	select HAVE_PCI
- 	select NO_IOPORT_MAP if !PCI
- 
-@@ -233,6 +236,7 @@ config SH_MIGOR
- 	bool "Migo-R"
- 	depends on CPU_SUBTYPE_SH7722
- 	select GPIOLIB
-+	select GPIOLIB_LEGACY
- 	select REGULATOR_FIXED_VOLTAGE if REGULATOR
- 	help
- 	  Select Migo-R if configuring for the SH7722 Migo-R platform
-@@ -242,6 +246,7 @@ config SH_AP325RXA
- 	bool "AP-325RXA"
- 	depends on CPU_SUBTYPE_SH7723
- 	select GPIOLIB
-+	select GPIOLIB_LEGACY
- 	select REGULATOR_FIXED_VOLTAGE if REGULATOR
- 	help
- 	  Renesas "AP-325RXA" support.
-@@ -251,6 +256,7 @@ config SH_KFR2R09
- 	bool "KFR2R09"
- 	depends on CPU_SUBTYPE_SH7724
- 	select GPIOLIB
-+	select GPIOLIB_LEGACY
- 	select REGULATOR_FIXED_VOLTAGE if REGULATOR
- 	help
- 	  "Kit For R2R for 2009" support.
-@@ -259,6 +265,7 @@ config SH_ECOVEC
- 	bool "EcoVec"
- 	depends on CPU_SUBTYPE_SH7724
- 	select GPIOLIB
-+	select GPIOLIB_LEGACY
- 	select REGULATOR_FIXED_VOLTAGE if REGULATOR
- 	imply SND_SOC_DA7210 if SND_SIMPLE_CARD
- 	help
-@@ -329,6 +336,7 @@ config SH_MAGIC_PANEL_R2
- 	bool "Magic Panel R2"
- 	depends on CPU_SUBTYPE_SH7720
- 	select GPIOLIB
-+	select GPIOLIB_LEGACY
- 	select REGULATOR_FIXED_VOLTAGE if REGULATOR
- 	help
- 	  Select Magic Panel R2 if configuring for Magic Panel R2.
-diff --git a/arch/sh/boards/mach-highlander/Kconfig b/arch/sh/boards/mach-highlander/Kconfig
-index b0abd03cac4e..cd3a553ce30c 100644
---- a/arch/sh/boards/mach-highlander/Kconfig
-+++ b/arch/sh/boards/mach-highlander/Kconfig
-@@ -20,6 +20,7 @@ config SH_R7785RP
- 	bool "R7785RP board support"
- 	depends on CPU_SUBTYPE_SH7785
- 	select GPIOLIB
+ 	select HAVE_PATA_PLATFORM
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+diff --git a/arch/mips/txx9/Kconfig b/arch/mips/txx9/Kconfig
+index 7335efa4d528..92b759a434c0 100644
+--- a/arch/mips/txx9/Kconfig
++++ b/arch/mips/txx9/Kconfig
+@@ -37,6 +37,7 @@ config SOC_TX4927
+ 	select IRQ_TXX9
+ 	select PCI_TX4927
+ 	select GPIO_TXX9
 +	select GPIOLIB_LEGACY
  
- endchoice
- 
-diff --git a/arch/sh/boards/mach-rsk/Kconfig b/arch/sh/boards/mach-rsk/Kconfig
-index f0299bc4416f..3810937aa5d4 100644
---- a/arch/sh/boards/mach-rsk/Kconfig
-+++ b/arch/sh/boards/mach-rsk/Kconfig
-@@ -12,16 +12,19 @@ config SH_RSK7201
- config SH_RSK7203
- 	bool "RSK7203"
- 	select GPIOLIB
-+	select GPIOLIB_LEGACY
- 	depends on CPU_SUBTYPE_SH7203
- 
- config SH_RSK7264
- 	bool "RSK2+SH7264"
- 	select GPIOLIB
-+	select GPIOLIB_LEGACY
- 	depends on CPU_SUBTYPE_SH7264
- 
- config SH_RSK7269
- 	bool "RSK2+SH7269"
- 	select GPIOLIB
-+	select GPIOLIB_LEGACY
- 	depends on CPU_SUBTYPE_SH7269
- 
- endchoice
+ config SOC_TX4938
+ 	bool
 -- 
 2.39.5
 
