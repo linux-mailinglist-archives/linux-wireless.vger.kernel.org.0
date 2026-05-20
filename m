@@ -1,175 +1,185 @@
-Return-Path: <linux-wireless+bounces-36729-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36730-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJQAJbMcDmro6AUAu9opvQ
-	(envelope-from <linux-wireless+bounces-36729-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 22:42:27 +0200
+	id IBAsKxQNDmo35wUAu9opvQ
+	(envelope-from <linux-wireless+bounces-36730-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 21:35:48 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9A0599F79
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 22:42:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C35C598777
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 21:35:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ED55A3387FF2
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 18:47:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ADE893014C64
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 19:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACE947D92F;
-	Wed, 20 May 2026 18:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F4A3469F6;
+	Wed, 20 May 2026 19:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TxJsYXWd"
+	dkim=pass (1024-bit key) header.d=valvesoftware.com header.i=@valvesoftware.com header.b="fhfCiSh7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-172.mimecast.com (us-smtp-delivery-172.mimecast.com [170.10.129.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E55E400E1D;
-	Wed, 20 May 2026 18:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3461A340404
+	for <linux-wireless@vger.kernel.org>; Wed, 20 May 2026 19:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302408; cv=none; b=jISA3eoemvuUIbfeM7cdhnQdmWUBXKTGiBAqGDYb16SwOHaJiLDefYJenj+lWtFfZQ0ZmCWAKo2PHHPD8yz5Jjh2lLqlZHX+EviNVxsNlNhF9z2GVa74uFdVvTI2XCBknprq4WS/7bF3nXwjravE3hqeH/6PCdA2DzW4d+SXdvg=
+	t=1779305539; cv=none; b=E4HrGry+qLde1F/TUSf86+JsySir1cq9IoI69z2WtXy3ZYgV1NR2pc1hTEDGYmA4mvD0Bc+my/HtM0oIEgHwJwCV7W/b08SbZ6jgecyeqT3QFzgAq2VL9opYjpyuSvd7ig1HvLnAQ1j5hFvNCcc0eQhTUYRoY80edIkyZNZZTmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302408; c=relaxed/simple;
-	bh=DkSZfXOAffCCtFwAjz7g6qmQiQIlMDMjpPdApHgp6TE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pRUFecsEeEN3IRyBst/STNE6jz0/pjXzZ0VUsVFNPlAml3p/3WAUUN/8QzuiwiOAVLEfVyqHdGU7sZxTlA9YBZjd6d+YntRmgytd0/4K0nggH94BAWskBAwzoy5hcs9L8UiQR7VQwi5T/0OyEIe/6dZ+yr5XJbZ+JuS++Q8cmaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TxJsYXWd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B121F0089A;
-	Wed, 20 May 2026 18:39:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779302406;
-	bh=02+6d8dOXhR9E+F29QDQjM2pWkqHo3wDZDJjMa+yUu0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TxJsYXWdfmza+UhP3R5pB3RwB3VkdHYGSwnVCeXIfZWjcwPv5hyYy1pozAEtav9zc
-	 ST23wnlxbaQNSejo3rEHwIRi3+Vsb+rGxZgXDu6Wg2SRyCm1gKgYG9kyT1s0+eLdMh
-	 jLq+3jUpE8uIKfQfhWYcZI1RUu3KhaTsvYTa7fcRh4jeGeHIn1KWH1IQXk1A+GPle+
-	 /fk//MJVx/io/TegeiPOyqkC6PuFHo2UABrmL27yz5Omg47Zm8XFMz0oUKynX/ZKE6
-	 XwChghHVCC5r3gWZlyQSDgbWCdunVnBYtGrwFl8Zgn+l6bnK9CSl/JfztXE0nTPRKy
-	 fbtvXvNZAq/IQ==
-From: Arnd Bergmann <arnd@kernel.org>
-To: linux-gpio@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Lamparter <chunkeey@googlemail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-wireless@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	linux-leds@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 10/10] gpiolib: turn off legacy interface by default
-Date: Wed, 20 May 2026 20:38:15 +0200
-Message-Id: <20260520183815.2510387-11-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260520183815.2510387-1-arnd@kernel.org>
-References: <20260520183815.2510387-1-arnd@kernel.org>
+	s=arc-20240116; t=1779305539; c=relaxed/simple;
+	bh=xCGPosPoOBqmiHmmAMZeLaQmUo6jTO0qDbWxKThBXkQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=HlsppRjrNo32w9WZwj55z/EU8xd3WbnBaS5NNGpq/AK15VwpemUVi8GiFUH/72+UfM3jqoLxOmPAAbsEClDLFQCqyrsFmM9YAsgGc2n4OP6gE5HpAwBxzrWWo/ywRLBeENZrt4M6x8rM/rc2HkCHz1gXp5ctomMxnoRBX1FqBic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=valvesoftware.com; spf=pass smtp.mailfrom=valvesoftware.com; dkim=pass (1024-bit key) header.d=valvesoftware.com header.i=@valvesoftware.com header.b=fhfCiSh7; arc=none smtp.client-ip=170.10.129.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=valvesoftware.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valvesoftware.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valvesoftware.com;
+	s=mc20150811; t=1779305537;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xCGPosPoOBqmiHmmAMZeLaQmUo6jTO0qDbWxKThBXkQ=;
+	b=fhfCiSh7K6gNg5hhaohfSH7Gqxxv+82Ct7Ir4KYzher2gQLeNR3fhbjYsYXOWgfUZd/tQE
+	ItL2+zr3of4mee2yf2+UvtJ8ZSU7+pudYRLu1JHjHyNypc5zTeRLs/U1KoFAfmgi8QGvUV
+	o/+bSEYE44SPdE69JS3Tv54c1rhxYWs=
+Received: from smtp-02-tuk3.valvesoftware.com
+ (smtp-02-blv1.valvesoftware.com [208.64.203.182]) by relay.mimecast.com
+ with ESMTP with STARTTLS (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384)
+ id us-mta-373-ShAMSSOoMY6Iy8aR3uiwKA-1; Wed, 20 May 2026 15:32:14 -0400
+X-MC-Unique: ShAMSSOoMY6Iy8aR3uiwKA-1
+X-Mimecast-MFC-AGG-ID: ShAMSSOoMY6Iy8aR3uiwKA_1779305533
+Received: from antispam.valve.org ([172.16.1.107])
+	by smtp-02-tuk3.valvesoftware.com with esmtp (Exim 4.97)
+	(envelope-from <sabae@valvesoftware.com>)
+	id 1wPmeL-00000004qw2-3SNG
+	for linux-wireless@vger.kernel.org;
+	Wed, 20 May 2026 12:32:13 -0700
+Received: from antispam.valve.org (127.0.0.1) id h1o63q0171sc for <linux-wireless@vger.kernel.org>; Wed, 20 May 2026 12:32:13 -0700 (envelope-from <sabae@valvesoftware.com>)
+Received: from mail1.valvemail.org ([172.16.144.22])
+	by antispam.valve.org ([172.16.1.107]) (SonicWall 10.0.15.7233)
+	with ESMTP id o202605201932130035107-5; Wed, 20 May 2026 12:32:13 -0700
+Received: from mail2.valvemail.org (172.16.144.23) by mail1.valvemail.org
+ (172.16.144.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 20 May
+ 2026 12:32:13 -0700
+Received: from mail2.valvemail.org ([::1]) by mail2.valvemail.org ([::1]) with
+ mapi id 15.02.2562.017; Wed, 20 May 2026 12:32:13 -0700
+From: Elliot Saba <sabae@valvesoftware.com>
+To: Greg KH <gregkh@linuxfoundation.org>, Johnson Tsai
+	<wenjie.tsai@realtek.com>
+CC: Johannes Berg <johannes@sipsolutions.net>, Ping-Ke Shih
+	<pkshih@realtek.com>, "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>, "driver-core@lists.linux.dev"
+	<driver-core@lists.linux.dev>, Charles Lohr <charlesl@valvesoftware.com>
+Subject: Re: [External Mail] Re: [RFC rtw-next 1/2] wifi: rtw89: usb: add
+ hw_info sysfs attribute
+Thread-Topic: [External Mail] Re: [RFC rtw-next 1/2] wifi: rtw89: usb: add
+ hw_info sysfs attribute
+Thread-Index: AQHc52CHOsKUzQ+SEUSORaNAsdGbNbYUb+IAgABMgwCAAAMoAIAB5JEQgACcKACAAA9+Dg==
+Date: Wed, 20 May 2026 19:32:13 +0000
+Message-ID: <9ce7404ea7bc480786b5ed0bb2182157@valvesoftware.com>
+References: <20260519072415.25746-1-pkshih@realtek.com>
+ <efb61959e14e4f57b78fbd49a563398e@realtek.com>
+ <83ddb427597663b947c49afd835014f2bc1033f2.camel@sipsolutions.net>
+ <2026051957-refract-barge-b21e@gregkh>
+ <b8640de28c5e4a94a3c2bbc3a101c1fa@realtek.com>,<2026052025-daringly-prolonged-5b2a@gregkh>
+In-Reply-To: <2026052025-daringly-prolonged-5b2a@gregkh>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Mlf-DSE-Version: 6871
+X-Mlf-Rules-Version: s20260520005434; ds20230628172248;
+	di20260507172443; ri20160318003319; fs20260520154049
+X-Mlf-Smartnet-Version: 20210917223710
+X-Mlf-Envelope-From: sabae@valvesoftware.com
+X-Mlf-CnxnMgmt-Allow: 172.16.144.22
+X-Mlf-Version: 10.0.15.7233
+X-Mlf-License: BSV_C_AP_T_R
+X-Mlf-UniqueId: o202605201932130035107
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: z2P0yRJsW3MlfS1sCL6_tx412xGA0zwLBEwxfPYBEb4_1779305533
+X-Mimecast-Originator: valvesoftware.com
+Content-Language: en-US
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[valvesoftware.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[valvesoftware.com:s=mc20150811];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36729-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36730-lists,linux-wireless=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,valvesoftware.com:mid,valvesoftware.com:dkim];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[40];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,googlemail.com,sipsolutions.net,iki.fi,kemnade.info,baylibre.com,kernel.org,atomide.com,alpha.franken.de,physik.fu-berlin.de,redhat.com,alien8.de,linux.intel.com,zytor.com,gmail.com,broadcom.com,lunn.ch,davemloft.net,google.com,lists.infradead.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arnd@kernel.org,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[valvesoftware.com:+];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sabae@valvesoftware.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9B9A0599F79
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 2C35C598777
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hello Greg, Johannes, thank you for your time and feedback on this patchset=
+.
 
-All users of the legacy interface now select CONFIG_GPIOLIB_LEGACY,
-so it can be turned off by default and only get built on platforms
-that still have one unconverted driver.
+The purpose of this information is to provide access to two pieces of infor=
+mation, a serial number (also printed on the outside of the device, used fo=
+r product tracking, RMAs, etc...) and a GUID (random entropy that is intent=
+ionally difficult to guess).
+We use the GUID to establish=A0a direct=A0connection=A0between the USB netw=
+ork adapter and another device.
 
-Allow turning it on manually for compile testing, in order to keep
-the build coverage of the legacy drivers in allmodconfig and
-randconfig.
+To directly answer your USB questions, unfortunately the ASIC used in this =
+product does not support customization of the USB serial number; all device=
+s have the same USB serial number.=A0 Indeed, I believe there is no mutable=
+ state on the device at all except for the e-fuses that are written at the =
+factory to write these two values.=A0 Given those constraints, we're trying=
+ to find the best way to raise this up to userspace, and we're grateful for=
+ your feedback.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/gpio/Kconfig | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+This USB=A0device is expected to operate on both Windows and Linux hosts, o=
+n the Windows side we have a custom driver that allows our host application=
+ (Steam) to directly query these fuses and setup the network connection app=
+ropriately.=A0 We're attempting to upstream this capability as much as poss=
+ible so that users running a vanilla kernel can take advantage of these fea=
+tures as much as possible.
 
-This patch depends on patches 1 through 9 to be applied first.
+With regards to permissions, we'd really like to make this serial number re=
+adable by non-root users so that the pairing functionality can work out-of-=
+the-box without needing special udev/tmpfiles.d rules to adjust permissions=
+ to allow Steam to read this information, but we are simultaneously sympath=
+etic to the desire to limit trackable/identifying information by default.=
+=A0 Of course we can adjust permissions however needed for our own Linux di=
+stribution, but in our effort to support the rest of the Linux ecosystem as=
+ best we can, we'd like to do our best to find a solution that would work e=
+verywhere.=A0 We're open to comparing against any existing precedent for de=
+vices that necessarily require identifying information to perform their bas=
+ic function, if you know of any.
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 00fcab5d09a4..eec17089eaa6 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -4,7 +4,14 @@
- #
- 
- config GPIOLIB_LEGACY
--	def_bool y
-+	bool "Legacy GPIO interfaces" if COMPILE_TEST
-+	help
-+	  There are a few legacy platforms that use the traditional GPIO
-+	  number based interfaces instead of GPIO descriptors.
-+	  Say Y here to enable build testing drivers that are specific
-+	  to those platforms.
-+
-+	  If unsure, say N.
- 
- config HAVE_SHARED_GPIOS
- 	bool
--- 
-2.39.5
+Thank you,
+-Elliot Saba
 
 
