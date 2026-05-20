@@ -1,359 +1,161 @@
-Return-Path: <linux-wireless+bounces-36713-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36714-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6JzuHdfJDWo33QUAu9opvQ
-	(envelope-from <linux-wireless+bounces-36713-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 16:48:55 +0200
+	id YM1ZLVDaDWrE4AUAu9opvQ
+	(envelope-from <linux-wireless+bounces-36714-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 17:59:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EEAB59009B
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 16:48:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8527F5915BF
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 17:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 92CF930741F2
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 14:44:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EF828308F239
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2026 15:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBBC3EDAB7;
-	Wed, 20 May 2026 14:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FF822541C;
+	Wed, 20 May 2026 15:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T639/esG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NCmG18Z+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9283EE1CC
-	for <linux-wireless@vger.kernel.org>; Wed, 20 May 2026 14:44:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779288281; cv=none; b=D0PUf0y1gnAICZT/Xychj0RBx9TrjBjwrUNksOHhPvGX/6ibMHCz1ocUbWAwMCV/KK6T2WshagHx8kXcflBuioT+lMaplvFCCNkS/PEoHXdpJofE8R73MzSU6YwlbPE5ZvIvgSzaBOc5W/WYFc4GrYJATZaSL6qUynKMtJm/ptg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779288281; c=relaxed/simple;
-	bh=MYxXA7PU/NQrHtwQ/gonOUrxNolNUctnP1r/NdM0+4A=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=HOMRgMaWrBy79XXO3DNP+5MThdalaT0vQz4YUCoqg2Rv5365+eo4b9rieZbSPG8OrMpozcyrofUdqhGIkhzPsdkNa3u5uFHrDIUTlX+tnijQqwKoXAgIYqEmeNkGzGkTE3QFthNDyCTbAilTJn/8ZHLF6+LXfLkoH4ysuVgQUys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T639/esG; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A57233722
+	for <linux-wireless@vger.kernel.org>; Wed, 20 May 2026 15:49:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779292147; cv=pass; b=fCvGCIQy1AfgisIs/hL0hJtNC6egj5XJmojQ9B7MxRVitgDaBF/nlXspSQDtFHSAVu8kHzzmOBmQp9XM1l+n4DAoi9lD4wftin+58dKqEiZU2kkj1cC9twF+kpfp7tmXR6g1+F6aU/pcaSwZQxR3Uvj5MtDtPHEtVS5+BLdchI0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779292147; c=relaxed/simple;
+	bh=WK+Vcfxjzj3dp6dqoGw0o16RV2DCuBdKYI+8+EM/S70=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a+TRrYVPly4CiEiQVUnn9um+UsX1IDLUwPtJpfaj5W4SvsMHqTVK6stidvKMjjiqGq3E2MXWsE0LjrW4ry4MJ6wl3UrbvfbIPX22ctohzlDl+sd2PphU0F71Hbi6YPP24t582XG8iUsbY86uknvHzlFfwDWjCDC9sxj3WvSTbl8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NCmG18Z+; arc=pass smtp.client-ip=209.85.210.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48fe26a177cso37425445e9.1
-        for <linux-wireless@vger.kernel.org>; Wed, 20 May 2026 07:44:38 -0700 (PDT)
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7e568ab0bc5so5692616a34.0
+        for <linux-wireless@vger.kernel.org>; Wed, 20 May 2026 08:49:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779292145; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SGpOPGMLcZW7sL6QzjpgRT7qbciYEOZ6Q2oJJU8AWK+oQrfqTts6dI/8dydYR2T+IU
+         zenMIlN2OdHWXVdDjT9of9FPRPLVyrSzO1zqJC4QkVl5Snv4kYg5AOpi25HvsE0DsnLZ
+         LoDtnTgoLaJdgeDrXmX+eKKUWkhtyxqWbx04I51ziwLxiTaASk7XOFNV5JY9SsYp5mez
+         KshNvcwHhrtxcBwgC+jjTcfOsYyed0zSD9vWWko1xFBM4VKgtqL7AXUsWg0f5LTcgU+Z
+         aXA+JuspSglmqLcc3/elD7dBS979MFiunbH4OQaKJffMUvfnPo8UK787okTBFxu0gwBr
+         n/rA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=WK+Vcfxjzj3dp6dqoGw0o16RV2DCuBdKYI+8+EM/S70=;
+        fh=eE01mNjt8UjS+CA8KEnETPQCKHecU3/TI/JYOj6Om8M=;
+        b=BxnbBFlx06Xesg4V9m9qo7OKHvxzbomJoMW3EFoyMhJS0RIM8K6/hmAFfYjLFSIRyt
+         kCPbUCXKQjAny4Z2hObUvq89GEWpeIrL8YazaqTcgZGZ7fjANPkMsBzpiBgAxl98UEAM
+         47VFsEhjvuTUqIg5wM4wLbi3fdR4cdMAzo7mEexYDW1rj0BN7NoqaueqX0sj4ReeqWyT
+         ODPNAjU9PHx82C1BbsIY8JE8WMEp6VOryZ37X7Rl0k2NaReB7tbMJyXTJpIdxL+KP/bj
+         UptJdE84sTJcHnaN8pp3+YawVRiOXr1TVZXIpUtaJ2zsiaIKyxl5XaXFtSOW2Aai2KN4
+         A8FA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779288277; x=1779893077; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jU1FeExlCvWFVZvNK0FP5+DrXdEo+HfelhTkWLaYKPI=;
-        b=T639/esG3GCHx4HX/SuWRa7OnfELRp1y3FX+1S/S9+Bj1bgt/HXFDlX3Tt6/fRk8f/
-         GkC1tlfVqg5+d66K1kkMafl5HgQuWTKF2qqTs+9MZaQbWuzBvy2sJGldfma9O+EG4KvP
-         +lDqCtYCOcsHLTZMc+Ixz5+cNAt6abB3TZ6RQJbWzmzTWXi42Pp8lUDi9tsTDGvepXhH
-         jcAfAtZU7ZcJ0BHXp2bzt64vDBvaji3OYjLa40ZQnY1f3FUm2J3N7kS2M7CN4rFYewvI
-         lrPOF2yhdz1NujjQ+eS03oS8lnl9q/L8TZk3wnLt85kgDwRCMbXerBNYwjgyLndF1gzH
-         c+nQ==
+        d=gmail.com; s=20251104; t=1779292145; x=1779896945; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WK+Vcfxjzj3dp6dqoGw0o16RV2DCuBdKYI+8+EM/S70=;
+        b=NCmG18Z+ueacEQoph52d5YthAwKOdR6LMMFKL0dDApFA+39akgY2QzkoKMChOSO4wS
+         uD9rfQP2QlG/FOEMKjSuBb6LvDAjuuW0hqCFcd1DejGeGmnZmmM5lP5nOGWd+OctUOBZ
+         NeK/1/wdW9xA8z6TyE7M9PneayM4EfCBGulxL4a22zGIKYWP8Q5wvGdsr9y9OtOERCWx
+         lxb6tehZSxr6Y6qypiXUf3UFdVQsrSfrFi6F9WL7E5EQ3rltG+0m6H9U4koL6h/KjCNm
+         iOYGjIvuuLyktqpqfqtST+XsfIgnPYlYHPIXCsxGQU7eKDFzz95v/s9O0JJtGRBMJuFw
+         n/Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779288277; x=1779893077;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jU1FeExlCvWFVZvNK0FP5+DrXdEo+HfelhTkWLaYKPI=;
-        b=FLb9y9s2GioXkrcDa4ObPoX2tzrhjou5oYEn06F1TJ0Jwz/74zb2f2lEWmJpZG8JW9
-         IA2Fxjy0hUnj0D6ZO+ProYhghxVQg2uUYvNb9+8azDD+U+mBxuD6CiT1JlZ0k9hqKzCW
-         JO+gXaD4p7PnbcCiC+hB6KO8e1yTjDJPeuk1IC2Nyr/BjmyR+WUh7s1SVXlnSvw3ltyE
-         G58M7S0jbhAW8/putnkfOhe5kdA8569hkZbGsKLFY0o801WybW1oDcLnQ6lGvwrniiF8
-         Xs6uu+9ASnFo5Ul6htlrkUXKvDCoenDSewWWvYtddHhRF6Ntbc2Kv8gUJfNC6cIF+GDM
-         WSHA==
-X-Gm-Message-State: AOJu0YwZngB8M0oC+e0mji9o/eG+6nucDj4c/o48njNdCTHXQB9hzL0L
-	p9fQM7AZTTLeaceNqsZwouVelrFkKUn/4mKtF1+oFxSw7xSC+wUOOOPclHBzgQ==
-X-Gm-Gg: Acq92OFnqvXsXTAvTJzSjKPgXBB12i6MwjqQAupf4+LSCuq6cSuI4IfAF9wPyIatd0J
-	6gc5sKuzJ7HnjMOQ4uPU1/iQ3oHoBFXiTzMw79hRYpgDPWEIZG0AvJNAg/JxB29W74BCV8SkKVc
-	kHH+isWQpAN1z33xzL7K7l1hEJslDlsU0p5bzCe9hiORSjb+V4Wsssbi0iKjNxtJcVjyM8F/Jl+
-	QG8yiCFW6SSAbsPq4WICLRKqx7RSnf8oElg4YvpKTBUT/ymJquUdgvi9LwP/XvHS4sNVmgBk/K7
-	tTea/kk+iSumnl1R7S6r1DfW/CWAGBIXjJeX6lLiS/jJdQPkmAE+MXqZJCSpkH5wcybUWH6VilU
-	L0Oc1Wjl0kIt8oZ+If+Zdn5Jm5/Le3DZbIVm2PPFhD09RBIbU1CsxRa5+S/9e44IWIGTWV4fREc
-	PLYdID1C8rH5jWHCDcT8Z2qJbS8GQxM96PS7b1ZGV7BQ==
-X-Received: by 2002:a05:600c:4e47:b0:48e:8345:6f8f with SMTP id 5b1f17b1804b1-48fe632361fmr395405105e9.18.1779288277379;
-        Wed, 20 May 2026 07:44:37 -0700 (PDT)
-Received: from [192.168.1.50] ([79.119.240.27])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febe5821fsm132575095e9.14.2026.05.20.07.44.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 07:44:36 -0700 (PDT)
-Message-ID: <e955451c-93a1-4d04-8024-d224a04f1d4a@gmail.com>
-Date: Wed, 20 May 2026 17:44:35 +0300
+        d=1e100.net; s=20251104; t=1779292145; x=1779896945;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WK+Vcfxjzj3dp6dqoGw0o16RV2DCuBdKYI+8+EM/S70=;
+        b=apkmkSOI4+RfcRGqOmKT4GiHPjI3GjK54/c5qlxKf866Roh9Z5++SFUoFwk5pPpWZR
+         PXY9RdIWzHWSEBW9jBq36T1Gk1xYb+N+OyEa2cOIqa0so4DMjg5asLh3IHg+NdAnnr/0
+         MjY5207XJABN3ML+UPqQtjM1VfbMv43b0wrDXfhNKrHW+K5N7MiPN8XdKqEoy3BXz3ZN
+         1HSE/1dVC+AHt3bd4Fz/rkdBkNvHuq/YlX+LoW4KCB7KESKocrzZGFWZcYyh3+2rKKOV
+         8t7QEujhKyYTo0xILByzY6M1o92FApu00J9LN7ZtqcetWwvXf+whhUUTSwx+Qov92F3g
+         D46Q==
+X-Gm-Message-State: AOJu0YyZTo/HxlQZqI+Vit9W5jooI+ITbwiC+S4ggZuaN+TMgEp0i46O
+	eLQJD0Nh6CoCV3ac9oyB8iPN0UhujuPqXVRtOCTTmtYnfYF1/uXIyn5zHnPnh6r2sqm31/v10fg
+	Vt1DhjOPpNGS6iGfiOlA4yIQJINv9EwG1Yn3RicFtWXRj
+X-Gm-Gg: Acq92OFz+gNRLzWHC/wNGEmIm0WgsKK52D3wlD06V8waYrCnYq55iGgeBoxQOhv0xlQ
+	1p24ckINMcsIwBf/rVaz9W+KQtgQ38m0ve6VzoTYRntw7qTBZcG0ake5wd7B205WM2IX+6eJ49j
+	dA1asy7VtpLWQcKBiE6Z3hKIAf3d6GFqJnHvr0KGgZOfrBpyCo/UpulpB2oCdH1a48iN/bRyCYx
+	wvR/0CmrT8Zh4qTr1n8WD9hM4ldN5efm5OLciIzUROFbjZCc17FEDqeEVn+oqc2v0JYu3Sl9bkQ
+	Ka/xqsnZyWCJp2sh7/EQap/vIlu/z047VgkMF5euiW4ZRAeNFrVwsxFWRQ==
+X-Received: by 2002:a9d:400a:0:b0:7db:d6c8:a21a with SMTP id
+ 46e09a7af769-7e5e62d40e0mr31918a34.3.1779292145220; Wed, 20 May 2026 08:49:05
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH rtw-next v4] wifi: rtw89: usb: Support switching to USB 3 mode
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+References: <5bfecba3-8a90-4e0f-9558-af5cd8a14975@gmail.com>
+In-Reply-To: <5bfecba3-8a90-4e0f-9558-af5cd8a14975@gmail.com>
+From: Oleksandr Havrylov <goainwo@gmail.com>
+Date: Wed, 20 May 2026 18:48:29 +0300
+X-Gm-Features: AVHnY4LPW1c08QSiFEkVj2cm-EUHevYvgiYjZLeP00fb3i4tPdrMSXd4KsaVpw4
+Message-ID: <CALdGYqS_wo+0kiUJPTgSGNWkhYpCHtGn7jxDaHxDX3O5RnSqbg@mail.gmail.com>
+Subject: Re: [PATCH rtw-next v2] wifi: rtw88: Add more validation for the RX descriptor
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, Ping-Ke Shih <pkshih@realtek.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Fiona Klute <fiona.klute@gmx.de>, 
+	andrej.skvortzov@gmail.com, anarsoul@gmail.com, 
+	Zhen XIN <zhen.xin@nokia-sbell.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36713-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36714-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,realtek.com,googlemail.com,gmx.de,gmail.com,nokia-sbell.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1EEAB59009B
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8527F5915BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The Realtek wifi 6/7 devices which support USB 3 are weird: when first
-plugged in, they pretend to be USB 2. The driver needs to send some
-commands to the device, which make it disappear and come back as a
-USB 3 device.
+Tested-by: Oleksandr Havrylov <goainwo@gmail.com>
 
-Implement the required commands in rtw89.
+Tested on HP Notebook with RTL8821CE [10ec:c821] on openSUSE Slowroll,
+running kernel 7.0.7-1-default.
 
-Add a new function rtw89_usb_write32_quiet() to avoid the warnings
-when writing to R_{AX,BE}_PAD_CTRL2. Even though the write succeeds,
-usb_control_msg() returns -EPROTO, probably because the USB device
-disappears immediately. This results in some confusing warnings in
-the kernel log.
+Applied the v2 patch to the out-of-tree rtw88 driver. With the patch, the
+driver successfully drops the corrupted RX frames without generating
+mac80211 kernel warnings or causing connection instability.
 
-When a USB 3 device is plugged into a USB 2 port, rtw89 will try to
-switch it to USB 3 mode only once. The device will disappear and come
-back still in USB 2 mode, of course.
-
-Tested with RTL8832AU, RTL8832BU, RTL8832CU, and RTL8912AU.
-
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
-v4:
- - Use a wrapper around rtw89_usb_vendorreq().
- - Add a warning message about 2.4 GHz interference.
-
-v3:
- - Avoid crash when trying to switch.
- - Remove the unwanted module parameter.
- - Support RTL8922AU as well.
- - Use more bit names.
- - Hide the warnings when writing R_AX_PAD_CTRL2.
----
- drivers/net/wireless/realtek/rtw89/reg.h |  27 ++++++
- drivers/net/wireless/realtek/rtw89/usb.c | 104 ++++++++++++++++++++++-
- 2 files changed, 128 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index c9bfb163c32e..76e107091d3b 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -164,6 +164,19 @@
- #define R_AX_DBG_PORT_SEL 0x00C0
- #define B_AX_DEBUG_ST_MASK GENMASK(31, 0)
- 
-+#define R_AX_PAD_CTRL2 0x00C4
-+#define B_AX_FORCE_U3_CK BIT(23)
-+#define B_AX_USB2_FORCE BIT(22)
-+#define B_AX_USB3_FORCE BIT(21)
-+#define B_AX_USB3_USB2_TRANSITION BIT(20)
-+#define B_AX_USB23_SW_MODE_V1 GENMASK(19, 18)
-+#define USB_MODE_U2 0x1
-+#define USB_MODE_U3 0x2
-+#define B_AX_NO_PDN_CHIPOFF_V1 BIT(17)
-+#define B_AX_RSM_EN_V1 BIT(16)
-+#define B_AX_MATCH_CNT GENMASK(15, 8)
-+#define USB_SWITCH_DELAY 0xF
-+
- #define R_AX_PMC_DBG_CTRL2 0x00CC
- #define B_AX_SYSON_DIS_PMCR_AX_WRMSK BIT(2)
- 
-@@ -4235,6 +4248,20 @@
- #define B_BE_TOGGLE BIT(31)
- #define B_BE_DATA_LINE_MASK GENMASK(30, 0)
- 
-+#define R_BE_PAD_CTRL2 0x00C4
-+#define B_BE_USB23_SW_MODE BIT(31)
-+#define B_BE_USB3_GEN_MODE BIT(30)
-+#define B_BE_USB3_LANE_MODE BIT(29)
-+#define B_BE_USB_AUTO_INSTALL_MASK BIT(28)
-+#define B_BE_FORCE_CLK_U2 BIT(25)
-+#define B_BE_FORCE_U2_CK BIT(24)
-+#define B_BE_FORCE_U3_CK BIT(23)
-+#define B_BE_USB2_FORCE BIT(22)
-+#define B_BE_USB3_FORCE BIT(21)
-+#define B_BE_NO_PDN_CHIPOFF_V1 BIT(17)
-+#define B_BE_RSM_EN_V1 BIT(16)
-+#define B_BE_MATCH_CNT GENMASK(15, 8)
-+
- #define R_BE_PMC_DBG_CTRL2 0x00CC
- #define B_BE_EFUSE_BURN_GNT_MASK GENMASK(31, 24)
- #define B_BE_DIS_IOWRAP_TIMEOUT BIT(16)
-diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
-index c6d55e669776..198378018062 100644
---- a/drivers/net/wireless/realtek/rtw89/usb.c
-+++ b/drivers/net/wireless/realtek/rtw89/usb.c
-@@ -11,8 +11,8 @@
- 
- static void rtw89_usb_read_port_complete(struct urb *urb);
- 
--static void rtw89_usb_vendorreq(struct rtw89_dev *rtwdev, u32 addr,
--				void *data, u16 len, u8 reqtype)
-+static void __rtw89_usb_vendorreq(struct rtw89_dev *rtwdev, u32 addr,
-+				  void *data, u16 len, u8 reqtype, bool warn)
- {
- 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
- 	struct usb_device *udev = rtwusb->udev;
-@@ -52,7 +52,7 @@ static void rtw89_usb_vendorreq(struct rtw89_dev *rtwdev, u32 addr,
- 
- 		if (ret == -ESHUTDOWN || ret == -ENODEV)
- 			set_bit(RTW89_FLAG_UNPLUGGED, rtwdev->flags);
--		else if (ret < 0)
-+		else if (ret < 0 && warn)
- 			rtw89_warn(rtwdev,
- 				   "usb %s%u 0x%x fail ret=%d value=0x%x attempt=%d\n",
- 				   str_read_write(reqtype == RTW89_USB_VENQT_READ),
-@@ -69,6 +69,12 @@ static void rtw89_usb_vendorreq(struct rtw89_dev *rtwdev, u32 addr,
- 	}
- }
- 
-+static void rtw89_usb_vendorreq(struct rtw89_dev *rtwdev, u32 addr,
-+				void *data, u16 len, u8 reqtype)
-+{
-+	__rtw89_usb_vendorreq(rtwdev, addr, data, len, reqtype, true);
-+}
-+
- static u32 rtw89_usb_read_cmac(struct rtw89_dev *rtwdev, u32 addr)
- {
- 	u32 addr32, val32, shift;
-@@ -157,6 +163,14 @@ static void rtw89_usb_ops_write32(struct rtw89_dev *rtwdev, u32 addr, u32 val)
- 	rtw89_usb_vendorreq(rtwdev, addr, &data, 4, RTW89_USB_VENQT_WRITE);
- }
- 
-+static void rtw89_usb_write32_quiet(struct rtw89_dev *rtwdev, u32 addr, u32 val)
-+{
-+	__le32 data = cpu_to_le32(val);
-+
-+	__rtw89_usb_vendorreq(rtwdev, addr, &data, 4,
-+			      RTW89_USB_VENQT_WRITE, false);
-+}
-+
- static u32
- rtw89_usb_ops_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
- 					    u8 txch)
-@@ -1059,6 +1073,83 @@ static void rtw89_usb_intf_deinit(struct rtw89_dev *rtwdev,
- 	usb_set_intfdata(intf, NULL);
- }
- 
-+static int rtw89_usb_switch_mode_ax(struct rtw89_dev *rtwdev)
-+{
-+	u32 pad_ctrl2;
-+
-+	/* No known USB 3 devices with this chip. */
-+	if (rtwdev->chip->chip_id == RTL8851B)
-+		return 0;
-+
-+	pad_ctrl2 = rtw89_usb_ops_read32(rtwdev, R_AX_PAD_CTRL2);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_HCI, "%s: pad_ctrl2: %#x\n",
-+		    __func__, pad_ctrl2);
-+
-+	/* Already tried to switch but it's a USB 2 port. */
-+	if (u32_get_bits(pad_ctrl2, B_AX_MATCH_CNT) == USB_SWITCH_DELAY)
-+		return 0;
-+
-+	/* Add delay to prevent some platforms would not detect USB switch */
-+	u32p_replace_bits(&pad_ctrl2, USB_SWITCH_DELAY, B_AX_MATCH_CNT);
-+
-+	pad_ctrl2 &= ~(B_AX_FORCE_U3_CK | B_AX_USB2_FORCE |
-+		       B_AX_USB3_FORCE | B_AX_USB3_USB2_TRANSITION);
-+
-+	u32p_replace_bits(&pad_ctrl2, USB_MODE_U3, B_AX_USB23_SW_MODE_V1);
-+
-+	pad_ctrl2 |= B_AX_NO_PDN_CHIPOFF_V1 | B_AX_RSM_EN_V1;
-+
-+	rtw89_usb_write32_quiet(rtwdev, R_AX_PAD_CTRL2, pad_ctrl2);
-+
-+	return 1;
-+}
-+
-+static int rtw89_usb_switch_mode_be(struct rtw89_dev *rtwdev)
-+{
-+	u32 pad_ctrl2;
-+
-+	pad_ctrl2 = rtw89_usb_ops_read32(rtwdev, R_BE_PAD_CTRL2);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_HCI, "%s: pad_ctrl2: %#x\n",
-+		    __func__, pad_ctrl2);
-+
-+	/* Already tried to switch but it's a USB 2 port. */
-+	if (u32_get_bits(pad_ctrl2, B_BE_MATCH_CNT) == USB_SWITCH_DELAY)
-+		return 0;
-+
-+	/* Add delay to prevent some platforms would not detect USB switch */
-+	u32p_replace_bits(&pad_ctrl2, USB_SWITCH_DELAY, B_BE_MATCH_CNT);
-+
-+	pad_ctrl2 |= B_BE_RSM_EN_V1 | B_BE_NO_PDN_CHIPOFF_V1 |
-+		     B_BE_USB_AUTO_INSTALL_MASK | B_BE_USB23_SW_MODE;
-+
-+	pad_ctrl2 &= ~(B_BE_USB3_FORCE | B_BE_USB2_FORCE |
-+		       B_BE_FORCE_U3_CK | B_BE_FORCE_U2_CK |
-+		       B_BE_FORCE_CLK_U2 | B_BE_USB3_GEN_MODE |
-+		       B_BE_USB3_LANE_MODE);
-+
-+	rtw89_usb_write32_quiet(rtwdev, R_BE_PAD_CTRL2, pad_ctrl2);
-+
-+	return 1;
-+}
-+
-+static int rtw89_usb_switch_mode(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
-+
-+	if (rtwusb->udev->speed == USB_SPEED_SUPER) {
-+		rtw89_info(rtwdev,
-+			   "2.4 GHz performance may be better in a USB 2 port\n");
-+		return 0;
-+	}
-+
-+	if (rtwdev->chip->chip_gen == RTW89_CHIP_AX)
-+		return rtw89_usb_switch_mode_ax(rtwdev);
-+
-+	return rtw89_usb_switch_mode_be(rtwdev);
-+}
-+
- int rtw89_usb_probe(struct usb_interface *intf,
- 		    const struct usb_device_id *id)
- {
-@@ -1091,6 +1182,13 @@ int rtw89_usb_probe(struct usb_interface *intf,
- 		goto err_free_hw;
- 	}
- 
-+	ret = rtw89_usb_switch_mode(rtwdev);
-+	if (ret) {
-+		/* Not a fail, but we do need to skip rtw89_core_register. */
-+		ret = 0;
-+		goto err_intf_deinit;
-+	}
-+
- 	if (rtwusb->udev->speed == USB_SPEED_SUPER)
- 		rtwdev->hci.dle_type = RTW89_HCI_DLE_TYPE_USB3;
- 	else
--- 
-2.54.0
-
+Tested with a 10-minute continuous download stress test (peak speeds
+around 200+ Mbit/s). Throughout the entire test, dmesg was continuously
+monitored and showed zero VHT/descriptor warnings, zero connection
+drops, and zero mac80211 errors.
 
