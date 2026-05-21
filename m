@@ -1,76 +1,77 @@
-Return-Path: <linux-wireless+bounces-36758-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36759-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PWvHTvODmpoCQYAu9opvQ
-	(envelope-from <linux-wireless+bounces-36758-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 11:19:55 +0200
+	id GAmlNEzODmpoCQYAu9opvQ
+	(envelope-from <linux-wireless+bounces-36759-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 11:20:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E462A5A22E3
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 11:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5B45A2301
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 11:20:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3BDBD31D21B0
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 09:04:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0141531E7669
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 09:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A8F377EBF;
-	Thu, 21 May 2026 09:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393B936BCDE;
+	Thu, 21 May 2026 09:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8xfN/oS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eKQomMCR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BB1372B2F
-	for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 09:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7DB366DD3
+	for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 09:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779354245; cv=none; b=K36fX81Z4YSQb9j6HauBdmhZ9lI+nzikW5eRlhFwP4JdJeck2lg4c08S6Np60cALEBdSdHkl5gG2w5/VwgmRV4cxXEawgtATJeDvFt5i0boKZsehaDn2ESoekXyQz6l2JYhLz+PH4y+3Tinvx/rkBFyVQVqylS+CEz+wiPvov6I=
+	t=1779354269; cv=none; b=Gi4FPr0s7egU/eaGJ2/rL0dAbV2Vu7w3v7B/LEJYLuYwekwCRxFeNPjuJJcAOqlaxBsFSIHtx02lHFFcm9SwkSs6HszgvZK/mLZIV26oCBi9hqIBRapmfKPQNM/sJ7SWexXguNSzeLLs8/FNKfYmjmTAd9jFkyc/HT3N+FzC948=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779354245; c=relaxed/simple;
-	bh=1QUNyf1+4GK6M6glNGqXfbJnZI6n5ng1QfS4YTKrhtM=;
+	s=arc-20240116; t=1779354269; c=relaxed/simple;
+	bh=TKLGSf3GBjMP36BA0MEdaSC8c160hy43LOrQEKAZGHA=;
 	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i7ZQDoKBvCXmKlfkcRIeHw4FgX2qcZcIHfCeJ67p2ymDtVX3VDPscPp80SeJO25Z4P3X/n8Xqstq6cXo5rLROKKsh9nFpfBAES08X5Hf7FEXZFh8/AecuVcbbVLh0Dl+IXqo5ByAF1loXiOA4UTx2MzdD27rrwcu+gkKXyoAcK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8xfN/oS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 634591F00A3F
-	for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 09:04:02 +0000 (UTC)
+	 To:Cc:Content-Type; b=rk0uqHzPc4g6RtvUYA71itqVdvYe00QQADg5NUMtmSfjWzxjDnhK4jGdz+FDL7qMZjOl6k7o4iItM7xdaIxLIRmVCAeQl0PWxn4/UIMXiXF92svfp7rWrbxgRYVoG5gzVrZ1hTHiCjW/gNjoo8IuTsT3fg7pP/15RKpD+fBogk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eKQomMCR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E75A1F00A3D
+	for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 09:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779354242;
-	bh=1QUNyf1+4GK6M6glNGqXfbJnZI6n5ng1QfS4YTKrhtM=;
+	s=k20260515; t=1779354266;
+	bh=TKLGSf3GBjMP36BA0MEdaSC8c160hy43LOrQEKAZGHA=;
 	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=U8xfN/oSnaOrNF+gtWDgNNJlSLhiqu7Q8UxQP2IAYfVXR5xgxWdbaVBaAzXyExy6m
-	 EiiCuk3G4CJ5/GOGGPGJAffJtx0E/wQuk3mK/TJjRlP9wLfMhSW/ggsqBOM9vvc0mJ
-	 4Q1+ZDu628ro1LYmqb+ztqMz72QHaA6fsdJrfe6qFmosM69fBhVsvkmDbR6GCCjFzr
-	 S0ofyit/qO0sxtHY0C1WlU4Xv1MWW0l23zwMhkHm/Ck0RnfSzGvkkrvPYsBRJCWr2a
-	 tN8Uht5hGv+3XNy6Y6s8OZja4tXvLwfByMASdUpbVP+Jw8XM0i8ZHc31/tsMxNxSAP
-	 tkWQifWvaOpFA==
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-13643f6d1a9so98628c88.0
-        for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 02:04:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9aG2wevnVcG92zZUg4V3qkYObCNDL9T7PEjXNEy+0qjG9wn/DGzLPu+sQnlyv/2MPff+aUH/v9h/SNlXHR0Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWwm8/tDOlPrcU/U8vybP/nbqTBbnd5LVRr3CTPYyM7fXwGLoQ
-	VV9Vx9QPqw+1XCW+APEacEcRLR32fyWbd7ZwXGUW93EHjWaowOG15zJ7QmpPOOni0BOVvvpLkSu
-	Mo8ID5uXDB7ALv9iNvZspJPgIhxXaaySwMgT+a4jkEw==
-X-Received: by 2002:a05:7022:624:b0:134:7497:2153 with SMTP id
- a92af1059eb24-13632b19501mr1138896c88.20.1779354241319; Thu, 21 May 2026
- 02:04:01 -0700 (PDT)
+	b=eKQomMCRdagq0CrKNNAbWd+5SdT7HxEZk8SS5c8YukUkxYbmsHDNc/MTCkRogOOAR
+	 Pt90hL1Y+9+RT+N3XxUqrqLtC8PCPudBhj3TVnarBl21Gv9NEoCrtJ8+d5Jb/WMAeC
+	 ML0j7DPXCMlI6VpU6g8SKFHinb03aCauKOqSAnYd6mmg/ByxqHRUMCYHVZSLCbjYjR
+	 Jqr3WTarjbmTW+joe5Y++iCVDIgMGOqSp9V1U1/HCam6x7pvdtNk1FCRJOo8Tkv7FQ
+	 FOLySF45LYKr6CJSo7I6TQ3iC18Zx5azfFzHqJN/J5myRPJSuw9bweC9nSI3U1A2dq
+	 WJy66QWmIaooQ==
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-132830d8281so4827239c88.1
+        for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 02:04:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/V/JWNJWRm8EqfHOLKuw1/PHyPL1AFp5nKQpi3+RpZ5NUEMY+XNEQ2qnib2pzh/0sMlxVO2dP5rOhEodoFCA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuU6cWbWxhOdFPHdtDGFl0RiW5SxiUjI6jsevX06MLM4GPn9ph
+	L4gKF/2xbITCM62utaroWyh4BepMpQZ7djTwkjDvhUfe+skXNnyGIXfMG/7v+Lj/iM2izMhd0b+
+	TG6hhkb8BR2sgrwQ7tUQ7QTx7vq3eEuux14hpa9KbNw==
+X-Received: by 2002:a05:7022:ec88:b0:134:a731:e778 with SMTP id
+ a92af1059eb24-13632f6adf6mr920006c88.39.1779354265385; Thu, 21 May 2026
+ 02:04:25 -0700 (PDT)
 Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 21 May 2026 02:03:57 -0700
+ HTTPREST; Thu, 21 May 2026 02:04:21 -0700
 Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 21 May 2026 02:03:57 -0700
+ HTTPREST; Thu, 21 May 2026 02:04:21 -0700
 From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260520183815.2510387-3-arnd@kernel.org>
+In-Reply-To: <20260520183815.2510387-8-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260520183815.2510387-1-arnd@kernel.org> <20260520183815.2510387-3-arnd@kernel.org>
-Date: Thu, 21 May 2026 02:03:57 -0700
-X-Gmail-Original-Message-ID: <CAMRc=Mf=JGOJUfs__HxxqTkiEk5NrkMX5J6RkO+=ybHUfWGShA@mail.gmail.com>
-X-Gm-Features: AVHnY4Iwi65kxiAOYAXhfVUikEld9MZPsgLFlTgVHCPfkqhuImHkvGx_B84f6lE
-Message-ID: <CAMRc=Mf=JGOJUfs__HxxqTkiEk5NrkMX5J6RkO+=ybHUfWGShA@mail.gmail.com>
-Subject: Re: [PATCH 02/10] [v3] input: gpio-keys: make legacy gpiolib optional
+References: <20260520183815.2510387-1-arnd@kernel.org> <20260520183815.2510387-8-arnd@kernel.org>
+Date: Thu, 21 May 2026 02:04:21 -0700
+X-Gmail-Original-Message-ID: <CAMRc=Mebt+hpSBfpsnHh1+SKt9b1cRBNge5WSoRrsfX1BBFgtA@mail.gmail.com>
+X-Gm-Features: AVHnY4LWqhGtTeBYvpB-D8gN85zif4ar2-h8NZZ1yCLGF3pH11futzwzVDKQXSE
+Message-ID: <CAMRc=Mebt+hpSBfpsnHh1+SKt9b1cRBNge5WSoRrsfX1BBFgtA@mail.gmail.com>
+Subject: Re: [PATCH 07/10] [v6 net-next] dt-bindings: net: add
+ st,stlc4560/p54spi binding
 To: Arnd Bergmann <arnd@kernel.org>
 Cc: linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
 	Christian Lamparter <chunkeey@googlemail.com>, Johannes Berg <johannes@sipsolutions.net>, 
@@ -90,7 +91,8 @@ Cc: linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
 	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
 	linux-mips@vger.kernel.org, linux-sh@vger.kernel.org, 
 	linux-input@vger.kernel.org, linux-leds@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-gpio@vger.kernel.org
+	netdev@vger.kernel.org, Christian Lamparter <chunkeey@gmail.com>, 
+	Conor Dooley <conor.dooley@microchip.com>, linux-gpio@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -101,12 +103,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36758-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[41];
+	TAGGED_FROM(0.00)[bounces-36759-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[43];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,googlemail.com,sipsolutions.net,iki.fi,kemnade.info,baylibre.com,kernel.org,atomide.com,alpha.franken.de,physik.fu-berlin.de,redhat.com,alien8.de,linux.intel.com,zytor.com,gmail.com,broadcom.com,lunn.ch,davemloft.net,google.com,lists.infradead.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,googlemail.com,sipsolutions.net,iki.fi,kemnade.info,baylibre.com,kernel.org,atomide.com,alpha.franken.de,physik.fu-berlin.de,redhat.com,alien8.de,linux.intel.com,zytor.com,gmail.com,broadcom.com,lunn.ch,davemloft.net,google.com,lists.infradead.org,microchip.com];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -119,27 +121,27 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: E462A5A22E3
+X-Rspamd-Queue-Id: 8A5B45A2301
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 20 May 2026 20:38:07 +0200, Arnd Bergmann <arnd@kernel.org> said:
+On Wed, 20 May 2026 20:38:12 +0200, Arnd Bergmann <arnd@kernel.org> said:
 > From: Arnd Bergmann <arnd@arndb.de>
 >
-> Most users of gpio-keys and gpio-keys-polled use modern gpiolib
-> interfaces, but there are still number of ancient sh, arm32 and x86
-> machines that have never been converted.
+> The SPI version of Prism54 was sold under a couple of different
+> names and supported by the Linux p54spi driver, but there was
+> never a DT binding for it.
 >
-> Add an #ifdef block for the parts of the driver that are only used on
-> those legacy machines.
+> Document the four known names of this device and the properties
+> that are sufficient for its use on the Nokia N8x0 tablet.
 >
-> The two Rohm PMIC drivers use a gpio-keys device without an actual GPIO,
-> passing an IRQ number instead. In order to keep this working both with
-> and with CONFIG_GPIOLIB_LEGACY, change the gpio-keys driver to ignore
-> the gpio number if an IRQ is passed.
+> As I don't have this hardware or documentation for it, this is
+> purely based on existing usage in the driver.
 >
-> Link: https://lore.kernel.org/all/b3c94552-c104-42e3-be15-7e8362e8039e@gmail.com/
-> Link: https://lore.kernel.org/all/afJXG4_rtaj3l2Dk@google.com/
+> Link: https://lore.kernel.org/all/e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com/
+> Acked-by: Christian Lamparter <chunkeey@gmail.com>
+>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
 
