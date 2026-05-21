@@ -1,184 +1,161 @@
-Return-Path: <linux-wireless+bounces-36766-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36767-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNjDDlc7D2qZIAYAu9opvQ
-	(envelope-from <linux-wireless+bounces-36766-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 19:05:27 +0200
+	id SOv2IHJGD2ptIgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-36767-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 19:52:50 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95C85A9D7B
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 19:05:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5075AA9E4
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 19:52:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED8F835A6B52
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 15:36:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A745F32C4A07
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 16:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5195730B508;
-	Thu, 21 May 2026 15:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DCE379C3F;
+	Thu, 21 May 2026 16:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="C2wTQ8dw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="egZmnsLW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A2C2DC79A;
-	Thu, 21 May 2026 15:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7A03845D8;
+	Thu, 21 May 2026 16:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779377729; cv=none; b=hZZJWLjhN4UMvHuUIpEzp0p7F8VSL3+VWA90BkhiKqcMMf6reyD5pUb4UqUfZRnDV3Zj2B+5uMdO6fBuyCyl/KutZG7zOIqdG4BNMOKX6VvSWQAtENmuLjSB0P4l5Ywp5cl8Co6kWHHluSsoZy2r45rcx1C5vAhokhVnsWpjRSo=
+	t=1779380376; cv=none; b=LV3EM4JzhRAoQPCeam/DuU/0mB5tAF6CQke9U/9D98GFEoJX9tzEJ0DUv75/NzxWEAZDw+WUjGx3svGC1LM/tE5IOyFV7J/C3Sq/DL2LKy3oUpfm02eKn+qRAGzyGbG9FMIaoQPOZYMuRu10Ujd3G/Ba85dr827Oxs1jsNXwx+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779377729; c=relaxed/simple;
-	bh=hAUkly468AWRI/7CgdtEVIMENOcJpCc6kG7C4EPEaSw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oXSIoVEJOigXspdILabkJCKqKqd1T4WB1CP34RIa1GVsIKNUj93ES1sRfuMa/PlcS8qGluNcmEK5cMlbPq/PNlVqxi1IFF8huxlbbAGf9fs3sqov3RYTxkZBf0ViovLrUYf+hdK4Skd4HpjOzthLfWbd05ds6hcead3eTpYouT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=C2wTQ8dw; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=XdRokCzNV5ZuuttIV0+NR6JuOvOxi7zH8GQjAXfoeI4=; t=1779377727; x=1780587327; 
-	b=C2wTQ8dwCuFlSTtbA0H7Xb9OSKAHJtjRqKsAxni+x0b/aly0ClP6tKALMQHdd1wc/WxiDo1UqOW
-	OSWYkplsY9WAsxW5tm3e0p++kf6u7dtqmAqhfCUaAiqPviv1QTFtyz1GQLJHzaLl8/OGn109JhuGs
-	JhVAzFCF1OpLVwNMhlzijqbzqtNsusHcRgFBQavjEXHaP8P7ZC2siLeL8C5DZg7GaKGWjxapcnbyR
-	1+Old0qC+q5SU0Wx7CAOM7TFA6r484KS6z4LXuVkRBRFkWsWN4sWjEByGg70OxVY9T8WeGYqcLGz7
-	arBB5UzQcO+BFSxmxghmDaqmcF+AI6LCKl2Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wQ5Qi-0000000ChVU-2AKh;
-	Thu, 21 May 2026 17:35:25 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-next-2026-05-21
-Date: Thu, 21 May 2026 17:34:34 +0200
-Message-ID: <20260521153519.380276-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1779380376; c=relaxed/simple;
+	bh=PTiSiCkcQ7fIijyClE3NFIBeAytqfuOG1d58YEIfOf8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=rFY7qnQKuTZ30CWA1ZxUB+17xRvVo0ovTGEZZyAFMlzxkNMOlUehLGZDbQ3E5CZSpQ5NE2LKb9wonShKz/9RzFvX9Jx3SVHEG214DbNXdRFwZbiHWGBs/dpZl/S5GgEL6RjfGzMyAKrig3TsX4g2oRu69NeWTItgaHiN1llEXcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=egZmnsLW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 081B01F000E9;
+	Thu, 21 May 2026 16:19:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779380374;
+	bh=dusw/CsGuS7cpPWYUs280n/HzgNhk1QSNG+bPDzIWTc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=egZmnsLWSWZwHn8w+BTtoFNaLddpu3vEbk5S/NTfl3m3pIcUXpg1+JpkKr5jd5DYG
+	 3JshXleLNNMdEn7mGBpUTRsbEqMr+UX9INQYkHmu8p9ATLeonR/D8mXJZXgwMw+782
+	 mzJGQ7jgcfKeiWnydGCw6uafhp/RD0kdOWElX8T2n7Xnd1su9x9UH91LsIPL3lHpM1
+	 djV9DFXeSVjTGRsF18VvuYCD0SwpuY5tT3WpYMGq0PXVoAt0UxjrT3N47hantIijUf
+	 X1zB4N5+XgEqRHyHVpKdFOmYB5ullo99tOf0xo4MQqTWj3okcvcGz+D7kzdCEUwtQP
+	 Q7E3PdJEkt5ag==
+Date: Thu, 21 May 2026 11:19:32 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: bhelgaas@google.com, alex@shazbot.org, nbd@nbd.name, lorenzo@kernel.org,
+	shayne.chen@mediatek.com, sean.wang@mediatek.com,
+	linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Ryder Lee <Ryder.Lee@mediatek.com>
+Subject: Re: [PATCH v3] PCI: Disable broken FLR on MediaTek MT7925
+Message-ID: <20260521161932.GA167656@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260521061205.12727-1-jtornosm@redhat.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	TAGGED_FROM(0.00)[bounces-36766-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36767-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A95C85A9D7B
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8A5075AA9E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+[+cc Ryder]
 
-OK this one's pretty sparse, but I'll send it anyway so we
-can sync up with wireless content etc. later. I guess I'll
-get more driver pull requests for -next as we get to later
-RCs.
+On Thu, May 21, 2026 at 08:12:05AM +0200, Jose Ignacio Tornos Martinez wrote:
+> The MediaTek MT7925 WiFi device (14c3:7925) advertises FLR capability
+> but the implementation is broken - reset always fails, leaving the device
+> in an undefined state.
+> 
+> This manifests in VFIO passthrough scenarios: Normal VM operation works
+> fine, including clean shutdown/reboot. However, when the VM terminates
+> uncleanly (crash, force-off), VFIO attempts to reset the device before
+> it can be assigned to another VM. Because FLR is broken, the reset fails
+> and the device remains in an undefined state, preventing reuse.
 
-Please pull and let us know if there's any problem.
+How do we know the device is an "undefined state"?  Does it just not
+respond to config accesses?  Is there something in dmesg that shows
+the problem?
 
-Thanks,
-johannes
+I suppose it's similar to 81f64e925c29 ("PCI: Avoid FLR for Mediatek
+MT7922 WiFi")?
 
+I guess I'm just looking for some text more specific than "undefined
+state".
 
+Can we get any of the MediaTek folks to comment on this:
+https://sashiko.dev/#/patchset/20260508145153.717641-1-jtornosm@redhat.com?part=1
 
-The following changes since commit 878492af7d503f4b093ea903173500be00e9cbe7:
+Sashiko suggested that Device ID 0x0717 might have the same FLR
+problem.
 
-  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-05-14 10:08:06 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2026-05-21
-
-for you to fetch changes up to 1d174fec87850e1005db9b106f84bbbb19cb59b9:
-
-  ARM: dts: omap2: add stlc4560 spi-wireless node (2026-05-20 12:05:04 +0200)
-
-----------------------------------------------------------------
-Not much going on here right now:
- - mac80211/hwsim:
-   - some NAN related things
-   - MCS/NSS rate issues with S1G
- - p54: port SPI version to device-tree
- - (a few other random things)
-
-----------------------------------------------------------------
-Arnd Bergmann (3):
-      dt-bindings: net: add st,stlc4560/p54spi binding
-      p54spi: convert to devicetree
-      ARM: dts: omap2: add stlc4560 spi-wireless node
-
-Daniel Gabay (1):
-      wifi: mac80211: allow cipher change on NAN_DATA interfaces
-
-Deepanshu Kartikey (1):
-      wifi: mac80211_hwsim: reject NAN on multi-radio wiphys
-
-Ilan Peer (2):
-      wifi: mac80211: Allow per station GTK for NAN Data interfaces
-      wifi: mac80211_hwsim: Do not declare NAN support for Extended Key ID
-
-Johannes Berg (3):
-      wifi: mac80211: check stations are removed before MLD change
-      wifi: mac80211_hwsim: advertise NPCA capability
-      wifi: cfg80211: add a function to parse UHR DBE
-
-Lachlan Hodges (2):
-      wifi: mac80211: skip NSS and BW init for S1G sta
-      wifi: mac80211: don't recalc min def for S1G chan ctx
-
-Miri Korenblit (1):
-      wifi: mac80211: don't call ieee80211_handle_reconfig_failure when not needed
-
-Rosen Penev (2):
-      wifi: rt2x00: allocate anchor with rt2x00dev
-      wifi: plfxlc: use module_usb_driver() macro
-
- .../bindings/net/wireless/st,stlc4560.yaml         |  61 +++++++
- MAINTAINERS                                        |   1 +
- arch/arm/boot/dts/ti/omap/omap2.dtsi               |   4 +
- .../arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi |  12 ++
- arch/arm/mach-omap2/board-n8x0.c                   |  18 --
- drivers/net/wireless/intersil/p54/p54spi.c         |  67 +++----
- drivers/net/wireless/intersil/p54/p54spi.h         |   3 +
- drivers/net/wireless/purelifi/plfxlc/usb.c         |  25 +--
- drivers/net/wireless/ralink/rt2x00/rt2x00.h        |   3 +-
- drivers/net/wireless/ralink/rt2x00/rt2x00usb.c     |  11 +-
- drivers/net/wireless/virtual/mac80211_hwsim_main.c |  31 +++-
- include/net/cfg80211.h                             |  10 ++
- net/mac80211/chan.c                                |  10 +-
- net/mac80211/key.c                                 |  22 ++-
- net/mac80211/link.c                                |   5 +-
- net/mac80211/sta_info.c                            |  17 ++
- net/mac80211/util.c                                |   6 +-
- net/wireless/chan.c                                | 130 ++++++++++++++
- net/wireless/tests/chan.c                          | 192 ++++++++++++++++++++-
- 19 files changed, 508 insertions(+), 120 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
+> Disable FLR for this device so the PCI core falls back to working reset
+> methods (PM reset or bus reset).
+> 
+> This follows the existing pattern used for the MediaTek MT7922 WiFi
+> (14c3:0616), which is the predecessor device and already uses this quirk.
+> 
+> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+> ---
+> v3: Resend with MediaTek wireless maintainers CC'd
+> v2: https://lore.kernel.org/all/20260508145153.717641-1-jtornosm@redhat.com/
+> 
+>  drivers/pci/quirks.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index 000000000000..111111111111 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -5607,6 +5607,7 @@
+>   * Intel 82579LM Gigabit Ethernet Controller 0x1502
+>   * Intel 82579V Gigabit Ethernet Controller 0x1503
+>   * Mediatek MT7922 802.11ax PCI Express Wireless Network Adapter
+> + * Mediatek MT7925 802.11be PCI Express Wireless Network Adapter
+>   */
+>  static void quirk_no_flr(struct pci_dev *dev)
+>  {
+> @@ -5617,6 +5618,7 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_AMD, 0x7901, quirk_no_flr);
+>  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1502, quirk_no_flr);
+>  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1503, quirk_no_flr);
+>  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_MEDIATEK, 0x0616, quirk_no_flr);
+> +DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_MEDIATEK, 0x7925, quirk_no_flr);
+> 
+>  /* FLR may cause the SolidRun SNET DPU (rev 0x1) to hang */
+>  static void quirk_no_flr_snet(struct pci_dev *dev)
+> --
+> 2.53.0
+> 
 
