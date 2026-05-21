@@ -1,36 +1,36 @@
-Return-Path: <linux-wireless+bounces-36765-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36766-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KM/KH3g5D2rUHwYAu9opvQ
-	(envelope-from <linux-wireless+bounces-36765-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 18:57:28 +0200
+	id oNjDDlc7D2qZIAYAu9opvQ
+	(envelope-from <linux-wireless+bounces-36766-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 19:05:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B1D5A9BA1
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 18:57:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95C85A9D7B
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 19:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4BFF331AF99D
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 15:29:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ED8F835A6B52
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 15:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B16035F165;
-	Thu, 21 May 2026 15:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5195730B508;
+	Thu, 21 May 2026 15:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ceI+wNUi"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="C2wTQ8dw"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B37356777;
-	Thu, 21 May 2026 15:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A2C2DC79A;
+	Thu, 21 May 2026 15:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779377357; cv=none; b=IR7vjF/e1A1xPkETTicdR51EO2xUbv0Rb6rxONtKyDiMIAz7mPaKtmJxdT7rvzKY7B3fUVTQ934NlQXKXWXzJp8gcW78wluuUqW95AroV/0QNhzRuhsbomvCJzbKg1TMz1SFeRfOmap4TW8FvyJQX2+mcfxW949GnofMdGD5fNM=
+	t=1779377729; cv=none; b=hZZJWLjhN4UMvHuUIpEzp0p7F8VSL3+VWA90BkhiKqcMMf6reyD5pUb4UqUfZRnDV3Zj2B+5uMdO6fBuyCyl/KutZG7zOIqdG4BNMOKX6VvSWQAtENmuLjSB0P4l5Ywp5cl8Co6kWHHluSsoZy2r45rcx1C5vAhokhVnsWpjRSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779377357; c=relaxed/simple;
-	bh=oYb9pOd8j/gebtlzVpdfdiIflXcqCMRkzK3DNBqg1hY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NF675Dwq4ohNADA12zIgpRSctEk4VNtjVCZsumMo3a9jeIpvSonfDXf1kESnwcVpcDTMJhWXwwc5Az/jf0udBjECiRjF2xTEA/K0JIXVC7PYPlvIjGTEhCTGSh/gXphzQP0M953vPiFCgT/fciSCfMzXRQelGr8OIj/tW/vzcFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ceI+wNUi; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1779377729; c=relaxed/simple;
+	bh=hAUkly468AWRI/7CgdtEVIMENOcJpCc6kG7C4EPEaSw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oXSIoVEJOigXspdILabkJCKqKqd1T4WB1CP34RIa1GVsIKNUj93ES1sRfuMa/PlcS8qGluNcmEK5cMlbPq/PNlVqxi1IFF8huxlbbAGf9fs3sqov3RYTxkZBf0ViovLrUYf+hdK4Skd4HpjOzthLfWbd05ds6hcead3eTpYouT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=C2wTQ8dw; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -38,23 +38,23 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=VE9xJYyXf5sDwGiPYUXsoTr1XxVuLoI26S6XQ9SaNKo=; t=1779377355; x=1780586955; 
-	b=ceI+wNUihyx8L1KNGbMPDJc9eNuNDZgaMa7X/eMNzJQzB7pNO4NBYt+e6CQRuhaGvCzmbVWG9C7
-	Enp2DDDB8s4HxgjdLtqAHP4klDTnpYAGv+kNYN0DV9QlqMoarE1makLn8CbLlyCe0Whvtt3U1mgDz
-	mz2zSZ6/bgiffhC6t8KxU1uTfLjERIoBBt7/q+dZri4/6Sd5R6UozcrEZeJqfDfj2cZSO7tKJEcIb
-	qJ5CoaUjaqRdC3KQk0eEmrN59aHhT7VdSUdwgbutDzZEy0Hv66REIDcH64KA5BgobuC4mYDUwTolh
-	cFYuiEoaOS9jCq5B8AZSXqHFdGUXuyzZvOfg==;
+	bh=XdRokCzNV5ZuuttIV0+NR6JuOvOxi7zH8GQjAXfoeI4=; t=1779377727; x=1780587327; 
+	b=C2wTQ8dwCuFlSTtbA0H7Xb9OSKAHJtjRqKsAxni+x0b/aly0ClP6tKALMQHdd1wc/WxiDo1UqOW
+	OSWYkplsY9WAsxW5tm3e0p++kf6u7dtqmAqhfCUaAiqPviv1QTFtyz1GQLJHzaLl8/OGn109JhuGs
+	JhVAzFCF1OpLVwNMhlzijqbzqtNsusHcRgFBQavjEXHaP8P7ZC2siLeL8C5DZg7GaKGWjxapcnbyR
+	1+Old0qC+q5SU0Wx7CAOM7TFA6r484KS6z4LXuVkRBRFkWsWN4sWjEByGg70OxVY9T8WeGYqcLGz7
+	arBB5UzQcO+BFSxmxghmDaqmcF+AI6LCKl2Q==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1wQ5Kd-0000000CgLZ-09IJ;
-	Thu, 21 May 2026 17:29:07 +0200
+	id 1wQ5Qi-0000000ChVU-2AKh;
+	Thu, 21 May 2026 17:35:25 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: netdev@vger.kernel.org
 Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2026-05-21
-Date: Thu, 21 May 2026 17:28:37 +0200
-Message-ID: <20260521152903.374070-3-johannes@sipsolutions.net>
+Subject: [GIT PULL] wireless-next-2026-05-21
+Date: Thu, 21 May 2026 17:34:34 +0200
+Message-ID: <20260521153519.380276-3-johannes@sipsolutions.net>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	TAGGED_FROM(0.00)[bounces-36765-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36766-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,17 +88,18 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 41B1D5A9BA1
+X-Rspamd-Queue-Id: A95C85A9D7B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Hi,
 
-Sorry for the last minute thing ... if it makes it at all.
-I forgot during the day, and it's already more because we
-had a holiday last week.
+OK this one's pretty sparse, but I'll send it anyway so we
+can sync up with wireless content etc. later. I guess I'll
+get more driver pull requests for -next as we get to later
+RCs.
 
 Please pull and let us know if there's any problem.
 
@@ -107,124 +108,77 @@ johannes
 
 
 
-The following changes since commit fcee7d82f27d6a8b1ddc5bbefda59b4e441e9bc0:
+The following changes since commit 878492af7d503f4b093ea903173500be00e9cbe7:
 
-  Merge tag 'net-7.1-rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-05-07 10:32:03 -0700)
+  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-05-14 10:08:06 -0700)
 
 are available in the Git repository at:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-05-21
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2026-05-21
 
-for you to fetch changes up to dc14686f27df6454b13b16ad1c9203ab3e9b0375:
+for you to fetch changes up to 1d174fec87850e1005db9b106f84bbbb19cb59b9:
 
-  wifi: cfg80211: wext: validate chandef in monitor mode (2026-05-20 11:44:19 +0200)
-
-----------------------------------------------------------------
-Quite a few more updates:
- - cfg80211/mac80211:
-   - various security(-ish) fixes
-   - fix A-MSDU subframe handling
-   - fix multi-link element parsing
- - ath10: avoid sending commands to dead device
- - ath11k:
-   - fix WMI buffer leaks on error conditions
-   - fix UAF in RX MSDU coalesce path
-   - allow peer ID 0 on RX path (legal for mobile devices)
-   - reinitialize shared SRNG pointers on restart
- - ath12k:
-   - fix 20 MHz-only parsing of EHT-MCS map
- - iwlwifi:
-   - fix TSO segmentation explosion
-   - don't TX to dead device
-   - fix warning in WoWLAN
-   - fix TX rates on old devices
-   - disconnect on beacon loss only if also no other traffic
-   - fill NULL-ptr deref
-   - fix STEP_URM hardware access
+  ARM: dts: omap2: add stlc4560 spi-wireless node (2026-05-20 12:05:04 +0200)
 
 ----------------------------------------------------------------
-Alexandru Hossu (1):
-      wifi: mac80211: bounds-check link_id in ieee80211_ml_epcs
+Not much going on here right now:
+ - mac80211/hwsim:
+   - some NAN related things
+   - MCS/NSS rate issues with S1G
+ - p54: port SPI version to device-tree
+ - (a few other random things)
 
-Baochen Qiang (1):
-      wifi: ath12k: fix EHT TX MCS limitation due to wrong 20 MHz-only parsing
+----------------------------------------------------------------
+Arnd Bergmann (3):
+      dt-bindings: net: add st,stlc4560/p54spi binding
+      p54spi: convert to devicetree
+      ARM: dts: omap2: add stlc4560 spi-wireless node
 
-Cole Leavitt (1):
-      wifi: iwlwifi: mld: fix TSO segmentation explosion when AMSDU is disabled
+Daniel Gabay (1):
+      wifi: mac80211: allow cipher change on NAN_DATA interfaces
 
-Emmanuel Grumbach (2):
-      wifi: iwlwifi: mld: disconnect only after 6 beacons without Rx
-      wifi: mac80211: don't override max_amsdu_subframes
+Deepanshu Kartikey (1):
+      wifi: mac80211_hwsim: reject NAN on multi-radio wiphys
 
-Johannes Berg (6):
-      wifi: iwlwifi: mvm: fix driver-set TX rates on old devices
-      wifi: iwlwifi: mld: don't WARN on WoWLAN suspend w/o BSS vif
-      wifi: mac80211: fix MLE defragmentation
-      wifi: mac80211: fix multi-link element inheritance
-      Merge tag 'iwlwifi-fixes-2026-05-16' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
-      Merge tag 'ath-current-20260519' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
+Ilan Peer (2):
+      wifi: mac80211: Allow per station GTK for NAN Data interfaces
+      wifi: mac80211_hwsim: Do not declare NAN support for Extended Key ID
 
-John Walker (1):
-      wifi: cfg80211: advance loop vars in cfg80211_merge_profile()
+Johannes Berg (3):
+      wifi: mac80211: check stations are removed before MLD change
+      wifi: mac80211_hwsim: advertise NPCA capability
+      wifi: cfg80211: add a function to parse UHR DBE
 
-Kang Yang (1):
-      wifi: ath10k: skip WMI and beacon transmission when device is wedged
-
-Kartik Nair (1):
-      wifi: cfg80211: wext: validate chandef in monitor mode
-
-Kyle Farnung (1):
-      wifi: ath11k: clear shared SRNG pointer state on restart
-
-Matthew Leach (1):
-      wifi: ath11k: fix peer resolution on rx path when peer_id=0
-
-Michael Bommarito (1):
-      wifi: mac80211: consume only present negotiated TTLM maps
+Lachlan Hodges (2):
+      wifi: mac80211: skip NSS and BW init for S1G sta
+      wifi: mac80211: don't recalc min def for S1G chan ctx
 
 Miri Korenblit (1):
-      wifi: iwlwifi: mld: don't dereference a pointer before NULL checking it
+      wifi: mac80211: don't call ieee80211_handle_reconfig_failure when not needed
 
-Moriya Itzchaki (1):
-      wifi: iwlwifi: use correct function to read STEP_URM register
+Rosen Penev (2):
+      wifi: rt2x00: allocate anchor with rt2x00dev
+      wifi: plfxlc: use module_usb_driver() macro
 
-Nicolas Escande (3):
-      wifi: ath11k: fix error path leaks in some WMI WOW calls
-      wifi: ath11k: fix error path leaks in some WMI calls
-      wifi: ath11k: fix error path leak in ath11k_tm_cmd_wmi_ftm()
-
-Sheroz Juraev (1):
-      wifi: iwlwifi: mld: stop TX during firmware restart
-
-Shitalkumar Gandhi (1):
-      wifi: wilc1000: fix dma_buffer leak on bus acquire failure
-
-Willmar Knikker (1):
-      wifi: ath11k: fix use after free in ath11k_dp_rx_msdu_coalesce()
-
-Zhao Li (1):
-      wifi: mac80211: capture fast-RX rate before mesh reuses skb->cb
-
- drivers/net/wireless/ath/ath10k/wmi.c              |  17 ++-
- drivers/net/wireless/ath/ath11k/dp_rx.c            |   9 +-
- drivers/net/wireless/ath/ath11k/hal.c              |  14 ++-
- drivers/net/wireless/ath/ath11k/hal_rx.c           |   5 +-
- drivers/net/wireless/ath/ath11k/testmode.c         |   1 +
- drivers/net/wireless/ath/ath11k/wmi.c              | 131 ++++++++++++++++++---
- drivers/net/wireless/ath/ath12k/mac.c              |   8 +-
- drivers/net/wireless/intel/iwlwifi/mld/constants.h |   4 +-
- drivers/net/wireless/intel/iwlwifi/mld/d3.c        |   6 +-
- drivers/net/wireless/intel/iwlwifi/mld/link.c      |  13 +-
- drivers/net/wireless/intel/iwlwifi/mld/tx.c        |  15 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c  |  27 +++--
- drivers/net/wireless/intel/iwlwifi/mvm/utils.c     |  14 +--
- .../intel/iwlwifi/pcie/gen1_2/trans-gen2.c         |   6 +-
- drivers/net/wireless/microchip/wilc1000/wlan.c     |   2 +-
- net/mac80211/cfg.c                                 |   5 +-
- net/mac80211/mlme.c                                |   5 +-
- net/mac80211/parse.c                               | 107 ++++++++++-------
- net/mac80211/rx.c                                  |   6 +-
- net/wireless/scan.c                                |   3 +
- net/wireless/wext-compat.c                         |   2 +
- 21 files changed, 276 insertions(+), 124 deletions(-)
+ .../bindings/net/wireless/st,stlc4560.yaml         |  61 +++++++
+ MAINTAINERS                                        |   1 +
+ arch/arm/boot/dts/ti/omap/omap2.dtsi               |   4 +
+ .../arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi |  12 ++
+ arch/arm/mach-omap2/board-n8x0.c                   |  18 --
+ drivers/net/wireless/intersil/p54/p54spi.c         |  67 +++----
+ drivers/net/wireless/intersil/p54/p54spi.h         |   3 +
+ drivers/net/wireless/purelifi/plfxlc/usb.c         |  25 +--
+ drivers/net/wireless/ralink/rt2x00/rt2x00.h        |   3 +-
+ drivers/net/wireless/ralink/rt2x00/rt2x00usb.c     |  11 +-
+ drivers/net/wireless/virtual/mac80211_hwsim_main.c |  31 +++-
+ include/net/cfg80211.h                             |  10 ++
+ net/mac80211/chan.c                                |  10 +-
+ net/mac80211/key.c                                 |  22 ++-
+ net/mac80211/link.c                                |   5 +-
+ net/mac80211/sta_info.c                            |  17 ++
+ net/mac80211/util.c                                |   6 +-
+ net/wireless/chan.c                                | 130 ++++++++++++++
+ net/wireless/tests/chan.c                          | 192 ++++++++++++++++++++-
+ 19 files changed, 508 insertions(+), 120 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
 
