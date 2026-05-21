@@ -1,90 +1,53 @@
-Return-Path: <linux-wireless+bounces-36777-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36778-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHfTCzyOD2pdNQYAu9opvQ
-	(envelope-from <linux-wireless+bounces-36777-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 00:59:08 +0200
+	id eGbkIwWUD2pQNgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-36778-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 01:23:49 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9BD55AC82C
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 00:59:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17ED95ACA4A
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 01:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D5CF5302E7C6
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 22:59:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68F18304047E
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 23:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4E8228CB0;
-	Thu, 21 May 2026 22:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D493803F3;
+	Thu, 21 May 2026 23:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WjPnc8cT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FX+wtth4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9A0369219
-	for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 22:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AF5345CDD;
+	Thu, 21 May 2026 23:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779404340; cv=none; b=S0uGbX0tq6E6MfI3PR2rA41P6uUI0rb6BGww8ttj8QBMToZEt44/Wa2UJKhKiHeppmo91p0+nBMIHME2xSfSVfFX4SNK6xDiiv67K71KS9MRorKaRKSa07uUCtFG3mLaOrnX4Kq48Xtuv+Md3clkVW4VtLrwom9gM04U5l7pq58=
+	t=1779405458; cv=none; b=i0/Zyx74DO8Pf6WNt3EInSLZ2RimuBLM6+JJFJrxP0i9teXBpChLWFWRg+fj7A9QckXpJ04aMisemAlpe+OcG9GjvzePcWjlCbnt+7OrqsT7JeT9yQil9DFL7XGc3/4zLZrZHiD1pl7vye4Lh7yh3F1sZnH5OBQie+RpbjvZeG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779404340; c=relaxed/simple;
-	bh=/gVaeaaR/Nul+7yI6e8KWRiT4BTAAc20vWyGG8Ny608=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxS71s4BXXXuX8+uh48mSU5NKTd/vrPOqiJwaOZ4WIavERu8uqr+7Jq0wiIhp/e2e9XQrtz7v9FE+v3fT1RShYPsFXtv2ykXA40QSTvDna+KW26zMKVLjIHh3Gye/bGnlzHxITdZMCnzTv0P+gG5Ga1ivpEIDmPfHhuprSCSlrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WjPnc8cT; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ba6485d219so50410005ad.3
-        for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 15:58:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779404338; x=1780009138; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rOq+YRJWx9TB0Y7bO+ZdcGgx8/pQckWDl5ZKeK9lCvA=;
-        b=WjPnc8cTPittsDe8PxVWroNYjYYC+MO45Vum+iiPd4kN5h9bmpGuZRFQDs5be+761b
-         PHFOWZTdWTksndDv6rnINolY4xKMMzYWv828P6HObEJWKCpUUGAp/py7CMMAXcAZc4HN
-         GFaGIzNquHf+BcITEfpOCQZp9Vfsd3N56bVQiubfNfImEuoXwbHF6nh4OOZnFZULj+pU
-         M9+1RlVW1YWXAvGjJUkBWcjt0qSuvUw9Vl5mzzbVcKCvIIhPz6Zr4rJCCbTBONjhvRkp
-         DgcqHimThNSaeLmFAwE98evi0SN85P9lgQVzYUlSkfbM0LJPHBwweQIDLOUDUvpNk06D
-         khMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779404338; x=1780009138;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rOq+YRJWx9TB0Y7bO+ZdcGgx8/pQckWDl5ZKeK9lCvA=;
-        b=X4YQiMz3FDSbNnZdyO7QFD5LThN9sQP37dKyqEBfjiClp8swi9+f5uxu1Amu+YOXUY
-         592zYf8hemsQ6TYAK8aZ05MgR07WD5OBlPB8l2Ld/3/vObSQ6RCcvfQZNr5O/a8Ml+0J
-         vij6lfd6/qC4TBRT2MYUFLz9UNY0iZ4rVTkH4aYoiw7krdf2MpcDpCGFZMqZ8teUmCub
-         6y51Vl+/YJRMCDfMOQCofs//osCFzsn8rgGKExBDxYk82GDkOPlmFuLMKdns3En51Vt/
-         ratPJVpjp13OteIm0aTGUOFAycnjaIFmgs+t/GItlh3jRnuGDFm4+MpJkDj5TgemODNF
-         wjHg==
-X-Gm-Message-State: AOJu0YxaJSv1uUMhdICgJAdyi5+cC6+tKGP3A1MeGOqSwTOgeDbfOx2Z
-	L0sEPN5Vz1sB7n+6XbgPSQgAb6fqjq+saFAoezpmWPP8EqNkjpj3D1q05R3QfQ==
-X-Gm-Gg: Acq92OHOhm0cA/9AuQc1VSxbxq46LhqgDJ4h3+8yBIuCt0DlwiHN2DKjgsoat03OuZv
-	B7Gsy0kki1JJqaqHdk/dnLMC/a2qB3WvSeyCu3q5zJ2nkvpG2qxxET5yxU0irZcFZQr+XhnlnWN
-	BgLXRHsJXIjTpZmkfxaIcMAEB6PyP2frLLlC4E26KXeb+jzwFZxfKrbHCPthzcMGJf/qAkV5482
-	P5RKJuxBBu/1+yA3q5+Xu6iSlt50WUjm90HW8ilbrtXdjrWtekW3cV7RbPDPLnMFqlLBD05wRBs
-	kKA4XNyehG5n6OG4Za70L/VKnAdSlA8Nt2K8OlkG8O1dL4yxHmyDVQMxvt/Oc1iASoqNeOhHtmn
-	dIQADiwGcDggJiPe04f5m2ShU9It+CMijfu3T4anWmdynMJPwVBFApPuWbIUo1V7wVupqCRloHL
-	M=
-X-Received: by 2002:a17:903:1ae3:b0:2ba:bfc:76a8 with SMTP id d9443c01a7336-2beb057f8c9mr9444045ad.16.1779404338530;
-        Thu, 21 May 2026 15:58:58 -0700 (PDT)
-Received: from ryzen9.. ([2001:ac8:40:25::19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb13d4c55sm2857855ad.70.2026.05.21.15.58.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 15:58:58 -0700 (PDT)
-From: Masashi Honma <masashi.honma@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net,
-	Masashi Honma <masashi.honma@gmail.com>
-Subject: [PATCH v8 6/6] wifi: mac80211: Fix PERR frame processing
-Date: Fri, 22 May 2026 07:58:42 +0900
-Message-ID: <20260521225842.31815-6-masashi.honma@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260521225842.31815-1-masashi.honma@gmail.com>
-References: <20260521225842.31815-1-masashi.honma@gmail.com>
+	s=arc-20240116; t=1779405458; c=relaxed/simple;
+	bh=a1huhdR3wAE1Ti940BRS1+5Rjvi33M94Lzu7AKstwg4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=IZkJaRTvdQYaIRJl8E4v/LFOt1MVU6kdcHpLOxH947NVGxKgy38jM0b34Qu7gyVqrwJbwB7wzzNyirIoKeulLXL35/QYmCoVExrV48PdvF3E1b0HY89ywHh922D7ti4/wRRxTvdDDkg+22OOrC2VnrBbCbil4sIBXeHzRss0Gsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FX+wtth4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AFA1F00ADF;
+	Thu, 21 May 2026 23:17:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779405455;
+	bh=csTF7Jhkg7NvGhaJfRSWBwUixA2BfQZBvY7deFSKqWk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=FX+wtth4w6iNiPglTnEizk6F2xbPNdK9OyIrwhv88F2JyJhJtUt9dsd0kUNFyxZ+d
+	 8hTexSAKcOLxnCUato2f/HvK6WNeenerH+1u9R4KUrpib9syWDYAc23M91g+oViMnL
+	 dljjyPNN2pwIuCBPNQQXnw7zFq4sNtDNkh8mGM6IAFi5uS3OibGoVqZn6Tjcj0zQaE
+	 K2mDp1Tk8SDRVCnrhtSIHn71vhEfE8/ODsjOKCnlBmhtK2ke2U9JJI6KFgXzf3t9Rd
+	 tnAnLhZwZQQmg6BY1ClnJ/Mym+FZfUQ1CvaXMlm4DA4scVgx+t0Loiqk7qltkk03Vi
+	 31mpaym6fL0BA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0C333930E3C;
+	Thu, 21 May 2026 23:17:45 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -92,148 +55,69 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Subject: Re: [GIT PULL] wireless-next-2026-05-21
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177940546442.547004.13599026291051114380.git-patchwork-notify@kernel.org>
+Date: Thu, 21 May 2026 23:17:44 +0000
+References: <20260521153519.380276-3-johannes@sipsolutions.net>
+In-Reply-To: <20260521153519.380276-3-johannes@sipsolutions.net>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36777-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,linux-wireless@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-36778-lists,linux-wireless=lfdr.de,netdevbpf];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[sipsolutions.net,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
-	FROM_NEQ_ENVFROM(0.00)[masashihonma@gmail.com,linux-wireless@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NO_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D9BD55AC82C
+	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 17ED95ACA4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-There are no issues with the PERR processing itself; however, to maintain
-consistency with the previous PREQ/PREP code modifications, I will create a
-new mesh_path_parse_error_frame() function to separately implement the
-frame format validation and the "not supported" check.
+Hello:
 
-Signed-off-by: Masashi Honma <masashi.honma@gmail.com>
----
- include/linux/ieee80211-mesh.h | 41 ++++++++++++++++++++++++++++++++++
- net/mac80211/mesh_hwmp.c       | 14 ++++++++++--
- net/mac80211/parse.c           |  9 ++++++--
- 3 files changed, 60 insertions(+), 4 deletions(-)
+This pull request was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/include/linux/ieee80211-mesh.h b/include/linux/ieee80211-mesh.h
-index b4fca2937de0..bd83c647a578 100644
---- a/include/linux/ieee80211-mesh.h
-+++ b/include/linux/ieee80211-mesh.h
-@@ -365,4 +365,45 @@ static inline bool ieee80211_mesh_prep_size_ok(const u8 *pos, u8 elen)
- 	return elen == needed;
- }
- 
-+/* IEEE Std 802.11-2016 9.4.2.115 PERR element */
-+static inline bool ieee80211_mesh_perr_size_ok(const u8 *pos, u8 elen)
-+{
-+	struct ieee80211_mesh_hwmp_perr *perr_elem = (void *)pos;
-+	u8 number_of_dst;
-+	u8 needed;
-+	const u8 *start;
-+	int i;
-+
-+	start = pos;
-+	needed = sizeof(struct ieee80211_mesh_hwmp_perr);
-+	pos += sizeof(struct ieee80211_mesh_hwmp_perr);
-+
-+	/* Check if the element contains number of dst */
-+	if (elen < needed)
-+		return false;
-+
-+	number_of_dst = perr_elem->number_of_dst;
-+	if (number_of_dst < 1 || number_of_dst > 19)
-+		return false;
-+
-+	for (i = 0; i < number_of_dst; i++) {
-+		struct ieee80211_mesh_hwmp_perr_dst *perr_dst =
-+			&perr_elem->dsts[i];
-+		u8 dst_len;
-+
-+		/* Check if the element contains flags */
-+		if (elen < pos - start + 1)
-+			return false;
-+
-+		dst_len = sizeof(struct ieee80211_mesh_hwmp_perr_dst) +
-+			  ((perr_dst->flags & AE_F) ? ETH_ALEN : 0)
-+			  /* Destination External Address */ +
-+			  2 /* Reason Code */;
-+		needed += dst_len;
-+		pos += dst_len;
-+	}
-+
-+	return elen == needed;
-+}
-+
- #endif /* LINUX_IEEE80211_MESH_H */
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 391d37721b23..a74d7b28a35d 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -957,9 +957,19 @@ void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
- 						path_metric);
- 	}
- 	if (elems->perr) {
--		if (elems->perr_len != 15)
--			/* Right now we support only one destination per PERR */
-+		struct ieee80211_mesh_hwmp_perr *perr_elem =
-+			(struct ieee80211_mesh_hwmp_perr *)elems->perr;
-+		int i;
-+
-+		/* Right now we support only one destination per PERR */
-+		if (perr_elem->number_of_dst != 1)
- 			goto free;
-+
-+		/* Right now we do not support AE (Address Extension) */
-+		for (i = 0; i < perr_elem->number_of_dst; i++)
-+			if (perr_elem->dsts[i].flags & AE_F)
-+				goto free;
-+
- 		hwmp_perr_frame_process(sdata, mgmt, elems->perr);
- 	}
- 	if (elems->rann)
-diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index bbd1e1bc77b4..d84e5e12ad24 100644
---- a/net/mac80211/parse.c
-+++ b/net/mac80211/parse.c
-@@ -565,8 +565,13 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
- 			}
- 			break;
- 		case WLAN_EID_PERR:
--			elems->perr = pos;
--			elems->perr_len = elen;
-+			if (ieee80211_mesh_perr_size_ok(pos, elen)) {
-+				elems->perr = pos;
-+				elems->perr_len = elen;
-+			} else {
-+				elem_parse_failed =
-+					IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
-+			}
- 			break;
- 		case WLAN_EID_RANN:
- 			if (elen >= sizeof(struct ieee80211_rann_ie))
+On Thu, 21 May 2026 17:34:34 +0200 you wrote:
+> Hi,
+> 
+> OK this one's pretty sparse, but I'll send it anyway so we
+> can sync up with wireless content etc. later. I guess I'll
+> get more driver pull requests for -next as we get to later
+> RCs.
+> 
+> [...]
+
+Here is the summary with links:
+  - [GIT,PULL] wireless-next-2026-05-21
+    https://git.kernel.org/netdev/net-next/c/1a1f055318d8
+
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
