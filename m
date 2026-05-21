@@ -1,161 +1,191 @@
-Return-Path: <linux-wireless+bounces-36767-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36768-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOv2IHJGD2ptIgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-36767-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 19:52:50 +0200
+	id gE0XG9Q/D2pNIQYAu9opvQ
+	(envelope-from <linux-wireless+bounces-36768-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 19:24:36 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5075AA9E4
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 19:52:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DED05AA2A8
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 19:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A745F32C4A07
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 16:21:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B48DB30F5E8C
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 16:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DCE379C3F;
-	Thu, 21 May 2026 16:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368BF38331E;
+	Thu, 21 May 2026 16:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="egZmnsLW"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="eIMj+4ky";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XoY3Ws0J"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7A03845D8;
-	Thu, 21 May 2026 16:19:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB7F383308
+	for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 16:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779380376; cv=none; b=LV3EM4JzhRAoQPCeam/DuU/0mB5tAF6CQke9U/9D98GFEoJX9tzEJ0DUv75/NzxWEAZDw+WUjGx3svGC1LM/tE5IOyFV7J/C3Sq/DL2LKy3oUpfm02eKn+qRAGzyGbG9FMIaoQPOZYMuRu10Ujd3G/Ba85dr827Oxs1jsNXwx+g=
+	t=1779382169; cv=none; b=FLWWr9pfR/8WxNazHaSALMts3gpkG/bPzBfaiWbUw/ExoG5ArPwBoDx3W2VLxCXcE+wmM+N2+a1esv7bO5RfNLufBa6ChvLT/7qQ79maXIAZMWHujPy9FC3kMTAs4kfq/oyINjo1euFMnv/F1nSXPnVoJRRFvfDH0JcuQONVxp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779380376; c=relaxed/simple;
-	bh=PTiSiCkcQ7fIijyClE3NFIBeAytqfuOG1d58YEIfOf8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=rFY7qnQKuTZ30CWA1ZxUB+17xRvVo0ovTGEZZyAFMlzxkNMOlUehLGZDbQ3E5CZSpQ5NE2LKb9wonShKz/9RzFvX9Jx3SVHEG214DbNXdRFwZbiHWGBs/dpZl/S5GgEL6RjfGzMyAKrig3TsX4g2oRu69NeWTItgaHiN1llEXcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=egZmnsLW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 081B01F000E9;
-	Thu, 21 May 2026 16:19:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779380374;
-	bh=dusw/CsGuS7cpPWYUs280n/HzgNhk1QSNG+bPDzIWTc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=egZmnsLWSWZwHn8w+BTtoFNaLddpu3vEbk5S/NTfl3m3pIcUXpg1+JpkKr5jd5DYG
-	 3JshXleLNNMdEn7mGBpUTRsbEqMr+UX9INQYkHmu8p9ATLeonR/D8mXJZXgwMw+782
-	 mzJGQ7jgcfKeiWnydGCw6uafhp/RD0kdOWElX8T2n7Xnd1su9x9UH91LsIPL3lHpM1
-	 djV9DFXeSVjTGRsF18VvuYCD0SwpuY5tT3WpYMGq0PXVoAt0UxjrT3N47hantIijUf
-	 X1zB4N5+XgEqRHyHVpKdFOmYB5ullo99tOf0xo4MQqTWj3okcvcGz+D7kzdCEUwtQP
-	 Q7E3PdJEkt5ag==
-Date: Thu, 21 May 2026 11:19:32 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: bhelgaas@google.com, alex@shazbot.org, nbd@nbd.name, lorenzo@kernel.org,
-	shayne.chen@mediatek.com, sean.wang@mediatek.com,
-	linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Ryder Lee <Ryder.Lee@mediatek.com>
-Subject: Re: [PATCH v3] PCI: Disable broken FLR on MediaTek MT7925
-Message-ID: <20260521161932.GA167656@bhelgaas>
+	s=arc-20240116; t=1779382169; c=relaxed/simple;
+	bh=OluPDvAZeQ9J5Fc7QJbpNDRGziE0W+ZxyotII0ZoQds=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OPNIGCBybLCMlK8GPmtreWadcJI9bLgzZ3nnH5a9Y6cDWqBgC9z0ZpFAyww9a6FtE13sPGsb5XemkBBUPUHtuzU5mvMfvHwB6Fu8di65UZWQZhvYosepCZ5zV9Tl8B3yQeBTChccSw6yrHmrIlYsisxW9XrK8JfqRocTelmbrWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=eIMj+4ky; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XoY3Ws0J; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64LGk7GS3532312
+	for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 16:49:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	tTyTyN0cmmgXE5HeBgXrCK1YngdMjkwlUOKAnMDVc6o=; b=eIMj+4ky2HCaefTD
+	qNNvbqbHw6K9YQuc2ovatWuCf8SgB3+3VXVCmhKoiOR7ALi2Yn6gfZCmU8805tRR
+	D80Fe4sIR73KyCaFX6CcRp/pDlnXegZTcspUTa8FsopULE6EvUiVGag7Cd4fQDXY
+	+E39b5V8sbWC6jh101szmAgq/rXx9f4kSQhxIHPh4O73zDPYSwUPIf7/IUtc9BWr
+	rkrO3BDOkO2cUx5YyrDXaVmVBgwyiJEGo+DQW3vuxQ2s3EuNNHGBPqzCH7qGdeXW
+	BDIOsx5wW23JZ9ZQBZBaVfmMDvDyFFyPyCF0qiFbmg+S++COdf8lT1/mRZO7PADV
+	zr6q9Q==
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ea39grt1s-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 16:49:27 +0000 (GMT)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-2eebb099efbso1401972eec.0
+        for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 09:49:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1779382166; x=1779986966; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tTyTyN0cmmgXE5HeBgXrCK1YngdMjkwlUOKAnMDVc6o=;
+        b=XoY3Ws0JSePEeius/CAD1ynpNjaVcMzHV98HHbbMVuexG5tFfVPwrhsaJyp9vGNHEG
+         mNE2MDTAfvYNFi9qk3IBTFIF4cUI73c4QXSS1ki2nqPWKwlDp3AgWVp+FDdgxjDViv7s
+         NZoIkCqDP9NilHEhN4b9ncgzOcKo3PtftKV08NQdTh0UJtJInZDruEECZWaWm4WiGBxI
+         gDq4VlLNrfQifpl1SflmAAofuUN9+cMrj+zpO/tjTLgJBRY3JU5f3LYnLFvB3tAM0LDU
+         UxCSO4rowkY5vnjL/QWuHesymM82fnTNTCj/VV7sXI3Cl0fuMIa+fD40ZCxYpupozNza
+         C8Qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779382166; x=1779986966;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tTyTyN0cmmgXE5HeBgXrCK1YngdMjkwlUOKAnMDVc6o=;
+        b=Et7jyhf84o0B26zhv2rAAQQPjLTy9BYY8ROc87sLe87hg7EkXCvpXBWNp0+7/bhn/c
+         iHtiQa4xP0GDVopIacBZ3MZDgooUcEgsKSI4Bc0Fpfj5g9L7Y7oMxy3IcLnmbK+PGPE+
+         5AWLhZ1r0GzVVdQyuCFPtzLHDNLOA3vsd8vEQJHMyKRKA8hD4Gz4uo8ExWULsni4UPrQ
+         rWCv2O6mMK2pwr0dubgPtBpoHhLKNWriHkX1iEJ2cZ0bWQGMss/cEr1uK5TZX9auPM8U
+         pnAUjAOGz96qENoEFugENBfN758QkcV4y5HPIeg7fMIIUc8OnIdcXPtCb8OQhfZO2L7Z
+         rGvw==
+X-Forwarded-Encrypted: i=1; AFNElJ/1vti9Echm6ta8KMXaz39U64kQI5us3NChRdFhcjojL2iJJIo0/KGvKhcxk0QJnCzfTIfc2tpzDDwjBpeiKw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVxWCI2sMc1sqzLC1PHhObFzq3UhBflJD9IC+MWqj74/hCRyxy
+	6mxV0y/7Ww9HNCVWZ6QO5cZb1pd0cxKsUShaKiRMVSYhv4CXjqZDqTwPmd7QD8KytG6m1jOzSOp
+	1Ktu2PhpLs647WyxRIAOcKZO2bZRrIOTpOQj4cCOERUsW+jw56EyfkcqDvr472CSMzX33rlTiON
+	21Xw==
+X-Gm-Gg: Acq92OH8dNGkAfJkqw5EPrmTY0EoVYB/2XKtfgtPC1dYdEq3FKIXLPFkCioTwKI2QFM
+	SMTt62DwU6IbvDg0onGBTYI/S3Q+umLbzJf1je0Ptm/w4iFfOHzhfh8basKRx/KzVVD6SIZ+edp
+	atGs7nMR2glIHthW2ziqY6P9OgdCHt5Xifa2vOxr6Pwqx96yfUInRAZ4bgbty+Fn0X0G1vrBfcN
+	I0CFRHCQFO+xCzQv7pqGC9lifwwvuZbAuBJaEsjozS+4QWnVe08qMlN6Rohf4iVSxO2WH9e3BT1
+	YSnVW5OZoOa8RJcaI/hf4diNDG6oH6vPqLd43O8uOGzA3Gyoe0bxD/9C4fJHLRfKLyE412SL9Mo
+	eHjwF35UkdF7hDdBqzsk75Yq+JRBxxM2CqV7C0CgR0BNJ6JEoC0d8ifDUH4c6vcS6As1sTLj1yt
+	YgnLUzTQ==
+X-Received: by 2002:a05:7301:678c:b0:2f4:3a9c:818c with SMTP id 5a478bee46e88-3042fb0cff0mr2290265eec.29.1779382166333;
+        Thu, 21 May 2026 09:49:26 -0700 (PDT)
+X-Received: by 2002:a05:7301:678c:b0:2f4:3a9c:818c with SMTP id 5a478bee46e88-3042fb0cff0mr2290236eec.29.1779382165808;
+        Thu, 21 May 2026 09:49:25 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304432dd21dsm909393eec.2.2026.05.21.09.49.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 May 2026 09:49:25 -0700 (PDT)
+Message-ID: <87dfbe33-7705-4ee7-bdde-565d2dfc8287@oss.qualcomm.com>
+Date: Thu, 21 May 2026 09:49:23 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521061205.12727-1-jtornosm@redhat.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/6] wifi: mac80211: Use struct instead of macro for
+ PREQ frame
+To: Masashi Honma <masashi.honma@gmail.com>, linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net
+References: <20260521085647.394151-1-masashi.honma@gmail.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260521085647.394151-1-masashi.honma@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=Yr8/gYYX c=1 sm=1 tr=0 ts=6a0f3797 cx=c_pps
+ a=cFYjgdjTJScbgFmBucgdfQ==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=A_8pNdP6YmOvI854vckA:9 a=QEXdDO2ut3YA:10
+ a=scEy_gLbYbu1JhEsrz4S:22
+X-Proofpoint-ORIG-GUID: gj7xAosZ9DuzE0xq7_xWKQCwMbC44cEQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDE2OCBTYWx0ZWRfX+IeBOkJ0lnA/
+ YSpIOASZsTd/IOOCUQxYcj/b6il9xdRm0TxISaYtn5sB0OUIhGQCdi/yR+ModHpqaXOazmkqUiF
+ QuqJ+2wCe7uJUQV0gURTbRdF/9fxEGk9GblgRjegQ8FSTQTriy4m9b6FRvbZFP5UXA9938IOZgj
+ IGAAQ1rxg98gD5IenyZ3OteO3EsoXxF/pB4D26xetRDZZeYT61L0iNuGD7QnxJG3HPdXxRQt4N9
+ VcQc3SuySq8cSqpLsUrNwTWUvUhFbKFzxB7N/6zRp1jlQbhVKpcNVsJP4ry2IPvcjE2NpcI8z6g
+ TzAYcVVjWZR9xdMFiX5fDDSdovDXYmxULviiFX+zntezT81PIpB5dSqlJ1VEA9m2Oqo4SwJxrFS
+ s5WDMawYDhqn9yg5I6EpRiHLKaoHQU7LJztzJwbOk/Khj1x8YkoFSvtzmvnm+h1VCoEl8qAr0NS
+ rsZWarripDqNaxekYXw==
+X-Proofpoint-GUID: gj7xAosZ9DuzE0xq7_xWKQCwMbC44cEQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-21_03,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
+ suspectscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605210168
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36767-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36768-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCPT_COUNT_THREE(0.00)[3];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8A5075AA9E4
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 7DED05AA2A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[+cc Ryder]
-
-On Thu, May 21, 2026 at 08:12:05AM +0200, Jose Ignacio Tornos Martinez wrote:
-> The MediaTek MT7925 WiFi device (14c3:7925) advertises FLR capability
-> but the implementation is broken - reset always fails, leaving the device
-> in an undefined state.
+On 5/21/2026 1:56 AM, Masashi Honma wrote:
+> In preparation for subsequent patches.
 > 
-> This manifests in VFIO passthrough scenarios: Normal VM operation works
-> fine, including clean shutdown/reboot. However, when the VM terminates
-> uncleanly (crash, force-off), VFIO attempts to reset the device before
-> it can be assigned to another VM. Because FLR is broken, the reset fails
-> and the device remains in an undefined state, preventing reuse.
+> Signed-off-by: Masashi Honma <masashi.honma@gmail.com>
 
-How do we know the device is an "undefined state"?  Does it just not
-respond to config accesses?  Is there something in dmesg that shows
-the problem?
+I'm surprised Johannes hasn't pushed back on your sparse commit text.
 
-I suppose it's similar to 81f64e925c29 ("PCI: Avoid FLR for Mediatek
-MT7922 WiFi")?
+We have guidelines that you aren't following:
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-your-changes
 
-I guess I'm just looking for some text more specific than "undefined
-state".
+Having commit text that fully describes what you are doing and why you are
+doing it makes it much easier for folks to understand and review your patches.
 
-Can we get any of the MediaTek folks to comment on this:
-https://sashiko.dev/#/patchset/20260508145153.717641-1-jtornosm@redhat.com?part=1
-
-Sashiko suggested that Device ID 0x0717 might have the same FLR
-problem.
-
-> Disable FLR for this device so the PCI core falls back to working reset
-> methods (PM reset or bus reset).
-> 
-> This follows the existing pattern used for the MediaTek MT7922 WiFi
-> (14c3:0616), which is the predecessor device and already uses this quirk.
-> 
-> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-> ---
-> v3: Resend with MediaTek wireless maintainers CC'd
-> v2: https://lore.kernel.org/all/20260508145153.717641-1-jtornosm@redhat.com/
-> 
->  drivers/pci/quirks.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index 000000000000..111111111111 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -5607,6 +5607,7 @@
->   * Intel 82579LM Gigabit Ethernet Controller 0x1502
->   * Intel 82579V Gigabit Ethernet Controller 0x1503
->   * Mediatek MT7922 802.11ax PCI Express Wireless Network Adapter
-> + * Mediatek MT7925 802.11be PCI Express Wireless Network Adapter
->   */
->  static void quirk_no_flr(struct pci_dev *dev)
->  {
-> @@ -5617,6 +5618,7 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_AMD, 0x7901, quirk_no_flr);
->  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1502, quirk_no_flr);
->  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1503, quirk_no_flr);
->  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_MEDIATEK, 0x0616, quirk_no_flr);
-> +DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_MEDIATEK, 0x7925, quirk_no_flr);
-> 
->  /* FLR may cause the SolidRun SNET DPU (rev 0x1) to hang */
->  static void quirk_no_flr_snet(struct pci_dev *dev)
-> --
-> 2.53.0
-> 
+/jeff
 
