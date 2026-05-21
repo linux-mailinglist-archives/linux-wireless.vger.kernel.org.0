@@ -1,154 +1,151 @@
-Return-Path: <linux-wireless+bounces-36746-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36747-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFRNOL+3DmrBBgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-36746-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 09:43:59 +0200
+	id 6Mi3Hpe4DmrBBgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-36747-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 09:47:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63D015A04A0
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 09:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6665A0556
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 09:47:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0951E3024C9A
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 07:38:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ABF723010512
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 07:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B1134E745;
-	Thu, 21 May 2026 07:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6EB3815DD;
+	Thu, 21 May 2026 07:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="RGYywP8M"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Pq+j39XW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B54233958
-	for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 07:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EB4369970
+	for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 07:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779349108; cv=none; b=rb7crosOaNvBJm/NoThKNkCAJwSZtqlyF5+wLfvR2IGosiLvalbHWMcZEwfcmQ9Gy+V+b6RXb+ZNG0L3MN4k4c0BglNhyquwCmqMJmKvPWjdFaigyeDBR1rWa2DcVyq0ucTG3utQH8WC2RD2CcDGoHZ2BEKf+mb3FF7jJyAWAak=
+	t=1779349338; cv=none; b=kAoxbw7ceFkqlxywlHVrNT3+aDVAfHjjopjovUtha4/k+dfbw1NequcNyRmKUKTg1ppUc4XBRLbbJMgMk2FwBms6RaB2k7s12HxqHrnM9yGQH7O9UdNsiUv8Vh6rMo4BWLbTu1tuXPHSj5JlPnApXzuHHYHMsjMfyYYulfSd9as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779349108; c=relaxed/simple;
-	bh=s2CYL32JDwclpVJqnmnje4du8Hngvb+RrJC3FMVCi3o=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=C42z0JL3PMZIRrcrjF3zc/dWexyKNyse6sVDVZ19Z+VO3LBTCTKHyBXaEZrMADHf9+VOpVA2RiQFIP8fOkcJ8IRmIigoFStkIAPgBmOxUK7SFV1jFyOMfF+ewEI4Hwh+F4jGAUanlQM1VobxTcjO0QVb02dgaJojAnhhPIN1dO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=RGYywP8M; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64L7cDlM51122906, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1779349093; bh=s2CYL32JDwclpVJqnmnje4du8Hngvb+RrJC3FMVCi3o=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=RGYywP8Mtsc17kK2clAhymRPDKlOLyE+JrW/oIILsXyLlFuC5n5lfrFCtJiu/0DC9
-	 0y5CmKK1wzxeJqe1iLwwSvRje2AIeO+U+Fi4AmGsysvPvGadpy9xp383ZjLkbk3chL
-	 YoJrS9JM1sRXfgLa7kF9kuvZKl5s+35Dea4yFDGWGBFHVBMpDzLF3+d4LaCqBQc3aH
-	 ER72I2BcvylLQMkxSVfWD6JA/DUQaNrmcw+UV5whA5pI7bdvbLQIhmVxcxczhN7nYd
-	 +AxLGyRbdZ18/d4y8+2MOrobQM45SPj6/C6bqOFLk3fYDE/fRcH92M9dUNhiNCyUZN
-	 Uml2gzZBQPAEQ==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 64L7cDlM51122906
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 May 2026 15:38:13 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 21 May 2026 15:38:14 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 21 May 2026 15:38:14 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::e6fd:5a3f:8946:92c4%10]) with mapi id
- 15.02.2562.017; Thu, 21 May 2026 15:38:14 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Johannes Berg <johannes@sipsolutions.net>,
-        Masashi Honma
-	<masashi.honma@gmail.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH v6 1/6] wifi: mac80211: Use struct instead of macro for
+	s=arc-20240116; t=1779349338; c=relaxed/simple;
+	bh=bbbekLEXB21vfPPsg+kVFH8yLE8eQtodALMDIboQk9E=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DDllUXPiaZaaPehVuLHmC/F238qvqRXphIlab7JGjvU7vIjuKhZClec1FbHFVDM034Cx0dpWM5Of4iW2dQMgEUHwRDE7alUDP7GPn7HYDFTX+pP9Bh1D6qWDyfB/d+9gtTSwuws2RJK+U9nnUVEr5J7c9Do09BVdcTxC24SllvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Pq+j39XW; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=muTAy6l9Ne10LTT0s5OukQkIoUOvif+5b1Gnk9FHhGg=;
+	t=1779349337; x=1780558937; b=Pq+j39XWyZiAOKi30yNOYjCO6sRFV02z66jKzNVgqR5h81D
+	e3vvcuxvd9zxoBjnJP5cV3+5Ql2bPpzJQa2Rk47DQ94nHF3ExdKeFvWtq9O7q1UaxrrRGhTWZnKfs
+	xlohtHz0Jnm6yDD09YyILRuKihovg60cImwh3O7A1MRgAhfMYtO4lJPMXpFZMBaRitrNmc627NOyA
+	BJW8nwtOUvIQsVjXlOZoTT8MFjDzn1I3pwTJfFUNkUiRTX37FopCU6j11BXlJq/V39h6xJBAViVPh
+	GirbdP4voPQSBtERPN1PzbdX1DDVbDztR4Z+uJCZVN4tUPULpcwnU1jWoxnAQfRw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wPy2o-0000000BoZq-0NWB;
+	Thu, 21 May 2026 09:42:14 +0200
+Message-ID: <bf2081a986eccd28378b4019b2968c15e6659b7f.camel@sipsolutions.net>
+Subject: Re: [PATCH v6 1/6] wifi: mac80211: Use struct instead of macro for
  PREQ frame
-Thread-Topic: [PATCH v6 1/6] wifi: mac80211: Use struct instead of macro for
- PREQ frame
-Thread-Index: AQHc5MP/zOngxkWbM0ai666I8zXda7YWRAMAgAFlUeCAAGI1LYAADEAQ
-Date: Thu, 21 May 2026 07:38:13 +0000
-Message-ID: <7e1aac3afd714d448e5bfba4a9a113b0@realtek.com>
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ping-Ke Shih <pkshih@realtek.com>, Masashi Honma
+ <masashi.honma@gmail.com>,  "linux-wireless@vger.kernel.org"	
+ <linux-wireless@vger.kernel.org>
+Date: Thu, 21 May 2026 09:42:09 +0200
+In-Reply-To: <7e1aac3afd714d448e5bfba4a9a113b0@realtek.com>
 References: <20260515233839.86829-1-masashi.honma@gmail.com>
-	 <965eff7ec3b928f093f7891e4307ec4e4a080ac4.camel@sipsolutions.net>
-	 <d2c051127e384a918ff014da02e37e1e@realtek.com>
-	 (sfid-20260521_024301_935117_BC310192)
- <93ab81b4fb7130a4d4e1048581d886568086fe24.camel@sipsolutions.net>
-In-Reply-To: <93ab81b4fb7130a4d4e1048581d886568086fe24.camel@sipsolutions.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+		 <965eff7ec3b928f093f7891e4307ec4e4a080ac4.camel@sipsolutions.net>
+		 <d2c051127e384a918ff014da02e37e1e@realtek.com>
+		 (sfid-20260521_024301_935117_BC310192) <93ab81b4fb7130a4d4e1048581d886568086fe24.camel@sipsolutions.net>
+	 <7e1aac3afd714d448e5bfba4a9a113b0@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+X-malware-bazaar: not-scanned
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36746-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[realtek.com,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-36747-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[sipsolutions.net,gmail.com,vger.kernel.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
 	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 63D015A04A0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:email,sipsolutions.net:mid,sipsolutions.net:dkim]
+X-Rspamd-Queue-Id: ED6665A0556
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-DQpKb2hhbm5lcyBCZXJnIDxqb2hhbm5lc0BzaXBzb2x1dGlvbnMubmV0PiB3cm90ZToNCj4gVGhl
-IHBvaW50IGlzIHRoYXQgX19wYWNrZWQgZm9yY2VzIHRoZSBjb21waWxlciB0byBlbWl0IGNvZGUg
-dGhhdCBkb2Vzbid0DQo+IHJlbHkgb24gYWxpZ25tZW50Lg0KDQpJIHdhcyBub3QgYXdhcmUgdGhh
-dCBfX3BhY2tlZCBpcyBhIGhpbnQgb2YgdW5hbGlnbm1lbnQgdG8gY29tcGlsZXIuDQpJIGxlYXJu
-ZWQuIDopDQoNCj4gDQo+IFNvIHNheSBlLmcuIHlvdSBoYXZlDQo+IA0KPiAgICAgICAgIF9fbGUz
-MiAqcHRyID0gLi4uOw0KPiANCj4gICAgICAgICB1MzIgdmFsID0gY3B1X3RvX2xlMzIoKnB0cik7
-DQo+IA0KPiBJbiB0aGlzIGNhc2UsIHRoZSBjb21waWxlciBjYW4gZW1pdCBhIGxvYWQgaW5zdHJ1
-Y3Rpb24gdGhhdCBhc3N1bWVzDQo+IGFsaWdubWVudCwgc28gaWYgJ3B0cicgY2FuIGJlIHVuYWxp
-Z25lZCwgd2UgbmVlZCB0byB1c2UNCj4gDQo+ICAgICAgICAgdTMyIHZhbCA9IGdldF91bmFsaWdu
-ZWRfbGUzMihwdHIpOw0KDQpHb3QgaXQuDQpXaXRoIHRoZSBhc3NpZ25tZW50IHRvIHBvaW50ZXIs
-IHRoZSBoaW50IGRpc2FwcGVhcmVkLiANCg0KPiANCj4gaW5zdGVhZC4NCj4gDQo+IEhvd2V2ZXIs
-IGlmIHdlIGhhdmUNCj4gDQo+ICAgICAgICAgc3RydWN0IGllZWU4MDIxMV9tZXNoX2h3bXBfcHJl
-cV90b3AgKnB0ciA9IC4uLjsNCj4gDQo+ICAgICAgICAgdTMyIHZhbCA9IGNwdV90b19sZTMyKHB0
-ci0+cHJlcV9pZCk7DQo+IA0KPiB0aGVuIHRoZSBjb21waWxlciBfY2Fubm90XyBlbWl0IGEgbG9h
-ZCBpbnN0cnVjdGlvbiB0aGF0IGFzc3VtZXMNCj4gYWxpZ25tZW50IGJlY2F1c2Ugb2YgdGhlIF9f
-cGFja2VkLCBhbmQgc28gdGhlIGNvbXBpbGVyIGhhcyB0byBlbWl0IGENCj4gKHBlcmhhcHMgc2Vx
-dWVuY2Ugb2YpIGluc3RydWN0aW9uKHMpIHRoYXQgbG9hZCB0aGUgMzItYml0IHZhbHVlIHdpdGhv
-dXQNCj4gcmVseWluZyBvbiBhbGlnbm1lbnQuIEFzIGEgY29uc2VxdWVuY2UsIHdlIGRvbid0IGhh
-dmUgdG8gZXhwbGljaXRseQ0KPiB3cml0ZSBpdCB0aGUgbW9yZSBjb21wbGljYXRlZCB3YXkgYW5k
-IGNhbiBqdXN0IHdyaXRlIGl0IHRoZSBtb3JlIG5hdHVyYWwNCj4gd2F5Lg0KDQpJJ2xsIHJlbWVt
-YmVyIHRoaXMgaXMgYmV0dGVyIHN0eWxlIGluIHByYWN0aWNlLiBDb21waWxlciBjYW4gaGVscC4N
-Cg0KDQpJbiBteSB0ZXN0cyB3aXRoIGFybS1nY2MgY29tcGlsZXIsIEkgZGlkIGEgc3BlY2lhbCBj
-YXNlOiANCg0Kc3RydWN0IGZvbyB7DQoJaW50IGE7DQoJY2hhciBiOw0KfSBfX3BhY2tlZDsNCg0K
-aW50IGJhcihzdHJ1Y3QgZm9vICpmb28pDQp7DQoJcmV0dXJuIGZvby0+YTsNCn0NCg0KSXQgaXMg
-b2J2aW91c2x5IGFsaWduZWQgKG9mZnNldCA9IDApLCBzbyBJIGd1ZXNzZWQgYXJtLWdjYyBjYW4g
-Z2VuZXJhdGUNCmEgc2luZ2xlIGxvYWQgaW5zdHJ1Y3Rpb24sIGJ1dCBhY3R1YWxseSBpdCBkb2Vz
-bid0IChldmVuIHdpdGggLU8zKS4NCkJ1dCB0aGlzIGlzIG5vdCB0aGUgY291cnNlIG9mIHRoaXMg
-dGhyZWFkLiA6KQ0KDQpUaGFuayB5b3UNClBpbmctS2UNCg0K
+On Thu, 2026-05-21 at 07:38 +0000, Ping-Ke Shih wrote:
+> Johannes Berg <johannes@sipsolutions.net> wrote:
+> > The point is that __packed forces the compiler to emit code that doesn'=
+t
+> > rely on alignment.
+>=20
+> I was not aware that __packed is a hint of unalignment to compiler.
+> I learned. :)
+
+Yes. Note it goes further:
+
+> In my tests with arm-gcc compiler, I did a special case:=20
+>=20
+> struct foo {
+> 	int a;
+> 	char b;
+> } __packed;
+>=20
+> int bar(struct foo *foo)
+> {
+> 	return foo->a;
+> }
+>=20
+> It is obviously aligned (offset =3D 0), so I guessed arm-gcc can generate
+> a single load instruction, but actually it doesn't (even with -O3).
+
+No, it cannot, because in addition it has to assume the pointer 'foo'
+itself has no alignment. We use this a lot too, since a struct like your
+'struct foo' could be in a frame element where we don't know what came
+before it while parsing the elements, so we don't know that 'foo' has
+any alignment.
+
+The reasons are related to what happens when you have a
+
+	struct foo array[N];
+
+I think, because then __packed means there's no padding at the end of
+'struct foo' either, and array[1] is a completely unaligned pointer.
+
+So no, the compiler couldn't assume alignment even for fields that look
+aligned within 'struct foo'.
+
+johannes
 
