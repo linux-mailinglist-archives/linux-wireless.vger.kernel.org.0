@@ -1,364 +1,388 @@
-Return-Path: <linux-wireless+bounces-36821-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36822-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id L6DDBPa3EGqzcwYAu9opvQ
-	(envelope-from <linux-wireless+bounces-36821-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 22:09:26 +0200
+	id YG7BBmq+EGomdAYAu9opvQ
+	(envelope-from <linux-wireless+bounces-36822-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 22:36:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4335B9E85
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 22:09:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AA55BA1ED
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 22:36:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 01B7B3005778
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 20:09:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 274F7300D152
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 20:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD58366560;
-	Fri, 22 May 2026 20:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8082BFC60;
+	Fri, 22 May 2026 20:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="EbgztTsE";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="gEnWvWbh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bvfo+4J9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCD82C234A
-	for <linux-wireless@vger.kernel.org>; Fri, 22 May 2026 20:09:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.168.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779480563; cv=pass; b=cGZX4CytCVbfQNeXKV9ZrHOptDUu2ToPLx8l6zUylv7hzImTKg++f4RDiklVn79ytdRn2ioq1hRzpik0v/rgLabD3ZSoCxFFr81QcLZ+G06dFrBXobP0bAAGsy0a1A0nrKX5wAL0jf2VjYpqmMldSeoURZx9rK09rH20L2lzYmE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779480563; c=relaxed/simple;
-	bh=BYenqKReshgy7WMYk3vXJQUj0YK+MP2HizGUmGHcwiE=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C972D0606
+	for <linux-wireless@vger.kernel.org>; Fri, 22 May 2026 20:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779482130; cv=none; b=IDdwELuLwHlGKmgAnCv5aTOqndQvG+3IwXYjtaE55nl2GEFR3QlMZdcmkpwNi5KGEcmhgRummdZgVoKYXXzJKvEF2ZzA6OE5ApZzdAD9d1rtqsOMskhf1uYtrph2wG1mhQcj5sc5FOQIIuG9WuRiOjj2/5ZQoQoyzjkDC4v/654=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779482130; c=relaxed/simple;
+	bh=HSWy4+0KV+6X7j5AY6uI1iOsf+IiHOTKwgYzaBHne5w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EHuRUTXupzTUPMXIYmGlEk39kxPpAsXOfJbFBSCYM8cppokxrCXhBo9/BDTZx9fc6zKVmdf/O6wN4rtFQpuylZkLCcL9IFgWAzaInhyIw8J05ASwOmOY3dH4aaHnvfGCG2MYTSoTT77yuCRUc1gj3uM9M2tQbvSD87Cqjk0irdc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EbgztTsE; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=gEnWvWbh; arc=pass smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64MHUciV1800934
-	for <linux-wireless@vger.kernel.org>; Fri, 22 May 2026 20:09:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4mgJ5edVM+mqGwYghHMz4APWCN08GCaqEMyrnNrUOWY=; b=EbgztTsE1C9CerSE
-	ANTpW3uvn5Il5z/EcdPUowP+j1DovIhpYLkshTBQcFSp04zrMrdGzt9VrEDdhC4u
-	/OS8jPtLzIIC64gNN8r1/jWRO1QKY7ePcVrH1lXNsJdefWwgMAsp1OkdSnzgxz2A
-	RmeUVsDokIDB0hnA0AhEfhHrMWZiz+A/5xNfbXHXQ2JjFfmAuTexFDG4uSh9GBE4
-	Uj7Hhq2m1Z1Dkp6h7E7qH5ORpxVxb0PHRo1f9A+gQd3r8tvMFo7+/vT88LSzxMd0
-	CYtP3evhGCD5OxWn9UeuQY1sqK6HwmFMAEMNY2/FH5RrzV0e0fIlG8WG6aFtaO5Z
-	vTsYIQ==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ean9g276w-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 22 May 2026 20:09:21 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-910304978f3so1550880485a.1
-        for <linux-wireless@vger.kernel.org>; Fri, 22 May 2026 13:09:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779480560; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VbvpHRFxxatNzbl8wog5wTRPyS+913k6CqDzTa3ZVexVlmQzNaznOAT6cN7Ezt5BbK
-         OiYA3ddZAxHVBn8C2gLVOhUUHiz8apRwZLbhdGrc1PLkBGexo+9lX8JzRrS6caGZbAP1
-         nJ2nkdA0ZcRlptRbrVCTS+54AmsOZfcSRQf3RQBappc0853Ez1DH+nurLl/FIgpkZ31f
-         NHu4rUR3bPcuZrL0CRGyyfRsr+4DXNuDxhS+W1SyeXXH3kmO+SzbPUKKd15670v+638c
-         xCR0hFLQdzfoY2aHTt/99KrTUK2evPOhwxbE1OE7W9+7UV2zeHKC2LJEM/JGiAzYY62e
-         j4Hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4mgJ5edVM+mqGwYghHMz4APWCN08GCaqEMyrnNrUOWY=;
-        fh=ffF4u8ja2pMoPI0JBe+Ks/5IHLwD1kIdSclii8RewEw=;
-        b=VS6P9ypbLgOPz1JrkE/oratL6DULFAJPY1mrxE8qhCuMtiHh/4Bb4wsoaAUNtRMbyx
-         2Jzn1PF5w5BUbNZyuG441yUlqED8RFagCgt2Xfsfe65DzWDjGAnsd0haK4eeKSE3IUmm
-         bH4Z+jXd6sghyJ7FIkKxxxua8ZnUKHSFqLZm76GxORZL8FRbvu1TPmibBE8Gps0r94oN
-         5PIq6Z9AUX/iPUXM9jnTOlSb9HnW/xpGUPT7Fm3IjBtTL68Ll4GuRERzUC0YNfqNdxQl
-         Uj+mRjNkiXkhSelRnBej0TtbbFg6uGpH9Q60DcXiDi0q/x9HHOdJdbitgNp9uhXvAL5P
-         JIGw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779480560; x=1780085360; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4mgJ5edVM+mqGwYghHMz4APWCN08GCaqEMyrnNrUOWY=;
-        b=gEnWvWbhvP0+e6LYTrWsbs3M/By180X7joJLIy4G7R1DWU4m/8cj1rAnGMnluHIE1P
-         Fw+WSudfAqe9Dfdh/nGbPNX8BTcQz7+0XSst2n7XzpU5SdFspXvzqSfiduK2u9PKJKOy
-         uletSv8F+H/t/Nyvg0VEHGnud9pDORrgqyA+eb/1zkC4pmc3TJmaB7f9P/Q9PL4vHkSP
-         IzKTr7crAYdi1pS/NkT3miojCZLXR3uLhm0AUsq5OCorx/BWtGzsJ8Oj3Hqvx90LlZo0
-         nBTgkIIsatOI5JDP5IzvlomB8GRyDteSzeo+tQzDLPa5b9AhqadO9439KBaU0+fYCkQm
-         sktQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779480560; x=1780085360;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4mgJ5edVM+mqGwYghHMz4APWCN08GCaqEMyrnNrUOWY=;
-        b=iKih8YY96fiVAJItDRnGMIQwmoxYs4mGpJi8qC8LOq17xEfWgeVySRlTdY6lRYCw2V
-         Y/5QtX124MvvLjnSEmfdSA8y7F5vGFoGtVIgj91nmSGUJZCls1OtAqaf7P9yzKqEVtYu
-         G7Lnp6ss0sQZj2q0AP3JiaIJzJYSzdsct9zwA/ByU3Hlqs//yF7BIrWGwrjSO7pNyzFN
-         s4PFVaKqpkjt0bHZCdrP82yMiA0LA8uK0a73ykSb5zQ6Llrn6IQMiz+IiiT0ffbp9LdG
-         e5xM2U4VwSfal79tZ5KIQw0kdMT5me21tvhOSO0TBOBGyGBASfp2yVDVUTT7r8BRy7Rq
-         blZw==
-X-Forwarded-Encrypted: i=1; AFNElJ/leSQNqbKbAOBJQVzoEJO02cYvG1LllWaU6p1B/419nfgSdAyaBhNloKWJzoW40SnbaNQwk905I0Wdcf4d9Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSwFFmGszx5/kNWOHtI3a4+FhyrAZTjr5b0Ojy6CV2/Xab9oFY
-	R2He3ynpEfDqRAcF/kwLXbCwUD/9xkhrh933Rb9kw6RVXOCxaHTwTgl0dVIz/nmE+pCLriWO5Yn
-	wkooxb6heSSPuzaRiS6I0SFG5oGJ+TzuY8hLawNtD1yaHTgPIxTav87cU4ng4Q8oJ9p9KkyF0m6
-	8TxAX3bbjiVjdQOR4t1/Z06mPu/5wvTISaTU+2a35gmlXv
-X-Gm-Gg: Acq92OEITvaypINC64V3xIbnlxRcIfnS1Y424HPuSAryH9wDJ7annSIV/h4yV5PBomQ
-	jaj1wNN0lymAR3VJiXDU164Mlk1sqt7/nx9Ic3Gz1280gEFg/RKSYRT8jb1VqhuBxZJ6RYopM1h
-	3UlcoHlmt9FkH+nvjbxVqWhu+xN3e76bzaHpS53VwFL/odufsBcJIBwhS6zS+oubXi1YDfJDPDX
-	qxP3nndsRBGgswJmJwykvkKVNO4JM/WF6fI/ouSn3rEwnAEvRTuuW5C5lIE7iNNNI2U
-X-Received: by 2002:a05:620a:28c7:b0:8cd:aa61:ad8f with SMTP id af79cd13be357-914b50cab94mr617027985a.14.1779480560176;
-        Fri, 22 May 2026 13:09:20 -0700 (PDT)
-X-Received: by 2002:a05:620a:28c7:b0:8cd:aa61:ad8f with SMTP id
- af79cd13be357-914b50cab94mr617022585a.14.1779480559708; Fri, 22 May 2026
- 13:09:19 -0700 (PDT)
+	 To:Cc:Content-Type; b=Iqotv/KBfx+PVxbKP/HQk0V7Ub8E55wEkWWvxK8Rhqn1yurFVub7rajEGxE0jxMymBjd6m2evOUuj8MvDefn1sZZYN5VL7PRoR255IrgGHTQkbosPEYngeGC2kLhybdcpaLBl2eJOrXaM6gaHhvaPEkj+7q+NYsjpoEZlu1q0/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bvfo+4J9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08701F0155D
+	for <linux-wireless@vger.kernel.org>; Fri, 22 May 2026 20:35:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779482128;
+	bh=k6EyF5hhQO7eaC9zrEY9M5Jju+ePXXxpPReIjxWeQJo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Bvfo+4J9k3zP83bx1tFCEXatTDWdPvgQkRpDVKEMjzmOW0xqlJ7GbNLtK0Q9b852d
+	 6a1FiUxIZMZWMhQbGM2bqPRoBkwM4s/EO5BG69cuCeq7/stPWUZfjrO3VDTHR0XXHI
+	 G2+icnxT0UA+aBVBjNDVXy0ySNvzRtgVF6+4l1AW8tVogg0Iw1AVLrylAKONQeKib1
+	 7RxReWO34Zh9ID7EcnWPZJWtZ43RXt6VmeCjiLnPQu1ipmgg80fCufwPDR7KH5zswV
+	 grHgjLEQQO25P4XF0Ka+asrVXjZDGW30XxNFnjOtuZ7GvihRicZPFInEYEiuGnixqC
+	 ZXzZ1Fiox9SXg==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-393c93a01abso19409291fa.1
+        for <linux-wireless@vger.kernel.org>; Fri, 22 May 2026 13:35:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8Dq6o0mceFAuqWcc5n+xgQE+sY+GISswsjA5Yz5eqVwZsDbCfxfVQYEtBxKoBjdm4YDfPnwwy1k26Di8H5rw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFdNjrgFwcoJ5HgJrxcHVd7sKONDhKCmfagrcRVAc24d7f/WNU
+	ecINnC9aBEvoKzJAeX3nOWgYTYi2w1XQBc/2Gl5SMOaw0vJkNa1ufTS2ffFdhZsXD0GfqVwVclj
+	9XP7ur6dsmCppaKkooqCjEKVKd4RZqMs=
+X-Received: by 2002:a05:651c:882:b0:394:987:946b with SMTP id
+ 38308e7fff4ca-395d8c12399mr17897371fa.2.1779482127167; Fri, 22 May 2026
+ 13:35:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260522-mhi_runtimepm-v2-0-fbebf41a82bb@oss.qualcomm.com> <20260522-mhi_runtimepm-v2-3-fbebf41a82bb@oss.qualcomm.com>
-In-Reply-To: <20260522-mhi_runtimepm-v2-3-fbebf41a82bb@oss.qualcomm.com>
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Date: Fri, 22 May 2026 22:09:08 +0200
-X-Gm-Features: AVHnY4J-9F8AAJuD_tJW6-iaDPIYDcwXI9s5goDnYZwmGPWaSdjsV19cBJfwNa0
-Message-ID: <CAFEp6-1sdQn11NKom6cfwtJvZX-CnPRpJeVzQ+99Sb4A4L-qaQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] net: mhi_net: Hold runtime PM during active data
- path operations
-To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-        Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-        Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>,
-        Oded Gabbay <ogabbay@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>, mhi@lists.linux.dev,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-        netdev@vger.kernel.org, mayank.rana@oss.qualcomm.com,
-        quic_vbadigan@quicinc.com, vivek.pernamitta@oss.qualcomm.com
+References: <5ecac6a9b7d29526e8438dea105b58f5487c93aa.1778521232.git.ryder.lee@mediatek.com>
+ <agdJ1EtZjjWh2R1h@lore-desk> <CAHoxojJX2BRRTLMuM_QcJqMMmshxS4EAwrB1VjU3rsZ+0k2PAg@mail.gmail.com>
+ <agsGiHKH6ly1afaf@lore-desk> <CAHoxojKeXCCnJoO7yBBmTM9euiTf38orujOhOK00X8bb3ctWuA@mail.gmail.com>
+ <CAA2SeNJXv+8QO6zEOF=qB3wVCdEoSqx6fftp1i=aB-DKMFeC=A@mail.gmail.com> <1e1318a9230533c63c31aecbaddf520b6f68affd.camel@mediatek.com>
+In-Reply-To: <1e1318a9230533c63c31aecbaddf520b6f68affd.camel@mediatek.com>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Fri, 22 May 2026 15:35:15 -0500
+X-Gmail-Original-Message-ID: <CAGp9Lzq_EhW-YR2EM0Hr64pRTV5eqAj1bx0RLuYCuWMTGhcHSA@mail.gmail.com>
+X-Gm-Features: AVHnY4IuzG8abYfmu1woK-eDo_ZET5-_JKn-20dhW4FE-eU_dJaCw-BZnzXQJqI
+Message-ID: <CAGp9Lzq_EhW-YR2EM0Hr64pRTV5eqAj1bx0RLuYCuWMTGhcHSA@mail.gmail.com>
+Subject: Re: [PATCH] wifi: mt76: mt7996: avoid memset overwriting tx_info->control.flags
+To: Ryder Lee <Ryder.Lee@mediatek.com>
+Cc: "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>, 
+	"roychl666@gmail.com" <roychl666@gmail.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "nbd@nbd.name" <nbd@nbd.name>, 
+	"lorenzo@kernel.org" <lorenzo@kernel.org>, =?UTF-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= <Shayne.Chen@mediatek.com>, 
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, Roy-CH Luo <Roy-CH.Luo@mediatek.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: Efapgrb3CcCD2UvbNo2CEqFh-oVOMuHq
-X-Authority-Analysis: v=2.4 cv=B/qJFutM c=1 sm=1 tr=0 ts=6a10b7f1 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=yOCtJkima9RkubShWh1s:22 a=EUspDBNiAAAA:8 a=omgbQWz8Cy1bZfrwG_oA:9
- a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-ORIG-GUID: Efapgrb3CcCD2UvbNo2CEqFh-oVOMuHq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDIwMCBTYWx0ZWRfXyeqwoIIkcG1r
- M2w+FTd5AKXVEhQdUqtH+akSuxlUjA+V+H7NItq7mLUbN/5SytYcwalzJHvMRvfYIE/cyw4XoDg
- MZGL6PO/t+q/gkhc3jK3NLqt2gZArPYCAE86mgEEP6P+g4oSuWtEjHAtZpzU/zAM5KSgf7fHlE+
- 7iS1Zu4r7rvB3g9kZVshZyXP0WzdvN4dm1kkLwCUCfOUd6oTw5XU2bypBEp/GglqDRBtrOOlbPq
- 648ISet2wi10rlWN2L53t30V7jzd9FqA/JNv62zvOTeYlGQWn/MpNQNcW65R8w4JuP0yloE+tTc
- WTd7tW7sS+B4oo5SP/YpbzSqsP8tBpZ1+CsDQMi6Wz7AKvtiehcGsJQ8/WfnGCOVzB800CAt+Ct
- GF3hJDUzrJIKQaKAMaK/C008Nd4Wc0390ZyG5sLH0fY/s2DL+E+IyCdXohWHenYXp2x2S/BfZGc
- 7LMCpZyaxBS9TpTEyAg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-22_05,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0
- suspectscore=0 adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605220200
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36821-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,oss.qualcomm.com,lunn.ch,davemloft.net,google.com,redhat.com,gmail.com,sipsolutions.net,lists.linux.dev,vger.kernel.org,lists.freedesktop.org,lists.infradead.org,quicinc.com];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,nbd.name,kernel.org,mediatek.com,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-36822-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[loic.poulain@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,mail.gmail.com:mid,oss.qualcomm.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5B4335B9E85
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 75AA55BA1ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Krishna,
+Hi,
 
-On Fri, May 22, 2026 at 12:01=E2=80=AFPM Krishna Chaitanya Chundru
-<krishna.chundru@oss.qualcomm.com> wrote:
+On Tue, May 19, 2026 at 3:43=E2=80=AFPM Ryder Lee <Ryder.Lee@mediatek.com> =
+wrote:
 >
-> The mhi_net driver does not coordinate with runtime PM, which allows the
-> underlying MHI controller to be runtime-suspended while transmit, receive=
-,
-> or RX buffer refill operations are in progress. This can lead to stalled
-> transfers or failed queueing once runtime PM is enabled in the MHI core.
+> On Tue, 2026-05-19 at 14:24 +0200, Lorenzo Bianconi wrote:
+> >
+> > External email : Please do not click links or open attachments until
+> > you have verified the sender or the content.
+> >
+> >
+> > >
+> > > On Mon, May 18, 2026 at 5:31=E2=80=AFAM Lorenzo Bianconi
+> > > <lorenzo@kernel.org> wrote:
+> > > >
+> > > > On May 15, Cheng Hao Luo wrote:
+> > > > > > struct ieee80211_tx_info {
+> > > > > >         u32                        flags;
+> > > > > > /*     0     4 */
+> > > > > >         u32                        band:3;
+> > > > > > /*     4: 0  4 */
+> > > > > >         u32                        status_data_idr:1;
+> > > > > > /*     4: 3  4 */
+> > > > > >         u32                        status_data:13;
+> > > > > > /*     4: 4  4 */
+> > > > > >         u32                        hw_queue:4;
+> > > > > > /*     4:17  4 */
+> > > > > >         u32                        tx_time_est:10;
+> > > > > > /*     4:21  4 */
+> > > > > >
+> > > > > >         /* XXX 1 bit hole, try to pack */
+> > > > > >
+> > > > > >         union {
+> > > > > >                 struct {
+> > > > > >                         union {
+> > > > > >                                 struct {
+> > > > > >                                         struct
+> > > > > > ieee80211_tx_rate rates[4]; /*     8    12 */
+> > > > > >                                         s8
+> > > > > > rts_cts_rate_idx; /*    20     1 */
+> > > > > >                                         u8     use_rts:1;
+> > > > > > /*    21: 0  1 */
+> > > > > >                                         u8
+> > > > > > use_cts_prot:1; /*    21: 1  1 */
+> > > > > >                                         u8
+> > > > > > short_preamble:1; /*    21: 2  1 */
+> > > > > >                                         u8     skip_table:1;
+> > > > > > /*    21: 3  1 */
+> > > > > >                                         u8     antennas:2;
+> > > > > > /*    21: 4  1 */
+> > > > > >                                 };
+> > > > > > /*     8    14 */
+> > > > > >                                 long unsigned int jiffies;
+> > > > > > /*     8     8 */
+> > > > > >                         };
+> > > > > > /*     8    16 */
+> > > > > >                         struct ieee80211_vif * vif;
+> > > > > > /*    24     8 */
+> > > > > >                         struct ieee80211_key_conf * hw_key;
+> > > > > > /*    32     8 */
+> > > > > >                         u32        flags;
+> > > > > > /*    40     4 */
+> > > > > >                         codel_time_t enqueue_time;
+> > > > > > /*    44     4 */
+> > > > > >                 } control;
+> > > > > > /*     8    40 */
+> > > > > >                 struct {
+> > > > > >                         u64        cookie;
+> > > > > > /*     8     8 */
+> > > > > >                 } ack;
+> > > > > > /*     8     8 */
+> > > > > >                 struct {
+> > > > > >                         struct ieee80211_tx_rate rates[4];
+> > > > > > /*     8    12 */
+> > > > > >                         s32        ack_signal;
+> > > > > > /*    20     4 */
+> > > > > >                         u8         ampdu_ack_len;
+> > > > > > /*    24     1 */
+> > > > > >                         u8         ampdu_len;
+> > > > > > /*    25     1 */
+> > > > > >                         u8         antenna;
+> > > > > > /*    26     1 */
+> > > > > >                         u8         pad;
+> > > > > > /*    27     1 */
+> > > > > >                         u16        tx_time;
+> > > > > > /*    28     2 */
+> > > > > >                         u8         flags;
+> > > > > > /*    30     1 */
+> > > > > >                         u8         pad2;
+> > > > > > /*    31     1 */
+> > > > > >                         void *     status_driver_data[2];
+> > > > > > /*    32    16 */
+> > > > > >                 } status;
+> > > > > > /*     8    40 */
+> > > > > >                 struct {
+> > > > > >                         struct ieee80211_tx_rate
+> > > > > > driver_rates[4]; /*     8    12 */
+> > > > > >                         u8         pad[4];
+> > > > > > /*    20     4 */
+> > > > > >                         void *     rate_driver_data[3];
+> > > > > > /*    24    24 */
+> > > > > >                 };
+> > > > > > /*     8    40 */
+> > > > > >                 void *             driver_data[5];
+> > > > > > /*     8    40 */
+> > > > > >         };
+> > > > > > /*     8    40 */
+> > > > > >
+> > > > > >         /* size: 48, cachelines: 1, members: 7 */
+> > > > > >         /* sum members: 44 */
+> > > > > >         /* sum bitfield members: 31 bits, bit holes: 1, sum
+> > > > > > bit holes: 1 bits */
+> > > > > >         /* last cacheline: 48 bytes */
+> > > > > > };
+> > > > > >
+> > > > > > According to pahole, the size of the control inner union is
+> > > > > > actually 16 bytes
+> > > > > > since the compiler adds 2 bytes of padding. Since
+> > > > > > mt76_tx_status_skb_add()
+> > > > > > meset to 0 just mt76_tx_cb size (that is 16 bytes) I can't
+> > > > > > see how
+> > > > > > control.flags is overwritten. Am I missing something?
+> > > > > >
+> > > > > > struct mt76_tx_cb {
+> > > > > >         long unsigned int          jiffies;
+> > > > > > /*     0     8 */
+> > > > > >         u16                        wcid;
+> > > > > > /*     8     2 */
+> > > > > >         u8                         pktid;
+> > > > > > /*    10     1 */
+> > > > > >         u8                         flags;
+> > > > > > /*    11     1 */
+> > > > > >
+> > > > > >         /* size: 16, cachelines: 1, members: 4 */
+> > > > > >         /* padding: 4 */
+> > > > > >         /* last cacheline: 16 bytes */
+> > > > > > };
+> > > > >
+> > > > > Hi Lorenzo,
+> > > > >
+> > > > > The mt76_tx_cb is placed at status.status_driver_data (offset
+> > > > > 32).
+> > > > > It overlaps with hw_key, flags and enqueue_time in the control
+> > > > > union.
+> > > > >
+> > > > > static inline struct mt76_tx_cb *mt76_tx_skb_cb(struct sk_buff
+> > > > > *skb)
+> > > > > {
+> > > > > BUILD_BUG_ON(sizeof(struct mt76_tx_cb) >
+> > > > >     sizeof(IEEE80211_SKB_CB(skb)->status.status_driver_data));
+> > > > > return ((void *)IEEE80211_SKB_CB(skb)-
+> > > > > >status.status_driver_data);
+> > > > > }
+> > > >
+> > > > Hi Roy,
+> > > >
+> > > > I still do not understand since mt76_tx_status_skb_add() sets to
+> > > > 0 just sizeof
+> > > > of mt76_tx_cb, that according to pahole is 16 bytes, so it can't
+> > > > overwrite
+> > > > hw_key pointer (whose offset respect to the beginning of the
+> > > > control struct is
+> > > > 24, 32 - 8).
+> > > >
+> > > > Regards,
+> > > > Lorenzo
+> > > >
+> > > > >
+> > > > > Regards,
+> > > > > Roy Luo
+> > >
+> > > Hi Lorenzo,
+> > >
+> > > The mt76_tx_status_skb_add() memset zero the 16 bytes starting from
+> > > status.status_driver_data (please see the above inline function
+> > > shared
+> > > in my last response) whose offset with respect to the beginning of
+> > > the control/status union is exactly 24 (32 - 8) instead of 0.
+> > >
+> > > Regards,
+> > > Roy Luo
+> >
+> > Hi Roy,
+> >
+> > I can see the issue now, I was confusing status.status_driver_data
+> > with
+> > driver_data. You are right, we have an issue here. However, copying
+> > all the
+> > ieee80211_tx_info struct seems a bit overkill, what do you think?
+> > Moreover, we have the same issue for various chipsets (e.g. mt7925
+> > and
+> > mt7915).  I guess we should try to find a global solution for the
+> > problem.
+> >
+> > Regards,
+> > Lorenzo
 >
-> Add runtime PM reference counting to the mhi_net data path to keep the
-> controller active for the duration of TX, RX, and buffer management
-> operations. Enable runtime PM during probe and take/release references
-> explicitly around these critical paths.
+> What about adding an helper for cb operation?
 >
-> Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.co=
-m>
-> ---
->  drivers/net/mhi_net.c | 39 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 39 insertions(+)
->
-> diff --git a/drivers/net/mhi_net.c b/drivers/net/mhi_net.c
-> index ae169929a9d8..5d7f9ccdb17b 100644
-> --- a/drivers/net/mhi_net.c
-> +++ b/drivers/net/mhi_net.c
-> @@ -9,6 +9,7 @@
->  #include <linux/mod_devicetable.h>
->  #include <linux/module.h>
->  #include <linux/netdevice.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/skbuff.h>
->  #include <linux/u64_stats_sync.h>
->
-> @@ -76,11 +77,19 @@ static netdev_tx_t mhi_ndo_xmit(struct sk_buff *skb, =
-struct net_device *ndev)
->         struct mhi_device *mdev =3D mhi_netdev->mdev;
->         int err;
->
-> +       err =3D pm_runtime_get(&mdev->dev);
-> +       if (err < 0 && err !=3D -EINPROGRESS) {
-> +               dev_err(&mdev->dev, "pm_runtime_get failed %d\n", err);
-> +               pm_runtime_put_noidle(&mdev->dev);
-> +               goto exit_drop;
-> +       }
+> +void
+> +mt76_tx_status_skb_cb_add(struct mt76_dev *dev, struct sk_buff *skb,
+> +                         struct mt76_wcid *wcid, int pid)
+> +{
+> +       struct mt76_tx_cb *cb =3D mt76_tx_skb_cb(skb);
 > +
+> +       memset(cb, 0, sizeof(*cb));
+> +
+> +       spin_lock_bh(&dev->status_lock);
+> +       cb->wcid =3D wcid->idx;
+> +       cb->pktid =3D pid;
+> +       spin_unlock_bh(&dev->status_lock);
+> +}
+> +EXPORT_SYMBOL_GPL(mt76_tx_status_skb_cb_add);
+>
+> And add this for each chipset.
+>
+> index 061ab66..d0b67a2 100644
+> --- a/mt7996/mac.c
+> +++ b/mt7996/mac.c
+> @@ -1108,6 +1108,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev,
+> void *txwi_ptr,
+>         if (!is_8023 || pid >=3D MT_PACKET_ID_FIRST)
+>                 mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb,
+> wcid, key,
+>                                       pid, qid, 0);
+> +       mt76_tx_status_skb_cb_add(dev, tx_info->skb, wcid, pid);
+>
+>
 
-I am wondering what the value is in pushing this PM responsibility to
-each individual MHI client driver and requiring every MHI operation to
-be bracketed with runtime PM handling.
+I would prefer to split the cb init logic out of
+mt76_tx_status_skb_add() and add a dedicated helper:
 
-What does the client driver know here that the MHI core itself cannot
-handle centrally? It feels like ensuring the controller is
-runtime-active during transfer could be handled generically in the
-framework instead of duplicating the same logic in every client.
+  /*
+   * Must be called only after all TXWI/TXP code has consumed
+   * IEEE80211_SKB_CB(skb)->control, since this switches skb->cb to the
+   * mt76 tx status tracking overlay.
+   */
+  void
+  mt76_tx_status_skb_init(struct mt76_dev *dev, struct mt76_wcid *wcid,
+              struct sk_buff *skb, int pktid)
+  {
+      struct mt76_tx_cb *cb =3D mt76_tx_skb_cb(skb);
 
->         err =3D mhi_queue_skb(mdev, DMA_TO_DEVICE, skb, skb->len, MHI_EOT=
-);
->         if (unlikely(err)) {
->                 net_err_ratelimited("%s: Failed to queue TX buf (%d)\n",
->                                     ndev->name, err);
->                 dev_kfree_skb_any(skb);
-> +               pm_runtime_put(&mdev->dev);
->                 goto exit_drop;
->         }
->
-> @@ -251,6 +260,7 @@ static void mhi_net_ul_callback(struct mhi_device *mh=
-i_dev,
->                 /* MHI layer stopping/resetting the UL channel */
->                 if (mhi_res->transaction_status =3D=3D -ENOTCONN) {
->                         u64_stats_update_end(&mhi_netdev->stats.tx_syncp)=
-;
-> +                       pm_runtime_put(&mdev->dev);
->                         return;
->                 }
->
-> @@ -261,6 +271,7 @@ static void mhi_net_ul_callback(struct mhi_device *mh=
-i_dev,
->         }
->         u64_stats_update_end(&mhi_netdev->stats.tx_syncp);
->
-> +       pm_runtime_put(&mdev->dev);
->         if (netif_queue_stopped(ndev) && !mhi_queue_is_full(mdev, DMA_TO_=
-DEVICE))
->                 netif_wake_queue(ndev);
->  }
-> @@ -277,6 +288,12 @@ static void mhi_net_rx_refill_work(struct work_struc=
-t *work)
->
->         size =3D mhi_netdev->mru ? mhi_netdev->mru : READ_ONCE(ndev->mtu)=
-;
->
-> +       err =3D pm_runtime_resume_and_get(&mdev->dev);
-> +       if (err) {
-> +               dev_err(&mdev->dev, "pm_runtime_resume_and_get failed %d\=
-n", err);
-> +               return;
-> +       }
-> +
->         while (!mhi_queue_is_full(mdev, DMA_FROM_DEVICE)) {
->                 skb =3D netdev_alloc_skb(ndev, size);
->                 if (unlikely(!skb))
-> @@ -296,6 +313,7 @@ static void mhi_net_rx_refill_work(struct work_struct=
- *work)
->                 cond_resched();
->         }
->
-> +       pm_runtime_put(&mdev->dev);
->         /* If we're still starved of rx buffers, reschedule later */
->         if (mhi_get_free_desc_count(mdev, DMA_FROM_DEVICE) =3D=3D mhi_net=
-dev->rx_queue_sz)
->                 schedule_delayed_work(&mhi_netdev->rx_refill, HZ / 2);
-> @@ -362,20 +380,41 @@ static int mhi_net_probe(struct mhi_device *mhi_dev=
-,
->
->         SET_NETDEV_DEV(ndev, &mhi_dev->dev);
->
-> +       pm_runtime_no_callbacks(&mhi_dev->dev);
-> +       err =3D devm_pm_runtime_set_active_enabled(&mhi_dev->dev);
-> +       if (err)
-> +               return err;
-> +
-> +       err =3D pm_runtime_resume_and_get(&mhi_dev->dev);
-> +       if (err) {
-> +               dev_err(&mhi_dev->dev, "pm_runtime_resume_and_get failed =
-%d\n", err);
-> +               return err;
-> +       }
-> +
->         err =3D mhi_net_newlink(mhi_dev, ndev);
->         if (err) {
->                 free_netdev(ndev);
-> +               pm_runtime_put(&mhi_dev->dev);
->                 return err;
->         }
->
-> +       pm_runtime_put(&mhi_dev->dev);
->         return 0;
->  }
->
->  static void mhi_net_remove(struct mhi_device *mhi_dev)
->  {
->         struct mhi_net_dev *mhi_netdev =3D dev_get_drvdata(&mhi_dev->dev)=
-;
-> +       int err;
-> +
-> +       err =3D pm_runtime_resume_and_get(&mhi_dev->dev);
-> +       if (err)
-> +               dev_err(&mhi_dev->dev, "pm_runtime_resume_and_get failed =
-%d\n", err);
->
->         mhi_net_dellink(mhi_dev, mhi_netdev->ndev);
-> +
-> +       if (!err)
-> +               pm_runtime_put(&mhi_dev->dev);
->  }
->
->  static const struct mhi_device_info mhi_hwip0 =3D {
->
-> --
-> 2.34.1
->
+      memset(cb, 0, sizeof(*cb));
+
+      if (wcid)
+          cb->wcid =3D wcid->idx;
+      cb->pktid =3D pktid;
+  }
+  EXPORT_SYMBOL_GPL(mt76_tx_status_skb_init);
+
+
+Then
+
+  pid =3D mt76_tx_status_skb_add(...);
+  ... write TXWI/TXP while info->control is still valid ...
+  mt76_tx_status_skb_init(...); to fix all drivers under mt76/
+
+  Reasons:
+
+  1. The helper does not need its own spinlock.
+mt76_tx_status_skb_add() already protects the idr/list update with
+status_lock; this helper only initializes the skb-local cb overlay.
+  2. wcid can be NULL on some paths, so the helper should guard against tha=
+t.
+  3. mt76_tx_status_skb_init() should be called after
+mt76_tx_status_skb_add() and after all TXWI/TXP write helpers in each
+mt76 driver. The same skb cb aliasing issue can potentially affect all
+drivers that consume IEEE80211_SKB_CB(skb)->control after calling
+mt76_tx_status_skb_add().
+  4.  The comment is useful because the ordering requirement is easy
+to miss: mt76_tx_status_skb_init() clears the skb cb area used by
+  IEEE80211_SKB_CB(skb)->control, so it must run only after TXWI/TXP
+setup has finished reading that control data.
 
