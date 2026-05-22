@@ -1,213 +1,203 @@
-Return-Path: <linux-wireless+bounces-36783-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36784-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKEoAfWVD2o1NgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-36783-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 01:32:05 +0200
+	id EOVvBH7jD2rGRAYAu9opvQ
+	(envelope-from <linux-wireless+bounces-36784-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 07:02:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE685ACC62
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 01:32:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8755AEDE8
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 07:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0FEE30459C4
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 May 2026 23:25:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EAE8B301E94C
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 04:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75552E5B02;
-	Thu, 21 May 2026 23:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0649235F5E1;
+	Fri, 22 May 2026 04:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JS07uhtn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GbeIv5MT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914E730594F
-	for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 23:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6127D357D02
+	for <linux-wireless@vger.kernel.org>; Fri, 22 May 2026 04:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779405904; cv=none; b=FVozY8iyaA5rL8ckEOS/fnqJ6ZKd/ohXxoWDkQgAu4iBU/1WAX6eJZvd0pN/hmN3vQQp52WWcgESKhGb8NeffjWv7VpFl3Z8GW8AfRr6kD8uTalMXFcFCIYVLUtrrWNMAGow1DuRUR9BZh/4z41dBdKk10yYbZo30BkopZ6y4kE=
+	t=1779425727; cv=none; b=hQAGYO1vYm+BVHSoh4/v2BUYlx2auu8qFatXQW83RFK2C4CUlTRyP53mp2OBa72LCbKfbQSPyjfTvHKvNEMQvZYdzf06BHiEwIBioT8Z1p1hTityb8GBXhTEyM3sUfVSYvXanYDPpefLuWyiW6VKJO0zMTO6TIUbrofh2GjfM/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779405904; c=relaxed/simple;
-	bh=caQzFBVz9+JRDYs3VPB+WZdfbYRu03k6zu3PTsCnwLw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SNtjDPBLeHPinHNC8QOP4eKlqCvid89lu2EJszMeKYLxOfGnTTJTCQQvtIqmQRIFyDtmKg4gSxSPdRukF3OdM7lan0HbcdBsFCTGmA80q/xUeGumvEnOV8ZgdblOAq5bKfloPgOQLVgWXqhJ0sXhQXv6AMfZ3cXxGJ85OOKwMi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JS07uhtn; arc=none smtp.client-ip=209.85.215.169
+	s=arc-20240116; t=1779425727; c=relaxed/simple;
+	bh=B9CAhNAdGTp5Zt5LCmbUDLKXezoz9dQvKZMGvVbfxrs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V9+gCVj4IoPXGGKmhNTXcSI9mQSHhoVm54Rd4TQuHpE2sT+01IouSh4gDBjXkET8B4afYhAs2jlOEXHxazUf3yxdclCc7kraeRGUOuykgP0sCYNfFnfa7ViXsP9C3PvuctTBtacOyC/bvLa7GDWc77AmlMdLplIUYRL/Lyh+oQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GbeIv5MT; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c798fc1a28cso3010316a12.3
-        for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 16:25:03 -0700 (PDT)
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5a8891febd2so9480499e87.1
+        for <linux-wireless@vger.kernel.org>; Thu, 21 May 2026 21:55:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779405903; x=1780010703; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/shh+HWrmrsrUU3hIQCrHnvACFJA2W4RqXWRdx38L90=;
-        b=JS07uhtn8hRJksHVMFGGpieV1/TsCdFck0LGbKU6vjOOD7JN+SxMRzqaIEJhCbmWWv
-         aQSK+YU5jLIExFny71lQt8aAJBzWwOo/qfzyE9aPk173tar5VBxa7OzpGu94h4MLsU3A
-         W1eLr+KmNRwde31neUWKaTdWsScqBsYf+LGvhYLCQDFP7NFPa3EI5L4wPFot0dEHxc8V
-         +pOG8wRHBzaUPzdHES8hkmJkBsRUlA7d5Qj85M9OgsyjLNR8D8SDhLzYSKUC1xnv8Xgb
-         qQL2bEnveMxNQwvWz2TfC3lsmIC0RNbetfdnTYtzaILMyaBQerc6mhHdBoZW8iY7uGIi
-         uGIw==
+        d=gmail.com; s=20251104; t=1779425724; x=1780030524; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2uaBSQpnXDZ0Lr2vqL2X8w5SaBUCpNSkuNqugybr2/A=;
+        b=GbeIv5MTw2u/PaO2jrKBK2QR0+f6vbEfqatUpYeF/bCRKRhpq6G8Yn6bHVqyKbI1nO
+         6aflGJoaJ4FzfLZN2vCoCXevRZkYXwZ0ohRvtIJXvxt2FB4+k9M4FpvxB9W3y197bLcX
+         jzZOqcdFQ6HV/axNzl0q6d65TSOGZM1FYwEzSzmHuAQfon6HxozChLLd9/L69PZ6wO+o
+         BkUjjOuiW5GpBTuadz6fKqNuP3bZ2aGwkn2/iHq1LfFsfqp/JKOnGWjKayLekJ9Bk1L2
+         iKO/ICx3ULCTvLSVIqiJXbMEUeDgTJ6tlBe24etov6zbxICSiBCXgQ+LB7PjnK3fwgt5
+         V9lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779405903; x=1780010703;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/shh+HWrmrsrUU3hIQCrHnvACFJA2W4RqXWRdx38L90=;
-        b=DY5JTwZifPePuimEJ9SvQVJ654MgMeyIIENZ+DHk5+wJohd+i7TP5tpLVWeYAMzDnN
-         Biunv/lGrBuHiqlbG7OATdPfvNxN3pSEpz7psUbuVPy5X2jrDoV3ntPR++nOd2lpy6mZ
-         WWK2oxq6kRkcaE/9yS70HFqwKLa9Zfb3alqwdUD/aoy/Axf3ZLa92L6JJidqnJwyjsHs
-         vHXEY+ZyEKuiDVQWsMsBmVKeQX52MtsnH81a58HbCW2p1GQZPZatg7fCo0vg7I88LRpO
-         LVNMVFgVOF5e16zc/dFl0Me/DVKrdRKBKL7THtSiwCIUIKpwsGEsr9wf4jPEPL2qSWHg
-         nDEQ==
-X-Gm-Message-State: AOJu0Yw7cjZVM8MIEehsyTe1bFLhz5zdvvjg2ZUUrGp/R6lkLM61YXV7
-	V/qMjHPmieEIUsVmDUHpY7Y5Nb0CZn6weTo2F7bOMYh3g1068gcy7AgRpX1smg==
-X-Gm-Gg: Acq92OFhOd/jwIqIb8DNagzow0oNLbk5kC+ND1Z0BapXcdSySE4t2A3McBP3+rQeDay
-	4hQCU7D6yvZlPkaWMxHJEF++qo0FW+kZy5bBGWBFb2h3mzcNux2FGEOGoUDt6jSksjZpXxDGFFU
-	A/cVRj2tg4A58YK/ObqrldnAW2eF/hx2XDfwQukuNKxTi9u2BNWTPv/+rmCa2Ao3BHO3hrp03eR
-	n+1J2Gh09nTWchykG3BSDwWhJTjrp2FGlqUOaA7he45AWdDGKZ1B0DnUhkiWgbcz0vhFo1R4lZo
-	vlP+sI3SXLZyPrP0/UG0u1VLJOwL2l4wRp/gqtuqAUFUQaVXrsgSmRU3guou5yKutCKhNe80u71
-	eQyfBptsH/2ol8hPnIR7R1AJUs/6e1rwRPKtY9SyajAEvD0U8uCfeOzjd6tgVFb/XyL9omx49wc
-	Vs0YlPu4YQRTqZtThj6oBrvSsTBz54nZjf1bPoG3g0GFsJiZA0nxwB7rR9MLiB/UJHZyCY77Uom
-	2S7xAp/cUcpkmCZwMRZ8cqUHTrrUVyRx2I=
-X-Received: by 2002:a05:6a21:4d14:b0:3a3:a9c4:3d60 with SMTP id adf61e73a8af0-3b328e74760mr958894637.27.1779405902722;
-        Thu, 21 May 2026 16:25:02 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841628795d5sm185466b3a.38.2026.05.21.16.25.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 16:25:02 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH ath-next] wifi: ath9k: improve stability on AR9330/AR9340
-Date: Thu, 21 May 2026 16:24:45 -0700
-Message-ID: <20260521232445.261915-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        d=1e100.net; s=20251104; t=1779425724; x=1780030524;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2uaBSQpnXDZ0Lr2vqL2X8w5SaBUCpNSkuNqugybr2/A=;
+        b=G/jZ9Nu7sno6KFfcCM2aSSUrBeR8ASmUxLANN58bdUjtR3/TDpAw0zLP5iB9rBoNiv
+         smWJFg8zsVctiWQ4MzYwzG5ZVYcyGUt4CQlpGMVFZ59k4ghoAuLi3yIl5eiNOeXCMdeX
+         qogIvHsdkvk3zd576fs2CloMhJD0E9R+Yb2oRMLkjwJ50sthduD5ZOUn4QxR0XH4GmcW
+         O5Vgi9tHKQ3TXED8MNPq96fvbAOdw0I6v85oArfI6LCgmi3K/uN0fxFr4qyWjOdFPlHa
+         eQ8IECBJPqHWFEv5tViiZJcaI4DIR9Q6WDNKFTMqDsGFVGQKhMaaVI6hsIXE1q/hjhvL
+         Rn7w==
+X-Forwarded-Encrypted: i=1; AFNElJ9WrfD9c4sCvxaJeDdW1jdhxM9Z8aS5Jx0l7bk6e0X3U9rGL7lsgcdr2GS03NkPmck8QAysVTa/O4LW2dV8yA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy624dxuXUGIlOA3s28QEBaIQhtNFZ169C33I+03VJSuxMcspwr
+	fx/yuj/bU2fNoRwGmivCpWvB7RQSYmJMerPdu+tEDPGODxJOF1TOW/s6
+X-Gm-Gg: Acq92OFwa742RAUFQmWIlzwPoplDgKM4XShlCj4TZyCFCDfxqry3wAJlmF8Z++ZB1Y6
+	lZx3EQsz5qumFKNgrHWcr2hKeTBNghguB1wDgw1My2gCkC1U3wCK3xdJuocVA7hFf/UhrlMXCqP
+	44w0rbD3kJAGz9SadPV91xccO5QeWr+gv6f3KsG155EoIdi7I/oNPRZsNPVRWIsS4bxA+HTW4p6
+	j5+N+iCtNouf99fBycY8UC0UQMc26PyPQHXZWp40AMp6st2yUMR/z+ubMTzsOvu3jBghxeNEf8F
+	tXW35TnRn3WPvRhzcRiMOWmw1pQy7DU5Y/OcKDFiWT25xCcoSG/1yuNraQHPUkr70atw/2Ag+wa
+	hHfHt26PCdz7OhDK3anRK68sbqHRFbCqwjaWesXMh5XwwY+yDYQ4WgqqCq5OlmQ2c/RA3Gvziab
+	oCR2fC2PusWqqI8hfq9BwFDXQoR93Z1jIWyJ+XesTX+zx1OKU5iErXzyJ618CJgex2VSPq5U9h4
+	3NZHANGO4e2X1VC4dE=
+X-Received: by 2002:a05:6512:2552:b0:5a8:9988:f1d5 with SMTP id 2adb3069b0e04-5aa323bc03emr387730e87.24.1779425723236;
+        Thu, 21 May 2026 21:55:23 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aa32cb36d2sm144533e87.13.2026.05.21.21.55.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 May 2026 21:55:22 -0700 (PDT)
+Message-ID: <b79d8ad9-f36e-4769-9dc2-58baefe23000@gmail.com>
+Date: Fri, 22 May 2026 07:55:19 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/10] [v3] input: gpio-keys: make legacy gpiolib optional
+To: Arnd Bergmann <arnd@kernel.org>, linux-gpio@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Christian Lamparter <chunkeey@googlemail.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
+ <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Lee Jones <lee@kernel.org>,
+ Pavel Machek <pavel@kernel.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Jonas Gorski <jonas.gorski@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-leds@vger.kernel.org, netdev@vger.kernel.org
+References: <20260520183815.2510387-1-arnd@kernel.org>
+ <20260520183815.2510387-3-arnd@kernel.org>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20260520183815.2510387-3-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36783-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36784-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,googlemail.com,sipsolutions.net,iki.fi,kemnade.info,baylibre.com,kernel.org,atomide.com,alpha.franken.de,physik.fu-berlin.de,redhat.com,alien8.de,linux.intel.com,zytor.com,gmail.com,broadcom.com,lunn.ch,davemloft.net,google.com,lists.infradead.org];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[40];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mazziesaccount@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5BE685ACC62
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5F8755AEDE8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Setting a couple of registers on these platforms improves stability.
+On 20/05/2026 21:38, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Most users of gpio-keys and gpio-keys-polled use modern gpiolib
+> interfaces, but there are still number of ancient sh, arm32 and x86
+> machines that have never been converted.
+> 
+> Add an #ifdef block for the parts of the driver that are only used on
+> those legacy machines.
+> 
+> The two Rohm PMIC drivers use a gpio-keys device without an actual GPIO,
+> passing an IRQ number instead. In order to keep this working both with
+> and with CONFIG_GPIOLIB_LEGACY, change the gpio-keys driver to ignore
+> the gpio number if an IRQ is passed.
+> 
+> Link: https://lore.kernel.org/all/b3c94552-c104-42e3-be15-7e8362e8039e@gmail.com/
+> Link: https://lore.kernel.org/all/afJXG4_rtaj3l2Dk@google.com/
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> v3: resend
+> v2: skip the fake GPIO number passing from mfd
+> 
+> The removal of the arm platforms using this is not yet going to happen
+> for 7.2, and Dmitry's changes for the Rohm drivers have not yet
+> made it into linux-next as of 2026-05-20, so for the moment I
+> would still like to see this patch get merged, even if we are
+> closing in on completely removing the legacy gpio support in
+> the gpio_keys driver, so we can make CONFIG_GPIOLIB_LEGACY
+> default-disabled sooner.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
+I am (still) all fine with this, even though I like Dmitry's set. I 
+suppose you already have a plan for merging this, but I still have to 
+ask - why the MFD changes aren't in own patch? I feel it would have 
+simplified merging, backporting, reviewing and reverting if needed.
+
+Well, other than that:
+
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+
+Yours,
+	-- Matti
+
 ---
- drivers/net/wireless/ath/ath9k/hw.c  | 25 +++++++++++++++++++++++++
- drivers/net/wireless/ath/ath9k/phy.h |  3 +++
- 2 files changed, 28 insertions(+)
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index 05c95e67a853..5168c02bb73c 100644
---- a/drivers/net/wireless/ath/ath9k/hw.c
-+++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -248,6 +248,19 @@ void ath9k_hw_get_channel_centers(struct ath_hw *ah,
- 		centers->synth_center + (extoff * HT40_CHANNEL_CENTER_SHIFT);
- }
- 
-+static inline void ath9k_hw_disable_pll_lock_detect(struct ath_hw *ah)
-+{
-+	/* On AR9330 and AR9340 devices, some PHY registers must be
-+	 * tuned to gain better stability/performance. These registers
-+	 * might be changed while doing wlan reset so the registers must
-+	 * be reprogrammed after each reset.
-+	 */
-+	REG_CLR_BIT(ah, AR_PHY_USB_CTRL1, BIT(20));
-+	REG_RMW(ah, AR_PHY_USB_CTRL2,
-+		(1 << 21) | (0xf << 22),
-+		(1 << 21) | (0x3 << 22));
-+}
-+
- /******************/
- /* Chip Revisions */
- /******************/
-@@ -1438,6 +1451,9 @@ static bool ath9k_hw_set_reset(struct ath_hw *ah, int type)
- 	if (AR_SREV_9100(ah))
- 		udelay(50);
- 
-+	if (AR_SREV_9330(ah) || AR_SREV_9340(ah))
-+		ath9k_hw_disable_pll_lock_detect(ah);
-+
- 	return true;
- }
- 
-@@ -1537,6 +1553,9 @@ static bool ath9k_hw_chip_reset(struct ath_hw *ah,
- 		ar9003_hw_internal_regulator_apply(ah);
- 	ath9k_hw_init_pll(ah, chan);
- 
-+	if (AR_SREV_9330(ah) || AR_SREV_9340(ah))
-+		ath9k_hw_disable_pll_lock_detect(ah);
-+
- 	return true;
- }
- 
-@@ -1843,6 +1862,9 @@ static int ath9k_hw_do_fastcc(struct ath_hw *ah, struct ath9k_channel *chan)
- 	if (AR_SREV_9271(ah))
- 		ar9002_hw_load_ani_reg(ah, chan);
- 
-+	if (AR_SREV_9330(ah) || AR_SREV_9340(ah))
-+		ath9k_hw_disable_pll_lock_detect(ah);
-+
- 	return 0;
- fail:
- 	return -EINVAL;
-@@ -2074,6 +2096,9 @@ int ath9k_hw_reset(struct ath_hw *ah, struct ath9k_channel *chan,
- 		ath9k_hw_set_radar_params(ah);
- 	}
- 
-+	if (AR_SREV_9330(ah) || AR_SREV_9340(ah))
-+		ath9k_hw_disable_pll_lock_detect(ah);
-+
- 	return 0;
- }
- EXPORT_SYMBOL(ath9k_hw_reset);
-diff --git a/drivers/net/wireless/ath/ath9k/phy.h b/drivers/net/wireless/ath/ath9k/phy.h
-index 4a1b99238ec2..af667a3629b1 100644
---- a/drivers/net/wireless/ath/ath9k/phy.h
-+++ b/drivers/net/wireless/ath/ath9k/phy.h
-@@ -48,6 +48,9 @@
- #define AR_PHY_PLL_CONTROL 0x16180
- #define AR_PHY_PLL_MODE 0x16184
- 
-+#define AR_PHY_USB_CTRL1	0x16c84
-+#define AR_PHY_USB_CTRL2	0x16c88
-+
- enum ath9k_ant_div_comb_lna_conf {
- 	ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2,
- 	ATH_ANT_DIV_COMB_LNA2,
--- 
-2.54.0
-
+~~ When things go utterly wrong vim users can always type :help! ~~
 
