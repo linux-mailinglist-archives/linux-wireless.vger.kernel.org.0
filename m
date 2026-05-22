@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-36814-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36815-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HtMI99IEGrzVgYAu9opvQ
-	(envelope-from <linux-wireless+bounces-36814-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 14:15:27 +0200
+	id iAKODytJEGrzVgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-36815-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 14:16:43 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEA75B3B4E
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 14:15:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF395B3B7B
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 14:16:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8302312FB70
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 12:04:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B31E73041A22
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 May 2026 12:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F9A366822;
-	Fri, 22 May 2026 12:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C503F3803DD;
+	Fri, 22 May 2026 12:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="omIQXAyo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RGYlecAU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F209364047;
-	Fri, 22 May 2026 12:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1EF376A00;
+	Fri, 22 May 2026 12:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779451381; cv=none; b=NtI1aP/aLialnmiil65rrjmzjz3MXXfr5jN2h+R1Yh3iFC8jNr0g2CFcOZoD2fUzYi0uwnI9/G7ydcJqvw7mbzFcT7Fj49JGjpcSEOpsMGV0uZL5pBxm3QOoEc7H41TMpXJCSOJQhnKEOJcixt/M4yoxuxrdscheip1kP3P2N8k=
+	t=1779451399; cv=none; b=VGAAJxCdJgZQD8l6wuy5ngqsjT6wKk+se7EbUx9Vgtc9RWvVE0b6UuP4UAFTEQmEXSEFB13tzXosRen7EaV/KjtzaRSXBK7CGPNiLNJI76VeS4BQW17sy+d1p8m1sSUIjsUdPOqJUPYt/qE78QSYbT9CvztkWbzDP1/fjOJ1Y/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779451381; c=relaxed/simple;
-	bh=ELz8UG0Mt3NxaxlOsH4sXk1VvXq7G9YaHBtwCJBufEQ=;
+	s=arc-20240116; t=1779451399; c=relaxed/simple;
+	bh=at1C8YDY/wGOzV+ETAwWHh61G+w+aU1TRFLVXFmiWus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lb1xdCTv7dWYxztq+ENMAKNgTh2AJturOFRrKk0G0jSd0gXxkpBzDTHNuY49nJA0s4UxS5YgbGw8K+ntcLucf67M9GnX6EsTshwOSPfP4VF70zzt0BReOwRQylO8c8WD1TVZJ7PSaZi/0rbOwTHhD0JSALdgOeSGVMiNXONKQb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=omIQXAyo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B611F000E9;
-	Fri, 22 May 2026 12:02:45 +0000 (UTC)
+	 MIME-Version; b=quvM6fqt+cLiFzHlW5DjAWnIAoMbDFaOcHsC4T1SrmEgDR2a8Mry6gzrieo4xYbNdoi0lKZ3xuPfj16+wSJPE+GhSP0xacACG+OsHKXYCXqF6p9PRd3SBtJCsl12OYng2sOKcQlYHimaCtlIKL78g+EPMs8nnfSi1J+RA7ePgmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RGYlecAU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AD61F00A3D;
+	Fri, 22 May 2026 12:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779451380;
-	bh=u/kEMqShFzt+y5ml+3T0yGQOr4WqkdCyZlIk59GqCQU=;
+	s=k20260515; t=1779451396;
+	bh=pVys0i6YW7m5nVQX1tYMz8tPVGIHT4So0swbXtcUKW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=omIQXAyoc98uS/cwiNPCyfpPoVqArLxPShlrerCXgY5ZYBLVTdBkkcMdPSuaAcThW
-	 8YrsLBRW33pPlHKzoVJL9pSV9vkvUECtlePU+J+E6KvMx5MAe62/Y/7/TPDaIFaiaI
-	 cY1nF1Ty3Vzz5/m7ibLiI/ReOBJlquVwt1gPRN7xlwHPk8USM8qCZ+wIXnkEv9fqV3
-	 k1WIkDcc/gbkHLaStceniK1hDm5yPyrl84TekPR8a1LyhhWwA0zI+JGOQDPKshT7Y3
-	 g05yNd3Ml4O84a4tekReYM8Pu/pTlIm8FjjjQgGKLqFbPCZtWdJSKzPy6SaWHFklJz
-	 kdGfkoeuI8Y1Q==
+	b=RGYlecAUmM/40zW9NM0I0+yzLzj19U6KHY5Zkr5HpPkpfOQcM3TI9K2k8aMvDuY9M
+	 w19KzAiq4zmmR7vUXAUjGmAN45kYA6FW1Mi/0HrswPWZgLQq41EIm3ch4OcVXTq2Tu
+	 QbKnjU6JoLInH384Ek6hu+5S0QNu3gIHA7EZ6fbSpG5mxgGu278Kp0bWyx0O+4SZGn
+	 AEYnJfEASAsosHSrjEK/t4cRWhbIrQbwFYx5chwlrr8jUw3Vo8ktS+Dc11H2DQHR7N
+	 TSYmxjC3MLlFigXszv72xe55EGniGsHfAVNt2aSUB6Zki/vCu06ETf79bI2PX1qJ/n
+	 qRMwAWfByfTWQ==
 From: Sumit Garg <sumit.garg@kernel.org>
 To: andersson@kernel.org
 Cc: linux-arm-msm@vger.kernel.org,
@@ -93,10 +93,11 @@ Cc: linux-arm-msm@vger.kernel.org,
 	apurupa@qti.qualcomm.com,
 	skare@qti.qualcomm.com,
 	linux-kernel@vger.kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: [PATCH v7 11/15] media: qcom: Pass proper PAS ID to set_remote_state API
-Date: Fri, 22 May 2026 17:29:32 +0530
-Message-ID: <20260522115936.201208-12-sumit.garg@kernel.org>
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Alex Elder <elder@riscstar.com>
+Subject: [PATCH v7 12/15] net: ipa: Switch to generic PAS TZ APIs
+Date: Fri, 22 May 2026 17:29:33 +0530
+Message-ID: <20260522115936.201208-13-sumit.garg@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260522115936.201208-1-sumit.garg@kernel.org>
 References: <20260522115936.201208-1-sumit.garg@kernel.org>
@@ -109,75 +110,103 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[49];
-	TAGGED_FROM(0.00)[bounces-36814-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org,riscstar.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36815-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[50];
 	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: 3AEA75B3B4E
+	NEURAL_HAM(-0.00)[-0.998];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[riscstar.com:email,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8CF395B3B7B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Sumit Garg <sumit.garg@oss.qualcomm.com>
 
-As per testing the SCM backend just ignores it while OP-TEE makes
-use of it to for proper book keeping purpose.
+Switch ipa client driver over to generic PAS TZ APIs. Generic PAS TZ
+service allows to support multiple TZ implementation backends like QTEE
+based SCM PAS service, OP-TEE based PAS service and any further future TZ
+backend service.
 
-Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Tested-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com> # Lemans
-Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+Reviewed-by: Alex Elder <elder@riscstar.com>
 Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
 ---
- drivers/media/platform/qcom/iris/iris_firmware.c | 2 +-
- drivers/media/platform/qcom/venus/firmware.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ipa/Kconfig    |  2 +-
+ drivers/net/ipa/ipa_main.c | 13 ++++++++-----
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/iris/iris_firmware.c b/drivers/media/platform/qcom/iris/iris_firmware.c
-index b3c5281aea91..856fa6a79064 100644
---- a/drivers/media/platform/qcom/iris/iris_firmware.c
-+++ b/drivers/media/platform/qcom/iris/iris_firmware.c
-@@ -109,5 +109,5 @@ int iris_fw_unload(struct iris_core *core)
+diff --git a/drivers/net/ipa/Kconfig b/drivers/net/ipa/Kconfig
+index 01d219d3760c..a9aff1b7977d 100644
+--- a/drivers/net/ipa/Kconfig
++++ b/drivers/net/ipa/Kconfig
+@@ -6,7 +6,7 @@ config QCOM_IPA
+ 	depends on QCOM_RPROC_COMMON || (QCOM_RPROC_COMMON=n && COMPILE_TEST)
+ 	depends on QCOM_AOSS_QMP || QCOM_AOSS_QMP=n
+ 	select QCOM_MDT_LOADER
+-	select QCOM_SCM
++	select QCOM_PAS
+ 	select QCOM_QMI_HELPERS
+ 	help
+ 	  Choose Y or M here to include support for the Qualcomm
+diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
+index 788dd99af2a4..3cd9e44680e9 100644
+--- a/drivers/net/ipa/ipa_main.c
++++ b/drivers/net/ipa/ipa_main.c
+@@ -14,7 +14,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/types.h>
  
- int iris_set_hw_state(struct iris_core *core, bool resume)
- {
--	return qcom_pas_set_remote_state(resume, 0);
-+	return qcom_pas_set_remote_state(resume, core->iris_platform_data->pas_id);
- }
-diff --git a/drivers/media/platform/qcom/venus/firmware.c b/drivers/media/platform/qcom/venus/firmware.c
-index 3a38ff985822..3c0727ea137d 100644
---- a/drivers/media/platform/qcom/venus/firmware.c
-+++ b/drivers/media/platform/qcom/venus/firmware.c
-@@ -59,7 +59,7 @@ int venus_set_hw_state(struct venus_core *core, bool resume)
- 	int ret;
+-#include <linux/firmware/qcom/qcom_scm.h>
++#include <linux/firmware/qcom/qcom_pas.h>
+ #include <linux/soc/qcom/mdt_loader.h>
  
- 	if (core->use_tz) {
--		ret = qcom_pas_set_remote_state(resume, 0);
-+		ret = qcom_pas_set_remote_state(resume, VENUS_PAS_ID);
- 		if (resume && ret == -EINVAL)
- 			ret = 0;
- 		return ret;
+ #include "ipa.h"
+@@ -624,10 +624,13 @@ static int ipa_firmware_load(struct device *dev)
+ 	}
+ 
+ 	ret = qcom_mdt_load(dev, fw, path, IPA_PAS_ID, virt, phys, size, NULL);
+-	if (ret)
++	if (ret) {
+ 		dev_err(dev, "error %d loading \"%s\"\n", ret, path);
+-	else if ((ret = qcom_scm_pas_auth_and_reset(IPA_PAS_ID)))
+-		dev_err(dev, "error %d authenticating \"%s\"\n", ret, path);
++	} else {
++		ret = qcom_pas_auth_and_reset(IPA_PAS_ID);
++		if (ret)
++			dev_err(dev, "error %d authenticating \"%s\"\n", ret, path);
++	}
+ 
+ 	memunmap(virt);
+ out_release_firmware:
+@@ -758,7 +761,7 @@ static enum ipa_firmware_loader ipa_firmware_loader(struct device *dev)
+ 		return IPA_LOADER_INVALID;
+ out_self:
+ 	/* We need Trust Zone to load firmware; make sure it's available */
+-	if (qcom_scm_is_available())
++	if (qcom_pas_is_available())
+ 		return IPA_LOADER_SELF;
+ 
+ 	return IPA_LOADER_DEFER;
 -- 
 2.51.0
 
