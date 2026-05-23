@@ -1,220 +1,169 @@
-Return-Path: <linux-wireless+bounces-36827-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36828-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eD6jKAW5EWpupAYAu9opvQ
-	(envelope-from <linux-wireless+bounces-36827-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 May 2026 16:26:13 +0200
+	id 0nCZLYoNEmpSugYAu9opvQ
+	(envelope-from <linux-wireless+bounces-36828-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 May 2026 22:26:50 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD105BF5B2
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 May 2026 16:26:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5D35C0C19
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 May 2026 22:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6149B301690C
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 May 2026 14:25:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DCC2D30060BF
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 May 2026 20:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE603A6B94;
-	Sat, 23 May 2026 14:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13B4305E28;
+	Sat, 23 May 2026 20:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J/DjFZUA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e0hzSx9w"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913983A6B7E
-	for <linux-wireless@vger.kernel.org>; Sat, 23 May 2026 14:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779546314; cv=none; b=UQHA022ZDiKARznYZe59lS2mwHnkrFc7ILhSeXISlsy0EqnDQR/q8mDkyypnc5QDvRFaYtm23urEt+NeU/g9tmMlF7NsrRgbcSCCvNdINDqHzvsh3AJML7XGFggL7hI6gqwP5KEetwly6oOe46re8GBn2kM3cKEO6ScmgjzJ678=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779546314; c=relaxed/simple;
-	bh=fxeEt8WOJ8LIimxgCQJSjj/eTbmjRqeA5dJmCD7G15k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DGfsXnXaMQNWAoHLOUfqDhYre3X4wI7m37raJyKt5bonPkbinC3UcVC9tyz1PDJxiaC8QaH0ZNruktpJmUbbHIMpygSjOiiKGLdE/uRPzH4jSBVnLDQkMKm8TM5Jvn9zGGOg48/vT7bwTv+6K+AzKFTFRcx2cPm8psyd76hI6Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J/DjFZUA; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C29523815B
+	for <linux-wireless@vger.kernel.org>; Sat, 23 May 2026 20:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779568003; cv=pass; b=T1EBFR8Pr554bARneVAzIOfUXUGL1XKtGnjbwoV1BPOVYiUxNKi2pPCjFH2BtM6aqbN7h4n5LDUNUY9c1zVFdzdWGvsnIv/iTD1cIIXoz9Ua/ZcZjM5tymwaKbpEUAKzvy4QAfUgCEcrSrTLbOOHb5saWCU74SOoaCCA1CRSQMs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779568003; c=relaxed/simple;
+	bh=ZlTqI7/Esz6racKcJLmPp0H32Q+er7razNZXlboazKs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z/vtTKNnZgWHtUMYD3zBCYLVjQDawqoKuGjAq83rb5y0GyvIj6Gfe2QAPqnfO1y3eflYD9HZeGl4sqnvODXv0+ISkQXmN9vECCqK4BkHYuJweI8dPOrsdvf12zqAlOJMC2JiT8e4z20MIgEtvOxrJ1DVH68iuDK4A8NbSeEIyo4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e0hzSx9w; arc=pass smtp.client-ip=74.125.82.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8b701756684so99489746d6.1
-        for <linux-wireless@vger.kernel.org>; Sat, 23 May 2026 07:25:13 -0700 (PDT)
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3042a388168so2051021eec.1
+        for <linux-wireless@vger.kernel.org>; Sat, 23 May 2026 13:26:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779568001; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ix0Sxkyo8bBZoC+V16HtIFBX1uIAj8xjw6U/mOf0CZAHiOpNYWteH99udXCDI0uwxD
+         sQIlQbe70/mbuOshgOI1sQYMb5UGMfCCQeL7bXSVcPxHjdD0MDM5ObgFREZ+3ti8PCpQ
+         MJDKr4FaIZ6alk++CPQKR5eNeoKJS+h9V/ksGAVpC0fV1LvDb4ALleMO0l0b0MfthUpw
+         nzaI+eCKSEcy+pOluALrh+uD+dVT7wLH0kLiVB1fH/gOLsBnhc3DvUi5vYxJYkDt9NX/
+         hCNG86/5tlWxMB12wo4AtkB9Tk8vYA6TqRaQ3197mQOnc/ly724ZaBJ+2y4OoDm0Myii
+         y6zA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=K0RRuOCVndtk9EZIwaESanvVJKl8ey89m4jFMnjBZdo=;
+        fh=teK194+dSkJTUyQvGFnW+kIauoA8qv8LSRfoI0yF+zo=;
+        b=DNSklDimpP9Yd5fSzu7EeMos+8IQngVdz/RXYVATcANoGPBdhKhl4eUANAc92LsajJ
+         4oaeBWfJPsfT58dZzRoj+YROpGQ8fNiGyA2l6BFNG3lQdEJLFrgb3A0WgzwE9fycV5Yy
+         Pr2iAmF5QCcId0dzcJNTC098yKohR7MhYBmIZmb5LRyZrbo+/zKGQEnVGCeJgOn/GJ08
+         3x5MAuFk14TNQP9utLEZHzLDsQm6nhoVS9025DUohfHiz27UPWXbIUQlWVWWtbFMeSaM
+         chsJzlKiG4Ga5620fHd03qKNbmTT3cvZN+j9ZED9zgBZPIGrF7XE7FPIP9tuZyhR+VVd
+         TxFg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779546313; x=1780151113; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JsSvQplB7jvK5Z1Ih49srVWHDqYh9wF4q8heYj0Wpvo=;
-        b=J/DjFZUAP7r2Oqfeuf3Gc90NjKD73HXNb1UM8gRRjiQ2lpjd0sxv7k3KUx+ul/Rjck
-         lQAcT2xMignzVZDVWpM19nPdYD/d9Pa4ZFOoBgmKTWLIFCKDzFVrCCHliUYt32m82FbQ
-         INKiPVBQ9yEGHLYcvyEOs/F3SKDAs5pMpBTA3emBnTuE3HfaHxhFc+Q4shhhqJ30c5pm
-         rx6ZMardSB7sP0vvDd9ZIpXFuqx4sAxIBiRawwIZLbbqOJdu/EjMTgfHEFVhF6ysH1xB
-         Xur+zXDslG9179QE4QNdhTZopJBgRecFPo4iKH8zMcmIN3CIW8Y4HKvnBzB9rr4VjYIY
-         Giag==
+        d=gmail.com; s=20251104; t=1779568001; x=1780172801; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=K0RRuOCVndtk9EZIwaESanvVJKl8ey89m4jFMnjBZdo=;
+        b=e0hzSx9w02vcnGUZfe2zhNudeWcqak4espKUYj/HOBoKqOK8z2KcGuaop8UEPy2xlX
+         j26xT2z25TA9uS5ovRsTC6Nqxw4KOMDZ/NtnAWUzlY7xU8oWHGl/I9OZlhN4lJ/6Ey0u
+         Y4RbWbSBAY6Zsl9XIdqps3rNvBNPlMsBTNVfrR/8dbWUsIPNPnhPoAIGbIXnvFAtB3Os
+         JpPlM3rt11XMhrJE6Z6Y9FiR9RKKxMiebqq8NbWsitRZaReToG6wLjwZkgoi5xt/VS+N
+         RyceuwX1w1jX7sOqCVPzY8YtvTHAjZXBzw2fjP/pl/mPqQWGQKd+qIJhOsBh21fjPrVM
+         4Ppg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779546313; x=1780151113;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1779568001; x=1780172801;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JsSvQplB7jvK5Z1Ih49srVWHDqYh9wF4q8heYj0Wpvo=;
-        b=Id/yqhS+EMP6FQfFTKBZ7tsDRb54fTkAfvqQOegp1qnrKU41KpVKsGqcraFUd7QQ8B
-         rzOmlew3mgx9dVX1+XHNqqlWgrihdSW6hk59f/pHcyW49h/OAh13eU9QH937XmmZaTT/
-         xRb1b3OMcue0W+jHUAzFijZQr5X2N5rtyuGbf9BbTS4FyEJphYMW7b2fBMXmg1vTiEes
-         B52EXxzcpVJSbrqzFrqkguwGV1YRaI57X3ydtt1gqg2JI6u34WdekAyo0hh/Ronmiq8m
-         gCqE02okypdhMJN0RoJAFYlrdjOZKsxokX4yZba1N03M+VFogfgswTDJ4yGBQ8C/fyoV
-         lrKw==
-X-Forwarded-Encrypted: i=1; AFNElJ9OeQU6yHpYgCgmsfbyTSEw+dshWoVNv2sPQcNPLVpnF95A3JNC/oPwaVu01Dq11ruylJ07kID9eMvqpjpU/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFbchLXv+3k3QF4ZZERpLUJyHNDQjC71nF2gwBCNfj38Bqsuei
-	opc2pkJyzj1EMKi/DZKXUraTnS2y/e+v1lhZ5mAZea30XR5/SddiU1DFt/gC5RkMtJE=
-X-Gm-Gg: Acq92OHQ03rSB2IUZJ20vFQHjVlVOFfCecrVaeemQ5i9c+EIvZpLEv+BvQUQM2E3lri
-	s2UMN4iWLkDZa47ZgbSiHElGTX4NST/K18wIxS/t5qixlvFjrml0rFLmr5ZtUsTnyrPt3271AWe
-	64IYgObE9H6XbamKo9CWfWRWvo23Skr0JYkibDv6wTU/+DGX0MsFN3Q27X4Ag+ng5UF1b2q483a
-	INPyDrCgem55ZiBQu3OBq4TJSEiB8Vr4o99DEbOBO6cx5zabxpBmtbfHX3kaV7oY6qrU6NecJN0
-	Usaj7pqf89q2knX80uIfC1Fu1ObxPaHJiuhvio3v8bWA6ne5WiCCeHVEQsjcMmgcqghFSfJKz8L
-	DgQ3Vus/VJsHhvIxMOQs0PkdXFlYm0qppVxj+3NAvnHDlLI1jJcUpblnXt5vflsDzkVp9+b8NGV
-	mbnmz3tAAufIpKlT1+SLgoVLnOD/0VwXHdjo4/rK10tuqowBz8eSxS+W7UPnSlturGO0bJhcx0V
-	OiGb9xc8MGu25Ysvnua
-X-Received: by 2002:a05:6214:498b:b0:8ae:6293:78ca with SMTP id 6a1803df08f44-8cc7bee818fmr122390976d6.18.1779546312568;
-        Sat, 23 May 2026 07:25:12 -0700 (PDT)
-Received: from mobile5 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cc812e2018sm47914196d6.28.2026.05.23.07.25.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 May 2026 07:25:12 -0700 (PDT)
-From: Mike Bommarito <michael.bommarito@gmail.com>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: iwlwifi: mvm: handle SEC_UNKNOWN in non-AMPDU rx path
-Date: Sat, 23 May 2026 10:24:38 -0400
-Message-ID: <20260523142438.118284-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=K0RRuOCVndtk9EZIwaESanvVJKl8ey89m4jFMnjBZdo=;
+        b=k/mOdiDQtIdteDuPZrLUEtinqvxCDD5/WfaGUcjVUvxkjZQvDiOmqATB8BiPM1P7wb
+         +418Era5hi/KaUpfMtLFTj48prFu+dxJV+6e0YZVMG1CmpKNBXwE9WP4rGRCtQGkWVSy
+         ZxYmu+esZsz4AuI+zj/2NwKi9J7V//L11MLm9BpNovO0swmGNMakny2LEcXtCup+fVIY
+         mjSBDfD4nk/FCpFPK6zdH4ZT3A+q6RQkD1rrOqxP0eavRThdrPJVtqqCQqzcdYMCkdV3
+         8vbYsLlMkblzWFe5hYXjDbmFVT/xHLxs/tQn2ELylVbpJQxyQ32IBHGiwJksUk/zcShh
+         4zVw==
+X-Gm-Message-State: AOJu0Ywgqj5J03JoKXvgNxQ6MliU7faPCaM9KBSUv7nGsWlOGELvjgNR
+	eeDKCNDlOj3HSp0+K2UoJ7d2R9UDsg6WxLcaY+keWazl8cgHo+xDmQM/PJKqKiNe6SybMC9S2/Q
+	IJ9/Ux/gPC37uF0Y+3CnYOPFCmw18aeI=
+X-Gm-Gg: Acq92OEN5rI9/H9C22QSL5hCdM0Wvlf7wDTABOtjcT0XNEJnQRg4eWJ9SKhdwcGCF65
+	N10d2nJt9BNXdckT/3K5R3GXFUE/N5Z+GVybYZGmKFVTZTuGhvr4XzJbunWggIv+siPa2tIyZZ4
+	by21Ob/mt8QtzKmxZSmDz7aSYDj1oQ/r5qYxVVePRVwAFRqjUfGiAKBeZFdAKslYNJGczCWe0yj
+	NJUV6FXR6Okx+8mk0r/mAm2W4LVTj/KeC3Y4RjKNEneU0ea5S2y//ahmEvQ0C06Y3pVIa0WeQ2i
+	DFrCwponHXp5DPXQv3kN6KJ1Dgdvokg2+gvqtblD0Gd1mUZsS6o=
+X-Received: by 2002:a05:7301:5f14:b0:2ed:a58c:956 with SMTP id
+ 5a478bee46e88-304305282f1mr5832027eec.8.1779568001257; Sat, 23 May 2026
+ 13:26:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+References: <CAAecyrWNVtgywvchgHe1XLoGKcubEm_pgSQiv+i=6F4zdQhStQ@mail.gmail.com>
+In-Reply-To: <CAAecyrWNVtgywvchgHe1XLoGKcubEm_pgSQiv+i=6F4zdQhStQ@mail.gmail.com>
+From: Emmanuel Grumbach <egrumbach@gmail.com>
+Date: Sat, 23 May 2026 23:26:29 +0300
+X-Gm-Features: AVHnY4LX5BM5aXue3ONb3szI--rLt6I5HwNvehlbZC_HFh_i6Sia87U0PzwkNBw
+Message-ID: <CANUX_P3v7Ecf_C=OUiLk-UZZFevLVTe_1uByEN4C6hLzox3Gaw@mail.gmail.com>
+Subject: Re: iwlwifi: HE not negotiated on Wi-Fi 7 BE201 (iwlmld, kernel 7.0.9)
+To: Michael Blake <mgblake7@gmail.com>
+Cc: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36827-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-36828-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,linux-wireless@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_THREE(0.00)[4];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_TWO(0.00)[2];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2BD105BF5B2
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[egrumbach@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 9D5D35C0C19
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-iwl_mvm_rx_crypto() does not handle IWL_RX_MPDU_STATUS_SEC_UNKNOWN
-explicitly in the non-AMPDU path: the switch's default case fires
-"Unhandled alg: 0x71b" for what the firmware documents as a benign
-condition (a cipher class not enumerated in the RX status field, or
-frames arriving before key install).  On a Meteor Lake laptop with
-an AX210 this produced 152 warnings across ~43.5 hours of normal
-use; net_ratelimit spaced them out but did not silence them.  The
-AMPDU sibling path at the top of the function already handles this
-status explicitly.
+Hi,
 
-Add an explicit SEC_UNKNOWN case that breaks to the final return 0
-(passing the frame undecrypted to mac80211, matching the default's
-effective behavior), with a dev_info_once() so the condition stays
-observable at default log levels without per-frame spam, and an
-IWL_DEBUG_DROP per occurrence mirroring the AMPDU handler.  Behavior
-for every other status value is unchanged.
+>
+> Hi,
+>>
+>   iwlwifi 0000:00:14.3: Detected Intel(R) Wi-Fi 7 BE201 320MHz
+>   iwlwifi 0000:00:14.3: loaded firmware version 101.6e695a70.0
+>                        bz-b0-fm-c0-c101.ucode op_mode iwlmld
+>   iwlwifi 0000:00:14.3: Microcode SW error detected. Restarting 0x0.
+>   iwlwifi 0000:00:14.3: 0x00000071 | NMI_INTERRUPT_UMAC_FATAL
+>   iwlwifi 0000:00:14.3: FW error in SYNC CMD CTDP_CONFIG_CMD
+>   iwlwifi 0000:00:14.3: cTDP command failed (err=-5)
+>
 
-Link: https://lore.kernel.org/all/0e1a890d2896791d7291f0174cc0e96832d7ed33.camel@intel.com/
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Mike Bommarito <michael.bommarito@gmail.com>
----
-Historical context (for reviewers, not the changelog)
+Can you attach the full message?
+Or even better, open a bug on bugzilla.kernel.org.
+Pick the drivers network wireless intel as the componen.
 
-The same warning was reported on Intel 9260 in 2019 [1].  Emmanuel
-Grumbach acknowledged then that "this print is harmless really",
-attributed it to a deprecated firmware flag, and suggested two
-fixes: "remove the warning message entirely or limit it to unicast
-packets only -- this has been merged in our internal repository and
-it will be upstreamed following the regular process."  The unicast
-restriction is now in tree (the default case guards on
-!is_multicast_ether_addr() && net_ratelimit()), but the
-remove-the-warning half never landed upstream.
+> Is HE expected to engage on BE201 with the current iwlmld driver?
+> Happy to capture more detailed logs (mac80211 trace, iwlwifi debug
+> masks, association IE dumps) or test patches if useful.
+>
 
-This patch is the narrower of Grumbach's two suggestions: only
-IWL_RX_MPDU_STATUS_SEC_UNKNOWN is special-cased, the existing
-default-case warning is preserved for genuinely unknown status
-values.
-
-Test data
-
-Pre-patch baseline on Framework Laptop 13 (Intel Core Ultra 5 125H,
-AX210, Linux 7.1-rc4): 152 "Unhandled alg: 0x71b" entries in dmesg
-across ~43.5 hours of mixed use, plus a burst of three within 70 ms
-during a single re-association:
-
-    [162152.782317] iwlwifi 0000:aa:00.0: Unhandled alg: 0x71b
-    [162152.813440] iwlwifi 0000:aa:00.0: Unhandled alg: 0x71b
-    [162152.844499] iwlwifi 0000:aa:00.0: Unhandled alg: 0x71b
-
-Status decoding: 0x71b & 0x700 == SEC_UNKNOWN; low bits are
-informational and vary between frames.
-
-Post-patch: module rebuilt + reloaded.  Triggered scans and
-nmcli reconnect cycles until a SEC_UNKNOWN frame was received.
-The new switch case fired its dev_info_once exactly once:
-
-    iwlwifi 0000:aa:00.0: RX SEC_UNKNOWN (status=0x707)
-
-Zero "Unhandled alg" warnings observed during the same window.
-A CONFIG_IWLWIFI_DEBUG=y build with IWL_DL_DROP enabled would
-additionally show one IWL_DEBUG_DROP per qualifying frame; the
-test kernel had CONFIG_IWLWIFI_DEBUG=n so those entries are absent
-but the dev_info_once carries the per-controller signature.
-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index 7f0b4f5daa21..f36e99c90ee3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -494,6 +494,19 @@ static int iwl_mvm_rx_crypto(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 		return 0;
- 	case RX_MPDU_RES_STATUS_SEC_CMAC_GMAC_ENC:
- 		break;
-+	case IWL_RX_MPDU_STATUS_SEC_UNKNOWN:
-+		/*
-+		 * Firmware-indicated unknown cipher; the AMPDU case is
-+		 * already handled at the top of this function.  For
-+		 * non-AMPDU frames this is valid (cipher not enumerated
-+		 * by the RX status field, or frame before key install).
-+		 * Pass undecrypted to mac80211.
-+		 */
-+		dev_info_once(mvm->dev,
-+			      "RX SEC_UNKNOWN (status=0x%x)\n", status);
-+		IWL_DEBUG_DROP(mvm,
-+			       "RX SEC_UNKNOWN (status=0x%x)\n", status);
-+		break;
- 	default:
- 		/*
- 		 * Sometimes we can get frames that were not decrypted
--- 
-2.53.0
-
+That would be another bug.
+You can run
+trace-cmd record -T -e iwlwifi -e iwlwifi_dbg -e mac80211 -e cfg80211
+and provide the trace.dat file it'll create.
 
