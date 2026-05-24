@@ -1,169 +1,176 @@
-Return-Path: <linux-wireless+bounces-36832-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36833-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNXrIhotE2rm8gYAu9opvQ
-	(envelope-from <linux-wireless+bounces-36832-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 May 2026 18:53:46 +0200
+	id KJsNOTBvE2oCBAcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36833-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 May 2026 23:35:44 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2D45C336E
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 May 2026 18:53:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1895C4621
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 May 2026 23:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 891C23001CF0
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 May 2026 16:53:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BEE0830082A0
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 May 2026 21:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6DC393DC7;
-	Sun, 24 May 2026 16:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A38C31F9A7;
+	Sun, 24 May 2026 21:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="WLVZmTJu"
+	dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b="NjD8Q/Z4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtpcmd0641.aruba.it (smtpcmd0641.aruba.it [62.149.156.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C0C319617;
-	Sun, 24 May 2026 16:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB1E3090C6
+	for <linux-wireless@vger.kernel.org>; Sun, 24 May 2026 21:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.156.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779641620; cv=none; b=TfO3itDDyCTzfZHFbzWt/Hz0vE8wTFXvfqlWFyHBGt71on4srhHaheYr9IAm6AI1pzS8mn136LQRMpNLf8Gqo9A486EMSwGNtmXRsY2WsnbRJMfXF9P6deyYRO7dXibAuBTrOHGfu0YIptZtBYirLEwSKcgNi2V8ts6hGaab0xU=
+	t=1779658541; cv=none; b=Y+gu6PK170/gN8VHQ9tE2J69GIryOQrstxNRnvxQf1jeqrKGVSL0NjBBGTCYnRoUTJjH6zfoKoggZYkFGY3LGfQvikLbEUmcCqyEzLaJBULVdkc8HeVUOB96GfQ/5TgcVSpDzp3OzoilckdkAKNWiACMvMGd7LvYvPFNAVoWQus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779641620; c=relaxed/simple;
-	bh=oVdJqfzDg+pfCc4Qmkr/qgAA6WrCqYj0GrqFfkK6LQA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rUVKG3ybFSe09pnO7DHOqAoOCpLkd5OH7SCFSvfysZlX/Z/q3Z5d7SnMqv1wn+q3krXwcDh5x0jWK47msEmPml//Juf5CF+H50RCKL9PGCGtsFu+JGX7SxN4n4zjkrBjBvqrN8B6er8cZwTfN2HxplZLhLKkXlsOYogccPwePBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=WLVZmTJu; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from debian.lan (unknown [95.24.24.142])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 8230C45F79AF;
-	Sun, 24 May 2026 16:53:26 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 8230C45F79AF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1779641606;
-	bh=jj4UBIPSW7Y6JlpURWt0PQfTWw8tmPjqzcErRESUcKk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WLVZmTJuJBNKgf4SZQ7c3es0MHBWHFQ2hWv5tnwgcYuCdmQTqGyosGbWuCKb/QWO8
-	 JgBDRw8NrGAU4IzTviLojcvhShiPgpBvKPtsM//qUnyfioIptJpgB5jVEPdD0O7uE7
-	 3vs7i/PZvtXegkzoMhKtOoFR1TYEB4K+CE/R80LU=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Tova Mussai <tova.mussai@intel.com>,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH] wifi: cfg80211: fix leak if split 6 GHz scanning fails
-Date: Sun, 24 May 2026 19:53:20 +0300
-Message-ID: <20260524165320.62089-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1779658541; c=relaxed/simple;
+	bh=m0REJhaxcRJwCTBGdPDcGM5Fijd0rMwrvKjjNFNpgh4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=ZztDt6F2lQpMjFA08rjpkqzcE0IG4fGRtRXf8gweM7tGAw1lxmrFpLjItsJShZxz4nYzWK9o5dJdHP0UKZgUNfIUk2cNueITIZgCypwdIcFHwkO5pZ89IAEeZqBCe06qFFwgtKEu9aP7PJLVlOj8IFvuzwyxaOR3GBzhZhz4trc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it; spf=pass smtp.mailfrom=mythread.it; dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b=NjD8Q/Z4; arc=none smtp.client-ip=62.149.156.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mythread.it
+Received: from fedora ([94.34.125.0])
+	by Aruba SMTP with ESMTPSA
+	id RGQuwYwDbdarQRGQuwhVxX; Sun, 24 May 2026 23:32:28 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mythread.it; s=a1;
+	t=1779658349; bh=m0REJhaxcRJwCTBGdPDcGM5Fijd0rMwrvKjjNFNpgh4=;
+	h=Date:From:To:Subject:MIME-Version:Content-Type;
+	b=NjD8Q/Z4igszcbgU+YW1tkruvgdFro2O9hvqzzV8Q+YFHFar6oJxTBVEEX0TAk0hh
+	 kgGtlPxmXWpAXZKRbGBLZMBK8JAWRkNk5a1uFdNAufnOXpDih1dYPWhLglNrSnJvNe
+	 vgzqn4JY9cdYKzKKg/JepY7pM1LOngOBCwDXbLj9koRPeT0Jex08SNgjFcfgnJFpGm
+	 rYqivDZ0UhBC+epWdXGIp1dTHuTxOXlc2UzCvptdwhb6luhsEvNx7a52L1D7oGdvJ+
+	 m1+ieLrtyBz9AJRJu4s2Amz71pX/bMjnfx2ABXtkdlXcBQcLtbapH1pC7WFgOpinnt
+	 ghTLiFR+vUPjA==
+Date: Sun, 24 May 2026 23:32:28 +0200
+From: Alessio Ferri <alessio.ferri@mythread.it>
+To: linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Cc: Alessio Ferri <alessio.ferri@mythread.it>
+Subject: [PATCH v2 0/7] b43: complete N-PHY rev 8 + radio 2057 rev 8
+Message-ID: <20260524233228.06b38dba@fedora>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-CMAE-Envelope: MS4xfHUUC3megLIxOwdKxOE5gl7Z8Rio0EGswsyT/jlAlmxiZ1Olxpd0bG0P0UKKR2z9hP7LeQyhsrokX65guCe4d7CgdCreziIOf8QR6IJHo62gZzKK1ZRJ
+ XAWTixZlS00YIdGZtHlksI3ShvieXvFEXASkuIJ0RWyVSHAxKv87r4u9YuIpaBQgMyPZUivKVkuXQkfvr5Xa4pJaZn3X4s6fOVaEUytJwKwU0pZIP6ekh4k9
+ yQCCrCNZJLEUQFtmnLhKKQNoWSxeHCwSaqeyZvYPS6ZHIY8JE6PuSqiaCIruV4iKIgPE8+NoeDid1YR0rGP2eg==
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ispras.ru,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[ispras.ru:s=default];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[mythread.it,none];
+	R_DKIM_ALLOW(-0.20)[mythread.it:s=a1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36832-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pchelkin@ispras.ru,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36833-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ispras.ru:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alessio.ferri@mythread.it,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[mythread.it:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxtesting.org:url]
-X-Rspamd-Queue-Id: 8E2D45C336E
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5A1895C4621
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-rdev->int_scan_req is leaked if cfg80211_scan() fails [1].  It's supposed
-to be released at ___cfg80211_scan_done() but this doesn't happen as
-rdev->scan_req is NULL at that point, too, leading to the early return
-from the freeing function.  Anyway scan_done shouldn't ever be expected to
-be called if triggering the scan has already failed.
 
-Note that the similar pattern at cfg80211_scan_6ghz() looks okay since
-int_scan_req is freed there on error in case first_part is being
-processed.  On the other side, when first_part is false - called directly
-from ___cfg80211_scan_done() - the old int_scan_req is kept then and will
-be freed afterwards.
+This series completes b43 support for the Broadcom N-PHY revision 8
+paired with radio 2057 revision 8. b43 already supports the surrounding
+PHY family - N-PHY rev 8 with radio 2057 rev 5 and rev 7 are handled,
+and rev 16 with radio 2057 rev 9 is handled - but the rev 8 + rev 8
+combination falls through four dispatcher gaps:
 
-[1]:
-unreferenced object 0xffff8881161d0800 (size 512):
-  comm "wpa_supplicant", pid 379, jiffies 4294749765
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 f0 81 13 16 81 88 ff ff  ................
-  backtrace (crc c867fdb6):
-    kmemleak_alloc+0x89/0x90
-    __kmalloc_noprof+0x2fd/0x410
-    cfg80211_scan+0x133/0x730
-    nl80211_trigger_scan+0xc69/0x1cc0
-    genl_family_rcv_msg_doit+0x204/0x2f0
-    genl_rcv_msg+0x431/0x6b0
-    netlink_rcv_skb+0x143/0x3f0
-    genl_rcv+0x27/0x40
-    netlink_unicast+0x4f6/0x820
-    netlink_sendmsg+0x797/0xce0
-    __sock_sendmsg+0xc4/0x160
-    ____sys_sendmsg+0x5e4/0x890
-    ___sys_sendmsg+0xf8/0x180
-    __sys_sendmsg+0x136/0x1e0
-    __x64_sys_sendmsg+0x76/0xc0
-    x64_sys_call+0x13f0/0x17d0
+  - radio_2057.c, r2057_upload_inittabs(), case 8 lists radio_rev 5
+    and 7 only;
+  - radio_2057.c, r2057_get_chantabent_rev7(), case 8 lists radio_rev
+    5 only;
+  - tables_nphy.c, b43_nphy_get_ipa_gain_table(), case 8 lists
+    radio_rev 5 only;
+  - radio_2057.c carries r2057_rev8_init[] as a 54-entry stub commented
+    out with "TODO: Which devices should use it?".
 
-Found by Linux Verification Center (linuxtesting.org).
+Two further pieces of plumbing are needed to reach those dispatchers
+in the first place: d11 core revision 0x16 is missing from the b43
+bcma id table, firmware name, and the corerev 22 / radio 2057
+combination needs the 24-bit indirect radio access path that brcmsmac
+uses for the same silicon generation (see brcmsmac/phy/phy_cmn.c=20
+read_radio_reg() / write_radio_reg()).
 
-Fixes: c8cb5b854b40 ("nl80211/cfg80211: support 6 GHz scanning")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+The series:
+
+  1/7  b43: add firmware and initvals names for rev22
+  2/7  b43: add d11 core revision 0x16 to id table
+  3/7  b43: route d11 corerev 22 to 24-bit indirect radio access
+  4/7  b43: support radio 2057 rev 8
+  5/7  b43: add IPA TX gain table for N-PHY r8 + radio 2057 r8
+  6/7  b43: add channel info table for N-PHY r8 + radio 2057 r8
+  7/7  b43: add RF power offset for N-PHY r8 + radio 2057 r8
+
+Patches almost reveal the bringup, the first two are swapped, as=20
+applying 2/7 without 1/7 generate an immediate kernel panic caused=20
+by a null deref.
+=46rom the third, each one fixes the next visible failure
+in bring-up: 3/7 lets phy versioning read coherent radio identifiers,=20
+4/7 unblocks the boot-time radio calibration that otherwise stalls,=20
+and 5/7-7/7 fill the remaining 2.4 GHz dispatcher entries so
+b43_nphy_set_channel completes to the default channel and core_init
+proceeds past PHY init.
+
+Tested on a D-Link DSL-3580L (Broadcom BCM6362 SoC, single-die 2.4 GHz
+N-PHY rev 8 + radio 2057 rev 8 in 2.4 GHz IPA mode).
+
+b43 is currently Orphan in MAINTAINERS. These patches do not add a
+new chip family or PHY infrastructure; they fill four explicit
+dispatcher gaps for a combination of an already-supported PHY and
+an already-supported radio.
+
+CHANGELOG:
+v2:
+  - Recovered the first patch of the series, so numbering is now /7
+  - Added Assisted-By header
+v1:
+https://lore.kernel.org/linux-wireless/8c0a07d2-9ec9-43d6-bdf7-f625bbb4a38a=
+@mythread.it/
+
+Signed-off-by: Alessio <alessio.ferri@mythread.it>
 ---
- net/wireless/scan.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Alessio Ferri (7):
+      b43: add firmware mappings and remove comments wondering about
+rev22 initvals b43: add d11 core revision 0x16 to id table
+      b43: route d11 corerev 22 to 24-bit indirect radio access
+      b43: support radio 2057 rev 8
+      b43: add IPA TX gain table for N-PHY r8 + radio 2057 r8
+      b43: add channel info table for N-PHY r8 + radio 2057 r8
+      b43: add RF power offset for N-PHY r8 + radio 2057 r8
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 358cbc9e43d8..fe7b47d046c7 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1071,6 +1071,7 @@ int cfg80211_scan(struct cfg80211_registered_device *rdev)
- 	struct cfg80211_scan_request_int *request;
- 	struct cfg80211_scan_request_int *rdev_req = rdev->scan_req;
- 	u32 n_channels = 0, idx, i;
-+	int err;
- 
- 	if (!(rdev->wiphy.flags & WIPHY_FLAG_SPLIT_SCAN_6GHZ)) {
- 		rdev_req->req.first_part = true;
-@@ -1101,7 +1102,12 @@ int cfg80211_scan(struct cfg80211_registered_device *rdev)
- 	rdev_req->req.scan_6ghz = false;
- 	rdev_req->req.first_part = true;
- 	rdev->int_scan_req = request;
--	return rdev_scan(rdev, request);
-+	err = rdev_scan(rdev, request);
-+	if (err) {
-+		kfree(rdev->int_scan_req);
-+		rdev->int_scan_req = NULL;
-+	}
-+	return err;
- }
- 
- void ___cfg80211_scan_done(struct cfg80211_registered_device *rdev,
--- 
-2.53.0
+ drivers/net/wireless/broadcom/b43/main.c        |  22 ++-
+ drivers/net/wireless/broadcom/b43/radio_2057.c  | 230
+ ++++++++++++++++++++++--
+ drivers/net/wireless/broadcom/b43/tables_nphy.c |  58 ++++++ 3 files
+ changed, 290 insertions(+), 20 deletions(-) ---
+base-commit: 8bc67e4db64aa72732c474b44ea8622062c903f0
+change-id:
+ 20260521-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-a3125f06e21e
 
+--=20
 
