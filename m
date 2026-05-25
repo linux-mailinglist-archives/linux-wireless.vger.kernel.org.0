@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-36852-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36853-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMGpN8jiE2qkHAcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36852-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2026 07:48:56 +0200
+	id gEtNGdTiE2qkHAcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36853-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2026 07:49:08 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817085C60C8
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2026 07:48:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7340E5C60D7
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2026 07:49:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D7FF3013270
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2026 05:48:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3CCD53001FBE
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2026 05:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3224333FE0A;
-	Mon, 25 May 2026 05:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43B133FE0A;
+	Mon, 25 May 2026 05:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="Zr6xHTJc"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="hAQE2lrp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
+Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72233149C6F;
-	Mon, 25 May 2026 05:48:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4B8125AA;
+	Mon, 25 May 2026 05:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779688132; cv=none; b=Gv/GhpUJqFDQPfbhqCrk5EfuAmlCQsyNgulCho1p2HN5oHl5qnTFv4kY4Qh+7QrNd/zo15spiluunPg1g83uoQ0RTSIraF+hd4nyHv0aUDKxem0u9t0rBTwVjDciLG3dGWLEwZpodM3GF5FSBYAsEvJh8sU0ttu4I6wrnWYSEtY=
+	t=1779688141; cv=none; b=X+a5wtM32CD73KxKJhzj7zrJRbXgD4uaH/a7vFyExogDi/e+OAjncR3uBau9yq8WJOxejAWmJ4JItEmzFUurrYdErsEhGVF7D2NcEgRbPc86HiHtbOmKBr9BaKRMVUkyZ541u7SZ4zt+9Q9N/rDpQJcHK9b4YDbjE41UpmhDw/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779688132; c=relaxed/simple;
-	bh=sBdeIIbu9Ngax4MVo+D791EZCg+rVSGe/Srj3TD7kuo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G1BoKyr6Fj/VTfXr2kSLbkm8O3K8ZnYR5j7vd3DUatmDum7RC0Sz3qmd/osORvnmcTbhwtdUsVdMjxR3ImotVWPMYNNOncrPcC2LLZKfg0fnCyTNdKd0VfYNkoF+sFwqsJF+BPyb2inxUgRcQwqpF65iZlhUZfusdXGcr+H/C7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=Zr6xHTJc; arc=none smtp.client-ip=120.232.169.114
+	s=arc-20240116; t=1779688141; c=relaxed/simple;
+	bh=1KivS5QoCAdUrG5zSQuzPZujS6vFlKYxo7tDq+2xOFk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jwUtpu2NN3IeOasu2/zp8RUIvGiJu4sRb8Fy75Pmfyg03iPJw5eAtH5QCPDvuDzHT9GPU0/CDHAWa+sShguxV7r5vtv3HX905xXn9PcoAJZbM7de0tkK5hDS0S3/0a27xVsttO+Hp60DnzU6mZpRF9lZtp/OvKgicaRVxRGUIYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=hAQE2lrp; arc=none smtp.client-ip=120.232.169.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=Zr6xHTJctM3T5X6FnR3PVXAQa6FwBV6vZNP71JVP+H6NUmi+BIof4YMWiUpTaZI0ksXunAs1v1pc6
-	 EedaPIyO82HpWEYqaKUpkDpW9mY+rYtkDW3OWK6FUgXuEh29j0khbQt6E81VqCaud9fsfiRjRYwdXY
-	 VdG0liEA01XAE5tg=
+	b=hAQE2lrpwhHpYTxO+Uows007Z4DFXNofo3fM5qieodxlIWE5/4LKEQMmXEKrKY2vHMIO9a/pgWVoY
+	 DiM8R61glgwJTSCgQj/KzWaq72sDvFHxO2OoE6fZ13G6T9jnv7uf531rQfevczT+3Lm7nYn8pJdz4j
+	 t7Ywa7/5sbPm3J/Q=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
 Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-39-12053 (RichMail) with SMTP id 2f156a13e2b3d55-01d96;
-	Mon, 25 May 2026 13:48:37 +0800 (CST)
-X-RM-TRANSID:2f156a13e2b3d55-01d96
+	by rmsmtp-lg-appmail-18-12021 (RichMail) with SMTP id 2ef56a13e2c45fe-00606;
+	Mon, 25 May 2026 13:48:55 +0800 (CST)
+X-RM-TRANSID:2ef56a13e2c45fe-00606
 From: Li hongliang <1468888505@139.com>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -61,9 +61,9 @@ Cc: patches@lists.linux.dev,
 	linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org,
 	johannes.berg@intel.com
-Subject: [PATCH 6.6.y] wifi: mac80211: check tdls flag in ieee80211_tdls_oper
-Date: Mon, 25 May 2026 13:48:35 +0800
-Message-Id: <20260525054835.2457749-1-1468888505@139.com>
+Subject: [PATCH 6.1.y] wifi: mac80211: check tdls flag in ieee80211_tdls_oper
+Date: Mon, 25 May 2026 13:48:54 +0800
+Message-Id: <20260525054854.2457807-1-1468888505@139.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -77,13 +77,13 @@ X-Spamd-Result: default: False [1.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-36852-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36853-lists,linux-wireless=lfdr.de];
 	DMARC_NA(0.00)[139.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -97,10 +97,10 @@ X-Spamd-Result: default: False [1.04 / 15.00];
 	DKIM_TRACE(0.00)[139.com:-];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.648];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,msgid.link:url,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 817085C60C8
+	NEURAL_HAM(-0.00)[-0.668];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email,syzkaller.appspot.com:url,msgid.link:url,sipsolutions.net:email,intel.com:email]
+X-Rspamd-Queue-Id: 7340E5C60D7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -131,10 +131,10 @@ Signed-off-by: Li hongliang <1468888505@139.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index 0fd353fec9fc..c3622f779d12 100644
+index 1f07b598a6a1..57bd4fc8d237 100644
 --- a/net/mac80211/tdls.c
 +++ b/net/mac80211/tdls.c
-@@ -1481,7 +1481,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+@@ -1382,7 +1382,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
  
  		mutex_lock(&local->sta_mtx);
  		sta = sta_info_get(sdata, peer);
