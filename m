@@ -1,121 +1,112 @@
-Return-Path: <linux-wireless+bounces-36888-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36889-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id LC8BK9WiFGqCPAcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36888-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2026 21:28:21 +0200
+	id ePk/MNqjFGqXPAcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36889-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2026 21:32:42 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A745CE055
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2026 21:28:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B1F05CE086
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2026 21:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC7053010BA4
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2026 19:28:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E749F300683F
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 May 2026 19:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035E037B00E;
-	Mon, 25 May 2026 19:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1B930C164;
+	Mon, 25 May 2026 19:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b="SCqjHkEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfy2oeke"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtpdh19-2.aruba.it (smtpdh19-2.aruba.it [62.149.155.149])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E381379EDA
-	for <linux-wireless@vger.kernel.org>; Mon, 25 May 2026 19:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.155.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D282A7E0E8;
+	Mon, 25 May 2026 19:32:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779737296; cv=none; b=kFVx2erOCdSCosL9RSMe1/cUjdO7YQAlByhelM1fcT1XE3qc4iKQs9AprjP9Crd3+d4Vnjz8CmBn70IDgIgrGYsXEppOC8jC5jwfru77R8obZ+n+zEfiIup2jav7mkLxKRDJnXB+mJ8n4yTgHYrvroC8Qhs6kHt62cg0oyYHFUk=
+	t=1779737560; cv=none; b=eix8QHl1mTdtiE6vsK6BzxyXwnWnD1mhDauICDf3z8tOK3V8wfCQ6gzGHUltk0gislhlaCzA9YEEOP1Ij3Tvx2HnrJuR0wLe51i05qVsGjbAxrK6MenLQpkbOozpjJ/mIglDSft3zWWXUhDqxG/d5A7tU4d9qFlE4U/rXSPyxks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779737296; c=relaxed/simple;
-	bh=ciiSIPOHoz25geGrQY/X3wqZon1rIzUIMwbhH9fHrYM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dhW5ulriEZdleHqrxJ3vLkjjjPfk6uacm41B7yXu7Vk6Htf57cas/lzeX91idzokWqN+vFjIMQowAs//eUCgyp6nzJpQiXy4wk96dOJ0fd4KTrs7s6KPoLkt4CD7YKgE6KQNzx8VM/OdMmPu/RAyy0NoBN6rKWmhkzI+LHxiV94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it; spf=pass smtp.mailfrom=mythread.it; dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b=SCqjHkEM; arc=none smtp.client-ip=62.149.155.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mythread.it
-Received: from fedora ([94.34.125.0])
-	by Aruba SMTP with ESMTPSA
-	id Ray5wLMmpclBZRay5w7bYd; Mon, 25 May 2026 21:28:05 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mythread.it; s=a1;
-	t=1779737285; bh=ciiSIPOHoz25geGrQY/X3wqZon1rIzUIMwbhH9fHrYM=;
-	h=Date:From:To:Subject:MIME-Version:Content-Type;
-	b=SCqjHkEMzaO9XKxTM56CJosM8PjVZuMpG3c9reO6kteVwobL1VwcpHWIhj4BTN1dB
-	 kZZJJaMQiEiG65/mi8r40qcIMWJkZRgSxrXpCuJgZegqfjLVSoZh+kYWioOyiESY9A
-	 hLijof27YRSviaJt6BujfP3NiL9M3fn6HeUFBnBwjtp4ploApxSCjgl8ktyUcfKXBF
-	 eqhfSU0l2+Ie97nFOmL4X73N37uYHEiiWUUXPeLNlqBakqGf+DzgSw5sZLFGZfrUX1
-	 9bU80spW5kMr6Pslio1m6mLmlB9DbAbN8n2PgaMMN/RMyG8MhEPheo830DCq9ubdPX
-	 CW6yEdimK37oA==
-Date: Mon, 25 May 2026 21:28:04 +0200
-From: Alessio Ferri <alessio.ferri@mythread.it>
-To: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-Cc: linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/7] b43: complete N-PHY rev 8 + radio 2057 rev 8
- support
-Message-ID: <20260525212804.7bfbc4fc@fedora>
-In-Reply-To: <20260525201405.6c60420f@barney>
-References: <20260524-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v1-0-cdad2c8526c6@gmail.com>
-	<20260525100752.16cdb59e@barney>
-	<20260525140438.265975e7@fedora>
-	<20260525201405.6c60420f@barney>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1779737560; c=relaxed/simple;
+	bh=qSmHp37VOdyX9WwozC4h7eTDtPYsaq1XUGZgGIE7NwY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Via4mk7Kixhhg0HKDaK6gqwrqSarlo5LxSgHNycH/Sz3LASacO24a+n8LUYsgAhW4xLi2yQs8quAvbii8GW9JKIkjMBe41Kb5eZDSp86MVHOI/7HZ0OmnPLymr45ObX9sHNd4aDWe0JckyuHwwCG5ptjXpqFr3I94XuS8zlhNuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfy2oeke; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FB41F000E9;
+	Mon, 25 May 2026 19:32:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779737559;
+	bh=rs/+k/SNcrNdjiAQ3Szs2C/gb9LuRbjuh5plxoql5i4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=zfy2oekesQ0LB4glrPw2TR8NFwD/QDGLnLBbXA10Acok9KZh8LAOn+f1sJ2ONBSGI
+	 sxO9CpbP+2Ib/40CH0mDCjr+22IkiC4YTzjW5gHYXMZznuqCWSmgbpNYf6zmGwzjyI
+	 rK+6Yk68GPdI8J7KYDCZINDrmDKIYE6Lm/mfSBp0=
+Date: Mon, 25 May 2026 21:31:43 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-wireless@vger.kernel.org, driver-core@lists.linux.dev,
+	johannes@sipsolutions.net, wenjie.tsai@realtek.com,
+	mh_chen@realtek.com, charlesl@valvesoftware.com,
+	sabae@valvesoftware.com
+Subject: Re: [PATCH v2 rtw-next 1/2] wifi: rtw89: add dev_id_quirks to
+ driver_info for per-device quirk control
+Message-ID: <2026052558-handclasp-garden-b472@gregkh>
+References: <20260525085148.35180-1-pkshih@realtek.com>
+ <20260525085148.35180-2-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-CMAE-Envelope: MS4xfExFWzYwp0AFqgtYxb1nXLBG/12VzMdzQsyZaES3CJHL1u3kYPtZpgV4+43JqWmygQo56VcMrrBW/+mn2fX/+anfn1Sg8uYwR30YM1IgA5GWetUr0BUS
- BYRt9iyDY2fZjM+dkbdkOnwy+ph3inhv0ZjNgGA6LAsJWSwq40UHgLVJzen1X3zjFrY4Up0vqgPLi72TsxWWbDpiOv577J0wNsJ8MFAVqrEcu/eddkMoxq0A
- B6H7G91kHfxnsjpJysvXXXi8Zv/fbXgbcxmi48afQezqg5j6shxOU6nSxAfIaE2Q
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260525085148.35180-2-pkshih@realtek.com>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mythread.it,none];
-	R_DKIM_ALLOW(-0.20)[mythread.it:s=a1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36889-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36888-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.990];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alessio.ferri@mythread.it,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[mythread.it:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bues.ch:email,mythread.it:email,mythread.it:dkim]
-X-Rspamd-Queue-Id: 06A745CE055
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6B1F05CE086
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Il giorno Mon, 25 May 2026 20:14:05 +0200
-Michael B=C3=BCsch <m@bues.ch> ha scritto:
+On Mon, May 25, 2026 at 04:51:47PM +0800, Ping-Ke Shih wrote:
+> --- a/drivers/net/wireless/realtek/rtw89/rtw8851be.c
+> +++ b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
+> @@ -73,6 +73,7 @@ static const struct rtw89_driver_info rtw89_8851be_info = {
+>  	.chip = &rtw8851b_chip_info,
+>  	.variant = NULL,
+>  	.quirks = NULL,
+> +	.dev_id_quirks = 0,
 
-> On Mon, 25 May 2026 14:04:38 +0200
-> Alessio Ferri <alessio.ferri@mythread.it> wrote:
->=20
-> > Please clarify "full expected wireless throughput", HT is
-> > not supported by b43, so it runs only with NOHT in g-like speed: =20
->=20
-> > Enabling HT for N chips is out of scope, also there nothing to
-> > gain and a lot to risk, so i won't do it. =20
->=20
-> That's fine.
-> Just wanted to know if there were known problems.
->=20
+Why are you manually adding a "= 0" for these when that's the default?
+No need to do so, only do it when it is set to something, right?
 
-Did not see any obvious problem for now. I Will try to fix any issues if
-someone find some
+thanks,
+
+greg k-h
 
