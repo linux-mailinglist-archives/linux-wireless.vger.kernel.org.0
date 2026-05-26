@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-36919-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36920-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iD22H9/XFWpYdAcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36919-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 19:26:55 +0200
+	id UALIJiHaFWpYdAcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36920-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 19:36:33 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 200E95DAA2F
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 19:26:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA945DAC40
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 19:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 045C13053BE2
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 17:20:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 429A2306A899
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 17:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A0043CEDB;
-	Tue, 26 May 2026 17:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5073243D4E3;
+	Tue, 26 May 2026 17:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cILTQson"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gkDfevTY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535D8403E99;
-	Tue, 26 May 2026 17:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A15A403E99;
+	Tue, 26 May 2026 17:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779815687; cv=none; b=qeQTjGPTCrIEzE0siYs7GFFyFaY5WMGrMj7KY3rQw1G2FHOFPulY0KBC5rnRrLOADGeac6Im9W8Bk5oZ2JWEDP6IkxOHas/YL28WYJ5E8VC8s46HCeNpaqNkgrpS0E8b6dEwZ1VkLzl9kC1Q0+KVFW7+w/A3G8tRA9WNuZ20PQs=
+	t=1779815692; cv=none; b=leRuXjcTM88QClggEVx3mcrGFelppFXN8tru5UnnIukmtoxOyk4APgGNAsfva62Ib8WcsCJnCQj/MWDyXos9K97cA/wF9rwxq0094tCeaMpWoPwYP/OxFQZAspgGK0UEzNft0bTRRLTu4sq9oYNjW4u9Q8mku8hY9VQGv7QwfX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779815687; c=relaxed/simple;
-	bh=eqDmv2UxJrRVlr6eig+h4vADLMNuDousFQxN6Zd4qtI=;
+	s=arc-20240116; t=1779815692; c=relaxed/simple;
+	bh=Y8IXzMUomtrlwK38Q7O+Uaj3T9uEUrs8xtbBKTUcZUk=;
 	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=n1kCtIy/BoL7wGh2iLMdSjf31jWnl4UIw6geHDIde7HhkW8ynC7FuGC4eCcJNblKg6VPJc1oQPSzxzvWlQTB0V7b4upVslYn1p2BV1OP/ELfAPuk6G84U/A+ljQpeqaIyNs8mHEH4z5ITMHmE8B/B6O1AUxLZjZaG4VNhO02lzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cILTQson; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 1B2411F000E9;
-	Tue, 26 May 2026 17:14:45 +0000 (UTC)
+	 Content-Type; b=bL9RMPZrVOdOLwqu3vlgTeDV7UkUwU6OSKLFDOzllqheStVaaCeruCAcfrLDgYnn33EfBWBEfz+LzYqUH+pE1disrEdpHAnbUJl8ve53EmGV6kKkwrRp+RHujQq3+9bBtuGAeOXwFfParbZCs5G0S9IHj7lAQwKd9T3qsK+c4ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gkDfevTY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 1F0FC1F000E9;
+	Tue, 26 May 2026 17:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779815686;
-	bh=cBO+dX735CksKtXJ1HJ6TXwHjNQmqyoR/p2tV7cxXb0=;
+	s=k20260515; t=1779815691;
+	bh=51tug6a6FaLaxd2I+xCk3mWFTQm5O63L+L59ZG+fII0=;
 	h=Date:From:To:Cc:Subject:References;
-	b=cILTQsonW++0qS7x+cFj3PEdFUuahq/pXsnEuKC8tyzniFVBXJd5h8Ig+wX52U8nw
-	 gvjeABRhU4sekjYYnLQT9DOEehvX5hcUhBx5B0E41+Zd2Z/FwXGbjiB5GPOCcBEFrm
-	 EGyNzpdo6ZS3w3lEShtw8oaNynpYrJLZnNlBGexShIj5GrhT7qzy84w5ReeffvpeMt
-	 6qwlJJVOwtf8GkuyB0WyjKN7lHEfi5wyIE0Z8XsKLlqqq+rlP8pt/NdLpmHeWOGVqN
-	 TXuSzUw1zK+ZvcOTSlzyDDXes/VBxBcl3zCCVCRQbEy+JQ8Df3/e4xGFlXzdDqyUJL
-	 vg0GpsVpO/enw==
-Date: Tue, 26 May 2026 19:14:42 +0200
-Message-ID: <20260526171223.826096151@kernel.org>
+	b=gkDfevTY41dsIoa9JxJ2MLOX8gXyCV3hS3Ud9hg+NxybSAIIJRaaUXs45noG50E7f
+	 IzjbiWKMlvzkFZB2pXRDon0qCbSM0FYd2d1GP7aner0ZQ7wr60YlQw9NOyyxPMn4Q5
+	 +M7NMep/nG+YO7NH04T4LmsQRwI2ixuhMo29LcyrEjkc480aGZkezQ2P9ieElq4Oa2
+	 TCOs/Sz9nqziL+8EZh359uUSyUkKYO6EO08u7SwXmFAG+zTnmInTJD9fGDX47S+lUv
+	 CI8juvZtxqAYEgg+EnAhcY60uosYehO1USDSt8/iamAW9+aKECAn6wqt4bVFIiGl35
+	 5uqolx94e+NWg==
+Date: Tue, 26 May 2026 19:14:47 +0200
+Message-ID: <20260526171223.901103717@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
@@ -57,7 +57,9 @@ Cc: David Woodhouse <dwmw2@infradead.org>,
  Frederic Weisbecker <frederic@kernel.org>,
  thomas.weissschuh@linutronix.de,
  Arthur Kiyanovski <akiyano@amazon.com>,
- Saeed Mahameed <saeedm@nvidia.com>,
+ Peter Hilber <peter.hilber@oss.qualcomm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ virtualization@lists.linux.dev,
  Rodolfo Giometti <giometti@enneenne.com>,
  Vincent Donnefort <vdonnefort@google.com>,
  Marc Zyngier <maz@kernel.org>,
@@ -71,12 +73,10 @@ Cc: David Woodhouse <dwmw2@infradead.org>,
  Johannes Berg <johannes.berg@intel.com>,
  Jacob Keller <jacob.e.keller@intel.com>,
  Tony Nguyen <anthony.l.nguyen@intel.com>,
- Peter Hilber <peter.hilber@oss.qualcomm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- virtualization@lists.linux.dev,
+ Saeed Mahameed <saeedm@nvidia.com>,
  linux-wireless@vger.kernel.org,
  linux-sound@vger.kernel.org
-Subject: [patch 15/24] net/mlx5: Use provided clock ID for history snapshot
+Subject: [patch 16/24] virtio_rtc: Use provided clock ID for history snapshot
 References: <20260526165826.392227559@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -88,16 +88,16 @@ Content-Type: text/plain; charset=UTF-8
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36919-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36920-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,nvidia.com,enneenne.com,linux.dev,lists.linux.dev,gmail.com,vger.kernel.org,suse.com,intel.com,oss.qualcomm.com];
+	FREEMAIL_CC(0.00)[infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,oss.qualcomm.com,lists.linux.dev,enneenne.com,linux.dev,gmail.com,vger.kernel.org,suse.com,intel.com,nvidia.com];
 	RCPT_COUNT_TWELVE(0.00)[28];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
@@ -109,9 +109,9 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 200E95DAA2F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,qualcomm.com:email]
+X-Rspamd-Queue-Id: EEA945DAC40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -124,30 +124,23 @@ Use ktime_get_snapshot_id() and hand the provided clock ID in.
 No functional change.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: Saeed Mahameed <saeedm@nvidia.com>
+Cc: Peter Hilber <peter.hilber@oss.qualcomm.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: virtualization@lists.linux.dev
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/virtio/virtio_rtc_ptp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-@@ -340,7 +340,7 @@ static int mlx5_ptp_getcrosststamp(struc
- 		goto unlock;
- 	}
+--- a/drivers/virtio/virtio_rtc_ptp.c
++++ b/drivers/virtio/virtio_rtc_ptp.c
+@@ -139,7 +139,7 @@ static int viortc_ptp_getcrosststamp(str
+ 	if (ret)
+ 		return ret;
  
 -	ktime_get_snapshot(&history_begin);
-+	ktime_get_snapshot_id(&history_begin, cts->clock_id);
++	ktime_get_snapshot_id(&history_begin, xtstamp->clock_id);
+ 	if (history_begin.cs_id != cs_id)
+ 		return -EOPNOTSUPP;
  
- 	err = get_device_system_crosststamp(mlx5_mtctr_syncdevicetime, mdev,
- 					    &history_begin, cts);
-@@ -366,7 +366,7 @@ static int mlx5_ptp_getcrosscycles(struc
- 		goto unlock;
- 	}
- 
--	ktime_get_snapshot(&history_begin);
-+	ktime_get_snapshot_id(&history_begin, cts->clock_id);
- 
- 	err = get_device_system_crosststamp(mlx5_mtctr_syncdevicecyclestime,
- 					    mdev, &history_begin, cts);
 
 
