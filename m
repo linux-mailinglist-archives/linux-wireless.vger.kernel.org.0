@@ -1,55 +1,56 @@
-Return-Path: <linux-wireless+bounces-36945-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36946-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEmKOVgwFmqQiwcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36945-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 01:44:24 +0200
+	id +HGcJngwFmqQiwcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36946-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 01:44:56 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CB05DD9D6
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 01:44:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15D35DD9ED
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 01:44:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5206D3035F33
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 23:44:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 117B5300B511
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 23:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A503DA5C6;
-	Tue, 26 May 2026 23:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0937D3D5C3C;
+	Tue, 26 May 2026 23:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="bQdQp9u9"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GgDeLDde"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02963DA7E7;
-	Tue, 26 May 2026 23:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58F33D412C;
+	Tue, 26 May 2026 23:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779839061; cv=none; b=FaVCFVzMDBtJ4RIPdvbCh7YN/80Ejzf9Ilv6zGCkCepy/xrWbJChcJtbwbT5bKIM35A/y8jIwP4h2YV2R0Ed6n+C1UQQ6cGlaHdckcFpEQhmxclI3lWlw8FRVysiUIT70q83P874jGTYuHGhcJQPjULfT780N20IfsWswYh6/mk=
+	t=1779839088; cv=none; b=dEtogCrX5/0ZcbBCr71WR/X3KBs8djkxdxLRaDAvzHSxo1rsS677dJgWrD/0xydzaI6WBTQ8KGBwGYp3+nC8idjiuIM+zR3jUx5cKncWJ0nsYp6XsQeKd7M0tXQy7eV9IhjvlYkX8HXQDiqgMw7qef+MAI3SOha86KsGPjbFBWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779839061; c=relaxed/simple;
-	bh=ufPfAxMe5xBiR0QauyNVc8uO4UDcz1SwLGhLPieSOvc=;
+	s=arc-20240116; t=1779839088; c=relaxed/simple;
+	bh=C1U2K7e9+LaMrRytL5wO8e+daYa+IyrD1vsAXhBk3Xg=;
 	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
-	 MIME-Version; b=A7LP7QuV3JdWJpJ0GGdJwJB7cGlrStykvSTDJwQVBatzKS0GweWDlAiUnRSaeV1JaOMGvQI9ay/DUQVP5zNiWsBspSm6jZPpGIsPNAaV+D5tgpZojyeEe4yWoRr2PcO1htpqr3QRCNbIqFi5OO9ZSV3OM0dglOb0ZlTylsfbxPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=bQdQp9u9; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=abK7E3zA5kolg530cLNGgbBX03E/Jr6jLjJhgFX6nwXur+80kL3IyHiRXB240TrLU3RwT9aI7tqNaA7gIlisUfgOrbPMPKOMP7MGpMje2kO0Tvhbn5XvXsfkngxalsIsbcBHApqv+QR3HQbwq2UP6CnLFeuTJn81ZElK5ym/Mk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GgDeLDde; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
 	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:References;
-	bh=ufPfAxMe5xBiR0QauyNVc8uO4UDcz1SwLGhLPieSOvc=; b=bQdQp9u9zG0GG9nelB8BfJ6DkY
-	Dhm8BzPwWTrmHUNehWPnXZK3U1d54p3XtfWsr27hj/qBKW/W+/xQ19eRsZrtsgLb5GsCDUJxwWwKX
-	/m7rx4WaLTLSyrEBGmZPWb4mIeSqM84lGjsELzXpZ7k/Gtf7OMvQIl6IkxCwFO0Qe64Drp60YUe2t
-	XvnZxsyLwWP6RydxfspyzV35feHsmaVYm5yCa3jTA/rH6+DUwquljMCF13D3ABmRoSyZHlN9CnsrR
-	zvrGWWktsWpRcUxY5IBNsTokOROUPWSD903QUJZ064ljE0hMFCs2ZckTk1Y7Tv/xX0NvAoOJr7PIR
-	Nx+qhklw==;
+	bh=C1U2K7e9+LaMrRytL5wO8e+daYa+IyrD1vsAXhBk3Xg=; b=GgDeLDdelBjFabM30uOy7h1D0w
+	0jpX048fGuVR3VDo8zgiUNevnZ7bsJhd0ELMuhX+Pqwhbx13WkRgbvEXkjo4vQ5IZ9R4Hb2Mh1yE1
+	9sTCHEieHXJ9wNd3qBrvDMALrmtUDjv6cWWkTlDoeq2CQFNr4uoEE+V4Bh1r/j05CtMLud0G/6vUN
+	HPb8ORRU8qRIm727rB7wR+/YuPlOqAtuMLOl0MdJKiWsxNw2deixS12XsLiA7F1gQJTxK22sZzLou
+	FaN4B7UQP7mcAa5+Z6V/V6qkZRoCS0bQNzwDunUZ2P2OIaDbXbEUagS/7eYqgpXc5ocB8TQiD1ZSZ
+	ujF59h/Q==;
 Received: from 54-240-197-239.amazon.com ([54.240.197.239] helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wS1RS-00000001fhY-08VJ;
-	Tue, 26 May 2026 23:44:10 +0000
-Message-ID: <9e6f2f360ae884db656242a67ab75167169de82c.camel@infradead.org>
-Subject: Re: [PATCH 8/24] timekeeping: Remove system_time_snapshot::real/boot
+	id 1wS1Rt-00000001fiw-2Y5p;
+	Tue, 26 May 2026 23:44:37 +0000
+Message-ID: <f515aa44bfb077c646bf24af8f0f623db7e01518.camel@infradead.org>
+Subject: Re: [PATCH 9/24] timekeeping: Add CLOCK_AUX support for
+ ktime_get_snapshot_id()
 From: David Woodhouse <dwmw2@infradead.org>
 To: tglx@kernel.org
 Cc: akiyano@amazon.com, anna-maria@linutronix.de,
@@ -63,10 +64,10 @@ Cc: akiyano@amazon.com, anna-maria@linutronix.de,
  richardcochran@gmail.com, saeedm@nvidia.com,  sboyd@kernel.org,
  thomas.weissschuh@linutronix.de, tiwai@suse.com,  vdonnefort@google.com,
  virtualization@lists.linux.dev
-Date: Wed, 27 May 2026 00:44:08 +0100
-in-reply-to: <20260526171223.300914258@kernel.org>
+Date: Wed, 27 May 2026 00:44:36 +0100
+in-reply-to: <20260526171223.374814973@kernel.org>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-W4+odkCDQlwYO46v+Z46"
+	boundary="=-BEs9MqSecjTmtzzej6fB"
 User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -79,12 +80,12 @@ X-Spamd-Result: default: False [-4.26 / 15.00];
 	SIGNED_SMIME(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
 	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36945-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36946-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -93,7 +94,7 @@ X-Spamd-Result: default: False [-4.26 / 15.00];
 	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[infradead.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -103,29 +104,27 @@ X-Spamd-Result: default: False [-4.26 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,infradead.org:mid,infradead.org:dkim,amazon.co.uk:email]
-X-Rspamd-Queue-Id: 62CB05DD9D6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.co.uk:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,infradead.org:mid,infradead.org:dkim]
+X-Rspamd-Queue-Id: A15D35DD9ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
---=-W4+odkCDQlwYO46v+Z46
+--=-BEs9MqSecjTmtzzej6fB
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 26 May 2026 19:14:08 +0200, Thomas Gleixner wrote:
-> All users are converted over to ktime_get_snapshot_id() and
-> system_time_snapshot::sys.
->
-> Remove the leftovers.
+On Tue, 26 May 2026 19:14:13 +0200, Thomas Gleixner wrote:
+> Now that all users are converted it's possible to enable snapshotting of
+> CLOCK_AUX time. The underlying clocksource is the same as for all other
+> CLOCK variants.
 >
 > Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Tested-by: David Woodhouse <dwmw@amazon.co.uk>
 
 
---=-W4+odkCDQlwYO46v+Z46
+--=-BEs9MqSecjTmtzzej6fB
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -204,22 +203,22 @@ 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
-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
+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
-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
+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
 
 
---=-W4+odkCDQlwYO46v+Z46--
+--=-BEs9MqSecjTmtzzej6fB--
 
