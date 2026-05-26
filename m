@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-36905-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36907-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GhlACjVFWrRcgcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36905-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 19:15:20 +0200
+	id YANwE97VFWrRcgcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36907-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 19:18:22 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C505DA73E
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 19:15:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2BEE5DA7F8
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 19:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 215803038A6B
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 17:14:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5CA2B3028443
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 17:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCFB40DFD9;
-	Tue, 26 May 2026 17:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C8641B366;
+	Tue, 26 May 2026 17:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YmZbwV0J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gBaPgM/x"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10758405C41;
-	Tue, 26 May 2026 17:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8CC409118;
+	Tue, 26 May 2026 17:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779815624; cv=none; b=LEQKrS8J6PxZdCWJA9lGFHFkirFpirOkFh4CNi9gHZ3zMugl0WWQz1454BMXm0OXXHsxwiHlJcbpMa3yVj5eA9mAjGXk4AE4ndoZNcc8z15Q8RSRe2vf4v4uedMFqdSTyMX58VnTTruC4JmUzLUNeRS1TTOXqqEkyg7fnulRmdM=
+	t=1779815633; cv=none; b=X9U888iuUXrde4aHwuqEBacTzcJXsUEugSTOcFsYY69+iFGMtmGibaeKDpxyRKIWRvL945rWyOcKcbpUwtfKCCernyCWWux6EkG+D/9Z9312gzrGrTGykqtIiSi5gufun3+fVXc8vjxsXekfnNZ2SXazTm9gjUirtZd2OHQZ+ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779815624; c=relaxed/simple;
-	bh=1gJ39ZBykzUVBWyDS6VHvRoUDWgo7sKerVkC8ZiW740=;
+	s=arc-20240116; t=1779815633; c=relaxed/simple;
+	bh=Jo/Au8bQYAno4GeE3KqHD8eiAALVUwsf3qSc631Dg88=;
 	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=i7Y+3DidpvBiJeIWI7sYGc6ru2QgstQ41LX8OUDhcHCevT/YymcNanjdYUPa9CwIpcK5vF4fKMu3/hT1Q0Ghpnh4CFKmtJRDC+GFuPwHwAkm999/qN3wHjuJNXVvmWvTKEqWrKB83OFTJ/FZVbx+9doLHXE4pG+pUgpl9K7xBWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YmZbwV0J; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id B20C31F00A3A;
-	Tue, 26 May 2026 17:13:40 +0000 (UTC)
+	 Content-Type; b=ZjBEMoopTvEmDPdo8fmix8jDVfNJKp9wOL1FmOJy4QIwbXcRFuATW61AmfJOpWL3cbvC19acXkJCb3z6oMWVlFfxB2dsyPWxAJ0wBgK0J0rqee8AxMf5NTlCb/nQxqWo/WiG/Imu65+9GYuX9MELsUN1ikEmmL3FzGG1jmgtgb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gBaPgM/x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id CAD001F00A3A;
+	Tue, 26 May 2026 17:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779815621;
-	bh=PbsJ6GKklobOZdFGQ/1Sa//V0DO21BARQCnNN3dl8uA=;
+	s=k20260515; t=1779815626;
+	bh=X0scQND1xJm72l+yu4qfzG29LQeAoWdi/2lmLZs8YK4=;
 	h=Date:From:To:Cc:Subject:References;
-	b=YmZbwV0Jx5+P9OBLnh6BPP6K29uNO7VDiOjP3djaK8Iq12XfIbPQUJ2XFuqbHkeUt
-	 WyclmZde0cCdGKJI0+Jp20D6gW62Ik8diU27wGA8eTNdrkgrvgeBGtfCNjdzA3Wcrg
-	 B0fV/+SCJMzLzvFQLBygK2as/tI4QC+ISwMysnUCAAHXT9g4mByv5W7uy5u9lRaSjs
-	 C9vhRoMzjdG5hfxZbAb2HQk4ycfPCgt2JdhsTKUEJ4/DOhBZd8i4Z2h1vxYyTFoSwQ
-	 v4gXkegCGDrMQjYguFpM7NgcdDcVjxMZL+JUFTK7fGaPJus8y5WGj9sWftN6vT8dNJ
-	 yXeafV0yJhihg==
-Date: Tue, 26 May 2026 19:13:38 +0200
-Message-ID: <20260526171222.846848261@kernel.org>
+	b=gBaPgM/xsCiUVCAw9BPRWT13zmyadEtGDb6uVyJdpOXvhWBk2ulU534ck+xRoQ//k
+	 9sUHIZvMsrUTuJPwaQzLyKyf1L1zY3Lo8ZxJ8SAsmKCTgb/GF9F7HZxiNCsS0Zpg/k
+	 nuU0oRAvZF6Qvj/Q+n5ulI4ai+250J3JNiqk9gnayFDcEntnuAxW2eV1zJi8SFy+nZ
+	 G0Ha02ne6Ck8Pi26tBsHGkCFMA4ybw53o2riJmtasNU+NfZ+pSqIknkIgG4R8byMwb
+	 NDmOd+QhbvSXAOBtuxGyy5RsFc93k/j4gZIgiBn2RM3VKW/510aFVqzMjHXHWgpHXN
+	 Fa0BUCoW+3qcQ==
+Date: Tue, 26 May 2026 19:13:43 +0200
+Message-ID: <20260526171222.920736414@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
@@ -76,8 +76,8 @@ Cc: David Woodhouse <dwmw2@infradead.org>,
  virtualization@lists.linux.dev,
  linux-wireless@vger.kernel.org,
  linux-sound@vger.kernel.org
-Subject: [patch 02/24] timekeeping: Use system_time_snapshot::sys instead of
- ::real
+Subject: [patch 03/24] pps: generators: Use ktime_get_real_ts64() instead of
+ ktime_get_snapshot()
 References: <20260526165826.392227559@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -89,12 +89,12 @@ Content-Type: text/plain; charset=UTF-8
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36905-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36907-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -110,46 +110,56 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 66C505DA73E
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,enneenne.com:email]
+X-Rspamd-Queue-Id: E2BEE5DA7F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-system_time_snapshot::sys provides the same information as
-system_time_snapshot::real when the snapshot was taken with
-ktime_get_snapshot_id(CLOCK_REALTIME).
+There is no reason to use the more complex ktime_get_snapshot() for
+retrieving CLOCK_REALTIME.
 
-Convert the history interpolation over to use 'sys' as 'real' is going away
-once all users are converted.
+Just use ktime_get_real_ts64(), which avoids the extra timespec64
+conversion as a bonus.
 
-As a side effect this is the first step to support CLOCK_AUX with
-get_device_crosstime_stamp() and the history interpolation.
+No functional change intended.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: Rodolfo Giometti <giometti@enneenne.com>
 ---
- kernel/time/timekeeping.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pps/generators/pps_gen-dummy.c |    6 +-----
+ drivers/pps/generators/pps_gen_tio.c   |    6 +-----
+ 2 files changed, 2 insertions(+), 10 deletions(-)
 
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -1342,7 +1342,7 @@ static int adjust_historical_crosststamp
- 			(corr_raw, tk->tkr_mono.mult, tk->tkr_raw.mult);
- 	} else {
- 		corr_real = (u64)ktime_to_ns(
--			ktime_sub(ts->sys_realtime, history->real));
-+			ktime_sub(ts->sys_realtime, history->sys));
- 		ret = scale64_check_overflow(partial_history_cycles,
- 					     total_history_cycles, &corr_real);
- 		if (ret)
-@@ -1352,7 +1352,7 @@ static int adjust_historical_crosststamp
- 	/* Fixup monotonic raw and real time time values */
- 	if (interp_forward) {
- 		ts->sys_monoraw = ktime_add_ns(history->raw, corr_raw);
--		ts->sys_realtime = ktime_add_ns(history->real, corr_real);
-+		ts->sys_realtime = ktime_add_ns(history->sys, corr_real);
- 	} else {
- 		ts->sys_monoraw = ktime_sub_ns(ts->sys_monoraw, corr_raw);
- 		ts->sys_realtime = ktime_sub_ns(ts->sys_realtime, corr_real);
+--- a/drivers/pps/generators/pps_gen-dummy.c
++++ b/drivers/pps/generators/pps_gen-dummy.c
+@@ -39,11 +39,7 @@ static void pps_gen_ktimer_event(struct
+ static int pps_gen_dummy_get_time(struct pps_gen_device *pps_gen,
+ 					struct timespec64 *time)
+ {
+-	struct system_time_snapshot snap;
+-
+-	ktime_get_snapshot(&snap);
+-	*time = ktime_to_timespec64(snap.real);
+-
++	ktime_get_real_ts64(time);
+ 	return 0;
+ }
+ 
+--- a/drivers/pps/generators/pps_gen_tio.c
++++ b/drivers/pps/generators/pps_gen_tio.c
+@@ -189,11 +189,7 @@ static int pps_tio_gen_enable(struct pps
+ static int pps_tio_get_time(struct pps_gen_device *pps_gen,
+ 			    struct timespec64 *time)
+ {
+-	struct system_time_snapshot snap;
+-
+-	ktime_get_snapshot(&snap);
+-	*time = ktime_to_timespec64(snap.real);
+-
++	ktime_get_real_ts64(time);
+ 	return 0;
+ }
+ 
 
 
