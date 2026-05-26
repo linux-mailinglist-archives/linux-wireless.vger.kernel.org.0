@@ -1,274 +1,234 @@
-Return-Path: <linux-wireless+bounces-36932-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36933-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNklFdYWFmrOhQcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36932-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 23:55:34 +0200
+	id WFAKKukWFmrOhQcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36933-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 23:55:53 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5595DCFBE
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 23:55:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C95C5DCFD6
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 23:55:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5A34A302E5C3
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 21:53:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9CF4730765E9
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 21:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD163C454E;
-	Tue, 26 May 2026 21:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145533C8C68;
+	Tue, 26 May 2026 21:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JvySodVW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QpqaCeut"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC01B3C818B
-	for <linux-wireless@vger.kernel.org>; Tue, 26 May 2026 21:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779832368; cv=none; b=WP5mQul1JjOhQAFVbEmexwy1LHHgPzOgtXNdI2tsbCmaX8qXMXGtN6rZVX6Gr8uEYer44/AskedqGf70ggS8LIykDSyLYqluSx/jlGrV8jMYjr+bW0bpaNuItLZ7m9Pyhga6ysIbf4jlEygxM32TNwdnYhLd9ezW5IVEmKfqfiQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779832368; c=relaxed/simple;
-	bh=c+8/7l091quGh0H14krQlVhQZvm8FgIVDYoP3y7im1o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DPU8LiNNzOH16mMA5gV5ud9ly6rgD3vCYeWFY+Y2QGr5UR2EOE5OR1h3CmfNnnFQP0ZJCugdn5Hxr9osT7ZegHxc6eaOJtM28d4BXn4sTFqJpAcTb+VeSEYQzIFyyauJWEzfTPRUO1GLqKdTz3esrhVfvLUo1u0kwooUrQjr5UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JvySodVW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40EC1F00A3E
-	for <linux-wireless@vger.kernel.org>; Tue, 26 May 2026 21:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779832365;
-	bh=vofwtLagvBRYkOYwKOjHnTeC6C87g7YP3KZhbzyhI3Q=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=JvySodVWkZ4MM3tRJ8YS99NO8G7r2QGWchQgjJs/N+v4T2fakaO4nQDdnRKzeIqTT
-	 twW0FxpXffz7ntaZsc3O/ISWeFOfVsNb/x05burAQaCV9x0p4/oCBx+unOrZNDKiKH
-	 l9eEs/xvzHk7ZO9LGKRzD+wyhYk/qRZhK5KF4wg+jKuzkyANdqT3/0CZ70KJQmgnhs
-	 zZQSlPOBMLaWKn7O7IGnTpnQLYT/fNAPwTGi9bD8J0K1DlMF127mpbMjHwpWu/C29v
-	 j8kQ4+Ada+sfRBKhvdrHvYOoaCl3yhfcJa5ke+GxzVVmXHgt06pmnxndTucORDzD0u
-	 JP8bxaosMVwHg==
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-38ea6a5a0b3so88879881fa.3
-        for <linux-wireless@vger.kernel.org>; Tue, 26 May 2026 14:52:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+mwp70fUQMNB74/DAky//DFfq30nq5/K4Qc7Yzj8wnEbtzyjjYkqL9URUATtXGUr5nErsbWZoE48+hO4UioQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxI7PMgTdU7wWD91cW+KlBe0rDnDzfOJ9p8SHm8akT5EHtVnk2
-	OvR68fn7Nq0UlyDBB2Xgp1sjAquzOra2ru3WNjUiUzMrP7MoeOP8p9hkd+nFmaeBjJAOgLm7+9A
-	NZAVb7EELiIBRi0rnQ40Dm67Nx1Gs58M=
-X-Received: by 2002:a2e:8192:0:b0:394:2b8a:2374 with SMTP id
- 38308e7fff4ca-395d8d3de65mr47969431fa.16.1779832364145; Tue, 26 May 2026
- 14:52:44 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0C12609E3;
+	Tue, 26 May 2026 21:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779832369; cv=fail; b=ASgfv+P+eZcC9wnteVIA3XsJ5cR8n+ostNeCzyWNIU2ecEP61LZLXFWG3v1YzcZTmboC6Vx8FCcKNSiKRsECyacIdJGNPmacCwFKzDYZzY3KvVD6GZLpz6Iy/TTajIB3FBVWa0niGKlQOkqbT8k2DJLi7QjWulc+aoOVuClaZzM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779832369; c=relaxed/simple;
+	bh=RLHFYuQomkE/FL/BJqVi6pWq6kernahDptqIvS2+CJM=;
+	h=Message-ID:Date:Subject:From:To:CC:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=JWLqD/DJd9NQBMZta8ETFCO5w67CmBagC9jp+UorQyVwRAMT8SwS6HeZh9Hxe4FWpewksdd60/8sY4hgj0mkzkhy4LVRXZly2dXm8CG4Xns5yYyQloGhryDUa3tv6XbQWFHOYmF/0QVvczXl6B8VwxCs+gqKd+vrkuXgxwFvYio=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QpqaCeut; arc=fail smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779832368; x=1811368368;
+  h=message-id:date:subject:from:to:cc:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=RLHFYuQomkE/FL/BJqVi6pWq6kernahDptqIvS2+CJM=;
+  b=QpqaCeutWxbvNQjOFW10yOiZF2vFoz/feIsVDRducOaQ4184KSnDa2zC
+   dO9pyCe1zXwfVxPKzG1XqnM/KngOOoos+QUmw8HkBboYmDI/NPRp1CLr3
+   067QCtKTTIPmCMumIZ6zC0R3xVyJJwTe/v/tKv+9u1UNS+uM0ho9qAwaZ
+   1PBPTvrGvrEWzf+Msa5X9Nb65Eb2Qn8295aWZfJnXqasYE38s5SihN8X5
+   ehbUYER/pNNm3HnD0xohlGZ5uIzg3W9T4uAiU1gIK93CV7TwTw1yN5ho4
+   3SyTxt0Nxd1M/OlXDKUIIZatrYhawaJzoGeuq119B/5q9c1UK5ruKn4uV
+   A==;
+X-CSE-ConnectionGUID: 3GFiduB8S8+rAS/KFSbfqQ==
+X-CSE-MsgGUID: 0RBaJIUFTqe/SiviipMZ0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="98083861"
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="98083861"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 14:52:46 -0700
+X-CSE-ConnectionGUID: 9ZYCPn2vS5yNAGjsaY8J1w==
+X-CSE-MsgGUID: XnPHaSwST/WEsRCEhOgHOw==
+X-ExtLoop1: 1
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 14:52:45 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 26 May 2026 14:52:43 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 26 May 2026 14:52:43 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.47) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 26 May 2026 14:52:43 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b7VSruFLd/ul9EtPpQzZOKs48ValMSxAhzEKMJx4+XkA59qpmNnaeXcTi/3UYmcOWhV2zYX2w48cUgBWb18XX1bHy+fD1iG9bYRXVmyqlKHPn20V6lJ8yTrwXxRG7BR/IgysW85xzf2IGcV/MZUAMjvquHScGB80YYkdjMewX2fIMkxO+mY7EUG9IIhKn5b3jkC3Cz+tSdXPdbw55nZeKiUiuzOzuPYzps5UZ5iRAIw3IECzBISm+usocX1fpXQRFa3YbBRdvJzoBzsdm2VT4lZB2TkWlTL8HNXdVkXgWKx4m5IiN7I28L8vrusNL6NcLxN0esgbrpjCcs9o6wSXjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=clHd+kmbDfHNAw+xb9D8jsgqKzpNCoVD6oS+S8pwL3E=;
+ b=kwey+Qwd/IWWrG5SWSlEGprrlFsrkonVbIA4nJq7X62GJmPT+AIA0P1aOIajkh70msYmuSI+zB08hh1gfE4J+KHN4bU1KmynT/JyAob9ohf6uZAihyQ3pTJPzw4742UQZcAJqMQiVgAd7Uf/R1joaHoEAVXCuJcm/sI4HrHF/oXwYbUR8Fn5b0K/TnZwnXNkbAlaIaOhLZPZFmj9ah3PjwULqhnzVn8c18omJAwRaaH5soA9NEksjSxBK9UhondHHGg2/Koz770rgw/pG0rMWDGqxxoMCzSanbq45l5LbO6gC+u4vigYUEX6+BPKfgLQnspLoTJa0x7SYPmspw7Lgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
+ by PH0PR11MB4888.namprd11.prod.outlook.com (2603:10b6:510:32::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Tue, 26 May
+ 2026 21:52:41 +0000
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58%5]) with mapi id 15.21.0071.011; Tue, 26 May 2026
+ 21:52:41 +0000
+Message-ID: <91ab0907-017f-4d18-9090-dd5ae7cd7a23@intel.com>
+Date: Tue, 26 May 2026 14:52:37 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [patch 08/24] timekeeping: Remove system_time_snapshot::real/boot
+From: Jacob Keller <jacob.e.keller@intel.com>
+To: Thomas Gleixner <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+CC: David Woodhouse <dwmw2@infradead.org>, Miroslav Lichvar
+	<mlichvar@redhat.com>, John Stultz <jstultz@google.com>, Stephen Boyd
+	<sboyd@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, "Frederic
+ Weisbecker" <frederic@kernel.org>, <thomas.weissschuh@linutronix.de>, "Arthur
+ Kiyanovski" <akiyano@amazon.com>, Rodolfo Giometti <giometti@enneenne.com>,
+	Vincent Donnefort <vdonnefort@google.com>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>, <kvmarm@lists.linux.dev>, Oliver Upton
+	<oupton@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
+	<netdev@vger.kernel.org>, Takashi Iwai <tiwai@suse.com>, Miri Korenblit
+	<miriam.rachel.korenblit@intel.com>, Johannes Berg <johannes.berg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Saeed Mahameed <saeedm@nvidia.com>,
+	Peter Hilber <peter.hilber@oss.qualcomm.com>, "Michael S. Tsirkin"
+	<mst@redhat.com>, <virtualization@lists.linux.dev>,
+	<linux-wireless@vger.kernel.org>, <linux-sound@vger.kernel.org>
+References: <20260526165826.392227559@kernel.org>
+ <20260526171223.300914258@kernel.org>
+ <9819b5ee-1f03-4687-9a36-9284741e19a4@intel.com>
+Content-Language: en-US
+In-Reply-To: <9819b5ee-1f03-4687-9a36-9284741e19a4@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR03CA0212.namprd03.prod.outlook.com
+ (2603:10b6:303:b9::7) To DS0PR11MB7381.namprd11.prod.outlook.com
+ (2603:10b6:8:134::14)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260526060841.49161-1-liujiajia@kylinos.cn>
-In-Reply-To: <20260526060841.49161-1-liujiajia@kylinos.cn>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Tue, 26 May 2026 16:52:32 -0500
-X-Gmail-Original-Message-ID: <CAGp9LzqzddmyDHMNsaqigYpVEdo_Pmzwbeh5Ri5_Gr87cVL6Dg@mail.gmail.com>
-X-Gm-Features: AVHnY4JN4XiSX6iZ8nQKBZrwSnhXgkTYMQMdyt2mZqBTxzISywSnHzHgBHOFEuo
-Message-ID: <CAGp9LzqzddmyDHMNsaqigYpVEdo_Pmzwbeh5Ri5_Gr87cVL6Dg@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mt76: mt7925: add wcid publish check in mt76_sta_add
-To: Jiajia Liu <liujiajia@kylinos.cn>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, Michael Lo <michael.lo@mediatek.com>, 
-	Leon Yen <leon.yen@mediatek.com>, linux-wireless@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|PH0PR11MB4888:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2185a8b5-ba93-46d3-22a5-08debb711c3c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|18002099003|22082099003|56012099006|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info: qBUZdIn1FDE/l2S9hWfCCf9NdA9MHbOWsyp+X9qHw5hn5yEIkvx7kExR6y3VfSdqptt6pG/z7o8IiMapRshBSwXIRi5V+mWPcro4X5Q1k7n4C2meT2lhAAxdyRo/cH3P7exZD0JWRdNyrIA5QTZRpliy5ccroFE1uPcSOc/zXzVYlzqgeiK0R4xXr6uhX1W4HofSTuf1MPn+6lONdBl8QDZMNYeMfVwBMnxYoZhMLNznLiW4MckGRIvX3RqdZbiLU5HACl6RSjQOrKNUoh/znpbeHtz3waanfRE9ES7uDpb9qvv0WBC+LfQPTwlgcQV8E8ViKiH3jsxUioGokK7+hmr5MxwJtFLxy2rkmpOQYDQV+9Bsf55cEHsBzHSHBKMRc+lNb2ynne5cfcRbsMDtjjtjBHbP4ld9e8xgvifDmLbiQK9Vnh7i4J/PV18hyMM4d/3lWzuJHegsE5Ep8BFGw4c0I8GpOfqXudca7y8nTjFJvJs3kdM5gZvlkikLZTu0of1ciqwSwigAeHmrQkYUM46gL5f25h9Vc10SPncgalM78hc8TjztcmpXtDXVnhKS98XvVeQCUbrmzDnoC5vlduxKYK7P9wtfso7xgV3ngEclCcT58OHq0dBHqRhNL4YC+Pex4ARFOIe526QGrEZwriRYFvkLgT/ek1c1Im6i7v65jUxhgBnUA+bzzzu1yMNZ
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TWFZR2prd05KcUpweEpIeXFnVEtjRElUYU9hYW5lSlNIM1h5anpvT2VpNUZN?=
+ =?utf-8?B?QXhZZ3FtTDRlQVlKSjVrQVJ6VFNRdkRYaVZ1WnpXTlZ3Y3UvdndHL3JKZC9S?=
+ =?utf-8?B?bkw4ZFIvMldaczZLaGFuT0RRYTh6U0ZKS3RqV0hITkRqMHFieFJTR3JCZDQx?=
+ =?utf-8?B?Y3pXbGttRkZtQUg4U2JwQVRXVXNaSnk0Y2RlZnFIb0ZIVWNQQWlwSWZkTGVo?=
+ =?utf-8?B?QmFKYklnT2hLZ2s4Yy94WkpWcmMzN0o5Rnh2dG5MVmJxTnI5THRYWDZodmF0?=
+ =?utf-8?B?ZjE0bXJIeDNUUThFTDJ1T0dKZVZrcWdncFRtSDlZZGkveTQ1NHJML0hGbG1R?=
+ =?utf-8?B?cE5tMXhMQ01XR1d0a2ZBRWRKZ01KUHpzTEdoTGNkU2RQQzVUQTFJTTM0emU5?=
+ =?utf-8?B?RzNZM1NicThWNDY4N2U3elI5REFFcmY5WDU2RC9EaVZOR2Q5dUl2blhhTllJ?=
+ =?utf-8?B?VHNSZ0dYMVczbm9vSGVESFFqTUZRai80Tll5RitBaVVGN2tGRzUrRUhCMzZq?=
+ =?utf-8?B?a3lBQjJkZ1U2VUg4bXFDZnFYZjkxMHFQeXlTcVlDV1U0RmQrbmh5RHRRZk5p?=
+ =?utf-8?B?WmxKcGNYak40Nmh1T3ZRdDJyd2JiWEFWa3Z6VEQwdVRUbXpWWE9MUnZhMmtj?=
+ =?utf-8?B?Y3I2MTRacXdNQk1ZSE1obVJFVVR1dXFuOTh3RG5oYk5Mc1FoNDRiNHk1ZVRK?=
+ =?utf-8?B?WEJkeG5RY241ZWw4cXNnRnBreklLVGIzWXYyeU9HL2pYMkpZME5CaUNPOWli?=
+ =?utf-8?B?UmkvTEtTK1VVMk5jcUR6aGd6RS8zUnc5SU1yb3VNTG91RUpBM2plQTRYSlNR?=
+ =?utf-8?B?WkVGVXFhbkpXZWZlSzV1KzBVaVUxbE9CSml2MmVWOEVqbU1tSlE3VElMRWd4?=
+ =?utf-8?B?UG04b1h1WEx3K1hWSVdwTHZiT2hpWkljeGtuM3AwbVZ0S3hlNVdMaXQwL2V0?=
+ =?utf-8?B?K2NJVjQ1enBuQjJnSWxxU1pUbWZZeWNqRmJGYXZuM0ZBa2RmT0cxNjlmYllS?=
+ =?utf-8?B?RW5NbkRWVXNlb3BEc1BTcTB1cVIyS0RHelB2bk1PRzU5THBkNTFmQmFPbnJt?=
+ =?utf-8?B?TzdPZ0FsRCtldXE3a0JRMW1qVWZJTWVmdFUrNTFRL3QxZTFoa3NMdEVHTU95?=
+ =?utf-8?B?M2MyRCtTa2VGWDJIWmxMN2FJbEp2MzhQYm56b1NNdGFWZXV6aFZKdEluTDlG?=
+ =?utf-8?B?Z2YrYmpCczlKdnBvQnI3V0svSXJjUEdWZVBER0U2TUZwaVpnUnNwRlptQ1RS?=
+ =?utf-8?B?V2dJOXF0SFNvdU00TmwrNCtveVd1cUx0em1WOUFEbVZPU2JibEpDMnFpdS9L?=
+ =?utf-8?B?eVIvU0FFTWRhUmRYbmxSR2R4ZWRNckpwZWszeXRFWDJXT2pTcDNHdmFJZm9i?=
+ =?utf-8?B?VXlUa0N4QzJYSXp2RUlPL01JbDlGL1pSemQ4TTlWQkw3dDI3RHY5eS9iUnV0?=
+ =?utf-8?B?MlN6cnJVOEpOQ2d5aEVwaUh1aksyNldjT3Zud2g4NysrQS9IU25yR0RUSVBa?=
+ =?utf-8?B?ZzFCSmVVTWpOcjhKOU85N25RK0RwNkN3aVcxck9mUjhjT3lTMmQ1SG9YNzN3?=
+ =?utf-8?B?MXB0bFZsTHppWWYzYkpyK3RpMWs4VmsxNzQvclhFUlVnMWNnVXk5MTFQcmdH?=
+ =?utf-8?B?dVZ1eDd6RmNjaEh4ZUk3MlhURHU4NmRrVlBmUHJreEtNRlIrN0d2T2J6RmEv?=
+ =?utf-8?B?ejZKcXBpMG9ZQ3pEUHpBNFpBM0kzUENxb0ZxT3BLUndKOGV3bzg4NmRNUzB1?=
+ =?utf-8?B?cktobWc3RVVBdVgyUWhwV2UvYUdsaHEvY0RNTzRKWEVQd2F3NzdEdVRXc21Z?=
+ =?utf-8?B?emRPeUV0THpCOUhFWmxoZDUvaDNPbzBYeC9SbGRsTVpxVEMzZzhxcFhDZjFi?=
+ =?utf-8?B?N29RaExoNW1kZDZPN0VUNlZwYWwxdnJJc05CYmN2WHNRaWd6UFNFdmp4Y2hp?=
+ =?utf-8?B?RDhzUmFvditJZnUyZWw3TTZ5YVh3TnVnbElkSXltaVZzaGttbVBxQ2pGLzBp?=
+ =?utf-8?B?R1ZTMFE4NmFDamhwdUNhUWt6aFQyQ1NaSkJRVkd4c3VsTDAyR0djN3VwU0Jw?=
+ =?utf-8?B?a055RGpQd0lFRUNGTktxL003QkJpL05IWmJZUTBIOWJTME9VanNvd2piOTZE?=
+ =?utf-8?B?b1RQODk3UmlGVUhGVENFMkNrT3BBd1NVZnFVbEF6Y3BFMFlmUjB5OTRGeUg0?=
+ =?utf-8?B?NWpNN3VrUThtOVROQXFJdWVLOGNxZ2dieUNNL0pkbWxKT3Q5bWZRaDF1dVJu?=
+ =?utf-8?B?WVVnZElKZjRVNHI2Q1llWUVNKzV2MjhDYWJja3Fvc0tRMU80ekhZUmU0VnBv?=
+ =?utf-8?B?MHVUY29VS0xEU1RDR3pmNXQrcWVWUWpTZzFKRVRLZzFFTk1OOHZwUT09?=
+X-Exchange-RoutingPolicyChecked: deRclGY9vYli/wgBTQAYYhjE9eBRsvsIeU7GFABe99C07NcdVUDM2wtHD0AOAuOB70NV+8OVg/AGdcxHLtSc8deqlvD4KRQGQuwAQuz+b2kspRU2Ee9vpxHuYtAtJIGyRYkXB/5A5DepeDMz3XOsNR9q8G3a/0DpDyHpb7Z8e7D7uRz17JrabPpvVl0kj61WFWGUXCr6+yVGMm2dAn6cIUSCZIY9OUY/eumOzCU0Vogc89Vc3KbAMW+vKRJZdMoneE+o2NcnaCuIAll+8PqvZpnAR/8NMoxaGjgfrWaatNdwZUwYnTEJIFhCnpDs+c4Lj10x3O4DEVRu6VHBzHq9Bw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2185a8b5-ba93-46d3-22a5-08debb711c3c
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 21:52:41.3518
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2jLpYw1N9oMPdHTzg7G3PpZDA1viTvFT6V7hd1Jut0Hwve8dOLtm42ObDvbt15ecqGycRtr0C/zyI5fBXFRZwgMYZSOp2rJnjUxp8DlHAB4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4888
+X-OriginatorOrg: intel.com
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36932-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[28];
+	TAGGED_FROM(0.00)[bounces-36933-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,enneenne.com,linux.dev,lists.linux.dev,gmail.com,vger.kernel.org,suse.com,intel.com,nvidia.com,oss.qualcomm.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:mid,intel.com:dkim];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jacob.e.keller@intel.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mail.gmail.com:mid,kylinos.cn:email]
-X-Rspamd-Queue-Id: 6F5595DCFBE
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 6C95C5DCFD6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+On 5/26/2026 2:49 PM, Jacob Keller wrote:
+> On 5/26/2026 10:14 AM, Thomas Gleixner wrote:
+>> All users are converted over to ktime_get_snapshot_id() and
+>> system_time_snapshot::sys.
+>>
+> 
+> I would have expected this to also remove ktime_get_snapshot() since the
+> description claims all users are converted to ktime_get_snapshot_id().
+> 
 
-On Tue, May 26, 2026 at 1:09=E2=80=AFAM Jiajia Liu <liujiajia@kylinos.cn> w=
-rote:
->
-> Since mt7925_mac_sta_add publishes wcid, add publish check in mt76_sta_ad=
-d
-> to avoid reinitializing the wcid->poll_list for mt7925.
->
-> Found dev->sta_poll_list corruption when using mt7925 and 7.0-rc4.
-> According to the corruption information, prev->next was changed to itself=
-.
->
-> wlan0: disconnect from AP 90:fb:5d:94:8b:e3 for new auth to 90:fb:5d:94:8=
-b:e2
-> wlan0: authenticate with 90:fb:5d:94:8b:e2 (local address=3D84:9e:56:9c:7=
-e:6b)
-> wlan0: send auth to 90:fb:5d:94:8b:e2 (try 1/3)
->  slab kmalloc-8k start ffff8c80958a6000 pointer offset 4160 size 8192
-> list_add corruption. prev->next should be next (ffff8c808a7488f8), but wa=
-s ffff8c80958a7040. (prev=3Dffff8c80958a7040).
->
->  mt76_wcid_add_poll+0x95/0xd0 [mt76]
->  mt7925_mac_add_txs.part.0+0xa5/0xe0 [mt7925_common]
->  mt7925_rx_check+0xa7/0xc0 [mt7925_common]
->  mt76_dma_rx_poll+0x50d/0x790 [mt76]
->  mt792x_poll_rx+0x52/0xe0 [mt792x_lib]
->
-> Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
-> ---
->
-> Reproduced and tested using the script below over ssh. Roam between two
-> bssids with the same SSID on a router.
->
-> #!/bin/bash
->
-> set -ex
->
-> while :; do
->         num=3D$(sudo iw wlan0 scan | grep Polaris | wc -l)
->         if [ $num -eq 2 ]; then
->                 break
->         fi
-> done
->
-> for i in $(seq 1 500); do
->
-> echo "index $i"
-> wpa_cli -i wlan0 roam 90:fb:5d:94:8b:e3
-> sleep 5
-> wpa_cli -i wlan0 roam 90:fb:5d:94:8b:e2
-> sleep 5
->
-> done
->
-> ---
->  drivers/net/wireless/mediatek/mt76/mac80211.c    | 11 ++++++++---
->  drivers/net/wireless/mediatek/mt76/mt76.h        |  1 +
->  drivers/net/wireless/mediatek/mt76/mt7925/main.c |  3 +++
->  3 files changed, 12 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/=
-wireless/mediatek/mt76/mac80211.c
-> index 4ae5e4715a9c..83f4f941b890 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-> @@ -1595,11 +1595,16 @@ mt76_sta_add(struct mt76_phy *phy, struct ieee802=
-11_vif *vif,
->                 mtxq->wcid =3D wcid->idx;
->         }
->
-> -       ewma_signal_init(&wcid->rssi);
-> -       rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
-> +       if (!test_bit(MT_WCID_FLAG_DRV_PUBLISH, &wcid->flags)) {
-> +               ewma_signal_init(&wcid->rssi);
-> +               rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
-> +               mt76_wcid_init(wcid, phy->band_idx);
-> +       } else {
-> +               wcid->phy_idx =3D phy->band_idx;
-> +       }
-> +
->         phy->num_sta++;
->
-
-Thanks for spotting the roaming issue.
-
-I think we can avoid adding MT_WCID_FLAG_DRV_PUBLISH and instead use the
-WCID table itself for the publish check.
-
-dev->wcid[] already encodes whether a WCID has been published, so checking
-it directly avoids adding a second mirror state. MT_WCID_FLAG_* is also
-better kept for WCID features that affect WTBL setup or data-path handling,
-rather than common bookkeeping state.
-
-Something like:
-
-@@ -1620,6 +1620,7 @@ mt76_sta_add(struct mt76_phy *phy, struct
-ieee80211_vif *vif,
-{
-  struct mt76_wcid *wcid =3D (struct mt76_wcid *)sta->drv_priv;
-  struct mt76_dev *dev =3D phy->dev;
-+       struct mt76_wcid *published;
-  int ret;
-  int i;
-
-@@ -1639,7 +1640,10 @@ mt76_sta_add(struct mt76_phy *phy, struct
-ieee80211_vif *vif,
-          mtxq->wcid =3D wcid->idx;
-  }
-
--       if (!test_bit(MT_WCID_FLAG_DRV_PUBLISH, &wcid->flags)) {
-+       published =3D rcu_dereference_protected(dev->wcid[wcid->idx],
-+                                             lockdep_is_held(&dev->mutex))=
-;
-+       if (published !=3D wcid) {
-+               WARN_ON_ONCE(published);
-                 ewma_signal_init(&wcid->rssi);
-                 rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
-                 mt76_wcid_init(wcid, phy->band_idx);
-
-   ....
-
-
-> -       mt76_wcid_init(wcid, phy->band_idx);
->  out:
->         mutex_unlock(&dev->mutex);
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
-less/mediatek/mt76/mt76.h
-> index 527bef97e122..8bfce686bff7 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> @@ -361,6 +361,7 @@ enum mt76_wcid_flags {
->         MT_WCID_FLAG_PS,
->         MT_WCID_FLAG_4ADDR,
->         MT_WCID_FLAG_HDR_TRANS,
-> +       MT_WCID_FLAG_DRV_PUBLISH,
->  };
->
->  #define MT76_N_WCIDS 1088
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7925/main.c
-> index 73d3722739d0..35b5c718475c 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-> @@ -1102,6 +1102,9 @@ int mt7925_mac_sta_add(struct mt76_dev *mdev, struc=
-t ieee80211_vif *vif,
->                                               &msta->deflink);
->         }
->
-> +       if (!err)
-> +               set_bit(MT_WCID_FLAG_DRV_PUBLISH, &msta->deflink.wcid.fla=
-gs);
-> +
->         return err;
->  }
->  EXPORT_SYMBOL_GPL(mt7925_mac_sta_add);
-> --
-> 2.53.0
->
->
+Ah. All the users of the real/boot paramaters have been updated, but
+drivers still use ktime_get_snapshot() until later in the series. Ok,
+that makes sense.
 
