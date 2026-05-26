@@ -1,237 +1,274 @@
-Return-Path: <linux-wireless+bounces-36935-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36932-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOXRFIwXFmrOhQcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36935-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 23:58:36 +0200
+	id UNklFdYWFmrOhQcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36932-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 23:55:34 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1397B5DD039
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 23:58:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F5595DCFBE
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 23:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 856D730BB82B
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 21:54:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5A34A302E5C3
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 21:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1584B3C9890;
-	Tue, 26 May 2026 21:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD163C454E;
+	Tue, 26 May 2026 21:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e2QlPQcU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JvySodVW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A2A3C8C7D;
-	Tue, 26 May 2026 21:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779832414; cv=fail; b=cmTwhrhQOvs6ZWpkZVBgEYs9/KQ2Co1qLbNMTqOtpG1DAWYsDniUGi8lye5QRdN8XrCWbO1pWvuQVtUAonBJ8zceZQUNpY2vleSu0WZQl6lsIiwtdtmI82HSNOqKJPQAAPDublt3dJ89Dkh7Jfci0lpPx8fPQcsw6EUifRBqMHA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779832414; c=relaxed/simple;
-	bh=wyMhGVvnjuiTna0QT+hZyKmYAc0HmazbMPLb6wny3lc=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Wx0Nl6GxTxS0Klm+EttTJwPjFE4J5Yjiq72lNcUae2tGng0zAYeucTC/y9vfUT49fGvoDEmyLdGpPvi2+A1lVoBU3whyGuGZRGzmxaxGww+EaOi1G4elXPpFKRu65MPdhpmQypXv6jElW8vcpGUb9MwWwUe/oGqlfodEm6tXlh0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e2QlPQcU; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779832413; x=1811368413;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=wyMhGVvnjuiTna0QT+hZyKmYAc0HmazbMPLb6wny3lc=;
-  b=e2QlPQcUkRbZLFjVQSf7H0ksIqEU+kl0yGTqDjL+YBLFHJ6kE9m93WAf
-   q0T1Vqfg1F8CHHb/MHotH7dAF7vAuG3oA3aKb4dlqcM/TrSnAznnerY3o
-   6qR1IosQ6TLDrTElHjJfGa1l/WypYUv5AxX+NQz/d0GskSytqA7UFDbPT
-   1UGeAGaHv0FBH4QiBEIeYJBhuC3rha0fq++9OMDsz2o7HnrKbnaGbL0I2
-   485OFyD92zJoN8NDbvdIKvKzhB0RlCqSgG5n4LAGV4DJ7ruhuDN1MyyPI
-   TesdG7eDevN/ipiM0RFkaYBI7kSB1M1qVsPFkmvsO5+jOrJLIYPoHOPMS
-   Q==;
-X-CSE-ConnectionGUID: aOLSsSpATIm7+qNj9j6lhg==
-X-CSE-MsgGUID: XF8U13NORla0RVutMsdiTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80690985"
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="80690985"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 14:51:58 -0700
-X-CSE-ConnectionGUID: 9skRG26EQwC5vNv49Oi0fQ==
-X-CSE-MsgGUID: jCr3nFoMQmO42iIzc+XKEw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="241884672"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 14:51:57 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 26 May 2026 14:51:56 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 26 May 2026 14:51:56 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.10) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 26 May 2026 14:51:56 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PQYFCl13PMhOTaByEOiz4Wum3WGPpUHhvvaHGHloLvLZz0kwQG76wsWe6F3U8i2G0Q0EmLT9Da5BWP25HvSRi9pHtlco4qhOjuNQ0jMa4iWVXasKpldlxIwbz9ZDz+XW1GXY7dRMJLt4UMoboP2qTEWQ20hLwFfaQrhQGxcJe/TALOm7BXrAnCFrIa4yrRGF9thTRuntGR5x5ux4ZJ9pKWhSgy6A9GsFffV4brT3sWVmCB6opFK9CROCe3ErLpTgg+CBo5cq+OBQSZkXsDd0Uj6ACtqzbPHucQZB9STGiy6cyGjyI3ay33urQ4Nm2OClTAD+46deVPiklog0qOgWeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WERpPhaelWKqd2cWcAYwy9nTCDdZNrzSzXJEfoQUpv4=;
- b=jT5VBM90iTg4ML5CLQTowFdY5596xI78QTKXss1zSv8Jk9IrGMcH96p/EQeQHpKnogwUYZfPj0NAOPfXFJBV1M3KGBBtFxPwAzxBrWMuYqCvtvJs6KrKzUUKPIF2Knc0du5tfmZKh2/ZtErtJZy2/vcTuCa18z3mZ4xXcywSuPSS3Z6C/pAx3VWMuLVajvuOwRYd8ioclyaLspSVnZ+g6yzbgQRgsusL9zuyQhEmtAIwk3RCCUIXRRQocpyzRTLB7zENnJ1Mzkj9GRKxVMeD/jQLjaS9CfCjhAwb3KAZgR5wllF6ZfOVYGkVNUuTxhIls3cFyOGdhk/VANQ3Nmd7QQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by PH0PR11MB4888.namprd11.prod.outlook.com (2603:10b6:510:32::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Tue, 26 May
- 2026 21:51:53 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%5]) with mapi id 15.21.0071.011; Tue, 26 May 2026
- 21:51:53 +0000
-Message-ID: <02ae20d5-95ab-4de6-9776-ec3f2bb7b61b@intel.com>
-Date: Tue, 26 May 2026 14:51:49 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [patch 14/24] igc: Use provided clock ID for history snapshot
-To: Thomas Gleixner <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-CC: David Woodhouse <dwmw2@infradead.org>, Miroslav Lichvar
-	<mlichvar@redhat.com>, John Stultz <jstultz@google.com>, Stephen Boyd
-	<sboyd@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, "Frederic
- Weisbecker" <frederic@kernel.org>, <thomas.weissschuh@linutronix.de>, "Arthur
- Kiyanovski" <akiyano@amazon.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Rodolfo Giometti <giometti@enneenne.com>, Vincent Donnefort
-	<vdonnefort@google.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton
-	<oliver.upton@linux.dev>, <kvmarm@lists.linux.dev>, Oliver Upton
-	<oupton@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
-	<netdev@vger.kernel.org>, Takashi Iwai <tiwai@suse.com>, Miri Korenblit
-	<miriam.rachel.korenblit@intel.com>, Johannes Berg <johannes.berg@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>, Peter Hilber
-	<peter.hilber@oss.qualcomm.com>, "Michael S. Tsirkin" <mst@redhat.com>,
-	<virtualization@lists.linux.dev>, <linux-wireless@vger.kernel.org>,
-	<linux-sound@vger.kernel.org>
-References: <20260526165826.392227559@kernel.org>
- <20260526171223.745281238@kernel.org>
-Content-Language: en-US
-From: Jacob Keller <jacob.e.keller@intel.com>
-In-Reply-To: <20260526171223.745281238@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0098.namprd04.prod.outlook.com
- (2603:10b6:303:83::13) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC01B3C818B
+	for <linux-wireless@vger.kernel.org>; Tue, 26 May 2026 21:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779832368; cv=none; b=WP5mQul1JjOhQAFVbEmexwy1LHHgPzOgtXNdI2tsbCmaX8qXMXGtN6rZVX6Gr8uEYer44/AskedqGf70ggS8LIykDSyLYqluSx/jlGrV8jMYjr+bW0bpaNuItLZ7m9Pyhga6ysIbf4jlEygxM32TNwdnYhLd9ezW5IVEmKfqfiQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779832368; c=relaxed/simple;
+	bh=c+8/7l091quGh0H14krQlVhQZvm8FgIVDYoP3y7im1o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DPU8LiNNzOH16mMA5gV5ud9ly6rgD3vCYeWFY+Y2QGr5UR2EOE5OR1h3CmfNnnFQP0ZJCugdn5Hxr9osT7ZegHxc6eaOJtM28d4BXn4sTFqJpAcTb+VeSEYQzIFyyauJWEzfTPRUO1GLqKdTz3esrhVfvLUo1u0kwooUrQjr5UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JvySodVW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40EC1F00A3E
+	for <linux-wireless@vger.kernel.org>; Tue, 26 May 2026 21:52:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779832365;
+	bh=vofwtLagvBRYkOYwKOjHnTeC6C87g7YP3KZhbzyhI3Q=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=JvySodVWkZ4MM3tRJ8YS99NO8G7r2QGWchQgjJs/N+v4T2fakaO4nQDdnRKzeIqTT
+	 twW0FxpXffz7ntaZsc3O/ISWeFOfVsNb/x05burAQaCV9x0p4/oCBx+unOrZNDKiKH
+	 l9eEs/xvzHk7ZO9LGKRzD+wyhYk/qRZhK5KF4wg+jKuzkyANdqT3/0CZ70KJQmgnhs
+	 zZQSlPOBMLaWKn7O7IGnTpnQLYT/fNAPwTGi9bD8J0K1DlMF127mpbMjHwpWu/C29v
+	 j8kQ4+Ada+sfRBKhvdrHvYOoaCl3yhfcJa5ke+GxzVVmXHgt06pmnxndTucORDzD0u
+	 JP8bxaosMVwHg==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-38ea6a5a0b3so88879881fa.3
+        for <linux-wireless@vger.kernel.org>; Tue, 26 May 2026 14:52:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+mwp70fUQMNB74/DAky//DFfq30nq5/K4Qc7Yzj8wnEbtzyjjYkqL9URUATtXGUr5nErsbWZoE48+hO4UioQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxI7PMgTdU7wWD91cW+KlBe0rDnDzfOJ9p8SHm8akT5EHtVnk2
+	OvR68fn7Nq0UlyDBB2Xgp1sjAquzOra2ru3WNjUiUzMrP7MoeOP8p9hkd+nFmaeBjJAOgLm7+9A
+	NZAVb7EELiIBRi0rnQ40Dm67Nx1Gs58M=
+X-Received: by 2002:a2e:8192:0:b0:394:2b8a:2374 with SMTP id
+ 38308e7fff4ca-395d8d3de65mr47969431fa.16.1779832364145; Tue, 26 May 2026
+ 14:52:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|PH0PR11MB4888:EE_
-X-MS-Office365-Filtering-Correlation-Id: ce42d2df-6ee8-4fd0-3cfe-08debb70ffa3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|18002099003|22082099003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info: 6tXRiF6H0aA/Vf8WQCG+1ErVrcSl1Ie/sSAOnMk1YGALXN5DbXzNwF7SBs9L2ukkgXX4Ie4nJZwxzSGsH2hZTnMlGWEaONOMxHKoTRuvK4FF6qJ6A5VEsrWnFGz7drkhRTBf7DB3GoLEINICA3LOaU11Tg0bN1yPuI5Rlnjk14LWsyWoS0oZaFaT26KtpgwVtAoDTmswwPDLghzu8EbYy0v1iI0PkhmhABkU2zqkt7GP7tfQhRy+HHzl/5RNG+lGQjqdrqcfxLJx3eUIF7c/qJB5qvt1KclmoaYj6HyAGDFZCBmbI9HeIP/TQgFGJlYCc4I0nU0OI9m0bvhlAvB6WcLXF+6EKo9KNjB9uHgDUUCsOwZJfJ4Pqo8oXR0/L5a8+Q+r/2BwKUgxsn99Sej+7Cl4rx6hJyqhHzNWRxjjS1jNnqlfAQH4dT7xjiUzV7CRS2GFxgW+ulPWRupvqYxkWF4PebsmqmU9iCguYsL5L8xqaJiq+SpYa4SKAzSSrtNPFot/7jMn83vJUpyiy4SOl0B1LHcMtWFKajOBzefSZYB/XOcBCyopnsSd8c1koJQtyp1AF5qRK+lOaI0Bx0/AgeJ2wq0Yyl5Pao6IMQpvZga34PaoGGtRcpRZAtGgzSgktNU1vyCL/wakcw7kdLk/RgaOp9WXjO8PCHTa3qjEjaY8kZeZH25BZy5CMafLf3n8
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dEZsVERpeGJmTlJZTi9ScXdkUlpzdVIyMm5NR2xoRGNKY2ZLZ1draWg4L2I5?=
- =?utf-8?B?dzRQbEl5LzVYVFNKM1NlZ1lWQkdMSXFBZVVyK1lnalRva3F2Vm9XYjlVY3F5?=
- =?utf-8?B?VE0wYkNCUlJEZTExSTdOdnRsaDhkdzVrbWJBdDRSU0tJb1Z1Q0xmZkNnRkN6?=
- =?utf-8?B?TlgySFVxTDFiU3ZOeXZLTGltb3VBWkJTN1psd2d0MzJsN1FWOTVKMXFyZHAx?=
- =?utf-8?B?SGpndmJMS0RLTnBTd21yblprYWY1K3l4QlZaQytpNGRtQWdURlhJNWgxQ2p6?=
- =?utf-8?B?TVplRzVlemhZb3BSRjNjSlplY1c2aDlnQkc5STlRTUl0Y1RBanN5dUQwZjQ0?=
- =?utf-8?B?Rk1aTi9JcTNhUGVjMkw4OGI3VUVpQ3h5RGFNalowZVpQaTR1ajBWTXlhVG1Y?=
- =?utf-8?B?RU9UbDlDZjVTZDVEYjBBazlmQnh4VjNHVjRSTlp4ZnZ1OU5QR2srM2tydFg2?=
- =?utf-8?B?SkxQdnpBbSs0dFUwNEpDL3Zwcm4rUldsekdxTDVNZkpNN0Q2QVM3Q2RvUmkx?=
- =?utf-8?B?OHZxNGdsTERuOVkydWpGR1dxZWs2U0JmTG9QNmI5d3BqTWVzaE9INTZIdStG?=
- =?utf-8?B?eEpZV0tPcGd5ZjdnbFphZ2UyYUE4dzVGTTFmTFhtdlpxQ0V4MzVWblg1OWJN?=
- =?utf-8?B?cnVhTENrcXNMemNDbE1PQWhtYTVadDBkUVZTMEdZZDdVRzAzRUFjQ0t3ZWlm?=
- =?utf-8?B?RVE2UTVMRVM4WFV2Sm1rSTZzSWlIUkdWVzlLTy9ROFQ1c09IdXRqMmNXVXdE?=
- =?utf-8?B?YkRNZ20vaU55Z3JmbFZsTGVBOHc4TlhWaGlINVdYbnFNU0NhQWR0Rzhrd0VC?=
- =?utf-8?B?MmR5dkFyVmF4c3JQVS9xUnpYSmFVaTE0RjFiTENISG8rZFhJSkRzcUZObXNo?=
- =?utf-8?B?R1JCeVNLWXVPMmxwNGpWZCtEOVZQa1RFbzUraFhUejk5L0dEdGgyVWd2YTV2?=
- =?utf-8?B?UDk0MjJwSkIraGVZWWR2OFJYZTAzL0NMZmpqbkE5U0hxZk9DcTJxTVRpclVE?=
- =?utf-8?B?VHMwVG5abHBocEJxeVpkSkc0WGhQZGEvdGNMOS9KMlVSc0pPN3V2Z1hVb2Qr?=
- =?utf-8?B?aWE5THlxWTBVWVYwS1Y0Zm85YlFhWkozbDJib0ZGNDZOZWRYay9MazhQSWMx?=
- =?utf-8?B?NDYvYVhMakZ3TnFhRHRFdThUeUVzRHNBOWMyek5LcVZEWEE5aDBoRDI0SGxk?=
- =?utf-8?B?SmpoUlFIOXJWT3dKWVhKRWgrYU0rRGhsZGk2NU5CRDdaK2JUQzAxVTIvekJY?=
- =?utf-8?B?cnV1d2RxUllaYW5sN3VPZUJSOUZQOXNVOVBYSjNPc3Q3a0pSeDNMdzE5SllO?=
- =?utf-8?B?VnhVVnd5K2VhK2NvYzBWSjN1ZUgyMk9oL3ZvQ2hNVjBhRkpyQUlOem5yeExh?=
- =?utf-8?B?cVpUWC9LZHhVbXVQdHlDUHUrc3E4Z0dHaEhMMC9sMmI4QzEvRUMwK2JoMHcr?=
- =?utf-8?B?SEZ0YzdxVExzZ2hqbTBEWlBOUFg1SmtMODhlN3ZjRlQzV1FCMTJwUitVVFI5?=
- =?utf-8?B?SEJ6MkRIZDhNRitBTHRoUjA0blVjU1d1VzR6TnhWY25jRnJ2S0tIcGhacTh5?=
- =?utf-8?B?Vm5CRjJ0SHR2SEdhRHNJdzNNa3pRS2U2c2xsMTJOcW9oMytkYlZYV09sMzBK?=
- =?utf-8?B?aWY0ZmFLbGUzN1NucDl0YktZa0FDQ0kzNVFST3VlK3pCbzZEOTExWll0Uzlz?=
- =?utf-8?B?UHV1WTREOUlhdXVaMXNwNzY5Q3BJMmRpOFhyWVlNQVd0OG1CUjRSZUNZanBt?=
- =?utf-8?B?WVVxcXVRMnZYSXkzbHlKeVFlcEYwRTJ3ak1EWE5xdk5pWmpsM25xblRRQ3Bt?=
- =?utf-8?B?L1Q2eVU0U1pwYTM2czJGUDVWeFVuTC9ZeFhsVFR4S0YzSTZRSWFWSE9ZcHg1?=
- =?utf-8?B?Q0FHbytXVmZRbU4wUktiQUVoZ1MwelRFNXd5UGFUMHp5bTAxN0lZeWpOdnNL?=
- =?utf-8?B?bm12K3NoNlVGdlhmTk1mMnJMZXQyVE1Ya1dxTkFUcllMTVRmUFgvb2txRkQ0?=
- =?utf-8?B?NjRLbU5ablNDRUR3Y2RGNzJ5YlZpeDZpeDFheHh6a3piUXFkQnNvVHJXeUZB?=
- =?utf-8?B?bTlhNjZLYlA0V3ZrcFZaV0dyNkVCVVJBM0ZWeHlOKzIyR3RyYnV0T1BKd2JJ?=
- =?utf-8?B?dEVVNVhEa0dIcVpWclQ4MjZPQk0xZ01DVlNJYTc1K2I3VHZoQUppOXo0bVZs?=
- =?utf-8?B?SkJGaXVYbVBQZjFVNVVFVU4rUEpvbmE3SUM1WFlrd3FPWmNmcTNWUzdTRHZw?=
- =?utf-8?B?bXVKZzROWlZZMWNKMkw5UGdpOFlCWmRNRTl3aFIwQWJiRTUvYkd5N3UzUzRu?=
- =?utf-8?B?aExmR3IvTWluUG1ZbkhLVkhUKzBSbUJEcTh6b29ZWHZSSTRNc3lQdz09?=
-X-Exchange-RoutingPolicyChecked: Al140Y3JDv5cD/vg7neAH0rt8gd/NpzpEEclXSuVL1na4qePkzdpnAjxB0ncYhMJhG3HkvUlbEa4JFtPw/kCMOv/9HSuoRzZbexH1nBl2WSFdqOrU721fAPmK8shnrsjalzWcSCo6sbgV1imLNYcwCPZhZwo0re6r/jE1T0jrX1Fc+tcy38TqrzxCRkslUxuI1xwu4vOBEIOobG7GqTZbyCrSL/78kjP9aM8i8qSRclUOl7/ltVA0uC8EDGzuHjYSky9e5K6I4q0mVdzX0fOVrpG4E/63P8ME7Mjnf8NXNaQYT8k3+TqPU8Gr3DsHzIbvNjo6LwaG2QlOyHMtLO4fQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce42d2df-6ee8-4fd0-3cfe-08debb70ffa3
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 21:51:53.3962
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: A/8P7wrz15ommt+lIFbZpG5zfx1s2+9ZsFHc8kM+eUzwJjQKE+iTiCCcJRW2IvNUKU1FaHjxlrODA/MkqOgzP1AevcchP6VsoQgNcl2uq5I=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4888
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+References: <20260526060841.49161-1-liujiajia@kylinos.cn>
+In-Reply-To: <20260526060841.49161-1-liujiajia@kylinos.cn>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Tue, 26 May 2026 16:52:32 -0500
+X-Gmail-Original-Message-ID: <CAGp9LzqzddmyDHMNsaqigYpVEdo_Pmzwbeh5Ri5_Gr87cVL6Dg@mail.gmail.com>
+X-Gm-Features: AVHnY4JN4XiSX6iZ8nQKBZrwSnhXgkTYMQMdyt2mZqBTxzISywSnHzHgBHOFEuo
+Message-ID: <CAGp9LzqzddmyDHMNsaqigYpVEdo_Pmzwbeh5Ri5_Gr87cVL6Dg@mail.gmail.com>
+Subject: Re: [PATCH] wifi: mt76: mt7925: add wcid publish check in mt76_sta_add
+To: Jiajia Liu <liujiajia@kylinos.cn>
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, Michael Lo <michael.lo@mediatek.com>, 
+	Leon Yen <leon.yen@mediatek.com>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[28];
-	TAGGED_FROM(0.00)[bounces-36935-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36932-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,intel.com,enneenne.com,linux.dev,lists.linux.dev,gmail.com,vger.kernel.org,suse.com,nvidia.com,oss.qualcomm.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,intel.com:mid,intel.com:dkim];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jacob.e.keller@intel.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 1397B5DD039
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mail.gmail.com:mid,kylinos.cn:email]
+X-Rspamd-Queue-Id: 6F5595DCFBE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/26/2026 10:14 AM, Thomas Gleixner wrote:
-> The PTP core indicates in system_device_crosststamp::clock_id the clock ID
-> for which the system time stamp should be taken. That allows to utilize
-> hardware timestamps with e.g. AUX clocks.
-> 
-> Save the provided clock ID and use it in igc_phc_get_syncdevicetime() for
-> taking the history snapshot.
-> 
-> No functional change.
-> 
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Hi,
+
+On Tue, May 26, 2026 at 1:09=E2=80=AFAM Jiajia Liu <liujiajia@kylinos.cn> w=
+rote:
+>
+> Since mt7925_mac_sta_add publishes wcid, add publish check in mt76_sta_ad=
+d
+> to avoid reinitializing the wcid->poll_list for mt7925.
+>
+> Found dev->sta_poll_list corruption when using mt7925 and 7.0-rc4.
+> According to the corruption information, prev->next was changed to itself=
+.
+>
+> wlan0: disconnect from AP 90:fb:5d:94:8b:e3 for new auth to 90:fb:5d:94:8=
+b:e2
+> wlan0: authenticate with 90:fb:5d:94:8b:e2 (local address=3D84:9e:56:9c:7=
+e:6b)
+> wlan0: send auth to 90:fb:5d:94:8b:e2 (try 1/3)
+>  slab kmalloc-8k start ffff8c80958a6000 pointer offset 4160 size 8192
+> list_add corruption. prev->next should be next (ffff8c808a7488f8), but wa=
+s ffff8c80958a7040. (prev=3Dffff8c80958a7040).
+>
+>  mt76_wcid_add_poll+0x95/0xd0 [mt76]
+>  mt7925_mac_add_txs.part.0+0xa5/0xe0 [mt7925_common]
+>  mt7925_rx_check+0xa7/0xc0 [mt7925_common]
+>  mt76_dma_rx_poll+0x50d/0x790 [mt76]
+>  mt792x_poll_rx+0x52/0xe0 [mt792x_lib]
+>
+> Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
 > ---
-Acked-by: Jacob Keller <jacob.e.keller@intel.com>
+>
+> Reproduced and tested using the script below over ssh. Roam between two
+> bssids with the same SSID on a router.
+>
+> #!/bin/bash
+>
+> set -ex
+>
+> while :; do
+>         num=3D$(sudo iw wlan0 scan | grep Polaris | wc -l)
+>         if [ $num -eq 2 ]; then
+>                 break
+>         fi
+> done
+>
+> for i in $(seq 1 500); do
+>
+> echo "index $i"
+> wpa_cli -i wlan0 roam 90:fb:5d:94:8b:e3
+> sleep 5
+> wpa_cli -i wlan0 roam 90:fb:5d:94:8b:e2
+> sleep 5
+>
+> done
+>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mac80211.c    | 11 ++++++++---
+>  drivers/net/wireless/mediatek/mt76/mt76.h        |  1 +
+>  drivers/net/wireless/mediatek/mt76/mt7925/main.c |  3 +++
+>  3 files changed, 12 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/=
+wireless/mediatek/mt76/mac80211.c
+> index 4ae5e4715a9c..83f4f941b890 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mac80211.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+> @@ -1595,11 +1595,16 @@ mt76_sta_add(struct mt76_phy *phy, struct ieee802=
+11_vif *vif,
+>                 mtxq->wcid =3D wcid->idx;
+>         }
+>
+> -       ewma_signal_init(&wcid->rssi);
+> -       rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
+> +       if (!test_bit(MT_WCID_FLAG_DRV_PUBLISH, &wcid->flags)) {
+> +               ewma_signal_init(&wcid->rssi);
+> +               rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
+> +               mt76_wcid_init(wcid, phy->band_idx);
+> +       } else {
+> +               wcid->phy_idx =3D phy->band_idx;
+> +       }
+> +
+>         phy->num_sta++;
+>
+
+Thanks for spotting the roaming issue.
+
+I think we can avoid adding MT_WCID_FLAG_DRV_PUBLISH and instead use the
+WCID table itself for the publish check.
+
+dev->wcid[] already encodes whether a WCID has been published, so checking
+it directly avoids adding a second mirror state. MT_WCID_FLAG_* is also
+better kept for WCID features that affect WTBL setup or data-path handling,
+rather than common bookkeeping state.
+
+Something like:
+
+@@ -1620,6 +1620,7 @@ mt76_sta_add(struct mt76_phy *phy, struct
+ieee80211_vif *vif,
+{
+  struct mt76_wcid *wcid =3D (struct mt76_wcid *)sta->drv_priv;
+  struct mt76_dev *dev =3D phy->dev;
++       struct mt76_wcid *published;
+  int ret;
+  int i;
+
+@@ -1639,7 +1640,10 @@ mt76_sta_add(struct mt76_phy *phy, struct
+ieee80211_vif *vif,
+          mtxq->wcid =3D wcid->idx;
+  }
+
+-       if (!test_bit(MT_WCID_FLAG_DRV_PUBLISH, &wcid->flags)) {
++       published =3D rcu_dereference_protected(dev->wcid[wcid->idx],
++                                             lockdep_is_held(&dev->mutex))=
+;
++       if (published !=3D wcid) {
++               WARN_ON_ONCE(published);
+                 ewma_signal_init(&wcid->rssi);
+                 rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
+                 mt76_wcid_init(wcid, phy->band_idx);
+
+   ....
+
+
+> -       mt76_wcid_init(wcid, phy->band_idx);
+>  out:
+>         mutex_unlock(&dev->mutex);
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
+less/mediatek/mt76/mt76.h
+> index 527bef97e122..8bfce686bff7 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -361,6 +361,7 @@ enum mt76_wcid_flags {
+>         MT_WCID_FLAG_PS,
+>         MT_WCID_FLAG_4ADDR,
+>         MT_WCID_FLAG_HDR_TRANS,
+> +       MT_WCID_FLAG_DRV_PUBLISH,
+>  };
+>
+>  #define MT76_N_WCIDS 1088
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7925/main.c
+> index 73d3722739d0..35b5c718475c 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+> @@ -1102,6 +1102,9 @@ int mt7925_mac_sta_add(struct mt76_dev *mdev, struc=
+t ieee80211_vif *vif,
+>                                               &msta->deflink);
+>         }
+>
+> +       if (!err)
+> +               set_bit(MT_WCID_FLAG_DRV_PUBLISH, &msta->deflink.wcid.fla=
+gs);
+> +
+>         return err;
+>  }
+>  EXPORT_SYMBOL_GPL(mt7925_mac_sta_add);
+> --
+> 2.53.0
+>
+>
 
