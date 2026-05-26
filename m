@@ -1,215 +1,217 @@
-Return-Path: <linux-wireless+bounces-36897-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36898-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHlXFBY5FWoDTwcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36897-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 08:09:26 +0200
+	id qF25BGxrFWoBVAcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36898-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 11:44:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009D65D115D
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 08:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 625A25D395E
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 11:44:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67479301CA58
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 06:09:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DB3D300EF9C
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 09:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5ED43B2FC9;
-	Tue, 26 May 2026 06:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE29A3D7D64;
+	Tue, 26 May 2026 09:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="lEKKrvK4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D333C1DBB3A;
-	Tue, 26 May 2026 06:09:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61233CD8D3
+	for <linux-wireless@vger.kernel.org>; Tue, 26 May 2026 09:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779775751; cv=none; b=D5nvLTsrWYaXeoURWipG6aUPG6Xj33ji5NznM8H9fzRAQJdivIv/+xIjt80pnsKJIsq4R4onMJq3aUawlAzfv567d3T31KSQx1s6H0IBBSjXNVWY4sqbEn9F5jfOL0SuJy84xVf8MX9yIjv/u1ovaODqBNiRmb+aytq0fp7KFkk=
+	t=1779788300; cv=none; b=p/YQmBDQjLwMVX9HR9fd2Kva5k8j1DtPSqajUzcoWZEp5DvIFZTjh1UmAA+/NDRConrINTeiTSEKNKKCMrvLtEgyj2hff/MMKqJOki5DNIhSIWftcxchL2sERPz3KENmJ5RcyomflYZ3v+py1mCzx1CAZcy4dy18sVDsRSUp7Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779775751; c=relaxed/simple;
-	bh=ZmQX+gjNHZdvvD+B4H7W4XcZiDobKqvNMmWCzHtBQl4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t8coTzN/45CQpaDHFed4XfYfaRGHQuP/hJWwNebOD4vYqagBr5NTlGmubVUjPKgNoCvgzX7t0AQD28km2SQBQje2m9lA6Eg6oXAJQa7qaiCWvM52Imc90ddm8UMwT4AdunSzzg7+d8+pFNL1z2FlAnco1irju9IUKBAtOqBExMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 63d14fe858c911f1aa26b74ffac11d73-20260526
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:d8e5edf1-6dc9-4bcb-934f-2113a4b15081,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:e7bac3a,CLOUDID:d63f01bd65cc66a9646d46786aa81cf6,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|865|898,TC:nil,Content:0|15|50,EDM:-
-	3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,A
-	V:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 63d14fe858c911f1aa26b74ffac11d73-20260526
-X-User: liujiajia@kylinos.cn
-Received: from nature.lan [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <liujiajia@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1555042781; Tue, 26 May 2026 14:09:01 +0800
-From: Jiajia Liu <liujiajia@kylinos.cn>
-To: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Michael Lo <michael.lo@mediatek.com>,
-	Leon Yen <leon.yen@mediatek.com>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Jiajia Liu <liujiajia@kylinos.cn>
-Subject: [PATCH] wifi: mt76: mt7925: add wcid publish check in mt76_sta_add
-Date: Tue, 26 May 2026 14:08:41 +0800
-Message-ID: <20260526060841.49161-1-liujiajia@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1779788300; c=relaxed/simple;
+	bh=RXJWIuO8bbHBBvc8hAmAJEeX88yUO/65JWt4BhqEy1c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t5kuVhdP9lU+MKTHya2HTXkmHCghnQLPAkuh25ws494dWu0+bSl4Xjac544Q0QrKt6TsrVPxEFrdlOn4dWi/BfmyGG/M73xb6m+bNe1+ayd4+uyqX1fWGUavd8vKPfHhZcmsryzYmMwzHsvnCHkWWm5ztiqAUyDWlv13Vby8MWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=lEKKrvK4; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-43fe62837baso6037051f8f.3
+        for <linux-wireless@vger.kernel.org>; Tue, 26 May 2026 02:38:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1779788297; x=1780393097; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RXJWIuO8bbHBBvc8hAmAJEeX88yUO/65JWt4BhqEy1c=;
+        b=lEKKrvK49QgmB6x/y+qpXA1KA0bnbMEP6IO3yJzfYm3FBYiPa5hAcQMU6Z9eUMT1Ot
+         y2U+uCnwT0Dph9Fy9Wu73sypiEmroqtd7H0h358q8bgNpXyTvNsXFkG5w/uKC4Qt1Aic
+         IftxxMPtWO6sVN3DJ1bwOS2pmDQlaSlNlRSiv3fu9mhf0UoMeKUaxH5ByfzQWHn6nnK1
+         GlIqILqAaaPTbQ3PoNcAKnmiOzbz0r5tbaTbBAdfObngsANtyBiOXgkdVDLygd30rzys
+         VA2yfKASkWiYh9UoDqDQTzHe3OrNl7mGvDRIQxHWoVXEUoWMIdhTceUwajQ6ZOftmbBw
+         IbHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779788297; x=1780393097;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RXJWIuO8bbHBBvc8hAmAJEeX88yUO/65JWt4BhqEy1c=;
+        b=GSg96eD3RfBH2jKWhRuFCGROZclLywMneu+WJH9utc0mnYuLUh4FP5M3RbegBL+maS
+         0BVwGKBc79g1RsPcI+Fzdxbe+5u0OzKqDif2bkmFhnmEuFDtB407KJBgxTGFf2kw/1tB
+         lworVDzOyF2tt/jPw/3Eg1xI1Bp7nd1PsfBxTjZLhpbfbi/1Iua94S43di1nsXemIjTd
+         aAcuSbmUtVGnCPevxOJF/F5gb/kMBEuLJ8bLme4dPqi2XVH59tRG6pQEiWVaRxS6Vi8W
+         vSodtHp7x0oBBaIFe329ENKSQ5yFSBK9t7MrahzJBu2SbB2KBT2UZMYZ3RWTyUkfRiMt
+         1BMA==
+X-Forwarded-Encrypted: i=1; AFNElJ/k7RKGhgFTOJoBWyI8q3VTZBiCxTn9PMesQcGnwZG6Nks0LuPI/3EPOFmf1wn52QvSqF5XeuX5FIuTgWyJfA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTv/HLoNXkEEqirrhc1qaA0w3UA47mGTAMAzQZnYYnI8/GH9g1
+	BDKtBiNWVe3dlpgz/2ans1f47cQcujmJmdGcYE2+sC66dhmr6LX138m2SXpN/SDv5vc=
+X-Gm-Gg: Acq92OEpQMRKLe8JBWi7pXV0QM2RTB1rFbM4yDGjdBCyBKpkNG9bp8EihjOhn8ybjTw
+	6V0mfE+AGeipA2m5YpLbn1E2Vo5vjCXDfJiCGuNcfbVshf68KEbVwYq2y21efwVUtlXeIBBrWa4
+	D6I2UxmhrEwpfg6BWpbDz6cppE47reiKRMKeYArzKvpUme/5YBP+80NrGM48Ct2V8BddGyR4K/h
+	CcoEfbtNCqmdqQ2hMS+WCtPdo6FaBMeVWdkfsT0GoG9AHhulnKJ8ys9ZJ2fSfm+hCTsp8z5syen
+	H/4GE3ek8OhYrdYxdduu2wBM3gaEoGvtJKFHLCv1Bes6cw5Hh9sebY7oI2XRMyiEOCvHTzvoO/m
+	24k0+d3JUzWLcHarCiqQcatlyr09LDn2DfC9ySP5kX/ETlJWVHFCO4Vl+LnFq0sWyNI3cwQehxZ
+	Eys90FpoTnl6z+fKfdYtQFsAeOc1fzMET59OSNZxEWvEp/5tqOaRigl4+0Vky7qaU5vbP7vJvRx
+	6Kx3JIakUprOg==
+X-Received: by 2002:a05:6000:1447:b0:452:d03a:7abe with SMTP id ffacd0b85a97d-45eb38b91c3mr32067787f8f.17.1779788297057;
+        Tue, 26 May 2026 02:38:17 -0700 (PDT)
+Received: from localhost (p200300f65f47db047ec792ae18ec05cd.dip0.t-ipconnect.de. [2003:f6:5f47:db04:7ec7:92ae:18ec:5cd])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-45eb6d49132sm34150219f8f.24.2026.05.26.02.38.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2026 02:38:16 -0700 (PDT)
+Date: Tue, 26 May 2026 11:38:15 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Ulf Hansson <ulfh@kernel.org>, 
+	"Christian A. Ehrhardt" <christian.ehrhardt@codasip.com>, linux-mmc@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	linux-kernel@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>, 
+	linux-bluetooth@vger.kernel.org, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-mediatek@lists.infradead.org, 
+	Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Brian Norris <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 1/6] sdio: Add syntactic sugar to store a pointer in
+ sdio_driver_id
+Message-ID: <ahVpRY6lxiWbJ7Qc@monoceros>
+References: <cover.1776429984.git.u.kleine-koenig@baylibre.com>
+ <c830049dcfcd99f005e2ff6742aace9341c61f13.1776429984.git.u.kleine-koenig@baylibre.com>
+ <aeaMkfk_1t98e7SU@monoceros>
+ <CABBYNZJzbEmYzTk2m+Y8SoHVouTMA6Gje_55iJsQ6cYtDLftbQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.54 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vtihelpcu7j6kvgw"
+Content-Disposition: inline
+In-Reply-To: <CABBYNZJzbEmYzTk2m+Y8SoHVouTMA6Gje_55iJsQ6cYtDLftbQ@mail.gmail.com>
+X-Spamd-Result: default: False [-1.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[baylibre.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[baylibre.com];
+	TAGGED_FROM(0.00)[bounces-36898-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-36897-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[baylibre.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	DMARC_DNSFAIL(0.00)[kylinos.cn : query timed out];
-	FROM_NEQ_ENVFROM(0.00)[liujiajia@kylinos.cn,linux-wireless@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.045];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[u.kleine-koenig@baylibre.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,codasip.com,vger.kernel.org,linuxfoundation.org,sang-engineering.com,holtmann.org,gmail.com,collabora.com,lists.infradead.org,realtek.com,nbd.name,mediatek.com,chromium.org,dolcini.it,linux.intel.com];
+	NEURAL_HAM(-0.00)[-0.987];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:mid,kylinos.cn:email]
-X-Rspamd-Queue-Id: 009D65D115D
+	TAGGED_RCPT(0.00)[linux-wireless,renesas];
+	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,baylibre.com:email,baylibre.com:dkim]
+X-Rspamd-Queue-Id: 625A25D395E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Since mt7925_mac_sta_add publishes wcid, add publish check in mt76_sta_add
-to avoid reinitializing the wcid->poll_list for mt7925.
 
-Found dev->sta_poll_list corruption when using mt7925 and 7.0-rc4.
-According to the corruption information, prev->next was changed to itself.
+--vtihelpcu7j6kvgw
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1 1/6] sdio: Add syntactic sugar to store a pointer in
+ sdio_driver_id
+MIME-Version: 1.0
 
-wlan0: disconnect from AP 90:fb:5d:94:8b:e3 for new auth to 90:fb:5d:94:8b:e2
-wlan0: authenticate with 90:fb:5d:94:8b:e2 (local address=84:9e:56:9c:7e:6b)
-wlan0: send auth to 90:fb:5d:94:8b:e2 (try 1/3)
- slab kmalloc-8k start ffff8c80958a6000 pointer offset 4160 size 8192
-list_add corruption. prev->next should be next (ffff8c808a7488f8), but was ffff8c80958a7040. (prev=ffff8c80958a7040).
+On Mon, Apr 20, 2026 at 04:46:56PM -0400, Luiz Augusto von Dentz wrote:
+> Hi Uwe,
+>=20
+> On Mon, Apr 20, 2026 at 4:31=E2=80=AFPM Uwe Kleine-K=C3=B6nig (The Capabl=
+e Hub)
+> <u.kleine-koenig@baylibre.com> wrote:
+> >
+> > Hello,
+> >
+> > On Fri, Apr 17, 2026 at 03:10:47PM +0200, Uwe Kleine-K=C3=B6nig (The Ca=
+pable Hub) wrote:
+> > > On all current Linux architectures sizeof(long) =3D=3D sizeof(void *)=
+ and
+> > > this is used a lot through the kernel. For example it enables the usu=
+al
+> > > practice to store pointers in sdio_driver_id's .driver_data member.
+> > >
+> > > This works fine, but involves casting and thus isn't type-safe.
+> > > Additionally with the CHERI architecture extension there are machines
+> > > with sizeof(void *) > sizeof(long) for with the traditional approach =
+of
+> > > storing a pointer in .driver_data doesn't work.
+> > >
+> > > By replacing the plain unsigned long .driver_data by an anonymous uni=
+on,
+> > > most of the casting can be dropped and it yields a working solution f=
+or
+> > > CHERI.
+> > >
+> > > All users of struct sdio_driver_id are initialized in a way that is
+> > > compatible with the new definition, so no adaptions are needed there.
+> >
+> > sashiko.dev found s/sdio_driver_id/sdio_device_id/ twice in the commit
+> > log and once in the short log. If you consider applying this patch
+> > please adapt the commit message accordingly.
+>=20
+> No problem I can fix them up once applying.
 
- mt76_wcid_add_poll+0x95/0xd0 [mt76]
- mt7925_mac_add_txs.part.0+0xa5/0xe0 [mt7925_common]
- mt7925_rx_check+0xa7/0xc0 [mt7925_common]
- mt76_dma_rx_poll+0x50d/0x790 [mt76]
- mt792x_poll_rx+0x52/0xe0 [mt792x_lib]
+Now that Ulf gave his blessing, would you please merge the first patch
+and the bluetooth ones (#2 and #3)? I will follow up then once your tree
+hits Linus's tree with the remaining patches for wifi.
 
-Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
----
+Please don't forget about s/sdio_driver_id/sdio_device_id/.
 
-Reproduced and tested using the script below over ssh. Roam between two
-bssids with the same SSID on a router.
+Thanks
+Uwe
 
-#!/bin/bash
+--vtihelpcu7j6kvgw
+Content-Type: application/pgp-signature; name="signature.asc"
 
-set -ex
+-----BEGIN PGP SIGNATURE-----
 
-while :; do
-	num=$(sudo iw wlan0 scan | grep Polaris | wc -l)
-	if [ $num -eq 2 ]; then
-		break
-	fi
-done
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmoVagQACgkQj4D7WH0S
+/k5P8Af7B8UAQJSjX3WHqmRdJihAfbJzuB0qsIl9eOVYHCAaEiAnVpqnjNkntHIU
+lX0CcswR4fXl9pEV+1mobDSLHsbDhg9BtXTuAm4pavvYRoS5isVyCkasNUeNDGt9
+B68NNR4oKyApL/DFvXCG4CPWrhA8TL+m9HE7DCkm2IYcH2TB2WdUCQnnQFV8E94x
+1eyEfCrTCqn5UlW+2urdJLmngSk7o3yv1wJ36pgHxMNQMXU8mPWN4nOCqEZAvtmP
+CrtRviKQ1QpRXNBA7blduSvvqqfr7uQEKta7E2argdEhkor6XY/fTTlu687QRi6n
+Po62G/0XCxIUYpanmYULzD9YbpSlyA==
+=Zdz8
+-----END PGP SIGNATURE-----
 
-for i in $(seq 1 500); do
-
-echo "index $i"
-wpa_cli -i wlan0 roam 90:fb:5d:94:8b:e3
-sleep 5
-wpa_cli -i wlan0 roam 90:fb:5d:94:8b:e2
-sleep 5
-
-done
-
----
- drivers/net/wireless/mediatek/mt76/mac80211.c    | 11 ++++++++---
- drivers/net/wireless/mediatek/mt76/mt76.h        |  1 +
- drivers/net/wireless/mediatek/mt76/mt7925/main.c |  3 +++
- 3 files changed, 12 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 4ae5e4715a9c..83f4f941b890 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -1595,11 +1595,16 @@ mt76_sta_add(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 		mtxq->wcid = wcid->idx;
- 	}
- 
--	ewma_signal_init(&wcid->rssi);
--	rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
-+	if (!test_bit(MT_WCID_FLAG_DRV_PUBLISH, &wcid->flags)) {
-+		ewma_signal_init(&wcid->rssi);
-+		rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
-+		mt76_wcid_init(wcid, phy->band_idx);
-+	} else {
-+		wcid->phy_idx = phy->band_idx;
-+	}
-+
- 	phy->num_sta++;
- 
--	mt76_wcid_init(wcid, phy->band_idx);
- out:
- 	mutex_unlock(&dev->mutex);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 527bef97e122..8bfce686bff7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -361,6 +361,7 @@ enum mt76_wcid_flags {
- 	MT_WCID_FLAG_PS,
- 	MT_WCID_FLAG_4ADDR,
- 	MT_WCID_FLAG_HDR_TRANS,
-+	MT_WCID_FLAG_DRV_PUBLISH,
- };
- 
- #define MT76_N_WCIDS 1088
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 73d3722739d0..35b5c718475c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1102,6 +1102,9 @@ int mt7925_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 					      &msta->deflink);
- 	}
- 
-+	if (!err)
-+		set_bit(MT_WCID_FLAG_DRV_PUBLISH, &msta->deflink.wcid.flags);
-+
- 	return err;
- }
- EXPORT_SYMBOL_GPL(mt7925_mac_sta_add);
--- 
-2.53.0
-
+--vtihelpcu7j6kvgw--
 
