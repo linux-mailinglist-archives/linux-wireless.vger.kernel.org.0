@@ -1,56 +1,56 @@
-Return-Path: <linux-wireless+bounces-36949-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36950-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCTDBU4xFmqQiwcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36949-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 01:48:30 +0200
+	id yCelCxoyFmqQiwcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36950-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 01:51:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0AF5DDA99
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 01:48:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C14B95DDAE4
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 01:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A5480303989C
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 23:47:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9A2B309AF6E
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 23:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4033D79FF;
-	Tue, 26 May 2026 23:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9601B3D410C;
+	Tue, 26 May 2026 23:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="PWTJNAd+"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="UwjXSBTH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC423D968D;
-	Tue, 26 May 2026 23:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8603C4B93;
+	Tue, 26 May 2026 23:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779839245; cv=none; b=Q1q77iRyAQt1ibVeWYqvrrAFWGpfUGkyKuCpjDyMkkTSLXAI/nt3fP1WrDboFhNJY9CepFbRqCZGLBqGsql5zbgGd+HXqdWvsXW8jJzU2nCu9PGQKOkzh+mMIDHCOJFr0XV3j5y2vLLOxYVoWax8foVd4eGiIO8X1nneDXYpeKs=
+	t=1779839397; cv=none; b=lJZwD5nk3ni8DJtyNDzJ9Fzzk+6+XDtPIsbrMtyZTooYNjYnMvjV+SmGo3weAvq2tffkdhWDmkVMC+9zqL7t4mrS6KvRM5anED6c+5iUw5O15yUOgHfNBfX55qCODEgo71nqOwSX4pMu/13D8elRykFnNAwxOuhN/iWlIApfp3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779839245; c=relaxed/simple;
-	bh=oTPQi9wceCzZBzL9AP6y2qQQUsb83qRb20SmmMbaF3M=;
+	s=arc-20240116; t=1779839397; c=relaxed/simple;
+	bh=hwCKg2h0vMdgzQYeiokJ5bZVPk0jcapigb0OPCQZNTo=;
 	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
-	 MIME-Version; b=K9Asyt0674bndSjPIKuoJXmInFn51Ol3Yo2FiZeqJ+rJVXUZZGCITF6zLYBCh8qR7kmoIrUAhaQz/ViEludxfGCmhrKcQGnHRx4EUG0HHh75tHmVhz/lDDSEX0TGtqpWD5RZ6QCFKWeams/l69l3jBv8WThDxvPW/MrAdW/Z1JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=PWTJNAd+; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=cZaGUeNJPwOsOUysVFkBWz9Gd9s1ZGVul3pwp3pZTBOeZRFbHlSWAI4yqcioslfgzUGCCcz8/BQRJil88+5tqHtn8kKg9lWnX1whKDFtr8GtSiPmFXTLA/ZXF4+JoT+jXX2WP40zG7+RayTgggwm9rxqi5dOcqqlWRq2C7hKuNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=UwjXSBTH; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
 	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:References;
-	bh=oTPQi9wceCzZBzL9AP6y2qQQUsb83qRb20SmmMbaF3M=; b=PWTJNAd+0VAmiT+rtp+xknkzoc
-	FyuT/YWCs4At2KrtlI/dwyU7OmI8cYftzrTZ+WFp6c7GbTHr1iTCusbDLq96mXU5uB//rlt0hVT9m
-	SWRbvgE6ERbW1+gAEbbZCbcmUt7aQL2Citdid15049INzqp5LrerAKOhtPL/MVBqVsMOEtiiEa8HW
-	+Im8EfTmHB7xHcH0p089NyzesJN8yshR0uJWa8Bpci79e3yZdBlV/rM8ydBPddyxBb6C+Kx96VB4b
-	YfBqsHLiyhfqR3yGgoyDX9OsKzXpmOkx9Ts5LaEijyCStmJ/X12IvlGUGD96BhRjank8kse0bdTZp
-	SBy/Vj8Q==;
+	bh=hwCKg2h0vMdgzQYeiokJ5bZVPk0jcapigb0OPCQZNTo=; b=UwjXSBTHmJI0nL+IHUOO1MF97/
+	q9I+BZTC/KfNtEufvDn0sN/EL2IQlZZNvzIj5bfp12RcM31/9NUYRMlMvayDkzA2SEDsqDRhwlFHU
+	0NWAfexUKUgHpu76w3RL2/IyXutBRC82VSrrWmV081GcP/pdBQaTPsJXUfuMBkcfYhQNWJWaf72on
+	WHLTguArd+cerhU3WZlTt+l0mpmvU6Is4Muy4L/kyTYnt3qROh+7TK+fxdUYObhhB41/O2tGMQsHM
+	qc7PwiOT0DVe1ThvNqBOxCRTIoFA1rdUpVj1+NfDDU2i1HbjrdWSY+PxE1QgIi7ODoIea/L8+TlBn
+	C2AzH+fQ==;
 Received: from 54-240-197-239.amazon.com ([54.240.197.239] helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wS1UM-00000001ft8-0Y34;
-	Tue, 26 May 2026 23:47:10 +0000
-Message-ID: <5276577c55a5204e9bb3e36bdfdaf7a620f115dd.camel@infradead.org>
-Subject: Re: [PATCH 12/24] wifi: iwlwifi: Adopt PTP cross timestamps to core
- changes
+	id 1wS1Wv-00000001g1D-3MvC;
+	Tue, 26 May 2026 23:49:49 +0000
+Message-ID: <863198a34915483da38abc29d74f88ce478b7c94.camel@infradead.org>
+Subject: Re: [PATCH 13/24] ice/ptp: Use provided clock ID for history
+ snapshot
 From: David Woodhouse <dwmw2@infradead.org>
 To: tglx@kernel.org
 Cc: akiyano@amazon.com, anna-maria@linutronix.de,
@@ -64,10 +64,10 @@ Cc: akiyano@amazon.com, anna-maria@linutronix.de,
  richardcochran@gmail.com, saeedm@nvidia.com,  sboyd@kernel.org,
  thomas.weissschuh@linutronix.de, tiwai@suse.com,  vdonnefort@google.com,
  virtualization@lists.linux.dev
-Date: Wed, 27 May 2026 00:47:08 +0100
-in-reply-to: <20260526171223.596169122@kernel.org>
+Date: Wed, 27 May 2026 00:49:48 +0100
+in-reply-to: <20260526171223.670955218@kernel.org>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-Op5yJWuXXUjq/fS5P/Bk"
+	boundary="=-0xHqilGWojdMiAKufLaW"
 User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -80,12 +80,12 @@ X-Spamd-Result: default: False [-4.26 / 15.00];
 	SIGNED_SMIME(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
 	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36949-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-36950-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -94,7 +94,7 @@ X-Spamd-Result: default: False [-4.26 / 15.00];
 	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[infradead.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -104,34 +104,33 @@ X-Spamd-Result: default: False [-4.26 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.co.uk:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,infradead.org:mid,infradead.org:dkim]
-X-Rspamd-Queue-Id: 8A0AF5DDA99
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:mid,infradead.org:dkim,amazon.co.uk:email]
+X-Rspamd-Queue-Id: C14B95DDAE4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
---=-Op5yJWuXXUjq/fS5P/Bk
+--=-0xHqilGWojdMiAKufLaW
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 26 May 2026 19:14:28 +0200, Thomas Gleixner wrote:
-> iwlwifi only supports CLOCK_REALTIME timestamps and provides an incomplet=
-e
-> result without system counter values etc.
+On Tue, 26 May 2026 19:14:33 +0200, Thomas Gleixner wrote:
+> The PTP core indicates in system_device_crosststamp::clock_id the clock I=
+D
+> for which then system time stamp should be taken. That allows to utilize
+> hardware timestamps with e.g. AUX clocks.
 >
-> It also zeros struct system_device_crosststamp, which is already zeroed i=
-n
-> the core and initialized with the clock ID.
+> Save the provided clock ID and use it in ice_capture_crosststamp() for
+> taking the history snapshot.
 >
-> Remove the zeroing and reject any request for a clock ID other than REALT=
-IME.
+> No functional change.
 >
 > Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 
 
---=-Op5yJWuXXUjq/fS5P/Bk
+--=-0xHqilGWojdMiAKufLaW
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -210,22 +209,22 @@ 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
-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
+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
-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
+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
 
 
---=-Op5yJWuXXUjq/fS5P/Bk--
+--=-0xHqilGWojdMiAKufLaW--
 
