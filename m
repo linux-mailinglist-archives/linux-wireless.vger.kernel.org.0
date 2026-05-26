@@ -1,163 +1,215 @@
-Return-Path: <linux-wireless+bounces-36896-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36897-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHRGGu8VFWpoSgcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36896-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 05:39:27 +0200
+	id SHlXFBY5FWoDTwcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36897-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 08:09:26 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3345D0667
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 05:39:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 009D65D115D
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 08:09:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 66C0F300915C
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 03:39:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67479301CA58
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 May 2026 06:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7716D391513;
-	Tue, 26 May 2026 03:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5ED43B2FC9;
+	Tue, 26 May 2026 06:09:11 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89398397AFF
-	for <linux-wireless@vger.kernel.org>; Tue, 26 May 2026 03:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D333C1DBB3A;
+	Tue, 26 May 2026 06:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779766765; cv=none; b=H2q94ABbMdm8tu8nVVEg7AcjztbKhopuxmMX2TGBqGpYE8YXDZMavu/RdA8Munkt2dJeWQBDEVTP1lBkQ2twjuqTjBQ1q5e5LVOZoRnxOc2H256RLjH7B7LcMZLQNeqe4FNLkl1JrmwacqBP7d89BIM7zRTQRQYWm7n427bGfiI=
+	t=1779775751; cv=none; b=D5nvLTsrWYaXeoURWipG6aUPG6Xj33ji5NznM8H9fzRAQJdivIv/+xIjt80pnsKJIsq4R4onMJq3aUawlAzfv567d3T31KSQx1s6H0IBBSjXNVWY4sqbEn9F5jfOL0SuJy84xVf8MX9yIjv/u1ovaODqBNiRmb+aytq0fp7KFkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779766765; c=relaxed/simple;
-	bh=XtiSO8QaIwpKLd8e8eYcVI0ifUfloh2ZhDUKh7Lmg4A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jt69F0odubM1IURpHhFdHXGQ1WTOwKGljUNtDQWVtTNM8WqW0lV74+r+6uNI4iaUn6Oqgylz3b23f5Z4//bmWPeA24xzigUyGOVbDUTYJdHSxug8rp1xg6NEzuImuGJTEBH0pvuIFKKT4TIGiycZp/NgNoCAJ3qykFcmLOeEEeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=13.75.44.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from [IPV6:fdfe:dcba:9876::1] (unknown [172.23.56.36])
-	by app2 (Coremail) with SMTP id zQmowAA3zwbgFRVqb9QOAA--.14932S2;
-	Tue, 26 May 2026 11:39:12 +0800 (CST)
-Message-ID: <84aa4118-6120-49bf-bcc3-9f2d1219e799@lzu.edu.cn>
-Date: Tue, 26 May 2026 11:39:12 +0800
+	s=arc-20240116; t=1779775751; c=relaxed/simple;
+	bh=ZmQX+gjNHZdvvD+B4H7W4XcZiDobKqvNMmWCzHtBQl4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t8coTzN/45CQpaDHFed4XfYfaRGHQuP/hJWwNebOD4vYqagBr5NTlGmubVUjPKgNoCvgzX7t0AQD28km2SQBQje2m9lA6Eg6oXAJQa7qaiCWvM52Imc90ddm8UMwT4AdunSzzg7+d8+pFNL1z2FlAnco1irju9IUKBAtOqBExMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 63d14fe858c911f1aa26b74ffac11d73-20260526
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:d8e5edf1-6dc9-4bcb-934f-2113a4b15081,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:e7bac3a,CLOUDID:d63f01bd65cc66a9646d46786aa81cf6,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|865|898,TC:nil,Content:0|15|50,EDM:-
+	3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,A
+	V:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 63d14fe858c911f1aa26b74ffac11d73-20260526
+X-User: liujiajia@kylinos.cn
+Received: from nature.lan [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <liujiajia@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1555042781; Tue, 26 May 2026 14:09:01 +0800
+From: Jiajia Liu <liujiajia@kylinos.cn>
+To: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Michael Lo <michael.lo@mediatek.com>,
+	Leon Yen <leon.yen@mediatek.com>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Jiajia Liu <liujiajia@kylinos.cn>
+Subject: [PATCH] wifi: mt76: mt7925: add wcid publish check in mt76_sta_add
+Date: Tue, 26 May 2026 14:08:41 +0800
+Message-ID: <20260526060841.49161-1-liujiajia@kylinos.cn>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] wifi: mac80211: validate minstrel HT tx status rates
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
- "nbd@openwrt.org" <nbd@openwrt.org>,
- "linville@tuxdriver.com" <linville@tuxdriver.com>,
- "yuantan098@gmail.com" <yuantan098@gmail.com>,
- "zcliangcn@gmail.com" <zcliangcn@gmail.com>,
- "bird@lzu.edu.cn" <bird@lzu.edu.cn>,
- "xuyuqiabc@gmail.com" <xuyuqiabc@gmail.com>
-References: <cover.1779619788.git.xuyq21@lenovo.com>
- <0e3f97ca5cfbeb67a8e60ca5c266f4335950816b.1779619788.git.xuyq21@lenovo.com>
- <710745062b5f4323a233db0cd4288ced@realtek.com>
-Content-Language: en-US
-From: Ren Wei <n05ec@lzu.edu.cn>
-In-Reply-To: <710745062b5f4323a233db0cd4288ced@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:zQmowAA3zwbgFRVqb9QOAA--.14932S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kw4UZrWkXF17CFyrAw47Arb_yoW8Xw1fpa
-	y8GFyjvr95JrW8tFsrXF4rAF1fAr48J34fG34rtw1SvF9xtr43Grn2qr90vr4fWFsxuw1F
-	va10krW3u3WayFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvIb7Iv0xC_Cr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
-	AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
-	6r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI
-	0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
-	Yx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbV
-	WUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE-syl42xK82IY
-	c2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8GwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
-	026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
-	Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20x
-	vEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE
-	14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf
-	9x07j1rWrUUUUU=
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQETCWoUBk4M-AABsd
-X-Spamd-Result: default: False [-1.46 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-36896-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[lzu.edu.cn];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[sipsolutions.net,openwrt.org,tuxdriver.com,gmail.com,lzu.edu.cn];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-36897-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[n05ec@lzu.edu.cn,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	DMARC_DNSFAIL(0.00)[kylinos.cn : query timed out];
+	FROM_NEQ_ENVFROM(0.00)[liujiajia@kylinos.cn,linux-wireless@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.045];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0E3345D0667
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:mid,kylinos.cn:email]
+X-Rspamd-Queue-Id: 009D65D115D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Since mt7925_mac_sta_add publishes wcid, add publish check in mt76_sta_add
+to avoid reinitializing the wcid->poll_list for mt7925.
 
+Found dev->sta_poll_list corruption when using mt7925 and 7.0-rc4.
+According to the corruption information, prev->next was changed to itself.
 
-On 5/26/26 10:43, Ping-Ke Shih wrote:
-> Ren Wei <n05ec@lzu.edu.cn> wrote:
->> @@ -1205,8 +1242,9 @@ minstrel_ht_txstat_valid(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
->>         if (!rate->count)
->>                 return false;
->>
->> -       if (rate->flags & IEEE80211_TX_RC_MCS ||
->> -           rate->flags & IEEE80211_TX_RC_VHT_MCS)
-> 
-> Miss a line?
-> - 		return true;
-> 
-> 
->> +       if (rate->flags & IEEE80211_TX_RC_MCS ||
->> +           rate->flags & IEEE80211_TX_RC_VHT_MCS)
->> +               return minstrel_ht_txstat_valid_rate(rate);
->>
->>         for (i = 0; i < ARRAY_SIZE(mp->cck_rates); i++)
->> @@ -1235,8 +1273,9 @@ minstrel_ht_ri_txstat_valid(struct minstrel_priv *mp,
->>         if (!rate_status->try_count)
->>                 return false;
->>
->> -       if (rate_status->rate_idx.flags & RATE_INFO_FLAGS_MCS ||
->> -           rate_status->rate_idx.flags & RATE_INFO_FLAGS_VHT_MCS)
-> 
-> Miss a line?
-> 
-> -		return true;
-> 
->> +       if (rate_status->rate_idx.flags & RATE_INFO_FLAGS_MCS ||
->> +           rate_status->rate_idx.flags & RATE_INFO_FLAGS_VHT_MCS)
->> +               return minstrel_ht_ri_txstat_valid_rate(&rate_status->rate_idx);
->>
->>         for (i = 0; i < ARRAY_SIZE(mp->cck_rates); i++) {
->> --
->> 2.54.0
->>
+wlan0: disconnect from AP 90:fb:5d:94:8b:e3 for new auth to 90:fb:5d:94:8b:e2
+wlan0: authenticate with 90:fb:5d:94:8b:e2 (local address=84:9e:56:9c:7e:6b)
+wlan0: send auth to 90:fb:5d:94:8b:e2 (try 1/3)
+ slab kmalloc-8k start ffff8c80958a6000 pointer offset 4160 size 8192
+list_add corruption. prev->next should be next (ffff8c808a7488f8), but was ffff8c80958a7040. (prev=ffff8c80958a7040).
 
-Yes, you're right, and I'm very sorry about this.
+ mt76_wcid_add_poll+0x95/0xd0 [mt76]
+ mt7925_mac_add_txs.part.0+0xa5/0xe0 [mt7925_common]
+ mt7925_rx_check+0xa7/0xc0 [mt7925_common]
+ mt76_dma_rx_poll+0x50d/0x790 [mt76]
+ mt792x_poll_rx+0x52/0xe0 [mt792x_lib]
 
-After generating the patch, we adjusted this part after finding
-an issue, but I made a mistake in that follow-up change and ended
-up changing it incorrectly here.
+Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
+---
 
-What should have been replaced in both places was the old
-return true; line with the helper-based return.
+Reproduced and tested using the script below over ssh. Roam between two
+bssids with the same SSID on a router.
 
-I'll fix it in the next revision. Thank you for catching this,
-and sorry for the trouble.
+#!/bin/bash
+
+set -ex
+
+while :; do
+	num=$(sudo iw wlan0 scan | grep Polaris | wc -l)
+	if [ $num -eq 2 ]; then
+		break
+	fi
+done
+
+for i in $(seq 1 500); do
+
+echo "index $i"
+wpa_cli -i wlan0 roam 90:fb:5d:94:8b:e3
+sleep 5
+wpa_cli -i wlan0 roam 90:fb:5d:94:8b:e2
+sleep 5
+
+done
+
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c    | 11 ++++++++---
+ drivers/net/wireless/mediatek/mt76/mt76.h        |  1 +
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c |  3 +++
+ 3 files changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 4ae5e4715a9c..83f4f941b890 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1595,11 +1595,16 @@ mt76_sta_add(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		mtxq->wcid = wcid->idx;
+ 	}
+ 
+-	ewma_signal_init(&wcid->rssi);
+-	rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
++	if (!test_bit(MT_WCID_FLAG_DRV_PUBLISH, &wcid->flags)) {
++		ewma_signal_init(&wcid->rssi);
++		rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
++		mt76_wcid_init(wcid, phy->band_idx);
++	} else {
++		wcid->phy_idx = phy->band_idx;
++	}
++
+ 	phy->num_sta++;
+ 
+-	mt76_wcid_init(wcid, phy->band_idx);
+ out:
+ 	mutex_unlock(&dev->mutex);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 527bef97e122..8bfce686bff7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -361,6 +361,7 @@ enum mt76_wcid_flags {
+ 	MT_WCID_FLAG_PS,
+ 	MT_WCID_FLAG_4ADDR,
+ 	MT_WCID_FLAG_HDR_TRANS,
++	MT_WCID_FLAG_DRV_PUBLISH,
+ };
+ 
+ #define MT76_N_WCIDS 1088
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 73d3722739d0..35b5c718475c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1102,6 +1102,9 @@ int mt7925_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 					      &msta->deflink);
+ 	}
+ 
++	if (!err)
++		set_bit(MT_WCID_FLAG_DRV_PUBLISH, &msta->deflink.wcid.flags);
++
+ 	return err;
+ }
+ EXPORT_SYMBOL_GPL(mt7925_mac_sta_add);
+-- 
+2.53.0
 
 
