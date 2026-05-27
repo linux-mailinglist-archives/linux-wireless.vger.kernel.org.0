@@ -1,189 +1,147 @@
-Return-Path: <linux-wireless+bounces-37010-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37011-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEQQMwbzFmo3yQcAu9opvQ
-	(envelope-from <linux-wireless+bounces-37010-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 15:35:02 +0200
+	id GHlYGyMAF2oJ0QcAu9opvQ
+	(envelope-from <linux-wireless+bounces-37011-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 16:30:59 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF795E5092
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 15:35:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C17EE5E5E53
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 16:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A65B4302D0C5
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 13:34:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD17730393A5
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 14:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FAB40FDAD;
-	Wed, 27 May 2026 13:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683022DFA3A;
+	Wed, 27 May 2026 14:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MqgTVytt"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="nrutu0GX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nbd.name (nbd.name [46.4.11.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59873410D0F
-	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 13:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9770131B101;
+	Wed, 27 May 2026 14:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779888845; cv=none; b=Ddn+Ufudhd+RukowHHdmrC6Ii+r18bGzPkaCKFGLtJxL9y5UK7t/3QJV2w4okBT8yttVTB9gu8So5DhpsTwM+iRNdC/HHyQtfTh7Ik3xRGMoMapjQcPBHGVege9O5soUTdrMiCXBGEumHPOLSrJk9FrKCps/ht02AQ6SpvD3vSE=
+	t=1779892041; cv=none; b=NHmBpIA0Vo0/QtSug9LVzw1PbtmAyv3bMl3T8rXcJ9Sg7f8Nb/ivpDbOmgXsYkUR0rAiOB1Hi2PVz6gAQ1H0qAsRzmH/tgbYjD4AWVdgsTGl+t58lPZl06KyOXNLIApPPmtFb/dj8QGql85cF8Z3e/HqsKhd9Z1Q6PlagPcYKiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779888845; c=relaxed/simple;
-	bh=kJg3+vkC/Ksj70rm3U6aG5YJmh840dLCu0pSDSlzRp4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oxeq0RkelTtyxGJhQ2EGJP3DHN1Vw2K1cd4LBhb8NVlOImVa0eB4L+Zha08osha4iJij8FHX7lw7IGnPH8ldcuLbLdzZNSWb7dtI3t8m9OQckdWr2B1E+xLxrIfbv1p3yng4GGEUCDrC8rcNlwFJAAqnQ/IeYbetCmqAyzP51OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MqgTVytt; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2bea7176c72so49677095ad.0
-        for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 06:34:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779888844; x=1780493644; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nbFhjouUY/ThE/xIFttbuPkaPlFmLqofLr8oFQGobyg=;
-        b=MqgTVyttUgIDr2xKAwZB5dt4x4xbu46UEPJtCDOogBJXtu5fXCBFtnjpYbtQ0c4+gZ
-         Cw2/4rQoIW6hAE1XWUvyk0iNRrvF4SNN63ch3t9FB/Koe+PTL4vzGw7m6DcPrxPtqXXn
-         kbGyWFFlwReU91kzrbnolDImOj+7dFOWCkWDye9N3xoc1Lg/LPqnObhpcwjYimEjKrNr
-         CvmTQ7lboQRili9EOVhQbJbDtyIHCHmUUKrs468cXjmVewK3ZuxTrdR1j5isRbgj/NVq
-         N8CwiymlT8tX68q4oCX3lM92oNcJ6ZfIyQStcnVN4f2rLSS4kGk488/mjef5OAR6NeUi
-         5pKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779888844; x=1780493644;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nbFhjouUY/ThE/xIFttbuPkaPlFmLqofLr8oFQGobyg=;
-        b=Y+ZsIBl5ZePxYpgbrN5JVrIWDvaQGnkhl/MXXxxjwOBVzYtDdbVtPwC1sCXMw6Y/DU
-         W/+vP28CAq4rAWxaGvKvt+Lt+zSi3DpGoODuQqwReNugI3zZIZ7mDdwh7e+qTBaeMfG/
-         tTuoOzm/C98GyosWVsXOrfY5gBCmiv1csNAbBMlZ9H+eYG1JDa2ZBJGk9awGwG8M0CXe
-         hWASZyW/hDo7T8nD/0z5Na6wRFjwmm9fmdevYCEfv/xXH/MAC8MDBEf92v34hlinYxqV
-         cLpXGS20hiA+gQBzA+g+7QGsRwzlNY0LY9AYGDwCoZ0dAEDM7ArDkbGjmxdb5wOOgZLI
-         1x0g==
-X-Gm-Message-State: AOJu0YzTvKQ0XvRC+vJsFeZKRoudxTAvUJfha4w4AV9orXaF+XylAvoC
-	3gS/gKBCcrLC/Z7r8b9aiUnyG4SuL2pA09HVO8i67hO19KKRHWHuoLVGufkXQw==
-X-Gm-Gg: Acq92OF065TPxitrpM507SMHIPmdqfdEgiTAPUXaXnG3gX2x2yeO+eoDlrUP0+DCVWv
-	4APTcHUTsV0TFagablX9oijkZjzPrP/IHUgdRFIlL1aL2BdqC48QO5VK4aj3CSti7D4t6fy8YGd
-	BTSXpk0xhbLSdMNmlueEQYvREDcMPtOOKxsWS07TSqKqC3jCGP/iNzFi98/P7s/DKNWhMOlmbxj
-	FpE8gYBaMUdlSHPFVyrvsZ45sVvuTLd/SJUf7IQxf4el31xZikJiJK/1qBekGIdeYXANneK8QUM
-	ZxFDvbhoYOFnVm5dKP4jEJeL4Z8S+KX420Bu9Tk8Jt97opwkfqpdgy2+aFpQwz3Id7hpv/b/8Jq
-	mzYDkSUqTpN/PC3V0J3rY1gCcTeJO9tS9AQYAWp7tn7uEAqdeDtMF7mOY1L81tdHmlH90moazou
-	LZwkNsMYxCV5K8qL9V0TT+boAAoimURfOk3V72n+fj8D1Yz552
-X-Received: by 2002:a17:903:15cf:b0:2bd:9c0a:32c with SMTP id d9443c01a7336-2beb0674468mr243336965ad.19.1779888843558;
-        Wed, 27 May 2026 06:34:03 -0700 (PDT)
-Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58b2cd6sm160008365ad.52.2026.05.27.06.34.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 06:34:03 -0700 (PDT)
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Maoyi Xie <maoyixie.tju@gmail.com>
-Subject: [PATCH wireless-next] wifi: nl80211: re-check wiphy netns in testmode and vendor dump continuations
-Date: Wed, 27 May 2026 21:33:58 +0800
-Message-Id: <20260527133358.2853238-1-maoyixie.tju@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779892041; c=relaxed/simple;
+	bh=RJLUJtpXWMDow+xOCNngZqMiKSgKiSFSiOXZP1L7NB0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MKyD2DC+8O4Od+AzyHAFs6YTZFlp6L4CETZxGWsUr+mYLXrmBvZhS6xQWVqTXDe3v4w8a+bsQ66+aYYs+v/k0LRT9FWq95RqLkLhr8lXfvGAew6P3uggTfOoQ9J0LjGwNuD3HZZC3HC2znsxgCm2enawqWgmtZsY7FQqtTEfRg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=pass smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=nrutu0GX; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=59sMnJ3WmBKmP7+U/VE0TCKfElxn4eLOccLPPt8sWcI=; b=nrutu0GXMRBhbCHOJuxubl41V5
+	0mQVbSwgoTIU7qpw1TY3MVQpq6Wu1KB6/ZNuERxEMKQgJwnOVIbRPlyWCMhnFRcQ5BKovcC+r6u/8
+	CO/sFu6jP/a4KApL8eWC6xw/2pcPiYa00EHmxVc3r4BuoxHZTsNRf4EOp97UhWUiijbY=;
+Received: from [2a01:599:10e:48be:48a2:ca22:1c65:c46a] (helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1wSEkQ-001Y8L-24;
+	Wed, 27 May 2026 15:56:38 +0200
+Message-ID: <a83c9aca-da9e-4a5e-a364-382910388a68@nbd.name>
+Date: Wed, 27 May 2026 15:56:37 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mt76] wifi: mt76: mt7915: configure noise floor reporting
+ on reset
+To: David Bauer <mail@david-bauer.net>, Lorenzo Bianconi
+ <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+References: <20260516144944.2574053-1-mail@david-bauer.net>
+Content-Language: en-US
+From: Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <20260516144944.2574053-1-mail@david-bauer.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [1.14 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_REJECT(1.00)[nbd.name:s=20160729];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[nbd.name : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37010-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37011-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[david-bauer.net,kernel.org,mediatek.com,gmail.com,collabora.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[nbd.name:-];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.421];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nbd@nbd.name,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6EF795E5092
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nbd.name:mid]
+X-Rspamd-Queue-Id: C17EE5E5E53
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit 79240f3f6d76 ("wifi: nl80211: re-check wiphy netns in
-nl80211_prepare_wdev_dump() continuation") fixed one dumpit path that
-looked the wiphy up by index on a later call without confirming it was
-still in the caller's netns. Two more dumpit paths have the same gap.
+On 16.05.26 16:49, David Bauer wrote:
+> When performing a full system recovery of the MCU on a dual-phy
+> platform, band 0 (usually 2.4GHz) stops reading correct noise floor
+> data.
+> 
+> This is due to noise floor reporting only being configured correctly
+> for the second device PHY.
+> 
+> Configure the respective registers correctly after restarting the MCU
+> firmware to fix reported noise-floor values.
+> 
+> Signed-off-by: David Bauer <mail@david-bauer.net>
+Have you considered clearing MT76_STATE_RUNNING in mt7915_mac_restart 
+instead?
 
-nl80211_testmode_dump() and nl80211_prepare_vendor_dump() both keep the
-wiphy index in cb->args[] and look it up again on later calls, through
-cfg80211_rdev_by_wiphy_idx() and wiphy_idx_to_wiphy(). The first call
-binds to the caller's netns. A later call does not check it again. In
-between, the wiphy can move to another netns via
-NL80211_CMD_SET_WIPHY_NETNS.
-
-Add the same net_eq() check to both. On a mismatch, return -ENODEV and
-the dump ends.
-
-No mainline driver registers .testmode_dump or
-wiphy_vendor_command.dumpit, so these paths are not reachable today.
-Drivers outside the tree can register either.
-
-Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
----
- net/wireless/nl80211.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index f334cdef8958..d462e0b784ad 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -13420,6 +13420,16 @@ static int nl80211_testmode_dump(struct sk_buff *skb,
- 			err = -ENOENT;
- 			goto out_err;
- 		}
-+
-+		/*
-+		 * The wiphy may have moved netns between dumpit
-+		 * invocations (via NL80211_CMD_SET_WIPHY_NETNS), so
-+		 * re-check that it still matches the caller's netns.
-+		 */
-+		if (!net_eq(wiphy_net(&rdev->wiphy), sock_net(skb->sk))) {
-+			err = -ENODEV;
-+			goto out_err;
-+		}
- 	} else {
- 		attrbuf = kzalloc_objs(*attrbuf, NUM_NL80211_ATTR);
- 		if (!attrbuf) {
-@@ -17382,6 +17392,15 @@ static int nl80211_prepare_vendor_dump(struct sk_buff *skb,
- 
- 		if (!wiphy)
- 			return -ENODEV;
-+
-+		/*
-+		 * The wiphy may have moved netns between dumpit
-+		 * invocations (via NL80211_CMD_SET_WIPHY_NETNS), so
-+		 * re-check that it still matches the caller's netns.
-+		 */
-+		if (!net_eq(wiphy_net(wiphy), sock_net(skb->sk)))
-+			return -ENODEV;
-+
- 		*rdev = wiphy_to_rdev(wiphy);
- 		*wdev = NULL;
- 
--- 
-2.34.1
-
+- Felix
 
