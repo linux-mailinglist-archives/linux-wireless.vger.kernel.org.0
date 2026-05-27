@@ -1,163 +1,154 @@
-Return-Path: <linux-wireless+bounces-37018-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37019-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +M/bC04kF2qu6wcAu9opvQ
-	(envelope-from <linux-wireless+bounces-37018-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 19:05:18 +0200
+	id mNKfBFlJF2r0/wcAu9opvQ
+	(envelope-from <linux-wireless+bounces-37019-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 21:43:21 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C06925E8236
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 19:05:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07CBC5E99A2
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 21:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DFADF301D58D
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 17:05:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 11FED30210F9
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 19:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C861743D4EF;
-	Wed, 27 May 2026 17:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E75638229D;
+	Wed, 27 May 2026 19:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=david-bauer.net header.i=@david-bauer.net header.b="qcIFRMu4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HBe5KwI+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgate02.uberspace.is (mailgate02.uberspace.is [185.26.156.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6341439B498
-	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 17:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.26.156.114
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC95314D18
+	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 19:43:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779901515; cv=none; b=NKDeItCtkd3KkgKyZpaunyZgbqB6Rumz1UQ6131+W6mAruJdTg3fHVHwkU3GaWZeF8w9mTs2r2Z6m1caBd9URw57ooTkeiP0mIYUbAPJ5DsFxHSUII5gJe3l4e8Ff1vF1iIQMD/zKgFpeSTzB9MTyi0Wwn6N3qMnZCgC7PHnN84=
+	t=1779910995; cv=none; b=IjOZ+Sh6vODFLEnJetf38+vaDMl4MUxIwhNrX9Yv8W0YDFuVlAhxwu15EJZFZZ3e9kZaC4iBdS9sKZfxapLl+GZ7uYtMjp15K9aWJhJD9gYDKvryWMZrB5wCX0lBHtJCNCttmb9TkTimzrd7aCsLQOVfIEbKmm1ZrWi32PjK/Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779901515; c=relaxed/simple;
-	bh=AHwrOyMcjOU+TKZ/ei9ohjaLiam4EHbLaLXCi9V69LQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cAWWMYcOHcxBmB7pC2LJHIyF1HlzT/FwTemHONi1RUXmbThpxChGmTMySXb+jTBIPhN2UQTkxhouGXXGjb9IIO6uFrEMmfnR4B1JxlGcjhZnyk5gOZug9WHECoz0RZZptoJS1ntvxQWnfM0z0rMPsxtMa/UMKmn0791qNqgUX3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=david-bauer.net; spf=pass smtp.mailfrom=david-bauer.net; dkim=pass (4096-bit key) header.d=david-bauer.net header.i=@david-bauer.net header.b=qcIFRMu4; arc=none smtp.client-ip=185.26.156.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=david-bauer.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=david-bauer.net
-Received: from perseus.uberspace.de (perseus.uberspace.de [95.143.172.134])
-	by mailgate02.uberspace.is (Postfix) with ESMTPS id 712AE1801E4
-	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 19:05:03 +0200 (CEST)
-Received: (qmail 28769 invoked by uid 988); 27 May 2026 17:05:03 -0000
-Authentication-Results: perseus.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unknown) (::1)
-	by perseus.uberspace.de (Haraka/3.1.1) with ESMTPSA; Wed, 27 May 2026 19:05:02 +0200
-Message-ID: <370e76e3-1d41-469b-8e50-8ace6b5622d2@david-bauer.net>
-Date: Wed, 27 May 2026 19:05:00 +0200
+	s=arc-20240116; t=1779910995; c=relaxed/simple;
+	bh=zjz4yXaBwBPcv77Q9AKn5PPsm2GrGPVxZWi2hLt82jY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hUjY72j0CbAZqU0iemm+DKRiq9j3LMnpKTbBJfO7cCvr2zKxd63FKbXQHIm7/MVsQck3BGx+ndatgnCasuoiGqqnOzs4+ZcDKyNCPy/0kGRq56qmLPmJqWRzrWAHuJpBoYyuV9v6XycrSDta+wCk8XLZwc12mERtY+QSDeiXNg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HBe5KwI+; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779910994; x=1811446994;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zjz4yXaBwBPcv77Q9AKn5PPsm2GrGPVxZWi2hLt82jY=;
+  b=HBe5KwI+Ymb2+PBcPsrDSsJir98prg60j7JacQG6CDaY0XHDn+OlPLel
+   hiLkqlPrkhgOcFimHtp0k+AAD38saXp54VjBmsOx0u69w2OXJX2SFrB6b
+   aQs5mk0uKwqd+QlKbMsHHadhcGCl0xJ4EALPFhOnB5XH3GROVVqz8lcCb
+   3TeMhdMCk38hAsQP0lXH8E2/ZFnam9k79ka38+HKuNu2U/0lmHVTkS6DH
+   hBPYRNlAoLr4swUM320Mt7DgNn1U8+ZJ+c/qjOUY1nFuIGy5EIqTS93w4
+   S/WTFj3uFmQYA6xvYw4MMBuZrzPgxm+TTs935leCUunE8W+9OK9Ii9xxo
+   g==;
+X-CSE-ConnectionGUID: juxF5tj4RPS6fTreA/jV7w==
+X-CSE-MsgGUID: Hud5WTQWR4GbzYtG43wMhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="84611764"
+X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
+   d="scan'208";a="84611764"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 12:43:13 -0700
+X-CSE-ConnectionGUID: F2F9eLt1R1W+c1ILR5pjUA==
+X-CSE-MsgGUID: lQk3xesZRAGF6UuzA4fuOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
+   d="scan'208";a="265940787"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 12:43:12 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>
+Subject: [PATCH wireless-next] wifi: mac80211_hwsim: add debug messages for link changes
+Date: Wed, 27 May 2026 22:42:40 +0300
+Message-Id: <20260527224151.b22a048abc7c.Ief2132c5c4bb67fa56e90eb8e7d59dfd9f2b9378@changeid>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mt76] wifi: mt76: mt7915: configure noise floor reporting
- on reset
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
- Sean Wang <sean.wang@mediatek.com>, Matthias Brugger
- <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20260516144944.2574053-1-mail@david-bauer.net>
- <a83c9aca-da9e-4a5e-a364-382910388a68@nbd.name>
-Content-Language: en-US
-From: David Bauer <mail@david-bauer.net>
-Autocrypt: addr=mail@david-bauer.net; keydata=
- xjMEZgynMBYJKwYBBAHaRw8BAQdA+32xE63/l6uaRAU+fPDToCtlZtYJhzI/dt3I6VxixXnN
- IkRhdmlkIEJhdWVyIDxtYWlsQGRhdmlkLWJhdWVyLm5ldD7CjwQTFggANxYhBLPGu7DmE/84
- Uyu0uW0x5c9UngunBQJmDKcwBQkFo5qAAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQbTHlz1Se
- C6eKAwEA8B6TGkUMw8X7Kv3JdBIoDqJG9+fZuuwlmFsRrdyDyHkBAPtLydDdancCVWNucImJ
- GSk+M80qzgemqIBjFXW0CZYPzjgEZgynMBIKKwYBBAGXVQEFAQEHQPIm0qo7519c7VUOTAUD
- 4OR6mZJXFJDJBprBfnXZUlY4AwEIB8J+BBgWCAAmFiEEs8a7sOYT/zhTK7S5bTHlz1SeC6cF
- AmYMpzAFCQWjmoACGwwACgkQbTHlz1SeC6fP2AD8CduoErEo6JePUdZXwZ1e58+lAeXOLLvC
- 2kj1OiLjqK4BANoZuHf/ku8ARYjUdIEgfgOzMX/OdYvn0HiaoEfMg7oB
-In-Reply-To: <a83c9aca-da9e-4a5e-a364-382910388a68@nbd.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Bar: /
-X-Rspamd-Report: SUSPICIOUS_RECIPS(1.5) BAYES_HAM(-2.227727) XM_UA_NO_VERSION(0.01) MIME_GOOD(-0.1)
-X-Rspamd-Score: -0.817727
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=david-bauer.net; s=uberspace;
-	h=from:to:cc:subject:date;
-	bh=AHwrOyMcjOU+TKZ/ei9ohjaLiam4EHbLaLXCi9V69LQ=;
-	b=qcIFRMu42+I0Ni21+8xZaHHyCeHpIE4Cf8Fq5BOPMT269ZD3lmB/68KUY92pSII+pL/ntO/NyQ
-	Ae/mxFx+6nnOFcBydRVvDfKlH4vyEQeToFhY5Xbujjp+Ww+50DyB30XSEIbwyE9b/ehtnsSuBSNN
-	dozEZ75VrWANephLvAODrR0qasgpf+r1m+TIthC3S2pmxGDNjv36VPbTLuVMn3sxGvJrNvS1Q7Vi
-	3CgmEcFbwgJjr/OR/sxmtEiHBraMLiOKy0XNB9N06YglHqpd3W+1lCzY6jxVrVJpa3WJ6A4T19kA
-	IbygySrlpJ+/K0HgZSqjQ3RuA75HhQaJpuzZdvS88TS5WmqKl4AVzgzJCdw+BEf3nKp5KCV/lP5/
-	PrX9wx6ijo+CT6XU7PjL4MM0kaBRBYkVrm7zN0G5tL7AdNQf9UD60hGXq7JUgXNcTEsyy5o7hW1b
-	2U4bKIVCIhxaEuY6MJ00bFOsJykWYDHM+GPEukmPxNENVzAd0ibJ8aNh65YY4JA17Ifpq7kgBU83
-	dLfwWDJtS6+EkikEvgQPkd7WGTYf8hcN1BJtZ1Iz4ddov0rUmVv/qEb3VZRvKfVCY5yjtA6mjZOv
-	bZFMbVX+976dLOMsmHPuhTrMP5TLBMRDucr19hmJaXt8WhTMIp7ALFXsl1KzrxEhIDfIV2SNqavl
-	U=
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[david-bauer.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[david-bauer.net:s=uberspace];
+	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com];
-	TAGGED_FROM(0.00)[bounces-37018-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[david-bauer.net:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-37019-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mail@david-bauer.net,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,david-bauer.net:email,david-bauer.net:mid,david-bauer.net:dkim]
-X-Rspamd-Queue-Id: C06925E8236
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,intel.com:dkim]
+X-Rspamd-Queue-Id: 07CBC5E99A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Felix,
+From: Johannes Berg <johannes.berg@intel.com>
 
-On 5/27/26 15:56, Felix Fietkau wrote:
-> On 16.05.26 16:49, David Bauer wrote:
->> When performing a full system recovery of the MCU on a dual-phy
->> platform, band 0 (usually 2.4GHz) stops reading correct noise floor
->> data.
->>
->> This is due to noise floor reporting only being configured correctly
->> for the second device PHY.
->>
->> Configure the respective registers correctly after restarting the MCU
->> firmware to fix reported noise-floor values.
->>
->> Signed-off-by: David Bauer <mail@david-bauer.net>
-> Have you considered clearing MT76_STATE_RUNNING in mt7915_mac_restart instead?
+It's useful to be able to see the link addresses when the
+interface links change, so add some prints to hwsim for the
+vif link change callback.
 
-The call to mt7915_run is guarded by MT76_STATE_RUNNING being set per-phy.
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ drivers/net/wireless/virtual/mac80211_hwsim_main.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-I think this is to not start the second PHY in case it was never started due to
-it not being present. We could in theory remove this check for the primary PHY
-and clear the flag prior calling mt7915_run.
-
-This seems a bit more hacky to me. Alternatively I can also refactor the entire
-mechanism to make it easier to understand and resolve this indirection in the
-process.
-
-What do you think?
-
-Best
-David
-
-> 
-> - Felix
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
+index 67a33e5e7d54..af9b0d957ad0 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
+@@ -3505,8 +3505,13 @@ static int mac80211_hwsim_change_vif_links(struct ieee80211_hw *hw,
+ 	if (!new_links)
+ 		add |= BIT(0);
+ 
+-	for_each_set_bit(i, &rem, IEEE80211_MLD_MAX_NUM_LINKS)
++	wiphy_dbg(hw->wiphy, "%s:\n", __func__);
++
++	for_each_set_bit(i, &rem, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 		mac80211_hwsim_config_mac_nl(hw, old[i]->addr, false);
++		wiphy_dbg(hw->wiphy,
++			  "  link [%d/%pM] removed\n", i, old[i]->addr);
++	}
+ 
+ 	for_each_set_bit(i, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 		struct ieee80211_bss_conf *link_conf;
+@@ -3516,6 +3521,8 @@ static int mac80211_hwsim_change_vif_links(struct ieee80211_hw *hw,
+ 			continue;
+ 
+ 		mac80211_hwsim_config_mac_nl(hw, link_conf->addr, true);
++		wiphy_dbg(hw->wiphy,
++			  "  link [%d/%pM] added\n", i, link_conf->addr);
+ 	}
+ 
+ 	return 0;
+-- 
+2.34.1
 
 
