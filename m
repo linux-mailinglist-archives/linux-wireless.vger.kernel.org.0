@@ -1,200 +1,108 @@
-Return-Path: <linux-wireless+bounces-37016-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37017-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMksCWUdF2rw5AcAu9opvQ
-	(envelope-from <linux-wireless+bounces-37016-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 18:35:49 +0200
+	id MBykN1UgF2rw5AcAu9opvQ
+	(envelope-from <linux-wireless+bounces-37017-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 18:48:21 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7845E7D75
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 18:35:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7315E7FBB
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 18:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2241D302C0F1
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 16:29:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 32A3A3004DBD
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 16:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C91438FF2;
-	Wed, 27 May 2026 16:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2415C3BF69C;
+	Wed, 27 May 2026 16:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g89DOoBA"
+	dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b="ECVApaaa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward500d.mail.yandex.net (forward500d.mail.yandex.net [178.154.239.208])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26773D79E3
-	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 16:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7DE2EDD78
+	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 16:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779899354; cv=none; b=eu1LuCbFV2FNVEQo0KBzLyNDbymZSZHC/yYAP/glW6iPYJJviaZdRIZNB4MVuYu7oVwbTT8lp1RqZlKp5zMi0UQslab2QFNbOWPeLv/EoDd3SvcqFMIo/R3rshEgfa968l5Jm61766iWZfjzUSEa4+iMUgg4FXiSSzYN3ZnbO+4=
+	t=1779900497; cv=none; b=pl2nMMM+b34bZmgtGic7EnRu72Sr7td9I6Ke6EZCEHpSz/rEcnPC5b7ZvYo0ZPVElP8hzU8pnz/BMjT9KCqnfwRiABIMsDs6FUrJNpD6HJxPp7ddZYz7sdd7sFKa+ObHYl5XF22u/j0qmQzDSHQtcKKAlt+dlE2SkrO72GuZVEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779899354; c=relaxed/simple;
-	bh=MARgWSB2JRyHiWTRwBhBMqTryJPPS2jchIS4w1LrmWc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MoZndDlgTCj0/ydjq6vX7P1rDkpjkN/DvTgd7JNGbqwE+uItgb9lVj42q50SOWXcaWxUxpp80H19zhzWwFQukk0QhuIsYaAq1cHGVIyGFuqV2uzMR28ZQn3ZDZnp8RalYR5C9KxdhH9h+036Dkvqh4RiChiJaBhtIFFwmixVtm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g89DOoBA; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-49056b9f04aso56726145e9.0
-        for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 09:29:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779899344; x=1780504144; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lp8EUEG6k+uQx75sbagyQs35jMaojHEjO5L3ntgLVNA=;
-        b=g89DOoBAuI83xqPWszuqhCTddZx0ONETKVoZcKFdcASpTkVpc7A18DmvjXbkukKjp3
-         jCzHh6oa0O2O60ft1uy4iEi3QrFypdTqA3bXE63RDDuojo2QkvpTLC4QvG0P5OSzsocv
-         fEU4i5WODBfJsI4QSgvSCYAGpHQwvBou62wMJHBx4Ogc0QB+VeM8xYq14VPYB6aroWft
-         GIJ3NGD/4re4dH4cAL6MU74xJCB/GqsPxFIqXwUz3hgODjcwYrWdL+rCF/7XwdcTaNc6
-         qcAMLG3NeHvmXmJQ2AkRTxH83svDmpqoDBjLEPvCKlLfJwHNtyKbeO75s5nLFLuBMXVh
-         MUhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779899344; x=1780504144;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Lp8EUEG6k+uQx75sbagyQs35jMaojHEjO5L3ntgLVNA=;
-        b=iFwOArOkiFTtxkz17X3HzNCZdqEHPWBooez/f9FJLs2xs9HfwgQIP8HsD5J2I9lzDD
-         LenqVGOQ/row4WmSrnBPjevYgriAsDEap5YEhkXQR8Tdtg1wEQ4J06EYXNKrU36q6NVP
-         QYsQT8ZDe9TySzJQ8PScM2X28eSCJKpmScG/1glTv2wtuSXkFUSd9AxJME3G9xOWjXow
-         eJyM8bdO80FCyVTAqfZbq54WySynTzmMBOnIVFw6Tw5WZa0iMQVmt3q0NgGxGWPJGMNu
-         810pQBCpGhv+1v6f/UZzLc+5PyyupYTuCk3TBFY9olhhvKRQelpmQY2qymiZVnIA6dPd
-         a6cA==
-X-Forwarded-Encrypted: i=1; AFNElJ/J6bXKT04PezeM3QllpqozAHzX6OOrXO7sethcP7vLu+VJbwo+J4L+bGZaNirAH6zaO7sxs+J0UfeYugGAEA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyvubxo6QJur+VC6NR4/gIG2KxksZfD0B4njiGkIeIoC9pKmbb3
-	/W/NoreS17dzic3szDIE8xy9Gow+jDvaR1TsgzmGURRxhOuDkg6Vnd5QDri5JsC2Wg==
-X-Gm-Gg: Acq92OF99/l17qN20pIf63PtFHev36R45URwfZ/pz8MEwk9aoz53oEmDOpiJ5IniPHV
-	eBh8rlTP9qee/Dg3ays28iq8AaOXN8+0s2+O7q5DNW77k0oiDXON9iv1Ik9yFBBQZcBg5e+USCO
-	aoH/Q3c2KjohcLx4CxtsC+yZma3EYcy+vnQoLsGQDa6FXwYwZlVzDDZALDJWjPwQcBVWJxQwR8l
-	rgdjAXmR6E6KIX7QVU6NDnEewOdQqI0tLJRCGD3auYgpDdsgOhK5oE+dT3XyjjLDAFx+x/K4o1b
-	3zh5rDwpHsIQ4jRAByoxboaF0nCIbVsxFYmM0TH70/t9gYKp2YqozmPQ66zOIVef7i3nsWgT4iC
-	CgyzsNjo8ZYtYTJ5SkBrVaomj94adCrXh90PtBq2iq99rgZVo7TJH0cHIyF41rUJ6M/x2mEkl4l
-	A7C+GJH+Bz3SiI2jR9jtrTBA/TJa3+q4ZND4ly54cvn6x3zeCPVOwcv4HMa6S/AIlMyUnXDUEbf
-	qkXOQ==
-X-Received: by 2002:a05:600c:45ce:b0:490:5cd8:d213 with SMTP id 5b1f17b1804b1-4905cd8d33emr244688485e9.15.1779899343733;
-        Wed, 27 May 2026 09:29:03 -0700 (PDT)
-Received: from google.com (135.91.155.104.bc.googleusercontent.com. [104.155.91.135])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4904561a160sm466125765e9.9.2026.05.27.09.29.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 09:29:03 -0700 (PDT)
-Date: Wed, 27 May 2026 17:28:59 +0100
-From: Vincent Donnefort <vdonnefort@google.com>
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Miroslav Lichvar <mlichvar@redhat.com>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	thomas.weissschuh@linutronix.de,
-	Arthur Kiyanovski <akiyano@amazon.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
-	Takashi Iwai <tiwai@suse.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Peter Hilber <peter.hilber@oss.qualcomm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	virtualization@lists.linux.dev, linux-wireless@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Subject: Re: [patch 05/24] KVM: arm64: Use ktime_get_snapshot_id() to
- retrieve CLOCK_BOOTTIME
-Message-ID: <ahcby8senHsmpOBm@google.com>
-References: <20260526165826.392227559@kernel.org>
- <20260526171223.070087856@kernel.org>
+	s=arc-20240116; t=1779900497; c=relaxed/simple;
+	bh=dTSUv/kugN/MCztqyIiZ5u0wWMgO4/vSMWNPA+RuO6Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MWY1N0DIqzEqhPbbq4EY4G8L+3HukOGaRfDW2UNnobqT2S1phlGc61rByg2YikXaIGnCCyKjzL0ugnJCHGFlx743RCM1efQQUphdbFsF7eWD4pbF3mdJQ/enIK5OQC6LXgaWNdphXVqHSGilDc31MEeamaTELZyNXC/bbiY5a6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me; spf=pass smtp.mailfrom=0upti.me; dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b=ECVApaaa; arc=none smtp.client-ip=178.154.239.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0upti.me
+Received: from mail-nwsmtp-smtp-production-main-95.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-95.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:d44d:0:640:ae2:0])
+	by forward500d.mail.yandex.net (Yandex) with ESMTPS id 538C98285E;
+	Wed, 27 May 2026 19:48:05 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-95.klg.yp-c.yandex.net (smtp) with ESMTPSA id 2mcWaU3gGiE0-cSGhRgBu;
+	Wed, 27 May 2026 19:48:04 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0upti.me; s=mail;
+	t=1779900484; bh=FJ+5+D/z50/Gvo+sPM7L4ltowM8cM8zEDvekqbXrS5U=;
+	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+	b=ECVApaaa7o6a9jV0OWJag3FLlkc8Eqgg+QRyk3Ss6LEsFHuh3IKsxT5PHUuTl8YEF
+	 aC3qchMX8E9yQuqOgbINjnVdFGUkFeOuNbuG+EICyR7ET/pJRPqHnJSfD2ZvzdxFb/
+	 o4LJgwKD77NT+4nAJ1Jpvbm24xnz5uQ5q4B3aWnE=
+Authentication-Results: mail-nwsmtp-smtp-production-main-95.klg.yp-c.yandex.net; dkim=pass header.i=@0upti.me
+Message-ID: <d18d4ba0-9fc6-4585-8161-610ec42fdab4@0upti.me>
+Date: Wed, 27 May 2026 19:47:59 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526171223.070087856@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wireless-regdb: allow 320MHz channel width for Russia
+To: Chen-Yu Tsai <wens@kernel.org>
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org,
+ Louis Kotze <loukot@gmail.com>
+References: <20260428093058.3672383-1-me@0upti.me>
+ <177751439231.3356117.7542785326182742344.b4-ty@kernel.org>
+Content-Language: en-US
+From: Ilya K <me@0upti.me>
+In-Reply-To: <177751439231.3356117.7542785326182742344.b4-ty@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[0upti.me,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[0upti.me:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,linux.dev,lists.linux.dev,enneenne.com,gmail.com,suse.com,intel.com,nvidia.com,oss.qualcomm.com];
-	TAGGED_FROM(0.00)[bounces-37016-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_TWELVE(0.00)[28];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[0upti.me:+];
+	TAGGED_FROM(0.00)[bounces-37017-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vdonnefort@google.com,linux-wireless@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[me@0upti.me,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7F7845E7D75
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,0upti.me:mid,0upti.me:dkim]
+X-Rspamd-Queue-Id: EE7315E7FBB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 26, 2026 at 07:13:53PM +0200, Thomas Gleixner wrote:
-> ktime_get_snapshot() is replaced by ktime_get_snapshot_id() which allows to
-> request a particular CLOCK ID to be captured along with the clocksource
-> counter.
 > 
-> Convert the tracing mechanism over and use the new
-> system_time_snapshot::sys field, which holds the system timestamp selected
-> by the CLOCK ID argument.
+> Applied to master in wens/wireless-regdb.git, thanks!
 > 
-> No functional change intended.
+> [1/1] wireless-regdb: allow 320MHz channel width for Russia
+>       https://git.kernel.org/wens/wireless-regdb/c/62d72c287e99
 > 
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> Cc: Vincent Donnefort <vdonnefort@google.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Oliver Upton <oliver.upton@linux.dev>
-> Cc: kvmarm@lists.linux.dev
-
-Acked-by: Vincent Donnefort <vdonnefort@google.com>
-
-> ---
->  arch/arm64/kvm/hyp_trace.c |    8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> --- a/arch/arm64/kvm/hyp_trace.c
-> +++ b/arch/arm64/kvm/hyp_trace.c
-> @@ -51,8 +51,8 @@ static void __hyp_clock_work(struct work
->  
->  	hyp_clock = container_of(dwork, struct hyp_trace_clock, work);
->  
-> -	ktime_get_snapshot(&snap);
-> -	boot = ktime_to_ns(snap.boot);
-> +	ktime_get_snapshot_id(&snap, CLOCK_BOOTTIME);
-> +	boot = ktime_to_ns(snap.sys);
->  
->  	delta_boot = boot - hyp_clock->boot;
->  	delta_cycles = snap.cycles - hyp_clock->cycles;
-> @@ -118,9 +118,9 @@ static void hyp_trace_clock_enable(struc
->  		hyp_clock->running = false;
->  	}
->  
-> -	ktime_get_snapshot(&snap);
-> +	ktime_get_snapshot_id(&snap, CLOCK_BOOTTIME);
->  
-> -	hyp_clock->boot = ktime_to_ns(snap.boot);
-> +	hyp_clock->boot = ktime_to_ns(snap.sys);
->  	hyp_clock->cycles = snap.cycles;
->  	hyp_clock->mult = 0;
->  
-> 
+Hi, can we get a signed tag with this included?
 
