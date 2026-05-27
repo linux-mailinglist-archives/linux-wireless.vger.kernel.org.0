@@ -1,73 +1,72 @@
-Return-Path: <linux-wireless+bounces-37036-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37038-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LJhNKNOF2qaAggAu9opvQ
-	(envelope-from <linux-wireless+bounces-37036-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 22:05:55 +0200
+	id wB/rIOBOF2qaAggAu9opvQ
+	(envelope-from <linux-wireless+bounces-37038-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 22:06:56 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A307F5E9E40
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 22:05:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9C45E9E9A
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 22:06:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0AAB6302C83F
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 20:05:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 34A533084B99
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 20:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBE73B6345;
-	Wed, 27 May 2026 20:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D576E3B6BFD;
+	Wed, 27 May 2026 20:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R2HTgcUP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WX8ZCu6L"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC3E3B52FB
-	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 20:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E975A3B27C4
+	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 20:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779912345; cv=none; b=HSY0rXNac4xfPCpDEt1STA/TJK7Q4U5wD1BsSOxKJU6V7UTU1Oz1VQeE6DJPrhvGTfCV4sZmtq1W84X8UWgyHz/qM5Tk1Fx6ywdeSviNMwqT897ylhzfS2fg5+XYtIlW1chVQsWYrD3QungceZNAFEH7TyBOzM/YhGxlzvyILRA=
+	t=1779912346; cv=none; b=noJ8Br/Ddh3lVM9FfLwpZDh2u5eDo5XM68lx/fvNxoFnempjfAfruM7Hv1qkvczJ0E/GN0YRFlZQnQehZFi1vsXC9NrfTOTXgfOC8304LAecoZg99jYkre8oH3uuJannvBlzJEVa9ndxHyTtnSl454JL7iSwJa10bwH2qcVz1ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779912345; c=relaxed/simple;
-	bh=RtqOvZa+TcAK8BE4WaAznV2EEctVZmi6hOc16ilQFBY=;
+	s=arc-20240116; t=1779912346; c=relaxed/simple;
+	bh=aDZlPUkblch/Awm58vko9J+FWwWTyHgw9JunVP+COSQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dzLzD2qoeCbMAyXBXuqMwjD1Htx1XKnwJxf2biBdk3gbLYPqxsLiIZys/yuoDWupnhs1uqFy0nTCHLfpOCbl7/gm1YVz1Ra1ymq6JuTbfDr289H5OXgJpAVcDtOni0+Q6myKU53T7iRBiSnXrqfwxYiFIVRqPfF3gRymMLmBwgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R2HTgcUP; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=kXQpCKeeoLihWtjOWZeQF6KWKwlN3KhtS9ihgqUuenafHD8VAUaqRhSjhSE61FUa/JfjE9YKyHUfL/T8Qy3DUSqq+7mZv4BrXhKmvHammfSmlvyOvYnSw49GCCPRqWb/MqMuzJ8D3k7q+Nk8P36NXVwwwM97uDCYdQ2CUZgrgFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WX8ZCu6L; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779912344; x=1811448344;
+  t=1779912346; x=1811448346;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=RtqOvZa+TcAK8BE4WaAznV2EEctVZmi6hOc16ilQFBY=;
-  b=R2HTgcUPR6uzyBBlxE4aclkaJOfCWfAopGXKD1Zyl2o2lNYE0qu2wsea
-   bRsbqJP4oP72uNjoc4oZWR8Rm0rTliB7gwA+zayLb8Vp7h5pB8xyn3WhT
-   oiORiuVpgrEdfE4Jsm8yc5tLtuwwGn84XiyG8Kol/z7/+sXBNdT8zP67e
-   UOoNT88xu5DJJjhX5SMfOtBw3nzhIsJ3GMh2LEsepOhqFNguqAMCIhE0M
-   bLNmSTyrVPPxQjHCyUnvpeLDpwH2DsItknMV9haJ9RWfWHzivbsMxcIQb
-   oZT3BIcyIF013fCiLHkhV7bAcTT+uG4Eoui49xCWpcpKfuITragnNT2vK
-   w==;
-X-CSE-ConnectionGUID: pPXrYTEER5yOeJh4uPzjgg==
-X-CSE-MsgGUID: GMi706HpTtCoFO0JzwHk5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80940877"
+  bh=aDZlPUkblch/Awm58vko9J+FWwWTyHgw9JunVP+COSQ=;
+  b=WX8ZCu6LdGhM3MN3TerzjYksC6d2E+lUbkK8hywXFEpY8gSABQGlxQqK
+   K+ipaeHfEPRWihnvFWsRJegYKOMppqpU9DBJAWjt1cPqHMIr3fLTwvINX
+   IWI9xc+5NWgcT6YNw52VQkPjAtsu90lG5q6H4jUfLDv60R6xrCdlVEgIB
+   0015RiVomrT3KVRUrPNIr7E+UQGTwy2TAJPjh3i3Mppv2m7bx+jvPHhEO
+   wh498J35meJ8WJE99ZGyYe7Np1lLyhCp3L8vqD9FM4MuCHEwHKmd1x2X2
+   fSbZfkAD/c2EEEYMoedHF2gnq0NZPnQGpe5dpAGPbFQZ4wz5W3+WAsSu0
+   g==;
+X-CSE-ConnectionGUID: IPUkq54DQOmfjQQl6sXbvA==
+X-CSE-MsgGUID: AV6W0LoFRaCRFhMuTwYLsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80940879"
 X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
-   d="scan'208";a="80940877"
+   d="scan'208";a="80940879"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 13:05:44 -0700
-X-CSE-ConnectionGUID: UT7ru7LmTgqrR6JYqgy+MA==
-X-CSE-MsgGUID: bNxOOuK6SW6nN6yHI2WjSA==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 13:05:45 -0700
+X-CSE-ConnectionGUID: fW+YHaVVTtiirYosEsLFAg==
+X-CSE-MsgGUID: 9JXVdAYQQCGugT/w0FQtLQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
-   d="scan'208";a="247286982"
+   d="scan'208";a="247286986"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 13:05:42 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 13:05:43 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-next 12/15] wifi: iwlwifi: mld: don't WARN on WoWLAN suspend w/o netdetect
-Date: Wed, 27 May 2026 23:05:09 +0300
-Message-Id: <20260527230313.19720967372b.Iff30814510a26f9f609f98eeea3111c50c1afb31@changeid>
+Cc: Avinash Bhatt <avinash.bhatt@intel.com>
+Subject: [PATCH iwlwifi-next 13/15] wifi: iwlwifi: mld: add KUnit tests for duplicated beacon RSSI adjustment
+Date: Wed, 27 May 2026 23:05:10 +0300
+Message-Id: <20260527230313.a3500c44f5e8.Icba6ee1158e9f563a91b482b8cdd3f51ddace468@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260527200512.506707-1-miriam.rachel.korenblit@intel.com>
 References: <20260527200512.506707-1-miriam.rachel.korenblit@intel.com>
@@ -84,19 +83,19 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37036-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-37038-lists,linux-wireless=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -105,48 +104,281 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A307F5E9E40
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1D9C45E9E9A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Avinash Bhatt <avinash.bhatt@intel.com>
 
-Clearly, from a user perspective, it must be valid to configure
-WoWLAN and then suspend while not connected to a network. Since
-mac80211 doesn't distinguish these cases and simply calls the
-driver to suspend whenever WoWLAN is configured, the driver has
-to cleanly handle the case where it's called for WoWLAN, it's
-not connected but there's also no netdetect configured.
+Add KUnit tests to verify RSSI adjustment for 6 GHz duplicated
+beacons across different operational bandwidths and validate
+detection of the duplicated beacon bit.
 
-Remove the WARN_ON() and keep returning 1 to disconnect and
-then suspend.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Avinash Bhatt <avinash.bhatt@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/d3.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/link.c |   3 +-
+ drivers/net/wireless/intel/iwlwifi/mld/link.h |   5 +
+ .../wireless/intel/iwlwifi/mld/tests/link.c   | 102 +++++++++++++++++-
+ .../wireless/intel/iwlwifi/mld/tests/utils.c  |  60 +++++++++++
+ .../wireless/intel/iwlwifi/mld/tests/utils.h  |   7 +-
+ 5 files changed, 173 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-index fc0a5871df2f..458a668ba916 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-@@ -2066,8 +2066,11 @@ int iwl_mld_wowlan_suspend(struct iwl_mld *mld, struct cfg80211_wowlan *wowlan)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+index 234821f6a441..98b9c4eef583 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+@@ -1024,7 +1024,7 @@ iwl_mld_get_avail_chan_load(struct iwl_mld *mld,
+ 	return MAX_CHAN_LOAD - iwl_mld_get_chan_load(mld, link_conf);
+ }
  
- 	if (!bss_vif->cfg.assoc) {
- 		int ret;
--		/* If we're not associated, this must be netdetect */
--		if (WARN_ON(!wowlan->nd_config))
-+		/*
-+		 * If not associated we can only do netdetect, if
-+		 * that's not enabled then just suspend normally.
-+		 */
-+		if (!wowlan->nd_config)
- 			return 1;
+-static s8
++VISIBLE_IF_IWLWIFI_KUNIT s8
+ iwl_mld_get_dup_beacon_rssi_adjust(struct iwl_mld *mld,
+ 				   struct ieee80211_bss_conf *link_conf)
+ {
+@@ -1077,6 +1077,7 @@ iwl_mld_get_dup_beacon_rssi_adjust(struct iwl_mld *mld,
+ 		return 0;
+ 	}
+ }
++EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_mld_get_dup_beacon_rssi_adjust);
  
- 		ret = iwl_mld_netdetect_config(mld, bss_vif, wowlan);
+ static s8 iwl_mld_get_primary_psd(const struct ieee80211_parsed_tpe_psd *psd,
+ 				  const struct cfg80211_chan_def *chandef,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.h b/drivers/net/wireless/intel/iwlwifi/mld/link.h
+index f1997e280058..d0aa577de81d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/link.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/link.h
+@@ -142,6 +142,11 @@ int iwl_mld_link_set_associated(struct iwl_mld *mld, struct ieee80211_vif *vif,
+ unsigned int iwl_mld_get_link_grade(struct iwl_mld *mld,
+ 				    struct ieee80211_bss_conf *link_conf);
+ 
++#if IS_ENABLED(CONFIG_IWLWIFI_KUNIT_TESTS)
++s8 iwl_mld_get_dup_beacon_rssi_adjust(struct iwl_mld *mld,
++				      struct ieee80211_bss_conf *link_conf);
++#endif
++
+ unsigned int iwl_mld_get_chan_load(struct iwl_mld *mld,
+ 				   struct ieee80211_bss_conf *link_conf);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/link.c b/drivers/net/wireless/intel/iwlwifi/mld/tests/link.c
+index 69a0d67858bf..21bcc341cd7d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/tests/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/link.c
+@@ -1,8 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * KUnit tests for channel helper functions
++ * KUnit tests for link helper functions
+  *
+- * Copyright (C) 2024-2025 Intel Corporation
++ * Copyright (C) 2024-2026 Intel Corporation
+  */
+ #include <kunit/static_stub.h>
+ 
+@@ -96,8 +96,106 @@ static void test_missed_beacon(struct kunit *test)
+ 	/* TODO: add test cases for esr and check */
+ }
+ 
++struct dup_beacon_test_case {
++	const char *desc;
++	enum nl80211_chan_width bandwidth;
++	bool has_he_oper;
++	bool dup_beacon_bit;
++	s8 expected_adj;
++};
++
++static const struct dup_beacon_test_case dup_beacon_cases[] = {
++	{
++		.desc = "20 MHz - no duplication",
++		.bandwidth = NL80211_CHAN_WIDTH_20,
++		.has_he_oper = true,
++		.dup_beacon_bit = true,
++		.expected_adj = 0,
++	},
++	{
++		.desc = "40 MHz with duplication - 3 dB",
++		.bandwidth = NL80211_CHAN_WIDTH_40,
++		.has_he_oper = true,
++		.dup_beacon_bit = true,
++		.expected_adj = 3,
++	},
++	{
++		.desc = "80 MHz with duplication - 6 dB",
++		.bandwidth = NL80211_CHAN_WIDTH_80,
++		.has_he_oper = true,
++		.dup_beacon_bit = true,
++		.expected_adj = 6,
++	},
++	{
++		.desc = "160 MHz with duplication - 9 dB",
++		.bandwidth = NL80211_CHAN_WIDTH_160,
++		.has_he_oper = true,
++		.dup_beacon_bit = true,
++		.expected_adj = 9,
++	},
++	{
++		.desc = "320 MHz with duplication - 12 dB",
++		.bandwidth = NL80211_CHAN_WIDTH_320,
++		.has_he_oper = true,
++		.dup_beacon_bit = true,
++		.expected_adj = 12,
++	},
++	{
++		.desc = "80 MHz without dup bit - no adjustment",
++		.bandwidth = NL80211_CHAN_WIDTH_80,
++		.has_he_oper = true,
++		.dup_beacon_bit = false,
++		.expected_adj = 0,
++	},
++	{
++		.desc = "80 MHz without HE oper - no adjustment",
++		.bandwidth = NL80211_CHAN_WIDTH_80,
++		.has_he_oper = false,
++		.dup_beacon_bit = true,
++		.expected_adj = 0,
++	},
++};
++
++KUNIT_ARRAY_PARAM_DESC(test_dup_beacon_rssi_adjust, dup_beacon_cases, desc);
++
++static void test_dup_beacon_rssi_adjust(struct kunit *test)
++{
++	const struct dup_beacon_test_case *params = test->param_value;
++	struct iwl_mld *mld = test->priv;
++	struct ieee80211_bss_conf *link_conf;
++	struct cfg80211_bss *bss;
++	struct element *he_elem = NULL;
++	s8 result;
++
++	KUNIT_ALLOC_AND_ASSERT(test, link_conf);
++	KUNIT_ALLOC_AND_ASSERT(test, bss);
++	link_conf->bss = bss;
++
++	link_conf->chanreq.oper.chan = &chan_6ghz;
++	link_conf->chanreq.oper.width = params->bandwidth;
++
++	if (params->has_he_oper) {
++		struct ieee80211_he_6ghz_oper he_6ghz = {};
++
++		if (params->dup_beacon_bit)
++			he_6ghz.control =
++				IEEE80211_HE_6GHZ_OPER_CTRL_DUP_BEACON;
++		he_elem = iwlmld_kunit_create_he_6ghz_oper(he_6ghz);
++	}
++
++	rcu_assign_pointer(bss->beacon_ies,
++			   iwlmld_kunit_create_bss_ies(he_elem));
++
++	guard(wiphy)(mld->wiphy);
++	result = iwl_mld_get_dup_beacon_rssi_adjust(mld, link_conf);
++
++	KUNIT_EXPECT_EQ(test, result, params->expected_adj);
++}
++
+ static struct kunit_case link_cases[] = {
+ 	KUNIT_CASE_PARAM(test_missed_beacon, test_missed_beacon_gen_params),
++	KUNIT_CASE_PARAM(test_dup_beacon_rssi_adjust,
++			 test_dup_beacon_rssi_adjust_gen_params),
+ 	{},
+ };
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c b/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c
+index cb1968b07452..fdeab7082e78 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.c
+@@ -439,6 +439,66 @@ struct ieee80211_vif *iwlmld_kunit_assoc_emlsr(struct iwl_mld_kunit_link *link1,
+ 	return vif;
+ }
+ 
++struct element *
++iwlmld_kunit_create_he_6ghz_oper(struct ieee80211_he_6ghz_oper he_6ghz)
++{
++	struct kunit *test = kunit_get_current_test();
++	u8 *data;
++	size_t data_len;
++	size_t offset = 0;
++	__le32 he_oper_params;
++	__le16 he_mcs_nss_set = 0;
++
++	/* Build HE Operation IE with 6 GHz info using raw buffer.
++	 * Cannot use struct embedding because ieee80211_he_operation
++	 * has a flexible array member (optional[]).
++	 *
++	 * Layout:
++	 *   1 byte:         ext_id (WLAN_EID_EXT_HE_OPERATION)
++	 *   he_oper_params: he_oper_params (from ieee80211_he_operation)
++	 *   he_mcs_nss_set: he_mcs_nss_set (from ieee80211_he_operation)
++	 *   he_6ghz:        ieee80211_he_6ghz_oper (goes into optional[])
++	 */
++	data_len = 1 + sizeof(he_oper_params) + sizeof(he_mcs_nss_set) +
++		   sizeof(struct ieee80211_he_6ghz_oper);
++
++	data = kunit_kzalloc(test, data_len, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, data);
++
++	data[offset++] = WLAN_EID_EXT_HE_OPERATION;
++
++	he_oper_params = cpu_to_le32(IEEE80211_HE_OPERATION_6GHZ_OP_INFO);
++	memcpy(&data[offset], &he_oper_params, sizeof(he_oper_params));
++	offset += sizeof(he_oper_params);
++
++	memcpy(&data[offset], &he_mcs_nss_set, sizeof(he_mcs_nss_set));
++	offset += sizeof(he_mcs_nss_set);
++
++	memcpy(&data[offset], &he_6ghz, sizeof(he_6ghz));
++
++	return iwlmld_kunit_gen_element(WLAN_EID_EXTENSION, data, data_len);
++}
++
++struct cfg80211_bss_ies *iwlmld_kunit_create_bss_ies(struct element *elem)
++{
++	struct kunit *test = kunit_get_current_test();
++	struct cfg80211_bss_ies *ies;
++	size_t ies_len = 0;
++
++	if (elem)
++		ies_len = sizeof(*elem) + elem->datalen;
++
++	ies = kunit_kzalloc(test, sizeof(*ies) + ies_len, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, ies);
++
++	ies->len = ies_len;
++
++	if (elem)
++		memcpy(ies->data, elem, ies_len);
++
++	return ies;
++}
++
+ struct element *iwlmld_kunit_gen_element(u8 id, const void *data, size_t len)
+ {
+ 	struct kunit *test = kunit_get_current_test();
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.h b/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.h
+index edf8eef4e81a..cfed5acaac3a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/utils.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2024-2025 Intel Corporation
++ * Copyright (C) 2024-2026 Intel Corporation
+  */
+ 
+ #ifndef __iwl_mld_kunit_utils_h__
+@@ -121,6 +121,11 @@ iwlmld_kunit_assoc_emlsr(struct iwl_mld_kunit_link *link1,
+ 
+ struct element *iwlmld_kunit_gen_element(u8 id, const void *data, size_t len);
+ 
++struct element *
++iwlmld_kunit_create_he_6ghz_oper(struct ieee80211_he_6ghz_oper he_6ghz);
++
++struct cfg80211_bss_ies *iwlmld_kunit_create_bss_ies(struct element *elem);
++
+ /**
+  * iwlmld_kunit_get_phy_of_link - Get the phy of a link
+  *
 -- 
 2.34.1
 
