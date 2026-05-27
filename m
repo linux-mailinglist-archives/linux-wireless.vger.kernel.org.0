@@ -1,173 +1,159 @@
-Return-Path: <linux-wireless+bounces-36974-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36975-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIjaL/KCFmoznAcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36974-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 07:36:50 +0200
+	id +ksuOI6JFmounQcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36975-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 08:05:02 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2855DF7A6
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 07:36:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 275565DFA6A
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 08:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE3673014940
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 05:36:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95AF53030B04
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 06:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B4D305681;
-	Wed, 27 May 2026 05:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AB8199FB0;
+	Wed, 27 May 2026 06:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+ifHbzU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B78A2D9EED;
-	Wed, 27 May 2026 05:36:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA3928371
+	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 06:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779860175; cv=none; b=CUpxylLRrDMMLgqhiqDAyR1mQDEu2/XicoMHKsVVL2Jm2Lc/A1xJdaRU22diT4cT8fYKsHGJPPjPz/HD3xXU+eymJRNZm8vTbnAm0GiqXUpudda051cV44ildgZmRQSmgBL5Fd+lmRpJix527nO6idszyxBbf+aUwHzKRbnl+wQ=
+	t=1779861900; cv=none; b=KB+v8vkYHJdKavPMdWtHYFH7lgLlRUqfyCOPcyaaZc2G6shPo1Jv0d1cuMayOYQAESGeMhBeqzzR/hRmhLy8y8Z5ZXHhEfWkZotl0yBPrKz/F2E9XxAGlPPk3eK2OociwPIbFUpjOho/m/A/cKRLyiAeA0HKFbzTjUfmYm8wCL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779860175; c=relaxed/simple;
-	bh=XqDtJg4s4mprG0Vhjk/S2UQJEifLJ+1oMBqCNttnDEQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WYcw0Eok7lIJgGFM5BGSY3qJMks2TwrHvXYRGqtJjPrCJCsKigoaWRmYWDdn/dUCO6wf1gZGYAHjRFdHwKgMg6H8BSqNeiQSjkjDvRgQ4w6ujX895w/n9vxmgTb6y5ZHuH6XcIw5NL4orYLCao10pD5+meoyuSs4gAmZQoiQQbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: f373f398598d11f1aa26b74ffac11d73-20260527
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:ca10df57-2e0c-4fc6-ae09-74bcce23b991,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:e7bac3a,CLOUDID:c81a0b6628644515af518e935d81ca37,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
-	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f373f398598d11f1aa26b74ffac11d73-20260527
-X-User: zenghongling@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zenghongling@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 627080900; Wed, 27 May 2026 13:36:03 +0800
-From: Hongling Zeng <zenghongling@kylinos.cn>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	xiong.huang@mediatek.com,
-	madhurkumar004@gmail.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	zhongling0719@126.com,
-	Hongling Zeng <zenghongling@kylinos.cn>
-Subject: [PATCH v3] wifi: mt76: mt7921: fix resource leak in probe error path
-Date: Wed, 27 May 2026 13:35:59 +0800
-Message-Id: <20260527053559.539603-1-zenghongling@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1779861900; c=relaxed/simple;
+	bh=44dQ0Q0TXtC8v4rQyhZChD2//RdSKE5Oy1yNpvzYbRM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QOU441U4tm6QH1zRwMw4rx2Gi9CMC2oxwg4y7IVB0l5liRLnLTHZpSgls3wtL7NOXRIiJTJBpe2FiQakPCs0hSklY+GUUnaun5m5DBzv7WN4M5pmOttamf6O1CblnyaefCwqir7ZJfFH0R1vVJspIA+CHKuGFR0jZMzL4apaW5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+ifHbzU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD991F00A3A
+	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 06:04:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779861898;
+	bh=vU21y0SHIUC3cwSTRp3cyIqWh6U++lSJj5SFMbybo8s=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=S+ifHbzUmIOr+lzuAsL76dhOFNLokxqTns3dnCJjYZaUJyNrTYZhHW2pMvCK30hBx
+	 AD2Gr6o+9qQeYAK30TgQUY+t009I/8Jj+JUzb5giAiLSUFYviHET/KjG4rk4hy+uhv
+	 QB6kKh9sPbI6Yt99aJnky8tiHG6VydaWHdZA0PFDu0IQuc62yOSEV9sTQR4t2fZnir
+	 iyFZGRgt9KyPoOfOg/c4s+K0YyPBqv5JD5FYehmUUekPj+GYIVkz6AwfrmUrU+qMGN
+	 oYs07bPW9pnPDaMhQv5cWJM7b258L8Z4gmTXltdQfXyLE4khPZdDVlcBeBhvYPUbLd
+	 cgSBNruWdyRjA==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a40502e63bso11359671e87.0
+        for <linux-wireless@vger.kernel.org>; Tue, 26 May 2026 23:04:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+Cw+rYdPdn30JE8M6L5qTb/eZQhMFfABPiWhnaZZyhS0JzUFSzScgxSYUeIzKEPSpJ5O5oJ9Jv/Gfp7Y5pxw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9sVhDVd5gu8evIK/ggwFIQHIIeI69FGE/okukLUTYK6/OSITl
+	jW8lg2oXehCMyUsKxRK2wBxSDA/Y3XehtbRBwPoBY6b2f0xBXg9nD0g6Z28BqjDWgpy4a3FRpCl
+	paXf0lXYKnGcVwXpvoJSuf4BvFlxeNvs=
+X-Received: by 2002:a05:6512:114c:b0:5a8:ee4b:7011 with SMTP id
+ 2adb3069b0e04-5aa323707efmr7257719e87.17.1779861897086; Tue, 26 May 2026
+ 23:04:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+References: <20260326190346.415226-1-lucid_duck@justthetip.ca>
+In-Reply-To: <20260326190346.415226-1-lucid_duck@justthetip.ca>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Wed, 27 May 2026 01:04:45 -0500
+X-Gmail-Original-Message-ID: <CAGp9Lzo4p6=a1rjpGrNPb8Ttk8R25e0WAgP-D_mNEFfytfW6Tg@mail.gmail.com>
+X-Gm-Features: AVHnY4ITbiyF4hU0cSqL4c0GJRlAxhTxxdLEs7nBxxlGfRFFyanpVtA0JdWqcLE
+Message-ID: <CAGp9Lzo4p6=a1rjpGrNPb8Ttk8R25e0WAgP-D_mNEFfytfW6Tg@mail.gmail.com>
+Subject: Re: [PATCH wireless-next] wifi: mt76: mt7925: add Netgear A8500 USB
+ device ID
+To: Lucid Duck <lucid_duck@justthetip.ca>
+Cc: nbd@nbd.name, lorenzo.bianconi@redhat.com, sean.wang@mediatek.com, 
+	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	morrownr@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[nbd.name,redhat.com,mediatek.com,vger.kernel.org,lists.infradead.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-36974-lists,linux-wireless=lfdr.de];
-	DMARC_NA(0.00)[kylinos.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zenghongling@kylinos.cn,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-36975-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,126.com,kylinos.cn];
-	NEURAL_HAM(-0.00)[-0.447];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:mid,kylinos.cn:email]
-X-Rspamd-Queue-Id: ED2855DF7A6
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 275565DFA6A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When pcim_iomap_region() or devm_kmemdup() fail, the code returns
-directly without cleaning up previously allocated resources:
-  - mt76_device allocated by mt76_alloc_device()
-  - pci irq vectors allocated by pci_alloc_irq_vectors()
-Fix this by jumping to the existing error cleanup path instead of
-returning directly.
+Hi Devin,
 
-To avoid using an uninitialized variable in the error path, move the
-dev initialization before the error checks.
+On Thu, Mar 26, 2026 at 2:07=E2=80=AFPM Lucid Duck <lucid_duck@justthetip.c=
+a> wrote:
+>
+> Add USB device ID for the Netgear A8500 (0846:9050) which uses
+> the mt7925 chipset.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
 
-Fixes: ee5bb35d2b83 ("wifi: mt76: mt7921: Replace deprecated PCI function")
-Fixes: 222606f43b58 ("wifi: mt76: mt7921: handle MT7902 irq_map quirk with mutable copy")
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+Sorry for the late reply.
 
----
- Change in v3
-  - Fix incorrect Fixes: tag as pointed out by Sean
-  - Correct tag from unrelated phy/ti-pipe3 commit to the actual mt76 commit
-    that introduced the resource leak
----
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+I ran checkpatch.pl on the patch and got the following warning:
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 7a790ddf43bb..49a37185f056 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -343,11 +343,14 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
- 
- 	pci_set_drvdata(pdev, mdev);
- 
-+	dev = container_of(mdev, struct mt792x_dev, mt76);
-+
- 	regs =  pcim_iomap_region(pdev, 0, pci_name(pdev));
--	if (IS_ERR(regs))
--		return PTR_ERR(regs);
-+	if (IS_ERR(regs)) {
-+		ret = PTR_ERR(regs);
-+		goto err_free_dev;
-+	}
- 
--	dev = container_of(mdev, struct mt792x_dev, mt76);
- 	dev->fw_features = features;
- 	dev->hif_ops = &mt7921_pcie_ops;
- 	dev->irq_map = &irq_map;
-@@ -359,8 +362,10 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
- 		/* MT7902 needs a mutable copy because wm2_complete_mask differs */
- 		map = devm_kmemdup(&pdev->dev, &irq_map,
- 				   sizeof(irq_map), GFP_KERNEL);
--		if (!map)
--			return -ENOMEM;
-+		if (!map) {
-+			ret = -ENOMEM;
-+			goto err_free_dev;
-+		}
- 
- 		map->rx.wm2_complete_mask = 0;
- 		dev->irq_map = map;
--- 
-2.25.1
+WARNING: The commit message has 'stable@', perhaps it also needs a 'Fixes:'=
+ tag?
 
+Could you please send a v2 that drops the Cc: stable tag and uses:
+Signed-off-by: Devin Wittmayer <lucid_duck@justthetip.ca>
+
+to keep it consistent with the other patches you sent?
+
+Thanks.
+
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7925/usb.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7925/usb.c
+> index d9968f038..e44f0cafd 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+> @@ -12,6 +12,9 @@
+>  static const struct usb_device_id mt7925u_device_table[] =3D {
+>         { USB_DEVICE_AND_INTERFACE_INFO(0x0e8d, 0x7925, 0xff, 0xff, 0xff)=
+,
+>                 .driver_info =3D (kernel_ulong_t)MT7925_FIRMWARE_WM },
+> +       /* Netgear, Inc. A8500 */
+> +       { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9050, 0xff, 0xff, 0xff)=
+,
+> +               .driver_info =3D (kernel_ulong_t)MT7925_FIRMWARE_WM },
+>         /* Netgear, Inc. A9000 */
+>         { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9072, 0xff, 0xff, 0xff)=
+,
+>                 .driver_info =3D (kernel_ulong_t)MT7925_FIRMWARE_WM },
+> --
+> 2.53.0
+>
+>
 
