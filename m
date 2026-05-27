@@ -1,170 +1,134 @@
-Return-Path: <linux-wireless+bounces-36965-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36966-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKz8LYhoFmqLmAcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36965-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 05:44:08 +0200
+	id gKyBB1RrFmoGmQcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36966-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 05:56:04 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DBD5DF06E
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 05:44:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811AD5DF115
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 05:56:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 301033026F0E
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 03:44:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 08F0B300F7B0
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 03:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554C2380FE2;
-	Wed, 27 May 2026 03:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA4C2773CA;
+	Wed, 27 May 2026 03:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="FkTn5Aiw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DB62E975E;
-	Wed, 27 May 2026 03:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0D224677B;
+	Wed, 27 May 2026 03:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.1.125
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779853445; cv=none; b=GzGnYbQgDpMimdmOAFTASOZRbm4ER/9stngZHMTGi/EYg70UgyR1vieirpH3xkrrbjq22liSryokOdM1iQ4Q/fgmVWftH3AhOfd4N1VHQh7KkjIbs9ZSI/t1yUlaSp2R2U153Id1VNXjOfau1wvDuInt5uSGGsTEbr6Xf0AuZbQ=
+	t=1779854156; cv=none; b=fHMcU07eGYGVhDxnsGhPHxMaxUBR4HWXT+imEdbwwt2yY+F+shzRytzav4oC+THNTiLx8PJYpn0iSjQXgwOTSdFqI/9E+M5bzWAJlCciRukCWOVVQ5wII80QTdvuxhCpJprvpqom9v0OVqpuEGBGlsS3pJAZvf3Uj+kCgixGgTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779853445; c=relaxed/simple;
-	bh=KAjiG1tf+SvhUsTdhjEYKAQ34htmVKhMDrO/3ccYwFk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ni48CwwuEHAOuFOJjHDwmTF7vIQYoWX4WJ2S1BSgDNNkC/MU/uC4jGO+dpR1dg6wTaZ2Cq2iBi1xaBk9NsPdNQS/6b4GR/iLFcJph+dMRyKikdilnc8eBs36e5DirwX2obPCD1USud2qJHVzcG2CPb24QygW9DXVQp+IdP7iumI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 4966b1e2597e11f1aa26b74ffac11d73-20260527
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:f775e487-f5c3-4a73-bbc5-b3fe8ce1bf47,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:e7bac3a,CLOUDID:652629b3110685a5ecfcbc68b44006ef,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
-	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 4966b1e2597e11f1aa26b74ffac11d73-20260527
-X-User: zenghongling@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zenghongling@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1685074291; Wed, 27 May 2026 11:43:55 +0800
-From: Hongling Zeng <zenghongling@kylinos.cn>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	xiong.huang@mediatek.com,
-	madhurkumar004@gmail.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	zhongling0719@126.com,
-	Hongling Zeng <zenghongling@kylinos.cn>
-Subject: [PATCH v2] wifi: mt76: mt7921: fix resource leak in probe error path
-Date: Wed, 27 May 2026 11:43:50 +0800
-Message-Id: <20260527034350.527482-1-zenghongling@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1779854156; c=relaxed/simple;
+	bh=NSGUt19Oh3I/sxQLPBg67SQ1ekQb3lXS57l7omGjgfM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uzNodySuMXpE90ULXeIY71HPZ7TiDNV6sdQscI6Nzw8cRcF09St8ZMHAIZWKyu4GKTHvujGnRLuee1yYC3W30tlD9S0xJ9sgBxaTF+GmpnGGfKIr4/2EWPDLf75fGarupWBTbJKpUeuw6/k2VdhlxFZBvGHvQZz1aopFla9+jbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=FkTn5Aiw; arc=none smtp.client-ip=44.246.1.125
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1779854155; x=1811390155;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=NSGUt19Oh3I/sxQLPBg67SQ1ekQb3lXS57l7omGjgfM=;
+  b=FkTn5AiwAcoHZgroUcQ6omKu/41PX5JHqqC8MSDT7+TAXaNDGnKxJJM+
+   BYPwgmEFT623Le3wMoUsHfaEgKQ254a6QDxounEDRc1hRMvHoXXEH/qYa
+   AoZa/S13QyBC4tihZYW/PIF00soy6bWlMNmf37Gke05HaT5E3q1J8j1/4
+   wVBMutuUXOVSwgNXPtpFFI5k8RejxuI5vw8k4CA9IICPs8iD8Cb5MP+ng
+   bB1pjNikR/yxQr3W/SaG84dAmE82q0rZjBDZOayp5gPHUcOpjSkvTLZGe
+   kN4wD06//J3e/ArLBz54zfFwvNlwzKCUllgbwCEMM7frQrgGGyZg4djDa
+   w==;
+X-CSE-ConnectionGUID: xnxwD3tESyiYSzGXWnie1A==
+X-CSE-MsgGUID: Wb6P6YM4R7qmjQq2/yUlXw==
+X-IronPort-AV: E=Sophos;i="6.24,170,1774310400"; 
+   d="scan'208";a="20533045"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 03:55:52 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:17930]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.62.206:2525] with esmtp (Farcaster)
+ id 138d2833-e4a7-4721-ad89-22efbecfd132; Wed, 27 May 2026 03:55:51 +0000 (UTC)
+X-Farcaster-Flow-ID: 138d2833-e4a7-4721-ad89-22efbecfd132
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Wed, 27 May 2026 03:55:49 +0000
+Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Wed, 27 May 2026 03:55:45 +0000
+From: Arthur Kiyanovski <akiyano@amazon.com>
+To: <tglx@kernel.org>
+CC: <akiyano@amazon.com>, <anna-maria@linutronix.de>,
+	<anthony.l.nguyen@intel.com>, <dwmw2@infradead.org>, <frederic@kernel.org>,
+	<giometti@enneenne.com>, <jacob.e.keller@intel.com>,
+	<johannes.berg@intel.com>, <jstultz@google.com>, <kvmarm@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-sound@vger.kernel.org>,
+	<linux-wireless@vger.kernel.org>, <maz@kernel.org>,
+	<miriam.rachel.korenblit@intel.com>, <mlichvar@redhat.com>, <mst@redhat.com>,
+	<netdev@vger.kernel.org>, <oliver.upton@linux.dev>, <oupton@kernel.org>,
+	<peter.hilber@oss.qualcomm.com>, <richardcochran@gmail.com>,
+	<saeedm@nvidia.com>, <sboyd@kernel.org>, <thomas.weissschuh@linutronix.de>,
+	<tiwai@suse.com>, <vdonnefort@google.com>, <virtualization@lists.linux.dev>
+Subject: Re: [PATCH 0/24] timekeeping/ptp: Expand snapshot functionality
+Date: Wed, 27 May 2026 03:55:32 +0000
+Message-ID: <20260527035533.13791-1-akiyano@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260526165826.392227559@kernel.org>
+References: <20260526165826.392227559@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-ClientProxiedBy: EX19D035UWA003.ant.amazon.com (10.13.139.86) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Spamd-Result: default: False [-8.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-36965-lists,linux-wireless=lfdr.de];
-	DMARC_NA(0.00)[kylinos.cn];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36966-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[amazon.com,linutronix.de,intel.com,infradead.org,kernel.org,enneenne.com,google.com,lists.linux.dev,vger.kernel.org,redhat.com,linux.dev,oss.qualcomm.com,gmail.com,nvidia.com,suse.com];
+	DKIM_TRACE(0.00)[amazon.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zenghongling@kylinos.cn,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[akiyano@amazon.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,126.com,kylinos.cn];
-	NEURAL_HAM(-0.00)[-0.444];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:mid,kylinos.cn:email]
-X-Rspamd-Queue-Id: 19DBD5DF06E
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 811AD5DF115
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When pcim_iomap_region() or devm_kmemdup() fail, the code returns
-directly without cleaning up previously allocated resources:
-  - mt76_device allocated by mt76_alloc_device()
-  - pci irq vectors allocated by pci_alloc_irq_vectors()
-Fix this by jumping to the existing error cleanup path instead of
-returning directly.
+Tested with a locally rebased version of my PTP clock attributes series [1]
+on top — verified ENA PHC and ptp_vmclock attrs ioctls on x86_64.
 
-To avoid using an uninitialized variable in the error path, move the
-dev initialization before the error checks.
+[1] https://lore.kernel.org/netdev/20260515164033.6403-1-akiyano@amazon.com/
 
-Fixes: 234738ea3390 ("phy: ti-pipe3: move clk initialization to a separate function")
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
-
----
- Change in v1
-   --fix uninitialized variable warning
----
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 7a790ddf43bb..49a37185f056 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -343,11 +343,14 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
- 
- 	pci_set_drvdata(pdev, mdev);
- 
-+	dev = container_of(mdev, struct mt792x_dev, mt76);
-+
- 	regs =  pcim_iomap_region(pdev, 0, pci_name(pdev));
--	if (IS_ERR(regs))
--		return PTR_ERR(regs);
-+	if (IS_ERR(regs)) {
-+		ret = PTR_ERR(regs);
-+		goto err_free_dev;
-+	}
- 
--	dev = container_of(mdev, struct mt792x_dev, mt76);
- 	dev->fw_features = features;
- 	dev->hif_ops = &mt7921_pcie_ops;
- 	dev->irq_map = &irq_map;
-@@ -359,8 +362,10 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
- 		/* MT7902 needs a mutable copy because wm2_complete_mask differs */
- 		map = devm_kmemdup(&pdev->dev, &irq_map,
- 				   sizeof(irq_map), GFP_KERNEL);
--		if (!map)
--			return -ENOMEM;
-+		if (!map) {
-+			ret = -ENOMEM;
-+			goto err_free_dev;
-+		}
- 
- 		map->rx.wm2_complete_mask = 0;
- 		dev->irq_map = map;
--- 
-2.25.1
-
+Tested-by: Arthur Kiyanovski <akiyano@amazon.com>
 
