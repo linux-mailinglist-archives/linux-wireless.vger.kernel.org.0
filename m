@@ -1,266 +1,146 @@
-Return-Path: <linux-wireless+bounces-36997-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-36998-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJ25A6PCFmrOqgcAu9opvQ
-	(envelope-from <linux-wireless+bounces-36997-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 12:08:35 +0200
+	id YC4LNDLBFmrOqgcAu9opvQ
+	(envelope-from <linux-wireless+bounces-36998-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 12:02:26 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7175E2643
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 12:08:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C20F05E2530
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 12:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15A57303352A
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 10:00:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7EA9E3003D3C
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 10:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256ED3EEACA;
-	Wed, 27 May 2026 10:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8501175809;
+	Wed, 27 May 2026 10:01:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB8C3E7BDF;
-	Wed, 27 May 2026 10:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A093DFC88
+	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 10:01:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779876031; cv=none; b=F5/sOWClJWu1QNFk1+U0Lbj0xwVvhFvb69PwuCQNLjnXA+AyVWaglgd8ykJsAI4MQmcrkUMMZRIFCYpumRwyqfNGxkBUKvPjk9YDdYeRvE3Hihn+FpdAFL/XXwUI3zVjbE9F7Vk7GaLZ7SWqppZNb2bZfFwVhlyOxXARjgtRqCI=
+	t=1779876090; cv=none; b=E7K0NAT/kCfMtGVKb7DTZR2JVYPzx1QVMH5pktA4TkcLHcDrCTTVM6LVqf7zyVbo1qz5umMM2qsYoo+3u+5yzKevqE+yZhwRrSmZeChT0IemtZL0RPBlYPjal1ftr0rCTr/dNpl0PRfbYr+CZ/Ekj0TL5mUicatvHqrExCJ9KVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779876031; c=relaxed/simple;
-	bh=gDgkJ0TD82DFTvkh4599+Re+Yyjc+glCUZn5JIR+0YA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qIcxl1hU42naGiHSz/0N4vbQMK3qu/YR0v0LOkjARdoGF/F72lHfVbBWmNrnNbjke2FNugZiOOQY+kFPxyHU30iZkWbjZ0WPYRQW9FovcUaOOJ/aChdyJZ/7uTFLBZ35qA6kB5958bQ/eD3Sy3RUQ3ubguKsnfEDQH9RwYx0VOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: dec7402459b211f1aa26b74ffac11d73-20260527
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:1fdcb15d-86a5-4dfd-9310-ad06384d0138,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:21fde180ab3492c37f445fc5f12cf05d,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|865|898,TC:nil,Content:0
-	|15|50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,O
-	SI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: dec7402459b211f1aa26b74ffac11d73-20260527
-X-User: liujiajia@kylinos.cn
-Received: from nature [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <liujiajia@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1695425657; Wed, 27 May 2026 18:00:20 +0800
-Date: Wed, 27 May 2026 18:00:17 +0800
-From: Jiajia Liu <liujiajia@kylinos.cn>
-To: Sean Wang <sean.wang@kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Michael Lo <michael.lo@mediatek.com>,
-	Leon Yen <leon.yen@mediatek.com>, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] wifi: mt76: mt7925: add wcid publish check in
- mt76_sta_add
-Message-ID: <ahbAsYwFCjsvpxEC@nature>
-References: <20260526060841.49161-1-liujiajia@kylinos.cn>
- <CAGp9LzqzddmyDHMNsaqigYpVEdo_Pmzwbeh5Ri5_Gr87cVL6Dg@mail.gmail.com>
+	s=arc-20240116; t=1779876090; c=relaxed/simple;
+	bh=w2cqiKlphkBC6QHoEaLO+llq+fz2T0vo7707KiYUees=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OI92gI7YaHx8/JL7Pj3rmaTYBFUvpD0jNJxoPo2r7KbtyoPgtm8gWSRpPfHk5FIVuhtr9n3zEA/Nghmu6P8Yqa15LPB0ApV1GgELWZeAlzVMOvZMhPRFrozWrGoNS+59GA/G0DNOGJrP3Kgdp+165AYGhHn7M/03/6ttlWVY5QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=206.189.21.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
+	by app2 (Coremail) with SMTP id zQmowABH4wrrwBZqrHUQAA--.38265S3;
+	Wed, 27 May 2026 18:01:18 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	quic_alokad@quicinc.com,
+	yuantan098@gmail.com,
+	zcliangcn@gmail.com,
+	bird@lzu.edu.cn,
+	xuyq21@lenovo.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH 1/1] wifi: nl80211: reject oversized EMA RNR element lists
+Date: Wed, 27 May 2026 18:01:09 +0800
+Message-ID: <db614d22c4d3cdae0f5fb94b9d78c8e3142c2ecd.1779632165.git.xuyq21@lenovo.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1779632165.git.xuyq21@lenovo.com>
+References: <cover.1779632165.git.xuyq21@lenovo.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGp9LzqzddmyDHMNsaqigYpVEdo_Pmzwbeh5Ri5_Gr87cVL6Dg@mail.gmail.com>
-X-Spamd-Result: default: False [0.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-CM-TRANSID:zQmowABH4wrrwBZqrHUQAA--.38265S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7KFyDtFWDXr1UJFW7XF4xWFg_yoW8JFWkpr
+	WrGry8Kr93Krn7Jr48G3WrZrWxJa1DGrsxuFZ0qas3Z3ZFqr1Fq3s0gFW5Zrn8Zw48GFWF
+	qrsIqF4DC395A37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvC1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
+	z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
+	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
+	6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r126r1DMxkIecxEwVCm
+	-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r48MxC20s026xCaFVCjc4AY6r
+	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
+	b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
+	vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
+	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
+	nxnUUI43ZEXa7VUbSfO7UUUUU==
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQ0ACWoWqU4C7QAAsx
+X-Spamd-Result: default: False [-0.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[kylinos.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-36997-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.947];
+	FREEMAIL_CC(0.00)[sipsolutions.net,quicinc.com,gmail.com,lzu.edu.cn,lenovo.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[liujiajia@kylinos.cn,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-36998-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RSPAMD_EMAILBL_FAIL(0.00)[bird.lzu.edu.cn:query timed out,xuyq21.lenovo.com:query timed out];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.987];
+	FROM_NEQ_ENVFROM(0.00)[n05ec@lzu.edu.cn,linux-wireless@vger.kernel.org];
+	DMARC_DNSFAIL(0.00)[lzu.edu.cn : query timed out];
+	TO_DN_NONE(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:email]
-X-Rspamd-Queue-Id: 4C7175E2643
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,lenovo.com:mid,lenovo.com:email]
+X-Rspamd-Queue-Id: C20F05E2530
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 26, 2026 at 04:52:32PM -0500, Sean Wang wrote:
-> Hi,
-> 
-> On Tue, May 26, 2026 at 1:09 AM Jiajia Liu <liujiajia@kylinos.cn> wrote:
-> >
-> > Since mt7925_mac_sta_add publishes wcid, add publish check in mt76_sta_add
-> > to avoid reinitializing the wcid->poll_list for mt7925.
-> >
-> > Found dev->sta_poll_list corruption when using mt7925 and 7.0-rc4.
-> > According to the corruption information, prev->next was changed to itself.
-> >
-> > wlan0: disconnect from AP 90:fb:5d:94:8b:e3 for new auth to 90:fb:5d:94:8b:e2
-> > wlan0: authenticate with 90:fb:5d:94:8b:e2 (local address=84:9e:56:9c:7e:6b)
-> > wlan0: send auth to 90:fb:5d:94:8b:e2 (try 1/3)
-> >  slab kmalloc-8k start ffff8c80958a6000 pointer offset 4160 size 8192
-> > list_add corruption. prev->next should be next (ffff8c808a7488f8), but was ffff8c80958a7040. (prev=ffff8c80958a7040).
-> >
-> >  mt76_wcid_add_poll+0x95/0xd0 [mt76]
-> >  mt7925_mac_add_txs.part.0+0xa5/0xe0 [mt7925_common]
-> >  mt7925_rx_check+0xa7/0xc0 [mt7925_common]
-> >  mt76_dma_rx_poll+0x50d/0x790 [mt76]
-> >  mt792x_poll_rx+0x52/0xe0 [mt792x_lib]
-> >
-> > Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
-> > ---
-> >
-> > Reproduced and tested using the script below over ssh. Roam between two
-> > bssids with the same SSID on a router.
-> >
-> > #!/bin/bash
-> >
-> > set -ex
-> >
-> > while :; do
-> >         num=$(sudo iw wlan0 scan | grep Polaris | wc -l)
-> >         if [ $num -eq 2 ]; then
-> >                 break
-> >         fi
-> > done
-> >
-> > for i in $(seq 1 500); do
-> >
-> > echo "index $i"
-> > wpa_cli -i wlan0 roam 90:fb:5d:94:8b:e3
-> > sleep 5
-> > wpa_cli -i wlan0 roam 90:fb:5d:94:8b:e2
-> > sleep 5
-> >
-> > done
-> >
-> > ---
-> >  drivers/net/wireless/mediatek/mt76/mac80211.c    | 11 ++++++++---
-> >  drivers/net/wireless/mediatek/mt76/mt76.h        |  1 +
-> >  drivers/net/wireless/mediatek/mt76/mt7925/main.c |  3 +++
-> >  3 files changed, 12 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-> > index 4ae5e4715a9c..83f4f941b890 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-> > @@ -1595,11 +1595,16 @@ mt76_sta_add(struct mt76_phy *phy, struct ieee80211_vif *vif,
-> >                 mtxq->wcid = wcid->idx;
-> >         }
-> >
-> > -       ewma_signal_init(&wcid->rssi);
-> > -       rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
-> > +       if (!test_bit(MT_WCID_FLAG_DRV_PUBLISH, &wcid->flags)) {
-> > +               ewma_signal_init(&wcid->rssi);
-> > +               rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
-> > +               mt76_wcid_init(wcid, phy->band_idx);
-> > +       } else {
-> > +               wcid->phy_idx = phy->band_idx;
-> > +       }
-> > +
-> >         phy->num_sta++;
-> >
-> 
-> Thanks for spotting the roaming issue.
-> 
-> I think we can avoid adding MT_WCID_FLAG_DRV_PUBLISH and instead use the
-> WCID table itself for the publish check.
-> 
-> dev->wcid[] already encodes whether a WCID has been published, so checking
-> it directly avoids adding a second mirror state. MT_WCID_FLAG_* is also
-> better kept for WCID features that affect WTBL setup or data-path handling,
-> rather than common bookkeeping state.
-> 
-> Something like:
-> 
-> @@ -1620,6 +1620,7 @@ mt76_sta_add(struct mt76_phy *phy, struct
-> ieee80211_vif *vif,
-> {
->   struct mt76_wcid *wcid = (struct mt76_wcid *)sta->drv_priv;
->   struct mt76_dev *dev = phy->dev;
-> +       struct mt76_wcid *published;
->   int ret;
->   int i;
-> 
-> @@ -1639,7 +1640,10 @@ mt76_sta_add(struct mt76_phy *phy, struct
-> ieee80211_vif *vif,
->           mtxq->wcid = wcid->idx;
->   }
-> 
-> -       if (!test_bit(MT_WCID_FLAG_DRV_PUBLISH, &wcid->flags)) {
-> +       published = rcu_dereference_protected(dev->wcid[wcid->idx],
-> +                                             lockdep_is_held(&dev->mutex));
-> +       if (published != wcid) {
-> +               WARN_ON_ONCE(published);
->                  ewma_signal_init(&wcid->rssi);
->                  rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
->                  mt76_wcid_init(wcid, phy->band_idx);
-> 
->    ....
-> 
+From: Yuqi Xu <xuyq21@lenovo.com>
 
-Thanks for the suggestion. Will update in v2.
+nl80211_parse_rnr_elems() stores the parsed element count in a
+u8-backed cfg80211_rnr_elems::cnt field and uses that count to size
+the flexible array allocation.
 
-> 
-> > -       mt76_wcid_init(wcid, phy->band_idx);
-> >  out:
-> >         mutex_unlock(&dev->mutex);
-> >
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-> > index 527bef97e122..8bfce686bff7 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt76.h
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> > @@ -361,6 +361,7 @@ enum mt76_wcid_flags {
-> >         MT_WCID_FLAG_PS,
-> >         MT_WCID_FLAG_4ADDR,
-> >         MT_WCID_FLAG_HDR_TRANS,
-> > +       MT_WCID_FLAG_DRV_PUBLISH,
-> >  };
-> >
-> >  #define MT76_N_WCIDS 1088
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-> > index 73d3722739d0..35b5c718475c 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-> > @@ -1102,6 +1102,9 @@ int mt7925_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
-> >                                               &msta->deflink);
-> >         }
-> >
-> > +       if (!err)
-> > +               set_bit(MT_WCID_FLAG_DRV_PUBLISH, &msta->deflink.wcid.flags);
-> > +
-> >         return err;
-> >  }
-> >  EXPORT_SYMBOL_GPL(mt7925_mac_sta_add);
-> > --
-> > 2.53.0
-> >
-> >
+Reject nested NL80211_ATTR_EMA_RNR_ELEMS input once the count reaches
+255, before incrementing it again. This keeps the parser aligned with
+the data structure it fills and matches the existing bound check used
+by nl80211_parse_mbssid_elems().
+
+Fixes: dbbb27e183b1568d5a907ace1cd144b0709ea52a ("cfg80211: support RNR for EMA AP")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Assisted-by: Codex:GPT-5.4
+Signed-off-by: Yuqi Xu <xuyq21@lenovo.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
+ net/wireless/nl80211.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index f334cdef8958..500eb84ff55a 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -6354,6 +6354,9 @@ nl80211_parse_rnr_elems(struct wiphy *wiphy, struct nlattr *attrs,
+ 		if (ret)
+ 			return ERR_PTR(ret);
+ 
++		if (num_elems >= 255)
++			return ERR_PTR(-EINVAL);
++
+ 		num_elems++;
+ 	}
+ 
+-- 
+2.54.0
+
 
