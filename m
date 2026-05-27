@@ -1,72 +1,73 @@
-Return-Path: <linux-wireless+bounces-37037-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37036-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LdROtZOF2r7AAgAu9opvQ
-	(envelope-from <linux-wireless+bounces-37037-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 22:06:46 +0200
+	id 0LJhNKNOF2qaAggAu9opvQ
+	(envelope-from <linux-wireless+bounces-37036-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 22:05:55 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF2D5E9E8A
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 22:06:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A307F5E9E40
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 22:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 35CD0307933C
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 20:05:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0AAB6302C83F
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 May 2026 20:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A71E3B6374;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBE73B6345;
 	Wed, 27 May 2026 20:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QPBnZ/Bv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R2HTgcUP"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB55A3B635A
-	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 20:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC3E3B52FB
+	for <linux-wireless@vger.kernel.org>; Wed, 27 May 2026 20:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779912345; cv=none; b=OtwDf4GSf9Rdwma1esf6Pc80ZRTrAGMtYT63izDG1jCgt3say9Ubbu7TSyH0K4m37sjXJR+AzfDmLk6BMSDwDGXetZ7deVi6YMIZ781xwuueSDQCs8Pid56eLkPT7+vu1c11aL4VCWHcWdyoM9LRLZmHfnJwL84A01vM7aGBozw=
+	t=1779912345; cv=none; b=HSY0rXNac4xfPCpDEt1STA/TJK7Q4U5wD1BsSOxKJU6V7UTU1Oz1VQeE6DJPrhvGTfCV4sZmtq1W84X8UWgyHz/qM5Tk1Fx6ywdeSviNMwqT897ylhzfS2fg5+XYtIlW1chVQsWYrD3QungceZNAFEH7TyBOzM/YhGxlzvyILRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779912345; c=relaxed/simple;
-	bh=Zqq4QxlwSJ2Y6Jidu/qpAPUfwCmRHPM45PxzaLBeOUY=;
+	bh=RtqOvZa+TcAK8BE4WaAznV2EEctVZmi6hOc16ilQFBY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NB3gnkbBUwXGs0SkpHVpxB2nUFj0BnDp5T6BpLmMh16E5Zx3F9lxOrRr/b9DyXqMJKdy5D8/8AnPyp7UgX2rsX98wMxFpREVHxZlHMqwfzAxrmF8Cli3rmgPCxHFVPrTZhLQ463ScRAqajgxozYY0j/VMaubhOiCrI8qVah2RWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QPBnZ/Bv; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=dzLzD2qoeCbMAyXBXuqMwjD1Htx1XKnwJxf2biBdk3gbLYPqxsLiIZys/yuoDWupnhs1uqFy0nTCHLfpOCbl7/gm1YVz1Ra1ymq6JuTbfDr289H5OXgJpAVcDtOni0+Q6myKU53T7iRBiSnXrqfwxYiFIVRqPfF3gRymMLmBwgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R2HTgcUP; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779912343; x=1811448343;
+  t=1779912344; x=1811448344;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Zqq4QxlwSJ2Y6Jidu/qpAPUfwCmRHPM45PxzaLBeOUY=;
-  b=QPBnZ/Bvtq0aZ6yGdaed3zjaQ7i4lMR5eysdYb34Xa8bHIsq7Qe+QDNS
-   jMPTujU1IAo+QxSAqPwXL/HabgVcQLJZLCaoBRTYBso52tGl7SEsqj+Xm
-   esf4RZCm3hBPxFA1cnnaWO/7ThBcIjiZvL9LBVQo0jWRRVi6Q2btmq9qp
-   rhgdqSxMHD1QzzZ+dPYdRE5HgnNiK1ov2cNaoWXU60ns64/0X6X3LVgvy
-   tgHVtOiVQbJvbhhFlM3F5aGVHGT4ES49ABydNgTR+UFhj14aSULh5cyTt
-   B5Hlz07ExVU8HbtKyqURfrTeh0HqkZLvrjAtcnSScR+9v6kgPZhbQdWZM
-   Q==;
-X-CSE-ConnectionGUID: y9U2zpzbSBagwHusqgAs3w==
-X-CSE-MsgGUID: yC2PtCs2Qmy726wuSGInTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80940875"
+  bh=RtqOvZa+TcAK8BE4WaAznV2EEctVZmi6hOc16ilQFBY=;
+  b=R2HTgcUPR6uzyBBlxE4aclkaJOfCWfAopGXKD1Zyl2o2lNYE0qu2wsea
+   bRsbqJP4oP72uNjoc4oZWR8Rm0rTliB7gwA+zayLb8Vp7h5pB8xyn3WhT
+   oiORiuVpgrEdfE4Jsm8yc5tLtuwwGn84XiyG8Kol/z7/+sXBNdT8zP67e
+   UOoNT88xu5DJJjhX5SMfOtBw3nzhIsJ3GMh2LEsepOhqFNguqAMCIhE0M
+   bLNmSTyrVPPxQjHCyUnvpeLDpwH2DsItknMV9haJ9RWfWHzivbsMxcIQb
+   oZT3BIcyIF013fCiLHkhV7bAcTT+uG4Eoui49xCWpcpKfuITragnNT2vK
+   w==;
+X-CSE-ConnectionGUID: pPXrYTEER5yOeJh4uPzjgg==
+X-CSE-MsgGUID: GMi706HpTtCoFO0JzwHk5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80940877"
 X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
-   d="scan'208";a="80940875"
+   d="scan'208";a="80940877"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 13:05:42 -0700
-X-CSE-ConnectionGUID: aKpNq55/QfSo6iLN2W80Gw==
-X-CSE-MsgGUID: BJYndFm2QzaHuhvBQu6AyA==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 13:05:44 -0700
+X-CSE-ConnectionGUID: UT7ru7LmTgqrR6JYqgy+MA==
+X-CSE-MsgGUID: bNxOOuK6SW6nN6yHI2WjSA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
-   d="scan'208";a="247286979"
+   d="scan'208";a="247286982"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 13:05:40 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 13:05:42 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Shahar Tzarfati <shahar.tzarfati@intel.com>
-Subject: [PATCH iwlwifi-next 11/15] wifi: iwlwifi: cfg: Revert "wifi: iwlwifi: cfg: move the MODULE_FIRMWARE to the per-rf file"
-Date: Wed, 27 May 2026 23:05:08 +0300
-Message-Id: <20260527230313.a10bc3359dca.I446a1340c635f07aff3efaba5317635e010c156f@changeid>
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH iwlwifi-next 12/15] wifi: iwlwifi: mld: don't WARN on WoWLAN suspend w/o netdetect
+Date: Wed, 27 May 2026 23:05:09 +0300
+Message-Id: <20260527230313.19720967372b.Iff30814510a26f9f609f98eeea3111c50c1afb31@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260527200512.506707-1-miriam.rachel.korenblit@intel.com>
 References: <20260527200512.506707-1-miriam.rachel.korenblit@intel.com>
@@ -83,19 +84,19 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37037-lists,linux-wireless=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-37036-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -104,83 +105,48 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6CF2D5E9E8A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A307F5E9E40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Shahar Tzarfati <shahar.tzarfati@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-IWL_BZ_UCODE_CORE_MAX is undefined in cfg/rf-fm.c, this
-causes __stringify(core) to turn it into the literal
-token text, so MODULE_FIRMWARE entries are generated as
-"iwlwifi...-cIWL_BZ_UCODE_CORE_MAX.ucode",
-instead of the actual number.
+Clearly, from a user perspective, it must be valid to configure
+WoWLAN and then suspend while not connected to a network. Since
+mac80211 doesn't distinguish these cases and simply calls the
+driver to suspend whenever WoWLAN is configured, the driver has
+to cleanly handle the case where it's called for WoWLAN, it's
+not connected but there's also no netdetect configured.
 
-This reverts the commit below.
+Remove the WARN_ON() and keep returning 1 to disconnect and
+then suspend.
 
-Fixes: e4d47493c6be ("wifi: iwlwifi: cfg: move the MODULE_FIRMWARE to the per-rf file")
-Signed-off-by: Shahar Tzarfati <shahar.tzarfati@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c    | 12 ++++++++++++
- drivers/net/wireless/intel/iwlwifi/cfg/rf-fm.c | 12 ------------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-index ecb4f81a99f5..9cdc4f142c7f 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-@@ -15,6 +15,12 @@
- /* Lowest firmware core release supported */
- #define IWL_BZ_UCODE_CORE_MIN	101
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+index fc0a5871df2f..458a668ba916 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+@@ -2066,8 +2066,11 @@ int iwl_mld_wowlan_suspend(struct iwl_mld *mld, struct cfg80211_wowlan *wowlan)
  
-+#define IWL_BZ_A_FM_B_FW_PRE		"iwlwifi-bz-a0-fm-b0"
-+#define IWL_BZ_A_FM_C_FW_PRE		"iwlwifi-bz-a0-fm-c0"
-+#define IWL_BZ_A_FM4_B_FW_PRE		"iwlwifi-bz-a0-fm4-b0"
-+#define IWL_GL_B_FM_B_FW_PRE		"iwlwifi-gl-b0-fm-b0"
-+#define IWL_GL_C_FM_C_FW_PRE		"iwlwifi-gl-c0-fm-c0"
-+
- static const struct iwl_family_base_params iwl_bz_base = {
- 	.num_of_queues = 512,
- 	.max_tfd_queue_size = 65536,
-@@ -85,3 +91,9 @@ const struct iwl_mac_cfg iwl_gl_mac_cfg = {
- 	.xtal_latency = 12000,
- 	.low_latency_xtal = true,
- };
-+
-+IWL_CORE_FW(IWL_BZ_A_FM_B_FW_PRE, IWL_BZ_UCODE_CORE_MAX);
-+IWL_CORE_FW(IWL_BZ_A_FM_C_FW_PRE, IWL_BZ_UCODE_CORE_MAX);
-+IWL_CORE_FW(IWL_BZ_A_FM4_B_FW_PRE, IWL_BZ_UCODE_CORE_MAX);
-+IWL_CORE_FW(IWL_GL_B_FM_B_FW_PRE, IWL_BZ_UCODE_CORE_MAX);
-+IWL_CORE_FW(IWL_GL_C_FM_C_FW_PRE, IWL_BZ_UCODE_CORE_MAX);
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/rf-fm.c b/drivers/net/wireless/intel/iwlwifi/cfg/rf-fm.c
-index 294cf25ae2a6..35b1618f3474 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/rf-fm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/rf-fm.c
-@@ -5,12 +5,6 @@
-  */
- #include "iwl-config.h"
+ 	if (!bss_vif->cfg.assoc) {
+ 		int ret;
+-		/* If we're not associated, this must be netdetect */
+-		if (WARN_ON(!wowlan->nd_config))
++		/*
++		 * If not associated we can only do netdetect, if
++		 * that's not enabled then just suspend normally.
++		 */
++		if (!wowlan->nd_config)
+ 			return 1;
  
--#define IWL_BZ_A_FM_B_FW_PRE		"iwlwifi-bz-a0-fm-b0"
--#define IWL_BZ_A_FM_C_FW_PRE		"iwlwifi-bz-a0-fm-c0"
--#define IWL_BZ_A_FM4_B_FW_PRE		"iwlwifi-bz-a0-fm4-b0"
--#define IWL_GL_B_FM_B_FW_PRE		"iwlwifi-gl-b0-fm-b0"
--#define IWL_GL_C_FM_C_FW_PRE		"iwlwifi-gl-c0-fm-c0"
--
- #define IWL_DEVICE_FM							\
- 	.ht_params = {							\
- 		.stbc = true,						\
-@@ -54,9 +48,3 @@ const char iwl_be201_name[] = "Intel(R) Wi-Fi 7 BE201 320MHz";
- const char iwl_be200_name[] = "Intel(R) Wi-Fi 7 BE200 320MHz";
- const char iwl_be202_name[] = "Intel(R) Wi-Fi 7 BE202 160MHz";
- const char iwl_be401_name[] = "Intel(R) Wi-Fi 7 BE401 320MHz";
--
--IWL_CORE_FW(IWL_BZ_A_FM_B_FW_PRE, IWL_BZ_UCODE_CORE_MAX);
--IWL_CORE_FW(IWL_BZ_A_FM_C_FW_PRE, IWL_BZ_UCODE_CORE_MAX);
--IWL_CORE_FW(IWL_BZ_A_FM4_B_FW_PRE, IWL_BZ_UCODE_CORE_MAX);
--IWL_CORE_FW(IWL_GL_B_FM_B_FW_PRE, IWL_BZ_UCODE_CORE_MAX);
--IWL_CORE_FW(IWL_GL_C_FM_C_FW_PRE, IWL_BZ_UCODE_CORE_MAX);
+ 		ret = iwl_mld_netdetect_config(mld, bss_vif, wowlan);
 -- 
 2.34.1
 
