@@ -1,179 +1,116 @@
-Return-Path: <linux-wireless+bounces-37055-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37056-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMecIon6F2oWXwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-37055-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 10:19:21 +0200
+	id eKIzKjH9F2oTYQgAu9opvQ
+	(envelope-from <linux-wireless+bounces-37056-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 10:30:41 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E208B5EE70A
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 10:19:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 196925EE990
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 10:30:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9579730177A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 08:12:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ECFBE30CDA26
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 08:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C7D368D42;
-	Thu, 28 May 2026 08:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315BA378D64;
+	Thu, 28 May 2026 08:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FW7u2jNj"
+	dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b="PBgn6JKO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtpdh18-2.aruba.it (smtpdh18-2.aruba.it [62.149.155.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E22367F51
-	for <linux-wireless@vger.kernel.org>; Thu, 28 May 2026 08:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB3836A374
+	for <linux-wireless@vger.kernel.org>; Thu, 28 May 2026 08:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.155.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779955954; cv=none; b=K7cG6FKrfi9i6vg0IaVdUlnaS+7uqyYk7FasHw35iK8RLlmezIJLBWPx89icWAQRZzM8fghOv0IeUxym2zoNzqmW/q+w5QE0y2da+2DSTmPGyv0yaK1v912YLwR4a1c1tPVfap71Roei6oBWXwgVIsscc1pYc1KP7mX7gjnhGPg=
+	t=1779956723; cv=none; b=oceXlL0359VyCPOa5mhgLVB2XGSPI70w1NurEluup2rqtZQ8sm3IE9luE9kN+DNUp+wuMV5ix12fv6peTCCN18L5flIEXpJh5Kz/nQUX24Vn1/HlFaGwxcC9/tAdzDc0ASaVszHDAGnEBiN8Cb/PQmC0pvZiJu6glyN/wzydiFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779955954; c=relaxed/simple;
-	bh=8GXk2KyIbZzZwXtmRHM/I2cKVJ8Mri/ZzvHAvPOs0RA=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eApOmKwRYTbrlsHjDHGPOZli/Cj9h1dS0Fu/gcC0GK4KVsCEQYE7qkRFgnftNNFACuIFdWEdEipi7xSz92Z2XkIBreTof76cclZmq5mQcF2BAiVZk83pnYwXxiY3WXNhHMbjuJbDJkIaVpfUjb9Rd3ScgWmioFHs95kwDucvCl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FW7u2jNj; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=hisHGOVJN8X50Mwuttzl2mfaiguBa40Sox4stmMR/Xo=;
-	t=1779955952; x=1781165552; b=FW7u2jNj+Td1wBkAyEmvY0TLowX5kn8zSYIu8GY7fZcv0Dr
-	rexF2zCCUYfg8G0OvcuIhayF1wBPClg4gtf7IZVvD+sMqoknh4ECd1liWgJl/UJ1SNtQ8/jHbVY/o
-	YZB9vlVsfG+C2MDOvJD0C/iS8cs1pltsKZUXeLNnwksD7o/htXcBVd9GJUO4aSJ4tDjwgL/F0sBYn
-	XmSlo63TBl7/3aidxyCOqYLyWuXDXF3E/TCqPDHE4B37Qn6hWqw2vViLodLMIhupPFiKPLo2IUNYR
-	VDvzL2zeV3t2oHb/ZPNjtdX6qIxOG7Vh71WyCMkoD8kGwXgYEsVZbLpRHk7EPflg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wSVqv-00000007C6I-39w7;
-	Thu, 28 May 2026 10:12:29 +0200
-Message-ID: <244b27052cbfd1f922132f2f3c5a16d6b25b0450.camel@sipsolutions.net>
-Subject: Re: [PATCH v8 6/6] wifi: mac80211: Fix PERR frame processing
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Masashi Honma <masashi.honma@gmail.com>, linux-wireless@vger.kernel.org
-Date: Thu, 28 May 2026 10:12:28 +0200
-In-Reply-To: <20260521225842.31815-6-masashi.honma@gmail.com> (sfid-20260522_005901_891083_9CB68DC2)
-References: <20260521225842.31815-1-masashi.honma@gmail.com>
-	 <20260521225842.31815-6-masashi.honma@gmail.com>
-	 (sfid-20260522_005901_891083_9CB68DC2)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1779956723; c=relaxed/simple;
+	bh=21SAsR3WJl68rB2JCZ9NOEaBf2TL1vh7yn+L5rZBWF0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Uo3TpATTNS4ic4AqPfgEagQDxYnt6sKyZpsXYY04GEB/WPNYyhXHPI9AeMUUuwRKI/KXjoLHnJRNBBdCJk5b9UvGw5zF4bVEZWqyZkjEb/gI6XyhzY655Mtvp9WKEX1NdGn60oZgFmJPghLazQv/h1+QDC4CFuM6G4kNAHzYVhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it; spf=pass smtp.mailfrom=mythread.it; dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b=PBgn6JKO; arc=none smtp.client-ip=62.149.155.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mythread.it
+Received: from DELL-MOBILE03.ad.smart.it ([77.89.54.34])
+	by Aruba SMTP with ESMTPSA
+	id SW0Hw2lBE5SteSW0Hwb4Nw; Thu, 28 May 2026 10:22:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mythread.it; s=a1;
+	t=1779956530; bh=21SAsR3WJl68rB2JCZ9NOEaBf2TL1vh7yn+L5rZBWF0=;
+	h=Date:From:To:Subject:MIME-Version:Content-Type;
+	b=PBgn6JKOAtCLp1mbxzN6c7SNCPJzvYJrbHTHy79yexNzG9GBn0fsGv9uL1rp9Q57x
+	 KFKizEPijlbsKDzyFsHes8VDUHhA0HvPHSB9i+MgNxwSYRGKIXGzfVHWhc9df/j/st
+	 UCW/IcFvz/VbkNpFwzK6qA4zDjXmPbsfTFerAmEDlxR8901gld4lTuqD72fvhxDwPD
+	 V0736V/3a1567UWCONqf6Om4XXQBeblkaiwbMGeIzUygUcYotwFdY9rkRVSuDrLAMp
+	 j6oVd2taUtQKGxLC2+/E4Xrx6Aayh8Wi7kVCkXnJlJBXKOxu6GWofSJdlxr3+E72Ym
+	 gnYIQSA8Norlg==
+Date: Thu, 28 May 2026 10:22:08 +0200
+From: Alessio Ferri <alessio.ferri@mythread.it>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/7] b43: add firmware mappings and remove comments
+ wondering about rev22 initvals
+Message-ID: <20260528102208.12dee646@DELL-MOBILE03.ad.smart.it>
+In-Reply-To: <5e8cdb04c12490dca37777975e921eb1842b6b4c.camel@sipsolutions.net>
+References: <20260524-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v1-0-cdad2c8526c6@gmail.com>
+	<20260524-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v1-1-cdad2c8526c6@gmail.com>
+	<5e8cdb04c12490dca37777975e921eb1842b6b4c.camel@sipsolutions.net>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfK+21eEnj4S1MjFANDpBTif2ZZJMYtCEuB/PTMyyjRI2/rFCZYAFzQPBDhcv40y+LEP7YyBKKUUi68q+H9sWUzVy7xiZ573uBtNbvsQ829dYFYNkEtnD
+ EEwZq/Pg/PilKG8ez2yu9Hx0BBKWPCCotHrpnKSBDWcA2XcOBySR25klBoY3BObq3Io4W8+vwS3ZbOz29EPIgDOgaPe2sQfgzLtDrQ7hESEqbceQq1NAkIIS
+ vyatAfovsXmLWVznLiTYnEDhWA5x5xq4N5Dak2/EeJMCG4c1D0NQiNhGDpCVaRMTZFpRUXQVBvf4prd7EkgEfHhQBJZ5tZ7wSYebYsVozw0=
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[mythread.it,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[mythread.it:s=a1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alessio.ferri@mythread.it,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37055-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:mid,sipsolutions.net:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E208B5EE70A
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-37056-lists,linux-wireless=lfdr.de];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCVD_COUNT_THREE(0.00)[4];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:email,mythread.it:email,mythread.it:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[mythread.it:+]
+X-Rspamd-Queue-Id: 196925EE990
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 2026-05-22 at 07:58 +0900, Masashi Honma wrote:
->=20
-> +/* IEEE Std 802.11-2016 9.4.2.115 PERR element */
-> +static inline bool ieee80211_mesh_perr_size_ok(const u8 *pos, u8 elen)
-> +{
-> +	struct ieee80211_mesh_hwmp_perr *perr_elem =3D (void *)pos;
-> +	u8 number_of_dst;
-> +	u8 needed;
-> +	const u8 *start;
-> +	int i;
-> +
-> +	start =3D pos;
-> +	needed =3D sizeof(struct ieee80211_mesh_hwmp_perr);
-> +	pos +=3D sizeof(struct ieee80211_mesh_hwmp_perr);
-> +
-> +	/* Check if the element contains number of dst */
-> +	if (elen < needed)
-> +		return false;
-> +
-> +	number_of_dst =3D perr_elem->number_of_dst;
-> +	if (number_of_dst < 1 || number_of_dst > 19)
-> +		return false;
+On Thu, 28 May 2026 09:43:58 +0200
+Johannes Berg <johannes@sipsolutions.net> wrote:
 
-Same here, though I didn't double-check this one; if we just go to 'int'
-or 'unsigned int' for 'needed', it's not necessary to even have this.
+> On Sun, 2026-05-24 at 23:56 +0200, Alessio Ferri wrote:
+> > Assisted-by: Claude:claude-4.7-opus
+> > Signed-off-by: Alessio Ferri <alessio.ferri@mythread.it>  
+> 
+> Please don't squeeze the entire commit message into the subject and
+> then omit the real one.
+> 
+> johannes
 
-> +
-> +	for (i =3D 0; i < number_of_dst; i++) {
-> +		struct ieee80211_mesh_hwmp_perr_dst *perr_dst =3D
-> +			&perr_elem->dsts[i];
-> +		u8 dst_len;
-> +
-> +		/* Check if the element contains flags */
-> +		if (elen < pos - start + 1)
-> +			return false;
-
-that comment seems a bit misleading. I figured out what you mean, but
-IMHO it'd be more obvious if you wrote it as
-
-	for (...) {
-		struct _perr_dst *perr_dst;
-		u8 dst_len;
-
-		if (elen < pos - start + sizeof(*perr_dst))
-			return false;
-
-> +		dst_len =3D sizeof(struct ieee80211_mesh_hwmp_perr_dst) +
-> +			  ((perr_dst->flags & AE_F) ? ETH_ALEN : 0)
-> +			  /* Destination External Address */ +
-> +			  2 /* Reason Code */;
-> +		needed +=3D dst_len;
-> +		pos +=3D dst_len;
-
-and technically that pos+=3D could be UB, so it should be
-
-		if (elen < pos - start + dst_len)
-			return false;
-		pos +=3D dst_len;
-
-> +		/* Right now we do not support AE (Address Extension) */
-> +		for (i =3D 0; i < perr_elem->number_of_dst; i++)
-> +			if (perr_elem->dsts[i].flags & AE_F)
-> +				goto free;
-
-This code will need to change based on what I commented on patch 3 wrt.
-the variable members, although we only really use [0] and allow for a
-single entry anyway ...
-
-Probably should have an inline that returns struct
-ieee80211_mesh_hwmp_perr_dst based on the index, and then have
-ieee80211_mesh_hwmp_perr_get_rcode() work on that pointer instead of the
-element and index.
-
-
-Thanks for sticking with this, it already looks really nice!
-
-johannes
+I see, i'll resend later a v4 with the correct split between
+subject/message. 
+By the way there is anything else i need to correct?
 
