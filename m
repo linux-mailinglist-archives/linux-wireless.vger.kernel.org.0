@@ -1,55 +1,54 @@
-Return-Path: <linux-wireless+bounces-37074-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37067-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kKlSKDd/GGpBkggAu9opvQ
-	(envelope-from <linux-wireless+bounces-37074-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 19:45:27 +0200
+	id WMnWFkt+GGoskggAu9opvQ
+	(envelope-from <linux-wireless+bounces-37067-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 19:41:31 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0E95F5D7D
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 19:45:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1336C5F5CAA
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 19:41:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5E28630498CE
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 17:35:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DBE49301CFCF
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 17:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01F43FCB06;
-	Thu, 28 May 2026 17:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E213FDBFE;
+	Thu, 28 May 2026 17:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b="l++jPRxu"
+	dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b="GSetKNaj"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtpweb146.aruba.it (smtpweb146.aruba.it [62.149.158.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E553FD971
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38DE3FD946
 	for <linux-wireless@vger.kernel.org>; Thu, 28 May 2026 17:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779989697; cv=none; b=ITTf+N7ZD2gTRFR2Dq8kye6WfByBr/2cfY9Xc0uzdXl+fM20MibRNPggmJzHvnxUqAXMXIi54QGOdZ3+VZZYggnVUWZONt1zWVqYT1KfqhPrkWjqbEaouQoy6JnDIoNatX82QYVkEzDV8/HkkdIgUEQH4aksrkQVrgRWnCbGGyA=
+	t=1779989695; cv=none; b=lX/sTKfq5idKyzV4KDc/mdWz9Z5JgQlQFHw5ONrOLnCxae3fY9Hk0rY/Zbx37Za+4C7620agJknR3mnbU8M+4eZo6WiQFfVTd3IoMB4+aJlYZDvbQYkSpqVEfMv0Jr+fL/XAENu/qETIor/oGWE4DpXSNyBQtITn3eRCA9w1k0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779989697; c=relaxed/simple;
-	bh=x/C7YXh4n4v0Noj27OMkH+Jht47ZFV6pK6P7tks4i4U=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To; b=lPMgOzimdiuEEpFZcvKu0/56nXYjWDLjaaOjf97sh8PSsR49sWZEq12qzqlgcHxQ35A2RrgvBx86BC5TYl0AM4UiJ6jVQgbddX5zXGvpA8Jv8AAXs7oBjBmue9SH5E1uqNOvRM3p7gefPPmt9/tpQhkKpcH/M/ZwdwfuokVAFyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it; spf=pass smtp.mailfrom=mythread.it; dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b=l++jPRxu; arc=none smtp.client-ip=62.149.158.146
+	s=arc-20240116; t=1779989695; c=relaxed/simple;
+	bh=19Z+zdaXGI3FYfSGWQoCBXevBSvCZqWMLW3DMW3r/lw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To; b=P9IcbBgH0M0kq3H2RYn7tP5V66IosZh3ceR3pEJ75yyYo7aGmisW6yHvEkv5P2bqwjwb9HF8RG3e78iE7MgpOtwweSlyOYO6Ei2yZimPOa8qoosSesfNK5sgFrz9KrBpMmYonCxG9a/U5jJSNNqeNXSN1hYbh7qgmvaFxTk65z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it; spf=pass smtp.mailfrom=mythread.it; dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b=GSetKNaj; arc=none smtp.client-ip=62.149.158.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mythread.it
 Received: from [192.168.1.237] ([94.34.125.0])
 	by Aruba SMTP with ESMTPSA
-	id Sea5wczvrrbJKSea5w6A2x; Thu, 28 May 2026 19:31:42 +0200
+	id Sea5wczvrrbJKSea6w6A39; Thu, 28 May 2026 19:31:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mythread.it; s=a1;
-	t=1779989502; bh=x/C7YXh4n4v0Noj27OMkH+Jht47ZFV6pK6P7tks4i4U=;
-	h=From:Subject:Date:MIME-Version:Content-Type:To;
-	b=l++jPRxuiVCSwEHI4Z9PzE+zWObhL8lppF+zVAj4VOBRI8vBll3mfuYDSvBhpBYmI
-	 OQ+kdWYCkRu5hNqLQMqODf1G5aTOG1Q6/kTxweMj40Qx5viYRoV3UXZHvPb6VrcZlE
-	 A5ieRhHduhgbie2ubKEDiVde9s8yMlX+HcBY61Yyc4L59rEi+NmyRS/h6+NA/TaFyl
-	 xA534Ft/kGSc/vJtUD7PUVcx6w6RVH614MUXIxg1q1Zj2zGz/e+0B/gAFeHZ5/7eTR
-	 Z7D/EF6HKhdAacOYoe+GUj8+06lufoxLMIaMllRhrC5KTadrY8XPuOc4+pvGbtoSvA
-	 qv5kVkJObOFow==
+	t=1779989502; bh=19Z+zdaXGI3FYfSGWQoCBXevBSvCZqWMLW3DMW3r/lw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:To;
+	b=GSetKNajeSjQPvm6v9X83qDUhcXhY4+R2ef8/HQNnHNIEDa7/tdvN0jnNbXn4MEhK
+	 WIvjBgty8cIu5/FzX8DEiP5hTMH6R9XIC0ZSq2IxUO4uaC9ZZYI/eLzdHlP/jKxwWB
+	 KzgfCOPXay1hqZG67LcBSUIGSRvQMNh4n0HybTomHYUalwPZ1le9QJJLy4Kf444oWB
+	 YeJ7YvwUIzeEb1Z66FJSd48X18bF7qX7AAB4vFze16YLhdVgbGSokZOpF0SIU34MUp
+	 kwTmuZKfbhrWC8R1wVqvWyZ/GJo44WOWe8fLpdKZggeVT8lDCskvtojjMuDDPJDklZ
+	 aAQQQzji4M6GA==
 From: Alessio Ferri <alessio.ferri@mythread.it>
-Subject: [PATCH v4 0/7] b43: complete N-PHY rev 8 + radio 2057 rev 8
- support
-Date: Thu, 28 May 2026 19:31:34 +0200
-Message-Id: <20260528-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v4-0-464566194d47@gmail.com>
+Date: Thu, 28 May 2026 19:31:35 +0200
+Subject: [PATCH v4 1/7] b43: add firmware mappings for rev22
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -58,11 +57,9 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/52OQQ6DIBREr2JYlwa+Qk1XvUdjCIWvkqgQsKbGe
- PdS016gyzfJzJuNJIwOE7kWG4m4uOT8lKE6FcT0euqQOpuZAAPJBHD6qEpl/BgGnFFNKvSryj1
- Vq6it8wqYuHyD9AzBx5nqkoNomUTgSPJuiNi61+G8N5l7l2Yf1+PCwj/pz1b9YVs4ZdRYbcHUA
- qSRt27UbjjnFdLs+/4G3ebSIPIAAAA=
-X-Change-ID: 20260521-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-a3125f06e21e
+Message-Id: <20260528-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v4-1-464566194d47@gmail.com>
+References: <20260528-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v4-0-464566194d47@gmail.com>
+In-Reply-To: <20260528-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v4-0-464566194d47@gmail.com>
 To: linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org, 
  linux-kernel@vger.kernel.org, Alessio Ferri <alessio.ferri@mythread.it>
 X-Mailer: b4 0.14.3
@@ -84,7 +81,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37074-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37067-lists,linux-wireless=lfdr.de];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_THREE(0.00)[4];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[mythread.it:email,mythread.it:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
@@ -93,91 +90,57 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	DKIM_TRACE(0.00)[mythread.it:+]
-X-Rspamd-Queue-Id: 3B0E95F5D7D
+X-Rspamd-Queue-Id: 1336C5F5CAA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This series completes b43 support for the Broadcom N-PHY revision 8
-paired with radio 2057 revision 8. b43 already supports the surrounding
-PHY family - N-PHY rev 8 with radio 2057 rev 5 and rev 7 are handled,
-and rev 16 with radio 2057 rev 9 is handled - but the rev 8 + rev 8
-combination falls through four dispatcher gaps:
-
-  - radio_2057.c, r2057_upload_inittabs(), case 8 lists radio_rev 5
-    and 7 only;
-  - radio_2057.c, r2057_get_chantabent_rev7(), case 8 lists radio_rev
-    5 only;
-  - tables_nphy.c, b43_nphy_get_ipa_gain_table(), case 8 lists
-    radio_rev 5 only;
-  - radio_2057.c carries r2057_rev8_init[] as a 54-entry stub commented
-    out with "TODO: Which devices should use it?".
-
-Two further pieces of plumbing are needed to reach those dispatchers
-in the first place: d11 core revision 0x16 is missing from the b43
-bcma id table, firmware name, and the corerev 22 / radio 2057 combination
-needs the 24-bit indirect radio access path that brcmsmac uses for
-the same silicon generation (see brcmsmac/phy/phy_cmn.c
-read_radio_reg() / write_radio_reg()).
-
-The series:
-
-  1/7  b43: add firmware and initvals names for rev22
-  2/7  b43: add d11 core revision 0x16 to id table
-  3/7  b43: route d11 corerev 22 to 24-bit indirect radio access
-  4/7  b43: support radio 2057 rev 8
-  5/7  b43: add IPA TX gain table for N-PHY r8 + radio 2057 r8
-  6/7  b43: add channel info table for N-PHY r8 + radio 2057 r8
-  7/7  b43: add RF power offset for N-PHY r8 + radio 2057 r8
-
-Patches almost reveal the bringup, the first two are swapped, as
-applying 2/7 without 1/7 generate an immediate kernel panic caused
-by a null deref.
-From the third, each one fixes the next visible failure
-in bring-up: 3/7 lets phy versioning read coherent radio identifiers,
-4/7 unblocks the boot-time radio calibration that otherwise stalls,
-and 5/7-7/7 fill the remaining 2.4 GHz dispatcher entries so
-b43_nphy_set_channel completes to the default channel and core_init
-proceeds past PHY init.
-
-Tested on a D-Link DSL-3580L (Broadcom BCM6362 SoC, single-die 2.4 GHz
-N-PHY rev 8 + radio 2057 rev 8 in 2.4 GHz IPA mode).
-
-b43 is currently Orphan in MAINTAINERS. These patches do not add a
-new chip family or PHY infrastructure; they fill four explicit
-dispatcher gaps for a combination of an already-supported PHY and
-an already-supported radio.
-
-CHANGELOG:
-v4: reword patch 1/7 commit
-v3: no changes, fighting with b4
-v2:
-  - Recovered the first patch of the series, so numbering is now /7
-  - Added Assisted-By header
-v1: https://lore.kernel.org/linux-wireless/8c0a07d2-9ec9-43d6-bdf7-f625bbb4a38a@mythread.it/
+add the specific firmware mappings for rev22, and drop comments wondering about rev22 initvals
 
 Assisted-by: Claude:claude-4.7-opus
 Signed-off-by: Alessio Ferri <alessio.ferri@mythread.it>
 ---
----
-Alessio Ferri (7):
-      b43: add firmware mappings for rev22
-      b43: add d11 core revision 0x16 to id table
-      b43: route d11 corerev 22 to 24-bit indirect radio access
-      b43: support radio 2057 rev 8
-      b43: add IPA TX gain table for N-PHY r8 + radio 2057 r8
-      b43: add channel info table for N-PHY r8 + radio 2057 r8
-      b43: add RF power offset for N-PHY r8 + radio 2057 r8
+ drivers/net/wireless/broadcom/b43/main.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
- drivers/net/wireless/broadcom/b43/main.c        |  22 ++-
- drivers/net/wireless/broadcom/b43/radio_2057.c  | 230 ++++++++++++++++++++++--
- drivers/net/wireless/broadcom/b43/tables_nphy.c |  58 ++++++
- 3 files changed, 290 insertions(+), 20 deletions(-)
----
-base-commit: 8bc67e4db64aa72732c474b44ea8622062c903f0
-change-id: 20260521-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-a3125f06e21e
+diff --git a/drivers/net/wireless/broadcom/b43/main.c b/drivers/net/wireless/broadcom/b43/main.c
+index b0e6aeb0b..37c5d9928 100644
+--- a/drivers/net/wireless/broadcom/b43/main.c
++++ b/drivers/net/wireless/broadcom/b43/main.c
+@@ -2344,6 +2344,10 @@ static int b43_try_request_fw(struct b43_request_fw_context *ctx)
+ 		if (phy->type == B43_PHYTYPE_N)
+ 			filename = "ucode16_mimo";
+ 		break;
++	case 22:
++		if (phy->type == B43_PHYTYPE_N)
++			filename = "ucode22_mimo";
++		break;
+ 	case 16 ... 19:
+ 		if (phy->type == B43_PHYTYPE_N)
+ 			filename = "ucode16_mimo";
+@@ -2405,7 +2409,9 @@ static int b43_try_request_fw(struct b43_request_fw_context *ctx)
+ 		else if (rev == 24)
+ 			filename = "n0initvals24";
+ 		else if (rev == 23)
+-			filename = "n0initvals16"; /* What about n0initvals22? */
++			filename = "n0initvals16";
++		else if (rev == 22)
++			filename = "n0initvals22";
+ 		else if (rev >= 16 && rev <= 18)
+ 			filename = "n0initvals16";
+ 		else if (rev >= 11 && rev <= 12)
+@@ -2465,7 +2471,9 @@ static int b43_try_request_fw(struct b43_request_fw_context *ctx)
+ 		else if (rev == 24)
+ 			filename = "n0bsinitvals24";
+ 		else if (rev == 23)
+-			filename = "n0bsinitvals16"; /* What about n0bsinitvals22? */
++			filename = "n0bsinitvals16";
++		else if (rev == 22)
++			filename = "n0bsinitvals22";
+ 		else if (rev >= 16 && rev <= 18)
+ 			filename = "n0bsinitvals16";
+ 		else if (rev >= 11 && rev <= 12)
 
-Best regards,
 -- 
-Alessio Ferri <alessio.ferri.3012@gmail.com>
+2.54.0
 
 
