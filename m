@@ -1,54 +1,54 @@
-Return-Path: <linux-wireless+bounces-37067-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37071-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMnWFkt+GGoskggAu9opvQ
-	(envelope-from <linux-wireless+bounces-37067-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 19:41:31 +0200
+	id QCOZF05+GGoskggAu9opvQ
+	(envelope-from <linux-wireless+bounces-37071-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 19:41:34 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1336C5F5CAA
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 19:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BA05F5CB1
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 19:41:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DBE49301CFCF
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 17:34:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3A73C30EB458
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 17:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E213FDBFE;
-	Thu, 28 May 2026 17:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D3E3FDC15;
+	Thu, 28 May 2026 17:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b="GSetKNaj"
+	dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b="JjfcVLnv"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtpweb146.aruba.it (smtpweb146.aruba.it [62.149.158.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38DE3FD946
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA6F3FBED9
 	for <linux-wireless@vger.kernel.org>; Thu, 28 May 2026 17:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779989695; cv=none; b=lX/sTKfq5idKyzV4KDc/mdWz9Z5JgQlQFHw5ONrOLnCxae3fY9Hk0rY/Zbx37Za+4C7620agJknR3mnbU8M+4eZo6WiQFfVTd3IoMB4+aJlYZDvbQYkSpqVEfMv0Jr+fL/XAENu/qETIor/oGWE4DpXSNyBQtITn3eRCA9w1k0U=
+	t=1779989697; cv=none; b=mdkioOODox3BEfIBTOjchD93Iak/RXIMZEH3QP+g+BNFpQFdNewdBSzVo4/4z4qtzFHhPREM9ezXAy2hYZkdTIVkUMztiy8KfaDuMqItaFRH8F/uIn6Rdl8mu6r5Eg0ctw7GW1qyFffgLNOAc45QPbKdLonM62EsxjJBO2jb9nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779989695; c=relaxed/simple;
-	bh=19Z+zdaXGI3FYfSGWQoCBXevBSvCZqWMLW3DMW3r/lw=;
+	s=arc-20240116; t=1779989697; c=relaxed/simple;
+	bh=SYIv7H7SpupxdJet3IQpOb3GAjuN7nX15ZBOx75fnxU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To; b=P9IcbBgH0M0kq3H2RYn7tP5V66IosZh3ceR3pEJ75yyYo7aGmisW6yHvEkv5P2bqwjwb9HF8RG3e78iE7MgpOtwweSlyOYO6Ei2yZimPOa8qoosSesfNK5sgFrz9KrBpMmYonCxG9a/U5jJSNNqeNXSN1hYbh7qgmvaFxTk65z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it; spf=pass smtp.mailfrom=mythread.it; dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b=GSetKNaj; arc=none smtp.client-ip=62.149.158.146
+	 In-Reply-To:To; b=bAHMS+uKPgvJhapazwBB55sYcxxqMGC4gZOFnpkTKCV9nmGBdLyckaPCO7deEwzzLHdk94JvZ+QK13224AJmYlcYc5Ok5/zE0clofkj75ILA4ijQtcoafJpr1WbYFWFwxde5vg8Q3hMX6jKJMcyPWu21BH5s9+XyBs7IIhGZP0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it; spf=pass smtp.mailfrom=mythread.it; dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b=JjfcVLnv; arc=none smtp.client-ip=62.149.158.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mythread.it
 Received: from [192.168.1.237] ([94.34.125.0])
 	by Aruba SMTP with ESMTPSA
-	id Sea5wczvrrbJKSea6w6A39; Thu, 28 May 2026 19:31:42 +0200
+	id Sea5wczvrrbJKSea6w6A3J; Thu, 28 May 2026 19:31:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mythread.it; s=a1;
-	t=1779989502; bh=19Z+zdaXGI3FYfSGWQoCBXevBSvCZqWMLW3DMW3r/lw=;
+	t=1779989502; bh=SYIv7H7SpupxdJet3IQpOb3GAjuN7nX15ZBOx75fnxU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:To;
-	b=GSetKNajeSjQPvm6v9X83qDUhcXhY4+R2ef8/HQNnHNIEDa7/tdvN0jnNbXn4MEhK
-	 WIvjBgty8cIu5/FzX8DEiP5hTMH6R9XIC0ZSq2IxUO4uaC9ZZYI/eLzdHlP/jKxwWB
-	 KzgfCOPXay1hqZG67LcBSUIGSRvQMNh4n0HybTomHYUalwPZ1le9QJJLy4Kf444oWB
-	 YeJ7YvwUIzeEb1Z66FJSd48X18bF7qX7AAB4vFze16YLhdVgbGSokZOpF0SIU34MUp
-	 kwTmuZKfbhrWC8R1wVqvWyZ/GJo44WOWe8fLpdKZggeVT8lDCskvtojjMuDDPJDklZ
-	 aAQQQzji4M6GA==
+	b=JjfcVLnv8Z9gfg+QYPbUQjBZthMfNSpIwH00Mgq/gLV3IUWNiOVC6erSiHyabCswF
+	 HCPSI8+YsNtzmr1j079ODdWLTrL2vmYR+4t8mB+L9maQ45wtdKiSvV+DpJ25n2MGrt
+	 3uuW6kDy+Nw+VAdhc8en1EkEnbIe3HgRQleXnb03iUP4LY8XDBy23KIojKzO1+0OeK
+	 eMYj3Z3BbcV1tTcsuewJDFPAvDtpQjpRQ/09TNVfNaYMA9Xj0/s993omWdTWnxqDWt
+	 2z6fRv/uJK3jPuYghmaqM63T+H6kkgAlC1npifv6NrnnNhb/eass3hPmUJQGqqiwSs
+	 20gZwMipH1EZA==
 From: Alessio Ferri <alessio.ferri@mythread.it>
-Date: Thu, 28 May 2026 19:31:35 +0200
-Subject: [PATCH v4 1/7] b43: add firmware mappings for rev22
+Date: Thu, 28 May 2026 19:31:36 +0200
+Subject: [PATCH v4 2/7] b43: add d11 core revision 0x16 to id table
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,7 +57,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260528-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v4-1-464566194d47@gmail.com>
+Message-Id: <20260528-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v4-2-464566194d47@gmail.com>
 References: <20260528-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v4-0-464566194d47@gmail.com>
 In-Reply-To: <20260528-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v4-0-464566194d47@gmail.com>
 To: linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org, 
@@ -81,7 +81,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37067-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37071-lists,linux-wireless=lfdr.de];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_THREE(0.00)[4];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[mythread.it:email,mythread.it:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
@@ -90,55 +90,40 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	DKIM_TRACE(0.00)[mythread.it:+]
-X-Rspamd-Queue-Id: 1336C5F5CAA
+X-Rspamd-Queue-Id: 21BA05F5CB1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-add the specific firmware mappings for rev22, and drop comments wondering about rev22 initvals
+Add d11 core revision 0x16 (= 22) to the b43 bcma device id table.
+
+The b43 bcma id table covers d11 revisions 0x11, 0x15, 0x17, 0x18,
+0x1C, 0x1D, 0x1E, 0x28 and 0x2A. Revision 0x16 belongs to the same
+N-PHY family as revisions 0x17 and 0x18 (radio 2057) and needs no
+new PHY or radio code beyond the radio_rev 8 dispatcher entries
+added later in this series - only the device id entry is missing.
+Without it bcma scan enumerates the 802.11 core but no driver binds.
+
+The revision is used by the Broadcom BCM6362 single-die integrated
+2.4 GHz wireless block found in xDSL SoCs.
 
 Assisted-by: Claude:claude-4.7-opus
 Signed-off-by: Alessio Ferri <alessio.ferri@mythread.it>
 ---
- drivers/net/wireless/broadcom/b43/main.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/wireless/broadcom/b43/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/wireless/broadcom/b43/main.c b/drivers/net/wireless/broadcom/b43/main.c
-index b0e6aeb0b..37c5d9928 100644
+index 37c5d9928..85ea8fdd9 100644
 --- a/drivers/net/wireless/broadcom/b43/main.c
 +++ b/drivers/net/wireless/broadcom/b43/main.c
-@@ -2344,6 +2344,10 @@ static int b43_try_request_fw(struct b43_request_fw_context *ctx)
- 		if (phy->type == B43_PHYTYPE_N)
- 			filename = "ucode16_mimo";
- 		break;
-+	case 22:
-+		if (phy->type == B43_PHYTYPE_N)
-+			filename = "ucode22_mimo";
-+		break;
- 	case 16 ... 19:
- 		if (phy->type == B43_PHYTYPE_N)
- 			filename = "ucode16_mimo";
-@@ -2405,7 +2409,9 @@ static int b43_try_request_fw(struct b43_request_fw_context *ctx)
- 		else if (rev == 24)
- 			filename = "n0initvals24";
- 		else if (rev == 23)
--			filename = "n0initvals16"; /* What about n0initvals22? */
-+			filename = "n0initvals16";
-+		else if (rev == 22)
-+			filename = "n0initvals22";
- 		else if (rev >= 16 && rev <= 18)
- 			filename = "n0initvals16";
- 		else if (rev >= 11 && rev <= 12)
-@@ -2465,7 +2471,9 @@ static int b43_try_request_fw(struct b43_request_fw_context *ctx)
- 		else if (rev == 24)
- 			filename = "n0bsinitvals24";
- 		else if (rev == 23)
--			filename = "n0bsinitvals16"; /* What about n0bsinitvals22? */
-+			filename = "n0bsinitvals16";
-+		else if (rev == 22)
-+			filename = "n0bsinitvals22";
- 		else if (rev >= 16 && rev <= 18)
- 			filename = "n0bsinitvals16";
- 		else if (rev >= 11 && rev <= 12)
+@@ -117,6 +117,7 @@ MODULE_PARM_DESC(allhwsupport, "Enable support for all hardware (even it if over
+ static const struct bcma_device_id b43_bcma_tbl[] = {
+ 	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_80211, 0x11, BCMA_ANY_CLASS),
+ 	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_80211, 0x15, BCMA_ANY_CLASS),
++	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_80211, 0x16, BCMA_ANY_CLASS),
+ 	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_80211, 0x17, BCMA_ANY_CLASS),
+ 	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_80211, 0x18, BCMA_ANY_CLASS),
+ 	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_80211, 0x1C, BCMA_ANY_CLASS),
 
 -- 
 2.54.0
