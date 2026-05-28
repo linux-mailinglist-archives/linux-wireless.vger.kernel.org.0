@@ -1,64 +1,64 @@
-Return-Path: <linux-wireless+bounces-37053-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37054-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SD2XC6r3F2oWXwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-37053-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 10:07:06 +0200
+	id OH0iLUb3F2q5WAgAu9opvQ
+	(envelope-from <linux-wireless+bounces-37054-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 10:05:26 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5CE5EE3F7
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 10:07:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617B45EE377
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 10:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E340930B836E
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 08:00:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1126B306D90E
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 08:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93239361DD9;
-	Thu, 28 May 2026 08:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A983352FA5;
+	Thu, 28 May 2026 08:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Q4CXvIWT"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="bHixHi0R"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0A334B682
-	for <linux-wireless@vger.kernel.org>; Thu, 28 May 2026 08:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DC3367B7E
+	for <linux-wireless@vger.kernel.org>; Thu, 28 May 2026 08:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779955213; cv=none; b=CsUTAZEOqDfhBNk5qDgqm5NpU7j8qmQo2N8qcePZ/uWIG0eQB7yPivQXl1KJIw2eJfO4NwaC1BtmTJE7W5ar4grGINtJothbeBFKi1gbDiP8ELX1wwCRXm4OxvIHUuT5b7wsDOBMowQBKWxUc0o1NP2CSVn+hxPS7RSzTX+UzhY=
+	t=1779955496; cv=none; b=bHeU4IMJrmYfZD3oULW4oUiuIJ/gQU38p6qjs5P/HMpxeTb9Dlq9pQ0T7ZjFsVKyoHb+pv/xiah/zF2w2vGgqtLZofOXdE6FgUpGu4KmXULCdh8YolOtZAFft0/EmMcmpaXkzgmaOv72cVNNACOSWNkJ5oFdDH1d1PbPrBksd24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779955213; c=relaxed/simple;
-	bh=vdD1iMtaeScVS5bAVIqmo0pHksz7J1y2+dRp41eEurg=;
+	s=arc-20240116; t=1779955496; c=relaxed/simple;
+	bh=uzL6dkjocgBpnSg+uUrT3IJgsgEsCmrR2LwVbJU6+m8=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PDIb+loafAE6ZwOCRLpD5OfFRaMhejwxyDLebZbKXKGv15TPK0X2ILLyoK8N92TZhafhUXvn+iPnJjCupSzPWfXVfCVw67BSnTJ/06GiGb+EG/4OeTMCH8eanNU6uhqC7zKTbaQInArVemGNP86sxZVuXdwLoCJO6LVD6YqSTpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Q4CXvIWT; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=cTsNNU7bqY/6OgplgLRu/uWAzHw+vEQ0IpJ5qh5OGrxppZNTD8u6fUY0/8gde/a4WQgruwETPgS8hvGwWwgbGv7TqmwfixkaO/xPzJgLmtl6cSQriDtKHVZzbf+xjmUeruRfx/vFUjUd32MJFd7OnJ6wlEg9v1n3a+bhkQyNbHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=bHixHi0R; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
 	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=lDSl9EZsl0NyqwyslQeB9GOD1vPBvRt/mUNpeSC8pqM=;
-	t=1779955211; x=1781164811; b=Q4CXvIWTt3LlS+4IBbkBd15gA7iLfGkApGjaY88IaE7l2as
-	wii7uavw/lUq/TDtt2AKIM1Bu3eQt+3occ/hYEYUXfCXi6kdDSdb+Oh3KG7xkd38n3wPIC6oUF/MD
-	zMET8Fx4UiTURPHIOGQkCYSeE0ieZSUD7qw2DzRxloEzgNl6wmmW5U3501/a1rNlHCe0ifERh/u8e
-	myDHjHH2m2JL3xzWAIe1ctCJ7UfDm0rfM38QvudBoBLtat+SiQk2l0WlToMblBBhiGfIKRCteLONY
-	pXCBDUoK3QUXvwmT3F/Cdfrh57fPyH+6otsgNJB5GWOf0War8Mq8JBK1eSp+dNog==;
+	Resent-Cc:Resent-Message-ID; bh=IVyJNux1B3pzKSR+3iEDuqJ7QC81+q5tTGHFtAP3G80=;
+	t=1779955495; x=1781165095; b=bHixHi0R5NeNwp4/pJkFq3mL2aufzxdJbaa9jlf+1FxLODm
+	NjDOCZiIx6Rrq46gSH09JsSoQCr/+JlKC3uISfJ+Jx1B+kJxSKUh7tKyqKnldt3k1r6kjWBuIwzoO
+	6eF04iWq2z3/myZ9BoEKUiHtT3e+LtbtXhFVFh5GZJL3EsB267mPeWtHPKXD2oQYG78jn13YGbVNP
+	hP1m6SejspwYkdA8THASJJfgYgQgciTSlnIPU1aEs67NjFiDu1aPrLZT7OzlKS8cafqHUtLUeq7lv
+	VGGP9qWDoR6nfm5kCpGuXCvhvnlVEuQU93shFJ1N25vncooaKFRTkKHLZhzz+zBQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1wSVey-00000007BRX-3dQO;
-	Thu, 28 May 2026 10:00:09 +0200
-Message-ID: <8ab957b3c31dec7be844ea9e1ac2fbb2fdcd8278.camel@sipsolutions.net>
-Subject: Re: [PATCH v8 3/6] wifi: mac80211: Use struct instead of macro for
- PERR frame
+	id 1wSVjY-00000007Bh0-2zIv;
+	Thu, 28 May 2026 10:04:52 +0200
+Message-ID: <f268572dbc71a4941523c510349207afb3fbe34c.camel@sipsolutions.net>
+Subject: Re: [PATCH v8 4/6] wifi: mac80211: Fix overread in PREQ frame
+ processing
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Masashi Honma <masashi.honma@gmail.com>, linux-wireless@vger.kernel.org
-Date: Thu, 28 May 2026 10:00:08 +0200
-In-Reply-To: <20260521225842.31815-3-masashi.honma@gmail.com> (sfid-20260522_005855_718104_C5CA026D)
+Date: Thu, 28 May 2026 10:04:51 +0200
+In-Reply-To: <20260521225842.31815-4-masashi.honma@gmail.com> (sfid-20260522_005857_938875_E4A88BEC)
 References: <20260521225842.31815-1-masashi.honma@gmail.com>
-	 <20260521225842.31815-3-masashi.honma@gmail.com>
-	 (sfid-20260522_005855_718104_C5CA026D)
+	 <20260521225842.31815-4-masashi.honma@gmail.com>
+	 (sfid-20260522_005857_938875_E4A88BEC)
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
@@ -72,7 +72,7 @@ X-malware-bazaar: not-scanned
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -84,8 +84,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37053-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-37054-lists,linux-wireless=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -95,78 +95,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:mid,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: 8D5CE5EE3F7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sipsolutions.net:mid,sipsolutions.net:dkim]
+X-Rspamd-Queue-Id: 617B45EE377
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
-
-So I was just about to apply this set, but now I'm thinking about this:
-
-
-> +struct ieee80211_mesh_hwmp_perr_dst {
-> +	u8 flags;
-> +	u8 addr[ETH_ALEN];
-> +	__le32 sn;
-> +	/* optional Destination External Address */
-> +	u8 variable[];
-> +} __packed;
-
-This has a variable member, and the presence of the address in
-'variable' depends on the flags (AE_F set there.)
-
-> +struct ieee80211_mesh_hwmp_perr {
-> +	u8 ttl;
-> +	u8 number_of_dst;
-> +	struct ieee80211_mesh_hwmp_perr_dst dsts[];
-> +} __packed;
-
-However this declares an array of these, and that doesn't really seem
-right. It effectively puts non-variable fields (e.g. dsts[1].ttl) after
-the variable field dsts[0].variable. I _think_ some compilers (versions)
-will also (rightfully) complain about this.
-
-It seems like this should just be
-
-struct ... {
-	u8 ttl;
-	u8 number_of_dst;
-
-	/* list of variably sized struct ieee80211_mesh_hwmp_perr_dst
-*/
-	u8 dsts[];
-} __packed;
-
-> +static inline u16
-> +ieee80211_mesh_hwmp_perr_get_rcode(const u8 *ie, u8 dst_idx)
+On Fri, 2026-05-22 at 07:58 +0900, Masashi Honma wrote:
+>=20
+> +/* IEEE Std 802.11-2016 9.4.2.113 PREQ element */
+> +static inline bool ieee80211_mesh_preq_size_ok(const u8 *pos, u8 elen)
 > +{
-> +	struct ieee80211_mesh_hwmp_perr *perr_ie =3D (void *)ie;
-> +	struct ieee80211_mesh_hwmp_perr_dst *dst =3D
-> +		&perr_ie->dsts[dst_idx];
-
-And especially this indexing doesn't seem like it could work - you have
-to walk through all of them to see if each has the AE_F set and skip
-sizeof() + optional ETH_ALEN.
-
+> +	struct ieee80211_mesh_hwmp_preq_bottom *preq_elem_bottom =3D
+> +		ieee80211_mesh_hwmp_preq_get_bottom(pos);
+> +	u8 target_count;
+> +	u8 needed;
 > +
-> +	return get_unaligned_le16(&dst->variable[
-> +		(dst->flags & AE_F) ? ETH_ALEN : 0]);
+> +	/* Check if the element contains flags */
+> +	if (elen < 1)
+> +		return false;
+> +
+> +	/* Check if the element contains target_count */
+> +	needed =3D sizeof(struct ieee80211_mesh_hwmp_preq_top) +
+> +		 (ieee80211_mesh_preq_prep_ae_enabled(pos) ? ETH_ALEN : 0)
+> +		 /* Originator External Address */ +
+> +		 sizeof(struct ieee80211_mesh_hwmp_preq_bottom);
+> +	if (elen < needed)
+> +		return false;
+> +
+> +	target_count =3D preq_elem_bottom->target_count;
+> +	if (target_count < 1 || target_count > 20)
+> +		return false;
 
-This looks like the comment above should be
+While this is correct now, I think it's perhaps too tricky ...
 
-	/* optional Destination External Address, rcode */
-	u8 variable[];
-=09
-or so?
+The reason it's correct is that needed starts out with at most
+sizeof(top) + ETH_ALEN + sizeof(bottom) =3D=3D 17 + 6 + 9 =3D=3D 32, target
+sizeof is 11, so 20*11+32 =3D=3D 252 and cannot overflow.
 
-> +	target_rcode =3D ieee80211_mesh_hwmp_perr_get_rcode(perr_elem, 0);
-
-but evidently, this doesn't really matter right now if only one
-destination entry is ever read.
-
-Still, please fix that, if only to avoid the compiler warnings I'm
-imagining will happen.
+But I think it'd be far simpler to declare "needed" simply as 'int',
+then even with target_count =3D=3D 255 and whatever else happened before
+cannot overflow, the elen=3D=3Dneeded check will promote to int and refuse =
+a
+bad target_count implicitly instead of needing to do so explicitly to
+avoid the integer overflow.
 
 johannes
 
