@@ -1,54 +1,55 @@
-Return-Path: <linux-wireless+bounces-37071-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37068-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCOZF05+GGoskggAu9opvQ
-	(envelope-from <linux-wireless+bounces-37071-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 19:41:34 +0200
+	id 2LUlGhF+GGrbkQgAu9opvQ
+	(envelope-from <linux-wireless+bounces-37068-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 19:40:33 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BA05F5CB1
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 19:41:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DB65F5C57
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 19:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3A73C30EB458
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 17:35:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3F90301547C
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 May 2026 17:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D3E3FDC15;
-	Thu, 28 May 2026 17:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5456718C008;
+	Thu, 28 May 2026 17:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b="JjfcVLnv"
+	dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b="a6c6Rbap"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtpweb146.aruba.it (smtpweb146.aruba.it [62.149.158.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA6F3FBED9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33FE3FCB05
 	for <linux-wireless@vger.kernel.org>; Thu, 28 May 2026 17:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779989697; cv=none; b=mdkioOODox3BEfIBTOjchD93Iak/RXIMZEH3QP+g+BNFpQFdNewdBSzVo4/4z4qtzFHhPREM9ezXAy2hYZkdTIVkUMztiy8KfaDuMqItaFRH8F/uIn6Rdl8mu6r5Eg0ctw7GW1qyFffgLNOAc45QPbKdLonM62EsxjJBO2jb9nU=
+	t=1779989696; cv=none; b=gsshm1uzf9PT+fb4jJL9kHSD6j6L3pq/JJNpyoUJg/k/sSD7hyLNMputxQqbdjNmlC3uCZDlRCHiLVPm4tidLhiTciCXHcROuZSfavp4tKJll8Iiy3MEDQlxB0VXkHZuQIZcImkh/is0qxrTQlS2fIi13P2EUud7VkVjA1YwojE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779989697; c=relaxed/simple;
-	bh=SYIv7H7SpupxdJet3IQpOb3GAjuN7nX15ZBOx75fnxU=;
+	s=arc-20240116; t=1779989696; c=relaxed/simple;
+	bh=e/hYjV7INXbX4jjE81sUHqotTmvH3P4OPUaxzlGVb8o=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To; b=bAHMS+uKPgvJhapazwBB55sYcxxqMGC4gZOFnpkTKCV9nmGBdLyckaPCO7deEwzzLHdk94JvZ+QK13224AJmYlcYc5Ok5/zE0clofkj75ILA4ijQtcoafJpr1WbYFWFwxde5vg8Q3hMX6jKJMcyPWu21BH5s9+XyBs7IIhGZP0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it; spf=pass smtp.mailfrom=mythread.it; dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b=JjfcVLnv; arc=none smtp.client-ip=62.149.158.146
+	 In-Reply-To:To; b=FBYAzEHG8UMCWgx5Q/vB+4EuocgWq79wR/2QT/iiQpy9QR8R9p3wRb4TPu69OZZZszx/+tLH6QN61CAM3yXw1aTyWI/U8Q6GqFC6ubSxZoQhRWmzM/cqyWzeFhcEhnQu99OQp1I5bqCsb2eO8Z3LwSBwxks9EOnb+2IiuDRfDFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it; spf=pass smtp.mailfrom=mythread.it; dkim=pass (2048-bit key) header.d=mythread.it header.i=@mythread.it header.b=a6c6Rbap; arc=none smtp.client-ip=62.149.158.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mythread.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mythread.it
 Received: from [192.168.1.237] ([94.34.125.0])
 	by Aruba SMTP with ESMTPSA
-	id Sea5wczvrrbJKSea6w6A3J; Thu, 28 May 2026 19:31:42 +0200
+	id Sea5wczvrrbJKSea6w6A3V; Thu, 28 May 2026 19:31:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mythread.it; s=a1;
-	t=1779989502; bh=SYIv7H7SpupxdJet3IQpOb3GAjuN7nX15ZBOx75fnxU=;
+	t=1779989502; bh=e/hYjV7INXbX4jjE81sUHqotTmvH3P4OPUaxzlGVb8o=;
 	h=From:Date:Subject:MIME-Version:Content-Type:To;
-	b=JjfcVLnv8Z9gfg+QYPbUQjBZthMfNSpIwH00Mgq/gLV3IUWNiOVC6erSiHyabCswF
-	 HCPSI8+YsNtzmr1j079ODdWLTrL2vmYR+4t8mB+L9maQ45wtdKiSvV+DpJ25n2MGrt
-	 3uuW6kDy+Nw+VAdhc8en1EkEnbIe3HgRQleXnb03iUP4LY8XDBy23KIojKzO1+0OeK
-	 eMYj3Z3BbcV1tTcsuewJDFPAvDtpQjpRQ/09TNVfNaYMA9Xj0/s993omWdTWnxqDWt
-	 2z6fRv/uJK3jPuYghmaqM63T+H6kkgAlC1npifv6NrnnNhb/eass3hPmUJQGqqiwSs
-	 20gZwMipH1EZA==
+	b=a6c6RbapPSkZq7gmJHA6f0SSxsNDZB0zqmSm1UQVdjVANRWpXlq6KaTRTEpPDCgx4
+	 bmzw/f4sLHQuwkYhN3So075klFUGEKbKvDXQaaXhjOlCj8iBXWi1gbQDeUOlZiqAGo
+	 GWwnZqVvJd1zo4il2fVIqlfLzMAlOSgtq5G/DRNw56f8AZxqa3PWFKqWYeVEJ8jnEh
+	 WlupS8p1v9AsDJ2ZIcMbmTsQ70pYxN1p+Bj56ROtwfyFCvPAr6rGMOUUQZAZBH23qT
+	 b//j/YIsdMB1l29GHpxH9GGdz2deQmAdJ2fYcHjfR/u4v+oVO73unuxlGRHWDWVizI
+	 G2W/D/URbQ7CQ==
 From: Alessio Ferri <alessio.ferri@mythread.it>
-Date: Thu, 28 May 2026 19:31:36 +0200
-Subject: [PATCH v4 2/7] b43: add d11 core revision 0x16 to id table
+Date: Thu, 28 May 2026 19:31:37 +0200
+Subject: [PATCH v4 3/7] b43: route d11 corerev 22 to 24-bit indirect radio
+ access
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,7 +58,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260528-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v4-2-464566194d47@gmail.com>
+Message-Id: <20260528-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v4-3-464566194d47@gmail.com>
 References: <20260528-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v4-0-464566194d47@gmail.com>
 In-Reply-To: <20260528-b43_complete_n_phy_rev_8_radio_2057_rev_8_support-v4-0-464566194d47@gmail.com>
 To: linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org, 
@@ -69,7 +70,7 @@ X-CMAE-Envelope: MS4xfOUW+OMsbislXLVfjghoLiIMSllfjXG3jKhyT1qtr1TPotfGmGoeb8vIdxF
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[mythread.it,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[mythread.it:s=a1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,52 +79,67 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[alessio.ferri@mythread.it,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37071-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37068-lists,linux-wireless=lfdr.de];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_THREE(0.00)[4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mythread.it:email,mythread.it:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mythread.it:email,mythread.it:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	DKIM_TRACE(0.00)[mythread.it:+]
-X-Rspamd-Queue-Id: 21BA05F5CB1
+X-Rspamd-Queue-Id: E6DB65F5C57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add d11 core revision 0x16 (= 22) to the b43 bcma device id table.
+Rev 22 backports the older 802.11 core but pairs it with a radio
+in the 2057 family, which requires the 24-bit indirect path. With
+the current dispatch, corerev 22 falls into the legacy 4-wire branch,
+reads garbage for radio_id, and bails out with -EOPNOTSUPP at the
+"FOUND UNSUPPORTED RADIO" branch below.
 
-The b43 bcma id table covers d11 revisions 0x11, 0x15, 0x17, 0x18,
-0x1C, 0x1D, 0x1E, 0x28 and 0x2A. Revision 0x16 belongs to the same
-N-PHY family as revisions 0x17 and 0x18 (radio 2057) and needs no
-new PHY or radio code beyond the radio_rev 8 dispatcher entries
-added later in this series - only the device id entry is missing.
-Without it bcma scan enumerates the 802.11 core but no driver binds.
+brcmsmac handles the same silicon family with the equivalent
+dispatch in drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/
+phy_cmn.c read_radio_reg() and write_radio_reg():
 
-The revision is used by the Broadcom BCM6362 single-die integrated
-2.4 GHz wireless block found in xDSL SoCs.
+    if ((D11REV_GE(pi->sh->corerev, 24)) ||
+        (D11REV_IS(pi->sh->corerev, 22)
+         && (pi->pubpi.phy_type != PHY_TYPE_SSN))) {
+            /* radioregaddr / radioregdata (indirect) */
+    } else {
+            /* phy4waddr / phy4wdatalo (legacy)      */
+    }
+
+b43 does not support SSN/SSLPN PHYs - they are rejected earlier in
+b43_phy_versioning() at the "unsupported PHY type" switch - so just
+adding the check corerev == 22 will do.
 
 Assisted-by: Claude:claude-4.7-opus
 Signed-off-by: Alessio Ferri <alessio.ferri@mythread.it>
 ---
- drivers/net/wireless/broadcom/b43/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/broadcom/b43/main.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/broadcom/b43/main.c b/drivers/net/wireless/broadcom/b43/main.c
-index 37c5d9928..85ea8fdd9 100644
+index 85ea8fdd9..783af26cb 100644
 --- a/drivers/net/wireless/broadcom/b43/main.c
 +++ b/drivers/net/wireless/broadcom/b43/main.c
-@@ -117,6 +117,7 @@ MODULE_PARM_DESC(allhwsupport, "Enable support for all hardware (even it if over
- static const struct bcma_device_id b43_bcma_tbl[] = {
- 	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_80211, 0x11, BCMA_ANY_CLASS),
- 	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_80211, 0x15, BCMA_ANY_CLASS),
-+	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_80211, 0x16, BCMA_ANY_CLASS),
- 	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_80211, 0x17, BCMA_ANY_CLASS),
- 	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_80211, 0x18, BCMA_ANY_CLASS),
- 	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_80211, 0x1C, BCMA_ANY_CLASS),
+@@ -4563,7 +4563,11 @@ static int b43_phy_versioning(struct b43_wldev *dev)
+ 		radio_id = b43_read16(dev, B43_MMIO_RADIO24_DATA);
+ 
+ 		radio_ver = 0; /* Is there version somewhere? */
+-	} else if (core_rev >= 24) {
++	} else if (core_rev >= 24 || core_rev == 22) {
++		/*
++		 * D11 corerev 22 pairs an older 802.11 core with a 2057
++		 * radio that requires the 24-bit indirect access path.
++		 */
+ 		u16 radio24[3];
+ 
+ 		for (tmp = 0; tmp < 3; tmp++) {
 
 -- 
 2.54.0
