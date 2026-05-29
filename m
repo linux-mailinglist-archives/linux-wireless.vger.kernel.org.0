@@ -1,60 +1,60 @@
-Return-Path: <linux-wireless+bounces-37109-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37110-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kB8FD0VOGWrzuQgAu9opvQ
-	(envelope-from <linux-wireless+bounces-37109-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 10:28:53 +0200
+	id 0ClvMlFOGWrzuQgAu9opvQ
+	(envelope-from <linux-wireless+bounces-37110-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 10:29:05 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7035FF27E
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 10:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2788F5FF285
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 10:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2FE530BA82D
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 08:26:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8C3830E8562
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 08:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917853ACA5C;
-	Fri, 29 May 2026 08:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FA9348C56;
+	Fri, 29 May 2026 08:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="EXeDRssx"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="OtX2ODlp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318DC3A8723
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39B63ACEFE
 	for <linux-wireless@vger.kernel.org>; Fri, 29 May 2026 08:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780043213; cv=none; b=PVa1Ohpt+LClZxypiouaip6AmbyV/NXKTpX1bD2bIpeE2KCqUAb9C+8vaJHN585LFm7jSCUR+jR9637yPJWAkUB0Am8igcdiugkIK9BrEbiF7sW7CeJ1DSH9oeNs7lpNYzZX7LvIByqy5HMjIKoFL4W3LLvIARAYFmtBkDCBiMQ=
+	t=1780043214; cv=none; b=csmNzIzL8/BXkDVEB3E29GtOGstvS5oTDgOZHdKmZ6OcgmMy+ip1hY37cAabnG6Dvoz4japOLJsXdb7/WH4Sxu8K2HItXPqMtF9VZKqb9rdx/wo6894xz8QC0mwxUTLqeqFDawwSG6Sb3UOe7pe7xgX8XOHdVeYjYgTDtV+nkcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780043213; c=relaxed/simple;
-	bh=6ReVxq/J6FIy1ygGDlCKc9llwtb+RVnyMvGHYtWBa3s=;
+	s=arc-20240116; t=1780043214; c=relaxed/simple;
+	bh=+sIoC6eb0W1eLEgklMRzgxa5sHu0RABnQ5yA3iXRTBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oxc/MrMP44t53voQ3jPbY61qZlCAGa3q+GJG8qYum09yXFDGrqhGlTvzhizPO+6uHd5YOH+1Xwh/kNZm9GUDNXSU5RsWNbIBWc2jvGVUKKrRpcEUAsAI2yxdVrWaYaWCCGEbOkX5WQt1ztxDRUBiT5/p4vZ3LuwxTAEEnTvbmYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=EXeDRssx; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=ujskT4rysIT1EQKud3skZ5HRdLETHJRdr8WhYj2JyMg0hoI9SPsGRsHDmbKK1/vaxuoVEBEG3ms0qJGXlHKkoX1tHfNurhbhYI2UMahYrYVKISaIBVFm6OwfRpiX+bdGIAp9bNTV/GoEbr4OmhRSS8BLUSCxBcmTsLa3UMy30Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=OtX2ODlp; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=uxWzorhgTEi/7mW65GtVZMQemWBCCoo5Qt5MYhFzp4Q=;
-	t=1780043212; x=1781252812; b=EXeDRssxVMEl/GM0o/tk1ZdW4nBg/qtCfvBXiwscNEjKFUn
-	DsvrFSY6c2NvjA6QxEP+u6/x3wNo570i9ERYJUTxLCiCcYxppmuIKA4VS5Peg6yRgA+wvmTaK9SlM
-	UvhUDysfmNO7ua3XdEqRSsldn2FE1sDd9zKO+jkuk+XlzOOw27Az808VImhFils8p3WZZsxgBJX9D
-	xWirGDqtrgM5syElHNE+brNKsfUqfQ5zUgkliVJsyx5+JPCKduXgGLOqYNn2x8aSk92ZKMl5Jq/rX
-	gL8KojOpNBAg5CER65tkBPLUu2kRPgldE80eVGZN7l2GlDYoSdjUSs+MnUEYneng==;
+	Resent-Cc:Resent-Message-ID; bh=4UQs+oduRqTMkiknIFQGq3zaKIanu0vjb5TD9He1P3s=;
+	t=1780043212; x=1781252812; b=OtX2ODlptFgDkbFkyEDMzQfTjQqkV3RjrgdGXy1JdG8NqAw
+	+9KP7i5ffXXTtrbt8TxCzaZgKS+I+z/xaj9ZE5p0xhim7CAYuTS3OsHJzhR1y4YUXXeLOO4lYxT3N
+	xRLMbih7o+fJEnfrHqH4R1779Alh/QFw1YhUDRgxl4EIU+oSIeK2dMV7bSQUuaB5wlZgrRux3s6so
+	IicIET0FdQfFPWQaJm1cYOJ8mS7LXxRCgyxaipghuVMUtmaM9pilh5wd0Y450P5Heb0ScnI59yIUG
+	OBGGHRrHWXYc0EIPfj92aVZ5NbP6IpMZ2EeODqeUHUCf7SvxkWsYDUYiyuoYEvag==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1wSsYL-00000009bVp-46b3;
+	id 1wSsYM-00000009bVp-2UXM;
 	Fri, 29 May 2026 10:26:50 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 03/16] wifi: mac80211: clean up return in ieee802_11_find_bssid_profile()
-Date: Fri, 29 May 2026 10:24:56 +0200
-Message-ID: <20260529102644.46f25609ddef.I9e651a0018e66953f4fb508f784188e00351c07f@changeid>
+Subject: [PATCH wireless-next 04/16] wifi: mac80211: rename "multi_link_inner" variable
+Date: Fri, 29 May 2026 10:24:57 +0200
+Message-ID: <20260529102644.7ccd55a411cf.I4101e1cfd133a2ce2374340712da8bb1f0292a40@changeid>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260529082644.106145-18-johannes@sipsolutions.net>
 References: <20260529082644.106145-18-johannes@sipsolutions.net>
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37109-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37110-lists,linux-wireless=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -91,46 +91,72 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: BC7035FF27E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,sipsolutions.net:dkim]
+X-Rspamd-Queue-Id: 2788F5FF285
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-There's no need to define 'profile_len' at the outer scope
-and initialize it, move it where needed and just return 0
-if nothing can be found.
+This variable name seems a bit misleading now (I added it
+myself a year ago or so), it indicates that the parsing is
+happening on the inner elements of a multi-link element.
+Rename it to "inside_multilink" to clarify.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/parse.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/parse.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index 8b30e361b622..22365c507b99 100644
+index 22365c507b99..4a7b41995f76 100644
 --- a/net/mac80211/parse.c
 +++ b/net/mac80211/parse.c
-@@ -813,10 +813,9 @@ static size_t ieee802_11_find_bssid_profile(const u8 *start, size_t len,
- 					    u8 *nontransmitted_profile)
- {
- 	const struct element *elem, *sub;
--	size_t profile_len = 0;
+@@ -59,7 +59,7 @@ struct ieee80211_elems_parse {
  
- 	if (!bss || !bss->transmitted_bss)
--		return profile_len;
-+		return 0;
+ 	struct ieee80211_elem_defrag ml_reconf, ml_epcs;
  
- 	for_each_element_id(elem, WLAN_EID_MULTIPLE_BSSID, start, len) {
- 		if (elem->datalen < 2)
-@@ -826,6 +825,7 @@ static size_t ieee802_11_find_bssid_profile(const u8 *start, size_t len,
+-	bool multi_link_inner;
++	bool inside_multilink;
+ 	bool skip_vendor;
  
- 		for_each_element(sub, elem->data + 1, elem->datalen - 1) {
- 			u8 new_bssid[ETH_ALEN];
-+			size_t profile_len;
- 			const u8 *index;
+ 	/*
+@@ -167,7 +167,7 @@ ieee80211_parse_extension_element(u32 *crc,
+ 			switch (le16_get_bits(mle->control,
+ 					      IEEE80211_ML_CONTROL_TYPE)) {
+ 			case IEEE80211_ML_CONTROL_TYPE_BASIC:
+-				if (elems_parse->multi_link_inner) {
++				if (elems_parse->inside_multilink) {
+ 					elems->parse_error |=
+ 						IEEE80211_PARSE_ERR_DUP_NEST_ML_BASIC;
+ 					break;
+@@ -1046,7 +1046,7 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
+ 	const struct element *non_inherit = NULL;
+ 	struct ieee802_11_elems *elems;
+ 	size_t scratch_len = 3 * params->len;
+-	bool multi_link_inner = false;
++	bool inside_multilink = false;
  
- 			if (sub->id != 0 || sub->datalen < 4) {
+ 	BUILD_BUG_ON(sizeof(empty_non_inheritance) != empty_non_inheritance[1] + 2);
+ 	BUILD_BUG_ON(offsetof(typeof(*elems_parse), elems) != 0);
+@@ -1114,7 +1114,7 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
+ 		/* must always parse to get elems_parse->ml_basic_elem */
+ 		non_inherit = ieee80211_prep_mle_link_parse(elems_parse, params,
+ 							    &sub);
+-		multi_link_inner = true;
++		inside_multilink = true;
+ 	}
+ 
+ 	elems_parse->skip_vendor =
+@@ -1125,7 +1125,7 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
+ 
+ 	/* Override with nontransmitted/per-STA profile if found */
+ 	if (sub.len) {
+-		elems_parse->multi_link_inner = multi_link_inner;
++		elems_parse->inside_multilink = inside_multilink;
+ 		elems_parse->skip_vendor = false;
+ 		_ieee802_11_parse_elems_full(&sub, elems_parse, NULL);
+ 	}
 -- 
 2.53.0
 
