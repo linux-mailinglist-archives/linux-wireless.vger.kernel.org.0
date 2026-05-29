@@ -1,73 +1,72 @@
-Return-Path: <linux-wireless+bounces-37095-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37096-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LkeFNIqGWrCrggAu9opvQ
-	(envelope-from <linux-wireless+bounces-37095-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 07:57:38 +0200
+	id AMAhCs0qGWrCrggAu9opvQ
+	(envelope-from <linux-wireless+bounces-37096-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 07:57:33 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E509E5FDA9B
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 07:57:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19EB65FDA85
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 07:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0A655302960A
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 05:57:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EDA10300C7FF
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 05:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C54E3A5443;
-	Fri, 29 May 2026 05:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7F23A7843;
+	Fri, 29 May 2026 05:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZgnifCg2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dLVr0wpF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D103A2544
-	for <linux-wireless@vger.kernel.org>; Fri, 29 May 2026 05:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4683A4538
+	for <linux-wireless@vger.kernel.org>; Fri, 29 May 2026 05:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780034245; cv=none; b=ZzfPtsIowXuyXoype2a7r0v4tKL9Fo+8oUXciaf5iYLIUBGk+k5eILYBNJB1sHGrW9jNZ32PstNQQRahhsQ+DSzaxQ/vlJYNDRUScSB6v5J4hvwuE/zbYEN58KGpR96avgwKd5ZWlRc+9dZcJYF5hXg0bhKmk/bF6hOY5x25Xxw=
+	t=1780034247; cv=none; b=PdB0XiPOyBkegrXMPsi5mac0g8gFRadqd3i+1kXi42i7DnmltqIIuMoM7b8ZRQUThHfKpUplmMBeuKu2w5tRwaEtRNudQvByasU2COAyJc0eeue3ye+uptAFgVNmOKhDO0RM/zVdgqKbq5B8Oh+1H+bRReQUsyy6pAs9FltqJIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780034245; c=relaxed/simple;
-	bh=2M8EvyKp6LU6TdSWF2btRAol4TIKl87NPGZ+Gb+L8SQ=;
+	s=arc-20240116; t=1780034247; c=relaxed/simple;
+	bh=fPENtGYU+cNYSrhOtC+FXFOTCLGvgWtbxevxkMyA8Uw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ehn8M97mA3zvYFBDJZx2gf5mmmMALd+ZaYxh8T8KNR0J9TY8HWlPZXDMumta6HfcEFS0EU0x0q+cJ+knUMTpg2Ux7ypkAh9iMQmy4eu4C9qmBimftRf19BNMntkFuMVD04MLeWx3VEPskVmSVtwS8vi2X3uiU9/VEOCyOmnPBrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZgnifCg2; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=iTgSxFPWS3ff1i0vG9nAhOiuk8KgUznI74m1+ELyA0F+QioXMzLpocf8qgzqj1vGE5bpJvNyHEHje4R3kvYenC4cZPq5fimihvmzm7XPMFfHI3sf6LETeXL4OwfQSCaVXJhAi4Ly9h0UqubBzBMov6btTXG8+n05oHAL8DD8MRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dLVr0wpF; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780034244; x=1811570244;
+  t=1780034245; x=1811570245;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2M8EvyKp6LU6TdSWF2btRAol4TIKl87NPGZ+Gb+L8SQ=;
-  b=ZgnifCg26UyGwzqx1feW6ZQJgQnBOG+fH6zzKb8GmbR4zeHOsJvnlR8J
-   9vtBieQCYm9T7ix3XukhzaFZCMwAdhvKuE10QB/eiCG3GhmFIJkUwB+O9
-   iyKO4RMefNAtF6Lx7d7TvPdk58Iv+Yjc+y+mdvjglqOeI2+mQSsnZ0lc3
-   iHMZJ0toOJCRlmMq9WsXsMgCQbC45blbSi37fBOKS+72Ui53SqfZfSQRC
-   BubhcczjRXGKH/PmG/6n0Y9NkSsSUoqMFAqsKxGNVgAyzsclvHV7ETEbz
-   bOueYFbMeY21QEaLXmGtU55TnPVvalOO0zHtV3BSxkgE9v1q8Pef5zWsj
+  bh=fPENtGYU+cNYSrhOtC+FXFOTCLGvgWtbxevxkMyA8Uw=;
+  b=dLVr0wpFw6gw/RhbldkCiAWWg2VrYHwMJo36EgNi03yrkZmeejFlirrN
+   Mki7h6Q4dlwc0gtoRdpUgLdQtBtBYQQnkWAz+il4YXQmJKYq43iljtVRQ
+   KPP6b4WsLsG1L0QBOgwegZIxzVxIPb3wKaSbmvpzXmcCfgEVvuKi1eP7p
+   M7s7LB0WLQBHSHaPmwJPuSHNE9o1B6eI/vWJ3by76IzrwBAywMCk5S5E7
+   K9C8FRmxoYGhNjGidNvzdPP+ATfzgAwVySFWCXRJAuCo1y96/T5++0M7H
+   7CrK1lVsYcUa8PBip3eohgqKVxxCM+0VS3VPyFzsD/O5PsrKxfG0LZDk3
    A==;
-X-CSE-ConnectionGUID: muSN8EvfQLmzZQVBaj8sIQ==
-X-CSE-MsgGUID: 0syCKy3kRQCcLMZAuP/0Hg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="84741131"
+X-CSE-ConnectionGUID: gQVQi45QQYKd3z3znXdA8w==
+X-CSE-MsgGUID: jmUclTSEQZeyLV5XB2UQkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="84741132"
 X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
-   d="scan'208";a="84741131"
+   d="scan'208";a="84741132"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 22:57:24 -0700
-X-CSE-ConnectionGUID: J9yhySOhTzOp5ffav8gSkw==
-X-CSE-MsgGUID: AWlhsIP4Sia9/QCKlN2WCQ==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 22:57:25 -0700
+X-CSE-ConnectionGUID: uIaTmJcRQHaAziHzTWg+5w==
+X-CSE-MsgGUID: cNCELUrdRyO+D9EhFUYTLg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
-   d="scan'208";a="238572720"
+   d="scan'208";a="238572735"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 22:57:22 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 22:57:24 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 wireless-fixes 1/3] wifi: iwlwifi: mvm: don't support the reset handshake for old firmwares
-Date: Fri, 29 May 2026 08:57:05 +0300
-Message-Id: <20260529085453.9307b81d9b02.I21bba9e649f4cd0e35d3ea6cd97a03258be5832f@changeid>
+Cc: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Subject: [PATCH v2 wireless-fixes 2/3] wifi: iwlwifi: mld: send tx power constraints before link activation
+Date: Fri, 29 May 2026 08:57:06 +0300
+Message-Id: <20260529085453.06c94b01efd2.Id43bdfe5eb030061c23348779687ba71b5f58182@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260529055707.24862-1-miriam.rachel.korenblit@intel.com>
 References: <20260529055707.24862-1-miriam.rachel.korenblit@intel.com>
@@ -84,19 +83,19 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37095-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-37096-lists,linux-wireless=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -105,43 +104,84 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E509E5FDA9B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,intel.com:dkim]
+X-Rspamd-Queue-Id: 19EB65FDA85
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
--77.ucode doesn't contain the fixes for this flow it seems.
-Don't use the firmware reset handshake even if the firmware claims
-support for it.
+TX power constraints must be sent to the firmware before link
+activation. If not, the firmware will use default power values.
 
-Fixes: 906d4eb84408 ("iwlwifi: support firmware reset handshake")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220600
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Fix this by moving the iwl_mld_send_ap_tx_power_constraint_cmd()
+call from iwl_mld_start_ap_ibss() to iwl_mld_assign_vif_chanctx(),
+before iwl_mld_activate_link() for AP interfaces. Also update
+the guard in the function to allow it to run before link activation
+for AP interfaces.
+
+Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mld/ap.c       | 4 ----
+ drivers/net/wireless/intel/iwlwifi/mld/mac80211.c | 7 +++++++
+ drivers/net/wireless/intel/iwlwifi/mld/power.c    | 2 +-
+ 3 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index ae177477b201..384bed95835d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -1416,6 +1416,12 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_rf_cfg *cfg,
- 		fw_has_capa(&mvm->fw->ucode_capa,
- 			    IWL_UCODE_TLV_CAPA_FW_RESET_HANDSHAKE);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ap.c b/drivers/net/wireless/intel/iwlwifi/mld/ap.c
+index 5c59acc8c4c5..6598d9333333 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/ap.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/ap.c
+@@ -9,7 +9,6 @@
+ #include "ap.h"
+ #include "hcmd.h"
+ #include "tx.h"
+-#include "power.h"
+ #include "key.h"
+ #include "phy.h"
+ #include "iwl-utils.h"
+@@ -273,9 +272,6 @@ int iwl_mld_start_ap_ibss(struct ieee80211_hw *hw,
+ 	struct ieee80211_chanctx_conf *ctx;
+ 	int ret;
  
-+	/* Those firmware versions claim to support the fw_reset_handshake
-+	 * but they are buggy.
-+	 */
-+	if (IWL_UCODE_MAJOR(mvm->fw->ucode_ver) <= 77)
-+		trans->conf.fw_reset_handshake = false;
+-	if (vif->type == NL80211_IFTYPE_AP)
+-		iwl_mld_send_ap_tx_power_constraint_cmd(mld, vif, link);
+-
+ 	ret = iwl_mld_update_beacon_template(mld, vif, link);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+index da6fd7471568..3c8daddc0bcb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+@@ -1150,6 +1150,13 @@ int iwl_mld_assign_vif_chanctx(struct ieee80211_hw *hw,
+ 	if (iwl_mld_can_activate_link(mld, vif, link)) {
+ 		iwl_mld_tlc_update_phy(mld, vif, link);
+ 
++		/* FW requires AP_TX_POWER_CONSTRAINTS_CMD before link
++		 * activation for AP and after link activation for STA,
++		 * for an unknown reason.
++		 */
++		if (vif->type == NL80211_IFTYPE_AP)
++			iwl_mld_send_ap_tx_power_constraint_cmd(mld, vif, link);
 +
- 	trans->conf.queue_alloc_cmd_ver =
- 		iwl_fw_lookup_cmd_ver(mvm->fw,
- 				      WIDE_ID(DATA_PATH_GROUP,
+ 		ret = iwl_mld_activate_link(mld, link);
+ 		if (ret)
+ 			goto err;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/power.c b/drivers/net/wireless/intel/iwlwifi/mld/power.c
+index 49b0d9f8f865..266fe16bb95d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/power.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/power.c
+@@ -366,7 +366,7 @@ iwl_mld_send_ap_tx_power_constraint_cmd(struct iwl_mld *mld,
+ 
+ 	lockdep_assert_wiphy(mld->wiphy);
+ 
+-	if (!mld_link->active)
++	if (!mld_link->active && vif->type != NL80211_IFTYPE_AP)
+ 		return;
+ 
+ 	if (link->chanreq.oper.chan->band != NL80211_BAND_6GHZ)
 -- 
 2.34.1
 
