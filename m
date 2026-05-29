@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-37146-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37147-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJVkAZ3xGWoX0AgAu9opvQ
-	(envelope-from <linux-wireless+bounces-37146-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:05:49 +0200
+	id iEEVFwDzGWp/0AgAu9opvQ
+	(envelope-from <linux-wireless+bounces-37147-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:11:44 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C47BC60834B
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:05:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5A456084F2
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C41DB309419D
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 20:03:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15E0B31BE88E
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 20:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E1B427A05;
-	Fri, 29 May 2026 20:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E3044B681;
+	Fri, 29 May 2026 20:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMJQfrOy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l1FsqaaX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE8842668B;
-	Fri, 29 May 2026 20:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9723409629;
+	Fri, 29 May 2026 20:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780084864; cv=none; b=aXoPFstBHeduiQ1ilmbHpDiNM4f6NDjm494vyiviMk1ECYedA5t5aFQ0wK7fN1FXoYDq7b8cd56G7VDXgKbqvVscB0izQlu5v/Je3F7vSQBp1A2UxK2udQp2PdZ1YNl1OZmcfAd3NF5BhttQLEdJMdpVItnI9M6A7H6RowpeGIE=
+	t=1780084868; cv=none; b=GQoaUL6PoP8ntuY/vrC1lOsALibQ8f89W7Oleb6+BVhZbnucse59PUtw0FBgbWPiyUVWrwNT4YMza9UTYI560oG5tIAoJB6M9OaHdKYIfsO9zM8S0L9yk2ugSIkjJ97KdWyeikZ1v9bDA2KH8hJSDdDFNu4ytlEFH9+qbz47zoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780084864; c=relaxed/simple;
-	bh=RWeQVX7jvXLz0btzPE+rQHUYicg01u0RKva8pFfur2k=;
+	s=arc-20240116; t=1780084868; c=relaxed/simple;
+	bh=+R7XSpN6ilecmjqcuCuZezg0eoN+spQg6JBV5nfvJuU=;
 	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=b4wLgTm9ub33q/mDGyhhlgq2MGbL/0RmGxoK629Mg/l1oSF9PdriAR8PRdsQ4X44IWu4/BkFlGfll/wjzfHNaDbRx85rD6Dq8sILXFfXtQU2+tibESD73VllptfP1Ten5WmcZh095AtaGldCPD82jVsOJPfuY+Sr9KUIOfujCS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMJQfrOy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED581F00893;
-	Fri, 29 May 2026 20:01:02 +0000 (UTC)
+	 Content-Type; b=XQoXxZO5kOVpCx/GxwpLZoH41gyOhDUMJAemmYM6U9HnUX/tPy5HPvBaSIJzbIGzgttOKCpS8q+BAwDCuX6p/fsq49c76QypJaquo+A6qUWGqW7FzO7iajhLwNrd1GiHyo0hRG9wrruxkV3p3+mc/MqhXNauAn0BmN9TF88fDB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l1FsqaaX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58E31F00893;
+	Fri, 29 May 2026 20:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780084863;
-	bh=w9cjsthHjdg5S9yLOT6GDhr6nr5/abstT1mU1tQu92g=;
+	s=k20260515; t=1780084867;
+	bh=s9+Lz026QcH5bg8yJpyql8pfzxPiIysiXMh+fVqDlzk=;
 	h=Date:From:To:Cc:Subject:References;
-	b=jMJQfrOyfNzRGM4d11LS9CqD1u4Gq4iggqTyqr+nTnI8w/obLWDB6YdLrTNDqcpWc
-	 yDexb7RrRS/byCwHtDN3Yq0qYDu33lyXrU6G1Ni+qRmZCJh4GiwysyMWsjnP3vX6x5
-	 PYt+gkktZJyzd44dPQF6IWgLqwsF3HH6Q+OId5NECpn/fSq2+YIAN5Jzc3ZrCmRmQr
-	 g6hwelzyva4U/ZKQYM7BuNuYBjhBu2rQE2m/m7Y87N4vZOfIJDoBy0bx6KCcNCnOMy
-	 OesS7vXi7Lyaw8UMOkfLa2xIFzUnzbEUnFk5RTjgbwQHtR4ebMWrMQsfrD69XQwQJU
-	 HzmwQj8E4kilA==
-Date: Fri, 29 May 2026 22:01:00 +0200
-Message-ID: <20260529195557.846634842@kernel.org>
+	b=l1FsqaaXGqD7R54MAvOyntq0dp+NJaYnuv3I/6d2D7kjvx5xm1BKcAXYtVL7nhypg
+	 MkDbqqDK3amPIPsRUDej+mq+iUW8REPRKPMEAtdR+OSwxyE0F7ZqKHdC8zVGfGYTjf
+	 NLGm9Cmtvtmv5Ier2DGSA8TJqyDb+pIPZU67jJFlvLJJ2Hnv5cHP38rJOuCq/0Y8Ar
+	 t/69ilYKyGqlUj1R0lqu4F6JYxomLpuM4Dh+xOVN2HCUx4iV1ROInItGX/ynNqGCR2
+	 IBpIxfNRKz9W+RXUS5JyeeRMMYORtlgkKzbZ3WdWxm3KJrKzCTFlnX2Q5/EOgeXcTS
+	 cAOR+pwTYrJDw==
+Date: Fri, 29 May 2026 22:01:05 +0200
+Message-ID: <20260529195557.897808371@kernel.org>
 User-Agent: quilt/0.69
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
@@ -78,8 +78,7 @@ Cc: David Woodhouse <dwmw2@infradead.org>,
  linux-sound@vger.kernel.org,
  David Woodhouse <dwmw@amazon.co.uk>,
  Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [patch V2 18/25] timekeeping: Prepare for cross timestamps on
- arbitrary clock IDs
+Subject: [patch V2 19/25] ptp: Use system_device_crosststamp::sys_systime
 References: <20260529193435.921555544@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -88,25 +87,24 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Spamd-Result: default: False [-1.11 / 15.00];
-	R_BAD_CTE_7BIT(1.05)[unknown,utf8];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37146-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37147-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,enneenne.com,linux.dev,lists.linux.dev,gmail.com,vger.kernel.org,suse.com,intel.com,nvidia.com,oss.qualcomm.com,amazon.co.uk];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCPT_COUNT_TWELVE(0.00)[30];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,linux-wireless@vger.kernel.org];
@@ -114,177 +112,38 @@ X-Spamd-Result: default: False [-1.11 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linutronix.de:email,amazon.co.uk:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C47BC60834B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amazon.co.uk:email,intel.com:email]
+X-Rspamd-Queue-Id: B5A456084F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Thomas Gleixner <tglx@kernel.org>
 
-PTP device system crosstime stamps support only CLOCK_REALTIME, which is
-meaningless for AUX clocks. The PTP core hands in the clock ID already, so
-prepare the core code to honor it.
+.. to prepare for cross timestamps with variable clock IDs.
 
- - Add a new sys_systime field to struct system_device_crosststamp which
-   aliases the sys_realtime field. Once all users are converted
-   sys_realtime can be removed.
-
- - Prepare get_device_system_crosststamp() and the related code for it by
-   switching to sys_systime and providing the initial changes to utilize
-   different time keepers.
-
-No functional change intended.
+No functional change.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Tested-by: David Woodhouse <dwmw@amazon.co.uk>
 Tested-by: Arthur Kiyanovski <akiyano@amazon.com>
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- include/linux/timekeeping.h |    7 ++++-
- kernel/time/timekeeping.c   |   60 +++++++++++++++++++++++++-------------------
- 2 files changed, 41 insertions(+), 26 deletions(-)
---- a/include/linux/timekeeping.h
-+++ b/include/linux/timekeeping.h
-@@ -319,13 +319,18 @@ struct system_counterval_t {
-  * @device:		Device time
-  * @sys_counter:	Clocksource counter value simultaneous with device time
-  * @sys_realtime:	Realtime simultaneous with device time
-+ * @sys_systime:	System time for @clock_id
-  * @sys_monoraw:	Monotonic raw simultaneous with device time
-  */
- struct system_device_crosststamp {
- 	clockid_t			clock_id;
- 	ktime_t				device;
- 	struct system_counterval_t	sys_counter;
--	ktime_t				sys_realtime;
-+	union {
-+		/* realtime goes away once all users are converted */
-+		ktime_t			sys_realtime;
-+		ktime_t			sys_systime;
-+	};
- 	ktime_t				sys_monoraw;
- };
- 
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -1312,7 +1312,7 @@ static int adjust_historical_crosststamp
- 					 struct system_device_crosststamp *ts)
- {
- 	struct timekeeper *tk = &tk_core.timekeeper;
--	u64 corr_raw, corr_real;
-+	u64 corr_raw, corr_sys;
- 	bool interp_forward;
- 	int ret;
- 
-@@ -1329,8 +1329,7 @@ static int adjust_historical_crosststamp
- 	 * Scale the monotonic raw time delta by:
- 	 *	partial_history_cycles / total_history_cycles
- 	 */
--	corr_raw = (u64)ktime_to_ns(
--		ktime_sub(ts->sys_monoraw, history->monoraw));
-+	corr_raw = (u64)ktime_to_ns(ktime_sub(ts->sys_monoraw, history->monoraw));
- 	ret = scale64_check_overflow(partial_history_cycles,
- 				     total_history_cycles, &corr_raw);
- 	if (ret)
-@@ -1338,30 +1337,29 @@ static int adjust_historical_crosststamp
- 
- 	/*
- 	 * If there is a discontinuity in the history, scale monotonic raw
--	 *	correction by:
--	 *	mult(real)/mult(raw) yielding the realtime correction
--	 * Otherwise, calculate the realtime correction similar to monotonic
--	 *	raw calculation
-+	 * correction by:
-+	 *	mult(sys)/mult(raw) yielding the system time correction
-+	 *
-+	 * Otherwise, calculate the system time correction similar to monotonic
-+	 * raw calculation
- 	 */
- 	if (discontinuity) {
--		corr_real = mul_u64_u32_div
--			(corr_raw, tk->tkr_mono.mult, tk->tkr_raw.mult);
-+		corr_sys = mul_u64_u32_div(corr_raw, tk->tkr_mono.mult, tk->tkr_raw.mult);
- 	} else {
--		corr_real = (u64)ktime_to_ns(
--			ktime_sub(ts->sys_realtime, history->systime));
--		ret = scale64_check_overflow(partial_history_cycles,
--					     total_history_cycles, &corr_real);
-+		corr_sys = (u64)ktime_to_ns(ktime_sub(ts->sys_systime, history->systime));
-+		ret = scale64_check_overflow(partial_history_cycles, total_history_cycles,
-+					     &corr_sys);
- 		if (ret)
- 			return ret;
- 	}
- 
--	/* Fixup monotonic raw and real time time values */
-+	/* Fixup monotonic raw and system time time values */
- 	if (interp_forward) {
- 		ts->sys_monoraw = ktime_add_ns(history->monoraw, corr_raw);
--		ts->sys_realtime = ktime_add_ns(history->systime, corr_real);
-+		ts->sys_systime = ktime_add_ns(history->systime, corr_sys);
- 	} else {
- 		ts->sys_monoraw = ktime_sub_ns(ts->sys_monoraw, corr_raw);
--		ts->sys_realtime = ktime_sub_ns(ts->sys_realtime, corr_real);
-+		ts->sys_systime = ktime_sub_ns(ts->sys_systime, corr_sys);
- 	}
- 
- 	return 0;
-@@ -1505,16 +1503,29 @@ int get_device_system_crosststamp(int (*
- 				  struct system_device_crosststamp *xtstamp)
- {
- 	u64 syscnt_cycles, cycles, now, interval_start;
--	struct timekeeper *tk = &tk_core.timekeeper;
- 	unsigned int seq, clock_was_set_seq = 0;
--	ktime_t base_real, base_raw;
--	u64 nsec_real, nsec_raw;
-+	ktime_t base_sys, base_raw, *offs;
-+	u64 nsec_sys, nsec_raw;
- 	u8 cs_was_changed_seq;
- 	bool do_interp;
-+	struct timekeeper *tk;
-+	struct tk_data *tkd;
- 	int ret;
- 
-+	switch (xtstamp->clock_id) {
-+	case CLOCK_REALTIME:
-+		tkd = &tk_core;
-+		offs = &tk_core.timekeeper.offs_real;
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return -ENODEV;
-+	}
-+
-+	tk = &tkd->timekeeper;
-+
- 	do {
--		seq = read_seqcount_begin(&tk_core.seq);
-+		seq = read_seqcount_begin(&tkd->seq);
- 		/*
- 		 * Try to synchronously capture device time and a system
- 		 * counter value calling back into the device driver
-@@ -1549,15 +1560,14 @@ int get_device_system_crosststamp(int (*
- 			do_interp = false;
- 		}
- 
--		base_real = ktime_add(tk->tkr_mono.base,
--				      tk_core.timekeeper.offs_real);
-+		base_sys = ktime_add(tk->tkr_mono.base, *offs);
- 		base_raw = tk->tkr_raw.base;
- 
--		nsec_real = timekeeping_cycles_to_ns(&tk->tkr_mono, cycles);
-+		nsec_sys = timekeeping_cycles_to_ns(&tk->tkr_mono, cycles);
- 		nsec_raw = timekeeping_cycles_to_ns(&tk->tkr_raw, cycles);
--	} while (read_seqcount_retry(&tk_core.seq, seq));
-+	} while (read_seqcount_retry(&tkd->seq, seq));
- 
--	xtstamp->sys_realtime = ktime_add_ns(base_real, nsec_real);
-+	xtstamp->sys_systime = ktime_add_ns(base_sys, nsec_sys);
- 	xtstamp->sys_monoraw = ktime_add_ns(base_raw, nsec_raw);
- 
- 	/*
+ drivers/ptp/ptp_chardev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+--- a/drivers/ptp/ptp_chardev.c
++++ b/drivers/ptp/ptp_chardev.c
+@@ -333,7 +333,7 @@ static long ptp_sys_offset_precise(struc
+ 	ts = ktime_to_timespec64(xtstamp.device);
+ 	precise_offset.device.sec = ts.tv_sec;
+ 	precise_offset.device.nsec = ts.tv_nsec;
+-	ts = ktime_to_timespec64(xtstamp.sys_realtime);
++	ts = ktime_to_timespec64(xtstamp.sys_systime);
+ 	precise_offset.sys_realtime.sec = ts.tv_sec;
+ 	precise_offset.sys_realtime.nsec = ts.tv_nsec;
+ 	ts = ktime_to_timespec64(xtstamp.sys_monoraw);
+
+
 
 
