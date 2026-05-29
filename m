@@ -1,134 +1,197 @@
-Return-Path: <linux-wireless+bounces-37124-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37125-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IP16DfeOGWpTxggAu9opvQ
-	(envelope-from <linux-wireless+bounces-37124-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 15:04:55 +0200
+	id eEhxN8aZGWrVxggAu9opvQ
+	(envelope-from <linux-wireless+bounces-37125-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 15:51:02 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83742602A1F
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 15:04:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCC76031B9
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 15:51:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BAACD304A8EF
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 13:02:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 17F933008E08
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 13:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E2E239E76;
-	Fri, 29 May 2026 13:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7474342510;
+	Fri, 29 May 2026 13:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E3HhoUKR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bOSFiqEZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139801E7C12;
-	Fri, 29 May 2026 13:02:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78D933F5B3
+	for <linux-wireless@vger.kernel.org>; Fri, 29 May 2026 13:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780059768; cv=none; b=amX1z/I181LsImE9srklGKSnhzq24W3aCG2g1y99Gi8o7o6HGqKNaeU5zGC29weuEeQqF/fyl+UTl3NoXMnXL2qP2JLBpmtVNzJ/FkPBuE1v6P29FYIquUWOG9a0JwYZ1xHC1ZmM7/s7CLd+VVXLN9ISoYLMq4tTAMdWEepOMDk=
+	t=1780062357; cv=none; b=cligRkE1OeGgqpzEK7o2gbIS5s7HyinNtYq8LyXECCoubQAxDv35QM4A2F1W2emJr4Ly97lulEoWSbKz48sQaXxtKYFXqM1qUWqF0527lfHwLYuFbM5sTsVygXf34dO5zedriBPPnug9IiQEDmr+KJaZECIW3/T7oETLorgc5k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780059768; c=relaxed/simple;
-	bh=ApQz1V5CNU9O9EyceeC74ecs8b38MRpfa33XpuXW5mI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Ps9VXsqyKftbQpcKIUKS3fsi4nMkfbn1bLr8GC69D30TWPyZIp6evV9blVCGfbVgBLzIqrYGgSwZ7QzieJSvFF9HzWdSVuL+p5MyC+ziNtC6D6rbnCYtwIK5IbulP26/rEfHPxUq/qZmIdwLG0xipnFrkgjbIIDtDu0fFwXCC50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E3HhoUKR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757FE1F00893;
-	Fri, 29 May 2026 13:02:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780059767;
-	bh=66jwmabnss1wzjbJ/pG7HLmk7a00oOo/dxDfODb4vpU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=E3HhoUKR/eThbMY+4+yrcHlS/pZyyLblbZn4d5+FNHlnJnEnizR352OFGeJTuCB/1
-	 fPEhuVfPJmr4NEfbWTKB0lHtHEPAjdcvACXXpCx8RwZZRfBH9Xpv2JHt6LoD9t2vyQ
-	 Io2fAnOB/CXyhFowtOqWtinEWkqw5c0UX/yWQw18xPOEGp/Gd0FCB9W66tKyyJWy/1
-	 sK0LuTYiEzwtdlVVDZH5dlH/pOkreTi1ZRDeUqQsJRzzEO8ivUCJK5DZjcWDYOJaym
-	 KFKrbDa46wfJC+p6Ioenp6HPCLM48/ac5dlXEfTJJyrJN1gstWyZUyrvcTU02aRhNh
-	 he+jdftUvhVKg==
-From: Srinivas Kandagatla <srini@kernel.org>
-To: konradybcio@kernel.org, andersson@kernel.org, 
- Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
-Cc: linux-kernel@vger.kernel.org, Alex Elder <elder@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jeff Johnson <jjohnson@kernel.org>, 
- Mathieu Poirier <mathieu.poirier@linaro.org>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Kees Cook <kees@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>, 
- Wesley Cheng <quic_wcheng@quicinc.com>, netdev@vger.kernel.org, 
- linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
- ath11k@lists.infradead.org, ath12k@lists.infradead.org, 
- linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
- linux-sound@vger.kernel.org
-In-Reply-To: <20260316171419.2619620-1-daniel.lezcano@oss.qualcomm.com>
-References: <20260316171419.2619620-1-daniel.lezcano@oss.qualcomm.com>
-Subject: Re: (subset) [PATCH v2 0/4] Use the QMI service IDs from the QMI
- header
-Message-Id: <178005976216.10291.3509337895172854457.b4-ty@kernel.org>
-Date: Fri, 29 May 2026 14:02:42 +0100
+	s=arc-20240116; t=1780062357; c=relaxed/simple;
+	bh=7mfVA8366x+r5q5VqaheTajG/HCr4Dam/HxL8Elkz/w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VeYYKCpCV6na/O9HHjbjML2qWF+lIOPMx8iuHKm+9FNyFEEh/YKmIrhX7SYvsAFwKtQRxJ+tLSH20sbtj5+n4n6/+WHPInMJbs/rVfe7c4Qr8Eow8OOpyzNbT8VN38VJRmXDwOwYhrlQtOfNHgHIedD/u2RlXZ5Zc8ecVxFgL3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bOSFiqEZ; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48e8132c6d0so89104165e9.1
+        for <linux-wireless@vger.kernel.org>; Fri, 29 May 2026 06:45:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780062354; x=1780667154; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WI4JNNwTYXy5l2RpWx9tW3vfysaC7FsaBfx7HKpPLfs=;
+        b=bOSFiqEZoiCxxGrUl+eSsJEmv/4LMIQU4DwTlmhxB9bc1xmh+PWmMxOKW0E8koVpai
+         EgsU50vhWCFz0sMkermf+aMiezRLc6YI4UwUTRnc07Rt8X75MjcqzJydTTYFstwzvwmc
+         di4PZbi6K1ud+zyyW2TsebOm7H52OHs10mLKY/bdpxGIdkrdlgUQEjHJRwtyos5ZM7vq
+         Zg9stMlylKAEfLKMrulCpHSbuDQrc8l/1g/yrQVEaDTx2cpB25mkrrgd6XSFkR6OVBPQ
+         JnTYZNmNovFzZCumXZ/22Edyg3t7KLMEsW9GKXhhWafA6r12GsI73VywPUAHTkaW9S5W
+         pf1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780062354; x=1780667154;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WI4JNNwTYXy5l2RpWx9tW3vfysaC7FsaBfx7HKpPLfs=;
+        b=rAhSjva2JCn/ehrtJ1XLaLPQTHUVTBV9opUk3quoW0YxYpsdjFxLg9S0T03RiZHeTO
+         z5OO1qf6+NlruZAjE52fYuJMjqnNAN91TLc6K0YnO2uZblzQGM/qI0a1wnle+zQG9ZXL
+         lj83nyvRqzQQtAHalUx2aYRVtAN+M7yxaP4Z6KULwCYfLAFOJwbn86M9ABJv38kUcb7b
+         V8DEDre+jDcsqrBaMlUY+Iw6b0QXXRX9cCqCTOphGQxgcVQ7YYuvn+bJ6/+C74IJ1VqX
+         43XXLKGvTpATqEG/0HIuuy1MN0mXuzra+rwE9ERfgCMm62N4y3MM9MB6xhlMpGQafXSQ
+         B+WQ==
+X-Gm-Message-State: AOJu0Yx0MwdivnjzG7KnkPzBbA7/RNvFLg+q4pBZXB1RwTvNg+aWLTIQ
+	KhK6idYDqLJzE1x6El/TvjJs7OQ7NGPOmNhDfMaV6fr8Hgx2sxzu8BRv
+X-Gm-Gg: Acq92OE548TKEbn22Y7GMhQRruv0vMDRTHFR/ggz/UoZ4KbEOw61++dW2cnYW5wAdKq
+	pbb2LcF4mK1LN8/xTijmsZWxQ1CV6CnLclcL/0i2UFiVCGO0VeHkwwdYpdFA6eLLok462K1PTDQ
+	tNrduELfHoogkMDf1UDPL0c2R5pmqzE6MGi+vO8CoAv2kzg5S6rLx+dglrqwHHW4eg9WT8/pjLr
+	+xxYTlcv6ilYbT8ySq3uBEawR9rrjCBzlYf2BS6Q5RvkW6Q99dwHeOyhnAhGfEUStePoXrOqoBL
+	3ivNqKt6XUq7QME0qmwifxd16tBH+bM4l8B7BpvPNrmhObtFmEdv71a/uPhyx8hVuTFMeSMaPju
+	4qIzjQXl9RMzEa+tZElPoy9oQKlu9XZCij1nbyhhe2Oe/g7tE7QM1Jb5pdOFdc5feRFuyvn7Xa8
+	42fBxkGrpwRuRy8Hha/MceLZfylfd7udUA7wK8D9BssA==
+X-Received: by 2002:a05:600c:3e87:b0:490:8a00:d250 with SMTP id 5b1f17b1804b1-4909d6e6922mr43960395e9.27.1780062354166;
+        Fri, 29 May 2026 06:45:54 -0700 (PDT)
+Received: from [192.168.1.50] ([79.119.240.27])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909d6f3612sm41825215e9.12.2026.05.29.06.45.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 May 2026 06:45:53 -0700 (PDT)
+Message-ID: <b434e6cb-fe51-49a7-ae66-d6ec833d5b8b@gmail.com>
+Date: Fri, 29 May 2026 16:45:52 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rtw88: usb: retry control message on -EPROTO error
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ VolcomIlluminated <volcomilluminated@tuta.com>
+Cc: Linux Wireless <linux-wireless@vger.kernel.org>
+References: <Otk9l6D--F-9@tuta.com>
+ <c3e40e8b0a3f4b1e96ca76072700175f@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <c3e40e8b0a3f4b1e96ca76072700175f@realtek.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37125-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37124-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_ALL(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[27];
+	RCPT_COUNT_THREE(0.00)[3];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[srini@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 83742602A1F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5CCC76031B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
-On Mon, 16 Mar 2026 18:14:10 +0100, Daniel Lezcano wrote:
-> The different subsystems implementing the QMI service protocol are
-> using their own definition of the service id. It is not a problem but
-> it results on having those duplicated with different names but the
-> same value and without consistency in their name.
+On 29/05/2026 04:09, Ping-Ke Shih wrote:
 > 
-> The QMI service IDs are defined in the qmi.h header file. Use those
-> instead of defining the IDs in the protocol implementation file. It
-> will result in unifying and providing a consistent way to represent
-> the supported protocols.
+> VolcomIlluminated <volcomilluminated@tuta.com> wrote:
+>> --- /tmp/linux-6.18/drivers/net/wireless/realtek/rtw88/usb.c	2025-11-30 17:42:10.000000000 -0500
+>> +++ /home/ptpx86mm1/kernelbuild/linux-6.18/drivers/net/wireless/realtek/rtw88/usb.c	2026-05-24 20:06:27.798337237 -0400
 > 
-> [...]
+> Your git repository looks weird.
+> 
+> Please clone https://github.com/pkshih/rtw.git and switch to rtw-next branch.
+> 
+> By the way, the subject prefix should be "[PATCH rtw-next] wifi: rtw88: ...".
+> 
+>> @@ -140,6 +140,16 @@
+>>  	ret = usb_control_msg(udev, usb_sndctrlpipe(udev, 0),
+>>  			      RTW_USB_CMD_REQ, RTW_USB_CMD_WRITE,
+>>  			      addr, 0, data, len, 500);
+>> +	if (ret == -EPROTO) {
+>> +		int retry;
+>> +
+>> +		for (retry = 0; retry < 3 && ret == -EPROTO; retry++) {
+>> +			msleep(10);
+>> +			ret = usb_control_msg(udev, usb_sndctrlpipe(udev, 0),
+>> +					      RTW_USB_CMD_REQ, RTW_USB_CMD_WRITE,
+>> +					      addr, 0, data, len, 500);
+> 
+> Don't duplicate the code of identical usb_control_msg(...).
+> 
+> Just 
+> 
+> for (retry = 0; retry < 3; retry++) {
+> 	ret = usb_control_msg(...);
+>     if (ret != -EPROTO)
+> 		break;
+> 
+> 	msleep(10); /* delay before retrying */
+> }
+> 
+> Bitterblue, could you have some inputs about this retry, since I don't have
+> much knowledge about USB?
+> 
 
-Applied, thanks!
+I think it's a good idea to retry in case of errors. The vendor drivers
+try the control messages up to 10 times, both reads and writes, and not
+just in case of -EPROTO.
 
-[3/4] slimbus: qcom-ngd-ctrl: Use the unified QMI service ID instead of defining it locally
-      commit: 05f3f5984121e1956867b309c76a750c1d4c9682
+Except when writing the firmware for the 8051 chips (address range
+0x1000..0x1fff). Those writes are not retried, instead the entire
+firmware download process is retried if it fails.
 
-Best regards,
--- 
-Srinivas Kandagatla <srini@kernel.org>
+Also, they don't sleep between attempts.
+
+But I would like to know more about the problem fixed by this patch.
+What register writes fail with -EPROTO? How often does it happen?
+How many times was this patch tested?
+
+I wonder if the problem is simply the write to register 0xc4
+(REG_PAD_CTRL2) which triggers the switch to USB 3? Like with the
+wifi 6 and 7 chips, that call to usb_control_msg() always returns
+-EPROTO. I assume it's because it makes the USB device disappear.
+
+>> +		}
+>> +	}
+>>  	if (ret < 0 && ret != -ENODEV && count++ < 4)
+>>  		rtw_err(rtwdev, "write register 0x%x failed with %d\n",
+>>  			addr, ret);
+> 
 
 
