@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-37136-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37137-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yd+SC1PyGWp10AgAu9opvQ
-	(envelope-from <linux-wireless+bounces-37136-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:08:51 +0200
+	id WHlTNabxGWoX0AgAu9opvQ
+	(envelope-from <linux-wireless+bounces-37137-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:05:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86095608419
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:08:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 525D6608364
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:05:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B701B3167674
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 20:00:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0233930EF66B
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 20:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7623ACF04;
-	Fri, 29 May 2026 20:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D02A426D12;
+	Fri, 29 May 2026 20:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bGB2HDD5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UdNN9lDU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5FD332629;
-	Fri, 29 May 2026 20:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B403AFCF6;
+	Fri, 29 May 2026 20:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780084824; cv=none; b=MZ1QILL3IqTE7KueoTY534ySVflL4+R6Gn+eY18ARRJx4V3Ttv2BpLTmWZAACOwQcl4jkhQsMLJMAHX/lWNymL58fGR0/S8r/FYVuwzAJW0teSFJPFrQPyh2FyNGxVgVPavv/cb9OENGrrSB1AULFbUEmwATFW5i0GXV9gS3sS4=
+	t=1780084828; cv=none; b=ABvnDSMXazpvJw8jMjMO77zlWMp2i9O2hW3B+BmhZdgE6aw733bOUgE0W/2Q/D4gVACyR77JqYe9pLhlGHYShMGsaJ+wmL+kNEtdVdymnWVJMWp3+VHkyokJl4KaJuw2HcyzoSYp3LK+G2FEkTaLyniqayGepE/b53UXYl0+xc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780084824; c=relaxed/simple;
-	bh=JVrGTZx95Dbv2azQIZUdv5pFW8iH3/YKR93bJNOtW2Q=;
+	s=arc-20240116; t=1780084828; c=relaxed/simple;
+	bh=A/5waJp+BmZ+vva6Vr7ea8bVP3AYVgQmus3ZwCqskxA=;
 	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=A6IM38hmA7FT53/2iFGS0k0WmOUzHLqmNHP20yTiB9J2y/R2rD0fl4de8uy8ZzoFZjiTznK3qd0fA1Kp3NIYDC8fntP6V8rX0J5nU3zykloeKZFa3Ug/1AtHh0TdMSj7KXJoh5IT4KCUQiR5RI+X6wBQqQnWt1s/ohwEEdpXUFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bGB2HDD5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4162B1F00893;
-	Fri, 29 May 2026 20:00:22 +0000 (UTC)
+	 Content-Type; b=MY/vIRquwTSKhD8I1k2mICv17QlwAeVGOiaZBVJyTdvnCHrwk9t7OqXbEtUW///iY3aNer4qGFFfd3EQ7cjYgBAXQtjqkVRQlX0pYWIN552UeWHQPcSkUM3Ea61QKiOg0NV8toFCrIwsIWQULt1+H4HCSOby0YRO3XWRbTsk+pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UdNN9lDU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537DF1F00893;
+	Fri, 29 May 2026 20:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780084822;
-	bh=b67VnBzKoqE7efAw6mu6viaJtmVWPsvV2nRLA3Q5Jpg=;
+	s=k20260515; t=1780084827;
+	bh=Peis10VZiN8/DpiwZbUZKE9VvYtDRN4ai22wyx4i9l0=;
 	h=Date:From:To:Cc:Subject:References;
-	b=bGB2HDD5DnsUTjfYy9+81ybn7I1A0QYaiPLVZTWt2p5LD4e0g7N3kKq+gkO3wwprN
-	 4cWZA4EEbzSeZRi/2WxrVxbecWHugpGo8LL6xMXoa1AUew2bY5k2oEEW0zkv81s/fq
-	 oBw1HI02Am8tGJEW26wA29qi8/1aMk/FGvGX1ZwNlebRBJh8JVOvM2ZPQWqfRmTFde
-	 UFenSEMfXboybOYiq9cULYxNYvN7XBilXk15v3cVpbSSH2A1cIBaH5IOc9gQtDay5E
-	 w4D0JFrSyV2hSmcoeldTOuHRXaAfVhUzBFehS5UzCPA6EjF2Xbjt8A7wHHr1g/prx5
-	 D7A5VxG9HBRZg==
-Date: Fri, 29 May 2026 22:00:20 +0200
-Message-ID: <20260529195557.330029635@kernel.org>
+	b=UdNN9lDUrY/wnD/o9Iu0KV6r5Gp2otSL5SWTBtBZqLqcuQiZOvMQAflU+A3qRxdXa
+	 PraTW2+SEqiFM9JkVn2TcSIHKSo22zjvTVVwWsvwqcmkj32Qu3Mggh55/pV6nuQYgM
+	 uph75hz6z0ZqDstWhYQAgd6h9ggrK6MTh4NwMPdzqRnbQ3BHasLSLo2tOdoke5Am3C
+	 4EIb7RnGu7kbT+GJPJ9Vf2lvkC62TxLF+eKlXnltRTmnqVmqKn6280iRBmTjn61U5q
+	 LC9KhS5etpEKnqGe95R9LyeVKhOR+Mhj6z6q3yRV9aeu/+rEKETeY+dojgHsVwm/wo
+	 rch6oFiGV31Aw==
+Date: Fri, 29 May 2026 22:00:24 +0200
+Message-ID: <20260529195557.380601005@kernel.org>
 User-Agent: quilt/0.69
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
@@ -78,8 +78,8 @@ Cc: David Woodhouse <dwmw2@infradead.org>,
  linux-sound@vger.kernel.org,
  David Woodhouse <dwmw@amazon.co.uk>,
  Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [patch V2 08/25] timekeeping: Remove
- system_time_snapshot::real/boot/raw
+Subject: [patch V2 09/25] timekeeping: Add CLOCK_AUX support for
+ ktime_get_snapshot_id()
 References: <20260529193435.921555544@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -93,12 +93,12 @@ X-Spamd-Result: default: False [-1.11 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37136-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37137-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,enneenne.com,linux.dev,lists.linux.dev,gmail.com,vger.kernel.org,suse.com,intel.com,nvidia.com,oss.qualcomm.com,amazon.co.uk];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -114,84 +114,70 @@ X-Spamd-Result: default: False [-1.11 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linutronix.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amazon.co.uk:email]
-X-Rspamd-Queue-Id: 86095608419
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amazon.co.uk:email,linutronix.de:email]
+X-Rspamd-Queue-Id: 525D6608364
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Thomas Gleixner <tglx@kernel.org>
 
-All users are converted over to ktime_get_snapshot_id() and
-system_time_snapshot::systime and ::monoraw.
-
-Remove the leftovers.
+Now that all users are converted it's possible to enable snapshotting of
+CLOCK_AUX time. The underlying clocksource is the same as for all other
+CLOCK variants.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Tested-by: David Woodhouse <dwmw@amazon.co.uk>
 Tested-by: Arthur Kiyanovski <akiyano@amazon.com>
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- include/linux/timekeeping.h |   10 +---------
- kernel/time/timekeeping.c   |    8 --------
- 2 files changed, 1 insertion(+), 17 deletions(-)
---- a/include/linux/timekeeping.h
-+++ b/include/linux/timekeeping.h
-@@ -280,9 +280,6 @@ static inline bool ktime_get_aux_ts64(cl
-  *				 a selected CLOCK_* and the clocksource counter value
-  * @cycles:		Clocksource counter value to produce the system times
-  * @systime:		The system time of the selected CLOCK ID
-- * @real:		Realtime system time
-- * @boot:		Boot time
-- * @raw:		Monotonic raw system time
-  * @monoraw:		Monotonic raw system time
-  * @cs_id:		Clocksource ID
-  * @clock_was_set_seq:	The sequence number of clock-was-set events
-@@ -292,12 +289,7 @@ static inline bool ktime_get_aux_ts64(cl
- struct system_time_snapshot {
- 	u64			cycles;
- 	ktime_t			systime;
--	ktime_t			real;
--	ktime_t			boot;
--	union {
--		ktime_t		raw;
--		ktime_t		monoraw;
--	};
-+	ktime_t			monoraw;
- 	enum clocksource_ids	cs_id;
- 	unsigned int		clock_was_set_seq;
- 	u8			cs_was_changed_seq;
+ kernel/time/timekeeping.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 --- a/kernel/time/timekeeping.c
 +++ b/kernel/time/timekeeping.c
-@@ -1196,8 +1196,6 @@ void ktime_get_snapshot_id(clockid_t clo
- 	struct timekeeper *tk;
- 	struct tk_data *tkd;
- 	unsigned int seq;
--	ktime_t base_real;
--	ktime_t base_boot;
+@@ -67,6 +67,7 @@ static inline bool tk_is_aux(const struc
+ {
+ 	return tk->id >= TIMEKEEPER_AUX_FIRST && tk->id <= TIMEKEEPER_AUX_LAST;
+ }
++static inline struct tk_data *aux_get_tk_data(clockid_t id);
+ #else
+ static inline bool tk_get_aux_ts64(unsigned int tkid, struct timespec64 *ts)
+ {
+@@ -77,6 +78,10 @@ static inline bool tk_is_aux(const struc
+ {
+ 	return false;
+ }
++static inline struct tk_data *aux_get_tk_data(clockid_t id)
++{
++	return NULL;
++}
+ #endif
  
- 	/* Invalidate the snapshot for all failure cases */
- 	systime_snapshot->valid = false;
-@@ -1239,18 +1237,12 @@ void ktime_get_snapshot_id(clockid_t clo
- 		offs_sys = *offs;
- 		base_raw = tk->tkr_raw.base;
+ static inline void tk_update_aux_offs(struct timekeeper *tk, ktime_t offs)
+@@ -1218,6 +1223,12 @@ void ktime_get_snapshot_id(clockid_t clo
+ 		tkd = &tk_core;
+ 		offs = &tk_core.timekeeper.offs_boot;
+ 		break;
++	case CLOCK_AUX ... CLOCK_AUX_LAST:
++		tkd = aux_get_tk_data(clock_id);
++		if (!tkd)
++			return;
++		offs = &tkd->timekeeper.offs_aux;
++		break;
+ 	default:
+ 		WARN_ON_ONCE(1);
+ 		return;
+@@ -1228,6 +1239,10 @@ void ktime_get_snapshot_id(clockid_t clo
+ 	do {
+ 		seq = read_seqcount_begin(&tkd->seq);
  
--		/* Kept around until the callers are fixed up */
--		base_real = ktime_add(base_sys, tk_core.timekeeper.offs_real);
--		base_boot = ktime_add(base_sys, tk_core.timekeeper.offs_boot);
--
- 		nsec_sys = timekeeping_cycles_to_ns(&tk->tkr_mono, now);
- 		nsec_raw = timekeeping_cycles_to_ns(&tk->tkr_raw, now);
- 	} while (read_seqcount_retry(&tkd->seq, seq));
- 
- 	systime_snapshot->cycles = now;
- 	systime_snapshot->systime = ktime_add_ns(base_sys, offs_sys + nsec_sys);
--	systime_snapshot->real = ktime_add_ns(base_real, nsec_sys);
--	systime_snapshot->boot = ktime_add_ns(base_boot, nsec_sys);
- 	systime_snapshot->monoraw = ktime_add_ns(base_raw, nsec_raw);
- 
- 	/*
++		/* Aux clocks can be invalid */
++		if (!tk->clock_valid)
++			return;
++
+ 		now = tk_clock_read(&tk->tkr_mono);
+ 		systime_snapshot->cs_id = tk->tkr_mono.clock->id;
+ 		systime_snapshot->cs_was_changed_seq = tk->cs_was_changed_seq;
 
 
