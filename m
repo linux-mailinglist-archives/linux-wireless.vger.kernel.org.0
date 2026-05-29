@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-37138-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37139-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGhdAszxGWpl0AgAu9opvQ
-	(envelope-from <linux-wireless+bounces-37138-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:06:36 +0200
+	id aPViA9rwGWoX0AgAu9opvQ
+	(envelope-from <linux-wireless+bounces-37139-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:02:34 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94829608385
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:06:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C85196082CC
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:02:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CE09231014DF
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 20:01:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 62DBD3065F2F
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 20:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5A73403FF;
-	Fri, 29 May 2026 20:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DBB3A8741;
+	Fri, 29 May 2026 20:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7w1dVnS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SM5E4/85"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583D33382C3;
-	Fri, 29 May 2026 20:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFF142980A;
+	Fri, 29 May 2026 20:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780084832; cv=none; b=C+ypWxRatv+vyxt5rXAeHtZwbfDLWX2bh4OLHN1mUOXxmPy/n9ZiqIkn2UOg+Fl9rX8uKtqbw85U89nItudGp3D3B1NypEmpHOeVyyBfWCEY9KTBjftZHd8QBWs4akb5As4h49zhgHezA1D82CBA7h317ng6BJDcfPG3ghEyk0A=
+	t=1780084836; cv=none; b=nXlHUl8+XcaTId5cTR0NACrogP6aygEYdb8kyTFM69XfIeb4Vl/RFoNkqtb8CjkDUR36SPVJHravgh8xwIMI77AStfPyrbPFVWcrPBdsGBqELO9V20kzp6AeuukBmUXnQnric8uhF1aM5uA0nKb/swHCm9bmxmj20HQ9lttFPtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780084832; c=relaxed/simple;
-	bh=3+zAdRIstwLiKcqqYWsWz0zrcfL5clt9y/+hnYFosms=;
+	s=arc-20240116; t=1780084836; c=relaxed/simple;
+	bh=dey8iRymM7vLMYV5UGJf+eaqqnGtoU5Ev2K55WxpyzM=;
 	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=EAq227YUzqhdKS8VmBt9/e8xnjlA5N7x3UzSLz9BlBU/BgOwm4PpB7lGV2hYlB3yNua11ugERAHQcGA7hDCL7rzCkewuCSW6HlD/5qlkpb+fwPnzDwZLCqrN6VOizHOgvT+mZdK81tMS6QdztiRZlskFhPGcBl/EshQtBYtW7F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7w1dVnS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588F01F00893;
-	Fri, 29 May 2026 20:00:30 +0000 (UTC)
+	 Content-Type; b=oE6dLFbjiAexZ1l3FYQb7EGcTvmc1Kns9MBn5KydCGri+JZVqMs3sAj8DnG59aLy+sJ/+nG6oVydEkSW3SX+6niadwFk7LsbLaCOh9La9AUOVcm8l9sy2XdRjDyAZ8JVxAux06KnGZGTLjoDW3uFvbsnUGWF3L57V8aLlQExM8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SM5E4/85; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFC91F00893;
+	Fri, 29 May 2026 20:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780084831;
-	bh=TzOBzjOs2Y3thGFeNAC6uYTpbahSBfsnJF7q+sb4muo=;
+	s=k20260515; t=1780084835;
+	bh=SKtcApTyTHzie8ozCXbhX547ZgXhyRfMe740j/N9Ov4=;
 	h=Date:From:To:Cc:Subject:References;
-	b=T7w1dVnS6RGSh5lLSprQBqHkcvkciS4XaObr1QWBp4a16D/pl9thRyN84dy3Baxm3
-	 IOhk16z+uzswmYrKybIm6t3T+ph9GnIq1IflbRFwkqdy6eNx8KO88S8gBAsbWHlucH
-	 O21PbTztzvfLjkKCRTnck+mU75QfD69rqATkIj1IYtx5Zi8bkSgcgy60AWwteeml+s
-	 hX9cW/bmYo1vQo/q4xOnpi039bjn4DZKlU5UlzsFtUirOQCPKqOfI5u/O2brA8zVgm
-	 yhAczfNyGl/jHn4gBpvdmjf+DjeGUOWjjtkI276ynfyXYWbPpecuyMDuM04swRf1Rf
-	 yO/MmMLwDYRVg==
-Date: Fri, 29 May 2026 22:00:28 +0200
-Message-ID: <20260529195557.429406675@kernel.org>
+	b=SM5E4/85RCzamZQ3ymZEtEOZ0kip2WKBP1GTaCKe+v3f6xwjQn8jGG95mZas7jQdR
+	 3AsUqDehajMjCk8urEa6MlRjCa6U0yhDQpDQN5PiypCHiEUvpVhv9JDlDtr3vBtKPX
+	 PTq/BJRIGWJNO0b8qS/jOjOb022grqBYr/Q+4hW2Sr27B/OmEqavzPL3DfwtOtvJQD
+	 /htCZdjwdt1YDlcJ+De9dqr+EEjc78W8VHGL7jpZFWetrJV2GWwZQ7pzIjhUTCNL9Y
+	 gpSPbOuLL8YFfE/RTyUKVnzCMDadpmdkyYAP5K3P2P1oDPRW/bRDwxQ/HwBmLh30cf
+	 ZPj/+NV726gJQ==
+Date: Fri, 29 May 2026 22:00:32 +0200
+Message-ID: <20260529195557.482153523@kernel.org>
 User-Agent: quilt/0.69
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
@@ -78,7 +78,7 @@ Cc: David Woodhouse <dwmw2@infradead.org>,
  linux-sound@vger.kernel.org,
  David Woodhouse <dwmw@amazon.co.uk>,
  Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [patch V2 10/25] timekeeping: Add system_counterval_t to struct
+Subject: [patch V2 11/25] timekeeping: Add CLOCK ID to
  system_device_crosststamp
 References: <20260529193435.921555544@kernel.org>
 Precedence: bulk
@@ -91,20 +91,20 @@ Content-Type: text/plain; charset=UTF-8
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37138-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37139-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,enneenne.com,linux.dev,lists.linux.dev,gmail.com,vger.kernel.org,suse.com,intel.com,nvidia.com,oss.qualcomm.com,amazon.co.uk];
 	RCPT_COUNT_TWELVE(0.00)[30];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -114,19 +114,25 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amazon.co.uk:email]
-X-Rspamd-Queue-Id: 94829608385
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.co.uk:email,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C85196082CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Thomas Gleixner <tglx@kernel.org>
 
-An upcoming extension to the PTP IOCTL requires to return the system counter
-value and the clocksource ID to user space. get_device_system_crosststamp() has
-this information already.
+The normal capture for system/device cross timestamps is CLOCK_REALTIME,
+but that's meaningless for AUX clocks.
 
-Extend struct system_device_crosststamp with a system_counterval_t member
-and fill in the data.
+Add a clock_id field to struct system_device_crosststamp and initialize it
+with CLOCK_REALTIME at the two places which prepare for cross
+timestamps.
+
+After the related code has been cleaned up, the core code will honor the
+clock_id field when calculating the system time from the system counter
+snapshot.
+
+No functional change.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Tested-by: David Woodhouse <dwmw@amazon.co.uk>
@@ -134,154 +140,53 @@ Tested-by: Arthur Kiyanovski <akiyano@amazon.com>
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- include/linux/timekeeping.h |   28 ++++++++++++++------------
- kernel/time/timekeeping.c   |   46 ++++++++++++++++++++------------------------
- 2 files changed, 36 insertions(+), 38 deletions(-)
+ drivers/ptp/ptp_chardev.c     |    2 +-
+ include/linux/timekeeping.h   |    2 ++
+ sound/hda/common/controller.c |    2 +-
+ 3 files changed, 4 insertions(+), 2 deletions(-)
+--- a/drivers/ptp/ptp_chardev.c
++++ b/drivers/ptp/ptp_chardev.c
+@@ -317,8 +317,8 @@ typedef int (*ptp_crosststamp_fn)(struct
+ static long ptp_sys_offset_precise(struct ptp_clock *ptp, void __user *arg,
+ 				   ptp_crosststamp_fn crosststamp_fn)
+ {
++	struct system_device_crosststamp xtstamp = { .clock_id = CLOCK_REALTIME };
+ 	struct ptp_sys_offset_precise precise_offset;
+-	struct system_device_crosststamp xtstamp;
+ 	struct timespec64 ts;
+ 	int err;
+ 
 --- a/include/linux/timekeeping.h
 +++ b/include/linux/timekeeping.h
-@@ -297,19 +297,6 @@ struct system_time_snapshot {
- };
- 
+@@ -315,12 +315,14 @@ struct system_counterval_t {
  /**
-- * struct system_device_crosststamp - system/device cross-timestamp
-- *				      (synchronized capture)
-- * @device:		Device time
-- * @sys_realtime:	Realtime simultaneous with device time
-- * @sys_monoraw:	Monotonic raw simultaneous with device time
-- */
--struct system_device_crosststamp {
--	ktime_t device;
--	ktime_t sys_realtime;
--	ktime_t sys_monoraw;
--};
--
--/**
-  * struct system_counterval_t - system counter value with the ID of the
-  *				corresponding clocksource
-  * @cycles:	System counter value
-@@ -325,6 +312,21 @@ struct system_counterval_t {
- 	bool			use_nsecs;
- };
- 
-+/**
-+ * struct system_device_crosststamp - system/device cross-timestamp
-+ *				      (synchronized capture)
-+ * @device:		Device time
-+ * @sys_counter:	Clocksource counter value simultaneous with device time
-+ * @sys_realtime:	Realtime simultaneous with device time
-+ * @sys_monoraw:	Monotonic raw simultaneous with device time
-+ */
-+struct system_device_crosststamp {
-+	ktime_t				device;
-+	struct system_counterval_t	sys_counter;
-+	ktime_t				sys_realtime;
-+	ktime_t				sys_monoraw;
-+};
-+
- extern bool ktime_real_to_base_clock(ktime_t treal,
- 				     enum clocksource_ids base_id, u64 *cycles);
- extern bool timekeeping_clocksource_has_base(enum clocksource_ids id);
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -1418,6 +1418,8 @@ static bool convert_base_to_cs(struct sy
- 		return false;
- 
- 	scv->cycles += base->offset;
-+	/* Set the clocksource ID as scv::cycles is now clocksource based */
-+	scv->cs_id = cs->id;
- 	return true;
- }
- 
-@@ -1485,11 +1487,11 @@ EXPORT_SYMBOL_GPL(ktime_real_to_base_clo
- 
- /**
-  * get_device_system_crosststamp - Synchronously capture system/device timestamp
-- * @get_time_fn:	Callback to get simultaneous device time and
-- *	system counter from the device driver
-+ * @get_time_fn:	Callback to get simultaneous device time and system counter
-+ *			from the device driver
-  * @ctx:		Context passed to get_time_fn()
-- * @history_begin:	Historical reference point used to interpolate system
-- *	time when counter provided by the driver is before the current interval
-+ * @history_begin:	Historical reference point used to interpolate system time when
-+ *			the counter value provided by the driver is before the current interval
-  * @xtstamp:		Receives simultaneously captured system and device time
-  *
-  * Reads a timestamp from a device and correlates it to system time
-@@ -1502,14 +1504,12 @@ int get_device_system_crosststamp(int (*
- 				  struct system_time_snapshot *history_begin,
- 				  struct system_device_crosststamp *xtstamp)
+  * struct system_device_crosststamp - system/device cross-timestamp
+  *				      (synchronized capture)
++ * @clock_id:		System time Clock ID to capture
+  * @device:		Device time
+  * @sys_counter:	Clocksource counter value simultaneous with device time
+  * @sys_realtime:	Realtime simultaneous with device time
+  * @sys_monoraw:	Monotonic raw simultaneous with device time
+  */
+ struct system_device_crosststamp {
++	clockid_t			clock_id;
+ 	ktime_t				device;
+ 	struct system_counterval_t	sys_counter;
+ 	ktime_t				sys_realtime;
+--- a/sound/hda/common/controller.c
++++ b/sound/hda/common/controller.c
+@@ -489,9 +489,9 @@ static int azx_get_time_info(struct snd_
+ 			struct snd_pcm_audio_tstamp_config *audio_tstamp_config,
+ 			struct snd_pcm_audio_tstamp_report *audio_tstamp_report)
  {
--	struct system_counterval_t system_counterval = {};
-+	u64 syscnt_cycles, cycles, now, interval_start;
- 	struct timekeeper *tk = &tk_core.timekeeper;
--	u64 cycles, now, interval_start;
--	unsigned int clock_was_set_seq = 0;
-+	unsigned int seq, clock_was_set_seq = 0;
- 	ktime_t base_real, base_raw;
- 	u64 nsec_real, nsec_raw;
- 	u8 cs_was_changed_seq;
--	unsigned int seq;
- 	bool do_interp;
++	struct system_device_crosststamp xtstamp = { .clock_id = CLOCK_REALTIME };
+ 	struct azx_dev *azx_dev = get_azx_dev(substream);
+ 	struct snd_pcm_runtime *runtime = substream->runtime;
+-	struct system_device_crosststamp xtstamp;
  	int ret;
+ 	u64 nsec;
  
-@@ -1519,19 +1519,20 @@ int get_device_system_crosststamp(int (*
- 		 * Try to synchronously capture device time and a system
- 		 * counter value calling back into the device driver
- 		 */
--		ret = get_time_fn(&xtstamp->device, &system_counterval, ctx);
-+		ret = get_time_fn(&xtstamp->device, &xtstamp->sys_counter, ctx);
- 		if (ret)
- 			return ret;
- 
- 		/*
- 		 * Verify that the clocksource ID associated with the captured
- 		 * system counter value is the same as for the currently
--		 * installed timekeeper clocksource
-+		 * installed timekeeper clocksource and convert to it.
- 		 */
--		if (system_counterval.cs_id == CSID_GENERIC ||
--		    !convert_base_to_cs(&system_counterval))
-+		if (xtstamp->sys_counter.cs_id == CSID_GENERIC ||
-+		    !convert_base_to_cs(&xtstamp->sys_counter))
- 			return -ENODEV;
--		cycles = system_counterval.cycles;
-+
-+		cycles = syscnt_cycles = xtstamp->sys_counter.cycles;
- 
- 		/*
- 		 * Check whether the system counter value provided by the
-@@ -1573,24 +1574,19 @@ int get_device_system_crosststamp(int (*
- 		 * clocksource change
- 		 */
- 		if (!history_begin ||
--		    !timestamp_in_interval(history_begin->cycles,
--					   cycles, system_counterval.cycles) ||
-+		    !timestamp_in_interval(history_begin->cycles, cycles, syscnt_cycles) ||
- 		    history_begin->cs_was_changed_seq != cs_was_changed_seq)
- 			return -EINVAL;
--		partial_history_cycles = cycles - system_counterval.cycles;
-+
-+		partial_history_cycles = cycles - syscnt_cycles;
- 		total_history_cycles = cycles - history_begin->cycles;
--		discontinuity =
--			history_begin->clock_was_set_seq != clock_was_set_seq;
-+		discontinuity = history_begin->clock_was_set_seq != clock_was_set_seq;
- 
--		ret = adjust_historical_crosststamp(history_begin,
--						    partial_history_cycles,
--						    total_history_cycles,
--						    discontinuity, xtstamp);
--		if (ret)
--			return ret;
-+		ret = adjust_historical_crosststamp(history_begin, partial_history_cycles,
-+						    total_history_cycles, discontinuity, xtstamp);
- 	}
- 
--	return 0;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(get_device_system_crosststamp);
- 
+
+
 
 
