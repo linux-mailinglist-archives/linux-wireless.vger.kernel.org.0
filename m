@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-37131-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37132-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGuqEKLxGWoX0AgAu9opvQ
-	(envelope-from <linux-wireless+bounces-37131-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:05:54 +0200
+	id 2K4GDofwGWoX0AgAu9opvQ
+	(envelope-from <linux-wireless+bounces-37132-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:01:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A340608355
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:05:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAD63608297
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 22:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 551DF3119F0C
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 20:00:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E0DA3059190
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 20:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31EA3FD12A;
-	Fri, 29 May 2026 20:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382554014BB;
+	Fri, 29 May 2026 20:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBkSZyRS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FEKjNpTF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1980408007;
-	Fri, 29 May 2026 20:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2216B13D53C;
+	Fri, 29 May 2026 20:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780084803; cv=none; b=A9hgsV+g7zDoRuuLqMGz7pgr9diN2dW4dITl2hOXtIs1wuoY458h4OfMBiDI7+/t4CSCZ5F07twch+qwXMHVEVBLV0QdNCRa37if0LXhaL7KkpV34O2oD0cUb7oPx+QfGaT7HGhPbbpP7sTpyj5/LigM5M+XSiAgqZcQHf881Xo=
+	t=1780084808; cv=none; b=OVu/d9U5s+dCfkeBS8juBq4pj0vs7VME5caOpAwM2uQPuD/IQ5nqMByZGeOYCZsTpNEsxwDLFzDNeUkLy4XE0RpX7YixBJgi3Csi6+s6aSO3HZjErToyBfWkCAeYF/nOITHZHk1ONLrgOhIGmWS0e2b9MZp/w7RdbxBpLey1Qwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780084803; c=relaxed/simple;
-	bh=5C7JwKG7kjwJuwdCXdvjxylr8WdCNnDRKLp6xdeCcTo=;
+	s=arc-20240116; t=1780084808; c=relaxed/simple;
+	bh=XJUX+tjEQtHwQCzntIRA6mkrzAvneAW5LZZBYjXvEMM=;
 	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=W4lW9VAwiZpckJKRVung0QNGwGGiEjzffadVu4BAFP3vkgabwQLq7KN0fk2GAuncgDvhZmx03MSx17CtUqOaLP/pqK9V81t7rFAwPjgXh742xOaJlfAE9+9V4EL+aDi+qw3c8Djtu6kAWhyd1Q9JmG926zTsC67AK6QwzIZSvBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBkSZyRS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F121F00893;
-	Fri, 29 May 2026 20:00:01 +0000 (UTC)
+	 Content-Type; b=GL9VXROkfP1z3ab9Ai95K3gws1yOCUk4lY+3jBbWLvHdGti0O4kfVDFwvoqJuPyO9BAauHK2jssH2eNoka/tqnWY0KfSeaVH6H6Br5R4CRFA3X+BmmzYuh1u8ZUStNs+m8LjYPTUFeXim9Z81mP84rhgBPrrTkVXwVV22NllnTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FEKjNpTF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D09D1F00893;
+	Fri, 29 May 2026 20:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780084802;
-	bh=CCz9vCDQiGdUd064CtcsBTxQEA+gPKTgfhLTy+v7giw=;
+	s=k20260515; t=1780084806;
+	bh=FZkyrSLm2T1xfbhjteZd4JlHM91F9x6V2go1S71X7K4=;
 	h=Date:From:To:Cc:Subject:References;
-	b=CBkSZyRSECHyHhutRERBNQEPid1w1N5/ovCC/uRsJ9jpCNfHk22JuqW5oiVyezDd5
-	 +xShcRXbqwV50ImT2CAWtZKmZNTbqZF7/S+4iym89JBKdz6P8eJu+q47zf2Wcp4fWM
-	 KTWKLFpZRHS9jLRZPDHixQorVanyfo2uXC6Mllt41DEbevTiu+9tfaz5OAdv8bsaSI
-	 XzHEODUnYZLlxmfmNjbQSHpU4c/Jxs48gQlBZ4N4yTXgxDtzSVZt//5SLoCHU8XdIh
-	 ZpU8vKW9FMX2hul1U4izHQayY9qiXACl3D8pRvL54Na0uE8b8mQUNNHBUtepzqFFYz
-	 anbqirMSoHmyQ==
-Date: Fri, 29 May 2026 21:59:59 +0200
-Message-ID: <20260529195557.074439049@kernel.org>
+	b=FEKjNpTFCsreN3iUN3UZ5kAGgqsqGfjw007m6Sb6Cv4IE5+XKsDMIsVuGdDltvWn1
+	 zDG3IGek8g/P+U+DXmK0WxT6TTPBbXjmOjEzi5jNDmpdM9/e/lJ60s9l5GoXsa76Qr
+	 Rpo1J0smny+ZqlTTRnmay6OCEncWY45zD/q+bVzX4wuVI/aK2aPhP5hw6TSRtxfG8n
+	 0gXkA+qmxeMc6KOYTeYHGl/0KDz9zw7QmQBu7/rUHeG22uEhTcnqsKV2VtG4Z8eu5n
+	 3+RiHBODxXlza9CTXigCCyXeoh7jpWoAWENC1ULzUyFpT5CVr8wa+7z3xAKFcDojoU
+	 7RCrpE3lUh0xQ==
+Date: Fri, 29 May 2026 22:00:04 +0200
+Message-ID: <20260529195557.123410250@kernel.org>
 User-Agent: quilt/0.69
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
@@ -78,8 +78,7 @@ Cc: David Woodhouse <dwmw2@infradead.org>,
  linux-sound@vger.kernel.org,
  David Woodhouse <dwmw@amazon.co.uk>,
  Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [patch V2 03/25] pps: generators: Use ktime_get_real_ts64() instead
- of ktime_get_snapshot()
+Subject: [patch V2 04/25] pps: Convert to ktime_get_snapshot_id()
 References: <20260529193435.921555544@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -93,12 +92,12 @@ X-Spamd-Result: default: False [-1.11 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37131-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37132-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,enneenne.com,linux.dev,lists.linux.dev,gmail.com,vger.kernel.org,suse.com,intel.com,nvidia.com,oss.qualcomm.com,amazon.co.uk];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -114,19 +113,22 @@ X-Spamd-Result: default: False [-1.11 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linutronix.de:email,amazon.co.uk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9A340608355
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,amazon.co.uk:email,linutronix.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: AAD63608297
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Thomas Gleixner <tglx@kernel.org>
 
-There is no reason to use the more complex ktime_get_snapshot() for
-retrieving CLOCK_REALTIME.
+ktime_get_snapshot() resolves to ktime_get_snapshot_id(CLOCK_REALTIME).
 
-Just use ktime_get_real_ts64(), which avoids the extra timespec64
-conversion as a bonus.
+Make it obvious in the code and convert the readout to use the
+snapshot::systime and monoraw fields instead of snapshot::real and raw,
+which aregoing away.
+
+Similar to the PPS generators, avoid the more expensive snapshot when
+CONFIG_NTP_PPS is disabled.
 
 No functional change intended.
 
@@ -136,37 +138,27 @@ Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/pps/generators/pps_gen-dummy.c |    6 +-----
- drivers/pps/generators/pps_gen_tio.c   |    6 +-----
- 2 files changed, 2 insertions(+), 10 deletions(-)
---- a/drivers/pps/generators/pps_gen-dummy.c
-+++ b/drivers/pps/generators/pps_gen-dummy.c
-@@ -39,11 +39,7 @@ static void pps_gen_ktimer_event(struct
- static int pps_gen_dummy_get_time(struct pps_gen_device *pps_gen,
- 					struct timespec64 *time)
- {
--	struct system_time_snapshot snap;
--
--	ktime_get_snapshot(&snap);
--	*time = ktime_to_timespec64(snap.real);
--
-+	ktime_get_real_ts64(time);
- 	return 0;
- }
+ include/linux/pps_kernel.h |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+--- a/include/linux/pps_kernel.h
++++ b/include/linux/pps_kernel.h
+@@ -99,12 +99,14 @@ static inline void timespec_to_pps_ktime
  
---- a/drivers/pps/generators/pps_gen_tio.c
-+++ b/drivers/pps/generators/pps_gen_tio.c
-@@ -189,11 +189,7 @@ static int pps_tio_gen_enable(struct pps
- static int pps_tio_get_time(struct pps_gen_device *pps_gen,
- 			    struct timespec64 *time)
+ static inline void pps_get_ts(struct pps_event_time *ts)
  {
--	struct system_time_snapshot snap;
--
++#ifdef CONFIG_NTP_PPS
+ 	struct system_time_snapshot snap;
+ 
 -	ktime_get_snapshot(&snap);
--	*time = ktime_to_timespec64(snap.real);
--
-+	ktime_get_real_ts64(time);
- 	return 0;
+-	ts->ts_real = ktime_to_timespec64(snap.real);
+-#ifdef CONFIG_NTP_PPS
+-	ts->ts_raw = ktime_to_timespec64(snap.raw);
++	ktime_get_snapshot_id(CLOCK_REALTIME, &snap);
++	ts->ts_real = ktime_to_timespec64(snap.systime);
++	ts->ts_raw = ktime_to_timespec64(snap.monoraw);
++#else
++	ktime_get_real_ts64(&ts->ts_real);
+ #endif
  }
  
 
