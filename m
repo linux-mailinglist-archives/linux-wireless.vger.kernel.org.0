@@ -1,200 +1,176 @@
-Return-Path: <linux-wireless+bounces-37086-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37087-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOOVIB3vGGo/pAgAu9opvQ
-	(envelope-from <linux-wireless+bounces-37086-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 03:42:53 +0200
+	id 3+Q7AcURGWpKqAgAu9opvQ
+	(envelope-from <linux-wireless+bounces-37087-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 06:10:45 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95915FC12A
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 03:42:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C64715FCEA9
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 06:10:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2073C307AE67
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 01:41:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC1173015E23
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 04:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5952035F61F;
-	Fri, 29 May 2026 01:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6CA370D77;
+	Fri, 29 May 2026 04:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="EKx2YRiH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2B635F18B
-	for <linux-wireless@vger.kernel.org>; Fri, 29 May 2026 01:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244B7370AFE;
+	Fri, 29 May 2026 04:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780018888; cv=none; b=joOVlSCsEG6GYSTvOInSPHicoALoq90jnXf3ELwc1ksbRQcxM6k9lChp1w9AWpWx3PMurOb3EENgMDKbjxCwOad6jOKCaXV/jXreJx2IDth3yzPNgBpoXneHm+rtrUM38u0FbywsbnXW+Jy+/nJCfb0casxZvckdy1oQIjXRRps=
+	t=1780027828; cv=none; b=qaI19YHqQoKXQc7nFouJlYRlrYbo4HLB+VRg3lgE1jepVLz8JD+YMND/nVZBzt03xEC5I6BoNuHVou63efL85Nf0nhYbF/HEf2L+SXyNQy3zZHNGA2KLUe6kAaW1sSeTUBTOrxQmdyTD5Zit9XyqaAL2Zj+FUcjKSfYNhj3OhLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780018888; c=relaxed/simple;
-	bh=120bVSQLdPnl7gzjI00muoHs/i0ZIQoj5jR62It2T+0=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=gZ30Y31ZgLrWE/IIURk1IS3Xw+WunIDfYYWlOhWX2cSfakbI65GD8n8NpctsUKiZXigKK1DLNEKaNKujLkuv22cB/3bqUMJGr3QK/HPScStT1AujK0P9FobRov/98P25xIYmWB+NnnwZB44qhehMkcN7kxPrOaCkr3MUr54s1s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-69d874805edso8791079eaf.0
-        for <linux-wireless@vger.kernel.org>; Thu, 28 May 2026 18:41:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780018885; x=1780623685;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yBCnZ43C3H+9ncA/RoRecjFYPKsKHr1k7V623+sXjgo=;
-        b=CRpO+n2YRlZyEM42Nhr7hDXCxyZZomFkMAyxn4M+FIReDUgZ6LdF39FWIYW1RTnrYr
-         tQRZwG2TMG9xQhazGLOTHBaAaoh9x5pWejWCLfT4QjI1liF+FemuoUQcE+mMMHKAm07p
-         f/hPl8tqzBVWi7/dFUbvMQNl1G5J9S6VllZBg04pei5eBh3Ihslv1KjrkxIi5QaV6A3y
-         9VOYlSmgM4h6luubcAh/p55xmp+iXtREV7N0dtxneYMgqTx599mmtRN5lUqI++dNIywm
-         HnjW//PM4ygnHdG/NTRR7bz/5VmyVfBK6EEd9d58iaJUmjAwWuVhf1GRIbgXRu+k8aXQ
-         eMlw==
-X-Forwarded-Encrypted: i=1; AFNElJ/JwrkaPdenKoXA+ORgYSSlXbIg2QxKfc2HoprRWyG2KXOl91w3Vn6QYWuMewh4iGdmLmlNkurESvLo9TORaQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxB93Wb1u3ecwsHVD1FBOyAzGJuLKaV+nUU6Z1EeGa3AIghWa3V
-	QasTsxsu5ZoSVoSpYs6cb8W8xbewEee9PBa1zqfoWevssJfPDdc812vt6L4PK28Z/f3i6yWjOhz
-	d5u3ojUgC1l5LUUkTV/uIlJYUzYp7pi7pEe05/YOos6ow2RrwHZIkgAqI6h8=
+	s=arc-20240116; t=1780027828; c=relaxed/simple;
+	bh=xQRrgxbFECh+xCJ1c/S146mZT+SmdEygtLmBspAcoX8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RrSotUtVR0e20CTSMEvTHwDpzhwGEYzwa20Hw/1Xx9XD8nJqTOtyNxHuyvJOFLm4kZ1Wcch3B8EnWgIqQIMMGjHJP6x1yB2wLeuId4yT8oc3WNGvJ6Zl38sRhq6GC+N2E7DtWJ/+bf4aXaDOqoyP+eQKYSDT6trFrgAoY5LfjXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=EKx2YRiH; arc=none smtp.client-ip=54.207.19.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1780027799;
+	bh=fOdxBJ/vsVFRBPuf6cKhChQgV4pfjqwQ43njmWshWKA=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=EKx2YRiHZ044vARLoYGuAYOEJt1ldhFSnxYnC+M4SVPboSHpP4Kn33KiQKIX4OjSA
+	 rD6Z7j1yuPASXbwZdoqZImj2hCmS8Wt3A0R7doCQe+XXEqZwvTZrJWrT9FCdCpCDvG
+	 /tazB4ssIQSbF7PxPfOaMHdJ8KjdhB1rX3JpgOgY=
+X-QQ-mid: zesmtpsz8t1780027772t8bdf7c2e
+X-QQ-Originating-IP: l0F0vEj/ROf7WiC6UVosjlCTC/EGHFgKAWz+St+ptaA=
+Received: from localhost.localdomain ( [124.126.19.250])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 29 May 2026 12:09:29 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 11107544085504726839
+EX-QQ-RecipientCnt: 6
+From: meihaipeng <meihaipeng@uniontech.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	meihaipeng <meihaipeng@uniontech.com>,
+	syzbot+c0472dd80bb8f668625f@syzkaller.appspotmail.com
+Subject: [PATCH] wifi: mac80211_hwsim: handle 5/10 MHz chanctx in rc update
+Date: Fri, 29 May 2026 12:09:23 +0800
+Message-Id: <20260529040923.9816-1-meihaipeng@uniontech.com>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:168d:b0:69d:9e9d:b000 with SMTP id
- 006d021491bc7-69e03ef9ad8mr519546eaf.23.1780018885631; Thu, 28 May 2026
- 18:41:25 -0700 (PDT)
-Date: Thu, 28 May 2026 18:41:25 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a18eec5.9a649fcc.180209.0002.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in drv_link_info_changed (3)
-From: syzbot <syzbot+c4686c3eb8b64032618f@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-0.36 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
+X-QQ-XMAILINFO: Of5inzNvXaPsJ9zOszJed1Cjbw1qoObhgHaJZ9wPRzqNLxwgUCkSM2D7
+	HS2T2oaE4Cs90GVls0Egpl86rZ98cVRXQ3vw3WwOq6WFkP1/+ewxtXb3EFQF76p9zrZvBu3
+	mSyzGopXzgH0s5Pc93d7lMH0lm0RiZGzMrp/XQfoObAO6qFrV+4kBGdKva16NqEnSBE6vd7
+	2XCxbiwii5X5vtR+xpzmUBHH+FkY2wuzCgbtGCuQ1IceYBfZJibxK9ff7R73r58QeHq3eC+
+	He+cnEwRpkfk4LQXtWR1OFWMXeqGy4hh7kw/E3rVG0cn77xjr5LRbbZ/5NiOGB5uvpAWtVW
+	QwxqapkrVLlHKznLoY8Tg19WHOUuwweGP0m0+nqTtBSnlTQnIwawzvRiDPotyT+h8wn+NHd
+	ePASHMgvD6zpQPLwDhPW1aQ3AhvVPW7fP1IJj2N+0cLKAV5R6v1byF+6BgXr2AQHokDiVxi
+	kHQru9TKWWsiVGkL4SIF/nS1DnPcKOKCfzMFwM8mDMLz/RzTmSCGSZ7iDVIYmqPbWvCsqCM
+	YLA3+WdTGro4kirS4ospLSA5qWh9aA+LdMeptyCOZiDpEoaVYKperjzFk7jucOgWmJvj/bQ
+	bCGnnqrO4gszI/AFZyr0MqnX2ypf9eyFsipzcl4H9uNjkGs+sIhPgaQHWEBNy29Uub3FV7V
+	bW+EMd1eFWQcsB2EMU7ialel5/szsPFMDiicA/o7DFPqfqCmkHXjG9SnIOVkAj7oweuH2Py
+	DzNXNO8kx7tZaD7/HqL68faNBAzT+VmLn3o8RQ85fN0OClDwL3F0LGctDl/YhYrgIH3SiR7
+	MIr+r+WxhNpiyLdD/w/laPw+DaaU8FGKon7CcoLF+AJ3UsWcyeNqSOJ2trgfRzM+ryqpdAf
+	ATrUHgy8nSQftpyKdcO8/4NdWhv/IPzZ+aRI0Z6oFiKac08tpA84tL3u3n2Vxp5yFHCuzJa
+	9TzPZJoHxKXz1XmC1VhLh0LC4ar9UPM0RSHtkSDrVHS6Jv854SOJd6YSmqWccDmj4Ynw887
+	NmF2ARBzZPlEhaankaNeZX2A/21HarwtYqEb6hGIWcBQqzIUaBtaHpRB0uZLo2iIPEeh+dX
+	g==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=e327ee9a867dd6b9];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37087-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37086-lists,linux-wireless=lfdr.de,c4686c3eb8b64032618f];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	SUBJECT_HAS_QUESTION(0.00)[];
-	REDIRECTOR_URL(0.00)[goo.gl];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[meihaipeng@uniontech.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,c0472dd80bb8f668625f];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,goo.gl:url,syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,storage.googleapis.com:url]
-X-Rspamd-Queue-Id: E95915FC12A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim]
+X-Rspamd-Queue-Id: C64715FCEA9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+mac80211_hwsim_sta_rc_update() compares ieee80211_sta_rx_bandwidth against 
+the current channel context width. 
 
-syzbot found the following issue on:
+The STA bandwidth enum has no sub-20 MHz states, so a normal 20 MHz link 
+STA falsely trips the warning on 5/10 MHz OCB channel contexts.so 
+a normal 20 MHz link STA falsely trips the warning on 5/10 MHz OCB 
+channel contexts.
 
-HEAD commit:    4cbfe4502e3d Merge tag 'v7.1-rc5-ksmbd-server-fixes' of gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=13bb6d96580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e327ee9a867dd6b9
-dashboard link: https://syzkaller.appspot.com/bug?extid=c4686c3eb8b64032618f
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+Treat sub-20 MHz channel contexts as 20 MHz for this validation and use 
+the actual channel-context width in the warning message.
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-4cbfe450.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/ae30bc5ef3ba/vmlinux-4cbfe450.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2547601acb10/bzImage-4cbfe450.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c4686c3eb8b64032618f@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-changed & (BSS_CHANGED_BEACON | BSS_CHANGED_BEACON_ENABLED) && sdata->vif.type != NL80211_IFTYPE_AP && sdata->vif.type != NL80211_IFTYPE_ADHOC && sdata->vif.type != NL80211_IFTYPE_MESH_POINT && sdata->vif.type != NL80211_IFTYPE_OCB
-WARNING: net/mac80211/driver-ops.c:468 at drv_link_info_changed+0x583/0x880 net/mac80211/driver-ops.c:468, CPU#3: syz.5.1844/11254
-Modules linked in:
-CPU: 3 UID: 0 PID: 11254 Comm: syz.5.1844 Tainted: G             L      syzkaller #0 PREEMPT(full) 
-Tainted: [L]=SOFTLOCKUP
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:drv_link_info_changed+0x583/0x880 net/mac80211/driver-ops.c:468
-Code: 00 48 89 74 24 10 e8 3c 3d 0f f7 48 8d 3d 75 29 ef 05 48 8b 74 24 10 44 89 f2 67 48 0f b9 3a e9 ae fc ff ff e8 1e 3d 0f f7 90 <0f> 0b 90 e9 bf fe ff ff e8 10 3d 0f f7 90 0f 0b 90 e9 b1 fe ff ff
-RSP: 0018:ffffc900065bee48 EFLAGS: 00010287
-RAX: 000000000000096f RBX: ffff8880277d4e40 RCX: ffffc90007392000
-RDX: 0000000000080000 RSI: ffffffff8af974c2 RDI: ffff88802aa42500
-RBP: 0000000000000200 R08: 0000000000000005 R09: 000000000000000b
-R10: 0000000000000002 R11: 0000000000000000 R12: 0000000000000002
-R13: ffff88805f010f20 R14: 0000000000000200 R15: ffff8880277d6b78
-FS:  00007fae699f66c0(0000) GS:ffff8880d666a000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 0000000044d79000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- ieee80211_link_info_change_notify+0x24b/0x3c0 net/mac80211/main.c:427
- ieee80211_offchannel_stop_vifs+0x328/0x5c0 net/mac80211/offchannel.c:122
- ieee80211_start_sw_scan net/mac80211/scan.c:583 [inline]
- __ieee80211_start_scan+0xfb6/0x1af0 net/mac80211/scan.c:882
- ieee80211_scan+0x4f8/0x6e0 net/mac80211/cfg.c:3343
- rdev_scan+0x148/0x370 net/wireless/rdev-ops.h:467
- cfg80211_scan+0x4dd/0x5d0 net/wireless/scan.c:1077
- cfg80211_conn_scan+0x70e/0xfc0 net/wireless/sme.c:134
- cfg80211_sme_connect net/wireless/sme.c:629 [inline]
- cfg80211_connect+0x17fe/0x1fe0 net/wireless/sme.c:1527
- nl80211_connect+0x17d3/0x2260 net/wireless/nl80211.c:13745
- genl_family_rcv_msg_doit+0x214/0x300 net/netlink/genetlink.c:1114
- genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
- genl_rcv_msg+0x560/0x800 net/netlink/genetlink.c:1209
- netlink_rcv_skb+0x159/0x420 net/netlink/af_netlink.c:2550
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x585/0x850 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1894
- sock_sendmsg_nosec net/socket.c:787 [inline]
- __sock_sendmsg net/socket.c:802 [inline]
- ____sys_sendmsg+0x9e1/0xb70 net/socket.c:2698
- ___sys_sendmsg+0x190/0x1e0 net/socket.c:2752
- __sys_sendmsg+0x170/0x220 net/socket.c:2784
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x10b/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fae6b79ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fae699f6028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007fae6ba15fa0 RCX: 00007fae6b79ce59
-RDX: 0000000000000000 RSI: 00002000000001c0 RDI: 0000000000000004
-RBP: 00007fae6b832d6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fae6ba16038 R14: 00007fae6ba15fa0 R15: 00007ffc87f56808
- </TASK>
-
-
+Fixes: aea9a6088ae46 ("wifi: mac80211_hwsim: do rc update per link")
+Reported-by: syzbot+c0472dd80bb8f668625f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c0472dd80bb8f668625f
+Signed-off-by: meihaipeng <meihaipeng@uniontech.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 1fcf5d0d2e13..3d759fb328a8 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -2793,6 +2793,7 @@ mac80211_hwsim_sta_rc_update(struct ieee80211_hw *hw,
+ 	for (link_id = 0;
+ 	     link_id < ARRAY_SIZE(vif->link_conf);
+ 	     link_id++) {
++		u32 confbw_mhz = 20;
+ 		enum nl80211_chan_width confbw = NL80211_CHAN_WIDTH_20_NOHT;
+ 		struct ieee80211_bss_conf *vif_conf;
+ 
+@@ -2826,10 +2827,17 @@ mac80211_hwsim_sta_rc_update(struct ieee80211_hw *hw,
+ 				confbw = chanctx_conf->def.width;
+ 		}
+ 
+-		WARN(bw > hwsim_get_chanwidth(confbw),
++		/*
++		 * ieee80211_sta_rx_bandwidth does not represent sub-20 MHz
++		 * channels, so treat 5/10 MHz channel contexts as 20 MHz when
++		 * validating the link bandwidth.
++		 */
++		confbw_mhz = max_t(u32, confbw_mhz, hwsim_get_chanwidth(confbw));
++
++		WARN(bw > confbw_mhz,
+ 		     "intf %pM [link=%d]: bad STA %pM bandwidth %d MHz (%d) > channel config %d MHz (%d)\n",
+ 		     vif->addr, link_id, sta->addr, bw, sta->deflink.bandwidth,
+-		     hwsim_get_chanwidth(data->bw), data->bw);
++		     hwsim_get_chanwidth(confbw), confbw);
+ 
+ 
+ 	}
+-- 
+2.20.1
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
