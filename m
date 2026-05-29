@@ -1,87 +1,87 @@
-Return-Path: <linux-wireless+bounces-37163-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37164-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2MEwA9McGmo+1ggAu9opvQ
-	(envelope-from <linux-wireless+bounces-37163-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	id wF+8LdMcGmo+1ggAu9opvQ
+	(envelope-from <linux-wireless+bounces-37164-lists+linux-wireless=lfdr.de@vger.kernel.org>)
 	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 01:10:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E1F609A2C
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 01:10:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7B2609A34
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 01:10:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3C6D13053BB3
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 23:10:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5564C304FFE9
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 May 2026 23:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F0F36E498;
-	Fri, 29 May 2026 23:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216E436E498;
+	Fri, 29 May 2026 23:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ngEmIQA7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KWIIDfyC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ACC36C580
-	for <linux-wireless@vger.kernel.org>; Fri, 29 May 2026 23:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F6C368D42
+	for <linux-wireless@vger.kernel.org>; Fri, 29 May 2026 23:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780096206; cv=none; b=fR1KZSrIRzVkglhSNn4Y3GbfhgTMaYrQXltTD5/Fdz/WetjJWYHslnymQVkaUagFCKgpgMgyFHLDEzgU9+S1WPNxEhWFbKpwP8q260jXEYHPme6NRkE1GPpd+Syqscb/22yj3tbUUCLfeVUDJM5N68nxOx/7p8oOeYBc1kmLB5o=
+	t=1780096208; cv=none; b=AFXz0Xgncw5q2J07xrAR5F+69G5S+YBDc8dujFAp2Szuaabm9GZwsy1wdMPqMN8v630sIVlnzPY8iFlW7MFBytW4G3xiyvn1njZTYNbpjNs3RIbiP4cjFo3psA+JVWMEseoe6TRhB9Jr7SvVXkZQVrlSdoBwTJBC7ZRUfnZsD+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780096206; c=relaxed/simple;
-	bh=JarTQlnIbu/9Am0QjXT+xjBP39mggMe60ojxxQyYHHw=;
+	s=arc-20240116; t=1780096208; c=relaxed/simple;
+	bh=hXEbkMSvvyoJNq4PeaaDeLfF+/4YXS8mD5YDKhjz4Bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViBhn8Qr3kqhMCCG+UR7vwf87W4CvYma2yq0kU9US8uO68rWjY9cOV68piWLo+pUlErHMAfv8tw2+plAW24TtENNrrMa2JELMIq7G7aCd0bPGzlrpCTsWdA81f3V1e7GxvrEWzgo5mMrxYQm2wkJA3NoEZbOCNXymlp/lKR+g+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ngEmIQA7; arc=none smtp.client-ip=209.85.216.46
+	 MIME-Version; b=Nzj3damiiQ3sV/5NKFj0Xph34/0lRLBTTDcKwjt49/BbVFcmKWnMmWmqR+n2r5YgAK4YCa5vjIZmZzMQmZfFLr1t6k90t2EOt0HufqQlGc0RZh5gib8vvYNAvtvQuFNgeTPIzv3p0/plOIzpewxa+bLJuHbnYEnarlVSJaCzrS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KWIIDfyC; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-36b9ec98144so1238328a91.1
-        for <linux-wireless@vger.kernel.org>; Fri, 29 May 2026 16:10:05 -0700 (PDT)
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-36bcbd7821fso513845a91.2
+        for <linux-wireless@vger.kernel.org>; Fri, 29 May 2026 16:10:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780096205; x=1780701005; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780096206; x=1780701006; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gGt9CDCQhvrc554zC5zHa1xlVGIJZOefOO7uKdX/98c=;
-        b=ngEmIQA7xQE9mZ7a0/cFjRkJNvvL8xAMwQwT6eXKsaZnlbUxDkrLACGytGZI0VC3vw
-         SLFEqznOFvFraN5V+/D7x682y/gHr7ao1R5ku8193RbL4d6AvodUCk46/mWnSbNgrE/0
-         ddy4eErifOsKJhKjaRICeMOXVwTwjnN4C4MaUO0hBeUWktMZH20dv6zKvCf+6mCP8cZ0
-         3TYPkihnN1Pr12T8WYRbn21LxYyryXqwDlboKW7DXQy+iWHD1iL4DiYZgkBEj6cfb47A
-         ry7LNK9XG7I6pNkt3IKu/MLzFqyGFuphCNhnch0KV0tlrm8NST4lOF+OwW6mSb+3iN1c
-         oaow==
+        bh=NkAFjs0pl9rNK9x4uY7qHoj5/e2KVlplxUNHi91E7I4=;
+        b=KWIIDfyCwHNX+x48XgD9RPbWsUy0hbhVvMvvbbpAM2kY+tUuZp61gpc7Snmwfi63yv
+         oPwmfooYt8SAiGyCFzEN/J6g57g0ryXkUCnW8nkFTRFJ7+0n+iDau1RitTLpFzNaAgqw
+         3KS6Scg8uht7UHOPdz5VHQTbpLtnTf/c7kxzLUTmONUhwMv4uMAu5/AmnKceNjJud5G3
+         iUXqnCnN5IcoANNZN9SpQjbj+8/V4qmBDFYph41a3nKv6Gzttfu+CmZRt9xa1iJDafKc
+         H1LMJiH8yT3puqElr0W5dYo3QTrQjE9c7nfrc9Xy4C5fl3WOPkAJE/Gt7ahXGAZdIBy5
+         JLcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780096205; x=1780701005;
+        d=1e100.net; s=20251104; t=1780096206; x=1780701006;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=gGt9CDCQhvrc554zC5zHa1xlVGIJZOefOO7uKdX/98c=;
-        b=q6bNcDXrmU/HIXwIlopbigE8i4YUCgHu8JRj3GNZOdCA1D9IkAlyZ1xVfLtdhpR4ma
-         C382456f5oanNbViOObNhxVoos8ZHhNyYmkagMG+PceL9foDRHBjgbRoRbnTzTJWSAQW
-         93QCJ2c15f9ZsCBpU0E1l0OxCmgBdCJvtD8E3BtDWjRS+0XbFRDwvrLq0RJ9SR1KiW9T
-         foeBNPrXrpiHaVGra9xSDMJusEVroG/vG7Cd2OpFPYobheVWuptApZ0zNEJaxt24fBgc
-         XI24yXorHZel9ex+vs/ADzd45ignYsruQMnaO/4Cg+kvAiMGehfj1bY4g6xrb/3MmLTa
-         d31w==
-X-Gm-Message-State: AOJu0YxgkapH/Pp/e9qKzW9Lfa4bg0TRk/7FKe7JRh4BFpWOc08ElwL6
-	DLaWS1fJdz6UbZRgEA173fXeZRIUejMFP2beGlgew54xIUizPJysL0rVA+E3Xw==
-X-Gm-Gg: Acq92OGwNQZPfeK/82DHpt6tdd/1VAu2aNH5Y+iMhusG0qK1fxEfxii7Im7uf4J+gY/
-	F/V8SyS+tU91Vv0Bpt8V0Z79j6KYoy5HWSYNSEVZDPzLHbyULL4vOkAKd4k+ZYc6s7aVqF5BaJj
-	4dLn+xvuIsJHDg4a0CERZ96E1Zqdkyip9/RenV5CdQmIWuaXKM+CgSKXS/rAnUglExUS2gbx32M
-	p1X/JVA7g3if/UU2e9KpqPXL2+bFUSQFW64QaszbtoaUZ8C8grM3mFpe0QEBS3tEnD/LPZvZ2R1
-	SW/2eD33fosSnFoc8eN9FjiSlSvk6cE1kVdWPbvYNAH7agrIjCtSTH9u1LPYNr1tRaZoFn6bbtt
-	Ziq/u+TRtKnjvkCCNkxpbt6myvOWG3f9Q/tKxUN2FKao2bSwrLaMHNBV/pjCNwj+F9TwmCt7Tlf
-	4QGobN0WNYIIyRmJbN
-X-Received: by 2002:a17:90b:1845:b0:36a:d6dd:9fee with SMTP id 98e67ed59e1d1-36c4ff6558bmr1123565a91.12.1780096204892;
-        Fri, 29 May 2026 16:10:04 -0700 (PDT)
+        bh=NkAFjs0pl9rNK9x4uY7qHoj5/e2KVlplxUNHi91E7I4=;
+        b=EOmrbTfXlWS27gpX4nuklMq6ihc2u5AaYt+nA5T2WxMPBWD84R1YGxcqjYqZkDUZf8
+         PrpNJ18cmXDLq6ou3ydGSQzDn/jXqnmc0wu6UtrZUmmdfMAuLnjCWTyYIBUtHktIFjGr
+         Hq33p91LDZl7cuUH3r5uFPHKAGyjlCck+UrRy0rwJ5nhG8ybb3RMlrAJczjSmid1Qv5p
+         eOo5UgqlkxS1GWKlpnt6lLD4jQlwBGu11kTe3BQqYQEfZPHdthsJtoi54p1h8seeODFW
+         55k5OSzNy+pzbcABeUul5J3/Fk4Y6n2jPQ4gkgbJHJsS3Sl+ODfVxLpl/bBqn5+5ohjd
+         4hgQ==
+X-Gm-Message-State: AOJu0YxsVbXUaZ1hlbKbZQ2WC0ZDB0Nn0d1O02L0VfvVbsP0djsFrnvS
+	FrM+WpdYKJXjBmyGuI5fIaNPIWoyDt8eXKQnlxVkKALZXXEWNsbrHbpb64iCXg==
+X-Gm-Gg: Acq92OFS5fIpaAYrc09TgZUw702nzvRBUWgoaDVK6ZDTZ0zARtTl78+2y9oPNkStDPU
+	tkOvUUrA10zut1ApkEayVSSsIrxUFu3boDMs7rUzZvICSm2oOci/F+jKYCeo+RFWzhwgVsOcg8f
+	EG1RVTQ6dIB0uCExFGpxqQZrwgyYDQ3+oGw/VRMNFPwFGlgQneOZqNTwfdgXgUTn+LeM/7VXNBX
+	rdZIFaxdbwQG+z7En8yD+CJ7IUKkdWhcMhgJmMTr5iI78ImPyZInxxbF27gtO2LSGn6ND4ocXTo
+	FuJsU+SPyoe/llRwLt+3+xLcUtqLjvENVEz6ikupJlwD/5n1CmLPVDORO0nTlGTsInNbu1QEcuw
+	Fk2348OH0hBRaE/83dKG7m8E+p17P8pUzutDItCK8HttxFi8c0xv5V+TgssUFc8h5bZOebHRnx3
+	q+IYC7clWBMwwEYwnplpaf7sCxKqE=
+X-Received: by 2002:a17:90a:c2cc:b0:35c:cba:3453 with SMTP id 98e67ed59e1d1-36c50217929mr1119291a91.22.1780096206172;
+        Fri, 29 May 2026 16:10:06 -0700 (PDT)
 Received: from ryzen9.. ([2a02:6ea0:d33b:6275::18])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36bc10c8746sm2512632a91.0.2026.05.29.16.10.03
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36bc10c8746sm2512632a91.0.2026.05.29.16.10.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 16:10:04 -0700 (PDT)
+        Fri, 29 May 2026 16:10:05 -0700 (PDT)
 From: Masashi Honma <masashi.honma@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: johannes@sipsolutions.net,
 	Masashi Honma <masashi.honma@gmail.com>
-Subject: [PATCH v9 6/9] wifi: mac80211: Fix PERR frame processing
-Date: Sat, 30 May 2026 08:09:48 +0900
-Message-ID: <20260529230952.124754-6-masashi.honma@gmail.com>
+Subject: [PATCH v9 7/9] Add KUnit test for ieee80211_mesh_preq_size_ok
+Date: Sat, 30 May 2026 08:09:49 +0900
+Message-ID: <20260529230952.124754-7-masashi.honma@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260529230952.124754-1-masashi.honma@gmail.com>
 References: <20260529230952.124754-1-masashi.honma@gmail.com>
@@ -96,7 +96,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -106,10 +106,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FREEMAIL_CC(0.00)[sipsolutions.net,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37163-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37164-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -120,117 +120,140 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B7E1F609A2C
+X-Rspamd-Queue-Id: 7B7B2609A34
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-There are no issues with the PERR processing itself; however, to maintain
-consistency with the previous PREQ/PREP code modifications, I will create a
-new mesh_path_parse_error_frame() function to separately implement the
-frame format validation and the "not supported" check.
-
 Signed-off-by: Masashi Honma <masashi.honma@gmail.com>
 ---
- include/linux/ieee80211-mesh.h | 36 ++++++++++++++++++++++++++++++++++
- net/mac80211/mesh_hwmp.c       | 18 +++++++++++++++--
- net/mac80211/parse.c           |  9 +++++++--
- 3 files changed, 59 insertions(+), 4 deletions(-)
+ net/mac80211/tests/elems.c | 105 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 105 insertions(+)
 
-diff --git a/include/linux/ieee80211-mesh.h b/include/linux/ieee80211-mesh.h
-index 482ac0c6d759..7eb15834531c 100644
---- a/include/linux/ieee80211-mesh.h
-+++ b/include/linux/ieee80211-mesh.h
-@@ -403,4 +403,40 @@ static inline bool ieee80211_mesh_prep_size_ok(const u8 *pos, u8 elen)
- 	return elen == needed;
+diff --git a/net/mac80211/tests/elems.c b/net/mac80211/tests/elems.c
+index 1039794a0183..576ba746a526 100644
+--- a/net/mac80211/tests/elems.c
++++ b/net/mac80211/tests/elems.c
+@@ -9,6 +9,94 @@
+ 
+ MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
+ 
++static const struct mesh_preq_parse_test_case {
++	const char *desc;
++	u8 len;
++	bool ae_enabled;
++	u8 target_count;
++	bool result;
++} mesh_preq_parse_cases[] = {
++	{
++		.desc = "shorter than header",
++		.len = 16,
++		.ae_enabled = false,
++		.target_count = 1,
++		.result = false,
++	},
++	{
++		.desc = "too short non AE, target count is not included",
++		.len = 29,
++		.ae_enabled = false,
++		.target_count = 1,
++		.result = false,
++	},
++	{
++		.desc = "too short non AE, target count is 1",
++		.len = 36,
++		.ae_enabled = false,
++		.target_count = 1,
++		.result = false,
++	},
++	{
++		.desc = "too short AE, target count is not included",
++		.len = 35,
++		.ae_enabled = true,
++		.target_count = 1,
++		.result = false,
++	},
++	{
++		.desc = "too short AE, target count is 1",
++		.len = 42,
++		.ae_enabled = true,
++		.target_count = 1,
++		.result = false,
++	},
++	{
++		.desc = "target count is zero",
++		.len = 26,
++		.ae_enabled = false,
++		.target_count = 0,
++		.result = false,
++	},
++	{
++		.desc = "target count is 21",
++		.len = 255,
++		.ae_enabled = false,
++		.target_count = 21,
++		.result = false,
++	},
++	{
++		.desc = "non AE, target count is 1",
++		.len = 37,
++		.ae_enabled = false,
++		.target_count = 1,
++		.result = true,
++	},
++	{
++		.desc = "non AE, target count is 20",
++		.len = 246,
++		.ae_enabled = false,
++		.target_count = 20,
++		.result = true,
++	},
++	{
++		.desc = "AE, target count is 1",
++		.len = 43,
++		.ae_enabled = true,
++		.target_count = 1,
++		.result = true,
++	},
++	{
++		.desc = "AE, target count is 20",
++		.len = 252,
++		.ae_enabled = true,
++		.target_count = 20,
++		.result = true,
++	},
++};
++
++KUNIT_ARRAY_PARAM_DESC(mesh_preq_parse, mesh_preq_parse_cases, desc);
++
+ static void mle_defrag(struct kunit *test)
+ {
+ 	struct ieee80211_elems_parse_params parse_params = {
+@@ -91,8 +179,25 @@ static void mle_defrag(struct kunit *test)
+ 	kfree_skb(skb);
  }
  
-+/* IEEE Std 802.11-2016 9.4.2.115 PERR element */
-+static inline bool ieee80211_mesh_perr_size_ok(const u8 *pos, u8 elen)
++static void mesh_preq_parse(struct kunit *test)
 +{
-+	struct ieee80211_mesh_hwmp_perr *perr_elem = (void *)pos;
-+	const u8 *start = pos;
-+	u8 number_of_dst;
-+	int needed;
-+	int i;
++	const struct mesh_preq_parse_test_case *params = test->param_value;
++	u8 data[64] = {};
++	struct ieee80211_mesh_hwmp_preq_top *top = (void *)data;
++	struct ieee80211_mesh_hwmp_preq_bottom *bottom;
 +
-+	needed = sizeof(struct ieee80211_mesh_hwmp_perr);
++	top->flags = params->ae_enabled ? AE_F : 0;
++	bottom = ieee80211_mesh_hwmp_preq_get_bottom(data);
++	bottom->target_count = params->target_count;
 +
-+	/* Check if the element contains number of dst */
-+	if (elen < needed)
-+		return false;
-+
-+	pos += sizeof(struct ieee80211_mesh_hwmp_perr);
-+	number_of_dst = perr_elem->number_of_dst;
-+
-+	for (i = 0; i < number_of_dst; i++) {
-+		struct ieee80211_mesh_hwmp_perr_dst *dst = (void *)pos;
-+		u8 dst_len = sizeof(struct ieee80211_mesh_hwmp_perr_dst);
-+
-+		/* Check if the element contains flags */
-+		if (elen < pos - start + dst_len)
-+			return false;
-+
-+		dst_len += ((dst->flags & AE_F) ? ETH_ALEN : 0)
-+			  /* Destination External Address */ +
-+			  2 /* Reason Code */;
-+		needed += dst_len;
-+		pos += dst_len;
-+	}
-+
-+	return elen == needed;
++	KUNIT_EXPECT_EQ(test,
++			ieee80211_mesh_preq_size_ok(data, params->len),
++			params->result);
 +}
 +
- #endif /* LINUX_IEEE80211_MESH_H */
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index f07e57d5568a..84903737271d 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -957,9 +957,23 @@ void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
- 						path_metric);
- 	}
- 	if (elems->perr) {
--		if (elems->perr_len != 15)
--			/* Right now we support only one destination per PERR */
-+		struct ieee80211_mesh_hwmp_perr *perr_elem =
-+			(struct ieee80211_mesh_hwmp_perr *)elems->perr;
-+		int i;
-+
-+		/* Right now we support only one destination per PERR */
-+		if (perr_elem->number_of_dst != 1)
- 			goto free;
-+
-+		/* Right now we do not support AE (Address Extension) */
-+		for (i = 0; i < perr_elem->number_of_dst; i++) {
-+			struct ieee80211_mesh_hwmp_perr_dst *dst =
-+				ieee80211_mesh_hwmp_perr_get_dst(elems->perr, i);
-+
-+			if (dst->flags & AE_F)
-+				goto free;
-+		}
-+
- 		hwmp_perr_frame_process(sdata, mgmt, elems->perr);
- 	}
- 	if (elems->rann)
-diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index 97508b141b8c..c44e81a2f80d 100644
---- a/net/mac80211/parse.c
-+++ b/net/mac80211/parse.c
-@@ -581,8 +581,13 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
- 			}
- 			break;
- 		case WLAN_EID_PERR:
--			elems->perr = pos;
--			elems->perr_len = elen;
-+			if (ieee80211_mesh_perr_size_ok(pos, elen)) {
-+				elems->perr = pos;
-+				elems->perr_len = elen;
-+			} else {
-+				elem_parse_failed =
-+					IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
-+			}
- 			break;
- 		case WLAN_EID_RANN:
- 			if (elen >= sizeof(struct ieee80211_rann_ie))
+ static struct kunit_case element_parsing_test_cases[] = {
+ 	KUNIT_CASE(mle_defrag),
++	KUNIT_CASE_PARAM(mesh_preq_parse, mesh_preq_parse_gen_params),
+ 	{}
+ };
+ 
 -- 
 2.43.0
 
