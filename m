@@ -1,261 +1,242 @@
-Return-Path: <linux-wireless+bounces-37169-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37170-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aI0qKwpaGmqN3wgAu9opvQ
-	(envelope-from <linux-wireless+bounces-37169-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 05:31:22 +0200
+	id sNCRKT3EGmpw8QgAu9opvQ
+	(envelope-from <linux-wireless+bounces-37170-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 13:04:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F8360B2C1
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 05:31:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2C560C53D
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 13:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 726CE303132A
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 03:28:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 02F7630187B1
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 11:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4481329C6B;
-	Sat, 30 May 2026 03:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D6D3A8745;
+	Sat, 30 May 2026 11:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dyNCgHnT"
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="hF98J4lt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtpcmd0757.aruba.it (smtpcmd0757.aruba.it [62.149.156.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2303F3090F4
-	for <linux-wireless@vger.kernel.org>; Sat, 30 May 2026 03:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCFB3A7590
+	for <linux-wireless@vger.kernel.org>; Sat, 30 May 2026 11:04:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.156.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780111697; cv=none; b=Io57CY+dep10XSmnUdBtxjdgb6WuzNTh0Zfcskb2ALFerW5x1yEQg7CymSTQxNr4JHUGL8uJ70J6crG8skCav2SnITO28V/Htr8bTFq7J6LOK0xBtU+UUhE47ki+vsIQXhB5RRDl8tKF/9Yy+7vD1ykOvpGRPbwy35HdGaiN8to=
+	t=1780139065; cv=none; b=CV32bqrtjDvHsTNi63lzWbvsK0tGBcUwtsPYil7IP8sa7KOFM2nlQ3BON0033weiiQwPKbpvcfbJWSKB4OS0+LJH0JXOsFw8671ngCOsRIaw7vreVCTbrYOpibwk2IVdH9F5xn5Z0VpCDRYWDQnuA0O6VOJL8Ex56uA8Mxt9sDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780111697; c=relaxed/simple;
-	bh=C5pDH2/VLG552lAD3BlcaSTSEzWB0UZdP/0Trm++DgA=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=QHAXfoOUot/819ezR/4p3ckeWLHcSEsMuWQhvBeDLzLXEeIn8QlzbiYmRd2HvJ49FO2YWmFGXc+WseHqUvJ6Ds3B7a4hZXWBnlKBZENTb5k5EPerzPHbmSTxgs+hayUNUOHzNzIuSJvyebMMflUQoyN4R/ajk9r9zwmd+Upo6L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dyNCgHnT; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780111695; x=1811647695;
-  h=date:from:to:cc:subject:message-id;
-  bh=C5pDH2/VLG552lAD3BlcaSTSEzWB0UZdP/0Trm++DgA=;
-  b=dyNCgHnTUBVWYHxg2nFXs3XhtfO+M/R4VCpEdcvae6Ll9fAjK8l3jJqY
-   CbTinD6/VgiLV6jo0Yxsvu0F6qiH7+JL6qCnR1qDECpP03Iezu0HSxqzx
-   0bT6JUMinJ/nZ+/I+P88xYh7YUT9BtDFZ6I8tdbf51zOSc0c2INKF44/e
-   jHIC0HaMrrmXuBaQfryp5cQ0d4oDrWG3ChiL9gwR+Ry8O0ljU5uECQf3s
-   /HP01j+EyILqgkV5yTyN6paadYj//wMjYkKTKMlSw6690TiECU/c7ZsvD
-   +npu2AZQmv2F3YR9iCH1ON6NhBCR6DoPrTwx72kBE3uTbEeCc8Oiu+hOR
-   Q==;
-X-CSE-ConnectionGUID: beyEtCF0S8i8TUXPBZLtPA==
-X-CSE-MsgGUID: WHI7dJpNSPe3W5rTUjvABg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11801"; a="79994378"
-X-IronPort-AV: E=Sophos;i="6.24,176,1774335600"; 
-   d="scan'208";a="79994378"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 20:28:14 -0700
-X-CSE-ConnectionGUID: FtpEPBdETUu/nWXh9E76zg==
-X-CSE-MsgGUID: ay/LHfrYTjqAHysX3sYLuQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,176,1774335600"; 
-   d="scan'208";a="243111218"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 29 May 2026 20:28:13 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wTAMs-0000000084U-1955;
-	Sat, 30 May 2026 03:28:10 +0000
-Date: Sat, 30 May 2026 11:27:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- e7d6bd24e883bf7c328d73c99bf6bcde19bf5e61
-Message-ID: <202605301150.zFTo1N5o-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1780139065; c=relaxed/simple;
+	bh=ql10+8xRiIzQXjadTxmnZisxTkDNSdk8C5q/jqCPnEY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JV2rXxOOJtBMGUZ1Ok48vV4cg0rSGRsXjLKT9/Uw9jZjU9SfKMQmLdrQmXMPm9hmJhCHqpM6K1ERdNq4Q9gb2b7DsZJ9mrtf2XEFBQ2FnPUL6PzwHyuKoNl+OqRDT/UrofdcQTLXjCFl8UQlARcuBR7aquG8bBz0LA84H4B7uKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=hF98J4lt; arc=none smtp.client-ip=62.149.156.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
+Received: from [192.168.0.186] ([109.118.80.246])
+	by Aruba SMTP with ESMTPSA
+	id THUBwvKe7tpTfTHUCwL2Xb; Sat, 30 May 2026 13:04:14 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+	t=1780139054; bh=ql10+8xRiIzQXjadTxmnZisxTkDNSdk8C5q/jqCPnEY=;
+	h=Date:MIME-Version:Subject:To:From:Content-Type;
+	b=hF98J4lt1nU6TI38hjDN7wAYPP66gs0eVJQfVgrs0VkzBH65bs4Z04X+eqAtJ2Cpy
+	 fFMQPIhRx0xJeXdXZvWhhT3uIqZcsYRSsfUIkyCyU7XclnLEBVNtOz3D5mTg6Wc/EQ
+	 N86qIL/WGlwv33vGt1wq+95wpVdMV61kaeO/exL/p/mYXyav1Ip45lF+vyDU5H/VCE
+	 JSlQxaUKjb50HbnEUIvvQvUDF/DHLBDJOmOzYMyhNDTn6Rf/B2lBVD7NFUyqPwH+KA
+	 u4P9RbKPGW4KlUea+gJJTMpYjut46mvcCaDVEnMVwK9QZ6IOuSeJjqW4qNKJ0jdest
+	 zy48G9YUqdgqQ==
+Message-ID: <86b5b571-824d-40b7-924f-6e1d4bf58d8b@enneenne.com>
+Date: Sat, 30 May 2026 13:04:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-0.66 / 15.00];
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [patch V2 03/25] pps: generators: Use ktime_get_real_ts64()
+ instead of ktime_get_snapshot()
+Content-Language: en-US
+To: Thomas Gleixner <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+ Miroslav Lichvar <mlichvar@redhat.com>, John Stultz <jstultz@google.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Frederic Weisbecker <frederic@kernel.org>, thomas.weissschuh@linutronix.de,
+ Arthur Kiyanovski <akiyano@amazon.com>,
+ Vincent Donnefort <vdonnefort@google.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev,
+ Oliver Upton <oupton@kernel.org>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ Takashi Iwai <tiwai@suse.com>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Johannes Berg <johannes.berg@intel.com>,
+ Jacob Keller <jacob.e.keller@intel.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>, Saeed Mahameed
+ <saeedm@nvidia.com>, Peter Hilber <peter.hilber@oss.qualcomm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev,
+ linux-wireless@vger.kernel.org, linux-sound@vger.kernel.org,
+ David Woodhouse <dwmw@amazon.co.uk>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>
+References: <20260529193435.921555544@kernel.org>
+ <20260529195557.074439049@kernel.org>
+From: Rodolfo Giometti <giometti@enneenne.com>
+In-Reply-To: <20260529195557.074439049@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfCJ4L6AvktiBiSjgdZHz6cd9G2cR3VoqAhOyLFZMlg2ukyXgpcoRDfIf42yajPI8mJBtuEmbaYcgebabmcEyNfb5V2AkY0KKGxs4D8kFPqg0j68KJE3J
+ Yvxknvg3dHFQC/aKOSX5dv+Ry5tghm0g49aQk4oM0kY/Gijw5KC7j+eegpXH8Wk8XwVQVCNNkZumNpU/yUAHQw8lft/nr9CCzuIsTNcqR0HJvrOKcdj65QZM
+ 8rye27fAUDEUpLY6Tr89jYlsM/2wPmxhwkmbdBbUVDsYh3C9v38aAIsY4V8aFZjpKraNPFW4903gB3FtMzhAnvKS9+siK5ekieMHnN7gD6KZGQxxu7XPdtxr
+ k0eEpab987THqcDO/6E2HJVt2Tk898anHlepE0cHJuuOfo3mqR+RxlLPL9oLI5RwNR1Jj86BZkC3kkkHoRuW47iSxDqCi+cCbPNR8QT+KCTW4CFOCJnVR4Yo
+ Rs18jeV3qCLoamvFfGjOQOGc7UnOX3VeBJMjYOxM2kGSQL9c1lNQJ9sSJ1091rNF/HKfCkbNfdXpyvJIQp8SGhJa7hNHuAdhTu7BqYUqIoT6nBt8oLg07SVv
+ +DFvG1XNqwxUC2QLYxzy/HT0RwvXLZ4b+xnuah5tQ2knl/5qMJ5JP8f/ZTnsJt4S7MhfxToAgxP6pmC1XrH38iPZp49LKrn3ZyFswbgja8wO29M5cjK71Doa
+ sZgGk06o6xKfAF/v7XzrgK0p6ohngW6G+CQaKrW6hvGzZVCz+P/YuIitQAhDcbBAOn44lQ9kB3rk2PrHCqV133Nha9VjiWRAQAcqsopCelGWdQ5DVKiYGIB8
+ j8RkiRITBwJz7xLLRWGPV9qUOwrRxc5cKAsMzbTCVVQU6u2LbKl87+wnNNTZcVWq3AzwuOD3dw0db67dRKSqlrn6X+YIOn3A/K+oMiO7DnYDipxB5QBu5yuM
+ wVwn2KMT2JC2mDpjNz+V4shk2gKEZz8cMDC0xTZKey2ePfoHada9STI694BrUVNVrP0QGH1/ANPvccrxRMSxKRbEtCIPkXUbQs4ccndlXmrv2Eb9ouVIq3Sl
+ t0MsxK6jwZvU/tiFFhBMBO5PwSkW6A1GzEcJzr5qE/Ecvlgcp/glIAIT8Lrp0gr6Bxzrtv/PLh8vrlTeuETdK1eQQfE8cvoBaqFaClotMSf2bZ4AtbSXuMXc
+ e6BR2eUFWvhou56Zt0WkDA==
+X-Spamd-Result: default: False [-1.56 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[aruba.it:s=a1];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[enneenne.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37169-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37170-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[30];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,linux.dev,lists.linux.dev,gmail.com,vger.kernel.org,suse.com,intel.com,nvidia.com,oss.qualcomm.com,amazon.co.uk];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[giometti@enneenne.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[aruba.it:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 04F8360B2C1
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[aruba.it:dkim,amazon.co.uk:email,intel.com:email,linutronix.de:email]
+X-Rspamd-Queue-Id: 3A2C560C53D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: e7d6bd24e883bf7c328d73c99bf6bcde19bf5e61  Merge tag 'wireless-next-2026-05-28' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
+On 29/05/2026 21:59, Thomas Gleixner wrote:
+> From: Thomas Gleixner <tglx@kernel.org>
+> 
+> There is no reason to use the more complex ktime_get_snapshot() for
+> retrieving CLOCK_REALTIME.
+> 
+> Just use ktime_get_real_ts64(), which avoids the extra timespec64
+> conversion as a bonus.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Tested-by: Arthur Kiyanovski <akiyano@amazon.com>
+> Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+> Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 
-elapsed time: 1631m
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
 
-configs tested: 135
-configs skipped: 78
+> ---
+>   drivers/pps/generators/pps_gen-dummy.c |    6 +-----
+>   drivers/pps/generators/pps_gen_tio.c   |    6 +-----
+>   2 files changed, 2 insertions(+), 10 deletions(-)
+> --- a/drivers/pps/generators/pps_gen-dummy.c
+> +++ b/drivers/pps/generators/pps_gen-dummy.c
+> @@ -39,11 +39,7 @@ static void pps_gen_ktimer_event(struct
+>   static int pps_gen_dummy_get_time(struct pps_gen_device *pps_gen,
+>   					struct timespec64 *time)
+>   {
+> -	struct system_time_snapshot snap;
+> -
+> -	ktime_get_snapshot(&snap);
+> -	*time = ktime_to_timespec64(snap.real);
+> -
+> +	ktime_get_real_ts64(time);
+>   	return 0;
+>   }
+>   
+> --- a/drivers/pps/generators/pps_gen_
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+From: Thomas Gleixner <tglx@kernel.org>
 
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-alpha                               defconfig    gcc-15.2.0
-arc                               allnoconfig    gcc-15.2.0
-arc                                 defconfig    gcc-15.2.0
-arc                   randconfig-001-20260530    gcc-14.3.0
-arc                   randconfig-002-20260530    gcc-14.3.0
-arm                               allnoconfig    clang-23
-arm                               allnoconfig    gcc-15.2.0
-arm                              allyesconfig    gcc-15.2.0
-arm                                 defconfig    gcc-15.2.0
-arm                   randconfig-001-20260530    gcc-13.4.0
-arm                   randconfig-001-20260530    gcc-14.3.0
-arm                   randconfig-002-20260530    gcc-11.5.0
-arm                   randconfig-002-20260530    gcc-14.3.0
-arm                   randconfig-003-20260530    clang-23
-arm                   randconfig-003-20260530    gcc-14.3.0
-arm                   randconfig-004-20260530    clang-23
-arm                   randconfig-004-20260530    gcc-14.3.0
-arm                             rpc_defconfig    clang-18
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.2.0
-arm64                               defconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                                defconfig    gcc-15.2.0
-hexagon                          allmodconfig    gcc-15.2.0
-hexagon                           allnoconfig    gcc-15.2.0
-hexagon                             defconfig    gcc-15.2.0
-hexagon               randconfig-001-20260530    clang-23
-hexagon               randconfig-002-20260530    clang-23
-i386                             allmodconfig    clang-20
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-15.2.0
-i386                             allyesconfig    clang-20
-i386                                defconfig    gcc-15.2.0
-i386                  randconfig-001-20260530    clang-20
-i386                  randconfig-002-20260530    clang-20
-i386                  randconfig-003-20260530    clang-20
-i386                  randconfig-004-20260530    clang-20
-i386                  randconfig-005-20260530    clang-20
-i386                  randconfig-006-20260530    clang-20
-i386                  randconfig-007-20260530    clang-20
-loongarch                         allnoconfig    gcc-15.2.0
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20260530    clang-23
-loongarch             randconfig-002-20260530    clang-23
-m68k                              allnoconfig    gcc-15.2.0
-m68k                                defconfig    clang-19
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                          defconfig    clang-19
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-nios2                            allmodconfig    clang-23
-nios2                             allnoconfig    clang-23
-nios2                               defconfig    clang-19
-nios2                 randconfig-001-20260530    clang-23
-nios2                 randconfig-002-20260530    clang-23
-openrisc                         allmodconfig    clang-23
-openrisc                          allnoconfig    clang-23
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    clang-23
-parisc                           allyesconfig    clang-19
-parisc                randconfig-001-20260530    gcc-8.5.0
-parisc                randconfig-002-20260530    gcc-8.5.0
-parisc64                            defconfig    clang-19
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    clang-23
-powerpc               randconfig-001-20260530    gcc-8.5.0
-powerpc               randconfig-002-20260530    gcc-8.5.0
-powerpc64             randconfig-001-20260530    gcc-8.5.0
-powerpc64             randconfig-002-20260530    gcc-8.5.0
-riscv                             allnoconfig    clang-23
-riscv                 randconfig-001-20260530    gcc-12.5.0
-riscv                 randconfig-002-20260530    gcc-12.5.0
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-15.2.0
-s390                  randconfig-001-20260530    gcc-12.5.0
-s390                  randconfig-002-20260530    gcc-12.5.0
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    clang-23
-sh                               allyesconfig    clang-19
-sh                                  defconfig    gcc-14
-sh                    randconfig-001-20260530    gcc-12.5.0
-sh                    randconfig-002-20260530    gcc-12.5.0
-sparc                             allnoconfig    clang-23
-sparc                 randconfig-001-20260530    gcc-9.5.0
-sparc                 randconfig-002-20260530    gcc-9.5.0
-sparc64                          allmodconfig    clang-23
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260530    gcc-9.5.0
-sparc64               randconfig-002-20260530    gcc-9.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-23
-um                               allyesconfig    gcc-15.2.0
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260530    gcc-9.5.0
-um                    randconfig-002-20260530    gcc-9.5.0
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                            allnoconfig    clang-23
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20260530    gcc-14
-x86_64      buildonly-randconfig-002-20260530    gcc-14
-x86_64      buildonly-randconfig-003-20260530    gcc-14
-x86_64      buildonly-randconfig-004-20260530    gcc-14
-x86_64      buildonly-randconfig-005-20260530    gcc-14
-x86_64      buildonly-randconfig-006-20260530    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-011-20260530    gcc-14
-x86_64                randconfig-012-20260530    gcc-14
-x86_64                randconfig-013-20260530    gcc-14
-x86_64                randconfig-014-20260530    gcc-14
-x86_64                randconfig-015-20260530    gcc-14
-x86_64                randconfig-016-20260530    gcc-14
-x86_64                randconfig-071-20260530    gcc-14
-x86_64                randconfig-072-20260530    gcc-14
-x86_64                randconfig-073-20260530    gcc-14
-x86_64                randconfig-074-20260530    gcc-14
-x86_64                randconfig-075-20260530    gcc-14
-x86_64                randconfig-076-20260530    gcc-14
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-23
-xtensa                           allyesconfig    clang-23
-xtensa                randconfig-001-20260530    gcc-9.5.0
-xtensa                randconfig-002-20260530    gcc-9.5.0
+There is no reason to use the more complex ktime_get_snapshot() for
+retrieving CLOCK_REALTIME.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Just use ktime_get_real_ts64(), which avoids the extra timespec64
+conversion as a bonus.
+
+No functional change intended.
+
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Tested-by: Arthur Kiyanovski <akiyano@amazon.com>
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+  drivers/pps/generators/pps_gen-dummy.c |    6 +-----
+  drivers/pps/generators/pps_gen_tio.c   |    6 +-----
+  2 files changed, 2 insertions(+), 10 deletions(-)
+--- a/drivers/pps/generators/pps_gen-dummy.c
++++ b/drivers/pps/generators/pps_gen-dummy.c
+@@ -39,11 +39,7 @@ static void pps_gen_ktimer_event(struct
+  static int pps_gen_dummy_get_time(struct pps_gen_device *pps_gen,
+  					struct timespec64 *time)
+  {
+-	struct system_time_snapshot snap;
+-
+-	ktime_get_snapshot(&snap);
+-	*time = ktime_to_timespec64(snap.real);
+-
++	ktime_get_real_ts64(time);
+  	return 0;
+  }
+
+--- a/drivers/pps/generators/pps_gen_tio.c
++++ b/drivers/pps/generators/pps_gen_tio.c
+@@ -189,11 +189,7 @@ static int pps_tio_gen_enable(struct pps
+  static int pps_tio_get_time(struct pps_gen_device *pps_gen,
+  			    struct timespec64 *time)
+  {
+-	struct system_time_snapshot snap;
+-
+-	ktime_get_snapshot(&snap);
+-	*time = ktime_to_timespec64(snap.real);
+-
++	ktime_get_real_ts64(time);
+  	return 0;
+  }
+
+
+tio.c
+> +++ b/drivers/pps/generators/pps_gen_tio.c
+> @@ -189,11 +189,7 @@ static int pps_tio_gen_enable(struct pps
+>   static int pps_tio_get_time(struct pps_gen_device *pps_gen,
+>   			    struct timespec64 *time)
+>   {
+> -	struct system_time_snapshot snap;
+> -
+> -	ktime_get_snapshot(&snap);
+> -	*time = ktime_to_timespec64(snap.real);
+> -
+> +	ktime_get_real_ts64(time);
+>   	return 0;
+>   }
+>   
+> 
+
+
+-- 
+GNU/Linux Solutions                  e-mail: giometti@enneenne.com
+Linux Device Driver                          giometti@linux.it
+Embedded Systems                     phone:  +39 349 2432127
+UNIX programming
 
