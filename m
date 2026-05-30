@@ -1,210 +1,214 @@
-Return-Path: <linux-wireless+bounces-37173-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37174-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BWjHGnPGmo59AgAu9opvQ
-	(envelope-from <linux-wireless+bounces-37173-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 13:52:09 +0200
+	id xzinNnYBG2rL+QgAu9opvQ
+	(envelope-from <linux-wireless+bounces-37174-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 17:25:42 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F16E60CA55
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 13:52:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CEE60DB69
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 17:25:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BCF323037EC5
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 11:50:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7AE2301570B
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 15:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDA83ACEFE;
-	Sat, 30 May 2026 11:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0290D2D3750;
+	Sat, 30 May 2026 15:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BomKkdOS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CTE9Cz4C"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50863955D3;
-	Sat, 30 May 2026 11:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EFF27B32C
+	for <linux-wireless@vger.kernel.org>; Sat, 30 May 2026 15:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780141804; cv=none; b=s6tpCrAcZSjwLQsZFZKuDGgJmlEaroaSkiQi+wW83do7iNQjDxBTpucU8n90IRikAI5TwEafkJcww1jSUa/FJPfklHLIggTnf/MiITv7p63e+15oknpCVM+ptYzsGCoMct3TTaklHG2/QQaEEW4+A7CIyyqrRD3178BgyLt3u5s=
+	t=1780154739; cv=none; b=ouFJ3M64klymi+a4g8Og4lUHYM3OyObf7nipdwQCepFzuCQX+jiuaCVhzJSxw0yX/agxaDTLSuZ4x4TP2rSY4g4o8MyrmHRRtCW7UjFK6L88cC7lNHH6xkIV9mK25zlHeeEAmb+4PjENQQSSNYlBzys3889s8HgCdSRUQpGOFmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780141804; c=relaxed/simple;
-	bh=1GPghIQVAUeI8K2DXi3bxs3ZioulkywxwVAgcohx/34=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VQ4ka9MINn7Hl8uitB8zY+MLTQgJ5IrH62XING408C+zCkAgW2n6mV/4xT96PJ04gEw1PNWe4j0pmlxrlHKbzPbWUOWrGTEeGJ3HbZnPvpZmaN11+ZkGS4RkhZr574w2pUIPjGzwiDCC4zgsrjc/jnJm/m3wllyXfbVOL4D6nl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BomKkdOS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CC61F00893;
-	Sat, 30 May 2026 11:50:02 +0000 (UTC)
+	s=arc-20240116; t=1780154739; c=relaxed/simple;
+	bh=+ODU18piNym2rm1K9uSelFt+iNDp/0MqUsJvcURV8ws=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=V942znymrKaLQD57CELg5+V32vDyP75EDepSd4EZJOwC02E1W/hMlgjHp6vbM3qqjtw6jPQYtUS6dCHaG7RZfIuc0qcCZeIpU3N1LXxQg5S5l3Xgise+UB7X9ZhjpoUkGV4UEgVUmeSSQi2ETX1O1s3ymeq5u9zBs00zI6MSzRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CTE9Cz4C; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF681F00893;
+	Sat, 30 May 2026 15:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780141803;
-	bh=7vDykY6wQIKMdW6dV3P8fQxfFzf8xBVMvGruxgzJYjk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BomKkdOS8U8MIU8eMNBY7sVB3hoVc9VJdkUjmVI3Ac/HBqLwxMkwxJfQKMT7I0GhG
-	 PP/RJvxlbgg+ZksCjj7KIoerTnJSyEi8/NeczDaF/9waIol9F9+HfxDHFMIyJLVbhE
-	 EudTXcRQHdwkVp8Ci/ssK3UqLKiDDwrkqOIC9wfbmr+iTuoMKAanuYAamAI+CGbWc2
-	 QzLxk4Z9/2Mzrgav4rnMLX3xNdtSh5C5yUERXBfv/+7VkG6nl5248DpaP33yLTTCnY
-	 +MRHeO4CrdNqahhc6KqEeXa3t3lO9L1+eGChXEx3vZBAkbzqU6x5Fw1P6/6Zqc48y9
-	 jPHMIL4cG3xNw==
-Date: Sat, 30 May 2026 13:50:00 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Alessio Ferri <alessio.ferri@mythread.it>
-Cc: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH 3/4] dt-bindings: bus: add brcm,bcm6362-wlan
-Message-ID: <20260530-psychedelic-cyber-seagull-140adf@quoll>
-References: <20260529-add-bcm6362-wlan-v1-0-722242777f58@gmail.com>
- <20260529-add-bcm6362-wlan-v1-3-722242777f58@gmail.com>
+	s=k20260515; t=1780154738;
+	bh=iecpMyBy5MTB0RQzT2oRMj4VPEdKJVOMMF3dhEPLQ5A=;
+	h=From:Date:Subject:To:Cc;
+	b=CTE9Cz4CnOBOBMH4lbuzHJRRx6S4pJAjmaSczNC8VC5sRDnJTx7I7837TS5Bpm46U
+	 ll9yL07TMB9RYVEB0+CTM0dh9GMY00t240I1pkPMa89qgY/onkSXA9jy2nqwKhctYL
+	 GAcPfvF9iUiobumycm/nNMbZGKoCVc7Vi4tAoL4pvvKmTEB8fLaTuKo3JBA+C4mXWD
+	 Vh9UtzQAQa/a6WgmcSkgQYUyTyJbd6Kua0aIcC6DbgAoLv9pyPEjcHj6GzRDw8BXrt
+	 L6Mt1+AUoXAUEiTexw5RK8LqXAVr2R0SxFgtfHYavFeviFSmdBFNg24RQIj4NbXb8S
+	 pPJh+KOTDcCmQ==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Sat, 30 May 2026 17:25:22 +0200
+Subject: [PATCH] wifi: mt76: mt7996: fix reading zeroed info->control.flags
+ after mt76_tx_status_skb_add()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260529-add-bcm6362-wlan-v1-3-722242777f58@gmail.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260530-mt76_tx_status_skb_add-overwrite-fix-v1-1-e2c3151c391a@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2N0QrCMAwAf2Xk2UC7sVn9FZHS2kyDuEkS52Ds3
+ y0+3j3cbaAkTArnZgOhhZXnqYI/NHB7pOlOyKUytK4dXN85fNlxiLZGtWQfjfrMMZWC80LyFTb
+ CkVcMffAhnXLu/Ag19Raq+r+5XPf9B00r8Lh2AAAA
+X-Change-ID: 20260530-mt76_tx_status_skb_add-overwrite-fix-85818a9bb31f
+To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Bo Jiao <Bo.Jiao@mediatek.com>, Peter Chiu <chui-hao.chiu@mediatek.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Roy Luo <roy-ch.luo@mediatek.com>, linux-wireless@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+X-Mailer: b4 0.14.3
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37173-lists,linux-wireless=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail];
+	TAGGED_FROM(0.00)[bounces-37174-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,pengutronix.de,broadcom.com,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[nbd.name,mediatek.com,gmail.com,collabora.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[devicetree.org:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mythread.it:email]
-X-Rspamd-Queue-Id: 1F16E60CA55
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 30CEE60DB69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, May 29, 2026 at 02:06:01AM +0200, Alessio Ferri wrote:
-> Document the binding for the SHIM bridge that gates the on-chip
-> 2.4 GHz WLAN block of the Broadcom BCM6362 SoC. The bridge owns the
-> SHIM peephole, a single clock for the macro, and two resets (the
-> SHIM macro itself and its ubus side). It is also a bus: it carries
-> one brcm,bus-axi child describing the bcma backplane behind the
-> SHIM, with a standard interrupt-map routing the d11 core's IRQ to
-> the SoC interrupt controller.
-> 
-> Assisted-by: Claude:claude-4.8-opus
-> Signed-off-by: Alessio Ferri <alessio.ferri@mythread.it>
-> ---
->  .../devicetree/bindings/bus/brcm,bcm6362-wlan.yaml | 106 +++++++++++++++++++++
->  1 file changed, 106 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/bus/brcm,bcm6362-wlan.yaml b/Documentation/devicetree/bindings/bus/brcm,bcm6362-wlan.yaml
-> new file mode 100644
-> index 000000000000..c8d49ccdd2c1
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/bus/brcm,bcm6362-wlan.yaml
-> @@ -0,0 +1,106 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/bus/brcm,bcm6362-wlan.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Broadcom BCM6362 on-chip WLAN SHIM bridge
-> +
-> +maintainers:
-> +  - Alessio Ferri <alessio.ferri@mythread.it>
-> +
-> +description: |
-> +  The BCM6362 SoC integrates a 2.4 GHz Broadcom WLAN block whose
-> +  register backplane uses the Broadcom AMBA (bcma) architecture. The
-> +  backplane is gated by a small SHIM bridge that holds the WLAN macro
-> +  in reset and disables its clocks until released by software. CFE
-> +  does not release this block, so software bring-up is required
-> +  before bcma can enumerate the backplane.
-> +
-> +  This binding describes the SHIM bridge node. The SHIM driver brings
+mt76_tx_status_skb_add() zeroes the mt76_tx_cb struct stored at
+info->status.status_driver_data via memset(). Since info->control and
+info->status are members of the same union in ieee80211_tx_info,
+this overwrites info->control.flags.
+In mt7996_tx_prepare_skb(), mt76_tx_status_skb_add() is called before
+mt7996_mac_write_txwi(), which re-reads info->control.flags to extract
+IEEE80211_TX_CTRL_MLO_LINK. Because the field has been zeroed, the
+link_id always resolves to 0 for frames using global_wcid, leading to
+incorrect TXWI configuration.
+Fix this by passing link_id as an explicit parameter to
+mt7996_mac_write_txwi(). In mt7996_tx_prepare_skb(), the link_id is
+already extracted from info->control.flags before the destructive
+mt76_tx_status_skb_add() call. For the beacon and inband discovery
+callers in mcu.c, use link_conf->link_id directly.
 
-Do not describe binding. Do not describe driver.
-Describe hardware.
+Fixes: f0b0b239b8f36 ("wifi: mt76: mt7996: rework mt7996_mac_write_txwi() for MLO support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c    | 9 +++------
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 5 +++--
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 3 ++-
+ 3 files changed, 8 insertions(+), 9 deletions(-)
 
-> +  the macro up and then populates the brcm,bus-axi child node, which
-> +  describes the bcma backplane behind the SHIM and is bound by the
-> +  bcma-host-soc driver. The SoC-specific configuration (big-endian
-> +  accessors, SHIM-attached topology, SHIM Control register peephole
-> +  pointer) is delivered to bcma via platform_data injected at
-> +  populate time, so the brcm,bus-axi child stays SoC-agnostic.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index c98446057282..2d3f80b3e41a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -856,7 +856,8 @@ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
+ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 			   struct sk_buff *skb, struct mt76_wcid *wcid,
+ 			   struct ieee80211_key_conf *key, int pid,
+-			   enum mt76_txq_id qid, u32 changed)
++			   enum mt76_txq_id qid, u32 changed,
++			   unsigned int link_id)
+ {
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+@@ -866,7 +867,6 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 	bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
+ 	struct mt76_vif_link *mlink = NULL;
+ 	struct mt7996_vif *mvif;
+-	unsigned int link_id;
+ 	u16 tx_count = 15;
+ 	u32 val;
+ 	bool inband_disc = !!(changed & (BSS_CHANGED_UNSOL_BCAST_PROBE_RESP |
+@@ -876,9 +876,6 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 
+ 	if (wcid != &dev->mt76.global_wcid)
+ 		link_id = wcid->link_id;
+-	else
+-		link_id = u32_get_bits(info->control.flags,
+-				       IEEE80211_TX_CTRL_MLO_LINK);
+ 
+ 	mvif = vif ? (struct mt7996_vif *)vif->drv_priv : NULL;
+ 	if (mvif) {
+@@ -1096,7 +1093,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	/* Transmit non qos data by 802.11 header and need to fill txd by host*/
+ 	if (!is_8023 || pid >= MT_PACKET_ID_FIRST)
+ 		mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, key,
+-				      pid, qid, 0);
++				      pid, qid, 0, link_id);
+ 
+ 	/* MT7996 and MT7992 require driver to provide the MAC TXP for AddBA
+ 	 * req
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 8be40d60ad29..a14c63438923 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -3103,7 +3103,7 @@ mt7996_mcu_beacon_cont(struct mt7996_dev *dev,
+ 
+ 	buf = (u8 *)bcn + sizeof(*bcn);
+ 	mt7996_mac_write_txwi(dev, (__le32 *)buf, skb, wcid, NULL, 0, 0,
+-			      BSS_CHANGED_BEACON);
++			      BSS_CHANGED_BEACON, link_conf->link_id);
+ 
+ 	memcpy(buf + MT_TXD_SIZE, skb->data, skb->len);
+ }
+@@ -3249,7 +3249,8 @@ int mt7996_mcu_beacon_inband_discov(struct mt7996_dev *dev,
+ 
+ 	buf = (u8 *)tlv + sizeof(*discov);
+ 
+-	mt7996_mac_write_txwi(dev, (__le32 *)buf, skb, wcid, NULL, 0, 0, changed);
++	mt7996_mac_write_txwi(dev, (__le32 *)buf, skb, wcid, NULL, 0, 0,
++			      changed, link_conf->link_id);
+ 
+ 	memcpy(buf + MT_TXD_SIZE, skb->data, skb->len);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 0dc4198fcf8b..0d6488522ba7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -874,7 +874,8 @@ void mt7996_mac_enable_nf(struct mt7996_dev *dev, u8 band);
+ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 			   struct sk_buff *skb, struct mt76_wcid *wcid,
+ 			   struct ieee80211_key_conf *key, int pid,
+-			   enum mt76_txq_id qid, u32 changed);
++			   enum mt76_txq_id qid, u32 changed,
++			   unsigned int link_id);
+ void mt7996_mac_update_beacons(struct mt7996_phy *phy);
+ void mt7996_mac_set_coverage_class(struct mt7996_phy *phy);
+ void mt7996_mac_work(struct work_struct *work);
 
-How is it relevant?
-
-> +
-> +properties:
-> +  compatible:
-> +    const: brcm,bcm6362-wlan
-> +
-> +  reg:
-> +    maxItems: 1
-> +    description: SHIM peephole registers.
-
-What is SHIM?
-
-> +
-> +  reg-names:
-> +    items:
-> +      - const: shim
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  resets:
-> +    items:
-> +      - description: SHIM macro reset
-> +      - description: SHIM ubus reset
-> +
-> +  reset-names:
-> +    items:
-> +      - const: shim
-> +      - const: shim-ubus
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 1
-> +
-> +  ranges: true
-> +
-> +patternProperties:
-> +  "^axi@[0-9a-f]+$":
-
-Use consistent quotes.
-
-> +    type: object
-> +    description: The bcma AXI backplane behind the SHIM.
-> +    $ref: /schemas/types.yaml#
-
-Need proper ref. You could easily check instead of sending Claude slop -
-is there any binding with above syntax?
-
-You don't get subnodes for buses for devices not being the actual
-buses.
+---
+base-commit: 4913f44167cf35a9536e9eec7352e15b2de0c573
+change-id: 20260530-mt76_tx_status_skb_add-overwrite-fix-85818a9bb31f
 
 Best regards,
-Krzysztof
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
 
 
