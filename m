@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-37170-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37171-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNCRKT3EGmpw8QgAu9opvQ
-	(envelope-from <linux-wireless+bounces-37170-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 13:04:29 +0200
+	id wNygCEjFGmok8ggAu9opvQ
+	(envelope-from <linux-wireless+bounces-37171-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 13:08:56 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2C560C53D
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 13:04:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB5960C5C5
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 13:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 02F7630187B1
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 11:04:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F9CD301A1D6
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 11:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D6D3A8745;
-	Sat, 30 May 2026 11:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511EA3A7189;
+	Sat, 30 May 2026 11:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="hF98J4lt"
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="kgKGRZBi"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtpcmd0757.aruba.it (smtpcmd0757.aruba.it [62.149.156.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCFB3A7590
-	for <linux-wireless@vger.kernel.org>; Sat, 30 May 2026 11:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAE339B489
+	for <linux-wireless@vger.kernel.org>; Sat, 30 May 2026 11:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.156.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780139065; cv=none; b=CV32bqrtjDvHsTNi63lzWbvsK0tGBcUwtsPYil7IP8sa7KOFM2nlQ3BON0033weiiQwPKbpvcfbJWSKB4OS0+LJH0JXOsFw8671ngCOsRIaw7vreVCTbrYOpibwk2IVdH9F5xn5Z0VpCDRYWDQnuA0O6VOJL8Ex56uA8Mxt9sDs=
+	t=1780139332; cv=none; b=GIBwsPxWcLfq9Zmm6uThM3475Z+kXGnTVKuwTSwkf3cZCQNV+GwPWsO1ULKKNBO+/fCyz0kZdK99OWc3N062fmwgVhoiMErCCqpQ7hmcalBOeYb96rx6/Fr/QqM4B2vqlkhLkgqJeEqHe9gLjVw8CR+k2ALFOu0YNHe7VlEmybE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780139065; c=relaxed/simple;
-	bh=ql10+8xRiIzQXjadTxmnZisxTkDNSdk8C5q/jqCPnEY=;
+	s=arc-20240116; t=1780139332; c=relaxed/simple;
+	bh=GPyYaBIjPJR6VxGYHYgZkTzX7CeNzKdf2h5i4+TkNEg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JV2rXxOOJtBMGUZ1Ok48vV4cg0rSGRsXjLKT9/Uw9jZjU9SfKMQmLdrQmXMPm9hmJhCHqpM6K1ERdNq4Q9gb2b7DsZJ9mrtf2XEFBQ2FnPUL6PzwHyuKoNl+OqRDT/UrofdcQTLXjCFl8UQlARcuBR7aquG8bBz0LA84H4B7uKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=hF98J4lt; arc=none smtp.client-ip=62.149.156.57
+	 In-Reply-To:Content-Type; b=lamhV2JQ1qWi69Xau/7bcboeZtV3W++uLMg3P5b7Gs7AyEUaXVytV6d/Jr97EFXqA55GKx1QyUyPxsrJVDvXxb9+2NMYwhYTTEV8YAo44CJrFO1KSzPHRl3w/KD1DpHo9FNMgEb7ZZJDGt6XqkLgwqVGF4s+WiGATwnGnPidCt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=kgKGRZBi; arc=none smtp.client-ip=62.149.156.57
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
 Received: from [192.168.0.186] ([109.118.80.246])
 	by Aruba SMTP with ESMTPSA
-	id THUBwvKe7tpTfTHUCwL2Xb; Sat, 30 May 2026 13:04:14 +0200
+	id THYcwvMjjtpTfTHYdwL3Pi; Sat, 30 May 2026 13:08:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1780139054; bh=ql10+8xRiIzQXjadTxmnZisxTkDNSdk8C5q/jqCPnEY=;
+	t=1780139329; bh=GPyYaBIjPJR6VxGYHYgZkTzX7CeNzKdf2h5i4+TkNEg=;
 	h=Date:MIME-Version:Subject:To:From:Content-Type;
-	b=hF98J4lt1nU6TI38hjDN7wAYPP66gs0eVJQfVgrs0VkzBH65bs4Z04X+eqAtJ2Cpy
-	 fFMQPIhRx0xJeXdXZvWhhT3uIqZcsYRSsfUIkyCyU7XclnLEBVNtOz3D5mTg6Wc/EQ
-	 N86qIL/WGlwv33vGt1wq+95wpVdMV61kaeO/exL/p/mYXyav1Ip45lF+vyDU5H/VCE
-	 JSlQxaUKjb50HbnEUIvvQvUDF/DHLBDJOmOzYMyhNDTn6Rf/B2lBVD7NFUyqPwH+KA
-	 u4P9RbKPGW4KlUea+gJJTMpYjut46mvcCaDVEnMVwK9QZ6IOuSeJjqW4qNKJ0jdest
-	 zy48G9YUqdgqQ==
-Message-ID: <86b5b571-824d-40b7-924f-6e1d4bf58d8b@enneenne.com>
-Date: Sat, 30 May 2026 13:04:11 +0200
+	b=kgKGRZBiSx58E4LAUgStLSQ3R2seSS6CpKU9kJ9hy+keJX+d7/DD3a7K0wTnshwMg
+	 ftkEItSrXwRxergIwPMhm0uf84sJTZnmNeWkIhX1DijGgo+xuErv+CK2qdSXQC/osC
+	 /G/3+ydAvP1mIjjWj5vl5yEQTfS+xju4EXMJDjVCFfiHhyN1jrIgSKgN0XYD6Hxl/y
+	 Fw8mAi/3TMyM8MZ/FLfy36LwEhjcNXeufB0ZTjQ6bABAs5zaKHcZWOn3t4pMrjAf0C
+	 6YpR52XYOXB1bHknwZFujGTTocln5fxtFXd2xu9tTXSYEZvErQqLSo7/M9uH5VuSod
+	 c1fZ4Qh8+lrVQ==
+Message-ID: <912a22e8-878f-4763-958b-71052ee69b36@enneenne.com>
+Date: Sat, 30 May 2026 13:08:46 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,8 +55,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [patch V2 03/25] pps: generators: Use ktime_get_real_ts64()
- instead of ktime_get_snapshot()
+Subject: Re: [patch V2 04/25] pps: Convert to ktime_get_snapshot_id()
 Content-Language: en-US
 To: Thomas Gleixner <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 Cc: David Woodhouse <dwmw2@infradead.org>,
@@ -80,25 +79,25 @@ Cc: David Woodhouse <dwmw2@infradead.org>,
  David Woodhouse <dwmw@amazon.co.uk>,
  Vadim Fedorenko <vadim.fedorenko@linux.dev>
 References: <20260529193435.921555544@kernel.org>
- <20260529195557.074439049@kernel.org>
+ <20260529195557.123410250@kernel.org>
 From: Rodolfo Giometti <giometti@enneenne.com>
-In-Reply-To: <20260529195557.074439049@kernel.org>
+In-Reply-To: <20260529195557.123410250@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfCJ4L6AvktiBiSjgdZHz6cd9G2cR3VoqAhOyLFZMlg2ukyXgpcoRDfIf42yajPI8mJBtuEmbaYcgebabmcEyNfb5V2AkY0KKGxs4D8kFPqg0j68KJE3J
- Yvxknvg3dHFQC/aKOSX5dv+Ry5tghm0g49aQk4oM0kY/Gijw5KC7j+eegpXH8Wk8XwVQVCNNkZumNpU/yUAHQw8lft/nr9CCzuIsTNcqR0HJvrOKcdj65QZM
- 8rye27fAUDEUpLY6Tr89jYlsM/2wPmxhwkmbdBbUVDsYh3C9v38aAIsY4V8aFZjpKraNPFW4903gB3FtMzhAnvKS9+siK5ekieMHnN7gD6KZGQxxu7XPdtxr
- k0eEpab987THqcDO/6E2HJVt2Tk898anHlepE0cHJuuOfo3mqR+RxlLPL9oLI5RwNR1Jj86BZkC3kkkHoRuW47iSxDqCi+cCbPNR8QT+KCTW4CFOCJnVR4Yo
- Rs18jeV3qCLoamvFfGjOQOGc7UnOX3VeBJMjYOxM2kGSQL9c1lNQJ9sSJ1091rNF/HKfCkbNfdXpyvJIQp8SGhJa7hNHuAdhTu7BqYUqIoT6nBt8oLg07SVv
- +DFvG1XNqwxUC2QLYxzy/HT0RwvXLZ4b+xnuah5tQ2knl/5qMJ5JP8f/ZTnsJt4S7MhfxToAgxP6pmC1XrH38iPZp49LKrn3ZyFswbgja8wO29M5cjK71Doa
- sZgGk06o6xKfAF/v7XzrgK0p6ohngW6G+CQaKrW6hvGzZVCz+P/YuIitQAhDcbBAOn44lQ9kB3rk2PrHCqV133Nha9VjiWRAQAcqsopCelGWdQ5DVKiYGIB8
- j8RkiRITBwJz7xLLRWGPV9qUOwrRxc5cKAsMzbTCVVQU6u2LbKl87+wnNNTZcVWq3AzwuOD3dw0db67dRKSqlrn6X+YIOn3A/K+oMiO7DnYDipxB5QBu5yuM
- wVwn2KMT2JC2mDpjNz+V4shk2gKEZz8cMDC0xTZKey2ePfoHada9STI694BrUVNVrP0QGH1/ANPvccrxRMSxKRbEtCIPkXUbQs4ccndlXmrv2Eb9ouVIq3Sl
- t0MsxK6jwZvU/tiFFhBMBO5PwSkW6A1GzEcJzr5qE/Ecvlgcp/glIAIT8Lrp0gr6Bxzrtv/PLh8vrlTeuETdK1eQQfE8cvoBaqFaClotMSf2bZ4AtbSXuMXc
- e6BR2eUFWvhou56Zt0WkDA==
+X-CMAE-Envelope: MS4xfDEumLSv+pk/U7kUrE6BL3srB8YYK8RA/hJdPG2uEhTOPvKA9Ae3985zLeyJTGgr/CFNuu2TwP1b19so35CyXgPbwgS/+GS4wpS04rqyC5DXeO2e3lwN
+ EgRf+BrmXj/gfc10HcckoI9SRkL6j6Kp57c12/EXsEsLtyt5ERq37z9tJBqN/ef46YKkLaZNVovcBNwdrEdpD5h5eEvWQRaI8tUmoazMGe45OuXe9xOu2MtM
+ Vt6sbU5QejS71ZbLguWs0nzAy9KuBGa6s8M3UsVhmuLGLgShRdlYeyRSgO2C69aVdiZ6BnW2+9QpDdnJ9rPsVNysuqBHMfCk/1o0NwxNanFEcT6gDCtMseHT
+ NW3Bw1DapD9bEybwmSWu2Zf5330Pv2AcCh+kHbC3zGofYr1aTnRG+gZePb295V3qWiZM8JNDREwGyp8QJaqaA2OdZXW2apEw8yLNGEqQN73GCHLdZZcdRnFM
+ HNBil37fEqKWVOa/tQt79gxnrDmlqkeFZBWQxjG/hR3RcEp+rKiuiSPx73hbH+IWRMHmX4mohtFeyEP7Vu+xekgyR5RahrSuNyOxM0ZOxTwWqt2L4AxPgcle
+ QjjXBe5kivH8MVmAv5NBuGdg3Y3Bkxt8dQ+JyzQ8Pf2VxNDOxxvVis+8e+2O9JghvhEj9641F6Eh4EC2r4tG8SvxMvA7Kl4uFERt7dzBWG7eIFcqPEffjeGY
+ QDPjGReTtDcjFDFYHaKelr95XeShfIlPw2CCCaoG5+x/d0B8832Tg1XTs/INUgofCDHRfrD1w3uYUcVnUsDnUbUjDH6SUGA4cRnPpKlVfVMP3jNldxb23ylZ
+ eaWdRoAaq0CNuufl1zHXpjCmbwmC7zZbGqUoeTpw+8wBE6yRimRIXelYPWNsh6PINInGPehIaUaetWGzBIaqE6lfol36A8FcFWp+QdKY7V07UnAjWu2YU9wg
+ HRqsu4wdF89Qgoke6D3VWDVMS+L7Q/UUbxfJl7GnrYIK/gcxE1hsAgVH9/rRu/9zrvHyxnMjqXPbioXaT+ya5WPb0jZdIBfk+5HAXyCLI2yk0mspHuf0gx+0
+ 7npTs+VEZBNH7zP4dydpKWU5LmOAgaM9+JyBec0Dhjm3KmLVPvmtdnKLk2LargZFo9erPppdU5zxSdYZINdZkt5izI3UTdMig+IqgGESyNEiZtfq1FHgEw24
+ +4Elt1LutSMUWoDAABdFQQ==
 X-Spamd-Result: default: False [-1.56 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[aruba.it:s=a1];
 	MAILLIST(-0.15)[generic];
 	DMARC_POLICY_SOFTFAIL(0.10)[enneenne.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
@@ -108,7 +107,7 @@ X-Spamd-Result: default: False [-1.56 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37170-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37171-lists,linux-wireless=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[30];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,linux.dev,lists.linux.dev,gmail.com,vger.kernel.org,suse.com,intel.com,nvidia.com,oss.qualcomm.com,amazon.co.uk];
@@ -120,20 +119,23 @@ X-Spamd-Result: default: False [-1.56 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[aruba.it:dkim,amazon.co.uk:email,intel.com:email,linutronix.de:email]
-X-Rspamd-Queue-Id: 3A2C560C53D
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,aruba.it:dkim,linutronix.de:email,amazon.co.uk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,enneenne.com:mid,enneenne.com:email]
+X-Rspamd-Queue-Id: 7BB5960C5C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 29/05/2026 21:59, Thomas Gleixner wrote:
+On 29/05/2026 22:00, Thomas Gleixner wrote:
 > From: Thomas Gleixner <tglx@kernel.org>
 > 
-> There is no reason to use the more complex ktime_get_snapshot() for
-> retrieving CLOCK_REALTIME.
+> ktime_get_snapshot() resolves to ktime_get_snapshot_id(CLOCK_REALTIME).
 > 
-> Just use ktime_get_real_ts64(), which avoids the extra timespec64
-> conversion as a bonus.
+> Make it obvious in the code and convert the readout to use the
+> snapshot::systime and monoraw fields instead of snapshot::real and raw,
+> which aregoing away.
+> 
+> Similar to the PPS generators, avoid the more expensive snapshot when
+> CONFIG_NTP_PPS is disabled.
 > 
 > No functional change intended.
 > 
@@ -142,97 +144,42 @@ On 29/05/2026 21:59, Thomas Gleixner wrote:
 > Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 > Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 > Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-
 > ---
->   drivers/pps/generators/pps_gen-dummy.c |    6 +-----
->   drivers/pps/generators/pps_gen_tio.c   |    6 +-----
->   2 files changed, 2 insertions(+), 10 deletions(-)
-> --- a/drivers/pps/generators/pps_gen-dummy.c
-> +++ b/drivers/pps/generators/pps_gen-dummy.c
-> @@ -39,11 +39,7 @@ static void pps_gen_ktimer_event(struct
->   static int pps_gen_dummy_get_time(struct pps_gen_device *pps_gen,
->   					struct timespec64 *time)
->   {
-> -	struct system_time_snapshot snap;
-> -
-> -	ktime_get_snapshot(&snap);
-> -	*time = ktime_to_timespec64(snap.real);
-> -
-> +	ktime_get_real_ts64(time);
->   	return 0;
->   }
+>   include/linux/pps_kernel.h |   10 ++++++----
+>   1 file changed, 6 insertions(+), 4 deletions(-)
+> --- a/include/linux/pps_kernel.h
+> +++ b/include/linux/pps_kernel.h
+> @@ -99,12 +99,14 @@ static inline void timespec_to_pps_ktime
 >   
-> --- a/drivers/pps/generators/pps_gen_
-
-From: Thomas Gleixner <tglx@kernel.org>
-
-There is no reason to use the more complex ktime_get_snapshot() for
-retrieving CLOCK_REALTIME.
-
-Just use ktime_get_real_ts64(), which avoids the extra timespec64
-conversion as a bonus.
-
-No functional change intended.
-
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Tested-by: Arthur Kiyanovski <akiyano@amazon.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
----
-  drivers/pps/generators/pps_gen-dummy.c |    6 +-----
-  drivers/pps/generators/pps_gen_tio.c   |    6 +-----
-  2 files changed, 2 insertions(+), 10 deletions(-)
---- a/drivers/pps/generators/pps_gen-dummy.c
-+++ b/drivers/pps/generators/pps_gen-dummy.c
-@@ -39,11 +39,7 @@ static void pps_gen_ktimer_event(struct
-  static int pps_gen_dummy_get_time(struct pps_gen_device *pps_gen,
-  					struct timespec64 *time)
-  {
--	struct system_time_snapshot snap;
--
--	ktime_get_snapshot(&snap);
--	*time = ktime_to_timespec64(snap.real);
--
-+	ktime_get_real_ts64(time);
-  	return 0;
-  }
-
---- a/drivers/pps/generators/pps_gen_tio.c
-+++ b/drivers/pps/generators/pps_gen_tio.c
-@@ -189,11 +189,7 @@ static int pps_tio_gen_enable(struct pps
-  static int pps_tio_get_time(struct pps_gen_device *pps_gen,
-  			    struct timespec64 *time)
-  {
--	struct system_time_snapshot snap;
--
--	ktime_get_snapshot(&snap);
--	*time = ktime_to_timespec64(snap.real);
--
-+	ktime_get_real_ts64(time);
-  	return 0;
-  }
-
-
-tio.c
-> +++ b/drivers/pps/generators/pps_gen_tio.c
-> @@ -189,11 +189,7 @@ static int pps_tio_gen_enable(struct pps
->   static int pps_tio_get_time(struct pps_gen_device *pps_gen,
->   			    struct timespec64 *time)
+>   static inline void pps_get_ts(struct pps_event_time *ts)
 >   {
-> -	struct system_time_snapshot snap;
-> -
+> +#ifdef CONFIG_NTP_PPS
+>   	struct system_time_snapshot snap;
+>   
 > -	ktime_get_snapshot(&snap);
-> -	*time = ktime_to_timespec64(snap.real);
-> -
-> +	ktime_get_real_ts64(time);
->   	return 0;
+> -	ts->ts_real = ktime_to_timespec64(snap.real);
+> -#ifdef CONFIG_NTP_PPS
+> -	ts->ts_raw = ktime_to_timespec64(snap.raw);
+> +	ktime_get_snapshot_id(CLOCK_REALTIME, &snap);
+> +	ts->ts_real = ktime_to_timespec64(snap.systime);
+> +	ts->ts_raw = ktime_to_timespec64(snap.monoraw);
+> +#else
+> +	ktime_get_real_ts64(&ts->ts_real);
+
+	/*
+	 * Prevent kernel stack information disclosure if the
+	 * structure is later copied to userspace.
+	 */
+	ts->ts_raw = (struct timespec64){0, 0};
+
+>   #endif
 >   }
 >   
 > 
 
+Ciao,
+
+Rodolfo
 
 -- 
 GNU/Linux Solutions                  e-mail: giometti@enneenne.com
