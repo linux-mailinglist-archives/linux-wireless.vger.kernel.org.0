@@ -1,186 +1,178 @@
-Return-Path: <linux-wireless+bounces-37179-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37180-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IC7JKNQG2r1AgkAu9opvQ
-	(envelope-from <linux-wireless+bounces-37179-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 23:03:31 +0200
+	id tmAPEC+MG2o3EAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-37180-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 May 2026 03:17:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC89613694
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 23:03:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4CCF6141F7
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 May 2026 03:17:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 904DB308551B
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 May 2026 20:57:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB17230157DE
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 May 2026 01:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD46357CE0;
-	Sat, 30 May 2026 20:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BF3314D1D;
+	Sun, 31 May 2026 01:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zm1aXvH7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f78.google.com (mail-ot1-f78.google.com [209.85.210.78])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D3C35677D
-	for <linux-wireless@vger.kernel.org>; Sat, 30 May 2026 20:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178A3314B6E
+	for <linux-wireless@vger.kernel.org>; Sun, 31 May 2026 01:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780174647; cv=none; b=fXyvgcM4QYf8GL5Q9AEJ7Ir+CcSZVriuDDVTTRBcD9qSLg5xGDiLsLBRSnRiZfl+VDMU/xoqXWA0xnLDaHFe30zcrP1XTtLt8+UXO3sOe69bV8y/BVixuS09hieBmXUbck25+vVLti8KcOpUHj8Law9M4+o4Cdda0uOjJi09bXU=
+	t=1780190252; cv=none; b=dzl4cOwNDnXXHJRpPLS43vwk8klOLzNYDDm8YV5UPhCGCMveK1bA03FoGDKkcKJpk3UCA74F2H3jva2UJ4K58dmcb7DgwFdEma4WbfkAOmYOBpR3k26mS6Dol5pl7H8k/TO9lZ1tUXKciwrIS0Dt7b5l53tQKyQb48jql+1Yxfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780174647; c=relaxed/simple;
-	bh=x9XptYzkS0OkjDLmo3HFzDKjn6JaQFGBGCp0SsokgMg=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=DMIcQtZB213VQjwNNR0AbDb61Y/hSgQZ01ASQmcxYz2o0864aUBzHELiusDh0UofQfcxA4Nu73dfeOQdDNMty1hHauggqTEDR5QlhK4xsXxRJuXwLbL290QBvdsG2dhMk/MCo82tl7M18ZVii4buDvyhXHQcy6rOuIQMV3GG/GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f78.google.com with SMTP id 46e09a7af769-7e6b5fe5484so169419a34.1
-        for <linux-wireless@vger.kernel.org>; Sat, 30 May 2026 13:57:24 -0700 (PDT)
+	s=arc-20240116; t=1780190252; c=relaxed/simple;
+	bh=TzMtIekqFZQ4pyJ+QebnViVyPHre4Kj3xcBVFdEEkMU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fIY0yniPzWcY2A71BF5f5IAdFANQexXq7mBWYGg3uvvAvGolF7ppcOHyclCC2RV1ftCHDU+DCRuzHMnbT/8WE1q3eahdqoqQxVxRq41AnnXczpTVwpLSv+4FnVjmCyEDsjruEy2V2kbLC4vM07H0Rno8D6lvNkMsBRL4Ex//2Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zm1aXvH7; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8423f236418so58663b3a.1
+        for <linux-wireless@vger.kernel.org>; Sat, 30 May 2026 18:17:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780190250; x=1780795050; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Go5vFC5tNtfqreeIQjYzU5aFsIfZiZVmcXpPFzjREA=;
+        b=Zm1aXvH7btlMvXHTwUh6yce3mH1R+dyAGH6CJiBr3Xd5ET/VkWa79y9QR6WYAfxQBB
+         cbbpY65PmGsbCzbdhQWZhwlcVicKLoJ2x7ZgPPHSLJvS6gFCdiFNnTmTC23Qz0xiHOvu
+         ByXp+DJIGwqsyBWPz9LuocUBJW6ebkcQESNfGiL51iih6WWMt5BYatBx15E+GV9A56kE
+         siH8OGt1hGKZyM4S2tw1mxCXaniUBwBIkcTXtplB+zzZ5xsF5zCsP/6cmM9169KlJP86
+         YCclLrxJT2/zMzhwmC+zSM3u/Yl/OPowmE7xKfpGjqetTXgVgpH0AlYOp4k0YPyOyxxT
+         eEpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780174643; x=1780779443;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TFO42tYpiiCLtgSoeyOHL39wBhqoRauG4K/xR+OLdpI=;
-        b=Ghvg8CZTOSLgRurd7F3jN/S0u06l6i+VGUOfLYYf0MRy3yt0OWjJzLmay0YMKpXG4/
-         8itPtfHOzipy/CVTZbLKhLfVdXV2+fu3G/cOemkahSPg8Fq3NOaO16xbGSQZnFF5F3yA
-         bj/O0kDo2JlsprW1wk5QBQ0PR/X9pyjnrlyaUpV+CRGybN7BF/LBwt+gA2y6Wd4iInPY
-         tdtANSfoxBIxOoBVE5bd42Ei8sqvJzJ+u3RhKhAasbXilL3/rRVvrgWwCZ8dt1hZWlrH
-         cloR85UGrqAeEOgY2RYN6QNxv8KVduQosMcLA4VJWeamirUZl0OCn3OWF3DEff/Lit5q
-         HhwA==
-X-Forwarded-Encrypted: i=1; AFNElJ8FGkG9ZCwXedov8rUSAyEnbYIsrlaVKwAFMYyEufutjYkmSJJ7eiAYw2UAPmqruo/NvGRzkAumCsIykzmijQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGxxecW7wHxVS5mdEz3FJzgPElDeiJ8+oSMbA9GTMSYUajOHwI
-	R0TV3Sr40uHBpllxGPiMWnn9LOT2YZlsco4COCPIqPw89UQlcfIVWFzRKMMfkPhGpYIZubd15pv
-	BYh5GQ5dT0Ido/i3xpfY8RRxACer3ViwRIu4ClPkjciRhuFOBnAoApAbG8cQ=
+        d=1e100.net; s=20251104; t=1780190250; x=1780795050;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2Go5vFC5tNtfqreeIQjYzU5aFsIfZiZVmcXpPFzjREA=;
+        b=cxFNrCCG1vLWV5BLMcXYjoqeSjDFfrdxuwiH4rs5VjBkFlBk0aNXQuI3xOZEUbAv70
+         FJ1eIW/xNj5OdEkF6G8MWx3Ezex+TVuBaXIaW5UUJoQQwAdDRPTO4jG1JeEZmyc5ilNP
+         5e2TIHZoPmrpxM/kl5OkHv9fRjHvQUUM9+IFNIGM6F9PmhG6GsmDbjR63laY2YucIE4P
+         +UwEhgcVpLGoh6ufu0y4S+4kFMWyuypcVgrX7WjI18qcFdDmEiHarcVBm45Wg+91nVf4
+         xGWt1ebz8gshS82TR91DXQm3X7mqhK2p/YrGljmr3dKOD771UT2uaD6Ma2j1RIZfP7IJ
+         59qg==
+X-Forwarded-Encrypted: i=1; AFNElJ+bnMQFA4QHyYopDkLpM9IPHO3p1mg1rJiKJOdbh5twfKsUoK2zsAOw5b1Tu8CvDJ8iet9+12dIzDKKgpD7Xg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy10wf3PUZpPTF+GZoZZR/8HOXR97lEH05fuA2f6HPeJE9FISCl
+	Ac8B1k+3MLtOeUdIKg7Dycat71Vc5MBXFmoNIlcLc2iV5UzYV756MjVk
+X-Gm-Gg: Acq92OFpTFFAKiWrPBRG7ztmLfAXApcbmGAZRNMVNaOZreKiI7NN07EdnMSJbXGkKhS
+	jGo7xnBlWiThag+YtB5Dx7l3KOzGYMlJer2ozEwhQIrVhhTVSiAGq22fLrXmS5Ufnbs5PFT2Ud/
+	3iy2qbKuoVF60Fg8kzKGWDuC8ROfIJweQO5wfdc4/Jd+xYjtsPRmvWf/aK77WzH/nNcuweW2SYi
+	M9SDuje8ok7BQjYP/JydpIjwqxK544G5PC1mnzBk9dPR6GUUHdd2BjxshtlNJdO/wFdADh+WLfI
+	wi6Y9XRWppFQLlmAOwwJM1aKHUXUI4iqSMZW6D49GkwyKILWEk+lnj+exkJUs4hNllaSyksLVWh
+	6x0pMq/QWbk6i0Bb62w/1ppmUlAQLFSyLxhVMPcAIPmf+AuxnB9+8vpwyqegneOkUBgF5bHgon4
+	q6LbjS9x483jdAi/MgNUnaoAh7N51eUHTFvm1xyqpAi2FeZJKUoK8a2yah7gktL9LZgatu7hcbg
+	aePOK7s921Taca9
+X-Received: by 2002:aa7:9a86:0:b0:824:afe1:f7e3 with SMTP id d2e1a72fcca58-84225376606mr5343989b3a.15.1780190250357;
+        Sat, 30 May 2026 18:17:30 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:383f:5ff:3b84:efa9:8e7b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214b31933sm5891818b3a.23.2026.05.30.18.17.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 May 2026 18:17:29 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: johannes@sipsolutions.net
+Cc: gregory.greenman@intel.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+8e0622f6d9446420271f@syzkaller.appspotmail.com
+Subject: [PATCH] wifi: mac80211: limit injected antenna index in ieee80211_parse_tx_radiotap
+Date: Sun, 31 May 2026 06:47:21 +0530
+Message-ID: <20260531011721.102941-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1627:b0:69d:8bac:f57d with SMTP id
- 006d021491bc7-69e04389831mr3099699eaf.26.1780174643472; Sat, 30 May 2026
- 13:57:23 -0700 (PDT)
-Date: Sat, 30 May 2026 13:57:23 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a1b4f33.fbc46276.d3ed.0459.GAE@google.com>
-Subject: [syzbot] [wireless?] UBSAN: shift-out-of-bounds in ieee80211_parse_tx_radiotap
-From: syzbot <syzbot+8e0622f6d9446420271f@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-0.36 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=bdcbd6339981e22b];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37179-lists,linux-wireless=lfdr.de,8e0622f6d9446420271f];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	SUBJECT_HAS_QUESTION(0.00)[];
-	REDIRECTOR_URL(0.00)[goo.gl];
+	FREEMAIL_CC(0.00)[intel.com,vger.kernel.org,gmail.com,syzkaller.appspotmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37180-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[kartikey406@gmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,googlegroups.com:email,appspotmail.com:email,goo.gl:url,syzkaller.appspot.com:url,storage.googleapis.com:url]
-X-Rspamd-Queue-Id: ECC89613694
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless,8e0622f6d9446420271f];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A4CCF6141F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+When parsing the radiotap header of an injected frame,
+ieee80211_parse_tx_radiotap() uses the IEEE80211_RADIOTAP_ANTENNA value
+directly as a shift count:
 
-syzbot found the following issue on:
+	info->control.antennas |= BIT(*iterator.this_arg);
 
-HEAD commit:    3e48a11675c5 Merge tag 'f2fs-for-7.0-rc1' of git://git.ker..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=126256e6580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=bdcbd6339981e22b
-dashboard link: https://syzkaller.appspot.com/bug?extid=8e0622f6d9446420271f
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15fd6c02580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1026fe5a580000
+*iterator.this_arg is an 8-bit value taken straight from the frame
+supplied by userspace, so BIT() can be asked to shift by up to 255. That
+is undefined behaviour on the unsigned long and is reported by UBSAN:
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-3e48a116.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/0749cae3d374/vmlinux-3e48a116.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/425b8d5bc900/bzImage-3e48a116.xz
+  UBSAN: shift-out-of-bounds in net/mac80211/tx.c:2174:30
+  shift exponent 235 is too large for 64-bit type 'unsigned long'
+  Call Trace:
+   ieee80211_parse_tx_radiotap+0xadb/0x1950 net/mac80211/tx.c:2174
+   ieee80211_monitor_start_xmit+0xb1f/0x1250 net/mac80211/tx.c:2451
+   ...
+   packet_sendmsg+0x3eb6/0x50f0 net/packet/af_packet.c:3109
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
+info->control.antennas is a 2-bit bitmap (u8 antennas:2), so only antenna
+indices 0 and 1 can ever be represented. Ignore any larger value instead
+of shifting out of bounds.
+
 Reported-by: syzbot+8e0622f6d9446420271f@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-UBSAN: shift-out-of-bounds in net/mac80211/tx.c:2174:30
-shift exponent 235 is too large for 64-bit type 'unsigned long'
-CPU: 0 UID: 0 PID: 5454 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- ubsan_epilogue+0xa/0x30 lib/ubsan.c:233
- __ubsan_handle_shift_out_of_bounds+0x385/0x410 lib/ubsan.c:494
- ieee80211_parse_tx_radiotap+0xadb/0x1950 net/mac80211/tx.c:2174
- ieee80211_monitor_start_xmit+0xb1f/0x1250 net/mac80211/tx.c:2451
- __netdev_start_xmit include/linux/netdevice.h:5275 [inline]
- netdev_start_xmit include/linux/netdevice.h:5284 [inline]
- xmit_one net/core/dev.c:3864 [inline]
- dev_hard_start_xmit+0x2d8/0x870 net/core/dev.c:3880
- __dev_queue_xmit+0x168f/0x38a0 net/core/dev.c:4829
- packet_snd net/packet/af_packet.c:3077 [inline]
- packet_sendmsg+0x3eb6/0x50f0 net/packet/af_packet.c:3109
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg net/socket.c:742 [inline]
- __sys_sendto+0x709/0x7a0 net/socket.c:2206
- __do_sys_sendto net/socket.c:2213 [inline]
- __se_sys_sendto net/socket.c:2209 [inline]
- __x64_sys_sendto+0xde/0x100 net/socket.c:2209
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f251db9bf79
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff388b1f78 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007f251de15fa0 RCX: 00007f251db9bf79
-RDX: 0000000000000038 RSI: 0000200000000640 RDI: 0000000000000007
-RBP: 00007f251dc327e0 R08: 0000200000000380 R09: 0000000000000014
-R10: 0000000004000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f251de15fac R14: 00007f251de15fa0 R15: 00007f251de15fa0
- </TASK>
----[ end trace ]---
-
-
+Closes: https://syzkaller.appspot.com/bug?extid=8e0622f6d9446420271f
+Fixes: ef246a1480cc ("wifi: mac80211: support antenna control in injection")
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ net/mac80211/tx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index b487d2330f25..ea7f63e1fc17 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2181,7 +2181,9 @@ bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
+ 
+ 		case IEEE80211_RADIOTAP_ANTENNA:
+ 			/* this can appear multiple times, keep a bitmap */
+-			info->control.antennas |= BIT(*iterator.this_arg);
++			/* control.antennas is only a 2-bit bitmap */
++			if (*iterator.this_arg < 2)
++				info->control.antennas |= BIT(*iterator.this_arg);
+ 			break;
+ 
+ 		case IEEE80211_RADIOTAP_DATA_RETRIES:
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
