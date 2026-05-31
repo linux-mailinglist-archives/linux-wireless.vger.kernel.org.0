@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-37190-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37191-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CUfEYz3G2oNHwkAu9opvQ
-	(envelope-from <linux-wireless+bounces-37190-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 May 2026 10:55:40 +0200
+	id cDytMg38G2rFIAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-37191-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 May 2026 11:14:53 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CAFB615378
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 May 2026 10:55:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3142761549F
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 May 2026 11:14:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D0E753004D2D
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 May 2026 08:55:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25C5C300FEF0
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 May 2026 09:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6537377ED9;
-	Sun, 31 May 2026 08:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D63345729;
+	Sun, 31 May 2026 09:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kH8qN1cb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RGV/adLu"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A333783AE;
-	Sun, 31 May 2026 08:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCBE243951
+	for <linux-wireless@vger.kernel.org>; Sun, 31 May 2026 09:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780217732; cv=none; b=H7wBisIlrt8bEi+YstRmd23JTZ+sGkQ9sENbpSivzEFjIx+qyI3p1qKnnHw6q5vcTXMb5V1vPiTxI1k3SOAivisdBP87uHCko3hc+p7OBw/Zj1ruJ2mvy9OQUQKjEv+5Htgh+cHYaAxc37Jcfkhdq+vRGj6d5/zm1xBZHCNiv+k=
+	t=1780218676; cv=none; b=t6fF+ksyO90trCyQ5non+VT1ZPdnLdoHLpaWeJ1x6xREFUBYShdlm0nb67CjjzUvPRm2W1cRE6OXyFML9/L5HIav9W8x5yLwB0nBwko0s3qAasteMaaetkGoqk2q3nifhscUYpO6IyC8JRnvSJQDznPzlGNF8JjPPKMGY/NqJtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780217732; c=relaxed/simple;
-	bh=zz2jg+uKo8pXrKJAN95ppTP0wmRVdaF/i8DIeaQQUyI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ONpNnVc9znK0SowrJe564sK2swGDhozJpaEf6ILK96ysm1VbQrvB645HdCnTvvfKrq+b+DeKLdvOGJajAwAeIqPDSLrkBfKHucRdII4ppqUT2G0ZXqSGg/G33vbwu3LuLnLTzfS0dh2FYpus2Pkgf7MR8jNSUN/GUw9gnXhqc5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kH8qN1cb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBB131F00893;
-	Sun, 31 May 2026 08:55:30 +0000 (UTC)
+	s=arc-20240116; t=1780218676; c=relaxed/simple;
+	bh=PbXxun0ih/3Ga6AnfHYh668oib+8oiaI7DMgPKjhkPc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VDQXpWOW9dn6uNfbbLyw/OTa/McjQQS940u7n7jm61W/2+v7cAi2eK0llNiBSJlwVDDEoNFjUzJUOHiPeTzYEB99rqBg0lXY9csUXrPbB1KWQivDLdrX0P4eiCzLjMAjdzg21jIfbER5iN9gpE9QszMmHdPJa7NjXQZigU7PYmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RGV/adLu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9011F00893;
+	Sun, 31 May 2026 09:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780217731;
-	bh=0vlPUZLJ6qFSfJi2KHBKAuBKAbgSeUs6MvoKLHrh2ec=;
+	s=k20260515; t=1780218675;
+	bh=6TGpPgHfFm56JUjwdlaeKJfpJw7m6x4u70bcMACQbLI=;
 	h=From:Date:Subject:To:Cc;
-	b=kH8qN1cbP4KP/vCQ13fR5Rebqcy0ezYw5dV1VP2w+7fzgEcrrEjdaaMelFeHKOw7q
-	 zPx14egOaT22ib9OvJzJnpx/ydGVnn0KUYi5Vz4mxJ/R5m3JRU0G5VBWOkw2jvo7FO
-	 uhzI0RPoaXS9yPJrvbPU4J9fOYG4nHEWJMXffhbWDagX7hxe5BxrrSHzR5KNo1m0MI
-	 pYnvlQZh6TeTuiTdaJW1C0m1xa0Qoefneb+tWWNuUuEWk3U4aQ/LE/JgopYwzV1vzy
-	 UUQL63RbGK96DSGz1XgoKMWn5UwsCR+03t4y+OYsIXYf58w4vGjZflLzvVgorJNad7
-	 WfBp0vS46vHLA==
+	b=RGV/adLubwTrr/AqpfjX+pOOAKqhivsYI7PU3+V/5v3JUCJI1TksqC8F4B6byVAFT
+	 W5nEQqF7nebdpMI5nMGTeHVwG29wkJUFnK7yqOcZ/4fhGEbC5x49OpsY7RkV1wblHl
+	 y7ETvm4+RRW4X3f7/8GP9ndTX+J5uwXQVDV9aLhd/jMndfqwG4Vcar1KAweCPmnJ0d
+	 KpHS+1FjVVpgH/gpCAbaXPlRD+IBYhHiZlIpXesBuJDZvShDagnPuvayo3jmvVkZum
+	 87ZOQ7MoroWrml2H+gPVP8TgZ+Ae6vIBtHvThSybFCXLGqAJxqQZAJ7muiQ8h4HLJZ
+	 ib4e1Z798ieMA==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Sun, 31 May 2026 10:55:04 +0200
-Subject: [PATCH v2] wifi: mt76: mt7996: fix reading zeroed
- info->control.flags after mt76_tx_status_skb_add()
+Date: Sun, 31 May 2026 11:10:59 +0200
+Subject: [PATCH] wifi: mt76: mt7996: Fix possible token leak in
+ mt7996_tx_prepare_skb()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,174 +55,107 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260531-mt76_tx_status_skb_add-overwrite-fix-v2-1-b73c4b4a9798@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5WNQQ6CMBAAv2J6toZtA4In/2FIU2CBDUrNtlYM4
- e9WfuBx5jCzCo9M6MXlsArGSJ7cnEAdD6Id7TygpC6xUJkqslxn8hHOhQmL8cGGlzd+aoztOuk
- i8pspoOxpkWVeQmmrptHQi5R6Mia9b2514pF8cPzZrxF+9s9BBAkSVashh1ZXYK8T8oz3k+NB1
- Nu2fQFM2BBi2QAAAA==
-X-Change-ID: 20260530-mt76_tx_status_skb_add-overwrite-fix-85818a9bb31f
+Message-Id: <20260531-mt7996_tx_prepare_skb-token-leack-v1-1-2b9c9f59ceb1@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2NUQrCMBAFr1L224U0amy9ikhI01ddomlJghRK7
+ 27o58Aws1FGEmS6Nxsl/CTLHCu0p4b828UXWMbKpJU26npu+VtufW9sWe2SsLgEm8PAZQ6I/IH
+ zgTsNfVFj542ZqHaqN8l6PB7Pff8DNkwQJnMAAAA=
+X-Change-ID: 20260531-mt7996_tx_prepare_skb-token-leack-82e240d8c66f
 To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
  Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
  Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Bo Jiao <Bo.Jiao@mediatek.com>, Peter Chiu <chui-hao.chiu@mediatek.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Roy Luo <roy-ch.luo@mediatek.com>, linux-wireless@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- linux-kernel@vger.kernel.org
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, Lorenzo Bianconi <lorenzo@kernel.org>
 X-Mailer: b4 0.14.3
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37190-lists,linux-wireless=lfdr.de];
-	FREEMAIL_TO(0.00)[nbd.name,mediatek.com,gmail.com,collabora.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-37191-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[nbd.name,mediatek.com,gmail.com,collabora.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4CAFB615378
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3142761549F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-mt76_tx_status_skb_add() zeroes the mt76_tx_cb struct stored at
-info->status.status_driver_data via memset(). Since info->control and
-info->status are members of the same union in ieee80211_tx_info,
-this overwrites info->control.flags.
-In mt7996_tx_prepare_skb(), mt76_tx_status_skb_add() is called before
-mt7996_mac_write_txwi(), which re-reads info->control.flags to extract
-IEEE80211_TX_CTRL_MLO_LINK. Because the field has been zeroed, the
-link_id always resolves to 0 for frames using global_wcid, leading to
-incorrect TXWI configuration.
-Fix this by passing link_id as an explicit parameter to
-mt7996_mac_write_txwi(). In mt7996_tx_prepare_skb(), the link_id is
-already extracted from info->control.flags before the destructive
-mt76_tx_status_skb_add() call. For the beacon and inband discovery
-callers in mcu.c, use link_conf->link_id directly.
+If link_conf or link_sta lookup fails in mt7996_tx_prepare_skb routine,
+mt7996 driver leaks an already allocated tx token. Fix the issue
+releasing the token in case of error.
 
-Fixes: f0b0b239b8f36 ("wifi: mt76: mt7996: rework mt7996_mac_write_txwi() for MLO support")
+Fixes: 7ef0c7ad735b0 ("wifi: mt76: mt7996: Implement MLD address translation for EAPOL")
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-Changes in v2:
-- Do not use link_id in mt7996_mac_write_txwi if it is IEEE80211_LINK_UNSPECIFIED
-- In mt7996_mac_write_txwi() rely on link_id calculated in
-  mt7996_tx_prepare_skb().
-- Link to v1: https://lore.kernel.org/r/20260530-mt76_tx_status_skb_add-overwrite-fix-v1-1-e2c3151c391a@kernel.org
----
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c    | 14 ++++----------
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    |  5 +++--
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h |  3 ++-
- 3 files changed, 9 insertions(+), 13 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 8 ++++++--
+ drivers/net/wireless/mediatek/mt76/tx.c         | 2 +-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index c98446057282..95b3078d9667 100644
+index c98446057282..8c56344d211b 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -856,7 +856,8 @@ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
- void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 			   struct sk_buff *skb, struct mt76_wcid *wcid,
- 			   struct ieee80211_key_conf *key, int pid,
--			   enum mt76_txq_id qid, u32 changed)
-+			   enum mt76_txq_id qid, u32 changed,
-+			   unsigned int link_id)
- {
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-@@ -866,7 +867,6 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 	bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
- 	struct mt76_vif_link *mlink = NULL;
- 	struct mt7996_vif *mvif;
--	unsigned int link_id;
- 	u16 tx_count = 15;
- 	u32 val;
- 	bool inband_disc = !!(changed & (BSS_CHANGED_UNSOL_BCAST_PROBE_RESP |
-@@ -874,17 +874,11 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 	bool beacon = !!(changed & (BSS_CHANGED_BEACON |
- 				    BSS_CHANGED_BEACON_ENABLED)) && (!inband_disc);
+@@ -1067,11 +1067,11 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
  
--	if (wcid != &dev->mt76.global_wcid)
--		link_id = wcid->link_id;
--	else
--		link_id = u32_get_bits(info->control.flags,
--				       IEEE80211_TX_CTRL_MLO_LINK);
--
- 	mvif = vif ? (struct mt7996_vif *)vif->drv_priv : NULL;
- 	if (mvif) {
- 		if (wcid->offchannel)
- 			mlink = rcu_dereference(mvif->mt76.offchannel_link);
--		if (!mlink)
-+		if (!mlink && link_id != IEEE80211_LINK_UNSPECIFIED)
- 			mlink = rcu_dereference(mvif->mt76.link[link_id]);
+ 		link_conf = rcu_dereference(vif->link_conf[wcid->link_id]);
+ 		if (!link_conf)
+-			return -EINVAL;
++			goto error_relase_token;
+ 
+ 		link_sta = rcu_dereference(sta->link[wcid->link_id]);
+ 		if (!link_sta)
+-			return -EINVAL;
++			goto error_relase_token;
+ 
+ 		dma_sync_single_for_cpu(mdev->dma_dev, tx_info->buf[1].addr,
+ 					tx_info->buf[1].len, DMA_TO_DEVICE);
+@@ -1176,6 +1176,10 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	tx_info->nbuf = MT_CT_DMA_BUF_NUM;
+ 
+ 	return 0;
++
++error_relase_token:
++	mt76_token_release(mdev, id, NULL);
++	return -EINVAL;
+ }
+ 
+ u32 mt7996_wed_init_buf(void *ptr, dma_addr_t phys, int token_id)
+diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+index 22f9690634c9..f96d9c471853 100644
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -933,7 +933,7 @@ mt76_token_release(struct mt76_dev *dev, int token, bool *wake)
+ #endif
  	}
  
-@@ -1096,7 +1090,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	/* Transmit non qos data by 802.11 header and need to fill txd by host*/
- 	if (!is_8023 || pid >= MT_PACKET_ID_FIRST)
- 		mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, key,
--				      pid, qid, 0);
-+				      pid, qid, 0, link_id);
+-	if (dev->token_count < dev->token_size - MT76_TOKEN_FREE_THR &&
++	if (wake && dev->token_count < dev->token_size - MT76_TOKEN_FREE_THR &&
+ 	    dev->phy.q_tx[0]->blocked)
+ 		*wake = true;
  
- 	/* MT7996 and MT7992 require driver to provide the MAC TXP for AddBA
- 	 * req
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 8be40d60ad29..a14c63438923 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -3103,7 +3103,7 @@ mt7996_mcu_beacon_cont(struct mt7996_dev *dev,
- 
- 	buf = (u8 *)bcn + sizeof(*bcn);
- 	mt7996_mac_write_txwi(dev, (__le32 *)buf, skb, wcid, NULL, 0, 0,
--			      BSS_CHANGED_BEACON);
-+			      BSS_CHANGED_BEACON, link_conf->link_id);
- 
- 	memcpy(buf + MT_TXD_SIZE, skb->data, skb->len);
- }
-@@ -3249,7 +3249,8 @@ int mt7996_mcu_beacon_inband_discov(struct mt7996_dev *dev,
- 
- 	buf = (u8 *)tlv + sizeof(*discov);
- 
--	mt7996_mac_write_txwi(dev, (__le32 *)buf, skb, wcid, NULL, 0, 0, changed);
-+	mt7996_mac_write_txwi(dev, (__le32 *)buf, skb, wcid, NULL, 0, 0,
-+			      changed, link_conf->link_id);
- 
- 	memcpy(buf + MT_TXD_SIZE, skb->data, skb->len);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 0dc4198fcf8b..0d6488522ba7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -874,7 +874,8 @@ void mt7996_mac_enable_nf(struct mt7996_dev *dev, u8 band);
- void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 			   struct sk_buff *skb, struct mt76_wcid *wcid,
- 			   struct ieee80211_key_conf *key, int pid,
--			   enum mt76_txq_id qid, u32 changed);
-+			   enum mt76_txq_id qid, u32 changed,
-+			   unsigned int link_id);
- void mt7996_mac_update_beacons(struct mt7996_phy *phy);
- void mt7996_mac_set_coverage_class(struct mt7996_phy *phy);
- void mt7996_mac_work(struct work_struct *work);
 
 ---
 base-commit: 4913f44167cf35a9536e9eec7352e15b2de0c573
-change-id: 20260530-mt76_tx_status_skb_add-overwrite-fix-85818a9bb31f
+change-id: 20260531-mt7996_tx_prepare_skb-token-leack-82e240d8c66f
 
 Best regards,
 -- 
