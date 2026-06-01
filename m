@@ -1,157 +1,172 @@
-Return-Path: <linux-wireless+bounces-37254-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37255-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFZqM79vHWp/awkAu9opvQ
-	(envelope-from <linux-wireless+bounces-37254-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 01 Jun 2026 13:40:47 +0200
+	id qI/CD2V4HWrKbAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-37255-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 01 Jun 2026 14:17:41 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B3D61E789
-	for <lists+linux-wireless@lfdr.de>; Mon, 01 Jun 2026 13:40:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A85A961F1D5
+	for <lists+linux-wireless@lfdr.de>; Mon, 01 Jun 2026 14:17:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F41B306DABC
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jun 2026 11:33:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F3EF7307111C
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jun 2026 12:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE0A35E1A6;
-	Mon,  1 Jun 2026 11:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CFC37754B;
+	Mon,  1 Jun 2026 12:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="NxZq/K5P"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="CdaAcBgw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nbd.name (nbd.name [46.4.11.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1F12E7394
-	for <linux-wireless@vger.kernel.org>; Mon,  1 Jun 2026 11:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780313602; cv=pass; b=WT1aWBqLE5y1XJ2wepdUuUCM4CN0iNVHDnn2saOvLqhusxoY2e/n/y3vyY5PXVF4ynHJ6qBCXJIbnX7NhuDF0++yh6vKioR7YHXa9uQ3LkBvnPWew6qNZzwKdXcx7gkOeJf6xUQkmLcDxQd4m+0BIS1pkAdOwwUxKhkjO1Y9ytU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780313602; c=relaxed/simple;
-	bh=uVMhWSI3M7PqFpwkfEATZt8vBsIE3hJ1C0QZF5LG9t0=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=dCmogWgQ3LvQ/pmR82lWTWHwWdc2FbikibjFVedUVYOMya6Uu28ZW4wxKjbgBAeXlucEjCHsqNbdFz5/wY3zaWxr3rrAkYxYCrSt0Nxx82hMvZEdo6n7aCmak2DnyDsHhx6U8a+x1/UuElNIMyzjKqmMGUcE+XGAyLCT87qPR0A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=NxZq/K5P; arc=pass smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c859a374903so391262a12.3
-        for <linux-wireless@vger.kernel.org>; Mon, 01 Jun 2026 04:33:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780313600; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Y7cIb7Dollcj/cJSE8eiDL/FpWioRTj8txNbBVybDul346Nh3KaqbvkwhFncrcS7Yv
-         N7PAAm2sVf8KMldqiJhvsGE/yZWQfhoOxmbPIQBeossg7IW9JUSfreULU9Oj3NUEkYaO
-         1VY2MCq7cZC6awV9rNacL2f+QMgkRCWm53X+RwgScoL1SqaH3e5l0ilfh9kbHdgJq5JE
-         vb1nggdcYwBdNiap+zUD9wLgUqlEWMiAwECgkcUzMtq3ljfAtxcBU6cSKcgwO5RLQVBL
-         H6OYbQw1snH3/lCaYEg/m1ibiH3EVKZo3H7BsbkRONt6MBfqaNmEN3utJr5c0LCPuDVm
-         RG9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=uVMhWSI3M7PqFpwkfEATZt8vBsIE3hJ1C0QZF5LG9t0=;
-        fh=zhYuQIUUIStYocHDrFQfxj3woRZBd+9CwLJ9JB3R06I=;
-        b=aKRBauznhJ1QhsJv8XN7F2v84We9TE/oNX8qNiaf0M0BfjwZHRmHuZ/Fuylucame1l
-         Qct2InihWPvH747rm+vb4Nz0muNVt/7nRmiu+UasNFuJ3rw79JvAVI4bmaL1M4jCG5K2
-         Ce6YqtcsghhYCRj7bBYSre55yfc74BUDmmv9NFui6b9H46oX9xqSuolXyUiF2lvf2Ch/
-         bvS7khdEQzhHufZLY0XZOCEdvrnWw4vWHHeKcKVqtc97hspCABG9VCPw/gJ6PjGANDAT
-         0EXVnsAMPTcHM6IH3FpgudzjSt1+bf3cjdrydFJkhpYc/NoyjLzJFjG9YkeXj7lIaqMY
-         s+9g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1780313600; x=1780918400; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=uVMhWSI3M7PqFpwkfEATZt8vBsIE3hJ1C0QZF5LG9t0=;
-        b=NxZq/K5PUE0h0E5mGzSrCcr06uEotsZJnn5qP20NrM5IJBFexugyZDJon0nmo7VDjK
-         LAsOk5Kav4Jj2LBD7XkQV9KBDwQ0DJjBWBd2u5tdFg443tQC8c/v4YGU0fSgAeinMXtP
-         UILenMZXPIcO414OeOhdT3GDiKYB3rE/cdROQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780313600; x=1780918400;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uVMhWSI3M7PqFpwkfEATZt8vBsIE3hJ1C0QZF5LG9t0=;
-        b=l8uC9gsjOTfpMxnhIoyIoNQTnQtdz5SKFWBxGQQO1mliVpvwHTKwfacM63QezJT3KJ
-         UVnlkylSkZg2ST2WTODHlr/Gba/7T7QUM9ABYIXx2AOip/zvCEF6WVv9HK6Knykle3Uu
-         RSYQ+VY7PP3czDVCtaYU4B3hSOEcmvmDasrOX4rxy+97nHWLOPPgBxvA922tBSJIX/4T
-         NS6v6eNeKaxMx6G5D9wc6defEWIsDcjHGnsuOYj0ryYrl4iG/Nc7EPm7UeuEVFnnvSnb
-         aA8Rtwp/IqPpe2/moragEZE82vxTrNyAMlZ9R3YZZfhMnJzTYwC5FLAUfzImQmnopbKI
-         gWYQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/aNu69dlOYHw3B6KolAFbIyAkePbm9qfVlfkCffblFZP4gy6mBme8NEK1bxQy1S8Z5H7WXng3xp/jS9jIS3Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwS02glZeNJ+Ox7FRpPUz9Y04T3I+qb7aomFNC9/cHogKmuzW9n
-	phNcaPXY3BqN8mcnKKnrKndDjxvCeMFS6QerfY13PteqvFo3+r59W+IAK2WNOn5c8bLIm74uX44
-	LY4Te82uwv7/Q1jzER4SJ7aE9rnUmGzZs3kn2n+3S
-X-Gm-Gg: Acq92OHzbLTGIqINhZtH6BbwWPIWA4BjWvp6WbE5ToPizEizY8LlL3lbkkM/O4KjIr9
-	dF6liu45vSp4LdIc0OdtSog8AdtT2betQem2AyY5ZCAp/Wu4g0a68cDJag4C7rm9HDy6/BPQTy8
-	E7MHWeqDCGzMv/Q+R1EeEcj5HfIgBWtGlDTVca7AvkGxieY7dX3XuOV6n3SDrQ0A/wVWgvBMpvp
-	LUxYYJW+SK+YY+iNQxfiayc2AmzwTO4yenLBkOmiGmD1BMZ19gxraFYcbZ/rARJM4CZN2jbtBz9
-	cKO0+kZZ8hKY6JLLjSD6tezsBQ==
-X-Received: by 2002:a05:6a21:7a96:b0:398:b433:87ed with SMTP id
- adf61e73a8af0-3b427f5dee5mr11677802637.44.1780313600132; Mon, 01 Jun 2026
- 04:33:20 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9E13750DB;
+	Mon,  1 Jun 2026 12:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780315767; cv=none; b=atwYAezvOiHcjDSE1HsTSEFsYLxUvrNlVcw2boi86KZ4zNfR+GV9QlidSeye7INzT4Vl58wB12Ax9uFoOZI25y+u5aDl72Y/4kcv+NsgZSlSmCRkxT7Lg1AmWO+L+t49aweyysfDeKfZD4jWxhn7Vr/ynU1n+5p049NZn2NkPm4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780315767; c=relaxed/simple;
+	bh=hLPG/54QCvQ3SeVNvRK7HejTb36mQ/N5uUjoNREjbUs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Pbn47Dq510RLD2WaqvnrkJQjgKNzV8hTb4x3n6HEFNTgQLZ5KWJdn7a1Af1I+K7wmVJUPzmqBtpJ5MIqjPVRHhRPadFl+acLQcCrqy/vtvq8HEp8AncFBUYXTaZVp0egWA356LIsyCnNWjpfqkRx94KToEw/TVhYJlb62mKASqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=pass smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=CdaAcBgw; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=DRyUFBv2XaY0azYCRWvAw2BmMROHRiJQM5iOAaN1NXs=; b=CdaAcBgwM1UMoq3B/U4/q3/Ufa
+	T5Yn3bnwf45EMCwPEKKqv3S6+UIsm51XnN33zwSlGrUtEuqCASwJgSlA010A7ghzgeQazKC86KXWh
+	QkHhXcB3IZBIT26inKj6KJjq0qUQyAV3e4m+lXACNusk95UgCt5b+yBh3s2To2Q07Doo=;
+Received: from p5b015753.dip0.t-ipconnect.de ([91.1.87.83] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1wU1SD-0059DS-0g;
+	Mon, 01 Jun 2026 14:09:13 +0200
+Message-ID: <fadec8b5-c3c0-41b6-a1d0-b31c4ae19fb0@nbd.name>
+Date: Mon, 1 Jun 2026 14:09:12 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 1 Jun 2026 07:33:09 -0400
-X-Gm-Features: AVHnY4I4Oq7kfzkvATZfqv_I4dIxsQYBxFxWE5rf6WImcq-_O15EbAx7JO-P5HE
-Message-ID: <CAM0EoMkbu0Y-qhtdQ03Zn93JKOUHd6yZy-DJ2mtYDC6aehsR6g@mail.gmail.com>
-Subject: Call for participation: New Age Tooling BoF
-To: Linux Kernel Network Developers <netdev@vger.kernel.org>
-Cc: netfilter-devel@vger.kernel.org, 
-	linux-wireless <linux-wireless@vger.kernel.org>, netfilter@vger.kernel.org, 
-	lartc@vger.kernel.org, ovs-dev@openvswitch.org, bpf <bpf@vger.kernel.org>, 
-	people <people@netdevconf.info>, PJ Waskiewicz <pjwaskiewicz@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_DKIM_ALLOW(-0.20)[mojatatu.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mt76] wifi: mt76: mt7915: configure noise floor reporting
+ on reset
+To: David Bauer <mail@david-bauer.net>, Lorenzo Bianconi
+ <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+References: <20260516144944.2574053-1-mail@david-bauer.net>
+ <a83c9aca-da9e-4a5e-a364-382910388a68@nbd.name>
+ <370e76e3-1d41-469b-8e50-8ace6b5622d2@david-bauer.net>
+Content-Language: en-US
+From: Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <370e76e3-1d41-469b-8e50-8ace6b5622d2@david-bauer.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [1.14 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_REJECT(1.00)[nbd.name:s=20160729];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[nbd.name : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37254-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37255-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[mojatatu.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,openvswitch.org,netdevconf.info,gmail.com];
+	FREEMAIL_TO(0.00)[david-bauer.net,kernel.org,mediatek.com,gmail.com,collabora.com];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[mojatatu.com:+];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[nbd.name:-];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.970];
+	FROM_NEQ_ENVFROM(0.00)[nbd@nbd.name,linux-wireless@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jhs@mojatatu.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mojatatu.com:dkim]
-X-Rspamd-Queue-Id: 35B3D61E789
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nbd.name:mid,david-bauer.net:email]
+X-Rspamd-Queue-Id: A85A961F1D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Apologies for the shotgun - I wasnt sure how to best reach out given
-the short notice.
+On 27.05.26 19:05, David Bauer wrote:
+> Hi Felix,
+> 
+> On 5/27/26 15:56, Felix Fietkau wrote:
+>> On 16.05.26 16:49, David Bauer wrote:
+>>> When performing a full system recovery of the MCU on a dual-phy
+>>> platform, band 0 (usually 2.4GHz) stops reading correct noise floor
+>>> data.
+>>>
+>>> This is due to noise floor reporting only being configured correctly
+>>> for the second device PHY.
+>>>
+>>> Configure the respective registers correctly after restarting the MCU
+>>> firmware to fix reported noise-floor values.
+>>>
+>>> Signed-off-by: David Bauer <mail@david-bauer.net>
+>> Have you considered clearing MT76_STATE_RUNNING in mt7915_mac_restart instead?
+> 
+> The call to mt7915_run is guarded by MT76_STATE_RUNNING being set per-phy.
+> 
+> I think this is to not start the second PHY in case it was never started due to
+> it not being present. We could in theory remove this check for the primary PHY
+> and clear the flag prior calling mt7915_run.
+> 
+> This seems a bit more hacky to me. Alternatively I can also refactor the entire
+> mechanism to make it easier to understand and resolve this indirection in the
+> process.
+My suggestion would be to do this:
+start_main = test_and_clear_bit(MT76_STATE_RUNNING, &dev->mphy.state);
+start_ext = ext_phy &&
+             test_and_clear_bit(MT76_STATE_RUNNING, &ext_phy->state);
 
-The recent AI tool bug onslaught (on the victim side for me) has
-highlighted the changing landscape on development tooling.
-As an initial skeptic I have to say the quality and accuracy of the AI
-analysis makes me feel like i have been in some deep slumber. I am
-still very clueless.
-And for these selfish reasons, I am helping organize a BoF at
-netdevconf 0x1A (week of July 13 in Rome.it) to discuss this new age
-of tooling.
-This BoF is a catch all for folks engaging AI in security (you will be
-in a friendly environment!), building tools, doing code reviews,
-generating patches and general automation. The intended focus is
-networking, but adjacent areas are also welcome.
+Then using those as conditions for calling mt7915_run in 
+mt7915_mac_restart.
 
-Come and discuss your tricks of the trade. The contribution can be in
-the form of a talk, tutorial or demo.
+That way the special case in mt7915_run disappears and the behavior 
+becomes easier to follow.
 
-cheers,
-jamal
+- Felix
 
