@@ -1,240 +1,201 @@
-Return-Path: <linux-wireless+bounces-37280-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37281-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELnVEP+8HWo/dQkAu9opvQ
-	(envelope-from <linux-wireless+bounces-37280-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 01 Jun 2026 19:10:23 +0200
+	id wNYKNirMHWrHeQkAu9opvQ
+	(envelope-from <linux-wireless+bounces-37281-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 01 Jun 2026 20:15:06 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC81623112
-	for <lists+linux-wireless@lfdr.de>; Mon, 01 Jun 2026 19:10:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA24A623D17
+	for <lists+linux-wireless@lfdr.de>; Mon, 01 Jun 2026 20:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 713DC3064EC5
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jun 2026 17:08:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B5C173014273
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jun 2026 18:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253F13DCD9A;
-	Mon,  1 Jun 2026 17:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF243E2769;
+	Mon,  1 Jun 2026 18:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZfCPvO2x"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JrexQGp+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8690932938D
-	for <linux-wireless@vger.kernel.org>; Mon,  1 Jun 2026 17:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780333733; cv=none; b=NqpJ2ZJfReRPG8zLU+O4ncfVyax9ommx5YZslneqlmmM/TpH0AwddeVkNFNfQGFFym/v1VryHrYmkU4FYDAxpgcIm+nWQXNU0U5mvI7ukZdW46eZENrh1Vund6XR/qYutl5svyGpvBljXUxkV4JOpvomTHPa2vnknyT1r0+vdr4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780333733; c=relaxed/simple;
-	bh=EzAxtso80P6P2oQKtnOX2YdnPIINUmaMEBKPpSvQnvM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=MpfUeE/JvsAg1Gdvnc2vZGphJGrHMGJ+IDAReAdJjepgsaOzm631UEaSMGt10csilY2r50hCQ42YcDN1xWM1ZOHA4OW+t+gR8oLzQnXx+1o0F99pCIH+PgiQNBH0U5UXs4hUuNhR+3Oj2efA74xYfL3paI3EGaTrB8IodOO83KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZfCPvO2x; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2923E275F
+	for <linux-wireless@vger.kernel.org>; Mon,  1 Jun 2026 18:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780337699; cv=pass; b=hCnSmEpnfGVVjWRgdo+KJXeJqdpN70UxZGQmkoV+TfHNO0I4i0kwDB5LPHVsel3djS3oGHPxcXiAM0oB2zkf0qSEvYhNqnCcfRC3DUKf1fjYaUBm8XtubVpZsko3sPBk0PJRSCTP1jYgIwTEYQXXigcjG85zwjFbKEmHZFfGATA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780337699; c=relaxed/simple;
+	bh=4HmRVF2hepmyhN/XxqYyryulGn5Er+uqaDbtJWfi0c0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rfw0A0zMqRgJNMUJ8E8EZEHO352907mW9FLSR4q6JpJvnp0l3hcFuTwn8kYikIPcVBbZQSV3q9cqRMhDluHqkVYMBlh+GYWITqMGZ9ip7M0ginWgFbbsgCjrE+799ZEc2T/DEoPpOTkJ3CvogqGK3VUwIGT+9wO12s6kZLwRLPk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JrexQGp+; arc=pass smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-490ac357c55so10244255e9.1
-        for <linux-wireless@vger.kernel.org>; Mon, 01 Jun 2026 10:08:51 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-becfa735b9aso209310266b.1
+        for <linux-wireless@vger.kernel.org>; Mon, 01 Jun 2026 11:14:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780337696; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CMKUezGJYBzcGm6GQj+vUgbKOuZBz8AMRPckNGAx5pqMoJO8DUwgFLzak16unbKLcF
+         zJCfhXSjkNAO2lZ6UEVDsp8jN9optKIfsZN8WKaS/6io1HmkArJ0S8V3hPCTNLZZasT0
+         ZXCL9HZj7q8pe4PUccurn579P826jEaRJ2Wtc6DDa5DuCI6Yru4zwGlNKUlZtnE/0H/o
+         4QNewfE5jIvYfOjs+WWvpxkAB0dAlsbwOgvZ+byk0XRBCaOTj//U/+8tpSDmPglmIjna
+         n4tEZNzMT2KwA49fAICAAYsExuevhv9HQGv69gns9D1gv02g/UK7m0LCTX8C28/pS6gW
+         64NA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=4HmRVF2hepmyhN/XxqYyryulGn5Er+uqaDbtJWfi0c0=;
+        fh=8gfoUYlXFtOB2nQpY2a4hUpC0S2Agln6dD+3EGkevTc=;
+        b=CJaq2Gg4aC9jwh1SJWkkEwta4vpGabpl9zf9ZcrDsRJmlY6VdkvrV09tucW2l/umbC
+         KtV7QrOCQA17E1kzrdyDyGQAHC2MchQW0Tdh+1KrdYxUcTK7u9GBctp/Pn6QVzbRvQ4q
+         SZ2GFXIk3FXub7p018nZ6B3dfGa0yNepjA8N+EIsP7/P6TT2DisChSS4JVdMWPPrr3aR
+         xTw/Ly9c7gOBVAnEBgHkUH8DwtISzWHnK18y647E7BJX6licbkDlmUaNUqqI2VVJN7/4
+         iQRCw9fifwgRqp+t8NXH4e2c7flPjylhlZXk+uSPIwjP1zYcSoMUxFJlTGknY6RZixxn
+         37HQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780333730; x=1780938530; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2Bb5+0SQ1WSt0e7KSkXzY2MHcwPs9a1pBUBUqaxnOM8=;
-        b=ZfCPvO2xGlyJJnslQdOtZ34tb+P5UPseoRFHdttt9vAdVEUlJQ5SEmd2szM34N4FkB
-         mhUIQC0ngXc2ZO8WlZo91EamxnHHRnrQChaYbHKeuXo4P0WA/II6gioLlI1qSkfLATB2
-         bL6Ufrqo/QikU647Wjel4fjwB6lKUqreFVWqyXzjigGZOVsB4L5wwY+Melg1jQ7ncp5w
-         FZ61NWaf3l8cikke/FSG4AEjfZSNJPJSgWsdKKL6RWgjb2L1YB49NzsEAJ3tw9YKrkse
-         XxzB+J95AfmCVSh4306LJZ1Wkd1NwRmUbyBmVCDcvXwAbO5Lmopg4EHq+OR+/HAX4XLb
-         lK7Q==
+        d=gmail.com; s=20251104; t=1780337696; x=1780942496; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4HmRVF2hepmyhN/XxqYyryulGn5Er+uqaDbtJWfi0c0=;
+        b=JrexQGp+rB2yp26DinOIopmctXPWF1l9HsHUtSocNndiA+sHUWHYIakWDkG47swP1q
+         ZQIcLdhgQvtX0BYpAT2vciouHZcGj/rBTHAEzQFDpEnCcZP0DdfUQoJ7fxBLx2cDYB/K
+         d9VU2hX5v49nKUU6zXvkcQYluLu/SmT541s3jIvaFBAkOsSIGarsKkPkDfKPzbwx5e4C
+         fW0zYj0+IrSQrm/Y6Ob96Tp3wI4RAuEtQ/iFIBl5IbwY0qOTlm78XXfr/dDAFbhtJQhk
+         hg+tJQWfNi3gw/8QtAVfmu+35r6P+uUlPk3dhZUKxigE+Ln3m78cQRP8oTYBMSi2d5Be
+         xVIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780333730; x=1780938530;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2Bb5+0SQ1WSt0e7KSkXzY2MHcwPs9a1pBUBUqaxnOM8=;
-        b=jxsQH0t6PJRdJqloNcZPv7lWhUyngka6vSEnszrVxNwjS8onb1zBCNN3aEHi4jvhJi
-         ISHv0acIBwKQQ1DhVZrcLi4E5jAT1EJmsfWK628dQ++2kdHfcK4UBDl1NFUArfM23TSw
-         cOmv14NGH1KuP1ZDIgWWNT85HuME09EEXzUAGytsEVpiHFDluxLgxs97R3Bpl1XTlcB4
-         bXZMqXrSE3ImEE0F/j0e0HPe98HIm988+sYX/5mP2dCLZ46m0wqq5puBauocS5sVBTM/
-         Janb20OpOd+LHOgs6Fh6Wrianq9NNTXHlM+bpNl+vHaUxYLG5KkqGcI54joZ5fZdQt1y
-         u6hA==
-X-Gm-Message-State: AOJu0YyEZaq4VmmTtTA6CBh3rAODFOoy7Us14ckRPbl3KSUFS907yXDb
-	qBnOGDFdlh40kpRABRkpb84rLNyS0ntw/ce3EphJ/B7hzSelKRphpnd4
-X-Gm-Gg: Acq92OEjjtv+vvpHV0gRnpCflU73VGw1Mek25volxshyUd8e1O4WN/NYUIh/X9HNGMi
-	9DE9b/xZtiuHeKe0Mn0PFpgkXg+WY35XBOv36VGwXKz5rvI7RyAX2ESf9Qdi7Sz8/U3ZhSIw5Pt
-	vUejmhHGvXx/WKhiZr9i1sVNrizvMKRIQeIe4+zaA7DqFNUmxvISL5QN8Jy0V9JZYOi/EiJBC8f
-	QaaD8W/b6PicuBiknDj3YE0/NMNjjeXQ2L83wndWOjVeBzGUGx0GVsOjN++HKoCWCvR26H39Psm
-	a6faNC2Fl13Y9xSj1yYatAE5O2B5FbVIiMobnw9rpmmPH85U9PQfRwW0e7RfAllABgyNnpsez8/
-	S4GPtcyx6NjIFhc1LqcqnBdeMkRuOuqqmAwX4LliTJ+wAtkwU8TdKNM5gNfFtse1oLOZTgPMrj5
-	wbhE+370v03g03gCTWZG8obKTEeczxIEc++HcDnXTre3BCxcV4ySyH
-X-Received: by 2002:a05:600c:a11:b0:490:b0f1:c27e with SMTP id 5b1f17b1804b1-490b0f1ce6dmr5127165e9.24.1780333729641;
-        Mon, 01 Jun 2026 10:08:49 -0700 (PDT)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b0e13eefsm5056975e9.2.2026.06.01.10.08.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Jun 2026 10:08:49 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780337696; x=1780942496;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4HmRVF2hepmyhN/XxqYyryulGn5Er+uqaDbtJWfi0c0=;
+        b=j8Dcfn6puLwXJcgb0NPkP06Tq5usgw5x2L9o9I6isCZfkT41MtWnVqGsEEi83oYtU9
+         q6s+DzNwUxYKTOwbD47INMTbi6Tj7OMuxhdU2vhvJoUE1JWSDqrR0j/AJ3xbWPYFPL9j
+         6H/8mi6qk5kHpMqXzULWtqeoZFor+QRLj8P7DqGoepWVJ7phaf8KdazNSc5UaRSxTp9q
+         EgwslqIm0nYEbCDeK/2LD9Ds6vqiFEquym7qZtZHej9QYhc0eYm+OolZ+PYButtwtGyD
+         0XwPI3Syh/pv3Lthcsv08oeVTWjy1gyEw69B7u8zGmcxUZdpq0FoFQ2/+YkeVreYx6UG
+         g9lg==
+X-Forwarded-Encrypted: i=1; AFNElJ+a2u0COoAAWjvd4lWmsRaw9sYiayyrd2dVSylD+RPRrPHl1D+V+9pSg6HtkDNyHtGgVcPBAVnxrNBU3I5EwA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2cdrnnh2refOq3WlLoZyH3CK8YMgN4VdJVLOlqjORUOb0CODK
+	XSYPLPG7gDhF3CGcNAwWo6aLo9XBsvmNvRlZTkF0Ek7/zEkwtlfRNM5WyO+Z/4Gb0K2y+Nfs2aH
+	cZxxlTHXbA9ZJiyGnu8oihyMuFWY5usw=
+X-Gm-Gg: Acq92OH7l5VX4PhQJ0fn8I6UPZouNvbE/u20+iRZIpLz/3yoCNYvPLr6233HGLwmnDn
+	b9VdICPB+ycEblHffzWq/JH9axmYHKVJckhskOCE9TIFy3nzaLMSSd6U22jbTBUQ5vmajbjOx7f
+	JwpYFU+uRaCPqJd0YhMFRQUFDetDsfoo4+KKUFBsjCrgg2eYnMr6eIM5MyCECSMhsaAP8w1yAmD
+	4LD0Qvl7KYlPTd9/ecaff5F6R8uLG2V1hwoKig8NK02l/7DkHDK7aFOPr2SZFKXnCt+No00N0oF
+	Kiv/xBSc984xr4Mg8TuC1xd8OcFeOfyZzC0Z3SKbXtmisRmG5Q==
+X-Received: by 2002:a17:907:3e89:b0:bd8:bb13:2227 with SMTP id
+ a640c23a62f3a-beab394bd54mr640730366b.6.1780337696213; Mon, 01 Jun 2026
+ 11:14:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 01 Jun 2026 19:08:48 +0200
-Message-Id: <DIXVMW7QYLL5.M5EQ7YQQ0DTM@gmail.com>
-Cc: <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH ath-next] wifi: ath12k: avoid setting 320MHZ support on
- non 6GHz band
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Rameshkumar Sundaram" <rameshkumar.sundaram@oss.qualcomm.com>, "Nicolas
- Escande" <nico.escande@gmail.com>, <ath12k@lists.infradead.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260123144224.2216923-1-nico.escande@gmail.com>
- <a4ee39fd-f1d6-4b84-832c-c4eb0166476d@oss.qualcomm.com>
-In-Reply-To: <a4ee39fd-f1d6-4b84-832c-c4eb0166476d@oss.qualcomm.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
+MIME-Version: 1.0
+References: <20260531-mt76_tx_status_skb_add-overwrite-fix-v2-1-b73c4b4a9798@kernel.org>
+ <ee0e584cb2ad1b536d327eb89342d1646fa96570.camel@mediatek.com>
+ <ahwla_obwnwr2cZo@lore-desk> <44c54ed4da0d294c567b3b0ad750f082a6f1be9f.camel@mediatek.com>
+ <ahwzwHDF7fT9t7hP@lore-desk> <7f02be7c4f919413718a0218b3792d4b0a222ca3.camel@mediatek.com>
+ <ah0fGek5y8Nha0kd@lore-rh-laptop>
+In-Reply-To: <ah0fGek5y8Nha0kd@lore-rh-laptop>
+From: Roy Luo <roychl666@gmail.com>
+Date: Mon, 1 Jun 2026 11:14:44 -0700
+X-Gm-Features: AVHnY4K7Rnr9HBZMT68ZgTpm2sqn42gpnxKwQoXBahDuVV30ZAwkIs0p7iRX8VQ
+Message-ID: <CAHoxoj+N3AtJgFD8vGP+uDpj6anKMgPBtZGejLDgAz0ZyisSHg@mail.gmail.com>
+Subject: Re: [PATCH v2] wifi: mt76: mt7996: fix reading zeroed
+ info->control.flags after mt76_tx_status_skb_add()
+To: "lorenzo@kernel.org" <lorenzo@kernel.org>
+Cc: Ryder Lee <Ryder.Lee@mediatek.com>, 
+	=?UTF-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= <Shayne.Chen@mediatek.com>, 
+	"nbd@nbd.name" <nbd@nbd.name>, Roy-CH Luo <Roy-CH.Luo@mediatek.com>, 
+	=?UTF-8?B?Q2h1aS1oYW8gQ2hpdSAo6YKx5Z6C5rWpKQ==?= <Chui-hao.Chiu@mediatek.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, Sean Wang <Sean.Wang@mediatek.com>, 
+	=?UTF-8?B?Qm8gSmlhbyAo54Sm5rOiKQ==?= <Bo.Jiao@mediatek.com>, 
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, 
+	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-37280-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,gmail.com,lists.infradead.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37281-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[mediatek.com,nbd.name,collabora.com,vger.kernel.org,lists.infradead.org,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nicoescande@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com]
-X-Rspamd-Queue-Id: ECC81623112
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[roychl666@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: EA24A623D17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu May 28, 2026 at 9:56 AM CEST, Rameshkumar Sundaram wrote:
-> On 1/23/2026 8:12 PM, Nicolas Escande wrote:
->> On a split phy qcn9274 (2.4GHz + 5GHz low), "iw phy" reports 320MHz
->> realated features on the 5GHz band while it should not:
->>=20
->>      Wiphy phy1
->>      [...]
->>          Band 2:
->>      [...]
->>              EHT Iftypes: managed
->>      [...]
->>                  EHT PHY Capabilities: (0xe2ffdbe018778000):
->>                      320MHz in 6GHz Supported
->>      [...]
->>                      Beamformee SS (320MHz): 7
->>      [...]
->>                      Number Of Sounding Dimensions (320MHz): 3
->>      [...]
->>                  EHT MCS/NSS: (0x22222222222222222200000000):
->>=20
->> This is also reflected in the beacons sent by a mesh interface started o=
-n
->> that band. They erroneously advertise 320MHZ support too.
->>=20
->> This should not happen as the spec at section 9.4.2.323.3 says we should
->> not set the 320MHz related fields when not operating on a 6GHz band.
->> For example it says about Bit 0 "Support For 320 MHz In 6 GHz"
->>=20
->>    "Reserved if the EHT Capabilities element is indicating capabilities =
-for
->>     the 2.4 GHz or 5 GHz bands."
->>=20
->> Fix this by clearing the related bits when converting from WMI eht phy
->> capabilities to mac80211 phy capabilities, for bands other than 6GHz.
->>=20
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00218-QCAHKSWPL_SILICONZ-1
->>=20
->> Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
->> ---
->>   drivers/net/wireless/ath/ath12k/wmi.c | 9 ++++++++-
->>   1 file changed, 8 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireles=
-s/ath/ath12k/wmi.c
->> index 84c29e4896a4..14947fdb9813 100644
->> --- a/drivers/net/wireless/ath/ath12k/wmi.c
->> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
->> @@ -4888,6 +4888,7 @@ static void ath12k_wmi_eht_caps_parse(struct ath12=
-k_pdev *pdev, u32 band,
->>   				       __le32 cap_info_internal)
->>   {
->>   	struct ath12k_band_cap *cap_band =3D &pdev->cap.band[band];
->> +	u8 *phy_cap =3D (u8 *)&cap_band->eht_cap_phy_info[0];
->>   	u32 support_320mhz;
->>   	u8 i;
->>  =20
->> @@ -4901,8 +4902,14 @@ static void ath12k_wmi_eht_caps_parse(struct ath1=
-2k_pdev *pdev, u32 band,
->>   	for (i =3D 0; i < WMI_MAX_EHTCAP_PHY_SIZE; i++)
->>   		cap_band->eht_cap_phy_info[i] =3D le32_to_cpu(cap_phy_info[i]);
->>  =20
->> -	if (band =3D=3D NL80211_BAND_6GHZ)
->> +	if (band =3D=3D NL80211_BAND_6GHZ) {
->>   		cap_band->eht_cap_phy_info[0] |=3D support_320mhz;
->> +	} else {
->> +		phy_cap[0] &=3D ~IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
->> +		phy_cap[1] &=3D ~IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_320MHZ_MASK;
->> +		phy_cap[2] &=3D ~IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_320MHZ_MASK;
+> > I mean the link_id is only corresponds to one specific flags bit of
+> > mac80211_tx_control_flags. But there are other bits that aren't
+> > handled. Wouldn't u32 flags make it more cleaner?
 >
-> This field is split across PHY capability byte 2 and byte 3, so should
-> IEEE80211_EHT_PHY_CAP3_SOUNDING_DIM_320MHZ_MASK be cleared as well ?
-
-Indeed
-
+> Yes, I got your point, but my concern is if we need to sync link_id between
+> mt7996_tx_prepare_skb() and mt7996_mac_write_txwi(). If so, I guess it is
+> much better to pass link_id explicitly to mt7996_mac_write_txwi() since it
+> does not just depended on mac80211_tx_control_flags and I think we should
+> not duplicate the logic in mt7996_mac_write_txwi(). Got my point?
+> If in the future (not required now) we need to pass mac80211_tx_control_flags
+> to mt7996_mac_write_txwi(), we will do it easily.
 >
+> Regards,
+> Lorenzo
 >
->> +		phy_cap[6] &=3D ~IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_320MHZ;
->> +	}
->>  =20
->>   	cap_band->eht_mcs_20_only =3D le32_to_cpu(supp_mcs[0]);
->>   	cap_band->eht_mcs_80 =3D le32_to_cpu(supp_mcs[1]);
->
->
-> Since you said "On a split phy qcn9274 (2.4GHz + 5GHz low)" i wonder how=
-=20
-> firmware set 6GHz capability bits in this case. That said, the approach=
-=20
+> >
+> > Ryder
+> >
+> >
 
-I suspect that the firmware sets the same features for mode 'a', regardless=
- of
-the actual frequency range supported by the device. I've also seen this on =
-a
-5G + 6G split device too.
+Lorenzo,
 
-> looks fine to me, although I would prefer to clear the remaining related=
-=20
-> bits as well:
->
->    IEEE80211_EHT_PHY_CAP3_SOUNDING_DIM_320MHZ_MASK
->    IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_320MHZ
->    IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP
->    IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_320MHZ
->    IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ
+I got your point and IIUC the problem being addressed in this patch is that
+the link id assignment has unnecessary duplicated logic across different
+places. However, the commit tile "fix reading zeroed info->control.flags"
+seems a bit misleading to me - this patch does not fully address the problem
+where the info->control.flags is cleared by memset in tx path when its
+value might still be referenced, the field is still zeroed after
+mt76_tx_status_skb_add() and whoever reads it afterward would get
+incorrect value. With this patch, we avoid using the incorrect value for
+link id, but the root cause remains.
 
-Yes, I cleared the ones I used in my middleware but I really don't mind
-clearing all the 6GHz/320MHz related bits I can find.
+The issue that Ryder tries to address in
+https://lore.kernel.org/all/5ecac6a9b7d29526e8438dea105b58f5487c93aa.1778521232.git.ryder.lee@mediatek.com/
+concerns the overlapping use of info->control and info->status in tx path,
+and it remains valid even with this link id fix applied. We have to be
+cautious when dealing with info->control in mt7996 tx path until the issue
+is fully resolved.
 
-Thanks for the review, I'll spin a v2
+Regards,
+Roy
 
