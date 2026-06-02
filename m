@@ -1,152 +1,204 @@
-Return-Path: <linux-wireless+bounces-37288-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37289-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPisLxh7HmrejQkAu9opvQ
-	(envelope-from <linux-wireless+bounces-37288-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 02 Jun 2026 08:41:28 +0200
+	id OEPZHrV8HmrnjgkAu9opvQ
+	(envelope-from <linux-wireless+bounces-37289-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 02 Jun 2026 08:48:21 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 406146291CD
-	for <lists+linux-wireless@lfdr.de>; Tue, 02 Jun 2026 08:41:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1645629261
+	for <lists+linux-wireless@lfdr.de>; Tue, 02 Jun 2026 08:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 01E3D3010251
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jun 2026 06:40:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B4961300D317
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jun 2026 06:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131B52EAD1B;
-	Tue,  2 Jun 2026 06:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29433A05C2;
+	Tue,  2 Jun 2026 06:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="KgJgyzOk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HMrt8VQ8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB7725B093
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Jun 2026 06:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEC927F19F;
+	Tue,  2 Jun 2026 06:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780382426; cv=none; b=tSx1XS0ksuTE4AQFJFbqKv04WyFTtF6hmCa3ErMsDGr6p600V4rixmEPR/rF05azSQSmktue+cR3F7usZeUA8CDYxOtZMBF2SZSWlBwixTdSuLORd2JIuYuq6L7X7TWqNxxoLpwNx6HoDRCsmNvMhiTcoWIs4TL7CA1EoQ/GEE4=
+	t=1780382612; cv=none; b=RB/UaFSBjj8u+/7sRApW6e3Nu6ClLLhnf32pFovSr9WhSv3Hn4jnmvYkSOdhMU6a8gKPM96c9TVBh0tof5iIQeLwqx1Z9a4YRz+vQAFn6nJrqfH/YkTykzG95OxFrz+ly5KivmvsRiqKr+dL6uEcL5UiUjg/F/jJlaNIgY2aMX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780382426; c=relaxed/simple;
-	bh=BAFkEt6Pb8vA6iN2+j3tlYBbM+zoS1nBQuyLpLw5Ubg=;
+	s=arc-20240116; t=1780382612; c=relaxed/simple;
+	bh=oVz6SYKqYy1ykUS1fwQECnfl6EKiONJTsloqPqT0xyw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FUTJ5hwDJKsgMBCN1zqMenEQrfx7Im40IfaGBuca3WSnzNU7wu5oV7eDQn/jykACqZ29ROBZNOUIIQd8QbCkK1X9OZ6e02bqvhI6ZEdfLLr3vceYGWNSJygk2G6UXzRgOv4sMF2S8voGFi67vtbZOGI23K33Z+mtpMvNHdcte+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=KgJgyzOk; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8423610ec93so1827084b3a.2
-        for <linux-wireless@vger.kernel.org>; Mon, 01 Jun 2026 23:40:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1780382424; x=1780987224; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eXuAh7KNgK/+wO/AYwWBAoE77f1hNy+rNed/BxYn/LE=;
-        b=KgJgyzOkYTTg6cZ2tUHAzaJIaXsPlbfe14r5nafFeaCIGvCIO6tGkYMCz+DaCiOpXy
-         F9104Ou3+b2+hKXkI8B3chbG5+YYsRv2V5WBxHj9cQIgtLBt84k6rDxWlvHF+vDVonZh
-         MYV3EESsgx0sJDZnBh1TBosPYjNNNITVOzchf5y83W0dJ47WJ+jTgiWDglb5GBkRLFjc
-         MQsxaFGs2Nmzo/juoao4WgZ97EB2A0eooGWJgJjA4KcIC2TWOwFYMiJWvnKD8XDSaIjc
-         eUd+/d2Bxhxb+IgOr3/CqeTMvIPpwG3zrNGWVXgVWL6F1QbkgQi+TFdI2MCRlR9rg+AX
-         Ar/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780382424; x=1780987224;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eXuAh7KNgK/+wO/AYwWBAoE77f1hNy+rNed/BxYn/LE=;
-        b=U4a4ULxMjQ+M+mS/TAgDt+ogDeDt9DUzy2TVcShfR6aF3MWRBUFg0ulCB+znt4qIS/
-         xMvxSBNj8mO7UhO4FqPBX5zya4E7g6LP/Rcji9BgRkxjG88rBiqa18axl6SJhIHcJbaX
-         tISyGtfrWl0YMkCnsUORRCAjKDFSiuBJXG3UAiwLdj+ZXQh+LGpFCYTflvqujbPQPYCQ
-         Rl9G/BKj5v21yCgtDJWvkflZP3BKblkJ8M1J+JeKhwxYqJRSDmqA+CHX5P/5s0O36L32
-         pBdtH3GvklANoOfPF3l1R0+carPhOYD/LdE9RQXQO8Pi11mVz81egvI5jCu4OCzAN4oD
-         MUjw==
-X-Gm-Message-State: AOJu0YyY7BhXgYFUPlJ164HwTaK+pkbfQIH6RvS6SV7wbr+DIfeXgb3o
-	taxKboGEKsOO46qJbgMYN8qkRz9QwkGDQASLxjgi9nw2inXJG4tiSanXyfsK5IcoFuY=
-X-Gm-Gg: Acq92OErKn1W4zgO+uepAwWLmg5Qs8SZLWmyr9z5ncprLyC/nwBEutXH2hsKBl5h+KT
-	n/lYbVvmrrdouTk4NGIkhbAcALN9k769of/9vpaqaEA5OPNs2xmYNJjPwO57Sr8oAtz2YTCfhxJ
-	9I71aPLc7uRGaQ9uV0DymGy/or21sSqGv698yaulDALlrdnqKkebbexizO3n8peRb/SdMBdiOT0
-	lKpGRMyxNBPBjl1RVpAPTLCVlVRLrh9ZoMkfj3mBCNqQ9nUq9nEwsZjiVe0ywbv9UNkjaBsS1FL
-	htcpi3PtHy8KSM9CbwR5e2HLVmbgq5QKMB/lTTZIstnV1bSB0lKruGaaa4QOIv6WVXGhWB2aYAF
-	CiHtE69Mvou47lBRDejSs5WkCkbGzCRtqgCEE6i4PezTbC2w4TIZ5wTB+33Q7uaM/PWRTrRLye5
-	JJhffElt4THPufAVgLAjRFJi7B6sj/m7qGrGUYsQ2dkduteTklGb/Tr5Hsyog5kEfUw59bwwNQY
-	XM=
-X-Received: by 2002:a05:6a00:23ca:b0:842:55b6:f5a1 with SMTP id d2e1a72fcca58-84255b6f93dmr7231018b3a.6.1780382423919;
-        Mon, 01 Jun 2026 23:40:23 -0700 (PDT)
-Received: from localhost ([60.227.167.223])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214affe1dsm12004492b3a.1.2026.06.01.23.40.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 23:40:23 -0700 (PDT)
-Date: Tue, 2 Jun 2026 16:40:20 +1000
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Subject: Re: [PATCH wireless-next] wifi: mac80211: basic S1G rx rate
- reporting support
-Message-ID: <y37p2nq34u2nqtmwr7d2fxujqkc7snbpgpedcwhqp2aee6okzs@6fofx7mozmrm>
-References: <20260602062224.1792985-1-lachlan.hodges@morsemicro.com>
- <2enlvwdxco5ezmpfosvvp3frreharqiiuspf67veztsmjwfcbd@rk3ej7yh4wow>
- <d6e543046d8b2ba7e681c137a23a55a21f4d19e0.camel@sipsolutions.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LIWNiausAE7Jqpzs1Kjeo/s7q8GQYcKCE8b8gui6qFeNrwd/jYZqbN+Fq8tNC1GusEJigUH2WgHWoKilhVg1xctaZno4C9upORZmn/9aPo2fdndNNRbtvfY3hrdsQIrnBUfr88G7mrV0wzJ3e03EuIlG0NjDLp8ppGrBada6Zlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HMrt8VQ8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D7F1F00893;
+	Tue,  2 Jun 2026 06:43:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780382611;
+	bh=oVz6SYKqYy1ykUS1fwQECnfl6EKiONJTsloqPqT0xyw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HMrt8VQ8uviRax8hfIijft+UtVgXap1KfnuLZUk9hKw3gmtJtZrF+2F0P9L2zwv6B
+	 OYVkXHe5ymymdtUGoHD8xqvbGWUxJc1bOI2lCCXUDxKLiejmYCSzKI0APvGYSdlZFv
+	 Gbj8qld+TsJLHaPOFGx3DCjpiIQKTEHVGWfqTgnLfquLyY27gmmakOp3nepTSoELKp
+	 ieziZVdbzoSz6bS3HS+dvaaJtnHGWxVjP1KuVUXiEvu7zmmL961jRIMW7GvKczDLnx
+	 gzUFgY6oQ7aHFoPKCFs7zDfZo967XXwqX6FJBwkBxaKAwLNlY8Y+LrEwPR1dhXw0E+
+	 UZQpNVNw7uMpQ==
+Date: Tue, 2 Jun 2026 08:43:27 +0200
+From: "lorenzo@kernel.org" <lorenzo@kernel.org>
+To: Roy Luo <roychl666@gmail.com>
+Cc: Ryder Lee <Ryder.Lee@mediatek.com>,
+	Shayne Chen =?utf-8?B?KOmZs+i7kuS4nik=?= <Shayne.Chen@mediatek.com>,
+	"nbd@nbd.name" <nbd@nbd.name>, Roy-CH Luo <Roy-CH.Luo@mediatek.com>,
+	Chui-hao Chiu =?utf-8?B?KOmCseWegua1qSk=?= <Chui-hao.Chiu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	Sean Wang <Sean.Wang@mediatek.com>,
+	Bo Jiao =?utf-8?B?KOeEpuazoik=?= <Bo.Jiao@mediatek.com>,
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v2] wifi: mt76: mt7996: fix reading zeroed
+ info->control.flags after mt76_tx_status_skb_add()
+Message-ID: <ah57j_SwdVZTc0GR@lore-rh-laptop>
+References: <20260531-mt76_tx_status_skb_add-overwrite-fix-v2-1-b73c4b4a9798@kernel.org>
+ <ee0e584cb2ad1b536d327eb89342d1646fa96570.camel@mediatek.com>
+ <ahwla_obwnwr2cZo@lore-desk>
+ <44c54ed4da0d294c567b3b0ad750f082a6f1be9f.camel@mediatek.com>
+ <ahwzwHDF7fT9t7hP@lore-desk>
+ <7f02be7c4f919413718a0218b3792d4b0a222ca3.camel@mediatek.com>
+ <ah0fGek5y8Nha0kd@lore-rh-laptop>
+ <CAHoxoj+N3AtJgFD8vGP+uDpj6anKMgPBtZGejLDgAz0ZyisSHg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vyatZ5JMfhikfHCS"
 Content-Disposition: inline
-In-Reply-To: <d6e543046d8b2ba7e681c137a23a55a21f4d19e0.camel@sipsolutions.net>
-X-Spamd-Result: default: False [-1.06 / 15.00];
+In-Reply-To: <CAHoxoj+N3AtJgFD8vGP+uDpj6anKMgPBtZGejLDgAz0ZyisSHg@mail.gmail.com>
+X-Spamd-Result: default: False [-1.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	FROM_DN_EQ_ADDR(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20251104.gappssmtp.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-37288-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37289-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[mediatek.com,nbd.name,collabora.com,vger.kernel.org,lists.infradead.org,gmail.com];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[morsemicro-com.20251104.gappssmtp.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 406146291CD
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: F1645629261
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Jun 02, 2026 at 08:37:48AM +0200, Johannes Berg wrote:
-> On Tue, 2026-06-02 at 16:32 +1000, Lachlan Hodges wrote:
-> > On Tue, Jun 02, 2026 at 04:22:24PM +1000, Lachlan Hodges wrote:
-> > > Introduce basic rate encoding/decoding for S1G stas such that the
-> > > usermode rx reporting is relevant as it currently uses VHT calculations
-> > > which are obviously wildy different to S1G. Sample iw output (with the
-> > > associated iw patches applied):
-> > 
-> > Johannes, there are obviously some driver changes associated with
-> > this - I'm not sure if you prefer these to be included in the v3
-> > since I have to fix some things anyway or scope v3 just to review/bot
-> > fixes and then send a subsequent pull request once it is in tree. I do
-> > not really mind.
-> 
-> Unfortunately, given demands on my time, I don't think I'll be able to
-> merge the driver for 7.2 since that'd have to happen in the next week or
-> so. I think it's fair to just include them in v3, ideally once this
-> patch lands, maybe I'll get a chance to restore the build bot too.
 
-That's not a problem at all and sounds good. I know the NXP driver is
-also under review on top of everything else... ^.^
+--vyatZ5JMfhikfHCS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-lachlan
+On Jun 01, Roy Luo wrote:
+> > > I mean the link_id is only corresponds to one specific flags bit of
+> > > mac80211_tx_control_flags. But there are other bits that aren't
+> > > handled. Wouldn't u32 flags make it more cleaner?
+> >
+> > Yes, I got your point, but my concern is if we need to sync link_id bet=
+ween
+> > mt7996_tx_prepare_skb() and mt7996_mac_write_txwi(). If so, I guess it =
+is
+> > much better to pass link_id explicitly to mt7996_mac_write_txwi() since=
+ it
+> > does not just depended on mac80211_tx_control_flags and I think we shou=
+ld
+> > not duplicate the logic in mt7996_mac_write_txwi(). Got my point?
+> > If in the future (not required now) we need to pass mac80211_tx_control=
+_flags
+> > to mt7996_mac_write_txwi(), we will do it easily.
+> >
+> > Regards,
+> > Lorenzo
+> >
+> > >
+> > > Ryder
+> > >
+> > >
+>=20
+> Lorenzo,
+
+Hi Roy,
+
+>=20
+> I got your point and IIUC the problem being addressed in this patch is th=
+at
+> the link id assignment has unnecessary duplicated logic across different
+> places. However, the commit tile "fix reading zeroed info->control.flags"
+> seems a bit misleading to me - this patch does not fully address the prob=
+lem
+> where the info->control.flags is cleared by memset in tx path when its
+> value might still be referenced, the field is still zeroed after
+> mt76_tx_status_skb_add() and whoever reads it afterward would get
+> incorrect value. With this patch, we avoid using the incorrect value for
+> link id, but the root cause remains.
+
+This patch is actually fixing both of the issues since now do not have any
+leftover access to info->control.flags after running mt76_tx_status_skb_add=
+()
+in the mt7996 tx path and it is not required (according to the current mt79=
+96
+codebase) to pass the flags cached value to mt7996_mac_write_txwi(). Howeve=
+r,
+if in the future this will be necessary, I am completely fine with that.
+
+Regards,
+Lorenzo
+
+>=20
+> The issue that Ryder tries to address in
+> https://lore.kernel.org/all/5ecac6a9b7d29526e8438dea105b58f5487c93aa.1778=
+521232.git.ryder.lee@mediatek.com/
+> concerns the overlapping use of info->control and info->status in tx path,
+> and it remains valid even with this link id fix applied. We have to be
+> cautious when dealing with info->control in mt7996 tx path until the issue
+> is fully resolved.
+>=20
+> Regards,
+> Roy
+
+--vyatZ5JMfhikfHCS
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCah57jAAKCRA6cBh0uS2t
+rAmFAQDk/bGX6PjAX+FifRA1xIjx6t2hREKHPBDgAfNVJn2rXAEA+RKD4cI97xcJ
+rWdhiY7wIkB+7003MrfHC78YlcbvXgM=
+=CO5r
+-----END PGP SIGNATURE-----
+
+--vyatZ5JMfhikfHCS--
 
