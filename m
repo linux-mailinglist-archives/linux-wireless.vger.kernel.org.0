@@ -1,155 +1,239 @@
-Return-Path: <linux-wireless+bounces-37351-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37352-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ax6JEkIlIGp4xQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-37351-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 14:59:46 +0200
+	id 3FXfHZEmIGplxgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-37352-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 15:05:21 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469A3637C9C
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 14:59:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 150B1637D79
+	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 15:05:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MnY62cPL;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37351-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37351-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=S3sGvcpU;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37352-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37352-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 12F8E3030835
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2026 12:53:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8CD233066205
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2026 13:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA24B3E5A3B;
-	Wed,  3 Jun 2026 12:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7CA480DE6;
+	Wed,  3 Jun 2026 13:04:01 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4E746AEEF
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jun 2026 12:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AC6480977
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jun 2026 13:03:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780491221; cv=none; b=W0A/VjtBlbcQfIK0nOsivEeEf90h0cAyigxi0GSBtCZeOxZSHdwoOzPtsPGuVPYrmESumwGEmZURau7osDgIKEwq7i2YH4si/JhAglY53LmCThI2OPdPg9PNxn06CAOuLcPmhLEo0Lg1jz8qgtm4bmI7oiQImntnO3bjSuXcBxA=
+	t=1780491841; cv=none; b=m12goP174TFEoanNVY+ZfAYO3StIAD7vNjHzta3sX7B53ZuRHSzajInrSuuq3BUdetYt3MlRRNUo0fZJI2sW3qTF8abV92HWn0CjeTkMOvh1MLxwC2sdCwEVVvSNPAVkZ1AyfBMBz5F0zXJBqx4icavPNd6EpC0v0WoogCnOlBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780491221; c=relaxed/simple;
-	bh=tw3B+H9jD5nskeOmMj1r0VbV1LssOSHmq4cYwMq7IXs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mY1Ce29s9vGLdCeThyGusbdvsBDNpe3K9EogJLuBbG75tE51jcsqCEq38qcK50UkMokcnXmmrwVB/aZOG00pykr8gyRzLBiyUgEGhKuGifVPSQLrN7+ThIglk/pa1TI1VOEknWJmgT+iIuYCUvFZV8Rk2MJhgu90eT3iFLeOazc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MnY62cPL; arc=none smtp.client-ip=209.85.214.171
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2c0c32f6ce1so24807105ad.2
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jun 2026 05:53:40 -0700 (PDT)
+	s=arc-20240116; t=1780491841; c=relaxed/simple;
+	bh=MBU7CS7WVwYwMOdcet6ICEOaUIj+8mKXQIBdEMW6F8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=N6gmYEjy2oKnq210nFmSnbPphWb7a05w6lM6MpZEFw4knbndg4Abx+kY1WTgzK5BFyFeE4m/i3Oc480tDPmgci0NVBh6xfkZ99hWa9W2o2FnET2UzI/V1yof1uksQ4d/mDAqM1fpojJqG+k4YJ08jAsXIA1OAiTAX8gLo7bL3FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S3sGvcpU; arc=none smtp.client-ip=209.85.221.44
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4600cbb06deso433062f8f.1
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jun 2026 06:03:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780491220; x=1781096020; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6RUtxi7gFFBB2jFLI9gsgqqsOc9t5I3VJP9BfFAwjBc=;
-        b=MnY62cPLvYhm1LdigdtW1LKvwEgS9K1nDRFy45BQqxru8GnQ6Ur8l70UoXAeqgQ1qr
-         HPvEhYUjzXOMdZKkMIjYsWpNHlkv0mLv5Xuth4S+fUv9adzGxcakm0qnfKoHv1K12JjN
-         HBvGg8nX7XCrZrpUdZksjFKX1wyq3AFdvq/NO17A7VCwepE706J/GvtfSR7jGY+P82yc
-         CusQzbwyfxtbHkQGbU1Jo/5IX7cwA49cXlMqiQijW/kVeEui2VegFMK0m5f7DjpeMQSO
-         qZjgZddbVmToWkkHFePqWt4D54nPxUE5NQrz5Me/xH1pLadCNsZ4P0tJNW2QYqiqT36Y
-         d/yA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780491220; x=1781096020;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1780491838; x=1781096638; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6RUtxi7gFFBB2jFLI9gsgqqsOc9t5I3VJP9BfFAwjBc=;
-        b=Al264v2imuYWwkxuQpKWbHf4yAcA4RTFOgfk8xEROVntKBdCuqnuBPzWJL7S1yPhTq
-         9596h8GBi5jdj1qcTSrkOe2yvXkLXPXS5QSqcAZ4151tAoxsRbRZ/QfXU4wOjSM+jO0h
-         TG0ZBA0r7PJZFx3YU2Qk8i8Bt1NyIOww+Lh87+Zyn/IdzHp9EmUAYgojpoTkLD6HgoJk
-         tJNqnNUnaAw2TR4hILdnayknS7RWcv7ySMgcIh/gZY9VDnN8RE8ni9qmqejFDzFyZQI0
-         aI62aOLebr44jw2ssqjtGCy2agluooiuHVM8NZa0yMv8tNwx8mfeP3hnFgQKCD/kY2bG
-         Tmmg==
-X-Gm-Message-State: AOJu0YyEx/8IO0/j1JtiL8OPKgTK4LF6MWh/02UjBOb+9fuWC9Z0Ki7Q
-	I4uOSGnuSzJ8ts2E1Z/3uTCuuPL+bl2NA/dRLcM56pzRC8thUD8smtLf17JCRh7Bpsg=
-X-Gm-Gg: Acq92OEle69IVIG7e2IGhn2NKDau5GB1mT365WX+VrLOiLClviBuVpze3w+eTZwL1OR
-	l61/bnfhb/6Kx4rLh4kBh9KkyK6ZfxNKGawfsI1IvRlwKho5kRCB1YMWUiuXZ9q18158QGzXZdt
-	FpRWufPujnz9NHQnfL7mizU2+fgLoxvMZ4DKKZ0ezo7A7vFK+tsVJYoNVUYeSKlC569M70yr1xQ
-	7tD2OheFGtLbyWAyIgsfKWRG3SGHpL3hY+0CH2pEMfqZrLc9OpkS+slwf6XdamzLtMgpH2Gry2C
-	gmCrE4YluTMQDLYpIuHw1i9DEsrJE0nE8Wb/qYUfXlBmAIlCqIwm37ydyYlWPBxXTOQe56Ol6mO
-	bjISfJ+15Vu3p6uKzeS4ODrG9c8v9Ynh07wNImwYeIlClHMLkZTeDgSe1KlpW+wnopDzqPs1YAk
-	w32bMrKSVXe8aFDulcEfKOwgy8TDqJI6qmIPPDV4zeUI2mqZea+jXI
-X-Received: by 2002:a17:903:2409:b0:2c0:bb11:19c8 with SMTP id d9443c01a7336-2c1641be73fmr37291035ad.36.1780491219737;
-        Wed, 03 Jun 2026 05:53:39 -0700 (PDT)
-Received: from jeevaanandh.. ([223.187.113.35])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16649ab01sm24449245ad.71.2026.06.03.05.53.36
+        bh=npACNw5GZ77miqur21FanA4v5+vTppUVJOnuElrt9AM=;
+        b=S3sGvcpU/jeOsGKM513xHUN2IPbJVouwCe4+ZZppPDYfGFGJSnZbCfImj4OLGXXdlh
+         /7fGwZIAVmucyU6kIY9xK0MRpVeefw4qWD734Kpx9P2uCjAM4z4dlgUdMVunipVWwFqE
+         fdqV4lFThsgkyvsUiQ6rPlEK77pr4Iap71PsNggEUY81aR0mU67yVocfFtk0VnAOgsdR
+         cjlo8SGHBPgquF+2mjy3xjPg3pCkPWdX4TrJf2DpRjAmxgru2UljmmDJseV9ePk57r8K
+         DwCfmeldb+PzUhYwGnU5k9RXTKDBbI9yBuZJUkF+ngKcO/evQ/GS4CqwHDFDj8xbAwVt
+         Pdjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780491838; x=1781096638;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=npACNw5GZ77miqur21FanA4v5+vTppUVJOnuElrt9AM=;
+        b=ewqN/E6FK1g0+Nzi2KfszJ81Qu5p/gN8a3fZBu7MrvFMkjyxAp1RgTavcAfwWGQMRv
+         I33wjnv68Z/GvhERcU2LrOalVS55FbXTJG/TGskn+VJzbd1ZKGgU3jPQym3wuN6At52/
+         sst9WAa9fsYz09zCeEE2B2B+te/XvUwW3pjRXOUdHBe/gI3D3L5L+V/ynBc8KsvS4VL4
+         zd8E6jlkE2+AoizCycg0nvocq4zxZ5YOcblPsiXEE6j3nTNrQj88E2Y+cLlz6Ne6kMO6
+         U1ahtOHkh/o7QOf2T+LjXOqTt9NfphBpEtyAUfteGYFpuxAe2hwfYgwQ9YCqVUvM+SBS
+         ACcQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/a3CljHDxkheOJZ4FSCFyTsVYf3w64+QpRebz80AHEb6N4m4PiiKUeH184ocLgXLpn5THmAENB64rLXRVlhQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMLPHe8bnyKGAk8qAYO1hA9ezM4jr/Qt+rgEAwVvUCNb7zNqtg
+	fGpOnOYNuoV18Mb7GOzI1GRtUPEFVUtycOZkSRHAzd0eap+69CjQ5CHJ
+X-Gm-Gg: Acq92OGheFkwsWJK0r5FKmf4nFR82X9VYncl72jiwVy0I15sG5chr/KH0L8nYGd/Rrl
+	Sh+h/UyUcEShknSSyyGgwiAmhjG8YXquOGP1CV9toO0bCRc/4B3DWoXt8BnrXCoBuBiZNx52N+I
+	qhacyaIgzHDXb1nnD4QCU/XL4iHNkKMJrC3wpoeksCY3edgNtmTgDLFUzCMIThBxgu9PSWoytMm
+	i9pHzw7zAQqMsszzRSXRnRWHXWp034YvmRmp3OEXsg9IKKXNT8z3jMeB7nmahCgayyVlw8qAH7Q
+	TOlUb9LQuTw4tSA9yGDFszTgqb4SSPnI9UTumBeAQdVQ2FNx4JRUBax7Taq7Se9zDLD/Q/ZmqsY
+	ceJYttaD+3a/oCxcr+KY1yNIHyTAnD2VmOsJzUiaB3BnNFBjYWryHTy7zJreCsJAnystNxrRg6j
+	j5/FPeBAcVVVot+IDH80eM39TAmQWwbGASuj4I9icwtILAtahbVyb0scFZ4iFXO5KbNeCNVDk=
+X-Received: by 2002:a5d:5f8c:0:b0:460:133f:2a4e with SMTP id ffacd0b85a97d-460212df7e6mr4465185f8f.13.1780491837758;
+        Wed, 03 Jun 2026 06:03:57 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f368e9fsm7576265f8f.37.2026.06.03.06.03.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 05:53:39 -0700 (PDT)
-From: Jeeva Anandh <anandhjeeva215@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: b43-dev@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jeeva Anandh <anandhjeeva215@gmail.com>
-Subject: [PATCH] b43legacy: remove redundant mask bit set
-Date: Wed,  3 Jun 2026 12:53:31 +0000
-Message-ID: <20260603125331.6310-1-anandhjeeva215@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Wed, 03 Jun 2026 06:03:56 -0700 (PDT)
+Date: Wed, 3 Jun 2026 14:03:54 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "Arnd Bergmann" <arnd@arndb.de>
+Cc: "Rasmus Villemoes" <linux@rasmusvillemoes.dk>, "Andy Shevchenko"
+ <andriy.shevchenko@linux.intel.com>, "Arnd Bergmann" <arnd@kernel.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>, "Masami Hiramatsu"
+ <mhiramat@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Petr
+ Mladek" <pmladek@suse.com>, "Nathan Chancellor" <nathan@kernel.org>,
+ "Dennis Dalessandro" <dennis.dalessandro@cornelisnetworks.com>, "Jason
+ Gunthorpe" <jgg@ziepe.ca>, "Leon Romanovsky" <leon@kernel.org>, "Arend van
+ Spriel" <arend.vanspriel@broadcom.com>, "Miri Korenblit"
+ <miriam.rachel.korenblit@intel.com>, "Mathieu Desnoyers"
+ <mathieu.desnoyers@efficios.com>, "Sergey Senozhatsky"
+ <senozhatsky@chromium.org>, "Nick Desaulniers"
+ <nick.desaulniers+lkml@gmail.com>, "Bill Wendling" <morbo@google.com>,
+ "Justin Stitt" <justinstitt@google.com>, "Vlastimil Babka (SUSE)"
+ <vbabka@kernel.org>, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-trace-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH 1/2] tracing: work around -Wmissing-format-attribute
+ warning
+Message-ID: <20260603140354.6744499b@pumpkin>
+In-Reply-To: <aafe201a-64a6-438f-89a3-d1cd10a357a7@app.fastmail.com>
+References: <20260602150904.2258624-1-arnd@kernel.org>
+	<ah8n-Nk305S5hRwN@ashevche-desk.local>
+	<WPQQfPHOiGJbSxrXRdFDy9jURhS7JMpNu9sD54Vfe5wB-JOjyGY6xPQyACz3MSGg0xGp79eOYCyZ2Hi2CsPeUg==@protonmail.internalid>
+	<35c1ba62-e74d-4abc-aa73-ccd35968ff89@app.fastmail.com>
+	<875x40hz7k.fsf@prevas.dk>
+	<aafe201a-64a6-438f-89a3-d1cd10a357a7@app.fastmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37351-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37352-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[anandhjeeva215@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:b43-dev@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:anandhjeeva215@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[davidlaightlinux@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[anandhjeeva215@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:arnd@arndb.de,m:linux@rasmusvillemoes.dk,m:andriy.shevchenko@linux.intel.com,m:arnd@kernel.org,m:rostedt@goodmis.org,m:mhiramat@kernel.org,m:akpm@linux-foundation.org,m:pmladek@suse.com,m:nathan@kernel.org,m:dennis.dalessandro@cornelisnetworks.com,m:jgg@ziepe.ca,m:leon@kernel.org,m:arend.vanspriel@broadcom.com,m:miriam.rachel.korenblit@intel.com,m:mathieu.desnoyers@efficios.com,m:senozhatsky@chromium.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:vbabka@kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:brcm80211@lists.linux.dev,m:brcm80211-dev-list.pdl@broadcom.com,m:linux-trace-kernel@vger.kernel.org,m:llvm@lists.linux.dev,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[rasmusvillemoes.dk,linux.intel.com,kernel.org,goodmis.org,linux-foundation.org,suse.com,cornelisnetworks.com,ziepe.ca,broadcom.com,intel.com,efficios.com,chromium.org,gmail.com,google.com,vger.kernel.org,lists.linux.dev];
 	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,lkml];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,pumpkin:mid,vger.kernel.org:from_smtp,arndb.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 469A3637C9C
+X-Rspamd-Queue-Id: 150B1637D79
 
-mask is initialized to 0x0000001F, which already contains
-the 0x0010 bit. Therefore the conditional OR operation is
-redundant and can be removed.
+On Wed, 03 Jun 2026 10:41:18 +0200
+"Arnd Bergmann" <arnd@arndb.de> wrote:
 
-Signed-off-by: Jeeva Anandh <anandhjeeva215@gmail.com>
----
- drivers/net/wireless/broadcom/b43legacy/main.c | 2 --
- 1 file changed, 2 deletions(-)
+> On Wed, Jun 3, 2026, at 09:15, Rasmus Villemoes wrote:
+> > On Tue, Jun 02 2026, "Arnd Bergmann" <arnd@arndb.de> wrote:  
+> >> On Tue, Jun 2, 2026, at 20:59, Andy Shevchenko wrote:  
+> >>> On Tue, Jun 02, 2026 at 05:07:05PM +0200, Arnd Bergmann wrote:  
+> >
+> > May I suggest a different approach, that avoids having that extra
+> > function emitted (which presumably compiles to a single jump
+> > instruction, but still, with retpoline and CFI and all that it all adds
+> > up): Keep the declaration of __vsnprintf() in the header without the
+> > __print() attribute, but then do
+> >
+> > int __vsnprintf(char *buf, size_t size, const char *fmt_str, va_list args) 
+> >    __alias(vsnprintf);
+> >
+> > in vsprintf.c. Aside from reusing the same entry point, I could well
+> > imagine a compiler some day complaining about seeing the printf
+> > attribute applied in a local extra declaration but not having it in the
+> > header file.
+> >
+> > Presumably it will need its own EXPORT_SYMBOL if any of the intended
+> > users are modular, and it certainly still needs a comment.  
+> 
+> I had tried that earlier but given up because the attributes have to
+> match exactly.
+> 
+> This definition works with all currently supported versions of gcc,
+> but may have to change when the there is a new version that adds
+> even more attributes:
+> 
+> int
+> __printf(3, 0)
+> __attribute__((nothrow))
+> __attribute__((nonnull(1)))
+> __vsnprintf(char *__restrict buf, size_t size,
+>             const char * __restrict fmt_str, va_list args)
+>                __alias(vsnprintf);
+> 
+> We'd probably want to also add __nothrow and __nonnull macros
+> in linux/compiler-attributes.h if we do this.
+> 
+> For reference, see below for the alternative idea I had
+> that avoids adding the __vsnprintf() alias altogether by
+> passing down the va_format using "%pV".
+> 
+> I don't think I actually got this one right in the end
+> since I only build-tested it, but I expect it could be done
+> if someone is able to test and fix all the corner cases
+> properly.
+> 
+>        Arnd
+> 
+> diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+> index 4715330c7b6b..8e44fc3e60b0 100644
+> --- a/include/linux/trace_events.h
+> +++ b/include/linux/trace_events.h
+> @@ -956,14 +956,11 @@ perf_trace_buf_submit(void *raw_data, int size, int rctx, u16 type,
+>   * gcc warns that you can not use a va_list in an inlined
+>   * function. But lets me make it into a macro :-/
+>   */
+> -#define __trace_event_vstr_len(fmt, va)			\
+> +#define __trace_event_vstr_len(vf)			\
+>  ({							\
+> -	va_list __ap;					\
+>  	int __ret;					\
+>  							\
+> -	va_copy(__ap, *(va));				\
+> -	__ret = __vsnprintf(NULL, 0, fmt, __ap) + 1;	\
+> -	va_end(__ap);					\
+> +	__ret = snprintf(NULL, 0, "%pV", vf) + 1;	\
 
-diff --git a/drivers/net/wireless/broadcom/b43legacy/main.c b/drivers/net/wireless/broadcom/b43legacy/main.c
-index 6b3e0b2bbca7..d32bffa6f009 100644
---- a/drivers/net/wireless/broadcom/b43legacy/main.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/main.c
-@@ -1904,8 +1904,6 @@ static int b43legacy_gpio_init(struct b43legacy_wldev *dev)
- 		mask |= 0x0200;
- 		set |= 0x0200;
- 	}
--	if (dev->dev->id.revision >= 2)
--		mask  |= 0x0010; /* FIXME: This is redundant. */
- 
- #ifdef CONFIG_SSB_DRIVER_PCICORE
- 	pcidev = bus->pcicore.dev;
--- 
-2.43.0
+This adds an extra snprintf call - non-trivial and more stack.
+Can't you just use the old code with vf->fmt and vf->ap ?
+
+And does the %pV" include the va_copy()?
+It isn't normally needed.
+Any scheme for avoiding doing the printf processing twice
+is likely to be a gain.
+
+-- David
 
 
