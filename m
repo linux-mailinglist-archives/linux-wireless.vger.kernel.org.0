@@ -1,142 +1,128 @@
-Return-Path: <linux-wireless+bounces-37358-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37359-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id w0ABBNVDIGrhzQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-37358-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 17:10:13 +0200
+	id Bp9lOmZHIGr/zwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-37359-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 17:25:26 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDCC638F98
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 17:10:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F73639263
+	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 17:25:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XSICvxH3;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37358-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37358-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlenalyA;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37359-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37359-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0DFB130D9EEB
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2026 14:51:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F3A683302B10
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2026 15:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F1F339853;
-	Wed,  3 Jun 2026 14:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AD73CBE7C;
+	Wed,  3 Jun 2026 15:14:47 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB6824A05D;
-	Wed,  3 Jun 2026 14:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE443AD52B;
+	Wed,  3 Jun 2026 15:14:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780498285; cv=none; b=HLXgfaEcs7EDwix+34WwBNbwilUgXFfyUq3J/jZlraD+wy7ZaWi7hOPLLf6vhXdIpjZyA296yXIaOl2mS0dUbLuIg+4Bew8kXrPtEW2yU5fmOu0Vvmji5ctEQw9+FHBTUWNa/rmI9scy6ARorEeGgWSDjpYzAP80iJ/OkUG6uGg=
+	t=1780499687; cv=none; b=cbLF+O3D4RHf1Hb1/CO8HYy96XI8hI5quwVnpfNlkonIn/vBsBZ2yhnJsi3tPW/m2SPvML8cK8VtK6G9WnPG3FrVQ1/7u0YeaxsRhnyYMKXcKVEhkJTfTFxSnFrtcLm49l3V9s+CqMSvGgt6Ki857TMEfMCv/rGzRPRIgtKICEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780498285; c=relaxed/simple;
-	bh=xgf/uSJdMuvtHpdV+BBZPxUDDiDUOaDapAJlKtyFE+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=agzsxLO+5566BWqHIaZ3jq8Xus374ZME2tKL+4wN6zLuxRcR3GfcNoIcmYKw1jtzm64vJkkS+1WNyB4F77+Q8Mtyk3+7ScMSl5EBFk/Y73BHmr39DDrchmQnv0Dmbzr86UHQSH5EcPf+XW79emVTBDnnTuQHJ/+9V9u2F9rnvsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XSICvxH3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77351F00893;
-	Wed,  3 Jun 2026 14:51:23 +0000 (UTC)
+	s=arc-20240116; t=1780499687; c=relaxed/simple;
+	bh=sfJFFRIt7ZtI5VSlY/vt/ttfsmf0TZHVo6bPhf4KChg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WU3La+ykwNB1DOJHqXI2M64gOSeO8yTgL3VlWO3ZjRHbS2XEeOLUxtQYXxg0klwzVrSyJ4XsKkIsK9dOzXo6K/cib16T+jePKGyJzsdWQL3oZ/RVnDG+7oNuAteDVznUSklSwn2KFPFu8/3bddGl/pY5iSTxVa66MdYtp05nEVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IlenalyA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D741F00898;
+	Wed,  3 Jun 2026 15:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780498283;
-	bh=6kW6ptgyg5H5Ykwdbp8DQZ2euT25CNIXLSKPhd7nzg4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XSICvxH3AvCsXhr/oIpKcbA9WVCvTjdM2xMNi6kuE4XSIKILLjgJxn03F+c+KnjC8
-	 zW1lv+i+veWu0Hgug8Sa7//B6wAUVKRoTuQ9mFVU7oakoWOqni79uRJHYDe4Z5abcv
-	 H3lcm3LKnHW56YdyA37zMDBJQTV3PY6+7rTrov5eN4X56dPcI9BoI/7Y7lhRkfO4n+
-	 K6OfPoqo0Lo+Dvs9FZvQxRUdVj67cDyGUJ0XfI1zGPc6oBDQm3Z+g7hZpGL3m17/VC
-	 yTBPuqe480+6J8vEEVm4NIk6Dbb3cOD5Ua5brzLIbJRluMPd/MwAKCm21YY7fp6ooT
-	 6vTPH35peH0Nw==
-Received: from johan by xi.lan with local (Exim 4.99.3)
-	(envelope-from <johan@kernel.org>)
-	id 1wUmwD-0000000AYYj-2wiC;
-	Wed, 03 Jun 2026 16:51:21 +0200
-Date: Wed, 3 Jun 2026 16:51:21 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+	s=k20260515; t=1780499686;
+	bh=q8gVi/KLN4RUu/hl2nIvT0jYawQsD47v53vKakKU8zE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IlenalyAI25X2pwHqJJ8/93TFOIjYZTFa05KP0tQul4B6AoYQ3L4kvq3L+PMWCJK8
+	 np0v8vEvaImhcIi/tfzMYPpeQlNAiSPTjUH79S/BY9XNdBParsdx8DvV+a/RtrVovz
+	 STm7FiJZCm+lXenwzyUVmPKXRJCzPiWDS3ug/dGt5u5h/NI5ZnjvN+aYOWIg3wgEjQ
+	 YGtP0vVDtMsK+aNsxD3d1m8IOv2GA//pgKte7JyuTy4mCo3TnmVP4EZ6rrjCP1W7gL
+	 mId5vdfmnudQsqDqSfvvmIUVZjEfhhvaPLvRzFAk01Da9xfwX2mN/CUNSQB9X6b3jR
+	 7hEywtPZwtTpw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	Duoming Zhou <duoming@zju.edu.cn>
+Cc: Sasha Levin <sashal@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Franky Lin <franky.lin@broadcom.com>,
+	Hante Meuleman <hante.meuleman@broadcom.com>,
+	Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+	Wright Feng <wright.feng@infineon.com>,
+	Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+	Kalle Valo <kvalo@codeaurora.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Piotr Haber <phaber@broadcom.com>,
+	"John W . Linville" <linville@tuxdriver.com>,
+	Pieter-Paul Giesberts <pieterpg@broadcom.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	linux-wireless@vger.kernel.org,
+	brcm80211-dev-list.pdl@broadcom.com,
+	SHA-cyfmac-dev-list@infineon.com,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 RESEND 0/5] wifi: mediatek: drop redundant USB device
- references
-Message-ID: <aiA_aYcTPizOPhtT@hovoldconsulting.com>
-References: <20260430083335.215239-1-johan@kernel.org>
+Subject: Re: [PATCH 5.15.y] wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work
+Date: Wed,  3 Jun 2026 11:14:10 -0400
+Message-ID: <20260603111500.item035@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260528055431.4124445-1-rob_garcia@163.com>
+References: <20260528055431.4124445-1-rob_garcia@163.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260430083335.215239-1-johan@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-37358-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[johan@kernel.org,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-37359-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,intel.com,broadcom.com,infineon.com,codeaurora.org,davemloft.net,tuxdriver.com,163.com,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:duoming@zju.edu.cn,m:sashal@kernel.org,m:johannes.berg@intel.com,m:arend.vanspriel@broadcom.com,m:franky.lin@broadcom.com,m:hante.meuleman@broadcom.com,m:chi-hsien.lin@infineon.com,m:wright.feng@infineon.com,m:chung-hsien.hsu@infineon.com,m:kvalo@codeaurora.org,m:davem@davemloft.net,m:kuba@kernel.org,m:phaber@broadcom.com,m:linville@tuxdriver.com,m:pieterpg@broadcom.com,m:rob_garcia@163.com,m:linux-wireless@vger.kernel.org,m:brcm80211-dev-list.pdl@broadcom.com,m:SHA-cyfmac-dev-list@infineon.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:kuba@kernel.org,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	SINGLE_SHORT_PART(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BCDCC638F98
+X-Rspamd-Queue-Id: 83F73639263
 
-On Thu, Apr 30, 2026 at 10:33:30AM +0200, Johan Hovold wrote:
-> [ This is a resend (with trimmed CC) of the five Mediatek patches which
->   still haven't been picked up from [1]. ]
-> 
-> Driver core holds a reference to the USB interface and its parent USB
-> device while the interface is bound to a driver and there is no need to
-> take additional references unless the structures are needed after
-> disconnect.
-> 
-> Drop redundant device references to reduce cargo culting, make it easier
-> to spot drivers where an extra reference is needed, and reduce the risk
-> of memory leaks when drivers fail to release them.
+Queued for 5.15.y, thanks.
 
-> [1] https://lore.kernel.org/all/20260306085144.12064-1-johan@kernel.org/
-> 
-> 
-> Johan Hovold (5):
->   wifi: mt76: drop redundant device reference
->   wifi: mt76x0u: drop redundant device reference
->   wifi: mt76x2u: drop redundant device reference
->   wifi: mt76: mt792xu: drop redundant device reference
->   wifi: mt7601u: drop redundant device reference
-
-It's now been three months since these were first posted.
-
-Can someone please pick them up?
-
-Johan
+-- 
+Thanks,
+Sasha
 
