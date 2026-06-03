@@ -1,209 +1,229 @@
-Return-Path: <linux-wireless+bounces-37354-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37355-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fL74HtsqIGpYyAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-37354-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 15:23:39 +0200
+	id 8FukOtArIGqRyAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-37355-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 15:27:44 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DB2963801B
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 15:23:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDE7638095
+	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 15:27:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=rasmusvillemoes.dk header.s=protonmail header.b=j9p4Bnka;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37354-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37354-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=rasmusvillemoes.dk;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BNZ9f9kK;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37355-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37355-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1B60E30854DC
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2026 13:15:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4FC7530B0F60
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2026 13:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7529481659;
-	Wed,  3 Jun 2026 13:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA34D481673;
+	Wed,  3 Jun 2026 13:20:46 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-43170.protonmail.ch (mail-43170.protonmail.ch [185.70.43.170])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F08481248;
-	Wed,  3 Jun 2026 13:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D3748165D
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jun 2026 13:20:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780492500; cv=none; b=Q1OFIUWRUFnP6+CAVyVbWQQAJtZzU12lc96b0vdJcOyCQq3LD5Jbsaa2pc49ovpNcXTLvt2jJabESOQ26oAMQf6czbPtKQYeKMOdpmky3PAYLy2tnL1uAZ+dstZQ3wkn6Uroc9Q4SXgKhFlMOJ16yg9qJxKHGMdgATC2q7osfUo=
+	t=1780492846; cv=none; b=EsR2PGQdcprsJmX0hNXNRyDr21eEpFErjZSaH9Ipo9BRIaFsSwVhtgSjIPcV5D/uLMWSJzEYq3SIq4QB6SfSqasYN4cXPETOO/E0L6fcIeGUYKlb8FK/kOKGN2XKY2nNOwIc+oSoTopN6rcOsedwZ/03tgGvM8cgs8rc1EnIRQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780492500; c=relaxed/simple;
-	bh=C2GewxLkkgkEYbqR2iNRlLWHQtBSWfBZDO6yBn946kQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RKzklnF/wUBLw4EwrJsPDzLp0S2H1iRS7moVr1qTVm6hp91PYv6JRxtaoK1cobMnZGAwRekwckYru4m28Hbp07F8QHc2gPpzBARrXUV8gDUmUYyyc5Q4UolUUuTAW22DAsYRyn3ZAAnBtLV+BqGy/cRdcF8Y//pMj/+FNFkdSEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rasmusvillemoes.dk; spf=pass smtp.mailfrom=rasmusvillemoes.dk; dkim=pass (2048-bit key) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.b=j9p4Bnka; arc=none smtp.client-ip=185.70.43.170
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rasmusvillemoes.dk;
-	s=protonmail; t=1780492488; x=1780751688;
-	bh=V2Q66gdvmCtjrbhnA8iFDT8uoIIyOyjUBipERHmuu4c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=j9p4Bnka6PQzW3q8mK/aVo01BjZleEwlhVKxZDjRCXNgW/dEvOKiKLq2eSjhrCSCf
-	 QsLmaxdpywC53akTtyxCM3OaE2kVJ9UjvkC329bTW+i45VQht398uA+WkYVcjxGiQG
-	 w+KDxUxGKlpLKhznpDa3LTmN41o1v2EJ5K4M+jAD81duudtI3XaBK0EASDtMOP/3DG
-	 SJs8KG2B1gJX7R2p2JNWI2pDk+Elhg6Tj0sedgkR3WuQBpBpWOhg3qD4vLkRNE1UTu
-	 hVQpzS+MLwZeGUDu8xSAkVpgXpfc3Sm9WLixRtD4BGnb1KiWY4BEp4XZIir2U9RAcj
-	 NNwpLVUUCm1/g==
-X-Pm-Submission-Id: 4gVp850wFCz2ScNN
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To: "Arnd Bergmann" <arnd@arndb.de>
-Cc: "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,  "Arnd Bergmann"
- <arnd@kernel.org>,  "Steven Rostedt" <rostedt@goodmis.org>,  "Masami
- Hiramatsu" <mhiramat@kernel.org>,  "Andrew Morton"
- <akpm@linux-foundation.org>,  "Petr Mladek" <pmladek@suse.com>,  "Nathan
- Chancellor" <nathan@kernel.org>,  "Dennis Dalessandro"
- <dennis.dalessandro@cornelisnetworks.com>,  "Jason Gunthorpe"
- <jgg@ziepe.ca>,  "Leon Romanovsky" <leon@kernel.org>,  "Arend van Spriel"
- <arend.vanspriel@broadcom.com>,  "Miri Korenblit"
- <miriam.rachel.korenblit@intel.com>,  "Mathieu Desnoyers"
- <mathieu.desnoyers@efficios.com>,  "Sergey Senozhatsky"
- <senozhatsky@chromium.org>,  "Nick Desaulniers"
- <nick.desaulniers+lkml@gmail.com>,  "Bill Wendling" <morbo@google.com>,
-  "Justin Stitt" <justinstitt@google.com>,  "Vlastimil Babka (SUSE)"
- <vbabka@kernel.org>,  <linux-rdma@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <linux-wireless@vger.kernel.org>,
-  <brcm80211@lists.linux.dev>,  <brcm80211-dev-list.pdl@broadcom.com>,
-  <linux-trace-kernel@vger.kernel.org>,  <llvm@lists.linux.dev>
-Subject: Re: [PATCH 1/2] tracing: work around -Wmissing-format-attribute
- warning
-In-Reply-To: <87zf1bhjqp.fsf@prevas.dk> (Rasmus Villemoes's message of "Wed,
-	03 Jun 2026 14:49:18 +0200")
-References: <20260602150904.2258624-1-arnd@kernel.org>
-	<ah8n-Nk305S5hRwN@ashevche-desk.local>
-	<WPQQfPHOiGJbSxrXRdFDy9jURhS7JMpNu9sD54Vfe5wB-JOjyGY6xPQyACz3MSGg0xGp79eOYCyZ2Hi2CsPeUg==@protonmail.internalid>
-	<35c1ba62-e74d-4abc-aa73-ccd35968ff89@app.fastmail.com>
-	<875x40hz7k.fsf@prevas.dk>
-	<cODLVx6ZlerCiOgdpsG7OSsC2YRA6pXmq2jBdTjRB2UQoTIY4hI-yhV1lrumRNBH1hTT2aJRS-MgtlbhNWUTEw==@protonmail.internalid>
-	<aafe201a-64a6-438f-89a3-d1cd10a357a7@app.fastmail.com>
-	<87zf1bhjqp.fsf@prevas.dk>
-Date: Wed, 03 Jun 2026 15:14:44 +0200
-Message-ID: <87se73hikb.fsf@prevas.dk>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1780492846; c=relaxed/simple;
+	bh=H2D3DsKMJCLENkE7pbhgaFA9ecmOaFqrZUFkLfrN59c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oOXBfHVWOjDen/wloJvR6UV9hYYtn9yhCd5O7CsFtsnAFMT8GzDKNiEhkgX/YV+fbLZdSejZ4UQ8S1dL1jzNPo9A6Mo9xZri3zY5J1xorXiE6CWu2PdrXzKgard0izpDIqdhU4VHuHWJoHRw0nnV9GOcGOP5M+8yY9aC+xOwuKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BNZ9f9kK; arc=none smtp.client-ip=192.198.163.19
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780492846; x=1812028846;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=H2D3DsKMJCLENkE7pbhgaFA9ecmOaFqrZUFkLfrN59c=;
+  b=BNZ9f9kKDy3MCCWaO3tZRmwETxxedoDm8WGHBhb2v2vlkk5AelYIZdtC
+   9/gooo1/tf6ZLEjtSJHf3upPMB2Kmf4GEFshg1umlsy0Bhk6cyrFXpvVs
+   odqQEBRJie+aS3qsmImyK6zr+HeBprLsu8dr48+IR0pnwKAejXKbnzGnU
+   vq8PcTyLD8Xl3y5HiESgdsUb7EC6rADobc2RJLknOSpotPuOh5sg2WQvB
+   AO2W9GUct/Ml5mhgjIzQ7IcRpuJM0U94B9Uq0UDEKhbPqpgvsOFVbyXTm
+   WhFplw+Ii5y1f/+v54eogCrfD8wBjiZmk02y/wWokIcPvWzdaTqmc/uRU
+   w==;
+X-CSE-ConnectionGUID: MDlrgCP4Qga2gv2gZyqbbw==
+X-CSE-MsgGUID: mIMMlCCpTNumfOR/erzHjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="80336205"
+X-IronPort-AV: E=Sophos;i="6.24,185,1774335600"; 
+   d="scan'208";a="80336205"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 06:20:45 -0700
+X-CSE-ConnectionGUID: Ebk5Hf5QTWK1EMkeaBwsBA==
+X-CSE-MsgGUID: Q9LWzdFPTaqwCb2KRD1JNw==
+X-ExtLoop1: 1
+Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
+  by fmviesa003.fm.intel.com with ESMTP; 03 Jun 2026 06:20:43 -0700
+Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wUlWT-00000000241-186f;
+	Wed, 03 Jun 2026 13:20:41 +0000
+Date: Wed, 3 Jun 2026 15:20:39 +0200
+From: kernel test robot <lkp@intel.com>
+To: Jason Huang <Jason.Huang2@infineon.com>, linux-wireless@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, wlan-kernel-dev-list@infineon.com,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Kurt Lee <kurt.lee@cypress.com>,
+	Jason Huang <jason.huang2@infineon.com>
+Subject: Re: [PATCH] wifi: brcmfmac: add DPP support and fix
+ fw-supplicant/P2P interop
+Message-ID: <202606031541.hOnf0Qnq-lkp@intel.com>
+References: <20260603035722.145894-1-Jason.Huang2@infineon.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260603035722.145894-1-Jason.Huang2@infineon.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[rasmusvillemoes.dk,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[rasmusvillemoes.dk:s=protonmail];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[26];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37354-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:arnd@arndb.de,m:andriy.shevchenko@linux.intel.com,m:arnd@kernel.org,m:rostedt@goodmis.org,m:mhiramat@kernel.org,m:akpm@linux-foundation.org,m:pmladek@suse.com,m:nathan@kernel.org,m:dennis.dalessandro@cornelisnetworks.com,m:jgg@ziepe.ca,m:leon@kernel.org,m:arend.vanspriel@broadcom.com,m:miriam.rachel.korenblit@intel.com,m:mathieu.desnoyers@efficios.com,m:senozhatsky@chromium.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:vbabka@kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:brcm80211@lists.linux.dev,m:brcm80211-dev-list.pdl@broadcom.com,m:linux-trace-kernel@vger.kernel.org,m:llvm@lists.linux.dev,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[linux@rasmusvillemoes.dk,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[rasmusvillemoes.dk:+];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@rasmusvillemoes.dk,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-37355-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,goodmis.org,linux-foundation.org,suse.com,cornelisnetworks.com,ziepe.ca,broadcom.com,intel.com,efficios.com,chromium.org,gmail.com,google.com,vger.kernel.org,lists.linux.dev];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,lkml];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:Jason.Huang2@infineon.com,m:linux-wireless@vger.kernel.org,m:oe-kbuild-all@lists.linux.dev,m:wlan-kernel-dev-list@infineon.com,m:johannes@sipsolutions.net,m:kurt.lee@cypress.com,m:jason.huang2@infineon.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rasmusvillemoes.dk:from_mime,rasmusvillemoes.dk:dkim,vger.kernel.org:from_smtp,prevas.dk:mid,prevas.dk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arndb.de:email]
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0DB2963801B
+X-Rspamd-Queue-Id: 7CDE7638095
 
-On Wed, Jun 03 2026, Rasmus Villemoes <ravi@prevas.dk> wrote:
+Hi Jason,
 
-> On Wed, Jun 03 2026, "Arnd Bergmann" <arnd@arndb.de> wrote:
->
->> On Wed, Jun 3, 2026, at 09:15, Rasmus Villemoes wrote:
->>> On Tue, Jun 02 2026, "Arnd Bergmann" <arnd@arndb.de> wrote:
->>>> On Tue, Jun 2, 2026, at 20:59, Andy Shevchenko wrote:
->>>>> On Tue, Jun 02, 2026 at 05:07:05PM +0200, Arnd Bergmann wrote:
->>>
->>> May I suggest a different approach, that avoids having that extra
->>> function emitted (which presumably compiles to a single jump
->>> instruction, but still, with retpoline and CFI and all that it all adds
->>> up): Keep the declaration of __vsnprintf() in the header without the
->>> __print() attribute, but then do
->>>
->>> int __vsnprintf(char *buf, size_t size, const char *fmt_str, va_list args)
->>>    __alias(vsnprintf);
->>>
->>> in vsprintf.c. Aside from reusing the same entry point, I could well
->>> imagine a compiler some day complaining about seeing the printf
->>> attribute applied in a local extra declaration but not having it in the
->>> header file.
->>>
->>> Presumably it will need its own EXPORT_SYMBOL if any of the intended
->>> users are modular, and it certainly still needs a comment.
->>
->> I had tried that earlier but given up because the attributes have to
->> match exactly.
->>
->> This definition works with all currently supported versions of gcc,
->> but may have to change when the there is a new version that adds
->> even more attributes:
->>
->> int
->> __printf(3, 0)
->> __attribute__((nothrow))
->> __attribute__((nonnull(1)))
->> __vsnprintf(char *__restrict buf, size_t size,
->>             const char * __restrict fmt_str, va_list args)
->>                __alias(vsnprintf);
->>
->
-> Ah, I see. The documentation for the alias attribute does say that the
-> types have to match, but I didn't know that the nothrow and nonnull
-> attributes were considered part of the type identity. Oddly enough, if
-> one does
->
->   typeof(vsnprintf) __vsnprintf __alias(vsnprintf);
->
-> that still fails, but only complains about nothrow, not nonnull.
->
-> I don't remember what minimum gcc we currently require, but gcc 9
-> introduced another attribute that is apperently meant for cases like
-> this: 'copy'. This seems to build:
->
-> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> index 9f359b31c8d1..c1402d375429 100644
-> --- a/lib/vsprintf.c
-> +++ b/lib/vsprintf.c
-> @@ -2988,6 +2988,9 @@ int vsnprintf(char *buf, size_t size, const char *fmt_str, va_list args)
->  }
->  EXPORT_SYMBOL(vsnprintf);
->  
-> +int __vsnprintf(char *buf, size_t size, const char *fmt_str, va_list args)
-> +       __alias(vsnprintf) __attribute__((__copy__(vsnprintf)));
-> +
->  /**
->   * vscnprintf - Format a string and place it in a buffer
->   * @buf: The buffer to place the result into
->
-> That at least should handle any future "gcc knows this-or-that about the
-> vsnprintf function". But I don't know if clang supports that copy
-> mechanism or if the minimum supported gcc is too old.
+kernel test robot noticed the following build warnings:
 
-Ah, so we already have __copy in compiler-attributes.h, stating that
-it's not supported by clang. Our current minimum gcc version is 8. But
-judging from the commit message for c0d9782f5, perhaps it's not actually
-a problem that it just expands to nothing for gcc 8, as the "less
-restrictive attribute" warning was also introduced with gcc 9, and the
-__copy macro is already used for module init/exit functions. Which also
-suggests that it might not be a problem that clang doesn't support it.
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on wireless/main linus/master v7.1-rc6 next-20260602]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Rasmus
+url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Huang/wifi-brcmfmac-add-DPP-support-and-fix-fw-supplicant-P2P-interop/20260603-115824
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20260603035722.145894-1-Jason.Huang2%40infineon.com
+patch subject: [PATCH] wifi: brcmfmac: add DPP support and fix fw-supplicant/P2P interop
+config: x86_64-rhel-9.4-ltp (https://download.01.org/0day-ci/archive/20260603/202606031541.hOnf0Qnq-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260603/202606031541.hOnf0Qnq-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606031541.hOnf0Qnq-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c: In function 'brcmf_p2p_tx_action_frame':
+>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c:1593:13: warning: variable 'action_frame_len' set but not used [-Wunused-but-set-variable]
+    1593 |         u16 action_frame_len;
+         |             ^~~~~~~~~~~~~~~~
+
+
+vim +/action_frame_len +1593 drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+
+  1570	
+  1571	
+  1572	/**
+  1573	 * brcmf_p2p_tx_action_frame() - send action frame over fil.
+  1574	 *
+  1575	 * @ifp: interface to transmit on.
+  1576	 * @p2p: p2p info struct for vif.
+  1577	 * @af_params: action frame data/info.
+  1578	 * @vif: vif to send
+  1579	 *
+  1580	 * Send an action frame immediately without doing channel synchronization.
+  1581	 *
+  1582	 * This function waits for a completion event before returning.
+  1583	 * The WLC_E_ACTION_FRAME_COMPLETE event will be received when the action
+  1584	 * frame is transmitted.
+  1585	 */
+  1586	static s32 brcmf_p2p_tx_action_frame(struct brcmf_if *ifp,
+  1587					     struct brcmf_p2p_info *p2p,
+  1588					     struct brcmf_fil_af_params_le *af_params)
+  1589	{
+  1590		struct brcmf_pub *drvr = p2p->cfg->pub;
+  1591		s32 err = 0;
+  1592		struct brcmf_fil_action_frame_le *action_frame;
+> 1593		u16 action_frame_len;
+  1594	
+  1595		action_frame = &af_params->action_frame;
+  1596		action_frame_len = le16_to_cpu(action_frame->len);
+  1597	
+  1598		brcmf_dbg(TRACE, "Enter\n");
+  1599	
+  1600		reinit_completion(&p2p->send_af_done);
+  1601		clear_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status);
+  1602		clear_bit(BRCMF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
+  1603	
+  1604		err = brcmf_fil_bsscfg_data_set(ifp, "actframe", af_params,
+  1605						sizeof(*af_params));
+  1606		if (err) {
+  1607			bphy_err(drvr, " sending action frame has failed\n");
+  1608			goto exit;
+  1609		}
+  1610	
+  1611		p2p->af_sent_channel = le32_to_cpu(af_params->channel);
+  1612		p2p->af_tx_sent_jiffies = jiffies;
+  1613	
+  1614		if (test_bit(BRCMF_P2P_STATUS_DISCOVER_LISTEN, &p2p->status) &&
+  1615		    p2p->af_sent_channel ==
+  1616		    ieee80211_frequency_to_channel(p2p->remain_on_channel.center_freq))
+  1617			p2p->wait_for_offchan_complete = false;
+  1618		else
+  1619			p2p->wait_for_offchan_complete = true;
+  1620	
+  1621		brcmf_dbg(TRACE, "Waiting for %s tx completion event\n",
+  1622			  (p2p->wait_for_offchan_complete) ?
+  1623			   "off-channel" : "on-channel");
+  1624	
+  1625		wait_for_completion_timeout(&p2p->send_af_done, P2P_AF_MAX_WAIT_TIME);
+  1626	
+  1627		if (test_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status)) {
+  1628			brcmf_dbg(TRACE, "TX action frame operation is success\n");
+  1629		} else {
+  1630			err = -EIO;
+  1631			brcmf_dbg(TRACE, "TX action frame operation has failed\n");
+  1632		}
+  1633		/* clear status bit for action tx */
+  1634		clear_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status);
+  1635		clear_bit(BRCMF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
+  1636	
+  1637	exit:
+  1638		return err;
+  1639	}
+  1640	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
