@@ -1,251 +1,167 @@
-Return-Path: <linux-wireless+bounces-37360-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37361-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PbT2OihVIGo81QAAu9opvQ
-	(envelope-from <linux-wireless+bounces-37360-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 18:24:08 +0200
+	id BVUQGEBTIGpe1AAAu9opvQ
+	(envelope-from <linux-wireless+bounces-37361-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 18:16:00 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58834639AFF
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 18:24:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA816399B1
+	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 18:15:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=candelatech.com header.s=default header.b="ltKjLR/T";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37360-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37360-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=candelatech.com;
+	dkim=pass header.d=bues.ch header.s=main header.b=LdRqLtvB;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37361-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37361-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=bues.ch;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7672F302D956
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2026 15:43:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 38EC4301F4AF
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2026 16:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039383D1717;
-	Wed,  3 Jun 2026 15:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B15C3E0C70;
+	Wed,  3 Jun 2026 16:06:11 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.bues.ch (bues.ch [116.203.120.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723973AE1AD
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jun 2026 15:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1305D3AC0FA;
+	Wed,  3 Jun 2026 16:06:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780501430; cv=none; b=QudYfeZs5izG+ue3b+Ccg34NmMcqcXeF7iZqg7j9ms9n7Nh5Fh0W4FNFVkblNxVrSXS1ir+18aj8jj/PnI/6fsglZjLeRV0HknmtxoetmOKCOVqSiZVvnsxeTLa+pScO1DzR4FF4b1+spMCfgFxMP8AYBJi/+jq46IDAdngopJ8=
+	t=1780502771; cv=none; b=AQVouf7CJSDa4SeM9098eixqQBkOgpCFiJ8IscThzicQyqvswf7j8XPim/zLpPfivjEi4+8t8IYFe92wFmlePAQxHapTT4TDs39BpfWjoS/Cbul6Eyh8u7ZOHlOKXiidDAdu8kJjc76Yq/UYZA0j2Z1Lp0XBLGnPynZzODm+Ct0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780501430; c=relaxed/simple;
-	bh=hLgshgyS7YOQD8gzLaUT8Q0QxecehSkbR1QldyX3hdE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tAiRzkJDfpXRGGTcrCRipeBmohgkbMxkbB2jb+0q8k+9rWPMEhEtQdI9mXxTFcA4dsfjEUhjrH2o8RrrexhzJ9JOYhOg//khLKc8dR0ajg39hEEOibFUOgQtWYcMwJfRdji1kU9Vc2XAd/ctKpj5yk3t7SkhJXAz3qJFaRM6b3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=ltKjLR/T; arc=none smtp.client-ip=148.163.129.48
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id ECCE0A80092;
-	Wed,  3 Jun 2026 15:43:44 +0000 (UTC)
-Received: from [192.168.101.110] (firewall.candelatech.com [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 7C54313C2B0;
-	Wed,  3 Jun 2026 08:43:42 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 7C54313C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1780501422;
-	bh=hLgshgyS7YOQD8gzLaUT8Q0QxecehSkbR1QldyX3hdE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ltKjLR/TkctAaphEbOismKYxMmiEtTw4a/WbAZf219lvTIoyYzW4KTLg87+C5FSQC
-	 hE402zaAXw6i5OLokUqaiQZHw+8EgNmS0z8PMavM7bTK9FKkVxrytr/NLpWNl26Uvv
-	 Cx6wqP6W43MdN7oiV2N6egC8MjQ/kpvlRWH0QS88=
-Message-ID: <a8a4f908-f8f1-4cbc-9be5-bbf8e109743f@candelatech.com>
-Date: Wed, 3 Jun 2026 08:43:42 -0700
+	s=arc-20240116; t=1780502771; c=relaxed/simple;
+	bh=o+VHwJshp/4g4QPqIYPVm1Z0Wc1eNwBIFQwc1W+uTm8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=r5bCOlhGMG+ob5H3W3aYkqTIx8ecgoFinO3huYX0sj11EvP1jDbqkPkYaNlwHxrv1ZaqikzzFxy8mLHBu0nSO9mgAOgV7np8oKhvhBpnbRedjOhmqvbpftfwItKLmszOc2Xz3WrOI62PV2hhn5opn+afX0ixaKcu9mo58+xYnCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; dkim=pass (2048-bit key) header.d=bues.ch header.i=@bues.ch header.b=LdRqLtvB; arc=none smtp.client-ip=116.203.120.240
+Date: Wed, 3 Jun 2026 17:56:22 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bues.ch; s=main;
+	t=1780502222;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zrNSRM1Z4CEXimJhWlKdTHX8Qi2VKmaYmJepC+k/Uh8=;
+	b=LdRqLtvBCwu7MaAyQ4Y+4digiuhV8Mss/XeLrk8/j4X0oDmXjjWYklrdknUGNwT1SBOrQY
+	OvHj3EoQcEWDM758+GoVX/4seeTGR47vvR0ojtnyOY5xjlsQio+X0fIOqfTKnSIDOeE0w1
+	ciyd/lMGXziERPaf/ZXjKsgrfkxh0SOQ+fKvRpavQjMJlt76HpQLLV6VeF1iq+letpA27m
+	9vOaKpoA83WXqMN8gvsC6oXM/me0IVLuTODofhtEhghAuv6L7+b2MgjB/hXfrM3kXE2doX
+	bNMu1OQOkW4DmDpI0smlN5IERvQ6fVHPLaDVac06EcWddv+DeYcTMj8+p4SIQQ==
+From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To: Jeeva Anandh <anandhjeeva215@gmail.com>
+Cc: linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] b43legacy: remove redundant mask bit set
+Message-ID: <20260603175622.3816e48d@barney>
+In-Reply-To: <20260603125331.6310-1-anandhjeeva215@gmail.com>
+References: <20260603125331.6310-1-anandhjeeva215@gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mt76: mt7996: Fix possible token leak in
- mt7996_tx_prepare_skb()
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-References: <20260531-mt7996_tx_prepare_skb-token-leack-v1-1-2b9c9f59ceb1@kernel.org>
- <80ff2108-dce3-4060-a8d0-59740979a99a@candelatech.com>
- <ah_TG4bkzitM4AER@lore-desk>
-Content-Language: en-US
-From: Dylan Eskew <dylan.eskew@candelatech.com>
-In-Reply-To: <ah_TG4bkzitM4AER@lore-desk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1780501426-zW_PSR9LY7Sa
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1780501426;zW_PSR9LY7Sa;<dylan.eskew@candelatech.com>;40f3b03bb24907b736a33b345f288e14
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Content-Type: multipart/signed; boundary="Sig_/DwH1_DYjyQLfw_tQzHJPZ2i";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
-	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[bues.ch,none];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[bues.ch:s=main];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[nbd.name,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-37360-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:anandhjeeva215@gmail.com,m:linux-wireless@vger.kernel.org,m:b43-dev@lists.infradead.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[dylan.eskew@candelatech.com,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:lorenzo@kernel.org,m:nbd@nbd.name,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:linux-wireless@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[m@bues.ch,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[candelatech.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37361-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[bues.ch:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dylan.eskew@candelatech.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[m@bues.ch,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,candelatech.com:mid,candelatech.com:from_mime,candelatech.com:dkim]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bues.ch:dkim,bues.ch:from_mime,bues.ch:url,barney:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 58834639AFF
+X-Rspamd-Queue-Id: DAA816399B1
 
-Hi Lore,
+--Sig_/DwH1_DYjyQLfw_tQzHJPZ2i
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
->> Hi Lore,
-> Hi Dylan,
->
->> We have been seeing the token memory leak in our custom kernel. After
->> pulling your patch in, we are still getting the leak (validated with
->> kmemleak). How did you figure out where this potential leak was? I want to
->> determine if we are leaking because of our changes or if there's more areas
->> for token leakage.
-> Can you please try to run kmemleak on Felix's tree to check if there are any
-> leftover leaks not fixed yet?
+On Wed,  3 Jun 2026 12:53:31 +0000
+Jeeva Anandh <anandhjeeva215@gmail.com> wrote:
 
-Ran kmemleak with Felix's tree. I brought up only a few stations, no 
-traffic run yet and kmemleak flagged a possible leak, same allocation 
-location we've seen flagged in our custom kernel.
+> mask is initialized to 0x0000001F, which already contains
+> the 0x0010 bit. Therefore the conditional OR operation is
+> redundant and can be removed.
+>=20
+> Signed-off-by: Jeeva Anandh <anandhjeeva215@gmail.com>
+> ---
+>  drivers/net/wireless/broadcom/b43legacy/main.c | 2 --
+>  1 file changed, 2 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/broadcom/b43legacy/main.c b/drivers/net=
+/wireless/broadcom/b43legacy/main.c
+> index 6b3e0b2bbca7..d32bffa6f009 100644
+> --- a/drivers/net/wireless/broadcom/b43legacy/main.c
+> +++ b/drivers/net/wireless/broadcom/b43legacy/main.c
+> @@ -1904,8 +1904,6 @@ static int b43legacy_gpio_init(struct b43legacy_wld=
+ev *dev)
+>  		mask |=3D 0x0200;
+>  		set |=3D 0x0200;
+>  	}
+> -	if (dev->dev->id.revision >=3D 2)
+> -		mask  |=3D 0x0010; /* FIXME: This is redundant. */
+> =20
+>  #ifdef CONFIG_SSB_DRIVER_PCICORE
+>  	pcidev =3D bus->pcicore.dev;
 
-kmemleak trace:
-```
-unreferenced object 0xffff88811e6ca380 (size 128):
-   comm "mt76-tx phy0", pid 1164, jiffies 4295044455
-   hex dump (first 32 bytes):
-     44 00 00 1a 0a a0 4c ae 0d 00 00 00 02 78 00 30 D.....L......x.0
-     00 00 00 00 01 00 00 00 14 00 27 12 00 00 00 08 ..........'.....
-   backtrace (crc fba2c5a3):
-     __kmalloc_noprof+0x38e/0x480
-     mt76_dma_tx_queue_skb+0x522/0x890 [mt76]
-     __mt76_tx_queue_skb+0x3e/0xa0 [mt76]
-     mt76_txq_schedule_pending_wcid+0x12b/0x200 [mt76]
-     mt76_txq_schedule_pending+0x122/0x1b0 [mt76]
-     mt76_tx_worker_run+0x1b/0xc0 [mt76]
-     __mt76_worker_fn+0x49/0x90 [mt76]
-     kthread+0xdc/0x110
-     ret_from_fork+0x190/0x280
-     ret_from_fork_asm+0x11/0x20
-```
+No, please don't just remove these things.
+There is a FIXME in the comment, because the author already noticed that th=
+is
+was strange and that there probably is an unknown reason for this.
+Just removing this FIXME without clarifying the underlying reason
+does not improve the code quality.
 
-In dma.c, line 19 is the where the kmemleak trace points:
-```
-10 static struct mt76_txwi_cache *
-11 mt76_alloc_txwi(struct mt76_dev *dev)
-12 {
-13         struct mt76_txwi_cache *t;
-14         dma_addr_t addr;
-15         u8 *txwi;
-16         int size;
-17
-18         size = L1_CACHE_ALIGN(dev->drv->txwi_size + sizeof(*t));
-19         txwi = kzalloc(size, GFP_ATOMIC);
-20         if (!txwi)
-21                 return NULL;
-22
-23         addr = dma_map_single(dev->dma_dev, txwi, dev->drv->txwi_size,
-24                               DMA_TO_DEVICE);
-25         if (unlikely(dma_mapping_error(dev->dma_dev, addr))) {
-26                 kfree(txwi);
-27                 return NULL;
-28         }
-29
-30         t = (struct mt76_txwi_cache *)(txwi + dev->drv->txwi_size);
-31         t->dma_addr = addr;
-32
-33         return t;
-34 }
-```
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
 
-Let me know if you need any other information.
+--Sig_/DwH1_DYjyQLfw_tQzHJPZ2i
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
--- Dylan
+-----BEGIN PGP SIGNATURE-----
 
->
-> Regards,
-> Lorenzo
->
->> -- Dylan
->>
->> On 5/31/26 2:10 AM, Lorenzo Bianconi wrote:
->>> If link_conf or link_sta lookup fails in mt7996_tx_prepare_skb routine,
->>> mt7996 driver leaks an already allocated tx token. Fix the issue
->>> releasing the token in case of error.
->>>
->>> Fixes: 7ef0c7ad735b0 ("wifi: mt76: mt7996: Implement MLD address translation for EAPOL")
->>> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->>> ---
->>>    drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 8 ++++++--
->>>    drivers/net/wireless/mediatek/mt76/tx.c         | 2 +-
->>>    2 files changed, 7 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
->>> index c98446057282..8c56344d211b 100644
->>> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
->>> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
->>> @@ -1067,11 +1067,11 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
->>>    		link_conf = rcu_dereference(vif->link_conf[wcid->link_id]);
->>>    		if (!link_conf)
->>> -			return -EINVAL;
->>> +			goto error_relase_token;
->>>    		link_sta = rcu_dereference(sta->link[wcid->link_id]);
->>>    		if (!link_sta)
->>> -			return -EINVAL;
->>> +			goto error_relase_token;
->>>    		dma_sync_single_for_cpu(mdev->dma_dev, tx_info->buf[1].addr,
->>>    					tx_info->buf[1].len, DMA_TO_DEVICE);
->>> @@ -1176,6 +1176,10 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
->>>    	tx_info->nbuf = MT_CT_DMA_BUF_NUM;
->>>    	return 0;
->>> +
->>> +error_relase_token:
->>> +	mt76_token_release(mdev, id, NULL);
->>> +	return -EINVAL;
->>>    }
->>>    u32 mt7996_wed_init_buf(void *ptr, dma_addr_t phys, int token_id)
->>> diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
->>> index 22f9690634c9..f96d9c471853 100644
->>> --- a/drivers/net/wireless/mediatek/mt76/tx.c
->>> +++ b/drivers/net/wireless/mediatek/mt76/tx.c
->>> @@ -933,7 +933,7 @@ mt76_token_release(struct mt76_dev *dev, int token, bool *wake)
->>>    #endif
->>>    	}
->>> -	if (dev->token_count < dev->token_size - MT76_TOKEN_FREE_THR &&
->>> +	if (wake && dev->token_count < dev->token_size - MT76_TOKEN_FREE_THR &&
->>>    	    dev->phy.q_tx[0]->blocked)
->>>    		*wake = true;
->>>
->>> ---
->>> base-commit: 4913f44167cf35a9536e9eec7352e15b2de0c573
->>> change-id: 20260531-mt7996_tx_prepare_skb-token-leack-82e240d8c66f
->>>
->>> Best regards,
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmogTqYACgkQ9TK+HZCN
+iw4rIw/7BmJ/cX5IldAqIHP1+YokL2qpD0dZ5HPwnGDcMV0ftM0+akuzV2xtxQPW
+jr31qZOMDOOlEJ0QivrsGKDpWI4iBKNYKygOfnztdHYCfjIesuz9Mx8zNroNog9A
+3LlNyAmAk9xghW0dd0ehu71rGvshY3UATCZXxcyIhqNhsmODck5RWSfdYaUCI+s/
+R/ns6t/A1cVgm6NqeSgWyEnUYtXXIiWrGL59O34pbxwIK6XsQ2n4p9XBqV5q56eu
+bnISEdgaGSUUilfW1jHMIIvBA1OAr/ZMpp/MISWr04AnUQtpHKFQDUl+OoHpaBJj
+J9rONGQdHV4LTJpOQyvS6ujIlEvdR8EtSxc3fKa9btjGMS1uoJJrqIAi9brrNfR7
+myPzTjArQJFLVtplGLKdDwRvIYGIQ0HP8sD5+MRzL1Nnc1v6UQacmSwK+llMW8EM
+O5Y/gk+S9lYRaVcjKtn5S0N82a4+gPWkVZ8oL0siGOJCCNMLQk2dW0xBS4BQiw2T
+BUt6yzV+NTk9iqSyqkWGhY2ZNg/BvC/2M7Iyogy/f4W3/03JgoZH3tbKId93+1wB
+eL2gyqfFezjuVuKMnUTS75ygkdEC9ea2octVN5OtTYcvKWlyJQORE/Uv2LJHKdpl
+f3eSBLhlz2g0c96cXyw2HfWqOsYNnl8vEddu5x5VgBE2yr4DuG4=
+=m2BT
+-----END PGP SIGNATURE-----
+
+--Sig_/DwH1_DYjyQLfw_tQzHJPZ2i--
 
