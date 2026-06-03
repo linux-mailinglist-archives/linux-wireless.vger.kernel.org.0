@@ -1,246 +1,482 @@
-Return-Path: <linux-wireless+bounces-37367-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37368-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cMegEk6OIGof5AAAu9opvQ
-	(envelope-from <linux-wireless+bounces-37367-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 22:27:58 +0200
+	id 1oeEC729IGqS7QAAu9opvQ
+	(envelope-from <linux-wireless+bounces-37368-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 01:50:21 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D694263B1E1
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Jun 2026 22:27:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE8763BEB0
+	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 01:50:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DlOeSIyI;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37367-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37367-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ocz8Dl/p";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37368-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37368-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 37B803058A17
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2026 20:27:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C9A4302296D
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2026 23:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C694014A0;
-	Wed,  3 Jun 2026 20:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2494B8DC0;
+	Wed,  3 Jun 2026 23:47:13 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E2C383C84
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jun 2026 20:27:52 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780518473; cv=none; b=gfGfNgBjSxKOsu0bCKj4VVkLHL1aYW4cRHRU+EU8wONEL/1ggBnmwc1EjMipd5577FlNgour9tP8uh7oAmVXV14kXfAgy83NMsJvPU+WaHN/MrqE/8vKO7uAsheab1xshfOW8na6INb9FMnZePpbgK//OkJu0Sn2fSqMKUT8+js=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780518473; c=relaxed/simple;
-	bh=YwTGPsjBah6GvaY4EYLSGeDs8Fkv/GZQKN8WfKQMncQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dptNIogoYwdlJl/coX1IA7Bn8MIb1gsXsVKeP4aRuMe7928iv4WR0o4ce3tQEM6FjNMNfoB5saeFb0pWdL01S0nB0vniWPFpfLV2JO9hvmCWOdRMDBfSVHZrwvU1TN0ZSeGmTsSKU0SNqzLOfqLVQn2rvfN845jpbj3VTwNCFHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DlOeSIyI; arc=none smtp.client-ip=192.198.163.7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780518473; x=1812054473;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YwTGPsjBah6GvaY4EYLSGeDs8Fkv/GZQKN8WfKQMncQ=;
-  b=DlOeSIyI37/Jfk17BtzO2WHU1lQD+EdK/h3kZMtAESd5eBth/Kmi10iL
-   +kZix/4gCCFa0hkUI4K+A1rKIeSN4e6tEI9Lpa4v2mM25NbtUMAeHrCMB
-   58dJnymvv1xL26uFPM+ImC4toEFozozqf4+faeVa8Cjh6QDJE/mS0b2ew
-   KC5QWhn5FP4TSAFtxfMLubT9SIF5ChY2Uf9S+Ox8E/uq/SNaOTRscCWuK
-   P2B9ndI7eTFtUmi6/GYe3mE1KND5RmgyIH8ZCWBhd/7bFdFObMv7CrTS5
-   UOnWV2eL67K85i46z+npEa5CC6IujMVDGfRiMTdcdwVxH1FI3lzplm78F
-   A==;
-X-CSE-ConnectionGUID: 2XnOxi8WTfSP9+ZZKUOBNQ==
-X-CSE-MsgGUID: JowZjQV5QB6TUj3IUxi7hw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11806"; a="106789447"
-X-IronPort-AV: E=Sophos;i="6.24,185,1774335600"; 
-   d="scan'208";a="106789447"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 13:27:52 -0700
-X-CSE-ConnectionGUID: 6vV8yUgjQ4iGVwtO1bkXVg==
-X-CSE-MsgGUID: xi91RExKRIWPluvF9+SKDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,185,1774335600"; 
-   d="scan'208";a="249263061"
-Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
-  by orviesa005.jf.intel.com with ESMTP; 03 Jun 2026 13:27:48 -0700
-Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wUsBl-0000000029B-3dO4;
-	Wed, 03 Jun 2026 20:27:45 +0000
-Date: Wed, 3 Jun 2026 22:27:39 +0200
-From: kernel test robot <lkp@intel.com>
-To: JB Tsai <jb.tsai@mediatek.com>, nbd@nbd.name, lorenzo@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	Deren.Wu@mediatek.com, Sean.Wang@mediatek.com,
-	Quan.Zhou@mediatek.com, Ryder.Lee@mediatek.com,
-	Leon.Yen@mediatek.com, litien.chang@mediatek.com,
-	Charlie-cy.Wu@mediatek.com, jb.tsai@mediatek.com
-Subject: Re: [PATCH] wifi: mt76: mt7925: add regulatory wiphy self manager
- support
-Message-ID: <202606032205.iaSDVq2Z-lkp@intel.com>
-References: <20260603075331.1234691-1-jb.tsai@mediatek.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0CA44CAE0
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jun 2026 23:47:10 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780530433; cv=pass; b=tSjcUz9TEPrYdktg0TUeYhMUkSVaWRbhSLoQ38WvUa0dMzocXWXYUyFxqbSRKyX3/e2sesVW8WPDUO2FrQKbmlvSaBen77OSh3KZ8gm4GOPRbzAkbTXU84FpAT39HWe2qYGXsfKPYrFIOSnLiwrVxGbeUGzuWJZqyXqhkf2Kx8s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780530433; c=relaxed/simple;
+	bh=8SEDpvoiCYKjdtxkdOpE2kdb8M5UEbwBzeVXGTDeLSU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U6pDvne4um+UfxKJP1nwgU+ONu6AZFK9Qhutjn53T84juXOHpAjRiz6pKgOXR6JLT2KmZr5TDzNWIoMbQoyVgZmxwkkRWReCpqw0vBCI3TZKYOKf6lQQGFBrnizmX+5WfKUK6NYn5uM62uB1A8CJK4q4IsbautkUjhx/UXJ3xyU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ocz8Dl/p; arc=pass smtp.client-ip=209.85.160.171
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-517654b8dd4so166741cf.3
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jun 2026 16:47:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780530429; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VC1q4GkR/xIu5BUDcviUOvROqU2fhsGA7Jh7MTyAhB2AeWS4sTXfDal5wB7rXWy7v+
+         +YUS3Ubd/4gCMltJexu6No9OwDi6IOfB6a7rkqDQM/Dip7wA4HfE8OjEZdH66bdAwbqf
+         nhXdYtsnve28SPHWYdNd+0hhjq1dcoRSgW6HljQVuQAFvl+lJqiVuv0p1pE0LjCDg33Y
+         5cJLBR5vlIRSX2bTr8pD6KjvZzAjOd2IIWH2Wnnq9okRzllJ+ZWzYnMnRlTwKqoyxhqp
+         IvdOg/0h7VfDEcQbYQua+hMVs2NBW0AmVkzrGi/Gx7IQvirCAnVCxqI+mFAqH2oYIeCi
+         lrtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IrsB5qlB9vbQ42mMffRvNtPBkwXix0VEJXwI5BRhHFo=;
+        fh=WC22FxggZySstborvmjlc1z92TN7RkAElljzyKT1Eg0=;
+        b=AV2YINuIiiRXhKRNZSC/x32qfQ2+zB5u0kavuDBPhEwB9vIrEAuXYbVX0d9OhleXas
+         OoVwUy0iEHdB2b7d8AL07oqwTvuxvS5mj52DW4WW2zec1z91CVcYiarWSWjiNDkaXeKk
+         jN1JZpO036QEibHSnYwGT3da1ZDuKbFz6uvSv3WTXRm46GRe9uH641+I2ohIVuFx98eQ
+         wszxO04r+cPdxi0Rbxyyvqiz5J5w9zkVDbbE3i7xKa9xPZmmiA3sT18U+ZIBTXQVwgRQ
+         CV8g1dl+pjTEv27Uw/JtiRir8IuATsvTMO1xXTmuKbTMurdKhOu5kV2KMwS+HZNA6W90
+         cNhw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780530429; x=1781135229; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IrsB5qlB9vbQ42mMffRvNtPBkwXix0VEJXwI5BRhHFo=;
+        b=ocz8Dl/pbXmb9qFeggCSP/tKkaZ1N1ncsDifE1KdKVLovM+8yz/DMilRyFjZSxbF5F
+         SdJMQUNCsSeLax2GCo+Gc28m5qP330V+pD0CK9hbBoL9lcCQsNNk5pXRyScBJF31ovFA
+         oI6ZIJKJ928zBkaPZDRcmPNrfLAl8yiTRlCjeWAHu6/E+tkrHO/16hH7l8WD2w9wLYRM
+         7uhvIneTBgqrD9oPTMkQpnU5nCRefdlscU1zcrWklJUhA5bDOOo2RQPKAg8YTeQ5rRNB
+         GibRlPde1Xgexbpzdf9fQ4Ju7KOeYS2SuwKYtlVluwqbZh0i9PC3Z97vLLhXAWw35Fw5
+         VpBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780530429; x=1781135229;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IrsB5qlB9vbQ42mMffRvNtPBkwXix0VEJXwI5BRhHFo=;
+        b=Q0IlVsh1eHvdNPh1FgzEuvl64rgQVj8MeqzyxOWEr3Cgxmlm4Pm1tVntDzECsOnR8C
+         ddFetBHzN8HR0JLFpqpr0Ocsc9rau5APx0LK5fFeGt59+GoCR9YdMtKm4AzSrnx42Xxg
+         nUwfV9elXxi5/di83gTW14yy+DxRI7xpEWhRFurFxNDRLlYfygefnNP1kif7nyLSTvJp
+         g+/fXaWtFmVji1duRciX+y3eLRZlff+Opb3sxdtynRcFVNF1UWu6sMlEKYeBPzVk6fNi
+         5l4UmRFDqQzhMElLhWFMp+nn4QrBicnrPssJm990cm+RuH9JiV2eDiH45CSvu7Xv/+W6
+         foKA==
+X-Forwarded-Encrypted: i=1; AFNElJ+xZwFvQ/lcQGcez6raAnST3fcbCtBJE7QSr9JHTZUQpLIt1hhRb3ydkpTUfsP13PJVEmflho7GEvHpKLKiSQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuT6GsMv4G/ht4OQVPqpa6Yg8QvPma+Kn0LGahgL7+alPEpw/B
+	2MQrsYqKXCW/blC87yOGn1PqvRvxl2BaJehNk2DLjopvGM7vNmGa2Z/CuQRCrv7a4ManWNvlCyf
+	kVRPYyNk64lDfnfjaBGibnIJuCXri+ns=
+X-Gm-Gg: Acq92OFRClJnTL4CX4JREW0cKdpJrWc9wFpzizkCkzTZ/VJxbVoVl4bJROgRwx3Fhzl
+	ihosbV6Ub3oE/WUpNoIVKfkjXGttWfeRjJYvzPNf2uaSNnaNNf/GF7gZFh9UAOU1qAk5pEgQdlp
+	iBPhi+2kffw5e0jOLdD6p9SyYfsTi+/AdrWS9l8+3jb04BQgk3/Z6R0Jm3l+rt+TelWFP9R8mUS
+	FWznPa00nfmvv5hq2Zgi7HGWqxyAU7/iITupCRbJfrm/CWKW0o38i9DIUryfFHFJx3cWuxfBTF7
+	9snS2swnnHNDNzR73JXxj/hmjQYxcXkxdrWhJYjzWyeUkq8=
+X-Received: by 2002:a05:622a:54f:b0:50e:6311:7380 with SMTP id
+ d75a77b69052e-5178a00cdc1mr3981031cf.6.1780530429438; Wed, 03 Jun 2026
+ 16:47:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260603075331.1234691-1-jb.tsai@mediatek.com>
+References: <CAN6xzWcVDRLVTV-SQcs6osZjnfhLM728NP7+W8+sFcTDmeVipw@mail.gmail.com>
+ <CAGp9LzrmUGQLK5giHVgOjJ5pzGNnfLaV02iWdodT7aDNBbNUqg@mail.gmail.com>
+In-Reply-To: <CAGp9LzrmUGQLK5giHVgOjJ5pzGNnfLaV02iWdodT7aDNBbNUqg@mail.gmail.com>
+From: Bradley Pizzimenti <brad.pizzimenti@gmail.com>
+Date: Wed, 3 Jun 2026 16:46:58 -0700
+X-Gm-Features: AVHnY4J9XV6wrdzDm41yteKNeBZCLKN_1ZB_hg37PDE9Gq8_o-lWRPTjxswvSgU
+Message-ID: <CACjnFahYMyRc1yfb-yA-iiMk_SUOXPx0GrOBbDUEyMtbSqv9iA@mail.gmail.com>
+Subject: Re: [bug report] wifi: mt76: mt7921: mt7925monitor-mode per-channel
+ retune emits narrowband RF burst
+To: Sean Wang <sean.wang@kernel.org>
+Cc: John Henry <jshenry1963@gmail.com>, Javier Tia <floss@jetm.me>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
+	ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com, 
+	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>, Deren Wu <deren.wu@mediatek.com>, 
+	Nick Morrow <morrownr@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-37367-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37368-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:sean.wang@kernel.org,m:jshenry1963@gmail.com,m:floss@jetm.me,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-mediatek@lists.infradead.org,m:deren.wu@mediatek.com,m:morrownr@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:jb.tsai@mediatek.com,m:nbd@nbd.name,m:lorenzo@kernel.org,m:llvm@lists.linux.dev,m:oe-kbuild-all@lists.linux.dev,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:Deren.Wu@mediatek.com,m:Sean.Wang@mediatek.com,m:Quan.Zhou@mediatek.com,m:Ryder.Lee@mediatek.com,m:Leon.Yen@mediatek.com,m:litien.chang@mediatek.com,m:Charlie-cy.Wu@mediatek.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER(0.00)[bradpizzimenti@gmail.com,linux-wireless@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,jetm.me,vger.kernel.org,nbd.name,kernel.org,mediatek.com,lists.infradead.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bradpizzimenti@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:from_mime,intel.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,git-scm.com:url]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,mediatek.com:email,nbd.name:email,infradead.org:url,jetm.me:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D694263B1E1
+X-Rspamd-Queue-Id: 7AE8763BEB0
 
-Hi JB,
+Hi there,
+Are all of these fixes going into kernel 7.1+ or introduced earlier?
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main linus/master v7.1-rc6 next-20260602]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/JB-Tsai/wifi-mt76-mt7925-add-regulatory-wiphy-self-manager-support/20260603-155908
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20260603075331.1234691-1-jb.tsai%40mediatek.com
-patch subject: [PATCH] wifi: mt76: mt7925: add regulatory wiphy self manager support
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260603/202606032205.iaSDVq2Z-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project f43d6834093b19baf79beda8c0337ab020ac5f17)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260603/202606032205.iaSDVq2Z-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606032205.iaSDVq2Z-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/net/wireless/mediatek/mt76/mt7925/regd.c:361:43: error: passing 'const struct ieee80211_regdomain *' to parameter of type 'struct ieee80211_regdomain *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
-     361 |                 return regulatory_set_wiphy_regd(wiphy, &mt7925_regd_ww);
-         |                                                         ^~~~~~~~~~~~~~~
-   include/net/cfg80211.h:8082:38: note: passing argument to parameter 'rd' here
-    8082 |                               struct ieee80211_regdomain *rd);
-         |                                                           ^
-   1 error generated.
-
-
-vim +361 drivers/net/wireless/mediatek/mt76/mt7925/regd.c
-
-   286	
-   287	int mt7925_regd_update(struct mt792x_phy *phy, char *alpha2)
-   288	{
-   289		struct wiphy *wiphy = phy->mt76->hw->wiphy;
-   290		struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
-   291		struct mt792x_dev *dev = mt792x_hw_dev(hw);
-   292		struct mt7925_regd_rule *mt7925_rule;
-   293		struct mt76_dev *mdev = &dev->mt76;
-   294		struct ieee80211_regdomain *regd;
-   295		struct ieee80211_reg_rule *rule;
-   296		struct mt7925_regd_rule_ev *ev;
-   297		int i, num_of_rules = 0;
-   298		struct sk_buff *skb;
-   299		int ret = 0;
-   300	
-   301		if (dev->hw_full_reset)
-   302			return 0;
-   303	
-   304		if (!MT7925_REGD_SUPPORTED(phy))
-   305			return -EOPNOTSUPP;
-   306	
-   307		mt792x_mutex_acquire(dev);
-   308		skb = mt7925_regd_query_regdb(phy, alpha2);
-   309		mt792x_mutex_release(dev);
-   310	
-   311		if (!skb)
-   312			return -EINVAL;
-   313	
-   314		ev = (struct mt7925_regd_rule_ev *)(skb->data + 4);
-   315		num_of_rules = le32_to_cpu(ev->n_reg_rules);
-   316	
-   317		if (!num_of_rules ||
-   318			WARN_ON_ONCE(num_of_rules > NL80211_MAX_SUPP_REG_RULES)) {
-   319			ret = -EINVAL;
-   320			goto err;
-   321		}
-   322	
-   323		regd = kzalloc(struct_size(regd, reg_rules, num_of_rules), GFP_KERNEL);
-   324		if (!regd) {
-   325			ret = -ENOMEM;
-   326			goto err;
-   327		}
-   328	
-   329		for (i = 0; i < num_of_rules; i++) {
-   330			mt7925_rule = &ev->reg_rule[i];
-   331			rule = &regd->reg_rules[i];
-   332	
-   333			rule->freq_range.start_freq_khz =
-   334						MHZ_TO_KHZ(mt7925_rule->start_freq);
-   335			rule->freq_range.end_freq_khz =
-   336						MHZ_TO_KHZ(mt7925_rule->end_freq);
-   337			rule->freq_range.max_bandwidth_khz =
-   338						MHZ_TO_KHZ(mt7925_rule->max_bw);
-   339			/* not used by fw */
-   340			rule->power_rule.max_antenna_gain = DBI_TO_MBI(6);
-   341			rule->power_rule.max_eirp = DBM_TO_MBM(22);
-   342			rule->flags = mt7925_rule->flags;
-   343		}
-   344	
-   345		regd->n_reg_rules = num_of_rules;
-   346		regd->dfs_region = ev->dfs_region;
-   347	
-   348		memcpy(regd->alpha2, alpha2, 2);
-   349		memcpy(mdev->alpha2, alpha2, 2);
-   350	
-   351		dev->regd_change = true;
-   352		mt7925_mcu_regd_update(dev, alpha2, ENVIRON_ANY);
-   353	
-   354		ret = regulatory_set_wiphy_regd(wiphy, regd);
-   355	
-   356		kfree(regd);
-   357	err:
-   358		dev_kfree_skb(skb);
-   359	
-   360		if (ret < 0)
- > 361			return regulatory_set_wiphy_regd(wiphy, &mt7925_regd_ww);
-   362	
-   363		return ret;
-   364	}
-   365	EXPORT_SYMBOL_GPL(mt7925_regd_update);
-   366	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On Wed, May 27, 2026 at 4:08=E2=80=AFPM Sean Wang <sean.wang@kernel.org> wr=
+ote:
+>
+> Hi John,
+>
+> On Wed, May 27, 2026 at 7:24=E2=80=AFAM John Henry <jshenry1963@gmail.com=
+> wrote:
+> >
+> > Just a kind reminder of this issue.
+> >
+> > Please advise if this is already taken up in a separate issue I am
+> > unaware of, but it is not directly related to the "iw set txpower
+> > fixed accepted but ignored" issue.
+> >
+> > On products available in the market, e.g.  the Alfa AWUS036AXML
+> > consumer product and the Netgear Nighthawk A9000, in Monitor Mode
+> > there is RF generated when scanning through channels and we get to 5
+> > or more channels in succession.
+> > This does not seem to occur at all in managed mode.
+> >
+> > This means if we scan the 2.4GHz channel list, an RF Spectrum analyzer
+> > will show a narrow pulse generated on each channel as we progress
+> > through the channels.
+> > This can 100% be reproduced using standard iw set channel commands as
+> > shown below:
+> > FACE=3D$(iw dev | awk '/Interface wl/ {print $2; exit}')
+> > iw reg set US ; sleep 1
+> > ip link set "$IFACE" down
+> > iw dev "$IFACE" set type monitor
+> > ip link set "$IFACE" up
+> >
+> > # This triggers narrowband bursts at channel center on each retune:
+> > while true; do
+> >   for f in 2412 2417 2422 2427 2432; do
+> >     iw dev "$IFACE" set freq "$f" HT20
+> >   done
+> > done
+> >
+>
+> I have thought about this issue for a while. A possible workaround
+> would be to reset WFSYS / firmware after five consecutive `set
+> channel` operations in monitor mode, then restore the current monitor
+> channel context. The WFSYS reset may take hundreds of milliseconds to
+> complete, which is the cost we would need to pay.
+>
+> > No special software required to reproduce.
+> > I have shown that this occurs on all MT7921 based products, along with
+> > MT7925 based products.
+> > It does not occur if the channel list is set to the same 4 over and
+> > over, no RF generated.
+> >
+> > There are no calibration channel commands going from the driver to the
+> > firmware, so I believe this is a firmware bug.
+> >
+> > Best Regards,
+> > John Henry
+> >
+> > On Sun, May 17, 2026 at 9:01=E2=80=AFAM John Henry <jshenry1963@gmail.c=
+om> wrote:
+> > >
+> > > Just a kind reminder of this issue, has anyone been able to reproduce
+> > > this monitor mode issue?
+> > > When scanning through channels, and the list of channels is > 4, ther=
+e
+> > > is a large transmit tick/burst coming from the MT7921u and the MT7925=
+.
+> > > This can easily be seen on an RF Spectrum Analyzer.
+> > > Confirmed on an Alfa AWUS036AXML consumer product and the Netgear
+> > > Nighthawk A9000.
+> > > This can be reproduced with simple scripts.
+> > >
+> > > Reproduction with stock iw commands (no custom code):
+> > >
+> > > IFACE=3D$(iw dev | awk '/Interface wl/ {print $2; exit}')
+> > > iw reg set US ; sleep 1
+> > > ip link set "$IFACE" down
+> > > iw dev "$IFACE" set type monitor
+> > > ip link set "$IFACE" up
+> > >
+> > > # This triggers narrowband bursts at channel center on each retune:
+> > > while true; do
+> > >   for f in 2412 2417 2422 2427 2432; do
+> > >     iw dev "$IFACE" set freq "$f" HT20
+> > >   done
+> > > done
+> > >
+> > > # This does NOT (only 4 frequencies):
+> > > while true; do
+> > >   for f in 2412 2422 2462 2484; do
+> > >     iw dev "$IFACE" set freq "$f" HT20
+> > >   done
+> > > done
+> > >
+> > > Bursts are ~800 kHz wide at the base, -30 to -50 dBm OTA at close
+> > > range, brief (estimated few hundred microseconds), at channel
+> > > frequency. tx_stats counters remain zero throughout.
+> > > On Mon, May 11, 2026 at 1:58=E2=80=AFPM John Henry <jshenry1963@gmail=
+.com> wrote:
+> > > >
+> > > > Bradley/Sean,
+> > > >
+> > > > Thank you all very much for the information.
+> > > > I tested this on mt7921u based Alfa AWUS unit and also an mt7925 ba=
+sed
+> > > > Netgear Nighthawk unit.
+> > > > I can confirm that the RF tick issue is present on both models when=
+ in
+> > > > Monitor Mode. I'm assuming it is in the base mt76?
+> > > >
+> > > > I attempted sudo iw dev wlxxx set txpower fixed nn where nn is the
+> > > > minimum value, next few values up, and then a few near the max valu=
+es,
+> > > > and see no change in the signal strength of the RF Ticks when scann=
+ing
+> > > > through 5 or more channels.
+> > > >
+> > > > Please keep this in mind when attempting to resolve the known txpow=
+er
+> > > > 3dBm issue if possible, or please generate a new bug report for tha=
+t
+> > > > specifically so that I can track when it is patched, or in ??? vers=
+ion
+> > > > so that I can test here locally.
+> > > >
+> > > > Incidentally, I'd appreciate it if anyone could please attempt to
+> > > > repeat using the scripts I had shown in the previous posts and conf=
+irm
+> > > > it is indeed seen by others.
+> > > >
+> > > > Thank you very much for your time and assistance
+> > > >
+> > > > John Henry
+> > > >
+> > > >
+> > > >
+> > > >
+> > > > From: Bradley Pizzimenti <brad.pizzimenti@gmail.com>
+> > > > To: linux-wireless@vger.kernel.org
+> > > > Cc: linux-kernel@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+> > > > ryder.lee@mediatek.com, shayne.chen@mediatek.com,
+> > > > sean.wang@mediatek.com
+> > > > Subject: [bug report] wifi: mt76: mt7925: iw set txpower fixed
+> > > > accepted but ignored
+> > > > Date: Mon, 4 May 2026 15:04:35 -0700 [thread overview]
+> > > > Message-ID: <CACjnFagN9zeSkwEv3-CSPJDUENPcEcOLjKyQoLQ91Yjn=3Drq5ww@=
+mail.gmail.com>
+> > > > (raw)
+> > > >
+> > > > Hi there maintainers,
+> > > >
+> > > > `iw dev <iface> set txpower fixed N` returns success on mt7925 for =
+any
+> > > > N tested, but the reported txpower never changes from a stuck value=
+ of
+> > > > 3.00 dBm. The kernel accepts and ignores the call silently in both
+> > > > directions (above and below the displayed value), and well below th=
+e
+> > > > regulatory ceiling.
+> > > >
+> > > > I'm aware there's prior art on the cosmetic 3.00 dBm display issue
+> > > > (Razvan Grigore's v2 series, Feb 2025; Ming Yen Hsieh's txpower ini=
+t
+> > > > refactor, Sept 2025). What seems potentially distinct here is that =
+the
+> > > > user-issued `iw set txpower fixed N` itself is silently no-op'd,
+> > > > separate from the reported-value question. Reporting as breadcrumbs
+> > > > in case the second observation is a separate bug rather than the sa=
+me
+> > > > one.
+> > > >
+> > > > Hardware
+> > > > --------
+> > > > MEDIATEK MT7925 [Filogic 360], 802.11be 2x2, PCI 14c3:7925
+> > > > ASIC revision 0x79250000
+> > > > Driver in use: mt7925e (in-tree)
+> > > >
+> > > > Firmware (from dmesg at probe)
+> > > > ------------------------------
+> > > > mt7925e 0000:01:00.0: HW/SW Version: 0x8a108a10,
+> > > >                      Build Time: 20260106153007a
+> > > > mt7925e 0000:01:00.0: WM Firmware Version: ____000000,
+> > > >                      Build Time: 20260106153120
+> > > > Files: mediatek/mt7925/WIFI_MT7925_PATCH_MCU_1_1_hdr.bin
+> > > >        mediatek/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin
+> > > >
+> > > > Kernel
+> > > > ------
+> > > > 6.18.18-1-MANJARO (close to vanilla 6.18 stable; not yet tested on
+> > > > wireless-next or nbd168/wireless HEAD -- happy to retest if needed,
+> > > > but flagging the data point in case it helps as-is).
+> > > >
+> > > > Tools: iw version 6.17
+> > > >
+> > > > Regulatory
+> > > > ----------
+> > > > $ iw reg get
+> > > > country US: DFS-FCC
+> > > >    ...
+> > > >    (5730 - 5850 @ 80), (N/A, 30), (N/A), AUTO-BW
+> > > >    ...
+> > > >
+> > > > Connection context: 5GHz channel 161 (5805 MHz), 80 MHz, VHT-MCS,
+> > > > NSS 1. So we are on a band with a 30 dBm regulatory cap.
+> > > >
+> > > > Observed
+> > > > --------
+> > > > $ iw dev wlp1s0 info | grep txpower
+> > > >         txpower 3.00 dBm
+> > > >
+> > > > $ sudo iw dev wlp1s0 set txpower fixed 100   # 1 dBm
+> > > > $ iw dev wlp1s0 info | grep txpower
+> > > >         txpower 3.00 dBm
+> > > >
+> > > > $ sudo iw dev wlp1s0 set txpower fixed 1500  # 15 dBm
+> > > > $ iw dev wlp1s0 info | grep txpower
+> > > >         txpower 3.00 dBm
+> > > >
+> > > > $ sudo iw dev wlp1s0 set txpower auto
+> > > > $ iw dev wlp1s0 info | grep txpower
+> > > >         txpower 3.00 dBm
+> > > >
+> > > > All four `set` invocations return exit code 0. The reported value
+> > > > never moves.
+> > > >
+> > > > Expected
+> > > > --------
+> > > > Either:
+> > > >   - The reported txpower follows the requested value (or, where
+> > > >     capped, the actual applied value with extack indicating the
+> > > >     cap reason), or
+> > > >   - The set call returns an error rather than silently ignoring the
+> > > >     request.
+> > > >
+> > > > Caveats
+> > > > -------
+> > > > - Not yet tested on wireless-next or nbd168/wireless HEAD. If a
+> > > >   reproduction on a current dev tree would be useful, I can do that=
+.
+> > > > - I have not verified whether the actual radiated TX power changes
+> > > >   in response to `set txpower fixed`; I am reporting only the
+> > > >   user-visible behavior.
+> > > >
+> > > > Thanks,
+> > > > Bradley
+> > > >
+> > > > On Wed, May 6, 2026 at 8:12=E2=80=AFPM Sean Wang <sean.wang@kernel.=
+org> wrote:
+> > > > >
+> > > > > Hi,
+> > > > >
+> > > > > The TX power reporting issue has already been investigated by Luc=
+id
+> > > > > from the Linux WiFi USB community, and there is a proposed soluti=
+on.
+> > > > > I think we can continue checking whether there are any remaining
+> > > > > issues on top of that work. Please refer to the patches here:
+> > > > > https://lists.infradead.org/pipermail/linux-mediatek/2026-April/1=
+05726.html
+> > > > > Thanks everyone for reporting and raising these concerns.
+> > > > >
+> > > > > On Wed, May 6, 2026 at 3:09=E2=80=AFPM Javier Tia <floss@jetm.me>=
+ wrote:
+> > > > > >
+> > > > > > On Sun May  4 22:04:48 2026 Bradley Pizzimenti wrote:
+> > > > > > > `iw dev <iface> set txpower fixed N` returns success on mt792=
+5 for
+> > > > > > > any N tested, but the reported txpower never changes from a s=
+tuck
+> > > > > > > value of 3.00 dBm.
+> > > > > >
+> > > > > > Hi Bradley,
+> > > > > >
+> > > > > > The 3 dBm display bug is a known issue we have seen when using =
+mt7927
+> > > > > > and a tested fix has been working well so far. The root cause i=
+s that
+> > > > > > mt7925_mcu_set_rate_txpower() programs the per-band SKU tables =
+into
+> > > > > > firmware but never assigns phy->txpower_cur. mt76_get_txpower()=
+ then
+> > > > > > computes:
+> > > > > >
+> > > > > >   DIV_ROUND_UP(0 + 6, 2) =3D 3
+> > > > > >
+> > > > > > regardless of the actual power level. The RF output is unaffect=
+ed;
+> > > > > > it is a display-only bug.
+> > > > > >
+> > > > > > The fix reads the effective TX power back from the rate power l=
+imits
+> > > > > > after programming the SKU tables and writes it to phy->txpower_=
+cur,
+> > > > > > following the same pattern used by mt7996:
+> > > > > >
+> > > > > >   https://github.com/jetm/mediatek-mt7927-dkms/blob/master/mt79=
+27-wifi-14-fix-reported-txpower-always-showing-3-db.patch
+> > > > > >
+> > > > > > This is part of a series we are targeting for wireless-next; no=
+t
+> > > > > > yet upstream.
+> > > > > >
+> > > > > > > What seems potentially distinct here is that the user-issued
+> > > > > > > `iw set txpower fixed N` itself is silently no-op'd, separate
+> > > > > > > from the reported-value question.
+> > > > > >
+> > > > > > Agreed those are two separate issues. Our patch addresses the
+> > > > > > display-only side: after applying it, iw will report the value =
+the
+> > > > > > firmware is actually using based on the SKU tables, rather than
+> > > > > > always 3 dBm. Whether `set txpower fixed N` propagates to firmw=
+are
+> > > > > > to change actual output power is orthogonal and not addressed h=
+ere.
+> > > > > >
+> > > > > > If you can test the patch on your MT7925 and confirm the displa=
+yed
+> > > > > > value reflects the correct power after association, a Tested-by
+> > > > > > would be appreciated.
+> > > > > >
+> > > > > > Best,
+> > > > > > Javier
+> > > > > >
+> > > > >
 
