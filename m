@@ -1,188 +1,128 @@
-Return-Path: <linux-wireless+bounces-37377-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37378-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9bLoKgtWIWo+EAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-37377-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 12:40:11 +0200
+	id xchuAN5YIWp+EgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-37378-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 12:52:14 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B27763F200
-	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 12:40:11 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40CD63F368
+	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 12:52:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kemnade.info header.s=20220719 header.b=3Gd+ZVrk;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37377-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37377-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=kemnade.info;
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=M8DMLoJx;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37378-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37378-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4AB4A306C333
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2026 10:33:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EEA6030380D7
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2026 10:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD1B3EA979;
-	Thu,  4 Jun 2026 10:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A26C298CAB;
+	Thu,  4 Jun 2026 10:40:31 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753973DB308;
-	Thu,  4 Jun 2026 10:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628C337EFF9
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Jun 2026 10:40:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780569213; cv=none; b=Ne0K0RSTOr0Mww9QLAcKa6Jf0iPLUdjxI8FSY+O0LK5Rq+PO95rAdUDCZkWlVHomedhtju8L4sf+4jz6ii3rm3C7GQHPoU0zINJ15YhXeTsmRiDCUuOzGSDYuqIhCTD1BmrSXnp/xEr7sqx/PdoOun1YCBbdQWaZLR31X/9mmjc=
+	t=1780569631; cv=none; b=IUJ5rSMmntZP2Bmb+ES+65/9cQZc8vBM5mJTUnrDGl4V9gmWhwnAsLcHl+Uqzl+aKKImYerE5TISdLoBIMM1f9XeOE+kqD/OgOx+hM0mjmRdPgvuWZa1eeh8Amk1xLFycQSI33oNFNRpLQImK8XHOcMbMkhSXZxqGoUg6LFpf1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780569213; c=relaxed/simple;
-	bh=BLc07fKVhXzZnWvTKJ4XMwVDTHiS8Mpeo7tD3taTAyk=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=f5+J0TbaR3n6xVRmczmUAkCzH4RsyoyiGK3bAAzguG1KtLvipwZGX3OmWjM2W2UDX6AW8W3jMX28OarCZ2lRU3aV0TFsHMgXHAuoih50N6Z67t2SDcPmQTQlY4QOKqiJVvmr3R/+cX0/K78oNZPwAHG1Fg/4RCqSxVxBCbbGJhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=3Gd+ZVrk; arc=none smtp.client-ip=178.238.236.174
+	s=arc-20240116; t=1780569631; c=relaxed/simple;
+	bh=XFO/bVOeRxJ743o3rUy2PSGAH0dk8y63+3ZDbj+5j4E=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HxP4+knrXy0/80H2msZRtKb4mrKdjdkKrJ8QBEWXjytmyza5Y7OEyFrowknS2Y9jdZxhQtVqT46/RR5zXHCyCs43TVB9NtSSqHEGE3GGMYmUCl/MzLdZbXnmbdxCxbzFQ4Fy47iK/0mb/F02VXnLPo6Eff02LhWIbaUvJUiUZWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=M8DMLoJx; arc=none smtp.client-ip=168.119.38.16
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=ctqp3CGlY5sM1PgS+2m+8jYbn8Iw3joc7iBSUmspyLM=; b=3Gd+ZVrkvGmkYr5UAQ66p/zprE
-	QbxrwBiBvvYbvmWlMKu3T77oEb6CdaBnOST7FQSQz8SGQGugrmfXxUEIuG0iOFPMVKRGKwRWLo/Ls
-	GFStsdqOf3XxxgPYavuCyEk5H0sE1EhidfHHGuDGwCBATXDQga36Dhu8p3W1hCz48MmBZ9Q9RqKxu
-	z8sKvXy1XtbJlltu5xEUm5Ajecx2bKtaHTV4kMpl9edHNGfe0e4ENLYeALvu9XqfvC+EHI00t8gtl
-	HjxEg2GD6uH/EvxhNtNFHoiTubagAHKWTH8Yd0qp8Uzn/sT5O+1vEO/86hSoijB7aNq6fXEtsDhW8
-	H0ChtRfg==;
-From: Andreas Kemnade <andreas@kemnade.info>
-To: johannes.berg@intel.com,
-	astrand@lysator.liu.se,
-	quic_rdevanat@quicinc.com,
-	kees@kernel.org,
-	sakari.ailus@linux.intel.com,
-	andreas@kemnade.info,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] wireless: wlcore: enable the right set of ciphers
-Date: Thu,  4 Jun 2026 12:33:16 +0200
-Message-ID: <20260604103316.377251-1-andreas@kemnade.info>
-X-Mailer: git-send-email 2.47.3
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=KxpqIH9O7EiQnbxVo9+XNKu4inEAbKaPR+qdL95F8Qk=;
+	t=1780569629; x=1781779229; b=M8DMLoJxPWeIpbQcuf88f0Cd3f7E7/mgaOae9yd+uwnIhow
+	fkOFT68Yb30p2lAM7m5PJRHMyRsmz9S8bpiKtrEGwzGjP7Sxw7Hnmy7NZIajynNZCl5TO2+yTGDR4
+	nfBbLEYD9jc/qlCVrSsXlJM1ScbWsQddkDgJAqFrr4EByuZ9Zt0/yvFOD8qJC8DB3ZibRoSFMh1a9
+	5rpypWvApnevDK+XzRCXKp3s4PN+16CVmXPj9Ya9gAPKUHyQmM2NZbZ8CkxkAsMkMN5QJ6ouOHi/9
+	fA8qPX9UDN150UQ4ajhzM0NGLHOKbyP/vI8AqHsOpBYvygV9d+Rr7XrPXVCFn5Cg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wV5Uw-00000000RDr-00lH;
+	Thu, 04 Jun 2026 12:40:26 +0200
+Message-ID: <8234e425e99515f75a038126a21c17221270af6d.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v3 2/4] wifi: cfg80211/nl80211: add
+ STA-mode peer probing
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org, quic_drohan@quicinc.com
+Date: Thu, 04 Jun 2026 12:40:24 +0200
+In-Reply-To: <20260507171603.1007812-3-pritiwa@qti.qualcomm.com>
+References: <20260507171603.1007812-1-pritiwa@qti.qualcomm.com>
+	 <20260507171603.1007812-3-pritiwa@qti.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kemnade.info,none];
-	R_DKIM_ALLOW(-0.20)[kemnade.info:s=20220719];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[andreas@kemnade.info,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-37377-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:johannes.berg@intel.com,m:astrand@lysator.liu.se,m:quic_rdevanat@quicinc.com,m:kees@kernel.org,m:sakari.ailus@linux.intel.com,m:andreas@kemnade.info,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37378-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kemnade.info:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:priyansha.tiwari@oss.qualcomm.com,m:linux-wireless@vger.kernel.org,m:quic_drohan@quicinc.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andreas@kemnade.info,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3B27763F200
+X-Rspamd-Queue-Id: E40CD63F368
 
-The firmware version number check for IGTK introduced in
-commit c34dbc5900b0 ("wifi: wlcore: Add support for IGTK key")
+Hi,
 
-lets the amount of ciphers decrease on every boot of a too old firmware and
-that is practically happening. It also does not take into account other
-chips than the wl18xx. On some wl128x, the following can be observed
-when connecting via nm to a common ap:
+I'd already fixed these, but there are other issues in the later
+patch(es?), so I'm sending this anyway:
 
-[  484.113311] wlcore: WARNING could not set keys
-[  484.117828] wlcore: ERROR Could not add or replace key
-[  484.123016] wlan0: failed to set key (5, ff:ff:ff:ff:ff:ff) to hardware (-5)
-[  484.123046] wlcore: Hardware recovery in progress. FW ver: Rev 7.3.10.0.142
-[  484.139923] wlcore: pc: 0x0, hint_sts: 0x00000048 count: 1
-[  484.145721] wlcore: down
-[  484.148986] ieee80211 phy0: Hardware restart was requested
-[  484.610473] wlcore: firmware booted (Rev 7.3.10.0.142)
-[  484.633758] wlcore: Association completed.
-[  484.690490] wlcore: ERROR command execute failure 14
-[  484.690490] ------------[ cut here ]------------
-[  484.700195] WARNING: drivers/net/wireless/ti/wlcore/main.c:872 at wl12xx_queue_recovery_work+0x64/0x74 [wlcore], CPU#0: kworker/0:0/892
+> + * @peer: The peer MAC address (or MLD address for MLO) or %NULL if not
+> + * applicable (e.g. for STA/P2P-client)
 
-This repeats endlessly.
-Always disable IGTK on wl12xx and fix the decrementing mess.
+That should have some indentation.
 
-Fixes: c34dbc5900b0 ("wifi: wlcore: Add support for IGTK key")
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- drivers/net/wireless/ti/wlcore/main.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+> @@ -16146,7 +16162,6 @@ static int nl80211_probe_peer(struct sk_buff *skb=
+, struct genl_info *info)
+>  		goto free_msg;
+>  	}
+> =20
+> -	addr =3D nla_data(info->attrs[NL80211_ATTR_MAC]);
+> =20
+>  	err =3D rdev_probe_peer(rdev, dev, addr, &cookie);
 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index 1c340a4a0930..be583ae331c0 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -32,6 +32,15 @@
- #define WL1271_BOOT_RETRIES 3
- #define WL1271_WAKEUP_TIMEOUT 500
- 
-+static const u32 cipher_suites[] = {
-+	WLAN_CIPHER_SUITE_WEP40,
-+	WLAN_CIPHER_SUITE_WEP104,
-+	WLAN_CIPHER_SUITE_TKIP,
-+	WLAN_CIPHER_SUITE_CCMP,
-+	WL1271_CIPHER_SUITE_GEM,
-+	WLAN_CIPHER_SUITE_AES_CMAC,
-+};
-+
- static char *fwlog_param;
- static int fwlog_mem_blocks = -1;
- static int bug_on_recovery = -1;
-@@ -2367,6 +2376,7 @@ static int wl12xx_init_vif_data(struct wl1271 *wl, struct ieee80211_vif *vif)
- 
- static int wl12xx_init_fw(struct wl1271 *wl)
- {
-+	struct wlcore_platdev_data *pdev_data = dev_get_platdata(&wl->pdev->dev);
- 	int retries = WL1271_BOOT_RETRIES;
- 	bool booted = false;
- 	struct wiphy *wiphy = wl->hw->wiphy;
-@@ -2421,8 +2431,9 @@ static int wl12xx_init_fw(struct wl1271 *wl)
- 
- 	/* WLAN_CIPHER_SUITE_AES_CMAC must be last in cipher_suites;
- 	   support only with firmware 8.9.1 and newer */
--	if (wl->chip.fw_ver[FW_VER_MAJOR] < 1)
--		wl->hw->wiphy->n_cipher_suites--;
-+	if (wl->chip.fw_ver[FW_VER_MAJOR] < 1  ||
-+	    (!strncmp(pdev_data->family->name, "wl12", 4)))
-+		wl->hw->wiphy->n_cipher_suites = ARRAY_SIZE(cipher_suites) - 1;
- 
- 	/*
- 	 * Now we know if 11a is supported (info from the NVS), so disable
-@@ -6198,14 +6209,6 @@ static void wl1271_unregister_hw(struct wl1271 *wl)
- static int wl1271_init_ieee80211(struct wl1271 *wl)
- {
- 	int i;
--	static const u32 cipher_suites[] = {
--		WLAN_CIPHER_SUITE_WEP40,
--		WLAN_CIPHER_SUITE_WEP104,
--		WLAN_CIPHER_SUITE_TKIP,
--		WLAN_CIPHER_SUITE_CCMP,
--		WL1271_CIPHER_SUITE_GEM,
--		WLAN_CIPHER_SUITE_AES_CMAC,
--	};
- 
- 	/* The tx descriptor buffer */
- 	wl->hw->extra_tx_headroom = sizeof(struct wl1271_tx_hw_descr);
--- 
-2.47.3
+that leaves a spurious blank line.
 
+johannes
 
