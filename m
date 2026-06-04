@@ -1,68 +1,66 @@
-Return-Path: <linux-wireless+bounces-37381-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37382-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zqyZKkZeIWrEFAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-37381-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 13:15:18 +0200
+	id 8GKjAihkIWqWFgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-37382-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 13:40:24 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AACE763F560
-	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 13:15:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E46863F806
+	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 13:40:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=juoCsuBv;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37381-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37381-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b="Nw1A/aRp";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37382-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37382-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B45D7300E906
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2026 11:02:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BD5833147131
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2026 11:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6947C3C4177;
-	Thu,  4 Jun 2026 11:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7903B19B4;
+	Thu,  4 Jun 2026 11:32:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BA0305696
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Jun 2026 11:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8CE403E96;
+	Thu,  4 Jun 2026 11:32:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780570951; cv=none; b=j6qHSoOkwUbVLnAKu7f32fR2MhdcKBXa+40uFuZZQs2Ry5/DrOL3oyU9B9y/YkPffsaKcOJojhhO9WLgdJI4bej70B+HqxmKYAgdccx8hdhaDrMkjTIU2NclYLoNdx9OR5JAEGgP4YO2lKjW/9Tp7eXDyNBhjc9vW3redMmgZlE=
+	t=1780572754; cv=none; b=usCDSjOPle0L8hfTg5RoZ+75y0VJlansI6FTNDyP9x6tOWwHCgKgO5NX8epiX74nXutgqO3sBQP1lLAt1Iz0VJ38BdjNtXgF9kj46Fcjwa5SyaZhCnEdo7eXcBounulnPM45O3LTEMIX0pn6jf6HHxt1JLHtDgbT3MfEmlGPkFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780570951; c=relaxed/simple;
-	bh=C+RfC3kcC5jGSP2ehVJ/y1oBokVSArcpGVZD6oI1LIg=;
+	s=arc-20240116; t=1780572754; c=relaxed/simple;
+	bh=xgYhSIRkRCyGHcQ00YeIGdZi+nwkSmB8ruuyjumdStg=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eXKd9mI5oXBRpKPi9Qokrdp/NFY+qlCYvlruPioM0gokJg34rLFVm4d+qqNCvtJ+9ZYTRfbvMkoO32ZCegtuEGm3AREEk7qRz5cjB82HhWcHmmuxNyoJUcp85St2d0W25OBnlN9Z0fzRBkcXRUZ6cgzpBxVgBj+RMIy7V4Xkucs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=juoCsuBv; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=AgB5egjH0o4JWiu99jh2O+tsWLDoZAtG18usVZq18ymx+TgkcfsGPTXhZQ8L9ZhTDqBNo8jSY7lUfl6wUQ1GCqy5+cuzHQpsokMqrbyTJ7nKWDl9zWPysGRiAVMHCcpjL+KMtISKV25oHAlKxdhANNJTPAzIGMaAcdyehlsiEtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Nw1A/aRp; arc=none smtp.client-ip=168.119.38.16
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=QoUl+iy4Q0l0d3iPZTSd3uGPnK7pDKJYC3R3dIC27+w=;
-	t=1780570949; x=1781780549; b=juoCsuBvoLZQQvS+q/FbpKC2/A6w3UVbIJVALcjXr3QEHwM
-	kjVdinIjib4OJLhlFXGGkdSL3WKkVbfQTk+ysrxH+gzebkM87a4o0uUGM4Jm8tNwlntAgyRUVp3+d
-	Crs0c25h7b9KfQmqRhzViVZBktww8Iki/i1whwgWKu76LzSJoirIxdeb3rleJQ9zV3tNOGUwoAiz1
-	qIB6+ZwRC6lXjlZH0Qt9tohPM9Ms23HHqim1eV+XMjvXJHutc8XRQRN5MEUj090os9FYwgQ+rhITu
-	tsMtZGjIqKgw0LIq7VhwGSbgo6/AGFojEwXVqX18YgyPnWOHe+7cTv0PkzVd7c8g==;
+	Resent-Cc:Resent-Message-ID; bh=iwSQI2qEXuEwf5G/fvDUmnFuMZLEfDqOI0sQhCWIuV0=;
+	t=1780572752; x=1781782352; b=Nw1A/aRpzvrGf4NAvyKc7HURcurB9bai8fiYy6hhiTtQCgA
+	UxVDq1Sndea3eqF/S4+S4KfCOaXW6GNV0jodHQl8swlqWAqgm9YDmlIgtouWAvSbm+Tk6PemWOpqE
+	NtND3ZznGs5blzzPIPq/Zla1gnBV+iLdY43YXbXswYWtl2M5xwzfPQ+bnM+LVGJUyIcgWUFpF1TEL
+	O4G0HxoX9qLQUHdfgM6uTrrLSAMW5LPiWrirk32je4YF8eaM3hIxJoZgog7+WFIicap1folotoEhH
+	zUwO6WR5CrPeKH96pTgbY90fQsb5k50HUbDyhVLw0+XuxTPK/fUbUrl0SijAeiww==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1wV5qD-00000000Rhy-3iHH;
-	Thu, 04 Jun 2026 13:02:26 +0200
-Message-ID: <09e2bd29cf9f8ad3fe64776343fd1e06426ea362.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next 1/2] wifi: nl80211: Add
- NL80211_ATTR_MAX_CH_SWITCH_TIME attribute
+	id 1wV6JJ-00000000SVz-3cDW;
+	Thu, 04 Jun 2026 13:32:30 +0200
+Message-ID: <d9721676a4f1f251202f7caa18e6e6cadd2420dd.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v2 02/31] wifi: mm81x: add command.c
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Shashikala Prabhu <shashikala.prabhu@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, vikram@qti.qualcomm.com, 
-	kiranv@qti.qualcomm.com, pshashik@qti.qualcomm.com, cgopi@qti.qualcomm.com,
- 	ybasamma@qti.qualcomm.com, vthiagar@qti.qualcomm.com,
- sivad@qti.qualcomm.com, 	uvignesh@qti.qualcomm.com,
- mohathan@qti.qualcomm.com, abishekg@qti.qualcomm.com
-Date: Thu, 04 Jun 2026 13:02:25 +0200
-In-Reply-To: <20260518103106.1462604-2-shashikala.prabhu@oss.qualcomm.com>
-References: <20260518103106.1462604-1-shashikala.prabhu@oss.qualcomm.com>
-	 <20260518103106.1462604-2-shashikala.prabhu@oss.qualcomm.com>
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>, Dan Callaghan
+	 <dan.callaghan@morsemicro.com>, Arien Judge <arien.judge@morsemicro.com>
+Cc: ayman.grais@morsemicro.com, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Thu, 04 Jun 2026 13:32:29 +0200
+In-Reply-To: <20260430045615.334669-3-lachlan.hodges@morsemicro.com> (sfid-20260430_065648_587462_38077D88)
+References: <20260430045615.334669-1-lachlan.hodges@morsemicro.com>
+	 <20260430045615.334669-3-lachlan.hodges@morsemicro.com>
+	 (sfid-20260430_065648_587462_38077D88)
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
@@ -76,76 +74,54 @@ X-malware-bazaar: not-scanned
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:shashikala.prabhu@oss.qualcomm.com,m:linux-wireless@vger.kernel.org,m:vikram@qti.qualcomm.com,m:kiranv@qti.qualcomm.com,m:pshashik@qti.qualcomm.com,m:cgopi@qti.qualcomm.com,m:ybasamma@qti.qualcomm.com,m:vthiagar@qti.qualcomm.com,m:sivad@qti.qualcomm.com,m:uvignesh@qti.qualcomm.com,m:mohathan@qti.qualcomm.com,m:abishekg@qti.qualcomm.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:lachlan.hodges@morsemicro.com,m:dan.callaghan@morsemicro.com,m:arien.judge@morsemicro.com,m:ayman.grais@morsemicro.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
 	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37381-lists,linux-wireless=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37382-lists,linux-wireless=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:from_mime,sipsolutions.net:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AACE763F560
+X-Rspamd-Queue-Id: 7E46863F806
 
-On Mon, 2026-05-18 at 16:01 +0530, Shashikala Prabhu wrote:
-> From: Chandru Gopi <cgopi@qti.qualcomm.com>
+On Thu, 2026-04-30 at 14:55 +1000, Lachlan Hodges wrote:
 >=20
-> IEEE Std 802.11-2024 subclause 9.4.2.216 (Max Channel Switch Time element=
-)
-> defines a Switch Time field in the Channel Switch Announcement (CSA)
-> element that indicates the time delta between the time the last beacon
-> is transmitted by the AP in the current channel and the expected time
-> of the first beacon transmitted by the AP in the new channel.
->=20
-> Add a new u32 nl80211 attribute, NL80211_ATTR_MAX_CH_SWITCH_TIME,
-> to carry this value in the NL80211_CMD_CH_SWITCH_STARTED_NOTIFY
-> event. Userspace can use this information to decide whether to
-> remain connected or disconnect before the AP moves to the new
-> channel.
+> +#define INIT_CMD_HDR(_req, _cmd, _vif_id)                              \
+> +	((struct host_cmd_header){                                     \
+> +		.flags =3D cpu_to_le16(0),                               \
 
-This really confused me a lot because that event is used on both sides
-... don't include the new netlink attribute when it's on the AP side.
+nit: you probably don't need the zeroes
+nit2: maybe you want to use tabs instead of spaces
 
-Also bad split with the patches - make one cfg/nl80211 API patch, and
-one mac80211 patch.
+> +	if (!cmd_q)
+> +		/* No control pageset, not supported by FW */
+> +		return -ENODEV;
 
->  	NL80211_ATTR_NPCA_PUNCT_BITMAP,
-> =20
-> +	NL80211_ATTR_MAX_CH_SWITCH_TIME,
->  	/* add attributes here, update the policy in nl80211.c */
+have to say I'm not a huge fan of this style, it always flares up a
+warning in my head at first "are there missing braces?" ;-)
 
-nit: looks odd without the blank line
-
-> +++ b/net/wireless/nl80211.c
-> @@ -1093,6 +1093,7 @@ static const struct nla_policy nl80211_policy[NUM_N=
-L80211_ATTR] =3D {
->  	[NL80211_ATTR_NPCA_PRIMARY_FREQ] =3D { .type =3D NLA_U32 },
->  	[NL80211_ATTR_NPCA_PUNCT_BITMAP] =3D
->  		NLA_POLICY_FULL_RANGE(NLA_U32, &nl80211_punct_bitmap_range),
-> +	[NL80211_ATTR_MAX_CH_SWITCH_TIME] =3D { .type =3D NLA_U32 },
-
-That seems wrong since it's output only, it shouldn't even be accepted
-on input.
 
 johannes
 
