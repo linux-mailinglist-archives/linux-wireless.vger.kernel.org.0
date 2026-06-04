@@ -1,482 +1,248 @@
-Return-Path: <linux-wireless+bounces-37368-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37369-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1oeEC729IGqS7QAAu9opvQ
-	(envelope-from <linux-wireless+bounces-37368-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 01:50:21 +0200
+	id G/nGBL3EIGr37gAAu9opvQ
+	(envelope-from <linux-wireless+bounces-37369-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 02:20:13 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE8763BEB0
-	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 01:50:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A0463C08E
+	for <lists+linux-wireless@lfdr.de>; Thu, 04 Jun 2026 02:20:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="ocz8Dl/p";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37368-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37368-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qTsLSklC;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37369-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37369-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C9A4302296D
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jun 2026 23:47:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80EC2304D7C3
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jun 2026 00:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2494B8DC0;
-	Wed,  3 Jun 2026 23:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA8532C8B;
+	Thu,  4 Jun 2026 00:14:49 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0CA44CAE0
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jun 2026 23:47:10 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780530433; cv=pass; b=tSjcUz9TEPrYdktg0TUeYhMUkSVaWRbhSLoQ38WvUa0dMzocXWXYUyFxqbSRKyX3/e2sesVW8WPDUO2FrQKbmlvSaBen77OSh3KZ8gm4GOPRbzAkbTXU84FpAT39HWe2qYGXsfKPYrFIOSnLiwrVxGbeUGzuWJZqyXqhkf2Kx8s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780530433; c=relaxed/simple;
-	bh=8SEDpvoiCYKjdtxkdOpE2kdb8M5UEbwBzeVXGTDeLSU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U6pDvne4um+UfxKJP1nwgU+ONu6AZFK9Qhutjn53T84juXOHpAjRiz6pKgOXR6JLT2KmZr5TDzNWIoMbQoyVgZmxwkkRWReCpqw0vBCI3TZKYOKf6lQQGFBrnizmX+5WfKUK6NYn5uM62uB1A8CJK4q4IsbautkUjhx/UXJ3xyU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ocz8Dl/p; arc=pass smtp.client-ip=209.85.160.171
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-517654b8dd4so166741cf.3
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jun 2026 16:47:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780530429; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VC1q4GkR/xIu5BUDcviUOvROqU2fhsGA7Jh7MTyAhB2AeWS4sTXfDal5wB7rXWy7v+
-         +YUS3Ubd/4gCMltJexu6No9OwDi6IOfB6a7rkqDQM/Dip7wA4HfE8OjEZdH66bdAwbqf
-         nhXdYtsnve28SPHWYdNd+0hhjq1dcoRSgW6HljQVuQAFvl+lJqiVuv0p1pE0LjCDg33Y
-         5cJLBR5vlIRSX2bTr8pD6KjvZzAjOd2IIWH2Wnnq9okRzllJ+ZWzYnMnRlTwKqoyxhqp
-         IvdOg/0h7VfDEcQbYQua+hMVs2NBW0AmVkzrGi/Gx7IQvirCAnVCxqI+mFAqH2oYIeCi
-         lrtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IrsB5qlB9vbQ42mMffRvNtPBkwXix0VEJXwI5BRhHFo=;
-        fh=WC22FxggZySstborvmjlc1z92TN7RkAElljzyKT1Eg0=;
-        b=AV2YINuIiiRXhKRNZSC/x32qfQ2+zB5u0kavuDBPhEwB9vIrEAuXYbVX0d9OhleXas
-         OoVwUy0iEHdB2b7d8AL07oqwTvuxvS5mj52DW4WW2zec1z91CVcYiarWSWjiNDkaXeKk
-         jN1JZpO036QEibHSnYwGT3da1ZDuKbFz6uvSv3WTXRm46GRe9uH641+I2ohIVuFx98eQ
-         wszxO04r+cPdxi0Rbxyyvqiz5J5w9zkVDbbE3i7xKa9xPZmmiA3sT18U+ZIBTXQVwgRQ
-         CV8g1dl+pjTEv27Uw/JtiRir8IuATsvTMO1xXTmuKbTMurdKhOu5kV2KMwS+HZNA6W90
-         cNhw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F19AD24
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Jun 2026 00:14:47 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780532088; cv=none; b=NweRyNNhQlhw4ujN+VfzquBGahdb7QbGu3w0d1OjX2aa7RAx4xki/GyH3C7IB07Sp+8tJL4tLMigXKxDws9LqNkn97MAEXC5UlZTl5oX5BjxOm6WOUYnG9p3+0GP4DlR47akntZ391byFJxIFIZXfuQViZuSYYyUib0G9F/Vrvw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780532088; c=relaxed/simple;
+	bh=uRUwW8sJEn66H88eqi7V403X+OCJlfaNIvy1M5GTx4M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c/Eivz4RGc7KWYweIsqpPWlu1LPrnX1leQhI1Ml2894BqL47XD5bnT+EGSraiBMgBqWlkzZa7pFcm66xa+DkK4eALrCdSpCTpLyrlwzHRYf8+F0YN5Mf5ImYfunLFganuxU4l5To0YNHJtgrgU++UlAOTHj7Vq8kNrXN8PCS2Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qTsLSklC; arc=none smtp.client-ip=209.85.215.169
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c858cc9870aso669616a12.0
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jun 2026 17:14:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780530429; x=1781135229; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IrsB5qlB9vbQ42mMffRvNtPBkwXix0VEJXwI5BRhHFo=;
-        b=ocz8Dl/pbXmb9qFeggCSP/tKkaZ1N1ncsDifE1KdKVLovM+8yz/DMilRyFjZSxbF5F
-         SdJMQUNCsSeLax2GCo+Gc28m5qP330V+pD0CK9hbBoL9lcCQsNNk5pXRyScBJF31ovFA
-         oI6ZIJKJ928zBkaPZDRcmPNrfLAl8yiTRlCjeWAHu6/E+tkrHO/16hH7l8WD2w9wLYRM
-         7uhvIneTBgqrD9oPTMkQpnU5nCRefdlscU1zcrWklJUhA5bDOOo2RQPKAg8YTeQ5rRNB
-         GibRlPde1Xgexbpzdf9fQ4Ju7KOeYS2SuwKYtlVluwqbZh0i9PC3Z97vLLhXAWw35Fw5
-         VpBg==
+        d=gmail.com; s=20251104; t=1780532087; x=1781136887; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=86GCrPPX3bP7K5pDkgyiAoWdFZ0y9yG0vMKrhP9/ARA=;
+        b=qTsLSklCw6nGiDiE60q43R7qfweW4AITbacWNQ+wcwcnPGSEL9WIumdAvcvTvgfDBj
+         8atcxUvlCxdCN5S5brGSp/tO8/oUUPvWEADZ6C3r1CC7OaSnRdqxWP2UkiTyUvmPAyZ0
+         iciJIqndm3c320zD7gwocIXVBXhD9wWKIvK9Nf9Gj8D09Z2KTBSgfBwXIt26xZmO0jAp
+         pp7ddPNacyFydjemD2gfrydi8j2WRJMZF0GprQLGw/SapEpnujnokeqL3haxq63P01kX
+         kD+p18WWVsYSG4qDWWtRnL2G9e8txLDlb1Mm/16et61j3FtjmfXPoXFcSVZ7e/k2ZwzW
+         YorA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780530429; x=1781135229;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IrsB5qlB9vbQ42mMffRvNtPBkwXix0VEJXwI5BRhHFo=;
-        b=Q0IlVsh1eHvdNPh1FgzEuvl64rgQVj8MeqzyxOWEr3Cgxmlm4Pm1tVntDzECsOnR8C
-         ddFetBHzN8HR0JLFpqpr0Ocsc9rau5APx0LK5fFeGt59+GoCR9YdMtKm4AzSrnx42Xxg
-         nUwfV9elXxi5/di83gTW14yy+DxRI7xpEWhRFurFxNDRLlYfygefnNP1kif7nyLSTvJp
-         g+/fXaWtFmVji1duRciX+y3eLRZlff+Opb3sxdtynRcFVNF1UWu6sMlEKYeBPzVk6fNi
-         5l4UmRFDqQzhMElLhWFMp+nn4QrBicnrPssJm990cm+RuH9JiV2eDiH45CSvu7Xv/+W6
-         foKA==
-X-Forwarded-Encrypted: i=1; AFNElJ+xZwFvQ/lcQGcez6raAnST3fcbCtBJE7QSr9JHTZUQpLIt1hhRb3ydkpTUfsP13PJVEmflho7GEvHpKLKiSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuT6GsMv4G/ht4OQVPqpa6Yg8QvPma+Kn0LGahgL7+alPEpw/B
-	2MQrsYqKXCW/blC87yOGn1PqvRvxl2BaJehNk2DLjopvGM7vNmGa2Z/CuQRCrv7a4ManWNvlCyf
-	kVRPYyNk64lDfnfjaBGibnIJuCXri+ns=
-X-Gm-Gg: Acq92OFRClJnTL4CX4JREW0cKdpJrWc9wFpzizkCkzTZ/VJxbVoVl4bJROgRwx3Fhzl
-	ihosbV6Ub3oE/WUpNoIVKfkjXGttWfeRjJYvzPNf2uaSNnaNNf/GF7gZFh9UAOU1qAk5pEgQdlp
-	iBPhi+2kffw5e0jOLdD6p9SyYfsTi+/AdrWS9l8+3jb04BQgk3/Z6R0Jm3l+rt+TelWFP9R8mUS
-	FWznPa00nfmvv5hq2Zgi7HGWqxyAU7/iITupCRbJfrm/CWKW0o38i9DIUryfFHFJx3cWuxfBTF7
-	9snS2swnnHNDNzR73JXxj/hmjQYxcXkxdrWhJYjzWyeUkq8=
-X-Received: by 2002:a05:622a:54f:b0:50e:6311:7380 with SMTP id
- d75a77b69052e-5178a00cdc1mr3981031cf.6.1780530429438; Wed, 03 Jun 2026
- 16:47:09 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780532087; x=1781136887;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=86GCrPPX3bP7K5pDkgyiAoWdFZ0y9yG0vMKrhP9/ARA=;
+        b=gSpXJl2bTAB6jXUR0M1ARC1s93mC3nh0cGGODGxpmgs2TggJTPGUFdspo8kp13Rrcq
+         YJ55n/0d3VFuQf7JFKIkHeQHbdP3GYG7a5D3ZBOhVmfkATVz47vFE6i9SGLU9YPBtE7a
+         +B0GySRtXlxNkEBae1jaQzQrKhCU6FBu0S4shrAKuCjAh/GS4bFLIyjI4ltYHXK8B5et
+         gYT64/bmqL5tYVb45QP5UgRBXNtmKMOcUofnukJrQPXI3Sb14djdMzuxMBVMhLDmagmZ
+         5gYIDmIxzpfLZz3r0zrgB4jreFVZCMLq8h2yFsE01pxf3+zc4JzU3A8JaQHSUTwA9Sms
+         tLZg==
+X-Gm-Message-State: AOJu0YxA5BRzZaFT3ZghuG5JGHg+5oogn4EtirLjRPqTNQAskxwv5fSQ
+	QRIQ+zC51bVMbNtLaTK95w01gSTx92LV/7DVUcLebpZf1pYWSt1Jdfjj0v1hjc+X
+X-Gm-Gg: Acq92OHUfDqmxeGez4fi5n8W2gmFOt2ooqvg9/aEnqQuhIZml74HEpuxQyApmI/XgqR
+	N0fQsKiOGDjHvDdX6/A2gZG9mETJeOvi5sEZRN+h+UWdbSmTSP5lKcRwbgwRKe6/SMxRhGsBUWF
+	fLiP3nzVtW8Vr2Xy1W/FTqyby6OQah4xtUW9kows43ehEd4Bxu/JN77Ul6dJdLIewSeHfIXzIz1
+	28mpU090VlStAXiSf2LWwWmlaICPo5U3HIGic0kv8pSdFjpqzT4liLujG56cQH1rEyIBpoZirnG
+	bWEKCf7Xy0Mu9fVadlGhCCed8KF3zxMu2DFwuBs0G6Di99ooKPg0QAs2bRCkIAwEKMr1vkoZy0r
+	lyRFYOIxl+TqLRd25Aq9+ORK+i4E3UJgR6Pd2NpkmcftqqMhB89hkgRa0uvW4rGGQXOIQQv6AWO
+	dUBxfTeiAm5YDZxaFfr0qcWIGquFnFTrLLZM/WbgpDSGCRv3oqZKEugHZ1UcG7cS9iOCNJhmPHg
+	1s1rzQijmqdnfUj58asLIkKjtd1LN5HVbAS+e3tiF9BuQ==
+X-Received: by 2002:a17:903:380d:b0:2bd:2c3a:2a36 with SMTP id d9443c01a7336-2c1951d279dmr13550705ad.0.1780532086757;
+        Wed, 03 Jun 2026 17:14:46 -0700 (PDT)
+Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f6d395sm51498375ad.17.2026.06.03.17.14.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 17:14:45 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH wireless-next] wifi: mac80211: fold tid_ampdu_rx allocations into a flexible array
+Date: Wed,  3 Jun 2026 17:14:27 -0700
+Message-ID: <20260604001427.16466-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAN6xzWcVDRLVTV-SQcs6osZjnfhLM728NP7+W8+sFcTDmeVipw@mail.gmail.com>
- <CAGp9LzrmUGQLK5giHVgOjJ5pzGNnfLaV02iWdodT7aDNBbNUqg@mail.gmail.com>
-In-Reply-To: <CAGp9LzrmUGQLK5giHVgOjJ5pzGNnfLaV02iWdodT7aDNBbNUqg@mail.gmail.com>
-From: Bradley Pizzimenti <brad.pizzimenti@gmail.com>
-Date: Wed, 3 Jun 2026 16:46:58 -0700
-X-Gm-Features: AVHnY4J9XV6wrdzDm41yteKNeBZCLKN_1ZB_hg37PDE9Gq8_o-lWRPTjxswvSgU
-Message-ID: <CACjnFahYMyRc1yfb-yA-iiMk_SUOXPx0GrOBbDUEyMtbSqv9iA@mail.gmail.com>
-Subject: Re: [bug report] wifi: mt76: mt7921: mt7925monitor-mode per-channel
- retune emits narrowband RF burst
-To: Sean Wang <sean.wang@kernel.org>
-Cc: John Henry <jshenry1963@gmail.com>, Javier Tia <floss@jetm.me>, linux-wireless@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
-	ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>, Deren Wu <deren.wu@mediatek.com>, 
-	Nick Morrow <morrownr@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-37368-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:sean.wang@kernel.org,m:jshenry1963@gmail.com,m:floss@jetm.me,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-mediatek@lists.infradead.org,m:deren.wu@mediatek.com,m:morrownr@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[bradpizzimenti@gmail.com,linux-wireless@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,jetm.me,vger.kernel.org,nbd.name,kernel.org,mediatek.com,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-37369-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:johannes@sipsolutions.net,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bradpizzimenti@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,mediatek.com:email,nbd.name:email,infradead.org:url,jetm.me:email]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7AE8763BEB0
+X-Rspamd-Queue-Id: 67A0463C08E
 
-Hi there,
-Are all of these fixes going into kernel 7.1+ or introduced earlier?
+Convert the separately-allocated reorder_buf pointer to a C99 flexible
+array member at the end of struct tid_ampdu_rx, and place reorder_time
+in the same allocation immediately after it. This collapses three
+allocations into one and removes the corresponding kfree() pairs from
+the error and free paths.
 
-On Wed, May 27, 2026 at 4:08=E2=80=AFPM Sean Wang <sean.wang@kernel.org> wr=
-ote:
->
-> Hi John,
->
-> On Wed, May 27, 2026 at 7:24=E2=80=AFAM John Henry <jshenry1963@gmail.com=
-> wrote:
-> >
-> > Just a kind reminder of this issue.
-> >
-> > Please advise if this is already taken up in a separate issue I am
-> > unaware of, but it is not directly related to the "iw set txpower
-> > fixed accepted but ignored" issue.
-> >
-> > On products available in the market, e.g.  the Alfa AWUS036AXML
-> > consumer product and the Netgear Nighthawk A9000, in Monitor Mode
-> > there is RF generated when scanning through channels and we get to 5
-> > or more channels in succession.
-> > This does not seem to occur at all in managed mode.
-> >
-> > This means if we scan the 2.4GHz channel list, an RF Spectrum analyzer
-> > will show a narrow pulse generated on each channel as we progress
-> > through the channels.
-> > This can 100% be reproduced using standard iw set channel commands as
-> > shown below:
-> > FACE=3D$(iw dev | awk '/Interface wl/ {print $2; exit}')
-> > iw reg set US ; sleep 1
-> > ip link set "$IFACE" down
-> > iw dev "$IFACE" set type monitor
-> > ip link set "$IFACE" up
-> >
-> > # This triggers narrowband bursts at channel center on each retune:
-> > while true; do
-> >   for f in 2412 2417 2422 2427 2432; do
-> >     iw dev "$IFACE" set freq "$f" HT20
-> >   done
-> > done
-> >
->
-> I have thought about this issue for a while. A possible workaround
-> would be to reset WFSYS / firmware after five consecutive `set
-> channel` operations in monitor mode, then restore the current monitor
-> channel context. The WFSYS reset may take hundreds of milliseconds to
-> complete, which is the cost we would need to pay.
->
-> > No special software required to reproduce.
-> > I have shown that this occurs on all MT7921 based products, along with
-> > MT7925 based products.
-> > It does not occur if the channel list is set to the same 4 over and
-> > over, no RF generated.
-> >
-> > There are no calibration channel commands going from the driver to the
-> > firmware, so I believe this is a firmware bug.
-> >
-> > Best Regards,
-> > John Henry
-> >
-> > On Sun, May 17, 2026 at 9:01=E2=80=AFAM John Henry <jshenry1963@gmail.c=
-om> wrote:
-> > >
-> > > Just a kind reminder of this issue, has anyone been able to reproduce
-> > > this monitor mode issue?
-> > > When scanning through channels, and the list of channels is > 4, ther=
-e
-> > > is a large transmit tick/burst coming from the MT7921u and the MT7925=
-.
-> > > This can easily be seen on an RF Spectrum Analyzer.
-> > > Confirmed on an Alfa AWUS036AXML consumer product and the Netgear
-> > > Nighthawk A9000.
-> > > This can be reproduced with simple scripts.
-> > >
-> > > Reproduction with stock iw commands (no custom code):
-> > >
-> > > IFACE=3D$(iw dev | awk '/Interface wl/ {print $2; exit}')
-> > > iw reg set US ; sleep 1
-> > > ip link set "$IFACE" down
-> > > iw dev "$IFACE" set type monitor
-> > > ip link set "$IFACE" up
-> > >
-> > > # This triggers narrowband bursts at channel center on each retune:
-> > > while true; do
-> > >   for f in 2412 2417 2422 2427 2432; do
-> > >     iw dev "$IFACE" set freq "$f" HT20
-> > >   done
-> > > done
-> > >
-> > > # This does NOT (only 4 frequencies):
-> > > while true; do
-> > >   for f in 2412 2422 2462 2484; do
-> > >     iw dev "$IFACE" set freq "$f" HT20
-> > >   done
-> > > done
-> > >
-> > > Bursts are ~800 kHz wide at the base, -30 to -50 dBm OTA at close
-> > > range, brief (estimated few hundred microseconds), at channel
-> > > frequency. tx_stats counters remain zero throughout.
-> > > On Mon, May 11, 2026 at 1:58=E2=80=AFPM John Henry <jshenry1963@gmail=
-.com> wrote:
-> > > >
-> > > > Bradley/Sean,
-> > > >
-> > > > Thank you all very much for the information.
-> > > > I tested this on mt7921u based Alfa AWUS unit and also an mt7925 ba=
-sed
-> > > > Netgear Nighthawk unit.
-> > > > I can confirm that the RF tick issue is present on both models when=
- in
-> > > > Monitor Mode. I'm assuming it is in the base mt76?
-> > > >
-> > > > I attempted sudo iw dev wlxxx set txpower fixed nn where nn is the
-> > > > minimum value, next few values up, and then a few near the max valu=
-es,
-> > > > and see no change in the signal strength of the RF Ticks when scann=
-ing
-> > > > through 5 or more channels.
-> > > >
-> > > > Please keep this in mind when attempting to resolve the known txpow=
-er
-> > > > 3dBm issue if possible, or please generate a new bug report for tha=
-t
-> > > > specifically so that I can track when it is patched, or in ??? vers=
-ion
-> > > > so that I can test here locally.
-> > > >
-> > > > Incidentally, I'd appreciate it if anyone could please attempt to
-> > > > repeat using the scripts I had shown in the previous posts and conf=
-irm
-> > > > it is indeed seen by others.
-> > > >
-> > > > Thank you very much for your time and assistance
-> > > >
-> > > > John Henry
-> > > >
-> > > >
-> > > >
-> > > >
-> > > > From: Bradley Pizzimenti <brad.pizzimenti@gmail.com>
-> > > > To: linux-wireless@vger.kernel.org
-> > > > Cc: linux-kernel@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org,
-> > > > ryder.lee@mediatek.com, shayne.chen@mediatek.com,
-> > > > sean.wang@mediatek.com
-> > > > Subject: [bug report] wifi: mt76: mt7925: iw set txpower fixed
-> > > > accepted but ignored
-> > > > Date: Mon, 4 May 2026 15:04:35 -0700 [thread overview]
-> > > > Message-ID: <CACjnFagN9zeSkwEv3-CSPJDUENPcEcOLjKyQoLQ91Yjn=3Drq5ww@=
-mail.gmail.com>
-> > > > (raw)
-> > > >
-> > > > Hi there maintainers,
-> > > >
-> > > > `iw dev <iface> set txpower fixed N` returns success on mt7925 for =
-any
-> > > > N tested, but the reported txpower never changes from a stuck value=
- of
-> > > > 3.00 dBm. The kernel accepts and ignores the call silently in both
-> > > > directions (above and below the displayed value), and well below th=
-e
-> > > > regulatory ceiling.
-> > > >
-> > > > I'm aware there's prior art on the cosmetic 3.00 dBm display issue
-> > > > (Razvan Grigore's v2 series, Feb 2025; Ming Yen Hsieh's txpower ini=
-t
-> > > > refactor, Sept 2025). What seems potentially distinct here is that =
-the
-> > > > user-issued `iw set txpower fixed N` itself is silently no-op'd,
-> > > > separate from the reported-value question. Reporting as breadcrumbs
-> > > > in case the second observation is a separate bug rather than the sa=
-me
-> > > > one.
-> > > >
-> > > > Hardware
-> > > > --------
-> > > > MEDIATEK MT7925 [Filogic 360], 802.11be 2x2, PCI 14c3:7925
-> > > > ASIC revision 0x79250000
-> > > > Driver in use: mt7925e (in-tree)
-> > > >
-> > > > Firmware (from dmesg at probe)
-> > > > ------------------------------
-> > > > mt7925e 0000:01:00.0: HW/SW Version: 0x8a108a10,
-> > > >                      Build Time: 20260106153007a
-> > > > mt7925e 0000:01:00.0: WM Firmware Version: ____000000,
-> > > >                      Build Time: 20260106153120
-> > > > Files: mediatek/mt7925/WIFI_MT7925_PATCH_MCU_1_1_hdr.bin
-> > > >        mediatek/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin
-> > > >
-> > > > Kernel
-> > > > ------
-> > > > 6.18.18-1-MANJARO (close to vanilla 6.18 stable; not yet tested on
-> > > > wireless-next or nbd168/wireless HEAD -- happy to retest if needed,
-> > > > but flagging the data point in case it helps as-is).
-> > > >
-> > > > Tools: iw version 6.17
-> > > >
-> > > > Regulatory
-> > > > ----------
-> > > > $ iw reg get
-> > > > country US: DFS-FCC
-> > > >    ...
-> > > >    (5730 - 5850 @ 80), (N/A, 30), (N/A), AUTO-BW
-> > > >    ...
-> > > >
-> > > > Connection context: 5GHz channel 161 (5805 MHz), 80 MHz, VHT-MCS,
-> > > > NSS 1. So we are on a band with a 30 dBm regulatory cap.
-> > > >
-> > > > Observed
-> > > > --------
-> > > > $ iw dev wlp1s0 info | grep txpower
-> > > >         txpower 3.00 dBm
-> > > >
-> > > > $ sudo iw dev wlp1s0 set txpower fixed 100   # 1 dBm
-> > > > $ iw dev wlp1s0 info | grep txpower
-> > > >         txpower 3.00 dBm
-> > > >
-> > > > $ sudo iw dev wlp1s0 set txpower fixed 1500  # 15 dBm
-> > > > $ iw dev wlp1s0 info | grep txpower
-> > > >         txpower 3.00 dBm
-> > > >
-> > > > $ sudo iw dev wlp1s0 set txpower auto
-> > > > $ iw dev wlp1s0 info | grep txpower
-> > > >         txpower 3.00 dBm
-> > > >
-> > > > All four `set` invocations return exit code 0. The reported value
-> > > > never moves.
-> > > >
-> > > > Expected
-> > > > --------
-> > > > Either:
-> > > >   - The reported txpower follows the requested value (or, where
-> > > >     capped, the actual applied value with extack indicating the
-> > > >     cap reason), or
-> > > >   - The set call returns an error rather than silently ignoring the
-> > > >     request.
-> > > >
-> > > > Caveats
-> > > > -------
-> > > > - Not yet tested on wireless-next or nbd168/wireless HEAD. If a
-> > > >   reproduction on a current dev tree would be useful, I can do that=
-.
-> > > > - I have not verified whether the actual radiated TX power changes
-> > > >   in response to `set txpower fixed`; I am reporting only the
-> > > >   user-visible behavior.
-> > > >
-> > > > Thanks,
-> > > > Bradley
-> > > >
-> > > > On Wed, May 6, 2026 at 8:12=E2=80=AFPM Sean Wang <sean.wang@kernel.=
-org> wrote:
-> > > > >
-> > > > > Hi,
-> > > > >
-> > > > > The TX power reporting issue has already been investigated by Luc=
-id
-> > > > > from the Linux WiFi USB community, and there is a proposed soluti=
-on.
-> > > > > I think we can continue checking whether there are any remaining
-> > > > > issues on top of that work. Please refer to the patches here:
-> > > > > https://lists.infradead.org/pipermail/linux-mediatek/2026-April/1=
-05726.html
-> > > > > Thanks everyone for reporting and raising these concerns.
-> > > > >
-> > > > > On Wed, May 6, 2026 at 3:09=E2=80=AFPM Javier Tia <floss@jetm.me>=
- wrote:
-> > > > > >
-> > > > > > On Sun May  4 22:04:48 2026 Bradley Pizzimenti wrote:
-> > > > > > > `iw dev <iface> set txpower fixed N` returns success on mt792=
-5 for
-> > > > > > > any N tested, but the reported txpower never changes from a s=
-tuck
-> > > > > > > value of 3.00 dBm.
-> > > > > >
-> > > > > > Hi Bradley,
-> > > > > >
-> > > > > > The 3 dBm display bug is a known issue we have seen when using =
-mt7927
-> > > > > > and a tested fix has been working well so far. The root cause i=
-s that
-> > > > > > mt7925_mcu_set_rate_txpower() programs the per-band SKU tables =
-into
-> > > > > > firmware but never assigns phy->txpower_cur. mt76_get_txpower()=
- then
-> > > > > > computes:
-> > > > > >
-> > > > > >   DIV_ROUND_UP(0 + 6, 2) =3D 3
-> > > > > >
-> > > > > > regardless of the actual power level. The RF output is unaffect=
-ed;
-> > > > > > it is a display-only bug.
-> > > > > >
-> > > > > > The fix reads the effective TX power back from the rate power l=
-imits
-> > > > > > after programming the SKU tables and writes it to phy->txpower_=
-cur,
-> > > > > > following the same pattern used by mt7996:
-> > > > > >
-> > > > > >   https://github.com/jetm/mediatek-mt7927-dkms/blob/master/mt79=
-27-wifi-14-fix-reported-txpower-always-showing-3-db.patch
-> > > > > >
-> > > > > > This is part of a series we are targeting for wireless-next; no=
-t
-> > > > > > yet upstream.
-> > > > > >
-> > > > > > > What seems potentially distinct here is that the user-issued
-> > > > > > > `iw set txpower fixed N` itself is silently no-op'd, separate
-> > > > > > > from the reported-value question.
-> > > > > >
-> > > > > > Agreed those are two separate issues. Our patch addresses the
-> > > > > > display-only side: after applying it, iw will report the value =
-the
-> > > > > > firmware is actually using based on the SKU tables, rather than
-> > > > > > always 3 dBm. Whether `set txpower fixed N` propagates to firmw=
-are
-> > > > > > to change actual output power is orthogonal and not addressed h=
-ere.
-> > > > > >
-> > > > > > If you can test the patch on your MT7925 and confirm the displa=
-yed
-> > > > > > value reflects the correct power after association, a Tested-by
-> > > > > > would be appreciated.
-> > > > > >
-> > > > > > Best,
-> > > > > > Javier
-> > > > > >
-> > > > >
+Assisted-by: Claude:Opus-4.7
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ net/mac80211/agg-rx.c   | 23 ++++++-----------------
+ net/mac80211/sta_info.h |  6 +++---
+ 2 files changed, 9 insertions(+), 20 deletions(-)
+
+diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
+index cecd1c917e45..20669cd8a34f 100644
+--- a/net/mac80211/agg-rx.c
++++ b/net/mac80211/agg-rx.c
+@@ -50,8 +50,6 @@ static void ieee80211_free_tid_rx(struct rcu_head *h)
+
+ 	for (i = 0; i < tid_rx->buf_size; i++)
+ 		__skb_queue_purge(&tid_rx->reorder_buf[i]);
+-	kfree(tid_rx->reorder_buf);
+-	kfree(tid_rx->reorder_time);
+ 	kfree(tid_rx);
+ }
+
+@@ -294,6 +292,7 @@ void __ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 	};
+ 	int i, ret = -EOPNOTSUPP;
+ 	u16 status = WLAN_STATUS_REQUEST_DECLINED;
++	size_t alloc_size;
+ 	u16 max_buf_size;
+
+ 	lockdep_assert_wiphy(sta->local->hw.wiphy);
+@@ -412,10 +411,14 @@ void __ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 	}
+
+ 	/* prepare A-MPDU MLME for Rx aggregation */
+-	tid_agg_rx = kzalloc_obj(*tid_agg_rx);
++	alloc_size = struct_size(tid_agg_rx, reorder_buf, buf_size);
++	alloc_size += sizeof(*tid_agg_rx->reorder_time) * buf_size;
++	tid_agg_rx = kzalloc(alloc_size, GFP_KERNEL);
+ 	if (!tid_agg_rx)
+ 		goto end;
+
++	tid_agg_rx->reorder_time = (void *)(tid_agg_rx->reorder_buf + buf_size);
++
+ 	spin_lock_init(&tid_agg_rx->reorder_lock);
+
+ 	/* rx timer */
+@@ -426,18 +429,6 @@ void __ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 	timer_setup(&tid_agg_rx->reorder_timer,
+ 		    sta_rx_agg_reorder_timer_expired, 0);
+
+-	/* prepare reordering buffer */
+-	tid_agg_rx->reorder_buf =
+-		kzalloc_objs(struct sk_buff_head, buf_size);
+-	tid_agg_rx->reorder_time =
+-		kcalloc(buf_size, sizeof(unsigned long), GFP_KERNEL);
+-	if (!tid_agg_rx->reorder_buf || !tid_agg_rx->reorder_time) {
+-		kfree(tid_agg_rx->reorder_buf);
+-		kfree(tid_agg_rx->reorder_time);
+-		kfree(tid_agg_rx);
+-		goto end;
+-	}
+-
+ 	for (i = 0; i < buf_size; i++)
+ 		__skb_queue_head_init(&tid_agg_rx->reorder_buf[i]);
+
+@@ -445,8 +436,6 @@ void __ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 	ht_dbg(sta->sdata, "Rx A-MPDU request on %pM tid %d result %d\n",
+ 	       sta->sta.addr, tid, ret);
+ 	if (ret) {
+-		kfree(tid_agg_rx->reorder_buf);
+-		kfree(tid_agg_rx->reorder_time);
+ 		kfree(tid_agg_rx);
+ 		goto end;
+ 	}
+diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+index 39608a0abbb5..66adfc5c89b2 100644
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -207,8 +207,6 @@ struct tid_ampdu_tx {
+ /**
+  * struct tid_ampdu_rx - TID aggregation information (Rx).
+  *
+- * @reorder_buf: buffer to reorder incoming aggregated MPDUs. An MPDU may be an
+- *	A-MSDU with individually reported subframes.
+  * @reorder_buf_filtered: bitmap indicating where there are filtered frames in
+  *	the reorder buffer that should be ignored when releasing frames
+  * @reorder_time: jiffies when skb was added
+@@ -228,6 +226,8 @@ struct tid_ampdu_tx {
+  *	and ssn.
+  * @removed: this session is removed (but might have been found due to RCU)
+  * @started: this session has started (head ssn or higher was received)
++ * @reorder_buf: buffer to reorder incoming aggregated MPDUs. An MPDU may be an
++ *	A-MSDU with individually reported subframes.
+  *
+  * This structure's lifetime is managed by RCU, assignments to
+  * the array holding it must hold the aggregation mutex.
+@@ -241,7 +241,6 @@ struct tid_ampdu_rx {
+ 	struct rcu_head rcu_head;
+ 	spinlock_t reorder_lock;
+ 	u64 reorder_buf_filtered;
+-	struct sk_buff_head *reorder_buf;
+ 	unsigned long *reorder_time;
+ 	struct sta_info *sta;
+ 	struct timer_list session_timer;
+@@ -256,6 +255,7 @@ struct tid_ampdu_rx {
+ 	u8 auto_seq:1,
+ 	   removed:1,
+ 	   started:1;
++	struct sk_buff_head reorder_buf[];
+ };
+
+ /**
+--
+2.54.0
+
 
