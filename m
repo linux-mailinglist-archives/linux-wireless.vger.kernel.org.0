@@ -1,241 +1,212 @@
-Return-Path: <linux-wireless+bounces-37401-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37402-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Dwi9KPgsImr1TQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-37401-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 05 Jun 2026 03:57:12 +0200
+	id MhWUBDQ5ImoEUAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-37402-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 05 Jun 2026 04:49:24 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0053E6448DA
-	for <lists+linux-wireless@lfdr.de>; Fri, 05 Jun 2026 03:57:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2365F644BEF
+	for <lists+linux-wireless@lfdr.de>; Fri, 05 Jun 2026 04:49:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=GGmV54wA;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=BIYR+P8P;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37401-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37401-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	dkim=pass header.d=mediatek.com header.s=dk header.b=E77qREhm;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37402-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37402-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=mediatek.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC32E3111E21
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jun 2026 01:44:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8F7263078636
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jun 2026 02:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C3C3C1F40;
-	Fri,  5 Jun 2026 01:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6B12264CA;
+	Fri,  5 Jun 2026 02:43:02 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373AC3A7F5F
-	for <linux-wireless@vger.kernel.org>; Fri,  5 Jun 2026 01:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD54C3CDBC4
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Jun 2026 02:42:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780623827; cv=none; b=VvqGLGMTZfflBqOfg2N3mqQXq/vzm3bOh685E1qe9Q6NMX/7TjSH0EJcf7+2kyi0JM4O+DKPqMN+6ZXrDt2jffHh82J7xhvPSBUDT2JrrrO77KoZQ83nZZxU3615f6oUXk71eOqLkd5f4sqfGx5BED8Kp+y9ZHG8RG8PvXfClT8=
+	t=1780627381; cv=none; b=Zl1Ij4d5+oSQAK/P6ZICg2WOHM5rJTzDBnAV0nkRSY4sJY91wRL8mpORzwnIUXNp3NttmhDFvRWUb0TKSzofQChbbIiOWHdsQoHmeE7fpBCs8tcSEfSRyb0i8BIAhAmmVJH7FOI3YdRqdKJmXnK7CXa3whEDcipIrZDWklgk0Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780623827; c=relaxed/simple;
-	bh=Seas6Qx+5XcIlCTIv3I02GH0/LYEga4U9BRhZlfP4A4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n8+VEqleig8ZHnozyJU5ZGUUjaqMBJOKvg5GMLPqKQLkQ/m5plCbijZnNjFzXMwa7vcfvXbMWVej5dCidi+CSswNNSWv3fwU1GOoe8Av6EdT04i1vbEEzHW9Sj0tOev397y0MdVPB8Lze1XwFWDbqUlw3vqbUXXeC3AWaSdW2LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GGmV54wA; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=BIYR+P8P; arc=none smtp.client-ip=205.220.168.131
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 654Hmq443221049
-	for <linux-wireless@vger.kernel.org>; Fri, 5 Jun 2026 01:43:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	SORoca5ybq1ayB/DzjEmBiJC+2QDx4/4tljaa16tMcQ=; b=GGmV54wAIhX8d1Sc
-	07cB32HqqgZVCZCA0pXu5sRzs/gYk8NTPpwKyKIddzAu0IDYOoozPetjS4c6IKIu
-	nPFAhvZBc882CpJRCdITZPAFNWkXQvz81axVUL67xF2FMah/2YMu28+gkdv5uzzU
-	SKe7vVSJqSgDi7rP8Csvem2TpGvMGSpg+Gk5UzpAtcI3yuS10JPw55g9qA57fTJa
-	Za+hMhasxchqqF0heQg2TDpiOF+Hj0Fxxm/WnVAv4PqFHxB62uUF2NIqunC5Wzto
-	gzPY3QF7TOFWPkIW43Y/JBFUHvF3PARhnWQVW+lL7G3Y7tjJ+sQlGjz9IYsanxYS
-	J8nnkQ==
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ek95ubhb7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 05 Jun 2026 01:43:37 +0000 (GMT)
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-307625ee07fso690391eec.1
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Jun 2026 18:43:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1780623816; x=1781228616; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SORoca5ybq1ayB/DzjEmBiJC+2QDx4/4tljaa16tMcQ=;
-        b=BIYR+P8PZuEcNjiVTbw0f4817tJ4eFaUuodPEkDCpvloPR4veeRrn8HNmuGfOhzJRD
-         6KYx0TT1jlOu4A/kjTclhQslh8FukxbWF7Kvr49Zn1PVZPwHe1C1TvaYii8Id7dHZn06
-         kzZLsNbZbL6KD+GvWcHxlQyT8mH/l21+MnEHJ00tArD0F93PpKe5Rr9AY48oZv1u/MhC
-         dPef5VpVfLW5SrxQnTi7cfIUSdIHjIaMz+o2yRCpHoSTJyll8VljfxLXY2l83JZY73Yx
-         msklQdTaUPdduMvn6CexG2770EmauoATnoa2ObdjYx9nQ0ohaMfWiRCIaR8NVuXmdtRz
-         uKKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780623816; x=1781228616;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SORoca5ybq1ayB/DzjEmBiJC+2QDx4/4tljaa16tMcQ=;
-        b=XqbH3u6mi+oqExsJrHbvgMVZK3vM4kPNbr6ax43Z22Ayvfpi7+8019uSlPJ4G4yKve
-         dIYu8RV/4bhJ1hfiqJyPQOWar3572oxi0qLdOxO+G+IpeeQGmG6tH1BU3sp2sMCBOwYh
-         1lXV9BciwUPd46f+hCLz0E9r/mU8tYbC5lDkjdy2XJHOsryotY+v2QeDO9TbwwXQZevP
-         BppS4TYAZM3G40qA3/9SjIhMMjknxZC82dlx5xvnhP80HbtFiKLzpXEtzWZoHnPsJYSa
-         LZ0SV6EcMTSXAzMQ2lp60OsSqUX0a2pgFQrLhCJNIOQCd7ksVxCkMY9ABOzco7MvBoSO
-         kVNQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8M32PZLYVHX6Fmf4mVwU+3VqdsKq8CyVrYldYH5h/JUfe80eM18me8LhZl+nmUtuEc8CTUK49wMHF1Je0S6g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywnt8kY5x9r6nEtrorWqHcL9nyvJdyO9ttQ2FGIjwTiNrVCbqDZ
-	IjGkVsJ274HkDQfCIP1AMiNXcjI8U1SPhh7StzAIQ23V1uwMjXk12ybyX45sVLk0RdmRKBVr6rh
-	ZKIbDSJoNW+7E9mSzKeIIcO/ZXs9u6zo7ldBL+bcoxiMe3ImKr/6s92iFSCujbLlLDtkxNA==
-X-Gm-Gg: Acq92OHlR8Kzlgb7nqHT9pcbtBls9aPLg7HFnL6i6vyXAdSP/xg/5ksqnfwVUvs8PVg
-	uqfyakJpY5s2XQDg3SndVDC8v/220ppV0Ad18WK5b0Nm9z2kxIrBVaEjgwxZkfTX7kRH7BOfCCm
-	Ypauc5HaRWI/5h8h/lktLK7k3AaF9UwDSFcMKW0ZCzSmIl1ZudfdMtt8/mE5ZjAS1QRIfHCpmX2
-	NnSX7Ncuf7p1gshte+L+6KCyz2gnUPYRjC60Y1yeB1sXPRAjUISbc7NuAUZGEAnI4/ym/XPfxHd
-	I0SlaIDpY4a0wRIqPNt8IsQCxTJx6BfHHdGsbENCleh/+VW1CKkJgN8VMwg4lRusWMSSdn0wYGl
-	klRGzSEp+1uuD+mIvtmTHXUfo2Yot+s1HTbAwqvtycckreg3N/P4KBozdJS2m782KY5G8J+J1z4
-	mx7NuuhkVy289JiQdlSnDDBb5Q
-X-Received: by 2002:a05:7300:3250:b0:2f5:5dd3:1fd8 with SMTP id 5a478bee46e88-3077aea9ef1mr725027eec.8.1780623816510;
-        Thu, 04 Jun 2026 18:43:36 -0700 (PDT)
-X-Received: by 2002:a05:7300:3250:b0:2f5:5dd3:1fd8 with SMTP id 5a478bee46e88-3077aea9ef1mr725017eec.8.1780623815963;
-        Thu, 04 Jun 2026 18:43:35 -0700 (PDT)
-Received: from [192.168.1.59] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074df77a0asm6971250eec.27.2026.06.04.18.43.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jun 2026 18:43:35 -0700 (PDT)
-Message-ID: <7c01afaf-5530-4ca2-b2f3-dbe95ddfe6ee@oss.qualcomm.com>
-Date: Thu, 4 Jun 2026 18:43:33 -0700
+	s=arc-20240116; t=1780627381; c=relaxed/simple;
+	bh=kIbVhWK2XJsB3c/sAvojIZljZ/rK2GSGdygWFtEtW0k=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=US0kv2V5kPpSp9XYh3wcmD0yWOSUkZ2oQJgeJ0Kuvry6ueCUw4+q2nSv56DyXBiw+2bKZQ7J8zh4sMBbkCHvbwgs4IbUqavFAbVfQEwDPceLSNZG++5kb6UPTAkVLqA+lqPpgQHjFH4ep+nXG7j/y9143k7ovBVWjVgKjTC6mrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=E77qREhm; arc=none smtp.client-ip=210.61.82.184
+X-UUID: 304b0a6c608811f18dc8c9802ae25ab1-20260605
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=nQRT4mJ1HgdsNx44mOqyA+8emUgDAkQ/qj+2hj+KmJw=;
+	b=E77qREhmIwi4yNofggsHQ50S1W1TGgE51v2rQand0j8RgMedlli/OAUXASXZdx5TrvlzJjRyYmssSfiq0Pt5TIK5WZOBhlxLwYVfbo0fHHcLUi7WZujpThK1KtoNF4aAN9B2WDIkiETmRiXz66mWeV7zk+kJLFQfF5FxyNWfWuQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.15,REQID:3ae8fa19-d989-409c-bc10-1cef5f73a952,IP:0,U
+	RL:0,TC:0,Content:-32768,EDM:0,RT:0,SF:-32768,FILE:0,BULK:-32768,RULE:Rele
+	ase_Ham,ACTION:release,TS:0
+X-CID-META: VersionHash:e276073,CLOUDID:848c84db-80d5-4559-8c71-d44bd75d0023,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:nil,TC:-5,Content:nil,EDM:-3,IP:nil,
+	URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,AV:0,LES:1,SP
+	R:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 304b0a6c608811f18dc8c9802ae25ab1-20260605
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
+	(envelope-from <ryder.lee@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1272822999; Fri, 05 Jun 2026 10:42:26 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 5 Jun 2026 10:42:25 +0800
+Received: from mussdccf250.eus.mediatek.inc (10.73.250.250) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Fri, 5 Jun 2026 10:42:24 +0800
+From: Ryder Lee <ryder.lee@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>
+CC: <linux-mediatek@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+	Shayne Chen <shayne.chen@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] wifi: mt76: fix potential tx_retries underflow
+Date: Thu, 4 Jun 2026 19:42:22 -0700
+Message-ID: <20260605024222.3388222-1-ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] wifi: wcn36xx: fix heap overflow from oversized
- firmware HAL response
-To: Tristan Madani <tristmd@gmail.com>,
-        Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        Tristan Madani <tristan@talencesecurity.com>
-References: <20260421135018.352774-1-tristmd@gmail.com>
- <20260421135018.352774-2-tristmd@gmail.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260421135018.352774-2-tristmd@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=at2CzyZV c=1 sm=1 tr=0 ts=6a2229c9 cx=c_pps
- a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=J_-Nd1mkAAAA:8 a=Tf1d1ZyckZSre_707FoA:9 a=QEXdDO2ut3YA:10
- a=6Ab_bkdmUrQuMsNx7PHu:22 a=n8ForQn92ZFaZtFqRdMw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDAxNCBTYWx0ZWRfX/WO3BaNBpQpn
- dPCcTwxgmIzOO+/ZIi9/nlP0jneB2FW8MHJEAd/8h5yjqmjFNXqFxbuxqJiNyw5st/B+z9snBVs
- Mo4Q9woItm9HX3+ZKLl/7s8aqwtDvf1AoHapPY9/zhDzjTczzz5/lTUONBPGHCnFe9V8cPN9W6n
- qoScbmDSJV7dpm7vuLWXFOoCMAoT5deDq6d+LRgujE89heHYzIlo7Gj1dB/Iv4s9jRQoUe5HLQO
- gE8qOmnbYuWgIE4IOP/QquFnnY5enbTjbC5OZcW3zN2QkQ60QvDWM84LSODalcjfSdIBl9fox5G
- V5YsRzylxmFd0QKjClF3PDNA0/6c1OhooCIyl+bBv4cR151pyxb9i/cwLKsHI7Q521yqpdA4tSG
- as5Z4bN0g4vyklk6PTmP5Rlmcf3+Yjdvl++L6mivDnLx7oxJKMQhV31Son8EUrayGG5D3tjXIxx
- GCeh/BCogkz6NB45H2g==
-X-Proofpoint-GUID: ySlcX3st0DAkSMypcND8slhNg2M2S9-I
-X-Proofpoint-ORIG-GUID: ySlcX3st0DAkSMypcND8slhNg2M2S9-I
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-04_07,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 spamscore=0 clxscore=1015 malwarescore=0
- adultscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606050014
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37401-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:tristmd@gmail.com,m:loic.poulain@oss.qualcomm.com,m:johannes@sipsolutions.net,m:wcn36xx@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:tristan@talencesecurity.com,s:lists@lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:dkim,vger.kernel.org:from_smtp,talencesecurity.com:email,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim];
-	FORGED_SENDER(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,oss.qualcomm.com];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-37402-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER(0.00)[ryder.lee@mediatek.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:linux-mediatek@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:shayne.chen@mediatek.com,m:ryder.lee@mediatek.com,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ryder.lee@mediatek.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	DKIM_TRACE(0.00)[mediatek.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0053E6448DA
+X-Rspamd-Queue-Id: 2365F644BEF
 
-On 4/21/2026 6:50 AM, Tristan Madani wrote:
-> From: Tristan Madani <tristan@talencesecurity.com>
-> 
-> The firmware response dispatcher copies all synchronous HAL responses
-> into the 4096-byte hal_buf without validating the response length. A
-> response exceeding WCN36XX_HAL_BUF_SIZE causes a heap buffer overflow
-> with firmware-controlled content.
-> 
-> Add a bounds check on the response length.
-> 
-> Fixes: 8e84c2582169 ("wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN3680 hardware")
-> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-> ---
-> Changes in v3:
->   - Regenerated from wireless-next with proper git format-patch to
->     produce valid index hashes (v2 had post-processed index lines).
-> 
-> Changes in v2:
->   - No code changes from v1.
-> 
->  drivers/net/wireless/ath/wcn36xx/smd.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-> index 813553edcb789..f65328329f4f0 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/smd.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-> @@ -3293,6 +3293,10 @@ int wcn36xx_smd_rsp_process(struct rpmsg_device *rpdev,
->  	case WCN36XX_HAL_EXIT_IMPS_RSP:
->  	case WCN36XX_HAL_UPDATE_CHANNEL_LIST_RSP:
->  	case WCN36XX_HAL_ADD_BCN_FILTER_RSP:
-> +		if (len > WCN36XX_HAL_BUF_SIZE) {
-> +			wcn36xx_warn("HAL response too large: %d\n", len);
-> +			break;
-> +		}
->  		memcpy(wcn->hal_buf, buf, len);
->  		wcn->hal_rsp_len = len;
->  		complete(&wcn->hal_rsp_compl);
+When FIELD_GET returns 0 for the retry count, subtracting 1 causes
+an unsigned integer underflow, resulting in tx_retries becoming a
+very large value (0xFFFFFFFF for u32 or 255 for u8).
 
-AI review points out that this logic will bypass the complete() meaning
-callers waiting for completion will be stuck (either forever or until the
-specified timeout expires). It proposes setting len = 0 instead of break and
-having each waiter deal with the issue that wcn->hal_rsp_len is 0.
+Fix by checking if count is non-zero before subtracting 1.
 
-Further probing gave the observation that there is only one waiter
-wcn36xx_smd_send_and_wait() so there isn't a "wait forever" scenario.
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 10 +++++-----
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c |  5 +++--
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c |  5 +++--
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c |  6 +++---
+ 4 files changed, 14 insertions(+), 12 deletions(-)
 
-It also confirmed that setting wcn->hal_rsp_len = 0 would subsequently be
-processed by wcn36xx_smd_rsp_status_check() which would return -EIO due to len
-< sizeof(header) + sizeof(status_rsp).
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index cec2c4208..334c19ab2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -912,16 +912,16 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+ 		}
+ 
+ 		if (!mtk_wed_device_active(&mdev->mmio.wed) && wcid) {
+-			u32 tx_retries = 0, tx_failed = 0;
++			u32 tx_retries = 0, tx_failed = 0, count;
+ 
+ 			if (v3 && (info & MT_TX_FREE_MPDU_HEADER_V3)) {
+-				tx_retries =
+-					FIELD_GET(MT_TX_FREE_COUNT_V3, info) - 1;
++				count = FIELD_GET(MT_TX_FREE_COUNT_V3, info);
++				tx_retries = count ? count - 1 : 0;
+ 				tx_failed = tx_retries +
+ 					!!FIELD_GET(MT_TX_FREE_STAT_V3, info);
+ 			} else if (!v3 && (info & MT_TX_FREE_MPDU_HEADER)) {
+-				tx_retries =
+-					FIELD_GET(MT_TX_FREE_COUNT, info) - 1;
++				count = FIELD_GET(MT_TX_FREE_COUNT, info);
++				tx_retries = count ? count - 1 : 0;
+ 				tx_failed = tx_retries +
+ 					!!FIELD_GET(MT_TX_FREE_STAT, info);
+ 			}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 03b4960db..668bfa195 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -530,8 +530,9 @@ static void mt7921_mac_tx_free(struct mt792x_dev *dev, void *data, int len)
+ 		stat = FIELD_GET(MT_TX_FREE_STATUS, info);
+ 
+ 		if (wcid) {
+-			wcid->stats.tx_retries +=
+-				FIELD_GET(MT_TX_FREE_COUNT, info) - 1;
++			u32 count = FIELD_GET(MT_TX_FREE_COUNT, info);
++
++			wcid->stats.tx_retries += count ? count - 1 : 0;
+ 			wcid->stats.tx_failed += !!stat;
+ 		}
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index c47bd812b..c56a9e530 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -1141,8 +1141,9 @@ mt7925_mac_tx_free(struct mt792x_dev *dev, void *data, int len)
+ 
+ 		if (info & MT_TXFREE_INFO_HEADER) {
+ 			if (wcid) {
+-				wcid->stats.tx_retries +=
+-					FIELD_GET(MT_TXFREE_INFO_COUNT, info) - 1;
++				u32 count = FIELD_GET(MT_TXFREE_INFO_COUNT, info);
++
++				wcid->stats.tx_retries += count ? count - 1 : 0;
+ 				wcid->stats.tx_failed +=
+ 					!!FIELD_GET(MT_TXFREE_INFO_STAT, info);
+ 			}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index a59c14c8f..3fad977ba 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1361,13 +1361,13 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
+ 				cur_info++;
+ 			continue;
+ 		} else if (info & MT_TXFREE_INFO_HEADER) {
+-			u32 tx_retries = 0, tx_failed = 0;
++			u32 tx_retries = 0, tx_failed = 0, count;
+ 
+ 			if (!wcid)
+ 				continue;
+ 
+-			tx_retries =
+-				FIELD_GET(MT_TXFREE_INFO_COUNT, info) - 1;
++			count = FIELD_GET(MT_TXFREE_INFO_COUNT, info);
++			tx_retries = count ? count - 1 : 0;
+ 			tx_failed = tx_retries +
+ 				!!FIELD_GET(MT_TXFREE_INFO_STAT, info);
+ 
+-- 
+2.45.2
 
-So setting len = 0 and still calling complete() would avoid the timeout and
-would cause -EIO vs -ETIME to be propagated.
-
-I can go either way with this since it is not expected to occur.
-
-/jeff
 
