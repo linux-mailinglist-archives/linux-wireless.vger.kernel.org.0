@@ -1,212 +1,207 @@
-Return-Path: <linux-wireless+bounces-37402-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37403-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MhWUBDQ5ImoEUAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-37402-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 05 Jun 2026 04:49:24 +0200
+	id 8k3cGlpbImqjVQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-37403-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 05 Jun 2026 07:15:06 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2365F644BEF
-	for <lists+linux-wireless@lfdr.de>; Fri, 05 Jun 2026 04:49:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F94645246
+	for <lists+linux-wireless@lfdr.de>; Fri, 05 Jun 2026 07:15:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mediatek.com header.s=dk header.b=E77qREhm;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37402-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37402-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=mediatek.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mx7VYxMP;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37403-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37403-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8F7263078636
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jun 2026 02:43:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8624B3009160
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jun 2026 05:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6B12264CA;
-	Fri,  5 Jun 2026 02:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CE837FF62;
+	Fri,  5 Jun 2026 05:13:14 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD54C3CDBC4
-	for <linux-wireless@vger.kernel.org>; Fri,  5 Jun 2026 02:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5F2356765;
+	Fri,  5 Jun 2026 05:13:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780627381; cv=none; b=Zl1Ij4d5+oSQAK/P6ZICg2WOHM5rJTzDBnAV0nkRSY4sJY91wRL8mpORzwnIUXNp3NttmhDFvRWUb0TKSzofQChbbIiOWHdsQoHmeE7fpBCs8tcSEfSRyb0i8BIAhAmmVJH7FOI3YdRqdKJmXnK7CXa3whEDcipIrZDWklgk0Uk=
+	t=1780636394; cv=none; b=W4F+anUg0tB7F6BHl5pA4uV5mPstfJc/Abc8C68OGrG2dXuekDCfaoGDm36PSe+pElwatXMNShKNYOeFjy26ePVyyQJ3v5jx9fyTFUvs+j05PL3+cdfW5Ien667qKdi7sxN2KbXebu+ZMRsmO2E6O13iZlW1GnI3W5dIpOwtD2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780627381; c=relaxed/simple;
-	bh=kIbVhWK2XJsB3c/sAvojIZljZ/rK2GSGdygWFtEtW0k=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=US0kv2V5kPpSp9XYh3wcmD0yWOSUkZ2oQJgeJ0Kuvry6ueCUw4+q2nSv56DyXBiw+2bKZQ7J8zh4sMBbkCHvbwgs4IbUqavFAbVfQEwDPceLSNZG++5kb6UPTAkVLqA+lqPpgQHjFH4ep+nXG7j/y9143k7ovBVWjVgKjTC6mrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=E77qREhm; arc=none smtp.client-ip=210.61.82.184
-X-UUID: 304b0a6c608811f18dc8c9802ae25ab1-20260605
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=nQRT4mJ1HgdsNx44mOqyA+8emUgDAkQ/qj+2hj+KmJw=;
-	b=E77qREhmIwi4yNofggsHQ50S1W1TGgE51v2rQand0j8RgMedlli/OAUXASXZdx5TrvlzJjRyYmssSfiq0Pt5TIK5WZOBhlxLwYVfbo0fHHcLUi7WZujpThK1KtoNF4aAN9B2WDIkiETmRiXz66mWeV7zk+kJLFQfF5FxyNWfWuQ=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.15,REQID:3ae8fa19-d989-409c-bc10-1cef5f73a952,IP:0,U
-	RL:0,TC:0,Content:-32768,EDM:0,RT:0,SF:-32768,FILE:0,BULK:-32768,RULE:Rele
-	ase_Ham,ACTION:release,TS:0
-X-CID-META: VersionHash:e276073,CLOUDID:848c84db-80d5-4559-8c71-d44bd75d0023,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:nil,TC:-5,Content:nil,EDM:-3,IP:nil,
-	URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,AV:0,LES:1,SP
-	R:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 304b0a6c608811f18dc8c9802ae25ab1-20260605
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
-	(envelope-from <ryder.lee@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1272822999; Fri, 05 Jun 2026 10:42:26 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 5 Jun 2026 10:42:25 +0800
-Received: from mussdccf250.eus.mediatek.inc (10.73.250.250) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Fri, 5 Jun 2026 10:42:24 +0800
-From: Ryder Lee <ryder.lee@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>
-CC: <linux-mediatek@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-	Shayne Chen <shayne.chen@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] wifi: mt76: fix potential tx_retries underflow
-Date: Thu, 4 Jun 2026 19:42:22 -0700
-Message-ID: <20260605024222.3388222-1-ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1780636394; c=relaxed/simple;
+	bh=TQUiYWAmwPUw+M03/QOdIdW1HsZH13WAQ/Eqy5s20Vg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mOh7r8AuVlUV5fNPMjJTlZWE6jj49LRdqK0Yjky68D283bihHqKoRmV4QKMM0goD+7PjMk9UUkMQkUCM2eCL1PII6bKACgz2Y2Wll+E8sO5jmf9kIp7irV2jmkR5nhmncO0TfbYcMgmjjEuOwDBTmyPEaGyoEc/6rqR4RIiXmj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mx7VYxMP; arc=none smtp.client-ip=198.175.65.12
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780636391; x=1812172391;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TQUiYWAmwPUw+M03/QOdIdW1HsZH13WAQ/Eqy5s20Vg=;
+  b=mx7VYxMPUyonXK2BTF6UX/JT6DRDw6m1PYl2ByX7dVEKJEEA9vzfRP8E
+   9DlL4XrfWjT3NubgLyRBmCM4FpzU8O5PPYPcRsPOBlQXWq6o6Q7lhFnOG
+   BTmmkEupumzU4zvbUoUxICZ4o89JIR+SvZ3uzLY6PdVy2PAuOiAM+dCVC
+   7C5Lmj+7oAmkFpRsmkGLkSVJWhZ1SBmK8oWNm/lUlWIvMPTABYZNatju0
+   brRXYNWj55LS+Ld991wXkGX1YYRF8ZK76ou0HDsqkeoCKzC3hh0eYnseR
+   Rexc4Y72u1bN5Q4jfKAiCu5HcTU7kOJ/DHOt772BPVsyaJsCaYUhgsMGS
+   w==;
+X-CSE-ConnectionGUID: 6Eq9ojt6RkCqpyno+/vvWA==
+X-CSE-MsgGUID: +1IvWnrVRwKfHw+KIbdGWA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="92955857"
+X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
+   d="scan'208";a="92955857"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 22:13:11 -0700
+X-CSE-ConnectionGUID: Egdbmk2NSHuR6c2aejfrkQ==
+X-CSE-MsgGUID: xlSgLb2LQQqEAFQk/fm/Ng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
+   d="scan'208";a="242258563"
+Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
+  by fmviesa008.fm.intel.com with ESMTP; 04 Jun 2026 22:13:09 -0700
+Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wVMrj-000000002U5-1bQ7;
+	Fri, 05 Jun 2026 05:13:07 +0000
+Date: Fri, 5 Jun 2026 07:12:10 +0200
+From: kernel test robot <lkp@intel.com>
+To: Thiyagarajan Pandiyan <thiyagarajan@aerlync.com>,
+	johannes@sipsolutions.net
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	Thiyagarajan Pandiyan <thiyagarajan@aerlync.com>
+Subject: Re: [PATCH] wifi: nl80211: Increase ie_len size to prevent truncated
+ IEs in new peer notifications
+Message-ID: <202606050734.F3c2JaGN-lkp@intel.com>
+References: <20260604203027.406815-1-thiyagarajan@aerlync.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260604203027.406815-1-thiyagarajan@aerlync.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37402-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37403-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[ryder.lee@mediatek.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:linux-mediatek@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:shayne.chen@mediatek.com,m:ryder.lee@mediatek.com,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ryder.lee@mediatek.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[mediatek.com:+];
+	FORGED_RECIPIENTS(0.00)[m:thiyagarajan@aerlync.com,m:johannes@sipsolutions.net,m:llvm@lists.linux.dev,m:oe-kbuild-all@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2365F644BEF
+X-Rspamd-Queue-Id: 43F94645246
 
-When FIELD_GET returns 0 for the retry count, subtracting 1 causes
-an unsigned integer underflow, resulting in tx_retries becoming a
-very large value (0xFFFFFFFF for u32 or 255 for u8).
+Hi Thiyagarajan,
 
-Fix by checking if count is non-zero before subtracting 1.
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 10 +++++-----
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c |  5 +++--
- drivers/net/wireless/mediatek/mt76/mt7925/mac.c |  5 +++--
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c |  6 +++---
- 4 files changed, 14 insertions(+), 12 deletions(-)
+[auto build test ERROR on wireless-next/main]
+[also build test ERROR on wireless/main linus/master v6.16-rc1 next-20260604]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index cec2c4208..334c19ab2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -912,16 +912,16 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
- 		}
- 
- 		if (!mtk_wed_device_active(&mdev->mmio.wed) && wcid) {
--			u32 tx_retries = 0, tx_failed = 0;
-+			u32 tx_retries = 0, tx_failed = 0, count;
- 
- 			if (v3 && (info & MT_TX_FREE_MPDU_HEADER_V3)) {
--				tx_retries =
--					FIELD_GET(MT_TX_FREE_COUNT_V3, info) - 1;
-+				count = FIELD_GET(MT_TX_FREE_COUNT_V3, info);
-+				tx_retries = count ? count - 1 : 0;
- 				tx_failed = tx_retries +
- 					!!FIELD_GET(MT_TX_FREE_STAT_V3, info);
- 			} else if (!v3 && (info & MT_TX_FREE_MPDU_HEADER)) {
--				tx_retries =
--					FIELD_GET(MT_TX_FREE_COUNT, info) - 1;
-+				count = FIELD_GET(MT_TX_FREE_COUNT, info);
-+				tx_retries = count ? count - 1 : 0;
- 				tx_failed = tx_retries +
- 					!!FIELD_GET(MT_TX_FREE_STAT, info);
- 			}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 03b4960db..668bfa195 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -530,8 +530,9 @@ static void mt7921_mac_tx_free(struct mt792x_dev *dev, void *data, int len)
- 		stat = FIELD_GET(MT_TX_FREE_STATUS, info);
- 
- 		if (wcid) {
--			wcid->stats.tx_retries +=
--				FIELD_GET(MT_TX_FREE_COUNT, info) - 1;
-+			u32 count = FIELD_GET(MT_TX_FREE_COUNT, info);
-+
-+			wcid->stats.tx_retries += count ? count - 1 : 0;
- 			wcid->stats.tx_failed += !!stat;
- 		}
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-index c47bd812b..c56a9e530 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-@@ -1141,8 +1141,9 @@ mt7925_mac_tx_free(struct mt792x_dev *dev, void *data, int len)
- 
- 		if (info & MT_TXFREE_INFO_HEADER) {
- 			if (wcid) {
--				wcid->stats.tx_retries +=
--					FIELD_GET(MT_TXFREE_INFO_COUNT, info) - 1;
-+				u32 count = FIELD_GET(MT_TXFREE_INFO_COUNT, info);
-+
-+				wcid->stats.tx_retries += count ? count - 1 : 0;
- 				wcid->stats.tx_failed +=
- 					!!FIELD_GET(MT_TXFREE_INFO_STAT, info);
- 			}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index a59c14c8f..3fad977ba 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1361,13 +1361,13 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
- 				cur_info++;
- 			continue;
- 		} else if (info & MT_TXFREE_INFO_HEADER) {
--			u32 tx_retries = 0, tx_failed = 0;
-+			u32 tx_retries = 0, tx_failed = 0, count;
- 
- 			if (!wcid)
- 				continue;
- 
--			tx_retries =
--				FIELD_GET(MT_TXFREE_INFO_COUNT, info) - 1;
-+			count = FIELD_GET(MT_TXFREE_INFO_COUNT, info);
-+			tx_retries = count ? count - 1 : 0;
- 			tx_failed = tx_retries +
- 				!!FIELD_GET(MT_TXFREE_INFO_STAT, info);
- 
--- 
-2.45.2
+url:    https://github.com/intel-lab-lkp/linux/commits/Thiyagarajan-Pandiyan/wifi-nl80211-Increase-ie_len-size-to-prevent-truncated-IEs-in-new-peer-notifications/20260605-043726
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20260604203027.406815-1-thiyagarajan%40aerlync.com
+patch subject: [PATCH] wifi: nl80211: Increase ie_len size to prevent truncated IEs in new peer notifications
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260605/202606050734.F3c2JaGN-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project f43d6834093b19baf79beda8c0337ab020ac5f17)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260605/202606050734.F3c2JaGN-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606050734.F3c2JaGN-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> net/wireless/nl80211.c:21357:6: error: conflicting types for 'cfg80211_notify_new_peer_candidate'
+    21357 | void cfg80211_notify_new_peer_candidate(struct net_device *dev, const u8 *addr,
+          |      ^
+   include/net/cfg80211.h:8687:6: note: previous declaration is here
+    8687 | void cfg80211_notify_new_peer_candidate(struct net_device *dev,
+         |      ^
+   1 error generated.
+
+
+vim +/cfg80211_notify_new_peer_candidate +21357 net/wireless/nl80211.c
+
+04a773ade0680d Johannes Berg         2009-04-19  21356  
+947add36ca2dcd Johannes Berg         2013-02-22 @21357  void cfg80211_notify_new_peer_candidate(struct net_device *dev, const u8 *addr,
+a63204d4bff16d Thiyagarajan Pandiyan 2026-06-05  21358  					const u8 *ie, size_t ie_len,
+ecbc12ad6b6826 Bob Copeland          2018-10-26  21359  					int sig_dbm, gfp_t gfp)
+c93b5e717ec47b Javier Cardona        2011-04-07  21360  {
+947add36ca2dcd Johannes Berg         2013-02-22  21361  	struct wireless_dev *wdev = dev->ieee80211_ptr;
+f26cbf401be935 Zhao, Gang            2014-04-21  21362  	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
+c93b5e717ec47b Javier Cardona        2011-04-07  21363  	struct sk_buff *msg;
+c93b5e717ec47b Javier Cardona        2011-04-07  21364  	void *hdr;
+c93b5e717ec47b Javier Cardona        2011-04-07  21365  
+947add36ca2dcd Johannes Berg         2013-02-22  21366  	if (WARN_ON(wdev->iftype != NL80211_IFTYPE_MESH_POINT))
+947add36ca2dcd Johannes Berg         2013-02-22  21367  		return;
+947add36ca2dcd Johannes Berg         2013-02-22  21368  
+947add36ca2dcd Johannes Berg         2013-02-22  21369  	trace_cfg80211_notify_new_peer_candidate(dev, addr);
+947add36ca2dcd Johannes Berg         2013-02-22  21370  
+4ef8c1c93f848e Johannes Berg         2017-01-09  21371  	msg = nlmsg_new(100 + ie_len, gfp);
+c93b5e717ec47b Javier Cardona        2011-04-07  21372  	if (!msg)
+c93b5e717ec47b Javier Cardona        2011-04-07  21373  		return;
+c93b5e717ec47b Javier Cardona        2011-04-07  21374  
+c93b5e717ec47b Javier Cardona        2011-04-07  21375  	hdr = nl80211hdr_put(msg, 0, 0, 0, NL80211_CMD_NEW_PEER_CANDIDATE);
+c93b5e717ec47b Javier Cardona        2011-04-07  21376  	if (!hdr) {
+c93b5e717ec47b Javier Cardona        2011-04-07  21377  		nlmsg_free(msg);
+c93b5e717ec47b Javier Cardona        2011-04-07  21378  		return;
+c93b5e717ec47b Javier Cardona        2011-04-07  21379  	}
+c93b5e717ec47b Javier Cardona        2011-04-07  21380  
+9360ffd1859720 David S. Miller       2012-03-29  21381  	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx) ||
+947add36ca2dcd Johannes Berg         2013-02-22  21382  	    nla_put_u32(msg, NL80211_ATTR_IFINDEX, dev->ifindex) ||
+947add36ca2dcd Johannes Berg         2013-02-22  21383  	    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, addr) ||
+9360ffd1859720 David S. Miller       2012-03-29  21384  	    (ie_len && ie &&
+ecbc12ad6b6826 Bob Copeland          2018-10-26  21385  	     nla_put(msg, NL80211_ATTR_IE, ie_len, ie)) ||
+ecbc12ad6b6826 Bob Copeland          2018-10-26  21386  	    (sig_dbm &&
+ecbc12ad6b6826 Bob Copeland          2018-10-26  21387  	     nla_put_u32(msg, NL80211_ATTR_RX_SIGNAL_DBM, sig_dbm)))
+9360ffd1859720 David S. Miller       2012-03-29  21388  		goto nla_put_failure;
+c93b5e717ec47b Javier Cardona        2011-04-07  21389  
+3b7b72eed19684 Johannes Berg         2011-10-22  21390  	genlmsg_end(msg, hdr);
+c93b5e717ec47b Javier Cardona        2011-04-07  21391  
+68eb55031da7c9 Johannes Berg         2013-11-19  21392  	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
+2a94fe48f32ccf Johannes Berg         2013-11-19  21393  				NL80211_MCGRP_MLME, gfp);
+c93b5e717ec47b Javier Cardona        2011-04-07  21394  	return;
+c93b5e717ec47b Javier Cardona        2011-04-07  21395  
+c93b5e717ec47b Javier Cardona        2011-04-07  21396   nla_put_failure:
+c93b5e717ec47b Javier Cardona        2011-04-07  21397  	nlmsg_free(msg);
+c93b5e717ec47b Javier Cardona        2011-04-07  21398  }
+947add36ca2dcd Johannes Berg         2013-02-22  21399  EXPORT_SYMBOL(cfg80211_notify_new_peer_candidate);
+c93b5e717ec47b Javier Cardona        2011-04-07  21400  
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
