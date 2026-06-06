@@ -1,145 +1,186 @@
-Return-Path: <linux-wireless+bounces-37447-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37448-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tDIvBhKkI2qWwAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-37447-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 06 Jun 2026 06:37:38 +0200
+	id zSuULBW4I2qixQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-37448-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 06 Jun 2026 08:03:01 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6475464C5EC
-	for <lists+linux-wireless@lfdr.de>; Sat, 06 Jun 2026 06:37:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AE564CA9D
+	for <lists+linux-wireless@lfdr.de>; Sat, 06 Jun 2026 08:03:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ekze.org header.s=purelymail2 header.b=sl3F+bSZ;
-	dkim=pass header.d=purelymail.com header.s=purelymail2 header.b=hvLA5FyI;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37447-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37447-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=ekze.org;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="RwAHXG/C";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37448-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37448-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3DD2B302C7AF
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jun 2026 04:37:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AE366300E333
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jun 2026 06:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35B5223DFF;
-	Sat,  6 Jun 2026 04:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAAD262FF8;
+	Sat,  6 Jun 2026 06:02:56 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499DD1D9663
-	for <linux-wireless@vger.kernel.org>; Sat,  6 Jun 2026 04:37:31 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780720652; cv=none; b=rW4JohfTjLDgs/oUe9k5yQ+vGhh6aHggIF+H7915yX51eaLMtiFalCmyDYhVHjwq7G48kQ+D0U4qYx1lvFX6RHHVZqKZc6PYc2ttQD6uApiPRvMBs7cuTN6+xG7Q+BNxLSeOG6TUegYuV9iGjqyqHfAvh9Iv4stG2T4NfnTenuI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780720652; c=relaxed/simple;
-	bh=ZZ7/N3EErjlHBqvD7NERSpKnh/m8zxvPSGhZHmTqH64=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=LObmWKYgwl3Qwdi0XI06zd2SC6MJFECHsBr+57xd8Lm9vbpRdeMz6hKQ72I/Rx/avgu92b5pqULkczBLki6lr9K0TQznOdUAJgvWJ3u1X6tSdHHqV9fG4Cv+dJKWeQr+7OLjmP3wcVnEqXUQ1kt52vJEnh1nlSV3CS6hTUDEIjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ekze.org; spf=pass smtp.mailfrom=ekze.org; dkim=pass (2048-bit key) header.d=ekze.org header.i=@ekze.org header.b=sl3F+bSZ; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=hvLA5FyI; arc=none smtp.client-ip=34.202.193.197
-DKIM-Signature: a=rsa-sha256; b=sl3F+bSZE2V7IpuK++mGELg2TlYIlXw2Ax/VYCLTR4ICVkZvoH5RhYvjTbTHNKbGarGnpbS8qpx675+YvNPxyi57OVJIC7yHIWo4p5czdZd/e3TC2PpVtUqLpdjRaQXvvwbJ24He1V5d3kHTxyCISKQa9jrD3cclJVX0rcyLruRpCeZCdXvlD4yS4eTrQ8TomiiKVuCbGjw+t2pRNI3NCwdkO8H2b5+knGVXCfoFiTA4PLcLbIit0mjxQJHp8Sn+USzJ3nrg6SJmgxRMUWuAGYmNUa4eJoEBkUSJrKDUBo+i+zDBFZoeqQGSK17ic4oNtvtf+xU7e1B3CWBi6V2S+A==; s=purelymail2; d=ekze.org; v=1; bh=ZZ7/N3EErjlHBqvD7NERSpKnh/m8zxvPSGhZHmTqH64=; h=Received:Date:To:From:Subject;
-DKIM-Signature: a=rsa-sha256; b=hvLA5FyIbwEqd+JJ6Nj3SgCTj8TGQLetfidRyMNL0H3QkYemlWv+yAiyd/WYJxmZQi6M2RXS8E7RuTdVRsC6bMG5XdnpHAbAnlqG51M/BfYM/JlaNEIJNOCFYnonFvX8E1KWyfdFB3QuFr52st0SVGwRJUr0MMtxSVoggSBjNOpYT15w5IFh2c/mRK6yeQI1KXXM/Q+WxMoV+cLkRNkL7DGVzHkoefeHNr033480/pJPfggI/fBXdBEXnvOXAnqnBQBtJGFje8Q1WprQc7nomKOcfTh8mr0V+3/cVBICNyy/5i/aHuo2p7zxdIqwGgoRycuDIdiN1jHAetXa7G1Q2g==; s=purelymail2; d=purelymail.com; v=1; bh=ZZ7/N3EErjlHBqvD7NERSpKnh/m8zxvPSGhZHmTqH64=; h=Feedback-ID:Received:Date:To:From:Subject;
-Feedback-ID: 815493:39682:null:purelymail
-X-Pm-Original-To: linux-wireless@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -180570768
-          for <linux-wireless@vger.kernel.org>
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Sat, 06 Jun 2026 04:37:29 +0000 (UTC)
-Message-ID: <cd0a8084-9ce9-4715-8a39-d97e0f7c754e@ekze.org>
-Date: Sat, 6 Jun 2026 08:37:27 +0400
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFA61D5CFB
+	for <linux-wireless@vger.kernel.org>; Sat,  6 Jun 2026 06:02:55 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780725776; cv=pass; b=gFc83OZMJ0qF+YBABQbO7zVrkCn1t6cJFFE2AkodmS25XQ7BglnMx8QELmR7fNykYUy8N4oIqbGcgmuW8sWAGj7D47XW6gZzlwmq2ihP0Zw6Hn8VLP3n6zOYOvMLMjr+vmAcD1kMK+Am3BxTZmLjjBQ+txEKHEamgJVzeedBl40=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780725776; c=relaxed/simple;
+	bh=3fKqA2z7A4gqOX3PDriOZIyYVbZt8sUe+A0GlXQWn5U=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=XUhh07WFvaelafhRLmA9T52Dx/yjU1Ucqlw2doo5gDXHiGTJvpX9bchmMNJogz+eYjCPDmaUDhaw51/ESfWl71EeNpBQyreuvDfNJ5BWcS8urKPPw5Gr/Hn0ZFpSgMhbsXYJ3FsLB8MXBSWLlDt2IUe6r+pxLazAhOCTz3Gjbr0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RwAHXG/C; arc=pass smtp.client-ip=74.125.82.51
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1370417c01cso3734358c88.1
+        for <linux-wireless@vger.kernel.org>; Fri, 05 Jun 2026 23:02:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780725774; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RqU4cg3zNJzrTNSX5joHfmdJN9ALiqVZYV+U5mdQsT8bnzjmWLtdV80A85YsqHJogk
+         IxMtit792UghPst6tGXS1Dv+SmFzid7LbHw3g8QEsf/E+z22wEYA+xlCv/QhuF0xMGjY
+         2yu5zrN66yrLkNoxTc7NnKLXhTSbo3sTYhZeiBX4fILkQTRqZPfGBFgPf8QtQKBVjDO6
+         9JeXpSSGfYcGAiRdo5qXuGg9/kf9x7P/dy/mQrZLW24NY617lExAdlA29oYt2f5YSvUh
+         GhikQv59ZkSZyKy+9DF5AtFnWA4/sCPFJPVDcw2b7Bkz9dbIYobJUrXijroE3OD9DFsJ
+         7pZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=j6onadKO2fgtpaiH1OdJ7P6FTRMuLxhIoqVI35Kfww8=;
+        fh=qW0phhq3fb3oiohK/Mu9j1KY1zyRNiiioKFc5anvatM=;
+        b=EqJLPDGQuArHaakGYCi++OjuZCS5lN6dFch+cIJ9ZiUQbBjVJjcY1JJ0XAeu8ZfXcY
+         DMm+OudoI7UB279aZkcX+dZDGemLBWA4Glt8QiIWEeoaJlp56HtAeL0iOlS/Cp7DP4i4
+         +T+b2RZ5SefIujw1EVJ8H8LBiykghjD2n32sWXfW9t9hSBcg+d94uxUIQZwjyitGoPeL
+         vRhjisf/O476r+MOm8RAwYZuGximZQKV0Rcf7kAYkznjQWwSHb0JkKL98e0uiHyYZZ3G
+         iKaMk3K16i547X9BVEkL+MY0GMTcGyuq0OjGY2AIVhu0DqmND1Yy+iFf5xbmSvPHQygH
+         vGhw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780725774; x=1781330574; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=j6onadKO2fgtpaiH1OdJ7P6FTRMuLxhIoqVI35Kfww8=;
+        b=RwAHXG/CKyJOmHMAbvInkLMwRILFP/lSGE6kk72VijEGmxB9zFN5dNe1rPquT2cjnE
+         lpETcWXS9YfQ52A4zlJAvxZBaKFjS6EaSYwbHT+NrjVBt/C9PdbYYrUoDglqDvmdZG8o
+         gtRspZt2pXojEgbnPfRHYiU12lJNTJ8ISnr2un8/YWNVBsJuBtzNp8IjJH1g3WlMEdLJ
+         Ts1k9wL2bTH0grK2+mvMzYUZfYdVICWjW9P0NlEqqBHFrC9RvomZ/WWEUtZkBs+yGlt2
+         Y1MHfp9PUCkyWkbV84qO+3UVet1Cl023LHcikGnCmOztbJS8SepiuUJTUKHrIdLQiWLT
+         j3NQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780725774; x=1781330574;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=j6onadKO2fgtpaiH1OdJ7P6FTRMuLxhIoqVI35Kfww8=;
+        b=rQXB9Om+5AMoyu/tgk7qgor1O62IJULi5DAIrtsoBSyIdgqPwHX+/TH9Nl9DZr21sL
+         TDvrUpb7OBJAddie7uAu3bPQmtbLJ25s5JnjIx4T6LJRefOYdO6RbSunSzpwd/RrsYZG
+         ONDN+yt9s8rnGDc5jKArq+8LfYAOj3gEWgswNXIj92hLPRWSCW5JDSM63nrBIuXVR7lD
+         bcaLe1HsQyddmGoric12nZmMEDtlh3WypPq/WnWYKtNsfdPnUPJvbwWx9eR9opejtU7u
+         gOPOxXk5hOC274aw3+74QQODdDNgn6O87x2ff+y43AvM0hIrQ6gpivP7DAJwSKs2l4p5
+         +JIw==
+X-Gm-Message-State: AOJu0YxE+rns3ImqZ82Wy20B9yEjmbMEmwjL4Y2G+/TAje0KJVFYTJ67
+	7Um3bizQKXmKFeDrchmrKw32lh1x9CBknkvfR5I8GJxYVxap3Z72q1vjxFWCtvu17oeFcbbCVu8
+	vh/Drt0TbVqRKMb6WTHnU7fCYSJ1L3ZwDRm+w
+X-Gm-Gg: Acq92OFRIh/sQpjgwDRFOaonNXdgr6RTPPaUv6TYvdZ0WY85zzcZkVacrJGh/qYj6qo
+	8yqDHAjjHjguvTidr6AwwMA1iZNclHxjkW4LlpL+ZDy9yViBlOuMnYBNBBGHdn1MGNdcKbxMjgu
+	33jA7lpUoC9Qhhfrj1K0kCIXCTX0KoReQeGbGeQwFzbcQ8rWy+MCEsImCdnSZ7D2+SExMsl6yIA
+	MEBTmV5mJB5gPA1WfEjt2NeUnBq+ovAOnaX5l1/4z/zUGZsT55pdlveIi3i2RoiLd50K6uHYvcR
+	l7KITleprFKswXOqfUE5yeswkTa0dlF/Eeobk5RXSsueF6cVtb8=
+X-Received: by 2002:a05:7022:419e:b0:137:4061:8cc2 with SMTP id
+ a92af1059eb24-1380670e1f3mr3541837c88.35.1780725774467; Fri, 05 Jun 2026
+ 23:02:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
+From: Armando Torres <armando.j.tor@gmail.com>
+Date: Sat, 6 Jun 2026 02:02:43 -0400
+X-Gm-Features: AVVi8CfHcYGJqZx7J0r9_A0FhHoybfqp8QsBWMLTHNoamxxjme8ZcoWbPaZPxVk
+Message-ID: <CABL2O_yyUvY42EVRV1X213vH1WPe086DJp7ie02ofXoY2wSFjw@mail.gmail.com>
+Subject: mac80211: fix HT MCS verification to ignore multi-stream basic rates
 To: linux-wireless@vger.kernel.org
-From: ekze <nya@ekze.org>
-Subject: wireless-regdb: Missing 5470-5725 MHz WAS/RLAN band for Georgia (GE)?
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	SUBJECT_ENDS_QUESTION(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ekze.org,reject];
-	R_DKIM_ALLOW(-0.20)[ekze.org:s=purelymail2,purelymail.com:s=purelymail2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37447-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-37448-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[armandojtor@gmail.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCPT_COUNT_ONE(0.00)[1];
-	FORGED_SENDER(0.00)[nya@ekze.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[ekze.org:+,purelymail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nya@ekze.org,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[armandojtor@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ekze.org:mid,ekze.org:from_mime,ekze.org:dkim,comcom.ge:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6475464C5EC
+X-Rspamd-Queue-Id: A8AE564CA9D
 
 Hello,
 
-I noticed that the current wireless-regdb entry for Georgia (GE) does not
-include the 5470-5725 MHz WAS/RLAN band.
+mac80211 currently fails HT association if the AP marks any MCS rates
+as basic that the STA doesn't support. Some APs (observed with a
+Netgear CGM4331COM/Xfinity gateway) mark
+3-stream MCS rates (basic_set byte 2 = 0xff) as required, even though
+the 802.11 spec does not mandate that all clients support multi-stream
+rates.
 
-According to the Georgian Communications Commission frequency plan, Georgia
-allows WAS/RLAN operation in 5470-5725 MHz with 1 W averaged EIRP, subject
-to mitigation requirements based on EN 301 893, including DFS/TPC
-requirements. The document also notes that if TPC is not used, the EIRP
-limits should be reduced by 3 dB.
+This causes Intel BE200 cards (2-stream only) to fall back to legacy
+54 Mbps mode instead of negotiating HT/VHT/HE, even though the AP
+and card are fully capable.
 
-Official source:
+Fix by only verifying single-stream (byte 0) basic MCS rates, which
+are the only ones truly mandatory for basic interoperability.
 
-Georgian Communications Commission, National Frequency Plan / Frequency
-Allocation Table:
-https://comcom.ge/uploads/other/14/14075.pdf
+Tested with:
+- Intel Wi-Fi 7 BE200 (iwlmld driver, firmware 103)
+- Netgear CGM4331COM gateway (Xfinity)
+- Linux 6.17.0-1025-oem
 
-Relevant entries in the document:
+Before: width: 20 MHz (no HT), rx bitrate: 54 Mbps
+After:  width: 80 MHz, rx bitrate: 680 Mbps (HE/Wi-Fi 6)
 
-- 5150-5350 MHz: WAS/RLAN, 200 mW averaged EIRP, indoor only
-- 5470-5725 MHz: WAS/RLAN, 1 W averaged EIRP
-- 5945-6425 MHz: RLAN, 200 mW averaged EIRP
+Signed-off-by: Armando Torres <armando.j.tor@gmail.com>
+---
+ net/mac80211/mlme.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-The notes for 5250-5350 MHz and 5470-5725 MHz reference EN 301 893
-mitigation requirements and TPC, with a 3 dB EIRP reduction if TPC is not
-used.
-
-Would the following update for GE be appropriate?
-
-diff --git a/db.txt b/db.txt
---- a/db.txt
-+++ b/db.txt
-@@
- =C2=A0country GE: DFS-ETSI
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 (2402 - 2482 @ 40), (20)
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 (5170 - 5250 @ 80), (18), AUTO-BW
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 (5250 - 5330 @ 80), (18), DFS, AUTO-BW
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0(5470 - 5725 @ 160), (27), DFS
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 (5945 - 6425 @ 320), (23), NO-OUTDOOR
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 (57000 - 66000 @ 2160), (40)
-
-I used 27 dBm here because the official document lists 1 W EIRP with TPC,
-and says that the limit should be reduced by 3 dB if TPC is not used.
-Please let me know if a different representation would be preferred.
-
-Thanks,
-ekze
-
+diff net/mac80211/mlme.c.bak net/mac80211/mlme.c
+522d521
+< ieee80211_apply_htcap_overrides(sdata, &sta_ht_cap);
+535,540c534,539
+< /* Simply check that all basic rates are in the STA RX mask */
+< for (i = 0; i < IEEE80211_HT_MCS_MASK_LEN; i++) {
+< if ((ht_op->basic_set[i] & sta_ht_cap.mcs.rx_mask[i]) !=
+<    ht_op->basic_set[i])
+< return false;
+< }
+---
+> /* Check that single-stream basic rates are supported (byte 0 only).
+> * Ignore multi-stream requirements as client may not support them.
+> */
+> if ((ht_op->basic_set[0] & sta_ht_cap.mcs.rx_mask[0]) !=
+>    ht_op->basic_set[0])
+> return false;
 
