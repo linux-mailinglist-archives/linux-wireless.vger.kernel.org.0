@@ -1,307 +1,198 @@
-Return-Path: <linux-wireless+bounces-37463-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37464-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XHrhNvPTJGo7AQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-37463-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 07 Jun 2026 04:14:11 +0200
+	id y079A2iPJWrEJAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-37464-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 07 Jun 2026 17:34:00 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F32564EACE
-	for <lists+linux-wireless@lfdr.de>; Sun, 07 Jun 2026 04:14:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C9C650E29
+	for <lists+linux-wireless@lfdr.de>; Sun, 07 Jun 2026 17:33:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ww0Zro3k;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37463-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37463-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=VK1hobsv;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=Gy9RSW8H;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37464-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37464-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A75330262E6
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Jun 2026 02:13:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50F67300D605
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Jun 2026 15:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69E6246774;
-	Sun,  7 Jun 2026 02:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD30258EF9;
+	Sun,  7 Jun 2026 15:33:55 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5357C242D9B
-	for <linux-wireless@vger.kernel.org>; Sun,  7 Jun 2026 02:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967802571C0
+	for <linux-wireless@vger.kernel.org>; Sun,  7 Jun 2026 15:33:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780798385; cv=none; b=ZFqWf3+w9ynMZtnJhUSbuC2p3ommJvIGwvaUiwzaw8i9Az6zWKzq7FYQoISfhBPa6CzH6dqAbkNfAyG+CA6FI5Poqwo74dIPWrxJesOWUYw/YIsywkc7MgCEjpv8jrrRjewVDCLh4b4XorSxvGP7TT11PlzhwCiWrU8AGLDg2SM=
+	t=1780846435; cv=none; b=AfWNOHjaNiRlHNr92GdH0hv95iWDNjc65utLeHpoZUsJ9ssmweNpmHSrXAkWwkFGRg8FfrbPcvw5N6x/3MXXLbrrItJhH52ZsYply8imJ7uhwQ/nE86B5huaJvWLEdv8bw9WRpThcmoXwxhja4e34uR4KReXvQwbdKICOxQ9SoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780798385; c=relaxed/simple;
-	bh=uQsMeEbR6kDv0rOCTarB+WL0+qAK97AZ0MjgyylTOhA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GSjicpUiU8zVyS2onKchHpdNbzzKmQwmqTyfJfYHtkaimGdzXdlvRAPH4bvP7ZheTJL6tkDfgk9Et//smfY675PtOhB4VeDFtzQsr9E2Ra7I16S4g9KEZY6l+VLUW3mku8Y+5P08goEKDooLe/mUb+xiDqQTHbgmmayB4otHWuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ww0Zro3k; arc=none smtp.client-ip=209.85.210.176
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84229481d44so1261681b3a.0
-        for <linux-wireless@vger.kernel.org>; Sat, 06 Jun 2026 19:13:04 -0700 (PDT)
+	s=arc-20240116; t=1780846435; c=relaxed/simple;
+	bh=8TuQusAdK1oQCcUuK9QApsryj7PWU71xCwLTHAlMAxk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=H6uX2lH+8d2yCxLDZ/TEaHHH06O2SFjcpoXyYoyBkkv0OQtACg4B7fxmeFXD5PtvfnRe1MgPd3F5ow9Hb1W+60lbluIPw+/v1Ds1rqGZJxa6q+Zj0xB8sJ4gkINA1L6teQZFjauhZ5Vkvv8MmYakqxdBQVZN7mJU8XedL2OLpmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VK1hobsv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Gy9RSW8H; arc=none smtp.client-ip=205.220.168.131
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 657Ejs0L440307
+	for <linux-wireless@vger.kernel.org>; Sun, 7 Jun 2026 15:33:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ctq/1w4DUNTGPmu45gjf8nQfOPRThFzezJAvYr6KElE=; b=VK1hobsv1CWC5LvQ
+	JzW2rjpq8tTKS8T4rsxpyIdLGG+F99jp1RCRXGQMygI3N8b7sUKLnLtq8unMdiFN
+	ErxpOu14veKQU5jsKeg81Eeym9TEgiY9EigFTzAS/p5z3Tc8v/e0A2wx90OfiY3t
+	bfZdwUpqf7A3RdgyVBbEx9lAswnjRIYHPKJYzHAfCUUnpkaQSAWJt6ds9EIYUAlj
+	ucW15yus2+aX9Ib2jJhPE2vA7R+Y3btIYbzT1HaiRhPrT7OucTQrLyENjNjnaA5U
+	eW0Npki4zXNv4Pglx61YrGiuKi8ZAF+y0Xuw2yub1OrP6p7P9/kd0QpUESZcVAs2
+	Iea9Wg==
+Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com [74.125.82.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4em98cvn75-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Sun, 07 Jun 2026 15:33:53 +0000 (GMT)
+Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-1370417c0bfso3105944c88.0
+        for <linux-wireless@vger.kernel.org>; Sun, 07 Jun 2026 08:33:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780798383; x=1781403183; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iBfzAvBmHxoTdEDnxAcg3ks9n3jJCgw3BECtZF4cCsY=;
-        b=Ww0Zro3kM9I9PiaBwI5tPtrEhm3dPpwJcwIRUlP+5b+ispwNgLBbFOAJlEZdVMj+3H
-         +QrXuwQhn7Vg91+5th53nLKxrVgx8DbFVe6R6v86ayhGsk0zSKaypfgXIwCaViM3oW98
-         DMcL1GI6294P911Va9m5jDrZzNKO/l3Cq4hAmTbfCYtR08P+GGalJ6nnEszdwv1g6nE0
-         1NChR9bTjSb0qRxNN33/vJi5SB7xayc1lLohodeCgMwfWhfMzUqJRvWXWKTuymIsrpc1
-         0B8kgligX17ko/2NUhA25zMK9c2gePGK9kfJLKmAPdyTdQLfVg9wWI2SJkHBH46KBXwu
-         yD0g==
+        d=oss.qualcomm.com; s=google; t=1780846433; x=1781451233; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ctq/1w4DUNTGPmu45gjf8nQfOPRThFzezJAvYr6KElE=;
+        b=Gy9RSW8HLINvsS7mq0GhOGQtzArtFx8+FfRMIt35BDU2WJA3UuYEjflYnjL5vEifvd
+         XCmUdZiX380Yk/k1kmYz7jhiMWqreyQbYeritQ9sYm+sdXLA7gMpgPaYOCu0EUdg6E8G
+         hXNp6FYYmLyhRX6EJ03IdcXitC6rPhfAQseo858dYmATzmT+zcyVsF1mr0jQTepr399n
+         Xt+3pDmKne/l3dUz2dtUERV9cjSOqa3fhCPqFX0YlzozLsjKzbVcnvfzrtdsKy1H15Hv
+         I+b0K57QbcWHyEw5falOulON333pvvFj9iISHXOVhD+00PxwcTqFSRxeOvTUlECvAuaW
+         6y7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780798383; x=1781403183;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iBfzAvBmHxoTdEDnxAcg3ks9n3jJCgw3BECtZF4cCsY=;
-        b=U+KIwbZqvGUroDQ9tW9TXdhbyxJvHYk2DN3ofhwEw1TVxjVW71nh0OXJ+0be5cPz2p
-         dgadkhJOaR3VIpTUWHJHAayOKpD4SAkY8kfMflyTUvTPAXvBXjRKz+vH1tASWOZHajGy
-         QyJRV+bcIQb3OYVKfB6Y7MVHdeGU490Zo74VA+axdsBJTO/44t4IXvfxsXjHZeNMlQHU
-         jY0qP41cxcw/IFZotdB54U1VIoR4TIhdR8aR4JEHlIslvUpu3Qi6dTxbGm8xogbQ56w1
-         QpYwTSe282WPwbM7tH5XhKZQgCEuKP4BZiVZSVM5zC/G+DAIW1/BrfNAQu8KYgS2yHgp
-         AkVA==
-X-Gm-Message-State: AOJu0YwEHOjajeLh3bo5ZHUXgYFnX0esNEEgNbxJZreBiCu1yLXl5Z15
-	VZCpMIQdcgm12Ug6byeIyPt5PcCfRvQkljBvltVeEZa11aQ9AV91eUWw/7NRjg==
-X-Gm-Gg: Acq92OEqwBJF5G6g7pPFfIXmpzGkNsqyySZvylf9s7aIAHkjuyy4Rt2tKpbA2H9hJor
-	91r2gKZ2ons6l/+DxBnG0D6dlcVLERQWbjwNOUMklYolK3tiftzDNiLRtTcNq31yvcMQJrc3vdr
-	8MRrhOVftjheXKWzYwjeLteASPlCHXD88Q7d37gfDeAMcFW2p+BMFFo/3m7ZheicVhX+48XrSar
-	bXpjBvVVpwNsXb/rUBFhRTn7hMmAW88UAWeA3h4xk6rBjjSecI9d5hkDlIEmgl9Wk6k1PsAdrjk
-	z2YsPwTyvWJrxyUowQYbtorFHZlJaKOaM4bwIve7YXsgLUSYQ6ccoxKnslr+z/g+Iv7BUfMhx1m
-	5zlVJfVX2tBtxujkouUI6Gk5jP+r8CX6helu4oIsiAjCi95UxogRCXEFp98Z0VQH0/OG2cbrYLa
-	SyMTMBvmn5NMBvawm/dAZgLqVBC+kmIVA9MnyEAM7YzS6QKMHnxH19CvmoYRmtD4WEtB1NuFQHO
-	nE2VmiYHbBYzO9ziOQzWsVvBQ0uGZGOaNdUqha12Gvusw==
-X-Received: by 2002:a05:6a00:3e22:b0:842:4af4:3099 with SMTP id d2e1a72fcca58-842b0e6a336mr9677898b3a.20.1780798383394;
-        Sat, 06 Jun 2026 19:13:03 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8428706fa9asm13184098b3a.45.2026.06.06.19.13.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Jun 2026 19:13:02 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCHv3 wireless-next] wifi: mac80211: fold tid_ampdu_rx allocations into a flexible array
-Date: Sat,  6 Jun 2026 19:12:45 -0700
-Message-ID: <20260607021245.6470-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        d=1e100.net; s=20251104; t=1780846433; x=1781451233;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ctq/1w4DUNTGPmu45gjf8nQfOPRThFzezJAvYr6KElE=;
+        b=XJ+WtowrZ3y/4rCgq4ohUz+3m+Gp0Q5eFnZs/9G6+6ZAnuV512TeYjI56UCKQvUVsZ
+         3OA4LBpAkw3ZDZV1ioZzTV4EVemrrRwEfCcWzynUVDyPHzvQzHai6jf+UwqzM53x/ms3
+         wpW1i38PiqGBfcbWucDHv16KVSRg8syMGAjUBBVwLV6Dav74z03xVCCuPsKy4eJtwIgy
+         2CPbmliOlhakyEMgdvtU+TJ6SDeTm/25pCUMyLGeFgt99eWnl3dm7fTMxwi0rZnZ4OGC
+         qf/6CS1n6mH2vBLUK1jYdKfswATap71V6/ZN/nn/UHsjKWFNhgndFKrNVvOwGx8Ydujm
+         WnDw==
+X-Gm-Message-State: AOJu0YwTGsK1y5QbUuSO5kpKh7S+GgOf7KggV0b0YuW0FGAXZ1lXTwSC
+	SGadVdRbJsJXmwYSU0FxutDhiYn+kngZckphJ15ZPZSljLadt2T+euZYpqq6pPdFSWpU+zxaQ09
+	jXO4/YGajqmCnDkQVgb5EVttZ7iKHE7LhJFpyhWOc8Jl6VMkYZ6K7W9KAlheJ4q3yf9b7Fw==
+X-Gm-Gg: Acq92OFo9Rk6goj6kXh5WbtuZOnTnSZEkVqP+0sH9E/jmdquSmqVAUJN0+PTNXoFW3i
+	BKMk9YuCEidaxf4TEcoVtWtlbrPAM1IIPfcjQgxz1NJhAQIOB3RgNCx8vM0GTO++jdpVki2Rs+1
+	SfC90ujH1EccZJbVE1LOEk7qQCTW12ku+jOCLdMPYhYMW2tmctvBX30Ji6A8SHGKtH9Xooz4Wdz
+	hL9nDw5hnyAcZ7ADTqWKzGr5uc/DpFH1s4ZuZN0bCDBHkXNr2MBwnI8SHwmyUzWLflclw2tLYH3
+	GRzBxcmJsmVOR5gV0S3UIKZBFuAdfQ6+luD6IRqCs1+PwuUZeX2VICUG4meCn3fY9r9lwNUwTZm
+	vBeLRH+iNxwFIesVHavLc8T9YJwDENADObR5n4igy9E+KdgrYIq2D7ztbArwp86D/pIh5V5/+XE
+	czUSxUcKM84tmJYk80Uf9Kq1OB
+X-Received: by 2002:a05:7022:b9c:b0:135:40b2:ede0 with SMTP id a92af1059eb24-13807d358e0mr5286692c88.6.1780846432969;
+        Sun, 07 Jun 2026 08:33:52 -0700 (PDT)
+X-Received: by 2002:a05:7022:b9c:b0:135:40b2:ede0 with SMTP id a92af1059eb24-13807d358e0mr5286675c88.6.1780846432450;
+        Sun, 07 Jun 2026 08:33:52 -0700 (PDT)
+Received: from [192.168.1.59] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-138063de4a5sm6237066c88.13.2026.06.07.08.33.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 Jun 2026 08:33:51 -0700 (PDT)
+Message-ID: <a97dac59-a689-4b9d-8419-2b09c1d106ab@oss.qualcomm.com>
+Date: Sun, 7 Jun 2026 08:33:50 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next 2/6] wifi: ath12k: Add support for 4-address mode
+To: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20260525110942.2890212-1-tamizh.raja@oss.qualcomm.com>
+ <20260525110942.2890212-3-tamizh.raja@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260525110942.2890212-3-tamizh.raja@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA3MDE1NSBTYWx0ZWRfXwPEu+ZqDJEjF
+ NIEs9pRWTcZUa2JmLzDSeLsd4pPuN2lm2td94sXI62QaFIBIiFBdHQ5GVe5JVdQqu9LYVos3ueN
+ GOjGNAJs3AxYo9ImfmvnHDjiRRRE3Y3UmH0iF3kqYcJw53KcnIkHqMNWmadz4DosSAbAeAkO3PP
+ 7xTAHkRlbCTggUAGpHSyjiqW+r/b+TVAgzgodb1NYh0w+XzEN/nRDE0iwbAFKU3UtoI2FgfgP6A
+ g/JHzvYUZfW3pYCVUrgq311cOyARyqsYYb5OtA2lR9nfWD3zJ5hqDb7HxnAkjzXMdhxJbFve1tM
+ Jl3D5yl5MmTRahNWgkYivE2LDzw+5OgoX17EeK+sTvHjMT9T3iYSe5yBS3dENqfdLu09aLhgSNo
+ 5kDKuF6CFZ+hLNAQStufhqagsEET2EGF8Jex5AE76ILK8/iIAV1J4Lk9WoUZeLEegfI86YWpkR+
+ 4ezcjg/JuDKTNviBTgg==
+X-Proofpoint-ORIG-GUID: Cmg84IDlDFbfyqqp9f4SW6b7Ieb7MeRL
+X-Proofpoint-GUID: Cmg84IDlDFbfyqqp9f4SW6b7Ieb7MeRL
+X-Authority-Analysis: v=2.4 cv=A/pc+aWG c=1 sm=1 tr=0 ts=6a258f61 cx=c_pps
+ a=SvEPeNj+VMjHSW//kvnxuw==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=AogDqfkJi6Jrrm46B_8A:9 a=QEXdDO2ut3YA:10
+ a=Kq8ClHjjuc5pcCNDwlU0:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-07_04,2026-06-05_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 bulkscore=0 spamscore=0 malwarescore=0
+ adultscore=0 priorityscore=1501 phishscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
+ definitions=main-2606070155
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37463-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:johannes@sipsolutions.net,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37464-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:tamizh.raja@oss.qualcomm.com,m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	RCPT_COUNT_THREE(0.00)[3];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,qualcomm.com:dkim,vger.kernel.org:from_smtp];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3F32564EACE
+X-Rspamd-Queue-Id: 68C9C650E29
 
-Convert the separately-allocated reorder_buf pointer to a C99 flexible
-array member at the end of struct tid_ampdu_rx, with both the
-sk_buff_head and the jiffies timestamp in each array element. This
-collapses three allocations into one and removes the corresponding
-kfree() pairs from the error and free paths.
+On 5/25/2026 4:09 AM, Tamizh Chelvam Raja wrote:
+...
+> @@ -999,6 +1007,11 @@ static void ath12k_wifi7_mac_op_tx(struct ieee80211_hw *hw,
+>  			skb_cb->vif = vif;
+>  			skb_cb->ar = tmp_ar;
+>  
+> +			if (ahsta && ahsta->enable_4addr)
+> +				arsta = rcu_dereference(ahsta->link[link_id]);
+> +			else
+> +				arsta = NULL;
+> +
+Tamizh, please check the smatch warning at:
+https://lore.kernel.org/oe-kbuild/202606051125.XaYVDQZf-lkp@intel.com/
 
-Assisted-by: opencode:big-pickle
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- v3: Fix kernel-doc
- v2: use anonymous struct to combine allocations
- net/mac80211/agg-rx.c   | 22 +++-------------------
- net/mac80211/rx.c       | 14 +++++++-------
- net/mac80211/sta_info.h | 13 ++++++++-----
- 3 files changed, 18 insertions(+), 31 deletions(-)
+This looks legitimate since there is a path where link_id can be 15, exceeding
+the ahsta->link[] array.
 
-diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
-index 0140ac826b23..9629e00069a1 100644
---- a/net/mac80211/agg-rx.c
-+++ b/net/mac80211/agg-rx.c
-@@ -49,9 +49,7 @@ static void ieee80211_free_tid_rx(struct rcu_head *h)
- 	int i;
-
- 	for (i = 0; i < tid_rx->buf_size; i++)
--		__skb_queue_purge(&tid_rx->reorder_buf[i]);
--	kfree(tid_rx->reorder_buf);
--	kfree(tid_rx->reorder_time);
-+		__skb_queue_purge(&tid_rx->reorder[i].buf);
- 	kfree(tid_rx);
- }
-
-@@ -412,7 +410,7 @@ void __ieee80211_start_rx_ba_session(struct sta_info *sta,
- 	}
-
- 	/* prepare A-MPDU MLME for Rx aggregation */
--	tid_agg_rx = kzalloc_obj(*tid_agg_rx);
-+	tid_agg_rx = kzalloc_flex(*tid_agg_rx, reorder, buf_size);
- 	if (!tid_agg_rx)
- 		goto end;
-
-@@ -426,27 +424,13 @@ void __ieee80211_start_rx_ba_session(struct sta_info *sta,
- 	timer_setup(&tid_agg_rx->reorder_timer,
- 		    sta_rx_agg_reorder_timer_expired, 0);
-
--	/* prepare reordering buffer */
--	tid_agg_rx->reorder_buf =
--		kzalloc_objs(struct sk_buff_head, buf_size);
--	tid_agg_rx->reorder_time =
--		kcalloc(buf_size, sizeof(unsigned long), GFP_KERNEL);
--	if (!tid_agg_rx->reorder_buf || !tid_agg_rx->reorder_time) {
--		kfree(tid_agg_rx->reorder_buf);
--		kfree(tid_agg_rx->reorder_time);
--		kfree(tid_agg_rx);
--		goto end;
--	}
--
- 	for (i = 0; i < buf_size; i++)
--		__skb_queue_head_init(&tid_agg_rx->reorder_buf[i]);
-+		__skb_queue_head_init(&tid_agg_rx->reorder[i].buf);
-
- 	ret = drv_ampdu_action(local, sta->sdata, &params);
- 	ht_dbg(sta->sdata, "Rx A-MPDU request on %pM tid %d result %d\n",
- 	       sta->sta.addr, tid, ret);
- 	if (ret) {
--		kfree(tid_agg_rx->reorder_buf);
--		kfree(tid_agg_rx->reorder_time);
- 		kfree(tid_agg_rx);
- 		goto end;
- 	}
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index db421edfd54c..fb9a3574afe9 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -1188,7 +1188,7 @@ static ieee80211_rx_result ieee80211_rx_mesh_check(struct ieee80211_rx_data *rx)
- static inline bool ieee80211_rx_reorder_ready(struct tid_ampdu_rx *tid_agg_rx,
- 					      int index)
- {
--	struct sk_buff_head *frames = &tid_agg_rx->reorder_buf[index];
-+	struct sk_buff_head *frames = &tid_agg_rx->reorder[index].buf;
- 	struct sk_buff *tail = skb_peek_tail(frames);
- 	struct ieee80211_rx_status *status;
-
-@@ -1211,7 +1211,7 @@ static void ieee80211_release_reorder_frame(struct ieee80211_sub_if_data *sdata,
- 					    int index,
- 					    struct sk_buff_head *frames)
- {
--	struct sk_buff_head *skb_list = &tid_agg_rx->reorder_buf[index];
-+	struct sk_buff_head *skb_list = &tid_agg_rx->reorder[index].buf;
- 	struct sk_buff *skb;
- 	struct ieee80211_rx_status *status;
-
-@@ -1290,14 +1290,14 @@ static void ieee80211_sta_reorder_release(struct ieee80211_sub_if_data *sdata,
- 				continue;
- 			}
- 			if (skipped &&
--			    !time_after(jiffies, tid_agg_rx->reorder_time[j] +
-+			    !time_after(jiffies, tid_agg_rx->reorder[j].time +
- 					HT_RX_REORDER_BUF_TIMEOUT))
- 				goto set_release_timer;
-
- 			/* don't leave incomplete A-MSDUs around */
- 			for (i = (index + 1) % tid_agg_rx->buf_size; i != j;
- 			     i = (i + 1) % tid_agg_rx->buf_size)
--				__skb_queue_purge(&tid_agg_rx->reorder_buf[i]);
-+				__skb_queue_purge(&tid_agg_rx->reorder[i].buf);
-
- 			ht_dbg_ratelimited(sdata,
- 					   "release an RX reorder frame due to timeout on earlier frames\n");
-@@ -1331,7 +1331,7 @@ static void ieee80211_sta_reorder_release(struct ieee80211_sub_if_data *sdata,
-
- 		if (!tid_agg_rx->removed)
- 			mod_timer(&tid_agg_rx->reorder_timer,
--				  tid_agg_rx->reorder_time[j] + 1 +
-+				  tid_agg_rx->reorder[j].time + 1 +
- 				  HT_RX_REORDER_BUF_TIMEOUT);
- 	} else {
- 		timer_delete(&tid_agg_rx->reorder_timer);
-@@ -1426,9 +1426,9 @@ static bool ieee80211_sta_manage_reorder_buf(struct ieee80211_sub_if_data *sdata
- 	}
-
- 	/* put the frame in the reordering buffer */
--	__skb_queue_tail(&tid_agg_rx->reorder_buf[index], skb);
-+	__skb_queue_tail(&tid_agg_rx->reorder[index].buf, skb);
- 	if (!(status->flag & RX_FLAG_AMSDU_MORE)) {
--		tid_agg_rx->reorder_time[index] = jiffies;
-+		tid_agg_rx->reorder[index].time = jiffies;
- 		tid_agg_rx->stored_mpdu_num++;
- 		ieee80211_sta_reorder_release(sdata, tid_agg_rx, frames);
- 	}
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 26138934b72e..b5f1310d2cd6 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -207,11 +207,8 @@ struct tid_ampdu_tx {
- /**
-  * struct tid_ampdu_rx - TID aggregation information (Rx).
-  *
-- * @reorder_buf: buffer to reorder incoming aggregated MPDUs. An MPDU may be an
-- *	A-MSDU with individually reported subframes.
-  * @reorder_buf_filtered: bitmap indicating where there are filtered frames in
-  *	the reorder buffer that should be ignored when releasing frames
-- * @reorder_time: jiffies when skb was added
-  * @session_timer: check if peer keeps Tx-ing on the TID (by timeout value)
-  * @reorder_timer: releases expired frames from the reorder buffer.
-  * @sta: station we are attached to
-@@ -228,6 +225,10 @@ struct tid_ampdu_tx {
-  *	and ssn.
-  * @removed: this session is removed (but might have been found due to RCU)
-  * @started: this session has started (head ssn or higher was received)
-+ * @reorder: array containing a buffer with a jiffies component
-+ * @reorder.buf: buffer to reorder incoming aggregated MPDUs. An MPDU may be an
-+ *     A-MSDU with individually reported subframes.
-+ * @reorder.time: jiffies when skb was added
-  *
-  * This structure's lifetime is managed by RCU, assignments to
-  * the array holding it must hold the aggregation mutex.
-@@ -241,8 +242,6 @@ struct tid_ampdu_rx {
- 	struct rcu_head rcu_head;
- 	spinlock_t reorder_lock;
- 	u64 reorder_buf_filtered;
--	struct sk_buff_head *reorder_buf;
--	unsigned long *reorder_time;
- 	struct sta_info *sta;
- 	struct timer_list session_timer;
- 	struct timer_list reorder_timer;
-@@ -256,6 +255,10 @@ struct tid_ampdu_rx {
- 	u8 auto_seq:1,
- 	   removed:1,
- 	   started:1;
-+	struct {
-+		struct sk_buff_head buf;
-+		unsigned long time;
-+	} reorder[];
- };
-
- /**
---
-2.54.0
-
+/jeff
 
