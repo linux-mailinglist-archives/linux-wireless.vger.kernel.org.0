@@ -1,216 +1,260 @@
-Return-Path: <linux-wireless+bounces-37492-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37493-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id U3YgJL5+JmrTXQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-37492-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Jun 2026 10:35:10 +0200
+	id JTbBFzmIJmoUYQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-37493-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 08 Jun 2026 11:15:37 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E78946541B6
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Jun 2026 10:35:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BBA6547D0
+	for <lists+linux-wireless@lfdr.de>; Mon, 08 Jun 2026 11:15:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="QV6Dd/Sd";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37492-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37492-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=bKpjWWnf;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=NRsOwTZ2;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37493-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37493-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7CE5F30453BD
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jun 2026 08:22:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 35B5830157F9
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jun 2026 09:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456DD26AE5;
-	Mon,  8 Jun 2026 08:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734163B440F;
+	Mon,  8 Jun 2026 09:07:53 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330983ACF0B
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Jun 2026 08:22:42 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780906967; cv=pass; b=KjbP49M9nRUDGHcm8ZM3L/cQay7nOYXitpaEm4j6yrOl7sGqgTBSyk/RWDOflznFYX6WI0t06crcJRzI6Okm4Q8MW8TFCoAY1GBQOqKkvT/R9Nh3jMLny08ccjjdGy6YaSP2egJ5bMbLt2YVShoY4Fo4bVDaT8de8J4r3lukRjs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780906967; c=relaxed/simple;
-	bh=V1Q+qFMXpxVeNP3nVattManJN37EJsg6DFMu6D3ZRck=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LamrZT1tn7sBjIumADgAAXG8XP3JxX++VA8seETzy4jGs8JmmjCN/uHyNyPt8QVvUlpJdO4O/JEkFCUJBlugqrveQwzK1htZFR/v7MrtfabYtOAXqUXxk+GyO90zgcY8IBMYBKBm0BUXYEWgFE5Zqnl/BeVGPCEMIPW4iOZDbH8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QV6Dd/Sd; arc=pass smtp.client-ip=209.85.208.173
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-39676d82b7fso39651511fa.0
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Jun 2026 01:22:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780906961; cv=none;
-        d=google.com; s=arc-20240605;
-        b=amQeEovyhreLZNTJcPGCDA/rgnZbT0dp7kcFuyTAQfsshXx+reE7Vrilfh7k2H/Gwl
-         YcY9JzLzenSko95cMR7BEsaI1A5I+Jwppxfv6zfqXDNT/EzuVheSLZPZwxA9fJ4dnZR+
-         bv8O4EIBGoxz8UocugBp8k43KOtflnYu1VoVE4D6B7Q8GVq6QiBBoScyimVztzVckNdw
-         kxTH5VbM0sjHfVIhFSlv+XIxxMbMu5hmqIhPvAVeEt1E2aFVkolFBB0QAFjVEnEUDNRc
-         asUbVLcvPEPv8V+7pE57rjRTrGfI1riFUkfdStdj7T1ru6CQShsnORJbdSAhF4op+pze
-         J7bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:dkim-signature;
-        bh=V1Q+qFMXpxVeNP3nVattManJN37EJsg6DFMu6D3ZRck=;
-        fh=hdzZC+/8zcbG7mUL1LVwezAX2ERL/XV9wrrwvnUlU2g=;
-        b=k9uFW4dX9vxvqgpMIKWD4MNAdEfxoUBLvEpjK7H7/b3ByEb1FhhUoUptsJXmwVKZY/
-         /iKaDhKV+fheYwPNp2/pNl2cXJsWHnyjY7bECWvLWJi4QgD4tq6EedMGzTs08ruiHNZt
-         Oi6r7/P9I+D1ve1YeHMHt/3yMlaXUySopkVj55hZ0/xCF2aL/qBMJ8lO0BUw/j7AQOIS
-         u/W3mVleCbsk/XvXn+C6yIWsA+YVkWYuqVpzy3+IFYQi4HnkGxFdSJQ12Vxdm1sUL3oX
-         G0xAnT6jzYwt3lDjnpnTQxT4QfvyDT/jHMFpJwLcyJ6emkIQe+gKux/C0UBOx2daJuH7
-         eM7w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481FA3B42F2
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Jun 2026 09:07:50 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780909673; cv=none; b=V8pAAP0fHIhHTP1wrkEuYVyBKspvHwniMoay9NhtDApEuxQE8lf+PpviqO1ijCgUe6ldlejyptcrHc3DAdRlwnRsTLesFH5TzcN7CDUYXFj2BhWoHtwS+sCzglAtBX5qDYXUSnpaWXPkQ6iWbz2Pub2HpSkjGkOf+6fa/NJVlko=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780909673; c=relaxed/simple;
+	bh=em+L8R/eMvzAwH/Szx2mGtcX/dspQ1c36ijq68dUpZs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DmN/NlXguISRdGWaDJPen4W3sf0SsMku+IrDog9vTAxExmEPjmX3R8hyA1SwMvRdC0/4bNkppQ/z4mZ8OV/qc4lDJtgSK9b8EwBGHuOQcDnX4nn7o/spnaN9jJU+Hc4kryFTMjPDxmT621AQfsoa4LFVjGtB10jwDKQaKGyJ+lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bKpjWWnf; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NRsOwTZ2; arc=none smtp.client-ip=205.220.180.131
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65890s5g3164190
+	for <linux-wireless@vger.kernel.org>; Mon, 8 Jun 2026 09:07:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=+3/R5lmk75UYvATrW4nidQVRUoSrgJqZLKr
+	xN01PK8c=; b=bKpjWWnfAhcfZgkWh/ql8DKBGZYdYncJ6ZQZA43etc/PwRKm/FY
+	n+QcMWaWNipS1u0leyvmO8r24+V7WrEdOON6oXZPB2Tf8jzbLYDl2xrhitlAbWL2
+	2C0wY7bKPdXUcE/wuTeBXX9YUNKv8762gmpZdmBxFvITbt4spX0Megp2zXloCo2L
+	vp98yitYiEljLZOODcDJm+6y4TeKRea4XvmZpEzvFa20nWxtqX80EX+MJvr45dF1
+	HO9Olqq/S/BpLXP2zwYFIv8f9psUTsjuLzvj91UqPEGlfakT6N/bMO56o+Ap+k/s
+	cFqG+nK0bWlZ3UsTuw9GPhiM9nbNT7J1gSQ==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4entr0g15r-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 08 Jun 2026 09:07:48 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8428384f31fso2872287b3a.3
+        for <linux-wireless@vger.kernel.org>; Mon, 08 Jun 2026 02:07:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780906961; x=1781511761; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=V1Q+qFMXpxVeNP3nVattManJN37EJsg6DFMu6D3ZRck=;
-        b=QV6Dd/SdegluSPRJ77ZY0YwyaM5npmnXyya5RA3aWm1lzNNHp0k3x1/T43vdaS3DOK
-         YDi1T3Jnb2JLgt+mbisyf5s10I79VAVk2sFT+yNHCwyy8ljX68+5xK9KtErdKjbRbo1u
-         S+ZjDgdx9y9j1d+9XsdqRupED50Z0/06OkR1EZDCxOy+aTaOsvYdDv/4hzWT9y5QEwyK
-         L0vquLmiQcFyZI2ptJKNJF7b6hQv6LQAm7iQ5CcoBuZwcLKmGoiFloZJVf1SzxY/Ozk0
-         KXIzRgxZh+KSNaYAFlGmgfrlgH1hMuSGDOKQr4++6Dphuq0gY8w2Ec2h1H+ki4HOP+ar
-         hOSw==
+        d=oss.qualcomm.com; s=google; t=1780909668; x=1781514468; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+3/R5lmk75UYvATrW4nidQVRUoSrgJqZLKrxN01PK8c=;
+        b=NRsOwTZ2idBO2lXTu0zd/43l3OQ5/XFaIMKILWDEqtlXq2kT/ih7SmDDLwuPlZ+U2i
+         kWXeesMO3TYgrtjX3BeIGyx+1f7EGWaizvX0KNdDxL2UEiDZPHjO+ioXbjFQ5jLmzaUl
+         OT1LsQz768BZshd6SDjLLmg2BNAup4GuTuX/ba2nlO02l0jwG/onHOl+92cw8ty1QKun
+         DxEQ52WncWYWVDtU9t61HduvwefPreWOWxF0Dvr2ZbhatClXvofOZct3FjgRpg9oIK+n
+         J5FR0lpHqXY2KSqMDfbOEbtXCmbqhVFXOpLRnhwlHYNvFxWEXQh4dsBLa861UH3Q6she
+         9Oiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780906961; x=1781511761;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V1Q+qFMXpxVeNP3nVattManJN37EJsg6DFMu6D3ZRck=;
-        b=Tk7Ck9Gk43O4mWt8RxDJcIUklgAx6drDKx9ypMj1oYa1fMZ2S1orT/Lq1aboKOLJi3
-         sj7UUm8Y2/AmDhxlrZNWrNMW0Dq5pxgKgKS7ORRlFATFXu0XSlZJCkKl6R0Mwspfzmyb
-         rWcAxY05wtAh2eiCepOIbuXgUgF4vdFsL+0rx7gvO8iczKaH+5FtUzhJbK1xFzEvy9b/
-         GvxQg3dnExqHoxcWP1nCHG/nmeH0xVFZU4fClFYjQhiu8IuQzR8wZuAJBS9FmAcdJUDC
-         hpKpKvk7Cg5gc0y1JzBoN9GthdvsDbEDw6NUP3+1QZ+TJC7IsoL6IhIkHYoQXbatn57K
-         eoBg==
-X-Gm-Message-State: AOJu0YyvR1HM9NBRx/D/HGc7Cq34I0uhyb9uZ98jcxtpvX8RGSFJJjgu
-	eKfOhH/caSLHAuMxzB7ZcPIImTX11LuU1Gdt4sy2uRCszEfuu3/3/hepmBCujB7V4MBv0X1L49p
-	Vldk9dT+1D+VTnoU+ZkhkLmjVf9JnF7Yp5brDN9k=
-X-Gm-Gg: Acq92OFcQvwBAMIcAajSJ7bCtlGupSSffbQ32qG71We6Jyc30aYtK+liIQd3q0GQiME
-	HU0yIvzCaFvzmisRpGxB1nKWzcQa9JFUqVlWN+3JKwGdrQJk2hsc2vymSMa1qIR/DJ+WGwgHyiW
-	ngBK4f8vIoW9jEeUXuHvYt3l83MNU6uDb5Ny8GUvVoWpG0hJe2jzYxcumxZJLT8tHSE8O3JYl90
-	uFYnpWwtR9tyvKhYl7jKdI7eEfvLN59eDDkpTppwUF3NWd/a3zNSWdjYik/kenPgQCTap+U2I69
-	Np6suK5WoarhrfiGg/Trmq+kddNC9FZSwvs9hWkuNl/bG+2Yt6H0YjUt43ZjdDrc
-X-Received: by 2002:a05:6512:401f:b0:5aa:6f89:9375 with SMTP id
- 2adb3069b0e04-5aa87c2dc8emr3420712e87.29.1780906960721; Mon, 08 Jun 2026
- 01:22:40 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780909668; x=1781514468;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+3/R5lmk75UYvATrW4nidQVRUoSrgJqZLKrxN01PK8c=;
+        b=FU5dHranTQMVjby6gwQHAyWIq3+cAqTRacAD3jXxmMm5evs5vtxlyTyqkyPTS407Sw
+         O9jekF1SKKN2fX0Y+dboMOIMNQdyu6IIqqtOkrc+KP6GuAoBKC7k9IBexQJq/O7eb3TM
+         0otzfPVwv09yXXg/scb1zujmimPAePIU9zmbanXHMCPKiZXyiom0/BLHNQiAXG4WZl9u
+         CKglM3PKEznp5rryhEVnX79wdW8m2JKFEFS14qYpS1MLfA4HPmR+esrA8pQix6Zra48u
+         kdUqnt/B6xLL8t6bg8YMujelXGYY4880y0RP/+RDOfAJ2BoMvsz+iQMSmA68jJXbaj9e
+         MpxQ==
+X-Gm-Message-State: AOJu0YxVivMZVHryHFzQiFiY7ZYLeNLNIcnfbSwIhjTJkptCT/OHLyRR
+	c4GWBb8gavSY2l4P0ApMDQpzMk/iiYsv1iLpAk1dVfYZPEwBLkcSDlWg8xmSocv7nW7H435TU9B
+	9zKPn0frjzygGRl2thydeyUTlFfKDQJB1U/CdBUxEnY56iUiaAgKnRaRy6OGMYdaYaqgJPwtDJr
+	SdPA==
+X-Gm-Gg: Acq92OHvoHgcsSA7bBj9hsVeu/7f2Tombon8dZJaI7LXOOevQKL3uNOqyNY1j1lp349
+	5XoLoOcIzkELPyL3aW6CwaJhv8YLd1jj4SvwL0//d+5iA5l5cXoCzgmyDGLK9B/R3xUxGAaCa+K
+	FZ76Zh5cjEi7Zg0Ttq+QAZluVQGiHOHSWJGTOMgda8ZKAF8Cgki2Ix4SEs1i4wlg5PToi5SK0Q1
+	boT2Zd060LtAyVQ5TO/d73JvvzaGCmM8N1jh6H+UldCf+rdoDMDYt1gh8HX7E0Tx8bYAxG4RmhD
+	KJOhscuFIOmelRkeTL4DvLDiQYTnlC6eA3LSf8XVZmthDTLK0iSqfuvklH3AzHO2/fojzx4LZT6
+	VZNyk7MbvDz5TZ9tdY/kQa0FKTpTHg4Lea4GhxeY3QUkMf6eUyKruja02
+X-Received: by 2002:a05:6a00:3d0d:b0:842:37d3:de21 with SMTP id d2e1a72fcca58-842b0fbb75emr13734314b3a.40.1780909667783;
+        Mon, 08 Jun 2026 02:07:47 -0700 (PDT)
+X-Received: by 2002:a05:6a00:3d0d:b0:842:37d3:de21 with SMTP id d2e1a72fcca58-842b0fbb75emr13734275b3a.40.1780909667137;
+        Mon, 08 Jun 2026 02:07:47 -0700 (PDT)
+Received: from hu-pritiwa-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84282379db0sm16512603b3a.24.2026.06.08.02.07.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 02:07:46 -0700 (PDT)
+From: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
+X-Google-Original-From: Priyansha Tiwari <pritiwa@qti.qualcomm.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org, quic_drohan@quicinc.com,
+        veerendranath.jakkam@oss.qualcomm.com
+Subject: [PATCH wireless-next v4 0/4] wifi: nl80211: introduce PROBE_PEER for AP and STA
+Date: Mon,  8 Jun 2026 14:37:23 +0530
+Message-Id: <20260608090727.2389161-1-pritiwa@qti.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1779269054-14963-mlmmj-1e4bac1a@vger.kernel.org> <CA+icZUVmdgL1A6mpFxMEtMtikwbkH5qWWyuEn-JOeSU80Q-mvA@mail.gmail.com>
-In-Reply-To: <CA+icZUVmdgL1A6mpFxMEtMtikwbkH5qWWyuEn-JOeSU80Q-mvA@mail.gmail.com>
-Reply-To: sedat.dilek@gmail.com
-From: Sedat Dilek <sedat.dilek@gmail.com>
-Date: Mon, 8 Jun 2026 10:22:04 +0200
-X-Gm-Features: AVVi8CeMsvFLoPHpvde1CSJd4sX1IbpHt0U0DPJeWSDYS8aJyqEOTGjtyrzfxmU
-Message-ID: <CA+icZUWx8_ULgXkiOyeVuJDA4PCTvfFttcdYQphCHausdueu3A@mail.gmail.com>
-Subject: Re: Unable to unsubscribe from linux-wireless@vger.kernel.org
-To: postmaster@kernel.org, 
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: linux-wireless@vger.kernel.org, Sedat Dilek <sedat.dilek@gmail.com>, 
-	Sedat Dilek <sedat.dilek@googlemail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA4MDA4MyBTYWx0ZWRfXyotNHj8/gFch
+ XD25UpReW5KSy2T32oDZMriYOya4DvI0reE6QtkVuEA3bE4FfvMyk3aRkOpmQJtfgYEm0t8AweQ
+ M425zohdjuS8pwvHQ4SlShs7AwoCYKLHnReU7dvRAGiw9paZmKDpI9Rr7jqlgWGzVIUjH3rnXDN
+ +valJ+72TSXYqQRKhI6l7Xy/FAIkw1wKqkyOe18wRWwohEw3hskA+YWHngfEyl6YDyfMUKc5UUL
+ t3K91aILcWJP1CTcKqtsa5PJHXMjk1BMBMaju0sUuKmslTwDFYOMhdAwQkZr+st+l6Wfm/DdHD8
+ /vmKJQiUwwSCpMrsWKtTaVCIONKNFuE5BvB9tu85tCUmkXWKDPmBRElHXQEzWnWDt94sFMwpkXK
+ kCtvoxvYqZezI+4K8PyeFp1zN8F7XchtGRh/p8bGzfH+4fQAa5kl+mNd9YgBID5tXE4n2D3py89
+ lfOR4PDiELuMJv46FBg==
+X-Proofpoint-ORIG-GUID: j_uWFgKAYQ14etLxwdtUphiWtsUF4fTl
+X-Proofpoint-GUID: j_uWFgKAYQ14etLxwdtUphiWtsUF4fTl
+X-Authority-Analysis: v=2.4 cv=VowTxe2n c=1 sm=1 tr=0 ts=6a268664 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=EUspDBNiAAAA:8
+ a=R0NonwOPtRFAW2HdiO8A:9 a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-08_02,2026-06-05_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 bulkscore=0 clxscore=1015
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
+ definitions=main-2606080083
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:postmaster@kernel.org,m:konstantin@linuxfoundation.org,m:linux-wireless@vger.kernel.org,m:sedat.dilek@gmail.com,m:sedat.dilek@googlemail.com,m:sedatdilek@gmail.com,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-37492-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_REPLYTO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[sedatdilek@gmail.com,linux-wireless@vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	PRECEDENCE_BULK(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sedatdilek@gmail.com,linux-wireless@vger.kernel.org];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,googlemail.com];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37493-lists,linux-wireless=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:quic_drohan@quicinc.com,m:veerendranath.jakkam@oss.qualcomm.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[priyansha.tiwari@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[priyansha.tiwari@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim];
+	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	HAS_REPLYTO(0.00)[sedat.dilek@gmail.com]
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E78946541B6
+X-Rspamd-Queue-Id: 15BBA6547D0
 
-Hi Konstantin et all,
+From: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
 
-Can you please check or help me find the right person?
+This series introduces a unified mechanism to probe connected peers.
+It generalizes the legacy AP-only PROBE_CLIENT functionality by adding
+NL80211_CMD_PROBE_PEER and enabling (feature-gated) STA-side probing.
+With this, AP/GO continues to probe associated stations as before, and
+STA/P2P-client can probe the connected AP for faster link health checks.
+For MLO connections, mac80211 supports per-link STA probing to obtain
+link-specific ACK information.
 
-I registered linux-wireless ML via <sedat.dilek@googlemail.com> email
-(email confirmed in monthly bounce-email from ML).
-In 2005 short xxx@gmail.com was not allowed these days for users from Germa=
-ny.
-This restriction changed some years later.
+Patch 1 renames NL80211_CMD_PROBE_CLIENT to NL80211_CMD_PROBE_PEER in
+the UAPI enum (keeping PROBE_CLIENT as a compatibility alias) and renames
+the .probe_client cfg80211_ops callback to .probe_peer. All in-tree users
+(wil6210, mwifiex, mac80211) are updated so the tree builds after this
+patch. This is a pure rename with no behaviour change; documentation is
+intentionally left unchanged.
 
-All my unsubscription emails are sent as <sedat.dilek@gmail.com> and fail.
-I still get emails from linux-wireless ML.
+Patch 2 updates the @probe_peer documentation in cfg80211_ops to describe
+the STA-mode semantics, adds NL80211_EXT_FEATURE_PROBE_AP to advertise
+STA-side support, extends cfg80211_probe_status() to carry an optional
+peer address and a link_id (-1 for non-MLO), and extends the nl80211
+handler to accept STA/P2P-client interfaces when the driver advertises
+the feature (MAC attribute must be omitted; the AP is implied by the
+association). All callers of cfg80211_probe_status() are updated.
 
-So, how can I unsubscribe successfully?
-Any hints/help much appreciated.
+Patch 3 adds per-link PROBE_PEER support in mac80211 for STA/P2P-client
+mode. For STA/P2P-client, it uses IEEE80211_LINK_UNSPECIFIED together
+with the associated AP/GO address and lets the driver select the link.
+For non-MLO connections, mac80211 still fills info->band from the
+current chanctx so legacy transmissions continue to carry the correct
+band information. The link_valid/link_id bitfields in
+ieee80211_tx_info.status are set before transmitting and read back in
+ieee80211_report_ack_skb() to report the actual link_id to userspace.
+AP/GO behaviour is unchanged.
 
-Thanks in advance.
+Patch 4 makes mac80211_hwsim populate link_valid/link_id in TX status
+for both the direct TX status path and the wmediumd/netlink TX status
+path.
 
-Best thanks,
--Sedat-
+---
+Changes in v4:
+  - Patch 3:
+    * Dropped guard(rcu)() from ieee80211_probe_peer() and used
+      wiphy_dereference() under the already held wiphy lock.
+    * Simplified STA/P2P-client probing to use
+      IEEE80211_LINK_UNSPECIFIED together with the associated
+      AP/GO address for both MLO and non-MLO cases.
+    * Kept the non-MLO band lookup via chanctx so legacy
+      transmissions still carry the correct band.
+    * Return -ENOLINK when the associated AP STA entry is missing,
+      instead of falling back to non-QoS probing.
 
+Changes in v3:
+  - Restructured patch split:
+    * Patch 1: pure rename (probe_client -> probe_peer), no doc changes
+    * Patch 2: documentation update for STA-mode semantics +
+               nl80211 API logic change + cfg80211_probe_status update
+    * Patch 3: mac80211 implementation
+  - Removed unnecessary bitfield padding (no pad2:3)
+  - Moved MAC-omission check for STA mode into cfg80211/nl80211
+    (not mac80211).
+  - Used switch statement in both nl80211_probe_peer() and
+    ieee80211_probe_peer().
+  - Used guard(rcu)() instead of manual rcu_read_lock/unlock
+  - Return -ENOLINK (not -ENOTCONN) for unconnected STA, consistent
+    with cfg80211 conventions
 
+Priyansha Tiwari (4):
+  wifi: nl80211/cfg80211: rename probe_client to probe_peer
+  wifi: cfg80211/nl80211: add STA-mode peer probing
+  wifi: mac80211: implement STA-mode peer probing
+  wifi: mac80211_hwsim: report TX status link_id
 
+ drivers/net/wireless/ath/wil6210/cfg80211.c   |  10 +-
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |   8 +-
+ .../wireless/virtual/mac80211_hwsim_main.c    |  43 ++++-
+ include/net/cfg80211.h                        |  18 +-
+ include/net/mac80211.h                        |   2 +-
+ include/uapi/linux/nl80211.h                  |  23 ++-
+ net/mac80211/cfg.c                            | 158 ++++++++++--------
+ net/mac80211/status.c                         |   5 +-
+ net/wireless/nl80211.c                        |  69 +++++---
+ net/wireless/rdev-ops.h                       |  10 +-
+ net/wireless/trace.h                          |   2 +-
+ 11 files changed, 216 insertions(+), 132 deletions(-)
 
-On Wed, May 20, 2026 at 11:31=E2=80=AFAM Sedat Dilek <sedat.dilek@gmail.com=
-> wrote:
->
-> Hi Postmaster,
->
-> can you help me with the unsubscription?
->
-> I sent an email to:
->
-> linux-wireless+unsubscribe@vger.kernel.org
->
-> And get the below answer.
->
-> Best thanks and Best regards,
-> -Sedat-
->
-> ---------- Forwarded message ---------
-> From: <linux-wireless+help@vger.kernel.org>
-> Date: Wed, May 20, 2026 at 11:26=E2=80=AFAM
-> Subject: Unable to unsubscribe from linux-wireless@vger.kernel.org
-> To: <sedat.dilek@gmail.com>
->
->
-> Greetings!
->
-> This is the mlmmj program managing the <linux-wireless@vger.kernel.org>
-> mailing list.
->
-> You were unable to be unsubscribed from the list because you are not
-> subscribed.
->
-> If you are receiving messages, perhaps a different email address is
-> subscribed. To find out which address you are subscribed with, refer to t=
-he
-> message welcoming you to the list, or look at the envelope "Return-Path"
-> header of a message you receive from the list.
+-- 
+2.34.1
 
