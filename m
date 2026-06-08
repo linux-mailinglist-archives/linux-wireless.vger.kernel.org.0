@@ -1,123 +1,213 @@
-Return-Path: <linux-wireless+bounces-37530-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37531-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DXZYL5/HJmrbkQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-37530-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Jun 2026 15:46:07 +0200
+	id qPWHNabJJmo3kgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-37531-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 08 Jun 2026 15:54:46 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEBC8656C5A
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Jun 2026 15:46:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94468656D36
+	for <lists+linux-wireless@lfdr.de>; Mon, 08 Jun 2026 15:54:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1PF6zVnj;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37530-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37530-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CowFtsuX;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37531-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37531-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 66AC63028F67
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jun 2026 13:44:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 967CB3021243
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jun 2026 13:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8774639C63E;
-	Mon,  8 Jun 2026 13:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A83A370AFD;
+	Mon,  8 Jun 2026 13:54:25 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E38738D40B
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Jun 2026 13:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E023C1984
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Jun 2026 13:54:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780926292; cv=none; b=Otl3Tck+UozEB8HyqszF01B+HHmNE1BrM7LldMZAiIsgdVTItYWrHni1fJlZvTnpvYRX+Pou90bS8AX9Sm4bZfqaKa9OpN8oXUhEwPq9BPiJ5U7OEfJFL9uiPKxC1/0U0QlGzlo8om4oZS10QfOYFzMN6XCFveS1f3IUmregKhU=
+	t=1780926865; cv=none; b=JnmBi79XIe2N0p4wrlT7I3rXiaoyJsncudlib/ilxM87gbL8HI03azwpA5rAiyy8yEx49k2boVm1N7tU8m3flM1RNzttUVv9+XMiOFwkMPseZREMRIhylD9DngKbdP+gpa9jwVPdDJu23Qp48Y87MTlnZQYTrBevJHqshIaCUag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780926292; c=relaxed/simple;
-	bh=lxCvq8ERmgGTp5SxzY5C48oW55kYRCwPe+L/9ue4+yY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eHcwV0t6qtLGa+uiaTqfgQMP8DZLuzyKdj7IKBvBXl/GD2K8SsAcSwkLqup/eQCEBU+eGg3o/2xhil+5dC7/8dDwvrpLqCHbpNTqyTeWM62E7eOKKEBHDVzPaurlydfAt+JIEwN0mZW2kd2TVZtcwyb6OpPelTYjfX/rjRBKstY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PF6zVnj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5C61F00893;
-	Mon,  8 Jun 2026 13:44:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780926291;
-	bh=7ft34wStJM8rr0j/XsQ0Otp6Tph3CNPNKKozVpkNTUc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=1PF6zVnjS+FGmL1fGjtQUjm7xqMRYN+dTkbw0AIKuxRBKo1F3fxjM5M6zLZSba5qk
-	 QJHbe1l4Ni8UMAolcLQqPzA1idJCcGR0hCbqNGMUjq3AHqvB0ccOGzcHymaLT0PJXJ
-	 HNqEleA+S4twjV1P+jBo9Hakzb54TtfYCPjAyDHY=
-Date: Mon, 8 Jun 2026 09:44:50 -0400
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Sedat Dilek <sedat.dilek@gmail.com>
-Cc: postmaster@kernel.org, linux-wireless@vger.kernel.org, 
-	Sedat Dilek <sedat.dilek@googlemail.com>
-Subject: Re: Unable to unsubscribe from linux-wireless@vger.kernel.org
-Message-ID: <20260608-gigantic-vicugna-of-karma-d3d26e@lemur>
-References: <1779269054-14963-mlmmj-1e4bac1a@vger.kernel.org>
- <CA+icZUVmdgL1A6mpFxMEtMtikwbkH5qWWyuEn-JOeSU80Q-mvA@mail.gmail.com>
- <CA+icZUWx8_ULgXkiOyeVuJDA4PCTvfFttcdYQphCHausdueu3A@mail.gmail.com>
+	s=arc-20240116; t=1780926865; c=relaxed/simple;
+	bh=WRM6rnm0YRU9zIEhu6olPs9K+uYsva+VYcdLLXprDfY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MzF1Arhxttb1mGaRyskvy69KXIHMxq+vraEBD1B1hPIcnZFdgU4Hk9AHO2hfb7R6q8/MSJe0BQGLM5GfcknfQG9MzXMEFfTB0c30tarNhMUW5bIR+2eAlYGiO88NrHnuH6aYZMY8aeUosQ3X2AEfscURuwBjsAyodnPAhIEFxDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CowFtsuX; arc=none smtp.client-ip=209.85.128.52
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-490bb83a3f6so36072665e9.0
+        for <linux-wireless@vger.kernel.org>; Mon, 08 Jun 2026 06:54:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780926862; x=1781531662; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PXD1hmtAJBOKntNEa4d1CS66NTtiC54GCzkhUezAbnA=;
+        b=CowFtsuXsI2n5yX/XQwBvBEItN5OFYanMsi2nzoBkX/uyhX4LY4kfib9VggDhmI2hz
+         VWLPvvuDGzTU2X0+d8heiBo+GJ2zCHrzYF8x5eULcE2JuQlNKcnyb7rhOX78Nv7wfpU6
+         zULJMY6lr5pDojO32920HWruEqTCrlmJIE64kZBvTl93lxi/dM7+7k46UfwzkkAT2KNy
+         +c06Qc8W5xZNZwDKG2bpdJ/34LPizgojrW3Qpfw8P1HexY8eBeTWkawECMPxicm994Ea
+         PRAoGM4oYI2rAIJcqHBgi4Ukh2r1fzu693caZYuWICYBrLx/yNQEuOAMz9flH7EzVKYo
+         /0UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780926862; x=1781531662;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PXD1hmtAJBOKntNEa4d1CS66NTtiC54GCzkhUezAbnA=;
+        b=gpAHvNc33BtzyPpUIgXH0wM78Xpg0L8PC+jS+sEcRJ8YDvD4wCD5PlpEFQkoGWdRpb
+         T/VbEzm7GmOU6M+lsjNwnT72pejNXhBaRz1oBnyI+6sHqY7aZEOqnWZuoiDzEbMkTgj6
+         6K84KDfHUFvojEXdOY5C71l4HLbGCpPYBIRCfh4oc9qWLwM+y7K4beiIYJA4IqaSYfDx
+         M+Pqp374t0v9q7EIPgRDJFoCQu1nS/KJVEXR3OkjlbOX13x82NMuhekeowK1nVq/nGp9
+         GsAgiMkZTUfzXfl/1sAWmEMJ2Tbh43bjZjT8n0BRfJ9+xihBjncs6yTQXeo9RMvUgrLo
+         a0zQ==
+X-Gm-Message-State: AOJu0YyR5AAA2wQqBUhNKV186kM2ztlErkD9fvGb9/ErT75EMUVDVLNn
+	AbgmyCTmE7Jdzp3XO1kyN6g/U8/YyOsriiNi67GynuuxG4Al0rT+cYuO
+X-Gm-Gg: Acq92OHNwySIjbcDeocQ7BPf4zQoP8+0bVI9dSGAyqlGP+aJPwjvIiy7lUNvNJJYXmj
+	8X7vUNTKAWbahhPnl7bSuANi1DpQ0IDtAS/sCvEFwIT6+qFf0s0fCj5TzRURIlP3krvrwklPo4d
+	u8+EFLjIeaHhVIxhLLB2STnQlA8LrOaT3lKdRL4UTIpbMeCwObHXU1qvjZeKy0HjPZgKEtZnuJ9
+	pOPbe7Owanlt1jNJSIiUOCFvnG3B+74gxsBSE/h78nND2CpzgPpFf5FMWreNzc120cpSkowM3Co
+	9G52yrq9dQxEBSY5DyHKOMQC0clP5MTCjnajVpw+Oh235N0tR0Osah1XU5HkS7zDt5lIHzqQFz6
+	00T6KHpCeCxLKuVPzmUXCMFpUP5c9SMvK0Auhe/+k0oBwiF3f36P8qza0A9faRoyEZOuNFnGvwP
+	jKC3dIa8TzDJ4h2hQ2Nqf0G1g2Z4sK3cMJAXIxsWHrSW1U
+X-Received: by 2002:a05:600c:8216:b0:490:688b:f9f8 with SMTP id 5b1f17b1804b1-490c261ad21mr253671525e9.27.1780926862225;
+        Mon, 08 Jun 2026 06:54:22 -0700 (PDT)
+Received: from localhost ([80.208.66.169])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4602cda3651sm41066099f8f.32.2026.06.08.06.54.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 06:54:21 -0700 (PDT)
+From: William Hansen-Baird <william.hansen.baird@gmail.com>
+X-Google-Original-From: William Hansen-Baird <williamhb+k@fastmail.com>
+To: pkshih@realtek.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	William Hansen-Baird <williamhb+k@fastmail.com>
+Subject: [PATCH] wifi: rtlwifi: rtl8723be: Remove unnecessary irq save/restore in hw_init()
+Date: Mon,  8 Jun 2026 15:53:47 +0200
+Message-ID: <20260608135345.2526325-3-williamhb+k@fastmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CA+icZUWx8_ULgXkiOyeVuJDA4PCTvfFttcdYQphCHausdueu3A@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sedat.dilek@gmail.com,m:postmaster@kernel.org,m:linux-wireless@vger.kernel.org,m:sedat.dilek@googlemail.com,m:sedatdilek@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37531-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37530-lists,linux-wireless=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[konstantin@linuxfoundation.org,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[konstantin@linuxfoundation.org,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,googlemail.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,fastmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[williamhansenbaird@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:williamhb+k@fastmail.com,m:williamhb@fastmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,lemur:mid]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[williamhansenbaird@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,k];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,fastmail.com:mid,fastmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DEBC8656C5A
+X-Rspamd-Queue-Id: 94468656D36
 
-On Mon, Jun 08, 2026 at 10:22:04AM +0200, Sedat Dilek wrote:
-> Hi Konstantin et all,
-> 
-> Can you please check or help me find the right person?
-> 
-> I registered linux-wireless ML via <sedat.dilek@googlemail.com> email
-> (email confirmed in monthly bounce-email from ML).
-> In 2005 short xxx@gmail.com was not allowed these days for users from Germany.
-> This restriction changed some years later.
-> 
-> All my unsubscription emails are sent as <sedat.dilek@gmail.com> and fail.
-> I still get emails from linux-wireless ML.
-> 
-> So, how can I unsubscribe successfully?
-> Any hints/help much appreciated.
+rtl8723be hw_init() calls local_save_flags(flags) followed by
+local_irq_enable(). Later, local_irq_restore(flags) is called.
 
-I've unsubscribed you.
+This causes warnings from Lockdep on boot and modprobe,
+as local_irq_restore(flags) should only be called while irqs are disabled.
 
--K
+With testing I found that all paths which call hw_init() have irqs
+already enabled for rtl8723be.
+
+Furthermore, the calls were originally added for the rtl8192ce
+in commit f78bccd79ba3 ("rtlwifi: rtl8192ce: Fix too long disable of IRQs")
+before later being added to most other rtlwifi drivers.
+
+Commit d3feae41a347 ("rtlwifi: Update power-save routines for 062814 driver")
+then replaces the call to spin_lock_irqsave() before hw_init(),
+and thus the codepath which caused irqs to be disabled in hw_init and
+prompted the original commit has been removed.
+
+The same irq save/restore pattern is also present in the hw_init() of
+rtl8192ce, rtl8723ae, rtl8188ee, rtl8192se and rtl8192cu,
+however I don't have the hardware to test them,
+so I did not include them in my changes.
+
+Tested on a Razer Blade 14 2017.
+
+Example of output from Lockdep prior to fix:
+
+[ 2305.476471] raw_local_irq_restore() called with IRQs enabled
+
+...
+
+[ 2305.478709] Call Trace:
+[ 2305.478731]  <TASK>
+[ 2305.478753]  rtl8723be_hw_init+0x5992/0x7220 [rtl8723be]
+[ 2305.478798]  ? static_obj+0x61/0xa0
+[ 2305.478848]  rtl_pci_start+0x222/0x5c0 [rtl_pci]
+[ 2305.478891]  rtl_op_start+0x128/0x1a0 [rtlwifi]
+[ 2305.478940]  ? __kasan_check_read+0x11/0x20
+[ 2305.480082]  drv_start+0x16c/0x550 [mac80211]
+
+...
+
+[ 2305.570855] irq event stamp: 887679
+[ 2305.571569] hardirqs last  enabled at (887689): [<ffffffff96511170>] __up_console_sem+0x90/0xa0
+[ 2305.572347] hardirqs last disabled at (887698): [<ffffffff96511155>] __up_console_sem+0x75/0xa0
+[ 2305.573076] softirqs last  enabled at (887670): [<ffffffff962f4675>] __irq_exit_rcu+0x175/0x2f0
+[ 2305.573817] softirqs last disabled at (887649): [<ffffffff962f4675>] __irq_exit_rcu+0x175/0x2f0
+[ 2305.574636] ---[ end trace 0000000000000000 ]---
+
+Link: https://lore.kernel.org/all/20210111153707.10071-1-mark.rutland@arm.com/
+Signed-off-by: William Hansen-Baird <williamhb+k@fastmail.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c
+index e1f811218894..bf7b5a32adaa 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c
+@@ -1333,11 +1333,6 @@ int rtl8723be_hw_init(struct ieee80211_hw *hw)
+ 	bool rtstatus = true;
+ 	int err;
+ 	u8 tmp_u1b;
+-	unsigned long flags;
+-
+-	/* reenable interrupts to not interfere with other devices */
+-	local_save_flags(flags);
+-	local_irq_enable();
+ 
+ 	rtlhal->fw_ready = false;
+ 	rtlpriv->rtlhal.being_init_adapter = true;
+@@ -1443,7 +1438,6 @@ int rtl8723be_hw_init(struct ieee80211_hw *hw)
+ 
+ 	rtl8723be_dm_init(hw);
+ exit:
+-	local_irq_restore(flags);
+ 	rtlpriv->rtlhal.being_init_adapter = false;
+ 	return err;
+ }
+-- 
+2.54.0
+
 
