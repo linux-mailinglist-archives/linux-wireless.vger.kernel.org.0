@@ -1,104 +1,104 @@
-Return-Path: <linux-wireless+bounces-37540-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37541-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id THpgD8sEJ2pSqAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-37540-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Jun 2026 20:07:07 +0200
+	id IcFoBy4SJ2oBrQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-37541-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 08 Jun 2026 21:04:14 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9E86598B7
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Jun 2026 20:07:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 644FE659FE3
+	for <lists+linux-wireless@lfdr.de>; Mon, 08 Jun 2026 21:04:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b="B4kA5RQ/";
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=NcNj+Jw2;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37540-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37540-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=AKKucsqt;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=TNI8j3IN;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37541-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37541-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=qualcomm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 40F8A3040CBF
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jun 2026 18:02:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5B34E300F976
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jun 2026 19:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969DF3793DC;
-	Mon,  8 Jun 2026 18:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F3D3DD506;
+	Mon,  8 Jun 2026 19:01:44 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4D8352C3C
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Jun 2026 18:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A47A35DA6E
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Jun 2026 19:01:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780941770; cv=none; b=oXUlCH/qmqWM6leiiJqNVf1n3Op1Fq+wESCveWGj4iFD1QFh/zSp4IEoC9V/UqAfbdF3z+P77QmrvmZdUnXfxJEgRgtIhe4/xbkW+EAepTZ2TjNqSi8j7ZRNkT+pQlgamYLx3mw3Sl+ashpJRxfVomoKp+WxezWRlMqk3Y51A+g=
+	t=1780945304; cv=none; b=swVmwW3t2vNLZRPGHXKmek3Cb+bMY0tCayC0YqaPcovecYBeq081uuFleuCdLGb7QizhSXJWf/csHfP8phQnZka0LpEEbS0X90RqaIswPYnIuRuordnvl+F43cc11A9i7Lw5t3dnkgjyd9FVMVOdpXWWteer02N/N4AcmjMghDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780941770; c=relaxed/simple;
-	bh=KpW+Y2fAkBjRtd4MTU4sifYqzqKisBXs104uip1G8TU=;
+	s=arc-20240116; t=1780945304; c=relaxed/simple;
+	bh=gzLWH8P2e065IAtRFRjgQqE4pT+Wdul8WMeujZz6xT8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CmyB8Dg0NDsGW6kMEsgdySqhSyyDKtNKS6S+NYLkbpJRnzBUOutWqpcqsJKJqE0hqHGaKMir/h+lXBjDP6WGak4RCrQyaASJK1TCGfNnV5pvUknV+rrTXyDbzvgwJKiqr63o9DF2R3xWYxglvtveXjEJVsxLtRSwnPHjNG5ls+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=B4kA5RQ/; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NcNj+Jw2; arc=none smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 658FGKRf4010358
-	for <linux-wireless@vger.kernel.org>; Mon, 8 Jun 2026 18:02:48 GMT
+	 In-Reply-To:Content-Type; b=KLyZTy3PKSmaenldLPPrOSCBIIFXSylRpl9H82novpXkHL8iH1n8OK+OD02v5h61dZZDzalFSLLWl1neGuPhcb8OKzy3HPmKLhQrnvm64Xwrgp+BhO930h/wWeFy6rjAbKOzyD1/ghs00crpodMKWD+nJUEIAkx0Z/K/A5BRKn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AKKucsqt; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TNI8j3IN; arc=none smtp.client-ip=205.220.168.131
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 658IvB1d4049401
+	for <linux-wireless@vger.kernel.org>; Mon, 8 Jun 2026 19:01:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	OWnb/0Le/7UQJwRxs5sDbMwc31U11Dyl6gRwsKyqgvs=; b=B4kA5RQ/aTWP4zgJ
-	anexe/w6spY3XVu4ZuhiEq9vX9o/p75mWg7BBFXncfn5rCgJEO1Jws6UZith/f6t
-	ggn7MrfkSqdkvxz58vQPv4auwIgHfYjB8VWVumD0o3sJBlqGWQAGA0QxICkSXI84
-	AyhMEaCqrkuxmsyEYBE185kk6sZcQR6f/78elAz3f1YOMz+1TNQAFnRW5L36iLY+
-	kAu1apJ93Gx5Cgkxco/NhYKdcdU+T0fghuqeKfpgKl2LqhHlsVLI4wTtQs1c5VxX
-	Odcqn2Rg9nMo+VGHJXymPzG6tXqeNf88XuwXIbTCbwCYc61JQBBYEeaYoVdS0w4W
-	+Iz8tA==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4entr0jj0m-1
+	XehZ6lg7KmMORG6Ha+/J71PUihEbRUaSfLz/3oRcnkA=; b=AKKucsqtMGlOSP2D
+	e7D0Rw4BbF3CaBrMkjy2b5KtF2tXo/+pRn/5aeM4lih3u5GzyV/EJXaHM03p9Ck/
+	07gu+oqh+fkc+4HEspQIX8k9SMUy0QRfKXk8c0YJ2D/C69IE+J99vAXCV26xVCh6
+	qfXl45+YAtTBaJpvGqaPMZHwIVcLuFYPxqosl6g1yXN20ytzl7ja05vBzE8FUU6e
+	SMhHHNN0AnkVKmdtAGqp4saoDDWxJtn1KattLKMxjw2YtIJMUxB+HZ3O7Si9Hy1n
+	TlFp1/ScViLAsr4nZYciDgfzlXYvc4E96xSjllh0F8vu4lEls84HjlXAtbEctJ6K
+	mFyzVw==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4enunaag6e-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 08 Jun 2026 18:02:47 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c85edbb10dfso2475541a12.0
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Jun 2026 11:02:47 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Mon, 08 Jun 2026 19:01:42 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2c10cd7df22so60426945ad.2
+        for <linux-wireless@vger.kernel.org>; Mon, 08 Jun 2026 12:01:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1780941767; x=1781546567; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1780945302; x=1781550102; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=OWnb/0Le/7UQJwRxs5sDbMwc31U11Dyl6gRwsKyqgvs=;
-        b=NcNj+Jw25OY99qc4oZ6qHUrxJExFFsw5jTzg7e1/te5XHplZTPRLdTbwsL9Ktzhfde
-         WK17oVdazCKtSoX/yfDW2i5ZANLK/DpzfwtIdTwuFt9BoEXj23WChm3iOfjq6Zl8SJ6D
-         b3zYe8gUa32NQVigcuaNAo2yzb17qy0lWoCFMtKOv8/4bRH6Uk9stfkkCg2owU1GyyCZ
-         eKdCvmdQioTGMwKt5N4rphwp0qBCiYQelhIsixU7fqcVbTTej4ggurg4k6Cs587uYksi
-         4V4bNWNcPZqaBwdLjC7cc/yqTnyQ6Xxp1iYxeL4KWj4PQzXLe66lVRzLGz5cAfP4+g0V
-         uugg==
+        bh=XehZ6lg7KmMORG6Ha+/J71PUihEbRUaSfLz/3oRcnkA=;
+        b=TNI8j3INipF5G3aWUgqSyzt1BP1YmGujPVxek+WLdvlZa/XhucgRT8m+0SePNDiZm9
+         16/X0uQqkysfoFY/RPZcSPOBRYSla1FreQ3gX6tOt8onRckU1z7hffoEqwW4lnFveC5j
+         j4QbqovLZEH5/g76ZiNlbjpyXC9b1YUEzQiVxNR9CmqI39fBF+LQgb433LAWXO9ChjjP
+         /UUwy03st6Bm+ZyY8uD3p292pAmiLx6v8a3zS6zbyXuMeCTDuETAAPZ1Y1NcGi69qw1H
+         yRJ19skMQlnJBQh2LuAFKyqsQ3uhJRX99ZcFlI03bp8dAy8iRa4/fXtSi8D1RpalVeAm
+         UEQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780941767; x=1781546567;
+        d=1e100.net; s=20251104; t=1780945302; x=1781550102;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OWnb/0Le/7UQJwRxs5sDbMwc31U11Dyl6gRwsKyqgvs=;
-        b=cIekNr9BGrENJPC7E/3aiijeRa730lHUF/GRo1uapQF/CpGYMfN9z6lL2/1KLPSBa9
-         etn0ayfOygTOJwI5tP68D3jab24h5B9SmpiwIETLPAbGPxv3ancL0G+ycYamNbVmenQo
-         mFN0+zXSManah/SEcA8PqV7kRAn1FfTzbPZe1nfTr86pbPE6y9gm9O7M7PmcSMQmG2ME
-         w0VihP+8Iq1IBMaDWyVHfBA9TzyCHC8S6AsaHLasC7pXDTcYWVRg0jQJbdXOOqgc7igT
-         u75D0fCNcK50Irta1DpAc3n3MEWehadhsNbQE00TQKRa8qu9Giw4A61fvnvdNmBzJ48k
-         GWPg==
-X-Gm-Message-State: AOJu0YwkTdWyGsMHS+lkOHbthgNdbKdX7V5tnh/u/nxVOvynlCrOeTPq
-	xJ6OLSWbU86JYGfjp1+x3lu3O+UVPPL+O9BNA9qPtM3s1zGBcnKgLb7YdL/gGLFNH/+U0mr6v1k
-	2Z/D8O/B0C2Y8Ati0xT2MrFNB4lu/+GC04KiySrDwaiz8QdJlZH1EUE4OQm1janUh1ne02zLQNV
-	lF9Q==
-X-Gm-Gg: Acq92OFgnbDCJsZBF9+/Ea0ShjGbnwhTMEHg7mRs37grgWkLVxpqBzr8tfM2XgvXGEa
-	7e6sBK6a6kVZiKD54bq43EWPTRZsneEHMQ8tG5OVDAUa+9FpoOZiPnyZ5aqEjE5hcjj1+3YviuH
-	p7odmHQ5yE7GzTc4yp3knrKtOHKWLknc/AFbEzu0PvkAOmw0Dwd467u577PxEobjrmcGc91+law
-	S5OWcxABURUUeE9Ue2ttwGRYhy/nLhNUvB3rMorcyDytg0aXmeyXuhlFfgJzkn8swKASxYxIswK
-	cAh9VL3IYRDsS+gW3qpytMCyIC/n4QCrGMEoTYLmyAmOzh/A2SzqeOHqrPDO1wE3NRTLwXonRUQ
-	Sfxj0qQ6GDkPWF+ZZAayhprGsQIc1mkcsb6Ee+En+IF2GoVheHw8LGB83Eak=
-X-Received: by 2002:a05:6a20:2d09:b0:39b:bc11:9ec5 with SMTP id adf61e73a8af0-3b4d3a529ecmr13266382637.13.1780941766833;
-        Mon, 08 Jun 2026 11:02:46 -0700 (PDT)
-X-Received: by 2002:a05:6a20:2d09:b0:39b:bc11:9ec5 with SMTP id adf61e73a8af0-3b4d3a529ecmr13266354637.13.1780941766351;
-        Mon, 08 Jun 2026 11:02:46 -0700 (PDT)
+        bh=XehZ6lg7KmMORG6Ha+/J71PUihEbRUaSfLz/3oRcnkA=;
+        b=a2ZVRBVX4+qT2mVEiVLyEigIu+31kp7hCPH8DlpQlTOn12n59Ck91JFzNw6qUK+E8m
+         fCp3V4hlGlZN82bkqK5XUQ8kPycubN197/ej6eQ0m3/MeQ6lx0E4C1hdSe4hu+fXIowX
+         bLYe9FX8gQnMPzK9MGgJPB3nb8SQPkuG9oQweHLdQk6TYDpVjVv/7DvtN2uvPPCDAYY8
+         bEz7DoHdM3DzDb3ULlAgrAbHxIJSvem6wnhGHVl/P4XlAVh60f7FIldQzYVe0VLrMGfW
+         jqXrRru4dv7vlW/Yo3tspLO+um+rTvMkuJ6/mhx6iiRImqFdvEQe4Cx1T9ZD4OUQ+jxy
+         M/WA==
+X-Gm-Message-State: AOJu0Yyc+ZyeTiKZilgx5aBnaGZ/u47QbNHg9AgR5dqgQ7e/moW/h0NN
+	MxBPSsbBwT+7mdnjz2KJ1gRvg5U95aUhseUQXworhDAgjpDhbzlZmb/anIwbAioWdmNeEH4DxL3
+	UpvZeZrEKQONWXt66KU609lwiRZNRZgw5dl+kTkyY7EIPB0DTmiHWXjhCRWeSkUYRJb1EVCUo1/
+	85cQ==
+X-Gm-Gg: Acq92OHyyaYG64NagwzM4FoEey0DPx5Jbmjf2qhkvtZN77w293zNCn103OWPYIaeK8Z
+	ZrXlATKodGKxdW72bJGMat21zIB/fxZ60/dU5uao3OSFzJJxoewutn9kU1g/c97YQLJEyzgBDR/
+	78LYpx3nilGiYQpb6wd3ZjFZquKQUSKCK/mFSqd1VVHota/f8i6Eb5p3gZ/QkMKKWcmLm0VmsHL
+	MA4FOHn/2ywMmxw4Ciu050mu7yEnJ44dlVEtKl2e3Sqgi324PpXFxOMXuNL/WbcD61G1dphifqD
+	ndGHxCXGXjuxsNtrkY6ypYVU1291iLiRw9s7SEyh8H1bo/JMLwjYw4o8onI80/WKXFXRXIcepXR
+	Xrsght9pBBq76OFiW4y7/BhhkdUjUYIn1OcaY+HtLwZLPwXvj7eLtNceCbVo=
+X-Received: by 2002:a17:903:3847:b0:2c0:c262:b917 with SMTP id d9443c01a7336-2c1e80e429amr194966945ad.5.1780945301488;
+        Mon, 08 Jun 2026 12:01:41 -0700 (PDT)
+X-Received: by 2002:a17:903:3847:b0:2c0:c262:b917 with SMTP id d9443c01a7336-2c1e80e429amr194966435ad.5.1780945300884;
+        Mon, 08 Jun 2026 12:01:40 -0700 (PDT)
 Received: from [192.168.1.8] ([116.73.159.142])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df03498csm18439621a12.1.2026.06.08.11.02.44
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c166391d53sm244633755ad.65.2026.06.08.12.01.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jun 2026 11:02:45 -0700 (PDT)
-Message-ID: <298f2f3d-d363-49ef-9503-bead5b35e24e@oss.qualcomm.com>
-Date: Mon, 8 Jun 2026 23:32:41 +0530
+        Mon, 08 Jun 2026 12:01:40 -0700 (PDT)
+Message-ID: <19098782-24e9-4707-8207-6244371a904f@oss.qualcomm.com>
+Date: Tue, 9 Jun 2026 00:31:36 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -106,48 +106,48 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next 3/5] wifi: cfg80211: Refactor
- nl80211_dump_station() to prepare for per-link stats
+Subject: Re: [PATCH wireless-next 4/5] wifi: cfg80211: Fragment per-link
+ station stats in nl80211_dump_station()
 To: Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org
 References: <20260607175912.2266215-1-praneesh.p@oss.qualcomm.com>
- <20260607175912.2266215-4-praneesh.p@oss.qualcomm.com>
- <39d12d9ae3b18495ed634715c93ede2f68c5bbf0.camel@sipsolutions.net>
+ <20260607175912.2266215-5-praneesh.p@oss.qualcomm.com>
+ <88c183f827eb184e6d471964662b7ee89caf63ad.camel@sipsolutions.net>
 Content-Language: en-US
 From: Praneesh P <praneesh.p@oss.qualcomm.com>
-In-Reply-To: <39d12d9ae3b18495ed634715c93ede2f68c5bbf0.camel@sipsolutions.net>
+In-Reply-To: <88c183f827eb184e6d471964662b7ee89caf63ad.camel@sipsolutions.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA4MDE2OSBTYWx0ZWRfXwxujo1kFSOub
- kfDCd2RCYkdbJxYG707r+etaAPVJYRPhwIa2Lx3MVwDgf1Ys8h53dpQhsyf+gshzdJ9jMLpW+Sx
- shVOaPX1/XEEzFQzsNs+29lBUqpwfOXYJ5V7QUkJKJ33A9MjS9uCdJ7kEqA/X8aSKHodM3H4+/Y
- qKWsZxHLeThxfbH0ve67tt8BsA+VoDyyqGf5M8JcgBiVUEeJaf/LHXbuUjkSzrCKuBsqSaME1gy
- sx63fZa02/FkveJn0ooZ4x8hnY1kr2ME/qUXOoJiNvua/kut11zBBKKlDbIDoVha+4p8zL32QEn
- CKAnXWe5L1dQwsI4UFQhxBiefZ+XCnefq+iwtcZPozt94QDP9pQfEDvTx7Tm2B8viqQ4Sqjmh+j
- 9TlFKEic71NcjkiqSfcdL1w+MwTOhow3LzrmouH9NZ/XJU+/Bpowj4YjdUIUTnrbjwL6H6yGgLt
- D/tGZJM7TKvFFHcEHwA==
-X-Proofpoint-ORIG-GUID: v5Z715BNA6B_oECGQPNgz9wTAsl7Rdds
-X-Proofpoint-GUID: v5Z715BNA6B_oECGQPNgz9wTAsl7Rdds
-X-Authority-Analysis: v=2.4 cv=VowTxe2n c=1 sm=1 tr=0 ts=6a2703c7 cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=0XKIscjZuezYqwSxLmfFhQ==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA4MDE3NyBTYWx0ZWRfXx36SCsBDSlWS
+ iypfA71E9HO+9ZuhBEXRRGC8MPY6y4X2VH11wP0gpOrdkkbkT0AwwzF77SyOaoRxeAfL7ATx10p
+ eu3em0sQeuBe9z4oE2ytuidL3BgP1aIdhLCrSMeEKttKIzFJgq27mKUV+l5sBcnW6NEda+cM3iK
+ 0hCKX/UPNYFgNJTK/SNth3KRIqizUJvxnd1U8rv7oCnf07Kq7E/SiqX6V6ojllm0cmL/y9reerH
+ OGUyci7tfKwc45oVM663M4Sv+9gJtPXQ7CTi5Nv7H+mdM1jODmOdVB3BjDwi3NqYGqy5mJfOeXi
+ Mgo6IKvUAz9ujYgxWCil4JumLPeuy+BqBBABbpnnQAlkBnVEUKoLdQ97E21cps4Vk2oN7f3N8i1
+ avg/JJcNR33B2HCCHnsqcGOzJ+FL/tn7ybNB5ONHcLCqh5t2vI3tmEUi/fGstOHvbkkm7oEnngh
+ xY4QTiqj5O6sNXrXORg==
+X-Authority-Analysis: v=2.4 cv=RfugzVtv c=1 sm=1 tr=0 ts=6a271196 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=0XKIscjZuezYqwSxLmfFhQ==:17
  a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=8RXYgg6yP7Gg3BFkkKoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=3WC7DwWrALyhR5TkjVHa:22
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
+ a=ZU5qrAxbi5h8eASNLEsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-ORIG-GUID: 4K95EDMfZu_29Dl3ITXQTWUDT3r56WZG
+X-Proofpoint-GUID: 4K95EDMfZu_29Dl3ITXQTWUDT3r56WZG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-08_04,2026-06-05_02,2025-10-01_01
+ definitions=2026-06-08_05,2026-06-05_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0 phishscore=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 suspectscore=0 bulkscore=0 clxscore=1015
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ impostorscore=0 bulkscore=0 adultscore=0 spamscore=0 suspectscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 lowpriorityscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
- definitions=main-2606080169
+ definitions=main-2606080177
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -155,20 +155,20 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-37540-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37541-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[praneesh.p@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	RCPT_COUNT_THREE(0.00)[3];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,qualcomm.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[praneesh.p@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
@@ -176,145 +176,266 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AA9E86598B7
+X-Rspamd-Queue-Id: 644FE659FE3
 
 
-On 6/8/2026 1:00 PM, Johannes Berg wrote:
+On 6/8/2026 1:12 PM, Johannes Berg wrote:
 > On Sun, 2026-06-07 at 23:29 +0530, P Praneesh wrote:
->> +++ b/net/wireless/nl80211.c
->> @@ -39,6 +39,39 @@ static int nl80211_crypto_settings(struct cfg80211_registered_device *rdev,
 >>   
->>   /* the netlink family */
->>   static struct genl_family nl80211_fam;
->> +/**
->> + * enum nl80211_dump_station_phase - station dump fragmentation phases
->> + * @NL80211_DUMP_STA_PHASE_AGGREGATED: send aggregated (MLO-combined) station
->> + *	statistics for the station entry
->> + * @NL80211_DUMP_STA_PHASE_PER_LINK: send per-link statistics for each active
->> + *	MLO link of the station; only used when dump_link_stats is set
->> + */
->> +enum nl80211_dump_station_phase {
->> +	NL80211_DUMP_STA_PHASE_AGGREGATED = 0,
->> +	NL80211_DUMP_STA_PHASE_PER_LINK   = 1,
->> +};
-> [snip]
->
-> probably nicer to move this stuff to closer to the dump code that needs
-> it; at the very least it's missing a blank line.
->
-> Also I think the whole 'phase' introduction etc. seems to more belong to
-> patch 4 instead of this one? We can still do the structure allocation
-> etc. here.
-Will add the missing blank line and move both the enum and struct
-definitions to sit just above nl80211_dump_station(). Patch 3 will
-only introduce the context struct (sta_idx, mac_addr, sinfo) and
-the stateful allocation/free mechanism. The phase field and its
-enum will move to patch 4 where they are actually used.
->> +struct nl80211_dump_station_ctx {
->> +	int sta_idx;
->> +	enum nl80211_dump_station_phase phase;
->> +	u8 mac_addr[ETH_ALEN];
->> +	struct station_info sinfo;
->> +};
+>> +static int nl80211_fill_link_station(struct sk_buff *msg,
+>> +				     struct cfg80211_registered_device *rdev,
+>> +				     struct link_station_info *link_sinfo)
+>> +{
+>> +	struct nlattr *bss_param, *link_sinfoattr;
 >> +
->> +/**
->> + * struct nl80211_dump_station_cb - state stored in netlink_callback::ctx
->> + * @wiphy_idx: args[0] - wiphy index from nl80211_prepare_wdev_dump
->> + * @wdev_id: args[1] - wdev identifier from nl80211_prepare_wdev_dump
->> + * @ctx: args[2] - dump station context pointer
->> + *
->> + * args[0] and args[1] are reserved by nl80211_prepare_wdev_dump().
->> + * The ctx pointer must live at args[2] to avoid corrupting those fields.
->> + */
->> +struct nl80211_dump_station_cb {
->> +	long wiphy_idx;
->> +	long wdev_id;
->> +	struct nl80211_dump_station_ctx *ctx;
->> +};
-> I'm not sure I'm happy with this - better to just use args[2] directly
-> for a pointer to struct nl80211_dump_station_ctx?
->
->>   static int nl80211_dump_station(struct sk_buff *skb,
->>   				struct netlink_callback *cb)
->>   {
->> -	struct station_info sinfo;
->>   	struct cfg80211_registered_device *rdev;
+>> +#define PUT_LINK_SINFO(attr, memb, type) do {				\
+>> +	BUILD_BUG_ON(sizeof(type) == sizeof(u64));			\
+>> +	if (link_sinfo->filled & BIT_ULL(NL80211_STA_INFO_ ## attr) &&	\
+>> +	    nla_put_ ## type(msg, NL80211_STA_INFO_ ## attr,		\
+>> +			     link_sinfo->memb))				\
+>> +		goto nla_put_failure;					\
+>> +	} while (0)
+>> +#define PUT_LINK_SINFO_U64(attr, memb) do {				\
+>> +	if (link_sinfo->filled & BIT_ULL(NL80211_STA_INFO_ ## attr) &&	\
+>> +	    nla_put_u64_64bit(msg, NL80211_STA_INFO_ ## attr,		\
+>> +			      link_sinfo->memb, NL80211_STA_INFO_PAD))	\
+>> +		goto nla_put_failure;					\
+>> +	} while (0)
+>> +
+>> +	link_sinfoattr = nla_nest_start_noflag(msg, NL80211_ATTR_STA_INFO);
+> See previous note about _noflag() in all of this code - that shouldn't
+> be there.
+Noted, I will address it in next version.
+>> +static int nl80211_send_link_station(struct sk_buff *msg,
+>> +				     struct netlink_callback *cb,
+>> +				     struct cfg80211_registered_device *rdev,
+>> +				     struct wireless_dev *wdev,
+>> +				     const u8 *mac_addr,
+>> +				     struct station_info *sinfo,
+>> +				     int link_idx)
+>> +{
+>> +	void *hdr;
+>> +	struct nlattr *links, *link;
+>> +	struct link_station_info *link_sinfo;
+>> +	struct nlattr *sinfoattr;
+>> +	int err;
+>> +
+>> +	hdr = nl80211hdr_put(msg, NETLINK_CB(cb->skb).portid,
+>> +			     cb->nlh->nlmsg_seq, NLM_F_MULTI,
+>> +			     NL80211_CMD_NEW_STATION);
+>> +	if (!hdr)
+>> +		return -EMSGSIZE;
+>> +
+>> +	if ((wdev->netdev &&
+>> +	     nla_put_u32(msg, NL80211_ATTR_IFINDEX, wdev->netdev->ifindex)) ||
+>> +	    nla_put_u64_64bit(msg, NL80211_ATTR_WDEV, wdev_id(wdev),
+>> +			      NL80211_ATTR_PAD) ||
+>> +	    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, mac_addr) ||
+>> +	    nla_put_u32(msg, NL80211_ATTR_GENERATION, sinfo->generation)) {
+>> +		err = -EMSGSIZE;
+>> +		goto err_cancel;
+>> +	}
+>> +
+>> +	sinfoattr = nla_nest_start_noflag(msg, NL80211_ATTR_STA_INFO);
+>> +	if (!sinfoattr) {
+>> +		err = -EMSGSIZE;
+>> +		goto err_cancel;
+>> +	}
+>> +
+>> +	link_sinfo = sinfo->links[link_idx];
+>> +	if (!link_sinfo) {
+>> +		err = -ENOENT;
+>> +		goto err_cancel;
+>> +	}
+>> +
+>> +	nla_nest_end(msg, sinfoattr);
+>> +	if (!is_valid_ether_addr(link_sinfo->addr)) {
+>> +		err = -EADDRNOTAVAIL;
+>> +		goto err_cancel;
+> That seems really odd? why even bother going into the whole thing if
+> it's invalid? Also, doesn't that ENOENT get propagated all the way and
+> it aborts? I guess it does but it should never happen because of
+> valid_links? Still seems a bit odd.
+Both the link_sinfo null check and is_valid_ether_addr() check
+will be moved to the top of the function, before any header or
+nest construction. The null check for sinfo->links[link_idx] is
+already guarded upstream by the valid_links bitmask so it should
+never be NULL in practice, I'll add a WARN_ON_ONCE and skip rather
+than returning -ENOENT, which would otherwise abort the entire dump.
+Will it be okay ?
+>> @@ -8354,13 +8616,22 @@ static int nl80211_dump_station(struct sk_buff *skb,
 >>   	struct wireless_dev *wdev;
->> -	u8 mac_addr[ETH_ALEN];
->> -	int sta_idx = cb->args[2];
->> -	bool sinfo_alloc = false;
->> -	int err, i;
->> +	struct nl80211_dump_station_cb *cb_data = (void *)cb->ctx;
->> +	struct nl80211_dump_station_ctx *ctx = cb_data->ctx;
-> This doesn't really seem better than just doing
->
-> 	struct nl80211_dump_station_ctx *ctx = cb->args[2];
->
-> given the overlay with generic code.
->
-> Alternatively we could change the _whole_ nl80211 code (as a separate
-> commit, perhaps even converting other things later) to have
->
-> struct nl80211_dump_cb {
-> 	long wiphy_idx;
-> 	long wdev_id;
-> 	union {
-> 		long wiphy_filter;
-> 		int mpath_idx;
-> 		int reg_idx;
-> 		int bss_idx;
-> 		int survey_idx;
-> 		//...
->
-> 		// and later add
-> 		struct nl80211_dump_station_ctx *sta_ctx;
-> 	};
-> };
->
-> or so, and then we don't have the args[0]/... problem at all.
->
-> But I'm not convinced mixing the structs with "must have this type at
-> this offset" etc. is a good idea if it's going to stay this way.
-Ok, I'll drop nl80211_dump_station_cb entirely and use:
-
-struct nl80211_dump_station_ctx *ctx = (void *)cb->args[2];
-
-directly, mirroring nl80211_dump_wiphy's pattern of casting
-cb->args[0] to its state pointer. The cb->args[0]/[1] contract
-is already established by nl80211_prepare_wdev_dump(), no
-overlay struct is needed to document it.
->> +	/* Phase 0: dump aggregated station info */
->> +	if (ctx->phase == NL80211_DUMP_STA_PHASE_AGGREGATED) {
->> +		while (true) {
->> +			memset(&ctx->sinfo, 0, sizeof(ctx->sinfo));
+>>   	struct nl80211_dump_station_cb *cb_data = (void *)cb->ctx;
+>>   	struct nl80211_dump_station_ctx *ctx = cb_data->ctx;
+>> +	struct nlattr **attrbuf = NULL;
+>>   	int err, ret;
+>>   
+>>   	NL_ASSERT_CTX_FITS(struct nl80211_dump_station_cb);
+>>   
+>> -	err = nl80211_prepare_wdev_dump(cb, &rdev, &wdev, NULL);
+>> -	if (err)
+>> +	if (!ctx) {
+>> +		attrbuf = kzalloc_objs(*attrbuf, NUM_NL80211_ATTR);
+>> +		if (!attrbuf)
+>> +			return -ENOMEM;
+>> +	}
+>> +
+>> +	err = nl80211_prepare_wdev_dump(cb, &rdev, &wdev, attrbuf);
+>> +	if (err) {
+>> +		kfree(attrbuf);
+>>   		return err;
+>> +	}
+>>   
+>>   	/* nl80211_prepare_wdev_dump acquired it in the successful case */
+>>   	__acquire(&rdev->wiphy.mtx);
+>> @@ -8369,15 +8640,22 @@ static int nl80211_dump_station(struct sk_buff *skb,
+>>   	if (!ctx) {
+>>   		ctx = kzalloc_obj(*ctx);
+>>   		if (!ctx) {
+>> +			kfree(attrbuf);
+> perhaps better to __free(kfree) instead of doing all these kfree()
+> calls?
+Yes, will use __free(kfree) for attrbuf.
+>> -	/* Phase 0: dump aggregated station info */
+>> -	if (ctx->phase == NL80211_DUMP_STA_PHASE_AGGREGATED) {
+>> -		while (true) {
+>> +	while (true) {
+>> +		/* Phase 0: dump aggregated station info */
+>> +		if (ctx->phase == NL80211_DUMP_STA_PHASE_AGGREGATED) {
+> changing it now also kind of argues for not having it in the first patch
+> in the first place ;-)
+Noted, the loop restructuring will be moved entirely into
+patch 4, not split across patches 3 and 4.
+>>   			memset(&ctx->sinfo, 0, sizeof(ctx->sinfo));
+>>   			for (int i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
+>>   				ctx->sinfo.links[i] =
+>> @@ -8428,15 +8706,45 @@ static int nl80211_dump_station(struct sk_buff *skb,
+>>   				goto out_err_release;
+>>   			}
+>>   
+>> -			/* Reset ctx for next station */
+>> -			cfg80211_sinfo_release_content(&ctx->sinfo);
+>> -			ctx->sta_idx++;
+>> +			ctx->phase = NL80211_DUMP_STA_PHASE_PER_LINK;
+>>   		}
+>> -	}
+>>   
+>> -	ctx->phase = NL80211_DUMP_STA_PHASE_AGGREGATED;
+>> -	err = skb->len;
+>> -	goto out_err;
+>> +		/* Phase 1: dump per-link station info */
+>> +		if (ctx->phase == NL80211_DUMP_STA_PHASE_PER_LINK &&
+>> +		    ctx->dump_link_stats && ctx->sinfo.valid_links) {
+>> +			while (ctx->link_idx < IEEE80211_MLD_MAX_NUM_LINKS) {
+>> +				if (!(ctx->sinfo.valid_links &
+>> +				      BIT(ctx->link_idx))) {
+>> +					ctx->link_idx++;
+>> +					continue;
+>> +				}
+>> +
+>> +				ret = nl80211_send_link_station(skb, cb, rdev,
+>> +								wdev,
+>> +								ctx->mac_addr,
+>> +								&ctx->sinfo,
+>> +								ctx->link_idx);
 >>
-> if you have this memset, why do you need this one:
+> I think conceptually this code is structured a bit strangely. It would
+> seem a lot simpler to me to do something like
 >
->> +out_err_release:
->> +	cfg80211_sinfo_release_content(&ctx->sinfo);
->> +	memset(&ctx->sinfo, 0, sizeof(ctx->sinfo));
-> Seems a bit odd?
+>
+> 	// not literally such a macro, just the while (true) loop
+> 	for_each_station_starting_from_idx(...) {
+> 		if (ctx->phase == 0) {
+> 			// fill sinfo etc.
+> 		}
+>
+> 		// common stuff
+> 		nl80211hdr_put()
+> 		nla_put_u32(msg, NL80211_ATTR_IFINDEX...)
+> 		nla_put_u64_64bit(msg, NL80211_ATTR_WDEV..)
+> 		nla_put(msg, NL80211_ATTR_MAC...)
+> 		nla_put_u32(msg, NL80211_ATTR_GENERATION...)
+>
+> 		switch (phase) {
+> 		case 0:
+> 			nl80211_put_sta_info_common(...);
+> 			phase++;
+> 			ctx->link_id = 0;
+> 			break;
+> 		case 1:
+> 			if (!multi-phase-requested)
+> 				break;
+> 			nl80211_put_link_station(..., ctx->link_id);
+> 			ctx->link_id++;
+> 			if (link_id == NUM_LINKS)
+> 				ctx->phase = 0; // next sta
+> 			break;
+> 		}
+> 	}
+>
+>
+> or something like that, more like we handle wiphy dump with all the
+> messages, for example?
+>
+> I think it'd be better to have just one place that creates the header
+> and all the common info.
+>
+> But maybe it's just my brain pathways being trained for that scheme.
 >
 > johannes
-The two memsets serve different purposes.
+ok, I will try to align with this suggested model. I'll refactor so the 
+outer loop
+produces exactly one netlink message per iteration, with header
+construction in one place:
 
-The first one (Phase 0 loop top) is a clean-slate reset before allocating
-the per-station sinfo.links[] entries for each iteration.
+while (true) {
+     if (ctx->phase == PHASE_AGGREGATED) {
+         /* fetch sinfo from driver once per station */
+         memset(&ctx->sinfo, ...);
+         /* allocate links[], call rdev_dump_station() */
+         /* apply cfg80211_sta_set_mld_sinfo() if needed */
+     }
 
-The second one at out_err_release is a double-free guard. The ctx is
-persistent across netlink dump callbacks (stored in cb->ctx), so when the
-function returns early via out_err_release, nl80211_dump_station_done()
-will eventually be called and it unconditionally invokes
-cfg80211_sinfo_release_content() again:
+     hdr = nl80211hdr_put(msg, ...);
+     /* common attrs: ifindex, wdev, mac, generation */
+     nla_put_u32(msg, NL80211_ATTR_IFINDEX, ...);
+     nla_put_u64_64bit(msg, NL80211_ATTR_WDEV, ...);
+     nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, ctx->mac_addr);
+     nla_put_u32(msg, NL80211_ATTR_GENERATION, ...);
 
-if (ctx) {
-   cfg80211_sinfo_release_content(&ctx->sinfo);
-   kfree(ctx);
+     switch (ctx->phase) {
+     case PHASE_AGGREGATED:
+         nl80211_put_sta_info_common(msg, rdev, &ctx->sinfo);
+         ctx->phase = PHASE_PER_LINK;
+         ctx->link_idx = first_valid_link();
+         break;
+     case PHASE_PER_LINK:
+         nl80211_put_link_station(msg, rdev, &ctx->sinfo, ctx->link_idx);
+         advance ctx->link_idx to next valid link;
+         if (no more links) {
+             cfg80211_sinfo_release_content(&ctx->sinfo);
+             ctx->sta_idx++;
+             ctx->phase = PHASE_AGGREGATED;
+         }
+         break;
+     }
+
+     genlmsg_end(msg, hdr);   /* or genlmsg_cancel() on EMSGSIZE 
+break-out */
 }
 
-Without the memset at out_err_release, sinfo.links[] would still hold the
-already-freed pointers when _done() runs, resulting in a double-free.
-The memset nullifies those pointers so the second
-cfg80211_sinfo_release_content() call in _done() hits
-kfree(NULL), which is harmless.
+
+This eliminates the duplicated nla_put_u32/u64/MAC header blocks
+that currently exist in both nl80211_send_accumulated_station()
+and nl80211_send_link_station(), and makes the EMSGSIZE bail-out
+uniform since we return before committing the message.
+
+should the rdev_dump_station() / sinfo fill stay outside the
+per-message loop (as a separate if (phase == AGGREGATED) guard
+at the top), or is it preferable to fold it into the switch
+case? I've sketched the former above since fetching sinfo is
+logically per-station, not per-message. I'm also ok to adjust
+if you'd prefer it inside the switch ?
+
+- Praneesh
 
