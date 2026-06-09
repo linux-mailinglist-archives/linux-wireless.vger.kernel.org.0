@@ -1,52 +1,91 @@
-Return-Path: <linux-wireless+bounces-37572-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37573-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +hS7C/zfJ2ow3wIAu9opvQ
-	(envelope-from <linux-wireless+bounces-37572-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 09 Jun 2026 11:42:20 +0200
+	id aRZmMW3eJ2rG3gIAu9opvQ
+	(envelope-from <linux-wireless+bounces-37573-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 09 Jun 2026 11:35:41 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E22C65E711
-	for <lists+linux-wireless@lfdr.de>; Tue, 09 Jun 2026 11:42:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B50065E637
+	for <lists+linux-wireless@lfdr.de>; Tue, 09 Jun 2026 11:35:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37572-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37572-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=trailofbits.com header.s=google header.b=RfUNNIAP;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37573-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37573-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=trailofbits.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02B2F3055429
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2026 09:26:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 92F12305D6BB
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2026 09:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473513E8346;
-	Tue,  9 Jun 2026 09:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D7639AD41;
+	Tue,  9 Jun 2026 09:34:15 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58094338595;
-	Tue,  9 Jun 2026 09:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8608E38553F
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Jun 2026 09:34:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780997145; cv=none; b=EDu4rUMhN+4j6T7pISH7xkyzShdro/RZkMP5AalXp1bhr6/fVoRYHiSc9k5BEPfUJhKjbcTxUBXPo1DNqEe3DC+N0FU5bCUgZvoutJlGzikRsXYLZNBVdnPRm4cTwWWdOVX0iFV6BLEJIQ40WoCXE1L/h5TIfOwqLchnh3wvhn0=
+	t=1780997655; cv=none; b=JDoPnoevIE6wMWCu6ffb+/0t9hdbwF5/W65fxD9fdT8yRo/PIv4OOrP/9k3B9OfO+v5tJEP6/kg1pxg2tI6EZETRRvmiqFb7Af9csMbxgJlU21FG8OuTfzAPtKMI/8p9J8giZO45Gia0l1p+PDPYO7qAt1dW6E+AS0fHyVslfk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780997145; c=relaxed/simple;
-	bh=zLVgllktfJnLD+YX1za89FeEcXsSSJ6xIqz47ySweuA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gPMhTb/qyXg3sUbE7V1dRFS4XFiBgMm1A3Gldbk+p0l9+Py+tCS4vXHF8qfntYYC40mTusHjqmMOdqznIh0qpFLKcLIs9bm/0g+zmxEJlABKPiZ1ZH1uXiswBVWYJH3JbXkkM3Vp27E+8plwdP0TZ0k+H2EBBnDx4TlpeN6NCt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowADHNekP3CdqzRrQEg--.260S2;
-	Tue, 09 Jun 2026 17:25:35 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: jjohnson@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
+	s=arc-20240116; t=1780997655; c=relaxed/simple;
+	bh=OAJ2FPGaOegDlCFXTwuYym3ZIC2TJcNNxRzP1MK00TM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nyPHmpmk+XjePPlZO713eWRCtumaaPX95w5ysriskr9zfL1FugU09y6KHQXGmvNVdqavep9bW/GXUbN/y560jinLSUteu7Vi2Ga45Zsw/Iv7QV2VoDKoHGxu5AxuMRfH6hyiMzt1Plsf5D7Jh5dtbYxKY3oRbBE9jQ46jTaye3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=RfUNNIAP; arc=none smtp.client-ip=209.85.128.47
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4903d730b1fso59936335e9.2
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Jun 2026 02:34:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=trailofbits.com; s=google; t=1780997651; x=1781602451; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oFRCm287uDLfDYNp3lKjU19Sbg+yyapEIRmK1Aq/3i8=;
+        b=RfUNNIAPi8Hei0ImLkmuzZgkHOlC06v8rD7gLLkHJlTeqBOMoKQZGdvGIGnwIHOS5Y
+         IXyDGy8NUHv1lZbT5KtAFIx9GhJafLaMLhkv6J/XFJDn4vhEpPsrTKAxa+8kvuPUpEWT
+         JUi9tncJdl4ZL4Tg0w14YTUTXLP0viQMla9H+6AfHvovIFL8FYB1QGprvddYHy7tm8Ss
+         kAxKZi3yHrszb6klGfbFApCmliixnU3o+9/YvUhgjcnDdsLQZtI6+9aPXz7p7GJObd9M
+         fLEIuo4vjmT10oUc7ttV7dxJmN60UXh/jr2p5DoRvKMsU7aod2xmS3rwSvWyrgMXMzph
+         dDwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780997651; x=1781602451;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oFRCm287uDLfDYNp3lKjU19Sbg+yyapEIRmK1Aq/3i8=;
+        b=hDbrKupzG4h0TzJOvN0nC0qYiL/6Jg4b9nLCJiM13BVHxwG+X2FbsU+QkSmL7PfpB9
+         Hb/hSncqhyX2qgJYEaBNpF+oQO4ySzSQ+W7S77fVbJdgz/sy32UapIWoVpYoTP6+v4OY
+         uu8OAqukfobURBjZRAowWrW1Gl2cNdo7uIINZkF9Upz6SDXY1DnRw4+uvikM1fZld7yQ
+         oT8q72kZhHBaP+GjKleGkZaPduzUTkfohPj7t9FEsh2O9kQmEeN00sj52kMDFCIDcvLQ
+         5bqeLbsTduH7kpkfQQbYy2pLPvJh8CuFL6S+nDwdW42ZDw/+zIPsoHlngvk2LBOAM20V
+         lu4g==
+X-Forwarded-Encrypted: i=1; AFNElJ9kjPHK+ilmpqsFn74F9O+raoaeqfjCgWFaTkKD0yffOTpaaHDiizqjszwfTr9cq/BAulgA/aP8K4WkFIJl7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYOoJEcJwj5gxddi3AsJ2vFazMDN7twtp5EJAyrWjfiYR0mZr3
+	aU/Ri8ifVUnPetLvNr8D85Eo8D/+wpPJqlJ0YCREKDLxoqjmBUPZBLD3OEVdWWI8+bEq1ZRA2js
+	B+xbXEDk=
+X-Gm-Gg: Acq92OFuR591gAL6AQW0TBq4GzjMCgJyMUhtiUGZWt0qBH/UMNFxpOw/1J73HhngV4m
+	HUiZuRrBmdflWEThWNTeYItJszhLd5nVkXrrtUeNa9bXqfAHBTY3/GkFKifFFmGQmjqhlziukcB
+	pzPaCzlIbFp0Aj15Pj/HnePama10IIwl82WaU8MGbRaTytVnfJ5JaqceLK6u1B31JrxV4p8rq6C
+	5So3Cch2mXZiPlUFpCMBRTK8KNYkxO/RWRu/VpzHCr3ZMUOdQhz75XReXX9AaDpwexCl30jW4ay
+	KR6kg3Xd+ua6NT7fk8k3Lz0esceqcWNtsvlMvQGf+bxQJxvRjq9uw3NJsEEtCeQtMT2bGao5Ajx
+	bi8YMwXMdfWFsKENCzkk387iCkgRVG4JXmZCFLDMXjJTGGDmiYkfi776L/sMAOaR4feF+DkEKCQ
+	SvovzyMXdC5FhztbRw69fSqeTpfwSBHXgaUFyrDkK2wsZPnHmt6cNmzlwUH8WC9RzEBuWpCUcET
+	SC83Q==
+X-Received: by 2002:a05:600c:3510:b0:490:ab8b:1bb3 with SMTP id 5b1f17b1804b1-490c25dd857mr311914885e9.18.1780997650810;
+        Tue, 09 Jun 2026 02:34:10 -0700 (PDT)
+Received: from localhost ([46.101.197.76])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-490bc3d663csm516975455e9.11.2026.06.09.02.34.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Jun 2026 02:34:10 -0700 (PDT)
+From: Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Jukka Rissanen <jukka.rissanen@linux.intel.com>,
+	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: ath11k: fix refcount leak in ath11k_ahb_fw_resources_init()
-Date: Tue,  9 Jun 2026 09:25:28 +0000
-Message-Id: <20260609092528.220547-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>
+Subject: [PATCH] wifi: mac80211_hwsim: fix destroy-on-close UAF in netlink handlers
+Date: Tue,  9 Jun 2026 09:32:49 +0000
+Message-ID: <20260609093408.2777763-1-dominik.czarnota@trailofbits.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -54,82 +93,191 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADHNekP3CdqzRrQEg--.260S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrZFWDKr15GFykJFy8AFyDGFg_yoWDJrg_GF
-	4Sg3Z2vryaka1jgws8Ca1ayw4SkF9rWF97Ga1IqayrWa17AFyUAry5uFn8JF92kr40vrnx
-	CFnrXFy8Zw1q9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb4xFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
-	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
-	cI8IcVAFwI0_Wrv_ZF1lYx0Ex4A2jsIE14v26F4UJVW0owAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUcFxUUUU
-	UU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4NA2onp3TYGAAAsX
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[trailofbits.com,reject];
+	R_DKIM_ALLOW(-0.20)[trailofbits.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37573-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:jjohnson@kernel.org,m:linux-wireless@vger.kernel.org,m:ath11k@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-37572-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,linux-wireless@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER(0.00)[dominik.czarnota@trailofbits.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:jukka.rissanen@linux.intel.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:dominik.czarnota@trailofbits.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dominik.czarnota@trailofbits.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[trailofbits.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,trailofbits.com:dkim,trailofbits.com:email,trailofbits.com:mid,trailofbits.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6E22C65E711
+X-Rspamd-Queue-Id: 5B50065E637
 
-of_get_child_by_name() returns a node pointer with refcount
-incremented, but the error path when ath11k_ahb_setup_msa_resources()
-fails does not release it.  Add the missing of_node_put() to avoid
-leaking the reference.
+mac80211_hwsim is a developer testing driver for simulated 802.11
+radios and is not used for normal wireless LAN operation.
 
-Cc: stable@vger.kernel.org
-Fixes: 095cb947490c ("wifi: ath11k: allow missing memory-regions")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Its generic-netlink handlers can look up a radio by MAC address and then
+continue using the returned hwsim data after the rhashtable lookup has
+completed. A destroy_on_close netlink socket can concurrently remove that
+radio from the global table and unregister/free the ieee80211_hw, leaving
+the handler with stale hwsim_data, wdev or PMSR request pointers. This
+can lead to a use-after-free.
+
+Make address lookup take an active radio reference under hwsim_radio_lock.
+Drop that reference at the end of each netlink handler that uses the
+lookup helper. During radio deletion, drop the initial reference and wait
+for active handlers to finish before unregistering and freeing the hw.
+
+Fixes: e9ed49bf4c2c ("mac80211-hwsim: Add support for HWSIM_ATTR_DESTROY_RADIO_ON_CLOSE")
+Assisted-by: Codex:gpt-5.5-cyber-preview
+Signed-off-by: Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>
 ---
- drivers/net/wireless/ath/ath11k/ahb.c | 1 +
- 1 file changed, 1 insertion(+)
+The issue was reproduced on a KASAN kernel with a PMSR-based netlink
+race reproducer. The report showed a slab-use-after-free in
+cfg80211_pmsr_report() from hwsim_pmsr_report_nl(). I can share the
+reproducer and full QEMU log if useful.
 
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index 08d3a0c8f105..8a08275db40a 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -996,6 +996,7 @@ static int ath11k_ahb_fw_resources_init(struct ath11k_base *ab)
- 	ret = ath11k_ahb_setup_msa_resources(ab);
- 	if (ret) {
- 		ath11k_err(ab, "failed to setup msa resources\n");
-+		of_node_put(node);
- 		return ret;
- 	}
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 37 ++++++++++++++++++++++++---
+ 1 file changed, 34 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 1fcf5d0d2e13f..0cc9d06b98041 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -15,6 +15,7 @@
+  */
  
--- 
-2.34.1
-
+ #include <linux/list.h>
++#include <linux/completion.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <net/dst.h>
+@@ -31,6 +32,7 @@
+ #include <net/genetlink.h>
+ #include <net/net_namespace.h>
+ #include <net/netns/generic.h>
++#include <linux/refcount.h>
+ #include <linux/rhashtable.h>
+ #include <linux/nospec.h>
+ #include <linux/virtio.h>
+@@ -688,6 +690,8 @@ struct mac80211_hwsim_data {
+ 	int channels, idx;
+ 	bool use_chanctx;
+ 	bool destroy_on_close;
++	refcount_t ref;
++	struct completion ref_done;
+ 	u32 portid;
+ 	char alpha2[2];
+ 	const struct ieee80211_regdomain *regd;
+@@ -795,7 +799,22 @@ struct hwsim_radiotap_ack_hdr {
+ 
+ static struct mac80211_hwsim_data *get_hwsim_data_ref_from_addr(const u8 *addr)
+ {
+-	return rhashtable_lookup_fast(&hwsim_radios_rht, addr, hwsim_rht_params);
++	struct mac80211_hwsim_data *data;
++
++	spin_lock_bh(&hwsim_radio_lock);
++	data = rhashtable_lookup_fast(&hwsim_radios_rht, addr,
++				      hwsim_rht_params);
++	if (data && !refcount_inc_not_zero(&data->ref))
++		data = NULL;
++	spin_unlock_bh(&hwsim_radio_lock);
++
++	return data;
++}
++
++static void hwsim_data_put(struct mac80211_hwsim_data *data)
++{
++	if (refcount_dec_and_test(&data->ref))
++		complete(&data->ref_done);
+ }
+ 
+ /* MAC80211_HWSIM netlink family */
+@@ -4124,6 +4143,7 @@ static int hwsim_pmsr_report_nl(struct sk_buff *msg, struct genl_info *info)
+ 	data->pmsr_request_wdev = NULL;
+ 
+ 	mutex_unlock(&data->mutex);
++	hwsim_data_put(data);
+ 	return err;
+ }
+ 
+@@ -5620,6 +5640,8 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 
+ 	data = hw->priv;
+ 	data->hw = hw;
++	refcount_set(&data->ref, 1);
++	init_completion(&data->ref_done);
+ 
+ 	data->dev = device_create(&hwsim_class, NULL, 0, hw, "hwsim%d", idx);
+ 	if (IS_ERR(data->dev)) {
+@@ -6127,6 +6149,9 @@ static void mac80211_hwsim_del_radio(struct mac80211_hwsim_data *data,
+ 				     const char *hwname,
+ 				     struct genl_info *info)
+ {
++	hwsim_data_put(data);
++	wait_for_completion(&data->ref_done);
++
+ 	hwsim_mcast_del_radio(data->idx, hwname, info);
+ 	debugfs_remove_recursive(data->debugfs);
+ 	ieee80211_unregister_hw(data->hw);
+@@ -6239,7 +6264,7 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
+ {
+ 
+ 	struct ieee80211_hdr *hdr;
+-	struct mac80211_hwsim_data *data2;
++	struct mac80211_hwsim_data *data2 = NULL;
+ 	struct ieee80211_tx_info *txi;
+ 	struct hwsim_tx_rate *tx_attempts;
+ 	u64 ret_skb_cookie;
+@@ -6326,8 +6351,11 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
+ 		txi->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
+ 
+ 	ieee80211_tx_status_irqsafe(data2->hw, skb);
++	hwsim_data_put(data2);
+ 	return 0;
+ out:
++	if (data2)
++		hwsim_data_put(data2);
+ 	return -EINVAL;
+ 
+ }
+@@ -6335,7 +6363,7 @@ static int hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
+ static int hwsim_cloned_frame_received_nl(struct sk_buff *skb_2,
+ 					  struct genl_info *info)
+ {
+-	struct mac80211_hwsim_data *data2;
++	struct mac80211_hwsim_data *data2 = NULL;
+ 	struct ieee80211_rx_status rx_status;
+ 	struct ieee80211_hdr *hdr;
+ 	const u8 *dst;
+@@ -6439,10 +6467,13 @@ static int hwsim_cloned_frame_received_nl(struct sk_buff *skb_2,
+ 
+ 	mac80211_hwsim_rx(data2, &rx_status, skb);
+ 
++	hwsim_data_put(data2);
+ 	return 0;
+ err:
+ 	pr_debug("mac80211_hwsim: error occurred in %s\n", __func__);
+ out:
++	if (data2)
++		hwsim_data_put(data2);
+ 	dev_kfree_skb(skb);
+ 	return -EINVAL;
+ }
 
