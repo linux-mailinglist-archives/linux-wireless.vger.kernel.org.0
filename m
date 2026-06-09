@@ -1,506 +1,184 @@
-Return-Path: <linux-wireless+bounces-37557-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37558-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TregIJS4J2p61AIAu9opvQ
-	(envelope-from <linux-wireless+bounces-37557-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 09 Jun 2026 08:54:12 +0200
+	id TJc7K6HAJ2pB1gIAu9opvQ
+	(envelope-from <linux-wireless+bounces-37558-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 09 Jun 2026 09:28:33 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4F865CF67
-	for <lists+linux-wireless@lfdr.de>; Tue, 09 Jun 2026 08:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1082A65D303
+	for <lists+linux-wireless@lfdr.de>; Tue, 09 Jun 2026 09:28:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mediatek.com header.s=dk header.b=IynVdgQ+;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37557-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37557-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=mediatek.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dBuTZzuq;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37558-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37558-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6FB1302DB66
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2026 06:50:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 954B0305B4A0
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2026 07:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122F132A3FE;
-	Tue,  9 Jun 2026 06:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125783CF1FE;
+	Tue,  9 Jun 2026 07:23:00 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2596435979
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Jun 2026 06:50:50 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780987853; cv=none; b=s5WkUBCw4mX7W0oLccDEMDxFIAWTy8OwwloWJ6aN/327HkH49lmQGEbHCtwbGZhjnDEgfidhk/PIOZaRIRPcnqwoLiHf5gQPqI1XHwYVWagaXC8h77VU4u5kXylU+7sAf6HpWDEAmHX5mdqn3QKlsIUF0BRnAtFoaaARj06LYQs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780987853; c=relaxed/simple;
-	bh=AAHX+lL28cxrCaci3cAy3VHxR0XC86imeMDMTEWeM8Y=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A8thLX3ukp0CrVlhclv/A4U8gwIEQUTPFWk9K9PkaspW1Yf5m6CXuFqJTF5Y4jbjf5VxY8otPYKgPdSpWFkgdLYE8llSZakGBektxfphDTHKuRj3n67XxyF8rIUacJY9uOGe7GwWpX33ofj0/LSlGgqNbb9/UTrJXrShb/s60Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=IynVdgQ+; arc=none smtp.client-ip=60.244.123.138
-X-UUID: 8647c72663cf11f1b1788b6acf885367-20260609
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=5MQoEjHjZwNIu1BVADaMTru/tWj8nPEaGFWXBRTFEoc=;
-	b=IynVdgQ+UO8c6FZxyLmnZX01Eoy4iBPsAQgo6eKaBn1uUJtTls+la/C3LQxUwD+KK5aZik5Ic3NuxngeBzpO136TtSWtjfBX6pIVzIfnYY4OMz22oERjuU8NT4LpCbCY9Z/evifKy2gQhURssmjOgPbkUiwgh9aRdNfNOFJAUlU=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.15,REQID:7cb182cc-2df9-4e9c-b3cf-6167bc4ce7ac,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e276073,CLOUDID:d6b9d9a4-9ef7-4489-861a-e83b251ece46,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|136|836|865|888|898,TC:-5,Conten
-	t:0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,O
-	SI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 8647c72663cf11f1b1788b6acf885367-20260609
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
-	(envelope-from <jb.tsai@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 403962514; Tue, 09 Jun 2026 14:50:38 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 9 Jun 2026 14:50:37 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Tue, 9 Jun 2026 14:50:37 +0800
-From: JB Tsai <jb.tsai@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	<Deren.Wu@mediatek.com>, <Sean.Wang@mediatek.com>, <Quan.Zhou@mediatek.com>,
-	<Ryder.Lee@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<litien.chang@mediatek.com>, <Charlie-cy.Wu@mediatek.com>,
-	<jb.tsai@mediatek.com>
-Subject: [PATCH v2] wifi: mt76: mt7921: add regulatory wiphy self manager support
-Date: Tue, 9 Jun 2026 14:50:36 +0800
-Message-ID: <20260609065036.577329-1-jb.tsai@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAE63B19D1
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Jun 2026 07:22:58 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780989780; cv=pass; b=EJjGVLK2R3fKbbI9ztxg5u1MHbnzk1f3N0kVtgCBABW4t/N72S47hUbm0cOwWLAuM+Cc17BEZ6Li7HN3nah4YRJ9GQ+4MUe8wI7EEwb0Gt2Q/rX21epEXesBCRXXONCmDx5y2L5jnPIBPaJC/E1JN9/gE+x8RBlyIzyBGxg6X6U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780989780; c=relaxed/simple;
+	bh=PmdY2NZaUOzBDSUH7dOmsNy2jhGnIK7fWI6FkwjDu0E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CyQCW9ZFC7mH9JxGOjIaARCivmV3De9YbgrBO7r8H+NhypvWNN7YI5tVj7UgtCuq4mJxDmHg3k81Zz3hUyOx8GYEfgny7nZKHeWDvPn+E6AmeLIAKouMKsVgPInEOQ1lL2BYak0w1pfOs7axy5bvJ4TLKWyh7p5KXkS0PCW6/Ro=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dBuTZzuq; arc=pass smtp.client-ip=209.85.208.175
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-396aacc5bcfso50525471fa.3
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Jun 2026 00:22:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780989777; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VJTX+Hxy8cYOFUVSdNoHrJGxJll1fdDZ/kSWbR5B2TXSGJI6WxOewGaAwo6UneOF5I
+         xW5xbgdurS06eER1UTLPVEd8JuJuAHlmelxMvk+gL8h6oPJdLJMaxXHd4hYftajOhH99
+         YxZKm2fmpjmcpruOU549VrPBNaqTlVWIOzaHHQ6ckO666hpYDZrlMPSGSgZxlrz1NU6O
+         FVMgwHAsjsbLEMEY5q8PGDrPlfDJOCOps9xU66DEwC75vQx9GM1lfsecG7vvG9fO/0xY
+         SEk6DpGvgq61AId2YbMiHSmdTWU2mdxo8XNdcpm0YXEwatutw8F4ZTqlV7D5CeZHtUgP
+         uo+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:dkim-signature;
+        bh=PmdY2NZaUOzBDSUH7dOmsNy2jhGnIK7fWI6FkwjDu0E=;
+        fh=8Mi0kWdkEVEDL/3lMqnYZSAErVaWoab7DRuJ523aXRA=;
+        b=XiqkTL0UCvoTCJfRiG7tyZCnkeZq4+g0Gil/WbHUEMOzMEuHmLCbLL1sLULoAoQ5yf
+         0aJfRJn2PbdM1Ypm/3wMQ7p8B6PUQuznlauuPB2ARVgNCRDneNhHGcqcLCr5z087Tvn8
+         eP2XPg1Tr0JCqIj+lJ5JN3/YOvYHjUwI73qH/fg2C6mT1vzg/YQwUP7HAeyQZOi0N8KQ
+         5myEKWAgTrVx7fWv7oDpbuiYpLp9O+QwuWGzXjVKvqOSt51JI4GPzalP3glusBdfaEKW
+         5Cv5y5M9OEljfORuGtCWyoKgZndcHhlZJEJD5haY6ZujPiqsUQ/2M+8TZOMd4I2fIcGW
+         VvrQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780989777; x=1781594577; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PmdY2NZaUOzBDSUH7dOmsNy2jhGnIK7fWI6FkwjDu0E=;
+        b=dBuTZzuqjEJrxQenrL9MivaSZcY21Svbjz0eXNbvUEadZxJTTL0OCU4qzXfTu4CFA7
+         OQ0fcaTgyp0h+hq3Fuaa8OaxEebZZOvsaGjdjx7KYPfDz2zOMpV/SCK7jbbADbdOl+tP
+         UnCZhhuhqp/PGdRKiXUcCNhYdAYx45fv3wRYqUSuUnQJuhe3NweIBzJ68Gn427SG3cOS
+         lV2OmNe2bvbSE0A+dD9lbfp4U9fkMdvGqmZD0RId1aQZUgvIfLM3ywYpRB8tIos1Cjjx
+         kpyu6i0bImGEO/XkUisunwY5HSZewK+9GHeYxjD05+bO9xgPm6v3wIOmBC49g5YQtcII
+         2Acw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780989777; x=1781594577;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PmdY2NZaUOzBDSUH7dOmsNy2jhGnIK7fWI6FkwjDu0E=;
+        b=CFAHMdW65Ok5loXdYD0oyY/OUDb7/ooTZY8jTBzBGe2r3h+jcs8mGHFI6kQ24tQJIV
+         tR0+IUmcl62ia/bZ3HXrYjWk+/U/cT4B5P1ORAmRKtd+PBL5KJpRaxM3uGZfb/vp6XU5
+         IZIPNwHr2kZ5JPkfUOA6hiZ1ldyq8vX1tClte4PFhYFGMssfuultmNTTl1dSjrmMdYt7
+         wrQXFxPGu/9zsGq9bo9JMUd0nqG0XcLXQVylpCnM/7mwNCOncUz1tN49nCoBT6bvbbY/
+         vZqDbGlAPaou+DS0G/F2+FrN1O9MIUe6wjbVAiJgILuw6VI9He1IvnXsIx+l8Tqzcqnk
+         ZpxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/FI3nxjZZ7I49JfUqzhEDQHu3KaLlRofgo9JL3qmMCjOb5/um6ihLvAKGE2I7oz0JJpz0yfp6CEDc3rJGmmg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGXm1r6+AOhohPqs0EpSxFZJCqDAapDelVSvXE8uRLTRkPMWXW
+	ERXWHMpZ8Hd5qQgL/gTbcJ5p6ubQBqOA+zic6B66S06NStMcEkRBObX+JRdYzIAs6Olv0Y2nSlV
+	T/ITwZaqHSWfX32KMgoCuSDyO46bSEvY=
+X-Gm-Gg: Acq92OEz8N/aplmhqMp90dRBWU8zTJotdcU4tDrWpwaUbZGugO7bkl/v7HBUd5Nm9fp
+	9ChFwzDzHCvO6JNj9eCRiaIyncJo5sCmy6irsMC9efc+qPT7s0Tz/vW2ybPbxiuMmrpM6IlmiFH
+	dvpLmSYT3wdIuaS+W+v10K/2wh9kOSlnJYPlVjSqubuXhvhIBmRc1SGOztzMp4tGJRmt2NqYtZj
+	pjFKVmvH86jgU0W/ZI7URazMIIxkOOKPyu1hGmRxZPnW/MhF5L5vjOkmNVhrjwDztEtm5N35tl4
+	kOxGR8SrwigVxQ12n0F6SEKQw1vkfd9zG6dCbALYb1LVoARmxnzFw4Bb/mAKSg/w
+X-Received: by 2002:a05:6512:ac4:b0:5aa:77e2:51b0 with SMTP id
+ 2adb3069b0e04-5aa87c537f2mr5638974e87.45.1780989776306; Tue, 09 Jun 2026
+ 00:22:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+References: <1779269054-14963-mlmmj-1e4bac1a@vger.kernel.org>
+ <CA+icZUVmdgL1A6mpFxMEtMtikwbkH5qWWyuEn-JOeSU80Q-mvA@mail.gmail.com>
+ <CA+icZUWx8_ULgXkiOyeVuJDA4PCTvfFttcdYQphCHausdueu3A@mail.gmail.com> <20260608-gigantic-vicugna-of-karma-d3d26e@lemur>
+In-Reply-To: <20260608-gigantic-vicugna-of-karma-d3d26e@lemur>
+Reply-To: sedat.dilek@gmail.com
+From: Sedat Dilek <sedat.dilek@gmail.com>
+Date: Tue, 9 Jun 2026 09:22:20 +0200
+X-Gm-Features: AVVi8Ce7P2uqCKfZe9TlC0xFpMYZxPEKPZXzIGxWDzdpX4rlHYejVPbCNktz--I
+Message-ID: <CA+icZUWGFUpZnJs+8YLuFkSKSP2RxmSpbmMVjpje_MOPXsjwQA@mail.gmail.com>
+Subject: Re: Unable to unsubscribe from linux-wireless@vger.kernel.org
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: postmaster@kernel.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37557-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:Deren.Wu@mediatek.com,m:Sean.Wang@mediatek.com,m:Quan.Zhou@mediatek.com,m:Ryder.Lee@mediatek.com,m:Leon.Yen@mediatek.com,m:litien.chang@mediatek.com,m:Charlie-cy.Wu@mediatek.com,m:jb.tsai@mediatek.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[jb.tsai@mediatek.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:konstantin@linuxfoundation.org,m:postmaster@kernel.org,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37558-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[jb.tsai@mediatek.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[sedatdilek@gmail.com,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	HAS_REPLYTO(0.00)[sedat.dilek@gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sedatdilek@gmail.com,linux-wireless@vger.kernel.org];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,mediatek.com:dkim,mediatek.com:email,mediatek.com:mid,mediatek.com:from_mime]
+	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BE4F865CF67
+X-Rspamd-Queue-Id: 1082A65D303
 
-From: Charlie-cy Wu <Charlie-cy.Wu@mediatek.com>
+On Mon, Jun 8, 2026 at 3:44=E2=80=AFPM Konstantin Ryabitsev
+<konstantin@linuxfoundation.org> wrote:
+>
+> On Mon, Jun 08, 2026 at 10:22:04AM +0200, Sedat Dilek wrote:
+> > Hi Konstantin et all,
+> >
+> > Can you please check or help me find the right person?
+> >
+> > I registered linux-wireless ML via <sedat.dilek@googlemail.com> email
+> > (email confirmed in monthly bounce-email from ML).
+> > In 2005 short xxx@gmail.com was not allowed these days for users from G=
+ermany.
+> > This restriction changed some years later.
+> >
+> > All my unsubscription emails are sent as <sedat.dilek@gmail.com> and fa=
+il.
+> > I still get emails from linux-wireless ML.
+> >
+> > So, how can I unsubscribe successfully?
+> > Any hints/help much appreciated.
+>
+> I've unsubscribed you.
+>
+> -K
 
-Introduce regulatory wiphy self-managed mode support for MT7921,
-allowing the driver to manage its own regulatory domain independently
-from the kernel's regulatory framework.
+Thank you Konstantin.
 
-Signed-off-by: Charlie-cy Wu <Charlie-cy.Wu@mediatek.com>
----
-v2: fix regd.c build warning
----
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |   1 +
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   |   3 +
- .../net/wireless/mediatek/mt76/mt7921/regd.c  | 209 ++++++++++++++++--
- .../net/wireless/mediatek/mt76/mt7921/regd.h  |  55 ++++-
- 4 files changed, 245 insertions(+), 23 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index ed5c441748d8..c10a2c4e7ee2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1363,6 +1363,7 @@ enum {
- 	MCU_CE_CMD_FWLOG_2_HOST = 0xc5,
- 	MCU_CE_CMD_GET_WTBL = 0xcd,
- 	MCU_CE_CMD_GET_TXPWR = 0xd0,
-+	MCU_CE_CMD_SET_REGD_CH = 0xd1,
- };
- 
- enum {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 25b9437250f7..2e0769d18f87 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1403,6 +1403,9 @@ int mt7921_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
- 
- 	/* submit all clc config */
- 	for (i = 0; i < ARRAY_SIZE(phy->clc); i++) {
-+		if (i == MT792x_CLC_REGD)
-+			continue;
-+
- 		ret = __mt7921_mcu_set_clc(dev, alpha2, env_cap,
- 					   phy->clc[i], i);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regd.c b/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-index f122e418d825..d29b3b0113f2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-@@ -10,6 +10,15 @@ static bool mt7921_disable_clc;
- module_param_named(disable_clc, mt7921_disable_clc, bool, 0644);
- MODULE_PARM_DESC(disable_clc, "disable CLC support");
- 
-+static struct ieee80211_regdomain mt7921_regd_ww = {
-+	.n_reg_rules = 1,
-+	.alpha2 =  "00",
-+	.reg_rules = {
-+		/* IEEE 802.11b/g, channels 1..11 */
-+		REG_RULE(2412 - 10, 2462 + 10, 40, 6, 20, 0),
-+	}
-+};
-+
- bool mt7921_regd_clc_supported(struct mt792x_dev *dev)
- {
- 	if (mt7921_disable_clc ||
-@@ -33,6 +42,9 @@ mt7921_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
- 	np = mt76_find_power_limits_node(mdev);
- 
- 	sband = wiphy->bands[NL80211_BAND_5GHZ];
-+	if (!sband)
-+		return;
-+
- 	band_np = np ? of_get_child_by_name(np, "txpower-5g") : NULL;
- 	for (i = 0; i < sband->n_channels; i++) {
- 		ch = &sband->channels[i];
-@@ -71,35 +83,36 @@ mt7921_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
- 	}
- }
- 
--int mt7921_mcu_regd_update(struct mt792x_dev *dev, u8 *alpha2,
--			   enum environment_cap country_ie_env)
-+static int mt7921_mcu_apply_regd(struct mt792x_dev *dev, u8 *alpha2,
-+				  enum environment_cap env)
- {
--	struct mt76_dev *mdev = &dev->mt76;
--	struct ieee80211_hw *hw = mdev->hw;
-+	struct ieee80211_hw *hw = mt76_hw(dev);
- 	struct wiphy *wiphy = hw->wiphy;
--	int ret = 0;
--
--	dev->regd_in_progress = true;
--
--	mt792x_mutex_acquire(dev);
--	if (!dev->regd_change)
--		goto err;
-+	int ret;
- 
--	ret = mt7921_mcu_set_clc(dev, alpha2, country_ie_env);
-+	ret = mt7921_mcu_set_clc(dev, alpha2, env);
- 	if (ret < 0)
--		goto err;
-+		return ret;
- 
- 	mt7921_regd_channel_update(wiphy, dev);
- 
- 	ret = mt76_connac_mcu_set_channel_domain(hw->priv);
- 	if (ret < 0)
--		goto err;
-+		return ret;
- 
--	ret = mt7921_set_tx_sar_pwr(hw, NULL);
--	if (ret < 0)
--		goto err;
-+	return mt7921_set_tx_sar_pwr(hw, NULL);
-+}
- 
--err:
-+int mt7921_mcu_regd_update(struct mt792x_dev *dev, u8 *alpha2,
-+			   enum environment_cap country_ie_env)
-+{
-+	int ret = 0;
-+
-+	dev->regd_in_progress = true;
-+
-+	mt792x_mutex_acquire(dev);
-+	if (dev->regd_change)
-+		ret = mt7921_mcu_apply_regd(dev, alpha2, country_ie_env);
- 	mt792x_mutex_release(dev);
- 	dev->regd_change = false;
- 	dev->regd_in_progress = false;
-@@ -142,10 +155,160 @@ void mt7921_regd_notifier(struct wiphy *wiphy,
- 	if (pm->suspended)
- 		return;
- 
-+	if (MT7921_REGD_SUPPORTED(&dev->phy)) {
-+		mt7921_regd_update(&dev->phy, req->alpha2);
-+
-+		return;
-+	}
-+
- 	mt7921_mcu_regd_update(dev, req->alpha2,
- 			       req->country_ie_env);
- }
- 
-+static struct sk_buff *
-+mt7921_regd_query_regdb(struct mt792x_phy *phy, char *alpha2)
-+{
-+	struct wiphy *wiphy = phy->mt76->hw->wiphy;
-+	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
-+	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+	struct mt7921_clc *clc = phy->clc[MT792x_CLC_REGD];
-+	struct mt7921_regd_query_req *req;
-+	struct mt7921_regd_cc *regd_cc;
-+	struct sk_buff *ret_skb = NULL;
-+	u8 *pos, *last_pos;
-+	int ret = 0;
-+
-+	if (!clc)
-+		return NULL;
-+
-+	pos = clc->data;
-+	last_pos = pos + le32_to_cpu(clc->len) - sizeof(struct mt7921_clc);
-+	while (pos < last_pos) {
-+		u32 req_len = 0;
-+		u32 rules_len = 0;
-+		u32 sign_len = 4;
-+
-+		if (pos + sizeof(*regd_cc) > last_pos)
-+			break;
-+
-+		regd_cc = (struct mt7921_regd_cc *)pos;
-+		rules_len = sizeof(struct mt7921_regd_rule_header) +
-+			    sizeof(struct mt7921_regd_rule) *
-+			    le32_to_cpu(regd_cc->n_reg_rules);
-+
-+		if (pos + sizeof(*regd_cc) + rules_len + sign_len > last_pos)
-+			break;
-+
-+		pos += sizeof(*regd_cc) + rules_len + sign_len;
-+		if (memcmp(regd_cc->alpha2, alpha2, 2))
-+			continue;
-+
-+		req_len = sizeof(*req) + rules_len + sign_len;
-+		req = devm_kmalloc(dev->mt76.dev, req_len, GFP_KERNEL);
-+
-+		if (!req)
-+			return NULL;
-+
-+		req->ver = regd_cc->ver;
-+		req->sign_type = regd_cc->sign_type;
-+		req->size = cpu_to_le32(rules_len + sign_len);
-+		req->n_reg_rules = regd_cc->n_reg_rules;
-+
-+		memcpy(req->alpha2, regd_cc->alpha2, 2);
-+		memcpy(req->data, regd_cc->data, rules_len + sign_len);
-+
-+		ret = mt76_mcu_send_and_get_msg(&dev->mt76,
-+						MCU_CE_CMD(SET_REGD_CH),
-+						req, req_len, true, &ret_skb);
-+
-+		devm_kfree(dev->mt76.dev, req);
-+
-+		return ret < 0 ? NULL : ret_skb;
-+	}
-+
-+	return NULL;
-+}
-+
-+int mt7921_regd_update(struct mt792x_phy *phy, char *alpha2)
-+{
-+	struct wiphy *wiphy = phy->mt76->hw->wiphy;
-+	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
-+	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+	struct mt7921_regd_rule *mt7921_rule;
-+	struct mt76_dev *mdev = &dev->mt76;
-+	struct ieee80211_regdomain *regd;
-+	struct ieee80211_reg_rule *rule;
-+	struct mt7921_regd_rule_ev *ev;
-+	int i, num_of_rules = 0;
-+	struct sk_buff *skb;
-+	int ret = 0;
-+
-+	if (dev->hw_full_reset)
-+		return 0;
-+
-+	if (!MT7921_REGD_SUPPORTED(phy))
-+		return -EOPNOTSUPP;
-+
-+	mt792x_mutex_acquire(dev);
-+	skb = mt7921_regd_query_regdb(phy, alpha2);
-+	mt792x_mutex_release(dev);
-+
-+	if (!skb)
-+		return -EINVAL;
-+
-+	ev = (struct mt7921_regd_rule_ev *)(skb->data + 4);
-+	num_of_rules = le32_to_cpu(ev->n_reg_rules);
-+
-+	if (!num_of_rules ||
-+		WARN_ON_ONCE(num_of_rules > NL80211_MAX_SUPP_REG_RULES)) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	regd = kzalloc(struct_size(regd, reg_rules, num_of_rules), GFP_KERNEL);
-+	if (!regd) {
-+		ret = -ENOMEM;
-+		goto err;
-+	}
-+
-+	for (i = 0; i < num_of_rules; i++) {
-+		mt7921_rule = &ev->reg_rule[i];
-+		rule = &regd->reg_rules[i];
-+
-+		rule->freq_range.start_freq_khz =
-+					MHZ_TO_KHZ(mt7921_rule->start_freq);
-+		rule->freq_range.end_freq_khz =
-+					MHZ_TO_KHZ(mt7921_rule->end_freq);
-+		rule->freq_range.max_bandwidth_khz =
-+					MHZ_TO_KHZ(mt7921_rule->max_bw);
-+		/* not used by fw */
-+		rule->power_rule.max_antenna_gain = DBI_TO_MBI(6);
-+		rule->power_rule.max_eirp = DBM_TO_MBM(22);
-+		rule->flags = mt7921_rule->flags;
-+	}
-+
-+	regd->n_reg_rules = num_of_rules;
-+	regd->dfs_region = ev->dfs_region;
-+
-+	memcpy(regd->alpha2, alpha2, 2);
-+	memcpy(mdev->alpha2, alpha2, 2);
-+
-+	dev->regd_change = true;
-+	mt7921_mcu_regd_update(dev, alpha2, ENVIRON_ANY);
-+
-+	ret = regulatory_set_wiphy_regd(wiphy, regd);
-+
-+	kfree(regd);
-+err:
-+	dev_kfree_skb(skb);
-+
-+	if (ret < 0)
-+		return regulatory_set_wiphy_regd(wiphy, &mt7921_regd_ww);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(mt7921_regd_update);
-+
- static bool
- mt7921_regd_is_valid_alpha2(const char *alpha2)
- {
-@@ -183,7 +346,9 @@ int mt7921_regd_change(struct mt792x_phy *phy, char *alpha2)
- 	if (!memcmp(alpha2, mdev->alpha2, 2))
- 		return 0;
- 
--	if (phy->chip_cap & MT792x_CHIP_CAP_11D_EN)
-+	if (MT7921_REGD_SUPPORTED(phy))
-+		return mt7921_regd_update(phy, alpha2);
-+	else if (phy->chip_cap & MT792x_CHIP_CAP_11D_EN)
- 		return regulatory_hint(wiphy, alpha2);
- 	else
- 		return mt7921_mcu_set_clc(dev, alpha2, ENVIRON_INDOOR);
-@@ -197,7 +362,11 @@ int mt7921_regd_init(struct mt792x_phy *phy)
- 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
- 	struct mt76_dev *mdev = &dev->mt76;
- 
--	if (phy->chip_cap & MT792x_CHIP_CAP_11D_EN)
-+	if (MT7921_REGD_SUPPORTED(phy)) {
-+		wiphy->regulatory_flags |= REGULATORY_WIPHY_SELF_MANAGED |
-+					   REGULATORY_DISABLE_BEACON_HINTS;
-+		return mt7921_regd_update(phy, "00");
-+	} else if (phy->chip_cap & MT792x_CHIP_CAP_11D_EN)
- 		wiphy->regulatory_flags |= REGULATORY_COUNTRY_IE_IGNORE |
- 					   REGULATORY_DISABLE_BEACON_HINTS;
- 	else
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regd.h b/drivers/net/wireless/mediatek/mt76/mt7921/regd.h
-index 571f31629e9e..c1e94cd4c958 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/regd.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/regd.h
-@@ -4,9 +4,57 @@
- #ifndef __MT7921_REGD_H
- #define __MT7921_REGD_H
- 
--struct mt792x_dev;
--struct wiphy;
--struct regulatory_request;
-+#include "mt7921.h"
-+
-+struct mt7921_regd_rule_header {
-+	u8 alpha2[2];
-+	u8 dfs_region;
-+	u8 rsv[13];
-+};
-+
-+struct mt7921_regd_rule {
-+	u32 start_freq;
-+	u32 end_freq;
-+	u32 max_bw;
-+	u32 eirp;
-+	u32 flags;
-+	u8 rsv[12];
-+};
-+
-+struct mt7921_regd_cc {
-+	u8 alpha2[2];
-+	u8 ver;
-+	u8 rsv;
-+	__le32 n_reg_rules;
-+	u8 sign_type;
-+	u8 rsv1[7];
-+	u8 data[];
-+};
-+
-+struct mt7921_regd_rule_ev {
-+	__le16 tag;
-+	__le16 len;
-+	__le32 n_reg_rules;
-+	u8 dfs_region;
-+	u8 rsv[15];
-+	struct mt7921_regd_rule reg_rule[];
-+};
-+
-+struct mt7921_regd_query_req {
-+	u8 ver;
-+	u8 sign_type;
-+	u8 rsv1[2];
-+	__le32 size;
-+	u8 alpha2[2];
-+	u8 rsv2[2];
-+	__le32 n_reg_rules;
-+	u8 rsv3[64];
-+	u8 data[];
-+};
-+
-+#define MT7921_REGD_SUPPORTED(phy) \
-+	(((phy)->chip_cap & MT792x_CHIP_CAP_REGD_EN) && \
-+	(phy)->clc[MT792x_CLC_REGD])
- 
- int mt7921_mcu_regd_update(struct mt792x_dev *dev, u8 *alpha2,
- 			   enum environment_cap country_ie_env);
-@@ -15,5 +63,6 @@ void mt7921_regd_notifier(struct wiphy *wiphy,
- bool mt7921_regd_clc_supported(struct mt792x_dev *dev);
- int mt7921_regd_change(struct mt792x_phy *phy, char *alpha2);
- int mt7921_regd_init(struct mt792x_phy *phy);
-+int mt7921_regd_update(struct mt792x_phy *phy, char *alpha2);
- 
- #endif
--- 
-2.18.0
-
+-sed@-
 
