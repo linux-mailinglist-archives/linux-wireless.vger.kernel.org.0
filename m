@@ -1,166 +1,148 @@
-Return-Path: <linux-wireless+bounces-37594-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37595-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Di+XOOwrKGoA/gIAu9opvQ
-	(envelope-from <linux-wireless+bounces-37594-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 09 Jun 2026 17:06:20 +0200
+	id W5IIJvQ+KGrBAwMAu9opvQ
+	(envelope-from <linux-wireless+bounces-37595-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 09 Jun 2026 18:27:32 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 425EB661842
-	for <lists+linux-wireless@lfdr.de>; Tue, 09 Jun 2026 17:06:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E906625BA
+	for <lists+linux-wireless@lfdr.de>; Tue, 09 Jun 2026 18:27:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=broadcom.com header.s=google header.b=Kq7nop5I;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37594-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37594-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=broadcom.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="foKDBY/7";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37595-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37595-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB52C3101498
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2026 14:53:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CAF2A332E536
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jun 2026 15:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3F1383983;
-	Tue,  9 Jun 2026 14:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F268643E49C;
+	Tue,  9 Jun 2026 15:33:46 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f227.google.com (mail-yw1-f227.google.com [209.85.128.227])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C55A35C1B2
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Jun 2026 14:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F21357D15
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Jun 2026 15:33:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781016814; cv=none; b=FCmhjedyddr5iYRbxfU+do6yvrHEszd4WecI1u6z13Lk5hYHyuwEO6Ygp8Ymicel+FWFjtdPHVGqNMjFxDQ7tZrhLdUXtxcyaj92+VP175hLTzdXMCouaGrLqgvvRwlsgZa+mLnUTwtd3GKEnPsOF9l4MgTFstJq1GruOUb98s8=
+	t=1781019226; cv=none; b=dZnrz0LhaZWP40oM2U2J23hMt9DlTIgj7dSDZmvE2W/auy8WLTO8DI9kD79ZHEn4WznjVuM0pAULiY3YeqdTVOyzdnLVGM16h/nItwIb2pP6CJYPKbQ6oG/30S4YsZMT1kBm76SM2vzjxSdagK4MboBcXKV6uHE/47RP9AcJWoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781016814; c=relaxed/simple;
-	bh=T5WTr7jmHvoqqrrXzwILgbWbeUmEOQN5/4IBCNi8Xy0=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=SyhID2g/4Iu/WwKpMXS2BpFBSHf+VUiHXnl8wNMLSFjfkrbDMedO9Gved/2iXTXZqYYnInXBufUR6Z6slKx2BM3b2DYdexZAhcDR7yhtwkdWmK3zGMfnG12t8DRX8mTd3oA56irR/taYxsZooQJtfzt+WkWUUh67TvJnAl5KUSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Kq7nop5I; arc=none smtp.client-ip=209.85.128.227
-Received: by mail-yw1-f227.google.com with SMTP id 00721157ae682-7dfe7712572so53498217b3.1
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Jun 2026 07:53:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781016812; x=1781621612;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:dkim-signature
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=d9nshAheis16fsfBtGYld+unMmzzCTRT676gO2+SBa4=;
-        b=Kh71rUOSSX085mh3lcTIC9/1OwKO5SFt3MxmjaXUS3UIq8lOtARVpPFWUFVDqYt5b8
-         c+28BGj8iRJTiDWHImrJJj8RmpuG/gHmGP5qrwYSN6KwpYjEop9HxfCF63PTXVRl0PRv
-         PAUIY0YF1v4L/PNeHRE1FZZy1IR8A6bKpO170W9nGCqptIQxIpe9BU46YBUSCxwO7jGN
-         4BuY9kSIX5m5NpsnVnrRqLPIdIlprpgB5z//THw5WO+ngxg8cLaSPUyExkl8yoVu5U5P
-         ZGzk27Nk9NMbRBW2w23Uilv/cT9WHqgZBgaWFwfapj70A06J1DL+kvu30xR4ow9Q3wxC
-         +zfQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8x05H1mYT4s13FJrAOGZXrxk/5McerxpqbWKPwxKjqGZGMjUcFqycpx+9DnH+9ouEKEbInQABS1z69wB6N3A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YywNbRbitGQd9BupVUrivOmHzGQ7UX9RC4FsT8Q2Gycs56QLTBN
-	ZxmqkxVe/rxBSihGIt9+7ISajsB12NxbNyhLFAKbvRkq50tBySXo/Nrt3EM+7mOpAnjJkeOTdhe
-	UWImqOR0Uoi2Kc+9r0o5BD54dj49Ek8Os9KBjlfYkY5LBaCnxsEeKqCm4ibMzLCE/ukbiLvvph5
-	hQjkNSaQMHKNNLaxdo2lcUIcM2f24kBEbDOrkda4nAazdQrrtWJGgdauc9CqgLCuVQmN24tOnfz
-	MKgbD1tCG3QZ0IW4yK7yNZmnDWt
-X-Gm-Gg: Acq92OGsQBFMsyK90qLy17juQQ5+0uNrIaWrlJC5QBlUCCZvuVgXatohjH53mNrOgQt
-	wUBSxTngwZUyIjM30Fopx7pByq6L59iETu+sWEqRHrqQyT/4nyBx4uop9JBmruQJBbn7j6VieIM
-	lhaIjvSmKSU+/TR+wQ4zooAE1KU/bmuUUhAowfweQa3jCo1+EMYdW3YmF+izuyUzb109lFS0Pti
-	vmguRJGCItV5Yt/jAP5Ius/SNStoTLK1uJNIfG9b1CPdcJYOKtCki5bcZxKH1vJ9gbIo8uTuMqw
-	1wg5RKNiPTmziiY4XNXrP9h57bjAMSmJUTsAQAHuXAfeHWdREXGZi8G+MtI5x+kDzBw7CiG1+Rj
-	mQT6FMp0OyIVk0IeIwJpQEYHaDo8wkIswDiDfLYVSty9eFmLpyqZthahJ+0O4HaUt7eA5payNdd
-	+gTz0mEkOu8ekfTvejoHczH0FqnRAWfMDTLC2zZjqCaM+4oMq1SIcE8FpoCh+1fRHfEQrCfXY=
-X-Received: by 2002:a05:690c:e1cd:10b0:7ef:d039:a32e with SMTP id 00721157ae682-7efd039acfcmr94338417b3.34.1781016811914;
-        Tue, 09 Jun 2026 07:53:31 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-21.dlp.protect.broadcom.com. [144.49.247.21])
-        by smtp-relay.gmail.com with ESMTPS id 00721157ae682-7ea23a95d93sm15332367b3.23.2026.06.09.07.53.31
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 09 Jun 2026 07:53:31 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-becd1c46294so549457166b.2
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Jun 2026 07:53:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1781016810; x=1781621610; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d9nshAheis16fsfBtGYld+unMmzzCTRT676gO2+SBa4=;
-        b=Kq7nop5I+99JEKXreHXLjAFIYdMUzJ4gGZW30flLPh6KXcpqNtGm7Fqe+Zu6xeFmci
-         TdBZpIkWl4x2OpbI2ey3fdxnDfeNmmqZfY/iKWBIKHBSeLebaJ/kSTlB7D18SShQRkbh
-         xPgyTJh3ymt0CzmlAi9mlTrLWM5uTV25CcbBk=
-X-Forwarded-Encrypted: i=1; AFNElJ8P+/xVFFzYTfeZRaCKaYhpjRX75ICpFlyuMfSs7m5LymflH9HX3urhfi1u6rhTvVyHFIUs/rRJ4bwECEGeFA==@vger.kernel.org
-X-Received: by 2002:a17:906:cc55:b0:baa:1d9:66ff with SMTP id a640c23a62f3a-bf9373dad65mr124057266b.20.1781016810170;
-        Tue, 09 Jun 2026 07:53:30 -0700 (PDT)
-X-Received: by 2002:a17:906:cc55:b0:baa:1d9:66ff with SMTP id a640c23a62f3a-bf9373dad65mr124054566b.20.1781016809689;
-        Tue, 09 Jun 2026 07:53:29 -0700 (PDT)
-Received: from [192.168.178.59] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf0558f3885sm1052383666b.54.2026.06.09.07.53.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jun 2026 07:53:29 -0700 (PDT)
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-To: Rosen Penev <rosenp@gmail.com>, <linux-wireless@vger.kernel.org>
-CC: <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>, <linux-kernel@vger.kernel.org>
-Date: Tue, 09 Jun 2026 16:53:29 +0200
-Message-ID: <19eacdfce28.2873.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20260608052854.11718-1-rosenp@gmail.com>
-References: <20260608052854.11718-1-rosenp@gmail.com>
-User-Agent: AquaMail/1.59.0 (build: 105900627)
-Subject: Re: [PATCHv2 wireless-next] wifi: brcm80211: change current_bss to value
+	s=arc-20240116; t=1781019226; c=relaxed/simple;
+	bh=ui57eud+2jNybnwIgjdXrFY/rFddgm487KTN2pVWv7o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cfjeoLQ/YtJ3XbNbe9H5Yhz3RH6RQe75U4PsKI4N5zXVVxxudcKmHYKlYaIMqTF/Kdm7L0iUaorX84p6Dbn+gaKB21MTSpT2B80jOTMZFpDMgCoZg9EN0Ti/RN06mCM0NAZArxAePX9jgrEpbWTd95ExBsx4/vuJ68KjHG2a5aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=foKDBY/7; arc=none smtp.client-ip=170.10.129.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781019225;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I8F188iQhDxLxAZTFy+ZfnH1B/Skq3VaWGOMUwtoZc8=;
+	b=foKDBY/7Z7fYaoR/vc+S5Ec9rUYUgtjdl68an6MjGzrekJLaYCzMhtCcl+UVCMhmwn1h4U
+	MjaBualBzr0MJFsYrxgccISoM/s+nO12gqw4S/uJOnKG9XhJl4ahLtzlb2JQaVzOkzJw8P
+	QXDqbNn5c+ouUSvpefil7P27zIpX/po=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-S3FBmI6dPgOz1skQ8MXRJA-1; Tue,
+ 09 Jun 2026 11:33:41 -0400
+X-MC-Unique: S3FBmI6dPgOz1skQ8MXRJA-1
+X-Mimecast-MFC-AGG-ID: S3FBmI6dPgOz1skQ8MXRJA_1781019220
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 71F0E195C26B;
+	Tue,  9 Jun 2026 15:33:39 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.32.77])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4A67D18005B3;
+	Tue,  9 Jun 2026 15:33:35 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: helgaas@kernel.org
+Cc: alex@shazbot.org,
+	bhelgaas@google.com,
+	jtornosm@redhat.com,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	lorenzo@kernel.org,
+	nbd@nbd.name,
+	sean.wang@mediatek.com,
+	shayne.chen@mediatek.com
+Subject: Re: [PATCH v4] PCI: Disable broken FLR on MediaTek MT7925
+Date: Tue,  9 Jun 2026 17:33:33 +0200
+Message-ID: <20260609153333.70991-1-jtornosm@redhat.com>
+In-Reply-To: <20260609144532.GA104629@bhelgaas>
+References: <20260609144532.GA104629@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
-	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37594-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:rosenp@gmail.com,m:linux-wireless@vger.kernel.org,m:brcm80211@lists.linux.dev,m:brcm80211-dev-list.pdl@broadcom.com,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,broadcom.com:dkim,broadcom.com:email,broadcom.com:mid,broadcom.com:from_mime];
-	FORGED_SENDER(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[broadcom.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37595-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:helgaas@kernel.org,m:alex@shazbot.org,m:bhelgaas@google.com,m:jtornosm@redhat.com,m:linux-kernel@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:lorenzo@kernel.org,m:nbd@nbd.name,m:sean.wang@mediatek.com,m:shayne.chen@mediatek.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 425EB661842
+X-Rspamd-Queue-Id: B5E906625BA
 
-Op 8 juni 2026 07:29:12 schreef Rosen Penev <rosenp@gmail.com>:
-
-> Change to a single allocation and remove some boilerplate.
-
-I thought current_bss used to be NULL when not associated, but seems my 
-memory needs to catch up to today's reality....
-
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
-> v2: change to value
-> .../broadcom/brcm80211/brcmsmac/main.c        | 40 +++----------------
-> .../broadcom/brcm80211/brcmsmac/main.h        |  2 +-
-> 2 files changed, 7 insertions(+), 35 deletions(-)
+Hello Bjorn,
 
 
+> Alex, are you OK with this?  The v2 conversation talks about SBR also
+> being broken, but maybe that turned out to be a red herring?
+> 
+>  https://lore.kernel.org/linux-pci/20260508145153.717641-1-jtornosm@redhat.com/t/#u
+Alex can answer better, but to clarify: SBR works correctly for MT7925e.
+The confusion in v2 was because I initially grouped MT7925e together with
+Qualcomm devices (WCN6855, WCN7850, SDX modems) to try to fix their reset
+issues. Alex suggested testing SBR for all of them, which revealed they
+have different issues:
+- MT7925e: FLR advertised but broken, SBR works fine (this patch - quirk_no_flr)
+- Qualcomm devices: No FLR capability, SBR is broken (separate series with
+  quirk_no_bus_reset + device-specific reset)
+So I split them into separate patches since the root causes are different.
+This fix for MT7925e (quirk_no_flr) removes the broken FLR and allows the
+working SBR to be used.
+
+Thanks
+
+Best regards
+Jose Ignacio
 
 
