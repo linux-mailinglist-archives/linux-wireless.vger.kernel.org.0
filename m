@@ -1,85 +1,85 @@
-Return-Path: <linux-wireless+bounces-37631-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37632-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /koXGCp6KWoRXgMAu9opvQ
-	(envelope-from <linux-wireless+bounces-37631-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 16:52:26 +0200
+	id FBpSHjZ6KWoWXgMAu9opvQ
+	(envelope-from <linux-wireless+bounces-37632-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 16:52:38 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FB566A6B4
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 16:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E012E66A6BF
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 16:52:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eFAkaZAB;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37631-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37631-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rLBoMV9F;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37632-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37632-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C860323CFEE
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 14:36:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC0DD32497B4
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 14:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8713E4266B9;
-	Wed, 10 Jun 2026 14:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD773FA5D8;
+	Wed, 10 Jun 2026 14:35:42 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA0141930F
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 14:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37FF413225
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 14:35:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781102122; cv=none; b=g8LIb4zfnHW94QchI0Ihgki1rekKibxq3TgcNwwdwQ8VMyCSiQeHF6E/H4T6JkOGEKOhwI2BTXpzbpL4N/4xyOZzHbknxyaABqX952bl2dhv0olW2VhBSsF1iViqjuwhi2oem9kFJk9r9u9TBvDzlFgmW+8W2tneB2u7ooUSqI4=
+	t=1781102142; cv=none; b=lc2irOtw5V6CWLnnaWm7x+dyin2O3ap83OErewwYfVZLhOIBUZcjSY6hgYS8CQKd3soMBE8gavIIFl26Y8kFETx/EQ6Rk+2CA8kBF+l0CSnihyz4XHqfslsdMZ3n9DG9BjRfdhA6rCkTvFtzw2K9g3ZaKJoi+KbbLYEawdnrmjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781102122; c=relaxed/simple;
-	bh=HvczFRqGw+IRU1mDcrnLUUgG+MM7iQrUu0vju3oC6GY=;
+	s=arc-20240116; t=1781102142; c=relaxed/simple;
+	bh=q+g7CYzbsKvLvi4mfWg786YFrApIxxHFHFUXr9uKI4w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CmDyUJkg4uivL5Q/CrWzJOmDej2c+hdUZzKuiXlAlxy1P7LCBhkOKmn74Lihvmo+EB7/64JG8mgQgmgZGur2qVJvJuG4FvqbtM0neV1knGewLC/+gs3Io1Oh0IY7y9kLot0CC3Un7je0AlYhBKUzDONWQZS/JrgfY3nIpGNf4vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eFAkaZAB; arc=none smtp.client-ip=209.85.221.41
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-45ef5146b56so5039917f8f.0
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 07:35:19 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=r4/CIGWXzGuUxMiIDA/3jZyr280HEkfmNo195TU3/9dEzZBb30xxklkd+fxMiGA2/knG46p5OgM2smaqTsp6sPqsSKxJf+dQd/nPQIgRk2L4e7yJeaMPoaoeZJhP9U4LUnfkJFvyxwqK84Cq/AGiR9YNoZ/afk2rZQihoSN3Gq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rLBoMV9F; arc=none smtp.client-ip=209.85.128.47
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-490e1904089so2163995e9.0
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 07:35:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781102118; x=1781706918; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781102139; x=1781706939; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=e/NimQjbBFn6JbAdVCXHQ0b8RgUcxqZ7nFsxKAMXryc=;
-        b=eFAkaZABS9/FunV8wpte9zBDIXM6mHoeqVN3DpDn80uOzw19UICnGtvONk9q0JdAQt
-         NYLphHAnyR2N495u5AZ81e6colTjK4b8fN65kp/EpOF11z2lZfaQNmb5MDdNvA+/MK5m
-         TMlJYuph1V663+23ODKupIDxHpNM+ArbWo2aaCde83xp2PFE1bedDz6VI7JQibrc7DNv
-         0myq9iPKcCfGZs6/JfMmz0UxbjySN61Y4rrvz3aEZKc+7B7wDvxBLraw9hxKEmSzbF2S
-         LjS/7qQjvgA8Kbd0CsJm1GOjEcej6FTRFe9Bg4n5V6YxTTO4DnGG9H1RxNWpMZUW5EXq
-         D2zQ==
+        bh=dpuf4sI5RxpciMojsi135R+tahIgw62q7Ly7Z20Zszo=;
+        b=rLBoMV9F0z+nwmKOzEd43gTwY88SN3z/2ZoYltA/QDtgamUBz3yoxbqhbNxPx5XEJO
+         OJbnTRXxIvUe/pSl+p8wQZBYsotgpFS3HPrF9OleZAMlYg5QJoY6cZpUf/MXxANJ8VQG
+         OrHucIZhya9UG0G7vdoEVsk1aSf6NBwITFIv5SyeK6lTLycXJpDsdSoUooahhf5Wg2DA
+         CuUlxAOyPlFy4au8SW+4BS4zBK5lJOJSbaq3kLKVyMYbLubvcZkmWDCyd7TuXZY20VPF
+         LHVJZhx3hZ4Oi2KUakdb+UVb2yr5Q8sRs+eY8UbeoQlGOkKnzgLiazJzfH1UIk7KdyJE
+         Vssw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781102118; x=1781706918;
+        d=1e100.net; s=20251104; t=1781102139; x=1781706939;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e/NimQjbBFn6JbAdVCXHQ0b8RgUcxqZ7nFsxKAMXryc=;
-        b=S3EGt3kmmPBDg44II65XfnmsX6m4vW5pp7r5/kjQSIzz5S5+aPWV5UZ65ThoaAfNss
-         j259IQzenqrjHziEF9eyEiMLBWdfq2FUPYTlEINY0EHPUovkqndeZoonFon4lnUFRRtW
-         Qun8OJ/4Y9ToEV+PNlwhvC4/PUhW//C3T68ONgVRV3sp/oyGxNWZJchtBHJhog5XSw12
-         qA8KRhsNjE11c0EVVD9tRhNpiAd1Ns7sGnbobKrBeaWC68TNT6RQeAVoUyFKSoZIgwns
-         ggWHWJTwmZRyRZau5HlIKrFRkC5LLjSMmJZXys+Q2PiUP59OUDLjie+BNy+fF164zslb
-         yB8A==
-X-Forwarded-Encrypted: i=1; AFNElJ/IXgNV7MaSTL2PPme+E9u0+GMyjd63twG6minSxBGx2pND+83Gxo6FBJeqV1QNw4sy07ZJ9xRQueHiNAAeog==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7Lb25kt87wBDztUSQJzl8k73kt7kcFxk3P6ZwQQvl3bYGQ8Ir
-	Sn3NuFK2tgNbXE8vKptFQ7W2ujgm1EaLESxLtj0RIjElxM2fophhtbzuExQZIZoq
-X-Gm-Gg: Acq92OH8Dsg9bfA/cFPEotw7cqdxf8Ssru2co11Y6V+II2SrgS+ZZ8waen+UERc8ky5
-	Toj1k3xefOpq2s+VqGuQq9Y0/sqzi0B3tyHpwYzz0/fltUqJ43Wi5FTr9pHsmcfAVN5gFOhEkXn
-	LLDJh6NDHKPi/PM+1ZmmHv5X5MD3yVjFPFLKy1zNfYycgWZt+OO/O7pQehXYt3DTQkNkuXlW8ri
-	udWiFUEjKIz/AwKRnjr8/trF/yAjIBgKGMkT91xGcBVcm3qHcmzgUEq4yTAAU+Wk4TUma8OCfAQ
-	IQUkmdBV0hg1z5ranT4ABmy9PbN1nxAxEVyaYo2uumUOkCnXQ4jLzHKSsJEaBRpsN/E1uNUxwH8
-	amVTgGpEkNBRUfg91RP5RtRENenjihHGnf6dzWJdrPRioiNcDyOTtX5ROJJoYjiG5xin7EYqOSm
-	Q1iTjp/nvJq1tXjlkYVb+o7KYBm8I+kU2EbaOVAFHdxasymiA17E8I5xC5wpS+qo9F9xMxgFx+i
-	7RSpw98kcAjcdbl
-X-Received: by 2002:a05:6000:200d:b0:45d:4c30:81a6 with SMTP id ffacd0b85a97d-46032b6b100mr33159846f8f.5.1781102117975;
-        Wed, 10 Jun 2026 07:35:17 -0700 (PDT)
+        bh=dpuf4sI5RxpciMojsi135R+tahIgw62q7Ly7Z20Zszo=;
+        b=DyWGLbLp7yEhpBHVW1CAfdDJ8RwHi5lcM8DTn/7TqfxUQZcYzXtyFFTTvwjLH3xxNk
+         HrcYU+eV3XDYHbaTlRIUXIif5pAcXFUyV7ohw1ardsikoAddVJ8L5bUQKDEffz4dpfNg
+         iarllee0LvJ5+W0+la6Vj6pCyKefU//tS1ZecfVPExnLsQ8wU5+a3qW/rQWCVyEDudzB
+         nhHX9rK4U9zymqPrPzCerAzGbS7oefCQjeJzva09dFmLfDIrwTpzbAGoakSr/1617i4C
+         OA01rtTbkrvgWMU7A7O2uY0jjd5xjKLGnT9tIB8d2PVTT2wrRmN49kiBbwUZXNnDj9JO
+         uDFA==
+X-Forwarded-Encrypted: i=1; AFNElJ+ka9WHfAFUymP6hA7WVVT5VSMmjhWiB90vSBdkuwk5TLXliuVz0s5ntbR0zibMuXQoWR4sJR796XFPPNKz3g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2tA73EAV1O+gVH2lFDsVH70NcXKVmWrMcKYMTUSLL7rD6jX2L
+	jO+1G31gcCyshM8pIKACn3jFgr7ERSvtr7M6fHkeoOx5rLpUaknE0wGM
+X-Gm-Gg: Acq92OEmV4bBQAylLWdgGBErCjBSrOpu1wXNC/QPbBPbCLXdM5J3dO74DWt2GUySqdm
+	RkMiVprEUmYg/MKTsML8VRIenRXwD9RB8vFPvb+KLmbzmuiBGyLh+k3BkH5RP5nL7U21D9cqbW8
+	uqbQGFa89kc5FrAKnu1LlkzEeOMjtamC9YxEbcmvMv7Rv2uEPYaGzIx5cXeRllRAvor6DQFwt1r
+	OsgndBu0mGZ2b6mRX9jLG92pCoOfX4RFJPbBAXnYMwJOGaGMleW7I2LgoaTIqQ7lXQvt1HhUnYv
+	fcRD4sqt0hzlsTYwO19SHkOLdyKE9I9W9tDWKc0U1uhx6f3KNruxQnJkJzcr0anWqbsSzN9SUYU
+	xc96k/hGyNDddyUCTRSXKva1NWLYlJL3u5OBn/6qBeVPT6t1X4svYNGiaoZCKsMp9hRLItHDCOQ
+	72RjvPMUVgq5ecBvTgzzKsnrOkkFXpBovQeKh5Inv5L1Y60IV8H2SDwLTzwauH9s9XPYzQsgew3
+	uG3TaIkIbX/aWhK
+X-Received: by 2002:a05:600c:8b6a:b0:490:bb19:b110 with SMTP id 5b1f17b1804b1-490c26216ddmr382830225e9.27.1781102138726;
+        Wed, 10 Jun 2026 07:35:38 -0700 (PDT)
 Received: from [192.168.1.131] (59.85-85-174.dynamic.clientes.euskaltel.es. [85.85.174.59])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f3446aesm79481632f8f.24.2026.06.10.07.35.16
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3fcf5bsm681766985e9.9.2026.06.10.07.35.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Jun 2026 07:35:17 -0700 (PDT)
-Message-ID: <0a23b741-0f5e-468d-a32a-0f730cb722de@gmail.com>
-Date: Wed, 10 Jun 2026 16:35:14 +0200
+        Wed, 10 Jun 2026 07:35:38 -0700 (PDT)
+Message-ID: <19a4d71b-cfcc-49c9-a564-5795a0b7a0cc@gmail.com>
+Date: Wed, 10 Jun 2026 16:35:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -87,7 +87,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mt76: mt7996: remove code guarded by nonexistent
+Subject: Re: [PATCH] wifi: mt76: mt7925: remove code guarded by nonexistent
  config option
 To: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
  linux-wireless@vger.kernel.org
@@ -95,8 +95,8 @@ Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
  Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
  Sean Wang <sean.wang@mediatek.com>,
  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Rex Lu <rex.lu@mediatek.com>
-References: <20260610041050.206950-1-enelsonmoore@gmail.com>
+ Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+References: <20260610042429.222717-1-enelsonmoore@gmail.com>
 Content-Language: en-US, ca-ES, es-ES
 From: Matthias Brugger <matthias.bgg@gmail.com>
 Autocrypt: addr=matthias.bgg@gmail.com; keydata=
@@ -142,7 +142,7 @@ Autocrypt: addr=matthias.bgg@gmail.com; keydata=
  +zFJv9fVUpo/bjePOL4PMP1y+PYrp4PmPmRwoklBpy1ep8m8XURv46fGUHUEIsTwPWs2Q87k
  7vjYyrcyAOarX2X5pvMQvpAMADGf2Z3wrCsDdG25w2HztweUNd9QEprtJG8GNNzMOD4cQ82T
  a7eGvPWPeXauWJDLVR9jHtWT9Ot3BQgmApLxACvwvD1a69jaFKov28SPHxUCQ9Y1Y/Ct
-In-Reply-To: <20260610041050.206950-1-enelsonmoore@gmail.com>
+In-Reply-To: <20260610042429.222717-1-enelsonmoore@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
@@ -155,8 +155,8 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37631-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:enelsonmoore@gmail.com,m:linux-wireless@vger.kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:angelogioacchino.delregno@collabora.com,m:rex.lu@mediatek.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37632-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:enelsonmoore@gmail.com,m:linux-wireless@vger.kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:angelogioacchino.delregno@collabora.com,m:mingyen.hsieh@mediatek.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER(0.00)[matthiasbgg@gmail.com,linux-wireless@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
@@ -180,12 +180,12 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C4FB566A6B4
+X-Rspamd-Queue-Id: E012E66A6BF
 
 
 
-On 10/06/2026 06:10, Ethan Nelson-Moore wrote:
-> A small piece of code in mt7996.h depends on CONFIG_MTK_DEBUG, which
+On 10/06/2026 06:24, Ethan Nelson-Moore wrote:
+> A small piece of code in mt7925/regs.h depends on CONFIG_MT76_DEV, which
 > has never been defined in the kernel. Remove this dead code.
 > 
 > Discovered while searching for CONFIG_* symbols referenced in code but
@@ -193,26 +193,28 @@ On 10/06/2026 06:10, Ethan Nelson-Moore wrote:
 > 
 > Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 
+
 Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
 
 > ---
->   drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 4 ----
+>   drivers/net/wireless/mediatek/mt76/mt7925/regs.h | 4 ----
 >   1 file changed, 4 deletions(-)
 > 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-> index bdcf72457954..39c525a40412 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-> @@ -921,10 +921,6 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
->   			 bool hif2, int *irq);
->   u32 mt7996_wed_init_buf(void *ptr, dma_addr_t phys, int token_id);
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/regs.h b/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
+> index 24985bba1b90..ea04e477a67c 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
+> @@ -74,11 +74,7 @@
+>   #define MT_HIF_REMAP_BASE_L1		0x130000
 >   
-> -#ifdef CONFIG_MTK_DEBUG
-> -int mt7996_mtk_init_debugfs(struct mt7996_phy *phy, struct dentry *dir);
+>   #define MT_HIF_REMAP_L2			0x0120
+> -#if IS_ENABLED(CONFIG_MT76_DEV)
+> -#define MT_HIF_REMAP_BASE_L2		(0x7c500000 - (0x7c000000 - 0x18000000))
+> -#else
+>   #define MT_HIF_REMAP_BASE_L2		0x18500000
 > -#endif
-> -
->   int mt7996_dma_rro_init(struct mt7996_dev *dev);
->   void mt7996_dma_rro_start(struct mt7996_dev *dev);
+>   
+>   #define MT_WFSYS_SW_RST_B		0x7c000140
 >   
 
 
