@@ -1,198 +1,159 @@
-Return-Path: <linux-wireless+bounces-37625-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37626-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id caG/NTZAKWoaTAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-37625-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 12:45:10 +0200
+	id ad5yMTBFKWqCTQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-37626-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 13:06:24 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F32E668688
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 12:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82BA8668937
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 13:06:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=HYz7wt4v;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37625-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37625-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=i-love.sakura.ne.jp (policy=none);
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37626-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37626-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26BC0322F36F
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 10:40:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 690FE3089E56
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 11:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35D63E2765;
-	Wed, 10 Jun 2026 10:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7013FBEA2;
+	Wed, 10 Jun 2026 11:01:45 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4699B3EFFAD
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 10:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD5E3F4109;
+	Wed, 10 Jun 2026 11:01:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781088048; cv=none; b=i55dDU/Q1SG4yRKrKJYIyfn1WQmGfWq/c5eHyOFlbfENmWsB/MW+dDVt7solDxB7V771jis8mAqM/04bQADJ8AjqSEtvhuWz1Oj1GfOkC9sTFbnucr4EXTs51IhttLOj/pI4vpZ6nl5y0en29qog/ZPSVC6katC9LpYOa/RInTU=
+	t=1781089305; cv=none; b=tmGUGvTddm5iLJ/dLBR1wzrm1TY8jUexMiSKvpMj65EBDMna3EnnI24FOZgOea+r90Rm72Ro2MYndlRqqb7GliIIPvfiax1ujjc/jhe+Q7unKHt4GVxcVM/cjXIHhjiC2AbAmNRC4bpoqjyTEWQTVZiRK4ZDRpO1cn0utXhaBq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781088048; c=relaxed/simple;
-	bh=5e7bW+Y0CjTqz+g7aKHz9HlVkCcWS3YMxS1rTmtWzS8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ulb1uSnA//sZjeDZHP2WkQunRQQ4sJ3uLPqClEjTdq229RO7Texm6VbcNxlHBHqhO2NlskcfxmAxUudwXuG1pQHJwFw0vR9bzoo9InnfblAWXGpIBqJTt90eVFQKVnsG6PBU7pi948jSqvZVnldSO27UyIrE/0noxq5kiADfQxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=HYz7wt4v; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=hGxZJjqUSM+cCMiYJPCLks95WMObgDOYKtdcr0R5aaI=;
-	t=1781088047; x=1782297647; b=HYz7wt4vCCI+aNVKt93Mx2MqO5O1VgzCJv0P/Lbf6vrAyZ8
-	64SdmrQKKa/mAYu14xT4btn0sW1wLrNx62lwbVbzoBVCKGZtpNpRkVig42Dr5NlbPGmGKT0VbweF7
-	GbapwYT+b4g5mF5g7SifJ58hQqj28n6Oy/HYD7S73W2KM28zgMYorOlmNUkQxhxv/HPKkS1S0j9eh
-	kF7SSH1Kt1t/HAt33EpdnKf29jDCbTwEI2DxTqVkZ83Pn3qPZpEJLf0LQ2gJcbIKcIgEyLS+bBZ/i
-	5kxbm9PcWXJDh6S26PuRSUlnf3AdhcoGgnXHX/Ux+OUbcvxLkDXXsB4En8ldcW5g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wXGMT-00000007tKz-47kZ;
-	Wed, 10 Jun 2026 12:40:42 +0200
-Message-ID: <9ad7cb4143a5d73b69eb98849921cf1c72f392e4.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next 4/5] wifi: cfg80211: Fragment per-link
- station stats in nl80211_dump_station()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Praneesh P <praneesh.p@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org
-Date: Wed, 10 Jun 2026 12:40:40 +0200
-In-Reply-To: <19098782-24e9-4707-8207-6244371a904f@oss.qualcomm.com>
-References: <20260607175912.2266215-1-praneesh.p@oss.qualcomm.com>
-	 <20260607175912.2266215-5-praneesh.p@oss.qualcomm.com>
-	 <88c183f827eb184e6d471964662b7ee89caf63ad.camel@sipsolutions.net>
-	 <19098782-24e9-4707-8207-6244371a904f@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1781089305; c=relaxed/simple;
+	bh=aBMlI5GynG8PGFL9oQvJmX7hmUnCvdv7groipJ0VJME=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MCfJZSUKi1HlgdRHuU0THk0WH8Gc7Om27cludHPJLFWX+MbiPldLpe08cC0zei4A71KI19jbPcGjCA7EHeT1JG/6FEobhWcI+NJszxyvGpkTz4vzA8hvUqpn2nHn6oiAOeBtywz4Ub5zdFwowfHjG3VLzI5Lem0elyjYV7M4Kd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
+Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 65AB1Fte097171;
+	Wed, 10 Jun 2026 20:01:15 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from [192.168.1.5] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
+	(authenticated bits=0)
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 65AB0k38096905
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 10 Jun 2026 20:01:15 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <075511fc-1136-4208-84d0-9214e761f8ba@I-love.SAKURA.ne.jp>
+Date: Wed, 10 Jun 2026 20:00:47 +0900
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath6kl: fix invalid workqueue flags in
+ ath6kl_usb_create()
+To: wuyankun <wuyankun@uniontech.com>, linux-wireless@vger.kernel.org
+Cc: jeff.johnson@oss.qualcomm.com, johan@kernel.org, kees@kernel.org,
+        sumanth.gavini@yahoo.com, linux-kernel@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com,
+        syzbot+f80c62f371ba6a1e7d79@syzkaller.appspotmail.com,
+        stable@vger.kernel.org
+References: <20260610092236.40026-1-wuyankun@uniontech.com>
+Content-Language: en-US
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <20260610092236.40026-1-wuyankun@uniontech.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Anti-Virus-Server: fsav405.rs.sakura.ne.jp
+X-Virus-Status: clean
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.14 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[i-love.sakura.ne.jp : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:praneesh.p@oss.qualcomm.com,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37625-lists,linux-wireless=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,kernel.org,yahoo.com,vger.kernel.org,googlegroups.com,syzkaller.appspotmail.com];
+	FORGED_SENDER(0.00)[penguin-kernel@I-love.SAKURA.ne.jp,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-37626-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:wuyankun@uniontech.com,m:linux-wireless@vger.kernel.org,m:jeff.johnson@oss.qualcomm.com,m:johan@kernel.org,m:kees@kernel.org,m:sumanth.gavini@yahoo.com,m:linux-kernel@vger.kernel.org,m:syzkaller-bugs@googlegroups.com,m:syzbot+f80c62f371ba6a1e7d79@syzkaller.appspotmail.com,m:stable@vger.kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[penguin-kernel@I-love.SAKURA.ne.jp,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid,sipsolutions.net:from_mime]
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,f80c62f371ba6a1e7d79];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4F32E668688
+X-Rspamd-Queue-Id: 82BA8668937
 
-On Tue, 2026-06-09 at 00:31 +0530, Praneesh P wrote:
->=20
-> > That seems really odd? why even bother going into the whole thing if
-> > it's invalid? Also, doesn't that ENOENT get propagated all the way and
-> > it aborts? I guess it does but it should never happen because of
-> > valid_links? Still seems a bit odd.
-> Both the link_sinfo null check and is_valid_ether_addr() check
-> will be moved to the top of the function, before any header or
-> nest construction. The null check for sinfo->links[link_idx] is
-> already guarded upstream by the valid_links bitmask so it should
-> never be NULL in practice, I'll add a WARN_ON_ONCE and skip rather
-> than returning -ENOENT, which would otherwise abort the entire dump.
-> Will it be okay ?
+On 2026/06/10 18:22, wuyankun wrote:
+> ath6kl_usb_create() currently creates ath6kl_wq with flags set to 0:
+> 
+>   alloc_workqueue("ath6kl_wq", 0, 0)
+> 
+> This triggers a runtime warning in __alloc_workqueue() because the queue is
+> created with neither WQ_PERCPU nor WQ_UNBOUND set:
+> 
+>   workqueue: ath6kl_wq is using neither WQ_PERCPU or WQ_UNBOUND.
+>   Setting WQ_PERCPU.
+> 
+> Set WQ_PERCPU explicitly to match the actual execution model and remove the
+> warning during device probe. No functional change intended.
+> 
+> Fixes: 62ebaf2f9261 ("ath6kl: avoid flush_scheduled_work() usage")
 
-I guess? Anyway the structure will change based on our other discussion
-below.
+Please use
 
-> ok, I will try to align with this suggested model. I'll refactor so the=
-=20
-> outer loop
-> produces exactly one netlink message per iteration, with header
-> construction in one place:
->=20
-> while (true) {
->  =C2=A0 =C2=A0 if (ctx->phase =3D=3D PHASE_AGGREGATED) {
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* fetch sinfo from driver once per station =
-*/
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 memset(&ctx->sinfo, ...);
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* allocate links[], call rdev_dump_station(=
-) */
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* apply cfg80211_sta_set_mld_sinfo() if nee=
-ded */
->  =C2=A0 =C2=A0 }
->=20
->  =C2=A0 =C2=A0 hdr =3D nl80211hdr_put(msg, ...);
->  =C2=A0 =C2=A0 /* common attrs: ifindex, wdev, mac, generation */
->  =C2=A0 =C2=A0 nla_put_u32(msg, NL80211_ATTR_IFINDEX, ...);
->  =C2=A0 =C2=A0 nla_put_u64_64bit(msg, NL80211_ATTR_WDEV, ...);
->  =C2=A0 =C2=A0 nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, ctx->mac_addr);
->  =C2=A0 =C2=A0 nla_put_u32(msg, NL80211_ATTR_GENERATION, ...);
->=20
->  =C2=A0 =C2=A0 switch (ctx->phase) {
->  =C2=A0 =C2=A0 case PHASE_AGGREGATED:
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 nl80211_put_sta_info_common(msg, rdev, &ctx-=
->sinfo);
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 ctx->phase =3D PHASE_PER_LINK;
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 ctx->link_idx =3D first_valid_link();
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;
->  =C2=A0 =C2=A0 case PHASE_PER_LINK:
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 nl80211_put_link_station(msg, rdev, &ctx->si=
-nfo, ctx->link_idx);
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 advance ctx->link_idx to next valid link;
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (no more links) {
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 cfg80211_sinfo_release_content=
-(&ctx->sinfo);
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ctx->sta_idx++;
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ctx->phase =3D PHASE_AGGREGATE=
-D;
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 }
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;
->  =C2=A0 =C2=A0 }
->=20
->  =C2=A0 =C2=A0 genlmsg_end(msg, hdr);=C2=A0 =C2=A0/* or genlmsg_cancel() =
-on EMSGSIZE=20
-> break-out */
-> }
->=20
->=20
-> This eliminates the duplicated nla_put_u32/u64/MAC header blocks
-> that currently exist in both nl80211_send_accumulated_station()
-> and nl80211_send_link_station(), and makes the EMSGSIZE bail-out
-> uniform since we return before committing the message.
+  Fixes: 21c05ca88a54 ("workqueue: Add warnings and ensure one among WQ_PERCPU or WQ_UNBOUND is present")
 
-Sounds good!
+for this problem because this problem is caused by
 
-> should the rdev_dump_station() / sinfo fill stay outside the
-> per-message loop (as a separate if (phase =3D=3D AGGREGATED) guard
-> at the top), or is it preferable to fold it into the switch
-> case? I've sketched the former above since fetching sinfo is
-> logically per-station, not per-message. I'm also ok to adjust
-> if you'd prefer it inside the switch ?
+  WQ subsystem is about to start requiring WQ_PERCPU unless WQ_UNBOUND,
+  without updating all in-tree users before start emitting WARNING: message
 
-I think it has to stay above otherwise you can't unify pushing the MAC
-address to the message? And then perhaps you could even unify the nest
-push (i.e. NL80211_ATTR_STA_INFO nest start), but I'm not sure how that
-interacts with other code and it's not really important. The header is
-more important since it could change in the future.
+. Also, you don't need to send to stable, but please try to send to linux.git before
+7.1-final is released (because this fix should be applied before 21c05ca88a54 is
+applied in order to avoid flooding of WARNING: messages).
 
-johannes
+> Reported-by: syzbot+f80c62f371ba6a1e7d79@syzkaller.appspotmail.com
+> Link: https://lore.kernel.org/all/6a289c01.39669fcc.33b062.00aa.GAE@google.com/T/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: wuyankun <wuyankun@uniontech.com>
+> ---
+>  drivers/net/wireless/ath/ath6kl/usb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
+> index 79c18f5ee02b..945984c3dbe6 100644
+> --- a/drivers/net/wireless/ath/ath6kl/usb.c
+> +++ b/drivers/net/wireless/ath/ath6kl/usb.c
+> @@ -636,7 +636,7 @@ static struct ath6kl_usb *ath6kl_usb_create(struct usb_interface *interface)
+>  	ar_usb = kzalloc_obj(struct ath6kl_usb);
+>  	if (ar_usb == NULL)
+>  		return NULL;
+> -	ar_usb->wq = alloc_workqueue("ath6kl_wq", 0, 0);
+> +	ar_usb->wq = alloc_workqueue("ath6kl_wq", WQ_PERCPU, 0);
+>  	if (!ar_usb->wq) {
+>  		kfree(ar_usb);
+>  		return NULL;
+
 
