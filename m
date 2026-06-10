@@ -1,129 +1,139 @@
-Return-Path: <linux-wireless+bounces-37614-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37615-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wt65ETX3KGoUOQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-37614-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 07:33:41 +0200
+	id dlKmMGD6KGqfOQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-37615-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 07:47:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FD8665F5E
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 07:33:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26266665FFA
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 07:47:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b="CStx/ZPT";
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=P63oMTho;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37614-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37614-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=IxVJhcc1;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b="WK/k3ak7";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37615-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37615-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=qualcomm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA044306B36C
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 05:33:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 252EF3019FC6
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jun 2026 05:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4449E33F58B;
-	Wed, 10 Jun 2026 05:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45542F6596;
+	Wed, 10 Jun 2026 05:47:08 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9087222AE48
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 05:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACA631F99B
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 05:47:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781069604; cv=none; b=SXyk055ziP2JM8JNwqL3wCkZ/iE4jTyRJPwlQ8vk3yCbKXxKugNgh9K3s64Se4rpJcZIuUsyF30uDi5MrLZ9cxeO5TN+kjs9ma9VGRncleUVQn8t1jjd482iVDVzGjxXsH/iiSKl+rz8j0JRtXSHWyr4+2XKbF73qoTSp0rEZdU=
+	t=1781070428; cv=none; b=j8OJoXrvTp0a8HhWnuLf1V9u2A9aFB+8VZH3DF2aUbLzA0nnRms5pJ74bWDLTyJzmYS7HYVZLEMmos+gb32wC+QvJJ3yMEMD9DHcPE5IArCx2WKaT3NP87nEqpaX3Y8/Y/GMNk8hsjq60YrZh1tRttlgy2V01HLbLkqsYHWddCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781069604; c=relaxed/simple;
-	bh=1jtMuM8JGGI9BdUBYwRqz65MkRKJ8a2f8+/cZX7EqKc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K/sjlRNUfOkJY/HNm4JHwjNXbvMJdo3ez2yxFf9yaRwkf9/x4wry1wUThbNYoANtqyfCf/lNBECOR0Ao8dEZHUYi5YnL2Nvmv4aIjIadPxfeneqoWK0XiYB/FthOiKZH8214bcbL85Iq6qVIJ6jQ+k3nl1fbRBMl1AyCS5Cbzeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CStx/ZPT; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=P63oMTho; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1781070428; c=relaxed/simple;
+	bh=ddHwpidLLnf7q9kplehLX4kwlBACPJoSIPP4b/6CqhI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SPy+6xO+q2cuhxkl39OK2UtKcD/7RgYSXwgUWsS5Ita13WbNevq2F/29hVX7PcIDNl4OlMnUq7QiZZesKnWacbh7lWD29lwUJ7lRODyMpGwhSsuZJ/Ho1gH6kGASTJ/I8rX9yN9b3E5hr0vhft8XP8c5tFIx0HG3j4prK4We4Xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IxVJhcc1; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WK/k3ak7; arc=none smtp.client-ip=205.220.180.131
 Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65A45JXH387509
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 05:33:21 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65A45QuR387966
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 05:47:06 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=hifyL0NPApEWe3nDZ2vyo0AZsxUVkJD6kco
-	qizNAelo=; b=CStx/ZPTGW2m7Fn6SqMF1JTVPm5CWk4MiodRvcpjr3mTZgfq1fE
-	FLPPY9tuW/T/zQTgbWpuLbln12h/mdk5y7VJTuDZFxQQkiDC7ox73GNIoKf49AAF
-	uFsTkCvHXkCN1Nu4zV9qsrihwBts0p04ZGxWi//OZ22CdzN+x2v/Es6WpBbXlAYx
-	NBzOFX0gqrbPqPvU6/UA4FwxG8IL/Q6ukPgZCmv7yq0jx50Ya3OUh92A7rfvbrhu
-	2N3A+wYR3onsor1ZH/m8/iuqhXtr+VCcqRICX1AGVH0kJdLRez6e6w+l9/YuWIlb
-	pkWxsENA2ZvreEDfWWuklhTlpNONiaPaRHg==
-Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eq0kd87vj-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Ilf9Gb5vywUQDri0aR7Jt3+ZugqsWowi/LJkwrMVpbM=; b=IxVJhcc16SDq3vWb
+	AooClzy1YkDqGWsUdXQPISn/pAG+pv2jDjRlrAPG1vtJCNb/CbA5bV3lZiPWQS+I
+	HAJCGSQgaLk46oWBPSaweyoB8GJMLF7vaf21eqHMftcdiICNYrc5DZc0MPk0ka3S
+	ZSivCAhhp7M9dIeLDvmX5Mjrj7itQUqnAocd/skkzot9kAbZboZPbxpdMVLhoJDn
+	JRIPai81kOdlXHXCej5FMbBrZecCWt3gjgLohgRiUCwFpOnQP34HveacwUHpMGne
+	nP/cp60m1D1PfTDB3kPURRb99iVlvbdXVPxmDY8PmliWNyic66RAnmc5yLjR32Vp
+	H8HOLQ==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eq0kd89ej-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 05:33:21 +0000 (GMT)
-Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-137eff27f36so8154093c88.1
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Jun 2026 22:33:21 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 05:47:05 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-36bba9b849dso6085115a91.1
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Jun 2026 22:47:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781069600; x=1781674400; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hifyL0NPApEWe3nDZ2vyo0AZsxUVkJD6kcoqizNAelo=;
-        b=P63oMThoqZ6OlwtnpdU9oe02I/bab3kK8AIVpN2oI9GaFJ+6rFko1Kbw3jBrJ/M9rZ
-         zH9zHOE6N/hTUSKgV6lWqVQVx3oTnOR1Z2CnZw/8aYqRsH22WWjs0IbbVMM0diRYJaUy
-         Mx/6h9w42DVbOBhb4Vr/AlqZOaLbzY5NIqdgM7bYeLpgHopGK2dSMX7QW/ltSUk4poX6
-         oiwlqGTN4MORQUIgNssjmY1kSuMQiJCZFWb3B1lEaTHB2E6uMcDBRAKpfN0VWBqYisO+
-         /aRNpZmKG24fqJUTkWosb/XeOSKkLLQp8ivBEm8Rz6PHJdT+kj8pXXQfpZjk9eWKWMBC
-         wXiw==
+        d=oss.qualcomm.com; s=google; t=1781070425; x=1781675225; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ilf9Gb5vywUQDri0aR7Jt3+ZugqsWowi/LJkwrMVpbM=;
+        b=WK/k3ak7gZJ71AHigX9VNo+QAOwJRY5VkwATvZ004dHZ/LL+lPCFvuEGBAFD1qprdh
+         Io8AjTErx95Q/rlikwn0krBuvORdS94hdibKRNVCkOT6kNwedUP7qxN8mcjcIr/rEdwd
+         a68uKZDG+k5tEADHhB3F+9ytrnMoHFAAYWy4/cJAPe80HCMUFvuMBG9wxDIKMR+c8s6J
+         +NM6rFu8VWXD7XvzrXd6kBny8cvQKXMC+XHzLx3AAtrPtaP3m05GKm3lto+VxClup1g5
+         5FhIljpuLO0eltDNfEf5gvGU+Zgx4bcipkrY502ZYEksJTIjLa3yeDaFhaeV12CMeP4x
+         p36A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781069600; x=1781674400;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hifyL0NPApEWe3nDZ2vyo0AZsxUVkJD6kcoqizNAelo=;
-        b=bXXv1Yzql6Pim3I/6BOuBPTuwBccOVHDJPSSJ44dj20P0+y12re/xtwnAGnnjjx8v0
-         xIQe0j91apm14G+fxLOXLIlAThq5RBXfJjFII/ryjja4lStaZBtiJEbesguuS4Qm6YfY
-         H5O+nXTUTsw2BeU0KjmPKnaT/zWVLu40Q5lP9Q9sk+AirBfCYnRDQfrW1LwkCHcgqSIA
-         dlogodxZzxVC5jf+bRFu3Dnps1ZT5xOGxFsc7ImcTaUBGfwZ4d3gg2e4aSapWtYgt0Zf
-         vXpIkrDvTztlEL1dNaIjy4TblPi8gNP9m9mOehJ68Takt2IYfd+oWYa8yatvNzs2dWII
-         PVbA==
-X-Gm-Message-State: AOJu0YwGGNOT8iAOBzUy3phgiwMBOR/PUgAvB7n+6cH/83MfGlHWtu/9
-	ard0j2j9WsZ8/8JDRK1etuFh//JkTtPG1YHa1i9N+je3vLr56NvYnVbBlWwrvpBmSO5ZNA0hscP
-	rSAb2Hdg5nyCIc/CvE2QMrhWTEh4cJtf1tIpBkx7gNbFIpXbJhHIM+m4Dc+Ca1oEjMtMh7dbcnS
-	Ut7A==
-X-Gm-Gg: Acq92OFTKO/vVihhT1O5tkPnTbKao1M0Y6rUu5XyjSkCC8hpSF9D7BjQlYvEwQjMe1B
-	JvpsYz8w26sZKVWeP1XQ2AXJ7EQXw1lNkwSlBvhs84JYJQJ+xaZniokNZl06B9rLNvzc07Fzs62
-	wYExMihjLoGxEEmV2tZ9J6/qYoLyzPOydIZILNo3C3vOEkvkz84AE28w+/n2QdXG6QaKHSj0yrL
-	GOyR2DbCg71mzm0ty6SahTNy3YDeMTjJHjONwj5bk3bFjlP/MI4JJKoGesakAOnZjv5owzdOB0Z
-	URHRqb6y0lReDgFYQb0riLHqvWVjEYSjk+B8OkhwSPyfnt3eXAYjpgsvQt6qO4CksjmBr5HWUSb
-	fNPWJA7t5d+IPRrPHPjKNzDAMOSzEssgPf9SdbEaB/9LvB6ADQtOZUksV+i+50uV62MfUNQcTrl
-	wCyu2nSjKXOxQ=
-X-Received: by 2002:a05:7022:98e:b0:12d:bab2:f213 with SMTP id a92af1059eb24-138066fbf9bmr12003002c88.21.1781069600158;
-        Tue, 09 Jun 2026 22:33:20 -0700 (PDT)
-X-Received: by 2002:a05:7022:98e:b0:12d:bab2:f213 with SMTP id a92af1059eb24-138066fbf9bmr12002973c88.21.1781069599497;
-        Tue, 09 Jun 2026 22:33:19 -0700 (PDT)
-Received: from hu-yintang-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-137f54c9c12sm17579127c88.6.2026.06.09.22.33.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 22:33:18 -0700 (PDT)
-From: Yingying Tang <yingying.tang@oss.qualcomm.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, yintang@qti.qualcomm.com,
-        yingying.tang@oss.qualcomm.com
-Subject: [PATCH ath-current] wifi: ath12k: Fix low MLO RX throughput on WCN7850
-Date: Tue,  9 Jun 2026 22:33:15 -0700
-Message-ID: <20260610053315.2249912-1-yingying.tang@oss.qualcomm.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1781070425; x=1781675225;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ilf9Gb5vywUQDri0aR7Jt3+ZugqsWowi/LJkwrMVpbM=;
+        b=JsNXPNJrreVto5tXuZ1YkFd/xjTu0p1mHyHQXzTngB0yWPWy794n52bVRVfwwMBpoO
+         +dKM6sHsisbFNC/aQxptgCLQuwcQi7SD1H1QJhZnFNxkgJB/UPi34eL+fNM2oo9FrmUw
+         Q291f8SrcQKwN4Q7QreQkXi37o86e7I/5fp4nxElPbqFajySeZb39oemnfDsUaKJGok+
+         GK/CxP7KjOHwfRooK5p1Xlp+8ReFC1aJDISfJ8o9M4/sg4m2e00wm2jEtbWv3yFYiFTN
+         5hJqbxVwyS0IRkb3vakd46n/OBgM7shhlBlW3USdSrNJkdFLymwaa7asWhhKtHJwcrCs
+         e6mA==
+X-Forwarded-Encrypted: i=1; AFNElJ9oGoJIb9m2rXU0cLU3qWzEeM1qDFbT/UVeAKkTsYJpyf36uyX1UOoiFppq+LxLmlLPUmmNe354ovfr1iv4ow==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+DdVMxppQ7uOpWQnEBbPudM8kf8eR3ZkFN7KVkHlm0fjIFVMt
+	UijDy940GVjHpYmnjtNsWPoNoW5jm9xm3R8A86SJ2QjiwaCEHWnFvQ7PqoIdTDpp04R/gjtqHOT
+	nlNa9e6dqW70ONuK3pSJumFAn4Nx6he7H8jDidc5L/u65ZZUU2AN6zxed5gKWeUn2Qg1wJaPaCe
+	gxdA==
+X-Gm-Gg: Acq92OGxSiPs1SDLiiC0PKvBcEtxoQpGxsqMRe0u4OWB1Qeh4D6Ems2eLQsIgU1SKSJ
+	/19Ov5Ua3Qji8P7RvlTACnCcMK77iOIqeE1zGeo1kGHAgEQ1/pw9/3CSRb6zmWbfBMh0JicfWYT
+	Uk9aT3S4ibvTK1M69Vbh4q2QTb8M2jsjDOcKnu9MzrkIpW5MNFtxigswYB149ZP+iws5mc3Wcqo
+	bY0ZGKT8fDWa2e0c/3UsF1uVJ3LHU0weGfbZX00CVYSUewVGqcnQKJcrKA8GWHlOvfzjehberib
+	RkVlFzHfQWo0Vj6aWtuOLgG2Y6Fm4i7/vrSn7MG5KerNqoILzQKDe/pQdD9H2CsKxZ7hNDFPfrQ
+	NkHlqjwt/6yctfQNtGqwn1Js31kU8OWeDyvh1w1faeAz1pFFwbDA5CXjhB7Z6Pd41nEvUC5RO
+X-Received: by 2002:a17:90b:3f88:b0:36d:e051:7b6a with SMTP id 98e67ed59e1d1-370ef1f3c52mr24237144a91.12.1781070424197;
+        Tue, 09 Jun 2026 22:47:04 -0700 (PDT)
+X-Received: by 2002:a17:90b:3f88:b0:36d:e051:7b6a with SMTP id 98e67ed59e1d1-370ef1f3c52mr24237088a91.12.1781070423364;
+        Tue, 09 Jun 2026 22:47:03 -0700 (PDT)
+Received: from [10.152.199.23] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37621852b31sm1387776a91.6.2026.06.09.22.46.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Jun 2026 22:47:03 -0700 (PDT)
+Message-ID: <cc9185b4-741b-4232-8907-a85872c3cf59@oss.qualcomm.com>
+Date: Wed, 10 Jun 2026 11:16:54 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=TeamcxQh c=1 sm=1 tr=0 ts=6a28f721 cx=c_pps
- a=JYo30EpNSr/tUYqK9jHPoA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=EUspDBNiAAAA:8
- a=OyfRQutId-_NmcKVfq4A:9 a=Fk4IpSoW4aLDllm1B1p-:22
-X-Proofpoint-GUID: zoQbWNcLuwPz1bKG0Ft551Y8L6oV3r70
-X-Proofpoint-ORIG-GUID: zoQbWNcLuwPz1bKG0Ft551Y8L6oV3r70
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEwMDA1MCBTYWx0ZWRfX9BwV5qJbLm92
- jSZYwZSVr4UbbsDNPUVskbGbw5k03R1k0pLPtqIGtGgHKm9Dbh9WDp0WH8liStt103LwD9VziZQ
- uNGCRJJ8mriLkixtUw6r5WPTrV8AJV9fNMJPIJzs9P76In20a798Q+xigAdYzXSly3iVBDBnSJ0
- XA+mrBOuZ92WVxl3sRD/C+Q6ULcj6BEzEcPrPWc+k0B45GmdOsFKYRYsRPnUx7J02BjRy1IlSnu
- tvnoqvQTBVyhqzr95WeKgtchqAVb7Tkd5fbTyorunYm+5X4rcqa6qsGt0TQjul40OCtivUdgR/q
- 1pHXCzJkTbV1qBdK/TBjfFtuKblPW4ptXeKQR/XHZNKCw8pb50zioRD9iWfziTEfCOUVqeQ/swR
- cBZsoN64ohBssIhfau1QVCFdlRmzSRCKmT533gMsAUN5Q7ZWiHHHqjJDx5j0FZWqNQdowK4/mV8
- 9PtHdOi7WnJhs65oBAQ==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [ath-current] wifi: ath11k: fix NULL pointer dereference in
+ ath11k_hal_srng_access_begin
+To: Gaole Zhang <gaole.zhang@oss.qualcomm.com>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Cc: miaoqing.pan@oss.qualcomm.com, hangtian.zhu@oss.qualcomm.com
+References: <20260609090609.4041009-1-gaole.zhang@oss.qualcomm.com>
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260609090609.4041009-1-gaole.zhang@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=TeamcxQh c=1 sm=1 tr=0 ts=6a28fa59 cx=c_pps
+ a=vVfyC5vLCtgYJKYeQD43oA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=EUspDBNiAAAA:8 a=E4ruc0QeprPoJUAD4lkA:9 a=QEXdDO2ut3YA:10
+ a=rl5im9kqc5Lf4LNbBjHf:22
+X-Proofpoint-GUID: oNQu1YoC7zf0jTTjwJKJESbXmFWYphVF
+X-Proofpoint-ORIG-GUID: oNQu1YoC7zf0jTTjwJKJESbXmFWYphVF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEwMDA1MSBTYWx0ZWRfX55WPMw5fAdty
+ 65st24FBUUqoBlKZ6xVgjp9OtvJU5paDZN7r9bxsQogjMsxVKQG8dQJ6b7OsQLkb5pclN22Dn7m
+ 6LdBSqzEibCf1v9kEWCEOjX1Xso3VnF73i4e+i0HufUUHd+KyBYpU036CkVP4jBhme0ypEbGbZU
+ mjiU8sT6UISb8EMwVSCdPB9YBrlwXTgLuTLOdTVauatENS13aPp04F7+VEC4Ujb7FAoRss+7hi/
+ IjIQY2SFYMOYQ2ou3sXq/0DYX46ah+Kw7JxfMWA+6/nS9bsIp6iPlO55BAHX24g7zKz14lf21ae
+ QZaxS1VNjRw3UQhtW42O6glOYcCyJIwf/GT1PbDuE1uvMg+Q/VxGOqbG8BuPO6xQbToMAWs+oK3
+ bTbBgBEAakw+nYFSs5WaX+Heqw3VMU9au7pUyGpLU1GnO8+fLUvaEyDP73HUipfxNcG38t3uPAq
+ CZltyde6mcLa0voGcSw==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-10_01,2026-06-09_02,2025-10-01_01
@@ -131,321 +141,66 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0 spamscore=0
  impostorscore=0 clxscore=1015 priorityscore=1501 bulkscore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606100050
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606100051
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-37614-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37615-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:yintang@qti.qualcomm.com,m:yingying.tang@oss.qualcomm.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[yingying.tang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gaole.zhang@oss.qualcomm.com,m:ath11k@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:miaoqing.pan@oss.qualcomm.com,m:hangtian.zhu@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yingying.tang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp];
-	TO_DN_NONE(0.00)[];
+	FORGED_SENDER(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,qualcomm.com:dkim,qualcomm.com:email,vger.kernel.org:from_smtp];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 92FD8665F5E
+X-Rspamd-Queue-Id: 26266665FFA
 
-Commit [1] introduced a regression causing severely degraded MLO RX
-throughput on WCN7850.
-
-On WCN7850, there is only a single ar instance, but MLO uses two
-link IDs. ath12k_dp_peer->hw_links[] is indexed using ar->hw_link_id,
-which causes both MLO link IDs to be stored at the same index.
-
-As a result, an incorrect link ID is assigned to MSDUs in
-ath12k_dp_rx_deliver_msdu(), leading to severe MLO RX throughput loss.
-
-Different chipsets identify the per-MSDU link differently:
-
-  - On QCN9274 / IPQ5332, the host owns multiple ar instances and the
-    per-MSDU hw_link_id from the RX descriptor maps cleanly through
-    dp_peer->hw_links[hw_link_id] to the IEEE link_id.
-
-  - On single-ar chipsets like WCN7850 / QCC2072, there is only one ar
-    instance for both MLO links, so dp_peer->hw_links[] has just one
-    valid slot and cannot be used to distinguish the two links. To
-    resolve the link, walk dp_peer->link_peers[] and match by
-    rxcb->peer_id, which on the link_peer side identifies the link
-    peer for the MSDU.
-
-Add a new hw_op set_rx_link_id() so each chipset resolves the link
-on the RX fast path using whatever signal it actually has, and let
-the op itself decide whether to populate rx_status::link_valid and
-rx_status::link_id:
-
-  QCN9274 / IPQ5332 : always derive link_id from
-                      dp_peer->hw_links[rxcb->hw_link_id] and set
-                      link_valid.
-  WCN7850 / QCC2072 : walk the link_peers[] of dp_peer to find the
-                      link_peer whose peer_id matches rxcb->peer_id,
-                      and set link_valid only when a match is found.
-                      Otherwise leave link_valid clear so that
-                      mac80211 can fall back to its own link
-                      resolution path (via addr2 / deflink).
-
-For WCN7850 / QCC2072, walking dp_peer->link_peers[] is bounded by
-the number of links actually populated, so introduce a link_peers_map
-bitmap (unsigned long) in struct ath12k_dp_peer that tracks populated
-slots and use for_each_set_bit() to iterate. Non-MLO clients hit one
-slot, current MLO clients hit two; the full ATH12K_NUM_MAX_LINKS
-array is never scanned. The bitmap is maintained with WRITE_ONCE() on
-the write side (under dp_hw->peer_lock) paired with READ_ONCE() on
-both the lockless RX read side and the write-side RMW for KCSAN
-correctness.
-
-Also guard the dp_peer dereference in ath12k_mac_peer_cleanup_all()
-with a NULL check, since peer->dp_peer can be NULL for self-peers or
-peers not yet fully assigned, the pre-existing rcu_assign_pointer()
-call there had the same latent issue.
-
-This restores the correct link ID on WCN7850 without changing the
-QCN9274 / IPQ5332 data path, which keeps its O(1) hw_links[]
-indexing.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
-
-Fixes: 11157e0910fd ("wifi: ath12k: Use ath12k_dp_peer in per packet Tx & Rx paths") # [1]
-Signed-off-by: Yingying Tang <yingying.tang@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath12k/dp_peer.c     |  4 +++
- drivers/net/wireless/ath/ath12k/dp_peer.h     |  1 +
- drivers/net/wireless/ath/ath12k/dp_rx.c       |  7 ++--
- drivers/net/wireless/ath/ath12k/hw.h          | 16 +++++++++
- drivers/net/wireless/ath/ath12k/mac.c         | 10 ++++--
- drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c | 33 +++++++++++++++++++
- drivers/net/wireless/ath/ath12k/wifi7/dp_rx.h |  6 ++++
- drivers/net/wireless/ath/ath12k/wifi7/hw.c    |  3 ++
- 8 files changed, 73 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/dp_peer.c b/drivers/net/wireless/ath/ath12k/dp_peer.c
-index a1100782d45e..f57f1483c3e4 100644
---- a/drivers/net/wireless/ath/ath12k/dp_peer.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_peer.c
-@@ -570,6 +570,8 @@ int ath12k_dp_link_peer_assign(struct ath12k_dp *dp, struct ath12k_dp_hw *dp_hw,
- 	peerid_index = ath12k_dp_peer_get_peerid_index(dp, peer->peer_id);
- 
- 	rcu_assign_pointer(dp_peer->link_peers[peer->link_id], peer);
-+	WRITE_ONCE(dp_peer->link_peers_map,
-+		   READ_ONCE(dp_peer->link_peers_map) | BIT(peer->link_id));
- 
- 	rcu_assign_pointer(dp_hw->dp_peers[peerid_index], dp_peer);
- 
-@@ -632,6 +634,8 @@ void ath12k_dp_link_peer_unassign(struct ath12k_dp *dp, struct ath12k_dp_hw *dp_
- 	peerid_index = ath12k_dp_peer_get_peerid_index(dp, peer->peer_id);
- 
- 	rcu_assign_pointer(dp_peer->link_peers[peer->link_id], NULL);
-+	WRITE_ONCE(dp_peer->link_peers_map,
-+		   READ_ONCE(dp_peer->link_peers_map) & ~BIT(peer->link_id));
- 
- 	rcu_assign_pointer(dp_hw->dp_peers[peerid_index], NULL);
- 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_peer.h b/drivers/net/wireless/ath/ath12k/dp_peer.h
-index 113b8040010f..d4d2ff16e836 100644
---- a/drivers/net/wireless/ath/ath12k/dp_peer.h
-+++ b/drivers/net/wireless/ath/ath12k/dp_peer.h
-@@ -140,6 +140,7 @@ struct ath12k_dp_peer {
- 
- 	/* Info used in MMIC verification of * RX fragments */
- 	struct ieee80211_key_conf *keys[WMI_MAX_KEY_INDEX + 1];
-+	unsigned long link_peers_map;
- 	struct ath12k_dp_link_peer __rcu *link_peers[ATH12K_NUM_MAX_LINKS];
- 	struct ath12k_reoq_buf reoq_bufs[IEEE80211_NUM_TIDS + 1];
- 	struct ath12k_dp_rx_tid rx_tid[IEEE80211_NUM_TIDS + 1];
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index b108ccd0f637..b5dba7c0155f 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -1344,10 +1344,9 @@ void ath12k_dp_rx_deliver_msdu(struct ath12k_pdev_dp *dp_pdev, struct napi_struc
- 
- 	pubsta = peer ? peer->sta : NULL;
- 
--	if (pubsta && pubsta->valid_links) {
--		status->link_valid = 1;
--		status->link_id = peer->hw_links[rxcb->hw_link_id];
--	}
-+	status->link_valid = 0;
-+	if (pubsta && pubsta->valid_links)
-+		ath12k_hw_set_rx_link_id(dp->hw_params, peer, rxcb, status);
- 
- 	ath12k_dbg(dp->ab, ATH12K_DBG_DATA,
- 		   "rx skb %p len %u peer %pM %d %s sn %u %s%s%s%s%s%s%s%s%s%s rate_idx %u vht_nss %u freq %u band %u flag 0x%x fcs-err %i mic-err %i amsdu-more %i\n",
-diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
-index a9888e0521a1..da75d19ae1a0 100644
---- a/drivers/net/wireless/ath/ath12k/hw.h
-+++ b/drivers/net/wireless/ath/ath12k/hw.h
-@@ -13,6 +13,10 @@
- #include "wmi.h"
- #include "hal.h"
- 
-+struct ath12k_dp_peer;
-+struct ath12k_skb_rxcb;
-+struct ieee80211_rx_status;
-+
- /* Target configuration defines */
- 
- /* Num VDEVS per radio */
-@@ -224,6 +228,9 @@ struct ath12k_hw_ops {
- 	bool (*dp_srng_is_tx_comp_ring)(int ring_num);
- 	bool (*is_frame_link_agnostic)(struct ath12k_link_vif *arvif,
- 				       struct ieee80211_mgmt *mgmt);
-+	void (*set_rx_link_id)(struct ath12k_dp_peer *dp_peer,
-+			       struct ath12k_skb_rxcb *rxcb,
-+			       struct ieee80211_rx_status *status);
- };
- 
- static inline
-@@ -254,6 +261,15 @@ static inline int ath12k_hw_mac_id_to_srng_id(const struct ath12k_hw_params *hw,
- 	return 0;
- }
- 
-+static inline void ath12k_hw_set_rx_link_id(const struct ath12k_hw_params *hw,
-+					    struct ath12k_dp_peer *dp_peer,
-+					    struct ath12k_skb_rxcb *rxcb,
-+					    struct ieee80211_rx_status *status)
-+{
-+	if (hw->hw_ops->set_rx_link_id)
-+		hw->hw_ops->set_rx_link_id(dp_peer, rxcb, status);
-+}
-+
- struct ath12k_fw_ie {
- 	__le32 id;
- 	__le32 len;
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index df2334f3bad6..a7377bc7308b 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -1234,9 +1234,13 @@ void ath12k_mac_peer_cleanup_all(struct ath12k *ar)
- 		/* cleanup dp peer */
- 		spin_lock_bh(&dp_hw->peer_lock);
- 		dp_peer = peer->dp_peer;
--		peerid_index = ath12k_dp_peer_get_peerid_index(dp, peer->peer_id);
--		rcu_assign_pointer(dp_peer->link_peers[peer->link_id], NULL);
--		rcu_assign_pointer(dp_hw->dp_peers[peerid_index], NULL);
-+		if (dp_peer) {
-+			peerid_index = ath12k_dp_peer_get_peerid_index(dp, peer->peer_id);
-+			rcu_assign_pointer(dp_peer->link_peers[peer->link_id], NULL);
-+			WRITE_ONCE(dp_peer->link_peers_map,
-+				   READ_ONCE(dp_peer->link_peers_map) & ~BIT(peer->link_id));
-+			rcu_assign_pointer(dp_hw->dp_peers[peerid_index], NULL);
-+		}
- 		spin_unlock_bh(&dp_hw->peer_lock);
- 
- 		ath12k_dp_link_peer_rhash_delete(dp, peer);
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c b/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c
-index 945680b3ebdf..2801a38cd1e7 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c
-@@ -5,6 +5,7 @@
-  */
- 
- #include "dp_rx.h"
-+#include "../dp_peer.h"
- #include "../dp_tx.h"
- #include "../peer.h"
- #include "hal_qcn9274.h"
-@@ -2240,3 +2241,35 @@ ath12k_wifi7_dp_rxdesc_mpdu_valid(struct ath12k_base *ab,
- 
- 	return tlv_tag == HAL_RX_MPDU_START;
- }
-+
-+void
-+ath12k_wifi7_dp_rx_set_link_id_qcn9274(struct ath12k_dp_peer *dp_peer,
-+				       struct ath12k_skb_rxcb *rxcb,
-+				       struct ieee80211_rx_status *status)
-+{
-+	status->link_valid = 1;
-+	status->link_id = dp_peer->hw_links[rxcb->hw_link_id];
-+}
-+
-+void
-+ath12k_wifi7_dp_rx_set_link_id_wcn7850(struct ath12k_dp_peer *dp_peer,
-+				       struct ath12k_skb_rxcb *rxcb,
-+				       struct ieee80211_rx_status *status)
-+{
-+	struct ath12k_dp_link_peer *link_peer;
-+	unsigned long links_map;
-+	int i;
-+
-+	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
-+			 "ath12k set rx link id called without rcu lock");
-+
-+	links_map = READ_ONCE(dp_peer->link_peers_map);
-+	for_each_set_bit(i, &links_map, ATH12K_NUM_MAX_LINKS) {
-+		link_peer = rcu_dereference(dp_peer->link_peers[i]);
-+		if (link_peer && link_peer->peer_id == rxcb->peer_id) {
-+			status->link_valid = 1;
-+			status->link_id = link_peer->link_id;
-+			return;
-+		}
-+	}
-+}
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.h b/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.h
-index 8aa79faf567f..1d3a4788a2dd 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.h
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.h
-@@ -57,4 +57,10 @@ ath12k_wifi7_dp_rxdesc_mpdu_valid(struct ath12k_base *ab,
- 				  struct hal_rx_desc *rx_desc);
- int ath12k_wifi7_dp_rx_tid_delete_handler(struct ath12k_base *ab,
- 					  struct ath12k_dp_rx_tid_rxq *rx_tid);
-+void ath12k_wifi7_dp_rx_set_link_id_qcn9274(struct ath12k_dp_peer *dp_peer,
-+					    struct ath12k_skb_rxcb *rxcb,
-+					    struct ieee80211_rx_status *status);
-+void ath12k_wifi7_dp_rx_set_link_id_wcn7850(struct ath12k_dp_peer *dp_peer,
-+					    struct ath12k_skb_rxcb *rxcb,
-+					    struct ieee80211_rx_status *status);
- #endif
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hw.c b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-index cb3185850439..f687eb69ea8d 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-@@ -158,6 +158,7 @@ static const struct ath12k_hw_ops qcn9274_ops = {
- 	.get_ring_selector = ath12k_wifi7_hw_get_ring_selector_qcn9274,
- 	.dp_srng_is_tx_comp_ring = ath12k_wifi7_dp_srng_is_comp_ring_qcn9274,
- 	.is_frame_link_agnostic = ath12k_wifi7_is_frame_link_agnostic_qcn9274,
-+	.set_rx_link_id = ath12k_wifi7_dp_rx_set_link_id_qcn9274,
- };
- 
- static const struct ath12k_hw_ops wcn7850_ops = {
-@@ -168,6 +169,7 @@ static const struct ath12k_hw_ops wcn7850_ops = {
- 	.get_ring_selector = ath12k_wifi7_hw_get_ring_selector_wcn7850,
- 	.dp_srng_is_tx_comp_ring = ath12k_wifi7_dp_srng_is_comp_ring_wcn7850,
- 	.is_frame_link_agnostic = ath12k_wifi7_is_frame_link_agnostic_wcn7850,
-+	.set_rx_link_id = ath12k_wifi7_dp_rx_set_link_id_wcn7850,
- };
- 
- static const struct ath12k_hw_ops qcc2072_ops = {
-@@ -178,6 +180,7 @@ static const struct ath12k_hw_ops qcc2072_ops = {
- 	.get_ring_selector = ath12k_wifi7_hw_get_ring_selector_wcn7850,
- 	.dp_srng_is_tx_comp_ring = ath12k_wifi7_dp_srng_is_comp_ring_wcn7850,
- 	.is_frame_link_agnostic = ath12k_wifi7_is_frame_link_agnostic_wcn7850,
-+	.set_rx_link_id = ath12k_wifi7_dp_rx_set_link_id_wcn7850,
- };
- 
- #define ATH12K_TX_RING_MASK_0 0x1
-
--- 
-base-commit: 54a5b38e4396530e5b2f12b54d3844e860ab6784
+On 6/9/2026 2:36 PM, Gaole Zhang wrote:
+> In ATH11K_QMI_EVENT_FW_READY, ATH11K_FLAG_REGISTERED is set
+> unconditionally even when ath11k_core_qmi_firmware_ready() fails.
+> This leaves the driver in an inconsistent state where
+> initialization is considered complete although the firmware ready
+> handling did not finish successfully. During the subsequent SSR,
+> the driver enters the restart path based on this incorrect state
+> and dereferences uninitialized srng members, resulting in a NULL
+> pointer dereference.
+> 
+> Call trace:
+>    ath11k_hal_srng_access_begin+0xc/0x60 [ath11k] (P)
+>    ath11k_ce_cleanup_pipes+0x17c/0x180 [ath11k]
+>    ath11k_core_restart+0x40/0x168 [ath11k]
+> 
+> Fix this by:
+> - skipping firmware_ready if ATH11K_FLAG_REGISTERED is already set
+> - setting ATH11K_FLAG_REGISTERED only when firmware_ready succeeds
+> - setting ATH11K_FLAG_QMI_FAIL and aborting the FW_READY handling
+> on error
+> 
+> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.2.0.c2-00204-QCAMSLSWPLZ-1
+> 
+> Fixes: 6fe62a8cec51c ("wifi: ath11k: Add cold boot calibration support on WCN6750")
+> Signed-off-by: Gaole Zhang <gaole.zhang@oss.qualcomm.com>
+Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 
