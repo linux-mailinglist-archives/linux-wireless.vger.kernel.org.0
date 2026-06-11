@@ -1,245 +1,216 @@
-Return-Path: <linux-wireless+bounces-37650-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37651-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AcvdG5gsKmpljgMAu9opvQ
-	(envelope-from <linux-wireless+bounces-37650-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 05:33:44 +0200
+	id 8SmSGN5RKmp5nQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-37651-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 08:12:46 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D52B166DFE4
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 05:33:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE5066EEE1
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 08:12:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=hEeh2kKh;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=fFaLbqM9;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37650-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37650-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DyQF+hs/";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37651-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37651-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53BBA3104305
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 03:33:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C761430DA13B
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 06:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060CA2BDC05;
-	Thu, 11 Jun 2026 03:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D400434EEEE;
+	Thu, 11 Jun 2026 06:12:41 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1E53128A3
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 03:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE41C35893;
+	Thu, 11 Jun 2026 06:12:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781148807; cv=none; b=glP4qq4okM6+D8s5XFIPhWd2dtrbvYYWmjXh4gbEKAi//jHGEksjbWh6P8k+p0v+mjKbYhnD547o7J0mMsEq4gmtfkrYrAJwEKCpY+G7R2X6R7J1sj0Ynmfc6rRKXtLqbMwuyhVbNNEbj/Laavk/T2Udbzz7s5DcxewecUwSG/w=
+	t=1781158361; cv=none; b=SZdB961wuk5Ud+ZXMWoAnf4h/OhEvGgyC4FKSGN7Xtk8yFwMxIl7D6L880C/KTqZKm8VqJO1jkW1k8xL2+W5yi+6Rb+wAeGR/RYo/EsHOUZVrORbpEuEUW5Vqn6nO2aKETGfU4FA7SF33FNi2OPh8G13DpdtOPElZhCr0IcVvNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781148807; c=relaxed/simple;
-	bh=tYGlgM3WWze2hc9PNcwsbFROOuQfTGv3VPZ0Hl7NkQ4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aJ8SlkKqjXnzyiEcfBE5c5c7ANiZzdKRGwd8/cVBpg4sQ7/KLPYUJHMyWw9/NfqDDR6TOU1YigaB7OMWSKazUmEdUN1xILFamHkX/7w7iKpphCAySGEm1ge01RMka0GhnsbAU5VENPxqPjmxpBmAir1TpgEWKPLBZDG7/jdp8GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hEeh2kKh; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fFaLbqM9; arc=none smtp.client-ip=205.220.168.131
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65B0Nhte3159720
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 03:33:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=wANYbend8iu
-	qsdCtlChTQdQSao4D8V09xXZgnJmxXi4=; b=hEeh2kKhUskne4GhQccTE3yx2x+
-	dmJiE+tq+Kr7zRKrvmL8/RsZlj2JaJLrbqF7SRetZfDZU382ky26u5vMqTS1cpGO
-	mKB+bteJV7eoHWMntJocn0aI0FFCWtlGGcZ2reQeG5DKypz4pKOVzq1+/jCb99/R
-	wb6U/KOZxx/W/3RDECMf0RS4L9ahgS/dPKgFcR7UYAWG//v9sgyl77PBB7gOP1Kx
-	cy7k5gNpVsS7fbwM5YVy3UcRrJX91ZsNUOMPv14DR5vnuDc3UEnL7ywUoEvTTckI
-	GPLn4XaxvAtBxzH21Mb+cF4ZREVVlKUG0wmF3MFFqJGPg4xK6P4g4dneTDg==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eqe701e9m-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 03:33:26 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-36d99629fd6so12070917a91.1
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 20:33:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781148805; x=1781753605; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wANYbend8iuqsdCtlChTQdQSao4D8V09xXZgnJmxXi4=;
-        b=fFaLbqM9lNlve8XRQvGwCbUMXZMCTAECgc0IvYg9fHtQqnC5t/d80z9zOJy0pUAsSb
-         wZpA+Bk6zDygcql3CYQYg5SashGCKAH4sJWVpfrymPddUvW7b4VXJI+J8MG/EE1zhzKV
-         9fviumGRE34109GcT/rtr38cRYL+Ki42jyCQUHVZRTJNt6lw2/hxj4zQ+33NkvdyjJeX
-         iaEQjrtyYL8HK40h1jBwbDdzxu4vZ17agJcxRhZrjKu5Xxbpb6YH/CY+ol8JWqs2pKbN
-         eVIqVEosOFVoOeHqZOVGE43vU0M95STQoP2wYoKIv88RJF/X0ZFzuljCRSbNKtaa+VYZ
-         JWAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781148805; x=1781753605;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wANYbend8iuqsdCtlChTQdQSao4D8V09xXZgnJmxXi4=;
-        b=OluQZOOrwtXfGoqaux7c7xVarcbt8uMLgU3I9Bha24oPw6doOjlvBCHeUGvZT2JKRp
-         2qbQCHd/Ci85hWZo6Y6XoYLdOteotND441FwVK/RipdNy46BUzyIuT2zY7VOx6U64ykB
-         bhDhM1ilyq3sCBSn6FYytNagOvcGMfPnSTuvQ4L8K7+ryQeqxRBERK5aX5i1jlEJ4Ucq
-         NtqYqUgdhjyKMVuHbo4QL/3mCipO+oXyS6cjA0QVovEd7E2+YaPdcihDZvO+O7+8UnzZ
-         Kf8mjCEHPRIGT209oPK/wR1IQMWbIY0uen3LcdcLimc46x2g1uNYqzXziw0pDFMs205P
-         oUCQ==
-X-Gm-Message-State: AOJu0YzLY+BEGLiRgHbagj3D85H2LPai19o9jIDdta1U6rvZg5NikgMT
-	lsUsAZw997G+4sZQ6VYJZEZQB0HmnUZftj4HMdjsosxEThFkIQScPygeWXPzwnP0I7n9as73YaL
-	FsIvndVXGtMByvJNAPIwa49K05gJ0WLt/2rMM5FdXnBBUrJL7WoDLryVh0/JLqISmUcFzRg==
-X-Gm-Gg: Acq92OFy2+fu+8I8p7cRdNeI8UV6+CtYeBCAJIX/psdM0mGEgTrGEDVOs+aWf3O1n+l
-	w69khmOiVOviDAyJqmj49VW4k37Jerylsm877aUt/R0pXNph9RJD0EIS+i5BDMKqqAFoE3U9dYr
-	6+FJs8Y1yD7DGQ0UnltGZqD2x76vpB0V4Rw+AuQWMpqGxCuiT2jaz5MsIbd+UU/Jy14AaeOJyYs
-	FeXu5In3RcqsZ7QPEOX5xbXIXFN6vBGgMI90Vn0OqtH4eUtv36aHhfwo5CpPBFKV3CQ7OX6eRuB
-	Fj+EX2T2xIEV8QlBCHSSA3AFSuUQqbcKsVP+f/PrIatwhnpCmuaS1J35GtRQLcXKo6D0hrjzJxd
-	Ftw3uFvM603cs2NVEauO6OAT4VSX4G9hcMQ6XGtl2/0Tg092Dp11DRUmz0bj/sQJaURV8hVV/bq
-	r5xGqetM93rfMXHOU9YvBXfSP93U7q7r75I7IQN03JN5TG39ejOI4JgRg=
-X-Received: by 2002:a17:90b:3f8f:b0:372:94b9:76d8 with SMTP id 98e67ed59e1d1-3779dd65b9amr1186311a91.6.1781148805573;
-        Wed, 10 Jun 2026 20:33:25 -0700 (PDT)
-X-Received: by 2002:a17:90b:3f8f:b0:372:94b9:76d8 with SMTP id 98e67ed59e1d1-3779dd65b9amr1186286a91.6.1781148805125;
-        Wed, 10 Jun 2026 20:33:25 -0700 (PDT)
-Received: from hu-aarasahu-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3775287186dsm896041a91.6.2026.06.10.20.33.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 20:33:24 -0700 (PDT)
-From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Subject: [PATCH ath-next 3/3] wifi: ath12k: allocate HOST_DDR and BDF regions after Q6 RO region
-Date: Thu, 11 Jun 2026 09:03:14 +0530
-Message-Id: <20260611033314.2330-4-aaradhana.sahu@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260611033314.2330-1-aaradhana.sahu@oss.qualcomm.com>
-References: <20260611033314.2330-1-aaradhana.sahu@oss.qualcomm.com>
+	s=arc-20240116; t=1781158361; c=relaxed/simple;
+	bh=DWQyiCFO1FABU7yAOsD/6HABw1tfpUVXIqUq8GqvtXw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q70OZACx2UgcVr/m5bjeEkn70b+dqY5NJ108Mwhef9jjgxtQmZPwjl9zMVSu8APoRKufKuR3eZVvA9NmOzMGbG4nrcUIpRHN8Mom9oVQE6m5QH6lM/NQQiicXQxRi2zBsTS1PVQiZ3HAeD8JYU4IBoV4NBgy9xfM2keB3EHvmak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DyQF+hs/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C451F00893;
+	Thu, 11 Jun 2026 06:12:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781158360;
+	bh=DxYpf2U0C53sMLriRY3htfPkTiuUmNi3d2UuSNLLb1k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DyQF+hs/aG2rKRYUzz85y5O3fU0Xse5+1w9iuDQQmnRQ+ehsgd9jJayZugQvqNZBC
+	 IZ01El2IY07l9WqTKehUlYt+eq/3GzT8LRjdI2EZGQe8RLBr4FmWhR0ndQsH6m5vmi
+	 a8A/TjwN67onTgt7GOU4Aj7GdJcxqZa6DJ6mLJT0yMQLCWBMvqKIJwjUud5LM0cCEB
+	 g3WmOrfKDgGEsL3nbWKxelci3j5KEQQqGZ5MHuW7qERz8RU6ZjLrc8LKE0cOPYtcGZ
+	 IeR4rF8FJXCidMidpVwr76lKev4yXLcggRbioAc8v8v7hH1+irYI8z8a0SETZ6fol9
+	 LzXJd6ueiD3xQ==
+Date: Thu, 11 Jun 2026 08:12:26 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+	Qiang Yu <qiang.yu@oss.qualcomm.com>, Jeff Johnson <jjohnson@kernel.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, 
+	Rocky Liao <quic_rjliao@quicinc.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+	devicetree@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	linux-bluetooth@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] PCI: qcom: fix parsing of PERST# in the legacy
+ case
+Message-ID: <sqxjkxbw6k7dstj2wmcwwigjou3jpq3bk4xidkpupfdblocadc@rkts6nbun5ld>
+References: <20260608-sm8350-wifi-v2-0-efb68f1ff04c@oss.qualcomm.com>
+ <20260608-sm8350-wifi-v2-1-efb68f1ff04c@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDAzMSBTYWx0ZWRfXwCgsHBvKjvXH
- KLzvUeXqSxC6PCYj2U/XqtIe/9GjtrZpWzjfId9UmBcP9XPIhvXwfDbARlFQtRyUDD+AaI/BgFd
- Da3DyO1gWLymH/VQF9wVrMGfvqpLtRXtThqTX1+iN/w+MhDCPW+2l8WK0v7oyHM05xGKUSuRRE2
- HZP0X+AI4j7Y+5BwIWB286bFqXDhJGHNcnq4iTnvEObFmi38aNqVSpjTGbntNiLnpYjtuSdtc4H
- QDhrnT4jdrx9yXu1/p3wa8XOe4ZKCPq+C2bAoRlS6MMZZ3XUSLQwPbHb8lJP67uIMFz4Rw0WQu0
- m9KZYor4O/C4BopOlJ8eTS0NztwfQ758+ApYLmK6Kzps3uVwWpizDY6Jb09mmL9U9ZuzXONlLA3
- i+UX7/BxS5B3Mke1p43iCYoAVbxTWKKxdvofDY8H7Lxm4u8mm9wKM14dz2vEEvfLwm51pZcYrDK
- julidYne9Z68LRKSLrA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDAzMSBTYWx0ZWRfX9aZ6GrisJk0A
- eNeAuOcYEnGjSbdpT2ajV5R03kqFxssLJDcXNcJgtCvj6vYMrO5ui84BOG+YOObZ/CzrtQMx+Wi
- yQuPH0ebkpxOWvRT6iMm76h45IY18hE=
-X-Proofpoint-GUID: 8vh20ITMcl9aJxE2C5wZlerV5BHBLwbW
-X-Proofpoint-ORIG-GUID: 8vh20ITMcl9aJxE2C5wZlerV5BHBLwbW
-X-Authority-Analysis: v=2.4 cv=Z5Tc2nRA c=1 sm=1 tr=0 ts=6a2a2c86 cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=EUspDBNiAAAA:8
- a=nT0BbeqX0ttObqoriowA:9 a=mQ_c8vxmzFEMiUWkPHU9:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-11_01,2026-06-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 adultscore=0 impostorscore=0 malwarescore=0
- spamscore=0 lowpriorityscore=0 phishscore=0 priorityscore=1501 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606110031
+In-Reply-To: <20260608-sm8350-wifi-v2-1-efb68f1ff04c@oss.qualcomm.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-37650-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[27];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:dmitry.baryshkov@oss.qualcomm.com,m:lpieralisi@kernel.org,m:kwilczynski@kernel.org,m:robh@kernel.org,m:bhelgaas@google.com,m:konrad.dybcio@oss.qualcomm.com,m:qiang.yu@oss.qualcomm.com,m:jjohnson@kernel.org,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:brgl@kernel.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:quic_bgodavar@quicinc.com,m:quic_rjliao@quicinc.com,m:andersson@kernel.org,m:konradybcio@kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath11k@lists.infradead.org,m:devicetree@vger.kernel.org,m:brgl@bgdev.pl,m:linux-bluetooth@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:aaradhana.sahu@oss.qualcomm.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[aaradhana.sahu@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aaradhana.sahu@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-37651-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER(0.00)[mani@kernel.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,google.com,oss.qualcomm.com,gmail.com,holtmann.org,quicinc.com,vger.kernel.org,lists.infradead.org,bgdev.pl];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,rkts6nbun5ld:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D52B166DFE4
+X-Rspamd-Queue-Id: EEE5066EEE1
 
-Currently, the Q6 region contains a read-only firmware region along with
-the BDF_MEM_REGION_TYPE and HOST_DDR_REGION_TYPE memory areas. The firmware
-expects these writable memory regions to be assigned after the Q6 read-only
-section.
+On Mon, Jun 08, 2026 at 09:59:19AM +0300, Dmitry Baryshkov wrote:
+> Commit deed8aec62dc ("PCI: qcom: Handle mixed PERST#/PHY DT
+> configuration") fixed support for the "mixed" platforms which declare
+> PERST# pin the RC node and the PHY in the RP node, however it also broke
+> support for a majority of existing platforms, which declare both PERST#
+> and PHY in the RC node, because now PERST# is first acquired in
+> qcom_pcie_parse_ports(), which then returns -ENODEV (as there are no
+> PHYs in the RP nodes). Later qcom_pcie_parse_legacy_binding() tries to
+> acquire the PERST# GPIO again and fails with -EBUSY (as the GPIO has
+> already been requested).
+> 
+> Move parsing of RC's perst-gpios to qcom_pcie_probe(), making it obvious
+> that it's shared for both cases and skip parsing it in both functions.
+> 
+> Fixes: deed8aec62dc ("PCI: qcom: Handle mixed PERST#/PHY DT configuration")
+> Closes: https://lore.kernel.org/r/gieaybsg2ckxpctvqj77nlwu7utama2yeyvebkonmexsxrra3v@v3fobqasxnmy/
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-However, the ath12k driver currently allocates the HOST_DDR_REGION_TYPE
-starting from the base of the Q6 region, which includes the read-only
-firmware area. As a result, the allocated memory regions overlap with the
-read-only section, causing the firmware to assert during QMI memory
-allocation. The Q6 memory region layout is as follows:
+This issue is fixed now. You can drop this patch in next revision.
 
-		Q6 Reserved Memory
-	+--------------------------------------+
-	|                                      |
-	|  Read-only Firmware Region           |
-	|  (Q6 RO Region)                      |
-	|                                      |
-	+--------------------------------------+ <--- bdf_addr_offset
-	|  Writable Memory Region              |
-	|  (BDF + HOST_DDR allocations)        |
-	|                                      |
-	+--------------------------------------+
+- Mani
 
-Fix this by allocating the required memory regions only after the end of
-the read-only region in the Q6 address space. The bdf_addr_offset parameter
-indicates where the writable region starts. Both HOST_DDR and BDF regions
-are allocated sequentially after this offset, with each region placed
-immediately after the previous one to avoid gaps and overlaps.
+> ---
+>  drivers/pci/controller/dwc/pcie-qcom.c | 25 ++++++++++---------------
+>  1 file changed, 10 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+> index 11fc60489892..7664c7c28c0e 100644
+> --- a/drivers/pci/controller/dwc/pcie-qcom.c
+> +++ b/drivers/pci/controller/dwc/pcie-qcom.c
+> @@ -1907,15 +1907,6 @@ static int qcom_pcie_parse_ports(struct qcom_pcie *pcie)
+>  	struct device *dev = pcie->pci->dev;
+>  	int ret = -ENODEV;
+>  
+> -	if (of_find_property(dev->of_node, "perst-gpios", NULL)) {
+> -		pcie->reset = devm_gpiod_get_optional(dev, "perst",
+> -						      GPIOD_OUT_HIGH);
+> -		if (IS_ERR(pcie->reset))
+> -			return PTR_ERR(pcie->reset);
+> -
+> -		dev_warn(dev, "Reusing PERST# from Root Complex node. DT needs to be fixed!\n");
+> -	}
+> -
+>  	for_each_available_child_of_node_scoped(dev->of_node, of_port) {
+>  		if (!of_node_is_type(of_port, "pci"))
+>  			continue;
+> @@ -1942,7 +1933,6 @@ static int qcom_pcie_parse_legacy_binding(struct qcom_pcie *pcie)
+>  	struct device *dev = pcie->pci->dev;
+>  	struct qcom_pcie_perst *perst;
+>  	struct qcom_pcie_port *port;
+> -	struct gpio_desc *reset;
+>  	struct phy *phy;
+>  	int ret;
+>  
+> @@ -1950,10 +1940,6 @@ static int qcom_pcie_parse_legacy_binding(struct qcom_pcie *pcie)
+>  	if (IS_ERR(phy))
+>  		return PTR_ERR(phy);
+>  
+> -	reset = devm_gpiod_get_optional(dev, "perst", GPIOD_OUT_HIGH);
+> -	if (IS_ERR(reset))
+> -		return PTR_ERR(reset);
+> -
+>  	ret = phy_init(phy);
+>  	if (ret)
+>  		return ret;
+> @@ -1970,7 +1956,7 @@ static int qcom_pcie_parse_legacy_binding(struct qcom_pcie *pcie)
+>  	INIT_LIST_HEAD(&port->list);
+>  	list_add_tail(&port->list, &pcie->ports);
+>  
+> -	perst->desc = reset;
+> +	perst->desc = pcie->reset;
+>  	INIT_LIST_HEAD(&port->perst);
+>  	INIT_LIST_HEAD(&perst->list);
+>  	list_add_tail(&perst->list, &port->perst);
+> @@ -2107,6 +2093,15 @@ static int qcom_pcie_probe(struct platform_device *pdev)
+>  
+>  	pp->ops = &qcom_pcie_dw_ops;
+>  
+> +	if (of_find_property(dev->of_node, "perst-gpios", NULL)) {
+> +		pcie->reset = devm_gpiod_get_optional(dev, "perst",
+> +						      GPIOD_OUT_HIGH);
+> +		if (IS_ERR(pcie->reset))
+> +			return PTR_ERR(pcie->reset);
+> +
+> +		dev_warn(dev, "Reusing PERST# from Root Complex node. DT needs to be updated!\n");
+> +	}
+> +
+>  	ret = qcom_pcie_parse_ports(pcie);
+>  	if (ret) {
+>  		if (ret != -ENODEV) {
+> 
+> -- 
+> 2.47.3
+> 
 
-Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.6-01275-QCAHKSWPL_SILICONZ-1
-
-Fixes: 6757079c5890 ("wifi: ath12k: add support for fixed QMI firmware memory")
-Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath12k/qmi.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index 5bf045971c94..11f57b0755ea 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -2746,8 +2746,8 @@ static const char *ath12k_qmi_get_mem_reg_name(int mem_type)
- static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
- {
- 	struct device_node *np = ab->dev->of_node;
-+	size_t avail_rmem_size, offset = 0;
- 	struct target_mem_chunk *chunk;
--	size_t avail_rmem_size;
- 	struct resource res;
- 	const char *rname;
- 	int i, idx, ret;
-@@ -2781,9 +2781,12 @@ static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
- 			goto out;
- 
- 		avail_rmem_size = resource_size(&res);
--		if (chunk->type == BDF_MEM_REGION_TYPE) {
-+		if (chunk->type == BDF_MEM_REGION_TYPE ||
-+		    chunk->type == HOST_DDR_REGION_TYPE) {
- 			avail_rmem_size -= ab->hw_params->bdf_addr_offset;
--			res.start += ab->hw_params->bdf_addr_offset;
-+			avail_rmem_size -= offset;
-+			res.start += ab->hw_params->bdf_addr_offset + offset;
-+			offset += chunk->size;
- 		}
- 
- 		if (avail_rmem_size < chunk->size) {
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
 
