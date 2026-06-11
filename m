@@ -1,107 +1,107 @@
-Return-Path: <linux-wireless+bounces-37648-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37649-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qzrtOYwsKmpXjgMAu9opvQ
-	(envelope-from <linux-wireless+bounces-37648-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 05:33:32 +0200
+	id f5BSDYgsKmpWjgMAu9opvQ
+	(envelope-from <linux-wireless+bounces-37649-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 05:33:28 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C5F466DFE1
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 05:33:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7CD66DFDC
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 05:33:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b="Ll+i/Dyw";
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=WYxJWqt1;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37648-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37648-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b="FPdrR/SM";
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b="NF8s/912";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37649-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37649-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=qualcomm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E8D930B73EC
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 03:33:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A00C53012BE6
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 03:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3495E305E28;
-	Thu, 11 Jun 2026 03:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69AC72BDC05;
+	Thu, 11 Jun 2026 03:33:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC782BDC05
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 03:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B41030C176
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 03:33:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781148805; cv=none; b=Ni6X+DFeqbQvQEU4GBNlGLrg/NR9fGN7hLm19Lx51kY5LNs0+CFa5+mZtAE+lgbAYJHnEFk0VGNIVgFQy1mi11z6xhP/cFl0jfCrtEN+fL9GSq2fd+0z15THT6aBaEmSMS/5wnLLMtc9VH+GNufv7wST3N8Av5XmUaRl/xxtxbA=
+	t=1781148806; cv=none; b=SSRdU1PAHJC1AQtJCtcBNQgfHhJEDmC8XlmoNFyMGzkTxLPe0LOgju+5KxoyKEb7Elv7bXnQTF+4GNJBd3ZTXaLMWGoT3Aof6sr9LVqPpDfLJW/l5sEavepyH4de3EP2hU7ztV+Zz/eQT/Vm2rOqTfvQLzZfb5TMmhXAWh6zbuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781148805; c=relaxed/simple;
-	bh=TBKpTBUlRxp16u+JjXGypy8HC6nOXsYEMWBbV585Odk=;
+	s=arc-20240116; t=1781148806; c=relaxed/simple;
+	bh=VAy9Y43aZFbImb0eimhCNNXIUD3i+m7rfbkf9yl31WU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=J0cCBh7aPOybE9Kxcgy60kag5bf1wBZfytruNPND+LOcZMtKlcAd4lDH4Zw1IuXT6TSpkQdwQ3+p9BrvGXkzaEaHrhXsJJbn5TRTVHrTjPCkYctGOCMyu49cfXN+baNWZGybQJQmWRz2zjzESpSK3wvzrtVSnil+Kvl/AgD39og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Ll+i/Dyw; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WYxJWqt1; arc=none smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65B0NXrF3233191
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 03:33:22 GMT
+	 MIME-Version; b=A6UtvWKAW7Aaij4sYB8Ye2/oAlDjE8Uggr5cCEQzyLS3qTqJQnUI340RgJYemJweedRNBtcIzEHX1qvl+ji/Izog623HswVKXbIzvhACX1cIZ8pMvJOJwvo/gM7PclNJXCb+mDr8zrjBUuLFcwFNPipND8FOEK1p1lhJt35MAHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FPdrR/SM; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NF8s/912; arc=none smtp.client-ip=205.220.168.131
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65B0NRVd3184198
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 03:33:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=eAi/cH55ITa
-	xLHzNN6NVJATn9sydmgbMVi5O/Jv7r6w=; b=Ll+i/DywpyGYjwdKlM/bL1PH3lv
-	/RyOIL4Ioi/VE5XETjJIXV4F2neR704cqs5Y7h16qUKog8qWQV80svO1Xl/UFs0h
-	Dd1JuwZGqNPCuJztbqCBq73Vke7OydiFiIRNh3ADvCDPQaZ0Tc9+vxKGkwZXVpoO
-	lyA4wu+lnNp9ijWMcE4UNRuaVIOkAANU0vuITjGF+9UAJyCUK2TktARY8DxLQU2u
-	gUTNEIlWbZZfmwVjaxEXm1AmyJKiWAlIrjp/BCtuoge85r10Vtq+9rkVCljPG55F
-	2mScMNM/mmfwXUrjlfO+LKwTszIqKpEF5oIJrnJHhT9H3ncfkMbf4XdjHcg==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eqe6shfs1-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=g43XeO4Dh6c
+	O/pZEQr5ju05m3Cr2XMlgsLAM3KbtotY=; b=FPdrR/SMKM76elVTWCnDM1s/ez5
+	0mpPl4zuZLhUD+PXIxULF3mDhMa2j83cF2rZGY0Idy6c0JZ6bYg5ivY78ABmGwhQ
+	N2JAia+HhMMS0ixdtzNZNmtgvhPPI4HVK+9nOwAIKXQtZWKzUlS7y0UYWUdeKeNA
+	3bCN/YRL0HpIz77wTgzJV0YsXusENVYcpSQ8eOCD5Q38n8qH1AUr4U8xl9y7RxU6
+	0/999F4MTKgUBia6cRZRwen5DrL/itNVVpcaNtmNWirDmKfM84mk6TwxbMhIifR0
+	57N4bH5GhmF2EJ9hCsU2eVa9+ohSLNGnIeVlZLcAtPIlrem7vZhDPnGNscw==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eqe6usdr7-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 03:33:22 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2c2da7fa311so5588525ad.3
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 20:33:22 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 03:33:24 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-36ba98cc003so5261454a91.1
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Jun 2026 20:33:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781148801; x=1781753601; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1781148804; x=1781753604; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eAi/cH55ITaxLHzNN6NVJATn9sydmgbMVi5O/Jv7r6w=;
-        b=WYxJWqt1G8l1wsX+peTz4a59wAlBMyEz9DnwlQNEsb+GL4AVts1rIAkr00D+sU1dno
-         i8pbBklCixhdJsizPUlgxHm0uXXj53fuMgGxavQ0UpuLlxCsOQuDKKm+urEgJQKMvIa7
-         GDhLpvN0z73D8Fqy3mKyaH2OzTuyzK5dX5Z3N2Rd43csAh8SaEaiYgmKfzSn5ZYFDxFY
-         2Vdg+/MdNI7UQPHgDXamOIYPwWM7Wp8uL1c0x537oOm/tQ9D1tJ+Sr5Jb4QT7/DzpOdj
-         ZhlyT1CMC1WzpvHHogVzJkcoEv2idoqea4Y6B3WFEskyYlDFpUIK7XPo5OJViPxZqT2C
-         tMwQ==
+        bh=g43XeO4Dh6cO/pZEQr5ju05m3Cr2XMlgsLAM3KbtotY=;
+        b=NF8s/912R6sE3cQScQQD6jHXR+fk2L6xnfm1JwpsldPbDQhP7u1CrDXKaYM9WPQkv2
+         kBFTNgr5kBKlg4KdYMLQLIJYsB6kVAFWDDgViGajAmBwKMU2U17HZ4Rpu6Vl5LxGDcoc
+         vIftk8Tr8Txwm/tCL3YpwOCoGq6eYW5fj7MJFoiKu5ZfdNgcg7/xfmTTa6hgLRkqUrjk
+         CA+3jETolJRUjTizsRHtThXiQWanrCd3pGIPKo77ZW+MiRjR5+mD5nlS4I2kTal1cQm4
+         J2l2uMzpejK2jyXwpnY+DHY/4Iz6AdNJ+MV71xkQZlDwpKDvPv1By7uIIiM7RopmOHoh
+         JIDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781148801; x=1781753601;
+        d=1e100.net; s=20251104; t=1781148804; x=1781753604;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=eAi/cH55ITaxLHzNN6NVJATn9sydmgbMVi5O/Jv7r6w=;
-        b=rG900kGzyhX7jOu6sP5F4SCfPI5PGfYoc56hCgnUDx5vGOuJVSskznNqMKtZeHAZ29
-         M02SE+G8iZvZyhBR1mcJJ0gpw5klqFljVEbvCamQ+i4iSjYL8Qq2vmbIFeJ2hC9sBpKR
-         rO+HqvJWU1/r5YWHErbKytjjw4tSnkSuXnfAWh0f4XhVN8RRn8pwbhSnpmnmT7MQMcsT
-         ygQ2PJxGXySSptDgtcvo1BUN5um/FOBTWigj1B8oEbDwX19BxrEx8nMfxATngrKKoiwQ
-         GXWjm9OwpOTjcS0rUheVmwtk/sIqfyhqYHhohx89zL5lRNaVdhUaBFhJM94qj21vFXT/
-         ZrzQ==
-X-Gm-Message-State: AOJu0Yzt1i2Rud0vDvKHD98SZ34thVPuo8zj+H6bC5Dfaqq6wQPv4N4P
-	6hX/ySgXYj0v4VlB4TSItZ3kLOmGV8ca1rCU4LXWG4a/DfyMz//V1pimP3z1olsYXQ10OapgqSE
-	UsPb8pasLGilODbs0o9HgKsS/xeaajX9pERdxQffaZZ9mDg4ToGHc5XCOCFWLJ3jJFmQ4+g==
-X-Gm-Gg: Acq92OGETcpLYryRiBRBxkQs2zfyNRA2QkkRRIZC3Gw7drkIS56Rag+esFUYrlDGX4r
-	VLL2nTgW+y1inNMT+p8WqTKDdTTzIlLsPx9p5bzAqAL7lLu/pDf5h5Bry2UatBpMSPUN3PNAOBt
-	Hxv3xvdyy59+fJvwIehzEZdeo3Ygdhno71xHgU6YStllkYvEYezVttSmamNaHZvv2dFXL5iOb1P
-	nv26VA4H0wFJ4/NGNHypmWmMLNDD1Mf5gaRoBZ40nVMEM/0d778+8DdAAYhxho5mc25t9DLeubU
-	1CJOfqDAiWYm9sm5lQ9+0ejkkElRMzJSb4M3QpRvyEb6EejD2IfB+Kg1/A3U41PIrenkelO5qWY
-	AKsTvKGRjg+0ULJ4Pifo/6EH6JUfs8hiLOLr7ES4hRFzMnAwY5S3VrD46DObgxJzsHJEKFeDfGg
-	e6Ih1H4uMdA/KX+RIvD1bKnL9/tBia530eeWoGtdS7F9FTp653Re7Katk=
-X-Received: by 2002:a17:90b:33c1:b0:36a:aa9:eea0 with SMTP id 98e67ed59e1d1-3779cb2617fmr1024653a91.4.1781148801435;
-        Wed, 10 Jun 2026 20:33:21 -0700 (PDT)
-X-Received: by 2002:a17:90b:33c1:b0:36a:aa9:eea0 with SMTP id 98e67ed59e1d1-3779cb2617fmr1024636a91.4.1781148800891;
-        Wed, 10 Jun 2026 20:33:20 -0700 (PDT)
+        bh=g43XeO4Dh6cO/pZEQr5ju05m3Cr2XMlgsLAM3KbtotY=;
+        b=F2CV2SoJYfvUtG+OHIZBanFscjTEPS1O3dz+nioU+Thjd1z+mGfNG9ckIj+FW+YuxJ
+         7Vh1yqo0i+v/xLK00SUUtlZ2b82Kk9IBJpf238jLwdrObz8QQGuvneyWJasKIc8J6c6H
+         dl4sDaSx1hoOLPC8xJbFyrQKTBjzT8p8OsSN4eb9rHZOQ337Jmws2nqlbsvXCHnlPDXc
+         8Z157YnfkUjzXR5hcB6UWp3jHvsnWLk8fb04+uT38dcPwuOTOKWWzNvV5CkhDhAFq7wx
+         HjmIyB0vb3l8u891j5A68ZLjS1gB4MtiF740DhteZVsN3AtV58KDLM3jEXA4+tNq5YhV
+         NotQ==
+X-Gm-Message-State: AOJu0YzhiiHlh02Sg4EIK+/e891Kyyo7AYt4fdpJpiLdK0rm6vu9500e
+	j/z/erYljLy/dhNtvwbwRu2xlNI3gVMCj85hpVuA9Iq84HfLcz7NyrzLZeHGvfpXBasjuu2sd9N
+	uUTj1AzwnVOnCnM1YPEPhEyib3KgTMB0cSvWHnFtq4a4o/FZ0rCpi4I1wvdgugUL716PB6A==
+X-Gm-Gg: Acq92OHQUjQgO+16M1haRYy+54j/wF6/W6TH/qmHR8hnT+Z31wGN6lVekIAkmkanzIk
+	3YiM9FPxo9pfS3DY35JZ9P/81g74vwq5C6YThMiPjealcO5Fto5o+LxrybHRGdFAG/0Wy3ArTKz
+	5QyjFnifQ2+9LBSSeEdluWN+f5msCnNgDLMBiw7d4nWGYerXzQPlBH09XHhQJLaXnlCNpV5Cxdt
+	gwEBiy/HgGyzzMCL8trLDCEvo6H1bLsHYsErx7mAb04xrWgEGJSCwpeqo8Q1DCKyhq9MsEUwQnu
+	hhSawFwQjkzmH3aO77JB1sfqrR5kxtORUMQPsNBpOU5Xr01ZjYBU5XVmfTrdE4qHZc8srtJ7RD5
+	KAI/alGC+DdVNz7Wto13bG2U4cRY3skuwfc09Uj6rFYUJNkTxyYzomWT78lIYaSsJe0kvtmOT1r
+	lXvs70+4Qi/3hUTeoQX+YL7dMN3gaR+aYCRit6Wuh5L37pmtNEabCAiw8=
+X-Received: by 2002:a17:90a:e7c4:b0:36a:f612:e695 with SMTP id 98e67ed59e1d1-377a591536fmr1193539a91.17.1781148803577;
+        Wed, 10 Jun 2026 20:33:23 -0700 (PDT)
+X-Received: by 2002:a17:90a:e7c4:b0:36a:f612:e695 with SMTP id 98e67ed59e1d1-377a591536fmr1193501a91.17.1781148802969;
+        Wed, 10 Jun 2026 20:33:22 -0700 (PDT)
 Received: from hu-aarasahu-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3775287186dsm896041a91.6.2026.06.10.20.33.19
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3775287186dsm896041a91.6.2026.06.10.20.33.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 20:33:20 -0700 (PDT)
+        Wed, 10 Jun 2026 20:33:22 -0700 (PDT)
 From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org,
         Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Subject: [PATCH ath-next 1/3] wifi: ath12k: switch to name-based reserved memory lookup
-Date: Thu, 11 Jun 2026 09:03:12 +0530
-Message-Id: <20260611033314.2330-2-aaradhana.sahu@oss.qualcomm.com>
+Subject: [PATCH ath-next 2/3] wifi: ath12k: refactor QMI memory assignment
+Date: Thu, 11 Jun 2026 09:03:13 +0530
+Message-Id: <20260611033314.2330-3-aaradhana.sahu@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260611033314.2330-1-aaradhana.sahu@oss.qualcomm.com>
 References: <20260611033314.2330-1-aaradhana.sahu@oss.qualcomm.com>
@@ -112,45 +112,44 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: eeXpNQBam0VfZzUmLc9WD0bd364WDg18
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDAzMSBTYWx0ZWRfX8STJLsTxBCk7
- 60TOJP4hft8KYlll34O5xf2aFqotBOeG7yWCnaT4i7N1iojubACpKDS83zi1j9x7r57db2WHB5B
- qQctVf5tIYaHD89rXuGAdbVNVsExuAw=
-X-Proofpoint-ORIG-GUID: eeXpNQBam0VfZzUmLc9WD0bd364WDg18
-X-Authority-Analysis: v=2.4 cv=Kux9H2WN c=1 sm=1 tr=0 ts=6a2a2c82 cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+X-Authority-Analysis: v=2.4 cv=FJ8rAeos c=1 sm=1 tr=0 ts=6a2a2c84 cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
  a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=EUspDBNiAAAA:8
- a=jmRftXr0Aczi6AUq4NEA:9 a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDAzMSBTYWx0ZWRfX/NJ5oL3+oolD
- av096B0c3P6QQyCVRGOV6rH9yD5SezOLeGhS+ywihwz7PrtD0axPFzLuhaXlqrwXQpm14DU41/M
- WirQPgFuZAZB311mYjSME2zocC/5Or3v/IIDQJrtqe2l45E/cIOyXPx9JktZRtzWlt57EJYWBr0
- bF4VOlVD54NH1T4E9ZLbk8K70BV5g6ekbOnFTh8fXkBTp1AaG8OU30j+VLnmOq2EoWOa2chdK1B
- A17lTtgOccmcMyKhWQ9VdpmDdgPlAdNE0jXrqpZqrAylUrRjQaca+a8uf5n5KWWSO8bnqNl0wmu
- 798WVzzqnpeskLDJgXVGhQ9TNTUeQwnw+j1oNhOXc6+bJvJZeudwJEufyJwzu6EPCi2H+AZqjYa
- S80pbwsKWXGHuz30c9TiopOnJz7Qfnh5EeoAcPk4pvQ+3j4ebg4tpwcFxi+4/VgswuR4SWJ4wFs
- Y+E4Dy5t2e2pAB5VYxg==
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=EUspDBNiAAAA:8
+ a=FsuqK5EfqoqfIKw4FYwA:9 a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDAzMSBTYWx0ZWRfXwMu8YQFJnE5g
+ MvQomoDjGX5CBB/TGJ6oTKerAkHqV6naCmYR0LUpqCBuLsTErWmcwoq29aQT6m8wolKWhc++B3Q
+ PlGjm0RN6Pw7qJqwJfanDD1PRjPJC88=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDAzMSBTYWx0ZWRfXx4QV5ZFqv+BF
+ HRuUOyXy/vud3+Qn73UHz/CwCfVPiu/778Vx9QyWoYlr1AiJilbhXwt0w78oIZEestISU0c451u
+ jdc6eyhbEnYRLdSiCdluCVFGUCpRBETefSCVPa2astciuIo+jJooDSyHjIHuYhe956h8r9zvD6J
+ 7Uz4NFAP+8BBERVYXy1EXPvTHjqVRQCIgA/Y9RaAZ0Vl+EzivS0SSo14Fm7ZYBZEQPuvh+rPnMr
+ 7WlmqeUMQ79MLhGZxGsFrkZSFr3ppndsP//vaeCyn7I5Dw1D5vV9p97qFuW1ieD3CgIkbGvWm3P
+ QqF7FOg/FZ/kVsPCy6JHPsmps7pP01X1HRMbLurr/h4hLfB79aBv3MVDPaFMaE7P16AWx1hgOQF
+ vnQioJPjKeyMdbBfdcj4HgiYw4v66XldsVhgrMx4+VuvL8mF9AgCTkQ+oedR+3F0KTCaaCW4ISn
+ kkuWi3/UBTXnPiYJ1LA==
+X-Proofpoint-GUID: X6aZWci3gIJ5MeOpSTMiby6dbMW-LjdG
+X-Proofpoint-ORIG-GUID: X6aZWci3gIJ5MeOpSTMiby6dbMW-LjdG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-11_01,2026-06-09_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 malwarescore=0 phishscore=0 spamscore=0 bulkscore=0
- clxscore=1015 suspectscore=0 lowpriorityscore=0 priorityscore=1501
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
- definitions=main-2606110031
+ malwarescore=0 clxscore=1015 adultscore=0 lowpriorityscore=0 bulkscore=0
+ impostorscore=0 priorityscore=1501 spamscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606110031
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-37648-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37649-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -158,7 +157,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:aaradhana.sahu@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[aaradhana.sahu@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -172,228 +171,208 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4C5F466DFE1
+X-Rspamd-Queue-Id: 9F7CD66DFDC
 
-The driver currently retrieves reserved memory regions using index-based
-lookup, which depends on the ordering of reserved-memory nodes in the
-device tree. Since different platforms define these regions in varying
-orders and combinations, this approach is not compatible and can result
-in incorrect memory region access.
+ath12k_qmi_assign_target_mem_chunk() uses a large switch-case to handle
+both memory region identification and allocation for each memory request
+type, leading to redundant allocation logic.
 
-Switch to looking up memory regions by name instead of index so it does
-not depend on node order.
-
-Use names already defined in qcom,ipq5332-wifi.yaml, so there are no
-backward compatibility issues.
+Refactor this by introducing ath12k_qmi_get_mem_reg_name() to map memory
+request types to their corresponding reserved memory region names.
 
 Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.6-01275-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
 ---
- drivers/net/wireless/ath/ath12k/ahb.c  | 18 ++++++------
- drivers/net/wireless/ath/ath12k/core.c | 25 -----------------
- drivers/net/wireless/ath/ath12k/core.h |  2 --
- drivers/net/wireless/ath/ath12k/qmi.c  | 38 +++++++++++++-------------
- 4 files changed, 29 insertions(+), 54 deletions(-)
+ drivers/net/wireless/ath/ath12k/qmi.c | 157 ++++++++++----------------
+ 1 file changed, 61 insertions(+), 96 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/ahb.c b/drivers/net/wireless/ath/ath12k/ahb.c
-index 30733a244454..695b605a92fd 100644
---- a/drivers/net/wireless/ath/ath12k/ahb.c
-+++ b/drivers/net/wireless/ath/ath12k/ahb.c
-@@ -15,6 +15,7 @@
- #include "ahb.h"
- #include "debug.h"
- #include "hif.h"
-+#include <linux/of_reserved_mem.h>
- 
- #define ATH12K_IRQ_CE0_OFFSET 4
- #define ATH12K_MAX_UPDS 1
-@@ -338,24 +339,25 @@ static int ath12k_ahb_power_up(struct ath12k_base *ab)
- 	char fw2_name[ATH12K_USERPD_FW_NAME_LEN];
- 	struct device *dev = ab->dev;
- 	const struct firmware *fw, *fw2;
--	struct reserved_mem *rmem = NULL;
- 	unsigned long time_left;
- 	phys_addr_t mem_phys;
-+	struct resource res;
- 	void *mem_region;
- 	size_t mem_size;
- 	u32 pasid;
- 	int ret;
- 
--	rmem = ath12k_core_get_reserved_mem(ab, 0);
--	if (!rmem)
--		return -ENODEV;
-+	ret = of_reserved_mem_region_to_resource_byname(dev->of_node, "q6-region",
-+							&res);
-+	if (ret)
-+		return ret;
- 
--	mem_phys = rmem->base;
--	mem_size = rmem->size;
-+	mem_phys = res.start;
-+	mem_size = resource_size(&res);
- 	mem_region = devm_memremap(dev, mem_phys, mem_size, MEMREMAP_WC);
- 	if (IS_ERR(mem_region)) {
--		ath12k_err(ab, "unable to map memory region: %pa+%pa\n",
--			   &rmem->base, &rmem->size);
-+		ath12k_err(ab, "unable to map memory region: %pa+%zx\n",
-+			   &res.start, mem_size);
- 		return PTR_ERR(mem_region);
- 	}
- 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 742d4fd1b598..617d039b9237 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -637,31 +637,6 @@ u32 ath12k_core_get_max_peers_per_radio(struct ath12k_base *ab)
- }
- EXPORT_SYMBOL(ath12k_core_get_max_peers_per_radio);
- 
--struct reserved_mem *ath12k_core_get_reserved_mem(struct ath12k_base *ab,
--						  int index)
--{
--	struct device *dev = ab->dev;
--	struct reserved_mem *rmem;
--	struct device_node *node;
--
--	node = of_parse_phandle(dev->of_node, "memory-region", index);
--	if (!node) {
--		ath12k_dbg(ab, ATH12K_DBG_BOOT,
--			   "failed to parse memory-region for index %d\n", index);
--		return NULL;
--	}
--
--	rmem = of_reserved_mem_lookup(node);
--	of_node_put(node);
--	if (!rmem) {
--		ath12k_dbg(ab, ATH12K_DBG_BOOT,
--			   "unable to get memory-region for index %d\n", index);
--		return NULL;
--	}
--
--	return rmem;
--}
--
- static inline
- void ath12k_core_to_group_ref_get(struct ath12k_base *ab)
- {
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index fc5127b5c1a3..ba2f617d8e5f 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -1294,8 +1294,6 @@ void ath12k_fw_stats_init(struct ath12k *ar);
- void ath12k_fw_stats_bcn_free(struct list_head *head);
- void ath12k_fw_stats_free(struct ath12k_fw_stats *stats);
- void ath12k_fw_stats_reset(struct ath12k *ar);
--struct reserved_mem *ath12k_core_get_reserved_mem(struct ath12k_base *ab,
--						  int index);
- enum ath12k_qmi_mem_mode ath12k_core_get_memory_mode(struct ath12k_base *ab);
- 
- static inline const char *ath12k_scan_state_str(enum ath12k_scan_state state)
 diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index fd762b5d7bb5..0176d6a4bf8c 100644
+index 0176d6a4bf8c..5bf045971c94 100644
 --- a/drivers/net/wireless/ath/ath12k/qmi.c
 +++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -13,6 +13,7 @@
- #include <linux/firmware.h>
- #include <linux/of_address.h>
- #include <linux/ioport.h>
-+#include <linux/of_reserved_mem.h>
+@@ -2726,120 +2726,85 @@ static int ath12k_qmi_alloc_target_mem_chunk(struct ath12k_base *ab)
+ 	return ret;
+ }
  
- #define SLEEP_CLOCK_SELECT_INTERNAL_BIT	0x02
- #define HOST_CSTATE_BIT			0x04
-@@ -2727,20 +2728,20 @@ static int ath12k_qmi_alloc_target_mem_chunk(struct ath12k_base *ab)
- 
++static const char *ath12k_qmi_get_mem_reg_name(int mem_type)
++{
++	switch (mem_type) {
++	case HOST_DDR_REGION_TYPE:
++	case BDF_MEM_REGION_TYPE:
++		return "q6-region";
++	case M3_DUMP_REGION_TYPE:
++		return "m3-dump";
++	case CALDB_MEM_REGION_TYPE:
++		return "q6-caldb";
++	case MLO_GLOBAL_MEM_REGION_TYPE:
++		return "mlo-global-mem";
++	default:
++		return NULL;
++	}
++}
++
  static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
  {
--	struct reserved_mem *rmem;
-+	struct device_node *np = ab->dev->of_node;
+ 	struct device_node *np = ab->dev->of_node;
++	struct target_mem_chunk *chunk;
  	size_t avail_rmem_size;
-+	struct resource res;
+ 	struct resource res;
++	const char *rname;
  	int i, idx, ret;
  
  	for (i = 0, idx = 0; i < ab->qmi.mem_seg_count; i++) {
- 		switch (ab->qmi.target_mem[i].type) {
- 		case HOST_DDR_REGION_TYPE:
--			rmem = ath12k_core_get_reserved_mem(ab, 0);
--			if (!rmem) {
--				ret = -ENODEV;
-+			ret = of_reserved_mem_region_to_resource_byname(np, "q6-region",
-+									&res);
-+			if (ret)
- 				goto out;
--			}
- 
--			avail_rmem_size = rmem->size;
-+			avail_rmem_size = resource_size(&res);
- 			if (avail_rmem_size < ab->qmi.target_mem[i].size) {
- 				ath12k_dbg(ab, ATH12K_DBG_QMI,
- 					   "failed to assign mem type %u req size %u avail size %zu\n",
-@@ -2751,7 +2752,7 @@ static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
- 				goto out;
- 			}
- 
--			ab->qmi.target_mem[idx].paddr = rmem->base;
-+			ab->qmi.target_mem[idx].paddr = res.start;
- 			ab->qmi.target_mem[idx].v.ioaddr =
- 				ioremap(ab->qmi.target_mem[idx].paddr,
- 					ab->qmi.target_mem[i].size);
-@@ -2764,13 +2765,13 @@ static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
- 			idx++;
- 			break;
- 		case BDF_MEM_REGION_TYPE:
--			rmem = ath12k_core_get_reserved_mem(ab, 0);
--			if (!rmem) {
--				ret = -ENODEV;
-+			ret = of_reserved_mem_region_to_resource_byname(np, "q6-region",
-+									&res);
-+			if (ret)
- 				goto out;
--			}
- 
--			avail_rmem_size = rmem->size - ab->hw_params->bdf_addr_offset;
-+			avail_rmem_size = resource_size(&res) -
-+					  ab->hw_params->bdf_addr_offset;
- 			if (avail_rmem_size < ab->qmi.target_mem[i].size) {
- 				ath12k_dbg(ab, ATH12K_DBG_QMI,
- 					   "failed to assign mem type %u req size %u avail size %zu\n",
-@@ -2781,7 +2782,7 @@ static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
- 				goto out;
- 			}
- 			ab->qmi.target_mem[idx].paddr =
--				rmem->base + ab->hw_params->bdf_addr_offset;
-+				res.start + ab->hw_params->bdf_addr_offset;
- 			ab->qmi.target_mem[idx].v.ioaddr =
- 				ioremap(ab->qmi.target_mem[idx].paddr,
- 					ab->qmi.target_mem[i].size);
-@@ -2806,13 +2807,12 @@ static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
- 			idx++;
- 			break;
- 		case M3_DUMP_REGION_TYPE:
--			rmem = ath12k_core_get_reserved_mem(ab, 1);
--			if (!rmem) {
+-		switch (ab->qmi.target_mem[i].type) {
+-		case HOST_DDR_REGION_TYPE:
+-			ret = of_reserved_mem_region_to_resource_byname(np, "q6-region",
+-									&res);
+-			if (ret)
+-				goto out;
+-
+-			avail_rmem_size = resource_size(&res);
+-			if (avail_rmem_size < ab->qmi.target_mem[i].size) {
+-				ath12k_dbg(ab, ATH12K_DBG_QMI,
+-					   "failed to assign mem type %u req size %u avail size %zu\n",
+-					   ab->qmi.target_mem[i].type,
+-					   ab->qmi.target_mem[i].size,
+-					   avail_rmem_size);
 -				ret = -EINVAL;
-+			ret = of_reserved_mem_region_to_resource_byname(np, "m3-dump",
-+									&res);
-+			if (ret)
- 				goto out;
+-				goto out;
 -			}
+-
+-			ab->qmi.target_mem[idx].paddr = res.start;
+-			ab->qmi.target_mem[idx].v.ioaddr =
+-				ioremap(ab->qmi.target_mem[idx].paddr,
+-					ab->qmi.target_mem[i].size);
+-			if (!ab->qmi.target_mem[idx].v.ioaddr) {
+-				ret = -EIO;
+-				goto out;
+-			}
+-			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
+-			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
+-			idx++;
+-			break;
+-		case BDF_MEM_REGION_TYPE:
+-			ret = of_reserved_mem_region_to_resource_byname(np, "q6-region",
+-									&res);
+-			if (ret)
+-				goto out;
+-
+-			avail_rmem_size = resource_size(&res) -
+-					  ab->hw_params->bdf_addr_offset;
+-			if (avail_rmem_size < ab->qmi.target_mem[i].size) {
+-				ath12k_dbg(ab, ATH12K_DBG_QMI,
+-					   "failed to assign mem type %u req size %u avail size %zu\n",
+-					   ab->qmi.target_mem[i].type,
+-					   ab->qmi.target_mem[i].size,
+-					   avail_rmem_size);
+-				ret = -EINVAL;
+-				goto out;
+-			}
+-			ab->qmi.target_mem[idx].paddr =
+-				res.start + ab->hw_params->bdf_addr_offset;
+-			ab->qmi.target_mem[idx].v.ioaddr =
+-				ioremap(ab->qmi.target_mem[idx].paddr,
+-					ab->qmi.target_mem[i].size);
+-			if (!ab->qmi.target_mem[idx].v.ioaddr) {
+-				ret = -EIO;
+-				goto out;
+-			}
+-			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
+-			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
+-			idx++;
+-			break;
+-		case CALDB_MEM_REGION_TYPE:
+-			/* Cold boot calibration is not enabled in Ath12k. Hence,
++		chunk = &ab->qmi.target_mem[i];
++		if (chunk->type == CALDB_MEM_REGION_TYPE) {
++			/*
++			 * Cold boot calibration is not enabled in Ath12k. Hence,
+ 			 * assign paddr = 0.
+ 			 * Once cold boot calibration is enabled add support to
+ 			 * assign reserved memory from DT.
+ 			 */
+ 			ab->qmi.target_mem[idx].paddr = 0;
+ 			ab->qmi.target_mem[idx].v.ioaddr = NULL;
+-			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
+-			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
++			ab->qmi.target_mem[idx].size = chunk->size;
++			ab->qmi.target_mem[idx].type = chunk->type;
+ 			idx++;
+-			break;
+-		case M3_DUMP_REGION_TYPE:
+-			ret = of_reserved_mem_region_to_resource_byname(np, "m3-dump",
+-									&res);
+-			if (ret)
+-				goto out;
+-
+-			avail_rmem_size = resource_size(&res);
+-			if (avail_rmem_size < ab->qmi.target_mem[i].size) {
+-				ath12k_dbg(ab, ATH12K_DBG_QMI,
+-					   "failed to assign mem type %u req size %u avail size %zu\n",
+-					   ab->qmi.target_mem[i].type,
+-					   ab->qmi.target_mem[i].size,
+-					   avail_rmem_size);
+-				ret = -EINVAL;
+-				goto out;
+-			}
++			continue;
++		}
  
--			avail_rmem_size = rmem->size;
-+			avail_rmem_size = resource_size(&res);
- 			if (avail_rmem_size < ab->qmi.target_mem[i].size) {
- 				ath12k_dbg(ab, ATH12K_DBG_QMI,
- 					   "failed to assign mem type %u req size %u avail size %zu\n",
-@@ -2823,7 +2823,7 @@ static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
- 				goto out;
- 			}
+-			ab->qmi.target_mem[idx].paddr = res.start;
+-			ab->qmi.target_mem[idx].v.ioaddr =
+-				ioremap(ab->qmi.target_mem[idx].paddr,
+-					ab->qmi.target_mem[i].size);
+-			if (!ab->qmi.target_mem[idx].v.ioaddr) {
+-				ret = -EIO;
+-				goto out;
+-			}
+-			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
+-			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
+-			idx++;
+-			break;
+-		default:
++		rname = ath12k_qmi_get_mem_reg_name(chunk->type);
++		if (!rname) {
+ 			ath12k_warn(ab, "qmi ignore invalid mem req type %u\n",
+-				    ab->qmi.target_mem[i].type);
+-			break;
++				    chunk->type);
++			continue;
++		}
++
++		ret = of_reserved_mem_region_to_resource_byname(np, rname, &res);
++		if (ret)
++			goto out;
++
++		avail_rmem_size = resource_size(&res);
++		if (chunk->type == BDF_MEM_REGION_TYPE) {
++			avail_rmem_size -= ab->hw_params->bdf_addr_offset;
++			res.start += ab->hw_params->bdf_addr_offset;
+ 		}
++
++		if (avail_rmem_size < chunk->size) {
++			ath12k_dbg(ab, ATH12K_DBG_QMI,
++				   "failed to assign mem type %u req size %u avail size %zu\n",
++				   chunk->type, chunk->size, avail_rmem_size);
++			ret = -EINVAL;
++			goto out;
++		}
++
++		ab->qmi.target_mem[idx].paddr = res.start;
++		ab->qmi.target_mem[idx].v.ioaddr = ioremap(ab->qmi.target_mem[idx].paddr,
++							   chunk->size);
++		if (!ab->qmi.target_mem[idx].v.ioaddr) {
++			ret = -EIO;
++			goto out;
++		}
++
++		ab->qmi.target_mem[idx].size = chunk->size;
++		ab->qmi.target_mem[idx].type = chunk->type;
++		idx++;
+ 	}
+ 	ab->qmi.mem_seg_count = idx;
  
--			ab->qmi.target_mem[idx].paddr = rmem->base;
-+			ab->qmi.target_mem[idx].paddr = res.start;
- 			ab->qmi.target_mem[idx].v.ioaddr =
- 				ioremap(ab->qmi.target_mem[idx].paddr,
- 					ab->qmi.target_mem[i].size);
 -- 
 2.34.1
 
