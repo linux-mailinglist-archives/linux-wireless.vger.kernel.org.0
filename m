@@ -1,208 +1,124 @@
-Return-Path: <linux-wireless+bounces-37660-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37661-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cKiUAG11KmqTpgMAu9opvQ
-	(envelope-from <linux-wireless+bounces-37660-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 10:44:29 +0200
+	id eXE0GH94KmqAqAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-37661-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 10:57:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910B266FF9F
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 10:44:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDCE670159
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 10:57:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HLn01jRK;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37660-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37660-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=dolcini.it header.s=default header.b=Fx1YMl6k;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37661-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37661-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=dolcini.it;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0C1673003821
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 08:44:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52D8332DD349
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 08:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D368D38F258;
-	Thu, 11 Jun 2026 08:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7643BA229;
+	Thu, 11 Jun 2026 08:53:57 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D964351C06
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 08:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C6D2EF64F;
+	Thu, 11 Jun 2026 08:53:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781167466; cv=none; b=F8TL3v0Tj9Zp6kwJysorN8StDJcB2mByAjH8TqyDd1YHVN4/Zah29u/WAhY2kXmdrf54h/JVHM0ujILDsfzgPe9IvfpmjrokVb9nnqJJo23DhdW858qRkH+1yPqffyNdf6/R0or4p0Aus01Fv38RVZFWGV0Um7pgGWCCL3oOEhc=
+	t=1781168037; cv=none; b=oKJvqOzl1i0AI+d4PmWg0+M5z8VUi8H1DJNkpjLK4xv+hAJEqWCodo/siMThww3i67c2Euhg8Zr+IUQXgUSeqhjogo4EJGIAXps4YudF1GYNo7giLjc63+s681cZ4H2o3HkKNTy3cVq8nyUE8tWg5vO5QsL2yNuJo20+OhcbuzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781167466; c=relaxed/simple;
-	bh=h/UsCBSxuu4j10jZt10F3GMVvVXLjsnDmwFr+0PA33Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DtIKphR97dKIRx//WxxlTlbP0RBXwdy8LPHCMYmhM2ehxjmnWS/eT6hg+C1q6y+0WSPVuG8GYVWYGmTykSLamKDcOuBZvnOB8u2wvyzo3fVbVwpWqwmKhGtI2ree78aBu4SN3HM17ju1tSZwHrN9wn8AWAJGdqUiPt2iX/wDbp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HLn01jRK; arc=none smtp.client-ip=209.85.221.54
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-45f3cf907ceso4012093f8f.2
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 01:44:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781167464; x=1781772264; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KfjdmvbLZ2ajcdt58jAGget3u2obgXtGYDr0JfRuXz8=;
-        b=HLn01jRKCKH6xdot5BkvWxFh1aQWtw+WeFSRHy7NbwtU4XJri5rcHZKRAYTQ+Fg5LM
-         G6/zlo643V1CF6/vplyQZBE5DfKp4guxap3y9kieSpeUzxPyN3VQBilZSPJrrufKTvZo
-         SGt5uKPmWt9uDZt8rghUh5Ex//PsdexJewbyktmXaXV6Opszh7ItiT/P0FoOarue+QoA
-         F2iK2QGaqcdoh6mPEaPL0mlccXRxjCqqnU2aoabvyAjDKP418WK0su7XjBOwrADQEApo
-         74Yxp9dl04JwOkPdiC5X0W8Xe5rSEstKVydqn+Wc3/64vuOfpyUB3/gzf2RNtAxrxR6R
-         iiUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781167464; x=1781772264;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KfjdmvbLZ2ajcdt58jAGget3u2obgXtGYDr0JfRuXz8=;
-        b=kdo107UXLriAf8BPdVQE99/x0DcgY6xLe9HTfgEOTbZ24VhdlWd2HMIi9mCd1sgxsi
-         A/X3CfV/1Z0O0Ubc5nZCHluKe4bEoKmDlOVVKZPbXz5frkE1wqF90hY5BNdaQi2GUjYV
-         sXLwQGUKtTjhEUIyMEv1KB7uKGDFpt2L3FT7OyTmeQCjD3ciqEkINGk446mT269ltQcX
-         v2ccer9TiOWvJlwQuKIM7AXkoZSHOc9QULx6aQUa7VmwVFdZyrypYK34DWe2v1GDEraR
-         Qr3K6pBCrwOA9CpTufkaj4ddfVEdWOMTj9PklIV4grVvmGkRzlDq6Fm/rycqfL1xN/0s
-         FSSA==
-X-Gm-Message-State: AOJu0YzDBiObql2CKiMGCp+iyt2oq41tAuEQSmugeJZMEDdFNZKUbjXX
-	iu820+kpyPUrng5nxFkWAqymJTngF6iMAa7iqVfj08G2cJ9SzDnBBvTGnpPRfA==
-X-Gm-Gg: Acq92OFq6phiADXU90DdjoSBTx8pGxqG86bv0zbj40JM1mRC8+oq8d8QghR5mRUrUPo
-	Xx5PFk5fnOpUKgp/uvjma8ZCS6asUs68CjZVzDNk2ry9MwYF+TlsXq2buS/3UojTLXTCTxIIPdl
-	e81b8Cd8DWslzT7XX5/9o7qf5nJsYXL6Z0vwij2/orSd880IsOWj1XC1XBEw7fatCABBgNaSeXn
-	ASKQLh/ki69rRvBCMgwz13WkLKkSE+MyCTnu6oarxumnL1s1s/E2bmjkyFoKI0Y5PDILwwGU9ib
-	k4fFAWrnyRKA0KNcpsdppSEP/MujPVVMlH7Pd/4DyPB7Yag6Bd2BM7SPr98xA7jfLzCsJsI1oGz
-	tswcHho9KpC7ZKGThMdQf9tAZzzI5NNVam+EXgKyp3V3hCHkzwX0AIn4w2gjmVeN9isgea77eZc
-	vBnswqZxBl3Isy6FAQpmrEo98tOirv01kTeQ26qcgk4NkE9ctnGU0oqJCa5f4ycCy1tVM=
-X-Received: by 2002:a05:600c:5250:b0:490:c2a2:b1d4 with SMTP id 5b1f17b1804b1-490e5620658mr18944445e9.35.1781167463459;
-        Thu, 11 Jun 2026 01:44:23 -0700 (PDT)
-Received: from syracuse.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dcde3sm81024394f8f.1.2026.06.11.01.44.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 01:44:23 -0700 (PDT)
-From: Nicolas Escande <nico.escande@gmail.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH ath-next v2] wifi: ath12k: avoid setting 320MHZ support on non 6GHz band
-Date: Thu, 11 Jun 2026 10:44:22 +0200
-Message-ID: <20260611084422.1511513-1-nico.escande@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1781168037; c=relaxed/simple;
+	bh=tfTwCjfLpFULPT9+zPuv67P5JPu6VZn0x12UyuJx9Qs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CPZHrlNlqe/QrfDz7VDsDbe50f5I6nVr8cwN8jxwJLfI3sjayx0523QXn5BTLmQ4hVkyB60EC9GCCyVY5dOq3/5qKp3ZwCgA6lUhHZrcKMfxyMG5PIPaxhGoqR++LpivRWUSy3//h6FxiI8UGN0IQgs7MuiIFtbvpaLmgmatWGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Fx1YMl6k; arc=none smtp.client-ip=217.194.8.81
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id C324A206E9;
+	Thu, 11 Jun 2026 10:53:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1781168025;
+	bh=AP4k7vCpcWzwbhiQECe8xTnolNKqf91FVaQ4lTLkXlY=; h=From:To:Subject;
+	b=Fx1YMl6kKbhJyCJ9Fi4A74unJnCFnnNIFgu8KAJ5y+IXnveaQQavA4yoaphen8NNN
+	 3ED9oQ6kPAPzEZDeGcxsjUAfyqaR2VCmtRe4NbniG4OByw1QGK2F/zmvhb+PHJdU/F
+	 2+cVpZSluPBGqiCk/4t7PRpd8c8G0pUnKtWTG8NN9npn2fbehQPVvoXVovufq+UeNY
+	 f6cTG4kUy3HCPYz0kmQ1IJckKELBjR5SpmiRWeB7uTaaTfX9qWZ+L1E8hjz9aKvsh2
+	 TgKBPhRLO4a5XLT6UugJqSxCZv2uJ7JDkDQxxsYEI4lgO4y6vt3VefXLmSd3+eCjP3
+	 0jlXFvnSLjZPA==
+Date: Thu, 11 Jun 2026 10:53:43 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rafael Beims <rafael@beims.me>
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Rafael Beims <rafael.beims@toradex.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jeff Chen <jeff.chen_1@nxp.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] wifi: mwifiex: fix roaming to different channel in
+ host_mlme mode
+Message-ID: <20260611085343.GB6993@francesco-nb>
+References: <20260610150021.1018611-1-rafael@beims.me>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260610150021.1018611-1-rafael@beims.me>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[dolcini.it,none];
+	R_DKIM_ALLOW(-0.20)[dolcini.it:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS(0.00)[m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-37660-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER(0.00)[nicoescande@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nicoescande@gmail.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-37661-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[francesco@dolcini.it,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:rafael@beims.me,m:briannorris@chromium.org,m:francesco@dolcini.it,m:rafael.beims@toradex.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:jeff.chen_1@nxp.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[dolcini.it:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[francesco@dolcini.it,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 910B266FF9F
+X-Rspamd-Queue-Id: 7BDCE670159
 
-On a split phy qcn9274 (2.4GHz + 5GHz low), "iw phy" reports 320MHz
-realated features on the 5GHz band while it should not:
+On Wed, Jun 10, 2026 at 12:00:18PM -0300, Rafael Beims wrote:
+> From: Rafael Beims <rafael.beims@toradex.com>
+> 
+> When host MLME is enabled, mwifiex_cfg80211_authenticate() transmits the
+> authentication frame on a remain-on-channel (ROC) reservation so that the
+> frame is sent on the target BSS's channel. The ROC is only configured
+> when priv->auth_flag is zero.
 
-    Wiphy phy1
-    [...]
-        Band 2:
-    [...]
-            EHT Iftypes: managed
-    [...]
-                EHT PHY Capabilities: (0xe2ffdbe018778000):
-                    320MHz in 6GHz Supported
-    [...]
-                    Beamformee SS (320MHz): 7
-    [...]
-                    Number Of Sounding Dimensions (320MHz): 3
-    [...]
-                EHT MCS/NSS: (0x22222222222222222200000000):
+...
 
-This is also reflected in the beacons sent by a mesh interface started on
-that band. They erroneously advertise 320MHZ support too.
+> 
+> Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4-7
+> Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
 
-This should not happen as the spec at section 9.4.2.323.3 says we should
-not set the 320MHz related fields when not operating on a 6GHz band.
-For example it says about Bit 0 "Support For 320 MHz In 6 GHz"
-
-  "Reserved if the EHT Capabilities element is indicating capabilities for
-   the 2.4 GHz or 5 GHz bands."
-
-Fix this by clearing the related bits when converting from WMI eht phy
-capabilities to mac80211 phy capabilities, for bands other than 6GHz.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00218-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
----
-Changes from v1:
-  - rebased on ath-next
-  - clear all 6GHz / 320MHz related phy capabilities fields from the firmware
----
- drivers/net/wireless/ath/ath12k/wmi.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 84a31b953db8..a8a4654c4f34 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -5154,6 +5154,7 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
- 				       __le32 cap_info_internal)
- {
- 	struct ath12k_band_cap *cap_band = &pdev->cap.band[band];
-+	u8 *phy_cap = (u8 *)&cap_band->eht_cap_phy_info[0];
- 	u32 support_320mhz;
- 	u8 i;
- 
-@@ -5167,8 +5168,22 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
- 	for (i = 0; i < WMI_MAX_EHTCAP_PHY_SIZE; i++)
- 		cap_band->eht_cap_phy_info[i] = le32_to_cpu(cap_phy_info[i]);
- 
--	if (band == NL80211_BAND_6GHZ)
-+	if (band == NL80211_BAND_6GHZ) {	
- 		cap_band->eht_cap_phy_info[0] |= support_320mhz;
-+	} else {
-+		/*
-+		 * It seems the firmware can report capabilities specific to
-+		 * 6GHz also for 5GHz, so lets explicitely clear them out.
-+		 */
-+		phy_cap[0] &= ~IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
-+		phy_cap[1] &= ~IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_320MHZ_MASK;
-+		phy_cap[2] &= ~IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_320MHZ_MASK;
-+		phy_cap[3] &= ~IEEE80211_EHT_PHY_CAP3_SOUNDING_DIM_320MHZ_MASK;
-+		phy_cap[6] &= ~IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_320MHZ;
-+		phy_cap[6] &= ~IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP;
-+		phy_cap[7] &= ~IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_320MHZ;
-+		phy_cap[7] &= ~IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ;	;
-+	}
- 
- 	cap_band->eht_mcs_20_only = le32_to_cpu(supp_mcs[0]);
- 	cap_band->eht_mcs_80 = le32_to_cpu(supp_mcs[1]);
--- 
-2.54.0
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
 
