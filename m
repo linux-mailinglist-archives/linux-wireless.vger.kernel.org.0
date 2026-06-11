@@ -1,168 +1,197 @@
-Return-Path: <linux-wireless+bounces-37670-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37671-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6I6cFNmmKmqwuQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-37670-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 14:15:21 +0200
+	id ohgGEpKyKmolvQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-37671-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 15:05:22 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEEC7671BBE
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 14:15:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7DA6722AD
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 15:05:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b="h/ysCyGJ";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37670-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37670-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JCkvv6G0;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37671-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37671-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 96CFE3007672
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 12:14:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBB1133FA470
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 12:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87993F1ADC;
-	Thu, 11 Jun 2026 12:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDDDEEBB;
+	Thu, 11 Jun 2026 12:59:19 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71435374A1B;
-	Thu, 11 Jun 2026 12:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6553F44F6;
+	Thu, 11 Jun 2026 12:59:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781180079; cv=none; b=G0U10NTbe3nUusHDPWKoBw9qy0/cfimZL5GrPiKwETRmOh/oZoo9kMlG0LVHqcV2wqnDu49H8Xwrc0nqrA9mrEErSP/Nc94+ix5EFidP5YKlzHf67tvknI9HHUtEKj2hk8p/YQ1A0cIIhn26CoG2ZV/KH1w7vMNtkJX3I7pwlMg=
+	t=1781182759; cv=none; b=fhWut1FDLICp5TRGpZ9b31+2iRSQd+L1jrY29H9Hg2vDxFwVipjSv7TMyqaHeF0x5Z++A2gyWcX4cuU3xdvccnfE2CFLr7WUen2VQB0L+PCteANaD8JVVozmD4QS7x+rmUtzFxwWI+2GlpyJOCBBoYFwfDKajeQfBl0gshzA0Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781180079; c=relaxed/simple;
-	bh=pZBwQN/SvU5hzocJ4ERPh0p5USb9OMY5oE+FNcAeqgU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OYg7nN0cVBPsgyzkAgZ0QEEGfMtVzbL8WWZKPsw/Cl/0w+kKTddfsFhrmG/gzLLS119zn/PX1Iky+iHJQ77p0ZB+48yd7vo4CSmY4G8dfF+iTK5v4JN71lGtPVqLHCEPPPgfRXfk4BMfbze7eGAepqNzi1cRFyYtmolexk6nG3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=h/ysCyGJ; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=WXxj1mkeB6TWeJTqqo+Z4AllTELSelgmZsAG2liQDH8=;
-	t=1781180077; x=1782389677; b=h/ysCyGJgxtIUNEOryO/jkwCnHmzUzjepqzxd/B5HXPGsLh
-	99dZlltXiRp4JyQTEdAM/6spEVbWaIChXWPGf29u2Bq/9sbeQGuDDlSQ6133lsqd0wYPQnYaDlOoH
-	eLc3DFzrGizE8v3I8u43JCKaQSRuybyHfpGRETzZnlmZDgewYt+V4eWJrpzsDklbd1gnUALwQbPvv
-	CL24zbpFIlNr6NVBTkNbzvHyfRnpcZIBkCMcWdLaU05YAHP/fTgIIdWGZRHNo/JypYecuQM55tymX
-	2u0R+hZVrdDh67LloYPGypEpHoboF0npBSchif3wdUKsRvVJemHmyUhorAiKoIXw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wXeIt-00000008zcj-0fJF;
-	Thu, 11 Jun 2026 14:14:35 +0200
-Message-ID: <caf46af4de722bd220fc934dd0b94e5090c5fe10.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: ieee80211: validate MLE common info length
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Zhao Li <enderaoelyther@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Thu, 11 Jun 2026 14:14:34 +0200
-In-Reply-To: <20260610154303.37079-1-enderaoelyther@gmail.com>
-References: <20260610154303.37079-1-enderaoelyther@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1781182759; c=relaxed/simple;
+	bh=/1dwIYvWmUtdrqJX9PgpkKAoazx0ZSPyTill6O1bVtE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=te62BViRHlHQ/fDtr5brmB/v5t/9N25bC1SMjnazEyo2qnHPF2PwL5aryVZ8u8yB0C+F4OZZFwIA5QzxwyPnbfX4sggbKX3RwTR72/sR4OEhU+Gqg9/TjfGbPXA8copNGXUVAqtl5H3x0/wa3YO42LqZplwIm15cp3Ub4ZCR/Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JCkvv6G0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7EE1F00893;
+	Thu, 11 Jun 2026 12:59:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781182757;
+	bh=Gu55FwRBT152Nih3ja11oNDgaQEq1L4WQl/WzeRJgRk=;
+	h=From:To:Cc:Subject:Date;
+	b=JCkvv6G0GQs9N16tnlg8iVWHuKokUZ2kB9waYD10z4w4Vs5Tsl8ei5Qu8eDAwJ+5q
+	 Nld17nsFeB8Qg8rTAi6yXlXqtjym/YzA3UzPpqTmm/oQWX5L+CLRPy9W92xC5MPVcP
+	 1ZNKS5/gQqZeEJnozokANXtPGE9XtOZOjeqqK05T9NrIHJvrdRP84gzWnai9ne2ugF
+	 SqMtUpNdBe051f8XgI+1LyvHamJr1PG9ZtbDar0CNv86cILFALmeGSZd4tsrXXOaih
+	 pr6BLYbLpRIge9Y8Dw0vJg/tixiUoxAJudzDTpp7nIVqudsOek8cGSPEvSXnVj6qAE
+	 pFqRBF3WTRvhg==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Rex Lu <rex.lu@mediatek.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH] wifi: mt76: fix airoha_npu dependency tracking
+Date: Thu, 11 Jun 2026 14:58:55 +0200
+Message-Id: <20260611125912.3387021-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:enderaoelyther@gmail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-37670-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com];
+	FORGED_SENDER(0.00)[arnd@kernel.org,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:arnd@arndb.de,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:rex.lu@mediatek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37671-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[arnd@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,arndb.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CEEC7671BBE
+X-Rspamd-Queue-Id: 8A7DA6722AD
 
-On Wed, 2026-06-10 at 23:43 +0800, Zhao Li wrote:
-> ieee80211_mle_size_ok() verifies that the advertised common information
-> length is large enough for the fixed fields that are present, but it does
-> not verify that the length also fits in the containing element.
->=20
-> Reconfiguration and Priority Access MLEs also carry a common information
-> length octet, but currently skip the common-length check. Reconfiguration
-> additionally fails to include the length octet in the minimum common size=
-.
->=20
-> Validate the common information length for Reconfiguration and Priority
-> Access MLEs, account for the Reconfiguration length octet, and reject
-> common lengths that exceed the element body.
->=20
-> Fixes: 0f48b8b88aa9 ("wifi: ieee80211: add definitions for multi-link ele=
-ment")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
-> ---
->  include/linux/ieee80211-eht.h | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->=20
-> diff --git a/include/linux/ieee80211-eht.h b/include/linux/ieee80211-eht.=
-h
-> index a97b1d01f3acf..d875045abf6cc 100644
-> --- a/include/linux/ieee80211-eht.h
-> +++ b/include/linux/ieee80211-eht.h
-> @@ -878,6 +878,8 @@ static inline bool ieee80211_mle_size_ok(const u8 *da=
-ta, size_t len)
->  		check_common_len =3D true;
->  		break;
->  	case IEEE80211_ML_CONTROL_TYPE_RECONF:
-> +		common +=3D 1;
-> +		check_common_len =3D true;
->  		if (control & IEEE80211_MLC_RECONF_PRES_MLD_MAC_ADDR)
->  			common +=3D ETH_ALEN;
->  		if (control & IEEE80211_MLC_RECONF_PRES_EML_CAPA)
-> @@ -893,6 +895,7 @@ static inline bool ieee80211_mle_size_ok(const u8 *da=
-ta, size_t len)
->  		break;
->  	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
->  		common =3D ETH_ALEN + 1;
-> +		check_common_len =3D true;
->  		break;
+From: Arnd Bergmann <arnd@arndb.de>
 
-You just made check_common_len redundant, it's now always true.
+There is a new build failure with MT7996E=m MT76_CORE=y and NET_AIROHA_NPU=m:
 
-I originally introduced it because variable[0] wasn't always common_len,
-but that actually got fixed in later drafts, and we should've adjusted
-that when we added +1 to all of these, e.g. commit 19aa842dcbb58.
+ld.lld: error: undefined symbol: airoha_npu_get
+ld.lld: error: undefined symbol: airoha_npu_put
+>>> referenced by npu.c
+>>>               drivers/net/wireless/mediatek/mt76/npu.o:(mt76_npu_init) in archive vmlinux.a
 
-We should probably more comprehensively change the whole thing so that
-common_info_len is a separate u8 rather than variable[0], but that's
-going to be much harder to do.
+Fix this by reworking the dependency for the MT7996_NPU to only
+allow enabling that when mt76_core can link against the npu driver.
 
-A smaller but probably better change would be to use the sub-structs
-here that are defined, e.g. struct ieee80211_mle_preq_common_info,
-struct ieee80211_mle_tdls_common_info and struct
-ieee80211_mle_basic_common_info. But the layout is a bit stupid even
-that way, dunno.
+To make sure this gets caught more easily in the future when additional
+mt76 variants need the same dependency, also turn CONFIG_MT76_NPU into
+a tristate symbol that has the same dependency.
 
-johannes
+Fixes: 7fb554b1b623 ("wifi: mt76: Introduce the NPU generic layer")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/wireless/mediatek/mt76/Kconfig        | 4 ++--
+ drivers/net/wireless/mediatek/mt76/Makefile       | 6 +++++-
+ drivers/net/wireless/mediatek/mt76/mt76.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/Kconfig | 2 +-
+ 4 files changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/Kconfig b/drivers/net/wireless/mediatek/mt76/Kconfig
+index 502303622a53..d941e67a222d 100644
+--- a/drivers/net/wireless/mediatek/mt76/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/Kconfig
+@@ -38,8 +38,8 @@ config MT792x_USB
+ 	select MT76_USB
+ 
+ config MT76_NPU
+-	bool
+-	depends on MT76_CORE
++	tristate
++	depends on NET_AIROHA_NPU=y || MT76=NET_AIROHA_NPU
+ 
+ source "drivers/net/wireless/mediatek/mt76/mt76x0/Kconfig"
+ source "drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig"
+diff --git a/drivers/net/wireless/mediatek/mt76/Makefile b/drivers/net/wireless/mediatek/mt76/Makefile
+index 1d42adfe8030..cacdd2b13d05 100644
+--- a/drivers/net/wireless/mediatek/mt76/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/Makefile
+@@ -12,7 +12,11 @@ mt76-y := \
+ 	mmio.o util.o trace.o dma.o mac80211.o debugfs.o eeprom.o \
+ 	tx.o agg-rx.o mcu.o wed.o scan.o channel.o
+ 
+-mt76-$(CONFIG_MT76_NPU) += npu.o
++ifdef CONFIG_MT76_NPU
++# CONFIG_MT76_NPU is tristate to simplify dependency tracking,
++# but it behaves as a bool symbol here.
++mt76-y += npu.o
++endif
+ mt76-$(CONFIG_PCI) += pci.o
+ mt76-$(CONFIG_NL80211_TESTMODE) += testmode.o
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 07955555f84d..60bd155cc7d5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1647,7 +1647,7 @@ int mt76_testmode_dump(struct ieee80211_hw *hw, struct sk_buff *skb,
+ int mt76_testmode_set_state(struct mt76_phy *phy, enum mt76_testmode_state state);
+ int mt76_testmode_alloc_skb(struct mt76_phy *phy, u32 len);
+ 
+-#ifdef CONFIG_MT76_NPU
++#if IS_ENABLED(CONFIG_MT76_NPU)
+ void mt76_npu_check_ppe(struct mt76_dev *dev, struct sk_buff *skb,
+ 			u32 info);
+ int mt76_npu_dma_add_buf(struct mt76_phy *phy, struct mt76_queue *q,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
+index 5503d03bf62c..5742bce12fbb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
+@@ -16,6 +16,6 @@ config MT7996E
+ config MT7996_NPU
+ 	bool "MT7996 (PCIe) NPU support"
+ 	depends on MT7996E
+-	depends on NET_AIROHA_NPU=y || MT7996E=NET_AIROHA_NPU
++	depends on NET_AIROHA_NPU=y || MT76_CORE=NET_AIROHA_NPU
+ 	select MT76_NPU
+ 	default n
+-- 
+2.39.5
+
 
