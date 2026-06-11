@@ -1,95 +1,88 @@
-Return-Path: <linux-wireless+bounces-37678-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37679-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jiSWI3ngKmqXygMAu9opvQ
-	(envelope-from <linux-wireless+bounces-37678-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 18:21:13 +0200
+	id 8WOYJPryKmqgzwMAu9opvQ
+	(envelope-from <linux-wireless+bounces-37679-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 19:40:10 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DA96736A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 18:21:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E75867413A
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 19:40:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DT6bqm+x;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37678-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37678-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FRRf6KQF;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37679-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37679-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F3B8310E562
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 16:20:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8AF5D3002B2C
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 17:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBF8429814;
-	Thu, 11 Jun 2026 16:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A404968F8;
+	Thu, 11 Jun 2026 17:35:16 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2DC428481
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 16:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E98F383333
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 17:35:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781194800; cv=none; b=N0uRFV9c3dAL+mjl4iSaO+bfdB37SgHKJ5xD+Xy249+iXWcCwavHD7/KAVVcMlVy77wp7AKpGHYFYOIXgkObOjq7vFMFbt8OthiuJZajfRU+wEB4pZpqGfeO+CnUdTGJK/y/iT65Avzt12ZLW/bOMlHjKVvCDShZcoeD4N2GlFI=
+	t=1781199316; cv=none; b=DBV7skFsQKkBePSuOOtU9DfGNN0YfW/BygcLwDWncAJvaAkcMZ/rxp6Xu4HUOuphcRLkJGc4jb3kG9CYeR1Tx1FvQWABWIxDb6TXL0kwgy1reCKOPTB02uoY+Ze9LloJuSC/STzKzjj1ZUKi4rt6MLBY3Ww5zvQpVjwdBKFN7cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781194800; c=relaxed/simple;
-	bh=kaG5qyz7UM2ji9838UuP3ncG1zNanDsJ30nAadWGaGU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/dC0JPc5P3OQA8iokXV6iwzHF+iYjKctamEqvHwqkT6Hl5NdwWkLk7NZyYFLZNTknRXkZY0yNr/05UOxZ0ETB3336SHfGYVPdjXUDiTaPV1LGVeQ9FJ++ZU8s9REK/WsKoEnr9YEf2GDqdSsGSHKzJW3rAM8sNlTmla/3cbnK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DT6bqm+x; arc=none smtp.client-ip=209.85.215.175
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c85b2139015so2877175a12.2
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 09:19:58 -0700 (PDT)
+	s=arc-20240116; t=1781199316; c=relaxed/simple;
+	bh=FuQd8meff7oP6JE01DWJHh6bS3K5BZBiEhXwQSMVXEs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aFfsKtTKZNAypA6rniEerdhXs74iDy///QDd1WdlJZsl8+PvSJ+0EjALscocliBDfpd1vUUO47fQMO4aVvbsNKtK5MSsEnCkbgLgvPVHVF1RSNC5IsRkimg39AJJQd7TsMKN5XAjh9Lvowt17z+EkhlHTo4jWHNkvr+wvDfXEgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FRRf6KQF; arc=none smtp.client-ip=209.85.216.46
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-36b8d414666so145803a91.3
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 10:35:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781194798; x=1781799598; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ozfYwTRjguWwldkipZcumrs2T+DMse6/l34PtGviF+8=;
-        b=DT6bqm+xpm1DQ1SoXwSy4yFQ9QbVt1pKWrNGgUShln/5TWgWFaXgznC7Kys9BYoe57
-         Xznbo1EHH15pPbIyVCobDzOm1E036J2+xR07gBJNUomR1nifX2FQLqc+dfUwvJGwimwV
-         pAUVghNVPSiWvpZ2j+wvcC6jfaW756FtwNzoD26Rq49qdniKcgDljOCUEyEMTJA+k6zu
-         r+77wEKnMcWgdpUPS2q61A4OPMHPy+Q3Cqu/DayycWcYQQlrmlQrMZHlw271+N9nZ1iX
-         fRnSaqnulksSIkCJAlGGWjhSTI91SsUsVnX5PUoAzTZoVRSjt5v0ba9+fR1+gamGUmLf
-         ALNg==
+        d=gmail.com; s=20251104; t=1781199314; x=1781804114; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZOh4h1Jbp5Tyf36zO2G+zbdh9lsb9GzpQeGsDyR6Flo=;
+        b=FRRf6KQF4azGjv6YThEWK0B7Fv1icigJzi6/4MaDWj0bv7CizKCkan3LR9Dt7w0IGZ
+         9Kh5B3caJVj8y3EBgaBjU2KXelvrkCNyW75nwX3KlJo8sm55zV/2jB4bFxla3p5yIRI3
+         /+zKqOGpgYpgaI3xbG07RQzPfk4i7RwKl+Rhxx9UJU6O8BiMKck0NFmZiIUMiws/IuEM
+         IqUzeeFGlQE03Gle8bNNOE+yZrRd6s6uwoEscGCAYl8jcfEhljIpyrFoDDv7CxyAVQnt
+         WAMmpcQRrSRI4h72ECiarOTOj65MwvmeyLSAuhPjGH2QfPzha7EHMrUevrR+tMgBppMe
+         zQ9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781194798; x=1781799598;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ozfYwTRjguWwldkipZcumrs2T+DMse6/l34PtGviF+8=;
-        b=KJ4o8vDoUKHvzL2eWMIVzRa5twiLTVaXv1aHRw8Mb8Bnxq1XcbS897Es111ZWuoKmk
-         nWexc/E7I4g+yK6Yq3JCyzG/nrk+5BZ5OBsm1ZDjNDdnUjFEpTaMnhKpdf8Bty76TKFx
-         NdJI6AIryVV7zNklA2ku0O5K1I5nUBoutjHF3iNzTY3qECiRkmx31Q4HUdfC4CIUXq+F
-         7HjptR/YTCjO1gHbQnX2fBFpIec7vhnsuM3V0ifbcX3aO01ziL+QOyrPE4p44K4TGIYW
-         vlFF67x+sv//w+Y3DFI6h+Le2W+sZDT1xhF4R81MluO53WTYPyqX1TG8XY+KOblNTt98
-         SbnQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8QLecbNNDy5n/Czb1EgM/Ip/AjAJhvOkd5MvXi2Nuk5V5cSyuR4dsJW0YMIFQJKHOb5M0ZlkIWRXWQoEmiHA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDahoreKdxhGWAHDakzPdkn/tce5+ZqiQR8LffT2Qn+6Ca/4zp
-	Sd+eWYz6Y5MGrB24wITb/MCLKCS96l4C63Xab5dUckDsF/bJbM3rYSjn
-X-Gm-Gg: Acq92OFV1tD/rqgUCOitDLOVeU21EIPojGBOla48S355KZmyQvN7tqVrE5me8rBvm84
-	x/c5WivSJRyOoK4ENGFQBnm7sX0pg6OQS51W0r7rWwuSDF2sfaCn2BzDtcgbnXZ0Dh/+CFN7Wg/
-	MF0ioAeHxnEI3tSfuhGQSsPAwqC0R2k21O2bMlTOyrvflsAbFH0wxpgOdiTwjwHxW+CW6POIh7D
-	4YRbQSuARy76D2aRQtbT4zIMUk9KzQwwZyQ9Xw/Quw1WUpUSQJ24U7mKl+9L8iDfWnJzgEZnS1u
-	od2FaxFCsKjFz765fXET9y/0Vcu2UfG1xs4wMvnMjOZVervHQF/UrTcTXNpKFirbVO4OQn39+c2
-	H27mDk1fhBKT28I/iZ04kwntUTU+8pKis557lnV8g19SEQba5XZHGbBTzZidfvqO5tC87+3vlzJ
-	sUZxrrTHCPf3Rlvzk6WdXUvoyhUzFsdzpkopQ9f23AJQV7zdiTsJdAHicpYSWRU8E=
-X-Received: by 2002:a05:6a20:da12:b0:39b:89e0:2e37 with SMTP id adf61e73a8af0-3b5e31d9e1dmr4203682637.14.1781194797751;
-        Thu, 11 Jun 2026 09:19:57 -0700 (PDT)
-Received: from KRHW1CJW23.bytedance.net ([139.177.225.254])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c865881640bsm2871231a12.26.2026.06.11.09.19.54
+        d=1e100.net; s=20251104; t=1781199314; x=1781804114;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZOh4h1Jbp5Tyf36zO2G+zbdh9lsb9GzpQeGsDyR6Flo=;
+        b=UyycZpCx/Ox1cl/TBFY/Sl+L0Los8GlkGwmwMcdJPRbYrH7/W+0bsA/PYiub0rQRvL
+         UOw6G23JMTii3OI8L2S+63eRNBSnHYyMn0rv8yaaQihZzqYrRXm17RWJyFwwuj+Q/UPd
+         vux/KR0zY1VkGt2Hu0DD8sg4eM2ZlwWJom1rsoj4CCptJHD52KHQWWSBmdgv5UkBQMxb
+         wWc83fRjoFWrPyd47GqHk2qKRmIWRF5ZZ90Cjj2QeUuc0nk/jNyCxG0scS+VzA02RoUL
+         gDYBXJVZ23XqyiJcVfI6n4Wdyn9pzCWbe4+ALm9OiarI+RkwSZyXsWmu5SoiJS2W4Uuv
+         Gl7w==
+X-Gm-Message-State: AOJu0YzTHr4XhktIjaS24eEawyLZrErNYP/mMNp/vzG/flB3orqMutkZ
+	frcgDZTNr36mgAQQwcQUyjnhz9qtLfY6FUOkvA/HJM9pKGShkcaIBNl9
+X-Gm-Gg: Acq92OHllSJzVIrUnbMZ46xGwy/GTNEC5zCJE0Ri1s8T0TiZCOIN8CbA1leYE8SWime
+	M7y6H6n54tq72yUrFmPy+xz+4kNR620WiijEvwiD6kCU/fiwoC7LekZB8C5FAHKs/I4Q42E70Nb
+	Ws5W9CYL4rff3SdJM4RvBrWv59mvePECQsDO7GRAaGLqbDXVe1Tg7VZ+ajaeXnEr4heBBgCJdIl
+	EBX3y9zzs855uyBoT9w4/TyUER9ZUmT9aYfsfa6idNh2yahT7ZxvdRj3ckImRt00+STLhqNR4y3
+	osU9D5HOgqJDfuJv90krscQL5gEWdIYZuloDKdjbnSm6Y0YtrFiPn3mw3nZn2xIYkCZlw41G1my
+	tV8kE6MT+qLNpTIkV4ovpCNRTn1PbuRxKJpOlqmT6n7DlL65YLBLf6WYNy4h0EaWkVeGbDUGhTD
+	NIutcoCl38q//AurvKWRgNy8qU6GorlxjNmyOOFxFpPwwd0aFHrLFlCZz11CTxkBM=
+X-Received: by 2002:a17:90b:394d:b0:366:3517:1a95 with SMTP id 98e67ed59e1d1-3778edd65b1mr4601128a91.0.1781199313748;
+        Thu, 11 Jun 2026 10:35:13 -0700 (PDT)
+Received: from KRHW1CJW23.bytedance.net ([139.177.225.238])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-843380c9307sm2416294b3a.29.2026.06.11.10.35.10
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 11 Jun 2026 09:19:57 -0700 (PDT)
+        Thu, 11 Jun 2026 10:35:13 -0700 (PDT)
 From: Zhao Li <enderaoelyther@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Thomas Pedersen <thomas@adapt-ip.com>,
-	linux-wireless@vger.kernel.org,
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zhao Li <enderaoelyther@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] wifi: cfg80211: derive S1G beacon TSF from S1G fields
-Date: Fri, 12 Jun 2026 00:19:46 +0800
-Message-ID: <20260611161943.91069-6-enderaoelyther@gmail.com>
+Subject: [PATCH v2] wifi: ieee80211: validate MLE common info length
+Date: Fri, 12 Jun 2026 01:35:07 +0800
+Message-ID: <20260611173506.36838-2-enderaoelyther@gmail.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260611161943.91069-4-enderaoelyther@gmail.com>
-References: <20260610162700.58722-1-enderaoelyther@gmail.com>
- <20260611161943.91069-4-enderaoelyther@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -104,22 +97,22 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[adapt-ip.com,vger.kernel.org,gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-37678-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37679-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:thomas@adapt-ip.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:enderaoelyther@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:enderaoelyther@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[enderaoelyther@gmail.com,linux-wireless@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[enderaoelyther@gmail.com,linux-wireless@vger.kernel.org];
@@ -127,52 +120,89 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 07DA96736A9
+X-Rspamd-Queue-Id: 2E75867413A
 
-cfg80211_inform_bss_frame_data() parses S1G beacons with the extension
-frame layout, but still reads the TSF from the regular probe response
-layout after the S1G branch. For S1G beacons that reads bytes at the
-regular management-frame timestamp offset instead of the S1G timestamp.
+ieee80211_mle_common_size() uses the first common-info octet as the
+common information length for all known MLE types. However,
+ieee80211_mle_size_ok() only validates that octet for Basic, Probe
+Request, and TDLS MLEs.
 
-Use the 32-bit S1G beacon timestamp and the S1G Beacon Compatibility
-element's TSF completion field when informing an S1G BSS. Keep the
-regular management-frame timestamp read in the non-S1G branch.
+Reconfiguration MLEs also skipped the length octet when calculating the
+minimum common size, and Priority Access MLEs skipped validation of the
+advertised common information length.
 
-Fixes: 9eaffe5078ca ("cfg80211: convert S1G beacon to scan results")
+Account for the Reconfiguration common-info length octet and validate
+the advertised common information length for all known MLE types. Keep
+unknown-type handling unchanged.
+
+Fixes: 0f48b8b88aa9 ("wifi: ieee80211: add definitions for multi-link element")
 Cc: stable@vger.kernel.org
 Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
 ---
- net/wireless/scan.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/ieee80211-eht.h | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 27a56ee2e8f0b..c90619eeb03b1 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -3309,14 +3309,15 @@ cfg80211_inform_bss_frame_data(struct wiphy *wiphy,
- 		bssid = ext->u.s1g_beacon.sa;
- 		capability = le16_to_cpu(compat->compat_info);
- 		beacon_interval = le16_to_cpu(compat->beacon_int);
-+		tsf = le32_to_cpu(ext->u.s1g_beacon.timestamp);
-+		tsf |= (u64)le32_to_cpu(compat->tsf_completion) << 32;
- 	} else {
- 		bssid = mgmt->bssid;
- 		beacon_interval = le16_to_cpu(mgmt->u.probe_resp.beacon_int);
- 		capability = le16_to_cpu(mgmt->u.probe_resp.capab_info);
-+		tsf = le64_to_cpu(mgmt->u.probe_resp.timestamp);
- 	}
+diff --git a/include/linux/ieee80211-eht.h b/include/linux/ieee80211-eht.h
+index a97b1d01f3acf..a557df0088c08 100644
+--- a/include/linux/ieee80211-eht.h
++++ b/include/linux/ieee80211-eht.h
+@@ -844,7 +844,7 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
+ 	const struct ieee80211_multi_link_elem *mle = (const void *)data;
+ 	u8 fixed = sizeof(*mle);
+ 	u8 common = 0;
+-	bool check_common_len = false;
++	u8 common_len;
+ 	u16 control;
  
--	tsf = le64_to_cpu(mgmt->u.probe_resp.timestamp);
+ 	if (!data || len < fixed)
+@@ -855,7 +855,6 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
+ 	switch (u16_get_bits(control, IEEE80211_ML_CONTROL_TYPE)) {
+ 	case IEEE80211_ML_CONTROL_TYPE_BASIC:
+ 		common += sizeof(struct ieee80211_mle_basic_common_info);
+-		check_common_len = true;
+ 		if (control & IEEE80211_MLC_BASIC_PRES_LINK_ID)
+ 			common += 1;
+ 		if (control & IEEE80211_MLC_BASIC_PRES_BSS_PARAM_CH_CNT)
+@@ -875,9 +874,9 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
+ 		common += sizeof(struct ieee80211_mle_preq_common_info);
+ 		if (control & IEEE80211_MLC_PREQ_PRES_MLD_ID)
+ 			common += 1;
+-		check_common_len = true;
+ 		break;
+ 	case IEEE80211_ML_CONTROL_TYPE_RECONF:
++		common += 1;
+ 		if (control & IEEE80211_MLC_RECONF_PRES_MLD_MAC_ADDR)
+ 			common += ETH_ALEN;
+ 		if (control & IEEE80211_MLC_RECONF_PRES_EML_CAPA)
+@@ -889,7 +888,6 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
+ 		break;
+ 	case IEEE80211_ML_CONTROL_TYPE_TDLS:
+ 		common += sizeof(struct ieee80211_mle_tdls_common_info);
+-		check_common_len = true;
+ 		break;
+ 	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
+ 		common = ETH_ALEN + 1;
+@@ -902,11 +900,10 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
+ 	if (len < fixed + common)
+ 		return false;
+ 
+-	if (!check_common_len)
+-		return true;
 -
- 	if (ieee80211_is_probe_resp(mgmt->frame_control))
- 		ftype = CFG80211_BSS_FTYPE_PRESP;
- 	else if (ext)
+ 	/* if present, common length is the first octet there */
+-	return mle->variable[0] >= common;
++	common_len = mle->variable[0];
++
++	return common_len >= common && common_len <= len - fixed;
+ }
+ 
+ /**
 -- 
 2.50.1 (Apple Git-155)
 
