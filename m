@@ -1,129 +1,170 @@
-Return-Path: <linux-wireless+bounces-37645-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37646-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kThOD0IIKmpZhgMAu9opvQ
-	(envelope-from <linux-wireless+bounces-37645-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 02:58:42 +0200
+	id WqWKCUoWKmopigMAu9opvQ
+	(envelope-from <linux-wireless+bounces-37646-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 03:58:34 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A08F66D927
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 02:58:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABAE666DB93
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 03:58:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b=OpFabeo6;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37645-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37645-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=realtek.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=N35qJdAQ;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37646-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37646-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CCDE30DB1BA
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 00:58:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B5C83023E08
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jun 2026 01:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E816B35893;
-	Thu, 11 Jun 2026 00:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2965024A06A;
+	Thu, 11 Jun 2026 01:58:28 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53ACC1519B4
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 00:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BF940D565;
+	Thu, 11 Jun 2026 01:58:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781139519; cv=none; b=CVikiKnNNGb7ItJn7TMWINkxr1Eo7G+d8L3yr3qR2mEbdmuk/htE92AC5RFs0SbznOPPq45N44N6Zf9brqNC9SuPbrecQdrn+LRoPIAbXoxLMhHaa1LO7GPG9UytjGvGdBWKNRgAyCs9gXbtKUFhCiAlZQNY356eIp11ddJECjQ=
+	t=1781143108; cv=none; b=bcN+rbfpq7I8AX0boRfN4iQQqAVsVt1fMN0G0QgPeTi9glWss59Q6rVIbFibkPrcGLCTDAvkp3bDkADFwlULrDDuTNO7SpKY1nQlM5+o7g+2GpYhARv6pKiqYrcO0dvDmuH7IWnXQxaT9gvvJT9XSG3bsA8BR5fxqMu5XHVnvxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781139519; c=relaxed/simple;
-	bh=ujO7byPJ5iV5Dx0y5GseZHYqm2h8jQBo0lahwfVBqCU=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ax6eZN7mfMaBNas9j5TZdxQ8iZiRUWhfJIDajodPlZu7CpmUtKOUVcyUWkzRdymTMtE9ofcsdZZ/L4ZOiMC4bCRPLUTVVaQCFpYSTHnuFDo7N2+vcyiKT9Wr2Z42aTjPuZ6em9evAeK6PW4/WTJ7h9Ohsu8OCQsueQyGV0z5uEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=OpFabeo6; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65B0wY1P11497015, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1781139514; bh=ujO7byPJ5iV5Dx0y5GseZHYqm2h8jQBo0lahwfVBqCU=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=OpFabeo6j4ypEQU9/JGQornGyAyJxIeRZSMMEsX3DEJa9aCpeXEQDztrQ7X8Kjbcn
-	 //NtpPt0YUhZbmcXEUX5cT4zQyyef41NG/Tc1sWh9SKnlStmTrLKKretJHOlGfjwfS
-	 QMdhtS4uYWCXpZGTo3bhjwK3uwDA+h+XfW86RCzi4wSvLVUDO5J6GshMLF5nUKvdJu
-	 GLbdt8/6Fema6Ui14xg4FK0mMC6uTptwamGXlYUEUQ6GRL/fbLbxkjmsAncfarAQPr
-	 iVEEsggY8zGyoqw+M0S2K/5RLk6anocKaqBbEUlxyY4Y7GZLrdF+DhkNE1wtNgAB0y
-	 U558O8gelSPjA==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65B0wY1P11497015
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 11 Jun 2026 08:58:34 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 11 Jun 2026 08:58:34 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::e6fd:5a3f:8946:92c4%10]) with mapi id
- 15.02.2562.017; Thu, 11 Jun 2026 08:58:34 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH rtw-next 2/2] wifi: rtw88: 8822b: Don't process RF path C
- in query_phy_status_page1
-Thread-Topic: [PATCH rtw-next 2/2] wifi: rtw88: 8822b: Don't process RF path C
- in query_phy_status_page1
-Thread-Index: AQHc+NlmI5RszDDEn0+/+c7N19D81LY4iRUA
-Date: Thu, 11 Jun 2026 00:58:34 +0000
-Message-ID: <0685e76052aa4fff87a95ee2465e5d7c@realtek.com>
-References: <ee30b95f-bc68-4711-9b15-cf5fd23c3c48@gmail.com>
- <9c4beb36-2954-4db0-844a-74ba5eacf21b@gmail.com>
-In-Reply-To: <9c4beb36-2954-4db0-844a-74ba5eacf21b@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1781143108; c=relaxed/simple;
+	bh=iszKkz3JgLlRe0sP3qPT2UGfqGVBejQNnEjJt/kZepY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=G04FBOlIqtoyVefV4Hb8C9YzAKLX2YIWlOaAN+i3Lkv2iI1HistdLhtopXEMXHGoegca2uKCYd7yHEf9247+ekgL0fQM0noG57Q0qIFyIaFqBPsY56O+N571/eMVH28/jbPYp1tvBrQGnVWjqmzPKk/RXHtGi9CEIPBCYxxwCm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=N35qJdAQ; arc=none smtp.client-ip=54.207.19.206
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1781142970;
+	bh=QJoWXZpcV5a9/t2+tGRRv6L7y8JgmT2jrErNwbztDW8=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=N35qJdAQFOCMRDXi2zfD6DRURedvfWscZ/nnyneokCjNw70axYlh7i1kCYSqFrECV
+	 rH59G5Hd1jJ24bRg0kqMGZsCdqcSOPzLRQS6vXuVRZEZ51qDw85L1M5svjvSJepoLR
+	 XS7VYNSroFIZmOg2b0GoBE6MPQYs3UDT6jWf9Rg8=
+X-QQ-mid: zesmtpsz8t1781142951t022be485
+X-QQ-Originating-IP: dtgcXLHrh7uYinHQvqJ4j0g25H+VW+HzZRG97NzK1xg=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 11 Jun 2026 09:55:48 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 263188192785953540
+EX-QQ-RecipientCnt: 10
+From: wuyankun <wuyankun@uniontech.com>
+To: penguin-kernel@i-love.sakura.ne.jp
+Cc: jeff.johnson@oss.qualcomm.com,
+	johan@kernel.org,
+	kees@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	sumanth.gavini@yahoo.com,
+	syzbot+f80c62f371ba6a1e7d79@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com,
+	wuyankun@uniontech.com
+Subject: [PATCH v2] wifi: ath6kl: fix invalid workqueue flags in ath6kl_usb_create()
+Date: Thu, 11 Jun 2026 09:55:45 +0800
+Message-Id: <20260611015545.111157-1-wuyankun@uniontech.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <075511fc-1136-4208-84d0-9214e761f8ba@I-love.SAKURA.ne.jp>
+References: <075511fc-1136-4208-84d0-9214e761f8ba@I-love.SAKURA.ne.jp>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: Obfty5iaetlmC1NFajMFI1oj9T4UQ0rWBTMhiJTc1PyoiIn2Ug9Gwsxo
+	8DXikI4OEDIx2XIsRLlfOlibdMFNSizg09+V13kR4tX/N1MDRGkucV48n1xjcZznRWujVAD
+	yb//ywC20QHQ/a6t2UTe+V8xSEwbiV2TR5qvaPdNRgArGdyhZ/eFmmy7kNT76uE16HbA/r5
+	s5D8e5cJjOxj/BrnI7/iJ6v0jZuTcPIXfDqWyySOQd/8gOVrj7VEYskH/h0S/CgPv+++e8z
+	ATbGqhk17xALoPTlWv9uE27EUCmLy3NEDSHn3wCCHQNjoVUV/1XELaRir8pDDylx4q1psvI
+	CvKQLvq6I5vLRMBfwUzGicHKv9B+3LJ9FVWtCDYxuovsgn7WPrXl6dStrAXo1DWc/IlUHLe
+	SYj/KFv9InIiHoOp8sPjBhjdMKRDPtHPaN5PBZfVRmzk5BcQwfgT6xpr3wCXm/CZRFDHPpx
+	pBwxEOtGDHqF9F8nBUAtejbcdzXkOoHFh9pW0PkRWkAqMIaEevQ5f1DsthaTEUpKenx16By
+	rhtA3gV9EyKYiUI1LcbX/x2BMAnmH2POPHs7BjJb+IZrJABsvYbMjeYIfBQAK4ftV2omHGk
+	lmQEK3BAd6GLGWt0DkuJcAunwmrnHA07OiaQb5YsGA8odq7DT00kF7PfTmBqtbsblIYFjPe
+	y0pqrvCA+ViCMo6E57yCzOw0YNWXzaKX0ST31BjU0SAwoEJDXch2hB3vkwQrXaLLz1jYY0P
+	RmV/tFEdfVgoeaMg/duuh0ltaNc9kXauzCQ1tu7hA85mc+RKIp0nPrr6kr/cy3WxflTvIbr
+	bTGzFQw9gqhLu5nzLETR44ygqQG/G2jK62vY0yOFIMYlHzoQ9htXYGFtYHyD2ctd/zL7BOk
+	ABnF+LiWCkHeoKxlQ2v6nsrkKt4OwxkiWDZpVdnDJznDv61bxKrEettaxTwxI1yE04/KyW3
+	jupfeXhZG1TWw/RaEGusnRp63HmFbPNU2MChbliCRP1sd4kguM613pYpnX0/u29X4nw32DO
+	oWdaphr1WxRrkSsaTLHt6Ctm5soQWEMnlFzq81DujawqZ/iRtluyWirUOBrD0=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:rtl8821cerfe2@gmail.com,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-37645-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,kernel.org,vger.kernel.org,yahoo.com,syzkaller.appspotmail.com,googlegroups.com,uniontech.com];
+	FORGED_SENDER(0.00)[wuyankun@uniontech.com,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:penguin-kernel@i-love.sakura.ne.jp,m:jeff.johnson@oss.qualcomm.com,m:johan@kernel.org,m:kees@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:sumanth.gavini@yahoo.com,m:syzbot+f80c62f371ba6a1e7d79@syzkaller.appspotmail.com,m:syzkaller-bugs@googlegroups.com,m:wuyankun@uniontech.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37646-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[realtek.com:+];
+	FROM_NEQ_ENVFROM(0.00)[wuyankun@uniontech.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,realtek.com:dkim,realtek.com:email,realtek.com:mid,realtek.com:from_mime,vger.kernel.org:from_smtp]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless,f80c62f371ba6a1e7d79];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9A08F66D927
+X-Rspamd-Queue-Id: ABAE666DB93
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBSZXBs
-YWNlIDw9IHdpdGggPCBpbiB0aGUgbG9vcCBpbiBxdWVyeV9waHlfc3RhdHVzX3BhZ2UxKCkuIEl0
-IHdhcw0KPiBwcm9jZXNzaW5nIGRhdGEgcmVsYXRlZCB0byBSRiBwYXRoIEMsIHdoaWNoIHRoaXMg
-Y2hpcCBkb2Vzbid0IGhhdmUuDQo+IFRoZSBvbmx5IGJhZCBlZmZlY3Qgc2VlbXMgdG8gYmUgdGhh
-dCB0aGUgcGh5X2luZm8gZmlsZSBpbiBkZWJ1Z2ZzIHdhcw0KPiBwcmludGluZyB1bmV4cGVjdGVk
-IHZhbHVlcyBmb3IgUkYgcGF0aCBDLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQml0dGVyYmx1ZSBT
-bWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQoNCkFja2VkLWJ5OiBQaW5nLUtlIFNoaWgg
-PHBrc2hpaEByZWFsdGVrLmNvbT4NCg0KDQo=
+ath6kl_usb_create() currently creates ath6kl_wq with flags set to 0:
+
+  alloc_workqueue("ath6kl_wq", 0, 0)
+
+This triggers a runtime warning in __alloc_workqueue() because the queue is
+created with neither WQ_PERCPU nor WQ_UNBOUND set:
+
+  workqueue: ath6kl_wq is using neither WQ_PERCPU or WQ_UNBOUND.
+  Setting WQ_PERCPU.
+
+Set WQ_PERCPU explicitly to match the actual execution model and remove the
+warning during device probe. No functional change intended.
+
+Fixes: 21c05ca88a54 ("workqueue: Add warnings and ensure one among WQ_PERCPU or WQ_UNBOUND is present")
+Reported-by: syzbot+f80c62f371ba6a1e7d79@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/6a289c01.39669fcc.33b062.00aa.GAE@google.com/T/
+Signed-off-by: wuyankun <wuyankun@uniontech.com>
+---
+ drivers/net/wireless/ath/ath6kl/usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
+index 79c18f5ee02b..945984c3dbe6 100644
+--- a/drivers/net/wireless/ath/ath6kl/usb.c
++++ b/drivers/net/wireless/ath/ath6kl/usb.c
+@@ -636,7 +636,7 @@ static struct ath6kl_usb *ath6kl_usb_create(struct usb_interface *interface)
+ 	ar_usb = kzalloc_obj(struct ath6kl_usb);
+ 	if (ar_usb == NULL)
+ 		return NULL;
+-	ar_usb->wq = alloc_workqueue("ath6kl_wq", 0, 0);
++	ar_usb->wq = alloc_workqueue("ath6kl_wq", WQ_PERCPU, 0);
+ 	if (!ar_usb->wq) {
+ 		kfree(ar_usb);
+ 		return NULL;
+-- 
+2.20.1
+
 
