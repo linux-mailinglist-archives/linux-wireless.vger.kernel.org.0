@@ -1,290 +1,208 @@
-Return-Path: <linux-wireless+bounces-37697-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37698-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EWB6FgKoK2oaBgQAu9opvQ
-	(envelope-from <linux-wireless+bounces-37697-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 08:32:34 +0200
+	id h313O2O1K2qaCQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-37698-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 09:29:40 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFBD676EDD
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 08:32:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0ED6773AD
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 09:29:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nxp.com header.s=selector1 header.b=UBtW8XuH;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37697-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37697-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=nxp.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=none ("invalid DKIM record") header.d=aerlync.com header.s=google header.b="SDB/9BVI";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37698-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37698-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=aerlync.com (policy=none);
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 94143307E784
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 06:32:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00F9430E6211
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 07:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099913955FA;
-	Fri, 12 Jun 2026 06:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7103B3D6488;
+	Fri, 12 Jun 2026 07:29:37 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010054.outbound.protection.outlook.com [52.101.69.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577E83D7D87;
-	Fri, 12 Jun 2026 06:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41AA391512
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 07:29:35 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781245931; cv=fail; b=TCl+//kM6sd1cg44873KGendSfTQ6S6bBqd2nxsqpOFvXs/Kib7Fpl86Dq73HHh0XCfo1pk0+iCfMgNzdq2dU9Fv9U5mDhX3EH8EuEfbfdkohwqdAfHNEpGa8x7i2OLOyceGz1siPy0ojUvAl6NKVjuCQm7uwvfcF5HehMe3YgY=
+	t=1781249377; cv=pass; b=PCUGLVxEP4wFV2cVZle+O6jPejiK/7kCaYdxIXjXrklHeuFodOAN8tEe/OP/MjV5gMvyb7ONxEIanVw1x+XfRU9Ho9RltzqxU15L5qRqcbCwQ0aWzG8oJJoNDku2xHOcdqr84Pq8e/7KocmO/S2PicYDSlcRxxBdIdkDzf6pYQw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781245931; c=relaxed/simple;
-	bh=3UQk/gndKJwP34aphs+bjBueXzF0f/2qi4Nmw5KJbtw=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=SEE7/y6YOHA/Ir6JrtrruChfEXaG/Qj/Fa0nduvBuEXhx6B46wDlYJaq+VTwUOQAz8ZYouuMpQaJVAExcO5OPhmMIC3JBkd7vV4C4WJ8LgayCrnkkKU350l+/+4pSeIcrsEkn99xwnmrAE/BqWCiPIVlhHvNb/pquRWTNrtc3GE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UBtW8XuH; arc=fail smtp.client-ip=52.101.69.54
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eeanOZnj8/f6443kfMQbkLRkYV190Ys+1F2UtcJFqNInXdz+AeetlBVsG7cNuR/wvwQIRYslRvFZIms822VITWu78TZdbs2tuOaWY5hi2Hz7CKnvAg+wU5Q2XAt6DcmNB9LKAjCeZ/nlUK7c87WYwe3Ao61RMUM7ZJsSmlYsJwWZ6cuUclJpvIVYyMVpVUsQZ+6DIxdocYlO1/SWymkuqDFKj4YQCkedAZpHljZ2fav31L2w4SmYRrcGiBVmbyWlKxx2OPhrSqRgVlPT0dfRqgbB1iDkZaD5CmP4us0p2ji8axJqIkn9C0KmlA1/sGwQH/L2C08lpF+fGH9OpYmBxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9UyLY8kanW048D04G/w4VJrXjtcUeWQIu+yzT/1/eZk=;
- b=JWEDz+1+7yxnHqvK72heoJEYMtiXJNDyjZ+C16iCqqCk0bt00rrkHCu1MmCCzZuYXo6EKBNDTnDmaB9Un3I3VlkSWmtPEAd+KD653H0uIdkAJuGc3rBnSwbPCTSVOXBUep1WbAVAuUOW4bN7ot/IRyfAT/TjPJ5tXPPOGSfaaLDU++FCDUaq0uEroYHVsQRc03CWaG+l6eerC//+5DnQ6RPbfH/YIsGZI9lkGqGyXqX1OLtI9hlO0cO2ZDUEYLRHx5KUQsAVO+sgWswVLHp3+MYp3yyegnZ8pvFnH+52NUhCYZaDreb6lcPvARLZr8gdGStlrAxljOSm/av/TlmIqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9UyLY8kanW048D04G/w4VJrXjtcUeWQIu+yzT/1/eZk=;
- b=UBtW8XuHUN4HzRAKJBjGgkD0WY6w/aHSiaey6YK/VNhC464lGSEaZJ5f/9fkZa+wFDkQ+GdeuKMhMu6+WdnY51iL0cA8xQaIJSNdsmbgsWctXKi/TwZqMcAygj659ZVApiNQbueqYpxCS5NsX2i9foeYEZ9cQO+WzZgzx6kXVWDaPheZ/zvv0VLQIU+vvwb8btLiMO/13e6Rfu3Bux7uU5uCCZ8Hh6S8NgL2l1gELGzZNybbh1+GulsktsT9UVT5xvxH73f+ufrKKw4LtKgdRIZ8jpems7JCcBNq9biDjKCkPB6RSLWoJi038EsNtKOzL4KCbPRGreADitZdrKgoLw==
-Received: from AM6PR04MB5239.eurprd04.prod.outlook.com (2603:10a6:20b:7::12)
- by PAXPR04MB8750.eurprd04.prod.outlook.com (2603:10a6:102:20c::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 12 Jun
- 2026 06:32:06 +0000
-Received: from AM6PR04MB5239.eurprd04.prod.outlook.com
- ([fe80::fa76:ead:9e21:f84e]) by AM6PR04MB5239.eurprd04.prod.outlook.com
- ([fe80::fa76:ead:9e21:f84e%6]) with mapi id 15.21.0113.013; Fri, 12 Jun 2026
- 06:32:06 +0000
-From: Jeff Chen <jeff.chen_1@nxp.com>
-To: linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	ulfh@kernel.org,
-	johannes@sipsolutions.net,
-	francesco@dolcini.it,
-	wyatt.hsu@nxp.com,
-	s.hauer@pengutronix.de
-Subject: pull-request: nxpwifi-2026-06-12
-Date: Fri, 12 Jun 2026 14:32:08 +0800
-Message-Id: <20260612063208.2754029-1-jeff.chen_1@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR2P281CA0021.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:14::8) To AM6PR04MB5239.eurprd04.prod.outlook.com
- (2603:10a6:20b:7::12)
+	s=arc-20240116; t=1781249377; c=relaxed/simple;
+	bh=tVg2r7SH40s0Z53c3qQyY3QGfxdt6vvxr86cv2zFvew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ah+Z6QYL4zzZl8jeAABCkyJWLQUW9OhSdvRwe6qhiw5R/ZGov0Qhr2OhrFGwdphLB4WeVzLUif1eQxNWqi0FUg3l/0HyWggaQVL7bU6OB2iLTAoelcwCiJ/1rLgGz9flGHfD0y4Uzs8G0DL17GPPQDB5GFgaR+RlIeJYQqOWj1c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aerlync.com; spf=pass smtp.mailfrom=aerlync.com; dkim=fail (0-bit key) header.d=aerlync.com header.i=@aerlync.com header.b=SDB/9BVI reason="key not found in DNS"; arc=pass smtp.client-ip=209.85.208.171
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3965d76090bso6268471fa.2
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 00:29:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781249374; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Z98iLX+aSHF6dYjO3i9WYzR/HG+sel3toY3FMOY0JB2MHdjTiSn2ljBBDSNZXOVNqz
+         fSrwfdSNlqJCjx+Z5qJtKyJt9m4EfC7PEJB1IKHFX8PxE6FRG0V2+UnzQkHrekZOreBF
+         xunzgg0J7ZmFlacS5iZMqmYR9Dezjfnj9imsSg5w0bpeJmlM5PU3FN8JOuqLcZT8sx/C
+         2dEdfHeqDmoQALWWpCzfVy0WisZxkoJO2JO38EP5xgZSns6Ts6NpHcK8u/glLyn57yPq
+         9815Vl8RQeV+qBCh0hZtSsG6C+olPFHG1AhQMG6wiqZCUI8seyrZpHKak6/T07yeMjk6
+         7GDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Z6ZI6tLmZUTFZyjC3DvxkYL28Mk3M9noRZhE0JUJwEc=;
+        fh=NXLQsPJj6pN9gik7YYOd3mwl531tCVr8SgZnNQ65P0Q=;
+        b=iJwYmxPZ8WKJOnCCSJBxv/8MDf1sIM/J7CkMVf5M/rdzy7iIYtxGEokpot2G3UAIIT
+         6cuEZdq1zlVfH+8THbO9EwiiDIdfGiAotFx5y9bH6hzktPVuHVtxogyvOFPUfcRWvPKQ
+         +SjJYNjWpy8wuP5OuwOAtg52WkqNcTPEN+urQpDqj6KYN3xx02w+ws1Mtwv32cBUZpOn
+         oSgZ0GrMaKTNluloH1hT6JCTmRTwIwsgGIwYKV0ZedLdAK4ZOczwXLGlN4chjMHlvMq5
+         SITmS8GCYl/XxtC3P0HunWi0IohdSQhYknUGECA+4GxmZcbaRcp+P9zZHKQ8B5DeFPpN
+         lHHw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=aerlync.com; s=google; t=1781249374; x=1781854174; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z6ZI6tLmZUTFZyjC3DvxkYL28Mk3M9noRZhE0JUJwEc=;
+        b=SDB/9BVIHwx+DUPmdxfNYZn6udJBzI1oEFCaxU2WzJoLSMFwmGTaROcLCxGthN6f3K
+         2WB3wYiUu3NYPRM4zBXKwRiXoDJ2TbImKHMqxqRWpwt2lGkU19PgPqSFrDJi/K1xL0Dj
+         OwE0vve5bPnXI0BVRrhktnE/9s9mLycnL8AJmhjzd4S6vcMCT45Pk1jITr6EiJs4m+o7
+         0QaGb2yF34NkXU4d4N1GM9rauzas1IlYbbGhPTT8g3FDfLMyMOVF7evfT6Wx+aKSX1Z0
+         MQkf2H7AZoVTRHzPtjvFqsOUeiLtEnk+KUxiJQQo7U8q6W9fc5/E79YqZOn1zi1gZ6bv
+         pKig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781249374; x=1781854174;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Z6ZI6tLmZUTFZyjC3DvxkYL28Mk3M9noRZhE0JUJwEc=;
+        b=Wq1Dktzx7jPrVvR0FCR659PKVG8BVJQPymI5Ck0pF9JbMJ9FQ2CJYmfUbHYuczkobq
+         8do8l0pO2kykTElat9rd5/N+blcOTuK5EZ5xEvV7cxTYqNxobc1X1L8OvUO2C83a/QLp
+         39try0DtANpIlAT3ZDzLryIfAAmfWxyDbe2fN+wazyMcUHBZXK34/OF2Hud68vIaLnku
+         6GJ2uANoq2azmuNFkr4GsFFm3IBuKstNMkp6tlQ7FjlTcgvBVemEApE6zzIStK9XuiKn
+         GLz6rT5CJ9xURcA0AIR6mKuRr4kIlaHba3K9S3IQStPCmojO7lR6x2TuKH8y8baKxbDP
+         swug==
+X-Forwarded-Encrypted: i=1; AFNElJ+Ue0jmkV+8qK3o3yh3HEVERkhjc7Q4n1558FQTe7jKqtuoI4iqp6AFfRK7c+5DtZEbRJWR4tvdpcynvNtL+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0PnHlj62isZLvdDTInPSOgmvqOEk3i5hRozRH9PBGkn0zfEDh
+	oGLsafWSuJljQFIlBr1RsHD9vWdOEwLvaeYtxQ1eQvO3AAAb6Cm7toAnqF1K8V681MRyruqIZ9+
+	RCO4CInaUAbwyQ/YKg+3UxDTuiBCm2hqwqqDp6eM35m+tg1ZX7hkB
+X-Gm-Gg: Acq92OGkBGd0sgEj9MWhHtKe6mmq+ahKQhf5JWaWQThese58VVakqdp9HTQxeLCk9+7
+	1Ou2EpwAE/LMPZy74HlDIGLy6mtgvyaa9ILEYMHOuOQcSRdmrvCN3zOgG6hfmJpA63Z6vhA0oU7
+	2xRQGWXcImWmOM9p24+LVVtKxqnwASDz7BgHgTn+cFn2BffDLVDsqu3SZJBnGREN99irdB9DjII
+	fFXRmoi8T/w3m62ubcUi5YndHpo/SzkrHFdr+ZYKy8gJ5exoO5Wkw2FQ+k0S2nHTUZ14dcRnEml
+	8u0eUds=
+X-Received: by 2002:a05:651c:24c7:b0:396:75ac:457a with SMTP id
+ 38308e7fff4ca-3992afba022mr2593921fa.8.1781249374144; Fri, 12 Jun 2026
+ 00:29:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB5239:EE_|PAXPR04MB8750:EE_
-X-MS-Office365-Filtering-Correlation-Id: 642c709c-f3dd-4426-7139-08dec84c528f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|23010399003|1800799024|19092799006|366016|38350700014|11063799006|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	ArrLp03Zfd01OiqGFgjaV9xntVDggPL1cs63TYPbSN7zCnBOqukckqEGzChOkOkTNb1+4mE0h+OWao2D34LXmgBUG7dBceLD+HqvhcFrHWDgFmjeNz/3QBmFtk3PirxKGWxZXGhVeiJqJtnivNsdktwy2yVNdz48p3eWMEXgZzxruXGg8mHexsMbuvmGRz7n8vN34k7/yNGJbVUVz7AdUgicvQmcd/X/vaGVzj+EjXMyd/Y/NExHlGwQ01xad4YWc+GIsoiYgn4mGve/z4KlEB8s/xjiM1iqLWKxTcFGG0ToFZ8yEQ3WZHHqiVAabW2DtwWa0rA9c3KgXmA5lpvyDPQ0ZDFS/FRCH2uQDmU5zohAhOO0F0MTs6cxa1erk8trn7YJ8l2JGjAZcZJ1xgXroo3eEnUO4A2xrwLM3aocbkKBsAWqmhT3a+w8+HU2k7RWJcXUmteVQVVONRPZo3chms8IqvUzZpPGKs1PHy4FB3ub2gbeZm7Gzd+1LoiCP6UU3j1kptJsp/0uDjf2AZ27fs/AqlUIaytg3VBr7Vn4ppsX7C6eLxCwkq9XJZJ+t/pAOJzZs0B3cU9LPva16hdWV5BsYy0/pcqXpMD3N6XZx7E3qOc8II0KJpku4XRFLAwd/X+E4sxsbLy0gawbeTd6QOk6oqqGsPdAitIe2STl31GQQTdcjZ5x9niST3preT9t140WV5suTcE0zxIcA/7zfyQmVT+FltmST7QScu4JIzZWB8HN1hLS7w1IkIqQkeRO
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5239.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(23010399003)(1800799024)(19092799006)(366016)(38350700014)(11063799006)(18002099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?yEyD77rbhzBdB8ew0QHEqLHKrEfjXMfFxzQpgmORf/LyEEQsvZrxKlNSR4oL?=
- =?us-ascii?Q?odc6NFxMcNZ8vzi38ZV5fNV1b7nui9OMBHktvqJXS1F833Y1S3fmldLZFRDk?=
- =?us-ascii?Q?oDtBrJGxvR9/YWhuasesiRn6xWX6MaaePuc5oVPU4JPjXI6R2uAb5459ICop?=
- =?us-ascii?Q?zoK0ooN8lCN1+SP30HQk9RtPLvISFL56wPsF70YukRZsFGUgr8Y4SP8GnSxl?=
- =?us-ascii?Q?k8MEQ5GINBWdfldi6/RjQwOObkN2hGV0En1NzDCMgaCSdW3UNri9Odf5BcjM?=
- =?us-ascii?Q?LND2ESovzIspAi5qm4A/iLHjhSIIIYn3XG4UAFnWvOpS6BL+UFFA77qLtsHD?=
- =?us-ascii?Q?o8ybBSUED3YbQUoEIRdCVdOnpdL9R3Sif8OvNbn5v0qItjMekA+1LKzfm+DN?=
- =?us-ascii?Q?GAIGVGUcjPjF0O3po6IPvHS8wsCVvFZHqgdM+s3oiiJJla7p5raam6MT03EU?=
- =?us-ascii?Q?FUiYVyxEOn1mu28A743EW5hWRMCewzGDCJj6oO2MaHZMbbQi3KgEHJRw/kR9?=
- =?us-ascii?Q?ZRLaACZ5dR7fDgmzLeKFW/l8N6uqx5blKYgLa0ezcnFOOu8z9UrXKVwcAECx?=
- =?us-ascii?Q?xcfoWmv2GstsMyR4whxYOgO9UP3O+sQPpG7M9Bp4EaV+2h246oK70X5f1Fm8?=
- =?us-ascii?Q?xoge8YTcyVDAz9ovh6ZXcQIcBsoQea7lOw67K2hSNgTHzrclKpB+sHlvT6Lw?=
- =?us-ascii?Q?F1J/mWe8k4/vM+L4zEh2sfnjxQt4CyLWmTPKdMQrsBWix0v7WNRWBJ+b/SiX?=
- =?us-ascii?Q?IF3GRR2ch4jT1bnRR+/3NqT1OCp+PAYnhgM8D5FjQbnfTDMSTEvFD8B01gOj?=
- =?us-ascii?Q?v3pS0zY4mVM15dQKeBzL6U054bm1LOjBFmF1ZPMJM+1jbI9Mfz6kFe8jLiGm?=
- =?us-ascii?Q?JpTXi9BZwexRhZ3AVkxWRjdBNMiyfL3ZyK3npCC7Ee0yDnUI07BbaXb85kaH?=
- =?us-ascii?Q?Zv3L04YS2xEwNqVRtWbrlRfzO29BHAV+jKn9GdOExZAL6GowESnfLGc+Nx9s?=
- =?us-ascii?Q?4yn4GwJ7BJ5jXpi5Skp/ES1WfAEsR9LWWZK7exPpzI//3LUqFk6tACqPZC8e?=
- =?us-ascii?Q?ihv6G4zJq5GG0JdcwUO49wOW/ZYS8i6yATslCX3F1HOdAuqvtjPMrRJs8VsM?=
- =?us-ascii?Q?+2TfAYzDcWOanrToKN1QuxWPrwn1CML4YgdjJInOkjcXmOjbdotSaIJJ+kb4?=
- =?us-ascii?Q?YrJgvZWlQWiyUBrEjEvVe/p/ONHpXf8jxrXOxNaBCfxrmfzde50aXPRX5qf+?=
- =?us-ascii?Q?7kpJL3VzsFCT8IVECH13R88Nj85ZlXoILhrfHzMR/a58pfOTFHBhSlm5mIEh?=
- =?us-ascii?Q?NwhPY1JCRovPedFyPLbjizO2hNC8ni50QwlEx9BHGtYPcAjY8E5L/35+FFXP?=
- =?us-ascii?Q?JYCP8S6AfoUT+Gx+c+BPhVV2JIblTxK4ExVD0AZXBfqmU3F1yHihUHqIUJaM?=
- =?us-ascii?Q?f6OI17XNXhIpGjH/DpFOrVZGeRi4eLY2OanoezcQ7JxOSvobikrT2rc+OStn?=
- =?us-ascii?Q?gNGytFMAvXZSj+RTksvMB2EzKahu3EiogOugJjcm7qZZZuQJ6WyT+GPBfsHP?=
- =?us-ascii?Q?8CQ858coKyq19bOjg/zAzIBkjJH3LttuYN9zBY30LmCtn7w0SwvN1RwiYGlq?=
- =?us-ascii?Q?YNbha15QpViJL8bzU0XLCW0eRodGDZTa8MDGzVjuhODS0d3gaOoFq2kOvDKk?=
- =?us-ascii?Q?lyQjJiDu1QaCfQmD4mTecaGltoyWbwk5vq0f9ErL6eFvArtsbdDJQCW4P5TN?=
- =?us-ascii?Q?ToIEInPEyg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 642c709c-f3dd-4426-7139-08dec84c528f
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB5239.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2026 06:32:06.5666
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dUdhZycfy9UeoKwHIrqWPp766pKo4QHK3S5vzbx5BfBucG9i9n7FvsDgGgKyOp5qmwADmyXXUusTWYHyug3F4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8750
+References: <20260605054307.427874-1-thiyagarajan@aerlync.com>
+In-Reply-To: <20260605054307.427874-1-thiyagarajan@aerlync.com>
+From: Thiyagarajan Pandiyan <thiyagarajan@aerlync.com>
+Date: Fri, 12 Jun 2026 12:59:17 +0530
+X-Gm-Features: AVVi8CdTzevzyoeXKAxtGy5Prp3DA55ak9AsJownX2IlzA2E4kcPVgB3F2rjH6E
+Message-ID: <CAL3EHw6QcuFAw5FwbF2O593jESqsWZpaxyynSFctKUWV15R1hg@mail.gmail.com>
+Subject: Re: [PATCH] wifi: nl80211: Increase ie_len size to prevent truncated
+ IEs in new peer notifications
+To: johannes@sipsolutions.net
+Cc: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	Thiyagarajan Pandiyan <thiyagarajan@aerlync.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
-	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [-1.36 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[aerlync.com : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37697-lists,linux-wireless=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[jeff.chen_1@nxp.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:ulfh@kernel.org,m:johannes@sipsolutions.net,m:francesco@dolcini.it,m:wyatt.hsu@nxp.com,m:s.hauer@pengutronix.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[jeff.chen_1@nxp.com,linux-wireless@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:thiyagarajan@aerlync.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[thiyagarajan@aerlync.com,linux-wireless@vger.kernel.org];
+	R_DKIM_PERMFAIL(0.00)[aerlync.com:s=google];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37698-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[nxp.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thiyagarajan@aerlync.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[aerlync.com:~];
 	ALIAS_RESOLVED(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:dkim,nxp.com:mid,nxp.com:from_mime,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BCFBD676EDD
+X-Rspamd-Queue-Id: 4B0ED6773AD
 
-The following changes since commit 972c4dd19cb92e03d75b66c426cfade07582a1ba:
+Hi Johannes,
+Could you please review this patch and provide feedback?
 
-  Merge tag 'wireless-next-2026-06-10' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next (2026-06-10 07:59:45 -0700)
+Thanks,
+Thiyagarajan
 
-are available in the Git repository at:
 
-  https://github.com/jeffchen71/nxpwifi/ tags/nxpwifi-2026-06-12
+Thiyagarajan
 
-for you to fetch changes up to 4c477f8bfc1a86c54a719cae475f7fa1973eba0f:
 
-  wifi: nxp: add nxpwifi driver for IW61x (2026-06-12 10:07:33 +0800)
-
-----------------------------------------------------------------
-wifi: nxp: patches for wireless-next
-
-In nxpwifi, introduce initial driver support for NXP IW61x Wi-Fi chipsets.
-The driver supports 802.11ac/ax, SDIO interface, Station and uAP modes.
-
-----------------------------------------------------------------
-Jeff Chen (2):
-      mmc: core: add NXP IW61x base ID and block size quirk
-      wifi: nxp: add nxpwifi driver for IW61x
-
- MAINTAINERS                                      |    7 +
- drivers/mmc/core/quirks.h                        |    3 +
- drivers/net/wireless/Kconfig                     |    1 +
- drivers/net/wireless/Makefile                    |    1 +
- drivers/net/wireless/nxp/Kconfig                 |   17 +
- drivers/net/wireless/nxp/Makefile                |    3 +
- drivers/net/wireless/nxp/nxpwifi/11ac.c          |  280 ++
- drivers/net/wireless/nxp/nxpwifi/11ac.h          |   33 +
- drivers/net/wireless/nxp/nxpwifi/11ax.c          |  594 ++++
- drivers/net/wireless/nxp/nxpwifi/11ax.h          |   73 +
- drivers/net/wireless/nxp/nxpwifi/11h.c           |  339 ++
- drivers/net/wireless/nxp/nxpwifi/11n.c           |  837 +++++
- drivers/net/wireless/nxp/nxpwifi/11n.h           |  158 +
- drivers/net/wireless/nxp/nxpwifi/11n_aggr.c      |  251 ++
- drivers/net/wireless/nxp/nxpwifi/11n_aggr.h      |   21 +
- drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.c |  826 +++++
- drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.h |   71 +
- drivers/net/wireless/nxp/nxpwifi/Kconfig         |   22 +
- drivers/net/wireless/nxp/nxpwifi/Makefile        |   39 +
- drivers/net/wireless/nxp/nxpwifi/cfg.h           | 1019 ++++++
- drivers/net/wireless/nxp/nxpwifi/cfg80211.c      | 3931 ++++++++++++++++++++++
- drivers/net/wireless/nxp/nxpwifi/cfg80211.h      |   18 +
- drivers/net/wireless/nxp/nxpwifi/cfp.c           |  458 +++
- drivers/net/wireless/nxp/nxpwifi/cmdevt.c        | 1310 +++++++
- drivers/net/wireless/nxp/nxpwifi/cmdevt.h        |  122 +
- drivers/net/wireless/nxp/nxpwifi/debugfs.c       | 1094 ++++++
- drivers/net/wireless/nxp/nxpwifi/ethtool.c       |   58 +
- drivers/net/wireless/nxp/nxpwifi/fw.h            | 2459 ++++++++++++++
- drivers/net/wireless/nxp/nxpwifi/ie.c            |  480 +++
- drivers/net/wireless/nxp/nxpwifi/init.c          |  607 ++++
- drivers/net/wireless/nxp/nxpwifi/join.c          |  787 +++++
- drivers/net/wireless/nxp/nxpwifi/main.c          | 1673 +++++++++
- drivers/net/wireless/nxp/nxpwifi/main.h          | 1427 ++++++++
- drivers/net/wireless/nxp/nxpwifi/scan.c          | 2695 +++++++++++++++
- drivers/net/wireless/nxp/nxpwifi/sdio.c          | 2327 +++++++++++++
- drivers/net/wireless/nxp/nxpwifi/sdio.h          |  340 ++
- drivers/net/wireless/nxp/nxpwifi/sta_cfg.c       | 1165 +++++++
- drivers/net/wireless/nxp/nxpwifi/sta_cmd.c       | 3387 +++++++++++++++++++
- drivers/net/wireless/nxp/nxpwifi/sta_event.c     |  862 +++++
- drivers/net/wireless/nxp/nxpwifi/sta_rx.c        |  242 ++
- drivers/net/wireless/nxp/nxpwifi/sta_tx.c        |  190 ++
- drivers/net/wireless/nxp/nxpwifi/txrx.c          |  352 ++
- drivers/net/wireless/nxp/nxpwifi/uap_cmd.c       | 1256 +++++++
- drivers/net/wireless/nxp/nxpwifi/uap_event.c     |  488 +++
- drivers/net/wireless/nxp/nxpwifi/uap_txrx.c      |  478 +++
- drivers/net/wireless/nxp/nxpwifi/util.c          | 1381 ++++++++
- drivers/net/wireless/nxp/nxpwifi/util.h          |  155 +
- drivers/net/wireless/nxp/nxpwifi/wmm.c           | 1313 ++++++++
- drivers/net/wireless/nxp/nxpwifi/wmm.h           |   77 +
- include/linux/mmc/sdio_ids.h                     |    1 +
- 50 files changed, 35728 insertions(+)
- create mode 100644 drivers/net/wireless/nxp/Kconfig
- create mode 100644 drivers/net/wireless/nxp/Makefile
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ac.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ac.h
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ax.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ax.h
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/11h.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n.h
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_aggr.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_aggr.h
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.h
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/Kconfig
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/Makefile
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg.h
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg80211.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg80211.h
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfp.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/cmdevt.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/cmdevt.h
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/debugfs.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/ethtool.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/fw.h
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/ie.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/init.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/join.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/main.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/main.h
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/scan.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/sdio.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/sdio.h
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_cfg.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_cmd.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_event.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_rx.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_tx.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/txrx.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_cmd.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_event.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_txrx.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/util.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/util.h
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/wmm.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/wmm.h
+On Fri, Jun 5, 2026 at 11:13=E2=80=AFAM Thiyagarajan Pandiyan
+<thiyagarajan@aerlync.com> wrote:
+>
+> Currently, ie_len in cfg80211_notify_new_peer_candidate is defined as
+> 1-byte field, capping the maximum IE list size at 255 bytes. When a
+> large beacon is received, the IE list is truncated, passing incomplete
+> data to wpa_supplicant. This causes supplicant to fail parsing the IEs.
+>
+> Increasing the size of ie_len to allow the full length of the IE list to
+> be forwarded properly.
+>
+> Signed-off-by: Thiyagarajan Pandiyan <thiyagarajan@aerlync.com>
+> ---
+>  include/net/cfg80211.h | 2 +-
+>  net/wireless/nl80211.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+> index 9d3639ff9c28..36af36533cac 100644
+> --- a/include/net/cfg80211.h
+> +++ b/include/net/cfg80211.h
+> @@ -8445,7 +8445,7 @@ void cfg80211_ibss_joined(struct net_device *dev, c=
+onst u8 *bssid,
+>   * cfg80211 then sends a notification to userspace.
+>   */
+>  void cfg80211_notify_new_peer_candidate(struct net_device *dev,
+> -               const u8 *macaddr, const u8 *ie, u8 ie_len,
+> +               const u8 *macaddr, const u8 *ie, size_t ie_len,
+>                 int sig_dbm, gfp_t gfp);
+>
+>  /**
+> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+> index 7db9cd433801..0d97a47c35fb 100644
+> --- a/net/wireless/nl80211.c
+> +++ b/net/wireless/nl80211.c
+> @@ -20958,7 +20958,7 @@ void nl80211_send_ibss_bssid(struct cfg80211_regi=
+stered_device *rdev,
+>  }
+>
+>  void cfg80211_notify_new_peer_candidate(struct net_device *dev, const u8=
+ *addr,
+> -                                       const u8 *ie, u8 ie_len,
+> +                                       const u8 *ie, size_t ie_len,
+>                                         int sig_dbm, gfp_t gfp)
+>  {
+>         struct wireless_dev *wdev =3D dev->ieee80211_ptr;
+> --
+> 2.43.0
+>
 
