@@ -1,87 +1,88 @@
-Return-Path: <linux-wireless+bounces-37753-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37754-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id k5V+GCJVLGo5PgQAu9opvQ
-	(envelope-from <linux-wireless+bounces-37753-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 20:51:14 +0200
+	id vVdcI0VVLGo9PgQAu9opvQ
+	(envelope-from <linux-wireless+bounces-37754-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 20:51:49 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB9567BDAE
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 20:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED33467BDBC
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 20:51:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=olTTVOLa;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37753-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37753-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iarCaaC4;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37754-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37754-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A4EB326D4FA
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 18:50:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54C463311685
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 18:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176B139B969;
-	Fri, 12 Jun 2026 18:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7012396B84;
+	Fri, 12 Jun 2026 18:50:56 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FCE36E48C
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 18:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A63C3A0E99
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 18:50:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781290253; cv=none; b=TSab48T2++XKoNoD/U09lYjpvTxXSjxKgSetk/peIHDgVOM5pwiNcQLnjNXPWPX9d0nKcXTFNVN48vMEYHIq9tj3P5lqUHJmwvlDVe8g0IDgcuPXSmZyspxDDE2yc9jQf39zmIwu3SGAZS/GWdlctSXtKJ4DKpDvmRm1zE8plzQ=
+	t=1781290256; cv=none; b=qvhcY9edo8QVLWSu0kwwwPDGwCrwBvRkeAaTpBQK50x1qUfz453AL8wTIh+45gkBWAo7S0jiSvo7UbtGBVyMn7w8L3i8yRysYSexBu8kSRTL2DqVG3mn82VJfeOetCXoUnSRshuZKB+SMlwBaVHPfbP8SL/KcXaXloepAsQ+Dr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781290253; c=relaxed/simple;
-	bh=zqdxczSfCDR24qK8RchijXOYco+66PeeGVmmOB0l8Fk=;
+	s=arc-20240116; t=1781290256; c=relaxed/simple;
+	bh=hlcOSpzCIeLy9An8PLGHbmJPvzwoOQPxOMGo6PLPsS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/2NZ0tUmDhI1uw8GNSN2mLjsx61IhSDq7qDBXUgnqLlIvuKHHrhB35fD9PvTcaiqjwVhxrW3NNsw+bfgzLYnZIhd+1FtqoWYpa1Nj98mZ03fuXYoMY6RdIe0qfWQxkGjUmPgtEyTVfG1jW/lesuNSTLulpyF5KnoM7g++atI/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=olTTVOLa; arc=none smtp.client-ip=209.85.214.170
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2bf30d530bdso13563435ad.3
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 11:50:52 -0700 (PDT)
+	 MIME-Version; b=cPql31dYv7cSMPBmOMlWAziZpnexKMdr6LAecJ/yn1iGus6UnnBNULF7yykU6QJ9pvoUt3eJc5lEpkFZy1uUObEKF10BJJUKjl+3Fk3CgqPFHjqpr8Wny4exmiM+86XSx4PM+xMMESOq3xwKKVmMom2lnEYPPElW2DRxrS+2bSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iarCaaC4; arc=none smtp.client-ip=209.85.214.181
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2bf20f6be6bso10428685ad.3
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 11:50:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781290252; x=1781895052; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781290254; x=1781895054; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5TDQxnXyG/6WR12CZ2iRyY55tbEMYwWbeoypsoM106w=;
-        b=olTTVOLa1MdVRpoXpCY3QdGjxZcyY83UUjSiJ60AsQuC/Q2CY/hBXvM/OfFSrvZS5p
-         2bDuHLuAlxAevbdQKVXfGvRNc3ZhKapVa6dSC+dzwtB0tnMRNBWmrfCvIvQwy/f58LVJ
-         IuZtprPnck72OgnBV3KyGcTxvL/llfWvXY4Awkh0AyJ4klKSrcZm2XbSajBTtyCvRogC
-         tJ+6jzHnXgVzsC4CixSrsYpKjVGmBiPRq/X4dt/77T7yC7jVUFQQX+zilUARCGa1ZCPV
-         agNlUB+h6UGpLle8ExZ/++bJrGSZACrJ2lCPJmbza8puAgVJ/ycfgwHbWFGYS6WjyWAD
-         QVKQ==
+        bh=DhYmWtYKzLZAshiSMxu3UaHeW+9G/xRMBLm0pBnYPNk=;
+        b=iarCaaC4vnCYvLrFhvGftRiRKARzuhPRpndN0cgHG8D5gs9Gp3yqvHRncIoSnEQKXk
+         FgIckTSXSKVn2n9foQsIrUGGL9LJY514ELyl0G3A5w8mxqVt4x2TqrYfwTrpanjXBUOX
+         nsqrfYO6m005h9GxwtkM6O64wfvan1JjmxlH9iAf5urcRtqNrMPtdF9Ntkvh9egY+w0Z
+         4LlE0tdVYhbKio8yYTTCzQ+QArjCcQbVlajIn26RSVaTi9x8Ttx04VRHoHxhrkPPzcMy
+         yOhxzIHzVmkL3uY2wlcdhJ8BoShj6DbFj2YvnAxGfb9jZHByr8J34VaiVFQzOCTF+9/l
+         cWGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781290252; x=1781895052;
+        d=1e100.net; s=20251104; t=1781290254; x=1781895054;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=5TDQxnXyG/6WR12CZ2iRyY55tbEMYwWbeoypsoM106w=;
-        b=Ih5y0Vd6HaEHGykw1V6V10Z5pSYhBFcl+MmGS5eQh9Pt72HYIL6B8J3oqqinuEQ9DZ
-         07zQChVH/+ihwShlp7BmOsZhW7NhQq4QZQ+nREOt2XDQtXuCrgn3FT82QfsIRpxLy4Td
-         ZQxssRJ3BbaluxcLOq1ayGUzS8Sx9mTYJtBZKj/AeLPGbYoHrIgznseHs8HlG9s/PkKn
-         mjyrvzRzKJLNdiAbtEMN7aKxVVBr5zm+/YJhDPAO7tX/XXMR9vMa4QnmCyRxlBoo78T/
-         kIg0MUgnQQDNq8O74lQi2Ssq6LURHacN4EfTC/YFl0qaOx+CAq1n7wSm0f54ytZ+tVRH
-         x7Uw==
-X-Gm-Message-State: AOJu0Yw9cY5CTz6KTtG15Yt7/KEiqQ9FkrNjEF3MTCsYq6AZ/8cxxENm
-	zcEcy646wvmten1Tl0ih+q4nnunIrPrab1eSJ9zi2VMe3nc38AR/VCp0
-X-Gm-Gg: Acq92OE8BiRkVWx4YRAdJWaKd+ZKf20/T81U+nP6mDn8aBjFXaX4OBdJ+0F8BQ2b7EA
-	WXAb4urKe/xvXHdP/KaTsSeyfgcu1rxHOTWhwCV0k3rZu2ZX9a2zPi+gmHt9BUlKw3vTQvBwBtq
-	RVPqVII5cSuJg27bXf97bzBjoRk1QtvrLMkUybKqIPPReq443Ei60UzrDndGPM/aInQm9uF0Ksn
-	Qtb6MbHNBbJVTdlWEm4Cmx4FNGImIfLAzv7MEn7prPxhHWeMnNpNQduJrzosSqr7ElJsw6a4ssf
-	U2gKU5ZEjcmcu7F9R2J7JFNR3NdHDGo3TQ0bhgpcuaLglrA0WtvACmuv8bJdq6N+dRx1+3i++bh
-	7XW5ltuODKgj50iJNT/qjpITqBDKuyiyp+hQXjzlstV6+xUFwz+gkIoEBeQ9zTAYIPXzpA2udn9
-	To/rIUEQ1ncs/CzHPaXZepeVmQoFaBMhkCeevyM9GpB5QGvFj3ImjO/tIPleNf3pc=
-X-Received: by 2002:a17:903:fb0:b0:2c1:d49c:8396 with SMTP id d9443c01a7336-2c6641987dbmr10454145ad.1.1781290251880;
-        Fri, 12 Jun 2026 11:50:51 -0700 (PDT)
+        bh=DhYmWtYKzLZAshiSMxu3UaHeW+9G/xRMBLm0pBnYPNk=;
+        b=JBncCxA0kk83Q9RHQyAj3UXOJiCVuvZ8tGx6dvxihk0aZlC8/XkzFlIfyxL2csw41P
+         gJs6mzGQ5SOCTXB0ACNOp62cnzTAW0AHndYjOkAvXU4l4018d8gWmZO31pvvoV1Xq/Cp
+         nzxzsWkJqRJd0PIkZ/w0/hDMNcUs3KggSiLyalRqCQHWz8aj4OAkYRJH1+NX4Zhb1sS3
+         Hv0KYrlkYSVegzXe1tmH2Wn+O4S9snpsf/s2wVwx08qh020kZnevSGVznnXHkkI3mDGh
+         hnyhWH0dZoyzZGt6iVnqnFFKN1LOzXoTDQi+/ZHSiicB8lYusRda499yrQVhmRnzxCLW
+         4NTA==
+X-Gm-Message-State: AOJu0YxOcyCNGutrKK14TYel3pnnOrOSY4a/vVypZeouu1d36IMgeeRg
+	Pg0zWrwXtFIjow8aC7WPEvDg3OQTnIETgpmjQm0KHB8RbxgR/JDgM3qhXzFG037UUPh6KQ==
+X-Gm-Gg: Acq92OGeLNPppj/9ZXVP+HdChH3tF5x7XlL8elyXMA4vv8tubrOFrafJWWu0QcJ1S1b
+	YtVKIFW9166hepp3qoox3Fo0qsFzlIl1WWM8WrR3B6uUEhZsm93m7xHzDrikjaB3BS6wHbX3edq
+	4RhmJkLaEHdMLrKvfaE+k4jmUodHsgfFDN/zQIV053JJXjvE3Pxsvqe+BqxxJ08BO0orZbRc0NQ
+	31ZtgCqcqeT6Zy2c8GldauIMuXyKOi24UjxDxrdKEPsrG3fL6/5GihzXX61/ApNOt/CZt3ZhF7k
+	K0RqvB3u5COtm9ZgId0o0OX9lIx8KVp21TGno6zz+TfA8oiXe3Y1hvwH+lNHuNEz6xljjVurRl0
+	ATAVtFcLk49rkQ3rLyO5ENzvyOX10IIlNT2lbWrtvG41FENKA50SxWoouMoo3npib71YYpjp4LO
+	ZpeUzA0qnT4EG09fH9hJFmJrSVryBuZdFtyjuv7Y+rf5fQYpOKj0KjpxjBiPKQJ6O89rdx2UWvQ
+	A==
+X-Received: by 2002:a17:903:41cd:b0:2c0:a373:89b9 with SMTP id d9443c01a7336-2c40ff3a3demr46700605ad.6.1781290254330;
+        Fri, 12 Jun 2026 11:50:54 -0700 (PDT)
 Received: from KRHW1CJW23.bytedance.net ([139.177.225.248])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c432d8a039sm28464465ad.62.2026.06.12.11.50.49
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c432d8a039sm28464465ad.62.2026.06.12.11.50.52
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 12 Jun 2026 11:50:51 -0700 (PDT)
+        Fri, 12 Jun 2026 11:50:54 -0700 (PDT)
 From: Zhao Li <enderaoelyther@gmail.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/3] wifi: cfg80211: validate assoc response length before status and IE access
-Date: Sat, 13 Jun 2026 02:50:44 +0800
-Message-ID: <20260612185042.66260-5-enderaoelyther@gmail.com>
+Subject: [PATCH 3/3] wifi: mac80211: validate deauth frame length before reason access
+Date: Sat, 13 Jun 2026 02:50:45 +0800
+Message-ID: <20260612185042.66260-6-enderaoelyther@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260612185042.66260-4-enderaoelyther@gmail.com>
 References: <20260612185042.66260-4-enderaoelyther@gmail.com>
@@ -103,7 +104,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-37753-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37754-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -127,122 +128,43 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EBB9567BDAE
+X-Rspamd-Queue-Id: ED33467BDBC
 
-cfg80211_rx_assoc_resp() initialises the status and response-IE fields
-of cfg80211_connect_resp_params from the management frame before
-proving that the frame is long enough for those offsets. S1G and
-regular association responses also have different IE offsets, but the
-S1G path only patched resp_ie after the unsafe initialiser had already
-run.
+ieee80211_rx_mgmt_deauth() reads the deauth reason code before checking
+that the fixed field is actually present in the received frame.
 
-Defer resp_ie, resp_ie_len, and status to after the link-iteration
-loop. Use a bool to remember whether the frame is S1G, then validate
-the appropriate minimum length and set all three fields in a single
-if/else block. Funnel short-frame and SME-reject cleanup through a
-shared free_bss label for the abandon paths.
+Validate the deauth frame length first and only then read the reason
+code.
 
 Assisted-by: Codex:gpt-5.5
 Assisted-by: Claude:claude-opus-4.8
 Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
 ---
- net/wireless/mlme.c | 56 ++++++++++++++++++++++++++++-----------------
- 1 file changed, 35 insertions(+), 21 deletions(-)
+ net/mac80211/mlme.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index a0f7b08bfcc9c..097b66f758ba2 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -32,14 +32,10 @@ void cfg80211_rx_assoc_resp(struct net_device *dev,
- 		.timeout_reason = NL80211_TIMEOUT_UNSPECIFIED,
- 		.req_ie = data->req_ies,
- 		.req_ie_len = data->req_ies_len,
--		.resp_ie = mgmt->u.assoc_resp.variable,
--		.resp_ie_len = data->len -
--			       offsetof(struct ieee80211_mgmt,
--					u.assoc_resp.variable),
--		.status = le16_to_cpu(mgmt->u.assoc_resp.status_code),
- 		.ap_mld_addr = data->ap_mld_addr,
- 	};
- 	unsigned int link_id;
-+	bool is_s1g = false;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index b98ddfa3003e1..8be470d730f52 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5179,13 +5179,15 @@ static void ieee80211_rx_mgmt_deauth(struct ieee80211_sub_if_data *sdata,
+ 				     struct ieee80211_mgmt *mgmt, size_t len)
+ {
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+-	u16 reason_code = le16_to_cpu(mgmt->u.deauth.reason_code);
++	u16 reason_code;
  
- 	for (link_id = 0; link_id < ARRAY_SIZE(data->links); link_id++) {
- 		cr.links[link_id].status = data->links[link_id].status;
-@@ -60,16 +56,32 @@ void cfg80211_rx_assoc_resp(struct net_device *dev,
+ 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
  
- 		if (cr.links[link_id].bss->channel->band == NL80211_BAND_S1GHZ) {
- 			WARN_ON(link_id);
--			cr.resp_ie = (u8 *)&mgmt->u.s1g_assoc_resp.variable;
--			cr.resp_ie_len = data->len -
--					 offsetof(struct ieee80211_mgmt,
--						  u.s1g_assoc_resp.variable);
-+			is_s1g = true;
- 		}
+-	if (len < 24 + 2)
++	if (len < offsetofend(struct ieee80211_mgmt, u.deauth.reason_code))
+ 		return;
  
- 		if (cr.ap_mld_addr)
- 			cr.valid_links |= BIT(link_id);
- 	}
- 
-+	if (is_s1g) {
-+		if (data->len < offsetof(struct ieee80211_mgmt,
-+					 u.s1g_assoc_resp.variable))
-+			goto free_bss;
-+		cr.resp_ie = (u8 *)&mgmt->u.s1g_assoc_resp.variable;
-+		cr.resp_ie_len = data->len -
-+				 offsetof(struct ieee80211_mgmt,
-+					  u.s1g_assoc_resp.variable);
-+	} else {
-+		if (data->len < offsetof(struct ieee80211_mgmt,
-+					 u.assoc_resp.variable))
-+			goto free_bss;
-+		cr.resp_ie = mgmt->u.assoc_resp.variable;
-+		cr.resp_ie_len = data->len -
-+				 offsetof(struct ieee80211_mgmt,
-+					  u.assoc_resp.variable);
-+	}
-+	cr.status = le16_to_cpu(mgmt->u.assoc_resp.status_code);
++	reason_code = le16_to_cpu(mgmt->u.deauth.reason_code);
 +
- 	trace_cfg80211_send_rx_assoc(dev, data);
- 
- 	/*
-@@ -78,22 +90,24 @@ void cfg80211_rx_assoc_resp(struct net_device *dev,
- 	 * and got a reject -- we only try again with an assoc
- 	 * frame instead of reassoc.
- 	 */
--	if (cfg80211_sme_rx_assoc_resp(wdev, cr.status)) {
--		for (link_id = 0; link_id < ARRAY_SIZE(data->links); link_id++) {
--			struct cfg80211_bss *bss = data->links[link_id].bss;
--
--			if (!bss)
--				continue;
--
--			cfg80211_unhold_bss(bss_from_pub(bss));
--			cfg80211_put_bss(wiphy, bss);
--		}
--		return;
--	}
-+	if (cfg80211_sme_rx_assoc_resp(wdev, cr.status))
-+		goto free_bss;
- 
- 	nl80211_send_rx_assoc(rdev, dev, data);
- 	/* update current_bss etc., consumes the bss reference */
- 	__cfg80211_connect_result(dev, &cr, cr.status == WLAN_STATUS_SUCCESS);
-+	return;
-+
-+free_bss:
-+	for (link_id = 0; link_id < ARRAY_SIZE(data->links); link_id++) {
-+		struct cfg80211_bss *bss = data->links[link_id].bss;
-+
-+		if (!bss)
-+			continue;
-+
-+		cfg80211_unhold_bss(bss_from_pub(bss));
-+		cfg80211_put_bss(wiphy, bss);
-+	}
- }
- EXPORT_SYMBOL(cfg80211_rx_assoc_resp);
- 
+ 	if (!ether_addr_equal(mgmt->bssid, mgmt->sa)) {
+ 		ieee80211_tdls_handle_disconnect(sdata, mgmt->sa, reason_code);
+ 		return;
 -- 
 2.50.1 (Apple Git-155)
 
