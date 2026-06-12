@@ -1,133 +1,187 @@
-Return-Path: <linux-wireless+bounces-37726-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37727-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bLyAE6AELGrRJgQAu9opvQ
-	(envelope-from <linux-wireless+bounces-37726-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 15:07:44 +0200
+	id p0c/IVcILGoEKAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-37727-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 15:23:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95250679A41
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 15:07:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1343679C0F
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 15:23:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=dolcini.it header.s=default header.b=wC8dERj8;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37726-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37726-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=dolcini.it;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZQ0DzEd6;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37727-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37727-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52CE3301CF87
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 13:06:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71FD732B2538
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 13:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C154F37F8C3;
-	Fri, 12 Jun 2026 13:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B213ED5A3;
+	Fri, 12 Jun 2026 13:19:06 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DC9374E62;
-	Fri, 12 Jun 2026 13:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801D03859CE
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 13:19:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781269597; cv=none; b=WH6nT1/Z0Wl451pOajap85cZtQzB8mdsdH+VZyLBqGEHvqmJeafqzaSrai4Z9cbdG0Xc1V+yZeGxonjlyIM68dV0OtZJdooZCoBHVB4X9/oPWhZ1bLNWnwX7rS8tZEoJCMQexjwHl8LJyPeqRA8czNRj7sYs+C+F5PDE63lXm5k=
+	t=1781270345; cv=none; b=ol7+RK3+HAjXFxQpwAuNPNs8VjfLwLrOpxaqAEFcGom0uNaRrddTaC7yiSht3rIJ4n2Oy+q38nFiTrQNJyT+sAWaAzybR84Xr9bIk32sYNj4tBlXxlBWyDEBAVf7qhUW/vCBS6NmYGKEICwYk/+5drRuPVj2JyqrO0m9cFtFNNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781269597; c=relaxed/simple;
-	bh=3/2Ue11F8wL6UEOw2Vu0tastySxi0e23NXJT9xOo4sc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kPNt9TCiJiB/nH8ewYlmQpnJz3Id+qh4NopKLErjlfO61lWILfF0FoxSQzvgank9S2Lm4wQh87Xo+HtkkuxP2ICcY69Jx74s+QIFsUiFcwv1gjsHdPhE8xBISRGhJg0bBFj53nS2ELAOsnbzZUzb2/gnUJAUWPFjEwe3w/fkTyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=wC8dERj8; arc=none smtp.client-ip=217.194.8.81
-Received: from francesco-nb (93-38-183-34.ip71.fastwebnet.it [93.38.183.34])
-	by mail11.truemail.it (Postfix) with ESMTPA id 5FFEB1FC78;
-	Fri, 12 Jun 2026 15:06:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1781269593;
-	bh=fL+oJnyelhrz5BnZSlgYYkxM+MCu//nUXuJUicIg6vs=; h=From:To:Subject;
-	b=wC8dERj8Hqae11QuUCttVkAFFEknSQGWPWcsachCf0hdL4vpxuKzt0Qh1USUeLdxY
-	 WrPAVrerZ3SfS75tlde7IyMg7fYInsItW8j+kkgejDesdS1LIxDoTfO8zpMxKx84t7
-	 /O/YDfkK8mAcH8GI18wTd9mmz09NWAV9VcETk8cYKs3keX3ahiIHRwAWxVOs7ZOvWz
-	 pG0KeXldn1uaBDZSXMAMoMmudjTcVPKJy1M4tKUrckJ+UfjEprCJyPQId+eGAe1T3C
-	 tSQ38qX6ot5+m5CjrIVWPYK8wD3xxKxSodhiQyB5XmegiDm7KByb3xnJ9qVHm1zuJr
-	 kefB2lQr0SWFQ==
-Date: Fri, 12 Jun 2026 15:06:28 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rafael Beims <rafael@beims.me>, Brian Norris <briannorris@chromium.org>,
-	Jeff Chen <jeff.chen_1@nxp.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Rafael Beims <rafael.beims@toradex.com>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH wireless-next v1] wifi: mwifiex: fix permanently busy
- scans after multiple roam iterations
-Message-ID: <20260612130607.GA7651@francesco-nb>
-References: <20260612122547.1586872-2-rafael@beims.me>
+	s=arc-20240116; t=1781270345; c=relaxed/simple;
+	bh=dQnVo8lNYu4xpPQLTXxhW7sL5FzlYGqTsz+uxrdY8Mc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fZvjXil0rmj15pfJtlMwKSo8k9fLWuV/KbS7evIedR1l5fsE7v1DXlHwECaS4g+jIuhDInlbFsb+eOWAt1rktnMh/6RRY3+YwDNS0aIOqsWfBg46mYIKJIyesGi7BkEmCsrZW09jrVHtV1NePBvATKjmjUsN18396mD22ej9Jus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZQ0DzEd6; arc=none smtp.client-ip=209.85.214.173
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2bf2247e38eso9391875ad.3
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 06:19:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781270343; x=1781875143; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9z5jaJokdbimHtXlGzYNhQuuXCJh036DzUL4Wz+Qe14=;
+        b=ZQ0DzEd6Ku8mHLQYaepheY0HDKhW0LO6c3VDqHq/Put3+wVEkHEPef7im818CGgpyA
+         ocvt34ciJcWaifpXDpR981sukJJnEyp6aYqfa/Us82sYp3pPEYMa/3cS9tKq1QfqsasY
+         80OXaB/GDcQf+KPl4i08oXQt6wGVq3pAGxgGT9sD1Kg9vrfX9qb2+sYlwwJJOTG6a+VJ
+         K1o+YIrogfGskFWTUfS2LJmF6K1UqlEjJCuqw33MFW14Qzsx/DENVZ6i6LE/xvdiJ/aH
+         XKD1ImkN4b4Oq0nCFEKEICwGCkcn5uaii4YoX0jQSpp7GSAxhPWqmxhIKX5ZhsXlyn2L
+         DutQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781270343; x=1781875143;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9z5jaJokdbimHtXlGzYNhQuuXCJh036DzUL4Wz+Qe14=;
+        b=ftTS2MuuzQpDhPlu7HkPijtvY4INdnlhiGORt4qlmB4QtUxdQ1QcHUKKsJrV8zOy3n
+         V+nQmioTE1esJ2CZky9mb+r2jSF2T1W0LLoXYxN+B4ROFkoelKew557hHtoSbUxtX7W/
+         S2PCNR6ps07ZdAiXkR5H3PA9+N/14asFAHdQ9raiP6OLZvfibqhO1ONvKNBJ9cOsitFT
+         iEJgyw0HCu2He2JkkVXcfSRVaxOtF97QrcESC8GZJygQNlsB54YLtoOVhbzcWb5Ggl+Z
+         g97CnglpGbPIkqtYOXVvV0r+Z1u90j59FPPHHdncI5USrE4Cf35b1eSGtkh+wGGup7oI
+         qvnA==
+X-Gm-Message-State: AOJu0YxribXesUKeNQiL71irPkPK9OYGwRh62rbQk4/uOv9afqcpQov0
+	XNAgtCBgIjzwSP6Ts77Aa5+TR6VY7+TIqSgo8eW0eQMJQUn+/s7sjPpU1r1AzBU6/JSNwA==
+X-Gm-Gg: Acq92OHDST0ehD7Xj4kVRqZWBzPCgb6wyvmpFqAlE3smY/ux5lUKmh8db4lmKzAa6b6
+	TDAkeXOLmQlj/tl3fTNvGhprwoYi85l2Oamg0BFeAoNPU/aQczRNJlanHaaD3Nk4McLDkFmlgvb
+	ml+686JXADu1SvGGEZXMi5+O/cKpU8iXoSVh8lcsxuk9tY2Ei4FdKnSZjo0m/qiXo2ahlxqqsJD
+	cSTXCo1gNLWU2WJz/oBVZCwufJ4K4IjaDml6FaouTWja1cd92YsE3Yqm/Dmb5ZThNi4IMp3kn3G
+	cywFUrCipx5dHNcxjhxBBbWPjcuIcXknwg2so08mFf5C5aBpwrbhPtSne1bCYtbPFeEvPArbJGr
+	QPgqapeup4S6mF8VrfVgRy9RZh/HfDjGSRmWWX3iDcUNC4QuOD+fURn52R+uQkKYB94Oz/xTQOK
+	6vJIuQfxJdiWGz8je030IEhjhwtnVHFXEgPhR8lSMC4v4+kYUGIP0qC5o8KvydmWs=
+X-Received: by 2002:a17:903:4587:b0:2bf:2e93:c624 with SMTP id d9443c01a7336-2c41284101amr35137785ad.27.1781270342888;
+        Fri, 12 Jun 2026 06:19:02 -0700 (PDT)
+Received: from KRHW1CJW23.bytedance.net ([139.177.225.248])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c43345e604sm19923585ad.74.2026.06.12.06.18.59
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 12 Jun 2026 06:19:02 -0700 (PDT)
+From: Zhao Li <enderaoelyther@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+	John Crispin <john@phrozen.org>,
+	Aloka Dixit <quic_alokad@quicinc.com>,
+	Aloka Dixit <aloka.dixit@oss.qualcomm.com>,
+	Muna Sinada <muna.sinada@oss.qualcomm.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] wifi: nl80211: validate nested MBSSID IE blobs
+Date: Fri, 12 Jun 2026 21:18:55 +0800
+Message-ID: <20260612131854.43575-3-enderaoelyther@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260612122547.1586872-2-rafael@beims.me>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[dolcini.it,none];
-	R_DKIM_ALLOW(-0.20)[dolcini.it:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37726-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[francesco@dolcini.it,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:rafael@beims.me,m:briannorris@chromium.org,m:jeff.chen_1@nxp.com,m:francesco@dolcini.it,m:rafael.beims@toradex.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[dolcini.it:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37727-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:john@phrozen.org,m:quic_alokad@quicinc.com,m:aloka.dixit@oss.qualcomm.com,m:muna.sinada@oss.qualcomm.com,m:rameshkumar.sundaram@oss.qualcomm.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[francesco@dolcini.it,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[enderaoelyther@gmail.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[enderaoelyther@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dolcini.it:dkim,dolcini.it:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,francesco-nb:mid,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 95250679A41
+X-Rspamd-Queue-Id: D1343679C0F
 
-On Fri, Jun 12, 2026 at 09:25:46AM -0300, Rafael Beims wrote:
-> From: Rafael Beims <rafael.beims@toradex.com>
-> 
-> In order for the firmware to sleep, the driver has to confirm a
-> previously received sleep request. The normal sequence of evets goes
-> like this:
-> EVENT_SLEEP -> adapter->ps_state = PS_STATE_PRE_SLEEP -> sleep-confirm
-> -> SLEEP -> EVENT_AWAKE -> AWAKE.
-> Before sending the sleep-confirm command, the driver must make sure
-> there are no commands either running or waiting to be completed.
-> 
-> mwifiex_ret_802_11_associate() unconditionally sets
-> ps_state = PS_STATE_AWAKE when it processes the association command
-> response, outside of the normal powersave management flow. If
-> EVENT_SLEEP arrives while the association command is in flight,
-> ps_state is PRE_SLEEP when the association command response is parsed,
-> and the forced AWAKE overwrites it. The deferred sleep-confirm is
-> never sent.
+Validate each nested NL80211_ATTR_MBSSID_ELEMS entry as a well-formed
+information-element stream before storing it for beacon construction.
 
-Brian / Jeff: I am not that familiar with this part of the code, it
-sounds correct to me (and I discussed it with Rafael before he did send
-the patch), maybe you can also have a look.
+RNR parsing already validates each nested blob with validate_ie_attr()
+before storing it. Apply the same syntactic IE validation to MBSSID
+entries before counting and copying their data and length pointers.
 
-Jeff: same issue in the nxpwifi driver.
+Fixes: dc1e3cb8da8b ("nl80211: MBSSID and EMA support in AP mode")
+Assisted-by: Codex:gpt-5.5
+Assisted-by: Claude:claude-opus-4.8
+Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
+---
+ net/wireless/nl80211.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-Francesco
-
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 76c537a6e8b52..2baf1bef0bbd2 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -6321,7 +6321,8 @@ static int nl80211_parse_mbssid_config(struct wiphy *wiphy,
+ }
+ 
+ static struct cfg80211_mbssid_elems *
+-nl80211_parse_mbssid_elems(struct wiphy *wiphy, struct nlattr *attrs)
++nl80211_parse_mbssid_elems(struct wiphy *wiphy, struct nlattr *attrs,
++			   struct netlink_ext_ack *extack)
+ {
+ 	struct nlattr *nl_elems;
+ 	struct cfg80211_mbssid_elems *elems;
+@@ -6332,6 +6333,12 @@ nl80211_parse_mbssid_elems(struct wiphy *wiphy, struct nlattr *attrs)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	nla_for_each_nested(nl_elems, attrs, rem_elems) {
++		int ret;
++
++		ret = validate_ie_attr(nl_elems, extack);
++		if (ret)
++			return ERR_PTR(ret);
++
+ 		if (num_elems >= 255)
+ 			return ERR_PTR(-EINVAL);
+ 		num_elems++;
+@@ -6503,7 +6510,8 @@ static int nl80211_parse_beacon(struct cfg80211_registered_device *rdev,
+ 	if (attrs[NL80211_ATTR_MBSSID_ELEMS]) {
+ 		struct cfg80211_mbssid_elems *mbssid =
+ 			nl80211_parse_mbssid_elems(&rdev->wiphy,
+-						   attrs[NL80211_ATTR_MBSSID_ELEMS]);
++						   attrs[NL80211_ATTR_MBSSID_ELEMS],
++						   extack);
+ 
+ 		if (IS_ERR(mbssid))
+ 			return PTR_ERR(mbssid);
+-- 
+2.50.1 (Apple Git-155)
 
