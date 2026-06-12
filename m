@@ -1,164 +1,201 @@
-Return-Path: <linux-wireless+bounces-37755-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37756-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yRnuGrphLGrcQAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-37755-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 21:44:58 +0200
+	id S3iEHOloLGpCQgQAu9opvQ
+	(envelope-from <linux-wireless+bounces-37756-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 22:15:37 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60EF567C245
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 21:44:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81A167C3F2
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 22:15:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=arndb.de header.s=fm3 header.b="ZGjGA/FN";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="D o3Bg+H";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37755-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37755-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=arndb.de;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h+lSchtS;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37756-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37756-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 019FB331141C
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 19:43:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CF74A30D5C9D
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 20:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB48D37FF40;
-	Fri, 12 Jun 2026 19:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4DE35AC00;
+	Fri, 12 Jun 2026 20:15:33 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549723806DD;
-	Fri, 12 Jun 2026 19:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404B61D6BB;
+	Fri, 12 Jun 2026 20:15:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781293416; cv=none; b=WqAutIFkIhrQcACgKpAqCfUTEEz/veOSo3dbEbShhj8ujYSfr8onbOTH7ZoDnwSGl5cBxuievzQy7MBmZeTVrPO+iRKjMo9Ttaozwx+oFhIxBMP04JMxSkTlMiwY+pu/7y+5t229H8GI9geN/eamsZ4vu5HABNdvBnDUP+pwXb8=
+	t=1781295333; cv=none; b=UIJES+fTyuz6dS9mLwuw1VUBSCljFAMc99/T3qS+o5YjiDl10ujaZvbuWlIaIs9s/DzrvauUMdG1i+VN1CYVJQ6Y5a3imTFkpHywvptvwYRQRzahFKPEM0k84JQKdIAwwM1UGpi+39skZJ7Jk3fmHSq9JKXafq723ACDXCilVB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781293416; c=relaxed/simple;
-	bh=uuJb4tJweieSJqosV9WAO3JRB5smnehgUVL74wGSA6g=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=ITe6x7XzWMEycMqWs64kkMh5a2EC6hAVy3ZJIpDeAKArbGEE5dg2NeSOZZgpCWNejCDINhZVkyPU+brV7NdbEthi/WXcniQ/9SeOoZlIhS0LN7iF1N7VrUIRYpegRaNpEJ/sFc5IFnCv4UQIDhMy/jUOWS9fBtcNoQP3V6+KWN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=ZGjGA/FN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Do3Bg+HH; arc=none smtp.client-ip=103.168.172.154
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 634811400080;
-	Fri, 12 Jun 2026 15:43:34 -0400 (EDT)
-Received: from phl-imap-05 ([10.202.2.95])
-  by phl-compute-04.internal (MEProxy); Fri, 12 Jun 2026 15:43:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1781293414;
-	 x=1781379814; bh=ScHxK0KjwcDjCF7wIFpDfscF/na+ZbrKo5E+v1XgI3Q=; b=
-	ZGjGA/FNU+I271Pne8RdFpKjp55QCYbk0m/C5MJz1SBrzVAgXdwwRGeE8Ne2Wjg2
-	8WknTpaLh8uq0nEHe64FJ/bsR5leVrgiy5O3M5QgnglCy4DPGMQ9j/bvnLyD46eh
-	mFrPEPnIb8EmcMdPQiW9/t6+g+GrbT7eu4iQ0gjwiRMSEISujCcJvMKWMdBiBn54
-	RSF4dRKkMAapi7zLrGR/FPag/3W1DkAMqo3XTS93JdMaRXoI5VGv6dTyeP0e8PmN
-	nU4GfVV/VLIfFkIqE1sHG33Awnjf4beCiops4EPBcX/3LXwUBlwxSRCcULd2lDwo
-	/00DYrl36GV8ZqsGFkymPw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781293414; x=
-	1781379814; bh=ScHxK0KjwcDjCF7wIFpDfscF/na+ZbrKo5E+v1XgI3Q=; b=D
-	o3Bg+HHJnuac9ktNURT3WRam2ihewmNQxsiMm6c0HYB+4a2ZHOOWFRdi/8bL/P6v
-	+unfUms/KCGQoOLimyglYpq+T3B22E8jhHuFNoYfrlnlwlZisf1TCSZgnDjFemqq
-	ldlNtTS+7knuXWuEZoCXRw6vn6yeLKzPz9ALEQl6dCYpLljmYg0h0a0VEWqq0p16
-	o2m+T0ydl+SwSt0qJyU9gM3Clk+irpwk4mDq+OnhicM405bjFM4ia/VeGNd3YyYG
-	+15sDbslvMAJm8OWb57JdSTsUnGcnCmT+J7Nmlh86PL9h52sjQK23N1xlqi3DwnZ
-	yxBF+FCeB3rFX5hndN7kQ==
-X-ME-Sender: <xms:ZWEsaozEC-9WnkaD73NzstBFX80Jgz8jzet7FwnqLyaKbrftABv-jQ>
-    <xme:ZWEsanFLN896QHPogvtjFIuuu4NghPDLLqxBWX8-oHPHjDBZQM87GaMR3aKy9Nqv8
-    RY3R-wmusXm8neOk16ltZuh0MDeKM0j4R_lHNA61EmAORjZ5FA1YUs>
-X-ME-Proxy-Cause: dmFkZTFZ7zD3Be8B30SaPbI6nkvYJJfGP2gTYuDGgUG73DODbZQp82HeUaNu/TitzBkHG1
-    Bm6NVvqGTGV7y//ssMJjzYKMPiywgRQiaiT8BVVkQn6I7ky78pM7QStYJ7VpyHQ42GDCte
-    HrZip5gfYkod+IeYjY/36Uvqp52bP350VDvjnLnC5e1DtyystUv7YtrSolpVWyTuPzZwyz
-    wZdbors2yB7lsgP0OZaEFEFu7jrihO5UeH4fnwoSS9V8vXJF+GE7Jrf7GJ32aK99B1hOUt
-    h0jhEawH7CZQDSD94l9OuB/sR+qwVzcUOcSgi9JUGI2CcEQTGimB7m4xrZImaf6If7A5qK
-    pmBsoyOg3KQaqkCxtHxDuFU+qkYECpUUj0ODpdbVX1yXN777h5x0TkFhpYHyqEUOuuQUH3
-    bUtNOzZfLUuKGArifAXitz4N9E2FgDahk1cDTk47x6cdL5IPcMbvJnDo3GntvAxF6rW/e8
-    uocXx84MXuUy0i/tqXTX32XW6K/mYhiNTfwDqWiHrGKmhLV4uVssFRMn4XjzN/4LVlDkxM
-    U4FtDaruULz9UCzR6Unhwp6ldDfaGAipl4EvrmHFa2kxzK+MZ0MXYmqlgl5ipWUtWcs+/p
-    OlFDDWws2EM3w3L9KUBl30iVzdNa+XzF4xVQUY/PYOPBDlQiyx3d5ymCfMhw
-X-ME-Proxy: <xmx:ZWEsatoCUK_FJIacnjEVzkR_R0GDHj2sahnI55ohaE8E8TMXyVmkXw>
-    <xmx:ZWEsauKaA1RYhMzamZzOIRJQL1CwYEBqL7f1HpMPPuSlvIMIUxznow>
-    <xmx:ZWEsals9JmXoCGYd6oKZZbyXtnng3SVc1bdWAzzPQg7PML0EzfjBpA>
-    <xmx:ZWEsajB1x8jherg_MCaV56p44EdsSOJPrBDFRstaDB1hDwPGemRRKg>
-    <xmx:ZmEsahLo9-hEGbgIc4j_NhjXsaiv9ZenPUEte2YzEurQHG3Z7w16WQ6j>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id D82FB182007E; Fri, 12 Jun 2026 15:43:33 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1781295333; c=relaxed/simple;
+	bh=9lsPaOAQQzgi9BEFCudf3/phOxp8fGkCLOaSD33Aexo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qD+KD8bG87wMOOWa+9U8OxMLsi6kwlC9jl/T6B+PHGvDFxZ3TRAdL6+ZthS939IfkfkDtvFpFMP7ChsCcM//ZI4DJh0YrH2xgDQbNkqdJoVfl0nf4VjnqwIqZe/pxBEqc6Y/mAj14xk3khVeVFkuSrHveukTnknbpVPe1YDJ7nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h+lSchtS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EE01F000E9;
+	Fri, 12 Jun 2026 20:15:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781295331;
+	bh=JFLLIafIg2RN3lK3a2syVcO/tejcNuhPUiFDic1ff7A=;
+	h=From:To:Cc:Subject:Date;
+	b=h+lSchtSegzbf7cESfcBDapSMYwPK1AzgV95HWmnL6iyWpNumaMAVTn/QfoUe89Jn
+	 Xzrxic5EfnVQECpweIxMdCYGo6PCQpb7zWxJ4OiJmuLMnOJlab6dW9Ntc+m1O4kkDF
+	 regR/kyq/TzphCLoXxyZZ8B/rT55vNFLLcYerPPCLAUZ/7NBpaCcBQOXnJMdsgWA3r
+	 dsW0JV6mqyaRWB4bys9I4R6UupwC5AYISkHq2y6DxeR3f3wZHu+RUB5ALDrpml1Vfx
+	 3w/pr9tVWgRcBr7Vqw2hqj+pCHxiZHsoSNiS8gweHT+EZipjbnb0d9VEldGIAycVKo
+	 Np5pzxYT8XYgg==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Rex Lu <rex.lu@mediatek.com>,
+	Sujuan Chen <sujuan.chen@mediatek.com>,
+	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH] [wireless-next v2] wifi: mt76: fix airoha_npu dependency tracking
+Date: Fri, 12 Jun 2026 22:13:19 +0200
+Message-Id: <20260612201519.4054683-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AXdheGxGYoOk
-Date: Fri, 12 Jun 2026 21:43:13 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Arnd Bergmann" <arnd@kernel.org>, "Felix Fietkau" <nbd@nbd.name>,
- "Lorenzo Bianconi" <lorenzo@kernel.org>,
- "Ryder Lee" <ryder.lee@mediatek.com>,
- "Matthias Brugger" <matthias.bgg@gmail.com>,
- "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>
-Cc: "Shayne Chen" <shayne.chen@mediatek.com>,
- "Sean Wang" <sean.wang@mediatek.com>, "Rex Lu" <rex.lu@mediatek.com>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Message-Id: <9370dc9b-a10f-4dda-8255-d59e9a8130ba@app.fastmail.com>
-In-Reply-To: <20260611125912.3387021-1-arnd@kernel.org>
-References: <20260611125912.3387021-1-arnd@kernel.org>
-Subject: Re: [PATCH] wifi: mt76: fix airoha_npu dependency tracking
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.65 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arndb.de,none];
-	R_DKIM_ALLOW(-0.20)[arndb.de:s=fm3,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
+	TAGGED_FROM(0.00)[bounces-37756-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,nbd.name,mediatek.com,gmail.com,collabora.com];
-	FORGED_SENDER(0.00)[arnd@arndb.de,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_RECIPIENTS(0.00)[m:arnd@kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:rex.lu@mediatek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:angelogioacchino.delregno@collabora.com,m:arnd@arndb.de,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:matthias.bgg@gmail.com,m:rex.lu@mediatek.com,m:sujuan.chen@mediatek.com,m:benjamin-jw.lin@mediatek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-37755-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[arndb.de:+,messagingengine.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arnd@arndb.de,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[arnd@kernel.org,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[arnd@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[arndb.de,mediatek.com,gmail.com,vger.kernel.org,lists.infradead.org];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,messagingengine.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arndb.de:dkim,arndb.de:from_mime]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arndb.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 60EF567C245
+X-Rspamd-Queue-Id: D81A167C3F2
 
-On Thu, Jun 11, 2026, at 14:58, Arnd Bergmann wrote:
-> 
->  config MT76_NPU
-> -	bool
-> -	depends on MT76_CORE
-> +	tristate
-> +	depends on NET_AIROHA_NPU=y || MT76=NET_AIROHA_NPU
-> 
+From: Arnd Bergmann <arnd@arndb.de>
 
-Further testing showed that there is a typo here, it should
-be MT76_CORE instead of MT76.
+There is a new build failure with MT7996E=m MT76_CORE=y and NET_AIROHA_NPU=m:
 
-I'll send a v2 patch.
+ld.lld: error: undefined symbol: airoha_npu_get
+ld.lld: error: undefined symbol: airoha_npu_put
+>>> referenced by npu.c
+>>>               drivers/net/wireless/mediatek/mt76/npu.o:(mt76_npu_init) in archive vmlinux.a
 
-      Arnd
+Fix this by reworking the dependency for the MT7996_NPU to only
+allow enabling that when mt76_core can link against the npu driver.
+
+To make sure this gets caught more easily in the future when additional
+mt76 variants need the same dependency, also turn CONFIG_MT76_NPU into
+a tristate symbol that has the same dependency.
+
+Fixes: 7fb554b1b623 ("wifi: mt76: Introduce the NPU generic layer")
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+----
+v2: fix typo s/MT76/MT76_CORE/
+---
+ drivers/net/wireless/mediatek/mt76/Kconfig        | 4 ++--
+ drivers/net/wireless/mediatek/mt76/Makefile       | 6 +++++-
+ drivers/net/wireless/mediatek/mt76/mt76.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/Kconfig | 2 +-
+ 4 files changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/Kconfig b/drivers/net/wireless/mediatek/mt76/Kconfig
+index 502303622a53..2ca96e0527c0 100644
+--- a/drivers/net/wireless/mediatek/mt76/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/Kconfig
+@@ -38,8 +38,8 @@ config MT792x_USB
+ 	select MT76_USB
+ 
+ config MT76_NPU
+-	bool
+-	depends on MT76_CORE
++	tristate
++	depends on NET_AIROHA_NPU=y || MT76_CORE=NET_AIROHA_NPU
+ 
+ source "drivers/net/wireless/mediatek/mt76/mt76x0/Kconfig"
+ source "drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig"
+diff --git a/drivers/net/wireless/mediatek/mt76/Makefile b/drivers/net/wireless/mediatek/mt76/Makefile
+index 1d42adfe8030..cacdd2b13d05 100644
+--- a/drivers/net/wireless/mediatek/mt76/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/Makefile
+@@ -12,7 +12,11 @@ mt76-y := \
+ 	mmio.o util.o trace.o dma.o mac80211.o debugfs.o eeprom.o \
+ 	tx.o agg-rx.o mcu.o wed.o scan.o channel.o
+ 
+-mt76-$(CONFIG_MT76_NPU) += npu.o
++ifdef CONFIG_MT76_NPU
++# CONFIG_MT76_NPU is tristate to simplify dependency tracking,
++# but it behaves as a bool symbol here.
++mt76-y += npu.o
++endif
+ mt76-$(CONFIG_PCI) += pci.o
+ mt76-$(CONFIG_NL80211_TESTMODE) += testmode.o
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 07955555f84d..60bd155cc7d5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1647,7 +1647,7 @@ int mt76_testmode_dump(struct ieee80211_hw *hw, struct sk_buff *skb,
+ int mt76_testmode_set_state(struct mt76_phy *phy, enum mt76_testmode_state state);
+ int mt76_testmode_alloc_skb(struct mt76_phy *phy, u32 len);
+ 
+-#ifdef CONFIG_MT76_NPU
++#if IS_ENABLED(CONFIG_MT76_NPU)
+ void mt76_npu_check_ppe(struct mt76_dev *dev, struct sk_buff *skb,
+ 			u32 info);
+ int mt76_npu_dma_add_buf(struct mt76_phy *phy, struct mt76_queue *q,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
+index 5503d03bf62c..5742bce12fbb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
+@@ -16,6 +16,6 @@ config MT7996E
+ config MT7996_NPU
+ 	bool "MT7996 (PCIe) NPU support"
+ 	depends on MT7996E
+-	depends on NET_AIROHA_NPU=y || MT7996E=NET_AIROHA_NPU
++	depends on NET_AIROHA_NPU=y || MT76_CORE=NET_AIROHA_NPU
+ 	select MT76_NPU
+ 	default n
+-- 
+2.39.5
+
 
