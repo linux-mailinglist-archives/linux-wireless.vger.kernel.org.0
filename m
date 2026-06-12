@@ -1,169 +1,290 @@
-Return-Path: <linux-wireless+bounces-37696-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37697-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZCLULQ2iK2p4AwQAu9opvQ
-	(envelope-from <linux-wireless+bounces-37696-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 08:07:09 +0200
+	id EWB6FgKoK2oaBgQAu9opvQ
+	(envelope-from <linux-wireless+bounces-37697-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 08:32:34 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BEDC676DD5
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 08:07:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFBD676EDD
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 08:32:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=hwYcQ8Zu;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37696-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37696-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=nxp.com header.s=selector1 header.b=UBtW8XuH;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37697-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37697-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=nxp.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B95D731E4E36
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 06:06:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 94143307E784
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 06:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC933BB9F0;
-	Fri, 12 Jun 2026 06:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099913955FA;
+	Fri, 12 Jun 2026 06:32:12 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010054.outbound.protection.outlook.com [52.101.69.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17A239FCCA;
-	Fri, 12 Jun 2026 06:06:42 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781244416; cv=none; b=pCZ0b1gYCSEXeUXqgXIrtJ7OgnXlIpnYXXxmdITxbJvXhNlVXT0dtr3eOgQg836ACjZvbjV8QNfeOskZ2PipkXzo3c9ZeR268MfE9ugaekU1T8QDoMN3fpgMaCb765xXRHGAj+NU9v01bWTVsYhPLIcQ4dc2au06lHAARQegqbg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781244416; c=relaxed/simple;
-	bh=iszKkz3JgLlRe0sP3qPT2UGfqGVBejQNnEjJt/kZepY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tIruZqsGpSM1pp74ZrYFUlFKs9Kq0tq9+DupbyTFnY3u5Tt+AtXFAgOafi7x9X+ei9z2P7Kqfc47z94s+FfE3tKJqwAiO+PkTcXmLn6MFaWtjsnS0uvtGtstvbxq3wx91i8jArsaqj0I9q78glNNXSbT6fR7D/zhxDbSJJu1Yuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=hwYcQ8Zu; arc=none smtp.client-ip=18.169.211.239
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1781244361;
-	bh=QJoWXZpcV5a9/t2+tGRRv6L7y8JgmT2jrErNwbztDW8=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=hwYcQ8ZuAi4YXqTWWeId+DPW/Ojum73QUhsHtKzLqn0YulKCKMqCc6uI+DuCxAa+s
-	 n61FXrEk/pOhgm+ZB1ePlgIm/8q6jk+qWoxOrCOuSTmcd8dkzyGlL5BFBYkps9D0W8
-	 XKo+1ItUuCjT3m1dN/I0Od+mDamEzR5cYjlrPuSM=
-X-QQ-mid: zesmtpgz4t1781244342t5aa2ed07
-X-QQ-Originating-IP: VNBj1aTnkDnzoT7DCa88i1WN7TVbLF5CR6W9vAx9ngI=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 12 Jun 2026 14:05:39 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 9832015854964275207
-EX-QQ-RecipientCnt: 10
-From: wuyankun <wuyankun@uniontech.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577E83D7D87;
+	Fri, 12 Jun 2026 06:32:10 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781245931; cv=fail; b=TCl+//kM6sd1cg44873KGendSfTQ6S6bBqd2nxsqpOFvXs/Kib7Fpl86Dq73HHh0XCfo1pk0+iCfMgNzdq2dU9Fv9U5mDhX3EH8EuEfbfdkohwqdAfHNEpGa8x7i2OLOyceGz1siPy0ojUvAl6NKVjuCQm7uwvfcF5HehMe3YgY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781245931; c=relaxed/simple;
+	bh=3UQk/gndKJwP34aphs+bjBueXzF0f/2qi4Nmw5KJbtw=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=SEE7/y6YOHA/Ir6JrtrruChfEXaG/Qj/Fa0nduvBuEXhx6B46wDlYJaq+VTwUOQAz8ZYouuMpQaJVAExcO5OPhmMIC3JBkd7vV4C4WJ8LgayCrnkkKU350l+/+4pSeIcrsEkn99xwnmrAE/BqWCiPIVlhHvNb/pquRWTNrtc3GE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UBtW8XuH; arc=fail smtp.client-ip=52.101.69.54
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eeanOZnj8/f6443kfMQbkLRkYV190Ys+1F2UtcJFqNInXdz+AeetlBVsG7cNuR/wvwQIRYslRvFZIms822VITWu78TZdbs2tuOaWY5hi2Hz7CKnvAg+wU5Q2XAt6DcmNB9LKAjCeZ/nlUK7c87WYwe3Ao61RMUM7ZJsSmlYsJwWZ6cuUclJpvIVYyMVpVUsQZ+6DIxdocYlO1/SWymkuqDFKj4YQCkedAZpHljZ2fav31L2w4SmYRrcGiBVmbyWlKxx2OPhrSqRgVlPT0dfRqgbB1iDkZaD5CmP4us0p2ji8axJqIkn9C0KmlA1/sGwQH/L2C08lpF+fGH9OpYmBxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9UyLY8kanW048D04G/w4VJrXjtcUeWQIu+yzT/1/eZk=;
+ b=JWEDz+1+7yxnHqvK72heoJEYMtiXJNDyjZ+C16iCqqCk0bt00rrkHCu1MmCCzZuYXo6EKBNDTnDmaB9Un3I3VlkSWmtPEAd+KD653H0uIdkAJuGc3rBnSwbPCTSVOXBUep1WbAVAuUOW4bN7ot/IRyfAT/TjPJ5tXPPOGSfaaLDU++FCDUaq0uEroYHVsQRc03CWaG+l6eerC//+5DnQ6RPbfH/YIsGZI9lkGqGyXqX1OLtI9hlO0cO2ZDUEYLRHx5KUQsAVO+sgWswVLHp3+MYp3yyegnZ8pvFnH+52NUhCYZaDreb6lcPvARLZr8gdGStlrAxljOSm/av/TlmIqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9UyLY8kanW048D04G/w4VJrXjtcUeWQIu+yzT/1/eZk=;
+ b=UBtW8XuHUN4HzRAKJBjGgkD0WY6w/aHSiaey6YK/VNhC464lGSEaZJ5f/9fkZa+wFDkQ+GdeuKMhMu6+WdnY51iL0cA8xQaIJSNdsmbgsWctXKi/TwZqMcAygj659ZVApiNQbueqYpxCS5NsX2i9foeYEZ9cQO+WzZgzx6kXVWDaPheZ/zvv0VLQIU+vvwb8btLiMO/13e6Rfu3Bux7uU5uCCZ8Hh6S8NgL2l1gELGzZNybbh1+GulsktsT9UVT5xvxH73f+ufrKKw4LtKgdRIZ8jpems7JCcBNq9biDjKCkPB6RSLWoJi038EsNtKOzL4KCbPRGreADitZdrKgoLw==
+Received: from AM6PR04MB5239.eurprd04.prod.outlook.com (2603:10a6:20b:7::12)
+ by PAXPR04MB8750.eurprd04.prod.outlook.com (2603:10a6:102:20c::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 12 Jun
+ 2026 06:32:06 +0000
+Received: from AM6PR04MB5239.eurprd04.prod.outlook.com
+ ([fe80::fa76:ead:9e21:f84e]) by AM6PR04MB5239.eurprd04.prod.outlook.com
+ ([fe80::fa76:ead:9e21:f84e%6]) with mapi id 15.21.0113.013; Fri, 12 Jun 2026
+ 06:32:06 +0000
+From: Jeff Chen <jeff.chen_1@nxp.com>
 To: linux-wireless@vger.kernel.org
-Cc: penguin-kernel@i-love.sakura.ne.jp,
-	jeff.johnson@oss.qualcomm.com,
-	johan@kernel.org,
-	kees@kernel.org,
-	linux-kernel@vger.kernel.org,
-	sumanth.gavini@yahoo.com,
-	syzbot+f80c62f371ba6a1e7d79@syzkaller.appspotmail.com,
-	syzkaller-bugs@googlegroups.com,
-	wuyankun@uniontech.com
-Subject: [PATCH v2] wifi: ath6kl: fix invalid workqueue flags in ath6kl_usb_create()
-Date: Fri, 12 Jun 2026 14:05:36 +0800
-Message-Id: <20260612060536.247232-1-wuyankun@uniontech.com>
-X-Mailer: git-send-email 2.20.1
+Cc: linux-kernel@vger.kernel.org,
+	ulfh@kernel.org,
+	johannes@sipsolutions.net,
+	francesco@dolcini.it,
+	wyatt.hsu@nxp.com,
+	s.hauer@pengutronix.de
+Subject: pull-request: nxpwifi-2026-06-12
+Date: Fri, 12 Jun 2026 14:32:08 +0800
+Message-Id: <20260612063208.2754029-1-jeff.chen_1@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR2P281CA0021.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:14::8) To AM6PR04MB5239.eurprd04.prod.outlook.com
+ (2603:10a6:20b:7::12)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: M0G3LjVjhyWpYh31Q8VJ1xHThYWbJUjgFi3/LsKmYVrfzOg4/0wcBpZ5
-	Vb/0txqPsXovc4dRizwCp9nRwuA5bsHNUF83TMDiundH9DGd3QYSWNgJxEII/72QCMI/MgI
-	grUi74bieuGk8kZ5noW2G14Ynrm2GvRBhXUYhy4RmHJlXiGQmGfqDQqv5Dg6IqavhTRYPq6
-	VJMrSnrzJMLInbvXiPzwCtq+65lS443VK6eCxu2OcOFNVGbZMXSzqYqN7SFrtoZfU7fK0zB
-	JuO/5mLF8kRgH/2e1kErhCs7bAU0ob9mTAhJnyySbv3Wcgu/dMnwgYyQ7LPaFATd1E1WNV3
-	lTHclGJ5JvXtXIbsshV8/qg7xoPMTd9RqDzwRiQQUBmqLd0tHAQEIdgSIEacm4z7GuF1BqH
-	UL18TteTpfdBg+lJosoZkDihqH8ItgOTQ+aVXOcX6uho+R6GZE9MqEBp771jH7ap5uKqfAG
-	cQvzgaM0U2rddK/u0MVJVyZE7sU4L+WnPioyBqtJ+PjNKS7g2D80veVkWOzEmUb2LabX14+
-	/JB+Ak8A3OhH+nO0vl9OBMxDy407n2NV4XddlVLvyiIJN6gtyQ/mlsgVifGwnU1hqcrVF7I
-	vibVDyEpchkD0zCPUdD4ojWDhd+k95JmBnSCko5+bSlXnILOwLfO49nZF0XWBg4BA/CVHPw
-	In0nfP4oahnxvyXssbalZJzK8RvmvDWxJa1QDyuUbPLBc+Ubiu+dLf3tjx5l5iGI+L8G2Pl
-	AMF5KE7zHdNmI8JPXeP3rTyfZ9x/dvCTSio67fgYNnY/p/cHSfpkWKMeA8GNF67JNnSn3RW
-	aYsXllyZM8elZ4EEAK6SA06yncGp4TX7Twvm06BV7d8UIvCbYBh4YGp2BV0P1TO+dl/KQsB
-	hm+JznGnijvDMqPuhF11FmN28EHsghvtwyCClW3vLtvBlO1+jlVf/ojC00dEVgQSO0WwA2c
-	GZ3aEdxWqx4lg7tqTaV531NueIOle+XYa+n8hyWVAutF4FyNU6Fl8ieIdWZqLBXtUPIxBkv
-	GbDDnTLRs2/nf3/I+czmOV0RDVLj1DtfEWxvAFnShE10/FdDrt2ykhqyXCfGW2Tz17it9pc
-	lN+8a7yugI1U0xd5wL6xDjqEbt4p0moLf04015VcdPY
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB5239:EE_|PAXPR04MB8750:EE_
+X-MS-Office365-Filtering-Correlation-Id: 642c709c-f3dd-4426-7139-08dec84c528f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|23010399003|1800799024|19092799006|366016|38350700014|11063799006|18002099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	ArrLp03Zfd01OiqGFgjaV9xntVDggPL1cs63TYPbSN7zCnBOqukckqEGzChOkOkTNb1+4mE0h+OWao2D34LXmgBUG7dBceLD+HqvhcFrHWDgFmjeNz/3QBmFtk3PirxKGWxZXGhVeiJqJtnivNsdktwy2yVNdz48p3eWMEXgZzxruXGg8mHexsMbuvmGRz7n8vN34k7/yNGJbVUVz7AdUgicvQmcd/X/vaGVzj+EjXMyd/Y/NExHlGwQ01xad4YWc+GIsoiYgn4mGve/z4KlEB8s/xjiM1iqLWKxTcFGG0ToFZ8yEQ3WZHHqiVAabW2DtwWa0rA9c3KgXmA5lpvyDPQ0ZDFS/FRCH2uQDmU5zohAhOO0F0MTs6cxa1erk8trn7YJ8l2JGjAZcZJ1xgXroo3eEnUO4A2xrwLM3aocbkKBsAWqmhT3a+w8+HU2k7RWJcXUmteVQVVONRPZo3chms8IqvUzZpPGKs1PHy4FB3ub2gbeZm7Gzd+1LoiCP6UU3j1kptJsp/0uDjf2AZ27fs/AqlUIaytg3VBr7Vn4ppsX7C6eLxCwkq9XJZJ+t/pAOJzZs0B3cU9LPva16hdWV5BsYy0/pcqXpMD3N6XZx7E3qOc8II0KJpku4XRFLAwd/X+E4sxsbLy0gawbeTd6QOk6oqqGsPdAitIe2STl31GQQTdcjZ5x9niST3preT9t140WV5suTcE0zxIcA/7zfyQmVT+FltmST7QScu4JIzZWB8HN1hLS7w1IkIqQkeRO
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5239.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(23010399003)(1800799024)(19092799006)(366016)(38350700014)(11063799006)(18002099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?yEyD77rbhzBdB8ew0QHEqLHKrEfjXMfFxzQpgmORf/LyEEQsvZrxKlNSR4oL?=
+ =?us-ascii?Q?odc6NFxMcNZ8vzi38ZV5fNV1b7nui9OMBHktvqJXS1F833Y1S3fmldLZFRDk?=
+ =?us-ascii?Q?oDtBrJGxvR9/YWhuasesiRn6xWX6MaaePuc5oVPU4JPjXI6R2uAb5459ICop?=
+ =?us-ascii?Q?zoK0ooN8lCN1+SP30HQk9RtPLvISFL56wPsF70YukRZsFGUgr8Y4SP8GnSxl?=
+ =?us-ascii?Q?k8MEQ5GINBWdfldi6/RjQwOObkN2hGV0En1NzDCMgaCSdW3UNri9Odf5BcjM?=
+ =?us-ascii?Q?LND2ESovzIspAi5qm4A/iLHjhSIIIYn3XG4UAFnWvOpS6BL+UFFA77qLtsHD?=
+ =?us-ascii?Q?o8ybBSUED3YbQUoEIRdCVdOnpdL9R3Sif8OvNbn5v0qItjMekA+1LKzfm+DN?=
+ =?us-ascii?Q?GAIGVGUcjPjF0O3po6IPvHS8wsCVvFZHqgdM+s3oiiJJla7p5raam6MT03EU?=
+ =?us-ascii?Q?FUiYVyxEOn1mu28A743EW5hWRMCewzGDCJj6oO2MaHZMbbQi3KgEHJRw/kR9?=
+ =?us-ascii?Q?ZRLaACZ5dR7fDgmzLeKFW/l8N6uqx5blKYgLa0ezcnFOOu8z9UrXKVwcAECx?=
+ =?us-ascii?Q?xcfoWmv2GstsMyR4whxYOgO9UP3O+sQPpG7M9Bp4EaV+2h246oK70X5f1Fm8?=
+ =?us-ascii?Q?xoge8YTcyVDAz9ovh6ZXcQIcBsoQea7lOw67K2hSNgTHzrclKpB+sHlvT6Lw?=
+ =?us-ascii?Q?F1J/mWe8k4/vM+L4zEh2sfnjxQt4CyLWmTPKdMQrsBWix0v7WNRWBJ+b/SiX?=
+ =?us-ascii?Q?IF3GRR2ch4jT1bnRR+/3NqT1OCp+PAYnhgM8D5FjQbnfTDMSTEvFD8B01gOj?=
+ =?us-ascii?Q?v3pS0zY4mVM15dQKeBzL6U054bm1LOjBFmF1ZPMJM+1jbI9Mfz6kFe8jLiGm?=
+ =?us-ascii?Q?JpTXi9BZwexRhZ3AVkxWRjdBNMiyfL3ZyK3npCC7Ee0yDnUI07BbaXb85kaH?=
+ =?us-ascii?Q?Zv3L04YS2xEwNqVRtWbrlRfzO29BHAV+jKn9GdOExZAL6GowESnfLGc+Nx9s?=
+ =?us-ascii?Q?4yn4GwJ7BJ5jXpi5Skp/ES1WfAEsR9LWWZK7exPpzI//3LUqFk6tACqPZC8e?=
+ =?us-ascii?Q?ihv6G4zJq5GG0JdcwUO49wOW/ZYS8i6yATslCX3F1HOdAuqvtjPMrRJs8VsM?=
+ =?us-ascii?Q?+2TfAYzDcWOanrToKN1QuxWPrwn1CML4YgdjJInOkjcXmOjbdotSaIJJ+kb4?=
+ =?us-ascii?Q?YrJgvZWlQWiyUBrEjEvVe/p/ONHpXf8jxrXOxNaBCfxrmfzde50aXPRX5qf+?=
+ =?us-ascii?Q?7kpJL3VzsFCT8IVECH13R88Nj85ZlXoILhrfHzMR/a58pfOTFHBhSlm5mIEh?=
+ =?us-ascii?Q?NwhPY1JCRovPedFyPLbjizO2hNC8ni50QwlEx9BHGtYPcAjY8E5L/35+FFXP?=
+ =?us-ascii?Q?JYCP8S6AfoUT+Gx+c+BPhVV2JIblTxK4ExVD0AZXBfqmU3F1yHihUHqIUJaM?=
+ =?us-ascii?Q?f6OI17XNXhIpGjH/DpFOrVZGeRi4eLY2OanoezcQ7JxOSvobikrT2rc+OStn?=
+ =?us-ascii?Q?gNGytFMAvXZSj+RTksvMB2EzKahu3EiogOugJjcm7qZZZuQJ6WyT+GPBfsHP?=
+ =?us-ascii?Q?8CQ858coKyq19bOjg/zAzIBkjJH3LttuYN9zBY30LmCtn7w0SwvN1RwiYGlq?=
+ =?us-ascii?Q?YNbha15QpViJL8bzU0XLCW0eRodGDZTa8MDGzVjuhODS0d3gaOoFq2kOvDKk?=
+ =?us-ascii?Q?lyQjJiDu1QaCfQmD4mTecaGltoyWbwk5vq0f9ErL6eFvArtsbdDJQCW4P5TN?=
+ =?us-ascii?Q?ToIEInPEyg=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 642c709c-f3dd-4426-7139-08dec84c528f
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB5239.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2026 06:32:06.5666
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dUdhZycfy9UeoKwHIrqWPp766pKo4QHK3S5vzbx5BfBucG9i9n7FvsDgGgKyOp5qmwADmyXXUusTWYHyug3F4w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8750
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[i-love.sakura.ne.jp,oss.qualcomm.com,kernel.org,vger.kernel.org,yahoo.com,syzkaller.appspotmail.com,googlegroups.com,uniontech.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37696-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[wuyankun@uniontech.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:penguin-kernel@i-love.sakura.ne.jp,m:jeff.johnson@oss.qualcomm.com,m:johan@kernel.org,m:kees@kernel.org,m:linux-kernel@vger.kernel.org,m:sumanth.gavini@yahoo.com,m:syzbot+f80c62f371ba6a1e7d79@syzkaller.appspotmail.com,m:syzkaller-bugs@googlegroups.com,m:wuyankun@uniontech.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wuyankun@uniontech.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-37697-lists,linux-wireless=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[jeff.chen_1@nxp.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:ulfh@kernel.org,m:johannes@sipsolutions.net,m:francesco@dolcini.it,m:wyatt.hsu@nxp.com,m:s.hauer@pengutronix.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[jeff.chen_1@nxp.com,linux-wireless@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[nxp.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,f80c62f371ba6a1e7d79];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email,vger.kernel.org:from_smtp]
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:dkim,nxp.com:mid,nxp.com:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4BEDC676DD5
+X-Rspamd-Queue-Id: BCFBD676EDD
 
-ath6kl_usb_create() currently creates ath6kl_wq with flags set to 0:
+The following changes since commit 972c4dd19cb92e03d75b66c426cfade07582a1ba:
 
-  alloc_workqueue("ath6kl_wq", 0, 0)
+  Merge tag 'wireless-next-2026-06-10' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next (2026-06-10 07:59:45 -0700)
 
-This triggers a runtime warning in __alloc_workqueue() because the queue is
-created with neither WQ_PERCPU nor WQ_UNBOUND set:
+are available in the Git repository at:
 
-  workqueue: ath6kl_wq is using neither WQ_PERCPU or WQ_UNBOUND.
-  Setting WQ_PERCPU.
+  https://github.com/jeffchen71/nxpwifi/ tags/nxpwifi-2026-06-12
 
-Set WQ_PERCPU explicitly to match the actual execution model and remove the
-warning during device probe. No functional change intended.
+for you to fetch changes up to 4c477f8bfc1a86c54a719cae475f7fa1973eba0f:
 
-Fixes: 21c05ca88a54 ("workqueue: Add warnings and ensure one among WQ_PERCPU or WQ_UNBOUND is present")
-Reported-by: syzbot+f80c62f371ba6a1e7d79@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/6a289c01.39669fcc.33b062.00aa.GAE@google.com/T/
-Signed-off-by: wuyankun <wuyankun@uniontech.com>
----
- drivers/net/wireless/ath/ath6kl/usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  wifi: nxp: add nxpwifi driver for IW61x (2026-06-12 10:07:33 +0800)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
-index 79c18f5ee02b..945984c3dbe6 100644
---- a/drivers/net/wireless/ath/ath6kl/usb.c
-+++ b/drivers/net/wireless/ath/ath6kl/usb.c
-@@ -636,7 +636,7 @@ static struct ath6kl_usb *ath6kl_usb_create(struct usb_interface *interface)
- 	ar_usb = kzalloc_obj(struct ath6kl_usb);
- 	if (ar_usb == NULL)
- 		return NULL;
--	ar_usb->wq = alloc_workqueue("ath6kl_wq", 0, 0);
-+	ar_usb->wq = alloc_workqueue("ath6kl_wq", WQ_PERCPU, 0);
- 	if (!ar_usb->wq) {
- 		kfree(ar_usb);
- 		return NULL;
--- 
-2.20.1
+----------------------------------------------------------------
+wifi: nxp: patches for wireless-next
 
+In nxpwifi, introduce initial driver support for NXP IW61x Wi-Fi chipsets.
+The driver supports 802.11ac/ax, SDIO interface, Station and uAP modes.
+
+----------------------------------------------------------------
+Jeff Chen (2):
+      mmc: core: add NXP IW61x base ID and block size quirk
+      wifi: nxp: add nxpwifi driver for IW61x
+
+ MAINTAINERS                                      |    7 +
+ drivers/mmc/core/quirks.h                        |    3 +
+ drivers/net/wireless/Kconfig                     |    1 +
+ drivers/net/wireless/Makefile                    |    1 +
+ drivers/net/wireless/nxp/Kconfig                 |   17 +
+ drivers/net/wireless/nxp/Makefile                |    3 +
+ drivers/net/wireless/nxp/nxpwifi/11ac.c          |  280 ++
+ drivers/net/wireless/nxp/nxpwifi/11ac.h          |   33 +
+ drivers/net/wireless/nxp/nxpwifi/11ax.c          |  594 ++++
+ drivers/net/wireless/nxp/nxpwifi/11ax.h          |   73 +
+ drivers/net/wireless/nxp/nxpwifi/11h.c           |  339 ++
+ drivers/net/wireless/nxp/nxpwifi/11n.c           |  837 +++++
+ drivers/net/wireless/nxp/nxpwifi/11n.h           |  158 +
+ drivers/net/wireless/nxp/nxpwifi/11n_aggr.c      |  251 ++
+ drivers/net/wireless/nxp/nxpwifi/11n_aggr.h      |   21 +
+ drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.c |  826 +++++
+ drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.h |   71 +
+ drivers/net/wireless/nxp/nxpwifi/Kconfig         |   22 +
+ drivers/net/wireless/nxp/nxpwifi/Makefile        |   39 +
+ drivers/net/wireless/nxp/nxpwifi/cfg.h           | 1019 ++++++
+ drivers/net/wireless/nxp/nxpwifi/cfg80211.c      | 3931 ++++++++++++++++++++++
+ drivers/net/wireless/nxp/nxpwifi/cfg80211.h      |   18 +
+ drivers/net/wireless/nxp/nxpwifi/cfp.c           |  458 +++
+ drivers/net/wireless/nxp/nxpwifi/cmdevt.c        | 1310 +++++++
+ drivers/net/wireless/nxp/nxpwifi/cmdevt.h        |  122 +
+ drivers/net/wireless/nxp/nxpwifi/debugfs.c       | 1094 ++++++
+ drivers/net/wireless/nxp/nxpwifi/ethtool.c       |   58 +
+ drivers/net/wireless/nxp/nxpwifi/fw.h            | 2459 ++++++++++++++
+ drivers/net/wireless/nxp/nxpwifi/ie.c            |  480 +++
+ drivers/net/wireless/nxp/nxpwifi/init.c          |  607 ++++
+ drivers/net/wireless/nxp/nxpwifi/join.c          |  787 +++++
+ drivers/net/wireless/nxp/nxpwifi/main.c          | 1673 +++++++++
+ drivers/net/wireless/nxp/nxpwifi/main.h          | 1427 ++++++++
+ drivers/net/wireless/nxp/nxpwifi/scan.c          | 2695 +++++++++++++++
+ drivers/net/wireless/nxp/nxpwifi/sdio.c          | 2327 +++++++++++++
+ drivers/net/wireless/nxp/nxpwifi/sdio.h          |  340 ++
+ drivers/net/wireless/nxp/nxpwifi/sta_cfg.c       | 1165 +++++++
+ drivers/net/wireless/nxp/nxpwifi/sta_cmd.c       | 3387 +++++++++++++++++++
+ drivers/net/wireless/nxp/nxpwifi/sta_event.c     |  862 +++++
+ drivers/net/wireless/nxp/nxpwifi/sta_rx.c        |  242 ++
+ drivers/net/wireless/nxp/nxpwifi/sta_tx.c        |  190 ++
+ drivers/net/wireless/nxp/nxpwifi/txrx.c          |  352 ++
+ drivers/net/wireless/nxp/nxpwifi/uap_cmd.c       | 1256 +++++++
+ drivers/net/wireless/nxp/nxpwifi/uap_event.c     |  488 +++
+ drivers/net/wireless/nxp/nxpwifi/uap_txrx.c      |  478 +++
+ drivers/net/wireless/nxp/nxpwifi/util.c          | 1381 ++++++++
+ drivers/net/wireless/nxp/nxpwifi/util.h          |  155 +
+ drivers/net/wireless/nxp/nxpwifi/wmm.c           | 1313 ++++++++
+ drivers/net/wireless/nxp/nxpwifi/wmm.h           |   77 +
+ include/linux/mmc/sdio_ids.h                     |    1 +
+ 50 files changed, 35728 insertions(+)
+ create mode 100644 drivers/net/wireless/nxp/Kconfig
+ create mode 100644 drivers/net/wireless/nxp/Makefile
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ac.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ac.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ax.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ax.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11h.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_aggr.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_aggr.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/Kconfig
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/Makefile
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg80211.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg80211.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfp.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cmdevt.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cmdevt.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/debugfs.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/ethtool.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/fw.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/ie.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/init.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/join.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/main.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/main.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/scan.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sdio.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sdio.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_cfg.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_cmd.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_event.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_rx.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_tx.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/txrx.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_cmd.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_event.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_txrx.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/util.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/util.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/wmm.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/wmm.h
 
