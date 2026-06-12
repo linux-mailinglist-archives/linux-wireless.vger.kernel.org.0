@@ -1,85 +1,85 @@
-Return-Path: <linux-wireless+bounces-37740-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37741-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0tSjERkMLGpPKQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-37740-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 15:39:37 +0200
+	id dcE6NicMLGpSKQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-37741-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 15:39:51 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE651679E88
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 15:39:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C920679E8E
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 15:39:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gG6rxkAh;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37740-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37740-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UiPAjgZh;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37741-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37741-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9853330E9BED
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 13:37:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7328731AB70D
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 13:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06FF3EB115;
-	Fri, 12 Jun 2026 13:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58FA3D5673;
+	Fri, 12 Jun 2026 13:37:11 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3943B1002
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 13:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37F43E5A24
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 13:37:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781271425; cv=none; b=fksbJGlt6KjbHhw2zE7wMZhsqqc4dr1Pj5T21saAF06h1uloVtpHxjb1XFcd2eOLxbPVhj3m3DI1tUH1K4DPPOcbuhNPhAMB7+4Fb00YI6yeLML63A3wpE4HDW+dpf7e7ENVEF4XipLAPv74C1vqbFRJ3MeoPFTg48sJXNqyOTw=
+	t=1781271431; cv=none; b=l9yTPJKXlK5WT1CsUmu7p3IrRzXLIpTeTmZp3p9tWMJfZbLAAKZzfZyoqSbiJAFNBpTZRqO89ggA2dcdJvGFXJ1ukAjhXbxqd3tAsPrF3H5DQ0sCxXAXF54a0UJEFt40+Jip4uGmiQ5kAnfSGTGWUijKyvT2+irhA8yFyzvNtzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781271425; c=relaxed/simple;
-	bh=2KWpkPQa41bZlQsm6JluDJgkZzmr13UUr59IacwjTO0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MuGjplPedEOKmdCa8/OL5Jd/pC3UzzmX7xvRUUhAv8CK/zTTObXhnlocaviDijI4qb/0aQzPdtwMMzsC2e2Sivhp2I+aT9+BFuyZZKVxhEf0jUXgv8B1zOBVeZOArKpNyVCZkm7eqAhZ3/EmNSY0m1+CDJfjNoCZNuCzA/HWoT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gG6rxkAh; arc=none smtp.client-ip=209.85.210.178
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8422f395a4aso722211b3a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 06:37:03 -0700 (PDT)
+	s=arc-20240116; t=1781271431; c=relaxed/simple;
+	bh=SgUY1nW+3aXyUug+WjSvufMDS6a/nSEqIgo5cdAu7aY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E5vnXXUYlB7ethoI3HfELgj6fAIShz3LefClEL+JEkjIlvh6HzJDoZdXESzu5cQAnAsD9T7mc+BNvrEWV4k4iITaOTGvTGIGOQddBDPW2as+0Vvy9B7S33E4r6aeUAjvYfBhFO1Jixi/n2I0iMyudKmVHxo6niYKLsKt6DD/BHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UiPAjgZh; arc=none smtp.client-ip=209.85.215.174
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c858b392697so452895a12.3
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 06:37:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781271423; x=1781876223; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781271430; x=1781876230; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OtjgRP64pOcIgAiCaPMHfLRKQkkQ9g99va4bg4X2WuI=;
-        b=gG6rxkAhBo8NS58cYQ1q1y5l2jGqyYfEFy9NBCJnkffIFV0Lof1Tt+eM65o3J/VYbg
-         mQU3C4dGd8ljvzlhKkBNkN2+Cj0PbvLypmsLikzEXxwecf1ItsjzQQVwC3+4VB3oQMDm
-         TVjVAS7n8zXhTYwZeMYkZQGvAgEJ4KtLjnQwTIXnyWD1laH6FbHyVaHb1IXffE7XbRS/
-         p5PuEWYmtLJ3Fhws0ThVo4je4WfpImZBSZ+2T1tiuWIjmzbnu/8lInP3LidiMKNhywsP
-         fgcUxOfrOwuaCgHb0vlzIwdv0mAG/Ifrl3iaWfk4gDTtBR5vmjGYNqgGFrHdB+8toyzO
-         Ovag==
+        bh=5MRU2t7e8A/ZVblByuIRmE1vztrNoX56qrc24aQwS7E=;
+        b=UiPAjgZhfSPlIOD8SOUu4gOPjnwHk5ER6MIAgOhXi7lASYQaNwlzSE0PPwfg0Wh5xe
+         IWVsos27zbzHAdXfPUIqN42ja0zpFAq2Dvh7eufC3UtmP7afkrrC05BTWMStQ1b2Is1I
+         QFoyQuN6QQaopaP9chKsLeFLEmP12zJ+KuGs1Im2UFHUjTWPYzRzexEFeQ507lDHTCF8
+         rBmdLGuRD0RaGNSSv3oMydgk/g4mYfGwwiqXAKTto7OzqY3WuUh4LHAyhT3NDAEaG8Hm
+         LDWDKDQ8CH+oNXGR94pj7ImPT9kjo5BbY53OnjGuQCIDE2J4sN6jEQL7GzCroWEC9MQ3
+         /Iag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781271423; x=1781876223;
+        d=1e100.net; s=20251104; t=1781271430; x=1781876230;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OtjgRP64pOcIgAiCaPMHfLRKQkkQ9g99va4bg4X2WuI=;
-        b=oK/DnUtlHJODeU0GtTShpb5bSqe/Hqdr9/DNMu/HUNitIKVRvxgDxJaBg5kdrZhcGZ
-         v4J+zY4k+1neSjSUOGHlHPmB1IOAqcdCD9TersNdJI/t4S9c2c8uPFqWJxLdV1cjyRev
-         2TvImOcI30WS7jy0kzpBG20k4yFWBjf436Pwzadvg9Aa0YXoaJ50yE7za0FFQj/yRBml
-         a0sGQf9Zk+21sg43/fNaay9unZKQyRPBarW/GkRn/Ij3QGqiJlsEV1gy7DyIpIi2DGyF
-         9T+xk8NH0XpwB8oZfclL1TPmPrAcDJatUL+aRtLx49CS3nRY+kl2GdsV80s+neZwzgzl
-         I2xw==
-X-Gm-Message-State: AOJu0YwbXllpb5mx/nU2wHBPFptw/j8QlSkCUQitmASpIo1MYFrF37hT
-	HQP54lj9eGToby3ieX1oxjp9yJ5H+W3JRDaBoP6plPery0o5ScJli5x2
-X-Gm-Gg: Acq92OEIyTxqfWP0dVmPIBQOJIIRu+xXgt4eTq56Yd1BCdMp+SfW4wuti7yEDaiPtdI
-	llTZuIX1XFhz0GwL8M4HLahkkGKegph2yk09GlC54DAqWRfHX8OivR5MDuREOyt+p30slGeKNM4
-	xDg51qdeiCijLzuFgy3DBzVx1eorEvEHnri/VOyz7ifexAsgCQS0J7Vi2Wy11kaSV3B38VYkbqB
-	6mX/wteAo7aPHqwoZgULHNFEowUauzCUDpsqKQxIfH0y+X5ZOSUnIJtOFR9WBpPFtDI4cVFudb2
-	uLUoiHO+/FWLaRSZn8djseOKbzhQy6+gZt24Xz4fbvSzJnEFQiBKvp+933zAiKKDQ9inpH5ivMi
-	hsrRgtIEnDEVAe4nBv1yXZB0jS11EO0VoeZj4yDoncihQGF274SeooTt27hw4w9VwjIkxsxglf4
-	CWJ1DyIkQ92oaaODT0UrHo2gXjSqfuhWPtDaduJ179SWlhHxshdgaLyuDRmR2sM/I=
-X-Received: by 2002:a05:6a00:451c:b0:842:614b:50dc with SMTP id d2e1a72fcca58-8434958ae59mr2904990b3a.13.1781271422827;
-        Fri, 12 Jun 2026 06:37:02 -0700 (PDT)
+        bh=5MRU2t7e8A/ZVblByuIRmE1vztrNoX56qrc24aQwS7E=;
+        b=sinWxgoe/ko2VG3GczKM2TPstRFG5jt82ek/MRfhWJdVC9rEiG4NAVQSIuqpJ83tS5
+         xBz1hWOtvzGZ7h9YeeTdxvXmMxi3PgXyP2TZtom20TXM2j221hCJ6wVXfHckNZ9vXvQs
+         u7UNNz79E6RPGJPbOywhfViIGN6YAi8M1p2l69yOA+5s618u4I0B7RY5F1m1j/svbChe
+         In83gXeW+ezxlDuW3HZtlcF1l6o5otmwfhVePW8CVpSSpmzz50xYar5W0oCm+u46EMvW
+         PyB2HGA1038mv3JSgAvLVv7Cu84wmvHNF7fEFZeSekm6mLudX7GoNVxhPMN7Pm8S7Wry
+         JL6w==
+X-Gm-Message-State: AOJu0YyjM6fsZpiuzmYzR6m8A6HnEQ16SMySZlUKEKuTBSCKVn1nizsT
+	COqtnOrPqRkcUlDiWu6ZemaFBnbnHBm3F5fIxtaPUI0Ywpb4MDahzvqK
+X-Gm-Gg: Acq92OFHGwD3i9r/9k7tmwrDxSMtFL4UR4cX8lPZh3TXIyBrWmLOkz/CHcpP1uuzz59
+	haHp97XgR69P7ZDUvkAgbZZ7ye/Pgkb8tUs90YdSGcPbHauSh/y0XNTiCQMpPd9RvuXSv+UmbCb
+	eotJs3yS+NOEq7okKit7/vXuA4YIBPcerRUPQg2SLxFQR4qs9VfnktMpyLTQuj6Q2fLcLOJBEwy
+	uLCdXCGrkqKyaEQ8rulh7vX8RikfD/feZKffLtMSxFpey/gbhgbhrVhiKOe0mFv2HG3Er56yEx8
+	Uoxh8B5CRAV86WkprddyPcGvmoKwz2XxCy8hXaz+7M0Gnbm+JVUmodIaVGA17zour9bcKSdg3FU
+	kQ3DPXJSK3Ppkc/0QuhTie8gFrVaVP5CZUzJ6j282V8B6qaDe/LHeiIoMM4jDHdYDfB3ogmL4dF
+	gjyThyaBrc6hzWdgMsHwRZXsXHepqolU4xC9ycjzJiyBFETSdtfTGxQD3fE5/3vrA=
+X-Received: by 2002:a05:6a00:f93:b0:842:46a6:e2cf with SMTP id d2e1a72fcca58-8434ce46552mr3364400b3a.21.1781271430089;
+        Fri, 12 Jun 2026 06:37:10 -0700 (PDT)
 Received: from KRHW1CJW23.bytedance.net ([139.177.225.248])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434ac9bfe1sm2574272b3a.12.2026.06.12.06.37.00
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434afd100esm3008932b3a.34.2026.06.12.06.37.07
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 12 Jun 2026 06:37:02 -0700 (PDT)
+        Fri, 12 Jun 2026 06:37:09 -0700 (PDT)
 From: Zhao Li <enderaoelyther@gmail.com>
 To: Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: cfg80211: validate PMSR measurement type data
-Date: Fri, 12 Jun 2026 21:36:57 +0800
-Message-ID: <20260612133656.92900-2-enderaoelyther@gmail.com>
+Subject: [PATCH] wifi: cfg80211: validate PMSR FTM preamble range
+Date: Fri, 12 Jun 2026 21:37:04 +0800
+Message-ID: <20260612133703.93274-2-enderaoelyther@gmail.com>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -95,12 +95,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37740-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37741-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[enderaoelyther@gmail.com,linux-wireless@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
@@ -118,73 +118,61 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AE651679E88
+X-Rspamd-Queue-Id: 5C920679E8E
 
-PMSR request parsing accepts missing or duplicated measurement type
-entries in NL80211_PMSR_REQ_ATTR_DATA.
+PMSR FTM request parsing accepts preamble values outside the
+enumerated nl80211 preamble range.
 
-Track whether one measurement type was already provided, reject a
-second one immediately, and return an error if the request data block
-contains no measurement type at all.
+Reject out-of-range values before using them in the parser capability
+bit test, and also update the nested preamble policy declaration to
+match the same enum range.
 
 Fixes: 9bb7e0f24e7e7 ("cfg80211: add peer measurement with FTM initiator API")
 Assisted-by: Codex:gpt-5.5
 Assisted-by: Claude:claude-opus-4.8
 Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
 ---
- net/wireless/pmsr.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ net/wireless/nl80211.c | 4 +++-
+ net/wireless/pmsr.c    | 7 +++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 76c537a6e8b52..52a805ee2049d 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -461,7 +461,9 @@ nl80211_ftm_responder_policy[NL80211_FTM_RESP_ATTR_MAX + 1] = {
+ static const struct nla_policy
+ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
+ 	[NL80211_PMSR_FTM_REQ_ATTR_ASAP] = { .type = NLA_FLAG },
+-	[NL80211_PMSR_FTM_REQ_ATTR_PREAMBLE] = { .type = NLA_U32 },
++	[NL80211_PMSR_FTM_REQ_ATTR_PREAMBLE] =
++		NLA_POLICY_RANGE(NLA_U32, NL80211_PREAMBLE_LEGACY,
++				 NL80211_PREAMBLE_HE),
+ 	[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP] =
+ 		NLA_POLICY_MAX(NLA_U8, 15),
+ 	[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD] = { .type = NLA_U16 },
 diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
-index d6cd0de64d1f8..b1ead4adf9690 100644
+index d6cd0de64d1f8..7724ed0aa28ee 100644
 --- a/net/wireless/pmsr.c
 +++ b/net/wireless/pmsr.c
-@@ -213,6 +213,7 @@ static int pmsr_parse_peer(struct cfg80211_registered_device *rdev,
- 	struct nlattr *tb[NL80211_PMSR_PEER_ATTR_MAX + 1];
- 	struct nlattr *req[NL80211_PMSR_REQ_ATTR_MAX + 1];
- 	struct nlattr *treq;
-+	bool have_measurement_type = false;
- 	int err, rem;
+@@ -29,6 +29,13 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_PREAMBLE])
+ 		preamble = nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_PREAMBLE]);
  
- 	/* no validation needed - was already done via nested policy */
-@@ -265,6 +266,14 @@ static int pmsr_parse_peer(struct cfg80211_registered_device *rdev,
- 	}
- 
- 	nla_for_each_nested(treq, req[NL80211_PMSR_REQ_ATTR_DATA], rem) {
-+		if (have_measurement_type) {
-+			NL_SET_ERR_MSG_ATTR(info->extack, treq,
-+					    "multiple measurement types in request data");
-+			return -EINVAL;
-+		}
-+
-+		have_measurement_type = true;
-+
- 		switch (nla_type(treq)) {
- 		case NL80211_PMSR_TYPE_FTM:
- 			err = pmsr_parse_ftm(rdev, treq, out, info);
-@@ -274,10 +283,16 @@ static int pmsr_parse_peer(struct cfg80211_registered_device *rdev,
- 					    "unsupported measurement type");
- 			err = -EINVAL;
- 		}
-+		if (err)
-+			return err;
- 	}
- 
--	if (err)
--		return err;
-+	if (!have_measurement_type) {
++	if (preamble > NL80211_PREAMBLE_HE) {
 +		NL_SET_ERR_MSG_ATTR(info->extack,
-+				    req[NL80211_PMSR_REQ_ATTR_DATA],
-+				    "missing measurement type in request data");
++				    tb[NL80211_PMSR_FTM_REQ_ATTR_PREAMBLE],
++				    "FTM: invalid preamble");
 +		return -EINVAL;
 +	}
++
+ 	/* set up values - struct is 0-initialized */
+ 	out->ftm.requested = true;
  
- 	return 0;
- }
 -- 
 2.50.1 (Apple Git-155)
 
