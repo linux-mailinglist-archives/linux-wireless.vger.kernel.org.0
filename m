@@ -1,173 +1,223 @@
-Return-Path: <linux-wireless+bounces-37745-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37746-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jrZgEgcTLGq0KwQAu9opvQ
-	(envelope-from <linux-wireless+bounces-37745-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 16:09:11 +0200
+	id zgjDLrgXLGoELQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-37746-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 16:29:12 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A2667A117
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 16:09:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E74367A2CE
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 16:29:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=morsemicro-com.20251104.gappssmtp.com header.s=20251104 header.b=sfq6q6ty;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37745-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37745-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=morsemicro.com (policy=none);
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Wi1+tShF;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37746-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37746-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B99BA304636F
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 14:07:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C7E7F31EBECF
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 14:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B25D383328;
-	Fri, 12 Jun 2026 14:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8687036D50D;
+	Fri, 12 Jun 2026 14:27:07 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60EC3002CF
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 14:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03ED3388885
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 14:27:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781273270; cv=none; b=RNnM3169RqrlxSTIdYnuPGgMCfk7tIU/ehzz4VDLWjZ3VvqdBEWdJy+IAEYJz1ZmmtbMEuGXyA1P1l3e5qRbWlZk6lR73hydjuIWmggoQ/lXPW5t9f5fiVCT0C44IvEvfpPTx7sGdlTldR70JiVqvQ5ygL4ozM7bqFHNd3wX6iM=
+	t=1781274427; cv=none; b=EOoBzksc15VKBAvm1w6+ZSLer02iDR6+egvv25o07c9bM5U/68De5WEp87chvK+zI7oQkKPu4hNi5xzUAT7c8eLj0vUTnryke4NgKeZU0oAqi8ZegTQWqaZ0IYc5pIgi2TEB+N93pPCYXkldpS/0OQ/gfXco7zV5+z42rryJg7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781273270; c=relaxed/simple;
-	bh=btjPbNSUbabKku1c0RBU7ZGV4LpOUhL43kNK74m0YEo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gm5hS0AleHCHy9zPGPtavhnkP2S/WLCi93zpkiu7DUfmrdjt2BGAQLmN0Ze/t/rg7kr3redSi79uuSL2+iG1zIAlRZYHz7CTsOWvs7iURzn81vIclqN0Ybw8ILr7R3OHqsybFPRzKaXWIgIuf/xh8GPkQD+2bGq+4EN2T8gTWZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=sfq6q6ty; arc=none smtp.client-ip=209.85.216.44
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-36ba3ea5c46so647009a91.1
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 07:07:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1781273268; x=1781878068; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=v6XnfIOCWTMr8+cdR8ElwI3mA/tB9ye05U71QzK/G0I=;
-        b=sfq6q6tyVYLD1GG0rUxkhV0BQQgC3W/BahgyVusii33yDZYe8gifn5va/nJsnM2fnK
-         rHm1seOdL0yoNzl2u829ALNZwmLX1lQfIJpNpFKNrP7xiA0Rt5c1R2QPBXUcw1o9X7c+
-         s4ljfv2LkOO7kbF6GSB/2isEYMMTMzXCRsAmnZRSKyA0d+ALJrHt6S8YkCN3R4gDeiPP
-         8xKPNa/N96ni8N0zcAwkWFrDW8Ym05h0ZNiDyoWbiGQMsYDHu+SqTqFiOOI492pkhLfv
-         5eo+UuC16GVLOHEqsBiU+yt/h4D4SNrzqz44CpOiXCBM2nUsJ62jgljTn//AOQ93JOlC
-         cxiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781273268; x=1781878068;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v6XnfIOCWTMr8+cdR8ElwI3mA/tB9ye05U71QzK/G0I=;
-        b=Ks0L6hA+VbASYTw41uNnYuqxQdIzdhD5RGoviU4wNWixUqU1C9rDvR1gBlkhx8aNzL
-         TLCPERIaJk8FSVgL4bKsPDdwOJZK48pJSaQgs85hvK5vcIXeE1ZIdHFeZXQ6KGcI6BJL
-         5kdIQNwh68fJ87eBP+cQcteM1giTanISJSsBplEKuqha6sYbHchDVxWT92U9iBMaW5bg
-         76mY9RdT6Vajj/M+0e+Tx66TpD5J+8KzTh8BIBxxE5qh3quv3UfzCOXq+jI7QNg6lfyC
-         PfbyEyJEVQlX0nIrXWaWlKhvvadFLKa2Tan5iNqZ2KpeTGFqVSKRWUy2+I08HlsNShSi
-         fL2w==
-X-Forwarded-Encrypted: i=1; AFNElJ+NWwWuIoZq1mlmk0eo+vgprCdYCo2lGO+mTph1HtiFQPeMGjRMdZ9+BSeUvC7bSnXWIMY1E/T+QOt1CmsX0w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwfFJWp20LI+AxIsAkrH0Sy0pn+DVYzCaaSXJv4YyYZ/ycJXFj
-	u0h0Ym/WZJp1Nn4TdFUXwi+9ZAHGvYOyhZwbzUf0tMhrJOZpj6rFYWirXVDRnmGVvTs=
-X-Gm-Gg: Acq92OEom9Fijy+3IIuf6CZLbm9iGOU5AKyfaXngTJUBg40a8cIrdJZcINOZhi7wgR1
-	87J7EoWy6Ww9DkuveoJ8bqezDyl2/0+Rz684WvkWSbAGjqa7kw17y0YysEoljLKIQp3ZZ/WmQBu
-	ODBqsqUKS/eLaeioBbmbSkSFVqEFPuNYP3uIZhM7P5VgdQ+jbVaT1FonP9dUhrFDm2m/gDl+OX9
-	GRsk2U2Qa5dU7H3lpNnDpJUkpht0Kmt16VRGJJ5AGkF+yyZpU8jbISKigmijBvftQzh1XWZZsWj
-	fXWCgL5eb9ZCFEEH/aYtyq8/ynpHt+9WmZ4quYR6BufQOGWN7sYHKW9E4NuctAOt0Qt9bYhMKSN
-	z/PUPSWiwjaJFHS5VBqhUn8S2+ui7CRDBCjV7o2QxJkADSWwPC1EBOhAL00m+WWhJ6bKwJCRxH0
-	CPGgkZ1AcOmS4Fi8iCjDyIaejb4epGmD1p3XMTxV37TEWxZi7jGrVspQMyxvDG+RzM
-X-Received: by 2002:a17:90b:4a43:b0:36d:5dbe:2a0d with SMTP id 98e67ed59e1d1-37a02417c6amr3478559a91.7.1781273268174;
-        Fri, 12 Jun 2026 07:07:48 -0700 (PDT)
-Received: from localhost ([60.227.167.223])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37a237dadbdsm2380476a91.5.2026.06.12.07.07.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 07:07:47 -0700 (PDT)
-Date: Sat, 13 Jun 2026 00:07:44 +1000
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: Zhao Li <enderaoelyther@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, 
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: mac80211: avoid non-S1G AID fallback for S1G assoc
-Message-ID: <a6upqc5b7kbemkkeuuzqsueha5toec5fvozeqoj7znosn635te@urjq4kf2bedf>
-References: <20260612133649.92630-2-enderaoelyther@gmail.com>
+	s=arc-20240116; t=1781274427; c=relaxed/simple;
+	bh=d3WgDjpu2x8otTXEevPDJQZBVp0KfQcGkGPkob30UJM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ulZ5HYgZKEqFHHNQGUfjM5xTN4e1F2Uo2iBuo6lb5Oe37TkOWYOOBjaDhisnEJbBYjUOBggOukFbirH6hXmUqJv2ZVnvdjURDFtn66oMPijlD0qOnT3EXJUrJfwDEB+slOTQoEyVtw5r8MAEWg41trtiV064gYo4+28n248VrQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wi1+tShF; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781274425;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+9WVanvaDPGBZOyMlBen4PPe6xSb3aQF/JsFC1M/M8M=;
+	b=Wi1+tShF3WV/YIUD3LI66UnO17cQJTZEL4aFa0VZo6qK9PW5WG3xwhDkEU5D6qvBmMfKS0
+	/2b/kUhX1Xfz6HcTNg9IYRn6+O7qk6uEq94+fJxLxvZdUr3eOnQIEW8AvOLftvMOYEDgX/
+	dbie+SeH5NATvCA42R22hW8pmBBcdKE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-572-Ykr_fRK1MZK2zdPPqwysZA-1; Fri,
+ 12 Jun 2026 10:26:59 -0400
+X-MC-Unique: Ykr_fRK1MZK2zdPPqwysZA-1
+X-Mimecast-MFC-AGG-ID: Ykr_fRK1MZK2zdPPqwysZA_1781274417
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C074118005A6;
+	Fri, 12 Jun 2026 14:26:56 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.48.49])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9EA2030001A1;
+	Fri, 12 Jun 2026 14:26:51 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: bhelgaas@google.com,
+	alex@shazbot.org
+Cc: jjohnson@kernel.org,
+	mani@kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
+	mhi@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Subject: [PATCH v9] PCI: Add device-specific reset for Qualcomm devices
+Date: Fri, 12 Jun 2026 16:26:38 +0200
+Message-ID: <20260612142638.1243895-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260612133649.92630-2-enderaoelyther@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.06 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:enderaoelyther@gmail.com,m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37745-lists,linux-wireless=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-37746-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:bhelgaas@google.com,m:alex@shazbot.org,m:jjohnson@kernel.org,m:mani@kernel.org,m:linux-pci@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath11k@lists.infradead.org,m:ath12k@lists.infradead.org,m:mhi@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:jtornosm@redhat.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 98A2667A117
+X-Rspamd-Queue-Id: 2E74367A2CE
 
-On Fri, Jun 12, 2026 at 09:36:50PM +0800, Zhao Li wrote:
-> When assoc_data->s1g is set and no AID Response element is present,
-> falling back to mgmt->u.assoc_resp.aid reads the non-S1G
-> association-response layout.
-> 
-> Keep the fallback for non-S1G only. If a successful S1G association
-> response omits the AID Response element, abandon the association
-> instead of proceeding with AID 0.
+Some Qualcomm PCIe devices (WCN6855/WCN7850 WiFi cards, SDX62/SDX65 modems)
+lack working reset methods for VFIO passthrough scenarios. These devices
+have no FLR capability, advertise NoSoftRst+ (blocking PM reset), and have
+broken bus reset.
 
-It might be nicer to explcitly state that AIDs distributed by an S1G
-AP are done via the AID Response Element as opposed to the
-(re)assoc response frame fixed field, so if you have an S1G
-assoc response with no AID response it is invalid (In addition to
-reading from the non-S1G field etc.).
+The problem manifests in VFIO passthrough scenarios:
+
+- WCN6855 WiFi card (17cb:1103): Normal VM operation works fine, including
+  clean shutdown/reboot. However, when the VM terminates uncleanly
+  (crash, force-off), VFIO attempts to reset the device before it can
+  be assigned to another VM. Without a working reset method, the device
+  remains in an undefined state, preventing reuse.
+
+- WCN7850 WiFi card (17cb:1107): Same behavior as WCN6855.
+
+- SDX62/SDX65 5G modems (17cb:0308): Never successfully initialize even
+  on first VM assignment without proper reset capability.
+
+Add device-specific reset entries for these Qualcomm devices using D3hot
+power cycling. Testing shows that despite advertising NoSoftRst+, D3hot
+transition provides sufficient reset for VFIO reuse, particularly after
+unexpected VM termination. While not a complete reset (BARs preserved),
+it provides the only viable reset mechanism for these devices.
+
+Testing was performed on desktop platforms with M.2 WiFi and modem cards
+using M.2-to-PCIe adapters, including extensive force-reset cycling to
+verify stability.
+
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+---
+v9:
+  - Complete redesign based on maintainer feedback (Alex Williamson, Bjorn
+    Helgaas, Rafael Wysocki): dropped general d3cold infrastructure entirely
+    and now just a single patch: the proven D3hot reset for specific
+    Qualcomm devices (device-specific reset)
+  - Previous v8 patch 1/3 (general d3cold) dropped: concerns about ACPI
+    portability, bridge issues, runtime PM, and lack of _PR3 hardware for
+    testing.
+  - Previous v8 patch 3/3 (quirk_no_bus_reset) already merged for v7.2
+v8: https://lore.kernel.org/all/20260609163649.319755-1-jtornosm@redhat.com/
+
+ drivers/pci/quirks.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 431c021d7414..bac1edb6c2dc 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4240,6 +4240,41 @@ static int reset_hinic_vf_dev(struct pci_dev *pdev, bool probe)
+ 	return 0;
+ }
  
->  	if (elems->aid_resp)
->  		aid = le16_to_cpu(elems->aid_resp->aid);
-> -	else
-> +	else if (!assoc_data->s1g)
->  		aid = le16_to_cpu(mgmt->u.assoc_resp.aid);
-> +	else if (status_code == WLAN_STATUS_SUCCESS)
-> +		goto abandon_assoc;
-> +	else
-> +		aid = 0;
++/*
++ * Device-specific reset method for certain Qualcomm devices via D3hot power
++ * cycle.
++ *
++ * These specific Qualcomm devices lack FLR capability, advertise NoSoftRst+
++ * (blocking PM reset), and have broken bus reset. Despite advertising
++ * NoSoftRst+, testing shows that D3hot transition provides sufficient reset
++ * for VFIO reuse, particularly after unexpected VM termination where the
++ * device would otherwise remain in an undefined state. While not a complete
++ * reset (BARs are preserved), it provides the only viable reset mechanism for
++ * these devices in the commented situations.
++ */
++static int reset_qualcomm_d3hot(struct pci_dev *dev, bool probe)
++{
++	int ret;
++
++	if (probe)
++		return 0;
++
++	if (dev->current_state != PCI_D0)
++		return -EINVAL;
++
++	ret = pci_set_power_state(dev, PCI_D3hot);
++	if (ret)
++		return ret;
++	msleep(200);
++
++	ret = pci_set_power_state(dev, PCI_D0);
++	if (ret)
++		return ret;
++	msleep(200);
++
++	return 0;
++}
++
+ static const struct pci_dev_reset_methods pci_dev_reset_methods[] = {
+ 	{ PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_82599_SFP_VF,
+ 		 reset_intel_82599_sfp_virtfn },
+@@ -4255,6 +4290,9 @@ static const struct pci_dev_reset_methods pci_dev_reset_methods[] = {
+ 		reset_chelsio_generic_dev },
+ 	{ PCI_VENDOR_ID_HUAWEI, PCI_DEVICE_ID_HINIC_VF,
+ 		reset_hinic_vf_dev },
++	{ PCI_VENDOR_ID_QCOM, 0x1103, reset_qualcomm_d3hot },  /* WCN6855 */
++	{ PCI_VENDOR_ID_QCOM, 0x1107, reset_qualcomm_d3hot },  /* WCN7850 */
++	{ PCI_VENDOR_ID_QCOM, 0x0308, reset_qualcomm_d3hot },  /* SDX62/SDX65 */
+ 	{ 0 }
+ };
+ 
+-- 
+2.54.0
 
-Those last two branches seem a bit weird, the only way to get there
-is if you don't have an AID response element with an S1G connection
-which is invalid regardless of what the AP status is so I think you
-can just have something like:
-
-if (elems->aid_resp)
-    aid = le16_to_cpu(elems->aid_resp->aid);
-else if (!assoc_data->s1g)
-    aid = le16_to_cpu(mgmt->u.assoc_resp.aid);
-else
-    goto abandon_assoc;
-
-?
-
-lachlan
 
