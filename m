@@ -1,78 +1,80 @@
-Return-Path: <linux-wireless+bounces-37727-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37728-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id p0c/IVcILGoEKAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-37727-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 15:23:35 +0200
+	id 1r+THlUHLGqcJwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-37728-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 15:19:17 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1343679C0F
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 15:23:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D906679B55
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 15:19:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZQ0DzEd6;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37727-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37727-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WFYrT2JM;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37728-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37728-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71FD732B2538
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 13:19:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9B20D30072AC
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 13:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B213ED5A3;
-	Fri, 12 Jun 2026 13:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5DF3ED5A3;
+	Fri, 12 Jun 2026 13:19:10 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801D03859CE
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 13:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCE43EA96F
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 13:19:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781270345; cv=none; b=ol7+RK3+HAjXFxQpwAuNPNs8VjfLwLrOpxaqAEFcGom0uNaRrddTaC7yiSht3rIJ4n2Oy+q38nFiTrQNJyT+sAWaAzybR84Xr9bIk32sYNj4tBlXxlBWyDEBAVf7qhUW/vCBS6NmYGKEICwYk/+5drRuPVj2JyqrO0m9cFtFNNA=
+	t=1781270350; cv=none; b=B3ky8Z3oATl9MRBkY4/T6GP5vQ9ltC06QSSHf0oicVAQKi9gn2nxsEqXtKjXzOSf0cAq2AEMFqb9Y8+wPbb8pGf/WocqCe/OVRuooTj+r4UmCKLeZuHenr8zOo4bTMXKx1RhAnZgGPverXp7hPiw1eM7k5GaYE19lTC8v5o6SY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781270345; c=relaxed/simple;
-	bh=dQnVo8lNYu4xpPQLTXxhW7sL5FzlYGqTsz+uxrdY8Mc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fZvjXil0rmj15pfJtlMwKSo8k9fLWuV/KbS7evIedR1l5fsE7v1DXlHwECaS4g+jIuhDInlbFsb+eOWAt1rktnMh/6RRY3+YwDNS0aIOqsWfBg46mYIKJIyesGi7BkEmCsrZW09jrVHtV1NePBvATKjmjUsN18396mD22ej9Jus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZQ0DzEd6; arc=none smtp.client-ip=209.85.214.173
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2bf2247e38eso9391875ad.3
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 06:19:03 -0700 (PDT)
+	s=arc-20240116; t=1781270350; c=relaxed/simple;
+	bh=oGoSUFfif90q7DkZoYyZmqUn6TWLUl3L+2MdI46yqsk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OUNYkkB3A/OHst16EqwYnvXL05uc0fsFW1/rkmbT9eWaQZFqeDBwwN6ANR60yIlLNcpzNKCD5DRoi/1XziovxsWmyhlVxxbBcW0f8Xa/fTZ5aeypyVU802/NohyByxp6rBY2CGeX2yAmbjGD13x24lWWUw9edQh2HbW+2zhiPjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WFYrT2JM; arc=none smtp.client-ip=209.85.214.170
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c0bb4a94b8so7819205ad.2
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 06:19:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781270343; x=1781875143; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9z5jaJokdbimHtXlGzYNhQuuXCJh036DzUL4Wz+Qe14=;
-        b=ZQ0DzEd6Ku8mHLQYaepheY0HDKhW0LO6c3VDqHq/Put3+wVEkHEPef7im818CGgpyA
-         ocvt34ciJcWaifpXDpR981sukJJnEyp6aYqfa/Us82sYp3pPEYMa/3cS9tKq1QfqsasY
-         80OXaB/GDcQf+KPl4i08oXQt6wGVq3pAGxgGT9sD1Kg9vrfX9qb2+sYlwwJJOTG6a+VJ
-         K1o+YIrogfGskFWTUfS2LJmF6K1UqlEjJCuqw33MFW14Qzsx/DENVZ6i6LE/xvdiJ/aH
-         XKD1ImkN4b4Oq0nCFEKEICwGCkcn5uaii4YoX0jQSpp7GSAxhPWqmxhIKX5ZhsXlyn2L
-         DutQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781270343; x=1781875143;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781270347; x=1781875147; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9z5jaJokdbimHtXlGzYNhQuuXCJh036DzUL4Wz+Qe14=;
-        b=ftTS2MuuzQpDhPlu7HkPijtvY4INdnlhiGORt4qlmB4QtUxdQ1QcHUKKsJrV8zOy3n
-         V+nQmioTE1esJ2CZky9mb+r2jSF2T1W0LLoXYxN+B4ROFkoelKew557hHtoSbUxtX7W/
-         S2PCNR6ps07ZdAiXkR5H3PA9+N/14asFAHdQ9raiP6OLZvfibqhO1ONvKNBJ9cOsitFT
-         iEJgyw0HCu2He2JkkVXcfSRVaxOtF97QrcESC8GZJygQNlsB54YLtoOVhbzcWb5Ggl+Z
-         g97CnglpGbPIkqtYOXVvV0r+Z1u90j59FPPHHdncI5USrE4Cf35b1eSGtkh+wGGup7oI
-         qvnA==
-X-Gm-Message-State: AOJu0YxribXesUKeNQiL71irPkPK9OYGwRh62rbQk4/uOv9afqcpQov0
-	XNAgtCBgIjzwSP6Ts77Aa5+TR6VY7+TIqSgo8eW0eQMJQUn+/s7sjPpU1r1AzBU6/JSNwA==
-X-Gm-Gg: Acq92OHDST0ehD7Xj4kVRqZWBzPCgb6wyvmpFqAlE3smY/ux5lUKmh8db4lmKzAa6b6
-	TDAkeXOLmQlj/tl3fTNvGhprwoYi85l2Oamg0BFeAoNPU/aQczRNJlanHaaD3Nk4McLDkFmlgvb
-	ml+686JXADu1SvGGEZXMi5+O/cKpU8iXoSVh8lcsxuk9tY2Ei4FdKnSZjo0m/qiXo2ahlxqqsJD
-	cSTXCo1gNLWU2WJz/oBVZCwufJ4K4IjaDml6FaouTWja1cd92YsE3Yqm/Dmb5ZThNi4IMp3kn3G
-	cywFUrCipx5dHNcxjhxBBbWPjcuIcXknwg2so08mFf5C5aBpwrbhPtSne1bCYtbPFeEvPArbJGr
-	QPgqapeup4S6mF8VrfVgRy9RZh/HfDjGSRmWWX3iDcUNC4QuOD+fURn52R+uQkKYB94Oz/xTQOK
-	6vJIuQfxJdiWGz8je030IEhjhwtnVHFXEgPhR8lSMC4v4+kYUGIP0qC5o8KvydmWs=
-X-Received: by 2002:a17:903:4587:b0:2bf:2e93:c624 with SMTP id d9443c01a7336-2c41284101amr35137785ad.27.1781270342888;
-        Fri, 12 Jun 2026 06:19:02 -0700 (PDT)
+        bh=SkJAXvyohCTz1p33+XEZmGxqsgzBNIZQw6o9Xn+aAuo=;
+        b=WFYrT2JMq5JPWyX5HwK6GSDZ5b/yr8DVoCh+ZiVbr6vN1SVCTrUhQBIjOLxMUBZ3Lb
+         LBko5+ilXtWB37b/aQ3XYD0CGOwmUcmO2eaOVpELmVO6s89FAcuWJo/zFrIxlkmIQeRS
+         EAsFZJJIULrTaPPSEdGJQvtzh6z+TXE+yzB4K1UGEK+lG7AMJGgy32q0x5sGJv6PgWJH
+         2n6zEz+SuEVCgjhrhCxPFwFltpdlAcMX3B2QgkmwidZagzHFIO0TA0x/I4ZwQdkphbkt
+         QfNOG9ExCr9iKkV2ztjQC5WfC+ptTg2ClnsZ0noiPZko+y/bOkyPAX1EY3wd0IZcEXNu
+         rwFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781270347; x=1781875147;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SkJAXvyohCTz1p33+XEZmGxqsgzBNIZQw6o9Xn+aAuo=;
+        b=j4fSZrzjcvz1usIhbNHA59uwCGXcEE5avMNwdxug88rdoet4Gowruv2S/n2gnqweUJ
+         NMbOxamjn0RCdLEfgiqQ3dUXRo/DQazfV3Etq7oskl7434KGpQW2uouZcY6i74mnflF8
+         D2B0axhBfOaUhl7hvJ8eLHaOTti0+diQMt8uVPKA1IuXufnsmrcY9k5RDL+LhqAR0+Fe
+         d5r/FOfuAZwdDjJV3w5x4rfQDROf5NHjrEAswkTVB/23G9pLGzYYdDhulzw8lzT41oDg
+         OkhOzAxCxwqysJ3GO1I21fSsEpRYiZ3XkhSB9rNnL7CDeB8VnoGjNbZK9x3pz+9/cjYb
+         B3FQ==
+X-Gm-Message-State: AOJu0YxsSZ2KqZ3wFKPfmZttRkrcTjD0fEbiJSTxA7ESWvovT0jS1Erl
+	sqvzWNNojTjNRT5+mTw1mTIYUwilRUliv6J2A8FFm8e91hkQdnt4OzoySd68/hauQrIKxw==
+X-Gm-Gg: Acq92OFnBZxKv/afCXoBYTuqnxs46zzELJQWwuaA9YbkGENR8SIPd7gmYD8R/E1II+9
+	pzUluvkgPzGqoQt6Mafae6C9yWv4isYLsl9LK1hjLOLsnlUpW4dTn8IB0NMd7WHfJhnAH1t/aan
+	hAmuO++ndnEsovyphM+24+E2MrCL+WfTqfkKlU1M74tBzsDtKc7u1E9qVqXKjGRMRTT3h4qVHM4
+	CZcBWxrgOca1eDPdPw5TmueawD6M3RDXxZBLrSMGNuxKjwEdLZaV3EWhxZRdRtLmXydLLbehSrF
+	soEqI5lEk+Rr94MsCugP3xAPUCIphHa5hiAENjc05d6k95rWR+MXCNXPa+XUQsUbKVy3mspCYJW
+	SSKn1xYX19TGTe4azKeYjNFkkPJB8o99E4y7eZ4CPt8j16V9J9v3CctvwmueURXf9Wv4AaUe5FH
+	JJ/zuIWiTKfK+1KfaOfT5tm1yOT9xW+sZc59EVSPfprstdS/mwb+4dGHX/ZEi5JdI=
+X-Received: by 2002:a17:903:2984:b0:2c1:88a1:9830 with SMTP id d9443c01a7336-2c41255a929mr34543415ad.17.1781270346952;
+        Fri, 12 Jun 2026 06:19:06 -0700 (PDT)
 Received: from KRHW1CJW23.bytedance.net ([139.177.225.248])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c43345e604sm19923585ad.74.2026.06.12.06.18.59
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c43345e604sm19923585ad.74.2026.06.12.06.19.03
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 12 Jun 2026 06:19:02 -0700 (PDT)
+        Fri, 12 Jun 2026 06:19:06 -0700 (PDT)
 From: Zhao Li <enderaoelyther@gmail.com>
 To: Johannes Berg <johannes@sipsolutions.net>,
 	John Crispin <john@phrozen.org>,
@@ -82,10 +84,12 @@ To: Johannes Berg <johannes@sipsolutions.net>,
 	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] wifi: nl80211: validate nested MBSSID IE blobs
-Date: Fri, 12 Jun 2026 21:18:55 +0800
-Message-ID: <20260612131854.43575-3-enderaoelyther@gmail.com>
+Subject: [PATCH 2/2] wifi: nl80211: constrain MBSSID TX link ID range
+Date: Fri, 12 Jun 2026 21:18:56 +0800
+Message-ID: <20260612131854.43575-4-enderaoelyther@gmail.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260612131854.43575-3-enderaoelyther@gmail.com>
+References: <20260612131854.43575-3-enderaoelyther@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -99,13 +103,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37727-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37728-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:john@phrozen.org,m:quic_alokad@quicinc.com,m:aloka.dixit@oss.qualcomm.com,m:muna.sinada@oss.qualcomm.com,m:rameshkumar.sundaram@oss.qualcomm.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -124,64 +128,37 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D1343679C0F
+X-Rspamd-Queue-Id: 7D906679B55
 
-Validate each nested NL80211_ATTR_MBSSID_ELEMS entry as a well-formed
-information-element stream before storing it for beacon construction.
+MBSSID transmitted-profile link IDs are valid only in the range
+0..IEEE80211_MLD_MAX_NUM_LINKS - 1. Constrain the nl80211 policy to
+reject out-of-range values during attribute validation.
 
-RNR parsing already validates each nested blob with validate_ie_attr()
-before storing it. Apply the same syntactic IE validation to MBSSID
-entries before counting and copying their data and length pointers.
-
-Fixes: dc1e3cb8da8b ("nl80211: MBSSID and EMA support in AP mode")
+Fixes: 37523c3c47b3 ("wifi: nl80211: add link id of transmitted profile for MLO MBSSID")
 Assisted-by: Codex:gpt-5.5
 Assisted-by: Claude:claude-opus-4.8
 Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
 ---
- net/wireless/nl80211.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ net/wireless/nl80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 76c537a6e8b52..2baf1bef0bbd2 100644
+index 2baf1bef0bbd2..9344247386656 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -6321,7 +6321,8 @@ static int nl80211_parse_mbssid_config(struct wiphy *wiphy,
- }
+@@ -616,7 +616,7 @@ nl80211_mbssid_config_policy[NL80211_MBSSID_CONFIG_ATTR_MAX + 1] = {
+ 	[NL80211_MBSSID_CONFIG_ATTR_TX_IFINDEX] = { .type = NLA_U32 },
+ 	[NL80211_MBSSID_CONFIG_ATTR_EMA] = { .type = NLA_FLAG },
+ 	[NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID] =
+-		NLA_POLICY_MAX(NLA_U8, IEEE80211_MLD_MAX_NUM_LINKS),
++		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS - 1),
+ };
  
- static struct cfg80211_mbssid_elems *
--nl80211_parse_mbssid_elems(struct wiphy *wiphy, struct nlattr *attrs)
-+nl80211_parse_mbssid_elems(struct wiphy *wiphy, struct nlattr *attrs,
-+			   struct netlink_ext_ack *extack)
- {
- 	struct nlattr *nl_elems;
- 	struct cfg80211_mbssid_elems *elems;
-@@ -6332,6 +6333,12 @@ nl80211_parse_mbssid_elems(struct wiphy *wiphy, struct nlattr *attrs)
- 		return ERR_PTR(-EINVAL);
- 
- 	nla_for_each_nested(nl_elems, attrs, rem_elems) {
-+		int ret;
-+
-+		ret = validate_ie_attr(nl_elems, extack);
-+		if (ret)
-+			return ERR_PTR(ret);
-+
- 		if (num_elems >= 255)
- 			return ERR_PTR(-EINVAL);
- 		num_elems++;
-@@ -6503,7 +6510,8 @@ static int nl80211_parse_beacon(struct cfg80211_registered_device *rdev,
- 	if (attrs[NL80211_ATTR_MBSSID_ELEMS]) {
- 		struct cfg80211_mbssid_elems *mbssid =
- 			nl80211_parse_mbssid_elems(&rdev->wiphy,
--						   attrs[NL80211_ATTR_MBSSID_ELEMS]);
-+						   attrs[NL80211_ATTR_MBSSID_ELEMS],
-+						   extack);
- 
- 		if (IS_ERR(mbssid))
- 			return PTR_ERR(mbssid);
+ static const struct nla_policy
 -- 
 2.50.1 (Apple Git-155)
 
