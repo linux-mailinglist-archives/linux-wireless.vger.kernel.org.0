@@ -1,148 +1,217 @@
-Return-Path: <linux-wireless+bounces-37687-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37688-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oltGCcJYK2ot7gMAu9opvQ
-	(envelope-from <linux-wireless+bounces-37687-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 02:54:26 +0200
+	id zAo5OaplK2o68wMAu9opvQ
+	(envelope-from <linux-wireless+bounces-37688-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 03:49:30 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F58676046
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 02:54:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2D3676315
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 03:49:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=morsemicro-com.20251104.gappssmtp.com header.s=20251104 header.b=lh2hyXdf;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37687-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37687-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=morsemicro.com (policy=none);
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="MH6Z/wDu";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37688-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37688-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2006630095C2
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 00:54:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8835B30E29A4
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jun 2026 01:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFE725228C;
-	Fri, 12 Jun 2026 00:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E2B33F8D4;
+	Fri, 12 Jun 2026 01:49:23 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C8778F4A
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 00:54:19 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781225660; cv=none; b=JnuP6Kdv5jFqtmvNREFEYJIWHT5Y7WGTXvwH98MZVT/pQeDWaLJNZLWZdUbNWabWGTSf/e1JdRy6Awk6iH2ktIjCtd/HAcVi98CKHA+bEpTx8XGU5xKvdpRF/yau5K7+vTttJo5o7tifawnrFdPrfmda3h6PLFdkEHVbzWbwZss=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781225660; c=relaxed/simple;
-	bh=IgWK4QwOggpqffFi8zzCuP2iTWUQZGV2bDAQa+u6lxY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dvD/vZuTlcpSnr0KVTsSXa5aw6VOdu6JbOuOY6qGA9XhoK653wx++920GcwC3WEN2xGRRcXkfNmir/1InBDXWe6KkPHiKOUb0Umodqx1Te3FJuQC3ay4llX35zi7A717lqLFGzA8oGqdZ8CLuTfkyDbm8GD+ExEayBSn9ompfBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=lh2hyXdf; arc=none smtp.client-ip=209.85.214.182
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2c0c2a68d01so2978605ad.1
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 17:54:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE288189B84
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jun 2026 01:49:21 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781228963; cv=pass; b=coV6nBXNeoFjw5/GpGXIq46upKtyuDwmoVuZmFGG+VD4E4kZJV6vD8HwFl1FhxGRefsZKmlPuAPaInFaLDbRPHLBmCUe0KXjfDv+mXJm9g5CfWNAiKTTRJZg+Syq0EsVMhZrhEb2AZ12TVde69NRyrTnd27jNedZriRk3oZCJNo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781228963; c=relaxed/simple;
+	bh=k/yLg8s0XHQpVqmfSBCS15YOtA/IhmtQG6SpKrCU07E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GsvDDt798UHk25iSQjf7WgXG6N4M78FNjP78qzg6+qfKNSuLvFhcxlQM8bSLzZlxm9POCDYDCiXPsAXx1gfZSm7eWLdVsfocSD1SkmM/1llAlfueadbfbacKmmNNVq8FKZ/6rcXr7FxSzRvV41yaAP/hevjMLkBpSh1AS751my8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MH6Z/wDu; arc=pass smtp.client-ip=209.85.161.49
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-69e46524711so354128eaf.0
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Jun 2026 18:49:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781228961; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ep6WUuB24O3FVHi6Ncnd7hBElgd9q++OQKtBIEAHgHUqhqnlqEfZOnQ3pmqRdbYRLC
+         zR3ub2flqUNMOsp4s7FKDg2mfPyzC3qYF/XNtUg95ujBMQVAy5LLpw9pPbmBgrCgAhnR
+         KsAwQsa7wivx6mdA6TAuDV4XQqeqeQ8Xahbd/pncleKyO4kxh2z/Qy+HPGpAEbDk3Qr3
+         mQXWqL97E79Iw1ZptWlbjoUvudN74K1gyn5PpTtUt17GFgHh4Y0RgvwY4yRcmGFUPMxq
+         xGnzJjHwuGlnFUctFaV/UVi3QpsjHAIZayaoV6Hqp9jMwTONt+94HVuVPmll6d0IuFCY
+         5gWA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=k/yLg8s0XHQpVqmfSBCS15YOtA/IhmtQG6SpKrCU07E=;
+        fh=FNM59O5jNIF7oAThOYQ5nqtYPcI9hnlxdOohMrOh+fk=;
+        b=SDeXJsRFMqpEb7trq3g6v1gSsWtFxc+6vK0Lcgek1rI03BSzEYsuI/IOgdB30lvH0x
+         pZalErsFr54MP0PBKUxA8j9XXXUqUsaRMizR9lFVmpWnuTtmlX6RDOGdgdyHsyoJ49Ue
+         Wu+88wqUivNlY6Ptfdd7WDQELstQhHN7Cm4N+6/UMEkBIW3TJVS/TDszxfk+75Y/Kfbc
+         7RuLSd6uwwtdxHUz/8Vkn+5+4xJ8l7PyUiu3W+giWCLGdjJK02He8gD0UpSfQaaRYZlH
+         8hE7gz+8I2BUb4iFMdx2xU/AzHdvC2bVx/MtKjCMjurFQl76xG3RFb3ZoGQnkwxQVfB1
+         riYQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1781225659; x=1781830459; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IgWK4QwOggpqffFi8zzCuP2iTWUQZGV2bDAQa+u6lxY=;
-        b=lh2hyXdfcYI/ENGX24XW562jVKpqXWhr6GfirNB+n1/iUBzzGHegJTPAJt4nlfUBFr
-         Uh27Zb/YYy6+uemzbTmlsHmqL8u6rXA1/XHZye7d0GVIptM1dzF9TYqJDoUc+XFSnmAb
-         aTA7wcrQVrIlclXyXRzCfeaqq3U7oqzCJhWY9FCBGlKpVfe6l0UJGqG/Ey45/oMnP+l/
-         UcSyZ00r0aNpR0hAtC8WgiH94AchHeUtYlkFXH4KjEM811rj4d3eeeBdAIHZaSv4QbOd
-         aaMoa3QaNugH11+l7AsWIG/phr2kMUdfW/eFVt2osWi6ho8Ei9Z4VcsbwThlAjpJCeoe
-         ubdg==
+        d=gmail.com; s=20251104; t=1781228961; x=1781833761; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k/yLg8s0XHQpVqmfSBCS15YOtA/IhmtQG6SpKrCU07E=;
+        b=MH6Z/wDuWf6v/N4yU/YtExRt3oA6EMxHBlQh844tQVwNUZsYmIHCeoaAMcyw3x+yTX
+         GFcvn6Ro9Rj7aQaHhKCvCt9pS93Qcmj1TCplpTFKK00l2RZP12xINBpfLkpqWQSaVg17
+         DS3Z7Cj6H9w0OQVCFG0aURUzr1hCfBvpuvwnfQUrv0YQEjUD/Yc2L8UH8A002PPC5GMe
+         PKfmrLnmwt6HPyf5VPWXm8dwc2Ob5qanv62AVao+YvfpYkGMeG00JKf/I8ruMhc62fDB
+         xbJcdbEqpEh5xAkScqx4fsRyO6yKIBMNKwt5P3hFK3krrgwI/O7wC/rcU0Y5f3Qp8XTm
+         miSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781225659; x=1781830459;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IgWK4QwOggpqffFi8zzCuP2iTWUQZGV2bDAQa+u6lxY=;
-        b=S9M1QF1u1Hq5UFWLoVVl/onSoZyO4LUGQCoRzkPgk3NUZPLIThgA3hwl7T11cSm6oC
-         g43qL91SYyyp+hYYtAXMpj1l4BdRVY+D5n1SSaurtpjIOjvamCA4LjE51gdRe7QzaGdK
-         W93uE+vZff1NzJHyP4dhy5D8yjx2uMRwP2T/cVY8EfGNpI9r9CjXDkLTjBIFcRAq+cZI
-         L+KvQbVt2IWnCGb+VREXu71oNshihAPdwNxpBeE5nPm2Do9zB4PvRouAa9FXlDXOSh1m
-         R1gmMrmdPVI9LpwnZvSZ6NUZdvjYU9SslZuEBD6KXvvnKiXzNl5fcMHzpb8TIaWW8v+m
-         WciA==
-X-Forwarded-Encrypted: i=1; AFNElJ+sWJETo6U15DN4oEJdmFM08C0u5aO0jdaZHljyUlShmOZhosdsCfy+4zG2n+UMNYsvkwJ58Ho1bYIGCWyUtg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3nFRLTsyBPfG5N23rmtjySxSrwmAaAide8LjPmyFP+KyaXr5z
-	Zhgh+4eg1fCxsXYNGkFzmr9UzbEhgSATFrjtTAekylrf/DrFzTzVoT9y3kXTpwjZzcE=
-X-Gm-Gg: Acq92OHrAbl7UtcPSjL1Ei5/jkavLKmJKhkOPloBYcF9uch2Og0YCN912oij4xzCRnB
-	TYvC+YGkcq39NMuo0DpUbpf69S8WnjkoSmvK6D+GuZcTMSYcEgG3wUNUsSg7wO+qNRJx7IB3ajm
-	yzIh/+ChhDvDCJKEKSwDkROnnyNiulj2b3QsBnB88od7XiqjN19P1f531tsD5CGMF2CZfpaFrxx
-	Q35wyx2z2J9aWhEhpoxIGqry0bcMtkmx+w1L3cS5PauULN7ySquawW2N+VBPGPpgpnBq4dJQeXQ
-	zQopLpPgRe0r7vSaZb6lr4EaVUUHPCRQbbDRV6Xi2+CH6r422xj7HBWFMABu17cfh07CkcwEpdN
-	RCJ68oRGOf0EuwNDecH06AwOAOtwTLNPm39dZrzZLPN9uBrpyRMeGHWxz1A1VfuEfhuhCyMRO60
-	/HFwKXEWMJSwnPR418IVY1qpwZc04JHZFYyxyLFApXcOQomThhXQWbxWL2k1VqzFWj
-X-Received: by 2002:a17:902:ebcb:b0:2c2:75c4:4b0f with SMTP id d9443c01a7336-2c40ff3a21emr8524485ad.2.1781225659041;
-        Thu, 11 Jun 2026 17:54:19 -0700 (PDT)
-Received: from localhost ([60.227.167.223])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c433369c8asm1417545ad.73.2026.06.11.17.54.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 17:54:18 -0700 (PDT)
-Date: Fri, 12 Jun 2026 10:54:14 +1000
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: Zhao Li <enderaoelyther@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, 
-	Thomas Pedersen <thomas@adapt-ip.com>, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] wifi: handle S1G and extension-frame RX layout
-Message-ID: <44nzahhupgftm5sqwtm4jrnpqaqnywgmvu5r7ttmwcsa6b7p72@pid7epae22cf>
-References: <20260610162700.58722-1-enderaoelyther@gmail.com>
- <20260611161943.91069-4-enderaoelyther@gmail.com>
+        d=1e100.net; s=20251104; t=1781228961; x=1781833761;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=k/yLg8s0XHQpVqmfSBCS15YOtA/IhmtQG6SpKrCU07E=;
+        b=Fi7k2ZELTml7S03RAV0ivyHNgAiWeGavL2e4CfARrRxwkgsxzMvILtzBM0cceWPN88
+         ju3h0MZXInKQCR8UE29RepzkSqkReIbwx4DbslAZtxxB5NHhKcXLtkmNVpgAdkMf8r8y
+         6PXV3MTRfh0HG6AwYb23JMMoFKLYxP9K5yy77IUsELSbI7No2ycnqeC0xF+/nUulE2es
+         RkRYvO5KH3Y16OjyvyDdnzFnS0uPI4RBmuun+5vyHspUPow8wLwCtziW/x2i6IPnZqLl
+         czKdWHMbjD9y0R0joqEDRo2kGoUTcds63T9FFgMlVELPHy5fS4gzshztgJ/1EjRhCkr3
+         frjg==
+X-Gm-Message-State: AOJu0YzatHXPBIHwGm7hMwhj0GW+tW8laHvVaKWsNhRinHSL653th/CV
+	eSHoFKcD2+RfSop3oBwyo4FzVI+5v82m4tC0Awzt/wm+rWufj1ygbyBcI0yVHjs1HWwTQsJAP/Z
+	zTF+7NwH5XNEFu8JYRFsnm1fd2tYM1OyVWc/aqLfawkevVr0=
+X-Gm-Gg: Acq92OE83HJ3PoPGTVGQoO9ddJVq///CRCJsc1lcb2GKJiJRge/dogpVjf43BiQbr8P
+	RxVtY+tPoL7cxXDhS2LSwtr5j/vP7WSBogZIJX/Rh5TGiK1zAh1/XG74/EALm6jNEGJbhEqYtZ4
+	n18orsqB8KfIx01PylIl7LFQuC2HBHU+Q5LLMZFdPcw5VA7ZaiLf67vTwWHh5QmzUZSsbCWOCtz
+	IqSj1gSdZhUmYTC/N6b5VFGxWFDCcupvLCmPvfT+TXHjGOkmkBlb5Bue1Rn/Zpix/+vojzrB6h0
+	bEeV7923
+X-Received: by 2002:a05:6820:1ca4:b0:69d:e2fc:361a with SMTP id
+ 006d021491bc7-69edc6f436fmr591736eaf.35.1781228960782; Thu, 11 Jun 2026
+ 18:49:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260611161943.91069-4-enderaoelyther@gmail.com>
+References: <CALaig7Pf++Hqn_c4hEa8zXHKkJpbmfSk=Bet_W574o7eBKF6Rw@mail.gmail.com>
+In-Reply-To: <CALaig7Pf++Hqn_c4hEa8zXHKkJpbmfSk=Bet_W574o7eBKF6Rw@mail.gmail.com>
+From: Zitong Zhao <zitongzhaooo@gmail.com>
+Date: Fri, 12 Jun 2026 09:49:39 +0800
+X-Gm-Features: AVVi8Ce9Ncz2jqaxVpmhTCw9AKNqguzmtwufqUXZ5nQfclbNp2-nmox8y2xjVAw
+Message-ID: <CALaig7O62JGRYW_dR7V0JqCBaZfDktfTUcJRx2DSWkB23yr3+Q@mail.gmail.com>
+Subject: Re: [mt76][mt7921] Question about host-visible deterministic TX
+ scheduling / TX completion timestamps
+To: linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Cc: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com, 
+	shayne.chen@mediatek.com, sean.wang@mediatek.com, deren.wu@mediatek.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20251104.gappssmtp.com:s=20251104];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:enderaoelyther@gmail.com,m:johannes@sipsolutions.net,m:thomas@adapt-ip.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37688-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:deren.wu@mediatek.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-37687-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER(0.00)[zitongzhaooo@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zitongzhaooo@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,morsemicro.com:from_mime,pid7epae22cf:mid]
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 18F58676046
+X-Rspamd-Queue-Id: 5E2D3676315
 
-> For process clarity: I used AI-assisted tooling for data-flow tracing,
-> state-machine analysis, code review, security checks, side-effect review,
-> and patch drafting. I reviewed the result and take responsibility for the
-> submission.
+Hi,
 
-FWIW I believe Johannes was saying you need to disclose via the
-assisted-by tags [1] on each individual patch, not the cover letter
-(since that is not applied)
+Just following up on this MT7921/MT7922 question.
 
-Thanks for these fixes though :)
+A yes/no answer on whether this hardware/firmware stack exposes any
+supported host-visible primitive for TSF-scheduled TX, firmware queue
+admission, or reliable per-packet firmware/PHY TX completion
+timestamps would already be very helpful.
 
-lachlan
+If this is not available through the public mt76 driver, could you
+point us to the right MediaTek documentation / NDA / direct-customer
+channel?
 
-[1] https://docs.kernel.org/process/coding-assistants.html#attribution
+Thanks,
+Zitong Zhao
+Cyber Physical System Lab from Shanghai Jiao Tong University
+
+On Mon, Jun 8, 2026 at 1:28=E2=80=AFPM Zitong Zhao <zitongzhaooo@gmail.com>=
+ wrote:
+>
+> Hi mt76 maintainers,
+>
+> Resending as plain text because the previous HTML mail was rejected by
+> linux-mediatek.
+>
+> We are working on a deterministic Wi-Fi TDMA research prototype using
+> MT7921/MT7922 with the mt76/mt7921e driver.
+>
+> We would like to understand whether the MT7921/MT7922
+> hardware/firmware exposes any supported host-visible primitive for:
+>
+> 1. TSF-scheduled TX or hardware-timed queue release
+> 2. firmware TX queue admission / queue pause-resume
+> 3. reliable per-packet firmware/PHY TX completion timestamps
+> 4. TWT service-period control usable for deterministic UL/DL scheduling
+>
+> From the public mt76 driver and our local diagnostics, we currently obser=
+ve:
+>
+> - RX MACTIME is available and useful for RX-side timestamping.
+> - TXS can be forced for diagnostics, but coverage is partial/asymmetric.
+> - WTBL_QUERY returns only a short status-like response in our setup.
+> - TWT_AGRT_UPDATE returns ACK/status, but we have not found evidence
+> that it provides host-controllable deterministic queue admission.
+> - We did not find an exposed TSF-scheduled TX path in mt7921e.
+>
+> Could you confirm whether this hardware/firmware stack supports any
+> host-visible deterministic TX scheduling or reliable per-packet TX
+> completion timestamp interface?
+>
+> If this is not available in the public mt76 driver, is it a firmware
+> limitation, or is there a documented MediaTek interface available
+> through another channel?
+>
+> Hardware/firmware in our setup:
+> - AP side: MT7961/MT7921e path
+> - STA side: MT7922/RZ616-family, mt7921e path
+> - Driver base: mt76/mt7921e with local research diagnostics
+>
+> We do not need confidential details on the public mailing list. A
+> yes/no answer about whether such primitives exist would already be
+> very helpful. If this requires MediaTek confidential documentation or
+> an NDA channel, could you point us to the right contact/process?
+>
+> Thanks,
+> Zitong Zhao
+> Cyber Physical System Lab from Shanghai Jiao Tong University
 
