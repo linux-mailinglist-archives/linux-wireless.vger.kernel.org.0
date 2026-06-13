@@ -1,92 +1,78 @@
-Return-Path: <linux-wireless+bounces-37763-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37764-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 00UWHg6ULWq3hgQAu9opvQ
-	(envelope-from <linux-wireless+bounces-37763-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jun 2026 19:31:58 +0200
+	id 4nH+IK7cLWqulgQAu9opvQ
+	(envelope-from <linux-wireless+bounces-37764-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2026 00:41:50 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B95FF67F2DC
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jun 2026 19:31:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9649267FF08
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2026 00:41:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GeZJToEl;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37763-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37763-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37764-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37764-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 812703016520
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jun 2026 17:31:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E0F5300D16A
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jun 2026 22:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC942264A9;
-	Sat, 13 Jun 2026 17:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3624342509;
+	Sat, 13 Jun 2026 22:41:46 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6AB1EEE6
-	for <linux-wireless@vger.kernel.org>; Sat, 13 Jun 2026 17:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF756223DCE
+	for <linux-wireless@vger.kernel.org>; Sat, 13 Jun 2026 22:41:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781371915; cv=none; b=l3GjG5QHG7a14BOJoTC9Wws2xzUnZAhyy+QmANKOtFbLbh1JVgl4sXMBx8gsrjhM0WrNSnkjByoLgHm9heZ6n3GBCZenfhtZMlpze4SPa8y+uR9yWQxr16BBhyV+i+yw1quqQ4WLSvDBtINbvYiTfESHM44Zupmpj+vJRZg/h9s=
+	t=1781390506; cv=none; b=uXb/lU3mogZCE15mBu6zTTNxHBAGH1ayzmJZxC17+inOWpdtg1qVJDQcGujuOruD+EDjEK/+DH2hBtqsaJ/XrGobNn7jcRymSAia99weAd8nfoBMuRpks2KQtVLGHq4+CComfN/8imxKJVMLdp8MnJhaa1ICK5/L8ZZ/Vz7Lw7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781371915; c=relaxed/simple;
-	bh=2zFDhV0tB+pIA+2vxsSf0QAiuoRgzkHkHOJ/ZWsP3U4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qyA3Rh9HqMnE/4dtlAyon78yeFZ6Xn4y446W2DNJDqaIxN4kp+S/DUl+Ir+k/5s2vMAQrn/3nicWjjqNJXeGMeAx4T4fceCCRynFXkbrrn1cKdyV5whJce+0EDTi/p7L7RQNbZ1/Ol+/9HIMk5d1qqWipeiVAzWaKr9cDCAnKHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GeZJToEl; arc=none smtp.client-ip=74.125.82.180
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-307631dbfedso4402124eec.0
-        for <linux-wireless@vger.kernel.org>; Sat, 13 Jun 2026 10:31:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781371913; x=1781976713; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=C17B2edKMqV+XF0ZSaOhZ1zqxpv8me/cpGMvVnK7YlE=;
-        b=GeZJToElApxyTRvi24G9Bg57exB3u7rFLLIchHF0ejQEqBYRCJV1i78C6QnGAAQck4
-         S/dDwg5ApiHlcNFTJvxE74kjvfwvSwNvWyh5JJWEM7lFwYK5qCx/f3zIAmNmu1BN3geY
-         fKeom6iurrxDNKpJxRMb5kNEdTA2L8XR0jYXPgeJaY5+mQRWrGwF0KI6EyzRl5ruNf43
-         lH76icG66FQ/ZVaJp8TKQKceD+tj2DG7eqydu+DWNZMoA3A3/uJqsVV3cUkixRULi/OK
-         UolF2yRFLcSnM6SrHwXoRyh7DhgoO3kWaOr0eR8I0tg4m48aw/lfBJJsfMsg9hVBRYNd
-         bVYA==
+	s=arc-20240116; t=1781390506; c=relaxed/simple;
+	bh=CV/nENwe3r6Wqt7osQEqCocgUQWamToICrWfBSiGRnY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QendRvbGJ17FAFMjeDX1xqLsebvoN5+YLnR9cNtXx+4qC4UvNqNB71tJKYsV4U/DVmPNl6APh3bnt1ZbZ9irZDhQ6OKkb2goXGc4lC7t/RX/u8ZmZ5+Z6yzE4yy9iiWT2HD1tbTS1GljfWzz+sh+wvqUlsKu9UMlThPF1xpjkeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.82.50
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1370417c01cso2714777c88.1
+        for <linux-wireless@vger.kernel.org>; Sat, 13 Jun 2026 15:41:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781371913; x=1781976713;
+        d=1e100.net; s=20251104; t=1781390505; x=1781995305;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=C17B2edKMqV+XF0ZSaOhZ1zqxpv8me/cpGMvVnK7YlE=;
-        b=tTNPjINKyqtvfNL19dO/DxsH/GzRrj1jg4r4opBG8Vylm8yaYO+IUKgUaJwyRQc15e
-         3QuzYZ6efbySPC/690jT771cx5M4ki288N+G92YEKNflChQ4quoSRBaqLnzT0btW9qxo
-         plAR4JdSeNF58eJE8A6CTnLvI7nj7UDpmMRXUzfW+/iwDeyvxqftG9qsRE2r8kpGgX31
-         JLIrz0qxNoZzg4K5SdTPTtwzy6T33PrUNh8aYNctW5tOAHzAz8FDsYoUUL7gtOiGFh4h
-         nHymePuFUWZNiV0ed1SBxCpSNzfSPyKHa9oL4vde/vJI1nl8JV/NN+//y0qoi46f7+PE
-         iBUw==
-X-Forwarded-Encrypted: i=1; AFNElJ9JhYEvbfa2a0sVXVtqIN9ax1TRJCcF5w/Lx10/tAqwZg572IeSh9mGOasyZ3qwq0ueRfCxJ11/wct9HFn3Ww==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzS9tFmDNjaBmsj1VjmMI5P6Vsn+zsFyBUcg/yTRrFGLzRV5TXl
-	0f/VM8aOwHsZrVACJ0np2eV8+6ZrHVQDYC3JKd44toIrNr3/xhmbJZB1
-X-Gm-Gg: Acq92OE92SxYF13bRqexX9uU73YLuH4F9b200cgvK5rea64fh8XuZz4sPNlY2fq5/gt
-	ojjb3rn7MkyUKkmUWmdzYh2EeimeebxZoCegLm5REq2fW38IaTYVIm22ILtmkLmX7tErFKUyuWp
-	V5UJYeKVCoijZC4SQt5fWil9KynpqbtDS/aqqnrh1Tn72p7o+Gjb8gWz0ocNEcljDf9s7U4MKgU
-	7chFVAC1L7YQWf0bfVLG6B72IAMFWNGYEL3jVTnI0KJV5heGc7p4IE7+Qm6GAP7j+GvOlM2cWpr
-	iHyyw/jipTo68o1/K491E/QfXP+ceUYeZPo6vX7NusQEFsJB1b0CpfUKG6jAIvphSmI7NjRptAv
-	oJRLVVUxtWN1fWD04PCkkLOhFly/hYSGruq3lyna6IQGQuoj4SMmBj3kpjV7HpPGLPqrFXLfdi7
-	OUbWmbEf494eHBooiycla56LIdKJCXZOOLZdnBPobKKdPrXit2WfCx4+lvYXgUj9UY
-X-Received: by 2002:a05:7300:8185:b0:307:26a3:75d8 with SMTP id 5a478bee46e88-3081ff40831mr4575359eec.1.1781371913456;
-        Sat, 13 Jun 2026 10:31:53 -0700 (PDT)
-Received: from DESKTOP-VNSSJ2S.lan (59-127-145-64.hinet-ip.hinet.net. [59.127.145.64])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081ea4fe55sm8260862eec.25.2026.06.13.10.31.51
+        bh=sFgM6pr1Jw6qKLoJhWrWpbUwhYhQ+a8Qd9W54UiixL4=;
+        b=K1KNrAlRebcfRdSNoZvfomEyWRdN2efZEyPQjG+QjyVnKOF65d+5W/0B/0UmGe+JN8
+         BuIY6bNhJRRIdFmeIjHFrEpE9gIKklSjVOCHyxZ3YrW9+qCx089VQZ1YLgdqbJ7yO7yq
+         /pjq/oP1YqkPg9yK89pd8i8svzlbdaQheWbd4Q+kNRo4E4nyco4QdjYQxTmJ7egwiDNd
+         6zN01Om4acxOhwJ+BQwTnRJWp+/hvGEV46wxp6D0zOoYs7WKkP8pv3r8K9tD3qDx2RnC
+         wRhkCUf4E3cnIaoxkGedUjcQmYGWGOBXLlL17++7IucQTeH/8aS8FoDgX1M7NqrI0XYc
+         wLew==
+X-Gm-Message-State: AOJu0Yyhsy04Dg19CHe5CwDVBeSQdtSlBXkYHaPRVgjQyjYjOxqGvO5U
+	DTHR8A6gF+gNMT2rOPOH/IXGj1oYUGWaNw2J44qapA0l8dF9rKZ4Hd4x
+X-Gm-Gg: Acq92OGQlxCfbgjDokyNA8ZrUcU3JC3KQLku7b9whd9UHyJjbBGE0gK+Uqbi+vclm4b
+	zmqruQ+Kf3QGfmyof+rN6aOFQs8WFEvxW4235kXnjpHszgOQX7fOo28CEsuch1I+1on+k3aN+dL
+	60jKA/oRsg8+v9ClkKfH2+VYKPQ1yCWmtpUkj/QR/Yk0jF5UYlnYpmskYhbVWeaMwBTzczLinVX
+	TjoJa08PFJpizKPHOYqSpGD4uoZYb7Umh30l9Yv7EyODKBW76Y87SURHXddEr1+hdAxuW6m+aek
+	88AELYUqgcaxPSmoUtQkC/vsHXGOxL4tkJihCuvH/3DUTu4bNjjPmxgOFz+S2MifwWhCOFscd8c
+	P2MJV2EN/rGXJBxVRlkOZ2siaZ0bBNIfRQ+evw4qvEuwfpIRTzHho0aVF1kAhuGdBUDQ9oSpjOP
+	2EOlxRyHSRI/E13Fjjdkfj3y3jDWf5YPJ7xDI53z/3exe5pKHQp6ERTmvPcPv4R1kNwElhvo3L7
+	hIZG0YcrYv+KTLX/XqoXtWuZezV39gGUtXV+FoA
+X-Received: by 2002:a05:7300:d513:b0:304:54d6:20f3 with SMTP id 5a478bee46e88-3081ff3da47mr4390011eec.4.1781390504780;
+        Sat, 13 Jun 2026 15:41:44 -0700 (PDT)
+Received: from sean-HP-EliteBook-830-G6.. (114-34-228-194.hinet-ip.hinet.net. [114.34.228.194])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081eb95450sm11104825eec.28.2026.06.13.15.41.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jun 2026 10:31:52 -0700 (PDT)
-From: Zhi-Jun You <hujy652@gmail.com>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com
-Cc: shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	linux-wireless@vger.kernel.org,
+        Sat, 13 Jun 2026 15:41:44 -0700 (PDT)
+From: Sean Wang <sean.wang@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org,
-	Zhi-Jun You <hujy652@gmail.com>
-Subject: [RFC,mt76] wifi: mt76: wed: fix kernel panic on single band MT7986
-Date: Sun, 14 Jun 2026 01:31:09 +0800
-Message-ID: <20260613173109.849-1-hujy652@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	Sean Wang <sean.wang@kernel.org>
+Subject: [PATCH 0/6] wifi: mt76: mt792x: harden USB reset and disconnect paths
+Date: Sat, 13 Jun 2026 17:41:25 -0500
+Message-ID: <20260613224131.2396026-1-sean.wang@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -95,153 +81,85 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[mediatek.com,vger.kernel.org,lists.infradead.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37763-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:sean.wang@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:hujy652@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[hujy652@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37764-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hujy652@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B95FF67F2DC
+X-Rspamd-Queue-Id: 9649267FF08
 
-In mt76_wed_init_rx_buf, it's hardcoded to use MT_RXQ_MAIN.
-But for single band MT7986 MT_RXQ_BAND1 is used for RX data queue which
-leads to kernel panic when attaching WED.
+This series hardens mt792x USB reset and disconnect handling.
 
-Use the correct RX queue by checking WED version and band_idx.
+When the USB control path starts timing out, later register accesses can
+keep entering the same dead transport. Each timed-out vendor request may
+block for seconds, so reset or disconnect can be delayed by repeated
+accesses that can no longer make progress.
 
-v2 and band 1 -> MT_RXQ_BAND1
-Others -> MT_RXQ_MAIN
+Avoid this by failing fast once the USB bus is known to be hung, stopping
+reset/init retry paths that cannot recover the device, draining UDMA before
+WFSYS reset, and quiescing USB activity before unregistering the device.
 
-Kernel panic:
+This series does the following:
+- stop mt7925 init retries once the USB bus is hung
+- skip mt7925 reset work once the USB bus is hung
+- switch later USB register accesses to no-op bus ops after bus hang
+- drain USB UDMA before WFSYS reset
+- enable the USB UDMA TX timeout limit
+- stop pending USB work and TX paths before unregistering the device
 
-Unable to handle kernel access to user memory outside uaccess routines at virtual address 0000000000000000
-Mem abort info:
-  ESR = 0x0000000096000005
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x05: level 1 translation fault
-Data abort info:
-  ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-Internal error: Oops: 0000000096000005 [#1]  SMP
-CPU: 1 UID: 0 PID: 925 Comm: kmodloader Tainted: G           O        6.18.26 #0 NONE
-Tainted: [O]=OOT_MODULE
-Hardware name: Acer Connect Vero W6m (DT)
-pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : page_pool_alloc_frag_netmem+0x1c/0x1bc
-lr : page_pool_alloc_frag+0xc/0x34
-sp : ffffffc081dab660
-x29: ffffffc081dab660 x28: ffffffc081dabc60 x27: ffffff80091af040
-x26: 0000008000000000 x25: ffffff80091a8898 x24: ffffff80091a5440
-x23: 0000000000001000 x22: 0000000140000000 x21: ffffff80091a2040
-x20: ffffff8003f1d780 x19: 0000000000000000 x18: 0000000000000020
-x17: ffffffbfbf0ac000 x16: ffffffc080ee0000 x15: ffffff80049d47ca
-x14: 000000000000037b x13: 000000000000037b x12: 0000000000000001
-x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-x8 : ffffff8003f1d7c0 x7 : 0000000000000000 x6 : ffffff8003f1d780
-x5 : 0000000000000680 x4 : 0000000000000000 x3 : 0000000000002824
-x2 : 0000000000000000 x1 : ffffffc081dab71c x0 : 0000000000000000
-Call trace:
- page_pool_alloc_frag_netmem+0x1c/0x1bc (P)
- page_pool_alloc_frag+0xc/0x34
- mt76_wed_init_rx_buf+0xf8/0x2ac [mt76]
- mtk_wed_start+0x79c/0x12ac
- mt7915_dma_start+0x274/0x63c [mt7915e]
- mt7915_dma_start+0x5b4/0x63c [mt7915e]
- mt7915_dma_init+0x49c/0x81c [mt7915e]
- mt7915_register_device+0x24c/0x530 [mt7915e]
- mt7915_mmio_probe+0x91c/0x1980 [mt7915e]
- platform_probe+0x58/0xa0
- really_probe+0xb8/0x2a8
- __driver_probe_device+0x74/0x118
- driver_probe_device+0x3c/0xe0
- __driver_attach+0x88/0x154
- bus_for_each_dev+0x60/0xb0
- driver_attach+0x20/0x28
- bus_add_driver+0xdc/0x200
- driver_register+0x64/0x118
- __platform_driver_register+0x20/0x30
- init_module+0x74/0x1000 [mt7915e]
- do_one_initcall+0x4c/0x1f8
- do_init_module+0x50/0x210
- load_module+0x15f8/0x1b10
- __do_sys_init_module+0x1a8/0x260
- __arm64_sys_init_module+0x18/0x20
- invoke_syscall.constprop.0+0x4c/0xd0
- do_el0_svc+0x3c/0xd0
- el0_svc+0x18/0x60
- el0t_64_sync_handler+0x98/0xdc
- el0t_64_sync+0x158/0x15c
-Code: aa0003f3 a9025bf5 a90363f7 d2820017 (b9400000)
+The series is based on wireless-next commit:
 
-Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
----
-Hi maintainers,
+21352612198c ("b43: add RF power offset for N-PHY r8 + radio 2057 r8")
 
-I am trying to fix WED on a MT7986 + MT7916 board.
-With this patch applied, WED loads without kernel panic.
-Client can connect but there's no traffic.
+It also cherry-picks the following patch from patchwork as a dependency:
 
-Maybe there's somewhere else that need to be configured for single band MT7986?
+wifi: mt76: mt76u: use a threaded NAPI for the RX path
+Link: https://lore.kernel.org/all/20260609105301.196302-1-phial@phiality.com/
 
-I can provide the rxinfo, txinfo dump from WED if requested.
----
- drivers/net/wireless/mediatek/mt76/wed.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Sean Wang (6):
+  wifi: mt76: mt7925: stop init retries on hung bus
+  wifi: mt76: mt7925: skip reset work on hung bus
+  wifi: mt76: mt792x: stop USB register access after bus hang
+  wifi: mt76: mt792x: drain USB UDMA before WFSYS reset
+  wifi: mt76: mt792x: enable USB UDMA TX timeout
+  wifi: mt76: mt792x: quiesce USB paths on disconnect
 
-diff --git a/drivers/net/wireless/mediatek/mt76/wed.c b/drivers/net/wireless/mediatek/mt76/wed.c
-index ed657d952de2..f210a0c57d81 100644
---- a/drivers/net/wireless/mediatek/mt76/wed.c
-+++ b/drivers/net/wireless/mediatek/mt76/wed.c
-@@ -33,10 +33,15 @@ u32 mt76_wed_init_rx_buf(struct mtk_wed_device *wed, int size)
- {
- 	struct mtk_wed_bm_desc *desc = wed->rx_buf_ring.desc;
- 	struct mt76_dev *dev = mt76_wed_to_dev(wed);
--	struct mt76_queue *q = &dev->q_rx[MT_RXQ_MAIN];
- 	struct mt76_txwi_cache *t = NULL;
-+	struct mt76_queue *q;
- 	int i;
- 
-+	if (wed->version == 2 && dev->phy.band_idx)
-+		q = &dev->q_rx[MT_RXQ_BAND1];
-+	else
-+		q = &dev->q_rx[MT_RXQ_MAIN];
-+
- 	for (i = 0; i < size; i++) {
- 		dma_addr_t addr;
- 		u32 offset;
+ drivers/net/wireless/mediatek/mt76/mt76.h     |   1 +
+ .../net/wireless/mediatek/mt76/mt7925/init.c  |   8 ++
+ .../net/wireless/mediatek/mt76/mt7925/mac.c   |   6 +
+ .../net/wireless/mediatek/mt76/mt7925/usb.c   |   7 +
+ .../net/wireless/mediatek/mt76/mt792x_usb.c   | 124 ++++++++++++++++--
+ drivers/net/wireless/mediatek/mt76/usb.c      |  11 ++
+ 6 files changed, 145 insertions(+), 12 deletions(-)
+
 -- 
-2.47.3
+2.43.0
 
 
