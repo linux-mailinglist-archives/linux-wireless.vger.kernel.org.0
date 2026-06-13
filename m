@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-37775-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37776-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7meJOADeLWoilwQAu9opvQ
-	(envelope-from <linux-wireless+bounces-37775-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2026 00:47:28 +0200
+	id EoxJDP/dLWohlwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-37776-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2026 00:47:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DEAA67FF4F
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2026 00:47:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94AC67FF4C
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2026 00:47:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37775-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37775-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37776-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37776-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C513300B3F2
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jun 2026 22:47:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3251C30054C2
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jun 2026 22:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F06B342509;
-	Sat, 13 Jun 2026 22:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B262032D;
+	Sat, 13 Jun 2026 22:47:25 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E693290AF
-	for <linux-wireless@vger.kernel.org>; Sat, 13 Jun 2026 22:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE8E3290AF
+	for <linux-wireless@vger.kernel.org>; Sat, 13 Jun 2026 22:47:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781390841; cv=none; b=slIDrXXIiPRTz9f3pYb3sCM0q0otZHB2iqMDA0EaXfn9ho6dj/HQHd4ET8MeI20Iizs5A8tBrh3YI1oAjDD+mGH4I0EL8NZnDYFfNutqAlUqK9SAHL5vtwLSBo7LCu2ac5DMF+nNqKj0ia5soXz6/MZGk1YyRieYP99gp9boHg4=
+	t=1781390845; cv=none; b=uFSnvjnHhtZ1EHshs8+Nj8cQhBJ7sWslkeaym2M0Mql6JJq2bK+RmV/d+NHwlTn1tlLpUQb3r78HRvhJ8dQBHF6onxCXDMVT6NCt4PUSCAOpcWYoBOcRdy0GHeC0fFJZBXSrG3XNw3iJQIfz9Kf1Vsq8sh2qkKGCdYW5tnr1TJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781390841; c=relaxed/simple;
-	bh=3zuNkaap7WALltlhFycvxeIdz2oxk/cfN37foopCS8w=;
+	s=arc-20240116; t=1781390845; c=relaxed/simple;
+	bh=ORq2sJZ5tHptn9+4XnrSaRFDK3YU0Dh4V17qcKhgiQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3Bm6ZpwO1yunGTbdng9gDjs8HnrKJpy8i4GVO3pdCzwKjLgfeYBvJSQN4QQ5XJ4DHaHfkQOtfslgmptl5/n/JoTZ7TLAtHAPR7IHyWINYWHBmtgz/SOj4BkbFYieQrexoTtWaEcNU4M1XPrNBlnNB38pO/ECaIL6fFG2X2m5QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.82.44
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-13810b63a1aso5089083c88.1
-        for <linux-wireless@vger.kernel.org>; Sat, 13 Jun 2026 15:47:19 -0700 (PDT)
+	 MIME-Version; b=ME7YVnSopN7Hcbo+/GTbAyhYDm+nLCNNc3zwussTVPoWhCTr5HaiEy360Z6OUt6UV/NmFDfzIyjG/LSXTQ3OEbUxD5SIq5+nGTerc6BL075P3m4HM0FCLLyC2LfvNSqZNC8PUbGqM6WFKSCxn27s0c8LlWvvkixatDU3wvReZzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.82.54
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-138501f8c04so807319c88.1
+        for <linux-wireless@vger.kernel.org>; Sat, 13 Jun 2026 15:47:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781390839; x=1781995639;
+        d=1e100.net; s=20251104; t=1781390844; x=1781995644;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rh/2Eq507HykjFUSyM79lweTsoPJN45Ln2Hf87GqCWg=;
-        b=XAv6R77uckJUtrutEBfUKDUQEogciNvF5g7brhaTtm6YGxlDsfJkgcwvqT2LrLtn8s
-         G90p/wSB3q9NqL0htIJ2O/L6+3DrE3bX/bt9BjPuQ7hI0QJ6jsImohQIB1V4oI3s4wsl
-         It44lsGboweZC0QJYHAWPZLUwGiECMs25iHIGXoltcn7vMql1xvjAztJGveslhjFj06f
-         VIgWwprgXlnqoJbfO4PUbNtZZOvWDF8T73EWqinElikG5+MXK2T3MlNWjLpfj6tZCxfM
-         8u1oaLkZx3N1V3MG2uTiy9hNEMNal8h9QGYgJag+600Iyk4U5SBaUGapYpTQ5guheY1E
-         b4BQ==
-X-Gm-Message-State: AOJu0Yzl68zYARrJ1ikNlol/NXQLNx3JPf6kIwUI37AHWOPmwG+Wp43k
-	uYxhw8rXavDXQDOxOxfLbPGWk57z+GA3j0i4sGEKpEmDNQPjIqN1P2U9
-X-Gm-Gg: Acq92OGn7w2g1U4YP+HyanKNgQLmzdyME5R3HBZOk/8nkP/NOq1JkhPcILuOePbjk+F
-	K95jzrHyL8Ft2VrVWASkY1Z106LHRhWPpWxRGc6WxVWIM/VZQqLs4M7d3AiTe8tiHJ/u1IHf0Pu
-	+HGM98F0poExvtyW3sogNojgK898ywv0Q8RSpldTMnBFXoVscdPhOqubdFEMcR85c/jGPJPZPq9
-	MUTxCpvNBlAyYslMXbkdzriNnIyQgTUaOlvOIRev0hdOocMHDnhVtgqXhOvr7roy2pp3hNUvqIM
-	8rjIWmiX9HcUGR3qWGi621ckjwVLu3ElHHYjHtqhjxkJUAgRi8wfWzhWyb/NC66SNUYNq0O+ESS
-	p9IFEbSbS1OC1rB+Qu5UQ7NoYl69+U0SGqgKlI57fG96DZi7qXFZLzLPuTDuCjUQg1aFLc8PlrD
-	OcMWfjG5hI21CL/hEgFB1b6rPgQV7eEBEYjLn+VbUEw5HSvlNmjxxHHEAz2IDfBDHLIawI0S50t
-	P448lcfa2V3VEOK489yywl0GRipwv3XODfRrm3M+bOA9d85HqA=
-X-Received: by 2002:a05:7022:f82:b0:12d:d972:b96e with SMTP id a92af1059eb24-1384bba8b3amr3914654c88.20.1781390839035;
-        Sat, 13 Jun 2026 15:47:19 -0700 (PDT)
+        bh=4LAVcEQDdglp6OEtODuDMvvqd/PwbISrhunyPv7tH68=;
+        b=bnL337ZcHW6hsBhZiIw+ay6lpQ3xQoSDzLJmB4gQZO5Zusxz9julhSiKtQTIH97Mhg
+         39bhyWIpfuY+runPlRSGfMFL/UoWgmhUZB1Mu0oGUfpMEJ8oiwIMFcxvBg/JfhEwk5Tu
+         s/TVagFdkUHeRB8yULarm9sq0WoX3LRac+Y60NVlK7FVdlvm6WpX63yq0T+j4OtFeCVb
+         R9dPAhFj/MSPm2CqVANqxvdxaBaL6VZPeEg3OPJZax3mxMpyd+3uzLLdOxluurxFDJVv
+         2CxX3Nft9q8wktIVFwCXYp2zRQqFHcUV7qonzpikB4yVmLMGLsJHReN+7zLGESgIhWQ9
+         bQIg==
+X-Gm-Message-State: AOJu0YyHNAsxcZNK8Lwqmrbwe1p8fkWBswHjO9yfBL81LTzD8s8cmdu2
+	FxZlx8cW1ZajruQPUlE1zNrze3kzLNzDdCXUMN7ez4Ynw8LlRwkD4Mhu
+X-Gm-Gg: Acq92OE1evedwwPOmsoBas/oBE5o1WZbjCux6w2FxYoDt7/LiFzvjCLhUsrOEfuX4m8
+	KPWvCoV7EIpeA3NqqlAltfLhQrKhJRNYHSJNY7Oz1G+zZdCzwRZG+/+LSgXsy0QHigumQ9jlhpD
+	4KcOkl9G/iW2Jy441IXGbB+L7hqdmrzh2K9Kr/3Mr3wPbY3TC6/DRijNdAu+IZPclOzESaLER50
+	JVLdaheosplhbVG03WVVkwZoWRbGvrxNakqmn9bBfltlkouDyrR1eqrjGWvOryoDjvH6mFvTFrO
+	cqa/P28EGEuGGYmMBDw8RXzUSHXRW/Nvd5oyc8MTM7AZF2HDR84URcJrCVMKVmJ/ASbZO3cOL90
+	WmxMfSh0Q/KAYwDfmU6xROhMOGIZuZzLyUzPMxUbx3zzhMLfDyJ4fwfFNw06Gqtg6pcFX/Xt9NN
+	nfzNjNaX2AXxJEqE0vK+jIVm8Aw/EaAmLNtiwXgi/pXOb52prfTA6dQQEHnWH8Xy8790TWI59IB
+	pQ5FZvJA2j3XKFblwgtF+dQW0OfJZjetf+etWwy
+X-Received: by 2002:a05:7022:43a4:b0:138:3613:dbb with SMTP id a92af1059eb24-1386f240408mr2221497c88.5.1781390843584;
+        Sat, 13 Jun 2026 15:47:23 -0700 (PDT)
 Received: from sean-HP-EliteBook-830-G6.. (114-34-228-194.hinet-ip.hinet.net. [114.34.228.194])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1384b97bf09sm6345380c88.14.2026.06.13.15.47.17
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1384b97bf09sm6345380c88.14.2026.06.13.15.47.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jun 2026 15:47:18 -0700 (PDT)
+        Sat, 13 Jun 2026 15:47:23 -0700 (PDT)
 From: Sean Wang <sean.wang@kernel.org>
 To: Felix Fietkau <nbd@nbd.name>,
 	Lorenzo Bianconi <lorenzo@kernel.org>
 Cc: linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org,
 	Sean Wang <sean.wang@mediatek.com>
-Subject: [PATCH 4/5] wifi: mt76: usb: add debugfs aggregation stats
-Date: Sat, 13 Jun 2026 17:46:54 -0500
-Message-ID: <20260613224655.2405686-5-sean.wang@kernel.org>
+Subject: [PATCH 5/5] wifi: mt76: mt7927u: enable USB RX aggregation
+Date: Sat, 13 Jun 2026 17:46:55 -0500
+Message-ID: <20260613224655.2405686-6-sean.wang@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260613224655.2405686-1-sean.wang@kernel.org>
 References: <20260613224655.2405686-1-sean.wang@kernel.org>
@@ -89,13 +89,13 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:sean.wang@mediatek.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37775-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37776-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -113,188 +113,69 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7DEAA67FF4F
+X-Rspamd-Queue-Id: B94AC67FF4C
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Add USB debugfs counters for RX/TX URBs, packets, bytes and recent RX
-aggregation frame counts.
-
-These stats make it easier to verify whether USB RX aggregation are working
-as expected, and to debug throughput issues without adding
-temporary driver logs.
+Enable USB RX aggregation on MT7927u with vendor driver parameters for
+alignment, padding and buffer size. According to the vendor driver, the
+hardware should run RX aggregation with USB SG disabled.
 
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/debugfs.c | 35 ++++++++++++++++++
- drivers/net/wireless/mediatek/mt76/mt76.h    | 12 ++++++
- drivers/net/wireless/mediatek/mt76/usb.c     | 39 ++++++++++++++++++++
- 3 files changed, 86 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/usb.c |  6 +++++-
+ drivers/net/wireless/mediatek/mt76/usb.c        | 11 +++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/debugfs.c b/drivers/net/wireless/mediatek/mt76/debugfs.c
-index a5ac6ca86735..b3f1bc3cd69b 100644
---- a/drivers/net/wireless/mediatek/mt76/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/debugfs.c
-@@ -88,6 +88,38 @@ static int mt76_rx_queues_read(struct seq_file *s, void *data)
- 	return 0;
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+index a0bfe6f09ae4..42d13bc6ebbc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+@@ -5,7 +5,6 @@
+ #include <linux/module.h>
+ #include <linux/sizes.h>
+ #include <linux/usb.h>
+-
+ #include "mt7925.h"
+ #include "mcu.h"
+ #include "mac.h"
+@@ -235,6 +234,11 @@ static int mt7925u_probe(struct usb_interface *usb_intf,
+ 		mdev->rev = (0x7927 << 16) | (mdev->rev & 0xff);
+ 	}
  
-+static int mt76_usb_stats_read(struct seq_file *s, void *data)
-+{
-+	struct mt76_dev *dev = dev_get_drvdata(s->private);
-+	struct mt76_usb *usb = &dev->usb;
-+	u64 seq;
-+	int i, n;
++	if (is_mt7927(mdev))
++		mt76u_enable_rx_aggr(mdev, MT7927_USB_RX_AGGR_ALIGN,
++				     MT7927_USB_RX_AGGR_PADDING,
++				     MT7927_USB_RX_AGGR_BUF_SIZE);
 +
-+	seq_printf(s, "rx_aggr\t%d\n", usb->rx_aggr.enable);
-+	seq_printf(s, "sg_en\t%d\n", usb->sg_en);
-+	seq_printf(s, "tx_urbs\t%lld\n", atomic64_read(&usb->stats.tx_urbs));
-+	seq_printf(s, "tx_packets\t%lld\n",
-+		   atomic64_read(&usb->stats.tx_packets));
-+	seq_printf(s, "tx_bytes\t%lld\n", atomic64_read(&usb->stats.tx_bytes));
-+	seq_printf(s, "rx_urbs\t%lld\n", atomic64_read(&usb->stats.rx_urbs));
-+	seq_printf(s, "rx_packets\t%lld\n",
-+		   atomic64_read(&usb->stats.rx_packets));
-+	seq_printf(s, "rx_bytes\t%lld\n", atomic64_read(&usb->stats.rx_bytes));
-+
-+	seq = atomic64_read(&usb->stats.rx_aggr_seq);
-+	seq_puts(s, "rx_aggr_nframes");
-+	n = min_t(u64, seq, MT_USB_AGGR_STATS_LEN);
-+	for (i = 0; i < n; i++) {
-+		u64 idx = seq - n + i;
-+		u64 slot = idx % MT_USB_AGGR_STATS_LEN;
-+
-+		seq_printf(s, " %u", READ_ONCE(usb->stats.rx_aggr_nframes[slot]));
-+	}
-+	seq_puts(s, "\n");
-+
-+	return 0;
-+}
-+
- void mt76_seq_puts_array(struct seq_file *file, const char *str,
- 			 s8 *val, int len)
- {
-@@ -120,6 +152,9 @@ mt76_register_debugfs_fops(struct mt76_phy *phy,
- 		debugfs_create_blob("otp", 0400, dir, &dev->otp);
- 	debugfs_create_devm_seqfile(dev->dev, "rx-queues", dir,
- 				    mt76_rx_queues_read);
-+	if (mt76_is_usb(dev))
-+		debugfs_create_devm_seqfile(dev->dev, "usb-stats", dir,
-+					    mt76_usb_stats_read);
- 
- 	return dir;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 125c97dc1f28..c11a463ae092 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -664,6 +664,7 @@ struct mt76u_rx_entry {
- #define MT_RX_SG_MAX_SIZE	4
- #define MT_NUM_TX_ENTRIES	256
- #define MT_NUM_RX_ENTRIES	128
-+#define MT_USB_AGGR_STATS_LEN	128
- #define MCU_RESP_URB_SIZE	1024
- struct mt76_usb {
- 	struct mutex usb_ctrl_mtx;
-@@ -687,6 +688,17 @@ struct mt76_usb {
- 		int buf_size;
- 	} rx_aggr;
- 
-+	struct {
-+		atomic64_t tx_urbs;
-+		atomic64_t tx_packets;
-+		atomic64_t tx_bytes;
-+		atomic64_t rx_urbs;
-+		atomic64_t rx_packets;
-+		atomic64_t rx_bytes;
-+		atomic64_t rx_aggr_seq;
-+		u8 rx_aggr_nframes[MT_USB_AGGR_STATS_LEN];
-+	} stats;
-+
- 	struct mt76u_mcu {
- 		u8 *data;
- 		/* multiple reads */
+ 	if (mt76_get_field(dev, MT_CONN_ON_MISC, MT_TOP_MISC2_FW_N9_RDY)) {
+ 		ret = mt792xu_wfsys_reset(dev);
+ 		if (ret)
 diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index cbdd663fbb25..10ad2b024985 100644
+index 10ad2b024985..f0df510904c5 100644
 --- a/drivers/net/wireless/mediatek/mt76/usb.c
 +++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -15,6 +15,36 @@ static bool disable_usb_sg;
- module_param_named(disable_usb_sg, disable_usb_sg, bool, 0644);
- MODULE_PARM_DESC(disable_usb_sg, "Disable usb scatter-gather support");
+@@ -1300,6 +1300,17 @@ static const struct mt76_queue_ops usb_queue_ops = {
+ 	.kick = mt76u_tx_kick,
+ };
  
-+static void mt76u_tx_stats_add(struct mt76_dev *dev, struct urb *urb,
-+			       unsigned int packets)
++void mt76u_enable_rx_aggr(struct mt76_dev *dev, int align, int padding,
++			  int buf_size)
 +{
-+	atomic64_inc(&dev->usb.stats.tx_urbs);
-+	atomic64_add(packets, &dev->usb.stats.tx_packets);
-+	atomic64_add(urb->transfer_buffer_length, &dev->usb.stats.tx_bytes);
++	dev->usb.sg_en = false;
++	dev->usb.rx_aggr.enable = true;
++	dev->usb.rx_aggr.align = align;
++	dev->usb.rx_aggr.padding = padding;
++	dev->usb.rx_aggr.buf_size = buf_size;
 +}
++EXPORT_SYMBOL_GPL(mt76u_enable_rx_aggr);
 +
-+static void mt76u_rx_urb_stats_add(struct mt76_dev *dev, struct urb *urb)
-+{
-+	atomic64_inc(&dev->usb.stats.rx_urbs);
-+	atomic64_add(urb->actual_length, &dev->usb.stats.rx_bytes);
-+}
-+
-+static void mt76u_rx_packet_stats_add(struct mt76_dev *dev,
-+				      unsigned int packets)
-+{
-+	atomic64_add(packets, &dev->usb.stats.rx_packets);
-+}
-+
-+static void mt76u_rx_aggr_stats_add(struct mt76_dev *dev, unsigned int packets)
-+{
-+	u64 idx, slot;
-+
-+	idx = atomic64_inc_return(&dev->usb.stats.rx_aggr_seq) - 1;
-+	slot = idx % MT_USB_AGGR_STATS_LEN;
-+	WRITE_ONCE(dev->usb.stats.rx_aggr_nframes[slot],
-+		   min_t(unsigned int, packets, U8_MAX));
-+}
-+
- int __mt76u_vendor_request(struct mt76_dev *dev, u8 req, u8 req_type,
- 			   u16 val, u16 offset, void *buf, size_t len)
+ int __mt76u_init(struct mt76_dev *dev, struct usb_interface *intf,
+ 		 struct mt76_bus_ops *ops)
  {
-@@ -634,6 +664,10 @@ static int mt76u_process_rx_agg_entry(struct mt76_dev *dev, struct urb *urb)
- 	mt76_put_page_pool_buf(urb->transfer_buffer, false);
- 	urb->transfer_buffer = NULL;
- 
-+	if (nframes)
-+		mt76u_rx_packet_stats_add(dev, nframes);
-+	mt76u_rx_aggr_stats_add(dev, nframes);
-+
- 	return max(nframes, 1);
- }
- 
-@@ -681,6 +715,7 @@ mt76u_process_rx_entry(struct mt76_dev *dev, struct urb *urb,
- 
- 	skb_mark_for_recycle(skb);
- 	dev->drv->rx_skb(dev, MT_RXQ_MAIN, skb, NULL);
-+	mt76u_rx_packet_stats_add(dev, 1);
- 
- 	return nsgs;
- }
-@@ -714,6 +749,9 @@ static void mt76u_complete_rx(struct urb *urb)
- 		break;
- 	}
- 
-+	if (!urb->status)
-+		mt76u_rx_urb_stats_add(dev, urb);
-+
- 	spin_lock_irqsave(&q->lock, flags);
- 	idx = e - q->entry;
- 	pending = q->ndesc - q->queued;
-@@ -1083,6 +1121,7 @@ static void mt76u_tx_kick(struct mt76_dev *dev, struct mt76_queue *q)
- 					err);
- 			break;
- 		}
-+		mt76u_tx_stats_add(dev, urb, 1);
- 		q->first = (q->first + 1) % q->ndesc;
- 	}
- }
 -- 
 2.43.0
 
