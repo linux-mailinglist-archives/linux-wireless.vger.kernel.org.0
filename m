@@ -1,165 +1,160 @@
-Return-Path: <linux-wireless+bounces-37786-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37787-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id M55/AmB0LmrUwAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-37786-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2026 11:29:04 +0200
+	id BAyECtGyLmrv1wQAu9opvQ
+	(envelope-from <linux-wireless+bounces-37787-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2026 15:55:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A8A5680C18
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2026 11:29:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89BDC6813A9
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2026 15:55:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mv+DF5rO;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37786-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37786-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HrkcoHlS;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37787-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37787-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E5EF3008D0C
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2026 09:28:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9901B300797C
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jun 2026 13:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC2F223DCE;
-	Sun, 14 Jun 2026 09:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE0B3C378F;
+	Sun, 14 Jun 2026 13:55:24 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833D3146588
-	for <linux-wireless@vger.kernel.org>; Sun, 14 Jun 2026 09:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BEF3C416B
+	for <linux-wireless@vger.kernel.org>; Sun, 14 Jun 2026 13:55:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781429327; cv=none; b=aOcZHISF9qLn97xCgUMdwvITrOvDneGp504q93nfRP/hkzoCm7AsYWKaF0tdk/Kjf28NBKWELtwP5bcwTTsfSfiH5Bq6BkpjTSGjevpDT6Ypv3WE9/pCyEAP3lnKCO90lZJ5Vwsg9cQnjQvbuE4XCFVd5RTcnZYjeOu3muRocpg=
+	t=1781445324; cv=none; b=UY5meTS6MPhNbIA+w8zPqTgSHNjJwDaC/x0I4hnzzgmIpT6L6j+Scn9/7fmt9p/ENJ5k013IWaEWWdJbXzHmY4lXvvGiLBmeKii4nuQS1HEd8Vq9ewxOG+L/5Tlpm9ubjwTqwm7PXY3qrL/HUiuGBhXXNhQyIY1XT2CmjK/F0go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781429327; c=relaxed/simple;
-	bh=aKOs6kXiI+DWulUOrgUEgTmjg2oSrrf/0LluwkPgv7E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jqp0P7grKrkaetaJLz99/StHklRJ4nwZ8QjJuEgJFMhocHcaST0t89OX7C0Ezf2CCNu+uqRxEPOLmlzGwUfQItAZOGo8tHIxhFg2AxJO/kgfvzm7z6kCyY2yt6Q8bpQg67gVsUWKzWX4D9IGoKVJYh2/bz1qHNrUioQA5+Xrv0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mv+DF5rO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 944C81F000E9;
-	Sun, 14 Jun 2026 09:28:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781429326;
-	bh=qqHEqZNJNsjZK9I6sk+rqbOvQVikyDhgsbDLwNY1Oz0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mv+DF5rOTEgmQYVWkV9d43nvbJDKv1wPLcVCUhiFkcxOuZf1hTlXa+7sNy9fpB2+O
-	 cpMinbgi+Pqt6mNbG7V0VD125vFvScUK0ok1Tu4RKF5UyR/cEglwbl8odJ2COaaiJR
-	 onrFuuFXN4hfawkVFiyvrbXv+LdosY1MMPldpVjvWYY9wYMqoAghkMlwtHeeeQJhVh
-	 zlR+W4nyBy5ZsphzvROBvoxbXpgRCqoGP1MuI7H5PXvl81KIosT4ztF2ebNZ1g4KKj
-	 GOGFKTBjCjEYlL5Z4nOVuwOD7xVtWFaPgrfLc1JOufYjqGceMBCjYJicg0MZy5Ktqz
-	 fMM6KURRPoW3A==
-Date: Sun, 14 Jun 2026 11:28:43 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Sean Wang <sean.wang@kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Sean Wang <sean.wang@mediatek.com>
-Subject: Re: [PATCH 1/5] wifi: mt76: usb: size RX page-pool pages from queue
- buffer
-Message-ID: <ai50S1JgkAdVJfST@lore-desk>
-References: <20260613224655.2405686-1-sean.wang@kernel.org>
- <20260613224655.2405686-2-sean.wang@kernel.org>
+	s=arc-20240116; t=1781445324; c=relaxed/simple;
+	bh=FOTH5pbLKjMo/q/s3k+tCEF1O8WkvwOAfvZCQa/ce3g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K1014PhxixoDAOUTmnuAnDDjS0rcl9JoXO1/ti0T0YFyuLmw4dHeJeti8aE/SqBi7VVW7563jxVXSpz8Q+Ohb6FybZWG7Li2hNyXYJehpm+7RvJTQQQ1oAcuHSx7xoetxCrYzt+TBo4IObYfmRGXJpwhyeS+UIG3IilTxE9yYc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HrkcoHlS; arc=none smtp.client-ip=209.85.218.45
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-bed2195323cso360504066b.1
+        for <linux-wireless@vger.kernel.org>; Sun, 14 Jun 2026 06:55:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781445322; x=1782050122; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OihU9r8K3X5JHSCdMwb8k3zIs2scuLguMW/J6GvYRFQ=;
+        b=HrkcoHlSh+0EJqMPgjt/jB1PZPA//G8HN0fhOJ9WCIbcbZ5fdZxZxKgY/K/LKkhk2l
+         dJk9Uj4j5aHvu3DVrlQAda0Dq2VRJCC1y55YubMzsnbVFCtWJX4u7A5y8T17O9sjUqWA
+         ZV31FzHWIZ1oYu7HNiGdH+pbxURbNe2nsEY4eAeWKmJyH8tXE+EzJWBjpQpXoaiWswBV
+         TLYzrwpQ+ljTQiDkiku9F0uj5l36pz90yo4AR9VagwF2sxhk7tzyZZTh2ORq/3Fqwv0H
+         uPTlCBVGxJ4BCvwGeNaEdaPw5kSSvDPlEKdXIFQjuI/CL7ia9/N2PfA0KU8sRrZ9aMD7
+         pwPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781445322; x=1782050122;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OihU9r8K3X5JHSCdMwb8k3zIs2scuLguMW/J6GvYRFQ=;
+        b=EJusBC+xbMAJxtu0M4qe6dNCaU5afV57ee9JbqfXGADEuZAFdPQJz4COp6OYRKjRUX
+         gx0KXrBfyxiplYGbz4ikayKrokB9SCOCJPbRtbQWDXMVtFx5VoAMUM4lz2UY7sJoek5z
+         i5MkNMFWmM+Pivd1qr5lNLwrKpjqlRlswLwJN1vno8cu++G8503v5v6o+mDZYHP8leKE
+         hCO9kJjDTZEnKpurIozVFjeW4/oohWFciXLmzdlMMOKHcJyyrATVw0wqTFYhEQdALMab
+         jHfRSyoQ7yU0GKVyj1Rgpqh3JRl3had9aiwVjUYoYMusVo60QC5X0FEkcpkI6DPTI8j+
+         aaXg==
+X-Gm-Message-State: AOJu0YyD7vw/cWHoG/YnO4ZotGj2O22ieopJLNzNbPWoWw/XJ5rr1sW7
+	1aJHPQ/qNJj3oiLqeOJ1Hss4qaTEVfJB6Tsy18PYNLcTOv/pPwPW/m2x
+X-Gm-Gg: Acq92OHpScfhZHhO9xIOaiVAIea+WNUqU0Z/vGaod1rhmvJ63+oJb8Hgps3tw4iCpET
+	yHPDIthb4SyVaGfl5b+4z6ki2814QJCYLZCvRubAzV1zpvYl0j7nibjxBCDXIdHtxwsLJfKjgss
+	bl/lc/N6/+0I9uHGOxHgjEpm0iqQYU9OUuKLoO/Wqc64tZ9WfOKYf9ERXjo5B6x27TDeECOVJVZ
+	65B6fK1H4zHR2B4N3xJ6L8JyhSpKpduK1jFkiZvDfHMaqn90K5PL6ZZLW/HLfkFHluuvL7bWBbQ
+	/2upq/rABa0mTmjDJ5PkGGHhahg+bis3uLVNysIA3/J3eMVj+M+hzqbHDOriF8WrjneHm6SfUab
+	vBCX7Howe0NmG6Qy4wZAtZBOQbOKuwqQIiLFI4D0+Mo5QRX8D28hLiOk7qi3/XN1dRfAOkhguTL
+	f0MEHH9EFYTJHEvFApeDSu3pm+v3FZPDb3
+X-Received: by 2002:a17:907:d19:b0:bfb:ced2:2f83 with SMTP id a640c23a62f3a-bfe26f34566mr445878866b.17.1781445321508;
+        Sun, 14 Jun 2026 06:55:21 -0700 (PDT)
+Received: from localhost ([37.185.178.0])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bfdb522167dsm321105766b.25.2026.06.14.06.55.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Jun 2026 06:55:20 -0700 (PDT)
+From: William Hansen-Baird <william.hansen.baird@gmail.com>
+To: pkshih@realtek.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	William Hansen-Baird <william.hansen.baird@gmail.com>
+Subject: [PATCH rtw-next 0/3]  wifi: rtlwifi: fix ASPM AER flooding on RTL8723BE devices
+Date: Sun, 14 Jun 2026 15:55:05 +0200
+Message-ID: <20260614135508.70307-1-william.hansen.baird@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="bg1KybBuqNpXKicp"
-Content-Disposition: inline
-In-Reply-To: <20260613224655.2405686-2-sean.wang@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-6.76 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sean.wang@kernel.org,m:nbd@nbd.name,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:sean.wang@mediatek.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-37786-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37787-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:william.hansen.baird@gmail.com,m:williamhansenbaird@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER(0.00)[williamhansenbaird@gmail.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[williamhansenbaird@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,mediatek.com:email,lore-desk:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5A8A5680C18
+X-Rspamd-Queue-Id: 89BDC6813A9
 
+This flood of AER error messages for the RTL8723BE is not unique to
+subsystem ID 17aa:b736. 
+Commit 77a6407c6ab2 ("wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723")
+targets the same issue for subsystem ID 11ad:1723.
+The fix applied in that commit, however, does not correctly
+disable ASPM. It merely disables driver control of ASPM.
 
---bg1KybBuqNpXKicp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Patch 1 fixes the previous commit such that it properly disables ASPM for
+subsystem ID 11ad:1723.
 
-> From: Sean Wang <sean.wang@mediatek.com>
->=20
-> Use the RX queue buffer size to select the page-pool allocation order.
-> This lets USB devices use larger RX buffers without silently allocating
-> undersized order-0 pages.
->=20
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mac80211.c | 3 +++
->  1 file changed, 3 insertions(+)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/=
-wireless/mediatek/mt76/mac80211.c
-> index 13c4e8abe281..6ff1eada6d09 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-> @@ -628,6 +628,9 @@ int mt76_create_page_pool(struct mt76_dev *dev, struc=
-t mt76_queue *q)
->  	if (!is_qrx && !mt76_queue_is_wed_tx_free(q))
->  		return 0;
-> =20
-> +	if (q->buf_size > PAGE_SIZE)
-> +		pp_params.order =3D get_order(q->buf_size);
+Patch 2 converts the if-statement check of subsystem IDs to a
+pci_device_id table matched with pci_match_id() such that future 
+subsystem IDs can easily be added if they have the same error.
 
-I guess you are interested just in usb devices here, right? Moreover, are y=
-ou
-interested just in MT_RXQ_MAIN queue?
+Patch 3 adds the subsystem ID 17aa:b736 to the pci_device_id table
+to disable ASPM for it. Testing on a Razer Blade 14 2017 showed this
+stops the AER error message flood and wifi works as it should.
 
-Regards,
-Lorenzo
+William Hansen-Baird (3):
+  wifi: rtlwifi: fix disabling of ASPM for RTL8723BE with AER flooding
+  wifi: rtlwifi: convert pci if-statement to ID table
+  wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 17aa:b736
 
-> +
->  	switch (idx) {
->  	case MT_RXQ_MAIN:
->  	case MT_RXQ_BAND1:
-> --=20
-> 2.43.0
->=20
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 27 ++++++++++++++--------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
---bg1KybBuqNpXKicp
-Content-Type: application/pgp-signature; name=signature.asc
+-- 
+2.54.0
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCai50SwAKCRA6cBh0uS2t
-rFjmAQDs02PyFHYQXUrmHijoXehLFvuHRG+XsNI5x6nK+MRBzwEAnEd1hrSzNXIx
-BjhBi2O6GmTUPAOU6BfaEib1AFDnngE=
-=s+16
------END PGP SIGNATURE-----
-
---bg1KybBuqNpXKicp--
 
