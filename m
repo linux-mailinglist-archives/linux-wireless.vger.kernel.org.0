@@ -1,185 +1,175 @@
-Return-Path: <linux-wireless+bounces-37821-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37822-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id l91xGMIEMGpiLwUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37821-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 15:57:22 +0200
+	id XeIXHWwPMGq8MgUAu9opvQ
+	(envelope-from <linux-wireless+bounces-37822-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 16:42:52 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66FB686E2A
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 15:57:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 146176874C3
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 16:42:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=neat.no header.s=google header.b=BBrlMJrh;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37821-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37821-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=neat.no;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J1anmXgR;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37822-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37822-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 132353004277
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 13:55:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0C469302797E
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 14:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DF91990C7;
-	Mon, 15 Jun 2026 13:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5123F88A3;
+	Mon, 15 Jun 2026 14:41:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B88C3F23CC
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 13:55:54 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781531756; cv=pass; b=EJSafbMPBAWQ1wHzAkWGCJ/Vz/25yG5e3TGl2hs0iVDUDZwbIPPvlZr0dYT7ti6d9DkqgmMQG8FUxNkfi2DqlWsGGE+DUa09IiE2f9+A8eLFieIoYvLAiYxuVJMyIqtENOguiem4qkCZ4kJfbomDQom7HWHqAqKuaEPAn6ZVzpc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781531756; c=relaxed/simple;
-	bh=tYDIDYmmfodx29k4MPH+z/baLBL7bv66zPRJnPP1uvc=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=TMCkl9HQ1OKGsNOSX1sVwYk7+j4SetaBZ+j/ZCt6oB5NcvZVXBNwjDvhQpDUucEBTUj3uwaGzZhxFYupIsc3fPSfKTsZWE5de+HFgEwtG7jceQTZTf98eocWHhzTMChT4qV1qgvcPWYf7LakH0DBw0aQ1PwfWgOeM8gClUAvug4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=neat.no; spf=pass smtp.mailfrom=neat.no; dkim=pass (2048-bit key) header.d=neat.no header.i=@neat.no header.b=BBrlMJrh; arc=pass smtp.client-ip=209.85.128.173
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-7e1c3f47d78so35385707b3.0
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 06:55:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781531753; cv=none;
-        d=google.com; s=arc-20240605;
-        b=g6l3GSEMDw0DSyfqpXov2bAajBpnq86pgKNbC9SyJtWezuM/J6Ryq3P00agcL6feiZ
-         YSBSC7XMJNV7YYCLpCx/BKJRqHUwlvuQlgGU8zclHMn2Kjjc02PrwOerbtUd2+OZOH1C
-         PZ9r0+uAxOw5OHStuT71/UFKD1wHhFCOWotFcuaP+OqxyDTekagdEcRRifk9trB1+Usi
-         vIXSsgZPziLYb9shUD1u9+P33KP056AiPgj+FFuvthy+0yJd/1opri4dCTxWup8cHUnV
-         CVfxVuZOqCcscqKuvPSxDIYcwOiJz/8cpO4mWQ1bfTLZHuv/KESifML65iq18fy5gnEn
-         zlsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=OKU2fS4WHk0JiCO3vb8oiP/9KqipJ03iGGp0qNTfG3g=;
-        fh=fNx1FSe3bM0x7jlYBd1zfXQPzQcp/Mml9XnxCq/2bkE=;
-        b=AcspV8QEs8sDbkIyRPm8mz/GLws15oN3uNDQqRTSBirDEX7bnZXKZp7NabTZz9cVsr
-         yrRoybQdXH2SUYwFiVLnsCeoDSKbomyD+hERNLYP/+pzmCeVXmm/lySa84Rx63SqsbTE
-         Fw/5iBGRGLj6SorF1NFSPLQ8OVxDivqrqpXRkj2W4fW++FJC3J+NHYyBIpFzcb81Yonu
-         psB7R+zHWQRuRBV1a0DNIIx97kk6xURVEjc+w34hUsyPsTPgIfw5vUVg8tjEur7e1gBu
-         YslzFZ3xMY8qkePD9zCr5/EdJr70US+icxVOLDxF656bueKLK1dJtdI1Sf1KrSK//51V
-         /ZVQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31ECA3FB046
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 14:41:22 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781534486; cv=none; b=KIkghP4Dt3yYkx2xbYK/5RaRhzopSzPLw62bvzXfaK11x25kJ6d36G7ooBglJtdZItUGJyMBL+p4PyTMM8tbnSb9Q1usCn68lcl3sKqyREzTYpEe6T7Xdc4qgztpkkTfr0W+6690jLOBQAcuyDEK7fxA634pK96jRghs6lJHWLA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781534486; c=relaxed/simple;
+	bh=Q1/4wTy5DthxwP4x7SY0at9RHkPfcXgmmMqEls/uqpQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Pg1k+64cCeZw46O0YR6aXd2NoCKWTIWJSnf1mhMepS92wYgX9UeRO0Kp2Josx74ahwEh+cyIQ5CUfzUVhlIVFiabQ+5PdxPhHiseWMyEn6LxVr71FwrySizu8Atu6sEEZCsfS8S/6sUd7i83t93Uh0NwpH3Jg9Xo82p6weoV5iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J1anmXgR; arc=none smtp.client-ip=209.85.210.182
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8423efad617so2173243b3a.0
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 07:41:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=neat.no; s=google; t=1781531753; x=1782136553; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=OKU2fS4WHk0JiCO3vb8oiP/9KqipJ03iGGp0qNTfG3g=;
-        b=BBrlMJrhQ2s7FkwyocLfOGOTlQBaLXsOXmqgXJm+jFhKVi4deZFBrBSYnbtf2dl38g
-         flGeQgXO8EQU7e9Ok5BTnJNgcDFILPE882PPxeMRfIiR/v3koNib/zT7givCM2L8sm8G
-         s8Kh9UeMtqS9LMGDxszyGYL95nHKtqPrIyd6gCsYsZn1400lrYbl5GYwGdWjenNvD7fI
-         MU046+HKaqBpwW/7FGqdYCuHrMTdKdAmPA4fo6E1qX6vlHpD5F+qCGKrEyyCQpQ0Y8ce
-         5Ei0GTLW6BGt3Ur2R+XmPxJf01kcxjOBwFee4QHT7tfIMvhua4PC8q1asmOp+ZSEqYPm
-         JOwA==
+        d=gmail.com; s=20251104; t=1781534482; x=1782139282; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DxIltKHZKUORF/QiYSksg74vukFnoE+ILmIBz8066bQ=;
+        b=J1anmXgRlcn6ptbRe3RKa9D/a0HrLZYZdyscyV6LtW2c8Ojkqs5JnBYUxMuwxZG2j9
+         oCvepZsDb3WETv1MHf7weydtn0ZmyvWtoPj6lDuhqaeCG+gKBPGdFo8tS8V5cCZK7+mu
+         yvEhN5Hh8FYg5BozqhLb/f1ZwL0HGq9ci2h+ICE0mkyaqXPp40v8XufbeYqugjU9VpKb
+         gZBJgTNxtv/WFH9MaQpoxCPSd7rtV0qVO5LESKXRi+iFpzLRp0N163n32vm9wa5An2nf
+         39MQM9MPaCJE1ARXHvPEzy8Euhyf+y3LTIaZLysPVizyRveZsENmPqUl0ejok2JeNJ3/
+         JZ7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781531753; x=1782136553;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OKU2fS4WHk0JiCO3vb8oiP/9KqipJ03iGGp0qNTfG3g=;
-        b=leFwfutbFdyGqQwa4IUQIcz5UyKSN91M/zQF2jo/zitek8P3hkyq7V48pznl9C+lcS
-         Pw0VQtt2Oh5tniTqV8l3L1ZeciorecGEOnO4jOkvNCMp2L0T74kyR5X33BD5dvVT8HZU
-         F3c1qbNt+lqstDe2H+KHOcMliq/qKgi7XaooXH10smAYHiwey3BYiCOr7zoSWng0ifoX
-         hRFXAufNv/WGCQu1oqFwoFHDls5ztczEKDjqDhW2ElogPlJvokEpDyVN6/yH8D4Xs1o0
-         /tIM9aghU7PUdCOBd6YRuYTV7M3PkNa7EvyrF6sNTC1f9QO/joOy7L/BAtc6ZDqAToGo
-         urWA==
-X-Gm-Message-State: AOJu0YwVtbIiOv+hL8lWv0v5wABcOdmlA5FCePOlENw3Du98lCjTmw5X
-	BZ+CVcvdjzKixMgx3UdNOJeh7uKT/soiXylb/3jo+WTsRxDlIpffrZa4p2VSaD8ll4JIYnBHa6U
-	dc5Cmo8gYSjHjjHTyTzZjlxBVwgkVvvfm57XildMxog==
-X-Gm-Gg: Acq92OEo3732QKV/Py1AtxPBYaIR0r6/8l8zG/6zkjQ5FyfxPZsKckeeGvn/GvdwPVU
-	MjrlQFHhGX+jiQtQwdeg/8PSCfYu62+dhWdcRFOGFF5UaQ/7E5ROfnuWPUgnxY6t9n/HzVgpZEd
-	KITRN1YOZUU9BQv8+FtTQJs9mdPTDEAIOJjN2rRmt2yYySZ6TheECy6X9YW1co/SqcNL2N9XXXm
-	T8ulyY75yCAyyqeUu+3HzX9nTibIAxL3gKMSmBcHqQ5wbYp5LnlihJ13wjKgxvF+hQX4RwaTeDH
-	lpJ65g==
-X-Received: by 2002:a05:690c:9c12:b0:7be:fedd:726b with SMTP id
- 00721157ae682-7f7b9414a4bmr153711167b3.42.1781531753459; Mon, 15 Jun 2026
- 06:55:53 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781534482; x=1782139282;
+        h=mime-version:content-transfer-encoding:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DxIltKHZKUORF/QiYSksg74vukFnoE+ILmIBz8066bQ=;
+        b=oPsNfoL0EkPKWWp7kQrLzS0SbHM6FCVYt3CziWnODTI+/pd3BiFjBpjWrt4Q86v59v
+         F+JKrEm0XUxhBqHBm/x0DXRRlGZYme+94r925PCkWf/uCwPO6Po1A2lBEpe3mxogLK0N
+         K3r2LifyJTJTbqxWL3o6ju1Uc0iwphc0j57QG76DjG4M6sKmRIkrarR31nn8pzbk0xyz
+         Es2jhO+1tYsPFXT1/t8FblxUeInsbaRidV+i8BRFvdF8px2bf4pNw2LTqs+iDgDODt2e
+         Xh9o2d9xO1FUDedRQmicz7fJyoVJwpKWEsVxHpxE51fotdXlcrUMfEZkMlS5a6OvNByl
+         7gbg==
+X-Gm-Message-State: AOJu0Yy8H8jI1dPvzSArlWIoldnZGPGZYSsTrbsUPtb3c4sDX3gaEZpK
+	Juv84V37E+8sOhx0SZM6L9ogsMDBxQisLVv51EWFgN0vfBTgvr2Mr37J
+X-Gm-Gg: Acq92OG50Z8nBxQLPPo6gQ57qQHScibX7tRIlWyI0B2hBVewof4h4ysU4mMDxfRp6QA
+	zfSsSsb0mKS4u+tJGA9l145KJRE7B0xLCRZhvXWN8GDjLgeqwNo6hBwscXhqB13WyZRU8rDw6Oj
+	vjikNnLCK4vwNiGN6unmTNU/iaGSiATLob1Dn9fodEoK9mL39oKkasAgnrQIVhlapbS9gdzqFPG
+	xZOaMe4wCN03CepxhZXdAGwwSj4vw5l2exXo6DqhR+1MDfMVKBST2JQGeGQKHK+HAnH22ngOK8B
+	Gan8ZGzfjYASBK4t+6bSq5mYvrHsJJPKTtB2Ye5zmm2Rrt4BpybgjK31pkY8TJIrh6DFX1leVEa
+	OGPkw/sM+7W+uz7MwdAxtk5U3aZ0gauWkj4DuwHCh+/9orq9aSoOlIpjSp4HfdAa6MjLr7gKCxA
+	7xi2bALXJm5+zgap/aSs2s0Z5RBVJLgLHNGZZw/R1vI1ckgNoM
+X-Received: by 2002:a05:6a00:3c8c:b0:842:688f:307f with SMTP id d2e1a72fcca58-8434cf0e0e6mr16291294b3a.28.1781534482072;
+        Mon, 15 Jun 2026 07:41:22 -0700 (PDT)
+Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434ad03fdcsm10226221b3a.24.2026.06.15.07.41.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 07:41:21 -0700 (PDT)
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+ Daniel Hodges <git@danielhodges.dev>
+Cc: linux-wireless@vger.kernel.org, libertas-dev@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Subject:
+ libertas_tf: same use-after-free as the recent lbs_free_adapter() fix?
+Date: Mon, 15 Jun 2026 22:41:18 +0800
+Message-ID: <178153447840.1536907.12495924954828649546@maoyixie.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Lucas Tanure <lucas.tanure@neat.no>
-Date: Mon, 15 Jun 2026 14:55:42 +0100
-X-Gm-Features: AVVi8CevtUtbIEY1DyJqbdpFEeGrLtPdlZM9coI2G7IJ2tPJti6o6zOWXNG4R1U
-Message-ID: <CALt7t=EDVdn7eGbXgXWU8rgbek52+frbbeYMHwzbH7J0xGXWzg@mail.gmail.com>
-Subject: wifi: rtw88: 8822cs/bs: Issues migrating RTL8822CS/BS from downstream
- to upstream driver
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Krzysztof Opasiak <krzysztof.opasiak@neat.no>, =?UTF-8?Q?Anders_R=C3=B8nningen?= <anders@neat.no>
-Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[neat.no,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[neat.no:s=google];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	SUBJECT_ENDS_QUESTION(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:git@danielhodges.dev,m:linux-wireless@vger.kernel.org,m:libertas-dev@lists.infradead.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:krzysztof.opasiak@neat.no,m:anders@neat.no,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[lucas.tanure@neat.no,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37821-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37822-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lucas.tanure@neat.no,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[neat.no:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[maoyixietju@gmail.com,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,neat.no:dkim,neat.no:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,maoyixie.com:url,maoyixie.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C66FB686E2A
+X-Rspamd-Queue-Id: 146176874C3
 
-Hi Ping-Ke,
+Hi all,
 
-We are bringing up an RTL8822BS / RTL8822CS combo on a Rockchip PX30
-board (kernel 6.1.118), Wi-Fi over SDIO, BT on the same die over UART
-via btrtl + hci_h5.
+Commit 03cc8f90d053 ("wifi: libertas: fix use-after-free in lbs_free_adapter()")
+recently switched timer_delete() to timer_delete_sync() in the libertas driver. I
+think the libertas_tf driver has the same problem in lbtf_free_adapter(), and it was
+not changed. I am not sure, so I would appreciate it if you could let me know whether
+you agree.
 
-We're deliberately migrating off Realtek's out-of-tree SDIO vendor
-driver to mainline rtw88: the vendor driver hits memory-corruption
-bugs we've been unable to get support on, and mainline is the better
-long-term path.
-That migration leaves us two gaps I'd appreciate your guidance on:
+lbtf_free_adapter() in drivers/net/wireless/marvell/libertas_tf/main.c does:
 
-1) Power-parameter tables. Mainline carries the TX-power data as generated
-   C arrays in rtw88xxc_table.c, while the vendor driver ships the same
-   data as text files.
+	lbtf_free_cmd_buffer(priv);
+	timer_delete(&priv->command_timer);
 
-   The TX-power limits look like this (TXPWR_LMT.txt):
+timer_delete() does not wait for a running command_timer_fn() callback.
+lbtf_free_adapter() is called on the teardown path right before priv is freed. In
+lbtf_remove_card() it is followed by ieee80211_free_hw(hw), which frees priv
+(priv == hw->priv); the probe error path does the same.
 
-       ##  2.4G, 20M, 1T, CCK, //(1M;2M;5.5M;11M)
-       ##  START
-       ##  #3#  FCC  ETSI  MKK
-       CH01  16  15  15
-       CH02  16  15  15
-       ##  END
+command_timer is armed by mod_timer(&priv->command_timer, ...) in
+lbtf_submit_command() whenever a firmware command is sent. command_timer_fn() then
+dereferences priv: it takes priv->driver_lock, reads priv->cur_cmd, sets
+priv->cmd_timed_out and queues priv->cmd_work. So if a command times out as the
+device is removed, command_timer_fn() can run while teardown frees priv, and it
+reads freed memory.
 
-   and the power-by-rate like this (PHY_REG_PG.txt):
+This is the same shape as the lbs fix above. The smallest fix is to mirror it:
 
-       #[2.4G][A]#
-       [1Tx] 0xc20  0xffffffff  18 19 19 19  // {11M 5.5M 2M 1M}
-       [1Tx] 0xc24  0xffffffff  18 18 18 18  // {18M 12M 9M 6M}
+	-	timer_delete(&priv->command_timer);
+	+	timer_delete_sync(&priv->command_timer);
 
-   Is there any way to convert these .TXT files into the C tables? It
-seems the vendor driver and the mainline driver power configuration
-don't have anything in common.
+in lbtf_free_adapter(). That covers both teardown paths, since both call
+lbtf_free_adapter() before the free. There is also a redundant
+timer_delete(&priv->command_timer) in lbtf_remove_card() just before
+lbtf_free_adapter(); it could be made _sync too, or dropped.
 
-2) Is there an upstream (linux-firmware) RTL8822BS firmware that
-supports the UART transport (rtl_bt/rtl8822bs_fw.bin + config), or
-does the 8822BS firmware still have to come from the vendor BSP?
-   Is there a problem using vendor firmware (not released at
-linux-firmware) with the mainline driver?
+Does this look like a real issue? I do not have the hardware, so I cannot drive the
+real removal path. I did confirm the use-after-free under KASAN with a small self test
+that forces the same race: the timer callback reads priv->driver_lock after
+timer_delete() and the free, and KASAN reports a slab-use-after-free. With
+timer_delete_sync() it is clean. I wanted to ask before sending a patch. I am happy to
+send one once you confirm.
 
 Thanks,
-Lucas Tanure
-Neat
+Maoyi
+https://maoyixie.com/
 
