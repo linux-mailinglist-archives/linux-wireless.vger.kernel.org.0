@@ -1,142 +1,216 @@
-Return-Path: <linux-wireless+bounces-37813-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37814-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gWHDAeXJL2qYGQUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37813-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 11:46:13 +0200
+	id hUZ1IE/OL2q8GwUAu9opvQ
+	(envelope-from <linux-wireless+bounces-37814-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 12:05:03 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E2C68528E
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 11:46:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E870B6853D7
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 12:05:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=dolcini.it header.s=default header.b=B4MVgt2w;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37813-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37813-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=dolcini.it;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=nKbWjbw9;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37814-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37814-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EAC7303A51C
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 09:44:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5BA54301B919
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 10:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34358392C27;
-	Mon, 15 Jun 2026 09:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1A03D332E;
+	Mon, 15 Jun 2026 10:04:29 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0DD211A14;
-	Mon, 15 Jun 2026 09:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FFB2EEE71;
+	Mon, 15 Jun 2026 10:04:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781516639; cv=none; b=jzLwufLn8OTy3DcRoD8EYBemfybDO2/lruSO3DcIo81BbqBO1vMJM4iffjkZPt+r2nrHx+gVe8ViSi/D+12qCAUB1cBTaqVV9P5EttXk6TymG5FuBDdDukyWep3ePxsaGP4lXn+EsMy1R8CYutNtIhNgu2AXstpayPHl69MgAVU=
+	t=1781517869; cv=none; b=S6k+2zxZkqqDKwEZOzbPi3aDe6Focnl677/LgJEMiMsOjRzbwzvXoXZxysRErlUBmik060TPyHMsjsWdOV8m2aRLi6dwOsEJK1C+VJ56pyw3+BVZApiWGq92Unj0bXj87hwkCdTu5No18VjWIal5pI052Yl26PfSdDh5Fy84BzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781516639; c=relaxed/simple;
-	bh=KChDnzIFB8LnEC5SidZPV+v786gS9QKb5p37tgRiis4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DiNJCC8EcjQjO47rUDMSv8T/eMjfDebgom/S/30erNpWu1W2qX6gFiZKJc4z0P+j6obln4BJe7UnTAoYSSlcbQVYF23rRBwziZJ471BKep2ZUVPkpmFBYpF9iwv4y1SPf7GLxWNfHm8IeCdwqrN2VAvJxvPiLYsiYZIsl3hWDsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=B4MVgt2w; arc=none smtp.client-ip=217.194.8.81
-Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id 0E1C21F91B;
-	Mon, 15 Jun 2026 11:43:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1781516635;
-	bh=IES+l93RpBOikmpagWwEnHcIIfJUfwn+CVgv1ELGJ58=; h=From:To:Subject;
-	b=B4MVgt2wjxkr6uNhb9CEuK3JhTGC3u6JVXoXseBtiDS4Y7sI5ggL/+bJ5k2zjUi09
-	 +Fc3n0XayFxN12GcxPPosC7m04/Mo5KBy+9yqAk/CpVKQm/b/Fxjsm0/p4gKVD4UyQ
-	 3CMVDJB8d9EHlfd+2ttVngjohGfeJyXOfXg9uNQV36qhJb0bEmj7D6RSjF6IpAla2a
-	 2Xw72REAeUMknhQpBFNGlwQ3xu6RD9fuQUcaZiWJmo5bWL0BIB8Y6FFHdFm8KZyPte
-	 dMNYL25uWXZLFaLRn5UoUdn2dMLWfZVIcMJSaMhdhBM8O1bx2/ouUQjOzvT9IhFzLC
-	 L1TKArVjEkhUA==
-Date: Mon, 15 Jun 2026 11:43:53 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Jeff Chen <jeff.chen_1@nxp.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Rafael Beims <rafael@beims.me>,
-	Brian Norris <briannorris@chromium.org>,
-	Rafael Beims <rafael.beims@toradex.com>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH wireless-next v1] wifi: mwifiex: fix permanently busy
- scans after multiple roam iterations
-Message-ID: <20260615094353.GB6878@francesco-nb>
-References: <20260612122547.1586872-2-rafael@beims.me>
- <20260612130607.GA7651@francesco-nb>
- <ai/G/C7VxxzDVWXW@nxpwireless-Inspiron-14-Plus-7440>
+	s=arc-20240116; t=1781517869; c=relaxed/simple;
+	bh=g/8xnAwne8DXAmxDpypotkqsc4FueU6nYUDeAtZHNWg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dbx4TgHC01SqFAfjOQzjbjoo/GP6sCNyfLtLKdhiz+Tk2R/KUNDr7k2FIX3oTNJHhr0BEv5GtleatsgUT2p8PQTBkCPQ7qTqkhVFpimbpTcblXgakBoU3JxmKEVl3XasZS0SAiU9qcZBQFH3OwXSF/JqDLQNRRktSdLaZB+YWhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=nKbWjbw9; arc=none smtp.client-ip=18.132.163.193
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1781517828;
+	bh=ooU2R9jgNyhauJx6UrZTEWa22XXcFTRTmssU3/mmzzM=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=nKbWjbw9tqHwDE55lO7bm5jK14OuNrW6Mg9qQ8JmUC6wVF9UaTAef5QHHbAcno/1w
+	 7U0xd2RXnvsa9IaWgLv5YhdgzJBtt91IhA1G1+Ke4yO6spEMwcEfRLb/fUCw+PoO+A
+	 nWvFnSV+cBkMpPdZM2nsRR302tzu6C4SPBysXci4=
+X-QQ-mid: zesmtpsz5t1781517812t739bc093
+X-QQ-Originating-IP: KSDGjuIfdttbINF+ELlLi4VEnMNbksYDYuXT9pX3hqY=
+Received: from localhost.localdomain ( [124.126.19.250])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 15 Jun 2026 18:03:29 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 5588724815608668507
+EX-QQ-RecipientCnt: 6
+From: meihaipeng <meihaipeng@uniontech.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	meihaipeng <meihaipeng@uniontech.com>,
+	syzbot+c0472dd80bb8f668625f@syzkaller.appspotmail.com
+Subject: [PATCH v2 1/1] wifi: mac80211_hwsim: skip sta_add rc update on sub-20 chanctx
+Date: Mon, 15 Jun 2026 18:03:21 +0800
+Message-Id: <20260615100321.22208-1-meihaipeng@uniontech.com>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ai/G/C7VxxzDVWXW@nxpwireless-Inspiron-14-Plus-7440>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
+X-QQ-XMAILINFO: NuZvjORXcxgL4M8HaWuGNMOZv/OZXJjqkdIW5SHfd3lvN8GEsRYo54Ja
+	R8osj18pRV2ez0IpwOoKRSNxgbFvi8keR8XdWW3qLlwUSC4PdoaNxjOaj0LxTyqHhTlF236
+	JPSd5/djb4dWFRhL7HSJOhohbE4vwBrZ+PEqVB4rtQBjCapN1bFnm5S4fQL/XpOSsVtMW47
+	3OCXsPa/LLT6UJL4mzsp+IMDPSUMgBRqy6AQLnKg6K7Rx5bSlcfYJ1gwwdskAtHrZtsa/Cr
+	R/5xLXKikrmx5dpd7uSk2IHoSVqbFP12VNPgXF539Fn3ULMJAmWyXBRw/FuLpvTdn+78igS
+	gVIuAkM/XO0XaC9p864c1LRzBQ2ltZboZBGat69gxTdDIkCW/+UdBfQqzdHjdjwqoJYb68l
+	kL5Cmn187s18ARF1yCPi+6mcn/yfC4O1ZlKjef+IuNfsLKx/4LrJaV9JHZiBzSDQ5QyXsMN
+	I19TW1NvdCqa0taCpQwulLzE7fnLD8Ay48nCQL6JnqeJGapzpDaAmU3GFv9ZfoHdgq96rFK
+	2IGO+dBMzfxHVYaduBa4Cb300zjYz2HAOSO5H5oan+emCNsgddVKpGVkhnJg0Z6ROLefl4t
+	QaTQWRp+ZtgW1jV+OLmwcvSqgH+JDt4HNCwCzo5shsHOVpraKWnVP6AoTuPKVUi26hGTBya
+	XKEpn2411rVCBzMOe/QhYW1cQ+sCfDv+vVLNBaHUMcV1cXFEPnQPnwT9Xu3YGNnspbudg8x
+	rATOrOzBVBT9H0YyI4bt4iJF/DaoNHZnY2iAzyR249EwT4naY1CD0ZAApeFkseHb5BMoYwD
+	M+kPcAZZ/0egrryR/rGs3cras1uHEMbYdCk3kTwuS5uYAMpTB0OZCLPIXvTUAVpIIM3pELH
+	NNaeMZfi2YtwUrV19SYCEeDgTVQQ6Ll6LVPyg3aGrYg+i6EEkqq0cGeLScIHLfAcMh+6PyW
+	i2WE8gcWCxzxJ2ZjocuQlfRs9l7ct+I1qPUHZ4LBzp/wa8En8lacNTiOnA/NQ6UiaOfjjES
+	ces4xNkgNkKr+iqO/1quCXilwAfVqJQVJRNzWcDvJyw5XNJ8E85LE2Fhps/XhtG1TBqDM1q
+	A==
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[dolcini.it,none];
-	R_DKIM_ALLOW(-0.20)[dolcini.it:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37813-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[francesco@dolcini.it,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:jeff.chen_1@nxp.com,m:francesco@dolcini.it,m:rafael@beims.me,m:briannorris@chromium.org,m:rafael.beims@toradex.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[dolcini.it:+];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:andrei.otcheretianski@intel.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:meihaipeng@uniontech.com,m:syzbot+c0472dd80bb8f668625f@syzkaller.appspotmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37814-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[francesco@dolcini.it,linux-wireless@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[meihaipeng@uniontech.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[meihaipeng@uniontech.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,toradex.com:email,dolcini.it:dkim,dolcini.it:from_mime,vger.kernel.org:from_smtp,francesco-nb:mid]
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless,c0472dd80bb8f668625f];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 48E2C68528E
+X-Rspamd-Queue-Id: E870B6853D7
 
-On Mon, Jun 15, 2026 at 05:33:48PM +0800, Jeff Chen wrote:
-> On Fri, Jun 12, 2026 at 03:06:28 PM +0200, Francesco Dolcini wrote:
-> > On Fri, Jun 12, 2026 at 09:25:46AM -0300, Rafael Beims wrote:
-> > > From: Rafael Beims <rafael.beims@toradex.com>
-> > > 
-> > > In order for the firmware to sleep, the driver has to confirm a
-> > > previously received sleep request. The normal sequence of evets goes
-> > > like this:
-> > > EVENT_SLEEP -> adapter->ps_state = PS_STATE_PRE_SLEEP -> sleep-confirm
-> > > -> SLEEP -> EVENT_AWAKE -> AWAKE.
-> > > Before sending the sleep-confirm command, the driver must make sure
-> > > there are no commands either running or waiting to be completed.
-> > > 
-> > > mwifiex_ret_802_11_associate() unconditionally sets
-> > > ps_state = PS_STATE_AWAKE when it processes the association command
-> > > response, outside of the normal powersave management flow. If
-> > > EVENT_SLEEP arrives while the association command is in flight,
-> > > ps_state is PRE_SLEEP when the association command response is parsed,
-> > > and the forced AWAKE overwrites it. The deferred sleep-confirm is
-> > > never sent.
-...
-> > 
-> > Jeff: same issue in the nxpwifi driver.
-> > 
-> I looked into this for nxpwifi. The nxpwifi driver currently only
-> supports IW61x.
+mac80211_hwsim_sta_add() eagerly calls mac80211_hwsim_sta_rc_update()
+for a new STA.
 
-Up to you, but maybe is worth applying the same change there. I assume
-you are going to add support for more Wi-Fi chips over time, and you do
-not want to have to debug this issue again.
+The warning that syzbot hits comes from that add-time call. For sub-20
+MHz channel contexts, ieee80211_sta_rx_bandwidth cannot represent the
+configured width, so the synthetic sta_add()-time rc_update() trips a
+false warning before any real rc_update() path is involved.
 
-Francesco
+Do the same thing that was done for S1G: keep the rc_update() logic
+itself unchanged and simply skip the sta_add()-time call when any active
+link uses a sub-20 MHz channel context.
+
+Fixes: aea9a6088ae46 ("wifi: mac80211_hwsim: do rc update per link")
+Reported-by: syzbot+c0472dd80bb8f668625f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c0472dd80bb8f668625f
+Signed-off-by: meihaipeng <meihaipeng@uniontech.com>
+
+---
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 47 ++++++++++++++++++-
+ 1 file changed, 46 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 1fcf5d0d2e13..4640b5d6cfa3 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -1022,6 +1022,46 @@ static int hwsim_get_chanwidth(enum nl80211_chan_width bw)
+ 	return INT_MAX;
+ }
+ 
++static bool hwsim_sta_uses_sub20_chanctx(struct ieee80211_hw *hw,
++					 struct ieee80211_vif *vif,
++					 struct ieee80211_sta *sta)
++{
++	struct mac80211_hwsim_data *data = hw->priv;
++	int link_id;
++
++	rcu_read_lock();
++	for (link_id = 0; link_id < ARRAY_SIZE(sta->link); link_id++) {
++		struct ieee80211_link_sta *link_sta;
++		enum nl80211_chan_width confbw = data->bw;
++		struct ieee80211_bss_conf *vif_conf;
++		struct ieee80211_chanctx_conf *chanctx_conf;
++
++		link_sta = rcu_dereference(sta->link[link_id]);
++		if (!link_sta)
++			continue;
++
++		if (data->use_chanctx) {
++			vif_conf = rcu_dereference(vif->link_conf[link_id]);
++			if (!vif_conf)
++				continue;
++
++			chanctx_conf = rcu_dereference(vif_conf->chanctx_conf);
++			if (!chanctx_conf)
++				continue;
++
++			confbw = chanctx_conf->def.width;
++		}
++
++		if (hwsim_get_chanwidth(confbw) < 20) {
++			rcu_read_unlock();
++			return true;
++		}
++	}
++	rcu_read_unlock();
++
++	return false;
++}
++
+ static void mac80211_hwsim_tx_frame(struct ieee80211_hw *hw,
+ 				    struct sk_buff *skb,
+ 				    struct ieee80211_channel *chan);
+@@ -2846,7 +2886,12 @@ static int mac80211_hwsim_sta_add(struct ieee80211_hw *hw,
+ 
+ 	hwsim_check_magic(vif);
+ 	hwsim_set_sta_magic(sta);
+-	mac80211_hwsim_sta_rc_update(hw, vif, &sta->deflink, 0);
++	/*
++	 * Like S1G, sub-20 widths aren't handled by this add-time
++	 * rc_update() call.
++	 */
++	if (!hwsim_sta_uses_sub20_chanctx(hw, vif, sta))
++		mac80211_hwsim_sta_rc_update(hw, vif, &sta->deflink, 0);
+ 
+ 	if (sta->valid_links) {
+ 		WARN(hweight16(sta->valid_links) > 1,
+-- 
+2.20.1
 
 
