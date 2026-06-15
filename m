@@ -1,160 +1,189 @@
-Return-Path: <linux-wireless+bounces-37819-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37820-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vecrOt74L2rEKgUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37819-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 15:06:38 +0200
+	id 1px2L24AMGpVLgUAu9opvQ
+	(envelope-from <linux-wireless+bounces-37820-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 15:38:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BF668686C
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 15:06:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25AAC686CC4
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 15:38:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=grHea4+O;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37819-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37819-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BY2O9icd;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37820-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37820-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F23CC3001FFE
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 13:06:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5A9C3078667
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 13:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9579B3F1AA4;
-	Mon, 15 Jun 2026 13:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C86D3F1AA8;
+	Mon, 15 Jun 2026 13:36:56 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F343EBF15
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 13:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B763EDAA3
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 13:36:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781528796; cv=none; b=BJDd6mirW4EwcqVugDjfIeOZwz9s0IyOcFth5+M+M7K+VEsIlc5OmDcUlj1xivUGy8tFlu0n3QV84fmCGGZyKrZrGQJRPQmgSIo0x0Axj6PKkCVKvu1UhL6RwVtw8sWzwpnBb+ZvAAy2jTj7at9wcqkJQk/dgYw6+UxXnMiIlpU=
+	t=1781530616; cv=none; b=up6jlR3NyVqF2vbuzirNlJF/t+41Qx6c7aRCW4tc0uxhsqkzLpJ7fU/oep5ZxU20c3MsPoeBt3bqn1EspP1ntKsS2SQrKeqQZTFCCBj36kZiEVBnpRf+/K/+taV8rwCScC5M0YQaHEH0EkamVY4ee1mU5wdbD0O0jbbc/Ebtuyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781528796; c=relaxed/simple;
-	bh=Iw06VSTSd13id9KhZoBja5SU9senPz0GmL/KsFWNhgg=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jGrzlzbNmuAPWDiQSJgsYF8GhNwvYVOnzJ9Zl5nPAWUVSOtsR7gWQZ596fpdJGe9pNWNBt6yi41XpqgNCKlir2o80wf7gb0bNTCmcyT6Bzd80EPOdePYCfUnXWVNwXy3cfJiXBCycSOjP6YnUo+Ga3vTcEb6BhZtmhUFbRgX7Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=grHea4+O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683551F00A3D
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 13:06:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781528795;
-	bh=Iw06VSTSd13id9KhZoBja5SU9senPz0GmL/KsFWNhgg=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=grHea4+O3St7FBU0cs2OI9uzNPZgGZPxcObx9I+gJxmajatBm4NosYYUeDhu3B7mh
-	 SThH3AYk1Iq/pLqVzviUgtscm34PjekuBu94uAES8FaHxsrVzgBqLuvEKIeNoF9Kbh
-	 otjHGfPuoDhbEY4e9b2+EmZzT/2pmISeY4bN6AENECIMU/RbkHETWgQe7Mt45sa3w5
-	 EKOKQb62G5t5fa5MtT0oIRMbeCccKrPyS4qthZ4/emPMKYT1p2Evf8lzfZwh1NnKJq
-	 Li/wtDWeDwFddzd9PLU9wMocFWDV5MZm5MHApJWD7EvqwooPMeQaWiGyhLYJhFGM+j
-	 7ISY9CaW5ZLug==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5ad0abf1f7bso2503977e87.3
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 06:06:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8LVq8j1C/Y3XuwuWiEoxv+u5iZSYb0h56KLri3ybW+DO+D9vafZhxNlJqV6rWbi/wKkxeTnFKcGnUmQNnsug==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhmkHxoPRieWv48dxU5+AbJdam+utAwAsQ0ZjSlpWnFFMwUor3
-	z2NbcXT+K6UHY5ZQEFyUt9cHy3cU5kV2bG+EOYdtinHvaDu8FlFSTZpEwyRsokGOBhzxzt8Rl3j
-	f6ezJkWhUigG5hsaTHHT84iMuu/kyYj+5MOLi3KlWsA==
-X-Received: by 2002:a05:6512:8016:10b0:5aa:62d3:3833 with SMTP id
- 2adb3069b0e04-5ad2db2c528mr2887597e87.5.1781528794189; Mon, 15 Jun 2026
- 06:06:34 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 15 Jun 2026 06:06:32 -0700
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 15 Jun 2026 06:06:32 -0700
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <CAFEp6-0oxBEdfH-fqhdM18pt4JewLwrMOON9qpQgLFh8KS0hDg@mail.gmail.com>
+	s=arc-20240116; t=1781530616; c=relaxed/simple;
+	bh=X4W99tGe8AunxStwgyiEQ8nkueEHmuGZtFFwNXRnrIw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oq5s8Q74hvzBkrKo+4RFZ2u21CBv7PEccc2MecTXOhYJevI40jbD/82vPkrVCTZsaOMYmPClx6WPEseSeq5Luw4ccwpDssRo2pivljJqMI/+DwztUjeTCiZ1UupPfCt0qds3J06jPdjjQF/7B0TTEYRYWH8hJahTudM7ksV7yeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BY2O9icd; arc=none smtp.client-ip=209.85.128.44
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-490be29c1c5so37413465e9.2
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 06:36:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781530613; x=1782135413; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=bJPr7AwovREaKXgEuzZAVb8kOr5xcjm3uq69zeHw4Ao=;
+        b=BY2O9icd+CYW+ktDT30G/mGbHOgFSFCQlk2ho1atz7D5gAb47Oi0nB2FfOebTI83OV
+         kR1c5QGR0xx4YS7vwTC6Qtne126TJdFUp7P1yy6k5Wh48FcJAhPQvcMLCWg71PXBrDWS
+         n7aYdOoxrJht5OUyds2KpEu8ui/vUNm6LVuC8frukXZjoxfEvpFVGj5YAMZBPoT8gxVS
+         xY2j2HKeMjY6fktg/kNDcHTzHClKs2vj+vuhlibOyycY7WgPsPbgzsUPbHHlh4hhAM21
+         4AzmbtFYw1M3oUWsyPCRmtW6eNufvuV4hrxh1D1UAin2UE+WJwtqw5tAuRrrhFUlWeRG
+         jVKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781530613; x=1782135413;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bJPr7AwovREaKXgEuzZAVb8kOr5xcjm3uq69zeHw4Ao=;
+        b=s7j99CPHMuyk4LDxXdQJWsij/oi3Aa322Eu2w5NbwTQKZLLvCt/wqdnolznZ073Dkc
+         VE7F/VwNuaBA8ruxRm/cVvCU1nA5SToJlO708Nm0C+mNVMqRgYe/fuk53JejmxBo2Bgx
+         p0eY9AplgOfLRnheMNW3E6iRkgbfkjb48it0MhqLqqhkoVIOziK+RiRjg5Ikkbrl+6rG
+         KERLOM6AvmXEaQlUTbKLnVC55DIpjFV+2Y0v+xfDYnEieNdO/iBoogBArfDdNEHr69us
+         buentVzlwJI4XGYFRDGgIyn39/Ddkw600VTE8eNANL4cbXlo68Eo9lTu6MEKIborCJfs
+         WM9A==
+X-Forwarded-Encrypted: i=1; AFNElJ/FDqoD1E8mNZEG/b/upQbYWwnIHP3TxbatN7IqfUf8eA8zwRjl3FICBia2ne55ISJg1smTJ8WFfP7IMNqm/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJsXSClmbthsveJ8LSAAoEG2/UmZhwoDySUBW2yw70ngN0yff2
+	NvgTljFbip5Zg+6EbyvX24nI9K6wqwUAjhLbLRRq4EUHjUFLpH3LEdns
+X-Gm-Gg: Acq92OHw1cfuwQf8gq34yHNaWhDXqP2OzVF3oJ500mlOA2eVzDlxoj3HtMAaKRwaINx
+	DwSq3+uLl75E/9+t8WCkonE4qosZuKamPzxkbU+2KHzFh1PvOkjwV9G1Uc0IZrVx1BMctZiRc4Z
+	NYW6T3JFep46l+DGnUM1DdU7J3RtN7DiXpQeTXIZmFJsLx0l+rheuyQfidL9xPUezqflDoqDavF
+	CI789R4mn0Z052sDmnTjJk6JCMDY1KwzeoHcB+WWT6FXS2YNIQTakodcQBItGXcyROAcAiyTDxY
+	5wRwFNXw+UGvaxgenRCajvBS41jRh04lMN6HrI1iCvvZ59Xhie1ws6x6D5rh8ikTvR/DJktGT9o
+	l94yizSdijQsUzHHEvpqIhFDL+zbC8nR31yoboaIO9plkc3x5tvDJurh1GSfmievyZ9SFFl9ev8
+	SO4l9wYQq46QCYUtorxFB6UejQucAmFTHunAo9LnApRvn+FqBTYLILM7QLRFclL0tE/4JP3+FB1
+	RD90DTRoYtWVlburukcLusb8wY=
+X-Received: by 2002:a05:600c:4512:b0:490:4663:691b with SMTP id 5b1f17b1804b1-490ec4992aamr201275805e9.7.1781530613100;
+        Mon, 15 Jun 2026 06:36:53 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490ea961f18sm270433745e9.2.2026.06.15.06.36.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 06:36:52 -0700 (PDT)
+Date: Mon, 15 Jun 2026 15:36:50 +0200
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+To: Andrew LaMarche <andrewjlamarche@gmail.com>
+Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
+	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] wifi: ath12k: support calibration-variant from
+ device tree
+Message-ID: <23fr45actdrqt6rp6fozcaugyk3egs5zm7imschl7gyuuj6cme@3pvdhqv7xvkq>
+References: <20260131003222.2011259-1-andrewjlamarche@gmail.com>
+ <A2E3AAE1-1A80-4265-9497-0C95C3308CD7@gmail.com>
+ <dc8c9c9c-dc85-40dd-9313-845a808a35f4@oss.qualcomm.com>
+ <3B9D1FBE-37D0-4902-8C0C-8AB57C1310A5@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260612-block-as-nvmem-v5-0-95e0b30fff90@oss.qualcomm.com>
- <20260612-block-as-nvmem-v5-5-95e0b30fff90@oss.qualcomm.com>
- <CAMRc=McQkLnz2OS2RREAbcrsp47cL-W3bCduq8LwPBBUcVNyJw@mail.gmail.com>
- <CAFEp6-0qsqhcwnSjm3=bG21jsCktzn5-L5sk2pNTZcGuVXaiNA@mail.gmail.com> <CAFEp6-0oxBEdfH-fqhdM18pt4JewLwrMOON9qpQgLFh8KS0hDg@mail.gmail.com>
-Date: Mon, 15 Jun 2026 06:06:32 -0700
-X-Gmail-Original-Message-ID: <CAMRc=Mc6rMwXvo+phxhjioFWwi_kN+yMiEjVwU6Zvu0bgfEaeQ@mail.gmail.com>
-X-Gm-Features: AVVi8CcYELXBpxe6-PKRsGQxMXLfew6V8MDcv_4EHem5JqYjvyy5fE7tXsAHiMU
-Message-ID: <CAMRc=Mc6rMwXvo+phxhjioFWwi_kN+yMiEjVwU6Zvu0bgfEaeQ@mail.gmail.com>
-Subject: Re: [PATCH v5 5/9] block: implement NVMEM provider
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Bartosz Golaszewski <brgl@kernel.org>, linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, daniel@makrotopia.org, Ulf Hansson <ulfh@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Jens Axboe <axboe@kernel.dk>, Johannes Berg <johannes@sipsolutions.net>, 
-	Jeff Johnson <jjohnson@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, 
-	Rocky Liao <quic_rjliao@quicinc.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Saravana Kannan <saravanak@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3B9D1FBE-37D0-4902-8C0C-8AB57C1310A5@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.infradead.org,makrotopia.org,kernel.dk,sipsolutions.net,holtmann.org,gmail.com,quicinc.com,davemloft.net,google.com,redhat.com,lunn.ch,armlinux.org.uk];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37819-lists,linux-wireless=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,vger.kernel.org:from_smtp,mail.gmail.com:mid];
-	FORGED_SENDER(0.00)[brgl@kernel.org,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[35];
-	FORGED_RECIPIENTS(0.00)[m:loic.poulain@oss.qualcomm.com,m:brgl@kernel.org,m:linux-mmc@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-block@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath10k@lists.infradead.org,m:linux-bluetooth@vger.kernel.org,m:netdev@vger.kernel.org,m:daniel@makrotopia.org,m:ulfh@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:andersson@kernel.org,m:konradybcio@kernel.org,m:axboe@kernel.dk,m:johannes@sipsolutions.net,m:jjohnson@kernel.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:quic_bgodavar@quicinc.com,m:quic_rjliao@quicinc.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:srini@kernel.org,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:linux@armlinux.org.uk,m:saravanak@kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:andrewjlamarche@gmail.com,m:jeff.johnson@oss.qualcomm.com,m:jjohnson@kernel.org,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[ernestvanhoecke@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-37820-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[vger.kernel.org:server fail,mail.gmail.com:server fail,qualcomm.com:server fail];
-	PRECEDENCE_BULK(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ernestvanhoecke@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	SEM_URIBL_UNKNOWN_FAIL(0.00)[qualcomm.com:server fail,mail.gmail.com:server fail,vger.kernel.org:server fail];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,qualcomm.com:email,3pvdhqv7xvkq:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 89BF668686C
+X-Rspamd-Queue-Id: 25AAC686CC4
 
-On Mon, 15 Jun 2026 11:33:22 +0200, Loic Poulain
-<loic.poulain@oss.qualcomm.com> said:
-> On Mon, Jun 15, 2026 at 11:28=E2=80=AFAM Loic Poulain
-> <loic.poulain@oss.qualcomm.com> wrote:
->>
->
-> Also we cannot safely return -EPROBE_DEFER from add_disk_final()
-> either. The NVMEM registration point is late in the sequence, too much
-> has already happened to easily unwind. The easiest is that the NVMEM
-> simply won't be available if registration fails, which looks
-> acceptable?
->
+On Wed, May 27, 2026 at 05:01:51PM -0400, Andrew LaMarche wrote:
+> Ack on the deprecation of qcom,ath12k-calibration-variant in favor of the
+> generic qcom,calibration-variant. 
+> 
+> However, drivers/net/wireless/ath/ath12k/core.c still misses the logic to 
+> actually load in the BDF, which this patch also accomplishes. I don’t see that
+> in the Qualcomm-authored series you linked. Perhaps a v2 to address this?
+> 
+> Andrew
+> 
+> > On May 27, 2026, at 3:52 PM, Jeff Johnson <jeff.johnson@oss.qualcomm.com> wrote:
+> > 
+> > On 5/27/2026 9:12 AM, Andrew LaMarche wrote:
+> >> Hi,
+> >> 
+> >> A kind ping here. I’m not sure why this functionality is missing in the first place, but it is needed for loading caldata from the device tree.
+> > 
+> > Your patch duplicates functionality in the Qualcomm authored series:
+> > https://msgid.link/20250228184214.337119-1-quic_rajkbhag@quicinc.com
+> > 
+> > And note the upstream device bindings for ath10k and ath11k only support the
+> > generic binding qcom,calibration-variant.
+> > 
+> > There are no longer any generation-specific bindings, see:
+> > https://msgid.link/20250225-b-wifi-qcom-calibration-variant-v1-0-3b2aa3f89c53@linaro.org
+> > 
+> > /jeff
+> 
 
-I'd argue that it's a problem with subsystem code then as unwinding should
-work fine no matter the point in the sequence when it's initiated but I gue=
-ss
-this isn't really an issue in your patches.
+Hi Jeff,
+Hi Andrew,
 
-I suppose we shouldn't typically run into probe deferral here so I'm fine j=
-ust
-ignoring the return value.
+We also need this functionality, and as Andrew noted, the patch series
+from Qualcomm does not actually address this.
 
-Bart
+I believe some confusion arose because the patch series mentions the
+"qcom,calibration-variant" DT property, but it does nothing to implement
+this in the driver. In that series it only exists within a schema file:
+Documentation/devicetree/bindings/net/wireless/qcom,ipq5332-wifi.yaml
+
+Our need for this property was previously discussed here, and for now I
+don't see a way forward without it:
+https://lore.kernel.org/all/77vowy4ax4cl6dlc45i2q3fjmwn3q676wqghq267tmbix7773b@27h5t66mflur/
+
+Thanks a lot for your work here.
+
+Best regards,
+Ernest
 
