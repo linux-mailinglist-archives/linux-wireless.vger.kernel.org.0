@@ -1,189 +1,185 @@
-Return-Path: <linux-wireless+bounces-37820-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37821-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1px2L24AMGpVLgUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37820-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 15:38:54 +0200
+	id l91xGMIEMGpiLwUAu9opvQ
+	(envelope-from <linux-wireless+bounces-37821-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 15:57:22 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25AAC686CC4
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 15:38:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C66FB686E2A
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 15:57:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BY2O9icd;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37820-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37820-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=neat.no header.s=google header.b=BBrlMJrh;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37821-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37821-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=neat.no;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5A9C3078667
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 13:36:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 132353004277
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 13:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C86D3F1AA8;
-	Mon, 15 Jun 2026 13:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DF91990C7;
+	Mon, 15 Jun 2026 13:55:56 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B763EDAA3
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 13:36:54 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781530616; cv=none; b=up6jlR3NyVqF2vbuzirNlJF/t+41Qx6c7aRCW4tc0uxhsqkzLpJ7fU/oep5ZxU20c3MsPoeBt3bqn1EspP1ntKsS2SQrKeqQZTFCCBj36kZiEVBnpRf+/K/+taV8rwCScC5M0YQaHEH0EkamVY4ee1mU5wdbD0O0jbbc/Ebtuyg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781530616; c=relaxed/simple;
-	bh=X4W99tGe8AunxStwgyiEQ8nkueEHmuGZtFFwNXRnrIw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oq5s8Q74hvzBkrKo+4RFZ2u21CBv7PEccc2MecTXOhYJevI40jbD/82vPkrVCTZsaOMYmPClx6WPEseSeq5Luw4ccwpDssRo2pivljJqMI/+DwztUjeTCiZ1UupPfCt0qds3J06jPdjjQF/7B0TTEYRYWH8hJahTudM7ksV7yeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BY2O9icd; arc=none smtp.client-ip=209.85.128.44
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-490be29c1c5so37413465e9.2
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 06:36:54 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B88C3F23CC
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 13:55:54 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781531756; cv=pass; b=EJSafbMPBAWQ1wHzAkWGCJ/Vz/25yG5e3TGl2hs0iVDUDZwbIPPvlZr0dYT7ti6d9DkqgmMQG8FUxNkfi2DqlWsGGE+DUa09IiE2f9+A8eLFieIoYvLAiYxuVJMyIqtENOguiem4qkCZ4kJfbomDQom7HWHqAqKuaEPAn6ZVzpc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781531756; c=relaxed/simple;
+	bh=tYDIDYmmfodx29k4MPH+z/baLBL7bv66zPRJnPP1uvc=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=TMCkl9HQ1OKGsNOSX1sVwYk7+j4SetaBZ+j/ZCt6oB5NcvZVXBNwjDvhQpDUucEBTUj3uwaGzZhxFYupIsc3fPSfKTsZWE5de+HFgEwtG7jceQTZTf98eocWHhzTMChT4qV1qgvcPWYf7LakH0DBw0aQ1PwfWgOeM8gClUAvug4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=neat.no; spf=pass smtp.mailfrom=neat.no; dkim=pass (2048-bit key) header.d=neat.no header.i=@neat.no header.b=BBrlMJrh; arc=pass smtp.client-ip=209.85.128.173
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-7e1c3f47d78so35385707b3.0
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 06:55:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781531753; cv=none;
+        d=google.com; s=arc-20240605;
+        b=g6l3GSEMDw0DSyfqpXov2bAajBpnq86pgKNbC9SyJtWezuM/J6Ryq3P00agcL6feiZ
+         YSBSC7XMJNV7YYCLpCx/BKJRqHUwlvuQlgGU8zclHMn2Kjjc02PrwOerbtUd2+OZOH1C
+         PZ9r0+uAxOw5OHStuT71/UFKD1wHhFCOWotFcuaP+OqxyDTekagdEcRRifk9trB1+Usi
+         vIXSsgZPziLYb9shUD1u9+P33KP056AiPgj+FFuvthy+0yJd/1opri4dCTxWup8cHUnV
+         CVfxVuZOqCcscqKuvPSxDIYcwOiJz/8cpO4mWQ1bfTLZHuv/KESifML65iq18fy5gnEn
+         zlsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=OKU2fS4WHk0JiCO3vb8oiP/9KqipJ03iGGp0qNTfG3g=;
+        fh=fNx1FSe3bM0x7jlYBd1zfXQPzQcp/Mml9XnxCq/2bkE=;
+        b=AcspV8QEs8sDbkIyRPm8mz/GLws15oN3uNDQqRTSBirDEX7bnZXKZp7NabTZz9cVsr
+         yrRoybQdXH2SUYwFiVLnsCeoDSKbomyD+hERNLYP/+pzmCeVXmm/lySa84Rx63SqsbTE
+         Fw/5iBGRGLj6SorF1NFSPLQ8OVxDivqrqpXRkj2W4fW++FJC3J+NHYyBIpFzcb81Yonu
+         psB7R+zHWQRuRBV1a0DNIIx97kk6xURVEjc+w34hUsyPsTPgIfw5vUVg8tjEur7e1gBu
+         YslzFZ3xMY8qkePD9zCr5/EdJr70US+icxVOLDxF656bueKLK1dJtdI1Sf1KrSK//51V
+         /ZVQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781530613; x=1782135413; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=bJPr7AwovREaKXgEuzZAVb8kOr5xcjm3uq69zeHw4Ao=;
-        b=BY2O9icd+CYW+ktDT30G/mGbHOgFSFCQlk2ho1atz7D5gAb47Oi0nB2FfOebTI83OV
-         kR1c5QGR0xx4YS7vwTC6Qtne126TJdFUp7P1yy6k5Wh48FcJAhPQvcMLCWg71PXBrDWS
-         n7aYdOoxrJht5OUyds2KpEu8ui/vUNm6LVuC8frukXZjoxfEvpFVGj5YAMZBPoT8gxVS
-         xY2j2HKeMjY6fktg/kNDcHTzHClKs2vj+vuhlibOyycY7WgPsPbgzsUPbHHlh4hhAM21
-         4AzmbtFYw1M3oUWsyPCRmtW6eNufvuV4hrxh1D1UAin2UE+WJwtqw5tAuRrrhFUlWeRG
-         jVKA==
+        d=neat.no; s=google; t=1781531753; x=1782136553; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OKU2fS4WHk0JiCO3vb8oiP/9KqipJ03iGGp0qNTfG3g=;
+        b=BBrlMJrhQ2s7FkwyocLfOGOTlQBaLXsOXmqgXJm+jFhKVi4deZFBrBSYnbtf2dl38g
+         flGeQgXO8EQU7e9Ok5BTnJNgcDFILPE882PPxeMRfIiR/v3koNib/zT7givCM2L8sm8G
+         s8Kh9UeMtqS9LMGDxszyGYL95nHKtqPrIyd6gCsYsZn1400lrYbl5GYwGdWjenNvD7fI
+         MU046+HKaqBpwW/7FGqdYCuHrMTdKdAmPA4fo6E1qX6vlHpD5F+qCGKrEyyCQpQ0Y8ce
+         5Ei0GTLW6BGt3Ur2R+XmPxJf01kcxjOBwFee4QHT7tfIMvhua4PC8q1asmOp+ZSEqYPm
+         JOwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781530613; x=1782135413;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1781531753; x=1782136553;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bJPr7AwovREaKXgEuzZAVb8kOr5xcjm3uq69zeHw4Ao=;
-        b=s7j99CPHMuyk4LDxXdQJWsij/oi3Aa322Eu2w5NbwTQKZLLvCt/wqdnolznZ073Dkc
-         VE7F/VwNuaBA8ruxRm/cVvCU1nA5SToJlO708Nm0C+mNVMqRgYe/fuk53JejmxBo2Bgx
-         p0eY9AplgOfLRnheMNW3E6iRkgbfkjb48it0MhqLqqhkoVIOziK+RiRjg5Ikkbrl+6rG
-         KERLOM6AvmXEaQlUTbKLnVC55DIpjFV+2Y0v+xfDYnEieNdO/iBoogBArfDdNEHr69us
-         buentVzlwJI4XGYFRDGgIyn39/Ddkw600VTE8eNANL4cbXlo68Eo9lTu6MEKIborCJfs
-         WM9A==
-X-Forwarded-Encrypted: i=1; AFNElJ/FDqoD1E8mNZEG/b/upQbYWwnIHP3TxbatN7IqfUf8eA8zwRjl3FICBia2ne55ISJg1smTJ8WFfP7IMNqm/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJsXSClmbthsveJ8LSAAoEG2/UmZhwoDySUBW2yw70ngN0yff2
-	NvgTljFbip5Zg+6EbyvX24nI9K6wqwUAjhLbLRRq4EUHjUFLpH3LEdns
-X-Gm-Gg: Acq92OHw1cfuwQf8gq34yHNaWhDXqP2OzVF3oJ500mlOA2eVzDlxoj3HtMAaKRwaINx
-	DwSq3+uLl75E/9+t8WCkonE4qosZuKamPzxkbU+2KHzFh1PvOkjwV9G1Uc0IZrVx1BMctZiRc4Z
-	NYW6T3JFep46l+DGnUM1DdU7J3RtN7DiXpQeTXIZmFJsLx0l+rheuyQfidL9xPUezqflDoqDavF
-	CI789R4mn0Z052sDmnTjJk6JCMDY1KwzeoHcB+WWT6FXS2YNIQTakodcQBItGXcyROAcAiyTDxY
-	5wRwFNXw+UGvaxgenRCajvBS41jRh04lMN6HrI1iCvvZ59Xhie1ws6x6D5rh8ikTvR/DJktGT9o
-	l94yizSdijQsUzHHEvpqIhFDL+zbC8nR31yoboaIO9plkc3x5tvDJurh1GSfmievyZ9SFFl9ev8
-	SO4l9wYQq46QCYUtorxFB6UejQucAmFTHunAo9LnApRvn+FqBTYLILM7QLRFclL0tE/4JP3+FB1
-	RD90DTRoYtWVlburukcLusb8wY=
-X-Received: by 2002:a05:600c:4512:b0:490:4663:691b with SMTP id 5b1f17b1804b1-490ec4992aamr201275805e9.7.1781530613100;
-        Mon, 15 Jun 2026 06:36:53 -0700 (PDT)
-Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490ea961f18sm270433745e9.2.2026.06.15.06.36.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 06:36:52 -0700 (PDT)
-Date: Mon, 15 Jun 2026 15:36:50 +0200
-From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-To: Andrew LaMarche <andrewjlamarche@gmail.com>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
-	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] wifi: ath12k: support calibration-variant from
- device tree
-Message-ID: <23fr45actdrqt6rp6fozcaugyk3egs5zm7imschl7gyuuj6cme@3pvdhqv7xvkq>
-References: <20260131003222.2011259-1-andrewjlamarche@gmail.com>
- <A2E3AAE1-1A80-4265-9497-0C95C3308CD7@gmail.com>
- <dc8c9c9c-dc85-40dd-9313-845a808a35f4@oss.qualcomm.com>
- <3B9D1FBE-37D0-4902-8C0C-8AB57C1310A5@gmail.com>
+        bh=OKU2fS4WHk0JiCO3vb8oiP/9KqipJ03iGGp0qNTfG3g=;
+        b=leFwfutbFdyGqQwa4IUQIcz5UyKSN91M/zQF2jo/zitek8P3hkyq7V48pznl9C+lcS
+         Pw0VQtt2Oh5tniTqV8l3L1ZeciorecGEOnO4jOkvNCMp2L0T74kyR5X33BD5dvVT8HZU
+         F3c1qbNt+lqstDe2H+KHOcMliq/qKgi7XaooXH10smAYHiwey3BYiCOr7zoSWng0ifoX
+         hRFXAufNv/WGCQu1oqFwoFHDls5ztczEKDjqDhW2ElogPlJvokEpDyVN6/yH8D4Xs1o0
+         /tIM9aghU7PUdCOBd6YRuYTV7M3PkNa7EvyrF6sNTC1f9QO/joOy7L/BAtc6ZDqAToGo
+         urWA==
+X-Gm-Message-State: AOJu0YwVtbIiOv+hL8lWv0v5wABcOdmlA5FCePOlENw3Du98lCjTmw5X
+	BZ+CVcvdjzKixMgx3UdNOJeh7uKT/soiXylb/3jo+WTsRxDlIpffrZa4p2VSaD8ll4JIYnBHa6U
+	dc5Cmo8gYSjHjjHTyTzZjlxBVwgkVvvfm57XildMxog==
+X-Gm-Gg: Acq92OEo3732QKV/Py1AtxPBYaIR0r6/8l8zG/6zkjQ5FyfxPZsKckeeGvn/GvdwPVU
+	MjrlQFHhGX+jiQtQwdeg/8PSCfYu62+dhWdcRFOGFF5UaQ/7E5ROfnuWPUgnxY6t9n/HzVgpZEd
+	KITRN1YOZUU9BQv8+FtTQJs9mdPTDEAIOJjN2rRmt2yYySZ6TheECy6X9YW1co/SqcNL2N9XXXm
+	T8ulyY75yCAyyqeUu+3HzX9nTibIAxL3gKMSmBcHqQ5wbYp5LnlihJ13wjKgxvF+hQX4RwaTeDH
+	lpJ65g==
+X-Received: by 2002:a05:690c:9c12:b0:7be:fedd:726b with SMTP id
+ 00721157ae682-7f7b9414a4bmr153711167b3.42.1781531753459; Mon, 15 Jun 2026
+ 06:55:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3B9D1FBE-37D0-4902-8C0C-8AB57C1310A5@gmail.com>
+From: Lucas Tanure <lucas.tanure@neat.no>
+Date: Mon, 15 Jun 2026 14:55:42 +0100
+X-Gm-Features: AVVi8CevtUtbIEY1DyJqbdpFEeGrLtPdlZM9coI2G7IJ2tPJti6o6zOWXNG4R1U
+Message-ID: <CALt7t=EDVdn7eGbXgXWU8rgbek52+frbbeYMHwzbH7J0xGXWzg@mail.gmail.com>
+Subject: wifi: rtw88: 8822cs/bs: Issues migrating RTL8822CS/BS from downstream
+ to upstream driver
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Krzysztof Opasiak <krzysztof.opasiak@neat.no>, =?UTF-8?Q?Anders_R=C3=B8nningen?= <anders@neat.no>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[neat.no,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[neat.no:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:andrewjlamarche@gmail.com,m:jeff.johnson@oss.qualcomm.com,m:jjohnson@kernel.org,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[ernestvanhoecke@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:krzysztof.opasiak@neat.no,m:anders@neat.no,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[lucas.tanure@neat.no,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-37820-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37821-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ernestvanhoecke@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[lucas.tanure@neat.no,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[neat.no:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,qualcomm.com:email,3pvdhqv7xvkq:mid]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,neat.no:dkim,neat.no:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 25AAC686CC4
+X-Rspamd-Queue-Id: C66FB686E2A
 
-On Wed, May 27, 2026 at 05:01:51PM -0400, Andrew LaMarche wrote:
-> Ack on the deprecation of qcom,ath12k-calibration-variant in favor of the
-> generic qcom,calibration-variant. 
-> 
-> However, drivers/net/wireless/ath/ath12k/core.c still misses the logic to 
-> actually load in the BDF, which this patch also accomplishes. I don’t see that
-> in the Qualcomm-authored series you linked. Perhaps a v2 to address this?
-> 
-> Andrew
-> 
-> > On May 27, 2026, at 3:52 PM, Jeff Johnson <jeff.johnson@oss.qualcomm.com> wrote:
-> > 
-> > On 5/27/2026 9:12 AM, Andrew LaMarche wrote:
-> >> Hi,
-> >> 
-> >> A kind ping here. I’m not sure why this functionality is missing in the first place, but it is needed for loading caldata from the device tree.
-> > 
-> > Your patch duplicates functionality in the Qualcomm authored series:
-> > https://msgid.link/20250228184214.337119-1-quic_rajkbhag@quicinc.com
-> > 
-> > And note the upstream device bindings for ath10k and ath11k only support the
-> > generic binding qcom,calibration-variant.
-> > 
-> > There are no longer any generation-specific bindings, see:
-> > https://msgid.link/20250225-b-wifi-qcom-calibration-variant-v1-0-3b2aa3f89c53@linaro.org
-> > 
-> > /jeff
-> 
+Hi Ping-Ke,
 
-Hi Jeff,
-Hi Andrew,
+We are bringing up an RTL8822BS / RTL8822CS combo on a Rockchip PX30
+board (kernel 6.1.118), Wi-Fi over SDIO, BT on the same die over UART
+via btrtl + hci_h5.
 
-We also need this functionality, and as Andrew noted, the patch series
-from Qualcomm does not actually address this.
+We're deliberately migrating off Realtek's out-of-tree SDIO vendor
+driver to mainline rtw88: the vendor driver hits memory-corruption
+bugs we've been unable to get support on, and mainline is the better
+long-term path.
+That migration leaves us two gaps I'd appreciate your guidance on:
 
-I believe some confusion arose because the patch series mentions the
-"qcom,calibration-variant" DT property, but it does nothing to implement
-this in the driver. In that series it only exists within a schema file:
-Documentation/devicetree/bindings/net/wireless/qcom,ipq5332-wifi.yaml
+1) Power-parameter tables. Mainline carries the TX-power data as generated
+   C arrays in rtw88xxc_table.c, while the vendor driver ships the same
+   data as text files.
 
-Our need for this property was previously discussed here, and for now I
-don't see a way forward without it:
-https://lore.kernel.org/all/77vowy4ax4cl6dlc45i2q3fjmwn3q676wqghq267tmbix7773b@27h5t66mflur/
+   The TX-power limits look like this (TXPWR_LMT.txt):
 
-Thanks a lot for your work here.
+       ##  2.4G, 20M, 1T, CCK, //(1M;2M;5.5M;11M)
+       ##  START
+       ##  #3#  FCC  ETSI  MKK
+       CH01  16  15  15
+       CH02  16  15  15
+       ##  END
 
-Best regards,
-Ernest
+   and the power-by-rate like this (PHY_REG_PG.txt):
+
+       #[2.4G][A]#
+       [1Tx] 0xc20  0xffffffff  18 19 19 19  // {11M 5.5M 2M 1M}
+       [1Tx] 0xc24  0xffffffff  18 18 18 18  // {18M 12M 9M 6M}
+
+   Is there any way to convert these .TXT files into the C tables? It
+seems the vendor driver and the mainline driver power configuration
+don't have anything in common.
+
+2) Is there an upstream (linux-firmware) RTL8822BS firmware that
+supports the UART transport (rtl_bt/rtl8822bs_fw.bin + config), or
+does the 8822BS firmware still have to come from the vendor BSP?
+   Is there a problem using vendor firmware (not released at
+linux-firmware) with the mainline driver?
+
+Thanks,
+Lucas Tanure
+Neat
 
