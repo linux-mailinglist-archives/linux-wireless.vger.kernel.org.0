@@ -1,211 +1,208 @@
-Return-Path: <linux-wireless+bounces-37802-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37803-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id C/reHZalL2rfDwUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37802-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 09:11:18 +0200
+	id TvYZAMeqL2pEEQUAu9opvQ
+	(envelope-from <linux-wireless+bounces-37803-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 09:33:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C8E16840DD
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 09:11:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E02684391
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 09:33:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nxp.com header.s=selector1 header.b=VpS1yCO7;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37802-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37802-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=nxp.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Tq1vqXc2;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37803-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37803-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 51CCB3003806
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 07:11:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F12533014BF2
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jun 2026 07:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA7B1D8E01;
-	Mon, 15 Jun 2026 07:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3A03BED33;
+	Mon, 15 Jun 2026 07:30:17 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013053.outbound.protection.outlook.com [40.107.162.53])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169F013AA2D;
-	Mon, 15 Jun 2026 07:11:12 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781507474; cv=fail; b=pbhMZmk9GObmIu5d5/0X7ucC2LiOSROSZak3oWzneF4/Y2Y+Ss1Lf7/rdBZVAN4LTT5DWl1Jm7QWNfTZR8+EqSAW5Ch1NmVjEYBvJ7wZy6Ea2tEJ3s7FfVV/m2PqcDPusq+cW5Maua5+zueemkeAetCK1+Xib42K/jKZTx7hMWc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781507474; c=relaxed/simple;
-	bh=0FBuA9IYWuOkyANE6C6cb9CCI2f4rdHwP2DHpHlXfsg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Z2fjtBYvJIvjtUdrau0vagjYBNNutJzfxTwpAsooVO2VUsMPLngfHqjwQcvW9yeUX7Jth843NS5i5pZlSXnizXXltq2RvxdXNRIpSHBU7AVokhbgmtrZKyl0f60mHBylJF323CQ4mCDTP2jKnMOUP0rYdkzIDEwA5aMO8muOL4o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VpS1yCO7; arc=fail smtp.client-ip=40.107.162.53
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W2auz7EdNZY6ylZtC7bto0jCa6XjP03tqiG6+TSGhe6nIRA+hK/1wU9woLAGx/p84PsIQzrKsVJ/n5VACtDaERdWarCvZt7sqMFIA2QQiqnPi2UZUP0nTQFCZJx5cJx2m7/rod/hxnyhFH+AqgdBGIzGJ8+KPgKEjG7SICs8bpep0ZV9R0Y44Ji9rEzaGV7GYzF1ITvAsOaT5SPmAK00ZBUoKz7nAwbjw3ylcWWuxZ+KgcTJmiPp6K0kfR1orMij3yIMOh2ASQER/HQW/qu9CB40I2nPSROZGI9PAsQdkhoYVdunJ+7l6vDDvWw3aD3wAyU4Hm+Btx0SOM67mloTrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+XbbzzYjlPOaKG8U/6hpFiGljpTOJlMphjibu2IP1mQ=;
- b=w5PkzPT72cKNnGOA/vrdTVN9jet3yjel4fsju3bT3juzhdCju/HxKRUDcKIQOyLNM+9FUQkeBTEVL56NG3rVRgy0cICMVutiq7MPgqMr1ECUSjSJvq9s/Hgs+RKrfE1TZg82TzPSly7d/miHf2KfaKpqSYiRT/Ahq+f3pQAR/8j1gftQSxI/bLc6Kcm8wDzy21qtVq51ldES4/woWC/OTL9+eBT19/0ZBjzKQYOH/1cdJDe3dytq5i1sy70dr3uQ4hYRr1uw6bnJjmK08LuPg1r0MfHF5I8gIkSMik/dYuKFMI7UROUja+63IuyWlv0cCxXNcuYEWRxE77+L82T4XA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+XbbzzYjlPOaKG8U/6hpFiGljpTOJlMphjibu2IP1mQ=;
- b=VpS1yCO7baHE5MFMaLGzpBzRNqZZLMqP9D0wIzVpzwxwtKEUUND+0j8XUJhFT7Jyo02q8qqcd7V22ypXIsOrfnfH4o6OUyiGvc64SD23ZlNm2SDDMLZgGk2msm4yJtf3bewSaSog8yBlnfnnwsxqBfI+RizMdgZVu+K7kQ8kRyi5uaaHmMBVIBNJicmcCGl7iYgiKTdfFJxAIMu22BTtrhel7ziAmUuD7vM2s0ayCH2HnYNL59mqxZDCuKgCg2Q2G0UDD2SdhuNA1fZPm6JUvAWWzlbnUuYjTnLPYzHX1lXfDLahKQ1Ees1wKCBVtbHqUizWnlcL2wvg7VqABTVcRg==
-Received: from AM6PR04MB5239.eurprd04.prod.outlook.com (2603:10a6:20b:7::12)
- by VI0PR04MB10688.eurprd04.prod.outlook.com (2603:10a6:800:25c::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
- 2026 07:11:09 +0000
-Received: from AM6PR04MB5239.eurprd04.prod.outlook.com
- ([fe80::fa76:ead:9e21:f84e]) by AM6PR04MB5239.eurprd04.prod.outlook.com
- ([fe80::fa76:ead:9e21:f84e%6]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
- 07:11:09 +0000
-Date: Mon, 15 Jun 2026 15:11:24 +0800
-From: Jeff Chen <jeff.chen_1@nxp.com>
-To: Rafael Beims <rafael@beims.me>
-Cc: Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Rafael Beims <rafael.beims@toradex.com>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH wireless-next v1] wifi: mwifiex: fix permanently busy
- scans after multiple roam iterations
-Message-ID: <ai+lnN/mjS0mycdV@nxpwireless-Inspiron-14-Plus-7440>
-References: <20260612122547.1586872-2-rafael@beims.me>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260612122547.1586872-2-rafael@beims.me>
-X-ClientProxiedBy: FR4P281CA0046.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cc::9) To AM6PR04MB5239.eurprd04.prod.outlook.com
- (2603:10a6:20b:7::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BC23BED0C
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 07:30:16 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781508617; cv=none; b=nmSHBdnSdOKeZOI7mPwMZ33NLdeYU1kmClU0Ir/usxwLuZ4Cjw7Ci7o0Q83JvUfMMiH5MxkEQ+B6TbusxLHvUhsPUTA3Iu7F35W28fse7hPVVgD/OVOEutzvgms4TMrGPgfWf1kYd5cXshS90dq/o+EuTHgpG1RrpslY3ngAGaw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781508617; c=relaxed/simple;
+	bh=fR0oi9v184iQOyv1BvHhYMt5snuytRuwX2/aefL9mLs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Y7s34wlEy9QQ/s7kbZTfjUD4j+rfCRnpDi0ubT2Aw3MsVDCLXPXeIsNUPacPXmHotAirNdV/sGdr0HGyYv0CuKiyy6DCX2I5qW48ayZb5l6GJBrSBs/lj3ZwpDQLunD4HU6k1kPlJqf+J1HKAHJKKfi8/YnVz+98Cra5EPRTcz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tq1vqXc2; arc=none smtp.client-ip=170.10.129.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781508615;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4VlL+ld2zIBTp0Uov30L/svoU5nNy1BEIdafxq1tBX4=;
+	b=Tq1vqXc2IcFfo4l5id6SpLDh7oDR/p1UEY2xrRc6Nw0J0ortN/b8msC2yICaH7K1ZFeu1J
+	LquZDk2bcaU4GOaBxjFnm4clV3BpH494shXvLrcfNNTdK3vzdZS7s+bcJgpkQ82tPpycXC
+	PNv/nnxxBhwK5dbvA8gmI/5dMBVs1Co=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-uW9eYI_rOsCmZdj76mUXtw-1; Mon,
+ 15 Jun 2026 03:30:12 -0400
+X-MC-Unique: uW9eYI_rOsCmZdj76mUXtw-1
+X-Mimecast-MFC-AGG-ID: uW9eYI_rOsCmZdj76mUXtw_1781508610
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5529B19560BB;
+	Mon, 15 Jun 2026 07:30:09 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.48.61])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CF602180056E;
+	Mon, 15 Jun 2026 07:30:03 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: helgaas@kernel.org,
+	alex@shazbot.org
+Cc: ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
+	bhelgaas@google.com,
+	jjohnson@kernel.org,
+	jtornosm@redhat.com,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	mani@kernel.org,
+	mhi@lists.linux.dev
+Subject: Re: [PATCH v9] PCI: Add device-specific reset for Qualcomm devices
+Date: Mon, 15 Jun 2026 09:30:01 +0200
+Message-ID: <20260615073001.401330-1-jtornosm@redhat.com>
+In-Reply-To: <20260612151749.GA603817@bhelgaas>
+References: <20260612151749.GA603817@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB5239:EE_|VI0PR04MB10688:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1f930191-c7e7-4f00-4f12-08decaad4672
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|52116014|366016|1800799024|23010399003|19092799006|56012099006|11063799006|3023799007|22082099003|38350700014|18002099003;
-X-Microsoft-Antispam-Message-Info:
- K/BRxEohbu54QRcr6MOjGxvJNMn0+Uuq38e7o748jDZc7ST3jtHBM5i11/i1hz6oIKgqGhZqoP1aSBO1TEvMnBRsR2MpK4jTSb7jOECNiKE49hn0RDS3DIY5T1U+kKpVft6AgNSO/PiZmNO+QBbpYLXJYgj1SbNPdI2x1fwZXUT7sC5Gliu7u8InfeBZL1x/CSc1EYRvFM80W3hC2zb5szPlyoQusKprMZZCefjD1Nux0qFuIhHo2IqoGOgU4owNk2daNokdDUoBf/DyZ6sjvIjTOYAj9sAlLqZJm6piOF4wi7ZIPwAbGISgzRyw3VPq8i0Cv2oAR9ZT9ukmg9/OshU+viNVR9qhMpV3/Vy7UkocNVIwnVhypu531mMU0iR4+vp/qaTLtgztZMqrkMUzE0pKgloZNP7TcmA61+YFUo2REzO3UvT+0R/FPIK3/UccXuT6DMA+9hbL7taY2i8Ha+Fs4zu9DUYFN83neyICimwoyVk/M7eErvonceEnpWMkgT3GvvQEfPWVET8B43QHMugFTmjvxwFESPoUnbOB+J89teD2bDeVbqTJJDiKU0rI7EaF9pcykhVicAJd4u2twFxcAgsi6Il5wDqkAgFJSFmZFEYRmDmjy9ZlLNrWV0BKwy1cAdQKZ/m9kftcqeOWIXr+5O4TDseo/gGO6+xC2b0fsYglYPXNaAG1fSNaqP6CB1u+vfw8YInFBN74cTSG/9LFQFJC3IJbrcL61HXvc3qDFmN8J6qCrAzVP46OaH+w
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5239.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(23010399003)(19092799006)(56012099006)(11063799006)(3023799007)(22082099003)(38350700014)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?dmtnaHAzWGVsdnUzZnhaWjBmU3NraXN1eEhqVXA3Y3BKZ1RNcFdFakFLQU8x?=
- =?utf-8?B?ZXh5MWUvK2VmRlQ2M0NKMVBmL0FRbGtQbW9SZ0cra0tyd2tKY21RRG1DdDdJ?=
- =?utf-8?B?NlEySGlmZ1hhUTR2NEd1S0gxSXFONm4wRW1LaElSQ2xpaS92alRaTUVyazVl?=
- =?utf-8?B?UTQ0UHFBRWR3T1hNR0EzK25ZUXE4L044SDNPTGkwT2t2VnMra3NXT0Qwc0NX?=
- =?utf-8?B?TE5XV0ZZcXgrSDdZYnJ4NkNNcHl3c0RoTzFzYW1OR3h1RksvakpnSTN2NTRU?=
- =?utf-8?B?clFvMmkxZkNNa3hIUmRXV0xKVnlxNUczanFnOGdWL2RKbGMyUmR2OFFrZ3RS?=
- =?utf-8?B?Z2FmTjhVMkJ5WmkrQXh4Y2ZBSmQvVmIvMTdXVVNNK2tubnJiSmFZVUZDM2k2?=
- =?utf-8?B?TEVDOHpCbDFOdThNSmdvSWZhQmhNNDl0MUpUakhuM0M2YXkyelZiMVhXOUlR?=
- =?utf-8?B?bmI0QnF3L2JZYlhBM2JoNlJndlVCeUZYQmtvM09vY0NlMWd3T29pQ0JUaDNl?=
- =?utf-8?B?SlBVYWVJQzc3djcrSFMwbXlqbDBTaUxlRTdDeUlQSXNLNVlrUEdRTUlab0Vx?=
- =?utf-8?B?eW40MEJadGtZVm9HNTNERE52cEQ0L3RuQzFBNGlHaVhlMlkrQkRnT0thSHJx?=
- =?utf-8?B?RHVOS0grWHhWNWNtcFYzVDRHZ2VuaWxKRFlBTWxhYy9QMkNaUnk0RWRGc0lI?=
- =?utf-8?B?djZpMVVaai9PcldMdGNLNVBjVWNVU0ZkdnNPSUEvMjQ2NXh5VTNlRENMKzAw?=
- =?utf-8?B?MGZQcCtzcERKSkowNHlSM1JFN3pOYjRKQlpSTTVIOTRTNXdqQkdyMkJUemh6?=
- =?utf-8?B?VXM1MEg0SG9pNVNLZ2JXTXRoWDlxS0pIc21GVGh1ejMwMlY4SHdidFA3RjVH?=
- =?utf-8?B?NzZKcTJuSHZLRGZjd0VUam5wRUVMVzZCckY4S3RYSVNCUkEyeWcrSjAwVXZQ?=
- =?utf-8?B?UmQ3cmVNVjhpQjVIenpadE9OQnpZQ1FTUWxDMFozbVB1SE5RL0g1cThjZHlD?=
- =?utf-8?B?Y09ZKzdRcy9IZ0lreGlybzdHVmh2c1F5ZWwweDhjbGllQnFDMDhWM0tyTzNa?=
- =?utf-8?B?MGhmQ2lpNTdYVy9GcGRBeEM1dHpMaUI3QWRiaENFbm9zVnhteElmaFJIclA4?=
- =?utf-8?B?Qk5JQXBBOEZva2l4ZW8xVlJkeXU5ZlZEOUFLUEViQ1pwdkRnS3B4QzN6dk1n?=
- =?utf-8?B?V1VoVUdNNVRscWxkaGFnbm56cmIyZDdjbVVtRU1KRkUvM0Q5TmV4VGRvNlpE?=
- =?utf-8?B?dFRXak5BM3FqZkdBTE5sWVdNYW9KMlZLRHVMam1Xend3SG10M3Y5V241Tzhm?=
- =?utf-8?B?Sm11d1Y1eXlPN0pmTDU2YlpFdkFQdFF6ZDRIYnZnemxLemZhdUtZc1UyQ2pt?=
- =?utf-8?B?R1doNTJRS3JEMUI5VlRnakwyRW1nZURzUit4cXZFMy9tMUFQTGZsYUVzMGlk?=
- =?utf-8?B?eTAxdnVxQXZTQU52MmlFQm5TeTB1aUFZdUtRYzNIMDFZNWVXbm1ReTE2Zmpm?=
- =?utf-8?B?bkkyNjh4ZWNQdng5TytGNHRUcEJBWi9DZjJqdlBJOHgvTy9sa0tyMzhrb2hx?=
- =?utf-8?B?NEgvcUttNWR0TFZ2UkxubWowN2h4WXFjdGFPSXlQV2JnY2ZCUmppT2tlN2U4?=
- =?utf-8?B?YXdJbWlCZDh4eXJBenFZTlZPeFdSbUxHTzl0VnpCaks2MWRGTUdkVm85am8x?=
- =?utf-8?B?UmZBYnhYYXh5cWZTUEdoYm9PTjBxWXoyakw3UEtqVFkzQXNnbXVQMUdBRzc0?=
- =?utf-8?B?b1YxQysvWVdwdlJadFZVL09hNjAzaEExQWtQdVpsYTZQeFZrT2JWV0IwU2l0?=
- =?utf-8?B?c0V2Z2FPbTlwTWxObGhpZkJSdXhhZ3NCT1ZPanZOYzByWnM3T2pETm5WUEZT?=
- =?utf-8?B?SGVva0hFMmhEYUsvMVdsdU50YmVIODBJa2xwTzUxY1c4aGpmODdYNjR1TGE4?=
- =?utf-8?B?bDVpR0x4RkNvNnkzLzNLa0tIUWVQWFdNWUVkbzFSc0hTQlVSbExCaDFtT2lU?=
- =?utf-8?B?bTArMmdWZTk1TTVha2pOeGxpZGNuR3o2MkdHdlFCU21Wc2lTSDI4ZTQrSWVC?=
- =?utf-8?B?K2toTmJEd2lZYXZzVlJsd1JPQWtyTXJ0U042aWw4aEpiUG15bFNaUVZraXBT?=
- =?utf-8?B?L0Jva29hTXQ2NXM3VGZZbnVJbTkrRm9FeTFkSEdJVkpPK0RvL0FIYkh6azNo?=
- =?utf-8?B?aG5sdU1MUGtweURCaGIycXdsOThTRXJnUWdxNndEZ1JPTWp6ZS81V0ZlTGdZ?=
- =?utf-8?B?ZER6aE9ZN0hObW82bUIrS2toeUhCMDBBaDV2clFBUzYvenk2N24xZWphVmIz?=
- =?utf-8?B?Ti9mTXFxYXNXZUw3cXF5b0Q4dTltOHNrM0hUQjI2T2NpTU5lNWxNQT09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f930191-c7e7-4f00-4f12-08decaad4672
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB5239.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 07:11:09.6886
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fVkYY+Xkj1fuXyCruTHAO15H10ZbZ/dpHFtpBMYZITzS2VOdrHFS7rbzSnQ7s1VT31YAymWBW4k8m98dv6yjbg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10688
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-37802-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[jeff.chen_1@nxp.com,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:rafael@beims.me,m:briannorris@chromium.org,m:francesco@dolcini.it,m:rafael.beims@toradex.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nxp.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.chen_1@nxp.com,linux-wireless@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	FORGED_SENDER(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:helgaas@kernel.org,m:alex@shazbot.org,m:ath11k@lists.infradead.org,m:ath12k@lists.infradead.org,m:bhelgaas@google.com,m:jjohnson@kernel.org,m:jtornosm@redhat.com,m:linux-kernel@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:mani@kernel.org,m:mhi@lists.linux.dev,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37803-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,toradex.com:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0C8E16840DD
+X-Rspamd-Queue-Id: 56E02684391
 
-On Fri, Jun 12, 2026 at 09:25:46 AM -0300, Rafael Beims wrote:
-> From: Rafael Beims <rafael.beims@toradex.com>
-> 
-> In order for the firmware to sleep, the driver has to confirm a
-> previously received sleep request. The normal sequence of evets goes
-> like this:
-> EVENT_SLEEP -> adapter->ps_state = PS_STATE_PRE_SLEEP -> sleep-confirm
-> -> SLEEP -> EVENT_AWAKE -> AWAKE.
-> Before sending the sleep-confirm command, the driver must make sure
-> there are no commands either running or waiting to be completed.
-> 
-> mwifiex_ret_802_11_associate() unconditionally sets
-> ps_state = PS_STATE_AWAKE when it processes the association command
-> response, outside of the normal powersave management flow. If
-> EVENT_SLEEP arrives while the association command is in flight,
-> ps_state is PRE_SLEEP when the association command response is parsed,
-> and the forced AWAKE overwrites it. The deferred sleep-confirm is
-> never sent.
-> 
+Hi Bjorn and Alex,
 
-Hi Rafael,
-Thanks for the clear analysis.
-Agreed with the fix — association response handling shouldn’t override ps_state.
-For reference, the NXP downstream driver also doesn’t update ps_state in the
-association response path, so this is consistent.
+Bjorn's questions:
 
-Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
+> I guess "bus reset" here refers to Secondary Bus Reset being asserted
+> by the bridge upstream from these devices?  Seems a bit surprising if
+> that doesn't work.  Or is it just that we can't use SBR because there
+> are multiple devices below that bridge?
+
+Yes, SBR. The devices I tested are alone on their bus (single device under
+bridge), so it's a device-specific issue, not a topology problem. The
+quirk_no_bus_reset patch addresses this for v7.2.
+
+> I don't know enough about VFIO, but I sort of expected that VFIO would
+> reset devices between reassignment regardless of how a VM terminates.
+> I guess that's not true?
+
+VFIO does attempt reset on every reassignment. Without a working reset method,
+the attempt fails and the device remains in undefined state. With this quirk,
+D3hot successfully resets the device allowing reassignment.
+
+> Since the device claims to preserve internal state across D3hot->D0
+> (and it sounds like at least BARs *are* preserved), is this a
+> potential leak of state between VMs?  To play devil's advocate, how do
+> we convince a customer that none of their data is ever leaked to a
+> subsequent tenant using this device?
+
+This is a valid concern. Testing shows device internals are reset despite
+NoSoftRst+ (command register cleared, requires driver reinitialization),
+though BARs are preserved. Given these devices have no other reset method,
+this provides the only viable mechanism for VFIO reuse. We cannot improve
+beyond what D3hot provides - the quirk works because despite advertising
+NoSoftRst+, D3hot does clear sufficient internal state for clean
+reinitialization.
+
+> If we think this is a viable method, it seems like we should use
+> pci_pm_reset(), which takes care of IOMMU and device readiness issues.
+>
+> We would have to change pci_pm_reset() to deal with the fact that
+> PCI_PM_CTRL_NO_SOFT_RESET seems wrong on these devices.  Maybe we
+> could cache PCI_PM_CTRL_NO_SOFT_RESET in pci_pm_init(), then override
+> it with quirks for these devices?
+
+I explored a similar idea in v2 (PCI_DEV_FLAGS_FORCE_PM_RESET to bypass
+NoSoftRst+):
+https://lore.kernel.org/linux-pci/20260508145153.717641-2-jtornosm@redhat.com/
+(Note: v2 used driver names ath11k/ath12k instead of device-specific names
+WCN6855/WCN7850, which Jeff Johnson later commented on in v7 feedback.)
+
+Alex provided guidance on both approaches and indicated device-specific reset
+seemed more appropriate here:
+
+"Device specific resets are made for this scenario. Look at
+pci_dev_specific_reset() and pci_dev_reset_methods[]. The supporting
+evidence that this performs a worthwhile reset is still a bit weak, but
+heuristically it seems better than nothing, which is what we're left
+with otherwise. Reset via D3hot for a device that does not expose
+NoSoftRst- is not something we should enable or endorse for any common
+use case."
+
+The device-specific approach keeps this quirk isolated to proven device IDs.
+But I can revisit the pm quirk approach if you both prefer it.
+
+Alex's suggestion:
+
+> It would be better to extract the core of pci_pm_reset() to a
+> pci_do_pm_reset() function that's used both here and by the
+> pci_pm_reset() function.
+
+Good point about the code duplication. In v9 I kept it as a self-contained
+quirk to avoid modifying pci_pm_reset() and touching core pci.c code, trying
+to minimize the change footprint. But I agree extracting a helper function
+would be cleaner.
+
+Once we confirm the preferred approach (device-specific vs pm quirk per
+Bjorn's question above), I'll send v10 with the appropriate implementation
+including the helper function if we proceed with the device-specific approach.
+
+Thanks
+
+Best regards
+Jose Ignacio
+
 
