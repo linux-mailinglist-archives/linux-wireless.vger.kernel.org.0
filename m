@@ -1,92 +1,78 @@
-Return-Path: <linux-wireless+bounces-37840-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37841-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WT8AJINdMWqOiAUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37840-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 16:28:19 +0200
+	id 5+2oIrx4MWrTkAUAu9opvQ
+	(envelope-from <linux-wireless+bounces-37841-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 18:24:28 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F31B96907CA
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 16:28:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0884F6920BA
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 18:24:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="hmm1mA5/";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37840-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37840-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37841-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37841-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6DE7F31A4BA3
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 14:17:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D42CD3276232
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 16:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0047337B00E;
-	Tue, 16 Jun 2026 14:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955414657F8;
+	Tue, 16 Jun 2026 16:10:41 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9670543C047
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 14:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C9E451052
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 16:10:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781619419; cv=none; b=KWmSuUYE1iE/z83QEPiV2M/SIZ2gbbBWlJrhxlLRbP8rFk1fz4x71pPTVNsasvYkm/wP77DVPq1Ksfp1zdL96PzyNtHEPS7EO8jL0F+Qq1U7PXv1FXN5MSbidgSxz79321sREkB7vp9I2H6Gke9Tt+MoCL6MWjxcJ4yiGRDF9Gs=
+	t=1781626241; cv=none; b=Bsw7wlORHNCjct3FhrxoTrClDz/m8WxSCAroYWWMLSVSCXIvr/UNhHbqJ0di7JYdBMlMc4Ew42C8FwEHmsxZH7SGekBT505wQzZCjYGCKxou714nJoC8koDEIczHW0Qm4vaXSbMEBoRy2YuBcB4bN+1GQIbCSftBUrnS2kA3mJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781619419; c=relaxed/simple;
-	bh=VPCRoNUG9aJ7F3yMhRHxwDzPzY+qMW0bGvnF8IJqyug=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fM3uFXaYUVoozj2SX1LDTeSelLyo2uzq8JyvgIPDT31gXIPwnaLQqNNyDTMrMQEhbaMs30ulJKeFIg+iuxJM4eWGI32iDcH63gCQKHh2MB5s/D9CozkGJMH9KyD8IXb0H5bNGuE/wXiUxbWIR51ys0F3qeyCh+RUE3tK5RJ81Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hmm1mA5/; arc=none smtp.client-ip=209.85.218.51
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c0115a3794bso511269966b.0
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 07:16:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781619417; x=1782224217; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8VHtkK8tM3BdtAhkGiLPcaxkAA8nOhYvW3opPVSOK/0=;
-        b=hmm1mA5/YoJoMTV1Yme7AAP+FEJh7nRhAwkYxCcjT/IYxuPd7goz3oP76WPxPxDJi0
-         X4NaXMQ1LPTr+rmI9mOhZ4dEusjKyMjc6jRNvJllVXuIIKxF3YoIZt5i5DB8FBss3QSm
-         S/CAVxU1RVX/rsRTf9HPQB1c7yakDaW/Ie9yfvyw1YPq0JcdtzKqJM576Nuoi0qHWYls
-         jgB+NSBJqIRm0/jasr+SFA7MpAxtgxgAnKZ68x6CuAuW9uPmVrJMMD+eRT9BenM868W5
-         81sbM2GD49ieQNfIaNgG28YX4PUBTQxAFnszmP0jW8aE5LbHqcUJRlmS4sWvOpxwJl6z
-         1AEw==
+	s=arc-20240116; t=1781626241; c=relaxed/simple;
+	bh=jEoGq3WpGTVIVPUqmh4lvksI6/c6ObtEqpx20Y1pUpo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TZnQDQql2jDQM63pOMGtKCenoRZ7wO0hYtQyRWNiiCKUghos7+RvqIicuq4EPirRHhPm0H/IZTuGXP7mXTgmXaZAuRaVu4f4N3uJskS442mwT918dNIUJnyQ+uxHh5nvC2r/iEplQuki9Ty9SBTBGZqEUA63O8PrCjflZ7OxjCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.169
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2c0c3546924so30870085ad.3
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 09:10:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781619417; x=1782224217;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8VHtkK8tM3BdtAhkGiLPcaxkAA8nOhYvW3opPVSOK/0=;
-        b=eUVmbEYZhePa5NoMGmRPPYoXAYv590fqQ0kOWGxKbRu6MJ4r97Qr7isj5qvmBkElgl
-         zHBOkyb9uTkaQhww8xRTtFGzUlZLWGjrgXo/pNgoX7Z7A2sU6fFVcRSungdLD2jujfDc
-         NBFxIP5FJhU0yio0xT52EjFPKqdBnOCH2wtrBMv9QuNOY18sI/hYbC9ojk1eNB2xgr7c
-         HZrdPF9jHK86FCB1qSsV2LEUM4l6PyO+B4bp3uE+d8uWEXw3zIB5KBiJJ3geAT0bEO+C
-         gyHSF2ioVNHW+KddSYP249dkxY2T1FxJsjhjhukGoIVKTlNJeIdaN5/9V47zzfDlrZLy
-         Rr0Q==
-X-Gm-Message-State: AOJu0YzmOKD3icN4G+gwovuXmmS0BOoXqp5xQ5xxqXwA/yQW7wK9XROy
-	Q+mjrIjIUr9kFXZh9s/R/878CgYyGZink6r4Vt8OURR5yGxuGOro7QhZrWqu1XtykcQ=
-X-Gm-Gg: Acq92OHt+Ds6Dpmli8+ZkTq39PEBsJB03usqIcOXg/VPP3qPp6aahPwZB402BT9GeMp
-	lEAsGrnyF5qmmywF4Uwm9ncDxFa5EOa9zyN+ivZF6naeD4InlWMfJoN6yu5BVVoIR1EH0I+DnhA
-	Md36z0EZQEsbJB85TH4jp06NOu9wfuYpbFXxvBX8VmvH2nUH4TrDoOxQmRK3KHDxZYWBGa0FrXW
-	vUZRzUOzpt6GYGIIKGBpmD9uMLZx3+E6by4Z2AI1mAHGx0N0NEEku8fqQKbv3djx3jLOxLi8tC7
-	/YdzlEVXCH5w4oFpUX7CATk3hEoEsn47jYXUFbkZKH0zfi3ls3RyJAJrDNx2zIh7a1/Ah95dAF2
-	3rAJOacfMO+Q/APnzWDBtxWV9AUK+eLgctuRbitIhySKoiH4ZA3GzND08I1GXA2czt1TsRsyPjN
-	ecQNChmRYos5V9IWMNmp6hRk7fLKtsSgM/5Q==
-X-Received: by 2002:a17:907:68a7:b0:bcb:d9c7:c6f with SMTP id a640c23a62f3a-bff496241eemr463151966b.7.1781619416660;
-        Tue, 16 Jun 2026 07:16:56 -0700 (PDT)
-Received: from localhost ([80.208.66.169])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c01ee8286c9sm373807366b.5.2026.06.16.07.16.55
+        d=1e100.net; s=20251104; t=1781626240; x=1782231040;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QfKOVyRBVUkjlDsBRH3w7gLrWCYdWHEdVo3BiIjzYz4=;
+        b=Z2TEPae8aFHcZHTREjStq+sQvXFQTj7lTeDqYWSBQ6ss1IH+My6ASb9I7NJvU/zcj3
+         qvWM/wr5bFtebA81EfcZzrMJVuo+8/EU4//1KYC2k5i0KqnXofYraQONzoX+x3gFXx6T
+         /Jbd9pC7+fPiCLJgS8pjCNjLF4yyhxB4p2X08pYjDxCtQvVO54jLSceuV+Mo7OcAS9ZK
+         MlABE391n3h9G3VhqBw6F1Ma9Kjoerw8FncyTeAE18F8tcGaqq01f5UUcmqhGsGFCYr2
+         jvifTHpZbiVtSRE8FNKQ96/jkLq/EaX4oL41HYjbX2QcxNNehr4w4PwP6NM3GK/I4Goj
+         W78g==
+X-Gm-Message-State: AOJu0YzFCsnCoZXsAGs5a7ORt52Wo1kX+XR+EzhrFgkOnAlOGN6vVz/t
+	+63AxDmwLNkOehuU4Hpx0ZUd+YzdlLq8NPyTdBz3TXKXVpZLy7hdknhuh2wW7Lrc
+X-Gm-Gg: Acq92OFq6d83SqgaGZbfmD3re/ZRO7p+NTbRIxSWm2V76ljZFN8yO1WwGRNr/8NJeS3
+	wnTEsLirYki1uWDVuZhwXdvIHCDgfs6C8rQi8W6nMNlTlXxczt83LV5P4STiEkPhwqMhci6PVBG
+	ol9a3FlqXNZ4TRo8T3Vu538Jnq6NeX6tjoTEjZpnx7WdC0orKx4AKzMSuxKiHeKl4JQNOCDNAgo
+	n90EdoPlvseFssv0annsUrfDC7VufxYWjnOHMhsbjWo5oUoz3CJnnx/RcJYwNZdunuVspzy6SAj
+	3lVnepgBhncGNEyAXgATMYgYHoQ/61s5NxPQbkk5nMTuS+J+onf2BGXKgDCzsTFNN5b+9ceQ6sF
+	l+EJmxzWuFlZBya4Wqn4JwBGES1dXCAvX6lj1KE9ANn3yr7SYPyYgWVZ2RYifKr2j9d8CFSy4Bz
+	ToWZWh23dBFrPuK7VP5//uZfZCO7NVbp7OqRHAln9WJwktpK2NYElK5ajPJrkzzzbZ8XXOizCDo
+	yV6rFkbUpGOTXGqMnnaNVs7gO9ZdGVd1ez/n6Zz06XaW8X2LwE=
+X-Received: by 2002:a17:902:ea06:b0:2c0:e5ee:f56c with SMTP id d9443c01a7336-2c664271b0amr171763185ad.20.1781626239769;
+        Tue, 16 Jun 2026 09:10:39 -0700 (PDT)
+Received: from sean-HP-EliteBook-830-G6.. (114-34-228-194.hinet-ip.hinet.net. [114.34.228.194])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c432f77479sm139360655ad.63.2026.06.16.09.10.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 07:16:56 -0700 (PDT)
-From: William Hansen-Baird <william.hansen.baird@gmail.com>
-To: pkshih@realtek.com
+        Tue, 16 Jun 2026 09:10:39 -0700 (PDT)
+From: Sean Wang <sean.wang@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>
 Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	William Hansen-Baird <william.hansen.baird@gmail.com>
-Subject: [PATCH rtw-next v2 3/3] wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 17aa:b736
-Date: Tue, 16 Jun 2026 16:16:20 +0200
-Message-ID: <20260616141620.91081-4-william.hansen.baird@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616141620.91081-1-william.hansen.baird@gmail.com>
-References: <20260614135508.70307-1-william.hansen.baird@gmail.com>
- <20260616141620.91081-1-william.hansen.baird@gmail.com>
+	linux-mediatek@lists.infradead.org,
+	Sean Wang <sean.wang@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7925: fix crash in reset link replay
+Date: Tue, 16 Jun 2026 11:10:16 -0500
+Message-ID: <20260616161016.19346-1-sean.wang@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -95,78 +81,83 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:sean.wang@mediatek.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37840-lists,linux-wireless=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[williamhansenbaird@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:william.hansen.baird@gmail.com,m:williamhansenbaird@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-37841-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[williamhansenbaird@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mediatek.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F31B96907CA
+X-Rspamd-Queue-Id: 0884F6920BA
 
-RTL8723BE outputs a large amount of PCIe AER errors during and
-after boot, even before probe and when driver is never loaded.
-This causes significant system slowdown.
+From: Sean Wang <sean.wang@mediatek.com>
 
-The errors are the same as reported by
-commit 77a6407c6ab2 ("wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723")
+During reset recovery, mt7925_vif_connect_iter() replays firmware state
+for links tracked in mvif->valid_links. After MLO link changes or MCU
+timeout recovery, the driver bitmap can temporarily contain a link whose
+mac80211 bss_conf has already gone away.
 
-Add the RTL8723BE with subsystem ID 17aa:b736 to the rtl_aspm_quirks
-table to stop the AER errors. AER errors can still be present prior to
-pci probe, as the device by default may have ASPM enabled.
+This can pass a NULL bss_conf to mt76_connac_mcu_uni_add_dev(), matching
+the crash where x1, the second argument, is NULL:
 
-Testing on a Razer Blade 14 2017 which shipped from the
-OEM equipped with an RTL8723BE card with this subsystem ID
-confirms that this patch resolves the AER flood and allows the
-wireless card to function normally once the driver takes over.
+pc : mt76_connac_mcu_uni_add_dev+0x8c/0x1f8 [mt76_connac_lib]
+lr : mt7925_vif_connect_iter+0x9c/0x168 [mt7925_common]
+x2 : ffffff80a77f6018 x1 : 0000000000000000 x0 : ffffff8099402080
+Call trace:
+mt76_connac_mcu_uni_add_dev+0x8c/0x1f8 [mt76_connac_lib]
+mt7925_vif_connect_iter+0x9c/0x168 [mt7925_common]
+mt7925_mac_reset_work+0x264/0x2f8 [mt7925_common]
 
-Signed-off-by: William Hansen-Baird <william.hansen.baird@gmail.com>
+Skip missing bss_conf entries before replaying the link. Non-MLO AP/STA
+reset replay is unchanged because the helper still returns &vif->bss_conf
+for the legacy link.
+
+Fixes: 14061994184d ("wifi: mt76: mt7925: add link handling in mt7925_vif_connect_iter")
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 9de396879806..9919c8588cbd 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -33,6 +33,7 @@ static const u8 ac_to_hwq[] = {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index d7e4ebe92342..cee4e4b8ff41 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -1284,6 +1284,9 @@ mt7925_vif_connect_iter(void *priv, u8 *mac,
  
- static const struct pci_device_id rtl_aspm_quirks[] = {
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_REALTEK, 0xb723, 0x11ad, 0x1723) },
-+	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_REALTEK, 0xb723, 0x17aa, 0xb736) },
- 	{ 0 }
- };
+ 	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 		bss_conf = mt792x_vif_to_bss_conf(vif, i);
++		if (!bss_conf)
++			continue;
++
+ 		mconf = mt792x_vif_to_link(mvif, i);
  
+ 		mt76_connac_mcu_uni_add_dev(&dev->mphy, bss_conf, &mconf->mt76,
 -- 
-2.54.0
+2.43.0
 
 
