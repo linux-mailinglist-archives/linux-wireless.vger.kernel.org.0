@@ -1,196 +1,171 @@
-Return-Path: <linux-wireless+bounces-37828-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37829-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1O/VA0O+MGqxWwUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37828-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 05:08:51 +0200
+	id JBEbN2nDMGqrXAUAu9opvQ
+	(envelope-from <linux-wireless+bounces-37829-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 05:30:49 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B50B68B9F0
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 05:08:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D78C68BB1A
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 05:30:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eOLmhALu;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37828-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37828-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=realtek.com header.s=dkim header.b=fm7GE72L;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37829-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37829-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=realtek.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 84D3E301AAB7
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 03:08:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DBF173012568
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 03:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B913237BE75;
-	Tue, 16 Jun 2026 03:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B222F8EB1;
+	Tue, 16 Jun 2026 03:30:47 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7CB2F1FEA
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 03:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A30335A3A4;
+	Tue, 16 Jun 2026 03:30:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781579327; cv=none; b=RmKmR8sZKGbagGxu299JYcuLPQgq43OuMM9+oBXHB48E3a7+g3iVJaBoha8JHd8lsXPf/Vv5LHJtNDlFRRNV2MngCM0dP/gtu7Lg6s6DfJaURbNzwny2avddR/FfLweEapcgH/djijqYTdG1PfiDlfCkefk8rUPFGlJQ42/1oUA=
+	t=1781580647; cv=none; b=CrQYTDj4pOLbSKrEpIAakH1fGj8N6AgqzqXVDcZBZ81yNd050YfHSWkwyNNxtxfEjclGkFJ8Xy+KZ8nc3SsFbQ5WCCK8qhxu1P9oPoYMBYExNFdHAawOpEWhaczto20HdpwtkY8L5DeOLszBbZ0qccbZJUOtGtLUB5gcgYnA1Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781579327; c=relaxed/simple;
-	bh=HCQ6qtKhF9EMVm1CRWI7J25L2G3MnCmQf+c04h6eW/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IVsY1BFJMVX/JrmLCJtk1Q5dZwryp4oET6ssQ2laTZ7TYQ2RhAffu4Y5SHAnjeVttE27qbSFUk6vBh3Us+qMu2EX7cEDlp6vA35JvSWBvTEiCZrDa4+WTCup4liBeaauMmjFpmAFK1XrFuO+OnY7xeLvsuYohyO3lRiEkhs+AZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eOLmhALu; arc=none smtp.client-ip=209.85.216.49
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-36b9b15af73so3366850a91.0
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 20:08:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781579326; x=1782184126; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KlE0MRVFcLUCpfu4xttIQYVS/IifqiP8sdgnIGomkDo=;
-        b=eOLmhALuT5T0iquZmdnbNG/6IXhDz2ji+GnrfhxYYXEtZmmSiOuGS/Knf97VPN9s1s
-         BXxighdfg/Z0BDsYZSQgk5BmZNuUVSDdX+ORDarkq1eSh9WHF96mCXICz74ybnun+3I3
-         IrHfNEwCmiwCoVCU67f6bzZenovb1lHzrnmNOoDSP0Lba0z4mMPJ5jTc74X2vG4WIHx2
-         g4PjOwnmvkb5CM2SWdqtwPLuKcaC1DWMxGVE5IkxQoSCnvpSys+iRW1rN+x3jxjQFSXL
-         42+pD62V8Cz/9tWH4jQC/zatrFdN57lhfyxNfNBMafpuSVYZFv5AYdD4PVOne0LV+o+a
-         c/lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781579326; x=1782184126;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KlE0MRVFcLUCpfu4xttIQYVS/IifqiP8sdgnIGomkDo=;
-        b=rXjsmoiJ6x3BByjR0k9qzq7dfXGY+X8Q1ubOTbDEwJuyHKQ89936dHGkhg243zVc4a
-         aDS3pmsVqCdjL4L+6tfQKOfRYvde3hFBLDHDmHe3uXRnwy09ugnM5mb0vQYrtlboBkme
-         smHYksqmzxIHCX6TWJ/ccMyDTgxJJk2PLEcb4IZ7dfncoz1KQYJzSZAOgomd/Ox41KFE
-         /ZDygGtc4kLSY1cdU9NguHDaXqgIzXs+7M6ZGejeYJ4feWWAi0nMFkcV5EU+Gb4O8Byu
-         xBZAPXrmO1FzrJ1iPpc3A9T6ycf+4n4ps6rBkOCvdZdVApaSRyKp1ZrA2ueDcU3OQTwe
-         q1tw==
-X-Gm-Message-State: AOJu0YwNS2rg2CWGLMAkVkL8BvU1CytZcHBlr3oFSxWHEoH9bzpo1/o7
-	6NsuECXIjGvnxaWoi+KR56BFQLL1CWeQT9uMJ3f+0eI815EtwQ5AXCEezyYkrA==
-X-Gm-Gg: Acq92OHbgQX6khWmoYHKHvtpDtK7t2gcUseF4GTXJpFornGOIdHOe3tcDmqOVE3ygGc
-	bBEpbX84qX81gI5U2P25MnQIc8OnHfgs9SCsxxUBKzyygtNJlvubhHvxnhypmEtN3jIBcGPM0qF
-	GGFIZ3ebq0gXnWhyTuA9P984M2jo7XWd2EYg5DSVPLDA/e5OA5AtfKBVPnO5rLQZYrkNGis+Ek8
-	Vd406p/VwKjUNo2hp/t8sW22qs6KDxU9se92qE7ZbxSZl5t0puNzzQZ7T9HlHU/z+peTUJZfUPl
-	vGCiVZls4DJ7GgZU337F4DKeWShB928k+hJ1hGBfHz+wh0pjfkX5+DEa96I2gSTEM3cMOU7qwgp
-	3iy+5NAoRue8oCTCktaFCTepBoJf0jt2iYJaHF38Ek2d7bZiIuCgPdSmA1zESMshfXCWpbl7GKy
-	N9zhboq+GW8U72TlSLVDRFleLmvftq6H+i6sWWD6KazTK8rRdF+Hv6CXVXiZQ4DHe7z7Kwmm9ng
-	+K22DhYNCIGLgnK5OOVuBEA2TRfL8oI4D0=
-X-Received: by 2002:a17:90b:3c03:b0:36d:b12f:613c with SMTP id 98e67ed59e1d1-37a0202ecdbmr18758831a91.10.1781579325886;
-        Mon, 15 Jun 2026 20:08:45 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:5b5d:33c4:7c66:bf93:6ee2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c521ae039sm1054607a91.1.2026.06.15.20.08.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 20:08:45 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH ath-next] wifi: ath9k: drop static from local pdadc and vpdTable arrays
-Date: Mon, 15 Jun 2026 20:08:28 -0700
-Message-ID: <20260616030828.655310-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1781580647; c=relaxed/simple;
+	bh=RahWYaljewJp/qZnK16eBE7wmJqB7ZypRBdgdryjDdA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=AMbGyvf3Z1NoIkzXGJ6OD2/wVMPMg56ufw2HTRTDa83OhHA+1fcF6Z1ILlQRmb1PjFu7/Bf9idu84dPu14zcUUCeF7GGiO1ETt1bNyN+b09uw9QHc2C6mrkb8hdgHKTrPRZj+ORuRwTiG65HnnE0UP6roVbQfTo3WJaFprnuzmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=fm7GE72L; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65G3UcWhA1329604, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1781580638; bh=RahWYaljewJp/qZnK16eBE7wmJqB7ZypRBdgdryjDdA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=fm7GE72L2rKSE4XpdcBLjS/5AWZy0tfMbrUwjnC7ZP+nFsVH6KJ+FanvR5ftLu8GU
+	 Pm2JVsQEWUowBrNDVVCvPFPSnk/eaMuaNYFFFx0wVr1JPtToiQU4m/Dk8gtq6xTUs8
+	 s4/wWECDKdYkwNa7hSKyr/Clk6Q/h6bQGt78FxaLXh2vocFa0Hldxm3qpzU0V06tDU
+	 JEuQ58L/U5W0awH6DBjYY8a+nGcun15XXQ9wWpTsMLnr9895JU/HQgTBtfzt6xcamI
+	 WG9JN5zXFeMfP+cNYi2+16LqBRh78iteMz6ndYG/VO1XZm8v4S9DNOKQV8Nsoq2ILG
+	 SEjcEL/RpZRxQ==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65G3UcWhA1329604
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 16 Jun 2026 11:30:38 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 16 Jun 2026 11:30:38 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::e6fd:5a3f:8946:92c4%10]) with mapi id
+ 15.02.2562.017; Tue, 16 Jun 2026 11:30:38 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Lucas Tanure <lucas.tanure@neat.no>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Krzysztof
+ Opasiak" <krzysztof.opasiak@neat.no>, =?utf-8?B?QW5kZXJzIFLDuG5uaW5nZW4=?=
+	<anders@neat.no>, Hilda Wu <hildawu@realtek.com>, Max Chou
+	<max.chou@realtek.com>
+Subject: RE: wifi: rtw88: 8822cs/bs: Issues migrating RTL8822CS/BS from
+ downstream to upstream driver
+Thread-Topic: wifi: rtw88: 8822cs/bs: Issues migrating RTL8822CS/BS from
+ downstream to upstream driver
+Thread-Index: AQHc/M6yNX20ldC4UEmoq6jLtFqOPbZAXPhg
+Date: Tue, 16 Jun 2026 03:30:37 +0000
+Message-ID: <049000e56f004b4b9d58b74eaed17aef@realtek.com>
+References: <CALt7t=EDVdn7eGbXgXWU8rgbek52+frbbeYMHwzbH7J0xGXWzg@mail.gmail.com>
+In-Reply-To: <CALt7t=EDVdn7eGbXgXWU8rgbek52+frbbeYMHwzbH7J0xGXWzg@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.06 / 15.00];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-37828-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37829-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:toke@toke.dk,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:lucas.tanure@neat.no,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:krzysztof.opasiak@neat.no,m:anders@neat.no,m:hildawu@realtek.com,m:max.chou@realtek.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,neat.no:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7B50B68B9F0
+X-Rspamd-Queue-Id: 6D78C68BB1A
 
-Remove the static qualifier from mutable local arrays in three EEPROM
-power-calibration functions.  These arrays are written to during normal
-operation, so static storage is both unnecessary and misleading: it
-implies sharing across calls when no such sharing is intended, and it
-makes the code subtly non-reentrant.  The sibling function in
-eeprom_9287.c already uses an automatic (stack-local) pdadcValues,
-confirming this is the correct pattern.
-
-This keeps ~1 KB of data off the static data section at the cost of
-stack usage, consistent with the rest of the driver's coding style.
-
-Assisted-by: opencode:big-pickle
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/net/wireless/ath/ath9k/eeprom.c     | 6 +++---
- drivers/net/wireless/ath/ath9k/eeprom_4k.c  | 2 +-
- drivers/net/wireless/ath/ath9k/eeprom_def.c | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/eeprom.c b/drivers/net/wireless/ath/ath9k/eeprom.c
-index df58dc02e104..fe5eb0d68b2e 100644
---- a/drivers/net/wireless/ath/ath9k/eeprom.c
-+++ b/drivers/net/wireless/ath/ath9k/eeprom.c
-@@ -460,11 +460,11 @@ void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
- 	int i, j, k;
- 	int16_t ss;
- 	u16 idxL = 0, idxR = 0, numPiers;
--	static u8 vpdTableL[AR5416_NUM_PD_GAINS]
-+	u8 vpdTableL[AR5416_NUM_PD_GAINS]
- 		[AR5416_MAX_PWR_RANGE_IN_HALF_DB];
--	static u8 vpdTableR[AR5416_NUM_PD_GAINS]
-+	u8 vpdTableR[AR5416_NUM_PD_GAINS]
- 		[AR5416_MAX_PWR_RANGE_IN_HALF_DB];
--	static u8 vpdTableI[AR5416_NUM_PD_GAINS]
-+	u8 vpdTableI[AR5416_NUM_PD_GAINS]
- 		[AR5416_MAX_PWR_RANGE_IN_HALF_DB];
-
- 	u8 *pVpdL, *pVpdR, *pPwrL, *pPwrR;
-diff --git a/drivers/net/wireless/ath/ath9k/eeprom_4k.c b/drivers/net/wireless/ath/ath9k/eeprom_4k.c
-index 3e16cfe059f3..eec7efdc21c3 100644
---- a/drivers/net/wireless/ath/ath9k/eeprom_4k.c
-+++ b/drivers/net/wireless/ath/ath9k/eeprom_4k.c
-@@ -288,7 +288,7 @@ static void ath9k_hw_set_4k_power_cal_table(struct ath_hw *ah,
- 	struct cal_data_per_freq_4k *pRawDataset;
- 	u8 *pCalBChans = NULL;
- 	u16 pdGainOverlap_t2;
--	static u8 pdadcValues[AR5416_NUM_PDADC_VALUES];
-+	u8 pdadcValues[AR5416_NUM_PDADC_VALUES];
- 	u16 gainBoundaries[AR5416_PD_GAINS_IN_MASK];
- 	u16 numPiers, i, j;
- 	u16 numXpdGain, xpdMask;
-diff --git a/drivers/net/wireless/ath/ath9k/eeprom_def.c b/drivers/net/wireless/ath/ath9k/eeprom_def.c
-index 5ba467cb7425..a1b10c826fe5 100644
---- a/drivers/net/wireless/ath/ath9k/eeprom_def.c
-+++ b/drivers/net/wireless/ath/ath9k/eeprom_def.c
-@@ -769,7 +769,7 @@ static void ath9k_hw_set_def_power_cal_table(struct ath_hw *ah,
- 	struct cal_data_per_freq *pRawDataset;
- 	u8 *pCalBChans = NULL;
- 	u16 pdGainOverlap_t2;
--	static u8 pdadcValues[AR5416_NUM_PDADC_VALUES];
-+	u8 pdadcValues[AR5416_NUM_PDADC_VALUES];
- 	u16 gainBoundaries[AR5416_PD_GAINS_IN_MASK];
- 	u16 numPiers, i, j;
- 	int16_t diff = 0;
---
-2.54.0
-
+SGksDQoNCkx1Y2FzIFRhbnVyZSA8bHVjYXMudGFudXJlQG5lYXQubm8+IHdyb3RlOg0KPiBIaSBQ
+aW5nLUtlLA0KPiANCj4gV2UgYXJlIGJyaW5naW5nIHVwIGFuIFJUTDg4MjJCUyAvIFJUTDg4MjJD
+UyBjb21ibyBvbiBhIFJvY2tjaGlwIFBYMzANCj4gYm9hcmQgKGtlcm5lbCA2LjEuMTE4KSwgV2kt
+Rmkgb3ZlciBTRElPLCBCVCBvbiB0aGUgc2FtZSBkaWUgb3ZlciBVQVJUDQo+IHZpYSBidHJ0bCAr
+IGhjaV9oNS4NCj4gDQo+IFdlJ3JlIGRlbGliZXJhdGVseSBtaWdyYXRpbmcgb2ZmIFJlYWx0ZWsn
+cyBvdXQtb2YtdHJlZSBTRElPIHZlbmRvcg0KPiBkcml2ZXIgdG8gbWFpbmxpbmUgcnR3ODg6IHRo
+ZSB2ZW5kb3IgZHJpdmVyIGhpdHMgbWVtb3J5LWNvcnJ1cHRpb24NCj4gYnVncyB3ZSd2ZSBiZWVu
+IHVuYWJsZSB0byBnZXQgc3VwcG9ydCBvbiwgYW5kIG1haW5saW5lIGlzIHRoZSBiZXR0ZXINCj4g
+bG9uZy10ZXJtIHBhdGguDQo+IFRoYXQgbWlncmF0aW9uIGxlYXZlcyB1cyB0d28gZ2FwcyBJJ2Qg
+YXBwcmVjaWF0ZSB5b3VyIGd1aWRhbmNlIG9uOg0KPiANCj4gMSkgUG93ZXItcGFyYW1ldGVyIHRh
+Ymxlcy4gTWFpbmxpbmUgY2FycmllcyB0aGUgVFgtcG93ZXIgZGF0YSBhcyBnZW5lcmF0ZWQNCj4g
+ICAgQyBhcnJheXMgaW4gcnR3ODh4eGNfdGFibGUuYywgd2hpbGUgdGhlIHZlbmRvciBkcml2ZXIg
+c2hpcHMgdGhlIHNhbWUNCj4gICAgZGF0YSBhcyB0ZXh0IGZpbGVzLg0KPiANCj4gICAgVGhlIFRY
+LXBvd2VyIGxpbWl0cyBsb29rIGxpa2UgdGhpcyAoVFhQV1JfTE1ULnR4dCk6DQo+IA0KPiAgICAg
+ICAgIyMgIDIuNEcsIDIwTSwgMVQsIENDSywgLy8oMU07Mk07NS41TTsxMU0pDQo+ICAgICAgICAj
+IyAgU1RBUlQNCj4gICAgICAgICMjICAjMyMgIEZDQyAgRVRTSSAgTUtLDQo+ICAgICAgICBDSDAx
+ICAxNiAgMTUgIDE1DQo+ICAgICAgICBDSDAyICAxNiAgMTUgIDE1DQo+ICAgICAgICAjIyAgRU5E
+DQoNClRoZSB0b29sIGZyb20gLnR4dCB0byBDIGFycmF5cyBmb3IgdmVuZG9yIGRyaXZlciBpcyBu
+b3QgbWFpbnRhaW5lZCBieSBteSB0ZWFtLA0KYnV0IEkgdGhpbmsgaXQgaXNuJ3QgdG9vIGhhcmQg
+dG8gdXNlIEFJIHRvb2wgdG8gY29udmVydCB0aGUgZm9ybWF0LiANCg0KVGhlIEMgYXJyYXkgZnJv
+bSB2ZW5kb3IgZHJpdmVyIHRvIHJ0dzg4IHN0cnVjdCBpcyBhbHNvIGEgc2ltcGxlIGNvbnZlcnNp
+b24NCnlvdSBjYW4gdXNlIEFJIHRvIGFzc2lzdCB0aGlzLg0KDQpJZiB5b3UgaGF2ZSB0cmFjZWQg
+cnR3ODgsIHRoZSBzdHJ1Y3QgZm9yIFRYIHBvd2VyIGxpbWl0IGlzOg0KDQpzdHJ1Y3QgcnR3X3R4
+cHdyX2xtdF9jZmdfcGFpciB7DQoJdTggcmVnZDsNCgl1OCBiYW5kOw0KCXU4IGJ3Ow0KCXU4IHJz
+Ow0KCXU4IGNoOw0KCXM4IHR4cHdyX2xtdDsNCn07DQoNCj4gDQo+ICAgIGFuZCB0aGUgcG93ZXIt
+YnktcmF0ZSBsaWtlIHRoaXMgKFBIWV9SRUdfUEcudHh0KToNCj4gDQo+ICAgICAgICAjWzIuNEdd
+W0FdIw0KPiAgICAgICAgWzFUeF0gMHhjMjAgIDB4ZmZmZmZmZmYgIDE4IDE5IDE5IDE5ICAvLyB7
+MTFNIDUuNU0gMk0gMU19DQo+ICAgICAgICBbMVR4XSAweGMyNCAgMHhmZmZmZmZmZiAgMTggMTgg
+MTggMTggIC8vIHsxOE0gMTJNIDlNIDZNfQ0KDQpUWCBwb3dlciBieSByYXRlIGlzOg0KDQpzdHJ1
+Y3QgcnR3X3BoeV9wZ19jZmdfcGFpciB7DQoJdTMyIGJhbmQ7DQoJdTMyIHJmX3BhdGg7DQoJdTMy
+IHR4X251bTsNCgl1MzIgYWRkcjsNCgl1MzIgYml0bWFzazsNCgl1MzIgZGF0YTsNCn07DQoNCj4g
+DQo+ICAgIElzIHRoZXJlIGFueSB3YXkgdG8gY29udmVydCB0aGVzZSAuVFhUIGZpbGVzIGludG8g
+dGhlIEMgdGFibGVzPyBJdA0KPiBzZWVtcyB0aGUgdmVuZG9yIGRyaXZlciBhbmQgdGhlIG1haW5s
+aW5lIGRyaXZlciBwb3dlciBjb25maWd1cmF0aW9uDQo+IGRvbid0IGhhdmUgYW55dGhpbmcgaW4g
+Y29tbW9uLg0KDQpUaGUgcHVycG9zZSBpcyBkaWZmZXJlbnQuIFRoZSAuVFhUIGlzIGZyb20gaHVt
+YW4gcG9pbnQgb2YgdmlldyB0byBiZSBlYXNpZXINCnRvIGZpbGwgY2FsaWJyYXRpb24gZGF0YSBv
+bmUgYnkgb25lLiBUaGUgZGVzaWduIG9mIEMgYXJyYXlzIGlzIHRvIGxvb2sgdXAgdGFibGUNCnF1
+aWNrbHkgKGl0IGlzbid0IHNvIHF1aWNrbHkgdGhvdWdoKS4NCg0KPiANCj4gMikgSXMgdGhlcmUg
+YW4gdXBzdHJlYW0gKGxpbnV4LWZpcm13YXJlKSBSVEw4ODIyQlMgZmlybXdhcmUgdGhhdA0KPiBz
+dXBwb3J0cyB0aGUgVUFSVCB0cmFuc3BvcnQgKHJ0bF9idC9ydGw4ODIyYnNfZncuYmluICsgY29u
+ZmlnKSwgb3INCj4gZG9lcyB0aGUgODgyMkJTIGZpcm13YXJlIHN0aWxsIGhhdmUgdG8gY29tZSBm
+cm9tIHRoZSB2ZW5kb3IgQlNQPw0KDQpDdXJyZW50bHksIG5vLiANCg0KPiAgICBJcyB0aGVyZSBh
+IHByb2JsZW0gdXNpbmcgdmVuZG9yIGZpcm13YXJlIChub3QgcmVsZWFzZWQgYXQNCj4gbGludXgt
+ZmlybXdhcmUpIHdpdGggdGhlIG1haW5saW5lIGRyaXZlcj8NCg0KRm9yIEJUIHBhcnQsIEkgdGhp
+bmsgaXQgY2FuIHdvcmsuIEJ1dCB0byB3b3JrIHdpdGggV2lGaSwgaXQgbmVlZHMNCkJULWNvZXhp
+c3RlbmNlIGltcGxlbWVudGVkIGluIFdpRmkgZHJpdmVyIHRvIHN1cHBvcnQgVUFSVCBCVC4gVW5m
+b3J0dW5hdGVseSANCmN1cnJlbnQgaXMgb25seSBwYXJ0aWFsbHkgc3VwcG9ydCBVQVJUIEJULg0K
+DQpQaW5nLUtlDQoNCg==
 
