@@ -1,209 +1,285 @@
-Return-Path: <linux-wireless+bounces-37834-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37835-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 77H4IxDsMGoRYwUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37834-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 08:24:16 +0200
+	id x9TPOYItMWphdQUAu9opvQ
+	(envelope-from <linux-wireless+bounces-37835-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 13:03:30 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D22C68C7E0
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 08:24:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 751D068E9A7
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 13:03:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=cvCxV5Hh;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=cXaXoo3w;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37834-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37834-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=neat.no header.s=google header.b=gJaQfn4I;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37835-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37835-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=neat.no;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BB65A3005330
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 06:24:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9130D300EDBC
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 11:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C613CF673;
-	Tue, 16 Jun 2026 06:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770893B14B4;
+	Tue, 16 Jun 2026 11:02:55 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704C43D7D75
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 06:24:10 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781591051; cv=none; b=omfeFNQqMqXCTBL7OAlaCO2XuNKjKC9DbPR9Ls1FE5JkKgbjGFie4FE7ZWxw54QupckLGd73yUK40TneIc/NF3D48NFnuyDvLB5yP6AgcbSWeS2bBL27mN0rtl1lUHEUD3jsp5UQyp1c+E62miuCaW8oPrGXKzWWGCRft5eBPKA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781591051; c=relaxed/simple;
-	bh=JgCU67R75ekxf4BnS9A6h6Yty3IaPnkzklGnfhm7wLw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hh3XcTkbo/XNx9MIPysqseB+Tiqf+KmXvzSNQJwl/bn76HlkJX17RDaOAwVxrvK25J9sCieKL23+hhHJPnr96o9ACI8bQTybHmzjYbX9TUK63NGaHy9YziO9M1xmje2h7wxQ9C4XSD5X09Yx0WeI5ZFzLXq3g52Q4we5z4wbQ4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cvCxV5Hh; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=cXaXoo3w; arc=none smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65G66nqr2824384
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 06:24:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=Tr5DEdIRkbYwn8L1Ccvfl5JRCBDqiEewip7
-	ejeOVPKA=; b=cvCxV5HhDMSPIFJcn6hrHvV8fvsRSXSK85bDL7WH5fujTqwjB6/
-	h7fGW8zuQXOgXttYpiOwmN/Ab7XWaphyuCBqhFmYYB39ulqx0sI2JH8SVP8MWQt5
-	9VbszJAx+1eNhTHJ6DhahpNVEz/gPZIiVrkJxERKQD2RuWKpyQtUVdq7Q3bUHVa8
-	0Z1FS+788v7mgEsi2ksJfsTosp5wt4Lpr58DC44nhoHtx9Wv/1PLFIJKjqQUP12s
-	+qYBJwixdHcneZrXWEMgFW9XnU24BoYtqhAmrQIZ++r5qUbcrn/VAUnXF3NtGk9t
-	ft04b/2IcvHuh6V8Kqz5uWUPmi2hjZW8JrQ==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eteguw842-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 06:24:09 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c85a2ed88c8so4059671a12.3
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jun 2026 23:24:09 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4ACB357CEB
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 11:02:53 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781607775; cv=pass; b=Mib9bMYl+73h03HAqGoJAh6aA4nS70KRb6V0ukN9NfTwwLTfr0lBaZFs3nLmE82g0UYiAtqdxFzVnR7g9Lu0Uj8gAKCxodYs27UxtY6ofRLGbB//wwOeQRB2H++JFMDNdpHVPS8gbO5V5FC/an4a3m2XAgQ3QO9BySEX8gWnndU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781607775; c=relaxed/simple;
+	bh=OrLvHHXHMVdNxZGeEHx1bcMK7vE+UK7oKUg6tIlklAg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qYZbDlDOQuzi+eoOpjqS8eesOPT9ory6Kg0iGjh6ThxaciFQB+LaBuqb7R0+klzx1Z9/3gyWU9PNhK3zSXriMoIUZGkoHtMqIvn3yDMM5uBvbVF9EOH5DeJBJDupcR0MJfdQCkbkDDAFdZ3+kFwjURFkLpux+OrKzyJ7f1vOHwg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=neat.no; spf=pass smtp.mailfrom=neat.no; dkim=pass (2048-bit key) header.d=neat.no header.i=@neat.no header.b=gJaQfn4I; arc=pass smtp.client-ip=209.85.128.180
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7e86d46b02dso47422887b3.3
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 04:02:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781607773; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RgNcV9sM1E+5eHN8pWXqtpP6rlzmbWV24LW9QiYhUXXiv6qkxO3LWLIMoWWQw4zYp+
+         e37dlootOAB/Y7ksNlSMIPRgnPGfZXzNYsZI/PIW19ODnJ87Re6neLlcUevvVQw/C5Ms
+         WhgTzv13Noqul8QwJECwpGRTKEYske3gupR4SinlKQ7pVoBIzq0auaxXFUnfDFz/gCZZ
+         twStBDEkugnj8F4jtIyz+TSGlcES81g88ApzW+T0QVP6nSndXZMjzsXZV+gHkVxyXCMC
+         dKmuz/257tjWuXii6r6O729BtukVwFg17H0a9nLWnMSqdWxhsr8PrdZJLmpFeiErIRV7
+         Wy6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xNmo2gR8wG31s1P40S7YqYNXBJAQZzkv61qmrOFWI3Q=;
+        fh=m8UTrwGn2am0aW40GdmnuK6YV1PhKEyqkxy5M1gKAdo=;
+        b=TetVWsyAWLZMOg4Zq4/mhRvSmJ8HBitcSKuoVoS+2x50R6mA09vZ1Ew1a3mof8TNrz
+         /TziVNdQpquVgQPflOmcBXDFPnj19GI8lxOP83jbtkVtdXJXPL0bxDBy6UtmGEcZFkEp
+         Jrjl8oT8PDi28D0ep9uNDc9xCrdTXWEqcQesPJgRbpKnM4GyCJMI4TX13jymELUzdy3/
+         0iTOJb00Z/LlHNMTtwGM9dGdSCGjPD07v6iT0nJ93Fjvr61ZPRbnKQVW40NIrZOecOfx
+         nnmOLRtHtXbK1caVZSXBJ2XtsJ2FQrEvaBoxbrAnvRVzqVUYdpb2RadJCeFUNndi7xjw
+         mj1A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781591048; x=1782195848; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tr5DEdIRkbYwn8L1Ccvfl5JRCBDqiEewip7ejeOVPKA=;
-        b=cXaXoo3w/jCQ7m/kqwfCOCTYyuwnGCfXrh3oQgBzaZPG9WOLzMOlvnvCUh4QBJ8fKq
-         4GEWivFTPnCBmtrS2WZT1ZfIYJoNaFjQrEbJSFyyPxTkqV76iB6S6P9JCOWdtM7BMq9Z
-         upzPeVGpq7lrHZRVaXi06xGuoElhA/b/rMYcx3bcjnkrEGzfMLeqdcDeJn8wUJVMbfKR
-         ja+jZNf3mHhT7B0c5hHpOwz0+gyoCZ2GK/3Y8x6QlwDnHidmXMyAHpmqJhz5oqjw6CIL
-         WgCSFMNuHJljX7fBMyPGGnK1IDzgmtci/S63tDRDFtoHoUQd17CDFui3JKC0RHCpHYl0
-         GhKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781591048; x=1782195848;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=neat.no; s=google; t=1781607773; x=1782212573; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Tr5DEdIRkbYwn8L1Ccvfl5JRCBDqiEewip7ejeOVPKA=;
-        b=oijKGkvXwyiTPdtj03J9eiNu0luQAmeIAQ8KxaYRRK8DopV0bLYmCxzTciLaGXZm8Y
-         qIFFAeeeeMopkSKEIbMtzmsfzObi+YN9hrCUEJFXPjxTVSAvh/INI3B14EzY9b4AtG0M
-         jXbJM1RLHiZTznCeYZgOVp8Okp5tehiTeM+HKMsrJQQdtEGtFKyxHj9AVyY+fKirm6RP
-         Xrb0+VNi6U02l4eefthRRQnz2/ebSbucRrJvBGx6JZDdGo6KuJbT4W7bGlVE1SrUyjLC
-         hBner24hnc6ZpyIKkDn34F6uN3TxPyLV6SYf9CLE/wUhf0j4tSgtPs/hizCzn5uRihxu
-         d1qA==
-X-Gm-Message-State: AOJu0Yz+vgo8mudqWORaBtW2vIbOHPpNHlsAaheY0cevuxfgbyJ6ZIIC
-	lQSQUn/YU8h8HjWs7b/Na2FX12r/U0z+C3mzmZxLh6p1HUqISEmac2HIXLFhrYm+yrTylYBtbyK
-	jPtFiM34PBH6u2xTgJ3oShUFZ65VgzR8Gk3Tv5ta53XpdIKkXjz566nxrG7KTHIZZMCCGXIP403
-	efoQ==
-X-Gm-Gg: Acq92OEkV2TAZcx06NBGyxGgs1t39l9TNnHsgtTmFWuUE2xF5pMaxQB4YEF7oG8EXLv
-	wvTlVXmsud+9iyRwpV3rRMCAHbE8uev0+s8xHdYE5Hz2arNVuCTf7B/bPrZJwQkWJTdAqnH+Ofc
-	NBx3PNUKNQl1BqiGFgzvT+hhJXvHa/rPzLVW1PBtuwBl9aVZW8DKJHRyeg8evIlFgCPaQ0xjRj9
-	7wiGR82z0v/oRe2BgdJLzNx/U3Hb/9cH+5oy2Pe/9C+HjrjmD+kRuhrGvUiKhgNh6Pc3OY7T/iF
-	3OkW6OV7i6IrGSAkpYkkn/ipMZEWmFAue27qdOJeyove7mnqPiq5WphBiZgnXlpi8W1w2dqYpA9
-	IyPXK/Ea+gy/o5yYfGAFD2MxyGpTorQ+UGt33UP4GVUuYswsahpod2C0qmU7mtwSxpPA/VCpyMt
-	m3+rt0NhqTPmF5D3nSXVdGuLsyGM5qa3dI+jHLRQf58VVf
-X-Received: by 2002:a05:6a20:2443:b0:3b4:b276:a789 with SMTP id adf61e73a8af0-3b7841ab01dmr19896338637.36.1781591048157;
-        Mon, 15 Jun 2026 23:24:08 -0700 (PDT)
-X-Received: by 2002:a05:6a20:2443:b0:3b4:b276:a789 with SMTP id adf61e73a8af0-3b7841ab01dmr19896319637.36.1781591047718;
-        Mon, 15 Jun 2026 23:24:07 -0700 (PDT)
-Received: from hu-aarasahu-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c866518677dsm10591529a12.19.2026.06.15.23.24.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 23:24:07 -0700 (PDT)
-From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Subject: [PATCH ath-next v2] wifi: ath12k: correct monitor destination ring size
-Date: Tue, 16 Jun 2026 11:53:42 +0530
-Message-Id: <20260616062342.4079796-1-aaradhana.sahu@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+        bh=xNmo2gR8wG31s1P40S7YqYNXBJAQZzkv61qmrOFWI3Q=;
+        b=gJaQfn4IU7lpk/xlN8atreiHbdkfQeNWKZuIMDKVmm9v8KdNQZ3PIt15GhEZkwf1GL
+         fe3ayhmvd8AzxqyFlZ1BMy972V52uV1vFJn+urCnlhiUiHKF0yNY7C9a9TpyQFsuC/vm
+         AtgFSrt+IljOeaOqK072/uBd0opc6o7MhdRuVrdAcJ++XyyfDzABnn1fAd4sWUyEayTk
+         bMkbMnFP5A95cph8uyjBQqLk/JFNUYlQe1HmLN6ElQTeF3AiKaDxbyoIoXV1641zUWXT
+         DB0fFYwZzCYwtdwM6nMcv+yN61SjR8Q5RBd67pccn8Kjo4LC5ieqDkwyHYARf+HH7+IN
+         QyNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781607773; x=1782212573;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xNmo2gR8wG31s1P40S7YqYNXBJAQZzkv61qmrOFWI3Q=;
+        b=qJJxMBrvD9BSHNxE6LlHXmzvO4A8pZtFKSj90QXukqHB8Ml1qW+IAi7paOrTNdPuqT
+         kJcuDO7NkDNH0ZVGcH/axny6HGw5I+QM6fxaeyOFPoyI7F0rIJztC6UZyJcF+kY++uz1
+         0WQF3biCNEGEMnRRvBxu4OvxzWUJceq8kV9fekr0QxLueUPeSEmQyJM11Lo/Zn2IXCKK
+         VIYWH6C5kMvwvIwIOSc5bUEoLJYBuXZxR3XwL+8jaAYDk5ynzgcF3grDd4pWqhhkxfde
+         YiD3jCFEHOJxCc1mWdkK3sT0JvSukn3DvEpkMnWEAp9luUFV/XvuF1zywnbB9yhWuJhR
+         lwlg==
+X-Gm-Message-State: AOJu0YxtM3exUe/6wXC1z5/uHRHWr5/1bg/OJDYOFBpwL+CKgTh8/ft1
+	MDr+WNbR9BOd3HoCkbOTuiSeivB28UNY4aJo8nLkcN5+ngMKOH4kOD9Sd5/0l8KY7I8umsC0lq0
+	IXw7P8ZPlOyEgMAPNjVvxB2z58mcBN0v/RdfwkTYK0Q==
+X-Gm-Gg: Acq92OFRzy/ZHV4Zqixxk34dtei8G8m69veBY4Kxez5Z1Tcbys21F/rYP0/fAuNaPzt
+	JGCmdWvyPhQicmkquImI+u63L4S9DAnUHMYXA/z4DmwQfT3H9Ow/+tqDyWMSGdkBQ+U+hJUJo4B
+	WPPCXf0EQo+HDOY6RP/4oeCvweeLqmugd2LF8VPgLK8mEqvBKvyy4zOPpKpxT/xxW8qigFIhG6N
+	v4Vt5WLNwbqBDz9T4cxigexUmo8fufppkAtzPmrRyqux38dL5GjibQG4EMWlRoHdofexv5bnPp/
+	oYWxnQ==
+X-Received: by 2002:a05:690c:9685:b0:7d1:dd7b:b734 with SMTP id
+ 00721157ae682-7f8c24026ccmr148706137b3.23.1781607772673; Tue, 16 Jun 2026
+ 04:02:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDA2MSBTYWx0ZWRfX8MHtPV0/0+eL
- lClQ1VgmbS0+3rrcYts+eJJtv+vl+Koz2LAsvDy1GG+LH5KP1fA+23bBYEQtoLB/hO85xUJY2iO
- x4i7eozqbWstkku4uvKdL5s5ty9Uaf/bq4NWl7C9e1dt1aoDxtAE1MkFZb06Y6SeUPTTS2HYkUA
- 1pMvGvcRKAU3S2Ec6K1Tx2OvtA6MceNcGhN1enrFH0fCMvECoTuOkd+7acFdixwT6t/Dm9ZDTOU
- p6AN4Vw8vKE1iQZuDwxFiuZWU9DALfTuCREmVyfuAIRinyEyJS4qHMzCOUBh6wYErhqwbQR9UaX
- vuiyj3Tr3+TWl1UL/8Mwbuo36XjXjIadphyRsaOv/AjPzgGZRzrMFBcGmQSoozm7oxZR+M/l9fu
- rXk6RlX5GnFI8nDtVPC+LvAvtCBDq2e5jv/F3s8+pygJZj4+rcLzTEX9IMeDVP1X3Yk+Jb0k2Hi
- o5rJdEN0KGbstZtEuuw==
-X-Proofpoint-ORIG-GUID: G8Od_VwgFKmCsIAawuYZuEpzN3JLxotE
-X-Authority-Analysis: v=2.4 cv=HMvz0Itv c=1 sm=1 tr=0 ts=6a30ec09 cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=EUspDBNiAAAA:8
- a=b5TSSxGLzCK9vQyPxlUA:9 a=bFCP_H2QrGi7Okbo017w:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDA2MSBTYWx0ZWRfXxnnmIEJRrq1v
- dL0gbk992jm1tphhv6jXf9lILZxDwcyFekjMm4GaAb06MhiZjNOxNVNCPJvM++rdQ6CeGbNZ07r
- cABg0lUyClMT3bwxJPsCf0WWdduJmlE=
-X-Proofpoint-GUID: G8Od_VwgFKmCsIAawuYZuEpzN3JLxotE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-16_02,2026-06-15_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 clxscore=1015 spamscore=0 malwarescore=0 suspectscore=0
- phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606160061
+References: <CALt7t=EDVdn7eGbXgXWU8rgbek52+frbbeYMHwzbH7J0xGXWzg@mail.gmail.com>
+ <049000e56f004b4b9d58b74eaed17aef@realtek.com>
+In-Reply-To: <049000e56f004b4b9d58b74eaed17aef@realtek.com>
+From: Lucas Tanure <lucas.tanure@neat.no>
+Date: Tue, 16 Jun 2026 12:02:41 +0100
+X-Gm-Features: AVVi8CdT4hm3iJdDbzmHOPrjCyhixE2aQ2lA_SpnNhBSN_4GFULiYudetG8Ts_k
+Message-ID: <CALt7t=G_ssGBb1i+knq1_tbcpwi_TcrK+7GBMH3vNLQ3+rcetA@mail.gmail.com>
+Subject: Re: wifi: rtw88: 8822cs/bs: Issues migrating RTL8822CS/BS from
+ downstream to upstream driver
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	Krzysztof Opasiak <krzysztof.opasiak@neat.no>, =?UTF-8?Q?Anders_R=C3=B8nningen?= <anders@neat.no>, 
+	Hilda Wu <hildawu@realtek.com>, Max Chou <max.chou@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[neat.no,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[neat.no:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:krzysztof.opasiak@neat.no,m:anders@neat.no,m:hildawu@realtek.com,m:max.chou@realtek.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER(0.00)[lucas.tanure@neat.no,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37835-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37834-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:aaradhana.sahu@oss.qualcomm.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[aaradhana.sahu@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aaradhana.sahu@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,vger.kernel.org:from_smtp];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lucas.tanure@neat.no,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[neat.no:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,realtek.com:email,neat.no:dkim,neat.no:email,neat.no:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8D22C68C7E0
+X-Rspamd-Queue-Id: 751D068E9A7
 
-The default memory profile configures rxdma_monitor_dst_ring_size as 8092,
-which is a typo. The intended value is 8192, consistent with all other ring
-sizes in the table being powers of two.
+Hi Ping-Ke,
 
-Correct the monitor destination ring size to 8192.
+On Tue, Jun 16, 2026 at 4:30=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> w=
+rote:
+>
+> Hi,
+>
+> Lucas Tanure <lucas.tanure@neat.no> wrote:
+> > Hi Ping-Ke,
+> >
+> > We are bringing up an RTL8822BS / RTL8822CS combo on a Rockchip PX30
+> > board (kernel 6.1.118), Wi-Fi over SDIO, BT on the same die over UART
+> > via btrtl + hci_h5.
+> >
+> > We're deliberately migrating off Realtek's out-of-tree SDIO vendor
+> > driver to mainline rtw88: the vendor driver hits memory-corruption
+> > bugs we've been unable to get support on, and mainline is the better
+> > long-term path.
+> > That migration leaves us two gaps I'd appreciate your guidance on:
+> >
+> > 1) Power-parameter tables. Mainline carries the TX-power data as genera=
+ted
+> >    C arrays in rtw88xxc_table.c, while the vendor driver ships the same
+> >    data as text files.
+> >
+> >    The TX-power limits look like this (TXPWR_LMT.txt):
+> >
+> >        ##  2.4G, 20M, 1T, CCK, //(1M;2M;5.5M;11M)
+> >        ##  START
+> >        ##  #3#  FCC  ETSI  MKK
+> >        CH01  16  15  15
+> >        CH02  16  15  15
+> >        ##  END
+>
+> The tool from .txt to C arrays for vendor driver is not maintained by my =
+team,
+> but I think it isn't too hard to use AI tool to convert the format.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01243-QCAHKSWPL_SILICONZ-1
+If Realtek has an internal .txt -> C conversion tool, could you share it?
+Otherwise, could you put us in contact with the team that can verify
+our converted tables?
 
-Fixes: defae535dd63 ("wifi: ath12k: Add a table of parameters entries impacting memory consumption")
-Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
----
-v2:
-  -Added fixes tag.
----
- drivers/net/wireless/ath/ath12k/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> The C array from vendor driver to rtw88 struct is also a simple conversio=
+n
+> you can use AI to assist this.
+>
+> If you have traced rtw88, the struct for TX power limit is:
+>
+> struct rtw_txpwr_lmt_cfg_pair {
+>         u8 regd;
+>         u8 band;
+>         u8 bw;
+>         u8 rs;
+>         u8 ch;
+>         s8 txpwr_lmt;
+> };
+>
+> >
+> >    and the power-by-rate like this (PHY_REG_PG.txt):
+> >
+> >        #[2.4G][A]#
+> >        [1Tx] 0xc20  0xffffffff  18 19 19 19  // {11M 5.5M 2M 1M}
+> >        [1Tx] 0xc24  0xffffffff  18 18 18 18  // {18M 12M 9M 6M}
+>
+> TX power by rate is:
+>
+> struct rtw_phy_pg_cfg_pair {
+>         u32 band;
+>         u32 rf_path;
+>         u32 tx_num;
+>         u32 addr;
+>         u32 bitmask;
+>         u32 data;
+> };
+>
+> >
+> >    Is there any way to convert these .TXT files into the C tables? It
+> > seems the vendor driver and the mainline driver power configuration
+> > don't have anything in common.
+>
+> The purpose is different. The .TXT is from human point of view to be easi=
+er
+> to fill calibration data one by one. The design of C arrays is to look up=
+ table
+> quickly (it isn't so quickly though).
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 742d4fd1b598..b488bd8fea9a 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -49,7 +49,7 @@ ath12k_mem_profile_based_param ath12k_mem_profile_based_param[] = {
- 		.dp_params = {
- 			.tx_comp_ring_size = 32768,
- 			.rxdma_monitor_buf_ring_size = 4096,
--			.rxdma_monitor_dst_ring_size = 8092,
-+			.rxdma_monitor_dst_ring_size = 8192,
- 			.num_pool_tx_desc = 32768,
- 			.rx_desc_count = 12288,
- 		},
+I used Claude, and it converted our vendor TXPWR_LMT.txt /
+PHY_REG_PG.txt into the rtw88 C arrays.
+Here is exactly how Claude did it - please tell us if any step is wrong.
 
-base-commit: 83f028be15fe071efbee8e27837538d6cca77e87
--- 
-2.34.1
+Row mapping (one TXPWR_LMT.txt line -> rtw_txpwr_lmt_cfg_pair rows):
+  header "## 2.4G, 20M, 1T, CCK"  +  "CH01  16  15  15"   (columns FCC ETSI=
+ MKK)
+    ->  { 0, 0, 0, 0, 1, 64 }    FCC  (regd 0)
+        { 2, 0, 0, 0, 1, 60 }    ETSI (regd 2)
+        { 1, 0, 0, 0, 1, 60 }    MKK  (regd 1)
+  One line -> 3 rows (one per regulatory column). Fields {regd, band,
+bw, rs, ch,
+  value}: regd FCC/MKK/ETSI =3D 0/1/2; band/bw/rs come from the header;
+value =3D dBm*U.
 
+Unit (value =3D real_dBm * U):
+  8822c, U=3D4 (max_power_index 0x7f):
+      bb_pg 0xc20 =3D 0x484c5054 =3D {18,19,20,21}      (0x48=3D72=3D18*4)
+      txpwr_lmt ETSI/CCK/ch1 =3D 60 =3D 15 dBm
+  8822b, U=3D2 (max_power_index 0x3f):
+      txpwr_lmt FCC/CCK/ch1 =3D 32 =3D 16 dBm
+  Both equal our vendor .txt (real dBm), so txpwr_lmt =3D dBm * U and
+  bb_pg byte =3D codeword * U (packed high->low).
+
+Is this correct?
+
+>
+> >
+> > 2) Is there an upstream (linux-firmware) RTL8822BS firmware that
+> > supports the UART transport (rtl_bt/rtl8822bs_fw.bin + config), or
+> > does the 8822BS firmware still have to come from the vendor BSP?
+>
+> Currently, no.
+>
+> >    Is there a problem using vendor firmware (not released at
+> > linux-firmware) with the mainline driver?
+>
+> For BT part, I think it can work. But to work with WiFi, it needs
+> BT-coexistence implemented in WiFi driver to support UART BT. Unfortunate=
+ly
+> current is only partially support UART BT.
+>
+> Ping-Ke
+>
+Thanks,
+Lucas
 
