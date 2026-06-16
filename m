@@ -1,88 +1,88 @@
-Return-Path: <linux-wireless+bounces-37839-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37840-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0179NPBcMWphiAUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37839-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 16:25:52 +0200
+	id WT8AJINdMWqOiAUAu9opvQ
+	(envelope-from <linux-wireless+bounces-37840-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 16:28:19 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB03690740
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 16:25:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F31B96907CA
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 16:28:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=G0L6QKC0;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37839-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37839-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="hmm1mA5/";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37840-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37840-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A6513356704
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 14:17:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6DE7F31A4BA3
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jun 2026 14:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72F0379C4A;
-	Tue, 16 Jun 2026 14:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0047337B00E;
+	Tue, 16 Jun 2026 14:17:00 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348AA421F17
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 14:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9670543C047
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 14:16:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781619416; cv=none; b=GAKFzOJItPUd1ue7FTyGTqkNaWchXLBbFEribOc92s5Bcm55lzireXds3k3Wkm/jsQfGYmkUWRY4soSP2G2wGe1IGXTxTZZrPEGiba7Zw1EymMe6pRp4Hgzwi8qo9NfW5clinZWJ/qQMjBWuIWCxPEXZf4PyANeyGpTGBppwC/c=
+	t=1781619419; cv=none; b=KWmSuUYE1iE/z83QEPiV2M/SIZ2gbbBWlJrhxlLRbP8rFk1fz4x71pPTVNsasvYkm/wP77DVPq1Ksfp1zdL96PzyNtHEPS7EO8jL0F+Qq1U7PXv1FXN5MSbidgSxz79321sREkB7vp9I2H6Gke9Tt+MoCL6MWjxcJ4yiGRDF9Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781619416; c=relaxed/simple;
-	bh=HMuqQZtEAPpuECh0YIsn3D1n+CdV9Wt9yoJX4xoWZ4U=;
+	s=arc-20240116; t=1781619419; c=relaxed/simple;
+	bh=VPCRoNUG9aJ7F3yMhRHxwDzPzY+qMW0bGvnF8IJqyug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4eFSiKTo51fMRwQBZNRlVtb5yLhMV4zVzhUQRzk4LqFZQbAcRW4izleRlk/Rk25uQyRcaF//6kOfCCwAWmafxbgBth8pMrorH/3S9fEkuxr5AQXTuf34dLTXjAEjgJ6DHjUte4KWIqCRbLcPsnmvpEmGGXiInsTdhslkyZMq+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G0L6QKC0; arc=none smtp.client-ip=209.85.208.54
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-68bfcf11050so7803905a12.0
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 07:16:54 -0700 (PDT)
+	 MIME-Version; b=fM3uFXaYUVoozj2SX1LDTeSelLyo2uzq8JyvgIPDT31gXIPwnaLQqNNyDTMrMQEhbaMs30ulJKeFIg+iuxJM4eWGI32iDcH63gCQKHh2MB5s/D9CozkGJMH9KyD8IXb0H5bNGuE/wXiUxbWIR51ys0F3qeyCh+RUE3tK5RJ81Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hmm1mA5/; arc=none smtp.client-ip=209.85.218.51
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c0115a3794bso511269966b.0
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 07:16:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781619413; x=1782224213; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781619417; x=1782224217; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FJgY6JYNixqVvD+kx1N9JDoSc3UDp9PKwiXsL7zqozM=;
-        b=G0L6QKC0pwNt55HQqBJHsnm7zNahGijAC0zF+BlvIaF77Ix1g32SmzWrkL79xsbcaX
-         2rg2xtVVQEapqCMS87cUtUhnCzAGhfJSsqCNaICy84m4Q2ck8y0mMvKNmFbQ3lmK3Csx
-         oF7RXfSb8AxcvfepNbqde87iT/wdoFT4DgZBeuJGXTUrHmEJMxSsuGrhPblvTYxNvD6q
-         l6OppKlHLxgQULWCaLzHyRUY+hrsrg4N8PNoAaT5lO+jCND28jISMZdGxOX/vvjAVtRh
-         FJeKTBi65kxWejd6NPCMX8xEKLqZk4Q98ANl4ZsMNef+BgmV8v0Fu3Bic3eaOTtpbs6m
-         UK0g==
+        bh=8VHtkK8tM3BdtAhkGiLPcaxkAA8nOhYvW3opPVSOK/0=;
+        b=hmm1mA5/YoJoMTV1Yme7AAP+FEJh7nRhAwkYxCcjT/IYxuPd7goz3oP76WPxPxDJi0
+         X4NaXMQ1LPTr+rmI9mOhZ4dEusjKyMjc6jRNvJllVXuIIKxF3YoIZt5i5DB8FBss3QSm
+         S/CAVxU1RVX/rsRTf9HPQB1c7yakDaW/Ie9yfvyw1YPq0JcdtzKqJM576Nuoi0qHWYls
+         jgB+NSBJqIRm0/jasr+SFA7MpAxtgxgAnKZ68x6CuAuW9uPmVrJMMD+eRT9BenM868W5
+         81sbM2GD49ieQNfIaNgG28YX4PUBTQxAFnszmP0jW8aE5LbHqcUJRlmS4sWvOpxwJl6z
+         1AEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781619413; x=1782224213;
+        d=1e100.net; s=20251104; t=1781619417; x=1782224217;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=FJgY6JYNixqVvD+kx1N9JDoSc3UDp9PKwiXsL7zqozM=;
-        b=Omnr7BCcztcTrRvOoKhgUh17g896Z0JEHfGqLAHmxuHWNcSdwcsa1k0x33/nHAGpd0
-         PIVfNpHLQc7WtDRSmyxOR57IN/bk+TqsO+MF6j9Snzu4iSPB0SShEOjctW8pCDzn7DL3
-         AS/tnjbBTDz+khw0evbi4RjecC056l2YfYSz5+IrM9RwF3xnxeSMM06tawqDhr12VFQx
-         aBbjb7rHMuPrWXFpf8jDLZa+MyHsUl4D9E47iIxSoEDEIKTEFRSLss2eAt/hshU+FWxj
-         xLDFOi0QAuhRc9zS0lQL4bKd0QCViUX3zknu99NFBQB+m2iyjvI+qmRdKXzzSIS1opw2
-         DZsg==
-X-Gm-Message-State: AOJu0YyNvCaEQNvkMyXXbxx67jm6/CP+6HuRol/pvfoW6m2QIvF8+OLg
-	FKt6fwFKxsGm+92XtFV/htS2hbFb9u7VmzJBkyVWSfPHjxt5k5sIRw6O
-X-Gm-Gg: Acq92OEKB0aVRf86rUuqclT4pRXFMbSY1I40ngFKURdnVxNSSw3v5dRNPatdaBTWekn
-	xYTn7vxnmICXJoyysqx8N8SqubmWg9T3zeZfPAxER4I6f/WbTbGncClI5UbCQmawRGjQhW9QAPa
-	hLHtf6Qfw7EU4T0HNCo9b2TOJnNje3xYX6J3TR5teHE0S7tcJ/tWVtT6ZIKYlI4HjDlCdFIQZqh
-	5ZlT9DdS6QDQabaSDL73tM8Z57+sgTryOeGbQnWS59+xhWUAjewo3O1m7zg+o2gKBp7zcuKhPC+
-	YxQ1BZsXWPzm+Ya8OlZdMhrtdzl2mYe3pQ6a7jPg3yEUDqdlI/aoFiFmES7XJqdvxsbwQ7TMmjf
-	ax8d+F/YubxOMdqfLsREHmux8Xl9H0sNrfECF/QKaJb3JnEsTyTyAcrCzEtt+qrOF7GZxMDFkR7
-	7J5rNK+U3eWEKM6XXmJfMa+fpQfIVaiHkFXw==
-X-Received: by 2002:a05:6402:4498:b0:68c:bf82:884c with SMTP id 4fb4d7f45d1cf-695086dce09mr2261369a12.6.1781619413514;
-        Tue, 16 Jun 2026 07:16:53 -0700 (PDT)
+        bh=8VHtkK8tM3BdtAhkGiLPcaxkAA8nOhYvW3opPVSOK/0=;
+        b=eUVmbEYZhePa5NoMGmRPPYoXAYv590fqQ0kOWGxKbRu6MJ4r97Qr7isj5qvmBkElgl
+         zHBOkyb9uTkaQhww8xRTtFGzUlZLWGjrgXo/pNgoX7Z7A2sU6fFVcRSungdLD2jujfDc
+         NBFxIP5FJhU0yio0xT52EjFPKqdBnOCH2wtrBMv9QuNOY18sI/hYbC9ojk1eNB2xgr7c
+         HZrdPF9jHK86FCB1qSsV2LEUM4l6PyO+B4bp3uE+d8uWEXw3zIB5KBiJJ3geAT0bEO+C
+         gyHSF2ioVNHW+KddSYP249dkxY2T1FxJsjhjhukGoIVKTlNJeIdaN5/9V47zzfDlrZLy
+         Rr0Q==
+X-Gm-Message-State: AOJu0YzmOKD3icN4G+gwovuXmmS0BOoXqp5xQ5xxqXwA/yQW7wK9XROy
+	Q+mjrIjIUr9kFXZh9s/R/878CgYyGZink6r4Vt8OURR5yGxuGOro7QhZrWqu1XtykcQ=
+X-Gm-Gg: Acq92OHt+Ds6Dpmli8+ZkTq39PEBsJB03usqIcOXg/VPP3qPp6aahPwZB402BT9GeMp
+	lEAsGrnyF5qmmywF4Uwm9ncDxFa5EOa9zyN+ivZF6naeD4InlWMfJoN6yu5BVVoIR1EH0I+DnhA
+	Md36z0EZQEsbJB85TH4jp06NOu9wfuYpbFXxvBX8VmvH2nUH4TrDoOxQmRK3KHDxZYWBGa0FrXW
+	vUZRzUOzpt6GYGIIKGBpmD9uMLZx3+E6by4Z2AI1mAHGx0N0NEEku8fqQKbv3djx3jLOxLi8tC7
+	/YdzlEVXCH5w4oFpUX7CATk3hEoEsn47jYXUFbkZKH0zfi3ls3RyJAJrDNx2zIh7a1/Ah95dAF2
+	3rAJOacfMO+Q/APnzWDBtxWV9AUK+eLgctuRbitIhySKoiH4ZA3GzND08I1GXA2czt1TsRsyPjN
+	ecQNChmRYos5V9IWMNmp6hRk7fLKtsSgM/5Q==
+X-Received: by 2002:a17:907:68a7:b0:bcb:d9c7:c6f with SMTP id a640c23a62f3a-bff496241eemr463151966b.7.1781619416660;
+        Tue, 16 Jun 2026 07:16:56 -0700 (PDT)
 Received: from localhost ([80.208.66.169])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6937949bc4esm5331722a12.25.2026.06.16.07.16.52
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c01ee8286c9sm373807366b.5.2026.06.16.07.16.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 07:16:53 -0700 (PDT)
+        Tue, 16 Jun 2026 07:16:56 -0700 (PDT)
 From: William Hansen-Baird <william.hansen.baird@gmail.com>
 To: pkshih@realtek.com
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	William Hansen-Baird <william.hansen.baird@gmail.com>
-Subject: [PATCH rtw-next v2 2/3] wifi: rtlwifi: convert pci if-statement to ID table
-Date: Tue, 16 Jun 2026 16:16:19 +0200
-Message-ID: <20260616141620.91081-3-william.hansen.baird@gmail.com>
+Subject: [PATCH rtw-next v2 3/3] wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 17aa:b736
+Date: Tue, 16 Jun 2026 16:16:20 +0200
+Message-ID: <20260616141620.91081-4-william.hansen.baird@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616141620.91081-1-william.hansen.baird@gmail.com>
 References: <20260614135508.70307-1-william.hansen.baird@gmail.com>
@@ -100,14 +100,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37839-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37840-lists,linux-wireless=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -115,7 +115,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[williamhansenbaird@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:william.hansen.baird@gmail.com,m:williamhansenbaird@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -129,58 +129,42 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3BB03690740
+X-Rspamd-Queue-Id: F31B96907CA
 
-Refactor the ASUSTek quirk logic from an if-statement to a standard
-rtl_aspm_quirks pci_device_id table. This allows future devices with
-the same quirk to be added more easily while avoiding a large if-chain.
+RTL8723BE outputs a large amount of PCIe AER errors during and
+after boot, even before probe and when driver is never loaded.
+This causes significant system slowdown.
+
+The errors are the same as reported by
+commit 77a6407c6ab2 ("wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723")
+
+Add the RTL8723BE with subsystem ID 17aa:b736 to the rtl_aspm_quirks
+table to stop the AER errors. AER errors can still be present prior to
+pci probe, as the device by default may have ASPM enabled.
+
+Testing on a Razer Blade 14 2017 which shipped from the
+OEM equipped with an RTL8723BE card with this subsystem ID
+confirms that this patch resolves the AER flood and allows the
+wireless card to function normally once the driver takes over.
 
 Signed-off-by: William Hansen-Baird <william.hansen.baird@gmail.com>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index a5bab06f2b61..9de396879806 100644
+index 9de396879806..9919c8588cbd 100644
 --- a/drivers/net/wireless/realtek/rtlwifi/pci.c
 +++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -31,6 +31,11 @@ static const u8 ac_to_hwq[] = {
- 	BK_QUEUE
+@@ -33,6 +33,7 @@ static const u8 ac_to_hwq[] = {
+ 
+ static const struct pci_device_id rtl_aspm_quirks[] = {
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_REALTEK, 0xb723, 0x11ad, 0x1723) },
++	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_REALTEK, 0xb723, 0x17aa, 0xb736) },
+ 	{ 0 }
  };
- 
-+static const struct pci_device_id rtl_aspm_quirks[] = {
-+	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_REALTEK, 0xb723, 0x11ad, 0x1723) },
-+	{ 0 }
-+};
-+
- static u8 _rtl_mac_to_hwqueue(struct ieee80211_hw *hw, struct sk_buff *skb)
- {
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
-@@ -328,21 +333,17 @@ static void rtl_pci_parse_configuration(struct pci_dev *pdev,
- 
- static void rtl_pci_init_aspm(struct ieee80211_hw *hw)
- {
--	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 
- 	_rtl_pci_update_default_setting(hw);
- 
--	/* RTL8723BE found on some ASUSTek laptops, such as F441U and
--	 * X555UQ with subsystem ID 11ad:1723 are known to output large
-+	/* Certain pci devices are known to output large
- 	 * amounts of PCIe AER errors during and after boot up, causing
- 	 * heavy lags, poor network throughput, and occasional lock-ups.
- 	 */
--	if (rtlpriv->rtlhal.hw_type == HARDWARE_TYPE_RTL8723BE &&
--	    (rtlpci->pdev->subsystem_vendor == 0x11ad &&
--	     rtlpci->pdev->subsystem_device == 0x1723)) {
-+	if (pci_match_id(rtl_aspm_quirks, rtlpci->pdev)) {
- 		__rtl_pci_disable_aspm(hw);
- 		ppsc->support_aspm = false;
- 	}
  
 -- 
 2.54.0
