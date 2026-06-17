@@ -1,88 +1,91 @@
-Return-Path: <linux-wireless+bounces-37876-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37877-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Y2rjI2ApM2o3+AUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37876-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 01:10:24 +0200
+	id 66zeN68wM2oG+QUAu9opvQ
+	(envelope-from <linux-wireless+bounces-37877-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 01:41:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9CB69CC52
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 01:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C8C969CD22
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 01:41:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HYirRgva;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37876-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37876-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=puNbBcuG;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37877-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37877-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6852E302B741
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 23:10:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05E31303A244
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 23:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C983C3AF675;
-	Wed, 17 Jun 2026 23:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8AD39A4DF;
+	Wed, 17 Jun 2026 23:41:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92098388396
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jun 2026 23:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA33386559
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Jun 2026 23:41:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781737821; cv=none; b=qGvIQttGTCX6InJlUuTfQnPS/XZBZvnuvZiOrzehEOuFC7cV+4ft2YLiPeCWt6HFH+C+oHQJm7ROHjTk2/OxYmngX7QOs7/2Cld9Fmbcsv/YouG+hk0A7QyWugtRHA9W9x0siPjkkqV6i3qe7x+z59iVy+5CoT5p47MLLCOVGCQ=
+	t=1781739686; cv=none; b=kl9LsmiciEaDIi//t87F6C8fUPDSejA11lB0w4maM7UsDg6KbtNPHJ6u6vF/dgaYg3FSicH/8Tp65pSaoYP7jjruG/sig/KrtxpIkpnmgwRS4orE7Ek5hh9wuibo3yIC84j7PN+2Pgkbc37WjSKHZ7nocaxCa7NG8YQQ6w/Iizw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781737821; c=relaxed/simple;
-	bh=u6wUHnxvwivQwuzu3HKhXhyqnsF7vcLu9HeL0jOJUk4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sPa6xAS/xNZ6wWn0mCLHDr3816E01UuUi2eVxGAuxIIDXZiXPkf2+XmlqC8UvTKc+v/lsE4BkUsw5CEJRy3jGkW+AWGVaWXOxnToD9ihAUlbErHWrCrGAuvpxHUkWZfZA/zbpNN4WTbM7MdS9bgoDukHaH7mvSjuv804/ZiFINo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HYirRgva; arc=none smtp.client-ip=209.85.210.169
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-842d37438d8so70994b3a.0
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Jun 2026 16:10:20 -0700 (PDT)
+	s=arc-20240116; t=1781739686; c=relaxed/simple;
+	bh=1xxApD3Hb5TuHMmSOnw8rBFtZGA1Y9mAEd5x7+SWaMc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aVQ9KugrbefUaJcX7m0QLC3eZizlO4vQh/BtOTW2IWeLrjBXahGXYHv/QqNZb2Gjch+3uUj27llx9MlTtCeCNGHQk7fFcRlfq8uaPJ4bvTrYEJKs9r4d17WoFY7LqDZGjNO6oN+MPICQQwUcCAV0kKE4LxlQolWEcgnSTICRIJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=puNbBcuG; arc=none smtp.client-ip=209.85.216.48
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-36babe2c4bdso132327a91.1
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Jun 2026 16:41:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781737820; x=1782342620; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781739683; x=1782344483; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gor21PaBldXAdPuL5q1IPXFVFpwunO3DWx10Zn+d6L4=;
-        b=HYirRgvaEK8OOyF3+HcVFSvfGL05KyLeg6SgQJwH6fIixHOuLV6nNI4LRVfbq1qpba
-         jT1OIVU7NAfzNCVngxj2reel2Mg/RnOStj5o+K38JUsS2v7b1Pqkx4udZsiYDPI3qcTB
-         9lok3ynpoWu0GQ+JaV17ljPIbGSM3LsnCy7A2j9vlQ7aZBjWb7RBA3DnE4FXGWcOW7nB
-         dYWy0NOyPRj64VFKdhgmt06txyTi2ssVgOTK7/KBWjTTecUsyH3jMb8feeyUw6DHSbFn
-         EXTQwSTPiaBCEwANWpvgzWUATonI7tpyQeGujAQJ2Mv/HC+5NBaXuFEMah7L2Dm/4s8B
-         dr9A==
+        bh=KA3VIuiaTabMHHJ9iGApHbWoluO34hyLG8PCxZjsMXM=;
+        b=puNbBcuGkGXzf3f8Q+ySJcSYPGOqH23R7OkA4xNlsd3HccByUK3g2xvGR4yTsYK8HO
+         TJKXhBGFVIv1GjjqdbFUwFxdtPyEB1DBiyrxaWXOoYDBVaIgXzxPbnUBaNosjcEY8we9
+         wjYlT1xEyIahMQJFxufaPlXziDbinuzrX9UiZx6vg0I8nTPJL0e0N9Km86g0K3uMrEWx
+         Dbs+1FQZfpI8DZ5U33GtzSEjx+ndOwU+cRrP3Ho1D0R7i/HpyiIzZI5fydREAPjnPM+d
+         PL1nHqt329z0EoCX9rcUPVEcJJGjgP8MZJFsi/d7pf8J34XepdKKw93amks+KMdjted3
+         zXGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781737820; x=1782342620;
+        d=1e100.net; s=20251104; t=1781739683; x=1782344483;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Gor21PaBldXAdPuL5q1IPXFVFpwunO3DWx10Zn+d6L4=;
-        b=lqmCCZS1DdpclIcQHSftAW0pEog8sTiFgXr2f6Hftcnl4jQLExKREUK742xRBU+m6z
-         kSpJsUmK5HifHhQ8Y/51iQzpG/sqwaW5OzNQYrdfOvKW+aWrq1ley9RsK5ON8E++jyxw
-         zAnAEzlxUOUpxjkvZGoE92zmvcxCXNpqKRodV1bIMUvyPvnidsjztFus6xgGjJSijpM5
-         m6QxcUj0m/lRVoDHhvVtbEQL6d0vS7jZcDB3S/9Zg4wzWM0RJZ9D2nGjm1Gg6Vyfcir+
-         9vGePaNStVKDbV2z/n1TujmKEH+0rDNBrEKxWJSI207h3DUaeD6bhil7+Nvx7yv/SWE3
-         9bVw==
-X-Gm-Message-State: AOJu0YzuiZ3J9wReiowog2li4DsTD5DqI8+xJgdFuC42Dj665O2NkAKX
-	h1L2NbIqjgZ1c7udfkVOPwwY8H+V6AOrevX0UdamBfF+SZ44Mt4xht6CzWMtkg==
-X-Gm-Gg: Acq92OG2iu0ieOkpmkR8ZUWfGiurRYewkUOD/s4fN86+qJlCpnUPU9/c9ZY/IPrR1hG
-	uZbl3SKcZf2UtQy//kON6S+1zOMT0OF64EPC/kl5pCRr91gbP+bDnLsEcl64YvxmyB6yVyDs0Nv
-	8o0985QYiyZyIJERiE/tR/g1yPrJDHWhrNdsVbVGxksoahdO+6siT/b1p7O6ZrXIEWZzJh+/kkc
-	sxYvN0G0+VdQfSNVQrv9S9YRjSE5/ZaYchzIgPwQ8+l+gu5t4sRUku1Jx0lp96JL8NIC5GuL0OV
-	IKYgL1WI1/DQC9gCMhO0jUHpUTQSh7dbf5s/TlKnL3hcRk+aOAPALCAk8KGuIAwKxm4kvHqg7K7
-	Ckosx8pRuX6zbVweTyWeUHLg4KlkaGkVYbZS/KO8bFv/8O+V30jwqt2uR1N4uppT6bkQyrIFD5S
-	osrrdO53nMa/eYv66FTIqrlcvLx8CcxoyC9gVg8lfTMM+ud6t39BZQOC/jDnWJjEt92Hf1S47mk
-	10O+95FT9ZOyFqGGdcuB1L9
-X-Received: by 2002:a05:6a00:2d85:b0:842:2382:a0ea with SMTP id d2e1a72fcca58-8452445d70bmr6060758b3a.14.1781737819864;
-        Wed, 17 Jun 2026 16:10:19 -0700 (PDT)
+        bh=KA3VIuiaTabMHHJ9iGApHbWoluO34hyLG8PCxZjsMXM=;
+        b=qsKREXpQ+Xeo1ou3h1NJwVDV4Vwk5oNB/iwHKFpGME7w/CrbzTsRFLrw94+vXByUlp
+         xPPvFgIIsZJ9t6+V1lJcHCPBHKQl0E9ia1fjmo96rFuGklfMAOT3G9awsTOf8trVqVUx
+         pu2kh04WX9p9XZp2xKeQG/ascSz+Y0X5nx/pES8XIU2fEpihNaZVtQflR1A8XYlIjqLD
+         zU4BYy3V759jiIX1QE/Jo45lUQ6bgnRSNNhJQfGBrCZJKFccdpRnGMWxC7qSz5Z3OWQN
+         Dv81jTdiQKCkgRtp0rkYFw0wK4POgg5Nz495phjmmz6lKXER0YQ3DxM7OOgRPax7Cj9k
+         3DGw==
+X-Gm-Message-State: AOJu0YzQT7/p0nn4cPqmqF04+/tVkvipJhvsWeE+LF5XtuPZ+4Aqkr8L
+	AdOvRdSm/GIiCTCzSl83YbX4PlMWwz2qupBl9J16EHrdKc8XMVyc00B6pgxlXw==
+X-Gm-Gg: AfdE7ckPfKx/3qxTQNlzuO5ItFosB95P7mr8qU//DK7SQDVwC6Kk4T//s5C3ammeikX
+	zoKHSBesus3KNT7JdXarHK5b8pmfh2WqgNybK1VbX7Hf4+z6jK9HZxNiPFKE7d4vRAKft0Roh2M
+	tg+5X4PKK7VMnAmAXsPK1AZI47ehFsRZriVNPPsrlEBDZVeDn/ZgLsVNzsbH6jL0p2l9ELzFw2z
+	WNYM4s1G5RsFsQEbqcBuXU/+jPSK0nl4+/2qBrcJiqoR5Yaph4Jy7DQrXYfKwO13J3vgMHmrU7m
+	b9h5bz1U52I4G7uHRsF/YVKH8DbGYrvfBHQkLILUoJSfXVB4n7sSoID9k+N+iOhlPwnM4JbVrUS
+	cScfbuh1rsEYYmALlmxbncvFVyVzDvQiyyaQkyBuUZLuHN7M4GWmhP27Di29y8a0qxsh41knNNR
+	wKJ9u8T/ps10n73ZHJXWDqeFKM3y2+FDZ8IchJNaV3YS+R4CfXcidLfOfRTrtha3STy20Rvn1JG
+	zyHFDg9K6BzUVWNK5iYl8S2
+X-Received: by 2002:a17:90a:e7d1:b0:369:1dcf:4a46 with SMTP id 98e67ed59e1d1-37c937055c5mr5722005a91.25.1781739683447;
+        Wed, 17 Jun 2026 16:41:23 -0700 (PDT)
 Received: from ryzen ([2601:644:8000:5b5d:7305:54ba:2fb4:e198])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434acca7ecsm17640525b3a.13.2026.06.17.16.10.18
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37ce68cab02sm238644a91.7.2026.06.17.16.41.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 16:10:19 -0700 (PDT)
+        Wed, 17 Jun 2026 16:41:22 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: linux-wireless@vger.kernel.org
-Cc: Jiri Slaby <jirislaby@kernel.org>,
-	Nick Kossifidis <mickflemm@gmail.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCHv2 ath-next] wifi: ath5k: ahb: use devm for ioremap
-Date: Wed, 17 Jun 2026 16:10:02 -0700
-Message-ID: <20260617231002.262820-1-rosenp@gmail.com>
+Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-kernel@vger.kernel.org (open list),
+	llvm@lists.linux.dev (open list:CLANG/LLVM BUILD SUPPORT:Keyword:\b(?i:clang|llvm)\b)
+Subject: [PATCH ath-next] ath9k: eeprom: alias vpdTableI onto vpdTableL to shrink stack frame
+Date: Wed, 17 Jun 2026 16:41:05 -0700
+Message-ID: <20260617234105.284358-1-rosenp@gmail.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -92,126 +95,149 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-37876-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:jirislaby@kernel.org,m:mickflemm@gmail.com,m:mcgrof@kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[toke.dk,kernel.org,gmail.com,google.com,vger.kernel.org,lists.linux.dev];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37877-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:toke@toke.dk,m:nathan@kernel.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:linux-kernel@vger.kernel.org,m:llvm@lists.linux.dev,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	TAGGED_RCPT(0.00)[linux-wireless,lkml];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DF9CB69CC52
+X-Rspamd-Queue-Id: 3C8C969CD22
 
-Simplifies the code by quite a bit in probe.
+vpdTableL, vpdTableR, and vpdTableI are never live simultaneously.
+vpdTableL and vpdTableR are consumed during the frequency-interpolation
+step that writes vpdTableI; after the if/else they are never read
+again.  Reuse vpdTableL for the interpolated result (what was
+vpdTableI), reducing the stack frame by one 256-byte array.
 
-Also allows removing a goto and returning directly.
+The read-via-write in the else branch is safe: ath9k_hw_interpolate()
+receives vpdTableL[i][j] by value as a function argument before the
+return value is written back to vpdTableL[i][j].
 
+Stack frame size change (x86_64, clang):
+  before: 0x440 (1088 B)
+  after:  0x330 (816 B)
+
+Assisted-by: opencode:big-pickle
 Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- v2: fix typo and remove error message
- drivers/net/wireless/ath/ath5k/ahb.c | 33 ++++++----------------------
- 1 file changed, 7 insertions(+), 26 deletions(-)
+ drivers/net/wireless/ath/ath9k/eeprom.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
-index cb3e891ee1bd..8d28e02c3418 100644
---- a/drivers/net/wireless/ath/ath5k/ahb.c
-+++ b/drivers/net/wireless/ath/ath5k/ahb.c
-@@ -87,7 +87,6 @@ static int ath_ahb_probe(struct platform_device *pdev)
- 	struct ar231x_board_config *bcfg = dev_get_platdata(&pdev->dev);
- 	struct ath5k_hw *ah;
- 	struct ieee80211_hw *hw;
--	struct resource *res;
- 	void __iomem *mem;
- 	int irq;
- 	int ret = 0;
-@@ -95,35 +94,21 @@ static int ath_ahb_probe(struct platform_device *pdev)
+diff --git a/drivers/net/wireless/ath/ath9k/eeprom.c b/drivers/net/wireless/ath/ath9k/eeprom.c
+index df58dc02e104..272491ae9f29 100644
+--- a/drivers/net/wireless/ath/ath9k/eeprom.c
++++ b/drivers/net/wireless/ath/ath9k/eeprom.c
+@@ -464,8 +464,6 @@ void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
+ 		[AR5416_MAX_PWR_RANGE_IN_HALF_DB];
+ 	static u8 vpdTableR[AR5416_NUM_PD_GAINS]
+ 		[AR5416_MAX_PWR_RANGE_IN_HALF_DB];
+-	static u8 vpdTableI[AR5416_NUM_PD_GAINS]
+-		[AR5416_MAX_PWR_RANGE_IN_HALF_DB];
  
- 	if (!dev_get_platdata(&pdev->dev)) {
- 		dev_err(&pdev->dev, "no platform data specified\n");
--		ret = -EINVAL;
--		goto err_out;
-+		return -EINVAL;
- 	}
+ 	u8 *pVpdL, *pVpdR, *pPwrL, *pPwrR;
+ 	u8 minPwrT4[AR5416_NUM_PD_GAINS];
+@@ -509,7 +507,7 @@ void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
+ 						data_9287[idxL].pwrPdg[i],
+ 						data_9287[idxL].vpdPdg[i],
+ 						intercepts,
+-						vpdTableI[i]);
++						vpdTableL[i]);
+ 			}
+ 		} else if (eeprom_4k) {
+ 			for (i = 0; i < numXpdGains; i++) {
+@@ -519,7 +517,7 @@ void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
+ 						data_4k[idxL].pwrPdg[i],
+ 						data_4k[idxL].vpdPdg[i],
+ 						intercepts,
+-						vpdTableI[i]);
++						vpdTableL[i]);
+ 			}
+ 		} else {
+ 			for (i = 0; i < numXpdGains; i++) {
+@@ -529,7 +527,7 @@ void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
+ 						data_def[idxL].pwrPdg[i],
+ 						data_def[idxL].vpdPdg[i],
+ 						intercepts,
+-						vpdTableI[i]);
++						vpdTableL[i]);
+ 			}
+ 		}
+ 	} else {
+@@ -568,7 +566,7 @@ void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
+ 						vpdTableR[i]);
  
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (res == NULL) {
--		dev_err(&pdev->dev, "no memory resource found\n");
--		ret = -ENXIO;
--		goto err_out;
--	}
--
--	mem = ioremap(res->start, resource_size(res));
--	if (mem == NULL) {
--		dev_err(&pdev->dev, "ioremap failed\n");
--		ret = -ENOMEM;
--		goto err_out;
--	}
-+	mem = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(mem))
-+		return PTR_ERR(mem);
+ 			for (j = 0; j <= (maxPwrT4[i] - minPwrT4[i]) / 2; j++) {
+-				vpdTableI[i][j] =
++				vpdTableL[i][j] =
+ 					(u8)(ath9k_hw_interpolate((u16)
+ 					     FREQ2FBIN(centers.
+ 						       synth_center,
+@@ -605,11 +603,11 @@ void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
+ 					(minPwrT4[i] / 2)) -
+ 				       tPdGainOverlap + 1 + minDelta);
+ 		}
+-		vpdStep = (int16_t)(vpdTableI[i][1] - vpdTableI[i][0]);
++		vpdStep = (int16_t)(vpdTableL[i][1] - vpdTableL[i][0]);
+ 		vpdStep = (int16_t)((vpdStep < 1) ? 1 : vpdStep);
  
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		ret = irq;
--		goto err_iounmap;
--	}
-+	if (irq < 0)
-+		return irq;
+ 		while ((ss < 0) && (k < (AR5416_NUM_PDADC_VALUES - 1))) {
+-			tmpVal = (int16_t)(vpdTableI[i][0] + ss * vpdStep);
++			tmpVal = (int16_t)(vpdTableL[i][0] + ss * vpdStep);
+ 			pPDADCValues[k++] = (u8)((tmpVal < 0) ? 0 : tmpVal);
+ 			ss++;
+ 		}
+@@ -621,17 +619,17 @@ void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
+ 			tgtIndex : sizeCurrVpdTable;
  
- 	hw = ieee80211_alloc_hw(sizeof(struct ath5k_hw), &ath5k_hw_ops);
- 	if (hw == NULL) {
- 		dev_err(&pdev->dev, "no memory for ieee80211_hw\n");
--		ret = -ENOMEM;
--		goto err_iounmap;
-+		return -ENOMEM;
- 	}
+ 		while ((ss < maxIndex) && (k < (AR5416_NUM_PDADC_VALUES - 1))) {
+-			pPDADCValues[k++] = vpdTableI[i][ss++];
++			pPDADCValues[k++] = vpdTableL[i][ss++];
+ 		}
  
- 	ah = hw->priv;
-@@ -179,9 +164,6 @@ static int ath_ahb_probe(struct platform_device *pdev)
+-		vpdStep = (int16_t)(vpdTableI[i][sizeCurrVpdTable - 1] -
+-				    vpdTableI[i][sizeCurrVpdTable - 2]);
++		vpdStep = (int16_t)(vpdTableL[i][sizeCurrVpdTable - 1] -
++				    vpdTableL[i][sizeCurrVpdTable - 2]);
+ 		vpdStep = (int16_t)((vpdStep < 1) ? 1 : vpdStep);
  
-  err_free_hw:
- 	ieee80211_free_hw(hw);
-- err_iounmap:
--        iounmap(mem);
-- err_out:
- 	return ret;
- }
- 
-@@ -213,7 +195,6 @@ static void ath_ahb_remove(struct platform_device *pdev)
- 	}
- 
- 	ath5k_deinit_ah(ah);
--	iounmap(ah->iobase);
- 	ieee80211_free_hw(hw);
- }
- 
+ 		if (tgtIndex >= maxIndex) {
+ 			while ((ss <= tgtIndex) &&
+ 			       (k < (AR5416_NUM_PDADC_VALUES - 1))) {
+-				tmpVal = (int16_t)((vpdTableI[i][sizeCurrVpdTable - 1] +
++				tmpVal = (int16_t)((vpdTableL[i][sizeCurrVpdTable - 1] +
+ 						    (ss - maxIndex + 1) * vpdStep));
+ 				pPDADCValues[k++] = (u8)((tmpVal > 255) ?
+ 							 255 : tmpVal);
 -- 
 2.54.0
 
