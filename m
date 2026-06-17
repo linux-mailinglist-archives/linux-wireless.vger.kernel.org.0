@@ -1,309 +1,369 @@
-Return-Path: <linux-wireless+bounces-37844-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37845-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id w6poDqIqMmo7wAUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37844-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 07:03:30 +0200
+	id Gd/aCls4MmrowwUAu9opvQ
+	(envelope-from <linux-wireless+bounces-37845-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 08:02:03 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A33DB696904
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 07:03:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5E2696B99
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 08:02:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=J+3stysH;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=UquRzYGk;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37844-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37844-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=RGmHNT7Q;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37845-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37845-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 737E630C8D3B
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 05:03:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53654309EC77
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 06:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F77D37A494;
-	Wed, 17 Jun 2026 05:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C483C3B14DE;
+	Wed, 17 Jun 2026 06:01:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BD234D929
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jun 2026 05:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A2624E4A1;
+	Wed, 17 Jun 2026 06:01:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781672607; cv=none; b=K4YbalvhUVfyoZzNJ646gxzlU2xvzy6eRyDnAh8dlzih2sD7CqJvj8kVqPOKKagJwVNwDZ4d65o6EyJ14gFCpTYsTA3/dZQBYYDVrdmvOjrCp1az7an9COOl7BEs72PD11KjImz3hrfbbXeOXdkkGbvVzwMsp6SLdokGnUjyCAs=
+	t=1781676090; cv=none; b=pXd5pVknZj/uVtQaDuLGIKRNZEUN+BqtIOXoGZriNj350+GjPIgN9MXcOmugC+wo9OBpGmzPoXl347vBQTRSHrl6Sct22iT3k8ndRm/aqqZgWgUtMXhmv5mEipUZ2R7Habe74LbuE5Tl8vijV4Ks+jSGs+DjK0ZOcgJHopurpBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781672607; c=relaxed/simple;
-	bh=aDIEjiAIfYlGafZXoizkGOYBuWaQhMMJT7lwd1hrT8c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lj/ry3l1fSv8v6esmWRs0/txxCFN+M2uU1s70BO1n3P2KBWCxaSMClwv6AsRfNT3kuq4xAfWjWQP3cZtEVoVuGIBYySp9kwm43Jzgxs9M3msQ+SVrhl3GLEtvDbdbhYvkF3uuBRN/ZFP1W48zzFrT62VI8CCtBHu6X+BWvQRkX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=J+3stysH; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=UquRzYGk; arc=none smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GLTHGN736088
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jun 2026 05:03:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	JgI+Cd0eSg5v7nwjX9kRNWHWUjEtqaXIcA4x0uTN1TY=; b=J+3stysHJ5gd8CKX
-	J/jMfx8SpS/LqbunMC0hbI+Hb4E8g3sk4lQs9ggvIlqcXda/yQp7ife+e2oDepbq
-	AzDrfcpq9Oz7kh/TSVmw5e4krGlsG20d26+xiu5cH3arFBjXJXGhZK31mfxrxVl7
-	Eqn+VoN+TMioBOMV+P59epyAVyGCCLKD3i6rW0+trIf6vjTl/ps3xjVFq1Pqt+qj
-	LZnP/LZgGsSSFMCbkReIZmCwPcAlTZ2Ntn3GUXAh26KJojHq+pNNcT8LkE9NTVL6
-	/I+2EJcfn/IMyLoiXLUQqmkZKnGSyaUmsHLsgdRAGE+y3iw4E5xLeMAJIW2c0ZUA
-	ZqhRqg==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eueeshg6k-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jun 2026 05:03:20 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2c6c431a04fso1729675ad.0
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Jun 2026 22:03:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781672599; x=1782277399; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JgI+Cd0eSg5v7nwjX9kRNWHWUjEtqaXIcA4x0uTN1TY=;
-        b=UquRzYGkzBPruGcsCUcTxih9FQ8Onb/x5Buz/FVY/UMw8ZR4CfdDBxr5tLyhgr+rim
-         4KeyWKXTWR4QkXrpIb8Q9j2yk9WJDYVCfwmhyfXJdNuIgOK/m8PfsYDklqSlKMnH3KRM
-         KmzcnEz+lzpIeljJLk5BvQjEGy1+16AOJ0GFsanrOt+QjMK67aCFnpmTFzD/dBLRNW5o
-         vd3k8DzqvQ4tzx9KCGkF69ivyENAggAC823MjmMS7ZmxXQckbZlfqxkcjuV14XLGCd5x
-         Pl1jVUM8IuWhNYe6QzW+mXPffusctqnTucBJiyepyjMvdMoBl9wlxroqMT3CP707H1Yr
-         Q20A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781672599; x=1782277399;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JgI+Cd0eSg5v7nwjX9kRNWHWUjEtqaXIcA4x0uTN1TY=;
-        b=F/NXuyJBQ31B0UqGXx+u+10kBMfe2mIWWG4IUKaz8+X2mTb26DabCRyQkdJMg/aRzV
-         c93FTgkM55VOMwuCU/uVcDNwuROPyZa8ZsUwgQ/luCBQj6+4qvdeo9Vpx8KItAXY5gM7
-         S7ln0Oa5S2lRgig+YMVFUhhLCZ7okUIWCyeCynG5RMfgW/AkYFnRdsla75Bco6LhUsZw
-         Ab3KBb6aXjAbD0MgN+AQLpLs8zCcZ3Kr7SAlAL4ix5jhSNPfKIUI8742NXRfhzRbbqO7
-         eYbjwGuu/MdtiFEW4yjD/ak96PEO6rRXSUFEm7EELuEevuLaBhM4Iw9iDrSa9D8FnWWm
-         mD+Q==
-X-Gm-Message-State: AOJu0YzR/G6qzPy6jEFDIgLxFYmhmSiQu8elp2EXb3NLtcBT3eoPF1is
-	7S5lU4VUKa1cq3nPuVM8x2raFmlxvbps5qkNCGAwGUJF4o7V6u3GVmWDlGLoeUgpNs9biSdQivF
-	RyiC8mF2r9p+VdQ+yqehzvYzRGM4hvPr4Yo5ZiVGQs60DtEhnGha3tiab6tOSJ1YpJV4r7Pn2Qh
-	xPTw==
-X-Gm-Gg: AfdE7cnrnkccKG+QKn/dgbqqOr+nM5TpO6NrOE3aH9Ob3Cn4U1hKyK/72gHDX6h/u0V
-	8AA6z9FVFIHkK16cEAcpFPwaI7Ir4u0LZvwlJvXCuQk9lyNfOztRBhwDcM2I5E81cvOqF1JUUnH
-	47mzO1UnQvkCLBHvjUsksM2vWCn+5GkMrRjzSpAVfktPHQuqINEwqUE4tMn3eTdJ7VUfIvPE87l
-	umThcmCNU6Bqx55VYzUONmmm6RgSEl0RcE1/wC+Ay+U6DSDVXASAhE9MMQkC4GLmR+nUH7P3BtN
-	x35CSQL78vCguAshKx9cQ4UicniRA+FSn7mVvwL3MPH7kxV7R6XzN359QTwkiALO1jGWqI4ttcv
-	em6ghs3UyGq1qawpqRYoQ//AAua/bjt693fskAYGjGsDIC/sQH6U=
-X-Received: by 2002:a17:903:1b4d:b0:2c6:9358:3ad5 with SMTP id d9443c01a7336-2c6bc20f6d4mr23015805ad.17.1781672599138;
-        Tue, 16 Jun 2026 22:03:19 -0700 (PDT)
-X-Received: by 2002:a17:903:1b4d:b0:2c6:9358:3ad5 with SMTP id d9443c01a7336-2c6bc20f6d4mr23015515ad.17.1781672598711;
-        Tue, 16 Jun 2026 22:03:18 -0700 (PDT)
-Received: from [10.152.199.23] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c43336937fsm152362095ad.72.2026.06.16.22.03.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jun 2026 22:03:18 -0700 (PDT)
-Message-ID: <3fb00a3b-2092-43d2-a8f8-9f934505dcee@oss.qualcomm.com>
-Date: Wed, 17 Jun 2026 10:33:14 +0530
+	s=arc-20240116; t=1781676090; c=relaxed/simple;
+	bh=pMBWIR0F6P1YR7l6eX9JDBSPYtmJb5pwcu6s7Z3CBvQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cOSRMhRdSd3EfJyKvumYYoSNj7Pi5nnmD85JOJtmR2HS/CzCsme2GRMNg5tDHqNsU3YVq8YLPkJEnK2zSaIJnKCeKYjbko1efj3o0ubDY0BYiLa4Wbc9I/4pfoARDRg+wQ4cUnKW0+H1KQhFN8knFCQYHmP5mNMfeYQ4UdXJRMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RGmHNT7Q; arc=none smtp.client-ip=192.198.163.17
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781676089; x=1813212089;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pMBWIR0F6P1YR7l6eX9JDBSPYtmJb5pwcu6s7Z3CBvQ=;
+  b=RGmHNT7QgUeErys4v57q0inNiO+uy21RZJ3bAHv726PTXrnw3ZTBhZIA
+   j01oQNCezNaW34m+Z8Wg0vDLhqbe4rdh2GqvRaKjVdWYa2TZCACeA8Chf
+   MffNQH2TDedbTa71WO0xY0JHnGWkb68UIER04c7zDUgBg5lkvmp8ddV2F
+   /YH5o+PjSmIax9MsJYiQANToqeXcTKNYs8qm68braghL5RbSdb7cIkKCc
+   BQ4FCXBpoWhmMjaa+yTqBQUR5w5P41MhnGmgR8CNsc6/Vuv1qkek2jguz
+   KT5hRDs7BLI3TNp9GQe1wrH2bo9GwNe9b2hyc0AXRqvLJScvZjz9HEp+H
+   g==;
+X-CSE-ConnectionGUID: HCavKeUGQF6aX0KyX8Sy1A==
+X-CSE-MsgGUID: mfS0SyfnTHuHIaXfMuSq4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="82337147"
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
+   d="scan'208";a="82337147"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 23:01:28 -0700
+X-CSE-ConnectionGUID: aiKY6Vn8R1yOGWbtRlBrjw==
+X-CSE-MsgGUID: vaFKjJF4T5O9xdjezvhi3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
+   d="scan'208";a="272042474"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 16 Jun 2026 23:01:27 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wZjL2-00000000UA6-1S9v;
+	Wed, 17 Jun 2026 06:01:24 +0000
+Date: Wed, 17 Jun 2026 14:00:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH ath-next] wifi: ath9k: drop static from local pdadc and
+ vpdTable arrays
+Message-ID: <202606171341.zUckYxVR-lkp@intel.com>
+References: <20260616030828.655310-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v2] wifi: ath12k: avoid setting 320MHZ support on
- non 6GHz band
-To: Nicolas Escande <nico.escande@gmail.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20260611084422.1511513-1-nico.escande@gmail.com>
-From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260611084422.1511513-1-nico.escande@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE3MDA0NCBTYWx0ZWRfX59invRMv/grc
- i+ngMvTM6P1+XR6k7pf2VcOloZwMqRFhvLSe6e3n6QXV8E7zpWkIL6Ob+3kUDSBRK6j+ZWf/ice
- OOpjIkUczaAjsISwCPnKnfQpOJ2SnVOgVV5gNWAOe5yEuT/2KW6Z1zOON0HCQje3xtBqgVuUCTe
- iGvXzqO0wpxclG+wQ9wjrzczflMqI7mbU6AiTb39HK8EaQGo43pwl9uSkggCMQEJpZmOIIriAIo
- LgyQtqIUMRFyq87jNuKrno9qF1qvn2OkLRAFON6D8blULq6Cj0QvbTN/8Uy4k4RAY94QMSRk/yC
- XdgUa1KNmOen1hfyi4P6NgE51SvlvGI21TSa8Xa1EFDZllF/14GkEOOsFUVIlXsurEUf3/SVgK7
- JbVYINRSy3GKu5sJPI9kTcgcRogSg8YrJi8j8jUwttw21J9rmpXpCcVo0R5nTFR90YTGcmWNDMJ
- sI9ip2Ul4NMMHEz99MA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE3MDA0NCBTYWx0ZWRfX05tJ6V5iESwI
- 7K93MAGH/01Z0IlfH54+qEtqb1E01KEe+TfO+4W3OLMzW/gAqIavkYCrXPAJv5ghstPSHQjuD1E
- w0yiUDHl14LpZsQ2NbAx2/Z+dJsNMX8=
-X-Proofpoint-ORIG-GUID: RsgqFejSsUD274qdXHN2ne_pGW3TKk6A
-X-Proofpoint-GUID: RsgqFejSsUD274qdXHN2ne_pGW3TKk6A
-X-Authority-Analysis: v=2.4 cv=ePojSnp1 c=1 sm=1 tr=0 ts=6a322a98 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=pGLkceISAAAA:8 a=0TnLR4_Wa9VIDZeikcEA:9 a=QEXdDO2ut3YA:10
- a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-16_05,2026-06-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
- malwarescore=0 bulkscore=0 clxscore=1015 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606170044
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260616030828.655310-1-rosenp@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-4.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-37844-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:dkim];
-	FREEMAIL_TO(0.00)[gmail.com,lists.infradead.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:nico.escande@gmail.com,m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:nicoescande@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37845-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:rosenp@gmail.com,m:linux-wireless@vger.kernel.org,m:oe-kbuild-all@lists.linux.dev,m:toke@toke.dk,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,01.org:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A33DB696904
+X-Rspamd-Queue-Id: 7D5E2696B99
 
-On 6/11/2026 2:14 PM, Nicolas Escande wrote:
-> On a split phy qcn9274 (2.4GHz + 5GHz low), "iw phy" reports 320MHz
-> realated features on the 5GHz band while it should not:
+Hi Rosen,
 
+kernel test robot noticed the following build warnings:
 
-s/realated/related
+[auto build test WARNING on ath/ath-next]
+[also build test WARNING on wireless/main wireless-next/main linus/master v7.1 next-20260616]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> 
->      Wiphy phy1
->      [...]
->          Band 2:
->      [...]
->              EHT Iftypes: managed
->      [...]
->                  EHT PHY Capabilities: (0xe2ffdbe018778000):
->                      320MHz in 6GHz Supported
->      [...]
->                      Beamformee SS (320MHz): 7
->      [...]
->                      Number Of Sounding Dimensions (320MHz): 3
->      [...]
->                  EHT MCS/NSS: (0x22222222222222222200000000):
-> 
-> This is also reflected in the beacons sent by a mesh interface started on
-> that band. They erroneously advertise 320MHZ support too.
+url:    https://github.com/intel-lab-lkp/linux/commits/Rosen-Penev/wifi-ath9k-drop-static-from-local-pdadc-and-vpdTable-arrays/20260616-114515
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git ath-next
+patch link:    https://lore.kernel.org/r/20260616030828.655310-1-rosenp%40gmail.com
+patch subject: [PATCH ath-next] wifi: ath9k: drop static from local pdadc and vpdTable arrays
+config: arm-allyesconfig (https://download.01.org/0day-ci/archive/20260617/202606171341.zUckYxVR-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 16.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260617/202606171341.zUckYxVR-lkp@intel.com/reproduce)
 
-s/320MHZ/320MHz
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606171341.zUckYxVR-lkp@intel.com/
 
-> 
-> This should not happen as the spec at section 9.4.2.323.3 says we should
+All warnings (new ones prefixed by >>):
 
-Reword the spec citation to: IEEE Std 802.11-2024, subclause 9.4.2.323.3 ...
+   drivers/net/wireless/ath/ath9k/eeprom.c: In function 'ath9k_hw_get_gain_boundaries_pdadcs':
+>> drivers/net/wireless/ath/ath9k/eeprom.c:657:1: warning: the frame size of 1360 bytes is larger than 1280 bytes [-Wframe-larger-than=]
+     657 | }
+         | ^
 
 
-> not set the 320MHz related fields when not operating on a 6GHz band.
-> For example it says about Bit 0 "Support For 320 MHz In 6 GHz"
-> 
->    "Reserved if the EHT Capabilities element is indicating capabilities for
->     the 2.4 GHz or 5 GHz bands."
-> 
-> Fix this by clearing the related bits when converting from WMI eht phy
-> capabilities to mac80211 phy capabilities, for bands other than 6GHz.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00218-QCAHKSWPL_SILICONZ-1
-> 
+vim +657 drivers/net/wireless/ath/ath9k/eeprom.c
 
-The commit log mentions wrong `iw phy` output and wrong mesh beacon
-advertisement, so this appears user visible. If that is the intended bug 
-being fixed, please add a Fixes tag.
+a55f858852e4345 Sujith        2010-06-01  451  
+115277a3bc0683d Felix Fietkau 2010-12-12  452  void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
+115277a3bc0683d Felix Fietkau 2010-12-12  453  				struct ath9k_channel *chan,
+115277a3bc0683d Felix Fietkau 2010-12-12  454  				void *pRawDataSet,
+115277a3bc0683d Felix Fietkau 2010-12-12  455  				u8 *bChans, u16 availPiers,
+115277a3bc0683d Felix Fietkau 2010-12-12  456  				u16 tPdGainOverlap,
+115277a3bc0683d Felix Fietkau 2010-12-12  457  				u16 *pPdGainBoundaries, u8 *pPDADCValues,
+115277a3bc0683d Felix Fietkau 2010-12-12  458  				u16 numXpdGains)
+115277a3bc0683d Felix Fietkau 2010-12-12  459  {
+115277a3bc0683d Felix Fietkau 2010-12-12  460  	int i, j, k;
+115277a3bc0683d Felix Fietkau 2010-12-12  461  	int16_t ss;
+115277a3bc0683d Felix Fietkau 2010-12-12  462  	u16 idxL = 0, idxR = 0, numPiers;
+8e792d8755eaf1a Rosen Penev   2026-06-15  463  	u8 vpdTableL[AR5416_NUM_PD_GAINS]
+115277a3bc0683d Felix Fietkau 2010-12-12  464  		[AR5416_MAX_PWR_RANGE_IN_HALF_DB];
+8e792d8755eaf1a Rosen Penev   2026-06-15  465  	u8 vpdTableR[AR5416_NUM_PD_GAINS]
+115277a3bc0683d Felix Fietkau 2010-12-12  466  		[AR5416_MAX_PWR_RANGE_IN_HALF_DB];
+8e792d8755eaf1a Rosen Penev   2026-06-15  467  	u8 vpdTableI[AR5416_NUM_PD_GAINS]
+115277a3bc0683d Felix Fietkau 2010-12-12  468  		[AR5416_MAX_PWR_RANGE_IN_HALF_DB];
+115277a3bc0683d Felix Fietkau 2010-12-12  469  
+115277a3bc0683d Felix Fietkau 2010-12-12  470  	u8 *pVpdL, *pVpdR, *pPwrL, *pPwrR;
+115277a3bc0683d Felix Fietkau 2010-12-12  471  	u8 minPwrT4[AR5416_NUM_PD_GAINS];
+115277a3bc0683d Felix Fietkau 2010-12-12  472  	u8 maxPwrT4[AR5416_NUM_PD_GAINS];
+115277a3bc0683d Felix Fietkau 2010-12-12  473  	int16_t vpdStep;
+115277a3bc0683d Felix Fietkau 2010-12-12  474  	int16_t tmpVal;
+115277a3bc0683d Felix Fietkau 2010-12-12  475  	u16 sizeCurrVpdTable, maxIndex, tgtIndex;
+115277a3bc0683d Felix Fietkau 2010-12-12  476  	bool match;
+115277a3bc0683d Felix Fietkau 2010-12-12  477  	int16_t minDelta = 0;
+115277a3bc0683d Felix Fietkau 2010-12-12  478  	struct chan_centers centers;
+115277a3bc0683d Felix Fietkau 2010-12-12  479  	int pdgain_boundary_default;
+115277a3bc0683d Felix Fietkau 2010-12-12  480  	struct cal_data_per_freq *data_def = pRawDataSet;
+115277a3bc0683d Felix Fietkau 2010-12-12  481  	struct cal_data_per_freq_4k *data_4k = pRawDataSet;
+940cd2c12ebff68 Felix Fietkau 2010-12-12  482  	struct cal_data_per_freq_ar9287 *data_9287 = pRawDataSet;
+115277a3bc0683d Felix Fietkau 2010-12-12  483  	bool eeprom_4k = AR_SREV_9285(ah) || AR_SREV_9271(ah);
+940cd2c12ebff68 Felix Fietkau 2010-12-12  484  	int intercepts;
+940cd2c12ebff68 Felix Fietkau 2010-12-12  485  
+940cd2c12ebff68 Felix Fietkau 2010-12-12  486  	if (AR_SREV_9287(ah))
+940cd2c12ebff68 Felix Fietkau 2010-12-12  487  		intercepts = AR9287_PD_GAIN_ICEPTS;
+940cd2c12ebff68 Felix Fietkau 2010-12-12  488  	else
+940cd2c12ebff68 Felix Fietkau 2010-12-12  489  		intercepts = AR5416_PD_GAIN_ICEPTS;
+115277a3bc0683d Felix Fietkau 2010-12-12  490  
+115277a3bc0683d Felix Fietkau 2010-12-12  491  	memset(&minPwrT4, 0, AR5416_NUM_PD_GAINS);
+115277a3bc0683d Felix Fietkau 2010-12-12  492  	ath9k_hw_get_channel_centers(ah, chan, &centers);
+115277a3bc0683d Felix Fietkau 2010-12-12  493  
+115277a3bc0683d Felix Fietkau 2010-12-12  494  	for (numPiers = 0; numPiers < availPiers; numPiers++) {
+115277a3bc0683d Felix Fietkau 2010-12-12  495  		if (bChans[numPiers] == AR5416_BCHAN_UNUSED)
+115277a3bc0683d Felix Fietkau 2010-12-12  496  			break;
+115277a3bc0683d Felix Fietkau 2010-12-12  497  	}
+115277a3bc0683d Felix Fietkau 2010-12-12  498  
+115277a3bc0683d Felix Fietkau 2010-12-12  499  	match = ath9k_hw_get_lower_upper_index((u8)FREQ2FBIN(centers.synth_center,
+115277a3bc0683d Felix Fietkau 2010-12-12  500  							     IS_CHAN_2GHZ(chan)),
+115277a3bc0683d Felix Fietkau 2010-12-12  501  					       bChans, numPiers, &idxL, &idxR);
+115277a3bc0683d Felix Fietkau 2010-12-12  502  
+115277a3bc0683d Felix Fietkau 2010-12-12  503  	if (match) {
+940cd2c12ebff68 Felix Fietkau 2010-12-12  504  		if (AR_SREV_9287(ah)) {
+940cd2c12ebff68 Felix Fietkau 2010-12-12  505  			for (i = 0; i < numXpdGains; i++) {
+940cd2c12ebff68 Felix Fietkau 2010-12-12  506  				minPwrT4[i] = data_9287[idxL].pwrPdg[i][0];
+83d6f1f15f8cce8 Arnd Bergmann 2016-03-14  507  				maxPwrT4[i] = data_9287[idxL].pwrPdg[i][intercepts - 1];
+940cd2c12ebff68 Felix Fietkau 2010-12-12  508  				ath9k_hw_fill_vpd_table(minPwrT4[i], maxPwrT4[i],
+940cd2c12ebff68 Felix Fietkau 2010-12-12  509  						data_9287[idxL].pwrPdg[i],
+940cd2c12ebff68 Felix Fietkau 2010-12-12  510  						data_9287[idxL].vpdPdg[i],
+940cd2c12ebff68 Felix Fietkau 2010-12-12  511  						intercepts,
+940cd2c12ebff68 Felix Fietkau 2010-12-12  512  						vpdTableI[i]);
+940cd2c12ebff68 Felix Fietkau 2010-12-12  513  			}
+940cd2c12ebff68 Felix Fietkau 2010-12-12  514  		} else if (eeprom_4k) {
+115277a3bc0683d Felix Fietkau 2010-12-12  515  			for (i = 0; i < numXpdGains; i++) {
+115277a3bc0683d Felix Fietkau 2010-12-12  516  				minPwrT4[i] = data_4k[idxL].pwrPdg[i][0];
+83d6f1f15f8cce8 Arnd Bergmann 2016-03-14  517  				maxPwrT4[i] = data_4k[idxL].pwrPdg[i][intercepts - 1];
+115277a3bc0683d Felix Fietkau 2010-12-12  518  				ath9k_hw_fill_vpd_table(minPwrT4[i], maxPwrT4[i],
+115277a3bc0683d Felix Fietkau 2010-12-12  519  						data_4k[idxL].pwrPdg[i],
+115277a3bc0683d Felix Fietkau 2010-12-12  520  						data_4k[idxL].vpdPdg[i],
+940cd2c12ebff68 Felix Fietkau 2010-12-12  521  						intercepts,
+115277a3bc0683d Felix Fietkau 2010-12-12  522  						vpdTableI[i]);
+115277a3bc0683d Felix Fietkau 2010-12-12  523  			}
+115277a3bc0683d Felix Fietkau 2010-12-12  524  		} else {
+115277a3bc0683d Felix Fietkau 2010-12-12  525  			for (i = 0; i < numXpdGains; i++) {
+115277a3bc0683d Felix Fietkau 2010-12-12  526  				minPwrT4[i] = data_def[idxL].pwrPdg[i][0];
+83d6f1f15f8cce8 Arnd Bergmann 2016-03-14  527  				maxPwrT4[i] = data_def[idxL].pwrPdg[i][intercepts - 1];
+115277a3bc0683d Felix Fietkau 2010-12-12  528  				ath9k_hw_fill_vpd_table(minPwrT4[i], maxPwrT4[i],
+115277a3bc0683d Felix Fietkau 2010-12-12  529  						data_def[idxL].pwrPdg[i],
+115277a3bc0683d Felix Fietkau 2010-12-12  530  						data_def[idxL].vpdPdg[i],
+940cd2c12ebff68 Felix Fietkau 2010-12-12  531  						intercepts,
+115277a3bc0683d Felix Fietkau 2010-12-12  532  						vpdTableI[i]);
+115277a3bc0683d Felix Fietkau 2010-12-12  533  			}
+115277a3bc0683d Felix Fietkau 2010-12-12  534  		}
+115277a3bc0683d Felix Fietkau 2010-12-12  535  	} else {
+115277a3bc0683d Felix Fietkau 2010-12-12  536  		for (i = 0; i < numXpdGains; i++) {
+940cd2c12ebff68 Felix Fietkau 2010-12-12  537  			if (AR_SREV_9287(ah)) {
+940cd2c12ebff68 Felix Fietkau 2010-12-12  538  				pVpdL = data_9287[idxL].vpdPdg[i];
+940cd2c12ebff68 Felix Fietkau 2010-12-12  539  				pPwrL = data_9287[idxL].pwrPdg[i];
+940cd2c12ebff68 Felix Fietkau 2010-12-12  540  				pVpdR = data_9287[idxR].vpdPdg[i];
+940cd2c12ebff68 Felix Fietkau 2010-12-12  541  				pPwrR = data_9287[idxR].pwrPdg[i];
+940cd2c12ebff68 Felix Fietkau 2010-12-12  542  			} else if (eeprom_4k) {
+115277a3bc0683d Felix Fietkau 2010-12-12  543  				pVpdL = data_4k[idxL].vpdPdg[i];
+115277a3bc0683d Felix Fietkau 2010-12-12  544  				pPwrL = data_4k[idxL].pwrPdg[i];
+115277a3bc0683d Felix Fietkau 2010-12-12  545  				pVpdR = data_4k[idxR].vpdPdg[i];
+115277a3bc0683d Felix Fietkau 2010-12-12  546  				pPwrR = data_4k[idxR].pwrPdg[i];
+115277a3bc0683d Felix Fietkau 2010-12-12  547  			} else {
+115277a3bc0683d Felix Fietkau 2010-12-12  548  				pVpdL = data_def[idxL].vpdPdg[i];
+115277a3bc0683d Felix Fietkau 2010-12-12  549  				pPwrL = data_def[idxL].pwrPdg[i];
+115277a3bc0683d Felix Fietkau 2010-12-12  550  				pVpdR = data_def[idxR].vpdPdg[i];
+115277a3bc0683d Felix Fietkau 2010-12-12  551  				pPwrR = data_def[idxR].pwrPdg[i];
+115277a3bc0683d Felix Fietkau 2010-12-12  552  			}
+115277a3bc0683d Felix Fietkau 2010-12-12  553  
+115277a3bc0683d Felix Fietkau 2010-12-12  554  			minPwrT4[i] = max(pPwrL[0], pPwrR[0]);
+115277a3bc0683d Felix Fietkau 2010-12-12  555  
+115277a3bc0683d Felix Fietkau 2010-12-12  556  			maxPwrT4[i] =
+940cd2c12ebff68 Felix Fietkau 2010-12-12  557  				min(pPwrL[intercepts - 1],
+940cd2c12ebff68 Felix Fietkau 2010-12-12  558  				    pPwrR[intercepts - 1]);
+115277a3bc0683d Felix Fietkau 2010-12-12  559  
+115277a3bc0683d Felix Fietkau 2010-12-12  560  
+115277a3bc0683d Felix Fietkau 2010-12-12  561  			ath9k_hw_fill_vpd_table(minPwrT4[i], maxPwrT4[i],
+115277a3bc0683d Felix Fietkau 2010-12-12  562  						pPwrL, pVpdL,
+940cd2c12ebff68 Felix Fietkau 2010-12-12  563  						intercepts,
+115277a3bc0683d Felix Fietkau 2010-12-12  564  						vpdTableL[i]);
+115277a3bc0683d Felix Fietkau 2010-12-12  565  			ath9k_hw_fill_vpd_table(minPwrT4[i], maxPwrT4[i],
+115277a3bc0683d Felix Fietkau 2010-12-12  566  						pPwrR, pVpdR,
+940cd2c12ebff68 Felix Fietkau 2010-12-12  567  						intercepts,
+115277a3bc0683d Felix Fietkau 2010-12-12  568  						vpdTableR[i]);
+115277a3bc0683d Felix Fietkau 2010-12-12  569  
+115277a3bc0683d Felix Fietkau 2010-12-12  570  			for (j = 0; j <= (maxPwrT4[i] - minPwrT4[i]) / 2; j++) {
+115277a3bc0683d Felix Fietkau 2010-12-12  571  				vpdTableI[i][j] =
+115277a3bc0683d Felix Fietkau 2010-12-12  572  					(u8)(ath9k_hw_interpolate((u16)
+115277a3bc0683d Felix Fietkau 2010-12-12  573  					     FREQ2FBIN(centers.
+115277a3bc0683d Felix Fietkau 2010-12-12  574  						       synth_center,
+115277a3bc0683d Felix Fietkau 2010-12-12  575  						       IS_CHAN_2GHZ
+115277a3bc0683d Felix Fietkau 2010-12-12  576  						       (chan)),
+115277a3bc0683d Felix Fietkau 2010-12-12  577  					     bChans[idxL], bChans[idxR],
+115277a3bc0683d Felix Fietkau 2010-12-12  578  					     vpdTableL[i][j], vpdTableR[i][j]));
+115277a3bc0683d Felix Fietkau 2010-12-12  579  			}
+115277a3bc0683d Felix Fietkau 2010-12-12  580  		}
+115277a3bc0683d Felix Fietkau 2010-12-12  581  	}
+115277a3bc0683d Felix Fietkau 2010-12-12  582  
+115277a3bc0683d Felix Fietkau 2010-12-12  583  	k = 0;
+115277a3bc0683d Felix Fietkau 2010-12-12  584  
+115277a3bc0683d Felix Fietkau 2010-12-12  585  	for (i = 0; i < numXpdGains; i++) {
+115277a3bc0683d Felix Fietkau 2010-12-12  586  		if (i == (numXpdGains - 1))
+115277a3bc0683d Felix Fietkau 2010-12-12  587  			pPdGainBoundaries[i] =
+115277a3bc0683d Felix Fietkau 2010-12-12  588  				(u16)(maxPwrT4[i] / 2);
+115277a3bc0683d Felix Fietkau 2010-12-12  589  		else
+115277a3bc0683d Felix Fietkau 2010-12-12  590  			pPdGainBoundaries[i] =
+115277a3bc0683d Felix Fietkau 2010-12-12  591  				(u16)((maxPwrT4[i] + minPwrT4[i + 1]) / 4);
+115277a3bc0683d Felix Fietkau 2010-12-12  592  
+115277a3bc0683d Felix Fietkau 2010-12-12  593  		pPdGainBoundaries[i] =
+115277a3bc0683d Felix Fietkau 2010-12-12  594  			min((u16)MAX_RATE_POWER, pPdGainBoundaries[i]);
+115277a3bc0683d Felix Fietkau 2010-12-12  595  
+115277a3bc0683d Felix Fietkau 2010-12-12  596  		minDelta = 0;
+115277a3bc0683d Felix Fietkau 2010-12-12  597  
+115277a3bc0683d Felix Fietkau 2010-12-12  598  		if (i == 0) {
+115277a3bc0683d Felix Fietkau 2010-12-12  599  			if (AR_SREV_9280_20_OR_LATER(ah))
+115277a3bc0683d Felix Fietkau 2010-12-12  600  				ss = (int16_t)(0 - (minPwrT4[i] / 2));
+115277a3bc0683d Felix Fietkau 2010-12-12  601  			else
+115277a3bc0683d Felix Fietkau 2010-12-12  602  				ss = 0;
+115277a3bc0683d Felix Fietkau 2010-12-12  603  		} else {
+115277a3bc0683d Felix Fietkau 2010-12-12  604  			ss = (int16_t)((pPdGainBoundaries[i - 1] -
+115277a3bc0683d Felix Fietkau 2010-12-12  605  					(minPwrT4[i] / 2)) -
+115277a3bc0683d Felix Fietkau 2010-12-12  606  				       tPdGainOverlap + 1 + minDelta);
+115277a3bc0683d Felix Fietkau 2010-12-12  607  		}
+115277a3bc0683d Felix Fietkau 2010-12-12  608  		vpdStep = (int16_t)(vpdTableI[i][1] - vpdTableI[i][0]);
+115277a3bc0683d Felix Fietkau 2010-12-12  609  		vpdStep = (int16_t)((vpdStep < 1) ? 1 : vpdStep);
+115277a3bc0683d Felix Fietkau 2010-12-12  610  
+115277a3bc0683d Felix Fietkau 2010-12-12  611  		while ((ss < 0) && (k < (AR5416_NUM_PDADC_VALUES - 1))) {
+115277a3bc0683d Felix Fietkau 2010-12-12  612  			tmpVal = (int16_t)(vpdTableI[i][0] + ss * vpdStep);
+115277a3bc0683d Felix Fietkau 2010-12-12  613  			pPDADCValues[k++] = (u8)((tmpVal < 0) ? 0 : tmpVal);
+115277a3bc0683d Felix Fietkau 2010-12-12  614  			ss++;
+115277a3bc0683d Felix Fietkau 2010-12-12  615  		}
+115277a3bc0683d Felix Fietkau 2010-12-12  616  
+115277a3bc0683d Felix Fietkau 2010-12-12  617  		sizeCurrVpdTable = (u8) ((maxPwrT4[i] - minPwrT4[i]) / 2 + 1);
+115277a3bc0683d Felix Fietkau 2010-12-12  618  		tgtIndex = (u8)(pPdGainBoundaries[i] + tPdGainOverlap -
+115277a3bc0683d Felix Fietkau 2010-12-12  619  				(minPwrT4[i] / 2));
+115277a3bc0683d Felix Fietkau 2010-12-12  620  		maxIndex = (tgtIndex < sizeCurrVpdTable) ?
+115277a3bc0683d Felix Fietkau 2010-12-12  621  			tgtIndex : sizeCurrVpdTable;
+115277a3bc0683d Felix Fietkau 2010-12-12  622  
+115277a3bc0683d Felix Fietkau 2010-12-12  623  		while ((ss < maxIndex) && (k < (AR5416_NUM_PDADC_VALUES - 1))) {
+115277a3bc0683d Felix Fietkau 2010-12-12  624  			pPDADCValues[k++] = vpdTableI[i][ss++];
+115277a3bc0683d Felix Fietkau 2010-12-12  625  		}
+115277a3bc0683d Felix Fietkau 2010-12-12  626  
+115277a3bc0683d Felix Fietkau 2010-12-12  627  		vpdStep = (int16_t)(vpdTableI[i][sizeCurrVpdTable - 1] -
+115277a3bc0683d Felix Fietkau 2010-12-12  628  				    vpdTableI[i][sizeCurrVpdTable - 2]);
+115277a3bc0683d Felix Fietkau 2010-12-12  629  		vpdStep = (int16_t)((vpdStep < 1) ? 1 : vpdStep);
+115277a3bc0683d Felix Fietkau 2010-12-12  630  
+115277a3bc0683d Felix Fietkau 2010-12-12  631  		if (tgtIndex >= maxIndex) {
+115277a3bc0683d Felix Fietkau 2010-12-12  632  			while ((ss <= tgtIndex) &&
+115277a3bc0683d Felix Fietkau 2010-12-12  633  			       (k < (AR5416_NUM_PDADC_VALUES - 1))) {
+115277a3bc0683d Felix Fietkau 2010-12-12  634  				tmpVal = (int16_t)((vpdTableI[i][sizeCurrVpdTable - 1] +
+115277a3bc0683d Felix Fietkau 2010-12-12  635  						    (ss - maxIndex + 1) * vpdStep));
+115277a3bc0683d Felix Fietkau 2010-12-12  636  				pPDADCValues[k++] = (u8)((tmpVal > 255) ?
+115277a3bc0683d Felix Fietkau 2010-12-12  637  							 255 : tmpVal);
+115277a3bc0683d Felix Fietkau 2010-12-12  638  				ss++;
+115277a3bc0683d Felix Fietkau 2010-12-12  639  			}
+115277a3bc0683d Felix Fietkau 2010-12-12  640  		}
+115277a3bc0683d Felix Fietkau 2010-12-12  641  	}
+115277a3bc0683d Felix Fietkau 2010-12-12  642  
+115277a3bc0683d Felix Fietkau 2010-12-12  643  	if (eeprom_4k)
+115277a3bc0683d Felix Fietkau 2010-12-12  644  		pdgain_boundary_default = 58;
+115277a3bc0683d Felix Fietkau 2010-12-12  645  	else
+115277a3bc0683d Felix Fietkau 2010-12-12  646  		pdgain_boundary_default = pPdGainBoundaries[i - 1];
+115277a3bc0683d Felix Fietkau 2010-12-12  647  
+115277a3bc0683d Felix Fietkau 2010-12-12  648  	while (i < AR5416_PD_GAINS_IN_MASK) {
+115277a3bc0683d Felix Fietkau 2010-12-12  649  		pPdGainBoundaries[i] = pdgain_boundary_default;
+115277a3bc0683d Felix Fietkau 2010-12-12  650  		i++;
+115277a3bc0683d Felix Fietkau 2010-12-12  651  	}
+115277a3bc0683d Felix Fietkau 2010-12-12  652  
+115277a3bc0683d Felix Fietkau 2010-12-12  653  	while (k < AR5416_NUM_PDADC_VALUES) {
+115277a3bc0683d Felix Fietkau 2010-12-12  654  		pPDADCValues[k] = pPDADCValues[k - 1];
+115277a3bc0683d Felix Fietkau 2010-12-12  655  		k++;
+115277a3bc0683d Felix Fietkau 2010-12-12  656  	}
+115277a3bc0683d Felix Fietkau 2010-12-12 @657  }
+115277a3bc0683d Felix Fietkau 2010-12-12  658  
 
-> Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-> ---
-> Changes from v1:
->    - rebased on ath-next
->    - clear all 6GHz / 320MHz related phy capabilities fields from the firmware
-> ---
->   drivers/net/wireless/ath/ath12k/wmi.c | 17 ++++++++++++++++-
->   1 file changed, 16 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-> index 84a31b953db8..a8a4654c4f34 100644
-> --- a/drivers/net/wireless/ath/ath12k/wmi.c
-> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
-> @@ -5154,6 +5154,7 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
->   				       __le32 cap_info_internal)
->   {
->   	struct ath12k_band_cap *cap_band = &pdev->cap.band[band];
-> +	u8 *phy_cap = (u8 *)&cap_band->eht_cap_phy_info[0];
->   	u32 support_320mhz;
->   	u8 i;
->   
-> @@ -5167,8 +5168,22 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
->   	for (i = 0; i < WMI_MAX_EHTCAP_PHY_SIZE; i++)
->   		cap_band->eht_cap_phy_info[i] = le32_to_cpu(cap_phy_info[i]);
->   
-> -	if (band == NL80211_BAND_6GHZ)
-> +	if (band == NL80211_BAND_6GHZ) {	
->   		cap_band->eht_cap_phy_info[0] |= support_320mhz;
-> +	} else {
-> +		/*
-> +		 * It seems the firmware can report capabilities specific to
-> +		 * 6GHz also for 5GHz, so lets explicitely clear them out.
-
-The code comment should be less tentative, how about:
-
-      /*
-       * Firmware may report 6 GHz/320 MHz specific capabilities for
-       * non-6 GHz bands, so explicitly clear them.
-       */
-
-
-> +		 */
-> +		phy_cap[0] &= ~IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
-> +		phy_cap[1] &= ~IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_320MHZ_MASK;
-> +		phy_cap[2] &= ~IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_320MHZ_MASK;
-> +		phy_cap[3] &= ~IEEE80211_EHT_PHY_CAP3_SOUNDING_DIM_320MHZ_MASK;
-> +		phy_cap[6] &= ~IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_320MHZ;
-> +		phy_cap[6] &= ~IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP;
-> +		phy_cap[7] &= ~IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_320MHZ;
-> +		phy_cap[7] &= ~IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ;	;
-> +	}
->   
->   	cap_band->eht_mcs_20_only = le32_to_cpu(supp_mcs[0]);
->   	cap_band->eht_mcs_80 = le32_to_cpu(supp_mcs[1]);
-
-
-checkpatch warnings:
-ERROR: trailing whitespace
-#61: FILE: drivers/net/wireless/ath/ath12k/wmi.c:5171:
-+^Iif (band == NL80211_BAND_6GHZ) {^I$
-
-WARNING: 'explicitely' may be misspelled - perhaps 'explicitly'?
-#66: FILE: drivers/net/wireless/ath/ath12k/wmi.c:5176:
-+                * 6GHz also for 5GHz, so lets explicitely clear them out.
-                                                ^^^^^^^^^^^
-
-WARNING: space prohibited before semicolon
-#75: FILE: drivers/net/wireless/ath/ath12k/wmi.c:5185:
-+               phy_cap[7] &= 
-~IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ;     ;
-
-WARNING: Statements terminations use 1 semicolon
-#75: FILE: drivers/net/wireless/ath/ath12k/wmi.c:5185:
-+               phy_cap[7] &= 
-~IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ;     ;
-
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
