@@ -1,136 +1,150 @@
-Return-Path: <linux-wireless+bounces-37866-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37867-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id p8noLYKZMmpr2gUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37866-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 14:56:34 +0200
+	id AhJ4FBK0Mmpm3wUAu9opvQ
+	(envelope-from <linux-wireless+bounces-37867-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 16:49:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6167699E4C
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 14:56:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD28D69AAA0
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 16:49:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b="fvgB/gNz";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37866-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37866-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nu+Iipjn;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37867-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37867-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D9D4F3006813
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 12:56:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6616310A501
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jun 2026 14:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A046B3EBF07;
-	Wed, 17 Jun 2026 12:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAD24611F4;
+	Wed, 17 Jun 2026 14:48:10 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08FC3B7752;
-	Wed, 17 Jun 2026 12:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC6F451056;
+	Wed, 17 Jun 2026 14:48:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781700984; cv=none; b=HL71EHKWcVw8KV9dVKQ/mx7QqPldlZqTikPGdFv7ioUJ5kwZsGCZ9hEi0c3BsnQDdHgBuetYchERspuUI+3YGLgNaGB3PLb/sibS7A3fuzv3p5615hB11cw+QRdGnOZ2FfxA2wt6SnecoO1UoYBwt0C9RfTb88TDgS1YlLNJjqQ=
+	t=1781707690; cv=none; b=pP8aZfAFsIXRVZQPs8igNOCQKrtMDQ5dKkvy5wsZDX4k2Ve/akHJsfMl/V/WcBcbrkWGLwP2w5lQDSPfpuLmBtJLrqZcTwuah3bFiR55vzuYuZCs0S2WXW4ldipl5f6bKtp8k+gizX+6E7dqb6V/YdvIN+FusUBVK8h6W8C6l5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781700984; c=relaxed/simple;
-	bh=4kX7Vgcf7HCZZi909HYoz8IJ7SLc9IU0Ws8WvYg36t4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PFDUzBchTcyuT/HajIdmWyrrEXZqiwVqJgrr1AkrS79fk2i6iWUxOe1pNLMKPRC0qc6BrtKQCwz4Mf5FQY4UGxvW4r86n9EgDYWqXezi5DZZF+MX2YfJ6j0pvFAU5CsLUc2FcLO3RQ651TTtH1zDteSCXp4zCcAFxeNY7s3v42g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=fvgB/gNz; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=VA99D5bK8lnbrqdc2poWyS2qPB2HZZGsDz4JLTRMe/U=;
-	t=1781700981; x=1782910581; b=fvgB/gNz/4FsaajvjT0ocSqITeDxtasaCQ1eyozZdCWVjJ8
-	7etV+dYiLMk/XVLoP0iSORFx2OBp522QwCPDNF6SJesOar5LgMOINwAMYM3RxcAilefx+RqxFR1+k
-	VB6nyADoRj1jl/wyYEeITmzS0HFLfBKqIs+kxS1su48F8uIrwgTKFzKsclMU0INoSSGNPs8N2Hezj
-	7CR27hoYEI24dPJJlcfg+kbNMrYmxGLScWcz3L5v0YQVH1FcGhk7HlUuDBWncyYPq4tfQ7WYCRLtf
-	I+N/+JQG/ezaPXoW3PDqMCNqHl/Ujx9tsC37e/QXW+IzK3aCcliAACPgH85tjDCg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wZpoQ-00000001C8x-2nsJ;
-	Wed, 17 Jun 2026 14:56:10 +0200
-Message-ID: <1e656f5798a9f2f36daa00aba60d2196b2456335.camel@sipsolutions.net>
-Subject: Re: [PATCH v1 1/2] overflow: Allow to sum a few arguments at once
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva"
- <gustavoars@kernel.org>
-Date: Wed, 17 Jun 2026 14:56:09 +0200
-In-Reply-To: <20260617112250.2791461-2-andriy.shevchenko@linux.intel.com>
-References: <20260617112250.2791461-1-andriy.shevchenko@linux.intel.com>
-	 <20260617112250.2791461-2-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1781707690; c=relaxed/simple;
+	bh=qUjx9MgPIq17Ua7gnKrtPrBAOEw/n9cpYdl1TteOLGw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sAHKLUbxuf+L1ZOzxdwWwm4Blj8hiU2K8Jx8xCxtbvqrN5l26Pb54O+AbNGRJDdPtqX6feP+XcUBC6yQNH0xEYyurMiOMDWrXGzZx4V4+5aK81NMQAQQbxfO8p7UcvL+5fElHVHH9SMtvePOho+lzA82vMQM9dma17jFpex/U0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nu+Iipjn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5594E1F000E9;
+	Wed, 17 Jun 2026 14:48:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781707687;
+	bh=Gcy/EaAZ/pJ1qaeNy3eriBsvPASZl+M9Jg5BLs22CGA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nu+IipjnxThO/KXMaqoJz6F2xpNAmVTnfMkZOXjRxKvtE9gFfupf6rXNAaomX60F7
+	 5nzo4GUh9tYxRjp9dd/C1YD2YXCNY5LUu8MgaMgguQjZmvM+Xt4nfXrOx7yHjSeeEj
+	 r3gZwjJoS6LOoxyRXfqN9wqhvMUbOfCV0/PaCD39EpH1uSrLOG3nOj0rWJUBgt8+n7
+	 L14QWpOIDCM0BZUKXGWTFDTF5rIxJJ/baN22qjH4ar4zyODmDnXsrqtOdJNsZv61z/
+	 nwlpwt55agoKXxja49kLE8IQbgyxHjfyoSPGBkIi2xTUwHdmqxbgwzxNlsDgPw/6Rk
+	 A+2Q4Avt+3JUw==
+Date: Wed, 17 Jun 2026 16:47:58 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: bhelgaas@google.com, alex@shazbot.org, jjohnson@kernel.org, 
+	linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+	ath12k@lists.infradead.org, mhi@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9] PCI: Add device-specific reset for Qualcomm devices
+Message-ID: <6nivb5fncfd5dwqkzlxwhtgbsiqvifazcbgpsgukp44iib45ke@65qpwgrvtkgn>
+References: <20260612142638.1243895-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260612142638.1243895-1-jtornosm@redhat.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:andriy.shevchenko@linux.intel.com,m:linux-hardening@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:kees@kernel.org,m:gustavoars@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-37866-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:jtornosm@redhat.com,m:bhelgaas@google.com,m:alex@shazbot.org,m:jjohnson@kernel.org,m:linux-pci@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath11k@lists.infradead.org,m:ath12k@lists.infradead.org,m:mhi@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[mani@kernel.org,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-37867-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid,sipsolutions.net:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[65qpwgrvtkgn:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D6167699E4C
+X-Rspamd-Queue-Id: DD28D69AAA0
 
-On Wed, 2026-06-17 at 13:12 +0200, Andy Shevchenko wrote:
-> Convert size_add() to take variadic argument, so we can simplify users
-> with using a macro only once.
+On Fri, Jun 12, 2026 at 04:26:38PM +0200, Jose Ignacio Tornos Martinez wrote:
+> Some Qualcomm PCIe devices (WCN6855/WCN7850 WiFi cards, SDX62/SDX65 modems)
+> lack working reset methods for VFIO passthrough scenarios. These devices
+> have no FLR capability, advertise NoSoftRst+ (blocking PM reset), and have
+> broken bus reset.
+> 
+> The problem manifests in VFIO passthrough scenarios:
+> 
+> - WCN6855 WiFi card (17cb:1103): Normal VM operation works fine, including
+>   clean shutdown/reboot. However, when the VM terminates uncleanly
+>   (crash, force-off), VFIO attempts to reset the device before it can
+>   be assigned to another VM. Without a working reset method, the device
+>   remains in an undefined state, preventing reuse.
+> 
+> - WCN7850 WiFi card (17cb:1107): Same behavior as WCN6855.
+> 
+> - SDX62/SDX65 5G modems (17cb:0308): Never successfully initialize even
+>   on first VM assignment without proper reset capability.
+> 
+> Add device-specific reset entries for these Qualcomm devices using D3hot
+> power cycling. Testing shows that despite advertising NoSoftRst+, D3hot
+> transition provides sufficient reset for VFIO reuse, particularly after
+> unexpected VM termination. While not a complete reset (BARs preserved),
+> it provides the only viable reset mechanism for these devices.
+> 
 
-> +#define __size_add3(addend1, addend2, addend3, addend4, ...)			\
-> +	__size_add(__size_add2(addend1,  addend2, addend3), addend4)
-> +#define __size_add4(addend1, addend2, addend3, addend4, addend5, ...)		\
-> +	__size_add(__size_add3(addend1,  addend2, addend3, addend4), addend5)
+I checked internally within Qcom and I was told that these PCIe devices retain
+the context during D3Hot to D0 transition and that's why they advertise
+No_Soft_Reset.
 
-I guess it's not going to really matter, but it would generate fewer
-calls to have something more like
+The partial reset behavior you are seeing might be due to firmware handling the
+transition as an error state. All these devices use MHI bus and when the MHI
+state doesn't match the PCIe device state, then the firmware will treat it as an
+error and will try to torn down resources. This could be the reason why you are
+seeing partial reset.
 
-#define __size_add3(a1, a2, a3, a4) \
-	size_add(size_add(a1, a2), size_add(a3, a4))
-#define __size_add4(a1, a2, a3, a4, a5) \
-	size_add(size_add(a1, a2), size_add(a3, a4, a5))
+Nevertheless, these devices do not support any form of Soft Reset and only way
+to reset them would be by doing D3Cold. But that depends on platform support
+though. So it would be inaccurate/wrong to assume that these devices support
+Soft Reset during D3Hot to D0 transition.
 
-as a binary tree, rather than only cutting one off every time. Not sure
-that results in hugely different code though - maybe fewer overflow
-checks?
+- Mani
 
-Although your version make it really completely equivalent to the
-nl80211.c code, clearly it doesn't matter if all the values are "good",
-and I believe the overflow behaviour means it doesn't matter for the
-overflow case either?
-
-johannes
+-- 
+மணிவண்ணன் சதாசிவம்
 
