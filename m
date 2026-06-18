@@ -1,207 +1,184 @@
-Return-Path: <linux-wireless+bounces-37904-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37905-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BPQ3FQ1lNGqlWwYAu9opvQ
-	(envelope-from <linux-wireless+bounces-37904-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 23:37:17 +0200
+	id hKytH25nNGqxXAYAu9opvQ
+	(envelope-from <linux-wireless+bounces-37905-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 23:47:26 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC556A2C85
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 23:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D4CD6A2CE4
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 23:47:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rhOEY0O7;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37904-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37904-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WKqrgOwq;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37905-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37905-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC19D3029AFB
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 21:36:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF2F9303798E
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 21:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B023254A5;
-	Thu, 18 Jun 2026 21:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE543233927;
+	Thu, 18 Jun 2026 21:47:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476AA3101BC
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jun 2026 21:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4880221F20
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jun 2026 21:47:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781818618; cv=none; b=SfKBHPpgbnLDbIB2r6MR9PIbhOXkkoWN9QYFWyG4zbO7HgU9Xwk5uGtIoxbjEkcDDDv5VtBwL8QNywvz1dslhEqAJAFm1WmNwmoPMd09wR5k3rmaUWGdA90vAWgeEIR8PEcw2BMA/xVt0gHWbz/LmgAGz5o+VsngqFHzWBDisg0=
+	t=1781819242; cv=none; b=EfToYeoPlS+6EohJGmhWvnToJwxfqU3fQ9PaZkhov7Vbew15DE+bslGp4ZUJmFjNZYcXKtoq38rgUCVq7coWo3h+R5PCq7ByR39JDnYADEF+D+X6VAk5pzwBtHotfPmF4XvK7ZuhJvMx216DHRwmgC1wXjrBWooAMJdL5q4ClTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781818618; c=relaxed/simple;
-	bh=EYjP31/qXaZiOklDzkuCs/LFZj34JkJlNtH9t3PgL5I=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H/MQM3dd2P3g3BHDRMXxOY+gMI8L/XeD3sLi9GvXYR4LBx9qCepcIPGHuSplFrtd1YuQ7zLEruVxxXTrKScfUc5ITzPp49NBCK9jok/04lWSRSeEMFCWJ36o9cJS9szHQlXIgDlVGrisZ2XSFVrrwxfrtBQlZuxzSD6QXFzyHJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rhOEY0O7; arc=none smtp.client-ip=209.85.128.42
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-490c0c92cffso9789795e9.2
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jun 2026 14:36:57 -0700 (PDT)
+	s=arc-20240116; t=1781819242; c=relaxed/simple;
+	bh=VBJuo0ibG6TgsiJgMtbyGfMHWuYDeqpoHyMEFkaJADM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JSNPSxEPU8yY2OAKHRgV2KEUvfXvADSwq8WIRfM5H1hl7UsdX528/FgQAoc+iyVV+LxgroORg3/cZLJ5IKRVhcPb8d86IkVdFC964o41Wq5DIL01Hbu+VSvZAihhZM1CmUkhjkv5FXPNo3IjR7g5cZXmEsCqaPauaYEKsKUQctY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WKqrgOwq; arc=none smtp.client-ip=209.85.218.41
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-bdb3fd39045so186907566b.3
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jun 2026 14:47:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781818616; x=1782423416; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xs7gyRJwRJkVNYolc+dgF0gvaFLP3C9o7IgJDu8x6hg=;
-        b=rhOEY0O7aheml7HozBSg9yy6AQNFKvSAu4DFD6pIRRNk5PWvBuFMoaQWKfOH/uKsoF
-         7konBO08nCgY6T6bYl3x/Hxmel/iCZ5DtWpdPuITX+MY8gUWDrPsaGj6i+15SokRSnUA
-         Z4VazPgZj8FOO1aoZE309d8P3/zbLEoJvY5D3OluzLG2RNWX14qUvmDlpHnkUcMXSIiF
-         N76LOAb+51Za4f+pwvLqxDBZs/B5N7TM6eG2kv4IRpUQXkgeBtdwf9LixVQof/ndFLbE
-         OXc+CIkCquv7grahBxk9UQ5pBLHa0+P8OLyRFBEb85jn4zs3prd58MpxJEmCA7kjB9Dg
-         EIiw==
+        d=gmail.com; s=20251104; t=1781819240; x=1782424040; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KGlMDnViUMkCsSlZJzDY1S0meEDS8qDd3hMSbZlQ96o=;
+        b=WKqrgOwq++3gcJYgjwDIRbb0+moPeNq1J4BRafM3ma54z8zMee0n/HwNOZ0/zKKq0K
+         QUhxr4He+63cHOY1Ux3zTvHwzbRsKV9g3O/wWuDe5TnYF8kf4K3nbvGxK+igyBfgDu3X
+         un7nZ2e7Vnuxf3/MHcfP5gmlz9oFk59IljLv+rJ8EA8ZqNk+AOmR1OIeN8uwkqW0QIat
+         Mgygq4CdgiBZhVwXATvRxfBM5/wzdAhjihUWXHqoNRHzytYXi62/nHyiiHM53EtcxvO2
+         xrvyEshENpwam7gnlJlXwmHbLr+XK+XnE9SmXMo9lDD2XX6Sg7LfJHK50TY4r7l3xyl4
+         rMDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781818616; x=1782423416;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Xs7gyRJwRJkVNYolc+dgF0gvaFLP3C9o7IgJDu8x6hg=;
-        b=XhmtJjjaCqkGRxs6G63Jq6PS5Y5H0sHtaV7qmFS232fBQQYcPB63LBRXaVP5UlhuMn
-         NQRMdai0YZu+Uz05syRjItmch5NyfSadpOuCqKrxYX5aozi0J0FUiDivnCp1uTjxEGqs
-         mjx/RzXnR4xlgaJTGIzi4bagBP8NIoDZGLQ9Sd5yHT3S8Y6Iapj5H7fDJivGtnRZ3VgJ
-         XOEyufKnhfal4j42iB7pQ776LBO+a3g3qkQv3qM+vGAS6o3oQd2mbVMXbjLdHgwGSSaf
-         1ZCwvUSEN3hT3NDBc/L0rSGDblal8F312ZYm8mdFF3mdZCz6OgHh/56Kz/u0lMISOJQW
-         fkUg==
-X-Forwarded-Encrypted: i=1; AFNElJ/EyPYHTysvyh6swaZ+NWdlnmNvKmqqkb45MgCBb7HOB4T/xanjD5dX2NMJcgmNnUWTsjRuDu6Q3PO59z3TNg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9LLV3ieSXzJ5X9peVCii1Ii37QlKWL0BAeNXN18/BLvGu2kLk
-	CcxptTkBYpxk2E33bHK8L4LGax7AWYTPhN0OlwjFplioL2ZO1tcRvurc
-X-Gm-Gg: AfdE7cleRZztRUvFIIYROoMiGZViGN3XJnyretE3771DYdqUBLN/QiwFV2etkCnUhyW
-	isvtLpnVBZ6QEkRQRUdnQZ451Uv98Zj9HoOISV2/rJglhh+00vbvquTkfpiEcpdmtojoDmTJfoZ
-	wO3vrAaJnLjv2KoHk8avRIZYLjQjd+pDWGiZIZ+q6QfNM9g2xDnX2pq7MfWocDp7XZHkHAcGaGo
-	opzespxx4gf9BZ9Hoc51+AwAHUsXNrVjn1iDn0eVCCBCxU/WQeNm/s/H4XM9jzF5fjsbJv8NboR
-	aTziUz8JfJEdkuWjlE3f//0du8coYgSxcIckThmggX0UthOifmIfeLzKk3BcK0cNlSNoSRNHL/D
-	qlv/BLOlFu0W+r5sbY9CyPgvjWdWNFFgLg2vluk4Yl+JiLQ5gWWyP+tRKCL7wJqz1XOhN/QGbhe
-	VWteXOlKkpC1LsjDbS8dxEA1P4Sk3iNUOWNur6Qz6243gDrmkMlWZl2Lw9GFcU
-X-Received: by 2002:a05:600c:d4:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-49240e20de0mr9055505e9.5.1781818615679;
-        Thu, 18 Jun 2026 14:36:55 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4650c114e22sm1701307f8f.34.2026.06.18.14.36.54
+        d=1e100.net; s=20251104; t=1781819240; x=1782424040;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KGlMDnViUMkCsSlZJzDY1S0meEDS8qDd3hMSbZlQ96o=;
+        b=Sx97AJ2eJTmZkdmvt0Rfb+qb0m0CwoPwV3fKVxM/8shkdvVh3ggL6lJj0nC+bnrE8J
+         2gUHDqJh59C0ekhItKNxESYbSYuj5MUFnTH7byzvFPuOQ5ER9GSiZlyLNBRSp/6m/5P0
+         l3Znr7nzxF5FnQXarginnASD3DrReiimIs4p3LYjJCKnmyJ0mqdzwy/R+xzu4ew/vlzE
+         E6ye854+S30n2H0wx8P3QZHRW/B6v0+OKuYysiw42nx6Rv9P4hrl15pz1PisXT6jQI/0
+         dtp7Zdn9XOJuqnmwTQElGeGuBThFaeruu7vKizWLr8chhQ3M9XLv5ifjQs4igoQ2mplW
+         dtpg==
+X-Gm-Message-State: AOJu0YzGTZB0o9QrcdefUMnZnx36+/Dx6Wc8v3ppyJ0dg58ecEKK0n8h
+	AlcVDW38dAtBmCL5GgRCmot5H9b6iXJbx4cQI9K4kEPSF3cG+25Z2pzG
+X-Gm-Gg: AfdE7ck0nymShNHrpIEvmEWmD1TQdULXzxy8zzxdqfTlj4wdLUn6cw0qbC/FFFH8dpv
+	zg5HXadx4I25mo+5NszUpORKQwpnxnMutDhRLlu2QPtSWXky6XijJ3KTK1asuxwR0B2kGrXEnGZ
+	GKhlUYCfryLKFEb+prrGAfG01KEyODtU00OwnEpxiEU6Z3qrUXSD3CE7wZK3WtKjyS23mR7RhK0
+	2kM3LkSQVFyeAYwCeHTMx3jUlTQhUVsJkmRP6CpkrYbtf4Gi0j4UA1HG9vsUJZG6zOtAI7ZQnAk
+	AuUtsljxdjd+hFDxYR8p3REUI+3Xy9Zo/jn7dPeThz10N5I7LTx+vIbvdMPnAaEbAqYGX2Nw+cF
+	adA42RWct/peWUagKekE0ZQJ7DQ3SicqFdL2IYjy/0TrorpeVR4DLFscjvgZlaiYAsNM3dpr03C
+	WcI393ZQlT+5mWGFgVz/T3XqBuls4=
+X-Received: by 2002:a17:906:9fca:b0:c08:49a4:c737 with SMTP id a640c23a62f3a-c097ae2ddd2mr58097066b.2.1781819239771;
+        Thu, 18 Jun 2026 14:47:19 -0700 (PDT)
+Received: from localhost (soda.int.kasm.eu. [2001:678:a5c:1202:4fb5:f16a:579c:6dcb])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0a9a1568dcsm6914166b.51.2026.06.18.14.47.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 14:36:55 -0700 (PDT)
-Date: Thu, 18 Jun 2026 22:36:53 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org, Kees Cook <kees@kernel.org>, "Gustavo A. R.
- Silva" <gustavoars@kernel.org>
-Subject: Re: [PATCH v1 1/2] overflow: Allow to sum a few arguments at once
-Message-ID: <20260618223653.01b42b38@pumpkin>
-In-Reply-To: <37fcf7c0b1a330a40005fc5ddbe075267b93851e.camel@sipsolutions.net>
-References: <20260617112250.2791461-1-andriy.shevchenko@linux.intel.com>
-	<20260617112250.2791461-2-andriy.shevchenko@linux.intel.com>
-	<1e656f5798a9f2f36daa00aba60d2196b2456335.camel@sipsolutions.net>
-	<20260617223056.754bfcb8@pumpkin>
-	<ajOSqWpYUhFTVqP-@ashevche-desk.local>
-	<37fcf7c0b1a330a40005fc5ddbe075267b93851e.camel@sipsolutions.net>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Thu, 18 Jun 2026 14:47:19 -0700 (PDT)
+Date: Thu, 18 Jun 2026 23:47:18 +0200
+From: Klara Modin <klarasmodin@gmail.com>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	"open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>, 
+	"moderated list:ARM/Mediatek SoC support" <linux-arm-kernel@lists.infradead.org>, 
+	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH wireless-next] wifi: mt76: fix of_get_mac_address error
+ handling
+Message-ID: <ajRmlyx_AEGybykL@soda.int.kasm.eu>
+References: <20260427051746.954704-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260427051746.954704-1-rosenp@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37905-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:rosenp@gmail.com,m:linux-wireless@vger.kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[klarasmodin@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-37904-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[davidlaightlinux@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:andriy.shevchenko@linux.intel.com,m:linux-hardening@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:kees@kernel.org,m:gustavoars@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[klarasmodin@gmail.com,linux-wireless@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,lists.infradead.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BEC556A2C85
+X-Rspamd-Queue-Id: 4D4CD6A2CE4
 
-On Thu, 18 Jun 2026 20:53:37 +0200
-Johannes Berg <johannes@sipsolutions.net> wrote:
+Hi,
 
-> (hah, just found this window open from this morning ...)
+On 2026-04-26 22:17:46 -0700, Rosen Penev wrote:
+> Check return value instead of is_valid_ether_addr. The latter is handled
+> by the former.
 > 
-> On Thu, 2026-06-18 at 09:39 +0300, Andy Shevchenko wrote:
-> > On Wed, Jun 17, 2026 at 10:30:56PM +0100, David Laight wrote:  
-> > > On Wed, 17 Jun 2026 14:56:09 +0200
-> > > Johannes Berg <johannes@sipsolutions.net> wrote:  
-> > > > On Wed, 2026-06-17 at 13:12 +0200, Andy Shevchenko wrote:  
-> > > > > Convert size_add() to take variadic argument, so we can simplify users
-> > > > > with using a macro only once.    
-> > > >   
-> > > > > +#define __size_add3(addend1, addend2, addend3, addend4, ...)			\
-> > > > > +	__size_add(__size_add2(addend1,  addend2, addend3), addend4)
-> > > > > +#define __size_add4(addend1, addend2, addend3, addend4, addend5, ...)		\
-> > > > > +	__size_add(__size_add3(addend1,  addend2, addend3, addend4), addend5)    
-> > > > 
-> > > > I guess it's not going to really matter, but it would generate fewer
-> > > > calls to have something more like
-> > > > 
-> > > > #define __size_add3(a1, a2, a3, a4) \
-> > > > 	size_add(size_add(a1, a2), size_add(a3, a4))
-> > > > #define __size_add4(a1, a2, a3, a4, a5) \
-> > > > 	size_add(size_add(a1, a2), size_add(a3, a4, a5))
-> > > > 
-> > > > as a binary tree, rather than only cutting one off every time. Not sure
-> > > > that results in hugely different code though - maybe fewer overflow
-> > > > checks?  
-> > 
-> > Good question. I'm also thinking that one-by-one may expand in too much of
-> > preprocessor code (haven't checked myself).  
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/eeprom.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> No. I was confused, and managed to confuse you too perhaps, sorry!
+> diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+> index 93d91264687f..0f6ccf6ed53d 100644
+> --- a/drivers/net/wireless/mediatek/mt76/eeprom.c
+> +++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+> @@ -93,7 +93,7 @@ mt76_eeprom_override(struct mt76_phy *phy)
+>  	if (err == -EPROBE_DEFER)
+>  		return err;
+>  
+> -	if (!is_valid_ether_addr(phy->macaddr)) {
+> +	if (err) {
+>  		eth_random_addr(phy->macaddr);
+>  		dev_info(dev->dev,
+>  			 "Invalid MAC address, using random address %pM\n",
+> -- 
+> 2.54.0
 > 
-> We have to have the same number of operations (__size_add calls)
-> regardless, since you have to add it all up: 1 + 2 + 3 + 4 + 5 has a
-> fixed number of + signs regardless of how you parenthesise it.
-> 
-> I guess actual CPU execution would have a better data dependency tree if
-> we balance it,
 
-Absolutely.
-Intel Haswell onwards and zen1-4 can execute 4 independent add/sub/and/or
-(etc) every clock. 
+Recently I have started to see randomized MAC-addresses on my x86 laptop
+with a MT7922 and the above message printed in the kernel log. I have
+CONFIG_OF turned on, but since this is an ACPI system the device is not
+described by any device tree and the earlier of_get_mac_address() likely
+fails with -ENODEV. Looking at the !CONFIG_OF stub for
+of_get_mac_address it always returns -ENODEV, meaning this will always
+randomize the mac in that case too.
 
-zen5 wins with 6 arithmetic ops or 4 cmov (and 2 alu) per clock.
+Reverting this patch fixes the issue and the correct MAC address is
+used. I'm not sure if there is any case where of_get_mac_addres() could
+fail in a way that results in a valid MAC address but it seems unlikely
+to me.
 
-> but ... if our hotpath depends on size_add() we've lost already.
-
-I've no idea what the compiler generates, but a cmovc to copy in ~0
-when the add sets carry stands a good chance of being pretty near the best.
-What you don't want is a conditional jump.
-The add, cmov pair will take two clocks, but the pairs are independent of
-each other (the carry flag isn't a limitation).
-The cpu should be able to execute two add and two cmov every clock.
-So with 4 values the 'tree' version is 4 clocks
-The other problem with ((a + b) + c) + d is that execution can't start
-until both a and b are available; with (a + b) + (c + d) it is much
-more likely that one of the adds can be executed early.
-
-Trying to guess the performance of modern cpu is non-trivial.
-
-	David
-
-> 
-> johannes
-
+Regards,
+Klara Modin
 
