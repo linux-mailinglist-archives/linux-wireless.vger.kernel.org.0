@@ -1,244 +1,217 @@
-Return-Path: <linux-wireless+bounces-37880-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37881-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eRhqLmhXM2qD/gUAu9opvQ
-	(envelope-from <linux-wireless+bounces-37880-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 04:26:48 +0200
+	id 8rCmIulpM2qyAgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-37881-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 05:45:45 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F1C669D20E
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 04:26:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0148269D5C9
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 05:45:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=ZJVfheDE;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=ZHkEVhcE;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37880-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37880-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	dkim=pass header.d=realtek.com header.s=dkim header.b=mATtiFav;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37881-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37881-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=realtek.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A2ABC3078A36
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 02:26:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4DD883023336
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jun 2026 03:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E77230C360;
-	Thu, 18 Jun 2026 02:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5581C84A0;
+	Thu, 18 Jun 2026 03:45:40 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9291023E320
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jun 2026 02:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B07E175A89;
+	Thu, 18 Jun 2026 03:45:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781749599; cv=none; b=lIJowr69Kvp/NfuS4z0qIFnGpixW7FxyJHqsYWmlHz+djbvS1O08Tbc/QEboN3H/HnoLdToDF94zaoe7lHUUVR0CXA/pnPhXnV9SAG1i987XxhwgP7mPYE39ONfwgl4pXMc2tL/XPV9HJQwK77ahsLKop4I5vVwBSQCQKgIBuCU=
+	t=1781754340; cv=none; b=qYYn/vA6jxE1PymplDtd6n14TldRZBNvy35CwtGoMLU59Gg7ppAWQeKUL0nfBM8WModA3IWCtpYSRsvadnKC3u39MmQn0uDSbsRqOQNW6yYLtXDQA67qSbEBTkwUtmP6sAGe52qn18BDQtbwFiqsGnyuhDdcCwFbAh7KsHtaC10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781749599; c=relaxed/simple;
-	bh=Kxw8kKOKrRDyeLtmbzCsHduldjoxsLNr2BKRzB6zIh4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hq6YSUh8C+zIgfkOi4znYO08X62pbfFucwygeI5eJjAGrN50hEtm7rZL+6CycOHJ7CvO/pgkl1aVNDpRHvZ6HNhFO3fqamxUAEnDyK9+TNYC588cE8kQ3mLfAv3waMbJbOxs5+JcUP0wI3Gz/natTCJiL8m0ZcqNIUaUUCI0jy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZJVfheDE; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZHkEVhcE; arc=none smtp.client-ip=205.220.168.131
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65HIRToc1597080
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jun 2026 02:26:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	zKf0bmfDYppgB0e27FIJ8nukk3QgDh4nPI/Bw4DM2ng=; b=ZJVfheDEmc1IaMDG
-	ZWacjI77NF1T8N8z8ShRjm6O0OL5IHZDXPwIUjsaz3TfPB30onNI7ocY7XmhHlIr
-	CtQIhE9AtFthPO1PAPbYfup8q1CGVgc8YlNWgErWSQ1ElbWHjRphxO6MiVeg8Yjr
-	2yB2kmJ3WntRwwzfVH5pURl2WoH9WsvnLIr48bSQfY1Za7At6wB+4s5T8piTA93m
-	T7u06HmERQcNmwHEk5Y+ToGJ6IOyGtnF9NabQodbS2pc/IFPzq9SSPwsUz7DuX4i
-	INeL5h4QIStcDJs0Q7IUdU6t50pRa+RqIWfGkjI4FyVnmK9+9o9csHJGABGo9rj1
-	ERZqMg==
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ev0vk1e07-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jun 2026 02:26:35 +0000 (GMT)
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-304b8d0ee63so1158258eec.0
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Jun 2026 19:26:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781749595; x=1782354395; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zKf0bmfDYppgB0e27FIJ8nukk3QgDh4nPI/Bw4DM2ng=;
-        b=ZHkEVhcEEEu4rFcmGpfi+DprApqzP+MYVxLWx6p5x4fpfroo/bwelSGaN6TcsoQ3NZ
-         thcnIWsHUFRNWrcjB+5/DR6lk0j3MXHbmbDq7nOx2PUOb+7aRQqhmQHVUydG8Hu6TnxF
-         9+AgDeG+joH2uQwQuOtgXgaZrL/QVevVdhh/9+1XuUBue8xVovtnd0MfRoBogyie5HnY
-         36CFw2PteqlaCxj2Z917tMOdGPoL6hC4MCM/ZS/CZ9XtViZzxSB8abB2IrUGAhOTNc3p
-         3PKom53AMuws8UKz6EXXlRNaiH2Sl1hmNqFgMYj6Z0jqUmZLjN+v+w3pvTzLGx0n8I9o
-         pNww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781749595; x=1782354395;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zKf0bmfDYppgB0e27FIJ8nukk3QgDh4nPI/Bw4DM2ng=;
-        b=iQ1/9qccXmizTzXk+iG00JwhCpIY7WWQ8EpNOdI9OxQNM0O3FQVjEL09ibe955x0ml
-         oNUestrZ8RymylWJ8QM3d9Z1ZXMz9nd7I/48ZXo4INknKr0fI1hA9OCY/sy7XFBqutDM
-         xyfMJC7c1LvM4m4GDOOjVqUFK1YYNxxcU6KfY0bvMFmRTn56PHy1bMrFw0yHIvizj3Jh
-         at9Rs7L+rYLJCTM6uq/+4MRbQlApAyYzV2ofVimjydGWY3EZfZYd+d3WWmOrHckGIUgC
-         6sq7jZS/ryFNIpYE8UzTjLMgl2yA6DMKfUfUmqTQ29quhQEtpuJEbI7k60djSSED0WVF
-         OlLg==
-X-Gm-Message-State: AOJu0YyZcB/bRURbZj3ofrBYglno3O+7fnKohbX6NnovJJOC0VGMhwpT
-	+glZyhZfpPQ5njAlQ5fY0dVefvUDiSAsCwGOP4sziRBXJVO+Hg6wdgQU0JSkFoTgAcDOY4Tb7+S
-	S1VlYFKFeNkN2QVnqnsbCQB+htCN2xht5U7PZFUSFCAXo8Yse4LVQwMw9fp08i8XKonznqQ==
-X-Gm-Gg: AfdE7cmNP8uF9YWzv6X5GpjHbQk1hdvs2ReOgDvS7if+zWrgyUOVwSUmp2QzrEUQtwh
-	79bf6DwcDG5X4RKSqn3z4UAcJheInhqFT1GTRsnGHR7C26FlvMdVJZR6Z2L+at9MpJWdx6UHJG0
-	zFe3+7KxwWFQy6uY1hFBGIlSSiCI191hqaGcFdW5nlOeiEf+fq6KkIyEJMy2nOZhQ/2OHjyOjIc
-	xQLU5V4Pfk6ofCL4+LSWHfNMT/zvEwpz19Vc4Zq2BsId38FJrLPdLeU3cxfoApWuI/NfechAQ3K
-	YqG09vUdbxTx1jXYfDYDMT5gXj/MH5ikdIN6x06iJmhFra1cyQAIODaZf1XjZhOq+0JIbY9xb9r
-	FX4pEvuekSq1IqlxnZsj0lGwyG0fT46sW1pL/1qJPn06bvPuK5OZVvWoPoQBKm2sSVqhuYAWLxD
-	tbSvw=
-X-Received: by 2002:a05:7301:e8e:b0:30b:dd58:e155 with SMTP id 5a478bee46e88-30bf09208c4mr1257502eec.20.1781749595079;
-        Wed, 17 Jun 2026 19:26:35 -0700 (PDT)
-X-Received: by 2002:a05:7301:e8e:b0:30b:dd58:e155 with SMTP id 5a478bee46e88-30bf09208c4mr1257468eec.20.1781749594545;
-        Wed, 17 Jun 2026 19:26:34 -0700 (PDT)
-Received: from [192.168.1.31] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30bcbb684absm4654469eec.1.2026.06.17.19.26.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Jun 2026 19:26:34 -0700 (PDT)
-Message-ID: <fb7d9a93-423c-4f05-9d3c-06e3ab25bbed@oss.qualcomm.com>
-Date: Wed, 17 Jun 2026 19:26:32 -0700
+	s=arc-20240116; t=1781754340; c=relaxed/simple;
+	bh=7MR7u7+dz5Cu4I8GG4Hs3jcng8hQpO42C0RkAWmeQhA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=klXiGNHiBWUJ0W90jq4t2lOfl2OcIzzVCmSCZeuYYL2/u9JpXSAp9W7hXkg877lozW62QZZtGdMnemyYuc0MfwWykgOMokwpawBE8cI2GOdhf5LNbtiWABFPEoKZSSBwTs22XZNR4yPuQ0uzWyUCoAmgVZ0N0RT0FxLF3Qr8Za4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=mATtiFav; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65I3jWwS53439965, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1781754332; bh=7MR7u7+dz5Cu4I8GG4Hs3jcng8hQpO42C0RkAWmeQhA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=mATtiFav+eFClyPeiYWIEQmpJTet2DljSkzdmGw8bhPdHx5/TJ2um3zQLGtgv7PkY
+	 qWlSiN3E9rwBbOeEM8xHJtJ4rmsFwjE9ypP1h0z5DTbD+ihc2DzgYC88mCzXNySiDn
+	 tcn7ia7u8yrZnNLCiI6lbwhltz/jLn8mtc1VGHSvQSK2Z4jy1wFTPD6Zoc1+dZzwRd
+	 P2SvgRaLGb+BfZ4dXzLgvgr1pBqXONYETDupo/LIUEovIvnvxtuQVtuEwR76FQ0jr4
+	 ZQVULC4UiDj1c2xAoq2xH2bCpDa+/Hg2nRjJAIxFiHsjYyLxf+dLX61DOLDKk6GQbJ
+	 plYSv/dgQeAVA==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65I3jWwS53439965
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 18 Jun 2026 11:45:32 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 18 Jun 2026 11:45:33 +0800
+Received: from RTKEXHMBS03.realtek.com.tw ([::1]) by
+ RTKEXHMBS03.realtek.com.tw ([fe80::a2e:aeb4:fa27:c32f%9]) with mapi id
+ 15.02.2562.017; Thu, 18 Jun 2026 11:45:33 +0800
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
+To: Matthew Leach <matthew.leach@collabora.com>, Ping-Ke Shih
+	<pkshih@realtek.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kernel@collabora.com" <kernel@collabora.com>
+Subject: RE: [PATCH] wifi: rtw89: regd: fix ww domain blocking on 6GHz
+Thread-Topic: [PATCH] wifi: rtw89: regd: fix ww domain blocking on 6GHz
+Thread-Index: AQHc/kLFbyzUGD3AnEyhLNPMXon1H7ZDo/4A
+Date: Thu, 18 Jun 2026 03:45:32 +0000
+Message-ID: <810df7528fc6425b97da759e0b0bd669@realtek.com>
+References: <20260617-rtw89-6ghz-regd-fixes-v1-1-33d744a07d16@collabora.com>
+In-Reply-To: <20260617-rtw89-6ghz-regd-fixes-v1-1-33d744a07d16@collabora.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] wifi: ath6kl: fix OOB read from firmware num_msg
- in TX complete handler
-To: Tristan Madani <tristmd@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Tristan Madani <tristan@talencesecurity.com>
-References: <20260421135009.348084-1-tristmd@gmail.com>
- <20260421135009.348084-4-tristmd@gmail.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260421135009.348084-4-tristmd@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: EnqCH84oFJqqQ1YVvn933XFdxr3L-J9K
-X-Authority-Analysis: v=2.4 cv=DNy/JSNb c=1 sm=1 tr=0 ts=6a33575b cx=c_pps
- a=cFYjgdjTJScbgFmBucgdfQ==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=J_-Nd1mkAAAA:8 a=I1eazs0kWn-z8uAMkgEA:9 a=QEXdDO2ut3YA:10
- a=scEy_gLbYbu1JhEsrz4S:22 a=n8ForQn92ZFaZtFqRdMw:22
-X-Proofpoint-GUID: EnqCH84oFJqqQ1YVvn933XFdxr3L-J9K
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDAyMCBTYWx0ZWRfX5BQ32NSKk6gj
- JFX4P2sAKUr7lN4EgnFgrP7G9LrrE98bNwyfjWNQRj/5KY8qsFcEb4dtYt5eETPmyPKaqK2Nfac
- Nucx9Tlph87BddffSm3vW5q3h71+J/g=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDAyMCBTYWx0ZWRfXxCTDBI5yKlAA
- D1YTgEwgU7ZpzZ7I8IcnyMnDmP89by73CGxSW3Pd/vs+LExo4Orl8sCBGt+wrTcarwUKJHUIftM
- TqZvPRwRiD66ganaYX0VPjt6sTDGi3/Cf1opKchGQqKFKc+lwCw8VlzLL87Ks8mWOLSUjJdVrZF
- 0bCbdBeOrppH/3a0Kz0i7jlwwLZpbbHxwzBjqVKWvPEmHDyFaQgb5FkpVNmcdTnnMIt42t1KW9w
- drkIi+UtVF2HldjngdttPJrXL1BCfSdHb9YGckDZv3lh1uliMSXgDBwg/efELc1J/2aYPO9dEo6
- wtKnu/p8ueObBt3hElnwEYfjJN/3l1SnMZvUvQ/ylFWz119mQVv1J8L+eK3vEs2Cu+Iz+us2aZ9
- 1JaQ0Z9SHJsVfcXrNmci7RZ3zMEZyNR7tE5aC2XsNtN16+Iisu8HKPpYVsXHYazq5+Qtxr7/npC
- y2DHmQMjcoy7R3VtCwg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-17_02,2026-06-17_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 phishscore=0 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 bulkscore=0 suspectscore=0 malwarescore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606180020
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.06 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:matthew.leach@collabora.com,m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:kernel@collabora.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37880-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:tristmd@gmail.com,m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:tristan@talencesecurity.com,s:lists@lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:dkim,talencesecurity.com:email];
-	FORGED_SENDER(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,sipsolutions.net];
-	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER(0.00)[kevin_yang@realtek.com,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37881-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kevin_yang@realtek.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,realtek.com:dkim,realtek.com:mid,realtek.com:from_mime,collabora.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3F1C669D20E
+X-Rspamd-Queue-Id: 0148269D5C9
 
-On 4/21/2026 6:50 AM, Tristan Madani wrote:
-> From: Tristan Madani <tristan@talencesecurity.com>
-> 
-> The firmware-controlled num_msg field (u8, 0-255) drives the loop in
-> ath6kl_wmi_tx_complete_event_rx() without validation against the buffer
-> length. This allows out-of-bounds reads of up to 1020 bytes past the
-> WMI event buffer when the firmware sends an inflated num_msg.
-> 
-> Add a check that the buffer is large enough to hold num_msg entries.
-> 
-> Fixes: bdcd81707973 ("Add ath6kl cleaned up driver")
-> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-> ---
-> Changes in v3:
->   - Regenerated from wireless-next with proper git format-patch to
->     produce valid index hashes (v2 had post-processed index lines).
-> 
-> Changes in v2:
->   - No code changes from v1.
-> 
->  drivers/net/wireless/ath/ath6kl/wmi.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath6kl/wmi.c b/drivers/net/wireless/ath/ath6kl/wmi.c
-> index 1cafbac2938fe..f56722c5ef5f1 100644
-> --- a/drivers/net/wireless/ath/ath6kl/wmi.c
-> +++ b/drivers/net/wireless/ath/ath6kl/wmi.c
-> @@ -484,6 +484,12 @@ static int ath6kl_wmi_tx_complete_event_rx(u8 *datap, int len)
->  
->  	evt = (struct wmi_tx_complete_event *) datap;
->  
-> +	if (len < sizeof(*evt) ||
-> +	    len < sizeof(*evt) + evt->num_msg * sizeof(struct tx_complete_msg_v1)) {
-> +		ath6kl_dbg(ATH6KL_DBG_WMI, "tx complete: invalid len %d for %u msgs\n",
-> +			   len, evt->num_msg);
-
-In the case where the first test is true, the logging of evt->num_msg will
-still overread the buffer.
-
-I think the logic would be more clear if it follows the pattern in the 2/3
-patch, first validate the fixed portion of the struct is available, and then
-separately validate the variable portion of the struct is available:
-
-	if (len < sizeof(*evt) {
-		ath6kl_dbg(ATH6KL_DBG_WMI, "tx complete: invalid len %d\n",
-			   len);
-		return -EINVAL;
-	}
-		
-	if (len < sizeof(*evt) + evt->num_msg * sizeof(struct tx_complete_msg_v1)) {
-		ath6kl_dbg(ATH6KL_DBG_WMI, "tx complete: invalid len %d for %u msgs\n",
-			   len, evt->num_msg);
-		return -EINVAL;
-	}
-
->  	ath6kl_dbg(ATH6KL_DBG_WMI, "comp: %d %d %d\n",
->  		   evt->num_msg, evt->msg_len, evt->msg_type);
->  
-
+TWF0dGhldyBMZWFjaCA8bWF0dGhldy5sZWFjaEBjb2xsYWJvcmEuY29tPiB3cm90ZToNCj4gDQo+
+IFRoZSBjdXJyZW50IGNvZGUga2VlcHMgYSBzZXBhcmF0ZSBpbnN0YW5jZSBmb3IgdGhlIHd3IHJl
+ZyBkb21haW4gb3V0c2lkZQ0KPiB0aGUgc3RhdGljIG1hcCwgYW5kIHRyZWF0cyBydHc4OV9yZWdk
+X2dldF9pbmRleCgpIHJldHVybmluZw0KPiBSVFc4OV9SRUdEX01BWF9DT1VOVFJZX05VTSBhcyB0
+aGUgaW5kZXggZm9yIHRoZSB3dyBkb21haW4uIFRoaXMNCj4gY29uZmxhdGVzIHRoZSAibm90IGZv
+dW5kIiBzZW50aW5lbCB3aXRoIGEgcmVhbCBpbmRleCBhbmQgY2F1c2VzIHRoZQ0KDQpXZSBlbnN1
+cmUgcmVnZF9tYXAgc2l6ZSA8PSBSVFc4OV9SRUdEX01BWF9DT1VOVFJZX05VTS4NCkFuZCB3ZSB0
+cmVhdCAibm90IGZvdW5kIiBhcyBXVy1saWtlIGNhc2UuDQoNCj4gYmxvY2tfKiBiaXRtYXAgbG9v
+a3VwcyB0byBza2lwIHd3IGVudGlyZWx5LCBleHBsaWNpdGx5IGJsb2NraW5nIDZHSHogb24NCj4g
+dGhlIHd3IGRvbWFpbiByYXRoZXIgdGhhbiBkZWZlcnJpbmcgdG8gdGhlIGtlcm5lbCByZWd1bGF0
+b3J5IHBvbGljeS4NCg0KSW4gZmFjdCwgd2UgbWVhbnQgdG8gYmxvY2sgNkdIeiBvbiBXVyBmb3Ig
+bm93Lg0KQW5kIEkgZGlkbid0IHNlZSB3aXJlbGVzcy1yZWdkYiBlbmFibGVzIDZHSHogb24gV1cg
+ZWl0aGVyLg0KDQo+IA0KPiBGb2xkIHRoZSBzdGFuZGFsb25lIHJ0dzg5X3d3X3JlZ2QgaW50byBy
+dHc4OV9yZWdkX21hcFswXSBhbmQgZHJvcCB0aGUNCj4gc3BlY2lhbCBjYXNlIGluIHJ0dzg5X3Jl
+Z2RfZ2V0X2luZGV4KCkgdGhhdCByZXR1cm5lZA0KPiBSVFc4OV9SRUdEX01BWF9DT1VOVFJZX05V
+TSBmb3Igd3cuIHJ0dzg5X3JlZ2RfZmluZF9yZWdfYnlfbmFtZSgpDQo+IG5vdw0KPiByZXR1cm5z
+IE5VTEwgb24gbWlzcywgYW5kIGl0cyBjYWxsZXJzIGVpdGhlciB0cmFuc2xhdGUgdGhhdCBpbnRv
+IHRoZQ0KPiBSVFc4OV9SRUdEX01BWF9DT1VOVFJZX05VTSBzZW50aW5lbA0KPiAocnR3ODlfcmVn
+ZF9nZXRfaW5kZXhfYnlfbmFtZSgpKSBvcg0KPiBmYWxsIGJhY2sgdG8gdGhlIHd3IGVudHJ5IGV4
+cGxpY2l0bHkgKHJ0dzg5X3JlZ2Rfbm90aWZpZXJfYXBwbHkoKSkuIFdpdGgNCg0KQSBiaWcgcHJv
+YmxlbSBoZXJlOg0KTm90ZSB0aGF0IHJlZ2RfbWFwIHdpbGwgYmUgZ2VuZXJhdGVkL3VwZGF0ZWQg
+YmFzZWQgb24gY2VydGlmaWNhdGlvbiBkb2N1bWVudA0KcHJvdmlkZWQgYnkgb3VyIFJGIHRlYW0s
+IGJ1dCBpdCB3b24ndCBpbmNsdWRlIFdXLiAobm8gc28tY2FsbGVkIFdXIGNlcnRpZmljYXRpb24p
+DQoNClRoZXJlIGFyZSB0d28ga2luZHMgb2YgY2hpcHNldHM6DQoxLiByZWdkX21hcCBpcyBsb2Fk
+ZWQgZnJvbSBidWlsdC1pbiBhcnJheQ0KMi4gcmVnZF9tYXAgaXMgbG9hZGVkIGZyb20gZncgZWxl
+bWVudA0KDQpGb3IgY2FzZSAyLCByZWdkX21hcFswXSB3b24ndCBzdGFuZCBmb3IgV1cuDQpTbywg
+eW91ciBmYWxsYmFjayB3b24ndCB3b3JrIGNvcnJlY3RseS4NCg0KPiB3dyBsaXZpbmcgYXQgYSBy
+ZWFsIGluZGV4LCB0aGUgYmxvY2stbGlzdCBjaGVja3MgYXBwbHkgYW5kIDZHSHogaXMgbm8NCj4g
+bG9uZ2VyIHVuY29uZGl0aW9uYWxseSBibG9ja2VkIGZvciB3dy4NCj4gDQo+IFNpZ25lZC1vZmYt
+Ynk6IE1hdHRoZXcgTGVhY2ggPG1hdHRoZXcubGVhY2hAY29sbGFib3JhLmNvbT4NCj4gLS0tDQo+
+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3JlZ2QuYyB8IDI4ICsrKysrKysr
+KysrKysrKysrKy0tLS0tLS0tLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxOCBpbnNlcnRpb25zKCsp
+LCAxMCBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVz
+cy9yZWFsdGVrL3J0dzg5L3JlZ2QuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
+cnR3ODkvcmVnZC5jDQo+IGluZGV4IDI4NDY2Y2IzNWVhMi4uNjk4YjhiN2Y2MTI5IDEwMDY0NA0K
+PiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3JlZ2QuYw0KPiArKysg
+Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3JlZ2QuYw0KPiBAQCAtMjEsMTAg
+KzIxLDggQEAgdm9pZCBydHc4OV9yZWdkX25vdGlmaWVyKHN0cnVjdCB3aXBoeSAqd2lwaHksIHN0
+cnVjdA0KPiByZWd1bGF0b3J5X3JlcXVlc3QgKnJlcXVlc3QNCj4gDQo+ICBzdGF0aWNfYXNzZXJ0
+KEJJVFNfUEVSX1RZUEUodW5zaWduZWQgbG9uZykgPj0NCj4gTlVNX09GX1JUVzg5X1JFR0RfRlVO
+Qyk7DQo+IA0KPiAtc3RhdGljIGNvbnN0IHN0cnVjdCBydHc4OV9yZWdkIHJ0dzg5X3d3X3JlZ2Qg
+PQ0KPiAtICAgICAgIENPVU5UUllfUkVHRCgiMDAiLCBSVFc4OV9XVywgUlRXODlfV1csIFJUVzg5
+X1dXLCAweDApOw0KPiAtDQo+ICBzdGF0aWMgY29uc3Qgc3RydWN0IHJ0dzg5X3JlZ2QgcnR3ODlf
+cmVnZF9tYXBbXSA9IHsNCj4gKyAgICAgICBDT1VOVFJZX1JFR0QoIjAwIiwgUlRXODlfV1csIFJU
+Vzg5X1dXLCBSVFc4OV9XVywNCj4gMHgwKSwNCj4gICAgICAgICBDT1VOVFJZX1JFR0QoIkFSIiwg
+UlRXODlfTUVYSUNPLCBSVFc4OV9NRVhJQ08sDQo+IFJUVzg5X0ZDQywgMHgwKSwNCj4gICAgICAg
+ICBDT1VOVFJZX1JFR0QoIkJPIiwgUlRXODlfRkNDLCBSVFc4OV9GQ0MsIFJUVzg5X05BLCAweDAp
+LA0KPiAgICAgICAgIENPVU5UUllfUkVHRCgiQlIiLCBSVFc4OV9GQ0MsIFJUVzg5X0ZDQywgUlRX
+ODlfRkNDLCAweDApLA0KPiBAQCAtMzE2LDEyICszMTQsMTMgQEAgc3RhdGljIGNvbnN0IHN0cnVj
+dCBydHc4OV9yZWdkDQo+ICpydHc4OV9yZWdkX2ZpbmRfcmVnX2J5X25hbWUoc3RydWN0IHJ0dzg5
+X2RldiAqcnQNCj4gICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuICZyZWdkX2N0cmwtPm1h
+cFtpXTsNCj4gICAgICAgICB9DQo+IA0KPiAtICAgICAgIHJldHVybiAmcnR3ODlfd3dfcmVnZDsN
+Cj4gKyAgICAgICByZXR1cm4gTlVMTDsNCj4gIH0NCj4gDQo+ICBzdGF0aWMgYm9vbCBydHc4OV9y
+ZWdkX2lzX3d3KGNvbnN0IHN0cnVjdCBydHc4OV9yZWdkICpyZWdkKQ0KPiAgew0KPiAtICAgICAg
+IHJldHVybiByZWdkID09ICZydHc4OV93d19yZWdkOw0KPiArICAgICAgIC8qIEluZGV4IDAgaW4g
+dGhlIHN0YXRpYyBtYXAgY29udGFpbnMgdGhlIFdXIGRvbWFpbiBlbnRyeS4gKi8NCj4gKyAgICAg
+ICByZXR1cm4gcmVnZCA9PSAmcnR3ODlfcmVnZF9tYXBbMF07DQo+ICB9DQo+IA0KPiAgc3RhdGlj
+IHU4IHJ0dzg5X3JlZ2RfZ2V0X2luZGV4KHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwgY29uc3Qg
+c3RydWN0DQo+IHJ0dzg5X3JlZ2QgKnJlZ2QpDQo+IEBAIC0zMzEsOSArMzMwLDYgQEAgc3RhdGlj
+IHU4IHJ0dzg5X3JlZ2RfZ2V0X2luZGV4KHN0cnVjdCBydHc4OV9kZXYNCj4gKnJ0d2RldiwgY29u
+c3Qgc3RydWN0IHJ0dzg5X3JlZ2QNCj4gDQo+ICAgICAgICAgQlVJTERfQlVHX09OKEFSUkFZX1NJ
+WkUocnR3ODlfcmVnZF9tYXApID4NCj4gUlRXODlfUkVHRF9NQVhfQ09VTlRSWV9OVU0pOw0KPiAN
+Cj4gLSAgICAgICBpZiAocnR3ODlfcmVnZF9pc193dyhyZWdkKSkNCj4gLSAgICAgICAgICAgICAg
+IHJldHVybiBSVFc4OV9SRUdEX01BWF9DT1VOVFJZX05VTTsNCj4gLQ0KPiAgICAgICAgIHJldHVy
+biByZWdkIC0gcmVnZF9jdHJsLT5tYXA7DQo+ICB9DQo+IA0KPiBAQCAtMzQyLDYgKzMzOCwxMCBA
+QCBzdGF0aWMgdTggcnR3ODlfcmVnZF9nZXRfaW5kZXhfYnlfbmFtZShzdHJ1Y3QNCj4gcnR3ODlf
+ZGV2ICpydHdkZXYsIGNvbnN0IGNoYXIgKmFscA0KPiAgICAgICAgIGNvbnN0IHN0cnVjdCBydHc4
+OV9yZWdkICpyZWdkOw0KPiANCj4gICAgICAgICByZWdkID0gcnR3ODlfcmVnZF9maW5kX3JlZ19i
+eV9uYW1lKHJ0d2RldiwgYWxwaGEyKTsNCj4gKw0KPiArICAgICAgIGlmICghcmVnZCkNCj4gKyAg
+ICAgICAgICAgICAgIHJldHVybiBSVFc4OV9SRUdEX01BWF9DT1VOVFJZX05VTTsNCj4gKw0KPiAg
+ICAgICAgIHJldHVybiBydHc4OV9yZWdkX2dldF9pbmRleChydHdkZXYsIHJlZ2QpOw0KPiAgfQ0K
+PiANCj4gQEAgLTcyMSw3ICs3MjEsNyBAQCBpbnQgcnR3ODlfcmVnZF9pbml0X2hpbnQoc3RydWN0
+IHJ0dzg5X2RldiAqcnR3ZGV2KQ0KPiAgICAgICAgICAgICAgICAgcmV0dXJuIC1FSU5WQUw7DQo+
+IA0KPiAgICAgICAgIGNoaXBfcmVnZCA9IHJ0dzg5X3JlZ2RfZmluZF9yZWdfYnlfbmFtZShydHdk
+ZXYsDQo+IHJ0d2Rldi0+ZWZ1c2UuY291bnRyeV9jb2RlKTsNCj4gLSAgICAgICBpZiAoIXJ0dzg5
+X3JlZ2RfaXNfd3coY2hpcF9yZWdkKSkgew0KPiArICAgICAgIGlmIChjaGlwX3JlZ2QgJiYgIXJ0
+dzg5X3JlZ2RfaXNfd3coY2hpcF9yZWdkKSkgew0KPiAgICAgICAgICAgICAgICAgcnR3ZGV2LT5y
+ZWd1bGF0b3J5LnJlZ2QgPSBjaGlwX3JlZ2Q7DQo+ICAgICAgICAgICAgICAgICBydHdkZXYtPnJl
+Z3VsYXRvcnkucHJvZ3JhbW1lZCA9IHRydWU7DQo+IA0KPiBAQCAtODU5LDcgKzg1OSwxNSBAQCBz
+dGF0aWMgdm9pZCBydHc4OV9yZWdkX25vdGlmaWVyX2FwcGx5KHN0cnVjdA0KPiBydHc4OV9kZXYg
+KnJ0d2RldiwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3Qg
+d2lwaHkgKndpcGh5LA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0
+cnVjdCByZWd1bGF0b3J5X3JlcXVlc3QNCj4gKnJlcXVlc3QpDQo+ICB7DQo+IC0gICAgICAgcnR3
+ZGV2LT5yZWd1bGF0b3J5LnJlZ2QgPSBydHc4OV9yZWdkX2ZpbmRfcmVnX2J5X25hbWUocnR3ZGV2
+LA0KPiByZXF1ZXN0LT5hbHBoYTIpOw0KPiArICAgICAgIGNvbnN0IHN0cnVjdCBydHc4OV9yZWdk
+ICpyZWdkID0NCj4gcnR3ODlfcmVnZF9maW5kX3JlZ19ieV9uYW1lKHJ0d2RldiwgcmVxdWVzdC0+
+YWxwaGEyKTsNCj4gKw0KPiArICAgICAgIGlmICghcmVnZCkgew0KPiArICAgICAgICAgICAgICAg
+LyogRmFsbGJhY2sgdG8gV1cgZG9tYWluIGlmIG5hbWUgbm90IGZvdW5kLiAqLw0KPiArICAgICAg
+ICAgICAgICAgcmVnZCA9ICZydHc4OV9yZWdkX21hcFswXTsNCj4gKyAgICAgICB9DQo+ICsNCj4g
+KyAgICAgICBydHdkZXYtPnJlZ3VsYXRvcnkucmVnZCA9IHJlZ2Q7DQo+ICsNCj4gICAgICAgICAv
+KiBUaGlzIG5vdGlmaWNhdGlvbiBtaWdodCBiZSBzZXQgZnJvbSB0aGUgc3lzdGVtIG9mIGRpc3Ry
+b3MsDQo+ICAgICAgICAgICogYW5kIGl0IGRvZXMgbm90IGV4cGVjdCB0aGUgcmVndWxhdG9yeSB3
+aWxsIGJlIG1vZGlmaWVkIGJ5DQo+ICAgICAgICAgICogY29ubmVjdGluZyB0byBhbiBBUCAoaS5l
+LiBjb3VudHJ5IGllKS4NCj4gDQo+IC0tLQ0KPiBiYXNlLWNvbW1pdDogOGNkOTUyMGQzNWE2YzM4
+ZGI2NTY3ZTk3ZGQ5M2IxZjExZjE4NWRjNg0KPiBjaGFuZ2UtaWQ6IDIwMjYwNjE2LXJ0dzg5LTZn
+aHotcmVnZC1maXhlcy1kOGY4MTY4ODBiZDANCj4gDQo+IEJlc3QgcmVnYXJkcywNCj4gLS0NCj4g
+TWF0dA0KPiANCg0K
 
