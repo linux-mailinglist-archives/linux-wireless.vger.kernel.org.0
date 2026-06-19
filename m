@@ -1,88 +1,87 @@
-Return-Path: <linux-wireless+bounces-37926-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37927-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rRCsMgFuNWqowAYAu9opvQ
-	(envelope-from <linux-wireless+bounces-37926-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 18:27:45 +0200
+	id MHCmGOuBNWqZyAYAu9opvQ
+	(envelope-from <linux-wireless+bounces-37927-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 19:52:43 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 578336A70D2
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 18:27:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E404A6A7518
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 19:52:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ceQ6HtXg;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37926-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37926-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="LZTtt43/";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37927-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37927-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 189063006B78
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 16:25:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC0693034EFF
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 17:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6753BFE20;
-	Fri, 19 Jun 2026 16:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154B93B19B2;
+	Fri, 19 Jun 2026 17:52:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7293BFAF0
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 16:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C311B349CEE
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 17:52:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781886353; cv=none; b=eTd/bV0xkGYihMwOzIA4g1CbUKpuCNRGjLZWGCKm4i1544iFY9FvGGQY5IKQ6CQMxtfuNeWkSpl5bqQDFxOU0zV+e727U8xFJZPeKodoY3ODhQGjuccxxGIyM0vBcOTSef7iHE+OXLcQXBq+YApY8Qr5i3V2cQ+VUramFwYut4k=
+	t=1781891550; cv=none; b=SZ3tI7gYRGCrwp5AfrqyI2lMPIiTTin4IEVFHtE8bMkkgJyzfbI1TXqvPQaJn9UqMBB1/qGnY1TgT4EgYy91o1EBldW5h1lrsW4HqJK39HBsXAMgJeA20EHAQePnJ40TqYxx/Oj7sejOArwi3Pfw83sJkRIYJhWk57oYHvmjND0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781886353; c=relaxed/simple;
-	bh=MhCq5bUczPMwBowFxwT6rYJ3hO0NnuNFD7T7JakP60c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=akxS6Bm0GYae92Q5mGavRfVJEZsqbzFXXu5dx5xI5Q72JNTL8Jh7wS2v9pqekg48ouC+iT0LCYCn2D5WtyxBgST/TiYPIUn7YG8xGuPfhjYLZn3HGnymhY5VoWjRwO+yNDx3qBxq6AjXwL1UyGXr/4X5tzCgqk9nfbRr9DghH1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ceQ6HtXg; arc=none smtp.client-ip=209.85.210.175
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8456005a6c4so148007b3a.2
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 09:25:49 -0700 (PDT)
+	s=arc-20240116; t=1781891550; c=relaxed/simple;
+	bh=zW9DKON9mx7IrUyUOjcnoR5Dpd1gG+9B9/BVhakQksI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=un5X49itXZ330oVLM36tXBk4SdTiJcy7gOHMdGMFvd1iDAwIvxnViOWeuxexs10IyqaqsP1FBeP5Hiw1+IFzHaZ/b1TrdqdPElAa0CRWYKBVr7w1PaWEo349sQf2NWnIcUOIO3kMWuj4i1msvg2IJTdE8F8VkwuuIL/hzh6alK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LZTtt43/; arc=none smtp.client-ip=74.125.82.170
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-30b6dad2382so4353488eec.0
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 10:52:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781886349; x=1782491149; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781891548; x=1782496348; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=muBeirQow0/kMxmtCBCufAVChsk2yWO9FqV2NLrBd/s=;
-        b=ceQ6HtXgFTI+SgKEIQtmhjOaWU7m68qtfSYyaKjCqq3+17t0+vLFm6pMztA2GbwMR6
-         PqGRhZc6ysRhB7A7gPW7HpzKi6fGlwjgf/xHTxOMH7iWhuuRfUSyWVpWhXOkMQ9//HU+
-         LCtjFgbIA8kHZT8dLFEoVlar4PIyO5xh+/Pa1ifGRd2SrcO41YlqXNZ5yXUx8v/Omdx2
-         cNWuPPzd1nLh8IbOweTu1+k1INCfkYmzhwu0GACtfKa918Km9yKyZLQZH3trCwbOnJkK
-         ciFSjR/CjQfr0flF1nrtgnp3r0QZ2nWkCGm62/y2fh3C3ZF97VfTqldY/bk8HXBTHN1G
-         Ku4A==
+        bh=CkKUbPI8bcHsG3LZvBu1T6EdoJFBnx5t8VUOydPJDN8=;
+        b=LZTtt43/8GK9EksmMt34X4Rtttb2oEsFfojD93y+5yjLe5dTKxXTVppdyxjvAD7MO3
+         0TfoWogz23aV0/AidBQVmjW5TAinQXmW8Nrf+/5TlS9xk17/3+/v5SDM5uKmiHGfub++
+         3NrA3D2KTNZkunyHYDiIKw+tj6zHJP2uoEQsJmZqOr5ZD3G3ECDjfneVbay9MQWOuybX
+         BnkJGcCcxzSUhpraUfZhghc6rD+MjUc87a1Y5nEHK4ZBclIGDUF3Y92tS6c7KsTdGC9b
+         j95bPaRNIXwtr3qxdGfFtVSLbTB3KNoJ+GjLKe2itc2XSyI6lyp5QVrP2wXsReMIIzSO
+         elFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781886349; x=1782491149;
+        d=1e100.net; s=20251104; t=1781891548; x=1782496348;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=muBeirQow0/kMxmtCBCufAVChsk2yWO9FqV2NLrBd/s=;
-        b=snc7T7ZiUGZ+RBpRZJD65JDoWGS40bah59DnIc/nbEqdvCNeZN2qwWFQstoz75PS/L
-         F1OaaYgo2wlq2pjJzkYmK7J4TtvZ9IEdy/NgrVi0PnKkmU9noI4EKXuRzYfVyo2w0dmh
-         iCPjXamZY96se/m47SPR3aWT1nYBGDXg9gePkEFZZIKOpiE47iHC2Htb9CIvBeUyGE5s
-         OIOti7XEzj0JPzTsnvWZGLB2rBkcA33QteSJfuNse1VAcn4lzBlwT1dYmGXq6npFQz/T
-         Y+O4yYDeuH/OSZNGGXmLCo9SYaXuc0pnnC9R4pjBgiUdVcZQ/GB04iV1jy2e0ijxkvMR
-         Sz1w==
-X-Gm-Message-State: AOJu0YxinCbsb592WaRJ/Bk0LrLDMa1zLVLL74RLpvmKoPGNTzxVfemo
-	cgeVc4KGnamSSNZPSDh9YwR7uTxFo0pyONwidRZH8Zpoj7KiHKFvYSsO
-X-Gm-Gg: AfdE7cmIE7Mau2/6Xw1fDVmKJ1zHxQumLBTkCBu6r3GmAWujIU48PoB6FJNlWO+M+S0
-	Ka8K1QO+PjFLRnKWHlSDYU0aUISK+HKnMnNu6D1ZNzISw2G49FX6mRXfxNZcdv/13K3WM/4Irx8
-	uo/ZN1jPNL5oWTDi1WbFXrbYWA+u9/b7WVvejv139Gdf7euZhcXD1IJ+iZXQWFFIZNVYFvg+G3Z
-	mcCPn05rMGdPvZuuhdkfWF2ECY0veRVo9W19pLDM+aRl+31kW9+XJDyXETyWP8rdRBRrss5YrwQ
-	XXmsEVfT9F+haK0AVI2DP5wa8Zi8zgEa/e4fuiYl+E/SiEDmVhEhXZ5zv9iiFVpJT/9okQahHN6
-	S81HAJrMfLTDjRTxp+qJkfKR6tJTR9zkWQuVqCddavNI4QhQrMuOVvjiXio85e2zUzYVPE/YPxA
-	9QLK+GtSc=
-X-Received: by 2002:a05:6a00:3d04:b0:836:5c3c:2054 with SMTP id d2e1a72fcca58-845508a0f2emr4613647b3a.37.1781886348649;
-        Fri, 19 Jun 2026 09:25:48 -0700 (PDT)
-Received: from localhost ([111.228.63.84])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84553854347sm2962140b3a.54.2026.06.19.09.25.45
+        bh=CkKUbPI8bcHsG3LZvBu1T6EdoJFBnx5t8VUOydPJDN8=;
+        b=i7jxZh/rBHO/ilz8qvudYqlK6PdRsnaYMDnXV07qxFSEWCxy3wk8h3HTeswScnpnLX
+         4Xaf018LF6pligfVCMFf/1wgx5lfLpuE/kHqaZCL4Rptu0BAbajGE44LAwMPr7nkNcIk
+         wOX1Sq7NiaTsDTKMWuwd9K6Pn7EDrU4kZna6D6J/uFESIlu0E7SbEhPKbs3d4d9ygVSS
+         5o2lEJCr4OdejY6fqD7GxYfnF/cmmvYsrSmvLQQ3BmXjhKTzpAFEH5a9j43gwH2u8EdW
+         gcEsIQq1nhYYQuFaSxmL3YEpoucUtvjZRVtulR9aQvnGEQy/E9gsNPZ5heuDDxra3j1w
+         5QgQ==
+X-Gm-Message-State: AOJu0YxhEFjcYCfxwS/4RJ05l1EA62ONpo8XeNYgYRXd8J1TErfJVo+K
+	qvZtnPBZhAN2wMYePhH1JPBDf0tTHisA4kFha7xPTqBq8vpsiH9pC3jZEUaiKw==
+X-Gm-Gg: AfdE7cm7Zkwd1vRqOQI+EkHn1SPBMXAmjOd/mu3+hRU2+nJNjBAJTy6vc2erJjS6FAO
+	qXPpcBqeBL3BA5NrM6H3oQDdUkJdooVza9nK/KuqxOUMhG4qUUm9FN3ikApT5Z4YZbOnyeapy/N
+	riV95SjjLklbjLT/AT8fyge/CBpbgnwgnrnsi6yUsv1S8gz7s9Qww/uOfiVGSYzuWh6r22UkO1D
+	6zOtO+hi6ThlhlHcKDSlGeLe6sziOILasg9HmHewuoheeiw/ku+ePXlFNvhdZScqDKaJmyxz+Z7
+	OczWZK2Ghs9t+8iQS+FvaIJg0CAfR9dAoX9ucj9FFnsss/ksdC1rn+sXKP4DOTnXiNnl4/vrVVQ
+	Zv7f8zluhsY2Akj5KvLMy+clYJXsmGO5RVlIal9mMwrzqhzDkFvUDSVZ4jw0DiFn3nM0W03ailO
+	IeV2g60WDQs3Socr9p+b1FruGnEYjQfXjQtJD0QZzebfAnlYtjIASIBNORpmVnkMEBjFHQkct0k
+	z/IFqYwv+JKaUyalkGXBJ2+
+X-Received: by 2002:a05:7301:4b18:b0:304:d835:274 with SMTP id 5a478bee46e88-30c0d105d43mr1722116eec.24.1781891547841;
+        Fri, 19 Jun 2026 10:52:27 -0700 (PDT)
+Received: from ryzen ([2601:644:8000:5b5d:7726:ebb3:f6b4:614e])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c1ba1f14fsm449951eec.5.2026.06.19.10.52.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 09:25:48 -0700 (PDT)
-From: Cen Zhang <zzzccc427@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	zzzccc427@gmail.com
-Subject: [PATCH] wifi: cfg80211: cancel sched scan results work on unregister
-Date: Sat, 20 Jun 2026 00:25:42 +0800
-Message-Id: <20260619162542.3878296-1-zzzccc427@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Fri, 19 Jun 2026 10:52:27 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCHv2 ath-next] wifi: ath9k: mark static arrays as const
+Date: Fri, 19 Jun 2026 10:52:10 -0700
+Message-ID: <20260619175210.5348-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -94,110 +93,93 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-37926-lists,linux-wireless=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:baijiaju1990@gmail.com,m:zzzccc427@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[zzzccc427@gmail.com,linux-wireless@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37927-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:toke@toke.dk,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zzzccc427@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 578336A70D2
+X-Rspamd-Queue-Id: E404A6A7518
 
-cfg80211_sched_scan_results() can queue rdev->sched_scan_res_wk from a
-driver result notification while a scheduled scan request is present. The
-work callback recovers the containing cfg80211_registered_device and then
-locks the wiphy and walks the scheduled-scan request list.
+PN9Data is a read-only lookup table and is never modified.  Adding const
+lets the compiler place it in .rodata and prevents accidental writes.
 
-wiphy_unregister() already makes the wiphy unreachable and drains rdev work
-items before cfg80211_dev_free() can release the object, but it does not
-drain sched_scan_res_wk. A queued or running result work item can therefore
-cross the unregister/free boundary and access freed rdev state.
+Use the same treatment for bits_per_symbol. It's not modified either.
 
-The buggy scenario involves two paths, with each column showing the order
-within that path:
-
-scheduled-scan result path:        unregister/free path:
-1. cfg80211_sched_scan_results()   1. interface teardown stops and
-   queues rdev->sched_scan_res_wk.    removes the scheduled scan request.
-2. cfg80211_wq starts the work     2. wiphy_unregister() drains other
-   item and recovers rdev.            rdev work items.
-3. The worker locks rdev->wiphy    3. cfg80211_dev_free() destroys and
-   and walks rdev state.              frees rdev.
-
-Cancel sched_scan_res_wk in wiphy_unregister() alongside the other rdev
-work items. cancel_work_sync() removes a pending result notification and
-waits for an already running callback, so cfg80211_dev_free() cannot free
-rdev while this work item is still active.
-
-Validation reproduced this kernel report:
-BUG: KASAN: use-after-free in cfg80211_sched_scan_results_wk+0x4a6/0x530
-Workqueue: cfg80211 cfg80211_sched_scan_results_wk [cfg80211]
-Read of size 8
-Call trace:
-  dump_stack_lvl+0x66/0xa0
-  print_report+0xce/0x630
-  cfg80211_sched_scan_results_wk+0x4a6/0x530
-  srso_alias_return_thunk+0x5/0xfbef5
-  __virt_addr_valid+0x224/0x430
-  kasan_report+0xac/0xe0
-  lockdep_hardirqs_on_prepare+0xea/0x1a0
-  process_one_work+0x8d0/0x18f0 (kernel/workqueue.c:3212)
-  lock_is_held_type+0x8f/0x100
-  worker_thread+0x5ad/0xfd0
-  __kthread_parkme+0xc6/0x200
-  kthread+0x31e/0x410
-  trace_hardirqs_on+0x1a/0x170
-  ret_from_fork+0x576/0x810
-  __switch_to+0x57e/0xe20
-  __switch_to_asm+0x33/0x70
-  ret_from_fork_asm+0x1a/0x30
-
-Fixes: 807f8a8c3004 ("cfg80211/nl80211: add support for scheduled scans")
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Assisted-by: opencode:big-pickle
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- net/wireless/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ v2: mention bits_per_symbol.
+ drivers/net/wireless/ath/ath9k/tx99.c | 16 ++++++++--------
+ drivers/net/wireless/ath/ath9k/xmit.c |  2 +-
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 3dcf63b04c41..2c729a7aca12 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1335,6 +1335,7 @@ void wiphy_unregister(struct wiphy *wiphy)
- 	/* this has nothing to do now but make sure it's gone */
- 	cancel_work_sync(&rdev->wiphy_work);
- 
-+	cancel_work_sync(&rdev->sched_scan_res_wk);
- 	cancel_work_sync(&rdev->rfkill_block);
- 	cancel_work_sync(&rdev->conn_work);
- 	flush_work(&rdev->event_work);
--- 
-2.43.0
+diff --git a/drivers/net/wireless/ath/ath9k/tx99.c b/drivers/net/wireless/ath/ath9k/tx99.c
+index f2144fd39093..b52d84f6cbc9 100644
+--- a/drivers/net/wireless/ath/ath9k/tx99.c
++++ b/drivers/net/wireless/ath/ath9k/tx99.c
+@@ -39,14 +39,14 @@ static void ath9k_tx99_stop(struct ath_softc *sc)
+
+ static struct sk_buff *ath9k_build_tx99_skb(struct ath_softc *sc)
+ {
+-	static u8 PN9Data[] = {0xff, 0x87, 0xb8, 0x59, 0xb7, 0xa1, 0xcc, 0x24,
+-			       0x57, 0x5e, 0x4b, 0x9c, 0x0e, 0xe9, 0xea, 0x50,
+-			       0x2a, 0xbe, 0xb4, 0x1b, 0xb6, 0xb0, 0x5d, 0xf1,
+-			       0xe6, 0x9a, 0xe3, 0x45, 0xfd, 0x2c, 0x53, 0x18,
+-			       0x0c, 0xca, 0xc9, 0xfb, 0x49, 0x37, 0xe5, 0xa8,
+-			       0x51, 0x3b, 0x2f, 0x61, 0xaa, 0x72, 0x18, 0x84,
+-			       0x02, 0x23, 0x23, 0xab, 0x63, 0x89, 0x51, 0xb3,
+-			       0xe7, 0x8b, 0x72, 0x90, 0x4c, 0xe8, 0xfb, 0xc0};
++	static const u8 PN9Data[] = {0xff, 0x87, 0xb8, 0x59, 0xb7, 0xa1, 0xcc, 0x24,
++			             0x57, 0x5e, 0x4b, 0x9c, 0x0e, 0xe9, 0xea, 0x50,
++			             0x2a, 0xbe, 0xb4, 0x1b, 0xb6, 0xb0, 0x5d, 0xf1,
++			             0xe6, 0x9a, 0xe3, 0x45, 0xfd, 0x2c, 0x53, 0x18,
++			             0x0c, 0xca, 0xc9, 0xfb, 0x49, 0x37, 0xe5, 0xa8,
++			             0x51, 0x3b, 0x2f, 0x61, 0xaa, 0x72, 0x18, 0x84,
++			             0x02, 0x23, 0x23, 0xab, 0x63, 0x89, 0x51, 0xb3,
++			             0xe7, 0x8b, 0x72, 0x90, 0x4c, 0xe8, 0xfb, 0xc0};
+ 	u32 len = 1200;
+ 	struct ieee80211_tx_rate *rate;
+ 	struct ieee80211_hw *hw = sc->hw;
+diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
+index 89d8b3178784..57e451548958 100644
+--- a/drivers/net/wireless/ath/ath9k/xmit.c
++++ b/drivers/net/wireless/ath/ath9k/xmit.c
+@@ -41,7 +41,7 @@
+ #define ATH9K_PWRTBL_11NG_HT_SHIFT      12
+
+
+-static u16 bits_per_symbol[][2] = {
++static const u16 bits_per_symbol[][2] = {
+ 	/* 20MHz 40MHz */
+ 	{    26,   54 },     /*  0: BPSK */
+ 	{    52,  108 },     /*  1: QPSK 1/2 */
+--
+2.54.0
 
 
