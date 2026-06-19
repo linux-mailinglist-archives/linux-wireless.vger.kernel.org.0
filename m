@@ -1,87 +1,87 @@
-Return-Path: <linux-wireless+bounces-37924-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37925-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9qIMH2JtNWpkwAYAu9opvQ
-	(envelope-from <linux-wireless+bounces-37924-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 18:25:06 +0200
+	id WVAaKr5tNWqLwAYAu9opvQ
+	(envelope-from <linux-wireless+bounces-37925-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 18:26:38 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4C46A70A0
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 18:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 148C06A70BF
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 18:26:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bsCwgCl8;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37924-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37924-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bN3PVrMn;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37925-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37925-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A99E30214F5
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 16:24:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E83E3308564D
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 16:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075583BB9EF;
-	Fri, 19 Jun 2026 16:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4F43BCD17;
+	Fri, 19 Jun 2026 16:25:08 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970F93BCD00
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 16:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A9B3B38B4
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 16:25:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781886268; cv=none; b=b0mf/iWWyPZ9GDnisDA6/JI91nzLBD4lGfM/HthVdNF7GIfDaSCPu8utv5il9KtVF6QXRuQc5OQVcD40D4CfMuwvH+xbHVM7xe2fUXhIkmnlrRLQe8Z7xL1LSbohxW4VmIVEGMfQ/kemXZnQtl68AK1rhWh2G1vzi2EMnOVRRac=
+	t=1781886308; cv=none; b=oQTuFVsmB+Nigatl/a3Cj6TmJnfmd4xpNKeA4lHYbUgNXtE2QcPrLndofuZRwbm6rnbNKIW6l176lphy2PSHpeWmKb9uvQKG7CeYTiTmfFziBZvl6EFYS1f/8a2/Mp0b8iSQ1Ak4tQGP9qGkP4C2xCmgiVht1nYCsKCM/eosZCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781886268; c=relaxed/simple;
-	bh=GpS9N+m0FSGQ4dGI8MM9zQBrTwmN4En5EbXmu4cuLVw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=B5xIkBoi25WnDRDxLGVJfAx/BiHafw5gg6C9eBQRICtC7AdOxfvUKjCfWAXlNCWzRTHfv/Bmd6zTgzfDc+cOzBblR3hQjMcz68lb6ed4qw62Ry7xbxlehUe9TsJFzRWKj+lAeZTrhC9CLGrAb+on2NBebpvElnMpwGmtcdFACpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bsCwgCl8; arc=none smtp.client-ip=209.85.210.180
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-842848fd613so2037799b3a.3
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 09:24:27 -0700 (PDT)
+	s=arc-20240116; t=1781886308; c=relaxed/simple;
+	bh=e29pFoMNGM2eCKhbcw0gYxXcivO9ok0GrFpZ2NN3e6k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JyEkKEVbZm3BmIHVkZbJNykW6boBOhGE2lPz4s66b4EntpIa/QBZnQOP2lOJ+a0oIF0k8XR1EWFvGlsvWs21S/jUvvRKqtu8s1kkH/e9qm4s4nJ5ezXx2JQSX6YOP84fiIpBTjhcjuNhderb2KP65/rNIrxNtkRgjzLgrCpGgyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bN3PVrMn; arc=none smtp.client-ip=209.85.214.171
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2bf125989f2so14773865ad.3
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 09:25:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781886267; x=1782491067; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781886306; x=1782491106; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=J2CbQ+kpNB+e+HTZk2sFB26eYNVwKtCy10gGIJQoT2U=;
-        b=bsCwgCl8/lRh+k3b72Z49YG7u/f06eJs/LxmmJJBEhHyR6+8W+5WFQilBmiZVmgY7A
-         hI7yZjB6IV7aA0geTgk0uxRlsWCH9X9rs6X+RNR4L9vQBEekBb5UUADxQhWcMlaV7RxT
-         PINKl3MxRCa6Xf2/ofKyo55oba0QV/yJP9nBMwUFaC+t67fZKIpa5Fa/ImL5nX2CiVms
-         0DG1ubQWeaEGSoPtl4rW8jXHFXM4fPm9GpKTV+ADWE8AZmiDry5KGSMfUJvwb661J2GA
-         hhNvyp+i0GTplft5KtvR/xVxG2CKajrFEAafDEYk0hC7wKYP3tsfYr80VU3m065Wu7Tz
-         bqsw==
+        bh=2Mmj6kZigFMWnee2TpRKcVLN0+A76a+20tMCpfB7bcE=;
+        b=bN3PVrMnEvT7Sfihf7rPjSLmv3LTarIBgXL5sGevh75sKdHiPYmyS18uVvF0C4GrrJ
+         +NaGiqHlcBICNkThh2nnqYUcWiXWpRcA6zFdFfjhcu33R4cvBvBGvyTE4dNqFKnrHMFi
+         oePyknN+hFLHA3pwAEC/Pwlp4XLXjomtT7P7/jfXjx3j9YRoBYZii72V2lEpQkSEOL7Z
+         d+R6E3LiLy2pfg34Uxfs3lFMNwThhiUJDRTXn1YVLSvDXNziDafyEQ6M7ztCvqDNjhO+
+         9Ws1nDwiXnvxVfo3ZX6/dw9z1QUciqxN7pyRiS0ku8ApCyU2pClDQ2UIV/WHXzf59ZGE
+         CrOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781886267; x=1782491067;
+        d=1e100.net; s=20251104; t=1781886306; x=1782491106;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=J2CbQ+kpNB+e+HTZk2sFB26eYNVwKtCy10gGIJQoT2U=;
-        b=kq1GKkIP+Qh5pOOJY1EzQZAfY0tO6hQGgZFwjfrnASnx05H3vTJEGUb+xOlRP7f9Zq
-         +T3HDVKHUScLcLAkyp0Eydk0VLzjFcy7nBp0EhwBR7vteG0AY5zYXnMVN9uzFvxnAu9Y
-         0OJ04hdkwgTMQZf0rWay0kbnoSFEITT+KY0Lpr0odmxNxc0g8pUbYMstAK17bkAk3zoS
-         isytctWHlEAfadJe3HjeXqtwtqqPCpxsQZNHmUZWpBdqTi2SY4CbRXafim/XJ5tIhUm4
-         NL3lZcJntBrr8xsXZzQiZ9GcZYZixtCY5VfV87y9oyZGgq5r6k4UCyt9MmCb7ZIVsweh
-         N0pg==
-X-Gm-Message-State: AOJu0YzuVIeSY5lr9ultwhcIhD+R25kvWPLXMteC8J3JCjF8tNRuw7Ta
-	LThYDGPQdnLBV8hwqfIQn2dD+YXrTF+YEJhVhUvQ2yBHUWDf39TA1rLk
-X-Gm-Gg: AfdE7cm47Lw5+kmyaCK6UbuAWaoqCvsSiKjnQWHI8Tt8zlIMfM17dgCHKWwdnidYSx/
-	Q2cddUja7dm4hAEhla0z+ioj6uTN3l/N2F2iGKr39hxCakroHBul8PPnDP/+ToLpMyM+dEp0ned
-	/47VOLAlyR6ZeGQLOLSO6L0A4dg8wUEf0nqvOYuZAZ9EPCRyTpCMBEBCbQDFPu+qIMGh7Lz4ncF
-	AuXo4QtxYvnC/z94YVlYkb4WnG1z0WiaE9ywwmWO+BvgbtER7juM0CjyQZqXb4ymvgbrTpmjNGy
-	rdobCdKO5k8++oZy2B+ud6UE219PJXW0lGheqp7vbJJvLjFY9VbOMHmxlW2yD0i2o58mZMa+m7Z
-	vBNT4aLIR597dz55P90Xay5jwkcMW76IGPptVUr5sEahxyocxYFePB3KVAajy+ggXSxXVf3UoCL
-	+WUG1KdOo=
-X-Received: by 2002:a05:6a00:bd01:b0:842:7992:bdd3 with SMTP id d2e1a72fcca58-845624574d5mr394307b3a.4.1781886266727;
-        Fri, 19 Jun 2026 09:24:26 -0700 (PDT)
+        bh=2Mmj6kZigFMWnee2TpRKcVLN0+A76a+20tMCpfB7bcE=;
+        b=MztcqDEY0lxBNczgi7mkoUTMfzKSrcK0w43pn6Nzf9p7KZK0L5nsluBVc/UIS9YSjb
+         Z4y8q0ovOM463dxcgD5TaK+bwBrETFPwCRfLWRETw/ecg1z+WBeez1H2xupcCPz6yhQ0
+         omN38wBwT24uSS5Ok0t0EycpJlNy+E2IMJs6Wbba4dgaCBTeFXri4vi2j+Q/XIc9mHzR
+         cJJAJRT8oDYNM6NYbW4YvgUck3TG62aGV0eSTTT2cyAyaBf7Wn3h7P/TKywh9V7YJhMd
+         n9b0dh346sT1NU8nbIUocrdrueQk4eejWOXFcZUvT+G9bZOo4DGhIP0if+o7Ni+d+S7k
+         MsqA==
+X-Gm-Message-State: AOJu0Yx4h/X5P7Jl4qkh9G/Z+UTy6/VfnIRzHFS8KxtWbFzZetOngohO
+	epd8Hdzpjk5F0XM2UY/w5qOjdrfi+VjcuLeUnv2UuaFDyOGHoBCESq+P
+X-Gm-Gg: AfdE7clw/pa8sQG3VCfl4AigmTu81AlTcPxdRy1q8mA0F+oWBKxiHNLyF6kUcwhHVYY
+	CfoC0uyAB1TPuAxElyAS/LkJHG63Wq1Hw+Kt4kX6RKTLNfPPJZcsusTtWcnnMN/lIssD+rp5YD0
+	tpdjYyHvGKV+hALIamEYLbGZw8TwN78AAKRVCgADAMzSc+lZ9gh6nu92UGOw+YyNl5s3mlBNObV
+	lkHKNhJ7M+4CJwDz05+LhfcRwwzyk47+nn73cEzO6RBl6owsWUtYJeMppuFt2YNZsUH4wARx8Xs
+	V6Quc0SGX7si9/67J82j9Ic3SugLT6IeOWi00PA3I3MQxr9eUAhyDhXeshOuvUyZ/aVDEMpRb1l
+	4g4kP7VoT74HS2Kck5aWxxAlhsvoN4qGSDJm6tz0WAba4DdT5mE4C7C3+mxTF9BDy7egWT6TJoK
+	UpHrmd72U=
+X-Received: by 2002:a17:902:db0e:b0:2c6:8e82:977c with SMTP id d9443c01a7336-2c718cbdd0bmr46699935ad.15.1781886306460;
+        Fri, 19 Jun 2026 09:25:06 -0700 (PDT)
 Received: from localhost ([111.228.63.84])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8455366ec6bsm2837628b3a.16.2026.06.19.09.24.22
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c720c0d84dsm28208235ad.75.2026.06.19.09.25.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 09:24:26 -0700 (PDT)
+        Fri, 19 Jun 2026 09:25:05 -0700 (PDT)
 From: Cen Zhang <zzzccc427@gmail.com>
 To: Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	baijiaju1990@gmail.com,
 	zzzccc427@gmail.com
-Subject: [PATCH] wifi: mac80211_hwsim: remove radios from rhashtable before freeing
-Date: Sat, 20 Jun 2026 00:24:19 +0800
-Message-Id: <20260619162419.3874564-1-zzzccc427@gmail.com>
+Subject: [PATCH] wifi: nl80211: serialize socket owner release with netdev teardown
+Date: Sat, 20 Jun 2026 00:25:00 +0800
+Message-Id: <20260619162500.3876325-1-zzzccc427@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -104,7 +104,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-37924-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37925-lists,linux-wireless=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:baijiaju1990@gmail.com,m:zzzccc427@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -125,141 +125,90 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EF4C46A70A0
+X-Rspamd-Queue-Id: 148C06A70BF
 
-mac80211_hwsim_new_radio() publishes each registered radio on the
-hwsim_radios list and in hwsim_radios_rht. The generic-netlink and
-virtio command paths use the rhashtable to find radios by address.
+nl80211_netlink_notify() walks the cfg80211 wireless device list when a
+NETLINK_GENERIC socket is released. If the socket owns a connection, the
+notifier queues the embedded wdev->disconnect_wk work item.
 
-Most radio removal paths remove the hash entry while holding
-hwsim_radio_lock before unregistering and freeing the radio. However,
-mac80211_hwsim_free() only removes the list entry. During init error
-unwinding after hwsim netlink and virtio registration, this can leave a
-freed radio reachable from hwsim_radios_rht until the callback surfaces
-are unpublished and the rhashtable is destroyed.
+NETDEV_GOING_DOWN tears the interface down and cancels disconnect_wk, and
+NETDEV_UNREGISTER removes the wireless device from the cfg80211 list. There
+is no ordering between those paths today, so the netlink notifier can pass
+the conn_owner_nlportid check before teardown clears it, then queue
+disconnect_wk after the NETDEV_GOING_DOWN cancel has already returned.
+synchronize_net() only waits for the notifier to finish; it does not drain
+the work that the notifier just queued.
 
 The buggy scenario involves two paths, with each column showing the order
 within that path:
 
-init error unwind path:              hwsim command path:
-1. create and hash a radio           1. receive a command by address
-2. hit a later init failure          2. look up hwsim_radios_rht
-3. call mac80211_hwsim_free()        3. get the stale radio pointer
-4. free the radio                    4. dereference the freed radio
-5. unregister netlink and virtio
+NETLINK_URELEASE path:              netdev teardown path:
+1. enter nl80211_netlink_notify()   1. run NETDEV_GOING_DOWN
+2. match conn_owner_nlportid        2. clear connection owner state
+3. get preempted before scheduling  3. cancel disconnect_wk
+4. schedule disconnect_wk           4. unregister and free the netdev
 
-Remove each radio from hwsim_radios_rht in mac80211_hwsim_free(),
-matching the other radio removal paths, before releasing the lock and
-freeing the hw object.
+Take RTNL while the notifier walks cfg80211 devices and schedules owner
+cleanup work. Netdevice notifier delivery already runs under RTNL, so the
+schedule and cancel are ordered: either the work is queued before
+NETDEV_GOING_DOWN and the existing cancel drains it, or teardown runs first
+and the notifier no longer queues work for that connection owner.
 
 Validation reproduced this kernel report:
-BUG: KASAN: slab-use-after-free in memcmp+0x1ab/0x1d0
+BUG: KASAN: use-after-free in cfg80211_autodisconnect_wk+0x338/0x3a0
+Workqueue: events cfg80211_autodisconnect_wk [cfg80211]
+Read of size 8
+Call trace:
+  dump_stack_lvl+0x66/0xa0
+  print_report+0xce/0x630
+  cfg80211_autodisconnect_wk+0x338/0x3a0
+  srso_alias_return_thunk+0x5/0xfbef5
+  __virt_addr_valid+0x224/0x430
+  kasan_report+0xac/0xe0
+  process_one_work+0x8d0/0x18f0 (kernel/workqueue.c:3212)
+  lock_is_held_type+0x8f/0x100
+  worker_thread+0x5ad/0xfd0
+  __kthread_parkme+0xc6/0x200
+  kthread+0x31e/0x410
+  trace_hardirqs_on+0x1a/0x170
+  ret_from_fork+0x576/0x810
+  __switch_to+0x57e/0xe20
+  __switch_to_asm+0x33/0x70
+  ret_from_fork_asm+0x1a/0x30
 
-Call Trace:
- <TASK>
- dump_stack_lvl+0x66/0xa0
- print_report+0xce/0x630
- ? memcmp+0x1ab/0x1d0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __virt_addr_valid+0x224/0x430
- ? memcmp+0x1ab/0x1d0
- kasan_report+0xac/0xe0
- ? memcmp+0x1ab/0x1d0
- memcmp+0x1ab/0x1d0
- get_hwsim_data_ref_from_addr+0x15b/0x4d0 [mac80211_hwsim]
- hwsim_cloned_frame_received_nl+0x1ff/0xce0 [mac80211_hwsim]
- ? __pfx_hwsim_cloned_frame_received_nl+0x10/0x10 [mac80211_hwsim]
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? kasan_save_track+0x14/0x30
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __kasan_kmalloc+0xaa/0xb0
- ? __nla_parse+0x24/0x30
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? genl_family_rcv_msg_attrs_parse.isra.0+0x17f/0x290
- genl_family_rcv_msg_doit+0x1e5/0x2c0
- ? __pfx_genl_family_rcv_msg_doit+0x10/0x10
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? kasan_save_stack+0x42/0x60
- ? kasan_save_stack+0x33/0x60
- ? kasan_save_track+0x14/0x30
- genl_rcv_msg+0x432/0x6f0
- ? __pfx_genl_rcv_msg+0x10/0x10
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __pfx_hwsim_cloned_frame_received_nl+0x10/0x10 [mac80211_hwsim]
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __lock_acquire+0x466/0x2260
- netlink_rcv_skb+0x124/0x350
- ? __pfx_genl_rcv_msg+0x10/0x10
- ? __pfx_netlink_rcv_skb+0x10/0x10
- ? lock_acquire+0x187/0x300
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? netlink_deliver_tap+0x150/0xac0
- genl_rcv+0x28/0x40
- netlink_unicast+0x47c/0x790
- ? __pfx_netlink_unicast+0x10/0x10
- netlink_sendmsg+0x767/0xc30
- ? __pfx_netlink_sendmsg+0x10/0x10
- ? lock_release+0xc8/0x290
- __sys_sendto+0x34f/0x3a0
- ? __pfx___sys_sendto+0x10/0x10
- ? lockdep_hardirqs_on_prepare+0xea/0x1a0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __x64_sys_poll+0x181/0x3e0
- ? __pfx___x64_sys_poll+0x10/0x10
- __x64_sys_sendto+0xe0/0x1c0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? trace_hardirqs_on+0x1a/0x170
- do_syscall_64+0x115/0x6a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Allocated by task 444:
- kasan_save_stack+0x33/0x60
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0xaa/0xb0
- __kmalloc_noprof+0x292/0x770
- p9_fcall_init+0xe5/0x400
- p9_tag_alloc+0x1b8/0x700
- p9_client_prepare_req+0x107/0x3e0
- p9_client_zc_rpc.constprop.0+0xf1/0x860
- p9_client_write+0x36d/0x780
- v9fs_issue_write+0xdd/0x170
- netfs_unbuffered_write+0x339/0x2680
- netfs_unbuffered_write_iter_locked+0x6c4/0x960
- netfs_unbuffered_write_iter+0x2d5/0x540
- vfs_write+0x5fb/0x1230
- ksys_write+0xf9/0x1d0
- do_syscall_64+0x115/0x6a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 444:
- kasan_save_stack+0x33/0x60
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3b/0x60
-
-Fixes: c6509cc3b3e8 ("mac80211_hwsim: add hashtable with mac address keys for faster lookup")
+Fixes: bd2522b16884 ("cfg80211: NL80211_ATTR_SOCKET_OWNER support for CMD_CONNECT")
 Assisted-by: Codex:gpt-5.5
 Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/wireless/nl80211.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-index 0dd8a6c85953..8e83ebdf4563 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-@@ -6274,6 +6274,9 @@ static void mac80211_hwsim_free(void)
- 						struct mac80211_hwsim_data,
- 						list))) {
- 		list_del(&data->list);
-+		rhashtable_remove_fast(&hwsim_radios_rht, &data->rht,
-+				       hwsim_rht_params);
-+		hwsim_radios_generation++;
- 		spin_unlock_bh(&hwsim_radio_lock);
- 		mac80211_hwsim_del_radio(data, wiphy_name(data->hw->wiphy),
- 					 NULL);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 53b4b3f76697..1e30673d1e79 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -22920,6 +22920,11 @@ static int nl80211_netlink_notify(struct notifier_block * nb,
+ 	if (state != NETLINK_URELEASE || notify->protocol != NETLINK_GENERIC)
+ 		return NOTIFY_DONE;
+ 
++	/*
++	 * Keep disconnect_wk scheduling ordered with NETDEV_GOING_DOWN's
++	 * cancel_work_sync() and NETDEV_UNREGISTER's wdev list removal.
++	 */
++	rtnl_lock();
+ 	rcu_read_lock();
+ 
+ 	list_for_each_entry_rcu(rdev, &cfg80211_rdev_list, list) {
+@@ -22961,6 +22966,7 @@ static int nl80211_netlink_notify(struct notifier_block * nb,
+ 	}
+ 
+ 	rcu_read_unlock();
++	rtnl_unlock();
+ 
+ 	/*
+ 	 * It is possible that the user space process that is controlling the
 -- 
 2.43.0
 
