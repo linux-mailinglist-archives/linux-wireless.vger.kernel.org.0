@@ -1,194 +1,195 @@
-Return-Path: <linux-wireless+bounces-37922-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37923-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 11SZN0M0NWq7ogYAu9opvQ
-	(envelope-from <linux-wireless+bounces-37922-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 14:21:23 +0200
+	id +tbOCCJZNWqLtgYAu9opvQ
+	(envelope-from <linux-wireless+bounces-37923-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 16:58:42 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EEAB6A5A95
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 14:21:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CAD16A6888
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 16:58:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=EcyazAJ6;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37922-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37922-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=wp.pl header.s=20241105 header.b="zlM90/qC";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37923-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37923-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=wp.pl;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E90903004914
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 12:21:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC03130180B2
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jun 2026 14:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C62C3822A8;
-	Fri, 19 Jun 2026 12:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A3027467F;
+	Fri, 19 Jun 2026 14:58:38 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E823233ED
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 12:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9962DC32C
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 14:58:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781871680; cv=none; b=MpFMtHQDEjeEaq9MWYUdXtaGUXwzHkUd7r3e5A5bA5SmNrTEObytQHR+ei6zz8Twi1YGfw8Up1Suvlw3+UxirflUCfkJhJmN1sOxLEeWEZ2FK42u0suXeBtFPA+KodDSZy5c/h9xbXvNpVGEZ+gONKkS9gvPmzL7OO9oC/ajMdI=
+	t=1781881118; cv=none; b=YvG5Ww5zghvlFQS0p+UJ8JQhghz1cUWTvn0GSYMoTcrG2FVJe4+X76UAkpiqpbi1lYF/xsc80XOxYcrB/Tb8zI3a1/62A1hYwylYPCD2UplKo6EjNUlw9mX+BblPMpG16QR7iqqfdc7gqGLwU06gcM6SSn5w00BIN/eZrhknjOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781871680; c=relaxed/simple;
-	bh=d23Ru1dl5KEDD43gU9puByylM0FcmzLk0fzu9oCO4ZM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GRKbjMnowXnKbHGwit45Bl8vnMOR7UYOqFz+z0O5Cp86Ysaf3iG97tG30mzu57/ASZyxZIiqBXv6BwDH6C1lKww5Y0eL1o7LY24NCYcK5kKYtX40MyVYpiRzNma+OUc6H94wEzO1MUh0LExdd8qT+2jvJVZzPMuHuVMyqG4fJpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=EcyazAJ6; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=Bv+EVBd7FbsbY9yZL993jVbP3FAWwH0raZVrEZBOFYE=; t=1781871673; x=1783081273; 
-	b=EcyazAJ6AQ6KO2/R1+fDtAQ+ZlMYoIC/6z3s5pfMVpYLK1R060MazZGzKkN4DF6MRIbpqjmDBFf
-	2rmZAF/ihy2BFJMHITqUcmUfkGSxB9dGskQ10WalUzCzNLbufMyi0KN4Qq5Hhq13i6/OgiWOFV/DR
-	p9yeo25A+k2HWFC96JXq0vQc+WEd7dRD4Yp9AVpujqsPW9HIoLPQ5XJ7RBn96bJV7XxYcILEwv3Tt
-	X1Z61WGKFDA56P3yWNCiqCGNNgcHaORfNtDvpcEb9LBnuoE34/7F8XRFrOzWxj6mXzBrHllUoZMKa
-	E9TeB18RSHcPbBV+8NHDTlIKskFHws5ag+uw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1waYDd-000000071io-2Yi2;
-	Fri, 19 Jun 2026 14:21:09 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next] wifi: cfg80211: remove WIPHY_FLAG_DISABLE_WEXT
-Date: Fri, 19 Jun 2026 14:21:07 +0200
-Message-ID: <20260619142107.150f1bbe3b83.I9ff3d419bad54313c76fa4c3485148c122e67fb3@changeid>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1781881118; c=relaxed/simple;
+	bh=NyrScO0dVhsACym1fuSEanidTYHc8ErpZjn2GEDMaOc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I0pwpvPwRqlRQ6xuQVpUII5LcFMF/3ZPDkfhlb7T3xF+kLX8HoDH+lszOSzEhdfPbTwSnh2nWJ96aOEcnayxgT0L/626G3K99V0RZb8tm85QAsy/laNSN69RM/Fl1E40HpQN5Bf90dqA5vPEf/N01dhbDYQak5igupXT0IvkAow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=zlM90/qC; arc=none smtp.client-ip=212.77.101.9
+Received: (wp-smtpd smtp.wp.pl 14198 invoked from network); 19 Jun 2026 16:31:54 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1781879515; bh=bzmFSpOZzFRmYN5ZZP9uYyPTRaSCgyKCPlBppCnsT2Y=;
+          h=From:To:Cc:Subject;
+          b=zlM90/qCL/UfNlVhvtPmLU6t2hZ445V3dKgJs/dpYyovkuYI5ILXYhH7D35FYrRGL
+           EgSKvYkL02ZBSrhWHhrwMrek4ZkGgv20+D4UHZARUBwZ3jdGJ7Xz+SXAt9tzdNP8b+
+           C8uxNJO/PtruJHSzDFQIqiBe/qKbssn/Jwx7kcp7Tik6iR5Qnnv/OQlrvwmoRPnx8O
+           xkF7EVjENcmwM9znw/tnAVO5U8fakZaVBZ2Mo8xW/8hLlO+gdl7VRBtlzR7isNmv1a
+           3/X6Yhs7p8PjFownw2OgZIPksiOF8S79ya7Xy9wAPgaIKB/9vwLkIT4wRdEyaIAxbm
+           qEcLHvEESj2kA==
+Received: from 77-236-11-197.static.play.pl (HELO localhost) (stf_xl@wp.pl@[77.236.11.197])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
+          for <runyu.xiao@seu.edu.cn>; 19 Jun 2026 16:31:54 +0200
+Date: Fri, 19 Jun 2026 16:31:49 +0200
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Cc: Gertjan van Wingerde <gwingerde@gmail.com>,
+	"John W . Linville" <linville@tuxdriver.com>,
+	Ivo van Doorn <IvDoorn@gmail.com>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH wireless] wifi: rt2x00: avoid full teardown before work
+ setup in probe
+Message-ID: <20260619143149.GA61690@wp.pl>
+References: <20260619073104.1809161-1-runyu.xiao@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260619073104.1809161-1-runyu.xiao@seu.edu.cn>
+X-WP-MailID: d787dc5315198eeb299b0b41783dca5e
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000001 [MeLR]                               
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[wp.pl,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[wp.pl:s=20241105];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:johannes.berg@intel.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37923-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[stf_xl@wp.pl,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,tuxdriver.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:runyu.xiao@seu.edu.cn,m:gwingerde@gmail.com,m:linville@tuxdriver.com,m:IvDoorn@gmail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-37922-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[stf_xl@wp.pl,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[wp.pl:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	FREEMAIL_FROM(0.00)[wp.pl];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,wp.pl:dkim,wp.pl:mid,wp.pl:from_mime,seu.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7EEAB6A5A95
+X-Rspamd-Queue-Id: 6CAD16A6888
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hi, 
 
-There are only two drivers left setting it, but they're
-both also setting WIPHY_FLAG_SUPPORTS_MLO for the relevant
-devices, so we can now remove WIPHY_FLAG_DISABLE_WEXT.
+On Fri, Jun 19, 2026 at 03:31:04PM +0800, Runyu Xiao wrote:
+> rt2x00lib_probe_dev() uses the full rt2x00lib_remove_dev() teardown for
+> all probe failures. However, drv_data allocation and workqueue allocation
+> can fail before intf_work, autowakeup_work and sleep_work have been
+> initialized.
+> 
+> Do not enter the full remove path until the probe has reached the point
+> where those work items are set up. Return directly for drv_data allocation
+> failure, and use a small early cleanup path for workqueue allocation
+> failure.
+>
+> This issue was found by our static analysis tool and then confirmed by
+> manual review of rt2x00lib_probe_dev() and rt2x00lib_remove_dev(). The
+> early probe exits should not call a common teardown path that assumes the
+> later work setup has already completed.
+> 
+> A QEMU PoC forced alloc_ordered_workqueue() to fail before the work
+> initializers are reached. The resulting fail path entered
+> rt2x00lib_remove_dev(), and DEBUG_OBJECTS reported invalid work drains with
+> rt2x00lib_probe_dev() and rt2x00lib_remove_dev() in the stack.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/ath/ath12k/mac.c     | 6 ------
- drivers/net/wireless/realtek/rtw89/core.c | 3 ---
- include/net/cfg80211.h                    | 3 +--
- net/wireless/wext-core.c                  | 6 ++----
- 4 files changed, 3 insertions(+), 15 deletions(-)
+Thanks for finding and fixing those bugs. The patch looks fine, but I think
+it could be a bit simpler, see the comments below.
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index af354bef5c0d..9775a87b3db3 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -14871,12 +14871,6 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
- 
- 	wiphy->features |= NL80211_FEATURE_TX_POWER_INSERTION;
- 
--	/* MLO is not yet supported so disable Wireless Extensions for now
--	 * to make sure ath12k users don't use it. This flag can be removed
--	 * once WIPHY_FLAG_SUPPORTS_MLO is enabled.
--	 */
--	wiphy->flags |= WIPHY_FLAG_DISABLE_WEXT;
--
- 	/* Copy over MLO related capabilities received from
- 	 * WMI_SERVICE_READY_EXT2_EVENT if single_chip_mlo_supp is set.
- 	 */
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 68dad6090f87..0f0e46cb4260 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -7432,9 +7432,6 @@ static int rtw89_core_register_hw(struct rtw89_dev *rtwdev)
- 	if (!chip->support_rnr)
- 		hw->wiphy->flags |= WIPHY_FLAG_SPLIT_SCAN_6GHZ;
- 
--	if (chip->chip_gen == RTW89_CHIP_BE)
--		hw->wiphy->flags |= WIPHY_FLAG_DISABLE_WEXT;
--
- 	if (rtwdev->support_mlo) {
- 		hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_MLO;
- 		hw->wiphy->iftype_ext_capab = rtw89_iftypes_ext_capa;
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 8188ad200de5..69bb864ac34d 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -5690,7 +5690,6 @@ struct cfg80211_ops {
-  *	set this flag to update channels on beacon hints.
-  * @WIPHY_FLAG_SUPPORTS_NSTR_NONPRIMARY: support connection to non-primary link
-  *	of an NSTR mobile AP MLD.
-- * @WIPHY_FLAG_DISABLE_WEXT: disable wireless extensions for this device
-  */
- enum wiphy_flags {
- 	WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK		= BIT(0),
-@@ -5702,7 +5701,7 @@ enum wiphy_flags {
- 	WIPHY_FLAG_4ADDR_STATION		= BIT(6),
- 	WIPHY_FLAG_CONTROL_PORT_PROTOCOL	= BIT(7),
- 	WIPHY_FLAG_IBSS_RSN			= BIT(8),
--	WIPHY_FLAG_DISABLE_WEXT			= BIT(9),
-+	/* reuse bit 9 */
- 	WIPHY_FLAG_MESH_AUTH			= BIT(10),
- 	WIPHY_FLAG_SUPPORTS_EXT_KCK_32          = BIT(11),
- 	WIPHY_FLAG_SUPPORTS_NSTR_NONPRIMARY	= BIT(12),
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index c19dece2bc6e..db77912b3994 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -660,8 +660,7 @@ struct iw_statistics *get_wireless_stats(struct net_device *dev)
- 	    dev->ieee80211_ptr->wiphy->wext &&
- 	    dev->ieee80211_ptr->wiphy->wext->get_wireless_stats) {
- 		wireless_warn_cfg80211_wext();
--		if (dev->ieee80211_ptr->wiphy->flags & (WIPHY_FLAG_SUPPORTS_MLO |
--							WIPHY_FLAG_DISABLE_WEXT))
-+		if (dev->ieee80211_ptr->wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO)
- 			return NULL;
- 		return dev->ieee80211_ptr->wiphy->wext->get_wireless_stats(dev);
- 	}
-@@ -703,8 +702,7 @@ static iw_handler get_handler(struct net_device *dev, unsigned int cmd)
- #ifdef CONFIG_CFG80211_WEXT
- 	if (dev->ieee80211_ptr && dev->ieee80211_ptr->wiphy) {
- 		wireless_warn_cfg80211_wext();
--		if (dev->ieee80211_ptr->wiphy->flags & (WIPHY_FLAG_SUPPORTS_MLO |
--							WIPHY_FLAG_DISABLE_WEXT))
-+		if (dev->ieee80211_ptr->wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO)
- 			return NULL;
- 		handlers = dev->ieee80211_ptr->wiphy->wext;
- 	}
--- 
-2.53.0
+> Fixes: 1ebbc48520a0 ("rt2x00: Introduce concept of driver data in struct rt2x00_dev.")
+> Fixes: 0439f5367c8d ("rt2x00: Move TX/RX work into dedicated workqueue")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+> ---
+>  drivers/net/wireless/ralink/rt2x00/rt2x00dev.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+> index f8a6f9c968a1..847b64e586f6 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+> @@ -1382,7 +1382,7 @@ int rt2x00lib_probe_dev(struct rt2x00_dev *rt2x00dev)
+>  			                      GFP_KERNEL);
+>  		if (!rt2x00dev->drv_data) {
+>  			retval = -ENOMEM;
+> -			goto exit;
+> +			return retval;
 
+This can be just "return -ENOMEM;"
+
+>  		}
+>  	}
+>  
+> @@ -1416,7 +1416,7 @@ int rt2x00lib_probe_dev(struct rt2x00_dev *rt2x00dev)
+>  	    alloc_ordered_workqueue("%s", 0, wiphy_name(rt2x00dev->hw->wiphy));
+>  	if (!rt2x00dev->workqueue) {
+>  		retval = -ENOMEM;
+> -		goto exit;
+> +		goto exit_free_drv_data;
+>  	}
+>  
+>  	INIT_WORK(&rt2x00dev->intf_work, rt2x00lib_intf_scheduled);
+I think should be sufficient to move INIT_*WORK's lines before
+alloc_ordered_workqueue() to avoid cancel_*_work_sync() on uninitialized data.
+And other de-init code from rt2x00lib_remove_dev() should work fine at this
+point.
+
+Regards
+Stanislaw
+> @@ -1488,6 +1488,14 @@ int rt2x00lib_probe_dev(struct rt2x00_dev *rt2x00dev)
+>  exit:
+>  	rt2x00lib_remove_dev(rt2x00dev);
+>  
+> +	return retval;
+> +
+> +exit_free_drv_data:
+> +	clear_bit(DEVICE_STATE_PRESENT, &rt2x00dev->flags);
+> +
+> +	kfree(rt2x00dev->drv_data);
+> +	rt2x00dev->drv_data = NULL;
+> +
+>  	return retval;
+>  }
+>  EXPORT_SYMBOL_GPL(rt2x00lib_probe_dev);
+> -- 
+> 2.34.1
+> 
 
