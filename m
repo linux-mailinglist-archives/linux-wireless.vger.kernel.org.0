@@ -1,151 +1,192 @@
-Return-Path: <linux-wireless+bounces-37935-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37936-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4+fmFkA4NmqN8gYAu9opvQ
-	(envelope-from <linux-wireless+bounces-37935-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2026 08:50:40 +0200
+	id byC+Fc04Nmqw8gYAu9opvQ
+	(envelope-from <linux-wireless+bounces-37936-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2026 08:53:01 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C966A870E
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2026 08:50:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1CD6A8750
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2026 08:53:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.s=20251104 header.b=CYXWYLoM;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37935-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37935-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.s=20251104 header.b=bFe+nWEH;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37936-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37936-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=iitm.ac.in (policy=none);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DB893031AD8
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2026 06:50:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 66D823018C17
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2026 06:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA79A373C1D;
-	Sat, 20 Jun 2026 06:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D14374A15;
+	Sat, 20 Jun 2026 06:52:57 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78582361DA6
-	for <linux-wireless@vger.kernel.org>; Sat, 20 Jun 2026 06:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70625374A0B
+	for <linux-wireless@vger.kernel.org>; Sat, 20 Jun 2026 06:52:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781938208; cv=none; b=aaYW2CwENux6NkbJc9vWnZgdtXn/mzWhiiVniZVk4xUvpPnoHLi8YJFKUJpsJtGmLNVK/i1MxPrEBykJ2TeBhhp2zhz83Z2ZQ1rNHkysyrsMJFkiOjDkuYMFEYEsF2INlzxwGZorWoY8NjMiFUmMbQdYKXgHhc8poEoNYUBBAqM=
+	t=1781938377; cv=none; b=tP/JnRCw4yHaF3j3OtkZVm94W0aYqW9aVZJpMH0TVeQLBo3TZ7qHz3T2qshSZ+mecCZmWvSze2yDqfhY6cBH2iDkrUmQlpbnn83hcMaCoAO0+26DmI87jRFNJCyvz0pDQL4JZF314MmxZWlLlpt/zDDqU0zMY+cmkkLYzRoIHPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781938208; c=relaxed/simple;
-	bh=dK82PrzfK0MmQgb2q/Ybhbo6Paemf3yKDTwrIdzHd2k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CGRhzoTp6/cE/0nyJm75wGRb27Dm15NAMPbguN3+8oB2IgQO1pR3fMzKC08GroBFDVXi62aPl0tscc/1gVXpOURjzhd8XWeBhApQKq/vfc+41OZdaYhdl0WDNVQmNveB7HIfJ1EO7oWqy4PPAv91HrdKAvxsqs1HJFewi3LNaog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=CYXWYLoM; arc=none smtp.client-ip=209.85.210.177
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-842307473b5so1916453b3a.2
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 23:50:07 -0700 (PDT)
+	s=arc-20240116; t=1781938377; c=relaxed/simple;
+	bh=2s0xvYMHNV3vbXplIoTi8wVcJPWVN0juzhUkxxloMsg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cBEHYZsl5wSr5axLaexbgwCKOG7lcybaNTcV8tp43BHZfPuR4GnuY2pEEsSTHAoFYBdo6pqMHJro8TgXkevE/UkAzD4sZSZ1C1vAJfb7e7upEuEnoMihCHx6Bj7jEinwOzR03HJNyG83YXUsLgkG8MuKtJP5cqMDe3/NxlnOtTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=bFe+nWEH; arc=none smtp.client-ip=209.85.216.52
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-36b9033d230so1542121a91.1
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 23:52:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1781938207; x=1782543007; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jWJ6ykcaVVJ8FSV3Vgps/e2+SKPjlPS1FEpT1cmZ/tA=;
-        b=CYXWYLoMsIT56/AXoEdufhmzUorm5fQ/VzIXXJvw/9/WQ4OlmFFVC2hCc1IH+uj31F
-         Zj+2ElYzgTSVbKKwV1zZFiAR7AHej29JvqpYjRu/885MowQRNrPUqRBoarMWmFmIuotY
-         vdybLQt4Vk5UA5ltHycfoeITd/VH4qGFFp+CPWM0CQFeIvkq5R26KXZSxLZBqD1e59vw
-         kpFIygOHqGVE1PBVliFS22VPrFaU//gwSmBPtjJwahVU56JM13smUL7p58yNvYYlVKjo
-         p1fgwqpqZswLG7VizwjjIabzUoMpnbSelPnx3JomSfFDgNDmD684GXZIljQ/bL+UYCQ/
-         k+Mw==
+        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1781938376; x=1782543176; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HWrAPVVPXK8Wz+6M4TACvlC6LCQEyIdcBgZX+P4A3lE=;
+        b=bFe+nWEHP7aOT3AeyhgdemqrxcPwj0FRayHCIXuV9j6oqE9BjlcoBA++NhlqEo/WXj
+         atrjp0qgFxzGoXX1JjfpW9e85gMfMkuyi/SgFIcr+ObQrDFBtcGLWFZXS6cRtfRp5s9y
+         cq/Madx0greD0+TGCHiZBR9fyY+/IVoppCaTuolv0AlmPo7CbGtbkunoeJD700LJEskX
+         1cX++k9mwqDtelhmPqstrQVjOCKPXrJ3Amos25T3Ffmyq2aGWLeyrJ5cYhFEWT3s8nFo
+         /vTKnOxG9KCtsYagCMzvvDHudlnun4CWdAgh9nv4LfEqT68Ddd3V8ls1KdtcE6bA2sBS
+         ZD+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781938207; x=1782543007;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jWJ6ykcaVVJ8FSV3Vgps/e2+SKPjlPS1FEpT1cmZ/tA=;
-        b=Ni5yTmlSk/R/DhY7mfMW6HWPW2iRd4zeZ1aXd7WKdv//mGtgq1NujB7Ju3S6dNZMKS
-         aRU1CeKBWuFlDyvsbKDzsuxwQiR/0WSSAmTKwfEI60VCxaqEa+RoLvFqrjLhIQxl84wI
-         kugE4uhMGD6wiET0pVpa0fLBpG/CXVewyG21Kwk2IsAFa6AH+ke9aoeC61uKDrJvQKwV
-         cV/Wpniw3wbgqhkIuZrA0Iwgjc7TigWL0yf72Cpu7q7k0FskfWgCaewYD7rEoEHN+TsS
-         wPPzXAqWUCvY80en9khlRYS9F9mDTtl2MB82vofxFZ7csP9auQ0m8xuc5RXabhKSfGB6
-         Vv/g==
-X-Gm-Message-State: AOJu0YyNlT9laVJluLhP1CuopITIyJGHz7aRocZ6JlWpjzKVBUJ097Ij
-	nj+eKNyA8WamFeUsP+ITaSJRY0Uxgrn/J66L9Axi4F1fjoarETmZ4xDJCOwpy+tILc8=
-X-Gm-Gg: AfdE7cmjzuSCE1WiP+sMseF8RC4OJUIFWsJQwfQI2xrJjmG07fdQua2V53NTJ3dT9RK
-	pOULg4VQnAkkDSdCnRIwL4pmlGdlbBpZJ57YMU1hhPjycEtcwJ4djYBg7/LFSmMpGDE0xEShDyu
-	gYYKvEah3sGfRcz6YIT7XpaUT5VVMR+IA5s9R1kQrNxc7J7eQofEIV+8p0BVDHeENfZAID/6LLn
-	crkCszOVqxnBWchKm5leFv2wEm7khjL7OxtIY5zrdeOU0phrCcUxCpv7UHWCWXW750wcglx0XnM
-	eVxCBA4bcZhj+oKnVt57yQqU9/4Kg/buAW0mee7fFA1qDeDJxng1Lq9tWnIxEOUEmO+QTkKJPRo
-	faGVmLyuPQQ1QHSuUL5on8TcGNc4JNUKCqWAb/uDWclRgWuETiXcuqMqMTc2nDnZLVPsM3R28iH
-	xyO8jWHql+aStyP1O+nt7kF+rwMAy7547p2Rb5OGXF+lWhF3f/s3lgB/nagDDnFVPehZo5K5IoT
-	E4E01WeH896X24r4ESxYW2C
-X-Received: by 2002:a05:6a00:2da7:b0:845:4d3d:c8a with SMTP id d2e1a72fcca58-8455616a4cbmr5905331b3a.32.1781938206616;
-        Fri, 19 Jun 2026 23:50:06 -0700 (PDT)
-Received: from essd ([103.158.43.41])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564ea7e22sm1394203b3a.42.2026.06.19.23.50.03
+        d=1e100.net; s=20251104; t=1781938376; x=1782543176;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HWrAPVVPXK8Wz+6M4TACvlC6LCQEyIdcBgZX+P4A3lE=;
+        b=MXVn0iSyAW1QQq6MFSPzQwF8AljXqj8zecISsNUvX+E9YlQ5TWi5f3Ev0J2k0Cp3KR
+         39FPqiBLoGxk0ky07DxhhvEMA3slFa4d/JyidFdrVLXX0UXlkj6Bbmc0nbp+y1vWDI7t
+         OQasllDNZepENBVeoKau6gHrcRQEbmToZJuIk46tXvkip9MIWSgUlwELI2VyKH6q5vCR
+         UGUUzQqJa7G5dvSQYgTtg35OWhNe50SAsCMSqep51R7zzNGbSJnVkhTrfqo4uYCbHqSf
+         pp7CyBTWHfdmcUTrQYg4OTx5YSdNdFuVyAjaEdfvSD6cXAFyMTrP8vdn/BE/Fj10deCB
+         JFCg==
+X-Forwarded-Encrypted: i=1; AFNElJ+NxU41F8rhBM+njCuQYUloIbH4UzbkGEKUt++LqZIfZ1DYzO3sQB9quvLldLfu0n3ql7bEGWRHLGgVvDw9Cw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAq+TBOtVLMGZ+O4J9iCRCNZ7C6TUsDykcdH8fxW2hEar0e8jr
+	H42apd4WtGMs7LqxzFMVws70y5BBpapfNXXFfGs3mg/As4465D+/rdqz59NGXV/pHjthpoqegVo
+	NsDTa
+X-Gm-Gg: AfdE7cm2KeEvFds5/lcn3if6ItHBVLwhO/Nk7O62t0KRt7tRCmcfj7lpOukkVhle1P5
+	BRIpcAmSgXV9c+vRYEFNyuh0XQAP2PdAfi/r00eVOYlIgJZa+4SFISYQ9pUj72f40+N+JAcmCUE
+	5M+92d41Hs0pmTK1shwAg3q4HILbFGRV2h7SOo42NG76TxxFYE9Oj1xkVeGCYqjnrY6kx4MGUxA
+	bur1MMN/M4h+6ubEREF02rDM3gOhMLPmyWWkmRUq3x/rieK5A4kQH3cxnI/3qjQsPhW7NP1KawA
+	NmbsFa+UU8HwqidhCFUTDzXg89lMIFttzsOyCg3JA03WuNuCldRaQuwDq42y/RqjVO0FX4nTrak
+	FgzRjU1+zdfVAaDx01APwyrW3GmdVQfrDeZtoV2RPMybDSeYwsx8CZpunO0oX4W+lLtTtS5U0ug
+	LH41e52NZ6VS/wUq6JGb8vyfbvhBhz4iIqdmtVbOcrR4LJoeMXyg+aBQOmEYhsj2RSVVMwfaf2w
+	vZLMxx1rHitZvJ91DZ9SpLwt54j6cmALJ4l8IYcXEi0QX0=
+X-Received: by 2002:a17:90b:4b81:b0:369:1dbb:4732 with SMTP id 98e67ed59e1d1-37d18637020mr5382239a91.0.1781938375682;
+        Fri, 19 Jun 2026 23:52:55 -0700 (PDT)
+Received: from localhost.localdomain ([103.158.43.41])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-37d1536b541sm4428857a91.1.2026.06.19.23.52.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 23:50:06 -0700 (PDT)
-Date: Sat, 20 Jun 2026 12:20:00 +0530
+        Fri, 19 Jun 2026 23:52:55 -0700 (PDT)
 From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 To: stas.yakovlev@gmail.com
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] wifi: ipw2100: fix potential memory leak in
- ipw2100_pci_init_one()
-Message-ID: <722flntlwzdr5olnxilkad5rg3mmu3isgobzzhvmfwqiseibjb@si2vam2v2y6k>
-References: <20260620055558.75740-1-nihaal@cse.iitm.ac.in>
+Subject: [PATCH v2] wifi: ipw2100: fix potential memory leak in ipw2100_pci_init_one()
+Date: Sat, 20 Jun 2026 12:22:39 +0530
+Message-ID: <20260620065242.93798-1-nihaal@cse.iitm.ac.in>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260620055558.75740-1-nihaal@cse.iitm.ac.in>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.06 / 15.00];
+X-Spamd-Result: default: False [-0.06 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[cse-iitm-ac-in.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	DMARC_POLICY_SOFTFAIL(0.10)[iitm.ac.in : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37935-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stas.yakovlev@gmail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:stasyakovlev@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:stas.yakovlev@gmail.com,m:nihaal@cse.iitm.ac.in,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:stasyakovlev@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37936-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[nihaal@cse.iitm.ac.in,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[cse-iitm-ac-in.20251104.gappssmtp.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_TO(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[nihaal@cse.iitm.ac.in,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_NONE(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[cse-iitm-ac-in.20251104.gappssmtp.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,sashiko.dev:url,cse.iitm.ac.in:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iitm.ac.in:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,cse.iitm.ac.in:mid,cse.iitm.ac.in:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A5C966A870E
+X-Rspamd-Queue-Id: BE1CD6A8750
 
-On Sat, Jun 20, 2026 at 11:25:54AM +0530, Abdun Nihaal wrote:
-> The memory allocated in the ipw2100_alloc_device() function is not freed
-> in some of the error paths in ipw2100_pci_init_one(). Fix that by
-> converting the direct return into a goto to the error path return.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 2c86c275015c ("Add ipw2100 wireless driver.")
-> Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+The memory allocated in the ipw2100_alloc_device() function is not freed
+in some of the error paths in ipw2100_pci_init_one(). Fix that by
+converting the direct return into a goto to the error path return.
 
-Sashiko reports a null pointer dereference introduced by the above
-patch, and I realized I made a mistake in the first goto error path.
+The error path when pci_enable_device() fails cannot jump to fail, since
+at this point priv is not set, so perform error handling inline.
 
-https://sashiko.dev/#/patchset/20260620055558.75740-1-nihaal%40cse.iitm.ac.in
+Cc: stable@vger.kernel.org
+Fixes: 2c86c275015c ("Add ipw2100 wireless driver.")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+---
+Compile tested only. Issue found using static analysis.
 
-Please ignore this patch. I'll send a v2 with the correct fix.
+v1->v2:
+- Converted the added goto fail statement into an inline error handling
+  when pci_enable_device() fails, because Sashiko pointed out that there
+  could be a null pointer dereference as the priv is only set after, but
+  is dereferenced in the 'fail' error path.
 
-Regards,
-Nihaal
+Link to v1: https://patchwork.kernel.org/project/linux-wireless/patch/20260620055558.75740-1-nihaal@cse.iitm.ac.in/
+
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+index c11428485dcc..2b8a23865bfb 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+@@ -6157,6 +6157,8 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
+ 	if (err) {
+ 		printk(KERN_WARNING DRV_NAME
+ 		       "Error calling pci_enable_device.\n");
++		free_libipw(dev, 0);
++		pci_iounmap(pci_dev, ioaddr);
+ 		return err;
+ 	}
+ 
+@@ -6169,16 +6171,14 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
+ 	if (err) {
+ 		printk(KERN_WARNING DRV_NAME
+ 		       "Error calling pci_set_dma_mask.\n");
+-		pci_disable_device(pci_dev);
+-		return err;
++		goto fail;
+ 	}
+ 
+ 	err = pci_request_regions(pci_dev, DRV_NAME);
+ 	if (err) {
+ 		printk(KERN_WARNING DRV_NAME
+ 		       "Error calling pci_request_regions.\n");
+-		pci_disable_device(pci_dev);
+-		return err;
++		goto fail;
+ 	}
+ 
+ 	/* We disable the RETRY_TIMEOUT register (0x41) to keep
+-- 
+2.43.0
+
 
