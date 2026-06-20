@@ -1,91 +1,53 @@
-Return-Path: <linux-wireless+bounces-37931-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37932-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6ZkLN2bvNWoe6QYAu9opvQ
-	(envelope-from <linux-wireless+bounces-37931-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2026 03:39:50 +0200
+	id 6Eg8N3gBNmpe6wYAu9opvQ
+	(envelope-from <linux-wireless+bounces-37932-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2026 04:56:56 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3951F6A829C
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2026 03:39:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7616A83DE
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2026 04:56:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kasilag.me header.s=google header.b=k+VEEKhQ;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37931-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37931-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kasilag.me;
+	dkim=pass header.d=seu.edu.cn header.s=default header.b="H8n47/0A";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37932-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37932-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 283A63046992
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2026 01:39:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D331302FB7A
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jun 2026 02:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B95F1DE2A5;
-	Sat, 20 Jun 2026 01:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF3A1DC1AB;
+	Sat, 20 Jun 2026 02:56:52 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m60231.netease.com (mail-m60231.netease.com [210.79.60.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF10F19D092
-	for <linux-wireless@vger.kernel.org>; Sat, 20 Jun 2026 01:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1180B64A8D;
+	Sat, 20 Jun 2026 02:56:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781919575; cv=none; b=lWRAhBm5RGnpM6g410xm2KtwC+3OkDE8FtvxxnCdUefWw1vCt2qd0dnVgBbpHa2L3VdWo7pGcSI/kx7GZmEYV9Mus5ZFEhgP8yYU9awATEtQmpU2JfwU2dYtz1ckRRNC3XErITAiOC3MQTaTE90lnTkl3yNyp5y5VvZ1BG/tpNc=
+	t=1781924212; cv=none; b=ZfKtaAJkJ+TYdUrO66HBDD6gk49dtkSixDKLGe0oH8UQlE3JaSRX0FF2BLpUVwj3JF/uqP+6D3L6gvXDNUNGbraUtGKbHHibRPcCyQBWuBcmS9DN/MvMfZjObp/NHjjlDc5C3yu1boOcjhq6f8DT7X1p8H/NSTa9cfIETjo7NZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781919575; c=relaxed/simple;
-	bh=NuKwllmelf+FZL2h5mskHLGEryoz0UxehEspb0TkNZw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WRc/FsDV/11mF9ZvPB3Zv3dKeSYQOo1i7Qe2XPUR10lbH1i6MFU34vt9KBccrYy/dzNQ/lb7iFpiMfyM8Ap2LTkv8xjN0N9wkSDhPrHneM0Evi50eIp62jFeYAdCEO0KvWzmVbr/w0kHVAmNv/YTI60xtjOXYsD0dr8Hg8ZIk0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kasilag.me; spf=pass smtp.mailfrom=kasilag.me; dkim=pass (2048-bit key) header.d=kasilag.me header.i=@kasilag.me header.b=k+VEEKhQ; arc=none smtp.client-ip=209.85.214.195
-Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2c6b3f71648so31018285ad.2
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Jun 2026 18:39:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kasilag.me; s=google; t=1781919573; x=1782524373; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=smAJSNsD8BYFeg8qmbLT9iMp7jN0lEYxyxXJ6DbCJYg=;
-        b=k+VEEKhQxxBAgNTwgUZY3pS3qAjgiLMyHpAM/JeqA2wbD1J9rmNRO5LXBQC97qIb/f
-         +97SgfK48D6gC3ZijHa1im1fAuB747h0Z3+5xiTgNkkW1yUionVWz6AEx9crun3e1rEw
-         G+m/7yWkJADqIpPOY0unXe+PzvOZtvGQojNf3IcozpxXP95zGrh0TqbB9oDY+hZX6zvO
-         k7S0zKQldywLRTGczNZTOz+/O36OXAlw2lJHGOFgRESGukp4+A5JAyt9rrxBPWCu11R2
-         EbG5WrTJTFM/t7jLvBHKAC3gtwgDRl+a61VYGFpIPYwQ4SjGP+IGCvwX58KwFy99GcK/
-         1bVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781919573; x=1782524373;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=smAJSNsD8BYFeg8qmbLT9iMp7jN0lEYxyxXJ6DbCJYg=;
-        b=SMFhaOG6hapdrGPFCpZj7stJLwlWQ9HDQEy79VRWvb+VL/mbMVnslYOBiP5fdPfs9v
-         Wr3pmzDgnzAlTmqxSAJNVoQ3fE/a/Dvx14Gr/oVpEnPZzKhHSSun2GwQGXaVVlLVC4Xo
-         tVpPfWoX2xKRpCzN4D8V0RMCehOXfz9W5zRgsDwfsDwwioxSEVRZrZ7EhuwSRcfDug40
-         /0LsaEY/z7to8cQly7lom35pUYVZxc4x40NFOnrUqMYxa9Ym+qdReVZh3quW9eZ6q/1k
-         FVJ6Ha1lZ8C3KKyWqsZQQmoyYS9Xz50qCQYamJJErHskCE+T7onWXLAbIj9s7cfsmPg7
-         GQKA==
-X-Forwarded-Encrypted: i=1; AFNElJ9jKwhgR7L0gzZWpHjgwccwmuQvRECR24gHqyIE2Jd+rWzSOlxxGZ6JmExAtgRAuh6FfN43YclAItfZcSw1kQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJM9MeXbk25V+3R5/K0Lcebqj6nzYiUmewgdJQ79ejIVx//ngJ
-	2alhFeut8ryndUcDMlu2dYaAEyL76gUD/l0GQzdjFoYU2SA558t+5KsovlkT9WqZS5M=
-X-Gm-Gg: AfdE7ckUJokTXPVwCWaL/LvtDj1nmEfG1JdMeVOjW+YA3r+oypb5k3lfVP0hcuRofcI
-	dsRsE0h5p9gZOAexvdWJfc3eW4FIXNJMvtuyCKH1+Yeii/j8jIoaBcF7jFfD7dkI3TL6yg7kF8S
-	Z9jf+wh1LN9sJydwiATmkyeSH5eeyF4LVy26KYgD/zkClnSs7zyWE1TOYCaydDEsKB/qgtcF+x7
-	sgpMOY5PmhFgZs5QH2XmQy82/Z+sLHXDl/TH2hLL8owqCvsjfrfxYdwDLPgxrxleh3gqm1qTfmQ
-	p/+4PF/oI95cA5odLXp4CIRDLa8vVXywoi0TfruyrmB+BbDFUO2xroL9amG0k8YrLp9ABFpZ9LV
-	FF+mhLF3fuxfOFsyYfqr52iSMTviizEY2RvFkCmeUP4EdfTZBt7iLzpjZuVM+o3uH/ZktY+sJDu
-	wiSNA8SfgCg/ywupus2w==
-X-Received: by 2002:a17:902:f610:b0:2c3:5683:9acb with SMTP id d9443c01a7336-2c718f98f0cmr68907925ad.32.1781919573089;
-        Fri, 19 Jun 2026 18:39:33 -0700 (PDT)
-Received: from localhost.localdomain ([2001:4451:470d:a400::3b2])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7439f8e51sm7008285ad.39.2026.06.19.18.39.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 18:39:32 -0700 (PDT)
-From: Kenneth Kasilag <kenneth@kasilag.me>
-To: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	linux-wireless@vger.kernel.org,
-	Kenneth Kasilag <kenneth@kasilag.me>
-Subject: [PATCH] wifi: mt76: mt7996: expose per-band MAC addresses to cfg80211
-Date: Sat, 20 Jun 2026 01:38:50 +0000
-Message-ID: <20260620013850.3949359-1-kenneth@kasilag.me>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1781924212; c=relaxed/simple;
+	bh=JNpBd+uZkP6DfCrlhTY/drlL03eMzz5KkGj4NbXGVJI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iAXRJMNGcQ5CURrcmimJuPr45bjfTdhckqFJouO9fCLfv8rZfIdzeWfPR38KsJ41zdqBB7MPvQ8/mQPizdkQR3QtucG66CI+1Tx2SGqrRD6PQZOABMt5jzQXKZWlsr3K2/85zhgZ3b2WRxtuyB6rmN9awB0XlkGcM0xNT2dgl+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=H8n47/0A; arc=none smtp.client-ip=210.79.60.231
+Received: from PC-202605011814.localdomain (unknown [223.112.146.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4314e50de;
+	Sat, 20 Jun 2026 10:56:37 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	linux-wireless@vger.kernel.org
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Runyu Xiao <runyu.xiao@seu.edu.cn>,
+	Jianhao Xu <jianhao.xu@seu.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH wireless] wifi: rtlwifi: rtl8192du: check QoS TID before indexing tids
+Date: Sat, 20 Jun 2026 10:56:32 +0800
+Message-Id: <20260620025632.46206-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -93,95 +55,89 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9ee2f574f803a1kunm08c4dea4e65b2
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaGB8YVkwYHk1MS0sZQk5LSFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSE
+	pPSExVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=H8n47/0AWazikQVEYseH7wOscfM60hPCE0l7xvqUy6iVyAqg6DFz0fT5NPEOuUWvLn9tW+qBo/5R9GMDKWD42OlPZn/YdeEq8cG752Mnws48Pt/q/rwuYxgrvCoxJnzB/e/NLSL8IKGOsSZ1lBCfnyRHquw6S+z1zgWONT++0Tg=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=1IWZ9O+Sl5aFiIfjp0uZas22aqensvgdoia6QJQRyjY=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kasilag.me,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kasilag.me:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-37931-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-wireless@vger.kernel.org,m:kenneth@kasilag.me,s:lists@lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER(0.00)[kenneth@kasilag.me,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kenneth@kasilag.me,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,seu.edu.cn];
+	TAGGED_FROM(0.00)[bounces-37932-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:rtl8821cerfe2@gmail.com,m:linux-kernel@vger.kernel.org,m:runyu.xiao@seu.edu.cn,m:jianhao.xu@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	ALIAS_RESOLVED(0.00)[];
-	DKIM_TRACE(0.00)[kasilag.me:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3951F6A829C
+X-Rspamd-Queue-Id: 3C7616A83DE
 
-mt7996/mt7992 are single-wiphy, multi-band devices. The driver assigns
-each band its own MAC address from a per-band EEPROM entry, or derives
-it from the primary band's address when that entry is empty, however
-only the primary band's is published as perm_addr. The per-band
-addresses are not exposed to cfg80211, so consumers usually fall back
-to deriving one from perm_addr.
+rtl92du_tx_fill_desc() uses ieee80211_get_tid() to read the QoS TID
+from the 802.11 header and then uses it as an index into
+sta_entry->tids[]. ieee80211_get_tid() returns the low 4-bit QoS TID
+value, so the result can be in the range 0..15.
 
-Store each band's address in wiphy->addresses[], indexed by radio, so
-cfg80211 exposes the address the hardware actually uses for that radio.
-addresses[0] is the primary band and matches perm_addr, as cfg80211
-requires.
+rtlwifi only allocates MAX_TID_COUNT entries for sta_entry->tids[], and
+MAX_TID_COUNT is 9. A QoS TID greater than 8 therefore indexes past the
+aggregation state array. Keep the default RTL_AGG_STOP state for
+out-of-range TIDs, matching rtl92cu_tx_fill_desc().
 
-Link: https://github.com/openwrt/openwrt/issues/23578
-Tested-on: Gemtek W1700K (MT7996)
-Signed-off-by: Kenneth Kasilag <kenneth@kasilag.me>
+This issue was detected by our static analysis tool and confirmed by
+manual audit. UBSAN validation for the same bug pattern reports an
+array-index-out-of-bounds access with index 10 for type
+'rtl_tid_data [9]'.
+
+Fixes: 8321424134a4 ("wifi: rtlwifi: Add rtl8192du/trx.{c,h}")
+Cc: stable@vger.kernel.org
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c   | 3 +++
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 1 +
- 2 files changed, 4 insertions(+)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192du/trx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index d6f9aa1ab52d..dbea4887b7ad 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -463,6 +463,8 @@ mt7996_init_wiphy_band(struct ieee80211_hw *hw, struct mt7996_phy *phy)
- 	radio->n_freq_range = 1;
- 	radio->iface_combinations = &if_comb;
- 	radio->n_iface_combinations = 1;
-+	memcpy(dev->radio_addrs[n_radios].addr, phy->mt76->macaddr, ETH_ALEN);
-+	hw->wiphy->n_addresses++;
- 	hw->wiphy->n_radio++;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/trx.c
+index 743ce0cfffe6..c608c51f1b78 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/trx.c
+@@ -106,7 +106,8 @@ void rtl92du_tx_fill_desc(struct ieee80211_hw *hw,
+ 	if (sta) {
+ 		sta_entry = (struct rtl_sta_info *)sta->drv_priv;
+ 		tid = ieee80211_get_tid(hdr);
+-		agg_state = sta_entry->tids[tid].agg.agg_state;
++		if (tid < MAX_TID_COUNT)
++			agg_state = sta_entry->tids[tid].agg.agg_state;
+ 		ampdu_density = sta->deflink.ht_cap.ampdu_density;
+ 	}
  
- 	wiphy->available_antennas_rx |= phy->mt76->chainmask;
-@@ -505,6 +507,7 @@ mt7996_init_wiphy(struct ieee80211_hw *hw, struct mtk_wed_device *wed)
- 	wiphy->n_iface_combinations = 1;
- 
- 	wiphy->radio = dev->radios;
-+	wiphy->addresses = dev->radio_addrs;
- 
- 	wiphy->reg_notifier = mt7996_regd_notifier;
- 	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH |
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 0d6488522ba7..cb5e60b25b89 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -411,6 +411,7 @@ struct mt7996_dev {
- 	struct mt7996_phy *radio_phy[MT7996_MAX_RADIOS];
- 	struct wiphy_radio radios[MT7996_MAX_RADIOS];
- 	struct wiphy_radio_freq_range radio_freqs[MT7996_MAX_RADIOS];
-+	struct mac_address radio_addrs[MT7996_MAX_RADIOS];
- 
- 	struct mt7996_hif *hif2;
- 	struct mt7996_reg_desc reg;
 -- 
-2.39.5 (Apple Git-154)
+2.34.1
 
 
