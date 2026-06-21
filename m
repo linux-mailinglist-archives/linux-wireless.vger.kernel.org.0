@@ -1,161 +1,147 @@
-Return-Path: <linux-wireless+bounces-37940-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37941-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YRvTKUJQN2rSMQcAu9opvQ
-	(envelope-from <linux-wireless+bounces-37940-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2026 04:45:22 +0200
+	id urbtNc6KN2oVOwcAu9opvQ
+	(envelope-from <linux-wireless+bounces-37941-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2026 08:55:10 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E9A6AA05E
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2026 04:45:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4A56AA54D
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2026 08:55:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fzZYW3S/";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37940-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37940-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=intel.com header.s=Intel header.b=c5jhijwH;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37941-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37941-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 85FFB30041E9
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2026 02:45:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8EF763003D27
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2026 06:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6D81A3172;
-	Sun, 21 Jun 2026 02:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8918522D4D3;
+	Sun, 21 Jun 2026 06:55:06 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A88C2AD37;
-	Sun, 21 Jun 2026 02:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893541C68F;
+	Sun, 21 Jun 2026 06:55:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782009918; cv=none; b=Ep4omAboJ6a0PbWgmUXJSjJjKVMYa7GGCfT3SgZnpIaNHvrc0iYsF7YWwugeKzii7TSHrdCYww3GBQXHyVl4m87lgRnLpqzh6nnWTxuJPkQ/Ofyb+DpD/tr7hCbiCUAxS0mQslj/5kRwUeoH1CBlefkXqG/lz7w+qIctOIKQn50=
+	t=1782024906; cv=none; b=h9lX8pMZ2UemwY3AoKBKlOlpNo8yZAiFrIUdrBa0ek5PWJGfgKZr/t5sGlFDxREhCtM1rxk0UdqXohohAB6CxFBZR/KqX/uMOh+GT50T5NXZt4YQPtBG5RbuCiP2eK7K3QADbLhPe7au1Yo5dvQyc3y/+TU6xpx21DInur4l7M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782009918; c=relaxed/simple;
-	bh=QGnNWdt+FgO58x0+Z3wMXsNd+qo+B8EMVj0UW+DWAu8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nsAOh9L4d9NoWSHquHL6gJxUcZlIlCP/R0i4vDUKvzaH/fqJkvrHvyJIBKaHTPWVCWpIyzmXCdg1OuhnaSPNmaX91QiaBGjaUn49qjz5u1Ic1lIC6qDeFY5aPSXMDEW/XVbOVQPYCyGn46+e6NIurcTP5y0M9tBPCES45NFngnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fzZYW3S/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 38068C2BCB0;
-	Sun, 21 Jun 2026 02:45:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1782009918;
-	bh=QGnNWdt+FgO58x0+Z3wMXsNd+qo+B8EMVj0UW+DWAu8=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=fzZYW3S/qnIAFjwudux7BSadqP8QmQ33y+K94naAV9mHWMNsz/EHXGP+rTmNec5mf
-	 L/fa6I4OIuDEOmMx/yKgO5zqvRL+e4uDm+hbTsiuloxJT8I5RFpfRc4flyprDuFPwm
-	 6vzp27qlAqdv3t/nO5n/JyACR1WrNFSA0zGynQS4jlgIqvuKziIy7XO0XW67i2GzgA
-	 0nvsmRhGJ+A9m5flP6XL3C5oOk3Tftmh1snjqRS2gSkCeW8R7wdGivvnsbDCu4hm62
-	 uDh+FMK/0//67n5DAGoZhS6SXfbtdlO+ArasMVo2XUWgAOqkWO/LJFFqVe79ugjFBS
-	 ypOqdVifEdjAw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E419CD4F26;
-	Sun, 21 Jun 2026 02:45:18 +0000 (UTC)
-From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
-Date: Sat, 20 Jun 2026 21:45:18 -0500
-Subject: [PATCH] wifi: mac80211_hwsim: clamp virtio RX length before
- skb_put
+	s=arc-20240116; t=1782024906; c=relaxed/simple;
+	bh=Wx01uP3faFngXSSrd1jm6na8igotzoZExmtNPTQ84ss=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ex3TdRvcEPSXt1bHAXY13tPcP5lWL3KScWx+wSBbgPFwjby8No3V+7TDdQH7+Blfxo/D+TZ0ldD9tUFLT2DBzagOcYTsReTgkn5+FmfXg5XgQr/ZYyUTDWltyqSSAq/afqKf3VG12uT4gNRFX7DlljPzEhc/tGAUuYWm9R6als0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c5jhijwH; arc=none smtp.client-ip=192.198.163.9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782024904; x=1813560904;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Wx01uP3faFngXSSrd1jm6na8igotzoZExmtNPTQ84ss=;
+  b=c5jhijwH4PG3lsj0wJ8wt7mT8i4Ye1OOkC2hoN1QZ8olMk7obPbm7hvM
+   I3d+pMmUH/5Sjscus779lCa5bDwotIIOOyA/WVVlRCnAiTXSOi0QUT0LM
+   U7NwerslBt8uSkESLK3FbCm2aRLfYG59oNutRH2CpwkXOYuyX7/pNTUyy
+   8vmJ/jKmyOatz6gXHg5VHvUz7BQ9o5FJUgWt3YUrSrseuP6Wms56+UFcp
+   36JMdbhlgdDWPv/gY2LpCVWfmTSwbjN1OfVZtwST1IW2aTpuXdU2s2eo6
+   TX+DMjcJ/qv7RevHXbHUGfFfIw4Q8AH30AmFHt/z6YjjSVifVZLvXVsBN
+   g==;
+X-CSE-ConnectionGUID: TGuTOx/uQMWmNvj4UX6Hdg==
+X-CSE-MsgGUID: wBsp2JiZT2aHN0q/fgFUQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11823"; a="93444611"
+X-IronPort-AV: E=Sophos;i="6.24,216,1774335600"; 
+   d="scan'208";a="93444611"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2026 23:55:03 -0700
+X-CSE-ConnectionGUID: KbyF/pl+Svet30DepINh+A==
+X-CSE-MsgGUID: maxN6Em8RdK8YKWY1jUL3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,216,1774335600"; 
+   d="scan'208";a="247809376"
+Received: from egrumbac-mobl6.jer.intel.com ([10.13.65.199])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2026 23:55:02 -0700
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+To: linux-pci@vger.kernel.org,
+	helgaas@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH] PCI: Disable NoSnoop and Relaxed ordering for Intel wireless BE200
+Date: Sun, 21 Jun 2026 09:54:51 +0300
+Message-ID: <20260621065451.21650-1-emmanuel.grumbach@intel.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260620-b4-disp-474bee37-v1-1-1a4d37f3e2d4@proton.me>
-X-B4-Tracking: v=1; b=H4sIAD1QN2oC/x2MMQqAMAwAvyKZDdRYWvQr4mDbqFlUWhCh+HeDt
- 91wV6FwFi4wNhUy31LkPFS6toG4L8fGKEkdyJAzjgwGi0nKhdbbwNx7DBwHhVyKBJpdmVd5/uU
- 0v+8H6+K7ZGIAAAA=
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782009917; l=1634;
- i=hexlabsecurity@proton.me; s=proton; h=from:subject:message-id;
- bh=HtfyUWDREuoINdT8NTkjOwRIxvQAbmpdni8YZu5OyaE=;
- b=l9uiKusTE+/qmCSun1xP8GV+9egR3wX99KQL2QurOzdFlurwTTL7BHRsCR0HgIJNaymx3dy3b
- rPxe23SiYBeAxa/cz5yjc6DjofDDvUX/FvjSBv39cJlZf4JRLl+ak5Q
-X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
- pk=dmppBMZNLLoPzxHi9l8tZDzEZUunPbgsYqIZYXeUrL0=
-X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/proton with
- auth_id=814
-X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
-Reply-To: hexlabsecurity@proton.me
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-37940-lists,linux-wireless=lfdr.de,hexlabsecurity.proton.me];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[devnull@kernel.org,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-37941-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-pci@vger.kernel.org,m:helgaas@kernel.org,m:linux-wireless@vger.kernel.org,m:miriam.rachel.korenblit@intel.com,m:emmanuel.grumbach@intel.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[emmanuel.grumbach@intel.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[emmanuel.grumbach@intel.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	HAS_REPLYTO(0.00)[hexlabsecurity@proton.me]
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 35E9A6AA05E
+X-Rspamd-Queue-Id: 1D4A56AA54D
 
-From: Bryam Vargas <hexlabsecurity@proton.me>
+The Intel wireless BE200 device fails to copy the TLP Attributes from a
+Request to the Completion.
+Since there is no caching involved the device anyway, disable the
+NoSnoop and Relaxed ordering on the root port.
 
-hwsim_virtio_rx_work() passes the virtqueue used-ring length reported by
-the device straight to skb_put() on a fixed-size receive skb. A backend
-reporting a length larger than the skb tailroom drives skb_put() past the
-buffer end and hits skb_over_panic() -- a host-triggerable guest panic
-(denial of service).
-
-Clamp the length to the skb's available room before skb_put(). A
-conforming device never reports more than the posted buffer size, so valid
-frames are unaffected; a truncated over-report then fails the
-length/header checks in hwsim_virtio_handle_cmd() and is dropped, so
-truncating rather than dropping here cannot be turned into a parsing
-problem.
-
-Fixes: 5d44fe7c9808 ("mac80211_hwsim: add frame transmission support over virtio")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/quirks.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-index 0dd8a6c85953..5c1718277599 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-@@ -7289,6 +7289,7 @@ static void hwsim_virtio_rx_work(struct work_struct *work)
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index c0242f3e9f06..e9f070d07b2c 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4674,6 +4674,13 @@ static void quirk_chelsio_T5_disable_root_port_attributes(struct pci_dev *pdev)
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_CHELSIO, PCI_ANY_ID,
+ 			 quirk_chelsio_T5_disable_root_port_attributes);
  
- 	skb->data = skb->head;
- 	skb_reset_tail_pointer(skb);
-+	len = min(len, skb_end_offset(skb));
- 	skb_put(skb, len);
- 	hwsim_virtio_handle_cmd(skb);
- 
-
----
-base-commit: 1a3746ccbb0a97bed3c06ccde6b880013b1dddc1
-change-id: 20260620-b4-disp-474bee37-bec999926dc2
-
-Best regards,
++/*
++ * The Intel wireless BE200 fails to copy TLP Attributes from a Request to the
++ * Completion it generates.
++ */
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x272b,
++			 quirk_disable_root_port_attributes);
++
+ /*
+  * pci_acs_ctrl_enabled - compare desired ACS controls with those provided
+  *			  by a device
 -- 
-Bryam Vargas <hexlabsecurity@proton.me>
-
+2.54.0
 
 
