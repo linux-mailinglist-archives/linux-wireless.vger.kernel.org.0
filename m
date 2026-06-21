@@ -1,55 +1,55 @@
-Return-Path: <linux-wireless+bounces-37950-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-37951-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id br2BHl/mN2qIVQcAu9opvQ
-	(envelope-from <linux-wireless+bounces-37950-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2026 15:25:51 +0200
+	id ncunAGXmN2qJVQcAu9opvQ
+	(envelope-from <linux-wireless+bounces-37951-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2026 15:25:57 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E356AAE17
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2026 15:25:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7826F6AAE1C
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2026 15:25:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMXaQN2d;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37950-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37950-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WXn1f4Xg;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-37951-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-37951-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2288F30055D4
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2026 13:25:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9CE7D301CC13
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jun 2026 13:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C032459FE;
-	Sun, 21 Jun 2026 13:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681C23655DB;
+	Sun, 21 Jun 2026 13:25:44 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFD41DF73A
-	for <linux-wireless@vger.kernel.org>; Sun, 21 Jun 2026 13:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD931DF73A
+	for <linux-wireless@vger.kernel.org>; Sun, 21 Jun 2026 13:25:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782048341; cv=none; b=pmmgOYoIaf5+mTmAhYFoJ3FIiZOIOr8p0hvXGgGW7XZ/yRk3BIofsu8Xe9cX8dSbD8ZGkdShjlbIR1CAgxksLHOXMRTpaMddfMzbjAlpV62Or03zwkhm3Zsk8AGsBVt6uP+lUJKHROBs3k6F0cMsXoeIsBhx/5rVtNqhmwBKiHU=
+	t=1782048344; cv=none; b=MEZ/cC8eHxSzIbzO3qBfyPrMZ2gJTHbHvNmz4a+xlh79ZbMVsMlikphCnGgMl03edbqvQy5DujJ10/K25Y4mJGsjYWPXb+ZhwDBbxjVHV3kPmyDrIUYLccXFSaYktyfcm9jiGubkESOjnFDgB93dDpmqnF7tEI4h4GImcU5f3mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782048341; c=relaxed/simple;
-	bh=7vP6pW3muH208Ga0bMDoiASj2cKyemkJsHp8qtMdAnU=;
+	s=arc-20240116; t=1782048344; c=relaxed/simple;
+	bh=uXvrwwuGzaFnHlMiF+IpGDniSgkffS+pmEB3m7W1/y0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KPzDGPHxT8sVUZ2ufoI2oLFVP6zI6DLklWn7sLV7A2XkzlLfbTei4GjOCBGq2MO72g4jGPGfTNQVAPf2Ch+Gfql30h7lIWDb5bckBlMefG62ZBYCD7cZVZxFGs42HWFkCGS9KhTxcJLNIYhZ8j11zmtnwjirg5sP3Q459uJGg1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZMXaQN2d; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272791F00A3D;
-	Sun, 21 Jun 2026 13:25:39 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=Q5/pdzyUajvRrsCNzUHDowvJZShmWfiqS2ELpyYq/1mXph9DBnaBRP4yca96SBiorA7eusxAGGdQAUIqCW6raDQpJlAa4yNyQnJl6NajGwNWUhyA/IeQkzpnO6yerkETDZ+01Rv9vnYNWTbcfHFN9vA7OjKfziEE/y8aKVCFdR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXn1f4Xg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994711F000E9;
+	Sun, 21 Jun 2026 13:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782048340;
-	bh=QJYJxNZ3l7dAEjRU1s4OBPkLV9TjpFhDdBuOa9bTN04=;
+	s=k20260515; t=1782048343;
+	bh=O+3Q274QQqI7fHg3RmAuv+m1smQF9cdSN9rwOrdkNuc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZMXaQN2dbi27JvvLcAfjDv8uZqzMMt8+KieoLxoK53NNLJRFbk2YBk3/hfqp2LIkP
-	 1qQ182aLy2t6KzkfkBob1QAJcMFg67DcM0TqT8n8nwuTzGtaOsiCRasr9PG+1dN8EN
-	 RuHrefLWQ2A88wY/+Q0nhU6CMwgoB2mlzxQUlbk3pdONyJLka68sh/Mp9x3kE75N4/
-	 FDtu95pKd3LPSp9iBPcw/NxX92cqSIDTljW/0KJs3dd39ZKvknfdkrFSW04OPoaSMB
-	 ksL8oNqUlP1DEeADAmVlp/rysSieJ6aZLLhSp6ijHvIu7WiPBIp4rCag6Vv85Pxg7c
-	 1Cj6GUw/XDd9g==
+	b=WXn1f4Xg2jyfZPr5uSnNsJPg7qMGI1QlyPjLJUNjr7NDtTyIUCij9K32qIx8PkKMl
+	 oexA2W/MtOSkKfZBkUeK53Oq5uySOy9S9HThwxToRmU4S1/XwCpsGrX305aUG5Xam/
+	 cIojjAgD5Av/hgcFS15nRjUst1dwBDAJ7Hze92p/RjksguaiC/78CKbcq8Ezt6v2Ao
+	 uvzovWSyi46uVi1nAScYCJnni8+DPhWLKBBvHLAVvWmVtmzvsDzDVvADGhHrlhanSf
+	 UIypUPHRJGK21lDgY8n//VI9KVnSz1P09LKL5xeMP/Fn5oLXrxwF/0/d+oN5/9I6Us
+	 V9gxl4zSC1IHw==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Sun, 21 Jun 2026 15:25:00 +0200
-Subject: [PATCH 2/4] wifi: mt76: mt7925: fix possible NULL-pointer deref in
- mt7925_mcu_bss_he_tlv()
+Date: Sun, 21 Jun 2026 15:25:01 +0200
+Subject: [PATCH 3/4] wifi: mt76: mt7996: check pointer returned by
+ mt76_connac_get_he_phy_cap()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260621-mt76_connac_get_he_phy_cap-fix-v1-2-ed4ccf7a0363@kernel.org>
+Message-Id: <20260621-mt76_connac_get_he_phy_cap-fix-v1-3-ed4ccf7a0363@kernel.org>
 References: <20260621-mt76_connac_get_he_phy_cap-fix-v1-0-ed4ccf7a0363@kernel.org>
 In-Reply-To: <20260621-mt76_connac_get_he_phy_cap-fix-v1-0-ed4ccf7a0363@kernel.org>
 To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
@@ -83,12 +83,12 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-37950-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-37951-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:leon.yen@mediatek.com,m:hao.zhang@mediatek.com,m:nelson.yu@mediatek.com,m:rong.yan@mediatek.com,m:Money.Wang@mediatek.com,m:Bo.Jiao@mediatek.com,m:StanleyYP.Wang@mediatek.com,m:howard-yh.hsu@mediatek.com,m:evelyn.tsai@mediatek.com,m:lorenzo@kernel.org,m:mingyen.hsieh@mediatek.com,m:linux-wireless@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:quan.zhou@mediatek.com,m:deren.wu@mediatek.com,m:meichia.chiu@mediatek.com,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
 	FREEMAIL_TO(0.00)[nbd.name,mediatek.com,gmail.com,collabora.com,kernel.org];
@@ -108,33 +108,55 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 67E356AAE17
+X-Rspamd-Queue-Id: 7826F6AAE1C
 
 mt76_connac_get_he_phy_cap routine can theoretically return NULL so
 check cap pointer before dereferencing it.
 
-Fixes: c948b5da6bbec ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Fixes: 98686cd21624c ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index e94fa544ff20..cb265a6fc7ad 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -2773,6 +2773,8 @@ mt7925_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_bss_conf *link_conf,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index f119f023bcd5..c868b1356894 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -935,6 +935,8 @@ mt7996_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
  	struct tlv *tlv;
  
- 	cap = mt76_connac_get_he_phy_cap(phy->mt76, link_conf->vif);
+ 	cap = mt76_connac_get_he_phy_cap(phy->mt76, vif);
 +	if (!cap)
 +		return;
  
- 	tlv = mt76_connac_mcu_add_tlv(skb, UNI_BSS_INFO_HE_BASIC, sizeof(*he));
+ 	tlv = mt7996_mcu_add_uni_tlv(skb, UNI_BSS_INFO_HE_BASIC, sizeof(*he));
+ 
+@@ -1855,17 +1857,18 @@ mt7996_mcu_sta_bfer_he(struct ieee80211_link_sta *link_sta,
+ {
+ 	struct ieee80211_sta_he_cap *pc = &link_sta->he_cap;
+ 	struct ieee80211_he_cap_elem *pe = &pc->he_cap_elem;
+-	const struct ieee80211_sta_he_cap *vc =
+-		mt76_connac_get_he_phy_cap(phy->mt76, vif);
+-	const struct ieee80211_he_cap_elem *ve = &vc->he_cap_elem;
+ 	u16 mcs_map = le16_to_cpu(pc->he_mcs_nss_supp.rx_mcs_80);
+ 	u8 nss_mcs = mt7996_mcu_get_sta_nss(mcs_map);
++	const struct ieee80211_he_cap_elem *ve;
++	const struct ieee80211_sta_he_cap *vc;
+ 	u8 snd_dim, sts;
+ 
++	vc = mt76_connac_get_he_phy_cap(phy->mt76, vif);
+ 	if (!vc)
+ 		return;
+ 
+ 	bf->tx_mode = MT_PHY_TYPE_HE_SU;
++	ve = &vc->he_cap_elem;
+ 
+ 	mt7996_mcu_sta_sounding_rate(bf, phy);
  
 
 -- 
