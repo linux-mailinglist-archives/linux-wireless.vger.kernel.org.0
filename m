@@ -1,134 +1,309 @@
-Return-Path: <linux-wireless+bounces-38021-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38022-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DNNALGDHOmrRGggAu9opvQ
-	(envelope-from <linux-wireless+bounces-38021-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 19:50:24 +0200
+	id RpIAGTvROmrqHggAu9opvQ
+	(envelope-from <linux-wireless+bounces-38022-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 20:32:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284B26B93F8
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 19:50:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7FA56B9722
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 20:32:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=FLrvvp6S;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38021-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38021-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KdTKfR6w;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38022-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38022-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F8CE300C83E
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 17:50:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4169306CC6F
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 18:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6A2390613;
-	Tue, 23 Jun 2026 17:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83B738D6BD;
+	Tue, 23 Jun 2026 18:31:35 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670003905E3;
-	Tue, 23 Jun 2026 17:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2067238A706
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Jun 2026 18:31:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782237014; cv=none; b=PQM9XWNSgHRrEWm+O8CHJXrcH+Wx+QrcFq2Nev/nvufkB0zupU3/g3OPait86YgNFLIIkOFuSfUB+mqvGgXfvEZ+3yJhDYSvp7GW8tCaxyxrAl4jQsXpTn/eI+nyJ/gt53W4wKW+3fHQX1tiV6OzLNHE9vLMCWUQzGxtnMz4fR4=
+	t=1782239495; cv=none; b=H21Jxr5ZWqNu1u4+v8VB3Id8L2B5bc2PMxx1eEslm4N+CWOjL1YE1vjqdoG18192+UWI149Y4pPl0jKsAIQZIOk0gZLFTqZYGQCEAHvHpq37OKSLdlsg0CozIyGmiHLSKccO/TBp+rBxbJKXbS+73YD8yyvuhBzN+5uGwrHlDbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782237014; c=relaxed/simple;
-	bh=+JdrjsYKUQPP+AJ1Ipz4wdn3hc3rh4DAOl755B86FG0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WPBAYxwa7E0Q1AvLmsT2ESteit/swzLq7+qKO+wIbJuQX7B6CvqVDyZyK9124bve8rY++GbwFrkur9dUrLmyVZX3wgD4mkgnM/nKv7o5CiOE1rydvOm1rELlP0lxMaOHzwCwsKjFzObWIP0BcbDY5jnMsh8N1PEABAWzooX9Tww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FLrvvp6S; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=+JdrjsYKUQPP+AJ1Ipz4wdn3hc3rh4DAOl755B86FG0=;
-	t=1782237012; x=1783446612; b=FLrvvp6SGxzv9oZgUN5pNguzw7NlXUIMbA807ijlz9aOwkT
-	JRjRfCmV6tg+1oT2KQYKe6CxUxhkqK9rSJYVMi4eRunD0pfyDQdAe9ppJlpQEefuSVv7icAWDexK0
-	fUK3EKLh5++kqZ+AWNJ2n5YMIz3fAqJduUMS2KgP2rk86lKOOrtfDfOBTU3RNdyyXqVyZgc5V7Xws
-	3djroDjk02KsmAllBffkV67FNmdUsRJpOxg5ceAEY9Az6E/w4DuWi/wHoOl9aKlXCvn8wxI7B4BN7
-	MNVOXDgygP/i5elV0GkHbve/5CXqkgLKstIzrfmVc1ttojzUhaz+Db2GWHqH2aiA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wc5G6-0000000Eiey-2W2y;
-	Tue, 23 Jun 2026 19:50:02 +0200
-Message-ID: <3511ab1ebd943677ba6a62c4e807db7dd762717b.camel@sipsolutions.net>
-Subject: Re: [PATCH v1 1/2] overflow: Allow to sum a few arguments at once
-From: Johannes Berg <johannes@sipsolutions.net>
-To: David Laight <david.laight.linux@gmail.com>, Andy Shevchenko
-	 <andriy.shevchenko@linux.intel.com>
-Cc: Kees Cook <kees@kernel.org>, linux-hardening@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, "Gustavo A.
- R. Silva" <gustavoars@kernel.org>
-Date: Tue, 23 Jun 2026 19:50:01 +0200
-In-Reply-To: <20260623163203.195416b4@pumpkin> (sfid-20260623_173213_713027_EF574A6E)
-References: <20260617112250.2791461-1-andriy.shevchenko@linux.intel.com>
-		<20260617112250.2791461-2-andriy.shevchenko@linux.intel.com>
-		<202606182046.AE5F6A241@keescook>	<ajTlfuOFHXlA7xdu@ashevche-desk.local>
-		<202606192025.CF68F2E@keescook>	<ajY5hg0f34C-iV3R@ashevche-desk.local>
-		<54974e4298efd26a52c9c0e9ada88d57e8695a09.camel@sipsolutions.net>
-		<ajqTpJAMFFV3H5Im@ashevche-desk.local> <20260623163203.195416b4@pumpkin>
-	 (sfid-20260623_173213_713027_EF574A6E)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1782239495; c=relaxed/simple;
+	bh=eKNKd51FC8HGp0OLaLEfCYpREWMo7TcVL9F+NcUbK4Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UThBydglCow1tzGayXguNxCO2TpXxeDWepuZVsR7LwOvI10GzR+yd6zg1npNUN+URoAVVAsjq4qjdfkUPMbD0sPksXXinwkwNt5EeLAFP0v/XGkESqlKqjZFWSXn5N/xfaFV+2W5ojxTbgymm/5yCticB/kngTc8rTrekwntBwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KdTKfR6w; arc=none smtp.client-ip=170.10.129.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782239493;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QKDSm+Cv7jYP8itDATFdUmXFlOG8Uyg1YfrB42kBduA=;
+	b=KdTKfR6wTmBfSUdwX5YMDCW54TJPKot72PbWn8oiqz0JvY65jeS8E3AYIPP04UbpfTpAMI
+	jJVHK1LetYzApphNU3gDH+28ms2HLjoHS61NACqPp/UrlLI/XjaBD/sl7JWp9+z9ItUCnf
+	zoAMzXadMY/EQ+Zj3BScBLBFPXyqfVM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-sf5a8ZPLMwecNmiqqlSvyA-1; Tue,
+ 23 Jun 2026 14:31:30 -0400
+X-MC-Unique: sf5a8ZPLMwecNmiqqlSvyA-1
+X-Mimecast-MFC-AGG-ID: sf5a8ZPLMwecNmiqqlSvyA_1782239488
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0078F1956096;
+	Tue, 23 Jun 2026 18:31:27 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.48.11])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 355B81955F71;
+	Tue, 23 Jun 2026 18:31:21 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: bhelgaas@google.com,
+	alex@shazbot.org,
+	mani@kernel.org
+Cc: jjohnson@kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
+	mhi@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Subject: [PATCH v10] Add device-specific reset for Qualcomm devices
+Date: Tue, 23 Jun 2026 20:31:15 +0200
+Message-ID: <20260623183115.1585273-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:david.laight.linux@gmail.com,m:andriy.shevchenko@linux.intel.com,m:kees@kernel.org,m:linux-hardening@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:gustavoars@kernel.org,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,linux.intel.com];
-	TAGGED_FROM(0.00)[bounces-38021-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-38022-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:bhelgaas@google.com,m:alex@shazbot.org,m:mani@kernel.org,m:jjohnson@kernel.org,m:linux-pci@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath11k@lists.infradead.org,m:ath12k@lists.infradead.org,m:mhi@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:jtornosm@redhat.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 284B26B93F8
+X-Rspamd-Queue-Id: A7FA56B9722
 
-On Tue, 2026-06-23 at 16:32 +0100, David Laight wrote:
->=20
-> Both those seem to contain multiple expansions of is_constexpr().
-> I'd be surprised if __builtin_constant_p() wasn't good enough.
->=20
-> I also wonder what kind of mess the object code looks like.
+Some Qualcomm PCIe devices (WCN6855/WCN7850 WiFi cards, SDX62/SDX65 modems)
+lack working reset methods for VFIO passthrough scenarios. These devices
+have no FLR capability, advertise NoSoftRst+ (blocking PM reset), and have
+broken bus reset.
 
-You should definitely wonder less out loud and only comment when you
-have actual hard facts...
+The problem manifests in VFIO passthrough scenarios:
 
-> I'd also worry whether the saturating maths in any way performs the corre=
-ct check.
-> I suspect the (non-saturated) value gets used for a kmalloc(),
-> but that has much smaller valid (and sane) limits than can come out of th=
-e above.
+- WCN6855 (17cb:1103) and WCN7850 (17cb:1107) WiFi devices:
+  Normal VM operation works fine, including clean shutdown/reboot.
+  However, when the VM terminates uncleanly (crash, force-off), VFIO
+  attempts to reset the device before it can be assigned to another VM.
+  Without a working reset method, the device remains in an undefined state,
+  preventing reuse.
 
-That's, frankly, ridiculous.
+- SDX62/SDX65 (17cb:0308) 5G modems: Never successfully initialize even
+  on first VM assignment without proper reset capability.
 
-johannes
+Add device-specific reset methods using BAR-space hardware reset registers
+that exist in these devices:
+
+- WCN6855/WCN7850 WiFi devices use SoC global reset via BAR0 (sequence from
+  ath11k/ath12k driver: ath11k_pci_soc_global_reset(), ath11k_pci_sw_reset(),
+  ath11k_mhi_set_mhictrl_reset()):
+  - Write/clear reset bit at offset 0x3008
+  - Wait for PCIe link recovery (up to 5 seconds)
+  - Clear MHI controller SYSERR status at offset 0x38
+
+- SDX62/SDX65 modem devices use MHI SoC reset via BAR0 (sequence from MHI
+  driver: mhi_soc_reset(), mhi_pci_reset_prepare()):
+  - Write reset request to offset 0xb0
+  - Wait 2 seconds for reset completion
+
+These are true hardware reset mechanisms (not power management or firmware
+error recovery), providing proper device reset for VFIO scenarios.
+
+Testing was performed on desktop platforms with M.2 WiFi and modem cards
+using M.2-to-PCIe adapters, including extensive force-reset cycling to
+verify stability.
+
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+---
+v10:
+  - Complete redesign based on maintainer feedback (Manivannan Sadhasivam,
+    Alex Williamson): use actual hardware reset registers from
+    device drivers instead of D3hot power cycling
+v9: https://lore.kernel.org/all/20260612142638.1243895-1-jtornosm@redhat.com/
+
+ drivers/pci/quirks.c | 118 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 118 insertions(+)
+
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 431c021d7414..8ad3f214e520 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4240,6 +4240,121 @@ static int reset_hinic_vf_dev(struct pci_dev *pdev, bool probe)
+ 	return 0;
+ }
+ 
++#define QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET	0x3008
++#define QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET_V	BIT(0)
++#define QUALCOMM_WIFI_MHISTATUS			0x48
++#define QUALCOMM_WIFI_MHICTRL			0x38
++#define QUALCOMM_WIFI_MHICTRL_RESET_MASK	0x2
++
++/*
++ * Qualcomm WiFi device-specific reset using SoC global reset via BAR0
++ * registers.
++ */
++static int reset_qualcomm_wifi(struct pci_dev *pdev, bool probe)
++{
++	bool link_recovered = false;
++	unsigned long timeout;
++	void __iomem *bar;
++	u32 val;
++	u16 cmd;
++
++	if (probe)
++		return 0;
++
++	if (pdev->current_state != PCI_D0)
++		return -EINVAL;
++
++	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
++	pci_write_config_word(pdev, PCI_COMMAND, cmd | PCI_COMMAND_MEMORY);
++
++	bar = pci_iomap(pdev, 0, 0);
++	if (!bar) {
++		pci_write_config_word(pdev, PCI_COMMAND, cmd);
++		return -ENODEV;
++	}
++
++	val = ioread32(bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
++	val |= QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET_V;
++	iowrite32(val, bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
++	ioread32(bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
++
++	msleep(10);
++
++	val &= ~QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET_V;
++	iowrite32(val, bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
++	ioread32(bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
++
++	msleep(10);
++
++	timeout = jiffies + msecs_to_jiffies(5000);
++	while (time_before(jiffies, timeout)) {
++		val = ioread32(bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
++		if (val != 0xffffffff) {
++			link_recovered = true;
++			break;
++		}
++		msleep(20);
++	}
++
++	if (!link_recovered) {
++		pci_err(pdev, "PCIe link failed to recover after reset\n");
++		goto out_restore;
++	}
++
++	/* After SOC_GLOBAL_RESET, MHISTATUS may still have SYSERR bit set
++	 * and thus need to set MHICTRL_RESET to clear SYSERR.
++	 */
++	iowrite32(QUALCOMM_WIFI_MHICTRL_RESET_MASK, bar + QUALCOMM_WIFI_MHICTRL);
++	ioread32(bar + QUALCOMM_WIFI_MHICTRL);
++
++	msleep(10);
++
++out_restore:
++	pci_iounmap(pdev, bar);
++	pci_write_config_word(pdev, PCI_COMMAND, cmd);
++
++	return link_recovered ? 0 : -ETIMEDOUT;
++}
++
++#define MHI_SOC_RESET_REQ_OFFSET		0xb0
++#define MHI_SOC_RESET_REQ			BIT(0)
++
++/*
++ * Qualcomm modem device-specific reset using MHI SoC reset via BAR0
++ * register.
++ */
++static int reset_qualcomm_modem(struct pci_dev *pdev, bool probe)
++{
++	void __iomem *bar;
++	u16 cmd;
++
++	if (probe)
++		return 0;
++
++	if (pdev->current_state != PCI_D0)
++		return -EINVAL;
++
++	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
++	pci_write_config_word(pdev, PCI_COMMAND, cmd | PCI_COMMAND_MEMORY);
++
++	bar = pci_iomap(pdev, 0, 0);
++	if (!bar) {
++		pci_write_config_word(pdev, PCI_COMMAND, cmd);
++		return -ENODEV;
++	}
++
++	iowrite32(MHI_SOC_RESET_REQ, bar + MHI_SOC_RESET_REQ_OFFSET);
++	ioread32(bar + MHI_SOC_RESET_REQ_OFFSET);
++
++	/* Be sure device reset has been executed */
++	msleep(2000);
++
++	pci_iounmap(pdev, bar);
++	pci_write_config_word(pdev, PCI_COMMAND, cmd);
++
++	return 0;
++}
++
+ static const struct pci_dev_reset_methods pci_dev_reset_methods[] = {
+ 	{ PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_82599_SFP_VF,
+ 		 reset_intel_82599_sfp_virtfn },
+@@ -4255,6 +4370,9 @@ static const struct pci_dev_reset_methods pci_dev_reset_methods[] = {
+ 		reset_chelsio_generic_dev },
+ 	{ PCI_VENDOR_ID_HUAWEI, PCI_DEVICE_ID_HINIC_VF,
+ 		reset_hinic_vf_dev },
++	{ PCI_VENDOR_ID_QCOM, 0x1103, reset_qualcomm_wifi },  /* WCN6855 WiFi */
++	{ PCI_VENDOR_ID_QCOM, 0x1107, reset_qualcomm_wifi },  /* WCN7850 WiFi */
++	{ PCI_VENDOR_ID_QCOM, 0x0308, reset_qualcomm_modem }, /* SDX62/SDX65 modems */
+ 	{ 0 }
+ };
+ 
+-- 
+2.54.0
+
 
