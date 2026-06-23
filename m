@@ -1,62 +1,64 @@
-Return-Path: <linux-wireless+bounces-38011-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38012-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /LnsA+GMOmrY/gcAu9opvQ
-	(envelope-from <linux-wireless+bounces-38011-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 15:40:49 +0200
+	id nVEUKVGPOmoqAAgAu9opvQ
+	(envelope-from <linux-wireless+bounces-38012-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 15:51:13 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331506B7850
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 15:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F75F6B7999
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 15:51:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eog6lePD;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38011-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38011-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtW8ybMC;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38012-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38012-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DCCEC3002F41
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 13:40:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BEC4930013B7
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 13:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6487937C91B;
-	Tue, 23 Jun 2026 13:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8655C37DE9D;
+	Tue, 23 Jun 2026 13:50:25 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538BA22E3F0;
-	Tue, 23 Jun 2026 13:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D00D3672A9;
+	Tue, 23 Jun 2026 13:50:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782222026; cv=none; b=MfrTMGSV6HxDk0Im+18NM6kiy5c1EUcpfa9gfXpRZF5+diy8rJGut661ETi75O7O9T34Kx3clT7vVHGjXW0z8s22qjzX+hdi/W6oiH5v2T+8DuyhjY2pqnFaUkD6og+z0e0njm84pLfzWzp1nese5MG/l6jOZCPGCk+5MvXuaKk=
+	t=1782222625; cv=none; b=DgjGyccBcQZ4mcUqhxypfO6kj9bbvw+iaMBwGkVbKjXiJCnRg6VjD/Y6aq4XGSA7W87C2f3MQh7JcTiea9sn9jHx7ImVSLbez8FGOtl09bw1ehj9DXWS32r4Y87v1nmxfmtIDyR41SeVUq0HpimLhbYxv7NNP0tbEAd3RHgNne4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782222026; c=relaxed/simple;
-	bh=VtyrWGAhbxvjX0SgyCmodbPbzQLVna+hNRYjk9HXCx0=;
+	s=arc-20240116; t=1782222625; c=relaxed/simple;
+	bh=zQDu23l59318ZbjiwU+/DgdA4l2AgopdPdTn1W2TIzM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y5j2Ro2us3iGbv6Z+d3boyT1t7Jf0qNZ/+CUcFjzPnBUI4M4tyyWMoKEv4WTVswJbsYIlD3Faaoi9curYxG0CnHPYMo1hf0bonMTeKgG+zbfF7+CLIodGeUraFoe9VIQnHe1in4ZmEP4uIV8IxyeycSG2fSOc8eKwADfF97CJFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eog6lePD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F241F000E9;
-	Tue, 23 Jun 2026 13:40:20 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=HgDYSA338ZNvnLxRcyMMAiuwBrNJoC3GVizzkm5BiuUIr/84hrI5lHi/BCYoUbGE1PpgbrWTk2qu52kvJWk8/0ZApt9mrD2WU6hUXV9tRPw7sDCh4ZkpPcq4IaAPpBFsORa8B4F/albHU4Pwcj5tSQueZ+A82gi602eGaG+/BiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gtW8ybMC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A441F000E9;
+	Tue, 23 Jun 2026 13:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782222025;
-	bh=pmgv52n41p5z4OQmO+J47C3uc5k3v6DiUGJnWHiFcd8=;
+	s=k20260515; t=1782222623;
+	bh=07uoq0PIndTVBv8tgnHeAEJeFAtrzEKE7E1mnPuM/Dg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eog6lePDuynqkdv62ua2ud0QrAX6PAZNziY/Ubl02jOpmGet7dGmXm/9VdWmzkZcq
-	 NKCxBBURFICGgk3em8aj5s1RxE4HWiY7js93DyMVxxDpDfIbQSLgGRZy7r2uBlYLZ+
-	 9FRlL4OTwbnrRmvZgkeG3f32xe+XREvoNrIx2oQfy1wvrda0u+uko8TQcSYEFHOcmq
-	 pft7hlp8BpLL7Xq4Q8BwqPKcnPkDW+E0SdUF8/E2Ii3uEgQNa58B6xxMzcag796MB7
-	 zk7Sq1Agg/SBwR/xTodgV2YIhOZkuRXaxdFRhpL78KowH71QiczKZI9ySCa9QUGAkq
-	 H+GfdPbltNLjQ==
-Date: Tue, 23 Jun 2026 15:40:16 +0200
+	b=gtW8ybMCR3A8frppplBqKA6GR+ojYF+zzFnO8rMTDlzZXqh81kXWWIfEbS1bV+0ex
+	 Pq1th8wk6FIFljyGQDEbPGKOeQaQFpBrhZqrcnoIgJdy0m6Fj0NCg1m/ifnlkD1dVb
+	 fN9yLXJXV5rBTTfVwBDadrOrF49Tkpbf806Gy7XEQjQzI6wXMtZS21S1R3rjnyo34E
+	 2oo7Cm5zFUH3NHHTfONxIriOOXGLStnIz2sTBgMmv6isAfxQyCGM2ixoAt+M2/ffLT
+	 YnK2VTDwt1wRaxUln/ozWqe4nooDXt4Fc+q3/d7/eAUTXDjzD7jQntvBI2kwPO5b13
+	 DR5xGFXyr+cMg==
+Date: Tue, 23 Jun 2026 15:50:15 +0200
 From: Manivannan Sadhasivam <mani@kernel.org>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: alex@shazbot.org, ath11k@lists.infradead.org, 
-	ath12k@lists.infradead.org, bhelgaas@google.com, jjohnson@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	mhi@lists.linux.dev
+To: Alex Williamson <alex@shazbot.org>
+Cc: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>, 
+	ath11k@lists.infradead.org, ath12k@lists.infradead.org, bhelgaas@google.com, 
+	jjohnson@kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, mhi@lists.linux.dev
 Subject: Re: [PATCH v9] PCI: Add device-specific reset for Qualcomm devices
-Message-ID: <frqpqy5nbx7wb7ds2osotuntnbsehp2gfbhpmhlilu4mzhljpa@sart22k7tjme>
-References: <r4jeqtx247iosfjdps6g4fqwtsdzine5qlgh33sdt4p6ktmaln@o725aolrpj4l>
- <20260623125637.1188867-1-jtornosm@redhat.com>
+Message-ID: <nlbqw3h2m6cux2cbpq2ka4kq7fl7qlizkndw5zltsqd3qf346n@xmxssbpalqih>
+References: <n3maiuu5cctivlal4fozysz37ir6ecdfws5u2xxw2neclsfdfj@nsvwvlh7b4j5>
+ <20260618063309.9536-1-jtornosm@redhat.com>
+ <4wmbans3ae5ayxqvs3wwn4hg3r3dcjuugmw2akoihvry35bq6k@k5lm6zjrp44l>
+ <20260622160822.09350246@shazbot.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,7 +68,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260623125637.1188867-1-jtornosm@redhat.com>
+In-Reply-To: <20260622160822.09350246@shazbot.org>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-4.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
@@ -81,11 +83,11 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:jtornosm@redhat.com,m:alex@shazbot.org,m:ath11k@lists.infradead.org,m:ath12k@lists.infradead.org,m:bhelgaas@google.com,m:jjohnson@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:mhi@lists.linux.dev,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:alex@shazbot.org,m:jtornosm@redhat.com,m:ath11k@lists.infradead.org,m:ath12k@lists.infradead.org,m:bhelgaas@google.com,m:jjohnson@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:mhi@lists.linux.dev,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[mani@kernel.org,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-38011-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38012-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -100,78 +102,98 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sart22k7tjme:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,xmxssbpalqih:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 331506B7850
+X-Rspamd-Queue-Id: 9F75F6B7999
 
-On Tue, Jun 23, 2026 at 02:56:35PM +0200, Jose Ignacio Tornos Martinez wrote:
-> Hi Mani and Alex,
+On Mon, Jun 22, 2026 at 04:08:22PM -0600, Alex Williamson wrote:
+> On Mon, 22 Jun 2026 18:22:39 +0200
+> Manivannan Sadhasivam <mani@kernel.org> wrote:
 > 
-> Thank you both for the guidance. 
+> > On Thu, Jun 18, 2026 at 08:33:08AM +0200, Jose Ignacio Tornos Martinez wrote:
+> > > Hi Mani,
+> > > 
+> > > Let me clarify the exact scenario and where the reset is necessary:
+> > > 
+> > > * For the commented WiFi devices (WCN6855/WCN7850):
+> > > 
+> > > Standard VFIO passthrough flow (this works fine):
+> > >   1. Unbind native driver (ath11k/ath12k/MHI)
+> > >   2. Bind vfio-pci driver
+> > >   3. Assign device to VM
+> > >   4. VM boots, loads its own driver → device works perfectly
+> > >   5. VM shuts down cleanly → device can be reassigned → works fine
+> > > 
+> > > The problem occurs with unclean VM termination:
+> > >   1. VM crashes or is force-terminated
+> > >   2. VFIO tries to reset the device before reassignment
+> > >   3. Without a working PCI reset method, reset fails
+> > >   4. Device stuck in undefined state → cannot be reassigned to another VM
+> > >   
+> > >      Unbinding the driver again doesn't help because the device hardware
+> > >      itself is in a bad state. From hypervisor:
+> > >      $ lspci -vvv -s 0000:03:00.0
+> > >         03:00.0 Network controller: Qualcomm Technologies, Inc (rev ff) (prog-if ff)
+> > >             !!! Unknown header type 7f
+> > >      And a full host power-cycle is necessary to recover.
+> > >        
+> > 
+> > Can you try the global reset available in the WLAN device BAR space?
+> > 
+> > WCN6855: https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/tree/drivers/net/wireless/ath/ath11k/pci.c#n193
+> > WCN7850: https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/tree/drivers/net/wireless/ath/ath12k/pci.c#n182
+> > 
+> > > * For the commented modem devices (SDX62/SDX65): 
+> > > 
+> > > Even worse because it fails during the first VM boot without proper reset
+> > > capability, standard VFIO passthrough flow:
+> > >   1. Unbind native driver (MHI)
+> > >   2. Bind vfio-pci driver
+> > >   3. Assign device to VM
+> > >   4. VM boots, loads its own driver and crashes:
+> > >      [   24.024165] mhi mhi0: Device failed to enter MHI Ready
+> > >      [   24.024168] mhi mhi0: MHI did not enter READY state
+> > >      
+> > >      Unbind/rebind attempts fail:
+> > >      [  352.643601] mhi mhi0: Requested to power ON
+> > >      [  352.643611] mhi mhi0: Power on setup success
+> > >      [  373.442954] mhi mhi0: Device failed to clear MHI Reset
+> > >      [  373.442970] mhi mhi0: MHI did not enter READY state
+> > >      And requires a full host power cycle to recover,
+> > >      even outside of VFIO scenarios.
+> > > 
+> > > * MHI Host driver's remove callback may handle clean software state
+> > > teardown, but it doesn't provide a PCI reset capability that VFIO can
+> > > invoke. VFIO needs a reset method registered in the PCI reset hierarchy
+> > > (device_specific, pm, flr, bus, etc.). VFIO invokes this reset both during
+> > > initial device binding (before the VM starts) and when reassigning the
+> > > device between VMs - without a working reset method, the device cannot
+> > > reach a clean state for initialization.
+> > >   
+> > 
+> > Likewise, there is a SoC reset available in the modem BAR space. You can try it:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/tree/drivers/bus/mhi/host/main.c#n178
+> > 
+> > If these works, then you can hook these in the device_specific reset callback.
 > 
 > 
-> I think your insight about the BAR-space reset mechanisms is a much better
-> approach to have a "real" reset. With that, I've implemented device-specific
-> reset functions based on the driver code Mani referenced:
+> These look promising as simple flows to implement in a device specific
+> reset: save command register, set memory enable, ioremap BAR space,
+> match read/write/delay sequences of reset function and caller, iounmap,
+> restore command.
 > 
-> WCN6855/WCN7850 WiFi (reset_qualcomm_wifi):
-> - Uses SoC global reset via BAR0 offset 0x3008
-> - Follows the sequence from ath11k_pci_soc_global_reset() /
->   ath12k_pci_soc_global_reset() / ath11k_pci_sw_reset()
-> - Set reset bit → 10ms delay → clear reset bit → 10ms delay → verify link
->   recovery (up to 5s)
-> - Includes MHI controller reset cleanup (offset 0x38) to clear SYSERR after SoC
->   reset
-> - Both WCN6855 and WCN7850 share identical register offsets and reset sequence
-> 
-> SDX62/SDX65 modems (reset_qualcomm_modem):
-> - Uses MHI SoC reset via BAR0 offset 0xb0
-> - Follows the sequence from mhi_soc_reset() / mhi_pci_reset_prepare()
-> - Write reset request → 2s delay for reset completion
-> 
-> All implementations follow Alex's pattern: save command register ->
-> enable memory decode -> ioremap BAR -> perform reset sequence ->
-> iounmap -> restore command.
-> Testing results: The implementation shows successful reset behavior for both
-> WiFi and modem devices in VFIO passthrough scenarios.
+> Note the delay in this latter reset is in the caller.  It's also
+> surprising that none of these implement a read to flush the posted
+> write that initiates the reset.  I wonder if that contributes to the 2s
+> delay in the latter example.
 > 
 
-Cool!
+While I agree that the absence of read-back after the posted write is a problem,
+especially with a delay afterwards, the delay itself is required to let the
+device reset itself and do a warm boot.
 
-> 
-> Regarding the approach (quirks.c vs dedicated VFIO driver):
-> 
-> Mani, I understand your concern about potential conflicts with the native
-> drivers. I want to make sure I implement this correctly. Could you clarify
-> when you envision the conflict occurring? 
-> From what I can see, the native drivers call their reset functions directly
-> without using pci_try_reset_function(), so the device-specific reset in
-> quirks.c could be enough, but I may be missing some error recovery paths or
-> other scenarios.
-> 
-
-MHI driver is calling pci_try_reset_function():
-
-$ git grep -r pci_try_reset_function drivers/bus/mhi
-drivers/bus/mhi/host/pci_generic.c:     err = pci_try_reset_function(pdev);
-
-So I was worried that it could create conflict. But looking more, I
-understood that it won't create any conflict, but just an additional SoC reset:
-
-  pci_try_reset_function()
-    -> pci_dev_save_and_disable()
-      -> mhi_pci_reset_prepare()
-         -> mhi_soc_reset()         <- First reset 
-    -> __pci_reset_function_locked()
-      -> pci_dev_specific_reset()   <- Second reset
-
-But this additional SoC reset wouldn't cause any issue to the device due to the
-2s delay, but the total recovery delay would compound to 4s now.
-
-And that also should be fine as this path gets triggered only when the device
-dies during the recovery work (very rare).
-
-So you can implement the reset in quirks.c with device_specific reset.
+I'll submit fixes to do a read-back after triggering the reset to ensure that
+the write gets flushed to the device before the delay.
 
 - Mani
 
