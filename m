@@ -1,309 +1,144 @@
-Return-Path: <linux-wireless+bounces-38022-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38023-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RpIAGTvROmrqHggAu9opvQ
-	(envelope-from <linux-wireless+bounces-38022-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 20:32:27 +0200
+	id V22qFIbfOmp5JggAu9opvQ
+	(envelope-from <linux-wireless+bounces-38023-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 21:33:26 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FA56B9722
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 20:32:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D7E56B9B96
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 21:33:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KdTKfR6w;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38022-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38022-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	dkim=pass header.d=nhoward.dev header.s=purelymail1 header.b=EBJwVYxt;
+	dkim=pass header.d=purelymail.com header.s=purelymail1 header.b=nAE4IqtA;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38023-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38023-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=nhoward.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4169306CC6F
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 18:31:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 108A93075DE6
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 19:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83B738D6BD;
-	Tue, 23 Jun 2026 18:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619BA3932DA;
+	Tue, 23 Jun 2026 19:32:10 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2067238A706
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jun 2026 18:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED8926056C
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Jun 2026 19:32:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782239495; cv=none; b=H21Jxr5ZWqNu1u4+v8VB3Id8L2B5bc2PMxx1eEslm4N+CWOjL1YE1vjqdoG18192+UWI149Y4pPl0jKsAIQZIOk0gZLFTqZYGQCEAHvHpq37OKSLdlsg0CozIyGmiHLSKccO/TBp+rBxbJKXbS+73YD8yyvuhBzN+5uGwrHlDbg=
+	t=1782243130; cv=none; b=TGooEK/2aZyDkUjhivTWmyT/AI79IR13fvsLo97yzaEHAfxchbdHIKytIQZWVUzzI4umniPxwLkI8bLQ0RACtXDaN99ydmVJB7DoaQ1xrQitkVy+RSLmt5YQHusA6RqBZGU0raezwpQJy3PsatOg5GMOk8kATWNsee9vB+t9BXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782239495; c=relaxed/simple;
-	bh=eKNKd51FC8HGp0OLaLEfCYpREWMo7TcVL9F+NcUbK4Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UThBydglCow1tzGayXguNxCO2TpXxeDWepuZVsR7LwOvI10GzR+yd6zg1npNUN+URoAVVAsjq4qjdfkUPMbD0sPksXXinwkwNt5EeLAFP0v/XGkESqlKqjZFWSXn5N/xfaFV+2W5ojxTbgymm/5yCticB/kngTc8rTrekwntBwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KdTKfR6w; arc=none smtp.client-ip=170.10.129.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782239493;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=QKDSm+Cv7jYP8itDATFdUmXFlOG8Uyg1YfrB42kBduA=;
-	b=KdTKfR6wTmBfSUdwX5YMDCW54TJPKot72PbWn8oiqz0JvY65jeS8E3AYIPP04UbpfTpAMI
-	jJVHK1LetYzApphNU3gDH+28ms2HLjoHS61NACqPp/UrlLI/XjaBD/sl7JWp9+z9ItUCnf
-	zoAMzXadMY/EQ+Zj3BScBLBFPXyqfVM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-sf5a8ZPLMwecNmiqqlSvyA-1; Tue,
- 23 Jun 2026 14:31:30 -0400
-X-MC-Unique: sf5a8ZPLMwecNmiqqlSvyA-1
-X-Mimecast-MFC-AGG-ID: sf5a8ZPLMwecNmiqqlSvyA_1782239488
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0078F1956096;
-	Tue, 23 Jun 2026 18:31:27 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.48.11])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 355B81955F71;
-	Tue, 23 Jun 2026 18:31:21 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: bhelgaas@google.com,
-	alex@shazbot.org,
-	mani@kernel.org
-Cc: jjohnson@kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org,
-	mhi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Subject: [PATCH v10] Add device-specific reset for Qualcomm devices
-Date: Tue, 23 Jun 2026 20:31:15 +0200
-Message-ID: <20260623183115.1585273-1-jtornosm@redhat.com>
+	s=arc-20240116; t=1782243130; c=relaxed/simple;
+	bh=Nr2aL63sOv9f485z/UhCxW0OunsYshCUH3IQCPyx7X4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JY7rJVe76WVpsYAA55jQqaY3NXnmtkI7NilyeBz7VSMn4Xq65OJbu7Hx6gZwH3dBDa+GLR8jB9Iym4ZA0v+HhDXS0GkjYXbPGS3jonNZY36I0STGr6AKIGem2wdfI8mnYhmLOdsxbJPNq35fs4eAPxZrCFm6MEbt5iOjmM/GTx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nhoward.dev; spf=pass smtp.mailfrom=nhoward.dev; dkim=pass (2048-bit key) header.d=nhoward.dev header.i=@nhoward.dev header.b=EBJwVYxt; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=nAE4IqtA; arc=none smtp.client-ip=34.202.193.197
+DKIM-Signature: a=rsa-sha256; b=EBJwVYxtKk62YxLgGLtFNLjkFNauEJm1unuBauKQEKR4iFgJY4H8Pt8uU5rhC3Oe21JNO2VwfLUDeBAfkLF0Lt6IVyi+dPRzgLGFdkAHvv1UEpXad4CEpbCnsYDAGKSBD87HVOOYKlaiQSY4ANqHFuXay73/MOsw78DGZgRfU+fpOThJdGCnMl5XsRQcwSxonP5oa8IVkXf+wFRahhUpYo8DSIO10wxiBXlAgiPmC30AN0X0Yr2n+4BIDQzduOpAUsu18mN4UdfIXAVG2xlWk1/LrWz7Fx9zITomx8SAHWmN5Sftx5jkL6a8Wyro1ktyjBZMCOqYOnpjwg4ixRL28Q==; s=purelymail1; d=nhoward.dev; v=1; bh=Nr2aL63sOv9f485z/UhCxW0OunsYshCUH3IQCPyx7X4=; h=Received:Date:From:To:Subject;
+DKIM-Signature: a=rsa-sha256; b=nAE4IqtAGyo8QxOv4tzc2TMiu3efeyMIg4BsbN6+auKho8AbbN5w23CzUgmsS7RYR7jmRn6MXGBxzXdJruMTJhp/a7otMkTQ0o4zZ/lthGmw1Qaw274JOpq3WMC2QctuvzNP3zkdq8CGwztaSMb+BwDjpijhTfmX20E2X1WSjNoHWaVlSJqjOEUHrkDkjeLoGvTMnfbvK+19fnqIjuCOLK8yndI9P1JZysvAdbHDWc7HF4GFDIpTigTGSSvGOFgCN/2Vlwv2qnxsmdeMnh3V8QmJzgiOqonjnnruQQWYNKINP+Bisxdo2OOwVxGi6+GgpN4OEeNJdO5xrauFTkjZTA==; s=purelymail1; d=purelymail.com; v=1; bh=Nr2aL63sOv9f485z/UhCxW0OunsYshCUH3IQCPyx7X4=; h=Feedback-ID:Received:Date:From:To:Subject;
+Feedback-ID: 823466:39853:null:purelymail
+X-Pm-Original-To: linux-wireless@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 420816377;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Tue, 23 Jun 2026 19:31:53 +0000 (UTC)
+Date: Tue, 23 Jun 2026 15:31:52 -0400
+From: Nathan Howard <kernel@nhoward.dev>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Yingjie Cao <yingjcao@sigvoid.com>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] wifi: mac80211: only accept IBSS channel switch from our
+ own BSSID
+Message-ID: <ajrfKAmdZnPPkGKE@gpu1>
+References: <20260623090437.13198-1-yingjcao@sigvoid.com>
+ <c3fd8617849368e579a56c4397b7ee8624ef27ad.camel@sipsolutions.net>
+ <9201d828365fa2b11fb6a83d1ff66365435a9072.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9201d828365fa2b11fb6a83d1ff66365435a9072.camel@sipsolutions.net>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nhoward.dev,reject];
+	R_DKIM_ALLOW(-0.20)[nhoward.dev:s=purelymail1,purelymail.com:s=purelymail1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-38022-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:bhelgaas@google.com,m:alex@shazbot.org,m:mani@kernel.org,m:jjohnson@kernel.org,m:linux-pci@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath11k@lists.infradead.org,m:ath12k@lists.infradead.org,m:mhi@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:jtornosm@redhat.com,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:yingjcao@sigvoid.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[kernel@nhoward.dev,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-38023-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kernel@nhoward.dev,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[nhoward.dev:+,purelymail.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,purelymail.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A7FA56B9722
+X-Rspamd-Queue-Id: 9D7E56B9B96
 
-Some Qualcomm PCIe devices (WCN6855/WCN7850 WiFi cards, SDX62/SDX65 modems)
-lack working reset methods for VFIO passthrough scenarios. These devices
-have no FLR capability, advertise NoSoftRst+ (blocking PM reset), and have
-broken bus reset.
+On Tue, Jun 23, 2026 at 11:12:20AM +0200, Johannes Berg wrote:
+> On Tue, 2026-06-23 at 11:10 +0200, Johannes Berg wrote:
+> > On Tue, 2026-06-23 at 17:04 +0800, Yingjie Cao wrote:
+> > > ieee80211_rx_bss_info() acts on a channel switch announcement (CSA)
+> > > carried in a received beacon or probe response before it verifies that
+> > > the frame's BSSID matches our own IBSS; it only checks that the SSID
+> > > matches. ieee80211_rx_mgmt_spectrum_mgmt() acts on a spectrum management
+> > > (channel switch) action frame without checking the BSSID at all.
+> > > 
+> > > Because of this, any station in radio range that knows the IBSS SSID
+> > > (which is broadcast in cleartext) can inject a beacon or action frame
+> > > carrying a CSA element that points at an unsupported channel. The switch
+> > > then fails in ieee80211_ibss_process_chanswitch(), which queues
+> > > csa_connection_drop_work and tears the whole IBSS down. The members
+> > > rejoin and the attacker repeats, resulting in a persistent,
+> > > unauthenticated denial of service. Encrypted IBSS networks are equally
+> > > affected because beacons are not protected. Since both of these CSA
+> > > entry points are IBSS-specific, the impact is confined to IBSS (ad-hoc)
+> > > mode; managed-mode CSA is handled separately in mlme.c and is unaffected.
+> > 
+> > Once you rewrite this to be more honest, you'll see that the whole Cc
+> > stable thing and all is fairly much pointless?
+> > 
+> > Or have you not realised yet that stations can also trivially fake their
+> > MAC address?
+> 
+> Also, since you don't have a track record in wifi, I'll point once again
+> to https://docs.kernel.org/process/coding-assistants.html
+>
 
-The problem manifests in VFIO passthrough scenarios:
-
-- WCN6855 (17cb:1103) and WCN7850 (17cb:1107) WiFi devices:
-  Normal VM operation works fine, including clean shutdown/reboot.
-  However, when the VM terminates uncleanly (crash, force-off), VFIO
-  attempts to reset the device before it can be assigned to another VM.
-  Without a working reset method, the device remains in an undefined state,
-  preventing reuse.
-
-- SDX62/SDX65 (17cb:0308) 5G modems: Never successfully initialize even
-  on first VM assignment without proper reset capability.
-
-Add device-specific reset methods using BAR-space hardware reset registers
-that exist in these devices:
-
-- WCN6855/WCN7850 WiFi devices use SoC global reset via BAR0 (sequence from
-  ath11k/ath12k driver: ath11k_pci_soc_global_reset(), ath11k_pci_sw_reset(),
-  ath11k_mhi_set_mhictrl_reset()):
-  - Write/clear reset bit at offset 0x3008
-  - Wait for PCIe link recovery (up to 5 seconds)
-  - Clear MHI controller SYSERR status at offset 0x38
-
-- SDX62/SDX65 modem devices use MHI SoC reset via BAR0 (sequence from MHI
-  driver: mhi_soc_reset(), mhi_pci_reset_prepare()):
-  - Write reset request to offset 0xb0
-  - Wait 2 seconds for reset completion
-
-These are true hardware reset mechanisms (not power management or firmware
-error recovery), providing proper device reset for VFIO scenarios.
-
-Testing was performed on desktop platforms with M.2 WiFi and modem cards
-using M.2-to-PCIe adapters, including extensive force-reset cycling to
-verify stability.
-
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
----
-v10:
-  - Complete redesign based on maintainer feedback (Manivannan Sadhasivam,
-    Alex Williamson): use actual hardware reset registers from
-    device drivers instead of D3hot power cycling
-v9: https://lore.kernel.org/all/20260612142638.1243895-1-jtornosm@redhat.com/
-
- drivers/pci/quirks.c | 118 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 118 insertions(+)
-
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 431c021d7414..8ad3f214e520 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4240,6 +4240,121 @@ static int reset_hinic_vf_dev(struct pci_dev *pdev, bool probe)
- 	return 0;
- }
- 
-+#define QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET	0x3008
-+#define QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET_V	BIT(0)
-+#define QUALCOMM_WIFI_MHISTATUS			0x48
-+#define QUALCOMM_WIFI_MHICTRL			0x38
-+#define QUALCOMM_WIFI_MHICTRL_RESET_MASK	0x2
-+
-+/*
-+ * Qualcomm WiFi device-specific reset using SoC global reset via BAR0
-+ * registers.
-+ */
-+static int reset_qualcomm_wifi(struct pci_dev *pdev, bool probe)
-+{
-+	bool link_recovered = false;
-+	unsigned long timeout;
-+	void __iomem *bar;
-+	u32 val;
-+	u16 cmd;
-+
-+	if (probe)
-+		return 0;
-+
-+	if (pdev->current_state != PCI_D0)
-+		return -EINVAL;
-+
-+	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-+	pci_write_config_word(pdev, PCI_COMMAND, cmd | PCI_COMMAND_MEMORY);
-+
-+	bar = pci_iomap(pdev, 0, 0);
-+	if (!bar) {
-+		pci_write_config_word(pdev, PCI_COMMAND, cmd);
-+		return -ENODEV;
-+	}
-+
-+	val = ioread32(bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
-+	val |= QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET_V;
-+	iowrite32(val, bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
-+	ioread32(bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
-+
-+	msleep(10);
-+
-+	val &= ~QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET_V;
-+	iowrite32(val, bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
-+	ioread32(bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
-+
-+	msleep(10);
-+
-+	timeout = jiffies + msecs_to_jiffies(5000);
-+	while (time_before(jiffies, timeout)) {
-+		val = ioread32(bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
-+		if (val != 0xffffffff) {
-+			link_recovered = true;
-+			break;
-+		}
-+		msleep(20);
-+	}
-+
-+	if (!link_recovered) {
-+		pci_err(pdev, "PCIe link failed to recover after reset\n");
-+		goto out_restore;
-+	}
-+
-+	/* After SOC_GLOBAL_RESET, MHISTATUS may still have SYSERR bit set
-+	 * and thus need to set MHICTRL_RESET to clear SYSERR.
-+	 */
-+	iowrite32(QUALCOMM_WIFI_MHICTRL_RESET_MASK, bar + QUALCOMM_WIFI_MHICTRL);
-+	ioread32(bar + QUALCOMM_WIFI_MHICTRL);
-+
-+	msleep(10);
-+
-+out_restore:
-+	pci_iounmap(pdev, bar);
-+	pci_write_config_word(pdev, PCI_COMMAND, cmd);
-+
-+	return link_recovered ? 0 : -ETIMEDOUT;
-+}
-+
-+#define MHI_SOC_RESET_REQ_OFFSET		0xb0
-+#define MHI_SOC_RESET_REQ			BIT(0)
-+
-+/*
-+ * Qualcomm modem device-specific reset using MHI SoC reset via BAR0
-+ * register.
-+ */
-+static int reset_qualcomm_modem(struct pci_dev *pdev, bool probe)
-+{
-+	void __iomem *bar;
-+	u16 cmd;
-+
-+	if (probe)
-+		return 0;
-+
-+	if (pdev->current_state != PCI_D0)
-+		return -EINVAL;
-+
-+	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-+	pci_write_config_word(pdev, PCI_COMMAND, cmd | PCI_COMMAND_MEMORY);
-+
-+	bar = pci_iomap(pdev, 0, 0);
-+	if (!bar) {
-+		pci_write_config_word(pdev, PCI_COMMAND, cmd);
-+		return -ENODEV;
-+	}
-+
-+	iowrite32(MHI_SOC_RESET_REQ, bar + MHI_SOC_RESET_REQ_OFFSET);
-+	ioread32(bar + MHI_SOC_RESET_REQ_OFFSET);
-+
-+	/* Be sure device reset has been executed */
-+	msleep(2000);
-+
-+	pci_iounmap(pdev, bar);
-+	pci_write_config_word(pdev, PCI_COMMAND, cmd);
-+
-+	return 0;
-+}
-+
- static const struct pci_dev_reset_methods pci_dev_reset_methods[] = {
- 	{ PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_82599_SFP_VF,
- 		 reset_intel_82599_sfp_virtfn },
-@@ -4255,6 +4370,9 @@ static const struct pci_dev_reset_methods pci_dev_reset_methods[] = {
- 		reset_chelsio_generic_dev },
- 	{ PCI_VENDOR_ID_HUAWEI, PCI_DEVICE_ID_HINIC_VF,
- 		reset_hinic_vf_dev },
-+	{ PCI_VENDOR_ID_QCOM, 0x1103, reset_qualcomm_wifi },  /* WCN6855 WiFi */
-+	{ PCI_VENDOR_ID_QCOM, 0x1107, reset_qualcomm_wifi },  /* WCN7850 WiFi */
-+	{ PCI_VENDOR_ID_QCOM, 0x0308, reset_qualcomm_modem }, /* SDX62/SDX65 modems */
- 	{ 0 }
- };
- 
--- 
-2.54.0
-
+So, what's the litmus test?  I've been watching this list for some time
+now.  I've seen (what appears) to be an ushering of distrust brought
+on by llm's.  This also seems to have come into prominence within the last 6 or
+so months.  I understand the cautious approach, but what if one's been
+working diligently (and quietly), and has spent many hours studying and
+preparing a driver series (for oneself and submission to the kernel)?
+I've always done well by doing my homework the hard way.  But now,
+submissions are met with skepticism... that the work must have been
+assisted-by if the person doesn't have a track record.  How should one defend
+his work (I'd rather not share credit with a machine when my work is my own)?
+To be clear, my question is sourcing from what I've seen to be trending
+more recently whereby several submissions have been ?softly? tagged as assisted-by.
+Maybe they were, but my point still stands.  Kindly provide guidance.
 
