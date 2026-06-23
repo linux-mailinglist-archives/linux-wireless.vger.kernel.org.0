@@ -1,177 +1,214 @@
-Return-Path: <linux-wireless+bounces-38017-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38018-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id l0rBHMGVOmoyAwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-38017-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 16:18:41 +0200
+	id xa36NUOjOmpsCQgAu9opvQ
+	(envelope-from <linux-wireless+bounces-38018-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 17:16:19 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CDC96B7CDE
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 16:18:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6BE6B83D9
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 17:16:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mlY+i5my;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38017-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38017-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=S77c8yFO;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38018-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38018-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9D6FC3019477
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 14:18:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 024E0300B1FC
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 15:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76B33845C4;
-	Tue, 23 Jun 2026 14:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB9F3D6491;
+	Tue, 23 Jun 2026 15:16:17 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBE333DEFC
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jun 2026 14:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830B137EFFF
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Jun 2026 15:16:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782224318; cv=none; b=FMkOvSb9nB0emAyZBo0hsGfKK/jHhTm9hKFaTWHinNo4JOzGPNXrrFrsdmAt+BelNudxCx5UtCRZfJrzYESTS34Vvgp+aW8C6iwi4+HHeHFvMs8DOZcg0Yh0c2AwpF4+tJ976WX1LOCRFPLJhEowuQNI2m7vVkIqTj069ECIvsA=
+	t=1782227777; cv=none; b=IYpHr4cRWzVFiQNJ541r2g5+SlHB3MDxaO0zzEELaj/RcX4NIHzAYadS0VY5ahly/9N5KNvjX69vjxkn82TNLwvdX894dL5PV8ptChMUVUsqa+c5prJBhtgBzaQUV+b+rxobPfKH4WNcCJVUT3zlBMvrHMu3D58eXnYmDNHasO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782224318; c=relaxed/simple;
-	bh=IIGhDu1O+xxr65+AZvSVCh+JlSAMXGWm6gzIMXsiIhw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jXWdIH4UoaqwMHPviuWDO2LkVyV+rcSVup7pHO5pmw12m3AB4JIBRYwoE2gENChx9R0f0dfhfyVxzSrt17sOCRCdjC9FiYrZNujEEcdE6SFOYGbuyfs+jmFTMOB3My0vo3s50RPsTqiNL8/Kl+Gj04p0roEnxyrziwjudjBIn+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mlY+i5my; arc=none smtp.client-ip=209.85.128.48
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-490c0c92cffso39472035e9.2
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Jun 2026 07:18:37 -0700 (PDT)
+	s=arc-20240116; t=1782227777; c=relaxed/simple;
+	bh=2XJvqAU9oYahTcC+SXLZXYvCIJQM8cGyszkv/qsM+vg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q6XGdR8Go5XmONUyuFZ/I9i0tWB45YIqqtjDjthNwaziarE5KbQJs3RvIEIoIVnFtSLi0WYWEeXPQEXLchKi9S/HhOEZKivvuDM5mBLM4LXBDv1nWRnp83WfNEwMj+VtGpwJMh3oCsg/j7ve60Af4iwwbnviohTHOV51R+weNlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S77c8yFO; arc=none smtp.client-ip=209.85.128.46
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49249707788so25503505e9.2
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Jun 2026 08:16:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782224316; x=1782829116; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4zXrpA92cffM+/4XGxxJ1PBuhbTGx3x8Hhj/f9/Bj58=;
-        b=mlY+i5mykCd5QICvyWEGkXVpNddud+6O0wLYzwuz4twdONJ1QkoDujDbY/l6EUUz3C
-         AjfQtymj60du+wH8FpuGyeFsarICJp69FXb7H5qQMjxCrRNBVmjcvD62Ht08rbPmwhwT
-         qcyChDk3XFRFvxs4OgnG5Nj+VgsrTumO+bks5V+sHx78B3FBLH4maQgiuROTqf6xnjU5
-         pjB+LjAqeChSq+ivSbsaM4avlplFQ054Xsty7smKAaVfUjtQjw8M7DeHyNPygR58UiAQ
-         ygRXjZgzEpN3LbKAtpffiC9fgCnheITS5UjfdfIYNZVTNQe8M2VTTaKGS9o9NELiCJ7y
-         D4Vw==
+        d=gmail.com; s=20251104; t=1782227775; x=1782832575; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AT1h44Zm9oh1x5aEKYj5yka+DdDxBM20kc8wgw2F+yA=;
+        b=S77c8yFOSm7zjb0QdXwq4S1tcDv6c/Sed4hb75GIqePA3hFjtZTRjMZNDtYeLbiUl7
+         7JKK+1pKJiAey5juXKzcYgnSwNZI0eoeydQiQ//WKJ9YBJ+dNbNoodWVcH4RqpFcfkNf
+         fgp6nnczZAuVtU2lk79peraYgkSSOHaksF/4Bz5iBVY/EQyfTkwQZFn0ySYpqu7v/T2e
+         Im6pb1W+vZAuFugiTBQyN5Wol02XdrIVvpN1nCWiCCNBlf0iAYJ8HpwTAQEtozPRpGax
+         SuVo16E1+nmRuTZlHHmmSWeh0qYGGvMOTmR6Mzi5kUc8ZhjsGJtODmp/qtzFRwUKewJN
+         ZWSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782224316; x=1782829116;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4zXrpA92cffM+/4XGxxJ1PBuhbTGx3x8Hhj/f9/Bj58=;
-        b=qAQLjwMScdptE35xTXH01QVMfGqGXIiuPOMaLYnCApTU6G+ENByJGX4sGwjBhw7YrI
-         lrTGAONehWSy1grG7DRZ7MKG1DWA7b4MHdY0Gx/iSt/UO/9WHZGbd/ad2OEvwV4X+eWP
-         xKHFYc1V7TgjyQ/jNaeZxlXL+Pt6CN023uPnmdhXFqtlDc9TuQfoAodgtWIiT/pBdpXB
-         bX9wMz3CAWazMb3zptPifmhkTrVHA8iwDaXGV47YlmJSSFHtrr8KD/3sy88jzwiYOP+H
-         tGIkU1oWrabQCeet9w+NNLnZjkvZvrzNx4vYVOSlPqM6fDGH79Y93N6d6aFHYubXKTyC
-         0Amg==
-X-Forwarded-Encrypted: i=1; AFNElJ+Cfa9Ec4dIyp22PBjZcu0jab6wDAowv5ALJoyiWrHMuHPTHmZaEHYlFqGI76jF1+hOMrqzopEvpONyi8zmFA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkJnL10cb4xjd9l66/ZULpX6Hsaz9cBRTfPIiG4fvXo8+Nowol
-	JD3B9te5sHv5izfk7qJMwTIFaIImu66mwnmuntBW4Yvhk0gQQWqRBtypCyOyqw==
-X-Gm-Gg: AfdE7cnyWymVepGDctYqLpxSEbo0E0/jRVJ60h7DwxouMAYfr2utOWUGN3mDevaNqSl
-	WTQV15x8GF6qqNhBMVAF5DtXHu1u5WSLtZSd47yZWkiO21aaPWBeFKHZOv5K5a4MKIRGX2ih0sB
-	GkZh83c1WcHulYEPzzZvuMGAmJg9o/GwPWyilo7am9NLtOgw3cXu9nwaaISnNsGrjCkbXTzwJGD
-	k8vKrzwmcWJsjLETit5PgN4pI1MLVC2hK9iFwCBiUz3bRazDfkDmSa/odeqTZF6lxwYqfJ43hHp
-	126V+4pGZmGWXDpT+81IwITHkoLKWyyR+M7mWDsjHcs1XJEzbV0P8vkCXS5fj/VJUL8N/q/ufOs
-	prqzewhnf6bg5KE39JbvynCqIhR0fEDJa2yb9Vr9AiyWrpeYC24Tds8vmXtxVwcVZYSZ2NZ7204
-	GR00ubTBjYoXzi49YB9Gg=
-X-Received: by 2002:a05:600c:c4b7:b0:490:b3e7:4614 with SMTP id 5b1f17b1804b1-49240e932camr300110115e9.25.1782224315311;
-        Tue, 23 Jun 2026 07:18:35 -0700 (PDT)
-Received: from [192.168.1.50] ([79.118.68.35])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4923fc47720sm648699055e9.0.2026.06.23.07.18.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jun 2026 07:18:34 -0700 (PDT)
-Message-ID: <3445ca1b-2d5a-43ae-9df1-d3f6440fae78@gmail.com>
-Date: Tue, 23 Jun 2026 17:18:33 +0300
+        d=1e100.net; s=20251104; t=1782227775; x=1782832575;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AT1h44Zm9oh1x5aEKYj5yka+DdDxBM20kc8wgw2F+yA=;
+        b=bLS517oFxpQc0K7NRjjem6PRUWWEUaihkqJ2Tv6dmo8sl+KkzV5qsNOA+POQyGj4Kq
+         BhRXASrwIPHVMANsShUs2neFJdVpzP4uOvE7eDq6b6oh2WwTpTYRzZ9a0/YZTPGGflXx
+         KR16+ioZLRS45Urel3oesG8AEPHpS3Nm5bxTiB62yk1Q/qku7E4a1rvSsG5wUOj68nAN
+         8wSix7ZaVUsBfp5zwzgnaG/VcyubUKI7StgmPw6zg7dp1cuDAcIlc6wSFu6Pnd+N8A4z
+         rvZFuqR/RVWv4IY4cb+fCzlmJGV5dHJBPNa7AKDSng0gI9ReRotQezoK33MvLwqdtE+m
+         699Q==
+X-Gm-Message-State: AOJu0YyZRe9guDEroM7yuMDRNoAhWiT1cDz2R0UKkZesDcMsO9UezrpU
+	D4HFapgUPYaG8GEFtPNwdTMhaNksU1VB/h+0oM0m4FcrvPykddaB/WGKM/PYJA==
+X-Gm-Gg: AfdE7cnX/WBfOsCDiIBq3QojFdWg7k/mmdU7NEFBwmoshJys30xLKqkiBvS3Bqjkw5J
+	ldxM9jjulmboMJuyfCGx4Hs0HjAA+9ye7nwOZ/i9Tygy20FJEAbxicIB+eUorlWrZmnEUEVX1kh
+	mIXkU/Y8iWBYx/KiAvmLEtLPfqLs7zWQvU87MUoJ9hbJSHnAZjT/unY2CYuzqiku5KARqagmzec
+	BRYJG25cMoJVJNB3P3AWeMG8pv4oHYOB3Kg2P51hOdM+DViyrYHxF5zGWiToI1izxXq0T61+f1j
+	p82S3vCiIqFGxLMQT9LnxhJFfRmrzOKd1gxRPspzAbXol2TG3IlfPx2EW4/Z2NziIAmt+gYxCE5
+	Om77D06tFy+pFhPOWlmaZJerCN6SdFrx5Thq+079J1vVSsLRNiTn2Bjyj6smK4TgOUDdxnUpddp
+	R8ogXSNdFnaLgFxnZl63ZBixOh0eiBgv1R89Fh32Ep90XiLQ==
+X-Received: by 2002:a05:600c:3e8f:b0:490:e5c1:b8b9 with SMTP id 5b1f17b1804b1-49249046b94mr230072095e9.0.1782227774587;
+        Tue, 23 Jun 2026 08:16:14 -0700 (PDT)
+Received: from syracuse.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-492494497ffsm312950005e9.11.2026.06.23.08.16.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jun 2026 08:16:14 -0700 (PDT)
+From: Nicolas Escande <nico.escande@gmail.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH ath-next v3] wifi: ath12k: avoid setting 320MHz support on non 6GHz band
+Date: Tue, 23 Jun 2026 17:16:13 +0200
+Message-ID: <20260623151613.72113-1-nico.escande@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next] wifi: rtw88: Enable receiving control frames in
- monitor mode
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: =?UTF-8?Q?Georg_Bi=C3=9Feling?= <georg.bisseling@sea-gmbh.com>
-References: <2a52d718-9e46-47f2-84a1-d8e7b1ed89a8@gmail.com>
- <7f12ff0969754a9fa4d78b0ae3d2409e@realtek.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <7f12ff0969754a9fa4d78b0ae3d2409e@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-38017-lists,linux-wireless=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:georg.bisseling@sea-gmbh.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38018-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_SENDER(0.00)[nicoescande@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nicoescande@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,realtek.com:email]
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9CDC96B7CDE
+X-Rspamd-Queue-Id: 8B6BE6B83D9
 
-On 23/06/2026 04:15, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> From: Bitterblue Smith (S.E.A. Datentechnik GmbH) <rtl8821cerfe2@gmail.com>
->>
->> By default RTL8723D, RTL8703B, RTL8812A, RTL8821A, and RTL8814A are
->> configured to filter out all control frames except PS-Poll, even in
->> monitor mode.
->>
->> Handle FIF_CONTROL in rtw_ops_configure_filter(). When it's set,
->> configure REG_RXFLTMAP1 to let all control frames through. When it's
->> unset, restore the original value. Because some drivers configure
->> REG_RXFLTMAP1 differently, keep track of its value in a new member of
->> struct rtw_hal.
-> 
-> All behaviors are unchanged for non-monitor mode, right?
-> 
+On a split phy qcn9274 (2.4GHz + 5GHz low), "iw phy" reports 320MHz
+related features on the 5GHz band while it should not:
 
-I think so.
+    Wiphy phy1
+    [...]
+        Band 2:
+    [...]
+            EHT Iftypes: managed
+    [...]
+                EHT PHY Capabilities: (0xe2ffdbe018778000):
+                    320MHz in 6GHz Supported
+    [...]
+                    Beamformee SS (320MHz): 7
+    [...]
+                    Number Of Sounding Dimensions (320MHz): 3
+    [...]
+                EHT MCS/NSS: (0x22222222222222222200000000):
 
->>
->> Signed-off-by: Bitterblue Smith (S.E.A. Datentechnik GmbH) <rtl8821cerfe2@gmail.com>
-> 
-> Once you migrate to your company mail, maybe you can add an entry to .mailmap, 
-> which only affects the output of git-shortlog though.
-> 
+This is also reflected in the beacons sent by a mesh interface started on
+that band. They erroneously advertise 320MHz support too.
 
-Seeing the company name in parentheses with no explanation makes you
-think I'm part of the company, doesn't it? But I'm not, they just
-sponsored this patch:
+This should not happen as IEEE Std 802.11-2024, subclause 9.4.2.323.3 says
+we should not set the 320MHz related fields when not operating on a 6GHz
+band. For example it says about Bit 0 "Support For 320 MHz In 6 GHz"
 
-https://lore.kernel.org/all/20250203174626.1131225-1-kuba@kernel.org/
+  "Reserved if the EHT Capabilities element is indicating capabilities for
+   the 2.4 GHz or 5 GHz bands."
 
-It's confusing, I don't know why they didn't go with a simple
-"Sponsored-by" tag.
+Fix this by clearing the related bits when converting from WMI eht phy
+capabilities to mac80211 phy capabilities, for bands other than 6GHz.
 
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-> 
-> 
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00218-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+---
+Changes from v2:
+  - rebased on ath-next
+  - fixed all typos
+  - changed wording in commit message & code comment
+  - also clear all other 6GHz related phy capabs
+
+Changes from v1:
+  - rebased on ath-next
+  - clear all 6GHz / 320MHz related phy capabilities fields from the firmware
+---
+ drivers/net/wireless/ath/ath12k/wmi.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 84a31b953db8..e7689ee3e701 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -5154,6 +5154,7 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
+ 				       __le32 cap_info_internal)
+ {
+ 	struct ath12k_band_cap *cap_band = &pdev->cap.band[band];
++	u8 *phy_cap = (u8 *)&cap_band->eht_cap_phy_info[0];
+ 	u32 support_320mhz;
+ 	u8 i;
+ 
+@@ -5167,8 +5168,22 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
+ 	for (i = 0; i < WMI_MAX_EHTCAP_PHY_SIZE; i++)
+ 		cap_band->eht_cap_phy_info[i] = le32_to_cpu(cap_phy_info[i]);
+ 
+-	if (band == NL80211_BAND_6GHZ)
++	if (band == NL80211_BAND_6GHZ) {
+ 		cap_band->eht_cap_phy_info[0] |= support_320mhz;
++	} else {
++		/*
++		 * Firmware may report 6 GHz/320 MHz specific capabilities for
++		 * non-6 GHz bands, so explicitly clear them.
++		 */
++		phy_cap[0] &= ~IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
++		phy_cap[1] &= ~IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_320MHZ_MASK;
++		phy_cap[2] &= ~IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_320MHZ_MASK;
++		phy_cap[3] &= ~IEEE80211_EHT_PHY_CAP3_SOUNDING_DIM_320MHZ_MASK;
++		phy_cap[6] &= ~IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_320MHZ;
++		phy_cap[6] &= ~IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP;
++		phy_cap[7] &= ~IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_320MHZ;
++		phy_cap[7] &= ~IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ;
++	}
+ 
+ 	cap_band->eht_mcs_20_only = le32_to_cpu(supp_mcs[0]);
+ 	cap_band->eht_mcs_80 = le32_to_cpu(supp_mcs[1]);
+-- 
+2.54.0
 
 
