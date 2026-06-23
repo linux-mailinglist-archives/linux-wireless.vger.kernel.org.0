@@ -1,192 +1,155 @@
-Return-Path: <linux-wireless+bounces-38013-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38014-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kArCKbqTOmpiAggAu9opvQ
-	(envelope-from <linux-wireless+bounces-38013-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 16:10:02 +0200
+	id 63A2LlSVOmoFAwgAu9opvQ
+	(envelope-from <linux-wireless+bounces-38014-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 16:16:52 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA886B7C01
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 16:10:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583756B7CB0
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 16:16:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=J4+J6cKe;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38013-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38013-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=fWYbk6fk;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="d 5wFqDm";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38014-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38014-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=shazbot.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 662563016AFD
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 14:09:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80DA53095FD5
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jun 2026 14:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75333812E1;
-	Tue, 23 Jun 2026 14:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18D7384CC8;
+	Tue, 23 Jun 2026 14:15:32 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A4E380FFE;
-	Tue, 23 Jun 2026 14:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9598237D11F;
+	Tue, 23 Jun 2026 14:15:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782223788; cv=none; b=WfhzVxT5HLMOEIIJDbcpRaXbixuMcaH212vpTNkj/M8TP05W1M58eEppPKGk6n/v76af79b/WDm6dZAb8vh9tgkLbW82ooWcWormBgP+bb/FnKPswdtJ01e3g13/t6XbaRODai07ZpBlKIvxhoYyAxxzuML/Vs65p3WWcVBXmc0=
+	t=1782224132; cv=none; b=fjzNnqTL5zV1RydD4voKlnFS8fNqdfTQ6TSDUGxaX2/mlX2AGoGeGSv7ejKH8Ti08D0T1amzVPRI1xMRk7WDw6Wg9t7hO6wWTbdeyCV9D00pspX/dT4PzWzWQXV2w8yIyGeHpz8Bi3qCv7hdZ8XDmU1Hq2KAhLROfqrNPdr1y+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782223788; c=relaxed/simple;
-	bh=kOprRzbM7KFPtmvL8N6apCL4mJ4W8aayvM4vio8qpao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gVlcQSJdge66bXs7sCzp1ijjgQKNNx2zk5PDJFSbbH+ox3wAO+QYwzvqRtuSDov+nY3/TT3rpPFPJ40CENBmJc3RreOfVahlaZZn5wZDOyw7I0bis0xjqiZbZjgD0t5oybFMZuOlbK6z7/alc2t+46CXNXf0AKIaci1B/89wszY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J4+J6cKe; arc=none smtp.client-ip=192.198.163.18
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782223786; x=1813759786;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=kOprRzbM7KFPtmvL8N6apCL4mJ4W8aayvM4vio8qpao=;
-  b=J4+J6cKevjZMWmCZxP/QqQRjUpWpKXPDvuJdto6hQcOmvSuq+HlypRhy
-   MQyeWVdw0bkKatMCAY8vQe2sZYnJT4TuOol58uGZY2apFY/z/RN6rORvW
-   VUrKffDIzoJAzzyYhD07Ct74emnzPt4/YhNt9UWNWHUpUdwkGr776oq60
-   CS8hu/wJ3oh67Ef9xpM1igrrzLrydUlq5osEcXYL05oSi0FDS/OdOPakh
-   zeaspsluW6bGhpiuYfa6L81WzXv/zfBZWAaxwMVu7bVUzYW/NaIUkhWeQ
-   j9+saLJT5aRnzKCmsG1BrMlOA4a8eDk024Fqw9R1mRramrXvexJt81MOr
-   Q==;
-X-CSE-ConnectionGUID: d0Ad45jLTmSLxd7FfSlTzg==
-X-CSE-MsgGUID: mdE/CPoZSH+9CWLzrxGgdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11826"; a="82074173"
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="82074173"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 07:09:44 -0700
-X-CSE-ConnectionGUID: kiNjFd8VQpmeNcjlSz3bfw==
-X-CSE-MsgGUID: h/g9ioxRRBiW564TCjXsXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="245161587"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.7])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 07:09:42 -0700
-Date: Tue, 23 Jun 2026 17:09:40 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Kees Cook <kees@kernel.org>, linux-hardening@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: Re: [PATCH v1 1/2] overflow: Allow to sum a few arguments at once
-Message-ID: <ajqTpJAMFFV3H5Im@ashevche-desk.local>
-References: <20260617112250.2791461-1-andriy.shevchenko@linux.intel.com>
- <20260617112250.2791461-2-andriy.shevchenko@linux.intel.com>
- <202606182046.AE5F6A241@keescook>
- <ajTlfuOFHXlA7xdu@ashevche-desk.local>
- <202606192025.CF68F2E@keescook>
- <ajY5hg0f34C-iV3R@ashevche-desk.local>
- <54974e4298efd26a52c9c0e9ada88d57e8695a09.camel@sipsolutions.net>
+	s=arc-20240116; t=1782224132; c=relaxed/simple;
+	bh=E9QkdfRNiqCNA23VrWWi12cR+wbZEAHm5lOxyji1qm0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FpcwlyhLKnB2bqpefcab8Y1tXBoIbxoTQgnvcxi+tWIWjVm73RgkEMKPXOqAVfgctQRt5bW5XteuvpxMDvMyer9pznD5noZGCdP4rJHI6kYXCMxHukIkoHFU17WgZFAoEp4RZgKVYwxQF/bvU1XgKS2JHNtfxw01e1JA9XeNI2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=fWYbk6fk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=d5wFqDme; arc=none smtp.client-ip=202.12.124.147
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id A1B8F1D0012B;
+	Tue, 23 Jun 2026 10:15:29 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 23 Jun 2026 10:15:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1782224129;
+	 x=1782310529; bh=2/BP8S3K7EAUl7PQnFjVmpuzHDdXnjTm3NfjEHjajEM=; b=
+	fWYbk6fkCNJC0bClPCw0ReBNdY4hN50DXQBD3DzXZQlrOQKgfkztR1qs6Z1B59lM
+	mXq/zyIRZQrmHPdTdXkxYvjCvd20lyfjz2/V29HoOovlhp6A4DOzlzMdyapJtjhu
+	5r1/IDqtzHbH+p/xPReg6U2FyANt6gLsceneZbidHLLxUiKNPks+heZBIsC2ddJx
+	tj9TqzPSKgFxvaTeiO1Z7ZKj6GJcgk/YMtBaOH1GSWdsehZYWR+gxk8d31tcLAB7
+	BwCF1YHE7yibxQGzSU/6HlSkZW5Yy79reIBWOfzzbrlAtJyaUb4sJTNCVIObJE/N
+	e+ONpLAI6slz+TUEjkLKlg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782224129; x=
+	1782310529; bh=2/BP8S3K7EAUl7PQnFjVmpuzHDdXnjTm3NfjEHjajEM=; b=d
+	5wFqDmeEoZULivheN107RbYoHR/AiayXFajvfWcvzOueC9a/OpQjUk33AW2s+wud
+	S68bO7o76KRqu60FLYGAFtdjOekhCIvpbNUQvN9P2kFfK5dDKG+23b47W5uh1dKH
+	NQtrv3gGm4PxEvVz0SKJCN8keHi+WTw60m2vGmCgsd20MXveWNhrP2eG2e0JJpPZ
+	XGVL//Cu9WN6xLVC92JF3fWr5VKpTZvIRAukXIbhptKVayPGbg3JXMEopYBue/nI
+	WM1DYcuU6FyRQ/yXXhEaoFRZfSpdJlp1xqwDKtu5YVEnOpGgJtsMu+R6PD5zHa2M
+	mHTnAHikq1lmBSf7knMrQ==
+X-ME-Sender: <xms:AZU6amHwTQM9Sk9JhzlIL57NdDglaID_OXxTc38efbiZpidyv0EEmQ>
+    <xme:AZU6avdQkVDsxA6PTEivIkdxE6go6uZwehI57pW0EmO0xQPHgnuzLF5JuFpdrzzA5
+    _HzYk5Ez-ESaJyJIB4X93m9w_dCFsRg1t8d1Dt4g1dgWU-8-xGFwg>
+X-ME-Received: <xmr:AZU6avpw6ntrmuenZorUPiJQ5HFCLxO4Tkvhe2qmLGChLDJ4-SslPzrcciM>
+X-ME-Proxy-Cause: dmFkZTEtltNPcCC7LyAuhl+F6mArHQnqSrrLTwwKExrXFThrGIeCpx+D/j+xo8RW9Aeb11
+    IjCJP2gJR3JeMmMcXRHHc6ZvZ6CmsaWiTS/tZu5AS4X6umxRyVu9/omdNSNMa4zgDvnwCW
+    LmHl7a3hynDEBCupmG8oHySMy/FUCpt/Tz2sFcrjvGVk/aUa11z+/lCkvOUcuHixlVVZ8r
+    ZcUMBKg/CR0J6Y4jXqGMml/9io5G/QNccl03ob3/2wk0l+xsige7kSbMveB3jq78qV/YSC
+    lJnh42RgTRJ5DEmJdAK32pyA+wRJ2tisV6YI/QxALvNOt4ynidfjUmsGnjE82cfrTiMFNm
+    QJeWWpu8OaaduqTC9G4JqO+pr+PmThSgZweCJkdbqnABYAEWMbRu2s+UwgrQFNeHMyJ2B9
+    TtA4yF7PCrI2OL1V0CL7ZfbZUXqCjsSZNGLaoymRlLmk7NVo9O1WvtzIq2P/JvK15//DRs
+    W3XROktIIlBGsMFb0efJ/HdTNaO4NwV51gGtv6e0mz1cdFy8X1g7YT3RSR6WcqjMgEC8hQ
+    W7x5QwP9IvMqVwnjnk5g+5R9tzgZO5hnaHgqIeXtPG/3Avjzug8HPYeIQ5BmM7hhjRMH3o
+    tu+rJbr4GLksDf7NFO9DUBa2SyH+iniMKm8SY7vOr8lhc80w/GmFEPPVxlWA
+X-ME-Proxy: <xmx:AZU6agA1NamTjmN3RGC8XCC_HfwZXZ8gcqBeavb-hNqv9gn5uUZvyA>
+    <xmx:AZU6aoeyNTIhZh0SplNYIa4iGoTht0cruMnDxc7-vk10W11yGLgr8A>
+    <xmx:AZU6agvtI6tevKqtZpX3n4nO5Sf6_Ql9XeImd-itP6SErmCHQOJDsw>
+    <xmx:AZU6anjaUc7soy3hM31J9HPENUmjN0SAx6sWHgA8luzAM-jxLmRpPw>
+    <xmx:AZU6ao6ItSUirKMV9MCX9Mu6m87XTdBBQkDexvO6oePbn2MnQCEz73lD>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 23 Jun 2026 10:15:28 -0400 (EDT)
+Date: Tue, 23 Jun 2026 08:15:26 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: mani@kernel.org, ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+ bhelgaas@google.com, jjohnson@kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
+ mhi@lists.linux.dev, alex@shazbot.org
+Subject: Re: [PATCH v9] PCI: Add device-specific reset for Qualcomm devices
+Message-ID: <20260623081526.1366a16a@shazbot.org>
+In-Reply-To: <20260623125637.1188867-1-jtornosm@redhat.com>
+References: <r4jeqtx247iosfjdps6g4fqwtsdzine5qlgh33sdt4p6ktmaln@o725aolrpj4l>
+	<20260623125637.1188867-1-jtornosm@redhat.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <54974e4298efd26a52c9c0e9ada88d57e8695a09.camel@sipsolutions.net>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[shazbot.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[shazbot.org:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:kees@kernel.org,m:linux-hardening@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:gustavoars@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[andriy.shevchenko@linux.intel.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[shazbot.org:+,messagingengine.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38013-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38014-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[alex@shazbot.org,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:jtornosm@redhat.com,m:mani@kernel.org,m:ath11k@lists.infradead.org,m:ath12k@lists.infradead.org,m:bhelgaas@google.com,m:jjohnson@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:mhi@lists.linux.dev,m:alex@shazbot.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,vger.kernel.org:from_smtp,ashevche-desk.local:mid]
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alex@shazbot.org,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,messagingengine.com:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8DA886B7C01
+X-Rspamd-Queue-Id: 583756B7CB0
 
-On Mon, Jun 22, 2026 at 01:16:29PM +0200, Johannes Berg wrote:
-> On Sat, 2026-06-20 at 09:56 +0300, Andy Shevchenko wrote:
-> > Johannes, are you okay to take a new version (I assume the wish is to h=
-ave
-> > the balanced additions)? If so, I will prepare one.
->=20
-> Sure, I can take the patches, sounds good to me.
+On Tue, 23 Jun 2026 14:56:35 +0200
+Jose Ignacio Tornos Martinez <jtornosm@redhat.com> wrote:
 
-Will send soon, for the record the *.i file is 61 character less with the p=
-atch.
+> Alex, Mani - would you prefer a dedicated VFIO PCI variant driver (similar
+> to mlx5-vfio-pci) to ensure the reset logic only runs in VFIO scenarios, or
+> is the quirks.c approach acceptable? I can implement either approach.
 
-Was
+It should be a device specific reset in quirks.c.  Thanks,
 
-size =3D __builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((=
-long)(n_channels) * 0l)) : (int *)8))), sizeof(*(request)) + __builtin_choo=
-se_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)(n_channels) * 0l)=
-) : (int *)8))), (n_channels) * sizeof(*(request)->channels) + ((int)sizeof=
-(struct {_Static_assert(!(!(!__builtin_types_compatible_p(typeof(((request)=
-->channels)), typeof(&((request)->channels)[0])))), "must be array");})), s=
-ize_mul(n_channels, sizeof(*(request)->channels) + ((int)sizeof(struct {_St=
-atic_assert(!(!(!__builtin_types_compatible_p(typeof(((request)->channels))=
-, typeof(&((request)->channels)[0])))), "must be array");})))), __size_add(=
-sizeof(*(request)), __builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? =
-((void *)((long)(n_channels) * 0l)) : (int *)8))), (n_channels) * sizeof(*(=
-request)->channels) + ((int)sizeof(struct {_Static_assert(!(!(!__builtin_ty=
-pes_compatible_p(typeof(((request)->channels)), typeof(&((request)->channel=
-s)[0])))), "must be array");})), size_mul(n_channels, sizeof(*(request)->ch=
-annels) + ((int)sizeof(struct {_Static_assert(!(!(!__builtin_types_compatib=
-le_p(typeof(((request)->channels)), typeof(&((request)->channels)[0])))), "=
-must be array");}))))));
-- size =3D __size_add(size, size_mul(sizeof(*request->ssids), n_ssids));
-- size =3D __size_add(size, size_mul(sizeof(*request->match_sets), n_match_=
-sets));
-- size =3D __size_add(size, size_mul(sizeof(*request->scan_plans), n_plans)=
-);
-- size =3D __size_add(size, ie_len);
-
-Now
-
-size =3D __size_add(__size_add(__size_add(__builtin_choose_expr((sizeof(int=
-) =3D=3D sizeof(*(8 ? ((void *)((long)(n_channels) * 0l)) : (int *)8))), si=
-zeof(*(request)) + __builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? (=
-(void *)((long)(n_channels) * 0l)) : (int *)8))), (n_channels) * sizeof(*(r=
-equest)->channels) + ((int)sizeof(struct {_Static_assert(!(!(!__builtin_typ=
-es_compatible_p(typeof(((request)->channels)), typeof(&((request)->channels=
-)[0])))), "must be array");})), size_mul(n_channels, sizeof(*(request)->cha=
-nnels) + ((int)sizeof(struct {_Static_assert(!(!(!__builtin_types_compatibl=
-e_p(typeof(((request)->channels)), typeof(&((request)->channels)[0])))), "m=
-ust be array");})))), __size_add(sizeof(*(request)), __builtin_choose_expr(=
-(sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)(n_channels) * 0l)) : (int=
- *)8))), (n_channels) * sizeof(*(request)->channels) + ((int)sizeof(struct =
-{_Static_assert(!(!(!__builtin_types_compatible_p(typeof(((request)->channe=
-ls)), typeof(&((request)->channels)[0])))), "must be array");})), size_mul(=
-n_channels, sizeof(*(request)->channels) + ((int)sizeof(struct {_Static_ass=
-ert(!(!(!__builtin_types_compatible_p(typeof(((request)->channels)), typeof=
-(&((request)->channels)[0])))), "must be array");})))))), ie_len), size_mul=
-(sizeof(*request->ssids), n_ssids)), __size_add(size_mul(sizeof(*request->m=
-atch_sets), n_match_sets), size_mul(sizeof(*request->scan_plans), n_plans))=
-);
-
---=20
-With Best Regards,
-Andy Shevchenko
-
-
+Alex
 
