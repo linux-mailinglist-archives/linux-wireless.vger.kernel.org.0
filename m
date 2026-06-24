@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-38039-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38040-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dXLiJ9lRO2p5WAgAu9opvQ
-	(envelope-from <linux-wireless+bounces-38039-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 05:41:13 +0200
+	id fc2rEt5RO2p6WAgAu9opvQ
+	(envelope-from <linux-wireless+bounces-38040-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 05:41:18 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42B8E6BB24E
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 05:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 218A06BB254
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 05:41:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b=fxeJcb5p;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38039-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38039-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=realtek.com header.s=dkim header.b=tdxyZ0Ys;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38040-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38040-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=realtek.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B50DE3014245
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 03:41:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 928E4302CD8F
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 03:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DB9246788;
-	Wed, 24 Jun 2026 03:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A35F30B53A;
+	Wed, 24 Jun 2026 03:41:16 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE7730C161
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 03:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808B6246788
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 03:41:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782272470; cv=none; b=kZzDJcWaNLDBcHphH1kGeuJy0u8OC2jdf11GYJvfmEUUNWMruWwnSjt0yXku3kpZ5bjwNaPqd+8ghfwt7rGYeI/8XfaS2xI/10SsTPhyrl9gfefVmzmrwsYKbEVVOOLAIsJi0+htpKcbEz2GpJoqUzcnsWhLos7nFfbJA2/IOjs=
+	t=1782272476; cv=none; b=c2axSd44YNu31MpPOV7he/RTCxt2GREzXdAWhcTTJjM60ZXC9EyRXZ5rvjr98TBM9dsxPKt92mO+7qgMqrMsJXzxNZm3PVzqq/HqGDOEdFeCXwlRlkcg4nwXGCUiXTBxmISFO6ltn/PCUnJpu3fJraEgAvubTemLHmWpWxroj3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782272470; c=relaxed/simple;
-	bh=kd5l7D4THQSpZBB79L69cHnVqw/js2z5cqQqOmvBc7E=;
+	s=arc-20240116; t=1782272476; c=relaxed/simple;
+	bh=8tbGvUD52mDR/DPnEV3Nfs2KpOFKhshYiTnX4lY+V1Q=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AdrrbV2Dgb1+RVUb3xvzwpntfrZfVtpf6djBlqq3e3GtbvHK6Jad/3NZzIeUQlphMg9qRkQHXHcAoeJgGpNpzDR3b4vzqjXuPMSvdcW/+1usVNZ0jOgN1d+tZ5dhd/0IOWjEuK1n8fO+MPEXYyLzzgu0k2Td4quGQW8NdKNAxMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=fxeJcb5p; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65O3f6FD13888951, This message is accepted by code: ctloc85258
+	 MIME-Version:Content-Type; b=iRX7mu2YTEymL+SzyP1HkdK0PXgH51x7Cz+0h0v/dAxaTkTXhuuzTAVahEX8PkpInG4Zp5N40+m547YSkntoGYAo4CbcW/tm6EgjgPWtBmzLUftdIOsHqQyg2ejOlFhc9iQuRy/V07rnYqMQrjUkaD+0vFfrs7dy7OzjElxZMRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=tdxyZ0Ys; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65O3fCeyD3888975, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1782272466; bh=fv8nbJ8We5JufL+Oh/vqSYYRpsyaw5RGJWl2sQTXIJE=;
+	t=1782272472; bh=FZkNnaZV/IBVAl35g7U4sMXRK1rj0IZkND3gHGMHIgY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=fxeJcb5pnVLOdgSbw0egS6+8hpvJ+1enj5NahE2Zo3x1Fpgje8f+HGHb1AHeCooWL
-	 M++2qH2YdtRcW9n/guZueBMse9XCJ96+Aw5XVjVnJH36Lv+7fPcHj41ooQ7SY+29U2
-	 w6/NwSibmjgX4q31Hbv45lRLW4L3f6pTBMTu2CEFhrfObK4dcdxLr6InkWa6UCV8RZ
-	 wEy7REztomyvwHIYgX8TuVdLir355hMCmXh/dvw7OzzO9NRh4YkaTJYiHpI0xgkolf
-	 kd6zIIVYFySCCPvPK0hZ/lKYe4tUxbtl3iPL/CH04tNUADHo5XGFkdgVeqi21nDSi8
-	 +j1aZbPPcUwpA==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65O3f6FD13888951
+	b=tdxyZ0YsTW9Yn4CxB6Tvg49RrVgB4yUKPCy8F3kw578G8fFw4YKW+ST1pvOCiVKfb
+	 ThOUPTVhIEu8HZSvoDxqZBFfMnQgHsLL+ZenDJ0MeoU0+X9PqET/jGTE2R6MQ9AF/y
+	 HXKj/cgZNqYMKDJKl1v0GOwEaYVLeUa/rPbxOSfqgfxQKG0LAyugobBCWf2gdRN+9g
+	 np+7HRWaMSsTm0g0qus4JW4y0dHFc+dLNMeEoKm8diIe5+PPu3ZiTuC6rrc4Cbozh7
+	 yUoM+eAWW33HyUcdvkYOgjhIjLtBf47TjPY2217Qw0lPF4YHQftnQkmFLpESjqZ2yt
+	 Ppu0vLC2FKSWQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65O3fCeyD3888975
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 11:41:06 +0800
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 11:41:12 +0800
 Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 24 Jun 2026 11:41:07 +0800
+ 15.2.2562.17; Wed, 24 Jun 2026 11:41:12 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 24 Jun 2026 11:41:07 +0800
+ 15.2.2562.17; Wed, 24 Jun 2026 11:41:12 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Wed, 24 Jun 2026 11:41:07 +0800
+ Transport; Wed, 24 Jun 2026 11:41:12 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <ku920601@realtek.com>
-Subject: [PATCH rtw-next 08/10] wifi: rtw89: coex: Renaming drvinfo_type to drvinfo_ver
-Date: Wed, 24 Jun 2026 11:39:39 +0800
-Message-ID: <20260624033941.45918-9-pkshih@realtek.com>
+Subject: [PATCH rtw-next 09/10] wifi: rtw89: coex: Add Wi-Fi firmware 0.35.94.1 support for RTL8922D
+Date: Wed, 24 Jun 2026 11:39:40 +0800
+Message-ID: <20260624033941.45918-10-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260624033941.45918-1-pkshih@realtek.com>
 References: <20260624033941.45918-1-pkshih@realtek.com>
@@ -90,7 +90,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38039-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38040-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:ku920601@realtek.com,s:lists@lfdr.de];
 	RCPT_COUNT_TWO(0.00)[2];
@@ -102,7 +102,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,realtek.com:dkim,realtek.com:email,realtek.com:mid,realtek.com:from_mime,vger.kernel.org:from_smtp];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,realtek.com:dkim,realtek.com:email,realtek.com:mid,realtek.com:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
 	TO_DN_NONE(0.00)[];
 	DKIM_TRACE(0.00)[realtek.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
@@ -111,283 +111,242 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 42B8E6BB24E
+X-Rspamd-Queue-Id: 218A06BB254
 
 From: Ching-Te Ku <ku920601@realtek.com>
 
-It's more closing to the original meaning. It is defined for rearranging
-driver info index by firmware support version.
+The firmware 0.35.94.1 included several new features. Wi-Fi TX power
+setting offload to firmware. Including dual BT / dual Wi-Fi MAC related
+configurations.
 
 Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 84 +++++++++++------------
- drivers/net/wireless/realtek/rtw89/core.h |  2 +-
- 2 files changed, 43 insertions(+), 43 deletions(-)
+ drivers/net/wireless/realtek/rtw89/coex.c | 62 +++++++++++++++++++----
+ drivers/net/wireless/realtek/rtw89/core.h |  3 ++
+ 2 files changed, 55 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index dd9d6cbc2943..572eed7939e1 100644
+index 572eed7939e1..6f9bb31b5263 100644
 --- a/drivers/net/wireless/realtek/rtw89/coex.c
 +++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -138,7 +138,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
+@@ -133,6 +133,15 @@ static const u32 cxtbl[] = {
+ 
+ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
+ 	/* firmware version must be in decreasing order for each chip */
++	{RTL8922D, RTW89_FW_VER_CODE(0, 35, 94, 0),
++	 .fcxbtcrpt = 11, .fcxtdma = 8,    .fcxslots = 7, .fcxcysta = 8,
++	 .fcxstep = 7,    .fcxnullsta = 7, .fcxmreg = 7,  .fcxgpiodbg = 8,
++	 .fcxbtver = 8,   .fcxbtscan = 8,  .fcxbtafh = 8, .fcxbtdevinfo = 8,
++	 .fwlrole = 10,    .frptmap = 5,    .fcxctrl = 9,  .fcxinit = 10,
++	 .fwevntrptl = 1,  .fwc2hfunc = 4, .drvinfo_ver = 3, .info_buf = 1800,
++	 .max_role_num = 6, .fcxosi = 6,   .fcxmlo = 2,   .bt_desired = 8,
++	 .fcxtrx = 9,
++	},
+ 	{RTL8852BT, RTW89_FW_VER_CODE(0, 29, 122, 0),
+ 	 .fcxbtcrpt = 8, .fcxtdma = 7,    .fcxslots = 7, .fcxcysta = 7,
  	 .fcxstep = 7,   .fcxnullsta = 7, .fcxmreg = 7,  .fcxgpiodbg = 7,
- 	 .fcxbtver = 7,  .fcxbtscan = 7,  .fcxbtafh = 7, .fcxbtdevinfo = 7,
- 	 .fwlrole = 7,   .frptmap = 3,    .fcxctrl = 7,  .fcxinit = 7,
--	 .fwevntrptl = 1, .fwc2hfunc = 2, .drvinfo_type = 1, .info_buf = 1800,
-+	 .fwevntrptl = 1, .fwc2hfunc = 2, .drvinfo_ver = 1, .info_buf = 1800,
- 	 .max_role_num = 6, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 8,
- 	 .fcxtrx = 0,
- 	},
-@@ -147,7 +147,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 7,   .fcxnullsta = 7, .fcxmreg = 7,  .fcxgpiodbg = 7,
- 	 .fcxbtver = 7,  .fcxbtscan = 7,  .fcxbtafh = 7, .fcxbtdevinfo = 7,
- 	 .fwlrole = 7,   .frptmap = 3,    .fcxctrl = 7,  .fcxinit = 7,
--	 .fwevntrptl = 1, .fwc2hfunc = 2, .drvinfo_type = 1, .info_buf = 1800,
-+	 .fwevntrptl = 1, .fwc2hfunc = 2, .drvinfo_ver = 1, .info_buf = 1800,
- 	 .max_role_num = 6, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 8,
- 	 .fcxtrx = 0,
- 	},
-@@ -156,7 +156,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
+@@ -156,7 +165,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
  	 .fcxstep = 7,   .fcxnullsta = 7, .fcxmreg = 7,  .fcxgpiodbg = 7,
  	 .fcxbtver = 7,  .fcxbtscan = 7,  .fcxbtafh = 7, .fcxbtdevinfo = 7,
  	 .fwlrole = 8,   .frptmap = 4,    .fcxctrl = 7,  .fcxinit = 7,
--	 .fwevntrptl = 1, .fwc2hfunc = 3, .drvinfo_type = 2, .info_buf = 1800,
-+	 .fwevntrptl = 1, .fwc2hfunc = 3, .drvinfo_ver = 2, .info_buf = 1800,
+-	 .fwevntrptl = 1, .fwc2hfunc = 3, .drvinfo_ver = 2, .info_buf = 1800,
++	 .fwevntrptl = 1, .fwc2hfunc = 3, .drvinfo_ver = 3, .info_buf = 1800,
  	 .max_role_num = 6, .fcxosi = 1,  .fcxmlo = 1,   .bt_desired = 9,
  	 .fcxtrx = 7,
  	},
-@@ -165,7 +165,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 7,   .fcxnullsta = 7, .fcxmreg = 7,  .fcxgpiodbg = 7,
- 	 .fcxbtver = 7,  .fcxbtscan = 7,  .fcxbtafh = 7, .fcxbtdevinfo = 7,
- 	 .fwlrole = 8,   .frptmap = 4,    .fcxctrl = 7,  .fcxinit = 7,
--	 .fwevntrptl = 1, .fwc2hfunc = 3, .drvinfo_type = 2, .info_buf = 1800,
-+	 .fwevntrptl = 1, .fwc2hfunc = 3, .drvinfo_ver = 2, .info_buf = 1800,
- 	 .max_role_num = 6, .fcxosi = 1,  .fcxmlo = 1,   .bt_desired = 9,
- 	 .fcxtrx = 0,
- 	},
-@@ -174,7 +174,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 7,   .fcxnullsta = 7, .fcxmreg = 7,  .fcxgpiodbg = 7,
- 	 .fcxbtver = 7,  .fcxbtscan = 7,  .fcxbtafh = 7, .fcxbtdevinfo = 7,
- 	 .fwlrole = 8,   .frptmap = 3,    .fcxctrl = 7,  .fcxinit = 7,
--	 .fwevntrptl = 1, .fwc2hfunc = 1, .drvinfo_type = 1, .info_buf = 1800,
-+	 .fwevntrptl = 1, .fwc2hfunc = 1, .drvinfo_ver = 1, .info_buf = 1800,
- 	 .max_role_num = 6, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 7,
- 	 .fcxtrx = 0,
- 	},
-@@ -183,7 +183,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 2,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 2,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_type = 0, .info_buf = 1800,
-+	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_ver = 0, .info_buf = 1800,
- 	 .max_role_num = 6, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 7,
- 	 .fcxtrx = 0,
- 	},
-@@ -192,7 +192,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_type = 0, .info_buf = 1280,
-+	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_ver = 0, .info_buf = 1280,
- 	 .max_role_num = 5, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 7,
- 	 .fcxtrx = 0,
- 	},
-@@ -201,7 +201,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 2,    .fcxctrl = 1,  .fcxinit = 0,
--	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_type = 0, .info_buf = 1280,
-+	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_ver = 0, .info_buf = 1280,
- 	 .max_role_num = 5, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 7,
- 	 .fcxtrx = 0,
- 	},
-@@ -210,7 +210,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 1, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 2,    .fcxctrl = 1,  .fcxinit = 0,
--	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_type = 0, .info_buf = 1280,
-+	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_ver = 0, .info_buf = 1280,
- 	 .max_role_num = 5, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 7,
- 	 .fcxtrx = 0,
- 	},
-@@ -219,7 +219,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 7,   .fcxnullsta = 7, .fcxmreg = 7,  .fcxgpiodbg = 7,
- 	 .fcxbtver = 7,  .fcxbtscan = 7,  .fcxbtafh = 7, .fcxbtdevinfo = 7,
- 	 .fwlrole = 7,   .frptmap = 3,    .fcxctrl = 7,  .fcxinit = 7,
--	 .fwevntrptl = 1, .fwc2hfunc = 2, .drvinfo_type = 1, .info_buf = 1800,
-+	 .fwevntrptl = 1, .fwc2hfunc = 2, .drvinfo_ver = 1, .info_buf = 1800,
- 	 .max_role_num = 6, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 8,
- 	 .fcxtrx = 0,
- 	},
-@@ -228,7 +228,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 2,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 2,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_type = 0, .info_buf = 1800,
-+	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_ver = 0, .info_buf = 1800,
- 	 .max_role_num = 6, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 7,
- 	 .fcxtrx = 0,
- 	},
-@@ -237,7 +237,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_type = 0, .info_buf = 1800,
-+	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_ver = 0, .info_buf = 1800,
- 	 .max_role_num = 6, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 7,
- 	 .fcxtrx = 0,
- 	},
-@@ -246,7 +246,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 1, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 1,    .fcxctrl = 1,  .fcxinit = 0,
--	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_type = 0, .info_buf = 1280,
-+	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_ver = 0, .info_buf = 1280,
- 	 .max_role_num = 5, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 7,
- 	 .fcxtrx = 0,
- 	},
-@@ -255,7 +255,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .fwevntrptl = 0, .fwc2hfunc = 0, .drvinfo_type = 0, .info_buf = 1280,
-+	 .fwevntrptl = 0, .fwc2hfunc = 0, .drvinfo_ver = 0, .info_buf = 1280,
- 	 .max_role_num = 5, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 7,
- 	 .fcxtrx = 0,
- 	},
-@@ -264,7 +264,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 2,   .fcxnullsta = 1, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 1, .fcxbtdevinfo = 1,
- 	 .fwlrole = 0,   .frptmap = 0,    .fcxctrl = 0,  .fcxinit = 0,
--	 .fwevntrptl = 0, .fwc2hfunc = 0, .drvinfo_type = 0, .info_buf = 1024,
-+	 .fwevntrptl = 0, .fwc2hfunc = 0, .drvinfo_ver = 0, .info_buf = 1024,
- 	 .max_role_num = 5, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 7,
- 	 .fcxtrx = 0,
- 	},
-@@ -275,7 +275,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 2,   .fcxnullsta = 1, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 1, .fcxbtdevinfo = 1,
- 	 .fwlrole = 0,   .frptmap = 0,    .fcxctrl = 0,  .fcxinit = 0,
--	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_type = 0, .info_buf = 1024,
-+	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_ver = 0, .info_buf = 1024,
- 	 .max_role_num = 5, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 7,
- 	 .fcxtrx = 0,
- 	},
-@@ -2789,62 +2789,62 @@ static void _fw_set_policy(struct rtw89_dev *rtwdev, u16 policy_type,
- 		rtw89_set_coex_ctrl_lps(rtwdev, btc->lps);
- }
- 
--static void _fw_set_drv_info(struct rtw89_dev *rtwdev, u8 type)
-+static void _fw_set_drv_info(struct rtw89_dev *rtwdev, u8 index)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	const struct rtw89_btc_ver *ver = btc->ver;
- 
--	switch (type) {
-+	switch (index) {
- 	case CXDRVINFO_INIT:
- 		if (ver->fcxinit == 7)
--			rtw89_fw_h2c_cxdrv_init_v7(rtwdev, type);
-+			rtw89_fw_h2c_cxdrv_init_v7(rtwdev, index);
- 		else
--			rtw89_fw_h2c_cxdrv_init(rtwdev, type);
-+			rtw89_fw_h2c_cxdrv_init(rtwdev, index);
+@@ -2423,6 +2432,7 @@ static u32 rtw89_btc_fw_rpt_ver(struct rtw89_dev *rtwdev, u32 rpt_map)
+ 			break;
+ 		case 3:
+ 		case 4:
++		case 5:
+ 			bit_map = BIT(5);
+ 			break;
+ 		default:
+@@ -2438,6 +2448,7 @@ static u32 rtw89_btc_fw_rpt_ver(struct rtw89_dev *rtwdev, u32 rpt_map)
+ 			break;
+ 		case 3:
+ 		case 4:
++		case 5:
+ 			bit_map = BIT(6);
+ 			break;
+ 		default:
+@@ -2451,6 +2462,7 @@ static u32 rtw89_btc_fw_rpt_ver(struct rtw89_dev *rtwdev, u32 rpt_map)
+ 			break;
+ 		case 3:
+ 		case 4:
++		case 5:
+ 			bit_map = BIT(7);
+ 			break;
+ 		default:
+@@ -2465,6 +2477,7 @@ static u32 rtw89_btc_fw_rpt_ver(struct rtw89_dev *rtwdev, u32 rpt_map)
+ 		case 3:
+ 			break;
+ 		case 4:
++		case 5:
+ 			bit_map = BIT(8);
+ 			break;
+ 		default:
+@@ -2481,6 +2494,7 @@ static u32 rtw89_btc_fw_rpt_ver(struct rtw89_dev *rtwdev, u32 rpt_map)
+ 			bit_map = BIT(8);
+ 			break;
+ 		case 4:
++		case 5:
+ 			bit_map = BIT(9);
+ 			break;
+ 		default:
+@@ -2488,7 +2502,10 @@ static u32 rtw89_btc_fw_rpt_ver(struct rtw89_dev *rtwdev, u32 rpt_map)
+ 		}
  		break;
- 	case CXDRVINFO_ROLE:
- 		if (ver->fwlrole == 0)
--			rtw89_fw_h2c_cxdrv_role(rtwdev, type);
-+			rtw89_fw_h2c_cxdrv_role(rtwdev, index);
- 		else if (ver->fwlrole == 1)
--			rtw89_fw_h2c_cxdrv_role_v1(rtwdev, type);
-+			rtw89_fw_h2c_cxdrv_role_v1(rtwdev, index);
- 		else if (ver->fwlrole == 2)
--			rtw89_fw_h2c_cxdrv_role_v2(rtwdev, type);
-+			rtw89_fw_h2c_cxdrv_role_v2(rtwdev, index);
- 		else if (ver->fwlrole == 7)
--			rtw89_fw_h2c_cxdrv_role_v7(rtwdev, type);
-+			rtw89_fw_h2c_cxdrv_role_v7(rtwdev, index);
- 		else if (ver->fwlrole == 8)
--			rtw89_fw_h2c_cxdrv_role_v8(rtwdev, type);
-+			rtw89_fw_h2c_cxdrv_role_v8(rtwdev, index);
+ 	case RPT_EN_TEST:
+-		bit_map = BIT(31);
++		if (ver->frptmap == 5)
++			bit_map = BIT(10);
++		else
++			bit_map = BIT(31);
+ 		break;
+ 	case RPT_EN_WL_ALL:
+ 		switch (ver->frptmap) {
+@@ -2501,6 +2518,7 @@ static u32 rtw89_btc_fw_rpt_ver(struct rtw89_dev *rtwdev, u32 rpt_map)
+ 			bit_map = GENMASK(2, 0) | BIT(8);
+ 			break;
+ 		case 4:
++		case 5:
+ 			bit_map = GENMASK(2, 0) | BIT(9);
+ 			break;
+ 		default:
+@@ -2520,6 +2538,7 @@ static u32 rtw89_btc_fw_rpt_ver(struct rtw89_dev *rtwdev, u32 rpt_map)
+ 			bit_map = GENMASK(7, 3);
+ 			break;
+ 		case 4:
++		case 5:
+ 			bit_map = GENMASK(8, 3);
+ 			break;
+ 		default:
+@@ -2539,6 +2558,7 @@ static u32 rtw89_btc_fw_rpt_ver(struct rtw89_dev *rtwdev, u32 rpt_map)
+ 			bit_map = GENMASK(8, 0);
+ 			break;
+ 		case 4:
++		case 5:
+ 			bit_map = GENMASK(9, 0);
+ 			break;
+ 		default:
+@@ -2558,6 +2578,7 @@ static u32 rtw89_btc_fw_rpt_ver(struct rtw89_dev *rtwdev, u32 rpt_map)
+ 			bit_map = GENMASK(8, 2);
+ 			break;
+ 		case 4:
++		case 5:
+ 			bit_map = GENMASK(9, 2);
+ 			break;
+ 		default:
+@@ -2814,7 +2835,7 @@ static void _fw_set_drv_info(struct rtw89_dev *rtwdev, u8 index)
+ 			rtw89_fw_h2c_cxdrv_role_v8(rtwdev, index);
  		break;
  	case CXDRVINFO_CTRL:
--		if (ver->drvinfo_type == 1)
--			type = 2;
-+		if (ver->drvinfo_ver == 1)
-+			index = 2;
+-		if (ver->drvinfo_ver == 1)
++		if (ver->drvinfo_ver != 0)
+ 			index = 2;
  
  		if (ver->fcxctrl == 7)
--			rtw89_fw_h2c_cxdrv_ctrl_v7(rtwdev, type);
-+			rtw89_fw_h2c_cxdrv_ctrl_v7(rtwdev, index);
- 		else
--			rtw89_fw_h2c_cxdrv_ctrl(rtwdev, type);
-+			rtw89_fw_h2c_cxdrv_ctrl(rtwdev, index);
+@@ -2823,7 +2844,7 @@ static void _fw_set_drv_info(struct rtw89_dev *rtwdev, u8 index)
+ 			rtw89_fw_h2c_cxdrv_ctrl(rtwdev, index);
  		break;
  	case CXDRVINFO_TRX:
--		if (ver->drvinfo_type == 1)
--			type = 3;
-+		if (ver->drvinfo_ver == 1)
-+			index = 3;
+-		if (ver->drvinfo_ver == 1)
++		if (ver->drvinfo_ver > 1)
+ 			index = 3;
  
  		if (ver->fcxtrx == 7)
--			rtw89_fw_h2c_cxdrv_trx_v7(rtwdev, type);
-+			rtw89_fw_h2c_cxdrv_trx_v7(rtwdev, index);
- 		else if (ver->fcxtrx == 9)
--			rtw89_fw_h2c_cxdrv_trx_v9(rtwdev, type);
-+			rtw89_fw_h2c_cxdrv_trx_v9(rtwdev, index);
+@@ -2832,7 +2853,7 @@ static void _fw_set_drv_info(struct rtw89_dev *rtwdev, u8 index)
+ 			rtw89_fw_h2c_cxdrv_trx_v9(rtwdev, index);
  		break;
  	case CXDRVINFO_RFK:
--		if (ver->drvinfo_type == 1)
-+		if (ver->drvinfo_ver == 1)
+-		if (ver->drvinfo_ver == 1)
++		if (ver->drvinfo_ver != 0)
  			return;
  
--		rtw89_fw_h2c_cxdrv_rfk(rtwdev, type);
-+		rtw89_fw_h2c_cxdrv_rfk(rtwdev, index);
- 		break;
- 	case CXDRVINFO_TXPWR:
--		if (ver->drvinfo_type == 3)
--			type = 4;
-+		if (ver->drvinfo_ver == 3)
-+			index = 4;
- 
- 		if (ver->fcxtrx == 7)
--			rtw89_fw_h2c_cxtxpwr_v7(rtwdev, type);
-+			rtw89_fw_h2c_cxtxpwr_v7(rtwdev, index);
- 		else if (ver->fcxtrx == 9)
--			rtw89_fw_h2c_cxtxpwr_v9(rtwdev, type);
-+			rtw89_fw_h2c_cxtxpwr_v9(rtwdev, index);
+ 		rtw89_fw_h2c_cxdrv_rfk(rtwdev, index);
+@@ -2847,12 +2868,26 @@ static void _fw_set_drv_info(struct rtw89_dev *rtwdev, u8 index)
+ 			rtw89_fw_h2c_cxtxpwr_v9(rtwdev, index);
  		break;
  	case CXDRVINFO_FDDT:
++		if (ver->drvinfo_ver == 3)
++			index = 5;
++		else
++			return;
++
++		rtw89_debug(rtwdev, RTW89_DBG_BTC, "drv_info FDDT index=%d\n", index);
++		break;
  	case CXDRVINFO_MLO:
-@@ -2852,12 +2852,12 @@ static void _fw_set_drv_info(struct rtw89_dev *rtwdev, u8 type)
++		if (ver->drvinfo_ver == 3)
++			index = 6;
++		else
++			return;
++
++		rtw89_debug(rtwdev, RTW89_DBG_BTC, "drv_info MLO index=%d\n", index);
++		break;
+ 	case CXDRVINFO_OSI:
  		if (!ver->fcxosi)
  			return;
  
--		if (ver->drvinfo_type == 2)
--			type = 7;
-+		if (ver->drvinfo_ver == 2)
-+			index = 7;
+-		if (ver->drvinfo_ver == 2)
++		if (ver->drvinfo_ver > 1)
+ 			index = 7;
  		else
  			return;
- 
--		rtw89_fw_h2c_cxdrv_osi_info(rtwdev, type);
-+		rtw89_fw_h2c_cxdrv_osi_info(rtwdev, index);
- 		break;
- 	default:
- 		break;
+@@ -8828,7 +8863,7 @@ static u8 rtw89_btc_c2h_get_index_by_ver(struct rtw89_dev *rtwdev, u8 func)
+ 			return BTF_EVNT_BUF_OVERFLOW;
+ 		else if (ver->fwc2hfunc == 2)
+ 			return func;
+-		else if (ver->fwc2hfunc == 3)
++		else if (ver->fwc2hfunc == 3 || ver->fwc2hfunc == 4)
+ 			return BTF_EVNT_BUF_OVERFLOW;
+ 		else
+ 			return BTF_EVNT_MAX;
+@@ -8839,19 +8874,26 @@ static u8 rtw89_btc_c2h_get_index_by_ver(struct rtw89_dev *rtwdev, u8 func)
+ 			return BTF_EVNT_C2H_LOOPBACK;
+ 		else if (ver->fwc2hfunc == 2)
+ 			return func;
+-		else if (ver->fwc2hfunc == 3)
++		else if (ver->fwc2hfunc == 3 || ver->fwc2hfunc == 4)
+ 			return BTF_EVNT_C2H_LOOPBACK;
+ 		else
+ 			return BTF_EVNT_MAX;
+ 	case BTF_EVNT_C2H_LOOPBACK:
+ 		if (ver->fwc2hfunc == 2)
+ 			return func;
+-		else if (ver->fwc2hfunc == 3)
++		else if (ver->fwc2hfunc == 3 || ver->fwc2hfunc == 4)
+ 			return BTF_EVNT_BT_LEAUDIO_INFO;
+ 		else
+ 			return BTF_EVNT_MAX;
+ 	case BTF_EVNT_BT_QUERY_TXPWR:
+-		if (ver->fwc2hfunc == 3)
++		if (ver->fwc2hfunc == 3 || ver->fwc2hfunc == 4)
++			return func;
++		else
++			return BTF_EVNT_MAX;
++	case BTF_EVNT_ZB_INFO:
++	case BTF_EVNT_ZB_CH:
++	case BTF_EVNT_ZB_QUERY_TXPWR:
++		if (ver->fwc2hfunc == 4)
+ 			return func;
+ 		else
+ 			return BTF_EVNT_MAX;
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 70c6ee1a6da2..7a87ffc1931e 100644
+index 7a87ffc1931e..6947f4c2c25d 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3365,7 +3365,7 @@ struct rtw89_btc_ver {
+@@ -3224,6 +3224,9 @@ enum rtw89_btc_btf_fw_event {
+ 	BTF_EVNT_BUF_OVERFLOW,
+ 	BTF_EVNT_C2H_LOOPBACK,
+ 	BTF_EVNT_BT_QUERY_TXPWR, /* fwc2hfunc > 3 */
++	BTF_EVNT_ZB_INFO = 11,
++	BTF_EVNT_ZB_CH = 12,
++	BTF_EVNT_ZB_QUERY_TXPWR = 13,
+ 	BTF_EVNT_MAX,
+ };
  
- 	u8 fwevntrptl;
- 	u8 fwc2hfunc;
--	u8 drvinfo_type;
-+	u8 drvinfo_ver;
- 	u16 info_buf;
- 	u8 max_role_num;
- 	u8 fcxosi;
 -- 
 2.25.1
 
