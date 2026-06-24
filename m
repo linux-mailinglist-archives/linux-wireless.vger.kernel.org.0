@@ -1,165 +1,180 @@
-Return-Path: <linux-wireless+bounces-38042-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38043-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HeSTIvRpO2prXggAu9opvQ
-	(envelope-from <linux-wireless+bounces-38042-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 07:24:04 +0200
+	id +3gGCxpsO2rHXggAu9opvQ
+	(envelope-from <linux-wireless+bounces-38043-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 07:33:14 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835296BB872
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 07:24:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B166BB8C0
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 07:33:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b=tWr684pm;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38042-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38042-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=realtek.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UlTGWQWy;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38043-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38043-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B60EC300B0B2
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 05:24:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 862763012771
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 05:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFC25478D;
-	Wed, 24 Jun 2026 05:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FCB31D381;
+	Wed, 24 Jun 2026 05:33:03 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B5B40D57C
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 05:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238D02EB5CD
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 05:33:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782278639; cv=none; b=Hmim6znLe2+/RK9lhK44naWDIyI2rSbUS6hqAJjEcreDE+pDzGlo05SEoTz9JuQp1FW95LqZarKhaOjHezsB1DbZvQLrifRgIfG/g1CUgP+ZGTjQpglcLKen+3uovIjHPS8cYNSaBg+3p1uOu0sZwqD5Gyx12gogbuQZMb1ndkI=
+	t=1782279183; cv=none; b=FuoBJC7/K0YnpAKsIPm9TuLJBZa3xtWJx4y3QiNiSxJarRJpoXPNm8717b48HYlUipPpPuFCwTRg3h4Velhh9ZWHzTDQHzw/out697dlz0loQHHVYsU5ijLEXDBBfAtH865L1En9WOwG8SV6Q+MObputjJC30e4SiPB9CNVRxv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782278639; c=relaxed/simple;
-	bh=+xe+xXPrpMlx9twtyQTnizQCXpdi+3oonETlXfJJU8I=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ji/9wuUvb3pp16TPHW30FhITmxGJR/QEjSFqGFk+riVluQJ6Z2radHJb99p32il3J1/JJsJdHhBS/b/co04sz61rjSrvynXdtDx9FhOMdID4ebBmCCTpZIWkqn0szyB9ho8+qVynMdQJ46cJSZlmPXTgZOI1+P5pBZNpRjMzSms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=tWr684pm; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65O5NpaA63924238, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1782278631; bh=+xe+xXPrpMlx9twtyQTnizQCXpdi+3oonETlXfJJU8I=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=tWr684pmj8hQTnl2B5Lp7JF/Ilvgv0dl86ZXkszUzbXShFloK3jMxbgmDcblMrAJ7
-	 SnAEhH3/7JogPftYWPbgojVaXNrtUZY0vjvCQWpoYV+ZYo17FHP3sgRHkXe2edv3LE
-	 TE0xISLJQxIYJ8hDryu6vsPB7qK7GSr2VVGTBFoHZaIbxLMyDcZSEomVzJ2P2bjGFC
-	 LGTUtdzNmoBkcaR0se7GzLT5CQh8OItppmEN5/x8olL8aVnFUpGRtdibXh0hgp2Az5
-	 mgrbH0Vi1SpdaBci4YyjRTSLbuIJqYsS69uj5WqD7VG3FU2uNUIVpqFecdMe7DNx1w
-	 0ruqsMjr5FwKw==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65O5NpaA63924238
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 24 Jun 2026 13:23:51 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 24 Jun 2026 13:23:52 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 24 Jun 2026 13:23:51 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::e6fd:5a3f:8946:92c4%10]) with mapi id
- 15.02.2562.017; Wed, 24 Jun 2026 13:23:51 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Gmail <helder.bertoldo@gmail.com>, "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-Subject: RE: [REGRESSION] rtw89: RTL8922AE Wi-Fi broken in Kernel 7.0 (and
- 6.18+) due to mac80211 API changes
-Thread-Topic: [REGRESSION] rtw89: RTL8922AE Wi-Fi broken in Kernel 7.0 (and
- 6.18+) due to mac80211 API changes
-Thread-Index: AQHdA4lroyskbLpM7kuOlrst4tUuCbZNIIiQ
-Date: Wed, 24 Jun 2026 05:23:51 +0000
-Message-ID: <e42e0d250c964ecb9740caff5b8a4ce9@realtek.com>
-References: <c26fda96-aa91-4372-8d24-35d3fa44fc09@gmail.com>
-In-Reply-To: <c26fda96-aa91-4372-8d24-35d3fa44fc09@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1782279183; c=relaxed/simple;
+	bh=nrtaw2ep0DCwDiNk68McCNWo/BLbRmzKgeIJm3iLoCE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VyKIQJpK3aCz+ukB5+qF7qmR/wlCcZ5CIoPOCmc38kJ7R3Q1q66JEIU4AW5uqDkYLuG5Bfphq9ferL46hb3b5eMGMVUrd6XL2DqIcqlSiLnAu6vEFxuP5nIjGcHTT0qlJ/rIluKlB/ALegqBu3WbTPQcoMZgt6AtQxZnfvBGFcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UlTGWQWy; arc=none smtp.client-ip=74.125.82.182
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-30c6836fea9so402885eec.1
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Jun 2026 22:33:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782279180; x=1782883980; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sOavHhXXwzowPYsq4xGyB1KuD7Tfjz+llQKByGEFJQo=;
+        b=UlTGWQWyJ+Acfv62bVw9aW+LlqLaie01vPFPQsvO1ruK45g/w+V3eVj8RmtX14mVMo
+         k8FqaviXfHY2KuooVq6c9HlF3uz8eYpIVxKZAdo4QfGy4kPFZf4EVQ/6aOELa1gHzluf
+         WYfGTW5qpfkW4Q/uArdUNmhQUn4+hPPgpCM+eemP6UFKnKWJdDHnALmffiIc1HujF28b
+         EtSKKK24GHHEa6lnYi5amLy6KHmJ5ltM8pPJaBbrw/0/f6PXWJXSNdNA8VrsL09YthRA
+         gzXsP2tL1pp5nmZCTnwS5nngZ2zvQf074hWNK/3PNEMnzK4FaneNfDyumnpwNkB1icaW
+         WqcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782279180; x=1782883980;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sOavHhXXwzowPYsq4xGyB1KuD7Tfjz+llQKByGEFJQo=;
+        b=UpPSN5VF4WkUxaIKJNO4pRAerGhMskZ5AuX08k2PiefGOApehuboV0vTBdG+JqyXFv
+         /qX+rjtV78n+VXEcfJmBPcpT42bvmTUrIc0iccqe2m9aQg5Xs9CX8m2uwP+nf0dAQkCw
+         UQuTIcWeKesdo1qOIpJ3wnfyxNUk26NZd4bBQFlRCdp0/7vH5YVlpn4RnNlbFP6FRwet
+         OigWNzsS3gt1Vrw/Z9/6GSe/ZfDhzT3/KrXJ+SHBMfILN4doeHfPiVs4jAKmcKgTHHI+
+         RMj9CloTRGcUnvMIpYGJaDbnKjKnmop9ohBGPY9bR0if9VNubLXAjJXpZNZJ4TrnUL7b
+         moKA==
+X-Gm-Message-State: AOJu0YxW4EcPa2zYjQbsBFXolsliMVV/WfJ+z9ap22FkhQIY0gtSGIdn
+	P7xqiijCtVkNWaO4CW63tGDNtJDKfoAKYo48hhzehrUWdWpz0pLnUQqV
+X-Gm-Gg: AfdE7cmBb3vEr4UrcXbsXUz/tnsUj+F+KrWE/OcOUfeF00XDOZYsv8b1tWHNc+vjWXu
+	eRGa3bxvlf5uXU8vTrDNoVWRAdNFLhwlEIgYdtQBqqjab9Onr1dKFs3Rq+k62aKCiv/p5Oa8WJA
+	JK9yaUBFKrWw6mOSEI90Q6siN6UT4eIrRWMROQdGozGANC7iwq2QmK63cRhLv09t+qu0X4geX7z
+	62F/4G0S+XV+x5ZXjphKuPPY4ydLo5/OIhMjo63ej3Pvnmm5EcI8UFL9yzi7m7WljVgI1ga6GSq
+	NSTspJenN9YQ4tC3nZ1Iq0ptzKPBScEz9aNcclkIx+7zcWAxiQs5sesNJ2T+MxYKkvBq2ewGlJB
+	FeiUg88xYJHllnlXJFRzA/XLHMCEoPSa/AK9ERJWziyoXobsKHfOVLkF0X3kC/FGVxEoJQWWX8z
+	HvM3oNEBKq2BcNi7GJr+Zei3iNjifWKhSzkt/ffp69
+X-Received: by 2002:a05:7300:80cc:b0:30c:1fb5:94b1 with SMTP id 5a478bee46e88-30c5553657amr6680575eec.6.1782279180167;
+        Tue, 23 Jun 2026 22:33:00 -0700 (PDT)
+Received: from localhost.localdomain ([192.197.201.174])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c1ba1c32csm22955775eec.6.2026.06.23.22.32.58
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 23 Jun 2026 22:32:59 -0700 (PDT)
+From: hewei-gikaku <skyexpoc@gmail.com>
+To: Christian Lamparter <chunkeey@googlemail.com>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	HE WEI <skyexpoc@gmail.com>,
+	syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com
+Subject: [PATCH] wifi: carl9170: bail out on invalid command response to fix stack-out-of-bounds write
+Date: Wed, 24 Jun 2026 14:32:45 +0900
+Message-ID: <20260624053246.74617-1-skyexpoc@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.06 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:helder.bertoldo@gmail.com,m:linux-wireless@vger.kernel.org,m:helderbertoldo@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38042-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:chunkeey@googlemail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:skyexpoc@gmail.com,m:syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com,m:chunkeey@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38043-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
+	FORGED_SENDER(0.00)[skyexpoc@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[googlemail.com];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,syzkaller.appspotmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[skyexpoc@gmail.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,5c1ca6ccaa1215781cac];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 835296BB872
+X-Rspamd-Queue-Id: 23B166BB8C0
 
-R21haWwgPGhlbGRlci5iZXJ0b2xkb0BnbWFpbC5jb20+IHdyb3RlOg0KPiBJIGFtIHJlcG9ydGlu
-ZyBhIHJlZ3Jlc3Npb24gcmVnYXJkaW5nIHRoZSBSZWFsdGVrIFJUTDg5MjJBRSBXaS1GaQ0KPiBh
-ZGFwdGVyIChydHc4OSkgb24gYSBHaWdhYnl0ZSBYODcwTSBBb3J1cyBFbGl0ZSBXaWZpNyBtb3Ro
-ZXJib2FyZC4NCj4gDQo+IFRoZSBhZGFwdGVyIHdvcmtzIHBlcmZlY3RseSBvbiBLZXJuZWwgNi4x
-Ny43LCBidXQgaXQgZmFpbHMgdG8gaW5pdGlhbGl6ZQ0KPiBvciBpcyBub3QgcmVjb2duaXplZCBp
-biBuZXdlciBrZXJuZWxzLCBzcGVjaWZpY2FsbHkgNi4xOCwgNi4xOSwgYW5kIHRoZQ0KPiBjdXJy
-ZW50IDcuMC54IHNlcmllcyB1c2VkIGluIHRoZSBCYXp6aXRlIChGZWRvcmEtYmFzZWQpIHRlc3Rp
-bmcgYnJhbmNoLg0KDQpQbGVhc2Ugc2hhcmUga2VybmVsIGxvZyBvZiA2LjE3LjcgKHdvcmsgd2Vs
-bCkgYW5kIDYuMTggKGZhaWxlZCB0byBpbml0aWFsaXplKS4NCg0KSSBjaGVja2VkIHRoZSBjaGFu
-Z2Ugb2YgdGhlIHJ0dzg5IGRyaXZlciBmcm9tIDYuMTcgdG8gNi4xOCwgYnV0IEkgY2FuJ3QNCmZp
-bmQgdGhlIG9idmlvdXMgY2hhbmdlIGZvciBSVEw4OTIyQUUgdGhvdWdoLg0KDQo+IA0KPiBUZWNo
-bmljYWwgZGV0YWlsczoNCj4gVGhlIGlzc3VlIHNlZW1zIHJlbGF0ZWQgdG8gcmVjZW50IGFyY2hp
-dGVjdHVyYWwgY2hhbmdlcyBpbiB0aGUgbWFjODAyMTENCj4gc3Vic3lzdGVtOg0KPiANCj4gMS4g
-U2lnbmF0dXJlIGNoYW5nZXMgaW4gJ3N0cnVjdCBpZWVlODAyMTFfb3BzJzogU2V2ZXJhbCBjYWxs
-YmFja3MNCj4gKGluY2x1ZGluZyAuY29uZmlnLCAuc3RvcCwgYW5kIC5zZXRfcnRzX3RocmVzaG9s
-ZCkgbm93IHJlcXVpcmUgdGhlDQo+ICdyYWRpb19pZHgnIHBhcmFtZXRlciB0byBzdXBwb3J0IG11
-bHRpLXJhZGlvIHdpcGh5L01MTy4gSXQgYXBwZWFycyB0aGUNCj4gcnR3ODkgZHJpdmVyIGluIHRo
-ZXNlIGtlcm5lbCBidWlsZHMgbWlnaHQgbm90IGhhdmUgYmVlbiBmdWxseSB1cGRhdGVkIHRvDQo+
-IG1hdGNoIHRoZXNlIG5ldyBzaWduYXR1cmVzLCBsZWFkaW5nIHRvIGluY29tcGF0aWJsZSBwb2lu
-dGVyIHR5cGUgZXJyb3JzDQo+IG9yIGluaXRpYWxpemF0aW9uIGZhaWx1cmVzLg0KDQpBcmUgeW91
-IHN1cmU/IFRoZSBjaGFuZ2VzIG9mIEFQSSB3aWxsIGJlIGNvbXBhdGlibGUgd2l0aCBleGlzdGlu
-Zw0KZnVuY3Rpb25hbGl0aWVzLg0KDQo+IA0KPiAyLiBSZW1vdmFsIG9mIGluaXRfZHVtbXlfbmV0
-ZGV2OiBUaGUgZHJpdmVyIGNvZGUgc2VlbXMgdG8gc3RpbGwNCj4gcmVmZXJlbmNlIGluaXRfZHVt
-bXlfbmV0ZGV2LCB3aGljaCB3YXMgcmVwbGFjZWQgYnkgYWxsb2NfbmV0ZGV2X2R1bW15KCkNCj4g
-aW4gdGhlIHdpcmVsZXNzLW5leHQvbmV0LW5leHQgdHJlZXMuDQoNCkl0IGhhcyBiZWVuIGFsbG9j
-X25ldGRldl9kdW1teSgpIGFscmVhZHkuDQoNCklmIHlvdSBhcmUgdXNpbmcgb3V0LW9mLXRyZWUg
-ZHJpdmVyLCBwbGVhc2UganVzdCB1c2UgaW4tdHJlZSBkcml2ZXIuIA0KDQo+IA0KPiBIYXJkd2Fy
-ZSBJbmZvOg0KPiAtIENoaXBzZXQ6IFJlYWx0ZWsgUlRMODkyMkFFDQo+IC0gUENJIElEOiBbMTBl
-Yzo4OTIyXSAoUGxlYXNlIHZlcmlmeSB0aGlzIElEIG9uIHlvdXIgc3lzdGVtIHVzaW5nICdsc3Bj
-aQ0KPiAtbm4nKQ0KPiAtIFdvcmtpbmcgS2VybmVsOiA2LjE3LjcNCj4gLSBCcm9rZW4gS2VybmVs
-czogNi4xOC54LCA2LjE5LngsIDcuMC54DQo+IA0KPiBJIGFtIHVzaW5nIHRoZSBPR0MgS2VybmVs
-IGZyb20gdGhlIEJhenppdGUgcHJvamVjdCwgYnV0IHRoZSBpc3N1ZQ0KPiBhcHBlYXJzIHRvIHN0
-ZW0gZnJvbSB0aGUgdXBzdHJlYW0gZHJpdmVyIHN5bmNocm9uaXphdGlvbiB3aXRoIHRoZSBuZXcN
-Cj4gbWFjODAyMTEgQVBJLg0KDQpDYW4geW91IHVzZSA2LjE3LjcgYW5kIHRoZW4gYXBwbHkgcGF0
-Y2hlcyBvZiB0aGUgcnR3ODkgZHJpdmVyIG9uZSBieSBvbmUNCmZyb20gNi4xOC54PyBUaGF0IGNh
-biBmaW5kIHRoZSBjYXVzZS4gDQoNCj4gDQo+IEFyZSB0aGVyZSBhbnkgcGVuZGluZyBwYXRjaGVz
-IGluIHRoZSBydHctbmV4dCB0cmVlIHRoYXQgYWRkcmVzcyB0aGVzZQ0KPiBzcGVjaWZpYyBpZWVl
-ODAyMTFfb3BzIHNpZ25hdHVyZSBjaGFuZ2VzIGZvciB0aGUgODkyMkFFPw0KDQpUaGUgbnVtYmVy
-IG9mIHJ0dzg5IHBhdGNoZXMgYmV0d2VlbiA2LjE3IGFuZCA2LjE4IGlzIGFib3V0IDQwLg0KVHJ5
-aW5nIGFib3ZlIHN1Z2dlc3Rpb24gd2lsbCBiZSBlYXNpZXIgdG8gYWRkcmVzcyBwcm9ibGVtLiAN
-Cg0KDQo=
+From: HE WEI (ギカク) <skyexpoc@gmail.com>
+
+carl9170_cmd_callback() copies a command response coming from the USB
+device into ar->readbuf using the device-reported length:
+
+	memcpy(ar->readbuf, buffer + 4, len - 4);
+
+ar->readbuf points at the buffer supplied by the caller of
+carl9170_exec_cmd(), which is frequently an on-stack buffer sized to the
+expected response length (ar->readlen).
+
+The preceding sanity check only emits a warning and schedules a restart
+when ar->readlen != len - 4; it does not stop processing, so the
+memcpy() still runs with the attacker-controlled length.  A malicious or
+malfunctioning AR9170 USB device can therefore answer a pending command
+with an over-sized response and overflow ar->readbuf, as reported by
+syzbot:
+
+  BUG: KASAN: stack-out-of-bounds Write in carl9170_handle_command_response
+
+The comment in that branch already documents the intended behaviour
+("Do not complete.  The command times out, and we get a stack trace from
+there."), but the return statement was missing.  Return after
+carl9170_restart() so an over-/under-sized response is neither copied
+into ar->readbuf nor completed; carl9170_exec_cmd() then times out and
+clears readbuf in its error path.
+
+Reported-by: syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5c1ca6ccaa1215781cac
+Fixes: a84fab3cbfdc ("carl9170: 802.11 rx/tx processing and usb backend")
+Signed-off-by: HE WEI (ギカク) <skyexpoc@gmail.com>
+---
+ drivers/net/wireless/ath/carl9170/rx.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
+--- a/drivers/net/wireless/ath/carl9170/rx.c
++++ b/drivers/net/wireless/ath/carl9170/rx.c
+@@ -145,6 +145,7 @@ static void carl9170_cmd_callback(struct ar9170 *ar, u32 len, void *buffer)
+ 		 * and we get a stack trace from there.
+ 		 */
+ 		carl9170_restart(ar, CARL9170_RR_INVALID_RSP);
++		return;
+ 	}
+
+ 	spin_lock(&ar->cmd_lock);
+--
+2.43.0
 
