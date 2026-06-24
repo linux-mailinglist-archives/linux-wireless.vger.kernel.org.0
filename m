@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-38034-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38035-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0cj9LtZRO2p3WAgAu9opvQ
-	(envelope-from <linux-wireless+bounces-38034-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 05:41:10 +0200
+	id /BYhOOlRO2p9WAgAu9opvQ
+	(envelope-from <linux-wireless+bounces-38035-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 05:41:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D936BB244
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 05:41:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D827F6BB260
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 05:41:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b=RuTvuIjC;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38034-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38034-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=realtek.com header.s=dkim header.b=Qm8alSAT;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38035-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38035-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=realtek.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 14735300B76F
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 03:40:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AADBB300B80A
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 03:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DBDD30BBB9;
-	Wed, 24 Jun 2026 03:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE26830BB91;
+	Wed, 24 Jun 2026 03:40:49 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33E330B53A
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 03:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C02E30B53A
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 03:40:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782272444; cv=none; b=B4Fq89vSDgE1WdP8o3foneKPCJjnS/tQPJvPDxjO3idDOssf5zOlaE1afCiA40032d7+oiNqKJYRHDG9jajAC5C9RUPFw4cuniYL+3WBS1edbnq+UetGJAfRrpHZXJ8u/GOG0VT1rpYLYYhxyonRC5VP3C/u85n/P5vqzrr5nXA=
+	t=1782272449; cv=none; b=SQbIsgGEK/a4/HRiE0zEqiLi03c9/45jCVecl8RUcAkxYQzUS0pkhZ4+vjwD2evp9/cyJ1UvPv1nudXiKBPMgpCTj3nn948MQWOjWzO9rRMpHSlq6JklD8ePBkCV6GTLNnE/ndKKoSejABVrmFHFk42JZnqaP5P645AZU6/sR0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782272444; c=relaxed/simple;
-	bh=4fvAT3RofCoPxYGIGuejSWGq0RLOF0X//Y04rygnUb4=;
+	s=arc-20240116; t=1782272449; c=relaxed/simple;
+	bh=Om69abFlGbQ8sY5OvTPxdTXia3OeYwV7ljZbctO5TQc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bQxscS4W55YE8Q4MuS5bh72Xq4AYxEaGXa6+/Y3ItUn9CYGT9++S4qLK0pKz9d3jnpnns/GHJRKcJs8mjJIkaxMPd1shL+Mp+DIAvE0QO1loBjkmLE5I59Rhko5c++vURTdA3+Gt0mSHLVa2F2YHIs3+uXZo06xKWs5hoL4u+6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=RuTvuIjC; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65O3ee0K33888831, This message is accepted by code: ctloc85258
+	 MIME-Version:Content-Type; b=S7wnqWP9rqHCuWFcvHkO1uIrbftatjFoOjads1/gfi7aq7ne5eekYZGeSuPXwmLmR4EzN5L7zjbGje+MoLMttb0/Oju4Ndsv8mt61ROASa5B9ZE4ng8+lxVHNuMXcufrE+WAjbitsKZWNz1XaO2JRTIwJn5nVp7+iPsvfh70dOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Qm8alSAT; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65O3ejD333888852, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1782272440; bh=IoXI+tj9u5IVINTe6Ei1hUrunqBorHIsbqQpcyokwrM=;
+	t=1782272445; bh=Z4MmMRptfLpIytbV6ijYvhfTVd1Nm69omF8sM/Ql8Cg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=RuTvuIjCtmGkiyg5tnu2bGu649B7TBefdp3aUjtRP11lTmHAWSTYIYEsH+qvX9vMv
-	 StjKmXfYnMPBUwEhxbEuO2r3c9yCnRFlgswVGSa0zlbr/3dSmf1etcgkyin7Z+7ZCi
-	 ksNeQ07nNsay4lkQ8fBC1XfmzStOpqf3sZmhL91rpx9fLFf82qfIWaeL5Fhzxlio6c
-	 GRN+/cqKSoLUOQfRZNP4yYb9ln7qhLBej0ToIWh3MVXzRogc20md4i2hOSNfSPc1hA
-	 rw3EasU30qyk8sRfh5UwHT9/fTnmZkmq2Dbs51GC7LFEBgENbQSssAgwwDZ7kJmvyU
-	 AH4KPlUhWLbeQ==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65O3ee0K33888831
+	b=Qm8alSATiHNHKVlOuA2RLOTRQfuU1thuLyHVjRZQVcZDAxOjsWpoOEhcYSWFlciTY
+	 1feObg5JcDpute/OpXQ37EGrqXa0gZV/0Y9cZhVZkF/xGkIrXDWZ0azPrCVxV8EpLW
+	 JVmAqYAOl8n6KjOk0kZznH7aqon6Zcyuq4jCnAKsb3wm0avSpiHDKKWhVjj03mjFs+
+	 Dz0IENEjdBrdqf2jg3zSq14l3ENN+hxuRcDT7xNm/u4lOehULDIHoO9BNUWtCySgpc
+	 2TfIHQRCIMIZATy2RXhYIT0Mq/NToqH7h7e+tenQoaUWk7SuHzmvlwikE4hBP5HDlF
+	 9aqYDJDsX9B+w==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65O3ejD333888852
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 11:40:40 +0800
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 11:40:45 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 24 Jun 2026 11:40:40 +0800
+ 15.2.2562.17; Wed, 24 Jun 2026 11:40:46 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Wed, 24 Jun 2026 11:40:40 +0800
+ Transport; Wed, 24 Jun 2026 11:40:45 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <ku920601@realtek.com>
-Subject: [PATCH rtw-next 03/10] wifi: rtw89: coex: Move wifi related counters to wifi info
-Date: Wed, 24 Jun 2026 11:39:34 +0800
-Message-ID: <20260624033941.45918-4-pkshih@realtek.com>
+Subject: [PATCH rtw-next 04/10] wifi: rtw89: coex: Extend bt_slot_req for dual MAC wifi
+Date: Wed, 24 Jun 2026 11:39:35 +0800
+Message-ID: <20260624033941.45918-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260624033941.45918-1-pkshih@realtek.com>
 References: <20260624033941.45918-1-pkshih@realtek.com>
@@ -80,13 +80,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38034-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38035-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:ku920601@realtek.com,s:lists@lfdr.de];
 	RCPT_COUNT_TWO(0.00)[2];
@@ -104,270 +104,134 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,realtek.com:dkim,realtek.com:email,realtek.com:mid,realtek.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,realtek.com:dkim,realtek.com:email,realtek.com:mid,realtek.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 38D936BB244
+X-Rspamd-Queue-Id: D827F6BB260
 
 From: Ching-Te Ku <ku920601@realtek.com>
 
-Move wifi related counters to wifi main info, it is to facilitate
-the after modification for dual MAC wifi structure.
+This variable is for asking driver occupied Bluetooth traffic slot while
+wifi is running at multi-port mode. Example like station + AP. The time
+slot is separated by wifi driver under these wifi modes. And to ensure
+Bluetooth performance, Coex will advice the Bluetooth slot length to
+driver. And each MAC is able to run multi-port mode, so extend the
+variable's index.
 
 Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 80 +++++++++++------------
+ drivers/net/wireless/realtek/rtw89/coex.c | 24 +++++++++++------------
+ drivers/net/wireless/realtek/rtw89/coex.h |  2 +-
  drivers/net/wireless/realtek/rtw89/core.h |  2 +-
- 2 files changed, 41 insertions(+), 41 deletions(-)
+ 3 files changed, 14 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index f857ba247c23..e4662e7b74e0 100644
+index e4662e7b74e0..659028edccfa 100644
 --- a/drivers/net/wireless/realtek/rtw89/coex.c
 +++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -3411,7 +3411,7 @@ static void _set_bt_afh_info_v0(struct rtw89_dev *rtwdev)
- 	rtw89_debug(rtwdev, RTW89_DBG_BTC,
- 		    "[BTC], %s(): en=%d, ch=%d, bw=%d\n",
- 		    __func__, en, ch, bw);
--	btc->cx.cnt_wl[BTC_WCNT_CH_UPDATE]++;
-+	wl->wcnt[BTC_WCNT_CH_UPDATE]++;
+@@ -975,8 +975,8 @@ static void _reset_btc_var(struct rtw89_dev *rtwdev, u8 type)
+ 		}
+ 
+ 		btc->policy_len = 0;
+-		btc->bt_req_len = 0;
+-
++		btc->bt_req_len[RTW89_PHY_0] = 0;
++		btc->bt_req_len[RTW89_PHY_1] = 0;
+ 		btc->dm.coex_info_map = BTC_COEX_INFO_ALL;
+ 		btc->dm.wl_tx_limit.tx_time = BTC_MAX_TX_TIME_DEF;
+ 		btc->dm.wl_tx_limit.tx_retry = BTC_MAX_TX_RETRY_DEF;
+@@ -1994,10 +1994,10 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
+ 			/* Check diff time between real BT slot and EBT/E5G slot */
+ 			if (dm->tdma_now.type == CXTDMA_OFF &&
+ 			    dm->tdma_now.ext_ctrl == CXECTL_EXT &&
+-			    btc->bt_req_len != 0) {
++			    btc->bt_req_len[RTW89_PHY_0] != 0) {
+ 				bt_slot_real = le16_to_cpu(pcysta->v3.cycle_time.tavg[CXT_BT]);
+-				if (btc->bt_req_len > bt_slot_real) {
+-					diff_t = btc->bt_req_len - bt_slot_real;
++				if (btc->bt_req_len[RTW89_PHY_0] > bt_slot_real) {
++					diff_t = btc->bt_req_len[RTW89_PHY_0] - bt_slot_real;
+ 					_chk_btc_err(rtwdev, BTC_DCNT_BT_SLOT_DRIFT, diff_t);
+ 				}
+ 			}
+@@ -2038,11 +2038,11 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
+ 			/* Check diff time between real BT slot and EBT/E5G slot */
+ 			if (dm->tdma_now.type == CXTDMA_OFF &&
+ 			    dm->tdma_now.ext_ctrl == CXECTL_EXT &&
+-			    btc->bt_req_len != 0) {
++			    btc->bt_req_len[RTW89_PHY_0] != 0) {
+ 				bt_slot_real = le16_to_cpu(pcysta->v4.cycle_time.tavg[CXT_BT]);
+ 
+-				if (btc->bt_req_len > bt_slot_real) {
+-					diff_t = btc->bt_req_len - bt_slot_real;
++				if (btc->bt_req_len[RTW89_PHY_0] > bt_slot_real) {
++					diff_t = btc->bt_req_len[RTW89_PHY_0] - bt_slot_real;
+ 					_chk_btc_err(rtwdev, BTC_DCNT_BT_SLOT_DRIFT, diff_t);
+ 				}
+ 			}
+@@ -2083,7 +2083,7 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
+ 			_chk_btc_err(rtwdev, BTC_DCNT_WL_SLOT_DRIFT, diff_t);
+ 
+ 			/* Check diff time between real BT slot and EBT/E5G slot */
+-			bt_slot_set = btc->bt_req_len;
++			bt_slot_set = btc->bt_req_len[RTW89_PHY_0];
+ 			bt_slot_real = le16_to_cpu(pcysta->v5.cycle_time.tavg[CXT_BT]);
+ 			diff_t = 0;
+ 			if (dm->tdma_now.type == CXTDMA_OFF &&
+@@ -5861,7 +5861,7 @@ static void _action_wl_2g_scc_v1(struct rtw89_dev *rtwdev)
+ 				dm->wl_scc.ebt_null = 0;
+ 				policy_type = BTC_CXP_OFFE_2GISOB;
+ 			} else if (bt->link_info.a2dp_desc.exist &&
+-				   dur < btc->bt_req_len) {
++				   dur < btc->bt_req_len[RTW89_PHY_0]) {
+ 				dm->wl_scc.ebt_null = 1; /* tx null at EBT */
+ 				policy_type = BTC_CXP_OFFE_2GBWMIXB2;
+ 			} else if (bt->link_info.a2dp_desc.exist ||
+@@ -5934,7 +5934,7 @@ static void _action_wl_2g_scc_v2(struct rtw89_dev *rtwdev)
+ 				dm->wl_scc.ebt_null = 0;
+ 				policy_type = BTC_CXP_OFFE_2GISOB;
+ 			} else if (bt->link_info.a2dp_desc.exist &&
+-				   dur < btc->bt_req_len) {
++				   dur < btc->bt_req_len[RTW89_PHY_0]) {
+ 				dm->wl_scc.ebt_null = 1; /* tx null at EBT */
+ 				policy_type = BTC_CXP_OFFE_2GBWMIXB2;
+ 			} else if (bt->link_info.a2dp_desc.exist ||
+@@ -9694,7 +9694,7 @@ static int _show_dm_info(struct rtw89_dev *rtwdev, char *buf, size_t bufsz)
+ 		       " %-15s : wl_tx_limit[en:%d/max_t:%dus/max_retry:%d], bt_slot_reg:%d-TU, bt_scan_rx_low_pri:%d\n",
+ 		       "[dm_ctrl]", dm->wl_tx_limit.enable,
+ 		       dm->wl_tx_limit.tx_time,
+-		       dm->wl_tx_limit.tx_retry, btc->bt_req_len,
++		       dm->wl_tx_limit.tx_retry, btc->bt_req_len[RTW89_PHY_0],
+ 		       bt->scan_rx_low_pri);
+ 
+ 	return p - buf;
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.h b/drivers/net/wireless/realtek/rtw89/coex.h
+index ea2c1e5d70f5..6ac14611607c 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.h
++++ b/drivers/net/wireless/realtek/rtw89/coex.h
+@@ -329,7 +329,7 @@ static inline u16 rtw89_coex_query_bt_req_len(struct rtw89_dev *rtwdev,
+ {
+ 	struct rtw89_btc *btc = &rtwdev->btc;
+ 
+-	return btc->bt_req_len;
++	return btc->bt_req_len[phy_idx];
  }
  
- static void _set_bt_afh_info_v1(struct rtw89_dev *rtwdev)
-@@ -3511,7 +3511,7 @@ static void _set_bt_afh_info_v1(struct rtw89_dev *rtwdev)
- 			    "[BTC], %s(): en=%d, ch=%d, bw=%d\n",
- 			    __func__, en, ch, bw);
- 
--		btc->cx.cnt_wl[BTC_WCNT_CH_UPDATE]++;
-+		wl->wcnt[BTC_WCNT_CH_UPDATE]++;
- 	}
- }
- 
-@@ -5630,7 +5630,7 @@ static void _action_common(struct rtw89_dev *rtwdev)
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC, "[BTC], write scbd: 0x%08x\n",
- 			    wl->scbd);
- 		wl->scbd_change = false;
--		btc->cx.cnt_wl[BTC_WCNT_SCBDUPDATE]++;
-+		wl->wcnt[BTC_WCNT_SCBDUPDATE]++;
- 	}
- 
- 	if (btc->ver->fcxosi) {
-@@ -6877,7 +6877,7 @@ static void _update_wl_info_v7(struct rtw89_dev *rtwdev, u8 rid)
- 	if (wl_rinfo->dbcc_en != rtwdev->dbcc_en) {
- 		wl_rinfo->dbcc_chg = 1;
- 		wl_rinfo->dbcc_en = rtwdev->dbcc_en;
--		btc->cx.cnt_wl[BTC_WCNT_DBCC_CHG]++;
-+		wl->wcnt[BTC_WCNT_DBCC_CHG]++;
- 	}
- 
- 	if (rtwdev->dbcc_en) {
-@@ -7321,7 +7321,7 @@ static void _update_wl_info_v8(struct rtw89_dev *rtwdev, u8 role_id, u8 rlink_id
- 
- 	if (wl_rinfo->dbcc_en != dbcc_en_ori) {
- 		wl->dbcc_chg = true;
--		btc->cx.cnt_wl[BTC_WCNT_DBCC_CHG]++;
-+		wl->wcnt[BTC_WCNT_DBCC_CHG]++;
- 	}
- }
- 
-@@ -7378,7 +7378,7 @@ void rtw89_coex_rfk_chk_work(struct wiphy *wiphy, struct wiphy_work *work)
- 	if (wl->rfk_info.state != BTC_WRFK_STOP) {
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC,
- 			    "[BTC], %s(): RFK timeout\n", __func__);
--		cx->cnt_wl[BTC_WCNT_RFK_TIMEOUT]++;
-+		wl->wcnt[BTC_WCNT_RFK_TIMEOUT]++;
- 		dm->error.map.wl_rfk_timeout = true;
- 		wl->rfk_info.state = BTC_WRFK_STOP;
- 		_write_scbd(rtwdev, BTC_WSCB_WLRFK, false);
-@@ -7520,13 +7520,13 @@ static bool _chk_wl_rfk_request(struct rtw89_dev *rtwdev)
- 
- 	_update_bt_scbd(rtwdev, true);
- 
--	cx->cnt_wl[BTC_WCNT_RFK_REQ]++;
-+	cx->wl.wcnt[BTC_WCNT_RFK_REQ]++;
- 
- 	if ((bt->rfk_info.map.run || bt->rfk_info.map.req) &&
- 	    !bt->rfk_info.map.timeout) {
--		cx->cnt_wl[BTC_WCNT_RFK_REJECT]++;
-+		cx->wl.wcnt[BTC_WCNT_RFK_REJECT]++;
- 	} else {
--		cx->cnt_wl[BTC_WCNT_RFK_GO]++;
-+		cx->wl.wcnt[BTC_WCNT_RFK_GO]++;
- 		return true;
- 	}
- 	return false;
-@@ -7934,14 +7934,14 @@ void rtw89_btc_ntfy_specific_packet(struct rtw89_dev *rtwdev,
- 
- 	switch (pkt_type) {
- 	case PACKET_DHCP:
--		cnt = ++cx->cnt_wl[BTC_WCNT_DHCP];
-+		cnt = ++wl->wcnt[BTC_WCNT_DHCP];
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC,
- 			    "[BTC], %s(): DHCP cnt=%d\n", __func__, cnt);
- 		wl->status.map.connecting = true;
- 		delay_work = true;
- 		break;
- 	case PACKET_EAPOL:
--		cnt = ++cx->cnt_wl[BTC_WCNT_EAPOL];
-+		cnt = ++wl->wcnt[BTC_WCNT_EAPOL];
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC,
- 			    "[BTC], %s(): EAPOL cnt=%d\n", __func__, cnt);
- 		wl->status.map._4way = true;
-@@ -7950,7 +7950,7 @@ void rtw89_btc_ntfy_specific_packet(struct rtw89_dev *rtwdev,
- 			delay /= 2;
- 		break;
- 	case PACKET_EAPOL_END:
--		cnt = ++cx->cnt_wl[BTC_WCNT_EAPOL];
-+		cnt = ++wl->wcnt[BTC_WCNT_EAPOL];
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC,
- 			    "[BTC], %s(): EAPOL_End cnt=%d\n",
- 			    __func__, cnt);
-@@ -7958,7 +7958,7 @@ void rtw89_btc_ntfy_specific_packet(struct rtw89_dev *rtwdev,
- 		wiphy_delayed_work_cancel(rtwdev->hw->wiphy, &rtwdev->coex_act1_work);
- 		break;
- 	case PACKET_ARP:
--		cnt = ++cx->cnt_wl[BTC_WCNT_ARP];
-+		cnt = ++wl->wcnt[BTC_WCNT_ARP];
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC,
- 			    "[BTC], %s(): ARP cnt=%d\n", __func__, cnt);
- 		return;
-@@ -10913,7 +10913,7 @@ static int _show_mreg_v1(struct rtw89_dev *rtwdev, char *buf, size_t bufsz)
- 	p += scnprintf(p, end - p,
- 		       " %-15s : WL->BT:0x%08x(cnt:%d), BT->WL:0x%08x(total:%d, bt_update:%d)\n",
- 		       "[scoreboard]", wl->scbd,
--		       cx->cnt_wl[BTC_WCNT_SCBDUPDATE],
-+		       wl->wcnt[BTC_WCNT_SCBDUPDATE],
- 		       bt->scbd, cx->cnt_bt[BTC_BCNT_SCBDREAD],
- 		       cx->cnt_bt[BTC_BCNT_SCBDUPDATE]);
- 
-@@ -10998,7 +10998,7 @@ static int _show_mreg_v2(struct rtw89_dev *rtwdev, char *buf, size_t bufsz)
- 	p += scnprintf(p, end - p,
- 		       " %-15s : WL->BT:0x%08x(cnt:%d), BT->WL:0x%08x(total:%d, bt_update:%d)\n",
- 		       "[scoreboard]", wl->scbd,
--		       cx->cnt_wl[BTC_WCNT_SCBDUPDATE],
-+		       wl->wcnt[BTC_WCNT_SCBDUPDATE],
- 		       bt->scbd, cx->cnt_bt[BTC_BCNT_SCBDREAD],
- 		       cx->cnt_bt[BTC_BCNT_SCBDUPDATE]);
- 
-@@ -11083,7 +11083,7 @@ static int _show_mreg_v7(struct rtw89_dev *rtwdev, char *buf, size_t bufsz)
- 	p += scnprintf(p, end - p,
- 		       "\n\r %-15s : WL->BT:0x%08x(cnt:%d), BT->WL:0x%08x(total:%d, bt_update:%d)",
- 		       "[scoreboard]", wl->scbd,
--		       cx->cnt_wl[BTC_WCNT_SCBDUPDATE],
-+		       wl->wcnt[BTC_WCNT_SCBDUPDATE],
- 		       bt->scbd, cx->cnt_bt[BTC_BCNT_SCBDREAD],
- 		       cx->cnt_bt[BTC_BCNT_SCBDUPDATE]);
- 
-@@ -11189,10 +11189,10 @@ static int _show_summary_v1(struct rtw89_dev *rtwdev, char *buf, size_t bufsz)
- 
- 		p += scnprintf(p, end - p,
- 			       " %-15s : wl_rfk[req:%d/go:%d/reject:%d/timeout:%d]",
--			       "[RFK]", cx->cnt_wl[BTC_WCNT_RFK_REQ],
--			       cx->cnt_wl[BTC_WCNT_RFK_GO],
--			       cx->cnt_wl[BTC_WCNT_RFK_REJECT],
--			       cx->cnt_wl[BTC_WCNT_RFK_TIMEOUT]);
-+			       "[RFK]", wl->wcnt[BTC_WCNT_RFK_REQ],
-+			       wl->wcnt[BTC_WCNT_RFK_GO],
-+			       wl->wcnt[BTC_WCNT_RFK_REJECT],
-+			       wl->wcnt[BTC_WCNT_RFK_TIMEOUT]);
- 
- 		p += scnprintf(p, end - p,
- 			       ", bt_rfk[req:%d/go:%d/reject:%d/timeout:%d/fail:%d]\n",
-@@ -11304,10 +11304,10 @@ static int _show_summary_v4(struct rtw89_dev *rtwdev, char *buf, size_t bufsz)
- 
- 		p += scnprintf(p, end - p,
- 			       " %-15s : wl_rfk[req:%d/go:%d/reject:%d/timeout:%d]",
--			       "[RFK]", cx->cnt_wl[BTC_WCNT_RFK_REQ],
--			       cx->cnt_wl[BTC_WCNT_RFK_GO],
--			       cx->cnt_wl[BTC_WCNT_RFK_REJECT],
--			       cx->cnt_wl[BTC_WCNT_RFK_TIMEOUT]);
-+			       "[RFK]", wl->wcnt[BTC_WCNT_RFK_REQ],
-+			       wl->wcnt[BTC_WCNT_RFK_GO],
-+			       wl->wcnt[BTC_WCNT_RFK_REJECT],
-+			       wl->wcnt[BTC_WCNT_RFK_TIMEOUT]);
- 
- 		p += scnprintf(p, end - p,
- 			       ", bt_rfk[req:%d/go:%d/reject:%d/timeout:%d/fail:%d]\n",
-@@ -11418,10 +11418,10 @@ static int _show_summary_v5(struct rtw89_dev *rtwdev, char *buf, size_t bufsz)
- 
- 		p += scnprintf(p, end - p,
- 			       " %-15s : wl_rfk[req:%d/go:%d/reject:%d/tout:%d]",
--			       "[RFK/LPS]", cx->cnt_wl[BTC_WCNT_RFK_REQ],
--			       cx->cnt_wl[BTC_WCNT_RFK_GO],
--			       cx->cnt_wl[BTC_WCNT_RFK_REJECT],
--			       cx->cnt_wl[BTC_WCNT_RFK_TIMEOUT]);
-+			       "[RFK/LPS]", wl->wcnt[BTC_WCNT_RFK_REQ],
-+			       wl->wcnt[BTC_WCNT_RFK_GO],
-+			       wl->wcnt[BTC_WCNT_RFK_REJECT],
-+			       wl->wcnt[BTC_WCNT_RFK_TIMEOUT]);
- 
- 		p += scnprintf(p, end - p,
- 			       ", bt_rfk[req:%d]",
-@@ -11539,10 +11539,10 @@ static int _show_summary_v105(struct rtw89_dev *rtwdev, char *buf, size_t bufsz)
- 
- 		p += scnprintf(p, end - p,
- 			       " %-15s : wl_rfk[req:%d/go:%d/reject:%d/tout:%d]",
--			       "[RFK/LPS]", cx->cnt_wl[BTC_WCNT_RFK_REQ],
--			       cx->cnt_wl[BTC_WCNT_RFK_GO],
--			       cx->cnt_wl[BTC_WCNT_RFK_REJECT],
--			       cx->cnt_wl[BTC_WCNT_RFK_TIMEOUT]);
-+			       "[RFK/LPS]", wl->wcnt[BTC_WCNT_RFK_REQ],
-+			       wl->wcnt[BTC_WCNT_RFK_GO],
-+			       wl->wcnt[BTC_WCNT_RFK_REJECT],
-+			       wl->wcnt[BTC_WCNT_RFK_TIMEOUT]);
- 
- 		p += scnprintf(p, end - p,
- 			       ", bt_rfk[req:%d]",
-@@ -11664,10 +11664,10 @@ static int _show_summary_v7(struct rtw89_dev *rtwdev, char *buf, size_t bufsz)
- 
- 		p += scnprintf(p, end - p,
- 			       "\n\r %-15s : wl_rfk[req:%d/go:%d/reject:%d/tout:%d/time:%dms]",
--			       "[RFK/LPS]", cx->cnt_wl[BTC_WCNT_RFK_REQ],
--			       cx->cnt_wl[BTC_WCNT_RFK_GO],
--			       cx->cnt_wl[BTC_WCNT_RFK_REJECT],
--			       cx->cnt_wl[BTC_WCNT_RFK_TIMEOUT],
-+			       "[RFK/LPS]", wl->wcnt[BTC_WCNT_RFK_REQ],
-+			       wl->wcnt[BTC_WCNT_RFK_GO],
-+			       wl->wcnt[BTC_WCNT_RFK_REJECT],
-+			       wl->wcnt[BTC_WCNT_RFK_TIMEOUT],
- 			       wl->rfk_info.proc_time);
- 
- 		p += scnprintf(p, end - p, ", bt_rfk[req:%d]",
-@@ -11777,10 +11777,10 @@ static int _show_summary_v8(struct rtw89_dev *rtwdev, char *buf, size_t bufsz)
- 
- 		p += scnprintf(p, end - p,
- 			       "\n\r %-15s : wl_rfk[req:%d/go:%d/reject:%d/tout:%d/time:%dms]",
--			       "[RFK/LPS]", cx->cnt_wl[BTC_WCNT_RFK_REQ],
--			       cx->cnt_wl[BTC_WCNT_RFK_GO],
--			       cx->cnt_wl[BTC_WCNT_RFK_REJECT],
--			       cx->cnt_wl[BTC_WCNT_RFK_TIMEOUT],
-+			       "[RFK/LPS]", wl->wcnt[BTC_WCNT_RFK_REQ],
-+			       wl->wcnt[BTC_WCNT_RFK_GO],
-+			       wl->wcnt[BTC_WCNT_RFK_REJECT],
-+			       wl->wcnt[BTC_WCNT_RFK_TIMEOUT],
- 			       wl->rfk_info.proc_time);
- 
- 		p += scnprintf(p, end - p, ", bt_rfk[req:%d]",
+ static inline u32 rtw89_get_antpath_type(u8 phy_map, u8 type)
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 2f12252bc26e..0abbde6a2013 100644
+index 0abbde6a2013..13fa7f574e91 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2078,6 +2078,7 @@ struct rtw89_btc_wl_info {
- 	bool link_mode_chg;
- 	bool dbcc_chg;
- 	u32 scbd;
-+	u32 wcnt[BTC_WCNT_NUM];
- };
+@@ -3390,7 +3390,7 @@ struct rtw89_btc {
+ 	struct wiphy_work dhcp_notify_work;
+ 	struct wiphy_work icmp_notify_work;
  
- struct rtw89_btc_module {
-@@ -2267,7 +2268,6 @@ struct rtw89_btc_cx {
- 	struct rtw89_btc_3rdcx_info other;
- 	u32 state_map;
- 	u32 cnt_bt[BTC_BCNT_NUM];
--	u32 cnt_wl[BTC_WCNT_NUM];
- };
+-	u32 bt_req_len;
++	u32 bt_req_len[RTW89_PHY_NUM];
  
- struct rtw89_btc_fbtc_tdma {
+ 	u8 policy[RTW89_BTC_POLICY_MAXLEN];
+ 	u8 ant_type;
 -- 
 2.25.1
 
