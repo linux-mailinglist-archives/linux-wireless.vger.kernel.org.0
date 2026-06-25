@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-38060-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38061-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DfUMGgB0PGqroAgAu9opvQ
-	(envelope-from <linux-wireless+bounces-38060-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 02:19:12 +0200
+	id aICnKh90PGq0oAgAu9opvQ
+	(envelope-from <linux-wireless+bounces-38061-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 02:19:43 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE666C1F3D
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 02:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4B56C1F42
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 02:19:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38060-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38060-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38061-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38061-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 61E77300BCA6
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 00:19:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DA4433010CF7
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 00:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A36A757EA;
-	Thu, 25 Jun 2026 00:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154AE2236FA;
+	Thu, 25 Jun 2026 00:19:36 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9DA1F192E
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2026 00:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C054E1FCFEF
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2026 00:19:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782346746; cv=none; b=PGfSoiaehr5l45/8ityeltAUUgai8A7UCeyRZOXKiZy174AHI/vSZEbDvjHeoiUfzwNYR+Z+eyBEaSHytdhAuMT6BP9AkDF3ko2ihR5eh+YYeU+8WWGfjzsooEfvjD/gDINJ7YxSqKxgbYNCVPYS/Gq//558oeP4HAesLHwtP/k=
+	t=1782346776; cv=none; b=g2Yp30dVHUjMFQZxhCta4490LgngSQn6FG/nS4TQTr6NBqanOqH+aQHvTCxJY16IDsTfb0zpXRi6CJ3nxhq5QQco3pAtvn8mbh6UEGB7ZjXoTET6k5sKQK4BDdVW1y+DC8+Ooqw992pRj87+1ndu6mngxfB9a6fKTKvRNtSCVz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782346746; c=relaxed/simple;
-	bh=k6vbv4St8c9nutb8oiRVPJe4UMxAZhPf+jHw4NBrYqs=;
+	s=arc-20240116; t=1782346776; c=relaxed/simple;
+	bh=+ZUju/5hbWFBWSkrIolTMVS1qvJd+9kW0flO1W8ttd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCAPMCFTsMgSIUcrZ2vzaezR5vLj1OBV8bXV1ENzY2XIvz/NA50BZpcclCtmEQP4dAx94K8ID2t4VLAKuE7DMjg+nsQQfvQMLPocivOP4DfwZ9zOODJ83tCuJVrdebvhefCe5vmfhfJI14fHRt/7PyhT4Iv5uS14pflg2JByToM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.169
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c8584e80d59so705482a12.2
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 17:19:04 -0700 (PDT)
+	 MIME-Version; b=EHUsSkKpg0/6NrxEIAWbs3VAo9DnXfjtDwmeHoyLfpjWMMjsGU1dLFpaSrLYkHdsupCHGRSgYiTogZkahA5P/ZZJNwnIPOHQILqlQAqAjQBi4vU4INmsZCvQ87QIGD6dvzgbRxVo9J+y3qMkQj95edRUa0coV1A6sptBAWWXqSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.178
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c8b49639fbaso1104394a12.0
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 17:19:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782346744; x=1782951544;
+        d=1e100.net; s=20251104; t=1782346774; x=1782951574;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=PfTLVu81fDyPQcXHERPJcN3IrtYpcc9/vrGzAGCrhXc=;
-        b=GTHXVcZirrxX4FrsEo8Tmm1uLdgLM8DRdBcLD9F2UwLfW7Avb/BRo6UYjN6oFfDATo
-         SgWrrpzIXx3QSmqJuDrLiokxqyBw2fqwNXJWaO6cXFT16mEzJjx6MAxHlw1HcG30SgOo
-         8c5wIU5yU4lbBOd86C1xN1Jo16Waon2UIkqx0IjjTX6ywAmtRrefkJfSs3Vr/nEmyeQe
-         FJqPwb0qO/QVLI7ur5g0eOWKO+nFExYerKv0nOLYgZIZGK02PgGLzJRf6WuuQHtFxogU
-         QC/YqugwYIubmluFxKZz7AH/0eBzc9hAnjvCGB1Bhoiv99HjkJ6j0wicQTxhS1HsXVVe
-         M9JQ==
-X-Forwarded-Encrypted: i=1; AFNElJ81+gY8y7eOhSD0FQBoW4/5QDyxcAPWE+e9GHEiRDbX2NRpw+xzVnau8moz0VLj6C1vWEBFKAYJsLBiXDGMqQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyH4uouiWokFPnZ06tmHJC0ttkyV1+96VIVMV8Oxcavty5+2NsJ
-	Br/nGP9ei4dSN5cG1Xl3SKOmysCyNy8DR5qkd4/KlD/kdiXwMiEzUN+J
-X-Gm-Gg: AfdE7cnAv7VA1vfoVaVbUUsM2dNma5um4oJZ7iC2mNA+055od/y8m4ESQgd2vlc+y2d
-	lsY6sVhclCJ9c+fye+m2r0haAzL2jy5oWiSeNOJ7wuVV/H9Gm/XV+gkJwBE8OuvhZbbUCECl0tt
-	4Z5Uun6UAaSfcD490AkP7TvtNFwI8OI2ql6+zk3zx4Wl63aSK4XpcNZk7P5JosesIHcSmDxIsR4
-	A2OdPZ9/hkBSj77EadUWDvVIbA6sFdYO/OrBF7nvY7tREpm/3dwyZQx3ICmJEs3Tn3r8zqv66VT
-	gBRHwV3OwOSD2+ogSZ/ujuUvzsx2HyxotlMLrYCAgWN11AvvGv93O2Td5o4zMsowqYkTPv1Scjm
-	dqxb7p59YDnzmVvBIUzkLOX6jiygIZbbXu3ty1hJnzkowubqcPwqNzVO3VBv3pmJtPpTpzzal7+
-	VtZFPXGrELPe/VkmLpkdaLQuRHbhSEJAjXyONZGtVy5OBuI3+vccI6EhsRc6kKJxUVOxTWDItHK
-	8LsbKyZUh5xKtW92d7x2tsAL4X3Ng==
-X-Received: by 2002:a05:6a21:1644:b0:3bd:3536:928c with SMTP id adf61e73a8af0-3bd4aec597bmr295275637.25.1782346744094;
-        Wed, 24 Jun 2026 17:19:04 -0700 (PDT)
+        bh=AyPmpTYq94Jn9nTAUSFDOvDYbqnAtTblCK+8XVszBnQ=;
+        b=fy0j9xPHsx/vsDMDWQI53CkmAxynsA3bITcndqDyNSjpMiDeTuIatGfheGDgRPw9Wd
+         Bx523ejl6YT9wgI5glUGO35el0iDcXiWdgCkARqBGiHgwvSDx23RtT5RwAoZNfzr0BIK
+         7iP8+loyIHMGXPzSfEBbJh8slNRpvPoyX/1a4BDR+t/MZ3PbMwUnLd7ZK4k6IyqSDc/t
+         4ewnQCsP+7p+xJk+B1dDVjVsqmHZLXknyiTiDujBa7NMiZ1ynZUcbP7CaM5yE6weJ05w
+         ud/kw8Ql9xiS/53djNaSunHmdcBueUWHveNeOtoVXG7lLEUF9ZVcQi6SzoZ9uYyKAU67
+         pqjw==
+X-Forwarded-Encrypted: i=1; AFNElJ+tJ866r3ATsjvO1HPiCn83P0zw7LtfzZ0Xf/V6uBvDb9aIXwsmnYcKXh2GiSDGkzArN0RGtD3lIK3DON1ESA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuxbU/JAL+SjkJOa/p/H9BOK9DqRTBQ9plqPhmkJuaAYWidQK/
+	6YBIp5Zagmx2bHopK500A2AlXprKc6p35Rzvj3LVcb87Y6fTqGIv8oOt
+X-Gm-Gg: AfdE7clP+tb2fP9RbOENNNNdst/9TXEa9MJjCkuVqgv5WATteKpLRXPYzaa8e1UsdaZ
+	FId0aKbaTOqRr+WY+8wZmze7mxD6JmOwT6+DzLBLspVYWoINcjRGutMDSAcQE6FBAsKkM4v1s9+
+	i8kCOdyyh1OyjaMt1cUTkb+I5swXU2AI2CGw2a7StRVkMJwDkAbQFalEFCmZnSLykYar696GSje
+	7rT1/hRRLHXfM47WkjKMsBR2eiKoB3eWtiqBEMNaandpaGXzVorgbJao9qqxmdvBOsZ5ESHhzum
+	Lx8otyLoxALTiuyrsuBzFHakxSbv5t0QRfyUsvZy5bgABdSL5X+FxqEDQQoz9upB6AHknfu0bRx
+	Xiw8Jqz1C8Z1vMIaS3x+upgSKnRuIpF9muu/FTkJmGXN3UOHGOcEc5EtaU2YlfQHNhelARF1U5M
+	IykvrWwuDZnD0xEf0B/U3h+RBHBQnnYhrl5U71XpTPJebVFe1PvP6TA+BXoGECEwZ/hGiZdiYfd
+	4KhYmZHA5k3Wio/VZWTu1H28aq/5w==
+X-Received: by 2002:a05:6a20:6a0d:b0:3b4:87c0:d90 with SMTP id adf61e73a8af0-3bd4ae3a935mr289934637.28.1782346774031;
+        Wed, 24 Jun 2026 17:19:34 -0700 (PDT)
 Received: from sean-HP-EliteBook-830-G6.. (114-34-228-194.hinet-ip.hinet.net. [114.34.228.194])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c92bc1e0d10sm586839a12.21.2026.06.24.17.19.01
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c92bc1e0d10sm586839a12.21.2026.06.24.17.19.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 17:19:03 -0700 (PDT)
+        Wed, 24 Jun 2026 17:19:33 -0700 (PDT)
 From: Sean Wang <sean.wang@kernel.org>
 To: Felix Fietkau <nbd@nbd.name>,
 	Lorenzo Bianconi <lorenzo@kernel.org>
@@ -75,9 +75,9 @@ Cc: chengwei.yu@mediatek.com,
 	linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org,
 	Sean Wang <sean.wang@mediatek.com>
-Subject: [PATCH v2 1/9] wifi: mt76: mt792x: advertise mgmt frame registration
-Date: Wed, 24 Jun 2026 19:18:26 -0500
-Message-ID: <20260625001834.475094-2-sean.wang@kernel.org>
+Subject: [PATCH v2 2/9] wifi: mt76: mt7925: guard BSS capability lookups
+Date: Wed, 24 Jun 2026 19:18:27 -0500
+Message-ID: <20260625001834.475094-3-sean.wang@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260625001834.475094-1-sean.wang@kernel.org>
 References: <20260625001834.475094-1-sean.wang@kernel.org>
@@ -99,7 +99,7 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38060-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38061-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
@@ -119,16 +119,17 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5AE666C1F3D
+X-Rspamd-Queue-Id: AE4B56C1F42
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Advertise multicast management frame registration support so userspace
-can subscribe to multicast management and action frames.
+mt7925 BSS setup may dereference missing channel data or query HE 6 GHz
+capabilities for an iftype without HE support.
 
-This capability is required for NAN discovery and related operations.
+Guard both lookups before adding NAN paths that can use partially
+configured BSS state.
 
 Co-developed-by: Stella Liu <yu-ching.liu@mediatek.com>
 Signed-off-by: Stella Liu <yu-ching.liu@mediatek.com>
@@ -136,21 +137,66 @@ Co-developed-by: Jeremy Yu <chengwei.yu@mediatek.com>
 Signed-off-by: Jeremy Yu <chengwei.yu@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt792x_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 26 ++++++++++++++-----
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index b50825eccdaf..a0db815c27bc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -719,6 +719,7 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_RATE_HE);
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_ACK_SIGNAL_SUPPORT);
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CAN_REPLACE_PTK0);
-+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_MULTICAST_REGISTRATIONS);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index e94fa544ff20..cff91b4eeac6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2364,11 +2364,18 @@ void mt7925_mcu_bss_rlm_tlv(struct sk_buff *skb, struct mt76_phy *phy,
+ {
+ 	struct cfg80211_chan_def *chandef = ctx ? &ctx->def :
+ 						  &link_conf->chanreq.oper;
+-	int freq1 = chandef->center_freq1, freq2 = chandef->center_freq2;
+-	enum nl80211_band band = chandef->chan->band;
+ 	struct bss_rlm_tlv *req;
++	enum nl80211_band band;
++	int freq1, freq2;
+ 	struct tlv *tlv;
  
- 	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
- 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
++	if (WARN_ON_ONCE(!chandef || !chandef->chan))
++		return;
++
++	freq1 = chandef->center_freq1;
++	freq2 = chandef->center_freq2;
++	band = chandef->chan->band;
++
+ 	tlv = mt76_connac_mcu_add_tlv(skb, UNI_BSS_INFO_RLM, sizeof(*req));
+ 	req = (struct bss_rlm_tlv *)tlv;
+ 	req->control_channel = chandef->chan->hw_value;
+@@ -2506,8 +2513,8 @@ mt7925_get_phy_mode_ext(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 			enum nl80211_band band,
+ 			struct ieee80211_link_sta *link_sta)
+ {
+-	struct ieee80211_he_6ghz_capa *he_6ghz_capa;
+-	const struct ieee80211_sta_eht_cap *eht_cap;
++	struct ieee80211_he_6ghz_capa *he_6ghz_capa = NULL;
++	const struct ieee80211_sta_eht_cap *eht_cap = NULL;
+ 	__le16 capa = 0;
+ 	u8 mode = 0;
+ 
+@@ -2515,11 +2522,18 @@ mt7925_get_phy_mode_ext(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		he_6ghz_capa = &link_sta->he_6ghz_capa;
+ 		eht_cap = &link_sta->eht_cap;
+ 	} else {
++		const struct ieee80211_sta_he_cap *he_cap;
+ 		struct ieee80211_supported_band *sband;
+ 
+ 		sband = phy->hw->wiphy->bands[band];
+-		capa = ieee80211_get_he_6ghz_capa(sband, vif->type);
+-		he_6ghz_capa = (struct ieee80211_he_6ghz_capa *)&capa;
++
++		he_cap = (band == NL80211_BAND_6GHZ) ?
++			 ieee80211_get_he_iftype_cap(sband, vif->type) : NULL;
++
++		if (he_cap) {
++			capa = ieee80211_get_he_6ghz_capa(sband, vif->type);
++			he_6ghz_capa = (struct ieee80211_he_6ghz_capa *)&capa;
++		}
+ 
+ 		eht_cap = ieee80211_get_eht_iftype_cap(sband, vif->type);
+ 	}
 -- 
 2.43.0
 
