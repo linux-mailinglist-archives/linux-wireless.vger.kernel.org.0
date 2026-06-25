@@ -1,119 +1,141 @@
-Return-Path: <linux-wireless+bounces-38086-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38090-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RFVCEG8PPWoJwggAu9opvQ
-	(envelope-from <linux-wireless+bounces-38086-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 13:22:23 +0200
+	id Rdo4J0UePWr7xAgAu9opvQ
+	(envelope-from <linux-wireless+bounces-38090-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 14:25:41 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C1AF6C5117
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 13:22:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D34D56C58B6
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 14:25:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=LrjCy1My;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38086-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38086-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=schwarzvogel.de (policy=none);
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38090-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38090-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9BB2A301625C
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 11:22:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 55DC3300AB07
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 12:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4033D813D;
-	Thu, 25 Jun 2026 11:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BF553E1690;
+	Thu, 25 Jun 2026 12:23:11 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from workdog.hb.i-no.de (unknown [37.17.237.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C2B3C2B9C;
-	Thu, 25 Jun 2026 11:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1DA3E0C57;
+	Thu, 25 Jun 2026 12:23:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782386538; cv=none; b=iclXSAMvIN1UH3VM5c+xS/iVgA1bBTms0rYz2aBbmpmdPOOLL95EtrS0UmFacrt/UmqUOSqlAODUv79Qy22Yjl1/gVmPYKEzI35Dn6jxdI6etW3Fs5q515OnkJcK46Slt1MKmDKmriYtyEEDWCPbO90gExi42332y2m4ue/wk0c=
+	t=1782390191; cv=none; b=eVXd9F7WV5lzZKKbN2TOj4puN0t706lPTWmLueDPb0LcvfJipDRwpvyAQM8fyzsA94RFa2U/54CTkNNfhLxEt1tA396WtHW82umDXBzicLSCHxjUL5nFRg8o1HZ+5GZWJjbHWt7Nflk02Iyj6KDC+6Q60NBpywwFUOXO6eM3dF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782386538; c=relaxed/simple;
-	bh=3MAxlbAg+83kx3PssMy/RSzbT4R3vIZ1wpn8AplK51Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G+XycAemmDSWUmq14XbbF4fwLTCvSvDXl5oI0jw3Z8qCzz+2KyW95Wa06LbmGM3GUoie/j4bxVqjuJP5N/Ft9ZF5lnHY4kuTOtrCjglr1lKmwwyn4SFa/TGKhnTs2XNK9bSkgmthTqzpWWbVv91W4ahBbfqjc/MAYw4kHTJ3f00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LrjCy1My; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=3MAxlbAg+83kx3PssMy/RSzbT4R3vIZ1wpn8AplK51Q=;
-	t=1782386536; x=1783596136; b=LrjCy1My/IfGdP5s//ELo8tlsb7pgdCKvBnXHQ59IYuwTq4
-	hHhaNNJ8/V5CXkanp62YcFLJdBq890y2U/F79DbE38rlFcU9RAlgPAYymEl1x6Sq6dfNJVwKC+jKJ
-	tXhMsCEW+LzRwFQ+JssBpMIcYsjCnzf7Zz5rzXlpuyk6MOdqiLXve4aaAACwEG8nmOqBJ8gdzSOFc
-	d9kDBlx6XR93X4pg+bIU7CN0V9D+gf4DrNBDe56IfqQRvRVf4omFFac/4X50d2j1kHwPOD3SmOA6p
-	WUeQf3AYF2LQDhrs+nIZxZqk0AJY740bn+AGrfnqbOiQ+BlbM1eMHcb3+UyZoraw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wci9n-00000001fk6-3b65;
-	Thu, 25 Jun 2026 13:22:08 +0200
-Message-ID: <d1db2391fe528c4e79b1afd9c80e49f44b948beb.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: cfg80211: replace BOOL_TO_STR macro with
- str_true_false()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Serhat Kumral <serhatkumral1@gmail.com>, linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Date: Thu, 25 Jun 2026 13:22:07 +0200
-In-Reply-To: <20260624204938.15222-1-serhatkumral1@gmail.com> (sfid-20260624_225014_090719_0EFB4145)
-References: <20260624204938.15222-1-serhatkumral1@gmail.com>
-	 (sfid-20260624_225014_090719_0EFB4145)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1782390191; c=relaxed/simple;
+	bh=bCCHjqTQ4kBBj6wQWvP+FH6UGzsEZRIFRGdEfKn9Enk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X+O1ka524fpQBFePl51GG4/Sgl02fsu8244Gzyk4nLKB+NUNv8dNEMx3gwglTS6uTXU919bpTfi3BiTaLW7/bucCfOeOGhSqNsszPkbsRxywC7ltsWxOB5eyaO9FHwm9CLOy5bad39thNDlh6bOCOd6zfJfgbtR0W8upZHFyaJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=schwarzvogel.de; spf=fail smtp.mailfrom=i-no.de; arc=none smtp.client-ip=37.17.237.91
+Received: from klausman by workdog.hb.i-no.de with local (Exim 4.99.4 2 (workog))
+	id 1wcidp-000000028Me-3Pbr;
+	Thu, 25 Jun 2026 13:53:09 +0200
+From: Tobias Klausmann <klausman@schwarzvogel.de>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Tobias Klausmann <klausman@schwarzvogel.de>
+Subject: [PATCH wireless-next] wifi: iwlwifi: mvm: demote "Unhandled alg" warning to debug
+Date: Thu, 25 Jun 2026 13:53:00 +0200
+Message-ID: <20260625115300.508794-1-klausman@schwarzvogel.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Sender: Tobias Klausmann <klausman@i-no.de>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.14 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[schwarzvogel.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:serhatkumral1@gmail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-38086-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_RECIPIENTS(0.00)[m:miriam.rachel.korenblit@intel.com,m:johannes.berg@intel.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:klausman@schwarzvogel.de,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38090-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[klausman@schwarzvogel.de,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid,sipsolutions.net:from_mime]
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[klausman@schwarzvogel.de,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9C1AF6C5117
+X-Rspamd-Queue-Id: D34D56C58B6
 
-On Wed, 2026-06-24 at 23:49 +0300, Serhat Kumral wrote:
-> Remove the local BOOL_TO_STR macro and replace all its usages with
-> the kernel's str_true_false() helper from <linux/string_choices.h>.
->=20
-> No functional change intended.
->=20
+The RX crypto paths emit an IWL_WARN "Unhandled alg" whenever a frame
+arrives that the firmware did not decrypt. This is expected and benign
+(e.g. multicast frames received before the GTK is installed), is not
+actionable, and floods the kernel log.
 
-I believe this breaks trace-cmd reporting. Please check and resend
-indicating that you have.
+Keep the diagnostic but move it from IWL_WARN to the driver's existing
+debug facility under the IWL_DL_DROP class, so it is silent by default
+and can be re-enabled at runtime via the debug_level bitmask. The
+multi-queue path uses IWL_DEBUG_DROP_LIMIT, which provides the same
+rate limiting the open-coded net_ratelimit() check did.
 
-johannes
+Signed-off-by: Tobias Klausmann <klausman@schwarzvogel.de>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 3 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 5 +++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+index d0c0faae0122..8b037e52eae3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+@@ -190,7 +190,8 @@ static u32 iwl_mvm_set_mac80211_rx_flag(struct iwl_mvm *mvm,
+ 	default:
+ 		/* Expected in monitor (not having the keys) */
+ 		if (!mvm->monitor_on)
+-			IWL_WARN(mvm, "Unhandled alg: 0x%x\n", rx_pkt_status);
++			IWL_DEBUG_DROP(mvm, "Unhandled alg: 0x%x\n",
++				       rx_pkt_status);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 7f0b4f5daa21..4eded44a104e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -504,8 +504,9 @@ static int iwl_mvm_rx_crypto(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 		 * Also drop un-decrypted frames in monitor mode.
+ 		 */
+ 		if (!is_multicast_ether_addr(hdr->addr1) &&
+-		    !mvm->monitor_on && net_ratelimit())
+-			IWL_WARN(mvm, "Unhandled alg: 0x%x\n", status);
++		    !mvm->monitor_on)
++			IWL_DEBUG_DROP_LIMIT(mvm, "Unhandled alg: 0x%x\n",
++					     status);
+ 	}
+ 
+ 	return 0;
+-- 
+2.53.0
+
 
