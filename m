@@ -1,87 +1,83 @@
-Return-Path: <linux-wireless+bounces-38058-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38059-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Vu0BBR5DPGpslwgAu9opvQ
-	(envelope-from <linux-wireless+bounces-38058-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 22:50:38 +0200
+	id Qao6OfZzPGqqoAgAu9opvQ
+	(envelope-from <linux-wireless+bounces-38059-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 02:19:02 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B4B6C1482
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 22:50:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2916C1F39
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 02:19:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=L6ZvWZoI;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38058-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38058-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38059-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38059-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 399C130377BB
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jun 2026 20:50:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BAEA2300BCAD
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 00:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0723D37DAB1;
-	Wed, 24 Jun 2026 20:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526D11A9F96;
+	Thu, 25 Jun 2026 00:18:56 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E105383326
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 20:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1692E757EA
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2026 00:18:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782334218; cv=none; b=UnKcwj6ctT7mxYXKtQl0Gp9JdJnX9P0MTweSxXBvqGN11fSjIa5Uj/or8/7vYz8ktBvmqWqGNg1lSz9zXuVppddQ0UUgQBwbe5nkqmQIS/MX5vObioUSTBpNHSDaTAgZf4slyuqE4J85MGnIcSthz0g56Nl5GRhy7CL4yJeI5Bk=
+	t=1782346736; cv=none; b=VXWznI9VwG+2QIkN9BcuqTG/A6jJL0nRV2th7WnSkoS4SBAbyS7gTfQlVtIBg2d6qHgVVM7MkWytq+WUuOFt5+myz2w6KG3NTt4ZXd4JvCZJ41tmCvcmLagq2OJ9aMdgnzntbfZACylwbBao8g4DWqka053apFPUM1r33YBiykQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782334218; c=relaxed/simple;
-	bh=jFTf4PrLX22uvgBVIFxRSx3JKDE5mssT8ULm4dUrvlo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L6KCbbdY3cKhxTuA6dDd9Yxkb4ORbOemx5GNpb5/AsSPexFE6zOo7zGDUdKiCGs4dgN3yqbTNdLLMB9o1Kf0V4mRiAMG2SLCiIhwqIq22RVyWvINwK6dsfc6/YcMYPsVFHJn3Duyr6cRAKA0EsS9kK0qK5iTRkiC9J9IeqoS6Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L6ZvWZoI; arc=none smtp.client-ip=209.85.221.65
-Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-46cbe01d4b6so689784f8f.2
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 13:50:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782334211; x=1782939011; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lJGqi/K1v+ssUJNVChcD2KX05iBVf8qFmmPThWCAueY=;
-        b=L6ZvWZoIFNQr+ftL2+qP57eVhR3GYafKc8faNHEBt5dhqTe3eoPZrPNkhGoX4MnHEh
-         4qy8tO4yC9afmGheD5+rL97tL2TvyRQKWODUC7KqdziVzgG0nkL0gvW5CFLT2EBpiMPf
-         yT1VGjLTiiTnRSGgGaJSRrWjOLUn9sKCYc7q8ZnGBF2OipaZzHBUN6pMa1vQ2Xmz4jUa
-         zLocjgHGlfWQY+9dzLKkfx476gsaV5jY9o5isFAHZA/M2c9EFOohcnndzNjQVXPbeacr
-         piYM8l9bNXzqZiuADsTmjPr+3Uz5p0wFFrVgPdaFNGIPA3BmiC9ZtvobRCoI2kXe13dx
-         tWzQ==
+	s=arc-20240116; t=1782346736; c=relaxed/simple;
+	bh=SEk72dIGPqJAK88aY20EMblCzHWB5xz7KVQtwVvby7c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b7R3diAzX0BB+p2QCK2R7Qte0N4AD7OR7D5gW/zHd+bW6ijSfxv+gR8vj8Z5hFwgnb10QVJvCwTSVrncxpb+LMcr+tBVwDxKbTKww4ph6Q4rjp9D42N4Jf+Xkcv4XONLqkt3jt/KKSVSyoo0Y045CMuJu1DgPsWfErBxD7F2VDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.47
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-37de8008910so720236a91.0
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Jun 2026 17:18:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782334211; x=1782939011;
+        d=1e100.net; s=20251104; t=1782346734; x=1782951534;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lJGqi/K1v+ssUJNVChcD2KX05iBVf8qFmmPThWCAueY=;
-        b=IFjnxvCUz0EV2H7H+eyqUIUytVkyNiijYdCgtKqjPVxe/T1hyxaG5giv1QZKrQzwx6
-         hzksha46Q2wkjrcQef2BZhHKmTC/7bsQroXZX3QS400GpZ01+27PtMrtUY5TAQzRS6PK
-         jmICV/M3Y8+T48fbCWLKdBg4+BC/aI97ohCJYDW6O0p44VqPWICEplu4DJOUUpC3CImP
-         gmb8oZRGy+AEMAyAwlVbguIGJ+w+0BzJtGd2YZHRK44XYZ+qUcQG4DqGssB/2j4q4BPd
-         flUmL7EgG5HNkZGuqZJ7uS6rdlIcGeh37tJENGowKKigJSLAhb1UKw0EHURabxwm8MJr
-         eJMw==
-X-Gm-Message-State: AOJu0YzhvAJ4hhPFSoeouUZVMhp65tK8EVkF4Nrc9DrhwpRTZBnFqekC
-	G5MZCKv/Al9q0COg9QiBo5pExdROLJl4NTEvtg0RJEs9s1klWG4p80NnOiazP6IBWSsRWQ==
-X-Gm-Gg: AfdE7claYgRTL8Yd0fDTkYkzGzgPuyWhXkMMizylA/81QLlGuJzh7+SOvUq8xivCj8V
-	r2vp7VcmTkkHY3Z4jJWQFKY4+ZFGK+nnUqMWbd7xmE6dZUYkTIbu4grkACVOwn0sqEU1+7YPbK1
-	W2FS0228AUEr93HCDkU5QKAKs4papMu9dfeDeUA/hgn2iVfdmtnWHwwB1ulCDlU9CJRECoOa6nF
-	+irkouP3s6qNlbklE5H3Q0ESzqCs5IKriMlsqRP5wR3lg/xwVoVTtC14t48hsscsMIAw5f/8VrA
-	V42mxBbtVsVSIqQvbNjKgnrpqDFbT+xpBrheOQOqO+dAOlb9Nx72ZIC3+ut9fCdKusQgehhPHwe
-	L+PJszPRLNgrxcx2osM85LbOmOwoO0yRlFusVYtvgiWSGkRr9B3Zar5/m2YIu1ncRj2oz/JYCwe
-	rlOrmbSvRXt/0=
-X-Received: by 2002:a05:6000:38b:b0:46d:638e:4581 with SMTP id ffacd0b85a97d-46d638e47a4mr787843f8f.14.1782334210625;
-        Wed, 24 Jun 2026 13:50:10 -0700 (PDT)
-Received: from fedora ([212.253.214.17])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c22b73badsm9880992f8f.33.2026.06.24.13.50.09
+        bh=hlR8b0vC5oVW3TqsUHgYLtphTYj6J1CxyewvuGXJDbc=;
+        b=ZZDqwQbzhYQtFXUFGU+m2wlUjv9EsIOy7k3j444kSEqV8R4zG9Py3NjOq4YGYhyg77
+         tvP/oqJ6bTzCx9v9y9F1ckGmkC14rrC8TWoFrOhfKbEaDytLf5YonpawhJC6I6Ahmai7
+         8F9QNSObEMATiw6uIzYCjti1dNNB653LZX8XLrv2dJftotR1CAz+haHN3ibrHvQlsRCM
+         0uAgaWNsJ5xvS3NVF460LixCF2tdYBxl9IOEpRZJf4t9qbcrUK0O6jqGNVPD/WgySrvr
+         tiEG2IRJd8jtr3nUdU8gIke0Tc67rAq6HWAovKdossi1c5ykRmzI1HGNcIR2TK9S0wlr
+         YUoQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro0Xo7iaQ06wMNrnb1hnh1/eUmbx+bvpV/K8Sf6KZjPXpnP1F0S/KTql2SAMsNxlmYQ+xN798XvIQXVvcBcuA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YysveQPuhOvbXbE0LeOS2lNjtTjJUmQ+xLwoVU47CS43eQvXgFP
+	iyAwYUbzY6zmf4OK1RzMjoTZoAR+jGCyYODqH/hXULMTCHEFQqvKyhff
+X-Gm-Gg: AfdE7ckinTmJnFqTlWzN5t+k+FJ6ecbaK4VS2/CnxVd9azyuizi5BVGVd3A1PBy4EiE
+	OoVpvxKP0KvKXDMoK7P+osE9HNzBwbOOxvd2JOWvSZ0YYJlpkJIGTa0lUbLA2oS3lgCgrJdU5BP
+	NQB34vuQTXtA1glf8Zi7gRObpg4dORx7jVOCUO2Hk/kXgGRUaBO2vRJ9gMTTd7eddg8rrDhe66T
+	13ZwAfYBzbGcJ7+/U8Uzk3JFCQxSCoFqA2tWeqRNX5jc9Xg77kaDN9lqpPvOdV51tOmMET11gWq
+	EL/dPRQv69mcniFaEn+k0/88AIonskmJ+wrjkp22wE90JMeTQQanFLY0ARhw+VO4RnAP6Q+SN9P
+	qYIvFTFsEBDf41/5YIPLH84AU7x+a+9ft4Jff1SuHmfy8kfHEceF7sjFwRoo3IxTdQMHWYMNp/i
+	onjMRBF5Q0pV/Tw9OQqkdwfi/u/CfOxentqNqkQzL65Sa4vpgBMKGsAJdXEVgME0UJDRl0D4LHL
+	BxR5rKM+CLIg76h4G4Rg+0La3+0ng==
+X-Received: by 2002:a17:90b:534f:b0:366:3517:1a95 with SMTP id 98e67ed59e1d1-37df9d41bb8mr159654a91.0.1782346734311;
+        Wed, 24 Jun 2026 17:18:54 -0700 (PDT)
+Received: from sean-HP-EliteBook-830-G6.. (114-34-228-194.hinet-ip.hinet.net. [114.34.228.194])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c92bc1e0d10sm586839a12.21.2026.06.24.17.18.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 13:50:10 -0700 (PDT)
-From: Serhat Kumral <serhatkumral1@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	linux-kernel@vger.kernel.org,
-	Serhat Kumral <serhatkumral1@gmail.com>
-Subject: [PATCH] wifi: cfg80211: replace BOOL_TO_STR macro with str_true_false()
-Date: Wed, 24 Jun 2026 23:49:38 +0300
-Message-ID: <20260624204938.15222-1-serhatkumral1@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        Wed, 24 Jun 2026 17:18:53 -0700 (PDT)
+From: Sean Wang <sean.wang@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: chengwei.yu@mediatek.com,
+	yu-ching.liu@mediatek.com,
+	jenhao.yang@mediatek.com,
+	posh.sun@mediatek.com,
+	linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	Sean Wang <sean.wang@kernel.org>
+Subject: [PATCH v2 0/9] wifi: mt76: add mt7925 NAN support
+Date: Wed, 24 Jun 2026 19:18:25 -0500
+Message-ID: <20260625001834.475094-1-sean.wang@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,242 +86,101 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[sipsolutions.net,vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38058-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38059-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:chengwei.yu@mediatek.com,m:yu-ching.liu@mediatek.com,m:jenhao.yang@mediatek.com,m:posh.sun@mediatek.com,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:sean.wang@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[serhatkumral1@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:johannes@sipsolutions.net,m:linux-kernel@vger.kernel.org,m:serhatkumral1@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[serhatkumral1@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B7B4B6C1482
+X-Rspamd-Queue-Id: CF2916C1F39
 
-Remove the local BOOL_TO_STR macro and replace all its usages with
-the kernel's str_true_false() helper from <linux/string_choices.h>.
+Add NAN support for mt7925.  The series first advertises userspace
+management-frame registration and hardens BSS capability lookups used by
+partially configured BSS state.
 
-No functional change intended.
+The rest of the series adds the connac NAN connection type, mt7925 NAN 
+MCU helpers and event handling, a generic init_wiphy callback, mac80211
+NAN operations, firmware-gated interface combinations and NAN data
+advertisement.
 
-Signed-off-by: Serhat Kumral <serhatkumral1@gmail.com>
----
- net/wireless/trace.h | 44 ++++++++++++++++++++++----------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+Changes since v1
+  - Rebased and reworked the 7-patch v1 series into 9 focused patches.
+  - v1 patch 2 and 3 are folded into one BSS capability guard patch.
+  - v1 patch 7 is split into a framework-only interface combination
+    patch and a final NAN/NAN_DATA advertisement patch.
+  - v1 patch 5 is split into NAN MCU helpers and mt7925 MCU response,
+    event and NAN-specific BSS/STA TLV handling.
+  - v1 patch 6 is split so NAN PHY capability setup uses a generic
+    init_wiphy callback before mac80211 NAN ops are wired.
+  - Order init_wiphy before the mt7925 NAN ops patch so each patch
+    builds independently.
+  - Define MT792x_FW_CAP_NAN in the patch that first uses it. 
+  - Move common NAN MCU command/event IDs to the connac patch and handle
+    NAN_DATA as a NAN connection type.
+  - Add NAN_DATA interface support, 2.4/5 GHz NAN bands and secure NAN 
+    advertisement.
+  - Add NMI address programming, DW notifications, local availability
+    updates, peer schedule updates and NDI STA mapping.
+  - Add cleanup and rollback for NAN peer indexes, NDP contexts and MCU 
+    failures.
+  - Drop temporary NAN channel debug logging and fix checkpatch issues.
 
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 94944f2a39a4..befab459852a 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -14,6 +14,7 @@
- 
- #include <linux/rtnetlink.h>
- #include <linux/etherdevice.h>
-+#include <linux/string_choices.h>
- #include <net/cfg80211.h>
- #include "core.h"
- 
-@@ -228,7 +229,6 @@
- 		__entry->plink_state = sinfo->plink_state;	       \
- 	} while (0)
- 
--#define BOOL_TO_STR(bo) (bo) ? "true" : "false"
- 
- #define QOS_MAP_ENTRY __field(u8, num_des)			\
- 		      __array(u8, dscp_exception,		\
-@@ -578,7 +578,7 @@ DECLARE_EVENT_CLASS(key_handle,
- 	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", link_id: %d, "
- 		  "key_index: %u, pairwise: %s, mac addr: %pM",
- 		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->link_id,
--		  __entry->key_index, BOOL_TO_STR(__entry->pairwise),
-+		  __entry->key_index, str_true_false(__entry->pairwise),
- 		  __entry->mac_addr)
- );
- 
-@@ -621,7 +621,7 @@ TRACE_EVENT(rdev_add_key,
- 		  "mac addr: %pM",
- 		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->link_id,
- 		  __entry->key_index, __entry->mode,
--		  BOOL_TO_STR(__entry->pairwise), __entry->mac_addr)
-+		  str_true_false(__entry->pairwise), __entry->mac_addr)
- );
- 
- TRACE_EVENT(rdev_set_default_key,
-@@ -647,8 +647,8 @@ TRACE_EVENT(rdev_set_default_key,
- 	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", link_id: %d, "
- 		  "key index: %u, unicast: %s, multicast: %s",
- 		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->link_id,
--		  __entry->key_index, BOOL_TO_STR(__entry->unicast),
--		  BOOL_TO_STR(__entry->multicast))
-+		  __entry->key_index, str_true_false(__entry->unicast),
-+		  str_true_false(__entry->multicast))
- );
- 
- TRACE_EVENT(rdev_set_default_mgmt_key,
-@@ -733,7 +733,7 @@ TRACE_EVENT(rdev_start_ap,
- 		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->ssid, CHAN_DEF_PR_ARG,
- 		  __entry->beacon_interval, __entry->dtim_period,
- 		  __entry->hidden_ssid, __entry->wpa_ver,
--		  BOOL_TO_STR(__entry->privacy), __entry->auth_type,
-+		  str_true_false(__entry->privacy), __entry->auth_type,
- 		  __entry->inactivity_timeout, __entry->link_id)
- );
- 
-@@ -1469,7 +1469,7 @@ TRACE_EVENT(rdev_assoc,
- 	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", bssid: %pM"
- 		  ", previous bssid: %pM, use mfp: %s, flags: 0x%x",
- 		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->bssid,
--		  __entry->prev_bssid, BOOL_TO_STR(__entry->use_mfp),
-+		  __entry->prev_bssid, str_true_false(__entry->use_mfp),
- 		  __entry->flags)
- );
- 
-@@ -1518,7 +1518,7 @@ TRACE_EVENT(rdev_disassoc,
- 		  ", reason: %u, local state change: %s",
- 		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->bssid,
- 		  __entry->reason_code,
--		  BOOL_TO_STR(__entry->local_state_change))
-+		  str_true_false(__entry->local_state_change))
- );
- 
- TRACE_EVENT(rdev_mgmt_tx_cancel_wait,
-@@ -1591,7 +1591,7 @@ TRACE_EVENT(rdev_connect,
- 		  ", ssid: %s, auth type: %d, privacy: %s, wpa versions: %u, "
- 		  "flags: 0x%x, previous bssid: %pM",
- 		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->bssid, __entry->ssid,
--		  __entry->auth_type, BOOL_TO_STR(__entry->privacy),
-+		  __entry->auth_type, str_true_false(__entry->privacy),
- 		  __entry->wpa_versions, __entry->flags, __entry->prev_bssid)
- );
- 
-@@ -2033,7 +2033,7 @@ TRACE_EVENT(rdev_tdls_mgmt,
- 		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->peer,
- 		  __entry->link_id, __entry->action_code, __entry->dialog_token,
- 		  __entry->status_code, __entry->peer_capability,
--		  BOOL_TO_STR(__entry->initiator),
-+		  str_true_false(__entry->initiator),
- 		  ((u8 *)__get_dynamic_array(buf))[0])
- );
- 
-@@ -2246,9 +2246,9 @@ TRACE_EVENT(rdev_mgmt_tx,
- 	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", " CHAN_PR_FMT ", offchan: %s,"
- 		  " wait: %u, no cck: %s, dont wait for ack: %s",
- 		  WIPHY_PR_ARG, WDEV_PR_ARG, CHAN_PR_ARG,
--		  BOOL_TO_STR(__entry->offchan), __entry->wait,
--		  BOOL_TO_STR(__entry->no_cck),
--		  BOOL_TO_STR(__entry->dont_wait_for_ack))
-+		  str_true_false(__entry->offchan), __entry->wait,
-+		  str_true_false(__entry->no_cck),
-+		  str_true_false(__entry->dont_wait_for_ack))
- );
- 
- TRACE_EVENT(rdev_tx_control_port,
-@@ -2276,7 +2276,7 @@ TRACE_EVENT(rdev_tx_control_port,
- 		  " proto: 0x%x, unencrypted: %s, link: %d",
- 		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->dest,
- 		  be16_to_cpu(__entry->proto),
--		  BOOL_TO_STR(__entry->unencrypted),
-+		  str_true_false(__entry->unencrypted),
- 		  __entry->link_id)
- );
- 
-@@ -2894,7 +2894,7 @@ TRACE_EVENT(rdev_set_multicast_to_unicast,
- 	),
- 	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", unicast: %s",
- 		  WIPHY_PR_ARG, NETDEV_PR_ARG,
--		  BOOL_TO_STR(__entry->enabled))
-+		  str_true_false(__entry->enabled))
- );
- 
- DEFINE_EVENT(wiphy_wdev_evt, rdev_get_txq_stats,
-@@ -3225,7 +3225,7 @@ TRACE_EVENT(cfg80211_return_bool,
- 	TP_fast_assign(
- 		__entry->ret = ret;
- 	),
--	TP_printk("returned %s", BOOL_TO_STR(__entry->ret))
-+	TP_printk("returned %s", str_true_false(__entry->ret))
- );
- 
- DECLARE_EVENT_CLASS(cfg80211_netdev_mac_evt,
-@@ -3500,7 +3500,7 @@ TRACE_EVENT(cfg80211_mgmt_tx_status,
- 		__entry->ack = ack;
- 	),
- 	TP_printk(WDEV_PR_FMT", cookie: %llu, ack: %s",
--		  WDEV_PR_ARG, __entry->cookie, BOOL_TO_STR(__entry->ack))
-+		  WDEV_PR_ARG, __entry->cookie, str_true_false(__entry->ack))
- );
- 
- TRACE_EVENT(cfg80211_control_port_tx_status,
-@@ -3517,7 +3517,7 @@ TRACE_EVENT(cfg80211_control_port_tx_status,
- 		__entry->ack = ack;
- 	),
- 	TP_printk(WDEV_PR_FMT", cookie: %llu, ack: %s",
--		  WDEV_PR_ARG, __entry->cookie, BOOL_TO_STR(__entry->ack))
-+		  WDEV_PR_ARG, __entry->cookie, str_true_false(__entry->ack))
- );
- 
- TRACE_EVENT(cfg80211_rx_control_port,
-@@ -3542,7 +3542,7 @@ TRACE_EVENT(cfg80211_rx_control_port,
- 	),
- 	TP_printk(NETDEV_PR_FMT ", len=%d, %pM, proto: 0x%x, unencrypted: %s, link: %d",
- 		  NETDEV_PR_ARG, __entry->len, __entry->from,
--		  __entry->proto, BOOL_TO_STR(__entry->unencrypted),
-+		  __entry->proto, str_true_false(__entry->unencrypted),
- 		  __entry->link_id)
- );
- 
-@@ -3726,7 +3726,7 @@ TRACE_EVENT(cfg80211_probe_status,
- 	),
- 	TP_printk(NETDEV_PR_FMT " addr:%pM, cookie: %llu, acked: %s",
- 		  NETDEV_PR_ARG, __entry->addr, __entry->cookie,
--		  BOOL_TO_STR(__entry->acked))
-+		  str_true_false(__entry->acked))
- );
- 
- TRACE_EVENT(cfg80211_cqm_pktloss_notify,
-@@ -3769,7 +3769,7 @@ TRACE_EVENT(cfg80211_pmksa_candidate_notify,
- 	),
- 	TP_printk(NETDEV_PR_FMT ", index:%d, bssid: %pM, pre auth: %s",
- 		  NETDEV_PR_ARG, __entry->index, __entry->bssid,
--		  BOOL_TO_STR(__entry->preauth))
-+		  str_true_false(__entry->preauth))
- );
- 
- TRACE_EVENT(cfg80211_report_obss_beacon,
-@@ -3848,7 +3848,7 @@ TRACE_EVENT(cfg80211_scan_done,
- 		}
- 	),
- 	TP_printk("aborted: %s, scan start (TSF): %llu, tsf_bssid: %pM",
--		  BOOL_TO_STR(__entry->aborted),
-+		  str_true_false(__entry->aborted),
- 		  (unsigned long long)__entry->scan_start_tsf,
- 		  __entry->tsf_bssid)
- );
+Sean Wang (9):
+  wifi: mt76: mt792x: advertise mgmt frame registration
+  wifi: mt76: mt7925: guard BSS capability lookups
+  wifi: mt76: connac: add NAN connection type
+  wifi: mt76: mt7925: add NAN MCU helpers
+  wifi: mt76: mt7925: add NAN MCU handling
+  wifi: mt76: add init_wiphy callback
+  wifi: mt76: mt7925: wire up NAN operations
+  wifi: mt76: mt792x: build iface combinations dynamically
+  wifi: mt76: mt792x: advertise NAN data support
+
+ drivers/net/wireless/mediatek/mt76/mac80211.c |    7 +
+ drivers/net/wireless/mediatek/mt76/mt76.h     |    3 +
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  |   14 +
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |    4 +
+ .../wireless/mediatek/mt76/mt7925/Makefile    |    2 +-
+ .../net/wireless/mediatek/mt76/mt7925/init.c  |   29 +
+ .../net/wireless/mediatek/mt76/mt7925/main.c  |  201 ++-
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   |  125 +-
+ .../net/wireless/mediatek/mt76/mt7925/nan.c   | 1091 +++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7925/nan.h   |  440 +++++++
+ .../net/wireless/mediatek/mt76/mt7925/regd.c  |   30 +
+ .../net/wireless/mediatek/mt76/mt7925/regd.h  |    3 +
+ drivers/net/wireless/mediatek/mt76/mt792x.h   |   43 +
+ .../net/wireless/mediatek/mt76/mt792x_core.c  |  125 +-
+ 14 files changed, 2077 insertions(+), 40 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/nan.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/nan.h
+
 -- 
-2.54.0
+2.43.0
 
 
