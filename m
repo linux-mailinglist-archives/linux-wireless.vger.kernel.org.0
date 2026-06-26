@@ -1,93 +1,96 @@
-Return-Path: <linux-wireless+bounces-38133-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38134-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oWLoCpcdPmr7/wgAu9opvQ
-	(envelope-from <linux-wireless+bounces-38133-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 08:35:03 +0200
+	id kqgKC8sePmo8AAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38134-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 08:40:11 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C115E6CAAB0
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 08:35:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386B66CAB3D
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 08:40:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=morsemicro-com.20251104.gappssmtp.com header.s=20251104 header.b="vl4/ebOi";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38133-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38133-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=morsemicro-com.20251104.gappssmtp.com header.s=20251104 header.b=lGkUUP1v;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38134-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38134-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=morsemicro.com (policy=none);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D3D523073311
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 06:33:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 808EB3044EE5
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 06:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2230E3DD523;
-	Fri, 26 Jun 2026 06:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4AD3DC4B3;
+	Fri, 26 Jun 2026 06:32:51 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E333DBD44
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 06:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A543DB62E
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 06:32:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782455566; cv=none; b=T5EWDuvCvzfETLQ5AwOnQqsKTRc2Mdyw3HdTefHvdqxNlH4Nitv8/XlR7BTVR1CXBsmK1kTILjrEb6n+aDPAHTyrIx9m4YIJATbTwFMx5Ti4cQyKsU7NyIE4KqSj4WS3YukGbs8Sfo5rl2yhsMTkluqmKYUfxKVSlUZhCkdD7yY=
+	t=1782455571; cv=none; b=tcrxdiGgsaMfYRq9wsvtyl8CmTttNi+CxYAn0Cml2fyQsJyGc4GMlaDJeXN1wVuptnp7LUwrixmcOS3M68ayG9qtxrj0vERVl2f26TlQEyaVcqoIttH5BZthU1WyQs3Es26aTnKXkYVL+2yWJ4AHgrMy9MptwBa2d90K7+P+Pgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782455566; c=relaxed/simple;
-	bh=saiskrqRg/kDqXGcJr/FZMd6EDITcxsGmSiPsiyJ/eA=;
+	s=arc-20240116; t=1782455571; c=relaxed/simple;
+	bh=jh7nryGEKabYgpd+PfRGwc0d27nBce12mposWAI1iFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZ2EEeDqvd38SvUgh8AkknXPBXPK4pmbEfSqboNLxCBzz9WLsqsH5YJrSiBCzM635Xc8Hd0CGgB6lxhz+oJUJCCfIPA1/7byz7VFvpWCSd3RZffAsRDQI9Olf+h6PWka/ToG0MDh4d92Hi+k1VsHYj0n335xVJR4k+rpvu5aCMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=vl4/ebOi; arc=none smtp.client-ip=74.125.82.47
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-13986d61b4eso1856217c88.0
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2026 23:32:43 -0700 (PDT)
+	 MIME-Version; b=iCXPmQdvlZukH/9T2LTXfIzGIbGp4iDUh7mJ3nup8fhWKWPpvkzBYWF4RNF0353yx0h/Ag7ETthx2qX80iUFOEcHw6jEoDTNrAJD+J1PYdORH0ton/X0xS/kbqxj0n+NkHd8C+LrXDAi7m4MZFndgyDTw44AtrUhhYlPdYiJXrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=lGkUUP1v; arc=none smtp.client-ip=74.125.82.53
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1363fe80fe8so1422339c88.0
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2026 23:32:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1782455563; x=1783060363; darn=vger.kernel.org;
+        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1782455568; x=1783060368; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4ftlJTtwHCXLMyplI6uv1ItiMO+rmbnr8Rj5vkieyP0=;
-        b=vl4/ebOic9tqDBuYQts2tgZdP2psP2JAzEhbxc4P1sBIg754ENwSo/tcyUiaYXFB3B
-         PFGlfdtZMam8/I70R9lpoXIrTIswX/eVhjUSMjOCZ6f2aA84sSyjHlkvvtdBb4Q8++6n
-         JLsLsDCLI6LpH/bt39ta20T1VwmwsgLubHZNYkg07yJ/x4KEX6zQrfq09W62tdGoSrr7
-         qexnYrCdDkqqIcM+jVIz9Qtu7a57mzaw84x/wIENl6oJ9tJqgStvNK/nItzYfttjAwff
-         zx28w5qlEIok77kLXhBvPb57s51ySC6aLEwcQohFAT6rgbPGjc1kTawLcvooUcfeVIv2
-         PP2w==
+         :message-id:reply-to:content-type;
+        bh=xcgbUEbRV//HZf8rnCos9XTT1qb4oAzB+LdSj1teGwU=;
+        b=lGkUUP1veDQG3tCyZ5bWIHEe2s9348Ne51cTTaAer6NRmDRVY4C/WxRKnm2zXWfjy2
+         PqNKECxZjeZfw0Gp06o5Uf5hsXJKog6XKuYHK4Ufv85dTsTYVs/9FbzSdmL9clpD+FnY
+         p3FcLa+v6DoSLSXBIA50RthO76mbHShdQPNomwYdmVmNFz1OjRA6lq0f5mloDxC2MOgO
+         ewns0VKUDz7JTlOtLreIRO51yEdSleLnuwY78PfBCaOHZZpv+r3tP9S+Iywt9LRq2sHg
+         S/LetjaI3tu5YXpAJXS8pwAsgU1aFwsLUdQ4ejHaaulvNSm7026wrGMnr2t4O/a3vfWz
+         6UKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782455563; x=1783060363;
+        d=1e100.net; s=20251104; t=1782455568; x=1783060368;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4ftlJTtwHCXLMyplI6uv1ItiMO+rmbnr8Rj5vkieyP0=;
-        b=nqiWBLfmiGQUor+aAQW1S3Z1CBfKnfcgG0Dr3Vq5qgIxxSe51pozNc7ahwQl5/IQOy
-         lqznuQcnupsOmBB4TUER0i4JGbC05QfMWYi0O8H+hI+gyp3vHKaB/4y5vUl9FeObjfVn
-         DlLu4M6SyL8KzIDKA686FOcvDC8HBEilkrpoxKFPV7dOlZVlmcSD/IPsbgwHNKa6vVYd
-         jqw7RLx7E7Zh3O3mS7qZ259TuzmH2A9oCr+LuS6Zo+5hKbyo8YeepRJ6lSkyqHt+LHn4
-         rPhkmscBG1t/Z3ftG/nTX9S5/vjcJKp1ib2QWT3k6PNMiAGwwFMCzg5CVepVkcQLy/mx
-         o+4g==
-X-Forwarded-Encrypted: i=1; AFNElJ9/5h4DfxJpbeoRGM0FmQohLQfYuU8NJZuFDQHbmIFrocFkUESLa00wpJwya4B/m4UKUGtrGHaOrS/sFEcHiQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrIbtv+69kNSNF/aM4J/uN0XK/ww2s5nBk34Bd600lZOd7M7Zi
-	5AyG0aZ3e0NC1mRHslirLXpei755JFHKPxgrfW+/noXHqgxH3ALnoGeWpwkMQrMP6dI=
-X-Gm-Gg: AfdE7cn+Z4+nvLnptr3GlRL+HR28T9Gb81nDk8Cp3oH4JYBi971E51Nktf5jI1G5JA7
-	TWRjxJ8U5SUf/wKKfPhfSFslkkI+t19OB/+2mECoWqWnVSQl+XE9+K5zcbc9LYvC0mukOX3WU3i
-	cL1ZXqFnJ6s75Owmy68uwF4YCrGWOx6t4hftom3Hxm8eSx4scQ1tpBK7MMJYHkOWqET7QJ17Wxs
-	41gGsGkv9DXfQsGpo3XyY+sWYl03cIEXAInEReXlpuJ8GdixpyVnf6ss4gVas2EtZtA+st8Ogaf
-	zAIztYqLxir5BhBRrBiFoO3r4GS1fOxYZqZoLW7nJPYrMSIJ4AkVsDMyLwcvZIN1AfH1zdWY5kp
-	Oi4Jq++4PtO7h4Vl7aML2PjeJV4dva7H1f52/gfY6uuHslLCdmHH9VhFc2AdHlrKQ+C7Lnnxq5g
-	Mzp3gFJzVUW8z6p8mLHbxQQgNbVvyZc8d8y/ImAU8SpwFexzE0R6pP1q3W9mAUtivRrAL7VapKy
-	5iHEf20fWgkCxMlyE9D
-X-Received: by 2002:a05:7022:4390:b0:138:507:debe with SMTP id a92af1059eb24-139dbac0aadmr4783011c88.14.1782455562885;
-        Thu, 25 Jun 2026 23:32:42 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xcgbUEbRV//HZf8rnCos9XTT1qb4oAzB+LdSj1teGwU=;
+        b=Vncbj3+NHvazfkQ3joue8bRb4EUwp+0tAdJa3K6ryS7J93MGbTpVp+xoKngA+kx+L1
+         aK13smF0Pb4KHGZBZLgMmx24QQRsiHew2Lu4kMFiizwIg/QVbUK3pBBkv/fvAMtINDjl
+         Mll83Xfgw13O1zoGawMvTO1ekIpy6PHW4TUhgyzzIFD5PWyXKWRLb1hKmlgl0KNY8LiV
+         phpoq6ZmcMkruT94EHWyYNqKkUReUyLbQBLDfoP4lpOntCHKyuKRZINIja9zbNnl87nP
+         eQBtcJCHb7BETR5oVRw0bRbCI6+F8a/ujUSbNxZ8e+2pwmOgB+eyJt9pQ3UfdMFi9+tj
+         cL8Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8nGSt9T7tFcwMUcjZ5xpKes0arrohubOKj8SVOSXnwER7U0xcGFSvOUNWdCsbB3Hq/WPKsFTARrMV/yBz9dw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCFSSoIm5jAz7BDpzk8rS6/fMA43wbQogNmfGisBiqXCZmkYlv
+	1ISmguQF3JO498zya0IUJqJ7MnyfQ75sogARAl2YvUHGoo2uv9J2wJDzVuUKocIRK6qppIRQxqw
+	v1xkRYBg=
+X-Gm-Gg: AfdE7clV2OVIxCLadroj9+o08OVj+3Cqv6+qqpc/epymTXslI1B/YEkIju7Je4jpnXg
+	BUR7J7vqUUXQQHnZAcHMo5v0pUZW3NhF7VXMlvRmyR7g+w/i6iv2AXR84zx/54F5HYc7qJFrCtm
+	FvaoNjVw35y/EN2ajde68iTBXBXsMLY2Nb4cIMrNh/efnlD7pBucQzjKayzbl+/Q6ykBpJH8kQY
+	IfpLcPo3hRlJlTJT2gblJu5aCUGWdojXaO89npFAs0Bd5Tpc2yM5GNDyVAGzrGGMsgH0Dnlfyul
+	f+pRq/cNWOutwixEE72Hw8jZCMFaToxHp0zL2OoNqjTeCqREds7UKymQZPu9FaJC2iaenz2DamX
+	iv1DI6H5xtz7qLFPJnY2ml9oq+WYhuIyOci3lcWD8EpADsWxbPu7N3GV/sIEX2j7wxp+0Pe4ea2
+	4qhHlQuaSA232tkaGugJUHknrdNw3NHPalDYuq4NOmksNUGCOfaqLiTMUiFvEFebyRHrStE/H/Y
+	hmqLBndG1F3otRH7D68NJzIJ47t294=
+X-Received: by 2002:a05:7022:6727:b0:137:5b9d:cf87 with SMTP id a92af1059eb24-139db93a89fmr4012264c88.0.1782455568353;
+        Thu, 25 Jun 2026 23:32:48 -0700 (PDT)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-139d91006bcsm15463687c88.13.2026.06.25.23.32.39
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-139d91006bcsm15463687c88.13.2026.06.25.23.32.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 23:32:42 -0700 (PDT)
+        Thu, 25 Jun 2026 23:32:48 -0700 (PDT)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	Dan Callaghan <dan.callaghan@morsemicro.com>,
-	Arien Judge <arien.judge@morsemicro.com>
-Cc: ayman.grais@morsemicro.com,
+	Ulf Hansson <ulfh@kernel.org>
+Cc: arien.judge@morsemicro.com,
+	dan.callaghan@morsemicro.com,
+	ayman.grais@morsemicro.com,
 	linux-wireless@vger.kernel.org,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	linux-mmc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless-next v3 22/33] wifi: mm81x: add rc.h
-Date: Fri, 26 Jun 2026 16:29:18 +1000
-Message-ID: <20260626063014.1275235-23-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next v3 23/33] mmc: sdio: add Morse Micro vendor ids
+Date: Fri, 26 Jun 2026 16:29:19 +1000
+Message-ID: <20260626063014.1275235-24-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260626063014.1275235-1-lachlan.hodges@morsemicro.com>
 References: <20260626063014.1275235-1-lachlan.hodges@morsemicro.com>
@@ -104,103 +107,64 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[morsemicro-com.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38133-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38134-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:lachlan.hodges@morsemicro.com,m:dan.callaghan@morsemicro.com,m:arien.judge@morsemicro.com,m:ayman.grais@morsemicro.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:ulfh@kernel.org,m:arien.judge@morsemicro.com,m:dan.callaghan@morsemicro.com,m:ayman.grais@morsemicro.com,m:linux-wireless@vger.kernel.org,m:lachlan.hodges@morsemicro.com,m:linux-mmc@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,morsemicro.com:email,morsemicro.com:mid,morsemicro.com:from_mime,morsemicro-com.20251104.gappssmtp.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[morsemicro-com.20251104.gappssmtp.com:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,morsemicro.com:email,morsemicro.com:mid,morsemicro.com:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C115E6CAAB0
+X-Rspamd-Queue-Id: 386B66CAB3D
 
-(Patches split per file for review, will be a single commit alongside
-SDIO ids once review is complete. See cover letter for more
-information)
+Add the Morse Micro mm81x series vendor ids.
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- drivers/net/wireless/morsemicro/mm81x/rc.h | 51 ++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
- create mode 100644 drivers/net/wireless/morsemicro/mm81x/rc.h
+Hi Ulf, since v2 we've made another slight change to the name removing
+a "B2" suffix so even though you acked v2, I suppose it's best to
+recollect again - sorry about that. As last time, the patchset is
+split once per file following wireless driver submission guidelines,
+but will be a pull request with a single patch adding the driver +
+sdio ID once review is complete through the wireless tree.
+---
+ include/linux/mmc/sdio_ids.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/morsemicro/mm81x/rc.h b/drivers/net/wireless/morsemicro/mm81x/rc.h
-new file mode 100644
-index 000000000000..53f129024408
---- /dev/null
-+++ b/drivers/net/wireless/morsemicro/mm81x/rc.h
-@@ -0,0 +1,51 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (c) 2017-2026 Morse Micro
-+ */
+diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
+index 0685dd717e85..bbffad9ae88e 100644
+--- a/include/linux/mmc/sdio_ids.h
++++ b/include/linux/mmc/sdio_ids.h
+@@ -117,6 +117,9 @@
+ #define SDIO_VENDOR_ID_MICROCHIP_WILC		0x0296
+ #define SDIO_DEVICE_ID_MICROCHIP_WILC1000	0x5347
+ 
++#define SDIO_VENDOR_ID_MORSEMICRO		0x325b
++#define SDIO_DEVICE_ID_MORSEMICRO_MM8108	0x0809
 +
-+#ifndef _MM81X_RC_H_
-+#define _MM81X_RC_H_
-+
-+#include <linux/list.h>
-+#include <linux/workqueue.h>
-+#include "core.h"
-+#include "mmrc.h"
-+
-+struct mm81x_vif;
-+
-+#define INIT_MAX_RATES_NUM 4
-+
-+struct mm81x_rc {
-+	/* Serialise rate control queue manipulation and timer functions */
-+	spinlock_t lock;
-+	struct list_head stas;
-+	struct timer_list timer;
-+	struct work_struct work;
-+	struct mm81x *mors;
-+};
-+
-+struct mm81x_rc_sta {
-+	struct mmrc_table *tb;
-+	struct list_head list;
-+	unsigned long last_update;
-+};
-+
-+void mm81x_rc_init(struct mm81x *mors);
-+void mm81x_rc_deinit(struct mm81x *mors);
-+int mm81x_rc_sta_add(struct mm81x *mors, struct ieee80211_vif *vif,
-+		     struct ieee80211_sta *sta);
-+void mm81x_rc_sta_remove(struct mm81x *mors, struct ieee80211_sta *sta);
-+void mm81x_rc_sta_fill_tx_rates(struct mm81x *mors,
-+				struct mm81x_skb_tx_info *tx_info,
-+				struct sk_buff *skb, struct ieee80211_sta *sta,
-+				int tx_bw, bool rts_allowed);
-+void mm81x_rc_sta_feedback_rates(struct mm81x *mors, struct sk_buff *skb,
-+				 struct ieee80211_sta *sta,
-+				 struct mm81x_skb_tx_status *tx_sts,
-+				 int tx_attempts);
-+void mm81x_rc_sta_state_check(struct mm81x *mors, struct ieee80211_vif *vif,
-+			      struct ieee80211_sta *sta,
-+			      enum ieee80211_sta_state old_state,
-+			      enum ieee80211_sta_state new_state);
-+
-+#endif /* !_MM81X_RC_H_ */
+ #define SDIO_VENDOR_ID_NXP			0x0471
+ #define SDIO_DEVICE_ID_NXP_IW61X		0x0205
+ 
 -- 
 2.43.0
 
