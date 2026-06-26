@@ -1,175 +1,218 @@
-Return-Path: <linux-wireless+bounces-38187-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38188-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uLwVM2eRPmqvIAkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38187-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 16:49:11 +0200
+	id kwOSCYiSPmr/IAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38188-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 16:54:00 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3E76CE1F6
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 16:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C9A6CE29D
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 16:53:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="ep/hAuDi";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38187-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38187-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=makB+MTz;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38188-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38188-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C4F4C304C6C0
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 14:47:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B758F309BECB
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 14:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E4E3FBB72;
-	Fri, 26 Jun 2026 14:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B572F7F11;
+	Fri, 26 Jun 2026 14:46:27 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A213FF1A4
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 14:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C33288C3D
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 14:46:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782485157; cv=none; b=Us2/4C8lZgG5xWB8UdklSPSp3DwJ6kDWriwwc/vwI2jceGqQ9ZEw8HIeLEfgwmHNeosjqfjRU72DddmADdcrDo8rTl5bX06/DgzzcPoR+I/GPGcAkwqyRmGka5aWpe6pY8nExeKp8dOOJY4qVvPT0cssqAcBTmvHVZJOJXYJzsA=
+	t=1782485187; cv=none; b=bHt7hzqj6aIbV52Mz1uAEfdJHroNHpEyRdfD8T+U9rIYpeW3Me0fy+7PjMsVhEHyWsy7RL0QVkDxaBzZDvE31TDVdAiNO5V5AdXpqyF1zNwzYRpU28z4SmvmD6WLEI6TeV78BtDt8Ksazx+8ipCv5Va1iFp4LKJrH9srbWulz64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782485157; c=relaxed/simple;
-	bh=AX9U9xN8wChIazxZOxRR5JpD5zZhzI3DYw3FyKRANos=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=glTG9y0Uk4ZlQaRrLPJ8bOvAumRSasb6goNkko9N076gtoC5VPOl/l4TScx4XBPlFKei4ChTLTBNrdArFjJ/57nyMXBZBOYS4uSEi/eenrVy2p2yoQgGdo5JMqBzcQOaNP8TgOi2CWeU9G/aDaJxRcIBi6MsVHi8qikJ+vpCoiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ep/hAuDi; arc=none smtp.client-ip=209.85.210.176
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8453f568e84so947491b3a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 07:45:52 -0700 (PDT)
+	s=arc-20240116; t=1782485187; c=relaxed/simple;
+	bh=ZIeMT+n0RkOB8oaaTu4E9qXgJfSz++ky/BGId1Sa5PA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AbktB1xdI7P6YpUDtaycqeQKCDypMms7MQoOZShoqWyj35IR++K3rua1OtcrfW+5q9LjsRI7TMX/WhtSOwAePr6ZOnS0om6rDuVzTDtIGLgI3fPjkoBV+rk/tfmPSIW2kKZ4U6XJdHZ43RGHCdydBgrNt58bTN12jyLpdKXzXGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=makB+MTz; arc=none smtp.client-ip=209.85.214.179
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c6b7bd4e8dso60095ad.0
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 07:46:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782485152; x=1783089952; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WdZSOi53dmzzj+BLCmkfJMdj4VvvOVoGTQDT9HDmFKM=;
-        b=ep/hAuDi+SYRr5EFzdLF9H1La3mdtzdCnLbD4eaYAed2WEKs8uzX/CoSv1Zj6TdwRK
-         KCNPo7HThUTBO8/0kjBx3pBMhdE/QwaEGRqWpnyjX3FZSzetliYp2Mae4CrJVbjapkss
-         InswdOCGSEYrIRBrxOSnJSnAYpftxAy4+O1JEUN9zZSA1jbQUbleXTpSxv+f3jY6gOeY
-         MbNWyEiHIknFmetQSg5j2XBAEC+dVb/ETas/N3meIlNanyUP7hUwxLcUAA0LbrsLvm5O
-         fnwOvd4zRdRhVR1+eu550f6GOlrERyeDZegnQC/OuRkQNvClz9XIbCmqIB5jFEJXt749
-         Yl+Q==
+        d=google.com; s=20251104; t=1782485186; x=1783089986; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8xMobHXgYc/DTjg9J1LZqrk8OVUxnJ4l6jelhtWEYy8=;
+        b=makB+MTzZrrY485DUbOvro8muvLKVzBXyKjbgpihZCw37OmH+PKx5yIBAJaY4hHePN
+         G7hGJquEuQuQ6NGb58SeURYZQYVyFL3WVGxx3w4liyjys6Ria35YlFfMOgVwDyeBJtw+
+         8TNoEhtvs2NSGO+3bNTdaLD1/FYjBWi924LL+DPSvkJFS3B8nBCll4S2Yx95cLOw/cHn
+         ypPwh5/aFwxV10yMhRASDKYNYcfG4W+Nc4FGZze92W4AHoDmXSl4h/hThSjzzbPqNV8F
+         2mz1D3GeRSdmCJ/bGVPWvVPPonLWKQVCRHu20w/JO+5MgD2MAdXkdmj/o9CB0N9VzBql
+         50UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782485152; x=1783089952;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WdZSOi53dmzzj+BLCmkfJMdj4VvvOVoGTQDT9HDmFKM=;
-        b=GLAHy1EfFJUA/rrjMUk8ST3sRdkU0/2v8wNJYEbk0ENJ7E65finagw0yxtNp/UJV1T
-         T6kNyxzRHVcPgS/IX0jVMGTXcgicAOBk6eLzEG2fPSc5T+pBFR/DOP+uIIDqPK6ZU6ev
-         2jHjBTCD+39hRTyTjmcAED5XpxFGDNy6mv8vEAGbbGO/NOJ2xmGjD7Bg44/TTarn7SLr
-         BFKBCamzToYmfUubAD9JrTeN6235/Y1Vf0EtWSU7Ew3MFsH3ioLrrmb/tiaoV2KQa2nj
-         yWd/TBTTL7ucntf/nzU1vHw1erBifogGJNoDd+KIOIsZU7mSwh7SAOskFmCS/TLSrD8w
-         YDRA==
-X-Gm-Message-State: AOJu0Yy3K4Xv9bAC1XIngD04VmwFP5M5n9yJchOXhHNzuR4Bz7RM7ErG
-	AyXdndyFJTlIyu0oJM4L+QsUEOtRxFPcbLYVqidyh2C0WzwR9yg7xE1U
-X-Gm-Gg: AfdE7cm10L3TUBC1tumv+WyhMr8eq+Xs0itMl1AAIBAG3Q8fss1Hotf8Y0pkZsX5ltr
-	q0uvGpS08o91RqM0RqIVcOnRzjTNIOZN9OI6AjvA30/l4WWayzUpljs3xsFc3CTfyneB0bFmOxo
-	RZ2Tu6U8q3pZxOKJsks4zn0VmP1pgnAI80Riiy5kJv8+rqSJWeSZQciybKeXqgEfRnkIapxNQJh
-	4ffM09mEII0ohhs1kx9ErFxedSPAwJ+pcUAfgx2hPZGg/mnB722KEhF2UrWntW3lo96yaPIWtob
-	tHdoc6rZ8HBEEndgdbTu84M8q//muO5Yi7scv6XllrJSSu3JMjMqsnvyBX6D8l1ppC1/bp8IsME
-	+Pknj7+/Dn0lBvgZdXNuHSENtjMPXhQAjTVgVwXKDGR7hu0iW+ONx0v6eB22WGG71Dhy3Fhb6hq
-	WUCMupDXCTmMV8NUhFgeLVYgSP1NZ+r/myLMNwNSU+i+a7FgMVU3N2g/6480NcKzupHs8m6cV0d
-	UabbnFWv6I=
-X-Received: by 2002:a05:6a00:a14:b0:841:58b0:82bb with SMTP id d2e1a72fcca58-845b3998244mr8220663b3a.9.1782485151758;
-        Fri, 26 Jun 2026 07:45:51 -0700 (PDT)
-Received: from localhost.localdomain (211-20-143-81.hinet-ip.hinet.net. [211.20.143.81])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-845a413c39fsm7608673b3a.55.2026.06.26.07.45.50
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 26 Jun 2026 07:45:51 -0700 (PDT)
-From: =?UTF-8?q?HE=20WEI=20=28=E3=82=AE=E3=82=AB=E3=82=AF=29?= <skyexpoc@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?HE=20WEI=20=28=E3=82=AE=E3=82=AB=E3=82=AF=29?= <skyexpoc@gmail.com>
-Subject: [PATCH] wifi: cfg80211: bound element ID read when checking non-inheritance
-Date: Fri, 26 Jun 2026 23:45:43 +0900
-Message-ID: <20260626144543.5034-1-skyexpoc@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        d=1e100.net; s=20251104; t=1782485186; x=1783089986;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8xMobHXgYc/DTjg9J1LZqrk8OVUxnJ4l6jelhtWEYy8=;
+        b=rr0ysh3oruuonLlSpA9a/YrR2drqOMofuH+CzVDqUdXm3RtA8scrH3euxps/AnusMC
+         iOYdZTPGNgkVbZWig8Eq05BN7cpZ/tCSOttxgG05z07l0rrSNTDE6qhYnQZyu0jtdVjT
+         0geAljSdDySMiSgfa1l1Z6kVa6bOLRpvogfrA1zIP0Q9VVeRgnDg5mCX25Kmy/6aWcp1
+         zS/Wo1bQUmaXQZxWk5qSgsUqeYQ0qQJzH02trPPRuHmgMQIVTmLp+ZsKKyWVie533oyK
+         4I1cTT2S8iU1l+BjkWtCvdfpQ/IhhMn4P4E4wSuMuX3V6BqL5jpnfRrLNnxmTqf25yuf
+         6oYw==
+X-Forwarded-Encrypted: i=1; AHgh+RpqCd5/aPjC0+ChbkreSRw5lZj3I4h1Gwk5gcH0yoXvVdOkRR3Jx6dU0n0cN8ipLx0iLandRysaQ+vraFM7gQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7gF4KJKSn8P5v34VZchqJ+nAuincn45+G/drCTuPTP7rW2LwH
+	B9EsjONEH0lbDQhpnM7FuXz0RNDsoO6BcaFc1S2vjfO3jd5kFTRwV2BKAmG6DZYhCV8UwrWKK6V
+	tUyfo/JB/
+X-Gm-Gg: AfdE7cnO5VGoAQCG3ijoU5bDFOvdx72zyuEoIie9x2XefQlWjdskSD84RE36IlBebVx
+	hARuk+MuCQbrSHVWug8PtFDjz1X3JBvSS6ObzpSM8SycdBEJzLtX7xRSCeKem6V+pLmM93jSZq5
+	XLbbgBw0SbUpf5e41msdAVm9tKYXTvH6shS89NyRfT6Vbnq4i2UZcZHKpDhIq4kPKuYE3n+T7XR
+	vupFingKXMk6BqLp78NLCBJcD6K9jJUbeLrsnbvMDS0Kl9hZeH0Mikk4WeTwKoHXLcKflyowvTl
+	3h2FLOQjLe3lSo7w7m7Z/IrE0QdsIU2KX7MltbGOccAKHzs9vskPOSXGG9eDWD3MYTQN8bYrHvI
+	kBbOxZb25AGJMbNo9tJBZ7ISFfoKs6TL/fayWvv6KK+UY7pbMBuF13rkm8DhreDqxD9E6bbZf8O
+	3ATmOWV9rfJ3lf1vp+1os6LhymLvJCC0Jo35NRhWbMfMIrSMepawaHSkZDEA9Lo7ujNCw2VqiMs
+	LOlqKJoCv96ihvt39j3hvLQMuvqFZAnJvw=
+X-Received: by 2002:a17:902:f543:b0:2bd:7e8e:ad56 with SMTP id d9443c01a7336-2c9854aa915mr266945ad.6.1782485185053;
+        Fri, 26 Jun 2026 07:46:25 -0700 (PDT)
+Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-845a41474cfsm6675222b3a.61.2026.06.26.07.46.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 07:46:24 -0700 (PDT)
+Date: Fri, 26 Jun 2026 14:46:20 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
+Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH wireless-next] wifi: cfg80211: fix regulatory.db async
+ firmware request blocking __usermodehelper_disable()
+Message-ID: <aj6QvBdf3hGzDQig@google.com>
+References: <20260625092904.2097371-1-kavita.kavita@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260625092904.2097371-1-kavita.kavita@oss.qualcomm.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[sto.lore.kernel.org:server fail,vger.kernel.org:server fail];
-	TAGGED_FROM(0.00)[bounces-38187-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38188-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:skyexpoc@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[skyexpoc@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:kavita.kavita@oss.qualcomm.com,m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[cmllamas@google.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[skyexpoc@gmail.com,linux-wireless@vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_NEQ_ENVFROM(0.00)[cmllamas@google.com,linux-wireless@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6A3E76CE1F6
+X-Rspamd-Queue-Id: B8C9A6CE29D
 
-cfg80211_is_element_inherited() reads the first data octet of the
-candidate element (id = elem->data[0]) to look it up in an extension
-non-inheritance list. It does so after testing elem->id, but without
-verifying that the element actually has a data octet. A zero-length
-extension element (WLAN_EID_EXTENSION with length 0) therefore makes it
-read one octet past the end of the element.
+On Thu, Jun 25, 2026 at 02:59:04PM +0530, Kavita Kavita wrote:
+> cfg80211 schedules an asynchronous request_firmware() work item for
+> regulatory.db via request_firmware_work_func(). When the direct
+> firmware load fails, _request_firmware() falls back to the sysfs
+> fallback path via firmware_fallback_sysfs(), which blocks indefinitely
+> in wait_for_completion_killable_timeout() waiting for userspace to
+> supply the firmware through the sysfs interface.
+> 
+> While this work item is pending, any caller of
+> __usermodehelper_disable() will deadlock attempting to acquire the
+> usermodehelper rwsem for writing, since the sysfs firmware fallback
+> path holds the rwsem for reading and is blocked waiting for userspace
+> response that can never arrive while usermode helpers are being
+> disabled.
+> 
+> Observed call traces where system suspend blocked due to regulatory.db
+> async firmware request:
+> 
+>   kworker/6:3 (pid 194) holding usermodehelper rwsem read lock, blocked
+>    waiting for userspace firmware response:
+>      wait_for_completion_killable_timeout+0x48
+>      firmware_fallback_sysfs+0x270
+>      _request_firmware+0x790
+>      request_firmware_work_func+0x44
+>      process_one_work[jt]+0x59c
+>      worker_thread+0x260
+>      kthread+0x150
+>      ret_from_fork+0x10
+> 
+>   Caller blocked in __usermodehelper_disable() during system suspend:
+>      rwsem_down_write_slowpath+0x768
+>      down_write+0x98
+>      __usermodehelper_disable+0x3c
+>      freeze_processes+0x18
+>      pm_suspend+0x320
+>      state_store+0x104
+>      kernfs_fop_write_iter[jt]+0x168
+>      vfs_write+0x270
+>      ksys_write+0x78
+> 
+> Any service or kernel subsystem invoking __usermodehelper_disable() is
+> susceptible to this hang as long as the regulatory.db sysfs fallback
+> request remains outstanding.
+> 
+> Fix this by replacing the unconditional uevent-based load with a
+> two-step approach. First, attempt a synchronous load via
+> request_firmware_direct() at init time. This is fast and
+> non-blocking, if the file is present in standard paths it is loaded
+> immediately with no delay. If not found, the load is deferred to
+> wiphy_regulatory_register() and triggered via
+> firmware_request_nowait_nowarn() only when the first non-self-managed
+> wiphy registers.
+> 
+> For self-managed drivers (REGULATORY_WIPHY_SELF_MANAGED), the hang is
+> avoided because wiphy_regulatory_register() handles them separately
+> and the deferred load path is never reached, so the file load is not
+> attempted at all. For this case, regulatory information is obtained
+> from driver/firmware during wiphy registration. For non-self-managed
+> drivers, the file is required and is expected to be present. The
+> deferred load via firmware_request_nowait_nowarn() is triggered only
+> when the first such wiphy registers. This ensures the database is
+> loaded only when it is actually needed, avoiding the sysfs fallback
+> path on systems where the file is absent at init time.
+> 
+> Also refactor regdb_fw_cb() into two functions: regdb_load() which
+> validates and stores the firmware image, and regdb_fw_cb_restore()
+> which is the async callback that calls restore_regulatory_settings()
+> to replay all pending regulatory requests (country hints from core,
+> user, driver and country IE) that arrived while the database was not
+> yet available.
+> 
+> NOTE:
+> This issue was observed on Android platforms where regulatory.db is
+> absent.
+> Steps to reproduce on Android platforms:
+>   1. Power off the device completely.
+>   2. Connect the charger; the device enters off-mode charging.
+>   3. While in off-mode charging, short press the power key.
+> 
+> Signed-off-by: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
 
-_ieee802_11_parse_elems_full() runs this check for every element of a
-frame once a non-inheritance context exists -- e.g. while parsing a
-per-STA profile of a Multi-Link element in a (re)association response,
-or a non-transmitted BSS profile -- so a crafted frame from an AP can
-trigger a one-octet slab-out-of-bounds read during element parsing:
-
-  BUG: KASAN: slab-out-of-bounds in cfg80211_is_element_inherited
-  Read of size 1 ... in net/wireless/scan.c
-
-Return early (treat the element as inherited) when an extension element
-carries no data, mirroring the existing handling of empty ID lists.
-
-The bug was found by fuzzing ieee802_11_parse_elems_full() under KASAN.
-
-Fixes: dfd9aa3e7a45 ("wifi: cfg80211: rewrite merging of inherited elements")
-Signed-off-by: HE WEI (ギカク) <skyexpoc@gmail.com>
----
- net/wireless/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 05b7dc6b7..0a44856b1 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -205,7 +205,7 @@ bool cfg80211_is_element_inherited(const struct element *elem,
- 		return true;
- 
- 	if (elem->id == WLAN_EID_EXTENSION) {
--		if (!ext_id_len)
-+		if (!ext_id_len || !elem->datalen)
- 			return true;
- 		loop_len = ext_id_len;
- 		list = &non_inherit_elem->data[3 + id_len];
--- 
-2.43.0
+Are you missing a `Fixes:` tag for this?
 
 
