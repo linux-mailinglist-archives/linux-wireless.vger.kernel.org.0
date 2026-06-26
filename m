@@ -1,96 +1,90 @@
-Return-Path: <linux-wireless+bounces-38104-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38105-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EELTIMW9PWpe6AgAu9opvQ
-	(envelope-from <linux-wireless+bounces-38104-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 01:46:13 +0200
+	id Z09SAFjCPWry6AgAu9opvQ
+	(envelope-from <linux-wireless+bounces-38105-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 02:05:44 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870A56C92B9
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 01:46:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7096C9355
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 02:05:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QKbuiSZo;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38104-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38104-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZLTL9xeD;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38105-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38105-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A90A8300C7D5
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jun 2026 23:46:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C2EA83023653
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 00:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1653064B5;
-	Thu, 25 Jun 2026 23:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E358872627;
+	Fri, 26 Jun 2026 00:04:59 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905612459C5
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2026 23:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3F11A285
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 00:04:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782431167; cv=none; b=qnz/mpoosXTyRhPILEqrQNlNpqO4ONq/DQrDDeXVgkyufajsXipKelxus/SHMpqyEneA4q8ZoqPUhlC4qv9CPkjrSHv/viuCSx8JRLYruJqWB/Xw2zrV/Bmj2ZpIFr3ND/mksLNNPh6Ywg8YE9xBrKwL5KbQNmKIzgfh20UsQ2k=
+	t=1782432299; cv=none; b=LvZmssceEZbsQ58FWCy1SP2/Xx4tsdZfNbracVY6WmVoLQf+BMosUDkV/kIeSkSsmZkixFoM8cZTo2fgZMRUp9A5r47EHsIvXXOuldlka++ZCJ/9vh5eKTWGZFjULWUR49XQScxz2dL8RhoAZOplEkvTD4nAb/dmYxAJTvvtmUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782431167; c=relaxed/simple;
-	bh=jnIzd9eXyM0lY5nLSKWOGJM4W2fxtczCL/IrCKu34m8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uwEICp3GYMnlo0CBIv77WC63jyTxiZr+uk6MM9UlnKXS++lN0cnMsxDKfLYdE/beqIa1HQiFpaB2AT5zBnQWImz0MNucxfrzv2D3GpD+Z2oyIGGkND3Td0DP0UoyRXQY9bQtpZ5UL96HERzO0+gloKYGOfcYV9ya3KtZpxt4FFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QKbuiSZo; arc=none smtp.client-ip=209.85.128.47
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49249072f03so2009125e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2026 16:46:06 -0700 (PDT)
+	s=arc-20240116; t=1782432299; c=relaxed/simple;
+	bh=ayPxqACUajzZC6lHclZxHjKQfq5zgQfhwgZV2hjKL+Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kkqrHIZEhzxDbzhW2Mz61wzEpvEdsqGKC2D3egRS/XshZiuYY3h0BVpVkx9uCeLG4sZ9rrndezOpMH4NuOIBfQZIUfiVmsfDpanY2ssNbXW+MXdwDCnS1HBz1gaUbTLMDyEELojIvSRMnB+ZvUSswHtHpBeeInVyafFGRm4h6OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZLTL9xeD; arc=none smtp.client-ip=209.85.128.52
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-49241896317so1908705e9.3
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Jun 2026 17:04:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782431165; x=1783035965; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jnIzd9eXyM0lY5nLSKWOGJM4W2fxtczCL/IrCKu34m8=;
-        b=QKbuiSZosEQxQUhbQggRt8UItfhFDmC0tLrLcEL51qtr5EgnZSEtpeEZFqUyzXMXvT
-         2d1LKTAq7z9sEbhQrJuBb9uHvJrvksZkeMoKZwZz8Bi9OI5N2aQJLxduu5Nzkn8UpYko
-         hSlOhNYr30cD/m+G15lesKfFbbVcZxcIpw73hz3iLW77WmdbLSeFEfhAJXL7LAQiLM+M
-         1nY1u8m9xhRVrT4Pds7Q/QI2i4O2BURUIzRQJP/F0L15PzDzXH5k3wrVZBd7ko3XTxdT
-         dONZhhAM1Ww2vQF+rshUSJrSi7h+J3DWghGlYVBQxdgidDogObn9VUDy/ZRg9WaCjP6b
-         me1Q==
+        d=gmail.com; s=20251104; t=1782432297; x=1783037097; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NMRwNmhHD7SMAAZ/RYaSTSHS6O1acOwv+l2W4zhXZ8E=;
+        b=ZLTL9xeDMb2AlgQa31ZciSFYnKh9vSEWk1ms43nUXHVAV92IzZR/xzHIlotIeyiT5m
+         pQ/jmsqNvh8+BICxdAM3GF2ngTxc34bHLwEAfSmweGiGZokg+y115OL1aiOxaIYRt2FL
+         zvEgdkKYsB/OWplX4tOfth3uqphtXwDZJppJdpC4G8m43hwvPgqL9xd2qZtBP37kotp3
+         ohEG/dP9gKKhagvvEuDoDLTdlK3YXLkpeDgMZBqyKDukNuyezPYraKe6v9faKp0k9Fiq
+         3bgv6BXzGyAJu1RLWCos3aMM+xWaeSqwHx+UsCVxIr4YojCowDs8suepaMYB5E6nFx9K
+         XJHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782431165; x=1783035965;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jnIzd9eXyM0lY5nLSKWOGJM4W2fxtczCL/IrCKu34m8=;
-        b=sYC9JqU3iiZmYQDgLR/mmzHofkohGXrPvpkobeBz5GlToXodPaTRJb24DRYERBocEO
-         V9hpdc0eWyPklz6IiNk/nwvCLM4B8L11yOb0DbRaGHY0FT1Lqu8Q47qfiACUHV+CkzLc
-         rnPoOAYUGIDGxvbkffl/W7flVWFZilSIZ2VgOKsOwQgeAYr1fDqeCsy1miy4Abxf27t9
-         U43Iu4sDd/LIbNSGYoay7sA1WtyRArmMFR/WWMw9n8zcdLPmYWZPl8DqFHVpYBeTcDEJ
-         G0p4IP2E/iY+N7HhgaDgGkmr59OfXL0O+ojsy/D6zcWySkKAzrKCPGvhckFOf8vSVwUm
-         RbNg==
-X-Forwarded-Encrypted: i=1; AFNElJ8wz+ZWcaI3RTG+ISxLoADSicIMNqJsANhym37mCx49b8Eb/cszKL77lGij7vlTVpQCh+7+IOgRRlazubLKNg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFF5MnxlGrFvvTsJanilYcj8IbyMYhvC8ajWbat4NYZ9zOWfNk
-	JjfITgCY3LfbtNtF+zKsCh2BjgnehueWyuZ+2q2+BOJc2k5ZR1LgCIaU0XbX
-X-Gm-Gg: AfdE7cmGIhWUEEzR1GfdPGdvHxNMgONyLf0sMMJ3kUQKK15m98x4q2aAx9AYD37QfLE
-	dJO7Ma78OYfOTvzwp1i4gFdyCjgjfCdYAIjR3aG8zpsdoHuLtMscH++7pniTvB8wuPe3OxwVWzx
-	uwAn+W7Kbw/BVUQdpZbUFwRXcxIva2WVOyiTabtQN4lvlVEM7NThpP6dTMm/BQpOmv8nw+ym1m8
-	oKum4iTnRtVjR2wQPf9qwFfI2uNtBskscM4cwP66BLzne+uufFlAESUdZG4fVMYB1SMstPWD7sm
-	Fsy7qHbKsj6urUHWuX7rCApRXDqSJwnbgqKoF9VwBH3YF6bsmPVAhnXIVft7LgN0Ww4aluJRTvJ
-	jsMl4WRVZrJ9FbyYU8chUNJFqggPWcFkLwP2Fz5NpSWGbSglJ6dFXusw=
-X-Received: by 2002:a05:600d:6452:10b0:492:1e36:85dc with SMTP id 5b1f17b1804b1-4926689ac37mr53156515e9.36.1782431164934;
-        Thu, 25 Jun 2026 16:46:04 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782432297; x=1783037097;
+        h=mime-version:content-transfer-encoding:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NMRwNmhHD7SMAAZ/RYaSTSHS6O1acOwv+l2W4zhXZ8E=;
+        b=fpbRGyzqqRYW6higgJgFyMtj503/YoeRRCyR3QXkkfiBlcIJBZ+GNSwGfthff7IKR1
+         eTCvb0S+zzdDvYO0MlxRFnUl4FKA0HcFGTW4sASUeQAR+4TpRsTxhkxrtxPufAzndphH
+         H/Bm8cdFhU9AgXbd/iPBo2p+BYR8g/aaMjrU4LCl7cQTl6MkgSmXdoT70nB6Ob7DJsjh
+         OeHz38ZkK8WOVVymbhG4GagLvPaa60bdVte9ej57ViQEt3tfziLsm3GdA943USIs8DTP
+         OPiKBCFFDHs8ae8UDKD7/7sSIgnkurIda2onk5YYpTxUiHR7j/b9xpXRoN9BsA4yCS6a
+         k41A==
+X-Gm-Message-State: AOJu0YzmvWTEoEwBDG2D6y8La9iuR7ZzUPSTA4k8urg895XZL5gLirz3
+	rehx2YRWWtlsVwvW9IaZePRNFlesDwoWd/prNuW0wSxZ7YlyGds4mfB4OPND
+X-Gm-Gg: AfdE7cmpkCH1Fm8aBu58D/BcY+e7AcMePr0ujKmkiVe3OEmRhMcb8BfCZOxV2o5YpLM
+	mY2q9tz9e228Gmq4e40s+EA1m021QINM1kj364UwrkampXq3bS0480C5f8jdNxMGfgGzHbEHqjN
+	ylrVHLroec4PW+RbmouxwmE+J9JRroCATY0rJ7dlY6Am+zUvH08gb99A9zcT/e2VPqUVAcc7Y6s
+	ClBvSy5pOeY8DgcR1pNtZsWNkNmbJYOi0ZYZVyerlfH61w5HHNWhNffP7UAxmz0+Oz9ZIm0yiBE
+	ghfA7xgooLp2cboxyxarrfPLB4v3N6rNuYcDBPwuI3QK4o8Rg7y7PiDc2fhy/AfcvUTaqWkMw28
+	HAOQVB9v4hXp0c6/L604DPwZVmwrC7gK0ePVJDTwA4rjstN827eVfUZdzuqBTYi3G95pM
+X-Received: by 2002:a05:600c:4e94:b0:490:c2a2:b1d4 with SMTP id 5b1f17b1804b1-492668933e5mr60482995e9.35.1782432296467;
+        Thu, 25 Jun 2026 17:04:56 -0700 (PDT)
 Received: from debian ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c22c680fasm20285246f8f.34.2026.06.25.16.46.03
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46e3d6ba143sm6636787f8f.33.2026.06.25.17.04.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 16:46:04 -0700 (PDT)
+        Thu, 25 Jun 2026 17:04:55 -0700 (PDT)
 From: Tristan Madani <tristmd@gmail.com>
-To: Christian Lamparter <chunkeey@gmail.com>
-Cc: Doruk Tan Ozturk <doruk@0sec.ai>,
+X-Google-Original-From: Tristan Madani <tristan@talencesecurity.com>
+To: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
  Johannes Berg <johannes@sipsolutions.net>,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- tristan@talencesecurity.com
-Subject: Re: [PATCH] wifi: carl9170: clamp command response copy to the read
- buffer size
-Date: Thu, 25 Jun 2026 23:46:03 -0000
-Message-ID: <178243116343.3635355.16109712055530784127@gmail.com>
-In-Reply-To:
- CAPdMp1oWXvtdvp8D0f32vpvzGa0H9PhprQcACqqoc4Gnyy=f6A@mail.gmail.com
-References: CAPdMp1oWXvtdvp8D0f32vpvzGa0H9PhprQcACqqoc4Gnyy=f6A@mail.gmail.com
+ Tristan Madani <tristan@talencesecurity.com>
+Subject:
+ [PATCH v4] wifi: ath6kl: fix OOB access from firmware ADDBA window size
+Date: Fri, 26 Jun 2026 00:04:54 -0000
+Message-ID: <178243229402.3653332.17576562809691611363@talencesecurity.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -101,53 +95,98 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38104-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:chunkeey@gmail.com,m:doruk@0sec.ai,m:johannes@sipsolutions.net,m:jeff.johnson@oss.qualcomm.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:tristan@talencesecurity.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38105-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vasanthakumar.thiagarajan@oss.qualcomm.com,m:jeff.johnson@oss.qualcomm.com,m:johannes@sipsolutions.net,m:tristan@talencesecurity.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[tristmd@gmail.com,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[tristmd@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,talencesecurity.com:mid,talencesecurity.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 870A56C92B9
+X-Rspamd-Queue-Id: 1F7096C9355
 
-Hi Christian, Doruk,
+aggr_recv_addba_req_evt() logs a debug message when the firmware-supplied
+win_sz is outside [AGGR_WIN_SZ_MIN, AGGR_WIN_SZ_MAX] but does not
+return. The out-of-range win_sz is then used in TID_WINDOW_SZ() to
+compute a kzalloc size and stored in rxtid->hold_q_sz, leading to
+zero-size or overflowed allocations and subsequent out-of-bounds access.
 
-No worries at all, these things happen. Both patches address the same
-underlying issue from different angles -- mine returns early after
-carl9170_restart() to skip the invalid response entirely, Doruk's
-clamps the memcpy to ar->readlen.
+Clean up any previously active aggregation session for the TID first,
+then return early when win_sz is out of the valid range, instead of
+proceeding with a broken allocation size.
 
-Either approach works. If it helps, I'm happy to respin my 3-patch
-series (the other two patches fix the TX status off-by-two and
-rx_stream failover overflow in the same driver).
+Fixes: bdcd81707973 ("Add ath6kl cleaned up driver")
+Cc: stable@vger.kernel.org
+Suggested-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualco=
+mm.com>
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+---
 
-Let me know if you'd prefer a fresh resend or if you'd rather pick
-from what's already on the list.
+Changes in v4:
+  - Move aggregation session cleanup before the window size check so
+    that a previously active session is always torn down, even when the
+    firmware sends an ADDBA event with an out-of-range window size
+    (Vasanthakumar Thiagarajan).
 
-Thanks,
-Tristan
+Changes in v3:
+  - Regenerated from wireless-next with proper git format-patch to
+    produce valid index hashes (v2 had post-processed index lines).
+
+Changes in v2:
+  - No code changes from v1.
+
+ drivers/net/wireless/ath/ath6kl/txrx.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath6kl/txrx.c b/drivers/net/wireless/at=
+h/ath6kl/txrx.c
+index 80e66ac..a39c815 100644
+--- a/drivers/net/wireless/ath/ath6kl/txrx.c
++++ b/drivers/net/wireless/ath/ath6kl/txrx.c
+@@ -1722,13 +1722,15 @@ void aggr_recv_addba_req_evt(struct ath6kl_vif *vif, =
+u8 tid_mux, u16 seq_no,
+=20
+ 	rxtid =3D &aggr_conn->rx_tid[tid];
+=20
+-	if (win_sz < AGGR_WIN_SZ_MIN || win_sz > AGGR_WIN_SZ_MAX)
+-		ath6kl_dbg(ATH6KL_DBG_WLAN_RX, "%s: win_sz %d, tid %d\n",
+-			   __func__, win_sz, tid);
+-
+ 	if (rxtid->aggr)
+ 		aggr_delete_tid_state(aggr_conn, tid);
+=20
++	if (win_sz < AGGR_WIN_SZ_MIN || win_sz > AGGR_WIN_SZ_MAX) {
++		ath6kl_dbg(ATH6KL_DBG_WLAN_RX, "%s: win_sz %d, tid %d\n",
++			   __func__, win_sz, tid);
++		return;
++	}
++
+ 	rxtid->seq_next =3D seq_no;
+ 	hold_q_size =3D TID_WINDOW_SZ(win_sz) * sizeof(struct skb_hold_q);
+ 	rxtid->hold_q =3D kzalloc(hold_q_size, GFP_KERNEL);
+--=20
+2.47.3
+
 
