@@ -1,179 +1,184 @@
-Return-Path: <linux-wireless+bounces-38154-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38155-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R68VKAFCPmrfCAkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38154-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 11:10:25 +0200
+	id 3OPGLBlNPmriCwkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38155-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 11:57:45 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2CDB6CB962
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 11:10:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF946CBDFF
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 11:57:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=qO7fz5S1;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38154-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38154-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="duP/jXdj";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38155-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38155-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 603B630D9940
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 09:04:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B50A30262CC
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 09:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B4F351C10;
-	Fri, 26 Jun 2026 09:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CC63EA947;
+	Fri, 26 Jun 2026 09:56:57 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D0D30C168;
-	Fri, 26 Jun 2026 09:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE7D3BB66C
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 09:56:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782464697; cv=none; b=sHrtiuWEmI+EcpZ48bFZtSFcqhu3iawkvHqbfLXDBC/agu69X5Nb6lXqV72SxWbIVeooh+/724UU/9bIs7ghHyvnSPSTAxrdGg9GdpRPBWuJ45Q2PTdR0kzyWwtBbDcJj0GAXFl2G0arTWHj/SzqljgqN1UJ5ODkNGu3toGkKLI=
+	t=1782467817; cv=none; b=Ct/2c8+5w3mzw2GQXrI3MWmtRVjKhjsB/DN+IoUjgdyLfoSodaAbfIIJDpXqNthFd1RlTFFT0JcwR5T2xmHAuK8WiN1DMRG/fuW85Ih7ky3Ydegy3PHz00SofrktuWG4p6tL0hstHrOC8e/HvXTnZzvXvnx9mfyOp0rzDuBR5Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782464697; c=relaxed/simple;
-	bh=xhKMx7fneCt45U02pHJWe6Qs7ZPoHihiDb8p1Vxqiik=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qf8olWU+jGnuRn+4zSSYGNHb+03RckunJEevh2sGTbs1Hp4YbGPchVpXZXDfhx7mOzqQsVwGx4d1cxBD7aiINXy6kt6heG7FUYUZKj16x2fb8Btum/Lf2J9/T986KMxWl6EgPQsQE2C5n9BEFRwlb682PptV117QvoiB0/CpEro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qO7fz5S1; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=hte3vjAzJ4brTzseVp1La6QRMHdGwUA6jGROLVkBg9I=;
-	t=1782464695; x=1783674295; b=qO7fz5S144YYEa8X5zhYurcntD8BOPCDi4KX5UbBoY2RRRJ
-	U3Y3ffFugCYqXLFw3YIDcIoqtCrfHjKs+hufD35mFMUYpVvLP+tHLUXL/X47BgaVRpC+/68EWOlOm
-	faBpMQpa7hv27uVbsQbame7DgpdguFWVZFcmdXRgvpldb8pXDkic4DyOo4kRHBAQaZrHU7hQRLglS
-	+o6X9u3i1GdnRvd3MOkbn9Cxcy21XRIcwITTAlItH4vFtL4jkBKrF0hTOeTFLXw8u8kCYn3I0p2KK
-	R2OdF1U0NR6Ij6HZC0ygMXFT6ECC4v6QRb8QspYKn2MpHU6plHxigocoi3Za3Fkg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wd2UW-00000005Ejj-1foy;
-	Fri, 26 Jun 2026 11:04:52 +0200
-Message-ID: <da2c4e2396697d3c245a3a0cf35d8d9a6b24981f.camel@sipsolutions.net>
-Subject: Re: mac80211: MLO link removal frees link RX stats percpu without
- RCU grace
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 26 Jun 2026 11:04:49 +0200
-In-Reply-To: <20260626080158.3589711-1-maoyixie.tju@gmail.com> (sfid-20260626_100204_586946_E725C9D9)
-References: <20260626080158.3589711-1-maoyixie.tju@gmail.com>
-	 (sfid-20260626_100204_586946_E725C9D9)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1782467817; c=relaxed/simple;
+	bh=JEemrDxTj8LHfgA6mJFtYRHl5FdaKjrhg22p9xG1wJU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rInzcyxBAHffHSVOphajcTWib8/wzLpRHYEjwJjQfOvJ7Cvc+4723r3RGZ8WNNpQ4EwrDUWwhjFSPqhZl5k5F77pLm1uaKTLI4tHZbziQrjSkpgjOuHvYQpaGH7IdVBghL+1lQwDodaOfdZBNurmGolKZ6byhEpnzv7URjYW5SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=duP/jXdj; arc=none smtp.client-ip=209.85.208.49
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-697cd68d7adso1224736a12.1
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 02:56:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782467814; x=1783072614; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8T8IHP369eTZYQZP+8gHvpgNRB9oBkLjALn1J6r4A8M=;
+        b=duP/jXdjHpS0z0DJiKpw2iRV38nj5c0dU94XOmspvM0n/B4zsysf1nyqooUDF5s338
+         wQ7gjs7HfxFFh0bteVZ4+t5eq2VZl0dFRl2/p56aSri+53lY6r67pJu1litjl6g9Iikw
+         XXNKRZXbL2iwNf+0FPpW1WpT05mAw5NDF2N6aviQXDtDX8ilj06fOQTKnlY4d73UHCXr
+         +DfgHnltMYozKiCupVNuADt5Fh22nI5uKibMzjPmzgdMEFROxBFJTgzH4OUbzaq06uuH
+         9xzz27LVswcjG4Mq9fasJggyhXa6dy0d6qAdfK+LX5FoVYuu7GafApZAtDxn5tniDju9
+         kldg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782467814; x=1783072614;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8T8IHP369eTZYQZP+8gHvpgNRB9oBkLjALn1J6r4A8M=;
+        b=fVRr9Or3VFenQuger1sl0F+GNbjHGZbGw+sei+9JAgqaoxLyGaCgZpyt4pepQZxvc4
+         2PY3bq6S3Jjzv6RITMm/4H4bPk7ECC8hEQVp2vOz/Z38S2imW7NL6sjDNqDjeU8cU+AU
+         /LLw+Jt8yoHqsewogFI2BrknwcRk2darrg4BuOZXB+HsHTqUmgAIJMO4zJZN34PDq2vJ
+         rXWJXZctboL1dQpeS7KzcUu9JjevUIQOD7ijbC+nmfMeykYI64jOUbiwYycV+e4itxHg
+         RJ9O9WPgCZSDewEWzcc+J9GUbEDmNphu9MWinaw4bb7msCfWfHVGUr5MpS/MVYlY4a+R
+         U+dg==
+X-Gm-Message-State: AOJu0YzhruYJDkiOm76LBcJHkfyMxjzdNT9pcnZnSR0YeSB/2uPmH2st
+	B2S2TT0RnOOPAE2UuYBGvLiOWKdVUacerg7XplAhrAnz3ro1bOtuaVfD6YX6JILX+nA=
+X-Gm-Gg: AfdE7ckOlsL10Xczl8u9HUlsLBspkz8oJeoQNqp1zp5XJZnBSkTbS2981OahXYmJ4Az
+	InqROrBZe1ioFaVQvcyWczQ985yBIUgqyr7p1ZWaLU3HkzjvW9ezS0/TVYtKMYuGswF7/jD+M1g
+	eBgFD2JbTv2BI55JC+iUt31HrxvIsShWubEya66JsAA56/mNc9KcfOX4uTadWta4IMNnennC0a4
+	oRuBftffhWmkdi0KgVubg93SJKX3c0r4qKEFikE6Y50jTU+PR0o6Be+mIeaHk0KdXhB0/6L7iXt
+	Cve1ydW7nkmseLA6lk+M8sWzUuqSXq1BFUHtxVqTtLlqY8OtjKgq7/P0EqSz6rv7ZiVqrk676Rk
+	RANSxoucsFuqm8oCL7XLNoaMeCHQAG6byXYepe2cae+w27nNYr6nyt38fFiowvgTZE9OSQOieJR
+	On6m0prXHR6VsgWEBLyk0Y9W0=
+X-Received: by 2002:a05:6402:190b:b0:697:ef1c:b5f7 with SMTP id 4fb4d7f45d1cf-69810a32487mr1771897a12.7.1782467813901;
+        Fri, 26 Jun 2026 02:56:53 -0700 (PDT)
+Received: from localhost ([80.208.66.169])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-697f3aeb509sm2577084a12.10.2026.06.26.02.56.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 02:56:53 -0700 (PDT)
+From: William Hansen-Baird <william.hansen.baird@gmail.com>
+To: pkshih@realtek.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	William Hansen-Baird <william.hansen.baird@gmail.com>
+Subject: [PATCH rtw-next v3 0/3] wifi: rtlwifi: fix ASPM AER flooding on RTL8723BE devices
+Date: Fri, 26 Jun 2026 11:56:45 +0200
+Message-ID: <20260626095648.1124924-1-william.hansen.baird@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:maoyixie.tju@gmail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:maoyixietju@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-38154-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38155-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[williamhansenbaird@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:william.hansen.baird@gmail.com,m:williamhansenbaird@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[williamhansenbaird@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,sipsolutions.net:dkim,sipsolutions.net:mid,sipsolutions.net:from_mime]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F2CDB6CB962
+X-Rspamd-Queue-Id: 2DF946CBDFF
 
-Hi,
+This series fixes AER error message flooding and system slowdown caused by
+RTL8723BE with subsystem ID 17aa:b736. The flood is found to be caused
+by ASPM, and disabling it stops the AER spam.
 
-> I think there is a use after free on the MLO link removal path in
-> net/mac80211/sta_info.c. The link RX stats percpu buffer is freed while a
-> concurrent RX softirq can still write to it. I would appreciate it if you
-> could take a look.
->=20
-> sta_remove_link() frees the link stats and defers only the container:
->=20
-> 	sta_info_free_link(&alloc->info);
-> 	kfree_rcu(alloc, rcu_head);
->=20
-> sta_info_free_link() does the free right away:
->=20
-> 	free_percpu(link_sta->pcpu_rx_stats);
+This flood of AER error messages for the RTL8723BE is not unique to
+subsystem ID 17aa:b736. 
+Commit 77a6407c6ab2 ("wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723")
+targets the same issue for subsystem ID 11ad:1723.
+The fix applied in that commit, however, does not correctly
+disable ASPM. It merely disables driver control of ASPM.
 
-Funny, I was looking at this code just yesterday for other reasons.
+Patch 1 fixes the previous commit such that it properly disables ASPM for
+subsystem ID 11ad:1723.
 
-> So the container waits for a grace period but the percpu stats are
-> reclaimed at once. The RX fast path runs in softirq under rcu_read_lock
-> only. It resolves link_sta early and writes the percpu stats later:
->=20
-> 	stats =3D this_cpu_ptr(link_sta->pcpu_rx_stats);
-> 	stats->last_signal =3D status->signal;
->=20
-> A reader that resolved link_sta before the removal NULLed it keeps the
-> pointer. The container is still alive from the kfree_rcu, so the read of
-> link_sta->pcpu_rx_stats works. But the percpu block it points to is
-> already freed. This needs uses_rss. That is when pcpu_rx_stats is
-> allocated. The trigger is an MLO link removed over the air through a
-> Multi-Link Reconfiguration element.
->=20
-> The full STA teardown does this safely. __sta_info_destroy calls
-> synchronize_net() before sta_info_free() frees the deflink stats. The MLO
-> link removal path has no such barrier. That path was added in
-> cb71f1d136a6 ("wifi: mac80211: add sta link addition/removal").
->=20
-> I do not have WiFi 7 hardware. This is from reading the code. A small tes=
-t
-> that frees the stats buffer and writes it through the live container trip=
-s
-> KASAN with a slab use after free.
->=20
-> Does this look like a real use after free to you?
+Patch 2 converts the if-statement check of subsystem IDs to a
+rtl_aspm_quirks pci_device_id table matched with pci_match_id() 
+such that future devices can easily be added if they have the same error.
 
-The above analysis doesn't look _incorrect_ to me, though I think
-between uses_rss, sta_pre_rcu remove and how drivers tend to work
-(though I can mostly speak for iwlwifi, and ath1[12]k also have RSS),
-it's going to be pretty fairly difficult (if not impossible?) to hit in
-practice.
+Patch 3 adds the RTL8723BE with subsystem ID 17aa:b736 to the 
+rtl_aspm_quirks table to disable ASPM for it. Testing on a 
+Razer Blade 14 2017 showed this stops the AER error message flood and 
+wifi works as it should.
 
-The only (relevant, real RCU) reader is rx.c, which requires fast_rx too
-(not all that relevant I think). During STA removal, both are removed
-together and we always have to have both, so I think it's mostly OK.
-When the driver passes the STA it could still be an issue though, I
-think?
+---
+v3:
+- Replace { 0 } with { } in rtl_pci_quirks table as recommended by Uwe
+  and requested by Ping-Ke
+- Added comments to rtl_pci_quirks table describing what machine
+  correspond to the pci ids
+- Replace net-specific comment style with wireless comment style
+- Removed misleading Fixes tag from patch 1.
+- Patch 3: carried forward Acked-by from v2
 
-During link switch it could be more of an issue, but then it's MLO and
-we require the driver to tell us where it's receiving, and it wouldn't
-receive on a link that was just disabled, so I don't think you'll hit it
-in practice here either.
+v2:
+- Implement __rtl_pci_disable_aspm() in patch 1 which disables ASPM 
+  without checking ppsc->support_aspm. 
+  This is called both by rtl_pci_disable_aspm(), guarded by the original
+  check of ppsc->support_aspm, and the new quirk code.
+- Rename rtl8723be_aspm_quirks to rtl_aspm_quirks and fill out system 
+  vendor and device ID alongside subsystem vendor and device ID in the
+  rtl_aspm_quirks table such that we can use pci_match_id() alone
+  without the RTL8723BE check.
 
-> Is the right fix to
-> defer the percpu free to RCU, like the container already is? I am happy t=
-o
-> send a patch once you confirm.
+William Hansen-Baird (3):
+  wifi: rtlwifi: fix disabling of ASPM for RTL8723BE with AER flooding
+  wifi: rtlwifi: convert pci if-statement to ID table
+  wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 17aa:b736
 
-I think it'd be better to combine them and free the link with data after
-RCU, rather than bumping each to RCU separately?
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 43 +++++++++++++++-------
+ 1 file changed, 30 insertions(+), 13 deletions(-)
 
-johannes
+-- 
+2.54.0
+
 
