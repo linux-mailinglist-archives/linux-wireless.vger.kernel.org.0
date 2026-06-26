@@ -1,191 +1,301 @@
-Return-Path: <linux-wireless+bounces-38166-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38167-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2udFNg9gPmouEwkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38166-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 13:18:39 +0200
+	id eZkBGChhPmqHEwkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38167-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 13:23:20 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 687656CC585
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 13:18:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7066CC62D
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 13:23:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hc+dtlOb;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38166-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38166-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=collabora.com header.s=mail header.b=qHdGsyIg;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38167-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38167-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=collabora.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA072301FA4B
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 11:16:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1680930B13D6
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 11:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875D23EFD37;
-	Fri, 26 Jun 2026 11:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504E239446B;
+	Fri, 26 Jun 2026 11:19:09 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856CC3164A9;
-	Fri, 26 Jun 2026 11:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847ED30D411;
+	Fri, 26 Jun 2026 11:19:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782472605; cv=none; b=jryBLc/o6C69Y/4w3zmgsifOqAwpHW0C/dFTY/bHFMg57KMCU6QBxPoSC/kvUKW1cwWd6RCQM5azcc0ALRmMVFO3t/2+O4M3h4nUYh1tUohPBTqMDwnf7bFmECg4wQN+O6ULGkSEE4Ho3YBxaS90sfTbn7Ld1CMMqpxn/G1mxuc=
+	t=1782472749; cv=none; b=L0MGWNwFUpf63m7jqoRlGthUSvF7xMmDd4Ah60jI8jMLjn3fqI1zuj0zJOX46vpXX6t07mSY6WuNliGVVtkvMo4oo8qEkVdK7JmRZEuZ/qPpTipY/0ECOe2S2b+ZrCzbMULPyNzN4nrp7r6SpqllCjubsm7CcCwxOXSlTIw2TPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782472605; c=relaxed/simple;
-	bh=pULAGn7gd9jrBHpRvgi7iMYk6v+UnrkTMVy0gC9jTNk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SD31jP7rk20fUaDDzS+SVNMTqCHNjWueKRtC/x5ZlS66/+9LHYVHCsj58GhnhGRRFwmkGK+uQmQVwPzOs4q9LSKMb5KU5LcqdPiJQ9F73NKeY1Q/gonLi2TXEzsWSZSfKDy3OaPxQgIc92AUFByvERXF6LlFyN5OzHzPBfRp1lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hc+dtlOb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACB51F000E9;
-	Fri, 26 Jun 2026 11:16:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782472604;
-	bh=+pjkC367Ll/gzzPWQk4yEj/jwA/X88/o2EzLb1kHUUU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Hc+dtlObmw4fBNFgub/XBvDDJXNpCQzAPPWXVJz2E/6orIM72j7cLM1lK4VyOG58y
-	 EmrdWQG8ywxiR/WlX32oLHNBaoQE8+RIw/DKrhL9C+0UBHQ/R1lWvHFDiZk2bK0l7b
-	 OiKfvy1JKx8neW8R71XN5XBlWoNjVLFLsPG0tk7Zwpwj1zptuxTbEQ5owdJDSFH/f1
-	 XiyIPcm6053bOdFZqEmYk8+Cy7bDs8v2KrkGar1+yo1TdJMQbH/eY53M4b38F4cEzA
-	 WwY7M5DydgLJt4Zp2IxTtknJLHQ8Zvki2QmRmVjP3cLEMXGYrsESPMScfPPUp8y06q
-	 ZZdrA1qC6s36A==
-Message-ID: <4531e20d-13ad-4493-8447-d09b9b91be7f@kernel.org>
-Date: Fri, 26 Jun 2026 13:16:31 +0200
+	s=arc-20240116; t=1782472749; c=relaxed/simple;
+	bh=QCdv/xm6S2363B4trKyY8X3EUb53sYrWR7Oxe4/NgMY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DlFUqY6eDWUubMM79uhavP8btzeBomF794XCx+q4eDGghup2qO3+CwhuU2IIEgCHUyhlf3cYNxcxBhCBi7NDwNh5wRoC4os92iKN7nshLqbFLIhvmQB+GdJ4u9qlRKOWUgJ3R3OJjW7v9XwEUXgiH82+YNSckEQuEAcUc7sXHhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=qHdGsyIg; arc=none smtp.client-ip=148.251.105.195
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1782472745;
+	bh=QCdv/xm6S2363B4trKyY8X3EUb53sYrWR7Oxe4/NgMY=;
+	h=From:Date:Subject:To:Cc:From;
+	b=qHdGsyIgPdn2LKWQO8Mj/EsuPkZ0nBYV7UAmW8atHgFi/b6Vu3BwFcdeSAexbCUHv
+	 goaImA6aOWkfoablor+nfdM3Hl7u+WFtpJovAMmXeR43txY+852QGj3OYUywUAByLN
+	 nXJGMJhcA+csPtjAmXULZiPhkKdw0FX9MiFe2F0JRGfXrESHdWzOKrCsZB3xi3BTWb
+	 XQ1AmRQYN1yPKEBXNXH5D+fkMrQN8rHVK/LoYnn3bEm/yAopHsQgQucJxYjlgI3n4b
+	 Jjq85mw/kGWDwg7oiGI1P9O7yJYJGelVs7NU7Xmj4gNszpU7Qn3CwzJ6iAxz12DM2A
+	 LiICGfAX81DsA==
+Received: from [192.168.1.156] (unknown [100.64.1.118])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: mattl)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 87C2C17E0180;
+	Fri, 26 Jun 2026 13:19:05 +0200 (CEST)
+From: Matthew Leach <matthew.leach@collabora.com>
+Date: Fri, 26 Jun 2026 12:19:01 +0100
+Subject: [PATCH v2] wifi: rtw89: regd: stop gating 6GHz on the ww domain
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] dt-bindings: remoteproc: document M0 Bluetooth
- Subsystem secure PIL
-To: George Moussalem <george.moussalem@outlook.com>
-Cc: Jens Axboe <axboe@kernel.dk>, Ulf Hansson <ulfh@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Johannes Berg
- <johannes@sipsolutions.net>, Jeff Johnson <jjohnson@kernel.org>,
- Bartosz Golaszewski <brgl@kernel.org>, Marcel Holtmann
- <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
- Rocky Liao <quic_rjliao@quicinc.com>, Saravana Kannan
- <saravanak@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Philipp Zabel <p.zabel@pengutronix.de>, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
- ath10k@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
- linux-remoteproc@vger.kernel.org
-References: <20260625-ipq5018-bluetooth-v1-0-d999be0e04f7@outlook.com>
- <20260625-ipq5018-bluetooth-v1-1-d999be0e04f7@outlook.com>
- <20260626-tiny-warm-jerboa-3ba57a@quoll>
- <SN7PR19MB67364ADE8CDD7C31297AE18D9DEB2@SN7PR19MB6736.namprd19.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <SN7PR19MB67364ADE8CDD7C31297AE18D9DEB2@SN7PR19MB6736.namprd19.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260626-rtw89-6ghz-regd-fixes-v2-1-beeb3fdb60ba@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNyw6CMBBFf4XM2jFtIaW68j8Mi9IOUIPUtIgPw
+ r9bMC5dntzHmSFScBThmM0QaHLR+SGB2GVgOj20hM4mBsGEZJJLDONDHVC23RsDtRYb96SIVjW
+ KS6VYbRmk7S3QFqTpufpyvNcXMuN6tjY6F0cfXpt44mvv5yj/OCaOHPPclkWhWWm5PBnf97r2Q
+ e+Nv0K1LMsHxJaiL9AAAAA=
+X-Change-ID: 20260616-rtw89-6ghz-regd-fixes-d8f816880bd0
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kernel@collabora.com, Zong-Zhe Yang <kevin_yang@realtek.com>, 
+ Matthew Leach <matthew.leach@collabora.com>
+X-Mailer: b4 0.15.2
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:george.moussalem@outlook.com,m:axboe@kernel.dk,m:ulfh@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:johannes@sipsolutions.net,m:jjohnson@kernel.org,m:brgl@kernel.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:quic_bgodavar@quicinc.com,m:quic_rjliao@quicinc.com,m:saravanak@kernel.org,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:linux@armlinux.org.uk,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:andersson@kernel.org,m:konradybcio@kernel.org,m:mathieu.poirier@linaro.org,m:p.zabel@pengutronix.de,m:linux-block@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mmc@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath10k@lists.infradead.org,m:linux-arm-msm@vger.kernel.org,m:linux-bluetooth@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-remoteproc@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[outlook.com];
-	TAGGED_FROM(0.00)[bounces-38166-lists,linux-wireless=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[36];
+	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:kernel@collabora.com,m:kevin_yang@realtek.com,m:matthew.leach@collabora.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38167-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.dk,kernel.org,sipsolutions.net,holtmann.org,gmail.com,quicinc.com,lunn.ch,armlinux.org.uk,davemloft.net,google.com,redhat.com,linaro.org,pengutronix.de,vger.kernel.org,lists.infradead.org];
+	FROM_NEQ_ENVFROM(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[collabora.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,collabora.com:dkim,collabora.com:email,collabora.com:mid,collabora.com:from_mime,realtek.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 687656CC585
+X-Rspamd-Queue-Id: AD7066CC62D
 
-On 26/06/2026 12:51, George Moussalem wrote:
->>
->> No supplies? no address space? How do you actually trigger remoteproc
->> startup?
-> 
-> No supplied and no address space. The core is booted by a
-> qcom_scm_auth_and_reset call to TrustZone which authenticated the
-> firmware, takes it out of reset and boots it.
+The driver maintains its own block_* bitmaps on top of cfg80211's
+regulatory enforcement. These bitmaps are indexed by the position of an
+entry in the active regd_map (either the built-in rtw89_regd_map or the
+table loaded from a firmware element).
 
-Then commit msg could be improved:
+The ww domain is handled outside the regd_map; it lives in a standalone
+rtw89_ww_regd object, and rtw89_regd_get_index() returns the
+RTW89_REGD_MAX_COUNTRY_NUM sentinel for it. Every block_* lookup site
+guards against that sentinel and bails out, which means none of the
+block_* checks ever apply to ww. The 6GHz check therefore treats ww as
+unconditionally blocked at the driver layer, independently of whatever
+cfg80211/wireless-regdb permit.
 
-"Firmware loaded is authenticated via TrustZone." ->
-"Firmware is loaded and authenticated via TrustZone."
+Make ww a first-class entry in the regd_map instead:
 
+- Reserve slot 0 of rtw89_regd_map for the ww entry and drop the
+  standalone rtw89_ww_regd object.
+- In rtw89_recognize_regd_from_elm(), reserve slot 0 of the
+  firmware-loaded map for ww and populate it from the built-in
+  definition via the new rtw89_regd_static_ww_entry() helper.
+- Drop the rtw89_regd_is_ww() special case in rtw89_regd_get_index()
+  and identify ww by alpha2 so the check works for entries in either
+  map.
+- Have rtw89_regd_find_reg_by_name() return NULL on miss instead of
+  silently substituting ww. Callers that need the previous "fall back
+  to ww" behaviour (rtw89_regd_notifier_apply()) now do so explicitly
+  against the active map's slot 0, and rtw89_regd_get_index_by_name()
+  translates NULL into the RTW89_REGD_MAX_COUNTRY_NUM sentinel so the
+  existing "unknown alpha2" branches in the block_* setup paths
+  remain.
+
+With ww at a real index the driver's block_* checks apply uniformly for
+all bands and cfg80211 / wireless-regdb become the sole source of truth
+for what is permitted on the ww domain.
+
+Signed-off-by: Matthew Leach <matthew.leach@collabora.com>
+---
+Changes in v2:
+- Re-word the commit message, clarifying the motivation behind the
+  patch (removing the explicit 6GHz disablement).
+- Re-work the patch to play nicely with firmware loaded regulatory
+  tables by reserving slot 0 in both static and firmware regulatory lists
+  for the WW domain.
+- Link to v1: https://patch.msgid.link/20260617-rtw89-6ghz-regd-fixes-v1-1-33d744a07d16@collabora.com
+
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ drivers/net/wireless/realtek/rtw89/core.h |  1 +
+ drivers/net/wireless/realtek/rtw89/fw.c   |  6 ++++--
+ drivers/net/wireless/realtek/rtw89/regd.c | 32 +++++++++++++++++++++----------
+ 3 files changed, 27 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index fd29dbbb120d..dc9eae2cee69 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -7862,6 +7862,7 @@ void rtw89_chip_cfg_txpwr_ul_tb_offset(struct rtw89_dev *rtwdev,
+ bool rtw89_legacy_rate_to_bitrate(struct rtw89_dev *rtwdev, u8 legacy_rate, u16 *bitrate);
+ int rtw89_regd_setup(struct rtw89_dev *rtwdev);
+ int rtw89_regd_init_hint(struct rtw89_dev *rtwdev);
++const struct rtw89_regd *rtw89_regd_static_ww_entry(void);
+ const char *rtw89_regd_get_string(enum rtw89_regulation_type regd);
+ void rtw89_traffic_stats_init(struct rtw89_dev *rtwdev,
+ 			      struct rtw89_traffic_stats *stats);
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 17704f054727..77f320cae01b 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -1347,10 +1347,11 @@ int rtw89_recognize_regd_from_elm(struct rtw89_dev *rtwdev,
+ {
+ 	const struct __rtw89_fw_regd_element *regd_elm = &elm->u.regd;
+ 	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
+-	u32 num_ents = le32_to_cpu(regd_elm->num_ents);
+ 	struct rtw89_regd_data *p;
+ 	struct rtw89_regd regd;
+-	u32 i = 0;
++	/* +1 because we reserve index 0 for WW */
++	u32 num_ents = le32_to_cpu(regd_elm->num_ents) + 1;
++	u32 i = 1;
+ 
+ 	if (num_ents > RTW89_REGD_MAX_COUNTRY_NUM) {
+ 		rtw89_warn(rtwdev,
+@@ -1373,6 +1374,7 @@ int rtw89_recognize_regd_from_elm(struct rtw89_dev *rtwdev,
+ 		return -ENOMEM;
+ 
+ 	p->nr = num_ents;
++	p->map[0] = *rtw89_regd_static_ww_entry();
+ 	rtw89_for_each_in_regd_element(&regd, regd_elm)
+ 		p->map[i++] = regd;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
+index 28466cb35ea2..27ac87374e6e 100644
+--- a/drivers/net/wireless/realtek/rtw89/regd.c
++++ b/drivers/net/wireless/realtek/rtw89/regd.c
+@@ -21,10 +21,8 @@ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request
+ 
+ static_assert(BITS_PER_TYPE(unsigned long) >= NUM_OF_RTW89_REGD_FUNC);
+ 
+-static const struct rtw89_regd rtw89_ww_regd =
+-	COUNTRY_REGD("00", RTW89_WW, RTW89_WW, RTW89_WW, 0x0);
+-
+ static const struct rtw89_regd rtw89_regd_map[] = {
++	COUNTRY_REGD("00", RTW89_WW, RTW89_WW, RTW89_WW, 0x0),
+ 	COUNTRY_REGD("AR", RTW89_MEXICO, RTW89_MEXICO, RTW89_FCC, 0x0),
+ 	COUNTRY_REGD("BO", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
+ 	COUNTRY_REGD("BR", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
+@@ -316,12 +314,12 @@ static const struct rtw89_regd *rtw89_regd_find_reg_by_name(struct rtw89_dev *rt
+ 			return &regd_ctrl->map[i];
+ 	}
+ 
+-	return &rtw89_ww_regd;
++	return NULL;
+ }
+ 
+ static bool rtw89_regd_is_ww(const struct rtw89_regd *regd)
+ {
+-	return regd == &rtw89_ww_regd;
++	return !memcmp(regd->alpha2, "00", 2);
+ }
+ 
+ static u8 rtw89_regd_get_index(struct rtw89_dev *rtwdev, const struct rtw89_regd *regd)
+@@ -331,9 +329,6 @@ static u8 rtw89_regd_get_index(struct rtw89_dev *rtwdev, const struct rtw89_regd
+ 
+ 	BUILD_BUG_ON(ARRAY_SIZE(rtw89_regd_map) > RTW89_REGD_MAX_COUNTRY_NUM);
+ 
+-	if (rtw89_regd_is_ww(regd))
+-		return RTW89_REGD_MAX_COUNTRY_NUM;
+-
+ 	return regd - regd_ctrl->map;
+ }
+ 
+@@ -342,6 +337,10 @@ static u8 rtw89_regd_get_index_by_name(struct rtw89_dev *rtwdev, const char *alp
+ 	const struct rtw89_regd *regd;
+ 
+ 	regd = rtw89_regd_find_reg_by_name(rtwdev, alpha2);
++
++	if (!regd)
++		return RTW89_REGD_MAX_COUNTRY_NUM;
++
+ 	return rtw89_regd_get_index(rtwdev, regd);
+ }
+ 
+@@ -721,7 +720,7 @@ int rtw89_regd_init_hint(struct rtw89_dev *rtwdev)
+ 		return -EINVAL;
+ 
+ 	chip_regd = rtw89_regd_find_reg_by_name(rtwdev, rtwdev->efuse.country_code);
+-	if (!rtw89_regd_is_ww(chip_regd)) {
++	if (chip_regd && !rtw89_regd_is_ww(chip_regd)) {
+ 		rtwdev->regulatory.regd = chip_regd;
+ 		rtwdev->regulatory.programmed = true;
+ 
+@@ -743,6 +742,11 @@ int rtw89_regd_init_hint(struct rtw89_dev *rtwdev)
+ 	return 0;
+ }
+ 
++const struct rtw89_regd *rtw89_regd_static_ww_entry(void)
++{
++	return &rtw89_regd_map[0];
++}
++
+ static void rtw89_regd_apply_policy_unii4(struct rtw89_dev *rtwdev,
+ 					  struct wiphy *wiphy)
+ {
+@@ -859,7 +863,15 @@ static void rtw89_regd_notifier_apply(struct rtw89_dev *rtwdev,
+ 				      struct wiphy *wiphy,
+ 				      struct regulatory_request *request)
+ {
+-	rtwdev->regulatory.regd = rtw89_regd_find_reg_by_name(rtwdev, request->alpha2);
++	const struct rtw89_regd *regd = rtw89_regd_find_reg_by_name(rtwdev, request->alpha2);
++
++	if (!regd) {
++		/* Fallback to WW domain if name not found. */
++		regd = &rtwdev->regulatory.ctrl.map[0];
++	}
++
++	rtwdev->regulatory.regd = regd;
++
+ 	/* This notification might be set from the system of distros,
+ 	 * and it does not expect the regulatory will be modified by
+ 	 * connecting to an AP (i.e. country ie).
+
+---
+base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
+change-id: 20260616-rtw89-6ghz-regd-fixes-d8f816880bd0
 
 Best regards,
-Krzysztof
+--  
+Matt
+
 
