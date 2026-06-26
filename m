@@ -1,301 +1,227 @@
-Return-Path: <linux-wireless+bounces-38167-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38168-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eZkBGChhPmqHEwkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38167-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 13:23:20 +0200
+	id V1qDJV1hPmqaEwkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38168-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 13:24:13 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD7066CC62D
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 13:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E39CB6CC63E
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 13:24:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=collabora.com header.s=mail header.b=qHdGsyIg;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38167-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38167-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=collabora.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=g1zAlDyz;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=jngTtTGh;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38168-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38168-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1680930B13D6
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 11:19:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7313A3026599
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jun 2026 11:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504E239446B;
-	Fri, 26 Jun 2026 11:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AE53F1ACA;
+	Fri, 26 Jun 2026 11:20:33 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847ED30D411;
-	Fri, 26 Jun 2026 11:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6896A3BAD91
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 11:20:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782472749; cv=none; b=L0MGWNwFUpf63m7jqoRlGthUSvF7xMmDd4Ah60jI8jMLjn3fqI1zuj0zJOX46vpXX6t07mSY6WuNliGVVtkvMo4oo8qEkVdK7JmRZEuZ/qPpTipY/0ECOe2S2b+ZrCzbMULPyNzN4nrp7r6SpqllCjubsm7CcCwxOXSlTIw2TPU=
+	t=1782472833; cv=none; b=bXVF0u+qHLv0h+qFQ/bIh5HJbos0TUpOp2pAFPRn3c7pNJJ3HhlWVHZGLuEu6nti0EB1xJWrt9BV3nObFCRBCZ7gmNTeamYmTixNN0509Xw636tyNMdKrLQU0pKwf6tAseuQmg/GU7v2W/sY/yK4RnJWY3tlEMA/vHGmye6bHnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782472749; c=relaxed/simple;
-	bh=QCdv/xm6S2363B4trKyY8X3EUb53sYrWR7Oxe4/NgMY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DlFUqY6eDWUubMM79uhavP8btzeBomF794XCx+q4eDGghup2qO3+CwhuU2IIEgCHUyhlf3cYNxcxBhCBi7NDwNh5wRoC4os92iKN7nshLqbFLIhvmQB+GdJ4u9qlRKOWUgJ3R3OJjW7v9XwEUXgiH82+YNSckEQuEAcUc7sXHhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=qHdGsyIg; arc=none smtp.client-ip=148.251.105.195
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1782472745;
-	bh=QCdv/xm6S2363B4trKyY8X3EUb53sYrWR7Oxe4/NgMY=;
-	h=From:Date:Subject:To:Cc:From;
-	b=qHdGsyIgPdn2LKWQO8Mj/EsuPkZ0nBYV7UAmW8atHgFi/b6Vu3BwFcdeSAexbCUHv
-	 goaImA6aOWkfoablor+nfdM3Hl7u+WFtpJovAMmXeR43txY+852QGj3OYUywUAByLN
-	 nXJGMJhcA+csPtjAmXULZiPhkKdw0FX9MiFe2F0JRGfXrESHdWzOKrCsZB3xi3BTWb
-	 XQ1AmRQYN1yPKEBXNXH5D+fkMrQN8rHVK/LoYnn3bEm/yAopHsQgQucJxYjlgI3n4b
-	 Jjq85mw/kGWDwg7oiGI1P9O7yJYJGelVs7NU7Xmj4gNszpU7Qn3CwzJ6iAxz12DM2A
-	 LiICGfAX81DsA==
-Received: from [192.168.1.156] (unknown [100.64.1.118])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: mattl)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 87C2C17E0180;
-	Fri, 26 Jun 2026 13:19:05 +0200 (CEST)
-From: Matthew Leach <matthew.leach@collabora.com>
-Date: Fri, 26 Jun 2026 12:19:01 +0100
-Subject: [PATCH v2] wifi: rtw89: regd: stop gating 6GHz on the ww domain
+	s=arc-20240116; t=1782472833; c=relaxed/simple;
+	bh=AODr9g7jG0ahMDR1iDWx5Ha4Byxlb7oWkWpK+6uo/Hk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GBPKbTklApZVdshcHXPjS0mEz2622ASW4BQ3qyCa/j0DmnA4I9FZzp3tLZ+pQ5VAIBSOREswzvih3NzvHBuYXdmCtPeR4FK17IJzRno/480fMR0ibGuvFPoqtPg4HKx63FKicYbxd2PMvuXld6GSgYOE+WtSQdNZOqrg8TWbkAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=g1zAlDyz; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jngTtTGh; arc=none smtp.client-ip=205.220.180.131
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65QAclvG1190030
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 11:20:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	efSmsLNw8E+yGzrU4i9rfMYqOeX4WnsvoEalewcGYnQ=; b=g1zAlDyz9+fjFEn1
+	eSLwg5hGzrK6g6mloSVh46LugG7GsSngDqO0kgNgdgND6LIRSGZXWL+6k34xsLaa
+	E0GaUP01R6u7FDeAt4tY85T8+QZC9Ph7N8Rei1xnQJsIR4Vaf0ua58e2H44b4Vh6
+	zsRya1YcadyGXUZMluRvvhQ3xB43A6rLUrguZaV8685jFOP9gawXuLDp9oJ8QMW7
+	OZ+84CuflpoD+EzVf5b1tTB+t28WxZTCyyJYKTn0OQHTifpEoRseAGg/nOsISOI3
+	y0d18VYFI12DOixIFrZ37QjG1Eex9Dm9DVSgncvQo/ETUDKXO6Ar3QOaNKB6pKWH
+	lA1LTg==
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com [209.85.217.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f1asku86v-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 11:20:31 +0000 (GMT)
+Received: by mail-vs1-f72.google.com with SMTP id ada2fe7eead31-734f236d7c2so34666137.0
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Jun 2026 04:20:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1782472831; x=1783077631; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=efSmsLNw8E+yGzrU4i9rfMYqOeX4WnsvoEalewcGYnQ=;
+        b=jngTtTGh/QW48K6XX3v+hysyuC0lWG7i7XbvFodzJ6RQXMEwG8vU9VMJ4Xy/BXVo6f
+         xCxLR6c+EsRhbo69q2Ci9HPbvLvSCIId8YEthagyCWaqIrY1G6lHlk1FIW2JWx+J2t2K
+         Vb6zK9TO/HsLg8NzOPbewohurkuzvZUDkV7wm3G+avBk90kvUmZ/WPUcePtwJz1FK3ek
+         hDxXDGWh0jcEFC1qDIVtBsF9/QRym5+xr6cGUErs3w1IBK3raav2YuQZXCAFFEfbUzCJ
+         9OEp/yoLLUkAZ1W2jaIsnYzVT0jduRtYpPZQmHY2nRVBa47EdfbxA4wq/wsEP/0fg34l
+         JLlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782472831; x=1783077631;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=efSmsLNw8E+yGzrU4i9rfMYqOeX4WnsvoEalewcGYnQ=;
+        b=L7x92IDwR1MUTNFEONuMSJiqZzfecn3wSo/11JpXuXkvqF0s8aQA+UZ/PYjdSjO1NV
+         813egjWcW/XlS33LvU9UzlsjF+EDkGM400y4+0niY4ngHrnrpYX4C5FcMcx8asBfIQai
+         wDcqcLn3OwtuR6wvH7DuhdwbaGP1TtA58N5jc5x2pNTHmbfI9+r9jqbdJxSo/0oFq6WU
+         rxTm8cs0HBx34iFy3DcZJzmSHgqLqLdqb9rBJRmVoLbGSexj7Z+zR9bHZ6RyvTvwI3mU
+         0qLQTA/hDhrHb3ZBliyKXF4XeqBI5m+0P5BGdJByng3dy/OR6LEOkwtTkuEX1yd3xIV9
+         qnlQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoMxKziT4JNExdlUlogKlYAyC9m0v+Cy80rAYL/TnBQiZ9J1fDyIlQr9XQgodoEZyJwJfi22Lj8DE+3Z8rJrw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4/i2ZSLAPAqJ5lCb4JjOYz46qXL55T3lXiLU180sqNEiKCybU
+	s1zXJ+Wg2n0x5btpSYvJbPMycoHK3LFYoQ48wDWRIqAt66gscg7zJKP7YqqMMt2SWJT1KpmQh+G
+	EMs1lmQCPhZGgxHatCtkGHEOYEbR14t9lDLpCuyR13hiUPSRUM/ZlyD6q3I3NIQMgLBNQyw==
+X-Gm-Gg: AfdE7cnIqHY1hiePRIAuQESenUo0oDVMW3dESXnJ0HV2B2L/aBeSrKzUKkaS7XFS5wM
+	Bwal27BJTNh9bqmAqMfNr/qgDFu1B6F1SYUv4XaEYTzliICiLc/mn+yzapwT6oLCzIaTvgWu8Az
+	9r1mkbstV5mpFFOgTXSJngQLfN4hrdVoQQbidqPFEUYseHA7iij4zYNW+7td9HMm7hTqdTXImsU
+	tQ9V6iqw/AIyC+AUlBr13w2QN9qNf3lRuKcQEhnFzqpZ/iwDk7XYdl7oT1aRE9Rc1lyiEEjM2kw
+	zpIGIQOXqqixtnDB5DZ9oHVx8oqQsIDg9zk0ip1m3A8B5TZEw71a8lkXio6w2nRIlhSLoC24kMq
+	NMif4uVas/IEHKcZMTTrmsGV+w3swEEKdNsE=
+X-Received: by 2002:a05:6102:148e:b0:6c2:7d0d:e09f with SMTP id ada2fe7eead31-73433e3675amr1071158137.1.1782472830788;
+        Fri, 26 Jun 2026 04:20:30 -0700 (PDT)
+X-Received: by 2002:a05:6102:148e:b0:6c2:7d0d:e09f with SMTP id ada2fe7eead31-73433e3675amr1071127137.1.1782472830410;
+        Fri, 26 Jun 2026 04:20:30 -0700 (PDT)
+Received: from [192.168.120.170] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-697f3ade18esm2731485a12.7.2026.06.26.04.20.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jun 2026 04:20:29 -0700 (PDT)
+Message-ID: <38aceb33-b28e-4994-b277-de070b6dae2b@oss.qualcomm.com>
+Date: Fri, 26 Jun 2026 13:20:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] remoteproc: qcom: Add M0 BTSS secure PIL driver
+To: george.moussalem@outlook.com, Jens Axboe <axboe@kernel.dk>,
+        Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bartosz Golaszewski <brgl@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+        Rocky Liao <quic_rjliao@quicinc.com>,
+        Saravana Kannan
+ <saravanak@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King
+ <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>
+Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        netdev@vger.kernel.org, linux-remoteproc@vger.kernel.org
+References: <20260625-ipq5018-bluetooth-v1-0-d999be0e04f7@outlook.com>
+ <20260625-ipq5018-bluetooth-v1-2-d999be0e04f7@outlook.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260625-ipq5018-bluetooth-v1-2-d999be0e04f7@outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260626-rtw89-6ghz-regd-fixes-v2-1-beeb3fdb60ba@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNyw6CMBBFf4XM2jFtIaW68j8Mi9IOUIPUtIgPw
- r9bMC5dntzHmSFScBThmM0QaHLR+SGB2GVgOj20hM4mBsGEZJJLDONDHVC23RsDtRYb96SIVjW
- KS6VYbRmk7S3QFqTpufpyvNcXMuN6tjY6F0cfXpt44mvv5yj/OCaOHPPclkWhWWm5PBnf97r2Q
- e+Nv0K1LMsHxJaiL9AAAAA=
-X-Change-ID: 20260616-rtw89-6ghz-regd-fixes-d8f816880bd0
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel@collabora.com, Zong-Zhe Yang <kevin_yang@realtek.com>, 
- Matthew Leach <matthew.leach@collabora.com>
-X-Mailer: b4 0.15.2
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI2MDA5MiBTYWx0ZWRfX63LoMH/pLQXf
+ f194j1FqFoT1zYnl6+kZH3jm6ExSzKW1jBcFlInGR0UemBookE/eyJR5g3jRcNO1bU2buM5y4Cq
+ 48OK9/bpISwSwE7eBrDAuq/vfvgTgPI=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI2MDA5MiBTYWx0ZWRfX4lLIMVeqjjoH
+ oKCI74BGYSohYqeljGXAxCLqdx9kK2IX+SzZBeI024UqzRpqHvv37St3QyMjbx4+hkyCsZRendg
+ TPFz09MjWq5UkZk5OiUfYuVj1yk+6J46VwZsnSaIyy8m+k9+nEaAt3zeaypozYPF4ID+367WI9u
+ qOqOM7mrboWROU9HB0tuCKRxR0uKa10fEBPi/+5djthiAL+D1XAQkDh4VBmjwCcSi4NxWqdo8qO
+ ROKtVEIv7vLZy0vZ/BOHxczYzeL6+F/2XASkfR7xsvjDNB08HoyyVV7PaKctW9fwwuiGTzsQbEe
+ MSBl6YJ4U30aJ8bDd9g5KdwkwWCzQiiaFTWISAVlN+PTHL1K3VlAx8bN8DnnaGy3qxyqN6jgEeB
+ J4kW5ZLZgyisuTxqE3iRqi1GUdXkFbfTkb+ONpvl1SALRULqlwKzvgbRAD2d93hB/+x6GlRVXov
+ j8Pg7LAAPU077FORSpQ==
+X-Proofpoint-GUID: UPu5M5zKmOwRch5LPcvKOdfaIWDlsu3_
+X-Proofpoint-ORIG-GUID: UPu5M5zKmOwRch5LPcvKOdfaIWDlsu3_
+X-Authority-Analysis: v=2.4 cv=AMxnnMPh c=1 sm=1 tr=0 ts=6a3e607f cx=c_pps
+ a=DUEm7b3gzWu7BqY5nP7+9g==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=UqCG9HQmAAAA:8 a=sp8NEORZx8pkfp9qRiAA:9 a=QEXdDO2ut3YA:10
+ a=-aSRE8QhW-JAV6biHavz:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-26_03,2026-06-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 impostorscore=0 priorityscore=1501 phishscore=0
+ malwarescore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606260092
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:kernel@collabora.com,m:kevin_yang@realtek.com,m:matthew.leach@collabora.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38167-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-38168-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[36];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[outlook.com,kernel.dk,kernel.org,sipsolutions.net,holtmann.org,gmail.com,quicinc.com,lunn.ch,armlinux.org.uk,davemloft.net,google.com,redhat.com,linaro.org,pengutronix.de];
+	FORGED_RECIPIENTS(0.00)[m:george.moussalem@outlook.com,m:axboe@kernel.dk,m:ulfh@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:johannes@sipsolutions.net,m:jjohnson@kernel.org,m:brgl@kernel.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:quic_bgodavar@quicinc.com,m:quic_rjliao@quicinc.com,m:saravanak@kernel.org,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:linux@armlinux.org.uk,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:andersson@kernel.org,m:konradybcio@kernel.org,m:mathieu.poirier@linaro.org,m:p.zabel@pengutronix.de,m:linux-block@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mmc@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath10k@lists.infradead.org,m:linux-arm-msm@vger.kernel.org,m:linux-bluetooth@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-remoteproc@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[konrad.dybcio@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,outlook.com:email,qualcomm.com:dkim,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[collabora.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[konrad.dybcio@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,collabora.com:dkim,collabora.com:email,collabora.com:mid,collabora.com:from_mime,realtek.com:email]
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AD7066CC62D
+X-Rspamd-Queue-Id: E39CB6CC63E
 
-The driver maintains its own block_* bitmaps on top of cfg80211's
-regulatory enforcement. These bitmaps are indexed by the position of an
-entry in the active regd_map (either the built-in rtw89_regd_map or the
-table loaded from a firmware element).
+On 6/25/26 4:10 PM, George Moussalem via B4 Relay wrote:
+> From: George Moussalem <george.moussalem@outlook.com>
+> 
+> Add support to bring up the M0 core of the bluetooth subsystem found in
+> the IPQ5018 SoC.
+> 
+> The signed firmware loaded is authenticated by TrustZone. If successful,
+> the M0 core boots the firmware and the peripheral is taken out of reset
+> using a Secure Channel Manager call to TrustZone.
+> 
+> Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+> ---
 
-The ww domain is handled outside the regd_map; it lives in a standalone
-rtw89_ww_regd object, and rtw89_regd_get_index() returns the
-RTW89_REGD_MAX_COUNTRY_NUM sentinel for it. Every block_* lookup site
-guards against that sentinel and bails out, which means none of the
-block_* checks ever apply to ww. The 6GHz check therefore treats ww as
-unconditionally blocked at the driver layer, independently of whatever
-cfg80211/wireless-regdb permit.
+Can this not fit inside the existing PAS driver?
 
-Make ww a first-class entry in the regd_map instead:
-
-- Reserve slot 0 of rtw89_regd_map for the ww entry and drop the
-  standalone rtw89_ww_regd object.
-- In rtw89_recognize_regd_from_elm(), reserve slot 0 of the
-  firmware-loaded map for ww and populate it from the built-in
-  definition via the new rtw89_regd_static_ww_entry() helper.
-- Drop the rtw89_regd_is_ww() special case in rtw89_regd_get_index()
-  and identify ww by alpha2 so the check works for entries in either
-  map.
-- Have rtw89_regd_find_reg_by_name() return NULL on miss instead of
-  silently substituting ww. Callers that need the previous "fall back
-  to ww" behaviour (rtw89_regd_notifier_apply()) now do so explicitly
-  against the active map's slot 0, and rtw89_regd_get_index_by_name()
-  translates NULL into the RTW89_REGD_MAX_COUNTRY_NUM sentinel so the
-  existing "unknown alpha2" branches in the block_* setup paths
-  remain.
-
-With ww at a real index the driver's block_* checks apply uniformly for
-all bands and cfg80211 / wireless-regdb become the sole source of truth
-for what is permitted on the ww domain.
-
-Signed-off-by: Matthew Leach <matthew.leach@collabora.com>
----
-Changes in v2:
-- Re-word the commit message, clarifying the motivation behind the
-  patch (removing the explicit 6GHz disablement).
-- Re-work the patch to play nicely with firmware loaded regulatory
-  tables by reserving slot 0 in both static and firmware regulatory lists
-  for the WW domain.
-- Link to v1: https://patch.msgid.link/20260617-rtw89-6ghz-regd-fixes-v1-1-33d744a07d16@collabora.com
-
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
- drivers/net/wireless/realtek/rtw89/core.h |  1 +
- drivers/net/wireless/realtek/rtw89/fw.c   |  6 ++++--
- drivers/net/wireless/realtek/rtw89/regd.c | 32 +++++++++++++++++++++----------
- 3 files changed, 27 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index fd29dbbb120d..dc9eae2cee69 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -7862,6 +7862,7 @@ void rtw89_chip_cfg_txpwr_ul_tb_offset(struct rtw89_dev *rtwdev,
- bool rtw89_legacy_rate_to_bitrate(struct rtw89_dev *rtwdev, u8 legacy_rate, u16 *bitrate);
- int rtw89_regd_setup(struct rtw89_dev *rtwdev);
- int rtw89_regd_init_hint(struct rtw89_dev *rtwdev);
-+const struct rtw89_regd *rtw89_regd_static_ww_entry(void);
- const char *rtw89_regd_get_string(enum rtw89_regulation_type regd);
- void rtw89_traffic_stats_init(struct rtw89_dev *rtwdev,
- 			      struct rtw89_traffic_stats *stats);
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 17704f054727..77f320cae01b 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -1347,10 +1347,11 @@ int rtw89_recognize_regd_from_elm(struct rtw89_dev *rtwdev,
- {
- 	const struct __rtw89_fw_regd_element *regd_elm = &elm->u.regd;
- 	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
--	u32 num_ents = le32_to_cpu(regd_elm->num_ents);
- 	struct rtw89_regd_data *p;
- 	struct rtw89_regd regd;
--	u32 i = 0;
-+	/* +1 because we reserve index 0 for WW */
-+	u32 num_ents = le32_to_cpu(regd_elm->num_ents) + 1;
-+	u32 i = 1;
- 
- 	if (num_ents > RTW89_REGD_MAX_COUNTRY_NUM) {
- 		rtw89_warn(rtwdev,
-@@ -1373,6 +1374,7 @@ int rtw89_recognize_regd_from_elm(struct rtw89_dev *rtwdev,
- 		return -ENOMEM;
- 
- 	p->nr = num_ents;
-+	p->map[0] = *rtw89_regd_static_ww_entry();
- 	rtw89_for_each_in_regd_element(&regd, regd_elm)
- 		p->map[i++] = regd;
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
-index 28466cb35ea2..27ac87374e6e 100644
---- a/drivers/net/wireless/realtek/rtw89/regd.c
-+++ b/drivers/net/wireless/realtek/rtw89/regd.c
-@@ -21,10 +21,8 @@ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request
- 
- static_assert(BITS_PER_TYPE(unsigned long) >= NUM_OF_RTW89_REGD_FUNC);
- 
--static const struct rtw89_regd rtw89_ww_regd =
--	COUNTRY_REGD("00", RTW89_WW, RTW89_WW, RTW89_WW, 0x0);
--
- static const struct rtw89_regd rtw89_regd_map[] = {
-+	COUNTRY_REGD("00", RTW89_WW, RTW89_WW, RTW89_WW, 0x0),
- 	COUNTRY_REGD("AR", RTW89_MEXICO, RTW89_MEXICO, RTW89_FCC, 0x0),
- 	COUNTRY_REGD("BO", RTW89_FCC, RTW89_FCC, RTW89_NA, 0x0),
- 	COUNTRY_REGD("BR", RTW89_FCC, RTW89_FCC, RTW89_FCC, 0x0),
-@@ -316,12 +314,12 @@ static const struct rtw89_regd *rtw89_regd_find_reg_by_name(struct rtw89_dev *rt
- 			return &regd_ctrl->map[i];
- 	}
- 
--	return &rtw89_ww_regd;
-+	return NULL;
- }
- 
- static bool rtw89_regd_is_ww(const struct rtw89_regd *regd)
- {
--	return regd == &rtw89_ww_regd;
-+	return !memcmp(regd->alpha2, "00", 2);
- }
- 
- static u8 rtw89_regd_get_index(struct rtw89_dev *rtwdev, const struct rtw89_regd *regd)
-@@ -331,9 +329,6 @@ static u8 rtw89_regd_get_index(struct rtw89_dev *rtwdev, const struct rtw89_regd
- 
- 	BUILD_BUG_ON(ARRAY_SIZE(rtw89_regd_map) > RTW89_REGD_MAX_COUNTRY_NUM);
- 
--	if (rtw89_regd_is_ww(regd))
--		return RTW89_REGD_MAX_COUNTRY_NUM;
--
- 	return regd - regd_ctrl->map;
- }
- 
-@@ -342,6 +337,10 @@ static u8 rtw89_regd_get_index_by_name(struct rtw89_dev *rtwdev, const char *alp
- 	const struct rtw89_regd *regd;
- 
- 	regd = rtw89_regd_find_reg_by_name(rtwdev, alpha2);
-+
-+	if (!regd)
-+		return RTW89_REGD_MAX_COUNTRY_NUM;
-+
- 	return rtw89_regd_get_index(rtwdev, regd);
- }
- 
-@@ -721,7 +720,7 @@ int rtw89_regd_init_hint(struct rtw89_dev *rtwdev)
- 		return -EINVAL;
- 
- 	chip_regd = rtw89_regd_find_reg_by_name(rtwdev, rtwdev->efuse.country_code);
--	if (!rtw89_regd_is_ww(chip_regd)) {
-+	if (chip_regd && !rtw89_regd_is_ww(chip_regd)) {
- 		rtwdev->regulatory.regd = chip_regd;
- 		rtwdev->regulatory.programmed = true;
- 
-@@ -743,6 +742,11 @@ int rtw89_regd_init_hint(struct rtw89_dev *rtwdev)
- 	return 0;
- }
- 
-+const struct rtw89_regd *rtw89_regd_static_ww_entry(void)
-+{
-+	return &rtw89_regd_map[0];
-+}
-+
- static void rtw89_regd_apply_policy_unii4(struct rtw89_dev *rtwdev,
- 					  struct wiphy *wiphy)
- {
-@@ -859,7 +863,15 @@ static void rtw89_regd_notifier_apply(struct rtw89_dev *rtwdev,
- 				      struct wiphy *wiphy,
- 				      struct regulatory_request *request)
- {
--	rtwdev->regulatory.regd = rtw89_regd_find_reg_by_name(rtwdev, request->alpha2);
-+	const struct rtw89_regd *regd = rtw89_regd_find_reg_by_name(rtwdev, request->alpha2);
-+
-+	if (!regd) {
-+		/* Fallback to WW domain if name not found. */
-+		regd = &rtwdev->regulatory.ctrl.map[0];
-+	}
-+
-+	rtwdev->regulatory.regd = regd;
-+
- 	/* This notification might be set from the system of distros,
- 	 * and it does not expect the regulatory will be modified by
- 	 * connecting to an AP (i.e. country ie).
-
----
-base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
-change-id: 20260616-rtw89-6ghz-regd-fixes-d8f816880bd0
-
-Best regards,
---  
-Matt
-
+Konrad
 
