@@ -1,199 +1,169 @@
-Return-Path: <linux-wireless+bounces-38198-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38199-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9HNEBS2KP2pGUQkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38198-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jun 2026 10:30:37 +0200
+	id a8Y1IBupP2p5WAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38199-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jun 2026 12:42:35 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23356D17B3
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jun 2026 10:30:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2626D1C69
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jun 2026 12:42:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OZZXTprs;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38198-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38198-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="qr/7cipu";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38199-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38199-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 262463009158
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jun 2026 08:30:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 475C230091FA
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jun 2026 10:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C62B39099E;
-	Sat, 27 Jun 2026 08:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE0135AC12;
+	Sat, 27 Jun 2026 10:42:28 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00FB34DCF3
-	for <linux-wireless@vger.kernel.org>; Sat, 27 Jun 2026 08:30:33 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782549035; cv=none; b=YRVshA0/QgSHx8hB1ph81UJwB6zACVeHtjcR54MGspxKdc/kpLwc3602Tp8p3Q3IVSo2tKxr0NL3fh3jZj7vpQpIwdpzQpiYCZojhRM2Amodo9hIFAGHBC+2HBMxcsba1cQUi+h/T8D05xIYzPImZr5mf5zldMjDPV6+C2FEVQQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782549035; c=relaxed/simple;
-	bh=UsnhKNetPInn6C8gKXQH4i2VomblsScIHThaYXpTtmo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AChIcC6YAx4sgy1xM8JGIehbZo7WLQU4bAV7nRDyMoQGUbxp7pmjh8VB75SemBuHL0XI3BmwMC0nj/MLQoEyBZCuIcYTRyGiU7WB+QAta0u+Ip0RMpF1vHlFpCyVp1tlGnj7Y/up8Ta9SFZLEnKKdosDHamIZxFEvsJveH/SsDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OZZXTprs; arc=none smtp.client-ip=209.85.214.173
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2c7cfa17fedso16864915ad.3
-        for <linux-wireless@vger.kernel.org>; Sat, 27 Jun 2026 01:30:33 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56B83A7194
+	for <linux-wireless@vger.kernel.org>; Sat, 27 Jun 2026 10:42:27 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782556948; cv=pass; b=gOjZzTIkYsg8F7qtorfY1cx8gxbLZXCD9U0pKbTA8HjK2ytGo3yhsFkHsSqu0HBsR/0NgNfq+cB5weiux9nIqglnSeI4cs+E5upS1kbkSPrtLSjh4E2V1Rp/IB+51HZ4DLlBK/L7pJkFMywiIlz60rQsHq34Rk9hT2ELyYoGOlc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782556948; c=relaxed/simple;
+	bh=yiPkMTj9yA2sXk/vwvHof63/CCEubbjonxxn7PtyAb0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YPJVL/LQ9f+TZcCbJ0WNW37nE15m0nyKkskI8jouRtsKShcOkVWK/8dLg5lFwAF1oo5wPUhz4IZehhfSEUWyx9xupORaILmnNASfOB1j2t8QJOOGLN8SAkOq7azq57IvgM6KLm+DRWPNgbb9kUKDZhAp/gVvkYxRCNgJMsiIS1Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qr/7cipu; arc=pass smtp.client-ip=209.85.160.169
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51a92a5aacaso6004071cf.2
+        for <linux-wireless@vger.kernel.org>; Sat, 27 Jun 2026 03:42:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782556946; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dSRH0vb1PPrDpHdzqA4bolg6OeLn9Le4bBlgH5/dOTxJ9KgRbp0yPRrnQnTCMa3pWr
+         e12C46m+rkJ+I9sSdyb2xKHG1urM1s6OiekXGB092E/8ePD5P840yZ7quPKpChvdVPLq
+         GvfNFNMbTkkcG/bpN9VLBynuDbmN58QT/zWc6ZxpBmMCo18p47nZ+cMwi4P+qVhZA+9H
+         jsabIsHczqjhXciJ5Tlw/v5mxzw0VcWB8EpB6zcgm+W0Z1Jh6Wd5OktfCTkiNj5Kmtty
+         JYC9jKt29sevOp19zNYW6xwHWfAdYVVtRc0M5betmIq7J/locNkdB6xe2hiQg4sGSIFB
+         fv7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yiPkMTj9yA2sXk/vwvHof63/CCEubbjonxxn7PtyAb0=;
+        fh=aGRW5/ukBDYN6qwyta3Qs6nnKGVqiAW7ZuRUO1+GVNA=;
+        b=Y1JmKo5I4imCEjk+BhiYubZ6qHiguJLZVTX8aiJCd2SN/xajjoSWSTWHTiSvkahyrN
+         eSn/9hsx7BQN/u1ImkbEGJnTU/48vq5uB5EQSgHZC66J+rPkdIH9a/8VQ5tTlauNUkq4
+         J/Kd/Uac83CdapqOfs7WERd1YLWtaVeGV8oI8IZ6ytZIJO+3oa2oNj6mCxsLVyE+zs5n
+         sIc0kMkOZ7ZBbjf5Z7BsdKpExSFNuBsTE8JrMH/rVBMLVFghDwatZF4XzQ5MWGJSHUhN
+         yH1lrL/MW0Wg/eYLWuFaRzSe4E7rMFB4VOcNwtt+TqSxqn4S+eI8jR14MRUQ7BhpBCYL
+         6SBg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782549033; x=1783153833; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PtT5g5YW2OGj0JW5pppGyBl6Hvxi0mOag4ijeWX4SQo=;
-        b=OZZXTprs8REoqjHuLwnsbiMkJsn8mrMqSfriXvGfms2ALG2yKbzfZrinsxdHzUKimb
-         re6X2hdP2/R8ohM/2f4sktrzBl3mF4bwWM8ejbkQytz9/7lBduNsI7miO22h0hlzkJDE
-         Lo3tKKbAdBORMDd7NR7GCQl2XYbKGxBoKBFHPFny/V/q86arjHr+YdJeOiUvplT/PzXu
-         DAPRCJ07drprM7yjP62XFohU//urYo1BlUE7kiOtHgWBK1k0mDrghdFPTXBaJYmnx+0V
-         IfdXspmI9HOnGtzznEO5q5ruUBXxEJOxFdskpC8Q19cQ+pAPNDZMSSJ1Bmt0mEwb8c1M
-         GPbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782549033; x=1783153833;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1782556946; x=1783161746; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PtT5g5YW2OGj0JW5pppGyBl6Hvxi0mOag4ijeWX4SQo=;
-        b=B+LcVjr7UM/rYPz2uWSfQGWkcbmaizZ8M4GDAk+mPhZd6eucg4+4JkFqNZHK23PLVy
-         H+SMakRCLkKInDFM4iluaoqtdzBTJ0tx6uM00vdOxeQedPEPQ73e9XDLkMZv+GyQGmj5
-         UAVZG4zy+VJwiYKYEsQPQ8fBaOzuFZjHlO9tDZTdFm6g84aGFYyjLvPZnvIsAHqTzzGd
-         kwxIfzxtVq7tkOIhWgpCmGY/ejUK9ArWseCbam8ANWETj8al88SYldeNhXNi1HParq0G
-         IF7m8WNHXpWk1FPPFy2wWVr+Ub6k1zustQ5uNTiD6hPqdPPzhJXgRCUBK2/WPhkQRBjT
-         v81A==
-X-Forwarded-Encrypted: i=1; AHgh+RoraHdKhXx0pnKlJTvl8ensVjt28s6ydACMCMDcCNqrPUyzVD/akeuPBinfhPUq7kW81qJshPFIzJiijcYGAg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6FcntPzzNIn3uak63I85uFnkt12G2UUTSb5W0i08ZrsCZald7
-	GhyQTw2ODjghViDIcBQn/Aw7OGR2bCAE5yYu8nHANX2pOdgHkH0Z1ghxG2iL+g==
-X-Gm-Gg: AfdE7ckTl23i8l0KqA1DRc09nyHUIFcP1vnzUtxbYhAKUY8neqz9DHYD8AMPI9yuEwj
-	vuvloN0iWWks+72+jDxtRlgEuqODAsaKwK6ghb2RsTvCNBlYE+7k734+IIcoGGKJ5i635ETZ3lQ
-	VexS38tO6y5Jg8t5Yb6h6LWZ7/fpWsyP/VGmyFkiHdSdRGMd1o20RYl9nzgWKNbUlwkmjxp6ens
-	QzYY+b2FjI6RBy2rl+57w8TMYzrYXnkthbLq3VJp4EYwAm/l14mH6HhwNy/yTLrkAA7+0t7iLQp
-	idUXH+mGv2lcgF6rvW6hfhZWkcfYLu7J4uWvjSHao9r/3T9fBV6URB18+MdCf9SWR68L0jI4aFr
-	KuzjQSUpwN3SQllwJvg7ZnUzZfKeaW1a22rY6lMVqZJovTf74wZ7ne/n+5nICTKUmDmu7DFDHjV
-	4QWKdOXPrwpaPuTJqkEMWdPmtih6N3f6WANrMcTQ==
-X-Received: by 2002:a17:903:2f8a:b0:2c9:97a8:afe8 with SMTP id d9443c01a7336-2c997a8b0ebmr25052495ad.43.1782549033052;
-        Sat, 27 Jun 2026 01:30:33 -0700 (PDT)
-Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c9c170d33esm2110615ad.27.2026.06.27.01.30.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Jun 2026 01:30:32 -0700 (PDT)
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Maoyi Xie <maoyixie.tju@gmail.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kaixuan Li <kaixuan.li@ntu.edu.sg>
-Subject: [PATCH] wifi: mac80211: defer link RX stats percpu free to RCU
-Date: Sat, 27 Jun 2026 16:30:28 +0800
-Message-Id: <20260627083028.3826810-1-maoyixie.tju@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        bh=yiPkMTj9yA2sXk/vwvHof63/CCEubbjonxxn7PtyAb0=;
+        b=qr/7cipuJ+vdHr1C9cd2wPueo7VVf5iMepMvkTg5REDa7him57FWENlNAOB/mcIQpp
+         dTiXBbYxU/1sDLC1HvpXx0xcIUUZYEMEK/2jLt23qp6pYFMiRBwMYPklfE87cpd1PRfZ
+         j8LrYFnlq0K73AZ6b9682vxcDKQTOdQDQBbr8o4fY2MRs10m+eAn167XFT11yxwGoV6T
+         wWlnwW00f/HlSIaajsvko99KgQJGJYXRTbrEtDRWcHXwQTC6q3RsbHjnu2zHHCfC9odl
+         sNVnyzwspIxKqNCb3OASCw6WhAWkLYgwXX6AHqhmPxB6jhcD7TaFFGcSBlSPGB4hQXSe
+         1qOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782556946; x=1783161746;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yiPkMTj9yA2sXk/vwvHof63/CCEubbjonxxn7PtyAb0=;
+        b=kea+gWyItK/SD+PO9eQPKdKmTjefqdEKz4GPQZSUH5Fl0GotAm0Fc1XDpNCZG/Z0lh
+         rEzfGJewfw5WDef0L4dzO/Kl9Vk9J/lz0dhDq8k5jF1kyD4AqWY+UJqRoV2AcS9ZNxZA
+         1QXjH2EG0Tlmp+FpUpmnv8ST7/R/j1Mrt0YM2ZiPKLR8cEAt87mS/2bDFraEjlTCMLIa
+         bA3OVbwa1xseSkThN8GhT/h++VONXe09klKpzjyWOxvSoHJ/mETfzotaXaAVM3eqrnYn
+         AILGZSiqlCM9gwyZGNYBW7xH5TppQJQLno9KL+7doKXmENWckzohW1DEDJv2/xqHlw+3
+         VkLw==
+X-Gm-Message-State: AOJu0Yyo9zjrdAFkIiGooayinLMd3jY83S/0Qsf/uMTvUOlle0vW6Sn+
+	zfS/K+ZnBvUKPG+VLRtKLBauhHfFdDW/w8ijTGuu0tzdMhKDG287XN3vJr6iEzMj054PYWIgDm5
+	jY+0nZ0CtxSQWNj2Uv9e3Ev0gURoMButZyE8=
+X-Gm-Gg: AfdE7ckeyzLip4gThRtuEgG14JssofYCwD3vQ5rI4LJ2DdZBCo53umc6OMt59Yb+OdW
+	hhfh1QjhnDm2NqqNobhrYZ7J4jGJsf+OZ9+FV8be1cQPdtWi4QBc9IgEKmVUadC3G7T57Tm7RWb
+	SrMhKIXixKaKdVjvI5LJ8hOJOAzfLuqiS+jwbKH9sRr6NJ5SD01ZkLnp2Z8NKqSJN4QsjwER4cm
+	zAFWWXXMw6q48C3RtuEhBijk8cKGvVKUyTJbvdA0cAgmMjYF4E7YyS6Ql6JuxVlefx7eSAOWbs2
+	6Mwws5vuYTwcjs2QphRxugOU
+X-Received: by 2002:a05:622a:5d0:b0:51b:1f2:f38d with SMTP id
+ d75a77b69052e-51b01f2f4d7mr23795521cf.28.1782556946532; Sat, 27 Jun 2026
+ 03:42:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAMe9DRPx8KTmSVPmb44VVE+Ebu_8isVncWFfwEHvSk=DLh8i9A@mail.gmail.com>
+In-Reply-To: <CAMe9DRPx8KTmSVPmb44VVE+Ebu_8isVncWFfwEHvSk=DLh8i9A@mail.gmail.com>
+From: Nick <morrownr@gmail.com>
+Date: Sat, 27 Jun 2026 05:41:59 -0500
+X-Gm-Features: AVVi8Cdho-EIdC_mkIFPTJwrx4j6CcmBDiA8KhFBvUfbbO9ldM-Zv1OGNwFPlPQ
+Message-ID: <CAFktD2fMi-VEkTofOVq-pY+-VHbZ0GUhFjoOtDG3iF1UyqHCCw@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=5Bmt76=5D_MT6639_=28device_0x7927=29_lacks_mainline_sup?=
+	=?UTF-8?Q?port_in_kernel_7=2E0_=E2=80=94_out=2Dof=2Dtree_patches_required?=
+To: =?UTF-8?Q?Rados=C5=82aw_Poprawski?= <rj.poprawski@gmail.com>
+Cc: linux-wireless@vger.kernel.org, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Felix Fietkau <nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-38198-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:rj.poprawski@gmail.com,m:linux-wireless@vger.kernel.org,m:lorenzo@kernel.org,m:nbd@nbd.name,m:rjpoprawski@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-38199-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:maoyixie.tju@gmail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:kaixuan.li@ntu.edu.sg,m:maoyixietju@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[morrownr@gmail.com,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[maoyixietju@gmail.com,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,ntu.edu.sg];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[morrownr@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,ntu.edu.sg:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A23356D17B3
+X-Rspamd-Queue-Id: 6F2626D1C69
 
-sta_remove_link() frees a removed MLO link's RX stats percpu buffer right
-away, but defers only the link container to RCU:
+On Sat, Jun 27, 2026 at 3:07=E2=80=AFAM Rados=C5=82aw Poprawski
+<rj.poprawski@gmail.com> wrote:
+>
+> I'm reporting a missing mainline kernel support issue for the MediaTek MT=
+6639 chip (marketed as MT7927/Wi-Fi 7), which requires out-of-tree DKMS pat=
+ches to function on Linux kernel 7.0.
 
-	sta_info_free_link(&alloc->info);
-	kfree_rcu(alloc, rcu_head);
+Hello Radoslaw,
 
-The RX fast path reads link_sta under rcu_read_lock and writes the percpu
-stats. A reader that resolved link_sta before the removal keeps the
-pointer. The container stays alive from the kfree_rcu, so the read still
-works. But the percpu block it points to is already freed. This needs
-uses_rss. That is when pcpu_rx_stats exists.
+You might want to go to the following repo:
 
-The full STA teardown frees the deflink stats only after
-synchronize_net(). The link removal path had no such barrier. The race is
-hard to win in practice, but the free should still wait for RCU.
+https://github.com/morrownr/mt76
 
-Free the link together with its data from a single RCU callback, so the
-percpu block is reclaimed only after readers drain.
+We recently set this repo up to help with various situations.
+Hopefully it helps you,
 
-Fixes: c71420db653a ("wifi: mac80211: RCU-ify link STA pointers")
-Link: https://lore.kernel.org/r/20260626080158.3589711-1-maoyixie.tju@gmail.com
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Co-developed-by: Kaixuan Li <kaixuan.li@ntu.edu.sg>
-Signed-off-by: Kaixuan Li <kaixuan.li@ntu.edu.sg>
-Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
----
-The earlier inquiry pointed at cb71f1d136a6, which added sta_remove_link().
-The regression is c71420db653a though. It moved the link pointers to RCU
-and deferred the container free. The percpu free stayed synchronous.
-
- net/mac80211/sta_info.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
-
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 4c31ef8817ce0..6d58571a364d1 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -355,6 +355,15 @@ static void sta_info_free_link(struct link_sta_info *link_sta)
- 	free_percpu(link_sta->pcpu_rx_stats);
- }
-
-+static void sta_link_free_rcu(struct rcu_head *head)
-+{
-+	struct sta_link_alloc *alloc =
-+		container_of(head, struct sta_link_alloc, rcu_head);
-+
-+	sta_info_free_link(&alloc->info);
-+	kfree(alloc);
-+}
-+
- static void sta_accumulate_removed_link_stats(struct sta_info *sta, int link_id)
- {
- 	struct link_sta_info *link_sta = wiphy_dereference(sta->local->hw.wiphy,
-@@ -439,10 +448,8 @@ static void sta_remove_link(struct sta_info *sta, unsigned int link_id,
-
- 	RCU_INIT_POINTER(sta->link[link_id], NULL);
- 	RCU_INIT_POINTER(sta->sta.link[link_id], NULL);
--	if (alloc) {
--		sta_info_free_link(&alloc->info);
--		kfree_rcu(alloc, rcu_head);
--	}
-+	if (alloc)
-+		call_rcu(&alloc->rcu_head, sta_link_free_rcu);
-
- 	ieee80211_sta_recalc_aggregates(&sta->sta);
- }
+Nick
 
