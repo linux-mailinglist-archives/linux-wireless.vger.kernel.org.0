@@ -1,92 +1,89 @@
-Return-Path: <linux-wireless+bounces-38212-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38213-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JaYkG05lQGpMfQkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38212-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 02:05:34 +0200
+	id tWStFHBnQGqAfQkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38213-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 02:14:40 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57356D2D8E
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 02:05:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49D0B6D2DB6
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 02:14:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=asu.edu header.s=google header.b=lWpKw3iq;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38212-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38212-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=asu.edu;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=X4vgZsiH;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38213-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38213-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5B2913016C8E
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 00:05:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 522603006934
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 00:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5C740D57B;
-	Sun, 28 Jun 2026 00:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72931800;
+	Sun, 28 Jun 2026 00:14:33 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8DA2771E
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 00:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB9C1E4AF
+	for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 00:14:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782605117; cv=none; b=F2yUxUQ0xbYb5tvH/JqQUtVWJtcP1/hvTv/Qj/WqkMG7vExCWuzykAQmaMZWA2vFHLjc8Lub+wdfctOnrf2z5Dmnw0wPJPWUAMX/ejEwR+vUVwRLNPrRXEOOjmd2eguBqSqIGSqIsNk8Hx5oezDARIjnH6O4wVNFgc5+DP38X0U=
+	t=1782605673; cv=none; b=DdQgJPYvS+R0nI+yHLtfPvaO46J5dp7tviT2KlBRs+aLnGPeVBguA2kXGd8/kPnB9npM2nq7Pd9u9nCDfMvBuiE0UBtljzLg53TyubNZVqoszsqeOWNGIxrbnnugvE7jbO/O/blKNGrgiWkRa62VNxh6YBmJRitROd2mPzjyRx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782605117; c=relaxed/simple;
-	bh=FB5wGAqoS2bX2ASLy/sBczt26iL9deLkDzWEdROLpMo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Sz77jlkNYoscqF7NQ+0+/NRCsRIjCAtSR06ObroR/jVprbFoAwspyN6/uDDLmVhpv3/WWN2QnMz1RZfE1VRqv0ET8JB0AK0FgWTd57hhIG3tVp4IU2RcBWXR/a323uMp4ILSWefOIKALj5191o6+Uy6UUIZev6YOnjJI/o8CKiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=lWpKw3iq; arc=none smtp.client-ip=209.85.215.174
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c964d52321bso168932a12.0
-        for <linux-wireless@vger.kernel.org>; Sat, 27 Jun 2026 17:05:14 -0700 (PDT)
+	s=arc-20240116; t=1782605673; c=relaxed/simple;
+	bh=bn5D81Emdp3F9NQjebzQbfGPoc9F0nldGSqdoQJdmTg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EUBpso0nFdjkZNGLq45+g89o7GKVUuev4LOFNniFZ8vFTB7+7GuMnIap3pbtjZoqi29H2y16ic8s+T7TR/Vo78aV5vYKgh9hpVLsBZU4ST7aDF6Jimw3eZywloiUG7NOhxOFYfO7yrMjS55X3CtqBoef9xtC+MnvmrEpiyFTK/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X4vgZsiH; arc=none smtp.client-ip=209.85.221.42
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-46ee68c3b7aso1732434f8f.3
+        for <linux-wireless@vger.kernel.org>; Sat, 27 Jun 2026 17:14:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1782605114; x=1783209914; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1782605670; x=1783210470; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=okD/Agid8Qwsbynaw3O1TDujT2jmme0nOePqmfn3oMs=;
-        b=lWpKw3iqh7u1zMHdTXM1s2M8r3eeHqvY0Z5rLJvYcHplCe/OTI9tibCGWf10+n7Ceb
-         ++WeXtYgo4II873VT2yLcXQG9llELW2/Eef305Js/DAFe2LrVICe6mRptSg7F9cSHNqj
-         tza+SOPZOcI9j6TWCRrSGFW9zc8H1VeVFK6bqzJH1Txsgx1M2JO/zal3no3130QYP/5i
-         aGJYeEC4/oPN82oPNtSHlN+DKrAZYJ2lOWg49zwYzHAFKxMEk/b3b2VLE7mBHyDwETJV
-         MBPjr7wc3xxWtbwJsZZsfZ15hM+3VVR9994iXEMBkani/JxQGvNrerf1N1qVxA/1qaqr
-         gBxg==
+        bh=ebH+lK9HrTDn4Rg3W7vRRjbwOoSeOQcKiaNHs9OnUKM=;
+        b=X4vgZsiHSmrJ+Zl3m9iPFdkxObopOdzVRz4wiU2C9qyJNK7oyhZw2YP5jUWlIX4daa
+         reECGgG2pG0DAb8NtJFQG8+mLLxu7BgUg3MKj0hhj5T0rQfmYlswIij+9QA6nqcZ4sSs
+         q2r4vfydOAxNAiqQMT0h8QAN/0RUck5LZzbpexLsw0/hd/08xp2G2+YLTF0kmbm26Vp9
+         saV4GRu84aMsFoah03+/3gfr8ZN40h+z27o31qh+53UdE2H+5DvTdccYNteEd9D9cVu6
+         nmiJEAT6WPOf31reQOGekA0at/mwY9KZBCXTfuwQvClzWgwMZJeisfKeckzPeVUlo7ts
+         3N9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782605114; x=1783209914;
+        d=1e100.net; s=20251104; t=1782605670; x=1783210470;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=okD/Agid8Qwsbynaw3O1TDujT2jmme0nOePqmfn3oMs=;
-        b=FXF/Q3yB7PB4YB4PP2aO05Vyw88STrHXrPkvb0LKt/ntFtWYP4qOeKGkaRyHPzgbqz
-         rtv+9AjPBrIZVode3wdeQHt4yvhsxX3aPaSR6Qhp7te6Ro7bBrhYzK4qejh56uTwr+76
-         vNQlG2CBvSkdF0frDQ8JwkVboNNs9eggCLfkDSFer++lKMciiQSt48K/Ji259uNW7/9V
-         OHV6alUY8DNH9UfjwamaKLKZnVJfV2BN2hKEtzWIdS0uSLdHcm7rnGYHNSS1qpLM1vTh
-         G9AtKF/uiihe0wy1J52nMCKlZoJneUREgfJHgWMrHLftAK7M1m8bm74qU8DlXISPe1Th
-         eDWg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq7fzPHLCCEKZrh4UzqJmSGYBo1qDS52ElWfECWcif8fNUaTSB2wdgLgf9RIogA8IavBmhv43GyjURwFCxHfA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyL0xYKF8YzovptcIxgBpcW7AeAGbLN0AJiRECMpuEwNTwldoV
-	1YpUyJqXKhqYlE9O2dvfhAH/826gYS5TEVjOM2uzZPds0c361W+bc/gCU1gmAwADvw==
-X-Gm-Gg: AfdE7cn1AsoL+PRCajHth1oBSauaLtoR87Oz3d7pm3YPx7vUZr9BUx1KI0n/2eW4sno
-	kuDaOA4SjnMkVssW09f/d6gvOwVCm+2/VPu0bsMJxt5vbcj5syEFSFC6Zve5DlbThTmQy0RIq9D
-	JG7wq+McopwFNzGy4N2uPGq+JNuxtMMgpge2dznGNYF7Iayp71Me0xpmgPfE8xa74e9xhSqVS7s
-	w37qQNQZr+HdJIhQSse25kO2Vf7A73DeOKx3Unr/QmCZcylOnowzW1+1UsZFwitIOKSP+crkOt7
-	xe4w0ny1PiuqoIOsuzQy32AeT8UC515O9AuDQKlL6QscyHWlA0N2HsLzdCxJFh7liBFHsfAQ9vZ
-	mvqp8anZIT7Og39+Rij6qLabWvtCzp4OaIRP3UNkLZZ7PYjGfVOe/r/IWqqGdqCg/ADWzjcudjZ
-	GPwq1Iijigbg==
-X-Received: by 2002:a05:6a00:1382:b0:842:2419:6bfe with SMTP id d2e1a72fcca58-845b39a255cmr15532331b3a.7.1782605113558;
-        Sat, 27 Jun 2026 17:05:13 -0700 (PDT)
-Received: from p1.. ([172.56.108.113])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847702a9d70sm79900b3a.20.2026.06.27.17.05.12
+        bh=ebH+lK9HrTDn4Rg3W7vRRjbwOoSeOQcKiaNHs9OnUKM=;
+        b=LgiKAFVgtDvdOw2cRxrWUreq8xQ923m5+aLxrDKI9qQwqOfFWS/KBcovxKhVMTIZIP
+         w9UTC3tK3AU8MuPGA6FRvqnrlGDMtyrxcuT/JhCvNj5NqhQ5CwThfPONFM+RE9b+WUEx
+         iZkYMPAGoC9+n3/9GbkUOsRHiRsNKuKgi2eMZWgA+khiiAVpLfKV3C/ycix8k1Kb+GOu
+         kEBQjtY7N4oGQceXpvKQcuQK/1o7kQVGW6y0T5wpAQmAPu7Yk1a8lNzNbJGflQmLFgYi
+         pPEvoeQYXW+VdVZ+NNEb6zk+sXcivD0B0W701QUqTyppNd6o2Buy872MLAaOT1snTpI3
+         dVIQ==
+X-Gm-Message-State: AOJu0YxDgw7M7KYeuNM1fVE6Te+fd8la+lumXHJ3ImdSbOsNUOLd/53N
+	iyGd/sgmsqrO2lSa9EpMlN+hVrkh0go/KFov0vAN0Xm8908LFhd0UiXd
+X-Gm-Gg: AfdE7cmLZ7Kc5GNlZpFqxXCrBiKf3lw9luvyaE0xLtqYb5Xz+JY5G7godJ0HJeHuTN7
+	ArXZkxQLaD53a6IpUMurCV7q3Aiue8S4Sb+SuzQwzSJN+HRI2gjKcNX0H21LVSDAicBrTHhgdp3
+	xOYijw11XBXwot2Yq1JEDKfxsfKkIIaehPRneWyvdJO1gEn/m94Z30yZS1s4PlZ0z34e6FZtCks
+	RHdPLSs5PBhw15xMSfaeGFDNnLzMU77HgTF5jRVjyzl+0LDTJVLzEpq0I17FDSl9wqYqGQFWlqO
+	00LTUQnN/Q3vQiiow3xtQtZFt4WNO5/FIK4z+fZLZYf+3hMM5rq2hDV/artP1AQXpGQQYabGQbc
+	uFAseA3IriFwiOcJshFrcaUwGNUhATR4VFXLJxoyq0tI6r+tGNkPoAk1uQkjwxYnvM8ZnweDIAu
+	kpkaZqILOZOyB4pbaijXDMLTwWkw==
+X-Received: by 2002:a05:600c:3b13:b0:492:450c:57cf with SMTP id 5b1f17b1804b1-492668ad60fmr185218005e9.31.1782605670319;
+        Sat, 27 Jun 2026 17:14:30 -0700 (PDT)
+Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4939a8279f3sm53101525e9.10.2026.06.27.17.14.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Jun 2026 17:05:13 -0700 (PDT)
-From: Xiang Mei <xmei5@asu.edu>
-To: Christian Lamparter <chunkeey@googlemail.com>,
-	linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Arien Judge <arien.judge@morsemicro.com>,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>
-Subject: [PATCH wireless] wifi: p54: validate RX frame length in p54_rx_eeprom_readback()
-Date: Sat, 27 Jun 2026 17:05:10 -0700
-Message-ID: <20260628000510.4152481-1-xmei5@asu.edu>
-X-Mailer: git-send-email 2.43.0
+        Sat, 27 Jun 2026 17:14:29 -0700 (PDT)
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot+cb7ed9d85261445a0201@syzkaller.appspotmail.com,
+	Yousef Alhouseen <alhouseenyousef@gmail.com>
+Subject: [PATCH] wifi: ath9k: avoid device access after async firmware request
+Date: Sun, 28 Jun 2026 02:13:50 +0200
+Message-ID: <20260628001350.20997-1-alhouseenyousef@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -97,107 +94,76 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[asu.edu,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[asu.edu:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-38213-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER(0.00)[alhouseenyousef@gmail.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:toke@toke.dk,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:syzbot+cb7ed9d85261445a0201@syzkaller.appspotmail.com,m:alhouseenyousef@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,morsemicro.com,gmail.com,asu.edu];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[xmei5@asu.edu,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-38212-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:chunkeey@googlemail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:johannes.berg@intel.com,m:arien.judge@morsemicro.com,m:lachlan.hodges@morsemicro.com,m:bestswngs@gmail.com,m:xmei5@asu.edu,m:chunkeey@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[googlemail.com,vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alhouseenyousef@gmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xmei5@asu.edu,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[asu.edu:+];
-	ALIAS_RESOLVED(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,asu.edu:dkim,asu.edu:email,asu.edu:mid,asu.edu:from_mime]
+	TAGGED_RCPT(0.00)[linux-wireless,cb7ed9d85261445a0201];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C57356D2D8E
+X-Rspamd-Queue-Id: 49D0B6D2DB6
 
-p54_rx_eeprom_readback() copies the requested EEPROM slice out of a
-device-supplied readback frame without checking that the skb actually holds
-that many bytes. Commit da1b9a55ff11 ("wifi: p54: prevent buffer-overflow in
-p54_rx_eeprom_readback()") closed the destination overflow by copying a
-fixed priv->eeprom_slice_size (and rejecting a mismatched advertised len),
-but the source side is still unbounded: nothing verifies the frame is long
-enough to supply that many bytes.
+request_firmware_nowait() may invoke the callback before the requesting
+context resumes. When a firmware lookup fails, the callback starts the
+next fallback request. That nested request can exhaust the fallback list,
+complete fw_done, and let disconnect free hif_dev before the parent request
+returns.
 
-A malicious USB device can send a short frame whose advertised len matches
-priv->eeprom_slice_size while the payload is truncated. The equality check
-passes and memcpy() reads past the end of the skb, leaking adjacent heap:
+The parent then dereferences hif_dev only to print a successful-request
+message. Remove that post-request access so completion cannot leave an
+older callback using the freed device state.
 
-  BUG: KASAN: slab-out-of-bounds in p54_rx (drivers/net/wireless/intersil/p54/txrx.c:507)
-  Read of size 1016 at addr ffff88800f077114 by task swapper/0/0
-  Call Trace:
-   <IRQ>
-   ...
-   __asan_memcpy (mm/kasan/shadow.c:105)
-   p54_rx (drivers/net/wireless/intersil/p54/txrx.c:507)
-   p54u_rx_cb (drivers/net/wireless/intersil/p54/p54usb.c:163)
-   __usb_hcd_giveback_urb (drivers/usb/core/hcd.c:1657)
-   dummy_timer (drivers/usb/gadget/udc/dummy_hcd.c:2005)
-   ...
-   </IRQ>
-
-  The buggy address belongs to the object at ffff88800f0770c0
-   which belongs to the cache skbuff_small_head of size 704
-  The buggy address is located 84 bytes inside of
-   allocated 704-byte region [ffff88800f0770c0, ffff88800f077380)
-
-Check that the slice fits in the skb before copying.
-
-Fixes: 7cb770729ba8 ("p54: move eeprom code into common library")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Fixes: e904cf6fe230 ("ath9k_htc: introduce support for different fw versions")
+Reported-by: syzbot+cb7ed9d85261445a0201@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cb7ed9d85261445a0201
+Cc: stable@vger.kernel.org
+Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
 ---
- drivers/net/wireless/intersil/p54/txrx.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intersil/p54/txrx.c b/drivers/net/wireless/intersil/p54/txrx.c
-index 1294a1d6528e..9f491334c8d0 100644
---- a/drivers/net/wireless/intersil/p54/txrx.c
-+++ b/drivers/net/wireless/intersil/p54/txrx.c
-@@ -499,11 +499,19 @@ static void p54_rx_eeprom_readback(struct p54_common *priv,
- 		if (le16_to_cpu(eeprom->v2.len) != priv->eeprom_slice_size)
- 			return;
- 
-+		if (eeprom->v2.data + priv->eeprom_slice_size >
-+		    skb_tail_pointer(skb))
-+			return;
-+
- 		memcpy(priv->eeprom, eeprom->v2.data, priv->eeprom_slice_size);
- 	} else {
- 		if (le16_to_cpu(eeprom->v1.len) != priv->eeprom_slice_size)
- 			return;
- 
-+		if (eeprom->v1.data + priv->eeprom_slice_size >
-+		    skb_tail_pointer(skb))
-+			return;
-+
- 		memcpy(priv->eeprom, eeprom->v1.data, priv->eeprom_slice_size);
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index 515267f48d80..aaf924cb8860 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -1222,9 +1222,6 @@ static int ath9k_hif_request_firmware(struct hif_device_usb *hif_dev,
+ 		return ret;
  	}
  
+-	dev_info(&hif_dev->udev->dev, "ath9k_htc: Firmware %s requested\n",
+-		 hif_dev->fw_name);
+-
+ 	return ret;
+ }
+ 
 -- 
-2.43.0
+2.54.0
 
 
