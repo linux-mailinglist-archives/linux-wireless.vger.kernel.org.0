@@ -1,165 +1,167 @@
-Return-Path: <linux-wireless+bounces-38218-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38219-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OTgNGCrBQGpUhwkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38218-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 08:37:30 +0200
+	id azo6AGTpQGq4jAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38219-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 11:29:08 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEA36D34CA
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 08:37:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC366D3791
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 11:29:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=H3BGAhcE;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38218-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38218-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="IigX29/Y";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38219-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38219-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6960F300252F
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 06:37:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF12D30125DE
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 09:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D8B23F417;
-	Sun, 28 Jun 2026 06:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3073101A2;
+	Sun, 28 Jun 2026 09:29:02 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30A7175A7F
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 06:37:21 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782628642; cv=pass; b=hbN6AswobMhMXVvzqmBxhRuRACKDkCkmzwME0aCYRbNWLtkgOE5n2RVfgf7JE/AVqiTzoajCsE1QjBcxjVAf5SD5Flj0KyqsKSGTGoRDCFx9qpAuRkmhPx/daQE4tYAMfAzq9Is401fvpZOKVqSCVga0U1eDdgV40P4GSA3XZVI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782628642; c=relaxed/simple;
-	bh=dX/qyZlPM8cB3iHqP1m+RbEp1XX1FDdi4EdRMnmTEAU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=dVWPaHcG1JasWIzRxNcueiR63J+kVr1rQKrC3MMJm8MEClNsyGfbHTSulqc5fhTWgOU4AHB+Wel1xjhsaqKlLFBx++MiAgVh9tJxd6q/w0zhoYQ/LjP7V7Nl1Vj0JXxzJ8OEq6XUXmAUOTaDmNcwm0oR6E3eqcUH1xepkm0dtY4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H3BGAhcE; arc=pass smtp.client-ip=209.85.128.172
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-800619d5e7eso29524067b3.0
-        for <linux-wireless@vger.kernel.org>; Sat, 27 Jun 2026 23:37:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782628641; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Z/eysxCWO8fB9dxxNVDl3nr6dhskzS0G+6Ei7+qO6iWONnlwnoimcvchqtitvPqFaU
-         LVXnp8MvKQd1IFjR33S//xJe6qSmnv3htRru+ZOHVfYH/sMXYx8a5ZVk+73LCvloigH4
-         rMRktSd3gUxhx2pm58ojumYu8Ln0ezRbCFkWTOOLQdVKSN5e31EJSzIlbnmY6HLFXE3G
-         u/YJ3GCiQiHHtXAXfG7rjlLxvEkgF7rLAoWPfGrSQlKTj14mvHhObIJ5fKpt5qqcM34c
-         r6zUHPluYZ0bX1WoYNzBxXDQMQmi4pdiUnF+RwetFf3lZybUH8v7+/L3rKhvNAVq0x2h
-         WBGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=NJrYPlgkNF2Vakuo/uExz62wdrU0jLhDNp7huh7YI9I=;
-        fh=hYLqwXhlzhZ/F+57foUaN9gOwER9wDdCz0ZuPpyV6uA=;
-        b=ZtowQMKF+/Lqla85/ErBYBrIn3mff/auMXrbjGOasjhLgi+7RkxrE2UaowW5MNrLba
-         XK9UgM49JyQjbWH8IktZjXswWIrT413MXvlL3dP6/jvy2/4OVfBXDcPNZusoZYZKFZ47
-         PmYRi1T8IVw0AgNgPkZ7wHhgN5bPHLxU3DLo4HsWQ6tPd8IKLwGIMNEeVLOMImUmrd37
-         6mxRdGFk1LR0g0AxAZizXyU/0vlra/y+X6stk+xepfBeGbuTMRPh/Nd9AYQ8GWgpsabZ
-         CMq2r+gubVOxGKnhYTtjhWewKKQCyEd4/oXCZyCJ+SbHi3msE1ImOecEBKOM6XO+GzaO
-         OKxQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2706285CB4
+	for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 09:29:01 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782638942; cv=none; b=OF+U5mkRW4+AVoUVTDIILymkYmELOokCkRbf8Ipkf2EqyEChAnmiRbB4vGsOJQh8U3vPGG5AuV/Es+UK4E7uayE3UuerIsxBhxLpUvNtMaFLibUnGKi1Gh8J1OM3HbvH8qC0ZRh3800iL75kXDog51Tx7CduJZc7mRgND85th5Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782638942; c=relaxed/simple;
+	bh=g3TEEhSCxa22KRzyGSBbXztaApgxMd71thbKhrfdhH0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RbSEjFaMLLS216giOhtBA3P9pJT3rJd+z7GpUEp7C7KZLwEG5wiaYyzy2TtJyQ4AUYfv75TEmZ3MIFmCQ4eq1ToRm7gMr+Y0roW39n3C76GQGeDFox4nBEAzJJG6w1GlZUOkaBicjreCn8cbLOCxPHCKldMXsVXutCUVzsVUuzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IigX29/Y; arc=none smtp.client-ip=74.125.224.49
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-664ae993e4bso1980042d50.0
+        for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 02:29:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782628641; x=1783233441; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NJrYPlgkNF2Vakuo/uExz62wdrU0jLhDNp7huh7YI9I=;
-        b=H3BGAhcE658tH64H4vxEVTHhbINbD970S2kc3oMpbNjXUq8jljmzOjdJGAJNYQSBDf
-         9I6nMq5Rxc3wFNzh0NXZBVhcxxfIew7HRJ4H9ci/Vwdx4cc6aT1CUxC3lJw1S51xzcFU
-         Q+NEY/jKJ0YLKZ5CcrnkjAvcxGPgyfvAnWD/F0fH3rBABS10VIMDOhUfD67qxlYIcb/v
-         frAFYVF8cpamrHpxZP0bD2nTBXDtjRYiEZppxUHNqXlOHwIlgAzkZi5T9ol0MEk+C+iA
-         FhPd3bnV/Lttec/nvy1luAna+UY06V8wi9H99hfBQ9rf60oTpS9v5ZsvHzkL0hIlIApO
-         ORkw==
+        d=gmail.com; s=20251104; t=1782638940; x=1783243740; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XBRPtbJqkKNZ5K9wV4Mq8UH+00E10dqVKsU9yLUE8eI=;
+        b=IigX29/YhnMkZOB9DNFpOEP0mWnZySasxJ1I3piH05xD0NsO5NC/+45L32c8AFjunH
+         jnHWLM196wfYxIsgIFb8UhHd3i8+VQtCPWaC1YKyNzY/hWFv7LovwbeFYaysUeymVgw+
+         k48geaKAcF36YyRQANprM9Y7VNzehIi44b9eg0S41agWfp//yHUGZoiJGPo50H/OCvdT
+         V9FBLRBE1isbJ4/XaNoL4qdhATBNB2K7bJvdaY9P3ATKj6b7UwVfdECDeB8eGiYVKvNn
+         Vtg3zZzM7FHjEMntBzBVjJ3wrmQJDfwlZ9gLU9ISbpAEIQsjxwqobXvLcjcxYBsWEist
+         ZCXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782628641; x=1783233441;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NJrYPlgkNF2Vakuo/uExz62wdrU0jLhDNp7huh7YI9I=;
-        b=FTw0FCZWZRUXq+1c88lOEqHpFAF3QG4yjbI079CjURKBlIrUP8ygW74gpb3eQ/hH3K
-         9ML5xRimDYxOl4rBXvTZoJU/+uNDIxcUOdKLcD8L9fbjaaqaBR/TX4MdB8WZXtRzvrwF
-         hWcMl/O/BYGJB6VcpaZNFR0Zqn69T1fY2zPK8uqCX0d2YPuiJI0YSD+8lRXsAwSjlHut
-         SUOEtK9xOMmxoN84f3lHIjw7HLz642J2Nsgpic0t3x16g2CSMByKlxfcfOsre5PLpQ2F
-         vO0PceHbd65ugpHSTpNskLqniunv0ToaGpEN15mBRMlwtnen3/ZX6nCoOKvM+qSkNhUA
-         aCyw==
-X-Gm-Message-State: AOJu0YxK8aMp8c5w/w87eHQSn3r6Uy4fKJIGQNbJ07Q31My9W7wPxpoJ
-	lbuwKCyaZE3dhNDUHpdEkYlj+yDaLvh379Qp551tAlZ5QF8RGlFlBa5k+9j+/ORwYddStrSuplj
-	8yWanA0R+7Rv67w2JOXPeo3Kf+Oh7/JjAL6oE
-X-Gm-Gg: AfdE7clIgUu4GsAbtGMq+sY0gvfCdvHabPW+6lGXOgVEeCjjOsCSF65N+pJdU7gcwrv
-	yqwyhBtezUdK0rSjocodNkBrOrtC83KtNWLy4UeYpDfCJT0nGYlDrsH0hOqCbUGOrbEaEHI/yUY
-	bju7W0qCZ59GhAw2eBkiN+CQjbUfhAkCjwAbPpacbEm/ayld3DX5aJLWHTiJ82x20v5oVM58QT5
-	LI5xN2UxNgUzPfEvQJvs1D7/Jh7t7eI4qvTMTSuY2ZAr0r0hIf2uoA7TxVNQZYDoBt0rDKK6w==
-X-Received: by 2002:a05:690c:884:b0:80c:2365:875f with SMTP id
- 00721157ae682-80c7260777emr66397137b3.20.1782628640666; Sat, 27 Jun 2026
- 23:37:20 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782638940; x=1783243740;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XBRPtbJqkKNZ5K9wV4Mq8UH+00E10dqVKsU9yLUE8eI=;
+        b=pIUs2ee8TQ3/hBXeYO2QIaYStRZZC9rOVOzeLoD1NHtpGhkezoM5KcVzA4JXRkyxmk
+         ynp2WUlVJtGo+QlvKFqNqvtLgxVIojEGEOq4WjqgAX+bqabrc6N47qQGbVTF53KvebNg
+         GdXhGOn75OuFmDeJ06905uH4FhFeROJJ9/S/JcrmUSk7QRpAhJQQrNanjujJwEvjE6if
+         doTiBDSLaTqOYEOUElT39OEpT0Il2o6aYTA3PTS+VsqxF6FXaFBPzOMOXUFpZGJXmh9K
+         ZIyQSQ0K2aWQd7qf7vj534YycYLyLWsUJD0k/bdQvJP+R30CRhZkB4kYoT41zAC24yvZ
+         cm8g==
+X-Gm-Message-State: AOJu0Yy0W0u1pEmmhT4AMrxsupK7WSk3jFYkZRnHo/leK77Uoh0si2DQ
+	hkv5zeFMqttRve/SH3FC6AzR6wlttTKC8S/ZZzhO00Jv4SNWX+ajQOx+43G2k1/SuUVgMA==
+X-Gm-Gg: AfdE7ckgOeDdvGBMouJG9D7/SVBWPw0XhRyEf5F0ACDkPnsAku06WOJvMTo2THjCwMD
+	bWCOllvXwhPRXgyQof+V5ZyTObiDiyf4AS+52L5Nw2/rlmQLHFVBirOsmekwqWS8NsFBh3/ygb+
+	ADUZ16CSH0vUdYy0EGvet5OtzuLHYb10ka5OvntO8qujWXDSVMGeCQHDqXJhDLwTY8utvW8hAcN
+	808tPC5MO+xMQmUKH+e/71LhT+FZ/zaP/X87BQZhjcAe5KKqvujct7QcAWLbu3e8o94R9c2MSx5
+	FL2WAUn3j1hhJ5BbzWdHyzQI0mVf+mbdEHqRUlHrpN98ggtLEc7WSgTRvavBGpVRrDGyIXyuLFK
+	Qh/1slpcaopRssCP7GGh2xrH3S9JxQEiN6MSSBw2cRO7+m89YUTUc0Q3grSRS+koPaVSVuEKVS8
+	qaUuffUg5YLJspBiUBno2E9oZ8hw==
+X-Received: by 2002:a05:690e:e89:b0:664:9ffb:e4c with SMTP id 956f58d0204a3-6649ffb1e1amr7317427d50.15.1782638940444;
+        Sun, 28 Jun 2026 02:29:00 -0700 (PDT)
+Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-664b8d0842asm1882897d50.19.2026.06.28.02.28.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jun 2026 02:28:59 -0700 (PDT)
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+To: Christian Lamparter <chunkeey@googlemail.com>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com,
+	Yousef Alhouseen <alhouseenyousef@gmail.com>
+Subject: [PATCH] wifi: carl9170: reject mismatched command response lengths
+Date: Sun, 28 Jun 2026 11:28:14 +0200
+Message-ID: <20260628092814.40583-1-alhouseenyousef@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Doug Brewer <brewer.doug@gmail.com>
-Date: Sun, 28 Jun 2026 14:37:09 +0800
-X-Gm-Features: AVVi8Cc-t0y7oE7EAn_Auei_Pwywa6wqUnQM6QY9vPL-GCU8PU-_HhT7JOaVOKg
-Message-ID: <CAG0V13TRHzXtoMY=XZMOd=WjzS58Cu=aePFCz8mY6UoGYm5dXw@mail.gmail.com>
-Subject: rtw89: RTL8852BE P2P-device iftype and STA+P2P interface combination
-To: linux-wireless@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:pkshih@realtek.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[brewerdoug@gmail.com,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-38218-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-38219-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:chunkeey@googlemail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com,m:alhouseenyousef@gmail.com,m:chunkeey@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[googlemail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[alhouseenyousef@gmail.com,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brewerdoug@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alhouseenyousef@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,5c1ca6ccaa1215781cac];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4DEA36D34CA
+X-Rspamd-Queue-Id: 3BC366D3791
 
-Hi,
+The firmware response length is controlled by the USB device. Although
+carl9170_cmd_callback() detects when it differs from the output buffer
+length, the function falls through and copies the entire response into
+that buffer. Callers commonly provide stack objects, so a malformed
+response can overwrite the kernel stack.
 
-I'm experimenting with Wi-Fi Display (Miracast sink) concurrent with an
-STA connection on an RTL8852BE (PCIe) using the mainline rtw89 driver
-(kernel 6.18.37).
+Return after scheduling device recovery. This also preserves the stated
+behavior of leaving the command incomplete so that its waiter times out
+and clears the pending output buffer.
 
-iw phy reports:
-Supported interface modes:
-   * managed, AP, P2P-client, P2P-GO
-   (no P2P-device)
-interface combinations are not supported
+Fixes: a84fab3cbfdc ("carl9170: 802.11 rx/tx processing and usb backend")
+Reported-by: syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5c1ca6ccaa1215781cac
+Cc: stable@vger.kernel.org
+Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
+---
+ drivers/net/wireless/ath/carl9170/rx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-In practice this blocks the standard P2P flow: there is no P2P-device
-iftype for a dedicated discovery context, and no advertised interface
-combination for managed + P2P-client coexistence.
+diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
+index 6833430130f4..ea3f435fb64c 100644
+--- a/drivers/net/wireless/ath/carl9170/rx.c
++++ b/drivers/net/wireless/ath/carl9170/rx.c
+@@ -145,6 +145,7 @@ static void carl9170_cmd_callback(struct ar9170 *ar, u32 len, void *buffer)
+ 		 * and we get a stack trace from there.
+ 		 */
+ 		carl9170_restart(ar, CARL9170_RR_INVALID_RSP);
++		return;
+ 	}
+ 
+ 	spin_lock(&ar->cmd_lock);
+-- 
+2.54.0
 
-My questions:
-1. is P2P-device iftype support planned for rtw89 on RTL885x? Is there a
-    known technical blocker, or is it simply not yet implemented?
-2. would advertising a managed + P2P-client interface combination
-    (single channel) be feasible on the current rtw89?
-3. is MCC (#channels > 1) on the roadmap, or considered out of scope?
-
-Regards,
-Doug
 
