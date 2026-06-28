@@ -1,199 +1,463 @@
-Return-Path: <linux-wireless+bounces-38214-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38215-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yqBCBRJqQGrQfQkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38214-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 02:25:54 +0200
+	id GShwM+2PQGrfgAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38215-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 05:07:25 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 802DE6D2DF0
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 02:25:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA2C6D2FE1
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 05:07:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Yy5/MvoO";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38214-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38214-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lu0VtDr5;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38215-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38215-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 13CCF301586F
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 00:25:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E366301412D
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 03:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4F71531E8;
-	Sun, 28 Jun 2026 00:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984DF262D0B;
+	Sun, 28 Jun 2026 03:07:17 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7CE49620
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 00:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248AD4315F;
+	Sun, 28 Jun 2026 03:07:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782606347; cv=none; b=Yti4ZiSDYhUAO5uzIelw4dOhIqIufZsXd6E0cP88Jk3/sXYUnGcZDdWMETfEyu4S1AJF5k89EAN2Ggm57cQlaEYfdovu8Vph6HA9YUECbD1cXOOxsEjBRqnpBHwJWC4FJyr4jAfMqU+5qFB+vpPYYvwfMCM4M3HgnNCNgn4ct1I=
+	t=1782616037; cv=none; b=InqEo5mzzUUapt0o1DsijPaxEZyaSPeeIfpgbu0YPSjd/5tbAVeyzzsGv4KTrnzqxrNEPduh1+/x8X8IoPsOTcwXal2DizcFUZp0q0I264eIw5iQZyLnIDDDTAsoSgN4epUPSrICNR7t3LxNx2NS1ta7BvZb8VUsmRfHn0Wsfss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782606347; c=relaxed/simple;
-	bh=Gp9heeZl8YOVXLS81sRHuvkbEUIKeicfYWTiUjTKSBE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dzpmzr8939OPA/FrB8B1HfGI6CIgHztX/zzr+YJVr4dT/QygvDqnHLuZ3lKLVQyPmiqLyWamOZ0mP14epbFd8SjQmL3FqNs0kHqPC0QEGsHhltifnTLKLiXnQdZBzMrksdllSgZBmSaTR5WG2DbgRkgTe56g+iux5RAQAHcmh54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yy5/MvoO; arc=none smtp.client-ip=209.85.128.44
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-493a5392c60so1989295e9.2
-        for <linux-wireless@vger.kernel.org>; Sat, 27 Jun 2026 17:25:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782606343; x=1783211143; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=w+ggCHBmTIi4iroEDf3wYeBaqmZKkqX7ae5VYLvC2Dk=;
-        b=Yy5/MvoOFUCHwQQi3KX9W+0IZlV5baCQ2HyMk8lARPWRP2fkJZsbAMDKPLnEJAb1s+
-         O/JBp10mly4ZQR801vCxhpgstqA+uOys8Tz4rQQuFkuEojiNGsIYBnhnKF/JoYvP0BfM
-         x9t1JlN/DeX8oXXdg2H4C6qyuJbXrfqfkWfJEEfIx2c+V6VgjWB7mmvoSziKXefekkue
-         IcOFSJwJF2T1MpC7Ol8UFb3VSIwFI3ihxnE1ggSs5YB/YDDJ8n4c16ZUS+/5sv5LmBsz
-         vAh8iu5MMKQVHEUDuRcjeiTmQ9yckZBbhDHYMSomD2Wq6/l/gZE0HBQjXSiwcNTtWe6m
-         rNhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782606343; x=1783211143;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w+ggCHBmTIi4iroEDf3wYeBaqmZKkqX7ae5VYLvC2Dk=;
-        b=YeF5u2t4VWuX1GnVVzw0x2FPC+UNotiBNWSb6f5NcbehmuAzBFScGqb+Ztk4se09il
-         wYFZbBn0UFZAF9Sh9Sj22Ig9RZUy2/wWG1RV+6WSWx8ehWFy8qAxTjpMdqeOnTL5tIio
-         z1jLBO3ze3Q+U15yu2UAP3ZkLyYLDAYV9gkhS084QrCPkyLPk2r+2rNUFV/b9asbp9ZE
-         AGEUopPyc0ky8PlDsOIck9UQya/sNDnmFisCvXZkb79VomEcG20CeIy7fJY6lSBc2u9B
-         awZSzYs+6qi1duNXE0NERglQOptzWSvZFeagH/hL1b5xk+eN8vgEom/dn9ZhkJ/zTPFo
-         eRNw==
-X-Gm-Message-State: AOJu0Ywe5iIAJDan3yEBlQcTXL5GUTuqVVykrfQ1Ek553H/Xepd2DFZG
-	M+FHzsOzp0ty2+kqO3ZEtTygdjm+rPZfWfVMh1kgwMY0z686R9y5Xqy7
-X-Gm-Gg: AfdE7cnMK11LYh4Vf7H2+qzr/03BtzZbwTssq/korAB0RkG7HriB2FNchw1JfhtBqc8
-	1F3Nla+an2OZ46Ib1TK9R2GVCyav6gPRaFTY7kQawawAjoKB5kmSUBIAhCaeGQSfwIIMDvUfrlo
-	vdk5Ga3MlTPm/qUTdp3aaLR06QeLv5TMCFgoGoa5H+LeHYhN5mwTPXo7lg8LwRQGCTflUleyzUl
-	28nE9u7r37OxThQNkWJiJ7AJn5SxFh9xumoYvARhy1WI68tbkuPscIDqtTAfz7W6PdyIvzb9+1Q
-	1HfpYP0YISCvfQDAGdOnsC1+FbFy7zdu1Vxg9xCmASZOF30R2cshl2SWA/xMzi+bknOQHYJp0YV
-	55V5i6HLrgr2r31CAnlm3ziuWTiJm7MlCE6mkyMvjEkZD7yXDpz/CpxF0OOCDvvie4r0esy/uHA
-	wbJqCGc/FBr4I4W5mtg7earhxTfA==
-X-Received: by 2002:a05:600c:6792:b0:492:7187:aa67 with SMTP id 5b1f17b1804b1-4927187aa7dmr68432665e9.30.1782606343532;
-        Sat, 27 Jun 2026 17:25:43 -0700 (PDT)
-Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4926f94f213sm145611055e9.12.2026.06.27.17.25.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Jun 2026 17:25:43 -0700 (PDT)
-From: Yousef Alhouseen <alhouseenyousef@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	stable@vger.kernel.org,
-	syzbot+21629c14aa749636db9d@syzkaller.appspotmail.com,
-	Yousef Alhouseen <alhouseenyousef@gmail.com>
-Subject: [PATCH] wifi: mac80211_hwsim: avoid treating MCS as legacy rate index
-Date: Sun, 28 Jun 2026 02:25:37 +0200
-Message-ID: <20260628002537.23550-1-alhouseenyousef@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1782616037; c=relaxed/simple;
+	bh=Yo4L18fh7VvlYUxkirlUx93t9UYHughwTkMPL5DLwqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iRNyH7P8x+bfboC2xBa4ClwUZntA4bZ3fMceeQOTu+ztX3z/iki26cHZHAWCWvyshjCybwQFujxmQTT+Hx2mb6orHVOComFfUho+8QqNWkpUk70D1ewsYOlH/YZMrBD1EMSHaaWTVFaoG7PT2k3YD4ykpypqqL8Jj8SQtzvCK+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lu0VtDr5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806041F000E9;
+	Sun, 28 Jun 2026 03:07:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782616035;
+	bh=vmkXcgYl+w/R1qnunR6PXyn5dCrixKgKvmxDaG58d0g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Lu0VtDr5h7i8BPVcYGWggTsEN1HWGUyBHpvQ+ivLYx+dwKxxVv5xx7QXxzB57eGKA
+	 tO1DM6iQgNP1tPmAKEpwHtFMU3gtm+J0aiKZ3UeuHb42TPYr/ovLH/J2Ky23SD2BEt
+	 Tfp+B7BWIfCZ1O8HuHB4/TNeCOSm5cErCo4mpcA9Ai7f4l52BGc11+mbvmL56cg+Qx
+	 Ez/bZOyo0/uh8Fgd4oVjho1IWhDtQLJxC7CVJfQhQRWOP9VXl9qjsdBvYdQfqsA7vU
+	 I0yU1daXd/kTOPks4tPmOmVRVq2h2LFqXyl549ZBSDLnNx4ME0H7Am1UDYvRQOg1NV
+	 L5nBys3SveKpw==
+Date: Sat, 27 Jun 2026 22:07:05 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: george.moussalem@outlook.com
+Cc: Jens Axboe <axboe@kernel.dk>, Ulf Hansson <ulfh@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, 
+	Jeff Johnson <jjohnson@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Rocky Liao <quic_rjliao@quicinc.com>, 
+	Saravana Kannan <saravanak@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	ath10k@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-remoteproc@vger.kernel.org
+Subject: Re: [PATCH 2/6] remoteproc: qcom: Add M0 BTSS secure PIL driver
+Message-ID: <akCOYIIhyl738PC6@baldur>
+References: <20260625-ipq5018-bluetooth-v1-0-d999be0e04f7@outlook.com>
+ <20260625-ipq5018-bluetooth-v1-2-d999be0e04f7@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260625-ipq5018-bluetooth-v1-2-d999be0e04f7@outlook.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,syzkaller.appspotmail.com,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38214-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:benjamin.berg@intel.com,m:stable@vger.kernel.org,m:syzbot+21629c14aa749636db9d@syzkaller.appspotmail.com,m:alhouseenyousef@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[alhouseenyousef@gmail.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:george.moussalem@outlook.com,m:axboe@kernel.dk,m:ulfh@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:johannes@sipsolutions.net,m:jjohnson@kernel.org,m:brgl@kernel.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:quic_bgodavar@quicinc.com,m:quic_rjliao@quicinc.com,m:saravanak@kernel.org,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:linux@armlinux.org.uk,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:konradybcio@kernel.org,m:mathieu.poirier@linaro.org,m:p.zabel@pengutronix.de,m:linux-block@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mmc@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath10k@lists.infradead.org,m:linux-arm-msm@vger.kernel.org,m:linux-bluetooth@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-remoteproc@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[35];
+	FREEMAIL_TO(0.00)[outlook.com];
+	FORGED_SENDER(0.00)[andersson@kernel.org,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-38215-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alhouseenyousef@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andersson@kernel.org,linux-wireless@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.dk,kernel.org,sipsolutions.net,holtmann.org,gmail.com,quicinc.com,lunn.ch,armlinux.org.uk,davemloft.net,google.com,redhat.com,linaro.org,pengutronix.de,vger.kernel.org,lists.infradead.org];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,21629c14aa749636db9d];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,outlook.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,baldur:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 802DE6D2DF0
+X-Rspamd-Queue-Id: 3CA2C6D2FE1
 
-Injected HT and VHT rates store an MCS value in rates[0].idx rather
-than an index into the legacy bitrate table. hwsim nevertheless passes
-these rates to ieee80211_get_tx_rate() while generating monitor frames
-and timestamps.
+On Thu, Jun 25, 2026 at 06:10:06PM +0400, George Moussalem via B4 Relay wrote:
+> From: George Moussalem <george.moussalem@outlook.com>
+> 
+> Add support to bring up the M0 core of the bluetooth subsystem found in
+> the IPQ5018 SoC.
+> 
+> The signed firmware loaded is authenticated by TrustZone. If successful,
+> the M0 core boots the firmware and the peripheral is taken out of reset
+> using a Secure Channel Manager call to TrustZone.
+> 
 
-A crafted injected frame can therefore read beyond the bitrate table.
-If the resulting bitrate is zero, mac80211_hwsim_write_tsf() also
-divides by zero, as observed by syzbot.
+The remoteproc framework deals with life cycle management of
+coprocessors, but you don't want that - you want the BT driver to own
+the life cycle.
 
-Use ieee80211_get_tx_rate() only for legacy rates. The existing fallback
-continues to supply a conservative bitrate where hwsim does not yet
-calculate MCS rates.
+Further, the fact that you split this in "BT" and "remoteproc", results
+in you having two representations in DeviceTree and in the device model
+for the same hardware.
 
-Fixes: e75129031f1c ("wifi: mac80211_hwsim: move timestamp writing later in the datapath")
-Reported-by: syzbot+21629c14aa749636db9d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=21629c14aa749636db9d
-Cc: stable@vger.kernel.org
-Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
----
- .../net/wireless/virtual/mac80211_hwsim_main.c    | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+I know we have examples of this in the kernel already, but they are all
+racy...
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-index 0dd8a6c85953..4a66272526f3 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-@@ -1324,6 +1324,17 @@ static void mac80211_hwsim_set_tsf(struct ieee80211_hw *hw,
- 	}
- }
- 
-+static struct ieee80211_rate *
-+mac80211_hwsim_get_tx_rate(struct ieee80211_hw *hw,
-+			   struct ieee80211_tx_info *info)
-+{
-+	if (info->control.rates[0].flags &
-+	    (IEEE80211_TX_RC_MCS | IEEE80211_TX_RC_VHT_MCS))
-+		return NULL;
-+
-+	return ieee80211_get_tx_rate(hw, info);
-+}
-+
- static void mac80211_hwsim_monitor_rx(struct ieee80211_hw *hw,
- 				      struct sk_buff *tx_skb,
- 				      struct ieee80211_channel *chan)
-@@ -1333,7 +1344,7 @@ static void mac80211_hwsim_monitor_rx(struct ieee80211_hw *hw,
- 	struct hwsim_radiotap_hdr *hdr;
- 	u16 flags, bitrate;
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_skb);
--	struct ieee80211_rate *txrate = ieee80211_get_tx_rate(hw, info);
-+	struct ieee80211_rate *txrate = mac80211_hwsim_get_tx_rate(hw, info);
- 
- 	if (!txrate)
- 		bitrate = 0;
-@@ -1603,7 +1614,7 @@ static void mac80211_hwsim_write_tsf(struct mac80211_hwsim_data *data,
- 
- 	spin_lock_bh(&data->tsf_offset_lock);
- 
--	txrate = ieee80211_get_tx_rate(data->hw, info);
-+	txrate = mac80211_hwsim_get_tx_rate(data->hw, info);
- 	if (txrate)
- 		bitrate = txrate->bitrate;
- 
--- 
-2.54.0
+Please see if you can embed the firmware loading, authentication and
+PAS calls directly into the BT driver - to have a single entity managing
+the life cycle of your M0 processor.
 
+Regards,
+Bjorn
+
+> Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+> ---
+>  drivers/remoteproc/Kconfig            |  12 ++
+>  drivers/remoteproc/Makefile           |   1 +
+>  drivers/remoteproc/qcom_m0_btss_pil.c | 261 ++++++++++++++++++++++++++++++++++
+>  3 files changed, 274 insertions(+)
+> 
+> diff --git a/drivers/remoteproc/Kconfig b/drivers/remoteproc/Kconfig
+> index c521c744e7db..6b52f78f1427 100644
+> --- a/drivers/remoteproc/Kconfig
+> +++ b/drivers/remoteproc/Kconfig
+> @@ -163,6 +163,18 @@ config PRU_REMOTEPROC
+>  	  processors on various TI SoCs. It's safe to say N here if you're
+>  	  not interested in the PRU or if you are unsure.
+>  
+> +config QCOM_M0_BTSS_PIL
+> +	tristate "Qualcomm M0 BTSS Peripheral Image Loader"
+> +	depends on OF && ARCH_QCOM
+> +	select QCOM_MDT_LOADER
+> +	select QCOM_RPROC_COMMON
+> +	select QCOM_SCM
+> +	help
+> +	  Say y here to support the Secure Peripheral Imager Loader for the
+> +	  Qualcomm Bluetooth Subsystem running on the M0 remote processor found
+> +	  in the IPQ5018 SoC. The M0 core is started and stopped using a
+> +	  Secure Channel Manager call to TrustZone.
+> +
+>  config QCOM_PIL_INFO
+>  	tristate
+>  
+> diff --git a/drivers/remoteproc/Makefile b/drivers/remoteproc/Makefile
+> index 1c7598b8475d..df80faf8d0df 100644
+> --- a/drivers/remoteproc/Makefile
+> +++ b/drivers/remoteproc/Makefile
+> @@ -21,6 +21,7 @@ obj-$(CONFIG_DA8XX_REMOTEPROC)		+= da8xx_remoteproc.o
+>  obj-$(CONFIG_KEYSTONE_REMOTEPROC)	+= keystone_remoteproc.o
+>  obj-$(CONFIG_MESON_MX_AO_ARC_REMOTEPROC)+= meson_mx_ao_arc.o
+>  obj-$(CONFIG_PRU_REMOTEPROC)		+= pru_rproc.o
+> +obj-$(CONFIG_QCOM_M0_BTSS_PIL)		+= qcom_m0_btss_pil.o
+>  obj-$(CONFIG_QCOM_PIL_INFO)		+= qcom_pil_info.o
+>  obj-$(CONFIG_QCOM_RPROC_COMMON)		+= qcom_common.o
+>  obj-$(CONFIG_QCOM_Q6V5_COMMON)		+= qcom_q6v5.o
+> diff --git a/drivers/remoteproc/qcom_m0_btss_pil.c b/drivers/remoteproc/qcom_m0_btss_pil.c
+> new file mode 100644
+> index 000000000000..7168e270e4d4
+> --- /dev/null
+> +++ b/drivers/remoteproc/qcom_m0_btss_pil.c
+> @@ -0,0 +1,261 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (c) 2026 The Linux Foundation. All rights reserved.
+> + */
+> +
+> +#include <linux/clk.h>
+> +#include <linux/delay.h>
+> +#include <linux/elf.h>
+> +#include <linux/firmware/qcom/qcom_scm.h>
+> +#include <linux/io.h>
+> +#include <linux/kernel.h>
+> +#include <linux/of_reserved_mem.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/reset.h>
+> +#include <linux/soc/qcom/mdt_loader.h>
+> +
+> +#include "qcom_common.h"
+> +
+> +#define BTSS_PAS_ID	0xc
+> +
+> +struct m0_btss {
+> +	struct device *dev;
+> +	phys_addr_t mem_phys;
+> +	phys_addr_t mem_reloc;
+> +	void __iomem *mem_region;
+> +	size_t mem_size;
+> +	struct reset_control *btss_reset;
+> +};
+> +
+> +static int m0_btss_start(struct rproc *rproc)
+> +{
+> +	int ret;
+> +
+> +	if (!qcom_scm_pas_supported(BTSS_PAS_ID)) {
+> +		dev_err(rproc->dev.parent,
+> +			"PAS is not available for peripheral: 0x%x\n",
+> +			BTSS_PAS_ID);
+> +		return -ENODEV;
+> +	}
+> +
+> +	ret = qcom_scm_pas_auth_and_reset(BTSS_PAS_ID);
+> +	if (ret) {
+> +		dev_err(rproc->dev.parent, "Failed to start rproc: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int m0_btss_stop(struct rproc *rproc)
+> +{
+> +	int ret;
+> +
+> +	if (rproc->state == RPROC_RUNNING || rproc->state == RPROC_CRASHED) {
+> +		ret = qcom_scm_pas_shutdown(BTSS_PAS_ID);
+> +		if (ret) {
+> +			dev_err(rproc->dev.parent, "Failed to stop rproc: %d\n",
+> +				ret);
+> +			return ret;
+> +		}
+> +
+> +		dev_info(rproc->dev.parent, "Successfully stopped rproc\n");
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int m0_btss_load(struct rproc *rproc, const struct firmware *fw)
+> +{
+> +	struct m0_btss *desc = rproc->priv;
+> +	const struct elf32_phdr *phdrs;
+> +	const struct firmware *seg_fw;
+> +	const struct elf32_phdr *phdr;
+> +	const struct elf32_hdr *ehdr;
+> +	void __iomem *metadata;
+> +	size_t metadata_size;
+> +	int i, ret;
+> +
+> +	ehdr = (const struct elf32_hdr *)fw->data;
+> +	phdrs = (const struct elf32_phdr *)(ehdr + 1);
+> +
+> +	ret = request_firmware(&fw, rproc->firmware, rproc->dev.parent);
+> +	if (ret) {
+> +		dev_err(rproc->dev.parent, "Failed to request firmware: %d\n",
+> +			ret);
+> +		return ret;
+> +	}
+> +
+> +	metadata = qcom_mdt_read_metadata(fw, &metadata_size, rproc->firmware,
+> +					  rproc->dev.parent);
+> +	if (IS_ERR(metadata)) {
+> +		ret = PTR_ERR(metadata);
+> +		dev_err(rproc->dev.parent,
+> +			"Failed to read firmware metadata: %d\n", ret);
+> +		goto release_fw;
+> +	}
+> +
+> +	ret = qcom_scm_pas_init_image(BTSS_PAS_ID, metadata,
+> +				      metadata_size, NULL);
+> +	if (ret) {
+> +		dev_err(rproc->dev.parent, "PAS init image failed: %d\n", ret);
+> +		goto free_metadata;
+> +	}
+> +
+> +	for (i = 0; i < ehdr->e_phnum; i++) {
+> +		char *seg_name __free(kfree) = kstrdup(rproc->firmware,
+> +						       GFP_KERNEL);
+> +		if (!seg_name)
+> +			return -ENOMEM;
+> +
+> +		phdr = &phdrs[i];
+> +
+> +		/* Only process valid loadable data segments */
+> +		if (phdr->p_type != PT_LOAD || !phdr->p_memsz)
+> +			continue;
+> +
+> +		if (phdr->p_vaddr + phdr->p_filesz > desc->mem_size) {
+> +			dev_err(rproc->dev.parent,
+> +				"Segment data exceeds the reserved memory area!\n");
+> +			goto free_metadata;
+> +		}
+> +
+> +		/* Check if firmware is split across multiple segment files */
+> +		if (phdr->p_offset > fw->size ||
+> +		    phdr->p_offset + phdr->p_filesz > fw->size) {
+> +			sprintf(seg_name + strlen(seg_name) - 3, "b%02d", i);
+> +			ret = request_firmware(&seg_fw, seg_name,
+> +					       rproc->dev.parent);
+> +			if (ret) {
+> +				dev_err(rproc->dev.parent,
+> +					"Could not find split segment binary: %s\n",
+> +					seg_name);
+> +				goto free_metadata;
+> +			}
+> +
+> +			/*
+> +			 * Use the virtual instead of the physical address as
+> +			 * the offset
+> +			 */
+> +			memcpy_toio(desc->mem_region + phdr->p_vaddr,
+> +				    seg_fw->data, phdr->p_filesz);
+> +
+> +			release_firmware(seg_fw);
+> +		} else {
+> +			memcpy_toio(desc->mem_region + phdr->p_vaddr,
+> +				    fw->data + phdr->p_offset, phdr->p_filesz);
+> +		}
+> +	}
+> +
+> +	return 0;
+> +
+> +free_metadata:
+> +	kfree(metadata);
+> +release_fw:
+> +	release_firmware(fw);
+> +	return ret;
+> +}
+> +
+> +static const struct rproc_ops m0_btss_ops = {
+> +	.start = m0_btss_start,
+> +	.stop = m0_btss_stop,
+> +	.load = m0_btss_load,
+> +	.get_boot_addr = rproc_elf_get_boot_addr,
+> +};
+> +
+> +static int m0_btss_alloc_memory_region(struct m0_btss *desc)
+> +{
+> +	struct device *dev = desc->dev;
+> +	struct resource res;
+> +	int ret;
+> +
+> +	ret = of_reserved_mem_region_to_resource(dev->of_node, 0, &res);
+> +	if (ret) {
+> +		dev_err(dev, "unable to acquire memory-region resource\n");
+> +		return ret;
+> +	}
+> +
+> +	desc->mem_phys = res.start;
+> +	desc->mem_reloc = res.start;
+> +	desc->mem_size = resource_size(&res);
+> +	desc->mem_region = devm_ioremap(dev, desc->mem_phys, desc->mem_size);
+> +	if (!desc->mem_region) {
+> +		dev_err(dev, "unable to map memory region: %pR\n", &res);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int m0_btss_pil_probe(struct platform_device *pdev)
+> +{
+> +	// struct reset_control *btss_reset;
+> +	struct device *dev = &pdev->dev;
+> +	const char *fw_name = NULL;
+> +	struct m0_btss *desc;
+> +	struct clk *lpo_clk;
+> +	struct rproc *rproc;
+> +	int ret;
+> +
+> +	ret = of_property_read_string(dev->of_node, "firmware-name",
+> +				      &fw_name);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	rproc = devm_rproc_alloc(dev, "m0btss", &m0_btss_ops,
+> +				 fw_name, sizeof(*desc));
+> +	if (!rproc) {
+> +		dev_err(dev, "failed to allocate rproc\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	desc = rproc->priv;
+> +	desc->dev = dev;
+> +
+> +	ret = m0_btss_alloc_memory_region(desc);
+> +	if (ret)
+> +		return ret;
+> +
+> +	lpo_clk = devm_clk_get_enabled(dev, "btss_lpo_clk");
+> +	if (IS_ERR(lpo_clk))
+> +		return dev_err_probe(dev, PTR_ERR(lpo_clk),
+> +				     "Failed to get lpo clock\n");
+> +
+> +	desc->btss_reset = devm_reset_control_get(dev, "btss_reset");
+> +	if (IS_ERR_OR_NULL(desc->btss_reset))
+> +		return dev_err_probe(dev, PTR_ERR(desc->btss_reset),
+> +				     "unable to acquire btss_reset\n");
+> +
+> +	ret = reset_control_deassert(desc->btss_reset);
+> +	if (ret)
+> +		return dev_err_probe(rproc->dev.parent, ret,
+> +				     "Failed to deassert reset\n");
+> +
+> +	rproc->auto_boot = false;
+> +	ret = devm_rproc_add(dev, rproc);
+> +	if (ret)
+> +		return ret;
+> +
+> +	platform_set_drvdata(pdev, rproc);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct of_device_id m0_btss_of_match[] = {
+> +	{ .compatible = "qcom,ipq5018-btss-pil" },
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(of, m0_btss_of_match);
+> +
+> +static struct platform_driver m0_btss_pil_driver = {
+> +	.probe = m0_btss_pil_probe,
+> +	.driver = {
+> +		.name = "qcom-m0-btss-pil",
+> +		.of_match_table = m0_btss_of_match,
+> +	},
+> +};
+> +
+> +module_platform_driver(m0_btss_pil_driver);
+> +
+> +MODULE_DESCRIPTION("Qualcomm M0 Bluetooth Subsystem Peripheral Image Loader");
+> +MODULE_LICENSE("GPL");
+> 
+> -- 
+> 2.53.0
+> 
+> 
 
