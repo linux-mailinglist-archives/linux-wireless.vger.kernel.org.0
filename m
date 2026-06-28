@@ -1,265 +1,183 @@
-Return-Path: <linux-wireless+bounces-38224-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38226-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TlICOhT1QGokjwkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38224-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 12:19:00 +0200
+	id VmnfObIcQWqBlAkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38226-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 15:08:02 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42A176D3947
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 12:19:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 363406D3DBC
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 15:08:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nyu.edu header.s=20180315 header.b=Md+xHcmJ;
-	dkim=pass header.d=nyu.edu header.s=nyu-googleapps1 header.b=d1iOmTAO;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38224-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38224-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=nyu.edu;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=h7+ptJpU;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38226-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38226-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F6E1301014D
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 10:18:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5447D301CFB4
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 13:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C009D2FDC5E;
-	Sun, 28 Jun 2026 10:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649243A5E77;
+	Sun, 28 Jun 2026 13:07:16 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-00256a01.pphosted.com (mx0a-00256a01.pphosted.com [148.163.150.240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B8942AA9
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 10:18:51 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782641934; cv=pass; b=LmJ05lWYW0ZVRkrzQSvXeskzTW2QrAyjjyKf7dkj9yAP+f+Zs4PmUUhIztJvxL1+TrCDQ/eZ9oOCGtSRz9Tqp4JLoG3frQVj3OsWLAHiXsKCTsHg2TzRJDclPqz9av0N4+FN7osWwQBWF4R9MWkDoXmOH9fOS/OlHRbBHijXj58=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782641934; c=relaxed/simple;
-	bh=DvFXAFCO9tcZqdlLmhVk/h5vnLge5f1OqFfZkggU5zA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QC98/PmlOvZFTZO06EYG8570vYfyYyscBEb+heB7/L9KWg6CL3kL1lLQ20jcXMxZSuTaXdrSYsicrnTX73gv7wohLvGwsu6KjtxRsu02LBVr5Xsj/Uprqa1BeNMtN0KPFQV42e5upKM2RkysCeYLb1Eolwua95Orhpat1v3uvIk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nyu.edu; spf=pass smtp.mailfrom=nyu.edu; dkim=pass (2048-bit key) header.d=nyu.edu header.i=@nyu.edu header.b=Md+xHcmJ; dkim=pass (2048-bit key) header.d=nyu.edu header.i=@nyu.edu header.b=d1iOmTAO; arc=pass smtp.client-ip=148.163.150.240
-Received: from pps.filterd (m0355795.ppops.net [127.0.0.1])
-	by mx0b-00256a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65S9W7v23847988
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 06:18:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyu.edu; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=20180315; bh=IqIUFv8eyNO2DKWR0kEueaSzy
-	xNdYsgSTleO4QX3P+k=; b=Md+xHcmJaAM5DZklTrqr+kCJUp3Ox9WP8ZyARl3zZ
-	hrhv9GzB5beVYuals8qVoylFKSErqAIzaXkvgOnQ0gkTXaxLv7P5ZJQxBGy7VlTm
-	UQWmiFAena6dZQVPGIVC88O/kz1claUlC3IWFFT4rjgxCol2magmsFgPZCQkrzhI
-	3xS892bFQ3XDXBGsNDnFyw1T+TanAaRm0UjyytuQtya9d3Pp0avttC+Ka+++vNQk
-	J6wUDeH002PscOoTVF5kG/HihChHjWVvsNjYq1xYluy2dRCwxUQS3Rf6xT192U+4
-	yb7pLEnPGOE/jzjwi2h2WL3HdAZGNg0qihHRttOrEjxEw==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0b-00256a01.pphosted.com (PPS) with ESMTPS id 4f2v2mhgs6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 06:18:51 -0400 (EDT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38001e788d6so42436a91.3
-        for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 03:18:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782641930; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mLit9szjgK9+sCR5MVQh9jGaYmT3HZfsRmkBktU0oUjBeLHHu2XGhECG6tk/5DqX+b
-         5r426JMCvgYc439rsxc4jdFL4LGED2hH4Nook/H1cTsbw83J42tdZQdaWHhtQf9z0wGM
-         R9V7570hNIb5v9WFrApcOhU/8VQDPklET2QefKr3NCIWPjvGBwSw6zDloPm8ozDtExsR
-         /ezch3F/6tfMfltCooA9sqTxiR3/qyzvA4VScOl8nu29763bNvI6nKqrDKubkZlQEn1R
-         jbVssy1LFlg/yhRObUVjXqZGZZvnf1ByKOgsgPaBS2ffh66/cbNrOK98asPWnftYaQ1Y
-         rfPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=IqIUFv8eyNO2DKWR0kEueaSzyxNdYsgSTleO4QX3P+k=;
-        fh=ZHgB2w6rI/FXuEQtOhXX4gN78MqoZc8e75NYem3pRDk=;
-        b=W60AN3Tyww63tEI5mldpKxKQ/nLRiPhOJndoSuMV8UJpJx5KUd/2EP0A4ChRx4bOyG
-         OmGPPv7cJn7zDLhCHPD1XP92qscSL+Povlp60XhsygJzZca2j5EYDak6PrxlsakM+BI4
-         jQgPUqm23MDkNvSugdLc+q7gMMBtsUdZnsktC5Ft/uAlotguSw5ryNTSitAcOTq0dRrb
-         NMntvz03DFQaw76jhC3a441jZosqFw1CeNOkQZ37TGR3rxhz2ulshdvJs0451khr3l90
-         I0Vt5/agsAziEjFP8cfEN0jp6SxMV2sUREWMazAuDhBme5BSSqwKbBj3kDOXbT6pn4pX
-         ygaw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F9B355F41
+	for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 13:07:13 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782652036; cv=none; b=PA4gVDtkDw/QcB4b/hxanqgL7T3lMOLIMKIjpjG0aQmw/KFjN6535qPOu3qttvy3/xyL+qospa6enCG/F3ljKF4lWp28DTmzpd0SLjsyOx3ePwZJOJ+Miso/sGhGqfvP+mqYZPtzUo+cxcXnL5sum7ALwebETlt3cA8XoRDW7oI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782652036; c=relaxed/simple;
+	bh=NOV9k4bQmcTJj14SJdSkvZ+wA1tTmvIvaPIE5b6IdDY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QWB0XOaYoGUXsr6Ryb976KkB8xVePgwWPzPEuDkilQ924spK+5Qbi6J4IDfSCVDPBtv/dQStSb1p/VyyUKXxVeNUbuMWiLf4LhBolNWN5b72Nd3DpAKmNgmTScGJjF/vhnRYamIBEJieLXZm1VcLPWlD7GwigHthcbidnZ02lYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h7+ptJpU; arc=none smtp.client-ip=209.85.210.180
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-845b733e82cso1492369b3a.2
+        for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 06:07:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nyu.edu; s=nyu-googleapps1; t=1782641930; x=1783246730; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=IqIUFv8eyNO2DKWR0kEueaSzyxNdYsgSTleO4QX3P+k=;
-        b=d1iOmTAOoQA+TT9ZAudDugMB4X0BNgjxADbfRwKnswAD6/2XxtuVKM1ZtA3HDhdNtR
-         3FgGakZP1Mc+f2mGnx40EfWSQUBprZHf1W4lY3T7vqT4IQsVc7sdjePDGILS0TiNKkVH
-         aCAeXb6Jn/dBH4AAxE761G1HBohjIWJirAM/rZh2Qyur69rufv2etnPFAtGDgHCrHPp6
-         Gd07w76lzOzxvU8ZJMkFcARoyyyXwAkjeJvIe3knF0dzjQ0QpjmLHuUd1cbtZOtnSnKv
-         PYn0LO7rFhMFrxrzXv2dsB5U93h0s8ax+288ndp8yDwjdivOg1aebkeZV37M1Tq4f0uC
-         Iz6w==
+        d=gmail.com; s=20251104; t=1782652033; x=1783256833; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sEXc+1vTiBJ6AKjHtSXADxnFDqbZ7Sr0UXeDibP7lJo=;
+        b=h7+ptJpU30jMeTLb3rBsLKfnolpYQ9S78XbOLO0Mjp4aUZGjtNSPl5jeuw7Wr+/e/1
+         /kyEl+9kYKXKziVw7v9A8D4zSbgiLV1hTJjBWnysQsILX28poPv4ygL4iBG/ra56MGRI
+         aUHbeMMhGcfGRouEMbmvT6ktWpmVG5u51IZSPERgm7bjA0fpIDeLwsGndG8iVLKnc6Yn
+         19gnFKylGUg9rJOq0S0uNNYwYBVbBcECzoIs/GqipfGBcwSCqEfn+qgfjgdosE30MIic
+         fphYVv3LGlFdGd3YOoNrSUvvRJftkgLyFocqFPn8ROluMM+TcC+gKxz1eyVjG5sK1Lne
+         8twQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782641930; x=1783246730;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1782652033; x=1783256833;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IqIUFv8eyNO2DKWR0kEueaSzyxNdYsgSTleO4QX3P+k=;
-        b=RY0gd4+YmV8rUJq2WwkcNMatJKzOdF81UL2drw+P1rl661l4Xfqt7pVGaDPJu4Ob74
-         uOfb+tYlDZOy7/F9m/Qt7Yu1dkZkSBXX61GYvo3wpiMHODAhdHILU/Uc/zXOeI282pHn
-         RZo2BInbkCiwV5FL9XLxGc95iwNn8GFcVV99wLE2+MMdexaLSzORCf+ISYX63mMy7C6d
-         ZlI8WtMe2OfVkOTdxLEznTXIji8wUu2gFRyh1Taazylt7v341IChGM8D4ID2+Mdkqgyk
-         N7n4oFW973qfcxQCi4h/cVzdXeRYPZVOx15U+4d1p+vrOAgp6QAGJMS1G6KIuFwk+lgf
-         7/Jw==
-X-Forwarded-Encrypted: i=1; AHgh+RpfEVvvhPn2UX/ZHKYk6Byq1A7inZ8HgXH5+hNO69QUHfq8w2uGRvuYBp0EgOXOeeGNTJa3nicaum1s2g+xVg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRSBBR0PZgnfwOWqKiHhh4EHN9POmSHvcWskLoIGL+mFXl2KMX
-	tTpyCH1g9Enw6pWobFANu/KgOGwvBz4jw2b35AHIOcaAVqNxFS2dW65S0EdDFUx19H/jEx+vSFk
-	qoXsouuerxwcM6imx/QFOMz3HeYsmOSm7dkwBTFPdZsURzDSmNvDceEVWU7M/bhGdNJO8+SVAGE
-	+8fRgEcwETJbXAs5000PTTQdyiaEr4hN7dgoAY6DYX+CHx3jkEUEo=
-X-Gm-Gg: AfdE7cnwABjhg0GK7mZZfmDCawp2MzhPKbQcR3xQMvUu629koCNw3Cu9by4KT3mO4GK
-	M0tSiDPImoBEy96F74NGtXeQ8SI4kPy1cbYVGMfR5DMtm0KpYGUWx/gbpRTK8kLVPFsJ8AY7mhw
-	PeReo9TgPrJBEBoOTFDbgJUSyIGh4qYo2vYYg4Mq08dXFrTWEr6tKHw6xiNCX5AJRfLJGg
-X-Received: by 2002:a17:90b:1c81:b0:37c:6910:5758 with SMTP id 98e67ed59e1d1-37f7a52c19fmr5834465a91.1.1782641930520;
-        Sun, 28 Jun 2026 03:18:50 -0700 (PDT)
-X-Received: by 2002:a17:90b:1c81:b0:37c:6910:5758 with SMTP id
- 98e67ed59e1d1-37f7a52c19fmr5834447a91.1.1782641930109; Sun, 28 Jun 2026
- 03:18:50 -0700 (PDT)
+        bh=sEXc+1vTiBJ6AKjHtSXADxnFDqbZ7Sr0UXeDibP7lJo=;
+        b=Lyh/1zbGy9llxlhIV6utqAWx+j/oVPEGH/9/uiXZYL49vYax3gZxJMWvN9/GTa78QX
+         QPDioH0hB6HxR6EbPgWNdLBWaN/murPm/BtusZbRuYBNoB8MbaVw4IpSpxM2aAK0V15M
+         WPMpfw2gYN2fpdWqV6PXqz1Niirju/ntstmR1umFpbjVgFJ7pH6A0SW6Fn7HckWoxmcw
+         hxEu0Bzzs+wQnKLd3W2lv1UqNri2JECgVu2lr7mc2ArGslhW8R3M0JdETIpYwA9tzLui
+         zEGl8wZKB1dHavWwiG6qStgEj617cCzLgu1TQbA7HdaeNnYXn2zGzkZSWklOu+qWOJg9
+         I7sg==
+X-Gm-Message-State: AOJu0YyNYADa6NvBkdHbARz/GzeQ62DBxirAw4hvr9ei4hARchNXEHBj
+	w6B2U7lQaXHOilaXNLvRV7S8af9T4+G/RMJ29wohPODTGjMvxOl9BXPX
+X-Gm-Gg: AfdE7ck+YTwTHFSgVTaZuYq99Yty9A2564hBDW6+oMYuiFDlGdWBOk+4Gki3tItdk2l
+	BYCXLQTubJ0KsKoffemAxbb5eXSurkjLm8YbfS/1aUrDsuNK7RTPJlBfP6GKjUhvumPiz/cLcKN
+	1Ur+fN0EDTBqsZEte7QrQux4FIE99FYlUJ9ptUmmIJojKP0pw73V5Ktuz3pbUMhZPI0uZPQU2Um
+	JJcXKytLccNKhxfonIVb9IR3GD9cNpNsTx8IgjXp265E9BTlkrpX7gGB9Sh4gKXZDcz0Ut7fRZi
+	IErAZRW5y9U+TqPO3wAfHzIMqqXP4OAe0BBmyGe5qCF5QBg98K0FDd+ACINtIskvTTCT5X+OBmY
+	d/jRYDP0CsKKO7gmhTAvl9qQjrqtjFQmId7xi0oKDQ7+V3FP66qtDa+nceBv2R4Q/oHP5KGfKuO
+	gMPgR3TRBqwsTbIBbkRc4ZxIvbKbw=
+X-Received: by 2002:a05:6a00:3004:b0:845:e703:3c with SMTP id d2e1a72fcca58-845e703122fmr2516476b3a.44.1782652033241;
+        Sun, 28 Jun 2026 06:07:13 -0700 (PDT)
+Received: from localhost.localdomain ([112.166.204.241])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-845a40ee417sm9712281b3a.40.2026.06.28.06.07.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jun 2026 06:07:12 -0700 (PDT)
+From: Hojun Choi <ghwns6743@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Deepak Karn <dkarn@redhat.com>,
+	syzbot+ca7a2759caaa6cd4e3db@syzkaller.appspotmail.com,
+	Hojun Choi <ghwns6743@gmail.com>
+Subject: [PATCH wireless] wifi: mac80211: clear beaconing state in ieee80211_do_stop()
+Date: Sun, 28 Jun 2026 22:08:02 +0900
+Message-ID: <20260628130802.7698-1-ghwns6743@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMt2zv5c0cYzfe0RQ5AfoUdm+b4bAshgjCs23NjFBhQXDKLniQ@mail.gmail.com>
-In-Reply-To: <CAMt2zv5c0cYzfe0RQ5AfoUdm+b4bAshgjCs23NjFBhQXDKLniQ@mail.gmail.com>
-From: Yang Liu <liu.y@nyu.edu>
-Date: Sun, 28 Jun 2026 03:18:14 -0700
-X-Gm-Features: AVVi8Cf8t9Ato-3g7XWUk93rEfgPTT4Ew3KvNQiLLSuTjXEG34M_PT0p9XJVcFI
-Message-ID: <CAMt2zv5gsy-vbjfZC5jQaNsOj1NnkhNrQuCKSQ2Sn32gmnCcag@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mt76: mt7996: fix TX DMA mapping leak for ADDBA-req frames
-To: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com
-Cc: shayne.chen@mediatek.com, sean.wang@mediatek.com,
-        linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI4MDA4OSBTYWx0ZWRfX0eUWCj14lgZb
- rOAC1OhY01TyC8+tWdt1mBCSftd2mv484d+pKu0SKtoeffZNtgXspQ27hYAjzs9UvYHQkDoNuVR
- bX6wBQiPCxVIb6KIAbthZ5oDiHnXRMY=
-X-Authority-Analysis: v=2.4 cv=YfSNIQRf c=1 sm=1 tr=0 ts=6a40f50b cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
- a=x7bEGLp0ZPQA:10 a=S0S_EcBMpFAA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Se5WoFf3ZZRiLcel0nel:22 a=Lu3rmdZLeA08KL8VqJdF:22 a=VwQbUJbxAAAA:8
- a=BIFNTvHFq2Y8mDqsfgwA:9 a=QEXdDO2ut3YA:10 a=uKXjsCUrEbL0IQVhDsJ9:22
-X-Proofpoint-GUID: Qb8PouD8-X0Rm2BeA6nS0yapMdfER3aM
-X-Proofpoint-ORIG-GUID: Qb8PouD8-X0Rm2BeA6nS0yapMdfER3aM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI4MDA4OSBTYWx0ZWRfX2GBQvWmtdCqn
- gET3k6Q8REvb7+Wv+Mbd5KWYnwzrSp9xiNa4+RihpCHbQQ7hqNgtVhaeFk5ZWcpZ6aaQuT7g10W
- +ddBWrHaaiU5GFHuzdNoUKfH0Wj5iQvktVuHnUiNBTzqebTMnnBcKUm3TGMSdSC/giJOG97CZib
- nlUuf9h4vHcRadg2Oa1yRuwfOq5lNDFYflS/OlOCiVENCqSIwj6gJc+yLXBxC/LE8K9b/hkzNSv
- 85JS4Bv2bavL1Um7C0ZZ8nOEQVnIBNqEUBipNuWAPQefOO5d5NgZ+sZaFv+fSQ/JB5cWesL85Ez
- VxnS2p/j/sm6l8na1QRTdvuPZPmSz/eoKNscJeNCsp6/5bDBtdyPaOejp+UemOM/tCK2b3pMh5T
- ZO/wPrpqs9yDcjgv3nCJa4sfOef2GGMLkEvWMJw9PRjFYS5w6nKrCPjR8yTjNHlX76FVRbFhyFt
- OtPC1GSYc59RYjez/Jg==
-X-Orig-IP: 209.85.216.71
-X-Proofpoint-Spam-Details: rule=outbound_bp_notspam policy=outbound_bp score=0
- priorityscore=1501 adultscore=0 clxscore=1011 malwarescore=0 phishscore=0
- suspectscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606280089
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nyu.edu,reject];
-	R_DKIM_ALLOW(-0.20)[nyu.edu:s=20180315,nyu.edu:s=nyu-googleapps1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nyu.edu:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-wireless@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38224-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38226-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER(0.00)[ghwns6743@gmail.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,syzkaller.appspotmail.com,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[liu.y@nyu.edu,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:dkarn@redhat.com,m:syzbot+ca7a2759caaa6cd4e3db@syzkaller.appspotmail.com,m:ghwns6743@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[liu.y@nyu.edu,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ghwns6743@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,ca7a2759caaa6cd4e3db];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 42A176D3947
+X-Rspamd-Queue-Id: 363406D3DBC
 
-MT7996 hands the firmware a HW MAC-TXP for ADDBA-req action frames
-(MT_TXD7_MAC_TXD, set in mt7996_mac_write_txwi_80211()), but the chip is a
-FW-TXP device, so on TX completion mt76_connac_txp_skb_unmap() decodes
-the per-frame txp as a struct mt76_connac_fw_txp.  For a MAC-TXP the
-fw_txp.nbuf byte aliases the high byte of the TID word
-(MT_TXP1_TID_ADDBA, GENMASK(14, 12)), which is always zero, so the
-unmap loop runs zero times and buf[1] (the skb DMA mapping) is never
-unmapped. mt7996_tx_prepare_skb() also sets buf[1].skip_unmap
-unconditionally, so the generic mt76 DMA-ring cleanup skips it as well.
+ieee80211_do_stop() zeroes vif.bss_conf.beacon_int but, unlike
+ieee80211_stop_ap(), ieee80211_ibss_disconnect() and
+ieee80211_stop_mesh(), leaves enable_beacon set and the
+SDATA_STATE_OFFCHANNEL_BEACON_STOPPED bit pending. cfg80211 rejects a
+beacon interval below 10, so a zero interval comes from this teardown,
+not from userspace.
 
-Each ADDBA req therefore leaks one TX DMA mapping, i.e. roughly one per
-(re)association.  When WED is enabled the mt76 DMA device bounces these
-mappings through the WED swiotlb pool, so under continuous client
-reconnect churn the pool is exhausted after ~1-2 days, after which DMA
-mapping fails for WED, the WiFi MCU and other on-SoC consumers.
+do_stop() clears SDATA_STATE_RUNNING first, so nothing acts on the stale
+state while the interface is down. But do_open() re-sets RUNNING without
+restoring beacon_int or clearing enable_beacon and the bit, so the state
+survives a down/up cycle. A later ieee80211_offchannel_return() on scan
+completion then consumes the stale bit and re-enables beaconing while
+beacon_int is still 0, and drivers arming a beacon timer from the
+interval divide by zero. syzbot reported this as a divide error in
+mac80211_hwsim_link_info_changed(); the exact sequence that leaves
+do_stop() with beaconing still enabled was not reproduced.
 
-Only set buf[1].skip_unmap on the FW-TXP path. For MAC-TXD frames
-leave it clear so mt76_dma_tx_cleanup_idx() unmaps buf[1]. The FW
-unmap is a no-op for these frames (nbuf reads 0), so there is no double
-free.
+Clear enable_beacon and the bit in ieee80211_do_stop() as well,
+mirroring the other teardown paths, so the state cannot outlive the
+interface. do_stop() warns on a vif that still has valid links, so MLD
+links are already torn down here and only the deflink beacon_int is
+zeroed; clearing the deflink enable_beacon is sufficient.
 
-Fixes: cb6ebbdffef2 ("wifi: mt76: mt7996: support writing MAC TXD for
-AddBA Request")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude-Code:claude-opus-4-8
-Signed-off-by: Yang Liu <liu.y@nyu.edu>
+Fixes: d6a83228823f ("mac80211: track enable_beacon explicitly")
+Reported-by: syzbot+ca7a2759caaa6cd4e3db@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ca7a2759caaa6cd4e3db
+Link: https://lore.kernel.org/all/20251205153502.273426-1-dkarn@redhat.com/
+Signed-off-by: Hojun Choi <ghwns6743@gmail.com>
 ---
-Tested on a Banana Pi R4 Pro (MT7988A, MT7996/BE14, WED enabled, 6.18.35):
-under a continuous client (re)association reproducer (~51 reassoc/min),
-/sys/kernel/debug/swiotlb/io_tlb_used grew ~25 slots/min before this
-patch (steady leak; pool exhaustion and the resulting DMA failures after
-~1-2 days) and is flat after it, with no double free.
+ net/mac80211/iface.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 0eebc81..962dad4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1010,6 +1010,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev,
-void *txwi_ptr,
-     struct mt76_txwi_cache *t;
-     int id, i, pid, nbuf = tx_info->nbuf - 1;
-     bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
-+    bool mac_txd;
-     __le32 *ptr = (__le32 *)txwi_ptr;
-     u8 *txwi = (u8 *)txwi_ptr;
-     u8 link_id;
-@@ -1096,7 +1097,8 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev,
-void *txwi_ptr,
-     /* MT7996 and MT7992 require driver to provide the MAC TXP for AddBA
-      * req
-      */
--    if (le32_to_cpu(ptr[7]) & MT_TXD7_MAC_TXD) {
-+    mac_txd = le32_to_cpu(ptr[7]) & MT_TXD7_MAC_TXD;
-+    if (mac_txd) {
-         u32 val, mac_txp_size = sizeof(struct mt76_connac_hw_txp);
-
-         ptr = (__le32 *)(txwi + MT_TXD_SIZE);
-@@ -1167,7 +1169,11 @@ int mt7996_tx_prepare_skb(struct mt76_dev
-*mdev, void *txwi_ptr,
-
-     /* pass partial skb header to fw */
-     tx_info->buf[1].len = MT_CT_PARSE_LEN;
--    tx_info->buf[1].skip_unmap = true;
-+    /* MAC-TXD (ADDBA-req) frames use a HW MAC-TXP that the fw-txp
-+     * mt76_connac_txp_skb_unmap() path does not unmap; free buf[1] via the
-+     * DMA-ring cleanup for them instead (see commit message).
-+     */
-+    tx_info->buf[1].skip_unmap = !mac_txd;
-     tx_info->nbuf = MT_CT_DMA_BUF_NUM;
-
-     return 0;
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 086272c3ec08..c070d47cb631 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -719,6 +719,10 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
+ 
+ 	sdata->vif.bss_conf.beacon_int = 0;
+ 
++	/* mirror stop_ap()/IBSS/mesh: also clear the beaconing state */
++	sdata->vif.bss_conf.enable_beacon = false;
++	clear_bit(SDATA_STATE_OFFCHANNEL_BEACON_STOPPED, &sdata->state);
++
+ 	/*
+ 	 * If the interface goes down while suspended, presumably because
+ 	 * the device was unplugged and that happens before our resume,
 -- 
-2.53.0
+2.54.0
+
 
