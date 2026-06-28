@@ -1,159 +1,165 @@
-Return-Path: <linux-wireless+bounces-38217-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38218-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zW82KeucQGquggkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38217-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 06:02:51 +0200
+	id OTgNGCrBQGpUhwkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38218-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 08:37:30 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2D16D31D3
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 06:02:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEA36D34CA
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 08:37:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38217-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38217-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=H3BGAhcE;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38218-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38218-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E846E3013039
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 04:02:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6960F300252F
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 06:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12FD346771;
-	Sun, 28 Jun 2026 04:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D8B23F417;
+	Sun, 28 Jun 2026 06:37:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC1234405C;
-	Sun, 28 Jun 2026 04:02:27 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782619354; cv=none; b=liq7PhfEAfO5safbbhi8oei71XAQzZrg87Hb/Aj8QtLS5j/oMw6Fb+R/aNqMjs1OtEeG72qacV4QLWwL6h7FBIjkipR8OQFDtfywALIOVmqO0Yf60nbLJYosDa79hC7U5qjTFGVzGfRede5Jw8CNEhzR2ZNnWN0VJB+u/nOXZf0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782619354; c=relaxed/simple;
-	bh=vc4XTNmJz1rEpHrXNp2XuTBwKB28ZOC8/y8X5mdNf1E=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Rzc0Iv6a6ZgTiuMEMxZRfvuOTTIOFrJJQsyYTQ13j6vwWFfHAhSf1d7CRnCMSPBYq1oKwCmZHCRkyyNQ1OB67dCErBrgPq+pJrkfVZkPZf1k91b4+jTlQuBqDqLUZYT+yX9B3os7KHTwYXzfRUhqP3QUtpN15DH42g2yd0uLoF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Received: from smtpclient.apple (unknown [117.182.74.7])
-	by APP-01 (Coremail) with SMTP id qwCowAD3j8h4nEBq+V6qAw--.55335S8;
-	Sun, 28 Jun 2026 12:02:25 +0800 (CST)
-Content-Type: text/plain;
-	charset=utf-8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30A7175A7F
+	for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 06:37:21 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782628642; cv=pass; b=hbN6AswobMhMXVvzqmBxhRuRACKDkCkmzwME0aCYRbNWLtkgOE5n2RVfgf7JE/AVqiTzoajCsE1QjBcxjVAf5SD5Flj0KyqsKSGTGoRDCFx9qpAuRkmhPx/daQE4tYAMfAzq9Is401fvpZOKVqSCVga0U1eDdgV40P4GSA3XZVI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782628642; c=relaxed/simple;
+	bh=dX/qyZlPM8cB3iHqP1m+RbEp1XX1FDdi4EdRMnmTEAU=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=dVWPaHcG1JasWIzRxNcueiR63J+kVr1rQKrC3MMJm8MEClNsyGfbHTSulqc5fhTWgOU4AHB+Wel1xjhsaqKlLFBx++MiAgVh9tJxd6q/w0zhoYQ/LjP7V7Nl1Vj0JXxzJ8OEq6XUXmAUOTaDmNcwm0oR6E3eqcUH1xepkm0dtY4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H3BGAhcE; arc=pass smtp.client-ip=209.85.128.172
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-800619d5e7eso29524067b3.0
+        for <linux-wireless@vger.kernel.org>; Sat, 27 Jun 2026 23:37:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782628641; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Z/eysxCWO8fB9dxxNVDl3nr6dhskzS0G+6Ei7+qO6iWONnlwnoimcvchqtitvPqFaU
+         LVXnp8MvKQd1IFjR33S//xJe6qSmnv3htRru+ZOHVfYH/sMXYx8a5ZVk+73LCvloigH4
+         rMRktSd3gUxhx2pm58ojumYu8Ln0ezRbCFkWTOOLQdVKSN5e31EJSzIlbnmY6HLFXE3G
+         u/YJ3GCiQiHHtXAXfG7rjlLxvEkgF7rLAoWPfGrSQlKTj14mvHhObIJ5fKpt5qqcM34c
+         r6zUHPluYZ0bX1WoYNzBxXDQMQmi4pdiUnF+RwetFf3lZybUH8v7+/L3rKhvNAVq0x2h
+         WBGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=NJrYPlgkNF2Vakuo/uExz62wdrU0jLhDNp7huh7YI9I=;
+        fh=hYLqwXhlzhZ/F+57foUaN9gOwER9wDdCz0ZuPpyV6uA=;
+        b=ZtowQMKF+/Lqla85/ErBYBrIn3mff/auMXrbjGOasjhLgi+7RkxrE2UaowW5MNrLba
+         XK9UgM49JyQjbWH8IktZjXswWIrT413MXvlL3dP6/jvy2/4OVfBXDcPNZusoZYZKFZ47
+         PmYRi1T8IVw0AgNgPkZ7wHhgN5bPHLxU3DLo4HsWQ6tPd8IKLwGIMNEeVLOMImUmrd37
+         6mxRdGFk1LR0g0AxAZizXyU/0vlra/y+X6stk+xepfBeGbuTMRPh/Nd9AYQ8GWgpsabZ
+         CMq2r+gubVOxGKnhYTtjhWewKKQCyEd4/oXCZyCJ+SbHi3msE1ImOecEBKOM6XO+GzaO
+         OKxQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782628641; x=1783233441; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NJrYPlgkNF2Vakuo/uExz62wdrU0jLhDNp7huh7YI9I=;
+        b=H3BGAhcE658tH64H4vxEVTHhbINbD970S2kc3oMpbNjXUq8jljmzOjdJGAJNYQSBDf
+         9I6nMq5Rxc3wFNzh0NXZBVhcxxfIew7HRJ4H9ci/Vwdx4cc6aT1CUxC3lJw1S51xzcFU
+         Q+NEY/jKJ0YLKZ5CcrnkjAvcxGPgyfvAnWD/F0fH3rBABS10VIMDOhUfD67qxlYIcb/v
+         frAFYVF8cpamrHpxZP0bD2nTBXDtjRYiEZppxUHNqXlOHwIlgAzkZi5T9ol0MEk+C+iA
+         FhPd3bnV/Lttec/nvy1luAna+UY06V8wi9H99hfBQ9rf60oTpS9v5ZsvHzkL0hIlIApO
+         ORkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782628641; x=1783233441;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NJrYPlgkNF2Vakuo/uExz62wdrU0jLhDNp7huh7YI9I=;
+        b=FTw0FCZWZRUXq+1c88lOEqHpFAF3QG4yjbI079CjURKBlIrUP8ygW74gpb3eQ/hH3K
+         9ML5xRimDYxOl4rBXvTZoJU/+uNDIxcUOdKLcD8L9fbjaaqaBR/TX4MdB8WZXtRzvrwF
+         hWcMl/O/BYGJB6VcpaZNFR0Zqn69T1fY2zPK8uqCX0d2YPuiJI0YSD+8lRXsAwSjlHut
+         SUOEtK9xOMmxoN84f3lHIjw7HLz642J2Nsgpic0t3x16g2CSMByKlxfcfOsre5PLpQ2F
+         vO0PceHbd65ugpHSTpNskLqniunv0ToaGpEN15mBRMlwtnen3/ZX6nCoOKvM+qSkNhUA
+         aCyw==
+X-Gm-Message-State: AOJu0YxK8aMp8c5w/w87eHQSn3r6Uy4fKJIGQNbJ07Q31My9W7wPxpoJ
+	lbuwKCyaZE3dhNDUHpdEkYlj+yDaLvh379Qp551tAlZ5QF8RGlFlBa5k+9j+/ORwYddStrSuplj
+	8yWanA0R+7Rv67w2JOXPeo3Kf+Oh7/JjAL6oE
+X-Gm-Gg: AfdE7clIgUu4GsAbtGMq+sY0gvfCdvHabPW+6lGXOgVEeCjjOsCSF65N+pJdU7gcwrv
+	yqwyhBtezUdK0rSjocodNkBrOrtC83KtNWLy4UeYpDfCJT0nGYlDrsH0hOqCbUGOrbEaEHI/yUY
+	bju7W0qCZ59GhAw2eBkiN+CQjbUfhAkCjwAbPpacbEm/ayld3DX5aJLWHTiJ82x20v5oVM58QT5
+	LI5xN2UxNgUzPfEvQJvs1D7/Jh7t7eI4qvTMTSuY2ZAr0r0hIf2uoA7TxVNQZYDoBt0rDKK6w==
+X-Received: by 2002:a05:690c:884:b0:80c:2365:875f with SMTP id
+ 00721157ae682-80c7260777emr66397137b3.20.1782628640666; Sat, 27 Jun 2026
+ 23:37:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.8\))
-Subject: Re: [PATCH] fix: ath11k: ath11k_ahb_fw_resources_init: fix
- device_node reference leak   on setup failure
-From: WenTao Liang <vulab@iscas.ac.cn>
-In-Reply-To: <20260626153619.52954-1-vulab@iscas.ac.cn>
-Date: Sun, 28 Jun 2026 12:02:14 +0800
-Cc: Jeff Johnson <jjohnson@kernel.org>,
- stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8107F859-E8FF-4A06-BAB9-51FE11249930@iscas.ac.cn>
-References: <20260626153619.52954-1-vulab@iscas.ac.cn>
-To: Kalle Valo <kvalo@kernel.org>,
- linux-wireless@vger.kernel.org
-X-Mailer: Apple Mail (2.3826.700.81.1.8)
-X-CM-TRANSID:qwCowAD3j8h4nEBq+V6qAw--.55335S8
-X-Coremail-Antispam: 1UD129KBjvJXoW7AF1UWFyfGFWUZFy8tr4Dtwb_yoW8Jw43pr
-	4xGa9FyFy5Aa1xJa1xZr4fZFy09a4ayrWYkrsYy34furs5AFy3tF15XFyUXr1rJF48CF4U
-	Xr42yry5GF90vaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBEb7Iv0xC_KF4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
-	8067AKxVWUAVCq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28C
-	jxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI
-	8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2
-	z280aVCY1x0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2
-	IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r1j6r4U
-	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUAVWUtw
-	CF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j
-	6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64
-	vIr41lIxAIcVC0I7IYx2IY67AKxVW5JVW7JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIx
-	AIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07j5zVbUUUUU
-	=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwEMA2pAixEc4AAAsF
+MIME-Version: 1.0
+From: Doug Brewer <brewer.doug@gmail.com>
+Date: Sun, 28 Jun 2026 14:37:09 +0800
+X-Gm-Features: AVVi8Cc-t0y7oE7EAn_Auei_Pwywa6wqUnQM6QY9vPL-GCU8PU-_HhT7JOaVOKg
+Message-ID: <CAG0V13TRHzXtoMY=XZMOd=WjzS58Cu=aePFCz8mY6UoGYm5dXw@mail.gmail.com>
+Subject: rtw89: RTL8852BE P2P-device iftype and STA+P2P interface combination
+To: linux-wireless@vger.kernel.org
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jjohnson@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:kvalo@kernel.org,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:pkshih@realtek.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-38217-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[brewerdoug@gmail.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-38218-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brewerdoug@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_FIVE(0.00)[5]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7C2D16D31D3
+X-Rspamd-Queue-Id: 4DEA36D34CA
 
+Hi,
 
+I'm experimenting with Wi-Fi Display (Miracast sink) concurrent with an
+STA connection on an RTL8852BE (PCIe) using the mainline rtw89 driver
+(kernel 6.18.37).
 
-> 2026=E5=B9=B46=E6=9C=8826=E6=97=A5 23:36=EF=BC=8CWenTao Liang =
-<vulab@iscas.ac.cn> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> of_get_child_by_name acquires a device_node reference. When the
->  subsequent ath11k_ahb_setup_msa_resources call fails, the function
->  returns immediately without calling of_node_put, leaking the node
->  reference.
->=20
-> Add of_node_put before returning on the setup failure error path.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax =
-devices")
-> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
-> ---
-> drivers/net/wireless/ath/ath11k/ahb.c | 1 +
-> 1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/net/wireless/ath/ath11k/ahb.c =
-b/drivers/net/wireless/ath/ath11k/ahb.c
-> index 08d3a0c8f105..8a08275db40a 100644
-> --- a/drivers/net/wireless/ath/ath11k/ahb.c
-> +++ b/drivers/net/wireless/ath/ath11k/ahb.c
-> @@ -996,6 +996,7 @@ static int ath11k_ahb_fw_resources_init(struct =
-ath11k_base *ab)
-> 	ret =3D ath11k_ahb_setup_msa_resources(ab);
-> 	if (ret) {
-> 		ath11k_err(ab, "failed to setup msa resources\n");
-> +		of_node_put(node);
-> 		return ret;
-> 	}
->=20
-> --=20
-> 2.39.5 (Apple Git-154)
+iw phy reports:
+Supported interface modes:
+   * managed, AP, P2P-client, P2P-GO
+   (no P2P-device)
+interface combinations are not supported
 
-Please ignore this patch. I will resend a proper version after
-learning the kernel submission process.
+In practice this blocks the standard P2P flow: there is no P2P-device
+iftype for a dedicated discovery context, and no advertised interface
+combination for managed + P2P-client coexistence.
 
-Apologies for the noise.
+My questions:
+1. is P2P-device iftype support planned for rtw89 on RTL885x? Is there a
+    known technical blocker, or is it simply not yet implemented?
+2. would advertising a managed + P2P-client interface combination
+    (single channel) be feasible on the current rtw89?
+3. is MCC (#channels > 1) on the roadmap, or considered out of scope?
 
-Best regards,
-WenTao Liang=
-
+Regards,
+Doug
 
