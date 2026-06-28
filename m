@@ -1,146 +1,159 @@
-Return-Path: <linux-wireless+bounces-38216-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38217-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FJ2LFEyQQGr8gAkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38216-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 05:09:00 +0200
+	id zW82KeucQGquggkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38217-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 06:02:51 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D716D3017
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 05:08:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2D16D31D3
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 06:02:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MOnRIRYa;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38216-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38216-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38217-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38217-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A0A9B301700F
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 03:08:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E846E3013039
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jun 2026 04:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F79025524C;
-	Sun, 28 Jun 2026 03:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12FD346771;
+	Sun, 28 Jun 2026 04:02:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A4D18B0A;
-	Sun, 28 Jun 2026 03:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC1234405C;
+	Sun, 28 Jun 2026 04:02:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782616132; cv=none; b=MTpUry8fHBxXkJ2yQPAVwon/bT7YUpjOFHUvUM/Bb5TkYhTBDuCHufY2DwCqNfboW/78CCcGpXZ4l5NjBLw6a6gpditF2TSj4125KgP6GaGiYMUAE7omRaCQRHQMNSTgSFCv2XfzHpMZd93jxjKOf30xGkdtFpZjVBB/Vuh3cY4=
+	t=1782619354; cv=none; b=liq7PhfEAfO5safbbhi8oei71XAQzZrg87Hb/Aj8QtLS5j/oMw6Fb+R/aNqMjs1OtEeG72qacV4QLWwL6h7FBIjkipR8OQFDtfywALIOVmqO0Yf60nbLJYosDa79hC7U5qjTFGVzGfRede5Jw8CNEhzR2ZNnWN0VJB+u/nOXZf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782616132; c=relaxed/simple;
-	bh=F13cvcxhy3d55n7MjK8iW6eyN6upRu2rZr5RBuse3J4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n+yq8J8XCsacC3DSr2s4I544cB8U/bulCCpoACOHTxBnDtI1gtnXlZG/puoOvb8ChfVk6pDVHdpGrV9MuKiNd9Mgg0IK4veeGsXwZok3WK28qAWebRByG5IZNKzJtDCengYsvfEwnkPC5dHqhC3o1NrqKBKypDogjp+nNdP1Vt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MOnRIRYa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3291F000E9;
-	Sun, 28 Jun 2026 03:08:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782616131;
-	bh=mB14dzokXviAWew5o/D1323LSbv37Vmdi+prndaBPPk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MOnRIRYaRdO5vvVGeU7z0bd3sUm5jr4IF5E7H3Drrc/mhZ6J38Qgq2KfeWfZdyiZF
-	 MyPP0RbCyJey4DDEUnHd/WLuffNAb8sTTBthLHXIGJyqrQSSPkIx6uWA/liBTX+5lW
-	 MrlHQ5wgAlRACR0pP+fZlMCwm6ZXwW2hMDDiaTArIgZesUqxLqEhUgCYnpG+5qr0Hj
-	 uKSDOrLyTeD9isVpYKdNW0tZpinsYRBlVXmHhM4YAegP3rdvy1dlnWzXSqBQtEmPm3
-	 0+QfU26iTUBVvK4ZJZA1rRf5Di3ctOCXGbhevxIzBFqBQWEaeaX29sq0WMzJFx/G1K
-	 t0d4zembWGl2A==
-Date: Sat, 27 Jun 2026 22:08:46 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: george.moussalem@outlook.com, Jens Axboe <axboe@kernel.dk>, 
-	Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson <jjohnson@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, 
-	Rocky Liao <quic_rjliao@quicinc.com>, Saravana Kannan <saravanak@kernel.org>, 
-	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	ath10k@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-remoteproc@vger.kernel.org
-Subject: Re: [PATCH 2/6] remoteproc: qcom: Add M0 BTSS secure PIL driver
-Message-ID: <akCQA-bLpp31QVGV@baldur>
-References: <20260625-ipq5018-bluetooth-v1-0-d999be0e04f7@outlook.com>
- <20260625-ipq5018-bluetooth-v1-2-d999be0e04f7@outlook.com>
- <38aceb33-b28e-4994-b277-de070b6dae2b@oss.qualcomm.com>
+	s=arc-20240116; t=1782619354; c=relaxed/simple;
+	bh=vc4XTNmJz1rEpHrXNp2XuTBwKB28ZOC8/y8X5mdNf1E=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Rzc0Iv6a6ZgTiuMEMxZRfvuOTTIOFrJJQsyYTQ13j6vwWFfHAhSf1d7CRnCMSPBYq1oKwCmZHCRkyyNQ1OB67dCErBrgPq+pJrkfVZkPZf1k91b4+jTlQuBqDqLUZYT+yX9B3os7KHTwYXzfRUhqP3QUtpN15DH42g2yd0uLoF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Received: from smtpclient.apple (unknown [117.182.74.7])
+	by APP-01 (Coremail) with SMTP id qwCowAD3j8h4nEBq+V6qAw--.55335S8;
+	Sun, 28 Jun 2026 12:02:25 +0800 (CST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <38aceb33-b28e-4994-b277-de070b6dae2b@oss.qualcomm.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.8\))
+Subject: Re: [PATCH] fix: ath11k: ath11k_ahb_fw_resources_init: fix
+ device_node reference leak   on setup failure
+From: WenTao Liang <vulab@iscas.ac.cn>
+In-Reply-To: <20260626153619.52954-1-vulab@iscas.ac.cn>
+Date: Sun, 28 Jun 2026 12:02:14 +0800
+Cc: Jeff Johnson <jjohnson@kernel.org>,
+ stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8107F859-E8FF-4A06-BAB9-51FE11249930@iscas.ac.cn>
+References: <20260626153619.52954-1-vulab@iscas.ac.cn>
+To: Kalle Valo <kvalo@kernel.org>,
+ linux-wireless@vger.kernel.org
+X-Mailer: Apple Mail (2.3826.700.81.1.8)
+X-CM-TRANSID:qwCowAD3j8h4nEBq+V6qAw--.55335S8
+X-Coremail-Antispam: 1UD129KBjvJXoW7AF1UWFyfGFWUZFy8tr4Dtwb_yoW8Jw43pr
+	4xGa9FyFy5Aa1xJa1xZr4fZFy09a4ayrWYkrsYy34furs5AFy3tF15XFyUXr1rJF48CF4U
+	Xr42yry5GF90vaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBEb7Iv0xC_KF4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
+	8067AKxVWUAVCq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28C
+	jxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI
+	8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2
+	z280aVCY1x0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2
+	IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r1j6r4U
+	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUAVWUtw
+	CF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j
+	6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64
+	vIr41lIxAIcVC0I7IYx2IY67AKxVW5JVW7JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+	6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIx
+	AIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07j5zVbUUUUU
+	=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwEMA2pAixEc4AAAsF
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38216-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:konrad.dybcio@oss.qualcomm.com,m:george.moussalem@outlook.com,m:axboe@kernel.dk,m:ulfh@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:johannes@sipsolutions.net,m:jjohnson@kernel.org,m:brgl@kernel.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:quic_bgodavar@quicinc.com,m:quic_rjliao@quicinc.com,m:saravanak@kernel.org,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:linux@armlinux.org.uk,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:konradybcio@kernel.org,m:mathieu.poirier@linaro.org,m:p.zabel@pengutronix.de,m:linux-block@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mmc@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath10k@lists.infradead.org,m:linux-arm-msm@vger.kernel.org,m:linux-bluetooth@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-remoteproc@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.
- de];
-	FORGED_SENDER(0.00)[andersson@kernel.org,linux-wireless@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:jjohnson@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:kvalo@kernel.org,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-38217-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_TWELVE(0.00)[36];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andersson@kernel.org,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[outlook.com,kernel.dk,kernel.org,sipsolutions.net,holtmann.org,gmail.com,quicinc.com,lunn.ch,armlinux.org.uk,davemloft.net,google.com,redhat.com,linaro.org,pengutronix.de,vger.kernel.org,lists.infradead.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[]
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_FIVE(0.00)[5]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 95D716D3017
+X-Rspamd-Queue-Id: 7C2D16D31D3
 
-On Fri, Jun 26, 2026 at 01:20:25PM +0200, Konrad Dybcio wrote:
-> On 6/25/26 4:10 PM, George Moussalem via B4 Relay wrote:
-> > From: George Moussalem <george.moussalem@outlook.com>
-> > 
-> > Add support to bring up the M0 core of the bluetooth subsystem found in
-> > the IPQ5018 SoC.
-> > 
-> > The signed firmware loaded is authenticated by TrustZone. If successful,
-> > the M0 core boots the firmware and the peripheral is taken out of reset
-> > using a Secure Channel Manager call to TrustZone.
-> > 
-> > Signed-off-by: George Moussalem <george.moussalem@outlook.com>
-> > ---
-> 
-> Can this not fit inside the existing PAS driver?
-> 
 
-While the start/stop SCM calls look the same, this doesn't follow any of
-the surrounding concepts. So I think this should follow the other
-non-remoteproc uses of mdt_loader and scm directly instead.
 
-Regards,
-Bjorn
+> 2026=E5=B9=B46=E6=9C=8826=E6=97=A5 23:36=EF=BC=8CWenTao Liang =
+<vulab@iscas.ac.cn> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> of_get_child_by_name acquires a device_node reference. When the
+>  subsequent ath11k_ahb_setup_msa_resources call fails, the function
+>  returns immediately without calling of_node_put, leaking the node
+>  reference.
+>=20
+> Add of_node_put before returning on the setup failure error path.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax =
+devices")
+> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+> ---
+> drivers/net/wireless/ath/ath11k/ahb.c | 1 +
+> 1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/net/wireless/ath/ath11k/ahb.c =
+b/drivers/net/wireless/ath/ath11k/ahb.c
+> index 08d3a0c8f105..8a08275db40a 100644
+> --- a/drivers/net/wireless/ath/ath11k/ahb.c
+> +++ b/drivers/net/wireless/ath/ath11k/ahb.c
+> @@ -996,6 +996,7 @@ static int ath11k_ahb_fw_resources_init(struct =
+ath11k_base *ab)
+> 	ret =3D ath11k_ahb_setup_msa_resources(ab);
+> 	if (ret) {
+> 		ath11k_err(ab, "failed to setup msa resources\n");
+> +		of_node_put(node);
+> 		return ret;
+> 	}
+>=20
+> --=20
+> 2.39.5 (Apple Git-154)
 
-> Konrad
+Please ignore this patch. I will resend a proper version after
+learning the kernel submission process.
+
+Apologies for the noise.
+
+Best regards,
+WenTao Liang=
+
 
