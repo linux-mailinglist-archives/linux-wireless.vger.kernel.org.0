@@ -1,235 +1,165 @@
-Return-Path: <linux-wireless+bounces-38305-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38306-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id O3mfJv6ZQmrh+QkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38305-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 18:14:54 +0200
+	id ur2NAWq2QmpFAAoAu9opvQ
+	(envelope-from <linux-wireless+bounces-38306-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 20:16:10 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB176DD345
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 18:14:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB036DDF46
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 20:16:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NmwCUn9f;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38305-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38305-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=schwarzvogel.de header.s=x header.b=Srpshzp0;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38306-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38306-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=schwarzvogel.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B2EC30E048A
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 16:01:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B7A63073963
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 18:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D74243DA38;
-	Mon, 29 Jun 2026 16:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2CD33EB06;
+	Mon, 29 Jun 2026 18:12:47 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.schwarzvogel.de (skade.schwarzvogel.de [157.90.210.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7356A3E5EF9;
-	Mon, 29 Jun 2026 16:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3CA381B0A
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2026 18:12:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782748906; cv=none; b=EKunJKIqE1ulq/GZEkQWnAtYrcoCT49HGdB10LdIzvxfYyov6Iy22gTrVzGHpRE8XLVaH1SNXK42F7DJQQZXIp+IcCAZuURID6A4ZgVlIgX63IZ7Z72nIoCikYrwy6uAWS0RK1ikPucuFIp2wxSlB1V6PsBzl5Hslr47z4jdnNo=
+	t=1782756767; cv=none; b=fY3i03FJVcWYCvIMESMbQhxxX9N+ndIsHNynlMzfQ5ka522psB2TaBvBgf9WrbWw0Bex988zjna5kUi0d63bvcQE3fk5gMMGhs6E7aw37UymVEdsM/k4NcIA1pkJa6xli/2k/n26/NMWDLLZY+7SNe5vL6zrsJNRaDNDqMfxDgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782748906; c=relaxed/simple;
-	bh=gNf3+xtGsHZcEPpHO8DbFh36xC7Xv23kzYATNbWno/8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nq4+fkx2spsuGoAjXAa53V3NlWxog6NxWyuhiNSxBgnUq616dytqHD/fldOayO9T0ny+pvhz46VvPZqadl8sh3sOcw5TaWtCu8IYmu295xz9KDBorSbtLZB+nIrEfCkyeg+tB+PNFX51pgsFxuAs2X5JiEdvJ3bLGZVC6/XwdzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmwCUn9f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780AD1F000E9;
-	Mon, 29 Jun 2026 16:01:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782748905;
-	bh=ZMagSuV/KEPQnZY+XS5s3kJW3BcH6iR0+wLbzdgK2X0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NmwCUn9fNzlLN6RHJFD4f7AaI7M+siGWgaA6KKEP8+YaHgbCT8Eo8ua71Hrl3tsBb
-	 EpcinpRLb8K5+ZYGfFCrfm7EX5pUXhwd2BSqPwDcPUh64Nk5R6nFyv7fw9tmx/PWoa
-	 s69IS3QurF0gsSQrR2oF5sNahDh46sdOzkV2qJUBVdWI9wGP4VGkAi+UmP5kFjb/Ds
-	 meVJPowgZXAb7UJobfEJ81GhUUY0N+OGFRk5wNRqM/PZgIS0yfCIQVKPoMH597Gonz
-	 PY9ic9oKw/XQW/PxJLHU+q6JjPJcYIjAlGlPO+EzOkAuHa1iOiwDQAOk+nrX2N1xLA
-	 JmMc0obmWEe7w==
-Date: Mon, 29 Jun 2026 18:01:37 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: bhelgaas@google.com, alex@shazbot.org, jjohnson@kernel.org, 
-	linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
-	ath12k@lists.infradead.org, mhi@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v11] PCI: Add device-specific reset for Qualcomm devices
-Message-ID: <5mrwcurlf6xnqla5x5idpt7ug34nv2eqpijnjmccgdwazrmwyv@64tixxe4aa57>
-References: <20260626055023.197470-1-jtornosm@redhat.com>
+	s=arc-20240116; t=1782756767; c=relaxed/simple;
+	bh=yU5GolFefwIFXusM1k+677bQ3wlhaYgh9g5qHEYylWg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ekH921rFgXFybcsPMXAH6WNyZOvlC0POT9XD7ysiTI17+L/DS9f7wxGkX48lmmqXn6Lz9F93gla6Gk7Nt9IU9W96AXNhhntdkd3gfyik2A4EZTploBSH+o/0Vul3DbVG8gIskiMnk//kpBZaAXc4Oxrkic7Es3Gaqf8LTwILhfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schwarzvogel.de; spf=pass smtp.mailfrom=schwarzvogel.de; dkim=pass (2048-bit key) header.d=schwarzvogel.de header.i=@schwarzvogel.de header.b=Srpshzp0; arc=none smtp.client-ip=157.90.210.195
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=schwarzvogel.de; s=x; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:
+	From:Date:Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
+	Resent-Date:In-Reply-To:References;
+	bh=PnkTGV/nH6e70Wn8noO3/L4aE2s/K8jiLLk5T/vfk5c=; b=Srpshzp0Kx7hCZ42t/jyKztTKe
+	OeVumzx6BwASHi7o1/wfpSde/GdT/YTxABgXFsziUMXqklcNzSdP+3qKKwiEt8qq98XEaAO4KpoGp
+	e7mimrUpGUxdW+r70NemY3PQ10XTUQCh0MlXL+zp//wrz8yG74mJ5/95qqHrQ31hazplX8COT5xi/
+	N4Y8qrW5FWzzbyyCcoJeadNr/TnER867+Tw9H6vtStuYbGoSXiBbHx27LdiTP2po0cCdJD0KWIA0B
+	W+R7+30PEGnLI0aory2IN37m6wvJOd1gc+l9rHb1G0+dP4puuBEE7oFmVBJOqyWiJXG3Ih/oo3NY+
+	Pk6+F6vw==;
+Received: from klausman by mail.schwarzvogel.de with local (Exim 4.99.4)
+	(envelope-from <klausman@schwarzvogel.de>)
+	id 1weGJ4-000000003k2-1g7D;
+	Mon, 29 Jun 2026 20:02:06 +0200
+Date: Mon, 29 Jun 2026 20:02:06 +0200
+From: Tobias Klausmann <klausman@schwarzvogel.de>
+To: linux-mediatek@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>
+Subject: mt76 newly rejects formerly working MAC from EPROM
+Message-ID: <30a90714-02d8-45f2-a7f1-4cfe0627d50b@skade.local>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260626055023.197470-1-jtornosm@redhat.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[schwarzvogel.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[schwarzvogel.de:s=x];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-38306-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:jtornosm@redhat.com,m:bhelgaas@google.com,m:alex@shazbot.org,m:jjohnson@kernel.org,m:linux-pci@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath11k@lists.infradead.org,m:ath12k@lists.infradead.org,m:mhi@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linux-mediatek@lists.infradead.org,m:linux-wireless@vger.kernel.org,m:nbd@nbd.name,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[mani@kernel.org,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-38305-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER(0.00)[klausman@schwarzvogel.de,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[klausman@schwarzvogel.de,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[schwarzvogel.de:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,skade.local:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ECB176DD345
+X-Rspamd-Queue-Id: 1FB036DDF46
 
-On Fri, Jun 26, 2026 at 07:50:23AM +0200, Jose Ignacio Tornos Martinez wrote:
-> Some Qualcomm PCIe devices (WCN6855/WCN7850 WiFi cards, SDX62/SDX65 modems)
-> lack working reset methods for VFIO passthrough scenarios. These devices
-> have no FLR capability, advertise NoSoftRst+ (blocking PM reset), and have
-> broken bus reset.
-> 
-> The problem manifests in VFIO passthrough scenarios:
-> 
-> - WCN6855 (17cb:1103) and WCN7850 (17cb:1107) WiFi devices:
->   Normal VM operation works fine, including clean shutdown/reboot.
->   However, when the VM terminates uncleanly (crash, force-off), VFIO
->   attempts to reset the device before it can be assigned to another VM.
->   Without a working reset method, the device remains in an undefined state,
->   preventing reuse.
-> 
-> - SDX62/SDX65 (17cb:0308) 5G modems: Never successfully initialize even
->   on first VM assignment without proper reset capability.
-> 
-> Add device-specific reset methods using BAR-space hardware reset registers
-> that exist in these devices:
-> 
-> - WCN6855/WCN7850 WiFi devices use SoC global reset via BAR0 (sequence from
->   ath11k/ath12k driver: ath11k_pci_soc_global_reset(), ath11k_pci_sw_reset(),
->   ath11k_mhi_set_mhictrl_reset()):
->   - Write/clear reset bit at offset 0x3008
->   - Wait for PCIe link recovery (up to 5 seconds)
->   - Clear MHI controller SYSERR status at offset 0x38
-> 
-> - SDX62/SDX65 modem devices use MHI SoC reset via BAR0 (sequence from MHI
->   driver: mhi_soc_reset(), mhi_pci_reset_prepare()):
->   - Write reset request to offset 0xb0
->   - Wait 2 seconds for reset completion
-> 
-> These are true hardware reset mechanisms (not power management or firmware
-> error recovery), providing proper device reset for VFIO scenarios.
-> 
-> Testing was performed on desktop platforms with M.2 WiFi and modem cards
-> using M.2-to-PCIe adapters, including extensive force-reset cycling to
-> verify stability.
-> 
-> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Hi!
 
-Couple of comments below, including one bug due to my previous suggestion. Once
-those are addressed, feel free to add:
+As of 7.2-rc1, my mediatek USB wifi dongle no longer works the way it
+used to. I now get an error about its MAC being wrong:
 
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+usbcore: registered new interface driver mt7921u
+mt7921u 8-1:1.0: HW/SW Version: 0x8a108a10, Build Time: 20260224110909a
+mt7921u 8-1:1.0: WM Firmware Version: ____010000, Build Time: 20260224110949
+mt7921u 8-1:1.0: Invalid MAC address, using random address c2:4d:ae:23:29:38
+mt7921u 8-1:1.0 wlxc24dae232938: renamed from wlan0
 
-> ---
-> v11: Address Manivannan Sadhasivam feedback:
->   - Remove unused QUALCOMM_WIFI_MHISTATUS define
->   - Use PCI_ERROR_RESPONSE instead of 0xffffffff
->   - Sort device IDs in ascending order (0x0308, 0x1103, 0x1107)
-> v10: https://lore.kernel.org/all/20260623183115.1585273-1-jtornosm@redhat.com/
-> 
->  drivers/pci/quirks.c | 117 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 117 insertions(+)
-> 
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index 431c021d7414..0de606366200 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -4240,6 +4240,120 @@ static int reset_hinic_vf_dev(struct pci_dev *pdev, bool probe)
->  	return 0;
->  }
->  
-> +#define QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET	0x3008
-> +#define QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET_V	BIT(0)
-> +#define QUALCOMM_WIFI_MHICTRL			0x38
-> +#define QUALCOMM_WIFI_MHICTRL_RESET_MASK	0x2
+This naturally breaks my udev rules, interface naming etc etc.
 
-Qcom calls these WiFi devices as WLAN devices. So I'd prefer to use this term
-all around even for function names.
+So I bisected it, and this is the commit that started it:
 
-> +
-> +/*
-> + * Qualcomm WiFi device-specific reset using SoC global reset via BAR0
-> + * registers.
-> + */
-> +static int reset_qualcomm_wifi(struct pci_dev *pdev, bool probe)
-> +{
-> +	bool link_recovered = false;
-> +	unsigned long timeout;
-> +	void __iomem *bar;
-> +	u32 val;
-> +	u16 cmd;
-> +
-> +	if (probe)
-> +		return 0;
-> +
-> +	if (pdev->current_state != PCI_D0)
-> +		return -EINVAL;
-> +
-> +	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-> +	pci_write_config_word(pdev, PCI_COMMAND, cmd | PCI_COMMAND_MEMORY);
-> +
-> +	bar = pci_iomap(pdev, 0, 0);
-> +	if (!bar) {
-> +		pci_write_config_word(pdev, PCI_COMMAND, cmd);
-> +		return -ENODEV;
-> +	}
-> +
-> +	val = ioread32(bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
-> +	val |= QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET_V;
-> +	iowrite32(val, bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
-> +	ioread32(bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
-> +
-> +	msleep(10);
-> +
-> +	val &= ~QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET_V;
-> +	iowrite32(val, bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
-> +	ioread32(bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
-> +
-> +	msleep(10);
-> +
-> +	timeout = jiffies + msecs_to_jiffies(5000);
-> +	while (time_before(jiffies, timeout)) {
-> +		val = ioread32(bar + QUALCOMM_WIFI_PCIE_SOC_GLOBAL_RESET);
-> +		if (val != PCI_ERROR_RESPONSE) {
+commit 31ee1582717e220cc5a3fa8f3940d5693c5c9169 (HEAD)
+Author: Rosen Penev <rosenp@gmail.com>
+Date:   Sun Apr 26 22:17:46 2026 -0700
 
-As Sashiko also pointed out, this will always evaluate to true due to
-PCI_ERROR_RESPONSE being ~0ULL. Please use:
+    wifi: mt76: fix of_get_mac_address error handling
+    
+    Check return value instead of is_valid_ether_addr. The latter is handled
+    by the former.
+    
+    Signed-off-by: Rosen Penev <rosenp@gmail.com>
+    Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+    Link: https://patch.msgid.link/20260427051746.954704-1-rosenp@gmail.com
+    Signed-off-by: Felix Fietkau <nbd@nbd.name>
 
-	if (!PCI_POSSIBLE_ERROR(val))
+diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+index afdb73661866e..b99d7452800fd 100644
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -181,7 +181,7 @@ mt76_eeprom_override(struct mt76_phy *phy)
+        if (err == -EPROBE_DEFER)
+                return err;
+ 
+-       if (!is_valid_ether_addr(phy->macaddr)) {
++       if (err) {
+                eth_random_addr(phy->macaddr);
+                dev_info(dev->dev,
+                         "Invalid MAC address, using random address %pM\n",
 
-Sorry for the wrong suggestion earlier.
+SO I thought that maybe my device had had a broken MAC all this time,
+and I just didn't notice. I changed the code a bit to emit the erroneous
+MAC and the value of err, which resulted in:
 
-- Mani
+usbcore: registered new interface driver mt7921u
+mt7921u 8-1:1.0: HW/SW Version: 0x8a108a10, Build Time: 20260224110909a
+mt7921u 8-1:1.0: WM Firmware Version: ____010000, Build Time: 20260224110949
+mt7921u 8-1:1.0: Invalid MAC address e0:e1:a9:38:96:29 err: -19
+mt7921u 8-1:1.0: Using random address 3a:ca:1d:51:83:f2
+mt7921u 8-1:1.0 wlx3aca1d5183f2: renamed from wlan0
 
--- 
-மணிவண்ணன் சதாசிவம்
+To me, e0:e1:a9:38:96:29 looks like a perfectly valid MAC, so at a
+minimum, the current code's wording is misleading: it assumes the only
+way of_get_mac_address() can ever return a nonzero value is if the MAC
+is invalid. However, looking at its code, I only see one nonzero return
+statement, which returns ENODEV, which seems at odds with "broken MAC".
+
+Either way, I am looking for a way to get a stable MAC again, either by
+fixing this commit (if it is indeed a bug) or fixing my hardware (if the
+bug is there.
+
+Best,
+Tobias Klausmann
 
