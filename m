@@ -1,210 +1,201 @@
-Return-Path: <linux-wireless+bounces-38242-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38243-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vWwgN6fsQWp3wAkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38242-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 05:55:19 +0200
+	id NJSiLzjxQWowwgkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38243-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 06:14:48 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0406D5BE7
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 05:55:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B72326D5CF9
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 06:14:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=Pft78SEo;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b="mhU/07WU";
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38242-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38242-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linutronix.de;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=FZvNBSZE;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=kg7IXyZ5;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38243-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38243-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 353A0300F55B
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 03:55:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6860D300E27D
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 04:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F003B379ED6;
-	Mon, 29 Jun 2026 03:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA80F3563EB;
+	Mon, 29 Jun 2026 04:14:44 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAED2D3A7C;
-	Mon, 29 Jun 2026 03:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B817C33343B
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2026 04:14:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782705317; cv=none; b=HLMR2ij9j8Ar7RWTaCKWGOZC9dYjuuDKz2IUknAbgYe8YTepwXVvF7QxmEdQdQbHF0oEpECtpYKFjQ5ElieMe2I4W/jnrNsCH+xBgQvmbDwE9G+derFrK2V7DAv0MJnX64jt30ySs0VyAw4/9eQKL7bgWkLP7FSVIA3SDwCiNxw=
+	t=1782706484; cv=none; b=Pl87bl77P2VYi9Ur4PCvIc+fGL1vEnUpHfMrc+5o3xbDMJ2ZWn0CupTwt/4HkxWTK0kQUYC3LfFEIPRoVPyhLzG+RIWdLJ+k7jxMNczMwRJzrEtgAxi5jP3Ibz2Rra8Oy0PfU+gXslNxKgENTxftb4R5/mpalzJxRWvAQParbYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782705317; c=relaxed/simple;
-	bh=+9Gt5xbV0f6uwKj3h75aKeru0YfHJBPFQCGeKZXf2cU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Eufzna1K0BcqIFLBEf679ZSQk/90bZBehL6iPcQPF1aSP7ho8RkhHOw1yje50f1EuLDpUS/g013HDoQPYEgm1l0KA4mTOVnbXvYJ/zTOlBtlEdglI3dEwJvdC4S+SbIyuB8zITK0EOOfMTa863xRjkEVGalCLDmLB/0QmW0FirA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Pft78SEo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mhU/07WU; arc=none smtp.client-ip=193.142.43.55
-Date: Mon, 29 Jun 2026 05:55:13 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1782705313;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fphPRIfC3c7/rVG8Mt/TDc8McgZz28sFey5ZU2tWKdc=;
-	b=Pft78SEoAU9N4qr3lmpoTg0M92qy3Nft6vgej121eR9dSbMe0f8peTU3UQ5ZdZp4xb32eB
-	b7WgzU76UpqfIi0KH7Nok5zMxvDv0BWBBliu/F8F1xalkGFAYdD3oGsQzbc0O5OjAwtWCF
-	mXycnLD/Wd7oQtN0SElsTscfGpUIJ3xYAESLabeu0rfoa+vtgLN19lNYJ3atZNfWAGOetu
-	XZifQFpTfhxnNu61bjULxpRwl9PAqqmE3eXNeppbBRnouZ1TD+2oTzJkKTam5Hq6Pq/Lz1
-	Zl42CcwgABCE3nJlNBy1i0YxdmOXGkBpyzioiyLcnR307F4EAjjODdDMzVT1mA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1782705313;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fphPRIfC3c7/rVG8Mt/TDc8McgZz28sFey5ZU2tWKdc=;
-	b=mhU/07WU2k0PFYZQUZgClVivDlMZa7FcCpph6HWnRTGAFP5kbPcuuzB14gmyxBBGCv5W+f
-	6CGdzH8OyJeCbxDw==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Miroslav Lichvar <mlichvar@redhat.com>, 
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
-	Arthur Kiyanovski <akiyano@amazon.com>, Rodolfo Giometti <giometti@enneenne.com>, 
-	Vincent Donnefort <vdonnefort@google.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, 
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>, Johannes Berg <johannes.berg@intel.com>, 
-	Jacob Keller <jacob.e.keller@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Peter Hilber <peter.hilber@oss.qualcomm.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, linux-wireless@vger.kernel.org, 
-	linux-sound@vger.kernel.org
-Subject: Re: [patch 09/24] timekeeping: Add CLOCK_AUX support for
- ktime_get_snapshot_id()
-Message-ID: <20260629055344-b74c43de-2a2b-4608-ae4e-ed0ac8e12fd1@linutronix.de>
-References: <20260526165826.392227559@kernel.org>
- <20260526171223.374814973@kernel.org>
- <20260626103359-66ab2b54-d36f-416b-94a4-3f3708dccced@linutronix.de>
- <87echtk24a.ffs@fw13>
- <20260626125819-d8b197fc-7671-4d12-a578-9025affc52d9@linutronix.de>
- <87fr29ib4v.ffs@fw13>
+	s=arc-20240116; t=1782706484; c=relaxed/simple;
+	bh=D4ASTnTzhXeUQsU+e9+6EqTB4ctGnZ9db+IBpMBt/G8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Rkj/d2cWOpCFxdpJnDDZBcxfSt69jlq9IpbI69fjQkbuDgXFnXvVqSmeD2+36kDWqU0dWVrxmPCXkNnXue0dWLZdHzUVED7D2KRM+GlmF4qNVK3tB0s2NtK8ar3yavPLYhCb6Pe2IAsCUAKUFiMtGbDYrwpIVOiZv9I0yCXjz3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FZvNBSZE; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kg7IXyZ5; arc=none smtp.client-ip=205.220.168.131
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65T2cw5X1545761
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2026 04:14:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	AKGHalJjL8+CmSeiutqbwRLhL5D4YU5/vZSAJ0iuwr0=; b=FZvNBSZEKQqUmnpB
+	caqreg6x2FuUa8Qp1oFH1NfNIUzhGZTB5MjYjTt3KO+W+id4zvnEhZ1boLJM0L4b
+	+q/8rnJyENrTWfDncm2c0s9JAz4jhpHIHP0kN/IhrYU53srzkJbsyLMmYwwYZuIM
+	wIadVu6eYBVe9CNr5ZOktJkVVJA8VL59vcDi32z3tXw3EAwlMrsJVeGgD0XnCVMF
+	wWYmTDVnZVg0EX3TSxOTAFnokeVch2VGG6u5qRQbbn4uTkOfDY7nWvqA20AehDOH
+	TxO01c1V3SLf4yHYxIQo1DyApi7FiSFc/YGtf5TZB9S8dPFOIi3UiVr3zmSOjMsG
+	aKVdGQ==
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f27084caw-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jun 2026 04:14:42 +0000 (GMT)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-30e773699d6so1546092eec.0
+        for <linux-wireless@vger.kernel.org>; Sun, 28 Jun 2026 21:14:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1782706482; x=1783311282; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AKGHalJjL8+CmSeiutqbwRLhL5D4YU5/vZSAJ0iuwr0=;
+        b=kg7IXyZ5VVuTAD12jr06zTWNezttqWRdFdt2zCZdhVzd0G+500pGibsCIhHT2f4APR
+         7+PAKMfOoOPc8FX7h4OcavjhhvJ5PT/yybk5il4nt+9KBeMim3SNXzbN1t9Cm0nxFUbL
+         f8u51gp7eQGIyhSuOimR6Bpv7LvLN1TGvN3lt2BWuRZKF3lsN/DqjrQEad0ZZG9jFcnP
+         j/IrDRo+ntLpAqYpRG+BwdOfn8JjSUQMy8K4+k5Ks92O0GwRMC1Zke0kTxsljLp8WJnG
+         ziy9wGZClPF2F4gYGgXq76bSUWw0KCeRXkTp9E4W4tBH3u81H8SzQJlMuvYUVLOTWn4v
+         pf5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782706482; x=1783311282;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AKGHalJjL8+CmSeiutqbwRLhL5D4YU5/vZSAJ0iuwr0=;
+        b=JcxjiZt6VHHYETv3kbhff1+DezGA1pTXYa5errWUr+sBPvAL/GzKslvQGu0fUi0JMW
+         OUt/Vu8plQuLQ/iFdm5zFqA8K0nKFXYFZ40ns9RJXiZLcYJHlsgbRDZCSHF5CQrmUSbk
+         1Aliz0mXcgu6XHP/Bmjxen3VQajWmPJWtly6nSQhXfIEXfjNOARH5sH5pUpiLj3838ps
+         vjWEZgMwd99APo4i5+l8WItZXHZjpwDd21ZgSEf548tvi5l51wQBltJMbKGFVU79vSWB
+         d1VqPWRj8M/j1zJB1Mho8S+7ibzrk8p3LGZkcKZS9FsKa53grvZctB06kbJ8cHnyzVRR
+         Nkbw==
+X-Gm-Message-State: AOJu0YxENGiEVtRFW9jklpPUb/cebfFAKcx4eTxN54Jj9fjuMilQMMXh
+	Txihb7K9J6a44A+KbmPYFNwkazgHlzuMejgjTZPnKRVo3xU1U4GEaSJQNgfQPBXdFaYaAobhf2X
+	XW+k5CFnzGC2Gi7UGXJ4RMS9ZyJ7A0E97C82bLGcR/iUFIZxg+LkpljuyFJaaPJgyirS2fA==
+X-Gm-Gg: AfdE7cmW3OVNavxeoKx0DV0YfwmlzS7pu5c8KIpsy46wvKEWtVufUq+qxjTkf232SXW
+	ZJQR3wJii4ZGqLn1IgROev2C4+XV7pUAQ5BxpLZRd9qFTQ4if/EU8EcNDwihkd38V+g7UHwz53g
+	75f9olhDdxMTAPp8LvwaiuIk7+mQrjxzrQQGDVicWvy4SLKHCMRFOh4586f1DOzuc6kfaDKeIb0
+	O1iatuGuOkBsGPcJvEm97GGCsZ6bmcLX32sjInVsgEdo1zAgvwNBhiDfBCz3ndWVMmt+w3y28e8
+	ViAZPkQ5MS39cEBCYP/+E5swJcYtIw8Joq4JmxpVOSFeLMdDbD7qPxEJ0kHBiGNiA5pTWNWNcap
+	NWRO6jboGL4zS4ee2LSsmRFbhny1d6IuMXYj+Ke1mZjzaMdoRgLI=
+X-Received: by 2002:a05:7300:3256:b0:304:997c:d4b6 with SMTP id 5a478bee46e88-30c84eba0d2mr14876884eec.17.1782706482234;
+        Sun, 28 Jun 2026 21:14:42 -0700 (PDT)
+X-Received: by 2002:a05:7300:3256:b0:304:997c:d4b6 with SMTP id 5a478bee46e88-30c84eba0d2mr14876866eec.17.1782706481719;
+        Sun, 28 Jun 2026 21:14:41 -0700 (PDT)
+Received: from [10.152.199.23] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30ec3e400a2sm11566769eec.28.2026.06.28.21.14.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 28 Jun 2026 21:14:41 -0700 (PDT)
+Message-ID: <af592fed-313a-4bc0-a4b3-f04ca0ffa6fe@oss.qualcomm.com>
+Date: Mon, 29 Jun 2026 09:44:37 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87fr29ib4v.ffs@fw13>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next 0/2] wifi: ath12k: correct monitor-mode RX
+ metadata handling
+To: Sushant Butta <sushant.butta@oss.qualcomm.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20260609064856.547032-1-sushant.butta@oss.qualcomm.com>
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260609064856.547032-1-sushant.butta@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=ObKoyBTY c=1 sm=1 tr=0 ts=6a41f132 cx=c_pps
+ a=cFYjgdjTJScbgFmBucgdfQ==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
+ a=EUspDBNiAAAA:8 a=pBvdREmwWComYNwZb9IA:9 a=QEXdDO2ut3YA:10
+ a=scEy_gLbYbu1JhEsrz4S:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI5MDAzMyBTYWx0ZWRfXyqJHZos/KPVr
+ ZsQUINhf/kCty+yre+PMY5ZZPzJGMOEh2oyG3MJNWznjisoyUHEj2kHTx9H+N41hKosE4SAAakQ
+ iTno9I42DLeR78dIEPSODfhRqyiEUjAMIaqtsHwEQ4HdTSktlDiIIPaCb2hlyBGN96Bl/egRxZT
+ ppWcyvJ9ltUhaVgF9i0gNA7HFyAsfkwwClJeswegy7/GCmxlVQUL+lRvnCospeR8RHUq6T0SahX
+ vU1s5UsEkWCTGONzj/regxH6b3/MVCT5/UrpNFFMEp+yduxC5e+iVn08KuzdrkkYdwluM18uopa
+ 4nn4jzzUMPs3AHD7iNNIXtiDNo16bSqgjx5zS4TEC/QkqzcVg1KYrkS7OO8QvYLnwN6BYUKWFH6
+ KWDO1TNSjToed++axa9AcmnV9vEpJWfmQTcIf4zVspSSFTgzB7615u/vsPVBtz9v47CC70/eh0H
+ Q5Gja+EWdcdqMzVRmFw==
+X-Proofpoint-ORIG-GUID: KQegf5eJpTf3zLCYw62WZ4wBvr2i3E22
+X-Proofpoint-GUID: KQegf5eJpTf3zLCYw62WZ4wBvr2i3E22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI5MDAzMyBTYWx0ZWRfX/uZSKlyu2fKV
+ YcEgu2CCl6E5Y7hihr3IhACy4yBsRJTJgyJkLq/E4Zy4su4o0eBE+6usGwcXWUfUBNmgFcKvvj3
+ 3rlJhLsfxta6zISSTnE6kKYZb0T5tNs=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-29_01,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 clxscore=1015 bulkscore=0 malwarescore=0 adultscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2606290033
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38242-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:tglx@kernel.org,m:linux-kernel@vger.kernel.org,m:dwmw2@infradead.org,m:mlichvar@redhat.com,m:jstultz@google.com,m:sboyd@kernel.org,m:anna-maria@linutronix.de,m:frederic@kernel.org,m:akiyano@amazon.com,m:giometti@enneenne.com,m:vdonnefort@google.com,m:maz@kernel.org,m:oliver.upton@linux.dev,m:kvmarm@lists.linux.dev,m:oupton@kernel.org,m:richardcochran@gmail.com,m:netdev@vger.kernel.org,m:tiwai@suse.com,m:miriam.rachel.korenblit@intel.com,m:johannes.berg@intel.com,m:jacob.e.keller@intel.com,m:anthony.l.nguyen@intel.com,m:saeedm@nvidia.com,m:peter.hilber@oss.qualcomm.com,m:mst@redhat.com,m:virtualization@lists.linux.dev,m:linux-wireless@vger.kernel.org,m:linux-sound@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,enneenne.com,linux.dev,lists.linux.dev,gmail.com,suse.com,intel.com,nvidia.com,oss.qualcomm.com];
-	RCPT_COUNT_TWELVE(0.00)[28];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38243-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:sushant.butta@oss.qualcomm.com,m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCPT_COUNT_THREE(0.00)[3];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,vger.kernel.org:from_smtp,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linutronix.de:dkim,linutronix.de:mid,linutronix.de:from_mime]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2F0406D5BE7
+X-Rspamd-Queue-Id: B72326D5CF9
 
-On Fri, Jun 26, 2026 at 05:17:52PM +0200, Thomas Gleixner wrote:
-> On Fri, Jun 26 2026 at 13:03, Thomas Weißschuh wrote:
-> > On Fri, Jun 26, 2026 at 12:49:41PM +0200, Thomas Gleixner wrote:
-> >> On Fri, Jun 26 2026 at 10:48, Thomas Weißschuh wrote:
-> >> > On Tue, May 26, 2026 at 07:14:13PM +0200, Thomas Gleixner wrote:
-> >> > (...)
-> >> >
-> >> >>  static inline void tk_update_aux_offs(struct timekeeper *tk, ktime_t offs)
-> >> >> @@ -1218,6 +1223,12 @@ bool ktime_get_snapshot_id(struct system
-> >> >>  		tkd = &tk_core;
-> >> >>  		offs = &tk_core.timekeeper.offs_boot;
-> >> >>  		break;
-> >> >> +	case CLOCK_AUX ... CLOCK_AUX_LAST:
-> >> >> +		tkd = aux_get_tk_data(clock_id);
-> >> >> +		if (!tkd)
-> >> >> +			return false;
-> >> >> +		offs = &tkd->timekeeper.offs_aux;
-> >> >> +		break;
-> >> >
-> >> > 'tkd' is also used to compute 'monoraw'. However 'tkr_raw' and 'tkr_mono'
-> >> > are the same for auxilary clocks, so this will compute a wrong 'monoraw'.
-> >> 
-> >> AUX clocks are independent in the first place and the MONORAW part is
-> >> the "MONORAW" related to the AUX clock itself. 
-> >> 
-> >> > Instead 'monoraw' should be computed based on 'tk_core'.
-> >> > Which then also requires the sequence locking of 'tk_core'.
-> >> 
-> >> No. From a PTP and steering point of view you want the "raw" value which
-> >> is related to the AUX clock itself and not the global one.
-> >
-> > Ack.
-> >
-> > However the kdocs call it 'CLOCK_MONOTONIC_RAW'. Can we clean this up?
+On 6/9/2026 12:18 PM, Sushant Butta wrote:
+> This series fixes monitor-mode meta data handling in ath12k and trims dead code:
 > 
-> Yes. Something like the below?
+> Monitor mode delivers raw 802.11 frames should not set RX_FLAG_8023 flag,
+> and populate peer/link metadata in ieee80211_rx_status for monitor MSDUs.
+> 
+> Sushant Butta (2):
+>    wifi: ath12k: Skip setting RX_FLAG_8023 for Ethernet-II (DIX) frames
+>      in monitor mode
+>    wifi: ath12k: Skip peer link info update in rx_status for monitor
+>      MSDUs
+> 
+>   drivers/net/wireless/ath/ath12k/dp_mon.c      | 70 +------------------
+>   drivers/net/wireless/ath/ath12k/dp_mon.h      |  4 +-
+>   .../net/wireless/ath/ath12k/wifi7/dp_mon.c    |  7 +-
+>   3 files changed, 4 insertions(+), 77 deletions(-)
+> 
+> 
 
-Looks good, thanks.
-The corresponding structure definitions are a also affected, though.
-
-> Thanks,
-> 
->         tglx
-> ---
-> --- a/kernel/time/timekeeping.c
-> +++ b/kernel/time/timekeeping.c
-> @@ -1202,10 +1202,21 @@ static inline u64 tk_clock_read_snapshot
->  
->  /**
->   * ktime_get_snapshot_id -  Simultaneously snapshot a given clock ID with
-> - *			    CLOCK_MONOTONIC_RAW and the underlying
-> + *			    the corresponding monotonic raw the underlying
->   *			    clocksource counter value.
->   * @clock_id:		The clock ID to snapshot
->   * @systime_snapshot:	Pointer to struct receiving the system time snapshot
-> + *
-> + * For the system time keeping clocks (REALTIME, MONOTONIC and BOOTTIME) the
-> + * monotonic raw clock is CLOCK_MONOTONIC_RAW. For AUX clocks this is the
-> + * monotonic raw clock related to the AUX clock. These AUX clock related
-> + * monotonic raw clocks have a strict linear offset to the system time
-> + * CLOCK_MONOTONIC_RAW:
-> + *
-> + *	MONOTONIC_RAW(AUX$N) = CLOCK_MONOTONIC_RAW(system) + offset(AUX$N)
-> + *
-> + * The offset is established when a AUX clock is initialized, but it is
-> + * currently not accessible.
->   */
->  void ktime_get_snapshot_id(clockid_t clock_id, struct system_time_snapshot *systime_snapshot)
->  {
-> @@ -1512,6 +1523,9 @@ EXPORT_SYMBOL_GPL(ktime_real_to_base_clo
->   * @xtstamp:		Receives simultaneously captured system and device time
->   *
->   * Reads a timestamp from a device and correlates it to system time
-> + *
-> + * See documentation for ktime_get_snapshot_id() for information about the raw
-> + * monotonic time stamp which is used here.
->   */
->  int get_device_system_crosststamp(int (*get_time_fn)
->  				  (ktime_t *device_time,
-> 
+Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 
