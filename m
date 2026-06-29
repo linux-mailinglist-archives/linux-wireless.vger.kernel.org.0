@@ -1,62 +1,62 @@
-Return-Path: <linux-wireless+bounces-38269-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38268-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wczIFnMrQmoj1QkAu9opvQ
-	(envelope-from <linux-wireless+bounces-38269-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 10:23:15 +0200
+	id PtFvFxsqQmrO1AkAu9opvQ
+	(envelope-from <linux-wireless+bounces-38268-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 10:17:31 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B8E6D7774
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 10:23:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7AB6D7640
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 10:17:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=westermo.com header.s=270620241 header.b=sciVKg8B;
-	dkim=pass header.d=beijerelectronicsab.onmicrosoft.com header.s=selector1-beijerelectronicsab-onmicrosoft-com header.b=gFhXT4DI;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38269-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38269-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=westermo.com header.s=270620241 header.b=LnIkU+qY;
+	dkim=pass header.d=beijerelectronicsab.onmicrosoft.com header.s=selector1-beijerelectronicsab-onmicrosoft-com header.b=RyNKBBHa;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38268-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38268-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=westermo.com;
 	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C500300F9F7
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 08:12:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83EDD30683E9
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jun 2026 08:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3CD3E5EF6;
-	Mon, 29 Jun 2026 08:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DECEB1DB13A;
+	Mon, 29 Jun 2026 08:00:02 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx07-0057a101.pphosted.com (mx07-0057a101.pphosted.com [205.220.184.10])
+Received: from mx08-0057a101.pphosted.com (mx08-0057a101.pphosted.com [185.183.31.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F853EB0F5;
-	Mon, 29 Jun 2026 08:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12C83E3D86;
+	Mon, 29 Jun 2026 07:59:58 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782720745; cv=fail; b=XdLd9jKyF0cU9AL6m2xB8BBuyNnYU0SCsBVqeeGzpdPhQ0juG0u9ytpWiCJHw3gEBMRhjIrZKZZUUUEYxFK5qVmuGu2HZsVyAXZHK7wwlezBA1ePDl1sKKaA6da6vW8k2JvCnOxJlYr+VYi0uw+exZbDnYrg4j6SWEtRzLmDNrE=
+	t=1782720002; cv=fail; b=ojYDlQgtw8DfwkVt4IYZjCgCBzaf4VbrNEHLzLlwdoPmGjNnAmRGwxPe/1uCHmQSsgf5ODRu+TsgML2GgbRufUoEsyGc5KZZE4NShk7q2pNTW+Q7n0jAdOCAVGygsTnihgs6QLfX5yJbz/9R2gicp4a+ahNv8xzlU4gglZjRHkY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782720745; c=relaxed/simple;
-	bh=VRTAtJEVQeCvBV7SFcJ/Ah+mBcxvxUkTIxlTHVKHPCM=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=XzzvzYcxNPCWGgo+DygCnyOTT6cfvHdmWH8Lr+bdmiDwVc3qi1eATKkDYh3AcQbzlBycvvoTqQOBjq0EntSr9JnCJyF2tyvvCBFXD6TL0KDjUFjpcibKUbSlmu8f4eA+h+tOfAmMErqkAcXwzPSZ6oCQwwEndVUGK2PzTg6Lo0M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=sciVKg8B; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=gFhXT4DI; arc=fail smtp.client-ip=205.220.184.10
-Received: from pps.filterd (m0214197.ppops.net [127.0.0.1])
-	by mx07-0057a101.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65T6lEJa1652265;
-	Mon, 29 Jun 2026 09:47:04 +0200
+	s=arc-20240116; t=1782720002; c=relaxed/simple;
+	bh=MT4KAcuKQbMvcYtQTM5NULCFc+Yte8u+El+A0qLSo5c=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=Fx3OVShIkf6Shrz3sB2sj8MI5BhstT8eMIZJ7JGJ8cbIvx4WK+Mu/hmB7Na9vNGfxfIv1x0MFm7IuSCf3XtZxaxqcOYe8KZ9bV0VYqpRrTQrl/auZkSenx+ROzz+Sbpob/4pOipIiTiHvFyy92SLX5crqMnoo34U02VSKPyifWc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=LnIkU+qY; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=RyNKBBHa; arc=fail smtp.client-ip=185.183.31.45
+Received: from pps.filterd (m0214196.ppops.net [127.0.0.1])
+	by mx07-0057a101.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65T6o9X81720245;
+	Mon, 29 Jun 2026 09:52:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=
 	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=270620241; bh=4dD+etMu7/ptF3iZpItfWS
-	UeToV3J4b2XlvRBfOAiwA=; b=sciVKg8BkVQ1+cWu+BasbUpUr7LOPPDw+06fcf
-	F439JSCNcYbtIiNK7Ry7VqbYR1j2lzzC79vR5H0yp7eMvybaSHaWC6TsSmAz5SXm
-	MHYPF3IvlcSMWaRDXqbR6t7jJ/KSw1hTQyF60DttZRcYbuL2iRU5RuJsTpaCWiJm
-	8rS31sTs/JunD8CsB8AZOL/Uwfm0mBnWLYPRYzyQDB66nhSDN3kRTJGFtF+CASBf
-	gP7GBgYoYdggZ31rhXrQpWVyt2inoLEdgE+6iHWsj3MaiuSgpj8aQkSlEPLvQImZ
-	0h0849+N+qTD/i2pA9Uh6qT/IEIpGiUaIuZFZ0XKjgkalBLA==
-Received: from gvxpr05cu001.outbound.protection.outlook.com (mail-swedencentralazon11023086.outbound.protection.outlook.com [52.101.83.86])
-	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 4f22v9acmy-1
+	:mime-version:subject:to; s=270620241; bh=t8Xved9iNvQxEQeBAzcZxT
+	m4lk4vFUEJdzDTnBUTwcE=; b=LnIkU+qYEruhvqePhhlq9aJaKHO++uh27W6Wmd
+	5kdMnbYTEG5NM/m+0xHwkBWcZr9QT67abEXEgBkjHaXCkDm4PAnghMuqnlacM9j8
+	xKMgMDIICiErskyC9bKG2L9DfhZXFwugojQEfZeGcRsT9ceekTzd0saH/Am6j36x
+	oTTkPKoLDC64a8svtsVK6n9C+Kvx8ArH9txm8Lv4bxxJQb/PAaGSD+LI7EMhzke/
+	MmL5sM/PHcQ1K0Gb7+HIdTD9bP8+jYHviAb6+/6T+E+oB2KEpTocVVs/g68+Qjl0
+	zYdgqZAYg8KXEohqLC+8OW5v5D1u27h9VrbtNfoZjuWkue+w==
+Received: from am0pr02cu008.outbound.protection.outlook.com (mail-westeuropeazon11023110.outbound.protection.outlook.com [52.101.72.110])
+	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 4f22h0t84k-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 29 Jun 2026 09:47:04 +0200 (MEST)
+	Mon, 29 Jun 2026 09:52:42 +0200 (MEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LPQz4dzTk+ytOYncoiwYs8JcDkB6K124oZyANS5IU7dpA38rXcNl/qtoBBN18I+801zG/L3E8oOiPywc60T1STWdmjtWxll4I17dymb+muSjypedWlcacE5mASuPD45pwNkSDyCDqPSSItAE8B6BJF39ww7q45xGR8oUMvnv/5mzE/si26iG+mOyT/pWBg+6ap6oYgXO/U0v+qpeFyjVX+mKgfSBW/IhlmdO0GEyW3dZUayEB6wau+Pm4Tr+rF8erkN/E5soZLDPrFK7t/cjQrQql81kEUSB7B1jor9Xtbn+DWeNGM0hF8sls+J5XdMVHFH9s1maqrdKqHtcnAJQfg==
+ b=wZmeiJWVqssdWN20Hj5i8Ea7M0jsro3NQ3zfcTw4um5TS8fudSndNCLtm4rlpewN76pA+/TdjGUbM4LBsWlHPJig4esEPOpmdTojQr6/j0i8dHS2aNPCQwI88twjIw6V28oj0gWETmH9KSVPmG3yoDYdl/lB+7jpQKbD8dkpRB+EQFtnvlfoiGPsQeAQsRoNKn+sMhYXtJEAv7cUpXR25Rti1GCW80E+nSJN6qlKBWoKshVPeZRbdLKNBhGYrb3VPw0qzC2W9WrQDl4/71HKHk7Vn6Apy1BBXSpRoOJtqTrdlPBoz2L1xVxqE4bT7pwDgKsaeBBIO+aOR1t9FbF7ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4dD+etMu7/ptF3iZpItfWSUeToV3J4b2XlvRBfOAiwA=;
- b=PL8x+mhY7sVCOUi30t47+VCsi5nGwYp+T0r4mv+PgLJXqfB0OwU6pqoiCMJ7iF5KWQjX37oGM1hMni/FnOsSQAepJUYGb76YZY8h4FjSAPDRazA5OcoGK4WfVRPVGK9XivReXvOYFoPL0sTRXi1a4AF6+2L7GAQqG1LGziKrvAOOPxJx5+yF4Gk2Y4XLZCDaZbQeexXYNqyTP7vlz6oMKw37T56k7OcTQiFg63TY5WbLMPSvgUvUh3eMNKm4oS+LmRcjABhjiFmMkRcZiiruQ7tnYGCOUsYDmmHelnTawpgyxYHsBhoehbTFh1amgYxEagSkMhXlAmSaiqisZQRlAg==
+ bh=t8Xved9iNvQxEQeBAzcZxTm4lk4vFUEJdzDTnBUTwcE=;
+ b=edbTf8quFdQaRUjZ3DZ/IN0uQFcNDfMeBBwWkP3MjdoEQt4n40sKAqRDleEFd1KOtE0ndn+Za5j+ctjbM5RFaROMEbs0Afn6RYX3QM0u5xStRQIpy4CGe6pSdrjz1vUeszmNN6T9crVm0ZwgT473xwu/ob2ejxgzFU1oJNWZgOl6TYf+XdQoRWgvGSVBM0KiNqIfJmRrVDSPLESSIGtZc1T2EOSPiTSxKImjMe9p1CaKOPaEHXhhYrJ/HRuqORU7p+Iu+JeSDcFXPCIhTRgEP3SPt/tVGop0pdcBbRAFUqLxiiO7VuArxMurUCCk8JXDNxtajxU+L/bqH2k/cjkHtQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
  dkim=pass header.d=westermo.com; arc=none
@@ -64,33 +64,34 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=beijerelectronicsab.onmicrosoft.com;
  s=selector1-beijerelectronicsab-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4dD+etMu7/ptF3iZpItfWSUeToV3J4b2XlvRBfOAiwA=;
- b=gFhXT4DImGFiEC5CzbmhW32Vi+OljB/razn1sqO/v2NNXOr69TbykU/ub24/K3yUxpZULGgmGizm0FH4FVqBPw76POm+dEZ+8u0tPR7/Mc6C75uLETFySeCDnGaUkuwfaqB4H8tXw83Ogh3CGrzu+qcF9157qDkyXw1z6VYsrrU=
+ bh=t8Xved9iNvQxEQeBAzcZxTm4lk4vFUEJdzDTnBUTwcE=;
+ b=RyNKBBHah6rZapnTbaUg9kIQR1Y2LrgLNYcheC0QRSyig8YhheK6Mtm3CNIJvszmrkdrXNcbfngm4hexPEsDznj3K3pCi0vRioPNx91sxrjf27PcDVhJagoMk0JEsTnWwNEXlOKDNEH+0TF/TUT+N8xYAuEfELXO2jasLwr2VdU=
 Received: from DB9P192MB3090.EURP192.PROD.OUTLOOK.COM (2603:10a6:10:5e2::11)
- by GV4P192MB3168.EURP192.PROD.OUTLOOK.COM (2603:10a6:150:2b3::8) with
+ by PA3P192MB3013.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:4da::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.14; Mon, 29 Jun
- 2026 07:47:02 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
+ 2026 07:52:41 +0000
 Received: from DB9P192MB3090.EURP192.PROD.OUTLOOK.COM
  ([fe80::656d:42d4:bdce:a46b]) by DB9P192MB3090.EURP192.PROD.OUTLOOK.COM
  ([fe80::656d:42d4:bdce:a46b%6]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
- 07:47:02 +0000
+ 07:52:40 +0000
 From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-Date: Mon, 29 Jun 2026 09:46:53 +0200
-Subject: [PATCH RESEND] wifi: ath12k: fix channel list copy on big endian
+Date: Mon, 29 Jun 2026 09:52:36 +0200
+Subject: [PATCH RESEND] wifi: ath12k: fix HE/EHT capability handling on big
+ endian
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260629-fix-channel-list-copy-v1-1-5ab826c46d7c@westermo.com>
-X-B4-Tracking: v=1; b=H4sIAOwiQmoC/4WNvQ6CMBSFX4Xc2Wu41WLi5ACrg46GAcutNIGWt
- AQlpO9u5QUcz/nOzwqBveEA52wFz7MJxtkkaJeB6hr7YjRt0iByUeQHOqE2H/wRyz32Jkyo3Li
- gYi1V04qjfhaQuqPnFNx2H3Cr7tW1hDr5XWo4v2x3M230z/JMSCiZWDZMSrby8uYwsR/cXrkB6
- hjjFyHwy1DFAAAA
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260629-fix-he-eht-capabilities-on-big-endian-v1-1-47026f59b8b2@westermo.com>
+X-B4-Tracking: v=1; b=H4sIAEMkQmoC/5XNPQ+CMBCA4b9COnuGlm8nB1kddDQOtBxyibSkb
+ VBD+O82TMZJx7vLPe/MHFpCx3bRzCxO5MjoMPBNxFTf6BsCtWFmIhZ5nPACOnpCj4C9B9WMjaQ
+ 7+QCA0SDpBqhbajS0VcpVKro8w4wFa7QYHtfOhZ3qc308sGvY9+S8sa81P/H1+mdp4sABC1klh
+ UxEkZf7BzqPdjBbZYY1MolPuPwVFgEu47TLlcqESqoveFmWN5kJmuw+AQAA
 To: Jeff Johnson <jjohnson@kernel.org>
 Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
         linux-kernel@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-ClientProxiedBy: GV3PEPF0001DBC8.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::6ba) To DB9P192MB3090.EURP192.PROD.OUTLOOK.COM
+X-ClientProxiedBy: GV2PEPF000239DA.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:400::178) To DB9P192MB3090.EURP192.PROD.OUTLOOK.COM
  (2603:10a6:10:5e2::11)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -99,73 +100,73 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9P192MB3090:EE_|GV4P192MB3168:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34fb037c-db1e-43fb-7596-08ded5b29b79
+X-MS-TrafficTypeDiagnostic: DB9P192MB3090:EE_|PA3P192MB3013:EE_
+X-MS-Office365-Filtering-Correlation-Id: 84041a16-5bc1-4536-979c-08ded5b3653a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|18002099003|11063799006|56012099006;
+	BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|6133799003|18092099006|18002099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	610umX0hSIJ6X9utgoFBllxUOgkHCGIW8fssKFrVWyxBd6VexC/8zpEHfpAEoq77eZub34y5hC09h/hPokU/jYADFkkp3opLeALSxsbP1z89F2SYc4oRqROIt9+rQ97/ZzP9x4muVMn/LOXf/5Nq5lTzMN+LGIflMR4yRZ+Yrv18pA/PiJLb25UyVdXTEjS9vYQ/D2RJCZlp/c+Mbpx7WJpdLPizhJu8y0VfdJEOtzDRw5QsX4LecN6pmklvQHNP6Vw7bjO834uTeWRavGduk2oAZCF8puB27iMgKhlFtRmQYYXNeh6sHnSilOdACfe4x3u63tteog/sRI0+TSW5gH9wJPUQ5P4zRblFNImoFwZN/xEuhx5MrmZb3YGxaPCnGbRRVNRpLfec70ECgtZ2NfuEcTpWuRe7rVppMmdX89/NHKc76QzaMKxwv7s14qDbwv53VByLLd7vdhC49ufM/53wZUl98oQBTRyTT6c7fv5A9Jam/uT9D1/QZHeOhMAfTrKkBpg9VqAOmpp8Qy/ZudYEWJeMYUgLxc9ci39f/KlRZDlvNk8tkLqRPm1h9t3SXt5vPcpg96ZWG0+fbdGDtu+UgkXdtNwNcff75gOOyFbs3/kY91gRJx2DnWdQe50KlrYXUro0WtaMFylhcryty4YkJkiK+kVBR1Xa28V6Y6A=
+	8HEM81sydojQwqjimVmh7Ri8E3H0IB4I9bZ1nnMwJTIJfXllQGKyYkhG3Hm4yscibEtY1725ucX5j2ZdMWb9JKZp+ekcswrE707Wk+7nr4xa3xOt6j9XO8DGN+BRYRIyh2PTNuSNrlDzpt1Ycf43c7V8/VWn8AQBmlTTqma4GAhiVzQ5fwgxnFtcE8SBLQoJnDwvdwzkns9vvLFWiToHyDNrrJO24gyzBWIBgaUdW9LDgADT6V/OgI3+bUeJBNXisPe4zi6IJO3zwCiDBrnLbCfwLB7QFZ1gA+/+fOwoqHBK1/L2d5kuG+alijegcqU1s5E8E26H4e1t0wUANBNvxyJk1IQOgXrrugZFcVYG2kJsdyIJbjofJ1TwgCrZStvnlAF3H10kEuALbaq3GYqo30TioXRlczSDObtLKB5mKmcnHUARyxV+2cr4tWQHoviGYqjUr+rKb8slpUldmjqZqJU8rK9bH35oppBrhWXi3pDu6aD2cyenxdRNu+dAD4s6oZENV5LaYI4zCVRBYZ19rzs0O2HUL11TmubQnCiICGup5bCUAgwOl5p9rUWbwWqyAF0tU1K6/PeKsWui/jd6ATrJm4FoEYVLNzWeRe/HSXrHIJ9/bDOiwQpV3JoSUEwWUA4aeXYerpoPr9QcWBt9VbNeUcjdNVATYlMi6KaUjG0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P192MB3090.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P192MB3090.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(6133799003)(18092099006)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WVRtYmhIcmt2amRJVjB0MEJiMjZVbnZISjBqU0tkWitJb1FvUEpWVThkMXhz?=
- =?utf-8?B?ZmZFZjBKNFd5dXNueU9ZV2ZZYkdRVmx2YVpuWGsvTXBkWkNLcnpsaTFhckND?=
- =?utf-8?B?blF1MFk0RkdLV2V4M25TWjY1cWg4TWxsTWRXYlNPTGs1aUxSRmNlUmhxcDV2?=
- =?utf-8?B?WkV0OE00T21JZmxGOGxHVHdpMy9DeU94eW9RNW9PTzlFK3ZpNUQ4QlExRk41?=
- =?utf-8?B?aEpVQ2pJeDNpUkFoMm5NVFBUOGZxOVVROUVENVh1RzQ4bEJpZ0xtWnJZTkY3?=
- =?utf-8?B?WEVaaGdzU1V5RnFOM3N2eUN3amZ5Qm1ZTlZqN0tEUVpSVmphYkZBc2g0OHlF?=
- =?utf-8?B?VXZLSmtXb3c2a3BQNHJFSlhrZFhYNmlMcDJxdFBwcUNkc3pncFdiRzlkU3Zj?=
- =?utf-8?B?TUhNTmI5TlZ0dmJRQjhwb0w5SzRENk9qaEtYaWtVSCtjd1dzYmZvall3YklW?=
- =?utf-8?B?dWZiNXdtT3BmTWZUV3pNTmhUdGVyQU50Ry9LM0VDcXY1R05Yd1BaeGx1dEwr?=
- =?utf-8?B?ODMyYmF4andSRSs0aURuYzBJNXR4LzBTaVF0Vk4yYUtQMEZIWENHOGhWdlI3?=
- =?utf-8?B?eVpTMldPMFhnSmIvRzRuYjZ0OVZlSlA2djNCbDRjc2ZNQm1LV3RYdzJTZDZ1?=
- =?utf-8?B?L2w3cVpNK2l3MGpscldmUFRwWkpMZXlZZWRmTk56ay9BcXBvQzNTUVZTbGVp?=
- =?utf-8?B?anpua3MrR0l5RU5SaFp3aXc5eFppaTBuRENGT1lQQWRMTk1IVFhFaHJETFNL?=
- =?utf-8?B?YW1IYlhYODRBVU5wTmxETlNHU29Tc0xSbnB4NzE0RC9kM2IwZWd4YU9JTWNX?=
- =?utf-8?B?YmQvbkRJNGlzYnpPaWt3dkFJbVRpdVBWd2RCWU9Kc2JjTGw2ZUk1d05IbFBt?=
- =?utf-8?B?NThxM1l5Vitqeis2RFVjcEI0VUFxNTJoTjFiSXNxRW5wM29jZnMwQ2J4UDVV?=
- =?utf-8?B?TnlmNTE0SU1BL3Zvd1RxcHZPd0RiQmRNYzVnSFN1bDFxY3d2RGRiTGJpbFY2?=
- =?utf-8?B?UUFNTUJ2VEk2MWQ2YTlnY0tDSTJFVWs0QVNBZkxJZVZaOHlQS2RLaG95dGdq?=
- =?utf-8?B?eHc5VndpbWJNeElBMEVQS1dKUlZnWGRyZnJQd1Rhdm5BREF0SHo2NkJrY2lC?=
- =?utf-8?B?N3NoaEZZOW1jSG1xQk5xQVZ1MXc3SGNURWlpYm9yb2c3cDhRcDNDcXE1ai9N?=
- =?utf-8?B?VmJqOW5USG5uZHhDdTVZWU1ZS3FkaERENE5UaEpXaTZKWi83eHZPemFsZFhj?=
- =?utf-8?B?UDdsUE9vdyt3VlZ1alN6NDQwQ0dUdGdwcUtPTHp1REhwaWZUZjBiREZlamdR?=
- =?utf-8?B?K2xiTXJBOEZGb2dqU094TTZKc0dPTmZaaWlWSDBsdmxoM0xRWm1LeGxKSUdw?=
- =?utf-8?B?MHNtN3VQMUxxOWlJUFRwbVF3SVdEN1lGTjFCVzh1MERLRWt6akFkREYyVkNa?=
- =?utf-8?B?QlpUNVd5YWhXRUVnYzFZQ0RKOG0xOWJhdWdTM3lpWS9SQ3k2Y3JjcURXbS9x?=
- =?utf-8?B?TjhxRVNGREcrUlBVcDkrWlA4emN5Vng5bEhFZ3dzNGc1RytFRk1HUzBtbGtw?=
- =?utf-8?B?a3dTZ1Rzc2N5Und0U2xHcStyMTdXcllkYm81d2xMR1NsdUNwLzJRZStHemt5?=
- =?utf-8?B?eTR5VFhiR0M3Y21FbUh6LzdUdFlVMko3NDIxaWVzSzB0dFp5aVcyeWdVRGtL?=
- =?utf-8?B?NG5POFBvQ3NqK0h4RGxLRDY1anp2aWtsTG4ycklJQjZUYlFFa2JETUM4QTZL?=
- =?utf-8?B?eUNVQXZ5ZC91MFNLTWlSNWtmTXlWVmRjblhKSy9mcEZIV0E0c1VvZ1h2TzBT?=
- =?utf-8?B?TFJPWTFpdnNTNDgvQzlxMTFpRUwybGlWcjd1UmN5enE3SGxHczlZd0lnUlhs?=
- =?utf-8?B?U0ROSU14bThFMVBPc3lQSXp0amlNeGo1R1EwMmJEZ1llSlFULzBWdTdycEJF?=
- =?utf-8?B?SDFXL3NaMHg0Y2xzZDdWdnora3hvVTQ5YUdxZVJUSnNRNnVVR3EySTFTd011?=
- =?utf-8?B?VTdkdUcrMnJuc1N5RnEwMGViT2lYc0R4L2ZVdUQ2TGppbGttdk5HcUw2WFlh?=
- =?utf-8?B?Sk1oSE1HV2FrcEJSdURoTTlCRlJNQldmR0VuLzBRR2JkeUdpckRGYVErR0hQ?=
- =?utf-8?B?Y3ZJTzV1Z0pLbFFmdzhOeWJLVVBSUVZhSHlCcVM2RjYybFV5SlVFR2p5bVFp?=
- =?utf-8?B?a1NHM2hBMkVuTWFxNkVKcVVrdGM2OW1wU2NYNURuWDhPdXI1MkhsS0R2MDF5?=
- =?utf-8?B?cnNzaTZVYXZYZGRzNDZaY1BOR3gxUFFVdEE5eTdWSjVCUkROOGdwUkg4UXNn?=
- =?utf-8?B?eTZFOThLZmp2eVJadVVHMmJtTGQ1d05TL3FCQVRTNmJ2VlhCdWN1Zz09?=
+	=?utf-8?B?UzNKVEc1MWdwTkdRSUF0U3VQYmRNT2sxSDFTZUJJVGNxcXFpb2lpaXY2algr?=
+ =?utf-8?B?Sk5FREErU0VScCsyL01vK3lyeWZoYUZRUzhsTmJPRjRFSFBxQ1AwaDZZL2o1?=
+ =?utf-8?B?RG5DZXpCV1JyU2dkeU5qajZJcFpwQ2Y0S2ptVHdMWUZrVXJ2dXJYN2lRQmoy?=
+ =?utf-8?B?RkNFbmFNa01XalhmdFI3RGs2dk1aWXRjbUc5UHBCdkN2OU5NNUh2bVVLeU5j?=
+ =?utf-8?B?cms2Y29Bcm5RVi9RQ0R3bkRGQVMxWlEzT3YzbzB0NmxVK0M2UVdvbjRNZkd6?=
+ =?utf-8?B?Z203TGVxb2YxTWJqL2prM3o4UEVFUElZVEMweHRnN1o5bVlEKzNEalRLRzd6?=
+ =?utf-8?B?Q1lhQkNwemJUbDZEdDVXUTVFbis0T3BjSTd4bkZneWk5TFdVWnpNaUhWYzdD?=
+ =?utf-8?B?NS9ISllhUmp0TnRqME5NMG9rNjg2enhneGpJaVkxazJ2VCt6c243TEtKQ1Rl?=
+ =?utf-8?B?RERJa1BlSFpaTDhTUjEyaWtsOGZmcHBZc2ZBS2xZNjh1WS93cTZCQjdDelpz?=
+ =?utf-8?B?Q2svSHpRQmYvRmIvaXM5TGZCNWRhK1E4N0N2dS9RdVJnb29hdkpqOUVvZEd0?=
+ =?utf-8?B?WDdoVWU4WEIvdDBhKzNMeWtnMXN5SGVJK1NzcEhUMitISVMrOWprNExpeWdz?=
+ =?utf-8?B?aHRyN2ltODBCa21LVkswWllrYUk0Tk1OT1gxdExvL3Y2UndKcm5kUm5WS0VJ?=
+ =?utf-8?B?VkYwSHBLZ2NyZ3ZWQ1ZyMzg1QWNnVE9xS0p4M2tZWFJVaG5Qb0V4bkd3dit3?=
+ =?utf-8?B?Z3pjMm8rNU5sUU1ONjlMUXJ6MDE1Z2NEY1V5YnM4ZiswWFVaMEQvNUtrZTFC?=
+ =?utf-8?B?cXNVUGxCZ29rbWNWK241ODFNWnBMNUQvTkJnZ1FZaWJNNEdnWkRIYnpOSzht?=
+ =?utf-8?B?bHVNbG4za2VZenRHNTE5bWpXYUp5dVlsUUR4bWV5bUVrSnMzOS9DSmJmMDBH?=
+ =?utf-8?B?OFI5dUFXMVp4aTRCL3puZDZiRkVoNklWOWlFWG9xRnZjdEdaaklYNVNxdWZJ?=
+ =?utf-8?B?SjJUTDNtWGtyL0FOeXBBNC8rRTNZMS85TFJMdDEybzFrcXo2N0VhM0NJSW9E?=
+ =?utf-8?B?SlhLM2RnT1hiZU13MHJqNkJrS1pzdURObTFJTmFvUXZxL1ZiMlBoTXJkSGR5?=
+ =?utf-8?B?b2wrMXNGTXlHTVBWUW9GdG9lclNSZDg4NVNVUWh5T0M5VkdpOWNmTjdxSEM2?=
+ =?utf-8?B?ekhOdndNSWFZYlcyYWY3MGJpSnBOMU5vblJtbEZyYjJXRUhoRCt4TDlwUXRQ?=
+ =?utf-8?B?NjRoUUxDUG5zMXl3eit5TEovVFNKZHMvQUxqUmJhSUFVV2pxSHFGUE5BaGN2?=
+ =?utf-8?B?ak5CRG5YdkFnVXBNUVVTWkJLd3R2aXB1Nzg4b3QxdmxRbkxMQW1PSUpkVENh?=
+ =?utf-8?B?U3Bad0tpNTlMMy9QYlVKa1IvV21kU1ZUUFFMSzdKZFB0YUxzQ1pwWHkvZlEz?=
+ =?utf-8?B?eVA1OHFMS3JDR09RejNBeFR4eHlRTjB2cG9WUTd0a2JiUkRRVlVZY05zbEkw?=
+ =?utf-8?B?ekpmUVRrSlVUcjM1RUEzMWR3eUx1TlhKM2VqNVM5dXdWcGJ3RHZzSXZlUEYx?=
+ =?utf-8?B?YlNDYmFvREpvN2p6NHJYb3lCZkhubGtMUnZZcCtxY2dFZ25ZOUw5VE56QlBE?=
+ =?utf-8?B?c1NiT29WdlJoNDJzeHo5WExUb1BFaWRIRjhBdk8wQlRJUXRpS2FmbTQ2aHps?=
+ =?utf-8?B?MGZLc21PSDlWUEdwKzJBV1BpKy9Lc3pXWnhZSmE5QnlhZzlxS0M3cEl4MGpq?=
+ =?utf-8?B?enh5dWRNTTlMbFZwR28wczdabVl4bjZ3Zm93M0pVV0xMLzltWnArNW5NNTh0?=
+ =?utf-8?B?THBjaFhoWllpeGVrZWNqQlQ0OWVmS3YyMXJKMmlJelcvajk3TFRxSEJtaGd0?=
+ =?utf-8?B?b3hOWjVMSUlsRDdUVzZVc1pWVUlJK0cyUnd4czY4N2hkMzl0L0E3blZ6S2dw?=
+ =?utf-8?B?Z2NQeUNlc1pxOEwyL3NwbElDLzc1NmlVQXBYR3ZNNGtIbEw4SnoxblVwSHZ5?=
+ =?utf-8?B?SHlzT0gvSURPR2QzWjRBL0xnYTA1S3p1bmFub3FCQjlBU1c0aVo5dmtUbXd2?=
+ =?utf-8?B?OWJhcC9wUWk3MTJHLzZWbUt2WHVBa3RtUW5zbXRtM3l1VkZ2bzdtaEIwYTlE?=
+ =?utf-8?B?Ny9xZkMwaWVSN0J2Tlk0azUyZkdlVnJtQnQ2UFB5N1p5YlhTTnNXUjZ0NUsv?=
+ =?utf-8?B?ZDdWRGcxSUxHUFhVRlZuU3g1RDFtMmhXUkVSNHBJNytjNWMwN05rTUlFQUFo?=
+ =?utf-8?B?V09zQ2UwQVJIdEtScU83K1ZKajl2dld3bTAxU01IRmo0VUc5M0VBb0VuUXl6?=
+ =?utf-8?B?VkJIeUNqVVR2dTBQdUI0d3NnWm9lUDFzVmpnZG41d01Ea2tQSkQwUT09?=
 X-Exchange-RoutingPolicyChecked:
-	FW+54jl3Htzgm4a505LZBXxN3sWyDZdrAPH5y2m/swPztfHX5oU+yiRk2du6mU29Fr2d8v1hufkDN9WhY6J9gaeKy7X+EiWmLhBOQwZgx4kcXtJO664coP9J8TAbr4UMFlGA7KLU8JS5jFO5qCOCwHmk8KapXMNnfW/ctnVPPQauHJg94Hj2LQyXYWg21utuVe0YFKng1OHiiK+BGyBOF+UxcWIZHJf4M/I2peFvO0FbueD72jMS9H3NXr7EkJQXqFryRTGSgrqVB5fA1dMEcEKMJY9EfuFKkysgfSbBQhlzeS0E1p7MxAiGMe1V/xOB59iy+IfIZMt43Pb2+dlwCQ==
+	pc4AKOIFVYnP5BgXgAdTxpscpDMvc/P6dLb0+KY8cXbajzheqDqv0JiGZnTjsokFfMop9SDOy3aE8Ml3ezjP5Eg/p/c6+5Icyql3RpZ0gKpzGHKY8bY8odW8ewyVsTxHJaB99GkXjkCCenwSSLbOEdvVosCp+qB0ZZ6BqKffwXF4mUPSZP/bG04xQ25yxSJpQXmsAvJnl0oOR/nfVCjZhHSgkeXDW7rYY0Ow7wogVdOmF7UVtyBH9UYpUftII0thjrXxeRyCH/RUEqDnsToQ9oaPb9kCEAqQZ/6HH5ILvZI+DvEA9YnYwFzMZUQibUp821Zhf2V1TqRCzTCXzecXzQ==
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	XHzBf4LdQmv1hWndtYqw7lr/2UKmR0mOVrkee0zWpbRzi/Uyx+bOUKha5D5RWfb1i+go4ZsRZatephz7wtzGtYv7iymz8sZl6kBOxUgdNa/fQFdAcpRig+DZwgJGc4c2PWhACpEY2ni0KzasTTxctgPuM8drzv30P12ZTVnUGo/4v/Yi1pj2fEak7l/5SfZJEiT+bid93TsgbtgpKStmiSJe/z9+Y2YHKaDg4/A6ycppMo+31K2XF8gtx3wHvQWcYyNNTL7XEEJKQ7W29VoHCU+73wFVxI54FLYSmr2BOVyVP2EroTGtLX+F3FebShAgCAtSrGDZnsF1ocVX6JVgPB6znJSKmJxGBcu7Dwb3GBNvifF+KTGsnqzrzdp89kIjx+wdHFjuLkvu/XLiTJ9JX81r7VHTr7PR7tphaVjqArD1y79wrqrdvBej9KwkK1mosOr8KZW5b6rMmBBVWpjKH5KzkaVIthOLsRifJUhZhe5MOjKFjHbfYdlK7DXKtmIchHraqgBYDnW9xU/G/E/rRG8UmE0rhh/Vp2BRbv8oMphXZ0cqHyDY7UcTD8J/elpOUPhzbTv2bX1bYhJZgHDvJzI4g12J/mNt8i7Rx2a3rHG8soHYEKat4aLSplyPxlbY
+	etGub1fRra4APNxX89ScREZTcPIiNyWhT5UZBWo9XQZsfHtF47oNHmMUn9ASaWrac6wtxM9qZRt96c3UmFeAVuVXi3EpLHYs+yPD4hXpe9wHTa0d5109ZJCfC1MpAUXFyRumDZfLAZQOj7CA/tyBwQwIMJgwpV9exJGavBsKzU8+DOJIqbCw54qQpp3fDwhLosUkH85RtFteJKrMQQjBtU1l8ZPCjO0ad6qfQ3P6K9iohkeXznhkJCKAY9/G2izv0TYdQCp6urin2pNW6Kugc7ybhIyXLVm12A6xpOrQrs4AfYsjtZAvIJffDPdhdFQ2yTWzwKatwQLJ2IT4SWPT6asQuohh5kIM3ZWuCembQFfvKwwbncKMzUArj+MO1NmNh+nXjS6Dow3hid6VE98lkAVft5JuACRTI3q7nzCS2EM3hWtDiz2ZTFRnhP27q+s6kodU7LLmF25CcrLeqEwks3gI1n3/7gd8+u0w+gXU8wPo5xP6LKlm71HaPBDGaJRYulhSqKELuJmNHKCe5A0XoDf06NCAhljbGY3A7O5ia8GogBa8Nr/LxQMomyt44Df2l3AxIGGScyLc9O21IHx5lnsq3WmLRrMEsfZneroixCdg+iyTw4ErxUDG2aZNrfXA
 X-OriginatorOrg: westermo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34fb037c-db1e-43fb-7596-08ded5b29b79
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84041a16-5bc1-4536-979c-08ded5b3653a
 X-MS-Exchange-CrossTenant-AuthSource: DB9P192MB3090.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 07:47:02.3560
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 07:52:40.8900
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MweZUg8xETGHGG4FEdVBysLvq6U5RyqvoN8Vq2QGY2KkDv2X3fwrElq1XMqEI5lurO3Q6t7fA5hfsg8AqWEovQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4P192MB3168
+X-MS-Exchange-CrossTenant-UserPrincipalName: m+bSPzmjMcYSOuxILLc/S70SNBF53bW9oQ7OUA4gtSrhZOw6RKeociEu0pkGq8cH2US5jKvsVtt03Rh9bLftnw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA3P192MB3013
 X-MS-Exchange-CrossPremises-AuthSource: DB9P192MB3090.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossPremises-AuthAs: Internal
 X-MS-Exchange-CrossPremises-AuthMechanism: 14
@@ -178,37 +179,37 @@ X-MS-Exchange-CrossPremises-Antispam-ScanContext:
 	DIR:Originating;SFV:NSPM;SKIP:0;
 X-MS-Exchange-CrossPremises-SCL: 1
 X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
-X-OrganizationHeadersPreserved: GV4P192MB3168.EURP192.PROD.OUTLOOK.COM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI5MDA2MiBTYWx0ZWRfX59ofqIkPMrDn
- pQVPnCTKuLtikmNUZVyK0mkBbYy04ArJ+SuBvQFxz22wmAg9oQ8TrLuCvK9QkYjsOMrK+NjbxA9
- JDSqUQnfOlZGxlXQEmFUAcqmncOo5N9HWLZ6LEQOAkahLOJmHGfmGeQA14/7eg2tsLb1ZXJLSY0
- KVFLmPFNC0lXsPtNOX1YJpHjdpPM6HbNFkgyD3s6kxocfwb0mxuB4vpBA3e+n4VLLXa830M49xG
- 47OojIaP3ERtQJxgdRBsIkVugVxsdvZwqswh0FSp6RcZjFMgewrT76Tz4kEaLYxYNqCVpTuKymA
- tu2396TJSXXV470iiGsJBJeMMyISgESzexopKFrEya6gQ0qMk1ToHhNxHeqv5UaNmSSKOrKyUmJ
- U6tSm86GyO7E1sQXTxcobSZSQ11YzoqMO5aoP1NTKgzXFu+HbPxSnKcgDUs0g2hGKFW4z4hwsvt
- QRNoCRo4uKDTPlZW1vA==
-X-Proofpoint-ORIG-GUID: rPurmBVjrZ5lfJIhvhrWnQPcS6p6jp_2
-X-Proofpoint-GUID: rPurmBVjrZ5lfJIhvhrWnQPcS6p6jp_2
-X-Authority-Analysis: v=2.4 cv=ZNznX37b c=1 sm=1 tr=0 ts=6a4222f8 cx=c_pps
- a=NDlXlHM6WrayTpZMBqf2Ew==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+X-OrganizationHeadersPreserved: PA3P192MB3013.EURP192.PROD.OUTLOOK.COM
+X-Proofpoint-GUID: gI-N58B5jIodl2OKJFQgrygPFGnZVqT_
+X-Authority-Analysis: v=2.4 cv=bcRbluPB c=1 sm=1 tr=0 ts=6a42244a cx=c_pps
+ a=GOCvCvAqFs6MniXVvcVIMQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
  a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
  a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=8gLI3H-aZtYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=tr3XZvuDWTETL0Uaxejn:22 a=8ys4xmT3Mru1TjC2zVq1:22
- a=N9GNhs4bAAAA:8 a=F4jRbKuxnH_zUiGVJR0A:9 a=QEXdDO2ut3YA:10
- a=PZhj9NlD-CKO8hVp7yCs:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI5MDA2MiBTYWx0ZWRfXyQlYiu1LdoHI
- LjC9GYsmB8cuBZqutIET7QIQIN1PQNawPqKwcP28ReJYd7/LpikkDyu9WZHd0kLAOxzBCi5OWSL
- S68TUaoC9cvW8ieIEgMTjrXJjUWHjjo=
+ a=VkNPw1HP01LnGYTKEx00:22 a=tr3XZvuDWTETL0Uaxejn:22 a=WQ4YJ39tjzx_Hbm9pN5v:22
+ a=VwQbUJbxAAAA:8 a=N9GNhs4bAAAA:8 a=P6DDrAdFcA6Gy848D_IA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=PZhj9NlD-CKO8hVp7yCs:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI5MDA2MiBTYWx0ZWRfX+jusGR3E4L/h
+ IxZpcRy2GbY9mF6+4z0MhHknn+X+lIOgOVi3yDh4wvTCCtDYPjbkIds1PqtAXRGo8prAshxlOVL
+ 8kPFVOs0rS0d2Z6axdogk/JDSaieE44=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI5MDA2MiBTYWx0ZWRfX/x2g4EzQhpU8
+ /OMsHkjw/YWrFnFuil8tg+gHHBG3nvMGDQVj+CU3W79TlUAC818v4FMLDzsQROE3D3rqffXYZDO
+ wUur3UfbAODG3qLuNGlWPWwAkw4iPYZqXvXASnBs26INO2M+g1woYvd+Q+mHQ518/MDP+iakSlW
+ nIypCxXDiEWG28YWT07VFOt/pO6v35FwaJPs0rS/YgMqZUsDKXlIZlAf5XY9Hsp9HOG2DD0Wh0A
+ APnY2/+yXJE4NjN1fGtu378jjElD+/Iifl1nuYyKwFlrDANv2bM0JHNOmyjE/1WeEGGHv3NM6dD
+ XgLaBHnvZEvNp8Up7UBqmXvcfu/xnyTLk1yb8W3cAaOpxyr9c25xzNfpv/BkGCQ6Q6nZlpKw4CU
+ jrAfkNFPh1JXBbNU7+4amqxVwE6jx2TIxFH4HX9a5+YG8GVbtHSUg8C0/rHSqBnFrQ0BQoPKzBi
+ 8KtP8Q5Vi3AEQlwHJgw==
+X-Proofpoint-ORIG-GUID: gI-N58B5jIodl2OKJFQgrygPFGnZVqT_
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_REJECT(1.00)[cv is fail on i=2];
 	DMARC_POLICY_ALLOW(-0.50)[westermo.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[westermo.com:s=270620241,beijerelectronicsab.onmicrosoft.com:s=selector1-beijerelectronicsab-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38269-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38268-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:jjohnson@kernel.org,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[alexander.wilhelm@westermo.com,linux-wireless@vger.kernel.org];
@@ -216,7 +217,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[beijerelectronicsab.onmicrosoft.com:dkim,westermo.com:dkim,westermo.com:email,westermo.com:mid,westermo.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,westermo.com:dkim,westermo.com:email,westermo.com:mid,westermo.com:from_mime,vger.kernel.org:from_smtp,beijerelectronicsab.onmicrosoft.com:dkim];
 	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -227,54 +228,223 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A6B8E6D7774
+X-Rspamd-Queue-Id: AD7AB6D7640
 
-The ath12k_wmi_scan_req_arg structure defines the channel list in
-CPU-native order, while wmi_start_scan_cmd expects the values in
-little-endian format. The simple memcpy causes the hardware scan to fail on
-big-endian architectures. Set __le32* type for the tmp_ptr and swap channel
-values to support both architectures correctly.
+Currently the driver uses u32 data types for the HE/EHT capabilities in
+CPU‑native order. However, the ieee80211.h header defines these fields as
+u8 arrays. This causes the ieee80211 registration failure on big‑endian
+platforms, as shown in the following log:
+
+    ath12k_pci 0001:01:00.0: BAR 0: assigned [mem 0xc00000000-0xc001fffff 64bit]
+    ath12k_pci 0001:01:00.0: MSI vectors: 1
+    ath12k_pci 0001:01:00.0: Hardware name: qcn9274 hw2.0
+    ath12k_pci 0001:01:00.0: qmi dma allocation failed (29360128 B type 1), will try later with small size
+    ath12k_pci 0001:01:00.0: memory type 10 not supported
+    ath12k_pci 0001:01:00.0: chip_id 0x0 chip_family 0xb board_id 0x1005 soc_id 0x401a2200
+    ath12k_pci 0001:01:00.0: fw_version 0x111300d6 fw_build_timestamp 2024-08-06 08:43 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
+    ath12k_pci 0001:01:00.0: leaving PCI ASPM disabled to avoid MHI M2 problems
+    ath12k_pci 0001:01:00.0: Invalid module id 2
+    ath12k_pci 0001:01:00.0: failed to parse tlv -22
+    ath12k_pci 0001:01:00.0: ieee80211 registration failed: -22
+    ath12k_pci 0001:01:00.0: failed register the radio with mac80211: -22
+    ath12k_pci 0001:01:00.0: failed to create pdev core: -22
+    ath12k_pci 0001:01:00.0: qmi failed set mode request, mode: 4, err = -110
+    ath12k_pci 0001:01:00.0: qmi failed to send wlan mode off
+
+Use the __le32 data type for the HE/EHT capabilities instead and avoid
+swapping, so that both platform endiannesses are supported.
 
 Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Changes in v2:
+- Rebase on latest ath master
+- Fix endianness in extra_mcs_supported bool in debugfs
+- Link to v1: https://lore.kernel.org/r/20260317-fix-he-eht-capabilities-on-big-endian-v1-1-e7b937b32768@westermo.com
+---
+ drivers/net/wireless/ath/ath12k/core.h    |  8 ++---
+ drivers/net/wireless/ath/ath12k/debugfs.c |  4 +--
+ drivers/net/wireless/ath/ath12k/wmi.c     | 58 +++++++++++++++----------------
+ drivers/net/wireless/ath/ath12k/wmi.h     |  4 +--
+ 4 files changed, 36 insertions(+), 38 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 59c193b24764..8481015dcda6 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -788,13 +788,13 @@ struct ath12k_band_cap {
+ 	u32 phy_id;
+ 	u32 max_bw_supported;
+ 	u32 ht_cap_info;
+-	u32 he_cap_info[2];
++	__le32 he_cap_info[2];
+ 	u32 he_mcs;
+-	u32 he_cap_phy_info[PSOC_HOST_MAX_PHY_SIZE];
++	__le32 he_cap_phy_info[PSOC_HOST_MAX_PHY_SIZE];
+ 	struct ath12k_wmi_ppe_threshold_arg he_ppet;
+ 	u16 he_6ghz_capa;
+-	u32 eht_cap_mac_info[WMI_MAX_EHTCAP_MAC_SIZE];
+-	u32 eht_cap_phy_info[WMI_MAX_EHTCAP_PHY_SIZE];
++	__le32 eht_cap_mac_info[WMI_MAX_EHTCAP_MAC_SIZE];
++	__le32 eht_cap_phy_info[WMI_MAX_EHTCAP_PHY_SIZE];
+ 	u32 eht_mcs_20_only;
+ 	u32 eht_mcs_80;
+ 	u32 eht_mcs_160;
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs.c b/drivers/net/wireless/ath/ath12k/debugfs.c
+index 358031fa14eb..f71ac5853cda 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs.c
+@@ -410,8 +410,8 @@ static bool ath12k_he_supports_extra_mcs(struct ath12k *ar, int freq)
+ 	else
+ 		cap_band = &cap->band[NL80211_BAND_6GHZ];
+ 
+-	extra_mcs_supported = u32_get_bits(cap_band->he_cap_info[1],
+-					   HE_EXTRA_MCS_SUPPORT);
++	extra_mcs_supported = le32_get_bits(cap_band->he_cap_info[1],
++					    HE_EXTRA_MCS_SUPPORT);
+ 	return extra_mcs_supported;
+ }
+ 
 diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 65a05a9520ff..9e1d3c662852 100644
+index 65a05a9520ff..f5cd1eb27685 100644
 --- a/drivers/net/wireless/ath/ath12k/wmi.c
 +++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -2571,7 +2571,8 @@ int ath12k_wmi_send_scan_start_cmd(struct ath12k *ar,
- 	struct wmi_tlv *tlv;
- 	void *ptr;
- 	int i, ret, len;
--	u32 *tmp_ptr, extraie_len_with_pad = 0;
-+	__le32 *tmp_ptr;
-+	u32 extraie_len_with_pad = 0;
- 	struct ath12k_wmi_hint_short_ssid_arg *s_ssid = NULL;
- 	struct ath12k_wmi_hint_bssid_arg *hint_bssid = NULL;
+@@ -487,12 +487,11 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
+ 		cap_band->phy_id = le32_to_cpu(mac_caps->phy_id);
+ 		cap_band->max_bw_supported = le32_to_cpu(mac_caps->max_bw_supported_2g);
+ 		cap_band->ht_cap_info = le32_to_cpu(mac_caps->ht_cap_info_2g);
+-		cap_band->he_cap_info[0] = le32_to_cpu(mac_caps->he_cap_info_2g);
+-		cap_band->he_cap_info[1] = le32_to_cpu(mac_caps->he_cap_info_2g_ext);
++		cap_band->he_cap_info[0] = mac_caps->he_cap_info_2g;
++		cap_band->he_cap_info[1] = mac_caps->he_cap_info_2g_ext;
+ 		cap_band->he_mcs = le32_to_cpu(mac_caps->he_supp_mcs_2g);
+-		for (i = 0; i < WMI_MAX_HECAP_PHY_SIZE; i++)
+-			cap_band->he_cap_phy_info[i] =
+-				le32_to_cpu(mac_caps->he_cap_phy_info_2g[i]);
++		memcpy(&cap_band->he_cap_phy_info, &mac_caps->he_cap_phy_info_2g,
++		       sizeof(u32) * WMI_MAX_HECAP_PHY_SIZE);
  
-@@ -2656,9 +2657,10 @@ int ath12k_wmi_send_scan_start_cmd(struct ath12k *ar,
- 	tlv = ptr;
- 	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_UINT32, len);
- 	ptr += TLV_HDR_SIZE;
--	tmp_ptr = (u32 *)ptr;
-+	tmp_ptr = (__le32 *)ptr;
+ 		cap_band->he_ppet.numss_m1 = le32_to_cpu(mac_caps->he_ppet2g.numss_m1);
+ 		cap_band->he_ppet.ru_bit_mask = le32_to_cpu(mac_caps->he_ppet2g.ru_info);
+@@ -508,12 +507,11 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
+ 		cap_band->max_bw_supported =
+ 			le32_to_cpu(mac_caps->max_bw_supported_5g);
+ 		cap_band->ht_cap_info = le32_to_cpu(mac_caps->ht_cap_info_5g);
+-		cap_band->he_cap_info[0] = le32_to_cpu(mac_caps->he_cap_info_5g);
+-		cap_band->he_cap_info[1] = le32_to_cpu(mac_caps->he_cap_info_5g_ext);
++		cap_band->he_cap_info[0] = mac_caps->he_cap_info_5g;
++		cap_band->he_cap_info[1] = mac_caps->he_cap_info_5g_ext;
+ 		cap_band->he_mcs = le32_to_cpu(mac_caps->he_supp_mcs_5g);
+-		for (i = 0; i < WMI_MAX_HECAP_PHY_SIZE; i++)
+-			cap_band->he_cap_phy_info[i] =
+-				le32_to_cpu(mac_caps->he_cap_phy_info_5g[i]);
++		memcpy(&cap_band->he_cap_phy_info, &mac_caps->he_cap_phy_info_5g,
++		       sizeof(u32) * WMI_MAX_HECAP_PHY_SIZE);
  
--	memcpy(tmp_ptr, arg->chan_list, arg->num_chan * 4);
-+	for (i = 0; i < arg->num_chan; i++)
-+		tmp_ptr[i] = cpu_to_le32(arg->chan_list[i]);
+ 		cap_band->he_ppet.numss_m1 = le32_to_cpu(mac_caps->he_ppet5g.numss_m1);
+ 		cap_band->he_ppet.ru_bit_mask = le32_to_cpu(mac_caps->he_ppet5g.ru_info);
+@@ -526,12 +524,11 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
+ 		cap_band->max_bw_supported =
+ 			le32_to_cpu(mac_caps->max_bw_supported_5g);
+ 		cap_band->ht_cap_info = le32_to_cpu(mac_caps->ht_cap_info_5g);
+-		cap_band->he_cap_info[0] = le32_to_cpu(mac_caps->he_cap_info_5g);
+-		cap_band->he_cap_info[1] = le32_to_cpu(mac_caps->he_cap_info_5g_ext);
++		cap_band->he_cap_info[0] = mac_caps->he_cap_info_5g;
++		cap_band->he_cap_info[1] = mac_caps->he_cap_info_5g_ext;
+ 		cap_band->he_mcs = le32_to_cpu(mac_caps->he_supp_mcs_5g);
+-		for (i = 0; i < WMI_MAX_HECAP_PHY_SIZE; i++)
+-			cap_band->he_cap_phy_info[i] =
+-				le32_to_cpu(mac_caps->he_cap_phy_info_5g[i]);
++		memcpy(&cap_band->he_cap_phy_info, &mac_caps->he_cap_phy_info_5g,
++		       sizeof(u32) * WMI_MAX_HECAP_PHY_SIZE);
  
- 	ptr += len;
+ 		cap_band->he_ppet.numss_m1 = le32_to_cpu(mac_caps->he_ppet5g.numss_m1);
+ 		cap_band->he_ppet.ru_bit_mask = le32_to_cpu(mac_caps->he_ppet5g.ru_info);
+@@ -2226,14 +2223,13 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
+ 	cmd->peer_phymode = cpu_to_le32(arg->peer_phymode);
  
+ 	/* Update 11ax capabilities */
+-	cmd->peer_he_cap_info = cpu_to_le32(arg->peer_he_cap_macinfo[0]);
+-	cmd->peer_he_cap_info_ext = cpu_to_le32(arg->peer_he_cap_macinfo[1]);
++	cmd->peer_he_cap_info = arg->peer_he_cap_macinfo[0];
++	cmd->peer_he_cap_info_ext = arg->peer_he_cap_macinfo[1];
+ 	cmd->peer_he_cap_info_internal = cpu_to_le32(arg->peer_he_cap_macinfo_internal);
+ 	cmd->peer_he_caps_6ghz = cpu_to_le32(arg->peer_he_caps_6ghz);
+ 	cmd->peer_he_ops = cpu_to_le32(arg->peer_he_ops);
+-	for (i = 0; i < WMI_MAX_HECAP_PHY_SIZE; i++)
+-		cmd->peer_he_cap_phy[i] =
+-			cpu_to_le32(arg->peer_he_cap_phyinfo[i]);
++	memcpy(cmd->peer_he_cap_phy, arg->peer_he_cap_phyinfo,
++	       sizeof(u32) * WMI_MAX_HECAP_PHY_SIZE);
+ 	cmd->peer_ppet.numss_m1 = cpu_to_le32(arg->peer_ppet.numss_m1);
+ 	cmd->peer_ppet.ru_info = cpu_to_le32(arg->peer_ppet.ru_bit_mask);
+ 	for (i = 0; i < WMI_MAX_NUM_SS; i++)
+@@ -5034,17 +5030,17 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
+ 	u8 i;
+ 
+ 	if (band == NL80211_BAND_6GHZ)
+-		support_320mhz = cap_band->eht_cap_phy_info[0] &
+-					IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
++		support_320mhz = le32_to_cpu(cap_band->eht_cap_phy_info[0]) &
++				 IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
+ 
+-	for (i = 0; i < WMI_MAX_EHTCAP_MAC_SIZE; i++)
+-		cap_band->eht_cap_mac_info[i] = le32_to_cpu(cap_mac_info[i]);
++	memcpy(cap_band->eht_cap_mac_info, cap_mac_info,
++	       sizeof(u32) * WMI_MAX_EHTCAP_MAC_SIZE);
+ 
+-	for (i = 0; i < WMI_MAX_EHTCAP_PHY_SIZE; i++)
+-		cap_band->eht_cap_phy_info[i] = le32_to_cpu(cap_phy_info[i]);
++	memcpy(cap_band->eht_cap_phy_info, cap_phy_info,
++	       sizeof(u32) * WMI_MAX_EHTCAP_PHY_SIZE);
+ 
+ 	if (band == NL80211_BAND_6GHZ)
+-		cap_band->eht_cap_phy_info[0] |= support_320mhz;
++		cap_band->eht_cap_phy_info[0] |= cpu_to_le32(support_320mhz);
+ 
+ 	cap_band->eht_mcs_20_only = le32_to_cpu(supp_mcs[0]);
+ 	cap_band->eht_mcs_80 = le32_to_cpu(supp_mcs[1]);
+@@ -5132,10 +5128,12 @@ static int ath12k_wmi_tlv_mac_phy_caps_ext(struct ath12k_base *ab, u16 tag,
+ 
+ 	if (ab->hw_params->single_pdev_only) {
+ 		if (caps->hw_mode_id == WMI_HOST_HW_MODE_SINGLE) {
+-			support_320mhz = le32_to_cpu(caps->eht_cap_phy_info_5ghz[0]) &
+-					 IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
++			support_320mhz =
++				le32_to_cpu(caps->eht_cap_phy_info_5ghz[0]) &
++				IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
+ 			cap_band = &ab->pdevs[0].cap.band[NL80211_BAND_6GHZ];
+-			cap_band->eht_cap_phy_info[0] |= support_320mhz;
++			cap_band->eht_cap_phy_info[0] |=
++				cpu_to_le32(support_320mhz);
+ 		}
+ 
+ 		if (ab->wmi_ab.preferred_hw_mode != le32_to_cpu(caps->hw_mode_id))
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index 5ba9b7d3a888..ea680a1a5464 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -3911,11 +3911,11 @@ struct ath12k_wmi_peer_assoc_arg {
+ 	u8 peer_mac[ETH_ALEN];
+ 
+ 	bool he_flag;
+-	u32 peer_he_cap_macinfo[2];
++	__le32 peer_he_cap_macinfo[2];
+ 	u32 peer_he_cap_macinfo_internal;
+ 	u32 peer_he_caps_6ghz;
+ 	u32 peer_he_ops;
+-	u32 peer_he_cap_phyinfo[WMI_HOST_MAX_HECAP_PHY_SIZE];
++	__le32 peer_he_cap_phyinfo[WMI_HOST_MAX_HECAP_PHY_SIZE];
+ 	u32 peer_he_mcs_count;
+ 	u32 peer_he_rx_mcs_set[WMI_HOST_MAX_HE_RATE_SET];
+ 	u32 peer_he_tx_mcs_set[WMI_HOST_MAX_HE_RATE_SET];
 
 ---
-base-commit: 702847e8cfd51856836a282db2073defd7cfd80c
-change-id: 20260317-fix-channel-list-copy-cef5cad24fb6
+base-commit: e77fa9aaf082d1774b205275c5bffac5a5d1dcb3
+change-id: 20260317-fix-he-eht-capabilities-on-big-endian-d941c42f65e5
 
 Best regards,
 -- 
