@@ -1,155 +1,184 @@
-Return-Path: <linux-wireless+bounces-38400-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38401-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id c+vkOLQERGpEnQoAu9opvQ
-	(envelope-from <linux-wireless+bounces-38400-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 20:02:28 +0200
+	id CPfJFRIaRGoqogoAu9opvQ
+	(envelope-from <linux-wireless+bounces-38401-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 21:33:38 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 548D56E7124
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 20:02:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CB56E79AA
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 21:33:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bW2LtgBu;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38400-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38400-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38401-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38401-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 667D430269CB
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 18:02:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D9C06300F268
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 19:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B883DE421;
-	Tue, 30 Jun 2026 18:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299E63C1F5B;
+	Tue, 30 Jun 2026 19:33:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f208.google.com (mail-oi1-f208.google.com [209.85.167.208])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B171F12CDBE;
-	Tue, 30 Jun 2026 18:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB08534389D
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 19:33:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782842541; cv=none; b=HY5uuORJQgWLnQaRoNT6A4TDhCOtXsbVR9jeZqD73iH4iNa8W37z6oGNHPPAZhOR6P/kgNoWGCr3cOdvkZAieaWmz1ttWZSv9rQMXrkqwhHpJHWZyggechlJA9ck1+ScnE7GCW4gX4oXp4+mvpNqYKrASSo09dmtEElMwZZHI0U=
+	t=1782848006; cv=none; b=l++BPmOXyD9TNJ4GO/T6K8EWeuoUJHqnZcz9GM2Tl4u20Dvb54eZC3whaZ1cm2awWPVI0MM6EeVT/560D09DvwVfiEA6XhIEvMs7TLCFKIeiwpiF0pnbKUQDfUJDSNOrRWFwP4aapngW2o4ZjSb7jJeKV3iAy7rc2wtlGec7QOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782842541; c=relaxed/simple;
-	bh=V16u8iU0zk+lCqlS1wIv/DHcIm7oRipJJhddV2VDekY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jbJ2hMw/+Vq/pFsMsKTj8FKzDhpW4T/fiI68JKB8snivEHVN4luFKCI0Ryz2sNRcNhDb7ONGaB7b0Kdsjd9ps7uZxjjQTAFoUGlMx5Y66YW9mGQ8pnHcAkOtFmEHgXVa5edmDf8L9ACP8f4WmgbOx5TL5RG4soRY1OyS1aJ+9Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bW2LtgBu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4201F000E9;
-	Tue, 30 Jun 2026 18:02:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782842540;
-	bh=xrqqsPqaXbkExbvl7l6TbPo4VTzO9ytLt6edYlDgBT8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bW2LtgBuXbPQAq4eiMMa8cUMnVjLuqj3Q6ugsddafkV7o5cM+0nsN+QgGxgqaE9Ke
-	 Hd2L/gR2uB4HHXsgPXibU6mlHo7TutX96zAGXa4SDB3W0MssskuFm1/Eozs7oBwvBA
-	 arL/o6a4H3Fr26i7Cxlgj1M2y63FOHzWKO/ny5MVsnEGMsX3sys6c3Cs30jcJHkO9+
-	 XRCna9Z2QOrPjFQ4omy9vh5UCxbCXgIqPfvOAEHTQtsCudlU/X2XioMfoqlzkl5rr7
-	 lEWWmTRxZJRsYFaORIATLAzNFLotlOzIx22OKAL6w1ojr3Hk3eIYpyEl3bK8vY9eJe
-	 Hrdb/XaxU/e/g==
-Date: Tue, 30 Jun 2026 13:02:19 -0500
-From: Rob Herring <robh@kernel.org>
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Ulf Hansson <ulfh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Rocky Liao <quic_rjliao@quicinc.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Christian Marangi <ansuelsmth@gmail.com>, linux-mmc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-	daniel@makrotopia.org, stable@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: Re: [PATCH v6 1/9] block: partitions: of: Skip child nodes without
- reg property
-Message-ID: <20260630180219.GA4139943-robh@kernel.org>
-References: <20260629-block-as-nvmem-v6-0-f02513dcd46d@oss.qualcomm.com>
- <20260629-block-as-nvmem-v6-1-f02513dcd46d@oss.qualcomm.com>
+	s=arc-20240116; t=1782848006; c=relaxed/simple;
+	bh=TJg+PTJkYd9/0ku8b/CRQqtSDTsx14fZLzROWdCDbYE=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=duqtARDXTzGNGZxrtlEK66VGGlJN9/N1O6Nxo1pp2OksqrR49IA3jeBbcIxo61sQ4n7UV6LqBlUxxPwwuvxzyL/5uusoNgf3TQIgqguYBinRjDsy4o4bhyNUJu/nff8Zb4CcTetg3/2Qd9FKRyM30k5erX1YGC6SzjIQhEZ+kMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.208
+Received: by mail-oi1-f208.google.com with SMTP id 5614622812f47-49601a1b80cso209634b6e.1
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 12:33:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782848004; x=1783452804;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D+rWZ8k73TMV9DNYwCNJH7ZdxXY5ZdbASYCz+2kmGPs=;
+        b=ljoWePHQU7kyfkEvlLAtWCSIGnSKxlz1TvVTiVXIHNQXXhihKukF73Gg+1I7aVPsJC
+         +VUHvaEh0dT+EpXWZCa62woHHzEZaHCd1zvT3oSfrp9XgwyZxluN5wtxiG7HG3OiJXZC
+         u1Sc6hkea54ErEIqj2p0j8lxzR0ncHjGafa8Qm2Dzy04Y28Nb5J5E1irbc5ogXQmaIwC
+         6sUOHdb0lTOayUW6unlhFhLQ3YHkkjicBW+PbcvKNPVoTocUjDT6XCaX3H3wPD67jZQq
+         y0t+AIf9maKuhOoe8SpFUFgajKihjYc2VlKyNvynfd26h+DRw6ZBbUKFsXOVImqvNrWw
+         alIw==
+X-Forwarded-Encrypted: i=1; AFNElJ85EHioLkAptpWsaJHc2KIycqDwaYgmoyiOBY0hMIkuRFZBTzYuWsAbmcxT0AMmSzPNSbrWRj+jE/amNlFfbw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIruWwcvGapT+Vqp36btrTqO3Tg5QIVT9tnI3J5updLikAHcAI
+	19qyc+wKe6lzUiDJA2/3DtO16rP2KKSKkUwGSG5qvigBkEj2lAg+NzLbOKxGf/HdylClLgqLwg8
+	+KxnA5tIAO20WApT/HZNW+zEOx/FbSLetq3yie6uLdMqepiaACEJlDjNz7tc=
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260629-block-as-nvmem-v6-1-f02513dcd46d@oss.qualcomm.com>
+X-Received: by 2002:a05:6808:87d1:b0:485:5f3f:bd1b with SMTP id
+ 5614622812f47-495fd49fef3mr1320558b6e.3.1782848003808; Tue, 30 Jun 2026
+ 12:33:23 -0700 (PDT)
+Date: Tue, 30 Jun 2026 12:33:23 -0700
+In-Reply-To: <6a00f268.170a0220.1c0296.021c.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a441a03.b42ede87.8e801.0009.GAE@google.com>
+Subject: Re: [syzbot] [wireless?] WARNING in mac80211_hwsim_tx (2)
+From: syzbot <syzbot+435fdb053cf98bfa5778@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.36 / 15.00];
+	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=3c3d59be33cf7e9a];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38400-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-38401-lists,linux-wireless=lfdr.de,435fdb053cf98bfa5778];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,syzkaller.appspot.com:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email,storage.googleapis.com:url];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:netdev@vger.kernel.org,m:syzkaller-bugs@googlegroups.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[37];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:loic.poulain@oss.qualcomm.com,m:ulfh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:andersson@kernel.org,m:konradybcio@kernel.org,m:axboe@kernel.dk,m:johannes@sipsolutions.net,m:jjohnson@kernel.org,m:brgl@kernel.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:quic_bgodavar@quicinc.com,m:quic_rjliao@quicinc.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:srini@kernel.org,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:linux@armlinux.org.uk,m:saravanak@kernel.org,m:ansuelsmth@gmail.com,m:linux-mmc@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-block@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath10k@lists.infradead.org,m:linux-bluetooth@vger.kernel.org,m:netdev@vger.kernel.org,m:daniel@makrotopia.org,m:stable@vger.kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,m:krzk@kernel.org,m:conor@kernel.org,m:luizdentz@gmail.com
- ,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[robh@kernel.org,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robh@kernel.org,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,kernel.dk,sipsolutions.net,holtmann.org,gmail.com,quicinc.com,davemloft.net,google.com,redhat.com,lunn.ch,armlinux.org.uk,vger.kernel.org,lists.infradead.org,makrotopia.org,oss.qualcomm.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	SUBJECT_HAS_QUESTION(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 548D56E7124
+X-Rspamd-Queue-Id: 58CB56E79AA
 
-On Mon, Jun 29, 2026 at 10:55:20AM +0200, Loic Poulain wrote:
-> Child nodes of a fixed-partitions node are not necessarily partition
-> entries, for example an nvmem-layout node has no reg property. The
-> current code passes a NULL reg pointer and uninitialized len to the
-> length check, which can result in a kernel panic or silent failure to
-> register any partitions.
+syzbot has found a reproducer for the following issue on:
 
-That does not sound right to me. A fixed-partitions node should only be 
-defining partitions with address ranges. I would expect a partition node 
-could be nvmem-layout, but not the whole address range. If you wanted 
-the latter, then just do:
+HEAD commit:    dc59e4fea9d8 Linux 7.2-rc1
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=12f58032580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3c3d59be33cf7e9a
+dashboard link: https://syzkaller.appspot.com/bug?extid=435fdb053cf98bfa5778
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13a73289580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=135db61e580000
 
-partitions {
-  ...
-};
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-dc59e4fe.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/9ee1f0ea24f2/vmlinux-dc59e4fe.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/729e963a1370/bzImage-dc59e4fe.xz
 
-nvmem-layout {
-  ...
-};
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+435fdb053cf98bfa5778@syzkaller.appspotmail.com
 
-Rob
+mac80211_hwsim hwsim5 wlan1: entered allmulticast mode
+------------[ cut here ]------------
+hwsim_get_chanwidth(bw) > hwsim_get_chanwidth(confbw)
+WARNING: drivers/net/wireless/virtual/mac80211_hwsim_main.c:2248 at mac80211_hwsim_tx+0x1ab4/0x2500 drivers/net/wireless/virtual/mac80211_hwsim_main.c:2248, CPU#0: syz.0.17/5510
+Modules linked in:
+CPU: 0 UID: 0 PID: 5510 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:mac80211_hwsim_tx+0x1ab4/0x2500 drivers/net/wireless/virtual/mac80211_hwsim_main.c:2248
+Code: c6 05 da 65 07 09 01 48 c7 c7 e0 74 7a 8c be 6b 08 00 00 48 c7 c2 20 76 7a 8c e8 a7 d6 8c fa e9 ff ee ff ff e8 7d eb b0 fa 90 <0f> 0b 90 49 bc 00 00 00 00 00 fc ff df e9 dd fe ff ff e8 65 eb b0
+RSP: 0018:ffffc9000278efe0 EFLAGS: 00010293
+RAX: ffffffff87158693 RBX: 0000000000000000 RCX: ffff888000ad8000
+RDX: 0000000000000000 RSI: 0000000000000014 RDI: 00000000000000a0
+RBP: ffffc9000278f170 R08: ffff888000ad8000 R09: 000000000000000e
+R10: 000000000000000d R11: 0000000000000000 R12: 0000000000000014
+R13: ffff8880120b3cb0 R14: 00000000000000a0 R15: 0000000000000030
+FS:  000055559073c500(0000) GS:ffff88808c815000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005562391e0138 CR3: 0000000012ea1000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ drv_tx net/mac80211/driver-ops.h:38 [inline]
+ ieee80211_tx_frags+0x3df/0x890 net/mac80211/tx.c:1746
+ __ieee80211_tx+0x267/0x580 net/mac80211/tx.c:1801
+ ieee80211_tx+0x312/0x4b0 net/mac80211/tx.c:1984
+ ieee80211_monitor_start_xmit+0xb33/0x1280 net/mac80211/tx.c:2479
+ __netdev_start_xmit include/linux/netdevice.h:5400 [inline]
+ netdev_start_xmit include/linux/netdevice.h:5409 [inline]
+ xmit_one net/core/dev.c:3889 [inline]
+ dev_hard_start_xmit+0x2cd/0x830 net/core/dev.c:3905
+ __dev_queue_xmit+0x1435/0x37f0 net/core/dev.c:4872
+ packet_snd net/packet/af_packet.c:3082 [inline]
+ packet_sendmsg+0x3d95/0x5040 net/packet/af_packet.c:3114
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+ __sock_sendmsg net/socket.c:790 [inline]
+ __sys_sendto+0x408/0x5a0 net/socket.c:2252
+ __do_sys_sendto net/socket.c:2259 [inline]
+ __se_sys_sendto net/socket.c:2255 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2255
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fc04219ce59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffcb766be38 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007fc042415fa0 RCX: 00007fc04219ce59
+RDX: 0000000000000030 RSI: 0000200000000640 RDI: 0000000000000008
+RBP: 00007fc042232e6f R08: 0000200000000380 R09: 0000000000000014
+R10: 0000000004000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fc042415fac R14: 00007fc042415fa0 R15: 00007fc042415fa0
+ </TASK>
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
