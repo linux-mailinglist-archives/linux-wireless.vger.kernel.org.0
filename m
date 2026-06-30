@@ -1,206 +1,220 @@
-Return-Path: <linux-wireless+bounces-38397-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38398-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UzqDNGnoQ2qOlQoAu9opvQ
-	(envelope-from <linux-wireless+bounces-38397-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 18:01:45 +0200
+	id 19QHJNH1Q2qsmAoAu9opvQ
+	(envelope-from <linux-wireless+bounces-38398-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 18:58:57 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4456E6355
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 18:01:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 037056E6B0B
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 18:58:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=SOltiwqS;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=dws5QCAo;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38397-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38397-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=VZxIxu7i;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38398-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38398-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3FAA830D4221
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 15:53:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56A2830237C8
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 16:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE111349CCF;
-	Tue, 30 Jun 2026 15:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2A63D75D1;
+	Tue, 30 Jun 2026 16:53:52 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9041436CE19
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 15:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CA73D1A98
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 16:53:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782834807; cv=none; b=BDdXtpxZs+qiul7cJsGe5Vgfl8PtGJAUeli3or6uD+Kv7w4doFv6M3PTzVrydlzAIPg5ogIgbCXC2nte+vVcn/Jm1Iy4fFd4ct7DIqVoSrlwmoQl68xQFG3vagCCvGuCjDIWSx7vh1OdbEiAwvDpuu8OM0XsBtXjWISraxhJYb8=
+	t=1782838432; cv=none; b=hTtGiWdMap/4aIK2DCJe71YmzdY/S9Oi9bwV2rd3yZH9Qu3DdKuI2PI4nerc5VvdQllc6ElGr9ymjlc4YFhLJKfmzWme9+vHruwVK8SNeDQsMwEB71ksF0MDlx1YrV9T66bhwYOkjF6BZ+PUAA+38EQVgVrAADzzVhiSnbOPxLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782834807; c=relaxed/simple;
-	bh=R/sI1gIUew15JcaHBORLHwETNj726R/YfUHkCgS8DVY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bTkImyZ94wJrrFPHEgYcmqvm8jBabYX+vEqK4WZnwdE3ShgqjH3SqhnAvY/IUYmO66+xr9xEOhSGRjl1L4uKEhR96jjH2hdnxAYdFJ9L8RX8xQer7H+0NiAQXkv8kL9s8oEvLx2q04t/p0VEYbBimucN4dnrGobxuWKHVxMEi6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SOltiwqS; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=dws5QCAo; arc=none smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65UEDIZ02209773
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 15:53:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	r3MfQYdMueMI2V1MlLuKgPKfUZ7shXX+zunl6VeCA8w=; b=SOltiwqSmQCX0IEI
-	rTnRRJFGdUhvsp8qkqsXJu0C92Jllou9Emc0n+icoXGklC2LGRw6Rp4vGgRXVW2U
-	ABQpTGElXgsJWYi/tVCL2M8ax2Bgmfgn9jdMasVkMRakM1C27O+b3RUtxl4QLS3M
-	vbiZDeOR8wOuUF7RGIi6HnZGmSrTC36GJTs3oCkp5PttIX6vN3Cf4tv1/ET14qWM
-	vZuSDB3vKaiJTEAXzVt4sUyMrrLbnk06idT14Ie3m7+7KDoR6aB3C980xFTX8xND
-	yayojntVsjOX+vYu0dqGK5oaJ0SEFA5w9wohPZthsi0xjVzZzrhPTDp6Eo8lD7+s
-	ktO6BA==
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f4avpsrae-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 15:53:25 +0000 (GMT)
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-30e773699d6so3372650eec.0
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 08:53:25 -0700 (PDT)
+	s=arc-20240116; t=1782838432; c=relaxed/simple;
+	bh=4cX60aAFpHSIylUr7tBHOHtlB3or0H1MO6CHMwJw11c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LYZ4+xwW3BuQHt2iKtyPPj9Ht9+YoHn7OyNc7C/Bm6z+j4nKYpN2hEA7UmlkZ3Gz89wYeSzoj91k1kpw1QLqpimjzgYQP2c7+rsGgZ2HAVWCTLqlWq8gkUzsvLEFqvP/f+HdpyW3m2rSgm1SGaNrF00lEYdAKbejLcDH9R1JPAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VZxIxu7i; arc=none smtp.client-ip=209.85.214.170
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c9b2ac97cdso135ad.1
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 09:53:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1782834804; x=1783439604; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=r3MfQYdMueMI2V1MlLuKgPKfUZ7shXX+zunl6VeCA8w=;
-        b=dws5QCAotuxYhg1ieugbj63Hz8UmkDeJP9INqpDStA2MMeZZxxB8SlwL9uArjMyfUH
-         UcQ82UNFD5iZEtcbNFH1dzahWC5JafRzBo/UUWn9/55QiJ4AvFIpUZC7BlziSz9kfjgU
-         5OjzW5E2fW+4zH+HAneyyWtU7t7/I49/dNdugqnneS0zcPf8lbeRyTFwsS1o14fBiNjx
-         iKME688xJrLDpec3F5GH1xykNhE7X6FP3pofvHh00IyjtzSxsmxGb/rbRYWJf7BaZR4Y
-         2gIixT+2tnL+jc3TehuCDjZJvcSY/bnafDw9G6uiCyGFQnImVxtheXMP5BLzX4YfM667
-         mIcA==
+        d=google.com; s=20251104; t=1782838430; x=1783443230; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zrPBeTNRyLA3ooNpufO1eFc7tmIMjSyBAKOe+RAYTN8=;
+        b=VZxIxu7i4mz4xfBB3cRpqrS6c/iWz/MJ7igksZYw+1Lt9vxZHVqjkGMg0VSjybEPiV
+         nY4tN4om7paWuLDmv05OT2yvcdR4Fl63us+dReii59F46TlJqvo1mUlRmYnoz4oWbVpU
+         ud+W4j+xFCDXm81O+bGQ2OVKXi322yRy1YsDGb7KFzEok7pGKsaSooS/rik3V+mmerIx
+         q6Tz1/no3EWCAxF6KpiqGi7fSng98p7I9IY4dHdaxZMiWSw5BUmzLDGM/RqYNQSItCyk
+         RCvzs8kwVzFlScSO0etuwUm8+1vDk2kFjkuLW0OHavqvKayLePYasTIq7xXiINhVDLM2
+         dhew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782834804; x=1783439604;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r3MfQYdMueMI2V1MlLuKgPKfUZ7shXX+zunl6VeCA8w=;
-        b=bjazlqD/sNh/P8z+lSdu7vGGBuoT/8OyoIIfgOnocwknTsUfDhnrJCyg/7iuZ82B1P
-         hPXhyHuXHhvE52XQd2aA16IFiRaiCOKse2uKXMOurQdMntZv0C+H4dKda4snxDg1hcf9
-         5otYR/hH7T1KwokHRzK7zaTBzRVhs9HqkTAL3SFdr7tD0+z8hWHtbZIfea8U1gvSMLh9
-         ZSfUdgHr8kFupqvo2czjj4oA4/aM7CTRfGpjeK3wVB7D9VBi3LB8DbnACRoCmZDDAIUO
-         vPEkUa9XssBzlZ2moipaw4RUGz+OyxDgTx1tHd5vjql3BVnoVUJZehSiL/Ae5mNqSp3q
-         pgow==
-X-Gm-Message-State: AOJu0YyHTzm2jEJ4UBMh+aoFt50s85BAu7PZmb695iK6fxA7B71oyeHq
-	fq5dJyCJ67G1/WGLj52syRsCzpjoK7/X3fadvEZy9/d5f5KPOLsIQWq8StY8dZpGtV+8CEEXtrC
-	y1CF5nSFPu7bdOL2tEOT0HzXLOzT8XD+8v9jxK+a4IOM1gzOUxV3IC0D1zl5f+r+mSSnecj8qLg
-	V8Zg==
-X-Gm-Gg: AfdE7ckVzXs5cFM12FWVOhZhaRZNnQIv1tS78cKT3Mu8RkoGXi5RwnONJ5AdfhTXyiJ
-	O2veSqQKvmGC3lAxs+njecDd1PM8gVPAQwUGEKfwPpFWxalQ4U/b2cIww41W7t6rjBp2orRXv9b
-	Wf9rDZNZTwcy6hOLz8eCk8pHm8ps3PDny+HxIpYGiPEfoOBYl+Sq8My9MbKFgLXCk66F5GJHNTX
-	cjrQshL/t0pFTj5zS+C5PvHSasEmYE8gz47lEv9ICNcnkVV1Jgv07Mz1523/OsRLxcWJ1zcia2y
-	Xn+QSQ/dRAxy0Lldtr60hUIP9gjNCDtk+HgjNxN4wQCx4gFR9baKGnqdZjJ0V3ThiPHz/F/NgLg
-	QL8Z78LmnosVTJi/L1sdpRJtWMyJsbdCXRT68kFYZJ1SRVhzDmXH/En3Nzh32W+j/sGQBfok=
-X-Received: by 2002:a05:7300:50c:b0:30e:cb91:659d with SMTP id 5a478bee46e88-30ee146e345mr3369342eec.22.1782834804297;
-        Tue, 30 Jun 2026 08:53:24 -0700 (PDT)
-X-Received: by 2002:a05:7300:50c:b0:30e:cb91:659d with SMTP id 5a478bee46e88-30ee146e345mr3369302eec.22.1782834803623;
-        Tue, 30 Jun 2026 08:53:23 -0700 (PDT)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30ee3170ef9sm14915810eec.16.2026.06.30.08.53.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jun 2026 08:53:23 -0700 (PDT)
-Message-ID: <4db87d04-2de6-4521-8da0-d80b036d216a@oss.qualcomm.com>
-Date: Tue, 30 Jun 2026 08:53:22 -0700
+        d=1e100.net; s=20251104; t=1782838430; x=1783443230;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zrPBeTNRyLA3ooNpufO1eFc7tmIMjSyBAKOe+RAYTN8=;
+        b=WcbN1sVhALtzJod5f3nCS564CFQX4O8Sgfb1wnrwHuXgmFxOgIiasCZ3RXeD81+k5+
+         tN9ei1DoTDZcze2lUlt+8iCrbb6YMjQFDlD5bC1Hpxj3XGR1dEVG97ytF9yCFXvDDnjH
+         5Hl3jD5u89cvLwSU+K93A3FidizzFn0g77tinKyNcfWNRKHTkCZ07lNfS+RjklNI9BhQ
+         PtyqvNoO0/DH0XtzFb/Eo1VrULELdX5KHhg4K3cO6+YmjUi0lARm7CCTrMW0dgg1h2MN
+         V3k/wvFmBH3GbtFPimPmzq4bXbdqe+T0EtyYUiZ6oKaJ1LSAIcjb5tN7yOSnZ8NzVeEF
+         Gf/g==
+X-Forwarded-Encrypted: i=1; AHgh+RqKPvwSbCZKicBNNPsBFUslMm5UTdHWM0tqP2BL8qTLNFj6NhsaFWP4S9LMza6Bt+cLwbkOMTwb/I8CvpZN4A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxByt8gZRttvL9vbMeoc+AUM96Y9Sc8sBhDjtVg/c6Dprk79b71
+	rXFOQ/tqe/BkcrFSqgpGW0Zp0An/0GjMC0yq/LEz9IkXgsXRqBLX24h+asY9VsUKmw==
+X-Gm-Gg: AfdE7ckbSkhycofmXfPGPpIChnuxJXyRM45VFFDJBbRrgKBIZwcwpsEtwMB6yoOROe2
+	zhPJ97rM5DwBd2wT06Tq9DvVNF9mfKCrb10sSlOOkCpGFlu8Nb4CrxnimiJkicgsMpA4soDSyar
+	9UppOTj1ObBVrE57ExRCheuUroW8HKWZo+FxbXR+RKibZZDnGgbtPDmYhsCqMx7iwEd5wtUr7pN
+	SILitj5NaiEUtdgol1EZ+h1ug4K8Ce9CDynZ9f+FGDM7+/UAL+i1Yo8hSyF+FSRb8pRpkbfNiV7
+	M7yGZqxiChzusqToyd2VSnQ5UwVmkMpTxjkwKuYafx46nXhZV8siCSqTGhiJnZ8HSzYK0T0Ibx/
+	pM0u5UYleBOyd4nZI/RmbZqe5iQj22o9iMq2SF8WcYW3JoqYOCZIa2ji1gF8TsI8njaPYEXaEkC
+	TG4wLfxttjEgztPkRWfugzUz5pLrOknc5tzD46LzeqFY5jU74+G6gzUXqh+M3QvqZCWY+CXy5w5
+	3pxyUVBW+ZRKdgleUCnf3V68CHHEJgV4Ag=
+X-Received: by 2002:a17:902:fda5:b0:2c7:7c7d:fb8f with SMTP id d9443c01a7336-2ca5d8dbceemr738665ad.17.1782838429959;
+        Tue, 30 Jun 2026 09:53:49 -0700 (PDT)
+Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9bbf95b8a4sm1910515a12.18.2026.06.30.09.53.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 09:53:49 -0700 (PDT)
+Date: Tue, 30 Jun 2026 16:53:45 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
+Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH wireless-next v2] wifi: cfg80211: fix regulatory.db async
+ firmware request blocking __usermodehelper_disable()
+Message-ID: <akP0mRFucE7p_P-S@google.com>
+References: <20260629063159.3288957-1-kavita.kavita@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v3] wifi: ath12k: add QMI capability negotiation
- for dynamic memory mode
-To: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20260626084327.2022076-1-aaradhana.sahu@oss.qualcomm.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260626084327.2022076-1-aaradhana.sahu@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: YnRYMeJWdiLK6_c2ane5GBPCqt6jOuUB
-X-Authority-Analysis: v=2.4 cv=KqJ9H2WN c=1 sm=1 tr=0 ts=6a43e675 cx=c_pps
- a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=8gEmGG-DoK4_G8SOyWUA:9 a=QEXdDO2ut3YA:10 a=6Ab_bkdmUrQuMsNx7PHu:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDE1MCBTYWx0ZWRfXxjrDYyFwUeCk
- gd4aeFYmqFPJjfhtnCJi+LUFhgKR3KKiUoCMUz9xHSN8nv6ifSlWqDHqbAsXnhAkSwuYLgyo28q
- M/cyb5KReMYM9LVBHZq7aEqbGAKriTeqD0rnG5VRLur8aaxwgxyo3RIBEqqEaKrnf9sMKH+BHvz
- h8Iiw/rPw+S/pPQxm4csbAV5K2bPluDx1upnW7AZBE75t88N4aQpo21iokTRMgn+/TSiXOY63+R
- nl+uJcBrtJvfiWP6NKv+KxtpPOijOerY4VPPK5Vhh/gx6Wiw2SMQKJj8FlE7PJDQ1jVI4OqLDqx
- 7UXmO4bjCmlwCztAIbWW5SLkluvGNh5I854uTAZ37cSOmthbnDA84GDFMzxWvfsJGJn9b1THsWM
- sGmxbokYyol4eD2Q6uMt3i+oFD4W41/TeTOXxWuJoPsNSFXgbS2RWGZpf/PLxlwN3a+hmHDI5NE
- 0su/kI+QqLm5hVQmyIA==
-X-Proofpoint-ORIG-GUID: YnRYMeJWdiLK6_c2ane5GBPCqt6jOuUB
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDE1MCBTYWx0ZWRfX0rYt6GjYUHln
- Sw1limxbCwo5o8IsurHB04B3sJk6f18ojBtT9Kqr+ISa9HsZyeibbXML3MqXaaerCQiHSneDE78
- 0qiKDFrLyc/JahRhMx9CAysBmFjMYFc=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-30_04,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 clxscore=1015 suspectscore=0 spamscore=0
- phishscore=0 bulkscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606300150
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260629063159.3288957-1-kavita.kavita@oss.qualcomm.com>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38397-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38398-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:aaradhana.sahu@oss.qualcomm.com,m:ath12k@lists.infradead.org,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:dkim];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:kavita.kavita@oss.qualcomm.com,m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[cmllamas@google.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cmllamas@google.com,linux-wireless@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9E4456E6355
+X-Rspamd-Queue-Id: 037056E6B0B
 
-On 6/26/2026 1:43 AM, Aaradhana Sahu wrote:
-> @@ -2319,11 +2360,14 @@ static void ath12k_qmi_phy_cap_send(struct ath12k_base *ab)
->  
->  	ab->qmi.num_radios = resp.num_phy;
->  
-> +	if (resp.dynamic_ddr_support_valid)
-> +		ab->qmi.dynamic_ddr_support = resp.dynamic_ddr_support;
-> +
->  	ath12k_dbg(ab, ATH12K_DBG_QMI,
-> -		   "phy capability resp valid %d single_chip_mlo_support %d valid %d num_phy %d valid %d board_id %d\n",
-> +		   "phy capability resp valid %d single_chip_mlo_support %d valid %d num_phy %d valid %d board_id %d dynamic_ddr_valid %u dynamic_ddr_support %u\n",
->  		   resp.single_chip_mlo_support_valid, resp.single_chip_mlo_support,
-> -		   resp.num_phy_valid, resp.num_phy,
-> -		   resp.board_id_valid, resp.board_id);
-> +		   resp.num_phy_valid, resp.num_phy, resp.board_id_valid, resp.board_id,
-> +		   resp.dynamic_ddr_support_valid, resp.dynamic_ddr_support);
+On Mon, Jun 29, 2026 at 12:01:59PM +0530, Kavita Kavita wrote:
+> cfg80211 schedules an asynchronous request_firmware() work item for
+> regulatory.db via request_firmware_work_func(). When the direct
+> firmware load fails, _request_firmware() falls back to the sysfs
+> fallback path via firmware_fallback_sysfs(), which blocks indefinitely
+> in wait_for_completion_killable_timeout() waiting for userspace to
+> supply the firmware through the sysfs interface.
+> 
+> While this work item is pending, any caller of
+> __usermodehelper_disable() will deadlock attempting to acquire the
+> usermodehelper rwsem for writing, since the sysfs firmware fallback
+> path holds the rwsem for reading and is blocked waiting for userspace
+> response that can never arrive while usermode helpers are being
+> disabled.
+> 
+> Observed call traces where system suspend blocked due to regulatory.db
+> async firmware request:
+> 
+>   kworker/6:3 (pid 194) holding usermodehelper rwsem read lock, blocked
+>    waiting for userspace firmware response:
+>      wait_for_completion_killable_timeout+0x48
+>      firmware_fallback_sysfs+0x270
+>      _request_firmware+0x790
+>      request_firmware_work_func+0x44
+>      process_one_work[jt]+0x59c
+>      worker_thread+0x260
+>      kthread+0x150
+>      ret_from_fork+0x10
+> 
+>   Caller blocked in __usermodehelper_disable() during system suspend:
+>      rwsem_down_write_slowpath+0x768
+>      down_write+0x98
+>      __usermodehelper_disable+0x3c
+>      freeze_processes+0x18
+>      pm_suspend+0x320
+>      state_store+0x104
+>      kernfs_fop_write_iter[jt]+0x168
+>      vfs_write+0x270
+>      ksys_write+0x78
+> 
+> Any service or kernel subsystem invoking __usermodehelper_disable() is
+> susceptible to this hang as long as the regulatory.db sysfs fallback
+> request remains outstanding.
+> 
+> Fix this by replacing the unconditional uevent-based load with a
+> two-step approach. First, attempt a synchronous load via
+> request_firmware_direct() at init time. This is fast and
+> non-blocking, if the file is present in standard paths it is loaded
+> immediately with no delay. If not found, the load is deferred to
+> wiphy_regulatory_register() and triggered via
+> firmware_request_nowait_nowarn() only when the first non-self-managed
+> wiphy registers.
+> 
+> For self-managed drivers (REGULATORY_WIPHY_SELF_MANAGED), the hang is
+> avoided because wiphy_regulatory_register() handles them separately
+> and the deferred load path is never reached, so the file load is not
+> attempted at all. For this case, regulatory information is obtained
+> from driver/firmware during wiphy registration. For non-self-managed
+> drivers, the file is required and is expected to be present. The
+> deferred load via firmware_request_nowait_nowarn() is triggered only
+> when the first such wiphy registers. This ensures the database is
+> loaded only when it is actually needed, avoiding the sysfs fallback
+> path on systems where the file is absent at init time.
+> 
+> Also refactor regdb_fw_cb() into two functions: regdb_load() which
+> validates and stores the firmware image, and regdb_fw_cb_restore()
+> which is the async callback that calls restore_regulatory_settings()
+> to replay all pending regulatory requests (country hints from core,
+> user, driver and country IE) that arrived while the database was not
+> yet available.
+> 
+> NOTE:
+> This issue was observed on Android platforms where regulatory.db is
+> absent.
+> Steps to reproduce on Android platforms:
+>   1. Power off the device completely.
+>   2. Connect the charger; the device enters off-mode charging.
+>   3. While in off-mode charging, short press the power key.
 
-Your logging change conflicts with the one in:
-wifi: ath12k: use %u for unsigned variables in QMI debug logs
+Can you confirm that you see this with !FW_LOADER_USER_HELPER_FALLBACK?
+IIUC, this is disabled in Android and shouldn't trigger this path?
 
-That one is already in my pending queue, so I'll have you rebase once that one
-lands in ath-next.
-
-/jeff
-
+> 
+> Fixes: 007f6c5e6eb4 ("cfg80211: support loading regulatory database as firmware file")
+> Signed-off-by: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
+> ---
 
