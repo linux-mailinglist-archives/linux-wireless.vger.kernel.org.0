@@ -1,184 +1,295 @@
-Return-Path: <linux-wireless+bounces-38401-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38402-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CPfJFRIaRGoqogoAu9opvQ
-	(envelope-from <linux-wireless+bounces-38401-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 21:33:38 +0200
+	id EY/2CyQgRGp9owoAu9opvQ
+	(envelope-from <linux-wireless+bounces-38402-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 21:59:32 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CB56E79AA
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 21:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20CD66E7B05
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 21:59:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38401-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38401-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=cdR8HRwp;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=XN24c5TU;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38402-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38402-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D9C06300F268
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 19:33:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D6EAE300C7F5
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 19:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299E63C1F5B;
-	Tue, 30 Jun 2026 19:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C161477982;
+	Tue, 30 Jun 2026 19:59:24 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f208.google.com (mail-oi1-f208.google.com [209.85.167.208])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB08534389D
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 19:33:24 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782848006; cv=none; b=l++BPmOXyD9TNJ4GO/T6K8EWeuoUJHqnZcz9GM2Tl4u20Dvb54eZC3whaZ1cm2awWPVI0MM6EeVT/560D09DvwVfiEA6XhIEvMs7TLCFKIeiwpiF0pnbKUQDfUJDSNOrRWFwP4aapngW2o4ZjSb7jJeKV3iAy7rc2wtlGec7QOM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782848006; c=relaxed/simple;
-	bh=TJg+PTJkYd9/0ku8b/CRQqtSDTsx14fZLzROWdCDbYE=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=duqtARDXTzGNGZxrtlEK66VGGlJN9/N1O6Nxo1pp2OksqrR49IA3jeBbcIxo61sQ4n7UV6LqBlUxxPwwuvxzyL/5uusoNgf3TQIgqguYBinRjDsy4o4bhyNUJu/nff8Zb4CcTetg3/2Qd9FKRyM30k5erX1YGC6SzjIQhEZ+kMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.208
-Received: by mail-oi1-f208.google.com with SMTP id 5614622812f47-49601a1b80cso209634b6e.1
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 12:33:24 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39C747277F
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 19:59:22 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782849564; cv=pass; b=MIW3osLmoUwqkMWyTcgLROEAEZ0sBsV8DIe3aURa/QTQoTo13crMtP2txL1HP2pjdY9/JZbTNdG8VdeMuxTh95jluSaTpCBDffCd4huuaKa5lwnXxgRZ58lZj9L8NNlA4FQucT9oiBlzqWmt5o5dyoHFr9S0NBXqc++ZB6gltPg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782849564; c=relaxed/simple;
+	bh=RiKwOhz2rdMC9/aebYm1g33822i4EXTv8wYdbkHCerM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Cohp+UqAbA8Ecl5DAZEIkAVoX1LEHGwe1rfDtHaCxgjnFRUxsuVeSqhkG5MgQRH35TVso/4VW2EfLtL29b1zmmWiHS+6lLGLoz0rtDVB9uUqDba7vHTNzwcwyn1o5HAtt4JgPCuAPjoxVZ88jF8/7zqfIKXBpctEfuKn9hLAbJo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cdR8HRwp; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XN24c5TU; arc=pass smtp.client-ip=205.220.168.131
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65UJDahX2873364
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 19:59:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	24HwDmxkwRqteaHOqqQJzmtBl1Z3hVbm1sSUYzWXHUM=; b=cdR8HRwpOL0F5KGf
+	Pa72vskx0M2kP/Z35S2cu0vrb4j+OEKIt6KMM7Th6UonX+P19BpjlUhTk5Li1d1Z
+	Y/Wv59ciZPfT/RYaiQrRsZFm3fZPcDfKBwaFfoTbWjAmnFyZj3n9bpk2D9uAq+as
+	Zefne9lZYGQzV3whovwFyt/TN8jYz46vzYj5NL0+/lOGbG9MlNpdo0tsMl5xk0yg
+	fCV3pDFQVQuR35FiZSvIftsxLo2l1P5E5HN15BL52dlkXhgQkdoSVKvLPz9tpEoo
+	i0SPA3tzquu7dDbPf2qsPBmIKC29344dcx2/YoqDcNf3SztycbPjKCqS4n+bRngs
+	SWWdJg==
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f4k3sgbs9-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 19:59:22 +0000 (GMT)
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8ec3314f65fso76871306d6.3
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 12:59:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782849561; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AT0m0DNUZhU7SPTS6CYNAQgfIcmNJPb0dzw2XNs70wmbNyfSfejwClOFfuTV6ykQva
+         ITj+A8fgJwmgcXAnQRWiN2zJnDEoGf4Wjba6m4GJCoBs798dLtuAT6i2nFLJfDlYlgum
+         M2zTg/SoKVMcubiQZtxKG9UY9+kc6xB85Oy8AW6Br2J/rfyzio9P733iyIPyWbLcBny8
+         DmjgT1a/qgbPqe2U3xmTk72El0FcNEHFSLbcMb6gcDV10XqEqONsQT6dpGDrxmOWjnkJ
+         lhzqj2GI6sohrxXguZ/63LlqMIxzkn4kl1EF6QlCBaZYWmBaG0VqwbtGaHmHG339XlK7
+         0Ptg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=24HwDmxkwRqteaHOqqQJzmtBl1Z3hVbm1sSUYzWXHUM=;
+        fh=t3NdBDBpb0bqmNS4xrORIuZ/8U9i2bXl/LskVoHGGk4=;
+        b=juH+h5c8UknlKZAC6U5KnoTbBZBDQ/xGb2zLtVE19NjKdK8c4UBcE8svlATyuNaoAg
+         Nm/3ziWghKmM8FwnhDdH81e7b9d/tmDXvSu81PTsDw1BqOxLwDm1VXbrnKVP/kLigtxC
+         moiH07LeYkxKRbceYV16o9xISyHWLbAGZWFWcqiMAMQHxogZuowE/srox5E2MXqlJj/t
+         b8sH9Gt3fejvWpmBefni5dMxjEgLxUqkreV7izGcl+JgHpGykosFx4ZLkTNGT9FuUEx1
+         gdJYhUq4q2oZK24h+TILQHR2vDBsUaLDCcWcGemLv8H8YiAzWQst3iUHUNvn7RSguy9V
+         ebXg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1782849561; x=1783454361; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=24HwDmxkwRqteaHOqqQJzmtBl1Z3hVbm1sSUYzWXHUM=;
+        b=XN24c5TU1mLtMwwVQrpsA3cb+Ec8JVOKflkTLwTXGBmehHakzQGPaN2aEZbPFpbD97
+         LJXI7Xi/LFKLihPbM/Ozc33AJiWJHQW3D1ngB20cGK4F0B+mw1KKlsWOORfLOvwYsoe+
+         pmnAxjzZ9/JjnTdkln0XJbGOPCH4QQHP6a4M2/WUsRbPfukntEC+Cb5T4b5ddzPzo/1E
+         Fgqd0htDz4EopwjnY4LZMQlSDeipFKR95uSEQi4bnEoxNaYVXOfOSGL1EIqOhDX1SE0p
+         xMUobMZUWaIXPebd5HgAPV046c5JKpeaohJhunSH/eiRKkNKEPKNFA+8OSveeGfCXZK+
+         ujaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782848004; x=1783452804;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D+rWZ8k73TMV9DNYwCNJH7ZdxXY5ZdbASYCz+2kmGPs=;
-        b=ljoWePHQU7kyfkEvlLAtWCSIGnSKxlz1TvVTiVXIHNQXXhihKukF73Gg+1I7aVPsJC
-         +VUHvaEh0dT+EpXWZCa62woHHzEZaHCd1zvT3oSfrp9XgwyZxluN5wtxiG7HG3OiJXZC
-         u1Sc6hkea54ErEIqj2p0j8lxzR0ncHjGafa8Qm2Dzy04Y28Nb5J5E1irbc5ogXQmaIwC
-         6sUOHdb0lTOayUW6unlhFhLQ3YHkkjicBW+PbcvKNPVoTocUjDT6XCaX3H3wPD67jZQq
-         y0t+AIf9maKuhOoe8SpFUFgajKihjYc2VlKyNvynfd26h+DRw6ZBbUKFsXOVImqvNrWw
-         alIw==
-X-Forwarded-Encrypted: i=1; AFNElJ85EHioLkAptpWsaJHc2KIycqDwaYgmoyiOBY0hMIkuRFZBTzYuWsAbmcxT0AMmSzPNSbrWRj+jE/amNlFfbw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIruWwcvGapT+Vqp36btrTqO3Tg5QIVT9tnI3J5updLikAHcAI
-	19qyc+wKe6lzUiDJA2/3DtO16rP2KKSKkUwGSG5qvigBkEj2lAg+NzLbOKxGf/HdylClLgqLwg8
-	+KxnA5tIAO20WApT/HZNW+zEOx/FbSLetq3yie6uLdMqepiaACEJlDjNz7tc=
+        d=1e100.net; s=20251104; t=1782849561; x=1783454361;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=24HwDmxkwRqteaHOqqQJzmtBl1Z3hVbm1sSUYzWXHUM=;
+        b=iuQ3cmsKhyljFYwL4nmkHEYxoSJ30RmaRBeKPq5+SZQx2BsiRA3owU/qS0m81xJ30N
+         FFLahLRFRNTDhRc3F7v5/z0+k2LLRDIDs2r9ckGFSJe/e+aZGJ3ONHSexYrmAJypH8vX
+         mWxfbm34lCBCmNls6UPr6JKI5bPIuYpbPgvmzRKKmKhMw+vp+6wFAqGaK49FACdW1kbC
+         PIIhdrDeLv7wGL96m5VL7s4heiauM89thb07UfeXVw7ve/pb14Kmd9ASXe1+hXhQxzf2
+         Y4uLwaiHI20e1/ZYNxTqN/Zx0pv/zI4Aocdj/eEs5ijNZ5ImpEbACUptReflE/bw3Ad2
+         ktJA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq27+h3nu2wz9ge+x4eo6PExEuT11D5nMeTrZSuFa+qXF2QxsqCGxd7Ap8f81sFV+lozDSzEjy+al/p3ySpBQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2F/a2r4DLiYmuj1nK9VDMzn/ACYSP9L54CSi8ASPBszDJk2jG
+	3gWMglaE5MYV9uPDNTi/RhmRRHSUElhqS5t/KyKCV7xK9AraMe5M1yvrFnUKoA8znkvEqM+CiDu
+	SK6QrOFrWtOqKX5lMCCF56bOb9c+EXt3gx1saU3IcLw1rftkp8Z8XxovBvVnvqAbt+0FfwFGd6y
+	pIJHo4G4NKElW+/ErjFKLCKQxjp9wmY4VNXrPBBjLGFKXL
+X-Gm-Gg: AfdE7clzwM6bDqTqZ+xfrZgESJL9unT8/6cOoOF4p3YaAq37iGT/xLK8t2ldJO3Up81
+	GEMVGd+jdQmG2WFXFXC8xuYBggCL+dJUPaD+HAS02T3bnbR3kwKKSEzxDrPX9/Bv19tXStVyrC/
+	1e2HqA74/RFg71c34SZTYS9/QQJrGpmbFIlw08m1FF6PmWDZaeyulGDt0TrvuAjjSBHM6vpGiQB
+	E8FsFKKs1P/Ovk5zy5/yPJdnE3tmAAJAXg1qJgciVFyhWVmLGRpmv+UYfmR/sr6wpP5ue2thLD1
+	Vf3pERERGYM=
+X-Received: by 2002:a05:6214:821b:10b0:8ce:e651:5d63 with SMTP id 6a1803df08f44-8f2d1343d13mr25863906d6.31.1782849561043;
+        Tue, 30 Jun 2026 12:59:21 -0700 (PDT)
+X-Received: by 2002:a05:6214:821b:10b0:8ce:e651:5d63 with SMTP id
+ 6a1803df08f44-8f2d1343d13mr25863166d6.31.1782849560532; Tue, 30 Jun 2026
+ 12:59:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:87d1:b0:485:5f3f:bd1b with SMTP id
- 5614622812f47-495fd49fef3mr1320558b6e.3.1782848003808; Tue, 30 Jun 2026
- 12:33:23 -0700 (PDT)
-Date: Tue, 30 Jun 2026 12:33:23 -0700
-In-Reply-To: <6a00f268.170a0220.1c0296.021c.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a441a03.b42ede87.8e801.0009.GAE@google.com>
-Subject: Re: [syzbot] [wireless?] WARNING in mac80211_hwsim_tx (2)
-From: syzbot <syzbot+435fdb053cf98bfa5778@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
+References: <20260629-block-as-nvmem-v6-0-f02513dcd46d@oss.qualcomm.com>
+ <20260629-block-as-nvmem-v6-1-f02513dcd46d@oss.qualcomm.com> <20260630180219.GA4139943-robh@kernel.org>
+In-Reply-To: <20260630180219.GA4139943-robh@kernel.org>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Tue, 30 Jun 2026 21:59:09 +0200
+X-Gm-Features: AVVi8CcrbqRCRkmYSZLH_ub9JNgkd2IUQmjyz1dD9_QoekOgl29FSB3CCebEUbk
+Message-ID: <CAFEp6-163adAq8-H_pCzGnq+Fo4jpyKGs6Jv25j3fSpZg3COjQ@mail.gmail.com>
+Subject: Re: [PATCH v6 1/9] block: partitions: of: Skip child nodes without
+ reg property
+To: Rob Herring <robh@kernel.org>
+Cc: Ulf Hansson <ulfh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bartosz Golaszewski <brgl@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+        Rocky Liao <quic_rjliao@quicinc.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Saravana Kannan <saravanak@kernel.org>,
+        Christian Marangi <ansuelsmth@gmail.com>, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+        daniel@makrotopia.org, stable@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: hUAXTi7azLaaSpU90VV7hlNiV1wOkPN-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDE5MyBTYWx0ZWRfX7N+30OilH/5q
+ 6ySSx36YCQ58yGsOCN2czb1KyB+ecyI3EtNvTt9RTSwChqXU6zuDT24fWva4cXOKKODnVj4eqnM
+ tSOIQYbPQEtZGQpChvXXT2Yb3eK0X4Y53JIi1MKYxTFd99ZQRLFLAeBiEr39kDs36Vnt03E1gdT
+ keBFrcY22vzyE/axFvaVQ8ipvlTOL8Ed315Inxu0j+dRBblws+fM9Y5P4oUYdLi2SW6chdqEXB9
+ EQCQScipGD86Cj5Cq+Vns79xj6ZnzvWA6my75fU+wKfYGXKdR7xdXycyfR0JXGTA2Kj0bAtigvf
+ /9BZUcF8xSYM2gjAXgLU0jXgm9UTGFH7uOf6sWGJBUXty4HE9KcGznEslK42eqjatiklmE5nD43
+ 81rsd2u96JNEjI866agIzf4gYrRW/cOYgOmmr9tNjFZGbtIuCAY6F2I1tKfsdsp9MuItjFxs6/F
+ oa8pTN2kpb0etE54YlQ==
+X-Proofpoint-ORIG-GUID: hUAXTi7azLaaSpU90VV7hlNiV1wOkPN-
+X-Authority-Analysis: v=2.4 cv=Ff4HAp+6 c=1 sm=1 tr=0 ts=6a44201a cx=c_pps
+ a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=_K5XuSEh1TEqbUxoQ0s3:22 a=VwQbUJbxAAAA:8 a=2sLY7anfMaDELvqluMMA:9
+ a=QEXdDO2ut3YA:10 a=pJ04lnu7RYOZP9TFuWaZ:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDE5MyBTYWx0ZWRfX0msfC+UkmUAX
+ QU/bGkdGIq6D3KSTm+qItXdZstyVu2JIAB2zs1Tfe3rN3yHEz0hfYKgVjw+G+Eq1vADwVZvmCca
+ DcsOjoh/+ukkyhHhbFg0IxLbadvHYW0=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-30_05,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 phishscore=0 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 spamscore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606300193
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.36 / 15.00];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=3c3d59be33cf7e9a];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38401-lists,linux-wireless=lfdr.de,435fdb053cf98bfa5778];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,syzkaller.appspot.com:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email,storage.googleapis.com:url];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:netdev@vger.kernel.org,m:syzkaller-bugs@googlegroups.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[37];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38402-lists,linux-wireless=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:robh@kernel.org,m:ulfh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:andersson@kernel.org,m:konradybcio@kernel.org,m:axboe@kernel.dk,m:johannes@sipsolutions.net,m:jjohnson@kernel.org,m:brgl@kernel.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:quic_bgodavar@quicinc.com,m:quic_rjliao@quicinc.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:srini@kernel.org,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:linux@armlinux.org.uk,m:saravanak@kernel.org,m:ansuelsmth@gmail.com,m:linux-mmc@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-block@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath10k@lists.infradead.org,m:linux-bluetooth@vger.kernel.org,m:netdev@vger.kernel.org,m:daniel@makrotopia.org,m:stable@vger.kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,m:krzk@kernel.org,m:conor@kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.
+ de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER(0.00)[loic.poulain@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,kernel.dk,sipsolutions.net,holtmann.org,gmail.com,quicinc.com,davemloft.net,google.com,redhat.com,lunn.ch,armlinux.org.uk,vger.kernel.org,lists.infradead.org,makrotopia.org,oss.qualcomm.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[loic.poulain@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	SUBJECT_HAS_QUESTION(0.00)[]
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,qualcomm.com:dkim,mail.gmail.com:mid,oss.qualcomm.com:dkim,oss.qualcomm.com:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 58CB56E79AA
+X-Rspamd-Queue-Id: 20CD66E7B05
 
-syzbot has found a reproducer for the following issue on:
+Hi Rob,
 
-HEAD commit:    dc59e4fea9d8 Linux 7.2-rc1
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=12f58032580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3c3d59be33cf7e9a
-dashboard link: https://syzkaller.appspot.com/bug?extid=435fdb053cf98bfa5778
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13a73289580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=135db61e580000
+On Tue, Jun 30, 2026 at 8:02=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
+:
+>
+> On Mon, Jun 29, 2026 at 10:55:20AM +0200, Loic Poulain wrote:
+> > Child nodes of a fixed-partitions node are not necessarily partition
+> > entries, for example an nvmem-layout node has no reg property. The
+> > current code passes a NULL reg pointer and uninitialized len to the
+> > length check, which can result in a kernel panic or silent failure to
+> > register any partitions.
+>
+> That does not sound right to me. A fixed-partitions node should only be
+> defining partitions with address ranges. I would expect a partition node
+> could be nvmem-layout, but not the whole address range. If you wanted
+> the latter, then just do:
+>
+> partitions {
+>   ...
+> };
+>
+> nvmem-layout {
+>   ...
+> };
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-dc59e4fe.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/9ee1f0ea24f2/vmlinux-dc59e4fe.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/729e963a1370/bzImage-dc59e4fe.xz
+In our case, the nvmem-layout needs to be associated with a specific
+eMMC hardware partition, nvmem cells can be a simple sub-range within
+the global eMMC, each hardware partition (boot0, boot1, user...)
+having its own address spaces.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+435fdb053cf98bfa5778@syzkaller.appspotmail.com
+That said, your point about not abusing fixed-partitions is valid. I
+initially dropped the compatible =3D "fixed-partitions" from the
+partitions-boot1 node when it only carries an nvmem-layout and no
+actual partition entries, making it a plain named container node. But
+it's a bit fragile if we want to support both nvmem-layout and
+fixed-partitions.
 
-mac80211_hwsim hwsim5 wlan1: entered allmulticast mode
-------------[ cut here ]------------
-hwsim_get_chanwidth(bw) > hwsim_get_chanwidth(confbw)
-WARNING: drivers/net/wireless/virtual/mac80211_hwsim_main.c:2248 at mac80211_hwsim_tx+0x1ab4/0x2500 drivers/net/wireless/virtual/mac80211_hwsim_main.c:2248, CPU#0: syz.0.17/5510
-Modules linked in:
-CPU: 0 UID: 0 PID: 5510 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:mac80211_hwsim_tx+0x1ab4/0x2500 drivers/net/wireless/virtual/mac80211_hwsim_main.c:2248
-Code: c6 05 da 65 07 09 01 48 c7 c7 e0 74 7a 8c be 6b 08 00 00 48 c7 c2 20 76 7a 8c e8 a7 d6 8c fa e9 ff ee ff ff e8 7d eb b0 fa 90 <0f> 0b 90 49 bc 00 00 00 00 00 fc ff df e9 dd fe ff ff e8 65 eb b0
-RSP: 0018:ffffc9000278efe0 EFLAGS: 00010293
-RAX: ffffffff87158693 RBX: 0000000000000000 RCX: ffff888000ad8000
-RDX: 0000000000000000 RSI: 0000000000000014 RDI: 00000000000000a0
-RBP: ffffc9000278f170 R08: ffff888000ad8000 R09: 000000000000000e
-R10: 000000000000000d R11: 0000000000000000 R12: 0000000000000014
-R13: ffff8880120b3cb0 R14: 00000000000000a0 R15: 0000000000000030
-FS:  000055559073c500(0000) GS:ffff88808c815000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005562391e0138 CR3: 0000000012ea1000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- drv_tx net/mac80211/driver-ops.h:38 [inline]
- ieee80211_tx_frags+0x3df/0x890 net/mac80211/tx.c:1746
- __ieee80211_tx+0x267/0x580 net/mac80211/tx.c:1801
- ieee80211_tx+0x312/0x4b0 net/mac80211/tx.c:1984
- ieee80211_monitor_start_xmit+0xb33/0x1280 net/mac80211/tx.c:2479
- __netdev_start_xmit include/linux/netdevice.h:5400 [inline]
- netdev_start_xmit include/linux/netdevice.h:5409 [inline]
- xmit_one net/core/dev.c:3889 [inline]
- dev_hard_start_xmit+0x2cd/0x830 net/core/dev.c:3905
- __dev_queue_xmit+0x1435/0x37f0 net/core/dev.c:4872
- packet_snd net/packet/af_packet.c:3082 [inline]
- packet_sendmsg+0x3d95/0x5040 net/packet/af_packet.c:3114
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
- __sock_sendmsg net/socket.c:790 [inline]
- __sys_sendto+0x408/0x5a0 net/socket.c:2252
- __do_sys_sendto net/socket.c:2259 [inline]
- __se_sys_sendto net/socket.c:2255 [inline]
- __x64_sys_sendto+0xde/0x100 net/socket.c:2255
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fc04219ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffcb766be38 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007fc042415fa0 RCX: 00007fc04219ce59
-RDX: 0000000000000030 RSI: 0000200000000640 RDI: 0000000000000008
-RBP: 00007fc042232e6f R08: 0000200000000380 R09: 0000000000000014
-R10: 0000000004000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fc042415fac R14: 00007fc042415fa0 R15: 00007fc042415fa0
- </TASK>
+Regarding your expectation of a partition node being a nvmem-layout,
+do you mean that the nvmem-layout should live under a fixed-partitions
+node? Something along these lines:
 
+partitions-boot1 {
+      compatible =3D "fixed-partitions";
+      #address-cells =3D <1>;
+      #size-cells =3D <1>;
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+      nvmem@4400 {
+          reg =3D <0x4400 0x1000>;
+
+          nvmem-layout {
+              compatible =3D "fixed-layout";
+              #address-cells =3D <1>;
+              #size-cells =3D <1>;
+
+              wifi_mac_addr: mac-addr@0 {
+                  compatible =3D "mac-base";
+                  reg =3D <0x0 0x6>;
+                  #nvmem-cell-cells =3D <1>;
+              };
+      [...]
+
+That makes some sense, this would require extra work for the
+emmc/block layer to also associate fwnodes with logical partitions,
+not just the whole disk/hw (hw part), Is that the direction you'd like
+us to go?
+
+Also, Note that regardless of which approach we settle on, this
+specific fix/patch remains necessary to validate the partition node
+and prevent NULL-deref.
+
+Regards,
+Loic
 
