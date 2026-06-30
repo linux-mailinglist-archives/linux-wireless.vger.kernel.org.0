@@ -1,79 +1,81 @@
-Return-Path: <linux-wireless+bounces-38395-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38396-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XgptOtDcQ2o8kgoAu9opvQ
-	(envelope-from <linux-wireless+bounces-38395-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 17:12:16 +0200
+	id o0lKC9rcQ2pKkgoAu9opvQ
+	(envelope-from <linux-wireless+bounces-38396-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 17:12:26 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5516E5C8D
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 17:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 920966E5CA4
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 17:12:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j4g5JylX;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38395-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38395-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ME2QYQQw;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38396-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38396-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 290FF303FF37
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 15:07:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C9A930FA3BD
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 15:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957912E7162;
-	Tue, 30 Jun 2026 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3742DB794;
+	Tue, 30 Jun 2026 15:07:13 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2002C21F8
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 15:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AE032E134
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 15:07:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782832027; cv=none; b=W4EGxkGkHITuBA4oe4RvUMn2rpm6RYuaxcduM876tZs6HBOipwjao3ONQXDbm6JMZPq7cWumjiffVT0SyKc5PtWTvoQn/UafCrKo5BfiK5CKncIJ6HFrqUNJsektiMMZFOwCzDYbVjUIxgXc+QOWu4Q0xjgpCtKE3sB0bUvPYdw=
+	t=1782832033; cv=none; b=TnAat6PfcYvN6+xuzQd0l21AASe3oW3fn7a5ilOuzv7R7uiobvLvOsIZDz6RIAXXoSeIzpE6fsyoFoJkiHnXDjFQPoK7WMBGIp0Eoewf3/g/riCO/EIbdr47MlOGQ6uTFPlgJWNOASug3nJF4EekkNA1lv0fDbs+e9yPWd2je4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782832027; c=relaxed/simple;
-	bh=aXD072FEnIHgF4SWBIyM+PiPgjDGjjhs9Xm1MTgvbJM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pJQxSSdB7dq3hr3lAsaLJ8BD6Z5qCPKKZ4pkqD8SXv2xwABWXhms/PyjmMQ7WifmbiARvxZfoQrwltimEZ1OTuf32BdzXu0oEUHt0MUaly5fWUD4zm/86pPp2DGYfMf4aXAElOXWFXhDUYZngHlWPKLHg8jIhwOm0B5+97jrdEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j4g5JylX; arc=none smtp.client-ip=209.85.216.43
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-37ff8e0ad0fso1546416a91.2
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 08:07:06 -0700 (PDT)
+	s=arc-20240116; t=1782832033; c=relaxed/simple;
+	bh=s5sX3m3bK4c40hkrPSrTPpPL4Zb4TpwZTWCPzXHH1NI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Zk1K4RSJ+Uq/69S/6IjWFI3YWL1jdiavNVNaE4E6R/lNM16wKzcFNHlAni5MXid2YmkMYMlbYiUOLTTbIfyug8V9o49fyB/U0Kfp8IZIASkntkhRnesMRQycoPIBk4WYc2WKoIiozbomcSRm4F9LoPpIGTl22zlUUJHbbvumzXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ME2QYQQw; arc=none smtp.client-ip=209.85.216.43
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-37cab825ec9so3895236a91.1
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 08:07:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782832025; x=1783436825; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MQZZDFFxqTDdSnsRY8wqJD42CyjhcA/Zlppkdex9wbI=;
-        b=j4g5JylXzx0FyjorKWFFKxwX0jEiHUy/DhM0bZ3X09lJFdXZCk8RbaaQ7TyUWEakd/
-         5D2oqgigkmJX1uGS2EWOXw9CYfMjvbkNqcaFtb7HXLMSzI/TI93Lc0AjnAD5O18nt4RC
-         FmFSN89BzY3xTxOU0TEve0Pf5nusncdya+oC2eg72NbnApHIGMFIs6hUXpzr7cJoBI9X
-         /2zcbTxp8ZS1GVSTP8P2oTOGW7TbvXNdeY9NxYFzwXcBN4mkcqCTKuslGScWl61V1vnQ
-         G3xoKop/Cyu2tvwXlc7gpVth+JQHq3WdCtS3sUsqzGSVobkCf+44nlhDCxF/HhzrvfYj
-         f8sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782832025; x=1783436825;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1782832032; x=1783436832; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MQZZDFFxqTDdSnsRY8wqJD42CyjhcA/Zlppkdex9wbI=;
-        b=FYo7QliXxBvMqu9pl7LbIDfoDXoa1eSjL3I0ncm6wsbz3/qFsYfKSlhDP2oH2RmXt8
-         f+Nq132Vy7ECGPjpPBe6Lspb8bhapljF0U4ZjNk4IGA4UulMmYxacnuS67Q67yERwmUu
-         durrJuMEhobkojPEzeN24GDQL08cqyuylvTGZPqAJYtnQ6gHF10sLVHdg0u+kJvtxiAF
-         zmyb5jl8A/NB4PUq96ZD6U8VTqtowwgY4GQATsUnEFOxc7JY2VLGetSsHtEm+08kUrWc
-         0SR7mKdvT7IB7rPRWC3U3qLx6NSLk4QYO5qM6ebXB8/1iP4NiHu/rwAkUaOxW/qFCCwv
-         9evA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq+AciBfDvyYb+YT0oNpSoubkzp7gYk/c1xbI6BMFazgcy4klfsidSEIghqaJ6Tal/dpkTBBeu4Tn0wDetV4Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoqPleYONEI/Y8ceedn8EnxkeDjDxfx8827blpN3qsJ9MUz3oI
-	dSccnjC4ad0DzQvjaYVAMMUduP29Cvq1+3cFTSNwLbediUSX/4VUxvna
-X-Gm-Gg: AfdE7cngX2D3ZL+fza28pdUoxpY5YBnjdHoAKCf2KyeaHrWS77DgPPeq09HwkHp+Etv
-	3g3vYp5tdTxEzdq5nJUnyCBL+XP8w/sV4rv59YGdU62cREglwEDZvmEfuEJOAXn6Wp0jwH3Xijw
-	m2BMjLZTDsUNR5Wzq8zXu41AynbAD57kGiIYmP3dBlMSGt+yALiRbDqTWqFMK5lMAL/mQaXxWm8
-	LoOwjZ86AOnJp6cN1m+d4bRI4bwvm/MULMr1G3pq4hBEnqE/up5XzpaccOXdA4z0WuANEnnhMvY
-	032gtcE86LS1bgrbOmiecfRF1s37r2shul48EBjHjwBooxINoM+lWoBIQplMcNGjLHBjwsCqVl2
-	kOWU0GVMBCXOdwHzoeyrTdPZPst8Eej9XhZw3dokTgA6AVePhqv6LwRrlYEK1fq9c0CkJdhRYIz
-	rB8btV/TA2wjZtlgHAmsg7jOEkGAUn4i4xsC7XsrZy58SaOHe2YGcfgQ==
-X-Received: by 2002:a17:90b:3909:b0:37f:9ce2:3489 with SMTP id 98e67ed59e1d1-3808c0e0679mr706219a91.26.1782832025249;
-        Tue, 30 Jun 2026 08:07:05 -0700 (PDT)
+        bh=bhvDY45MSy6G6g9L6tyWvHlT65On3gQKFm/j/jxjGrE=;
+        b=ME2QYQQwAmNxHWAacx2gxr/6uKwoD0/xhtAbQVVpJc2ldnY6LXSzp8sxZg3RKLRZYE
+         oBLLo4FqE3tGX6wOF+4WjqU+UlUAMsPE9AJpxYrRwyj3D7Z+D3WWWuOHO8EJhE1ykYdF
+         IdXJ5bHJyDGg9FtA2v92J01AM8Ff/Rzszx+BYZTw0ZevQ8x7XOu0bCeraAgSdncZxw0j
+         6Y2GqrRE7fEXu6slbDuYMXOwTsvXSiyhRkC6GEtNrFFmS1RizeIZxCMXCxOBE4fGWUu3
+         9oalxedbvEErsO/RcX0T9nVT6OI6yOMxv21l+jffxxo6s4f/+9kej40nKEF/AE3x8kGk
+         w/Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782832032; x=1783436832;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bhvDY45MSy6G6g9L6tyWvHlT65On3gQKFm/j/jxjGrE=;
+        b=XTLrvYlzNZArgz5+9rKcqtUB1MEpquhb4hcoEEoMYXCC32Cdw2cn5RvJXP84Z9Srd5
+         Qzaez7y3TGlXlIFX/s1WsISqpkjTdxSII3g3hY0V1tONudHzI/KHnXr7KVbEkPzkGc2W
+         gDv5Ky5Evc88MAXMkRynSugvUslSBjCSvYJsgQ+0TCcSAEhOTPeaCZpozNhAh4TtN2GV
+         6xu7NWoquK3gpuqgd8OxeCUoLT3xsN6W5J+JvMKzGiSLMt99ORvmhu047JM/7vGF8Wwh
+         sArUosUW3FSzP2UPafLDxxyw3EpEBF5oBWgmuNNYeBcpU2H+xPQ2PmoifENIPXPfrJ3+
+         esMw==
+X-Forwarded-Encrypted: i=1; AHgh+RppNHvezlGkq+n2ZKs4jbFyekX/idS/vakunDZJLEK3DTo92+Tga5lA2t383OLRu5lz8UufBz+x79udomLI7Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/qp27wk2q5m0KtTmNV8QRWI28UYh42MARLstWJIOla7X3uFhV
+	zyRyieSHRI5BSqsp6HPXCgoPfd2+B7yHSvulwiK6nISlWwkICHxlXhAJ
+X-Gm-Gg: AfdE7cmjcoNMQ4yf1/cwZC1QubltjbIz7zCPOszYyO2T8wz3uYAZ2c3r9jJWKFRY8mA
+	2G3zccut/ikk9xtA4ItM6SuEpE4JiU6w9IE0NSroAENOUQGau8nuuiFdmeGOD7dILkanFDlXClm
+	N3s/Su/NmZLg4Dcd5qDkF1Xq78C5Qjv1yLfBylbm1j0akDLaejm95YLkC3j64eBXwMjMFZ0Z7C/
+	HH5M1AzlIIaX4M7GL9xGCYK0VJDYoSfNIxPUdCWaHG91Ce0B+cUNzFYM6OMVA2LQdKllqINrWle
+	CHEnRO47UrmhRVltW1VfE/nbg0Y8SA84sTNFyC0H2MN4IZ53it8r3J/piWVP5I50qZoNJX93nrj
+	qvkR6huxS3S0ZMRbU+WD8SNWupDWiRnJlxM69YwONzpdSiisW+j24jSYpNQ7dKTJpjL+dtsRWfo
+	Vmja5QGXa5F8bavvEMsuqYRrpXfRzcSL5GPRP3CaPA7ZucmGI/cojfyw==
+X-Received: by 2002:a17:90b:2e47:b0:367:d850:6a5f with SMTP id 98e67ed59e1d1-3808c0e3eb2mr667892a91.25.1782832031701;
+        Tue, 30 Jun 2026 08:07:11 -0700 (PDT)
 Received: from DESKTOP-VNSSJ2S.lan (59-127-145-64.hinet-ip.hinet.net. [59.127.145.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38095b684basm41811a91.1.2026.06.30.08.07.02
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38095b684basm41811a91.1.2026.06.30.08.07.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 08:07:04 -0700 (PDT)
+        Tue, 30 Jun 2026 08:07:11 -0700 (PDT)
 From: Zhi-Jun You <hujy652@gmail.com>
 To: nbd@nbd.name,
 	lorenzo@kernel.org,
@@ -82,11 +84,14 @@ Cc: shayne.chen@mediatek.com,
 	sean.wang@mediatek.com,
 	linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org,
-	Zhi-Jun You <hujy652@gmail.com>
-Subject: [PATCH mt76 1/2] wifi: mt76: wed: fix kernel panic on non-DBDC MT7986
-Date: Tue, 30 Jun 2026 23:06:48 +0800
-Message-ID: <20260630150649.1629-1-hujy652@gmail.com>
+	Zhi-Jun You <hujy652@gmail.com>,
+	Benjamin Larsson <benjamin.larsson@genexis.eu>
+Subject: [PATCH mt76 2/2] wifi: mt76: mt7915: fix net_fill_forward_path for non-DBDC mt7986
+Date: Tue, 30 Jun 2026 23:06:49 +0800
+Message-ID: <20260630150649.1629-2-hujy652@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260630150649.1629-1-hujy652@gmail.com>
+References: <20260630150649.1629-1-hujy652@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -107,12 +112,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[mediatek.com,vger.kernel.org,lists.infradead.org,gmail.com];
+	FREEMAIL_CC(0.00)[mediatek.com,vger.kernel.org,lists.infradead.org,gmail.com,genexis.eu];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-38395-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38396-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:hujy652@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:hujy652@gmail.com,m:benjamin.larsson@genexis.eu,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[hujy652@gmail.com,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
@@ -123,117 +128,86 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,genexis.eu:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4B5516E5C8D
+X-Rspamd-Queue-Id: 920966E5CA4
 
-In mt76_wed_init_rx_buf, it's hardcoded to use MT_RXQ_MAIN.
-But for non-DBDC MT7986 MT_RXQ_BAND1 is used for RX data queue which
-leads to kernel panic when attaching WED.
+Current implementation assumes that the hardware supports DBDC or single
+band and binds to band0.
 
-Use the correct RX queue by checking WED version and band_idx.
+This causes net_fill_forward_path to select the wrong queue for non-DBDC
+mt7986 because it binds to band1 and getting the following in dmesg:
 
-v2 and band 1 -> MT_RXQ_BAND1
-Others -> MT_RXQ_MAIN
+ieee80211 phy2: WA: --> drop by reaseon:1, msdu id = 0xc002 but failed!
+mtk_wed1: error status=00000002
+ieee80211 phy2: WA: txblk
+10324e00
+len = 128
+DW0 : 10 00 00 00
+DW1 : 00 00 00 00
+DW2 : 00 00 00 00
+DW3 : 72 0f 94 68
+DW4 : 00 00 00 00
+DW5 : ff 03 00 00
+DW6 : 00 00 3c 40
+DW7 : 00 17 dd 14
+DW8 : 79 6f 00 00
+DW9 : 02 c0 00 00
+DW10 : 58 c5 34 10
+DW11 : 00 00 00 00
+DW12 : 00 06 3e 00
+DW13 : 00 00 00 80
+DW14 : 10 8c 00 00
+DW15 : 00 00 00 00
+DW16 : 00 00 00 00
+DW17 : 00 00 00 00
+DW18 : 00 00 00 00
+DW19 : 00 00 00 00
+DW20 : 00 00 00 00
+DW21 : 00 00 00 00
+DW22 : 00 00 00 00
+DW23 : 00 00 00 00
+DW24 : 00 00 00 00
+DW25 : 00 00 00 00
+DW26 : 00 00 00 00
+DW27 : 00 00 00 00
+DW28 : 00 00 00 00
+DW29 : 00 00 00 00
+DW30 : 00 00 00 00
+DW31 : 00 00 00 00
 
-Kernel panic:
+Fix it by using phy->mt76->band_idx for queue when it's non-DBDC and
+mt7986.
 
-Unable to handle kernel access to user memory outside uaccess routines at virtual address 0000000000000000
-Mem abort info:
-  ESR = 0x0000000096000005
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x05: level 1 translation fault
-Data abort info:
-  ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-Internal error: Oops: 0000000096000005 [#1]  SMP
-CPU: 1 UID: 0 PID: 925 Comm: kmodloader Tainted: G           O        6.18.26 #0 NONE
-Tainted: [O]=OOT_MODULE
-Hardware name: Acer Connect Vero W6m (DT)
-pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : page_pool_alloc_frag_netmem+0x1c/0x1bc
-lr : page_pool_alloc_frag+0xc/0x34
-sp : ffffffc081dab660
-x29: ffffffc081dab660 x28: ffffffc081dabc60 x27: ffffff80091af040
-x26: 0000008000000000 x25: ffffff80091a8898 x24: ffffff80091a5440
-x23: 0000000000001000 x22: 0000000140000000 x21: ffffff80091a2040
-x20: ffffff8003f1d780 x19: 0000000000000000 x18: 0000000000000020
-x17: ffffffbfbf0ac000 x16: ffffffc080ee0000 x15: ffffff80049d47ca
-x14: 000000000000037b x13: 000000000000037b x12: 0000000000000001
-x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-x8 : ffffff8003f1d7c0 x7 : 0000000000000000 x6 : ffffff8003f1d780
-x5 : 0000000000000680 x4 : 0000000000000000 x3 : 0000000000002824
-x2 : 0000000000000000 x1 : ffffffc081dab71c x0 : 0000000000000000
-Call trace:
- page_pool_alloc_frag_netmem+0x1c/0x1bc (P)
- page_pool_alloc_frag+0xc/0x34
- mt76_wed_init_rx_buf+0xf8/0x2ac [mt76]
- mtk_wed_start+0x79c/0x12ac
- mt7915_dma_start+0x274/0x63c [mt7915e]
- mt7915_dma_start+0x5b4/0x63c [mt7915e]
- mt7915_dma_init+0x49c/0x81c [mt7915e]
- mt7915_register_device+0x24c/0x530 [mt7915e]
- mt7915_mmio_probe+0x91c/0x1980 [mt7915e]
- platform_probe+0x58/0xa0
- really_probe+0xb8/0x2a8
- __driver_probe_device+0x74/0x118
- driver_probe_device+0x3c/0xe0
- __driver_attach+0x88/0x154
- bus_for_each_dev+0x60/0xb0
- driver_attach+0x20/0x28
- bus_add_driver+0xdc/0x200
- driver_register+0x64/0x118
- __platform_driver_register+0x20/0x30
- init_module+0x74/0x1000 [mt7915e]
- do_one_initcall+0x4c/0x1f8
- do_init_module+0x50/0x210
- load_module+0x15f8/0x1b10
- __do_sys_init_module+0x1a8/0x260
- __arm64_sys_init_module+0x18/0x20
- invoke_syscall.constprop.0+0x4c/0xd0
- do_el0_svc+0x3c/0xd0
- el0_svc+0x18/0x60
- el0t_64_sync_handler+0x98/0xdc
- el0t_64_sync+0x158/0x15c
-Code: aa0003f3 a9025bf5 a90363f7 d2820017 (b9400000)
-
+Fixes: f68d67623dec ("mt76: mt7915: add Wireless Ethernet Dispatch support")
+Suggested-by: Benjamin Larsson <benjamin.larsson@genexis.eu>
 Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
 ---
-Changes since RFC
-- Replace single band with non-DBDC
----
- drivers/net/wireless/mediatek/mt76/wed.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/wed.c b/drivers/net/wireless/mediatek/mt76/wed.c
-index ed657d952de2..f210a0c57d81 100644
---- a/drivers/net/wireless/mediatek/mt76/wed.c
-+++ b/drivers/net/wireless/mediatek/mt76/wed.c
-@@ -33,10 +33,15 @@ u32 mt76_wed_init_rx_buf(struct mtk_wed_device *wed, int size)
- {
- 	struct mtk_wed_bm_desc *desc = wed->rx_buf_ring.desc;
- 	struct mt76_dev *dev = mt76_wed_to_dev(wed);
--	struct mt76_queue *q = &dev->q_rx[MT_RXQ_MAIN];
- 	struct mt76_txwi_cache *t = NULL;
-+	struct mt76_queue *q;
- 	int i;
- 
-+	if (wed->version == 2 && dev->phy.band_idx)
-+		q = &dev->q_rx[MT_RXQ_BAND1];
-+	else
-+		q = &dev->q_rx[MT_RXQ_MAIN];
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 51643a48ed15..1b433733661c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1743,7 +1743,11 @@ mt7915_net_fill_forward_path(struct ieee80211_hw *hw,
+ 	path->mtk_wdma.wdma_idx = wed->wdma_idx;
+ 	path->mtk_wdma.bss = mvif->mt76.idx;
+ 	path->mtk_wdma.wcid = is_mt7915(&dev->mt76) ? msta->wcid.idx : 0x3ff;
+-	path->mtk_wdma.queue = phy != &dev->phy;
 +
- 	for (i = 0; i < size; i++) {
- 		dma_addr_t addr;
- 		u32 offset;
++	if (!dev->dbdc_support && is_mt7986(&dev->mt76))
++		path->mtk_wdma.queue = phy->mt76->band_idx;
++	else
++		path->mtk_wdma.queue = phy != &dev->phy;
+ 
+ 	ctx->dev = NULL;
+ 
 -- 
 2.47.3
 
