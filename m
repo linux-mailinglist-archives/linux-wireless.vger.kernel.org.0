@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-38422-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38423-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8XehE4o6RGqgqwoAu9opvQ
-	(envelope-from <linux-wireless+bounces-38422-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 23:52:10 +0200
+	id KDdBOGg7RGrSqwoAu9opvQ
+	(envelope-from <linux-wireless+bounces-38423-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 23:55:52 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E8086E83AB
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 23:52:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 561C56E83CB
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 23:55:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BmvDpbkc;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38422-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38422-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dCg0wK7L;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38423-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38423-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7A4503010CFA
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 21:52:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18D0D3047061
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 21:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3F52F7F06;
-	Tue, 30 Jun 2026 21:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59ACB313E00;
+	Tue, 30 Jun 2026 21:55:49 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611701531E8;
-	Tue, 30 Jun 2026 21:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5782C224B04;
+	Tue, 30 Jun 2026 21:55:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782856325; cv=none; b=CxM44oeg98246htN9MgPNYynvWkss5yQjTIlR2Hl80Ls79eW+yePOm9LYisePUouyejunvF1rKd0C8n7vhe+/EXRR6FYSr8KvRyUGD76Ess2Ga7xUq3Ci0ZYgcE1HVUQp1yo6hvTPfGDV+XnkGy2GhTes6l/qRrrw7PGWwP8Xe0=
+	t=1782856549; cv=none; b=k1RVh0q59DP4nGsY7qMQL4gDNTtqct6wzASbZtmGj5n53JFBC3yZGLLhOTz0e6HUkm1p3vM27iW6L1BxSPU8Ct2wX5M06hinhYHtpHtPCf/7otSSCnQu/9oKUkkpNN3R7XgU381+v7W5yet3A+ERR3z6pPskcatse+jxHdA/Kg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782856325; c=relaxed/simple;
-	bh=8JiTjT5Lrqsx/ou5nc3RDpYw9aXzkKLqhT9tlPUe2lY=;
+	s=arc-20240116; t=1782856549; c=relaxed/simple;
+	bh=AzgWfUadsxXXl91k1YepQX3sOGSydX+rniN6XnLDOWk=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=Hu/WuUW63hHQ0L49db1ghT6T7DK3TmzEIahqwGFqu1iy4ZoEwq3GxbSbgy2IpxccS4DVV7oSYVgvp520dP1MAeMMy1jSOvHUFtbPzckhhlipXWB5uw/CoXNy6w26mD5U8qr+FRi1STeZr7jI9q9al1Tte+wm3JPN1Cj8FxsXD3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BmvDpbkc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D301F000E9;
-	Tue, 30 Jun 2026 21:52:02 +0000 (UTC)
+	 References:In-Reply-To; b=b2oakdQdUltpWLWyABplN5YILrb+HuEZbP5KDE3tF1A+EW/eOp9lRHr4U5pu8GSZEYbMPbVL0K2W66CG5uWxeJxsgHgWvryFNcMFNPMLW8g6U4AgPXPtdMqGaS8gN269czppm0VTplk7azcOl9gVhW/TROEvieAG+jkkPkEsjRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dCg0wK7L; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313291F000E9;
+	Tue, 30 Jun 2026 21:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782856324;
-	bh=8JiTjT5Lrqsx/ou5nc3RDpYw9aXzkKLqhT9tlPUe2lY=;
+	s=k20260515; t=1782856547;
+	bh=srQ9IMbSxBsXUogcwFbDc7WcbubgWp0stEVi0zSwC6E=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=BmvDpbkclL7RvwJJXqL+tIOJ+TeLHCqo/H4wLUG/20aHB7tpTy8PyToDfQLJhuFvH
-	 5ZHnNKih9HdLwy5NeqyUFQm1MJfKflHZWDPkpFKXFNdKGqRMYW8itbl48MThGDIT8r
-	 UWJd8Iu8KQ86fNw8TX9JXxWVnqlNef9QAph5jiSQ3k98Mr/KBBIifL3SEUvsWYkk0O
-	 kZXI7+lgIQ2sAwYyxsT6k9keBwmes2RIOpE5pYH4cYbyiIsTWtBDazAb6A25jOK7pa
-	 DnqINSq6Z2yEqAvzd5DRja/g6Dv+ng/Gwdno6LA2Tczh8/cyzCD5Gax6xDzwgM+2rI
-	 vjW/Iu7hldm+Q==
+	b=dCg0wK7L3bAkrxJoAbg45PoI34akiDZgSlNyyLIAamfVjDexyiIkIfvKLOe94+e3h
+	 fYu1HtabqCs0J2HACQlB6vjzzMebaz+UPBSdWNfQ8fnzZlXcnqTCzsqly4aX6yNOGj
+	 W17JJH8WW8KES68nl8XgWsN7nEuzreDQm11jUX0h/4hW6VrG95FrP52muTNxX3YRwP
+	 mGttoi80U+NS9u07u+uup/j3Gn3/keNvW5kO89L0DeBkqxW8bSBoqew2mvdhntxVeV
+	 uP/dY+tk138kjMIyqJRLDYu4+0jNMOTerwGREgg3YmQQrr/DY0nli4SRh60DZGMGWM
+	 tlpozJ+B+IB9Q==
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -54,9 +54,10 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 30 Jun 2026 23:52:00 +0200
-Message-Id: <DJMPTIYEGQ6S.BYJ6RF0WWBX0@kernel.org>
-Subject: Re: [PATCH 3/4] usb: serial: spcp8x5: don't keep usb_device_id
+Date: Tue, 30 Jun 2026 23:55:44 +0200
+Message-Id: <DJMPWDSKN8C3.1Z3RQ8WGH563R@kernel.org>
+Subject: Re: [PATCH 4/4] usb: fix UAF when probe runs concurrent to dyn ID
+ removal
 Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
  <rafael@kernel.org>, =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?=
  <toke@toke.dk>, "Johan Hovold" <johan@kernel.org>,
@@ -65,8 +66,8 @@ Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
 To: "Gary Guo" <gary@garyguo.net>
 From: "Danilo Krummrich" <dakr@kernel.org>
 References: <20260630-usb_dyn_id_uaf-v1-0-160a02be5ac2@garyguo.net>
- <20260630-usb_dyn_id_uaf-v1-3-160a02be5ac2@garyguo.net>
-In-Reply-To: <20260630-usb_dyn_id_uaf-v1-3-160a02be5ac2@garyguo.net>
+ <20260630-usb_dyn_id_uaf-v1-4-160a02be5ac2@garyguo.net>
+In-Reply-To: <20260630-usb_dyn_id_uaf-v1-4-160a02be5ac2@garyguo.net>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-4.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
@@ -74,12 +75,12 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	MV_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38422-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38423-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER(0.00)[dakr@kernel.org,linux-wireless@vger.kernel.org];
@@ -99,22 +100,50 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[garyguo.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3E8086E83AB
+X-Rspamd-Queue-Id: 561C56E83CB
 
 On Tue Jun 30, 2026 at 1:38 PM CEST, Gary Guo wrote:
-> USB probe functions should not keep usb_device_id for longer than probe d=
-ue
-> to presence of dynamic ID removal. USB serial does not support ID removal=
-,
-> however in this case only driver_data is ever needed, there is no reason
-> keeping the usb_device_id in the first place, so convert it as well.
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
+> @@ -320,7 +321,8 @@ static int usb_probe_interface(struct device *dev)
+>  	struct usb_driver *driver =3D to_usb_driver(dev->driver);
+>  	struct usb_interface *intf =3D to_usb_interface(dev);
+>  	struct usb_device *udev =3D interface_to_usbdev(intf);
+> -	const struct usb_device_id *id;
+> +	struct usb_device_id id;
+> +	const struct usb_device_id *matched_id;
+>  	int error =3D -ENODEV;
+>  	int lpm_disable_error =3D -ENODEV;
+> =20
+> @@ -340,11 +342,12 @@ static int usb_probe_interface(struct device *dev)
+>  		return error;
+>  	}
+> =20
+> -	id =3D usb_match_dynamic_id(intf, driver);
+> -	if (!id)
+> -		id =3D usb_match_id(intf, driver->id_table);
+> -	if (!id)
+> -		return error;
+> +	if (!usb_match_dynamic_id(intf, driver, &id)) {
+> +		matched_id =3D usb_match_id(intf, driver->id_table);
+> +		if (!matched_id)
+> +			return error;
+> +		id =3D *matched_id;
+> +	}
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+I think this could just be:
+
+	struct usb_device_id id_copy;
+
+	if (usb_match_dynamic_id(intf, driver, &id_copy)) {
+		id =3D &id_copy;
+	} else {
+		id =3D usb_match_id(intf, driver->id_table);
+		if (!id)
+			return error;
+	}
+
+Avoids the unnecessary copy and also results in a smaller diff.
 
