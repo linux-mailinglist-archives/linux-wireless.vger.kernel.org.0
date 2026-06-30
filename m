@@ -1,118 +1,145 @@
-Return-Path: <linux-wireless+bounces-38331-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38332-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Qe8iFXdvQ2qQYQoAu9opvQ
-	(envelope-from <linux-wireless+bounces-38331-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 09:25:43 +0200
+	id 6pcBIyRwQ2q0YQoAu9opvQ
+	(envelope-from <linux-wireless+bounces-38332-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 09:28:36 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453026E11D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 09:25:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D686E1252
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 09:28:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=Yau9jqaR;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38331-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38331-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=none;
 	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38332-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38332-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7EE0F3006D68
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 07:25:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C3112300909C
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jun 2026 07:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4463939903B;
-	Tue, 30 Jun 2026 07:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793C539A7E1;
+	Tue, 30 Jun 2026 07:28:31 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B43241225;
-	Tue, 30 Jun 2026 07:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FE639A071;
+	Tue, 30 Jun 2026 07:28:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782804336; cv=none; b=rmadKHvz7IzpwOHxPac0hvY5Sx5JuwJldH2x82UZr6xlvqZiYDlwHT1A8Uw/zLhviBRFOESxS5bFWFhf7JLLQns2/y4dAFPudx1Fh2RVfcngMJruFhj43kdZ23qdu8+2tn/nX3UQYmrj7zrZbV1K/J+d9jr+yHVvyPp8wfd2kFQ=
+	t=1782804511; cv=none; b=mb830AvLobMNIQlNKpat3X/CAXdDZoJDIcIIvmBd93ojXq9LsFJ8c4EU7JlM/SFY04I5K7HpoV9rgkiVNuSXND9CBUrLLjcghFo3OM9n+h+wjsedkNYPeN/YXVONU/KK3kcoYv+rIQ6LgRl7u80lZa1LoPHuhugpIArWbuNbbps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782804336; c=relaxed/simple;
-	bh=WvhxqOiusRfFAMqN0hegOJIEbSbrtZDw9h2KJZtuHV8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RWPMTQyVGDjxW3Xl1pqjN5o8w+P+Rh5DcGqQafRbSFPTu8iE9A43Sss0YP5jvTGcem+c4oHIGtJzeqzw7FzgBN0+gUBlt98GSRqmtxhTebikDG0o6iapncjtrQHRwIQi4G83TB5wxUP8HnQA70dVVmtSBfKlTQys23jipLt2IK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Yau9jqaR; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=WvhxqOiusRfFAMqN0hegOJIEbSbrtZDw9h2KJZtuHV8=;
-	t=1782804334; x=1784013934; b=Yau9jqaR9nqamEnCozVwSPqSSQL5QpnPn+HDM89a3jnuElu
-	VgDKB1M1Zx5tMykXF2MjlLdzCZ7T5uA/l3L1MfEod0BoOKwedzjRojyo+Xwi0lHyJOmACOsl2kV2s
-	l8EvGVcpZJUnSyNp52x9VVhbNvR+vyMUBKhrZJyVgoOL7hAd0xqiOm1a5Le8qFNlAI6sHQ1u6o2kU
-	5nWab6fHsMxDmAwEDB3x+NGVtWnrPGtT3a5Hyf4aDL+uRgcYe/LbjDuUTEOC0+s+iuJ+wKQ8jZNQK
-	Eva4EH0Mb+Nr2pTf2JOVHJHsZEDe9bG6EpGzAqaZGlqBr5nfFMuYACkXNPtNRG5w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1weSqZ-00000003OF2-1mo4;
-	Tue, 30 Jun 2026 09:25:31 +0200
-Message-ID: <a9578988af110a0966cd2bd236e6044ac5e7a70e.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/2] wifi: iwlwifi: enable MFP_CAPABLE in FIPS mode
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: emmanuel.grumbach@intel.com, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, miriam.rachel.korenblit@intel.com
-Date: Tue, 30 Jun 2026 09:25:29 +0200
-In-Reply-To: <20260630072046.201393-1-jtornosm@redhat.com>
-References: 
-	<588f665e6c1e8a24d6cee56762ae754f39ab9703.camel@sipsolutions.net>
-	 <20260630072046.201393-1-jtornosm@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1782804511; c=relaxed/simple;
+	bh=QRBqWdSS1ATX4Oq2rX9Qu4MDsd2KB58HwSSM8HHjE5Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oOS5lcAWK4+MOf/YjI6QZvQlXLMg0o0TpTVKFp4TqBYAVWr2JJeS5Q4723pt3F5OfY5x/XUj8lRcU04QQDx+hejJOZr0B1bVxvYFTxCtEsMjNahFbzy6mkv4mAqMALq4SbJZeKwnVc7KjaCcdMyN1hR+BYGK6H8J1m68zECFCA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Received: from 0021-wifi-iwlwifi-fix-HE-extended-capability-length-checks.eml (unknown [111.196.245.140])
+	by APP-05 (Coremail) with SMTP id zQCowAC3Gt4acENqK5YkFg--.25206S2;
+	Tue, 30 Jun 2026 15:28:26 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>
+Subject: [PATCH] wifi: iwlwifi: fix HE extended capability length checks
+Date: Tue, 30 Jun 2026 15:28:26 +0800
+Message-ID: <2026063009014275.1-ccfa108-0021-wifi-iwlwifi-fix-HE-extende-pengpeng@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAC3Gt4acENqK5YkFg--.25206S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WF4UtF17Zr43Xw4rJFyrZwb_yoW8Aw4kpF
+	W8ury29w4rKr4DX34rAa1fuas5J3W0y398CFWDJw13ZF4UJr1rGr1kua4UJw1FyrW7Aa1S
+	9F1vvF43WFnagrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUyS14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCF04k20xvY0x0EwIxGrwCF
+	x2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14
+	v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY
+	67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2
+	IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUa9akUUUUU=
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jtornosm@redhat.com,m:emmanuel.grumbach@intel.com,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:miriam.rachel.korenblit@intel.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	TAGGED_FROM(0.00)[bounces-38332-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:miriam.rachel.korenblit@intel.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:pengpeng@iscas.ac.cn,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[pengpeng@iscas.ac.cn,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38331-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,sipsolutions.net:dkim,sipsolutions.net:mid,sipsolutions.net:from_mime]
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	R_DKIM_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 453026E11D2
+X-Rspamd-Queue-Id: 30D686E1252
 
-On Tue, 2026-06-30 at 09:20 +0200, Jose Ignacio Tornos Martinez wrote:
-> Hi Johannes,
->=20
-> > There's probably something to be said for the second patch anyway.
-> Good to know, should I resend patch 2/2 separately, or would you like me
-> to wait until I have the customer use case information?
+The MLD and MVM OBSS narrow bandwidth RU iterators read extended
+capability byte 10, but the length check only rejects datalen values
+below 10.  Byte 10 requires at least 11 bytes.
 
-I think we can just take it as-is.
+Fix both checks to require datalen >= 11 before reading data[10].
 
-johannes
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+---
+ drivers/net/wireless/intel/iwlwifi/mld/mac80211.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+index 17286b3..9ac17be 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+@@ -1708,7 +1708,7 @@ static void iwl_mld_check_he_obss_narrow_bw_ru_iter(struct wiphy *wiphy,
+ 	elem = cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY, ies->data,
+ 				  ies->len);
+ 
+-	if (!elem || elem->datalen < 10 ||
++	if (!elem || elem->datalen < 11 ||
+ 	    !(elem->data[10] &
+ 	      WLAN_EXT_CAPA10_OBSS_NARROW_BW_RU_TOLERANCE_SUPPORT)) {
+ 		*tolerated = false;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 74bd403..48cc10d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -3490,7 +3490,7 @@ static void iwl_mvm_check_he_obss_narrow_bw_ru_iter(struct wiphy *wiphy,
+ 	elem = cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY, ies->data,
+ 				  ies->len);
+ 
+-	if (!elem || elem->datalen < 10 ||
++	if (!elem || elem->datalen < 11 ||
+ 	    !(elem->data[10] &
+ 	      WLAN_EXT_CAPA10_OBSS_NARROW_BW_RU_TOLERANCE_SUPPORT)) {
+ 		data->tolerated = false;
+
 
