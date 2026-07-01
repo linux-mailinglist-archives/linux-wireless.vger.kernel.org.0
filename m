@@ -1,227 +1,339 @@
-Return-Path: <linux-wireless+bounces-38434-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38435-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id veUPNxeyRGp4zAoAu9opvQ
-	(envelope-from <linux-wireless+bounces-38434-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Jul 2026 08:22:15 +0200
+	id lvJJI3q2RGpyzQoAu9opvQ
+	(envelope-from <linux-wireless+bounces-38435-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Jul 2026 08:40:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5AD6EA2B4
-	for <lists+linux-wireless@lfdr.de>; Wed, 01 Jul 2026 08:22:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 243E26EA48C
+	for <lists+linux-wireless@lfdr.de>; Wed, 01 Jul 2026 08:40:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=leemhuis.info header.s=key2 header.b=g4zUQNpf;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38434-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38434-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=none;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qGXQ1I98;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38435-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38435-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2429F3004DA9
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jul 2026 06:22:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8FB783016B74
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jul 2026 06:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2781399015;
-	Wed,  1 Jul 2026 06:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CAE3A0B05;
+	Wed,  1 Jul 2026 06:40:55 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.103])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FCD1CAA7D;
-	Wed,  1 Jul 2026 06:22:04 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782886929; cv=none; b=JjKcjMgF4IZCmKd5dp+uJPj/Ti/BQ/Kt3U5LqpYpLd5zALS53V/kVbVQWqg8ulw/yp5lrB4kk6yxhClLscvezLwBxn7GDwfzHa2+Xx6lHG0Q9DSEdsUEI8xUn1Hx85eYlNRk9XjV3rdog1t7thvcLx5HJ08sTdJq2nUD2NycbwQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782886929; c=relaxed/simple;
-	bh=rp90KJFs22SyjGf2Hk3J7Q7l91PBQxjIILxn6RvvY+M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fy1rFibPZ/NMxNvVNuUlcqbajX7LTTIH/esyzd1lgX7IG+4dVPlUR9TotTVjAbUbwaE0Xtbaeve+k9fiY21vtSfgRL0uRBUvO5ryTsBlbsoLg3J7nr5lBP5B4Ht3ik2xNv1rOxBs3CYi9ukdcD1E2iY7eLzbSyVle9a+4Xug8mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=g4zUQNpf; arc=none smtp.client-ip=188.68.61.103
-Received: from mors-relay-8403.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4gqqXC5GYNz8F0Z;
-	Wed,  1 Jul 2026 08:16:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1782886571;
-	bh=rp90KJFs22SyjGf2Hk3J7Q7l91PBQxjIILxn6RvvY+M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=g4zUQNpfJa61aEi2tVmdwfjBlUEOaHTBD6TeHnpae3Gauuf3u499YLSwlxzx607z5
-	 fxczv1T92tXpFjMgoZtRFJ/ik7KovZRl69bmFf0VQjxI+PV9EBEWruVWkc8N39LkwM
-	 YA+G4JVW8J9reLpC8yKaWc9D0ZrLMwmOybv8i+mpqz+hvFGFz/H4oIIKqvnWogy4Lc
-	 LCmwFml4B2ny64ZREkUfyKU3SYMFCytAdHYuFEQW9evW4cBMRBT6eFHZ9jV1LeXFq2
-	 slmwUl9P2YWY4PbcSqGwYsLJCKFqEnE35SNCr1YgSOoM9QnXIKxAx7VhEUB9K9tAVT
-	 7PL3R6rd9+fNQ==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4gqqXC4Y7Pz8F0W;
-	Wed,  1 Jul 2026 08:16:11 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4gqqXB0S2bz8sb0;
-	Wed,  1 Jul 2026 08:16:10 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 79E145F961;
-	Wed,  1 Jul 2026 08:16:08 +0200 (CEST)
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <dc7657b2-e3d5-4777-af52-1169fe743761@leemhuis.info>
-Date: Wed, 1 Jul 2026 08:16:07 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8ECB2DB78C
+	for <linux-wireless@vger.kernel.org>; Wed,  1 Jul 2026 06:40:53 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782888055; cv=pass; b=pV5Hir4n5j7ZNm60QrYsyyZ5uvOjd/7ObspKAkOsyW3GmC8lTmqFt4ymiNyKn1Afvgh1fQsogoiKryjSLPQWOmYSn9IzLilrNdxcKEzGSX0ACEIbP4lgTb8j/xTz2pM/mAq/FXCGnY/lWlhgDpxoppDgO/FX/lJ63pfkIurbfmw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782888055; c=relaxed/simple;
+	bh=FkNGGK5Qpt8V6OC8b3p1VUkIQC8dqra/rirLMLLz5Ak=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s/sxBU8Ai7ieeBLdftXQRdWV0ykRYPyWBAbjavnCfdi/7wqep65YHEps0tBkCrVGXkGMeHVUq0XF0aClG5nqM9t31nfw7WebyBe31cfkYXHgsKSKONzHymM65//MXXpAhCRzNhVJmmY6ekcot7Cdl4qw7eInxUyG6slGzlcTdD0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qGXQ1I98; arc=pass smtp.client-ip=74.125.224.54
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-664a10cd4a4so291791d50.2
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Jun 2026 23:40:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782888053; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ExPp4V8RD14K4RtgUq96XiBcBE3vfU8+Cada13qNxnslACJ4HJGV0r5deJu0Py9SaA
+         TIreHQKYUvnTIwt7xBTylY5olbDlhPmTyk9qcudpCqZ4+skw6JALnt+FOAraZ7l9m0Yj
+         0EtpdvoZYlz++wCR6+q6xNxhLGpLJDnVhIFtIzal1yN6dzWq7iMfliS74b9m0H1I9qag
+         nAhuX/BV5hdxJO3qzqqr1PS5kuU0hotHRSrajWqI/nzHLMN+yJ5cxeF219ERINCFcgax
+         cMslEmdkPYJ75nuQCDzBKcpNuLNr6KEijcebOepmUc6Oh4ux4+1yvp8Y6MJfgQtsa59x
+         VJXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Wq1zL5FeNn6UHLWkir6u/GW66JHQsFkG2l3gRlEawnk=;
+        fh=zFCB9yj6tbPtiNOgT9n/qK9LnQKfgtX1AWhCxXtoerY=;
+        b=Qu4naivvPq6xFoaDz1X8j/7Txbgv4yKT2q9bk0EiPVej3ISPpfoT9a373fjKKcQGGE
+         Ya0kSmf1IjMsbzxXzU+Pnvwsvn3asgU8GPPPl7DDUaTnx527d71kyoLrUTnBUfWDW9Vb
+         pIhPRzDvCqaRZB/9WOIa8qlzf8SD2Hmqe8DaneYFZn2kTwg4y/ZnVPCPXYDlNLNfKbVp
+         GX+fryjV3BXsi43zjKneFe6IvOpr9lUWPtYzAGEf91MDwChzk33CIGqN5+xSESU2AIxw
+         VQ3Ma0aQAk4XAEFWjQzH4ZgmvYu4QEdtxpRAlzS4/wSIBt1dP7DUCqvrmTkWmKnqbGC0
+         oU5Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782888053; x=1783492853; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wq1zL5FeNn6UHLWkir6u/GW66JHQsFkG2l3gRlEawnk=;
+        b=qGXQ1I98RcXronLqAkxcYIHNG1nVRJm0piX368sXTfzIB3n+2PmZNYVIFW9VCIg/aH
+         VzNpOx8hLtX8B4T7b7C8WPj3pb4rrULkm9L6QqQx0GW9wXW+4ea0uTAtOJEn74lzB9m1
+         KDpO462MlICIfM8QgtA6v0mMb95dIm1wBaBZAj1ldWhHKD5Ypv6oZ+ofWRjWix6Fihsj
+         q3haldFYsk+uZW/Lf2AhNTSPI7+kff4E86eww5qniNFppjlO4zsZbb8X09QLq9oyGWAP
+         Kh/mrPMjFiqm4c8+/9Tos2vCyXc2qWrEXjzXHEXt4O8rPunH0L6Pho//9a20wCKgrirO
+         3dCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782888053; x=1783492853;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Wq1zL5FeNn6UHLWkir6u/GW66JHQsFkG2l3gRlEawnk=;
+        b=pJTIGn6b5id1UYkNxDUnbqA2TlHC2ujI6hE1umRaVS1uQDNtjev1ifMll6WA7r47w3
+         w88YSFyas6b/IoHPKZnhUWS+aVEexZl3WEV9bTp6SUuwKaRhCB3PUmn6nVkaFr6WTJEI
+         uxv5pFxbciN36sDoVlOQHH8cF5/EAxPGlAblhtGAveu+vjkyEzzR+ze+vykucYWH1XLb
+         znwlA2txSkC8lpDOyeXWLffR3seaa0QPFYOCYbjRnlxtFS0ubz2Zb1qh6ysEBujMZAKi
+         JokLKeaopqQvy27W0GzwXu9gWUA/B+6DqfTgpA8AwxGFiYWG1earE/xHqjdDnp2lHdbI
+         6QJA==
+X-Gm-Message-State: AOJu0YyJcEp9MAMegd9N/U371Pe0GOW5fsErywLVjxa7My/OMttyUdPj
+	7+9mtDEaOjvwW6KwYIXxFjz4MfvVXnNKTA5AV60qYOpyPWf5aIxOl4kaJp+vF9R5ioD/modDO6r
+	qSHlROMPjXHNFRaeA1PpUWcRVTroUhis=
+X-Gm-Gg: AfdE7cnR5K2kr7w7aZ2HYvIhsIs8CxFfsNtRpjV1XGTXp/y0FsjhJ8wpxTmvl6jPmmy
+	goa4YI7cTxF9HfsbhLgF1aZ3oTAx0ri+Lnqy/+H5krZNzLQdaHGHW5hHy695Mu5M2QLgaZozeXM
+	jEn+rz1y2c8I45yLKeu9iWx7HqBR/zYjZQGAv7CM1UY+2f5zaW+s+xHi2ugHhYD+XEzSGo+sRIi
+	ql6TVnkC5y7aWHM5hD3RtY2Otfid1+PZKOTqujBiIelE5m3Xcu+oYJs49ViUA2hfFAaJyzOVX8+
+	Oz7Dn54=
+X-Received: by 2002:a05:690e:12c4:b0:664:be82:2b6a with SMTP id
+ 956f58d0204a3-66521be5e28mr365289d50.38.1782888052633; Tue, 30 Jun 2026
+ 23:40:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: mt76: add wcid publish check in mt76_sta_add
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Jiajia Liu <liujiajia@kylinos.cn>, Ryder Lee <ryder.lee@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, Leon Yen
- <leon.yen@mediatek.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20260528033814.46418-1-liujiajia@kylinos.cn>
- <b143b62e-ca11-4f00-ad60-f71ae55213b9@leemhuis.info>
- <akSoHk-BozrpWPmZ@nature>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <akSoHk-BozrpWPmZ@nature>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: 
- <178288656922.3967521.14789663261680188235@mxe9fb.netcup.net>
-X-NC-CID: l2BgsPYJ/4KD2mWJhuqWjAbXGGXHzUV2LTla55HtmwPtd8pnV9s=
+References: <CAG0V13TRHzXtoMY=XZMOd=WjzS58Cu=aePFCz8mY6UoGYm5dXw@mail.gmail.com>
+ <54e7877f76944bd29e57d6eafe5e3811@realtek.com> <CAG0V13Qfp+eVCR6NjQJydN-fL8tus_EyJCWGQqQxTkKA9ZXBFQ@mail.gmail.com>
+ <02d3be993ed84cf983cf995e53c86f1f@realtek.com>
+In-Reply-To: <02d3be993ed84cf983cf995e53c86f1f@realtek.com>
+From: Doug Brewer <brewer.doug@gmail.com>
+Date: Wed, 1 Jul 2026 14:40:41 +0800
+X-Gm-Features: AVVi8Cf0Ra2ygHuJWnVvYfl-pIPebv2AJD81DqNephy4zMcFTd9rQ3vtjcWDqG4
+Message-ID: <CAG0V13T_Ujautadyaqxjy_8zqWFbz1JiRp9bpWO-T7Gy9O+mnA@mail.gmail.com>
+Subject: Re: rtw89: RTL8852BE P2P-device iftype and STA+P2P interface combination
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38434-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:liujiajia@kylinos.cn,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:mingyen.hsieh@mediatek.com,m:leon.yen@mediatek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:regressions@lists.linux.dev,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,kylinos.cn:email];
-	DMARC_NA(0.00)[leemhuis.info];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,kylinos.cn,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org,lists.linux.dev];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_SENDER(0.00)[regressions@leemhuis.info,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[brewerdoug@gmail.com,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-38435-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brewerdoug@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.gmail.com:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DA5AD6EA2B4
+X-Rspamd-Queue-Id: 243E26EA48C
 
-On 7/1/26 07:39, Jiajia Liu wrote:
-> On Tue, Jun 30, 2026 at 01:29:51PM +0200, Thorsten Leemhuis wrote:
->> On 5/28/26 05:38, Jiajia Liu wrote:
->>> Since mt7925_mac_sta_add publishes wcid, add publish check in mt76_sta_add
->>> to avoid reinitializing the wcid->poll_list.
->>>
->>> Found dev->sta_poll_list corruption when using mt7925 and 7.1-rc4.
->>
->> Jiajia Liu, Felox:
+On Tue, Jun 30, 2026 at 8:51=E2=80=AFAM Ping-Ke Shih wrote:
+>
+> Doug Brewer  wrote:
+> > On Mon, Jun 29, 2026 at 10:10=E2=80=AFAM Ping-Ke Shih  wrote:
+> > >
+> > > Doug Brewer wrote:
+> > > > Hi,
+> > > >
+> > > > I'm experimenting with Wi-Fi Display (Miracast sink) concurrent wit=
+h an
+> > > > STA connection on an RTL8852BE (PCIe) using the mainline rtw89 driv=
+er
+> > > > (kernel 6.18.37).
+> > > >
+> > > > iw phy reports:
+> > > > Supported interface modes:
+> > > >    * managed, AP, P2P-client, P2P-GO
+> > > >    (no P2P-device)
+> > > > interface combinations are not supported
+> > > >
+> > > > In practice this blocks the standard P2P flow: there is no P2P-devi=
+ce
+> > > > iftype for a dedicated discovery context, and no advertised interfa=
+ce
+> > > > combination for managed + P2P-client coexistence.
+> > > >
+> > > > My questions:
+> > > > 1. is P2P-device iftype support planned for rtw89 on RTL885x? Is th=
+ere a
+> > > >     known technical blocker, or is it simply not yet implemented?
+> > >
+> > > We are planning to add P2P-device iftype. It needs to consider the ca=
+ses of
+> > > channel context, conditions of power save, and etc. It will take some=
+ time.
+> > >
+> > > I think it would be okay that you use STA interface to do P2P negotia=
+tion,
+> > > and then create P2P-client or P2P-GO iftype then.
+> > >
+> > > > 2. would advertising a managed + P2P-client interface combination
+> > > >     (single channel) be feasible on the current rtw89?
+> > >
+> > > This is a SCC which is supported.
+> > >
+> > > > 3. is MCC (#channels > 1) on the roadmap, or considered out of scop=
+e?
+> > >
+> > > Current support MCC as well. However, we are cooking new firmware to =
+support
+> > > hw_scan with two operation channels -- which doesn't matter if you do=
+n't need
+> > > to do scan when MCC is operating.
+> >
+> > Thanks for the suggestion. I tried using the STA interface for P2P
+> > negotiation, and wanted to share what I found.
+> >
+> > With the STA connected (2.4GHz ch11) and an active p2p_connect, a
+> > wpa_supplicant -dd trace shows GO negotiation getting fairly far:
+> >
+> > Peer's GO-NEG Request is received
+> > send the GO-NEG Response on ch11, peer ACKs it (TX ack=3D1)
+> > State goes GO_NEG -> CONNECT
+> > then time out waiting for the GO-NEG Confirm, status=3D-1
+> >
+> > I select ch11 as the P2P operating channel (same as STA, SCC), while
+> > the peer's operating preference is 5GHz ch149. It looks like after we T=
+X
+> > the Response, the radio doesn't stay on ch11 to listen for the Confirm,
+> > so the frame is missed -- presumably because the single radio is servin=
+g
+> > the STA connection.
+>
+> So, peer doesn't stay ch11 to complete he negotiation, right?
+>
+> What is the peer device you are using? Can you setup another RTL8852BE?
+> I suggest running simple scenario first to dig cause.
+>
+> 1. two peers make P2P group without any STA connection
+> 2. RTL8852BE with a STA connection, and peer without connection.
+>
+> >
+> > Aalso tested with the STA on 5GHz (ch149); the result is the same
+> > GO-NEG Confirm timeout.
+> >
+> > Is this the channel-context issue that P2P-device iftype will address?
+> > And with the current driver, is there any way to keep the P2P listen
+> > context on the operating channel during GO negotiation while STA is up?
+>
+> Before P2P negotiation completion, there is only one channel context.
+> The second interface (GC or GO) is created when the P2P role is decided
+> by P2P negotiation.
+>
+> You need to check supplicant log about channels on both peers. I think
+> remain-on-channel is the method supplicant switch channel to send
+> negotiation frames and to stay on listen channel.
+>
+> >
+> > (FWIW, passing an explicit freq=3D to p2p_connect is rejected with FAIL=
+,
+> > whether or not it matches the STA channel.)
+>
+> Not sure why. In our side, it seems work.
+>
+>
+> I'd share a pair of wpa_supplicant .conf and wpa_cli commands we are test=
+ing
+> for reference.
 
-BTW: @Felix, sorry for the typo!
+Great progress using your test conf and a second RTL8852BE. Results:
 
->> given that the problem seems to be in 7.1, should we
->> ask the stable team to pick this regression fix up, as this change was
->> mainlined (as 20b126920a259d ("wifi: mt76: add wcid publish check in
->> mt76_sta_add") [v7.2-rc1]), but lacks both a Fixes and a Stable tag?
-> 
-> Yes. It seems to be related to cbf5e61da660 ("wifi: mt76: initialize
-> more wcid fields mt76_wcid_init") [v6.14-rc1]. But I didn't reproduce
-> when I checked it out and tested. So Fixes was not added.
+Two RTL8852BE peers, no STA =E2=80=94 P2P connects fine (GO/client, group f=
+ormed,
+4-way HS completed).
 
-In that case:
+One RTL8852BE with STA on 5GHz ch149, the other RTL8852BE with no STA,
+also succeeds. The GO comes up on ch153 while the STA stays on ch149 (so MC=
+C),
+group formed, client connected. Both sides confirmed via iw dev
+(GO on ch153 + STA on ch149; peer client on ch153).
 
-@Stable team, you you please pick up 20b126920a259d ("wifi: mt76: add
-wcid publish check in mt76_sta_add") [v7.2-rc1] for 7.1? It lacks a
-fixes tag and the problem might be older, but I saw two reports about
-this with 7.1-rc -- so it seems some recent change made that problem
-more likely to occur, so it might be good to fix it at least in 7.1.y.
+So STA + P2P coexistence, including MCC, works fine between two 8852BE peer=
+s.
 
-Ciao, Thorsten
+p2p_no_group_iface=3D1 in your conf may have contributed, P2P runs on the m=
+ain
+interface instead of a separate group interface.
 
->>> According to the corruption information, prev->next was changed to itself.
->>>
->>> wlan0: disconnect from AP 90:fb:5d:94:8b:e3 for new auth to 90:fb:5d:94:8b:e2
->>> wlan0: authenticate with 90:fb:5d:94:8b:e2 (local address=84:9e:56:9c:7e:6b)
->>> wlan0: send auth to 90:fb:5d:94:8b:e2 (try 1/3)
->>>  slab kmalloc-8k start ffff8c80958a6000 pointer offset 4160 size 8192
->>> list_add corruption. prev->next should be next (ffff8c808a7488f8), but was ffff8c80958a7040. (prev=ffff8c80958a7040).
->>>
->>>  mt76_wcid_add_poll+0x95/0xd0 [mt76]
->>>  mt7925_mac_add_txs.part.0+0xa5/0xe0 [mt7925_common]
->>>  mt7925_rx_check+0xa7/0xc0 [mt7925_common]
->>>  mt76_dma_rx_poll+0x50d/0x790 [mt76]
->>>  mt792x_poll_rx+0x52/0xe0 [mt792x_lib]
->>>
->>> Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
->>> ---
->>>
->>> Changes in v2:
->>>   - use dev->wcid table instead of adding MT_WCID_FLAG_DRV_PUBLSH for
->>>     wcid publish check suggested by Sean
->>>   - subject and commit message update
->>>
->>> ---
->>>  drivers/net/wireless/mediatek/mt76/mac80211.c | 15 ++++++++++++---
->>>  1 file changed, 12 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
->>> index 4ae5e4715a9c..b78b4cd206e0 100644
->>> --- a/drivers/net/wireless/mediatek/mt76/mac80211.c
->>> +++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
->>> @@ -1576,6 +1576,7 @@ mt76_sta_add(struct mt76_phy *phy, struct ieee80211_vif *vif,
->>>  {
->>>  	struct mt76_wcid *wcid = (struct mt76_wcid *)sta->drv_priv;
->>>  	struct mt76_dev *dev = phy->dev;
->>> +	struct mt76_wcid *published;
->>>  	int ret;
->>>  	int i;
->>>  
->>> @@ -1595,11 +1596,19 @@ mt76_sta_add(struct mt76_phy *phy, struct ieee80211_vif *vif,
->>>  		mtxq->wcid = wcid->idx;
->>>  	}
->>>  
->>> -	ewma_signal_init(&wcid->rssi);
->>> -	rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
->>> +	published = rcu_dereference_protected(dev->wcid[wcid->idx],
->>> +					      lockdep_is_held(&dev->mutex));
->>> +	if (published != wcid) {
->>> +		WARN_ON_ONCE(published);
->>> +		ewma_signal_init(&wcid->rssi);
->>> +		rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
->>> +		mt76_wcid_init(wcid, phy->band_idx);
->>> +	} else {
->>> +		wcid->phy_idx = phy->band_idx;
->>> +	}
->>> +
->>>  	phy->num_sta++;
->>>  
->>> -	mt76_wcid_init(wcid, phy->band_idx);
->>>  out:
->>>  	mutex_unlock(&dev->mutex);
->>>
+Thank you very much for the test conf and guidance.
 
+> Peer 1:
+> ctrl_interface=3D/var/run/wpa_supplicant
+>
+> network=3D{
+>         ssid=3D"ap_x"
+>         key_mgmt=3DNONE
+>
+> }
+>
+> update_config=3D1
+> device_name=3Dmy_p2p
+> manufacturer=3DRealtek
+> model_name=3DRTW_STA
+> model_number=3DWLAN_CU
+> serial_number=3D12345
+> device_type=3D1-0050F204-1
+> os_version=3D01020300
+> config_methods=3Dvirtual_display virtual_push_button keypad
+> p2p_listen_reg_class=3D81
+> p2p_listen_channel=3D1
+> p2p_oper_reg_class=3D81
+> p2p_oper_channel=3D1
+> p2p_no_group_iface=3D1
+>
+>
+> wpa_supplicant -i wlan0 -c p2p.conf
+> wpa_cli
+> > p2p_find
+> > p2p_connect $SUT_MAC_ADDR pbc (freq=3Dxxxx go_intent=3D15)
+>
+>
+> Peer 2:
+> ctrl_interface=3D/var/run/wpa_supplicant
+> update_config=3D1
+> device_name=3Dmy_p2p
+> manufacturer=3DRealtek
+> model_name=3DRTW_STA
+> model_number=3DWLAN_CU
+> serial_number=3D12345
+> device_type=3D1-0050F204-1
+> os_version=3D01020300
+> config_methods=3Dvirtual_display virtual_push_button keypad
+> p2p_listen_reg_class=3D81
+> p2p_listen_channel=3D1
+> p2p_oper_reg_class=3D81
+> p2p_oper_channel=3D1
+> p2p_no_group_iface=3D1
+>
+> wpa_supplicant -i wlan0 -c p2p.conf
+> wpa_cli
+> > p2p_find
+> > p2p_connect $DUT_MAC_ADDR pbc (freq=3Dxxxx go_intent=3D1)
+>
+> Regards
+> Ping-Ke
+
+Regards,
+Doug
 
