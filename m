@@ -1,402 +1,312 @@
-Return-Path: <linux-wireless+bounces-38504-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38505-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Dt4pFuNFRmobNgsAu9opvQ
-	(envelope-from <linux-wireless+bounces-38504-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 13:05:07 +0200
+	id nn16JVRURmq0QwsAu9opvQ
+	(envelope-from <linux-wireless+bounces-38505-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 14:06:44 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7622C6F6655
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 13:05:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8ABC6F74FB
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 14:06:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=collabora.com header.s=mail header.b=G2MjV5Z3;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38504-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38504-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=collabora.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lG3zVab8;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38505-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38505-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC49C31A93CD
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2026 10:50:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57B74300A755
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2026 11:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8BA3C2B8F;
-	Thu,  2 Jul 2026 10:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEAE46AF2E;
+	Thu,  2 Jul 2026 11:59:01 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4103439F187;
-	Thu,  2 Jul 2026 10:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FD3373BE4;
+	Thu,  2 Jul 2026 11:59:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782989426; cv=none; b=WDft2+Fuy5IZUOju9s3BXgS26DLA/qo0mKoMBX+ykVy+xcQJ8MC6FNwpqEdqpUFoU+/gfIfVwMOssGhMcSlhFT4HjqX4gCrh8Z+mLgNtdv45pvdVOYcPn4yhtj59hHzT+3Chh2sVF716P7n6Yh/lVlcNC24h0vxjuiQpo5N0mY0=
+	t=1782993541; cv=none; b=mswFLAi0IA5ty8KAP+NXvrKeEh8Tr8m9ec/uPyLwwVdqq6+7PeX2zjzSCl3EVsaqfETIMS+Rcc/ah1sd9Fndv7SL7UjxRfhM43euIRx8F2BEWHg3FXXdHDDHgBXBJF46d95nDcL4APkf3cHFKIA4atYthaqRfAIaaOlgLTyK+Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782989426; c=relaxed/simple;
-	bh=TdAKQ5bkpDJ+q8vtr1fnXS4gPKoJw8I70LTsjzfMgM8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=e/m/Zw5+s8fSipu3aDuVlGMU2WhlrY1T9fEIdM/6GSRn5OeBD96bOT3mHoMvjTDmuK3Uxux7IBdav7hIE4/LSVwZi7neHiFQlK5iQ94N/Y8AUq9M43B+K9rlnlEy4tNLzdmz8sSfh2vsgpCd+fZRYhADwtO1rmOgRo2zioBuY8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=G2MjV5Z3; arc=none smtp.client-ip=148.251.105.195
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1782989422;
-	bh=TdAKQ5bkpDJ+q8vtr1fnXS4gPKoJw8I70LTsjzfMgM8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=G2MjV5Z3MMQ+EENa0wQ8ycXV9qtAp0jrp07oJUCKnuXC1BioqUk07NwF/G0GtUsBZ
-	 F6gHsiUazjA0i+DjmhhTM5UJ0yAu299lenpZ5vxykKSTuDZvaFF+PzkljuCBqi87B4
-	 3f/d+hvQ5/fFUTMbqlQOrb0M7zvTOnDMouG7+hPBPzuX3rLFcdVIn1Q41xKtuvfL4P
-	 dqGLTLzaK+qv3Z7eWiskJcWvnJZmti7WoO8RoKA+yPrMZpXze1Eg/q0YFGGMinJkju
-	 oeQrBAWOwsd3KhOXq5AFpP8wY0ih2f2ig6vLE8L6IcOhxYrNHXJmvTsPV+PO7/x8VM
-	 o+gxM4EvwKQNw==
-Received: from [192.168.1.156] (unknown [100.64.1.118])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: mattl)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id CEAFD17E0CA2;
-	Thu,  2 Jul 2026 12:50:21 +0200 (CEST)
-From: Matthew Leach <matthew.leach@collabora.com>
-Date: Thu, 02 Jul 2026 11:50:16 +0100
-Subject: [PATCH v2] wifi: ath12k: fix survey indexing across bands
+	s=arc-20240116; t=1782993541; c=relaxed/simple;
+	bh=QmDK7QLobqPP9bGB3uSK4I2wtDujB2CKvgPtV1EpqMk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tbVdQSt7v+TbUaHzoDzSvZ/bsaBTbVU6sRyxW3S4p94x5aUmiA5hZ/QBXjohymaWNKctnzAnx3ihAX6uJvBB8K+cV+4OjkFI0cK9ebNiCCx87J2c6cKWJKM0/9U/tQugwIcL3ug/ZHeFK84sMS6pzEvUHvCz267wp7/JokQY8ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lG3zVab8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DC61F000E9;
+	Thu,  2 Jul 2026 11:58:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782993540;
+	bh=bujUXrxeKMEXmfr9FWXvhM2Ce9/ltyaOQsurmQ2F3Fo=;
+	h=From:To:Cc:Subject:Date;
+	b=lG3zVab83xzcoXG2mnkWPk/3IQtSX2h69xtnl92IeH4yMICTJyJXS73PNNECJD3HM
+	 gG1ZYUUV3Tjd+KalL4tyB+PQG0x6TficJy6HX+g0tST1dZ5KbYeZZMjOplo56oiiMK
+	 zDgKB7wHJiYaItIKpwikAbnVPJYfsN7+7KzBU/8JVe9kwNJYXRff1eYzvxhSQJprmw
+	 MCRDtxW7en2fQFqexjyRtJU/ld7O7M4xAZJ6UwgzCkVt7rchYxmZfM4KI0JoafqZJz
+	 oThB7Rekoc2anH3meiK/CcTQoyTyXQsXq7DEEAClatA7tYL120Y8wkKuThLBK+5HiA
+	 Gz0TnbMR2Z7YQ==
+From: Sumit Garg <sumit.garg@kernel.org>
+To: andersson@kernel.org,
+	konradybcio@kernel.org
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org,
+	linux-media@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	robin.clark@oss.qualcomm.com,
+	sean@poorly.run,
+	akhilpo@oss.qualcomm.com,
+	lumag@kernel.org,
+	abhinav.kumar@linux.dev,
+	jesszhan0024@gmail.com,
+	marijn.suijten@somainline.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	vikash.garodia@oss.qualcomm.com,
+	bod@kernel.org,
+	mchehab@kernel.org,
+	elder@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jjohnson@kernel.org,
+	mathieu.poirier@linaro.org,
+	trilokkumar.soni@oss.qualcomm.com,
+	mukesh.ojha@oss.qualcomm.com,
+	pavan.kondeti@oss.qualcomm.com,
+	jorge.ramirez@oss.qualcomm.com,
+	tonyh@qti.qualcomm.com,
+	vignesh.viswanathan@oss.qualcomm.com,
+	srinivas.kandagatla@oss.qualcomm.com,
+	amirreza.zarrabi@oss.qualcomm.com,
+	jenswi@kernel.org,
+	op-tee@lists.trustedfirmware.org,
+	apurupa@qti.qualcomm.com,
+	skare@qti.qualcomm.com,
+	linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: [PATCH v9 00/14] firmware: qcom: Add OP-TEE PAS service support
+Date: Thu,  2 Jul 2026 17:28:16 +0530
+Message-ID: <20260702115835.167602-1-sumit.garg@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260702-ath12-survey-band-fix-v2-1-75b5bdf72a08@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQ6CMBREr0L+2m9opRRYeQ/Doi1fqUFqWmgkh
- Ltb8AAu32Rm3gqBvKUATbaCp2iDdWMCfsrA9Gp8ENouMfCcl3nJJKqpZxzD7CMtqNXY4d1+sNC
- CZCVkfZE1pO3bU4qP31v74zDrJ5lpP9sbvQ2T88shjmzv/XNEhgxJdrUQQutCVlfjhkFp59XZu
- Be027Z9AbFo5NzQAAAA
-X-Change-ID: 20260617-ath12-survey-band-fix-4b5e78579379
-To: Jeff Johnson <jjohnson@kernel.org>, 
- Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>, 
- Baochen Qiang <quic_bqiang@quicinc.com>, 
- Ramya Gnanasekar <quic_rgnanase@quicinc.com>, 
- Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Cc: Kalle Valo <kvalo@kernel.org>, 
- Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>, 
- P Praneesh <quic_ppranees@quicinc.com>, 
- Sriram R <quic_srirrama@quicinc.com>, linux-wireless@vger.kernel.org, 
- ath12k@lists.infradead.org, linux-kernel@vger.kernel.org, 
- kernel@collabora.com, 
- Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>, 
- Matthew Leach <matthew.leach@collabora.com>, 
- Rameshkumar Sundaram <quic_ramess@quicinc.com>, 
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-38505-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38504-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:jjohnson@kernel.org,m:quic_vthiagar@quicinc.com,m:quic_bqiang@quicinc.com,m:quic_rgnanase@quicinc.com,m:quic_periyasa@quicinc.com,m:kvalo@kernel.org,m:quic_pradeepc@quicinc.com,m:quic_ppranees@quicinc.com,m:quic_srirrama@quicinc.com,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:kernel@collabora.com,m:rameshkumar.sundaram@oss.qualcomm.com,m:matthew.leach@collabora.com,m:quic_ramess@quicinc.com,m:jeff.johnson@oss.qualcomm.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:andersson@kernel.org,m:konradybcio@kernel.org,m:linux-arm-msm@vger.kernel.org,m:devicetree@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:freedreno@lists.freedesktop.org,m:linux-media@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,m:linux-remoteproc@vger.kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:robin.clark@oss.qualcomm.com,m:sean@poorly.run,m:akhilpo@oss.qualcomm.com,m:lumag@kernel.org,m:abhinav.kumar@linux.dev,m:jesszhan0024@gmail.com,m:marijn.suijten@somainline.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:vikash.garodia@oss.qualcomm.com,m:bod@kernel.org,m:mchehab@kernel.org,m:elder@kernel.org,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:jjohnson@kernel.org,m:mathieu.poirier@linaro.org,m:trilokkumar.soni@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:pavan.kondeti@oss.qualcomm.com,m:jorge.ramirez@oss
+ .qualcomm.com,m:tonyh@qti.qualcomm.com,m:vignesh.viswanathan@oss.qualcomm.com,m:srinivas.kandagatla@oss.qualcomm.com,m:amirreza.zarrabi@oss.qualcomm.com,m:jenswi@kernel.org,m:op-tee@lists.trustedfirmware.org,m:apurupa@qti.qualcomm.com,m:skare@qti.qualcomm.com,m:linux-kernel@vger.kernel.org,m:sumit.garg@oss.qualcomm.com,m:krzk@kernel.org,m:conor@kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[48];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[collabora.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email,qualcomm.com:email,collabora.com:dkim,collabora.com:email,collabora.com:mid,collabora.com:from_mime,msgid.link:url]
+	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7622C6F6655
+X-Rspamd-Queue-Id: E8ABC6F74FB
 
-When running 'iw dev wlan0 survey dump' the values for the channel busy
-time have the same sequence across bands. This is caused by indexing
-into the ath12k survey array using a band-local index rather than the
-global index passed by mac80211. This results in surveys for 5 GHz and 6
-GHz channels returning values from 2.4 GHz slots, making the survey
-unusable on those bands. Further, there are redundant survey slots for
-multi-radio/single-phy instances.
+From: Sumit Garg <sumit.garg@oss.qualcomm.com>
 
-Fix by moving the survey data into ath12k_hw so multiple radios under a
-single wiphy share one table, and index into it using the global
-mac80211 index. A new spinlock in ath12k_hw serialises access to the
-survey array, which is now shared across all radios under a single hw.
+Qcom platforms has the legacy of using non-standard SCM calls
+splintered over the various kernel drivers. These SCM calls aren't
+compliant with the standard SMC calling conventions which is a
+prerequisite to enable migration to the FF-A specifications from Arm.
 
-Band busy-times Before this fix:
+OP-TEE as an alternative trusted OS to Qualcomm TEE (QTEE) can't
+support these non-standard SCM calls. And even for newer architectures
+using S-EL2 with Hafnium support, QTEE won't be able to support SCM
+calls either with FF-A requirements coming in. And with both OP-TEE
+and QTEE drivers well integrated in the TEE subsystem, it makes further
+sense to reuse the TEE bus client drivers infrastructure.
 
-2.4 GHz: 9, 2, 2, 2, 4, 2, 10, 16, 4, 12, 5
-5 GHz:   9, 2, 2, 2, 4, 2, 10, 16, 4, 12, 5
-6 GHz:   9, 2, 2, 2, 4, 2, 10, 16, 4, 12, 5
+The added benefit of TEE bus infrastructure is that there is support
+for discoverable/enumerable services. With that client drivers don't
+have to manually invoke a special SCM call to know the service status.
 
-After this fix, times are independent:
+So enable the generic Peripheral Authentication Service (PAS) provided
+by the firmware. It acts as the common layer with different TZ
+backends plugged in whether it's an SCM implementation or a proper
+TEE bus based PAS service implementation.
 
-2.4 GHz: 23, 5,  5,  12, 2,   12,  26,  5,   3,  1,  27
-5 GHz:   30, 40, 29, 27, 118, 118, 112, 120, 11, 11, 11
-6 GHz:   1,  0,  0,  0,  0,   0,   0,   0,   0,  0,  1
+The TEE PAS service ABI is designed to be extensible with additional API
+as PTA_QCOM_PAS_CAPABILITIES. This allows to accommodate any future
+extensions of the PAS service needed while still maintaining backwards
+compatibility.
 
-Tested-on: wcn7850 hw2.0 PCI WLAN.IOE_HMT.1.1-00018-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+Currently OP-TEE support is being added to provide the backend PAS
+service implementation which can be found as part of this PR [1].
+This implementation has been tested on Kodiak/RB3Gen2 and lemans
+EVK boards. In addition to that WIN/IPQ targets tested OP-TEE with
+this service too. Surely the backwards compatibility is maintained and
+tested for SCM backend.
 
-Fixes: 4f242b1d6996 ("wifi: ath12k: support get_survey mac op for single wiphy")
-Signed-off-by: Matthew Leach <matthew.leach@collabora.com>
+Note that kernel PAS service support while running in EL2 is at parity
+among OP-TEE vs QTEE. Especially the media (venus/iris) support depends
+on proper IOMMU support being worked out on the PAS client end.
+
+Patch summary:
+- Patch #1: adds generic PAS service.
+- Patch #2: migrates SCM backend to generic PAS service.
+- Patch #3: adds TEE/OP-TEE backend for generic PAS service.
+- Patch #4-#12: migrates all client drivers to generic PAS service.
+- Patch #13: drops legacy PAS SCM exported APIs.
+
+The patch-set is based on v7.2-rc1 and can be found in git tree
+here [2].
+
+Merge strategy:
+
+It is expected due to APIs dependency, the entire patch-set to go via
+the Qcom tree. All other subsystem maintainers, it will be great if I
+can get acks for the corresponding subsystem patches.
+
+[1] https://github.com/OP-TEE/optee_os/pull/7721 (already merged)
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/sumit.garg/linux.git/log/?h=qcom-pas-v9
+
 ---
+Changes in v9:
+- Rebased to 7.2-rc1.
+- Enable SCM backend similar to TEE if ARCH_QCOM is set.
+- Address misc. comments from Konrad.
+- Add checks for corner cases (although not reachable as per OP-TEE ABI)
+  reported by Shashiko on patch #3.
+- Picked up review tags from Konrad.
+
+Changes in v8:
+- Rebased on mainline tip (no functional changes).
+- Now Lemans EVK is also tested to support OP-TEE PAS here:
+  https://github.com/OP-TEE/optee_os/pull/7845
+- Drop Kodiak DT patch as it is carried independently by Mukesh here:
+  https://lore.kernel.org/lkml/20260624063952.2242702-1-mukesh.ojha@oss.qualcomm.com/
+- Regarding Sashiko comments, I have already replied in v6 the ones that
+  don't apply but in v7 I got the same comments again. Specific context
+  reasoning which Shashiko ignores:
+    - ABI contract between Linux and TZ
+    - No support for multiple concurrent backends
+    - The TZ backend doesn’t detach during the entire boot cycle
+
+Changes in v7:
+- Rebased to qcom tree (for-next branch) tip.
+- Merged patch #5 and #7 due to build dependency.
+- Disabled modem for kodiak EL2 as it isn't tested yet.
+- Fix an issue found out by sashiko-bot for patch #4.
+
+Changes in v6:
+- Rebased to v7.1-rc4 tag.
+- Patch #14: fixed ret error print.
+- Add Kconfig descriptions for PAS symbols such that they are visible
+  in menuconfig to update.
+
+Changes in v5:
+- Incorporated misc. comments from Mukesh.
+- Split up patch #11 into 2 to add an independent commit for passing
+  proper PAS ID to set_remote_state API.
+- Picked up tags.
+
+Changes in v4:
+- Incorporate misc. comments on patch #4.
+- Picked up an ack for patch #10.
+- Clarify in cover letter about state of media support.
+
+Changes in v3:
+- Incorporated some style and misc. comments for patch #2, #3 and #4.
+- Add QCOM_PAS Kconfig dependency for various subsystems.
+- Switch from pseudo TA to proper TA invoke commands.
+
 Changes in v2:
-- Move survey[] from ath12k to ath12k_hw so multi-radio single-wiphy
-  setups share one global table (suggested by Rameshkumar Sundaram).
-- Drop the ar->mac.sbands[] filter in freq_to_idx() so the WMI event
-  handlers use the same global index
-- Add ah->survey_lock to serialise access to the shared survey table
-- Update Fixes: tag to the correct commit
-- Link to v1: https://patch.msgid.link/20260617-ath12-survey-band-fix-v1-1-e7d9555bb478@collabora.com
+- Fixed kernel doc warnings.
+- Polish commit message and comments for patch #2.
+- Pass proper PAS ID in set_remote_state API for media firmware drivers.
+- Added Maintainer entry and dropped MODULE_AUTHOR.
 
-To: Jeff Johnson <jjohnson@kernel.org>
-To: Sriram R <quic_srirrama@quicinc.com>
-To: Kalle Valo <kvalo@kernel.org>
-To: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: ath12k@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
----
- drivers/net/wireless/ath/ath12k/core.h |  6 ++++-
- drivers/net/wireless/ath/ath12k/mac.c  | 33 ++++++++++++++-------------
- drivers/net/wireless/ath/ath12k/wmi.c  | 41 ++++++++++++++++++----------------
- 3 files changed, 45 insertions(+), 35 deletions(-)
+Sumit Garg (14):
+  firmware: qcom: Add a generic PAS service
+  firmware: qcom_scm: Migrate to generic PAS service
+  firmware: qcom: Add a PAS TEE service
+  remoteproc: qcom_q6v5_pas: Switch over to generic PAS TZ APIs
+  remoteproc: qcom_q6v5_mss: Switch to generic PAS TZ APIs
+  remoteproc: qcom_wcnss: Switch to generic PAS TZ APIs
+  remoteproc: qcom: Select QCOM_PAS generic service
+  drm/msm: Switch to generic PAS TZ APIs
+  media: qcom: Switch to generic PAS TZ APIs
+  media: qcom: Pass proper PAS ID to set_remote_state API
+  net: ipa: Switch to generic PAS TZ APIs
+  wifi: ath12k: Switch to generic PAS TZ APIs
+  firmware: qcom_scm: Remove SCM PAS wrappers
+  MAINTAINERS: Add maintainer entry for Qualcomm PAS TZ service
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 8be435535a4e..6ce2f7b3fa50 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -712,7 +712,6 @@ struct ath12k {
- 	 * avoid reporting garbage data.
- 	 */
- 	bool ch_info_can_report_survey;
--	struct survey_info survey[ATH12K_NUM_CHANS];
- 	struct completion bss_survey_done;
- 
- 	struct work_struct regd_update_work;
-@@ -774,6 +773,11 @@ struct ath12k_hw {
- 	 */
- 	struct mutex hw_mutex;
- 	enum ath12k_hw_state state;
-+
-+	/* protects survey[] shared across radios of this hw. */
-+	spinlock_t survey_lock;
-+	struct survey_info survey[ATH12K_NUM_CHANS];
-+
- 	bool regd_updated;
- 	bool use_6ghz_regd;
- 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 2cff9485c95a..daf9bc8722df 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -13348,52 +13348,54 @@ ath12k_mac_update_bss_chan_survey(struct ath12k *ar,
- int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
- 			     struct survey_info *survey)
- {
-+	struct ath12k_hw *ah = hw->priv;
- 	struct ath12k *ar;
- 	struct ieee80211_supported_band *sband;
--	struct survey_info *ar_survey;
-+	struct survey_info *ah_survey;
-+	int sband_idx = idx;
- 
- 	lockdep_assert_wiphy(hw->wiphy);
- 
--	if (idx >= ATH12K_NUM_CHANS)
-+	if (sband_idx >= ATH12K_NUM_CHANS)
- 		return -ENOENT;
- 
- 	sband = hw->wiphy->bands[NL80211_BAND_2GHZ];
--	if (sband && idx >= sband->n_channels) {
--		idx -= sband->n_channels;
-+	if (sband && sband_idx >= sband->n_channels) {
-+		sband_idx -= sband->n_channels;
- 		sband = NULL;
- 	}
- 
- 	if (!sband)
- 		sband = hw->wiphy->bands[NL80211_BAND_5GHZ];
--	if (sband && idx >= sband->n_channels) {
--		idx -= sband->n_channels;
-+	if (sband && sband_idx >= sband->n_channels) {
-+		sband_idx -= sband->n_channels;
- 		sband = NULL;
- 	}
- 
- 	if (!sband)
- 		sband = hw->wiphy->bands[NL80211_BAND_6GHZ];
- 
--	if (!sband || idx >= sband->n_channels)
-+	if (!sband || sband_idx >= sband->n_channels)
- 		return -ENOENT;
- 
--	ar = ath12k_mac_get_ar_by_chan(hw, &sband->channels[idx]);
-+	ar = ath12k_mac_get_ar_by_chan(hw, &sband->channels[sband_idx]);
- 	if (!ar) {
--		if (sband->channels[idx].flags & IEEE80211_CHAN_DISABLED) {
-+		if (sband->channels[sband_idx].flags & IEEE80211_CHAN_DISABLED) {
- 			memset(survey, 0, sizeof(*survey));
- 			return 0;
- 		}
- 		return -ENOENT;
- 	}
- 
--	ar_survey = &ar->survey[idx];
-+	ah_survey = &ah->survey[idx];
- 
--	ath12k_mac_update_bss_chan_survey(ar, &sband->channels[idx]);
-+	ath12k_mac_update_bss_chan_survey(ar, &sband->channels[sband_idx]);
- 
--	spin_lock_bh(&ar->data_lock);
--	memcpy(survey, ar_survey, sizeof(*survey));
--	spin_unlock_bh(&ar->data_lock);
-+	scoped_guard(spinlock_bh, &ah->survey_lock) {
-+		memcpy(survey, ah_survey, sizeof(*survey));
-+	}
- 
--	survey->channel = &sband->channels[idx];
-+	survey->channel = &sband->channels[sband_idx];
- 
- 	if (ar->rx_channel == survey->channel)
- 		survey->filled |= SURVEY_INFO_IN_USE;
-@@ -15055,6 +15057,7 @@ static struct ath12k_hw *ath12k_mac_hw_allocate(struct ath12k_hw_group *ag,
- 
- 	mutex_init(&ah->hw_mutex);
- 
-+	spin_lock_init(&ah->survey_lock);
- 	spin_lock_init(&ah->dp_hw.peer_lock);
- 	INIT_LIST_HEAD(&ah->dp_hw.dp_peers_list);
- 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index b5e904a55aea..aa70d2a61d38 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -6617,16 +6617,12 @@ static int ath12k_pull_roam_ev(struct ath12k_base *ab, struct sk_buff *skb,
- 	return 0;
- }
- 
--static int freq_to_idx(struct ath12k *ar, int freq)
-+static int freq_to_idx(struct ieee80211_hw *hw, int freq)
- {
- 	struct ieee80211_supported_band *sband;
--	struct ieee80211_hw *hw = ath12k_ar_to_hw(ar);
- 	int band, ch, idx = 0;
- 
- 	for (band = NL80211_BAND_2GHZ; band < NUM_NL80211_BANDS; band++) {
--		if (!ar->mac.sbands[band].channels)
--			continue;
--
- 		sband = hw->wiphy->bands[band];
- 		if (!sband)
- 			continue;
-@@ -7507,6 +7503,7 @@ static void ath12k_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
- {
- 	struct wmi_chan_info_event ch_info_ev = {};
- 	struct ath12k *ar;
-+	struct ath12k_hw *ah;
- 	struct survey_info *survey;
- 	int idx;
- 	/* HW channel counters frequency value in hertz */
-@@ -7538,6 +7535,7 @@ static void ath12k_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
- 		return;
- 	}
- 	spin_lock_bh(&ar->data_lock);
-+	ah = ath12k_ar_to_ah(ar);
- 
- 	switch (ar->scan.state) {
- 	case ATH12K_SCAN_IDLE:
-@@ -7549,8 +7547,8 @@ static void ath12k_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
- 		break;
- 	}
- 
--	idx = freq_to_idx(ar, le32_to_cpu(ch_info_ev.freq));
--	if (idx >= ARRAY_SIZE(ar->survey)) {
-+	idx = freq_to_idx(ath12k_ar_to_hw(ar), le32_to_cpu(ch_info_ev.freq));
-+	if (idx >= ARRAY_SIZE(ah->survey)) {
- 		ath12k_warn(ab, "chan info: invalid frequency %d (idx %d out of bounds)\n",
- 			    ch_info_ev.freq, idx);
- 		goto exit;
-@@ -7563,14 +7561,16 @@ static void ath12k_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
- 		cc_freq_hz = (le32_to_cpu(ch_info_ev.mac_clk_mhz) * 1000);
- 
- 	if (ch_info_ev.cmd_flags == WMI_CHAN_INFO_START_RESP) {
--		survey = &ar->survey[idx];
--		memset(survey, 0, sizeof(*survey));
--		survey->noise = le32_to_cpu(ch_info_ev.noise_floor);
--		survey->filled = SURVEY_INFO_NOISE_DBM | SURVEY_INFO_TIME |
-+		scoped_guard(spinlock_bh, &ah->survey_lock) {
-+			survey = &ah->survey[idx];
-+			memset(survey, 0, sizeof(*survey));
-+			survey->noise = le32_to_cpu(ch_info_ev.noise_floor);
-+			survey->filled = SURVEY_INFO_NOISE_DBM | SURVEY_INFO_TIME |
- 				 SURVEY_INFO_TIME_BUSY;
--		survey->time = div_u64(le32_to_cpu(ch_info_ev.cycle_count), cc_freq_hz);
--		survey->time_busy = div_u64(le32_to_cpu(ch_info_ev.rx_clear_count),
--					    cc_freq_hz);
-+			survey->time = div_u64(le32_to_cpu(ch_info_ev.cycle_count), cc_freq_hz);
-+			survey->time_busy = div_u64(le32_to_cpu(ch_info_ev.rx_clear_count),
-+						    cc_freq_hz);
-+		}
- 	}
- exit:
- 	spin_unlock_bh(&ar->data_lock);
-@@ -7583,6 +7583,7 @@ ath12k_pdev_bss_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
- 	struct wmi_pdev_bss_chan_info_event bss_ch_info_ev = {};
- 	struct survey_info *survey;
- 	struct ath12k *ar;
-+	struct ath12k_hw *ah;
- 	u32 cc_freq_hz = ab->cc_freq_hz;
- 	u64 busy, total, tx, rx, rx_bss;
- 	int idx;
-@@ -7623,15 +7624,18 @@ ath12k_pdev_bss_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
- 		return;
- 	}
- 
--	spin_lock_bh(&ar->data_lock);
--	idx = freq_to_idx(ar, le32_to_cpu(bss_ch_info_ev.freq));
--	if (idx >= ARRAY_SIZE(ar->survey)) {
-+	ah = ath12k_ar_to_ah(ar);
-+
-+	guard(spinlock_bh)(&ah->survey_lock);
-+
-+	idx = freq_to_idx(ath12k_ar_to_hw(ar), le32_to_cpu(bss_ch_info_ev.freq));
-+	if (idx >= ARRAY_SIZE(ah->survey)) {
- 		ath12k_warn(ab, "bss chan info: invalid frequency %d (idx %d out of bounds)\n",
- 			    bss_ch_info_ev.freq, idx);
- 		goto exit;
- 	}
- 
--	survey = &ar->survey[idx];
-+	survey = &ah->survey[idx];
- 
- 	survey->noise     = le32_to_cpu(bss_ch_info_ev.noise_floor);
- 	survey->time      = div_u64(total, cc_freq_hz);
-@@ -7644,7 +7648,6 @@ ath12k_pdev_bss_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
- 			     SURVEY_INFO_TIME_RX |
- 			     SURVEY_INFO_TIME_TX);
- exit:
--	spin_unlock_bh(&ar->data_lock);
- 	complete(&ar->bss_survey_done);
- 
- 	rcu_read_unlock();
+ MAINTAINERS                                   |   9 +
+ drivers/firmware/qcom/Kconfig                 |  22 +-
+ drivers/firmware/qcom/Makefile                |   2 +
+ drivers/firmware/qcom/qcom_pas.c              | 299 +++++++++++
+ drivers/firmware/qcom/qcom_pas.h              |  50 ++
+ drivers/firmware/qcom/qcom_pas_tee.c          | 479 ++++++++++++++++++
+ drivers/firmware/qcom/qcom_scm.c              | 302 ++++-------
+ drivers/gpu/drm/msm/Kconfig                   |   1 +
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c         |   4 +-
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c       |  11 +-
+ drivers/media/platform/qcom/iris/Kconfig      |  27 +-
+ .../media/platform/qcom/iris/iris_firmware.c  |   9 +-
+ drivers/media/platform/qcom/venus/Kconfig     |   1 +
+ drivers/media/platform/qcom/venus/firmware.c  |  11 +-
+ drivers/net/ipa/Kconfig                       |   2 +-
+ drivers/net/ipa/ipa_main.c                    |  13 +-
+ drivers/net/wireless/ath/ath12k/Kconfig       |   2 +-
+ drivers/net/wireless/ath/ath12k/ahb.c         |  10 +-
+ drivers/remoteproc/Kconfig                    |   4 +-
+ drivers/remoteproc/qcom_q6v5_mss.c            |   5 +-
+ drivers/remoteproc/qcom_q6v5_pas.c            |  51 +-
+ drivers/remoteproc/qcom_wcnss.c               |  12 +-
+ drivers/soc/qcom/mdt_loader.c                 |  12 +-
+ include/linux/firmware/qcom/qcom_pas.h        |  43 ++
+ include/linux/firmware/qcom/qcom_scm.h        |  29 --
+ include/linux/soc/qcom/mdt_loader.h           |   6 +-
+ 26 files changed, 1095 insertions(+), 321 deletions(-)
+ create mode 100644 drivers/firmware/qcom/qcom_pas.c
+ create mode 100644 drivers/firmware/qcom/qcom_pas.h
+ create mode 100644 drivers/firmware/qcom/qcom_pas_tee.c
+ create mode 100644 include/linux/firmware/qcom/qcom_pas.h
 
----
-base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
-change-id: 20260617-ath12-survey-band-fix-4b5e78579379
-
-Best regards,
---  
-Matt
+-- 
+2.53.0
 
 
