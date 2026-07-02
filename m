@@ -1,50 +1,51 @@
-Return-Path: <linux-wireless+bounces-38505-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38506-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nn16JVRURmq0QwsAu9opvQ
-	(envelope-from <linux-wireless+bounces-38505-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 14:06:44 +0200
+	id eWyHMaFSRmoGQwsAu9opvQ
+	(envelope-from <linux-wireless+bounces-38506-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 13:59:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8ABC6F74FB
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 14:06:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 545936F727A
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 13:59:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lG3zVab8;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38505-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38505-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VRUcLuFR;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38506-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38506-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 57B74300A755
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2026 11:59:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C84313017456
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2026 11:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEAE46AF2E;
-	Thu,  2 Jul 2026 11:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8620F47CC63;
+	Thu,  2 Jul 2026 11:59:17 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FD3373BE4;
-	Thu,  2 Jul 2026 11:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C797D34AB0B;
+	Thu,  2 Jul 2026 11:59:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782993541; cv=none; b=mswFLAi0IA5ty8KAP+NXvrKeEh8Tr8m9ec/uPyLwwVdqq6+7PeX2zjzSCl3EVsaqfETIMS+Rcc/ah1sd9Fndv7SL7UjxRfhM43euIRx8F2BEWHg3FXXdHDDHgBXBJF46d95nDcL4APkf3cHFKIA4atYthaqRfAIaaOlgLTyK+Rk=
+	t=1782993557; cv=none; b=bQouhc3lL24HjZz9CNMhzbs4E2qhJtCeUirVQ6pdoz1U9UrEr/Y8fwfJtZVA6gRit/hQbY5+rfteWJDaB9h8LTJNMkLfsznPk/uha5Y9HgBjaxpzqzlbJ5QCWZ8AInBcIFU+MbgDpXLuyx4AikyXtRKdgrkt539ROGfRf+J8e58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782993541; c=relaxed/simple;
-	bh=QmDK7QLobqPP9bGB3uSK4I2wtDujB2CKvgPtV1EpqMk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tbVdQSt7v+TbUaHzoDzSvZ/bsaBTbVU6sRyxW3S4p94x5aUmiA5hZ/QBXjohymaWNKctnzAnx3ihAX6uJvBB8K+cV+4OjkFI0cK9ebNiCCx87J2c6cKWJKM0/9U/tQugwIcL3ug/ZHeFK84sMS6pzEvUHvCz267wp7/JokQY8ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lG3zVab8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DC61F000E9;
-	Thu,  2 Jul 2026 11:58:45 +0000 (UTC)
+	s=arc-20240116; t=1782993557; c=relaxed/simple;
+	bh=oRFoRhQ6mcqCQ2w9LqLkeAwAn9IJLN+WFOY8S1IfDeg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iXXNvY+p0lgwL5KdibLO0rgRBUpJO0t4/HYkF1dVa+NXLDoeWx66Gl2b1ov8vALvpANOy41NZ+rU/BJs2E1EZjgCZPSkl27f3OLSr79tCwGrdqLnSZkQuD4qh9s7XUXE7/HV0mM5fQ0LEOzwhcCQJkP/t47w7UG44zqcL6fRGzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VRUcLuFR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86D71F00A3D;
+	Thu,  2 Jul 2026 11:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782993540;
-	bh=bujUXrxeKMEXmfr9FWXvhM2Ce9/ltyaOQsurmQ2F3Fo=;
-	h=From:To:Cc:Subject:Date;
-	b=lG3zVab83xzcoXG2mnkWPk/3IQtSX2h69xtnl92IeH4yMICTJyJXS73PNNECJD3HM
-	 gG1ZYUUV3Tjd+KalL4tyB+PQG0x6TficJy6HX+g0tST1dZ5KbYeZZMjOplo56oiiMK
-	 zDgKB7wHJiYaItIKpwikAbnVPJYfsN7+7KzBU/8JVe9kwNJYXRff1eYzvxhSQJprmw
-	 MCRDtxW7en2fQFqexjyRtJU/ld7O7M4xAZJ6UwgzCkVt7rchYxmZfM4KI0JoafqZJz
-	 oThB7Rekoc2anH3meiK/CcTQoyTyXQsXq7DEEAClatA7tYL120Y8wkKuThLBK+5HiA
-	 Gz0TnbMR2Z7YQ==
+	s=k20260515; t=1782993555;
+	bh=8kDWphrwe+0Zb70OovIJAd379QtOliz6aCiGmLNK7ZM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VRUcLuFRKuIKbZx5unU7CUCtXsBeWJEFHJq2QmYKax16hGYvvx2VAGKqjSWnunhya
+	 yQ2wFjR4FGzVG/syquNgaBdKnjbN26T+EAqWt6uD5HP+XRzDqVFRdR+brtM1Bulo8e
+	 oqRG7HnLdNxM6jcanNfghc22zCT8cnh2xPBp69bVy9ebrldkO/K+S07mQz+278oj5g
+	 DDt0QFW9X/1+7+jtOXSo2qUgJekb4oXaFBBKq3Y/rFnpdoNwkP6LTbYIucX/vcnEFT
+	 6lq2VPksbNWgb2hriEh1VEBLHpb91JUgSz7eH6ChwGfZt9O51btl2BPwPaWXm8D5x0
+	 9GC2jgveXghfg==
 From: Sumit Garg <sumit.garg@kernel.org>
 To: andersson@kernel.org,
 	konradybcio@kernel.org
@@ -93,56 +94,60 @@ Cc: linux-arm-msm@vger.kernel.org,
 	apurupa@qti.qualcomm.com,
 	skare@qti.qualcomm.com,
 	linux-kernel@vger.kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: [PATCH v9 00/14] firmware: qcom: Add OP-TEE PAS service support
-Date: Thu,  2 Jul 2026 17:28:16 +0530
-Message-ID: <20260702115835.167602-1-sumit.garg@kernel.org>
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Harshal Dev <harshal.dev@oss.qualcomm.com>
+Subject: [PATCH v9 01/14] firmware: qcom: Add a generic PAS service
+Date: Thu,  2 Jul 2026 17:28:17 +0530
+Message-ID: <20260702115835.167602-2-sumit.garg@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260702115835.167602-1-sumit.garg@kernel.org>
+References: <20260702115835.167602-1-sumit.garg@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38505-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38506-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:andersson@kernel.org,m:konradybcio@kernel.org,m:linux-arm-msm@vger.kernel.org,m:devicetree@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:freedreno@lists.freedesktop.org,m:linux-media@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,m:linux-remoteproc@vger.kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:robin.clark@oss.qualcomm.com,m:sean@poorly.run,m:akhilpo@oss.qualcomm.com,m:lumag@kernel.org,m:abhinav.kumar@linux.dev,m:jesszhan0024@gmail.com,m:marijn.suijten@somainline.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:vikash.garodia@oss.qualcomm.com,m:bod@kernel.org,m:mchehab@kernel.org,m:elder@kernel.org,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:jjohnson@kernel.org,m:mathieu.poirier@linaro.org,m:trilokkumar.soni@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:pavan.kondeti@oss.qualcomm.com,m:jorge.ramirez@oss
- .qualcomm.com,m:tonyh@qti.qualcomm.com,m:vignesh.viswanathan@oss.qualcomm.com,m:srinivas.kandagatla@oss.qualcomm.com,m:amirreza.zarrabi@oss.qualcomm.com,m:jenswi@kernel.org,m:op-tee@lists.trustedfirmware.org,m:apurupa@qti.qualcomm.com,m:skare@qti.qualcomm.com,m:linux-kernel@vger.kernel.org,m:sumit.garg@oss.qualcomm.com,m:krzk@kernel.org,m:conor@kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+ .qualcomm.com,m:tonyh@qti.qualcomm.com,m:vignesh.viswanathan@oss.qualcomm.com,m:srinivas.kandagatla@oss.qualcomm.com,m:amirreza.zarrabi@oss.qualcomm.com,m:jenswi@kernel.org,m:op-tee@lists.trustedfirmware.org,m:apurupa@qti.qualcomm.com,m:skare@qti.qualcomm.com,m:linux-kernel@vger.kernel.org,m:sumit.garg@oss.qualcomm.com,m:harshal.dev@oss.qualcomm.com,m:krzk@kernel.org,m:conor@kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[49];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_TWELVE(0.00)[48];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E8ABC6F74FB
+X-Rspamd-Queue-Id: 545936F727A
 
 From: Sumit Garg <sumit.garg@oss.qualcomm.com>
 
@@ -167,145 +172,460 @@ by the firmware. It acts as the common layer with different TZ
 backends plugged in whether it's an SCM implementation or a proper
 TEE bus based PAS service implementation.
 
-The TEE PAS service ABI is designed to be extensible with additional API
-as PTA_QCOM_PAS_CAPABILITIES. This allows to accommodate any future
-extensions of the PAS service needed while still maintaining backwards
-compatibility.
-
-Currently OP-TEE support is being added to provide the backend PAS
-service implementation which can be found as part of this PR [1].
-This implementation has been tested on Kodiak/RB3Gen2 and lemans
-EVK boards. In addition to that WIN/IPQ targets tested OP-TEE with
-this service too. Surely the backwards compatibility is maintained and
-tested for SCM backend.
-
-Note that kernel PAS service support while running in EL2 is at parity
-among OP-TEE vs QTEE. Especially the media (venus/iris) support depends
-on proper IOMMU support being worked out on the PAS client end.
-
-Patch summary:
-- Patch #1: adds generic PAS service.
-- Patch #2: migrates SCM backend to generic PAS service.
-- Patch #3: adds TEE/OP-TEE backend for generic PAS service.
-- Patch #4-#12: migrates all client drivers to generic PAS service.
-- Patch #13: drops legacy PAS SCM exported APIs.
-
-The patch-set is based on v7.2-rc1 and can be found in git tree
-here [2].
-
-Merge strategy:
-
-It is expected due to APIs dependency, the entire patch-set to go via
-the Qcom tree. All other subsystem maintainers, it will be great if I
-can get acks for the corresponding subsystem patches.
-
-[1] https://github.com/OP-TEE/optee_os/pull/7721 (already merged)
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/sumit.garg/linux.git/log/?h=qcom-pas-v9
-
+Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Tested-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com> # Lemans
+Reviewed-by: Harshal Dev <harshal.dev@oss.qualcomm.com>
+Tested-by: Vignesh Viswanathan <vignesh.viswanathan@oss.qualcomm.com> # IPQ9650
+Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
 ---
-Changes in v9:
-- Rebased to 7.2-rc1.
-- Enable SCM backend similar to TEE if ARCH_QCOM is set.
-- Address misc. comments from Konrad.
-- Add checks for corner cases (although not reachable as per OP-TEE ABI)
-  reported by Shashiko on patch #3.
-- Picked up review tags from Konrad.
-
-Changes in v8:
-- Rebased on mainline tip (no functional changes).
-- Now Lemans EVK is also tested to support OP-TEE PAS here:
-  https://github.com/OP-TEE/optee_os/pull/7845
-- Drop Kodiak DT patch as it is carried independently by Mukesh here:
-  https://lore.kernel.org/lkml/20260624063952.2242702-1-mukesh.ojha@oss.qualcomm.com/
-- Regarding Sashiko comments, I have already replied in v6 the ones that
-  don't apply but in v7 I got the same comments again. Specific context
-  reasoning which Shashiko ignores:
-    - ABI contract between Linux and TZ
-    - No support for multiple concurrent backends
-    - The TZ backend doesn’t detach during the entire boot cycle
-
-Changes in v7:
-- Rebased to qcom tree (for-next branch) tip.
-- Merged patch #5 and #7 due to build dependency.
-- Disabled modem for kodiak EL2 as it isn't tested yet.
-- Fix an issue found out by sashiko-bot for patch #4.
-
-Changes in v6:
-- Rebased to v7.1-rc4 tag.
-- Patch #14: fixed ret error print.
-- Add Kconfig descriptions for PAS symbols such that they are visible
-  in menuconfig to update.
-
-Changes in v5:
-- Incorporated misc. comments from Mukesh.
-- Split up patch #11 into 2 to add an independent commit for passing
-  proper PAS ID to set_remote_state API.
-- Picked up tags.
-
-Changes in v4:
-- Incorporate misc. comments on patch #4.
-- Picked up an ack for patch #10.
-- Clarify in cover letter about state of media support.
-
-Changes in v3:
-- Incorporated some style and misc. comments for patch #2, #3 and #4.
-- Add QCOM_PAS Kconfig dependency for various subsystems.
-- Switch from pseudo TA to proper TA invoke commands.
-
-Changes in v2:
-- Fixed kernel doc warnings.
-- Polish commit message and comments for patch #2.
-- Pass proper PAS ID in set_remote_state API for media firmware drivers.
-- Added Maintainer entry and dropped MODULE_AUTHOR.
-
-Sumit Garg (14):
-  firmware: qcom: Add a generic PAS service
-  firmware: qcom_scm: Migrate to generic PAS service
-  firmware: qcom: Add a PAS TEE service
-  remoteproc: qcom_q6v5_pas: Switch over to generic PAS TZ APIs
-  remoteproc: qcom_q6v5_mss: Switch to generic PAS TZ APIs
-  remoteproc: qcom_wcnss: Switch to generic PAS TZ APIs
-  remoteproc: qcom: Select QCOM_PAS generic service
-  drm/msm: Switch to generic PAS TZ APIs
-  media: qcom: Switch to generic PAS TZ APIs
-  media: qcom: Pass proper PAS ID to set_remote_state API
-  net: ipa: Switch to generic PAS TZ APIs
-  wifi: ath12k: Switch to generic PAS TZ APIs
-  firmware: qcom_scm: Remove SCM PAS wrappers
-  MAINTAINERS: Add maintainer entry for Qualcomm PAS TZ service
-
- MAINTAINERS                                   |   9 +
- drivers/firmware/qcom/Kconfig                 |  22 +-
- drivers/firmware/qcom/Makefile                |   2 +
- drivers/firmware/qcom/qcom_pas.c              | 299 +++++++++++
- drivers/firmware/qcom/qcom_pas.h              |  50 ++
- drivers/firmware/qcom/qcom_pas_tee.c          | 479 ++++++++++++++++++
- drivers/firmware/qcom/qcom_scm.c              | 302 ++++-------
- drivers/gpu/drm/msm/Kconfig                   |   1 +
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c         |   4 +-
- drivers/gpu/drm/msm/adreno/adreno_gpu.c       |  11 +-
- drivers/media/platform/qcom/iris/Kconfig      |  27 +-
- .../media/platform/qcom/iris/iris_firmware.c  |   9 +-
- drivers/media/platform/qcom/venus/Kconfig     |   1 +
- drivers/media/platform/qcom/venus/firmware.c  |  11 +-
- drivers/net/ipa/Kconfig                       |   2 +-
- drivers/net/ipa/ipa_main.c                    |  13 +-
- drivers/net/wireless/ath/ath12k/Kconfig       |   2 +-
- drivers/net/wireless/ath/ath12k/ahb.c         |  10 +-
- drivers/remoteproc/Kconfig                    |   4 +-
- drivers/remoteproc/qcom_q6v5_mss.c            |   5 +-
- drivers/remoteproc/qcom_q6v5_pas.c            |  51 +-
- drivers/remoteproc/qcom_wcnss.c               |  12 +-
- drivers/soc/qcom/mdt_loader.c                 |  12 +-
- include/linux/firmware/qcom/qcom_pas.h        |  43 ++
- include/linux/firmware/qcom/qcom_scm.h        |  29 --
- include/linux/soc/qcom/mdt_loader.h           |   6 +-
- 26 files changed, 1095 insertions(+), 321 deletions(-)
+ drivers/firmware/qcom/Kconfig          |   8 +
+ drivers/firmware/qcom/Makefile         |   1 +
+ drivers/firmware/qcom/qcom_pas.c       | 299 +++++++++++++++++++++++++
+ drivers/firmware/qcom/qcom_pas.h       |  50 +++++
+ include/linux/firmware/qcom/qcom_pas.h |  43 ++++
+ 5 files changed, 401 insertions(+)
  create mode 100644 drivers/firmware/qcom/qcom_pas.c
  create mode 100644 drivers/firmware/qcom/qcom_pas.h
- create mode 100644 drivers/firmware/qcom/qcom_pas_tee.c
  create mode 100644 include/linux/firmware/qcom/qcom_pas.h
 
+diff --git a/drivers/firmware/qcom/Kconfig b/drivers/firmware/qcom/Kconfig
+index b477d54b495a..9f66cc774508 100644
+--- a/drivers/firmware/qcom/Kconfig
++++ b/drivers/firmware/qcom/Kconfig
+@@ -6,6 +6,14 @@
+ 
+ menu "Qualcomm firmware drivers"
+ 
++config QCOM_PAS
++	tristate "Qualcomm generic PAS interface driver"
++	help
++	  Enable the generic Peripheral Authentication Service (PAS) provided
++	  by the firmware. It acts as the common layer with different TZ
++	  backends plugged in whether it's an SCM implementation or a proper
++	  TEE bus based PAS service implementation.
++
+ config QCOM_SCM
+ 	select QCOM_TZMEM
+ 	tristate
+diff --git a/drivers/firmware/qcom/Makefile b/drivers/firmware/qcom/Makefile
+index 0be40a1abc13..dc5ab45f906a 100644
+--- a/drivers/firmware/qcom/Makefile
++++ b/drivers/firmware/qcom/Makefile
+@@ -8,3 +8,4 @@ qcom-scm-objs += qcom_scm.o qcom_scm-smc.o qcom_scm-legacy.o
+ obj-$(CONFIG_QCOM_TZMEM)	+= qcom_tzmem.o
+ obj-$(CONFIG_QCOM_QSEECOM)	+= qcom_qseecom.o
+ obj-$(CONFIG_QCOM_QSEECOM_UEFISECAPP) += qcom_qseecom_uefisecapp.o
++obj-$(CONFIG_QCOM_PAS)		+= qcom_pas.o
+diff --git a/drivers/firmware/qcom/qcom_pas.c b/drivers/firmware/qcom/qcom_pas.c
+new file mode 100644
+index 000000000000..0e47f1c8dbbd
+--- /dev/null
++++ b/drivers/firmware/qcom/qcom_pas.c
+@@ -0,0 +1,299 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2010,2015,2019 The Linux Foundation. All rights reserved.
++ * Copyright (C) 2015 Linaro Ltd.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
++ */
++
++#include <linux/device/devres.h>
++#include <linux/firmware/qcom/qcom_pas.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++
++#include "qcom_pas.h"
++
++static struct qcom_pas_ops *ops_ptr;
++
++/**
++ * devm_qcom_pas_context_alloc() - Allocate peripheral authentication service
++ *				   context for a given peripheral
++ *
++ * PAS context is device-resource managed, so the caller does not need
++ * to worry about freeing the context memory.
++ *
++ * @dev:	  PAS firmware device
++ * @pas_id:	  peripheral authentication service id
++ * @mem_phys:	  Subsystem reserve memory start address
++ * @mem_size:	  Subsystem reserve memory size
++ *
++ * Return: The new PAS context, or ERR_PTR() on failure.
++ */
++struct qcom_pas_context *devm_qcom_pas_context_alloc(struct device *dev,
++						     u32 pas_id,
++						     phys_addr_t mem_phys,
++						     size_t mem_size)
++{
++	struct qcom_pas_context *ctx;
++
++	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
++	if (!ctx)
++		return ERR_PTR(-ENOMEM);
++
++	ctx->dev = dev;
++	ctx->pas_id = pas_id;
++	ctx->mem_phys = mem_phys;
++	ctx->mem_size = mem_size;
++
++	return ctx;
++}
++EXPORT_SYMBOL_GPL(devm_qcom_pas_context_alloc);
++
++/**
++ * qcom_pas_init_image() - Initialize peripheral authentication service state
++ *			   machine for a given peripheral, using the metadata
++ * @pas_id:	peripheral authentication service id
++ * @metadata:	pointer to memory containing ELF header, program header table
++ *		and optional blob of data used for authenticating the metadata
++ *		and the rest of the firmware
++ * @size:	size of the metadata
++ * @ctx:	optional pas context
++ *
++ * Return: 0 on success.
++ *
++ * Upon successful return, the PAS metadata context (@ctx) will be used to
++ * track the metadata allocation, this needs to be released by invoking
++ * qcom_pas_metadata_release() by the caller.
++ */
++int qcom_pas_init_image(u32 pas_id, const void *metadata, size_t size,
++			struct qcom_pas_context *ctx)
++{
++	if (!ops_ptr)
++		return -ENODEV;
++
++	return ops_ptr->init_image(ops_ptr->dev, pas_id, metadata, size, ctx);
++}
++EXPORT_SYMBOL_GPL(qcom_pas_init_image);
++
++/**
++ * qcom_pas_metadata_release() - release metadata context
++ * @ctx:	pas context
++ */
++void qcom_pas_metadata_release(struct qcom_pas_context *ctx)
++{
++	if (!ops_ptr || !ctx || !ctx->ptr)
++		return;
++
++	ops_ptr->metadata_release(ops_ptr->dev, ctx);
++}
++EXPORT_SYMBOL_GPL(qcom_pas_metadata_release);
++
++/**
++ * qcom_pas_mem_setup() - Prepare the memory related to a given peripheral
++ *			  for firmware loading
++ * @pas_id:	peripheral authentication service id
++ * @addr:	start address of memory area to prepare
++ * @size:	size of the memory area to prepare
++ *
++ * Return: 0 on success.
++ */
++int qcom_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size)
++{
++	if (!ops_ptr)
++		return -ENODEV;
++
++	return ops_ptr->mem_setup(ops_ptr->dev, pas_id, addr, size);
++}
++EXPORT_SYMBOL_GPL(qcom_pas_mem_setup);
++
++/**
++ * qcom_pas_get_rsc_table() - Retrieve the resource table in passed output buffer
++ *			      for a given peripheral.
++ *
++ * Qualcomm remote processor may rely on both static and dynamic resources for
++ * its functionality. Static resources typically refer to memory-mapped
++ * addresses required by the subsystem and are often embedded within the
++ * firmware binary and dynamic resources, such as shared memory in DDR etc.,
++ * are determined at runtime during the boot process.
++ *
++ * On Qualcomm Technologies devices, it's possible that static resources are
++ * not embedded in the firmware binary and instead are provided by TrustZone.
++ * However, dynamic resources are always expected to come from TrustZone. This
++ * indicates that for Qualcomm devices, all resources (static and dynamic) will
++ * be provided by TrustZone PAS service.
++ *
++ * If the remote processor firmware binary does contain static resources, they
++ * should be passed in input_rt. These will be forwarded to TrustZone for
++ * authentication. TrustZone will then append the dynamic resources and return
++ * the complete resource table in output_rt_tzm.
++ *
++ * If the remote processor firmware binary does not include a resource table,
++ * the caller of this function should set input_rt as NULL and input_rt_size
++ * as zero respectively.
++ *
++ * More about documentation on resource table data structures can be found in
++ * include/linux/remoteproc.h
++ *
++ * @ctx:	    PAS context
++ * @pas_id:	    peripheral authentication service id
++ * @input_rt:       resource table buffer which is present in firmware binary
++ * @input_rt_size:  size of the resource table present in firmware binary
++ * @output_rt_size: TrustZone expects caller should pass worst case size for
++ *		    the output_rt_tzm.
++ *
++ * Return:
++ *  On success, returns a pointer to the allocated buffer containing the final
++ *  resource table and output_rt_size will have actual resource table size from
++ *  TrustZone. The caller is responsible for freeing the buffer. On failure,
++ *  returns ERR_PTR(-errno).
++ */
++struct resource_table *qcom_pas_get_rsc_table(struct qcom_pas_context *ctx,
++					      void *input_rt,
++					      size_t input_rt_size,
++					      size_t *output_rt_size)
++{
++	if (!ops_ptr)
++		return ERR_PTR(-ENODEV);
++	if (!ctx)
++		return ERR_PTR(-EINVAL);
++
++	return ops_ptr->get_rsc_table(ops_ptr->dev, ctx, input_rt,
++				      input_rt_size, output_rt_size);
++}
++EXPORT_SYMBOL_GPL(qcom_pas_get_rsc_table);
++
++/**
++ * qcom_pas_auth_and_reset() - Authenticate the given peripheral firmware
++ *			       and reset the remote processor
++ * @pas_id:	peripheral authentication service id
++ *
++ * Return: 0 on success.
++ */
++int qcom_pas_auth_and_reset(u32 pas_id)
++{
++	if (!ops_ptr)
++		return -ENODEV;
++
++	return ops_ptr->auth_and_reset(ops_ptr->dev, pas_id);
++}
++EXPORT_SYMBOL_GPL(qcom_pas_auth_and_reset);
++
++/**
++ * qcom_pas_prepare_and_auth_reset() - Prepare, authenticate, and reset the
++ *				       remote processor
++ *
++ * @ctx:	Context saved during call to devm_qcom_pas_context_alloc()
++ *
++ * This function performs the necessary steps to prepare a PAS subsystem,
++ * authenticate it using the provided metadata, and initiate a reset sequence.
++ *
++ * It should be used when Linux is in control setting up the IOMMU hardware
++ * for remote subsystem during secure firmware loading processes. The
++ * preparation step sets up a shmbridge over the firmware memory before
++ * TrustZone accesses the firmware memory region for authentication. The
++ * authentication step verifies the integrity and authenticity of the firmware
++ * or configuration using secure metadata. Finally, the reset step ensures the
++ * subsystem starts in a clean and sane state.
++ *
++ * Return: 0 on success, negative errno on failure.
++ */
++int qcom_pas_prepare_and_auth_reset(struct qcom_pas_context *ctx)
++{
++	if (!ops_ptr)
++		return -ENODEV;
++	if (!ctx)
++		return -EINVAL;
++
++	return ops_ptr->prepare_and_auth_reset(ops_ptr->dev, ctx);
++}
++EXPORT_SYMBOL_GPL(qcom_pas_prepare_and_auth_reset);
++
++/**
++ * qcom_pas_set_remote_state() - Set the remote processor state
++ * @state:	peripheral state
++ * @pas_id:	peripheral authentication service id
++ *
++ * Return: 0 on success.
++ */
++int qcom_pas_set_remote_state(u32 state, u32 pas_id)
++{
++	if (!ops_ptr)
++		return -ENODEV;
++
++	return ops_ptr->set_remote_state(ops_ptr->dev, state, pas_id);
++}
++EXPORT_SYMBOL_GPL(qcom_pas_set_remote_state);
++
++/**
++ * qcom_pas_shutdown() - Shut down the remote processor
++ * @pas_id:	peripheral authentication service id
++ *
++ * Return: 0 on success.
++ */
++int qcom_pas_shutdown(u32 pas_id)
++{
++	if (!ops_ptr)
++		return -ENODEV;
++
++	return ops_ptr->shutdown(ops_ptr->dev, pas_id);
++}
++EXPORT_SYMBOL_GPL(qcom_pas_shutdown);
++
++/**
++ * qcom_pas_supported() - Check if the peripheral authentication service is
++ *			  supported for the given peripheral
++ * @pas_id:	peripheral authentication service id
++ *
++ * Return: true if PAS is supported for this peripheral, otherwise false.
++ */
++bool qcom_pas_supported(u32 pas_id)
++{
++	if (!ops_ptr)
++		return false;
++
++	return ops_ptr->supported(ops_ptr->dev, pas_id);
++}
++EXPORT_SYMBOL_GPL(qcom_pas_supported);
++
++/**
++ * qcom_pas_is_available() - Check if the peripheral authentication service is
++ *			     available. Note that it is mandatory for any PAS
++ *			     client to invoke this API. If it returns true then
++ *			     only any other PAS API can be invoked.
++ *
++ * Return: true if PAS is available, otherwise false.
++ */
++bool qcom_pas_is_available(void)
++{
++	/*
++	 * The barrier for ops_ptr is intended to synchronize the data stores
++	 * for the ops data structure when client drivers are in parallel
++	 * checking for PAS service availability.
++	 *
++	 * Once the PAS backend becomes available, it is allowed for multiple
++	 * threads to enter TZ for parallel bringup of co-processors during
++	 * boot.
++	 */
++	return !!smp_load_acquire(&ops_ptr);
++}
++EXPORT_SYMBOL_GPL(qcom_pas_is_available);
++
++void qcom_pas_ops_register(struct qcom_pas_ops *ops)
++{
++	if (!qcom_pas_is_available())
++		/* Paired with smp_load_acquire() in qcom_pas_is_available() */
++		smp_store_release(&ops_ptr, ops);
++	else
++		pr_err("qcom_pas: ops already registered by %s\n",
++		       ops_ptr->drv_name);
++}
++EXPORT_SYMBOL_GPL(qcom_pas_ops_register);
++
++void qcom_pas_ops_unregister(void)
++{
++	/* Paired with smp_load_acquire() in qcom_pas_is_available() */
++	smp_store_release(&ops_ptr, NULL);
++}
++EXPORT_SYMBOL_GPL(qcom_pas_ops_unregister);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Qualcomm generic TZ PAS driver");
+diff --git a/drivers/firmware/qcom/qcom_pas.h b/drivers/firmware/qcom/qcom_pas.h
+new file mode 100644
+index 000000000000..8643e2760602
+--- /dev/null
++++ b/drivers/firmware/qcom/qcom_pas.h
+@@ -0,0 +1,50 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
++ */
++
++#ifndef __QCOM_PAS_INT_H
++#define __QCOM_PAS_INT_H
++
++struct device;
++
++/**
++ * struct qcom_pas_ops - Qcom Peripheral Authentication Service (PAS) ops
++ * @drv_name:			PAS driver name.
++ * @dev:			PAS device pointer.
++ * @supported:			Peripheral supported callback.
++ * @init_image:			Peripheral image initialization callback.
++ * @mem_setup:			Peripheral memory setup callback.
++ * @get_rsc_table:		Peripheral get resource table callback.
++ * @prepare_and_auth_reset:	Peripheral prepare firmware authentication and
++ *				reset callback.
++ * @auth_and_reset:		Peripheral firmware authentication and reset
++ *				callback.
++ * @set_remote_state:		Peripheral set remote state callback.
++ * @shutdown:			Peripheral shutdown callback.
++ * @metadata_release:		Image metadata release callback.
++ */
++struct qcom_pas_ops {
++	const char *drv_name;
++	struct device *dev;
++	bool (*supported)(struct device *dev, u32 pas_id);
++	int (*init_image)(struct device *dev, u32 pas_id, const void *metadata,
++			  size_t size, struct qcom_pas_context *ctx);
++	int (*mem_setup)(struct device *dev, u32 pas_id, phys_addr_t addr,
++			 phys_addr_t size);
++	void *(*get_rsc_table)(struct device *dev, struct qcom_pas_context *ctx,
++			       void *input_rt, size_t input_rt_size,
++			       size_t *output_rt_size);
++	int (*prepare_and_auth_reset)(struct device *dev,
++				      struct qcom_pas_context *ctx);
++	int (*auth_and_reset)(struct device *dev, u32 pas_id);
++	int (*set_remote_state)(struct device *dev, u32 state, u32 pas_id);
++	int (*shutdown)(struct device *dev, u32 pas_id);
++	void (*metadata_release)(struct device *dev,
++				 struct qcom_pas_context *ctx);
++};
++
++void qcom_pas_ops_register(struct qcom_pas_ops *ops);
++void qcom_pas_ops_unregister(void);
++
++#endif /* __QCOM_PAS_INT_H */
+diff --git a/include/linux/firmware/qcom/qcom_pas.h b/include/linux/firmware/qcom/qcom_pas.h
+new file mode 100644
+index 000000000000..65b1c9564458
+--- /dev/null
++++ b/include/linux/firmware/qcom/qcom_pas.h
+@@ -0,0 +1,43 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (c) 2010-2015, 2018-2019 The Linux Foundation. All rights reserved.
++ * Copyright (C) 2015 Linaro Ltd.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
++ */
++
++#ifndef __QCOM_PAS_H
++#define __QCOM_PAS_H
++
++#include <linux/err.h>
++#include <linux/types.h>
++
++struct qcom_pas_context {
++	struct device *dev;
++	u32 pas_id;
++	phys_addr_t mem_phys;
++	size_t mem_size;
++	void *ptr;
++	dma_addr_t phys;
++	ssize_t size;
++	bool use_tzmem;
++};
++
++bool qcom_pas_is_available(void);
++struct qcom_pas_context *devm_qcom_pas_context_alloc(struct device *dev,
++						     u32 pas_id,
++						     phys_addr_t mem_phys,
++						     size_t mem_size);
++int qcom_pas_init_image(u32 pas_id, const void *metadata, size_t size,
++			struct qcom_pas_context *ctx);
++struct resource_table *qcom_pas_get_rsc_table(struct qcom_pas_context *ctx,
++					      void *input_rt, size_t input_rt_size,
++					      size_t *output_rt_size);
++int qcom_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size);
++int qcom_pas_auth_and_reset(u32 pas_id);
++int qcom_pas_prepare_and_auth_reset(struct qcom_pas_context *ctx);
++int qcom_pas_set_remote_state(u32 state, u32 pas_id);
++int qcom_pas_shutdown(u32 pas_id);
++bool qcom_pas_supported(u32 pas_id);
++void qcom_pas_metadata_release(struct qcom_pas_context *ctx);
++
++#endif /* __QCOM_PAS_H */
 -- 
 2.53.0
 
