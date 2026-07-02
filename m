@@ -1,90 +1,91 @@
-Return-Path: <linux-wireless+bounces-38483-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38484-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9au5E9S1RWrmEAsAu9opvQ
-	(envelope-from <linux-wireless+bounces-38483-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 02:50:28 +0200
+	id IWbfApDgRWohGQsAu9opvQ
+	(envelope-from <linux-wireless+bounces-38484-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 05:52:48 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5396F2B03
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 02:50:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313436F34EB
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 05:52:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=T0qW8dek;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38483-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38483-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=r5nXFPWm;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38484-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38484-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9389301C149
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2026 00:50:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8492302AD3E
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2026 03:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0661621CA0D;
-	Thu,  2 Jul 2026 00:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F5634B1B0;
+	Thu,  2 Jul 2026 03:52:45 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B431FB1
-	for <linux-wireless@vger.kernel.org>; Thu,  2 Jul 2026 00:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B053F346A0A
+	for <linux-wireless@vger.kernel.org>; Thu,  2 Jul 2026 03:52:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782953424; cv=none; b=WX+8qfgE4i+8mDmaOccnQd3s4HvvEMa5jTb52C7q3AM6iXxGqf3NoxfwszBU/bTxUA784KmZDjgJo3EeYEEH/fXdOwyJG/81Dk1GAyLg1XuXkGqMROzzptl2vxuw2h2WeMx3kAiWExVFafucErRSV30A94Tus4FIcH6tJdj9ons=
+	t=1782964365; cv=none; b=UFnx/D99WV1vf0uH0/u41CQ8c5qeOpp7Mnc+zUn7p/ziMg0jvaY3/52i6GuzvbNqu083DSXaHcEsTb4BgIfmJZGaf954lL39avj8Ctyc4QLOMqI3NtwY+TxVNAn0Gxdw6G8BefNuKAQ2v5KJ76PbozHTBwmbHDgDLiXUqzq4eLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782953424; c=relaxed/simple;
-	bh=oAV3PO9BQ+ZuyovnCrvkgJTGceWcDv9CRAo4iAZ12p4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zbr04mcruLPZYn7HBsonBVQCW4iixAlgdLIDWsbe9IT59HhF2BSo+IkkTzr57RfNc3BkH6miFsF47elA2qaL9PanYLPESaB0JIcV/55YdTRH4o5v/q7W92GIvIk08SVJeH1OdMIspF7hSkFbbsnT3qNlbkyLHg0OUGmOtq5Q8GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T0qW8dek; arc=none smtp.client-ip=209.85.221.44
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-475881b9a4bso1263961f8f.3
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Jul 2026 17:50:23 -0700 (PDT)
+	s=arc-20240116; t=1782964365; c=relaxed/simple;
+	bh=7ZcPijjc1RgbgAx4Q7izzYD4hi46U+2wPXK+U0WesyM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iC/7nDZCc4J/xLyc2o+q9eixdRuEk9KPQYWbpRYwXdxr4Ch+wWZ2K32sJCp6l8VbIloM9OxocwQeV+MNsXc7A3+Qs6AxBAMk4F/tk0OEgQoK6dnSfk9V5gQNGs/AWp1iirYK7Z81nOVXYnlfgpMQxS44NvATVEPBrmXF/5ZXeEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r5nXFPWm; arc=none smtp.client-ip=209.85.210.175
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-847a483e344so149537b3a.0
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Jul 2026 20:52:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782953422; x=1783558222; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CWkUSJ2157Xsff0+/g2CHpj4cXQ6nQx4HiCWFbqWFso=;
-        b=T0qW8dekdGH0/URnE6qqg0dAY4aUECbNrYbMHqPJlPoAGcNi/n930ocAnIkqUKy+wo
-         lSP9RyayirXAzHruU2CFrLofdrB9OUGNtLYDgNn4tXYKGpMrsnYoAHMOwb50W+XN1ti3
-         nWnYuuHnztHbyjUREXTwVFeP1pdh/18JW5ulFoLAKFlzsZF37RGb+D1EIaBPJ68re4jR
-         ONTwIc4qvJxkT8BOa1ZqVQxSsCqaI/5uvsyrSL70gHRDkUn47xkY7TXSVz8TtYZfl8XV
-         RzFX69sPh5AdJiInWcUuxHVp2YKDjRu2shAHpyBpLsGQwv5z63Q0pQT9OB5PuPzc/Ao7
-         yeMg==
+        d=gmail.com; s=20251104; t=1782964363; x=1783569163; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aTxIoT2T4MF8kQ0IhrOvAz2CYquvztawWB3Fq2L/RIo=;
+        b=r5nXFPWmwBUBhb/SlXqZRAiAiFUOhYUC4m4Y0XTfonHmeAN5vX5vsCO9zcNbe4Y07u
+         BGfzFDAkoAeIbHMUBXS8YR6U0ySTXMA+w1blOwHGhVP4D/EgWAKJWR3OUmve/hLIEn3l
+         OFLn6D/l2RLr+ADtfjRZvXbQJdoO4r4YhD3PqJylZdkgFfcHIQjVvRGXFVs1ZLinUIFk
+         SG/8kzaRxsLUoyIfWmD8+jMzhGEYZa/XSTlPt7WpY6aZ2UcjIEEa/AdDID1KpciPwyCh
+         /tmU+FuZR1vkIAMCQtDruVeJ52KahC6uHcDglTBgFhoPTQBhmXbcj1RY04LiQt0AiqM5
+         Jo7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782953422; x=1783558222;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CWkUSJ2157Xsff0+/g2CHpj4cXQ6nQx4HiCWFbqWFso=;
-        b=BxzTg9CuCNPi+AuxH55mpuIDp1WzuqJh0xmKbY98zrEMk4IVRnVjr8wvrH++CDj5+2
-         BEcYDzdcuR69flCmaiz5Hz1uJD8imwLJn2xg5lZIecxIBfov4rDqvT2Mbhvzu4wgZhA5
-         XJfoyiYW822qBbe7GUlwonxhjnXnc/r8HCmWot6vv7dKJX5beHV+Ea7dY9JRIgWaCcSL
-         cQVwo9KRLIiJol48I72ZyiZks2i4UvV03bhMqed5rNZS/GsRmVFCaklJ0PXgn6Hlynny
-         +0btJGiPOjB57U1b0XFSKBzZT5U+Xxz5hTqE25CIX1vo5c3eHPA6Ig4k4MwL3Df0eoNt
-         SaOA==
-X-Gm-Message-State: AOJu0Yy2VyRxVnl6ruztaJ50GTi3s818YCumWlxGtIoA6BWA23ufc9+6
-	avCy7LpGJq+2oydAGowJSSy1ZT5O/94ewcM52yxvQQe+EXqxpmbUks2M3Bdq
-X-Gm-Gg: AfdE7cnbaPCT0TVYlpwpS7qDZ/AurqhmtnYjICnK67g8RZ3XAz3AJQlAUtcPM2QP2Ta
-	ZQlQmR0wawrcqlRBHa6qlXB1/eY86pEJrAgTuD7dJkY+UKEpYZC9LL6s4YCqUkNDaOjI7+XOtGu
-	+CPqvc+HpyB00ZX4OYrktVNIk/7QEIFNCZFgyUbWAY4TRX0ca3w2AHSKods5nHPWAoG0VjoOSw/
-	WBR83vvCj5aublKl4ras0s7bIIF8CM9o9+jwzeitrWxaq1QQWWIXG4lUxrN+Tz7x/WfbXZQRa6C
-	AS0OKMHa3XrdMyXse7fU3+ZF+dVWQwVaih20iTzq796MDrWUwS30FIW0L4cyQ9VyTeWp08AceA/
-	3ZH0h4mlxf7UPK1fJ3EuJbOq++kZ31wptX5S/+KnA9YsRo/VKRbyAUsn48Q==
-X-Received: by 2002:a5d:5588:0:b0:475:f100:35f5 with SMTP id ffacd0b85a97d-477b5c415a8mr3398042f8f.50.1782953421736;
-        Wed, 01 Jul 2026 17:50:21 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db8a4b83sm4747406f8f.12.2026.07.01.17.50.20
+        d=1e100.net; s=20251104; t=1782964363; x=1783569163;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aTxIoT2T4MF8kQ0IhrOvAz2CYquvztawWB3Fq2L/RIo=;
+        b=ARTp9Ox6CI4ElaHi+3rG3U2fvjWCYLZKfTnjBrVGMvs4NotvTQlZXI+fORc5ucdQgg
+         grceZyPMEsq0XMDx0BvVryCqtFj6Qnb0wdvb/izQMH5+0B5WXmpT+bKXK+8E+2BvQ36h
+         YX5SbE0flb/AlrG8i3O353va7tU3r+axWan1V0Ta8OF12pBLZHcnJgZ0/5otX+rnclAT
+         9n7rV4V7DBCVDdAVoz4wVOGmYCyfPTIVwUU1/qa8cn6ukzytn/oKLMqfEK+oLVObgUYT
+         74RW+CZ7lrn10cboWKgn/GUNRN9VfOGqWBAwjy1u182DZMKGz1zV5IHILcExEoHhjDge
+         uXGA==
+X-Gm-Message-State: AOJu0YygeKoIBHZEqNDcn2lzZfxvuX7XGk97WHpl+LBtpyEe6UChXAoC
+	23nRtzHXACwMECmx9RQYFAbmAKhWJklLemm7QzPv819j9VcljtQij0ac
+X-Gm-Gg: AfdE7ck4Ds4u9fqaEr9T5RjVv3r1csz4Rh9JJrEFsW1Qm4DkG48ZbKb0kbcWwU9KbNA
+	2lmmRAXqjM7ALWcAicbUrbjCtmEv86PzNm16yD1j0fxj72zP3hPmRO9Xqu3Y65kgxl/HVAsJ9Uq
+	I9QZo97exVpvfPhNDxBmeL7wVxmQzW7t1HlRO9uDj29tDeWCv5zIUh9JSA7762VmUxMpq51KT+g
+	HfNMxkbHfiS3LTnp1cu0BKNZlQTw1fPuKcAnKe1IoLP+1WTVYdZKHgHqaOaMWi2/uzRyTf/OXc8
+	UtWfqNsyyhzuQynxaWcA+Be6Uj1e+fQk2zJb41LssWbTBxqVAParqY+YX1mn6WJ84b+2WLM1YSq
+	VitZhCzokGbzPTIvLyHppkXScNwzOlmk39r/tNSEaOJOvPhRpajmoqYKinj2OeHLLRMadJjGorw
+	tWmyAIfUTOgIaYRN9CBzYx2fE3eczMZF9B9xyEy2ZxoMN0O+pQkgjfe+iutDivXoc=
+X-Received: by 2002:a05:6a00:f8c:b0:847:7cf2:a8ff with SMTP id d2e1a72fcca58-847a83566aamr7305698b3a.30.1782964362566;
+        Wed, 01 Jul 2026 20:52:42 -0700 (PDT)
+Received: from frank0988server (36-236-219-120.dynamic-ip.hinet.net. [36.236.219.120])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847cb94bd7esm650121b3a.38.2026.07.01.20.52.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 17:50:20 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-To: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: vasanthakumar.thiagarajan@oss.qualcomm.com,
-	jeff.johnson@oss.qualcomm.com,
-	johannes@sipsolutions.net,
-	tristan@talencesecurity.com,
-	Tristan Madani <tristmd@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v5] wifi: ath6kl: fix OOB access from firmware ADDBA window size
-Date: Thu,  2 Jul 2026 00:50:20 +0000
-Message-ID: <20260702005020.708717-1-tristmd@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        Wed, 01 Jul 2026 20:52:42 -0700 (PDT)
+From: Chun-Cheng Chang <frank0988855428@gmail.com>
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chun-Cheng Chang <frank0988855428@gmail.com>
+Subject: [PATCH v2] wifi: ath: avoid repeated divisions in DFS PRI detector
+Date: Thu,  2 Jul 2026 03:52:36 +0000
+Message-ID: <20260702035236.392328-1-frank0988855428@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260701170424.380202-1-frank0988855428@gmail.com>
+References: <20260701170424.380202-1-frank0988855428@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -94,105 +95,155 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[oss.qualcomm.com,sipsolutions.net,talencesecurity.com,gmail.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-38483-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38484-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vasanthakumar.thiagarajan@oss.qualcomm.com,m:jeff.johnson@oss.qualcomm.com,m:johannes@sipsolutions.net,m:tristan@talencesecurity.com,m:tristmd@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[tristmd@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[frank0988855428@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:jjohnson@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:frank0988855428@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[frank0988855428@gmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,qualcomm.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1B5396F2B03
+X-Rspamd-Queue-Id: 313436F34EB
 
-From: Tristan Madani <tristan@talencesecurity.com>
+pde_get_multiple() is called repeatedly with the same PRI (Pulse
+Repetition Interval) value while validating candidate and existing PRI
+sequences.
 
-aggr_recv_addba_req_evt() logs a debug message when the firmware-supplied
-win_sz is outside [AGGR_WIN_SZ_MIN, AGGR_WIN_SZ_MAX] but does not
-return. The out-of-range win_sz is then used in TID_WINDOW_SZ() to
-compute a kzalloc size and stored in rxtid->hold_q_sz, leading to
-zero-size or overflowed allocations and subsequent out-of-bounds access.
+Cache the reciprocal value for each sequence structure and leverage
+reciprocal_divide() in the hot path. This keeps the existing matching
+logic and tolerance checks intact while replacing expensive hardware
+integer divisions with low-cost multiply-and-shift operations.
 
-Clean up any previously active aggregation session for the TID first,
-then return early when win_sz is out of the valid range, instead of
-proceeding with a broken allocation size.
+Testing with a userspace model of the same detector logic demonstrated
+identical detector states and outputs across 100 verification traces.
+To eliminate memory allocator noise, an isolated micro-benchmark using
+a static object pool showed that the reciprocal variant reduces CPU
+cycles by approximately 3.4%.
 
-Fixes: bdcd81707973 ("Add ath6kl cleaned up driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Chun-Cheng Chang <frank0988855428@gmail.com>
 ---
-
-Changes in v5:
-  - Add From: tag in the patch body to fix the From/Signed-off-by
-    address mismatch (Jeff Johnson).
-  - Drop Suggested-by, add Reviewed-by (Vasanthakumar Thiagarajan).
-
-Changes in v4:
-  - Move aggregation session cleanup before the window size check so
-    that a previously active session is always torn down, even when the
-    firmware sends an ADDBA event with an out-of-range window size
-    (Vasanthakumar Thiagarajan).
-
-Changes in v3:
-  - Regenerated from wireless-next with proper git format-patch to
-    produce valid index hashes (v2 had post-processed index lines).
-
 Changes in v2:
-  - No code changes from v1.
+- Use a known identity for the author and Signed-off-by tags.
 
- drivers/net/wireless/ath/ath6kl/txrx.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/dfs_pri_detector.c | 14 +++++++++++---
+ drivers/net/wireless/ath/dfs_pri_detector.h |  3 +++
+ 2 files changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/txrx.c b/drivers/net/wireless/ath/ath6kl/txrx.c
-index 80e66ac..a39c815 100644
---- a/drivers/net/wireless/ath/ath6kl/txrx.c
-+++ b/drivers/net/wireless/ath/ath6kl/txrx.c
-@@ -1722,13 +1722,15 @@ void aggr_recv_addba_req_evt(struct ath6kl_vif *vif, u8 tid_mux, u16 seq_no,
+diff --git a/drivers/net/wireless/ath/dfs_pri_detector.c b/drivers/net/wireless/ath/dfs_pri_detector.c
+index 388f9d1913bd..520fd1567a0b 100644
+--- a/drivers/net/wireless/ath/dfs_pri_detector.c
++++ b/drivers/net/wireless/ath/dfs_pri_detector.c
+@@ -16,6 +16,7 @@
+ 
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
++#include <linux/reciprocal_div.h>
+ 
+ #include "ath.h"
+ #include "dfs_pattern_detector.h"
+@@ -41,7 +42,9 @@ struct pulse_elem {
+  * pde_get_multiple() - get number of multiples considering a given tolerance
+  * Return value: factor if abs(val - factor*fraction) <= tolerance, 0 otherwise
+  */
+-static u32 pde_get_multiple(u32 val, u32 fraction, u32 tolerance)
++static u32 pde_get_multiple(u32 val, u32 fraction,
++			    struct reciprocal_value fraction_recip,
++			    u32 tolerance)
+ {
+ 	u32 remainder;
+ 	u32 factor;
+@@ -56,8 +59,8 @@ static u32 pde_get_multiple(u32 val, u32 fraction, u32 tolerance)
+ 		/* val and fraction are within tolerance */
+ 		return 1;
+ 
+-	factor = val / fraction;
+-	remainder = val % fraction;
++	factor = reciprocal_divide(val, fraction_recip);
++	remainder = val - factor * fraction;
+ 	if (remainder > tolerance) {
+ 		/* no exact match */
+ 		if ((fraction - remainder) <= tolerance)
+@@ -247,6 +250,9 @@ static bool pseq_handler_create_sequences(struct pri_detector *pde,
+ 		ps.last_ts = ts;
+ 		ps.pri = GET_PRI_TO_USE(pde->rs->pri_min,
+ 			pde->rs->pri_max, ts - p->ts);
++		ps.pri_recip = (struct reciprocal_value){};
++		if (ps.pri)
++			ps.pri_recip = reciprocal_value(ps.pri);
+ 		ps.dur = ps.pri * (pde->rs->ppb - 1)
+ 				+ 2 * pde->rs->max_pri_tolerance;
+ 
+@@ -261,6 +267,7 @@ static bool pseq_handler_create_sequences(struct pri_detector *pde,
+ 				break;
+ 			/* check if pulse match (multi)PRI */
+ 			factor = pde_get_multiple(ps.last_ts - p2->ts, ps.pri,
++						  ps.pri_recip,
+ 						  pde->rs->max_pri_tolerance);
+ 			if (factor > 0) {
+ 				ps.count++;
+@@ -318,6 +325,7 @@ pseq_handler_add_to_existing_seqs(struct pri_detector *pde, u64 ts)
+ 
+ 		delta_ts = ts - ps->last_ts;
+ 		factor = pde_get_multiple(delta_ts, ps->pri,
++					  ps->pri_recip,
+ 					  pde->rs->max_pri_tolerance);
+ 		if (factor > 0) {
+ 			ps->last_ts = ts;
+diff --git a/drivers/net/wireless/ath/dfs_pri_detector.h b/drivers/net/wireless/ath/dfs_pri_detector.h
+index 86339f2b4d3a..c519466cff8b 100644
+--- a/drivers/net/wireless/ath/dfs_pri_detector.h
++++ b/drivers/net/wireless/ath/dfs_pri_detector.h
+@@ -18,6 +18,7 @@
+ #define DFS_PRI_DETECTOR_H
+ 
+ #include <linux/list.h>
++#include <linux/reciprocal_div.h>
+ 
+ extern struct ath_dfs_pool_stats global_dfs_pool_stats;
+ 
+@@ -25,6 +26,7 @@ extern struct ath_dfs_pool_stats global_dfs_pool_stats;
+  * struct pri_sequence - sequence of pulses matching one PRI
+  * @head: list_head
+  * @pri: pulse repetition interval (PRI) in usecs
++ * @pri_recip: cached reciprocal value for PRI divisions
+  * @dur: duration of sequence in usecs
+  * @count: number of pulses in this sequence
+  * @count_falses: number of not matching pulses in this sequence
+@@ -35,6 +37,7 @@ extern struct ath_dfs_pool_stats global_dfs_pool_stats;
+ struct pri_sequence {
+ 	struct list_head head;
+ 	u32 pri;
++	struct reciprocal_value pri_recip;
+ 	u32 dur;
+ 	u32 count;
+ 	u32 count_falses;
+-- 
+2.53.0
 
- 	rxtid = &aggr_conn->rx_tid[tid];
-
--	if (win_sz < AGGR_WIN_SZ_MIN || win_sz > AGGR_WIN_SZ_MAX)
--		ath6kl_dbg(ATH6KL_DBG_WLAN_RX, "%s: win_sz %d, tid %d\n",
--			   __func__, win_sz, tid);
--
- 	if (rxtid->aggr)
- 		aggr_delete_tid_state(aggr_conn, tid);
-
-+	if (win_sz < AGGR_WIN_SZ_MIN || win_sz > AGGR_WIN_SZ_MAX) {
-+		ath6kl_dbg(ATH6KL_DBG_WLAN_RX, "%s: win_sz %d, tid %d\n",
-+			   __func__, win_sz, tid);
-+		return;
-+	}
-+
- 	rxtid->seq_next = seq_no;
- 	hold_q_size = TID_WINDOW_SZ(win_sz) * sizeof(struct skb_hold_q);
- 	rxtid->hold_q = kzalloc(hold_q_size, GFP_KERNEL);
---
-2.47.3
 
