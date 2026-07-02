@@ -1,478 +1,347 @@
-Return-Path: <linux-wireless+bounces-38528-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38529-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IAVPE8awRmrGbgsAu9opvQ
-	(envelope-from <linux-wireless+bounces-38528-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 20:41:10 +0200
+	id QS3sF5W4RmoIcQsAu9opvQ
+	(envelope-from <linux-wireless+bounces-38529-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 21:14:29 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3E36FC32C
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 20:41:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F216FC746
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Jul 2026 21:14:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=DSxXa9j4;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=HcXisEQC;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38528-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38528-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=linaro.org header.s=google header.b=RgkwURSj;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38529-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38529-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linaro.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F2B231E8761
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2026 18:06:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AE0E53043C2C
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jul 2026 19:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67CC346FB3;
-	Thu,  2 Jul 2026 18:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E061E385D78;
+	Thu,  2 Jul 2026 19:14:19 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330C1339719
-	for <linux-wireless@vger.kernel.org>; Thu,  2 Jul 2026 18:06:22 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783015583; cv=none; b=MfjAMy4XE//Urr7zdrD9hqEuvbGTmd01RDtf0/7S9hea/bZ7z9ZljZscAgKfUBsb5RvivDo27djqrGMkt9tPE8UFPzoPD92nIHtRBvx09ljrhaudMffh0WzbFfSarsy2o4Cd6h9Q9mlqZcNX3izrzPHUZvABl+nauBJynzeZoks=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783015583; c=relaxed/simple;
-	bh=zWJEmjyvqcMyeuzV8tn7G0eL/VomiTr+4CoSU0Dx8KU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hhqze3+M7h5SRWKO8t9v3SaWPPpytujgw6jwQk3TbSy6GnJzeOuQo2+EmlLlsrSX34p0stjxIM0mjA0lm8bxlOGUq8j/Vlp10wmUpvWGBu5BHNjg88vZDwEfZ7hx+o7NE2Tx4Q/4uWJza7OI8jda0XN++NMGpOVVBDlPJO+Cisk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DSxXa9j4; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=HcXisEQC; arc=none smtp.client-ip=205.220.168.131
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 662E3d26560417
-	for <linux-wireless@vger.kernel.org>; Thu, 2 Jul 2026 18:06:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	NiePhak0dMAegnCxGrFfwKb+IHV27vZ4JEKE5uV61kc=; b=DSxXa9j4COb6M8/T
-	D2IiS5GmOs2+NrEqSXVaY8OrF88Dt2YszNIZBc2b4df91iB5OoUXSELXdgwDYf8U
-	x3F86PCpcYi1YWqyGNMJbMWdDzBITL/uvdfNDRn0p+nusu1EiJ2hR2c79QQVcYLg
-	78eaUQpW5nB/DxVrCMRKiEz/LIlksWXiJcsfU+3y2qjzMfkzGTClCDChhKiuqJOj
-	w8P4L6dXJ3wNoQWJT474AOsA63egDwvMBi3NJHo3UIU3hQicBx8/vmcEnYu16lKn
-	iTm6+j0f7NtyZ8YQXtCXd6xVRVJUM6PnzgtSjJ97Yne6YntgDQJmz+6BvsM5ZBVM
-	y6kGDw==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f5n9bj8b0-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 02 Jul 2026 18:06:21 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c889d1eebafso3973132a12.0
-        for <linux-wireless@vger.kernel.org>; Thu, 02 Jul 2026 11:06:21 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D688C381E94
+	for <linux-wireless@vger.kernel.org>; Thu,  2 Jul 2026 19:14:16 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783019659; cv=pass; b=pQJWKJOY4AxzuDRtPC70C4yBdu2bwmErBbSljGd8IO0Mi89FAgEFF8omxZkHtHY7/FS4JC6ooDKvcbvpDsgE3EunT40eOjDvgu1CfIxxxuSubbOXfry/3EY1ult2SD0nblYGuUHyYlROIGRg7Fp9LbWNiAvDEmwbHpNc4zaXuaM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783019659; c=relaxed/simple;
+	bh=AFRxrS3Iacb87huKcZLkeP4rPFbsF1/y1vtgJZmH1yQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=txSN1J5TA7Fy4YEyGjlNeALxZY1AQPXN2am2222NrJA5XGZKHEmqO2d4tKtbNf0ekqBzjsBhNOWTBADtUt9iSUsm+aYgNNtbwcQz7aOli8eM8AcYhXSrqZHB85Pkxnbig1h0tC2pfQ+2XRD2Yc9ZUL4/F1NihnMSP/norTB1Igg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RgkwURSj; arc=pass smtp.client-ip=209.85.208.42
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-698bf053053so835929a12.3
+        for <linux-wireless@vger.kernel.org>; Thu, 02 Jul 2026 12:14:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783019655; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fn2xKGVL+yNFxK/m2JutgDo1jGyf578UnqVR7w+NnZUC8cxnwNpWgBiFoGBDSdLLh0
+         xy+zmOT3rnq6kDCkGuuNnQjXnOPy9pQaX7UJkkXzmx5GHQfJmdZ7f7T8OvaBXKqTWHxa
+         K8EMA0TUV1Zg/A1q3tOHjOrsp0PbOLV5/5+UuSs1XdeWXVowbU4SlsqRs1V5OXHzFNPK
+         frJaEUkGZBMG3yq6WGu//oNyBBmB0yaa7jH1CYsAQ4L602VkOn/SpBR/Cz2qwFn9cW1n
+         Y3QVZ1Gell+Z173LW/mgd3t5vxilUvOWI2RDCX0WPkFhgrLVamrtsz46pzccDClfFMy9
+         1oww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Dfas/91RHw7TRgs4MMexcFlE2KWowDBMjBihd9aSOjU=;
+        fh=w1Q7afWu1FZmleMtp0/v0sNOHn0G/bP1gdX1au9xkdo=;
+        b=Kj6dKiKCsoQsn84g+oLsrB1/yu45TsHxGCdvQSj+Tj2HN7Ye44EC5M91L3yi1MQwB3
+         CyOuYr+4eh6O635T2XxFm0l9oheYEIzSK6HAr1EnmKhGm3LhQOYaoNNI8ygtNqpY3b4j
+         maEXFLqsCW6UILOq9FTw3hsmKCXQgZGUl4wIdWbAlLdkIxcBURvzBCZG4Bf7Yuy+vgeQ
+         SBJhAgSJZeFs0mb6US0aD2xWv8sESP1ZcDbGE1nCm3m8fYrNjyZP45oHx7kKeTtB85Qp
+         EElbLxjmxheMOhcsKMnpZm124d3fRjNDR45+i5tCvaapC7/g5RoYUns9QEj3c8GtYgXv
+         chNg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783015581; x=1783620381; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NiePhak0dMAegnCxGrFfwKb+IHV27vZ4JEKE5uV61kc=;
-        b=HcXisEQCN2Nl5C7UWQ/g0i4PAfJ1Rc+7IJX+rlXayGidFpBtbQutg3DCR3USPlFgZ4
-         r3nw0zDHetFIEvPpdF0fUvQ1PxUG+fYnlTcBj8DbItpe01KncwO/TwydzeFYoarQb/ZP
-         ABHFUsIybYt4nIaU/BsawmvUsxRlsneI8AoRRJinxlN9jqRRMuJwYfrD9QpODjerqKYY
-         3Qui0YkRRbCBp/2kFQmGhszYV/bkfFg2MHxSsGy4+njRmgizG6YNYeprsMuZQ+2AYw8r
-         HrmphaM6evbWiP+cs6WZKV4vtuy+/FgNv2pRhQGoKTvnmimD2rNKDHpfPsYZ1I1fn/KO
-         nhWA==
+        d=linaro.org; s=google; t=1783019655; x=1783624455; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Dfas/91RHw7TRgs4MMexcFlE2KWowDBMjBihd9aSOjU=;
+        b=RgkwURSj3i+qlMo0vyXjDMQorNP287GxHINwOzCcpIbiBQn1R0u6FCnhLNzBPyqGdm
+         Aj6Dqi3xvVgZaia1AhUGtUACf4UpLyxR40dRzZVI+0Co1X4uFrhGWgBf7GNelVsSqTVf
+         BjWB44zt3RvVz/gzbYbbEYVEnqhUPMRKUO8xA1Dh/AOLwU4cEwZzx7mDqRx0GaGXC0wZ
+         wR8l+6z9Twp0zGYcx70YrItlNWwIXuGhETmbFPXLGRKZC6//POim/lAbdzRPP3CvInyT
+         piQ1HUohh18nZmSZd94ODMKFhyNzMGgAazG6UUJ1V3fj0H6NHw4B/dzlidHPSMfdwWdS
+         772A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783015581; x=1783620381;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NiePhak0dMAegnCxGrFfwKb+IHV27vZ4JEKE5uV61kc=;
-        b=RNR95jsCyptRT/vgRmMWFmQsunO5Q3nTQ/RBqsflSYiSc8zhPRAx0zKgmI1T24rnQT
-         8HHeJGWJ3fSt4tdMCrPFp7i46PQFc9yLyzQWHh0hPW84rmetdKYcgQP3oljvzIAazygy
-         OaNRBFlCXyybJM7FJQAqF81q3BFGWOcP1IDwRoCtx+WMePsRWOlzrrNIQscO0MKqDnRf
-         AFTD/wRjkhFtIwpjhFfGeV5jpWkngxcXQG0uNh02RrdCS2r1Omfk5/h+5F6/Vek5P5LK
-         Lre6LkfdTeY0PE7LQKMjY33JMKWzf5IrLUlttiP4uHLsrNNAkljw/wofPM32pQSFrz5q
-         BeRQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9jCs8sdmodXOGlJ1ciDVcLJl9RabEEPAMpgUHUiQnygz5TraAYfngao67xFzn5trqqye9HsAzaoIDZYuB9SQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOTJE8aEt2175EkbheyQThgaaBeEhhySofYIq3yLxhpIKPhl04
-	0LDi1WlEj8VyO0sTuqWTiL0OrOwV+EZ/E+KPXCMMSE90HHKVZH3XofHI5rXZEd6Y3UeUrlQaUiS
-	4A8fhcE8OAXWH0hUPGYoTP0/KW0ummN7H0qvyYsFlnzbbkLwB2J5knbJnkDwpIrg4l8VMkA==
-X-Gm-Gg: AfdE7clKDZAyanvMibHYXO+hx52MeL72dx2uXg8szkrPjVe8ADfaauWzDYWDHk66Fpu
-	UcOwwGmA3S4Gz3x2+hzCM5qIorP0NbDK5U1A8bZeM+0REUxjWcVVJ8vYWt8bLNHDISqLzn+msru
-	gu4DZ6ZmzXH13K1tvSdVgPV9eoa6FIpMrhN4PwrJaEUcc4itrwYYL5fWN7WBzMVwaRJcg03KArT
-	dOn/mFwwt8THl+C5ZWt2qe5nBf+KV/AHVIIBZLNB5EHwV0xrqDV3hLPeQo+jKeS8D1BVww9NCHS
-	sCp2/WNJNUF/IVowfV73eAVxpfW9QuP5NxMeIC7+bNfCFz8IUIc8P3VONn1b/88aKxRLKnRfKZm
-	LQ9oJ+ywSnRfo7uNPrgtI4kcNZCeCxaqj70dHfLv8tcBujpMg0tJHb3M=
-X-Received: by 2002:a05:6a20:4c8:b0:3b4:8f57:3205 with SMTP id adf61e73a8af0-3bff4235bd5mr7540982637.36.1783015580527;
-        Thu, 02 Jul 2026 11:06:20 -0700 (PDT)
-X-Received: by 2002:a05:6a20:4c8:b0:3b4:8f57:3205 with SMTP id adf61e73a8af0-3bff4235bd5mr7540930637.36.1783015580062;
-        Thu, 02 Jul 2026 11:06:20 -0700 (PDT)
-Received: from [192.168.11.104] ([124.123.80.135])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30f0bc3ea61sm12164081eec.30.2026.07.02.11.06.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jul 2026 11:06:19 -0700 (PDT)
-Message-ID: <8dd4aceb-48e8-45cb-abe8-af7ece2285ae@oss.qualcomm.com>
-Date: Thu, 2 Jul 2026 23:36:13 +0530
+        d=1e100.net; s=20251104; t=1783019655; x=1783624455;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Dfas/91RHw7TRgs4MMexcFlE2KWowDBMjBihd9aSOjU=;
+        b=TYepyNLmrd5UKw/mVTKFPpNOsjSiANepCbvhkU4jizsYKKO+PTVy9h1G8rd2xJKEYG
+         DR3ZBYeollUMRRiHEk8Axfj4JWSVO+42+dSRfo7oyvQCPVyrJ4/l4eV5Jkx2ioqdaGt9
+         WhUzoX/TGq3QVicpCAP5d+t+07hm/d8xwqXcWL+vu5poDHkLjA9oTLecrX9Zz4dlYxXS
+         SvVUv7iNmKqNOtRdNzPa7AFXPLxIH1++qYSh1VQ7X3I0QqfAnbyh2poLF9O0z1OWGUkm
+         d/F2MERjdZPaF+yKSCpF0KxEd81TQAZSaD3IK3ZvpH52ShO1EPR4dlYWa6XfeZSv7m9c
+         JziQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqkFob6o79m2KRPZxzt59wscHC6vhTGPobmAXkNlf7l5KlLuXQFPL97MFc92wh1RHbw8XtlEIdekeui555K3w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4mfbAsgm8SsvdumqKeJbnl4XrGjgulVrmyogHEbbi59V87DcC
+	xqjma0bXxVwfe9Tzc7MyjS+kaTpdkW46i3l2mXvnJoCWzuVLMmpo8obgEes3nPB2qcr/elWkZLJ
+	eZbz2obNUfXAjMxnI5U2n+5Z8u+NVULj0rIKbinojiw==
+X-Gm-Gg: AfdE7ck0WVZO63A9Xz3y25QPwKx2IpwM0ONa2oWx5SM3qA/4EMkH70OsDdQHwXmN5Wy
+	HBmqnJcqwswHK98VF56wmf7Vul8tqNa8ZDO1T4Kxkkc78oUGul5pIrxytveh5SDhaw3J9c+hhQd
+	kti92PS7WqQJiIBepaHAsQ70w3GmRZXqH5btQqsVoBcWaSWoRvPzBYJaEbduG+iwfMlmr8QJ4YE
+	H0RlDomYLeNkknwVivXA1WfW8RDUjtGixjz033oEV3zKsSw9vACY2V9AxDg5++YWf95jTVeAm6f
+	0kOSh9Gbb0ARMrgFLa/tMAzOyoHTezM=
+X-Received: by 2002:a05:6402:42c6:b0:695:f580:a66f with SMTP id
+ 4fb4d7f45d1cf-698a2cda40dmr3064278a12.21.1783019655273; Thu, 02 Jul 2026
+ 12:14:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath12k: fix survey indexing across bands
-To: Matthew Leach <matthew.leach@collabora.com>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
-        Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: Kalle Valo <kvalo@kernel.org>,
-        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com,
-        Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-References: <20260702-ath12-survey-band-fix-v2-1-75b5bdf72a08@collabora.com>
-From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260702-ath12-survey-band-fix-v2-1-75b5bdf72a08@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: 4NJYIvakikDLfAqBb__kRHlHdS4ocTMI
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAyMDE4OSBTYWx0ZWRfX1X2UsAGT4gBe
- RbnhMoXAAtN0JKFEQyfbc5YCXZIHmxj0Ui8cfTWcSlRueJEibblqGEOqZgxwqYarNivvZg3uqkq
- MJ+Fc9TbSuSbhd1sIr+MO4sSKTFLVHQ=
-X-Proofpoint-GUID: 4NJYIvakikDLfAqBb__kRHlHdS4ocTMI
-X-Authority-Analysis: v=2.4 cv=bOom5v+Z c=1 sm=1 tr=0 ts=6a46a89d cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=kllYWVK2JqQtNyhMtAlpJw==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=bC-a23v3AAAA:8 a=QX4gbG5DAAAA:8 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=EUspDBNiAAAA:8 a=JfrnYn6hAAAA:8 a=Z1bz1sYHDrk7OavG6BEA:9 a=QEXdDO2ut3YA:10
- a=bFCP_H2QrGi7Okbo017w:22 a=FO4_E8m0qiDe52t0p3_H:22 a=AbAUZ8qAyYyZVLSsDulk:22
- a=TjNXssC_j7lpFel5tvFf:22 a=1CNFftbPRP8L7MoqJWF3:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDE4OSBTYWx0ZWRfX4TJeZOISQOLp
- g1wPROrpm5kZde8IPIWdrhI+oF6dwCZBAb3wmrWkAykLdiW7yaIokIImgi91UmCYArubtKQd0lB
- m1JRjKxOi7KAK+QIlikLSolk67DGOaTipFIrShPJjI9ex9KXQVWdDJvbOVjlc9Y0DrZraui3VI/
- 4eERZpjb1Go5XA311fYFqXEzXEjWNiomDI6ISQcDkQZq62w2b3VlvrCnziTO6m4aEYMcvSe+8w8
- bGEQ9NsfnpGMe5YuxMYO01EzSxv9GzPu4M2e/0HivLTBdrUNTj9YZkCrHvZ/lgj3+Yj6Mvl3/RE
- O3PJRXxzaKBg2mQEgQJkEo4hmVZPMXSltQlhbzb7g3cw+n//hi9OsI+k0XYhF8F3uBlZS/aFK/A
- LAJV8ludg98WaUayTo0sE+8EwOuQ2QZt+OU3AvakU1m11xK4N5cTyd/Xa2kNXJVdnXNsFapDJBC
- ZEg+uPBhASgiSWheQQg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-02_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 clxscore=1015 suspectscore=0
- phishscore=0 priorityscore=1501 impostorscore=0 malwarescore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607020189
+References: <20260702115835.167602-1-sumit.garg@kernel.org>
+In-Reply-To: <20260702115835.167602-1-sumit.garg@kernel.org>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+Date: Thu, 2 Jul 2026 13:14:03 -0600
+X-Gm-Features: AVVi8CeXvNLFBEH_Z9SIZx0oNo56nh0xA5WRLgXhkbS1U9sxKdwz3gfEHooCZ0g
+Message-ID: <CANLsYkyFJ+CbUJpwWAy28KHvmNz6rJRtM5KrEzHjyAha-7grTQ@mail.gmail.com>
+Subject: Re: [PATCH v9 00/14] firmware: qcom: Add OP-TEE PAS service support
+To: Sumit Garg <sumit.garg@kernel.org>
+Cc: andersson@kernel.org, konradybcio@kernel.org, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
+	linux-media@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, 
+	linux-remoteproc@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run, 
+	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev, 
+	jesszhan0024@gmail.com, marijn.suijten@somainline.org, airlied@gmail.com, 
+	simona@ffwll.ch, vikash.garodia@oss.qualcomm.com, bod@kernel.org, 
+	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	jjohnson@kernel.org, trilokkumar.soni@oss.qualcomm.com, 
+	mukesh.ojha@oss.qualcomm.com, pavan.kondeti@oss.qualcomm.com, 
+	jorge.ramirez@oss.qualcomm.com, tonyh@qti.qualcomm.com, 
+	vignesh.viswanathan@oss.qualcomm.com, srinivas.kandagatla@oss.qualcomm.com, 
+	amirreza.zarrabi@oss.qualcomm.com, jenswi@kernel.org, 
+	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com, 
+	skare@qti.qualcomm.com, linux-kernel@vger.kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38528-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:sumit.garg@kernel.org,m:andersson@kernel.org,m:konradybcio@kernel.org,m:linux-arm-msm@vger.kernel.org,m:devicetree@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:freedreno@lists.freedesktop.org,m:linux-media@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,m:linux-remoteproc@vger.kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:robin.clark@oss.qualcomm.com,m:sean@poorly.run,m:akhilpo@oss.qualcomm.com,m:lumag@kernel.org,m:abhinav.kumar@linux.dev,m:jesszhan0024@gmail.com,m:marijn.suijten@somainline.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:vikash.garodia@oss.qualcomm.com,m:bod@kernel.org,m:mchehab@kernel.org,m:elder@kernel.org,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:jjohnson@kernel.org,m:trilokkumar.soni@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:pavan.kondeti@oss.qualcomm.com,m:jorge.ramirez@oss.qual
+ comm.com,m:tonyh@qti.qualcomm.com,m:vignesh.viswanathan@oss.qualcomm.com,m:srinivas.kandagatla@oss.qualcomm.com,m:amirreza.zarrabi@oss.qualcomm.com,m:jenswi@kernel.org,m:op-tee@lists.trustedfirmware.org,m:apurupa@qti.qualcomm.com,m:skare@qti.qualcomm.com,m:linux-kernel@vger.kernel.org,m:sumit.garg@oss.qualcomm.com,m:krzk@kernel.org,m:conor@kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38529-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:matthew.leach@collabora.com,m:jjohnson@kernel.org,m:quic_vthiagar@quicinc.com,m:quic_bqiang@quicinc.com,m:kvalo@kernel.org,m:quic_pradeepc@quicinc.com,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:kernel@collabora.com,m:quic_ramess@quicinc.com,m:jeff.johnson@oss.qualcomm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[mathieu.poirier@linaro.org,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,qualcomm.com:dkim,qualcomm.com:email,collabora.com:email,infradead.org:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[48];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mathieu.poirier@linaro.org,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.freedesktop.org,lists.infradead.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,qti.qualcomm.com,lists.trustedfirmware.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linaro.org:dkim,linaro.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5B3E36FC32C
+X-Rspamd-Queue-Id: 15F216FC746
 
-On 7/2/2026 4:20 PM, Matthew Leach wrote:
-> When running 'iw dev wlan0 survey dump' the values for the channel busy
-> time have the same sequence across bands. This is caused by indexing
-> into the ath12k survey array using a band-local index rather than the
-> global index passed by mac80211. This results in surveys for 5 GHz and 6
-> GHz channels returning values from 2.4 GHz slots, making the survey
-> unusable on those bands. Further, there are redundant survey slots for
-> multi-radio/single-phy instances.
-> 
-> Fix by moving the survey data into ath12k_hw so multiple radios under a
-> single wiphy share one table, and index into it using the global
-> mac80211 index. A new spinlock in ath12k_hw serialises access to the
-> survey array, which is now shared across all radios under a single hw.
-> 
-> Band busy-times Before this fix:
-> 
-> 2.4 GHz: 9, 2, 2, 2, 4, 2, 10, 16, 4, 12, 5
-> 5 GHz:   9, 2, 2, 2, 4, 2, 10, 16, 4, 12, 5
-> 6 GHz:   9, 2, 2, 2, 4, 2, 10, 16, 4, 12, 5
-> 
-> After this fix, times are independent:
-> 
-> 2.4 GHz: 23, 5,  5,  12, 2,   12,  26,  5,   3,  1,  27
-> 5 GHz:   30, 40, 29, 27, 118, 118, 112, 120, 11, 11, 11
-> 6 GHz:   1,  0,  0,  0,  0,   0,   0,   0,   0,  0,  1
-> 
-> Tested-on: wcn7850 hw2.0 PCI WLAN.IOE_HMT.1.1-00018-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
-> 
-> Fixes: 4f242b1d6996 ("wifi: ath12k: support get_survey mac op for single wiphy")
-> Signed-off-by: Matthew Leach <matthew.leach@collabora.com>
+Hey Sumit - nice hearing from you...
+
+Is there some kind of overarching design harminisation between what
+you are proposing here and what Arnaud posted back in April [1] ?
+
+[1]. https://lists.trustedfirmware.org/archives/list/op-tee@lists.trustedfi=
+rmware.org/thread/VMKTRATYUFWL2TP7NHN5KJ37MSVZZMPK/
+
+On Thu, 2 Jul 2026 at 05:59, Sumit Garg <sumit.garg@kernel.org> wrote:
+>
+> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+>
+> Qcom platforms has the legacy of using non-standard SCM calls
+> splintered over the various kernel drivers. These SCM calls aren't
+> compliant with the standard SMC calling conventions which is a
+> prerequisite to enable migration to the FF-A specifications from Arm.
+>
+> OP-TEE as an alternative trusted OS to Qualcomm TEE (QTEE) can't
+> support these non-standard SCM calls. And even for newer architectures
+> using S-EL2 with Hafnium support, QTEE won't be able to support SCM
+> calls either with FF-A requirements coming in. And with both OP-TEE
+> and QTEE drivers well integrated in the TEE subsystem, it makes further
+> sense to reuse the TEE bus client drivers infrastructure.
+>
+> The added benefit of TEE bus infrastructure is that there is support
+> for discoverable/enumerable services. With that client drivers don't
+> have to manually invoke a special SCM call to know the service status.
+>
+> So enable the generic Peripheral Authentication Service (PAS) provided
+> by the firmware. It acts as the common layer with different TZ
+> backends plugged in whether it's an SCM implementation or a proper
+> TEE bus based PAS service implementation.
+>
+> The TEE PAS service ABI is designed to be extensible with additional API
+> as PTA_QCOM_PAS_CAPABILITIES. This allows to accommodate any future
+> extensions of the PAS service needed while still maintaining backwards
+> compatibility.
+>
+> Currently OP-TEE support is being added to provide the backend PAS
+> service implementation which can be found as part of this PR [1].
+> This implementation has been tested on Kodiak/RB3Gen2 and lemans
+> EVK boards. In addition to that WIN/IPQ targets tested OP-TEE with
+> this service too. Surely the backwards compatibility is maintained and
+> tested for SCM backend.
+>
+> Note that kernel PAS service support while running in EL2 is at parity
+> among OP-TEE vs QTEE. Especially the media (venus/iris) support depends
+> on proper IOMMU support being worked out on the PAS client end.
+>
+> Patch summary:
+> - Patch #1: adds generic PAS service.
+> - Patch #2: migrates SCM backend to generic PAS service.
+> - Patch #3: adds TEE/OP-TEE backend for generic PAS service.
+> - Patch #4-#12: migrates all client drivers to generic PAS service.
+> - Patch #13: drops legacy PAS SCM exported APIs.
+>
+> The patch-set is based on v7.2-rc1 and can be found in git tree
+> here [2].
+>
+> Merge strategy:
+>
+> It is expected due to APIs dependency, the entire patch-set to go via
+> the Qcom tree. All other subsystem maintainers, it will be great if I
+> can get acks for the corresponding subsystem patches.
+>
+> [1] https://github.com/OP-TEE/optee_os/pull/7721 (already merged)
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/sumit.garg/linux.git/=
+log/?h=3Dqcom-pas-v9
+>
 > ---
+> Changes in v9:
+> - Rebased to 7.2-rc1.
+> - Enable SCM backend similar to TEE if ARCH_QCOM is set.
+> - Address misc. comments from Konrad.
+> - Add checks for corner cases (although not reachable as per OP-TEE ABI)
+>   reported by Shashiko on patch #3.
+> - Picked up review tags from Konrad.
+>
+> Changes in v8:
+> - Rebased on mainline tip (no functional changes).
+> - Now Lemans EVK is also tested to support OP-TEE PAS here:
+>   https://github.com/OP-TEE/optee_os/pull/7845
+> - Drop Kodiak DT patch as it is carried independently by Mukesh here:
+>   https://lore.kernel.org/lkml/20260624063952.2242702-1-mukesh.ojha@oss.q=
+ualcomm.com/
+> - Regarding Sashiko comments, I have already replied in v6 the ones that
+>   don't apply but in v7 I got the same comments again. Specific context
+>   reasoning which Shashiko ignores:
+>     - ABI contract between Linux and TZ
+>     - No support for multiple concurrent backends
+>     - The TZ backend doesn=E2=80=99t detach during the entire boot cycle
+>
+> Changes in v7:
+> - Rebased to qcom tree (for-next branch) tip.
+> - Merged patch #5 and #7 due to build dependency.
+> - Disabled modem for kodiak EL2 as it isn't tested yet.
+> - Fix an issue found out by sashiko-bot for patch #4.
+>
+> Changes in v6:
+> - Rebased to v7.1-rc4 tag.
+> - Patch #14: fixed ret error print.
+> - Add Kconfig descriptions for PAS symbols such that they are visible
+>   in menuconfig to update.
+>
+> Changes in v5:
+> - Incorporated misc. comments from Mukesh.
+> - Split up patch #11 into 2 to add an independent commit for passing
+>   proper PAS ID to set_remote_state API.
+> - Picked up tags.
+>
+> Changes in v4:
+> - Incorporate misc. comments on patch #4.
+> - Picked up an ack for patch #10.
+> - Clarify in cover letter about state of media support.
+>
+> Changes in v3:
+> - Incorporated some style and misc. comments for patch #2, #3 and #4.
+> - Add QCOM_PAS Kconfig dependency for various subsystems.
+> - Switch from pseudo TA to proper TA invoke commands.
+>
 > Changes in v2:
-> - Move survey[] from ath12k to ath12k_hw so multi-radio single-wiphy
->    setups share one global table (suggested by Rameshkumar Sundaram).
-> - Drop the ar->mac.sbands[] filter in freq_to_idx() so the WMI event
->    handlers use the same global index
-> - Add ah->survey_lock to serialise access to the shared survey table
-> - Update Fixes: tag to the correct commit
-> - Link to v1: https://patch.msgid.link/20260617-ath12-survey-band-fix-v1-1-e7d9555bb478@collabora.com
-> 
-> To: Jeff Johnson <jjohnson@kernel.org>
-> To: Sriram R <quic_srirrama@quicinc.com>
-> To: Kalle Valo <kvalo@kernel.org>
-> To: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-> Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: ath12k@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
->   drivers/net/wireless/ath/ath12k/core.h |  6 ++++-
->   drivers/net/wireless/ath/ath12k/mac.c  | 33 ++++++++++++++-------------
->   drivers/net/wireless/ath/ath12k/wmi.c  | 41 ++++++++++++++++++----------------
->   3 files changed, 45 insertions(+), 35 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-> index 8be435535a4e..6ce2f7b3fa50 100644
-> --- a/drivers/net/wireless/ath/ath12k/core.h
-> +++ b/drivers/net/wireless/ath/ath12k/core.h
-> @@ -712,7 +712,6 @@ struct ath12k {
->   	 * avoid reporting garbage data.
->   	 */
->   	bool ch_info_can_report_survey;
-> -	struct survey_info survey[ATH12K_NUM_CHANS];
->   	struct completion bss_survey_done;
->   
->   	struct work_struct regd_update_work;
-> @@ -774,6 +773,11 @@ struct ath12k_hw {
->   	 */
->   	struct mutex hw_mutex;
->   	enum ath12k_hw_state state;
-> +
-> +	/* protects survey[] shared across radios of this hw. */
-> +	spinlock_t survey_lock;
-> +	struct survey_info survey[ATH12K_NUM_CHANS];
-> +
->   	bool regd_updated;
->   	bool use_6ghz_regd;
->   
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 2cff9485c95a..daf9bc8722df 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -13348,52 +13348,54 @@ ath12k_mac_update_bss_chan_survey(struct ath12k *ar,
->   int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
->   			     struct survey_info *survey)
->   {
-> +	struct ath12k_hw *ah = hw->priv;
->   	struct ath12k *ar;
->   	struct ieee80211_supported_band *sband;
-> -	struct survey_info *ar_survey;
-> +	struct survey_info *ah_survey;
-> +	int sband_idx = idx;
->   
->   	lockdep_assert_wiphy(hw->wiphy);
->   
-> -	if (idx >= ATH12K_NUM_CHANS)
-> +	if (sband_idx >= ATH12K_NUM_CHANS)
->   		return -ENOENT;
->   
->   	sband = hw->wiphy->bands[NL80211_BAND_2GHZ];
-> -	if (sband && idx >= sband->n_channels) {
-> -		idx -= sband->n_channels;
-> +	if (sband && sband_idx >= sband->n_channels) {
-> +		sband_idx -= sband->n_channels;
->   		sband = NULL;
->   	}
->   
->   	if (!sband)
->   		sband = hw->wiphy->bands[NL80211_BAND_5GHZ];
-> -	if (sband && idx >= sband->n_channels) {
-> -		idx -= sband->n_channels;
-> +	if (sband && sband_idx >= sband->n_channels) {
-> +		sband_idx -= sband->n_channels;
->   		sband = NULL;
->   	}
->   
->   	if (!sband)
->   		sband = hw->wiphy->bands[NL80211_BAND_6GHZ];
->   
-> -	if (!sband || idx >= sband->n_channels)
-> +	if (!sband || sband_idx >= sband->n_channels)
->   		return -ENOENT;
->   
-> -	ar = ath12k_mac_get_ar_by_chan(hw, &sband->channels[idx]);
-> +	ar = ath12k_mac_get_ar_by_chan(hw, &sband->channels[sband_idx]);
->   	if (!ar) {
-> -		if (sband->channels[idx].flags & IEEE80211_CHAN_DISABLED) {
-> +		if (sband->channels[sband_idx].flags & IEEE80211_CHAN_DISABLED) {
->   			memset(survey, 0, sizeof(*survey));
->   			return 0;
->   		}
->   		return -ENOENT;
->   	}
->   
-> -	ar_survey = &ar->survey[idx];
-> +	ah_survey = &ah->survey[idx];
->   
-> -	ath12k_mac_update_bss_chan_survey(ar, &sband->channels[idx]);
-> +	ath12k_mac_update_bss_chan_survey(ar, &sband->channels[sband_idx]);
->   
-> -	spin_lock_bh(&ar->data_lock);
-> -	memcpy(survey, ar_survey, sizeof(*survey));
-> -	spin_unlock_bh(&ar->data_lock);
-> +	scoped_guard(spinlock_bh, &ah->survey_lock) {
-> +		memcpy(survey, ah_survey, sizeof(*survey));
-> +	}
->   
-> -	survey->channel = &sband->channels[idx];
-> +	survey->channel = &sband->channels[sband_idx];
->   
->   	if (ar->rx_channel == survey->channel)
->   		survey->filled |= SURVEY_INFO_IN_USE;
-> @@ -15055,6 +15057,7 @@ static struct ath12k_hw *ath12k_mac_hw_allocate(struct ath12k_hw_group *ag,
->   
->   	mutex_init(&ah->hw_mutex);
->   
-> +	spin_lock_init(&ah->survey_lock);
->   	spin_lock_init(&ah->dp_hw.peer_lock);
->   	INIT_LIST_HEAD(&ah->dp_hw.dp_peers_list);
->   
-> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-> index b5e904a55aea..aa70d2a61d38 100644
-> --- a/drivers/net/wireless/ath/ath12k/wmi.c
-> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
-> @@ -6617,16 +6617,12 @@ static int ath12k_pull_roam_ev(struct ath12k_base *ab, struct sk_buff *skb,
->   	return 0;
->   }
->   
-> -static int freq_to_idx(struct ath12k *ar, int freq)
-> +static int freq_to_idx(struct ieee80211_hw *hw, int freq)
->   {
->   	struct ieee80211_supported_band *sband;
-> -	struct ieee80211_hw *hw = ath12k_ar_to_hw(ar);
->   	int band, ch, idx = 0;
->   
->   	for (band = NL80211_BAND_2GHZ; band < NUM_NL80211_BANDS; band++) {
-> -		if (!ar->mac.sbands[band].channels)
-> -			continue;
-> -
->   		sband = hw->wiphy->bands[band];
->   		if (!sband)
->   			continue;
-> @@ -7507,6 +7503,7 @@ static void ath12k_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
->   {
->   	struct wmi_chan_info_event ch_info_ev = {};
->   	struct ath12k *ar;
-> +	struct ath12k_hw *ah;
->   	struct survey_info *survey;
->   	int idx;
->   	/* HW channel counters frequency value in hertz */
-> @@ -7538,6 +7535,7 @@ static void ath12k_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
->   		return;
->   	}
->   	spin_lock_bh(&ar->data_lock);
-> +	ah = ath12k_ar_to_ah(ar);
->   
->   	switch (ar->scan.state) {
->   	case ATH12K_SCAN_IDLE:
-> @@ -7549,8 +7547,8 @@ static void ath12k_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
->   		break;
->   	}
->   
-> -	idx = freq_to_idx(ar, le32_to_cpu(ch_info_ev.freq));
-> -	if (idx >= ARRAY_SIZE(ar->survey)) {
-> +	idx = freq_to_idx(ath12k_ar_to_hw(ar), le32_to_cpu(ch_info_ev.freq));
-> +	if (idx >= ARRAY_SIZE(ah->survey)) {
->   		ath12k_warn(ab, "chan info: invalid frequency %d (idx %d out of bounds)\n",
->   			    ch_info_ev.freq, idx);
->   		goto exit;
-> @@ -7563,14 +7561,16 @@ static void ath12k_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
->   		cc_freq_hz = (le32_to_cpu(ch_info_ev.mac_clk_mhz) * 1000);
->   
->   	if (ch_info_ev.cmd_flags == WMI_CHAN_INFO_START_RESP) {
-> -		survey = &ar->survey[idx];
-> -		memset(survey, 0, sizeof(*survey));
-> -		survey->noise = le32_to_cpu(ch_info_ev.noise_floor);
-> -		survey->filled = SURVEY_INFO_NOISE_DBM | SURVEY_INFO_TIME |
-> +		scoped_guard(spinlock_bh, &ah->survey_lock) {
-> +			survey = &ah->survey[idx];
-> +			memset(survey, 0, sizeof(*survey));
-> +			survey->noise = le32_to_cpu(ch_info_ev.noise_floor);
-> +			survey->filled = SURVEY_INFO_NOISE_DBM | SURVEY_INFO_TIME |
->   				 SURVEY_INFO_TIME_BUSY;
-> -		survey->time = div_u64(le32_to_cpu(ch_info_ev.cycle_count), cc_freq_hz);
-> -		survey->time_busy = div_u64(le32_to_cpu(ch_info_ev.rx_clear_count),
-> -					    cc_freq_hz);
-> +			survey->time = div_u64(le32_to_cpu(ch_info_ev.cycle_count), cc_freq_hz);
-> +			survey->time_busy = div_u64(le32_to_cpu(ch_info_ev.rx_clear_count),
-> +						    cc_freq_hz);
-> +		}
->   	}
->   exit:
->   	spin_unlock_bh(&ar->data_lock);
-> @@ -7583,6 +7583,7 @@ ath12k_pdev_bss_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
->   	struct wmi_pdev_bss_chan_info_event bss_ch_info_ev = {};
->   	struct survey_info *survey;
->   	struct ath12k *ar;
-> +	struct ath12k_hw *ah;
->   	u32 cc_freq_hz = ab->cc_freq_hz;
->   	u64 busy, total, tx, rx, rx_bss;
->   	int idx;
-> @@ -7623,15 +7624,18 @@ ath12k_pdev_bss_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
->   		return;
->   	}
->   
-> -	spin_lock_bh(&ar->data_lock);
-> -	idx = freq_to_idx(ar, le32_to_cpu(bss_ch_info_ev.freq));
-> -	if (idx >= ARRAY_SIZE(ar->survey)) {
-> +	ah = ath12k_ar_to_ah(ar);
-> +
-> +	guard(spinlock_bh)(&ah->survey_lock);
-> +
-> +	idx = freq_to_idx(ath12k_ar_to_hw(ar), le32_to_cpu(bss_ch_info_ev.freq));
-> +	if (idx >= ARRAY_SIZE(ah->survey)) {
->   		ath12k_warn(ab, "bss chan info: invalid frequency %d (idx %d out of bounds)\n",
->   			    bss_ch_info_ev.freq, idx);
->   		goto exit;
->   	}
->   
-the scope of survey_lock should start here and ..
-
-> -	survey = &ar->survey[idx];
-> +	survey = &ah->survey[idx];
->   
->   	survey->noise     = le32_to_cpu(bss_ch_info_ev.noise_floor);
->   	survey->time      = div_u64(total, cc_freq_hz);
-> @@ -7644,7 +7648,6 @@ ath12k_pdev_bss_chan_info_event(struct ath12k_base *ab, struct sk_buff *skb)
->   			     SURVEY_INFO_TIME_RX |
->   			     SURVEY_INFO_TIME_TX);
->   exit:
-> -	spin_unlock_bh(&ar->data_lock);
-
-end here, may be a scoped guard here as well ?
-
->   	complete(&ar->bss_survey_done);
->   
->   	rcu_read_unlock();
-> 
-> ---
-> base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
-> change-id: 20260617-ath12-survey-band-fix-4b5e78579379
-> 
-> Best regards,
+> - Fixed kernel doc warnings.
+> - Polish commit message and comments for patch #2.
+> - Pass proper PAS ID in set_remote_state API for media firmware drivers.
+> - Added Maintainer entry and dropped MODULE_AUTHOR.
+>
+> Sumit Garg (14):
+>   firmware: qcom: Add a generic PAS service
+>   firmware: qcom_scm: Migrate to generic PAS service
+>   firmware: qcom: Add a PAS TEE service
+>   remoteproc: qcom_q6v5_pas: Switch over to generic PAS TZ APIs
+>   remoteproc: qcom_q6v5_mss: Switch to generic PAS TZ APIs
+>   remoteproc: qcom_wcnss: Switch to generic PAS TZ APIs
+>   remoteproc: qcom: Select QCOM_PAS generic service
+>   drm/msm: Switch to generic PAS TZ APIs
+>   media: qcom: Switch to generic PAS TZ APIs
+>   media: qcom: Pass proper PAS ID to set_remote_state API
+>   net: ipa: Switch to generic PAS TZ APIs
+>   wifi: ath12k: Switch to generic PAS TZ APIs
+>   firmware: qcom_scm: Remove SCM PAS wrappers
+>   MAINTAINERS: Add maintainer entry for Qualcomm PAS TZ service
+>
+>  MAINTAINERS                                   |   9 +
+>  drivers/firmware/qcom/Kconfig                 |  22 +-
+>  drivers/firmware/qcom/Makefile                |   2 +
+>  drivers/firmware/qcom/qcom_pas.c              | 299 +++++++++++
+>  drivers/firmware/qcom/qcom_pas.h              |  50 ++
+>  drivers/firmware/qcom/qcom_pas_tee.c          | 479 ++++++++++++++++++
+>  drivers/firmware/qcom/qcom_scm.c              | 302 ++++-------
+>  drivers/gpu/drm/msm/Kconfig                   |   1 +
+>  drivers/gpu/drm/msm/adreno/a5xx_gpu.c         |   4 +-
+>  drivers/gpu/drm/msm/adreno/adreno_gpu.c       |  11 +-
+>  drivers/media/platform/qcom/iris/Kconfig      |  27 +-
+>  .../media/platform/qcom/iris/iris_firmware.c  |   9 +-
+>  drivers/media/platform/qcom/venus/Kconfig     |   1 +
+>  drivers/media/platform/qcom/venus/firmware.c  |  11 +-
+>  drivers/net/ipa/Kconfig                       |   2 +-
+>  drivers/net/ipa/ipa_main.c                    |  13 +-
+>  drivers/net/wireless/ath/ath12k/Kconfig       |   2 +-
+>  drivers/net/wireless/ath/ath12k/ahb.c         |  10 +-
+>  drivers/remoteproc/Kconfig                    |   4 +-
+>  drivers/remoteproc/qcom_q6v5_mss.c            |   5 +-
+>  drivers/remoteproc/qcom_q6v5_pas.c            |  51 +-
+>  drivers/remoteproc/qcom_wcnss.c               |  12 +-
+>  drivers/soc/qcom/mdt_loader.c                 |  12 +-
+>  include/linux/firmware/qcom/qcom_pas.h        |  43 ++
+>  include/linux/firmware/qcom/qcom_scm.h        |  29 --
+>  include/linux/soc/qcom/mdt_loader.h           |   6 +-
+>  26 files changed, 1095 insertions(+), 321 deletions(-)
+>  create mode 100644 drivers/firmware/qcom/qcom_pas.c
+>  create mode 100644 drivers/firmware/qcom/qcom_pas.h
+>  create mode 100644 drivers/firmware/qcom/qcom_pas_tee.c
+>  create mode 100644 include/linux/firmware/qcom/qcom_pas.h
+>
 > --
-> Matt
-> 
-
-Rest of the changes looks fine to me.
+> 2.53.0
+>
 
