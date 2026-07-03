@@ -1,155 +1,197 @@
-Return-Path: <linux-wireless+bounces-38605-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38606-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id D4q9LBgBSGptjAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-38605-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Jul 2026 20:36:08 +0200
+	id jJGQJtQKSGpXkgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-38606-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 03 Jul 2026 21:17:40 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A313704F81
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Jul 2026 20:36:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2302470512A
+	for <lists+linux-wireless@lfdr.de>; Fri, 03 Jul 2026 21:17:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mD62q6zY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38605-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38605-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=wp.pl header.s=20241105 header.b=V3DGhrzc;
+	dmarc=pass (policy=none) header.from=wp.pl;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38606-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38606-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68BC5300F5ED
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jul 2026 18:33:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 40D66302E331
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jul 2026 19:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3CB31618B;
-	Fri,  3 Jul 2026 18:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4D82E2DFB;
+	Fri,  3 Jul 2026 19:17:13 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A16D2F745D
-	for <linux-wireless@vger.kernel.org>; Fri,  3 Jul 2026 18:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F386531353C
+	for <linux-wireless@vger.kernel.org>; Fri,  3 Jul 2026 19:17:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783103588; cv=none; b=BWa0Fbfi+lLSw13PopF4zoubdVh10IBCbxguS2nQTJuazO/yddth9ePzoxsRo9/OT2+opk5pDsHtVHAlaHj8YkdEz9kj/MnbaNnINHVvbRxxWDMzUl3ebF9/mmmLqF8T16rUZGE/1oADv2JQbpkNFZeDNxRVZP84xPUNNHhSxXQ=
+	t=1783106233; cv=none; b=t4MHGPgqnjgP/WaULPmUyi6PVZTeLuYooWGna/wIVypgcSwSqOmWkb4wsyV5ncf+zJtSnr5kDMrwUoVgX/ZWAChP79itTYo3Wi1eQTVYs54IyFhYXnW5Yh+O4yDR7j1FABLXhwD3yQOlXU1M5PjMhKJAmvNzC4kptk79oeSuZ0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783103588; c=relaxed/simple;
-	bh=x4hZaC3qSBTQ+0r7SnWMnbQD6b27HqnpjIIjcYi9yVs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r4/K9nbchFVJP+NypY9kA7BhyjJoSCWoLA2cSXl+WqDEV2krO1yfFcfEcrsCjU1Q7LYJeVBBUPRVXFaa2Bg30+0uHeF1LOLPL0CtD8JtNWaopeyvWJmbmH8WBL33df7tN4MR46xY8kQBXJKZiz739cdXw3YpJkY/XEmtxvKXf40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mD62q6zY; arc=none smtp.client-ip=209.85.221.46
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-471eeac43bfso910336f8f.3
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Jul 2026 11:33:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783103584; x=1783708384; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=x4hZaC3qSBTQ+0r7SnWMnbQD6b27HqnpjIIjcYi9yVs=;
-        b=mD62q6zYryduvOUtwnrT6iiKJqZCzT93L1XK6GW9jOHkPBeL8AJskDxDr4y5zK2N3l
-         9mj5YkjrAX7wbgSWNb4+FvNS6RH6jcEl4RWST0BJXC5TLk8/ahBgERYBv5bdMOvlwFNV
-         L5Zf0KFkPdM2XCrZI6AA6jFns9TwcxIlJ2LdOqQeX6wB2Q/URoONreSRAOinjewm42LA
-         FmReWcyisqw51SawIpJOp7AjoDyo1ZsbTRoW0QfjQib/ptjZObKKuXeIize3Q9S7DTzJ
-         3aWaXMPUEuo/L6EfnZZn0Z+6XqxULoX2M17cDaUKWxY0ricle2KaMO+h6dFeqE8wbKs7
-         AF1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783103584; x=1783708384;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x4hZaC3qSBTQ+0r7SnWMnbQD6b27HqnpjIIjcYi9yVs=;
-        b=nwMaNLpYBiAAyjJ8+395VHcLyKSh3XEcu5oXxNrZ8QyZ4SDHm4MELzly/Wv9ZPqeZk
-         bCQOt0bo+X60ilDdFVMQ1nmNPgxi3K/S4c9FY7lhHy8KkOuL9bnWSVTSLrbr4ge2UqFG
-         axAnwDvxkUvczS8horMSRpwoWDegFEZwQqdHtc80vNB0GSUAOH8drdg7A/1IB76iea2T
-         BoRvZITfwA2Iujbqp3pMgrZgXN/0Ggtxtt6zYlBJiQHVWDq6OaCTxWe4g7XllytUdhUg
-         i2NVW56Ij7Ly9oi3wUtPa5uYVNAThIAtHqv+NHhf9WeNK9n0U9oVZUZOHChuiGNbJzye
-         uCmw==
-X-Forwarded-Encrypted: i=1; AHgh+RrcGRL00QUeIVqfDL0RBneUtR8JZtQE8nPIbGzP0W0VlPmTrjQeTgENJpaWjD/Mo+9Vxuf+z7acsn7OauTBig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAdXcVG5miBXjf26nAiS9V5kSJjZ21XgS8uvnZJS7IRhHSYoVc
-	PExPOO6O5G0fyp5hjkFeH+ZcLcu2EztOJy9mMXcI9ZNdxldx/uCY4+3T
-X-Gm-Gg: AfdE7cnqdmi5E4FKJO8tf8qF8tCRSxUOaLore2rlxvUnS3vk4JLM81HxYVQxeJIJsuQ
-	aVa6hmxoQ6MTv6CSoVfz7PU+niyhG9KSjZwi0YNYAeMlDTbBKdIJePBgCRTqfYgSHH/CcznUSlk
-	ARhxXLaI6mkakKIvzJdkIkD+/C2PAtCGpAyHGy6U3mrT6jk4FCif7FIjr4R9Np2ieprlNdFihIY
-	1yvtZGcMQ8EsXEzkY8BbZkqE6TvN1I+cIaIPD9nvqPh3PTc1TXBL8X2OdEj+3U/OShxVVuBow5W
-	caHTkFz8S3yIpAxZ8yr7HDoigtxwaZk7upo6bsOuSxU2Q5MPSsL37E4sq4tABDuKvoI/PTAUPeC
-	9pEyk7K73SV3cTdQnriWHu9KiGinN0oHCAtSOWEm2ZSUoF3/Rm6vKzEcTjQ+kcO8hVjZhlCsRtH
-	CS3Wk7gZNdpxO1mRsps6MmgY4wHoE2O+iTSWryphYEqL6IB2d1qwQfulMJ3OQnyTNTa66gj4KDt
-	1UOW7wh
-X-Received: by 2002:a5d:6f0c:0:b0:46f:f12b:e456 with SMTP id ffacd0b85a97d-47aaaade280mr570803f8f.25.1783103584106;
-        Fri, 03 Jul 2026 11:33:04 -0700 (PDT)
-Received: from [10.128.11.240] (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d780csm1270043f8f.11.2026.07.03.11.33.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jul 2026 11:33:03 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-Message-ID: <0e19531c-2b24-4e9a-b4a8-c7991b28d6ee@gmail.com>
-Date: Fri, 3 Jul 2026 19:33:02 +0100
+	s=arc-20240116; t=1783106233; c=relaxed/simple;
+	bh=HZpn+LzEdQiChdKODgOInSWhyjcSHx3vU/HlqLbVzLY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iBsFf8Eu2Rqn4OUhC5+M9VVxoYUCp+Poq0MxCN70oWGloExgWdde8mK+zPZHOiv/HBv+Vo6Paf3HjcyTHpOIPL0RseHz/qyRu3xMf39vZlFhp24hD3lwznd9hjKyoflLxBLVWFbjLmK9V5Tq27A2EUAh4N+Ab5FB5QSiJcwQUIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=V3DGhrzc; arc=none smtp.client-ip=212.77.101.12
+Received: (wp-smtpd smtp.wp.pl 41919 invoked from network); 3 Jul 2026 21:17:00 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1783106220; bh=XltZ51lcaAfXjjwWeqNJ33cCCEX8OwFtiK+K0f9hfQQ=;
+          h=From:To:Cc:Subject;
+          b=V3DGhrzcdsLXxL0EOgDAp2f5Qp5PNoyasIfQ3sPOwGx6ZkUWKSLhIPzJQTzEVmaqn
+           A4fQEZ++w0u/FYAbrXu2wZ5HO0qhMxmV6PREAQR2516U4rPsKmqAeI+sZOmd73Btlf
+           mhCXMZV/BzZFkOeAOkTzElSREf3kJ+34j8CNt8GTBUGXBDDRB0fySbHKhdpsFEoStm
+           O3ixzsajAyG1+ePcPBDuXGC2ahKkU4jGlVQEZoUayHnrmIM5WFuysVHFp9Jka5NEM+
+           XllAwUFQdD5FyKtW1J1Y/3VglpGSigcJQUSrCVZ6GFYCOpOeA3qQBB0e8gthy2PbDh
+           B0358EvJQm8IA==
+Received: from 77-236-11-179.static.play.pl (HELO localhost) (stf_xl@wp.pl@[77.236.11.179])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
+          for <clabbe@baylibre.com>; 3 Jul 2026 21:17:00 +0200
+Date: Fri, 3 Jul 2026 21:17:00 +0200
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Corentin Labbe <clabbe@baylibre.com>
+Cc: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] net: wireless: ralink: RT2X00: init EEPROM properly
+Message-ID: <20260703191700.GA8093@wp.pl>
+References: <20260703134932.3786771-1-clabbe@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: p54: update stale wireless wiki URLs
-To: Anas Khan <anxkhn28@gmail.com>,
- Christian Lamparter <chunkeey@googlemail.com>
-Cc: Kees Cook <kees@kernel.org>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260702102325.63955-1-anxkhn28@gmail.com>
-Content-Language: en-US
-From: Julian Braha <julianbraha@gmail.com>
-In-Reply-To: <20260702102325.63955-1-anxkhn28@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260703134932.3786771-1-clabbe@baylibre.com>
+X-WP-MailID: c6c60aed9b5d4a4ec0f4138872622716
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [YTOR]                               
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[wp.pl,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[wp.pl:s=20241105];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38605-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38606-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:anxkhn28@gmail.com,m:chunkeey@googlemail.com,m:kees@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:chunkeey@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[julianbraha@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[gmail.com,googlemail.com];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:clabbe@baylibre.com,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[stf_xl@wp.pl,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FREEMAIL_FROM(0.00)[wp.pl];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[julianbraha@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[stf_xl@wp.pl,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[wp.pl:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre.com:email,wp.pl:from_mime,wp.pl:email,wp.pl:mid,wp.pl:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0A313704F81
+X-Rspamd-Queue-Id: 2302470512A
 
-On 7/2/26 11:23, Anas Khan wrote:
-> The p54 wireless wiki links (wireless.wiki.kernel.org) return 404; the
-> content moved to the Sphinx documentation site. Point them at the
-> current wireless.docs.kernel.org pages.
+Hi,
 
-Nice!
+On Fri, Jul 03, 2026 at 01:49:32PM +0000, Corentin Labbe wrote:
+> I have an hostapd setup with a
+> 01:00.0 Network controller: Ralink corp. RT2790 Wireless 802.11n 1T/2R PCIe
+> 
+> The setup work fine on 6.18.26-gentoo
+> It breaks on 6.18.33-gentoo (and still broken on 6.18.37)
+> 
+> I found an hint in dmesg:
+> On 6.18.26-gentoo I see:
+> May 31 15:48:45 trash01 kernel: ieee80211 phy0: rt2x00_set_rf: Info - RF chipset 0003 detected
+> On 6.18.33-gentoo I see:
+> May 31 15:22:57 trash01 kernel: ieee80211 phy0: rt2x00_set_rf: Info - RF chipset 0006 detected
+> 
+> The RF chipset seems badly detected.
+> 
+> The problem was the EEPROM which was badly initialized.
 
-If you're interested in doing some more work like this, here's a list of
-known dead links:
-https://lore.kernel.org/lkml/6732bf08-41ee-40c4-83b2-4ae8bc0da7cf@gmail.com/
+Good catch. Some new fields were added to struct eeprom_93cx6, but
+the rt2x00 driver was not updated to initalize those.
 
-that I detected some time ago using kconfirm:
-https://lore.kernel.org/all/6ec4df6d-1445-48ca-8f54-1d1a83c4716d@gmail.com/
+> Probably the origin was in some PCI change but unfortunately I couldn't play
+> to bisect/reboot often the board with this card to do it.
+> 
+> Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Cc: stable@vger.kernel.org
 
-- Julian Braha
+> ---
+>  drivers/net/wireless/ralink/rt2x00/rt2400pci.c | 2 +-
+>  drivers/net/wireless/ralink/rt2x00/rt2500pci.c | 2 +-
+>  drivers/net/wireless/ralink/rt2x00/rt2800pci.c | 2 +-
+>  drivers/net/wireless/ralink/rt2x00/rt61pci.c   | 2 +-
+>  4 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2400pci.c b/drivers/net/wireless/ralink/rt2x00/rt2400pci.c
+> index 42e21e9f303b..15073b856adf 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt2400pci.c
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt2400pci.c
+> @@ -1429,7 +1429,7 @@ static irqreturn_t rt2400pci_interrupt(int irq, void *dev_instance)
+>   */
+>  static int rt2400pci_validate_eeprom(struct rt2x00_dev *rt2x00dev)
+>  {
+> -	struct eeprom_93cx6 eeprom;
+> +	struct eeprom_93cx6 eeprom = {};
+>  	u32 reg;
+>  	u16 word;
+>  	u8 *mac;
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2500pci.c b/drivers/net/wireless/ralink/rt2x00/rt2500pci.c
+> index 36ddc5a69fa4..3536a0f31117 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt2500pci.c
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt2500pci.c
+> @@ -1555,7 +1555,7 @@ static irqreturn_t rt2500pci_interrupt(int irq, void *dev_instance)
+>   */
+>  static int rt2500pci_validate_eeprom(struct rt2x00_dev *rt2x00dev)
+>  {
+> -	struct eeprom_93cx6 eeprom;
+> +	struct eeprom_93cx6 eeprom = {};
+>  	u32 reg;
+>  	u16 word;
+>  	u8 *mac;
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800pci.c b/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
+> index 14c45aba836f..853fd31d1362 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
+> @@ -108,7 +108,7 @@ static void rt2800pci_eepromregister_write(struct eeprom_93cx6 *eeprom)
+>  
+>  static int rt2800pci_read_eeprom_pci(struct rt2x00_dev *rt2x00dev)
+>  {
+> -	struct eeprom_93cx6 eeprom;
+> +	struct eeprom_93cx6 eeprom = {};
+>  	u32 reg;
+>  
+>  	reg = rt2x00mmio_register_read(rt2x00dev, E2PROM_CSR);
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt61pci.c b/drivers/net/wireless/ralink/rt2x00/rt61pci.c
+> index d1cd5694e3c7..5dca2afb4b96 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt61pci.c
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt61pci.c
+> @@ -2298,7 +2298,7 @@ static irqreturn_t rt61pci_interrupt(int irq, void *dev_instance)
+>   */
+>  static int rt61pci_validate_eeprom(struct rt2x00_dev *rt2x00dev)
+>  {
+> -	struct eeprom_93cx6 eeprom;
+> +	struct eeprom_93cx6 eeprom = {};
+>  	u32 reg;
+>  	u16 word;
+>  	u8 *mac;
+> -- 
+> 2.53.0
+> 
 
