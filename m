@@ -1,74 +1,71 @@
-Return-Path: <linux-wireless+bounces-38548-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38549-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CsdGGeosR2rsTwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-38548-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Jul 2026 05:30:50 +0200
+	id /f1BHioxR2p4UAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-38549-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 03 Jul 2026 05:48:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E2A6FE360
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Jul 2026 05:30:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD7366FE42A
+	for <lists+linux-wireless@lfdr.de>; Fri, 03 Jul 2026 05:48:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b=IuPWvvU0;
+	dkim=pass header.d=realtek.com header.s=dkim header.b=SZyOQN0z;
 	dmarc=pass (policy=none) header.from=realtek.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38548-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38548-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38549-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38549-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5236130063AE
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jul 2026 03:28:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3753A303EF77
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jul 2026 03:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFE830567F;
-	Fri,  3 Jul 2026 03:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E0B315D3E;
+	Fri,  3 Jul 2026 03:48:55 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E58F30566B
-	for <linux-wireless@vger.kernel.org>; Fri,  3 Jul 2026 03:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D0D3164C7
+	for <linux-wireless@vger.kernel.org>; Fri,  3 Jul 2026 03:48:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783049308; cv=none; b=XD6XivZTgfr7a9kveJvlbQU5xhY3RNKtzWygd9b6GSvnJZB4x7RYFPuWLUnOr2QzH0lwqcuST6h4NULOCGM6izGC+hR825nFsy1yHDPzK+3ujt+S/X2hYJhY7V5/AYRZLFDh5lvQxujKrL/6DJnhOEhYWZ5I99Vl6u7AC1fK8LE=
+	t=1783050534; cv=none; b=LiijdmNhWrOydAyeKsK0yFIlOMUnqcuYRpjHyjDQf6j9trLK5yvmaIW6Qyw1k5OjHvY49stg33G0NiwdA4Mlmr4MnIQ4Y4aFZ4c/WF4HxUxXMLJm6db8UC0iomKCJOANRJQO4RoXXZAgamgb3dqkUknqQfJFuwMFQEy+WpGh+RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783049308; c=relaxed/simple;
-	bh=U0xL/cnvdN04xjRjALmZE+0rhjZ4anv2VlwT0ib3zv8=;
+	s=arc-20240116; t=1783050534; c=relaxed/simple;
+	bh=vxAdLMBwnG2IQO8QLPtFhpXihhvG9HVfKm6BZrhRN7I=;
 	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type; b=qcMkhiAEPK6DgrMM7HfXPl6h2nmBNEHJqo7hLVMDAQ7xcnOsFC1l1v7E5yneKjmdP+K3grkHDl9hvWGD8of0JBl7YxcVjiBjcKPNP8xRyQHS4OTXV3bKc3Lpm1E+se1jysEaJ959fyoKu5u5h+3LfvuWqW4dxuB4H3IMItQ3FrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=IuPWvvU0; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6633SGJ502417722, This message is accepted by code: ctloc85258
+	 MIME-Version:Content-Type; b=J0GV30DcjzCENpd+oERcYiI9LVPhuFIlNZS4U1d8C1jHajxfSqXAz/+0bChsvPikhbV6AwcPu7yoN++Of1Y9/f7FAbncdE3rZXzgX7S6Ydq5rj3QZVdEenlF7BgHCyIGAC5/Qtr9+/AAgLQus+6sIAZzjZWHUPPyMvhXhD2oGoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=SZyOQN0z; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6633mgvlF2425059, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1783049296; bh=WdqTn6MANZGTo6klshnrp2gKizUyhfCmSZYAKOAmQFA=;
+	t=1783050522; bh=Mn6DmuJCabgd8NfztDdqUFVJE+LaLvgjeC5ppO2LcY8=;
 	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
 	 MIME-Version:Content-Type;
-	b=IuPWvvU0PIvCX5Ry3mzq0WQNkUyuI13i6+3vZ+ooG37gXsQa0xsKEpNNMWQkhNNEe
-	 BgDZ9bzYJuXHqF+G+kvh5DcAQyMgxWL+2rC1/dBx4gI1fd1KUWDquxEyZubfPjxxex
-	 VplfKpxXHMzMqjWLNW4/4ibxQOAmnihbeQNYvlGBIej+WIGFr8yGPBplcxY6hSAchT
-	 9zZiOR9Ih/pWqKd/X+ZY97Igk4Gh22roclVHMsyhIsy3gIYoe3V+/XlQpBcIUZiVG9
-	 cW/8sFPq2PsrkchbOCUEyc2XZGL57Z22py6FXhrfSPDJ+ayIz1J5UIQ6aURu0ZP3pQ
-	 bOE6W1cjSVdSg==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6633SGJ502417722
+	b=SZyOQN0znfCKM76XDb7Tl7BaT38MclZ9mEx/pZeunEZtfXo/kLo3zkj+RbF3+NN/b
+	 Q4oonkmj8X7d5oSDlUBTVVx2oi5tDwMXJsnkpCalM0SH8VDT9gcLeoRSH1YIYl7pkV
+	 WnkoByhyNBmw+u3cfV9A2rYGfigq/FSy11BcSwY/JZPAWOcWCRWtA++IM8AGrpo8uA
+	 3RPdaQamZcSC9xLUQxhpNEG5N9q72dmEEvBnEiGeNpk0UBz5YX+uGbgylBZtF/TfST
+	 XzOcwAVK9jH6X7YeFxi5yo98yAj5T9Qo5Ex5Vku198AJW1+6B0Zlq/9T80SMN0AXKQ
+	 UEWbjj7Zn+1MA==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6633mgvlF2425059
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
-	for <linux-wireless@vger.kernel.org>; Fri, 3 Jul 2026 11:28:16 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+	for <linux-wireless@vger.kernel.org>; Fri, 3 Jul 2026 11:48:42 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Fri, 3 Jul 2026 11:28:16 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Fri, 3 Jul 2026 11:28:16 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
- (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
+ 15.2.2562.17; Fri, 3 Jul 2026 11:48:42 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
+ (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Fri, 3 Jul 2026 11:28:16 +0800
+ Transport; Fri, 3 Jul 2026 11:48:42 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
-CC: <ku920601@realtek.com>
-Subject: Re: [PATCH rtw-next 01/10] wifi: rtw89: coex: force to exit Wi-Fi LPS while Bluetooth profile exist
-In-Reply-To: <20260624033941.45918-2-pkshih@realtek.com>
-References: <20260624033941.45918-1-pkshih@realtek.com> <20260624033941.45918-2-pkshih@realtek.com>
-Message-ID: <8bd21c8c-39e8-4491-a653-6ab5fd644746@RTKEXHMBS05.realtek.com.tw>
-Date: Fri, 3 Jul 2026 11:28:16 +0800
+CC: <gary.chang@realtek.com>, <timlee@realtek.com>,
+	<dian_syuan0116@realtek.com>, <kevin_yang@realtek.com>
+Subject: Re: [PATCH rtw-next 01/10] wifi: rtw89: mac: finish active TX immediately without waiting for DMAC
+In-Reply-To: <20260625061545.44808-2-pkshih@realtek.com>
+References: <20260625061545.44808-1-pkshih@realtek.com> <20260625061545.44808-2-pkshih@realtek.com>
+Message-ID: <2dcee9e5-4621-43d3-b432-78868562b71f@RTKEXHMBS03.realtek.com.tw>
+Date: Fri, 3 Jul 2026 11:48:42 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,59 +78,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:ku920601@realtek.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38549-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:linux-wireless@vger.kernel.org,m:gary.chang@realtek.com,m:timlee@realtek.com,m:dian_syuan0116@realtek.com,m:kevin_yang@realtek.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-38548-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[realtek.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,realtek.com:from_mime,realtek.com:email,realtek.com:dkim];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B1E2A6FE360
+X-Rspamd-Queue-Id: BD7366FE42A
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Ching-Te Ku <ku920601@realtek.com>
+> Currently active TX only finishes after ensuring PCIE and DMAC become idle.
+> However, the waiting time might be long. Since the packet is already
+> transmitted over the air, update the registers to finish active TX
+> immediately, regardless of the PCIE/DMAC status.
 > 
-> Wi-Fi can not reach LPS leave threshold while Wi-Fi only throughput
-> not good & Bluetooth share bandwidth. Add logic to let force leave
-> Wi-Fi LPS while Bluetooth profile exist. Update COEX version to 9.0.1.
-> 
-> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
 10 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-04e91bb237a4 wifi: rtw89: coex: force to exit Wi-Fi LPS while Bluetooth profile exist
-ce9b6ca8f4ba wifi: rtw89: coex: offset current BT info to BT0 for dual BT configuration
-6ca62c49a679 wifi: rtw89: coex: Move wifi related counters to wifi info
-257cdb2c6e38 wifi: rtw89: coex: Extend bt_slot_req for dual MAC wifi
-77e219a25501 wifi: rtw89: coex: Move Bluetooth related counters to BT info
-195ce7889423 wifi: rtw89: coex: Refine third party module related coexistence
-ebb69df34148 wifi: rtw89: coex: Add TX/RX RF parameter format version 9
-600649fa9c10 wifi: rtw89: coex: Renaming drvinfo_type to drvinfo_ver
-5c071a06bbba wifi: rtw89: coex: Add Wi-Fi firmware 0.35.94.1 support for RTL8922D
-9a149cf572e9 wifi: rtw89: coex: Add RTL8922D chip string
+0819de0fd290 wifi: rtw89: mac: finish active TX immediately without waiting for DMAC
+14dfbfeba17b wifi: rtw89: mac: pass chip version to firmware
+e50c0fb7867e wifi: rtw89: fw: lower debug level for UDM1 debug register
+c99498b4cbd7 wifi: rtw89: drop packet offload entry on H2C addition failure to avoid scan issue
+b993046234fc wifi: rtw89: disable sniffer mode in RX filter when initialization for Wi-Fi 7 chips
+0ec249ffc060 wifi: rtw89: pci: disable phy error flag related to refclk
+c1eabaaa088d wifi: rtw89: fw: fix link ID filling for LPS MLO common info
+76edcedda643 wifi: rtw89: wow: use MLD address in WoWLAN ARP replies for MLO stations
+03a963f4aeda wifi: rtw89: wow: add QoS control field to WoWLAN ARP response for MLO
+dbff9040587e wifi: rtw89: wow: only WiFi 6 chips initialize RF registers in WoWLAN mode
 
 ---
 https://github.com/pkshih/rtw.git
