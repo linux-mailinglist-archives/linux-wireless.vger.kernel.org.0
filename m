@@ -1,199 +1,146 @@
-Return-Path: <linux-wireless+bounces-38573-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38574-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tYp6EnqTR2rebQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-38573-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Jul 2026 12:48:26 +0200
+	id i10HN9yhR2qDcgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-38574-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 03 Jul 2026 13:49:48 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B2770168E
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Jul 2026 12:48:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1B7702066
+	for <lists+linux-wireless@lfdr.de>; Fri, 03 Jul 2026 13:49:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=EpJdPjDS;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=falUHtrx;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38573-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38573-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=realtek.com header.s=dkim header.b="BgG/qGJ5";
+	dmarc=pass (policy=none) header.from=realtek.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38574-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38574-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 796B6308E0F5
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jul 2026 10:41:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C0894304C962
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jul 2026 11:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB20A3D9DB1;
-	Fri,  3 Jul 2026 10:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886BB386440;
+	Fri,  3 Jul 2026 11:43:16 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400BD3D9544
-	for <linux-wireless@vger.kernel.org>; Fri,  3 Jul 2026 10:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695B32EEE7C
+	for <linux-wireless@vger.kernel.org>; Fri,  3 Jul 2026 11:43:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783074986; cv=none; b=KzIj/ZirsMy0laGBB7W+Xrm1CzHc3rTCzHZJMrNxicxWwyrIU9kcspyrBKHIDwYOUErngYJkYRXU5FGc8vdxR4tjrmtDXtsVMQ7UZFUd2w7UAUWJNBTn2LvFAJKB8mnlLjlcMJN2+jhBNURJi0QoHlhg69cVX4XEwYR9GuvwSIM=
+	t=1783078996; cv=none; b=HQYr3LH6k8iJyxkmPJYjLtLvx0saIgHacU274W1cDSrzz9eg7otV+L0S5+QmNWGrC+bW6N5jS4JoNBs015J5O+GSgYrL/Ws3jZ72BUo46ka2W1975rrAJLHhS5XceYrx7r9EoommaPN9W/FQ/kjfICCe5J2yIR+pQQo8GP9wL4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783074986; c=relaxed/simple;
-	bh=92i8UPrYFM9G2v+lQeSO5oIi2vXqIG/djDXA+JTb+y8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E3Ay+jdmOswYetn0tYzgWKQtT/D4Adye/d2zt9cDAJfuyQ6uLJH9JsgyYMZxT6TKHezX3qpNZYIynAgJz+4oy/RWTT8y3lVa62y9CXsuytQbm3I3Jba93IZti/h3qRjDHXl/yucnED0mIX4SjVXIf6PanFoBBMUTYwV3EEP/gsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EpJdPjDS; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=falUHtrx; arc=none smtp.client-ip=205.220.168.131
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6637ZgZJ3410048
-	for <linux-wireless@vger.kernel.org>; Fri, 3 Jul 2026 10:36:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	y7nX2t7d/sMmYWGo3rIr0X5bV0IZTvF333uqoqdP2u0=; b=EpJdPjDS1nK7FVuc
-	MpWYxPN1aKqTdHLS0tw5yQCXtxcMTIby4BTOJ6bwQUxcn15qaE/22tHgCbu+ZN/5
-	uZdmwzjZpBnebH9i0TtMmZozqbP7VIcdjvjMtpYJqKJj7g0yr4ro6chrub1oo7k3
-	od8kKowptdwNXwTW/qgPgjzzgWpeQp95Gf6GhhVI5SccldkjHR9NpmlY3ImaaMlC
-	APNYEWe8YYQbApC46CZfupqD2RXJF8mAxFKYnwKXMeDpq9hbZNsV3jl0hhuuGTgZ
-	7TrBHGMjC7cRFUH0BjOxgEON+AthjlkeQ5ilaq3Td+El0FiDxdFfAZQRYMox/YW2
-	rEVHig==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f68u30nmm-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 03 Jul 2026 10:36:23 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2caa9a3cf7aso17812925ad.0
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Jul 2026 03:36:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783074983; x=1783679783; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=y7nX2t7d/sMmYWGo3rIr0X5bV0IZTvF333uqoqdP2u0=;
-        b=falUHtrxMtYvThnG3YsGO53F2+emillcNsmKzKA5XMRj3qvxUCL6c+3m5epKib28wq
-         Ys/OAoELVPxuE91Fw6WJykXUCG9hUpbmw78B6cnytCJQBARWTcj8JNoyEdoQIIMr66ng
-         TiuBq+U9hSQfgRdb6kEGupLkK6WQOBBrKA3XWVWsPPWF2sXtpDng7hctHTsYR2ww2DJP
-         LuidvbBRd7h5Ht8gNUV/zivTx0QyLNWuNr88qa/BfvPM/gzT1HM1FZpxS0VuWV8eaEIG
-         ws4re8kniSEI2+j0YdkeIdPVDm/ISIetP2NMr5kziXdpiVQ+cqpDyfQm/AGo3avB7Ix3
-         wFCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783074983; x=1783679783;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=y7nX2t7d/sMmYWGo3rIr0X5bV0IZTvF333uqoqdP2u0=;
-        b=DP+oAFbbScn+c/iBIOMvHlnE2ql+3DyMckaf4A7Ul3tOMFUTVA0yHU3p79Ndn4ACmH
-         D+/H+nGo+4P9hNLFvsLtX/TaF1CM45o89M9bVe09zwxWa+iBKXle7FGYTBY7rOLflvCz
-         loFKqxTGURc3pOjTs5VnlXh8Hj+9ToryFQt0mmaRWRhwA3kc0zItlagsSjj3+/yiXkv0
-         kjgnuhU9pEeHfgTK6wgOae57pdPG5m7w2MaLD3+ksVh3zudS4LJxwlqa5Jfj+0jWIZGS
-         aJWWExAsapI5JMQfESFSda95++9dYcdb0Mqe0LNwsO81g0lhX/FGKwmT4SuQtQBBdjb8
-         GVeA==
-X-Gm-Message-State: AOJu0Yz76E+ab8lvJV1Tsmep62JGQO71znrl52D0nquWDlhsVLiaTjye
-	eUVOr8xT6LzKB6yYqw6EtVe93nS0BXyn27XK0tEJrLmA9z72BXy/rnpN068wxUt2FFYVWDWU88O
-	Tqw+u+zmwYIVJTm12k53EH6lCf/1Xuvnl1gSWJ1FP3KtY6z3niPZTcltVyFqlb2F2z3qR/I1GBq
-	IEKQ==
-X-Gm-Gg: AfdE7cny+hznq9hRcoJx2mLyIh4kV4hjMG6lhLoqUmo7AAIcmSiQl6xZDjBXbYE0aBY
-	pts/rg9DPwvNcZtDnz1kaK2OT/xcCdAHV9PPud2q8hWNCHP0MVgUw5oJxtPBZMTMboOAxWsc4Yj
-	YLIawLad1JU3qNtHFdn8vH2mnSYm5hxv9hE6XcKDFSTgKZyJwc9rOxJFG1HQcUVbB50pI/+WT33
-	tz8r/KkoXBHgQYyR8vDO6K4dvCz0TmzSQZQ+OhIjTsNQD/70ulEW6+h/v1MPKVyn0YSTDyPmnS3
-	URn1erY516vlNWNTGldfgGIgmX4tsyZVV88bsj21oYBf448kPA0XjCDhIoG461baeQXLjYAP+Dm
-	I5bTUMkZNmCqdv3ANrYMiQAj/tMu0QFJUQUNC+dCgiOT4b1v2BtE=
-X-Received: by 2002:a17:903:3c6b:b0:2c9:d56d:afa3 with SMTP id d9443c01a7336-2cacb070082mr42780345ad.15.1783074982848;
-        Fri, 03 Jul 2026 03:36:22 -0700 (PDT)
-X-Received: by 2002:a17:903:3c6b:b0:2c9:d56d:afa3 with SMTP id d9443c01a7336-2cacb070082mr42779985ad.15.1783074982316;
-        Fri, 03 Jul 2026 03:36:22 -0700 (PDT)
-Received: from [10.152.199.23] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b446a766asm13555217c88.7.2026.07.03.03.36.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jul 2026 03:36:21 -0700 (PDT)
-Message-ID: <20d52df0-a33c-48da-8f62-9adb7c77eea0@oss.qualcomm.com>
-Date: Fri, 3 Jul 2026 16:06:17 +0530
+	s=arc-20240116; t=1783078996; c=relaxed/simple;
+	bh=mgP8p7JmwpZkS6T2JBXHH0yGes/DEAzmsAkP339zyP4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NtCBzcIwwjUjckC6zDZCHKPqu+umuJs7xf5H70p3sPyny1DflkN3KVll+Sk48IRdL2iuxEDP6Xt4jqHwY9vy7X7lIFYXizowNM6qMNSdPM75qLmw2hT6CtY9kwZfkWa4iBPIUpGo53nsVuSlVE31Cbb1kqcqtvbUV5pnGMCrhQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=BgG/qGJ5; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 663BhCvT52636859, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1783078992; bh=zX5Kr0MNBND4NOEMn7vUBUqcBiVbEUjGW1oKOQnJQGA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=BgG/qGJ5L99Eu4kukTOjwEdkI0wvgEegMQHf1YIIzxT/C/mqjMvtF2Vj8fdaxlv0l
+	 8/XgaXrHnOtDUOZl3L+FVC/fgnuK5dQA2BV4lyLTComk0VgxaI9thExst+g/YQhxHQ
+	 yX2V7Uv0yZWujppn/oj7EcgzvqD5+WaSEPrs8vHo4lQn58qL9/m9mLBurAT2wLsKaC
+	 WfAbAZ9WEj/RRl+FQ+ml/EgFg3p7+FUpZQqCx6V6zVdFWWzO/yOEOEe8Ho1NnQiwMo
+	 9oIk2y6C845+b5A/kk0mqzhmCIcplfhj6OPeIbUZX4bIcMZi3vk6zsKE+3fy609jsP
+	 IIULBm2B3MJrQ==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 663BhCvT52636859
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
+	for <linux-wireless@vger.kernel.org>; Fri, 3 Jul 2026 19:43:12 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Fri, 3 Jul 2026 19:43:12 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Fri, 3 Jul 2026 19:43:11 +0800
+Received: from [127.0.1.1] (172.21.40.76) by RTKEXHMBS05.realtek.com.tw
+ (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
+ Transport; Fri, 3 Jul 2026 19:43:11 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <ku920601@realtek.com>
+Subject: [PATCH rtw-next 0/9] wifi: rtw89: coex: implement components for dual Bluetooth
+Date: Fri, 3 Jul 2026 19:43:02 +0800
+Message-ID: <20260703114311.2609942-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath11k: fix potential buffer underflow in
- ath11k_hal_rx_msdu_list_get()
-To: Dmitry Morgun <d.morgun@ispras.ru>, Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
-        stable@vger.kernel.org
-References: <20260530114252.42615-1-d.morgun@ispras.ru>
-From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260530114252.42615-1-d.morgun@ispras.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: nm8t6yJF6RwZlRqoGXPnjA97W7VREQQ-
-X-Proofpoint-ORIG-GUID: nm8t6yJF6RwZlRqoGXPnjA97W7VREQQ-
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAzMDEwMiBTYWx0ZWRfX6AP1STcIyVLu
- xFK0WnRpM1o0JOIRS32mGTfttQzlOG47k1lCkrh2viEqasoRCemYHAc0I+bSAWBetffFqIDfynU
- 5d4UsomSxLfD2FaeWBY5tqNGHp/lupY=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAzMDEwMiBTYWx0ZWRfX/KYQke/e4q+o
- nu2nZ77LHK7RWqeZa50Ke8FC0nbi4VlRy4VhinR6m8rqTvo02Gg1UFiOlJIzguxMnFZaMRZJXnw
- 0nNtan2ptBDSddEnL/blULOBy32bKjuy42GcaDPPCXtzqvKeT0ByYLDy3tH589ox3wy4QsbO+Pu
- sdIB6i6g7ui2ZRUQE65aea5xW8klKJuVI7fakjqC7BDWraep4CVcv1dZICwj+BKjHt8P0m5EPYL
- Ma7gv95mYKw8E5O0cL8DMNbasknWbox9d6hXfPvIVn30Y3fpEkLWZ97+1AIX+8JU2bwo43lcPn/
- dHG07tI8dlW00WfR0Onn9UG8UuQRwrTW0Q+A3e2H30t2JiTwe9CnU4/wOp9D0uyfk/7E4LHI+B/
- uyyp6F6ApZJ42Uhvbe8sR2SbnJdr18s8VcGG8EYpHRsOCyJMt/axpuAAv6lBsTAJnr1dnURrP/e
- 9nuvpWph9GF38L82PSw==
-X-Authority-Analysis: v=2.4 cv=OaKoyBTY c=1 sm=1 tr=0 ts=6a4790a7 cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=HH5vDtPzAAAA:8 a=xjQjg--fAAAA:8 a=EUspDBNiAAAA:8 a=YRM84PAP6wGYPlwToDIA:9
- a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10 a=GvdueXVYPmCkWapjIL-Q:22
- a=QM_-zKB-Ew0MsOlNKMB5:22 a=L4vkcYpMSA5nFlNZ2tk3:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-03_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
- priorityscore=1501 adultscore=0 spamscore=0 phishscore=0 malwarescore=0
- clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607030102
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38573-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:d.morgun@ispras.ru,m:jjohnson@kernel.org,m:linux-wireless@vger.kernel.org,m:ath11k@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,vger.kernel.org:from_smtp,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxtesting.org:url];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rameshkumar.sundaram@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-38574-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:ku920601@realtek.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_SENDER(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:from_mime,realtek.com:dkim,realtek.com:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D6B2770168E
+X-Rspamd-Queue-Id: 3F1B7702066
 
-On 5/30/2026 5:12 PM, Dmitry Morgun wrote:
-> When the first entry in msdu_details has a zero buffer address,
-> the code accesses msdu_details[i - 1] with i == 0, causing a
-> buffer underflow.
-> 
-> Fix similarly to ath12k_wifi7_hal_rx_msdu_list_get() by adding
-> a separate check for i == 0 before the main condition to prevent
-> the out-of-bounds access.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Signed-off-by: Dmitry Morgun <d.morgun@ispras.ru>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Extend more components of BT-coexitence to support dual Bluetooth,
+including TDMA descriptor, TX power, RX gain, scoreboard and etc.
+
+Ching-Te Ku (9):
+  wifi: rtw89: coex: Add Init info version 10
+  wifi: rtw89: coex: add rtw89_btc_init() entry for initialization once
+  wifi: rtw89: coex: Update TDMA descriptor for dual MAC
+  wifi: rtw89: coex: Add Bluetooth binding for Bluetooth TX power
+    setting
+  wifi: rtw89: coex: Add Bluetooth binding for Bluetooth RX gain setting
+  wifi: rtw89: coex: Add WiFi/Bluetooth adapter binding info
+  wifi: rtw89: coex: Add TDMA binding for dual MAC
+  wifi: rtw89: coex: Update scoreboard related logic for dual Bluetooth
+  wifi: rtw89: coex: Add Co-RX logic
+
+ drivers/net/wireless/realtek/rtw89/coex.c     | 1493 +++++++++++------
+ drivers/net/wireless/realtek/rtw89/coex.h     |   16 +
+ drivers/net/wireless/realtek/rtw89/core.c     |    5 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |  241 ++-
+ drivers/net/wireless/realtek/rtw89/fw.c       |   41 +
+ drivers/net/wireless/realtek/rtw89/fw.h       |    9 +
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |    2 -
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |    1 -
+ .../wireless/realtek/rtw89/rtw8852b_common.c  |    1 -
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |    1 -
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |    1 -
+ 11 files changed, 1298 insertions(+), 513 deletions(-)
+
+
+base-commit: 2b7858891b100587c10c136cf07205335a897be0
+-- 
+2.25.1
+
 
