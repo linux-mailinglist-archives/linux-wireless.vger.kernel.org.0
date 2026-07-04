@@ -1,92 +1,92 @@
-Return-Path: <linux-wireless+bounces-38617-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38618-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id if6yENPzSGq3vwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-38617-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 13:51:47 +0200
+	id WyIZNdX0SGoawAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-38618-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 13:56:05 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A11EF70772E
-	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 13:51:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B79707759
+	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 13:56:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eQYYBx1v;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LRLytZGR;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38617-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38617-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38618-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38618-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AE13E30065C3
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jul 2026 11:51:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 670A53002FBA
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jul 2026 11:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764EA2F290A;
-	Sat,  4 Jul 2026 11:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9A416F27F;
+	Sat,  4 Jul 2026 11:56:02 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8002DECCC
-	for <linux-wireless@vger.kernel.org>; Sat,  4 Jul 2026 11:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3088433E8C
+	for <linux-wireless@vger.kernel.org>; Sat,  4 Jul 2026 11:55:57 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783165903; cv=pass; b=AmbjX31/roXXnkI0oaOmG28WiniKc8BRq5rQ3Sehq5VIBkfDXfZhuGqFRw9Gd/gc00BgeJ8xBeSCVvg5laD9tN/gS/zDEF6yaWl1xWLp511BCDXLC/5afW6LzLfRPZ5TuvRyKDGN2IbqfseBHThg0zIhYl9yuuvFYI+fmswn5AU=
+	t=1783166162; cv=pass; b=osSkuUAf6B9NHOAySnyptsgn1YVx9YumSLMy/hg0mixlwfKD+uUbkErqtwrxNsXHk9tAb0tDKA/r6mGjvuSxcpWvCOVyyz2jlNni7G+0/F9QfO5uAkfwjliMisjYe5VKy8DHlQ1fc/HawVuDiH0ssxfps2HjLIsQtA/pZ6ksXAE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783165903; c=relaxed/simple;
-	bh=hr+YFPscwDNJhdQoywNil9vP8KgD8QFUSQfxnPWJ7nI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Twj1sDsTN1GZgahasOxLgxechoYOyowNZO4uwiYxjg7HPtUTCTCkY1tkNT79s4eXL0prr+tPa4AWJ+OQKgr0ixo3FTD0uFPJ2xFSGWswXdGfdt1ki8icIhc3d3OeJhqwkEpPQcmJOIPq1kq8xJqaV8BcrrPCgJJMg179JAZ008s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eQYYBx1v; arc=pass smtp.client-ip=209.85.161.46
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6a15ca0d761so921062eaf.0
-        for <linux-wireless@vger.kernel.org>; Sat, 04 Jul 2026 04:51:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783165897; cv=none;
+	s=arc-20240116; t=1783166162; c=relaxed/simple;
+	bh=tdsI1PXZgNvqGxbx5t7+IfLmC/Mmff/9CLEBU90HNmA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=los4QBvhKR2HuZy5EtkDmEAqVEFpnSqmzEkATZ30DQXQMVgwI4Pc6Igmn2dmzi9F1e/GXDTz4usLa2zvVnmLTF1Ublp8KXNxH8Lc3wSghRsAbqDEkKSCQZwtoI2YB5rWc+PVUOPmJ8HliNjlvFLnzkZpBMosyz2BuHwzgXDueGE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LRLytZGR; arc=pass smtp.client-ip=209.85.161.46
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6a149bfb2a8so563651eaf.2
+        for <linux-wireless@vger.kernel.org>; Sat, 04 Jul 2026 04:55:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783166157; cv=none;
         d=google.com; s=arc-20260327;
-        b=m7ykqiLEFKqUTJQpxq93qAwIhmlQXvgUDFMkNQXmPdIh4Uy0ii44tp4wxDo32eXmg6
-         7lZ7ctVzM8YPpZo+F5wwgU5csy4DXOpyjsL1CL/t8PZOYX4CwDlNNGSf0N0bfFMViqH2
-         Ny9ZqQfVG80qwmxZH83FvVTHFG83QTMsKWR9+qiv7CaxpDaQDfgQ0ZNWcpdBsTBclHPZ
-         jhvi/yMkUGJsTSdkATMKnThiUAz+7ONJ+Nz+t1H9VKrawnM46Ycgjgy6qjH6KmGylOY7
-         PE6xVogiHbj9hnGNcIQzCxcG1h+e1+Y4bD6vsyGOYOLE3rBZlQalTFgYZDchv+EwWOcp
-         Pxpg==
+        b=RgNrm+bKJjJErfx7+0S0gT41Ys0JmwNNBdZM16TfhoD1gXvZL+uWOWL2y26tfs6x0d
+         zZy9aYgfmXTzxs6/ZxpP26yOgPrMn4VITowu6LvTYUsbccq3NNMZAvvMFyVeYxg/ObHI
+         q6vaDV/YZkwN4Z6EsH5oi+DUySi+s7bxFeoa5srttN2taiB9F58aDpdYSnd0FNBEX/fO
+         PJeZg5wTMgI4USOfSSgl3vQDLff9/QQynMnGJ4B/78ijzGW+F9UK09b86TaSbB9caceS
+         8aMb0C/hJsLGH1QPpR5C0Ynjsk5BdZf9tTJWnXL/uJXnz9OlkxuB5qCRiSXJ+JBNJpj3
+         H+/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=xdJbE6XAu1Uoqs/QfLM4D2OYTpCg/DMaYs0TFywO+80=;
+        bh=abAnWFAqYOtaDvCgwQQLjkyxJjU8XmHQ3pWd7n4QL2s=;
         fh=xgr8QQLxaQMUyvZ9EAhu84Jd9XtC/AfyzYYYAL/ARfY=;
-        b=XbeL9yf0/r9SZ4o8akOS3+PtQ5GaYA1rPAmqsNRlvD5vktUoZtcclnZCJykx1Y681k
-         L4Jt8o/4k3dY748DVN3XUJWBQo5/ioceucJHD5/f06/2CNl7/jtRQ+uc9FYHzfjXWdFL
-         qwmTeP5rgbwe9LQ2L2UCLb/Q0TSMYjnLRuK/EuylmS32MgD/AiB+I/Pmr7agA/dTUCzQ
-         OdggYnS34bEsE6+WMhm2RwIjrQdSKzSYeTDQ0we2yTgX75i4eDYTwL4TCEuAPjS9uZ3j
-         Sq+MC8Y+LW0Qmb92HaPF2Px/0aO/S6OYx/+J20qmwvewGoRqSYLOEVHPeZW5OYB5SSj4
-         ulbQ==;
+        b=ats+kz2XXNedPpI7CcSezrmhCgVTlgBS6lCxjVFqePqQUcNdYY1i98p4q4VQ9XfuJv
+         BubDB50Qfp/Vg3c36H7CR0XpRBBvSlFUsgBvXNJffVhSfDdyfphBHfGdRqzjzj+O04k6
+         EzcaycbfaKPp+Z7wXyA1wzRfsxkLNIpfBeoejwB9IfjDrHuIgUSU3Yc7psG32gPhazx4
+         HwwOQ0u7bJWqZwwylBEQJWRFr8L+VWLAmMXOmlsuQHs+ha/Yy0DJlNxZQsYW7F8CgFtM
+         F0GdqH1wvsOYXGLk12rhxokC9Ofw48duJTAIwfJ4tqbU29r4tOdd8R9x7xDTY/c+5MSX
+         BW9w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783165897; x=1783770697; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783166157; x=1783770957; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=xdJbE6XAu1Uoqs/QfLM4D2OYTpCg/DMaYs0TFywO+80=;
-        b=eQYYBx1v5FZfGlUFIbWZjVMkqobR0VlVIHXHrfgdnS6WZEW8Z+ff4Tt5kdHLsPK4KS
-         J7t+GCNxVQFydZJdk2xP3T9bvAbcBuqrGF6DttgLIJFap3dPIWAC6Y/uy6di89YKn/x6
-         lJiFeJnNIiSKKwHGpkjPebf8hfOOJBK4P3ysKhrvJhIlv+nARfy1Nxu62SbwYO13NMCw
-         0m2zZcOG3c6m3dOZ0QK60QD5hfxH2KqOxFqrJtsB22Ph85u/sQg5Crja55y7QlDQWb3F
-         Xfm9Au0YVHIEKmtlb/sYwpOARrsGsIkN/qfEQmM9o7m51ZOHxYAltAhmSca8PfRVURep
-         wTDA==
+        bh=abAnWFAqYOtaDvCgwQQLjkyxJjU8XmHQ3pWd7n4QL2s=;
+        b=LRLytZGRSNGl3kIevIzOjyREGAKvcclLkmYUqgRthQC0qMEsjFtiEbr0RxEvTN6qQx
+         iJqlmHkqZZp5MGdRuogNk+lfQaKXG8gPfi1x8T4lkbvSqD3/PX/8zk16sYSfvIoOrHHC
+         MOexMhf7H09JEFx2WAfHMlGKG98cuwwmm/efCqoGmr6aqob7/E25N6TOVF3e09bIfgVr
+         OemfZ5FWtvQgbq3HfWWUIdxyAHvlEJCoGxknrzS9wi/2+jbhmL1CUkdJcEWdA6QCA7du
+         HC48zpsuvXfqJ0D6Hy0S7r76lisrqXyH7xRWbxat88X04IpwYA0n2WTz/biWNRMmujOQ
+         L8Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783165897; x=1783770697;
+        d=1e100.net; s=20251104; t=1783166157; x=1783770957;
         h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xdJbE6XAu1Uoqs/QfLM4D2OYTpCg/DMaYs0TFywO+80=;
-        b=dWaF6223HhLHFEsGOxVNurjOwSTVjSjhBdz5scO/ril3T3G12CEvNcKHInENJAP1/0
-         L3fCXJlVvvxaa7PLJYJaaulJmw7Q4rbsuLVkxeMGfFOMBA5c8ps9eYKgCH/AEZANHZqn
-         eCdzgvzeQ1D2M+RV55GzsqpXhpYTxGRMZ4pgmEj7pZZvpFr2W1AkAnhAvyWqA+KGUfbe
-         F/vysDCDarFkPhLwWWL6FgACtuS4g/sZmuypivt8qIDVvrS0dgkgLsjDXCO421iLBSMi
-         H5m64buX+s9lFwyhD4ANbGxf6HRQVXNqnvw4Y6EeySlnmV3FS1OQZsonRxjjO3FeBjb3
-         N20w==
-X-Gm-Message-State: AOJu0YyL4UrQXa/V8cL8+Y86szY5ib7Md2/9LrdZIcJXW/nn6dUgc+Mi
-	X6GexT0gsyHGfmJ8Se19mbpOxNJDzBt5xfTHprUsuHs/Bs40Sz7k81QWiZmXaUIzyyTPg441eFE
-	L5yFJnjFN34flLDpodAlrlZYQn2BoikVdic+yZaE=
-X-Gm-Gg: AfdE7ck8fh7UiB3l5EmtV9fe/M0x11AocGX6EQCjw0zBv69RGc799hIhu+TLvZa3niR
-	JmwMFN3z3hkM7XJ+i5s5K0WiN3Pkipe3SZhI7xkoqJcyfbpdA/54VWAuFUX2TYztQsrxU6EMR+Z
-	+1bAFRb4xxDKEHTXFgirjCPWl/EvSJAFHfaaoUCToy4E3U2o+rv9Pb8KAtunh2rYEd4ysrQTi7n
-	ra2FtuxVBhvKXEP8pdoZzGhLmSu+dtARNo4wQQehqEtqd/JIAVyFmyKXUqtSNe0IkKEsgUlBg==
-X-Received: by 2002:a05:6820:4cc2:b0:69e:31fc:d134 with SMTP id
- 006d021491bc7-6a32f5a71f8mr1725001eaf.49.1783165897136; Sat, 04 Jul 2026
- 04:51:37 -0700 (PDT)
+        bh=abAnWFAqYOtaDvCgwQQLjkyxJjU8XmHQ3pWd7n4QL2s=;
+        b=CdBU+mqLBdsiB4NvR/rias/BBkmM7MuCCI4Q/4gOSZ3viEB0tVQ68qZHyFsY4stS6a
+         161h5TTDvtuogqHF/gVXhYaMKPGnFbW3RRomEmbRzIuF+4O3Pa1QcqOnNttcALnSKkIk
+         dYJ7jk+5i4j6c15J6k3mEY+nq2/vgad6Ho/ps5iUF3w1n/tUQ4MK198vS0iIN/Bb9h9m
+         dheX6NHBKw2hZukPF4UxreK2bHIdxa/TU9D/9wnS4Kl+WL+K+nwF8H9eaZcJycXD8q3x
+         t1ingaKDPg5FcYQ0I0YVAdtrfD0oZUTFllCeWySnjJlE0qPfTWKNhW9D4GkTD8UA3aBh
+         lSXQ==
+X-Gm-Message-State: AOJu0YzvPVnCLFcx7EtxsHhgMkJxOZX7cOhV1jJZBPCKiDc3e5x3vPJw
+	TqnwOziKAheZJAh5kkKxLuF2qacx73dSCzNYRVEri8HM6fi1hdNZYB/ReF7698aMKrDPk3Uq+10
+	sTS79dIyzHZ/PmjgnxIf4nJvmV538voX4+BhFoX4=
+X-Gm-Gg: AfdE7ckOJn6Go8+OBNIoVgb0EZuLg4/F7r1UtSeYlcXv2OIRcDdbT/8JoC7OjioFlMt
+	paaAHG7JO0Za9uzVxb/+WPB5sk0Zkj7ms/BSfiq6G2x0w9H8vbR5SKt2I/u48dA1edbGr7ECiHD
+	aGxmyKmSPzk8H1Bec57DJyPchBAntbMgRhTdj5IS4Hvgg9hwPqMphtgR45PiqpGqHaQdiW6yrmj
+	NDcGi4Vrie04krXwnXPjxU4BgR8/XRdQiVB89TLWOEDY9et9r/fpb1ilIBUk5i7GN68a1hrSw==
+X-Received: by 2002:a4a:ee98:0:b0:6a1:5531:726f with SMTP id
+ 006d021491bc7-6a32f5aad13mr1482047eaf.55.1783166156494; Sat, 04 Jul 2026
+ 04:55:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -94,29 +94,29 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 From: Nilesh Kumar <nileshcool@gmail.com>
-Date: Sat, 4 Jul 2026 17:21:15 +0530
-X-Gm-Features: AVVi8CcflUECQiiidmSJIPcOqQExwNkkKFgmRzpF6jfaPuB1kb-JMUAqX01lPlw
-Message-ID: <CA+=sdFyOcoR6ZcGxOkYqaaZUWUGWeftxCqY+V7VApZY7pHbCPg@mail.gmail.com>
+Date: Sat, 4 Jul 2026 17:25:35 +0530
+X-Gm-Features: AVVi8Cf82c8XyvJr3_B9UB7yL21kjt_j9gUPMTyCFY2xRVewhYV_vCUP-GQTQLs
+Message-ID: <CA+=sdFznhv0RqfNaYYgpit3bqo1kvqDQT6CZta8=ZHPUXZE7zQ@mail.gmail.com>
 Subject: ath11k_pci: QCNFA765 connection failure with PREV_AUTH_NOT_VALID /
  "Secrets were required" state machine crash on Fedora 44
 To: linux-wireless@vger.kernel.org
 Cc: ath11k@lists.infradead.org
-Content-Type: multipart/mixed; boundary="000000000000e0048f0655c7a999"
+Content-Type: multipart/mixed; boundary="0000000000005579780655c7b998"
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.06 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	MIME_BASE64_TEXT_BOGUS(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[multipart/mixed,multipart/alternative,text/plain,text/x-log];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:ath11k@lists.infradead.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38617-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38618-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~,4:+];
 	RCPT_COUNT_TWO(0.00)[2];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -124,27 +124,27 @@ X-Spamd-Result: default: False [-1.06 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_ATTACHMENT(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[nileshcool@gmail.com,linux-wireless@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	HAS_ATTACHMENT(0.00)[];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,mail.gmail.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,mail.gmail.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A11EF70772E
+X-Rspamd-Queue-Id: 97B79707759
 
---000000000000e0048f0655c7a999
-Content-Type: multipart/alternative; boundary="000000000000e0048d0655c7a997"
+--0000000000005579780655c7b998
+Content-Type: multipart/alternative; boundary="0000000000005579760655c7b996"
 
---000000000000e0048d0655c7a997
+--0000000000005579760655c7b996
 Content-Type: text/plain; charset="UTF-8"
 
 Hello,
@@ -153,13 +153,12 @@ I am experiencing a persistent Wi-Fi disconnection issue on Fedora 44 that
 eventually locks up the driver state machine until a full system reboot.
 The network adapter is a Qualcomm QCNFA765 using the ath11k_pci driver.
 
-[HARDWARE & OS DETAILS]
 - Distro: Fedora 44
 - Wireless Adapter: Qualcomm Technologies, Inc QCNFA765 [17cb:1103] (rev 01)
 - Subsystem: Lenovo Device [17aa:9309]
 - Driver: ath11k_pci
 
-[PROBLEM DESCRIPTION]
+PROBLEM DESCRIPTION
 The interface disconnects after a few sessions. Once disconnected,
 NetworkManager and wpa_supplicant enter a state-machine loop where they are
 unable to re-associate, repeatedly throwing "Secrets were required, but not
@@ -171,18 +170,15 @@ driver appears to remain in a glitched state where it refuses to pass the
 authentication keys to the AP. Only a full system restart resolves the
 condition temporarily.
 
-[RELEVANT LOG SNIPPETS]
+RELEVANT LOG SNIPPETS
 logs generated are attached with the mail.
-
-
 
 
 -- 
 Warm regards,
 Nilesh Kumar
-Call Me @ +919434345530
 
---000000000000e0048d0655c7a997
+--0000000000005579760655c7b996
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -190,10 +186,10 @@ Content-Transfer-Encoding: quoted-printable
 Fi disconnection=20
 issue on Fedora 44 that eventually locks up the driver state machine=20
 until a full system reboot. The network adapter is a Qualcomm QCNFA765=20
-using the ath11k_pci driver.<br><br>[HARDWARE &amp; OS DETAILS]<br>- Distro=
-: Fedora 44<br>- Wireless Adapter: Qualcomm Technologies, Inc QCNFA765 [17c=
-b:1103] (rev 01)<br>- Subsystem: Lenovo Device [17aa:9309]<br>- Driver: ath=
-11k_pci<br><br>[PROBLEM DESCRIPTION]<br>The
+using the ath11k_pci driver.<br><br>- Distro: Fedora 44<br>- Wireless Adapt=
+er: Qualcomm Technologies, Inc QCNFA765 [17cb:1103] (rev 01)<br>- Subsystem=
+: Lenovo Device [17aa:9309]<br>- Driver: ath11k_pci<br><br>PROBLEM DESCRIPT=
+ION<br>The
  interface disconnects after a few sessions. Once disconnected,=20
 NetworkManager and wpa_supplicant enter a state-machine loop where they=20
 are unable to re-associate, repeatedly throwing &quot;Secrets were required=
@@ -205,20 +201,20 @@ or
 NetworkManager/wpa_supplicant, and manually bringing the link up/down,=20
 the driver appears to remain in a glitched state where it refuses to=20
 pass the authentication keys to the AP. Only a full system restart=20
-resolves the condition temporarily.<br><br>[RELEVANT LOG SNIPPETS]<br>logs =
-generated are attached with the mail.</div><div><br></div><font color=3D"#8=
-88888"><div><br></div></font><br clear=3D"all"></div><br><span class=3D"gma=
-il_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signatur=
-e" data-smartmail=3D"gmail_signature"><div dir=3D"ltr"><div>Warm regards,</=
-div><div>Nilesh Kumar</div>Call Me @ +919434345530<br></div></div></div>
+resolves the condition temporarily.<br><br>RELEVANT LOG SNIPPETS<br>logs ge=
+nerated are attached with the mail.</div><font color=3D"#888888"></font><br=
+ clear=3D"all"></div><br><span class=3D"gmail_signature_prefix">-- </span><=
+br><div dir=3D"ltr" class=3D"gmail_signature" data-smartmail=3D"gmail_signa=
+ture"><div dir=3D"ltr"><div>Warm regards,</div><div>Nilesh Kumar</div></div=
+></div></div>
 
---000000000000e0048d0655c7a997--
---000000000000e0048f0655c7a999
+--0000000000005579760655c7b996--
+--0000000000005579780655c7b998
 Content-Type: text/x-log; charset="US-ASCII"; name="logs.log"
 Content-Disposition: attachment; filename="logs.log"
 Content-Transfer-Encoding: base64
-Content-ID: <f_mr6awtya0>
-X-Attachment-Id: f_mr6awtya0
+Content-ID: <f_mr6b28zc0>
+X-Attachment-Id: f_mr6b28zc0
 
 c3VkbyBpdyBkZXYgd2xwMXMwIHNldCBwb3dlcl9zYXZlIG9mZgpzdWRvIHN5c3RlbWN0bCByZXN0
 YXJ0IE5ldHdvcmtNYW5hZ2VyCltzdWRvXSBwYXNzd29yZCBmb3IgbmlsZXNoOgpbbmlsZXNoQGZl
@@ -2051,5 +2047,5 @@ Y3RpdmF0aW9uIGZhaWxlZDogU2VjcmV0cyB3ZXJlIHJlcXVpcmVkLCBidXQgbm90IHByb3ZpZGVk
 CkhpbnQ6IHVzZSAnam91cm5hbGN0bCAteGUgTk1fQ09OTkVDVElPTj04OGMwMTFhMS1lNThmLTQw
 MjMtODY2Yi1hMGQ1OWFhMGY4NTEgKyBOTV9ERVZJQ0U9d2xwMXMwJyB0byBnZXQgbW9yZSBkZXRh
 aWxzLgpbbmlsZXNoQGZlZG9yYSBQaWN0dXJlc10kCg==
---000000000000e0048f0655c7a999--
+--0000000000005579780655c7b998--
 
