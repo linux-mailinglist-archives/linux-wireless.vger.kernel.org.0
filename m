@@ -1,90 +1,90 @@
-Return-Path: <linux-wireless+bounces-38623-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38624-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id E7BCEpRjSWpl1AAAu9opvQ
-	(envelope-from <linux-wireless+bounces-38623-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 21:48:36 +0200
+	id LacWAKBjSWpn1AAAu9opvQ
+	(envelope-from <linux-wireless+bounces-38624-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 21:48:48 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20AA27084B7
-	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 21:48:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A71B7084BF
+	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 21:48:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="elEA/Ldl";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SPTLu0Ca;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38623-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38623-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38624-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38624-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8FBCB300915B
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jul 2026 19:48:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 038CF3022602
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jul 2026 19:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0479C2264CA;
-	Sat,  4 Jul 2026 19:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDF12C0303;
+	Sat,  4 Jul 2026 19:48:45 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78887282F01
-	for <linux-wireless@vger.kernel.org>; Sat,  4 Jul 2026 19:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A0E2E2DD2
+	for <linux-wireless@vger.kernel.org>; Sat,  4 Jul 2026 19:48:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783194513; cv=none; b=eTf9xP73LUq4SeekXCNj+XfyfFuojc04H8CUL6MAnF/YQ863I/Idw6krI/EW8Lc9mNYS9nt0Fo3uYEIM1GbwCVZLX55xYOlRDrW1A1hcjWliXvMmxU0tXe8vLBKIPVwTUMTqB0/nLwNoyUhMpV/NpHohcP8zgtAmCETjXz7uZr0=
+	t=1783194525; cv=none; b=l7Zoq1NVXlPHJY6Tyfn5D5ikwTGIcv8SA90E8+zzHjGUI35Z4PBXob1BXsN6d/mm3v9k+w8W/aDzcHlqBJO0pcaWZHzlQnLr3fakBWukBAvARm5Rtb+VVTRI4yxjZ0JlRmTSo+OXGtqK+9xMPPpPxr9hdbYVtSumFqEqi14PxKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783194513; c=relaxed/simple;
-	bh=+TO/qNl/0FdIFuKVmQ+xVp/v9nqEpZkPw4eUZgFqTbc=;
+	s=arc-20240116; t=1783194525; c=relaxed/simple;
+	bh=DjnuPL2bW88foM2JsjICeRBHpRdyyJm2pS00YULmmkU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gKgc3mNuvzAc6WRdO4GfyApmkK6cCu/C8N9V8PCR0nP4juIEoLEzEy2uFa7b9/C4FfGoqfqEtjU96CrIXNshl7S/lcmlRy1KjPIoNwZhwc2h6eI4arhMS0KcCsZD7S6DC1ZsFEC/OfEW+ALXmVVmuwHawrZBcR1cX/DCN/RCU/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=elEA/Ldl; arc=none smtp.client-ip=209.85.128.54
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-493c19bad03so14658785e9.2
-        for <linux-wireless@vger.kernel.org>; Sat, 04 Jul 2026 12:48:32 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=SfoSulWlA97pZ1PeTpFNsBw+Xv6uJWDjYm17bGE1fkc+LQcquQXY3XAM9jsuC5wDhMcvktX/TZHz5g7Z7aWq5MbC72/y6AjZdgjAjURXmlO5/vw4X1YabPvQeojc6Wp305WVwl79SVJqNi3qq3x8i9p0/LcbO7+flUISMXmrmYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SPTLu0Ca; arc=none smtp.client-ip=209.85.128.41
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-493bc8fda98so17885535e9.0
+        for <linux-wireless@vger.kernel.org>; Sat, 04 Jul 2026 12:48:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783194511; x=1783799311; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783194522; x=1783799322; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=lEyqJwfyH2jgv+Eu0NdsBWQhxvi9pBURuWdxLLJyU20=;
-        b=elEA/Ldlqs3ZSefXbR+6alF5CrW4gbGw4WXoVOe/ejRJwAI+MGxpgRkEq2F406VQK/
-         ssrKgOwVKx/4Vb8ArzibwspQS0KjHL/j8rkShaWu5N5aonpuMd8F+WVsvmniV9GXmqHd
-         Zi1Cj2/aESkp49KDXiZ/oLl8OI62RVYJnr+9lL9H7AiCIZnihPBG0Nt3UrOkGw6YQlpb
-         Wg5OrM+kv0+emd5wmiAjo7Vq0R4C7OAGzbkkV+JBAWkt4g8fuSt11h3ughJmY30sRgvg
-         g3ORp3QffDgWM+f7wfbEq/PysPph8TVLKWSC2w/SMAJ0Eo6Jvyz6dVNrW7Bhwtu4h2I1
-         Mpgg==
+        bh=jajvi8AVqAQfTHFADtWCFML6DSVMe8XFUK0J1hsMK+M=;
+        b=SPTLu0CafzNMLpgd75gJ/8j5hUFQP+S/b0OolPxvK7xQwvSJySBYt365+dTPY3ff/F
+         i86gPeaqp9TGiI5bQySk97/O++ZptIFGpWTI9hZ96YdsLG01ki/p7mwqQ99Wb7wRW0sA
+         QEyTfBkUPg0tFJiF0DWdLbsAUuIQv6UUN6iWmX/ezNlM1UDc4llB00w0cmVnc1R6ZkPw
+         ioKnaCSvHpEzVj3X2BynPMTd9ukYsexVxidfZYs3p8gB5eOwaNnXH+xn3XWojz+G3CHW
+         N7rWJhNV7bOOoPhLjMhBM8tSNWHL4NHDl/OAAyYDpMknMsM8LbAjXMfJC/37rO2bQE1h
+         RePA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783194511; x=1783799311;
+        d=1e100.net; s=20251104; t=1783194522; x=1783799322;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lEyqJwfyH2jgv+Eu0NdsBWQhxvi9pBURuWdxLLJyU20=;
-        b=UHDKRqhcoZGShg8CZ5bLhSlT5ISRCZBQrC4v8sS2J6YJGMpq4FFxkgRovzZQvnIdZj
-         yRnXyQmdvF4FFVUrf2ck6U9Ad6xtHqzL2WTzwZW2sMMuc9lYEoLZ8lOpuEe+5n+JptTC
-         t/G+8mcD0Av5ujUyuDx/4uRAm0H7hAAfsrb5D9ERkcjcKf0tmqmYC6ewKIH26fRl88NL
-         u2vooIQzLJJzc2nPdHG/R38dMq5Cx8h41ceuEg3ufVy8COciF+YUZNQJoFelTm5NhiOI
-         NbuPkMYK2Clk/Uz3fmZ8nd0ccYPDJAL7ExuTUtTwaG00Oz9zVwCwqHOrh00bHj3sVV8e
-         1QOw==
-X-Forwarded-Encrypted: i=1; AFNElJ8BcxVmFt5RTab9wp6SFLCNMGV2DK+Tc62JWIUJuL2uUpvxFogJTRwv/dz3LvvAvuR88HYUjti3fHQ0Xwdv2A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzb8F2EMPNSe96ZCunVRpT+v7CknqcZBPc3/QI1EcZgo8abp5uE
-	LCIQL2ZoErgxgtti2Ey0RDd5ht6aI7AbvNPn0z+hhcqTIxF/2XVO+EPf
-X-Gm-Gg: AfdE7clyHJtc6qyZuJiVa9OMsUoQNAR9+uHXiPKvSkAKk31W6WySn28rhuTaLbeTO8x
-	tmLZ7V/tIAtXN5qHzrpJLvvpaiStFoNtbyZk81rg+0HAox1Y//DGlV16fYrnay1yjgwdNxsHmZL
-	RSPyST1jkefWIelmWJvu4JQaQIpfVO+w1ZJVqxRsONi65CgHWEqHprC7wwyzkIKC9CknvE6pszB
-	KE85kKWYFlEDmFviatr3fwX1KvkdDj3nvvAfS/10AOrK7RFzJvds1yuoXqvHKYhHQPVWTgQwSGC
-	IFTKpOJik8LpJF4wDRm+42RsendzWPYi2oyHUK+b3KEYXa3RfjOreh0GVuIscpuRWVcrZ5gNCLv
-	JEl2ud7I88xhkVVSfxzpqDMjIvv6bpynmMH5MD8bzl38R577nso3HdUWZAW7dJYv3tQ20R8m+IW
-	ogb0EPf+taqNCfMNhUR78KZ3RZXdmNUDiZhDvZI02ZVL7MBpWA9nfP3wytRXpYidbHdATpPSHoX
-	KPTAgZqPgQ=
-X-Received: by 2002:a05:600c:8711:b0:493:aa24:792b with SMTP id 5b1f17b1804b1-493d11f15c6mr45985435e9.22.1783194510915;
-        Sat, 04 Jul 2026 12:48:30 -0700 (PDT)
+        bh=jajvi8AVqAQfTHFADtWCFML6DSVMe8XFUK0J1hsMK+M=;
+        b=nOmJ4EVbo6jVnCboHvFjlZrScXe4QALgvjnjNemGx1AGVR1WOR68x8qjITtc3/rHjk
+         cdBbwqxv5t/uBN8jouggC+mCLAZ/4WJE1FdgCo1oVT4nbpZwfqfMYQZ3oIGESVh9SKI1
+         Fl+Tm6q88l8QvV1cIzwwGZk4GjDMMxOk/GonlOXsw3CoHz62BCQIva+/Lg7whSQJX4vJ
+         FiFED4vSfG/xCn4nLmxtJxzlutJMvgvEEnTp807FT+s8KLEyWdotjrSP54ChZ2i4MMTV
+         LVduIzKhs/VL9ZZwk0TH3sD+zXQfMq/tSYKBvjrdWIjhKzclS5ZGekay7LO9fQm4hH4r
+         c/aA==
+X-Forwarded-Encrypted: i=1; AFNElJ8pz/xfhX7Hf6VAtocNIgwRtm05hXLUkYiFru5Sq8M8gBjRquoSAAjauvpetDDDv7L4qVHIzshkOODLoDGB7A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVGidZA7E4UiyBZD1p2q4I/e98M0C7a2uX9X5CnshrReEzhxiX
+	eSkMbOK36wospYy8r+K54mXwENlclWZZpAikQ+RK0dx77iw/agfLpetwysk6AQ==
+X-Gm-Gg: AfdE7cle/4vUxLLlutOv1GRoFLajzybht4uiVZMV1NbKSr5IgFjhhlKyStPZhlhoAWq
+	VhyaarwFBNig4fl8h1QeETQJuW4qoe1XxvaNMCMORohaVvChDUQcn8DqQGuc6rCT7v24FPWRPRB
+	9oPVzbOmKa9q7b9ssrWc9/TOalC8ZYFSsv7qKRTaxRg/SSLt58H47Z0L+xIpDmlgVX8Ao8px9G/
+	znmMaKtTDhS6JbbTkuhGpRHKIAyN+lSGJeHRodQwdFptFFv8rzDhBmbB99CeTCEzRvDgnrnjJ9M
+	DsZ+B/Xz215Pu1dD038oloeA0HiH6y/XYeBLWqQ7M9OjzP90T0HLzy+l62tNVHlsupY/1zsq7BQ
+	tuFrksZ89wOLVCBIAOLdc8zGiUC3sYE252GY/QNwd/lczw+Pxg0RetYwRTFH0Lm5jNMwadtveYL
+	wb0Ycbj7NYcCU0Wao1kqx2KQUQGcnMu7h/r8szNpfBLO8W0Qo/gf52VrYrq8nO/yGlE6zlKCo6d
+	+7a8fRNzfM=
+X-Received: by 2002:a05:600c:5487:b0:493:c389:d436 with SMTP id 5b1f17b1804b1-493d11d7b91mr48863315e9.9.1783194522196;
+        Sat, 04 Jul 2026 12:48:42 -0700 (PDT)
 Received: from shift (p200300d5ff229f0050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff22:9f00:50f4:96ff:fe46:beef])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c63bfba1sm264034355e9.15.2026.07.04.12.48.30
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa039ae4fsm10649869f8f.18.2026.07.04.12.48.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Jul 2026 12:48:30 -0700 (PDT)
+        Sat, 04 Jul 2026 12:48:41 -0700 (PDT)
 Received: from localhost ([127.0.0.1])
 	by shift with esmtp (Exim 4.99.4)
 	(envelope-from <chunkeey@gmail.com>)
-	id 1wg6Ll-00000000JoV-1nGR;
-	Sat, 04 Jul 2026 21:48:29 +0200
-Message-ID: <e6cd0ff1-a715-4a6e-b5b7-175ddbc9b2d5@gmail.com>
-Date: Sat, 4 Jul 2026 21:48:29 +0200
+	id 1wg6Lw-00000000Joz-1u1n;
+	Sat, 04 Jul 2026 21:48:40 +0200
+Message-ID: <fe1630ad-07fa-48cc-8ca1-72dd7a0e088a@gmail.com>
+Date: Sat, 4 Jul 2026 21:48:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -92,18 +92,18 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] wifi: carl9170: fix OOB read from off-by-two in TX
- status handler
+Subject: Re: [PATCH v3 3/3] wifi: carl9170: fix buffer overflow in rx_stream
+ failover path
 To: Tristan Madani <tristmd@gmail.com>,
  Christian Lamparter <chunkeey@googlemail.com>
 Cc: Johannes Berg <johannes@sipsolutions.net>,
  linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
  Tristan Madani <tristan@talencesecurity.com>
 References: <20260421134929.325662-1-tristmd@gmail.com>
- <20260421134929.325662-3-tristmd@gmail.com>
+ <20260421134929.325662-4-tristmd@gmail.com>
 Content-Language: de-DE
 From: Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <20260421134929.325662-3-tristmd@gmail.com>
+In-Reply-To: <20260421134929.325662-4-tristmd@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
@@ -111,14 +111,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38623-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38624-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:tristmd@gmail.com,m:chunkeey@googlemail.com,m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:tristan@talencesecurity.com,m:chunkeey@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[chunkeey@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -137,50 +137,53 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,talencesecurity.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,talencesecurity.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 20AA27084B7
+X-Rspamd-Queue-Id: 4A71B7084BF
 
 On 4/21/26 3:49 PM, Tristan Madani wrote:
 > From: Tristan Madani <tristan@talencesecurity.com>
 > 
-> The bounds check in carl9170_tx_process_status() uses
-> `i > ((cmd->hdr.len / 2) + 1)` which is off by two, allowing
-> 2 extra iterations past valid _tx_status entries when the firmware-
-> controlled hdr.ext exceeds hdr.len/2. Fix by using the correct
-> comparison `i >= (cmd->hdr.len / 2)`.
+> The failover continuation in carl9170_rx_stream() copies the full tlen
+> from the second USB transfer instead of capping at rx_failover_missing
+> bytes. When both transfers are near maximum size, the total exceeds the
+> 65535-byte failover SKB, triggering skb_over_panic.
+> 
+> Limit the copy size to the missing byte count.
 > 
 > Fixes: a84fab3cbfdc ("carl9170: 802.11 rx/tx processing and usb backend")
 > Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 Acked-by: Christian Lamparter <chunkeey@gmail.com>
 
+
 > ---
 > Changes in v3:
->    - Regenerated from wireless-next with proper git format-patch to
->      produce valid index hashes (v2 had post-processed index lines).
+>    - Regenerated from wireless-next with proper git format-patch.
 > 
 > Changes in v2:
->    - No code changes from v1.
+>    - Use min_t() instead of separate if-check, per Christian Lamparter.
 > 
->   drivers/net/wireless/ath/carl9170/tx.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   drivers/net/wireless/ath/carl9170/rx.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/wireless/ath/carl9170/tx.c b/drivers/net/wireless/ath/carl9170/tx.c
-> index 59caf1e4b1589..06aaf281655b1 100644
-> --- a/drivers/net/wireless/ath/carl9170/tx.c
-> +++ b/drivers/net/wireless/ath/carl9170/tx.c
-> @@ -692,7 +692,7 @@ void carl9170_tx_process_status(struct ar9170 *ar,
->   	unsigned int i;
+> diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
+> index f6855efc05c0f..ccadc46385240 100644
+> --- a/drivers/net/wireless/ath/carl9170/rx.c
+> +++ b/drivers/net/wireless/ath/carl9170/rx.c
+> @@ -918,7 +918,9 @@ static void carl9170_rx_stream(struct ar9170 *ar, void *buf, unsigned int len)
+>   				}
+>   			}
 >   
->   	for (i = 0;  i < cmd->hdr.ext; i++) {
-> -		if (WARN_ON(i > ((cmd->hdr.len / 2) + 1))) {
-> +		if (WARN_ON(i >= (cmd->hdr.len / 2))) {
->   			print_hex_dump_bytes("UU:", DUMP_PREFIX_NONE,
->   					     (void *) cmd, cmd->hdr.len + 4);
->   			break;
+> -			skb_put_data(ar->rx_failover, tbuf, tlen);
+> +			skb_put_data(ar->rx_failover, tbuf,
+> +			     min_t(unsigned int, tlen,
+> +				   ar->rx_failover_missing));
+>   			ar->rx_failover_missing -= tlen;
+>   
+>   			if (ar->rx_failover_missing <= 0) {
 
 
