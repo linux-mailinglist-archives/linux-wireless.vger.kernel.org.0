@@ -1,194 +1,138 @@
-Return-Path: <linux-wireless+bounces-38607-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38608-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lpWxKRo7SGrpnwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-38607-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 00:43:38 +0200
+	id CJH4FZldSGr9pQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-38608-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 03:10:49 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B264E7060D9
-	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 00:43:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F676706568
+	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 03:10:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=Fp+lQsYh;
-	dmarc=pass (policy=reject) header.from=acm.org;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38607-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38607-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38608-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38608-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 23207304B04D
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jul 2026 22:43:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56E333017267
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jul 2026 01:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E29259C80;
-	Fri,  3 Jul 2026 22:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E268176238;
+	Sat,  4 Jul 2026 01:10:46 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEB61F4631
-	for <linux-wireless@vger.kernel.org>; Fri,  3 Jul 2026 22:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DE8217659;
+	Sat,  4 Jul 2026 01:10:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783118614; cv=none; b=GPpbFYJkC3B1xyQko0ZZnRugS/yUL1bGHb+1Cw2lQwOJ1BtmtpXHTQVLK39qrc9M1fCzi739ld3vrNLkaJVmYza5++q0JaS6CSntI6ifVCMPEmunrfh871O0YvH0NexBjaNyP/TQECQ5dcfslydEZWWBNJU5McOUrrzkRpUBvYc=
+	t=1783127446; cv=none; b=SBVGAbEzvmKGV5f18mA4a9lrERnF/XrBFNL0e5SxEERSiSueB3GVH6R2tcEDPhVdTXyNh5t7WN3GTKh2/hXzZFIeL/IrvXA040m5rJDW/HCGfDDa/f2O1lo0Tr49E6ir+sKZ32BVRiUNnz7xG0GWVNv4fVQXQcILsf0/chRhHqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783118614; c=relaxed/simple;
-	bh=eoZe2aeMSGB0yLehGKbPfX7pLT30XOJhOwGSvyjPs40=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=TsGkAw/fVlzRj2Xyu2NagJLzGH7EWqldmmyJaDtNPME/RQmly/SsN4ICz2Npt8gll1hS8A1KZ1Z+/Gufl4DG5LLjic2XONr7JEuLwDLS+D4xVOBPnMOO+CmfKjaUW8MTM+qnuAsD6y7cojpQ2L+HCKj9MKMOWzYxFSo8Y2Bubu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=Fp+lQsYh; arc=none smtp.client-ip=199.89.1.16
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4gsTLX4mRWzlhH0B
-	for <linux-wireless@vger.kernel.org>; Fri,  3 Jul 2026 22:43:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-type:content-type:subject:subject:message-id:date:date
-	:from:from:mime-version:received:received:received; s=mr01; t=
-	1783118611; x=1785710612; bh=9crJ0MXL8cyvtFFWI/xFl//GhDodklwUxXl
-	E6rcG8t4=; b=Fp+lQsYhT38vmjqS+Jw3W1E0eddkMzTFGklANH0yBpdpwlyfrcC
-	RPtJ6j+S7KKjBmwPhZZdRQEWam3fJ/T+bhXaBx8BUc0QjHREfFy9xyaVDrrwwTZA
-	8U82jlvq6HuFtkFdvVvJeufSuiyD6mLV3coA64VcbYcIkpgmY0Q5wqOmKyHZCrrB
-	shCTJOqogEGQEJ2z4yLnetoftlHSviv5l+gblzcQK1xHugoON1l1fCNLtT4r0Lwb
-	39PtTa3Rg5odWuMBzm4ZI/Uf0Ijt4Eon6p3LhGEs1zErDf+ALeRq/QnTFzHbjvJn
-	RL0nLB9kfg6Jqy9f7OdG4PhsSHDHhijzK2Q==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id TYu0dcLdx-YU for <linux-wireless@vger.kernel.org>;
- Fri,  3 Jul 2026 22:43:31 +0000 (UTC)
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bogdan.nicolae@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4gsTLW2yTfzlfl8L
-	for <linux-wireless@vger.kernel.org>; Fri,  3 Jul 2026 22:43:31 +0000 (UTC)
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-698c1df9651so172670a12.0
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Jul 2026 15:43:31 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzXlDjIaOyMW7X/MFKiwjnh7pRjWbd/tTVcswW8yipErPu8nKj/
-	YWaeECkBppfJ6jaEZ7FTglFhKKCkgyq6g5vz6F1S2in6KIDo/FgQ3Ya9DbcJ3JkuH3aiQ/3n9Hh
-	JuV8gg7TaJ8gPVMo0qH1wLdjfjeHRnBA=
-X-Received: by 2002:a17:906:7952:b0:beb:3449:5fff with SMTP id
- a640c23a62f3a-c12e3cb2fe1mr35273866b.0.1783118609795; Fri, 03 Jul 2026
- 15:43:29 -0700 (PDT)
+	s=arc-20240116; t=1783127446; c=relaxed/simple;
+	bh=wFB6vIweQGWlEM9z3yZCzg5uHxXxNlG0khSVuyXCQCw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ft1+GOzBhu8VgWWr9HyNtFiqTWPmrocA2wR3JLK39ieBaiq5aqtMeRFda9CvbbAl7H+W6Q5mowxXZLOiu48l/3uKqScUkX/URCC0kfOIqKh8rGZ6PnrNx14TNq5r++wjxtF83zJH4eNNoNWcXrA/WH3UPqkLifatzK1ceaMzK3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Received: from localhost.localdomain (unknown [111.196.245.140])
+	by APP-05 (Coremail) with SMTP id zQCowABX0vWSXUhqPp_EFg--.11755S2;
+	Sat, 04 Jul 2026 09:10:42 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>
+Subject: [PATCH] wifi: ath11k: validate regulatory capability phy_id
+Date: Sat,  4 Jul 2026 09:10:40 +0800
+Message-ID: <20260704011040.26233-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Bogdan Nicolae <bogdan.nicolae@acm.org>
-Date: Fri, 3 Jul 2026 17:39:51 -0500
-X-Gmail-Original-Message-ID: <CA+ORkNQPL_qdLOSC2Ae0Y7-wihKVRaaO-DUajN-3rpjzyoEtjg@mail.gmail.com>
-X-Gm-Features: AVVi8CdXe3pSxerqc5jsVpcP3oM9iW5EoM3Wh0UnMLjs3qoByk61FbqQ8rG9ylA
-Message-ID: <CA+ORkNQPL_qdLOSC2Ae0Y7-wihKVRaaO-DUajN-3rpjzyoEtjg@mail.gmail.com>
-Subject: [PATCH] brcmfmac-cyw: clean up PMKID and cookie code
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
-	brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABX0vWSXUhqPp_EFg--.11755S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7XrWUZF1ftrW7Cw1fuw4rKrg_yoWDGrX_Gr
+	1YvF1q9w18G3WjqryUKF4UZr9a9rsFgas8WFyqvFWfCan7CrsrAr95Ar4YyrZ5uFyIvrn5
+	Cr15ZrWxZ34j9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb4AFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
+	6r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
+	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCI
+	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
+	AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_
+	Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbb_-P
+	UUUUU==
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[acm.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
-	R_DKIM_ALLOW(-0.20)[acm.org:s=mr01];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38607-lists,linux-wireless=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,acm.org:from_mime,acm.org:email,acm.org:dkim];
-	FORGED_SENDER(0.00)[bogdan.nicolae@acm.org,linux-wireless@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:arend.vanspriel@broadcom.com,m:linux-wireless@vger.kernel.org,m:brcm80211@lists.linux.dev,m:brcm80211-dev-list.pdl@broadcom.com,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:jjohnson@kernel.org,m:linux-wireless@vger.kernel.org,m:ath11k@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:pengpeng@iscas.ac.cn,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38608-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[acm.org:+];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER(0.00)[pengpeng@iscas.ac.cn,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bogdan.nicolae@acm.org,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:from_mime,iscas.ac.cn:email,iscas.ac.cn:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B264E7060D9
+X-Rspamd-Queue-Id: 9F676706568
 
-Avoid setting packet_id to cookie, which is always 0. Instead, use an
-increasing atomic counter. Avoids mismatches of completion events later
-in brcmf_notify_mgmt_tx_status, where packet_id != vif->mgmt_tx_id is
-checked.
+ath11k_wmi_tlv_ext_hal_reg_caps() copies firmware regulatory
+capability records into soc->hal_reg_cap[] using reg_cap.phy_id as
+the destination index.  The loop count is bounded by num_phy, but the
+phy_id embedded in each record is not checked against the fixed
+MAX_RADIOS-sized destination array.
 
-Also, zero out auth_status on initialization. Otherwise, garbage will
-leak from the stack to the firmware (when bssid is less than 32 bytes
-and/or when params->pmkid is set). Then, pass the params->pmkid to the
-firmware (without it, the firmware caches a garbage PMKID on successful
-authentication and denies a subsequent association request that includes
-the PMKID).
+Reject firmware records whose phy_id does not fit soc->hal_reg_cap[]
+before copying the parsed capability.
 
-Signed-off-by: Bogdan Nicolae <bogdan.nicolae@acm.org>
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 ---
-.../net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c  | 9 +++++++--
-1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-index ce09d44fa..06e5dc79c 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-@@ -2,6 +2,7 @@
-/*
- * Copyright (c) 2022 Broadcom Corporation
- */
-+#include <linux/atomic.h>
-#include <linux/errno.h>
-#include <linux/types.h>
-#include <core.h>
-@@ -23,6 +24,8 @@
-#define MGMT_AUTH_FRAME_DWELL_TIME     4000
-#define MGMT_AUTH_FRAME_WAIT_TIME      (MGMT_AUTH_FRAME_DWELL_TIME + 100)
-
-+static atomic_t brcmf_cyw_mgmt_tx_id = ATOMIC_INIT(0);
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -4856,6 +4856,12 @@
+ 		if (ret) {
+ 			ath11k_warn(soc, "failed to extract reg cap %d\n", i);
+ 			return ret;
++		}
 +
-static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
-                                struct cfg80211_crypto_settings *crypto)
-{
-@@ -155,7 +158,7 @@ int brcmf_cyw_mgmt_tx(struct wiphy *wiphy, struct
-wireless_dev *wdev,
++		if (reg_cap.phy_id >= ARRAY_SIZE(soc->hal_reg_cap)) {
++			ath11k_warn(soc, "invalid reg cap phy_id %u\n",
++				    reg_cap.phy_id);
++			return -EINVAL;
+ 		}
+ 
+ 		memcpy(&soc->hal_reg_cap[reg_cap.phy_id],
 
-       memcpy(&mf_params->da[0], &mgmt->da[0], ETH_ALEN);
-       memcpy(&mf_params->bssid[0], &mgmt->bssid[0], ETH_ALEN);
--       mf_params->packet_id = cpu_to_le32(*cookie);
-+       mf_params->packet_id =
-cpu_to_le32(atomic_inc_return(&brcmf_cyw_mgmt_tx_id));
-       memcpy(mf_params->data, &buf[DOT11_MGMT_HDR_LEN],
-              le16_to_cpu(mf_params->len));
-
-@@ -200,7 +203,7 @@ brcmf_cyw_external_auth(struct wiphy *wiphy,
-struct net_device *dev,
-{
-       struct brcmf_if *ifp;
-       struct brcmf_pub *drvr;
--       struct brcmf_auth_req_status_le auth_status;
-+       struct brcmf_auth_req_status_le auth_status = {};
-       int ret = 0;
-
-       brcmf_dbg(TRACE, "Enter\n");
-@@ -208,6 +211,8 @@ brcmf_cyw_external_auth(struct wiphy *wiphy,
-struct net_device *dev,
-       ifp = netdev_priv(dev);
-       drvr = ifp->drvr;
-       if (params->status == WLAN_STATUS_SUCCESS) {
-+               if (params->pmkid)
-+                       memcpy(auth_status.pmkid, params->pmkid,
-WLAN_PMKID_LEN);
-               auth_status.flags = cpu_to_le16(BRCMF_EXTAUTH_SUCCESS);
-       } else {
-               bphy_err(drvr, "External authentication failed: status=%d\n",
---
-2.54.0
 
