@@ -1,218 +1,172 @@
-Return-Path: <linux-wireless+bounces-38626-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38627-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bbyNBFZoSWoJ1gAAu9opvQ
-	(envelope-from <linux-wireless+bounces-38626-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 22:08:54 +0200
+	id 5GVEJsLqSWrt8QAAu9opvQ
+	(envelope-from <linux-wireless+bounces-38627-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 05 Jul 2026 07:25:22 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE8270864F
-	for <lists+linux-wireless@lfdr.de>; Sat, 04 Jul 2026 22:08:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E923E709016
+	for <lists+linux-wireless@lfdr.de>; Sun, 05 Jul 2026 07:25:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="h/reNsFp";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JGmJj32G;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38626-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38626-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38627-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38627-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BD3373005AA4
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jul 2026 20:08:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B6973010511
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jul 2026 05:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0B72C21D8;
-	Sat,  4 Jul 2026 20:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5343526738C;
+	Sun,  5 Jul 2026 05:25:18 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A08C26CE39
-	for <linux-wireless@vger.kernel.org>; Sat,  4 Jul 2026 20:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE0B2EBBB9
+	for <linux-wireless@vger.kernel.org>; Sun,  5 Jul 2026 05:25:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783195729; cv=none; b=cgp/I1ZllrB8jkrSVyS3PjNif9ooMP+0Do+AOPdkbrXm5P33djggjFJMELa4CWX4AF04xENxCoSEyIduQpiXYuGu449epaGTlScQ66jOvDq4Njkkprpcvj11pTQ1OUnF4mmXqDlJtC6UE8wY3271aA1BlNIylQoQyaWAzcVbczw=
+	t=1783229118; cv=none; b=II2pslpbMaWwqBqA4qsl2BARl51zt+ksc0GB+3slvUO3JCxbbAiHhuuyMHMF66WZeB1KugbmUlYsP+AJ5Y5ayZQ9MHazyoZW0iF8dc+qUzOHPNLY7gMxT4/0k2nWOls9Bah+DFv4WXMcbvStBgSySKscscSWMxD3Rl/TRXOg9hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783195729; c=relaxed/simple;
-	bh=/mljatL7jfR8u/fC5oFpIrgmq2oqa5zg1DjRnBq+lO0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=II3WQGEoslUBP5k+LTw/RIJ0+lTKamcFRXgee6MDLwJiZ5G3oXNe26xfjlAIIO9OI8h0pOf5NkXV4H9UZUwCCcfMgbDiWjZ9vpXFsXj1LOxmAp+F+DHssygakr3NmwVJsdpcD8WCj+wGAiKUm/F7q9VSSJuzJR4RRdgvUr7Gz/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h/reNsFp; arc=none smtp.client-ip=209.85.128.48
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-493c486f012so7059505e9.3
-        for <linux-wireless@vger.kernel.org>; Sat, 04 Jul 2026 13:08:48 -0700 (PDT)
+	s=arc-20240116; t=1783229118; c=relaxed/simple;
+	bh=O1+ENlUHG2dVn+CM9CHkYU8RJDakTHxXXVRv0M1G5dE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=D9hQmBGsntA3pLE5tNc42WwecuJVB0Ks3Vfh376uFAk7JUxQ36xkmXBWriPi01+l2dOtrU98iU5lrytlsQyUf6obzPp1mmQLEQJ30+Cwl9DFiIMs/Y67QUkjZyh5eK8Bz2F/Gn8RxRCNVNzEbjsiZieGKUxKdUcJF0CPemBEyRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JGmJj32G; arc=none smtp.client-ip=209.85.216.53
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-381065a7a03so1362191a91.0
+        for <linux-wireless@vger.kernel.org>; Sat, 04 Jul 2026 22:25:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783195727; x=1783800527; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yZ6s5Jw0wnLJ083z7ESM3Mk2xFWuRhKwyQC7d0QvTWY=;
-        b=h/reNsFpoYhNoFWceqDqEi4jl0nrz/P+M7z/QE96Veq9K5j1o/CyS0cHvfRUZrX5NC
-         T4aZYpi7IGzydZH16DkjOgBg7hU2iNRq8NkqtIBcBYxqetZeBhVW7RjT98REVmn5OKXc
-         OIx67gJubd5iGuFV29csxIIncc/lNJbh4YgfZyiFNyNMHvP8nFe6MjMV/pwu5uNTjJ1K
-         3ydusGic8QJxIQGkNu/hbKSbCx+uUpcOq4hbR0oXw9TaX0Zk7TMXACTyms4VWATZXoEK
-         9sBQ4PRwJRujdse26NJM9wdF8dtBePZ9KR8XXvsXuz/A6G98YsMtNPUJeYDuNQY7tGXo
-         fwnA==
+        d=gmail.com; s=20251104; t=1783229115; x=1783833915; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q5E91OTPvV+ZJz4uFncOkjNOPReoSP8zzTh43d9B2oQ=;
+        b=JGmJj32GFu6WjNkqj9ff3szaicd+3vZipe4ZKeRw0Z3mHtOm3CK7wZZElGVNK+pqfX
+         3oPneuZ6s6NoJ7eykRmXbBubp0AOPpA/8sm9hAjga41Z00OBdIyQyHbRkSznXFO28sRe
+         3eGVspTRpbkovEj7XFUBTV9wpXSqZFy8gvzUwp9aR2Y/DIL9IOaupw8GsjYJJEh8Jcqn
+         ztYFHBWFsscpYv0FYUW2TnmBm747AVNym9lZReaQfKQ2MeCU1ysR0SYvg0M9bUYA/XGY
+         kwyJZ8tysBtM1KvT7IAGo9/wi2dKSeTN5ln2axTOgZEFtHg7m7rjKL/9NJfD139HOHwZ
+         Nz3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783195727; x=1783800527;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yZ6s5Jw0wnLJ083z7ESM3Mk2xFWuRhKwyQC7d0QvTWY=;
-        b=Ka+DqXI9vyaTUQWAg2Giyl2YprGdAinaF4mDuWbYhMYdp+npn85CHDB0rGgoKLDbv6
-         WozZqjWbYMQGo2Jy1KaUQefkBEUwlvR7Urczq8QEpBoGc/3oFr+1gN3XINTB0CTGSg+m
-         T5pAHjlWcJNMzZj5v3OITq00J5aHeWpnkegnCiU6VSSCYBRP0R7yEgUmDgzFBoNya/Hm
-         lhCz+8M0D4qMefLnc/P71fXH3s94D/XRFQKpMFwgw1K1fGAFJY0ulQH9tZ2tDysfwyFG
-         32j6k54otyG7zcKVB887jXs7Ss67lGtFAWuIeJYJoxOe9t4frU9NnukmJh9OscWx6tAJ
-         Q6rA==
-X-Forwarded-Encrypted: i=1; AFNElJ9AKF6IDr+rUVCXB+qf4Rn3HB9mvMRX68irnlI8y7X+7bEITjRUc2LRyfmu1fDh5n4EbiP7m36AKd0rn4O6Vg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzW7o4Ww6Y112c5oeEGIRpzRL/QcIQz/2OUZskixijRpOI0r4ml
-	G22qfxqIhzyOqI+18bZuF/HD8qmRpET7IomR3DMEj5G4evyQIFR9Pmjp
-X-Gm-Gg: AfdE7cmvxe5RT3AXAykuwTjlBVroflZkK8Q/tzz1O9RsaJL2h6QK92FCkLvE+rwY4hO
-	iKQyhkqf9HHinUs36b13S3likmJ2E0p296efbRYsYLQmQEVT4mTmMYQ8nTZpUMHZX8DcdFrGXhk
-	mXQ9GFkBHIuz6gx7JngGjhcnDRmc4TUQRwLCfUmnTspeN6dDSHqDQ7/JhsF0UURLpvtj3d/0j98
-	C36XnS9zEVMCUHmN3FdNbe8kufHODuwttWVvIpbxkyjyGtLsg6uZS4GIRazeKEkjGs9J7GmM5BR
-	hEjD9pAKk8vgXol9f+rJuQd4fQushtw1KcFTGVvdlvlZ6s63lB0eNQzDUFozX3DaxlLar/xckBs
-	zdVAFU6dW50T4csp8tbtihRR46OasuAdJYW1pMhG/DpgjUEq5T51oLujWvbdmXpj8H3O9ueYmp+
-	VqDpzooRKAT9jZo7uLHXaOLw5dzmW8QZULpeuJa2gmxxJiodJGo6/hmqMEsqy6FuJ7Jd8OT/g68
-	lTvmvD0MY7eHIkegpS0AA==
-X-Received: by 2002:a05:600c:620e:b0:492:5e22:ef18 with SMTP id 5b1f17b1804b1-493d2be8646mr41874915e9.9.1783195726563;
-        Sat, 04 Jul 2026 13:08:46 -0700 (PDT)
-Received: from shift (p200300d5ff229f0050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff22:9f00:50f4:96ff:fe46:beef])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493ccd9d620sm158811555e9.1.2026.07.04.13.08.44
+        d=1e100.net; s=20251104; t=1783229115; x=1783833915;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q5E91OTPvV+ZJz4uFncOkjNOPReoSP8zzTh43d9B2oQ=;
+        b=sr+xNy8NtbU5N011/zy8CN1LpuNX40N62FmMZLRUn8ARIzFL706UePdAAUUZ97uVHd
+         hvEt3YWBMKJBFle7QYA19f7ubbkEQMhSdy85PXbeUndQwPs1UQdxgQoEGZQwrw5xiBCe
+         MO4es3A7XYlS35xPS6gJnOxa2Q+Yw8QijIMyN3Jp7T9k0DRV+6l9NaSEr6IYSYTkHnS5
+         P48k7FDq8Mgmc4EASlrSepj97ncIS+PeqoB9lDJ5ni/ixG03FUQipJxYoimQeBsNK4YO
+         urgDESpymF1rQQIVgZ7sOvIwydHfNUkJdTrWuRx/fP9WzXUZ2LX7YrEJPlRBWtu84ywc
+         HNSw==
+X-Forwarded-Encrypted: i=1; AHgh+RqFeM26AVV9wTpS7UFZ7YAM8ch82quCN8NoXyuphvHAa9bG2EfT5bDTW2dTZV0dN0lMY9/cWXI+PZiwfG+rUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEVeKpRbwbjloehDIVMXaFJqu510hi/0JzaNRM768QgGsQVh/i
+	vmZS7VAdMNfAj6bIOErGLlUtbiZoBgZE6ho1H6SHpqc8Ubeu36c1d6OwKB45iA==
+X-Gm-Gg: AfdE7clzNiSLbCo64SpE9fqiJdUUgrslON+1YPpGr3LziMHicB5mp9zXf9tLZBfuJZ9
+	dCShiHja7kopj72C1Ui0Mz4lAKloYAceTW9LPwKfAsaKPilRT2wpQQWp8akPG1FSlWCS0C/ocuB
+	1HGu7AiWrPpWYtEnVKI9QFCncvL4Cgmef9YthI4itNseXaY60sB1E7djtMZqQ8L18O8xdisB3AV
+	2g4mfjVjLwbYBxrzrc+tQ1UDtusGB5pEmNUfHzVDmtQ/AMhSfxR2hY7Q54PAUcc/fBp9866QYcp
+	glICX+yY+AaF0Kifst954kU6z8FpAthYmdBqVp2/G4EKLyew54mAwJuc/jztUeE2isXf60qlWwB
+	H3uEKPxavt204YBV+CBc76cOAAPYutJY6hWk+HwpdBY+EvZU7eDDX/HPSgpazThHRrq3P+gWSL0
+	Tq+bBJ97yR0VduRhX4SyfCgoCRJs+ekC15yAOq/h1xvbce3DqKDvvCT7pj8ZM7in6zIxTnNxhik
+	cV2
+X-Received: by 2002:a17:90b:4cca:b0:37f:fda5:8d9a with SMTP id 98e67ed59e1d1-3829f001825mr5075022a91.25.1783229115290;
+        Sat, 04 Jul 2026 22:25:15 -0700 (PDT)
+Received: from dtor-ws.sjc.corp.google.com ([2a00:79e0:2ebe:8:4560:aa1b:b33a:15b8])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30f0b7b9a1bsm39035329eec.3.2026.07.04.22.25.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Jul 2026 13:08:45 -0700 (PDT)
-Received: from localhost ([127.0.0.1])
-	by shift with esmtp (Exim 4.99.4)
-	(envelope-from <chunkeey@gmail.com>)
-	id 1wg6fL-00000000KNV-1pW0;
-	Sat, 04 Jul 2026 22:08:43 +0200
-Message-ID: <80d10637-2654-4dd6-bb24-3fbada3aa801@gmail.com>
-Date: Sat, 4 Jul 2026 22:08:43 +0200
+        Sat, 04 Jul 2026 22:25:14 -0700 (PDT)
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 0/3] MIPS: BCM47XX: convert buttons to software nodes
+Date: Sat, 04 Jul 2026 22:25:07 -0700
+Message-Id: <20260704-b4-bcm47xx-swnode-v1-0-730d59340237@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless] wifi: p54: validate RX frame length in
- p54_rx_eeprom_readback()
-To: Xiang Mei <xmei5@asu.edu>, linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
- Arien Judge <arien.judge@morsemicro.com>,
- Lachlan Hodges <lachlan.hodges@morsemicro.com>,
- Weiming Shi <bestswngs@gmail.com>
-References: <20260628000510.4152481-1-xmei5@asu.edu>
-Content-Language: de-DE
-From: Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <20260628000510.4152481-1-xmei5@asu.edu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALPqSWoC/yXMSQ6DMAxA0asgr7EEKZjhKqgLEtzWSAQUd4iEu
+ Dtpu3yL/3dQDsIKfbZD4LeorD6hzDNwj9HfGWVKBlMYKsg0aCu0bqmaGFE/fp0Yu669ENe1KYk
+ gdVvgm8Tfc7j+rS87s3t+R3AcJ0DAQhh1AAAA
+X-Change-ID: 20260627-b4-bcm47xx-swnode-99836e552166
+To: =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>, 
+ Michael Buesch <m@bues.ch>, Hauke Mehrtens <hauke@hauke-m.de>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mips@vger.kernel.org
+X-Mailer: b4 0.16-dev-b242f
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38626-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,morsemicro.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-38627-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:zajec5@gmail.com,m:m@bues.ch,m:hauke@hauke-m.de,m:tsbogend@alpha.franken.de,m:brgl@kernel.org,m:arnd@arndb.de,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mips@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:xmei5@asu.edu,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:johannes.berg@intel.com,m:arien.judge@morsemicro.com,m:lachlan.hodges@morsemicro.com,m:bestswngs@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[chunkeey@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER(0.00)[dmitrytorokhov@gmail.com,linux-wireless@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,bues.ch,hauke-m.de,alpha.franken.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chunkeey@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5AE8270864F
+X-Rspamd-Queue-Id: E923E709016
 
-On 6/28/26 2:05 AM, Xiang Mei wrote:
-> p54_rx_eeprom_readback() copies the requested EEPROM slice out of a
-> device-supplied readback frame without checking that the skb actually holds
-> that many bytes. Commit da1b9a55ff11 ("wifi: p54: prevent buffer-overflow in
-> p54_rx_eeprom_readback()") closed the destination overflow by copying a
-> fixed priv->eeprom_slice_size (and rejecting a mismatched advertised len),
-> but the source side is still unbounded: nothing verifies the frame is long
-> enough to supply that many bytes.
-> 
-> A malicious USB device can send a short frame whose advertised len matches
-> priv->eeprom_slice_size while the payload is truncated. The equality check
-> passes and memcpy() reads past the end of the skb, leaking adjacent heap:
-> 
->    BUG: KASAN: slab-out-of-bounds in p54_rx (drivers/net/wireless/intersil/p54/txrx.c:507)
->    Read of size 1016 at addr ffff88800f077114 by task swapper/0/0
->    Call Trace:
->     <IRQ>
->     ...
->     __asan_memcpy (mm/kasan/shadow.c:105)
->     p54_rx (drivers/net/wireless/intersil/p54/txrx.c:507)
->     p54u_rx_cb (drivers/net/wireless/intersil/p54/p54usb.c:163)
->     __usb_hcd_giveback_urb (drivers/usb/core/hcd.c:1657)
->     dummy_timer (drivers/usb/gadget/udc/dummy_hcd.c:2005)
->     ...
->     </IRQ>
-> 
->    The buggy address belongs to the object at ffff88800f0770c0
->     which belongs to the cache skbuff_small_head of size 704
->    The buggy address is located 84 bytes inside of
->     allocated 704-byte region [ffff88800f0770c0, ffff88800f077380)
-> 
-> Check that the slice fits in the skb before copying.
-> 
-> Fixes: 7cb770729ba8 ("p54: move eeprom code into common library")
+This series converts the legacy gpio-keys platform device on BCM47XX
+boards to use software nodes and static properties.
 
-Sure
+To do this properly without relying on legacy name-based matching
+(which is being removed from gpiolib), we introduce and register
+software nodes for the underlying GPIO controllers (BCMA and SSB)
+and reference them in the button properties.
 
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
+The first two patches add the software nodes to bcma-gpio and
+ssb-gpio respectively. The third patch performs the conversion
+for the BCM47XX buttons.
 
-> Reported-by: Weiming Shi <bestswngs@gmail.com>
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Xiang Mei <xmei5@asu.edu>
-> ---
->   drivers/net/wireless/intersil/p54/txrx.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/intersil/p54/txrx.c b/drivers/net/wireless/intersil/p54/txrx.c
-> index 1294a1d6528e..9f491334c8d0 100644
-> --- a/drivers/net/wireless/intersil/p54/txrx.c
-> +++ b/drivers/net/wireless/intersil/p54/txrx.c
-> @@ -499,11 +499,19 @@ static void p54_rx_eeprom_readback(struct p54_common *priv,
->   		if (le16_to_cpu(eeprom->v2.len) != priv->eeprom_slice_size)
->   			return;
->   
-> +		if (eeprom->v2.data + priv->eeprom_slice_size >
-> +		    skb_tail_pointer(skb))
-> +			return;
-> +
->   		memcpy(priv->eeprom, eeprom->v2.data, priv->eeprom_slice_size);
->   	} else {
->   		if (le16_to_cpu(eeprom->v1.len) != priv->eeprom_slice_size)
->   			return;
->   
-> +		if (eeprom->v1.data + priv->eeprom_slice_size >
-> +		    skb_tail_pointer(skb))
-> +			return;
-> +
->   		memcpy(priv->eeprom, eeprom->v1.data, priv->eeprom_slice_size);
->   	}
->   
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+---
+Dmitry Torokhov (3):
+      bcma: gpio: Add and register software node for GPIO controller
+      ssb: gpio: Add and register software node for GPIO controller
+      MIPS: BCM47XX: Convert buttons to software nodes
+
+ arch/mips/bcm47xx/buttons.c | 434 +++++++++++++++++++++++++-------------------
+ drivers/bcma/driver_gpio.c  |  17 +-
+ drivers/ssb/driver_gpio.c   |  27 ++-
+ include/linux/bcma/bcma.h   |   3 +
+ include/linux/ssb/ssb.h     |   3 +
+ 5 files changed, 293 insertions(+), 191 deletions(-)
+---
+base-commit: 2b763db0c2763d6bf73d7d3e69665222d1f377cf
+change-id: 20260627-b4-bcm47xx-swnode-99836e552166
+
+Thanks.
+
+-- 
+Dmitry
 
 
