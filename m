@@ -1,193 +1,124 @@
-Return-Path: <linux-wireless+bounces-38670-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38671-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ritlH0ifS2q4XAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38670-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 14:27:52 +0200
+	id ousPEP2PS2pIVgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38671-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 13:22:37 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2304710832
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 14:27:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0BE70FC8B
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 13:22:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=broadcom.com header.s=google header.b=WW7NU5ub;
-	dmarc=pass (policy=reject) header.from=broadcom.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38670-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38670-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=QVZw1nVN;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38671-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38671-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28935304FA75
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 10:25:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 99E753122B9C
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 10:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BE33191BB;
-	Mon,  6 Jul 2026 10:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16E93A4535;
+	Mon,  6 Jul 2026 10:37:48 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f226.google.com (mail-qt1-f226.google.com [209.85.160.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209DF44213E
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 10:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C55F3AFAE0;
+	Mon,  6 Jul 2026 10:37:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783333531; cv=none; b=R9Oa0kjbyta18siFvQa4ThrRnKqGSgs+7Pxz5hy2eqVkODrtbQlxzgEDvY3a9wi8j/sxoT1d7hSR7qhlZ8wXl0igYfAwB2h+whw9tFuZIxaii/MFozUMAfXGWAD1TbcfUrfR0QrntWBMwJJM/qx3Ksuvx5QuIYjZqE9ZT8svzPw=
+	t=1783334268; cv=none; b=aAMnBfmCGCU6qIiOrDTaI9n0Es0GGwJZ+icS3dOnPPzJ369sFOmZxoCJHHmpTriWViA98TlIs9ytydNXA+QkcskfiTtl62fpVbyJcErJ39YeFfeNntOiko12kdn8HgVYlY+/TUdIlmSkeJisMdrQocsIHnGhTaxtil/36jXWkt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783333531; c=relaxed/simple;
-	bh=wXkmloe32wDeBpHMbchLne5t/itP8cURECNWNe6OBPQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tlr2489hQFOAx0PP3QGKEH2AOXEo4zs+5peWGgQyahkAHhymH0q3cCa6PZ7243dd3wqjdyD3fW5My19vVcDg3yUZCiTsXSrhRds+Qf14YrC1Zwijkil5H43oZ8YR68z963IEBTxe9wC9VnRtIpBFkfVWtj/KpIIoYNOuqYdEInY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WW7NU5ub; arc=none smtp.client-ip=209.85.160.226
-Received: by mail-qt1-f226.google.com with SMTP id d75a77b69052e-51c149c5722so15922291cf.0
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jul 2026 03:25:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783333529; x=1783938329;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CA5p8dVeCW7g5NSaVGN5KNCsgXkRD8Ko8sUb8IXK2EM=;
-        b=TW0n3cZy4twRXoDDQtvGiN9ymZOioHvFl6/5IqKiL7v/4mGgawJMMYnzMQm2KHb+wL
-         l9kVxFDFHodO3spGb0dQJf0CDsgldAn2bHZHsO7rpslWK5iaaBHQtINiwnaLTuve7KwV
-         fNb8vIIFNqm43qSowvCehs7W9Bnbovo5d2aQot0GaGa6sndoVnbErv+xUPBs42QJHfNY
-         ifEOkgbDNGXdV+LgC5590qg5wMmrOWdVyJsV/+JNym/QwfDz1MLqBF//Ro3XbW/ISG9Z
-         FUlis1tA3s8dE+/8ZKsmUFGjb1mnhxYHhkz+w36AzSYhXceM2zsvnjjmcQ9hItfNsUSH
-         BAcw==
-X-Gm-Message-State: AOJu0YyYQo19tQiV53vQfd7Qd1eBGakYEv10XoCJvCceT7SygxIrDJFO
-	FkZ937IB91CQ7ArGdTwJHZVUCVntADqUisl+V+Vd4X08Fc0YDpUjNBh747/OJuk4fde9wi1qgZz
-	VQPDZ5g/t1dUDwZdLrZsYjcQl4ExB2rCuPZK8VreQPk+8goMtXKP9rFS4cGoOVCJSZ/x34V+YE8
-	Q9SmOhZY4OgPGhu7D5+7uoeFHU5WJZsLNDoGfbeCbW5ct95w/+4JsCb2rj2bPmeFTJwVhQsvm6g
-	NWH0kYP1aOzHYziErjgRpRzyKGk
-X-Gm-Gg: AfdE7clLqsauMfGLhxsXMx4aGQ5sqB7eobS9r+v6OP24Tl5/czR/sJmm4ExRpS5EkFk
-	+RVpgt49g7RhBfkneQeSPutpYMjGxE45eVXIrOr/SOnFIOqH/1NwQXZ+q7gp7C6fDBok95SbQFK
-	hTzvPfxB8GkNyB3GUq1Kc/n89m7Jup5zeGFPRjKhpEP+J1K0aWbQvVrFrs6uTvSRcotjbnVyaBG
-	cCTJZnaQ9ab/s3B5fA0Q+kJQbUQ4D9MP/7bpS+yNYb/ioKOzapzl45qFQzTmEfdxhvbeCPSOnYA
-	aDMna3EPtGRttuZfoV/z4W+NU75uT7bbMXSen8ZECRaF60I1YXRRVSPTEZNTT7wXZOM2cOMWAJJ
-	OCYKD6x0BUtckO8BqvMJYRpGUFwKiXwKlhDxIF0EBjQ/6vh6iTn7b4ZeaB3onfCz8HW4QTCosWs
-	BmD5VnTOb5U6raT4nrgullPoZDLTDmS50OL/EkLYQnanvPyuAfEUwe
-X-Received: by 2002:ac8:7d0b:0:b0:51a:8c86:bd2e with SMTP id d75a77b69052e-51c7407ca0cmr290481cf.35.1783333528907;
-        Mon, 06 Jul 2026 03:25:28 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-101.dlp.protect.broadcom.com. [144.49.247.101])
-        by smtp-relay.gmail.com with ESMTPS id d75a77b69052e-51c41cb2b6dsm4482301cf.16.2026.07.06.03.25.28
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 06 Jul 2026 03:25:28 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-92e63df032bso317888685a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jul 2026 03:25:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1783333528; x=1783938328; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CA5p8dVeCW7g5NSaVGN5KNCsgXkRD8Ko8sUb8IXK2EM=;
-        b=WW7NU5ubtmnMCQExPTvwSZzJ2P/f6luftYTa9VtKOBuDV5caF2ZpY4fahyerIia/sJ
-         LvSOKx8p+vCWcR2Xr5cObFqT52B3dUf6epNmlnrM7uOsXUKfyx+hxhjqW8rjOi/xibr/
-         eJy9Mzkm0j5t1b1sICY4wBTXn+gW1PRS8hrP0=
-X-Received: by 2002:a05:620a:261c:b0:92e:650f:c39c with SMTP id af79cd13be357-92e8b25d442mr1666946185a.3.1783333528159;
-        Mon, 06 Jul 2026 03:25:28 -0700 (PDT)
-X-Received: by 2002:a05:620a:261c:b0:92e:650f:c39c with SMTP id af79cd13be357-92e8b25d442mr1666943585a.3.1783333527680;
-        Mon, 06 Jul 2026 03:25:27 -0700 (PDT)
-Received: from bld-bun-02.bun.broadcom.net ([192.19.176.227])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90c926basm873038785a.22.2026.07.06.03.25.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 03:25:26 -0700 (PDT)
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-To: Jason Huang <Jason.Huang2@infineon.com>
-Cc: linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	Kurt Lee <kurt.lee@cypress.com>
-Subject: Re: [PATCH v2] wifi: brcmfmac: add DPP support and fix fw-supplicant/P2P interop
-Date: Mon,  6 Jul 2026 12:25:23 +0200
-Message-ID: <20260706102523.1430606-1-arend.vanspriel@broadcom.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260604034227.590951-1-Jason.Huang2@infineon.com>
-References: <20260603035722.145894-1-Jason.Huang2@infineon.com> <20260604034227.590951-1-Jason.Huang2@infineon.com>
+	s=arc-20240116; t=1783334268; c=relaxed/simple;
+	bh=70DB+crKdAn5t3MarAwEHdKaAEIJV+wYO9z148L6D8k=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZVCXp/ftSIV7s7YuI78Fjhr+Vnz3QDp61Dh3Fza25lteYMC7StW2+uqeoGk/+fvRgsGfq0eDgfumltEbwsUMWL6aA6g1MU2rG0R8fq1AnF99T71NLC0BEEc8YnmD0QTwtG5kcRuY7mffk8CSEhe+g0vn2J+YJQ34Usg3GCkPIbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QVZw1nVN; arc=none smtp.client-ip=168.119.38.16
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=cTKHlkUlKyFrya+FhJXp8WuW7bCMIJ+/sIackbjAeqY=;
+	t=1783334267; x=1784543867; b=QVZw1nVNE4SdXsCCeRK1VaN3HubJ19HemlDf/Dy6I/Vgx5z
+	gPKMh22jneash+lq00haIxNWqDnxHueQFHplUNogD5GOhxPdOWmIHUDoOd4DaeN1WFEmn74EspxbJ
+	gWrN9i8yG1I9VHeILA10WfD3yjDjtdmOR1CwM9K+IwbGtylz5lwgaTHQ2Y8o3BcOCRFO1TiNlJ/Ii
+	nVOTYEmFMBDESg3AtZWbkLhqgfgfCmH7HmSbSdEYJKQC3PUTMdnusPS+Rj7lInh1cqnL+a7A8yJlL
+	hmu36e9+deLxrynQglekD25/CbcsGRSTrpt4/Nb/JWb04clMMTE3ij6MYjk77WUA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wgghs-0000000D61z-2zyu;
+	Mon, 06 Jul 2026 12:37:44 +0200
+Message-ID: <488ed9862d5196b8f5ecf23f037fa6725fbe9a52.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/3] wifi: cfg80211: validate rx/tx MLME callback frame
+ lengths before access
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Zhao Li <enderaoelyther@gmail.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 06 Jul 2026 12:37:44 +0200
+In-Reply-To: <20260612185042.66260-4-enderaoelyther@gmail.com>
+References: <20260612185042.66260-4-enderaoelyther@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-malware-bazaar: not-scanned
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-7.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[broadcom.com:D:+];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:Jason.Huang2@infineon.com,m:linux-wireless@vger.kernel.org,m:brcm80211@lists.linux.dev,m:brcm80211-dev-list.pdl@broadcom.com,m:kurt.lee@cypress.com,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,broadcom.com:from_mime,broadcom.com:dkim,broadcom.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38670-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:enderaoelyther@gmail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[broadcom.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-38671-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sipsolutions.net:from_mime,sipsolutions.net:dkim,sipsolutions.net:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C2304710832
+X-Rspamd-Queue-Id: 9A0BE70FC8B
 
-On Thu, 4 Jun 2026 11:42:29 +0800, Jason Huang wrote:
-> From: Kurt Lee <kurt.lee@cypress.com>
->
-> Add DPP support in brcmfmac and include follow-up fixes needed for
-> reliable operation with mixed security setups.
+On Sat, 2026-06-13 at 02:50 +0800, Zhao Li wrote:
+> cfg80211_rx_mlme_mgmt() and cfg80211_tx_mlme_mgmt() read the frame
+> control field without first checking len >=3D 2, then dispatch into
+> subtype handlers that assume their fixed fields are present.
+>=20
+> Add a frame-control length gate, then validate each subtype's minimum
+> frame size in an if/else-if chain that mirrors the dispatch logic.
+> Trace only after the frame is known to be well-formed.
+>=20
+> Side effects of this change:
+>  - The WARN_ON(len < 2) is replaced by a silent early return, since
+>    these cfg80211 callbacks can legitimately receive short frames from
+>    drivers.
 
-[...]
+Can they? How?
 
->  		if (sme->crypto.psk) {
->  			if (is_sae_akm &&
->  			    profile->use_fwsup != BRCMF_PROFILE_FWSUP_SAE) {
->  				profile->use_fwsup = BRCMF_PROFILE_FWSUP_NONE;
->  			} else if (!is_sae_akm &&
->  				   profile->use_fwsup != BRCMF_PROFILE_FWSUP_SAE) {
->  				if (WARN_ON(profile->use_fwsup !=
->  					BRCMF_PROFILE_FWSUP_NONE)) {
->  					err = -EINVAL;
->  					goto done;
->  				}
->  				brcmf_dbg(INFO, "using PSK offload\n");
->  				profile->use_fwsup = BRCMF_PROFILE_FWSUP_PSK;
->  			}
->  		} else {
->  			profile->use_fwsup = BRCMF_PROFILE_FWSUP_NONE;
->  		}
-
-The else branch resets use_fwsup unconditionally when psk is NULL. For a pure
-SAE connection (sae_pwd set, psk NULL), brcmf_set_key_mgmt() set use_fwsup =
-FWSUP_SAE, but the else clears it to NONE. As a result sup_wpa = 0 is written
-and the SAE password path below is never reached, breaking WPA3-SAE. Same
-problem for 802.1X (FWSUP_1X, psk = NULL).
-
-For DPP, use_fwsup is already FWSUP_NONE at this point, so writing sup_wpa = 0
-only when use_fwsup == NONE would achieve the goal without the regression.
-
-This patch will also conflict with the pending "wifi: brcmfmac: fix
-802.11x-SHA256 call trace warning" patch as both touch brcmf_set_key_mgmt().
-Please rebase on top of it.
-
-The remain-on-channel wdev tracking fix is a pre-existing P2P bug independent of
-DPP. Please split it into a separate patch with a Fixes: tag so it can be
-backported to stable independently.
-
-Regards,
-Arend
+johannes
 
