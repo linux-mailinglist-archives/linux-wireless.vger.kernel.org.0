@@ -1,177 +1,129 @@
-Return-Path: <linux-wireless+bounces-38703-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38704-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fQUsOsvWS2rKbAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38703-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 18:24:43 +0200
+	id PnduGaMETGp5ewEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38704-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 21:40:19 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974A171335F
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 18:24:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B307A71516E
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 21:40:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="A3oP/Nyp";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38703-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38703-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=tutamail.com header.s=s1 header.b=sUGNLaef;
+	dmarc=pass (policy=quarantine) header.from=tutamail.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38704-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38704-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 215243077B6A
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 16:18:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A882130570D1
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 18:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC73C430CC6;
-	Mon,  6 Jul 2026 16:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188EC2DEA68;
+	Mon,  6 Jul 2026 18:15:19 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.w13.tutanota.de (mail.w13.tutanota.de [185.205.69.213])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2420421F00
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 16:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E153B1035
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 18:15:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783354710; cv=none; b=XXZ01BzQokf/fPf5f5cOK8BLqRWFniY/qnMAY9JvmEMggGkejprZ8gI+pHcMmHoJ6P0XbXH+6G8vCesfw7BWzNhPHChWie+JnkXOK0gxUqEp93lhPxrcuiHsfPfFKPCl5lu1f22a0sCWHwFmZ4T5b3L3FavpSwhTp7RaOkzln2Q=
+	t=1783361719; cv=none; b=NdiKZ69P4j90coiRUT3Tq2oqclK9zwFQRjun3kNEI5tw6h0I8LzMFfeC5fFn4mUZaY8zKftq1YYDZJzBkU6tgYTQeQAAdlhRFGXHNCl0oRR7bY/v/iNw+CcTLgwEfj5VPc9rYELVMqZJ6nBIQI92kreNngzI3HssvYO8uGu98Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783354710; c=relaxed/simple;
-	bh=uga9yq6Wsu+61EZ2xlBnLUHRbvzLzH7QGLu0bVCIo2Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ua+7Zj02JNw61LJEYWeYGpHC7i6t/boxR2m5KxQ7px4MRmEX1X2tIExQgdN2ufVLI7jVOxgx1u4o0tCAS4fuy16YY6ZWNvfgR3cISVTDA+KCN37jdvF5ixcr4suso4dEDpjBue8pEIzEw8gwK5/4MAI4figheEAKwPT4Z9caqPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A3oP/Nyp; arc=none smtp.client-ip=209.85.210.181
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-847aebc56b6so2515879b3a.3
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jul 2026 09:18:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783354709; x=1783959509; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9t7T+Sc/sT/VjtNfD1hynQA07ltSFXZs0EJkEbquL54=;
-        b=A3oP/Nyplesbd7EcXW27lclTFjKs7BfBNvt+BC0kKYr0E6exIfIRucH6gi4n0yUkdo
-         pPQBmVbPg9iq9TW5R19WAl2cI8GhHPEnxtWhF94m/x6GGUz+xhVUBNq+uypX3R6yFLHR
-         P/aZh/9X36cGw2Yndp6Aq0T6hx9urye6MHloG150pgYqKbhJ5xk4NG6WB9Ok+t1JJYAb
-         jJvqWLWMV6qqN1A4YEkvhn+6e9/fEQiECYXQD09gl0ebd7JW8RW9am1QiluGs4ztpfUd
-         2b7Tmpvq51OnfEVjybkh034TuNAX/VkSTyWMErZHjfFA52rykt6oXa3CkiZOk6of6NBV
-         Ctqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783354709; x=1783959509;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9t7T+Sc/sT/VjtNfD1hynQA07ltSFXZs0EJkEbquL54=;
-        b=EMDaG4f0CRXHJWejVAdNZipLesOXLVlqsXmn7rS+Rn/rn8cf2UHEiMZT0eNVzs05RD
-         9IR2bdzLpOd10FiDsafXkyDavDDDKpu0zFo8VCRrPQXU1JvwSU9VqSxse7EwTDEekFmN
-         +xE3/pSvm2E5BdokgsrpZdjTBxpu0PwFRXn/AQ7WDi+CY/IdpL5aVMLguXN8aml/yJGT
-         wmz5MppCTHoi/GqGNBjqfvFwrZqso+aUz3sDndNBvJGo/8Uq1PZrGpcOHD1pHGtTYGhu
-         aM5M2e3JAMQf1tD24Opcx8MQq4vSj6P647P2r2WtrrdMRWVP9bvLpQYDtvzcoNCCtG+S
-         IUDQ==
-X-Gm-Message-State: AOJu0YzBizhYtDw89Dv7xt2ugZWL4ovmOGSPIz1jhdlVBISW/TjZ3+Wv
-	oWG6ZFT/AMIyjp80AKdnXjWo+u+EXTolbB2MwUUh1GrSq74RAMqrDNnI
-X-Gm-Gg: AfdE7clNb17DKhdMAyPB/dcfJUyfMgy3/YQFNyqemQOfq3ecY6FKUv0VaH7PWopLY00
-	Q/2rskIq/tXNi8fK7ZcwSL1VWvMwdwvkWINGJ1iN/93zXiemPUGRbm3tv6pdCys8t2mbWZaLUni
-	sb3b7anwdMI+bc0TbFfJtUM51WMaV/AH+x1URbt2L8Nc8+sawJE6CT4C2Jx4hWmo/A29b1xjtDC
-	Z83h1EmyDAp7hbDjXzrbLF4aY/Ftc7aiSTTuf5jB0DA2GZMLvmZukXH2riGhRH91m3GwD7InzBV
-	bXbJaGFX/P9xDgODBYYpZTyENhQKsELBnDI+y2GdmZC3C7EGIEPetDm9qH9DTAafS5NwSTsSqUy
-	H0jj90Nwq3VdkdM+UzlcMlbfXF2Dge0zehXVptyRe+uGUhVudZU7egqmMO8ITVTsdAtwoeb8QZY
-	mlcubv1O8=
-X-Received: by 2002:a05:6a21:62cc:b0:3bf:63af:859 with SMTP id adf61e73a8af0-3c08ef1766cmr1637800637.45.1783354708931;
-        Mon, 06 Jul 2026 09:18:28 -0700 (PDT)
-Received: from localhost ([111.228.63.84])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e92b83bd9sm6325071a12.31.2026.07.06.09.18.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 09:18:28 -0700 (PDT)
-From: Cen Zhang <zzzccc427@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	zzzccc427@gmail.com
-Subject: [PATCH] wifi: mac80211_hwsim: avoid NULL skb in stop queue drain
-Date: Tue,  7 Jul 2026 00:18:22 +0800
-Message-Id: <20260706161822.921039-1-zzzccc427@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1783361719; c=relaxed/simple;
+	bh=5O5qhfX6ulkq+VFdKia/M3YAA6lGVvBfplcOkRw7VfI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=ShLomx/FTErnNIQ92IlyrG8ldqQqSrpqCl2PCrvgCMhyrCtDgWZnAtXbSzpWOdJCx8Dq8VLvq84qenwMp7yTBBq3iAJD73yFJbb6S9ilfdhrrMvqzEfBs7MZb8ufUxpCTItVmhp4DCvlOO8B36bG3YcBAqBGpscIdZCZbVvNCPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tutamail.com; spf=pass smtp.mailfrom=tutamail.com; dkim=pass (2048-bit key) header.d=tutamail.com header.i=@tutamail.com header.b=sUGNLaef; arc=none smtp.client-ip=185.205.69.213
+Received: from tutadb.w10.tutanota.de (w10.api.tuta.com [IPv6:fd:ac::d:10])
+	by mail.w13.tutanota.de (Postfix) with ESMTP id 5E36A159D1ABF
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 20:15:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783361710;
+	s=s1; d=tutamail.com;
+	h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:References:Sender;
+	bh=5O5qhfX6ulkq+VFdKia/M3YAA6lGVvBfplcOkRw7VfI=;
+	b=sUGNLaefrvZ5bjtEfXiCrICy5Ot/G+NWUm8bD7M2yDkFxhxpJwD3rCFEoU0D2g76
+	w6GJZFIvRrXeDfs/u70VyePVb+0Nh+X5531gJ30EbXu2UzhoyNibO+5eOiIqM/eaAe2
+	/+XKBhbWJsCEVgBqkYmek/hZbzyLkK9gG4ESNptrtl99PYDeA6HpcLc2whISmfFGjIt
+	PwrtBf1Bz+HltxaOCsmV8/e0f0RreV2LZGwwervPHiekZj9HSjvXNfo3qrDxYLxqYwA
+	0of6yy0/SxtEGYIFONK4Iuo15uSmNCyPyQXe86g0IHhVDM7VJwrblEUSmChkJ0zh2RU
+	Ac5klU2VzQ==
+Date: Mon, 6 Jul 2026 20:15:10 +0200 (CEST)
+From: cybersnow_2001@tutamail.com
+To: John Scott <jscott@posteo.net>
+Cc: Linux Wireless <linux-wireless@vger.kernel.org>
+Message-ID: <OwscydZ--F-9@tutamail.com>
+In-Reply-To: <c2163c6ee67e982fd95d1f965ecf0b853f687214.camel@posteo.net>
+References: <OwQQjLm--J-9@tutamail.com> <c2163c6ee67e982fd95d1f965ecf0b853f687214.camel@posteo.net>
+Subject: Re: Atheros AR9280 / AR7010 Initial low scaning signal range
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Feedback-ID: 0148cefbf77245a42b8d92790169c2e5f3889e2ac922109814e9377b88997be23fd058959082c4e525ef1b19740c34b7ef4478cd506e389835ad86d84f5ca78a4f:TurnOnPrivacy!:tutamail
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[tutamail.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[tutamail.com:s=s1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-38703-lists,linux-wireless=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:baijiaju1990@gmail.com,m:zzzccc427@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[zzzccc427@gmail.com,linux-wireless@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	TO_DN_ALL(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:jscott@posteo.net,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38704-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[cybersnow_2001@tutamail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[cybersnow_2001@tutamail.com,linux-wireless@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zzzccc427@gmail.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[tutamail.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	MIME_TRACE(0.00)[0:+];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 974A171335F
+X-Rspamd-Queue-Id: B307A71516E
 
-mac80211_hwsim_stop() drops any frames left in data->pending. The loop
-currently checks skb_queue_empty() and then dequeues separately.
+Thanks for looking at it. Here is what I could find on the Web about the same issue. Someone said Kernel 6.4 and earlier worked. You might try with Debian Live DVD Buster, Bullseye and others distro if you want. I tried to use an older firmware of Atheros v1.3 instead of 1.4, same problem. I wonder if there are older firmware... But I'm not sure if this is related to the firmware. It might be more about the kernel 80211 modules... Or it might be an electronic issue coming from the chip itself. I need to do a cold/freeze and very hot test to see if it solve the issue...
+https://discussion.fedoraproject.org/t/need-help-with-weak-wifi-signal-on-fedora-with-qualcomm-atheros-card/87854
+https://www.spinics.net/lists/linux-wireless/msg90423.html
+https://forum.mikrotik.com/t/ar9280-low-speed/62030
+https://forums.freebsd.org/threads/atheros-ar9280-wifi-not-working.68357/
+https://forum.opnsense.org/index.php?topic=28266.0
+https://forum.mikrotik.com/t/compex-wle200nx-atheros-ar9280/166217/3
+https://forum.netgate.com/topic/83364/atheros-ar9280-testing-settings-craziness-success-ymmv/2
+https://forums.tomshardware.com/threads/qualcomm-atheros-ar9287-terrible-range.2687938/
+https://forum.netgate.com/topic/53616/atheros-ar9280-ath0-stuck-beacon-resetting-bmiss-count-4-hangs-later/2
+https://forums.linuxmint.com/viewtopic.php?t=299646
 
-That split is racy with TX status handling, which can remove a pending
-frame under the queue lock. If the last entry is removed after the empty
-check, skb_dequeue() returns NULL and the stop path passes that NULL skb
-to ieee80211_free_txskb().
 
-Use skb_dequeue() as the loop condition instead. The dequeue result is the
-object that stop owns and frees, and a concurrent status completion that
-empties the queue simply makes the loop terminate.
 
-Fixes: bd18de517923 ("mac80211_hwsim: drop pending frames on stop")
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
----
- drivers/net/wireless/virtual/mac80211_hwsim_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Jul 4, 2026, 17:25 by jscott@posteo.net:
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-index 0dd8a6c85953..f92d90bc7107 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-@@ -2303,6 +2303,7 @@ static int mac80211_hwsim_start(struct ieee80211_hw *hw)
- static void mac80211_hwsim_stop(struct ieee80211_hw *hw, bool suspend)
- {
- 	struct mac80211_hwsim_data *data = hw->priv;
-+	struct sk_buff *skb;
- 	int i;
- 
- 	data->started = false;
-@@ -2310,8 +2311,8 @@ static void mac80211_hwsim_stop(struct ieee80211_hw *hw, bool suspend)
- 	for (i = 0; i < ARRAY_SIZE(data->link_data); i++)
- 		hrtimer_cancel(&data->link_data[i].beacon_timer);
- 
--	while (!skb_queue_empty(&data->pending))
--		ieee80211_free_txskb(hw, skb_dequeue(&data->pending));
-+	while ((skb = skb_dequeue(&data->pending)))
-+		ieee80211_free_txskb(hw, skb);
- 
- 	wiphy_dbg(hw->wiphy, "%s\n", __func__);
- }
--- 
-2.43.0
+> On Wed, 2026-07-01 at 04:08 +0200, cybersnow_2001@tutamail.com wrote:
+>
+>> I've read in another forum that people experienced the same issue after a kernel update, maybe after 6.8. What do you think?
+>>
+>
+> I think I can partially reproduce the problem. I have a Sony UWA-BR100 on Debian Trixie (kernel 6.12.94) and a wireless scan only shows very few access points, never more than -65 dBm or so. The access point for my home, being the closest one to me, actually has the *worst* signal strength value reported as -80 dBm consistently. A scan for access points does show 5GHz ones, but it chose to connect to my AP on 2.4GHz (which may or may not be legitimate; iwd normally joins the 5GHz ones when I'm using dual-band NICs). I did not observe any circumstance in which the reported signal became better, though.
+>
+> With a TP-Link TL-WN822N v2 (still AR7010, but the 2.4GHz-only AR9287 instead of dual-band AR9280), everything is excellent, so indeed it seems only the AR9280 devices are affected.
+> Could you share that forum link? I'm not sure I'll get around to it but my next steps would be to bisect the kernel using a virtual machine and USB pass-through. This is strange indeed...
+>
 
 
