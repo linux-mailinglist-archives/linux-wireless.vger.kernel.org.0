@@ -1,172 +1,119 @@
-Return-Path: <linux-wireless+bounces-38697-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38698-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mpNkCDbCS2ojZwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38697-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 16:56:54 +0200
+	id TIKDEPXKS2pqaQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38698-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 17:34:13 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A712B71241C
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 16:56:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FC3712A4D
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 17:34:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VwZmURvI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38697-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38697-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=JhYf8Kff;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38698-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38698-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 391683276B64
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 14:42:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 92B8030BF0E6
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 14:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA9B41611A;
-	Mon,  6 Jul 2026 14:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ED83A2540;
+	Mon,  6 Jul 2026 14:54:56 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D1641F7E7
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 14:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E0F3FCB00
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 14:54:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783348815; cv=none; b=HI3ix96k2cOKhoAWDZTDYvYdgPYOW8jbPxbjdeFOjKz89tpc0Rh8oEBe7Gj6Nb1OlHD9MGrteSvqVDHYPvDb7EwNXRbItDxBRQhswKTBOn2Y+Xzqn9tGn4wB/Y7dH15FE0Pslpv6nSvvTyNVZ2KW/rgWToTuge/ThXGf8tgTX5o=
+	t=1783349696; cv=none; b=XJVmPY2JgpyxDkxKHNkJrmd5fYALaBJIXYEbWYCbJdXdb1DeO+Oy2X4qxn0A1pCKrfFV3gA3fLgxaYj3xK1T/09aCCYxi908OT13UKydozchZTiz33+qMoXOpBnUrHz3IMM01X/qRDtLeQRf4BZs1QMi9ZmELwnZ7zhnKYGkfxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783348815; c=relaxed/simple;
-	bh=+HJRPXWUR5wKFR7fxw0fX+rLOu+JjhItliDTQTLZ/1U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D6Pk9TylBltsa8EIrof+4u0dHzozXb9nhFU1Xhss0JJ1uZpkp6r8EavMlVezpAP5k+A7YyB+7/T+z5ZAbAslmjQSsxK5fC7BjTHay5ZkUENZBpKqNAGOwa3o4MIyt3Qpr7sc+Ejur9kDIMA33aHzqBjFsuoZ2dLqBvojPFKmoFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VwZmURvI; arc=none smtp.client-ip=209.85.208.177
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-39b2d353713so23149891fa.3
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jul 2026 07:40:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783348812; x=1783953612; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YkycRqxvjty9WMrqLNNOLyHpGeUgcD9g+5kM6fU1uwM=;
-        b=VwZmURvIN5ocZzYjjHDEPZ5CM8rsMEIT/zv4HGLZK/HSH+bTXf1yr1t/2BITffixCF
-         3ADyUyevyA63h7SKuk38CcuzeyF8t+bzKLb8nwxNBxsQcPcuhnohzMSctzXTJglHctIX
-         bnnyrzmO16OZYnhqVLHk8fJPjNcKGgwP60Q+FWS/yGD0BrHpp13hYIMVpeGNTWGL9UCA
-         x9sXkqfyKaxwMsXhrv5+Slck9Ek0C5t+9rG7LWbg31I0YDzbb1zpKII6AOJYEham91K3
-         D2JzsLZf8L+gXpWd5sKSgmK60m3lBoCbWfGwQK3jLWqCJZP6DSSDcQ7apc7yKv8um1DF
-         THBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783348812; x=1783953612;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YkycRqxvjty9WMrqLNNOLyHpGeUgcD9g+5kM6fU1uwM=;
-        b=MsFI3boqOPm/XbhgFqW8JGZ5KeeavwNY6LGzt/d2U5cUe/pc8PsJytbmMbx3I1B+CZ
-         IFSlq+dS+pZ2JtQIdo0P0e6Y53jFIgWAws7UOeZ2sXM4xmoowCyd804k3BLCIUNWtU8p
-         uEi31F8FeN6h2wzsWpL7Stl1p50gudD8bC2Ph5Itex7kUZwt+J8hGKKC257vKn1TIb6E
-         kYx9TLZStCTqekrGZgVuSJR0bZBwtR3aK4+xIQyz0gxuCpI+tYqRxyVu/XMn7u5mtf/B
-         McVaQ5+dI3/uZN0shFnaMHt+/IXKcaML9XDBk8maHWYyoPVBqYPWQWnnmAyboNcMTbfi
-         O3Eg==
-X-Gm-Message-State: AOJu0Yyq8EZf3E8Bc0FzniZdDpzoDUaZid3S//hP8LsF+aCJ5RUP+287
-	SVsgQrYXr2QZOIdy95f/jour3LTvCDyx5CbKjPFZh3pY8bBjCw2E1E82
-X-Gm-Gg: AfdE7cmB0KckGMu3K+CDEcKADqa9KvXBBj31fJcZEakKOHVDvIGbIfA/Df585JJ2+ni
-	YNPAOqyq8rvJmxlwIZ2X/zg62eRL3G2VXSFrzhWZuoWOrEsKFXbTCr0D2U8+zdCyXP4e5BUNhGl
-	UTWjaBJdaCigLg+IWMTMokOO131u5nKF15DX0EoArfwS3Skr+lgFUtAkQ9FN1ZzD9cFYK5yfnUq
-	t2kCd22aYnvu4s5qSGYAVe8/ORInQw2pwtjUifKBP4585dlS/etljWO7LV/IX7SHQiW44fz7e+J
-	RSqPlT3I/QvvHlt20Z/mYqGYHiNFvP/6ke6ybcRj9AmTD1kRFZGafAp4VNGDF9lLcjJsC3I8npk
-	we2nWA9yy9wiu12oS7F7UOXeiU9u9MkYQVk8Cu4ByS3alheDmniWT5niCCc0cACnlywTp6ix5nu
-	Y9Bu4CDKm5xMaNIfpaJaEj64w6rJY=
-X-Received: by 2002:a05:6512:414d:b0:5ae:9de4:4907 with SMTP id 2adb3069b0e04-5b007bb9136mr132541e87.53.1783348811872;
-        Mon, 06 Jul 2026 07:40:11 -0700 (PDT)
-Received: from localhost (soda.int.kasm.eu. [2001:678:a5c:1202:7b92:9ac1:b9ef:5287])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aed137705dsm2947841e87.32.2026.07.06.07.40.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 07:40:11 -0700 (PDT)
-Date: Mon, 6 Jul 2026 16:40:10 +0200
-From: Klara Modin <klarasmodin@gmail.com>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	"open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-arm-kernel@lists.infradead.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>, Tobias Klausmann <klausman@schwarzvogel.de>, 
-	Thorsten Leemhuis <regressions@leemhuis.info>, Linux kernel regressions list <regressions@lists.linux.dev>
-Subject: Re: [PATCH wireless-next] wifi: mt76: fix MAC address for non OF
- pcie cards
-Message-ID: <aku9T5a__-8EqFM_@soda.int.kasm.eu>
-References: <20260630210215.400379-1-rosenp@gmail.com>
+	s=arc-20240116; t=1783349696; c=relaxed/simple;
+	bh=Kksx9x3KD/QqVq9g+mgo2v0oF2B9zffbFhWAvCAV2Jg=;
+	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=CS2w+9u94uSXFwjyI033+/HwyKdFRhVqBL2dF2tWGrL6ddhVZU9of1NNPNSbD7+XxeQFWV6MJIQaAAMtHKdoDnOT0iGYDsfD3GzHofnVSysIBKFiafqiXcw/1Ty4mMHC5OvK8dxdQdwmOu6HxzTlmOJWo+yLFaERtejDHgzU7hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=JhYf8Kff; arc=none smtp.client-ip=168.119.38.16
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=Kksx9x3KD/QqVq9g+mgo2v0oF2B9zffbFhWAvCAV2Jg=; t=1783349695; x=1784559295; 
+	b=JhYf8KffoofAo1zVqxVNdyXmFtBBw12ya6lf1dkkmyhE5eU7wdFKJOVqsxRvfYYAfjUuinaRDYz
+	A1LDvHENgod1K7Muy5HgbgeBoJYKOwH2/zlP+SPlsyDIsyvL5Oyh5Z5dj6Sa78Zo7Ri6DQH94rI8d
+	ewFUJuahcGWNnEGxNyT5UBdu1hVDHjDzL8ozX3EFjpZi7J0a+4K9bmyCiyz2tFQw5Rnwbi/l5sCd2
+	KYhah+BclFNFf89l4HTJGG+wmRDE/PLmYb3tTD8Ab2ZBilW/oBtjXF2z2btpciaA2soDM8oxlFYnp
+	E+ibZYzNhzh2yHdLzzZBv6oGepRDa9wg4+dg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wgkih-0000000DUli-3vSZ
+	for linux-wireless@vger.kernel.org;
+	Mon, 06 Jul 2026 16:54:52 +0200
+Message-ID: <cfb943ff3d7bd273d0f46293177824a7f839636b.camel@sipsolutions.net>
+Subject: FYI: wireless & wireless-next rebased
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Date: Mon, 06 Jul 2026 16:54:51 +0200
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260630210215.400379-1-rosenp@gmail.com>
+X-malware-bazaar: not-scanned
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38697-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:rosenp@gmail.com,m:linux-wireless@vger.kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:klausman@schwarzvogel.de,m:regressions@leemhuis.info,m:regressions@lists.linux.dev,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[klarasmodin@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38698-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[klarasmodin@gmail.com,linux-wireless@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,lists.infradead.org,schwarzvogel.de,leemhuis.info,lists.linux.dev];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_ONE(0.00)[1];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,soda.int.kasm.eu:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sipsolutions.net:from_mime,sipsolutions.net:dkim,sipsolutions.net:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A712B71241C
+X-Rspamd-Queue-Id: A3FC3712A4D
 
-On 2026-06-30 14:02:15 -0700, Rosen Penev wrote:
-> If seems the check for err is wrong as the proper macaddr gets written
-> to from the EEPROM itself. Meaning checking err from of_get_mac_address is
-> wrong as the proper macaddr has been written by this point.
-> 
-> Fixes: 31ee1582717e ("wifi: mt76: fix of_get_mac_address error handling")
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+As much as I like to avoid it, given the linux-next reports I've rebased
+both of the trees. The heads are currently:
 
-Tested-by: Klara Modin <klarasmodin@gmail.com>
+wireless: 4a360c6e18df ("wifi: mac80211: validate deauth frame length
+before reason access")
 
-> ---
->  drivers/net/wireless/mediatek/mt76/eeprom.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-> index b99d7452800f..afdb73661866 100644
-> --- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-> +++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-> @@ -181,7 +181,7 @@ mt76_eeprom_override(struct mt76_phy *phy)
->  	if (err == -EPROBE_DEFER)
->  		return err;
->  
-> -	if (err) {
-> +	if (!is_valid_ether_addr(phy->macaddr)) {
->  		eth_random_addr(phy->macaddr);
->  		dev_info(dev->dev,
->  			 "Invalid MAC address, using random address %pM\n",
-> -- 
-> 2.55.0
-> 
+wireless-next: f9202a374ec3 ("wifi: cfg80211: support MAC address
+filtering in station dump for link stats")
+
+If you have prior versions of those commits, sorry, please rebase as
+well.
+
+(neither of the prior versions were live for very long, but I figured
+I'd give a heads-up anyway)
+
+johannes
 
