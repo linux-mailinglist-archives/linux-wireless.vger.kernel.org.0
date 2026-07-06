@@ -1,129 +1,157 @@
-Return-Path: <linux-wireless+bounces-38704-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38705-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PnduGaMETGp5ewEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38704-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 21:40:19 +0200
+	id h+0KG6cLTGpcfQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38705-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 22:10:15 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B307A71516E
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 21:40:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDED3715509
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 22:10:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=tutamail.com header.s=s1 header.b=sUGNLaef;
-	dmarc=pass (policy=quarantine) header.from=tutamail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38704-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38704-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=cqMiRWq2;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38705-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38705-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A882130570D1
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 18:15:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C90423290E25
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 19:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188EC2DEA68;
-	Mon,  6 Jul 2026 18:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2653830C163;
+	Mon,  6 Jul 2026 19:00:32 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.w13.tutanota.de (mail.w13.tutanota.de [185.205.69.213])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E153B1035
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 18:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054492EEE93
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 19:00:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783361719; cv=none; b=NdiKZ69P4j90coiRUT3Tq2oqclK9zwFQRjun3kNEI5tw6h0I8LzMFfeC5fFn4mUZaY8zKftq1YYDZJzBkU6tgYTQeQAAdlhRFGXHNCl0oRR7bY/v/iNw+CcTLgwEfj5VPc9rYELVMqZJ6nBIQI92kreNngzI3HssvYO8uGu98Fw=
+	t=1783364432; cv=none; b=K6lcj1IOswJhHKbqi13+ATYb+ZOBGt2dVpeGdnxHjTZguqSgAXNDnOiPLHYRQ0H4ZxEDn1LwX5BOLCJUAnYWEcz3lvCaEOmiZ1tRseO++Ot/UYAsl+AUNlJD/1Ysgk5duQCFdb2W74+phiz2VlRTEsnbItxRDhSsqOWnX6KoURc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783361719; c=relaxed/simple;
-	bh=5O5qhfX6ulkq+VFdKia/M3YAA6lGVvBfplcOkRw7VfI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=ShLomx/FTErnNIQ92IlyrG8ldqQqSrpqCl2PCrvgCMhyrCtDgWZnAtXbSzpWOdJCx8Dq8VLvq84qenwMp7yTBBq3iAJD73yFJbb6S9ilfdhrrMvqzEfBs7MZb8ufUxpCTItVmhp4DCvlOO8B36bG3YcBAqBGpscIdZCZbVvNCPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tutamail.com; spf=pass smtp.mailfrom=tutamail.com; dkim=pass (2048-bit key) header.d=tutamail.com header.i=@tutamail.com header.b=sUGNLaef; arc=none smtp.client-ip=185.205.69.213
-Received: from tutadb.w10.tutanota.de (w10.api.tuta.com [IPv6:fd:ac::d:10])
-	by mail.w13.tutanota.de (Postfix) with ESMTP id 5E36A159D1ABF
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 20:15:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783361710;
-	s=s1; d=tutamail.com;
-	h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:References:Sender;
-	bh=5O5qhfX6ulkq+VFdKia/M3YAA6lGVvBfplcOkRw7VfI=;
-	b=sUGNLaefrvZ5bjtEfXiCrICy5Ot/G+NWUm8bD7M2yDkFxhxpJwD3rCFEoU0D2g76
-	w6GJZFIvRrXeDfs/u70VyePVb+0Nh+X5531gJ30EbXu2UzhoyNibO+5eOiIqM/eaAe2
-	/+XKBhbWJsCEVgBqkYmek/hZbzyLkK9gG4ESNptrtl99PYDeA6HpcLc2whISmfFGjIt
-	PwrtBf1Bz+HltxaOCsmV8/e0f0RreV2LZGwwervPHiekZj9HSjvXNfo3qrDxYLxqYwA
-	0of6yy0/SxtEGYIFONK4Iuo15uSmNCyPyQXe86g0IHhVDM7VJwrblEUSmChkJ0zh2RU
-	Ac5klU2VzQ==
-Date: Mon, 6 Jul 2026 20:15:10 +0200 (CEST)
-From: cybersnow_2001@tutamail.com
-To: John Scott <jscott@posteo.net>
-Cc: Linux Wireless <linux-wireless@vger.kernel.org>
-Message-ID: <OwscydZ--F-9@tutamail.com>
-In-Reply-To: <c2163c6ee67e982fd95d1f965ecf0b853f687214.camel@posteo.net>
-References: <OwQQjLm--J-9@tutamail.com> <c2163c6ee67e982fd95d1f965ecf0b853f687214.camel@posteo.net>
-Subject: Re: Atheros AR9280 / AR7010 Initial low scaning signal range
+	s=arc-20240116; t=1783364432; c=relaxed/simple;
+	bh=X4/h8GBbG2fpHq/yfHygZ2of0m3xFkwHFcyYsef0dpg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZTWu2B1Bn5qlNhSdimCa4LlwIIlHIv3Teus1uzcehxBvfnFkh07HQzBOuhsVBt7qY4Y5IUv2/YsLApsbXwUkaQKwk9dIj+mC7jzf3MOy7NkbU3R1w93oE7s18GIqx5VilJ1foPLyA9Al0kkP7I2RmRVuWIDDYicG9l/VhhJ0chc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cqMiRWq2; arc=none smtp.client-ip=192.198.163.19
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783364427; x=1814900427;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=X4/h8GBbG2fpHq/yfHygZ2of0m3xFkwHFcyYsef0dpg=;
+  b=cqMiRWq2//Hva/WXoVqwFPLFsJzk9qtmtMFCYPUuDyqggow2ZYlZzdQs
+   ezvzs9cZxASaY0DGkaMtYNH5Lmt26SKBPDPhYzr3K0naoFXqPepB4UegC
+   SJ1M9hsoLfoGLXIo+bm/rj+WiUYrEB5DZW1y9RRuFnZdTzXXxjC8Trcwo
+   Rf2LaSj5IrYrLyPj7DDL0e1B/tzVGH23pRwZXOe07XC/qdy/GmYWpV92o
+   YJ7NSPis2vlOfwicdrMIkLjYJxrSzx3cPdYTVHOjLXHY0kmRm/kk6THb2
+   Hj+ZD2nVEZrsuhm/NiAMM4oeCIMD/WH8fN5MoxHM22zdrV018BVdT8Zsm
+   w==;
+X-CSE-ConnectionGUID: X6czRkT4QUmqWPI7NsW4oQ==
+X-CSE-MsgGUID: yCnaL6fTTByMiz6ZtGgFhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11839"; a="82985424"
+X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
+   d="scan'208";a="82985424"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 12:00:26 -0700
+X-CSE-ConnectionGUID: cOTfDHpXQAC+xLpi2i7q/A==
+X-CSE-MsgGUID: Z8cYv2eNSHqUMmB49NUEEw==
+X-ExtLoop1: 1
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 12:00:23 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	Shahar Tzarfati <shahar.tzarfati@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wifi: mac80211: recalculate rx_nss on IBSS peer capability update
+Date: Mon,  6 Jul 2026 22:00:02 +0300
+Message-Id: <20260706215954.422adfd57b71.I5a47f65c5e38a221712f5203e5c8040304b382b5@changeid>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Feedback-ID: 0148cefbf77245a42b8d92790169c2e5f3889e2ac922109814e9377b88997be23fd058959082c4e525ef1b19740c34b7ef4478cd506e389835ad86d84f5ca78a4f:TurnOnPrivacy!:tutamail
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-4.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[tutamail.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[tutamail.com:s=s1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38705-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_ALL(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jscott@posteo.net,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38704-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[cybersnow_2001@tutamail.com,linux-wireless@vger.kernel.org];
-	FROM_NEQ_ENVFROM(0.00)[cybersnow_2001@tutamail.com,linux-wireless@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:shahar.tzarfati@intel.com,m:johannes.berg@intel.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[tutamail.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:from_mime,intel.com:email,intel.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B307A71516E
+X-Rspamd-Queue-Id: BDED3715509
 
-Thanks for looking at it. Here is what I could find on the Web about the same issue. Someone said Kernel 6.4 and earlier worked. You might try with Debian Live DVD Buster, Bullseye and others distro if you want. I tried to use an older firmware of Atheros v1.3 instead of 1.4, same problem. I wonder if there are older firmware... But I'm not sure if this is related to the firmware. It might be more about the kernel 80211 modules... Or it might be an electronic issue coming from the chip itself. I need to do a cold/freeze and very hot test to see if it solve the issue...
-https://discussion.fedoraproject.org/t/need-help-with-weak-wifi-signal-on-fedora-with-qualcomm-atheros-card/87854
-https://www.spinics.net/lists/linux-wireless/msg90423.html
-https://forum.mikrotik.com/t/ar9280-low-speed/62030
-https://forums.freebsd.org/threads/atheros-ar9280-wifi-not-working.68357/
-https://forum.opnsense.org/index.php?topic=28266.0
-https://forum.mikrotik.com/t/compex-wle200nx-atheros-ar9280/166217/3
-https://forum.netgate.com/topic/83364/atheros-ar9280-testing-settings-craziness-success-ymmv/2
-https://forums.tomshardware.com/threads/qualcomm-atheros-ar9287-terrible-range.2687938/
-https://forum.netgate.com/topic/53616/atheros-ar9280-ath0-stuck-beacon-resetting-bmiss-count-4-hangs-later/2
-https://forums.linuxmint.com/viewtopic.php?t=299646
+From: Shahar Tzarfati <shahar.tzarfati@intel.com>
 
+When IBSS peer capabilities change, rates_updated is set to true in
+ieee80211_update_sta_info(), but rx_nss is never recalculated.
+For peers with HT/VHT, this leaves rx_nss at 0 instead of the
+correct value, causing drivers to use incorrect rate scaling
+parameters.
 
+The root cause is that the commit below moved NSS initialisation
+out of rate_control_rate_init() into explicit call sites, but
+missing the rates_updated path in ieee80211_update_sta_info().
 
-Jul 4, 2026, 17:25 by jscott@posteo.net:
+Fix this by calling ieee80211_sta_init_nss_bw_capa() before
+rate_control_rate_init() when peer capabilities are updated,
+consistent with the other IBSS call sites added by that commit.
 
-> On Wed, 2026-07-01 at 04:08 +0200, cybersnow_2001@tutamail.com wrote:
->
->> I've read in another forum that people experienced the same issue after a kernel update, maybe after 6.8. What do you think?
->>
->
-> I think I can partially reproduce the problem. I have a Sony UWA-BR100 on Debian Trixie (kernel 6.12.94) and a wireless scan only shows very few access points, never more than -65 dBm or so. The access point for my home, being the closest one to me, actually has the *worst* signal strength value reported as -80 dBm consistently. A scan for access points does show 5GHz ones, but it chose to connect to my AP on 2.4GHz (which may or may not be legitimate; iwd normally joins the 5GHz ones when I'm using dual-band NICs). I did not observe any circumstance in which the reported signal became better, though.
->
-> With a TP-Link TL-WN822N v2 (still AR7010, but the 2.4GHz-only AR9287 instead of dual-band AR9280), everything is excellent, so indeed it seems only the AR9280 devices are affected.
-> Could you share that forum link? I'm not sure I'll get around to it but my next steps would be to bisect the kernel using a virtual machine and USB pass-through. This is strange indeed...
->
+Fixes: e5ad38a9b261 ("wifi: mac80211: clean up STA NSS handling")
+Signed-off-by: Shahar Tzarfati <shahar.tzarfati@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ net/mac80211/ibss.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
+index d0fd6054f182..1e5414ee27c0 100644
+--- a/net/mac80211/ibss.c
++++ b/net/mac80211/ibss.c
+@@ -1029,8 +1029,8 @@ static void ieee80211_update_sta_info(struct ieee80211_sub_if_data *sdata,
+ 		u32 changed = IEEE80211_RC_SUPP_RATES_CHANGED;
+ 		u8 rx_nss = sta->sta.deflink.rx_nss;
+ 
+-		/* Force rx_nss recalculation */
+-		sta->sta.deflink.rx_nss = 0;
++		ieee80211_sta_init_nss_bw_capa(&sta->deflink,
++					       &sdata->deflink.conf->chanreq.oper);
+ 		rate_control_rate_init(&sta->deflink);
+ 		if (sta->sta.deflink.rx_nss != rx_nss)
+ 			changed |= IEEE80211_RC_NSS_CHANGED;
+-- 
+2.34.1
 
 
