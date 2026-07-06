@@ -1,143 +1,203 @@
-Return-Path: <linux-wireless+bounces-38664-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38665-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id K777D5SBS2pOSgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38664-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 12:21:08 +0200
+	id PO37D6x/S2qiSQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38665-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 12:13:00 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC0570F159
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 12:21:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3564470EF66
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 12:12:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38664-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38664-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Su6QmA+4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38665-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38665-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E01B23194FD0
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 09:40:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C3302304231A
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 10:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F48C42CAE3;
-	Mon,  6 Jul 2026 09:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB8A422543;
+	Mon,  6 Jul 2026 09:56:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9237B414A11;
-	Mon,  6 Jul 2026 09:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10485434E50
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 09:56:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783330025; cv=none; b=AqILMDVtMf3uowrQwG5xqfr5WOHz3+7Je8qdYeksJntdUVO3Oqk/96FEu8lRd3ZKfBdD4bU5B2u9aJkTbBmPvrgS/4kUhbOLAUEnGitezCxf+3LQfHVvNPJphOvrpRue8Yc77Z07WC7P1zxjvALA89iW5WAmLteTWqvcTqcxozM=
+	t=1783331789; cv=none; b=hHuK8fUXY2lgz2lgS4xBqN8/uAWb76LCCIlY4bDBs1CM3yj6wrOIDpG0phFmblxXuILrNnsIkzWbl93YTUmBzlvhgIboqWWMp3nH5J1LDcQ1ZRp7vT5BFzLA2iEtrlknzXQlGjuasPOcABe83+l+VvD3ZGMDLfMtC8Fgq7WHZfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783330025; c=relaxed/simple;
-	bh=1llPvU5vVQ2cYYQnB/l37/ziu5SlMcl6kCPXycMcMMA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PEvEkgStLer/L5gQkOrC7304IJfDBPBhh016uUBlPjvdl3ltVz8GSuCYbHPRMM7zqdqSDOhtvzEBVM9uS9F/GxdUdaIHZnsYikLw6QAIjlt8x0+mBh5vb6IYCMl+ZTBZxlYlhtT/Z21OjYtBTXABP5h7FKfFk5wR4EubgYkHJlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Received: from localhost.localdomain (unknown [111.196.245.140])
-	by APP-01 (Coremail) with SMTP id qwCowABH5s7fdEtqUFrxBA--.35233S2;
-	Mon, 06 Jul 2026 17:26:56 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Kees Cook <kees@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: mwifiex: validate scan TLV result arrays
-Date: Mon,  6 Jul 2026 17:26:54 +0800
-Message-ID: <20260706092654.79403-1-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1783331789; c=relaxed/simple;
+	bh=eENoCQXIymb1FX7G0TZzWrzmNSnvnJFIBqcP19wClZk=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B2uhI4ipt1cgmTbaHxANf7Beikhi/AwahlNeMC6qZgv3wu2j6jJeZJUtWr0YHp2QQQkst9xwb6Ltk6zdqCePi7gItJusCq8ocFQMntBBSu0WO1wQAf+ZKIifjr1NM7p6sCsBxjCAbaJrHogk6qKl4oamVCRDLPnc7/BuMNctqNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Su6QmA+4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52BEB1F00ADE
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 09:56:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783331785;
+	bh=mvohprdb7yYHFpRfAfE7wCAqKcQVAUnlIPGzv9lPscM=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=Su6QmA+4j5hjr4j7jhc0GUVYNGV1Sd8dMRVYzwPGySS3lXXPrmDHWZ+ZFIgJPmknW
+	 /yegVrb0o2DzYz1N2m5SqKouQedeLEvy2rrOErEIO+Rl0mrQab1esD8edy8eL9AQjO
+	 DPxzFO2QfYjoRA9ygCp52oiq1fqrkKzi6OMJDNx7W8eJk3ZIzxgINUABRXDmpiC1gI
+	 BU5cuTFB1fl3U8LlnVanwAz6Nu08HNK9FoM8+8g1KjqCxIXw2RLUtbO2BtyGQwY1yp
+	 lz4WArEWODfFCrvSo8CYg/XZ21c0MD0Ih1Ko2avF0niRb3rCXUJCrwEs6Cxm11LI2f
+	 fj1tDjb1rD+vQ==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-39b03d41976so23036601fa.3
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jul 2026 02:56:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqV4qKyxGyK/0GzxCtU5NxXCpruD6ih8xl76m94Y8Y4HDhC0AIoZjHZNSYRX8iR2U0Xok4d7qmXKFtPsic4ug==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyioW44q6x5Tn+WUwuWWsKUWKpFc3KfvjdHgSRp0ouvnFRZ6f8J
+	Uwi4094bbEzjqOIsgBUEgkEcxOSY9Grl3H725+aPyml8enUDGYg1PmRkQ2ktzA7Xb+ErwwhS0xz
+	Sltj/vt4xy4/WoIxMGdMM9whY3NDq63KJMFtUiXCbvQ==
+X-Received: by 2002:a05:651c:2227:b0:399:87c9:459a with SMTP id
+ 38308e7fff4ca-39b53cd5cf2mr19262101fa.9.1783331783978; Mon, 06 Jul 2026
+ 02:56:23 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 6 Jul 2026 05:56:22 -0400
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 6 Jul 2026 05:56:22 -0400
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260704-b4-bcm47xx-swnode-v1-1-730d59340237@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABH5s7fdEtqUFrxBA--.35233S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7JF47GF4Dur1rWF48Ary8AFb_yoW8Jr4kp3
-	9xCFWIk34rJrn8Ca1rJF48Aa45K3Z5KFy2krZ2k34rKwnIkryrAwn8W34I9r1YqFs29ryY
-	9rWFqF1UuFsrAFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvj14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j
-	6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfU8-
-	B_UUUUU
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+References: <20260704-b4-bcm47xx-swnode-v1-0-730d59340237@gmail.com> <20260704-b4-bcm47xx-swnode-v1-1-730d59340237@gmail.com>
+Date: Mon, 6 Jul 2026 05:56:22 -0400
+X-Gmail-Original-Message-ID: <CAMRc=McxZ3GQLJabxtyUCUoAEWBX0czSSRFYYkiPBeQNZJpFkg@mail.gmail.com>
+X-Gm-Features: AVVi8CdPffyo_M9BGr1tovBbAAGtZnCO-dyCb3YY--piU-sCDUsCzgdujNxKHbc
+Message-ID: <CAMRc=McxZ3GQLJabxtyUCUoAEWBX0czSSRFYYkiPBeQNZJpFkg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] bcma: gpio: Add and register software node for GPIO controller
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, 
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
+	Michael Buesch <m@bues.ch>, Hauke Mehrtens <hauke@hauke-m.de>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-38665-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38664-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[kernel.org,arndb.de,vger.kernel.org,gmail.com,bues.ch,hauke-m.de,alpha.franken.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:dmitry.torokhov@gmail.com,m:brgl@kernel.org,m:arnd@arndb.de,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mips@vger.kernel.org,m:zajec5@gmail.com,m:m@bues.ch,m:hauke@hauke-m.de,m:tsbogend@alpha.franken.de,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[brgl@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[pengpeng@iscas.ac.cn,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:briannorris@chromium.org,m:pengpeng@iscas.ac.cn,m:francesco@dolcini.it,m:kees@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:from_mime,iscas.ac.cn:email,iscas.ac.cn:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ABC0570F159
+X-Rspamd-Queue-Id: 3564470EF66
 
-mwifiex_ret_802_11_scan() indexes TSF and channel-band TLV
-arrays by the reported number of BSS result sets.
+On Sun, 5 Jul 2026 07:25:08 +0200, Dmitry Torokhov
+<dmitry.torokhov@gmail.com> said:
+> We want to convert the legacy gpio-keys platform device on BCM47XX
+> boards to use software nodes. To do this properly and allow
+> referencing the GPIO controller by address rather than relying on
+> name-based matching (which is being removed from the gpiolib core),
+> we need to associate the GPIO controller with a software node.
+>
+> Introduce bcma_gpio_swnode, register it if the device does not
+> already have a firmware node, and associate it with the gpio_chip.
+>
+> Assisted-by: Antigravity:gemini-3.5-flash
+> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> ---
+>  drivers/bcma/driver_gpio.c | 17 ++++++++++++++++-
+>  include/linux/bcma/bcma.h  |  3 +++
+>  2 files changed, 19 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/bcma/driver_gpio.c b/drivers/bcma/driver_gpio.c
+> index 658c7e2ac8bf..0dad8d6dbe5a 100644
+> --- a/drivers/bcma/driver_gpio.c
+> +++ b/drivers/bcma/driver_gpio.c
+> @@ -19,6 +19,11 @@
+>
+>  #define BCMA_GPIO_MAX_PINS	32
+>
+> +const struct software_node bcma_gpio_swnode = {
+> +	.name = "bcma-gpio",
+> +};
+> +EXPORT_SYMBOL_GPL(bcma_gpio_swnode);
+> +
+>  static int bcma_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+>  {
+>  	struct bcma_drv_cc *cc = gpiochip_get_data(chip);
+> @@ -190,7 +195,15 @@ int bcma_gpio_init(struct bcma_drv_cc *cc)
+>  	chip->direction_input	= bcma_gpio_direction_input;
+>  	chip->direction_output	= bcma_gpio_direction_output;
+>  	chip->parent		= bus->dev;
+> -	chip->fwnode		= dev_fwnode(&cc->core->dev);
+> +
+> +	if (!dev_fwnode(&cc->core->dev)) {
+> +		err = software_node_register(&bcma_gpio_swnode);
+> +		if (err)
+> +			return err;
+> +		chip->fwnode = software_node_fwnode(&bcma_gpio_swnode);
+> +	} else {
+> +		chip->fwnode = dev_fwnode(&cc->core->dev);
+> +	}
+>
+>  	switch (bus->chipinfo.id) {
+>  	case BCMA_CHIP_ID_BCM4707:
+> @@ -234,5 +247,7 @@ int bcma_gpio_unregister(struct bcma_drv_cc *cc)
+>  {
+>  	bcma_gpio_irq_exit(cc);
+>  	gpiochip_remove(&cc->gpio);
+> +	if (cc->gpio.fwnode && is_software_node(cc->gpio.fwnode))
+> +		software_node_unregister(&bcma_gpio_swnode);
+>  	return 0;
+>  }
+> diff --git a/include/linux/bcma/bcma.h b/include/linux/bcma/bcma.h
+> index f02cb3909375..aa88c2d64bfb 100644
+> --- a/include/linux/bcma/bcma.h
+> +++ b/include/linux/bcma/bcma.h
+> @@ -486,4 +486,7 @@ extern u32 bcma_core_dma_translation(struct bcma_device *core);
+>
+>  extern unsigned int bcma_core_irq(struct bcma_device *core, int num);
+>
+> +struct software_node;
 
-Ignore TSF or channel-band TLVs whose payload length cannot provide one
-entry per reported BSS set.
+Maybe move the forward declaration to the top of the file as is customary?
 
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
----
- drivers/net/wireless/marvell/mwifiex/scan.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> +extern const struct software_node bcma_gpio_swnode;
+> +
+>  #endif /* LINUX_BCMA_H_ */
+>
+> --
+> 2.55.0.rc0.799.gd6f94ed593-goog
+>
+>
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index 97c0ec3b822e..7416756ada3b 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -2165,6 +2165,15 @@ int mwifiex_ret_802_11_scan(struct mwifiex_private *priv,
- 					     (struct mwifiex_ie_types_data **)
- 					     &chan_band_tlv);
- 
-+	if (tsf_tlv &&
-+	    le16_to_cpu(tsf_tlv->header.len) / TSF_DATA_SIZE <
-+	    scan_rsp->number_of_sets)
-+		tsf_tlv = NULL;
-+	if (chan_band_tlv &&
-+	    le16_to_cpu(chan_band_tlv->header.len) /
-+	    sizeof(*chan_band_tlv->chan_band_param) < scan_rsp->number_of_sets)
-+		chan_band_tlv = NULL;
-+
- #ifdef CONFIG_PM
- 	if (priv->wdev.wiphy->wowlan_config)
- 		nd_config = priv->wdev.wiphy->wowlan_config->nd_config;
--- 
-2.43.0
-
+Bart
 
