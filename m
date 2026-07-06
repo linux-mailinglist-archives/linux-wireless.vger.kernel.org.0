@@ -1,229 +1,162 @@
-Return-Path: <linux-wireless+bounces-38658-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38660-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BzzdEsdpS2oGRAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38658-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 10:39:35 +0200
+	id AzMCMk52S2pkRwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38660-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 11:33:02 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE3C70E321
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 10:39:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF8370EA22
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 11:33:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=SgSm04Aw;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=Oe7AB0Ri;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38658-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38658-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=xEzvHrmZ;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=WP2PNLca;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38660-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38660-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D10BD301D326
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 08:39:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33CA0303746A
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 08:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB89279DC9;
-	Mon,  6 Jul 2026 08:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623D13F8234;
+	Mon,  6 Jul 2026 08:42:40 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2602C3F39EC
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 08:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304A93FD159;
+	Mon,  6 Jul 2026 08:42:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783327158; cv=none; b=ooCguDCdWR4rB7GhDUXNpKeO6jG2v3CY4n0DMefS1xBx3QaF2N+HgrGe5feTHhL8jzJTzwgMeAHrynf8n9jZSn5/PSeOtJ10TL0dZxpWLf/c/ApKmRO/MHaZU0s0grBXR9gUPiaDWX9XF6KD8Ycb7hPWmpBAd7ND0WzfOdv+r/M=
+	t=1783327358; cv=none; b=o3HYj2gNVbmZI/lajffEs3eitewEnRbFdrTKg42oN9uKp2I+SRULhYE3dF0Hctcg7Vd2mGfQ9+otOcc4jLBE7URAz5K5nw9GOPNsRb50Scdkm6vyE3v4Zs4xI9e5yAQ8WS7wrTWcR7O6BYSW3PRpk3fzZnyzc/PLnvubnjTcXE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783327158; c=relaxed/simple;
-	bh=yYIvx/7sDTXc/tF5CeTXb73963GdpGznJzBQeFA8Mkc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DQMJlN0nRDdWtqjV5r8br1e+JJIt/wLz3EaLnpbnnRTbw/s+8g9Jz369Nf4+/p7JR19CZJfdIXrTV1AP2hI/RubnAoQuGohWGTPqzG2BSJxwCdWp0RSGZ+bszMk/qHuJ9fG7cJjCwGA5FosuASwFjWgQoIduQtCNIXpF9ywiFJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SgSm04Aw; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Oe7AB0Ri; arc=none smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 666857f94007029
-	for <linux-wireless@vger.kernel.org>; Mon, 6 Jul 2026 08:39:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=8cCUED+WKOM
-	Tjfk+NJYpMOHd3h9YMIL+mgA+oxh+HtQ=; b=SgSm04AwjatgXlfw/OHIPKseokN
-	yHGwpqiKKsa3KQY0NBhH6VwwRGApC54fFHhpvF+Dl++y40cIFKvYPayxJ6/+mwxe
-	QKUYY6z9/yVB9C9dq/QXBFIV7dIa4pAq44KfvYjQujAJn1AqfTnr0Uf5Y1E8lD37
-	IBd3bPGyEQazqkeGbCGIRsl6kYgTpPtzemnghrFPr0AnYPV9+n8c/Bxu1yy5MlDC
-	qnU5k9sBGuLU6SeXhWs3zV8pWM+o2yBtrszOyBL/hF7p71XhrV3jCvTqT2BNIwAm
-	u9Wc8UqGWt89ZWnOZkad0WaaZgfu4UoWLLkVckKmx/i3YQ1nQqXiNokNVTA==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f88hs851t-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 06 Jul 2026 08:39:09 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cc77a6943eso54667275ad.0
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jul 2026 01:39:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783327148; x=1783931948; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8cCUED+WKOMTjfk+NJYpMOHd3h9YMIL+mgA+oxh+HtQ=;
-        b=Oe7AB0RieCM+1GRI9XxvKBDXDRwqS9uCKvd3xWC6lgQh/hi+Rx+e+DEoxLPAmOSgK3
-         j5jwLSYFrOewzmDtC8hNGa8TsdBtq5JrI59gb6JzNfUOAtLBhqoD2Z63pxWfbroJz/KZ
-         5eGp5HYGY5TNnsGWVmzyS4ltG3LnRJH3rguL6gtYuZsBjyyEH/klcAGSxzhaLzpL/1GC
-         hyjHzV0WdrHH8bhsqqPuv+vt8gaYmlTlzEl4xyLsHDEKvMqLGLFRwkPADIqu3nOXu+HH
-         O8oYf6I3PUwgeicLk/oQqU3Q68WHEHh5FMgOQUXkSX4NkDQA+iC/a18TyoRntVxNzOoV
-         w/Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783327148; x=1783931948;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8cCUED+WKOMTjfk+NJYpMOHd3h9YMIL+mgA+oxh+HtQ=;
-        b=S7ZHCrSyHNnnN9QKTOMnZO7yZ8ROM+naxO8JPavNwO5rOb5gnDhUxfpMs23VaXcxLk
-         XnPmDxARA5+FnSFBwGpXSDO5YkP07h8pwZNRJUZCKNNdjExgq15GAYiYmVG1Xozyu80P
-         D78OTDb8JbRq4N+2Aaz84RLKG52naWlxej0sFiS6uduLOaKUc6Kclbgeh2bvaW+5ogcA
-         VqHVQZvCdaeqeObyykK5ugfE3wo3pQHxjNY6gfVEkYVlaH7LFUvPz1V0cEiMlpm8yWZG
-         ik4zCploPpfKY6O+b9S1UHcYY9i7QUxJQxSoxpbg4//hkqFB6m45cyqYm82ohJF5ZcWx
-         bu7A==
-X-Gm-Message-State: AOJu0Ywn375mo+X65aR2HJ2drEQsoz795bPX8kZZaStjqbzPvoRAFZgV
-	tV2XOXi2PkUlXHPQFqj3VmCrWlMi/u7K7EmnFv2kLkGdObI4dxg+thV5+5ZSY84m2k3kycz9Hwk
-	nIF1DKgHfQ9r+QUglCodTre22HHbuePeN2fqnmveyaBB1HPO4zrYfIcjEwzb5QXSjHPfs
-X-Gm-Gg: AfdE7clAlsG9lRx04GNAfQN2hQwXbL6KqAq4+bpOuCNsT1fCAyTbf+TaNGNhoTJCwuF
-	tice0oNi+D90g19GQoRRD332EbhldVh23iYe4JU8UqzEnr1VZ9VvvxRmhDoDFwkdzGtJcs2TngA
-	H07qX1ei2Sm1A1XGFKxQXXOy5ft/yBnav/4p/T91XDBGNLsEOEv/Lbvg6YLmDVastXI8NCdkh6n
-	ZMVk70SiS2U7Cb4bCshkCtJhtJVGvms8uKNQ0aS+YZod1K/tmLncaDvcy36e68fM+xYPQuRKM04
-	eA0QgYXmeZQx2opnnU/zbT9IXxNr1haz0FA/e+h2KSYPN9gy9HUQ4gmTo1oGiksiW12ZDJgTqQ7
-	d69kOzG4FpS3rYjI125OmgUMA8Dp8dObCYNK5Akk+PD3z2IOqzm3EVEeD8Vw1jVHOJXtKX7W6A+
-	rd8jBiZ6KikG3Ggt70iFzxEXTpgvDw+xp/jb6W
-X-Received: by 2002:a17:902:e552:b0:2c9:97a9:2096 with SMTP id d9443c01a7336-2cbb9ef52c1mr98515635ad.42.1783327148097;
-        Mon, 06 Jul 2026 01:39:08 -0700 (PDT)
-X-Received: by 2002:a17:902:e552:b0:2c9:97a9:2096 with SMTP id d9443c01a7336-2cbb9ef52c1mr98515455ad.42.1783327147683;
-        Mon, 06 Jul 2026 01:39:07 -0700 (PDT)
-Received: from hu-pshashik-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cad6f25f92sm45656925ad.9.2026.07.06.01.39.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 01:39:07 -0700 (PDT)
-From: Shashikala Prabhu <shashikala.prabhu@oss.qualcomm.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, cgopi@qti.qualcomm.com
-Subject: [PATCH wireless-next v2 2/2] wifi: mac80211: Pass MCST element value in ch_switch_started_notify
-Date: Mon,  6 Jul 2026 14:09:00 +0530
-Message-Id: <20260706083900.908140-3-shashikala.prabhu@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260706083900.908140-1-shashikala.prabhu@oss.qualcomm.com>
-References: <20260706083900.908140-1-shashikala.prabhu@oss.qualcomm.com>
+	s=arc-20240116; t=1783327358; c=relaxed/simple;
+	bh=O4q3m9twkSC1QC9V2DeWjMZQFNL1nKCZpNAoTTNPdOc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ISkT6wZ5EB6xybIOv75GWN+0aHCc4E8f9pBe4ZgltyQVg40W+BMUPB8+j3O8sycNtzlDbY0POQKjIa1kcmGhGG5weqfdX+FBk1Iqya1A0XrYhFc1PonoLtDbmukvqYQb7QE+KHGTDdSAOHvSCpM0vuBXBzmEy9jPulMwcsYzelg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xEzvHrmZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WP2PNLca; arc=none smtp.client-ip=193.142.43.55
+Date: Mon, 6 Jul 2026 10:42:22 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1783327343;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Qx2JGNYXzBQVck8nCP9EIoLDc9txtLOxBCkElVT+408=;
+	b=xEzvHrmZJIRJyRrBqvbshSnu52HLO8ue8Vule+sdKx2uzfp/swOjBcFZij3UNweaE1G/20
+	iQ+YRVGQVQjwEJe1zh/TkaQwkUYmsRf1sVT0aK1MhpgsJoC+pR+9i0SAG/qKDpmtjOFjTW
+	3TdvXuzMlmQDZSKFytMF2yHJOF1NVAi0hyVA6/7ajcjgeCxpSS0AVaU+v7kpIWZkR8/kPu
+	wAS9EELIqgox5PuZUG2CiNi8DW2fu/1Qv2hV4lrwYX7p/yLERy6dI+vkLAfEWV9IxDRsyc
+	j1QgJKor7fn4iVERFkYHh+WT8XfJ5iXnmnlJJGAZxafJ8jFTc613xHO4Ye02Xw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1783327343;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Qx2JGNYXzBQVck8nCP9EIoLDc9txtLOxBCkElVT+408=;
+	b=WP2PNLcaTAzB3qA0iJOv8D8ZDx9jJzYzqtcHxwOwZT1TRFIs2jwW5FFQ9ljELht+FYSHYO
+	GfjT2OyA72zsvuBA==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, 
+	David Woodhouse <dwmw2@infradead.org>, Miroslav Lichvar <mlichvar@redhat.com>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	Arthur Kiyanovski <akiyano@amazon.com>, Rodolfo Giometti <giometti@enneenne.com>, 
+	Vincent Donnefort <vdonnefort@google.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, 
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>, Johannes Berg <johannes.berg@intel.com>, 
+	Jacob Keller <jacob.e.keller@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Peter Hilber <peter.hilber@oss.qualcomm.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, linux-wireless@vger.kernel.org, 
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH] timekeeping: Document monotonic raw timestamps in
+ snapshots correctly
+Message-ID: <20260706081734-32262bc9-5dcd-401c-bd47-18b91636bf73@linutronix.de>
+References: <20260526165826.392227559@kernel.org>
+ <20260526171223.374814973@kernel.org>
+ <20260626103359-66ab2b54-d36f-416b-94a4-3f3708dccced@linutronix.de>
+ <87echtk24a.ffs@fw13>
+ <20260626125819-d8b197fc-7671-4d12-a578-9025affc52d9@linutronix.de>
+ <87fr29ib4v.ffs@fw13>
+ <20260629055344-b74c43de-2a2b-4608-ae4e-ed0ac8e12fd1@linutronix.de>
+ <87bjctsptt.ffs@fw13>
+ <87wlv9k3wz.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: kBL6jvQ8QAAKlETfTtA7niLWYuyXI_-x
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA2MDA4NiBTYWx0ZWRfX4fafP0N1+WPX
- gOXFsoTy2kEpP/S/CGGIQ6xpeD7c2BKcuxZ0d2dssdLZWqkQydGPUGRvxdbT7/h4DkAjqco6MQn
- cyDGdnBD+QownbPWvFiZ5AUqGGHrB9LsL50AXVFQLxK1n6++tIQ+H5pxNNwtLQjXO3BDqAhbbkS
- 9jdDSWOCOObassO/0phPNp1C7UjkvMZTylgWUqztSQJ5fh6/RqzcFCNHDZX786hC4RwNRILIVMJ
- AeR1W5z7v6uL2uS9OWVL/XLz6HrsNHzQnSTRw15uqo8vWLruK+YWIG/S27Of99N43kT7ivgrlCz
- n8eZqlkJO7LWPqrbYdLJtzh/IfmKJRL9dBUTXgtdXCkzgR5I7CP08DlyJlH5hznKxmhtJaTMrya
- /IOxmn5sj880yat5OXuSzdbEM18KA4LSBnYpw5O2dq0Z7pJqciLu8BrZALci7itgwlmiOEuIXdB
- BxUYNZuEKIroRz3NGwQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA2MDA4NiBTYWx0ZWRfX6uX9EVkEZdzC
- 0YrE2dZTOOuUNSX6CRDTbzik9288u4pc1AEGRFc8VXIqtmTl/2tA+qmx1hH5zfb16biJkxucp8o
- R5qL1nM0pyEIGZOvWOXrcb4zULFLTcI=
-X-Authority-Analysis: v=2.4 cv=XIwAjwhE c=1 sm=1 tr=0 ts=6a4b69ad cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=EUspDBNiAAAA:8
- a=qGnBH85BPG6j4nX1zRsA:9 a=1OuFwYUASf3TG4hYMiVC:22
-X-Proofpoint-GUID: kBL6jvQ8QAAKlETfTtA7niLWYuyXI_-x
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-05_02,2026-07-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015 bulkscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 lowpriorityscore=0 spamscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607060086
+In-Reply-To: <87wlv9k3wz.ffs@fw13>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38658-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38660-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:cgopi@qti.qualcomm.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[shashikala.prabhu@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shashikala.prabhu@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,vger.kernel.org:from_smtp];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:tglx@kernel.org,m:linux-kernel@vger.kernel.org,m:dwmw2@infradead.org,m:mlichvar@redhat.com,m:jstultz@google.com,m:sboyd@kernel.org,m:anna-maria@linutronix.de,m:frederic@kernel.org,m:akiyano@amazon.com,m:giometti@enneenne.com,m:vdonnefort@google.com,m:maz@kernel.org,m:oliver.upton@linux.dev,m:kvmarm@lists.linux.dev,m:oupton@kernel.org,m:richardcochran@gmail.com,m:netdev@vger.kernel.org,m:tiwai@suse.com,m:miriam.rachel.korenblit@intel.com,m:johannes.berg@intel.com,m:jacob.e.keller@intel.com,m:anthony.l.nguyen@intel.com,m:saeedm@nvidia.com,m:peter.hilber@oss.qualcomm.com,m:mst@redhat.com,m:virtualization@lists.linux.dev,m:linux-wireless@vger.kernel.org,m:linux-sound@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,infradead.org,redhat.com,google.com,kernel.org,linutronix.de,amazon.com,enneenne.com,linux.dev,lists.linux.dev,gmail.com,suse.com,intel.com,nvidia.com,oss.qualcomm.com];
+	RCPT_COUNT_TWELVE(0.00)[28];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linutronix.de:from_mime,linutronix.de:email,linutronix.de:mid,linutronix.de:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9FE3C70E321
+X-Rspamd-Queue-Id: 3AF8370EA22
 
-From: Chandru Gopi <cgopi@qti.qualcomm.com>
+On Sun, Jul 05, 2026 at 02:38:04PM +0200, Thomas Gleixner wrote:
+> The comments related to raw monotonic timestamps for the various
+> snapshot mechanisms in code and struct documentation are ambiguous. They
+> reference them as CLOCK_MONOTONIC_RAW timestamps, but with the arrival
+> of AUX clocks that's not longer correct.
+> 
+> The raw monotonic timestamps only represent CLOCK_MONOTONIC_RAW for the
+> system time clock IDs, i.e. REALTIME, MONOTONIC, BOOTTIME, TAI.
+> 
+> For AUX clocks they refer to the monotonic raw clock which is related to
+> the individual AUX clocks. These monotonic raw timestamps have the same
+> conversion factor as CLOCK_MONOTONIC_RAW, but differ from that by an
+> offset:
+> 
+> 	MONORAW(AUX$N) = MONORAW(SYSTEM) + OFFSET(AUX$N)
+> 
+> The offset is established when a AUX clock is enabled and stays constant
+> for the lifetime of the AUX clock.
+> 
+> Update the comments so they reflect reality.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Reported-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
 
-IEEE Std 802.11-2024 subclause 9.4.2.216 (Max Channel Switch Time element)
-defines a Switch Time field in the Channel Switch Announcement (CSA)
-element that indicates the time delta between the time the last beacon
-is transmitted by the AP in the current channel and the expected time
-of the first beacon transmitted by the AP in the new channel.
+Thanks!
 
-Pass the already-parsed MCST (Maximum Channel Switch Time) element
-value to cfg80211_ch_switch_started_notify().
+Reviewed-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
 
-Pass mcst_tu=0 in the __ieee80211_channel_switch() call to
-cfg80211_ch_switch_started_notify() since the AP-initiated channel
-switch path does not carry a MCST element, as this element is only
-present in Beacon/Probe Response frames processed on the STA side via
-ieee80211_sta_process_chanswitch().
-
-Signed-off-by: Chandru Gopi <chandru.gopi@oss.qualcomm.com>
-Signed-off-by: Shashikala Prabhu <shashikala.prabhu@oss.qualcomm.com>
----
- net/mac80211/cfg.c  | 2 +-
- net/mac80211/mlme.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 3b58af59f7e4..70cb8e39a64f 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4802,7 +4802,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 
- 	cfg80211_ch_switch_started_notify(sdata->dev,
- 					  &link_data->csa.chanreq.oper, link_id,
--					  params->count, params->block_tx);
-+					  params->count, params->block_tx, 0);
- 
- 	if (changed) {
- 		ieee80211_link_info_change_notify(sdata, link_data, changed);
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 9e92337bb6f9..507d7e81ddcd 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -3470,7 +3470,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 
- 	cfg80211_ch_switch_started_notify(sdata->dev, &csa_ie.chanreq.oper,
- 					  link->link_id, csa_ie.count,
--					  csa_ie.mode);
-+					  csa_ie.mode, csa_ie.max_switch_time);
- 
- 	/* we may have to handle timeout for deactivated link in software */
- 	now = ktime_get_boottime();
--- 
-2.34.1
-
+(...)
 
