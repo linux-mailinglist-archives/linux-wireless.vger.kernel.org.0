@@ -1,62 +1,62 @@
-Return-Path: <linux-wireless+bounces-38673-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38674-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RevfARmkS2pwXgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38673-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 14:48:25 +0200
+	id KuqlEGekS2qFXgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38674-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 14:49:43 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38634710C3A
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 14:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8516F710C6B
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 14:49:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=qOqq4odu;
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b="OkF/uk3G";
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38673-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38673-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38674-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38674-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5B72322D8AD
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 10:54:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 607CB32C76FF
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 10:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD203A5E93;
-	Mon,  6 Jul 2026 10:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460863EB108;
+	Mon,  6 Jul 2026 10:55:03 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE33D303C9C
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 10:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB7B3E63B6
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 10:55:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783335250; cv=none; b=nBjxOpPySr1exlwMfd/pdVPrunlU2vjcSIDj0p1t5IeqNXp9Msq7mvb4U7MEaAHYXwXIXDOo6g4E2nhFC1gLXNP9WNivFg3nE0zGiBat2lTlKrbOI6S1amb2mqJNYvUlhw44FglblA8moqGlVVOgUNBaVU8Jj2V97xwqi8K03+E=
+	t=1783335303; cv=none; b=eWQcXLgW72PwLxeNBeB1FJ+y+o5ZMThjzRofQJ6KNrgNb0CyZR1uSy7s/OgeTtC+UQ/7A3KpGOnty7WqZENmYgyg+XWhMnp0YaLVmE8bNAwjNzX5C9qgbH7Dxf0kPPMZZSBF5s64EXDMXYNP9e0UCApoaLyfyS7wFhFHQbasmGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783335250; c=relaxed/simple;
-	bh=1VfGwQyqm85kRlTDkyURvifgwc43LbuOrgXR/ZdODdM=;
+	s=arc-20240116; t=1783335303; c=relaxed/simple;
+	bh=tKII93/eQw3qLXFwc+XhcBDus/c9JI18ieefTE/wCXo=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=a4HR6gWU+nCTIAWrGWRTIalgj2BmrU345SO3vP0yiBFrP1vVST5p5SF1WIkaiuN8WPSRx8QmxpJcQMpkpJ0q6wMNylZDSHgXJbbPBSfBx7KmAplqoa/ZZoGsN5v+/OIUqpoDCf8c/nndQUqEgprFqu1E6uFNzVdo8lqExXd7AWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qOqq4odu; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=IL0bIuwUREVui2b7ZdzT7sLj72xwOuNaFuYlY7RPaflCAsH1pN9+H2RMA1f6IaF0BW4FZnPYlVIZqd9pxVqc6FzfmAuC0i/LMHeddbmpKJt6YV/BHVVKnfbzvjtY88FBH0DyLM12usvuSsoTNoN7B3ObcjiszaO7sV1Xj9YsoGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=OkF/uk3G; arc=none smtp.client-ip=168.119.38.16
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=fjyw2jFaTKSFHNWY2CKEBOo8aO2mOl6RpigxW+MdlmA=;
-	t=1783335248; x=1784544848; b=qOqq4odufQcHpzdCdCpEXl+SmPyLecS6+q1p94yvIkyQ2+o
-	8QIkOCF6SVEabl+HxUye/8u5DtFvQyZGioVE+jHROy5eaPTKqvl3F5EiEe+VCH/jS/RVbKWVaXDuw
-	UdIIjVHOWgKdvujIYNqsyYKh3EhcGUFHB+IN1vk2PP/NYtJEt7oRIns4dmT1foMnsbdvYd6Yn2Yy4
-	Z1l5vsbFdTYLvOor9tKjGz27rZONsT49nTD3dpf6QX0tq4+4QfM1tdkxSYOeUwZxNZku6O2bFBFJt
-	mk8GaVMadMVs+vzd+PG5XlK85CONn7bJf8BDcYYt1kBdu7/sbZWM8wbhBVjF/PzA==;
+	Resent-Cc:Resent-Message-ID; bh=SJpQlZzQKNXfBy9ZuscJZTdK+EC2ty7w5265PBSBglw=;
+	t=1783335301; x=1784544901; b=OkF/uk3GHIJdKsdVPb40pLiA5DPxnhd/a2/W3ba07H5DCUU
+	rzR6Ik78XjPxpgn9sPRf+9/SXDVJ7SotCntkdeoBHGkqRDuUmdPMoWVN09+V8/hDmEJr4B0DkZAhc
+	gwg2XR2byYqQHsatnNkLnv55jG0g/BTI+AFUDjf5qiFaVURyt0scE4GQLIQ6Ch2/iYubb9mhn4Qit
+	2ba160Nu+zUkZAuP0Xl14/gWO/TLGIrFbTx9V0N3SphNw9Tu6rQ6/Q0utR6GZKVGvPqpoq2UA/ygm
+	R84gHqIsVMamIcGF64iesYAECitYfZgRzy68pnVdvDmDXgKfbDQql3K5U48T5VYg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1wggxb-0000000DE4m-3hDD;
-	Mon, 06 Jul 2026 12:54:03 +0200
-Message-ID: <b1d6bff2709e5368b635b956b435cccf4606cb66.camel@sipsolutions.net>
+	id 1wggyW-0000000DFMU-00WW;
+	Mon, 06 Jul 2026 12:54:57 +0200
+Message-ID: <f36938368d164be5aaedc836ff85abd678ee3785.camel@sipsolutions.net>
 Subject: Re: [PATCH wireless-next v5 3/4] wifi: mac80211: implement STA-mode
  peer probing
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Priyansha Tiwari <priyansha.tiwari@oss.qualcomm.com>
 Cc: veerendranath.jakkam@oss.qualcomm.com, linux-wireless@vger.kernel.org, 
 	quic_drohan@quicinc.com
-Date: Mon, 06 Jul 2026 12:53:58 +0200
+Date: Mon, 06 Jul 2026 12:54:54 +0200
 In-Reply-To: <20260611062225.2144241-4-pritiwa@qti.qualcomm.com>
 References: <20260611062225.2144241-1-pritiwa@qti.qualcomm.com>
 	 <20260611062225.2144241-4-pritiwa@qti.qualcomm.com>
@@ -85,7 +85,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
 	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-38673-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38674-lists,linux-wireless=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -101,32 +101,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:from_mime,sipsolutions.net:dkim,sipsolutions.net:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,sipsolutions.net:from_mime,sipsolutions.net:dkim,sipsolutions.net:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 38634710C3A
+X-Rspamd-Queue-Id: 8516F710C6B
 
 On Thu, 2026-06-11 at 11:52 +0530, Priyansha Tiwari wrote:
 >=20
-> @@ -1396,7 +1396,7 @@ struct ieee80211_tx_info {
->  			u8 pad;
->  			u16 tx_time;
->  			u8 flags;
-> -			u8 pad2;
-> +			u8 link_valid:1, link_id:4;
+> +			conf =3D wiphy_dereference(local->hw.wiphy,
+> +						 sdata->vif.link_conf[link_id]);
+> +			if (unlikely(!conf))
 
-[...]
+could drop the unlikely() that you copied - fairly pointless here
 
->  	info->control.flags |=3D u32_encode_bits(link_id,
->  					       IEEE80211_TX_CTRL_MLO_LINK);
-> +	if (link_id !=3D IEEE80211_LINK_UNSPECIFIED) {
-> +		info->status.link_valid =3D 1;
-> +		info->status.link_id =3D link_id;
-> +	}
+>  	nullfunc =3D skb_put(skb, size);
+> +	memset(nullfunc, 0, size);
 
-These changes seem so *obviously* wrong that I can't believe you're
-actually trying to achieve what it looks like.
-
-I guess I'll apply patches 1 and 2.
+skb_put_zero() exists.
 
 johannes
 
