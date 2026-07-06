@@ -1,266 +1,239 @@
-Return-Path: <linux-wireless+bounces-38701-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38702-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /lPSDgPLS2praQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38701-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 17:34:27 +0200
+	id MTZCMS7sS2rmcwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38702-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 19:55:58 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F2B712A53
-	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 17:34:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB327142C4
+	for <lists+linux-wireless@lfdr.de>; Mon, 06 Jul 2026 19:55:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bluw3o8d;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38701-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38701-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=KEuW3qTD;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=ceaoRugY;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38702-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38702-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BC3953042BAE
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 15:24:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7E8433EED3F
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jul 2026 15:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2203876DE;
-	Mon,  6 Jul 2026 15:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B212430CD1;
+	Mon,  6 Jul 2026 15:47:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB743803C4
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 15:24:26 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783351468; cv=none; b=D4D4prTcs7y0KmRg8ciY7pjUIAZ6iNC3uiBKDTY+d6T5dMVi237I6gPHCBzNuap9bgGJs0CiJjExd0hT9gwzyITHXEuxF64D4o4qen3nrAVSY9Dxh/e7tuoUdREp5tIxlcxj2J6Cw1yLRqSekgaJ+KeCfOpvOP/Ds2L5rpM3iug=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783351468; c=relaxed/simple;
-	bh=WAZyh8iTwhnsZaoAC/QftPEu8NMQFMip181JBFbQpjY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hW9aE0PogtZKMOgga/cspf3Z8urq8whieFqI8PodIu9EDCGTGok8XgwdPzmQRZ4H4f7JGHZ278qpLkOn28Jr9OKNKAK17iEsan4T5yWqZ+EDXJTr7xHudKaPXZVbzC6FO9ot+qA77EDUA84AEZKqj/cHjETZHGPW6l3+fPncQNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bluw3o8d; arc=none smtp.client-ip=209.85.214.172
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cad8076b01so41042015ad.2
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jul 2026 08:24:26 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8FF30FC33
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jul 2026 15:47:24 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783352846; cv=pass; b=uZ0/x1WEr4stt1ObrgEGn+b14XzQ3krgBIHArlWp+CosLk6y0DYv9CduXyzvPOFa/RXqj4U8DYysvHHbESboc2Xxsxwf8hswILA4eiLclPzrs4L2qStPRjK6EEpHwUL/x+gP9cIxTi52eO+kSy1B8xoku//M0iJ4zHRjgaKaF2c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783352846; c=relaxed/simple;
+	bh=Zb3cH/fai8fDmo5+VF4j0GwH/xc79uxvxl3GXDwcAhM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dvh4IAwvqBs+QfexTpz4H4t+AmFJJQjvSnyz9sXZ3n+7VX1IyQwetsc71abHWNm7g1wttiWuF+YqDOt8ZUJbUgghnDpXRjJ51yywQyryAlSKtP+ar2mfhQY09Pft0hcvHZugPTSmSz4S/pbQYkLtslwcgPpaaWFOKLpqKxDuTJQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=KEuW3qTD; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ceaoRugY; arc=pass smtp.client-ip=205.220.168.131
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 666FF46W981479
+	for <linux-wireless@vger.kernel.org>; Mon, 6 Jul 2026 15:47:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	XDe1SM319R7dXYpM0TKd1mksOi+amIB/t46psKRtyxA=; b=KEuW3qTDKSVLDEBs
+	WHgcYg4mADpR1KremIPHqcJUE5rO9UXe0FCgTQUlCr0GGsBn1oAHmFJ6qFsOnGbH
+	NqGAfDcCgi2FjZ3ZTj4flkfzWXbJghCk3+dN1uaFqs6S6zhQ1PwPWLzFuTa/aZ3k
+	lDADQeuQJvTx8VPVcsOfVi7VBbDiBt/rX5OTHWH96MIwPNjkT3tCpZB+fWYNL6mT
+	Dl57auozveBd9BwCQwUHY7YKr0lgsyf6dR+bi+Vv0Cte80Gv6shojFqsPRrXIZdV
+	EJErFYAj5Q4nuoPFBX0/qjwfDi+91KmjhIL0d8k3vqo+r3ogmcWhAorQyIPPRMxa
+	ybiAHg==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f89kgsr43-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 06 Jul 2026 15:47:24 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8f0ed4fe79aso70856346d6.0
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jul 2026 08:47:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783352843; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ei7Kb0suMsnvtN2AkS+t7rWvukpDgxAhvBAKK3fGPO5oOhsKc/SMDsDpx00Kn2MfUZ
+         LaVf6ERbkLSV8hXgrFfUD1wdJ2TnEKrsj588SrQW6d/ewOY0ggxTYDB1edz9pL+qJjhV
+         DaU3HJN/RhYcVGxzHgtQXKR2MJ9j8at44bBcE3wsMZ2GLYK6THZlpb8Jy18i8qM+1VRs
+         lLvcHu6kwi8qu6ioMmDhdz8gylUB9SjvtrBHM74uSaiZqHiBd2ASTfYF9X9skhQ2bxc7
+         xfI3KUBZPFKDWBhPr3s8mqBygSYMSJWM+ULm06Z5O/qfPFWa8ANsSyeKvv74Et1DR2vi
+         MRag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XDe1SM319R7dXYpM0TKd1mksOi+amIB/t46psKRtyxA=;
+        fh=1H5OqoF3MMcbyCWEZzztzMjNGCVWGGqyxSipxWZC4zo=;
+        b=jFYW+TUYmWtIfEech8RYeUkyF+MGka0tsH5kSj7VyjmV9KO9CJjTtiqxu6dGyhF/0x
+         wB4sRH4c5s/sjIM8wgtsvS8A0EXDVfsu7iJZc27sYVDZAALhhjFDP61VRxjs7Rx1fORR
+         nbg5QoU5OPgPv+/PZwtZA1y2H2Cod4Hz/UrhzyYP8gcj2ZnVwjcaUh3yxSROM6jt3K6s
+         J3DgsZ4BUp/2qVXrPGaGC6V42XqFTS639xA7RvZsxi/BA0RyXCPFcc4rtVNygQr3qKSu
+         pigcJAyhIxseMXpEUSb/TutF43RJHtaBOB+AMDNzOPtTpyK2aeDV2i4EtgQLVokldJG5
+         fO4Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783351466; x=1783956266; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IP0fMjDVbSttpn2ImHSgGtkbct1faOHVV/jYyyvxQ5c=;
-        b=bluw3o8dC8Okpg8AyNZhR2vfLywcTJNSGDxc+L08TT7JhUpMPoem1UdZ7/RU/t2oJw
-         79T0Va/xPlB5NL1kyFJiKR5STTfkutD0JrG5FnserbKEtSt9/4+0LpR64o39brKfYGov
-         ney/5D5O6bbF5RiUn/Ih9nywVUJwZw/FvUtKEBalDXouC1pk0Xv9fBPBSl7FfrB0tTjH
-         ZYoQQBmeVVRZrOgDXFKRHpip6aj7as840T8hWm4aMIeO3oWm+6kEWO3Zv3Vl0DTLpv7r
-         nVuBQU12ZcdwX8Le8F3A/fX+DIinpgUyP7iDOyygt3GRmTO7aW23TtDNsUkRP+03pLW2
-         cWLQ==
+        d=oss.qualcomm.com; s=google; t=1783352843; x=1783957643; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XDe1SM319R7dXYpM0TKd1mksOi+amIB/t46psKRtyxA=;
+        b=ceaoRugYoap1V8gKQPQHievEoPWz13WzrZR5hIjJ3yxW3H7/q45yOQBPWC8qBg3zKf
+         InZQCxbh8XioeM+CLMxHMHdxPZsTPTssjYb9BNbEANlZmmCYM8x4k54GzIpi29pUhSPF
+         dL2J4FeuZNyd77ltzkI/D0oGYlwsILFBXROX6459V0jIksm5OtpN8cDmcY0R9pWrNiA7
+         wt/NuM2Zyy89HiswFZg70P2RKVpPLh9j4E2GloSMAg11aYab8T/785CpaMu9IK/QTmES
+         MfF6OuoiJWA4kOwIR0rXozq4bj5S6Gz3+Mb0zzyvM1vXI2BrYqD/hSbPtNnJ4xmn/WMU
+         qGDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783351466; x=1783956266;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IP0fMjDVbSttpn2ImHSgGtkbct1faOHVV/jYyyvxQ5c=;
-        b=hCjfslGDd2bmvca7zHhvCbQ0oZq5mk1WYpFkLjGRvpTDsv3L31NSR07ks6+es+OfO9
-         KSjTdSyOKp/p0J/TxXQiZBdXv7ozwh0fw9MRb1szIVxCylya6NM4XbOgt8uJ34iLWwmN
-         SVS9ODMwyewCSyJVxBnwsET1G/bb51IcA6TuYC5IEJptwtcgkwSiR/gRLNr9n0GRmmKe
-         1TGZqAPlfGMZFVbqHHfpzb5IVrpq8iRRfDm9VrQ2KqycCw2tQSuheTaj2XlScBD1Z5G3
-         gLt2OgeMQHKsqaZEWXekpPLWvaY90dTbTZB+CYV99a6K37JFdcIemkT8vrelaRCLD8tj
-         c+3g==
-X-Gm-Message-State: AOJu0YyE6bndhwY/E3Ct08huDgszI8KJCTraul1lVGUW/LSg08onw7aG
-	MqVdiDCos2tIh0tMniWCap0HDH/aI4p9mpg/ErHqK4kvttLs32herZlq
-X-Gm-Gg: AfdE7cl5kx9b6FeHjPV6SjlVh6vdtek19XtSEh3ujVCws7K6m107XZhzVkAmy2XLixY
-	EnxCZApjWehk9AQgkIG7kSqLXEfRk1NvOhtEHmCF3y9gSUBoIMI7MQ1VuEZ5ogsrjZXrijWecEE
-	j0Yd8YLWy5lLHdOdqqbiwDBiAMyCLjby/oKgFzg7mgHKbeSc+jQbhIEHdb3oQmk3hk7K9hhr8q7
-	PRJUYJWi813b8QzmOqp1cwrsHYcxr6/t7tXbuc5rcWSYUiSvWFZrgZ2ajtoL7ZBnRzWMshLgJ6R
-	5MIJXUCiINnO9PHFjIrOpnwdJiUFFlbFGC5z47wK3l+3qrfXpSslFWUPvG+xzgIsPEPRilQFF3f
-	1kp1C6+Zhfg4L2PEfKFMWaqdimKVhusy33U9ZWHnAyrP7H51NiCJCRzb9aE1tAY6aatMjsbgwHL
-	bDu2skdy9xlpn/aRopNA==
-X-Received: by 2002:a17:903:198e:b0:2ca:10fe:a30 with SMTP id d9443c01a7336-2ccbf2c086amr10717565ad.47.1783351466237;
-        Mon, 06 Jul 2026 08:24:26 -0700 (PDT)
-Received: from localhost ([111.228.63.84])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cad7875d54sm52586995ad.69.2026.07.06.08.24.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 08:24:25 -0700 (PDT)
-From: Cen Zhang <zzzccc427@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zzzccc427@gmail.com,
-	baijiaju1990@gmail.com
-Subject: [PATCH v2] wifi: cfg80211: use wiphy work for socket owner autodisconnect
-Date: Mon,  6 Jul 2026 23:24:18 +0800
-Message-Id: <20260706152418.779226-1-zzzccc427@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20251104; t=1783352843; x=1783957643;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XDe1SM319R7dXYpM0TKd1mksOi+amIB/t46psKRtyxA=;
+        b=RnanoiErpX3BAWcBccGKd0b1lkJoBGxjwjZk1F6GWvstVjkHkwxoHJQMitKg/sLT6R
+         6QycX6TJ5/CyXJ+F2ToNiuNO58IPE2rKgTtH7vuvowKpWe1jW1QQOwgtBPUEVsXxC06C
+         kaNoqvULN9bGYAjEKMqRFwY1cgUq+3kB1HBPD63rNmxjf3qnBQTZPLxeVpkM8Ik+tgfC
+         I2hNYP+gru1h7oo+dlwkr2D+Lpo80YFWysSK1Ah/YZeL7TgzQ9Raa7E/C7s7xg8GKZBx
+         K6Mh0uv+l/VDZa9U0cmLleVXQ3j2xzCFcp7d3MthAe/Nw1XKDQM+KNEhf9eP0KIKzCHW
+         DdeA==
+X-Forwarded-Encrypted: i=1; AHgh+RrKTCtydOHnbAwKxaMcETHnGs+GcZXdm8tizaDBJ+ArH9R3wEzQzVKIDZ/3nPfzB67TR5BhBX3f+O4GImqhzA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/RVU/zu8cPQwnLqKGHQFDLsErJ6LQeCa5MUWl/QAoec1TN4yJ
+	SeZCDzX+Ya5MFXtPO38zAbYPpCDSJy1SvL2y7uVK7AIBOu6RdD3y4xmJz3u8t3h3XoBZnZcry6H
+	7UU/EcIdCNeLGMTdbYPFwat+Lx1TzZk+ezuNJr/Z1b57FyAU0JrlEnd4z5B05vAbB4o0xFbue2b
+	f+0hudyl+R0ozM8+yDt1dKU5V0al6+GZILtZiFzdBu+e1v
+X-Gm-Gg: AfdE7cmqifXtzFNZ9nheD1WDPfKLKUbDfttDN3/N6xoYuOqRzdbgBYp+aJfPd1ezpkE
+	KlhiAcryhwwCsBmrsQ+CqwNmDbko9IXUytW+aZ3b9bQ/J9V1s9rBzNLDtD4pNYYDFPLUBtj4coo
+	CQq0h5LA125LBl6hA8SP5meIV8r72Dkz19CGXcD56uKU+i81Eu0CDDnu0XF3n8vrHC+mHD
+X-Received: by 2002:ad4:5946:0:b0:8ef:5c5c:dbfc with SMTP id 6a1803df08f44-8fcb4a042d4mr12696516d6.43.1783352843327;
+        Mon, 06 Jul 2026 08:47:23 -0700 (PDT)
+X-Received: by 2002:ad4:5946:0:b0:8ef:5c5c:dbfc with SMTP id
+ 6a1803df08f44-8fcb4a042d4mr12696066d6.43.1783352842865; Mon, 06 Jul 2026
+ 08:47:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260626063014.1275235-1-lachlan.hodges@morsemicro.com> <20260626063014.1275235-24-lachlan.hodges@morsemicro.com>
+In-Reply-To: <20260626063014.1275235-24-lachlan.hodges@morsemicro.com>
+From: Ulf Hansson <ulf.hansson@oss.qualcomm.com>
+Date: Mon, 6 Jul 2026 17:47:12 +0200
+X-Gm-Features: AVVi8Ce9U-pzBFpRo6F6_AW1qMU08gSYjLH35DGEhvet44vD774wHB9GxPSvsig
+Message-ID: <CAPx+jO9TEcARhBc4_SUqj2h0uMhguzHJUSfYMH10v9Yuq1rW7w@mail.gmail.com>
+Subject: Re: [PATCH wireless-next v3 23/33] mmc: sdio: add Morse Micro vendor ids
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Cc: johannes@sipsolutions.net, Ulf Hansson <ulfh@kernel.org>,
+        arien.judge@morsemicro.com, dan.callaghan@morsemicro.com,
+        ayman.grais@morsemicro.com, linux-wireless@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: p0vo1SJ2I-ZJraTWiYq91BhaCdZnedOg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA2MDE2MCBTYWx0ZWRfX/lgkxxPzZi3/
+ cq8tP/I2DmMcMWOx3N6LA3BNZeZMxCD81Mk6OBY5kMjc/RycD4vDGnwsSrwtpmUcEBC3Y7WKOLl
+ 0OHJXnsjs41uFhz5VJMrMFBboBjUvgO2QhhzPpm0IDygjP+yUFP11J+TQgvqw//5/B4jMMePTDX
+ 8LUXq9HtO18cjP9VRfjJMvfqMMONaX28BHBhOGne7bcxWG/47p67VO+2L9NfTv+WwxZYjabRALv
+ F5tZHHXAnBnxNCHnnY9F62sjwDoVXYzz0LEmOCjDfbaTKbmPn51ND4syrkstYSBwXN03EBf20sV
+ S7bKlR9lXftt6qbZdG/D+JF1gKJUm64KlvBcmNyY0I5cRelxlXQDgqSm5FohcVr3NbD/5jPtWpC
+ MhsO2p76veIrmW4zwe4h+BT9MyMtNY0lDsfbg2RIfvhHrCQsncI4KIoF8bztfxEFTMX3Lo4VphX
+ V0bVrYzQiGwxNXsrCuw==
+X-Proofpoint-ORIG-GUID: p0vo1SJ2I-ZJraTWiYq91BhaCdZnedOg
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA2MDE2MCBTYWx0ZWRfX0xwU/eMZ725B
+ DzsISt2J7g3InEjnj5G7woGa5RbmS+dP26yH0Sn87qRb2Es+Q2gD8E661mFwNHszxZoNwox15r3
+ gbU4zq9q2103i+NFrNLCdnlZGlINn+A=
+X-Authority-Analysis: v=2.4 cv=c6Sbhx9l c=1 sm=1 tr=0 ts=6a4bce0c cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=yOCtJkima9RkubShWh1s:22 a=YPXFKQCaAAAA:8 a=VwQbUJbxAAAA:8
+ a=HBoK9o11-f7nQtA1NX4A:9 a=QEXdDO2ut3YA:10 a=iYH6xdkBrDN1Jqds4HTS:22
+ a=R5n2JtruLZ7-kf9guG-3:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-06_02,2026-07-06_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 clxscore=1011
+ adultscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607060160
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-38701-lists,linux-wireless=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:zzzccc427@gmail.com,m:baijiaju1990@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[zzzccc427@gmail.com,linux-wireless@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zzzccc427@gmail.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-38702-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:lachlan.hodges@morsemicro.com,m:johannes@sipsolutions.net,m:ulfh@kernel.org,m:arien.judge@morsemicro.com,m:dan.callaghan@morsemicro.com,m:ayman.grais@morsemicro.com,m:linux-wireless@vger.kernel.org,m:linux-mmc@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[ulf.hansson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp,qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,morsemicro.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C2F2B712A53
+X-Rspamd-Queue-Id: 3AB327142C4
 
-nl80211_netlink_notify() walks the cfg80211 wireless device list when a
-NETLINK_GENERIC socket is released. If the socket owns a connection, the
-notifier queues the embedded wdev->disconnect_wk work item.
+On Fri, Jun 26, 2026 at 8:32=E2=80=AFAM Lachlan Hodges
+<lachlan.hodges@morsemicro.com> wrote:
+>
+> Add the Morse Micro mm81x series vendor ids.
+>
+> Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 
-That work is a plain work_struct today. NETDEV_GOING_DOWN cancels it, but a
-NETLINK_URELEASE notifier that already observed conn_owner_nlportid can
-queue it after that cancel returns. _cfg80211_unregister_wdev() then
-removes the wdev from the list and waits for RCU readers, but
-synchronize_net() does not drain work queued by such a reader.
+Acked-by: Ulf Hansson <ulfh@kernel.org>
 
-Make the autodisconnect work a wiphy_work instead. The callback already
-needs the wiphy mutex, and wiphy_work runs under that mutex. This lets
-teardown cancel pending autodisconnect work while holding the mutex,
-without a cancel_work_sync() vs. worker locking concern.
+Kind regards
+Uffe
 
-Also cancel the wiphy work after list_del_rcu() and synchronize_net(). Any
-NETLINK_URELEASE notifier that had already reached the wdev list has then
-either queued the work and it is removed, or can no longer find the wdev.
 
-Fixes: bd2522b16884 ("cfg80211: NL80211_ATTR_SOCKET_OWNER support for CMD_CONNECT")
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
----
-v2:
-- Convert the autodisconnect work to wiphy_work instead of taking RTNL in
-  nl80211_netlink_notify().
-- Add a final wiphy_work_cancel() after list_del_rcu()/synchronize_net().
-
- include/net/cfg80211.h |  2 +-
- net/wireless/core.c    | 10 ++++++----
- net/wireless/core.h    |  2 +-
- net/wireless/nl80211.c |  3 ++-
- net/wireless/sme.c     |  6 ++----
- 5 files changed, 12 insertions(+), 11 deletions(-)
-
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 8188ad200de5..76827c965f41 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -7228,7 +7228,7 @@ struct wireless_dev {
- 	enum ieee80211_bss_type conn_bss_type;
- 	u32 conn_owner_nlportid;
- 
--	struct work_struct disconnect_wk;
-+	struct wiphy_work disconnect_wk;
- 	u8 disconnect_bssid[ETH_ALEN];
- 
- 	struct list_head event_list;
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 3dcf63b04c41..de86464695ba 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1424,6 +1424,7 @@ static void _cfg80211_unregister_wdev(struct wireless_dev *wdev,
- 	list_del_rcu(&wdev->list);
- 	synchronize_net();
- 	rdev->devlist_generation++;
-+	wiphy_work_cancel(wdev->wiphy, &wdev->disconnect_wk);
- 
- 	cfg80211_mlme_purge_registrations(wdev);
- 
-@@ -1637,7 +1638,7 @@ void cfg80211_init_wdev(struct wireless_dev *wdev)
- 	     wdev->iftype == NL80211_IFTYPE_ADHOC) && !wdev->use_4addr)
- 		wdev->netdev->priv_flags |= IFF_DONT_BRIDGE;
- 
--	INIT_WORK(&wdev->disconnect_wk, cfg80211_autodisconnect_wk);
-+	wiphy_work_init(&wdev->disconnect_wk, cfg80211_autodisconnect_wk);
- }
- 
- void cfg80211_register_wdev(struct cfg80211_registered_device *rdev,
-@@ -1743,10 +1744,11 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
- 		break;
- 	case NETDEV_GOING_DOWN:
- 		cfg80211_leave(rdev, wdev, -1);
--		scoped_guard(wiphy, &rdev->wiphy)
-+		scoped_guard(wiphy, &rdev->wiphy) {
- 			cfg80211_remove_links(wdev);
--		/* since we just did cfg80211_leave() nothing to do there */
--		cancel_work_sync(&wdev->disconnect_wk);
-+			/* since we just did cfg80211_leave() nothing to do there */
-+			wiphy_work_cancel(wdev->wiphy, &wdev->disconnect_wk);
-+		}
- 		cancel_work_sync(&wdev->pmsr_free_wk);
- 		break;
- 	case NETDEV_DOWN:
-diff --git a/net/wireless/core.h b/net/wireless/core.h
-index df47ed6208a5..f343d1074ace 100644
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -428,7 +428,7 @@ void __cfg80211_port_authorized(struct wireless_dev *wdev, const u8 *peer_addr,
- 				const u8 *td_bitmap, u8 td_bitmap_len);
- int cfg80211_mgd_wext_connect(struct cfg80211_registered_device *rdev,
- 			      struct wireless_dev *wdev);
--void cfg80211_autodisconnect_wk(struct work_struct *work);
-+void cfg80211_autodisconnect_wk(struct wiphy *wiphy, struct wiphy_work *work);
- 
- /* SME implementation */
- void cfg80211_conn_work(struct work_struct *work);
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 53b4b3f76697..153a9e8f35eb 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -22942,7 +22942,8 @@ static int nl80211_netlink_notify(struct notifier_block * nb,
- 				wdev->nl_owner_dead = true;
- 				schedule_work(&rdev->destroy_work);
- 			} else if (wdev->conn_owner_nlportid == notify->portid) {
--				schedule_work(&wdev->disconnect_wk);
-+				wiphy_work_queue(wdev->wiphy,
-+						 &wdev->disconnect_wk);
- 			}
- 
- 			cfg80211_release_pmsr(wdev, notify->portid);
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index b451df3096dd..2a719b5c487e 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -1578,13 +1578,11 @@ int cfg80211_disconnect(struct cfg80211_registered_device *rdev,
-  * Used to clean up after the connection / connection attempt owner socket
-  * disconnects
-  */
--void cfg80211_autodisconnect_wk(struct work_struct *work)
-+void cfg80211_autodisconnect_wk(struct wiphy *wiphy, struct wiphy_work *work)
- {
- 	struct wireless_dev *wdev =
- 		container_of(work, struct wireless_dev, disconnect_wk);
--	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
--
--	guard(wiphy)(wdev->wiphy);
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
- 
- 	if (wdev->conn_owner_nlportid) {
- 		switch (wdev->iftype) {
--- 
-2.43.0
+> ---
+> Hi Ulf, since v2 we've made another slight change to the name removing
+> a "B2" suffix so even though you acked v2, I suppose it's best to
+> recollect again - sorry about that. As last time, the patchset is
+> split once per file following wireless driver submission guidelines,
+> but will be a pull request with a single patch adding the driver +
+> sdio ID once review is complete through the wireless tree.
+> ---
+>  include/linux/mmc/sdio_ids.h | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
+> index 0685dd717e85..bbffad9ae88e 100644
+> --- a/include/linux/mmc/sdio_ids.h
+> +++ b/include/linux/mmc/sdio_ids.h
+> @@ -117,6 +117,9 @@
+>  #define SDIO_VENDOR_ID_MICROCHIP_WILC          0x0296
+>  #define SDIO_DEVICE_ID_MICROCHIP_WILC1000      0x5347
+>
+> +#define SDIO_VENDOR_ID_MORSEMICRO              0x325b
+> +#define SDIO_DEVICE_ID_MORSEMICRO_MM8108       0x0809
+> +
+>  #define SDIO_VENDOR_ID_NXP                     0x0471
+>  #define SDIO_DEVICE_ID_NXP_IW61X               0x0205
+>
+> --
+> 2.43.0
+>
 
