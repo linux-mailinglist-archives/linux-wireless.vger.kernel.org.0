@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-38732-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38733-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6u22ADzETGqKpQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38732-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 11:17:48 +0200
+	id 4c1KKD7ETGqLpQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38733-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 11:17:50 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8227199EB
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 11:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 887CC7199F4
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 11:17:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b=UApiNxc0;
+	dkim=pass header.d=realtek.com header.s=dkim header.b=cAj67tDD;
 	dmarc=pass (policy=none) header.from=realtek.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38732-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38732-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38733-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38733-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0FEAD30ADA9C
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2026 09:12:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6EF2D30AE0F1
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2026 09:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B10439099C;
-	Tue,  7 Jul 2026 09:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24FC2F8EA5;
+	Tue,  7 Jul 2026 09:12:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DD538F93B
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Jul 2026 09:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D012392C4C
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Jul 2026 09:12:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783415537; cv=none; b=bx9POM9reT3dnlZndctucpgU+oucEjuuHi2EAwYKwrqfbwXX+sOefIpo/tVTYa/AsfaJH0Qf4gWq+xW7EaMv3IahvpoRdIysYuebBA3Bz3/QUdayJFQNCHt/aZ0qaAXk4fbBMnK+WFVKt5d9LwMqw0WpPqPQU+0K0enjbOilGbc=
+	t=1783415542; cv=none; b=VB2E/VehMQMWA9QxGhlCYxoH4iPIUCNnRs3VF38iXQNUJp578g0IopcIFhkKbBYwnmFFV8gA69OWUtPBruAMCxMTFmL+G0quIBt0J9g9du6B2wW8vsrizhTTAr4KQDUhxt8x0I4nu3v1elTI6elV1JewRWriO4sDvWFU31WxZck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783415537; c=relaxed/simple;
-	bh=DX+ntFTitJOGytYjLnb9gGLsCRHowt90VMiPq7VDslM=;
+	s=arc-20240116; t=1783415542; c=relaxed/simple;
+	bh=Z9e76qTePyVC8zrRilXpjmE6Y2bkdiNHQ5haw1sxZuQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eC0DmJw/3QreCVTEJRfnZxfWXK8xFsGGbAmRv9sojH1JjsoOh1HDF9XQRifHMPggTlrzLbKLMVCgCM13Q6xgH1MJ9vGfF88z55PIWGF3MaQajdPBG5GrMZRsNKg68Jt3ZIt8usaSEdQK8DOqOHEWK0u0WO2uBtaOaedyMzqOnv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=UApiNxc0; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6679CD0A01359505, This message is accepted by code: ctloc85258
+	 MIME-Version:Content-Type; b=D4JWR7G2ZsNF2ysTo4DDKhchMtmrbEdw964tfjzkRandTDRmtaS35nnOe+AdyIcIZlXNoiXbwKdhs30waTWQTFNHMYeztOXcnAPNXQ5lebCgcncjJCEcjOPaAmddjDLmrFu8c/Bg+lqJNzN/3T6882gQ99RbnbjMTdkLLIFB+XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=cAj67tDD; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6679CI8o81359525, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1783415533; bh=GXTLCoNiLsla4tPs06C/RPxNtWvejxTbo1TtRf+MXuM=;
+	t=1783415538; bh=CTu9aOxPiG/wtGfKT9CGESD5etgBn/gZI8rSUXnJGD4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=UApiNxc0zNMxiIuGVJjkLIB438/03WatR+5U6ZsbHF7AqK+10pKNPKD7qqKzV4CEB
-	 xJGjGqS/AevtXgKyQlAi6N/LqVFwdNX9qweQ4mLf2c7lob85fEOn7kQP06YckfPBOH
-	 ulrCC0Q/GRxEved5F73R8IF8cZUi4MF8S0HA+Wzz9AkwNu7g4vzf2bSrVbHbVOiTFM
-	 VXatuFjkJAyYlIG8g0WLKAROxMoviw4lDcuv7YBlNqFLKBhndvQLQ5QmGiaqT6vBqS
-	 frhWictWVwk1wY1B9RdtDIAFdfbH6a23mwBkzOUvvPsSUaBHGlwxKoLCt+wQFrsOxJ
-	 lc1afk1BqqHEA==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6679CD0A01359505
+	b=cAj67tDDCYPovJQOawSc1JNa7OUuljHpMUfq2JZlQmKuFqoEXWEdc2dzSA/Bkmf5W
+	 R8xgy0n3wLpVJz/RvXsF99FJlS94zfhnLEpTS1fWoTYX6zoV0fNVdGkglvuFhYD2Ki
+	 mp2MjOOKUICTB6zjlJngpMIshqZy/IEALzo1eXY4qJY4xO3pqhK7bLWymNxWZFlu40
+	 pI9pkKSEEtYQoST72OwhHYoYIc/qChJ4kKmvyCvkvb5dhjn/SShpgwbY6O2tnWm/mS
+	 smGcbfq6cXv4/I4jLL0Tki6zUmRmhgWT7P/h2gnfsEsnc2LmszLEZKqfp3d3AkVgYf
+	 o3j1RpepvWo2Q==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6679CI8o81359525
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
-	for <linux-wireless@vger.kernel.org>; Tue, 7 Jul 2026 17:12:13 +0800
+	for <linux-wireless@vger.kernel.org>; Tue, 7 Jul 2026 17:12:18 +0800
 Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 7 Jul 2026 17:12:13 +0800
+ 15.2.2562.17; Tue, 7 Jul 2026 17:12:19 +0800
 Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
  RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 7 Jul 2026 17:12:13 +0800
+ 15.2.2562.17; Tue, 7 Jul 2026 17:12:18 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
  (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Tue, 7 Jul 2026 17:12:13 +0800
+ Transport; Tue, 7 Jul 2026 17:12:18 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <gary.chang@realtek.com>, <echuang@realtek.com>
-Subject: [PATCH rtw-next 04/15] wifi: rtw89: phy: fix bandedge primary channel for 2.4GHz 40MHz and 6GHz
-Date: Tue, 7 Jul 2026 17:10:45 +0800
-Message-ID: <20260707091056.42771-5-pkshih@realtek.com>
+Subject: [PATCH rtw-next 05/15] wifi: rtw89: 8922d: set TX compensation by format v2
+Date: Tue, 7 Jul 2026 17:10:46 +0800
+Message-ID: <20260707091056.42771-6-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260707091056.42771-1-pkshih@realtek.com>
 References: <20260707091056.42771-1-pkshih@realtek.com>
@@ -89,7 +89,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-38732-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38733-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -111,41 +111,60 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9A8227199EB
+X-Rspamd-Queue-Id: 887CC7199F4
 
-From: Eric Huang <echuang@realtek.com>
+The total number of TX compensation registers is 22, including 7 base and
+15 ones according to operating channel.
 
-Correct 2.4GHz bandwidth 40MHz bandedge check: pri_ch 5/9 instead of 3/11.
-Remove stale 6GHz bandedge case; no restricted band borders 6GHz range.
+The v0 is 22 ones per channel. To reduce array size, v1 treats 7 base as
+common part across all conditions. However, we can fine tune the base part
+to yield better performance, so divide base into two sets according to NSS.
+Summarize dimensions as follows
 
-Signed-off-by: Eric Huang <echuang@realtek.com>
+	base (7)		vals(15)
+  v0	nss * band * path	nss * band * path
+  v1	1			nss * band * path
+  v2	nss			nss * band * path
+
+Currently, v1 and v2 can present in a file, but only one fw element with
+a specific format will be used for specific RFE type.
+
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/phy_be.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8922d.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy_be.c b/drivers/net/wireless/realtek/rtw89/phy_be.c
-index 99263355e2f1..ac4ce30445b3 100644
---- a/drivers/net/wireless/realtek/rtw89/phy_be.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy_be.c
-@@ -623,7 +623,7 @@ static u32 rtw89_phy_bb_wrap_be_bandedge_decision(struct rtw89_dev *rtwdev,
- 	case RTW89_BAND_2G:
- 		if (pri_ch == 1 || pri_ch == 13)
- 			val = BIT(1) | BIT(0);
--		else if (pri_ch == 3 || pri_ch == 11)
-+		else if (pri_ch == 5 || pri_ch == 9)
- 			val = BIT(1);
- 		break;
- 	case RTW89_BAND_5G:
-@@ -637,8 +637,6 @@ static u32 rtw89_phy_bb_wrap_be_bandedge_decision(struct rtw89_dev *rtwdev,
- 			val = BIT(3);
- 		break;
- 	case RTW89_BAND_6G:
--		if (pri_ch == 233)
--			val = BIT(0);
- 		break;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.c b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
+index 212917db7154..e8267173bd4c 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922d.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
+@@ -2249,6 +2249,12 @@ static void rtw8922d_set_digital_pwr_comp(struct rtw89_dev *rtwdev,
+ 		struct {
+ 			__le32 vals[DIGITAL_PWR_COMP_VALS_NUM];
+ 		} sets[2][RTW89_TX_COMP_BAND_NR][BB_PATH_NUM_8922D];
++	} *pwr_comp_v1;
++	const struct {
++		__le32 base[2][DIGITAL_PWR_COMP_BASE_NUM];
++		struct {
++			__le32 vals[DIGITAL_PWR_COMP_VALS_NUM];
++		} sets[2][RTW89_TX_COMP_BAND_NR][BB_PATH_NUM_8922D];
+ 	} *pwr_comp;
+ 	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
+ 	const struct rtw89_fw_element_hdr *txcomp_elm = elm_info->tx_comp;
+@@ -2259,8 +2265,12 @@ static void rtw8922d_set_digital_pwr_comp(struct rtw89_dev *rtwdev,
  
+ 	if (sizeof(*pwr_comp) == le32_to_cpu(txcomp_elm->size)) {
+ 		pwr_comp = (const void *)txcomp_elm->u.common.contents;
+-		comp_base = &pwr_comp->base;
++		comp_base = &pwr_comp->base[nss];
+ 		comp_vals = &pwr_comp->sets[nss][chan->tx_comp_band][path].vals;
++	} else if (sizeof(*pwr_comp_v1) == le32_to_cpu(txcomp_elm->size)) {
++		pwr_comp_v1 = (const void *)txcomp_elm->u.common.contents;
++		comp_base = &pwr_comp_v1->base;
++		comp_vals = &pwr_comp_v1->sets[nss][chan->tx_comp_band][path].vals;
+ 	} else if (sizeof(*pwr_comp_v0) == le32_to_cpu(txcomp_elm->size)) {
+ 		pwr_comp_v0 = (const void *)txcomp_elm->u.common.contents;
+ 		comp_base = &pwr_comp_v0->sets[nss][chan->tx_comp_band][path].base;
 -- 
 2.25.1
 
