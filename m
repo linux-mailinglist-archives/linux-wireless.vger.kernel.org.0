@@ -1,121 +1,191 @@
-Return-Path: <linux-wireless+bounces-38749-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38750-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qQIDJSDpTGrSrwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38749-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 13:55:12 +0200
+	id j49oKnnqTGojsAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38750-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 14:00:57 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C1971B222
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 13:55:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F50571B2AF
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 14:00:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=dN0PGSmL;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38749-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38749-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=O6brfJq9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38750-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38750-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4E01D3002D3D
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2026 11:54:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7778030241AC
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2026 12:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2663F8247;
-	Tue,  7 Jul 2026 11:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B133FC5A5;
+	Tue,  7 Jul 2026 12:00:04 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D8D36492C;
-	Tue,  7 Jul 2026 11:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49DC3FA5EB
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Jul 2026 12:00:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783425242; cv=none; b=vF88udABtafqOeoGgc8gaKXe9PAUdi/FTdDZNfQlXfX8tVi5JwnEXFoNhBJBpAr7PgrlO9ws/Um+/6P/7CRII0flo9j+foZvMZZFUl8hivK0hFrosaxh8C7zrpWYeAiOyVeM4KOCV2TA4ggdIWoj/5ieccz4nkGLvd/dJL8PLT8=
+	t=1783425604; cv=none; b=QpUcbA43pQ0DqpQsgyeioiSZUQjGI80M1FcCZC7/ejvbi8oySbdDBzg2Cir0/klTzAYf4DW79DDUClr82OflQuvk2VZ8SYg69DQfIVjffrTOHv+sdfXTsw2q3+Eh3uwNaYsxNuErFHrm8wQpxV1y/kayeE9675F3mnow5yIIAyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783425242; c=relaxed/simple;
-	bh=UQG5tqqR/SxCXiYIVw9rXYRTneBRCFBjtBbXNLE8DK0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PggNL9yQLTapTV5b/jl3Cx/gYqAUUjmBG2QY5ppnkSATfSrNIxBqAzV3cc8eAG6xXss+TzrAD3VFnt8ilekmOWu+f3bKurniVzptT0dT/UcnQ4Ehn+eCrBUysri3YYWd+CCuaar2pL31Q/S8PT2FZlpKl2YD/1XpYOJd+tBzr0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=dN0PGSmL; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=UQG5tqqR/SxCXiYIVw9rXYRTneBRCFBjtBbXNLE8DK0=;
-	t=1783425240; x=1784634840; b=dN0PGSmL5G46yM5LsPZuje4S1giu1x+yoq6Ikty3eAXYgSf
-	5PW3j057lJfJ7VgFlAEym1eDHCZtDJvoEbjkt3flIc6FaQpW/ULfjs5B0dY+74QOPriZfX/gmXO1q
-	0pxEtnaijyZf7u+Gp06w9lUZftvnN+iRNEcYtTHvXBSZviaafKKhhVvoHjlM5k4KKR4pmFqSlqloN
-	nqfp1/4ftjDRM8in9LIEzwk4dzMFgkKWOIDr+d76EAERjg3XghDjkOFrTgq00HnrXCmhmRX9pKjPX
-	sCRa2QpWM7J2ol/vSbJBUq+fOemobPXpqUBYuP3iD3qv77tmvYvsiWsw/w/1jDMg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wh4N5-0000000HZMV-3sN0;
-	Tue, 07 Jul 2026 13:53:52 +0200
-Message-ID: <6fbaefdeba935d0adaed1992037d0f746b9821fb.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] wifi: brcmfmac: cyw: fix heap overflow on a short
- auth frame
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>, Maoyi Xie
-	 <maoyixie.tju@gmail.com>
-Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
-	brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org
-Date: Tue, 07 Jul 2026 13:53:51 +0200
-In-Reply-To: <996adbdb-9531-49e1-8cae-5fcb7b914d19@broadcom.com>
-References: <20260707063155.3099999-1-maoyixie.tju@gmail.com>
-	 <77dfa2f3-296f-470b-8d21-0f10a56a2a4a@broadcom.com>
-	 <996adbdb-9531-49e1-8cae-5fcb7b914d19@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1783425604; c=relaxed/simple;
+	bh=NH8KzkcpA2UkqkGy4ApP5rltY8b6jpgrZrvEARN4Tgo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Awf8VhxAuFvdf2Mb2vhKY6sWkfufs9tOSDawMe7M5Ds09Z6oY4rLexvodevcf6J1VWypDEKJHVezI/PED14T7GDnNe23oFleR9my7CR/3gGYQ7LNsSI8K+dQPvCDD/N3OuqZTmpTqq3rPUUVUnDdLCM8pntPcP0AEzoAWDu+iho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O6brfJq9; arc=none smtp.client-ip=209.85.215.179
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c9e30214d8fso2929269a12.3
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Jul 2026 05:00:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783425601; x=1784030401; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JrdDA/3Tx7GekjGo23iiSAy0AqP4qNw67v0Rs6Rz9B4=;
+        b=O6brfJq9hrxpaP6LxatvKZIXsXc5nTZvc/njRCH1PXdckw7/WhGJK+XQKVZwt1bAr9
+         vNFUtvjpd1bbixOD2vXldHvxMoHJMQKR7uCafIPxVMpjvNhR0mLml6xh2BUST5umK/96
+         TWJmsOJ8uCxOFyDVMotA+EsoHdnPlzWNZIx01y0hvlCvBssLxJCQysKseX1fRDQuvqpW
+         tDy+9/T9VgFXckN0h9eosQJ+uKTqH14+nH0aSsh84RaNEh9GR3F1jFFZXTXs/k1untdu
+         VuI9yU++WWiL0YoPl+whmXoCQRZVmNRKu5hJk+WJEyYrJFEQvjF35QZBrx9OfATYJEqt
+         /T2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783425601; x=1784030401;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JrdDA/3Tx7GekjGo23iiSAy0AqP4qNw67v0Rs6Rz9B4=;
+        b=jakr7fKpkTsbse7V+rInybsN1skWunf5HCRRSsN/l3gTOfxV0f0MTveq15xnU6bZv0
+         wJy5cIioMYTTCgr3h3ul43NTx/fnTIDi2xRBjg5/R6Tb/j5gcBmFV41Exr6iQoLtXYoi
+         VXjYlldnaLe/wza6Sc+2DvZSrHHznUN2qCx6pXa70562nu1N28o6Aifw01vmvHvSH5TD
+         lS/ywq1Rrb8EyV6+PdMn2g+vC8LaXUpl5bsAVBIPTcnAvgKY6Tl231r9EAq4jE7q0j0k
+         y0lU1AVsjhqOPWxFzx8rDDtp1sF9iaX0LJ+vt5vgwlcF54PRWf0+8rHYkGYRpDhG9MtV
+         i3/Q==
+X-Gm-Message-State: AOJu0YwH1GCT/2pfZaS+7FIq1JIRPk71/2DQXU3TZhzU0zq2pc4K5bdj
+	qOR/gTCpN1tzVh69wFrGhoI0lFevH1yeFNvFWlAFX2L0N3u/VuswDlmZ
+X-Gm-Gg: AfdE7cnwiQ+kq5CxcfczOagibCEEZgp8mNmUcN1D4YnW18904qAeVD4imqPjhXYPJD8
+	ArCzKvqQQc2nhQv0Oh52MV4aVOZNyFe5uHLwJ/wOtXktI5JlqfoTZWMGSCpK1iIEjnOyYF4QHFi
+	5UCV0IR5krVnx5EwZO3aHD9HD9AIJyslCM0vNAUMR9FZQWDFzC4lblGQFGfbR+MTHIhPKEpwXEi
+	9uah5DU91hCrmlT8JLwqer2/HkRASdxRSQlv495URU+4o4DLVgsxYWbuabEZa1R3R+fmizXwbpD
+	6s/IiGZGxJxSgRtxc6Qy6XM9ibWoecY6is6zmzyjSRuP5VZoFeZhZa8+EXojaphRBDC5tMDJ3sl
+	xFv5RLzaHAyaNAq/8AnldmBsgvludq0b9ySnpORnnGOkVDUjC/6Zh3HXxFKpLHOJ2LzTlw+c7Ru
+	OcKdF5o2b6kKqUI6oMrp5nuRblTj16urd7pXE8NFKc
+X-Received: by 2002:a05:6a20:9595:b0:3b4:8717:1c21 with SMTP id adf61e73a8af0-3c08ee5177emr6231987637.35.1783425601156;
+        Tue, 07 Jul 2026 05:00:01 -0700 (PDT)
+Received: from localhost.localdomain ([192.197.201.174])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-311747f596asm7785716eec.2.2026.07.07.04.59.59
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 07 Jul 2026 05:00:00 -0700 (PDT)
+From: =?UTF-8?q?HE=20WEI=20=28=E3=82=AE=E3=82=AB=E3=82=AF=29?= <skyexpoc@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sara Sharon <sara.sharon@intel.com>,
+	Luca Coelho <luciano.coelho@intel.com>,
+	=?UTF-8?q?HE=20WEI=20=28=E3=82=AE=E3=82=AB=E3=82=AF=29?= <skyexpoc@gmail.com>
+Subject: [PATCH v3] wifi: cfg80211: bound element ID read when checking non-inheritance
+Date: Tue,  7 Jul 2026 20:59:54 +0900
+Message-ID: <20260707115954.21721-1-skyexpoc@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260626144543.5034-1-skyexpoc@gmail.com>
+References: <20260626144543.5034-1-skyexpoc@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:arend.vanspriel@broadcom.com,m:maoyixie.tju@gmail.com,m:linux-wireless@vger.kernel.org,m:brcm80211@lists.linux.dev,m:brcm80211-dev-list.pdl@broadcom.com,m:linux-kernel@vger.kernel.org,m:maoyixietju@gmail.com,s:lists@lfdr.de];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[broadcom.com,gmail.com];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-38750-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER(0.00)[skyexpoc@gmail.com,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:sara.sharon@intel.com,m:luciano.coelho@intel.com,m:skyexpoc@gmail.com,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38749-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[skyexpoc@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,sipsolutions.net:from_mime,sipsolutions.net:dkim,sipsolutions.net:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A0C1971B222
+X-Rspamd-Queue-Id: 3F50571B2AF
 
-On Tue, 2026-07-07 at 13:40 +0200, Arend van Spriel wrote:
->=20
-> Actually v1 was already applied to the wireless tree.
+cfg80211_is_element_inherited() reads the first data octet of the
+candidate element (id = elem->data[0]) to look it up in an extension
+non-inheritance list. It does so after testing elem->id, but without
+verifying that the element actually has a data octet. A zero-length
+extension element (WLAN_EID_EXTENSION with length 0) therefore makes it
+read one octet past the end of the element.
 
-Yeah, I thought the Link: was fine - I (only) add links to the patch
-submission itself for tracking (Linus isn't super happy about accepts it
-now), but the link given was to a report/further discussion, so that
-seemed OK.
+_ieee802_11_parse_elems_full() runs this check for every element of a
+frame once a non-inheritance context exists -- e.g. while parsing a
+per-STA profile of a Multi-Link element in a (re)association response,
+or a non-transmitted BSS profile -- so a crafted frame from an AP can
+trigger a one-octet slab-out-of-bounds read during element parsing:
 
-johannes
+  BUG: KASAN: slab-out-of-bounds in cfg80211_is_element_inherited
+  Read of size 1 ... in net/wireless/scan.c
+
+Return early (treat the element as inherited) when an extension element
+carries no data, mirroring the existing handling of empty ID lists.
+
+The bug was found by fuzzing ieee802_11_parse_elems_full() under KASAN.
+
+Fixes: f7dacfb11475 ("cfg80211: support non-inheritance element")
+Signed-off-by: HE WEI (ギカク) <skyexpoc@gmail.com>
+---
+Changes in v3:
+- Move the version changelog below the --- line and trim the Fixes
+  commit id to 12 characters (checkpatch).
+
+Changes in v2:
+- Correct the Fixes tag. The unchecked elem->data[0] read was
+  introduced in 2019 by f7dacfb11475 ("cfg80211: support
+  non-inheritance element") -- the commit that added
+  cfg80211_is_element_inherited() -- not by dfd9aa3e7a45, which only
+  rewrote the sibling cfg80211_gen_new_ie() and never touched this
+  function.
+
+ net/wireless/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 05b7dc6b7..0a44856b1 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -205,7 +205,7 @@ bool cfg80211_is_element_inherited(const struct element *elem,
+ 		return true;
+
+ 	if (elem->id == WLAN_EID_EXTENSION) {
+-		if (!ext_id_len)
++		if (!ext_id_len || !elem->datalen)
+ 			return true;
+ 		loop_len = ext_id_len;
+ 		list = &non_inherit_elem->data[3 + id_len];
+--
+2.43.0
 
