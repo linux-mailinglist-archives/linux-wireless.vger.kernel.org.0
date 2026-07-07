@@ -1,176 +1,183 @@
-Return-Path: <linux-wireless+bounces-38744-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38745-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8BjGA0fHTGqDpgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38744-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 11:30:47 +0200
+	id A8+IOh/MTGqdpwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38745-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 11:51:27 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6EC719CC2
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 11:30:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7CE719F91
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 11:51:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hfGwdAHo;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SJ1PegD0;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38744-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38744-lists+linux-wireless=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38745-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38745-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 332A53053E7E
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2026 09:25:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E0C35303C678
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2026 09:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C7A397B12;
-	Tue,  7 Jul 2026 09:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589F23D5C07;
+	Tue,  7 Jul 2026 09:48:37 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F393955F5
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Jul 2026 09:22:57 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783416179; cv=pass; b=r8DtuhXYqNmFtuCb5T6aA+SXmIi5erDxXgHHQ1BKtKWq4rCF4/FzBievFcPSj+VYQkmvowpGggJLxnEKO9JakS61msc5twlLEpmTLCI1Hqha6JibcDlQl8a1pXfjGcBLYSxEm20JbR4YOEVmI75YDiD/xZRk7bobphhYsosv4MQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783416179; c=relaxed/simple;
-	bh=APBFi5wRuEGOKDTs2u+TQsFzU9wU2tBftpxmDi+WFuw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j7lCRPVr+N+jBcc8X4hTcjxW0Nc6HM2Vxy2oR3tFX9T4njh8PlAqI8D+ArTJCy4XgC53Kak1FFxi+eu29v3NtZEdQPp3MlYhEqLexO7l1ctw/syXrpnF0/VisEmmGElxIFCBgdx3kaMnG8wriXZRRH7IfII5jRw1E2T9yiR1V+Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hfGwdAHo; arc=pass smtp.client-ip=209.85.128.182
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-8114a4542b2so59434377b3.1
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Jul 2026 02:22:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783416177; cv=none;
-        d=google.com; s=arc-20260327;
-        b=e2ow+AeicJbpLZQN1WNFNguI/R4qeKBOtA66GvI7pv7Z8zyFck5O3yoUnWsJf7Slsf
-         Bv7mP8XWVcvmh+SPeTjYo3uFg9OcsXi9QuwNJL1pXtLszFdOJWqmW6xVOoeQSGWBJayA
-         7b4rfl5W8M2ON5w7sW/m0HSC6I/1nK/NJjxhmvyDz4+4AfL34BLkBV0JatSUy8DmclHJ
-         O7YPhqgzKQDHnwpmk9GZVOLNnBUE8Cei718vD9cyuZnCq5SeSMYSBLM5m7rvao5Sidt6
-         Xg76YKv2Gaj7a+srjWnlrorhTcuJibyDAJE3H+7rO5LMdE+BkXe2d2egaPFHhW4pFGnF
-         U9yA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=APBFi5wRuEGOKDTs2u+TQsFzU9wU2tBftpxmDi+WFuw=;
-        fh=8IAy5qup0a2EY8QRGpBSpKR+Jn4fWjWAV5x6xozgXOQ=;
-        b=RREMdigiF9f/cmjfEzz7AjDTBuwXyVLFoRQsPX6+ZT72MvG55lsTAxdxsvXc/Jo3fR
-         xAksJ0YMag2ztmrLH9IOxLVl2COKOFs+iZ53aAYvIKtUIvluveRqpVpwmUwnxaRsK/Py
-         by5dKlof64WT0pJ4vwf5sSJbe1cezKEgmA6Rm0naOevSksXSIPcv/2nmTgijOdUkUKYh
-         ysRlB3TWzhCBojYWw/54le6Crl/sUAT4hm3s0/CaATjzsqBD+WIZSaFqVgAywFD23/Gj
-         oPrF05PUYiat2UHvzpHmmHX4G3VOa5FCd+u0yZUzTCWd7la6tNGv52SJdfhPQIl2iW7F
-         2o0A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADE670808
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Jul 2026 09:48:35 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783417717; cv=none; b=ISByz+gdJyZ7RllDocxnAzsqC3AgOLfsfPqj3kzPPGno9J8PJ2dCpEE9q/FT4v1+4QUJs+iYFPvT8eb85BXAHcpGk8jG3AkPOhWx8srbQ+lQB22w2YRDq8IOF3YzhrlJveFB1uyP+DIMDWkam5rIXiHy+mpHy1qPl0hDfdKK4Yk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783417717; c=relaxed/simple;
+	bh=vRz18SgEEOj8TQdJtXT9tGpbtIx0CYUiRJEM90Fpm0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AisGsnBscXQ1kv7u8mqDAMgyp+EQNaF0OAUNhHS9QVZc8B3MLhmt61DwTMNT4HAA/xBnXSV8jdsEHOQ5pczb1mwQUZz40w8kH1pSWe0OBsW/mWgKDMYd4btmnyQ6buqRypfWmP7iWBOLUbUU7r1bcuZRooPCTgX7RaQ2CaXIVY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SJ1PegD0; arc=none smtp.client-ip=209.85.210.177
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84780c95e2eso3150366b3a.3
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Jul 2026 02:48:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783416177; x=1784020977; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1783417715; x=1784022515; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=APBFi5wRuEGOKDTs2u+TQsFzU9wU2tBftpxmDi+WFuw=;
-        b=hfGwdAHoON1n4Ryafh5cIinS0PbnhmT6z9ofJP1aDhgcNYuJXO/jSasLrnSFcDRlTh
-         QDfMjhrZodpqjdv7LtfXDsSWxCwF17/QkVq4J4CjN9dcsT315q83xBeFHsfU+2PzEYt3
-         FSFP2Q2WUgtTAWTeJweVAzalX7ehSxNC+Mx2Acuhlck442LTJEe6BxVN2TFWJ0eZyN7u
-         t08P6wZsSM4EHJs80xxB9q5wO7plD+P/CaD7pdpIQBcRNnRCu71hEFkRZQm/Pc47VuTr
-         5aIsRE0fAChJyQVOoGOxGYHrb6r1vAm5wGEMaIAHpgkdN6kDRYNdc8f6TVO8Ml4qaZ7c
-         gJ2A==
+        bh=WHuPDXrv2XXNS07fUsoB0zQeifyt2lknu8CByaXQxnA=;
+        b=SJ1PegD0G4A6f273ID1RyXmgiv0ZxSdokmX6AyzqeyTkwmSly0dvvSDENm1W1CWCXJ
+         ZBdlr2Yq7vPDCSM31yYuMnu2gGV5ftdEgurbO2xPohEMd/KE4IzRqXwZE5P9iku5GsnA
+         PbueMNPuujCus3BEYEV2OQig7a4BoN22ZUS5TLjHus9U5SYrad2N1eb16ph1AzXkNJLV
+         k96d2bBhZuPKQzkYsJ3A7Z/W4Apv8DVWvC5hzCYeDZS4HSUQOqmGONhB0lDquxJAxjyD
+         M9mYvLFr/ezdeIHgy01uDTpr4HGySVVmwlB4v/zGI+Gv3/7afj3h7kGrNBF2rKA6wz25
+         3a2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783416177; x=1784020977;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1783417715; x=1784022515;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=APBFi5wRuEGOKDTs2u+TQsFzU9wU2tBftpxmDi+WFuw=;
-        b=tKoFozhbX8nIAyoYyclwvAXxzsnepmGt6hv7nzSPspODf98vrkshoaj5dg3eCzkH99
-         39DjH8eiXHHr9B2xDirjlSanNFZwzCpkC0HcCyArfMlhV8o72+ao+ZgZngVYBDaE0fhd
-         JhW8GWrwlTuegceyiL7hoNvLDOBgq+3+aLTSce9EhyTYRV/XB6YQmf37If26L5q4qNUX
-         BHU250RxaVtSnxQmQqByXp5Ep799PwuqG1t6arXvBaAnMD94wFKx3Gm5rMl1DEtsvpVl
-         qy989u7JksKXAihwlrCZtTOePwOKi40qANRLB69faecNJUH7Itdsky/PUFu09EiKlX+B
-         dXpg==
-X-Gm-Message-State: AOJu0YzUzgfvPLTaRs42cJaPGBlQRzY2BmSb0hRwnObiHoaMVzHtYPVm
-	I1KA9iLo0QDVzl1zkhHZsG9rLcDU+N8LRDdy8xjPXGRZInQC9qys285b68btamTSi0xAMhT9wnV
-	+/228wIRvkDL5TC3BfwCeU7Zsh9mb/rA4Z7qqBOWzWQ==
-X-Gm-Gg: AfdE7cmSt1SvwPMokV+mKp1TMvyFaiHrMAqi6LENwK+SgmnO4QcjBZgox4xXssC1OZi
-	rFChC/N/yg2RO+/f/bQw9WZucabVZEmfBTrjWPLOM3WnxoHoqWuSyHMLxOjIgioKQFnOBA80zAZ
-	EEr/4gXNIH/JCg4oQcSD3Z3XiZ9bnGs81Ogt8HnzN+imDt48kCkItHSsq1+C8tjzZO4fBQA5NMH
-	jjCGJ3ECSbyFOEQXQ/9SB6/jV0JakJGHdsdMzcYsccyMr0880ne4t4mLG4+DyQ9GAMulLShrg9l
-	SycXWGIkPs4GDkXp
-X-Received: by 2002:a05:690c:6f05:b0:81c:e8ab:c4f5 with SMTP id
- 00721157ae682-81ce8abd14bmr2966837b3.13.1783416176991; Tue, 07 Jul 2026
- 02:22:56 -0700 (PDT)
+        bh=WHuPDXrv2XXNS07fUsoB0zQeifyt2lknu8CByaXQxnA=;
+        b=PSzj1gCXKcblx8obiDkjJ4+q604FVeaHWqcbf/2AHY4i+T2oupX9fQw+29y3XycVXR
+         5+CbEKAtiBspT5zFj9I9ItpEc6WTLCFn1d6QVvibXojP4ltSEyDdqoHjr9GeS+U1o6m5
+         cE/YdySiBtp+yDoF2Bpbt94Lyb6Li1H8VXvSK7P7hxKgRSiP5SA7KXzzkYheq78OhYdx
+         nQomb+hxTgr7M1QknEvG5JZmR1agbgYLf/lrObgQLPZRKbf/iARYghwPHaXL1LJx/rmS
+         PUnOkiZkCZfXE1Ls0op62wcbmOslcT983nJkr0QSJhHsc1Dsx3CsLQ1e7rTG6DggrorX
+         MIsQ==
+X-Gm-Message-State: AOJu0YwGOK/JX0icui9AyMyU+jpLg2Njq1Cdr68mn1cWB+zb8Cgc9u+k
+	muhgvROD5xr/bHO6hiqDM1HF4WJR5nIaQk+H4rYwicfYOqaW/PfT/Sn2
+X-Gm-Gg: AfdE7ck7faDxJL9Y2xZ9H/SpSBHPfW9hCauWti7/OfbDgiZ7FlD04XDXedp4SsM/gyJ
+	NMTs4bU+KOMiixJMl7T2NI3cLCjubRJ1p3IqCwPWuWZmspRItlpWKT439kcIUcS7Tt0zhtuAS4I
+	9x59eZk/pN9+fnZgQUVk6cqAhk+cFNw/tKzan7WX/A1b9NelculVC2gfHpRm/K++qCDVQuEONVP
+	h5oYOUjhsXtzWMSauZ1b4AWyE8KvwODEn5Xx4nJESofyJ2eL/dXHE2C8CbFX+NgMnO0gIbhaFrv
+	HSXQppq+OrEpJIUtIf3+SiPirzQTRCp6Pi0Uy7dS8aKBAuy3YNnca2c03JmITSM/GPI+T5lrAI2
+	nE3N6J50PNPlKm7xlekJvxKBCj1vGJbmHmu2Dxa80lx/fcesmFdZWZ5m4j/6gPMjFAPemykwc0e
+	fHhc4VaQK+LU7VrOLH/VAxBgZc/jMIo67ZLz7dLHQ0Q+JxPZPvGKM=
+X-Received: by 2002:a05:6a21:1f8d:b0:3c0:9c1a:894e with SMTP id adf61e73a8af0-3c09c1a9cb5mr2699654637.70.1783417715345;
+        Tue, 07 Jul 2026 02:48:35 -0700 (PDT)
+Received: from localhost.localdomain ([192.197.201.174])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b659d7c8bsm6649122c88.12.2026.07.07.02.48.33
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 07 Jul 2026 02:48:35 -0700 (PDT)
+From: =?UTF-8?q?HE=20WEI=20=28=E3=82=AE=E3=82=AB=E3=82=AF=29?= <skyexpoc@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?HE=20WEI=20=28=E3=82=AE=E3=82=AB=E3=82=AF=29?= <skyexpoc@gmail.com>
+Subject: [PATCH v2] wifi: cfg80211: bound element ID read when checking non-inheritance
+Date: Tue,  7 Jul 2026 18:48:28 +0900
+Message-ID: <20260707094828.16465-1-skyexpoc@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260626144543.5034-1-skyexpoc@gmail.com>
+References: <20260626144543.5034-1-skyexpoc@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260626144543.5034-1-skyexpoc@gmail.com> <b4129a5d4d11080726c460955579851198c879f5.camel@sipsolutions.net>
-In-Reply-To: <b4129a5d4d11080726c460955579851198c879f5.camel@sipsolutions.net>
-From: =?UTF-8?B?SEUgV0VJ77yI44Ku44Kr44Kv77yJ?= <skyexpoc@gmail.com>
-Date: Tue, 7 Jul 2026 18:22:45 +0900
-X-Gm-Features: AVVi8Ce7Hk-z7o4kekBOGVsY8aF_hhmQk0xIppr6yTxO6wPhTEhKw97QHRTQPgI
-Message-ID: <CAOC0qyJCoLa8FZmYyxdkEKn775+V6TELbneseRNELu3PfY-ZQA@mail.gmail.com>
-Subject: Re: [PATCH] wifi: cfg80211: bound element ID read when checking non-inheritance
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-38745-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38744-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER(0.00)[skyexpoc@gmail.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:skyexpoc@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[skyexpoc@gmail.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[skyexpoc@gmail.com,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,sipsolutions.net:email,mail.gmail.com:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9C6EC719CC2
+X-Rspamd-Queue-Id: 8F7CE719F91
 
-Hi Johannes,
+cfg80211_is_element_inherited() reads the first data octet of the
+candidate element (id = elem->data[0]) to look it up in an extension
+non-inheritance list. It does so after testing elem->id, but without
+verifying that the element actually has a data octet. A zero-length
+extension element (WLAN_EID_EXTENSION with length 0) therefore makes it
+read one octet past the end of the element.
 
-I'm sorry, that was my oversight. After reconfirmation, I found that
-cfg80211_is_element_inherited() was introduced in commit f7dacfb11475b
-("cfg80211: support non-inheritance element"), not dfd9aa3e7a45.
+_ieee802_11_parse_elems_full() runs this check for every element of a
+frame once a non-inheritance context exists -- e.g. while parsing a
+per-STA profile of a Multi-Link element in a (re)association response,
+or a non-transmitted BSS profile -- so a crafted frame from an AP can
+trigger a one-octet slab-out-of-bounds read during element parsing:
 
-The bug existed from the initial implementation of this function in 2019.
-I will send v2 with the correct Fixes tag.
+  BUG: KASAN: slab-out-of-bounds in cfg80211_is_element_inherited
+  Read of size 1 ... in net/wireless/scan.c
 
-Thank you for catching this!
+Return early (treat the element as inherited) when an extension element
+carries no data, mirroring the existing handling of empty ID lists.
 
-Best regards,
-HE WEI=EF=BC=88=E3=82=AE=E3=82=AB=E3=82=AF=EF=BC=89
+The bug was found by fuzzing ieee802_11_parse_elems_full() under KASAN.
 
-Johannes Berg <johannes@sipsolutions.net> =E4=BA=8E2026=E5=B9=B47=E6=9C=886=
-=E6=97=A5=E5=91=A8=E4=B8=80 20:44=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Fri, 2026-06-26 at 23:45 +0900, HE WEI (=E3=82=AE=E3=82=AB=E3=82=AF) w=
-rote:
->
-> >
-> > Fixes: dfd9aa3e7a45 ("wifi: cfg80211: rewrite merging of inherited elem=
-ents")
->
-> This doesn't seem right at all?
->
-> johannes
+Changes in v2:
+- Fixed the Fixes tag to point to the correct commit f7dacfb11475b
+  ("cfg80211: support non-inheritance element")
+- The bug was introduced in the original implementation in 2019, not in
+  commit dfd9aa3e7a45
+
+Fixes: f7dacfb11475b ("cfg80211: support non-inheritance element")
+Signed-off-by: HE WEI (ギカク) <skyexpoc@gmail.com>
+---
+ net/wireless/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 05b7dc6b7..0a44856b1 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -205,7 +205,7 @@ bool cfg80211_is_element_inherited(const struct element *elem,
+ 		return true;
+ 
+ 	if (elem->id == WLAN_EID_EXTENSION) {
+-		if (!ext_id_len)
++		if (!ext_id_len || !elem->datalen)
+ 			return true;
+ 		loop_len = ext_id_len;
+ 		list = &non_inherit_elem->data[3 + id_len];
+-- 
+2.43.0
 
