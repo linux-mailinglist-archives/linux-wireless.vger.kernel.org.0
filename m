@@ -1,365 +1,279 @@
-Return-Path: <linux-wireless+bounces-38715-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38716-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tnbyCjxGTGpxigEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38715-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 02:20:12 +0200
+	id ZSxaGtNaTGo0jgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38716-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 03:48:03 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E78071676D
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 02:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF50716ABC
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 03:48:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=msbs.com header.s=dkimprovmx2 header.b=GEVQolyz;
-	dmarc=pass (policy=none) header.from=msbs.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38715-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38715-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=Gu+ProE7;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38716-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38716-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03F8630363FD
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2026 00:18:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DD487302732E
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2026 01:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A62C1E51E0;
-	Tue,  7 Jul 2026 00:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF08B2FC037;
+	Tue,  7 Jul 2026 01:47:59 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail4.mxsw2.infra.improvmx.com (mail4.mxsw2.infra.improvmx.com [51.158.91.226])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBDF1A6813
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Jul 2026 00:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6611624DF
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Jul 2026 01:47:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783383517; cv=none; b=fIiKGmdpXzSIHFMb143Z+k26ybhI8CoapmXHHxlcX230D3VCqjsS/0QJRSr8AA+HUf+5fQIw7b1qLNWro8aDrWbpIm3I8civmRrvWVaC+vgv79TPGtSRSkCD0ccRjguNOGCQUrzqrPG6gfvTrxMNhPSbbrluL7/hRdY2QwS5sJM=
+	t=1783388879; cv=none; b=CfFsdC8PpWEdSRyqvn72ZfIzc8wG/AW7S89LGBYpiFdbLwB18APjtgrnqD8KwPaXK//yO0agdl+n+3BJr8drD31ZiyQsjNY11z2i/3alpGqqJ1QMotAO9b2Gc+gK8Qm61ChAwwltK5PpYPRnhE4OrhMWQZ21WH3UD/BLQiClEuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783383517; c=relaxed/simple;
-	bh=PMQiM5eBVmU0LoAzw5OFyjtzlzaRKLO+l1L/lXziWpw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LEETbIhJwJ6RXemu8bkw+h2OAVKkZPP9gAfli7+iOk4eq/2mH9DeCV1bbzeNNmOG5h06xtXlCZE+jtpEWfrxLVuOX/QDyla23IKNhN7YbnT6g9WfgVyW14lfWghCnvc57ZGJsxtvxWaP6QalUudiDRvPZhYSXGjXQYKFMzIBOiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=msbs.com; spf=pass smtp.mailfrom=msbs.com; dkim=pass (2048-bit key) header.d=msbs.com header.i=@msbs.com header.b=GEVQolyz; arc=none smtp.client-ip=51.158.91.226
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=msbs.com;
- i=@msbs.com; q=dns/txt; s=dkimprovmx2; t=1783383385; h=date : from :
- to : subject : content-type : feedback-id : message-id;
- bh=ey3QhB6J3gnwrfAIUZr8wNCqwKOYSyeo95dRaK+/vzk=;
- b=GEVQolyzAlGaBS2VMNAvGsWkuU5hj7GHnDV8zOjwIy407HaR2vTFcRsAFTYCyPcQ/DJKa
- kaj4qBW7Wbs+gfGdjJhk6ir1xzOdexvv0V97qWanWckAW4s5o6Lxhee+OoWGFdgci6DPr5S
- SbFO+bM+UBaaDNNdVsFRnd5SQ56My0aNmpJCzQJMbGtvAP1hL6VYPkmPyWhSn9hEc27d3d6
- etLsWxavJPegMlXU8YeIngWY1tvU/OUHXPEMqwO+Wi8AFDkvx3WhgpcgvVEQ8g1uFwiSB+5
- z1/sprr2U9eKShElv12K5/LVD72KFEwWugSr6vtf+EL40iiNqHF0roFT0k3w==
-X-Sending-Service: ImprovMX v3.0.0
-Feedback-ID: bXNicy5jb20=:send:ImprovMX
-X-ImprovMX-Server-Id: 088d2cf
-X-ImprovMX-Session-Id:
- 6c00779a-0465-4a11-8afd-6391e82931cc
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com.
- [209.85.208.182])
-    by mx1.improvmx.com with ESMTPSA (version=TLSv1.3
- cipher=TLS_AES_256_GCM_SHA384 bits=256/256)
-    for <linux-wireless@vger.kernel.org>;
-    Tue, 07 Jul 2026 00:16:23 -0000
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-39b1026e171so35446261fa.1
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jul 2026 17:16:22 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyfqW9VC+qnJAh1EJQZpuDWs8D8Glx0eqZpvkPxOS/PIAXzb3Kw
-	YW8oeBg3detWplnEsR6Y2gEwyWgLAn7CIHQKjvXz7mXGQ/MF4TlOiECAACAEUmOigmqRcPZ5vxT
-	BmbvovWTMYYAaQizwrUJNK6INisg12js=
-X-Received: by 2002:a2e:9b95:0:b0:393:8ba5:3d01 with SMTP id
- 38308e7fff4ca-39c5ffa4574mr4697491fa.22.1783383377035; Mon, 06 Jul 2026
- 17:16:17 -0700 (PDT)
+	s=arc-20240116; t=1783388879; c=relaxed/simple;
+	bh=j394IDDScrauKr9JXqZoL2SSwbrcc7FTzPWCE4XPAVw=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=HRK2Kn9jZXhk29P/t4Ckn5r0bwH/QGXuTvpZgf45EsDcLQW/Y/SU61TwLAPSovBt4NiWkicSrwL8uRi580apPtlgMDN0MYVkhmb4hHnOufX0Fytvy9UpZBilaV4kudX+B8JIO2zmAq0F8vaEYUSAoqtK9THOZbaTwFfSNW0qWMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gu+ProE7; arc=none smtp.client-ip=198.175.65.16
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783388877; x=1814924877;
+  h=date:from:to:cc:subject:message-id;
+  bh=j394IDDScrauKr9JXqZoL2SSwbrcc7FTzPWCE4XPAVw=;
+  b=Gu+ProE7cnlA+VgFZzFKAX2hSzgYWeAauBg61octEF0A3Ayir5auCY7s
+   ff8swgZ9y/accRb4o+2yHqbtgjZeUzXFonRbvDJ70BRzzYEg8y9xcGTnN
+   7/s+IYCymLiQqkV9eTq52jXu9hhdPg4fbP+AleUYSTUvpFKJ8Rpdqh3dl
+   60/X/xcwnAH8fNkRwNeJCTHFPek7T7ySWbSGWqWr14sGfJUoiO7F9Fy2r
+   kDVSYmxJrC/BDLcnAf/2xoOo0EVA24ufLLxS7q6293+txVnAfCa6HxDiy
+   hiaC6D2fk+wLGz3OHtiQhsgATqTUAcQc7hWd6+AgCBD6jNWLc02gl2Upf
+   g==;
+X-CSE-ConnectionGUID: qjNk3BoJQ12lmotAqCcdmw==
+X-CSE-MsgGUID: trO2ZU3aQ+GDJNVwwrLQxg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11839"; a="84218634"
+X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
+   d="scan'208";a="84218634"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 18:47:57 -0700
+X-CSE-ConnectionGUID: 12+a9ltjT0euq1WbWim/lQ==
+X-CSE-MsgGUID: 4LMNmpLeQ7GmDJ/dE8Hk/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
+   d="scan'208";a="253393303"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 06 Jul 2026 18:47:55 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wguue-00000000Evv-3PM1;
+	Tue, 07 Jul 2026 01:47:52 +0000
+Date: Tue, 07 Jul 2026 09:47:26 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: linux-wireless@vger.kernel.org
+Subject: [wireless:for-next] BUILD SUCCESS
+ 4a360c6e18dfa9d70006c7247a6a8cc8dfe0d60f
+Message-ID: <202607070914.3K8GP1aa-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CAPpkL-yLfeNwsePSGDK7m8ctzPLXTVto1HhrufHv12HO0+B1Vw@mail.gmail.com>
- <CAPpkL-y54ySw8ftqeumccNEVatY0Zt6-Ag4PejYddK5WcsiV3A@mail.gmail.com> <870f1c80-5027-4503-b6c4-6df80eea7df3@leemhuis.info>
-In-Reply-To: <870f1c80-5027-4503-b6c4-6df80eea7df3@leemhuis.info>
-From: B X <brent@msbs.com>
-Date: Mon, 6 Jul 2026 20:16:05 -0400
-X-Gmail-Original-Message-ID: <CAPpkL-xcQJu2Y_7h_moAJ1XEMimQVByz6+_cZCmAj6RqZr0cGQ@mail.gmail.com>
-X-Gm-Features: AVVi8CfAhBrZ2u3uERpszP9KdYBi5EX9GEnu78omY7Lc_zd7GvlznoDbleUyEoc
-Message-ID: <CAPpkL-xcQJu2Y_7h_moAJ1XEMimQVByz6+_cZCmAj6RqZr0cGQ@mail.gmail.com>
-Subject: Re: [REGRESSION] mt7925e: fails to read EEPROM MAC on 7.2-rc2, falls
- back to random MAC (worked on 7.1-rc7 and 7.0.x)
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
-	ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com, 
-	regressions@lists.linux.dev, Rosen Penev <rosenp@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[msbs.com,none];
-	R_DKIM_ALLOW(-0.20)[msbs.com:s=dkimprovmx2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,nbd.name,kernel.org,mediatek.com,lists.linux.dev,gmail.com];
-	TAGGED_FROM(0.00)[bounces-38715-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:regressions@leemhuis.info,m:linux-wireless@vger.kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:regressions@lists.linux.dev,m:rosenp@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[msbs.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[brent@msbs.com,linux-wireless@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-38716-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:johannes.berg@intel.com,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brent@msbs.com,linux-wireless@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,msbs.com:from_mime,msbs.com:email,msbs.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:from_mime,intel.com:dkim,intel.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7E78071676D
+X-Rspamd-Queue-Id: CCF50716ABC
 
-Confirmed -- the patch fixes it.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 4a360c6e18dfa9d70006c7247a6a8cc8dfe0d60f  wifi: mac80211: validate deauth frame length before reason access
 
-I applied 20260630210215.400379-1-rosenp@gmail.com on top of 7.2-rc2 and
-booted it on my x86 Strix Halo (MT7925 RZ717, non-OF PCIe card). With the
-patch, the "Invalid MAC address, using random address" line is gone and the
-adapter comes up with its real EEPROM MAC (ac:f2:3c:35:31:15). Stock 7.2-rc=
-2
-without the patch reproduces the random-MAC behaviour on the same hardware.
+elapsed time: 800m
 
-Tested-by: Brent Paine <bkpaine1@gmail.com>
+configs tested: 148
+configs skipped: 20
 
-Brent
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-On Mon, Jul 6, 2026 at 10:21=E2=80=AFAM Thorsten Leemhuis
-<regressions@leemhuis.info> wrote:
->
->
->
-> On 7/6/26 15:35, B X wrote:
-> > B X <brent@msbs.com>
-> > 8:12=E2=80=AFAM (1 hour ago)
-> > to linux-wireless, nbd, lorenzo, ryder.lee, shayne.chen, sean.wang,
-> > regressions, Brent
-> >
-> > Hi,
-> >
-> > Reporting a regression in the mt7925e driver: on Linux 7.2.0-rc2 the ad=
-apter
-> > fails to read its stored (EEPROM/efuse) MAC address and substitutes a r=
-andom
-> > one. The same hardware read its real MAC correctly on every earlier ker=
-nel,
-> > including the immediately-preceding boot one day earlier on 7.0.0-22.
->
-> Sounds a lot like it's the problem "wifi: mt76: fix MAC address for non
-> OF pcie cards" aims to fix:
-> https://lore.kernel.org/all/20260630210215.400379-1-rosenp@gmail.com/
->
-> Would be great if you could confirm.
->
-> Ciao, Thorsten
->
-> > Verified with Claude Code when my ATT fiber kept failing to pin IP on
-> > my Halo Strix
-> >
-> > Hardware
-> > --------
-> > MediaTek MT7925 (RZ717) Wi-Fi 7 160MHz
-> > PCI ID: [14c3:0717], driver mt7925e
-> > Platform: AMD "Strix Halo" (Ryzen AI Max) mini-PC
-> > linux-firmware: 20260319.git217ca6e4
-> >
-> > Symptom (kernel 7.2.0-rc2, 2026-07-06)
-> > --------------------------------------
-> >   mt7925e 0000:c3:00.0: enabling device (0000 -> 0002)
-> >   mt7925e 0000:c3:00.0: ASIC revision: 79250000
-> >   mt7925e 0000:c3:00.0: HW/SW Version: 0x8a108a10, Build Time: 20260106=
-153007a
-> >   mt7925e 0000:c3:00.0: WM Firmware Version: ____000000, Build Time:
-> > 20260106153120
-> >   mt7925e 0000:c3:00.0: Invalid MAC address, using random address
-> > 12:1f:34:c6:57:04
-> >   mt7925e 0000:c3:00.0 wlp195s0: renamed from wlan0
-> >
-> > The driver then brings the interface up with the random MAC 12:1f:34:c6=
-:57:04.
-> >
-> > Last known good (kernel 7.0.0-22, 2026-07-05, same machine, no MAC over=
-ride)
-> > -----------------------------------------------------------------------=
------
-> >   mt7925e 0000:c3:00.0: ASIC revision: 79250000
-> >   mt7925e 0000:c3:00.0: HW/SW Version: 0x8a108a10, Build Time: 20260106=
-153007a
-> >   mt7925e 0000:c3:00.0: WM Firmware Version: ____000000, Build Time:
-> > 20260106153120
-> >   ...
-> >   wlp195s0: authenticate with <ap> (local address=3Dac:f2:3c:35:31:15)
-> >
-> > i.e. the real MAC ac:f2:3c:35:31:15 was read straight off the adapter. =
-Note
-> > the firmware init lines (ASIC revision, HW/SW Version, WM Firmware Vers=
-ion,
-> > build times) are byte-identical between the good and bad boots -- only =
-the
-> > kernel differs, and only the MAC read fails. This rules out a firmware =
-or
-> > bad-NVRAM cause: the same silicon read the MAC correctly ~24h earlier.
-> >
-> > Regression range
-> > ----------------
-> > Confirmed good on: 7.0.0, 7.0.0-22, 7.0.0-27, 7.1.0-rc7 (dozens of boot=
-s,
-> > journal-verified, no "Invalid MAC address" line on any of them).
-> > First and only bad boot: 7.2.0-rc2.
-> >
-> > So the regression landed between 7.1-rc7 and 7.2-rc2. I have not bisect=
-ed to
-> > the exact commit yet, but I can -- the machine builds kernels quickly -=
-- if a
-> > bisect would help pin it down.
-> >
-> > Not reboot-type dependent: on the good kernels (7.0.0-22 / 7.0.0-27) th=
-e
-> > correct MAC was read reliably across both warm/clean reboots and cold/h=
-ard
-> > power cycles. The failure does not correlate with reboot type or chip p=
-ower
-> > state -- it correlates only with the kernel version (7.2-rc2).
-> >
-> > Impact
-> > ------
-> > The substituted MAC is random per boot, changing the adapter's L2 ident=
-ity.
-> > This breaks router-side DHCP reservations / fixed-IP allocations keyed =
-on MAC:
-> > the host stops receiving its pinned address and lands on an arbitrary l=
-ease.
-> > Any MT7925 user relying on MAC-based address pinning is affected. Curre=
-nt
-> > workaround here is forcing the real MAC via NetworkManager cloned-mac-a=
-ddress.
-> >
-> > #regzbot introduced: v7.1..v7.2-rc2
-> >
-> >
-> >
-> > Thanks,
-> >
-> >
-> > Brent Paine, AWS, CCNP
-> >
-> > git bkpaine1
-> > Medium bkpaine1
-> >
-> >
-> > On Mon, Jul 6, 2026 at 8:12=E2=80=AFAM B X <brent@msbs.com> wrote:
-> >>
-> >> Hi,
-> >>
-> >> Reporting a regression in the mt7925e driver: on Linux 7.2.0-rc2 the a=
-dapter
-> >> fails to read its stored (EEPROM/efuse) MAC address and substitutes a =
-random
-> >> one. The same hardware read its real MAC correctly on every earlier ke=
-rnel,
-> >> including the immediately-preceding boot one day earlier on 7.0.0-22.
-> >>
-> >> Verified with Claude Code when my ATT fiber kept failing to pin IP on =
-my Halo Strix
-> >>
-> >> Hardware
-> >> --------
-> >> MediaTek MT7925 (RZ717) Wi-Fi 7 160MHz
-> >> PCI ID: [14c3:0717], driver mt7925e
-> >> Platform: AMD "Strix Halo" (Ryzen AI Max) mini-PC
-> >> linux-firmware: 20260319.git217ca6e4
-> >>
-> >> Symptom (kernel 7.2.0-rc2, 2026-07-06)
-> >> --------------------------------------
-> >>   mt7925e 0000:c3:00.0: enabling device (0000 -> 0002)
-> >>   mt7925e 0000:c3:00.0: ASIC revision: 79250000
-> >>   mt7925e 0000:c3:00.0: HW/SW Version: 0x8a108a10, Build Time: 2026010=
-6153007a
-> >>   mt7925e 0000:c3:00.0: WM Firmware Version: ____000000, Build Time: 2=
-0260106153120
-> >>   mt7925e 0000:c3:00.0: Invalid MAC address, using random address 12:1=
-f:34:c6:57:04
-> >>   mt7925e 0000:c3:00.0 wlp195s0: renamed from wlan0
-> >>
-> >> The driver then brings the interface up with the random MAC 12:1f:34:c=
-6:57:04.
-> >>
-> >> Last known good (kernel 7.0.0-22, 2026-07-05, same machine, no MAC ove=
-rride)
-> >> ----------------------------------------------------------------------=
-------
-> >>   mt7925e 0000:c3:00.0: ASIC revision: 79250000
-> >>   mt7925e 0000:c3:00.0: HW/SW Version: 0x8a108a10, Build Time: 2026010=
-6153007a
-> >>   mt7925e 0000:c3:00.0: WM Firmware Version: ____000000, Build Time: 2=
-0260106153120
-> >>   ...
-> >>   wlp195s0: authenticate with <ap> (local address=3Dac:f2:3c:35:31:15)
-> >>
-> >> i.e. the real MAC ac:f2:3c:35:31:15 was read straight off the adapter.=
- Note
-> >> the firmware init lines (ASIC revision, HW/SW Version, WM Firmware Ver=
-sion,
-> >> build times) are byte-identical between the good and bad boots -- only=
- the
-> >> kernel differs, and only the MAC read fails. This rules out a firmware=
- or
-> >> bad-NVRAM cause: the same silicon read the MAC correctly ~24h earlier.
-> >>
-> >> Regression range
-> >> ----------------
-> >> Confirmed good on: 7.0.0, 7.0.0-22, 7.0.0-27, 7.1.0-rc7 (dozens of boo=
-ts,
-> >> journal-verified, no "Invalid MAC address" line on any of them).
-> >> First and only bad boot: 7.2.0-rc2.
-> >>
-> >> So the regression landed between 7.1-rc7 and 7.2-rc2. I have not bisec=
-ted to
-> >> the exact commit yet, but I can -- the machine builds kernels quickly =
--- if a
-> >> bisect would help pin it down.
-> >>
-> >> Not reboot-type dependent: on the good kernels (7.0.0-22 / 7.0.0-27) t=
-he
-> >> correct MAC was read reliably across both warm/clean reboots and cold/=
-hard
-> >> power cycles. The failure does not correlate with reboot type or chip =
-power
-> >> state -- it correlates only with the kernel version (7.2-rc2).
-> >>
-> >> Impact
-> >> ------
-> >> The substituted MAC is random per boot, changing the adapter's L2 iden=
-tity.
-> >> This breaks router-side DHCP reservations / fixed-IP allocations keyed=
- on MAC:
-> >> the host stops receiving its pinned address and lands on an arbitrary =
-lease.
-> >> Any MT7925 user relying on MAC-based address pinning is affected. Curr=
-ent
-> >> workaround here is forcing the real MAC via NetworkManager cloned-mac-=
-address.
-> >>
-> >> #regzbot introduced: v7.1..v7.2-rc2
-> >>
-> >>
-> >>
-> >> Thanks,
-> >>
-> >>
-> >> Brent Paine, AWS, CCNP
-> >>
-> >> git bkpaine1
-> >> Medium bkpaine1
->
+tested configs:
+alpha                             allnoconfig    gcc-16.1.0
+alpha                            allyesconfig    gcc-16.1.0
+arc                              allmodconfig    gcc-16.1.0
+arc                               allnoconfig    gcc-16.1.0
+arc                              allyesconfig    gcc-16.1.0
+arc                   randconfig-001-20260707    gcc-14.3.0
+arc                   randconfig-002-20260707    gcc-12.5.0
+arm                               allnoconfig    clang-17
+arm                              allyesconfig    gcc-16.1.0
+arm                          pxa168_defconfig    clang-23
+arm                   randconfig-001-20260707    gcc-8.5.0
+arm                   randconfig-002-20260707    clang-17
+arm                   randconfig-003-20260707    clang-17
+arm                   randconfig-004-20260707    clang-23
+arm64                            allmodconfig    clang-23
+arm64                             allnoconfig    gcc-16.1.0
+arm64                 randconfig-001-20260707    clang-23
+arm64                 randconfig-002-20260707    clang-18
+arm64                 randconfig-003-20260707    clang-23
+arm64                 randconfig-004-20260707    clang-17
+csky                             allmodconfig    gcc-16.1.0
+csky                              allnoconfig    gcc-16.1.0
+csky                  randconfig-001-20260707    gcc-16.1.0
+csky                  randconfig-002-20260707    gcc-16.1.0
+hexagon                          allmodconfig    clang-23
+hexagon                           allnoconfig    clang-23
+hexagon               randconfig-001-20260707    clang-23
+hexagon               randconfig-002-20260707    clang-18
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-004-20260707    gcc-14
+i386                           randconfig-001    clang-22
+i386                  randconfig-001-20260707    gcc-13
+i386                           randconfig-002    gcc-14
+i386                  randconfig-002-20260707    clang-22
+i386                           randconfig-003    gcc-14
+i386                  randconfig-003-20260707    clang-22
+i386                           randconfig-004    clang-22
+i386                  randconfig-004-20260707    gcc-14
+i386                           randconfig-005    gcc-14
+i386                  randconfig-005-20260707    clang-22
+i386                           randconfig-006    gcc-14
+i386                  randconfig-006-20260707    clang-22
+i386                           randconfig-007    gcc-14
+i386                  randconfig-007-20260707    clang-22
+i386                  randconfig-012-20260707    gcc-14
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-20
+loongarch                           defconfig    clang-23
+loongarch             randconfig-001-20260707    clang-18
+loongarch             randconfig-002-20260707    clang-19
+m68k                             allmodconfig    gcc-16.1.0
+m68k                              allnoconfig    gcc-16.1.0
+m68k                             allyesconfig    gcc-16.1.0
+m68k                                defconfig    gcc-16.1.0
+microblaze                        allnoconfig    gcc-16.1.0
+microblaze                       allyesconfig    gcc-16.1.0
+microblaze                          defconfig    gcc-16.1.0
+mips                             allmodconfig    gcc-16.1.0
+mips                              allnoconfig    gcc-16.1.0
+mips                             allyesconfig    gcc-16.1.0
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260707    gcc-11.5.0
+nios2                 randconfig-002-20260707    gcc-11.5.0
+openrisc                         allmodconfig    gcc-16.1.0
+openrisc                          allnoconfig    gcc-16.1.0
+openrisc                            defconfig    gcc-16.1.0
+parisc                           allmodconfig    gcc-16.1.0
+parisc                            allnoconfig    gcc-16.1.0
+parisc                           allyesconfig    gcc-16.1.0
+parisc                              defconfig    gcc-16.1.0
+parisc                randconfig-001-20260707    gcc-15.2.0
+parisc                randconfig-002-20260707    gcc-9.5.0
+parisc64                            defconfig    gcc-16.1.0
+powerpc                          allmodconfig    gcc-16.1.0
+powerpc                           allnoconfig    gcc-16.1.0
+powerpc               randconfig-001-20260707    clang-23
+powerpc               randconfig-002-20260707    gcc-14.3.0
+powerpc64             randconfig-001-20260707    gcc-8.5.0
+powerpc64             randconfig-002-20260707    clang-22
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    gcc-16.1.0
+riscv                            allyesconfig    clang-23
+riscv                               defconfig    clang-23
+riscv             nommu_k210_sdcard_defconfig    gcc-16.1.0
+riscv                          randconfig-001    gcc-13.4.0
+riscv                 randconfig-001-20260707    gcc-14.3.0
+riscv                          randconfig-002    clang-17
+riscv                 randconfig-002-20260707    gcc-8.5.0
+s390                             allmodconfig    clang-23
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-16.1.0
+s390                                defconfig    clang-18
+s390                           randconfig-001    gcc-15.2.0
+s390                  randconfig-001-20260707    clang-21
+s390                           randconfig-002    clang-18
+s390                  randconfig-002-20260707    gcc-13.4.0
+sh                               allmodconfig    gcc-16.1.0
+sh                                allnoconfig    gcc-16.1.0
+sh                               allyesconfig    gcc-16.1.0
+sh                                  defconfig    gcc-16.1.0
+sh                             randconfig-001    gcc-14.3.0
+sh                    randconfig-001-20260707    gcc-16.1.0
+sh                             randconfig-002    gcc-9.5.0
+sh                    randconfig-002-20260707    gcc-16.1.0
+sparc                             allnoconfig    gcc-16.1.0
+sparc                               defconfig    gcc-16.1.0
+sparc                          randconfig-001    gcc-16.1.0
+sparc                 randconfig-001-20260707    gcc-13.4.0
+sparc                          randconfig-002    gcc-11.5.0
+sparc                 randconfig-002-20260707    gcc-15.2.0
+sparc64                          allmodconfig    clang-20
+sparc64                             defconfig    clang-23
+sparc64                        randconfig-001    gcc-12.5.0
+sparc64               randconfig-001-20260707    gcc-8.5.0
+sparc64                        randconfig-002    clang-20
+sparc64               randconfig-002-20260707    clang-23
+um                               allmodconfig    clang-17
+um                                allnoconfig    clang-17
+um                               allyesconfig    gcc-14
+um                                  defconfig    clang-23
+um                             i386_defconfig    gcc-14
+um                             randconfig-001    clang-23
+um                    randconfig-001-20260707    clang-18
+um                             randconfig-002    clang-23
+um                    randconfig-002-20260707    clang-23
+um                           x86_64_defconfig    clang-23
+x86_64                           allmodconfig    clang-22
+x86_64                            allnoconfig    clang-22
+x86_64                           allyesconfig    clang-22
+x86_64                              defconfig    gcc-14
+x86_64                randconfig-011-20260707    clang-22
+x86_64                randconfig-012-20260707    gcc-14
+x86_64                randconfig-013-20260707    clang-22
+x86_64                randconfig-014-20260707    gcc-14
+x86_64                randconfig-015-20260707    gcc-14
+x86_64                randconfig-016-20260707    clang-22
+x86_64                randconfig-076-20260707    gcc-14
+x86_64                          rhel-9.4-rust    clang-22
+xtensa                            allnoconfig    gcc-16.1.0
+xtensa                           allyesconfig    gcc-16.1.0
+xtensa                         randconfig-001    gcc-8.5.0
+xtensa                randconfig-001-20260707    gcc-8.5.0
+xtensa                         randconfig-002    gcc-13.4.0
+xtensa                randconfig-002-20260707    gcc-11.5.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
