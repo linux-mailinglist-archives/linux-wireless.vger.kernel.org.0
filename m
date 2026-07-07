@@ -1,170 +1,186 @@
-Return-Path: <linux-wireless+bounces-38746-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38747-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +oFwMUbVTGoiqgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38746-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 12:30:30 +0200
+	id 7jczI4blTGrbrgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38747-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 13:39:50 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F8E71A63A
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 12:30:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D6971B05C
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Jul 2026 13:39:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.com header.s=google header.b="VPTrz/up";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38746-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38746-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=broadcom.com header.s=google header.b="FL+kY/2N";
+	dmarc=pass (policy=reject) header.from=broadcom.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38747-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38747-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BB4C930BB6E0
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2026 10:24:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A01C303C415
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jul 2026 11:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DAA3E0C47;
-	Tue,  7 Jul 2026 10:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9729E3F8891;
+	Tue,  7 Jul 2026 11:32:15 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF333E44F6
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Jul 2026 10:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E183F8886
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Jul 2026 11:32:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783419791; cv=none; b=PT9WX3zJCA0UV/GVsEZX15FHe5WeZWAXM5IknqXaH19Ij7w3Mz8lDnBEtEy08vBUS4NAy0Tjmydn5f57bA3RDIC/PJOiL+1uMZV4o89914D+LnaYMtwkOCWpP9OnRzdbsvb9hLBSiEQGklL6Y6Y3+jRqAJJnFlfvUT51ud661eE=
+	t=1783423935; cv=none; b=f6QBmqPbvPYvY+yHAEyQEOw0HpKnFD3ifN5XCGLJeSRA7er0ur7ZDSUPVXlJMC4ak+t6JQDAkcPMPos8QChlwm0baA+R+trgAlreVbsWkbCpfYqr14oNAwxpx5fZUCnyNsFvPn37inve33kzbrgNMBn3Qle3ZiEEYBldiLZ3uSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783419791; c=relaxed/simple;
-	bh=xHQwsR28DCaUl6xwb13l8RdKLkVzlcxiX7hu/6kuc+g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hsvq3cO+7/8ihxE0CSzjKuRJAfEgxjyWwjnCPyh4fSJns+uJ5lg+zQOwWOP2ga6U2ele19DUbrKH8NHIxQPewCLZecSJra7eOmhvjJMUEN5dIzMn3WLYCxG4OtuSkvy4cY9kQBXBH9h4ShGVJSViYyxqVtPFAQ/02BS3vCtAJHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=VPTrz/up; arc=none smtp.client-ip=209.85.128.50
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-493b1710405so25351795e9.2
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Jul 2026 03:23:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1783419788; x=1784024588; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=u/lA36J/bQLDfutFSE5oIizTeSmltDoXhBB9tDrM1e4=;
-        b=VPTrz/upXvZORs/XZkAtXEHTYtM34LvANez+5MQJEtDEBTEFBpHhRzV3ht6LsstBSO
-         c64Y1PSA73N4GRoJ9aVzW6gQ1YsFTIvRfpnzwbZ7b8Z/56kaPRH66K1CnnWjH0HRHuFL
-         t8JQwnBI2ehwlnu6xVsh5KYPa3qXzFubd/MMAJtqcaB1TWE9meLETLxvS7UdXvDdDnP5
-         w7PiNCzc/v6D0rULv07lbn+0I13HaFY2/NPVu0ThPuEA7BBGHKcHoZ66dePEZb904IG2
-         jhAa9vjg5CL0Ms5D0bGtKFSDw7gHts+RdfVIf+iqUupofy6YRca43bRy97h+cOLJY9XO
-         7YcA==
+	s=arc-20240116; t=1783423935; c=relaxed/simple;
+	bh=nnvomAEpu0wEat20NTObqGZb5UC503NtBfolCZLb92M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AX+puzTQN8qvi/MiLyUcpFr/WHvkNf011uRBYqsjxojhecVp5Zx5hUzkuuCaqtUkXKHtx8jXOGJ49KDpsZIDab9k2XvQ7ytqqyDpl2IvWjY72Cwc1OcHibA1CZnDBmcQydaPdcatApGHL1Q1RYVL9RmIrUzWH2WL8IN/EGWhOmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=FL+kY/2N; arc=none smtp.client-ip=209.85.214.225
+Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-2c7c61b5292so58113085ad.0
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Jul 2026 04:32:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783419788; x=1784024588;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u/lA36J/bQLDfutFSE5oIizTeSmltDoXhBB9tDrM1e4=;
-        b=LtfaR26RJz61f6Y1Owio61F2O10I28XVcbe6k8U+s0V9U7f5g+NTL9FQSb4V5+zrpP
-         E2yLaqbexIRXz82vAfq6DKwZUg3W0ZlhisjKruCLKTmIGcbdldATnM/vmUgazEG+XeiY
-         /HeApi7ihBiAlwXnRDXL2lU+J5rPAEE2ksWgjJOMc5+7U+14xF86PfcUNnHpaIPmEUpg
-         LA3xHFNPjWLMbEaua428wL7/rzfUwqPwT9R1sYJlQB3wFu6PMcu/pUBM/kSQmQ2JlXA0
-         LfIwuJRAZKxw2llWYtwWyIM91Y37sjnzo/SmW50Qsomo0/lqj/G/g9yztCVolRYNd4Ns
-         NXAg==
-X-Forwarded-Encrypted: i=1; AHgh+RoOdQW7pfMZYRYcwsW4MO26/xIjUPYXjp3SIeNQcM8pJkyLrIqYmp2aC7kEpQXMlzMW9hjpaP6LCL2Ws+5q9g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRaiF/08K1gxz3tKQ4v+QK6jGeZr0ap8rsxKofskSlDb9TjXtj
-	FQF1a3ooQkrZOeQ1NRdnIcN7A8vitCqYEdRgeRGh2Iu/3n+H+E863KEHWRLPRPI2FKA=
-X-Gm-Gg: AfdE7ckNjgeKJsfPnibYe26UuXxdmilrmZAFvgb08JUPkKrc7Sdd8evujvhLjTwmjkl
-	uDu6Q4pHxdVI//Q0DCPb5um2XdTT4gvjSiNcYpBIi09u2izhiXdUBTtWh5CUDMqsbcCmUDjLzAl
-	lDEEGuORN3NEJ+ngmb3Jr9HNLQmJifby2ks4dvFEmeGm48Q2q56rurmu9JE6q0apPIEM2LyxchY
-	LF3MFuZrdQTfKHHKlUDZrIWl+6AUr/4bejwL+EdpPD/Rj+5WPdoLCPp9Yw7wjN1qPOYgg5tw7Jg
-	xfltHB9o59LfzfdE8wydsbVodziLCUHR3s+7rzV3S0T3pO6JfRamJKH4Dtr3OrbOPTJufSzx7pt
-	Ra5j2bv23rLXc349jWbdNbtHv8p3JKqt1cXaF//RzN0qhkV9QEe00A8RjtZ+AAwQSqmCoNGbCbo
-	HFdZWTtlMOIlccYOnISfPcDbjBwAIKqdZquYlD
-X-Received: by 2002:a05:600c:e549:10b0:493:cbdc:7cd6 with SMTP id 5b1f17b1804b1-493df0b6aa6mr34447565e9.7.1783419788379;
-        Tue, 07 Jul 2026 03:23:08 -0700 (PDT)
-Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0f439fesm47344285e9.8.2026.07.07.03.23.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 03:23:08 -0700 (PDT)
-From: Marco Crivellari <marco.crivellari@suse.com>
-To: linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH iwlwifi-next] wifi: iwlwifi: transport: Change system_unbound_wq with system_dfl_wq
-Date: Tue,  7 Jul 2026 12:23:01 +0200
-Message-ID: <20260707102301.148845-1-marco.crivellari@suse.com>
-X-Mailer: git-send-email 2.54.0
+        d=1e100.net; s=20251104; t=1783423933; x=1784028733;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=YJ5QiKQH3VtcXnw6BGy4lgO2MoGjRkeKal0uvLeH+uQ=;
+        b=VuTKQV1g9evsAKJ7JDnHqr03w1T+tOSJ+AmlUuiajs2Yor2CsSbwojFLBGQIiVlOPN
+         ktrm3WYCDovS2VuPqFrzze8q0nmSUCFMQK1zklQsfgSQsnWrR2LbYM4EVXDmt4oGconf
+         +7V5NEaw5dspDI+Jlcqo+wl2igKilmcaK3gwcmJ/UeADYR/6YQNk9+QrrOUV/UX9mXnL
+         bIcnDfCHqyf+o/5lxDG1EH/4RM1qMxvWNPTlhuKbonYfzqhatOJekw1pxfoY/PEdDYX3
+         nlh2iU5djO7XM2iFx6ZI+eUjNh54xfKxnTeK14BcgZ+p6wTfWHSgoJxtGfKrJo0wOqG5
+         lWWg==
+X-Gm-Message-State: AOJu0YyeLBuEMSmReJRRGll6n4wmf7YjbwmONLFMRm2JmV94EzQISaSJ
+	R/O2XaoTM5mMzI4ItQPjEeqMqQtu+73xZJwMv8DS2ZGqfF5U44/JFZQfCxtj6pdp43U79SntZhy
+	Ucwzxec/a53VkGcWi5O62iOJ80GD03lAmT6YQSt3MfS/Gk7xAoVKZ+cu8cfIGD6fZAMEFj745qp
+	BwdsBbm1EQUQVpnww+uFfzDHTk/JctdklbxDzziCzQvMJ/iMlgeJARQ15U57huyGVdCy234cuXV
+	C2vG8Z97jP156+8i6ZYOkMsUOU2
+X-Gm-Gg: AfdE7cnMgYbM1uo+d0y9MoZ56LxsiahoOqJYcGB6aBNcveTzvlB0NPaWtihhanW8/Zv
+	ygZX8rjr1o+YpeqE2wKwaQh3zKBC+nENID5XXZHuAPtZB8bxSjgbj/Tjn/8VlsZyVVAh4fd453Z
+	iNay5czOvAMr6p6X3djX8Eai9HJgbuNjf+obqUfKrX9xICJf8VNRIfKfh5+heIovLZmVMEx42m8
+	r1xOa+Td6Kw8HhehuMP321t/45HnTf1pGW0zcVDVIGOuukh5VYKRcYNTr+86aGTaqjlCbcnSgHA
+	tKpQlmM8kM5kndIkQEgZsmwqorsrKWcvhv3CI+v/ZDK4OEACgR1IhBeDqcS2FNEWUShD+Gg3CgE
+	QQzzY3yhEn2urRD96Es3ntxZmHw6iMKqpOzaRC689jS6HF7V/fU/Scqf8WO7idntN/lgbOdlLQI
+	ayVGrBXTSjAa8PqQ0QJsbJxzahFlCHIa1wYi/KAhbSRGo20TQ/e1vw
+X-Received: by 2002:a17:902:e84e:b0:2c9:e5ff:995d with SMTP id d9443c01a7336-2ccbf051374mr54819715ad.31.1783423933365;
+        Tue, 07 Jul 2026 04:32:13 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-101.dlp.protect.broadcom.com. [144.49.247.101])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2ccc9ccdc21sm1973015ad.28.2026.07.07.04.32.12
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 07 Jul 2026 04:32:13 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-51c01ff996dso55535111cf.2
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Jul 2026 04:32:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1783423932; x=1784028732; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YJ5QiKQH3VtcXnw6BGy4lgO2MoGjRkeKal0uvLeH+uQ=;
+        b=FL+kY/2Ntl9zvm1VmfXY3isCz0qeaPptoayjX0QrWWgCtkwbuOccsYsG0FpDoF6Lmn
+         UDMXQUvkrIgwuYjkJ2oeexzmabOcgibnfvNGpW3IWdGg074kP6oGYLIl5YzGGFHX9m6s
+         b292OAmzKXfclE07K/g/5Abr8w+dPBOFanO6c=
+X-Received: by 2002:a05:622a:2516:b0:51c:7b12:11fe with SMTP id d75a77b69052e-51c7b121745mr20758721cf.76.1783423931797;
+        Tue, 07 Jul 2026 04:32:11 -0700 (PDT)
+X-Received: by 2002:a05:622a:2516:b0:51c:7b12:11fe with SMTP id d75a77b69052e-51c7b121745mr20758181cf.76.1783423931150;
+        Tue, 07 Jul 2026 04:32:11 -0700 (PDT)
+Received: from [10.176.2.33] ([192.19.176.250])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c41d7eb26sm111016721cf.21.2026.07.07.04.32.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Jul 2026 04:32:09 -0700 (PDT)
+Message-ID: <77dfa2f3-296f-470b-8d21-0f10a56a2a4a@broadcom.com>
+Date: Tue, 7 Jul 2026 13:32:09 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: brcmfmac: cyw: fix heap overflow on a short auth
+ frame
+To: Maoyi Xie <maoyixie.tju@gmail.com>
+Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org
+References: <20260707063155.3099999-1-maoyixie.tju@gmail.com>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <20260707063155.3099999-1-maoyixie.tju@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-7.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[broadcom.com:D:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-38747-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-38746-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,linutronix.de,suse.com,intel.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_SENDER(0.00)[marco.crivellari@suse.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:maoyixie.tju@gmail.com,m:linux-wireless@vger.kernel.org,m:brcm80211@lists.linux.dev,m:brcm80211-dev-list.pdl@broadcom.com,m:linux-kernel@vger.kernel.org,m:maoyixietju@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:tj@kernel.org,m:jiangshanlai@gmail.com,m:frederic@kernel.org,m:bigeasy@linutronix.de,m:marco.crivellari@suse.com,m:mhocko@suse.com,m:miriam.rachel.korenblit@intel.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[marco.crivellari@suse.com,linux-wireless@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ntu.edu.sg:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:from_mime,broadcom.com:email,broadcom.com:mid,broadcom.com:dkim];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[broadcom.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[suse.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:from_mime,suse.com:email,suse.com:mid,suse.com:dkim]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 39F8E71A63A
+X-Rspamd-Queue-Id: E0D6971B05C
 
-system_wq (per-CPU) and system_unbound_wq (unbound) are the older
-workqueue name, replaced by system_{percpu|dfl}_wq.
-The new workqueues have been introduced by:
+On 07/07/2026 08:31, Maoyi Xie wrote:
+> brcmf_notify_auth_frame_rx() takes the frame length from the firmware
+> event and copies the frame body with the management header offset
+> subtracted:
+> 
+> 	u32 mgmt_frame_len = e->datalen - sizeof(struct brcmf_rx_mgmt_data);
+> 	...
+> 	memcpy(&mgmt_frame->u, frame,
+> 	       mgmt_frame_len - offsetof(struct ieee80211_mgmt, u));
+> 
+> The only length check is e->datalen >= sizeof(*rxframe), so mgmt_frame_len
+> can be anything from 0 up. offsetof(struct ieee80211_mgmt, u) is 24. When
+> mgmt_frame_len is below that, the subtraction wraps as an unsigned value to
+> a huge length. The memcpy then runs far past the kzalloc'd buffer. A
+> malicious or malfunctioning AP can make the frame short during the
+> external SAE auth exchange, so this is a remotely triggered heap overflow.
+> 
+> Reject frames shorter than the management header offset before the copy.
+> 
+> Fixes: 66f909308a7c ("wifi: brcmfmac: cyw: support external SAE authentication in station mode")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Kaixuan Li <kaixuan.li@ntu.edu.sg>
+> Signed-off-by: Kaixuan Li <kaixuan.li@ntu.edu.sg>
+> Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-  128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
+Thanks. Nothing to add here.
 
-Usage of older workqueues will now trigger a pr_warn_once() because they are
-marked as deprecated as per commit:
-
-  64d8eae3f895 ("workqueue: Add warnings and fallback if system_{unbound}_wq is used")
-
-So change the used workqueue with the newer, keeping the same behavior.
-
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
----
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-index 73aae1125042..9343b6230e1a 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-@@ -236,7 +236,7 @@ static void iwl_trans_restart_wk(struct work_struct *wk)
- 	mode = iwl_trans_determine_restart_mode(trans);
- 	if (mode == IWL_RESET_MODE_BACKOFF) {
- 		IWL_ERR(trans, "Too many device errors - delay next reset\n");
--		queue_delayed_work(system_unbound_wq, &trans->restart.wk,
-+		queue_delayed_work(system_dfl_wq, &trans->restart.wk,
- 				   IWL_TRANS_RESET_DELAY);
- 		return;
- 	}
--- 
-2.54.0
-
+> ---
+> v2: drop the Link: tag (Arend), add Arend's Acked-by.
+> 
+> v1: https://lore.kernel.org/r/20260627131313.3878893-1-maoyixie.tju@gmail.com
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 
