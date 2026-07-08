@@ -1,173 +1,222 @@
-Return-Path: <linux-wireless+bounces-38772-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38773-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id P1hVFOqfTWqh3AEAu9opvQ
-	(envelope-from <linux-wireless+bounces-38772-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 02:55:06 +0200
+	id 9zwIEpq2TWqQ9QEAu9opvQ
+	(envelope-from <linux-wireless+bounces-38773-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 04:31:54 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92178720BC9
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 02:55:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B287212F4
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 04:31:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=realtek.com header.s=dkim header.b="VS9cvEY/";
-	dmarc=pass (policy=none) header.from=realtek.com;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38772-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38772-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=morsemicro-com.20251104.gappssmtp.com header.s=20251104 header.b=rVKJSuDH;
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=morsemicro.com (policy=none);
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38773-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38773-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F9373007E3E
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jul 2026 00:55:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C3673011113
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jul 2026 02:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC00B3A63FB;
-	Wed,  8 Jul 2026 00:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7673955E3;
+	Wed,  8 Jul 2026 02:30:53 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715FC37A827
-	for <linux-wireless@vger.kernel.org>; Wed,  8 Jul 2026 00:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F514379ECF
+	for <linux-wireless@vger.kernel.org>; Wed,  8 Jul 2026 02:30:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783472103; cv=none; b=Jcrh84TuWeGX6mKhz0n3iehKXKyhr63wXjGlz4PVlZFoMjmrsy0bJGBUe8omUVQIUOeu8i5wNZqq/hZtZ45m4Ko1SqrO968mSKmHBgkvDogfDmM2Vo9Lo1cMYb01VD0pFvB2dK1RiSsWRaFnCsKKdz1naA1UxTap0jV/CNGerVQ=
+	t=1783477853; cv=none; b=qxhK68yj0q1a/yBxSw6LsyPMpKB2khCm4ab2P01jJSCKoTXnvT2ovIrSztKuZNgkroyluqcXUdBC/nxYig7QeHO5b1QfKIZzJTC2nIgaJDRjS1nA9RSAu2a1dy7Hv4v0ck1Axh4j58eVGDmkONdyh/Z0ZQiATu8F2ayatZpB+qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783472103; c=relaxed/simple;
-	bh=trVZBm7iIt0Qb/CBlGZmDYfjv3pGu99p/IVebEbIgN4=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=IgYsvLbVPjwqU1+2bTmspgkOrvBntMIM4lKvQo0Dm6eLlNrS7ZNiU7Xv8LhVVyzAQkGQeoovYq3kvSg00xANv1GzC0Ps/hy8Vsq9P8aTVAVZKrEV7AoROO+gANBqtO6jGn0B5wJqqyRxGJNTNmuT7AmewRLdQg3EUqF6NXgkOeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=VS9cvEY/; arc=none smtp.client-ip=211.75.126.72
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6680sql771894038, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1783472092; bh=trVZBm7iIt0Qb/CBlGZmDYfjv3pGu99p/IVebEbIgN4=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=VS9cvEY/BCqXHf1JCdp/kwIvk+ZdB6u08DYySqboib0U+pY7JE0eDXk1Kk72JXE/I
-	 zurXZZ5wjGxjIWKaxunMSftcmYCEi4crtWLRdh7txRLAWkTJre76+euONmOKEsOFZE
-	 nmXTlSrzzL4cZn0NGhWtwcRD3vHX0+9yuisuQokJB+mkaXg9XBxdc+eXLxpz2lF/BT
-	 DRWJ8WtuWyqhYi1vZKuQvpAqAvRXNLQuoryNU+eRrHXN8Vn5E/NAeCPyVzlH3OKT8T
-	 mjev5rFr+x/FIFSGi6YpXzuCsUA/cLU0TTIlFNK6H/0IZA0a4oGu/o+26SXVeQGuZT
-	 Au6AU2t80TacQ==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6680sql771894038
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 8 Jul 2026 08:54:52 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 8 Jul 2026 08:54:53 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 8 Jul 2026 08:54:52 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::e6fd:5a3f:8946:92c4%10]) with mapi id
- 15.02.2562.017; Wed, 8 Jul 2026 08:54:52 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: or1k <tixzit@gmail.com>, "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>, "kvalo@kernel.org" <kvalo@kernel.org>
-Subject: RE: [BUG] rtw89: RTL8852CE RX_DCK timeout + Bluetooth A2DP
- coexistence failures (fw-2.bin 0.27.129.4)
-Thread-Topic: [BUG] rtw89: RTL8852CE RX_DCK timeout + Bluetooth A2DP
- coexistence failures (fw-2.bin 0.27.129.4)
-Thread-Index: AQHdDlvZDJN6KtcAY0OAWVZw7x50ALZiyn2A
-Date: Wed, 8 Jul 2026 00:54:52 +0000
-Message-ID: <1cbb8e8573b14f689654b7e361f110c2@realtek.com>
-References: <OduUSxVfSVayC9OVEeIrxw@gmail.com>
-In-Reply-To: <OduUSxVfSVayC9OVEeIrxw@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1783477853; c=relaxed/simple;
+	bh=i1Mgo6TgyRD8i2fVrC0r8VExcL/g7/2QWuNArqObyyU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Sz55tbMQfUTYeA2wjsexF3lYrGvZbOGVgw6gaX/v4Kl74S4Xc+VwGh4ttEPqLYbMR8FUeoXe/y1qhlzA7Htc1UKFOthcZzyJ/mIgxrQUjqz5C9OR1W5h2/8L42a/rBKDTxo7zrnDXm8bEJ3cfoFRIjJHgJ6A6fgULOv6eRxDgD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=rVKJSuDH; arc=none smtp.client-ip=209.85.215.180
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c96b08cdd1cso87842a12.0
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Jul 2026 19:30:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1783477851; x=1784082651; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=K1pfKei1esO+zFwIXH53UVxMYrpFP1S5MrPPXv4xctw=;
+        b=rVKJSuDHYW+JRkJiFmnAC8RQPRpN+8WP/5PIa2QQOprxqh/wK+8I3fVRaG5Dei1Q0u
+         ERS/Cny7+qJoKXEVGN3VgUrLy0uaG2y8Behdmed3c0R3garfix8GZtjXU3HSk3wFptFz
+         tv+zBeK85rp7IWxIFlOMqe1PuIIRfMpHLUoqURMWi0vo/d1EACA5NyLQ2+NFAFCNPPvZ
+         wy3mgfQq+l58mO4AAylrUGeYP3wVCbj/8rRLWlivvzo0S8437dpmQZ+n3y8yAx2W6xi5
+         tS6VozY9tuSWP+mq9ggMSo8eB0gg2Ptd3uUMxx3ugQsyZpQUyAFkH8R6fkwOwzCqqcTz
+         UxOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783477851; x=1784082651;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=K1pfKei1esO+zFwIXH53UVxMYrpFP1S5MrPPXv4xctw=;
+        b=CHJNMlA0S8sdyePBBEz3Cy3RuErDgxEWlHeiqWdP947Haradk0HvvEcgdtKDGv3nVQ
+         WawvuKSGM27kUJ5d0VHe6UmRtaYtyBABQoxHXQXxcs1c9YN9eT+i3/F5G5WU4lGiB2lS
+         XrV+hygEuGmmrC6E/N+kobgiIviitdgEz5GnGLUV+x1yFkXvqj6/mSEMLx0NvEK5SmbM
+         FXQ0VHCd32krMF1OUU84Zu+fhtukkm1JZiwRctNZaLrtoIA1oa7GIh+lu+HRAZwlhepe
+         qvD4OXLXShi56TfF2+5r3yc/kpYmnkwmqVgJqe8CTEt3A0EbwutcrTzs2Un2V+dTSUGx
+         /dAQ==
+X-Gm-Message-State: AOJu0Yx/dAExhF+0os5ykNmXU7vsYfaazPXURjATK9APVy8nFqlzfGb3
+	nvPNV/cGpbjqU1DDVbeAjdp/kH1N4rUTVut/rVgSw20QZ25ux9kUAeGcaejZEozryyY=
+X-Gm-Gg: AfdE7cn1X5gXgg/RpeRUkCNy8hOc/l12MxdVzOf0NIUsLmBBCBjQE2LXRQvmQVb6Ug2
+	LB3KssrlrmY59F1jZ5JfmvmUPtcdUNLpHbA6B5x2RGIj5Rv67Lcw8YxBSHGlfdrMqXZ+J3H+tGD
+	caj95R3bNnDD5CJxrkmvo2aM/PSN37C9uSbWO1kVdwA+OXrWssEM7mhFd9aiJlMBFqBNr/NZ7O9
+	jE+xlv+2o9p4j4CdRx6t1lxIHyuiHCzQrwIPEQDFdLslEmW6xP81nIc5jl+iJhUWj0sx6c3QLUQ
+	JrktWHW4iqhQGXBAA9Xk3TvEEGoNI+wWf4Q/a/iI+6FkMFkZ/AR4g9zseX/WCZxXilw/AtDr+85
+	4n9oEVNd0dV65YVAD9IGJAdW5YPqppQLwfoBcJZPrkwNjtvkC52JLA+b/eOKGIcoxOxlMdl1axI
+	ismpSLy+JnFfkCLSkOkuDjUew7BuXNzx5kAOrSMz3diYCG7LWAdGpsXqAcie6O3bm42PRQRleqB
+	a6Ko4eupOJY
+X-Received: by 2002:a05:6a20:12d2:b0:3bf:7fa5:8922 with SMTP id adf61e73a8af0-3c0bcf48fa9mr379437637.2.1783477851422;
+        Tue, 07 Jul 2026 19:30:51 -0700 (PDT)
+Received: from localhost (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b658a99afsm14337917c88.0.2026.07.07.19.30.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 19:30:51 -0700 (PDT)
+Date: Wed, 8 Jul 2026 12:30:47 +1000
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com, 
+	ayman.grais@morsemicro.com, dan.callaghan@morsemicro.com
+Subject: pull request: mm81x-driver-08-07-2026
+Message-ID: <svi6q7fgwkgzr6ta3ailxwubgoiokykfybz45igpqiry342tbv@vvqslr3ss7r4>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.06 / 15.00];
+X-Spamd-Result: default: False [-1.06 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[morsemicro-com.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
+	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:tixzit@gmail.com,m:linux-wireless@vger.kernel.org,m:kvalo@kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38772-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,kernel.org];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,realtek.com:from_mime,realtek.com:dkim,realtek.com:mid];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:arien.judge@morsemicro.com,m:ayman.grais@morsemicro.com,m:dan.callaghan@morsemicro.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-38773-lists,linux-wireless=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vvqslr3ss7r4:mid,morsemicro.com:from_mime,morsemicro-com.20251104.gappssmtp.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 92178720BC9
+X-Rspamd-Queue-Id: 86B287212F4
 
-b3IxayA8dGl4eml0QGdtYWlsLmNvbT4gd3JvdGU6DQo+IEhpLA0KPiANCj4gUmVwb3J0aW5nIGEg
-V2ktRmkvQmx1ZXRvb3RoIGNvZXhpc3RlbmNlIGlzc3VlIG9uIFJUTDg4NTJDRSB0aGF0IGFsc28g
-aGFzIGFuDQo+IG9wZW4gRmVkb3JhL1JlZCBIYXQgdHJhY2tlciAoYnVnemlsbGEucmVkaGF0LmNv
-bSAjMjM0OTY3NSksIGJ1dCB0aGF0IHJlcG9ydA0KPiB3YXMgZmlsZWQgYWdhaW5zdCBhbiBvbGRl
-ciBmaXJtd2FyZSAocnR3ODg1MmNfZnctMS5iaW4sIDAuMjcuOTcuMCkuIEknbQ0KPiBzZWVpbmcg
-d2hhdCBsb29rcyBsaWtlIHRoZSBzYW1lIGNsYXNzIG9mIGZhaWx1cmUgb24gdGhlIG5ld2VyDQo+
-IHJ0dzg4NTJjX2Z3LTIuYmluLCBmaXJtd2FyZSB2ZXJzaW9uIDAuMjcuMTI5LjQgKDNmMWE1MzAy
-KSwgc28gaXQgbWF5IG5vdCBiZQ0KPiBmdWxseSBmaXhlZCBieSB3aGF0ZXZlciBjaGFuZ2VkIGJl
-dHdlZW4gdGhvc2UgZmlybXdhcmUgcmV2aXNpb25zLg0KDQpXZSBhcmUgd29ya2luZyBvbiBkcml2
-ZXIgdG8gc3VwcG9ydCB0aGUgbmV3IGZpcm13YXJlICgwLjI3LjEyOS40KSwgYW5kIA0KSSBleHBl
-Y3RlZCB0byBsYW5kIHRoZSBwYXRjaGVzIG9uIDcuMy4gDQoNCkknZCBjbGFyaWZ5IHRoYXQgZG9l
-cyAwLjI3Ljk3LjAgd29yayB0byB5b3U/DQoNCj4gDQo+IEhhcmR3YXJlOg0KPiAgIFdpLUZpOiAg
-ICAgIFJlYWx0ZWsgUlRMODg1MkNFIFsxMGVjOmM4NTJdIHJldiAwMSwgTGVub3ZvIHN1YnN5c3Rl
-bQ0KPiBbMTdhYTo1ODUyXQ0KPiAgICAgICAgICAgICAgIFBDSSAwMDAwOjAyOjAwLjAsIGRyaXZl
-ciBydHc4OV84ODUyY2UNCj4gICBCbHVldG9vdGg6ICBzYW1lIGNvbWJvIGNoaXAsIFVTQiAwYmRh
-OjU4NTIgIlJlYWx0ZWsgQmx1ZXRvb3RoIFJhZGlvIiwNCj4gICAgICAgICAgICAgICBkcml2ZXIg
-YnR1c2IvYnRydGwsIEJUIGZpcm13YXJlIHJ0bDg4NTJjdV9md192Mi5iaW4gKDB4MDQwZDcyMjUp
-DQo+ICAgUGxhdGZvcm06ICAgTGVub3ZvIGxhcHRvcCwgQU1EIFJ5emVuIEFQVSAodW5yZWxhdGVk
-IHRvIHRoaXMgYnVnLCBqdXN0IGZvcg0KPiAgICAgICAgICAgICAgIGNvbnRleHQg4oCUIHJ1bGVk
-IG91dCBhcyBhIGZhY3RvcikNCj4gDQo+IFNvZnR3YXJlOg0KPiAgIEtlcm5lbCA3LjEuMy0yMDAu
-ZmM0NC54ODZfNjQgKEZlZG9yYSA0NCksIGxpbnV4LWZpcm13YXJlLTIwMjYwNjIyLTEuZmM0NA0K
-PiANCj4gU3ltcHRvbTogaW50ZXJtaXR0ZW50IFdpLUZpIGRpc2Nvbm5lY3RzL3JlYXV0aCB0b2dl
-dGhlciB3aXRoIEJsdWV0b290aCBBMkRQDQo+IGF1ZGlvIHRyYW5zcG9ydCBmYWlsdXJlcywgYm90
-aCB0cmFjZWQgdG8gdGhlIHNhbWUgcGh5c2ljYWwgY29tYm8gY2hpcC4NCj4gDQo+IGRtZXNnIChX
-aS1GaSBzaWRlKSwgcmVjdXJyaW5nIHNldmVyYWwgdGltZXMvZGF5IGluIHNob3J0IGNsdXN0ZXJz
-Og0KPiANCj4gICBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBbUlhfRENLXSBTMSBSWERDSyB0
-aW1lb3V0DQo+ICAgcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogdGltZWQgb3V0IHRvIGZsdXNo
-IHF1ZXVlcw0KPiANCj4gam91cm5hbGN0bCAoQmx1ZXRvb3RoIHNpZGUpLCBzYW1lIHRpbWUgZnJh
-bWUsIGRldmljZSA4NTo0MjozNjo1MTpCMTpEMQ0KPiAoQmx1ZXRvb3RoIGhlYWRwaG9uZXMsIEEy
-RFAgc2luayk6DQo+IA0KPiAgIHdpcmVwbHVtYmVyOiBzcGEuYmx1ZXo1LnNpbmsubWVkaWE6IE1p
-c3Nja2V0DQo+ICAgICAoMCBzdXBwcmVzc2VkKTogQmx1ZXRvb3RoIGFkYXB0ZXIgZmlybQ0KPiAg
-IGJsdWV0b290aGQ6IHNyYy9wcm9maWxlLmM6ZXh0X2lvX2Rpc2Nvbm4gZm9yDQo+ICAgICBIYW5k
-cy1GcmVlIFZvaWNlIGdhdGV3YXk6IGdldHBlZXJuYW1lOg0KPiAgICAgY29ubmVjdGVkICgxMDcp
-DQo+ICAgd2lyZXBsdW1iZXI6IHNwYS5ibHVlejU6IEZhaWx1cmUgaW4gQmx1ZXRvb3RoIGF1ZGlv
-IHRyYW5zcG9ydA0KPiAgICAgL29yZy9ibHVlei9oY2kwL2Rldl84NV80Ml8zNl81MV9CMV9EMS8N
-Cj4gDQo+IERpcmVjdCBjb3JyZWxhdGlvbiBjYXB0dXJlZCB3aXRoIG10cjogYSBXaXJlR3VhcmQt
-dHVubmVsZWQgcGluZyB0ZXN0DQo+ICh1bHRpbWF0ZWx5IHJvdXRlZCBvdmVyIHdscDJzMCkgc2hv
-d2VkIDUuOSB0aGUNCj4gc2FtZSB+NjBzIHdpbmRvdyBhcyA4IGNvbnNlY3V0aXZlICJNaXNzaW5n
-aW5lcw0KPiBmb3IgdGhlIHNhbWUgZGV2aWNlICgwMDoxMjo1MSkgYW5kIGFuIEhGUCAxKS4NCj4g
-Qm90aCByYWRpb3MgZGVncmFkZWQgdG9nZXRoZXIsIHdoaWNoIHBvaW50bXdhcmUNCj4gZmF1bHQg
-cmF0aGVyIHRoYW4gdHdvIHVucmVsYXRlZCBidWdzLg0KPiANCj4gV29ya2Fyb3VuZHMgdHJpZWQs
-IHBhcnRpYWwgZWZmZWN0IG9ubHk6DQo+ICAgLSBVU0IgYXV0b3N1c3BlbmQgZGlzYWJsZWQgZm9y
-IHRoZSBCVCBhZA0KPiAgIC0gcnR3ODlfY29yZS5kaXNhYmxlX3BzX21vZGU9MSwgcnR3ODlfcGMN
-Cj4gICAtIEEyRFAgY29kZWMgZm9yY2VkIHRvIFNCQyBpbnN0ZWFkIG9mIEFBDQo+IA0KPiBJcyB0
-aGlzIGV4cGVjdGVkIHRvIGJlIGNvdmVyZWQgYnkgdGhlIHNhbWUgZml4IHBhdGggYXMgUkgjMjM0
-OTY3NSwgb3IgaXMgaXQNCj4gd29ydGggdHJhY2tpbmcgc2VwYXJhdGVseSBzaW5jZSBpdCByZXBy
-b2R1Pw0KDQpDYW4geW91IGV4cGxhaW4gd2hhdCBSSCMyMzQ5Njc1IGlzPw0KDQo+IEhhcHB5IHRv
-IHRlc3QgY2FuZGlkYXRlIGZpcm13YXJlL3BhdGNoZXMgbw0KDQpJIHdpbGwgc2hhcmUgdGhlIHBh
-dGNoZXMgd2hlbiB0aGV5IGdldCByZWFkeSAoSSBzdXBwb3NlIGl0IHdpbGwgYmUNCmluIG9uZSBv
-ciB0d28gd2Vla3MpLg0KDQpQaW5nLUtlDQoNCg0K
+The following changes since commit ac798f757d6475dc6fee2ec899980d6740714596:
+
+  wifi: mac80211: Route (Re)association req/response to per-STA queue (2026-07-07 10:16:31 +0200)
+
+are available in the Git repository at:
+
+  https://github.com/MorseMicro/linux.git tags/mm81x-driver-08-07-2026
+
+for you to fetch changes up to b1906cea00b021acea22460225401d5b27bc7c36:
+
+  wifi: mm81x: add mm81x Wi-Fi HaLow driver (2026-07-08 12:03:50 +1000)
+
+----------------------------------------------------------------
+
+Introduce mm81x driver for mm81x based chipsets plus associated
+SDIO ids.
+
+----------------------------------------------------------------
+Lachlan Hodges (2):
+      mmc: sdio: add Morse Micro vendor ids
+      wifi: mm81x: add mm81x Wi-Fi HaLow driver
+
+ MAINTAINERS                                        |    8 +
+ drivers/net/wireless/Kconfig                       |    1 +
+ drivers/net/wireless/Makefile                      |    1 +
+ drivers/net/wireless/morsemicro/Kconfig            |   15 +
+ drivers/net/wireless/morsemicro/Makefile           |    2 +
+ drivers/net/wireless/morsemicro/mm81x/Kconfig      |   24 +
+ drivers/net/wireless/morsemicro/mm81x/Makefile     |   21 +
+ drivers/net/wireless/morsemicro/mm81x/bus.h        |   99 +
+ drivers/net/wireless/morsemicro/mm81x/command.c    |  563 +++++
+ drivers/net/wireless/morsemicro/mm81x/command.h    |   85 +
+ .../net/wireless/morsemicro/mm81x/command_defs.h   | 1658 +++++++++++++
+ drivers/net/wireless/morsemicro/mm81x/core.c       |  138 ++
+ drivers/net/wireless/morsemicro/mm81x/core.h       |  456 ++++
+ drivers/net/wireless/morsemicro/mm81x/fw.c         |  752 ++++++
+ drivers/net/wireless/morsemicro/mm81x/fw.h         |  143 ++
+ drivers/net/wireless/morsemicro/mm81x/hif.h        |  117 +
+ drivers/net/wireless/morsemicro/mm81x/hw.c         |  367 +++
+ drivers/net/wireless/morsemicro/mm81x/hw.h         |  159 ++
+ drivers/net/wireless/morsemicro/mm81x/mac.c        | 2443 ++++++++++++++++++++
+ drivers/net/wireless/morsemicro/mm81x/mac.h        |   63 +
+ drivers/net/wireless/morsemicro/mm81x/mmrc.c       | 1354 +++++++++++
+ drivers/net/wireless/morsemicro/mm81x/mmrc.h       |  193 ++
+ drivers/net/wireless/morsemicro/mm81x/ps.c         |  120 +
+ drivers/net/wireless/morsemicro/mm81x/ps.h         |   22 +
+ drivers/net/wireless/morsemicro/mm81x/rate_code.h  |  177 ++
+ drivers/net/wireless/morsemicro/mm81x/rc.c         |  494 ++++
+ drivers/net/wireless/morsemicro/mm81x/rc.h         |   51 +
+ drivers/net/wireless/morsemicro/mm81x/sdio.c       |  613 +++++
+ drivers/net/wireless/morsemicro/mm81x/skbq.c       | 1064 +++++++++
+ drivers/net/wireless/morsemicro/mm81x/skbq.h       |  218 ++
+ drivers/net/wireless/morsemicro/mm81x/usb.c        |  943 ++++++++
+ drivers/net/wireless/morsemicro/mm81x/yaps.c       |  704 ++++++
+ drivers/net/wireless/morsemicro/mm81x/yaps.h       |   77 +
+ drivers/net/wireless/morsemicro/mm81x/yaps_hw.c    |  702 ++++++
+ drivers/net/wireless/morsemicro/mm81x/yaps_hw.h    |   52 +
+ include/linux/mmc/sdio_ids.h                       |    3 +
+ 36 files changed, 13902 insertions(+)
+ create mode 100644 drivers/net/wireless/morsemicro/Kconfig
+ create mode 100644 drivers/net/wireless/morsemicro/Makefile
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/Kconfig
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/Makefile
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/bus.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/command.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/command.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/command_defs.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/core.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/core.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/fw.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/fw.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/hif.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/hw.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/hw.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/mac.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/mac.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/mmrc.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/mmrc.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/ps.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/ps.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/rate_code.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/rc.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/rc.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/sdio.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/skbq.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/skbq.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/usb.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/yaps.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/yaps.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/yaps_hw.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/yaps_hw.h
 
