@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-38790-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38787-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TZjJKGtfTmrmLQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-38790-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 16:32:11 +0200
+	id dcNQLmdfTmriLQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-38787-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 16:32:07 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DBE72761D
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 16:32:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A327727616
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 16:32:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JX03yOPT;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rsESOzX6;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38790-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38790-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38787-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38787-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FC9F30277EE
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jul 2026 14:30:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41CF13026331
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jul 2026 14:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99E8416CF9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D942D2E8DEF;
 	Wed,  8 Jul 2026 14:30:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA2E3B7747;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982FF2D662F;
 	Wed,  8 Jul 2026 14:30:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783521021; cv=none; b=EnHhGAAUZI13Gftqet99mEOaIQ4CCZtASq2R/Lsmdm4yYrQd+4PeFDh+sZkaG7mM8o2rLzyMneMogosfqawc9dYhacKlaMVz/SLjVGlzyneJZPX/5PFZZqkLoaz4uATrXkF5zpONZRVwPxYUJk1G/6JNB0itCMP44mudqqN/7d0=
+	t=1783521021; cv=none; b=mrpuR/8wt9Kt0XD6WEvgcWvVuNOXFOrjmR86EcD/0sRqjN2aKHmD6/VdetxJmfYtxnPuDxlta4msmyWh96tWgQuhDSo8UCqnSnwn8UqBgyVxK8dbtLON7Ue2ZoZK5N9iK53LrgOonHIRaL15Py17e6eoxLx7H6bAWVv9OqIWexQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783521021; c=relaxed/simple;
-	bh=gQhapFU2gHvnflkP8Shzdby92+Ir7fqJ5ZXyGhEN0WI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lQMMosQxd8omDB9w8JmHBr5MaEBP2RGUu9OKPF1g5RvQp7r41Cpvlt0FkR0W7zCzr/7hOPDcorlirYXBjkp1U6C7x7J1KH7Oxwx2urqj6AqNk9xZzfF3ywEitIQI05rPFkfo+9bgEzCmaWgK11haIzCwx2Pux9wUSG6X3K5UEo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JX03yOPT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E49EDC2BCB7;
-	Wed,  8 Jul 2026 14:30:20 +0000 (UTC)
+	bh=TmLrFj8hFi2S6bgLQ4ZFE8c9fZx37+p1hBxYmJWj/yg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=D2VtdhXLvOtcYf71t2icHzX5y3bUcoPWlaULNd7MKRAbezBhcxNvNkGexf+S/6SbHX11n2H559tWunYpCPnrPXatqBmQnPxvMF0iO1cH5cfS2fHg1TLX+9tNWfCnmlYJcTZfvSpPQZrGFhFKKmxr1WIK87nIbg6izVWG00L//n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rsESOzX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 038E0C2BCB3;
+	Wed,  8 Jul 2026 14:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1783521021;
-	bh=gQhapFU2gHvnflkP8Shzdby92+Ir7fqJ5ZXyGhEN0WI=;
-	h=From:Subject:Date:To:Cc:From;
-	b=JX03yOPTVQvNuAbErhlJVQe8E1RpFeIRKMPxI1o6sw3aMGBdhfCWlHYLcsfOopDsI
-	 Y0FiLiHDrQsM+J0LxFK1AmUu50TSBvJ8Wjl2MDhRpyDJ+AmS6aAKg+IPRg/xpV6tbB
-	 HUwIPV+aKJ5mbyOrXmEZWMP9hdI2IpfLNTfkGOvkhppM8sQ3L50AtUQWxH0aDPDlKX
-	 SNvH7NJ9JDxX0FCHR73mS9QvkNJXjf7ayPM42v2ibqLIUAIG5WjVTTUG4gdfcLzUgN
-	 uKsQkN1Kb7H2s463uOIKGg9QqGM+znkBQIKgViI4URX0j5X4PwIqvQT7pnSXBciO8j
-	 0kkxNiLRayMWQ==
+	bh=TmLrFj8hFi2S6bgLQ4ZFE8c9fZx37+p1hBxYmJWj/yg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=rsESOzX6vSmqdYlEZOM+bVRFqmZfd9GZ+rJAW8+lF02rXUE1LKMAgOXUQM461Zd4Q
+	 yXOdgHLD2VFgNXkZ3H0cxGLH1n8Xs7HklfOvKt4mHb9WXkFBGRwUXqlzjlugyX0WJx
+	 U6b7CLTFdfK1DgjhtBgd96Fqcx4Kjb5HizE4I/HXfh7H8Qlw6orHAXEcP+42bqZ9gg
+	 rRi/BBvIpSpsdM6PdTB9X4sBwbM2rrNrAE6vQQpDi21GJBZ8ASkHhfxIy+HKmew/zK
+	 SWriGf5pkTMnPCMPE46pXy3+MydqomO7NnLZ1RlHsozGYZRnoH70iuWn/79btSITzf
+	 5IlYVBto1j7iA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BEB04C43458;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D60C5C44501;
 	Wed,  8 Jul 2026 14:30:20 +0000 (UTC)
 From: Manivannan Sadhasivam <mani@kernel.org>
-Subject: [PATCH v3 0/8] PCI/ASPM: Add pci_force_enable_link_state() API and
- convert Atheros drivers
-Date: Wed, 08 Jul 2026 16:30:14 +0200
-Message-Id: <20260708-pci-aspm-fix-v3-0-6bd72451746e@kernel.org>
+Date: Wed, 08 Jul 2026 16:30:15 +0200
+Subject: [PATCH v3 1/8] PCI/ASPM: Always disable ASPM when driver requests
+ it
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -61,10 +61,9 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAPZeTmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHUUlJIzE
- vPSU3UzU4B8JSMDIzMDcwML3YLkTN3E4oJc3bTMCl1jY0MLI7NEo+Qk0xQloJaColSgMNi46Fg
- Iv7g0KSs1uQRkhlJtLQCyes/GcAAAAA==
-X-Change-ID: 20260708-pci-aspm-fix-331826a2cb5d
+Message-Id: <20260708-pci-aspm-fix-v3-1-6bd72451746e@kernel.org>
+References: <20260708-pci-aspm-fix-v3-0-6bd72451746e@kernel.org>
+In-Reply-To: <20260708-pci-aspm-fix-v3-0-6bd72451746e@kernel.org>
 To: Bjorn Helgaas <bhelgaas@google.com>, 
  Lorenzo Pieralisi <lpieralisi@kernel.org>, 
  =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
@@ -80,16 +79,16 @@ Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
  =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
  Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5491; i=mani@kernel.org;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4353; i=mani@kernel.org;
  h=from:subject:message-id;
- bh=gQhapFU2gHvnflkP8Shzdby92+Ir7fqJ5ZXyGhEN0WI=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBqTl73YP36FvIsLRoHSB3uLXBEmb1VLP8fzrjGo
- vopGvPHqqGJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCak5e9wAKCRBVnxHm/pHO
- 9VItB/9+NlfefDWPw3NDZQfzENbdPK5CjbHbDyMYfvDUBd+0D+ymYnONXpd9fnx6TyydIiRfiCe
- ZSlkrclpD5J7Y7QCkDo0hAc1ErkkCRx8ujsWjFonBGX2vTBr5edjBf6TcWOVe68wbfqvWk5eO5n
- Z/dqImoNjC7RXgnTtaXHLHjfyXXD42JgXDQZHxoXXRDlR7WrZRQ3cVRwUyO1MN0KfmCGfTR9Koi
- dKoAfVHGpw0hQCCVM386cmF2NHMWzkDg8KIQvYHnCU15sE11lxO1mbZXxtKNd+qhJKMCJydHCAU
- z1wbhqEUFE4eQzcBw80/kj4qbP3OZnyOtVEwPfjjwGBDlvpi
+ bh=D4w9YT637FWLwgGnXYf3ez0AiW99miyOiPTxsYowQUw=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBqTl73FnTd3FyCB9aJRYE2UOKhmwqdo19Kc5ziJ
+ 7sAwr/kAXSJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCak5e9wAKCRBVnxHm/pHO
+ 9f50B/92ojehwpKQmD7fMrpHqUlkMXlLamTGMqdbknwGUnu/SaSgOmRdv6pQPrzr5EGUI3MBTIr
+ mZ+pcC9qimhjXzkzAfuMJaLtNLW1bM2Fyk/sTbPnG7cG3dkWx1Lo2UuCHZcppRdOjocDScSjuup
+ X7voUBR4odulK89JVh+URt2I2Dn/NF0mcrlU/dOVo7mS1tglGAHXlMSKZpLl+LiaSSQ7taZHfiH
+ TtYuOD03UTxXhCOoWYlkkVjM/fobA6tiE1aF4aDv/up2b1smVe/0V5xfF8RhOR2nm4DQY8whvho
+ ZF0E9epv6ByhHnflSnJuKlByNi4Ky1tPc0IltsOr9dYJl3t0
 X-Developer-Key: i=mani@kernel.org; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-Endpoint-Received: by B4 Relay for mani@kernel.org/default with
@@ -101,19 +100,19 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38790-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38787-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:bhelgaas@google.com,m:lpieralisi@kernel.org,m:kwilczynski@kernel.org,m:robh@kernel.org,m:nirmal.patel@linux.intel.com,m:jonathan.derrick@linux.dev,m:jjohnson@kernel.org,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,m:ath11k@lists.infradead.org,m:ath10k@lists.infradead.org,m:krishna.chundru@oss.qualcomm.com,m:qiang.yu@oss.qualcomm.com,m:mani@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:manivannan.sadhasivam@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[mani@kernel.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -127,123 +126,106 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 06DBE72761D
+X-Rspamd-Queue-Id: 3A327727616
 
-Hi,
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-This series converts the atheros WLAN drivers (ath10k/ath11k/ath12k) to
-use the PCI core ASPM APIs for enabling/disabling ASPM instead of writing
-to the LNKCTL register directly. Touching LNKCTL behind the PCI core's
-back leaves the ASPM service driver's view of the link state out of sync
-with the hardware, which is not nice.
+PCI core/ASPM service driver allows controlling ASPM state through
+pci_disable_link_state() API. It was decided earlier (see the Link
+below), to not allow ASPM changes when OS does not have control over it
+but only log a warning about the problem 'commit 2add0ec14c25 ("PCI/ASPM:
+Warn when driver asks to disable ASPM, but we can't do it")'.
 
-The catch is that these drivers save the currently enabled ASPM states,
-disable ASPM before firmware download, and restore the saved states
-afterwards. pci_enable_link_state() cannot restore states that were
-disabled via pci_disable_link_state() or blacklisted during init (like
-the pre-1.1 device blacklist, which is only meant to be overridden with
-pcie_aspm=force), and that is intentional. So the save/restore sequence
-cannot be expressed with the existing APIs.
+A number of drivers have added workarounds to force ASPM off with own
+writes into the Link Control Register (some even with comments
+explaining why PCI core does not disable it under some circumstances).
+According to the comments, some drivers require ASPM to be off for
+reliable operation.
 
-In v2 I tried to fix this by making pci_enable_link_state*() symmetric
-with the disable APIs, but as pointed out during review, that also ends
-up overriding the init-time blacklist for every caller (including VMD),
-which is not something we want. So instead, this version adds a separate
-pci_force_enable_link_state() API (patch 2) that re-enables the requested
-states unconditionally. The caller is responsible for only asking for
-states the device actually supports, and the ath drivers do this by
-restoring exactly what pcie_aspm_enabled() reported earlier.
+Having custom ASPM handling in drivers is problematic because the state
+kept in the ASPM service driver is not updated by the changes made
+outside the link state management API.
 
-The first five patches touch the PCI core: patch 1 (from Ilpo) makes
-pci_disable_link_state() disable ASPM unconditionally, patch 2 adds the
-new API, patch 3 moves the D0 transition needed before enabling PCI-PM
-L1 PM Substates (PCIe r6.0, sec 5.5.4) into the shared helper and drops
-it from the vmd and pcie-qcom callers, patch 4 cleans up the kernel-doc,
-and patch 5 makes pcie_aspm_enabled() return the enabled state mask so it
-can be used for save/restore. The last three patches convert the ath
-drivers.
+As the first step to address this issue, make pci_disable_link_state()
+to unconditionally disable ASPM so the motivation for drivers to come
+up with custom ASPM handling code is eliminated.
 
-Testing
-=======
+To fully take advantage of the ASPM handling core provides, the drivers
+that need to quirk ASPM have to be altered depend on PCIEASPM and the
+custom ASPM code is removed. This is to be done separately. As PCIEASPM
+is already behind EXPERT, it should be no problem to limit disabling it
+for configurations that do not require touching ASPM.
 
-I've tested this series on a Lenovo Thinkpad T14s with WCN7850 (so that's
-just the ath12k driver). Rest of the drivers are compile tested only.
+Make pci_disable_link_state() function comment to comply kerneldoc
+formatting while changing the description.
 
-Merging Strategy
-================
-
-Even though there is no build dependency between the PCI core and atheros
-patches, there is a functional dependency. So I'd recommend creating an
-immutable branch with the PCI patches and merging that branch into both
-the PCI and linux-wireless trees, and finally merging the atheros patches
-into the linux-wireless tree.
-
-If the immutable branch seems like a hassle, then the PCI core patches
-could get merged first and the atheros patches can wait for the next
-cycle.
-
-- Mani
-
-Changes in v3:
-* Dropped the change that made pci_enable_link_state*() symmetric with the
-  disable APIs. Instead added a new pci_force_enable_link_state() API used
-  only by the ath drivers, so the init-time blacklist stays overridable
-  only via pcie_aspm=force and existing callers like VMD are left
-  untouched.
-* Fixed the locked path to use pci_set_power_state_locked() for the D0
-  transition. The previous version called the non-locked variant, which
-  re-acquires pci_bus_sem.
-* ath drivers now disable PCIE_LINK_STATE_ASPM_ALL instead of
-  PCIE_LINK_STATE_ALL so that CLKPM is preserved and can be restored
-  (pcie_aspm_enabled() doesn't report CLKPM).
-* Reworked the kernel-doc patch to cover both the enable and disable APIs
-  and reference the new API.
-* Rebased on top of v7.2-rc1.
-
-Changes in v2:
-* Reworked the pcie_aspm_enabled() API to return the enabled states
-  instead of bool and used it to save/restore the ASPM states in ath
-  drivers.
-* Added a patch from Ilpo to disable ASPM even if BIOS didn't grant
-  permission.
-* Added the CONFIG_PCIEASPM dependency to ath{10/11/12}k drivers.
-* Rebased on top of v6.17-rc1.
-
+Link: https://lore.kernel.org/all/CANUX_P3F5YhbZX3WGU-j1AGpbXb_T9Bis2ErhvKkFMtDvzatVQ@mail.gmail.com/
+Link: https://lore.kernel.org/all/20230511131441.45704-1-ilpo.jarvinen@linux.intel.com/
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+[mani: commit message fixup]
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 ---
-Ilpo Järvinen (1):
-      PCI/ASPM: Always disable ASPM when driver requests it
+ drivers/pci/pcie/aspm.c | 33 ++++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
 
-Manivannan Sadhasivam (7):
-      PCI/ASPM: Add pci_force_enable_link_state() API
-      PCI/ASPM: Transition the device to D0 (if required) when enabling ASPM link states
-      PCI/ASPM: Improve the kernel-doc for pci_{enable,disable}_link_state*() APIs
-      PCI/ASPM: Return enabled ASPM states from pcie_aspm_enabled() API
-      wifi: ath12k: Use pci_{enable/disable}_link_state() APIs to enable/disable ASPM states
-      wifi: ath11k: Use pci_{enable/disable}_link_state() APIs to enable/disable ASPM states
-      wifi: ath10k: Use pci_{enable/disable}_link_state() APIs to enable/disable ASPM states
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 172783e7f519..1c15a14718e8 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1449,16 +1449,23 @@ static int __pci_disable_link_state(struct pci_dev *pdev, int state, bool locked
+ 		return -EINVAL;
+ 	/*
+ 	 * A driver requested that ASPM be disabled on this device, but
+-	 * if we don't have permission to manage ASPM (e.g., on ACPI
++	 * if we might not have permission to manage ASPM (e.g., on ACPI
+ 	 * systems we have to observe the FADT ACPI_FADT_NO_ASPM bit and
+-	 * the _OSC method), we can't honor that request.  Windows has
+-	 * a similar mechanism using "PciASPMOptOut", which is also
+-	 * ignored in this situation.
++	 * the _OSC method), previously we chose to not honor disable
++	 * request in that case. Windows has a similar mechanism using
++	 * "PciASPMOptOut", which is also ignored in this situation.
++	 *
++	 * Not honoring the requests to disable ASPM, however, led to
++	 * drivers forcing ASPM off on their own. As such changes of ASPM
++	 * state are not tracked by this service driver, the state kept here
++	 * became out of sync.
++	 *
++	 * Therefore, honor ASPM disable requests even when OS does not have
++	 * ASPM control. Plain disable for ASPM is assumed to be slightly
++	 * safer than fully managing it.
+ 	 */
+-	if (aspm_disabled) {
+-		pci_warn(pdev, "can't disable ASPM; OS doesn't have ASPM control\n");
+-		return -EPERM;
+-	}
++	if (aspm_disabled)
++		pci_warn(pdev, "OS doesn't have ASPM control, disabling ASPM anyway\n");
+ 
+ 	if (!locked)
+ 		down_read(&pci_bus_sem);
+@@ -1485,13 +1492,13 @@ int pci_disable_link_state_locked(struct pci_dev *pdev, int state)
+ EXPORT_SYMBOL(pci_disable_link_state_locked);
+ 
+ /**
+- * pci_disable_link_state - Disable device's link state, so the link will
+- * never enter specific states.  Note that if the BIOS didn't grant ASPM
+- * control to the OS, this does nothing because we can't touch the LNKCTL
+- * register. Returns 0 or a negative errno.
+- *
++ * pci_disable_link_state - Disable device's link state
+  * @pdev: PCI device
+  * @state: ASPM link state to disable
++ *
++ * Disable device's link state so the link will never enter specific states.
++ *
++ * Return: 0 or a negative errno
+  */
+ int pci_disable_link_state(struct pci_dev *pdev, int state)
+ {
 
- drivers/net/wireless/ath/ath10k/Kconfig |   2 +-
- drivers/net/wireless/ath/ath10k/pci.c   |  11 +--
- drivers/net/wireless/ath/ath10k/pci.h   |   5 +-
- drivers/net/wireless/ath/ath11k/Kconfig |   2 +-
- drivers/net/wireless/ath/ath11k/pci.c   |  19 +----
- drivers/net/wireless/ath/ath11k/pci.h   |   3 +-
- drivers/net/wireless/ath/ath12k/Kconfig |   2 +-
- drivers/net/wireless/ath/ath12k/pci.c   |  19 +----
- drivers/net/wireless/ath/ath12k/pci.h   |   4 +-
- drivers/pci/controller/dwc/pcie-qcom.c  |   5 --
- drivers/pci/controller/vmd.c            |   5 --
- drivers/pci/pcie/aspm.c                 | 140 ++++++++++++++++++++++++--------
- include/linux/pci.h                     |   7 +-
- 13 files changed, 129 insertions(+), 95 deletions(-)
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260708-pci-aspm-fix-331826a2cb5d
-
-Best regards,
---  
-மணிவண்ணன் சதாசிவம்
+-- 
+2.43.0
 
 
 
