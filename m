@@ -1,209 +1,176 @@
-Return-Path: <linux-wireless+bounces-38795-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38796-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id S7L2H0dgTmo8LgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-38795-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 16:35:51 +0200
+	id P2i4ON9mTmoNMAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-38796-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 17:03:59 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19CE872771B
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 16:35:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC7C727BB8
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Jul 2026 17:03:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MTZhMT+7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38795-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38795-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38796-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38796-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CAD9F30F2F61
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jul 2026 14:30:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C03933100D42
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jul 2026 14:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54653299937;
-	Wed,  8 Jul 2026 14:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6344B3033DE;
+	Wed,  8 Jul 2026 14:54:46 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D163AEF34;
-	Wed,  8 Jul 2026 14:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A965736A370
+	for <linux-wireless@vger.kernel.org>; Wed,  8 Jul 2026 14:54:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783521022; cv=none; b=TPqTZK6c9pEjgs8VQ7eT+MmtDjL7T1Mol5SHD2zbohs9InGZj2f0Qz3WF+8W0IhwC7STW2qpzccqb8zSqDdCHpgu9ERBZ0wo9S/49rQVSLr1ARWtWIKtflNVBNGRcF0D0cvZ8HCIDKKs2olTETnkYr7H4HRxZbFvIg6HqMNgrgw=
+	t=1783522486; cv=none; b=XH67Bu6RKxQmGPgVGfgXjsSBZdopw5Dw8nmc5zHAngytDXslzPkSTJ7VANTTREo9XHdmyHOYNpEB6IMP+Bw40ZLS1jS/A1iEf+fg+C8NB1wEdUOZwSvhhQpqdG+J0IdosaBdoW54gepH1KSMHO9pyk/5izfKFUjvRD/T3zIRcCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783521022; c=relaxed/simple;
-	bh=FBm9gNuNzt9SJsQ0hC9UT2oUPY0iinHKBxh/yqQB+Zo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qZ0QJRDsjGSBAINck9I5vFhzEzde6PPXk1ogEHFONTNe0zdNSgmwQkJUb7zNeB8eCykkDu8tQ2Ac3MMXztZyevbR/gp8ykwfFwz8+CcZgDra1u4swbAvS7IYoiazWgSjTmTTg+dlmPliTIOeWX/gSC5rHju/yjZiVPNJxSesYpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MTZhMT+7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 77425C2BCF5;
-	Wed,  8 Jul 2026 14:30:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1783521021;
-	bh=FBm9gNuNzt9SJsQ0hC9UT2oUPY0iinHKBxh/yqQB+Zo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=MTZhMT+7duBMhXAvbpqWaXcnTAmXbG384xFmed2kGbvGk9oPbBaSs4HpsugdMpxNx
-	 679ztub8wi742TQH8aH6yHI/gW93ChTb3xDyRuO8zCsxgoyjraKaeklI+BdNzx97DC
-	 MgXq0fbDRCbUziTzx49vGCHf1hbJq+n9jF8QxnmY/59MhFDDcDmxo+9n9EZ63aG2lE
-	 qfdK8BuRgRH/Td7/GYfgjJisAGOfkOdnJAQOfOv3QY4U0JzWvdx3TKXvH80MNrBkQq
-	 k4OW9664oK7p2EsfFxUwEU1Vf3jJ8sgoDqEtp1V3QKeGhbxIaHwYuvn2JJ1EGGqk2R
-	 fMYlINc9lwA7A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6241FC43602;
-	Wed,  8 Jul 2026 14:30:21 +0000 (UTC)
-From: Manivannan Sadhasivam <mani@kernel.org>
-Date: Wed, 08 Jul 2026 16:30:22 +0200
-Subject: [PATCH v3 8/8] wifi: ath10k: Use pci_{enable/disable}_link_state()
- APIs to enable/disable ASPM states
+	s=arc-20240116; t=1783522486; c=relaxed/simple;
+	bh=n8a6IgAdvXQyqjnaQ9JkUOGf0ijz8TJilUs7FUksiM4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rxMu5v5Xh7ZgQIc1GOLYIsAO5TWE7SHuKxTYBzQSqpV02GUQSLb7rx3LxE4R3n3QcD1Mw7rUmIEA8lKBYBqqErEkrrUIsAbcLOLHtUd3ZyHZPKF3fqvv7zsgJFTnpwr4214kE6lzUzuHV2MUfAqpopQ5wziSgEpZCljgWdREIOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=green-communications.fr; spf=pass smtp.mailfrom=green-communications.fr; arc=none smtp.client-ip=212.227.17.24
+Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue107
+ [212.227.17.181]) with ESMTPSA (Nemesis) id 1M9nAB-1wl4Tn0JeP-009EVu; Wed, 08
+ Jul 2026 16:48:58 +0200
+From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+To: linux-wireless@vger.kernel.org
+Cc: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Ruslan Isaev <legale.legale@gmail.com>
+Subject: [PATCH mt76] wifi: mt76: Disable napi when removing device
+Date: Wed,  8 Jul 2026 16:43:47 +0200
+Message-ID: <20260708144615.24092-1-nicolas.cavallari@green-communications.fr>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260708-pci-aspm-fix-v3-8-6bd72451746e@kernel.org>
-References: <20260708-pci-aspm-fix-v3-0-6bd72451746e@kernel.org>
-In-Reply-To: <20260708-pci-aspm-fix-v3-0-6bd72451746e@kernel.org>
-To: Bjorn Helgaas <bhelgaas@google.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Rob Herring <robh@kernel.org>, Nirmal Patel <nirmal.patel@linux.intel.com>, 
- Jonathan Derrick <jonathan.derrick@linux.dev>, 
- Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-wireless@vger.kernel.org, 
- ath12k@lists.infradead.org, ath11k@lists.infradead.org, 
- ath10k@lists.infradead.org, 
- Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
- Qiang Yu <qiang.yu@oss.qualcomm.com>, mani@kernel.org, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2824; i=mani@kernel.org;
- h=from:subject:message-id;
- bh=1V3SgamKnKbZCTaqKi1kk2ScK2GisZBgIvhrbdDfnK8=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBqTl76e2nfaUZvQNRIS2JAPpu0u23/DFhDhZ81P
- q/TDV/Dm+eJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCak5e+gAKCRBVnxHm/pHO
- 9Tw7CAClHNhscV05//m5Z7wi7IlDfyYBab+jNO+wyaShe6hkjqEqWMyHT6/VoLxuobAHNoUOunm
- TTTFtKSglloBBVmGdDeo2vQusyiSbq2D3jecIfM2HWf01oPR/lDhMPM9iu6NP/dTnjPifoFqGfv
- XdHF3Vicrqbavf6w5sZsEAJ74QbBA9UUc3ncielCX8s36O+Ij0cvdEJRpRCTKLxR6WSarpbBz7F
- JbVIyPPBhRVHZswbvVTi48SJxq1IBYZAsIQIbxR6TyWtKgj5KKpdvTYVZq62bqgLmXbnHt1MRNd
- T9Nf2E44HV5nLkqcXnF+3mtJL2czXg7lcRLMpw+sZrEe41go
-X-Developer-Key: i=mani@kernel.org; a=openpgp;
- fpr=C668AEC3C3188E4C611465E7488550E901166008
-X-Endpoint-Received: by B4 Relay for mani@kernel.org/default with
- auth_id=787
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:7MWKL+1X+JeZku4k0J1/JbP7QjnVsPblGgJo4RbwmlgsDYMwuqK
+ ONNqt6qB+Im8MM+QAVw/eUjKMR/vDqygn2ZrYbtSpyPaOr/2JVbmfqazZprvIpNFsOFjhBg
+ JMNGswyQTXI3AFqA6rgWiBqJXnovFAwvm4hXamx+87SQlcUswAbwdtgULrztYcLejyprDoS
+ pPaZG3LJ6R8G6OkkqkmbA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:4by+nj9iuN8=;Wabs3Mp2/Sm6smjj0NIiBMqLXyK
+ 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
+ =
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [1.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38795-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-38796-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:bhelgaas@google.com,m:lpieralisi@kernel.org,m:kwilczynski@kernel.org,m:robh@kernel.org,m:nirmal.patel@linux.intel.com,m:jonathan.derrick@linux.dev,m:jjohnson@kernel.org,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,m:ath11k@lists.infradead.org,m:ath10k@lists.infradead.org,m:krishna.chundru@oss.qualcomm.com,m:qiang.yu@oss.qualcomm.com,m:mani@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:manivannan.sadhasivam@oss.qualcomm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[nicolas.cavallari@green-communications.fr,linux-wireless@vger.kernel.org];
+	DMARC_NA(0.00)[green-communications.fr];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[mani@kernel.org,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:legale.legale@gmail.com,m:legalelegale@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nicolas.cavallari@green-communications.fr,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	R_DKIM_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,green-communications.fr:from_mime,green-communications.fr:email,green-communications.fr:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 19CE872771B
+X-Rspamd-Queue-Id: 7BC7C727BB8
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Unloading the mt7915e module with a MT7916 triggers multiples WARN in
+__netif_napi_del_locked() and in page_pool_disable_direct_recycling()
+because the driver does not disable the napi before destroying it.
 
-It is not recommended to enable/disable the ASPM states on the back of the
-PCI core directly using the LNKCTL register. It will break the PCI core's
-knowledge about the device ASPM states. So use the APIs exposed by the PCI
-core to enable/disable ASPM states.
+This is troublesome since on MT7916 it is required to unload the module
+and reinsert it with a different enable_6ghz parameter to change the
+frequency.  The system generally becomes unstable after reinserting the
+module.
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Fix it by disabling napi before deleting it.  Also, do not delete napi
+on WED queues since napi is neither used nor initialized on them.
+
+Fixes: 17f1de56df05 ("mt76: add common code shared between multiple chipsets")
+Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+
 ---
- drivers/net/wireless/ath/ath10k/Kconfig |  2 +-
- drivers/net/wireless/ath/ath10k/pci.c   | 11 ++++-------
- drivers/net/wireless/ath/ath10k/pci.h   |  5 ++---
- 3 files changed, 7 insertions(+), 11 deletions(-)
+I'm aware of these previous attempts:
+https://lore.kernel.org/linux-wireless/agEbiurBZzZv_Yt0@wico-dev.wnam.ru/T/#u
+https://lore.kernel.org/linux-wireless/ahTdpNQp2va_xTVR@wico-dev.wnam.ru/T/#u
 
-diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wireless/ath/ath10k/Kconfig
-index efb9f022d8c6..eac3ec5a4e78 100644
---- a/drivers/net/wireless/ath/ath10k/Kconfig
-+++ b/drivers/net/wireless/ath/ath10k/Kconfig
-@@ -17,7 +17,7 @@ config ATH10K_CE
- 
- config ATH10K_PCI
- 	tristate "Atheros ath10k PCI support"
--	depends on ATH10K && PCI
-+	depends on ATH10K && PCI && PCIEASPM
- 	help
- 	  This module adds support for PCIE bus
- 
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index 335bc7c488e4..2e27a70065cc 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -1965,9 +1965,7 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
- 	ath10k_pci_irq_enable(ar);
- 	ath10k_pci_rx_post(ar);
- 
--	pcie_capability_clear_and_set_word(ar_pci->pdev, PCI_EXP_LNKCTL,
--					   PCI_EXP_LNKCTL_ASPMC,
--					   ar_pci->link_ctl & PCI_EXP_LNKCTL_ASPMC);
-+	pci_force_enable_link_state(ar_pci->pdev, ar_pci->aspm_states);
- 
- 	return 0;
- }
-@@ -2822,10 +2820,9 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
- 
- 	ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot hif power up\n");
- 
--	pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
--				  &ar_pci->link_ctl);
--	pcie_capability_clear_word(ar_pci->pdev, PCI_EXP_LNKCTL,
--				   PCI_EXP_LNKCTL_ASPMC);
-+	ar_pci->aspm_states = pcie_aspm_enabled(ar_pci->pdev);
-+
-+	pci_disable_link_state(ar_pci->pdev, PCIE_LINK_STATE_ASPM_ALL);
- 
- 	/*
- 	 * Bring the target up cleanly.
-diff --git a/drivers/net/wireless/ath/ath10k/pci.h b/drivers/net/wireless/ath/ath10k/pci.h
-index d114778edb41..122e365b7cdd 100644
---- a/drivers/net/wireless/ath/ath10k/pci.h
-+++ b/drivers/net/wireless/ath/ath10k/pci.h
-@@ -128,10 +128,9 @@ struct ath10k_pci {
- 	struct timer_list rx_post_retry;
- 
- 	/* Due to HW quirks it is recommended to disable ASPM during device
--	 * bootup. To do that the original PCI-E Link Control is stored before
--	 * device bootup is executed and re-programmed later.
-+	 * bootup. To do that the ASPM states are saved and re-programmed later.
- 	 */
--	u16 link_ctl;
-+	u32 aspm_states;
- 
- 	/* Protects ps_awake and ps_wake_refcount */
- 	spinlock_t ps_lock;
+I can only test on a wed-less mt7916
+---
+ drivers/net/wireless/mediatek/mt76/dma.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index f8c2fe5f2f58..322041859217 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -1189,7 +1189,10 @@ void mt76_dma_cleanup(struct mt76_dev *dev)
+ 	mt76_for_each_q_rx(dev, i) {
+ 		struct mt76_queue *q = &dev->q_rx[i];
+ 
+-		netif_napi_del(&dev->napi[i]);
++		if (!mt76_queue_is_wed_rro(q)) {
++			napi_disable(&dev->napi[i]);
++			netif_napi_del(&dev->napi[i]);
++		}
+ 		mt76_dma_rx_cleanup(dev, q);
+ 
+ 		page_pool_destroy(q->page_pool);
+
+base-commit: 50a7f9f9d48eb50c0e95bef53358acb5af5cb3c6
 -- 
-2.43.0
-
+2.53.0
 
 
