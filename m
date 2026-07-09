@@ -1,146 +1,145 @@
-Return-Path: <linux-wireless+bounces-38808-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-38810-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cKXAMcxET2rQdAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-38808-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 08:50:52 +0200
+	id njvtFD1UT2pDegIAu9opvQ
+	(envelope-from <linux-wireless+bounces-38810-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 09:56:45 +0200
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6261472D597
-	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 08:50:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8FF072DFCC
+	for <lists+linux-wireless@lfdr.de>; Thu, 09 Jul 2026 09:56:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=SUqbHg27;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38808-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38808-lists+linux-wireless=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=mediatek.com header.s=dk header.b=stHWIHxD;
+	dmarc=pass (policy=quarantine) header.from=mediatek.com;
+	spf=pass (mail.lfdr.de: domain of "linux-wireless+bounces-38810-lists+linux-wireless=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-wireless+bounces-38810-lists+linux-wireless=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 843B330518F6
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 06:47:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 500A23028E99
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jul 2026 07:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341063BBA0D;
-	Thu,  9 Jul 2026 06:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA423D75AB;
+	Thu,  9 Jul 2026 07:56:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00323C945B;
-	Thu,  9 Jul 2026 06:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD48F3DF009
+	for <linux-wireless@vger.kernel.org>; Thu,  9 Jul 2026 07:56:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783579548; cv=none; b=YW0y3/sEqZ56uuyW8J2xVUyJyUH4aCF508cquwbwAnYdbG1MMwBosSJDNLUaugQI2bXh1+KcfrLql49G1qTBfNuJhnyhysFfADMCrzFRw8x5pCnhr4rtRWuVM2iWBerTZzT2GcuXd53V125sbU3AdG1DYnY6TaM+EkFpdHF0lcs=
+	t=1783583782; cv=none; b=oRhN/ynMGdE2uniLuB7aGDjhi26PP3vG6zEb6Xx1IT/LrkS6/C/z1WsHPLe7S7H3EKQqVMaPNMufsydU0p5DlV+GP/ngkZR9GhzWiag+ka5GuYFEyDkHmsTA6vw9f2twElf2YkM3LCiidk1THuXh3cXyEnPQ8iDRL2mpXoEzx/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783579548; c=relaxed/simple;
-	bh=ePf3TLUk8IumGoGVKjttBlVSijbu8aI5m/BkEk7IM+I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aRNvYWo7kWEwx/WFWQycHWIBs9vDDQ2T8ZuZrzyL7RyQRRmRrTlPb6HiNNTzkD1+px/xwk5J2nDimDKEpk04+AZqAPIJFu7Fix+thV8eG533Udjbc2wAuoGMjCPt4hcjiQLE8rr+3LQpEIOdBCfKbl6IloleW9G7A6OyYC8+9KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=SUqbHg27; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=ePf3TLUk8IumGoGVKjttBlVSijbu8aI5m/BkEk7IM+I=;
-	t=1783579545; x=1784789145; b=SUqbHg272XU4+SOI0UZu9ywr3j2iCbrqNDM+5YLtz+R7vV4
-	gIpgYgtnFT7vW6MvdFR8QQctljDcR7ZnhIM0tBAMUqihdhdVxlz5l9EEbzeykvXJt4XhxAElQYkEU
-	ONHWLRjY+ASc8gHtYCjit+ZwDQvaQ2AYicmbRo45NgqQFLaKAfHTee2vr3+voHtyIVCOtlvjWsqpj
-	M8KBEAn46TDQHMPeE0XES1K/uDN9qENvfAUU0lHcI3yrdji9WUFmwSkGhmuzDeni6+Eia6uliPW3R
-	kJXsfISMloMQrRXjzbv61pJAXXT/higachtw61O8WGulU3gQnxCVCfkrLE5GVLkA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1whiVr-00000007P9J-36CL;
-	Thu, 09 Jul 2026 08:45:35 +0200
-Message-ID: <3e8e6ff58a0809b0346d133c01eda720367eb511.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: Fix cryptographic MAC comparison to be
- constant-time
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Eric Biggers <ebiggers@kernel.org>, linux-wireless@vger.kernel.org, 
- Jouni Malinen <jouni.malinen@oss.qualcomm.com>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Thu, 09 Jul 2026 08:45:35 +0200
-In-Reply-To: <20260709024443.58132-1-ebiggers@kernel.org>
-References: <20260709024443.58132-1-ebiggers@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1783583782; c=relaxed/simple;
+	bh=KdV7ZNl/uIA7O9vBF9sUTQNyMVZlG0bEb0Haz7SAsO4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W0tSqdmJ7sBpbDkG15/Pjj1NfjtXda/DU9W3ovLGwbxDaoaybR3Zo0aC3mXKXimONzYtiol6Gdt2h7sTmay+4nF+v6EgNZe013f2QfuCJI5ZiKpEU3WltDXPXn3pWskX5iwAEGEmKjjV+JlbrfJm410wm/OXlRyAlLzI9/S4oF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=stHWIHxD; arc=none smtp.client-ip=210.61.82.184
+X-UUID: a89196f07b6b11f18dc8c9802ae25ab1-20260709
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=miRr2Vh2qV0uzgDRTJNRMD3Yv5mTPwM32SzzMgMj50I=;
+	b=stHWIHxDZ6hmqVUNy2JgwS0egw2Wu2wPX9XUp7CnfxLC2eE/q4rimHLvvhD+cDALPI2WPfeJ8uaM5LfcmpYQWrX4DZjOj9FtGdufQJynR9EshJMTaBUunESsJ7jxOseSVMVx4c43iiCpzjxso4bQwVTdpUbna/sYTdwGMUBLK38=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.17,REQID:30a83245-d60d-4044-b308-12f88ccf2719,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:d497b38,CLOUDID:544be918-ab14-4403-9336-76696324c5a8,B
+	ulkID:nil,BulkQuantity:0,SF:102|836|865|888|898,TC:-5,Content:0|15|50|99,E
+	DM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: a89196f07b6b11f18dc8c9802ae25ab1-20260709
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
+	(envelope-from <eason.lai@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1855363146; Thu, 09 Jul 2026 15:56:14 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 9 Jul 2026 15:56:13 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Thu, 9 Jul 2026 15:56:13 +0800
+From: Eason Lai <eason.lai@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	<Yf.Luo@mediatek.com>, <kun.wu@mediatek.com>, <deren.wu@mediatek.com>,
+	<sean.wang@mediatek.com>, <quan.zhou@mediatek.com>, <ryder.lee@mediatek.com>,
+	<leon.yen@mediatek.com>, <litien.chang@mediatek.com>, <jb.tsai@mediatek.com>,
+	<eason.lai@mediatek.com>, Eason Lai <Eason.Lai@mediatek.com>
+Subject: [PATCH 0/3] Fix TX performance degradation when IOMMU is enabled
+Date: Thu, 9 Jul 2026 15:55:55 +0800
+Message-ID: <20260709075558.1654164-1-eason.lai@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ebiggers@kernel.org,m:linux-wireless@vger.kernel.org,m:jouni.malinen@oss.qualcomm.com,m:linux-crypto@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-38810-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-38808-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER(0.00)[eason.lai@mediatek.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,m:Yf.Luo@mediatek.com,m:kun.wu@mediatek.com,m:deren.wu@mediatek.com,m:sean.wang@mediatek.com,m:quan.zhou@mediatek.com,m:ryder.lee@mediatek.com,m:leon.yen@mediatek.com,m:litien.chang@mediatek.com,m:jb.tsai@mediatek.com,m:eason.lai@mediatek.com,m:Eason.Lai@mediatek.com,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[eason.lai@mediatek.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[mediatek.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,sipsolutions.net:from_mime,sipsolutions.net:dkim,sipsolutions.net:mid]
+	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,mediatek.com:from_mime,mediatek.com:email,mediatek.com:mid,mediatek.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6261472D597
+X-Rspamd-Queue-Id: B8FF072DFCC
 
-On Wed, 2026-07-08 at 22:44 -0400, Eric Biggers wrote:
-> To prevent timing attacks, the comparison of cryptographic message
-> authentication codes (MACs) needs to have data-independent timing.
-> Replace the memcmp() with the correct function, crypto_memneq().
->=20
-> Fixes: 39404feee691 ("mac80211: FILS AEAD protection for station mode ass=
-ociation frames")
-> Cc: stable@vger.kernel.org
+From: Eason Lai <Eason.Lai@mediatek.com>
 
-I guess I'll apply (a variant of) this patch for -next, but that commit
-log really makes it sound like something is actually broken and needs
-fixing, and I don't think that's true in this specific context.
+This series adds a TX preallocated buffer mechanism to fix the TX
+performance degradation observed after enabling IOMMU.
 
-What happens is that the frame is validated and then we associate
-successfully (upon success) or drop the frame (upon failure). Only the
-failure case is relevant for the timing issue, but in that case we
-simply drop the frame and there isn't really an observable signal -
-nothing else happens, at least not immediately, we may retry the request
-later after a timer.
+Currently this feature is only enabled on MT8196, where it has been
+validated.
 
-So sure, it looks better to have a crypto_memneq() in AES-SIV related
-code, but in practice I don't see how it would make a difference now,
-and it's even unlikely this code will ever matter for anything else in
-the future, given that things are moving more and more towards full
-frame encryption, including association request/response now.
+Eason Lai (3):
+  wifi: mt76: Separate skb and page_pool_buf pointers in mt76_txwi_cache
+  wifi: mt76: mt792x: Add TX page pool support for IOMMU-enabled systems
+  wifi: mt76: mt792x: Restrict TX page pool to MT8196 platform
 
-I saw you originally had this in the "use libraries" patch [1], I'm also
-good with you just keeping the change there. This might even be better
-if you're planning to have this in -next soon, where it would otherwise
-conflict if I keep this to -next.
+ drivers/net/wireless/mediatek/mt76/dma.c      |  55 ++-
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  15 +-
+ .../wireless/mediatek/mt76/mt76_connac_mac.c  |   6 +
+ .../net/wireless/mediatek/mt76/mt7925/pci.c   |   4 +-
+ drivers/net/wireless/mediatek/mt76/mt792x.h   |   2 +
+ .../net/wireless/mediatek/mt76/mt792x_dma.c   | 330 ++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   |  10 +-
+ drivers/net/wireless/mediatek/mt76/tx.c       |   2 +-
+ drivers/net/wireless/mediatek/mt76/wed.c      |   6 +-
+ 9 files changed, 398 insertions(+), 32 deletions(-)
 
-[1] https://lore.kernel.org/linux-crypto/20260707053503.209874-24-ebiggers@=
-kernel.org/
+-- 
+2.45.2
 
-(The whole feature is also fairly much unused anyway in practice as far
-as I can tell.)
-
-johannes
 
